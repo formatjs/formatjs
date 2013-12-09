@@ -1,5 +1,5 @@
-Int Message Format Polyfill
-===========================
+Intl Message Format Polyfill
+============================
 
 [![Build Status](https://travis-ci.org/yahoo/intl-messageformat-polyfill.png?branch=master)](https://travis-ci.org/yahoo/intl-messageformat-polyfill)
 
