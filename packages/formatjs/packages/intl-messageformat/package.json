@@ -1,0 +1,40 @@
+{
+  "name": "intl-messageformat",
+  "version": "0.0.1",
+  "description": "implementation of the ECMA 402 proposal for MessageFormatter",
+  "keywords": [
+    "intl",
+    "i18n",
+    "MessageFormatter"
+  ],
+  "author": "Anthony Pipkin <a.pipkin@yahoo.com>",
+  "contributors": [
+    "Drew Folta <drew@folta.net>"
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/yahoo/intl-messageformat-polyfill/blob/master/LICENSE.txt"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/yahoo/intl-messageformat-polyfill/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:yahoo/intl-messageformat-polyfill.git"
+  },
+  "main": "lib/message.js",
+  "directories": {
+    "test": "tests"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-cli": "~0.1.11",
+    "grunt-contrib-jshint": "~0.7.2"
+  },
+  "scripts": {
+    "pretest": "grunt jshint",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
