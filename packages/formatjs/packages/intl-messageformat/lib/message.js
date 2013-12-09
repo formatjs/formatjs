@@ -23,19 +23,19 @@ THE SOFTWARE.
 */
 (function (root, factory) {
 
-    var MessageFormatter = factory();
+    var MessageFormat = factory();
 
     // register in -all- the module systems (at once)
     if (typeof define === 'function' && define.amd) {
-        defined('IntlMessageFormatter', MessageFormatter);
+        defined('IntlMessageFormat', MessageFormat);
     }
 
     if (typeof exports === 'object') {
-        module.exports = MessageFormatter;
+        module.exports = MessageFormat;
     }
 
     if (root) {
-        root.IntlMessageFormatter = MessageFormatter;
+        root.IntlMessageFormat = MessageFormat;
     }
 
 })(typeof global !== 'undefined' ? global : this, function() {
@@ -64,7 +64,7 @@ THE SOFTWARE.
          Use array for plural and select messages, otherwise use string form.
      @param {Object} optFieldFormatters Holds user defined formatters for each field (Dojo like).
      */
-    function MessageFormatter (locale, pattern, optFieldFormatters) {
+    function MessageFormat (locale, pattern, optFieldFormatters) {
         var chunks,
             len,
             i,
@@ -120,7 +120,7 @@ THE SOFTWARE.
      @param {Array|Object} params
      @return {String}
      */
-    MessageFormatter.prototype.format = function (obj) {
+    MessageFormat.prototype.format = function (obj) {
 
         var pattern = this.pattern,
             tokens,
@@ -170,7 +170,7 @@ THE SOFTWARE.
      Returns resolved options, in this case supported locale.
      @return {Object}
      */
-    MessageFormatter.prototype.resolvedOptions = function () {
+    MessageFormat.prototype.resolvedOptions = function () {
         // TODO: Figure out what options should be returned for messages
         return {};
     };
@@ -180,7 +180,7 @@ THE SOFTWARE.
      @param {Number} count Number to normalize
      @return {String}
      */
-    MessageFormatter.prototype._normalizeCount = function (count) {
+    MessageFormat.prototype._normalizeCount = function (count) {
         // Prefer to use CLDR
         if (count === 0) {
             return 'zero';
@@ -205,7 +205,7 @@ THE SOFTWARE.
      @param {Object} obj
      @return {String}
      */
-    MessageFormatter.prototype._processArray = function (arr, obj) {
+    MessageFormat.prototype._processArray = function (arr, obj) {
         var str = '',
             valType,
             val,
@@ -254,7 +254,7 @@ THE SOFTWARE.
      @param {Object} lookUp
      @return {String|Array|Object}
      */
-    MessageFormatter.prototype._processObject = function (obj, lookUp) {
+    MessageFormat.prototype._processObject = function (obj, lookUp) {
         var val = lookUp[obj.valueName],
             valName = val,
             formatterFn;
@@ -302,6 +302,6 @@ THE SOFTWARE.
         return val;
     };
 
-    return MessageFormatter;
+    return MessageFormat;
 });
 

@@ -27,14 +27,14 @@ THE SOFTWARE.
 
 
 var expect = require('chai').expect,
-    MessageFormatter = require('../lib/message.js');
+    MessageFormat = require('../lib/message.js');
 
 
 describe('message creation', function () {
 
     it('simple string formatting', function () {
         var msg, m;
-        msg = new MessageFormatter(null, 'My name is ${first} {last}.');
+        msg = new MessageFormat(null, 'My name is ${first} {last}.');
         m = msg.format({
             first: 'Anthony',
             last: 'Pipkin'
@@ -45,7 +45,7 @@ describe('message creation', function () {
 
     it ('complex object formatter', function () {
         var msg, m;
-        msg = new MessageFormatter(null, ['Some text before ', {
+        msg = new MessageFormat(null, ['Some text before ', {
             type: 'plural',
             valueName: 'numPeople',
             offset: 1,
@@ -86,7 +86,7 @@ describe('message creation', function () {
 
     it('Simple string formatter using a custom formatter for a token', function () {
         var msg, m;
-        msg = new MessageFormatter(null, 'Test formatter d: ${num:d}', {
+        msg = new MessageFormat(null, 'Test formatter d: ${num:d}', {
             d: function (locale, val) {
                 return +val;
             }

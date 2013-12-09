@@ -1,11 +1,11 @@
 {
   "name": "intl-messageformat",
   "version": "0.0.1",
-  "description": "implementation of the ECMA 402 proposal for MessageFormatter",
+  "description": "implementation of the ECMA 402 proposal for MessageFormat",
   "keywords": [
     "intl",
     "i18n",
-    "MessageFormatter"
+    "MessageFormat"
   ],
   "author": "Anthony Pipkin <a.pipkin@yahoo.com>",
   "contributors": [
