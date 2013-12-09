@@ -29,12 +29,15 @@
     "test": "tests"
   },
   "devDependencies": {
+    "chai": "~1.8.1",
     "grunt": "~0.4.2",
     "grunt-cli": "~0.1.11",
-    "grunt-contrib-jshint": "~0.7.2"
+    "grunt-contrib-jshint": "~0.7.2",
+    "istanbul": "~0.1.46",
+    "mocha": "~1.15.1"
   },
   "scripts": {
     "pretest": "grunt jshint",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "istanbul cover -- _mocha tests/ --reporter spec"
   }
 }

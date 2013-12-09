@@ -3,7 +3,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         jshint: {
-            all: ['lib/message.js']
+            all: ['lib/*.js', 'tests/*.js']
         }
     });
 
