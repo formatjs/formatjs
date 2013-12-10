@@ -14,15 +14,15 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/yahoo/intl-messageformat-polyfill/blob/master/LICENSE.txt"
+      "url": "https://github.com/yahoo/intl-messageformat/blob/master/LICENSE.txt"
     }
   ],
   "bugs": {
-    "url": "https://github.com/yahoo/intl-messageformat-polyfill/issues"
+    "url": "https://github.com/yahoo/intl-messageformat/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:yahoo/intl-messageformat-polyfill.git"
+    "url": "git@github.com:yahoo/intl-messageformat.git"
   },
   "main": "index.js",
   "directories": {
