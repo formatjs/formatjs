@@ -24,7 +24,7 @@
     "type": "git",
     "url": "git@github.com:yahoo/intl-messageformat-polyfill.git"
   },
-  "main": "lib/message.js",
+  "main": "index.js",
   "directories": {
     "test": "tests"
   },

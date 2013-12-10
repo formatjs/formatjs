@@ -16,7 +16,7 @@ This protects `intl-messageformat` developers, who rely on [intl-messageformat's
 Dev mode installation
 ---------------------
 
-- The main source files are located under `lib/`.
+- The main source file is located at `index.js`.
 - Unit tests are located under `tests/`.
 
 To install the dependencies:

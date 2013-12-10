@@ -27,7 +27,7 @@ THE SOFTWARE.
 
 
 var expect = require('chai').expect,
-    MessageFormat = require('../lib/message.js');
+    MessageFormat = require('../index.js');
 
 
 describe('message creation', function () {
