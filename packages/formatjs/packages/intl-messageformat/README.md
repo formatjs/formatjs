@@ -1,7 +1,7 @@
 Intl Message Format Polyfill
 ============================
 
-[![Build Status](https://travis-ci.org/yahoo/intl-messageformat-polyfill.png?branch=master)](https://travis-ci.org/yahoo/intl-messageformat-polyfill)
+[![Build Status](https://travis-ci.org/yahoo/intl-messageformat.png?branch=master)](https://travis-ci.org/yahoo/intl-messageformat)
 
 Format a string with placeholders, including plural and gender support to
 create localized messages.

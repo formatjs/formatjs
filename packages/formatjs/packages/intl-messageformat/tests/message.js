@@ -30,6 +30,25 @@ var expect = require('chai').expect,
     MessageFormat = require('../index.js');
 
 
+describe('message resolvedOptions', function () {
+
+    it('empty options', function () {
+        var msg, o, p, pCount = 0;
+
+        msg = new MessageFormat(null, 'My name is ${name}');
+
+        o = msg.resolvedOptions();
+
+        for (p in o) {
+            if (o.hasOwnProperty(p)) {
+                pCount++;
+            }
+        }
+
+        expect(pCount).to.equal(0);
+    });
+});
+
 describe('message creation', function () {
 
     it('simple string formatting', function () {
@@ -42,8 +61,79 @@ describe('message creation', function () {
         expect(m).to.equal('My name is Anthony Pipkin.');
     });
 
+    it('simple object formatting', function () {
+        var msg, m;
+
+        msg = new MessageFormat(null, ['I have ', 2, ' cars.']);
+
+        m = msg.format();
+
+        expect(m).to.equal('I have 2 cars.');
+
+    });
+
+    it('simple object with post processing tokens', function () {
+        var msg, m;
+
+        msg = new MessageFormat(null, ['${', 'company', '}', ' {', 'verb' ,'}.']);
+
+        m = msg.format({
+            company: 'Yahoo',
+            verb: 'rocks'
+        });
+
+        expect(m).to.equal('Yahoo rocks.');
+
+    });
 
     it ('complex object formatter', function () {
+        var msg, m;
+        msg = new MessageFormat(null, ['Some text before ', {
+            type: 'plural',
+            valueName: 'numPeople',
+            options: {
+                one: 'one',
+
+                few: 'few',
+
+                other: 'Some messages for the default'
+            }
+        }, ' and text after']);
+
+        m = msg.format({
+            numPeople: 20
+        });
+
+        expect(m).to.equal("Some text before Some messages for the default and text after");
+    });
+
+    it ('complex object formatter with invalid valueName', function () {
+        var msg, m;
+        msg = new MessageFormat(null, ['Some text before ', {
+            type: 'plural',
+            valueName: 'numPeople',
+            options: {
+                one: 'one',
+
+                few: 'few',
+
+                other: 'Some messages for the default'
+            }
+        }, ' and text after']);
+
+        try {
+            m = msg.format({
+                jumper: 20
+            });
+        } catch (e) {
+            var err = 'The valueName `numPeople` was not found.';
+            expect(e).to.equal(err);
+        }
+
+
+    });
+
+    it ('complex object formatter with offset', function () {
         var msg, m;
         msg = new MessageFormat(null, ['Some text before ', {
             type: 'plural',
@@ -95,6 +185,33 @@ describe('message creation', function () {
             num: '010'
         });
         expect(m).to.equal('Test formatter d: 10');
+    });
+
+    it('Simple string formatter using an inline formatter for a token', function () {
+        var msg, m;
+        msg = new MessageFormat(null, [{
+            valueName: 'str',
+            formatter: function (locale, val) {
+                return val.toString().split('').reverse().join('');
+            }
+        }]);
+        m = msg.format({
+            str: 'aardvark'
+        });
+        expect(m).to.equal('kravdraa');
+    });
+
+    it('Simple string formatter using a nonexistent formatter for a token', function () {
+        var msg, m;
+        msg = new MessageFormat(null, 'Test formatter foo: ${num:foo}', {
+            d: function (locale, val) {
+                return +val;
+            }
+        });
+        m = msg.format({
+            num: '010'
+        });
+        expect(m).to.equal('Test formatter foo: 010');
     });
 
 });

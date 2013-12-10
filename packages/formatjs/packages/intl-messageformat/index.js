@@ -27,7 +27,7 @@ THE SOFTWARE.
 
     // register in -all- the module systems (at once)
     if (typeof define === 'function' && define.amd) {
-        defined('IntlMessageFormat', MessageFormat);
+        defined(MessageFormat);
     }
 
     if (typeof exports === 'object') {
@@ -157,7 +157,7 @@ THE SOFTWARE.
 
                 // replace the token with obj[key]
                 if (obj.hasOwnProperty(key)) {
-                    pattern = pattern.replace(obj[key]);
+                    pattern = pattern.replace(tokens[i], obj[key]);
                 }
             }
         }
