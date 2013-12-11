@@ -26,8 +26,19 @@ THE SOFTWARE.
 'use strict';
 
 
-var expect = require('chai').expect,
-    MessageFormat = require('../index.js');
+var chai,
+    expect,
+    IntlMessageFormat;
+
+
+// This oddity is so that this file can be used for both client-side and
+// server-side testing.  (On the client we've already loaded chai and
+// IntlMessageFormat.)
+if ('function' === typeof require) {
+    chai = require('chai');
+    IntlMessageFormat = require('../index.js');
+}
+expect = chai.expect;
 
 
 describe('message resolvedOptions', function () {
@@ -35,7 +46,7 @@ describe('message resolvedOptions', function () {
     it('empty options', function () {
         var msg, o, p, pCount = 0;
 
-        msg = new MessageFormat(null, 'My name is ${name}');
+        msg = new IntlMessageFormat(null, 'My name is ${name}');
 
         o = msg.resolvedOptions();
 
@@ -53,7 +64,7 @@ describe('message creation', function () {
 
     it('simple string formatting', function () {
         var msg, m;
-        msg = new MessageFormat(null, 'My name is ${first} {last}.');
+        msg = new IntlMessageFormat(null, 'My name is ${first} {last}.');
         m = msg.format({
             first: 'Anthony',
             last: 'Pipkin'
@@ -64,7 +75,7 @@ describe('message creation', function () {
     it('simple object formatting', function () {
         var msg, m;
 
-        msg = new MessageFormat(null, ['I have ', 2, ' cars.']);
+        msg = new IntlMessageFormat(null, ['I have ', 2, ' cars.']);
 
         m = msg.format();
 
@@ -75,7 +86,7 @@ describe('message creation', function () {
     it('simple object with post processing tokens', function () {
         var msg, m;
 
-        msg = new MessageFormat(null, ['${', 'company', '}', ' {', 'verb' ,'}.']);
+        msg = new IntlMessageFormat(null, ['${', 'company', '}', ' {', 'verb' ,'}.']);
 
         m = msg.format({
             company: 'Yahoo',
@@ -88,7 +99,7 @@ describe('message creation', function () {
 
     it ('complex object formatter', function () {
         var msg, m;
-        msg = new MessageFormat(null, ['Some text before ', {
+        msg = new IntlMessageFormat(null, ['Some text before ', {
             type: 'plural',
             valueName: 'numPeople',
             options: {
@@ -109,7 +120,7 @@ describe('message creation', function () {
 
     it ('complex object formatter with invalid valueName', function () {
         var msg, m;
-        msg = new MessageFormat(null, ['Some text before ', {
+        msg = new IntlMessageFormat(null, ['Some text before ', {
             type: 'plural',
             valueName: 'numPeople',
             options: {
@@ -135,7 +146,7 @@ describe('message creation', function () {
 
     it ('complex object formatter with offset', function () {
         var msg, m;
-        msg = new MessageFormat(null, ['Some text before ', {
+        msg = new IntlMessageFormat(null, ['Some text before ', {
             type: 'plural',
             valueName: 'numPeople',
             offset: 1,
@@ -176,7 +187,7 @@ describe('message creation', function () {
 
     it('Simple string formatter using a custom formatter for a token', function () {
         var msg, m;
-        msg = new MessageFormat(null, 'Test formatter d: ${num:d}', {
+        msg = new IntlMessageFormat(null, 'Test formatter d: ${num:d}', {
             d: function (locale, val) {
                 return +val;
             }
@@ -189,7 +200,7 @@ describe('message creation', function () {
 
     it('Simple string formatter using an inline formatter for a token', function () {
         var msg, m;
-        msg = new MessageFormat(null, [{
+        msg = new IntlMessageFormat(null, [{
             valueName: 'str',
             formatter: function (locale, val) {
                 return val.toString().split('').reverse().join('');
@@ -203,7 +214,7 @@ describe('message creation', function () {
 
     it('Simple string formatter using a nonexistent formatter for a token', function () {
         var msg, m;
-        msg = new MessageFormat(null, 'Test formatter foo: ${num:foo}', {
+        msg = new IntlMessageFormat(null, 'Test formatter foo: ${num:foo}', {
             d: function (locale, val) {
                 return +val;
             }
