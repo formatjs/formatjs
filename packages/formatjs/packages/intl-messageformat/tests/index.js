@@ -243,7 +243,7 @@ describe('message creation', function () {
         CustomFormatters.prototype.constructor = CustomFormatters;
 
 
-        msg = new MessageFormat(null, 'd: ${num:d} / f: ${num:f}', new CustomFormatters());
+        msg = new IntlMessageFormat(null, 'd: ${num:d} / f: ${num:f}', new CustomFormatters());
 
         m = msg.format({
             num: 0
@@ -255,7 +255,7 @@ describe('message creation', function () {
     it('broken pattern', function () {
        var msg, m;
 
-        msg = new MessageFormat(null, '${name} ${formula}');
+        msg = new IntlMessageFormat(null, '${name} ${formula}');
 
         msg.pattern = '${name} ${formula}';
 
@@ -271,7 +271,7 @@ describe('message creation', function () {
 
 
 describe('message creation for plurals', function () {
-    var msg = new MessageFormat(null, ['I have ', {
+    var msg = new IntlMessageFormat(null, ['I have ', {
             type: 'plural',
             valueName: 'numPeople',
             options: {
