@@ -30,7 +30,7 @@ THE SOFTWARE.
         define(MessageFormat);
     }
 
-    if (typeof exports === 'object') {
+    if (typeof module === 'object' && typeof module.exports === 'object') {
         module.exports = MessageFormat;
     }
 
