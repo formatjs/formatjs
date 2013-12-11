@@ -214,6 +214,113 @@ describe('message creation', function () {
         expect(m).to.equal('Test formatter foo: 010');
     });
 
+
+    it('Custom formatters with hidden inheritance', function () {
+        var msg, m,
+            Formatters = function () {
+                this.d = function (locale, val) {
+                    return val + '030';
+                };
+            },
+            CustomFormatters = function () {
+                this.f = function (locale, val) {
+                    return val + '080';
+                };
+            };
+
+        CustomFormatters.prototype = Formatters;
+        CustomFormatters.prototype.constructor = CustomFormatters;
+
+
+        msg = new MessageFormat(null, 'd: ${num:d} / f: ${num:f}', new CustomFormatters());
+
+        m = msg.format({
+            num: 0
+        });
+
+        expect(m).to.equal('d: 0 / f: 0080');
+    });
+
+    it('broken pattern', function () {
+       var msg, m;
+
+        msg = new MessageFormat(null, '${name} ${formula}');
+
+        msg.pattern = '${name} ${formula}';
+
+        m = msg.format({
+            name: 'apipkin'
+        });
+
+        expect(m).to.equal('apipkin ${formula}');
+
+    });
+
 });
 
+
+describe('message creation for plurals', function () {
+    var msg = new MessageFormat(null, ['I have ', {
+            type: 'plural',
+            valueName: 'numPeople',
+            options: {
+                zero : 'zero points',
+                one  : 'a point',
+                two  : 'two points',
+                few  : 'a few points',
+                many : 'lots of points',
+                other: 'some other amount of points'
+            }
+        }, '.']);
+
+    it('zero', function () {
+        var m = msg.format({
+            numPeople: 0
+        });
+
+        expect(m).to.equal('I have zero points.');
+    });
+
+    it('one', function () {
+        var m = msg.format({
+            numPeople: 1
+        });
+
+        expect(m).to.equal('I have a point.');
+    });
+
+    it('two', function () {
+        var m = msg.format({
+            numPeople: 2
+        });
+
+        expect(m).to.equal('I have two points.');
+    });
+
+    it('few', function () {
+        var m = msg.format({
+            numPeople: 5
+        });
+
+        expect(m).to.equal('I have a few points.');
+    });
+
+    it('many', function () {
+        var m = msg.format({
+            numPeople: 20
+        });
+
+        expect(m).to.equal('I have lots of points.');
+    });
+
+    it('other', function () {
+        var m = msg.format({
+            numPeople: 100
+        });
+
+        expect(m).to.equal('I have some other amount of points.');
+    });
+
+
+});
 
