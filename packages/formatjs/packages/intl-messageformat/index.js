@@ -27,7 +27,7 @@ THE SOFTWARE.
 
     // register in -all- the module systems (at once)
     if (typeof define === 'function' && define.amd) {
-        defined(MessageFormat);
+        define(MessageFormat);
     }
 
     if (typeof exports === 'object') {
@@ -156,7 +156,7 @@ THE SOFTWARE.
                 key = key.substr(0, key.length - 1);
 
                 // replace the token with obj[key]
-                if (obj.hasOwnProperty(key)) {
+                if (typeof obj[key] !== 'undefined') {
                     pattern = pattern.replace(tokens[i], obj[key]);
                 }
             }
@@ -248,7 +248,7 @@ THE SOFTWARE.
      lookUp object.
 
      If the lookUp object returns a string, it will be sandwiched between
-    `obj.prefix` and `obj.postfix` if they exist.
+     `obj.prefix` and `obj.postfix` if they exist.
 
      @param {Ojbect} obj
      @param {Object} lookUp
@@ -257,10 +257,11 @@ THE SOFTWARE.
     MessageFormat.prototype._processObject = function (obj, lookUp) {
         var val = lookUp[obj.valueName],
             valName = val,
+            valType,
             formatterFn;
 
         // our look up object isn't in the provided lookUp object
-        if (!val) {
+        if (typeof val === 'undefined' || val === null) {
             throw 'The valueName `' + obj.valueName + '` was not found.';
         }
 
@@ -281,10 +282,17 @@ THE SOFTWARE.
             val = obj.options[val] || obj.options.other;
         }
 
-        // if we have a string to return, we need to sandwich it with (pre|post)fix
-        if (typeof val === 'string') {
-            // We need to make sure we aren't doing a context look up `${#}`
-            val = val.replace('${#}', valName);
+        valType = typeof val;
+
+        // if we have a string or number to return, we need to sandwich it
+        // with (pre|post)fix
+        if (valType === 'string' || valType === 'number') {
+
+            // strings should be checked for hash tokens
+            if (valType === 'string') {
+                // We need to make sure we aren't doing a context look up `${#}`
+                val = val.replace('${#}', valName);
+            }
 
             // process with a formatter if one exists
             if (obj.formatter) {
