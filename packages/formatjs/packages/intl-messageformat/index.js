@@ -156,7 +156,7 @@ THE SOFTWARE.
                 key = key.substr(0, key.length - 1);
 
                 // replace the token with obj[key]
-                if (typeof obj[key] !== 'undefined') {
+                if (obj.hasOwnProperty(key)) {
                     pattern = pattern.replace(tokens[i], obj[key]);
                 }
             }
