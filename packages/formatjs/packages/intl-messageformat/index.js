@@ -59,12 +59,12 @@ THE SOFTWARE.
 
      @constructor
 
-     @param {LocaleList|String} locale Locale for string formatting
      @param {Array|String} pattern Array or string that serves as formatting pattern.
          Use array for plural and select messages, otherwise use string form.
+     @param {LocaleList|String} locale Locale for string formatting
      @param {Object} optFieldFormatters Holds user defined formatters for each field (Dojo like).
      */
-    function MessageFormat (locale, pattern, optFieldFormatters) {
+    function MessageFormat (pattern, locale, optFieldFormatters) {
         var chunks,
             len,
             i,
@@ -299,7 +299,7 @@ THE SOFTWARE.
                 formatterFn = {}.toString.call(obj.formatter) === '[object Function]' ? obj.formatter : this.formatters[obj.formatter];
 
                 if (formatterFn) {
-                    val = formatterFn.call(this, this.locale, val);
+                    val = formatterFn.call(this, val, this.locale);
                 }
             }
 
