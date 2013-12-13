@@ -229,12 +229,12 @@ describe('message creation', function () {
     it('Custom formatters with hidden inheritance', function () {
         var msg, m,
             Formatters = function () {
-                this.d = function (locale, val) {
+                this.d = function (val, locale) {
                     return val + '030';
                 };
             },
             CustomFormatters = function () {
-                this.f = function (locale, val) {
+                this.f = function (val, locale) {
                     return val + '080';
                 };
             };
@@ -243,7 +243,7 @@ describe('message creation', function () {
         CustomFormatters.prototype.constructor = CustomFormatters;
 
 
-        msg = new IntlMessageFormat(null, 'd: ${num:d} / f: ${num:f}', new CustomFormatters());
+        msg = new IntlMessageFormat('d: ${num:d} / f: ${num:f}', null, new CustomFormatters());
 
         m = msg.format({
             num: 0
@@ -255,7 +255,7 @@ describe('message creation', function () {
     it('broken pattern', function () {
        var msg, m;
 
-        msg = new IntlMessageFormat(null, '${name} ${formula}');
+        msg = new IntlMessageFormat('${name} ${formula}');
 
         msg.pattern = '${name} ${formula}';
 
@@ -271,7 +271,7 @@ describe('message creation', function () {
 
 
 describe('message creation for plurals', function () {
-    var msg = new IntlMessageFormat(null, ['I have ', {
+    var msg = new IntlMessageFormat(['I have ', {
             type: 'plural',
             valueName: 'numPeople',
             options: {
