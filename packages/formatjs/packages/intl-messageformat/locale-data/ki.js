@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({locale:"ki", messageformat:{pluralFunction:function (n) {  }}});

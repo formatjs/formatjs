@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({locale:"pa", messageformat:{pluralFunction:function (n) { n=Math.floor(n);if(n>=0&&n<=1)return"one";return"other"; }}});

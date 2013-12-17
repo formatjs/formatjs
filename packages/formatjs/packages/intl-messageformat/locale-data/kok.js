@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({locale:"kok", messageformat:{pluralFunction:function (n) {  }}});

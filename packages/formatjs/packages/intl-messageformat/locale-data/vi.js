@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({locale:"vi", messageformat:{pluralFunction:function (n) { return"other"; }}});

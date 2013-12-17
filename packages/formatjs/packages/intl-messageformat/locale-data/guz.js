@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({locale:"guz", messageformat:{pluralFunction:function (n) {  }}});

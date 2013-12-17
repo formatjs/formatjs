@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({locale:"mer", messageformat:{pluralFunction:function (n) {  }}});

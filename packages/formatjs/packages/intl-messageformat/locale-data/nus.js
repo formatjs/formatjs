@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({locale:"nus", messageformat:{pluralFunction:function (n) {  }}});

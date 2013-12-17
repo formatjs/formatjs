@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({locale:"khq", messageformat:{pluralFunction:function (n) {  }}});

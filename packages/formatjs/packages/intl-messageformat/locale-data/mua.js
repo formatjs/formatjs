@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({locale:"mua", messageformat:{pluralFunction:function (n) {  }}});

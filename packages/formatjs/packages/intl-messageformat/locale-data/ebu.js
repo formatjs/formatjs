@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({locale:"ebu", messageformat:{pluralFunction:function (n) {  }}});

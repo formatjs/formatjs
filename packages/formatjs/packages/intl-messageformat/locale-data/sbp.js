@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({locale:"sbp", messageformat:{pluralFunction:function (n) {  }}});

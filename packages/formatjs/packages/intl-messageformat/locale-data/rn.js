@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({locale:"rn", messageformat:{pluralFunction:function (n) {  }}});

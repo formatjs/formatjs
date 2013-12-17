@@ -19,7 +19,9 @@ var chai,
 // IntlMessageFormat.)
 if ('function' === typeof require) {
     chai = require('chai');
-    IntlMessageFormat = require('../index.js');
+    IntlMessageFormat = require('../build/index.en.min.js');
+    require('../locale-data/ar.js');
+    require('../locale-data/pl.js');
 }
 expect = chai.expect;
 
@@ -123,8 +125,6 @@ describe('message creation', function () {
             var err = 'The valueName `numPeople` was not found.';
             expect(e).to.equal(err);
         }
-
-
     });
 
     it ('complex object formatter with offset', function () {
@@ -148,7 +148,7 @@ describe('message creation', function () {
 
                 other: 'Some messages for the default',
 
-                    '1': ['Optional prefix text ', {
+                '1': ['Optional prefix text ', {
                     type: 'select',
                     valueName: 'gender',
                     options: {
@@ -158,9 +158,11 @@ describe('message creation', function () {
                     }
                 }, ' optional postfix text'],
             }
-        }, ' and text after']);
+        }, ' and text after'],
+            'pl'    // this has the "few" rule that we need
+        );
         m = msg.format({
-            numPeople: 4,
+            numPeople: 1,   // offset will move this to "2" so that the "few" group is used
             ph: 'whatever',
             gender: 'male'
         });
@@ -265,7 +267,7 @@ describe('message creation for plurals', function () {
                 many : 'lots of points',
                 other: 'some other amount of points'
             }
-        }, '.']);
+        }, '.'], 'ar');
 
     it('zero', function () {
         var m = msg.format({

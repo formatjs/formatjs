@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({locale:"tg", messageformat:{pluralFunction:function (n) {  }}});

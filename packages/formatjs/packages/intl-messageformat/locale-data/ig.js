@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({locale:"ig", messageformat:{pluralFunction:function (n) { return"other"; }}});

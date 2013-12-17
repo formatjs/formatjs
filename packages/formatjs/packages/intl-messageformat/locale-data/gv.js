@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({locale:"gv", messageformat:{pluralFunction:function (n) { n=Math.floor(n);if(n%10===1)return"one";if(n%10===2)return"two";if(n%100===0||n%100===20||n%100===40||n%100===60)return"few";return"other"; }}});

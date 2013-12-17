@@ -33,11 +33,16 @@
     "grunt": "~0.4.2",
     "grunt-cli": "~0.1.11",
     "grunt-contrib-jshint": "~0.7.2",
+    "grunt-contrib-uglify": "~0.2.7",
     "istanbul": "~0.1.46",
     "mocha": "~1.15.1"
   },
+  "optionalDependencies": {
+    "cldr": "~2.0.1"
+  },
   "scripts": {
-    "pretest": "grunt jshint",
+    "build-data": "grunt build-data",
+    "pretest": "grunt jshint build",
     "test": "istanbul cover -- _mocha tests/ --reporter spec"
   }
 }

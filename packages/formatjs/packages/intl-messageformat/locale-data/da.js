@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({locale:"da", messageformat:{pluralFunction:function (n) { var i=Math.floor(Math.abs(n)),t=parseInt(n.toString().replace(/^[^.]*\.?|0+$/g,""),10);n=Math.floor(n);if(n===1||(t!==0)&&(i===0||i===1))return"one";return"other"; }}});

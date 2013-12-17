@@ -26,6 +26,10 @@
 
     "use strict";
 
+    var DEFAULT_LOCALE = (typeof Intl === 'object') && (typeof Intl.DefaultLocale === 'function') ? Intl.DefaultLocale() : 'en',
+        // localeData registered by __addLocaleData()
+        localeData = {};
+
     /**
      Creates MessageFormat object from a pattern, locale and field formatters.
      String patterns are broken down Arrays. Objects should match the
@@ -58,7 +62,14 @@
         // store locale
         this.locale = locale;
 
-
+        // We calculate the pluralization function used for the specific locale.
+        // Since this is a bit expensive (if repeated too much) and since the
+        // locale can change on us without notice, we need to keep track of
+        // which locale was used in choosing the pluralization function.
+        // (It's expected that the locale will change very infrequently for
+        // each MessageFormat object.)
+        this._pluralLocale = undefined;
+        this._pluralFunc = undefined;
 
         // Assume the string passed in is a simple pattern for replacement.
         if (typeof pattern === 'string') {
@@ -165,20 +176,47 @@
      @return {String}
      */
     MessageFormat.prototype._normalizeCount = function (count) {
-        // Prefer to use CLDR
-        if (count === 0) {
-            return 'zero';
-        } else if (count === 1) {
-            return 'one';
-        } else if (count === 2) {
-            return 'two';
-        } else if (count < 7) {
-            return 'few';
-        } else if (count < 30) {
-            return 'many';
-        } else {
-            return 'other';
+        var locale = this.locale || DEFAULT_LOCALE,
+            data,
+            fn,
+            parts;
+        // cache the choice of pluralization function
+        if (this._pluralLocale !== locale) {
+            if (locale !== DEFAULT_LOCALE) {
+                parts = this.locale.toLowerCase().split('-');
+                while (parts.length) {
+                    data = localeData[parts.join('_')];
+                    if (data && data.pluralFunction) {
+                        fn = data.pluralFunction;
+                        break;
+                    }
+                    parts.pop();
+                }
+            }
+            if (!fn) {
+                // While this seems excessive, it's possible the user has a
+                // complex default locale (such as "zh-hans-CN") since the
+                // default locale can come from a browser setting.
+                parts = DEFAULT_LOCALE.toLowerCase().split('-');
+                while (parts.length) {
+                    data = localeData[parts.join('_')];
+                    if (data && data.pluralFunction) {
+                        fn = data.pluralFunction;
+                        break;
+                    }
+                    parts.pop();
+                }
+            }
+            if (!fn) {
+                data = localeData.en;
+                fn = (data && data.pluralFunction) || function() {
+                    return 'other';
+                };
+            }
+            this._pluralLocale = locale;
+            this._pluralFunc = fn;
         }
+        return this._pluralFunc(count) || 'other';
     };
 
     /**
@@ -292,6 +330,29 @@
         }
 
         return val;
+    };
+
+    /**
+     Registers localization data for a particular locale.
+     The format is:
+
+     ```
+     {
+        locale: 'the locale',
+        messageformat: {
+            // This function takes a number (count) and turns it into a
+            // pluralization group (e.g. 'one', 'few', 'many', 'other').
+            pluralFunction: function(count) { return 'plural group' }
+        }
+     }
+     ```
+
+     @method __addLocaleData
+     @param {Object} The locale data as described above.
+     @return {nothing}
+     */
+    MessageFormat.__addLocaleData = function(data) {
+        localeData[data.locale] = data.messageformat;
     };
 
     return MessageFormat;

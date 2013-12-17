@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({locale:"kea", messageformat:{pluralFunction:function (n) { return"other"; }}});

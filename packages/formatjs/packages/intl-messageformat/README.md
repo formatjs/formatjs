@@ -39,28 +39,36 @@ Install using npm:
 $ npm install intl-messageformat
 ```
 
+
 Usage
 -----
 
-### Creating a message in Node.js
 
-Message creating is done using the MessageFormat contstructor as:
+### Creating a Message in Node.js
 
-```javascript
-var MessageFormat = require('intl-messageformat');
-
-var msg = new MessageFormat("My name is ${name}.");
-```
-
-### Creating a message in a browser
-
-Message creation is done using the MessageFormat constructor as:
+Message creating is done using the IntlMessageFormat contstructor as:
 
 ```javascript
-var msg = new MessageFormat("My name is ${name}.");
+var IntlMessageFormat = require('intl-messageformat');
+// load some locales that you care about
+require('intl-messageformat/locale-data/en.js');
+require('intl-messageformat/locale-data/ar.js');
+require('intl-messageformat/locale-data/pl.js');
+
+var msg = new IntlMessageFormat("My name is ${name}.", "en-US");
 ```
 
-### Formatting a message
+### Creating a Message in a Browser
+
+Message creation is done using the IntlMessageFormat constructor as:
+
+```javascript
+var msg = new IntlMessageFormat("My name is ${name}.", "en-US");
+```
+
+
+
+### Formatting a Message
 
 Once the message is created, formatting the message is done by calling the
 `format` method of the instantiated object:
@@ -71,20 +79,45 @@ var myNameIs = msg.format({ name: "Ferris Wheeler"});
 // myNameIs === "My name is Ferris Wheeler."
 ```
 
+
+Locale Data
+-----------
+
+This package ships with locale data for the top-level locales (e.g. `en` but not `en-US`).
+You can load the library and locale(s) using any of the following subpaths in the package:
+
+* Load the base and then just the locale(s) that you need: `intl-messageformat/index.js` and `intl-messageformat/locale-data/{locale}.js`.
+* Load the base with a single locale builtin: `intl-messageformat/build/index.{locale}.js')`. You can then optionally add more locale(s) as above.
+* Load all locales: `intl-messageformat/build/index.complete.js`.
+
+
+### Loading Locale Data in Node.js
+
+**Please note** that if you are loading from the `locale-data/` directory that those files are expecting the library to be available in the `IntlMessageFormat` variable.
+
+
+### Loading Locale Data in a Browser
+
+Every `intl-messageformat/build/*.js` file also has an `intl-messageformat/build/*.min.js` equivalent which has already been minified.
+
+
 Examples
 --------
+
+
 #### Simple String
 ```javascript
-var msg = new MessageFormat("My name is ${name}.");
+var msg = new IntlMessageFormat("My name is ${name}.", "en-US");
 
 var myNameIs = msg.format({ name: "Ferris Wheeler"});
 
 // myNameIs === "My name is Ferris Wheeler."
 ```
 
+
 #### Complex Formatting
 ```javascript
-var msg = new MessageFormat(['Some text before ', {
+var msg = new IntlMessageFormat(['Some text before ', {
     type: 'plural',
     valueName: 'numPeople',
     offset: 1,
@@ -113,7 +146,7 @@ var msg = new MessageFormat(['Some text before ', {
             }
         }, ' optional postfix text'],
     }
-}, ' and text after']);
+}, ' and text after'], "en-US");
 
 var complex = msg.format({
     numPeople: 4,
@@ -124,12 +157,13 @@ var complex = msg.format({
 // complex === "Some text before Optional prefix text for |few| Text for male option with ' single quotes optional postfix text and text after"
 ```
 
+
 API
 ---
 
 ### Constructor
 
-Creates MessageFormat object from a pattern, locale and field formatters.
+Creates IntlMessageFormat object from a pattern, locale and field formatters.
 String patterns are broken down Arrays. Objects should match the
 following pattern:
 
