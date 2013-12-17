@@ -11,7 +11,7 @@
     "intl",
     "messageformat"
   ],
-  "license": "MIT",
+  "license": "Yahoo BSD",
   "ignore": [
     "**/.*",
     "node_modules",
