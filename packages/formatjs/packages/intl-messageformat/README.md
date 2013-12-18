@@ -17,18 +17,53 @@ in JavaScript on both the server and client.
 
 ### How It Works
 
-Messages are provided into the constructor as Arrays or simple String
-messages. Strings are then broken up and processed into a workable Array. The
-Array is stored internally until the format method is called with an Object
-containing parameters for generating the message. The Array is then processed
-by converting Objects into strings based on the paramters provided and
+Messages are provided into the constructor as `Array`s or simple `String`
+messages.
+```javascript
+var msg = new IntlMessageFormat(pattern, locale, [optFieldFormatters]);
+```
+
+If a string is provided, it is broken up and processed into a workable `Array`. This means
+```javascript
+"Welcome to ${CITY}, ${STATE}!"
+```
+becomes
+```javascript
+[
+    "Welcome to ",
+    {
+        valueName: "CITY"
+    },
+    ", "
+    {
+        valueName: "STATE"
+    },
+    "!"
+]
+```
+The `Array` is stored internally until the `format()` method is called with an `Object`
+containing parameters for generating the message. The `Array` is then processed
+by converting `Object`s into strings based on the parameters provided and
 concatenating the values together.
+
 
 ### Features
 Custom formatters can be used to format the value __after__ it is gathered from
-the original process. Custom formatters are applied to the message during
-construction.
+the original process. Custom formatters are stored in the message during
+construction as the third parameter. Formatters are denoted in the token with a colon (:) followed by the formatter name.
 
+For example you can ensure that certain tokens are always upper cased:
+```javascript
+var msg = new IntlMessageFormat("Then they yelled '${YELL:upper}!'", "en", {
+    "upper": function (val, locale) {
+        return val.toString().toUpperCase();
+    }
+});
+
+var m = msg.format({ YELL: "suprise" });
+
+// Then they yelled 'SUPRISE!'
+```
 
 Installation
 ------------
@@ -42,31 +77,31 @@ $ npm install intl-messageformat
 
 Usage
 -----
+### IntlMessageFormat Constructor
+Message creating is done using the IntlMessageFormat constructor. The constructor has three parameters:
 
+ - **pattern** - _{String|Array}_ - Array or string that serves as formatting pattern. Use array for plural and select messages, otherwise use string form.
 
-### Creating a Message in Node.js
+ - **locale** - _{String}_ - Locale for string formatting
 
-Message creating is done using the IntlMessageFormat contstructor as:
+ - **optFieldFormatters** - _{Object}_ - Holds user defined formatters for each field
 
+#### Creating a Message in Node.js
 ```javascript
 var IntlMessageFormat = require('intl-messageformat');
+
 // load some locales that you care about
 require('intl-messageformat/locale-data/en.js');
 require('intl-messageformat/locale-data/ar.js');
 require('intl-messageformat/locale-data/pl.js');
 
-var msg = new IntlMessageFormat("My name is ${name}.", "en-US");
+var msg = new IntlMessageFormat("My name is ${NAME}.", "en-US");
 ```
 
-### Creating a Message in a Browser
-
-Message creation is done using the IntlMessageFormat constructor as:
-
+#### Creating a Message in a Browser
 ```javascript
-var msg = new IntlMessageFormat("My name is ${name}.", "en-US");
+var msg = new IntlMessageFormat("My name is ${NAME}.", "en-US");
 ```
-
-
 
 ### Formatting a Message
 
@@ -74,9 +109,9 @@ Once the message is created, formatting the message is done by calling the
 `format` method of the instantiated object:
 
 ```javascript
-var myNameIs = msg.format({ name: "Ferris Wheeler"});
+var myNameIs = msg.format({ NAME: "Ferris Wheeler"});
 
-// myNameIs === "My name is Ferris Wheeler."
+// "My name is Ferris Wheeler."
 ```
 
 
@@ -111,7 +146,7 @@ var msg = new IntlMessageFormat("My name is ${name}.", "en-US");
 
 var myNameIs = msg.format({ name: "Ferris Wheeler"});
 
-// myNameIs === "My name is Ferris Wheeler."
+// "My name is Ferris Wheeler."
 ```
 
 
@@ -157,6 +192,30 @@ var complex = msg.format({
 // complex === "Some text before Optional prefix text for |few| Text for male option with ' single quotes optional postfix text and text after"
 ```
 
+#### User Defined Formatters
+User defined formatters are provided to the IntlMessageFormat as the third
+parameter. To denote a key should be process through a formatter, you need
+only provide the formatter name after the token key. Such as, `${key}` would
+then become `${key:formatter}`. This is an example of using the
+Intl.NumberFormat to create a currency formatter.
+
+```
+var msg = new IntlMessageFormatter("I just made ${TOTAL:currency}!!", "en-US", {
+    currency: function (val, locale) {
+        return new Intl.NumberFormat(val, {
+            style: 'currency',
+            currency: 'USD',
+            currencyDisplay: 'symbol'
+        });
+    }
+});
+
+var payday = msg.format({ TOTAL: 3 });
+
+// I just made $3!!
+```
+
+
 
 API
 ---
@@ -164,12 +223,12 @@ API
 ### Constructor
 
 Creates IntlMessageFormat object from a pattern, locale and field formatters.
-String patterns are broken down Arrays. Objects should match the
+String patterns are broken down to Arrays. Objects should match the
 following pattern:
 
 ```javascript
 {
-    type: 'plural|gender|select',
+    type: 'plural|gender',
     valueName: 'string',
     offset: 1, // consistent offsets for plurals
     options: {}, // keys match options for plurals, gender and selects
@@ -179,26 +238,26 @@ following pattern:
 
 **Parameters**
 
-* `locale`: __{LocaleList|String}__ Locale for string formatting and when Date
-and Number
-
-* `pattern`: __{Array|String}__ Array or string that serves as formatting
+- **`pattern`**: _{Array|String}_ Array or string that serves as formatting
 pattern
 
-* `optFieldFormatters`: __{Object}__ Holds user defined formatters for each
+- **`locale`**: _{LocaleList|String}_ Locale for string formatting and when Date
+and Number
+
+- **`optFieldFormatters`**: _{Object}_ Holds user defined formatters for each
 field
 
 
 
 ### Instace Methods
 
-#### `format`
+#### `format(obj)`
 Formats pattern with supplied parameters.
 Dates, times and numbers are formatted in locale sensitive way.
 
 **Parameters**
 
-* `params`: __{Array|Object}__ Object used to choose options when formatting
+- **`obj`**: _{Object}_ Object used to choose options when formatting
 the message
 
 
@@ -214,3 +273,4 @@ See the [LICENSE file][] for license text and copyright information.
 
 
 [LICENSE file]: https://github.com/yahoo/intl-messageformat/blob/master/LICENSE
+
