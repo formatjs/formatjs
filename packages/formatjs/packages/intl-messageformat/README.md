@@ -15,6 +15,46 @@ Overview
 To provide a standardized way to concatenate strings with localization support
 in JavaScript on both the server and client.
 
+This implementation is based on the
+[http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting][MessageFormat Strawman].
+There are a few places this diverges from the strawman. One such place is the
+object passed to the `format` method. The strawman indicates that the objects
+should be "flat" where grouping options are at the same level as the `type`
+and `valueName`. This, as an example, would look like:
+```
+{
+    type: "plural",
+    valueName: "TRAVELER_COUNT",
+    zero: "No travelers",
+    one: "One traveler",
+    two: "Two travelers",
+    few: "There are a few travelers",
+    many: "There are many travelers",
+    other: "There are a lot of travelers"
+}
+```
+This implementation takes a readability approach and places grouping options
+in an `options` key. This looks like:
+```
+{
+    type: "plural",
+    valueName: "TRAVELER_COUNT",
+    options: {
+        zero: "No travelers",
+        one: "One traveler",
+        two: "Two travelers",
+        few: "There are a few travelers",
+        many: "There are many travelers",
+        other: "There are a lot of travelers"
+    }
+}
+```
+
+The strawman also makes mention of built-in formatters for integers, floating
+point numbers and strings. These built in formatters are not in this
+implementation, but you may provide formatters as user defined methods as a
+third parameter when you instantiate the IntlMessageFormatter.
+
 ### How It Works
 
 Messages are provided into the constructor as `Array`s or simple `String`
@@ -169,17 +209,7 @@ var msg = new IntlMessageFormat(['Some text before ', {
             }
         }, ' optional postfix text'],
 
-        other: 'Some messages for the default',
-
-            '1': ['Optional prefix text ', {
-            type: 'select',
-            valueName: 'gender',
-            options: {
-                male: 'Text for male option with \' single quotes',
-                female: 'Text for female option with {}',
-                other: 'Text for default'
-            }
-        }, ' optional postfix text'],
+        other: 'Some messages for the default'
     }
 }, ' and text after'], "en-US");
 
@@ -214,7 +244,6 @@ var payday = msg.format({ TOTAL: 3 });
 
 // I just made $3!!
 ```
-
 
 
 API
