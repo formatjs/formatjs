@@ -372,7 +372,7 @@
         localeData[data.locale] = data.messageformat;
     };
 
-    MessageFormat._log = function (msg, type) {
+    MessageFormat.prototype._log = function (msg, type) {
         if (!console) {
             throw new ReferenceError('Console does not exist.');
         }
