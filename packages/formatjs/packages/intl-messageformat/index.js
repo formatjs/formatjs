@@ -26,7 +26,7 @@
 
     "use strict";
 
-    var DEFAULT_LOCALE = (typeof Intl === 'object') && (typeof Intl.DefaultLocale === 'function') ? Intl.DefaultLocale() : 'en',
+    var DEFAULT_LOCALE = (typeof Intl === 'object') && (typeof Intl.DefaultLocale === 'function') ? Intl.DefaultLocale() : null,
         // localeData registered by __addLocaleData()
         localeData = {};
 
@@ -49,7 +49,7 @@
 
      @param {Array|String} pattern Array or string that serves as formatting pattern.
          Use array for plural and select messages, otherwise use string form.
-     @param {LocaleList|String} locale Locale for string formatting
+     @param {LocaleList|String} locale Locale for string formatting.
      @param {Object} optFieldFormatters Holds user defined formatters for each field (Dojo like).
      */
     function MessageFormat (pattern, locale, optFieldFormatters) {
@@ -61,6 +61,12 @@
 
         // store locale
         this.locale = locale;
+
+        // Recommend to alway provide a locale
+        if (!locale && console) {
+            (console.warn || console.log)('One does not simply format without a locale.');
+        }
+
 
         // We calculate the pluralization function used for the specific locale.
         // Since this is a bit expensive (if repeated too much) and since the
@@ -180,6 +186,12 @@
             data,
             fn,
             parts;
+
+        // if the locale isn't set, and there is no default locale set, throw
+        if (typeof locale === 'undefined' || locale === null) {
+            throw new ReferenceError('No locale data has been provided for this object yet.');
+        }
+
         // cache the choice of pluralization function
         if (this._pluralLocale !== locale) {
             if (locale !== DEFAULT_LOCALE) {
@@ -208,7 +220,7 @@
                 }
             }
             if (!fn) {
-                data = localeData.en;
+                data = localeData[DEFAULT_LOCALE];
                 fn = (data && data.pluralFunction) || function() {
                     return 'other';
                 };
@@ -352,6 +364,12 @@
      @return {nothing}
      */
     MessageFormat.__addLocaleData = function(data) {
+
+        // if there isn't a default locale set, set it out of the data.locale
+        if (DEFAULT_LOCALE === null) {
+            DEFAULT_LOCALE = data.locale || null;
+        }
+
         localeData[data.locale] = data.messageformat;
     };
 
