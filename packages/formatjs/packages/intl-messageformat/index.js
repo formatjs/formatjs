@@ -63,8 +63,8 @@
         this.locale = locale;
 
         // Recommend to alway provide a locale
-        if (!locale && console) {
-            (console.warn || console.log)('One does not simply format without a locale.');
+        if (!locale) {
+            this._log('It is recommended to provide a locale.');
         }
 
 
@@ -101,7 +101,6 @@
 
         // save the pattern internally
         this.pattern = pattern;
-
 
         // store formatters
         this.formatters = {};
@@ -255,7 +254,7 @@
             if (typeof val !== 'string') {
                 while (typeof val !== 'string') {
                     // let's find out what we are working with in the loop
-                    valType = {}.toString.call(val);
+                    valType = Object.prototype.toString.call(val);
 
                     if (valType === '[object Array]') {
                         val = this._processArray.call(this, val, obj);
@@ -296,7 +295,7 @@
 
         // our look up object isn't in the provided lookUp object
         if (typeof val === 'undefined' || val === null) {
-            throw 'The valueName `' + obj.valueName + '` was not found.';
+            throw new ReferenceError('The valueName `' + obj.valueName + '` was not found.');
         }
 
         // if we are dealing with plurals and we have a number, we need to
@@ -330,7 +329,7 @@
 
             // process with a formatter if one exists
             if (obj.formatter) {
-                formatterFn = {}.toString.call(obj.formatter) === '[object Function]' ? obj.formatter : this.formatters[obj.formatter];
+                formatterFn = Object.prototype.toString.call(obj.formatter) === '[object Function]' ? obj.formatter : this.formatters[obj.formatter];
 
                 if (formatterFn) {
                     val = formatterFn.call(this, val, this.locale);
@@ -371,6 +370,16 @@
         }
 
         localeData[data.locale] = data.messageformat;
+    };
+
+    MessageFormat._log = function (msg, type) {
+        if (!console) {
+            throw new ReferenceError('Console does not exist.');
+        }
+
+        var logFn = console[type] || console.log;
+
+        logFn(msg);
     };
 
     return MessageFormat;
