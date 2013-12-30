@@ -382,8 +382,6 @@
             throw new ReferenceError('Console does not exist.');
         }
 
-        console.log(type);
-
         if (console.hasOwnProperty(type)) {
             console[type](msg);
         } else {
