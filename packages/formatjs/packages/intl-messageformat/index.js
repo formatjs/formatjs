@@ -64,7 +64,7 @@
 
         // Recommend to alway provide a locale
         if (!locale) {
-            this._log('It is recommended to provide a locale.');
+            this._log('It is recommended to provide a locale.', 'warn');
         }
 
 
@@ -366,10 +366,15 @@
 
         // if there isn't a default locale set, set it out of the data.locale
         if (DEFAULT_LOCALE === null) {
-            DEFAULT_LOCALE = data.locale || null;
+            DEFAULT_LOCALE = data.locale;
         }
 
         localeData[data.locale] = data.messageformat;
+    };
+
+    MessageFormat.__purge = function () {
+        DEFAULT_LOCALE = null;
+        localeData = {};
     };
 
     MessageFormat.prototype._log = function (msg, type) {
@@ -377,9 +382,13 @@
             throw new ReferenceError('Console does not exist.');
         }
 
-        var logFn = console[type] || console.log;
+        console.log(type);
 
-        logFn(msg);
+        if (console.hasOwnProperty(type)) {
+            console[type](msg);
+        } else {
+            console.log(msg);
+        }
     };
 
     return MessageFormat;
