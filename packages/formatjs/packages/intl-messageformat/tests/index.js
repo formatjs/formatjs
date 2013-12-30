@@ -18,10 +18,17 @@ var chai,
 // server-side testing.  (On the client we've already loaded chai and
 // IntlMessageFormat.)
 if ('function' === typeof require) {
+
+    delete global.IntlMessageFormat;
+
     chai = require('chai');
+
     IntlMessageFormat = require('../build/index.en.min.js');
+
+    require('../locale-data/en.js');
     require('../locale-data/ar.js');
     require('../locale-data/pl.js');
+
 }
 expect = chai.expect;
 
@@ -122,8 +129,8 @@ describe('message creation', function () {
                 jumper: 20
             });
         } catch (e) {
-            var err = 'The valueName `numPeople` was not found.';
-            expect(e).to.equal(err);
+            var err = new ReferenceError('The valueName `numPeople` was not found.');
+            expect(e.toString()).to.equal(err.toString());
         }
     });
 
@@ -307,9 +314,8 @@ describe('message creation for plurals', function () {
 
         expect(m).to.equal('I have some other amount of points.');
     });
-
-
 });
+
 
 describe('locale switching', function () {
     var simple = {
@@ -487,5 +493,88 @@ describe('locale switching with counts', function () {
 });
 
 
+
+//------------------------------------------------
+//
+//====== CAUTION: PURGING BEYOND THIS POINT ======
+//
+//------------------------------------------------
+
+
+describe('no locale provided', function () {
+    it('no locale', function () {
+        try {
+            IntlMessageFormat.__purge();
+
+            var msg = new IntlMessageFormat(['I have ', {
+                type: 'plural',
+                valueName: 'NUM_BOOKS',
+                options: {
+                    one: '1 book',
+                    other: '${#} books'
+                }
+            }, '.']);
+
+            var m = msg.format({ NUM_BOOKS: 2 });
+
+            // always fail if we didn't throw
+            expect(false).to.equal(true);
+
+        } catch (e) {
+            var err = new ReferenceError('No locale data has been provided for this object yet.');
+            expect(e.toString()).to.equal(err.toString());
+        }
+    });
+});
+
+describe('no default', function () {
+    it('blind switching', function () {
+        var msg = new IntlMessageFormat([{
+                type: 'plural',
+                valueName: 'COMPANY_COUNT',
+                options: {
+                   one: 'One company',
+                   other: '${#} companies'
+                }
+            },
+            ' published new books.'
+        ]);
+
+        // let's set the locale to something witout data
+        IntlMessageFormat.__addLocaleData({locale: 'fu-baz'});
+        msg.locale = 'fu-baz';
+
+        var m = msg.format({ COMPANY_COUNT: 1});
+
+        expect(m).to.equal('1 companies published new books.');
+    });
+
+    it('update locale', function () {
+        IntlMessageFormat.__purge();
+
+        // let's set the locale to something witout data
+        IntlMessageFormat.__addLocaleData({
+            locale: 'fu-baz',
+            messageformat: {
+                pluralFunction: function (count) { return null; }
+            }
+        });
+
+        var msg = new IntlMessageFormat([{
+                type: 'plural',
+                valueName: 'COMPANY_COUNT',
+                options: {
+                   one: 'One company',
+                   other: '${#} companies'
+                }
+            },
+            ' published new books.'
+        ]);
+
+        var m = msg.format({ COMPANY_COUNT: 1});
+
+        expect(m).to.equal('1 companies published new books.');
+    });
+});
 
 
