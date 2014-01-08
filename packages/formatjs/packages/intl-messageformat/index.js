@@ -187,7 +187,10 @@
             parts;
 
         // if the locale isn't set, and there is no default locale set, throw
-        if (typeof locale === 'undefined' || locale === null) {
+        if (
+            typeof locale !== 'string' || // make sure we have a string
+            locale.replace(/\s/g,'').length < 2 // it's at least two characters
+        ) {
             throw new ReferenceError('No locale data has been provided for this object yet.');
         }
 
@@ -372,6 +375,7 @@
         localeData[data.locale] = data.messageformat;
     };
 
+    // For testing only
     MessageFormat.__purge = function () {
         DEFAULT_LOCALE = null;
         localeData = {};
