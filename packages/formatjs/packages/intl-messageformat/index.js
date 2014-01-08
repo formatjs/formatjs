@@ -59,13 +59,21 @@
             p;
 
 
-        // store locale
-        this.locale = locale;
-
         // Recommend to always provide a locale
         if (!locale) {
             this._log('It is recommended to provide a locale.', 'warn');
+        } else {
+            // strict value checking for locale when provided
+            if (
+                typeof locale !== 'string' || // make sure we have a string
+                locale.replace(/\s/g,'').length < 2 // it's at least two characters
+            ) {
+                throw new RangeError('Invalid language tag.');
+            }
         }
+
+        // store locale
+        this.locale = locale;
 
 
         // We calculate the pluralization function used for the specific locale.
