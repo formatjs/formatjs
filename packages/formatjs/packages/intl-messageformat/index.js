@@ -26,7 +26,7 @@
 
     "use strict";
 
-    var DEFAULT_LOCALE = (typeof Intl === 'object') && (typeof Intl.DefaultLocale === 'function') ? Intl.DefaultLocale() : null,
+    var DEFAULT_LOCALE = null,
         // localeData registered by __addLocaleData()
         localeData = {};
 
@@ -62,7 +62,7 @@
         // store locale
         this.locale = locale;
 
-        // Recommend to alway provide a locale
+        // Recommend to always provide a locale
         if (!locale) {
             this._log('It is recommended to provide a locale.', 'warn');
         }
