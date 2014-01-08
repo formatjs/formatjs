@@ -152,15 +152,15 @@ Pattern objects should always at least contain a `valueName`. There are a few ot
 
 - **`options`** _{Object}_ - each key should be matched based on the `type` specified
 
- - **`zero`** _{String|Array}_ - (plural) Matched when `_normalizeCount` returns `"zero"`
+ - **`zero`** _{String|Array}_ - (plural) Matched when the locale determines that the number is in the `"zero"` pluralization class
 
- - **`one`** _{String|Array}_ - (plural) Matched when `_normalizeCount` returns `"one"`
+ - **`one`** _{String|Array}_ - (plural) Matched when the locale determines that the number is in the `"one"` pluralization class
 
- - **`two`** _{String|Array}_ - (plural) Matched when `_normalizeCount` returns `"two"`
+ - **`two`** _{String|Array}_ - (plural) Matched when the locale determines that the number is in the `"two"` pluralization class
 
- - **`few`** _{String|Array}_ - (plural) Matched when `_normalizeCount` returns `"few"`
+ - **`few`** _{String|Array}_ - (plural) Matched when the locale determines that the number is in the `"few"` pluralization class
 
- - **`many`** _{String|Array}_ - (plural) Matched when `_normalizeCount` returns `"many"`
+ - **`many`** _{String|Array}_ - (plural) Matched when the locale determines that the number is in the `"many"` pluralization class
 
  - **`male`** _{String|Array}_ - (select) Matched when the `valueName` returns `"male"`
 
