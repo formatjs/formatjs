@@ -329,7 +329,7 @@
 
             // process with a formatter if one exists
             if (obj.formatter) {
-                formatterFn = Object.prototype.toString.call(obj.formatter) === '[object Function]' ? obj.formatter : this.formatters[obj.formatter];
+                formatterFn = (typeof obj.formatter === 'function') ? obj.formatter : this.formatters[obj.formatter];
 
                 if (formatterFn) {
                     val = formatterFn.call(this, val, this.locale);
