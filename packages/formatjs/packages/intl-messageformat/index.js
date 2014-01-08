@@ -379,7 +379,8 @@
 
     MessageFormat.prototype._log = function (msg, type) {
         if (!console) {
-            throw new ReferenceError('Console does not exist.');
+            // no console; fail silently
+            return;
         }
 
         if (console.hasOwnProperty(type)) {
