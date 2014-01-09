@@ -621,7 +621,18 @@ describe('check tokens:', function () {
 
     });
 
+    describe('multiple tokens', function () {
+        it('tokens with a space should not match but not fail', function () {
+            var msg = new IntlMessageFormat('The {STATE} of {ST1ATE} is {ST ATE}.');
+            var m = msg.format({
+                    STATE: 'description',
+                    ST1ATE: 'Tennessee',
+                    "ST ATE": 'long'
+                });
 
+            expect(m).to.equal('The description of Tennessee is {ST ATE}.');
+        });
+    });
 
 });
 
