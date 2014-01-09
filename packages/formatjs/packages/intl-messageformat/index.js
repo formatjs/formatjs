@@ -381,11 +381,6 @@
     };
 
 
-    MessageFormat.__purge = function () {
-        DEFAULT_LOCALE = null;
-        localeData = {};
-    };
-
     return MessageFormat;
 });
 
