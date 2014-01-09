@@ -26,6 +26,7 @@ if ('function' === typeof require) {
     });
 
     chai = require('chai');
+    expect = chai.expect;
 
     IntlMessageFormat = require('../index.js');
 
@@ -37,12 +38,12 @@ if ('function' === typeof require) {
 
     describe('no locale', function () {
 
-        beforeEach(function () {
-            mockery.resetCache();
-            IntlMessageFormat = require('../index.js');
-        });
-
         describe('no locale provided', function () {
+
+            before(function () {
+                mockery.resetCache();
+                IntlMessageFormat = require('../index.js');
+            });
 
             it('no locale', function () {
                 try {
