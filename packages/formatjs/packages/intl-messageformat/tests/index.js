@@ -503,5 +503,126 @@ describe('invalid lang tags', function () {
     });
 });
 
+describe('check tokens:', function () {
+    describe('STATE:', function() {
+        var msg = new IntlMessageFormat("{STATE}"),
+            typeErr = new TypeError("Cannot read property 'STATE' of undefined"),
+            refErr = new ReferenceError("The valueName `STATE` was not found."),
+            state = 'Missouri',
+            m;
+
+        it('format()', function () {
+            try {
+                m = msg.format();
+            } catch (e) {
+                expect(e.toString()).to.equal(typeErr.toString());
+            }
+        });
+
+        it('format({ FOO: "bar" })', function () {
+            try {
+                m = msg.format({ FOO: state });
+            } catch (e) {
+                expect(e.toString()).to.equal(refErr.toString());
+            }
+        });
+
+        it("format({ STATE: 'Missouri' })", function () {
+            try {
+                m = msg.format({ STATE: state });
+                expect(m).to.equal(state);
+            } catch (e) {
+                // should never get here
+                expect(false).to.equal(true);
+            }
+        });
+
+        it("format({ 'ST ATE': 'Missouri' })", function () {
+            try {
+                m = msg.format({ "ST ATE": state });
+            } catch (e) {
+                expect(e.toString()).to.equal(refErr.toString());
+            }
+        });
+
+        it('format({ ST1ATE: "Missouri" })', function () {
+            try {
+                m = msg.format({ ST1ATE: state });
+            } catch (e) {
+                expect(e.toString()).to.equal(refErr.toString());
+            }
+        });
+
+    });
+
+    describe('ST ATE:', function() {
+        var msg,
+            rangeErr = new RangeError('No tokens were provided.'),
+            state = 'Missouri',
+            m;
+
+        it('format()', function () {
+            try {
+                msg = new IntlMessageFormat("{ST ATE}");
+                m = msg.format();
+            } catch (e) {
+                expect(e.toString()).to.equal(rangeErr.toString());
+            }
+        });
+    });
+    describe('ST1ATE:', function() {
+        var msg = new IntlMessageFormat("{ST1ATE}"),
+            typeErr = new TypeError("Cannot read property 'ST1ATE' of undefined"),
+            refErr = new ReferenceError("The valueName `ST1ATE` was not found."),
+            state = 'Missouri',
+            m;
+
+        it('format()', function () {
+            try {
+                m = msg.format();
+            } catch (e) {
+                expect(e.toString()).to.equal(typeErr.toString());
+            }
+        });
+
+        it('format({ FOO: "bar" })', function () {
+            try {
+                m = msg.format({ FOO: state });
+            } catch (e) {
+                expect(e.toString()).to.equal(refErr.toString());
+            }
+        });
+
+        it("format({ STATE: 'Missouri' })", function () {
+            try {
+                m = msg.format({ ST1ATE: state });
+            } catch (e) {
+                expect(e.toString()).to.equal(refErr.toString());
+            }
+        });
+
+        it("format({ 'ST ATE': 'Missouri' })", function () {
+            try {
+                m = msg.format({ "ST ATE": state });
+            } catch (e) {
+                expect(e.toString()).to.equal(refErr.toString());
+            }
+        });
+
+        it('format({ ST1ATE: "Missouri" })', function () {
+            try {
+                m = msg.format({ ST1ATE: state });
+                expect(m).to.equal(state);
+            } catch (e) {
+                // should never get here
+                expect(false).to.equal(true);
+            }
+        });
+
+    });
+
+
+
+});
 
 

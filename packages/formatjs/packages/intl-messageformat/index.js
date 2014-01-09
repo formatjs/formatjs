@@ -54,9 +54,11 @@
      */
     function MessageFormat (pattern, locale, optFieldFormatters) {
         var chunks,
+            matches,
             len,
             i,
-            p;
+            p,
+            hasTokens = false;
 
 
         if (locale) {
@@ -85,19 +87,27 @@
         // Assume the string passed in is a simple pattern for replacement.
         if (typeof pattern === 'string') {
             // break apart the string into chunks and tokens
-            chunks = pattern.match(/((\$?\{)?[^\$\{\}]*\}?)/gi);
+            chunks = pattern.match(/(\$?\{?[^\$\{\}]*\}?)/gi);
 
             // loop through each chunk and replace tokens when found
             for (i = 0, len = chunks.length; i < len; i++) {
                 // create an object for the token when found
-                if (/\$?\{(\w*):?(\w*)?\}/.test(chunks[i])) {
+                if (/\$?\{([-_a-z0-9]*):?([-_a-z0-9]*)?\}/i.test(chunks[i])) {
+                    hasTokens = true;
+
+                    matches = chunks[i].match(/\$?\{([-_a-z0-9]*):?([-_a-z0-9]*)?\}/i);
 
                     chunks[i] = {
                         // the valuename is the "key" for the token ... ${key}
-                        valueName: chunks[i].match(/\$?\{(\w*):?(\w*)?\}/)[1],
-                        formatter: chunks[i].match(/\$?\{(\w*):?(\w*)?\}/)[2],
+                        valueName: matches[1],
+                        formatter: matches[2],
                     };
                 }
+            }
+
+            // No tokens
+            if (hasTokens !== true) {
+                throw new RangeError('No tokens were provided.');
             }
 
             // our pattern should now be the chunked array
