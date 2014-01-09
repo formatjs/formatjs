@@ -59,10 +59,7 @@
             p;
 
 
-        // Recommend to always provide a locale
-        if (!locale) {
-            this._log('It is recommended to provide a locale.', 'warn');
-        } else {
+        if (locale) {
             // strict value checking for locale when provided
             if (
                 typeof locale !== 'string' || // make sure we have a string
@@ -383,23 +380,10 @@
         localeData[data.locale] = data.messageformat;
     };
 
-    // For testing only
+
     MessageFormat.__purge = function () {
         DEFAULT_LOCALE = null;
         localeData = {};
-    };
-
-    MessageFormat.prototype._log = function (msg, type) {
-        if (!console) {
-            // no console; fail silently
-            return;
-        }
-
-        if (console.hasOwnProperty(type)) {
-            console[type](msg);
-        } else {
-            console.log(msg);
-        }
     };
 
     return MessageFormat;
