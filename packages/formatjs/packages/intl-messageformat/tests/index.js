@@ -21,8 +21,9 @@ if ('function' === typeof require) {
 
     chai = require('chai');
 
-    IntlMessageFormat = require('../build/index.en.min.js');
+    IntlMessageFormat = require('../index.js');
 
+    require('../locale-data/en.js');
     require('../locale-data/ar.js');
     require('../locale-data/pl.js');
 
@@ -491,6 +492,16 @@ describe('locale switching with counts', function () {
 
 });
 
+describe('invalid lang tags', function () {
+    it('empty string', function () {
+        try {
+            var msg = new IntlMessageFormat('{NAME}', " ");
+        } catch (e) {
+            var err = new RangeError('Invalid language tag.');
+            expect(e.toString()).to.equal(err.toString());
+        }
+    });
+});
 
 
 
