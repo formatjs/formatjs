@@ -60,6 +60,8 @@
             p,
             hasTokens = false;
 
+        // default locale to null
+        locale || (locale = null);
 
         if (locale) {
             // strict value checking for locale when provided
@@ -88,6 +90,11 @@
         if (typeof pattern === 'string') {
             // break apart the string into chunks and tokens
             chunks = pattern.match(/(\$?\{?[^\$\{\}]*\}?)/gi);
+
+            // Regular expression unfortunately matches an empty string at the end
+            if (chunks[chunks.length - 1] === '') {
+                chunks.pop();
+            }
 
             // loop through each chunk and replace tokens when found
             for (i = 0, len = chunks.length; i < len; i++) {
