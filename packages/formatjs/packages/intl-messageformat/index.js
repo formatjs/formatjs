@@ -61,6 +61,7 @@
             hasTokens = false;
 
         // default locale to null
+        /*jshint expr:true */
         locale || (locale = null);
 
         if (locale) {
@@ -129,7 +130,7 @@
 
         if (optFieldFormatters) {
             for (p in optFieldFormatters) {
-                if (optFieldFormatters.hasOwnProperty(p)) {
+                if (optFieldFormatters.hasOwnProperty(p) && typeof optFieldFormatters[p] === 'function') {
                     this.formatters[p] = optFieldFormatters[p];
                 }
             }
