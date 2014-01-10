@@ -31,7 +31,7 @@
         REGEX_WHITE_SPACE         = /\s/g,
         REGEX_STRING_TO_PATTERN   = /\$?\{([^\} ]*)\}/g,
         REGEX_TOKEN_BREAK         = /(\$?\{?[^\$\{\}]*\}?)/gi,
-        REGEX_TOKEN_AND_FORMATTER = /\$?\{([-_a-z0-9]*):?([-_a-z0-9]*)?\}/i,
+        REGEX_TOKEN_AND_FORMATTER = /\$?\{([-\w]*):?([-\w]*)?\}/i,
 
         // localeData registered by __addLocaleData()
         localeData = {};
