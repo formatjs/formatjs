@@ -27,6 +27,12 @@
     "use strict";
 
     var DEFAULT_LOCALE = null,
+
+        REGEX_WHITE_SPACE         = /\s/g,
+        REGEX_STRING_TO_PATTERN   = /\$?\{([^\} ]*)\}/g,
+        REGEX_TOKEN_BREAK         = /(\$?\{?[^\$\{\}]*\}?)/gi,
+        REGEX_TOKEN_AND_FORMATTER = /\$?\{([-_a-z0-9]*):?([-_a-z0-9]*)?\}/i,
+
         // localeData registered by __addLocaleData()
         localeData = {};
 
@@ -68,7 +74,7 @@
             // strict value checking for locale when provided
             if (
                 typeof locale !== 'string' || // make sure we have a string
-                locale.replace(/\s/g,'').length < 2 // it's at least two characters
+                locale.replace(REGEX_WHITE_SPACE,'').length < 2 // it's at least two characters
             ) {
                 throw new RangeError('Invalid language tag.');
             }
@@ -90,7 +96,7 @@
         // Assume the string passed in is a simple pattern for replacement.
         if (typeof pattern === 'string') {
             // break apart the string into chunks and tokens
-            chunks = pattern.match(/(\$?\{?[^\$\{\}]*\}?)/gi);
+            chunks = pattern.match(REGEX_TOKEN_BREAK);
 
             // Regular expression unfortunately matches an empty string at the end
             if (chunks[chunks.length - 1] === '') {
@@ -100,10 +106,10 @@
             // loop through each chunk and replace tokens when found
             for (i = 0, len = chunks.length; i < len; i++) {
                 // create an object for the token when found
-                if (/\$?\{([-_a-z0-9]*):?([-_a-z0-9]*)?\}/i.test(chunks[i])) {
+                if (REGEX_TOKEN_AND_FORMATTER.test(chunks[i])) {
                     hasTokens = true;
 
-                    matches = chunks[i].match(/\$?\{([-_a-z0-9]*):?([-_a-z0-9]*)?\}/i);
+                    matches = chunks[i].match(REGEX_TOKEN_AND_FORMATTER);
 
                     chunks[i] = {
                         // the valuename is the "key" for the token ... ${key}
@@ -165,7 +171,7 @@
         pattern += '';
 
         // find tokens and replace with the object
-        tokens = pattern.match(/\$?\{([^\} ]*)\}/g);
+        tokens = pattern.match(REGEX_STRING_TO_PATTERN);
 
         // if there were any tokens found, we need to replace them with the
         if (tokens) {
