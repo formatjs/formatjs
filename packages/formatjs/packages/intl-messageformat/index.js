@@ -106,10 +106,9 @@
             // loop through each chunk and replace tokens when found
             for (i = 0, len = chunks.length; i < len; i++) {
                 // create an object for the token when found
-                if (REGEX_TOKEN_AND_FORMATTER.test(chunks[i])) {
+                matches = chunks[i].match(REGEX_TOKEN_AND_FORMATTER);
+                if (matches) {
                     hasTokens = true;
-
-                    matches = chunks[i].match(REGEX_TOKEN_AND_FORMATTER);
 
                     chunks[i] = {
                         // the valuename is the "key" for the token ... ${key}
