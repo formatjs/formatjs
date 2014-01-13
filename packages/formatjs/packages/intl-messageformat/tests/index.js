@@ -214,15 +214,13 @@ describe('IntlMessageFormat', function () {
     describe('using a string pattern', function () {
 
         it('should fail if there is no argument in the string', function () {
-            try {
-                var msgFmt = new IntlMessageFormat('My name is {FIRST LAST}');
+            var msgFmt = new IntlMessageFormat('My name is {FIRST LAST}'),
+                m = msgFmt.format({
+                        FIRST: 'Anthony',
+                        LAST: 'Pipkin'
+                    });
 
-                // should never reach here
-                expect(false, 'IntlMessageFormat should have thrown').to.equal(true);
-            } catch (e) {
-                var err = new RangeError('No tokens were provided.');
-                expect(err.toString()).to.equal(e.toString());
-            }
+            expect(m).to.equal('My name is {FIRST LAST}');
         });
 
         it('should properly replace direct arguments in the string', function () {
@@ -720,13 +718,13 @@ describe('IntlMessageFormat', function () {
                 state = 'Missouri',
                 m;
 
-            it('should fail as no tokens are discovered in the string', function () {
-                try {
-                    msg = new IntlMessageFormat("{ST ATE}");
-                    m = msg.format();
-                } catch (e) {
-                    expect(e.toString()).to.equal(rangeErr.toString());
-                }
+            it('should return the same string as no tokens are discovered', function () {
+                msg = new IntlMessageFormat("{ST ATE}");
+                m = msg.format({
+                    "ST ATE": state
+                });
+
+                expect(m).to.equal('{ST ATE}');
             });
         });
 

@@ -63,8 +63,7 @@
             matches,
             len,
             i,
-            p,
-            hasTokens = false;
+            p;
 
         // default locale to null
         /*jshint expr:true */
@@ -108,19 +107,12 @@
                 // create an object for the token when found
                 matches = chunks[i].match(REGEX_TOKEN_AND_FORMATTER);
                 if (matches) {
-                    hasTokens = true;
-
                     chunks[i] = {
                         // the valuename is the "key" for the token ... ${key}
                         valueName: matches[1],
                         formatter: matches[2],
                     };
                 }
-            }
-
-            // No tokens
-            if (hasTokens !== true) {
-                throw new RangeError('No tokens were provided.');
             }
 
             // our pattern should now be the chunked array
