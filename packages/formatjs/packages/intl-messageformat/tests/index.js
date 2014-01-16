@@ -133,6 +133,11 @@ describe('IntlMessageFormat', function () {
     describe('#formatters', function () {
         it('should be an empty object without a third parameter', function () {
             var msgFmt = new IntlMessageFormat(),
+                formatters = [
+                    'num_int', 'num_cur', 'num_percent',
+                    'date_short', 'date_medium', 'date_long', 'date_full',
+                    'time_short', 'time_medium', 'time_long', 'time_full'
+                ],
                 p, pCount = 0;
 
             expect(msgFmt.formatters).to.be.an('object');
@@ -143,7 +148,7 @@ describe('IntlMessageFormat', function () {
                 }
             }
 
-            expect(pCount).to.equal(0);
+            expect(pCount).to.equal(formatters.length);
         });
 
         it('should only contain formatter functions from the third parameter', function () {
