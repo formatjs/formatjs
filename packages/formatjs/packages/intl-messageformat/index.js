@@ -465,7 +465,7 @@
 
             // process with a formatter if one exists
             if (obj.formatter) {
-                formatterFn = (typeof obj.formatter === 'function') ? obj.formatter : this.formatters[obj.formatter];
+                formatterFn = (typeof obj.formatter === 'function') ? obj.formatter : this.formatters[obj.type + '_' + obj.formatter];
 
                 if (formatterFn) {
                     val = formatterFn.call(this, val, this.locale);
