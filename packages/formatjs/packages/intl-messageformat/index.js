@@ -236,16 +236,7 @@
         this.pattern = pattern;
 
         // store formatters
-        this.formatters = {};
-
-        if (optFieldFormatters) {
-            for (p in optFieldFormatters) {
-                if (optFieldFormatters.hasOwnProperty(p) && typeof optFieldFormatters[p] === 'function') {
-                    this.formatters[p] = optFieldFormatters[p];
-                }
-            }
-        }
-
+        this.formatters = optFieldFormatters || {};
         this.formatters.__proto__ = DEFAULT_FORMATTERS;
     }
 

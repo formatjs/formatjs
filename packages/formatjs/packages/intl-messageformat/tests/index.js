@@ -139,11 +139,11 @@ describe('IntlMessageFormat', function () {
 
             // Randomly test for default formatters to exist
             /*jshint expr:true*/
-            expect(msgFmt.formatters['number_integer']).to.exist;
+            expect(msgFmt.formatters['number_integer']).to.be.a('function');
             /*jshint expr:true*/
-            expect(msgFmt.formatters['date_short']).to.exist;
+            expect(msgFmt.formatters['date_short']).to.be.a('function');
             /*jshint expr:true*/
-            expect(msgFmt.formatters['time_long']).to.exist;
+            expect(msgFmt.formatters['time_long']).to.be.a('function');
         });
 
         it('should maintain the default formatters', function () {
@@ -156,9 +156,9 @@ describe('IntlMessageFormat', function () {
 
 
             /*jshint expr:true*/
-            expect(msgFmtA.formatters.foo).to.exist;
+            expect(msgFmtA.formatters.foo).to.be.a('function');
             /*jshint expr:true*/
-            expect(msgFmtA.formatters.time_long).to.exist;
+            expect(msgFmtA.formatters.time_long).to.be.a('function');
             expect(msgFmtA.formatters.foo('bar')).to.equal('foo: bar');
 
 
@@ -170,24 +170,6 @@ describe('IntlMessageFormat', function () {
             expect(msgFmtB.formatters.foo).to.not.exist;
             /*jshint expr:true*/
             expect(msgFmtB.formatters.time_long).to.exist;
-
-        });
-
-        it('should only contain formatter functions from the third parameter', function () {
-            var msgFmt = new IntlMessageFormat(null, null, {
-                'num': 3,
-                'str': 'foo',
-                'fn' : function () { }
-            }),
-
-            formatters = msgFmt.formatters;
-
-            /*jshint expr:true */
-            expect(formatters.fn).to.exist;
-            /*jshint expr:true */
-            expect(formatters.num).to.not.exist;
-            /*jshint expr:true */
-            expect(formatters.str).to.not.exist;
         });
 
     });
