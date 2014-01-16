@@ -138,12 +138,9 @@ describe('IntlMessageFormat', function () {
 
 
             // Randomly test for default formatters to exist
-            /*jshint expr:true*/
-            expect(msgFmt.formatters['number_integer']).to.be.a('function');
-            /*jshint expr:true*/
-            expect(msgFmt.formatters['date_short']).to.be.a('function');
-            /*jshint expr:true*/
-            expect(msgFmt.formatters['time_long']).to.be.a('function');
+            expect(msgFmt.formatters.number_integer).to.be.a('function');
+            expect(msgFmt.formatters.date_short).to.be.a('function');
+            expect(msgFmt.formatters.time_long).to.be.a('function');
         });
 
         it('should maintain the default formatters', function () {
@@ -155,9 +152,7 @@ describe('IntlMessageFormat', function () {
                 msgFmtB;
 
 
-            /*jshint expr:true*/
             expect(msgFmtA.formatters.foo).to.be.a('function');
-            /*jshint expr:true*/
             expect(msgFmtA.formatters.time_long).to.be.a('function');
             expect(msgFmtA.formatters.foo('bar')).to.equal('foo: bar');
 

@@ -237,6 +237,7 @@
 
         // store formatters
         this.formatters = optFieldFormatters || {};
+        /*jshint proto:true*/
         this.formatters.__proto__ = DEFAULT_FORMATTERS;
     }
 
