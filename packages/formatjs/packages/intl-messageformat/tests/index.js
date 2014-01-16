@@ -157,6 +157,8 @@ describe('IntlMessageFormat', function () {
 
             /*jshint expr:true*/
             expect(msgFmtA.formatters.foo).to.exist;
+            /*jshint expr:true*/
+            expect(msgFmtA.formatters.time_long).to.exist;
             expect(msgFmtA.formatters.foo('bar')).to.equal('foo: bar');
 
 
@@ -166,6 +168,8 @@ describe('IntlMessageFormat', function () {
 
             /*jshint expr:true*/
             expect(msgFmtB.formatters.foo).to.not.exist;
+            /*jshint expr:true*/
+            expect(msgFmtB.formatters.time_long).to.exist;
 
         });
 
