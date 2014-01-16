@@ -33,6 +33,119 @@
         REGEX_TOKEN_BREAK         = /(\$?\{?[^\$\{\}]*\}?)/gi,
         REGEX_TOKEN_AND_FORMATTER = /\$?\{([-\w]*):?([-\w]*)?\}/i,
 
+        DEFAULT_FORMATTERS = {
+            // TYPE: number
+            number_integer: function (val, locale) {
+                // 20000 -> 20,000
+                return (new Intl.NumberFormat(locale)).format(val);
+            },
+            number_currency: function (val, locale, options) {
+                // 20000 -> $20,000.00
+                var currencyFormat = new Intl.NumberFormat(locale, {
+                    style: 'currency',
+                    currency: options.currency || options.CURRENCY || 'USD'
+                });
+                return currencyFormat.format(val);
+            },
+            number_percent: function (val, locale) {
+                // 20000 -> 200%
+                return (new Intl.NumberFormat(locale, { style: 'percent'})).format(val);
+            },
+
+            // TYPE: date
+            // Date formats
+            date_short: function (val, locale, options) {
+                var dateFormat = new Intl.DateTimeFormat(locale, {
+                    timeZone    : options.timeZone || null,
+                    month: 'numeric',
+                    day  : 'numeric',
+                    year : '2-digit'
+                });
+
+                return dateFormat.format(val);
+            },
+
+            date_medium: function (val, locale, options) {
+                var dateFormat = new Intl.DateTimeFormat(locale, {
+                    timeZone    : options.timeZone || null,
+                    month: 'short',
+                    day  : 'numeric',
+                    year : 'numeric'
+                });
+
+                return dateFormat.format(val);
+            },
+
+            date_long: function (val, locale, options) {
+                var dateFormat = new Intl.DateTimeFormat(locale, {
+                    timeZone    : options.timeZone || null,
+                    month: 'long',
+                    day  : 'numeric',
+                    year : 'numeric'
+                });
+
+                return dateFormat.format(val);
+            },
+
+            date_full: function (val, locale, options) {
+                var dateFormat = new Intl.DateTimeFormat(locale, {
+                    timeZone    : options.timeZone || null,
+                    weekday: 'long',
+                    month  : 'long',
+                    day    : 'numeric',
+                    year   : 'numeric'
+                });
+
+                return dateFormat.format(val);
+            },
+
+            // TYPE: time
+            time_short: function (val, locale, options) {
+                var timeFormat = new Intl.DateTimeFormat(locale, {
+                    timeZone: options.timeZone || null,
+                    hour    : 'numeric',
+                    minute  : 'numeric'
+                });
+
+                return timeFormat.format(val);
+            },
+
+            time_medium: function (val, locale, options) {
+                var timeFormat = new Intl.DateTimeFormat(locale, {
+                    timeZone: options.timeZone || null,
+                    hour    : 'numeric',
+                    minute  : 'numeric',
+                    second  : 'numeric'
+                });
+
+                return timeFormat.format(val);
+            },
+
+            time_long: function (val, locale, options) {
+                var timeFormat = new Intl.DateTimeFormat(locale, {
+                    timeZone    : options.timeZone || null,
+                    hour        : 'numeric',
+                    minute      : 'numeric',
+                    second      : 'numeric',
+                    timeZoneName: 'short'
+                });
+
+                return timeFormat.format(val);
+            },
+
+            time_full: function (val, locale, options) {
+                var timeFormat = new Intl.DateTimeFormat(locale, {
+                    timeZone    : options.timeZone || null,
+                    hour        : 'numeric',
+                    minute      : 'numeric',
+                    second      : 'numeric',
+                    timeZoneName: 'short'
+                });
+
+                return timeFormat.format(val);
+            }
+        },
+
         // localeData registered by __addLocaleData()
         localeData = {};
 
@@ -123,12 +236,12 @@
         this.pattern = pattern;
 
         // store formatters
-        this.formatters = {};
+        this.formatters = DEFAULT_FORMATTERS;
 
         if (optFieldFormatters) {
             for (p in optFieldFormatters) {
                 if (optFieldFormatters.hasOwnProperty(p) && typeof optFieldFormatters[p] === 'function') {
-                    this.formatters[p] = optFieldFormatters[p];
+                    this.formatters['custom_' + p] = optFieldFormatters[p];
                 }
             }
         }
