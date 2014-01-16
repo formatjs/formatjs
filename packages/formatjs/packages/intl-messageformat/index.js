@@ -241,7 +241,7 @@
         if (optFieldFormatters) {
             for (p in optFieldFormatters) {
                 if (optFieldFormatters.hasOwnProperty(p) && typeof optFieldFormatters[p] === 'function') {
-                    this.formatters['custom_' + p] = optFieldFormatters[p];
+                    this.formatters[p] = optFieldFormatters[p];
                 }
             }
         }
@@ -465,7 +465,7 @@
 
             // process with a formatter if one exists
             if (obj.formatter) {
-                formatterFn = (typeof obj.formatter === 'function') ? obj.formatter : this.formatters[obj.type + '_' + obj.formatter];
+                formatterFn = (typeof obj.formatter === 'function') ? obj.formatter : this.formatters[obj.formatter];
 
                 if (formatterFn) {
                     val = formatterFn.call(this, val, this.locale);
