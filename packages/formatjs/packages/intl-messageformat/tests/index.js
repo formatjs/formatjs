@@ -132,23 +132,41 @@ describe('IntlMessageFormat', function () {
 
     describe('#formatters', function () {
         it('should be an empty object without a third parameter', function () {
-            var msgFmt = new IntlMessageFormat(),
-                formatters = [
-                    'num_int', 'num_cur', 'num_percent',
-                    'date_short', 'date_medium', 'date_long', 'date_full',
-                    'time_short', 'time_medium', 'time_long', 'time_full'
-                ],
-                p, pCount = 0;
+            var msgFmt = new IntlMessageFormat();
 
             expect(msgFmt.formatters).to.be.an('object');
 
-            for (p in msgFmt.formatters) {
-                if (msgFmt.formatters.hasOwnProperty(p)) {
-                    pCount++;
-                }
-            }
 
-            expect(pCount).to.equal(formatters.length);
+            // Randomly test for default formatters to exist
+            /*jshint expr:true*/
+            expect(msgFmt.formatters['number_integer']).to.exist;
+            /*jshint expr:true*/
+            expect(msgFmt.formatters['date_short']).to.exist;
+            /*jshint expr:true*/
+            expect(msgFmt.formatters['time_long']).to.exist;
+        });
+
+        it('should maintain the default formatters', function () {
+            var msgFmtA = new IntlMessageFormat(null, null, {
+                    foo: function (val) {
+                        return 'foo: ' + val;
+                    }
+                }),
+                msgFmtB;
+
+
+            /*jshint expr:true*/
+            expect(msgFmtA.formatters.foo).to.exist;
+            expect(msgFmtA.formatters.foo('bar')).to.equal('foo: bar');
+
+
+
+
+            msgFmtB = new IntlMessageFormat();
+
+            /*jshint expr:true*/
+            expect(msgFmtB.formatters.foo).to.not.exist;
+
         });
 
         it('should only contain formatter functions from the third parameter', function () {
