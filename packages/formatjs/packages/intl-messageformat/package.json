@@ -37,7 +37,8 @@
     "istanbul": "~0.1.46",
     "mocha": "~1.15.1",
     "xunit-file": "*",
-    "mockery": "~1.4.0"
+    "mockery": "~1.4.0",
+    "intl": "~0.1.0"
   },
   "optionalDependencies": {
     "cldr": "~2.0.1"
