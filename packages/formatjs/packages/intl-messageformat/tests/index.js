@@ -23,6 +23,8 @@ if ('function' === typeof require) {
 
     IntlMessageFormat = require('../index.js');
 
+    Intl = (global.Intl = require('intl'));
+
     require('../locale-data/en.js');
     require('../locale-data/ar.js');
     require('../locale-data/pl.js');
@@ -768,6 +770,184 @@ describe('IntlMessageFormat', function () {
                 expect(m).to.equal(state);
             });
         });
+    });
+
+    describe('formatting patterns with formatters', function () {
+        // have to use "parsed" values until parser is in there
+        it('should format numbers into integers', function () {
+            // {NUMBER, number, integer}
+            var msgFmt = new IntlMessageFormat([{
+                    type: 'number',
+                    valueName: 'NUMBER',
+                    formatter: 'integer'
+                }], 'en-US'),
+                m = msgFmt.format({ NUMBER: 30000 });
+
+            expect(m).to.equal('30,000');
+        });
+
+        it('should format numbers into currency', function () {
+            // {NUMBER, number, currency}
+            var msgFmt = new IntlMessageFormat([{
+                    type: 'number',
+                    valueName: 'NUMBER',
+                    formatter: 'currency'
+                }], 'en-US'),
+                m = msgFmt.format({
+                    NUMBER: 30000,
+                    currency: 'USD'
+                });
+
+            expect(m, 'as `currency`').to.equal('$30,000.00');
+
+            m = msgFmt.format({
+                NUMBER: 30000,
+                CURRENCY: 'USD'
+            });
+
+            expect(m, 'as `CURRENCY`').to.equal('$30,000.00');
+
+            m = msgFmt.format({
+                NUMBER: 30000
+            });
+
+            expect(m, 'as `undefined`').to.equal('$30,000.00');
+        });
+
+        it('should format numbers into a percent', function () {
+            // {NUMBER, number, percent}
+            var msgFmt = new IntlMessageFormat([{
+                    type: 'number',
+                    valueName: 'NUMBER',
+                    formatter: 'percent'
+                }], 'en-US'),
+                m = msgFmt.format({ NUMBER: 30 });
+
+            expect(m).to.equal('3,000%');
+        });
+
+        // Fri Jan 17 2014 17:44:57 GMT-0500 (EST)
+        // timestamp 1389998697742
+        it('should format date into short', function () {
+            // {DATE, date, short}
+            var msgFmt = new IntlMessageFormat([{
+                    type: 'date',
+                    valueName: 'DATE',
+                    formatter: 'short'
+                }], 'en-US'),
+                m = msgFmt.format({
+                    DATE: new Date(1389998697742),
+                    timeZone: 'UTC'
+                });
+
+            expect(m).to.equal('1/17/2014');
+        });
+
+        it('should format date into medium', function () {
+            // {DATE, date, medium}
+            var msgFmt = new IntlMessageFormat([{
+                    type: 'date',
+                    valueName: 'DATE',
+                    formatter: 'medium'
+                }], 'en-US'),
+                m = msgFmt.format({
+                    DATE: new Date(1389998697742),
+                    timeZone: 'UTC'
+                });
+
+            expect(m).to.equal('Jan 17, 2014');
+        });
+
+        it('should format date into long', function () {
+            // {DATE, date, long}
+            var msgFmt = new IntlMessageFormat([{
+                    type: 'date',
+                    valueName: 'DATE',
+                    formatter: 'long'
+                }], 'en-US'),
+                m = msgFmt.format({
+                    DATE: new Date(1389998697742),
+                    timeZone: 'UTC'
+                });
+
+            expect(m).to.equal('Jan 17, 2014');
+        });
+
+        it('should format date into a full', function () {
+            // {DATE, date, full}
+            var msgFmt = new IntlMessageFormat([{
+                    type: 'date',
+                    valueName: 'DATE',
+                    formatter: 'full'
+                }], 'en-US'),
+                m = msgFmt.format({
+                    DATE: new Date(1389998697742),
+                    timeZone: 'UTC'
+                });
+
+            expect(m).to.equal('Fri, Jan 17, 2014');
+        });
+
+        it('should format time into short', function () {
+            // {DATE, time, short}
+            var msgFmt = new IntlMessageFormat([{
+                    type: 'time',
+                    valueName: 'DATE',
+                    formatter: 'short'
+                }], 'en-US'),
+                m = msgFmt.format({
+                    DATE: new Date(1389998697742),
+                    timeZone: 'UTC'
+                });
+
+            expect(m).to.equal('5:44 PM');
+        });
+
+        it('should format time into medium', function () {
+            // {DATE, time, medium}
+            var msgFmt = new IntlMessageFormat([{
+                    type: 'time',
+                    valueName: 'DATE',
+                    formatter: 'medium'
+                }], 'en-US'),
+                m = msgFmt.format({
+                    DATE: new Date(1389998697742),
+                    timeZone: 'UTC'
+                });
+
+            expect(m).to.equal('5:44:57 PM');
+        });
+
+        it('should format time into long', function () {
+            // {DATE, time, long}
+            var msgFmt = new IntlMessageFormat([{
+                    type: 'time',
+                    valueName: 'DATE',
+                    formatter: 'long'
+                }], 'en-US'),
+                m = msgFmt.format({
+                    DATE: new Date(1389998697742),
+                    timeZone: 'UTC'
+                });
+
+            expect(m).to.equal('5:44:57 PM');
+        });
+
+        it('should format time into a full', function () {
+            // {DATE, time, full}
+            var msgFmt = new IntlMessageFormat([{
+                    type: 'time',
+                    valueName: 'DATE',
+                    formatter: 'full'
+                }], 'en-US'),
+                m = msgFmt.format({
+                    DATE: new Date(1389998697742),
+                    timeZone: 'UTC'
+                });
+
+            expect(m).to.equal('5:44:57 PM');
+        });
+
     });
 
 });
