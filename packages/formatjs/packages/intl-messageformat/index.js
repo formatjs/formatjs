@@ -410,8 +410,8 @@
      a `valueName` property; this property is used to located the value in the
      lookUp object.
 
-     If the lookUp object returns a string, it will be sandwiched between
-     `obj.prefix` and `obj.postfix` if they exist.
+     If the lookUp object is not an array or object, it will be formatted, if
+     requested, and returned as a String
 
      @param {Ojbect} obj
      @param {Object} lookUp
@@ -421,6 +421,7 @@
         var val = lookUp[obj.valueName],
             valName = val,
             valType,
+            formatterFnName,
             formatterFn;
 
         // our look up object isn't in the provided lookUp object
@@ -445,29 +446,35 @@
             val = obj.options[val] || obj.options.other;
         }
 
-        valType = typeof val;
+        valType = Object.prototype.toString.call(val);
 
-        // if we have a string or number to return, we need to sandwich it
-        // with (pre|post)fix
-        if (valType === 'string' || valType === 'number') {
+        // anything that isn't an Object or Array should be formatted
+        // (if requested) and returned as a string
+        if (valType !== '[object Object]' && valType !== '[object Array]') {
 
             // strings should be checked for hash tokens
-            if (valType === 'string') {
+            if (valType === '[object String]') {
                 // We need to make sure we aren't doing a context look up `${#}`
                 val = val.replace('${#}', valName);
             }
 
             // process with a formatter if one exists
             if (obj.formatter) {
-                formatterFn = (typeof obj.formatter === 'function') ? obj.formatter : this.formatters[obj.formatter];
+                if (typeof obj.formatter === 'function') {
+                    formatterFn = obj.formatter;
+                } else {
+                    formatterFnName = (obj.type) ? obj.type + '_' : '';
+                    formatterFnName += obj.formatter;
+                    formatterFn = this.formatters[formatterFnName];
+                }
 
                 if (formatterFn) {
-                    val = formatterFn.call(this, val, this.locale);
+                    val = formatterFn.call(this, val, this.locale, lookUp);
                 }
             }
 
-            // sandwich
-            val = (obj.prefix || '') + val + (obj.postfix || '');
+            // ensure we have a string
+            val = val.toString();
         }
 
         return val;
