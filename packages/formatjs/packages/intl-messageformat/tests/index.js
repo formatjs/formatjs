@@ -23,7 +23,9 @@ if ('function' === typeof require) {
 
     IntlMessageFormat = require('../index.js');
 
-    Intl = (global.Intl = require('intl'));
+    if (typeof Intl === 'undefined'){
+        global.Intl = require('intl');
+    }
 
     require('../locale-data/en.js');
     require('../locale-data/ar.js');
