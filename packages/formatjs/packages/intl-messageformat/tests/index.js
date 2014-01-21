@@ -244,7 +244,6 @@ describe('IntlMessageFormat', function () {
 
             for (i = 0, len = patterns.length; i < len; i++) {
                 pattern = patterns[i];
-                console.log(pattern.name);
                 expect(IntlMessageFormat.parse(pattern.pattern), pattern.name).to.deep.equal(pattern.parsed);
             }
 
@@ -439,17 +438,6 @@ describe('IntlMessageFormat', function () {
         });
 
         it('should properly replace direct arguments in the string', function () {
-            var msgFmt = new IntlMessageFormat('My name is {FIRST} {LAST}.'),
-                m = msgFmt.format({
-                    FIRST: 'Anthony',
-                    LAST : 'Pipkin'
-                });
-
-            expect(m).to.be.a('string');
-            expect(m).to.equal('My name is Anthony Pipkin.');
-        });
-
-        it('should properly replace direct arguments in the string preceeding with a $', function () {
             var msgFmt = new IntlMessageFormat('My name is {FIRST} {LAST}.'),
                 m = msgFmt.format({
                     FIRST: 'Anthony',
@@ -985,14 +973,9 @@ describe('IntlMessageFormat', function () {
     });
 
     describe('formatting patterns with formatters', function () {
-        // have to use "parsed" values until parser is in there
         it('should format numbers into integers', function () {
             // {NUMBER, number, integer}
-            var msgFmt = new IntlMessageFormat([{
-                    type: 'number',
-                    valueName: 'NUMBER',
-                    formatter: 'integer'
-                }], 'en-US'),
+            var msgFmt = new IntlMessageFormat("{NUMBER, number, integer}", 'en-US'),
                 m = msgFmt.format({ NUMBER: 30000 });
 
             expect(m).to.equal('30,000');
@@ -1000,11 +983,7 @@ describe('IntlMessageFormat', function () {
 
         it('should format numbers into currency', function () {
             // {NUMBER, number, currency}
-            var msgFmt = new IntlMessageFormat([{
-                    type: 'number',
-                    valueName: 'NUMBER',
-                    formatter: 'currency'
-                }], 'en-US'),
+            var msgFmt = new IntlMessageFormat("{NUMBER, number, currency}", 'en-US'),
                 m = msgFmt.format({
                     NUMBER: 30000,
                     currency: 'USD'
@@ -1028,11 +1007,7 @@ describe('IntlMessageFormat', function () {
 
         it('should format numbers into a percent', function () {
             // {NUMBER, number, percent}
-            var msgFmt = new IntlMessageFormat([{
-                    type: 'number',
-                    valueName: 'NUMBER',
-                    formatter: 'percent'
-                }], 'en-US'),
+            var msgFmt = new IntlMessageFormat("{NUMBER, number, percent}", 'en-US'),
                 m = msgFmt.format({ NUMBER: 30 });
 
             expect(m).to.equal('3,000%');
@@ -1042,11 +1017,7 @@ describe('IntlMessageFormat', function () {
         // timestamp 1389998697742
         it('should format date into short', function () {
             // {DATE, date, short}
-            var msgFmt = new IntlMessageFormat([{
-                    type: 'date',
-                    valueName: 'DATE',
-                    formatter: 'short'
-                }], 'en-US'),
+            var msgFmt = new IntlMessageFormat("{DATE, date, short}", 'en-US'),
                 m = msgFmt.format({
                     DATE: new Date(1389998697742),
                     timeZone: 'UTC'
@@ -1057,11 +1028,7 @@ describe('IntlMessageFormat', function () {
 
         it('should format date into medium', function () {
             // {DATE, date, medium}
-            var msgFmt = new IntlMessageFormat([{
-                    type: 'date',
-                    valueName: 'DATE',
-                    formatter: 'medium'
-                }], 'en-US'),
+            var msgFmt = new IntlMessageFormat("{DATE, date, medium}", 'en-US'),
                 m = msgFmt.format({
                     DATE: new Date(1389998697742),
                     timeZone: 'UTC'
@@ -1072,11 +1039,7 @@ describe('IntlMessageFormat', function () {
 
         it('should format date into long', function () {
             // {DATE, date, long}
-            var msgFmt = new IntlMessageFormat([{
-                    type: 'date',
-                    valueName: 'DATE',
-                    formatter: 'long'
-                }], 'en-US'),
+            var msgFmt = new IntlMessageFormat("{DATE, date, long}", 'en-US'),
                 m = msgFmt.format({
                     DATE: new Date(1389998697742),
                     timeZone: 'UTC'
@@ -1087,11 +1050,7 @@ describe('IntlMessageFormat', function () {
 
         it('should format date into a full', function () {
             // {DATE, date, full}
-            var msgFmt = new IntlMessageFormat([{
-                    type: 'date',
-                    valueName: 'DATE',
-                    formatter: 'full'
-                }], 'en-US'),
+            var msgFmt = new IntlMessageFormat("{DATE, date, full}", 'en-US'),
                 m = msgFmt.format({
                     DATE: new Date(1389998697742),
                     timeZone: 'UTC'
@@ -1102,11 +1061,7 @@ describe('IntlMessageFormat', function () {
 
         it('should format time into short', function () {
             // {DATE, time, short}
-            var msgFmt = new IntlMessageFormat([{
-                    type: 'time',
-                    valueName: 'DATE',
-                    formatter: 'short'
-                }], 'en-US'),
+            var msgFmt = new IntlMessageFormat("{DATE, time, short}", 'en-US'),
                 m = msgFmt.format({
                     DATE: new Date(1389998697742),
                     timeZone: 'UTC'
@@ -1117,11 +1072,7 @@ describe('IntlMessageFormat', function () {
 
         it('should format time into medium', function () {
             // {DATE, time, medium}
-            var msgFmt = new IntlMessageFormat([{
-                    type: 'time',
-                    valueName: 'DATE',
-                    formatter: 'medium'
-                }], 'en-US'),
+            var msgFmt = new IntlMessageFormat("{DATE, time, medium}", 'en-US'),
                 m = msgFmt.format({
                     DATE: new Date(1389998697742),
                     timeZone: 'UTC'
@@ -1132,11 +1083,7 @@ describe('IntlMessageFormat', function () {
 
         it('should format time into long', function () {
             // {DATE, time, long}
-            var msgFmt = new IntlMessageFormat([{
-                    type: 'time',
-                    valueName: 'DATE',
-                    formatter: 'long'
-                }], 'en-US'),
+            var msgFmt = new IntlMessageFormat("{DATE, time, long}", 'en-US'),
                 m = msgFmt.format({
                     DATE: new Date(1389998697742),
                     timeZone: 'UTC'
@@ -1147,11 +1094,7 @@ describe('IntlMessageFormat', function () {
 
         it('should format time into a full', function () {
             // {DATE, time, full}
-            var msgFmt = new IntlMessageFormat([{
-                    type: 'time',
-                    valueName: 'DATE',
-                    formatter: 'full'
-                }], 'en-US'),
+            var msgFmt = new IntlMessageFormat("{DATE, time, full}", 'en-US'),
                 m = msgFmt.format({
                     DATE: new Date(1389998697742),
                     timeZone: 'UTC'
