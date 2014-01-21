@@ -11,6 +11,7 @@
 
 var chai,
     expect,
+    intl,
     IntlMessageFormat;
 
 
@@ -34,6 +35,7 @@ if ('function' === typeof require) {
 }
 expect = chai.expect;
 
+global.Intl = global.Intl || intl;
 
 describe('IntlMessageFormat', function () {
 
@@ -41,10 +43,212 @@ describe('IntlMessageFormat', function () {
         expect(IntlMessageFormat).to.be.a('function');
     });
 
-    // PROTOTYPE
+    // STATIC
     describe('.__addLocaleData( [obj] )', function () {
         it('should respond to .__addLocaleData()', function () {
             expect(IntlMessageFormat).itself.to.respondTo('__addLocaleData');
+        });
+    });
+
+    describe('.parse( [messagePattern] )', function () {
+        it('should respond to .parse()', function () {
+            expect(IntlMessageFormat).itself.to.respondTo('parse');
+        });
+
+        it('should fail with an imbalanced bracket', function () {
+            try {
+                IntlMessageFormat.parse('{imbalanced} tokens}');
+            } catch (e) {
+                var err = new Error('Imbalanced bracket detected at index 19 for message "{imbalanced} tokens}"');
+                expect(err.toString()).to.equal(e.toString());
+            }
+        });
+
+        it('should fail if the brackets are not closed properly', function () {
+            try {
+                IntlMessageFormat.parse('{{hello}');
+            } catch (e) {
+                var err = new Error('Brackets were not properly closed: {{hello}');
+                expect(err.toString()).to.equal(e.toString());
+            }
+        });
+
+        it('should fail if options tokens are not supplied in pairs', function () {
+            try {
+                IntlMessageFormat.parse('{FOO, plural, one {bar} other}');
+            } catch (e) {
+                var err = new Error('Options must come in pairs: one, {bar}, other');
+                expect(err.toString()).to.equal(e.toString());
+            }
+        });
+
+        it('should fail if a default `other` option is not supplied', function () {
+            try {
+                IntlMessageFormat.parse('{Foo, plural, one {bar} few {baz}}');
+            } catch (e) {
+                var err = new Error('Options must include default \"other\" option: one, {bar}, few, {baz}');
+                expect(err.toString()).to.equal(e.toString());
+            }
+        });
+
+        it('should parse the pattern into an array', function () {
+            var i, len, pattern,
+                patterns = [
+                    {
+                        name: 'basic string',
+                        pattern: '{KAMEN} {RIDER} is {STRONGER} than you!',
+                        parsed: [
+                            '${KAMEN}',
+                            ' ',
+                            '${RIDER}',
+                            ' is ',
+                            '${STRONGER}',
+                            ' than you!',
+                        ]
+                    }, {
+                        name: 'basic plural',
+                        pattern: 'There {NUM_RIDERS, plural, one {is only one} other {are #}} kamen rider(s)',
+                        parsed: [
+                            'There ',
+                            {
+                                type: 'plural',
+                                valueName: 'NUM_RIDERS',
+                                options: {
+                                    one: 'is only one',
+                                    other: 'are ${#}'
+                                }
+                            },
+                            ' kamen rider(s)'
+                        ]
+                    }, {
+                        name: 'basic select',
+                        pattern: 'Kamen rider is {LEVEL, select, good {awesome} better {very awesome} best {awesome-possum} other {amaaazing}}!!',
+                        parsed: [
+                            'Kamen rider is ',
+                            {
+                                type: 'select',
+                                valueName: 'LEVEL',
+                                options: {
+                                    good: 'awesome',
+                                    better: 'very awesome',
+                                    best: 'awesome-possum',
+                                    other: 'amaaazing'
+                                }
+                            },
+                            '!!'
+                        ]
+                    }, {
+                        name: 'basic time',
+                        pattern: 'Today is {TIME, time, long}.',
+                        parsed: [
+                            'Today is ',
+                            {
+                                type: 'time',
+                                valueName: 'TIME',
+                                format: 'long'
+                            },
+                            '.'
+                        ]
+                    }, {
+                        name: 'basic time - defaulting',
+                        pattern: 'Today is {TIME, time}.',
+                        parsed: [
+                            'Today is ',
+                            {
+                                type: 'time',
+                                valueName: 'TIME',
+                                format: 'medium'
+                            },
+                            '.'
+                        ]
+                    }, {
+                        name: 'basic date',
+                        pattern: 'Today is {TIME, date, short}.',
+                        parsed: [
+                            'Today is ',
+                            {
+                                type: 'date',
+                                valueName: 'TIME',
+                                format: 'short'
+                            },
+                            '.'
+                        ]
+                    }, {
+                        name: 'basic date - defaulting',
+                        pattern: 'Today is {TIME, date}.',
+                        parsed: [
+                            'Today is ',
+                            {
+                                type: 'date',
+                                valueName: 'TIME',
+                                format: 'medium'
+                            },
+                            '.'
+                        ]
+                    }, {
+                        name: 'basic number',
+                        pattern: 'There are {POPULATION, number, integer} people in {CITY}.',
+                        parsed: [
+                            'There are ',
+                            {
+                                type: 'number',
+                                valueName: 'POPULATION',
+                                format: 'integer'
+                            },
+                            ' people in ',
+                            '${CITY}',
+                            '.'
+                        ]
+                    }, {
+                        name: 'complex pattern with string, plural, and select',
+                        pattern: '{TRAVELLERS} {TRAVELLER_COUNT, plural, one {est {GENDER, select, female {allée} other {allé}}} other {sont {GENDER, select, female {allées} other {allés}}}} à {CITY}.',
+                        parsed: [
+                            '${TRAVELLERS}',
+                            ' ',
+                            {
+                                type: 'plural',
+                                valueName: 'TRAVELLER_COUNT',
+                                options: {
+                                    one: [
+                                        'est ',
+                                        {
+                                            type: 'select',
+                                            valueName: 'GENDER',
+                                            options: {
+                                                female: 'allée',
+                                                other: 'allé'
+                                            }
+                                        }
+                                    ],
+                                    other: [
+                                        'sont ',
+                                        {
+                                            type: 'select',
+                                            valueName: 'GENDER',
+                                            options: {
+                                                female: 'allées',
+                                                other: 'allés'
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            ' à ',
+                            '${CITY}',
+                            '.'
+                        ]
+                    }
+                ];
+
+
+
+            for (i = 0, len = patterns.length; i < len; i++) {
+                pattern = patterns[i];
+                console.log(pattern.name);
+                expect(IntlMessageFormat.parse(pattern.pattern), pattern.name).to.deep.equal(pattern.parsed);
+            }
+
+
         });
     });
 
@@ -121,15 +325,13 @@ describe('IntlMessageFormat', function () {
         });
 
         it('should match the first parameter parsed into an array when it is a string', function () {
-            var msgFmt = new IntlMessageFormat('My name is ${NAME}');
+            var msgFmt = new IntlMessageFormat('My name is {NAME}');
 
             expect(msgFmt.pattern).to.be.an('array');
             expect(msgFmt.pattern.length).to.equal(2);
             expect(msgFmt.pattern[0]).to.equal('My name is ');
-            expect(msgFmt.pattern[1]).to.be.an('object');
-            /*jshint expr:true */
-            expect(msgFmt.pattern[1].valueName).to.exist;
-            expect(msgFmt.pattern[1].valueName).to.equal('NAME');
+            expect(msgFmt.pattern[1]).to.be.a('string');
+            expect(msgFmt.pattern[1]).to.equal('${NAME}');
         });
 
     });
@@ -212,9 +414,14 @@ describe('IntlMessageFormat', function () {
             expect(msgFmt).to.respondTo('format');
         });
 
-        it('should return a string', function () {
+        it('should throw an error when no parameter is passed', function () {
             msgFmt = new IntlMessageFormat();
-            expect(msgFmt.format()).to.be.a('string');
+            try {
+                msgFmt.format();
+            } catch (e) {
+                var err = new ReferenceError('`format` expects the first argument to be an Object. undefined was found.');
+                expect(err.toString()).to.equal(e.toString());
+            }
         });
 
     });
@@ -243,7 +450,7 @@ describe('IntlMessageFormat', function () {
         });
 
         it('should properly replace direct arguments in the string preceeding with a $', function () {
-            var msgFmt = new IntlMessageFormat('My name is ${FIRST} ${LAST}.'),
+            var msgFmt = new IntlMessageFormat('My name is {FIRST} {LAST}.'),
                 m = msgFmt.format({
                     FIRST: 'Anthony',
                     LAST : 'Pipkin'
@@ -256,7 +463,7 @@ describe('IntlMessageFormat', function () {
         it('should process an argument with a value formatter', function () {
             var msgFmt, m;
 
-            msgFmt = new IntlMessageFormat('Test formatter d: ${num:d}', null, {
+            msgFmt = new IntlMessageFormat('Test formatter d: {num, d}', null, {
                     d: function (val, locale) {
                         return +val;
                     }
@@ -272,7 +479,7 @@ describe('IntlMessageFormat', function () {
         it('should not fail if the formatter is non existant', function () {
             var msgFmt, m;
 
-            msgFmt = new IntlMessageFormat('Test formatter foo: ${NUM:foo}', null, {
+            msgFmt = new IntlMessageFormat('Test formatter foo: {NUM, foo}', null, {
                     d: function (val, locale) {
                         return +val;
                     }
@@ -302,7 +509,7 @@ describe('IntlMessageFormat', function () {
             CustomFormatters.prototype.constructor = CustomFormatters;
 
 
-            msg = new IntlMessageFormat('d: ${num:d} / f: ${num:f}', 'en-US', new CustomFormatters());
+            msg = new IntlMessageFormat('d: {num, d} / f: {num, f}', 'en-US', new CustomFormatters());
 
             m = msg.format({
                 num: 0
@@ -314,15 +521,15 @@ describe('IntlMessageFormat', function () {
         it('should work when the pattern is replaced', function () {
            var msg, m;
 
-            msg = new IntlMessageFormat('${NAME} ${FORMULA}', 'en-US');
+            msg = new IntlMessageFormat('{NAME} {FORMULA}', 'en-US');
 
-            msg.pattern = '${FORMULA} ${NAME}';
+            msg.pattern = '{FORMULA} {NAME}';
 
             m = msg.format({
                 NAME: 'apipkin'
             });
 
-            expect(m).to.equal('${FORMULA} apipkin');
+            expect(m).to.equal('{FORMULA} apipkin');
 
         });
 
@@ -334,7 +541,8 @@ describe('IntlMessageFormat', function () {
 
             msgFmt = new IntlMessageFormat(['I have ', 2, ' cars.']);
 
-            m = msgFmt.format();
+            // pass an object to prevent throwing
+            m = msgFmt.format({});
 
             expect(m).to.equal('I have 2 cars.');
         });
@@ -359,7 +567,7 @@ describe('IntlMessageFormat', function () {
         it('should concatenate an Array and process arguments afterwards', function () {
             var msgFmt, m;
 
-            msgFmt = new IntlMessageFormat(['${', 'company', '}', ' {', 'verb' ,'}.']);
+            msgFmt = new IntlMessageFormat(['{', 'company', '}', ' {', 'verb' ,'}.']);
 
             m = msgFmt.format({
                 company: 'Yahoo',
@@ -420,7 +628,7 @@ describe('IntlMessageFormat', function () {
 
             msgFmt = new IntlMessageFormat([{
                     valueName: 'ANIMAL',
-                    formatter: function (val, locale) {
+                    format: function (val, locale) {
                         return val.toString().split('').reverse().join('');
                     }
                 }], 'en-US');
@@ -523,10 +731,10 @@ describe('IntlMessageFormat', function () {
             },
 
             complex = {
-                en: '${TRAVELLERS} went to ${CITY}.',
+                en: '{TRAVELLERS} went to {CITY}.',
 
                 fr: [
-                    '${TRAVELLERS}',
+                    '{TRAVELLERS}',
                     {
                         type: 'plural',
                         valueName: 'TRAVELLER_COUNT',
@@ -550,7 +758,7 @@ describe('IntlMessageFormat', function () {
                         }
                     },
                     ' à ',
-                    '${CITY}',
+                    '{CITY}',
                     '.'
                 ]
             },
@@ -685,6 +893,7 @@ describe('IntlMessageFormat', function () {
 
         describe('no spaces', function() {
             var msg = new IntlMessageFormat("{STATE}"),
+                emptyErr = new ReferenceError('`format` expects the first argument to be an Object. undefined was found.'),
                 typeErr = new TypeError("Cannot read property 'STATE' of undefined"),
                 refErr = new ReferenceError("The valueName `STATE` was not found."),
                 state = 'Missouri',
@@ -694,7 +903,7 @@ describe('IntlMessageFormat', function () {
                 try {
                     m = msg.format();
                 } catch (e) {
-                    expect(e.toString()).to.equal(typeErr.toString());
+                    expect(e.toString()).to.equal(emptyErr.toString());
                 }
             });
 
@@ -738,6 +947,7 @@ describe('IntlMessageFormat', function () {
 
         describe('a numeral', function() {
             var msg = new IntlMessageFormat("{ST1ATE}"),
+                emptyErr = new ReferenceError('`format` expects the first argument to be an Object. undefined was found.'),
                 typeErr = new TypeError("Cannot read property 'ST1ATE' of undefined"),
                 refErr = new ReferenceError("The valueName `ST1ATE` was not found."),
                 state = 'Missouri',
@@ -747,7 +957,7 @@ describe('IntlMessageFormat', function () {
                 try {
                     m = msg.format();
                 } catch (e) {
-                    expect(e.toString()).to.equal(typeErr.toString());
+                    expect(e.toString()).to.equal(emptyErr.toString());
                 }
             });
 

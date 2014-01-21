@@ -30,8 +30,6 @@
 
         REGEX_WHITE_SPACE         = /\s/g,
         REGEX_STRING_TO_PATTERN   = /\$?\{([^\} ]*)\}/g,
-        REGEX_TOKEN_BREAK         = /(\$?\{?[^\$\{\}]*\}?)/gi,
-        REGEX_TOKEN_AND_FORMATTER = /\$?\{([-\w]*):?([-\w]*)?\}/i,
 
         DEFAULT_FORMATTERS = {
             // TYPE: number
@@ -207,29 +205,7 @@
 
         // Assume the string passed in is a simple pattern for replacement.
         if (typeof pattern === 'string') {
-            // break apart the string into chunks and tokens
-            chunks = pattern.match(REGEX_TOKEN_BREAK);
-
-            // Regular expression unfortunately matches an empty string at the end
-            if (chunks[chunks.length - 1] === '') {
-                chunks.pop();
-            }
-
-            // loop through each chunk and replace tokens when found
-            for (i = 0, len = chunks.length; i < len; i++) {
-                // create an object for the token when found
-                matches = chunks[i].match(REGEX_TOKEN_AND_FORMATTER);
-                if (matches) {
-                    chunks[i] = {
-                        // the valuename is the "key" for the token ... ${key}
-                        valueName: matches[1],
-                        formatter: matches[2],
-                    };
-                }
-            }
-
-            // our pattern should now be the chunked array
-            pattern = chunks;
+            pattern = MessageFormat.parse(pattern);
         }
 
         // save the pattern internally
@@ -254,6 +230,10 @@
             key,
             len,
             i;
+
+        if (typeof obj !== 'object') {
+            throw new ReferenceError('`format` expects the first argument to be an Object. ' + typeof obj + ' was found.');
+        }
 
         // the pattern we have is an array, we need to stitch it together
         // before moving forward
@@ -288,7 +268,6 @@
                 }
             }
         }
-
 
         return pattern;
     };
@@ -510,6 +489,351 @@
     };
 
 
+
+
+
+
+    // ---------------------------------------------------------
+    // -- PARSER Functions -------------------------------------
+    // ---------------------------------------------------------
+
+    // `type` (required): The name of the message format type.
+    // `regex` (required): The regex used to check if this formatter can parse the message.
+    // `parse` (required): The main parse method which is given the full message.
+    // `tokenParser` (optional): Used to parse the remaining tokens of a message (what remains after the variable and the format type).
+    // `postParser` (optional): Used to format the output before returning from the main `parse` method.
+    // `outputFormatter` (optional): Used to format the fully parsed string returned from the base case of the recursive parser.
+    var FORMATTERS = [
+        {
+            type: 'string',
+            regex: /^{\s*([-\w]+)\s*}$/,
+            parse: formatElementParser,
+            postParser: function (parsed) {
+                return '${' + parsed.valueName + '}';
+            }
+        },
+        {
+            type: 'select',
+            regex: /^{\s*([-\w]+)\s*,\s*select\s*,\s*(.*)\s*}$/,
+            parse: formatElementParser,
+            tokenParser: pairedOptionsParser
+        },
+        {
+            type: 'plural',
+            regex: /^{\s*([-\w]+)\s*,\s*plural\s*,\s*(.*)\s*}$/,
+            parse: formatElementParser,
+            tokenParser: pairedOptionsParser,
+            outputFormatter: function (str) {
+                return str.replace(/#/g, '${#}');
+            }
+        },
+        {
+            type: 'time',
+            regex: /^{\s*([-\w]+)\s*,\s*time(?:,(.*))?\s*}$/,
+            parse: formatElementParser,
+            tokenParser: formatOptionParser,
+            postParser: function (parsed) {
+                parsed.format = parsed.format || 'medium';
+                return parsed;
+            }
+        },
+        {
+            type: 'date',
+            regex: /^{\s*([-\w]+)\s*,\s*date(?:,(.*))?\s*}$/,
+            parse: formatElementParser,
+            tokenParser: formatOptionParser,
+            postParser: function (parsed) {
+                parsed.format = parsed.format || 'medium';
+                return parsed;
+            }
+        },
+        {
+            type: 'number',
+            regex: /^{\s*([-\w]+)\s*,\s*number(?:,(.*))?\s*}$/,
+            parse: formatElementParser,
+            tokenParser: formatOptionParser
+        },
+        {
+            type: 'custom',
+            regex: /^{\s*([-\w]+)\s*,\s*([a-zA-Z]*)(?:,(.*))?\s*}$/,
+            parse: formatElementParser,
+            tokenParser:formatOptionParser
+        }
+    ];
+
+    /**
+     Tokenizes a MessageFormat pattern.
+     @method tokenize
+     @param {String} pattern A pattern
+     @param {Boolean} trim Whether or not the tokens should be trimmed of whitespace
+     @return {Array} Tokens
+     **/
+    function tokenize (pattern, trim) {
+        var bracketRE   = /[{}]/g,
+            tokens      = [],
+            balance     = 0,
+            startIndex  = 0,
+            endIndex,
+            substr,
+            match,
+            i,
+            len;
+
+
+        match = bracketRE.exec(pattern);
+
+        while (match) {
+            // Keep track of balanced brackets
+            balance += match[0] === '{' ? 1 : -1;
+
+            // Imbalanced brackets detected (e.g. "}hello{", "{hello}}")
+            if (balance < 0) {
+                throw new Error('Imbalanced bracket detected at index ' +
+                    match.index + ' for message "' + pattern + '"');
+            }
+
+            // Tokenize a pair of balanced brackets
+            if (balance === 0) {
+                endIndex = match.index + 1;
+
+                tokens.push(
+                    pattern.slice(startIndex, endIndex)
+                );
+
+                startIndex = endIndex;
+            }
+
+            // Tokenize any text that comes before the first opening bracket
+            if (balance === 1 && startIndex !== match.index) {
+                substr = pattern.slice(startIndex, match.index);
+                if (substr.indexOf('{') === -1) {
+                    tokens.push(substr);
+                    startIndex = match.index;
+                }
+            }
+
+            match = bracketRE.exec(pattern);
+        }
+
+        // Imbalanced brackets detected (e.g. "{{hello}")
+        if (balance !== 0) {
+            throw new Error('Brackets were not properly closed: ' + pattern);
+        }
+
+        // Tokenize any remaining non-empty string
+        if (startIndex !== pattern.length) {
+            tokens.push(
+                pattern.slice(startIndex)
+            );
+        }
+
+        if (trim) {
+            for (i = 0, len = tokens.length; i < len; i++) {
+                tokens[i] = tokens[i].replace(/^\s+|\s+$/gm, '');
+            }
+        }
+
+        return tokens;
+    }
+
+
+
+    /**
+     Gets the content of the format element by peeling off the outermost pair of
+     brackets.
+     @method getFormatElementContent
+     @param {String} formatElement Format element
+     @return {String} Contents of format element
+     **/
+    function getFormatElementContent (formatElement) {
+        return formatElement.replace(/^\{\s*/,'').replace(/\s*\}$/, '');
+    }
+
+    /**
+     Checks if the pattern contains a format element.
+     @method containsFormatElement
+     @param {String} pattern Pattern
+     @return {Boolean} Whether or not the pattern contains a format element
+     **/
+    function containsFormatElement (pattern) {
+        return pattern.indexOf('{') >= 0;
+    }
+
+    /**
+     Parses a list of tokens into paired options where the key is the option name
+     and the value is the pattern.
+     @method pairedOptionsParser
+     @param {Object} parsed Parsed object
+     @param {Array} tokens Remaining tokens that come after the value name and the
+         format id
+     @return {Object} Parsed object with added options
+     **/
+    function pairedOptionsParser (parsed, tokens) {
+        var hasDefault,
+            value,
+            name,
+            l,
+            i;
+
+        parsed.options  = {};
+
+        if (tokens.length % 2) {
+            throw new Error('Options must come in pairs: ' + tokens.join(', '));
+        }
+
+        for (i = 0, l = tokens.length; i < l; i += 2) {
+            name  = tokens[i];
+            value = tokens[i + 1];
+
+            parsed.options[name] = value;
+
+            hasDefault = hasDefault || name === 'other';
+        }
+
+        if (!hasDefault) {
+            throw new Error('Options must include default "other" option: ' + tokens.join(', '));
+        }
+
+        return parsed;
+    }
+
+    function formatOptionParser (parsed, tokens) {
+        parsed.format = tokens[0];
+        return parsed;
+    }
+
+    /**
+     Parses a format element. Format elements are surrounded by curly braces, and
+     contain at least a value name.
+     @method formatElementParser
+     @param {String} formatElement A format element
+     @param {Object} match The result of a String.match() that has at least the
+         value name at index 1 and a subformat at index 2
+     @return {Object} Parsed object
+     **/
+    function formatElementParser (formatElement, match, formatter) {
+        var parsed = {
+                type: formatter.type,
+                valueName: match[1]
+            },
+            tokens = match[2] && tokenize(match[2], true);
+
+        // If there are any additional tokens to parse, it should be done here
+        if (formatter.tokenParser && tokens) {
+            parsed = formatter.tokenParser(parsed, tokens);
+        }
+
+        // Any final modifications to the parsed output should be done here
+        if (formatter.postParser) {
+            parsed = formatter.postParser(parsed);
+        }
+
+        return parsed;
+    }
+
+    /**
+     For each formatter, test it on the token in order. Exit early on first
+     token matched.
+     @method parseToken
+     @param {Array} tokens
+     @param {Number} index
+     @return {String|Object} Parsed token or original token
+     */
+    function parseToken (tokens, index) {
+        var i, len;
+
+        for (i = 0, len = FORMATTERS.length; i < len; i++) {
+            if (parseFormatTokens(FORMATTERS[i], tokens, index)) {
+                return tokens[index];
+            }
+        }
+
+        return tokens[index];
+    }
+
+    /**
+     Attempts to parse a token at the given index with the provided formatter.
+     If the token fails the `formatter.regex`, `false` is returned. Otherwise,
+     the token is parsed with `formatter.parse`. Then if the token contains
+     options due to the parsing process, it has each option processed. Then it
+     returns `true` alerting the caller the token was parsed.
+
+     @method parseFormatTokens
+     @param {Object} formatter
+     @param {Array} tokens
+     @param {Number} tokenIndex
+     @return {Boolean}
+     */
+    function parseFormatTokens (formatter, tokens, tokenIndex) {
+        var token = tokens[tokenIndex],
+            match = token.match(formatter.regex),
+            parsedToken,
+            parsedKeys = [],
+            key,
+            i, len;
+
+        if (match) {
+            parsedToken = formatter.parse(token, match, formatter);
+            tokens[tokenIndex] = parsedToken;
+
+            // if we have options, each option must be parsed
+            if (parsedToken && parsedToken.options && typeof parsedToken.options === 'object') {
+                for (key in parsedToken.options) {
+                    if (parsedToken.options.hasOwnProperty(key)) {
+                        parsedKeys.push(key);
+                    }
+                }
+            }
+
+            for (i = 0, len = parsedKeys.length; i < len; i++) {
+                parseFormatOptions(parsedToken, parsedKeys[i], formatter);
+            }
+
+            return true;
+        }
+
+        return !!match;
+    }
+
+    /**
+     @method parseFormatOptions
+     @param {Object}
+     */
+    function parseFormatOptions (parsedToken, key, formatter) {
+        var value = parsedToken.options && parsedToken.options[key];
+        value = getFormatElementContent(value);
+        parsedToken.options[key] = parse(value, formatter.outputFormatter);
+    }
+
+    /**
+     Parses a pattern that may contain nested format elements.
+     @method parse
+     @param {String} pattern A pattern
+     @return {Object|Array} Parsed output
+     **/
+    function parse (pattern, outputFormatter) {
+
+        var tokens,
+            i, len;
+
+        // base case (plain string)
+        if (!containsFormatElement(pattern)) {
+            // Final chance to format the string before the parser spits it out
+            return outputFormatter ? outputFormatter(pattern) : pattern;
+        }
+
+        tokens = tokenize(pattern);
+
+        for (i = 0, len = tokens.length; i < len; i++) {
+            if (tokens[i].charAt(0) === '{') { // tokens must start with a {
+                tokens[i] = parseToken(tokens, i);
+            }
+        }
+
+        return tokens;
+    }
+
+    MessageFormat.parse = parse;
+
     return MessageFormat;
 });
-
