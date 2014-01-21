@@ -438,12 +438,12 @@
             }
 
             // process with a formatter if one exists
-            if (obj.formatter) {
-                if (typeof obj.formatter === 'function') {
-                    formatterFn = obj.formatter;
+            if (obj.format) {
+                if (typeof obj.format === 'function') {
+                    formatterFn = obj.format;
                 } else {
-                    formatterFnName = (obj.type) ? obj.type + '_' : '';
-                    formatterFnName += obj.formatter;
+                    formatterFnName = (obj.type && obj.type !== 'custom') ? obj.type + '_' : '';
+                    formatterFnName += obj.format;
                     formatterFn = this.formatters[formatterFnName];
                 }
 
