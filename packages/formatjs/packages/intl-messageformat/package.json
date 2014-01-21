@@ -46,6 +46,6 @@
   "scripts": {
     "build-data": "grunt build-data",
     "pretest": "grunt jshint build",
-    "test": "istanbul cover -- _mocha tests/ --reporter xunit-file"
+    "test": "istanbul cover -- _mocha tests/ --reporter spec"
   }
 }
