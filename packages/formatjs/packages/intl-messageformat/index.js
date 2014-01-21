@@ -385,25 +385,25 @@
 
 
     /**
-     Processes the Object based on the lookUp object. Each object should have
+     Processes the Object based on the data object. Each object should have
      a `valueName` property; this property is used to located the value in the
-     lookUp object.
+     data object.
 
-     If the lookUp object is not an array or object, it will be formatted, if
+     If the data object is not an array or object, it will be formatted, if
      requested, and returned as a String
 
      @param {Ojbect} obj
-     @param {Object} lookUp
+     @param {Object} data
      @return {String|Array|Object}
      */
-    MessageFormat.prototype._processObject = function (obj, lookUp) {
-        var val = lookUp[obj.valueName],
+    MessageFormat.prototype._processObject = function (obj, data) {
+        var val = data[obj.valueName],
             valName = val,
             valType,
             formatterFnName,
             formatterFn;
 
-        // our look up object isn't in the provided lookUp object
+        // our look up object isn't in the provided data object
         if (typeof val === 'undefined' || val === null) {
             throw new ReferenceError('The valueName `' + obj.valueName + '` was not found.');
         }
@@ -448,7 +448,7 @@
                 }
 
                 if (formatterFn) {
-                    val = formatterFn.call(this, val, this.locale, lookUp);
+                    val = formatterFn.call(this, val, this.locale, data);
                 }
             }
 
