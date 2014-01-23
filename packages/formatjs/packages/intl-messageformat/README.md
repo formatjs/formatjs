@@ -1,5 +1,5 @@
-Intl Message Format Polyfill
-============================
+Intl Message Format
+===================
 
 ![Build Status][TRAVIS]
 
