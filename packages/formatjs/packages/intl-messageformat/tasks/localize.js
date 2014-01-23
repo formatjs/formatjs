@@ -12,7 +12,7 @@ module.exports = function(grunt) {
         srcFiles = fs.readdirSync(config.src);
         srcFiles.forEach(function(srcFile) {
             var srcPath = libpath.resolve(config.src, srcFile),
-                destPath = libpath.resolve(config.dest, 'index.' + srcFile),
+                destPath = libpath.resolve(config.dest, 'intl-messageformat.' + srcFile),
                 out = library;
             out += grunt.file.read(srcPath);
             grunt.file.write(destPath, out, {encoding: 'utf8'});

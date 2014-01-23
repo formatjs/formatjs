@@ -179,9 +179,9 @@ This package ships with locale data for the top-level locales (e.g. `en` but not
 
 * Load the base and then just the locale(s) that you need: `intl-messageformat/index.js` and `intl-messageformat/locale-data/{locale}.js`.
 
-* Load the base with a single locale builtin: `intl-messageformat/build/index.{locale}.js')`. You can then optionally add more locale(s) as above.
+* Load the base with a single locale builtin: `intl-messageformat/build/intl-messageformat.{locale}.js')`. You can then optionally add more locale(s) as above.
 
-* Load all locales: `intl-messageformat/build/index.complete.js`.
+* Load all locales: `intl-messageformat/build/intl-messageformat.complete.js`.
 
 
 ### Loading Locale Data in Node.js

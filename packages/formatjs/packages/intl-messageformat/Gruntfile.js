@@ -20,7 +20,7 @@ module.exports = function (grunt) {
             },
             index: {
                 src: 'index.js',
-                dest: 'build/index.min.js'
+                dest: 'build/intl-messageformat.min.js'
             },
             localized: {
                 expand: true,

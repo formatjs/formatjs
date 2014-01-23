@@ -1,6 +1,6 @@
 {
   "name": "intl-messageformat",
-  "main": "index.js",
+  "main": "build/intl-messageformat.complete.min.js",
   "version": "0.0.1",
   "homepage": "https://github.com/yahoo/intl-messageformat",
   "authors": [

@@ -24,7 +24,7 @@
     "type": "git",
     "url": "git@github.com:yahoo/intl-messageformat.git"
   },
-  "main": "index.js",
+  "main": "build/intl-messageformat.complete.min.js",
   "directories": {
     "test": "tests"
   },
