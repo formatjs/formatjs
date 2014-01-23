@@ -15,7 +15,7 @@ This `IntlMessageFormat` API may change to stay in sync with ECMA-402
 To provide a standardized way to concatenate strings with localization support in JavaScript on both the server and client.
 
 ### Basis
-This implementation is based on the [Strawman Draft][STRAWMAN]. There are a few places this implementation diverges from the strawman draft. One such place is the object passed to the `format` method. The strawman draft indicates that the objects should be "flat" - where grouping options are at the same level as the `type` and `valueName`. This, as an example, would look like:
+This implementation is based on the [Strawman Draft][STRAWMAN]. There are a few places this implementation diverges from the strawman draft. One such place is the pattern after it has been parsed. The strawman draft indicates the parsed arguments should be "flat" - where grouping options are at the same level as the `type` and `valueName`. This, as an example, would look like:
 ```
 {
     type: "plural",
@@ -44,8 +44,6 @@ This implementation takes a readability approach and places grouping options in 
 }
 ```
 
-The strawman also makes mention of built-in formatters for integers, floating point numbers and strings. These built in formatters are not in this implementation, but you may provide formatters as user defined methods as a third parameter when you instantiate the IntlMessageFormatter.
-
 ### How It Works
 
 Messages are provided into the constructor as an `Array` or `String` messages.
@@ -53,9 +51,9 @@ Messages are provided into the constructor as an `Array` or `String` messages.
 var msg = new IntlMessageFormat(pattern, locale, [optFieldFormatters]);
 ```
 
-If a `String` is provided, it is broken up and processed into a workable `Array`. This means
+If a `String` is provided, it is parsed into a workable `Array` of tokens. This means
 ```javascript
-"Welcome to ${CITY}, ${STATE}!"
+"Welcome to {CITY}, {STATE}!"
 ```
 becomes
 ```javascript
@@ -72,17 +70,17 @@ becomes
 ]
 ```
 
-The `Array` may contain `Strings` or pattern `Objects`. Read more about [Pattern Objects](#message-pattern-objects)
+The pattern `Array` may contain `Strings` or `Objects`. Read more about [Token Objects](#token-objects)
 
-The pattern is stored internally until the `format()` method is called with an `Object` containing parameters for generating the message. The `Array` is then processed by converting pattern into strings based on the parameters provided and concatenating the values together.
+The pattern is stored internally until the `format()` method is called with an `Object` containing parameters for generating the message. The pattern is then processed by converting the tokens into strings based on the parameters provided and concatenating the values together.
 
 
 ### Features
-Custom formatters can be used to format the value __after__ it is gathered from the original process. Custom formatters are stored in the message during construction as the third parameter. Formatters are denoted in the token with a colon (:) followed by the formatter name.
+Custom formatters can be used to format the value __after__ it is gathered from the original process. Custom formatters are stored in the message during construction as the third parameter. Formatters are denoted in the argument with a comma (,) followed by the formatter name.
 
 For example you can ensure that certain tokens are always upper cased:
 ```javascript
-var msg = new IntlMessageFormat("Then they yelled '${YELL:upper}!'", "en", {
+var msg = new IntlMessageFormat("Then they yelled '{YELL, upper}!'", "en", {
     "upper": function (val, locale) {
         return val.toString().toUpperCase();
     }
@@ -110,7 +108,7 @@ To create a message to format, use the IntlMessageFormat constructor. The constr
 
  - **pattern** - _{String|Array}_ - Array or string that serves as formatting pattern. Use array for plural and select messages, otherwise use string form.
 
- - **locale** - _{String}_ - Locale for string formatting. The locale is optional, but it is highly encouraged to provide a locale.
+ - **locale** - _{String}_ - Locale for string formatting. The locale is optional, but it is highly encouraged to provide a locale. If you do not provide a locale, the default locale will be used.
 
  - **optFieldFormatters** - _{Object}_ - (optional) Holds user defined formatters for each field
 
@@ -119,16 +117,16 @@ To create a message to format, use the IntlMessageFormat constructor. The constr
 var IntlMessageFormat = require('intl-messageformat');
 
 // load some locales that you care about
-require('intl-messageformat/locale-data/en.js');
-require('intl-messageformat/locale-data/ar.js');
-require('intl-messageformat/locale-data/pl.js');
+require('intl-messageformat/locale-data/en');
+require('intl-messageformat/locale-data/ar');
+require('intl-messageformat/locale-data/pl');
 
-var msg = new IntlMessageFormat("My name is ${NAME}.", "en-US");
+var msg = new IntlMessageFormat("My name is {NAME}.", "en-US");
 ```
 
 #### Creating a Message in a Browser
 ```javascript
-var msg = new IntlMessageFormat("My name is ${NAME}.", "en-US");
+var msg = new IntlMessageFormat("My name is {NAME}.", "en-US");
 ```
 
 ### Formatting a Message
@@ -141,14 +139,14 @@ var myNameIs = msg.format({ NAME: "Ferris Wheeler"});
 // "My name is Ferris Wheeler."
 ```
 
-### Message Pattern Objects
-Pattern objects should always at least contain a `valueName`. There are a few other items that can be included:
+### Token Objects
+Token objects are created when the string is parsed. If you wish, you can create your own token objects. Token objects should always at least contain a `valueName`. There are a few other items that can be included:
 
-- **`type`** _{String}_ - `plural` or `select` to identify the grouping type
+- **`type`** _{String}_ - `plural` or `select` to identify the grouping type. Other values such as `number` and `date` are used to identify the type of the value and can be combined with a `format` string to identify a formatter to be used.
 
 - **`valueName`** _{String}_ - key to match the `format` object
 
-- **`formatter`** _{Function}_ - formatter used on the value after is discovered
+- **`format`** _{String|Function}_ - formatter used on the value after is discovered. Specifying the `type` is `"number"` and the `format` is `"integer"` would result in the default formatter `number_integer` being called
 
 - **`options`** _{Object}_ - each key should be matched based on the `type` specified
 
@@ -200,7 +198,7 @@ Examples
 
 #### Simple String
 ```javascript
-var msg = new IntlMessageFormat("My name is ${name}.", "en-US");
+var msg = new IntlMessageFormat("My name is {name}.", "en-US");
 
 var myNameIs = msg.format({ name: "Ferris Wheeler"});
 
@@ -241,10 +239,10 @@ var complex = msg.format({
 ```
 
 #### User Defined Formatters
-User defined formatters are provided to the IntlMessageFormat as the third parameter. To denote a key should be process through a formatter, you need only provide the formatter name after the token key. Such as, `${key}` would then become `${key:formatter}`. This is an example of using the Intl.NumberFormat to create a currency formatter.
+User defined formatters are provided to the IntlMessageFormat as the third parameter. To denote a key should be process through a formatter, you need only provide the formatter name after the token key. Such as, `{key}` would then become `{key, formatter}`. This is an example of using the Intl.NumberFormat to create a currency formatter.
 
 ```
-var msg = new IntlMessageFormatter("I just made ${TOTAL:currency}!!", "en-US", {
+var msg = new IntlMessageFormatter("I just made {TOTAL, currency}!!", "en-US", {
     currency: function (val, locale) {
         return new Intl.NumberFormat(val, {
             style: 'currency',
@@ -273,14 +271,14 @@ Creates IntlMessageFormat object from a pattern, locale and field formatters. St
     valueName: 'string',
     offset: 1, // consistent offsets for plurals
     options: {}, // keys match options for plurals and selects
-    formatter: 'string|function' // strings are matched to internal formatters
+    format: 'string|function' // strings are matched to internal formatters
 }
 ```
 
 **Parameters**
 
 - **`pattern`**: _{Array|String}_ `Array` or `String` that serves as formatting
-pattern. An `Array` may consist of `Strings` and [Pattern Objects](#message-pattern-objects).
+pattern. An `Array` may consist of `Strings` and [Token Objects](#token-objects).
 
 - **`locale`**: _{String}_ Locale for string formatting and when using plurals and formatters.
 
@@ -289,15 +287,16 @@ field
 
 ### Instace Methods
 
-#### format(obj)
+#### format(data)
 Formats the pattern with supplied parameters. Dates, times and numbers are formatted in locale sensitive way when used with a formatter.
 
 _PARAMETERS_
 
-- **`obj`**: _{Object}_ Object used to choose options when formatting the message
+- **`data`**: _{Object}_ Object used to choose options when formatting the message
 
 
 #### resolvedOptions
+**_NOT YET DETERMINED_**
 Returns resolved options, in this case supported locale.
 
 
