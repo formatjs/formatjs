@@ -35,8 +35,6 @@ if ('function' === typeof require) {
 }
 expect = chai.expect;
 
-global.Intl = global.Intl || intl;
-
 describe('IntlMessageFormat', function () {
 
     it('should be a function', function () {
