@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 if [[ "x" == "x$SAUCE_USERNAME" ]]; then
     echo $0 "is missing env var SAUCE_USERNAME"
     exit 1
@@ -9,13 +8,16 @@ if [[ "x" == "x$SAUCE_ACCESS_KEY" ]]; then
     echo $0 "is missing env var SAUCE_ACCESS_KEY"
     exit 1
 fi
-if [[ "x" != "x$TRAVIS_JOB_NUMBER" ]]; then
-    x=`echo $TRAVIS_JOB_NUMBER | cut -d. -f2`
-    if [[ "1" != "$x" ]]; then
-        echo $0 'only needs to run on the "first" (.1) travis job'
-        exit 0
-    fi
-fi
+
+# This is only needed if there are multiple `node_js` specified in `.travis.yml`
+#
+#   if [[ "x" != "x$TRAVIS_JOB_NUMBER" ]]; then
+#       x=`echo $TRAVIS_JOB_NUMBER | cut -d. -f2`
+#       if [[ "1" != "$x" ]]; then
+#           echo $0 'only needs to run on the "first" (.1) travis job'
+#           exit 0
+#       fi
+#   fi
 
 
 build=$$
