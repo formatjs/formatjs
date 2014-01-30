@@ -7,7 +7,10 @@
 
 (function (root, factory) {
 
-    var MessageFormat = factory();
+    'use strict';
+
+    var Intl          = root.Intl || root.IntlPolyfill,
+        MessageFormat = factory(Intl);
 
     // register in -all- the module systems (at once)
     if (typeof define === 'function' && define.amd) {
@@ -22,9 +25,9 @@
         root.IntlMessageFormat = MessageFormat;
     }
 
-})(typeof global !== 'undefined' ? global : this, function() {
+})(typeof global !== 'undefined' ? global : this, function (Intl) {
 
-    "use strict";
+    'use strict';
 
     var DEFAULT_LOCALE = null,
 
