@@ -321,6 +321,14 @@
                     });
                     break;
 
+                case 'time':
+                    format = formats['time_' + part.format];
+                    formatPattern.push({
+                        valueName: valueName,
+                        format   : new Intl.DateTimeFormat(locales, format).format
+                    });
+                    break;
+
                 case 'number':
                     format = formats['number_' + part.format];
                     formatPattern.push({
