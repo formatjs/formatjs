@@ -86,7 +86,11 @@
     function MessageFormat(pattern, locales, formats) {
         // Parse string messages into a tokenized JSON structure for traversal.
         if (typeof pattern === 'string') {
-            pattern = parse(pattern);
+            pattern = MessageFormat.__parse(pattern);
+        }
+
+        if (!(pattern && typeof pattern.length === 'number')) {
+            throw new TypeError('A pattern must be provided as a String or Array.');
         }
 
         // Creates a new object with the default formats as its prototype, then
@@ -200,6 +204,9 @@
         }
     }});
 
+    // Defines `__parse()` static method as an exposed private.
+    defineProperty(MessageFormat, '__parse', {value: parse});
+
     // Define public `defaultLocale` property which is set when the first bundle
     // of locale data is added.
     defineProperty(MessageFormat, 'defaultLocale', {
@@ -292,7 +299,7 @@
 
                     // Early exit and special handling for plural options with a
                     // "${#}" token. These options will have this token replaced
-                    // with NumberPart wrap with optional prefix and suffix.
+                    // with NumberFormat wrap with optional prefix and suffix.
                     if (type === 'plural' && typeof option === 'string' &&
                             option.indexOf('${#}') >= 0) {
 
@@ -300,7 +307,10 @@
 
                         optionsParts[key] = [
                             option[1], // prefix
-                            new NumberPart(valueName, locales),
+                            {
+                                valueName: valueName,
+                                format   : new Intl.NumberFormat(locales).format
+                            },
                             option[2]  // suffix
                         ];
 
