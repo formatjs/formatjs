@@ -99,7 +99,7 @@
         // Define the format pattern which is highly optimized for repeated
         // `format()` invocations. **Note:** This passes the `locales` set
         // provided to the constructor instead of just the resolved locale.
-        pattern = this._buildFormatPattern(pattern || '', locales, formats);
+        pattern = this._buildFormatPattern(pattern, locales, formats);
         defineProperty(this, '_pattern', {value: pattern});
 
         // Bind `format()` method to `this` so it can be passed by reference
@@ -241,20 +241,13 @@
             value   = values[valueName];
             options = part.options;
 
-            // handle offset if we are a plural
-            if (part.pluralFunction && typeof part.offset === 'number') {
-                value += part.offset;
-            }
-
             // Recursively format plural and select parts' option — which can be
             // a nested pattern structure. The choosing of the option to use is
             // abstracted-by and delegated-to the part helper object.
             if (options) {
                 result += this._format(part.getOption(value), values);
-            } else if (typeof part.format === 'function') {
-                result += part.format(value);
             } else {
-                result += value;
+                result += part.format(value);
             }
         }
 
@@ -280,12 +273,6 @@
             // tokenized place-holder that needs to be substituted.
             if (typeof part === 'string') {
                 formatPattern.push(createStringPart(part));
-                continue;
-            }
-
-            // Checks if part is a number. If it is, we just pass that through as a string
-            if (typeof part === 'number') {
-                formatPattern.push(String(part));
                 continue;
             }
 
@@ -329,7 +316,7 @@
             // Create a specialized format part for each type. This creates a
             // common interface for the `format()` method and encapsulates the
             // relevant data need for each type of formatting.
-            switch (String(type)) {
+            switch (type) {
                 case 'date':
                     format = formats['date_' + part.format];
                     formatPattern.push({
@@ -357,22 +344,15 @@
                 case 'plural':
                     pluralFunction = localeData[locale].pluralFunction;
                     formatPattern.push(new PluralPart(valueName, optionsParts,
-                            pluralFunction, part.offset));
+                            pluralFunction));
                     break;
 
                 case 'select':
                     formatPattern.push(new SelectPart(valueName, optionsParts));
                     break;
 
-                case 'custom': // custom formatters are just called
-                    formatPattern.push({
-                        valueName: valueName,
-                        format: formats[part.format]
-                    });
-                    break;
-
-                case 'undefined': // no type defined
-                    formatPattern.push(part);
+                default: // no type defined or no valid type
+                    throw new Error('Pattern at index `' + i + '` does not have a valid type.');
                     break;
             }
         }
@@ -426,18 +406,6 @@
         return typeof value === 'string' ? value : String(value);
     };
 
-    function NumberPart(valueName) {
-        this.valueName = valueName;
-    }
-
-    NumberPart.prototype.format = function (value) {
-        if (value !== 0 && !value) {
-            return '';
-        }
-
-        return String(value);
-    };
-
     function SelectPart(valueName, options) {
         this.valueName = valueName;
         this.options   = options;
@@ -448,14 +416,10 @@
         return options[value] || options.other;
     };
 
-    function PluralPart(valueName, options, pluralFunction, offset) {
+    function PluralPart(valueName, options, pluralFunction) {
         this.valueName      = valueName;
         this.options        = options;
         this.pluralFunction = pluralFunction;
-
-        if (offset) {
-            this.offset = offset;
-        }
     }
 
     PluralPart.prototype.getOption = function (value) {
