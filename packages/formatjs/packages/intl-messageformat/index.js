@@ -97,13 +97,14 @@
         // it's extended with the `formats` provided to the constructor.
         formats = extend(objCreate(MessageFormat.FORMATS), formats);
 
-        // Define first because it's used to build the format pattern.
+        // Defined first because it's used to build the format pattern.
         defineProperty(this, '_locale',  {value: this._resolveLocale(locales)});
 
-        // Define the format pattern which is highly optimized for repeated
-        // `format()` invocations. **Note:** This passes the `locales` set
-        // provided to the constructor instead of just the resolved locale.
-        pattern = this._buildFormatPattern(pattern, locales, formats);
+        // Define the `pattern` property, a compiled pattern that is highly
+        // optimized for repeated `format()` invocations. **Note:** This passes
+        // the `locales` set provided to the constructor instead of just the
+        // resolved locale.
+        pattern = this._compilePattern(pattern, locales, formats);
         defineProperty(this, '_pattern', {value: pattern});
 
         // Bind `format()` method to `this` so it can be passed by reference
@@ -261,7 +262,7 @@
         return result;
     };
 
-    MessageFormat.prototype._buildFormatPattern = function (pattern, locales, formats) {
+    MessageFormat.prototype._compilePattern = function (pattern, locales, formats) {
         // Wrap string patterns with an array for iteration control flow.
         if (typeof pattern === 'string') {
             pattern = [pattern];
@@ -317,8 +318,8 @@
                         continue;
                     }
 
-                    // Recursively build a format pattern for the option.
-                    optionsParts[key] = this._buildFormatPattern(option,
+                    // Recursively compiles a format pattern for the option.
+                    optionsParts[key] = this._compilePattern(option,
                             locales, formats);
                 }
             }
