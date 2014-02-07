@@ -263,20 +263,20 @@ describe('IntlMessageFormat', function () {
         var msgFmt;
 
         it('should be a default value', function () {
-            msgFmt = new IntlMessageFormat();
+            msgFmt = new IntlMessageFormat('');
             /*jshint expr:true */
             expect(msgFmt._locale).to.equal('en');
         });
 
         it('should be equal to the second parameter\'s language code', function () {
-            msgFmt = new IntlMessageFormat(null, 'en-US');
+            msgFmt = new IntlMessageFormat('', 'en-US');
             expect(msgFmt._locale).to.equal('en');
         });
 
     });
 
     describe('#_pluralLocale', function () {
-        var msgFmt = new IntlMessageFormat();
+        var msgFmt = new IntlMessageFormat('');
 
         it('should be undefined', function () {
             /*jshint expr:true */
@@ -285,7 +285,7 @@ describe('IntlMessageFormat', function () {
     });
 
     describe('#_pluralFunc', function () {
-        var msgFmt = new IntlMessageFormat();
+        var msgFmt = new IntlMessageFormat('');
 
         it('should be undefined', function () {
             /*jshint expr:true */
@@ -295,19 +295,19 @@ describe('IntlMessageFormat', function () {
 
     describe('#pattern', function () {
         it('should be undefined', function () {
-            var msgFmt = new IntlMessageFormat();
+            var msgFmt = new IntlMessageFormat('');
             /*jshint expr:true */
             expect(msgFmt.pattern).to.not.exist;
         });
 
         it('should be undefined when first parameter is ommited', function () {
-            var msgFmt = new IntlMessageFormat();
+            var msgFmt = new IntlMessageFormat('');
             /*jshint expr:true */
             expect(msgFmt.pattern).to.not.exist;
         });
 
         it('should match the first parameter when it is an array', function () {
-            var msgFmt = new IntlMessageFormat(['My name is ', { valueName: 'NAME' }]);
+            var msgFmt = new IntlMessageFormat('My name is {NAME}' );
 
             expect(msgFmt._pattern).to.be.an('array');
             expect(msgFmt._pattern.length).to.equal(2);
@@ -337,7 +337,7 @@ describe('IntlMessageFormat', function () {
 
     describe('#formatters', function () {
         it('should be an empty object without a third parameter', function () {
-            var msgFmt = new IntlMessageFormat();
+            var msgFmt = new IntlMessageFormat('');
 
             expect(msgFmt.formatters).to.be.an('object');
 
@@ -364,7 +364,7 @@ describe('IntlMessageFormat', function () {
 
 
 
-            msgFmtB = new IntlMessageFormat();
+            msgFmtB = new IntlMessageFormat('');
 
             /*jshint expr:true* /
             expect(msgFmtB.formatters.foo).to.not.exist;
@@ -381,7 +381,7 @@ describe('IntlMessageFormat', function () {
         var msgFmt;
 
         beforeEach(function () {
-            msgFmt = new IntlMessageFormat();
+            msgFmt = new IntlMessageFormat('');
         });
 
         it('should be a function', function () {
@@ -409,13 +409,13 @@ describe('IntlMessageFormat', function () {
         var msgFmt;
 
         it('should be a function', function () {
-            msgFmt = new IntlMessageFormat();
+            msgFmt = new IntlMessageFormat('');
             expect(msgFmt.format).to.be.a('function');
             expect(msgFmt).to.respondTo('format');
         });
 
         it('should throw an error when no parameter is passed', function () {
-            msgFmt = new IntlMessageFormat();
+            msgFmt = new IntlMessageFormat('');
             try {
                 msgFmt.format();
             } catch (e) {
@@ -449,71 +449,13 @@ describe('IntlMessageFormat', function () {
             expect(m).to.equal('My name is Anthony Pipkin.');
         });
 
-        it('should process an argument with a value formatter', function () {
-            var msgFmt, m;
-
-            msgFmt = new IntlMessageFormat('Test formatter d: {num, d}', null, {
-                    d: function (val, locale) {
-                        return +val;
-                    }
-                }, 'en-US');
-
-            m = msgFmt.format({
-                num: '010'
-            });
-
-            expect(m).to.equal('Test formatter d: 10');
-        });
-
-        it('should not fail if the formatter is non existant', function () {
-            var msgFmt, m;
-
-            msgFmt = new IntlMessageFormat('Test formatter foo: {NUM, foo}', null, {
-                    d: function (val, locale) {
-                        return +val;
-                    }
-                }, 'en-US');
-
-            m = msgFmt.format({
-                NUM: '010'
-            });
-
-            expect(m).to.equal('Test formatter foo: 010');
-        });
-
-        it('should not process inherited formatters', function () {
-            var msg, m,
-                Formatters = function () {
-                    this.d = function (val, locale) {
-                        return val + '030';
-                    };
-                },
-                CustomFormatters = function () {
-                    this.f = function (val, locale) {
-                        return val + '080';
-                    };
-                };
-
-            CustomFormatters.prototype = Formatters;
-            CustomFormatters.prototype.constructor = CustomFormatters;
-
-
-            msg = new IntlMessageFormat('d: {num, d} / f: {num, f}', 'en-US', new CustomFormatters());
-
-            m = msg.format({
-                num: 0
-            });
-
-            expect(m).to.equal('d: 0 / f: 0080');
-        });
-
     });
 
     describe('using an Array pattern', function () {
         it('should concatenate the Array', function () {
             var msgFmt, m;
 
-            msgFmt = new IntlMessageFormat(['I have ', 2, ' cars.']);
+            msgFmt = new IntlMessageFormat(['I have ', '2', ' cars.']);
 
             // pass an object to prevent throwing
             m = msgFmt.format({});
@@ -523,13 +465,13 @@ describe('IntlMessageFormat', function () {
 
         it ('should throw an error if the format object does not contain an argument that is replaced' , function () {
             assert.throws(function () {
-                var msgFmt = new IntlMessageFormat(['I have ', { valueName: 'COLOR' }, ' cars.'], 'en-US'),
+                var msgFmt = new IntlMessageFormat(['I have ', { type: 'number', valueName: 'COUNT' }, ' cars.'], 'en-US'),
 
                     m = msgFmt.format({
-                        color: 'blue'
+                        count: 6
                     });
 
-            }, Error, 'A value must be provided for: COLOR');
+            }, Error, 'A value must be provided for: COUNT');
         });
 
         it ('should process plural argument types', function () {
@@ -552,6 +494,13 @@ describe('IntlMessageFormat', function () {
             });
 
             expect(m).to.equal("Some text before Some messages for the default and text after");
+        });
+
+        /*
+         -- -- Hide offset tests unitl parser supports offsets
+
+        it('should process a plural argument type with an offset value in the string', function () {
+            var msg = '{host} {num_guests, plural, offset: 1 one {invites {guest} to her party.} other {invites {guest} and # other people to her party.}}';
         });
 
         it('should process a plural argument type with an offset value', function () {
@@ -577,23 +526,7 @@ describe('IntlMessageFormat', function () {
 
             expect(m).to.equal("Some text before few and text after");
         });
-
-        it('should process an argument with a value formatter provided in an argument object', function () {
-            var msgFmt, m;
-
-            msgFmt = new IntlMessageFormat([{
-                    valueName: 'ANIMAL',
-                    format: function (val, locale) {
-                        return val.toString().split('').reverse().join('');
-                    }
-                }], 'en-US');
-
-            m = msgFmt.format({
-                ANIMAL: 'aardvark'
-            });
-
-            expect(m).to.equal('kravdraa');
-        });
+        */
     });
 
     describe('and plurals under the Arabic locale', function () {
@@ -662,14 +595,14 @@ describe('IntlMessageFormat', function () {
     describe('and changing the locale', function () {
         var simple = {
                 en: [
-                    { valueName: 'NAME' },
+                    '${NAME}',
                     ' went to ',
-                    { valueName: 'CITY' },
+                    '${CITY}',
                     '.'
                 ],
 
                 fr: [
-                    { valueName: 'NAME' },
+                    '${NAME}',
                     ' est ',
                     {
                         type: 'select',
@@ -680,7 +613,7 @@ describe('IntlMessageFormat', function () {
                         }
                     },
                     ' à ',
-                    { valueName: 'CITY' },
+                    '${CITY}',
                     '.'
                 ]
             },
