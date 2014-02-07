@@ -762,7 +762,7 @@
         // base case (plain string)
         if (!containsFormatElement(pattern)) {
             // Final chance to format the string before the parser spits it out
-            return outputFormatter ? outputFormatter(pattern) : pattern;
+            return outputFormatter ? outputFormatter(pattern) : [pattern];
         }
 
         tokens = tokenize(pattern);
