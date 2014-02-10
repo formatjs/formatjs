@@ -36,7 +36,7 @@ describe('no locale', function () {
         });
 
         it('no locale', function () {
-            try {
+            function createWithNoLocaleData() {
                 var msg = new IntlMessageFormat(['I have ', {
                     type: 'plural',
                     valueName: 'NUM_BOOKS',
@@ -46,42 +46,11 @@ describe('no locale', function () {
                     }
                 }, '.']);
 
-                var m = msg.format({ NUM_BOOKS: 2 });
-
-                // always fail if we didn't throw
-                expect(false).to.equal(true);
-
-            } catch (e) {
-                var err = new ReferenceError('No locale data has been provided for this object yet.');
-                expect(e.toString()).to.equal(err.toString());
+                return msg.format({ NUM_BOOKS: 2 });
             }
+
+            expect(createWithNoLocaleData).to.throw(Error);
         });
-    });
-
-
-    describe('no default', function () {
-
-        it('blind switching', function () {
-            var msg = new IntlMessageFormat([{
-                        type: 'plural',
-                        valueName: 'COMPANY_COUNT',
-                        options: {
-                           one: 'One company',
-                           other: '${#} companies'
-                        }
-                    },
-                    ' published new books.'
-                ]);
-
-            // let's set the locale to something witout data
-            IntlMessageFormat.__addLocaleData({locale: 'fu-baz'});
-            msg.locale = 'fu-baz';
-
-            var m = msg.format({ COMPANY_COUNT: 1});
-
-            expect(m).to.equal('1 companies published new books.');
-        });
-
     });
 
     describe('no default', function () {
