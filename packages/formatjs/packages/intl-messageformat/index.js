@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
- * Copyrights licensed under the New BSD License.
- * See the accompanying LICENSE file for terms.
- */
+Copyright (c) 2014, Yahoo! Inc. All rights reserved.
+Copyrights licensed under the New BSD License.
+See the accompanying LICENSE file for terms.
+*/
 
 (function (root, factory) {
     'use strict';
@@ -25,11 +25,11 @@
 
 })(typeof global !== 'undefined' ? global : this, function (Intl) {
 
-    if (!Intl) {
-        throw new ReferenceError ('Intl is ' + typeof Intl + '.');
-    }
-
     'use strict';
+
+    if (!Intl) {
+        throw new ReferenceError ('Intl must be available');
+    }
 
     // -- ES5 Built-ins --------------------------------------------------------
 
@@ -362,9 +362,8 @@
                     formatPattern.push(new SelectPart(valueName, optionsParts));
                     break;
 
-                default: // no type defined or no valid type
-                    throw new Error('Pattern at index `' + i + '` does not have a valid type.');
-                    break;
+                default:
+                    throw new Error('Message pattern part at index ' + i + ' does not have a valid type');
             }
         }
 
@@ -386,6 +385,12 @@
         if (locales && locales.length) {
             for (i = 0, len = locales.length; i < len; i += 1) {
                 locale = locales[i].toLowerCase().split('-')[0];
+
+                // Make sure the first part of the locale that we care about is
+                // structurally valid.
+                if (!/[a-z]{2,3}/i.test(locale)) {
+                    throw new RangeError('"' + locales[i] + '" is not a structurally valid language tag');
+                }
 
                 if (availableLocales.indexOf(locale) >= 0) {
                     break;
