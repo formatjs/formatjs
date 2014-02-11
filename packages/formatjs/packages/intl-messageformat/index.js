@@ -24,7 +24,6 @@ See the accompanying LICENSE file for terms.
     }
 
 })(typeof global !== 'undefined' ? global : this, function (Intl) {
-
     'use strict';
 
     if (!Intl) {
@@ -93,9 +92,9 @@ See the accompanying LICENSE file for terms.
             throw new TypeError('A pattern must be provided as a String or Array.');
         }
 
-        // Creates a new object with the default formats as its prototype, then
-        // it's extended with the `formats` provided to the constructor.
-        formats = extend(objCreate(MessageFormat.FORMATS), formats);
+        // Creates a new object with the specified `formats` merged with the
+        // default formats.
+        formats = this._mergeFormats(MessageFormat.FORMATS, formats);
 
         // Defined first because it's used to build the format pattern.
         defineProperty(this, '_locale',  {value: this._resolveLocale(locales)});
@@ -119,62 +118,68 @@ See the accompanying LICENSE file for terms.
         enumerable: true,
 
         value: {
-            number_currency: {
-                style: 'currency'
+            number: {
+                'currency': {
+                    style: 'currency'
+                },
+
+                'percent': {
+                    style: 'percent'
+                }
             },
 
-            number_percent: {
-                style: 'percent'
+            date: {
+                'short': {
+                    month: 'numeric',
+                    day  : 'numeric',
+                    year : '2-digit'
+                },
+
+                'medium': {
+                    month: 'short',
+                    day  : 'numeric',
+                    year : 'numeric'
+                },
+
+                'long': {
+                    month: 'long',
+                    day  : 'numeric',
+                    year : 'numeric'
+                },
+
+                'full': {
+                    weekday: 'long',
+                    month  : 'long',
+                    day    : 'numeric',
+                    year   : 'numeric'
+                }
             },
 
-            date_short: {
-                month: 'numeric',
-                day  : 'numeric',
-                year : '2-digit'
-            },
+            time: {
+                'short': {
+                    hour  : 'numeric',
+                    minute: 'numeric'
+                },
 
-            date_medium: {
-                month: 'short',
-                day  : 'numeric',
-                year : 'numeric'
-            },
+                'medium':  {
+                    hour  : 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric'
+                },
 
-            date_long: {
-                month: 'long',
-                day  : 'numeric',
-                year : 'numeric'
-            },
+                'long': {
+                    hour        : 'numeric',
+                    minute      : 'numeric',
+                    second      : 'numeric',
+                    timeZoneName: 'short'
+                },
 
-            date_full: {
-                weekday : 'long',
-                month   : 'long',
-                day     : 'numeric',
-                year    : 'numeric'
-            },
-
-            time_short: {
-                hour  : 'numeric',
-                minute: 'numeric'
-            },
-
-            time_medium:  {
-                hour  : 'numeric',
-                minute: 'numeric',
-                second: 'numeric'
-            },
-
-            time_long: {
-                hour        : 'numeric',
-                minute      : 'numeric',
-                second      : 'numeric',
-                timeZoneName: 'short'
-            },
-
-            time_full: {
-                hour        : 'numeric',
-                minute      : 'numeric',
-                second      : 'numeric',
-                timeZoneName: 'short'
+                'full': {
+                    hour        : 'numeric',
+                    minute      : 'numeric',
+                    second      : 'numeric',
+                    timeZoneName: 'short'
+                }
             }
         }
     });
@@ -224,42 +229,6 @@ See the accompanying LICENSE file for terms.
         return {
             locale: this._locale
         };
-    };
-
-    MessageFormat.prototype._format = function (pattern, values) {
-        var result = '',
-            i, len, part, valueName, value, options;
-
-        for (i = 0, len = pattern.length; i < len; i += 1) {
-            part = pattern[i];
-
-            // Exist early for string parts.
-            if (typeof part === 'string') {
-                result += part;
-                continue;
-            }
-
-            valueName = part.valueName;
-
-            // Enforce that all required values are provided by the caller.
-            if (!(values && hop.call(values, valueName))) {
-                throw new Error('A value must be provided for: ' + valueName);
-            }
-
-            value   = values[valueName];
-            options = part.options;
-
-            // Recursively format plural and select parts' option — which can be
-            // a nested pattern structure. The choosing of the option to use is
-            // abstracted-by and delegated-to the part helper object.
-            if (options) {
-                result += this._format(part.getOption(value), values);
-            } else {
-                result += part.format(value);
-            }
-        }
-
-        return result;
     };
 
     MessageFormat.prototype._compilePattern = function (pattern, locales, formats) {
@@ -329,7 +298,7 @@ See the accompanying LICENSE file for terms.
             // relevant data need for each type of formatting.
             switch (type) {
                 case 'date':
-                    format = formats['date_' + part.format];
+                    format = formats.date[part.format];
                     formatPattern.push({
                         valueName: valueName,
                         format   : new Intl.DateTimeFormat(locales, format).format
@@ -337,7 +306,7 @@ See the accompanying LICENSE file for terms.
                     break;
 
                 case 'time':
-                    format = formats['time_' + part.format];
+                    format = formats.time[part.format];
                     formatPattern.push({
                         valueName: valueName,
                         format   : new Intl.DateTimeFormat(locales, format).format
@@ -345,7 +314,7 @@ See the accompanying LICENSE file for terms.
                     break;
 
                 case 'number':
-                    format = formats['number_' + part.format];
+                    format = formats.number[part.format];
                     formatPattern.push({
                         valueName: valueName,
                         format   : new Intl.NumberFormat(locales, format).format
@@ -368,6 +337,59 @@ See the accompanying LICENSE file for terms.
         }
 
         return formatPattern;
+    };
+
+    MessageFormat.prototype._format = function (pattern, values) {
+        var result = '',
+            i, len, part, valueName, value, options;
+
+        for (i = 0, len = pattern.length; i < len; i += 1) {
+            part = pattern[i];
+
+            // Exist early for string parts.
+            if (typeof part === 'string') {
+                result += part;
+                continue;
+            }
+
+            valueName = part.valueName;
+
+            // Enforce that all required values are provided by the caller.
+            if (!(values && hop.call(values, valueName))) {
+                throw new Error('A value must be provided for: ' + valueName);
+            }
+
+            value   = values[valueName];
+            options = part.options;
+
+            // Recursively format plural and select parts' option — which can be
+            // a nested pattern structure. The choosing of the option to use is
+            // abstracted-by and delegated-to the part helper object.
+            if (options) {
+                result += this._format(part.getOption(value), values);
+            } else {
+                result += part.format(value);
+            }
+        }
+
+        return result;
+    };
+
+    MessageFormat.prototype._mergeFormats = function (defaults, formats) {
+        var mergedFormats = {},
+            type, mergedType;
+
+        for (type in defaults) {
+            if (!hop.call(defaults, type)) { continue; }
+
+            mergedFormats[type] = mergedType = objCreate(defaults[type]);
+
+            if (formats && hop.call(formats, type)) {
+                extend(mergedType, formats[type]);
+            }
+        }
+
+        return mergedFormats;
     };
 
     MessageFormat.prototype._resolveLocale = function (locales) {
