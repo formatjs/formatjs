@@ -1,6 +1,6 @@
 {
   "name": "intl-messageformat",
-  "version": "0.0.1",
+  "version": "0.1.0-rc-1",
   "description": "implementation of the ECMA 402 proposal for MessageFormat",
   "keywords": [
     "intl",
