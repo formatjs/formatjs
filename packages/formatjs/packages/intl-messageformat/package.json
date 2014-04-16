@@ -40,9 +40,7 @@
     "mockery": "~1.4.0",
     "xunit-file": "*",
     "yeti": "~0.2.25",
-    "benchmark": "~1.0.0"
-  },
-  "optionalDependencies": {
+    "benchmark": "~1.0.0",
     "cldr": "~2.0.1"
   },
   "scripts": {
