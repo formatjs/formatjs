@@ -1,0 +1,46 @@
+{
+  "name": "react-intl",
+  "version": "0.1.0-rc-1",
+  "description": "reactjs helpers for internationalization",
+  "keywords": [
+    "intl",
+    "i18n",
+    "react",
+    "reactjs"
+  ],
+  "author": "Caridy Patino <caridy@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/caridy/react-intl/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:caridy/react-intl.git"
+  },
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "intl-messageformat": "*",
+    "react": "*"
+  },
+  "devDependencies": {
+    "chai": "1.8.*",
+    "grunt": "0.4.*",
+    "grunt-cli": "0.1.*",
+    "grunt-contrib-jshint": "0.7.*",
+    "grunt-wrap": "~0.3.0",
+    "grunt-contrib-uglify": "0.2.*",
+    "react": "*",
+    "istanbul": "0.1.*",
+    "mocha": "1.15.*",
+    "intl": "*",
+    "benchmark": "~1.0.0",
+    "xunit-file": "*",
+    "grunt-contrib-watch": "^0.6.1"
+  },
+  "scripts": {
+    "pretest": "grunt jshint build",
+    "test": "istanbul cover -- _mocha tests/ --reporter spec"
+  }
+}
