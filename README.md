@@ -29,55 +29,55 @@ The patterns consumed by `intlMessage()` are the patterns supported by [intl-mes
 1. Install with [bower][]: `bower install react-intl`
 2. Load the scripts into your page.
 
-    ```html
-    <script src="path/to/react.js"></script>
-    <script src="path/to/intl-messageformat.complete.js"></script>
-    <script src="path/to/react-intl.js"></script>
-    ```
+```html
+<script src="path/to/react.js"></script>
+<script src="path/to/intl-messageformat.complete.js"></script>
+<script src="path/to/react-intl.js"></script>
+```
 
 _note: for older browsers, and safari, you might need to also load [Intl.js][] polyfill before
 including [intl-messageformat][] library._
 
 3. Creating a React component with the Intl mixin:
 
-    ```javascript
-    var MyComponent = React.createClass({
-      mixins: [ReactIntlMixin],
-      getMyMessage: function () {
-        return "{product} cost {price, number} if ordered by {deadline, date}"
-      },
-      render: function () {
-        return <div>
-          <p>{this.intlDate(new Date())}</p>
-          <p>{this.intlNumber(600)}</p>
-          <p>{this.intlMessage(this.getMyMessage(), {
-            product: 'Mac Mini',
-            price: 2000.0015,
-            deadline: 1390518044403
-          })}</p>
-        </div>;
-      }
-    });
-    ```
+```javascript
+var MyComponent = React.createClass({
+  mixins: [ReactIntlMixin],
+  getMyMessage: function () {
+    return "{product} will cost {price, number} if ordered by {deadline, date}"
+  },
+  render: function () {
+    return <div>
+      <p>{this.intlDate(new Date())}</p>
+      <p>{this.intlNumber(600)}</p>
+      <p>{this.intlMessage(this.getMyMessage(), {
+        product: 'Mac Mini',
+        price: 2000.0015,
+        deadline: 1390518044403
+      })}</p>
+    </div>;
+  }
+});
+```
 
 4. Using the React component by specifying the `locales`:
 
 
-    ```javascript
-    React.renderComponent(
-      <MyComponent locales={["fr-FR"]}/>,
-      document.getElementById('example')
-    );
-    ```
+```javascript
+React.renderComponent(
+  <MyComponent locales={["fr-FR"]}/>,
+  document.getElementById('example')
+);
+```
 
 ### Node/CommonJS
 
 1. You can install the mixin with npm: `npm install react-intl`
 2. Load in the module and register it:
 
-    ```javascript
-    var ReactIntlMixin = require('react-intl');
-    ```
+```javascript
+var ReactIntlMixin = require('react-intl');
+```
 
 ## Advanced Options
 
@@ -87,31 +87,31 @@ including [intl-messageformat][] library._
 
 By default, when using `{this.intlDate(new Date())}` and `{this.intlNumber(600)}`, `react-intl` will use the default format for the data, and the default numeric format for the number. To specify a custom format, you have two ways, passing a second argument with the specific format you want to use. The following examples will ilustrate this option:
 
-    ```javascript
-    var MyComponent = React.createClass({
-      mixins: [ReactIntlMixin],
-      render: function () {
-        return <div>
-            <p>A: {this.intlDate(1390518044403, { hour: 'numeric', minute: 'numeric' })}</p>
-            <p>B: {this.intlNumber(400, { style: 'percent' })}</p>
-        </div>;
-      }
-    });
-    ```
+```javascript
+var MyComponent = React.createClass({
+  mixins: [ReactIntlMixin],
+  render: function () {
+    return <div>
+        <p>A: {this.intlDate(1390518044403, { hour: 'numeric', minute: 'numeric' })}</p>
+        <p>B: {this.intlNumber(400, { style: 'percent' })}</p>
+    </div>;
+  }
+});
+```
 
 In the example above, if `locales` is set to `["fr-FR"]`, the output will be:
 
-    ```html
-    A: 18:00
-    B: 40 000 %
-    ```
+```html
+A: 18:00
+B: 40 000 %
+```
 
 But if `locales` is set to `["en-US"]`, the output will be:
 
-    ```html
-    A: 6:00 PM
-    B: 40,000%
-    ```
+```html
+A: 6:00 PM
+B: 40,000%
+```
 
 This explicit way to specify a format works well for simple cases, but for complex applications, it falls short because you will have to pass these values everywhere. Also, it doesn't work with complex structures processed by `intlMessage()` because there is no way to pass the formatter for each individual element. To overcome this limitation, we introduced the custom formatters.
 
@@ -120,56 +120,56 @@ This explicit way to specify a format works well for simple cases, but for compl
 
 With custom formatters, you can specify a set of rules that can be apply to your entire application, or for a section of the page (a component and its child components). These custom formatters can also be used thru `intlMessage()` API for complex language sentences. The following examples will ilustrate this option:
 
-    ```javascript
-    var MyContainer = React.createClass({
-      mixins: [ReactIntlMixin],
-      getDefaultProps: function() {
-        return {
+```javascript
+var MyContainer = React.createClass({
+  mixins: [ReactIntlMixin],
+  getDefaultProps: function() {
+    return {
 
-          // hardcoding formats as properties, but they can be passed from parent...
-          "formats": {
-            "date": {
-              "timeStyle": {
-                "hour": "numeric",
-                "minute": "numeric"
-              }
-            },
-            "number": {
-              "percentStyle": {
-                "style": "percent"
-              },
-              "eur": {
-                "style": "currency",
-                "currency": "EUR"
-              }
-            }
+      // hardcoding formats as properties, but they can be passed from parent...
+      "formats": {
+        "date": {
+          "timeStyle": {
+            "hour": "numeric",
+            "minute": "numeric"
+          }
+        },
+        "number": {
+          "percentStyle": {
+            "style": "percent"
           },
-
-          // using properties or a mixin to bring the messages in different languages...
-          "MyMessage": "{product} cost {price, number, eur} if ordered by {deadline, date, timeStyle}"
-
-        };
+          "eur": {
+            "style": "currency",
+            "currency": "EUR"
+          }
+        }
       },
-      render: function () {
-        return <div>
-            <p>A: {this.intlDate(1390518044403, "timeStyle")}</p>
-            <p>B: {this.intlNumber(400, "percentStyle")}</p>
-            <p>{this.intlMessage(this.props.MyMessage, {
-              product: 'Mac Mini',
-              price: 2000.0015,
-              deadline: 1390518044403
-            })}</p>
-        </div>;
-      }
-    });
-    ```
+
+      // using properties or a mixin to bring the messages in different languages...
+      "MyMessage": "{product} will cost {price, number, eur} if ordered by {deadline, date, timeStyle}"
+
+    };
+  },
+  render: function () {
+    return <div>
+        <p>A: {this.intlDate(1390518044403, "timeStyle")}</p>
+        <p>B: {this.intlNumber(400, "percentStyle")}</p>
+        <p>{this.intlMessage(this.props.MyMessage, {
+          product: 'Mac Mini',
+          price: 2000.0015,
+          deadline: 1390518044403
+        })}</p>
+    </div>;
+  }
+});
+```
 
 In the example above, if `locales` is set to `["fr-FR"]`, the output will be:
 
 ```html
 A: 6:00 PM
 B: 40,000%
-C: Mac Mini cost €200 if ordered by 6:00 PM
+C: Mac Mini will cost €200 if ordered by 6:00 PM
 ```
 
 By having defined `this.props.formats`, which specifies a set of named formats under `date` and `number` members, allow us to use those named formats as a second argument for `intlNumber()` and `intlDate()`, but also allow us to reference them as a third token when defining the messages, e.g: `{deadline, date, timeStyle}`, which describes the format options for `deadline` value, specifying that it is a `date` and should be formatted using `timeStyle` custom formatter.
