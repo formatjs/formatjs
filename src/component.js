@@ -7,9 +7,16 @@
 var Intl              = global.Intl || global.IntlPolyfill,
     IntlMessageFormat = global.IntlMessageFormat,
     // Cache to hold NumberFormat and DateTimeFormat instances for reuse.
-    formats = {
+    formatsCache = {
         number: {},
         date  : {}
+    },
+    isArray = Array.isArray,
+    isObject = function (o) {
+        return (typeof o === 'object' && !isArray(o));
+    },
+    isFunction = function (fn) {
+        return (typeof fn === 'function');
     };
 
 if (!Intl) {
@@ -20,29 +27,9 @@ if (!IntlMessageFormat) {
     throw new ReferenceError('IntlMessageFormat must be available.');
 }
 
-function intlResolve(name) {
-    var current = this._owner;
-    // TODO: add cache layer to avoid the penalty of the lookup
-    while (current && !current.props[name]) {
-        current = current._owner;
-    }
-    if (!current || !current.props[name]) {
-        console.warn('Could not resolve prop `' + name + '` thru owners chain.' );
-    }
-    return current && current.props[name];
-}
-
-function intlLocales() {
-    return this.props.locales || this.intlResolve('locales');
-}
-
-function intlFormats() {
-    return this.props.formats || this.intlResolve('formats');
-}
-
 function intlDate(date, formatOptions) {
-    var locales = this.intlLocales(),
-        formats = this.intlFormats();
+    var locales = this.props.locales || this.context.locales,
+        formats = this.props.formats || this.context.formats;
 
     date = new Date(date);
 
@@ -67,8 +54,8 @@ function intlDate(date, formatOptions) {
 }
 
 function intlNumber(num, formatOptions) {
-    var locales = this.intlLocales(),
-        formats = this.intlFormats();
+    var locales = this.props.locales || this.context.locales,
+        formats = this.props.formats || this.context.formats;
 
     if (typeof num !== 'number') {
         throw new TypeError('A number must be provided.');
@@ -90,21 +77,21 @@ function intlNumber(num, formatOptions) {
 }
 
 function intlMessage(message, values) {
-    var locales = this.intlLocales(),
-        formats = this.intlFormats();
+    var locales = this.props.locales || this.context.locales,
+        formats = this.props.formats || this.context.formats;
 
     // When `message` is a function, assume it's an IntlMessageFormat
     // instance's `format()` method passed by reference, and call it.
     // This is possible because its `this` will be pre-bound to the
     // instance.
-    if (typeof message === 'function') {
+    if (isFunction(message)) {
         return message(values);
     }
 
     // Assume that an object with a `format()` method is already an
     // IntlMessageFormat instance, and use it; otherwise create a new
     // one.
-    if (typeof message.format !== 'function') {
+    if (!isFunction(message.format)) {
         message = new IntlMessageFormat(message, locales, formats);
     }
 
@@ -145,7 +132,7 @@ function getFormat(type, locales, options) {
     }
 
     // Check for a cached format instance, and use it.
-    format = formats[type][id];
+    format = formatsCache[type][id];
     if (format) { return format; }
 
     switch (type) {
@@ -159,7 +146,7 @@ function getFormat(type, locales, options) {
 
     // Cache format for reuse.
     if (id) {
-        formats[type][id] = format;
+        formatsCache[type][id] = format;
     }
 
     return format;
@@ -186,15 +173,52 @@ function extend(obj) {
 // -- exports---------------------------------------------------------------
 
 global.ReactIntlMixin = {
-    // getDefaultProps: function () {
-    //     return {
-    //         locales: this.intlLocales(),
-    //         formats: this.intlFormats()
-    //     };
-    // },
-    intlLocales: intlLocales,
-    intlFormats: intlFormats,
-    intlResolve: intlResolve,
+    contextTypes: {
+        locales: function(context) {
+            if (isArray(context.locales)) {
+                console.warn('Invalid `context.locales` value, it should be an array!');
+            }
+        },
+        formats: function(context) {
+            if (isObject(context.formats)) {
+                console.warn('Invalid `context.formats` value, it should be an object!');
+            }
+        }
+    },
+    childContextTypes: {
+        locales: function(context) {
+            if (isArray(context.locales)) {
+                console.warn('Invalid `locales` value in getChildContext(), it should be an array!');
+            }
+        },
+        formats: function(context) {
+            if (isObject(context.formats)) {
+                console.warn('Invalid `formats` value in getChildContext(), it should be an object!');
+            }
+        }
+    },
+    propsTypes: {
+        locales: function(props) {
+            if (isArray(props.locales)) {
+                console.warn('Invalid `props.locales` value, it should be an array!');
+            }
+        },
+        formats: function(props) {
+            if (isObject(props.formats)) {
+                console.warn('Invalid `props.formats` value, it should be an object!');
+            }
+        }
+    },
+    getChildContext: function () {
+        var childContext = Object.create(this.context);
+        if (this.props.locales) {
+            childContext.locales = this.props.locales;
+        }
+        if (this.props.formats) {
+            childContext.formats = this.props.formats;
+        }
+        return childContext;
+    },
     intlDate   : intlDate,
     intlNumber : intlNumber,
     intlMessage: intlMessage

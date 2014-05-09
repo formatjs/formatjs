@@ -2,6 +2,13 @@
 
 var Another = React.createClass({
   mixins: [ReactIntlMixin],
+  getDefaultProps: function() {
+    return {
+      i18n: {
+        SHORT: "{product} cost {price, number, usd} if ordered by {deadline, date, medium}"
+      }
+    };
+  },
   render: function () {
     return <div>
       <h2>Instance #{this.props.foo}</h2>
@@ -12,7 +19,7 @@ var Another = React.createClass({
       {this.intlNumber(600, "eur")}
 
       <h3>message helper:</h3>
-      {this.intlMessage(this.intlResolve('messages').LONG, {
+      {this.intlMessage(this.props.i18n.SHORT, {
         product: 'apples',
         price: 2000.15,
         deadline: new Date(),
@@ -114,6 +121,6 @@ var Container = React.createClass({
 });
 
 React.renderComponent(
-  <Container/>,
+  <Container locales={["fr-FR"]}/>,
   document.getElementById('example')
 );
