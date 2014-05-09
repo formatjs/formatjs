@@ -31,7 +31,7 @@ The patterns consumed by `intlMessage()` are the patterns supported by [intl-mes
 
     ```html
     <script src="path/to/react.js"></script>
-    <script src="path/to/intl-messageformat.js"></script>
+    <script src="path/to/intl-messageformat.complete.js"></script>
     <script src="path/to/react-intl.js"></script>
     ```
 
@@ -166,11 +166,11 @@ With custom formatters, you can specify a set of rules that can be apply to your
 
 In the example above, if `locales` is set to `["fr-FR"]`, the output will be:
 
-    ```html
-    A: 6:00 PM
-    B: 40,000%
-    C: Mac Mini cost €200 if ordered by 6:00 PM
-    ```
+```html
+A: 6:00 PM
+B: 40,000%
+C: Mac Mini cost €200 if ordered by 6:00 PM
+```
 
 By having defined `this.props.formats`, which specifies a set of named formats under `date` and `number` members, allow us to use those named formats as a second argument for `intlNumber()` and `intlDate()`, but also allow us to reference them as a third token when defining the messages, e.g: `{deadline, date, timeStyle}`, which describes the format options for `deadline` value, specifying that it is a `date` and should be formatted using `timeStyle` custom formatter.
 
@@ -178,14 +178,14 @@ By having defined `this.props.formats`, which specifies a set of named formats u
 
 Another feature of the Intl Mixin is its ability to propagate `formats` and `locales` to any child component. Internally, it laverages `context` to allow those child components to reuse the values defined at the parent level, making this ideal to define custom formatters for the app, and the language or the application by defining them or passing them into the root component when rendering the application. Ideally, you will do this:
 
-    ```javascript
-    var appLocales = ['en-US'];
-    var appFormats = { number: {}, date: {} };
-    React.renderComponent(
-      <MyRootComponent locales={appLocales} formats={appFormats} />,
-      document.getElementById('container')
-    );
-    ```
+```javascript
+var appLocales = ['en-US'];
+var appFormats = { number: {}, date: {} };
+React.renderComponent(
+  <MyRootComponent locales={appLocales} formats={appFormats} />,
+  document.getElementById('container')
+);
+```
 
 Then make sure `MyRootComponent` implement the `ReactIntlMixin`. By doing that, you can define the list of `locales`, normally one or more in case you want to support fallback, (e.g.: `["fr-FR", "en"]`); and you can define the `formats` to describe how the application will format dates and numbers. And all child components will be able to inherit these two structures in such a way that you don't have to propagate or define `locales` or `formats` at any level in your application, just apply this mixin in those components that are suppose to use `this.intlNumber()`, `this.intlDate()` and/or `this.intlMessage()` in the `render()` method and you're all set.
 
