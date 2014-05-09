@@ -85,14 +85,14 @@ By default, when using `{this.intlDate(new Date())}` and `{this.intlNumber(600)}
 
 In the example above, if `locales` is set to `["fr-FR"]`, the output will be:
 
-    ```
+    ```html
     A: 18:00
     B: 40 000 %
     ```
 
 But if `locales` is set to `["en-US"]`, the output will be:
 
-    ```
+    ```html
     A: 6:00 PM
     B: 40,000%
     ```
@@ -104,7 +104,7 @@ This explicit way to specify a format works well for simple cases, but for compl
 
 With custom formatters, you can specify a set of rules that can be apply to your entire application, or for a section of the page (a component and its child components). These custom formatters can also be used thru `intlMessage()` API for complex language sentences. The following examples will ilustrate this option:
 
-    ```
+    ```javascript
     var MyContainer = React.createClass({
       mixins: [ReactIntlMixin],
       getDefaultProps: function() {
@@ -150,7 +150,7 @@ With custom formatters, you can specify a set of rules that can be apply to your
 
 In the example above, if `locales` is set to `["fr-FR"]`, the output will be:
 
-    ```
+    ```html
     A: 6:00 PM
     B: 40,000%
     C: Mac Mini cost €200 if ordered by 6:00 PM
