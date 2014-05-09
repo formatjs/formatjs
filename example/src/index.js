@@ -121,6 +121,6 @@ var Container = React.createClass({
 });
 
 React.renderComponent(
-  <Container locales={["fr-FR"]}/>,
+  <Container locales={["en-US"]}/>,
   document.getElementById('example')
 );
