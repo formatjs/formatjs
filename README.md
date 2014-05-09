@@ -14,7 +14,7 @@ The `ReactIntlMixin` implements a [ReactJS][] Component [Mixin][] that adds thre
  * `intlNumber()` to format a numeric value
  * `intlMessage()` to format a complex i18n message
 
-In the case of `intlDate()` and `intlNumber()`, they are just sugar on top of `new Intl.NumberFormat()` _[1]_ and `new Intl.DateTimeFormat()` _[2]_ implemented by most modern browsers, it also add some caching mechanism to reuse the instances when possible to avoid a performance penalty of creating those objects over and over again, which happens to be very slow due to the machinery associated with it.
+In the case of `intlDate()` and `intlNumber()`, they are just sugar on top of `new Intl.NumberFormat()` __[*1]__ and `new Intl.DateTimeFormat()` __[*2]__ implemented by most modern browsers, it also add some caching mechanism to reuse the instances when possible to avoid a performance penalty of creating those objects over and over again, which happens to be very slow due to the machinery associated with it.
 
 But `intlMessage()` is a far more interested piece, and it follows the same principle of defining a sugar layer on top of [intl-messageformat][], which is a library to support more advanced translation patterns that included complex pluralization and gender support. This library is based on the [Strawman Draft][] that is set to evolve [ECMAScript 402][] to provides a standardized way to concatenate strings with localization support in JavaScript.
 
