@@ -1,10 +1,26 @@
 React Intl Mixin
 ================
 
-This repository contains a [ReactJS][] Component [Mixin][] to implement Internationalization
+This repository contains a [ReactJS][] Component Mixin to implement Internationalization
 features in a react component. The Intl Mixin provides a series of methods that
 can be used in the `render()` method of the component to provide date formatting,
 number formatting, as well as plural and gender based translations.
+
+## Overview
+
+The `ReactIntlMixin` implements a [ReactJS][] Component [Mixin][] that adds three new methods to any React component, these method are:
+
+ * `intlDate()` to format a date value
+ * `intlNumber()` to format a numeric value
+ * `intlMessage()` to format a complex i18n message
+
+In the case of `intlDate()` and `intlNumber()`, they are just sugar on top of `new Intl.NumberFormat()` _[1]_ and `new Intl.DateTimeFormat()` _[2]_ implemented by most modern browsers, it also add some caching mechanism to reuse the instances when possible to avoid a performance penalty of creating those objects over and over again, which happens to be very slow due to the machinery associated with it.
+
+But `intlMessage()` is a far more interested piece, and it follows the same principle of defining a sugar layer on top of [intl-messageformat][], which is a library to support more advanced translation patterns that included complex pluralization and gender support. This library is based on the [Strawman Draft][] that is set to evolve [ECMAScript 402][] to provides a standardized way to concatenate strings with localization support in JavaScript.
+
+In general, `intlMessage()` provides many different ways to add translations to any render process in your application, and provides the right hooks for your application to implement i18n in an effective way, including the ability to cache expensive objects created through `new IntlMessageFormat(pattern, locale, [optFieldFormatters])` to avoid string manipulations during the runtime process.
+
+The patterns consumed by `intlMessage()` are the patterns supported by [intl-messageformat][], which is one of the industry standards used in other languages like Java and PHP, and it is a format that professional translators know how to handle. You can learn more about this format here: https://github.com/yahoo/intl-messageformat#how-it-works
 
 ## Installation
 
@@ -185,3 +201,6 @@ including [intl-messageformat][] library.
 [Mixin]: http://facebook.github.io/react/docs/reusable-components.html#mixins
 [bower]: http://bower.io/
 [intl-messageformat]: https://github.com/yahoo/intl-messageformat
+[1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
+[2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+[Strawman Draft]: http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting
