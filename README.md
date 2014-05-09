@@ -14,7 +14,7 @@ The `ReactIntlMixin` implements a [ReactJS][] Component [Mixin][] that adds thre
  * `intlNumber()` to format a numeric value
  * `intlMessage()` to format a complex i18n message
 
-In the case of `intlDate()` and `intlNumber()`, they are just sugar on top of `new Intl.NumberFormat()` __[*1]__ and `new Intl.DateTimeFormat()` __[*2]__ implemented by most modern browsers, it also add some caching mechanism to reuse the instances when possible to avoid a performance penalty of creating those objects over and over again, which happens to be very slow due to the machinery associated with it.
+In the case of `intlDate()` and `intlNumber()`, they are just sugar on top of `new [Intl.NumberFormat][]()` and `new [Intl.DateTimeFormat][]()` implemented by most modern browsers, it also add some caching mechanism to reuse the instances when possible to avoid a performance penalty of creating those objects over and over again, which happens to be very slow due to the machinery associated with it.
 
 But `intlMessage()` is a far more interested piece, and it follows the same principle of defining a sugar layer on top of [intl-messageformat][], which is a library to support more advanced translation patterns that included complex pluralization and gender support. This library is based on the [Strawman Draft][] that is set to evolve [ECMAScript 402][] to provides a standardized way to concatenate strings with localization support in JavaScript.
 
@@ -201,6 +201,6 @@ including [intl-messageformat][] library.
 [Mixin]: http://facebook.github.io/react/docs/reusable-components.html#mixins
 [bower]: http://bower.io/
 [intl-messageformat]: https://github.com/yahoo/intl-messageformat
-[1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
-[2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+[Intl.NumberFormat]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
+[Intl.DateTimeFormat]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
 [Strawman Draft]: http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting
