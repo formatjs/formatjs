@@ -41,6 +41,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
 
+    grunt.registerTask('cldr', ['build-data']);
     grunt.registerTask('build', ['localize', 'uglify:index', 'uglify:localized']);
     grunt.registerTask('default', ['jshint']);
 };
