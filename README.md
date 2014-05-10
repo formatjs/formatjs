@@ -189,7 +189,8 @@ React.renderComponent(
 
 Then make sure `MyRootComponent` implement the `ReactIntlMixin`. By doing that, you can define the list of `locales`, normally one or more in case you want to support fallback, (e.g.: `["fr-FR", "en"]`); and you can define the `formats` to describe how the application will format dates and numbers. And all child components will be able to inherit these two structures in such a way that you don't have to propagate or define `locales` or `formats` at any level in your application, just apply this mixin in those components that are suppose to use `this.intlNumber()`, `this.intlDate()` and/or `this.intlMessage()` in the `render()` method and you're all set.
 
-## `intlMessage()` Examples
+
+## How to use intlMessage()
 
 
 ### Example #1: simple string replacement
