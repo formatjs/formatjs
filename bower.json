@@ -3,8 +3,7 @@
     "version": "0.0.1-pre",
     "main": ["dist/react-intl.js", "dist/react-intl.min.js"],
     "dependencies": {
-        "intl": "~0.1.2",
-        "intl-messageformat": "~1.1.9-rc-3"
+        "intl": "~0.1.2"
     },
     "keywords": [
         "intl",

@@ -175,36 +175,36 @@ function extend(obj) {
 global.ReactIntlMixin = {
     contextTypes: {
         locales: function(context) {
-            if (isArray(context.locales)) {
+            if (context.locales && !isArray(context.locales)) {
                 console.warn('Invalid `context.locales` value, it should be an array!');
             }
         },
         formats: function(context) {
-            if (isObject(context.formats)) {
+            if (context.formats && !isObject(context.formats)) {
                 console.warn('Invalid `context.formats` value, it should be an object!');
             }
         }
     },
     childContextTypes: {
         locales: function(context) {
-            if (isArray(context.locales)) {
+            if (context.locales && !isArray(context.locales)) {
                 console.warn('Invalid `locales` value in getChildContext(), it should be an array!');
             }
         },
         formats: function(context) {
-            if (isObject(context.formats)) {
+            if (context.formats && !isObject(context.formats)) {
                 console.warn('Invalid `formats` value in getChildContext(), it should be an object!');
             }
         }
     },
     propsTypes: {
         locales: function(props) {
-            if (isArray(props.locales)) {
+            if (props.locales && !isArray(props.locales)) {
                 console.warn('Invalid `props.locales` value, it should be an array!');
             }
         },
         formats: function(props) {
-            if (isObject(props.formats)) {
+            if (props.formats && !isObject(props.formats)) {
                 console.warn('Invalid `props.formats` value, it should be an object!');
             }
         }

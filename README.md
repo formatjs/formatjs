@@ -31,12 +31,10 @@ The patterns consumed by `intlMessage()` are the patterns supported by [intl-mes
 
 ```html
 <script src="path/to/react.js"></script>
-<script src="path/to/intl-messageformat.complete.js"></script>
 <script src="path/to/react-intl.js"></script>
 ```
 
-_note: for older browsers, and safari, you might need to also load [Intl.js][] polyfill before
-including [intl-messageformat][] library._
+_note: for older browsers, and safari, you might need to also load [Intl.js][] polyfill before including `react-intl.js`._
 
 3. Creating a React component with the Intl mixin:
 
@@ -375,8 +373,7 @@ _Note: `IntlMessage()` will take care of caching internal structures for date an
 Limitations
 -----------
 
-Not all browsers have implemented [ECMAScript 402][], which is the internationalization API, for older browsers, and Safari, you might need to patch the browser by loading [Intl.js][] polyfill before
-including [intl-messageformat][] library.
+Not all browsers have implemented [ECMAScript 402][], which is the internationalization API, for older browsers, and Safari, you might need to patch the browser by loading [Intl.js][] polyfill before including `react-intl.js` library.
 
 [Intl.js]: https://github.com/andyearnshaw/Intl.js
 [ECMAScript 402]: http://www.ecma-international.org/ecma-402/1.0/

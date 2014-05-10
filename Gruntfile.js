@@ -7,9 +7,21 @@ module.exports = function (grunt) {
         jshint: {
             all: ['src/*.js']
         },
+        concat: {
+            options: {
+                separator: '\n\n',
+            },
+            dist: {
+                src: [
+                    'node_modules/intl-messageformat/build/intl-messageformat.complete.js',
+                    'src/component.js'
+                ],
+                dest: 'tmp/react-intl.js',
+            },
+        },
         wrap: {
             globals: {
-                src: ['src/component.js'],
+                src: ['tmp/react-intl.js'],
                 dest: 'dist/react-intl.js',
                 options: {
                     seperator: '\n',
@@ -33,7 +45,7 @@ module.exports = function (grunt) {
         watch: {
           scripts: {
             files: ['src/*.js'],
-            tasks: ['jshint', 'wrap', 'uglify'],
+            tasks: ['jshint', 'concat', 'wrap', 'uglify'],
             options: {
               spawn: false
             }
@@ -42,9 +54,10 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-wrap');
 
-    grunt.registerTask('default', ['jshint', 'wrap', 'uglify']);
+    grunt.registerTask('default', ['jshint', 'concat', 'wrap', 'uglify']);
 };
