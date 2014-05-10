@@ -275,7 +275,7 @@ As you can see in this example, russian has different rules when it comes to plu
 
 ### Example #3: string replacement with pluralization and gender
 
-```
+```javascript
 var MyComponent = React.createClass({
   mixins: [ReactIntlMixin],
   render: function () {
