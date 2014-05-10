@@ -826,7 +826,8 @@ See the accompanying LICENSE file for terms.
 
     return MessageFormat;
 });
-(function() {
+(function(global) {
+var IntlMessageFormat = global.IntlMessageFormat;
 var funcs = [
 function (n) {  },
 function (n) { n=Math.floor(n);if(n===1)return"one";return"other"; },
@@ -1060,4 +1061,4 @@ IntlMessageFormat.__addLocaleData({locale:"yo", messageformat:{pluralFunction:fu
 IntlMessageFormat.__addLocaleData({locale:"zgh", messageformat:{pluralFunction:funcs[0]}});
 IntlMessageFormat.__addLocaleData({locale:"zh", messageformat:{pluralFunction:funcs[6]}});
 IntlMessageFormat.__addLocaleData({locale:"zu", messageformat:{pluralFunction:funcs[3]}});
-})();
+})(typeof global !== "undefined" ? global : this);

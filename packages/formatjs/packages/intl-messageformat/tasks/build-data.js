@@ -63,6 +63,7 @@ module.exports = function(grunt) {
             }
             locales[locale] = unique[fn];
         });
+        lines.push('var IntlMessageFormat = global.IntlMessageFormat;');
         lines.push('var funcs = [');
         i = 0;
         last = bodies.length - 1;
@@ -74,7 +75,7 @@ module.exports = function(grunt) {
         Object.keys(funcs).forEach(function(locale) {
             lines.push(addLocale(locale, 'funcs[' + locales[locale] + ']'));
         });
-        return '(function() {\n' + lines.join('\n') + '\n})();';
+        return '(function(global) {\n' + lines.join('\n') + '\n})(typeof global !== "undefined" ? global : this);';
     }
 
 
