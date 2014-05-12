@@ -21,7 +21,7 @@
     "test": "tests"
   },
   "dependencies": {
-    "intl-messageformat": "*",
+    "intl-messageformat": "^0.1.0",
     "react": "*"
   },
   "devDependencies": {
