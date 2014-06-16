@@ -1,7 +1,7 @@
 Intl Message Format
 ===================
 
-![Build Status][TRAVIS]
+[![Build Status][TRAVIS-BADGE]][TRAVIS]
 
 Format a string with placeholders, including plural and select support to create localized messages.
 
@@ -308,7 +308,7 @@ See the [LICENSE file][LICENSE] for license text and copyright information.
 
 
 
-[TRAVIS]: https://travis-ci.org/yahoo/intl-messageformat.png?branch=master
+[TRAVIS]: https://travis-ci.org/yahoo/intl-messageformat
+[TRAVIS-BADGE]: https://travis-ci.org/yahoo/intl-messageformat.svg?branch=master
 [STRAWMAN]: http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting
 [LICENSE]: https://github.com/yahoo/intl-messageformat/blob/master/LICENSE
-
