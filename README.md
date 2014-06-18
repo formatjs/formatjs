@@ -2,31 +2,31 @@ React Intl Mixin
 ================
 
 This repository contains a [ReactJS][] Component Mixin to implement Internationalization
-features in a react component. The Intl Mixin provides a series of methods that
+features in a React component. The Intl Mixin provides a series of methods that
 can be used in the `render()` method of the component to provide date formatting,
 number formatting, as well as plural and gender based translations.
 
 ## Overview
 
-The `ReactIntlMixin` implements a [ReactJS][] Component [Mixin][] that adds three new methods to any React component, these method are:
+The `ReactIntlMixin` implements a [ReactJS][] Component [Mixin][] that adds these new methods to any React component:
 
  * `intlDate()` to format a date value
  * `intlNumber()` to format a numeric value
- * `intlMessage()` to format a complex i18n message
+ * `intlMessage()` to format a complex message
 
-In the case of `intlDate()` and `intlNumber()`, they are just sugar on top of [Intl.NumberFormat][] and [Intl.DateTimeFormat][] implemented by most modern browsers, it also add some caching mechanism to reuse the instances when possible to avoid a performance penalty of creating those objects over and over again, which happens to be very slow due to the machinery associated with it.
+`intlDate()` and `intlNumber()` are just sugar on top of [Intl.NumberFormat][] and [Intl.DateTimeFormat][], APIs implemented by most modern browsers. On top of them, React Intl Mixin uses an internal caching mechanism to reuse instances of `Intl.NumberFormat` and `Intl.DateTimeFormat` when possible to avoid the performance penalty of creating these objects over and over again.
 
-But `intlMessage()` is a far more interested piece, and it follows the same principle of defining a sugar layer on top of [intl-messageformat][], which is a library to support more advanced translation patterns that included complex pluralization and gender support. This library is based on the [Strawman Draft][] that is set to evolve [ECMAScript 402][] to provides a standardized way to concatenate strings with localization support in JavaScript.
+Similarly, `intlMessage()` is a sugar layer on top of [intl-messageformat][], a library to support more advanced translation patterns that include complex pluralization and gender support. This library is based on the [Strawman Draft][] that is set to evolve [ECMAScript 402][] to provide a standardized way to concatenate strings with localization support in JavaScript.
 
-In general, `intlMessage()` provides many different ways to add translations to any `render()` method in your react components, and provides the right hooks for your application to implement i18n in an effective way, including the ability to cache expensive objects created through `new IntlMessageFormat(pattern, locale, [optFieldFormatters])` to avoid string manipulations during the runtime process.
+In general, `intlMessage()` provides different ways to translate content in the `render()` method of your React components. It also provides the right hooks for your application to implement i18n in an effective way, including the ability to cache expensive objects created through `new IntlMessageFormat(pattern, locale, [optFieldFormatters])`.
 
-The patterns consumed by `intlMessage()` are the patterns supported by [intl-messageformat][], which is one of the industry standards used in other programming languages like Java and PHP. Although this format looks complex, professional translators know how to use. You can learn more about this format here: https://github.com/yahoo/intl-messageformat#how-it-works
+The data consumed by `intlMessage()` follows the same format supported by [intl-messageformat][], which is one of the industry standards used in other programming languages like Java and PHP. Although this format looks complex, professional translators are familiar with it. You can learn more about this format here: https://github.com/yahoo/intl-messageformat#how-it-works.
 
 ## Installation
 
 ### Browser
 
-1. Install with [bower][]: `bower install react-intl`
+1. Install with [bower][]: `bower install react-intl`.
 2. Load the scripts into your page.
 
 ```html
@@ -34,9 +34,9 @@ The patterns consumed by `intlMessage()` are the patterns supported by [intl-mes
 <script src="path/to/react-intl.js"></script>
 ```
 
-_note: for older browsers, and safari, you might need to also load [Intl.js][] polyfill before including `react-intl.js`._
+_Note: for older browsers and Safari you may need to also load the [Intl.js][] polyfill before including `react-intl.js`._
 
-3. Creating a React component with the Intl mixin:
+3. Creating a React component with the Intl Mixin:
 
 ```javascript
 var MyComponent = React.createClass({
@@ -58,8 +58,7 @@ var MyComponent = React.createClass({
 });
 ```
 
-4. Using the React component by specifying the `locales`:
-
+4. Using the React component by specifying `locales`:
 
 ```javascript
 React.renderComponent(
@@ -70,8 +69,8 @@ React.renderComponent(
 
 ### Node/CommonJS
 
-1. You can install the mixin with npm: `npm install react-intl`
-2. Load in the module and register it:
+1. You can install the mixin with npm: `npm install react-intl`.
+2. Load in the module and register it.
 
 ```javascript
 var ReactIntlMixin = require('react-intl');
@@ -83,7 +82,7 @@ var ReactIntlMixin = require('react-intl');
 
 #### Explicit formats
 
-By default, when using `{this.intlDate(new Date())}` and `{this.intlNumber(600)}`, `react-intl` will use the default format for the data, and the default numeric format for the number. To specify a custom format, you have two ways, passing a second argument with the specific format you want to use. The following examples will ilustrate this option:
+By default, when using `{this.intlDate(new Date())}` and `{this.intlNumber(600)}`, `react-intl` will use the default format for the data, and the default numeric format for the number. To specify a custom format you can pass in a second argument with the format you want to use. The following examples will ilustrate this option:
 
 ```javascript
 var MyComponent = React.createClass({
@@ -111,12 +110,12 @@ A: 6:00 PM
 B: 40,000%
 ```
 
-This explicit way to specify a format works well for simple cases, but for complex applications, it falls short because you will have to pass these values everywhere. Also, it doesn't work with complex structures processed by `intlMessage()` because there is no way to pass the formatter for each individual element. To overcome this limitation, we introduced the custom formatters.
+This explicit way to specify a format works well for simple cases, but for complex applications, it falls short because you will have to pass these values everywhere. Also, it doesn't work with complex structures processed by `intlMessage()` because there is no way to pass the formatter for each individual element. To overcome this limitation, we introduced the concept of "custom formatters".
 
 
-#### Custom formats
+#### Custom formatters
 
-With custom formatters, you can specify a set of rules that can be apply to your entire application, or for a section of the page (a component and its child components). These custom formatters can also be used thru `intlMessage()` API for complex language sentences. The following examples will ilustrate this option:
+With custom formatters, you can specify a set of rules that can be applied to your entire application or to a section of the page (a component and its child components). These custom formatters can also be used thru `intlMessage()` API for complex language sentences. The following examples will ilustrate how custom formatters work.
 
 ```javascript
 var MyContainer = React.createClass({
@@ -162,7 +161,7 @@ var MyContainer = React.createClass({
 });
 ```
 
-In the example above, if `locales` is set to `["fr-FR"]`, the output will be:
+In the example above, if `locales` is set to `["en-US"]`, the output will be:
 
 ```html
 A: 6:00 PM
@@ -170,7 +169,7 @@ B: 40,000%
 C: Mac Mini will cost €200 if ordered by 6:00 PM
 ```
 
-By having defined `this.props.formats`, which specifies a set of named formats under `date` and `number` members, allow us to use those named formats as a second argument for `intlNumber()` and `intlDate()`, but also allow us to reference them as a third token when defining the messages, e.g: `{deadline, date, timeStyle}`, which describes the format options for `deadline` value, specifying that it is a `date` and should be formatted using `timeStyle` custom formatter.
+By defining `this.props.formats`, which specifies a set of named formats under `date` and `number` members, you can use those named formats as a second argument for `intlNumber()` and `intlDate()`. You can also reference them as a third token when defining the messages, e.g: `{deadline, date, timeStyle}`. In this case `deadline` describes the format options for its value, specifying that it is a `date` and should be formatted using the `timeStyle` custom formatter.
 
 ### App Configuration
 
@@ -185,7 +184,7 @@ React.renderComponent(
 );
 ```
 
-Then make sure `MyRootComponent` implement the `ReactIntlMixin`. By doing that, you can define the list of `locales`, normally one or more in case you want to support fallback, (e.g.: `["fr-FR", "en"]`); and you can define the `formats` to describe how the application will format dates and numbers. And all child components will be able to inherit these two structures in such a way that you don't have to propagate or define `locales` or `formats` at any level in your application, just apply this mixin in those components that are suppose to use `this.intlNumber()`, `this.intlDate()` and/or `this.intlMessage()` in the `render()` method and you're all set.
+Then make sure `MyRootComponent` uses the `ReactIntlMixin`. By doing that, you can define the list of `locales`, normally one or more in case you want to support fallback, (e.g.: `["fr-FR", "en"]`); and you can define `formats` to describe how the application will format dates and numbers. All child components will be able to inherit these two structures in such a way that you don't have to propagate or define `locales` or `formats` at each level in your application. Just apply this mixin in those components that are suppose to use `this.intlNumber()`, `this.intlDate()` and/or `this.intlMessage()` in the `render()` method and you're all set.
 
 
 ## How to use intlMessage()
@@ -204,7 +203,7 @@ var MyComponent = React.createClass({
   }
 });
 
-// render in english:
+// render in English:
 GlobalMessages = {
     MSG1: "{employee} reports to {manager}."
 };
@@ -212,7 +211,7 @@ React.renderComponent(
   <MyComponent locales={["en-US"]} name="John" manager="Mike" />,
   document.getElementById('example')
 );
-// - english output: "John reports to Mike."
+// - English output: "John reports to Mike."
 
 
 // render in german:
@@ -238,7 +237,7 @@ var MyComponent = React.createClass({
   }
 });
 
-// render in english:
+// render in English:
 GlobalMessages = {
   OTHER: "{COMPANY_COUNT, plural, one {One company} other {# companies}} published new books."
 };
@@ -246,10 +245,10 @@ React.renderComponent(
   <MyComponent locales={["en-US"]} count=1 />,
   document.getElementById('example')
 );
-// - english output: "One company published new books."
+// - English output: "One company published new books."
 
 
-// render in russian:
+// render in Russian:
 GlobalMessages = {
   OTHER: "{COMPANY_COUNT, plural, one {Одна компания опубликовала} few {# компании опубликовали} many {# компаний опубликовали} other {# компаний опубликовали}} новые книги."
 };
@@ -257,19 +256,19 @@ React.renderComponent(
   <MyComponent locales={["ru-RU"]} count=1 />,
   document.getElementById('example')
 );
-// - russian output: "Одна компания опубликовала новые книги."
+// - Russian output: "Одна компания опубликовала новые книги."
 
 
 // if the `count` property that is passed into `MyComponent` is 2, then:
-// - english output: "2 companies published new books."
-// - russian output: "2 компании опубликовали новые книги."
+// - English output: "2 companies published new books."
+// - Russian output: "2 компании опубликовали новые книги."
 
 // if the `count` property that is passed into `MyComponent` is 99, then:
-// - english output: "99 companies published new books."
-// - russian output: "99 компаний опубликовали новые книги."
+// - English output: "99 companies published new books."
+// - Russian output: "99 компаний опубликовали новые книги."
 ```
 
-As you can see in this example, russian has different rules when it comes to pluralization, having different messages for `one`, `few` and `other`, while american english is just targeting `one` and `other`.
+As you can see in this example, Russian has different rules when it comes to pluralization, having different messages for `one`, `few` and `other`, while American English is just targeting `one` and `other`.
 
 
 ### Example #3: string replacement with pluralization and gender
@@ -282,7 +281,7 @@ var MyComponent = React.createClass({
   }
 });
 
-// render in french:
+// render in French:
 GlobalMessages = {
   ANOTHER: "{TRAVELLER_COUNT} {TRAVELLER_COUNT, plural, one {est {GENDER, select, female {allée} other {allé}}} other {sont {GENDER, select, female {allées} other {allés}}}} à {CITY}."
 };
@@ -290,10 +289,10 @@ React.renderComponent(
   <MyComponent locales={["fr-FR"]} TRAVELLER_COUNT=1 GENDER="female" />,
   document.getElementById('example')
 );
-// - french output: "1 est allée à Havana"
+// - French output: "1 est allée à Havana"
 
 
-// render in english
+// render in English
 GlobalMessages = {
   ANOTHER: "{TRAVELLER_COUNT} went to {CITY}."
 };
@@ -301,10 +300,10 @@ React.renderComponent(
   <MyComponent locales={["en-US"]} TRAVELLER_COUNT=1 GENDER="female" />,
   document.getElementById('example')
 );
-// - english output: "1 went to Havana"
+// - English output: "1 went to Havana"
 
 
-// render in french:
+// render in French:
 GlobalMessages = {
   ANOTHER: "{TRAVELLER_COUNT} {TRAVELLER_COUNT, plural, one {est {GENDER, select, female {allée} other {allé}}} other {sont {GENDER, select, female {allées} other {allés}}}} à {CITY}."
 };
@@ -312,10 +311,10 @@ React.renderComponent(
   <MyComponent locales={["fr-FR"]} TRAVELLER_COUNT=3 />,
   document.getElementById('example')
 );
-// - french output: "3 sont allés à Havana"
+// - French output: "3 sont allés à Havana"
 
 
-// render in english
+// render in English
 GlobalMessages = {
   ANOTHER: "{TRAVELLER_COUNT} went to {CITY}."
 };
@@ -323,12 +322,12 @@ React.renderComponent(
   <MyComponent locales={["en-US"]} TRAVELLER_COUNT=3 />,
   document.getElementById('example')
 );
-// - english output: "3 went to Havana"
+// - English output: "3 went to Havana"
 ```
 
 The example above is more generic, and we pass all props as data into the `intlMessage()` method instead of picking up individual `props` that we need per translation. This is a common practive for small components.
 
-You can also see how the french version of `GlobalMessages.ANOTHER` is combining the use of pluralization (for `TRAVELLER_COUNT`) and the gender of the travel or travelers because it is derived from latin, in which case the gender might change the meaning, while in american english this is not affecting the output of the translation.
+You can also see how the French version of `GlobalMessages.ANOTHER` is combining the use of pluralization (for `TRAVELLER_COUNT`) and the gender of the traveler or travelers because it is derived from Latin, in which case the gender might change the meaning, while in American English this is not affecting the output of the translation.
 
 
 ### Example #4: dates and numbers within messages
@@ -343,7 +342,7 @@ var MyComponent = React.createClass({
   }
 });
 
-// render in english:
+// render in English:
 GlobalMessages = {
   COMBINE: "{product} will cost {price, number, eur} if ordered by {deadline, date, timeStyle}"
 };
@@ -365,7 +364,7 @@ React.renderComponent(
   <MyComponent locales={GlobalLocales} formats={GlobalFormats} product="Mac Mini" price=200 deadline=1390518044403 />,
   document.getElementById('example')
 );
-// - english output: "Mac Mini will cost €200 if ordered by 6:00 PM"
+// - English output: "Mac Mini will cost €200 if ordered by 6:00 PM"
 ```
 
 _Note: `IntlMessage()` will take care of caching internal structures for date and numbers to avoid creating unnecessary objects by reusing existing instances when similar formats are applied._
