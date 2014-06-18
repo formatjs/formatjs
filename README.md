@@ -327,7 +327,7 @@ React.renderComponent(
 
 The example above is more generic, and we pass all props as data into the `intlMessage()` method instead of picking up individual `props` that we need per translation. This is a common practive for small components.
 
-You can also see how the French version of `GlobalMessages.ANOTHER` is combining the use of pluralization (for `TRAVELLER_COUNT`) and the gender of the traveler or travelers because it is derived from Latin, in which case the gender might change the meaning, while in American English this is not affecting the output of the translation.
+You can also see how the French version of `GlobalMessages.ANOTHER` is combining the use of pluralization (for `TRAVELLER_COUNT`) and the gender of the traveler or travelers because it is derived from Latin, in which case the gender might change the structure of the sentence, while in American English this is not affecting the output of the translation.
 
 
 ### Example #4: dates and numbers within messages
