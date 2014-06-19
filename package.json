@@ -16,6 +16,7 @@
     "type": "git",
     "url": "git@github.com:caridy/react-intl.git"
   },
+  "files": ["src/", "index.js"],
   "main": "index.js",
   "directories": {
     "test": "tests"
