@@ -7,6 +7,12 @@
     <div id="example"></div>
     <script src="react-0.10.0/build/react.js"></script>
     <script src="../dist/react-intl.js"></script>
-    <script src="build/index.js"></script>
+    <script src="build/components.js"></script>
+    <script>
+    React.renderComponent(
+      Container({ locales: ["en-US"] }),
+      document.getElementById('example')
+    );
+    </script>
   </body>
 </html>

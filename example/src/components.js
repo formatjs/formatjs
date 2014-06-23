@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+(function (global) {
+
 var Another = React.createClass({
   mixins: [ReactIntlMixin],
   getDefaultProps: function() {
@@ -40,7 +42,7 @@ var WrapIntlComponent = React.createClass({
   }
 });
 
-var Container = React.createClass({
+var Container = global.Container = React.createClass({
   mixins: [ReactIntlMixin],
   getDefaultProps: function() {
     return {
@@ -120,7 +122,4 @@ var Container = React.createClass({
   }
 });
 
-React.renderComponent(
-  <Container locales={["en-US"]}/>,
-  document.getElementById('example')
-);
+})(typeof global !== 'undefined' ? global : window);
