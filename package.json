@@ -9,6 +9,7 @@
     "reactjs"
   ],
   "author": "Caridy Patino <caridy@gmail.com>",
+  "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/caridy/react-intl/issues"
   },
