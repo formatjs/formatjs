@@ -375,6 +375,12 @@ Limitations
 
 Not all browsers have implemented [ECMAScript 402][], which is the internationalization API, for older browsers, and Safari, you might need to patch the browser by loading [Intl.js][] polyfill before including `react-intl.js` library.
 
+License
+-------
+
+This software is free to use under the Yahoo Inc. BSD license.
+See the [LICENSE file][] for license text and copyright information.
+
 [Intl.js]: https://github.com/andyearnshaw/Intl.js
 [ECMAScript 402]: http://www.ecma-international.org/ecma-402/1.0/
 [ReactJS]: http://facebook.github.io/react/
@@ -384,3 +390,4 @@ Not all browsers have implemented [ECMAScript 402][], which is the international
 [Intl.NumberFormat]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
 [Intl.DateTimeFormat]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
 [Strawman Draft]: http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting
+[LICENSE file]: https://github.com/caridy/react-intl/blob/master/LICENSE.md
