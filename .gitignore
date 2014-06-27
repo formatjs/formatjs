@@ -1,6 +1,5 @@
 node_modules
 coverage
-dist
 tmp
 example/build/
 example/react-*/
