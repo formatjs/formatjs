@@ -389,4 +389,4 @@ See the [LICENSE file][] for license text and copyright information.
 [Intl.NumberFormat]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
 [Intl.DateTimeFormat]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
 [Strawman Draft]: http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting
-[LICENSE file]: https://github.com/caridy/react-intl/blob/master/LICENSE.md
+[LICENSE file]: https://github.com/yahoo/react-intl/blob/master/LICENSE.md

@@ -11,11 +11,11 @@
   "author": "Caridy Patino <caridy@gmail.com>",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/caridy/react-intl/issues"
+    "url": "https://github.com/yahoo/react-intl/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:caridy/react-intl.git"
+    "url": "git@github.com:yahoo/react-intl.git"
   },
   "files": ["src/", "index.js"],
   "main": "index.js",
