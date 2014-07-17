@@ -17,10 +17,8 @@
     "internationalization",
     "localization",
     "globalization",
-    "parse",
+    "messageformat",
     "parser",
-    "messages",
-    "messageforamt",
     "plural",
     "icu"
   ],
