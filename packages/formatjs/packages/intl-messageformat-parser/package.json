@@ -1,0 +1,41 @@
+{
+  "name": "intl-messageformat-parser",
+  "version": "0.0.0",
+  "description": "Parses ICU message strings to an AST that can be used to format the messages for a person's locale.",
+  "main": "dist/parser.js",
+  "jsnext:main": "src/parser.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/yahoo/intl-messageformat-parser.git"
+  },
+  "keywords": [
+    "i18n",
+    "intl",
+    "internationalization",
+    "localization",
+    "globalization",
+    "parse",
+    "parser",
+    "messages",
+    "messageforamt",
+    "plural",
+    "icu"
+  ],
+  "author": "Eric Ferraiuolo <eferraiuolo@gmail.com>",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/yahoo/intl-messageformat-parser/issues"
+  },
+  "homepage": "https://github.com/yahoo/intl-messageformat-parser",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-benchmark": "^0.3.0",
+    "grunt-bundle-jsnext-lib": "git://github.com/caridy/grunt-bundle-jsnext-lib",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-uglify": "^0.5.0",
+    "grunt-peg": "git://github.com/dvberkel/grunt-peg"
+  }
+}

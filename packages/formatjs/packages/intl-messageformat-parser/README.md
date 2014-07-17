@@ -1,6 +1,10 @@
 intl-messageformat-parser
 =========================
 
+Parses ICU message strings to an AST that can be used to format the messages for
+a person's locale.
+
+
 License
 -------
 

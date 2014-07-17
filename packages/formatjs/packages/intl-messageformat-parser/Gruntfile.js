@@ -1,0 +1,52 @@
+'use strict';
+
+module.exports = function (grunt) {
+    grunt.initConfig({
+        clean: {
+            dist: 'dist/'
+        },
+
+        bundle_jsnext: {
+            dest: 'dist/parser.js',
+
+            options: {
+                namespace: 'IntlMessageFormatParser'
+            }
+        },
+
+        benchmark: {
+            all: {
+                src: ['test/benchmark/*.js']
+            }
+        },
+
+        peg: {
+            parser: {
+                src : 'src/parser.pegjs',
+                dest: 'src/parser.js',
+
+                options: {
+                    wrapper: function (filename, code) {
+                        return 'export default ' + code + ';';
+                    }
+                }
+            }
+        },
+
+        uglify: {
+            parser: {
+                src : 'dist/parser.js',
+                dest: 'dist/parser-min.js'
+            }
+        }
+    });
+
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-benchmark');
+    grunt.loadNpmTasks('grunt-bundle-jsnext-lib');
+    grunt.loadNpmTasks('grunt-peg');
+
+    grunt.registerTask('dist', ['clean:dist', 'peg', 'bundle_jsnext', 'uglify']);
+    grunt.registerTask('default', ['dist']);
+};
