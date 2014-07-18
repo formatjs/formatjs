@@ -8,8 +8,8 @@ Given a message like this:
 
 ```js
 var photosMsg = 'On {takenDate, date, short} {name} took {numPhotos, plural,' +
-    '0= {no photos :(}' +
-    '1= {one photo.}' +
+    '=0 {no photos :(}' +
+    '=1 {one photo.}' +
     'other {# photos!}}';
 
 parser.parse(msg);
@@ -55,7 +55,7 @@ This parser will produce this AST:
                 "options": [
                     {
                         "type": "optionalFormatPattern",
-                        "selector": "0=",
+                        "selector": "=0",
                         "value": {
                             "type": "messageFormatPattern",
                             "elements": [
@@ -68,7 +68,7 @@ This parser will produce this AST:
                     },
                     {
                         "type": "optionalFormatPattern",
-                        "selector": "1=",
+                        "selector": "=1",
                         "value": {
                             "type": "messageFormatPattern",
                             "elements": [
