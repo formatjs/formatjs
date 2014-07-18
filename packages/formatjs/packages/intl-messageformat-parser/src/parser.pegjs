@@ -27,7 +27,20 @@ messageFormatElement
     / argumentElement
 
 messageText
-    = $(_ chars _)+
+    = text:(_ chars _)+ {
+        var string = '',
+            i, j, outerLen, inner, innerLen;
+
+        for (i = 0, outerLen = text.length; i < outerLen; i += 1) {
+            inner = text[i];
+
+            for (j = 0, innerLen = inner.length; j < innerLen; j += 1) {
+                string += inner[j];
+            }
+        }
+
+        return string;
+    }
     / $(ws)
 
 messageTextElement
@@ -40,7 +53,7 @@ messageTextElement
 
 argument
     = number
-    / $([^ \t\n\r,.+={}]+)
+    / $([^ \t\n\r,.+={}#]+)
 
 argumentElement
     = '{' _ id:argument _ format:(',' _ elementFormat)? _ '}' {
@@ -102,7 +115,7 @@ offset
 // -- Helpers ------------------------------------------------------------------
 
 ws 'whitespace' = [ \t\n\r]+
-_ 'optionalWhitespace' = ws*
+_ 'optionalWhitespace' = $(ws*)
 
 digit    = [0-9]
 hexDigit = [0-9a-f]i
@@ -120,4 +133,4 @@ char
         return String.fromCharCode(parseInt(digits, 16));
     }
 
-chars = $(char+)
+chars = chars:char+ { return chars.join(''); }
