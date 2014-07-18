@@ -33,7 +33,6 @@
     "grunt-benchmark": "^0.3.0",
     "grunt-bundle-jsnext-lib": "^0.1.0",
     "grunt-contrib-clean": "^0.5.0",
-    "grunt-contrib-uglify": "^0.5.0",
     "grunt-peg": "git://github.com/dvberkel/grunt-peg"
   }
 }

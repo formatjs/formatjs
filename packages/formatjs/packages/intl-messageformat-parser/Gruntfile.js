@@ -42,11 +42,10 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-benchmark');
     grunt.loadNpmTasks('grunt-bundle-jsnext-lib');
     grunt.loadNpmTasks('grunt-peg');
 
-    grunt.registerTask('dist', ['clean:dist', 'peg', 'bundle_jsnext', 'uglify']);
+    grunt.registerTask('dist', ['clean:dist', 'peg', 'bundle_jsnext']);
     grunt.registerTask('default', ['dist']);
 };
