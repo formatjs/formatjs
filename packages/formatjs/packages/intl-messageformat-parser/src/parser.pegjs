@@ -95,7 +95,7 @@ selectFormat
     }
 
 selector
-    = '=' number:number { return number; }
+    = $('=' number)
     / chars
 
 optionalFormatPattern
