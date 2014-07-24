@@ -15,7 +15,7 @@ start
     = messageFormatPattern
 
 messageFormatPattern
-    = elements:messageFormatElement+ {
+    = elements:messageFormatElement* {
         return {
             type    : 'messageFormatPattern',
             elements: elements
