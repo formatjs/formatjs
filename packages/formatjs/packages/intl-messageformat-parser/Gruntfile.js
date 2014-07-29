@@ -31,13 +31,6 @@ module.exports = function (grunt) {
                     }
                 }
             }
-        },
-
-        uglify: {
-            parser: {
-                src : 'dist/parser.js',
-                dest: 'dist/parser-min.js'
-            }
         }
     });
 
