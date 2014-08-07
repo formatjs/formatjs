@@ -1,3 +1,5 @@
 dist/
+lib/
 node_modules/
 src/parser.js
+tmp/
