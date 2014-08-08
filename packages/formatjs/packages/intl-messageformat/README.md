@@ -20,7 +20,7 @@ This implementation is based on the [Strawman Draft][STRAWMAN]. There are a few 
 
 ### How It Works
 
-Messages are provided into the constructor as `String` message, or [pre-prased AST][PARSER].
+Messages are provided into the constructor as `String` message, or [pre-parsed AST][PARSER].
 
 ```javascript
 var msg = new IntlMessageFormat(message, locales, [formats]);
@@ -88,7 +88,7 @@ Usage
 
 ### `Intl` Dependency
 
-This package assumes that the [`Intl`][INTL] global object exists in the runtime. `Intl` is present in all modern browsers _expect_ Safari, and there's work happening to [integrate `Intl` into Node.js][NODE-INTL].
+This package assumes that the [`Intl`][INTL] global object exists in the runtime. `Intl` is present in all modern browsers _except_ Safari, and there's work happening to [integrate `Intl` into Node.js][NODE-INTL].
 
 **Luckly, there's the [Intl.js][] polyfill!** You will need to conditionally load the polyfill if you want to support runtimes which `Intl` is not already built-in.
 
@@ -97,7 +97,7 @@ This package assumes that the [`Intl`][INTL] global object exists in the runtime
 #### `IntlMessageFormat` Constructor
 To create a message to format, use the IntlMessageFormat constructor. The constructor has three parameters:
 
- - **message** - _{String | AST}_ - String message (or pre-prased AST) that serves as formatting pattern.
+ - **message** - _{String | AST}_ - String message (or pre-parsed AST) that serves as formatting pattern.
 
  - **locales** - _{String | String[]}_ - A string with a BCP 47 language tag, or an array of such strings. If you do not provide a locale, the default locale will be used, but you should _always_ provide one!
 
