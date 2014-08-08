@@ -1,1 +1,0 @@
-IntlMessageFormat.__addLocaleData({locale:"bas", messageformat:{pluralFunction:function (n) {  }}});

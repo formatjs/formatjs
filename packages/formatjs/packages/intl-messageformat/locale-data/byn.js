@@ -1,1 +1,0 @@
-IntlMessageFormat.__addLocaleData({locale:"byn", messageformat:{pluralFunction:function (n) {  }}});

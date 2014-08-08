@@ -1,6 +1,6 @@
 {
   "name": "intl-messageformat",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "implementation of the ECMA 402 proposal for MessageFormat",
   "keywords": [
     "intl",
@@ -9,7 +9,9 @@
   ],
   "author": "Anthony Pipkin <a.pipkin@yahoo.com>",
   "contributors": [
-    "Drew Folta <drew@folta.net>"
+    "Drew Folta <drew@folta.net>",
+    "Caridy Patino <caridy@gmail.com>",
+    "Eric Ferraiuolo <eferraiuolo@gmail.com>"
   ],
   "licenses": [
     {
@@ -24,28 +26,43 @@
     "type": "git",
     "url": "git@github.com:yahoo/intl-messageformat.git"
   },
-  "main": "build/intl-messageformat.complete.min.js",
+  "main": "index.js",
+  "dist": "dist/intl-messageformat.js",
+  "jsnext:main": "./src/full.js",
+  "files": [
+    "index.js",
+    "lib/",
+    "dist/",
+    "src/",
+    "LICENSE"
+  ],
   "directories": {
     "test": "tests"
   },
   "devDependencies": {
+    "benchmark": "~1.0.0",
     "chai": "~1.8.1",
-    "grunt": "~0.4.2",
-    "grunt-cli": "~0.1.11",
-    "grunt-contrib-jshint": "~0.7.2",
-    "grunt-contrib-uglify": "~0.2.7",
+    "cldr": "~2.0.1",
+    "grunt": "^0.4.5",
+    "grunt-benchmark": "^0.3.0",
+    "grunt-bundle-jsnext-lib": "^0.2.0",
+    "grunt-cli": "~0.1.13",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-uglify": "^0.5.0",
     "intl": "~0.1.0",
     "istanbul": "~0.1.46",
     "mocha": "~1.15.1",
-    "mockery": "~1.4.0",
     "xunit-file": "*",
-    "yeti": "~0.2.25",
-    "benchmark": "~1.0.0",
-    "cldr": "~2.0.1"
+    "yeti": "~0.2.25"
   },
   "scripts": {
     "build-data": "grunt build-data",
-    "pretest": "grunt jshint build",
-    "test": "istanbul cover -- _mocha tests/ --reporter spec && tests/saucelabs.sh"
+    "test": "istanbul cover -- _mocha tests/ --reporter spec && tests/saucelabs.sh",
+    "prepublish": "grunt && npm test"
+  },
+  "dependencies": {
+    "intl-messageformat-parser": "^0.4.0"
   }
 }

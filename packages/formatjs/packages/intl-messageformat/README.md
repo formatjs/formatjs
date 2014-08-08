@@ -116,11 +116,6 @@ To create a message to format, use the IntlMessageFormat constructor. The constr
 ```javascript
 var IntlMessageFormat = require('intl-messageformat');
 
-// load some locales that you care about
-require('intl-messageformat/locale-data/en');
-require('intl-messageformat/locale-data/ar');
-require('intl-messageformat/locale-data/pl');
-
 var msg = new IntlMessageFormat("My name is {NAME}.", "en-US");
 ```
 
@@ -169,28 +164,6 @@ Token objects are created when the string is parsed. If you wish, you can create
  - **`other`** _{String|Array}_ - (plural or select) Matched when `_normalizeCount` returns `"other"`, the `valueName` returns `"other"` or the returned value from either of those returns a value that is not specified. For instance, if `"male"` is returned and `"male"` is not specified, other will be matched.
 
 When `options` is matched and returns an `Array`, that `Array` is then processed in the same manner. This means, large complex, conditional messages can be formed by defining the pattern as such.
-
-Locale Data
------------
-
-This package ships with locale data for the top-level locales (e.g. `en` but not `en-US`). You can load the library and locale(s) using any of the following subpaths in the package:
-
-* Load the base and then just the locale(s) that you need: `intl-messageformat/index.js` and `intl-messageformat/locale-data/{locale}.js`.
-
-* Load the base with a single locale builtin: `intl-messageformat/build/intl-messageformat.{locale}.js')`. You can then optionally add more locale(s) as above.
-
-* Load all locales: `intl-messageformat/build/intl-messageformat.complete.js`.
-
-
-### Loading Locale Data in Node.js
-
-**Please note** that if you are loading from the `locale-data/` directory that those files are expecting the library to be available in the `IntlMessageFormat` variable.
-
-
-### Loading Locale Data in a Browser
-
-Every `intl-messageformat/build/*.js` file also has an `intl-messageformat/build/*.min.js` equivalent which has already been minified.
-
 
 Examples
 --------
@@ -285,7 +258,7 @@ pattern. An `Array` may consist of `Strings` and [Token Objects](#token-objects)
 - **`optFieldFormatters`**: _{Object}_ Holds user defined formatters for each
 field
 
-### Instace Methods
+### Instance Methods
 
 #### format(data)
 Formats the pattern with supplied parameters. Dates, times and numbers are formatted in locale sensitive way when used with a formatter.

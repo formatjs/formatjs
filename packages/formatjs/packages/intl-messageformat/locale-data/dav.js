@@ -1,1 +1,0 @@
-IntlMessageFormat.__addLocaleData({locale:"dav", messageformat:{pluralFunction:function (n) {  }}});

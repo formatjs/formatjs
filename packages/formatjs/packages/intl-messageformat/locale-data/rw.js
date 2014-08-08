@@ -1,1 +1,0 @@
-IntlMessageFormat.__addLocaleData({locale:"rw", messageformat:{pluralFunction:function (n) {  }}});

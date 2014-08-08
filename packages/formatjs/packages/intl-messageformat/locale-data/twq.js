@@ -1,1 +1,0 @@
-IntlMessageFormat.__addLocaleData({locale:"twq", messageformat:{pluralFunction:function (n) {  }}});

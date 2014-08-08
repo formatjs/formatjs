@@ -1,1 +1,0 @@
-IntlMessageFormat.__addLocaleData({locale:"as", messageformat:{pluralFunction:function (n) {  }}});

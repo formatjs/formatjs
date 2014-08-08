@@ -1,1 +1,0 @@
-IntlMessageFormat.__addLocaleData({locale:"sg", messageformat:{pluralFunction:function (n) { return"other"; }}});

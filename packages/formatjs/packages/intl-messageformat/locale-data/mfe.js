@@ -1,1 +1,0 @@
-IntlMessageFormat.__addLocaleData({locale:"mfe", messageformat:{pluralFunction:function (n) {  }}});

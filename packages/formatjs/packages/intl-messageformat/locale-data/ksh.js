@@ -1,1 +1,0 @@
-IntlMessageFormat.__addLocaleData({locale:"ksh", messageformat:{pluralFunction:function (n) { n=Math.floor(n);if(n===0)return"zero";if(n===1)return"one";return"other"; }}});

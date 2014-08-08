@@ -1,1 +1,0 @@
-IntlMessageFormat.__addLocaleData({locale:"kde", messageformat:{pluralFunction:function (n) { return"other"; }}});

@@ -1,1 +1,0 @@
-IntlMessageFormat.__addLocaleData({locale:"is", messageformat:{pluralFunction:function (n) { var i=Math.floor(Math.abs(n)),t=parseInt(n.toString().replace(/^[^.]*\.?|0+$/g,""),10);n=Math.floor(n);if(t===0&&i%10===1&&((i%100!==11)||(t!==0)))return"one";return"other"; }}});

@@ -1,1 +1,0 @@
-IntlMessageFormat.__addLocaleData({locale:"dyo", messageformat:{pluralFunction:function (n) {  }}});

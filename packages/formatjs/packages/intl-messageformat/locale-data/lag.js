@@ -1,1 +1,0 @@
-IntlMessageFormat.__addLocaleData({locale:"lag", messageformat:{pluralFunction:function (n) { var i=Math.floor(Math.abs(n));n=Math.floor(n);if(n===0)return"zero";if((i===0||i===1)&&(n!==0))return"one";return"other"; }}});

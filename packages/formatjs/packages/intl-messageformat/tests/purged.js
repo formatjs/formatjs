@@ -11,51 +11,21 @@
 
 var chai = require('chai'),
     expect = chai.expect,
-
-    mockery = require('mockery'),
-
-    IntlMessageFormat;
-
-mockery.enable({
-    useCleanCache:      true,
-    warnOnReplace:      false,
-    warnOnUnregistered: false
-});
-
-
-IntlMessageFormat = require('../index.js');
-
+    IntlMessageFormat = require('../');
 
 describe('no locale', function () {
 
     describe('no locale provided', function () {
 
-        before(function () {
-            mockery.resetCache();
-            IntlMessageFormat = require('../index.js');
-        });
-
         it('no locale', function () {
-            function createWithNoLocaleData() {
-                var msg = new IntlMessageFormat(['I have ', {
-                    type: 'plural',
-                    valueName: 'NUM_BOOKS',
-                    options: {
-                        one: '1 book',
-                        other: '${#} books'
-                    }
-                }, '.']);
-
-                return msg.format({ NUM_BOOKS: 2 });
-            }
-
-            expect(createWithNoLocaleData).to.throw(Error);
+            var msg = new IntlMessageFormat('I have {NUM_BOOKS, plural, =1 {1 book} other {# books}}.');
+            expect(msg.format({ NUM_BOOKS: 2 })).to.equal('I have 2 books.');
         });
     });
 
-    describe('no default', function () {
+    describe('invalid locale default', function () {
 
-        it('update locale', function () {
+        it('should fallback to default locale', function () {
             // let's set the locale to something witout data
             IntlMessageFormat.__addLocaleData({
                 locale: 'fu-baz',
@@ -64,21 +34,10 @@ describe('no locale', function () {
                 }
             });
 
-            var msg = new IntlMessageFormat([{
-                        type: 'plural',
-                        valueName: 'COMPANY_COUNT',
-                        options: {
-                           one: 'One company',
-                           other: '${#} companies'
-                        }
-                    },
-                    ' published new books.'
-                ]);
-
+            var msg = new IntlMessageFormat('{COMPANY_COUNT, plural, =1 {One company} other {# companies}} published new books.');
             var m = msg.format({ COMPANY_COUNT: 1});
 
-            expect(m).to.equal('1 companies published new books.');
+            expect(m).to.equal('One company published new books.');
         });
     });
 });
-

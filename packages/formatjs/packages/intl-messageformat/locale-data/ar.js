@@ -1,1 +1,0 @@
-IntlMessageFormat.__addLocaleData({locale:"ar", messageformat:{pluralFunction:function (n) { n=Math.floor(n);if(n===0)return"zero";if(n===1)return"one";if(n===2)return"two";if(n%100>=3&&n%100<=10)return"few";if(n%100>=11&&n%100<=99)return"many";return"other"; }}});

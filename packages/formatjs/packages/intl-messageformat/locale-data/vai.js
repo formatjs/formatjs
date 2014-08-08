@@ -1,1 +1,0 @@
-IntlMessageFormat.__addLocaleData({locale:"vai", messageformat:{pluralFunction:function (n) {  }}});

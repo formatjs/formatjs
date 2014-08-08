@@ -23,13 +23,7 @@ if ('function' === typeof require) {
         global.Intl = require('intl');
     }
 
-    IntlMessageFormat = require('../index.js');
-
-    require('../locale-data/en.js');
-    require('../locale-data/fr.js');
-    require('../locale-data/ru.js');
-    require('../locale-data/ar.js');
-    require('../locale-data/pl.js');
+    IntlMessageFormat = require('../');
 
 }
 
@@ -97,31 +91,6 @@ describe('IntlMessageFormat', function () {
             /*jshint expr:true */
             expect(msgFmt.pattern).to.not.exist;
         });
-
-        it('should match the first parameter when it is an array', function () {
-            var msgFmt = new IntlMessageFormat('My name is {NAME}' );
-
-            expect(msgFmt._pattern).to.be.an('array');
-            expect(msgFmt._pattern.length).to.equal(2);
-            expect(msgFmt._pattern[0]).to.equal('My name is ');
-            expect(msgFmt._pattern[1]).to.be.an('object');
-            /*jshint expr:true */
-            expect(msgFmt._pattern[1].valueName).to.exist;
-            expect(msgFmt._pattern[1].valueName).to.equal('NAME');
-        });
-
-        it('should match the first parameter parsed into an array when it is a string', function () {
-            var msgFmt = new IntlMessageFormat('My name is {NAME}');
-
-            expect(msgFmt._pattern).to.be.an('array');
-            expect(msgFmt._pattern.length).to.equal(2);
-            expect(msgFmt._pattern[0]).to.equal('My name is ');
-            expect(msgFmt._pattern[1]).to.be.an('object');
-            /*jshint expr:true */
-            expect(msgFmt._pattern[1].valueName).to.exist;
-            expect(msgFmt._pattern[1].valueName).to.equal('NAME');
-        });
-
     });
 
     // INSTANCE METHODS
@@ -164,15 +133,17 @@ describe('IntlMessageFormat', function () {
 
     describe('using a string pattern', function () {
 
-        it('should fail if there is no argument in the string', function () {
-            var msgFmt = new IntlMessageFormat('My name is {FIRST LAST}'),
-                m = msgFmt.format({
-                        FIRST: 'Anthony',
-                        LAST: 'Pipkin'
-                    });
-
-            expect(m).to.equal('My name is {FIRST LAST}');
-        });
+        // TODO: Determine if spaces are valid in argument names in Yala; and if
+        // not, then remove this test.
+        // it('should fail if there is no argument in the string', function () {
+        //     var msgFmt = new IntlMessageFormat('My name is {FIRST LAST}'),
+        //         m = msgFmt.format({
+        //                 FIRST: 'Anthony',
+        //                 LAST: 'Pipkin'
+        //             });
+        //
+        //     expect(m).to.equal('My name is {FIRST LAST}');
+        // });
 
         it('should properly replace direct arguments in the string', function () {
             var msgFmt = new IntlMessageFormat('My name is {FIRST} {LAST}.'),
@@ -187,73 +158,18 @@ describe('IntlMessageFormat', function () {
 
     });
 
-    describe('using an Array pattern', function () {
-        it('should concatenate the Array', function () {
-            var msgFmt, m;
-
-            msgFmt = new IntlMessageFormat(['I have ', '2', ' cars.']);
-
-            // pass an object to prevent throwing
-            m = msgFmt.format({});
-
-            expect(m).to.equal('I have 2 cars.');
-        });
-
-        it ('should throw an error if the format object does not contain an argument that is replaced' , function () {
-            function formatWithMissingValue() {
-                var msgFmt = new IntlMessageFormat([
-                    'I have ',
-                    {
-                        type     : 'number',
-                        valueName: 'COUNT'
-                    },
-                    ' cars.'
-                ], 'en-US');
-
-                return msgFmt.format({count: 6});
-            }
-
-            expect(formatWithMissingValue).to.throw(Error);
-        });
-
-        it ('should process plural argument types', function () {
-            var msgFmt, m;
-
-            msgFmt = new IntlMessageFormat([
-                'Some text before ',
-                {
-                    type     : 'plural',
-                    valueName: 'NUM_PEOPLE',
-                    options: {
-                        one  : 'one',
-                        few  : 'few',
-                        other: 'Some messages for the default'
-                    }
-                },
-                ' and text after'
-            ]);
-
-            m = msgFmt.format({
-                NUM_PEOPLE: 20
-            });
-
-            expect(m).to.equal('Some text before Some messages for the default and text after');
-        });
-    });
-
     describe('and plurals under the Arabic locale', function () {
-        var msgFmt = new IntlMessageFormat(['I have ', {
-                type: 'plural',
-                valueName: 'numPeople',
-                options: {
-                    zero : 'zero points',
-                    one  : 'a point',
-                    two  : 'two points',
-                    few  : 'a few points',
-                    many : 'lots of points',
-                    other: 'some other amount of points'
-                }
-            }, '.'], 'ar');
+        var msg = '' +
+            'I have {numPeople, plural,' +
+                'zero {zero points}' +
+                'one {a point}' +
+                'two {two points}' +
+                'few {a few points}' +
+                'many {lots of points}' +
+                'other {some other amount of points}}' +
+            '.';
+
+        var msgFmt = new IntlMessageFormat(msg, 'ar');
 
         it('should match zero', function () {
             var m = msgFmt.format({
@@ -306,87 +222,52 @@ describe('IntlMessageFormat', function () {
 
     describe('and changing the locale', function () {
         var simple = {
-                en: [
-                    '${NAME}',
-                    ' went to ',
-                    '${CITY}',
-                    '.'
-                ],
+            en: '{NAME} went to {CITY}.',
 
-                fr: [
-                    '${NAME}',
-                    ' est ',
-                    {
-                        type: 'select',
-                        valueName: 'GENDER',
-                        options: {
-                            female: 'allée',
-                            other: 'allé'
-                        }
-                    },
-                    ' à ',
-                    '${CITY}',
-                    '.'
-                ]
-            },
+            fr: '{NAME} est {GENDER, select, ' +
+                    'female {allée}' +
+                    'other {allé}}'+
+                ' à {CITY}.'
+        };
 
-            complex = {
-                en: '{TRAVELLERS} went to {CITY}.',
+        var complex = {
+            en: '{TRAVELLERS} went to {CITY}.',
 
-                fr: [
-                    '${TRAVELLERS}',
-                    {
-                        type: 'plural',
-                        valueName: 'TRAVELLER_COUNT',
-                        options: {
-                            one: [' est ', {
-                                type: 'select',
-                                valueName: 'GENDER',
-                                options: {
-                                    female: 'allée',
-                                    other: 'allé'
-                                }
-                            }],
-                            other: [' sont ', {
-                                type: 'select',
-                                valueName: 'GENDER',
-                                options: {
-                                    female: 'allées',
-                                    other: 'allés'
-                                }
-                            }]
-                        }
-                    },
-                    ' à ',
-                    '${CITY}',
-                    '.'
-                ]
-            },
+            fr: '{TRAVELLERS} {TRAVELLER_COUNT, plural, ' +
+                    '=1 {est {GENDER, select, ' +
+                        'female {allée}' +
+                        'other {allé}}}' +
+                    'other {sont {GENDER, select, ' +
+                        'female {allées}' +
+                        'other {allés}}}}' +
+                ' à {CITY}.'
+        };
 
-            maleObj = {
-                NAME: 'Tony',
-                CITY: 'Paris',
-                GENDER: 'male'
-            },
-            femaleObj = {
-                NAME: 'Jenny',
-                CITY: 'Paris',
-                GENDER: 'female'
-            },
+        var maleObj = {
+            NAME  : 'Tony',
+            CITY  : 'Paris',
+            GENDER: 'male'
+        };
 
-            maleTravelers = {
-                TRAVELLERS: 'Lucas, Tony and Drew',
-                TRAVELLER_COUNT: 3,
-                GENDER: 'male',
-                CITY: 'Paris'
-            },
+        var femaleObj = {
+            NAME  : 'Jenny',
+            CITY  : 'Paris',
+            GENDER: 'female'
+        };
 
-            femaleTravelers = {
-                TRAVELLERS: 'Monica',
-                TRAVELLER_COUNT: 1,
-                GENDER: 'female',
-                CITY: 'Paris'
-            };
+        var maleTravelers = {
+            TRAVELLERS     : 'Lucas, Tony and Drew',
+            TRAVELLER_COUNT: 3,
+            GENDER         : 'male',
+            CITY           : 'Paris'
+        };
+
+        var femaleTravelers = {
+            TRAVELLERS     : 'Monica',
+            TRAVELLER_COUNT: 1,
+            GENDER         : 'female',
+            CITY           : 'Paris'
+        };
 
         it('should format message en-US simple with different objects', function () {
             var msgFmt = new IntlMessageFormat(simple.en, 'en-US');
@@ -418,28 +299,17 @@ describe('IntlMessageFormat', function () {
     describe('and change the locale with different counts', function () {
 
         var messages = {
-                en: [{
-                        type: 'plural',
-                        valueName: 'COMPANY_COUNT',
-                        options: {
-                           one: 'One company',
-                           other: '${#} companies'
-                        }
-                    },
-                    ' published new books.'
-                ],
-                ru: [{
-                        type: 'plural',
-                        valueName: 'COMPANY_COUNT',
-                        options: {
-                            one: 'Одна компания опубликовала',
-                            many: '${#} компаний опубликовали',
-                            other: '${#} компаний опубликовали'
-                        }
-                    },
-                    ' новые книги.'
-                ]
-            };
+            en: '{COMPANY_COUNT, plural, ' +
+                    '=1 {One company}' +
+                    'other {# companies}}' +
+                ' published new books.',
+
+            ru: '{COMPANY_COUNT, plural, ' +
+                    'one {Одна компания опубликовала}' +
+                    'many {# компаний опубликовали}' +
+                    'other {# компаний опубликовали}}' +
+                ' новые книги.'
+        };
 
         it('should format a message with en-US locale', function () {
             var msgFmt = new IntlMessageFormat(messages.en, 'en-US');
@@ -495,11 +365,13 @@ describe('IntlMessageFormat', function () {
             });
         });
 
-        describe('a space', function() {
-            it('should return the same string as no tokens are discovered', function () {
-                expect(new IntlMessageFormat('{ST ATE}').format({'ST ATE': 'Missouri'})).to.equal('{ST ATE}');
-            });
-        });
+        // TODO: Determine if spaces are valid in argument names in Yala; and if
+        // not, then remove this test.
+        // describe('a space', function() {
+        //     it('should return the same string as no tokens are discovered', function () {
+        //         expect(new IntlMessageFormat('{ST ATE}').format({'ST ATE': 'Missouri'})).to.equal('{ST ATE}');
+        //     });
+        // });
 
         describe('a numeral', function() {
             var msg   = new IntlMessageFormat('{ST1ATE}'),

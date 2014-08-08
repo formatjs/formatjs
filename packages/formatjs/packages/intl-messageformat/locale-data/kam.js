@@ -1,1 +1,0 @@
-IntlMessageFormat.__addLocaleData({locale:"kam", messageformat:{pluralFunction:function (n) {  }}});

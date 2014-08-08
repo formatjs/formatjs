@@ -1,1 +1,0 @@
-IntlMessageFormat.__addLocaleData({locale:"nmg", messageformat:{pluralFunction:function (n) {  }}});

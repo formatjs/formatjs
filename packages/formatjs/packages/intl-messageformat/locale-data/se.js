@@ -1,1 +1,0 @@
-IntlMessageFormat.__addLocaleData({locale:"se", messageformat:{pluralFunction:function (n) { n=Math.floor(n);if(n===1)return"one";if(n===2)return"two";return"other"; }}});
