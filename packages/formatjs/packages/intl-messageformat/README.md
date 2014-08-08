@@ -115,7 +115,7 @@ var msg = new IntlMessageFormat('My name is {name}.', 'en-US');
 
 ##### Creating a Message in a Browser
 ```html
-<script src="https://cdn.rawgit.com/yahoo/intl-messageformat/v0.2.0/dist/intl-messageformat.min.js"></script>
+<script src="https://cdn.rawgit.com/yahoo/intl-messageformat/v1.0.0-rc-1/dist/intl-messageformat.min.js"></script>
 <script>
     var msg = new IntlMessageFormat('My name is {name}.', 'en-US');
 </script>
