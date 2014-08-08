@@ -8,6 +8,7 @@ See the accompanying LICENSE file for terms.
 
 import {extend, hop} from './utils';
 import {defineProperty, objCreate, fnBind} from './es5';
+import Compiler from './compiler';
 import parser from 'intl-messageformat-parser';
 
 export default MessageFormat;
@@ -162,128 +163,8 @@ MessageFormat.prototype.resolvedOptions = function () {
 };
 
 MessageFormat.prototype._compilePattern = function (ast, locales, formats, pluralFn) {
-    var pluralStack        = [],
-        currentPlural      = null,
-        pluralNumberFormat = null;
-
-    function compile(ast) {
-        var elements = ast.elements,
-            pattern  = [];
-
-        var i, len, element;
-
-        for (i = 0, len = elements.length; i < len; i += 1) {
-            element = elements[i];
-
-            switch (element.type) {
-                case 'messageTextElement':
-                    pattern.push(compileMessageText(element));
-                    break;
-
-                case 'argumentElement':
-                    pattern.push(compileArgument(element));
-                    break;
-
-                default:
-                    throw new Error('Message element does not have a valid type');
-            }
-        }
-
-        return pattern;
-    }
-
-    function compileMessageText(element) {
-        // When this `element` is part of plural sub-pattern and its value
-        // contains an unescaped '#', use a `PluralOffsetString` helper to
-        // properly output the number with the correct offset in the string.
-        if (currentPlural && /(^|[^\\])#/g.test(element.value)) {
-            // Create a cache a NumberFormat instance that can be reused for any
-            // PluralOffsetString instance in this message.
-            if (!pluralNumberFormat) {
-                pluralNumberFormat = new Intl.NumberFormat(locales);
-            }
-
-            return new PluralOffsetString(
-                    currentPlural.id,
-                    currentPlural.format.offset,
-                    pluralNumberFormat,
-                    element.value);
-        }
-
-        // Unescape the escaped '#'s in the message text.
-        return element.value.replace(/\\#/g, '#');
-    }
-
-    function compileArgument(element) {
-        var format = element.format,
-            options;
-
-        if (!format) {
-            return new StringFormat(element.id);
-        }
-
-        switch (format.type) {
-            case 'numberFormat':
-                options = formats.number[format.style];
-                return {
-                    id    : element.id,
-                    format: new Intl.NumberFormat(locales, options).format
-                };
-
-            case 'dateFormat':
-                options = formats.date[format.style];
-                return {
-                    id    : element.id,
-                    format: new Intl.DateTimeFormat(locales, options).format
-                };
-
-            case 'timeFormat':
-                options = formats.time[format.style];
-                return {
-                    id    : element.id,
-                    format: new Intl.DateTimeFormat(locales, options).format
-                };
-
-            case 'pluralFormat':
-                options = compileOptions(element);
-                return new PluralFormat(element.id, format.offset, options, pluralFn);
-
-            case 'selectFormat':
-                options = compileOptions(element);
-                return new SelectFormat(element.id, options);
-
-            default:
-                throw new Error('Message element does not have a valid format type');
-        }
-    }
-
-    function compileOptions(element) {
-        var format      = element.format,
-            options     = format.options,
-            optionsHash = {};
-
-        // Save the current plural element, if any, then set it to a new value
-        // when compiling the options sub-patterns. This conform's the spec's
-        // algorithm for handling `"#"` synax in message text.
-        pluralStack.push(currentPlural);
-        currentPlural = format.type === 'pluralFormat' ? element : null;
-
-        var i, len, option;
-
-        for (i = 0, len = options.length; i < len; i += 1) {
-            option = options[i];
-
-            // Compile the sub-pattern and save it under the options's selector.
-            optionsHash[option.selector] = compile(option.value);
-        }
-
-        // Pop the plural stack to put back the original currnet plural value.
-        currentPlural = pluralStack.pop();
-
-        return optionsHash;
-    }
-
-    return compile(ast);
+    var compiler = new Compiler(locales, formats, pluralFn);
+    return compiler.compile(ast);
 };
 
 MessageFormat.prototype._format = function (pattern, values) {
@@ -367,59 +248,4 @@ MessageFormat.prototype._resolveLocale = function (locales) {
     }
 
     return locale || MessageFormat.defaultLocale;
-};
-
-// -- MessageFormat Helper Classes ---------------------------------------------
-
-function StringFormat(id) {
-    this.id = id;
-}
-
-StringFormat.prototype.format = function (value) {
-    if (!value) {
-        return '';
-    }
-
-    return typeof value === 'string' ? value : String(value);
-};
-
-function PluralFormat(id, offset, options, pluralFn) {
-    this.id       = id;
-    this.offset   = offset;
-    this.options  = options;
-    this.pluralFn = pluralFn;
-}
-
-PluralFormat.prototype.getOption = function (value) {
-    var options = this.options;
-
-    var option = options['=' + value] ||
-            options[this.pluralFn(value - this.offset)];
-
-    return option || options.other;
-};
-
-function PluralOffsetString(id, offset, numberFormat, string) {
-    this.id           = id;
-    this.offset       = offset;
-    this.numberFormat = numberFormat;
-    this.string       = string;
-}
-
-PluralOffsetString.prototype.format = function (value) {
-    var number = this.numberFormat.format(value - this.offset);
-
-    return this.string
-            .replace(/(^|[^\\])#/g, '$1' + number)
-            .replace(/\\#/g, '#');
-};
-
-function SelectFormat(id, options) {
-    this.id      = id;
-    this.options = options;
-}
-
-SelectFormat.prototype.getOption = function (value) {
-    var options = this.options;
-    return options[value] || options.other;
 };

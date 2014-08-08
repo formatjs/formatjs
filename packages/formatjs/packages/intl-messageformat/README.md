@@ -1,276 +1,156 @@
 Intl Message Format
 ===================
 
-[![Build Status][TRAVIS-BADGE]][TRAVIS]
-
 Format a string with placeholders, including plural and select support to create localized messages.
+
+[![npm Version](https://img.shields.io/npm/v/intl-messageformat.svg?style=flat)][NPM]
+[![Build Status](http://img.shields.io/travis/yahoo/intl-messageformat.svg?style=flat)][TRAVIS]
+[![Dependency Status](https://img.shields.io/david/yahoo/intl-messageformat.svg?style=flat)][DAVID]
 
 Overview
 --------
-### Note
-This `IntlMessageFormat` API may change to stay in sync with ECMA-402
 
 ### Goals
 
-To provide a standardized way to concatenate strings with localization support in JavaScript on both the server and client.
+This package aims to provide a way for you to manage and format your JavaScript app's string-based messages into localized string for people using your app. You can use this package in the browser and on the server via Node.js.
 
-### Basis
-This implementation is based on the [Strawman Draft][STRAWMAN]. There are a few places this implementation diverges from the strawman draft. One such place is the pattern after it has been parsed. The strawman draft indicates the parsed arguments should be "flat" - where grouping options are at the same level as the `type` and `valueName`. This, as an example, would look like:
-```
-{
-    type: "plural",
-    valueName: "TRAVELER_COUNT",
-    zero: "No travelers",
-    one: "One traveler",
-    two: "Two travelers",
-    few: "There are a few travelers",
-    many: "There are many travelers",
-    other: "There are a lot of travelers"
-}
-```
-This implementation takes a readability approach and places grouping options in an `options` key. This looks like:
-```
-{
-    type: "plural",
-    valueName: "TRAVELER_COUNT",
-    options: {
-        zero: "No travelers",
-        one: "One traveler",
-        two: "Two travelers",
-        few: "There are a few travelers",
-        many: "There are many travelers",
-        other: "There are a lot of travelers"
-    }
-}
-```
+This implementation is based on the [Strawman Draft][STRAWMAN]. There are a few places this implementation diverges from the strawman draft.
+
+**Note:** This `IntlMessageFormat` API may change to stay in sync with ECMA-402.
 
 ### How It Works
 
-Messages are provided into the constructor as an `Array` or `String` messages.
+Messages are provided into the constructor as `String` message, or [pre-prased AST][PARSER].
+
 ```javascript
-var msg = new IntlMessageFormat(pattern, locale, [optFieldFormatters]);
+var msg = new IntlMessageFormat(message, locales, [formats]);
 ```
 
-If a `String` is provided, it is parsed into a workable `Array` of tokens. This means
+The string `message` is parsed, then stored internally in a compiled form that is optomized for generating the formatted string via the `format()` method.
+
 ```javascript
-"Welcome to {CITY}, {STATE}!"
+var output = msg.format(values);
 ```
-becomes
+
+### Common Usage Example
+
+A very common example is formatting messages that have numbers with plural lables. With this package you can make sure that the string is properly formatted for a person's locale, e.g.:
+
 ```javascript
-[
-    "Welcome to ",
-    {
-        valueName: "CITY"
+var MESSAGES = {
+    'en-US': {
+        NUM_PHOTOS: 'You have {numPhotos, plural, ' +
+            '0= {no photos.}' +
+            '1= {one photo.}' +
+            'other {# photos.}}'
     },
-    ", "
-    {
-        valueName: "STATE"
-    },
-    "!"
-]
+
+    'es-MX': {
+        NUM_PHOTOS: 'Usted {numPhotos, plural, ' +
+            '0= {no tiene fotos.}' +
+            '1= {tiene una foto.}' +
+            'other {tiene # fotos.}}'
+    }
+};
+
+var output;
+
+var enNumPhotos = new IntlMessageFormat(MESSAGES['en-US'].NUM_PHOTOS, 'en-US');
+output = enNumPhotos.format({numPhotos: 1000});
+console.log(output); // => "You have 1,000 photos."
+
+var esNumPhotos = new IntlMessageFormat(MESSAGES['es-MX'].NUM_PHOTOS, 'es-MX');
+output = esNumPhotos.format({numPhotos: 1000});
+console.log(output); // => "Usted tiene 1,000 fotos."
 ```
 
-The pattern `Array` may contain `Strings` or `Objects`. Read more about [Token Objects](#token-objects)
+### Message Syntax
 
-The pattern is stored internally until the `format()` method is called with an `Object` containing parameters for generating the message. The pattern is then processed by converting the tokens into strings based on the parameters provided and concatenating the values together.
-
+The message syntax that this package uses is not proprietary, in fact it's a common standard message syntax that works across programming languages and one that professional translators are familiar with. This package uses the **[ICU Message syntax][ICU]** and works for all [CLDR languages][CLDR].
 
 ### Features
-Custom formatters can be used to format the value __after__ it is gathered from the original process. Custom formatters are stored in the message during construction as the third parameter. Formatters are denoted in the argument with a comma (,) followed by the formatter name.
 
-For example you can ensure that certain tokens are always upper cased:
-```javascript
-var msg = new IntlMessageFormat("Then they yelled '{YELL, upper}!'", "en", {
-    "upper": function (val, locale) {
-        return val.toString().toUpperCase();
-    }
-});
+* Follows [ICU Message][ICU] and [CLDR][CLDR] standards.
 
-var m = msg.format({ YELL: "suprise" });
+* Supports **plural** and **select** message arguments.
 
-// Then they yelled 'SUPRISE!'
-```
+* Formats numbers and dates/times in messages using [`Intl.NumberFormat`][INTL-NF] and [`Intl.DateTimeFormat`][INTL-DTF], respectively.
 
-Installation
-------------
+* Optimized for repeated calls to an `IntlMessageFormat` instance's `format()` method.
 
-Install using npm:
+* Supports defining custom format styles/options.
 
-```shell
-$ npm install intl-messageformat
-```
+* Supports escape sequences for message syntax chars, e.g.: `"\\{foo\\}"` will output: `"{foo}"` in the formatted output instead of interpreting it as a `foo` argument.
 
 
 Usage
 -----
-### IntlMessageFormat Constructor
+
+### `Intl` Dependency
+
+This package assumes that the [`Intl`][INTL] global object exists in the runtime. `Intl` is present in all modern browsers _expect_ Safari, and there's work happening to [integrate `Intl` into Node.js][NODE-INTL].
+
+**Luckly, there's the [Intl.js][] polyfill!** You will need to conditionally load the polyfill if you want to support runtimes which `Intl` is not already built-in.
+
+### Public API
+
+#### `IntlMessageFormat` Constructor
 To create a message to format, use the IntlMessageFormat constructor. The constructor has three parameters:
 
- - **pattern** - _{String|Array}_ - Array or string that serves as formatting pattern. Use array for plural and select messages, otherwise use string form.
+ - **message** - _{String | AST}_ - String message (or pre-prased AST) that serves as formatting pattern.
 
- - **locale** - _{String}_ - Locale for string formatting. The locale is optional, but it is highly encouraged to provide a locale. If you do not provide a locale, the default locale will be used.
+ - **locales** - _{String | String[]}_ - A string with a BCP 47 language tag, or an array of such strings. If you do not provide a locale, the default locale will be used, but you should _always_ provide one!
 
- - **optFieldFormatters** - _{Object}_ - (optional) Holds user defined formatters for each field
+ - **[formats]** - _{Object}_ - Optional object with user defined options for format styles.
 
-#### Creating a Message in Node.js
+##### Creating a Message in Node.js
 ```javascript
+// Conditionally load the Intl.js polyfill.
+global.Intl || require('intl');
+
 var IntlMessageFormat = require('intl-messageformat');
 
-var msg = new IntlMessageFormat("My name is {NAME}.", "en-US");
+var msg = new IntlMessageFormat('My name is {name}.', 'en-US');
 ```
 
-#### Creating a Message in a Browser
+##### Creating a Message in a Browser
+```html
+<script src="https://cdn.rawgit.com/yahoo/intl-messageformat/v0.2.0/dist/intl-messageformat.min.js"></script>
+<script>
+    var msg = new IntlMessageFormat('My name is {name}.', 'en-US');
+</script>
+```
+
+#### `format(values)` Method
+
+Once the message is created, formatting the message is done by calling the `format()` method on the instance and passing a collection of `values`:
+
 ```javascript
-var msg = new IntlMessageFormat("My name is {NAME}.", "en-US");
+var output = msg.format({name: "Eric"});
+console.log(output); // => "My name is Eric."
 ```
 
-### Formatting a Message
+**Note:** A value _must_ be supplied for every argument in the message pattern the instance was constructed with.
 
-Once the message is created, formatting the message is done by calling the `format` method of the instantiated object:
+#### User Defined Formats
+
+Define custom format styles is useful you need supply a set of options to the underlying formatter; e.g., outputting a number in USD:
 
 ```javascript
-var myNameIs = msg.format({ NAME: "Ferris Wheeler"});
-
-// "My name is Ferris Wheeler."
-```
-
-### Token Objects
-Token objects are created when the string is parsed. If you wish, you can create your own token objects. Token objects should always at least contain a `valueName`. There are a few other items that can be included:
-
-- **`type`** _{String}_ - `plural` or `select` to identify the grouping type. Other values such as `number` and `date` are used to identify the type of the value and can be combined with a `format` string to identify a formatter to be used.
-
-- **`valueName`** _{String}_ - key to match the `format` object
-
-- **`format`** _{String|Function}_ - formatter used on the value after is discovered. Specifying the `type` is `"number"` and the `format` is `"integer"` would result in the default formatter `number_integer` being called
-
-- **`options`** _{Object}_ - each key should be matched based on the `type` specified
-
- - **`zero`** _{String|Array}_ - (plural) Matched when the locale determines that the number is in the `"zero"` pluralization class
-
- - **`one`** _{String|Array}_ - (plural) Matched when the locale determines that the number is in the `"one"` pluralization class
-
- - **`two`** _{String|Array}_ - (plural) Matched when the locale determines that the number is in the `"two"` pluralization class
-
- - **`few`** _{String|Array}_ - (plural) Matched when the locale determines that the number is in the `"few"` pluralization class
-
- - **`many`** _{String|Array}_ - (plural) Matched when the locale determines that the number is in the `"many"` pluralization class
-
- - **`male`** _{String|Array}_ - (select) Matched when the `valueName` returns `"male"`
-
- - **`female`** _{String|Array}_ - (select) Matched when the `valueName` returns `"female"`
-
- - **`neuter`** _{String|Array}_ - (select) Matched when the `valueName` returns `"neuter"`
-
- - **`other`** _{String|Array}_ - (plural or select) Matched when `_normalizeCount` returns `"other"`, the `valueName` returns `"other"` or the returned value from either of those returns a value that is not specified. For instance, if `"male"` is returned and `"male"` is not specified, other will be matched.
-
-When `options` is matched and returns an `Array`, that `Array` is then processed in the same manner. This means, large complex, conditional messages can be formed by defining the pattern as such.
-
-Examples
---------
-
-
-#### Simple String
-```javascript
-var msg = new IntlMessageFormat("My name is {name}.", "en-US");
-
-var myNameIs = msg.format({ name: "Ferris Wheeler"});
-
-// "My name is Ferris Wheeler."
-```
-
-
-#### Complex Formatting
-```javascript
-var msg = new IntlMessageFormat(['Some text before ', {
-    type: 'plural',
-    valueName: 'NUM_PEOPLE',
-    offset: 1,
-    options: {
-        one: 'Some message ${PH} with ${#} value',
-
-        few: ['Optional prefix text for |few| ', {
-            type: 'select',
-            valueName: 'GENDER',
-            options: {
-                male: 'Text for male option with \' single quotes',
-                female: 'Text for female option with {}',
-                other: 'Text for default'
-            }
-        }, ' optional postfix text'],
-
-        other: 'Some messages for the default'
-    }
-}, ' and text after'], "en-US");
-
-var complex = msg.format({
-    NUM_PEOPLE: 4,
-    PH: 'whatever',
-    GENDER: 'male'
-});
-
-// "Some text before Optional prefix text for |few| Text for male option with ' single quotes optional postfix text and text after"
-```
-
-#### User Defined Formatters
-User defined formatters are provided to the IntlMessageFormat as the third parameter. To denote a key should be process through a formatter, you need only provide the formatter name after the token key. Such as, `{key}` would then become `{key, formatter}`. This is an example of using the Intl.NumberFormat to create a currency formatter.
-
-```
-var msg = new IntlMessageFormatter("I just made {TOTAL, currency}!!", "en-US", {
-    currency: function (val, locale) {
-        return new Intl.NumberFormat(val, {
-            style: 'currency',
-            currency: 'USD',
-            currencyDisplay: 'symbol'
-        });
+var msg = new IntlMessageFormat('The price is: {price, number, USD}', 'en-US', {
+    number: {
+        USD: {
+            style   : 'currency',
+            currency: 'USD'
+        }
     }
 });
 
-var payday = msg.format({ TOTAL: 3 });
-
-// I just made $3.00!!
+var output = msg.format({price: 100});
+console.log(output); // => "The price is: $100.00"
 ```
 
-
-API
----
-
-### Constructor
-
-Creates IntlMessageFormat object from a pattern, locale and field formatters. String patterns are broken down to Arrays. Objects should match the following pattern:
-
-```javascript
-{
-    type: 'plural|select',
-    valueName: 'string',
-    offset: 1, // consistent offsets for plurals
-    options: {}, // keys match options for plurals and selects
-    format: 'string|function' // strings are matched to internal formatters
-}
-```
-
-**Parameters**
-
-- **`pattern`**: _{Array|String}_ `Array` or `String` that serves as formatting
-pattern. An `Array` may consist of `Strings` and [Token Objects](#token-objects).
-
-- **`locale`**: _{String}_ Locale for string formatting and when using plurals and formatters.
-
-- **`optFieldFormatters`**: _{Object}_ Holds user defined formatters for each
-field
-
-### Instance Methods
-
-#### format(data)
-Formats the pattern with supplied parameters. Dates, times and numbers are formatted in locale sensitive way when used with a formatter.
-
-_PARAMETERS_
-
-- **`data`**: _{Object}_ Object used to choose options when formatting the message
-
-
-#### resolvedOptions
-**_NOT YET DETERMINED_**
-Returns resolved options, in this case supported locale.
+In this example, we're defining a `USD` number format style which is passed to the underlying `Intl.NumberFormat` instance as its options.
 
 
 License
@@ -281,7 +161,16 @@ See the [LICENSE file][LICENSE] for license text and copyright information.
 
 
 
+[DAVID]: https://david-dm.org/yahoo/intl-messageformat
 [TRAVIS]: https://travis-ci.org/yahoo/intl-messageformat
-[TRAVIS-BADGE]: https://travis-ci.org/yahoo/intl-messageformat.svg?branch=master
+[NPM]: https://www.npmjs.org/package/intl-messageformat
 [STRAWMAN]: http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting
+[PARSER]: https://github.com/yahoo/intl-messageformat-parser
+[ICU]: http://userguide.icu-project.org/formatparse/messages
+[CLDR]: http://cldr.unicode.org/
+[INTL]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl
+[INTL-NF]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
+[INTL-DTF]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+[NODE-INTL]: https://github.com/joyent/node/issues/6371
+[Intl.js]: https://github.com/andyearnshaw/Intl.js
 [LICENSE]: https://github.com/yahoo/intl-messageformat/blob/master/LICENSE

@@ -28,7 +28,7 @@
   },
   "main": "index.js",
   "dist": "dist/intl-messageformat.js",
-  "jsnext:main": "./src/full.js",
+  "jsnext:main": "src/full.js",
   "files": [
     "index.js",
     "lib/",
