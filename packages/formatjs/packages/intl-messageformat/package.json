@@ -27,7 +27,6 @@
     "url": "git@github.com:yahoo/intl-messageformat.git"
   },
   "main": "index.js",
-  "dist": "dist/intl-messageformat.js",
   "jsnext:main": "src/full.js",
   "files": [
     "index.js",
