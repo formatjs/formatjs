@@ -28,16 +28,6 @@
   },
   "main": "index.js",
   "jsnext:main": "src/full.js",
-  "files": [
-    "index.js",
-    "lib/",
-    "dist/",
-    "src/",
-    "LICENSE"
-  ],
-  "directories": {
-    "test": "tests"
-  },
   "devDependencies": {
     "benchmark": "^1.0.0",
     "chai": "^1.9.1",
