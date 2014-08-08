@@ -4,6 +4,17 @@ intl-messageformat-parser
 Parses ICU message strings to an AST that can be used to format the messages for
 a person's locale.
 
+[![npm Version](https://img.shields.io/npm/v/intl-messageformat-parser.svg?style=flat)][npm]
+[![Dependency Status](https://img.shields.io/david/yahoo/intl-messageformat-parser.svg?style=flat)][david]
+[![JS Next](https://img.shields.io/badge/jsnext-module-yellow.svg?style=flat)][jsmodules]
+
+[npm]: https://www.npmjs.org/package/intl-messageformat-parser
+[david]: https://david-dm.org/yahoo/intl-messageformat-parser
+[jsmodules]: http://jsmodules.io
+
+Usage
+-----
+
 Given a message like this:
 
 ```js
