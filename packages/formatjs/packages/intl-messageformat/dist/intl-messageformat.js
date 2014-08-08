@@ -1731,19 +1731,19 @@
     function (n) { n=Math.floor(n);if(n>=0&&n<=1)return"one";return"other"; },
     function (n) { var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";return"other"; },
     function (n) { n=Math.floor(n);if(n===0)return"zero";if(n===1)return"one";if(n===2)return"two";if(n%100>=3&&n%100<=10)return"few";if(n%100>=11&&n%100<=99)return"many";return"other"; },
+    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other"; },
     function (n) { n=Math.floor(n);if(n%10===1&&(n%100!==11))return"one";if(n%10>=2&&n%10<=4&&!(n%100>=12&&n%100<=14))return"few";if(n%10===0||n%10>=5&&n%10<=9||n%100>=11&&n%100<=14)return"many";return"other"; },
     function (n) { return"other"; },
     function (n) { n=Math.floor(n);if(n%10===1&&!(n%100===11||n%100===71||n%100===91))return"one";if(n%10===2&&!(n%100===12||n%100===72||n%100===92))return"two";if((n%10>=3&&n%10<=4||n%10===9)&&!(n%100>=10&&n%100<=19||n%100>=70&&n%100<=79||n%100>=90&&n%100<=99))return"few";if((n!==0)&&n%1e6===0)return"many";return"other"; },
     function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length,f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(v===0&&i%10===1&&((i%100!==11)||f%10===1&&(f%100!==11)))return"one";if(v===0&&i%10>=2&&i%10<=4&&(!(i%100>=12&&i%100<=14)||f%10>=2&&f%10<=4&&!(f%100>=12&&f%100<=14)))return"few";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other"; },
     function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";if(i>=2&&i<=4&&v===0)return"few";if((v!==0))return"many";return"other"; },
     function (n) { n=Math.floor(n);if(n===0)return"zero";if(n===1)return"one";if(n===2)return"two";if(n===3)return"few";if(n===6)return"many";return"other"; },
     function (n) { var i=Math.floor(Math.abs(n)),t=parseInt(n.toString().replace(/^[^.]*\.?|0+$/g,""),10);n=Math.floor(n);if(n===1||(t!==0)&&(i===0||i===1))return"one";return"other"; },
     function (n) { var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||i===1)return"one";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i>=0&&i<=1&&v===0)return"one";return"other"; },
+    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length,f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(v===0&&(i===1||i===2||i===3||v===0&&(!(i%10===4||i%10===6||i%10===9)||(v!==0)&&!(f%10===4||f%10===6||f%10===9))))return"one";return"other"; },
     function (n) { n=Math.floor(n);if(n===1)return"one";if(n===2)return"two";if(n>=3&&n<=6)return"few";if(n>=7&&n<=10)return"many";return"other"; },
     function (n) { n=Math.floor(n);if(n===1||n===11)return"one";if(n===2||n===12)return"two";if(n>=3&&n<=10||n>=13&&n<=19)return"few";return"other"; },
-    function (n) { n=Math.floor(n);if(n%10===1)return"one";if(n%10===2)return"two";if(n%100===0||n%100===20||n%100===40||n%100===60)return"few";return"other"; },
+    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(v===0&&i%10===1)return"one";if(v===0&&i%10===2)return"two";if(v===0&&(i%100===0||i%100===20||i%100===40||i%100===60||i%100===80))return"few";if((v!==0))return"many";return"other"; },
     function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";if(i===2&&v===0)return"two";if(v===0&&!(n>=0&&n<=10)&&n%10===0)return"many";return"other"; },
     function (n) { var i=Math.floor(Math.abs(n)),t=parseInt(n.toString().replace(/^[^.]*\.?|0+$/g,""),10);n=Math.floor(n);if(t===0&&i%10===1&&((i%100!==11)||(t!==0)))return"one";return"other"; },
     function (n) { n=Math.floor(n);if(n===0)return"zero";if(n===1)return"one";return"other"; },
@@ -1756,12 +1756,11 @@
     function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";if(v===0&&i%10>=2&&i%10<=4&&!(i%100>=12&&i%100<=14))return"few";if(v===0&&(i!==1)&&(i%10>=0&&i%10<=1||v===0&&(i%10>=5&&i%10<=9||v===0&&i%100>=12&&i%100<=14)))return"many";return"other"; },
     function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length,t=parseInt(n.toString().replace(/^[^.]*\.?|0+$/g,""),10);n=Math.floor(n);if(i===1&&(v===0||i===0&&t===1))return"one";return"other"; },
     function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";if((v!==0)||n===0||(n!==1)&&n%100>=1&&n%100<=19)return"few";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(v===0&&i%10===1&&(i%100!==11))return"one";if(v===0&&(i%10===0||v===0&&(i%10>=5&&i%10<=9||v===0&&i%100>=11&&i%100<=14)))return"many";return"other"; },
+    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(v===0&&i%10===1&&(i%100!==11))return"one";if(v===0&&i%10>=2&&i%10<=4&&!(i%100>=12&&i%100<=14))return"few";if(v===0&&(i%10===0||v===0&&(i%10>=5&&i%10<=9||v===0&&i%100>=11&&i%100<=14)))return"many";return"other"; },
     function (n) { var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";if(n>=2&&n<=10)return"few";return"other"; },
     function (n) { var i=Math.floor(Math.abs(n)),f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(n===0||n===1||i===0&&f===1)return"one";return"other"; },
     function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(v===0&&i%100===1)return"one";if(v===0&&i%100===2)return"two";if(v===0&&(i%100>=3&&i%100<=4||(v!==0)))return"few";return"other"; },
-    function (n) { n=Math.floor(n);if(n>=0&&n<=1||n>=11&&n<=99)return"one";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(v===0&&i%10===1&&(i%100!==11))return"one";if(v===0&&i%10>=2&&i%10<=4&&!(i%100>=12&&i%100<=14))return"few";if(v===0&&(i%10===0||v===0&&(i%10>=5&&i%10<=9||v===0&&i%100>=11&&i%100<=14)))return"many";return"other"; }
+    function (n) { n=Math.floor(n);if(n>=0&&n<=1||n>=11&&n<=99)return"one";return"other"; }
     ];
     $$core$$default.__addLocaleData({locale:"aa", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
     $$core$$default.__addLocaleData({locale:"af", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
@@ -1769,53 +1768,54 @@
     $$core$$default.__addLocaleData({locale:"ak", messageformat:{pluralFunction:$$src$full$$funcs[2]}});
     $$core$$default.__addLocaleData({locale:"am", messageformat:{pluralFunction:$$src$full$$funcs[3]}});
     $$core$$default.__addLocaleData({locale:"ar", messageformat:{pluralFunction:$$src$full$$funcs[4]}});
-    $$core$$default.__addLocaleData({locale:"as", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
+    $$core$$default.__addLocaleData({locale:"as", messageformat:{pluralFunction:$$src$full$$funcs[5]}});
     $$core$$default.__addLocaleData({locale:"asa", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"ast", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
+    $$core$$default.__addLocaleData({locale:"ast", messageformat:{pluralFunction:$$src$full$$funcs[5]}});
     $$core$$default.__addLocaleData({locale:"az", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"bas", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"be", messageformat:{pluralFunction:$$src$full$$funcs[5]}});
+    $$core$$default.__addLocaleData({locale:"be", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
     $$core$$default.__addLocaleData({locale:"bem", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"bez", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"bg", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"bm", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
+    $$core$$default.__addLocaleData({locale:"bm", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"bn", messageformat:{pluralFunction:$$src$full$$funcs[3]}});
-    $$core$$default.__addLocaleData({locale:"bo", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
-    $$core$$default.__addLocaleData({locale:"br", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
+    $$core$$default.__addLocaleData({locale:"bo", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
+    $$core$$default.__addLocaleData({locale:"br", messageformat:{pluralFunction:$$src$full$$funcs[8]}});
     $$core$$default.__addLocaleData({locale:"brx", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"bs", messageformat:{pluralFunction:$$src$full$$funcs[8]}});
+    $$core$$default.__addLocaleData({locale:"bs", messageformat:{pluralFunction:$$src$full$$funcs[9]}});
     $$core$$default.__addLocaleData({locale:"byn", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"ca", messageformat:{pluralFunction:$$src$full$$funcs[9]}});
+    $$core$$default.__addLocaleData({locale:"ca", messageformat:{pluralFunction:$$src$full$$funcs[5]}});
     $$core$$default.__addLocaleData({locale:"cgg", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"chr", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"cs", messageformat:{pluralFunction:$$src$full$$funcs[10]}});
     $$core$$default.__addLocaleData({locale:"cy", messageformat:{pluralFunction:$$src$full$$funcs[11]}});
     $$core$$default.__addLocaleData({locale:"da", messageformat:{pluralFunction:$$src$full$$funcs[12]}});
     $$core$$default.__addLocaleData({locale:"dav", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"de", messageformat:{pluralFunction:$$src$full$$funcs[9]}});
+    $$core$$default.__addLocaleData({locale:"de", messageformat:{pluralFunction:$$src$full$$funcs[5]}});
     $$core$$default.__addLocaleData({locale:"dje", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
     $$core$$default.__addLocaleData({locale:"dua", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
     $$core$$default.__addLocaleData({locale:"dyo", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"dz", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
+    $$core$$default.__addLocaleData({locale:"dz", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"ebu", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
     $$core$$default.__addLocaleData({locale:"ee", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"el", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"en", messageformat:{pluralFunction:$$src$full$$funcs[9]}});
+    $$core$$default.__addLocaleData({locale:"en", messageformat:{pluralFunction:$$src$full$$funcs[5]}});
     $$core$$default.__addLocaleData({locale:"eo", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"es", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"et", messageformat:{pluralFunction:$$src$full$$funcs[9]}});
+    $$core$$default.__addLocaleData({locale:"et", messageformat:{pluralFunction:$$src$full$$funcs[5]}});
     $$core$$default.__addLocaleData({locale:"eu", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"ewo", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
     $$core$$default.__addLocaleData({locale:"fa", messageformat:{pluralFunction:$$src$full$$funcs[3]}});
     $$core$$default.__addLocaleData({locale:"ff", messageformat:{pluralFunction:$$src$full$$funcs[13]}});
-    $$core$$default.__addLocaleData({locale:"fi", messageformat:{pluralFunction:$$src$full$$funcs[14]}});
+    $$core$$default.__addLocaleData({locale:"fi", messageformat:{pluralFunction:$$src$full$$funcs[5]}});
     $$core$$default.__addLocaleData({locale:"fil", messageformat:{pluralFunction:$$src$full$$funcs[14]}});
     $$core$$default.__addLocaleData({locale:"fo", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"fr", messageformat:{pluralFunction:$$src$full$$funcs[13]}});
     $$core$$default.__addLocaleData({locale:"fur", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
+    $$core$$default.__addLocaleData({locale:"fy", messageformat:{pluralFunction:$$src$full$$funcs[5]}});
     $$core$$default.__addLocaleData({locale:"ga", messageformat:{pluralFunction:$$src$full$$funcs[15]}});
     $$core$$default.__addLocaleData({locale:"gd", messageformat:{pluralFunction:$$src$full$$funcs[16]}});
-    $$core$$default.__addLocaleData({locale:"gl", messageformat:{pluralFunction:$$src$full$$funcs[9]}});
+    $$core$$default.__addLocaleData({locale:"gl", messageformat:{pluralFunction:$$src$full$$funcs[5]}});
     $$core$$default.__addLocaleData({locale:"gsw", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"gu", messageformat:{pluralFunction:$$src$full$$funcs[3]}});
     $$core$$default.__addLocaleData({locale:"guz", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
@@ -1824,32 +1824,32 @@
     $$core$$default.__addLocaleData({locale:"haw", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"he", messageformat:{pluralFunction:$$src$full$$funcs[18]}});
     $$core$$default.__addLocaleData({locale:"hi", messageformat:{pluralFunction:$$src$full$$funcs[3]}});
-    $$core$$default.__addLocaleData({locale:"hr", messageformat:{pluralFunction:$$src$full$$funcs[8]}});
+    $$core$$default.__addLocaleData({locale:"hr", messageformat:{pluralFunction:$$src$full$$funcs[9]}});
     $$core$$default.__addLocaleData({locale:"hu", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"hy", messageformat:{pluralFunction:$$src$full$$funcs[13]}});
     $$core$$default.__addLocaleData({locale:"ia", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"id", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
-    $$core$$default.__addLocaleData({locale:"ig", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
-    $$core$$default.__addLocaleData({locale:"ii", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
+    $$core$$default.__addLocaleData({locale:"id", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
+    $$core$$default.__addLocaleData({locale:"ig", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
+    $$core$$default.__addLocaleData({locale:"ii", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"is", messageformat:{pluralFunction:$$src$full$$funcs[19]}});
-    $$core$$default.__addLocaleData({locale:"it", messageformat:{pluralFunction:$$src$full$$funcs[9]}});
-    $$core$$default.__addLocaleData({locale:"ja", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
+    $$core$$default.__addLocaleData({locale:"it", messageformat:{pluralFunction:$$src$full$$funcs[5]}});
+    $$core$$default.__addLocaleData({locale:"ja", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"jgo", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"jmc", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"ka", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"kab", messageformat:{pluralFunction:$$src$full$$funcs[13]}});
     $$core$$default.__addLocaleData({locale:"kam", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"kde", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
-    $$core$$default.__addLocaleData({locale:"kea", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
+    $$core$$default.__addLocaleData({locale:"kde", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
+    $$core$$default.__addLocaleData({locale:"kea", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"khq", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
     $$core$$default.__addLocaleData({locale:"ki", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
     $$core$$default.__addLocaleData({locale:"kk", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"kkj", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"kl", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"kln", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"km", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
+    $$core$$default.__addLocaleData({locale:"km", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"kn", messageformat:{pluralFunction:$$src$full$$funcs[3]}});
-    $$core$$default.__addLocaleData({locale:"ko", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
+    $$core$$default.__addLocaleData({locale:"ko", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"kok", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
     $$core$$default.__addLocaleData({locale:"ks", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"ksb", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
@@ -1859,9 +1859,9 @@
     $$core$$default.__addLocaleData({locale:"ky", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"lag", messageformat:{pluralFunction:$$src$full$$funcs[22]}});
     $$core$$default.__addLocaleData({locale:"lg", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"lkt", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
+    $$core$$default.__addLocaleData({locale:"lkt", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"ln", messageformat:{pluralFunction:$$src$full$$funcs[2]}});
-    $$core$$default.__addLocaleData({locale:"lo", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
+    $$core$$default.__addLocaleData({locale:"lo", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"lt", messageformat:{pluralFunction:$$src$full$$funcs[23]}});
     $$core$$default.__addLocaleData({locale:"lu", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
     $$core$$default.__addLocaleData({locale:"luo", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
@@ -1877,15 +1877,15 @@
     $$core$$default.__addLocaleData({locale:"ml", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"mn", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"mr", messageformat:{pluralFunction:$$src$full$$funcs[3]}});
-    $$core$$default.__addLocaleData({locale:"ms", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
+    $$core$$default.__addLocaleData({locale:"ms", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"mt", messageformat:{pluralFunction:$$src$full$$funcs[26]}});
     $$core$$default.__addLocaleData({locale:"mua", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"my", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
+    $$core$$default.__addLocaleData({locale:"my", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"naq", messageformat:{pluralFunction:$$src$full$$funcs[21]}});
     $$core$$default.__addLocaleData({locale:"nb", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"nd", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"ne", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"nl", messageformat:{pluralFunction:$$src$full$$funcs[9]}});
+    $$core$$default.__addLocaleData({locale:"nl", messageformat:{pluralFunction:$$src$full$$funcs[5]}});
     $$core$$default.__addLocaleData({locale:"nmg", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
     $$core$$default.__addLocaleData({locale:"nn", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"nnh", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
@@ -1907,13 +1907,13 @@
     $$core$$default.__addLocaleData({locale:"ru", messageformat:{pluralFunction:$$src$full$$funcs[30]}});
     $$core$$default.__addLocaleData({locale:"rw", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
     $$core$$default.__addLocaleData({locale:"rwk", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"sah", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
+    $$core$$default.__addLocaleData({locale:"sah", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"saq", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"sbp", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
     $$core$$default.__addLocaleData({locale:"se", messageformat:{pluralFunction:$$src$full$$funcs[21]}});
     $$core$$default.__addLocaleData({locale:"seh", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"ses", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
-    $$core$$default.__addLocaleData({locale:"sg", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
+    $$core$$default.__addLocaleData({locale:"ses", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
+    $$core$$default.__addLocaleData({locale:"sg", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"shi", messageformat:{pluralFunction:$$src$full$$funcs[31]}});
     $$core$$default.__addLocaleData({locale:"si", messageformat:{pluralFunction:$$src$full$$funcs[32]}});
     $$core$$default.__addLocaleData({locale:"sk", messageformat:{pluralFunction:$$src$full$$funcs[10]}});
@@ -1921,32 +1921,33 @@
     $$core$$default.__addLocaleData({locale:"sn", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"so", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"sq", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"sr", messageformat:{pluralFunction:$$src$full$$funcs[8]}});
+    $$core$$default.__addLocaleData({locale:"sr", messageformat:{pluralFunction:$$src$full$$funcs[9]}});
     $$core$$default.__addLocaleData({locale:"ss", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"ssy", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"st", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"sv", messageformat:{pluralFunction:$$src$full$$funcs[9]}});
-    $$core$$default.__addLocaleData({locale:"sw", messageformat:{pluralFunction:$$src$full$$funcs[9]}});
+    $$core$$default.__addLocaleData({locale:"sv", messageformat:{pluralFunction:$$src$full$$funcs[5]}});
+    $$core$$default.__addLocaleData({locale:"sw", messageformat:{pluralFunction:$$src$full$$funcs[5]}});
     $$core$$default.__addLocaleData({locale:"swc", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
     $$core$$default.__addLocaleData({locale:"ta", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"te", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"teo", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"tg", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"th", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
+    $$core$$default.__addLocaleData({locale:"th", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"ti", messageformat:{pluralFunction:$$src$full$$funcs[2]}});
     $$core$$default.__addLocaleData({locale:"tig", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"tn", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"to", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
+    $$core$$default.__addLocaleData({locale:"to", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"tr", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"ts", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"twq", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
     $$core$$default.__addLocaleData({locale:"tzm", messageformat:{pluralFunction:$$src$full$$funcs[34]}});
-    $$core$$default.__addLocaleData({locale:"uk", messageformat:{pluralFunction:$$src$full$$funcs[35]}});
-    $$core$$default.__addLocaleData({locale:"ur", messageformat:{pluralFunction:$$src$full$$funcs[9]}});
+    $$core$$default.__addLocaleData({locale:"ug", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
+    $$core$$default.__addLocaleData({locale:"uk", messageformat:{pluralFunction:$$src$full$$funcs[30]}});
+    $$core$$default.__addLocaleData({locale:"ur", messageformat:{pluralFunction:$$src$full$$funcs[5]}});
     $$core$$default.__addLocaleData({locale:"uz", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"vai", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
     $$core$$default.__addLocaleData({locale:"ve", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"vi", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
+    $$core$$default.__addLocaleData({locale:"vi", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"vo", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"vun", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"wae", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
@@ -1954,9 +1955,9 @@
     $$core$$default.__addLocaleData({locale:"xh", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"xog", messageformat:{pluralFunction:$$src$full$$funcs[1]}});
     $$core$$default.__addLocaleData({locale:"yav", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"yo", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
+    $$core$$default.__addLocaleData({locale:"yo", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"zgh", messageformat:{pluralFunction:$$src$full$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"zh", messageformat:{pluralFunction:$$src$full$$funcs[6]}});
+    $$core$$default.__addLocaleData({locale:"zh", messageformat:{pluralFunction:$$src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"zu", messageformat:{pluralFunction:$$src$full$$funcs[3]}});
     var $$src$full$$default = $$core$$default;
     this['IntlMessageFormat'] = $$src$full$$default;

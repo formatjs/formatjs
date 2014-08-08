@@ -40,27 +40,26 @@
     "test": "tests"
   },
   "devDependencies": {
-    "benchmark": "~1.0.0",
-    "chai": "~1.8.1",
-    "cldr": "~2.0.1",
+    "benchmark": "^1.0.0",
+    "chai": "^1.9.1",
+    "cldr": "^2.2.1",
     "grunt": "^0.4.5",
     "grunt-benchmark": "^0.3.0",
-    "grunt-bundle-jsnext-lib": "^0.2.0",
-    "grunt-cli": "~0.1.13",
+    "grunt-bundle-jsnext-lib": "^0.2.1",
+    "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-copy": "^0.5.0",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-uglify": "^0.5.0",
-    "intl": "~0.1.0",
-    "istanbul": "~0.1.46",
-    "mocha": "~1.15.1",
-    "xunit-file": "*",
-    "yeti": "~0.2.25"
+    "intl": "^0.1.4",
+    "istanbul": "^0.3.0",
+    "mocha": "^1.21.4",
+    "xunit-file": "0.0.5",
+    "yeti": "^0.2.29"
   },
   "scripts": {
-    "build-data": "grunt build-data",
     "test": "istanbul cover -- _mocha tests/ --reporter spec && tests/saucelabs.sh",
-    "prepublish": "grunt && npm test"
+    "prepublish": "grunt"
   },
   "dependencies": {
     "intl-messageformat-parser": "^0.4.0"
