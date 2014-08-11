@@ -1,5 +1,5 @@
-Intl Message Format
-===================
+Intl MessageFormat
+==================
 
 Format a string with placeholders, including plural and select support to create localized messages.
 
