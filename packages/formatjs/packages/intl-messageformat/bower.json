@@ -1,20 +1,33 @@
 {
   "name": "intl-messageformat",
-  "main": ["dist/intl-messageformat.js"],
+  "main": [
+    "dist/intl-messageformat.js"
+  ],
   "version": "1.0.0-rc-2",
   "homepage": "https://github.com/yahoo/intl-messageformat",
   "authors": [
+    "Eric Ferraiuolo <eferraiuolo@gmail.com>",
+    "Drew Folta <drew@folta.net>",
+    "Caridy Patino <caridy@gmail.com>",
     "Anthony Pipkin <a.pipkin@yahoo.com>"
   ],
-  "description": "implementation of the ECMA 402 proposal for MessageFormat",
+  "description": "Format a string with placeholders, including plural and select support to create localized messages.",
   "keywords": [
     "intl",
-    "messageformat",
-    "i18n"
+    "i18n",
+    "MessageFormat"
   ],
-  "license": "Yahoo BSD",
+  "license": "BSD",
   "ignore": [
     "**/.*",
-    "!dist/*.js"
+    "!dist/*.js",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "moduleType": [
+    "es6",
+    "globals"
   ]
 }

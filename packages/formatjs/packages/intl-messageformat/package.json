@@ -7,17 +7,11 @@
     "i18n",
     "MessageFormat"
   ],
-  "author": "Anthony Pipkin <a.pipkin@yahoo.com>",
+  "author": "Eric Ferraiuolo <eferraiuolo@gmail.com>",
   "contributors": [
     "Drew Folta <drew@folta.net>",
     "Caridy Patino <caridy@gmail.com>",
-    "Eric Ferraiuolo <eferraiuolo@gmail.com>"
-  ],
-  "licenses": [
-    {
-      "type": "Yahoo BSD",
-      "url": "https://github.com/yahoo/intl-messageformat/blob/master/LICENSE"
-    }
+    "Anthony Pipkin <a.pipkin@yahoo.com>"
   ],
   "bugs": {
     "url": "https://github.com/yahoo/intl-messageformat/issues"
@@ -52,5 +46,10 @@
   },
   "dependencies": {
     "intl-messageformat-parser": "^1.0.0-rc-1"
-  }
+  },
+  "homepage": "https://github.com/yahoo/intl-messageformat",
+  "directories": {
+    "test": "tests"
+  },
+  "license": "BSD"
 }
