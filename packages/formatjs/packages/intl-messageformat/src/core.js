@@ -24,8 +24,8 @@ function MessageFormat(message, locales, formats) {
         throw new TypeError('A message must be provided as a String or AST.');
     }
 
-    // Creates a new object with the specified `formats` merged with the
-    // default formats.
+    // Creates a new object with the specified `formats` merged with the default
+    // formats.
     formats = this._mergeFormats(MessageFormat.FORMATS, formats);
 
     // Defined first because it's used to build the format pattern.
@@ -34,20 +34,20 @@ function MessageFormat(message, locales, formats) {
     var pluralFn = MessageFormat.__localeData__[this._locale].pluralFunction;
 
     // Define the `pattern` property, a compiled pattern that is highly
-    // optimized for repeated `format()` invocations. **Note:** This passes
-    // the `locales` set provided to the constructor instead of just the
-    // resolved locale.
+    // optimized for repeated `format()` invocations. **Note:** This passes the
+    // `locales` set provided to the constructor instead of just the resolved
+    // locale.
     var pattern = this._compilePattern(ast, locales, formats, pluralFn);
     defineProperty(this, '_pattern', {value: pattern});
 
-    // Bind `format()` method to `this` so it can be passed by reference
-    // like the other `Intl` APIs.
+    // Bind `format()` method to `this` so it can be passed by reference like
+    // the other `Intl` APIs.
     this.format = fnBind.call(this.format, this);
 }
 
-// Default format options used as the prototype of the `formats` provided to
-// the constructor. These are used when constructing the internal
-// Intl.NumberFormat and Intl.DateTimeFormat instances.
+// Default format options used as the prototype of the `formats` provided to the
+// constructor. These are used when constructing the internal Intl.NumberFormat
+// and Intl.DateTimeFormat instances.
 defineProperty(MessageFormat, 'FORMATS', {
     enumerable: true,
 
@@ -148,8 +148,8 @@ defineProperty(MessageFormat, '__addLocaleData', {value: function (data) {
 // Defines `__parse()` static method as an exposed private.
 defineProperty(MessageFormat, '__parse', {value: parser.parse});
 
-// Define public `defaultLocale` property which is set when the first bundle
-// of locale data is added.
+// Define public `defaultLocale` property which is set when the first bundle of
+// locale data is added.
 defineProperty(MessageFormat, 'defaultLocale', {
     enumerable: true,
     writable  : true,
@@ -194,8 +194,8 @@ MessageFormat.prototype._format = function (pattern, values) {
 
         value = values[id];
 
-        // Recursively format plural and select parts' option — which can be
-        // a nested pattern structure. The choosing of the option to use is
+        // Recursively format plural and select parts' option — which can be a
+        // nested pattern structure. The choosing of the option to use is
         // abstracted-by and delegated-to the part helper object.
         if (part.options) {
             result += this._format(part.getOption(value), values);

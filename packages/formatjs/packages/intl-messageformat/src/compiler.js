@@ -53,9 +53,9 @@ Compiler.prototype.compileMessage = function (ast) {
 };
 
 Compiler.prototype.compileMessageText = function (element) {
-    // When this `element` is part of plural sub-pattern and its value
-    // contains an unescaped '#', use a `PluralOffsetString` helper to
-    // properly output the number with the correct offset in the string.
+    // When this `element` is part of plural sub-pattern and its value contains
+    // an unescaped '#', use a `PluralOffsetString` helper to properly output
+    // the number with the correct offset in the string.
     if (this.currentPlural && /(^|[^\\])#/g.test(element.value)) {
         // Create a cache a NumberFormat instance that can be reused for any
         // PluralOffsetString instance in this message.
@@ -125,9 +125,9 @@ Compiler.prototype.compileOptions = function (element) {
         options     = format.options,
         optionsHash = {};
 
-    // Save the current plural element, if any, then set it to a new value
-    // when compiling the options sub-patterns. This conform's the spec's
-    // algorithm for handling `"#"` synax in message text.
+    // Save the current plural element, if any, then set it to a new value when
+    // compiling the options sub-patterns. This conform's the spec's algorithm
+    // for handling `"#"` synax in message text.
     this.pluralStack.push(this.currentPlural);
     this.currentPlural = format.type === 'pluralFormat' ? element : null;
 

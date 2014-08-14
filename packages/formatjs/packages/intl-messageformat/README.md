@@ -160,7 +160,6 @@ This software is free to use under the Yahoo! Inc. BSD license.
 See the [LICENSE file][LICENSE] for license text and copyright information.
 
 
-
 [DAVID]: https://david-dm.org/yahoo/intl-messageformat
 [TRAVIS]: https://travis-ci.org/yahoo/intl-messageformat
 [NPM]: https://www.npmjs.org/package/intl-messageformat
