@@ -5,6 +5,7 @@
   "main": "index.js",
   "jsnext:main": "src/formats.js",
   "scripts": {
+    "prepublish": "grunt",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
