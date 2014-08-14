@@ -1,0 +1,23 @@
+{
+  "name": "intl-format-cache",
+  "version": "1.0.0",
+  "description": "Produces instances of JavaScript `Intl` formats, and caches them for reuse.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yahoo/intl-format-cache.git"
+  },
+  "keywords": [
+    "intl",
+    "i18n"
+  ],
+  "author": "Eric Ferraiuolo <eferraiuolo@gmail.com>",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/yahoo/intl-format-cache/issues"
+  },
+  "homepage": "https://github.com/yahoo/intl-format-cache"
+}
