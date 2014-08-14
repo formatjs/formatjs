@@ -138,6 +138,11 @@ defineProperty(MessageFormat, '__addLocaleData', {value: function (data) {
 
     availableLocales.push(locale);
     localeData[locale] = data.messageformat;
+
+    // Assign as `defaultLocale` if there isn't already a default.
+    if (!MessageFormat.defaultLocale) {
+        MessageFormat.defaultLocale = locale;
+    }
 }});
 
 // Defines `__parse()` static method as an exposed private.
@@ -148,7 +153,7 @@ defineProperty(MessageFormat, '__parse', {value: parser.parse});
 defineProperty(MessageFormat, 'defaultLocale', {
     enumerable: true,
     writable  : true,
-    value     : 'en'
+    value     : undefined
 });
 
 MessageFormat.prototype.format = function (values) {

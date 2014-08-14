@@ -5,7 +5,7 @@
  */
 
 /*jshint node:true */
-/*global describe,it,beforeEach */
+/*global describe,it,beforeEach,afterEach */
 'use strict';
 
 var chai,
@@ -46,16 +46,22 @@ describe('IntlMessageFormat', function () {
     // CONSTRUCTOR PROPERTIES
 
     describe('#_locale', function () {
-        var msgFmt;
+        var defaultLocale = IntlMessageFormat.defaultLocale;
+
+        afterEach(function () {
+            IntlMessageFormat.defaultLocale = defaultLocale;
+        });
 
         it('should be a default value', function () {
-            msgFmt = new IntlMessageFormat('');
-            /*jshint expr:true */
+            // Set defaultLocale to "en".
+            IntlMessageFormat.defaultLocale = 'en';
+
+            var msgFmt = new IntlMessageFormat('');
             expect(msgFmt._locale).to.equal('en');
         });
 
         it('should be equal to the second parameter\'s language code', function () {
-            msgFmt = new IntlMessageFormat('', 'en-US');
+            var msgFmt = new IntlMessageFormat('', 'en-US');
             expect(msgFmt._locale).to.equal('en');
         });
 
