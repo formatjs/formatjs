@@ -1,4 +1,3 @@
-example
-tests
-coverage
-dist
+example/
+tmp/
+Gruntfile.js

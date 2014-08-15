@@ -1,63 +1,57 @@
+'use strict';
+
 module.exports = function (grunt) {
-
-    var libpath = require('path');
-
     grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
+        clean: {
+            dist: 'dist/',
+            lib : 'lib/',
+            tmp : 'tmp/'
+        },
+
+        copy: {
+            tmp: {
+                expand : true,
+                flatten: true,
+                src    : 'tmp/src/*.*',
+                dest   : 'lib/'
+            }
+        },
+
         jshint: {
-            all: ['src/*.js']
+            src: 'src/*.js'
         },
-        concat: {
+
+        bundle_jsnext: {
+            dest: 'dist/mixin.js',
+
             options: {
-                separator: '\n\n',
-            },
-            dist: {
-                src: [
-                    'node_modules/intl-messageformat/build/intl-messageformat.complete.js',
-                    'src/component.js'
-                ],
-                dest: 'tmp/react-intl.js',
-            },
+                namespace: 'ReactIntlMixin'
+            }
         },
-        wrap: {
-            globals: {
-                src: ['tmp/react-intl.js'],
-                dest: 'dist/react-intl.js',
+
+        cjs_jsnext: {
+            dest: 'tmp/'
+        },
+
+        uglify: {
+            dist: {
+                src : 'dist/mixin.js',
+                dest: 'dist/mixin.min.js',
+
                 options: {
-                    seperator: '\n',
-                    indent: '    ',
-                    wrapper: [
-                        "(function (global) {",
-                            // content goes here...
-                        "})(window);"]
+                    preserveComments: 'some'
                 }
             }
-        },
-        uglify: {
-            options: {
-                preserveComments: 'some'
-            },
-            helpers: {
-                src: 'dist/react-intl.js',
-                dest: 'dist/react-intl.min.js'
-            }
-        },
-        watch: {
-          scripts: {
-            files: ['src/*.js'],
-            tasks: ['jshint', 'concat', 'wrap', 'uglify'],
-            options: {
-              spawn: false
-            }
-          }
         }
     });
 
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-wrap');
+    grunt.loadNpmTasks('grunt-bundle-jsnext-lib');
 
-    grunt.registerTask('default', ['jshint', 'concat', 'wrap', 'uglify']);
+    grunt.registerTask('default', [
+        'jshint', 'clean', 'bundle_jsnext', 'uglify', 'cjs_jsnext', 'copy:tmp'
+    ]);
 };

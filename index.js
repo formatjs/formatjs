@@ -1,9 +1,15 @@
+'use strict';
 
-// setting up the global requirements of the component
-global.Intl = global.Intl || global.IntlPolyfill || require('intl');
-global.IntlMessageFormat = require('intl-messageformat');
+// Expose `React` as a global, because the ReactIntlMixin assumes it's global.
+var oldReact = global.React;
 global.React = require('react');
 
-require('./src/component.js');
+exports = module.exports = require('./lib/mixin').default;
+Object.defineProperty(exports, 'default', {value: exports});
 
-module.exports = global.ReactIntlMixin;
+// Put back `global.React` to how it was.
+if (oldReact) {
+    global.React = oldReact;
+} else {
+    delete global.React;
+}
