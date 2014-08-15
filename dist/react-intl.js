@@ -2209,4 +2209,4 @@
     this['ReactIntlMixin'] = src$mixin$$default;
 }).call(this);
 
-//# sourceMappingURL=mixin.js.map
+//# sourceMappingURL=react-intl.js.map

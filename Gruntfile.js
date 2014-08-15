@@ -22,7 +22,7 @@ module.exports = function (grunt) {
         },
 
         bundle_jsnext: {
-            dest: 'dist/mixin.js',
+            dest: 'dist/react-intl.js',
 
             options: {
                 namespace: 'ReactIntlMixin'
@@ -35,8 +35,8 @@ module.exports = function (grunt) {
 
         uglify: {
             dist: {
-                src : 'dist/mixin.js',
-                dest: 'dist/mixin.min.js',
+                src : 'dist/react-intl.js',
+                dest: 'dist/react-intl.min.js',
 
                 options: {
                     preserveComments: 'some'
