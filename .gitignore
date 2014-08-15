@@ -1,5 +1,4 @@
-node_modules
-coverage
-tmp
-example/build/
-example/react-*/
+build/
+lib/
+node_modules/
+tmp/
