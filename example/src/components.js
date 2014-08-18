@@ -8,13 +8,13 @@ var Another = React.createClass({
     return <div>
       <h2>Instance #{this.props.foo}</h2>
       <h3>date helper with custom formatters:</h3>
-      {this.intlDate(new Date(), "time-style")}
+      {this.formatDate(new Date(), "time-style")}
 
       <h3>number helper with custom formatters:</h3>
-      {this.intlNumber(600, "eur")}
+      {this.formatNumber(600, "eur")}
 
       <h3>message helper:</h3>
-      {this.intlMessage(this.getIntlMessage('SHORT'), {
+      {this.formatMessage(this.getIntlMessage('SHORT'), {
         product: 'apples',
         price: 2000.15,
         deadline: new Date(),
@@ -58,32 +58,32 @@ var Container = global.Container = React.createClass({
   },
   render: function () {
     return <div>
-        <h1>`intlDate` helper</h1>
+        <h1>`formatDate` helper</h1>
 
         <h3>date helper:</h3>
-        {this.intlDate(this.props.someTimestamp)}
+        {this.formatDate(this.props.someTimestamp)}
         <h3>date helper with formatters:</h3>
-        {this.intlDate(this.props.someTimestamp, { hour: 'numeric', minute: 'numeric' })}
+        {this.formatDate(this.props.someTimestamp, { hour: 'numeric', minute: 'numeric' })}
         <h3>date helper with custom formatters:</h3>
-        {this.intlDate(this.props.someTimestamp, "time-style")}
+        {this.formatDate(this.props.someTimestamp, "time-style")}
 
         <hr/>
 
-        <h1>`intlNumber` helper</h1>
+        <h1>`formatNumber` helper</h1>
 
         <h3>number helper:</h3>
-        {this.intlNumber(400)}
+        {this.formatNumber(400)}
         <h3>number helper with formatters:</h3>
-        {this.intlNumber(400, { style: 'percent' })}
+        {this.formatNumber(400, { style: 'percent' })}
         <h3>number helper with custom formatters:</h3>
-        {this.intlNumber(400, "eur")}
+        {this.formatNumber(400, "eur")}
 
         <hr/>
 
-        <h1>`intlMessage` helper</h1>
+        <h1>`formatMessage` helper</h1>
 
         <h3>message helper:</h3>
-        {this.intlMessage(this.getIntlMessage('LONG'), {
+        {this.formatMessage(this.getIntlMessage('LONG'), {
           product: 'oranges',
           price: 40000.004,
           deadline: this.props.someTimestamp,

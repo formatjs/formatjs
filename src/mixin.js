@@ -9,36 +9,20 @@ import {
 
 // -----------------------------------------------------------------------------
 
+var typesSpec = {
+    locales: React.PropTypes.oneOfType([
+        React.PropTypes.string,
+        React.PropTypes.array
+    ]),
+
+    formats : React.PropTypes.object,
+    messages: React.PropTypes.object
+};
+
 export default {
-    contextTypes: {
-        locales: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.array
-        ]),
-
-        formats : React.PropTypes.object,
-        messages: React.PropTypes.object
-    },
-
-    childContextTypes: {
-        locales: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.array
-        ]),
-
-        formats : React.PropTypes.object,
-        messages: React.PropTypes.object
-    },
-
-    propsTypes: {
-        locales: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.array
-        ]),
-
-        formats : React.PropTypes.object,
-        messages: React.PropTypes.object
-    },
+    propsTypes       : typesSpec,
+    contextTypes     : typesSpec,
+    childContextTypes: typesSpec,
 
     getChildContext: function () {
         var childContext = Object.create(this.context);
@@ -58,7 +42,7 @@ export default {
         return childContext;
     },
 
-    intlDate: function (date, options) {
+    formatDate: function (date, options) {
         var locales = this.props.locales || this.context.locales,
             formats = this.props.formats || this.context.formats;
 
@@ -80,10 +64,11 @@ export default {
         return getDateTimeFormat(locales, options).format(date);
     },
 
-    intlTime: function (date, options) {
+    formatTime: function (date, options) {
         var formats = this.props.formats || this.context.formats;
 
-        // Lookup named format on `formats.time` before delegating to intlDate.
+        // Lookup named format on `formats.time` before delegating to
+        // `formatDate()`.
         if (options && typeof options === 'string') {
             try {
                 options = formats.time[options];
@@ -92,10 +77,10 @@ export default {
             }
         }
 
-        return this.intlDate(date, options);
+        return this.formatDate(date, options);
     },
 
-    intlNumber: function (num, options) {
+    formatNumber: function (num, options) {
         var locales = this.props.locales || this.context.locales,
             formats = this.props.formats || this.context.formats;
 
@@ -114,7 +99,7 @@ export default {
         return getNumberFormat(locales, options).format(num);
     },
 
-    intlMessage: function (message, values) {
+    formatMessage: function (message, values) {
         var locales = this.props.locales || this.context.locales,
             formats = this.props.formats || this.context.formats;
 
