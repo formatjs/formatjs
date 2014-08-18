@@ -13,6 +13,17 @@ global.ReactIntlMixin = require('../'); // require('react-intl');
 // requiring components
 require('./build/components.js');
 
+var i18n = {
+  locales: ["en-US"],
+  messages: {
+    SHORT: "{product} cost {price, number, usd} if ordered by {deadline, date, medium}",
+    LONG: "{product} cost {price, number, usd} (or {price, number, eur}) if ordered by {deadline, date, medium}"
+  }
+};
+
 console.log(React.renderComponentToString(
-  global.Container({ locales: ["en-US"] })
+  global.Container({
+    locales: i18n.locales,
+    messages: i18n.messages
+  })
 ));

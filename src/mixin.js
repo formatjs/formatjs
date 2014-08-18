@@ -16,7 +16,8 @@ export default {
             React.PropTypes.array
         ]),
 
-        formats: React.PropTypes.object
+        formats : React.PropTypes.object,
+        messages: React.PropTypes.object
     },
 
     childContextTypes: {
@@ -25,7 +26,8 @@ export default {
             React.PropTypes.array
         ]),
 
-        formats: React.PropTypes.object
+        formats : React.PropTypes.object,
+        messages: React.PropTypes.object
     },
 
     propsTypes: {
@@ -34,7 +36,8 @@ export default {
             React.PropTypes.array
         ]),
 
-        formats: React.PropTypes.object
+        formats : React.PropTypes.object,
+        messages: React.PropTypes.object
     },
 
     getChildContext: function () {
@@ -46,6 +49,10 @@ export default {
 
         if (this.props.formats) {
             childContext.formats = this.props.formats;
+        }
+
+        if (this.props.messages) {
+            childContext.messages = this.props.messages;
         }
 
         return childContext;
@@ -123,5 +130,24 @@ export default {
         }
 
         return message.format(values);
+    },
+
+    getIntlMessage: function (path) {
+        var messages  = this.props.messages || this.context.messages,
+            pathParts = path.split('.');
+
+        var message;
+
+        try {
+            message = pathParts.reduce(function (obj, pathPart) {
+                return obj[pathPart];
+            }, messages);
+        } finally {
+            if (message === undefined) {
+                throw new ReferenceError('Could not find Intl message: ' + path);
+            }
+        }
+
+        return message;
     }
 };
