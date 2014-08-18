@@ -7,13 +7,24 @@
   <body>
     <div id="example"></div>
     <script src="http://fb.me/react-0.11.1.min.js"></script>
-    <script src="../dist/mixin.js"></script>
+    <script src="../dist/react-intl.js"></script>
     <script src="build/components.js"></script>
     <script>
-    React.renderComponent(
-      Container({ locales: ["en-US"] }),
-      document.getElementById('example')
-    );
+      var i18n = {
+        locales: ["en-US"],
+        messages: {
+          SHORT: "{product} cost {price, number, usd} if ordered by {deadline, date, medium}",
+          LONG: "{product} cost {price, number, usd} (or {price, number, eur}) if ordered by {deadline, date, medium}"
+        }
+      };
+
+      React.renderComponent(
+        Container({
+          locales: i18n.locales,
+          messages: i18n.messages
+        }),
+        document.getElementById('example')
+      );
     </script>
   </body>
 </html>
