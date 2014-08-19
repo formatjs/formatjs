@@ -3,6 +3,10 @@ React Intl Mixin
 
 This repository contains a [ReactJS][] Component Mixin to implement Internationalization features for a React component. The Intl Mixin provides a set of methods that can be used in the `render()` method of the component to provide date, number, and message formatting, as well as plural and gender based translations.
 
+[![npm Version][npm-badge]][npm]
+[![Dependency Status][david-badge]][david]
+
+
 Overview
 --------
 
@@ -393,6 +397,10 @@ This software is free to use under the Yahoo Inc. BSD license.
 See the [LICENSE file][] for license text and copyright information.
 
 
+[npm]: https://www.npmjs.org/package/react-intl
+[npm-badge]: https://img.shields.io/npm/v/react-intl.svg?style=flat
+[david]: https://david-dm.org/yahoo/react-intl
+[david-badge]: https://img.shields.io/david/yahoo/react-intl.svg?style=flat
 [Intl.js]: https://github.com/andyearnshaw/Intl.js
 [ECMAScript 402]: http://www.ecma-international.org/ecma-402/1.0/
 [ReactJS]: http://facebook.github.io/react/
