@@ -40,15 +40,15 @@ A very common example is formatting messages that have numbers with plural lable
 var MESSAGES = {
     'en-US': {
         NUM_PHOTOS: 'You have {numPhotos, plural, ' +
-            '0= {no photos.}' +
-            '1= {one photo.}' +
+            '=0 {no photos.}' +
+            '=1 {one photo.}' +
             'other {# photos.}}'
     },
 
     'es-MX': {
         NUM_PHOTOS: 'Usted {numPhotos, plural, ' +
-            '0= {no tiene fotos.}' +
-            '1= {tiene una foto.}' +
+            '=0 {no tiene fotos.}' +
+            '=1 {tiene una foto.}' +
             'other {tiene # fotos.}}'
     }
 };
