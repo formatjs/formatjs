@@ -26,7 +26,7 @@ Messages are provided into the constructor as `String` message, or [pre-parsed A
 var msg = new IntlMessageFormat(message, locales, [formats]);
 ```
 
-The string `message` is parsed, then stored internally in a compiled form that is optomized for generating the formatted string via the `format()` method.
+The string `message` is parsed, then stored internally in a compiled form that is optimized for generating the formatted string via the `format()` method.
 
 ```javascript
 var output = msg.format(values);
