@@ -111,9 +111,9 @@
     };
 
     $$compiler$$Compiler.prototype.compileMessageText = function (element) {
-        // When this `element` is part of plural sub-pattern and its value
-        // contains an unescaped '#', use a `PluralOffsetString` helper to
-        // properly output the number with the correct offset in the string.
+        // When this `element` is part of plural sub-pattern and its value contains
+        // an unescaped '#', use a `PluralOffsetString` helper to properly output
+        // the number with the correct offset in the string.
         if (this.currentPlural && /(^|[^\\])#/g.test(element.value)) {
             // Create a cache a NumberFormat instance that can be reused for any
             // PluralOffsetString instance in this message.
@@ -183,9 +183,9 @@
             options     = format.options,
             optionsHash = {};
 
-        // Save the current plural element, if any, then set it to a new value
-        // when compiling the options sub-patterns. This conform's the spec's
-        // algorithm for handling `"#"` synax in message text.
+        // Save the current plural element, if any, then set it to a new value when
+        // compiling the options sub-patterns. This conform's the spec's algorithm
+        // for handling `"#"` synax in message text.
         this.pluralStack.push(this.currentPlural);
         this.currentPlural = format.type === 'pluralFormat' ? element : null;
 
@@ -1519,8 +1519,8 @@
             throw new TypeError('A message must be provided as a String or AST.');
         }
 
-        // Creates a new object with the specified `formats` merged with the
-        // default formats.
+        // Creates a new object with the specified `formats` merged with the default
+        // formats.
         formats = this._mergeFormats($$core$$MessageFormat.FORMATS, formats);
 
         // Defined first because it's used to build the format pattern.
@@ -1529,20 +1529,20 @@
         var pluralFn = $$core$$MessageFormat.__localeData__[this._locale].pluralFunction;
 
         // Define the `pattern` property, a compiled pattern that is highly
-        // optimized for repeated `format()` invocations. **Note:** This passes
-        // the `locales` set provided to the constructor instead of just the
-        // resolved locale.
+        // optimized for repeated `format()` invocations. **Note:** This passes the
+        // `locales` set provided to the constructor instead of just the resolved
+        // locale.
         var pattern = this._compilePattern(ast, locales, formats, pluralFn);
         $$es5$$defineProperty(this, '_pattern', {value: pattern});
 
-        // Bind `format()` method to `this` so it can be passed by reference
-        // like the other `Intl` APIs.
+        // Bind `format()` method to `this` so it can be passed by reference like
+        // the other `Intl` APIs.
         this.format = $$es5$$fnBind.call(this.format, this);
     }
 
-    // Default format options used as the prototype of the `formats` provided to
-    // the constructor. These are used when constructing the internal
-    // Intl.NumberFormat and Intl.DateTimeFormat instances.
+    // Default format options used as the prototype of the `formats` provided to the
+    // constructor. These are used when constructing the internal Intl.NumberFormat
+    // and Intl.DateTimeFormat instances.
     $$es5$$defineProperty($$core$$MessageFormat, 'FORMATS', {
         enumerable: true,
 
@@ -1638,13 +1638,25 @@
     // Defines `__parse()` static method as an exposed private.
     $$es5$$defineProperty($$core$$MessageFormat, '__parse', {value: intl$messageformat$parser$$default.parse});
 
-    // Define public `defaultLocale` property which is set when the first bundle
-    // of locale data is added.
+    // Define public `defaultLocale` property which can be set by the developer, or
+    // it will be set when the first MessageFormat instance is created by leveraging
+    // the resolved locale from `Intl`.
     $$es5$$defineProperty($$core$$MessageFormat, 'defaultLocale', {
         enumerable: true,
         writable  : true,
-        value     : 'en'
+        value     : undefined
     });
+
+    $$es5$$defineProperty($$core$$MessageFormat, '__getDefaultLocale', {value: function () {
+        if (!$$core$$MessageFormat.defaultLocale) {
+            // Leverage the locale-resolving capabilities of `Intl` to determine
+            // what the default locale should be.
+            $$core$$MessageFormat.defaultLocale =
+                    new Intl.NumberFormat().resolvedOptions().locale;
+        }
+
+        return $$core$$MessageFormat.defaultLocale;
+    }});
 
     $$core$$MessageFormat.prototype.format = function (values) {
         return this._format(this._pattern, values);
@@ -1684,8 +1696,8 @@
 
             value = values[id];
 
-            // Recursively format plural and select parts' option — which can be
-            // a nested pattern structure. The choosing of the option to use is
+            // Recursively format plural and select parts' option — which can be a
+            // nested pattern structure. The choosing of the option to use is
             // abstracted-by and delegated-to the part helper object.
             if (part.options) {
                 result += this._format(part.getOption(value), values);
@@ -1742,8 +1754,10 @@
             }
         }
 
-        return locale || $$core$$MessageFormat.defaultLocale;
+        return locale || $$core$$MessageFormat.__getDefaultLocale().split('-')[0];
     };
+    var src$full$$default = $$core$$default;
+
     var src$full$$funcs = [
     function (n) {  },
     function (n) { n=Math.floor(n);if(n===1)return"one";return"other"; },
@@ -1978,7 +1992,6 @@
     $$core$$default.__addLocaleData({locale:"zgh", messageformat:{pluralFunction:src$full$$funcs[0]}});
     $$core$$default.__addLocaleData({locale:"zh", messageformat:{pluralFunction:src$full$$funcs[7]}});
     $$core$$default.__addLocaleData({locale:"zu", messageformat:{pluralFunction:src$full$$funcs[3]}});
-    var src$full$$default = $$core$$default;
     this['IntlMessageFormat'] = src$full$$default;
 }).call(this);
 
