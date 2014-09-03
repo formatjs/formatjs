@@ -138,23 +138,30 @@ defineProperty(MessageFormat, '__addLocaleData', {value: function (data) {
 
     availableLocales.push(locale);
     localeData[locale] = data.messageformat;
-
-    // Assign as `defaultLocale` if there isn't already a default.
-    if (!MessageFormat.defaultLocale) {
-        MessageFormat.defaultLocale = locale;
-    }
 }});
 
 // Defines `__parse()` static method as an exposed private.
 defineProperty(MessageFormat, '__parse', {value: parser.parse});
 
-// Define public `defaultLocale` property which is set when the first bundle of
-// locale data is added.
+// Define public `defaultLocale` property which can be set by the developer, or
+// it will be set when the first MessageFormat instance is created by leveraging
+// the resolved locale from `Intl`.
 defineProperty(MessageFormat, 'defaultLocale', {
     enumerable: true,
     writable  : true,
     value     : undefined
 });
+
+defineProperty(MessageFormat, '__getDefaultLocale', {value: function () {
+    if (!MessageFormat.defaultLocale) {
+        // Leverage the locale-resolving capabilities of `Intl` to determine
+        // what the default locale should be.
+        MessageFormat.defaultLocale =
+                new Intl.NumberFormat().resolvedOptions().locale;
+    }
+
+    return MessageFormat.defaultLocale;
+}});
 
 MessageFormat.prototype.format = function (values) {
     return this._format(this._pattern, values);
@@ -252,5 +259,5 @@ MessageFormat.prototype._resolveLocale = function (locales) {
         }
     }
 
-    return locale || MessageFormat.defaultLocale;
+    return locale || MessageFormat.__getDefaultLocale().split('-')[0];
 };
