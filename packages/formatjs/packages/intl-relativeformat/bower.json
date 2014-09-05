@@ -1,0 +1,31 @@
+{
+  "name": "intl-relativeformat",
+  "main": [
+    "dist/intl-relativeformat.js"
+  ],
+  "version": "1.0.0-rc-1",
+  "homepage": "https://github.com/yahoo/intl-relativeformat",
+  "authors": [
+    "Drew Folta <drew@folta.net>",
+    "Eric Ferraiuolo <eferraiuolo@gmail.com>"
+  ],
+  "description": "Implementation of the ECMA 402 proposal for relativeformat.",
+  "keywords": [
+    "intl",
+    "i18n",
+    "relativeformat"
+  ],
+  "license": "BSD",
+  "ignore": [
+    "**/.*",
+    "!dist/*.js",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "moduleType": [
+    "es6",
+    "globals"
+  ]
+}
