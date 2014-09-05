@@ -5,7 +5,10 @@
   "keywords": [
     "intl",
     "i18n",
-    "MessageFormat"
+    "relative",
+    "moment",
+    "format",
+    "date"
   ],
   "author": "Caridy Patino <caridy@gmail.com>",
   "bugs": {
@@ -28,12 +31,13 @@
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-copy": "^0.5.0",
     "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-uglify": "^0.5.0",
+    "grunt-contrib-uglify": "^0.5.1",
     "intl": "^0.1.4",
-    "istanbul": "^0.3.0",
+    "istanbul": "^0.3.2",
     "mocha": "^1.21.4",
     "xunit-file": "0.0.5",
-    "yeti": "^0.2.29"
+    "yeti": "^0.2.29",
+    "moment": "^2.8.2"
   },
   "scripts": {
     "test": "istanbul cover -- _mocha tests/ --reporter spec && tests/saucelabs.sh",
