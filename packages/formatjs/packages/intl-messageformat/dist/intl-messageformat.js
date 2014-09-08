@@ -55,15 +55,6 @@
 
         return obj;
     };
-
-    var $$es5$$fnBind = Function.prototype.bind || function (thisObj) {
-        var fn   = this,
-            args = [].slice.call(arguments, 1);
-
-        return function () {
-            fn.apply(thisObj, args.concat([].slice.call(arguments)));
-        };
-    };
     var $$compiler$$default = $$compiler$$Compiler;
 
     function $$compiler$$Compiler(locales, formats, pluralFn) {
@@ -133,15 +124,16 @@
     };
 
     $$compiler$$Compiler.prototype.compileArgument = function (element) {
-        var format   = element.format,
-            formats  = this.formats,
-            locales  = this.locales,
-            pluralFn = this.pluralFn,
-            options;
+        var format = element.format;
 
         if (!format) {
             return new $$compiler$$StringFormat(element.id);
         }
+
+        var formats  = this.formats,
+            locales  = this.locales,
+            pluralFn = this.pluralFn,
+            options;
 
         switch (format.type) {
             case 'numberFormat':
@@ -1528,16 +1520,17 @@
 
         var pluralFn = $$core$$MessageFormat.__localeData__[this._locale].pluralFunction;
 
-        // Define the `pattern` property, a compiled pattern that is highly
-        // optimized for repeated `format()` invocations. **Note:** This passes the
-        // `locales` set provided to the constructor instead of just the resolved
-        // locale.
+        // Compile the `ast` to a pattern that is highly optimized for repeated
+        // `format()` invocations. **Note:** This passes the `locales` set provided
+        // to the constructor instead of just the resolved locale.
         var pattern = this._compilePattern(ast, locales, formats, pluralFn);
-        $$es5$$defineProperty(this, '_pattern', {value: pattern});
 
-        // Bind `format()` method to `this` so it can be passed by reference like
+        // "Bind" `format()` method to `this` so it can be passed by reference like
         // the other `Intl` APIs.
-        this.format = $$es5$$fnBind.call(this.format, this);
+        var messageFormat = this;
+        this.format = function (values) {
+            return messageFormat._format(pattern, values);
+        };
     }
 
     // Default format options used as the prototype of the `formats` provided to the
@@ -1657,10 +1650,6 @@
 
         return $$core$$MessageFormat.defaultLocale;
     }});
-
-    $$core$$MessageFormat.prototype.format = function (values) {
-        return this._format(this._pattern, values);
-    };
 
     $$core$$MessageFormat.prototype.resolvedOptions = function () {
         // TODO: Provide anything else?
