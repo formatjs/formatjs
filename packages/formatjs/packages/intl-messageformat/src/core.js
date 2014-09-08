@@ -7,7 +7,7 @@ See the accompanying LICENSE file for terms.
 /* jslint esnext: true */
 
 import {extend, hop} from './utils';
-import {defineProperty, objCreate, fnBind} from './es5';
+import {defineProperty, objCreate} from './es5';
 import Compiler from './compiler';
 import parser from 'intl-messageformat-parser';
 
@@ -33,16 +33,17 @@ function MessageFormat(message, locales, formats) {
 
     var pluralFn = MessageFormat.__localeData__[this._locale].pluralFunction;
 
-    // Define the `pattern` property, a compiled pattern that is highly
-    // optimized for repeated `format()` invocations. **Note:** This passes the
-    // `locales` set provided to the constructor instead of just the resolved
-    // locale.
+    // Compile the `ast` to a pattern that is highly optimized for repeated
+    // `format()` invocations. **Note:** This passes the `locales` set provided
+    // to the constructor instead of just the resolved locale.
     var pattern = this._compilePattern(ast, locales, formats, pluralFn);
-    defineProperty(this, '_pattern', {value: pattern});
 
-    // Bind `format()` method to `this` so it can be passed by reference like
+    // "Bind" `format()` method to `this` so it can be passed by reference like
     // the other `Intl` APIs.
-    this.format = fnBind.call(this.format, this);
+    var messageFormat = this;
+    this.format = function (values) {
+        return messageFormat._format(pattern, values);
+    };
 }
 
 // Default format options used as the prototype of the `formats` provided to the
@@ -162,10 +163,6 @@ defineProperty(MessageFormat, '__getDefaultLocale', {value: function () {
 
     return MessageFormat.defaultLocale;
 }});
-
-MessageFormat.prototype.format = function (values) {
-    return this._format(this._pattern, values);
-};
 
 MessageFormat.prototype.resolvedOptions = function () {
     // TODO: Provide anything else?

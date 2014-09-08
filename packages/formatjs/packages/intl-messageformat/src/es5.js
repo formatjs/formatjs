@@ -8,7 +8,7 @@ See the accompanying LICENSE file for terms.
 
 import {hop} from './utils';
 
-export {defineProperty, objCreate, fnBind};
+export {defineProperty, objCreate};
 
 // Purposely using the same implementation as the Intl.js `Intl` polyfill.
 // Copyright 2013 Andy Earnshaw, MIT License
@@ -44,13 +44,4 @@ var objCreate = Object.create || function (proto, props) {
     }
 
     return obj;
-};
-
-var fnBind = Function.prototype.bind || function (thisObj) {
-    var fn   = this,
-        args = [].slice.call(arguments, 1);
-
-    return function () {
-        fn.apply(thisObj, args.concat([].slice.call(arguments)));
-    };
 };

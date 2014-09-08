@@ -75,15 +75,16 @@ Compiler.prototype.compileMessageText = function (element) {
 };
 
 Compiler.prototype.compileArgument = function (element) {
-    var format   = element.format,
-        formats  = this.formats,
-        locales  = this.locales,
-        pluralFn = this.pluralFn,
-        options;
+    var format = element.format;
 
     if (!format) {
         return new StringFormat(element.id);
     }
+
+    var formats  = this.formats,
+        locales  = this.locales,
+        pluralFn = this.pluralFn,
+        options;
 
     switch (format.type) {
         case 'numberFormat':
