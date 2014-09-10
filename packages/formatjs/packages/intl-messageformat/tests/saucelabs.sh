@@ -78,7 +78,7 @@ sleep 5
 
 echo
 echo failed runs $failures
-if [[ "x0" != "x$failure" ]]; then
+if [[ "x0" != "x$failures" ]]; then
     exit 1
 fi
 exit 0
