@@ -3,13 +3,13 @@
   "main": [
     "dist/intl-relativeformat.js"
   ],
-  "version": "1.0.0-rc-1",
+  "version": "1.0.0-beta-1",
   "homepage": "https://github.com/yahoo/intl-relativeformat",
   "authors": [
-    "Drew Folta <drew@folta.net>",
+    "Caridy Patino <caridy@gmail.com>",
     "Eric Ferraiuolo <eferraiuolo@gmail.com>"
   ],
-  "description": "Implementation of the ECMA 402 proposal for relativeformat.",
+  "description": "Formats JavaScript dates to relative time strings.",
   "keywords": [
     "intl",
     "i18n",
@@ -18,7 +18,7 @@
   "license": "BSD",
   "ignore": [
     "**/.*",
-    "!dist/*.js",
+    "!dist/*",
     "node_modules",
     "bower_components",
     "test",
