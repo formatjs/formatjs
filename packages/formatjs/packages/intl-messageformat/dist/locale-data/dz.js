@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({"locale":"dz","pluralRuleFunction":function (n) {return"other";}});

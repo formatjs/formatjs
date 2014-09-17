@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({"locale":"ig","pluralRuleFunction":function (n) {return"other";}});

@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({"locale":"yo","pluralRuleFunction":function (n) {return"other";}});

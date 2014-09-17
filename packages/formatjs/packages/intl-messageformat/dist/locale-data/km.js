@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({"locale":"km","pluralRuleFunction":function (n) {return"other";}});

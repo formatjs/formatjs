@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({"locale":"th","pluralRuleFunction":function (n) {return"other";}});

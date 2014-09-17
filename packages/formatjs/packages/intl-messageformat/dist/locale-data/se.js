@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({"locale":"se","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";if(n===2)return"two";return"other";}});

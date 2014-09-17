@@ -3,7 +3,7 @@
   "main": [
     "dist/intl-messageformat.js"
   ],
-  "version": "1.0.0-rc-4",
+  "version": "1.0.0-rc-5",
   "homepage": "https://github.com/yahoo/intl-messageformat",
   "authors": [
     "Eric Ferraiuolo <eferraiuolo@gmail.com>",
@@ -20,7 +20,7 @@
   "license": "BSD",
   "ignore": [
     "**/.*",
-    "!dist/*.js",
+    "!dist/*",
     "node_modules",
     "bower_components",
     "test",

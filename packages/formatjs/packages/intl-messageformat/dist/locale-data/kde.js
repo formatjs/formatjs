@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({"locale":"kde","pluralRuleFunction":function (n) {return"other";}});

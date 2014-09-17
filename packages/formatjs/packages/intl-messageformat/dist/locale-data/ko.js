@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({"locale":"ko","pluralRuleFunction":function (n) {return"other";}});

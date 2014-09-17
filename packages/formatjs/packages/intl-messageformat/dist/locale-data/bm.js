@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({"locale":"bm","pluralRuleFunction":function (n) {return"other";}});
