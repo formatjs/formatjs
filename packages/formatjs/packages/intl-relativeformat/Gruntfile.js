@@ -20,12 +20,60 @@ module.exports = function (grunt) {
             }
         },
 
-        jshint: {
-            all: ['index.js', 'src/*.js', '!src/full.js', 'tests/*.js']
+        concat: {
+            dist_with_locales: {
+                src: ['dist/intl-relativeformat.js', 'dist/locale-data/*.js'],
+                dest: 'dist/intl-relativeformat-with-locales.js'
+            }
         },
 
-        build_locale_data: {
-            dest: 'src/full.js'
+        jshint: {
+            all: ['index.js', 'src/*.js', '!src/en.js', 'tests/*.js']
+        },
+
+        extract_cldr_data: {
+            options: {
+                fields : ['second', 'minute', 'hour', 'day', 'month', 'year'],
+                plurals: true
+            },
+
+            src_en: {
+                dest: 'src/en.js',
+
+                options: {
+                    locales: ['en'],
+                    prelude: '// GENERATED FILE\n',
+
+                    wrapEntry: function (entry) {
+                        return 'export default ' + entry + ';';
+                    }
+                }
+            },
+
+            lib_all: {
+                dest: 'lib/locales.js',
+
+                options: {
+                    prelude: [
+                        '// GENERATED FILE',
+                        'var IntlRelativeFormat = require("./core").default;\n\n'
+                    ].join('\n'),
+
+                    wrapEntry: function (entry) {
+                        return 'IntlRelativeFormat.__addLocaleData(' + entry + ');';
+                    }
+                }
+            },
+
+            dist_all: {
+                dest: 'dist/locale-data/',
+
+                options: {
+                    wrapEntry: function (entry) {
+                        return 'IntlRelativeFormat.__addLocaleData(' + entry + ');';
+                    }
+                }
+            }
         },
 
         bundle_jsnext: {
@@ -40,12 +88,18 @@ module.exports = function (grunt) {
         },
 
         uglify: {
-            all: {
-                src: 'dist/intl-relativeformat.js',
-                dest: 'dist/intl-relativeformat.min.js',
-
+            dist: {
                 options: {
                     preserveComments: 'some'
+                },
+
+                files: {
+                    'dist/intl-relativeformat.min.js': [
+                        'dist/intl-relativeformat.js'
+                    ],
+                    'dist/intl-relativeformat-with-locales.min.js': [
+                        'dist/intl-relativeformat-with-locales.js'
+                    ]
                 }
             }
         },
@@ -60,17 +114,29 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.loadTasks('./tasks');
-
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-bundle-jsnext-lib');
     grunt.loadNpmTasks('grunt-benchmark');
+    grunt.loadNpmTasks('grunt-extract-cldr-data');
 
-    grunt.registerTask('cldr', ['build_locale_data']);
+    grunt.registerTask('cldr', ['extract_cldr_data']);
+
+    grunt.registerTask('compile', [
+        'jshint',
+        'bundle_jsnext',
+        'concat:dist_with_locales',
+        'uglify:dist',
+        'cjs_jsnext',
+        'copy:tmp'
+    ]);
+
     grunt.registerTask('default', [
-        'jshint', 'clean', 'bundle_jsnext', 'uglify', 'cjs_jsnext', 'copy'
+        'clean',
+        'cldr',
+        'compile'
     ]);
 };

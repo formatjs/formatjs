@@ -1,7 +1,7 @@
 {
   "name": "intl-relativeformat",
-  "version": "1.0.0-rc-1",
-  "description": "implementation of the ECMA 402 proposal for relativeformat",
+  "version": "1.0.0-beta-1",
+  "description": "Formats JavaScript dates to relative time strings.",
   "keywords": [
     "intl",
     "i18n",
@@ -11,6 +11,9 @@
     "date"
   ],
   "author": "Caridy Patino <caridy@gmail.com>",
+  "contributors": [
+    "Eric Ferraiuolo <edf@ericf.me>"
+  ],
   "bugs": {
     "url": "https://github.com/yahoo/intl-relativeformat/issues"
   },
@@ -19,25 +22,29 @@
     "url": "git@github.com:yahoo/intl-relativeformat.git"
   },
   "main": "index.js",
-  "jsnext:main": "src/full.js",
+  "jsnext:main": "src/main.js",
+  "dependencies": {
+    "intl-messageformat": "^1.0.0-rc-5"
+  },
   "devDependencies": {
     "benchmark": "^1.0.0",
     "chai": "^1.9.1",
-    "cldr": "^2.2.1",
     "grunt": "^0.4.5",
     "grunt-benchmark": "^0.3.0",
     "grunt-bundle-jsnext-lib": "^0.2.1",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-concat": "^0.5.0",
     "grunt-contrib-copy": "^0.5.0",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-uglify": "^0.5.1",
+    "grunt-extract-cldr-data": "^1.0.0",
     "intl": "^0.1.4",
     "istanbul": "^0.3.2",
     "mocha": "^1.21.4",
+    "moment": "^2.8.2",
     "xunit-file": "0.0.5",
-    "yeti": "^0.2.29",
-    "moment": "^2.8.2"
+    "yeti": "^0.2.29"
   },
   "scripts": {
     "test": "istanbul cover -- _mocha tests/ --reporter spec && tests/saucelabs.sh",
@@ -47,8 +54,5 @@
   "directories": {
     "test": "tests"
   },
-  "license": "BSD",
-  "dependencies": {
-    "intl-messageformat": "^1.0.0-rc-3"
-  }
+  "license": "BSD"
 }

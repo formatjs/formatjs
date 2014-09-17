@@ -6,33 +6,26 @@ See the accompanying LICENSE file for terms.
 
 /* jslint esnext: true */
 
-import {defineProperty, objCreate, fnBind} from './es5';
-import IntlMessageFormat from "intl-messageformat";
+import {defineProperty, objCreate} from './es5';
+import IntlMessageFormat from 'intl-messageformat';
 import diff from './diff';
 
 export default RelativeFormat;
-
-// default relative time thresholds from moment.js to align with it
-var thresholds = {
-    second: 45,  // seconds to minute
-    minute: 45,  // minutes to hour
-    hour: 22,  // hours to day
-    day: 26,  // days to month
-    month: 11   // months to year
-};
 
 var priority = ['second', 'minute', 'hour', 'day', 'month', 'year'];
 
 // -- RelativeFormat --------------------------------------------------------
 
 function RelativeFormat(locales, options) {
-    defineProperty(this, '_locale',  {value: this._resolveLocale(locales)});
-    defineProperty(this, '_options', {value: options || {}});
+    defineProperty(this, '_locale', {value: this._resolveLocale(locales)});
     defineProperty(this, '_messages', {value: objCreate(null)});
 
-    // Bind `format()` method to `this` so it can be passed by reference like
+    // "Bind" `format()` method to `this` so it can be passed by reference like
     // the other `Intl` APIs.
-    this.format = fnBind.call(this.format, this);
+    var relativeFormat = this;
+    this.format = function (date) {
+        return relativeFormat._format(date);
+    };
 }
 
 // Define internal private properties for dealing with locale data.
@@ -40,12 +33,15 @@ defineProperty(RelativeFormat, '__availableLocales__', {value: []});
 defineProperty(RelativeFormat, '__localeData__', {value: objCreate(null)});
 defineProperty(RelativeFormat, '__addLocaleData', {value: function (data) {
     if (!(data && data.locale)) {
-        throw new Error('Object passed does not identify itself with a valid language tag');
+        throw new Error('Locale data does not contain a `locale` property');
     }
 
-    if (!data.relativeTime) {
-        throw new Error('Object passed does not contain locale data for IntlRelativeFormat');
+    if (!data.fields) {
+        throw new Error('Locale data does not contain a `fields` property');
     }
+
+    // Add data to IntlMessageFormat.
+    IntlMessageFormat.__addLocaleData(data);
 
     var availableLocales = RelativeFormat.__availableLocales__,
         localeData       = RelativeFormat.__localeData__;
@@ -54,7 +50,7 @@ defineProperty(RelativeFormat, '__addLocaleData', {value: function (data) {
     var locale = data.locale.toLowerCase().split('-')[0];
 
     availableLocales.push(locale);
-    localeData[locale] = data.relativeTime;
+    localeData[locale] = data;
 }});
 
 // Define public `defaultLocale` property which can be set by the developer, or
@@ -66,18 +62,28 @@ defineProperty(RelativeFormat, 'defaultLocale', {
     value     : undefined
 });
 
-defineProperty(RelativeFormat, '__getDefaultLocale', {value: function () {
-    if (!RelativeFormat.defaultLocale) {
-        // Leverage the locale-resolving capabilities of `Intl` to determine
-        // what the default locale should be.
-        RelativeFormat.defaultLocale =
-                new Intl.NumberFormat().resolvedOptions().locale;
+// Define public `thresholds` property which can be set by the developer, and
+// defaults to relative time thresholds from moment.js.
+defineProperty(RelativeFormat, 'thresholds', {
+    enumerable: true,
+
+    value: {
+        second: 45,  // seconds to minute
+        minute: 45,  // minutes to hour
+        hour  : 22,  // hours to day
+        day   : 26,  // days to month
+        month : 11   // months to year
     }
+});
 
-    return RelativeFormat.defaultLocale;
-}});
+RelativeFormat.prototype.resolvedOptions = function () {
+    // TODO: Provide anything else?
+    return {
+        locale: this._locale
+    };
+};
 
-RelativeFormat.prototype.format = function (date) {
+RelativeFormat.prototype._format = function (date) {
     date = new Date(date);
 
     // Determine if the `date` is valid.
@@ -90,47 +96,50 @@ RelativeFormat.prototype.format = function (date) {
 
     for (i = 0, l = priority.length; i < l; i++) {
         key = priority[i];
-        if (d[key] < thresholds[key]) {
+        if (d[key] < RelativeFormat.thresholds[key]) {
             break;
         }
     }
 
     msg = this._resolveMessage(key);
+
     return msg.format({
-        0: d[key],
+        '0' : d[key],
         when: d.duration < 0 ? 'past' : 'future'
     });
 };
 
-RelativeFormat.prototype.resolvedOptions = function () {
-    // TODO: Provide anything else?
-    return {
-        locale: this._locale
-    };
-};
-
 RelativeFormat.prototype._resolveMessage = function (key) {
     var messages = this._messages,
-        data, i, future = '', past = '';
+        field, relativeTime, i, future, past;
 
+    // Create a new synthetic message based on the locale data from CLDR.
     if (!messages[key]) {
-        // creating a new synthetic message based on the locale data from CLDR
-        data = RelativeFormat.__localeData__[this._locale];
-        for (i in data[key].future) {
-            if (data[key].future.hasOwnProperty(i)) {
-                future += ' ' + i + ' {' + data[key].future[i] + '}';
+        field        = RelativeFormat.__localeData__[this._locale].fields[key];
+        relativeTime = field.relativeTime;
+        future       = '';
+        past         = '';
+
+        for (i in relativeTime.future) {
+            if (relativeTime.future.hasOwnProperty(i)) {
+                future += ' ' + i + ' {' +
+                    relativeTime.future[i].replace('{0}', '#') + '}';
             }
         }
-        for (i in data[key].past) {
-            if (data[key].past.hasOwnProperty(i)) {
-                past += ' ' + i + ' {' + data[key].past[i] + '}';
+        for (i in relativeTime.past) {
+            if (relativeTime.past.hasOwnProperty(i)) {
+                past += ' ' + i + ' {' +
+                    relativeTime.past[i].replace('{0}', '#') + '}';
             }
         }
+
         messages[key] = new IntlMessageFormat(
-            '{when, select, future {{0, plural, ' + future + '}} past {{0, plural, ' + past   + '}}}',
+            '{when, select, future {{0, plural, ' + future + '}}' +
+                           'past {{0, plural, ' + past + '}}}',
             this._locale
         );
     }
+
     return messages[key];
 };
 
@@ -162,5 +171,5 @@ RelativeFormat.prototype._resolveLocale = function (locales) {
         }
     }
 
-    return locale || RelativeFormat.__getDefaultLocale().split('-')[0];
+    return locale || RelativeFormat.defaultLocale.split('-')[0];
 };
