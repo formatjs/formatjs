@@ -1,6 +1,17 @@
-var m = require('./lib/full.js');
+/* jshint node:true */
 
-// providing an idiomatic api for the nodejs version of this module
-module.exports = exports = m.default;
-// preserving the original api in case another module is relying on that
-exports.default = m.default;
+'use strict';
+
+var IntlMessageFormat = require('./lib/core').default;
+
+// Add all locale data to `IntlMessageFormat`;
+require('./lib/locales');
+
+// Set the default locale to English.
+IntlMessageFormat.defaultLocale = 'en';
+
+// Re-export `IntlMessageFormat` as the CommonJS default exports with all the
+// locale data registered, and with English set as the default locale. Define
+// the `default` prop for use with other compiled ES6 Modules.
+exports = module.exports = IntlMessageFormat;
+Object.defineProperty(exports, 'default', {value: exports});

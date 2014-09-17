@@ -26,12 +26,12 @@ function MessageFormat(message, locales, formats) {
 
     // Creates a new object with the specified `formats` merged with the default
     // formats.
-    formats = this._mergeFormats(MessageFormat.FORMATS, formats);
+    formats = this._mergeFormats(MessageFormat.formats, formats);
 
     // Defined first because it's used to build the format pattern.
     defineProperty(this, '_locale',  {value: this._resolveLocale(locales)});
 
-    var pluralFn = MessageFormat.__localeData__[this._locale].pluralFunction;
+    var pluralFn = MessageFormat.__localeData__[this._locale].pluralRuleFunction;
 
     // Compile the `ast` to a pattern that is highly optimized for repeated
     // `format()` invocations. **Note:** This passes the `locales` set provided
@@ -49,7 +49,7 @@ function MessageFormat(message, locales, formats) {
 // Default format options used as the prototype of the `formats` provided to the
 // constructor. These are used when constructing the internal Intl.NumberFormat
 // and Intl.DateTimeFormat instances.
-defineProperty(MessageFormat, 'FORMATS', {
+defineProperty(MessageFormat, 'formats', {
     enumerable: true,
 
     value: {
@@ -124,45 +124,30 @@ defineProperty(MessageFormat, '__availableLocales__', {value: []});
 defineProperty(MessageFormat, '__localeData__', {value: objCreate(null)});
 defineProperty(MessageFormat, '__addLocaleData', {value: function (data) {
     if (!(data && data.locale)) {
-        throw new Error('Object passed does not identify itself with a valid language tag');
+        throw new Error('Locale data does not contain a `locale` property');
     }
 
-    if (!data.messageformat) {
-        throw new Error('Object passed does not contain locale data for IntlMessageFormat');
+    if (!data.pluralRuleFunction) {
+        throw new Error('Locale data does not contain a `pluralRuleFunction` property');
     }
 
     var availableLocales = MessageFormat.__availableLocales__,
         localeData       = MessageFormat.__localeData__;
 
-    // Message format locale data only requires the first part of the tag.
-    var locale = data.locale.toLowerCase().split('-')[0];
-
-    availableLocales.push(locale);
-    localeData[locale] = data.messageformat;
+    availableLocales.push(data.locale);
+    localeData[data.locale] = data;
 }});
 
 // Defines `__parse()` static method as an exposed private.
 defineProperty(MessageFormat, '__parse', {value: parser.parse});
 
-// Define public `defaultLocale` property which can be set by the developer, or
-// it will be set when the first MessageFormat instance is created by leveraging
-// the resolved locale from `Intl`.
+// Define public `defaultLocale` property which defaults to English, but can be
+// set by the developer.
 defineProperty(MessageFormat, 'defaultLocale', {
     enumerable: true,
     writable  : true,
     value     : undefined
 });
-
-defineProperty(MessageFormat, '__getDefaultLocale', {value: function () {
-    if (!MessageFormat.defaultLocale) {
-        // Leverage the locale-resolving capabilities of `Intl` to determine
-        // what the default locale should be.
-        MessageFormat.defaultLocale =
-                new Intl.NumberFormat().resolvedOptions().locale;
-    }
-
-    return MessageFormat.defaultLocale;
-}});
 
 MessageFormat.prototype.resolvedOptions = function () {
     // TODO: Provide anything else?
@@ -256,5 +241,5 @@ MessageFormat.prototype._resolveLocale = function (locales) {
         }
     }
 
-    return locale || MessageFormat.__getDefaultLocale().split('-')[0];
+    return locale || MessageFormat.defaultLocale.split('-')[0];
 };

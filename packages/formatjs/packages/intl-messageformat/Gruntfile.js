@@ -1,7 +1,4 @@
 module.exports = function (grunt) {
-
-    var libpath = require('path');
-
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
@@ -20,12 +17,58 @@ module.exports = function (grunt) {
             }
         },
 
-        jshint: {
-            all: ['index.js', 'src/*.js', '!src/full.js', 'tests/*.js']
+        concat: {
+            dist_with_locales: {
+                src: ['dist/intl-messageformat.js', 'dist/locale-data/*.js'],
+                dest: 'dist/intl-messageformat-with-locales.js'
+            }
         },
 
-        build_locale_data: {
-            dest: 'src/full.js'
+        jshint: {
+            all: ['index.js', 'src/*.js', '!src/en.js', 'tests/*.js']
+        },
+
+        extract_cldr_data: {
+            options: {
+                plurals: true
+            },
+
+            src_en: {
+                dest: 'src/en.js',
+
+                options: {
+                    locales: ['en'],
+                    prelude: '// GENERATED FILE\n',
+
+                    wrapEntry: function (entry) {
+                        return 'export default ' + entry + ';';
+                    }
+                }
+            },
+
+            lib_all: {
+                dest: 'lib/locales.js',
+
+                options: {
+                    prelude: [
+                        '// GENERATED FILE',
+                        'var IntlMessageFormat = require("./core").default;\n\n'
+                    ].join('\n'),
+
+                    wrapEntry: function (entry) {
+                        return 'IntlMessageFormat.__addLocaleData(' + entry + ');';
+                    }
+                }
+            },
+
+            dist_all: {
+                dest: 'dist/locale-data/',
+                options: {
+                    wrapEntry: function (entry) {
+                        return 'IntlMessageFormat.__addLocaleData(' + entry + ');';
+                    }
+                }
+            }
         },
 
         bundle_jsnext: {
@@ -40,12 +83,18 @@ module.exports = function (grunt) {
         },
 
         uglify: {
-            all: {
-                src: 'dist/intl-messageformat.js',
-                dest: 'dist/intl-messageformat.min.js',
-
+            dist: {
                 options: {
                     preserveComments: 'some'
+                },
+
+                files: {
+                    'dist/intl-messageformat.min.js': [
+                        'dist/intl-messageformat.js'
+                    ],
+                    'dist/intl-messageformat-with-locales.min.js': [
+                        'dist/intl-messageformat-with-locales.js'
+                    ]
                 }
             }
         },
@@ -60,17 +109,25 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.loadTasks('./tasks');
-
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-bundle-jsnext-lib');
     grunt.loadNpmTasks('grunt-benchmark');
+    grunt.loadNpmTasks('grunt-extract-cldr-data');
 
-    grunt.registerTask('cldr', ['build_locale_data']);
+    grunt.registerTask('cldr', ['extract_cldr_data']);
+
     grunt.registerTask('default', [
-        'jshint', 'clean', 'bundle_jsnext', 'uglify', 'cjs_jsnext', 'copy'
+        'jshint',
+        'clean',
+        'cldr',
+        'bundle_jsnext',
+        'concat:dist_with_locales',
+        'uglify:dist',
+        'cjs_jsnext',
+        'copy:tmp'
     ]);
 };

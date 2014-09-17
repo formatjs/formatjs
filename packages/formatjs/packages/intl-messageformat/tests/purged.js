@@ -17,8 +17,9 @@ describe('no locale', function () {
 
     describe('no locale provided', function () {
 
-        it('no locale', function () {
+        it('should default to English', function () {
             var msg = new IntlMessageFormat('I have {NUM_BOOKS, plural, =1 {1 book} other {# books}}.');
+            expect(msg.resolvedOptions().locale).to.equal('en');
             expect(msg.format({ NUM_BOOKS: 2 })).to.equal('I have 2 books.');
         });
     });
@@ -29,9 +30,7 @@ describe('no locale', function () {
             // let's set the locale to something witout data
             IntlMessageFormat.__addLocaleData({
                 locale: 'fu-baz',
-                messageformat: {
-                    pluralFunction: function (count) { return null; }
-                }
+                pluralRuleFunction: function (count) { return null; }
             });
 
             var msg = new IntlMessageFormat('{COMPANY_COUNT, plural, =1 {One company} other {# companies}} published new books.');
