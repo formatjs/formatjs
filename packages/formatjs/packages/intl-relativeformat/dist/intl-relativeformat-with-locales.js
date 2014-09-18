@@ -1775,6 +1775,8 @@
 
     var intl$messageformat$$default = $$core1$$default;
 
+    var $$diff$$round = Math.round;
+
     function $$diff$$absRound(number) {
         return Math[number < 0 ? 'ceil' : 'floor'](number);
     }
@@ -1785,25 +1787,28 @@
     }
 
     var $$diff$$default = function (dfrom, dto) {
-        var round = Math.round,
-            duration = $$diff$$absRound(dto.getTime() - dfrom.getTime()),
-            ms = Math.abs(duration),
-            ss = round(ms / 1000),
-            mm = round(ss / 60),
-            hh = round(mm / 60),
-            dd = round(hh / 24),
-            ww = round(dd / 7);
+        var duration    = $$diff$$absRound(dto.getTime() - dfrom.getTime()),
+            millisecond = Math.abs(duration),
+            second      = $$diff$$round(millisecond / 1000),
+            minute      = $$diff$$round(second / 60),
+            hour        = $$diff$$round(minute / 60),
+            day         = $$diff$$round(hour / 24),
+            week        = $$diff$$round(day / 7);
+
+        var rawYears = $$diff$$daysToYears(day),
+            month    = $$diff$$round(rawYears * 12),
+            year     = $$diff$$round(rawYears);
 
         return {
-            duration: duration,
-            week: ww,
-            day: dd,
-            hour: hh,
-            minute: mm,
-            second: ss,
-            millisecond: ms,
-            year: round((mm + $$diff$$daysToYears(dd) * 12) / 12),
-            month: round(mm + $$diff$$daysToYears(dd) * 12),
+            duration   : duration,
+            year       : year,
+            month      : month,
+            week       : week,
+            day        : day,
+            hour       : hour,
+            minute     : minute,
+            second     : second,
+            millisecond: millisecond
         };
     };
 
