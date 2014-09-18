@@ -6,6 +6,8 @@ See the accompanying LICENSE file for terms.
 
 /* jslint esnext: true */
 
+var round = Math.round;
+
 function absRound(number) {
     return Math[number < 0 ? 'ceil' : 'floor'](number);
 }
@@ -16,24 +18,27 @@ function daysToYears (days) {
 }
 
 export default function (dfrom, dto) {
-    var round = Math.round,
-        duration = absRound(dto.getTime() - dfrom.getTime()),
-        ms = Math.abs(duration),
-        ss = round(ms / 1000),
-        mm = round(ss / 60),
-        hh = round(mm / 60),
-        dd = round(hh / 24),
-        ww = round(dd / 7);
+    var duration    = absRound(dto.getTime() - dfrom.getTime()),
+        millisecond = Math.abs(duration),
+        second      = round(millisecond / 1000),
+        minute      = round(second / 60),
+        hour        = round(minute / 60),
+        day         = round(hour / 24),
+        week        = round(day / 7);
+
+    var rawYears = daysToYears(day),
+        month    = round(rawYears * 12),
+        year     = round(rawYears);
 
     return {
-        duration: duration,
-        week: ww,
-        day: dd,
-        hour: hh,
-        minute: mm,
-        second: ss,
-        millisecond: ms,
-        year: round((mm + daysToYears(dd) * 12) / 12),
-        month: round(mm + daysToYears(dd) * 12),
+        duration   : duration,
+        year       : year,
+        month      : month,
+        week       : week,
+        day        : day,
+        hour       : hour,
+        minute     : minute,
+        second     : second,
+        millisecond: millisecond
     };
 }
