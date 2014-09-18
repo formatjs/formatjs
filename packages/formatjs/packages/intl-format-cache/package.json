@@ -1,6 +1,6 @@
 {
   "name": "intl-format-cache",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Produces instances of JavaScript `Intl` formats, and caches them for reuse.",
   "main": "index.js",
   "jsnext:main": "src/memoizer.js",
