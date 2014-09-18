@@ -1,11 +1,9 @@
 /* global React */
 /* jslint esnext:true */
 
-import {
-    getDateTimeFormat,
-    getNumberFormat,
-    getMessageFormat
-} from 'intl-format-cache';
+import IntlMessageFormat from 'intl-messageformat';
+import IntlRelativeFormat from 'intl-relativeformat';
+import createFormatCache from 'intl-format-cache';
 
 // -----------------------------------------------------------------------------
 
@@ -23,6 +21,11 @@ export default {
     propsTypes       : typesSpec,
     contextTypes     : typesSpec,
     childContextTypes: typesSpec,
+
+    getNumberFormat  : createFormatCache(Intl.NumberFormat),
+    getDateTimeFormat: createFormatCache(Intl.DateTimeFormat),
+    getMessageFormat : createFormatCache(IntlMessageFormat),
+    getRelativeFormat: createFormatCache(IntlRelativeFormat),
 
     getChildContext: function () {
         var childContext = Object.create(this.context);
@@ -61,7 +64,7 @@ export default {
             }
         }
 
-        return getDateTimeFormat(locales, options).format(date);
+        return this.getDateTimeFormat(locales, options).format(date);
     },
 
     formatTime: function (date, options) {
@@ -96,7 +99,7 @@ export default {
             }
         }
 
-        return getNumberFormat(locales, options).format(num);
+        return this.getNumberFormat(locales, options).format(num);
     },
 
     formatMessage: function (message, values) {
@@ -111,10 +114,32 @@ export default {
         }
 
         if (typeof message === 'string') {
-            message = getMessageFormat(message, locales, formats);
+            message = this.getMessageFormat(message, locales, formats);
         }
 
         return message.format(values);
+    },
+
+    formatRelative: function (date, options) {
+        var locales = this.props.locales || this.context.locales,
+            formats = this.props.formats || this.context.formats;
+
+        date = new Date(date);
+
+        // Determine if the `date` is valid.
+        if (!(date && date.getTime())) {
+            throw new TypeError('A date must be provided.');
+        }
+
+        if (options && typeof options === 'string') {
+            try {
+                options = formats.relative[options];
+            } catch (e) {
+                throw new ReferenceError('No relative format named: ' + options);
+            }
+        }
+
+        return this.getRelativeFormat(locales, options).format(date);
     },
 
     getIntlMessage: function (path) {
@@ -134,5 +159,10 @@ export default {
         }
 
         return message;
+    },
+
+    __addLocaleData: function (data) {
+        IntlMessageFormat.__addLocaleData(data);
+        IntlRelativeFormat.__addLocaleData(data);
     }
 };
