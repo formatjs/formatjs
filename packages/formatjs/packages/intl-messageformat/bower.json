@@ -28,6 +28,7 @@
   ],
   "moduleType": [
     "es6",
+    "commonjs",
     "globals"
   ]
 }
