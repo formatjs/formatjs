@@ -86,15 +86,26 @@ module.exports = function (grunt) {
         },
 
         uglify: {
+            options: {
+                preserveComments: 'some',
+            },
+
             dist: {
                 options: {
-                    preserveComments: 'some'
+                    sourceMap              : true,
+                    sourceMapIn            : 'dist/react-intl.js.map',
+                    sourceMapIncludeSources: true
                 },
 
                 files: {
                     'dist/react-intl.min.js': [
                         'dist/react-intl.js'
-                    ],
+                    ]
+                }
+            },
+
+            dist_with_locales: {
+                files: {
                     'dist/react-intl-with-locales.min.js': [
                         'dist/react-intl-with-locales.js'
                     ]
@@ -117,7 +128,7 @@ module.exports = function (grunt) {
         'jshint',
         'bundle_jsnext',
         'concat:dist_with_locales',
-        'uglify:dist',
+        'uglify',
         'cjs_jsnext',
         'copy:tmp'
     ]);
