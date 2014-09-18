@@ -9,7 +9,7 @@ Produces instances of JavaScript `Intl` formats, and caches them for reuse.
 Overview
 --------
 
-This is an helper package used within [Yahoo's IntlJS suite][IntlJS]. It provides a cache layer for creating [`Intl`][Intl] format instances: [`IntlNumberFormat`][Intl-NF], [`Intl.DateTimeFormat`][Intl-DTF], and [`IntlMessageFormat`][Intl-MF].
+This is an helper package used within [Yahoo's IntlJS suite][IntlJS]. It provides a cache/memoize layer for creating [`Intl`][Intl] format instances: [`IntlNumberFormat`][Intl-NF], [`Intl.DateTimeFormat`][Intl-DTF], and [`IntlMessageFormat`][Intl-MF].
 
 
 License
