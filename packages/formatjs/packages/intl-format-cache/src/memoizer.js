@@ -18,7 +18,7 @@ function createFormatCache(FormatConstructor) {
     return function () {
         var args    = Array.prototype.slice.call(arguments);
         var cacheId = getCacheId(args);
-        var format  = cache[cacheId];
+        var format  = cacheId && cache[cacheId];
 
         if (!format) {
             format = objCreate(FormatConstructor.prototype);
@@ -37,7 +37,7 @@ function createFormatCache(FormatConstructor) {
 
 function getCacheId(inputs) {
     // When JSON is not available in the runtime, we will not create a cache id.
-    if (!JSON) { return; }
+    if (typeof JSON === 'undefined') { return; }
 
     var cacheId = [];
 
