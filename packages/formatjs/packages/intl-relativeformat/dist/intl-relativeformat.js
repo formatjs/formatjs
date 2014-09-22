@@ -1777,18 +1777,13 @@
 
     var $$diff$$round = Math.round;
 
-    function $$diff$$absRound(number) {
-        return Math[number < 0 ? 'ceil' : 'floor'](number);
-    }
-
     function $$diff$$daysToYears (days) {
         // 400 years have 146097 days (taking into account leap year rules)
         return days * 400 / 146097;
     }
 
     var $$diff$$default = function (dfrom, dto) {
-        var duration    = $$diff$$absRound(dto.getTime() - dfrom.getTime()),
-            millisecond = Math.abs(duration),
+        var millisecond = $$diff$$round(dto.getTime() - dfrom.getTime()),
             second      = $$diff$$round(millisecond / 1000),
             minute      = $$diff$$round(second / 60),
             hour        = $$diff$$round(minute / 60),
@@ -1800,32 +1795,39 @@
             year     = $$diff$$round(rawYears);
 
         return {
-            duration   : duration,
-            year       : year,
-            month      : month,
-            week       : week,
-            day        : day,
-            hour       : hour,
-            minute     : minute,
+            millisecond: millisecond,
             second     : second,
-            millisecond: millisecond
+            minute     : minute,
+            hour       : hour,
+            day        : day,
+            week       : week,
+            month      : month,
+            year       : year
         };
     };
 
     var $$core$$default = $$core$$RelativeFormat;
 
-    var $$core$$priority = ['second', 'minute', 'hour', 'day', 'month', 'year'];
+    var $$core$$FIELDS = ['second', 'minute', 'hour', 'day', 'month', 'year'];
+    var $$core$$STYLES = ['best fit', 'numeric'];
 
     // -- RelativeFormat --------------------------------------------------------
 
     function $$core$$RelativeFormat(locales, options) {
+        options = options || {};
+
         $$es5$$defineProperty(this, '_locale', {value: this._resolveLocale(locales)});
+        $$es5$$defineProperty(this, '_options', {value: {
+            style: this._resolveStyle(options.style),
+            units: this._isValidUnits(options.units) && options.units
+        }});
+
         $$es5$$defineProperty(this, '_messages', {value: $$es5$$objCreate(null)});
 
         // "Bind" `format()` method to `this` so it can be passed by reference like
         // the other `Intl` APIs.
         var relativeFormat = this;
-        this.format = function (date) {
+        this.format = function format(date) {
             return relativeFormat._format(date);
         };
     }
@@ -1835,11 +1837,17 @@
     $$es5$$defineProperty($$core$$RelativeFormat, '__localeData__', {value: $$es5$$objCreate(null)});
     $$es5$$defineProperty($$core$$RelativeFormat, '__addLocaleData', {value: function (data) {
         if (!(data && data.locale)) {
-            throw new Error('Locale data does not contain a `locale` property');
+            throw new Error(
+                'Locale data provided to IntlRelativeFormat does not contain a ' +
+                '`locale` property'
+            );
         }
 
         if (!data.fields) {
-            throw new Error('Locale data does not contain a `fields` property');
+            throw new Error(
+                'Locale data provided to IntlRelativeFormat does not contain a ' +
+                '`fields` property'
+            );
         }
 
         // Add data to IntlMessageFormat.
@@ -1879,9 +1887,10 @@
     });
 
     $$core$$RelativeFormat.prototype.resolvedOptions = function () {
-        // TODO: Provide anything else?
         return {
-            locale: this._locale
+            locale: this._locale,
+            style : this._options.style,
+            units : this._options.units
         };
     };
 
@@ -1890,34 +1899,93 @@
 
         // Determine if the `date` is valid.
         if (!(date && date.getTime())) {
-            throw new TypeError('A date must be provided.');
+            throw new TypeError(
+                'A Date must be provided to a IntlRelativeFormat instance\'s ' +
+                '`format()` function'
+            );
         }
 
-        var d = $$diff$$default(new Date(), date),
-            key, msg, i, l;
+        var diffReport  = $$diff$$default(new Date(), date);
+        var units       = this._options.units || this._selectUnits(diffReport);
+        var diffInUnits = diffReport[units];
 
-        for (i = 0, l = $$core$$priority.length; i < l; i++) {
-            key = $$core$$priority[i];
-            if (d[key] < $$core$$RelativeFormat.thresholds[key]) {
-                break;
+        if (this._options.style !== 'numeric') {
+            var relativeUnits = this._resolveRelativeUnits(diffInUnits, units);
+            if (relativeUnits) {
+                return relativeUnits;
             }
         }
 
-        msg = this._resolveMessage(key);
-
-        return msg.format({
-            '0' : d[key],
-            when: d.duration < 0 ? 'past' : 'future'
+        return this._resolveMessage(units).format({
+            '0' : Math.abs(diffInUnits),
+            when: diffInUnits < 0 ? 'past' : 'future'
         });
     };
 
-    $$core$$RelativeFormat.prototype._resolveMessage = function (key) {
-        var messages = this._messages,
-            field, relativeTime, i, future, past;
+    $$core$$RelativeFormat.prototype._isValidUnits = function (units) {
+        if (!units || $$core$$FIELDS.indexOf(units) >= 0) {
+            return true;
+        }
+
+        if (typeof units === 'string') {
+            var suggestion = /s$/.test(units) && units.substr(0, units.length - 1);
+            if (suggestion && $$core$$FIELDS.indexOf(suggestion) >= 0) {
+                throw new Error(
+                    '"' + units + '" is not a valid IntlRelativeFormat `units` ' +
+                    'value, did you mean: ' + suggestion
+                );
+            }
+        }
+
+        throw new Error(
+            '"' + units + '" is not a valid IntlRelativeFormat `units` value, it ' +
+            'must be one of: "' + $$core$$FIELDS.join('", "') + '"'
+        );
+    };
+
+    $$core$$RelativeFormat.prototype._resolveLocale = function (locales) {
+        if (!locales) {
+            locales = $$core$$RelativeFormat.defaultLocale;
+        }
+
+        if (typeof locales === 'string') {
+            locales = [locales];
+        }
+
+        var availableLocales = $$core$$RelativeFormat.__availableLocales__;
+        var i, len, locale;
+
+        for (i = 0, len = locales.length; i < len; i += 1) {
+            // We just need the root part of the langage tag.
+            locale = locales[i].split('-')[0].toLowerCase();
+
+            // Validate that the langage tag is structurally valid.
+            if (!/[a-z]{2,3}/.test(locale)) {
+                throw new Error(
+                    'Language tag provided to IntlRelativeFormat is not ' +
+                    'structrually valid: ' + locale
+                );
+            }
+
+            // Return the first locale for which we have CLDR data registered.
+            if (availableLocales.indexOf(locale) >= 0) {
+                return locale;
+            }
+        }
+
+        throw new Error(
+            'No locale data has been added to IntlRelativeFormat for: ' +
+            locales.join(', ')
+        );
+    };
+
+    $$core$$RelativeFormat.prototype._resolveMessage = function (units) {
+        var messages = this._messages;
+        var field, relativeTime, i, future, past, message;
 
         // Create a new synthetic message based on the locale data from CLDR.
-        if (!messages[key]) {
-            field        = $$core$$RelativeFormat.__localeData__[this._locale].fields[key];
+        if (!messages[units]) {
+            field        = $$core$$RelativeFormat.__localeData__[this._locale].fields[units];
             relativeTime = field.relativeTime;
             future       = '';
             past         = '';
@@ -1928,6 +1996,7 @@
                         relativeTime.future[i].replace('{0}', '#') + '}';
                 }
             }
+
             for (i in relativeTime.past) {
                 if (relativeTime.past.hasOwnProperty(i)) {
                     past += ' ' + i + ' {' +
@@ -1935,45 +2004,51 @@
                 }
             }
 
-            messages[key] = new intl$messageformat$$default(
-                '{when, select, future {{0, plural, ' + future + '}}' +
-                               'past {{0, plural, ' + past + '}}}',
-                this._locale
-            );
+            message = '{when, select, future {{0, plural, ' + future + '}}' +
+                    'past {{0, plural, ' + past + '}}}';
+
+            messages[units] = new intl$messageformat$$default(message, this._locale);
         }
 
-        return messages[key];
+        return messages[units];
     };
 
-    $$core$$RelativeFormat.prototype._resolveLocale = function (locales) {
-        var availableLocales = $$core$$RelativeFormat.__availableLocales__,
-            locale, parts, i, len;
+    $$core$$RelativeFormat.prototype._resolveRelativeUnits = function (diff, units) {
+        var field = $$core$$RelativeFormat.__localeData__[this._locale].fields[units];
 
-        if (availableLocales.length === 0) {
-            throw new Error('No locale data has been provided for IntlRelativeFormat yet');
+        if (field.relative) {
+            return field.relative[diff];
+        }
+    };
+
+    $$core$$RelativeFormat.prototype._resolveStyle = function (style) {
+        // Default to "best fit" style.
+        if (!style) {
+            return $$core$$STYLES[0];
         }
 
-        if (typeof locales === 'string') {
-            locales = [locales];
+        if ($$core$$STYLES.indexOf(style) >= 0) {
+            return style;
         }
 
-        if (locales && locales.length) {
-            for (i = 0, len = locales.length; i < len; i += 1) {
-                locale = locales[i].toLowerCase().split('-')[0];
+        throw new Error(
+            '"' + style + '" is not a valid IntlRelativeFormat `style` value, it ' +
+            'must be one of: "' + $$core$$STYLES.join('", "') + '"'
+        );
+    };
 
-                // Make sure the first part of the locale that we care about is
-                // structurally valid.
-                if (!/[a-z]{2,3}/i.test(locale)) {
-                    throw new RangeError('"' + locales[i] + '" is not a structurally valid language tag');
-                }
+    $$core$$RelativeFormat.prototype._selectUnits = function (diffReport) {
+        var i, l, units;
 
-                if (availableLocales.indexOf(locale) >= 0) {
-                    break;
-                }
+        for (i = 0, l = $$core$$FIELDS.length; i < l; i += 1) {
+            units = $$core$$FIELDS[i];
+
+            if (Math.abs(diffReport[units]) < $$core$$RelativeFormat.thresholds[units]) {
+                break;
             }
         }
 
-        return locale || $$core$$RelativeFormat.defaultLocale.split('-')[0];
+        return units;
     };
     var $$en$$default = {"locale":"en","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";},"fields":{"second":{"displayName":"Second","relative":{"0":"now"},"relativeTime":{"future":{"one":"in {0} second","other":"in {0} seconds"},"past":{"one":"{0} second ago","other":"{0} seconds ago"}}},"minute":{"displayName":"Minute","relativeTime":{"future":{"one":"in {0} minute","other":"in {0} minutes"},"past":{"one":"{0} minute ago","other":"{0} minutes ago"}}},"hour":{"displayName":"Hour","relativeTime":{"future":{"one":"in {0} hour","other":"in {0} hours"},"past":{"one":"{0} hour ago","other":"{0} hours ago"}}},"day":{"displayName":"Day","relative":{"0":"today","1":"tomorrow","-1":"yesterday"},"relativeTime":{"future":{"one":"in {0} day","other":"in {0} days"},"past":{"one":"{0} day ago","other":"{0} days ago"}}},"month":{"displayName":"Month","relative":{"0":"this month","1":"next month","-1":"last month"},"relativeTime":{"future":{"one":"in {0} month","other":"in {0} months"},"past":{"one":"{0} month ago","other":"{0} months ago"}}},"year":{"displayName":"Year","relative":{"0":"this year","1":"next year","-1":"last year"},"relativeTime":{"future":{"one":"in {0} year","other":"in {0} years"},"past":{"one":"{0} year ago","other":"{0} years ago"}}}}};
 
