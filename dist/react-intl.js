@@ -23,14 +23,14 @@
     // Purposely using the same implementation as the Intl.js `Intl` polyfill.
     // Copyright 2013 Andy Earnshaw, MIT License
 
-    var $$es5$$realDefineProp = (function () {
+    var $$es51$$realDefineProp = (function () {
         try { return !!Object.defineProperty({}, 'a', {}); }
         catch (e) { return false; }
     })();
 
-    var $$es5$$es3 = !$$es5$$realDefineProp && !Object.prototype.__defineGetter__;
+    var $$es51$$es3 = !$$es51$$realDefineProp && !Object.prototype.__defineGetter__;
 
-    var $$es5$$defineProperty = $$es5$$realDefineProp ? Object.defineProperty :
+    var $$es51$$defineProperty = $$es51$$realDefineProp ? Object.defineProperty :
             function (obj, name, desc) {
 
         if ('get' in desc && obj.__defineGetter__) {
@@ -40,7 +40,7 @@
         }
     };
 
-    var $$es5$$objCreate = Object.create || function (proto, props) {
+    var $$es51$$objCreate = Object.create || function (proto, props) {
         var obj, k;
 
         function F() {}
@@ -49,20 +49,11 @@
 
         for (k in props) {
             if ($$utils$$hop.call(props, k)) {
-                $$es5$$defineProperty(obj, k, props[k]);
+                $$es51$$defineProperty(obj, k, props[k]);
             }
         }
 
         return obj;
-    };
-
-    var $$es5$$fnBind = Function.prototype.bind || function (thisObj) {
-        var fn   = this,
-            args = [].slice.call(arguments, 1);
-
-        return function () {
-            fn.apply(thisObj, args.concat([].slice.call(arguments)));
-        };
     };
     var $$compiler$$default = $$compiler$$Compiler;
 
@@ -111,9 +102,9 @@
     };
 
     $$compiler$$Compiler.prototype.compileMessageText = function (element) {
-        // When this `element` is part of plural sub-pattern and its value
-        // contains an unescaped '#', use a `PluralOffsetString` helper to
-        // properly output the number with the correct offset in the string.
+        // When this `element` is part of plural sub-pattern and its value contains
+        // an unescaped '#', use a `PluralOffsetString` helper to properly output
+        // the number with the correct offset in the string.
         if (this.currentPlural && /(^|[^\\])#/g.test(element.value)) {
             // Create a cache a NumberFormat instance that can be reused for any
             // PluralOffsetString instance in this message.
@@ -133,15 +124,16 @@
     };
 
     $$compiler$$Compiler.prototype.compileArgument = function (element) {
-        var format   = element.format,
-            formats  = this.formats,
-            locales  = this.locales,
-            pluralFn = this.pluralFn,
-            options;
+        var format = element.format;
 
         if (!format) {
             return new $$compiler$$StringFormat(element.id);
         }
+
+        var formats  = this.formats,
+            locales  = this.locales,
+            pluralFn = this.pluralFn,
+            options;
 
         switch (format.type) {
             case 'numberFormat':
@@ -183,9 +175,9 @@
             options     = format.options,
             optionsHash = {};
 
-        // Save the current plural element, if any, then set it to a new value
-        // when compiling the options sub-patterns. This conform's the spec's
-        // algorithm for handling `"#"` synax in message text.
+        // Save the current plural element, if any, then set it to a new value when
+        // compiling the options sub-patterns. This conform's the spec's algorithm
+        // for handling `"#"` synax in message text.
         this.pluralStack.push(this.currentPlural);
         this.currentPlural = format.type === 'pluralFormat' ? element : null;
 
@@ -1519,31 +1511,32 @@
             throw new TypeError('A message must be provided as a String or AST.');
         }
 
-        // Creates a new object with the specified `formats` merged with the
-        // default formats.
-        formats = this._mergeFormats($$core$$MessageFormat.FORMATS, formats);
+        // Creates a new object with the specified `formats` merged with the default
+        // formats.
+        formats = this._mergeFormats($$core$$MessageFormat.formats, formats);
 
         // Defined first because it's used to build the format pattern.
-        $$es5$$defineProperty(this, '_locale',  {value: this._resolveLocale(locales)});
+        $$es51$$defineProperty(this, '_locale',  {value: this._resolveLocale(locales)});
 
-        var pluralFn = $$core$$MessageFormat.__localeData__[this._locale].pluralFunction;
+        var pluralFn = $$core$$MessageFormat.__localeData__[this._locale].pluralRuleFunction;
 
-        // Define the `pattern` property, a compiled pattern that is highly
-        // optimized for repeated `format()` invocations. **Note:** This passes
-        // the `locales` set provided to the constructor instead of just the
-        // resolved locale.
+        // Compile the `ast` to a pattern that is highly optimized for repeated
+        // `format()` invocations. **Note:** This passes the `locales` set provided
+        // to the constructor instead of just the resolved locale.
         var pattern = this._compilePattern(ast, locales, formats, pluralFn);
-        $$es5$$defineProperty(this, '_pattern', {value: pattern});
 
-        // Bind `format()` method to `this` so it can be passed by reference
-        // like the other `Intl` APIs.
-        this.format = $$es5$$fnBind.call(this.format, this);
+        // "Bind" `format()` method to `this` so it can be passed by reference like
+        // the other `Intl` APIs.
+        var messageFormat = this;
+        this.format = function (values) {
+            return messageFormat._format(pattern, values);
+        };
     }
 
-    // Default format options used as the prototype of the `formats` provided to
-    // the constructor. These are used when constructing the internal
-    // Intl.NumberFormat and Intl.DateTimeFormat instances.
-    $$es5$$defineProperty($$core$$MessageFormat, 'FORMATS', {
+    // Default format options used as the prototype of the `formats` provided to the
+    // constructor. These are used when constructing the internal Intl.NumberFormat
+    // and Intl.DateTimeFormat instances.
+    $$es51$$defineProperty($$core$$MessageFormat, 'formats', {
         enumerable: true,
 
         value: {
@@ -1614,41 +1607,34 @@
     });
 
     // Define internal private properties for dealing with locale data.
-    $$es5$$defineProperty($$core$$MessageFormat, '__availableLocales__', {value: []});
-    $$es5$$defineProperty($$core$$MessageFormat, '__localeData__', {value: $$es5$$objCreate(null)});
-    $$es5$$defineProperty($$core$$MessageFormat, '__addLocaleData', {value: function (data) {
+    $$es51$$defineProperty($$core$$MessageFormat, '__availableLocales__', {value: []});
+    $$es51$$defineProperty($$core$$MessageFormat, '__localeData__', {value: $$es51$$objCreate(null)});
+    $$es51$$defineProperty($$core$$MessageFormat, '__addLocaleData', {value: function (data) {
         if (!(data && data.locale)) {
-            throw new Error('Object passed does not identify itself with a valid language tag');
+            throw new Error('Locale data does not contain a `locale` property');
         }
 
-        if (!data.messageformat) {
-            throw new Error('Object passed does not contain locale data for IntlMessageFormat');
+        if (!data.pluralRuleFunction) {
+            throw new Error('Locale data does not contain a `pluralRuleFunction` property');
         }
 
         var availableLocales = $$core$$MessageFormat.__availableLocales__,
             localeData       = $$core$$MessageFormat.__localeData__;
 
-        // Message format locale data only requires the first part of the tag.
-        var locale = data.locale.toLowerCase().split('-')[0];
-
-        availableLocales.push(locale);
-        localeData[locale] = data.messageformat;
+        availableLocales.push(data.locale);
+        localeData[data.locale] = data;
     }});
 
     // Defines `__parse()` static method as an exposed private.
-    $$es5$$defineProperty($$core$$MessageFormat, '__parse', {value: intl$messageformat$parser$$default.parse});
+    $$es51$$defineProperty($$core$$MessageFormat, '__parse', {value: intl$messageformat$parser$$default.parse});
 
-    // Define public `defaultLocale` property which is set when the first bundle
-    // of locale data is added.
-    $$es5$$defineProperty($$core$$MessageFormat, 'defaultLocale', {
+    // Define public `defaultLocale` property which defaults to English, but can be
+    // set by the developer.
+    $$es51$$defineProperty($$core$$MessageFormat, 'defaultLocale', {
         enumerable: true,
         writable  : true,
-        value     : 'en'
+        value     : undefined
     });
-
-    $$core$$MessageFormat.prototype.format = function (values) {
-        return this._format(this._pattern, values);
-    };
 
     $$core$$MessageFormat.prototype.resolvedOptions = function () {
         // TODO: Provide anything else?
@@ -1684,8 +1670,8 @@
 
             value = values[id];
 
-            // Recursively format plural and select parts' option — which can be
-            // a nested pattern structure. The choosing of the option to use is
+            // Recursively format plural and select parts' option — which can be a
+            // nested pattern structure. The choosing of the option to use is
             // abstracted-by and delegated-to the part helper object.
             if (part.options) {
                 result += this._format(part.getOption(value), values);
@@ -1704,7 +1690,7 @@
         for (type in defaults) {
             if (!$$utils$$hop.call(defaults, type)) { continue; }
 
-            mergedFormats[type] = mergedType = $$es5$$objCreate(defaults[type]);
+            mergedFormats[type] = mergedType = $$es51$$objCreate(defaults[type]);
 
             if (formats && $$utils$$hop.call(formats, type)) {
                 $$utils$$extend(mergedType, formats[type]);
@@ -1742,310 +1728,402 @@
             }
         }
 
-        return locale || $$core$$MessageFormat.defaultLocale;
+        return locale || $$core$$MessageFormat.defaultLocale.split('-')[0];
     };
-    var intl$messageformat$$funcs = [
-    function (n) {  },
-    function (n) { n=Math.floor(n);if(n===1)return"one";return"other"; },
-    function (n) { n=Math.floor(n);if(n>=0&&n<=1)return"one";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";return"other"; },
-    function (n) { n=Math.floor(n);if(n===0)return"zero";if(n===1)return"one";if(n===2)return"two";if(n%100>=3&&n%100<=10)return"few";if(n%100>=11&&n%100<=99)return"many";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other"; },
-    function (n) { n=Math.floor(n);if(n%10===1&&(n%100!==11))return"one";if(n%10>=2&&n%10<=4&&!(n%100>=12&&n%100<=14))return"few";if(n%10===0||n%10>=5&&n%10<=9||n%100>=11&&n%100<=14)return"many";return"other"; },
-    function (n) { return"other"; },
-    function (n) { n=Math.floor(n);if(n%10===1&&!(n%100===11||n%100===71||n%100===91))return"one";if(n%10===2&&!(n%100===12||n%100===72||n%100===92))return"two";if((n%10>=3&&n%10<=4||n%10===9)&&!(n%100>=10&&n%100<=19||n%100>=70&&n%100<=79||n%100>=90&&n%100<=99))return"few";if((n!==0)&&n%1e6===0)return"many";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length,f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(v===0&&i%10===1&&((i%100!==11)||f%10===1&&(f%100!==11)))return"one";if(v===0&&i%10>=2&&i%10<=4&&(!(i%100>=12&&i%100<=14)||f%10>=2&&f%10<=4&&!(f%100>=12&&f%100<=14)))return"few";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";if(i>=2&&i<=4&&v===0)return"few";if((v!==0))return"many";return"other"; },
-    function (n) { n=Math.floor(n);if(n===0)return"zero";if(n===1)return"one";if(n===2)return"two";if(n===3)return"few";if(n===6)return"many";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),t=parseInt(n.toString().replace(/^[^.]*\.?|0+$/g,""),10);n=Math.floor(n);if(n===1||(t!==0)&&(i===0||i===1))return"one";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||i===1)return"one";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length,f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(v===0&&(i===1||i===2||i===3||v===0&&(!(i%10===4||i%10===6||i%10===9)||(v!==0)&&!(f%10===4||f%10===6||f%10===9))))return"one";return"other"; },
-    function (n) { n=Math.floor(n);if(n===1)return"one";if(n===2)return"two";if(n>=3&&n<=6)return"few";if(n>=7&&n<=10)return"many";return"other"; },
-    function (n) { n=Math.floor(n);if(n===1||n===11)return"one";if(n===2||n===12)return"two";if(n>=3&&n<=10||n>=13&&n<=19)return"few";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(v===0&&i%10===1)return"one";if(v===0&&i%10===2)return"two";if(v===0&&(i%100===0||i%100===20||i%100===40||i%100===60||i%100===80))return"few";if((v!==0))return"many";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";if(i===2&&v===0)return"two";if(v===0&&!(n>=0&&n<=10)&&n%10===0)return"many";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),t=parseInt(n.toString().replace(/^[^.]*\.?|0+$/g,""),10);n=Math.floor(n);if(t===0&&i%10===1&&((i%100!==11)||(t!==0)))return"one";return"other"; },
-    function (n) { n=Math.floor(n);if(n===0)return"zero";if(n===1)return"one";return"other"; },
-    function (n) { n=Math.floor(n);if(n===1)return"one";if(n===2)return"two";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n));n=Math.floor(n);if(n===0)return"zero";if((i===0||i===1)&&(n!==0))return"one";return"other"; },
-    function (n) { var f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(n%10===1&&!(n%100>=11&&n%100<=19))return"one";if(n%10>=2&&n%10<=9&&!(n%100>=11&&n%100<=19))return"few";if((f!==0))return"many";return"other"; },
-    function (n) { var v=n.toString().replace(/^[^.]*\.?/,"").length,f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(n%10===0||n%100>=11&&n%100<=19||v===2&&f%100>=11&&f%100<=19)return"zero";if(n%10===1&&((n%100!==11)||v===2&&f%10===1&&((f%100!==11)||(v!==2)&&f%10===1)))return"one";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length,f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(v===0&&(i%10===1||f%10===1))return"one";return"other"; },
-    function (n) { n=Math.floor(n);if(n===1)return"one";if(n===0||n%100>=2&&n%100<=10)return"few";if(n%100>=11&&n%100<=19)return"many";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";if(v===0&&i%10>=2&&i%10<=4&&!(i%100>=12&&i%100<=14))return"few";if(v===0&&(i!==1)&&(i%10>=0&&i%10<=1||v===0&&(i%10>=5&&i%10<=9||v===0&&i%100>=12&&i%100<=14)))return"many";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length,t=parseInt(n.toString().replace(/^[^.]*\.?|0+$/g,""),10);n=Math.floor(n);if(i===1&&(v===0||i===0&&t===1))return"one";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";if((v!==0)||n===0||(n!==1)&&n%100>=1&&n%100<=19)return"few";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(v===0&&i%10===1&&(i%100!==11))return"one";if(v===0&&i%10>=2&&i%10<=4&&!(i%100>=12&&i%100<=14))return"few";if(v===0&&(i%10===0||v===0&&(i%10>=5&&i%10<=9||v===0&&i%100>=11&&i%100<=14)))return"many";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";if(n>=2&&n<=10)return"few";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(n===0||n===1||i===0&&f===1)return"one";return"other"; },
-    function (n) { var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(v===0&&i%100===1)return"one";if(v===0&&i%100===2)return"two";if(v===0&&(i%100>=3&&i%100<=4||(v!==0)))return"few";return"other"; },
-    function (n) { n=Math.floor(n);if(n>=0&&n<=1||n>=11&&n<=99)return"one";return"other"; }
-    ];
-    $$core$$default.__addLocaleData({locale:"aa", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"af", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"agq", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"ak", messageformat:{pluralFunction:intl$messageformat$$funcs[2]}});
-    $$core$$default.__addLocaleData({locale:"am", messageformat:{pluralFunction:intl$messageformat$$funcs[3]}});
-    $$core$$default.__addLocaleData({locale:"ar", messageformat:{pluralFunction:intl$messageformat$$funcs[4]}});
-    $$core$$default.__addLocaleData({locale:"as", messageformat:{pluralFunction:intl$messageformat$$funcs[5]}});
-    $$core$$default.__addLocaleData({locale:"asa", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"ast", messageformat:{pluralFunction:intl$messageformat$$funcs[5]}});
-    $$core$$default.__addLocaleData({locale:"az", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"bas", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"be", messageformat:{pluralFunction:intl$messageformat$$funcs[6]}});
-    $$core$$default.__addLocaleData({locale:"bem", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"bez", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"bg", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"bm", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"bn", messageformat:{pluralFunction:intl$messageformat$$funcs[3]}});
-    $$core$$default.__addLocaleData({locale:"bo", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"br", messageformat:{pluralFunction:intl$messageformat$$funcs[8]}});
-    $$core$$default.__addLocaleData({locale:"brx", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"bs", messageformat:{pluralFunction:intl$messageformat$$funcs[9]}});
-    $$core$$default.__addLocaleData({locale:"byn", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"ca", messageformat:{pluralFunction:intl$messageformat$$funcs[5]}});
-    $$core$$default.__addLocaleData({locale:"cgg", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"chr", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"cs", messageformat:{pluralFunction:intl$messageformat$$funcs[10]}});
-    $$core$$default.__addLocaleData({locale:"cy", messageformat:{pluralFunction:intl$messageformat$$funcs[11]}});
-    $$core$$default.__addLocaleData({locale:"da", messageformat:{pluralFunction:intl$messageformat$$funcs[12]}});
-    $$core$$default.__addLocaleData({locale:"dav", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"de", messageformat:{pluralFunction:intl$messageformat$$funcs[5]}});
-    $$core$$default.__addLocaleData({locale:"dje", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"dua", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"dyo", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"dz", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"ebu", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"ee", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"el", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"en", messageformat:{pluralFunction:intl$messageformat$$funcs[5]}});
-    $$core$$default.__addLocaleData({locale:"eo", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"es", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"et", messageformat:{pluralFunction:intl$messageformat$$funcs[5]}});
-    $$core$$default.__addLocaleData({locale:"eu", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"ewo", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"fa", messageformat:{pluralFunction:intl$messageformat$$funcs[3]}});
-    $$core$$default.__addLocaleData({locale:"ff", messageformat:{pluralFunction:intl$messageformat$$funcs[13]}});
-    $$core$$default.__addLocaleData({locale:"fi", messageformat:{pluralFunction:intl$messageformat$$funcs[5]}});
-    $$core$$default.__addLocaleData({locale:"fil", messageformat:{pluralFunction:intl$messageformat$$funcs[14]}});
-    $$core$$default.__addLocaleData({locale:"fo", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"fr", messageformat:{pluralFunction:intl$messageformat$$funcs[13]}});
-    $$core$$default.__addLocaleData({locale:"fur", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"fy", messageformat:{pluralFunction:intl$messageformat$$funcs[5]}});
-    $$core$$default.__addLocaleData({locale:"ga", messageformat:{pluralFunction:intl$messageformat$$funcs[15]}});
-    $$core$$default.__addLocaleData({locale:"gd", messageformat:{pluralFunction:intl$messageformat$$funcs[16]}});
-    $$core$$default.__addLocaleData({locale:"gl", messageformat:{pluralFunction:intl$messageformat$$funcs[5]}});
-    $$core$$default.__addLocaleData({locale:"gsw", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"gu", messageformat:{pluralFunction:intl$messageformat$$funcs[3]}});
-    $$core$$default.__addLocaleData({locale:"guz", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"gv", messageformat:{pluralFunction:intl$messageformat$$funcs[17]}});
-    $$core$$default.__addLocaleData({locale:"ha", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"haw", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"he", messageformat:{pluralFunction:intl$messageformat$$funcs[18]}});
-    $$core$$default.__addLocaleData({locale:"hi", messageformat:{pluralFunction:intl$messageformat$$funcs[3]}});
-    $$core$$default.__addLocaleData({locale:"hr", messageformat:{pluralFunction:intl$messageformat$$funcs[9]}});
-    $$core$$default.__addLocaleData({locale:"hu", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"hy", messageformat:{pluralFunction:intl$messageformat$$funcs[13]}});
-    $$core$$default.__addLocaleData({locale:"ia", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"id", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"ig", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"ii", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"is", messageformat:{pluralFunction:intl$messageformat$$funcs[19]}});
-    $$core$$default.__addLocaleData({locale:"it", messageformat:{pluralFunction:intl$messageformat$$funcs[5]}});
-    $$core$$default.__addLocaleData({locale:"ja", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"jgo", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"jmc", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"ka", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"kab", messageformat:{pluralFunction:intl$messageformat$$funcs[13]}});
-    $$core$$default.__addLocaleData({locale:"kam", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"kde", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"kea", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"khq", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"ki", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"kk", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"kkj", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"kl", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"kln", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"km", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"kn", messageformat:{pluralFunction:intl$messageformat$$funcs[3]}});
-    $$core$$default.__addLocaleData({locale:"ko", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"kok", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"ks", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"ksb", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"ksf", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"ksh", messageformat:{pluralFunction:intl$messageformat$$funcs[20]}});
-    $$core$$default.__addLocaleData({locale:"kw", messageformat:{pluralFunction:intl$messageformat$$funcs[21]}});
-    $$core$$default.__addLocaleData({locale:"ky", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"lag", messageformat:{pluralFunction:intl$messageformat$$funcs[22]}});
-    $$core$$default.__addLocaleData({locale:"lg", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"lkt", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"ln", messageformat:{pluralFunction:intl$messageformat$$funcs[2]}});
-    $$core$$default.__addLocaleData({locale:"lo", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"lt", messageformat:{pluralFunction:intl$messageformat$$funcs[23]}});
-    $$core$$default.__addLocaleData({locale:"lu", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"luo", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"luy", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"lv", messageformat:{pluralFunction:intl$messageformat$$funcs[24]}});
-    $$core$$default.__addLocaleData({locale:"mas", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"mer", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"mfe", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"mg", messageformat:{pluralFunction:intl$messageformat$$funcs[2]}});
-    $$core$$default.__addLocaleData({locale:"mgh", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"mgo", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"mk", messageformat:{pluralFunction:intl$messageformat$$funcs[25]}});
-    $$core$$default.__addLocaleData({locale:"ml", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"mn", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"mr", messageformat:{pluralFunction:intl$messageformat$$funcs[3]}});
-    $$core$$default.__addLocaleData({locale:"ms", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"mt", messageformat:{pluralFunction:intl$messageformat$$funcs[26]}});
-    $$core$$default.__addLocaleData({locale:"mua", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"my", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"naq", messageformat:{pluralFunction:intl$messageformat$$funcs[21]}});
-    $$core$$default.__addLocaleData({locale:"nb", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"nd", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"ne", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"nl", messageformat:{pluralFunction:intl$messageformat$$funcs[5]}});
-    $$core$$default.__addLocaleData({locale:"nmg", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"nn", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"nnh", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"nr", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"nso", messageformat:{pluralFunction:intl$messageformat$$funcs[2]}});
-    $$core$$default.__addLocaleData({locale:"nus", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"nyn", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"om", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"or", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"os", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"pa", messageformat:{pluralFunction:intl$messageformat$$funcs[2]}});
-    $$core$$default.__addLocaleData({locale:"pl", messageformat:{pluralFunction:intl$messageformat$$funcs[27]}});
-    $$core$$default.__addLocaleData({locale:"ps", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"pt", messageformat:{pluralFunction:intl$messageformat$$funcs[28]}});
-    $$core$$default.__addLocaleData({locale:"rm", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"rn", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"ro", messageformat:{pluralFunction:intl$messageformat$$funcs[29]}});
-    $$core$$default.__addLocaleData({locale:"rof", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"ru", messageformat:{pluralFunction:intl$messageformat$$funcs[30]}});
-    $$core$$default.__addLocaleData({locale:"rw", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"rwk", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"sah", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"saq", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"sbp", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"se", messageformat:{pluralFunction:intl$messageformat$$funcs[21]}});
-    $$core$$default.__addLocaleData({locale:"seh", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"ses", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"sg", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"shi", messageformat:{pluralFunction:intl$messageformat$$funcs[31]}});
-    $$core$$default.__addLocaleData({locale:"si", messageformat:{pluralFunction:intl$messageformat$$funcs[32]}});
-    $$core$$default.__addLocaleData({locale:"sk", messageformat:{pluralFunction:intl$messageformat$$funcs[10]}});
-    $$core$$default.__addLocaleData({locale:"sl", messageformat:{pluralFunction:intl$messageformat$$funcs[33]}});
-    $$core$$default.__addLocaleData({locale:"sn", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"so", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"sq", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"sr", messageformat:{pluralFunction:intl$messageformat$$funcs[9]}});
-    $$core$$default.__addLocaleData({locale:"ss", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"ssy", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"st", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"sv", messageformat:{pluralFunction:intl$messageformat$$funcs[5]}});
-    $$core$$default.__addLocaleData({locale:"sw", messageformat:{pluralFunction:intl$messageformat$$funcs[5]}});
-    $$core$$default.__addLocaleData({locale:"swc", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"ta", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"te", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"teo", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"tg", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"th", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"ti", messageformat:{pluralFunction:intl$messageformat$$funcs[2]}});
-    $$core$$default.__addLocaleData({locale:"tig", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"tn", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"to", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"tr", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"ts", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"twq", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"tzm", messageformat:{pluralFunction:intl$messageformat$$funcs[34]}});
-    $$core$$default.__addLocaleData({locale:"ug", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"uk", messageformat:{pluralFunction:intl$messageformat$$funcs[30]}});
-    $$core$$default.__addLocaleData({locale:"ur", messageformat:{pluralFunction:intl$messageformat$$funcs[5]}});
-    $$core$$default.__addLocaleData({locale:"uz", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"vai", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"ve", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"vi", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"vo", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"vun", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"wae", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"wal", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"xh", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"xog", messageformat:{pluralFunction:intl$messageformat$$funcs[1]}});
-    $$core$$default.__addLocaleData({locale:"yav", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"yo", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"zgh", messageformat:{pluralFunction:intl$messageformat$$funcs[0]}});
-    $$core$$default.__addLocaleData({locale:"zh", messageformat:{pluralFunction:intl$messageformat$$funcs[7]}});
-    $$core$$default.__addLocaleData({locale:"zu", messageformat:{pluralFunction:intl$messageformat$$funcs[3]}});
+    var $$en1$$default = {"locale":"en","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}};
+
+    $$core$$default.__addLocaleData($$en1$$default);
+    $$core$$default.defaultLocale = 'en';
+
     var intl$messageformat$$default = $$core$$default;
+
+    // Purposely using the same implementation as the Intl.js `Intl` polyfill.
+    // Copyright 2013 Andy Earnshaw, MIT License
+
+    var $$es52$$hop = Object.prototype.hasOwnProperty;
+
+    var $$es52$$realDefineProp = (function () {
+        try { return !!Object.defineProperty({}, 'a', {}); }
+        catch (e) { return false; }
+    })();
+
+    var $$es52$$es3 = !$$es52$$realDefineProp && !Object.prototype.__defineGetter__;
+
+    var $$es52$$defineProperty = $$es52$$realDefineProp ? Object.defineProperty :
+            function (obj, name, desc) {
+
+        if ('get' in desc && obj.__defineGetter__) {
+            obj.__defineGetter__(name, desc.get);
+        } else if (!$$es52$$hop.call(obj, name) || 'value' in desc) {
+            obj[name] = desc.value;
+        }
+    };
+
+    var $$es52$$objCreate = Object.create || function (proto, props) {
+        var obj, k;
+
+        function F() {}
+        F.prototype = proto;
+        obj = new F();
+
+        for (k in props) {
+            if ($$es52$$hop.call(props, k)) {
+                $$es52$$defineProperty(obj, k, props[k]);
+            }
+        }
+
+        return obj;
+    };
+
+    var $$diff$$round = Math.round;
+
+    function $$diff$$daysToYears (days) {
+        // 400 years have 146097 days (taking into account leap year rules)
+        return days * 400 / 146097;
+    }
+
+    var $$diff$$default = function (dfrom, dto) {
+        var millisecond = $$diff$$round(dto.getTime() - dfrom.getTime()),
+            second      = $$diff$$round(millisecond / 1000),
+            minute      = $$diff$$round(second / 60),
+            hour        = $$diff$$round(minute / 60),
+            day         = $$diff$$round(hour / 24),
+            week        = $$diff$$round(day / 7);
+
+        var rawYears = $$diff$$daysToYears(day),
+            month    = $$diff$$round(rawYears * 12),
+            year     = $$diff$$round(rawYears);
+
+        return {
+            millisecond: millisecond,
+            second     : second,
+            minute     : minute,
+            hour       : hour,
+            day        : day,
+            week       : week,
+            month      : month,
+            year       : year
+        };
+    };
+
+    var $$core1$$default = $$core1$$RelativeFormat;
+
+    var $$core1$$FIELDS = ['second', 'minute', 'hour', 'day', 'month', 'year'];
+    var $$core1$$STYLES = ['best fit', 'numeric'];
+
+    // -- RelativeFormat --------------------------------------------------------
+
+    function $$core1$$RelativeFormat(locales, options) {
+        options = options || {};
+
+        $$es52$$defineProperty(this, '_locale', {value: this._resolveLocale(locales)});
+        $$es52$$defineProperty(this, '_options', {value: {
+            style: this._resolveStyle(options.style),
+            units: this._isValidUnits(options.units) && options.units
+        }});
+
+        $$es52$$defineProperty(this, '_messages', {value: $$es52$$objCreate(null)});
+
+        // "Bind" `format()` method to `this` so it can be passed by reference like
+        // the other `Intl` APIs.
+        var relativeFormat = this;
+        this.format = function format(date) {
+            return relativeFormat._format(date);
+        };
+    }
+
+    // Define internal private properties for dealing with locale data.
+    $$es52$$defineProperty($$core1$$RelativeFormat, '__availableLocales__', {value: []});
+    $$es52$$defineProperty($$core1$$RelativeFormat, '__localeData__', {value: $$es52$$objCreate(null)});
+    $$es52$$defineProperty($$core1$$RelativeFormat, '__addLocaleData', {value: function (data) {
+        if (!(data && data.locale)) {
+            throw new Error(
+                'Locale data provided to IntlRelativeFormat does not contain a ' +
+                '`locale` property'
+            );
+        }
+
+        if (!data.fields) {
+            throw new Error(
+                'Locale data provided to IntlRelativeFormat does not contain a ' +
+                '`fields` property'
+            );
+        }
+
+        // Add data to IntlMessageFormat.
+        intl$messageformat$$default.__addLocaleData(data);
+
+        var availableLocales = $$core1$$RelativeFormat.__availableLocales__,
+            localeData       = $$core1$$RelativeFormat.__localeData__;
+
+        // Message format locale data only requires the first part of the tag.
+        var locale = data.locale.toLowerCase().split('-')[0];
+
+        availableLocales.push(locale);
+        localeData[locale] = data;
+    }});
+
+    // Define public `defaultLocale` property which can be set by the developer, or
+    // it will be set when the first RelativeFormat instance is created by leveraging
+    // the resolved locale from `Intl`.
+    $$es52$$defineProperty($$core1$$RelativeFormat, 'defaultLocale', {
+        enumerable: true,
+        writable  : true,
+        value     : undefined
+    });
+
+    // Define public `thresholds` property which can be set by the developer, and
+    // defaults to relative time thresholds from moment.js.
+    $$es52$$defineProperty($$core1$$RelativeFormat, 'thresholds', {
+        enumerable: true,
+
+        value: {
+            second: 45,  // seconds to minute
+            minute: 45,  // minutes to hour
+            hour  : 22,  // hours to day
+            day   : 26,  // days to month
+            month : 11   // months to year
+        }
+    });
+
+    $$core1$$RelativeFormat.prototype.resolvedOptions = function () {
+        return {
+            locale: this._locale,
+            style : this._options.style,
+            units : this._options.units
+        };
+    };
+
+    $$core1$$RelativeFormat.prototype._format = function (date) {
+        date = new Date(date);
+
+        // Determine if the `date` is valid.
+        if (!(date && date.getTime())) {
+            throw new TypeError(
+                'A Date must be provided to a IntlRelativeFormat instance\'s ' +
+                '`format()` function'
+            );
+        }
+
+        var diffReport  = $$diff$$default(new Date(), date);
+        var units       = this._options.units || this._selectUnits(diffReport);
+        var diffInUnits = diffReport[units];
+
+        if (this._options.style !== 'numeric') {
+            var relativeUnits = this._resolveRelativeUnits(diffInUnits, units);
+            if (relativeUnits) {
+                return relativeUnits;
+            }
+        }
+
+        return this._resolveMessage(units).format({
+            '0' : Math.abs(diffInUnits),
+            when: diffInUnits < 0 ? 'past' : 'future'
+        });
+    };
+
+    $$core1$$RelativeFormat.prototype._isValidUnits = function (units) {
+        if (!units || $$core1$$FIELDS.indexOf(units) >= 0) {
+            return true;
+        }
+
+        if (typeof units === 'string') {
+            var suggestion = /s$/.test(units) && units.substr(0, units.length - 1);
+            if (suggestion && $$core1$$FIELDS.indexOf(suggestion) >= 0) {
+                throw new Error(
+                    '"' + units + '" is not a valid IntlRelativeFormat `units` ' +
+                    'value, did you mean: ' + suggestion
+                );
+            }
+        }
+
+        throw new Error(
+            '"' + units + '" is not a valid IntlRelativeFormat `units` value, it ' +
+            'must be one of: "' + $$core1$$FIELDS.join('", "') + '"'
+        );
+    };
+
+    $$core1$$RelativeFormat.prototype._resolveLocale = function (locales) {
+        if (!locales) {
+            locales = $$core1$$RelativeFormat.defaultLocale;
+        }
+
+        if (typeof locales === 'string') {
+            locales = [locales];
+        }
+
+        var availableLocales = $$core1$$RelativeFormat.__availableLocales__;
+        var i, len, locale;
+
+        for (i = 0, len = locales.length; i < len; i += 1) {
+            // We just need the root part of the langage tag.
+            locale = locales[i].split('-')[0].toLowerCase();
+
+            // Validate that the langage tag is structurally valid.
+            if (!/[a-z]{2,3}/.test(locale)) {
+                throw new Error(
+                    'Language tag provided to IntlRelativeFormat is not ' +
+                    'structrually valid: ' + locale
+                );
+            }
+
+            // Return the first locale for which we have CLDR data registered.
+            if (availableLocales.indexOf(locale) >= 0) {
+                return locale;
+            }
+        }
+
+        throw new Error(
+            'No locale data has been added to IntlRelativeFormat for: ' +
+            locales.join(', ')
+        );
+    };
+
+    $$core1$$RelativeFormat.prototype._resolveMessage = function (units) {
+        var messages = this._messages;
+        var field, relativeTime, i, future, past, message;
+
+        // Create a new synthetic message based on the locale data from CLDR.
+        if (!messages[units]) {
+            field        = $$core1$$RelativeFormat.__localeData__[this._locale].fields[units];
+            relativeTime = field.relativeTime;
+            future       = '';
+            past         = '';
+
+            for (i in relativeTime.future) {
+                if (relativeTime.future.hasOwnProperty(i)) {
+                    future += ' ' + i + ' {' +
+                        relativeTime.future[i].replace('{0}', '#') + '}';
+                }
+            }
+
+            for (i in relativeTime.past) {
+                if (relativeTime.past.hasOwnProperty(i)) {
+                    past += ' ' + i + ' {' +
+                        relativeTime.past[i].replace('{0}', '#') + '}';
+                }
+            }
+
+            message = '{when, select, future {{0, plural, ' + future + '}}' +
+                    'past {{0, plural, ' + past + '}}}';
+
+            messages[units] = new intl$messageformat$$default(message, this._locale);
+        }
+
+        return messages[units];
+    };
+
+    $$core1$$RelativeFormat.prototype._resolveRelativeUnits = function (diff, units) {
+        var field = $$core1$$RelativeFormat.__localeData__[this._locale].fields[units];
+
+        if (field.relative) {
+            return field.relative[diff];
+        }
+    };
+
+    $$core1$$RelativeFormat.prototype._resolveStyle = function (style) {
+        // Default to "best fit" style.
+        if (!style) {
+            return $$core1$$STYLES[0];
+        }
+
+        if ($$core1$$STYLES.indexOf(style) >= 0) {
+            return style;
+        }
+
+        throw new Error(
+            '"' + style + '" is not a valid IntlRelativeFormat `style` value, it ' +
+            'must be one of: "' + $$core1$$STYLES.join('", "') + '"'
+        );
+    };
+
+    $$core1$$RelativeFormat.prototype._selectUnits = function (diffReport) {
+        var i, l, units;
+
+        for (i = 0, l = $$core1$$FIELDS.length; i < l; i += 1) {
+            units = $$core1$$FIELDS[i];
+
+            if (Math.abs(diffReport[units]) < $$core1$$RelativeFormat.thresholds[units]) {
+                break;
+            }
+        }
+
+        return units;
+    };
+    var $$en2$$default = {"locale":"en","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";},"fields":{"second":{"displayName":"Second","relative":{"0":"now"},"relativeTime":{"future":{"one":"in {0} second","other":"in {0} seconds"},"past":{"one":"{0} second ago","other":"{0} seconds ago"}}},"minute":{"displayName":"Minute","relativeTime":{"future":{"one":"in {0} minute","other":"in {0} minutes"},"past":{"one":"{0} minute ago","other":"{0} minutes ago"}}},"hour":{"displayName":"Hour","relativeTime":{"future":{"one":"in {0} hour","other":"in {0} hours"},"past":{"one":"{0} hour ago","other":"{0} hours ago"}}},"day":{"displayName":"Day","relative":{"0":"today","1":"tomorrow","-1":"yesterday"},"relativeTime":{"future":{"one":"in {0} day","other":"in {0} days"},"past":{"one":"{0} day ago","other":"{0} days ago"}}},"month":{"displayName":"Month","relative":{"0":"this month","1":"next month","-1":"last month"},"relativeTime":{"future":{"one":"in {0} month","other":"in {0} months"},"past":{"one":"{0} month ago","other":"{0} months ago"}}},"year":{"displayName":"Year","relative":{"0":"this year","1":"next year","-1":"last year"},"relativeTime":{"future":{"one":"in {0} year","other":"in {0} years"},"past":{"one":"{0} year ago","other":"{0} years ago"}}}}};
+
+    $$core1$$default.__addLocaleData($$en2$$default);
+    $$core1$$default.defaultLocale = 'en';
+
+    var intl$relativeformat$$default = $$core1$$default;
+
+    // Purposely using the same implementation as the Intl.js `Intl` polyfill.
+    // Copyright 2013 Andy Earnshaw, MIT License
+
+    var $$es5$$hop = Object.prototype.hasOwnProperty;
+
+    var $$es5$$realDefineProp = (function () {
+        try { return !!Object.defineProperty({}, 'a', {}); }
+        catch (e) { return false; }
+    })();
+
+    var $$es5$$es3 = !$$es5$$realDefineProp && !Object.prototype.__defineGetter__;
+
+    var $$es5$$defineProperty = $$es5$$realDefineProp ? Object.defineProperty :
+            function (obj, name, desc) {
+
+        if ('get' in desc && obj.__defineGetter__) {
+            obj.__defineGetter__(name, desc.get);
+        } else if (!$$es5$$hop.call(obj, name) || 'value' in desc) {
+            obj[name] = desc.value;
+        }
+    };
+
+    var $$es5$$objCreate = Object.create || function (proto, props) {
+        var obj, k;
+
+        function F() {}
+        F.prototype = proto;
+        obj = new F();
+
+        for (k in props) {
+            if ($$es5$$hop.call(props, k)) {
+                $$es5$$defineProperty(obj, k, props[k]);
+            }
+        }
+
+        return obj;
+    };
+    var intl$format$cache$$default = intl$format$cache$$createFormatCache;
 
     // -----------------------------------------------------------------------------
 
-    // Cache to hold `DateTimeFormat`, `NumberFormat`, and `IntlMessageFormat`
-    // instances for reuse.
-    var intl$format$cache$$cache = {
-        dateTimeFormats: {},
-        numberFormats  : {},
-        messageFormats : {}
-    };
+    function intl$format$cache$$createFormatCache(FormatConstructor) {
+        var cache = $$es5$$objCreate(null);
 
-    function intl$format$cache$$getDateTimeFormat(locales, options) {
-        options || (options = {});
+        return function () {
+            var args    = Array.prototype.slice.call(arguments);
+            var cacheId = intl$format$cache$$getCacheId(args);
+            var format  = cacheId && cache[cacheId];
 
-        var cacheId = intl$format$cache$$getCacheId([locales, options]),
-            format  = intl$format$cache$$cache.dateTimeFormats[cacheId];
+            if (!format) {
+                format = $$es5$$objCreate(FormatConstructor.prototype);
+                FormatConstructor.apply(format, args);
 
-        if (!format) {
-            format = new Intl.DateTimeFormat(locales, options);
-
-            if (cacheId) {
-                intl$format$cache$$cache.dateTimeFormats[cacheId] = format;
+                if (cacheId) {
+                    cache[cacheId] = format;
+                }
             }
-        }
 
-        return format;
-    }
-
-    function intl$format$cache$$getNumberFormat(locales, options) {
-        options || (options = {});
-
-        var cacheId = intl$format$cache$$getCacheId([locales, options]),
-            format  = intl$format$cache$$cache.numberFormats[cacheId];
-
-        if (!format) {
-            format = new Intl.NumberFormat(locales, options);
-
-            if (cacheId) {
-                intl$format$cache$$cache.numberFormats[cacheId] = format;
-            }
-        }
-
-        return format;
-    }
-
-    function intl$format$cache$$getMessageFormat(message, locales, options) {
-        options || (options = {});
-
-        var cacheId = intl$format$cache$$getCacheId([message, locales, options]),
-            format  = intl$format$cache$$cache.messageFormats[cacheId];
-
-        if (!format) {
-            format = new intl$messageformat$$default(message, locales, options);
-
-            if (cacheId) {
-                intl$format$cache$$cache.messageFormats[cacheId] = format;
-            }
-        }
-
-        return format;
+            return format;
+        };
     }
 
     // -- Utilities ----------------------------------------------------------------
 
     function intl$format$cache$$getCacheId(inputs) {
         // When JSON is not available in the runtime, we will not create a cache id.
-        if (!JSON) { return; }
+        if (typeof JSON === 'undefined') { return; }
 
         var cacheId = [];
 
@@ -2091,7 +2169,7 @@
 
     // -----------------------------------------------------------------------------
 
-    var src$mixin$$typesSpec = {
+    var $$mixin$$typesSpec = {
         locales: React.PropTypes.oneOfType([
             React.PropTypes.string,
             React.PropTypes.array
@@ -2101,10 +2179,15 @@
         messages: React.PropTypes.object
     };
 
-    var src$mixin$$default = {
-        propsTypes       : src$mixin$$typesSpec,
-        contextTypes     : src$mixin$$typesSpec,
-        childContextTypes: src$mixin$$typesSpec,
+    var $$mixin$$default = {
+        propsTypes       : $$mixin$$typesSpec,
+        contextTypes     : $$mixin$$typesSpec,
+        childContextTypes: $$mixin$$typesSpec,
+
+        getNumberFormat  : intl$format$cache$$default(Intl.NumberFormat),
+        getDateTimeFormat: intl$format$cache$$default(Intl.DateTimeFormat),
+        getMessageFormat : intl$format$cache$$default(intl$messageformat$$default),
+        getRelativeFormat: intl$format$cache$$default(intl$relativeformat$$default),
 
         getChildContext: function () {
             var childContext = Object.create(this.context);
@@ -2143,7 +2226,7 @@
                 }
             }
 
-            return intl$format$cache$$getDateTimeFormat(locales, options).format(date);
+            return this.getDateTimeFormat(locales, options).format(date);
         },
 
         formatTime: function (date, options) {
@@ -2178,7 +2261,7 @@
                 }
             }
 
-            return intl$format$cache$$getNumberFormat(locales, options).format(num);
+            return this.getNumberFormat(locales, options).format(num);
         },
 
         formatMessage: function (message, values) {
@@ -2193,10 +2276,32 @@
             }
 
             if (typeof message === 'string') {
-                message = intl$format$cache$$getMessageFormat(message, locales, formats);
+                message = this.getMessageFormat(message, locales, formats);
             }
 
             return message.format(values);
+        },
+
+        formatRelative: function (date, options) {
+            var locales = this.props.locales || this.context.locales,
+                formats = this.props.formats || this.context.formats;
+
+            date = new Date(date);
+
+            // Determine if the `date` is valid.
+            if (!(date && date.getTime())) {
+                throw new TypeError('A date must be provided.');
+            }
+
+            if (options && typeof options === 'string') {
+                try {
+                    options = formats.relative[options];
+                } catch (e) {
+                    throw new ReferenceError('No relative format named: ' + options);
+                }
+            }
+
+            return this.getRelativeFormat(locales, options).format(date);
         },
 
         getIntlMessage: function (path) {
@@ -2216,10 +2321,20 @@
             }
 
             return message;
+        },
+
+        __addLocaleData: function (data) {
+            intl$messageformat$$default.__addLocaleData(data);
+            intl$relativeformat$$default.__addLocaleData(data);
         }
     };
 
-    this['ReactIntlMixin'] = src$mixin$$default;
+    var $$en$$default = {"locale":"en","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";},"fields":{"second":{"displayName":"Second","relative":{"0":"now"},"relativeTime":{"future":{"one":"in {0} second","other":"in {0} seconds"},"past":{"one":"{0} second ago","other":"{0} seconds ago"}}},"minute":{"displayName":"Minute","relativeTime":{"future":{"one":"in {0} minute","other":"in {0} minutes"},"past":{"one":"{0} minute ago","other":"{0} minutes ago"}}},"hour":{"displayName":"Hour","relativeTime":{"future":{"one":"in {0} hour","other":"in {0} hours"},"past":{"one":"{0} hour ago","other":"{0} hours ago"}}},"day":{"displayName":"Day","relative":{"0":"today","1":"tomorrow","-1":"yesterday"},"relativeTime":{"future":{"one":"in {0} day","other":"in {0} days"},"past":{"one":"{0} day ago","other":"{0} days ago"}}},"month":{"displayName":"Month","relative":{"0":"this month","1":"next month","-1":"last month"},"relativeTime":{"future":{"one":"in {0} month","other":"in {0} months"},"past":{"one":"{0} month ago","other":"{0} months ago"}}},"year":{"displayName":"Year","relative":{"0":"this year","1":"next year","-1":"last year"},"relativeTime":{"future":{"one":"in {0} year","other":"in {0} years"},"past":{"one":"{0} year ago","other":"{0} years ago"}}}}};
+
+    $$mixin$$default.__addLocaleData($$en$$default);
+
+    var src$main$$default = $$mixin$$default;
+    this['ReactIntlMixin'] = src$main$$default;
 }).call(this);
 
 //# sourceMappingURL=react-intl.js.map
