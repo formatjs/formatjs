@@ -12,18 +12,24 @@ import diff from './diff';
 
 export default RelativeFormat;
 
-var priority = ['second', 'minute', 'hour', 'day', 'month', 'year'];
+var PRIORITY = ['second', 'minute', 'hour', 'day', 'month', 'year'];
 
 // -- RelativeFormat --------------------------------------------------------
 
 function RelativeFormat(locales, options) {
+    options = options || {};
+
     defineProperty(this, '_locale', {value: this._resolveLocale(locales)});
     defineProperty(this, '_messages', {value: objCreate(null)});
+
+    if (options.units && this._isValidUnits(options.units)) {
+        defineProperty(this, '_units', {value: options.units});
+    }
 
     // "Bind" `format()` method to `this` so it can be passed by reference like
     // the other `Intl` APIs.
     var relativeFormat = this;
-    this.format = function (date) {
+    this.format = function format(date) {
         return relativeFormat._format(date);
     };
 }
@@ -33,11 +39,17 @@ defineProperty(RelativeFormat, '__availableLocales__', {value: []});
 defineProperty(RelativeFormat, '__localeData__', {value: objCreate(null)});
 defineProperty(RelativeFormat, '__addLocaleData', {value: function (data) {
     if (!(data && data.locale)) {
-        throw new Error('Locale data does not contain a `locale` property');
+        throw new Error(
+            'Locale data provided to IntlRelativeFormat does not contain a ' +
+            '`locale` property'
+        );
     }
 
     if (!data.fields) {
-        throw new Error('Locale data does not contain a `fields` property');
+        throw new Error(
+            'Locale data provided to IntlRelativeFormat does not contain a ' +
+            '`fields` property'
+        );
     }
 
     // Add data to IntlMessageFormat.
@@ -77,9 +89,9 @@ defineProperty(RelativeFormat, 'thresholds', {
 });
 
 RelativeFormat.prototype.resolvedOptions = function () {
-    // TODO: Provide anything else?
     return {
-        locale: this._locale
+        locale: this._locale,
+        units : this._units
     };
 };
 
@@ -88,34 +100,90 @@ RelativeFormat.prototype._format = function (date) {
 
     // Determine if the `date` is valid.
     if (!(date && date.getTime())) {
-        throw new TypeError('A date must be provided.');
+        throw new TypeError(
+            'A Date must be provided to a IntlRelativeFormat instance\'s ' +
+            '`format()` function'
+        );
     }
 
-    var d = diff(new Date(), date),
-        key, msg, i, l;
+    var diffReport  = diff(new Date(), date);
+    var units       = this._units || this._selectUnits(diffReport);
+    var diffInUnits = diffReport[units];
 
-    for (i = 0, l = priority.length; i < l; i++) {
-        key = priority[i];
-        if (d[key] < RelativeFormat.thresholds[key]) {
-            break;
-        }
+    var relativeUnits = this._resolveRelativeUnits(diffInUnits, units);
+    if (relativeUnits) {
+        return relativeUnits;
     }
 
-    msg = this._resolveMessage(key);
-
+    var msg = this._resolveMessage(units);
     return msg.format({
-        '0' : d[key],
-        when: d.duration < 0 ? 'past' : 'future'
+        '0' : Math.abs(diffInUnits),
+        when: diffInUnits < 0 ? 'past' : 'future'
     });
 };
 
-RelativeFormat.prototype._resolveMessage = function (key) {
-    var messages = this._messages,
-        field, relativeTime, i, future, past;
+RelativeFormat.prototype._isValidUnits = function (units) {
+    if (PRIORITY.indexOf(units) >= 0) {
+        return true;
+    }
+
+    var suggestion = /s$/.test(units) && units.substring(0, units.length - 1);
+    if (suggestion && PRIORITY.indexOf(suggestion) >= 0) {
+        throw new Error(
+            '"' + units + '" is not a valid IntlRelativeFormat `units` ' +
+            'value, did you mean: ' + suggestion
+        );
+    } else {
+        throw new Error(
+            '"' + units + '" is not a valid IntlRelativeFormat `units` ' +
+            'value, it must be one of: ' + PRIORITY.join(', ')
+        );
+    }
+};
+
+RelativeFormat.prototype._resolveLocale = function (locales) {
+    if (!locales) {
+        locales = RelativeFormat.defaultLocale;
+    }
+
+    if (typeof locales === 'string') {
+        locales = [locales];
+    }
+
+    var availableLocales = RelativeFormat.__availableLocales__;
+    var i, len, locale;
+
+    for (i = 0, len = locales.length; i < len; i += 1) {
+        // We just need the root part of the langage tag.
+        locale = locales[i].split('-')[0].toLowerCase();
+
+        // Validate that the langage tag is structurally valid.
+        if (!/[a-z]{2,3}/.test(locale)) {
+            throw new Error(
+                'Language tag provided to IntlRelativeFormat is not ' +
+                'structrually valid: ' + locale
+            );
+        }
+
+        // Return the first locale for which we have CLDR data registered.
+        if (availableLocales.indexOf(locale) >= 0) {
+            return locale;
+        }
+    }
+
+    throw new Error(
+        'No locale data has been added to IntlRelativeFormat for: ' +
+        locales.join(', ')
+    );
+};
+
+RelativeFormat.prototype._resolveMessage = function (units) {
+    var messages = this._messages;
+    var field, relativeTime, i, future, past, message;
 
     // Create a new synthetic message based on the locale data from CLDR.
-    if (!messages[key]) {
-        field        = RelativeFormat.__localeData__[this._locale].fields[key];
+    if (!messages[units]) {
+        field        = RelativeFormat.__localeData__[this._locale].fields[units];
         relativeTime = field.relativeTime;
         future       = '';
         past         = '';
@@ -126,6 +194,7 @@ RelativeFormat.prototype._resolveMessage = function (key) {
                     relativeTime.future[i].replace('{0}', '#') + '}';
             }
         }
+
         for (i in relativeTime.past) {
             if (relativeTime.past.hasOwnProperty(i)) {
                 past += ' ' + i + ' {' +
@@ -133,43 +202,33 @@ RelativeFormat.prototype._resolveMessage = function (key) {
             }
         }
 
-        messages[key] = new IntlMessageFormat(
-            '{when, select, future {{0, plural, ' + future + '}}' +
-                           'past {{0, plural, ' + past + '}}}',
-            this._locale
-        );
+        message = '{when, select, future {{0, plural, ' + future + '}}' +
+                'past {{0, plural, ' + past + '}}}';
+
+        messages[units] = new IntlMessageFormat(message, this._locale);
     }
 
-    return messages[key];
+    return messages[units];
 };
 
-RelativeFormat.prototype._resolveLocale = function (locales) {
-    var availableLocales = RelativeFormat.__availableLocales__,
-        locale, parts, i, len;
+RelativeFormat.prototype._resolveRelativeUnits = function (diff, units) {
+    var field = RelativeFormat.__localeData__[this._locale].fields[units];
 
-    if (availableLocales.length === 0) {
-        throw new Error('No locale data has been provided for IntlRelativeFormat yet');
+    if (field.relative) {
+        return field.relative[diff];
     }
+};
 
-    if (typeof locales === 'string') {
-        locales = [locales];
-    }
+RelativeFormat.prototype._selectUnits = function (diffReport) {
+    var i, l, units;
 
-    if (locales && locales.length) {
-        for (i = 0, len = locales.length; i < len; i += 1) {
-            locale = locales[i].toLowerCase().split('-')[0];
+    for (i = 0, l = PRIORITY.length; i < l; i += 1) {
+        units = PRIORITY[i];
 
-            // Make sure the first part of the locale that we care about is
-            // structurally valid.
-            if (!/[a-z]{2,3}/i.test(locale)) {
-                throw new RangeError('"' + locales[i] + '" is not a structurally valid language tag');
-            }
-
-            if (availableLocales.indexOf(locale) >= 0) {
-                break;
-            }
+        if (Math.abs(diffReport[units]) < RelativeFormat.thresholds[units]) {
+            break;
         }
     }
 
-    return locale || RelativeFormat.defaultLocale.split('-')[0];
+    return units;
 };

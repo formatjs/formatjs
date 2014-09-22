@@ -8,18 +8,13 @@ See the accompanying LICENSE file for terms.
 
 var round = Math.round;
 
-function absRound(number) {
-    return Math[number < 0 ? 'ceil' : 'floor'](number);
-}
-
 function daysToYears (days) {
     // 400 years have 146097 days (taking into account leap year rules)
     return days * 400 / 146097;
 }
 
 export default function (dfrom, dto) {
-    var duration    = absRound(dto.getTime() - dfrom.getTime()),
-        millisecond = Math.abs(duration),
+    var millisecond = round(dto.getTime() - dfrom.getTime()),
         second      = round(millisecond / 1000),
         minute      = round(second / 60),
         hour        = round(minute / 60),
@@ -31,14 +26,13 @@ export default function (dfrom, dto) {
         year     = round(rawYears);
 
     return {
-        duration   : duration,
-        year       : year,
-        month      : month,
-        week       : week,
-        day        : day,
-        hour       : hour,
-        minute     : minute,
+        millisecond: millisecond,
         second     : second,
-        millisecond: millisecond
+        minute     : minute,
+        hour       : hour,
+        day        : day,
+        week       : week,
+        month      : month,
+        year       : year
     };
 }
