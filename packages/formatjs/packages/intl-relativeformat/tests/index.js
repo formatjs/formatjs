@@ -266,7 +266,7 @@ describe('IntlRelativeFormat', function () {
                 var rf = new IntlRelativeFormat('en');
 
                 function expectNoNumberInOutput(output) {
-                    expect(/\d+/.test(output)).to.be.false;
+                    expect(/\d+/.test(output)).to.equal(false);
                 }
 
                 expectNoNumberInOutput(rf.format(Date.now()));
@@ -280,7 +280,7 @@ describe('IntlRelativeFormat', function () {
                 var rf = new IntlRelativeFormat('en', {style: 'numeric'});
 
                 function expectNumberInOutput(output) {
-                    expect(/\d+/.test(output)).to.be.true;
+                    expect(/\d+/.test(output)).to.equal(true);
                 }
 
                 expectNumberInOutput(rf.format(Date.now()));
