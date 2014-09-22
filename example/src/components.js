@@ -39,7 +39,7 @@ var Container = global.Container = React.createClass({
   mixins: [ReactIntlMixin],
   getDefaultProps: function() {
     return {
-      someTimestamp: 1390518044403,
+      someTimestamp: 1409939308585,
       locales: ["en-US"],
       formats: {
         date: {
@@ -58,6 +58,11 @@ var Container = global.Container = React.createClass({
   },
   render: function () {
     return <div>
+        <h1>`formatRelative` helper</h1>
+        {this.formatRelative(this.props.someTimestamp)}
+
+        <hr/>
+
         <h1>`formatDate` helper</h1>
 
         <h3>date helper:</h3>

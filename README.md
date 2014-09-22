@@ -14,16 +14,19 @@ The `ReactIntlMixin` implements a [ReactJS][] Component [Mixin][] that adds thes
 
  * `formatDate()` to format a date value
  * `formatTime()` to format a date value with `time` formats
+ * `formatRelative()` to format a date relative to now; e.g. "3 hours ago"
  * `formatNumber()` to format a numeric value
  * `formatMessage()` to format a complex message
 
 `formatDate()`, `formatTime()`, and `formatNumber()` are sugar on top of [Intl.NumberFormat][] and [Intl.DateTimeFormat][] APIs implemented by most modern browsers. To improve runtime performance, React Intl Mixin uses an internal cache to reuse instances of `Intl.NumberFormat` and `Intl.DateTimeFormat` when possible.
 
-Similarly, `formatMessage()` is a sugar layer on top of [intl-messageformat][], a library to support more advanced translation patterns that include complex pluralization and gender support. This library is based on a [Strawman Draft][] proposing to evolve [ECMAScript 402][] to provide a standard way to format message strings with localization support in JavaScript.
+`formatMessage()` is a sugar layer on top of [intl-messageformat][], a library to support more advanced translation patterns that include complex pluralization and gender support. This library is based on a [Strawman Draft][] proposing to evolve [ECMAScript 402][] to provide a standard way to format message strings with localization support in JavaScript.
 
 The `formatMessage()` method accepts a string message and values to format it with. It too uses an internal cache to improve runtime performance by reusing `IntlMessageFormat` instances.
 
 The data consumed by `formatMessage()` follows the same format supported by [intl-messageformat][], which is one of the industry standards used in other programming languages like Java and PHP. Although this format looks complex, professional translators are familiar with it. You can [learn more about this format](https://github.com/yahoo/intl-messageformat#how-it-works).
+
+`formatRelative()` is similar to `formatMessage()` in that it's a sugar layer on top of a non-started library, [intl-relativeformat][], which takes a JavaScript date or timestamp, compares it with "now", and returns the formatted string; e.g., "3 hours ago".
 
 
 Installation
@@ -35,11 +38,19 @@ Installation
 2. Load the scripts into your page.
 
 ```html
-<script src="path/to/react.js"></script>
-<script src="path/to/react-intl.js"></script>
+<script src="react/react.min.js"></script>
+<script src="react-intl/react-intl.min.js"></script>
 ```
 
 _Note: for older browsers and Safari you may need to also load the [Intl.js][] polyfill before including `react-intl.js`._
+
+Be default, React Intl ships with the locale data for English built-in. When you need to format data in another locale, include its data; e.g., for French:
+
+```html
+<script src="react-intl/locale-data/fr.js"></script>
+```
+
+_Note: All 150+ locales supported use their root BCP 47 language tag; i.e., the part before the first hyphen (if any)._
 
 3. Creating a React component with the Intl Mixin:
 
@@ -87,6 +98,8 @@ React.renderComponent(
 ```javascript
 var ReactIntlMixin = require('react-intl');
 ```
+
+_Note: in Node.js, the data for all locales is pre-loaded._
 
 Advanced Options
 ----------------
@@ -264,7 +277,7 @@ var messages = {
 React.renderComponent(
   <MyComponent locales={["en-US"]} messages={messages["en-US"]}
     name="John" manager="Mike" />,
-  document.getElementById('example')
+  document.getElementById("example")
 );
 // - English output: "John reports to Mike."
 
@@ -272,9 +285,49 @@ React.renderComponent(
 React.renderComponent(
   <MyComponent locales={["de-DE"]} messages={messages["de-DE"]}
     name="John" manager="Mike" />,
-  document.getElementById('example')
+  document.getElementById("example")
 );
 // - German output: "John berichtet an Mike."
+```
+
+### Example #1: Simple String Replacement with Relative Time
+
+```javascript
+var MyComponent = React.createClass({
+  mixins: [ReactIntlMixin],
+
+  render: function () {
+    return <p>{this.formatMessage(this.getIntlMessage("posted"), {
+      relativeTime: this.formatRelative(this.props.postDate),
+    })}</p>;
+  }
+});
+
+var messages = {
+    "en": {
+      reporting: "posted {relativeTime}"
+    },
+
+    "es": {
+      reporting: "publicado {relativeTime}"
+    }
+};
+
+// Render in English:
+React.renderComponent(
+  <MyComponent locales={["en"]} messages={messages["en"]}
+    postDate="2014-05-11" />,
+  document.getElementById('example')
+);
+// - English output: "posted 4 months ago"
+
+// Render in Spanish:
+React.renderComponent(
+  <MyComponent locales={["es"]} messages={messages["es"]}
+    postDate="2014-05-11" />,
+  document.getElementById('example')
+);
+// - German output: "publicado hace 4 meses"
 ```
 
 ### Example #2: String Replacement with Pluralization
@@ -407,6 +460,7 @@ See the [LICENSE file][] for license text and copyright information.
 [Mixin]: http://facebook.github.io/react/docs/reusable-components.html#mixins
 [bower]: http://bower.io/
 [intl-messageformat]: https://github.com/yahoo/intl-messageformat
+[intl-relativeformat]: https://github.com/yahoo/intl-relativeformat
 [Intl.NumberFormat]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
 [Intl.DateTimeFormat]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
 [Strawman Draft]: http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting
