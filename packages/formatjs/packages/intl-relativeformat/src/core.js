@@ -12,7 +12,8 @@ import diff from './diff';
 
 export default RelativeFormat;
 
-var PRIORITY = ['second', 'minute', 'hour', 'day', 'month', 'year'];
+var FIELDS = ['second', 'minute', 'hour', 'day', 'month', 'year'];
+var STYLES = ['best fit', 'numeric'];
 
 // -- RelativeFormat --------------------------------------------------------
 
@@ -20,11 +21,12 @@ function RelativeFormat(locales, options) {
     options = options || {};
 
     defineProperty(this, '_locale', {value: this._resolveLocale(locales)});
-    defineProperty(this, '_messages', {value: objCreate(null)});
+    defineProperty(this, '_options', {value: {
+        style: this._resolveStyle(options.style),
+        units: this._isValidUnits(options.units) && options.units
+    }});
 
-    if (options.units && this._isValidUnits(options.units)) {
-        defineProperty(this, '_units', {value: options.units});
-    }
+    defineProperty(this, '_messages', {value: objCreate(null)});
 
     // "Bind" `format()` method to `this` so it can be passed by reference like
     // the other `Intl` APIs.
@@ -91,7 +93,8 @@ defineProperty(RelativeFormat, 'thresholds', {
 RelativeFormat.prototype.resolvedOptions = function () {
     return {
         locale: this._locale,
-        units : this._units
+        style : this._options.style,
+        units : this._options.units
     };
 };
 
@@ -107,38 +110,41 @@ RelativeFormat.prototype._format = function (date) {
     }
 
     var diffReport  = diff(new Date(), date);
-    var units       = this._units || this._selectUnits(diffReport);
+    var units       = this._options.units || this._selectUnits(diffReport);
     var diffInUnits = diffReport[units];
 
-    var relativeUnits = this._resolveRelativeUnits(diffInUnits, units);
-    if (relativeUnits) {
-        return relativeUnits;
+    if (this._options.style !== 'numeric') {
+        var relativeUnits = this._resolveRelativeUnits(diffInUnits, units);
+        if (relativeUnits) {
+            return relativeUnits;
+        }
     }
 
-    var msg = this._resolveMessage(units);
-    return msg.format({
+    return this._resolveMessage(units).format({
         '0' : Math.abs(diffInUnits),
         when: diffInUnits < 0 ? 'past' : 'future'
     });
 };
 
 RelativeFormat.prototype._isValidUnits = function (units) {
-    if (PRIORITY.indexOf(units) >= 0) {
+    if (!units || FIELDS.indexOf(units) >= 0) {
         return true;
     }
 
-    var suggestion = /s$/.test(units) && units.substring(0, units.length - 1);
-    if (suggestion && PRIORITY.indexOf(suggestion) >= 0) {
-        throw new Error(
-            '"' + units + '" is not a valid IntlRelativeFormat `units` ' +
-            'value, did you mean: ' + suggestion
-        );
-    } else {
-        throw new Error(
-            '"' + units + '" is not a valid IntlRelativeFormat `units` ' +
-            'value, it must be one of: ' + PRIORITY.join(', ')
-        );
+    if (typeof units === 'string') {
+        var suggestion = /s$/.test(units) && units.substr(0, units.length - 1);
+        if (suggestion && FIELDS.indexOf(suggestion) >= 0) {
+            throw new Error(
+                '"' + units + '" is not a valid IntlRelativeFormat `units` ' +
+                'value, did you mean: ' + suggestion
+            );
+        }
     }
+
+    throw new Error(
+        '"' + units + '" is not a valid IntlRelativeFormat `units` value, it ' +
+        'must be one of: "' + FIELDS.join('", "') + '"'
+    );
 };
 
 RelativeFormat.prototype._resolveLocale = function (locales) {
@@ -219,11 +225,27 @@ RelativeFormat.prototype._resolveRelativeUnits = function (diff, units) {
     }
 };
 
+RelativeFormat.prototype._resolveStyle = function (style) {
+    // Default to "best fit" style.
+    if (!style) {
+        return STYLES[0];
+    }
+
+    if (STYLES.indexOf(style) >= 0) {
+        return style;
+    }
+
+    throw new Error(
+        '"' + style + '" is not a valid IntlRelativeFormat `style` value, it ' +
+        'must be one of: "' + STYLES.join('", "') + '"'
+    );
+};
+
 RelativeFormat.prototype._selectUnits = function (diffReport) {
     var i, l, units;
 
-    for (i = 0, l = PRIORITY.length; i < l; i += 1) {
-        units = PRIORITY[i];
+    for (i = 0, l = FIELDS.length; i < l; i += 1) {
+        units = FIELDS[i];
 
         if (Math.abs(diffReport[units]) < RelativeFormat.thresholds[units]) {
             break;
