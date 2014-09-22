@@ -25,8 +25,8 @@
   "dependencies": {
     "intl-format-cache": "^2.0.0",
     "intl-messageformat": "^1.0.0-rc-5",
-    "intl-relativeformat": "^1.0.0-beta-1",
-    "react": "^0.11.1"
+    "intl-relativeformat": "^1.0.0-beta-2",
+    "react": "^0.11.2"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
