@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+    - 0.10
+notifications:
+    email:
+        recipients:
+            - ypt-team@yahoo-inc.com
+        on_success: change
+        on_failure: always
+env:
+  global:
+    - secure: HezmcXRtnLiJZxYZi0DdPVcJT+sPaBQfGc/mRYJDbyTOTzTsemWGR1ZQn/YfuMQUWUzKh7qTChjwMm/SXfjTr+mtq95w+4kz+Md+MYuerrH0ISqPJwqlg3JQ8Y/sqh4JEq1RXpGY66hJ8GL5YpZN7j3wD2mPFWVeMzJBwqCljRE=
+    - secure: t0QzA5clSN+TGxjp4ta7zbXmErW2uwXrxOAkb4Y+A30eb137dmeXqkwqJS6uYUF6MDTkFLdWFIWMrpsnDZG9GbxI8BgbFlaH6zrGZkHxZNfSCH/llTaPIkJuhx+6SaQ7bm7Mz1/0nZ8Qki1g+K0ZIz3ygZmIk4bvkg3rPpEeDnA=
+addons:
+  sauce_connect: true
