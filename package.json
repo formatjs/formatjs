@@ -29,6 +29,7 @@
     "react": "^0.11.2"
   },
   "devDependencies": {
+    "expect.js": "^0.3.1",
     "grunt": "^0.4.5",
     "grunt-bundle-jsnext-lib": "^0.2.1",
     "grunt-cli": "^0.1.13",
@@ -41,7 +42,8 @@
     "intl": "^0.1.4"
   },
   "scripts": {
-    "prepublish": "grunt"
+    "prepublish": "grunt",
+    "test": "./tests/smoke/saucelabs.sh"
   },
   "homepage": "https://github.com/yahoo/react-intl"
 }

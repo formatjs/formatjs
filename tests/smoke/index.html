@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Browser smoke test</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../node_modules/mocha/mocha.css" />
+    <style>
+      .tests {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <div class="tests">
+      <div id="test1"></div>
+      <div id="test2"></div>
+      <div id="test3"></div>
+    </div>
+    <script src="../../node_modules/mocha/mocha.js"></script>
+    <script src="../../node_modules/expect.js/index.js"></script>
+    <script src="../../node_modules/intl/Intl.complete.js"></script>
+    <script src="../../node_modules/react/dist/react.js"></script>
+    <script src="../../dist/react-intl-with-locales.js"></script>
+    <script>
+      mocha.setup('bdd');
+    </script>
+    <script src="smoke.js"></script>
+    <script>
+      mocha.run();
+    </script>
+  </body>
+</html>
