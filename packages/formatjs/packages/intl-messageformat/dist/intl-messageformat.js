@@ -1607,22 +1607,26 @@
     });
 
     // Define internal private properties for dealing with locale data.
-    $$es5$$defineProperty($$core$$MessageFormat, '__availableLocales__', {value: []});
     $$es5$$defineProperty($$core$$MessageFormat, '__localeData__', {value: $$es5$$objCreate(null)});
     $$es5$$defineProperty($$core$$MessageFormat, '__addLocaleData', {value: function (data) {
         if (!(data && data.locale)) {
-            throw new Error('Locale data does not contain a `locale` property');
+            throw new Error(
+                'Locale data provided to IntlMessageFormat does not contain a ' +
+                '`locale` property'
+            );
         }
 
         if (!data.pluralRuleFunction) {
-            throw new Error('Locale data does not contain a `pluralRuleFunction` property');
+            throw new Error(
+                'Locale data provided to IntlMessageFormat does not contain a ' +
+                '`pluralRuleFunction` property'
+            );
         }
 
-        var availableLocales = $$core$$MessageFormat.__availableLocales__,
-            localeData       = $$core$$MessageFormat.__localeData__;
+        // Message format locale data only requires the first part of the tag.
+        var locale = data.locale.toLowerCase().split('-')[0];
 
-        availableLocales.push(data.locale);
-        localeData[data.locale] = data;
+        $$core$$MessageFormat.__localeData__[locale] = data;
     }});
 
     // Defines `__parse()` static method as an exposed private.
@@ -1701,34 +1705,39 @@
     };
 
     $$core$$MessageFormat.prototype._resolveLocale = function (locales) {
-        var availableLocales = $$core$$MessageFormat.__availableLocales__,
-            locale, parts, i, len;
-
-        if (availableLocales.length === 0) {
-            throw new Error('No locale data has been provided for IntlMessageFormat yet');
+        if (!locales) {
+            locales = $$core$$MessageFormat.defaultLocale;
         }
 
         if (typeof locales === 'string') {
             locales = [locales];
         }
 
-        if (locales && locales.length) {
-            for (i = 0, len = locales.length; i < len; i += 1) {
-                locale = locales[i].toLowerCase().split('-')[0];
+        var localeData = $$core$$MessageFormat.__localeData__;
+        var i, len, locale;
 
-                // Make sure the first part of the locale that we care about is
-                // structurally valid.
-                if (!/[a-z]{2,3}/i.test(locale)) {
-                    throw new RangeError('"' + locales[i] + '" is not a structurally valid language tag');
-                }
+        for (i = 0, len = locales.length; i < len; i += 1) {
+            // We just need the root part of the langage tag.
+            locale = locales[i].split('-')[0].toLowerCase();
 
-                if (availableLocales.indexOf(locale) >= 0) {
-                    break;
-                }
+            // Validate that the langage tag is structurally valid.
+            if (!/[a-z]{2,3}/.test(locale)) {
+                throw new Error(
+                    'Language tag provided to IntlMessageFormat is not ' +
+                    'structrually valid: ' + locale
+                );
+            }
+
+            // Return the first locale for which we have CLDR data registered.
+            if ($$utils$$hop.call(localeData, locale)) {
+                return locale;
             }
         }
 
-        return locale || $$core$$MessageFormat.defaultLocale.split('-')[0];
+        throw new Error(
+            'No locale data has been added to IntlMessageFormat for: ' +
+            locales.join(', ')
+        );
     };
     var $$en$$default = {"locale":"en","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}};
 
