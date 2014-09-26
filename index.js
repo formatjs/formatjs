@@ -5,7 +5,7 @@
 var oldReact = global.React;
 global.React = require('react');
 
-// Add all locale data to `ReactIntlMixin`;
+// Add all locale data to `ReactIntlMixin`.
 require('./lib/locales');
 
 exports = module.exports = require('./lib/mixin').default;
