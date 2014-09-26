@@ -83,15 +83,26 @@ module.exports = function (grunt) {
         },
 
         uglify: {
+            options: {
+                preserveComments: 'some'
+            },
+
             dist: {
                 options: {
-                    preserveComments: 'some'
+                    sourceMap              : true,
+                    sourceMapIn            : 'dist/intl-messageformat.js.map',
+                    sourceMapIncludeSources: true
                 },
 
                 files: {
                     'dist/intl-messageformat.min.js': [
                         'dist/intl-messageformat.js'
-                    ],
+                    ]
+                }
+            },
+
+            dist_with_locales: {
+                files: {
                     'dist/intl-messageformat-with-locales.min.js': [
                         'dist/intl-messageformat-with-locales.js'
                     ]
@@ -126,7 +137,7 @@ module.exports = function (grunt) {
         'cldr',
         'bundle_jsnext',
         'concat:dist_with_locales',
-        'uglify:dist',
+        'uglify',
         'cjs_jsnext',
         'copy:tmp'
     ]);
