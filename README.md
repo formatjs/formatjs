@@ -480,9 +480,9 @@ See the [LICENSE file][] for license text and copyright information.
 
 
 [npm]: https://www.npmjs.org/package/react-intl
-[npm-badge]: https://img.shields.io/npm/v/react-intl.svg?style=flat
+[npm-badge]: https://img.shields.io/npm/v/react-intl.svg?style=flat-square
 [david]: https://david-dm.org/yahoo/react-intl
-[david-badge]: https://img.shields.io/david/yahoo/react-intl.svg?style=flat
+[david-badge]: https://img.shields.io/david/yahoo/react-intl.svg?style=flat-square
 [Intl.js]: https://github.com/andyearnshaw/Intl.js
 [ECMAScript 402]: http://www.ecma-international.org/ecma-402/1.0/
 [ReactJS]: http://facebook.github.io/react/
