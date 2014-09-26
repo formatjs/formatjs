@@ -37,7 +37,6 @@ function RelativeFormat(locales, options) {
 }
 
 // Define internal private properties for dealing with locale data.
-defineProperty(RelativeFormat, '__availableLocales__', {value: []});
 defineProperty(RelativeFormat, '__localeData__', {value: objCreate(null)});
 defineProperty(RelativeFormat, '__addLocaleData', {value: function (data) {
     if (!(data && data.locale)) {
@@ -57,14 +56,10 @@ defineProperty(RelativeFormat, '__addLocaleData', {value: function (data) {
     // Add data to IntlMessageFormat.
     IntlMessageFormat.__addLocaleData(data);
 
-    var availableLocales = RelativeFormat.__availableLocales__,
-        localeData       = RelativeFormat.__localeData__;
-
-    // Message format locale data only requires the first part of the tag.
+    // Relative format locale data only requires the first part of the tag.
     var locale = data.locale.toLowerCase().split('-')[0];
 
-    availableLocales.push(locale);
-    localeData[locale] = data;
+    RelativeFormat.__localeData__[locale] = data;
 }});
 
 // Define public `defaultLocale` property which can be set by the developer, or
@@ -156,7 +151,8 @@ RelativeFormat.prototype._resolveLocale = function (locales) {
         locales = [locales];
     }
 
-    var availableLocales = RelativeFormat.__availableLocales__;
+    var hop        = Object.prototype.hasOwnProperty;
+    var localeData = RelativeFormat.__localeData__;
     var i, len, locale;
 
     for (i = 0, len = locales.length; i < len; i += 1) {
@@ -172,7 +168,7 @@ RelativeFormat.prototype._resolveLocale = function (locales) {
         }
 
         // Return the first locale for which we have CLDR data registered.
-        if (availableLocales.indexOf(locale) >= 0) {
+        if (hop.call(localeData, locale)) {
             return locale;
         }
     }

@@ -88,15 +88,26 @@ module.exports = function (grunt) {
         },
 
         uglify: {
+            options: {
+                preserveComments: 'some'
+            },
+
             dist: {
                 options: {
-                    preserveComments: 'some'
+                    sourceMap              : true,
+                    sourceMapIn            : 'dist/intl-relativeformat.js.map',
+                    sourceMapIncludeSources: true
                 },
 
                 files: {
                     'dist/intl-relativeformat.min.js': [
                         'dist/intl-relativeformat.js'
-                    ],
+                    ]
+                }
+            },
+
+            dist_with_locales: {
+                files: {
                     'dist/intl-relativeformat-with-locales.min.js': [
                         'dist/intl-relativeformat-with-locales.js'
                     ]
@@ -129,7 +140,7 @@ module.exports = function (grunt) {
         'jshint',
         'bundle_jsnext',
         'concat:dist_with_locales',
-        'uglify:dist',
+        'uglify',
         'cjs_jsnext',
         'copy:tmp'
     ]);
