@@ -42,7 +42,8 @@
     "grunt-contrib-uglify": "^0.6.0",
     "grunt-extract-cldr-data": "^1.0.0",
     "grunt-saucelabs": "^8.3.2",
-    "intl": "^0.1.4"
+    "intl": "^0.1.4",
+    "mocha": "^1.21.4"
   },
   "scripts": {
     "prepublish": "grunt",
