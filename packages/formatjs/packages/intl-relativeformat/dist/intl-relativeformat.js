@@ -1792,7 +1792,11 @@
     }
 
     var $$diff$$default = function (dfrom, dto) {
-        var millisecond = $$diff$$round(dto.getTime() - dfrom.getTime()),
+        // Convert to ms timestamps.
+        dfrom = +dfrom;
+        dto   = +dto;
+
+        var millisecond = $$diff$$round(dto - dfrom),
             second      = $$diff$$round(millisecond / 1000),
             minute      = $$diff$$round(second / 60),
             hour        = $$diff$$round(minute / 60),
@@ -1817,10 +1821,16 @@
 
     var $$core$$default = $$core$$RelativeFormat;
 
+    // -----------------------------------------------------------------------------
+
     var $$core$$FIELDS = ['second', 'minute', 'hour', 'day', 'month', 'year'];
     var $$core$$STYLES = ['best fit', 'numeric'];
 
-    // -- RelativeFormat --------------------------------------------------------
+    var $$core$$getTime = Date.now ? Date.now : function () {
+        return new Date().getTime();
+    };
+
+    // -- RelativeFormat -----------------------------------------------------------
 
     function $$core$$RelativeFormat(locales, options) {
         options = options || {};
@@ -1846,15 +1856,15 @@
     $$es5$$defineProperty($$core$$RelativeFormat, '__addLocaleData', {value: function (data) {
         if (!(data && data.locale)) {
             throw new Error(
-                'Locale data provided to IntlRelativeFormat does not contain a ' +
-                '`locale` property'
+                'Locale data provided to IntlRelativeFormat is missing a ' +
+                '`locale` property value'
             );
         }
 
         if (!data.fields) {
             throw new Error(
-                'Locale data provided to IntlRelativeFormat does not contain a ' +
-                '`fields` property'
+                'Locale data provided to IntlRelativeFormat is missing a ' +
+                '`fields` property value'
             );
         }
 
@@ -1899,17 +1909,22 @@
     };
 
     $$core$$RelativeFormat.prototype._format = function (date) {
-        date = new Date(date);
+        var now = $$core$$getTime();
 
-        // Determine if the `date` is valid.
-        if (!(date && date.getTime())) {
-            throw new TypeError(
-                'A Date must be provided to a IntlRelativeFormat instance\'s ' +
-                '`format()` function'
+        if (date === undefined) {
+            date = now;
+        }
+
+        // Determine if the `date` is valid, and throw a similar error to what
+        // `Intl.DateTimeFormat#format()` would throw.
+        if (!isFinite(date)) {
+            throw new RangeError(
+                'The date value provided to IntlRelativeFormat#format() is not ' +
+                'in valid range.'
             );
         }
 
-        var diffReport  = $$diff$$default(new Date(), date);
+        var diffReport  = $$diff$$default(now, date);
         var units       = this._options.units || this._selectUnits(diffReport);
         var diffInUnits = diffReport[units];
 
