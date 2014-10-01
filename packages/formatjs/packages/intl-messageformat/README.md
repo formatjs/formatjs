@@ -8,6 +8,8 @@ Formats strings with number, date, plural, and select placeholders to create loc
 [![Dependency Status][david-badge]][david]
 
 
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/intl-messageformat.svg)](https://saucelabs.com/u/intl-messageformat)
+
 Overview
 --------
 

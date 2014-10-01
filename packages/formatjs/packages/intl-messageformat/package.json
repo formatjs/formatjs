@@ -28,16 +28,19 @@
   "devDependencies": {
     "benchmark": "^1.0.0",
     "chai": "^1.9.1",
+    "expect.js": "^0.3.1",
     "grunt": "^0.4.5",
     "grunt-benchmark": "^0.3.0",
     "grunt-bundle-jsnext-lib": "^0.2.1",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-concat": "^0.5.0",
+    "grunt-contrib-connect": "~0.8.0",
     "grunt-contrib-copy": "^0.6.0",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-uglify": "^0.6.0",
     "grunt-extract-cldr-data": "^1.0.1",
+    "grunt-saucelabs": "~8.3.2",
     "intl": "^0.1.4",
     "istanbul": "^0.3.0",
     "mocha": "^1.21.4",
@@ -45,7 +48,8 @@
     "yeti": "^0.2.29"
   },
   "scripts": {
-    "test": "istanbul cover -- _mocha tests/ --reporter spec && tests/saucelabs.sh",
+    "test": "istanbul cover -- _mocha tests/ --reporter spec",
+    "travis": "istanbul cover -- _mocha tests/ --reporter spec && tests/saucelabs.sh",
     "prepublish": "grunt"
   },
   "homepage": "https://github.com/yahoo/intl-messageformat",

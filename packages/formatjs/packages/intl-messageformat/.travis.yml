@@ -1,18 +1,14 @@
 language: node_js
 node_js:
 - "0.10"
+script: npm run travis
 notifications:
   email:
     recipients:
     - mojito-next@yahoo-inc.com
     on_success: change
     on_failure: always
-addons:
-  sauce_connect:
-    username: drewfish
-    access_key:
-      secure: Wah4sN+/YCy4pgeDJ9D/k8dg4dSygGldtvg+9FimvdYciBy1PfDL/tMX64RnpdrYR06JmM4T4M/Epawwz5P2SNVvtRfUe53NMJlImay7Sc+1P6psxVzRsTf2C7WJ4Lg7tzIT4sqA5YBUvdyGIsaoY1CyQWzEfFmFp8Z7rFOgSRw=
 env:
   global:
-  - SAUCE_USERNAME: drewfish
-  - secure: VpOyvozBCLjDUN1oKzQJhsOEUwJ3vxXAwhvPqrCQTzdOjzKwurx+CvvEizFSE8jS4TbRB1B7USgMBGyiETAoW+ep2bC3uDUIQHX1A3+m/cyjLbcGzaoVC4zZUXYZbsStpb0DUhD+rzH0D6IuWulNzhnQCHDMi3a6q7QhJyLNF1k=
+    - secure: Q1Agjbg1jP4OwEt2LZHX89gjxwK0vTK7EhXgQDIRnqJIqnQ26CbMn8eu8zdKOkysx8F0lHYjU5DqanV81VV4ApvjDuArAFpSJ3TjwFwyQf1UDwCGXsEb+gfd2S3zmzxc7N/T/QPdA+TsXxdzjg0NtnNW1rcThN3IL7Kh1Q1nvoQ=
+    - secure: K0CNsX5Dirh28CgYZtFSScrAKeyeH+YRNFxOADUNF4QVNPCGZWY8VNS+jHi5mekzm/2KgnkvLxpoD/0TECz8R6TvjIwrDZOcSRRi6Y5L7xO+R4xMZId93RT+mcwVR+7cqt+QVYnWjDVHof1ji4TdWq0WWbktDlULXq28VfjLr7c=
