@@ -87,7 +87,7 @@ module.exports = function (grunt) {
 
         uglify: {
             options: {
-                preserveComments: 'some',
+                preserveComments: 'some'
             },
 
             dist: {
@@ -135,11 +135,6 @@ module.exports = function (grunt) {
                     },
                     throttled: 3,
                     browsers: [
-                        {
-                            browserName: 'internet explorer',
-                            platform: 'Windows XP',
-                            version: '7'
-                        },
                         {
                             browserName: 'internet explorer',
                             platform: 'Windows 7',

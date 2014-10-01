@@ -44,7 +44,7 @@ describe('React Intl mixin', function () {
             now: date
         }), testNode);
 
-        expect(testNode.firstChild.innerHTML).to.equal('lunes');
+        expect(testNode.firstChild.innerHTML).to.contain('lunes');
     });
 
     it('Formats messages correctly', function () {
