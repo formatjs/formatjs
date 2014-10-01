@@ -1,6 +1,7 @@
 language: node_js
 node_js:
     - 0.10
+script: npm run travis
 notifications:
     email:
         recipients:
@@ -9,7 +10,5 @@ notifications:
         on_failure: always
 env:
   global:
-    - secure: P/e4dltlJyW+i4Tp/XQovQdBpeGlAUghryJX5rP19vsgcF9OCj6H3oR/XqvDKeE0nodMTnTxF+nonDSAVC75q9p5wWGTAJf8xQFT0JEPNyWuvD22LHwh2HpMV6TRRb8L0Icd6+NRYGXTakwX6/Sg6PhzWSQvZfVPWE8jAQBBNFs=
-    - secure: TuxjACPdPnjhJKzsvd1dZPmoTa8xOQ3jIcUBIkLBzm9V+I/weNC56LnhAbcTY5FREFxxD19OFzgAGtovR/0uZ4TP/fBPeG72mF9pv1+8l8kdfMDsXT13HZs9BTSDtVxEQE9KaVaRJu4+hQ+tpoq1zGWyFqtW97hiEgwxc9Qvbsw=
-addons:
-  sauce_connect: true
+    - secure: WbnUp5FGES0fYpvlzB8wayHoA2xbAoyge5O5oMpmqh54O/uDBUVscxMXbC/XaW8G/2YTHKXuMOTK5aMHcv7Vci3sa5Xi23gEEW4dZWRyFapG6D/apeftXLv8bsvnVfdjEGxlBVGgCwf0Y1mhWtdkW+lMjim/u7RMHVXkKdcx/aQ=
+    - secure: UhWj7DnqwMl3g69ZGj3kaWwro5FpuDxnsrbiw3N2PDM+7HFzWCJNUOOi/2ibGtRrvXm3pT47ivYv4G3ddU8rvSSRpb8VZk01XoeQ56Gt76JKQtpfyvPbHdCSRX43b6jBm5ySIa285f+kmHZ16aCGk1KW2voDA4w04KU27IFYTI0=
