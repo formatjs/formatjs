@@ -131,7 +131,7 @@ module.exports = function (grunt) {
         'saucelabs-mocha': {
             all: {
                 options: {
-                    urls: ['http://127.0.0.1:9999/tests/index.html'],
+                    urls: ['http://127.0.0.1:9999/tests/smoke/index.html'],
                     build: process.env.TRAVIS_BUILD_NUMBER,
                     sauceConfig: {
                         'record-video': false,
