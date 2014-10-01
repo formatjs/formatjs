@@ -1,1 +1,1 @@
-IntlMessageFormat.__addLocaleData({"locale":"ga","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";if(n===2)return"two";if(n>=3&&n<=6)return"few";if(n>=7&&n<=10)return"many";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"ga","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";if(n===2)return"two";if(n===Math.floor(n)&&n>=3&&n<=6)return"few";if(n===Math.floor(n)&&n>=7&&n<=10)return"many";return"other";}});

@@ -1,1 +1,1 @@
-IntlMessageFormat.__addLocaleData({"locale":"nso","pluralRuleFunction":function (n) {n=Math.floor(n);if(n>=0&&n<=1)return"one";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"nso","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===Math.floor(n)&&n>=0&&n<=1)return"one";return"other";}});

@@ -1,1 +1,1 @@
-IntlMessageFormat.__addLocaleData({"locale":"shi","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";if(n>=2&&n<=10)return"few";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"shi","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";if(n===Math.floor(n)&&n>=2&&n<=10)return"few";return"other";}});
