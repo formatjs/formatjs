@@ -77,6 +77,75 @@ describe('IntlRelativeFormat', function () {
 
     });
 
+    describe('options', function () {
+        describe('style', function () {
+            it('should defaul to "best fit"', function () {
+                var resolvedOptions = new IntlRelativeFormat().resolvedOptions();
+
+                expect(resolvedOptions).to.have.ownProperty('style');
+                expect(resolvedOptions.style).to.equal('best fit');
+            });
+
+            it('should use relative units when "best fit"', function () {
+                var rf = new IntlRelativeFormat('en');
+
+                function expectNoNumberInOutput(output) {
+                    expect(/\d+/.test(output)).to.equal(false);
+                }
+
+                expectNoNumberInOutput(rf.format(Date.now()));
+                expectNoNumberInOutput(rf.format(past(24 * 60 * 60 * 1000)));
+                expectNoNumberInOutput(rf.format(past(30 * 24 * 60 * 60 * 1000)));
+                expectNoNumberInOutput(rf.format(future(24 * 60 * 60 * 1000)));
+                expectNoNumberInOutput(rf.format(future(30 * 24 * 60 * 60 * 1000)));
+            });
+
+            it('should always output a number when "numeric" is specified', function () {
+                var rf = new IntlRelativeFormat('en', {style: 'numeric'});
+
+                function expectNumberInOutput(output) {
+                    expect(/\d+/.test(output)).to.equal(true);
+                }
+
+                expectNumberInOutput(rf.format(Date.now()));
+                expectNumberInOutput(rf.format(past(24 * 60 * 60 * 1000)));
+                expectNumberInOutput(rf.format(past(30 * 24 * 60 * 60 * 1000)));
+                expectNumberInOutput(rf.format(future(24 * 60 * 60 * 1000)));
+                expectNumberInOutput(rf.format(future(30 * 24 * 60 * 60 * 1000)));
+            });
+        });
+
+        describe('units', function () {
+            it('should default to `undefined`', function () {
+                var resolvedOptions = new IntlRelativeFormat().resolvedOptions();
+
+                expect(resolvedOptions).to.have.ownProperty('units');
+                expect(resolvedOptions.units).to.equal(undefined);
+            });
+
+            it('should always output in the specified units', function () {
+                var rf = new IntlRelativeFormat('en', {units: 'day'});
+
+                expect(rf.format(Date.now())).to.equal('today');
+                expect(rf.format(past(24 * 60 * 60 * 1000))).to.equal('yesterday');
+                expect(rf.format(past(30 * 24 * 60 * 60 * 1000))).to.equal('30 days ago');
+                expect(rf.format(future(24 * 60 * 60 * 1000))).to.equal('tomorrow');
+                expect(rf.format(future(30 * 24 * 60 * 60 * 1000))).to.equal('in 30 days');
+            });
+
+            it('should validate the specified units', function () {
+                function createInstance(options) {
+                    return function () {
+                        return new IntlRelativeFormat('en', options);
+                    };
+                }
+
+                expect(createInstance({units: 'bla'})).to.throw(Error);
+                expect(createInstance({units: 'hours'})).to.throw(Error, /did you mean: hour/);
+            });
+        });
+    });
+
     // INSTANCE METHODS
 
     describe('#resolvedOptions( )', function () {
@@ -98,10 +167,27 @@ describe('IntlRelativeFormat', function () {
     });
 
     describe('#format( [object] )', function () {
+        var rf;
+
+        beforeEach(function () {
+            rf = new IntlRelativeFormat();
+        });
+
         it('should be a function', function () {
-            var rf = new IntlRelativeFormat();
             expect(rf.format).to.be.a('function');
             expect(rf).to.respondTo('format');
+        });
+
+        it('should throw on non-dates', function () {
+            expect(rf.format(Date.now())).to.be.a('string');
+            expect(rf.format(new Date())).to.be.a('string');
+            expect(rf.format.bind(rf, 'foo')).to.throw();
+        });
+
+        it('should handle dates on and around the epoch', function () {
+            expect(rf.format(1)).to.be.a('string');
+            expect(rf.format(0)).to.be.a('string');
+            expect(rf.format(-1)).to.be.a('string');
         });
     });
 
@@ -250,75 +336,6 @@ describe('IntlRelativeFormat', function () {
         it('should return 1 second future', function () {
             var output = rt.format(future(1 * 1000));
             expect(output).to.equal('in 1 second');
-        });
-    });
-
-    describe('options', function () {
-        describe('style', function () {
-            it('should defaul to "best fit"', function () {
-                var resolvedOptions = new IntlRelativeFormat().resolvedOptions();
-
-                expect(resolvedOptions).to.have.ownProperty('style');
-                expect(resolvedOptions.style).to.equal('best fit');
-            });
-
-            it('should use relative units when "best fit"', function () {
-                var rf = new IntlRelativeFormat('en');
-
-                function expectNoNumberInOutput(output) {
-                    expect(/\d+/.test(output)).to.equal(false);
-                }
-
-                expectNoNumberInOutput(rf.format(Date.now()));
-                expectNoNumberInOutput(rf.format(past(24 * 60 * 60 * 1000)));
-                expectNoNumberInOutput(rf.format(past(30 * 24 * 60 * 60 * 1000)));
-                expectNoNumberInOutput(rf.format(future(24 * 60 * 60 * 1000)));
-                expectNoNumberInOutput(rf.format(future(30 * 24 * 60 * 60 * 1000)));
-            });
-
-            it('should always output a number when "numeric" is specified', function () {
-                var rf = new IntlRelativeFormat('en', {style: 'numeric'});
-
-                function expectNumberInOutput(output) {
-                    expect(/\d+/.test(output)).to.equal(true);
-                }
-
-                expectNumberInOutput(rf.format(Date.now()));
-                expectNumberInOutput(rf.format(past(24 * 60 * 60 * 1000)));
-                expectNumberInOutput(rf.format(past(30 * 24 * 60 * 60 * 1000)));
-                expectNumberInOutput(rf.format(future(24 * 60 * 60 * 1000)));
-                expectNumberInOutput(rf.format(future(30 * 24 * 60 * 60 * 1000)));
-            });
-        });
-
-        describe('units', function () {
-            it('should default to `undefined`', function () {
-                var resolvedOptions = new IntlRelativeFormat().resolvedOptions();
-
-                expect(resolvedOptions).to.have.ownProperty('units');
-                expect(resolvedOptions.units).to.equal(undefined);
-            });
-
-            it('should always output in the specified units', function () {
-                var rf = new IntlRelativeFormat('en', {units: 'day'});
-
-                expect(rf.format(Date.now())).to.equal('today');
-                expect(rf.format(past(24 * 60 * 60 * 1000))).to.equal('yesterday');
-                expect(rf.format(past(30 * 24 * 60 * 60 * 1000))).to.equal('30 days ago');
-                expect(rf.format(future(24 * 60 * 60 * 1000))).to.equal('tomorrow');
-                expect(rf.format(future(30 * 24 * 60 * 60 * 1000))).to.equal('in 30 days');
-            });
-
-            it('should validate the specified units', function () {
-                function createInstance(options) {
-                    return function () {
-                        return new IntlRelativeFormat('en', options);
-                    };
-                }
-
-                expect(createInstance({units: 'bla'})).to.throw(Error);
-                expect(createInstance({units: 'hours'})).to.throw(Error, /did you mean: hour/);
-            });
         });
     });
 

@@ -12,10 +12,16 @@ import diff from './diff';
 
 export default RelativeFormat;
 
+// -----------------------------------------------------------------------------
+
 var FIELDS = ['second', 'minute', 'hour', 'day', 'month', 'year'];
 var STYLES = ['best fit', 'numeric'];
 
-// -- RelativeFormat --------------------------------------------------------
+var getTime = Date.now ? Date.now : function () {
+    return new Date().getTime();
+};
+
+// -- RelativeFormat -----------------------------------------------------------
 
 function RelativeFormat(locales, options) {
     options = options || {};
@@ -41,15 +47,15 @@ defineProperty(RelativeFormat, '__localeData__', {value: objCreate(null)});
 defineProperty(RelativeFormat, '__addLocaleData', {value: function (data) {
     if (!(data && data.locale)) {
         throw new Error(
-            'Locale data provided to IntlRelativeFormat does not contain a ' +
-            '`locale` property'
+            'Locale data provided to IntlRelativeFormat is missing a ' +
+            '`locale` property value'
         );
     }
 
     if (!data.fields) {
         throw new Error(
-            'Locale data provided to IntlRelativeFormat does not contain a ' +
-            '`fields` property'
+            'Locale data provided to IntlRelativeFormat is missing a ' +
+            '`fields` property value'
         );
     }
 
@@ -94,17 +100,22 @@ RelativeFormat.prototype.resolvedOptions = function () {
 };
 
 RelativeFormat.prototype._format = function (date) {
-    date = new Date(date);
+    var now = getTime();
 
-    // Determine if the `date` is valid.
-    if (!(date && date.getTime())) {
-        throw new TypeError(
-            'A Date must be provided to a IntlRelativeFormat instance\'s ' +
-            '`format()` function'
+    if (date === undefined) {
+        date = now;
+    }
+
+    // Determine if the `date` is valid, and throw a similar error to what
+    // `Intl.DateTimeFormat#format()` would throw.
+    if (!isFinite(date)) {
+        throw new RangeError(
+            'The date value provided to IntlRelativeFormat#format() is not ' +
+            'in valid range.'
         );
     }
 
-    var diffReport  = diff(new Date(), date);
+    var diffReport  = diff(now, date);
     var units       = this._options.units || this._selectUnits(diffReport);
     var diffInUnits = diffReport[units];
 

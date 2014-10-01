@@ -14,7 +14,11 @@ function daysToYears (days) {
 }
 
 export default function (dfrom, dto) {
-    var millisecond = round(dto.getTime() - dfrom.getTime()),
+    // Convert to ms timestamps.
+    dfrom = +dfrom;
+    dto   = +dto;
+
+    var millisecond = round(dto - dfrom),
         second      = round(millisecond / 1000),
         minute      = round(second / 60),
         hour        = round(minute / 60),
