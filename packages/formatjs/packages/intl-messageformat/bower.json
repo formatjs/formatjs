@@ -3,7 +3,7 @@
   "main": [
     "dist/intl-messageformat.js"
   ],
-  "version": "1.0.0-rc-6",
+  "version": "1.0.0",
   "homepage": "https://github.com/yahoo/intl-messageformat",
   "authors": [
     "Eric Ferraiuolo <eferraiuolo@gmail.com>",
@@ -11,11 +11,17 @@
     "Caridy Patino <caridy@gmail.com>",
     "Anthony Pipkin <a.pipkin@yahoo.com>"
   ],
-  "description": "Format a string with placeholders, including plural and select support to create localized messages.",
+  "description": "Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.",
   "keywords": [
-    "intl",
     "i18n",
-    "MessageFormat"
+    "intl",
+    "internationalization",
+    "localization",
+    "globalization",
+    "messageformat",
+    "parser",
+    "plural",
+    "icu"
   ],
   "license": "BSD",
   "ignore": [
