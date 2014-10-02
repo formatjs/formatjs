@@ -28,7 +28,11 @@ export default {
     getRelativeFormat: createFormatCache(IntlRelativeFormat),
 
     getChildContext: function () {
-        var childContext = Object.create(this.context);
+        var childContext = {
+            locales: this.context.locales,
+            formats: this.context.formats,
+            messages: this.context.messages
+        };
 
         if (this.props.locales) {
             childContext.locales = this.props.locales;
