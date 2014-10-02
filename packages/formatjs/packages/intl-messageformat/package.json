@@ -23,7 +23,7 @@
   "main": "index.js",
   "jsnext:main": "src/main.js",
   "dependencies": {
-    "intl-messageformat-parser": "1.0.0-rc-2"
+    "intl-messageformat-parser": "1.0.0"
   },
   "devDependencies": {
     "benchmark": "^1.0.0",
