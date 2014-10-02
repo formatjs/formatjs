@@ -28,25 +28,14 @@ export default {
     getRelativeFormat: createFormatCache(IntlRelativeFormat),
 
     getChildContext: function () {
-        var childContext = {
-            locales: this.context.locales,
-            formats: this.context.formats,
-            messages: this.context.messages
+        var context = this.context,
+            props   = this.props;
+
+        return {
+            locales:  props.locales  || context.locales,
+            formats:  props.formats  || context.formats,
+            messages: props.messages || context.messages
         };
-
-        if (this.props.locales) {
-            childContext.locales = this.props.locales;
-        }
-
-        if (this.props.formats) {
-            childContext.formats = this.props.formats;
-        }
-
-        if (this.props.messages) {
-            childContext.messages = this.props.messages;
-        }
-
-        return childContext;
     },
 
     formatDate: function (date, options) {
