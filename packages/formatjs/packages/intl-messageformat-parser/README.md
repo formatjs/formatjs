@@ -31,7 +31,7 @@ The `dist/` folder contains the version of this package for use in the browser, 
 ```html
 <script src="intl-messageformat-parser/dist/parser.min.js"></script>
 <script>
-    IntlMessageFormatParser.prase('...');
+    IntlMessageFormatParser.parse('...');
 </script>
 ```
 
