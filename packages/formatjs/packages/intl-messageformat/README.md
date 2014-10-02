@@ -1,7 +1,7 @@
 Intl MessageFormat
 ==================
 
-Formats strings with number, date, plural, and select placeholders to create localized messages.
+Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.
 
 [![npm Version][npm-badge]][npm]
 [![Build Status][travis-badge]][travis]

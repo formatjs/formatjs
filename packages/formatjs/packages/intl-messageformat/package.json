@@ -1,11 +1,17 @@
 {
   "name": "intl-messageformat",
   "version": "1.0.0-rc-6",
-  "description": "Formats strings with number, date, plural, and select placeholders to create localized messages.",
+  "description": "Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.",
   "keywords": [
-    "intl",
     "i18n",
-    "MessageFormat"
+    "intl",
+    "internationalization",
+    "localization",
+    "globalization",
+    "messageformat",
+    "parser",
+    "plural",
+    "icu"
   ],
   "author": "Eric Ferraiuolo <eferraiuolo@gmail.com>",
   "contributors": [
