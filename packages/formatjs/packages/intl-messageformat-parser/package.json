@@ -1,7 +1,7 @@
 {
   "name": "intl-messageformat-parser",
   "version": "1.0.0-rc-2",
-  "description": "Parses ICU message strings to an AST that can be used to format the messages for a person's locale.",
+  "description": "Parses ICU Message strings into an AST via JavaScript.",
   "main": "index.js",
   "jsnext:main": "src/parser.js",
   "scripts": {
