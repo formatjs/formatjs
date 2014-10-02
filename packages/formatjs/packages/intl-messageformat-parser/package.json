@@ -5,7 +5,7 @@
   "main": "index.js",
   "jsnext:main": "src/parser.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "istanbul cover -- _mocha test/unit/ --reporter spec",
     "prepublish": "grunt"
   },
   "repository": {
@@ -30,12 +30,16 @@
   },
   "homepage": "https://github.com/yahoo/intl-messageformat-parser",
   "devDependencies": {
+    "expect.js": "^0.3.1",
     "grunt": "^0.4.5",
     "grunt-benchmark": "^0.3.0",
     "grunt-bundle-jsnext-lib": "^0.2.1",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-copy": "^0.6.0",
-    "grunt-peg": "^1.5.0"
+    "grunt-peg": "^1.5.0",
+    "istanbul": "^0.3.2",
+    "mocha": "^1.21.4",
+    "xunit-file": "0.0.5"
   }
 }
