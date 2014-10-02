@@ -1649,14 +1649,14 @@
     $$es51$$defineProperty($$core1$$MessageFormat, '__addLocaleData', {value: function (data) {
         if (!(data && data.locale)) {
             throw new Error(
-                'Locale data provided to IntlMessageFormat does not contain a ' +
+                'Locale data provided to IntlMessageFormat is missing a ' +
                 '`locale` property'
             );
         }
 
         if (!data.pluralRuleFunction) {
             throw new Error(
-                'Locale data provided to IntlMessageFormat does not contain a ' +
+                'Locale data provided to IntlMessageFormat is missing a ' +
                 '`pluralRuleFunction` property'
             );
         }
