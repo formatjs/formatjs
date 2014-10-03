@@ -1,13 +1,13 @@
 Intl RelativeFormat
 ===================
 
+Formats JavaScript dates to relative time strings.
+
 [![npm Version][npm-badge]][npm]
 [![Build Status][travis-badge]][travis]
 [![Dependency Status][david-badge]][david]
 
 [![Sauce Test Status][sauce-badge]][sauce]
-
-Formats JavaScript dates to relative time strings.
 
 
 [npm]: https://www.npmjs.org/package/intl-relativeformat
