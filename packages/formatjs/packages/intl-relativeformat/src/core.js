@@ -6,7 +6,7 @@ See the accompanying LICENSE file for terms.
 
 /* jslint esnext: true */
 
-import {defineProperty, objCreate} from './es5';
+import {defineProperty, objCreate, arrIndexOf} from './es5';
 import IntlMessageFormat from 'intl-messageformat';
 import diff from './diff';
 
@@ -133,13 +133,13 @@ RelativeFormat.prototype._format = function (date) {
 };
 
 RelativeFormat.prototype._isValidUnits = function (units) {
-    if (!units || FIELDS.indexOf(units) >= 0) {
+    if (!units || arrIndexOf.call(FIELDS, units) >= 0) {
         return true;
     }
 
     if (typeof units === 'string') {
         var suggestion = /s$/.test(units) && units.substr(0, units.length - 1);
-        if (suggestion && FIELDS.indexOf(suggestion) >= 0) {
+        if (suggestion && arrIndexOf.call(FIELDS, suggestion) >= 0) {
             throw new Error(
                 '"' + units + '" is not a valid IntlRelativeFormat `units` ' +
                 'value, did you mean: ' + suggestion
@@ -238,7 +238,7 @@ RelativeFormat.prototype._resolveStyle = function (style) {
         return STYLES[0];
     }
 
-    if (STYLES.indexOf(style) >= 0) {
+    if (arrIndexOf.call(STYLES, style) >= 0) {
         return style;
     }
 

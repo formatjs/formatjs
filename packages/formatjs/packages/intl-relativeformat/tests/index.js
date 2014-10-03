@@ -160,7 +160,9 @@ describe('IntlRelativeFormat', function () {
         it('should throw on non-dates', function () {
             expect(rf.format(Date.now())).to.be.a('string');
             expect(rf.format(new Date())).to.be.a('string');
-            expect(rf.format.bind(rf, 'foo')).to.throwException();
+            expect(function () {
+                return rf.format('foo');
+            }).to.throwException();
         });
 
         it('should handle dates on and around the epoch', function () {
