@@ -18,6 +18,10 @@ function future(v) {
     return new Date().getTime() + (v || 0);
 }
 
+function now() {
+    return (new Date()).getTime();
+}
+
 describe('IntlRelativeFormat', function () {
 
     it('should be a function', function () {
@@ -72,7 +76,7 @@ describe('IntlRelativeFormat', function () {
                     expect(/\d+/.test(output)).to.equal(false);
                 }
 
-                expectNoNumberInOutput(rf.format(Date.now()));
+                expectNoNumberInOutput(rf.format(now()));
                 expectNoNumberInOutput(rf.format(past(24 * 60 * 60 * 1000)));
                 expectNoNumberInOutput(rf.format(past(30 * 24 * 60 * 60 * 1000)));
                 expectNoNumberInOutput(rf.format(future(24 * 60 * 60 * 1000)));
@@ -86,7 +90,7 @@ describe('IntlRelativeFormat', function () {
                     expect(/\d+/.test(output)).to.equal(true);
                 }
 
-                expectNumberInOutput(rf.format(Date.now()));
+                expectNumberInOutput(rf.format(now()));
                 expectNumberInOutput(rf.format(past(24 * 60 * 60 * 1000)));
                 expectNumberInOutput(rf.format(past(30 * 24 * 60 * 60 * 1000)));
                 expectNumberInOutput(rf.format(future(24 * 60 * 60 * 1000)));
@@ -105,7 +109,7 @@ describe('IntlRelativeFormat', function () {
             it('should always output in the specified units', function () {
                 var rf = new IntlRelativeFormat('en', {units: 'day'});
 
-                expect(rf.format(Date.now())).to.equal('today');
+                expect(rf.format(now())).to.equal('today');
                 expect(rf.format(past(24 * 60 * 60 * 1000))).to.equal('yesterday');
                 expect(rf.format(past(30 * 24 * 60 * 60 * 1000))).to.equal('30 days ago');
                 expect(rf.format(future(24 * 60 * 60 * 1000))).to.equal('tomorrow');
@@ -158,7 +162,7 @@ describe('IntlRelativeFormat', function () {
         });
 
         it('should throw on non-dates', function () {
-            expect(rf.format(Date.now())).to.be.a('string');
+            expect(rf.format(now())).to.be.a('string');
             expect(rf.format(new Date())).to.be.a('string');
             expect(function () {
                 return rf.format('foo');
