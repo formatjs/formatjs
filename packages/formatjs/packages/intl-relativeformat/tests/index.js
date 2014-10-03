@@ -5,12 +5,8 @@
  */
 
 /*jshint node:true */
-/*global describe,it,beforeEach,afterEach */
+/*global describe,it,beforeEach,afterEach,expect,Intl,IntlRelativeFormat */
 'use strict';
-
-var chai,
-    expect,
-    IntlRelativeFormat;
 
 var TS = 1409810798651;
 
@@ -22,23 +18,6 @@ function future(v) {
     return new Date().getTime() + (v || 0);
 }
 
-// This oddity is so that this file can be used for both client-side and
-// server-side testing.  (On the client we've already loaded chai and
-// IntlRelativeFormat.)
-if ('function' === typeof require) {
-
-    chai = require('chai');
-
-    if (typeof global.Intl === 'undefined'){
-        global.Intl = require('intl');
-    }
-
-    IntlRelativeFormat = require('../');
-
-}
-
-expect = chai.expect;
-
 describe('IntlRelativeFormat', function () {
 
     it('should be a function', function () {
@@ -49,7 +28,7 @@ describe('IntlRelativeFormat', function () {
 
     describe('.__addLocaleData( [obj] )', function () {
         it('should respond to .__addLocaleData()', function () {
-            expect(IntlRelativeFormat).itself.to.respondTo('__addLocaleData');
+            expect(IntlRelativeFormat.__addLocaleData).to.be.a('function');
         });
     });
 
@@ -82,7 +61,7 @@ describe('IntlRelativeFormat', function () {
             it('should defaul to "best fit"', function () {
                 var resolvedOptions = new IntlRelativeFormat().resolvedOptions();
 
-                expect(resolvedOptions).to.have.ownProperty('style');
+                expect(resolvedOptions).to.have.property('style');
                 expect(resolvedOptions.style).to.equal('best fit');
             });
 
@@ -119,7 +98,7 @@ describe('IntlRelativeFormat', function () {
             it('should default to `undefined`', function () {
                 var resolvedOptions = new IntlRelativeFormat().resolvedOptions();
 
-                expect(resolvedOptions).to.have.ownProperty('units');
+                expect(resolvedOptions).to.have.property('units');
                 expect(resolvedOptions.units).to.equal(undefined);
             });
 
@@ -140,8 +119,10 @@ describe('IntlRelativeFormat', function () {
                     };
                 }
 
-                expect(createInstance({units: 'bla'})).to.throw(Error);
-                expect(createInstance({units: 'hours'})).to.throw(Error, /did you mean: hour/);
+                expect(createInstance({units: 'bla'})).to.throwException(function (e) {
+                    expect(e).to.be.an(Error);
+                });
+                expect(createInstance({units: 'hours'})).to.throwException(/did you mean: hour/);
             });
         });
     });
@@ -157,12 +138,11 @@ describe('IntlRelativeFormat', function () {
 
         it('should be a function', function () {
             expect(rf.resolvedOptions).to.be.a('function');
-            expect(rf).to.respondTo('resolvedOptions');
         });
 
         it('should contain `locale`, `style`, and `units` properties', function () {
             var resolvedOptions = rf.resolvedOptions();
-            expect(resolvedOptions).to.include.keys(['locale', 'style', 'units']);
+            expect(resolvedOptions).to.have.keys(['locale', 'style', 'units']);
         });
     });
 
@@ -175,13 +155,12 @@ describe('IntlRelativeFormat', function () {
 
         it('should be a function', function () {
             expect(rf.format).to.be.a('function');
-            expect(rf).to.respondTo('format');
         });
 
         it('should throw on non-dates', function () {
             expect(rf.format(Date.now())).to.be.a('string');
             expect(rf.format(new Date())).to.be.a('string');
-            expect(rf.format.bind(rf, 'foo')).to.throw();
+            expect(rf.format.bind(rf, 'foo')).to.throwException();
         });
 
         it('should handle dates on and around the epoch', function () {
