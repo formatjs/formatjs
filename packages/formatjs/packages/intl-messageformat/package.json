@@ -33,7 +33,6 @@
   },
   "devDependencies": {
     "benchmark": "^1.0.0",
-    "chai": "^1.9.1",
     "expect.js": "^0.3.1",
     "grunt": "^0.4.5",
     "grunt-benchmark": "^0.3.0",
@@ -53,8 +52,8 @@
     "xunit-file": "0.0.5"
   },
   "scripts": {
-    "test": "istanbul cover -- _mocha tests/ --reporter spec",
-    "travis": "istanbul cover -- _mocha tests/ --reporter spec && tests/saucelabs.sh",
+    "test": "istanbul cover -x lib/locales.js -- ./node_modules/mocha/bin/_mocha tests/runner.js --reporter spec",
+    "travis": "istanbul cover -x lib/locales.js -- _mocha tests/runner.js --reporter spec && tests/saucelabs.sh",
     "prepublish": "grunt"
   },
   "homepage": "https://github.com/yahoo/intl-messageformat",

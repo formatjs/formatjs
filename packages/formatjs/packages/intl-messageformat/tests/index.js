@@ -5,29 +5,8 @@
  */
 
 /*jshint node:true */
-/*global describe,it,beforeEach,afterEach */
+/*global describe,it,beforeEach,afterEach,expect,IntlMessageFormat */
 'use strict';
-
-var chai,
-    expect,
-    IntlMessageFormat;
-
-// This oddity is so that this file can be used for both client-side and
-// server-side testing.  (On the client we've already loaded chai and
-// IntlMessageFormat.)
-if ('function' === typeof require) {
-
-    chai = require('chai');
-
-    if (typeof global.Intl === 'undefined'){
-        global.Intl = require('intl');
-    }
-
-    IntlMessageFormat = require('../');
-
-}
-
-expect = chai.expect;
 
 describe('IntlMessageFormat', function () {
 
@@ -39,7 +18,7 @@ describe('IntlMessageFormat', function () {
 
     describe('.__addLocaleData( [obj] )', function () {
         it('should respond to .__addLocaleData()', function () {
-            expect(IntlMessageFormat).itself.to.respondTo('__addLocaleData');
+            expect(IntlMessageFormat.__addLocaleData).to.be.a('function');
         });
     });
 
@@ -72,7 +51,7 @@ describe('IntlMessageFormat', function () {
 
         it('should be undefined', function () {
             /*jshint expr:true */
-            expect(msgFmt._pluralLocale).to.be.undefined;
+            expect(msgFmt._pluralLocale).to.be(undefined);
         });
     });
 
@@ -81,7 +60,7 @@ describe('IntlMessageFormat', function () {
 
         it('should be undefined', function () {
             /*jshint expr:true */
-            expect(msgFmt._pluralFunc).to.be.undefined;
+            expect(msgFmt._pluralFunc).to.be(undefined);
         });
     });
 
@@ -89,13 +68,13 @@ describe('IntlMessageFormat', function () {
         it('should be undefined', function () {
             var msgFmt = new IntlMessageFormat('');
             /*jshint expr:true */
-            expect(msgFmt.pattern).to.not.exist;
+            expect(msgFmt.pattern).to.not.be.ok();
         });
 
         it('should be undefined when first parameter is ommited', function () {
             var msgFmt = new IntlMessageFormat('');
             /*jshint expr:true */
-            expect(msgFmt.pattern).to.not.exist;
+            expect(msgFmt.pattern).to.not.be.ok();
         });
     });
 
@@ -110,7 +89,6 @@ describe('IntlMessageFormat', function () {
 
         it('should be a function', function () {
             expect(msgFmt.resolvedOptions).to.be.a('function');
-            expect(msgFmt).to.respondTo('resolvedOptions');
         });
 
         it('should return an empty object', function () {
@@ -133,7 +111,6 @@ describe('IntlMessageFormat', function () {
         it('should be a function', function () {
             var msgFmt = new IntlMessageFormat('');
             expect(msgFmt.format).to.be.a('function');
-            expect(msgFmt).to.respondTo('format');
         });
     });
 
@@ -344,7 +321,9 @@ describe('IntlMessageFormat', function () {
                 return new IntlMessageFormat('{NAME}', ' ');
             }
 
-            expect(createWithInvalidLocale).to.throw(Error);
+            expect(createWithInvalidLocale).to.throwException(function (e) {
+                expect(e).to.be.an(Error);
+            });
         });
     });
 
@@ -355,7 +334,9 @@ describe('IntlMessageFormat', function () {
                 state = 'Missouri';
 
             it('should fail when the argument in the pattern is not provided', function () {
-                expect(msg.format).to.throw(Error);
+                expect(msg.format).to.throwException(function (e) {
+                    expect(e).to.be.an(Error);
+                });
             });
 
             it('should fail when the argument in the pattern has a typo', function () {
@@ -363,7 +344,9 @@ describe('IntlMessageFormat', function () {
                     return msg.format({'ST ATE': state});
                 }
 
-                expect(formatWithValueNameTypo).to.throw(Error);
+                expect(formatWithValueNameTypo).to.throwException(function (e) {
+                    expect(e).to.be.an(Error);
+                });
             });
 
             it('should succeed when the argument is correct', function () {
@@ -388,7 +371,9 @@ describe('IntlMessageFormat', function () {
                     return msg.format({ FOO: state });
                 }
 
-                expect(formatWithMissingValue).to.throw(Error);
+                expect(formatWithMissingValue).to.throwException(function (e) {
+                    expect(e).to.be.an(Error);
+                });
             });
 
             it('should fail when the argument in the pattern has a typo', function () {
@@ -396,7 +381,9 @@ describe('IntlMessageFormat', function () {
                     msg.format({ 'ST ATE': state });
                 }
 
-                expect(formatWithMissingValue).to.throw(Error);
+                expect(formatWithMissingValue).to.throwException(function (e) {
+                    expect(e).to.be.an(Error);
+                });
             });
 
             it('should succeed when the argument is correct', function () {
