@@ -1,14 +1,14 @@
 Intl RelativeFormat
-==================
+===================
 
-Formats JavaScript dates to **relative times** strings (e.g., "3 hours ago").
+Formats JavaScript dates to relative time strings (e.g., "3 hours ago").
 
 [![npm Version][npm-badge]][npm]
 [![Build Status][travis-badge]][travis]
 [![Dependency Status][david-badge]][david]
 
-
 [![Sauce Test Status][sauce-badge]][sauce]
+
 
 Overview
 --------
@@ -74,6 +74,7 @@ var output = rf.format(dateValue);
 
 As a result, the output will be "1 day ago" instead of "yesterday".
 
+
 Usage
 -----
 
@@ -132,6 +133,7 @@ If the browser does not already have the `Intl` APIs built-in, the Intl.js Polyf
 ```
 
 _Note: Modern browsers already have the `Intl` APIs built-in, so you can load the Intl.js Polyfill conditionally, by for checking for `window.Intl`._
+
 
 License
 -------
