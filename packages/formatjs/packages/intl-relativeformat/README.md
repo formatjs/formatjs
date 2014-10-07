@@ -31,7 +31,7 @@ To format a date to relative time, use the `IntlRelativeFormat` constructor. The
 
  - **locales** - _{String | String[]}_ - A string with a BCP 47 language tag, or an array of such strings. If you do not provide a locale, the default locale will be used, but you should _always_ provide one!
 
- - **[options]** - _{Object}_ - Optional object with user defined options for format styles.
+ - **options** - _{Object}_ - Optional object with user defined options for format styles.
 
 Here is the most basic example:
 
@@ -155,3 +155,6 @@ See the [LICENSE file][LICENSE] for license text and copyright information.
 [moment.js]: http://momentjs.com/
 [sauce]: https://saucelabs.com/u/intl-relativeformat
 [sauce-badge]: https://saucelabs.com/browser-matrix/intl-relativeformat.svg
+[ECMA 402]: http://www.ecma-international.org/ecma-402/1.0/index.html
+[DateTimeFormat]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+[NumberFormat]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
