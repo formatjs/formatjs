@@ -1611,14 +1611,14 @@
     $$es51$$defineProperty($$core$$MessageFormat, '__addLocaleData', {value: function (data) {
         if (!(data && data.locale)) {
             throw new Error(
-                'Locale data provided to IntlMessageFormat does not contain a ' +
+                'Locale data provided to IntlMessageFormat is missing a ' +
                 '`locale` property'
             );
         }
 
         if (!data.pluralRuleFunction) {
             throw new Error(
-                'Locale data provided to IntlMessageFormat does not contain a ' +
+                'Locale data provided to IntlMessageFormat is missing a ' +
                 '`pluralRuleFunction` property'
             );
         }
@@ -1784,6 +1784,22 @@
         return obj;
     };
 
+    var $$es52$$arrIndexOf = Array.prototype.indexOf || function (search, fromIndex) {
+        /*jshint validthis:true */
+        var arr = this;
+        if (!arr.length) {
+            return -1;
+        }
+
+        for (var i = fromIndex || 0, max = arr.length; i < max; i++) {
+            if (arr[i] === search) {
+                return i;
+            }
+        }
+
+        return -1;
+    };
+
     var $$diff$$round = Math.round;
 
     function $$diff$$daysToYears (days) {
@@ -1792,7 +1808,11 @@
     }
 
     var $$diff$$default = function (dfrom, dto) {
-        var millisecond = $$diff$$round(dto.getTime() - dfrom.getTime()),
+        // Convert to ms timestamps.
+        dfrom = +dfrom;
+        dto   = +dto;
+
+        var millisecond = $$diff$$round(dto - dfrom),
             second      = $$diff$$round(millisecond / 1000),
             minute      = $$diff$$round(second / 60),
             hour        = $$diff$$round(minute / 60),
@@ -1817,10 +1837,16 @@
 
     var $$core1$$default = $$core1$$RelativeFormat;
 
+    // -----------------------------------------------------------------------------
+
     var $$core1$$FIELDS = ['second', 'minute', 'hour', 'day', 'month', 'year'];
     var $$core1$$STYLES = ['best fit', 'numeric'];
 
-    // -- RelativeFormat --------------------------------------------------------
+    var $$core1$$getTime = Date.now ? Date.now : function () {
+        return new Date().getTime();
+    };
+
+    // -- RelativeFormat -----------------------------------------------------------
 
     function $$core1$$RelativeFormat(locales, options) {
         options = options || {};
@@ -1846,15 +1872,15 @@
     $$es52$$defineProperty($$core1$$RelativeFormat, '__addLocaleData', {value: function (data) {
         if (!(data && data.locale)) {
             throw new Error(
-                'Locale data provided to IntlRelativeFormat does not contain a ' +
-                '`locale` property'
+                'Locale data provided to IntlRelativeFormat is missing a ' +
+                '`locale` property value'
             );
         }
 
         if (!data.fields) {
             throw new Error(
-                'Locale data provided to IntlRelativeFormat does not contain a ' +
-                '`fields` property'
+                'Locale data provided to IntlRelativeFormat is missing a ' +
+                '`fields` property value'
             );
         }
 
@@ -1899,17 +1925,22 @@
     };
 
     $$core1$$RelativeFormat.prototype._format = function (date) {
-        date = new Date(date);
+        var now = $$core1$$getTime();
 
-        // Determine if the `date` is valid.
-        if (!(date && date.getTime())) {
-            throw new TypeError(
-                'A Date must be provided to a IntlRelativeFormat instance\'s ' +
-                '`format()` function'
+        if (date === undefined) {
+            date = now;
+        }
+
+        // Determine if the `date` is valid, and throw a similar error to what
+        // `Intl.DateTimeFormat#format()` would throw.
+        if (!isFinite(date)) {
+            throw new RangeError(
+                'The date value provided to IntlRelativeFormat#format() is not ' +
+                'in valid range.'
             );
         }
 
-        var diffReport  = $$diff$$default(new Date(), date);
+        var diffReport  = $$diff$$default(now, date);
         var units       = this._options.units || this._selectUnits(diffReport);
         var diffInUnits = diffReport[units];
 
@@ -1927,13 +1958,13 @@
     };
 
     $$core1$$RelativeFormat.prototype._isValidUnits = function (units) {
-        if (!units || $$core1$$FIELDS.indexOf(units) >= 0) {
+        if (!units || $$es52$$arrIndexOf.call($$core1$$FIELDS, units) >= 0) {
             return true;
         }
 
         if (typeof units === 'string') {
             var suggestion = /s$/.test(units) && units.substr(0, units.length - 1);
-            if (suggestion && $$core1$$FIELDS.indexOf(suggestion) >= 0) {
+            if (suggestion && $$es52$$arrIndexOf.call($$core1$$FIELDS, suggestion) >= 0) {
                 throw new Error(
                     '"' + units + '" is not a valid IntlRelativeFormat `units` ' +
                     'value, did you mean: ' + suggestion
@@ -2032,7 +2063,7 @@
             return $$core1$$STYLES[0];
         }
 
-        if ($$core1$$STYLES.indexOf(style) >= 0) {
+        if ($$es52$$arrIndexOf.call($$core1$$STYLES, style) >= 0) {
             return style;
         }
 
@@ -2195,21 +2226,14 @@
         getRelativeFormat: intl$format$cache$$default(intl$relativeformat$$default),
 
         getChildContext: function () {
-            var childContext = Object.create(this.context);
+            var context = this.context,
+                props   = this.props;
 
-            if (this.props.locales) {
-                childContext.locales = this.props.locales;
-            }
-
-            if (this.props.formats) {
-                childContext.formats = this.props.formats;
-            }
-
-            if (this.props.messages) {
-                childContext.messages = this.props.messages;
-            }
-
-            return childContext;
+            return {
+                locales:  props.locales  || context.locales,
+                formats:  props.formats  || context.formats,
+                messages: props.messages || context.messages
+            };
         },
 
         formatDate: function (date, options) {
