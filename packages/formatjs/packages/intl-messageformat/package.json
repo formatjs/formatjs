@@ -44,7 +44,7 @@
     "grunt-contrib-copy": "^0.6.0",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-uglify": "^0.6.0",
-    "grunt-extract-cldr-data": "^1.0.1",
+    "grunt-extract-cldr-data": "^1.1.0",
     "grunt-saucelabs": "~8.3.2",
     "intl": "^0.1.4",
     "istanbul": "^0.3.0",
