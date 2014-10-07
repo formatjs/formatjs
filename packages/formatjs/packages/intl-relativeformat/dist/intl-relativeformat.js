@@ -38,6 +38,22 @@
 
         return obj;
     };
+
+    var $$es5$$arrIndexOf = Array.prototype.indexOf || function (search, fromIndex) {
+        /*jshint validthis:true */
+        var arr = this;
+        if (!arr.length) {
+            return -1;
+        }
+
+        for (var i = fromIndex || 0, max = arr.length; i < max; i++) {
+            if (arr[i] === search) {
+                return i;
+            }
+        }
+
+        return -1;
+    };
     var $$utils$$hop = Object.prototype.hasOwnProperty;
 
     function $$utils$$extend(obj) {
@@ -1942,13 +1958,13 @@
     };
 
     $$core$$RelativeFormat.prototype._isValidUnits = function (units) {
-        if (!units || $$core$$FIELDS.indexOf(units) >= 0) {
+        if (!units || $$es5$$arrIndexOf.call($$core$$FIELDS, units) >= 0) {
             return true;
         }
 
         if (typeof units === 'string') {
             var suggestion = /s$/.test(units) && units.substr(0, units.length - 1);
-            if (suggestion && $$core$$FIELDS.indexOf(suggestion) >= 0) {
+            if (suggestion && $$es5$$arrIndexOf.call($$core$$FIELDS, suggestion) >= 0) {
                 throw new Error(
                     '"' + units + '" is not a valid IntlRelativeFormat `units` ' +
                     'value, did you mean: ' + suggestion
@@ -2047,7 +2063,7 @@
             return $$core$$STYLES[0];
         }
 
-        if ($$core$$STYLES.indexOf(style) >= 0) {
+        if ($$es5$$arrIndexOf.call($$core$$STYLES, style) >= 0) {
             return style;
         }
 
