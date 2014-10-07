@@ -1,6 +1,6 @@
 {
   "name": "react-intl",
-  "version": "1.0.0-rc-3",
+  "version": "1.0.0",
   "main": [
     "dist/react-intl.js",
     "dist/react-intl.min.js"
@@ -20,7 +20,9 @@
     "/example",
     "**/.*",
     "node_modules",
-    "bower_components"
+    "bower_components",
+    "test",
+    "tests"
   ],
   "homepage": "https://github.com/yahoo/react-intl",
   "authors": [
