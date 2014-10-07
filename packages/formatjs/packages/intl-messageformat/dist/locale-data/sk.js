@@ -1,0 +1,1 @@
+IntlMessageFormat.__addLocaleData({"locale":"sk","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";if(i===Math.floor(i)&&i>=2&&i<=4&&v===0)return"few";if((v!==0))return"many";return"other";}});

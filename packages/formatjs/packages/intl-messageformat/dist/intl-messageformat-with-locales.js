@@ -1812,6 +1812,7 @@ IntlMessageFormat.__addLocaleData({"locale":"ja","pluralRuleFunction":function (
 IntlMessageFormat.__addLocaleData({"locale":"jgo","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"jmc","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"ka","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"kab","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||i===1)return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"kde","pluralRuleFunction":function (n) {return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"kea","pluralRuleFunction":function (n) {return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"kk","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
@@ -1860,6 +1861,7 @@ IntlMessageFormat.__addLocaleData({"locale":"pl","pluralRuleFunction":function (
 IntlMessageFormat.__addLocaleData({"locale":"ps","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"pt","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length,t=parseInt(n.toString().replace(/^[^.]*\.?|0+$/g,""),10);n=Math.floor(n);if(i===1&&(v===0||i===0&&t===1))return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"rm","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"ro","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";if((v!==0)||n===0||(n!==1)&&n%100===Math.floor(n%100)&&n%100>=1&&n%100<=19)return"few";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"rof","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"ru","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(v===0&&i%10===1&&(i%100!==11))return"one";if(v===0&&i%10===Math.floor(i%10)&&i%10>=2&&i%10<=4&&!(i%100>=12&&i%100<=14))return"few";if(v===0&&(i%10===0||v===0&&(i%10===Math.floor(i%10)&&i%10>=5&&i%10<=9||v===0&&i%100===Math.floor(i%100)&&i%100>=11&&i%100<=14)))return"many";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"rwk","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
@@ -1871,10 +1873,12 @@ IntlMessageFormat.__addLocaleData({"locale":"ses","pluralRuleFunction":function 
 IntlMessageFormat.__addLocaleData({"locale":"sg","pluralRuleFunction":function (n) {return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"shi","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";if(n===Math.floor(n)&&n>=2&&n<=10)return"few";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"si","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(n===0||n===1||i===0&&f===1)return"one";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"sk","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";if(i===Math.floor(i)&&i>=2&&i<=4&&v===0)return"few";if((v!==0))return"many";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"sl","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(v===0&&i%100===1)return"one";if(v===0&&i%100===2)return"two";if(v===0&&(i%100===Math.floor(i%100)&&i%100>=3&&i%100<=4||(v!==0)))return"few";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"sn","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"so","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"sq","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"sr","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length,f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(v===0&&i%10===1&&((i%100!==11)||f%10===1&&(f%100!==11)))return"one";if(v===0&&i%10===Math.floor(i%10)&&i%10>=2&&i%10<=4&&(!(i%100>=12&&i%100<=14)||f%10===Math.floor(f%10)&&f%10>=2&&f%10<=4&&!(f%100>=12&&f%100<=14)))return"few";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"ss","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"ssy","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"st","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
@@ -1892,6 +1896,7 @@ IntlMessageFormat.__addLocaleData({"locale":"tr","pluralRuleFunction":function (
 IntlMessageFormat.__addLocaleData({"locale":"ts","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"tzm","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===Math.floor(n)&&n>=0&&n<=1||n===Math.floor(n)&&n>=11&&n<=99)return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"ug","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"uk","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(v===0&&i%10===1&&(i%100!==11))return"one";if(v===0&&i%10===Math.floor(i%10)&&i%10>=2&&i%10<=4&&!(i%100>=12&&i%100<=14))return"few";if(v===0&&(i%10===0||v===0&&(i%10===Math.floor(i%10)&&i%10>=5&&i%10<=9||v===0&&i%100===Math.floor(i%100)&&i%100>=11&&i%100<=14)))return"many";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"ur","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"uz","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"ve","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
@@ -1900,4 +1905,7 @@ IntlMessageFormat.__addLocaleData({"locale":"vo","pluralRuleFunction":function (
 IntlMessageFormat.__addLocaleData({"locale":"vun","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"wae","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"xh","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"xog","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"yo","pluralRuleFunction":function (n) {return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"zh","pluralRuleFunction":function (n) {return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"zu","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";return"other";}});
