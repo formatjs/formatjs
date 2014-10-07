@@ -137,7 +137,7 @@ _Note: All 150+ locales supported by this package use their root BCP 47 langage 
 If you'd like to load this package via a CDN, instead of hosting it yourself, one option is using [Raw Git][rawgit]. **Be sure to reference a `dist/` file using a Git tag:**
 
 ```html
-<script src="https://cdn.rawgit.com/yahoo/intl-messageformat/v1.0.0-rc-6/dist/intl-messageformat.min.js"></script>
+<script src="https://cdn.rawgit.com/yahoo/intl-messageformat/v1.0.1/dist/intl-messageformat.min.js"></script>
 ```
 
 ### Loading Intl MessageFormat in Node.js
