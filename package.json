@@ -23,9 +23,9 @@
   "main": "index.js",
   "jsnext:main": "src/main.js",
   "dependencies": {
-    "intl-format-cache": "^2.0.0",
-    "intl-messageformat": "1.0.0-rc-6",
-    "intl-relativeformat": "1.0.0-rc-1",
+    "intl-format-cache": "2.0.0",
+    "intl-messageformat": "1.0.1",
+    "intl-relativeformat": "1.0.0",
     "react": "^0.11.2"
   },
   "devDependencies": {
@@ -40,7 +40,7 @@
     "grunt-contrib-copy": "^0.6.0",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-uglify": "^0.6.0",
-    "grunt-extract-cldr-data": "^1.0.0",
+    "grunt-extract-cldr-data": "1.1.0",
     "grunt-saucelabs": "^8.3.2",
     "intl": "^0.1.4",
     "mocha": "^1.21.4"
