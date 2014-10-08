@@ -494,7 +494,9 @@ See the [LICENSE file][] for license text and copyright information.
 [bower]: http://bower.io/
 [intl-messageformat]: https://github.com/yahoo/intl-messageformat
 [intl-relativeformat]: https://github.com/yahoo/intl-relativeformat
+[Intl]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl
 [Intl.NumberFormat]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
 [Intl.DateTimeFormat]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+[Intl-Node]: https://github.com/joyent/node/issues/6371
 [Strawman Draft]: http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting
 [LICENSE file]: https://github.com/yahoo/react-intl/blob/master/LICENSE.md
