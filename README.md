@@ -182,7 +182,7 @@ This explicit way to specify a format works well for simple cases, but for compl
 With custom format, you can name a set of options that can be used within the entire application or within a component subtree (a component and its child components). These custom formats will also be used by the `formatMessage()` method for complex messages. The following examples will illustrates how custom formats work.
 
 ```javascript
-var MyContainer = React.createClass({
+var MyComponent = React.createClass({
   mixins: [ReactIntlMixin],
 
   getDefaultProps: function() {
