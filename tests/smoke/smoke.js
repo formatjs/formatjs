@@ -2,7 +2,6 @@
 describe('React Intl mixin', function () {
 
     it('Formats numbers correctly', function () {
-
         var FormattedNumber = React.createClass({
             displayName: 'FormattedNumber',
 
@@ -29,7 +28,7 @@ describe('React Intl mixin', function () {
             mixins: [ReactIntlMixin],
 
             render: function () {
-                return React.DOM.div(null, this.formatDate(this.props.now, {
+                return React.DOM.div(null, this.formatDate(this.props.date, {
                     weekday: 'long',
                     timeZone: 'UTC'
                 }));
@@ -37,14 +36,20 @@ describe('React Intl mixin', function () {
         });
 
         var testNode = document.getElementById('test2');
-        var date = Date.UTC(2014, 8, 22, 0, 0, 0, 0);
 
         React.renderComponent(FormattedDate({
             locales: ['es-AR'],
-            now: date
+            date: Date.UTC(2014, 8, 22, 0, 0, 0, 0)
         }), testNode);
 
         expect(testNode.firstChild.innerHTML).to.contain('lunes');
+
+        React.renderComponent(FormattedDate({
+            locales: ['en-US'],
+            date: 0
+        }), testNode);
+
+        expect(testNode.firstChild.innerHTML).to.contain('Thursday');
     });
 
     it('Formats messages correctly', function () {
