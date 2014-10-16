@@ -5,11 +5,22 @@
 var oldReact = global.React;
 global.React = require('react');
 
-// Add all locale data to `ReactIntlMixin`.
+// Require the lib with all the locale data preloaded.
+var ReactIntl = require('./lib/react-intl');
 require('./lib/locales');
 
-exports = module.exports = require('./lib/mixin').default;
-Object.defineProperty(exports, 'default', {value: exports});
+// Export the Mixin as the default export for back-compat.
+exports = module.exports = ReactIntl.Mixin;
+
+Object.defineProperties(exports, {
+    Mixin   : {value: ReactIntl.Mixin},
+    Date    : {value: ReactIntl.Date},
+    Time    : {value: ReactIntl.Time},
+    Relative: {value: ReactIntl.Relative},
+    Message : {value: ReactIntl.Message},
+
+    __addLocaleData: {value: ReactIntl.__addLocaleData}
+});
 
 // Put back `global.React` to how it was.
 if (oldReact) {

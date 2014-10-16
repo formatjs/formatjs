@@ -25,7 +25,7 @@ module.exports = function (grunt) {
         },
 
         jshint: {
-            all: ['index.js', 'src/*.js', '!src/en.js', 'tests/*.js']
+            all: ['index.js', 'src/*.js', '!src/en.js', '!src/main.js', '!src/react-intl.js', 'tests/*.js']
         },
 
         extract_cldr_data: {
@@ -53,11 +53,11 @@ module.exports = function (grunt) {
                 options: {
                     prelude: [
                         '// GENERATED FILE',
-                        'var ReactIntlMixin = require("./mixin").default;\n\n'
+                        'var ReactIntl = require("./react-intl");\n\n'
                     ].join('\n'),
 
                     wrapEntry: function (entry) {
-                        return 'ReactIntlMixin.__addLocaleData(' + entry + ');';
+                        return 'ReactIntl.__addLocaleData(' + entry + ');';
                     }
                 }
             },
@@ -67,7 +67,7 @@ module.exports = function (grunt) {
 
                 options: {
                     wrapEntry: function (entry) {
-                        return 'ReactIntlMixin.__addLocaleData(' + entry + ');';
+                        return 'ReactIntl.__addLocaleData(' + entry + ');';
                     }
                 }
             }
@@ -77,7 +77,7 @@ module.exports = function (grunt) {
             dest: 'dist/react-intl.js',
 
             options: {
-                namespace: 'ReactIntlMixin'
+                namespace: 'ReactIntl'
             }
         },
 

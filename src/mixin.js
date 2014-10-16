@@ -32,6 +32,18 @@ function assertIsNumber(num, errMsg) {
 }
 
 export default {
+    statics: {
+        filterFormatOptions: function (obj) {
+            return (this.formatOptions || []).reduce(function (opts, name) {
+                if (obj.hasOwnProperty(name)) {
+                    opts[name] = obj[name];
+                }
+
+                return opts;
+            }, {});
+        }
+    },
+
     propsTypes       : typesSpec,
     contextTypes     : typesSpec,
     childContextTypes: typesSpec,
@@ -141,10 +153,5 @@ export default {
             default:
                 throw new Error('Unrecognized format type: ' + type);
         }
-    },
-
-    __addLocaleData: function (data) {
-        IntlMessageFormat.__addLocaleData(data);
-        IntlRelativeFormat.__addLocaleData(data);
     }
 };
