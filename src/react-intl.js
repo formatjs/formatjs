@@ -3,14 +3,14 @@
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 
-import Mixin from './mixin';
-import Date from './date';
-import Time from './time';
-import Relative from './relative';
-import Number from './number';
-import Message from './message';
-
 import defaultLocale from './en';
+import Mixin from './mixin';
+
+import Date from './components/date';
+import Time from './components/time';
+import Relative from './components/relative';
+import Number from './components/number';
+import Message from './components/message';
 
 export {Mixin, Date, Time, Relative, Number, Message};
 

@@ -32,7 +32,7 @@
     "es5-shim": "^4.0.3",
     "expect.js": "^0.3.1",
     "grunt": "^0.4.5",
-    "grunt-bundle-jsnext-lib": "^0.2.1",
+    "grunt-bundle-jsnext-lib": "^0.3.1",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-concat": "^0.5.0",

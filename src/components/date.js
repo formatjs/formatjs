@@ -1,10 +1,10 @@
 /* global React */
 /* jslint esnext:true */
 
-import IntlMixin from './mixin';
+import IntlMixin from '../mixin';
 
-var IntlTime = React.createClass({
-    displayName: 'Time',
+var IntlDate = React.createClass({
+    displayName: 'Date',
     mixins     : [IntlMixin],
 
     statics: {
@@ -19,10 +19,10 @@ var IntlTime = React.createClass({
         var date = React.Children.only(this.props.children);
 
         var formatOpts = this.props.format ||
-                IntlTime.filterFormatOptions(this.props);
+                IntlDate.filterFormatOptions(this.props);
 
-        return React.DOM.span(null, this.formatTime(date, formatOpts));
+        return React.DOM.span(null, this.formatDate(date, formatOpts));
     }
 });
 
-export default IntlTime;
+export default IntlDate;

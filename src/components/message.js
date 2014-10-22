@@ -1,7 +1,7 @@
 /* global React */
 /* jslint esnext:true */
 
-import IntlMixin from './mixin';
+import IntlMixin from '../mixin';
 
 var IntlMessage = React.createClass({
     displayName: 'Relative',
