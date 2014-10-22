@@ -11,7 +11,7 @@ module.exports = function (grunt) {
         copy: {
             tmp: {
                 expand: true,
-                cwd   : 'src/',
+                cwd   : 'tmp/src/',
                 src   : '**/*.js',
                 dest  : 'lib/'
             }
