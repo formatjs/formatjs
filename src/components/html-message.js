@@ -20,19 +20,25 @@ function escapeProps(props) {
 }
 
 var IntlHTMLMessage = React.createClass({
-    displayName: 'HTMLMessage',
+    displayName: 'IntlHTMLMessage',
     mixins     : [IntlMixin],
 
+    getDefaultProps: function () {
+        return {__tagName: 'span'};
+    },
+
     render: function () {
-        var message      = React.Children.only(this.props.children);
-        var escapedProps = escapeProps(this.props);
+        var props        = this.props;
+        var tagName      = props.__tagName;
+        var message      = props.children;
+        var escapedProps = escapeProps(props);
 
         // Since the message presumably has HTML in it, we need to set
         // `innerHTML` in order for it to be rendered and not escaped by React.
         // To be safe, we are escaping all string prop values before formatting
         // the message. It is assumed that the message is not UGC, and came from
         // the developer making it more like a template.
-        return React.DOM.span({
+        return React.DOM[tagName]({
             dangerouslySetInnerHTML: {
                 __html: this.formatMessage(message, escapedProps)
             }
