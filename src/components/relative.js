@@ -4,7 +4,7 @@
 import IntlMixin from '../mixin';
 
 var IntlRelative = React.createClass({
-    displayName: 'Relative',
+    displayName: 'IntlRelative',
     mixins     : [IntlMixin],
 
     statics: {
@@ -14,10 +14,9 @@ var IntlRelative = React.createClass({
     },
 
     render: function () {
-        var date = React.Children.only(this.props.children);
-
-        var formatOpts = this.props.format ||
-                IntlRelative.filterFormatOptions(this.props);
+        var props      = this.props;
+        var date       = props.children;
+        var formatOpts = props.format || IntlRelative.filterFormatOptions(props);
 
         return React.DOM.span(null, this.formatRelative(date, formatOpts));
     }

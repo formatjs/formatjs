@@ -4,7 +4,7 @@
 import IntlMixin from '../mixin';
 
 var IntlTime = React.createClass({
-    displayName: 'Time',
+    displayName: 'IntlTime',
     mixins     : [IntlMixin],
 
     statics: {
@@ -16,10 +16,9 @@ var IntlTime = React.createClass({
     },
 
     render: function () {
-        var date = React.Children.only(this.props.children);
-
-        var formatOpts = this.props.format ||
-                IntlTime.filterFormatOptions(this.props);
+        var props      = this.props;
+        var date       = props.children;
+        var formatOpts = props.format || IntlTime.filterFormatOptions(props);
 
         return React.DOM.span(null, this.formatTime(date, formatOpts));
     }

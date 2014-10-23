@@ -4,7 +4,7 @@
 import IntlMixin from '../mixin';
 
 var IntlNumber = React.createClass({
-    displayName: 'Number',
+    displayName: 'IntlNumber',
     mixins     : [IntlMixin],
 
     statics: {
@@ -17,10 +17,9 @@ var IntlNumber = React.createClass({
     },
 
     render: function () {
-        var num = React.Children.only(this.props.children);
-
-        var formatOpts = this.props.format ||
-                IntlNumber.filterFormatOptions(this.props);
+        var props      = this.props;
+        var num        = props.children;
+        var formatOpts = props.format || IntlNumber.filterFormatOptions(props);
 
         return React.DOM.span(null, this.formatNumber(num, formatOpts));
     }
