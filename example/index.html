@@ -6,7 +6,7 @@
   </head>
   <body>
     <div id="example"></div>
-    <script src="http://fb.me/react-0.11.1.min.js"></script>
+    <script src="http://fb.me/react-0.11.2.js"></script>
     <script src="../dist/react-intl-with-locales.js"></script>
     <script src="build/components.js"></script>
     <script>
@@ -14,7 +14,8 @@
         locales: ["en-US"],
         messages: {
           SHORT: "{product} cost {price, number, usd} if ordered by {deadline, date, medium}",
-          LONG: "{product} cost {price, number, usd} (or {price, number, eur}) if ordered by {deadline, date, medium}"
+          LONG: "{product} cost {price, number, usd} (or {price, number, eur}) if ordered by {deadline, date, medium}",
+          LONG_WITH_HTML: "{product} cost <b>{price, number, usd}</b> (<i>or {price, number, eur}</i>) if ordered by {deadline, date, medium}"
         }
       };
 
