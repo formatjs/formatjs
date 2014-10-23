@@ -5,21 +5,20 @@
 var oldReact = global.React;
 global.React = require('react');
 
-// Require the lib with all the locale data preloaded.
+// Require the lib and preload all the locale data.
 var ReactIntl = require('./lib/react-intl');
 require('./lib/locales');
 
-// Export the Mixin as the default export for back-compat.
+// Export the Mixin as the default export for back-compat with v1.0.0. This will
+// be changed to simply re-exporting `ReactIntl` as the default export in v2.0.
 exports = module.exports = ReactIntl.Mixin;
 
-Object.defineProperties(exports, {
-    Mixin   : {value: ReactIntl.Mixin},
-    Date    : {value: ReactIntl.Date},
-    Time    : {value: ReactIntl.Time},
-    Relative: {value: ReactIntl.Relative},
-    Message : {value: ReactIntl.Message},
-
-    __addLocaleData: {value: ReactIntl.__addLocaleData}
+// Define non-enumerable expandos for each named export on the default export --
+// which is the Mixin for back-compat with v1.0.0.
+Object.keys(ReactIntl).forEach(function (namedExport) {
+    Object.defineProperty(exports, namedExport, {
+        value: ReactIntl[namedExport]
+    });
 });
 
 // Put back `global.React` to how it was.
