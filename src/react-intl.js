@@ -11,8 +11,9 @@ import Time from './components/time';
 import Relative from './components/relative';
 import Number from './components/number';
 import Message from './components/message';
+import HTMLMessage from './components/html-message';
 
-export {Mixin, Date, Time, Relative, Number, Message};
+export {Mixin, Date, Time, Relative, Number, Message, HTMLMessage};
 
 export function __addLocaleData(data) {
     IntlMessageFormat.__addLocaleData(data);

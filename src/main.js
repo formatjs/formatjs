@@ -1,8 +1,5 @@
 /* jslint esnext: true */
 
-import IntlMessageFormat from 'intl-messageformat';
-import IntlRelativeFormat from 'intl-relativeformat';
-
 import {
     Mixin,
     Date,
@@ -10,16 +7,18 @@ import {
     Relative,
     Number,
     Message,
+    HTMLMessage,
     __addLocaleData
 } from './react-intl';
 
 export default {
-    Mixin   : Mixin,
-    Date    : Date,
-    Time    : Time,
-    Relative: Relative,
-    Number  : Number,
-    Message : Message,
+    Mixin      : Mixin,
+    Date       : Date,
+    Time       : Time,
+    Relative   : Relative,
+    Number     : Number,
+    Message    : Message,
+    HTMLMessage: HTMLMessage,
 
     __addLocaleData: __addLocaleData
 };

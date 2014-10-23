@@ -4,7 +4,7 @@
 import IntlMixin from '../mixin';
 
 var IntlMessage = React.createClass({
-    displayName: 'Relative',
+    displayName: 'Message',
     mixins     : [IntlMixin],
 
     render: function () {
