@@ -83,7 +83,7 @@ Usage
 Install package and polyfill:
 
 ```bash
-npm install intl-relativetime --save
+npm install intl-relativeformat --save
 npm install intl --save
 ```
 
@@ -103,7 +103,7 @@ _Note: in Node.js, the data for all 150+ locales is loaded along with the librar
 
 ### Loading IntlRelativeFormat in a browser
 
-Install using bower: `bower install intl-relativetime` or [download from dist/ folder](https://github.com/yahoo/intl-relativeformat/tree/master/dist)
+Install using bower: `bower install intl-relativeformat` or [download from dist/ folder](https://github.com/yahoo/intl-relativeformat/tree/master/dist)
 
 Include the library in your page:
 
