@@ -35,7 +35,7 @@ var WrapIntlComponent = React.createClass({
   }
 });
 
-var Container = global.Container = React.createClass({
+var Container = global.ContainerComponent = React.createClass({
   mixins: [ReactIntlMixin],
   getDefaultProps: function() {
     return {
