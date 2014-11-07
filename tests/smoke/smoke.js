@@ -46,7 +46,7 @@ describe('React Intl mixin', function () {
 
         expect(testNode.firstChild.innerHTML).to.contain('lunes');
 
-        React.renderComponent(FormattedDate({
+        React.render(FormattedDate({
             locales: ['en-US'],
             date: 0
         }), testNode);
