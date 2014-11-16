@@ -115,7 +115,7 @@ var i18n = {
   }
 };
 
-React.renderComponent(
+React.render(
   <MyComponent locales={i18n.locales} messages={i18n.messages}/>,
   document.getElementById('example')
 );
@@ -236,7 +236,7 @@ var i18n = {
   }
 };
 
-React.renderComponent(
+React.render(
   <MyComponent locales={i18n.locales} messages={i18n.messages}/>,
   document.body
 );
@@ -265,7 +265,7 @@ var i18n = {
   messages: {}
 };
 
-React.renderComponent(
+React.render(
   <MyRootComponent
     locales={i18n.locales}
     formats={i18n.formats}
@@ -305,7 +305,7 @@ var messages = {
 };
 
 // Render in English:
-React.renderComponent(
+React.render(
   <MyComponent locales={["en-US"]} messages={messages["en-US"]}
     name="John" manager="Mike" />,
   document.getElementById("example")
@@ -313,7 +313,7 @@ React.renderComponent(
 // - English output: "John reports to Mike."
 
 // Render in german:
-React.renderComponent(
+React.render(
   <MyComponent locales={["de-DE"]} messages={messages["de-DE"]}
     name="John" manager="Mike" />,
   document.getElementById("example")
@@ -345,7 +345,7 @@ var messages = {
 };
 
 // Render in English:
-React.renderComponent(
+React.render(
   <MyComponent locales={["en"]} messages={messages["en"]}
     postDate="2014-05-11" />,
   document.getElementById('example')
@@ -353,7 +353,7 @@ React.renderComponent(
 // - English output: "posted 4 months ago"
 
 // Render in Spanish:
-React.renderComponent(
+React.render(
   <MyComponent locales={["es"]} messages={messages["es"]}
     postDate="2014-05-11" />,
   document.getElementById('example')
@@ -393,14 +393,14 @@ var messages = {
 };
 
 // Render in English:
-React.renderComponent(
+React.render(
   <MyComponent locales={["en-US"]} messages={messages["en-US"]} count=1 />,
   document.getElementById("example")
 );
 // - English output: "One company published new books."
 
 // Render in Russian:
-React.renderComponent(
+React.render(
   <MyComponent locales={["ru-RU"]} messgaes={messages["ru-RU"]} count=1 />,
   document.getElementById('example')
 );
@@ -457,7 +457,7 @@ var i18n = {
 };
 
 // Render in English:
-React.renderComponent(
+React.render(
   <MyComponent
     locales={i18n.locales} formats={i18n.formats} messages={i18n.messages}
     product="Mac Mini" price=200 deadline=1390518044403 />,

@@ -2215,6 +2215,20 @@
         messages: React.PropTypes.object
     };
 
+    function $$mixin$$assertIsDate(date, errMsg) {
+        // Determine if the `date` is valid by checking if it is finite, which is
+        // the same way that `Intl.DateTimeFormat#format()` checks.
+        if (!isFinite(date)) {
+            throw new TypeError(errMsg);
+        }
+    }
+
+    function $$mixin$$assertIsNumber(num, errMsg) {
+        if (typeof num !== 'number') {
+            throw new TypeError(errMsg);
+        }
+    }
+
     var $$mixin$$default = {
         propsTypes       : $$mixin$$typesSpec,
         contextTypes     : $$mixin$$typesSpec,
@@ -2226,8 +2240,8 @@
         getRelativeFormat: intl$format$cache$$default(intl$relativeformat$$default),
 
         getChildContext: function () {
-            var context = this.context,
-                props   = this.props;
+            var context = this.context;
+            var props   = this.props;
 
             return {
                 locales:  props.locales  || context.locales,
@@ -2237,65 +2251,31 @@
         },
 
         formatDate: function (date, options) {
-            var locales = this.props.locales || this.context.locales,
-                formats = this.props.formats || this.context.formats;
-
             date = new Date(date);
-
-            // Determine if the `date` is valid.
-            if (!(date && date.getTime())) {
-                throw new TypeError('A date must be provided.');
-            }
-
-            if (options && typeof options === 'string') {
-                try {
-                    options = formats.date[options];
-                } catch (e) {
-                    throw new ReferenceError('No date format named: ' + options);
-                }
-            }
-
-            return this.getDateTimeFormat(locales, options).format(date);
+            $$mixin$$assertIsDate(date, 'A date or timestamp must be provided to formatDate()');
+            return this._format('date', date, options);
         },
 
         formatTime: function (date, options) {
-            var formats = this.props.formats || this.context.formats;
+            date = new Date(date);
+            $$mixin$$assertIsDate(date, 'A date or timestamp must be provided to formatTime()');
+            return this._format('time', date, options);
+        },
 
-            // Lookup named format on `formats.time` before delegating to
-            // `formatDate()`.
-            if (options && typeof options === 'string') {
-                try {
-                    options = formats.time[options];
-                } catch (e) {
-                    throw new ReferenceError('No time format named: ' + options);
-                }
-            }
-
-            return this.formatDate(date, options);
+        formatRelative: function (date, options) {
+            date = new Date(date);
+            $$mixin$$assertIsDate(date, 'A date or timestamp must be provided to formatRelative()');
+            return this._format('relative', date, options);
         },
 
         formatNumber: function (num, options) {
-            var locales = this.props.locales || this.context.locales,
-                formats = this.props.formats || this.context.formats;
-
-            if (typeof num !== 'number') {
-                throw new TypeError('A number must be provided.');
-            }
-
-            if (options && typeof options === 'string') {
-                try {
-                    options = formats.number[options];
-                } catch (e) {
-                    throw new ReferenceError('No number format named: ' + options);
-                }
-            }
-
-            return this.getNumberFormat(locales, options).format(num);
+            $$mixin$$assertIsNumber(num, 'A number must be provided to formatNumber()');
+            return this._format('number', num, options);
         },
 
         formatMessage: function (message, values) {
-            var locales = this.props.locales || this.context.locales,
-                formats = this.props.formats || this.context.formats;
+            var locales = this.props.locales || this.context.locales;
+            var formats = this.props.formats || this.context.formats;
 
             // When `message` is a function, assume it's an IntlMessageFormat
             // instance's `format()` method passed by reference, and call it. This
@@ -2311,31 +2291,9 @@
             return message.format(values);
         },
 
-        formatRelative: function (date, options) {
-            var locales = this.props.locales || this.context.locales,
-                formats = this.props.formats || this.context.formats;
-
-            date = new Date(date);
-
-            // Determine if the `date` is valid.
-            if (!(date && date.getTime())) {
-                throw new TypeError('A date must be provided.');
-            }
-
-            if (options && typeof options === 'string') {
-                try {
-                    options = formats.relative[options];
-                } catch (e) {
-                    throw new ReferenceError('No relative format named: ' + options);
-                }
-            }
-
-            return this.getRelativeFormat(locales, options).format(date);
-        },
-
         getIntlMessage: function (path) {
-            var messages  = this.props.messages || this.context.messages,
-                pathParts = path.split('.');
+            var messages  = this.props.messages || this.context.messages;
+            var pathParts = path.split('.');
 
             var message;
 
@@ -2350,6 +2308,37 @@
             }
 
             return message;
+        },
+
+        _format: function (type, value, options) {
+            var locales = this.props.locales || this.context.locales;
+            var formats = this.props.formats || this.context.formats;
+
+            if (options && typeof options === 'string') {
+                try {
+                    options = formats[type][options];
+                } catch (e) {
+                    options = undefined;
+                } finally {
+                    if (options === undefined) {
+                        throw new ReferenceError(
+                            'No ' + type + ' format named: ' + options
+                        );
+                    }
+                }
+            }
+
+            switch(type) {
+                case 'date':
+                case 'time':
+                    return this.getDateTimeFormat(locales, options).format(value);
+                case 'number':
+                    return this.getNumberFormat(locales, options).format(value);
+                case 'relative':
+                    return this.getRelativeFormat(locales, options).format(value);
+                default:
+                    throw new Error('Unrecognized format type: ' + type);
+            }
         },
 
         __addLocaleData: function (data) {

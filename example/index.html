@@ -6,7 +6,7 @@
   </head>
   <body>
     <div id="example"></div>
-    <script src="http://fb.me/react-0.11.2.js"></script>
+    <script src="http://fb.me/react-0.12.0.min.js"></script>
     <script src="../dist/react-intl-with-locales.js"></script>
     <script src="build/components.js"></script>
     <script>
@@ -19,7 +19,9 @@
         }
       };
 
-      React.renderComponent(
+      var Container = React.createFactory(ContainerComponent);
+
+      React.render(
         Container({
           locales: i18n.locales,
           messages: i18n.messages

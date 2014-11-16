@@ -24,8 +24,10 @@ var i18n = {
   }
 };
 
-console.log(React.renderComponentToString(
-  global.Container({
+var Container = React.createFactory(global.ContainerComponent);
+
+console.log(React.renderToString(
+  Container({
     locales: i18n.locales,
     messages: i18n.messages
   })

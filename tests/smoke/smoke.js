@@ -2,7 +2,7 @@
 describe('React Intl mixin', function () {
 
     it('Formats numbers correctly', function () {
-        var FormattedNumber = React.createClass({
+        var FormattedNumberComponent = React.createClass({
             displayName: 'FormattedNumber',
 
             mixins: [ReactIntlMixin],
@@ -12,9 +12,10 @@ describe('React Intl mixin', function () {
             }
         });
 
+        var FormattedNumber = React.createFactory(FormattedNumberComponent);
         var testNode = document.getElementById('test1');
 
-        React.renderComponent(FormattedNumber({
+        React.render(FormattedNumber({
             locales: ['es-AR']
         }), testNode);
 
@@ -22,7 +23,7 @@ describe('React Intl mixin', function () {
     });
 
     it('Formats dates correctly', function () {
-        var FormattedDate = React.createClass({
+        var FormattedDateComponent = React.createClass({
             displayName: 'FormattedDate',
 
             mixins: [ReactIntlMixin],
@@ -35,16 +36,17 @@ describe('React Intl mixin', function () {
             }
         });
 
+        var FormattedDate = React.createFactory(FormattedDateComponent);
         var testNode = document.getElementById('test2');
 
-        React.renderComponent(FormattedDate({
+        React.render(FormattedDate({
             locales: ['es-AR'],
             date: Date.UTC(2014, 8, 22, 0, 0, 0, 0)
         }), testNode);
 
         expect(testNode.firstChild.innerHTML).to.contain('lunes');
 
-        React.renderComponent(FormattedDate({
+        React.render(FormattedDate({
             locales: ['en-US'],
             date: 0
         }), testNode);
@@ -53,7 +55,7 @@ describe('React Intl mixin', function () {
     });
 
     it('Formats messages correctly', function () {
-        var FormattedMessage = React.createClass({
+        var FormattedMessageComponent = React.createClass({
             displayName: 'FormattedMessage',
 
             mixins: [ReactIntlMixin],
@@ -69,9 +71,10 @@ describe('React Intl mixin', function () {
             }
         });
 
+        var FormattedMessage = React.createFactory(FormattedMessageComponent);
         var testNode = document.getElementById('test3');
 
-        React.renderComponent(FormattedMessage({
+        React.render(FormattedMessage({
             locales: ['en-US'],
             numPhotos: 1
         }), testNode);
