@@ -20,7 +20,11 @@ module.exports = function (grunt) {
         concat: {
             dist_with_locales: {
                 src: ['dist/react-intl.js', 'dist/locale-data/*.js'],
-                dest: 'dist/react-intl-with-locales.js'
+                dest: 'dist/react-intl-with-locales.js',
+
+                options: {
+                    sourceMap: true
+                }
             }
         },
 
@@ -77,7 +81,8 @@ module.exports = function (grunt) {
             dest: 'dist/react-intl.js',
 
             options: {
-                namespace: 'ReactIntlMixin'
+                namespace: 'ReactIntlMixin',
+                sourceRoot: 'react-intl/'
             }
         },
 
@@ -87,14 +92,14 @@ module.exports = function (grunt) {
 
         uglify: {
             options: {
-                preserveComments: 'some'
+                preserveComments       : 'some',
+                sourceMap              : true,
+                sourceMapIncludeSources: true
             },
 
             dist: {
                 options: {
-                    sourceMap              : true,
-                    sourceMapIn            : 'dist/react-intl.js.map',
-                    sourceMapIncludeSources: true
+                    sourceMapIn: 'dist/react-intl.js.map'
                 },
 
                 files: {
@@ -105,6 +110,10 @@ module.exports = function (grunt) {
             },
 
             dist_with_locales: {
+                options: {
+                    sourceMapIn: 'dist/react-intl-with-locales.js.map'
+                },
+
                 files: {
                     'dist/react-intl-with-locales.min.js': [
                         'dist/react-intl-with-locales.js'
