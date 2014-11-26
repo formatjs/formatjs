@@ -324,4 +324,32 @@ describe('IntlRelativeFormat', function () {
         });
     });
 
+    // INTERNAL FORMAT DELEGATION
+
+    describe('internal format delegation', function () {
+        it('should delegate the original `locales` value to internal formats', function () {
+            // NOTE: This entire test case is a huge, huge hack to get at the
+            // internals of IntlRelativeFormat, IntlMessageFormat, to finally
+            // grab ahold of an Intl.NumberFormat instance to check its resolved
+            // locale.
+
+            var rf = new IntlRelativeFormat('fr-FR');
+            var internalMF = rf._compileMessage('second');
+
+            function checkInternalMessagePattern(pattern) {
+                var subPattern = pattern[0].options.future[0].options.other[0];
+                var nf = subPattern.numberFormat;
+
+                expect(nf.resolvedOptions().locale).to.equal('fr-FR');
+            }
+
+            // Override private method, which will expose the internal Message
+            // Format pattern that we can traverse and check that its internal
+            // Intl.NumberFormat pattern resolved the correct locale that was
+            // originally passed to the IntlRelativeFormat instance.
+            internalMF._format = checkInternalMessagePattern;
+            internalMF.format({});
+        });
+    });
+
 });

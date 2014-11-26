@@ -26,7 +26,14 @@ var getTime = Date.now ? Date.now : function () {
 function RelativeFormat(locales, options) {
     options = options || {};
 
+    // Make a copy of `locales` if it's an array, so that it doesn't change
+    // since it's used lazily.
+    if (Object.prototype.toString.call(locales) === '[object Array]') {
+        locales = locales.concat();
+    }
+
     defineProperty(this, '_locale', {value: this._resolveLocale(locales)});
+    defineProperty(this, '_locales', {value: locales});
     defineProperty(this, '_options', {value: {
         style: this._resolveStyle(options.style),
         units: this._isValidUnits(options.units) && options.units
@@ -97,6 +104,42 @@ RelativeFormat.prototype.resolvedOptions = function () {
         style : this._options.style,
         units : this._options.units
     };
+};
+
+RelativeFormat.prototype._compileMessage = function (units) {
+    // `this._locales` is the original set of locales the user specificed to the
+    // constructor, while `this._locale` is the resolved root locale.
+    var locales        = this._locales;
+    var resolvedLocale = this._locale;
+
+    var localeData   = RelativeFormat.__localeData__;
+    var field        = localeData[resolvedLocale].fields[units];
+    var relativeTime = field.relativeTime;
+    var future       = '';
+    var past         = '';
+    var i;
+
+    for (i in relativeTime.future) {
+        if (relativeTime.future.hasOwnProperty(i)) {
+            future += ' ' + i + ' {' +
+                relativeTime.future[i].replace('{0}', '#') + '}';
+        }
+    }
+
+    for (i in relativeTime.past) {
+        if (relativeTime.past.hasOwnProperty(i)) {
+            past += ' ' + i + ' {' +
+                relativeTime.past[i].replace('{0}', '#') + '}';
+        }
+    }
+
+    var message = '{when, select, future {{0, plural, ' + future + '}}' +
+                                 'past {{0, plural, ' + past + '}}}';
+
+    // Create the synthetic IntlMessageFormat instance using the original
+    // locales value specified by the user when constructing the the parent
+    // IntlRelativeFormat instance.
+    return new IntlMessageFormat(message, locales);
 };
 
 RelativeFormat.prototype._format = function (date) {
@@ -192,33 +235,10 @@ RelativeFormat.prototype._resolveLocale = function (locales) {
 
 RelativeFormat.prototype._resolveMessage = function (units) {
     var messages = this._messages;
-    var field, relativeTime, i, future, past, message;
 
     // Create a new synthetic message based on the locale data from CLDR.
     if (!messages[units]) {
-        field        = RelativeFormat.__localeData__[this._locale].fields[units];
-        relativeTime = field.relativeTime;
-        future       = '';
-        past         = '';
-
-        for (i in relativeTime.future) {
-            if (relativeTime.future.hasOwnProperty(i)) {
-                future += ' ' + i + ' {' +
-                    relativeTime.future[i].replace('{0}', '#') + '}';
-            }
-        }
-
-        for (i in relativeTime.past) {
-            if (relativeTime.past.hasOwnProperty(i)) {
-                past += ' ' + i + ' {' +
-                    relativeTime.past[i].replace('{0}', '#') + '}';
-            }
-        }
-
-        message = '{when, select, future {{0, plural, ' + future + '}}' +
-                'past {{0, plural, ' + past + '}}}';
-
-        messages[units] = new IntlMessageFormat(message, this._locale);
+        messages[units] = this._compileMessage(units);
     }
 
     return messages[units];
