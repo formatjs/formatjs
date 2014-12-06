@@ -1799,6 +1799,13 @@
     $$core1$$default.defaultLocale = 'en';
 
     var intl$messageformat$$default = $$core1$$default;
+    /*
+    Copyright (c) 2014, Yahoo! Inc. All rights reserved.
+    Copyrights licensed under the New BSD License.
+    See the accompanying LICENSE file for terms.
+    */
+
+    /* jslint esnext: true */
 
     var $$diff$$round = Math.round;
 
@@ -1851,7 +1858,14 @@
     function $$core$$RelativeFormat(locales, options) {
         options = options || {};
 
+        // Make a copy of `locales` if it's an array, so that it doesn't change
+        // since it's used lazily.
+        if (Object.prototype.toString.call(locales) === '[object Array]') {
+            locales = locales.concat();
+        }
+
         $$es5$$defineProperty(this, '_locale', {value: this._resolveLocale(locales)});
+        $$es5$$defineProperty(this, '_locales', {value: locales});
         $$es5$$defineProperty(this, '_options', {value: {
             style: this._resolveStyle(options.style),
             units: this._isValidUnits(options.units) && options.units
@@ -1922,6 +1936,42 @@
             style : this._options.style,
             units : this._options.units
         };
+    };
+
+    $$core$$RelativeFormat.prototype._compileMessage = function (units) {
+        // `this._locales` is the original set of locales the user specificed to the
+        // constructor, while `this._locale` is the resolved root locale.
+        var locales        = this._locales;
+        var resolvedLocale = this._locale;
+
+        var localeData   = $$core$$RelativeFormat.__localeData__;
+        var field        = localeData[resolvedLocale].fields[units];
+        var relativeTime = field.relativeTime;
+        var future       = '';
+        var past         = '';
+        var i;
+
+        for (i in relativeTime.future) {
+            if (relativeTime.future.hasOwnProperty(i)) {
+                future += ' ' + i + ' {' +
+                    relativeTime.future[i].replace('{0}', '#') + '}';
+            }
+        }
+
+        for (i in relativeTime.past) {
+            if (relativeTime.past.hasOwnProperty(i)) {
+                past += ' ' + i + ' {' +
+                    relativeTime.past[i].replace('{0}', '#') + '}';
+            }
+        }
+
+        var message = '{when, select, future {{0, plural, ' + future + '}}' +
+                                     'past {{0, plural, ' + past + '}}}';
+
+        // Create the synthetic IntlMessageFormat instance using the original
+        // locales value specified by the user when constructing the the parent
+        // IntlRelativeFormat instance.
+        return new intl$messageformat$$default(message, locales);
     };
 
     $$core$$RelativeFormat.prototype._format = function (date) {
@@ -2017,33 +2067,10 @@
 
     $$core$$RelativeFormat.prototype._resolveMessage = function (units) {
         var messages = this._messages;
-        var field, relativeTime, i, future, past, message;
 
         // Create a new synthetic message based on the locale data from CLDR.
         if (!messages[units]) {
-            field        = $$core$$RelativeFormat.__localeData__[this._locale].fields[units];
-            relativeTime = field.relativeTime;
-            future       = '';
-            past         = '';
-
-            for (i in relativeTime.future) {
-                if (relativeTime.future.hasOwnProperty(i)) {
-                    future += ' ' + i + ' {' +
-                        relativeTime.future[i].replace('{0}', '#') + '}';
-                }
-            }
-
-            for (i in relativeTime.past) {
-                if (relativeTime.past.hasOwnProperty(i)) {
-                    past += ' ' + i + ' {' +
-                        relativeTime.past[i].replace('{0}', '#') + '}';
-                }
-            }
-
-            message = '{when, select, future {{0, plural, ' + future + '}}' +
-                    'past {{0, plural, ' + past + '}}}';
-
-            messages[units] = new intl$messageformat$$default(message, this._locale);
+            messages[units] = this._compileMessage(units);
         }
 
         return messages[units];
