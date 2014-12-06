@@ -1,6 +1,6 @@
 {
   "name": "intl-format-cache",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A memoizer factory for Intl format constructors.",
   "main": "index.js",
   "jsnext:main": "src/memoizer.js",
