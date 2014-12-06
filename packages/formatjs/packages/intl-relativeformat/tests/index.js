@@ -333,14 +333,14 @@ describe('IntlRelativeFormat', function () {
             // grab ahold of an Intl.NumberFormat instance to check its resolved
             // locale.
 
-            var rf = new IntlRelativeFormat('fr-FR');
+            var rf = new IntlRelativeFormat('en-GB');
             var internalMF = rf._compileMessage('second');
 
             function checkInternalMessagePattern(pattern) {
                 var subPattern = pattern[0].options.future[0].options.other[0];
                 var nf = subPattern.numberFormat;
 
-                expect(nf.resolvedOptions().locale).to.equal('fr-FR');
+                expect(nf.resolvedOptions().locale).to.equal('en-GB');
             }
 
             // Override private method, which will expose the internal Message
