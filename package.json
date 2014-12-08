@@ -23,7 +23,7 @@
   "main": "index.js",
   "jsnext:main": "src/main.js",
   "dependencies": {
-    "intl-format-cache": "2.0.1",
+    "intl-format-cache": "2.0.2",
     "intl-messageformat": "1.0.1",
     "intl-relativeformat": "1.0.0",
     "react": ">=0.11.2 <0.13.0"
