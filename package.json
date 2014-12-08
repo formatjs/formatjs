@@ -22,6 +22,10 @@
   },
   "main": "index.js",
   "jsnext:main": "src/main.js",
+  "browser": {
+    "./lib/locales": false,
+    "./lib/locales.js": false
+  },
   "dependencies": {
     "intl-format-cache": "2.0.2",
     "intl-messageformat": "1.0.1",
