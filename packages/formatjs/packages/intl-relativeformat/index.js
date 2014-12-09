@@ -2,13 +2,11 @@
 
 'use strict';
 
-var IntlRelativeFormat = require('./lib/core').default;
+var IntlRelativeFormat = require('./lib/main').default;
 
-// Add all locale data to `IntlRelativeFormat`;
+// Add all locale data to `IntlRelativeFormat`. This module will be ignored when
+// bundling for the browser with Browserify/Webpack.
 require('./lib/locales');
-
-// Set the default locale to English.
-IntlRelativeFormat.defaultLocale = 'en';
 
 // Re-export `IntlRelativeFormat` as the CommonJS default exports with all the
 // locale data registered, and with English set as the default locale. Define

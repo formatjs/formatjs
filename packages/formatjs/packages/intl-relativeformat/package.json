@@ -23,6 +23,10 @@
   },
   "main": "index.js",
   "jsnext:main": "src/main.js",
+  "browser": {
+    "./lib/locales": false,
+    "./lib/locales.js": false
+  },
   "dependencies": {
     "intl-messageformat": "1.0.1"
   },
