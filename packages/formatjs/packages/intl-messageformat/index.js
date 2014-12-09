@@ -2,13 +2,11 @@
 
 'use strict';
 
-var IntlMessageFormat = require('./lib/core').default;
+var IntlMessageFormat = require('./lib/main').default;
 
-// Add all locale data to `IntlMessageFormat`;
+// Add all locale data to `IntlMessageFormat`. This module will be ignored when
+// bundling for the browser with Browserify/Webpack.
 require('./lib/locales');
-
-// Set the default locale to English.
-IntlMessageFormat.defaultLocale = 'en';
 
 // Re-export `IntlMessageFormat` as the CommonJS default exports with all the
 // locale data registered, and with English set as the default locale. Define
