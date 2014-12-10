@@ -1,7 +1,7 @@
-React Intl Mixin
-================
+React Intl
+==========
 
-This repository contains a [ReactJS][] Component Mixin to implement Internationalization features for a React component. The Intl Mixin provides a set of methods that can be used in the `render()` method of the component to provide date, number, and message formatting, as well as plural and gender based translations.
+This repository contains [React][] Components and a Mixin for internationalizing React web apps. The components provide a declarative way to format dates, numbers, and string messages, as well as plural and gender based translations.
 
 [![npm Version][npm-badge]][npm]
 [![Build Status][travis-badge]][travis]
@@ -12,23 +12,24 @@ This repository contains a [ReactJS][] Component Mixin to implement Internationa
 Overview
 --------
 
-The `ReactIntlMixin` implements a [ReactJS][] Component [Mixin][] that adds these new methods to any React component:
+`ReactIntl` provides the following collection of [React][] Components:
 
- * `formatDate()` to format a date value
- * `formatTime()` to format a date value with `time` formats
- * `formatRelative()` to format a date relative to now; e.g. "3 hours ago"
- * `formatNumber()` to format a numeric value
- * `formatMessage()` to format a complex message
+ * `ReactIntl.Date` to format a date value
+ * `ReactIntl.Time` to format a date value with `time` formats
+ * `ReactIntl.Relative` to format a date relative to now; e.g. "3 hours ago"
+ * `ReactIntl.Number` to format a numeric value
+ * `ReactIntl.Message` to format a complex message
+ * `ReactIntl.HTMLMessage` to format a complex message that contains HTML
 
-`formatDate()`, `formatTime()`, and `formatNumber()` are sugar on top of [Intl.NumberFormat][] and [Intl.DateTimeFormat][] APIs implemented by most modern browsers. To improve runtime performance, React Intl Mixin uses an internal cache to reuse instances of `Intl.NumberFormat` and `Intl.DateTimeFormat` when possible.
+`ReactIntl.Date`, `ReactIntl.Time`, and `ReactIntl.Number` are sugar on top of [Intl.NumberFormat][] and [Intl.DateTimeFormat][] APIs implemented by most modern browsers. To improve runtime performance, React Intl uses an internal cache to reuse instances of `Intl.DateTimeFormat` and `Intl.NumberFormat` when possible.
 
-`formatMessage()` is a sugar layer on top of [intl-messageformat][], a library to support more advanced translation patterns that include complex pluralization and gender support. This library is based on a [Strawman Draft][] proposing to evolve [ECMAScript 402][] to provide a standard way to format message strings with localization support in JavaScript.
+`ReactIntl.Message` and `ReactIntl.HTMLMessage` are a sugar layer on top of [intl-messageformat][], a library to support more advanced translation patterns that include complex pluralization and gender support. This library is based on a [Strawman Draft][] proposing to evolve [ECMAScript 402][] to provide a standard way to format message strings with localization support in JavaScript.
 
-The `formatMessage()` method accepts a string message and values to format it with. It too uses an internal cache to improve runtime performance by reusing `IntlMessageFormat` instances.
+The `ReactIntl.Message` component has a single child which is the string message, its props are the values to format it with. It too uses an internal cache to improve runtime performance by reusing `IntlMessageFormat` instances.
 
-The data consumed by `formatMessage()` follows the same format supported by [intl-messageformat][], which is one of the industry standards used in other programming languages like Java and PHP. Although this format looks complex, professional translators are familiar with it. You can [learn more about this format](https://github.com/yahoo/intl-messageformat#how-it-works).
+The string messaged formatted by `ReactIntl.Message` follow the same format supported by [intl-messageformat][], which is one of the industry standards used in other programming languages like Java and PHP. Although this format looks complex, professional translators are familiar with it. You can [learn more about this format](http://formatjs.io/guide/#messageformat-syntax).
 
-`formatRelative()` is similar to `formatMessage()` in that it's a sugar layer on top of a non-started library, [intl-relativeformat][], which takes a JavaScript date or timestamp, compares it with "now", and returns the formatted string; e.g., "3 hours ago".
+`ReactIntl.Relative` is similar to `ReactIntl.Message` in that it's a sugar layer on top of a non-started library, [intl-relativeformat][], which takes a JavaScript date or timestamp, compares it with "now", and returns the formatted string; e.g., "3 hours ago".
 
 
 Usage
@@ -70,7 +71,7 @@ _Note: When using the Intl.js Polyfill in Node.js, it will automatically load th
 
 ```html
 <script src="react/react.min.js"></script>
-<script src="react-intl/react-intl.min.js"></script>
+<script src="react-intl/dist/react-intl.min.js"></script>
 ```
 
 _Note: for older browsers and Safari you may need to also load the [Intl.js][] polyfill before including `react-intl.js`._
@@ -78,27 +79,32 @@ _Note: for older browsers and Safari you may need to also load the [Intl.js][] p
 Be default, React Intl ships with the locale data for English built-in. When you need to format data in another locale, include its data; e.g., for French:
 
 ```html
-<script src="react-intl/locale-data/fr.js"></script>
+<script src="react-intl/dist/locale-data/fr.js"></script>
 ```
 
 _Note: All 150+ locales supported use their root BCP 47 language tag; i.e., the part before the first hyphen (if any)._
 
-3. Creating a React component with the Intl Mixin:
+3. Use React Intl components Mixin:
 
 ```javascript
 var MyComponent = React.createClass({
-  mixins: [ReactIntlMixin],
+  mixins: [ReactIntl.Mixin],
 
   render: function () {
-    return <div>
-      <p>{this.formatDate(new Date())}</p>
-      <p>{this.formatNumber(600)}</p>
-      <p>{this.formatMessage(this.getIntlMessage('product.info'), {
-        product: 'Mac Mini',
-        price: 2000.0015,
-        deadline: 1390518044403
-      })}</p>
-    </div>;
+    return (
+      <div>
+        <p><ReactIntl.Date>{new Date()}</ReactIntl.Date></p>
+        <p><ReactIntl.Number>{600}</ReactIntl.Number></p>
+        <p>
+          <ReactIntl.Message
+              product="Mac Mini"
+              price={2000.0015}
+              deadline={1390518044403}>
+            {this.getIntlMessage('product.info')}
+          </ReactIntl.Message>
+        </p>
+      </div>
+    );
   }
 });
 ```
@@ -116,7 +122,7 @@ var i18n = {
 };
 
 React.render(
-  <MyComponent locales={i18n.locales} messages={i18n.messages}/>,
+  <MyComponent {...i18n}/>,
   document.getElementById('example')
 );
 ```
@@ -127,7 +133,7 @@ React.render(
 2. Load in the module and register it.
 
 ```javascript
-var ReactIntlMixin = require('react-intl');
+var ReactIntl = require('react-intl');
 ```
 
 _Note: in Node.js, the data for all locales is pre-loaded._
@@ -139,20 +145,28 @@ Advanced Options
 
 #### Explicit Formats
 
-By default, when using `{this.formatDate(new Date())}` and `{this.formatNumber(600)}`, `react-intl` will use the default format for the date, and the default numeric format for the number. To specify a custom format you can pass in a second argument with the format you want to use. The following examples will illustrate this option:
+By default, when using `<ReactIntl.Date>{new Date()}</ReactIntl.Date>` and `<ReactIntl.Number>{600}</ReactIntl.Number>`, `react-intl` will use the default format for the date, and the default numeric format for the number. To specify a custom format you can pass in a second argument with the format you want to use. The following examples will illustrate this option:
 
 ```javascript
 var MyComponent = React.createClass({
-  mixins: [ReactIntlMixin],
+  mixins: [ReactIntl.Mixin],
 
   render: function () {
-    return <div>
-      <p>A: {this.formatDate(1390518044403, {
-        hour: 'numeric',
-        minute: 'numeric'
-      })}</p>
-      <p>B: {this.formatNumber(400, { style: 'percent' })}</p>
-    </div>;
+    return (
+      <div>
+        <p>
+          A:
+          <ReactIntl.Date
+              hour="numeric"
+              minute="numeric">
+            {1390518044403}
+          </ReactIntl.Date>
+        </p>
+        <p>
+          B: <ReactIntl.Number style="percent">{400}</ReactIntl.Number>
+        </p>
+      </div>
+    );
   }
 });
 ```
@@ -175,15 +189,15 @@ But if `locales` is set to `["en-US"]`, the output will be:
 </div>
 ```
 
-This explicit way to specify a format works well for simple cases, but for complex applications, it falls short because you will have to pass these format config objects through the component hierarchy. Also, it doesn't work with complex structures processed by `formatMessage()` because there is no way to pass the format options for each individual element. To overcome this limitation, we introduced the concept of "custom formats".
+This explicit way to specify a format works well for simple cases, but for complex applications, it falls short because you will have to pass these format config objects through the component hierarchy. Also, it doesn't work with complex structures processed by `ReactIntl.Message` because there is no way to pass the format options for each individual element. To overcome this limitation, we introduced the concept of "custom formats".
 
 #### Custom Formats
 
-With custom format, you can name a set of options that can be used within the entire application or within a component subtree (a component and its child components). These custom formats will also be used by the `formatMessage()` method for complex messages. The following examples will illustrates how custom formats work.
+With custom format, you can name a set of options that can be used within the entire application or within a component subtree (a component and its child components). These custom formats will also be used by the `ReactIntl.Message` method for complex messages. The following examples will illustrates how custom formats work.
 
 ```javascript
 var MyComponent = React.createClass({
-  mixins: [ReactIntlMixin],
+  mixins: [ReactIntl.Mixin],
 
   getDefaultProps: function() {
     return {
@@ -191,14 +205,14 @@ var MyComponent = React.createClass({
       // parent component or outside of React.
       formats: {
         date: {
-          timeStyle: {
+          time: {
             hour: "numeric",
             minute: "numeric"
           }
         },
 
         number: {
-          percentStyle: {
+          percent: {
             style: "percent"
           },
           EUR: {
@@ -212,13 +226,17 @@ var MyComponent = React.createClass({
 
   render: function () {
     return <div>
-      <p>A: {this.formatDate(1390518044403, "timeStyle")}</p>
-      <p>B: {this.formatNumber(400, "percentStyle")}</p>
-      <p>C: {this.formatMessage(this.getIntlMessage('product.info'), {
-        product: 'Mac Mini',
-        price: 2000.0015,
-        deadline: 1390518044403
-      })}</p>
+      <p>A: <ReactIntl.Date format="time">{1390518044403}</ReactIntl.Date></p>
+      <p>B: <ReactIntl.Number format="percent">{400}</ReactIntl.Number></p>
+      <p>
+        C:
+        <ReactIntl.Message
+            product="Mac Mini"
+            price={2000.0015}
+            deadline={1390518044403}>
+          this.getIntlMessage('product.info')
+        </ReactIntl.Message>
+      </p>
     </div>;
   }
 });
@@ -231,13 +249,13 @@ var i18n = {
   locales: ["en-US"],
   messages: {
     product {
-      info: "{product} will cost {price, number, eur} if ordered by {deadline, date, timeStyle}"
+      info: "{product} will cost {price, number, EUR} if ordered by {deadline, date, time}"
     }
   }
 };
 
 React.render(
-  <MyComponent locales={i18n.locales} messages={i18n.messages}/>,
+  <MyComponent {...i18n}>,
   document.body
 );
 ```
@@ -252,11 +270,11 @@ The above rendering of `MyComponent` will output:
 </div>
 ```
 
-By defining `this.props.formats`, which specifies a set of named formats under `date` and `number` members, you can use those named formats as a second argument for `formatNumber()`, `formatDate()`, and `formatTime()`. You can also reference them as the third token when defining the messages, e.g: `{deadline, date, timeStyle}`. In this case `deadline` describes the format options for its value, specifying that it is a `date` and should be formatted using the `timeStyle` custom format.
+By defining `this.props.formats`, which specifies a set of named formats under `date` and `number` members, you can use those named formats by name by assigning them to the `format` prop on the React Intl components. You can also reference them as the third token when defining the messages, e.g: `{deadline, date, timeStyle}`. In this case `deadline` describes the format options for its value, specifying that it is a `date` and should be formatted using the `time` custom format.
 
 ### App Configuration
 
-Another feature of the Intl Mixin is its ability to propagate `formats` and `locales` to any child component. Internally, it leverages the `context` to allow those child components to reuse the values defined at the parent level, making this ideal to define custom formats and the locale for the app by defining them or passing them into the root component when rendering the application. **This is always the recommended way to provide i18n message strings to the React component hierarchy.** Ideally, you will do this:
+Another feature of the React Intl Mixin is its ability to propagate `formats` and `locales` to any child component. Internally, it leverages the `context` to allow those child components to reuse the values defined at the parent level, making this ideal to define custom formats and the locale for the app by defining them or passing them into the root component when rendering the application. **This is always the recommended way to provide i18n message strings to the React component hierarchy.** Ideally, you will do this:
 
 ```javascript
 var i18n = {
@@ -266,31 +284,33 @@ var i18n = {
 };
 
 React.render(
-  <MyRootComponent
-    locales={i18n.locales}
-    formats={i18n.formats}
-    messages={i18n.messages} />,
+  <MyRootComponent {...i18n} />,
   document.getElementById('container')
 );
 ```
 
-Then make sure `MyRootComponent` uses the `ReactIntlMixin`. By doing that, you can define the list of `locales`, normally one or more in case you want to support fallback, (e.g.: `["fr-FR", "en"]`); and you can define `formats` to describe how the application will format dates and numbers. You will also want to mass the `messages` for the current locale, since the string will be locale-specific. All child components will be able to inherit these three structures in such a way that you don't have to propagate or define them at each level in your application. Just apply this mixin in those components that are suppose to use `this.formatNumber()`, `this.formatDate()` and/or `this.formatMessage()` in the `render()` method and you're all set.
+Then make sure `MyRootComponent` uses the `ReactIntl.Mixin`. By doing that, you can define the list of `locales`, normally one or more in case you want to support fallback, (e.g.: `["fr-FR", "en"]`); and you can define `formats` to describe how the application will format dates and numbers. You will also want to mass the `messages` for the current locale, since the string will be locale-specific. All child components will be able to inherit these three structures in such a way that you don't have to propagate or define them at each level in your application. The React Intl components also use this mixin so they have access to the propagated `locales`, `formats`, and `messages`.
 
 
-How to Use `formatMessage()`
-----------------------------
+How to Use `ReactIntl.Message`
+------------------------------
 
 ### Example #1: Simple String Replacement
 
 ```javascript
 var MyComponent = React.createClass({
-  mixins: [ReactIntlMixin],
+  mixins: [ReactIntl.Mixin],
 
   render: function () {
-    return <p>{this.formatMessage(this.getIntlMessage("reporting"), {
-      employee: this.props.name,
-      manager: this.props.manager
-    })}</p>;
+    return (
+      <p>
+        <ReactIntl.Message
+            employee={this.props.name}
+            manager={this.props.manager}>
+          this.getIntlMessage("reporting")
+        </ReactIntl.Message>
+      </p>
+    );
   }
 });
 
@@ -325,12 +345,17 @@ React.render(
 
 ```javascript
 var MyComponent = React.createClass({
-  mixins: [ReactIntlMixin],
+  mixins: [ReactIntl.Mixin],
 
   render: function () {
-    return <p>{this.formatMessage(this.getIntlMessage("posted"), {
-      relativeTime: this.formatRelative(this.props.postDate),
-    })}</p>;
+    return (
+      <p>
+        <ReactIntl.Message
+            relativeTime={this.formatRelative(this.props.postDate)}>
+          this.getIntlMessage("posted")
+        </ReactIntl.Message>
+      </p>
+    );
   }
 });
 
@@ -365,12 +390,16 @@ React.render(
 
 ```javascript
 var MyComponent = React.createClass({
-  mixins: [ReactIntlMixin],
+  mixins: [ReactIntl.Mixin],
 
   render: function () {
-    return <p>{this.formatMessage(this.getIntlMessage("publishers"), {
-      COMPANY_COUNT: this.props.count
-    })}</p>;
+    return (
+      <p>
+        <ReactIntl.Message COMPANY_COUNT={this.props.count}>
+          this.getIntlMessage("publishers")
+        </ReactIntl.Message>
+      </p>
+    );
   }
 });
 
@@ -424,12 +453,16 @@ In any message, you can use `{<valueName>, number [, <optionalFormat>]}` and `{<
 
 ```javascript
 var MyComponent = React.createClass({
-  mixins: [ReactIntlMixin],
+  mixins: [ReactIntl.Mixin],
 
   render: function () {
-    return <p>
-      {this.formatMessage(this.getIntlMessage('product'), this.props)}
-    </p>;
+    return (
+      <p>
+        <ReactIntl.Message {...this.props}>
+          this.getIntlMessage('product')
+        </ReactIntl.Message>
+      </p>
+    );
   }
 });
 
@@ -458,15 +491,14 @@ var i18n = {
 
 // Render in English:
 React.render(
-  <MyComponent
-    locales={i18n.locales} formats={i18n.formats} messages={i18n.messages}
+  <MyComponent {...i18n}
     product="Mac Mini" price=200 deadline=1390518044403 />,
   document.getElementById('example')
 );
 // - English output: "Mac Mini will cost €200 if ordered by 6:00 PM"
 ```
 
-_Note: `formatMessage()` will take care of creating the internal date and number format instances, and cache them to avoid creating unnecessary objects by reusing existing instances when similar formats are applied._
+_Note: `ReactIntl.Message` will take care of creating the internal date and number format instances, and cache them to avoid creating unnecessary objects by reusing existing instances when similar formats are applied._
 
 
 Limitations
@@ -489,7 +521,7 @@ See the [LICENSE file][] for license text and copyright information.
 [travis-badge]: https://img.shields.io/travis/yahoo/react-intl.svg?style=flat-square
 [Intl.js]: https://github.com/andyearnshaw/Intl.js
 [ECMAScript 402]: http://www.ecma-international.org/ecma-402/1.0/
-[ReactJS]: http://facebook.github.io/react/
+[React]: http://facebook.github.io/react/
 [Mixin]: http://facebook.github.io/react/docs/reusable-components.html#mixins
 [bower]: http://bower.io/
 [intl-messageformat]: https://github.com/yahoo/intl-messageformat
