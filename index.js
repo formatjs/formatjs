@@ -5,7 +5,8 @@
 var oldReact = global.React;
 global.React = require('react');
 
-// Require the lib and preload all the locale data.
+// Require the lib and add all locale data to `ReactIntl`. This module will be
+// ignored when bundling for the browser with Browserify/Webpack.
 var ReactIntl = require('./lib/react-intl');
 require('./lib/locales');
 
