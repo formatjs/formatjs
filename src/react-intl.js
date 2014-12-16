@@ -1,4 +1,4 @@
-/* jslint esnext: true */
+/* jshint esnext: true */
 
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';

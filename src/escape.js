@@ -1,4 +1,4 @@
-/* jslint esnext:true */
+/* jshint esnext:true */
 
 /*
 HTML escaping implementation is the same as React's (on purpose.) Therefore, it
