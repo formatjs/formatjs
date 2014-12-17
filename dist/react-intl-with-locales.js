@@ -2120,6 +2120,7 @@
 
     var intl$relativeformat$$default = $$core1$$default;
     var $$en$$default = {"locale":"en","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";},"fields":{"second":{"displayName":"Second","relative":{"0":"now"},"relativeTime":{"future":{"one":"in {0} second","other":"in {0} seconds"},"past":{"one":"{0} second ago","other":"{0} seconds ago"}}},"minute":{"displayName":"Minute","relativeTime":{"future":{"one":"in {0} minute","other":"in {0} minutes"},"past":{"one":"{0} minute ago","other":"{0} minutes ago"}}},"hour":{"displayName":"Hour","relativeTime":{"future":{"one":"in {0} hour","other":"in {0} hours"},"past":{"one":"{0} hour ago","other":"{0} hours ago"}}},"day":{"displayName":"Day","relative":{"0":"today","1":"tomorrow","-1":"yesterday"},"relativeTime":{"future":{"one":"in {0} day","other":"in {0} days"},"past":{"one":"{0} day ago","other":"{0} days ago"}}},"month":{"displayName":"Month","relative":{"0":"this month","1":"next month","-1":"last month"},"relativeTime":{"future":{"one":"in {0} month","other":"in {0} months"},"past":{"one":"{0} month ago","other":"{0} months ago"}}},"year":{"displayName":"Year","relative":{"0":"this year","1":"next year","-1":"last year"},"relativeTime":{"future":{"one":"in {0} year","other":"in {0} years"},"past":{"one":"{0} year ago","other":"{0} years ago"}}}}};
+    var $$react$$default = React;
 
     // Purposely using the same implementation as the Intl.js `Intl` polyfill.
     // Copyright 2013 Andy Earnshaw, MIT License
@@ -2234,13 +2235,13 @@
     // -----------------------------------------------------------------------------
 
     var $$mixin$$typesSpec = {
-        locales: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.array
+        locales: $$react$$default.PropTypes.oneOfType([
+            $$react$$default.PropTypes.string,
+            $$react$$default.PropTypes.array
         ]),
 
-        formats : React.PropTypes.object,
-        messages: React.PropTypes.object
+        formats : $$react$$default.PropTypes.object,
+        messages: $$react$$default.PropTypes.object
     };
 
     function $$mixin$$assertIsDate(date, errMsg) {
@@ -2382,7 +2383,7 @@
         }
     };
 
-    var $$components$date$$IntlDate = React.createClass({
+    var $$components$date$$IntlDate = $$react$$default.createClass({
         displayName: 'IntlDate',
         mixins     : [$$mixin$$default],
 
@@ -2399,13 +2400,13 @@
             var date       = props.children;
             var formatOpts = props.format || $$components$date$$IntlDate.filterFormatOptions(props);
 
-            return React.DOM.span(null, this.formatDate(date, formatOpts));
+            return $$react$$default.DOM.span(null, this.formatDate(date, formatOpts));
         }
     });
 
     var $$components$date$$default = $$components$date$$IntlDate;
 
-    var $$components$time$$IntlTime = React.createClass({
+    var $$components$time$$IntlTime = $$react$$default.createClass({
         displayName: 'IntlTime',
         mixins     : [$$mixin$$default],
 
@@ -2422,13 +2423,13 @@
             var date       = props.children;
             var formatOpts = props.format || $$components$time$$IntlTime.filterFormatOptions(props);
 
-            return React.DOM.span(null, this.formatTime(date, formatOpts));
+            return $$react$$default.DOM.span(null, this.formatTime(date, formatOpts));
         }
     });
 
     var $$components$time$$default = $$components$time$$IntlTime;
 
-    var $$components$relative$$IntlRelative = React.createClass({
+    var $$components$relative$$IntlRelative = $$react$$default.createClass({
         displayName: 'IntlRelative',
         mixins     : [$$mixin$$default],
 
@@ -2443,13 +2444,13 @@
             var date       = props.children;
             var formatOpts = props.format || $$components$relative$$IntlRelative.filterFormatOptions(props);
 
-            return React.DOM.span(null, this.formatRelative(date, formatOpts));
+            return $$react$$default.DOM.span(null, this.formatRelative(date, formatOpts));
         }
     });
 
     var $$components$relative$$default = $$components$relative$$IntlRelative;
 
-    var $$components$number$$IntlNumber = React.createClass({
+    var $$components$number$$IntlNumber = $$react$$default.createClass({
         displayName: 'IntlNumber',
         mixins     : [$$mixin$$default],
 
@@ -2467,13 +2468,13 @@
             var num        = props.children;
             var formatOpts = props.format || $$components$number$$IntlNumber.filterFormatOptions(props);
 
-            return React.DOM.span(null, this.formatNumber(num, formatOpts));
+            return $$react$$default.DOM.span(null, this.formatNumber(num, formatOpts));
         }
     });
 
     var $$components$number$$default = $$components$number$$IntlNumber;
 
-    var $$components$message$$IntlMessage = React.createClass({
+    var $$components$message$$IntlMessage = $$react$$default.createClass({
         displayName: 'IntlMessage',
         mixins     : [$$mixin$$default],
 
@@ -2481,12 +2482,12 @@
             var props   = this.props;
             var message = props.children;
 
-            return React.DOM.span(null, this.formatMessage(message, props));
+            return $$react$$default.DOM.span(null, this.formatMessage(message, props));
         }
     });
 
     var $$components$message$$default = $$components$message$$IntlMessage;
-    /* jslint esnext:true */
+    /* jshint esnext:true */
 
     /*
     HTML escaping implementation is the same as React's (on purpose.) Therefore, it
@@ -2529,7 +2530,7 @@
         }, {});
     }
 
-    var $$components$html$message$$IntlHTMLMessage = React.createClass({
+    var $$components$html$message$$IntlHTMLMessage = $$react$$default.createClass({
         displayName: 'IntlHTMLMessage',
         mixins     : [$$mixin$$default],
 
@@ -2548,7 +2549,7 @@
             // To be safe, we are escaping all string prop values before formatting
             // the message. It is assumed that the message is not UGC, and came from
             // the developer making it more like a template.
-            return React.DOM[tagName]({
+            return $$react$$default.DOM[tagName]({
                 dangerouslySetInnerHTML: {
                     __html: this.formatMessage(message, escapedProps)
                 }
