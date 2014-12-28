@@ -248,7 +248,7 @@ The component above will now be rendered with `locales` and `mesages` set extern
 var i18n = {
   locales: ["en-US"],
   messages: {
-    product {
+    product: {
       info: "{product} will cost {price, number, EUR} if ordered by {deadline, date, time}"
     }
   }
