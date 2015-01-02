@@ -118,9 +118,8 @@ export default {
                 return obj[pathPart];
             }, messages);
         } finally {
-            if (message === undefined) {
-                throw new ReferenceError('Could not find Intl message: ' + path);
-            }
+            console.warn('Could not find Intl message: ' + path);
+            return path;
         }
 
         return message;
