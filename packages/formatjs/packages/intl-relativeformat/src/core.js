@@ -210,10 +210,10 @@ RelativeFormat.prototype._resolveLocale = function (locales) {
     var i, len, locale;
 
     for (i = 0, len = locales.length; i < len; i += 1) {
-        // We just need the root part of the langage tag.
+        // We just need the root part of the language tag.
         locale = locales[i].split('-')[0].toLowerCase();
 
-        // Validate that the langage tag is structurally valid.
+        // Validate that the language tag is structurally valid.
         if (!/[a-z]{2,3}/.test(locale)) {
             throw new Error(
                 'Language tag provided to IntlRelativeFormat is not ' +
