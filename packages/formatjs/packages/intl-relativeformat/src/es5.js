@@ -6,12 +6,13 @@ See the accompanying LICENSE file for terms.
 
 /* jslint esnext: true */
 
-export {defineProperty, objCreate, arrIndexOf};
+export {defineProperty, objCreate, arrIndexOf, isArray, dateNow};
 
 // Purposely using the same implementation as the Intl.js `Intl` polyfill.
 // Copyright 2013 Andy Earnshaw, MIT License
 
 var hop = Object.prototype.hasOwnProperty;
+var toString = Object.prototype.toString;
 
 var realDefineProp = (function () {
     try { return !!Object.defineProperty({}, 'a', {}); }
@@ -60,4 +61,12 @@ var arrIndexOf = Array.prototype.indexOf || function (search, fromIndex) {
     }
 
     return -1;
+};
+
+var isArray = Array.isArray || function (obj) {
+    return toString.call(obj) === '[object Array]';
+};
+
+var dateNow = Date.now || function () {
+    return new Date().getTime();
 };

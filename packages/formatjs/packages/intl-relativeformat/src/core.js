@@ -6,7 +6,7 @@ See the accompanying LICENSE file for terms.
 
 /* jslint esnext: true */
 
-import {defineProperty, objCreate, arrIndexOf} from './es5';
+import {defineProperty, objCreate, arrIndexOf, isArray, dateNow} from './es5';
 import IntlMessageFormat from 'intl-messageformat';
 import diff from './diff';
 
@@ -17,10 +17,6 @@ export default RelativeFormat;
 var FIELDS = ['second', 'minute', 'hour', 'day', 'month', 'year'];
 var STYLES = ['best fit', 'numeric'];
 
-var getTime = Date.now ? Date.now : function () {
-    return new Date().getTime();
-};
-
 // -- RelativeFormat -----------------------------------------------------------
 
 function RelativeFormat(locales, options) {
@@ -28,7 +24,7 @@ function RelativeFormat(locales, options) {
 
     // Make a copy of `locales` if it's an array, so that it doesn't change
     // since it's used lazily.
-    if (Object.prototype.toString.call(locales) === '[object Array]') {
+    if (isArray(locales)) {
         locales = locales.concat();
     }
 
@@ -143,7 +139,7 @@ RelativeFormat.prototype._compileMessage = function (units) {
 };
 
 RelativeFormat.prototype._format = function (date) {
-    var now = getTime();
+    var now = dateNow();
 
     if (date === undefined) {
         date = now;
