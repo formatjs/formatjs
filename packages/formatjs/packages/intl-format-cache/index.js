@@ -1,2 +1,4 @@
-exports = module.exports = require('./lib/memoizer').default;
-Object.defineProperty(exports, 'default', {value: exports});
+'use strict';
+
+exports = module.exports = require('./lib/memoizer')['default'];
+exports['default'] = exports;
