@@ -40,6 +40,6 @@
     "grunt-peg": "^1.5.0",
     "istanbul": "^0.3.2",
     "mocha": "^2.0.1",
-    "xunit-file": "0.0.5"
+    "xunit-file": "0.0.6"
   }
 }
