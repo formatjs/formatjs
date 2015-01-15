@@ -27,12 +27,6 @@ function assertIsDate(date, errMsg) {
     }
 }
 
-function assertIsNumber(num, errMsg) {
-    if (typeof num !== 'number') {
-        throw new TypeError(errMsg);
-    }
-}
-
 export default {
     statics: {
         filterFormatOptions: function (obj) {
@@ -85,7 +79,6 @@ export default {
     },
 
     formatNumber: function (num, options) {
-        assertIsNumber(num, 'A number must be provided to formatNumber()');
         return this._format('number', num, options);
     },
 
