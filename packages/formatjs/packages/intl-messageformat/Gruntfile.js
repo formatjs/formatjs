@@ -10,17 +10,21 @@ module.exports = function (grunt) {
 
         copy: {
             tmp: {
-                expand : true,
-                flatten: true,
-                src    : ['tmp/src/*.js'],
-                dest   : 'lib/'
+                expand: true,
+                cwd   : 'tmp/src/',
+                src   : '**/*.js',
+                dest  : 'lib/'
             }
         },
 
         concat: {
             dist_with_locales: {
                 src: ['dist/intl-messageformat.js', 'dist/locale-data/*.js'],
-                dest: 'dist/intl-messageformat-with-locales.js'
+                dest: 'dist/intl-messageformat-with-locales.js',
+
+                options: {
+                    sourceMap: true
+                }
             }
         },
 
@@ -73,8 +77,10 @@ module.exports = function (grunt) {
 
         bundle_jsnext: {
             dest: 'dist/intl-messageformat.js',
+
             options: {
-                namespace: 'IntlMessageFormat'
+                namespace : 'IntlMessageFormat',
+                sourceRoot: 'intl-messageformat/'
             }
         },
 
@@ -84,14 +90,15 @@ module.exports = function (grunt) {
 
         uglify: {
             options: {
-                preserveComments: 'some'
+                preserveComments        : 'some',
+                sourceMap               : true,
+                sourceMapRoot           : 'intl-messageformat/',
+                sourceMapIncludeSources : true
             },
 
             dist: {
                 options: {
-                    sourceMap              : true,
-                    sourceMapIn            : 'dist/intl-messageformat.js.map',
-                    sourceMapIncludeSources: true
+                    sourceMapIn : 'dist/intl-messageformat.js.map'
                 },
 
                 files: {
@@ -102,11 +109,25 @@ module.exports = function (grunt) {
             },
 
             dist_with_locales: {
+                options: {
+                    sourceMapIn: 'dist/intl-messageformat-with-locales.js.map'
+                },
+
                 files: {
                     'dist/intl-messageformat-with-locales.min.js': [
                         'dist/intl-messageformat-with-locales.js'
                     ]
                 }
+            }
+        },
+
+        json_remove_fields: {
+            min_source_maps: {
+                options: {
+                    fields: ['sourceRoot']
+                },
+
+                src: 'dist/*.min.js.map'
             }
         },
 
@@ -205,6 +226,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-bundle-jsnext-lib');
     grunt.loadNpmTasks('grunt-benchmark');
     grunt.loadNpmTasks('grunt-extract-cldr-data');
+    grunt.loadNpmTasks('grunt-json-remove-fields');
     grunt.loadNpmTasks('grunt-saucelabs');
     grunt.loadNpmTasks('grunt-contrib-connect');
 
@@ -222,6 +244,7 @@ module.exports = function (grunt) {
         'bundle_jsnext',
         'concat:dist_with_locales',
         'uglify',
+        'json_remove_fields',
         'cjs_jsnext',
         'copy:tmp'
     ]);

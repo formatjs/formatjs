@@ -47,13 +47,14 @@
     "grunt-contrib-connect": "^0.9.0",
     "grunt-contrib-copy": "^0.7.0",
     "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-uglify": "^0.6.0",
+    "grunt-contrib-uglify": "^0.7.0",
     "grunt-extract-cldr-data": "^1.1.0",
-    "grunt-saucelabs": "~8.3.2",
+    "grunt-json-remove-fields": "git://github.com/ericf/grunt-json-remove-fields#improve-files-and-output",
+    "grunt-saucelabs": "^8.4.1",
     "intl": "^0.1.4",
     "istanbul": "^0.3.0",
     "mocha": "^2.0.1",
-    "xunit-file": "0.0.5"
+    "xunit-file": "0.0.6"
   },
   "scripts": {
     "test": "istanbul cover -x lib/locales.js -- ./node_modules/mocha/bin/_mocha tests/runner.js --reporter spec",
