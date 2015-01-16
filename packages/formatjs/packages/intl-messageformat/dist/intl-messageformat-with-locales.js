@@ -1748,7 +1748,7 @@
     this['IntlMessageFormat'] = src$main$$default;
 }).call(this);
 
-//# sourceMappingURL=intl-messageformat.js.map
+//
 IntlMessageFormat.__addLocaleData({"locale":"af","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"ak","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===Math.floor(n)&&n>=0&&n<=1)return"one";return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"am","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";return"other";}});
@@ -1909,3 +1909,4 @@ IntlMessageFormat.__addLocaleData({"locale":"xog","pluralRuleFunction":function 
 IntlMessageFormat.__addLocaleData({"locale":"yo","pluralRuleFunction":function (n) {return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"zh","pluralRuleFunction":function (n) {return"other";}});
 IntlMessageFormat.__addLocaleData({"locale":"zu","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";return"other";}});
+//# sourceMappingURL=intl-messageformat-with-locales.js.map
