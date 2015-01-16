@@ -29,14 +29,14 @@ function assertIsDate(date, errMsg) {
 
 export default {
     statics: {
-        filterFormatOptions: function (obj) {
+        filterFormatOptions: function (obj, defaults) {
             return (this.formatOptions || []).reduce(function (opts, name) {
                 if (obj.hasOwnProperty(name)) {
                     opts[name] = obj[name];
                 }
 
                 return opts;
-            }, {});
+            }, defaults ? Object.create(defaults) : {});
         }
     },
 
@@ -119,22 +119,28 @@ export default {
         return message;
     },
 
+    getNamedFormat: function (type, name) {
+        var formats = this.props.formats || this.context.formats;
+        var format  = null;
+
+        try {
+            format = formats[type][name];
+        } finally {
+            if (!format) {
+                throw new ReferenceError(
+                    'No ' + type + ' format named: ' + name
+                );
+            }
+        }
+
+        return format;
+    },
+
     _format: function (type, value, options) {
         var locales = this.props.locales || this.context.locales;
-        var formats = this.props.formats || this.context.formats;
 
         if (options && typeof options === 'string') {
-            try {
-                options = formats[type][options];
-            } catch (e) {
-                options = undefined;
-            } finally {
-                if (options === undefined) {
-                    throw new ReferenceError(
-                        'No ' + type + ' format named: ' + options
-                    );
-                }
-            }
+            options = this.getNamedFormat(type, options);
         }
 
         switch(type) {

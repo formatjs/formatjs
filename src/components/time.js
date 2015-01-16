@@ -18,11 +18,12 @@ var IntlTime = React.createClass({
     },
 
     render: function () {
-        var props      = this.props;
-        var date       = props.children;
-        var formatOpts = props.format || IntlTime.filterFormatOptions(props);
+        var props    = this.props;
+        var value    = props.children;
+        var defaults = props.format && this.getNamedFormat('time', props.format);
+        var options  = IntlTime.filterFormatOptions(props, defaults);
 
-        return React.DOM.span(null, this.formatTime(date, formatOpts));
+        return React.DOM.span(null, this.formatTime(value, options));
     }
 });
 

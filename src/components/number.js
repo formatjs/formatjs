@@ -19,11 +19,12 @@ var IntlNumber = React.createClass({
     },
 
     render: function () {
-        var props      = this.props;
-        var num        = props.children;
-        var formatOpts = props.format || IntlNumber.filterFormatOptions(props);
+        var props    = this.props;
+        var value    = props.children;
+        var defaults = props.format && this.getNamedFormat('number', props.format);
+        var options  = IntlNumber.filterFormatOptions(props, defaults);
 
-        return React.DOM.span(null, this.formatNumber(num, formatOpts));
+        return React.DOM.span(null, this.formatNumber(value, options));
     }
 });
 
