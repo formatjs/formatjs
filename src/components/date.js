@@ -18,11 +18,12 @@ var IntlDate = React.createClass({
     },
 
     render: function () {
-        var props      = this.props;
-        var date       = props.children;
-        var formatOpts = props.format || IntlDate.filterFormatOptions(props);
+        var props    = this.props;
+        var value    = props.children;
+        var defaults = props.format && this.getNamedFormat('date', props.format);
+        var options  = IntlDate.filterFormatOptions(props, defaults);
 
-        return React.DOM.span(null, this.formatDate(date, formatOpts));
+        return React.DOM.span(null, this.formatDate(value, options));
     }
 });
 

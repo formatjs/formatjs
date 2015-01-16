@@ -33,6 +33,33 @@ describe('React Intl mixin', function () {
         expect(testNode.firstChild.innerHTML).to.equal('1.000');
     });
 
+    it('Formats numbers correctly using named formats', function () {
+        var IntlNumber = React.createFactory(ReactIntl.Number);
+        var testNode = document.getElementById('test1');
+
+        var price = {
+            value: 99.95,
+            currency: 'USD'
+        };
+
+        React.render(IntlNumber({
+            locales: ['en-US'],
+            formats: {
+                number: {
+                    currency: {
+                        style: 'currency',
+                        minimumFractionDigits: 2
+                    }
+                }
+            },
+
+            format: 'currency',
+            currency: price.currency
+        }, price.value), testNode);
+
+        expect(testNode.firstChild.innerHTML).to.equal('$99.95');
+    });
+
     it('Formats dates correctly', function () {
         var FormattedDateComponent = React.createClass({
             displayName: 'FormattedDate',

@@ -16,11 +16,12 @@ var IntlRelative = React.createClass({
     },
 
     render: function () {
-        var props      = this.props;
-        var date       = props.children;
-        var formatOpts = props.format || IntlRelative.filterFormatOptions(props);
+        var props    = this.props;
+        var value    = props.children;
+        var defaults = props.format && this.getNamedFormat('relative', props.format);
+        var options  = IntlRelative.filterFormatOptions(props, defaults);
 
-        return React.DOM.span(null, this.formatRelative(date, formatOpts));
+        return React.DOM.span(null, this.formatRelative(value, options));
     }
 });
 
