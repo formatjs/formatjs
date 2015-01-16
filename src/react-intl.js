@@ -4,16 +4,24 @@ import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 
 import defaultLocale from './en';
-import Mixin from './mixin';
 
-import Date from './components/date';
-import Time from './components/time';
-import Relative from './components/relative';
-import Number from './components/number';
-import Message from './components/message';
-import HTMLMessage from './components/html-message';
+import IntlMixin from './mixin';
+import IntlDate from './components/date';
+import IntlTime from './components/time';
+import IntlRelative from './components/relative';
+import IntlNumber from './components/number';
+import IntlMessage from './components/message';
+import IntlHTMLMessage from './components/html-message';
 
-export {Mixin, Date, Time, Relative, Number, Message, HTMLMessage};
+export {
+    IntlMixin,
+    IntlDate,
+    IntlTime,
+    IntlRelative,
+    IntlNumber,
+    IntlMessage,
+    IntlHTMLMessage
+};
 
 export function __addLocaleData(data) {
     IntlMessageFormat.__addLocaleData(data);

@@ -1,11 +1,18 @@
 /*global describe, it, expect, React, ReactIntl*/
 describe('React Intl mixin', function () {
+    var IntlMixin       = ReactIntl.IntlMixin;
+    var IntlNumber      = React.createFactory(ReactIntl.IntlNumber);
+    var IntlDate        = React.createFactory(ReactIntl.IntlDate);
+    var IntlTIme        = React.createFactory(ReactIntl.IntlTIme);
+    var IntlRelative    = React.createFactory(ReactIntl.IntlRelative);
+    var IntlMessage     = React.createFactory(ReactIntl.IntlMessage);
+    var IntlHTMLMessage = React.createFactory(ReactIntl.IntlHTMLMessage);
 
     it('Formats numbers correctly', function () {
         var FormattedNumberComponent = React.createClass({
             displayName: 'FormattedNumber',
 
-            mixins: [ReactIntl.Mixin],
+            mixins: [IntlMixin],
 
             render: function () {
                 return React.DOM.div(null, this.formatNumber(1000));
@@ -23,7 +30,6 @@ describe('React Intl mixin', function () {
     });
 
     it('Formats numbers correctly using IntlNumber component', function () {
-        var IntlNumber = React.createFactory(ReactIntl.Number);
         var testNode = document.getElementById('test1');
 
         React.render(IntlNumber({
@@ -37,7 +43,7 @@ describe('React Intl mixin', function () {
         var FormattedDateComponent = React.createClass({
             displayName: 'FormattedDate',
 
-            mixins: [ReactIntl.Mixin],
+            mixins: [IntlMixin],
 
             render: function () {
                 return React.DOM.div(null, this.formatDate(this.props.date, {
@@ -66,7 +72,6 @@ describe('React Intl mixin', function () {
     });
 
     it('Formats dates correctly using IntlDate component', function () {
-        var IntlDate = React.createFactory(ReactIntl.Date);
         var testNode = document.getElementById('test2');
 
         React.render(IntlDate({
@@ -90,7 +95,7 @@ describe('React Intl mixin', function () {
         var FormattedMessageComponent = React.createClass({
             displayName: 'FormattedMessage',
 
-            mixins: [ReactIntl.Mixin],
+            mixins: [IntlMixin],
 
             getMyMessage: function () {
                 return 'You have {numPhotos, plural, =0 {no photos} =1 {one photo} other {# photos}}.';
@@ -115,7 +120,6 @@ describe('React Intl mixin', function () {
     });
 
     it('Formats messages correctly using IntlMessage component', function () {
-        var IntlMessage = React.createFactory(ReactIntl.Message);
         var testNode = document.getElementById('test3');
 
         React.render(IntlMessage({
