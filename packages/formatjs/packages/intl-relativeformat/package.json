@@ -28,7 +28,7 @@
     "./lib/locales.js": false
   },
   "dependencies": {
-    "intl-messageformat": "1.0.2"
+    "intl-messageformat": "1.0.3"
   },
   "devDependencies": {
     "benchmark": "^1.0.0",
