@@ -94,6 +94,7 @@ module.exports = function (grunt) {
             options: {
                 preserveComments       : 'some',
                 sourceMap              : true,
+                sourceMapRoot          : 'react-intl/',
                 sourceMapIncludeSources: true
             },
 
@@ -119,6 +120,16 @@ module.exports = function (grunt) {
                         'dist/react-intl-with-locales.js'
                     ]
                 }
+            }
+        },
+
+        json_remove_fields: {
+            min_source_maps: {
+                options: {
+                    fields: ['sourceRoot']
+                },
+
+                src: 'dist/*.min.js.map'
             }
         },
 
@@ -201,6 +212,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-bundle-jsnext-lib');
     grunt.loadNpmTasks('grunt-extract-cldr-data');
+    grunt.loadNpmTasks('grunt-json-remove-fields');
     grunt.loadNpmTasks('grunt-saucelabs');
     grunt.loadNpmTasks('grunt-contrib-connect');
 
@@ -216,6 +228,7 @@ module.exports = function (grunt) {
         'bundle_jsnext',
         'concat:dist_with_locales',
         'uglify',
+        'json_remove_fields',
         'cjs_jsnext',
         'copy:tmp'
     ]);
