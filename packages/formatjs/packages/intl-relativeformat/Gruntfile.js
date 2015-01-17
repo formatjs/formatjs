@@ -13,17 +13,21 @@ module.exports = function (grunt) {
 
         copy: {
             tmp: {
-                expand : true,
-                flatten: true,
-                src    : ['tmp/src/*.js'],
-                dest   : 'lib/'
+                expand: true,
+                cwd   : 'tmp/src/',
+                src   : '**/*.js',
+                dest  : 'lib/'
             }
         },
 
         concat: {
             dist_with_locales: {
                 src: ['dist/intl-relativeformat.js', 'dist/locale-data/*.js'],
-                dest: 'dist/intl-relativeformat-with-locales.js'
+                dest: 'dist/intl-relativeformat-with-locales.js',
+
+                options: {
+                    sourceMap: true
+                }
             }
         },
 
@@ -79,7 +83,8 @@ module.exports = function (grunt) {
         bundle_jsnext: {
             dest: 'dist/intl-relativeformat.js',
             options: {
-                namespace: 'IntlRelativeFormat'
+                namespace : 'IntlRelativeFormat',
+                sourceRoot: 'intl-relativeformat/'
             }
         },
 
@@ -89,14 +94,15 @@ module.exports = function (grunt) {
 
         uglify: {
             options: {
-                preserveComments: 'some'
+                preserveComments       : 'some',
+                sourceMap              : true,
+                sourceMapRoot          : 'intl-relativeformat/',
+                sourceMapIncludeSources: true
             },
 
             dist: {
                 options: {
-                    sourceMap              : true,
-                    sourceMapIn            : 'dist/intl-relativeformat.js.map',
-                    sourceMapIncludeSources: true
+                    sourceMapIn: 'dist/intl-relativeformat.js.map'
                 },
 
                 files: {
@@ -107,11 +113,25 @@ module.exports = function (grunt) {
             },
 
             dist_with_locales: {
+                options: {
+                    sourceMapIn: 'dist/intl-relativeformat-with-locales.js.map'
+                },
+
                 files: {
                     'dist/intl-relativeformat-with-locales.min.js': [
                         'dist/intl-relativeformat-with-locales.js'
                     ]
                 }
+            }
+        },
+
+        json_remove_fields: {
+            min_source_maps: {
+                options: {
+                    fields: ['sourceRoot']
+                },
+
+                src: 'dist/*.min.js.map'
             }
         },
 
@@ -210,6 +230,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-bundle-jsnext-lib');
     grunt.loadNpmTasks('grunt-benchmark');
     grunt.loadNpmTasks('grunt-extract-cldr-data');
+    grunt.loadNpmTasks('grunt-json-remove-fields');
     grunt.loadNpmTasks('grunt-saucelabs');
     grunt.loadNpmTasks('grunt-contrib-connect');
 
@@ -225,6 +246,7 @@ module.exports = function (grunt) {
         'bundle_jsnext',
         'concat:dist_with_locales',
         'uglify',
+        'json_remove_fields',
         'cjs_jsnext',
         'copy:tmp'
     ]);
