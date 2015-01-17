@@ -1750,6 +1750,7 @@
     // Copyright 2013 Andy Earnshaw, MIT License
 
     var $$es51$$hop = Object.prototype.hasOwnProperty;
+    var $$es51$$toString = Object.prototype.toString;
 
     var $$es51$$realDefineProp = (function () {
         try { return !!Object.defineProperty({}, 'a', {}); }
@@ -1798,6 +1799,14 @@
         }
 
         return -1;
+    };
+
+    var $$es51$$isArray = Array.isArray || function (obj) {
+        return $$es51$$toString.call(obj) === '[object Array]';
+    };
+
+    var $$es51$$dateNow = Date.now || function () {
+        return new Date().getTime();
     };
     /*
     Copyright (c) 2014, Yahoo! Inc. All rights reserved.
@@ -1849,10 +1858,6 @@
     var $$core1$$FIELDS = ['second', 'minute', 'hour', 'day', 'month', 'year'];
     var $$core1$$STYLES = ['best fit', 'numeric'];
 
-    var $$core1$$getTime = Date.now ? Date.now : function () {
-        return new Date().getTime();
-    };
-
     // -- RelativeFormat -----------------------------------------------------------
 
     function $$core1$$RelativeFormat(locales, options) {
@@ -1860,7 +1865,7 @@
 
         // Make a copy of `locales` if it's an array, so that it doesn't change
         // since it's used lazily.
-        if (Object.prototype.toString.call(locales) === '[object Array]') {
+        if ($$es51$$isArray(locales)) {
             locales = locales.concat();
         }
 
@@ -1975,7 +1980,7 @@
     };
 
     $$core1$$RelativeFormat.prototype._format = function (date) {
-        var now = $$core1$$getTime();
+        var now = $$es51$$dateNow();
 
         if (date === undefined) {
             date = now;
@@ -2042,10 +2047,10 @@
         var i, len, locale;
 
         for (i = 0, len = locales.length; i < len; i += 1) {
-            // We just need the root part of the langage tag.
+            // We just need the root part of the language tag.
             locale = locales[i].split('-')[0].toLowerCase();
 
-            // Validate that the langage tag is structurally valid.
+            // Validate that the language tag is structurally valid.
             if (!/[a-z]{2,3}/.test(locale)) {
                 throw new Error(
                     'Language tag provided to IntlRelativeFormat is not ' +
@@ -2252,22 +2257,16 @@
         }
     }
 
-    function $$mixin$$assertIsNumber(num, errMsg) {
-        if (typeof num !== 'number') {
-            throw new TypeError(errMsg);
-        }
-    }
-
     var $$mixin$$default = {
         statics: {
-            filterFormatOptions: function (obj) {
+            filterFormatOptions: function (obj, defaults) {
                 return (this.formatOptions || []).reduce(function (opts, name) {
                     if (obj.hasOwnProperty(name)) {
                         opts[name] = obj[name];
                     }
 
                     return opts;
-                }, {});
+                }, defaults ? Object.create(defaults) : {});
             }
         },
 
@@ -2310,7 +2309,6 @@
         },
 
         formatNumber: function (num, options) {
-            $$mixin$$assertIsNumber(num, 'A number must be provided to formatNumber()');
             return this._format('number', num, options);
         },
 
@@ -2351,22 +2349,28 @@
             return message;
         },
 
+        getNamedFormat: function (type, name) {
+            var formats = this.props.formats || this.context.formats;
+            var format  = null;
+
+            try {
+                format = formats[type][name];
+            } finally {
+                if (!format) {
+                    throw new ReferenceError(
+                        'No ' + type + ' format named: ' + name
+                    );
+                }
+            }
+
+            return format;
+        },
+
         _format: function (type, value, options) {
             var locales = this.props.locales || this.context.locales;
-            var formats = this.props.formats || this.context.formats;
 
             if (options && typeof options === 'string') {
-                try {
-                    options = formats[type][options];
-                } catch (e) {
-                    options = undefined;
-                } finally {
-                    if (options === undefined) {
-                        throw new ReferenceError(
-                            'No ' + type + ' format named: ' + options
-                        );
-                    }
-                }
+                options = this.getNamedFormat(type, options);
             }
 
             switch(type) {
@@ -2396,11 +2400,12 @@
         },
 
         render: function () {
-            var props      = this.props;
-            var date       = props.children;
-            var formatOpts = props.format || $$components$date$$IntlDate.filterFormatOptions(props);
+            var props    = this.props;
+            var value    = props.children;
+            var defaults = props.format && this.getNamedFormat('date', props.format);
+            var options  = $$components$date$$IntlDate.filterFormatOptions(props, defaults);
 
-            return $$react$$default.DOM.span(null, this.formatDate(date, formatOpts));
+            return $$react$$default.DOM.span(null, this.formatDate(value, options));
         }
     });
 
@@ -2419,11 +2424,12 @@
         },
 
         render: function () {
-            var props      = this.props;
-            var date       = props.children;
-            var formatOpts = props.format || $$components$time$$IntlTime.filterFormatOptions(props);
+            var props    = this.props;
+            var value    = props.children;
+            var defaults = props.format && this.getNamedFormat('time', props.format);
+            var options  = $$components$time$$IntlTime.filterFormatOptions(props, defaults);
 
-            return $$react$$default.DOM.span(null, this.formatTime(date, formatOpts));
+            return $$react$$default.DOM.span(null, this.formatTime(value, options));
         }
     });
 
@@ -2440,11 +2446,12 @@
         },
 
         render: function () {
-            var props      = this.props;
-            var date       = props.children;
-            var formatOpts = props.format || $$components$relative$$IntlRelative.filterFormatOptions(props);
+            var props    = this.props;
+            var value    = props.children;
+            var defaults = props.format && this.getNamedFormat('relative', props.format);
+            var options  = $$components$relative$$IntlRelative.filterFormatOptions(props, defaults);
 
-            return $$react$$default.DOM.span(null, this.formatRelative(date, formatOpts));
+            return $$react$$default.DOM.span(null, this.formatRelative(value, options));
         }
     });
 
@@ -2464,11 +2471,12 @@
         },
 
         render: function () {
-            var props      = this.props;
-            var num        = props.children;
-            var formatOpts = props.format || $$components$number$$IntlNumber.filterFormatOptions(props);
+            var props    = this.props;
+            var value    = props.children;
+            var defaults = props.format && this.getNamedFormat('number', props.format);
+            var options  = $$components$number$$IntlNumber.filterFormatOptions(props, defaults);
 
-            return $$react$$default.DOM.span(null, this.formatNumber(num, formatOpts));
+            return $$react$$default.DOM.span(null, this.formatNumber(value, options));
         }
     });
 
