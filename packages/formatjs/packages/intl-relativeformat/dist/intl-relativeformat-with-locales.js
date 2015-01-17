@@ -5,6 +5,7 @@
     // Copyright 2013 Andy Earnshaw, MIT License
 
     var $$es5$$hop = Object.prototype.hasOwnProperty;
+    var $$es5$$toString = Object.prototype.toString;
 
     var $$es5$$realDefineProp = (function () {
         try { return !!Object.defineProperty({}, 'a', {}); }
@@ -53,6 +54,14 @@
         }
 
         return -1;
+    };
+
+    var $$es5$$isArray = Array.isArray || function (obj) {
+        return $$es5$$toString.call(obj) === '[object Array]';
+    };
+
+    var $$es5$$dateNow = Date.now || function () {
+        return new Date().getTime();
     };
     var $$utils$$hop = Object.prototype.hasOwnProperty;
 
@@ -1849,10 +1858,6 @@
     var $$core$$FIELDS = ['second', 'minute', 'hour', 'day', 'month', 'year'];
     var $$core$$STYLES = ['best fit', 'numeric'];
 
-    var $$core$$getTime = Date.now ? Date.now : function () {
-        return new Date().getTime();
-    };
-
     // -- RelativeFormat -----------------------------------------------------------
 
     function $$core$$RelativeFormat(locales, options) {
@@ -1860,7 +1865,7 @@
 
         // Make a copy of `locales` if it's an array, so that it doesn't change
         // since it's used lazily.
-        if (Object.prototype.toString.call(locales) === '[object Array]') {
+        if ($$es5$$isArray(locales)) {
             locales = locales.concat();
         }
 
@@ -1975,7 +1980,7 @@
     };
 
     $$core$$RelativeFormat.prototype._format = function (date) {
-        var now = $$core$$getTime();
+        var now = $$es5$$dateNow();
 
         if (date === undefined) {
             date = now;
@@ -2042,10 +2047,10 @@
         var i, len, locale;
 
         for (i = 0, len = locales.length; i < len; i += 1) {
-            // We just need the root part of the langage tag.
+            // We just need the root part of the language tag.
             locale = locales[i].split('-')[0].toLowerCase();
 
-            // Validate that the langage tag is structurally valid.
+            // Validate that the language tag is structurally valid.
             if (!/[a-z]{2,3}/.test(locale)) {
                 throw new Error(
                     'Language tag provided to IntlRelativeFormat is not ' +
@@ -2122,7 +2127,7 @@
     this['IntlRelativeFormat'] = src$main$$default;
 }).call(this);
 
-//# sourceMappingURL=intl-relativeformat.js.map
+//
 IntlRelativeFormat.__addLocaleData({"locale":"af","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";},"fields":{"second":{"displayName":"Sekonde","relative":{"0":"nou"},"relativeTime":{"future":{"one":"Oor {0} sekonde","other":"Oor {0} sekondes"},"past":{"one":"{0} sekonde gelede","other":"{0} sekondes gelede"}}},"minute":{"displayName":"Minuut","relativeTime":{"future":{"one":"Oor {0} minuut","other":"Oor {0} minute"},"past":{"one":"{0} minuut gelede","other":"{0} minute gelede"}}},"hour":{"displayName":"Uur","relativeTime":{"future":{"one":"Oor {0} uur","other":"Oor {0} uur"},"past":{"one":"{0} uur gelede","other":"{0} uur gelede"}}},"day":{"displayName":"Dag","relative":{"0":"vandag","1":"môre","2":"Die dag na môre","-2":"Die dag voor gister","-1":"gister"},"relativeTime":{"future":{"one":"Oor {0} dag","other":"Oor {0} dae"},"past":{"one":"{0} dag gelede","other":"{0} dae gelede"}}},"month":{"displayName":"Maand","relative":{"0":"vandeesmaand","1":"volgende maand","-1":"verlede maand"},"relativeTime":{"future":{"one":"Oor {0} maand","other":"Oor {0} maande"},"past":{"one":"{0} maand gelede","other":"{0} maande gelede"}}},"year":{"displayName":"Jaar","relative":{"0":"hierdie jaar","1":"volgende jaar","-1":"verlede jaar"},"relativeTime":{"future":{"one":"Oor {0} jaar","other":"Oor {0} jaar"},"past":{"one":"{0} jaar gelede","other":"{0} jaar gelede"}}}}});
 IntlRelativeFormat.__addLocaleData({"locale":"ak","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===Math.floor(n)&&n>=0&&n<=1)return"one";return"other";},"fields":{"second":{"displayName":"Sɛkɛnd","relative":{"0":"now"},"relativeTime":{"future":{"other":"+{0} s"},"past":{"other":"-{0} s"}}},"minute":{"displayName":"Sema","relativeTime":{"future":{"other":"+{0} min"},"past":{"other":"-{0} min"}}},"hour":{"displayName":"Dɔnhwer","relativeTime":{"future":{"other":"+{0} h"},"past":{"other":"-{0} h"}}},"day":{"displayName":"Da","relative":{"0":"Ndɛ","1":"Ɔkyena","-1":"Ndeda"},"relativeTime":{"future":{"other":"+{0} d"},"past":{"other":"-{0} d"}}},"month":{"displayName":"Bosome","relative":{"0":"this month","1":"next month","-1":"last month"},"relativeTime":{"future":{"other":"+{0} m"},"past":{"other":"-{0} m"}}},"year":{"displayName":"Afe","relative":{"0":"this year","1":"next year","-1":"last year"},"relativeTime":{"future":{"other":"+{0} y"},"past":{"other":"-{0} y"}}}}});
 IntlRelativeFormat.__addLocaleData({"locale":"am","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";return"other";},"fields":{"second":{"displayName":"ሰከንድ","relative":{"0":"አሁን"},"relativeTime":{"future":{"one":"በ{0} ሰከንድ ውስጥ","other":"በ{0} ሰከንዶች ውስጥ"},"past":{"one":"ከ{0} ሰከንድ በፊት","other":"ከ{0} ሰከንዶች በፊት"}}},"minute":{"displayName":"ደቂቃ","relativeTime":{"future":{"one":"በ{0} ደቂቃ ውስጥ","other":"በ{0} ደቂቃዎች ውስጥ"},"past":{"one":"ከ{0} ደቂቃ በፊት","other":"ከ{0} ደቂቃዎች በፊት"}}},"hour":{"displayName":"ሰዓት","relativeTime":{"future":{"one":"በ{0} ሰዓት ውስጥ","other":"በ{0} ሰዓቶች ውስጥ"},"past":{"one":"ከ{0} ሰዓት በፊት","other":"ከ{0} ሰዓቶች በፊት"}}},"day":{"displayName":"ቀን","relative":{"0":"ዛሬ","1":"ነገ","2":"ከነገ ወዲያ","-2":"ከትናንት ወዲያ","-1":"ትናንት"},"relativeTime":{"future":{"one":"በ{0} ቀን ውስጥ","other":"በ{0} ቀናት ውስጥ"},"past":{"one":"ከ{0} ቀን በፊት","other":"ከ{0} ቀናት በፊት"}}},"month":{"displayName":"ወር","relative":{"0":"በዚህ ወር","1":"የሚቀጥለው ወር","-1":"ያለፈው ወር"},"relativeTime":{"future":{"one":"በ{0} ወር ውስጥ","other":"በ{0} ወራት ውስጥ"},"past":{"one":"ከ{0} ወር በፊት","other":"ከ{0} ወራት በፊት"}}},"year":{"displayName":"ዓመት","relative":{"0":"በዚህ ዓመት","1":"የሚቀጥለው ዓመት","-1":"ያለፈው ዓመት"},"relativeTime":{"future":{"one":"በ{0} ዓመታት ውስጥ","other":"በ{0} ዓመታት ውስጥ"},"past":{"one":"ከ{0} ዓመት በፊት","other":"ከ{0} ዓመታት በፊት"}}}}});
@@ -2283,3 +2288,4 @@ IntlRelativeFormat.__addLocaleData({"locale":"xog","pluralRuleFunction":function
 IntlRelativeFormat.__addLocaleData({"locale":"yo","pluralRuleFunction":function (n) {return"other";},"fields":{"second":{"displayName":"Ìsẹ́jú Ààyá","relative":{"0":"now"},"relativeTime":{"future":{"other":"+{0} s"},"past":{"other":"-{0} s"}}},"minute":{"displayName":"Ìsẹ́jú","relativeTime":{"future":{"other":"+{0} min"},"past":{"other":"-{0} min"}}},"hour":{"displayName":"wákàtí","relativeTime":{"future":{"other":"+{0} h"},"past":{"other":"-{0} h"}}},"day":{"displayName":"Ọjọ́","relative":{"0":"Òní","1":"Ọ̀la","2":"òtúùnla","-2":"íjẹta","-1":"Àná"},"relativeTime":{"future":{"other":"+{0} d"},"past":{"other":"-{0} d"}}},"month":{"displayName":"Osù","relative":{"0":"this month","1":"next month","-1":"last month"},"relativeTime":{"future":{"other":"+{0} m"},"past":{"other":"-{0} m"}}},"year":{"displayName":"Ọdún","relative":{"0":"this year","1":"next year","-1":"last year"},"relativeTime":{"future":{"other":"+{0} y"},"past":{"other":"-{0} y"}}}}});
 IntlRelativeFormat.__addLocaleData({"locale":"zh","pluralRuleFunction":function (n) {return"other";},"fields":{"second":{"displayName":"秒钟","relative":{"0":"现在"},"relativeTime":{"future":{"other":"{0}秒钟后"},"past":{"other":"{0}秒钟前"}}},"minute":{"displayName":"分钟","relativeTime":{"future":{"other":"{0}分钟后"},"past":{"other":"{0}分钟前"}}},"hour":{"displayName":"小时","relativeTime":{"future":{"other":"{0}小时后"},"past":{"other":"{0}小时前"}}},"day":{"displayName":"日","relative":{"0":"今天","1":"明天","2":"后天","-2":"前天","-1":"昨天"},"relativeTime":{"future":{"other":"{0}天后"},"past":{"other":"{0}天前"}}},"month":{"displayName":"月","relative":{"0":"本月","1":"下个月","-1":"上个月"},"relativeTime":{"future":{"other":"{0}个月后"},"past":{"other":"{0}个月前"}}},"year":{"displayName":"年","relative":{"0":"今年","1":"明年","-1":"去年"},"relativeTime":{"future":{"other":"{0}年后"},"past":{"other":"{0}年前"}}}}});
 IntlRelativeFormat.__addLocaleData({"locale":"zu","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";return"other";},"fields":{"second":{"displayName":"Isekhondi","relative":{"0":"manje"},"relativeTime":{"future":{"one":"Kusekhondi elingu-{0}","other":"Kumasekhondi angu-{0}"},"past":{"one":"isekhondi elingu-{0} eledlule","other":"amasekhondi angu-{0} adlule"}}},"minute":{"displayName":"Iminithi","relativeTime":{"future":{"one":"Kumunithi engu-{0}","other":"Emaminithini angu-{0}"},"past":{"one":"eminithini elingu-{0} eledlule","other":"amaminithi angu-{0} adlule"}}},"hour":{"displayName":"Ihora","relativeTime":{"future":{"one":"Ehoreni elingu-{0}","other":"Emahoreni angu-{0}"},"past":{"one":"ehoreni eligu-{0} eledluli","other":"emahoreni angu-{0} edlule"}}},"day":{"displayName":"Usuku","relative":{"0":"namhlanje","1":"kusasa","2":"Usuku olulandela olakusasa","-2":"Usuku olwandulela olwayizolo","-1":"izolo"},"relativeTime":{"future":{"one":"Osukwini olungu-{0}","other":"Ezinsukwini ezingu-{0}"},"past":{"one":"osukwini olungu-{0} olwedlule","other":"ezinsukwini ezingu-{0} ezedlule."}}},"month":{"displayName":"Inyanga","relative":{"0":"le nyanga","1":"inyanga ezayo","-1":"inyanga edlule"},"relativeTime":{"future":{"one":"Enyangeni engu-{0}","other":"Ezinyangeni ezingu-{0}"},"past":{"one":"enyangeni engu-{0} eyedlule","other":"ezinyangeni ezingu-{0} ezedlule"}}},"year":{"displayName":"Unyaka","relative":{"0":"kulo nyaka","1":"unyaka ozayo","-1":"onyakeni odlule"},"relativeTime":{"future":{"one":"Onyakeni ongu-{0}","other":"Eminyakeni engu-{0}"},"past":{"one":"enyakeni ongu-{0} owedlule","other":"iminyaka engu-{0} eyedlule"}}}}});
+//# sourceMappingURL=intl-relativeformat-with-locales.js.map

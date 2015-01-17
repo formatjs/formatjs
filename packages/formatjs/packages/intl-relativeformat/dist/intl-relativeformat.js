@@ -5,6 +5,7 @@
     // Copyright 2013 Andy Earnshaw, MIT License
 
     var $$es5$$hop = Object.prototype.hasOwnProperty;
+    var $$es5$$toString = Object.prototype.toString;
 
     var $$es5$$realDefineProp = (function () {
         try { return !!Object.defineProperty({}, 'a', {}); }
@@ -53,6 +54,14 @@
         }
 
         return -1;
+    };
+
+    var $$es5$$isArray = Array.isArray || function (obj) {
+        return $$es5$$toString.call(obj) === '[object Array]';
+    };
+
+    var $$es5$$dateNow = Date.now || function () {
+        return new Date().getTime();
     };
     var $$utils$$hop = Object.prototype.hasOwnProperty;
 
@@ -1849,10 +1858,6 @@
     var $$core$$FIELDS = ['second', 'minute', 'hour', 'day', 'month', 'year'];
     var $$core$$STYLES = ['best fit', 'numeric'];
 
-    var $$core$$getTime = Date.now ? Date.now : function () {
-        return new Date().getTime();
-    };
-
     // -- RelativeFormat -----------------------------------------------------------
 
     function $$core$$RelativeFormat(locales, options) {
@@ -1860,7 +1865,7 @@
 
         // Make a copy of `locales` if it's an array, so that it doesn't change
         // since it's used lazily.
-        if (Object.prototype.toString.call(locales) === '[object Array]') {
+        if ($$es5$$isArray(locales)) {
             locales = locales.concat();
         }
 
@@ -1975,7 +1980,7 @@
     };
 
     $$core$$RelativeFormat.prototype._format = function (date) {
-        var now = $$core$$getTime();
+        var now = $$es5$$dateNow();
 
         if (date === undefined) {
             date = now;
@@ -2042,10 +2047,10 @@
         var i, len, locale;
 
         for (i = 0, len = locales.length; i < len; i += 1) {
-            // We just need the root part of the langage tag.
+            // We just need the root part of the language tag.
             locale = locales[i].split('-')[0].toLowerCase();
 
-            // Validate that the langage tag is structurally valid.
+            // Validate that the language tag is structurally valid.
             if (!/[a-z]{2,3}/.test(locale)) {
                 throw new Error(
                     'Language tag provided to IntlRelativeFormat is not ' +
