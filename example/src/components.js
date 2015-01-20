@@ -18,13 +18,13 @@ var Another = React.createClass({
       {this.formatDate(new Date(), "time-style")}
 
       <h3>IntlDate component with custom format</h3>
-      <IntlDate format="time-style">{new Date()}</IntlDate>
+      <IntlDate value={new Date()} format="time-style" />
 
       <h3>formatNumber() method with custom format</h3>
       {this.formatNumber(600, "eur")}
 
       <h3>IntlNumber component with custom format</h3>
-      <IntlNumber format="eur">{600}</IntlNumber>
+      <IntlNumber value={600} format="eur" />
 
       <h3>formatMessage() method</h3>
       {this.formatMessage(this.getIntlMessage('SHORT'), {
@@ -35,13 +35,11 @@ var Another = React.createClass({
       })}
 
       <h3>IntlMessage component</h3>
-      <IntlMessage
+      <IntlMessage message={this.getIntlMessage('SHORT')}
           product="apples"
           price={2000.15}
           deadline={new Date()}
-          timeZone="UTC">
-        {this.getIntlMessage('SHORT')}
-      </IntlMessage>
+          timeZone="UTC" />
     </div>;
   }
 });
@@ -86,7 +84,7 @@ var Container = global.ContainerComponent = React.createClass({
         {this.formatRelative(this.props.someTimestamp)}
 
         <h2>IntlRelative component</h2>
-        <IntlRelative>{this.props.someTimestamp}</IntlRelative>
+        <IntlRelative value={this.props.someTimestamp} />
 
         <hr/>
 
@@ -102,11 +100,11 @@ var Container = global.ContainerComponent = React.createClass({
 
         <h2>IntlDate component</h2>
         <h3>default</h3>
-        <IntlDate>{this.props.someTimestamp}</IntlDate>
+        <IntlDate value={this.props.someTimestamp} />
         <h3>with options</h3>
-        <IntlDate hour="numeric" minute="numeric">{this.props.someTimestamp}</IntlDate>
+        <IntlDate value={this.props.someTimestamp} hour="numeric" minute="numeric" />
         <h3>with custom format</h3>
-        <IntlDate format="time-style">{this.props.someTimestamp}</IntlDate>
+        <IntlDate value={this.props.someTimestamp} format="time-style" />
 
         <hr/>
 
@@ -122,11 +120,11 @@ var Container = global.ContainerComponent = React.createClass({
 
         <h2>IntlNumber component</h2>
         <h3>default</h3>
-        <IntlNumber>{400}</IntlNumber>
+        <IntlNumber value={400} />
         <h3>with options</h3>
-        <IntlNumber style="percent">{0.40}</IntlNumber>
+        <IntlNumber value={0.40} style="percent" />
         <h3>with custom format</h3>
-        <IntlNumber format="eur">{400}</IntlNumber>
+        <IntlNumber value={400} format="eur" />
 
         <hr/>
 
@@ -141,45 +139,57 @@ var Container = global.ContainerComponent = React.createClass({
         })}
 
         <h3>IntlMessage component</h3>
-        <IntlMessage
+        <IntlMessage message={this.getIntlMessage('LONG')}
             product="oranges"
             price={40000.004}
             deadline={this.props.someTimestamp}
-            timeZone="UTC">
-          {this.getIntlMessage('LONG')}
-        </IntlMessage>
+            timeZone="UTC" />
 
         <hr/>
 
-        <h1>HTMLMessage</h1>
+        <h1>Message with HTML</h1>
 
-        <h3>IntlHTMLMessage component</h3>
-        <IntlHTMLMessage
-            product="oranges"
-            price={40000.004}
-            deadline={this.props.someTimestamp}
-            timeZone="UTC">
-          {this.getIntlMessage('LONG_WITH_HTML')}
-        </IntlHTMLMessage>
+        <h3>IntlMessage component with HTML</h3>
+        <IntlMessage message={this.getIntlMessage('LONG')}
+          product={<strong>oranges</strong>}
+          price={40000.004}
+          deadline={this.props.someTimestamp}
+          timeZone="UTC" />
 
-        <h3>IntlHTMLMessage component with XSS attempt</h3>
-        <IntlHTMLMessage
+        <h3>IntlMessage component with XSS attempt</h3>
+        <IntlMessage message={this.getIntlMessage('LONG')}
             product="oranges</span><script>alert('pwnd!');</script>"
             price={40000.004}
             deadline={this.props.someTimestamp}
-            timeZone="UTC">
-          {this.getIntlMessage('LONG_WITH_HTML')}
-        </IntlHTMLMessage>
+            timeZone="UTC" />
 
-        <h3>IntlHTMLMessage component with custom tagName</h3>
-        <IntlHTMLMessage
-            __tagName="p"
+        <h3>IntlMessage component with custom tagName</h3>
+        <IntlMessage tagName="p" message={this.getIntlMessage('LONG')}
+            product={<strong>oranges</strong>}
+            price={40000.004}
+            deadline={this.props.someTimestamp}
+            timeZone="UTC" />
+
+        <h3>IntlHTMLMessage component</h3>
+        <IntlHTMLMessage message={this.getIntlMessage('LONG_WITH_HTML')}
             product="oranges"
             price={40000.004}
             deadline={this.props.someTimestamp}
-            timeZone="UTC">
-          {this.getIntlMessage('LONG_WITH_HTML')}
-        </IntlHTMLMessage>
+            timeZone="UTC" />
+
+        <h3>IntlHTMLMessage component with XSS attempt</h3>
+        <IntlHTMLMessage message={this.getIntlMessage('LONG_WITH_HTML')}
+            product="oranges</span><script>alert('pwnd!');</script>"
+            price={40000.004}
+            deadline={this.props.someTimestamp}
+            timeZone="UTC" />
+
+        <h3>IntlHTMLMessage component with custom tagName</h3>
+        <IntlHTMLMessage tagName="p" message={this.getIntlMessage('LONG_WITH_HTML')}
+            product="oranges"
+            price={40000.004}
+            deadline={this.props.someTimestamp}
+            timeZone="UTC" />
 
         <hr/>
 

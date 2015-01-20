@@ -18,10 +18,16 @@ var IntlNumber = React.createClass({
         ]
     },
 
+    propTypes: {
+        format: React.PropTypes.string,
+        value : React.PropTypes.any.isRequired
+    },
+
     render: function () {
         var props    = this.props;
-        var value    = props.children;
-        var defaults = props.format && this.getNamedFormat('number', props.format);
+        var value    = props.value;
+        var format   = props.format;
+        var defaults = format && this.getNamedFormat('number', format);
         var options  = IntlNumber.filterFormatOptions(props, defaults);
 
         return React.DOM.span(null, this.formatNumber(value, options));
