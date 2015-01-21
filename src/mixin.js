@@ -30,7 +30,7 @@ function assertIsDate(date, errMsg) {
 export default {
     statics: {
         filterFormatOptions: function (obj, defaults) {
-            defaults || (defaults = {});
+            if (!defaults) { defaults = {}; }
 
             return (this.formatOptions || []).reduce(function (opts, name) {
                 if (obj.hasOwnProperty(name)) {
