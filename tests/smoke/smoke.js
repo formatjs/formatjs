@@ -12,7 +12,7 @@ describe('React Intl', function () {
         var FormattedNumberComponent = React.createClass({
             displayName: 'FormattedNumber',
 
-            mixins: [ReactIntl.Mixin],
+            mixins: [IntlMixin],
 
             render: function () {
                 return React.DOM.div(null, this.formatNumber(1000));
@@ -71,7 +71,7 @@ describe('React Intl', function () {
         var FormattedDateComponent = React.createClass({
             displayName: 'FormattedDate',
 
-            mixins: [ReactIntl.Mixin],
+            mixins: [IntlMixin],
 
             render: function () {
                 return React.DOM.div(null, this.formatDate(this.props.date, {
@@ -125,7 +125,7 @@ describe('React Intl', function () {
         var FormattedMessageComponent = React.createClass({
             displayName: 'FormattedMessage',
 
-            mixins: [ReactIntl.Mixin],
+            mixins: [IntlMixin],
 
             getMyMessage: function () {
                 return 'You have {numPhotos, plural, =0 {no photos} =1 {one photo} other {# photos}}.';
