@@ -5,8 +5,8 @@ import React from '../react';
 
 import IntlMixin from '../mixin';
 
-var IntlRelative = React.createClass({
-    displayName: 'IntlRelative',
+var FormattedRelative = React.createClass({
+    displayName: 'FormattedRelative',
     mixins     : [IntlMixin],
 
     statics: {
@@ -25,10 +25,10 @@ var IntlRelative = React.createClass({
         var value    = props.value;
         var format   = props.format;
         var defaults = format && this.getNamedFormat('relative', format);
-        var options  = IntlRelative.filterFormatOptions(props, defaults);
+        var options  = FormattedRelative.filterFormatOptions(props, defaults);
 
         return React.DOM.span(null, this.formatRelative(value, options));
     }
 });
 
-export default IntlRelative;
+export default FormattedRelative;

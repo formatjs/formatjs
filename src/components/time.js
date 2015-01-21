@@ -5,8 +5,8 @@ import React from '../react';
 
 import IntlMixin from '../mixin';
 
-var IntlTime = React.createClass({
-    displayName: 'IntlTime',
+var FormattedTime = React.createClass({
+    displayName: 'FormattedTime',
     mixins     : [IntlMixin],
 
     statics: {
@@ -27,10 +27,10 @@ var IntlTime = React.createClass({
         var value    = props.value;
         var format   = props.format;
         var defaults = format && this.getNamedFormat('time', format);
-        var options  = IntlTime.filterFormatOptions(props, defaults);
+        var options  = FormattedTime.filterFormatOptions(props, defaults);
 
         return React.DOM.span(null, this.formatTime(value, options));
     }
 });
 
-export default IntlTime;
+export default FormattedTime;

@@ -5,8 +5,8 @@ import React from '../react';
 
 import IntlMixin from '../mixin';
 
-var IntlNumber = React.createClass({
-    displayName: 'IntlNumber',
+var FormattedNumber = React.createClass({
+    displayName: 'FormattedNumber',
     mixins     : [IntlMixin],
 
     statics: {
@@ -28,10 +28,10 @@ var IntlNumber = React.createClass({
         var value    = props.value;
         var format   = props.format;
         var defaults = format && this.getNamedFormat('number', format);
-        var options  = IntlNumber.filterFormatOptions(props, defaults);
+        var options  = FormattedNumber.filterFormatOptions(props, defaults);
 
         return React.DOM.span(null, this.formatNumber(value, options));
     }
 });
 
-export default IntlNumber;
+export default FormattedNumber;

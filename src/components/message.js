@@ -5,8 +5,8 @@ import React from '../react';
 
 import IntlMixin from '../mixin';
 
-var IntlMessage = React.createClass({
-    displayName: 'IntlMessage',
+var FormattedMessage = React.createClass({
+    displayName: 'FormattedMessage',
     mixins     : [IntlMixin],
 
     propTypes: {
@@ -73,4 +73,4 @@ var IntlMessage = React.createClass({
     }
 });
 
-export default IntlMessage;
+export default FormattedMessage;
