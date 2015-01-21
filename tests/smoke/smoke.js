@@ -27,8 +27,9 @@ describe('React Intl mixin', function () {
         var testNode = document.getElementById('test1');
 
         React.render(IntlNumber({
-            locales: ['es-AR']
-        }, 1000), testNode);
+            locales: ['es-AR'],
+            value: 1000
+        }), testNode);
 
         expect(testNode.firstChild.innerHTML).to.equal('1.000');
     });
@@ -53,9 +54,10 @@ describe('React Intl mixin', function () {
                 }
             },
 
+            value: price.value,
             format: 'currency',
             currency: price.currency
-        }, price.value), testNode);
+        }), testNode);
 
         expect(testNode.firstChild.innerHTML).to.equal('$99.95');
     });
@@ -98,17 +100,19 @@ describe('React Intl mixin', function () {
 
         React.render(IntlDate({
             locales: ['es-AR'],
+            value: Date.UTC(2014, 8, 22, 0, 0, 0, 0),
             weekday: 'long',
             timeZone: 'UTC'
-        }, Date.UTC(2014, 8, 22, 0, 0, 0, 0)), testNode);
+        }), testNode);
 
         expect(testNode.firstChild.innerHTML).to.contain('lunes');
 
         React.render(IntlDate({
             locales: ['en-US'],
+            value: 0,
             weekday: 'long',
             timeZone: 'UTC'
-        }, 0), testNode);
+        }), testNode);
 
         expect(testNode.firstChild.innerHTML).to.contain('Thursday');
     });
@@ -147,8 +151,9 @@ describe('React Intl mixin', function () {
 
         React.render(IntlMessage({
             locales: ['en-US'],
+            message: 'You have {numPhotos, plural, =0 {no photos} =1 {one photo} other {# photos}}.',
             numPhotos: 1
-        }, 'You have {numPhotos, plural, =0 {no photos} =1 {one photo} other {# photos}}.'), testNode);
+        }), testNode);
 
         expect(testNode.firstChild.innerHTML).to.equal('You have one photo.');
     });

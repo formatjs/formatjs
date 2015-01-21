@@ -17,10 +17,16 @@ var IntlTime = React.createClass({
         ]
     },
 
+    propTypes: {
+        format: React.PropTypes.string,
+        value : React.PropTypes.any.isRequired
+    },
+
     render: function () {
         var props    = this.props;
-        var value    = props.children;
-        var defaults = props.format && this.getNamedFormat('time', props.format);
+        var value    = props.value;
+        var format   = props.format;
+        var defaults = format && this.getNamedFormat('time', format);
         var options  = IntlTime.filterFormatOptions(props, defaults);
 
         return React.DOM.span(null, this.formatTime(value, options));
