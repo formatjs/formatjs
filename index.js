@@ -18,7 +18,8 @@ exports = module.exports = ReactIntl.Mixin;
 // which is the Mixin for back-compat with v1.0.0.
 Object.keys(ReactIntl).forEach(function (namedExport) {
     Object.defineProperty(exports, namedExport, {
-        value: ReactIntl[namedExport]
+        enumerable: true,
+        value     : ReactIntl[namedExport]
     });
 });
 
