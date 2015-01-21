@@ -2260,13 +2260,17 @@
     var $$mixin$$default = {
         statics: {
             filterFormatOptions: function (obj, defaults) {
+                if (!defaults) { defaults = {}; }
+
                 return (this.formatOptions || []).reduce(function (opts, name) {
                     if (obj.hasOwnProperty(name)) {
                         opts[name] = obj[name];
+                    } else if (defaults.hasOwnProperty(name)) {
+                        opts[name] = defaults[name];
                     }
 
                     return opts;
-                }, defaults ? Object.create(defaults) : {});
+                }, {});
             }
         },
 
@@ -2387,8 +2391,8 @@
         }
     };
 
-    var $$components$date$$IntlDate = $$react$$default.createClass({
-        displayName: 'IntlDate',
+    var $$components$date$$FormattedDate = $$react$$default.createClass({
+        displayName: 'FormattedDate',
         mixins     : [$$mixin$$default],
 
         statics: {
@@ -2399,20 +2403,26 @@
             ]
         },
 
+        propTypes: {
+            format: $$react$$default.PropTypes.string,
+            value : $$react$$default.PropTypes.any.isRequired
+        },
+
         render: function () {
             var props    = this.props;
-            var value    = props.children;
-            var defaults = props.format && this.getNamedFormat('date', props.format);
-            var options  = $$components$date$$IntlDate.filterFormatOptions(props, defaults);
+            var value    = props.value;
+            var format   = props.format;
+            var defaults = format && this.getNamedFormat('date', format);
+            var options  = $$components$date$$FormattedDate.filterFormatOptions(props, defaults);
 
             return $$react$$default.DOM.span(null, this.formatDate(value, options));
         }
     });
 
-    var $$components$date$$default = $$components$date$$IntlDate;
+    var $$components$date$$default = $$components$date$$FormattedDate;
 
-    var $$components$time$$IntlTime = $$react$$default.createClass({
-        displayName: 'IntlTime',
+    var $$components$time$$FormattedTime = $$react$$default.createClass({
+        displayName: 'FormattedTime',
         mixins     : [$$mixin$$default],
 
         statics: {
@@ -2423,20 +2433,26 @@
             ]
         },
 
+        propTypes: {
+            format: $$react$$default.PropTypes.string,
+            value : $$react$$default.PropTypes.any.isRequired
+        },
+
         render: function () {
             var props    = this.props;
-            var value    = props.children;
-            var defaults = props.format && this.getNamedFormat('time', props.format);
-            var options  = $$components$time$$IntlTime.filterFormatOptions(props, defaults);
+            var value    = props.value;
+            var format   = props.format;
+            var defaults = format && this.getNamedFormat('time', format);
+            var options  = $$components$time$$FormattedTime.filterFormatOptions(props, defaults);
 
             return $$react$$default.DOM.span(null, this.formatTime(value, options));
         }
     });
 
-    var $$components$time$$default = $$components$time$$IntlTime;
+    var $$components$time$$default = $$components$time$$FormattedTime;
 
-    var $$components$relative$$IntlRelative = $$react$$default.createClass({
-        displayName: 'IntlRelative',
+    var $$components$relative$$FormattedRelative = $$react$$default.createClass({
+        displayName: 'FormattedRelative',
         mixins     : [$$mixin$$default],
 
         statics: {
@@ -2445,20 +2461,26 @@
             ]
         },
 
+        propTypes: {
+            format: $$react$$default.PropTypes.string,
+            value : $$react$$default.PropTypes.any.isRequired
+        },
+
         render: function () {
             var props    = this.props;
-            var value    = props.children;
-            var defaults = props.format && this.getNamedFormat('relative', props.format);
-            var options  = $$components$relative$$IntlRelative.filterFormatOptions(props, defaults);
+            var value    = props.value;
+            var format   = props.format;
+            var defaults = format && this.getNamedFormat('relative', format);
+            var options  = $$components$relative$$FormattedRelative.filterFormatOptions(props, defaults);
 
             return $$react$$default.DOM.span(null, this.formatRelative(value, options));
         }
     });
 
-    var $$components$relative$$default = $$components$relative$$IntlRelative;
+    var $$components$relative$$default = $$components$relative$$FormattedRelative;
 
-    var $$components$number$$IntlNumber = $$react$$default.createClass({
-        displayName: 'IntlNumber',
+    var $$components$number$$FormattedNumber = $$react$$default.createClass({
+        displayName: 'FormattedNumber',
         mixins     : [$$mixin$$default],
 
         statics: {
@@ -2470,31 +2492,93 @@
             ]
         },
 
+        propTypes: {
+            format: $$react$$default.PropTypes.string,
+            value : $$react$$default.PropTypes.any.isRequired
+        },
+
         render: function () {
             var props    = this.props;
-            var value    = props.children;
-            var defaults = props.format && this.getNamedFormat('number', props.format);
-            var options  = $$components$number$$IntlNumber.filterFormatOptions(props, defaults);
+            var value    = props.value;
+            var format   = props.format;
+            var defaults = format && this.getNamedFormat('number', format);
+            var options  = $$components$number$$FormattedNumber.filterFormatOptions(props, defaults);
 
             return $$react$$default.DOM.span(null, this.formatNumber(value, options));
         }
     });
 
-    var $$components$number$$default = $$components$number$$IntlNumber;
+    var $$components$number$$default = $$components$number$$FormattedNumber;
 
-    var $$components$message$$IntlMessage = $$react$$default.createClass({
-        displayName: 'IntlMessage',
+    var $$components$message$$FormattedMessage = $$react$$default.createClass({
+        displayName: 'FormattedMessage',
         mixins     : [$$mixin$$default],
+
+        propTypes: {
+            tagName: $$react$$default.PropTypes.string,
+            message: $$react$$default.PropTypes.string.isRequired
+        },
+
+        getDefaultProps: function () {
+            return {tagName: 'span'};
+        },
 
         render: function () {
             var props   = this.props;
-            var message = props.children;
+            var tagName = props.tagName;
+            var message = props.message;
 
-            return $$react$$default.DOM.span(null, this.formatMessage(message, props));
+            // Creates a token with a random guid that should not be guessible or
+            // conflict with other parts of the `message` string.
+            var guid       = Math.floor(Math.random() * 0x10000000000).toString(16);
+            var tokenRegex = new RegExp('(@__ELEMENT-' + guid + '-\\d__@)', 'g');
+            var elements   = {};
+
+            var generateToken = (function () {
+                var counter = 0;
+                return function () {
+                    return '@__ELEMENT-' + guid + '-' + (counter += 1) + '__@';
+                };
+            }());
+
+            // Iterates over the `props` to keep track of any React Element values
+            // so they can be represented by the `token` as a placeholder when the
+            // `message` is formatted. This allows the formatted message to then be
+            // broken-up into parts with references to the React Elements inserted
+            // back in.
+            var values = Object.keys(props).reduce(function (values, name) {
+                var value = props[name];
+                var token;
+
+                if ($$react$$default.isValidElement(value)) {
+                    token           = generateToken();
+                    values[name]    = token;
+                    elements[token] = value;
+                } else {
+                    values[name] = value;
+                }
+
+                return values;
+            }, {});
+
+            // Formats the `message` with the `values`, including the `token`
+            // placeholders for React Element values.
+            var formattedMessage = this.formatMessage(message, values);
+
+            // Split the message into parts, and replace the token placeholder parts
+            // with references to the React Element values captured above. This
+            // approach allows messages to render with React Elements while keeping
+            // React's virtual diffing working properly.
+            var children = formattedMessage.split(tokenRegex).map(function (part) {
+                return elements[part] || part;
+            });
+
+            var elementArgs = [tagName, null].concat(children);
+            return $$react$$default.createElement.apply(null, elementArgs);
         }
     });
 
-    var $$components$message$$default = $$components$message$$IntlMessage;
+    var $$components$message$$default = $$components$message$$FormattedMessage;
     /* jshint esnext:true */
 
     /*
@@ -2523,49 +2607,59 @@
         });
     };
 
-    function $$components$html$message$$escapeProps(props) {
-        return Object.keys(props).reduce(function (escapedProps, name) {
-            var value = props[name];
-
-            // TODO: Can we force string coersion here? Or would that not be needed
-            // and possible mess with IntlMessageFormat?
-            if (typeof value === 'string') {
-                value = $$$escape$$default(value);
-            }
-
-            escapedProps[name] = value;
-            return escapedProps;
-        }, {});
-    }
-
-    var $$components$html$message$$IntlHTMLMessage = $$react$$default.createClass({
-        displayName: 'IntlHTMLMessage',
+    var $$components$html$message$$FormattedHTMLMessage = $$react$$default.createClass({
+        displayName: 'FormattedHTMLMessage',
         mixins     : [$$mixin$$default],
 
+        propTypes: {
+            tagName: $$react$$default.PropTypes.string,
+            message: $$react$$default.PropTypes.string.isRequired
+        },
+
         getDefaultProps: function () {
-            return {__tagName: 'span'};
+            return {tagName: 'span'};
         },
 
         render: function () {
-            var props        = this.props;
-            var tagName      = props.__tagName;
-            var message      = props.children;
-            var escapedProps = $$components$html$message$$escapeProps(props);
+            var props   = this.props;
+            var tagName = props.tagName;
+            var message = props.message;
+
+            // Process all the props before they are used as values when formatting
+            // the ICU Message string. Since the formatted message will be injected
+            // via `innerHTML`, all String-based values need to be HTML-escaped. Any
+            // React Elements that are passed as props will be rendered to a static
+            // markup string that is presumed to be safe.
+            var values = Object.keys(props).reduce(function (values, name) {
+                var value = props[name];
+
+                if (typeof value === 'string') {
+                    value = $$$escape$$default(value);
+                } else if ($$react$$default.isValidElement(value)) {
+                    value = $$react$$default.renderToStaticMarkup(value);
+                }
+
+                values[name] = value;
+                return values;
+            }, {});
 
             // Since the message presumably has HTML in it, we need to set
             // `innerHTML` in order for it to be rendered and not escaped by React.
-            // To be safe, we are escaping all string prop values before formatting
-            // the message. It is assumed that the message is not UGC, and came from
+            // To be safe, all string prop values were escaped before formatting the
+            // message. It is assumed that the message is not UGC, and came from
             // the developer making it more like a template.
+            //
+            // Note: There's a perf impact of using this component since there's no
+            // way for React to do its virtual DOM diffing.
             return $$react$$default.DOM[tagName]({
                 dangerouslySetInnerHTML: {
-                    __html: this.formatMessage(message, escapedProps)
+                    __html: this.formatMessage(message, values)
                 }
             });
         }
     });
 
-    var $$components$html$message$$default = $$components$html$message$$IntlHTMLMessage;
+    var $$components$html$message$$default = $$components$html$message$$FormattedHTMLMessage;
     function $$react$intl$$__addLocaleData(data) {
         intl$messageformat$$default.__addLocaleData(data);
         intl$relativeformat$$default.__addLocaleData(data);
@@ -2574,13 +2668,13 @@
     $$react$intl$$__addLocaleData($$en$$default);
 
     var src$main$$default = {
-        Mixin      : $$mixin$$default,
-        Date       : $$components$date$$default,
-        Time       : $$components$time$$default,
-        Relative   : $$components$relative$$default,
-        Number     : $$components$number$$default,
-        Message    : $$components$message$$default,
-        HTMLMessage: $$components$html$message$$default,
+        IntlMixin           : $$mixin$$default,
+        FormattedDate       : $$components$date$$default,
+        FormattedTime       : $$components$time$$default,
+        FormattedRelative   : $$components$relative$$default,
+        FormattedNumber     : $$components$number$$default,
+        FormattedMessage    : $$components$message$$default,
+        FormattedHTMLMessage: $$components$html$message$$default,
 
         __addLocaleData: $$react$intl$$__addLocaleData
     };
@@ -2588,7 +2682,7 @@
     // Back-compat for v1.0.0. This adds a `ReactIntlMixin` global that references
     // the mixin directly. This will be deprecated in v2.0.0.
     if (typeof window !== 'undefined') {
-        window.ReactIntlMixin = $$mixin$$default;
+        window.ReactIntlMixin     = $$mixin$$default;
         $$mixin$$default.__addLocaleData = $$react$intl$$__addLocaleData;
     }
     this['ReactIntl'] = src$main$$default;
