@@ -1,5 +1,12 @@
 /*global describe, it, expect, React, ReactIntl*/
-describe('React Intl mixin', function () {
+describe('React Intl', function () {
+    var IntlMixin            = ReactIntl.IntlMixin;
+    var FormattedNumber      = React.createFactory(ReactIntl.FormattedNumber);
+    var FormattedDate        = React.createFactory(ReactIntl.FormattedDate);
+    var FormattedTime        = React.createFactory(ReactIntl.FormattedTime);
+    var FormattedRelative    = React.createFactory(ReactIntl.FormattedRelative);
+    var FormattedMessage     = React.createFactory(ReactIntl.FormattedMessage);
+    var FormattedHTMLMessage = React.createFactory(ReactIntl.FormattedHTMLMessage);
 
     it('Formats numbers correctly', function () {
         var FormattedNumberComponent = React.createClass({
@@ -22,11 +29,10 @@ describe('React Intl mixin', function () {
         expect(testNode.firstChild.innerHTML).to.equal('1.000');
     });
 
-    it('Formats numbers correctly using IntlNumber component', function () {
-        var IntlNumber = React.createFactory(ReactIntl.Number);
+    it('Formats numbers correctly using FormattedNumber component', function () {
         var testNode = document.getElementById('test1');
 
-        React.render(IntlNumber({
+        React.render(FormattedNumber({
             locales: ['es-AR'],
             value: 1000
         }), testNode);
@@ -35,7 +41,6 @@ describe('React Intl mixin', function () {
     });
 
     it('Formats numbers correctly using named formats', function () {
-        var IntlNumber = React.createFactory(ReactIntl.Number);
         var testNode = document.getElementById('test1');
 
         var price = {
@@ -43,7 +48,7 @@ describe('React Intl mixin', function () {
             currency: 'USD'
         };
 
-        React.render(IntlNumber({
+        React.render(FormattedNumber({
             locales: ['en-US'],
             formats: {
                 number: {
@@ -94,11 +99,10 @@ describe('React Intl mixin', function () {
         expect(testNode.firstChild.innerHTML).to.contain('Thursday');
     });
 
-    it('Formats dates correctly using IntlDate component', function () {
-        var IntlDate = React.createFactory(ReactIntl.Date);
+    it('Formats dates correctly using FormattedDate component', function () {
         var testNode = document.getElementById('test2');
 
-        React.render(IntlDate({
+        React.render(FormattedDate({
             locales: ['es-AR'],
             value: Date.UTC(2014, 8, 22, 0, 0, 0, 0),
             weekday: 'long',
@@ -107,7 +111,7 @@ describe('React Intl mixin', function () {
 
         expect(testNode.firstChild.innerHTML).to.contain('lunes');
 
-        React.render(IntlDate({
+        React.render(FormattedDate({
             locales: ['en-US'],
             value: 0,
             weekday: 'long',
@@ -145,11 +149,10 @@ describe('React Intl mixin', function () {
         expect(testNode.firstChild.innerHTML).to.equal('You have one photo.');
     });
 
-    it('Formats messages correctly using IntlMessage component', function () {
-        var IntlMessage = React.createFactory(ReactIntl.Message);
+    it('Formats messages correctly using FormattedMessage component', function () {
         var testNode = document.getElementById('test3');
 
-        React.render(IntlMessage({
+        React.render(FormattedMessage({
             locales: ['en-US'],
             message: 'You have {numPhotos, plural, =0 {no photos} =1 {one photo} other {# photos}}.',
             numPhotos: 1
