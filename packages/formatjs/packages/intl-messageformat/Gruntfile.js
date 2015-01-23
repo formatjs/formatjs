@@ -56,7 +56,7 @@ module.exports = function (grunt) {
                 options: {
                     prelude: [
                         '// GENERATED FILE',
-                        'var IntlMessageFormat = require("./core").default;\n\n'
+                        'var IntlMessageFormat = require("./core")["default"];\n\n'
                     ].join('\n'),
 
                     wrapEntry: function (entry) {
