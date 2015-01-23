@@ -23,10 +23,10 @@ var FormattedMessage = React.createClass({
         var tagName = props.tagName;
         var message = props.message;
 
-        // Creates a token with a random guid that should not be guessible or
+        // Creates a token with a random guid that should not be guessable or
         // conflict with other parts of the `message` string.
         var guid       = Math.floor(Math.random() * 0x10000000000).toString(16);
-        var tokenRegex = new RegExp('(@__ELEMENT-' + guid + '-\\d__@)', 'g');
+        var tokenRegex = new RegExp('(@__ELEMENT-' + guid + '-\\d+__@)', 'g');
         var elements   = {};
 
         var generateToken = (function () {
@@ -60,13 +60,19 @@ var FormattedMessage = React.createClass({
         // placeholders for React Element values.
         var formattedMessage = this.formatMessage(message, values);
 
-        // Split the message into parts, and replace the token placeholder parts
-        // with references to the React Element values captured above. This
+        // Split the message into parts so the React Element values captured
+        // above can be inserted back into the rendered message. This
         // approach allows messages to render with React Elements while keeping
         // React's virtual diffing working properly.
-        var children = formattedMessage.split(tokenRegex).map(function (part) {
-            return elements[part] || part;
-        });
+        var children = formattedMessage.split(tokenRegex)
+            .filter(function (part) {
+                // Ignore empty string parts.
+                return !!part;
+            })
+            .map(function (part) {
+                // When the `part` is a token, get a ref to the React Element.
+                return elements[part] || part;
+            });
 
         var elementArgs = [tagName, null].concat(children);
         return React.createElement.apply(null, elementArgs);
