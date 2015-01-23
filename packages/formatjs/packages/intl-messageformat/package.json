@@ -33,7 +33,7 @@
     "./lib/locales.js": false
   },
   "dependencies": {
-    "intl-messageformat-parser": "1.0.1"
+    "intl-messageformat-parser": "1.0.2"
   },
   "devDependencies": {
     "benchmark": "^1.0.0",
