@@ -149,10 +149,21 @@ module.exports = function (grunt) {
             }
         },
 
+        browserify: {
+            test: {
+                src : 'tests/browserify/app.js',
+                dest: 'tmp/browserify/app.js'
+            }
+        },
+
         'saucelabs-mocha': {
             all: {
                 options: {
-                    urls: ['http://127.0.0.1:9999/tests/index.html'],
+                    urls: [
+                        'http://127.0.0.1:9999/tests/index.html',
+                        'http://127.0.0.1:9999/tests/browserify/index.html'
+                    ],
+
                     build: process.env.TRAVIS_BUILD_NUMBER,
                     sauceConfig: {
                         'record-video': false,
@@ -223,14 +234,16 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-bundle-jsnext-lib');
     grunt.loadNpmTasks('grunt-benchmark');
+    grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('grunt-bundle-jsnext-lib');
     grunt.loadNpmTasks('grunt-extract-cldr-data');
     grunt.loadNpmTasks('grunt-json-remove-fields');
     grunt.loadNpmTasks('grunt-saucelabs');
     grunt.loadNpmTasks('grunt-contrib-connect');
 
     grunt.registerTask('sauce', [
+        'browserify',
         'connect',
         'saucelabs-mocha'
     ]);
