@@ -27,9 +27,9 @@
     "./lib/locales.js": false
   },
   "dependencies": {
-    "intl-format-cache": "2.0.3",
-    "intl-messageformat": "1.0.3",
-    "intl-relativeformat": "1.0.2",
+    "intl-format-cache": "2.0.4",
+    "intl-messageformat": "1.0.4",
+    "intl-relativeformat": "1.0.3",
     "react": ">=0.11.2 <0.13.0"
   },
   "devDependencies": {
