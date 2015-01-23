@@ -27,5 +27,11 @@ Object.keys(ReactIntl).forEach(function (namedExport) {
 if (oldReact) {
     global.React = oldReact;
 } else {
-    delete global.React;
+    // IE < 9 will throw when trying to delete something off the global object,
+    // `window`, so this does the next best thing as sets it to `undefined`.
+    try {
+        delete global.React;
+    } catch (e) {
+        global.React = undefined;
+    }
 }
