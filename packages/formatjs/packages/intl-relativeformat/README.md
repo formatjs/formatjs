@@ -103,18 +103,16 @@ _Note: in Node.js, the data for all 150+ locales is loaded along with the librar
 
 ### Loading IntlRelativeFormat in a browser
 
-Install using bower: `bower install intl-relativeformat` or [download from dist/ folder](https://github.com/yahoo/intl-relativeformat/tree/master/dist)
-
 Include the library in your page:
 
 ```html
-<script src="intl-relativeformat/intl-relativeformat.min.js"></script>
+<script src="intl-relativeformat/dist/intl-relativeformat.min.js"></script>
 ```
 
 By default, Intl RelativeFormat ships with the locale data for English built-in to the runtime library. When you need to format data in another locale, include its data; e.g., for French:
 
 ```html
-<script src="intl-relativeformat/locale-data/fr.js"></script>
+<script src="intl-relativeformat/dist/locale-data/fr.js"></script>
 ```
 
 _Note: All 150+ locales supported by this package use their root BCP 47 langage tag; i.e., the part before the first hyphen (if any)._
