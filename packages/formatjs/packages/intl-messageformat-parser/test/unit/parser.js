@@ -173,6 +173,76 @@ describe('parse()', function () {
         });
     });
 
+    describe('parse("{floor, selectordinal, =0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor")', function () {
+        var msg = '{floor, selectordinal, =0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor';
+        var ast = parse(msg);
+
+        it('should contain 2 `elements`', function () {
+            expect(ast.elements).to.have.length(2);
+        });
+
+        it('should contain an `argumentElement`', function () {
+            var element = ast.elements[0];
+            expect(element).to.be.an('object');
+            expect(element).to.have.property('type');
+            expect(element.type).to.equal('argumentElement');
+            expect(element).to.have.property('id');
+            expect(element.id).to.equal('floor');
+            expect(element).to.have.property('format');
+
+            var format = element.format;
+            expect(format).to.be.an('object');
+            expect(format).to.have.property('type');
+            expect(format.type).to.equal('pluralFormat');
+            expect(format).to.have.property('offset');
+            expect(format.offset).to.equal(0);
+            expect(format.ordinal).to.equal(true);
+        });
+
+        it('should contain 5 `options`', function () {
+            var options = ast.elements[0].format.options;
+            expect(options).to.have.length(5);
+
+            var option = options[0];
+            expect(option).to.be.an('object');
+            expect(option).to.have.property('type');
+            expect(option.type).to.equal('optionalFormatPattern');
+            expect(option).to.have.property('selector');
+            expect(option.selector).to.equal('=0');
+            expect(option).to.have.property('value');
+            expect(option.value).to.be.an('object');
+
+            expect(options[1].selector).to.equal('one');
+            expect(options[2].selector).to.equal('two');
+            expect(options[3].selector).to.equal('few');
+            expect(options[4].selector).to.equal('other');
+        });
+
+        it('should contain nested `messageFormatPattern` values for each option', function () {
+            var options = ast.elements[0].format.options;
+
+            var value = options[0].value;
+            expect(value).to.have.property('type');
+            expect(value.type).to.equal('messageFormatPattern');
+            expect(value).to.have.property('elements');
+            expect(value.elements).to.be.an('array');
+            expect(value.elements).to.have.length(1);
+
+            var element = value.elements[0];
+            expect(element).to.be.an('object');
+            expect(element).to.have.property('type');
+            expect(element.type).to.equal('messageTextElement');
+            expect(element).to.have.property('value');
+            expect(element.value).to.equal('ground');
+
+            expect(options[0].value.elements[0].value).to.equal('ground');
+            expect(options[1].value.elements[0].value).to.equal('#st');
+            expect(options[2].value.elements[0].value).to.equal('#nd');
+            expect(options[3].value.elements[0].value).to.equal('#rd');
+            expect(options[4].value.elements[0].value).to.equal('#th');
+        });
+    });
+
     describe('parse("{gender, select, female {woman} male {man} other {person}}")', function () {
         var msg = '{gender, select, female {woman} male {man} other {person}}';
         var ast = parse(msg);

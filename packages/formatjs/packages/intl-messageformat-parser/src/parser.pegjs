@@ -67,6 +67,7 @@ argumentElement
 elementFormat
     = simpleFormat
     / pluralFormat
+    / selectOrdinalFormat
     / selectFormat
 
 simpleFormat
@@ -78,11 +79,22 @@ simpleFormat
     }
 
 pluralFormat
-    = 'plural' _ ',' _ offset:offset? _ options:optionalFormatPattern+ {
+    = 'plural' _ ',' _ pluralStyle:pluralStyle {
         return {
-            type   : 'pluralFormat',
-            offset : offset || 0,
-            options: options
+            type   : pluralStyle.type,
+            ordinal: false,
+            offset : pluralStyle.offset || 0,
+            options: pluralStyle.options
+        };
+    }
+
+selectOrdinalFormat
+    = 'selectordinal' _ ',' _ pluralStyle:pluralStyle {
+        return {
+            type   : pluralStyle.type,
+            ordinal: true,
+            offset : pluralStyle.offset || 0,
+            options: pluralStyle.options
         }
     }
 
@@ -91,7 +103,7 @@ selectFormat
         return {
             type   : 'selectFormat',
             options: options
-        }
+        };
     }
 
 selector
@@ -110,6 +122,15 @@ optionalFormatPattern
 offset
     = 'offset:' _ number:number {
         return number;
+    }
+
+pluralStyle
+    = offset:offset? _ options:optionalFormatPattern+ {
+        return {
+            type   : 'pluralFormat',
+            offset : offset,
+            options: options
+        };
     }
 
 // -- Helpers ------------------------------------------------------------------
