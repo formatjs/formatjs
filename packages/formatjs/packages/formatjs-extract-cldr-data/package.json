@@ -1,0 +1,15 @@
+{
+  "name": "formatjs-extract-cldr-data",
+  "version": "0.0.0",
+  "description": "Utility library that extracts the CLDR data that's needed by the FormatJS libraries.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eric Ferraiuolo <edf@ericf.me>",
+  "license": "BSD",
+  "dependencies": {
+    "make-plural": "^2.1.1",
+    "object.assign": "^1.1.1"
+  }
+}
