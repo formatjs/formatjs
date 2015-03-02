@@ -11,7 +11,7 @@ var path = require('path');
 var availableLocales = require('./locales').locales;
 
 // Language tags have a hierarchical meaning which this function uses to expand
-// the specificed `locales` up to their root locales and returns a collection of
+// the specified `locales` up to their root locales and returns a collection of
 // unique language tags.
 module.exports = function expandLocales(locales) {
     if (!locales) {

@@ -24,7 +24,7 @@ var FIELD_NAMES = [
 ];
 
 module.exports = function extractRelativeFields(locales) {
-    // Filter the specificed `locales` to just those for which we have Date
+    // Filter the specified `locales` to just those for which we have Date
     // Fields CLDR data.
     locales = locales.filter(function (locale) {
         return availableLocales.has(locale);
@@ -42,7 +42,7 @@ module.exports = function extractRelativeFields(locales) {
     }
 
     // To produce a collection of locales and their data that's unique, the fact
-    // that langauge tags are hierarchical is used to determine if the current
+    // that language tags are hierarchical is used to determine if the current
     // locale's field data is represented by another, more generic, locale
     // within its hierarchy.
     return Object.keys(data).reduce(function (relativeFields, locale) {

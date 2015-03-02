@@ -155,7 +155,7 @@ describe('extractData()', function () {
                 expect(extractData).withArgs({locales: ['foo-bar']}).to.throwException();
             });
 
-            it('should recusively expand `locales` to their roots', function () {
+            it('should recursively expand `locales` to their roots', function () {
                 var data = extractData({
                     locales       : ['en-US', 'zh-Hant-TW'],
                     pluralRules   : true,
