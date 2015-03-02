@@ -23,5 +23,21 @@
     "grunt-zip": "^0.16.2",
     "istanbul": "^0.3.6",
     "mocha": "^2.1.0"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yahoo/formatjs-extract-cldr-data.git"
+  },
+  "keywords": [
+    "i18n",
+    "cldr",
+    "formatjs"
+  ],
+  "bugs": {
+    "url": "https://github.com/yahoo/formatjs-extract-cldr-data/issues"
+  },
+  "homepage": "https://github.com/yahoo/formatjs-extract-cldr-data"
 }
