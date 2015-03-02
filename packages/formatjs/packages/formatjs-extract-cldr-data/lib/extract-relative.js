@@ -24,6 +24,12 @@ var FIELD_NAMES = [
 ];
 
 module.exports = function extractRelativeFields(locales) {
+    // Filter the specificed `locales` to just those for which we have Date
+    // Fields CLDR data.
+    locales = locales.filter(function (locale) {
+        return availableLocales.has(locale);
+    });
+
     var data   = loadRelativeFieldsData(locales);
     var hashes = {};
 
@@ -70,9 +76,7 @@ module.exports = function extractRelativeFields(locales) {
 };
 
 function loadRelativeFieldsData(locales) {
-    return locales.filter(function (locale) {
-        return availableLocales.has(locale);
-    }).reduce(function (data, locale) {
+    return locales.reduce(function (data, locale) {
         var filename = path.join(CLDR_PATH, 'main', locale, 'dateFields.json');
         var fields   = require(filename).main[locale].dates.fields;
 
