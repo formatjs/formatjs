@@ -1,0 +1,456 @@
+{
+  "main": {
+    "ka-GE": {
+      "identity": {
+        "version": {
+          "_cldrVersion": "26",
+          "_number": "$Revision: 10669 $"
+        },
+        "generation": {
+          "_date": "$Date: 2014-07-23 16:10:33 -0500 (Wed, 23 Jul 2014) $"
+        },
+        "language": "ka",
+        "territory": "GE"
+      },
+      "dates": {
+        "fields": {
+          "era": {
+            "displayName": "ეპოქა"
+          },
+          "year": {
+            "displayName": "წელი",
+            "relative-type--1": "გასულ წელს",
+            "relative-type-0": "ამ წელს",
+            "relative-type-1": "მომავალ წელს",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} წელიწადში",
+              "relativeTimePattern-count-other": "{0} წელიწადში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} წლის წინ",
+              "relativeTimePattern-count-other": "{0} წლის წინ"
+            }
+          },
+          "year-short": {
+            "displayName": "წ.",
+            "relative-type--1": "გასულ წელს",
+            "relative-type-0": "ამ წელს",
+            "relative-type-1": "მომავალ წელს",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} წელში",
+              "relativeTimePattern-count-other": "{0} წელში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} წლის წინ",
+              "relativeTimePattern-count-other": "{0} წლის წინ"
+            }
+          },
+          "year-narrow": {
+            "displayName": "წ.",
+            "relative-type--1": "გასულ წელს",
+            "relative-type-0": "ამ წელს",
+            "relative-type-1": "მომავალ წელს",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} წელში",
+              "relativeTimePattern-count-other": "{0} წელში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} წლის წინ",
+              "relativeTimePattern-count-other": "{0} წლის წინ"
+            }
+          },
+          "quarter": {
+            "displayName": "კვარტალი",
+            "relative-type--1": "last quarter",
+            "relative-type-0": "this quarter",
+            "relative-type-1": "next quarter",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} კვარტალში",
+              "relativeTimePattern-count-other": "{0} კვარტალში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} კვარტალის წინ",
+              "relativeTimePattern-count-other": "{0} კვარტალის წინ"
+            }
+          },
+          "quarter-short": {
+            "displayName": "კვარტ.",
+            "relative-type--1": "last quarter",
+            "relative-type-0": "this quarter",
+            "relative-type-1": "next quarter",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} კვარტალში",
+              "relativeTimePattern-count-other": "{0} კვარტალში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} კვარტ. წინ",
+              "relativeTimePattern-count-other": "{0} კვარტ. წინ"
+            }
+          },
+          "quarter-narrow": {
+            "displayName": "კვარტ.",
+            "relative-type--1": "last quarter",
+            "relative-type-0": "this quarter",
+            "relative-type-1": "next quarter",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} კვარტალში",
+              "relativeTimePattern-count-other": "{0} კვარტალში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} კვარტ. წინ",
+              "relativeTimePattern-count-other": "{0} კვარტ. წინ"
+            }
+          },
+          "month": {
+            "displayName": "თვე",
+            "relative-type--1": "გასულ თვეს",
+            "relative-type-0": "ამ თვეში",
+            "relative-type-1": "მომავალ თვეს",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} თვეში",
+              "relativeTimePattern-count-other": "{0} თვეში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} თვის წინ",
+              "relativeTimePattern-count-other": "{0} თვის წინ"
+            }
+          },
+          "month-short": {
+            "displayName": "თვე",
+            "relative-type--1": "გასულ თვეს",
+            "relative-type-0": "ამ თვეში",
+            "relative-type-1": "მომავალ თვეს",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} თვეში",
+              "relativeTimePattern-count-other": "{0} თვეში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} თვის წინ",
+              "relativeTimePattern-count-other": "{0} თვის წინ"
+            }
+          },
+          "month-narrow": {
+            "displayName": "თვე",
+            "relative-type--1": "გასულ თვეს",
+            "relative-type-0": "ამ თვეში",
+            "relative-type-1": "მომავალ თვეს",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} თვეში",
+              "relativeTimePattern-count-other": "{0} თვეში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} თვის წინ",
+              "relativeTimePattern-count-other": "{0} თვის წინ"
+            }
+          },
+          "week": {
+            "displayName": "კვირა",
+            "relative-type--1": "გასულ კვირაში",
+            "relative-type-0": "ამ კვირაში",
+            "relative-type-1": "მომავალ კვირაში",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} კვირაში",
+              "relativeTimePattern-count-other": "{0} კვირაში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} კვირის წინ",
+              "relativeTimePattern-count-other": "{0} კვირის წინ"
+            }
+          },
+          "week-short": {
+            "displayName": "კვ.",
+            "relative-type--1": "გასულ კვირაში",
+            "relative-type-0": "ამ კვირაში",
+            "relative-type-1": "მომავალ კვირაში",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} კვირაში",
+              "relativeTimePattern-count-other": "{0} კვირაში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} კვ. წინ",
+              "relativeTimePattern-count-other": "{0} კვ. წინ"
+            }
+          },
+          "week-narrow": {
+            "displayName": "კვ.",
+            "relative-type--1": "გასულ კვირაში",
+            "relative-type-0": "ამ კვირაში",
+            "relative-type-1": "მომავალ კვირაში",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} კვირაში",
+              "relativeTimePattern-count-other": "{0} კვირაში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} კვირის წინ",
+              "relativeTimePattern-count-other": "{0} კვირის წინ"
+            }
+          },
+          "day": {
+            "displayName": "დღე",
+            "relative-type--1": "გუშინ",
+            "relative-type--2": "გუშინწინ",
+            "relative-type-0": "დღეს",
+            "relative-type-1": "ხვალ",
+            "relative-type-2": "ზეგ",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} დღეში",
+              "relativeTimePattern-count-other": "{0} დღეში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} დღის წინ",
+              "relativeTimePattern-count-other": "{0} დღის წინ"
+            }
+          },
+          "day-short": {
+            "displayName": "დღე",
+            "relative-type--1": "გუშინ",
+            "relative-type--2": "გუშინწინ",
+            "relative-type-0": "დღეს",
+            "relative-type-1": "ხვალ",
+            "relative-type-2": "ზეგ",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} დღეში",
+              "relativeTimePattern-count-other": "{0} დღეში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} დღის წინ",
+              "relativeTimePattern-count-other": "{0} დღის წინ"
+            }
+          },
+          "day-narrow": {
+            "displayName": "დღე",
+            "relative-type--1": "გუშინ",
+            "relative-type--2": "გუშინწინ",
+            "relative-type-0": "დღეს",
+            "relative-type-1": "ხვალ",
+            "relative-type-2": "ზეგ",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} დღეში",
+              "relativeTimePattern-count-other": "{0} დღეში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} დღის წინ",
+              "relativeTimePattern-count-other": "{0} დღის წინ"
+            }
+          },
+          "weekday": {
+            "displayName": "კვირის დღე"
+          },
+          "sun": {
+            "relative-type--1": "გასულ კვირას",
+            "relative-type-0": "ამ კვირას",
+            "relative-type-1": "მომავალ კვირას"
+          },
+          "sun-short": {
+            "relative-type--1": "გასულ კვირას",
+            "relative-type-0": "ამ კვირას",
+            "relative-type-1": "მომავალ კვირას"
+          },
+          "sun-narrow": {
+            "relative-type--1": "გასულ კვირას",
+            "relative-type-0": "ამ კვირას",
+            "relative-type-1": "მომავალ კვირას"
+          },
+          "mon": {
+            "relative-type--1": "გასულ ორშაბათს",
+            "relative-type-0": "ამ ორშაბათს",
+            "relative-type-1": "მომავალ ორშაბათს"
+          },
+          "mon-short": {
+            "relative-type--1": "წინა ორშ.",
+            "relative-type-0": "ამ ორშ.",
+            "relative-type-1": "მომ. ორშ."
+          },
+          "mon-narrow": {
+            "relative-type--1": "გას. ორ.",
+            "relative-type-0": "ამ ორ.",
+            "relative-type-1": "მომ. ორ."
+          },
+          "tue": {
+            "relative-type--1": "გასულ სამშაბათს",
+            "relative-type-0": "ამ სამშაბათს",
+            "relative-type-1": "მომავალ სამშაბათს"
+          },
+          "tue-short": {
+            "relative-type--1": "წინა სამ.",
+            "relative-type-0": "ამ სამ.",
+            "relative-type-1": "მომ. სამ."
+          },
+          "tue-narrow": {
+            "relative-type--1": "წინ სა.",
+            "relative-type-0": "ამ სა.",
+            "relative-type-1": "მომმ სა."
+          },
+          "wed": {
+            "relative-type--1": "გასულ ოთხშაბათს",
+            "relative-type-0": "ამ ოთხშაბათს",
+            "relative-type-1": "მომავალ ოთხშაბათს"
+          },
+          "wed-short": {
+            "relative-type--1": "წინა ოთხ.",
+            "relative-type-0": "ამ ოთხ.",
+            "relative-type-1": "მომ. ოთხ."
+          },
+          "wed-narrow": {
+            "relative-type--1": "წინა ოთ.",
+            "relative-type-0": "ამ ოთ.",
+            "relative-type-1": "მომ. ოთ."
+          },
+          "thu": {
+            "relative-type--1": "გასულ ხუთშაბათს",
+            "relative-type-0": "ამ ხუთშაბათს",
+            "relative-type-1": "მომავალ ხუთშაბათს"
+          },
+          "thu-short": {
+            "relative-type--1": "წინა ხუთ.",
+            "relative-type-0": "ამ ხუთ.",
+            "relative-type-1": "მომ. ხუთ."
+          },
+          "thu-narrow": {
+            "relative-type--1": "წინა ხთ.",
+            "relative-type-0": "ამ ხთ.",
+            "relative-type-1": "მომ. ხთ."
+          },
+          "fri": {
+            "relative-type--1": "გასულ პარასკევს",
+            "relative-type-0": "ამ პარასკევს",
+            "relative-type-1": "მომავალ პარასკევს"
+          },
+          "fri-short": {
+            "relative-type--1": "წინა პარ.",
+            "relative-type-0": "ამ პარ.",
+            "relative-type-1": "მომ. პარ."
+          },
+          "fri-narrow": {
+            "relative-type--1": "წინა პა.",
+            "relative-type-0": "ამ პა.",
+            "relative-type-1": "მომ. პა."
+          },
+          "sat": {
+            "relative-type--1": "გასულ შაბათს",
+            "relative-type-0": "ამ შაბათს",
+            "relative-type-1": "მომავალ შაბათს"
+          },
+          "sat-short": {
+            "relative-type--1": "წინა შაბ.",
+            "relative-type-0": "ამ შაბ.",
+            "relative-type-1": "მომ. შაბ."
+          },
+          "sat-narrow": {
+            "relative-type--1": "წინა შბ.",
+            "relative-type-0": "ამ შა.",
+            "relative-type-1": "მომ. შბ."
+          },
+          "dayperiod": {
+            "displayName": "დღის ნახევარი"
+          },
+          "hour": {
+            "displayName": "საათი",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} საათში",
+              "relativeTimePattern-count-other": "{0} საათში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} საათის წინ",
+              "relativeTimePattern-count-other": "{0} საათის წინ"
+            }
+          },
+          "hour-short": {
+            "displayName": "სთ.",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} საათში",
+              "relativeTimePattern-count-other": "{0} საათში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} სთ წინ",
+              "relativeTimePattern-count-other": "{0} სთ წინ"
+            }
+          },
+          "hour-narrow": {
+            "displayName": "სთ.",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} საათში",
+              "relativeTimePattern-count-other": "{0} საათში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} სთ წინ",
+              "relativeTimePattern-count-other": "{0} სთ წინ"
+            }
+          },
+          "minute": {
+            "displayName": "წუთი",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} წუთში",
+              "relativeTimePattern-count-other": "{0} წუთში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} წუთის წინ",
+              "relativeTimePattern-count-other": "{0} წუთის წინ"
+            }
+          },
+          "minute-short": {
+            "displayName": "წთ.",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} წუთში",
+              "relativeTimePattern-count-other": "{0} წუთში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} წთ წინ",
+              "relativeTimePattern-count-other": "{0} წთ წინ"
+            }
+          },
+          "minute-narrow": {
+            "displayName": "წთ.",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} წუთში",
+              "relativeTimePattern-count-other": "{0} წუთში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} წთ წინ",
+              "relativeTimePattern-count-other": "{0} წთ წინ"
+            }
+          },
+          "second": {
+            "displayName": "წამი",
+            "relative-type-0": "ახლა",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} წამში",
+              "relativeTimePattern-count-other": "{0} წამში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} წამის წინ",
+              "relativeTimePattern-count-other": "{0} წამის წინ"
+            }
+          },
+          "second-short": {
+            "displayName": "წმ.",
+            "relative-type-0": "ახლა",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} წამში",
+              "relativeTimePattern-count-other": "{0} წამში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} წმ წინ",
+              "relativeTimePattern-count-other": "{0} წმ წინ"
+            }
+          },
+          "second-narrow": {
+            "displayName": "წმ.",
+            "relative-type-0": "ახლა",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} წამში",
+              "relativeTimePattern-count-other": "{0} წამში"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} წმ წინ",
+              "relativeTimePattern-count-other": "{0} წმ წინ"
+            }
+          },
+          "zone": {
+            "displayName": "დროის სარტყელი"
+          }
+        }
+      }
+    }
+  }
+}

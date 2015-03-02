@@ -1,0 +1,456 @@
+{
+  "main": {
+    "bn-BD": {
+      "identity": {
+        "version": {
+          "_cldrVersion": "26",
+          "_number": "$Revision: 10669 $"
+        },
+        "generation": {
+          "_date": "$Date: 2014-07-23 16:10:33 -0500 (Wed, 23 Jul 2014) $"
+        },
+        "language": "bn",
+        "territory": "BD"
+      },
+      "dates": {
+        "fields": {
+          "era": {
+            "displayName": "যুগ"
+          },
+          "year": {
+            "displayName": "বছর",
+            "relative-type--1": "গত বছর",
+            "relative-type-0": "এই বছর",
+            "relative-type-1": "পরের বছর",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} বছরে",
+              "relativeTimePattern-count-other": "{0} বছরে"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} বছর পূর্বে",
+              "relativeTimePattern-count-other": "{0} বছর পূর্বে"
+            }
+          },
+          "year-short": {
+            "displayName": "বছর",
+            "relative-type--1": "গত বছর",
+            "relative-type-0": "এই বছর",
+            "relative-type-1": "পরের বছর",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} বছরে",
+              "relativeTimePattern-count-other": "{0} বছরে"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} বছর পূর্বে",
+              "relativeTimePattern-count-other": "{0} বছর পূর্বে"
+            }
+          },
+          "year-narrow": {
+            "displayName": "বছর",
+            "relative-type--1": "গত বছর",
+            "relative-type-0": "এই বছর",
+            "relative-type-1": "পরের বছর",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} বছরে",
+              "relativeTimePattern-count-other": "{0} বছরে"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} বছর পূর্বে",
+              "relativeTimePattern-count-other": "{0} বছর পূর্বে"
+            }
+          },
+          "quarter": {
+            "displayName": "ত্রৈমাসিক",
+            "relative-type--1": "last quarter",
+            "relative-type-0": "this quarter",
+            "relative-type-1": "next quarter",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} ত্রৈমাসিকের এক চতুর্থাংশ",
+              "relativeTimePattern-count-other": "{0} ত্রৈমাসিকের এক চতুর্থাংশ"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} ত্রৈমাসিকের আগে",
+              "relativeTimePattern-count-other": "{0} ত্রৈমাসিকের আগে"
+            }
+          },
+          "quarter-short": {
+            "displayName": "ত্রৈমাসিক",
+            "relative-type--1": "last quarter",
+            "relative-type-0": "this quarter",
+            "relative-type-1": "next quarter",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} ত্রৈমাসিকের এক চতুর্থাংশ",
+              "relativeTimePattern-count-other": "{0} ত্রৈমাসিকের এক চতুর্থাংশ"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} ত্রৈমাসিকের আগে",
+              "relativeTimePattern-count-other": "{0} ত্রৈমাসিকের আগে"
+            }
+          },
+          "quarter-narrow": {
+            "displayName": "ত্রৈমাসিক",
+            "relative-type--1": "last quarter",
+            "relative-type-0": "this quarter",
+            "relative-type-1": "next quarter",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} ত্রৈমাসিকের এক চতুর্থাংশ",
+              "relativeTimePattern-count-other": "{0} ত্রৈমাসিকের এক চতুর্থাংশ"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} ত্রৈমাসিকের আগে",
+              "relativeTimePattern-count-other": "{0} ত্রৈমাসিকের আগে"
+            }
+          },
+          "month": {
+            "displayName": "মাস",
+            "relative-type--1": "গত মাস",
+            "relative-type-0": "এই মাস",
+            "relative-type-1": "পরের মাস",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} মাসে",
+              "relativeTimePattern-count-other": "{0} মাসে"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} মাস পূর্বে",
+              "relativeTimePattern-count-other": "{0} মাস পূর্বে"
+            }
+          },
+          "month-short": {
+            "displayName": "মাস",
+            "relative-type--1": "গত মাস",
+            "relative-type-0": "এই মাস",
+            "relative-type-1": "পরের মাস",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} মাসে",
+              "relativeTimePattern-count-other": "{0} মাসে"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} মাস পূর্বে",
+              "relativeTimePattern-count-other": "{0} মাস পূর্বে"
+            }
+          },
+          "month-narrow": {
+            "displayName": "মাস",
+            "relative-type--1": "গত মাস",
+            "relative-type-0": "এই মাস",
+            "relative-type-1": "পরের মাস",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} মাসে",
+              "relativeTimePattern-count-other": "{0} মাসে"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} মাস পূর্বে",
+              "relativeTimePattern-count-other": "{0} মাস পূর্বে"
+            }
+          },
+          "week": {
+            "displayName": "সপ্তাহ",
+            "relative-type--1": "গত সপ্তাহ",
+            "relative-type-0": "এই সপ্তাহ",
+            "relative-type-1": "পরের সপ্তাহ",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} সপ্তাহে",
+              "relativeTimePattern-count-other": "{0} সপ্তাহে"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} সপ্তাহ পূর্বে",
+              "relativeTimePattern-count-other": "{0} সপ্তাহ পূর্বে"
+            }
+          },
+          "week-short": {
+            "displayName": "সপ্তাহ",
+            "relative-type--1": "গত সপ্তাহ",
+            "relative-type-0": "এই সপ্তাহ",
+            "relative-type-1": "পরের সপ্তাহ",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} সপ্তাহে",
+              "relativeTimePattern-count-other": "{0} সপ্তাহে"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} সপ্তাহ পূর্বে",
+              "relativeTimePattern-count-other": "{0} সপ্তাহ পূর্বে"
+            }
+          },
+          "week-narrow": {
+            "displayName": "সপ্তাহ",
+            "relative-type--1": "গত সপ্তাহ",
+            "relative-type-0": "এই সপ্তাহ",
+            "relative-type-1": "পরের সপ্তাহ",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} সপ্তাহে",
+              "relativeTimePattern-count-other": "{0} সপ্তাহে"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} সপ্তাহ পূর্বে",
+              "relativeTimePattern-count-other": "{0} সপ্তাহ পূর্বে"
+            }
+          },
+          "day": {
+            "displayName": "দিন",
+            "relative-type--1": "গতকাল",
+            "relative-type--2": "গত পরশু",
+            "relative-type-0": "আজ",
+            "relative-type-1": "আগামীকাল",
+            "relative-type-2": "আগামী পরশু",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} দিনের মধ্যে",
+              "relativeTimePattern-count-other": "{0} দিনের মধ্যে"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} দিন পূর্বে",
+              "relativeTimePattern-count-other": "{0} দিন পূর্বে"
+            }
+          },
+          "day-short": {
+            "displayName": "দিন",
+            "relative-type--1": "গতকাল",
+            "relative-type--2": "গত পরশু",
+            "relative-type-0": "আজ",
+            "relative-type-1": "আগামীকাল",
+            "relative-type-2": "আগামী পরশু",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} দিনের মধ্যে",
+              "relativeTimePattern-count-other": "{0} দিনের মধ্যে"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} দিন পূর্বে",
+              "relativeTimePattern-count-other": "{0} দিন পূর্বে"
+            }
+          },
+          "day-narrow": {
+            "displayName": "দিন",
+            "relative-type--1": "গতকাল",
+            "relative-type--2": "গত পরশু",
+            "relative-type-0": "আজ",
+            "relative-type-1": "আগামীকাল",
+            "relative-type-2": "আগামী পরশু",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} দিনের মধ্যে",
+              "relativeTimePattern-count-other": "{0} দিনের মধ্যে"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} দিন পূর্বে",
+              "relativeTimePattern-count-other": "{0} দিন পূর্বে"
+            }
+          },
+          "weekday": {
+            "displayName": "সপ্তাহের দিন"
+          },
+          "sun": {
+            "relative-type--1": "গত রবিবার",
+            "relative-type-0": "এই রবিবার",
+            "relative-type-1": "পরের রবিবার"
+          },
+          "sun-short": {
+            "relative-type--1": "গত রবিবার",
+            "relative-type-0": "এই রবিবার",
+            "relative-type-1": "পরের রবিবার"
+          },
+          "sun-narrow": {
+            "relative-type--1": "গত রবিবার",
+            "relative-type-0": "এই রবিবার",
+            "relative-type-1": "পরের রবিবার"
+          },
+          "mon": {
+            "relative-type--1": "গত সোমবার",
+            "relative-type-0": "এই সোমবার",
+            "relative-type-1": "পরের সোমবার"
+          },
+          "mon-short": {
+            "relative-type--1": "গত সোমবার",
+            "relative-type-0": "এই সোমবার",
+            "relative-type-1": "পরের সোমবার"
+          },
+          "mon-narrow": {
+            "relative-type--1": "গত সোমবার",
+            "relative-type-0": "এই সোমবার",
+            "relative-type-1": "পরের সোমবার"
+          },
+          "tue": {
+            "relative-type--1": "গত মঙ্গলবার",
+            "relative-type-0": "এই মঙ্গলবার",
+            "relative-type-1": "পরের মঙ্গলবার"
+          },
+          "tue-short": {
+            "relative-type--1": "গত মঙ্গলবার",
+            "relative-type-0": "এই মঙ্গলবার",
+            "relative-type-1": "পরের মঙ্গলবার"
+          },
+          "tue-narrow": {
+            "relative-type--1": "গত মঙ্গলবার",
+            "relative-type-0": "এই মঙ্গলবার",
+            "relative-type-1": "পরের মঙ্গলবার"
+          },
+          "wed": {
+            "relative-type--1": "গত বুধবার",
+            "relative-type-0": "এই বুধবার",
+            "relative-type-1": "পরের বুধবার"
+          },
+          "wed-short": {
+            "relative-type--1": "গত বুধবার",
+            "relative-type-0": "এই বুধবার",
+            "relative-type-1": "পরের বুধবার"
+          },
+          "wed-narrow": {
+            "relative-type--1": "গত বুধবার",
+            "relative-type-0": "এই বুধবার",
+            "relative-type-1": "পরের বুধবার"
+          },
+          "thu": {
+            "relative-type--1": "গত বৃহস্পতিবার",
+            "relative-type-0": "এই বৃহস্পতিবার",
+            "relative-type-1": "পরের বৃহস্পতিবার"
+          },
+          "thu-short": {
+            "relative-type--1": "গত বৃহস্পতিবার",
+            "relative-type-0": "এই বৃহস্পতিবার",
+            "relative-type-1": "পরের বৃহস্পতিবার"
+          },
+          "thu-narrow": {
+            "relative-type--1": "গত বৃহস্পতিবার",
+            "relative-type-0": "এই বৃহস্পতিবার",
+            "relative-type-1": "পরের বৃহস্পতিবার"
+          },
+          "fri": {
+            "relative-type--1": "গত শুক্রবার",
+            "relative-type-0": "এই শুক্রবার",
+            "relative-type-1": "পরের শুক্রবার"
+          },
+          "fri-short": {
+            "relative-type--1": "গত শুক্রবার",
+            "relative-type-0": "এই শুক্রবার",
+            "relative-type-1": "পরের শুক্রবার"
+          },
+          "fri-narrow": {
+            "relative-type--1": "গত শুক্রবার",
+            "relative-type-0": "এই শুক্রবার",
+            "relative-type-1": "পরের শুক্রবার"
+          },
+          "sat": {
+            "relative-type--1": "গত শনিবার",
+            "relative-type-0": "এই শনিবার",
+            "relative-type-1": "পরের শনিবার"
+          },
+          "sat-short": {
+            "relative-type--1": "গত শনিবার",
+            "relative-type-0": "এই শনিবার",
+            "relative-type-1": "পরের শনিবার"
+          },
+          "sat-narrow": {
+            "relative-type--1": "গত শনিবার",
+            "relative-type-0": "এই শনিবার",
+            "relative-type-1": "পরের শনিবার"
+          },
+          "dayperiod": {
+            "displayName": "পূর্বাহ্ণ/অপরাহ্ণ"
+          },
+          "hour": {
+            "displayName": "ঘন্টা",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} ঘন্টায়",
+              "relativeTimePattern-count-other": "{0} ঘন্টায়"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} ঘন্টা আগে",
+              "relativeTimePattern-count-other": "{0} ঘন্টা আগে"
+            }
+          },
+          "hour-short": {
+            "displayName": "ঘন্টা",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} ঘন্টায়",
+              "relativeTimePattern-count-other": "{0} ঘন্টায়"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} ঘন্টা আগে",
+              "relativeTimePattern-count-other": "{0} ঘন্টা আগে"
+            }
+          },
+          "hour-narrow": {
+            "displayName": "ঘন্টা",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} ঘন্টায়",
+              "relativeTimePattern-count-other": "{0} ঘন্টায়"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} ঘন্টা আগে",
+              "relativeTimePattern-count-other": "{0} ঘন্টা আগে"
+            }
+          },
+          "minute": {
+            "displayName": "মিনিট",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} মিনিটে",
+              "relativeTimePattern-count-other": "{0} মিনিটে"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} মিনিট পূর্বে",
+              "relativeTimePattern-count-other": "{0} মিনিট পূর্বে"
+            }
+          },
+          "minute-short": {
+            "displayName": "মিনিট",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} মিনিটে",
+              "relativeTimePattern-count-other": "{0} মিনিটে"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} মিনিট পূর্বে",
+              "relativeTimePattern-count-other": "{0} মিনিট পূর্বে"
+            }
+          },
+          "minute-narrow": {
+            "displayName": "মিনিট",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} মিনিটে",
+              "relativeTimePattern-count-other": "{0} মিনিটে"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} মিনিট পূর্বে",
+              "relativeTimePattern-count-other": "{0} মিনিট পূর্বে"
+            }
+          },
+          "second": {
+            "displayName": "সেকেন্ড",
+            "relative-type-0": "এখন",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} সেকেন্ডে",
+              "relativeTimePattern-count-other": "{0} সেকেন্ডে"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} সেকেন্ড পূর্বে",
+              "relativeTimePattern-count-other": "{0} সেকেন্ড পূর্বে"
+            }
+          },
+          "second-short": {
+            "displayName": "সেকেন্ড",
+            "relative-type-0": "এখন",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} সেকেন্ডে",
+              "relativeTimePattern-count-other": "{0} সেকেন্ডে"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} সেকেন্ড পূর্বে",
+              "relativeTimePattern-count-other": "{0} সেকেন্ড পূর্বে"
+            }
+          },
+          "second-narrow": {
+            "displayName": "সেকেন্ড",
+            "relative-type-0": "এখন",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "{0} সেকেন্ডে",
+              "relativeTimePattern-count-other": "{0} সেকেন্ডে"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} সেকেন্ড পূর্বে",
+              "relativeTimePattern-count-other": "{0} সেকেন্ড পূর্বে"
+            }
+          },
+          "zone": {
+            "displayName": "এলাকা"
+          }
+        }
+      }
+    }
+  }
+}

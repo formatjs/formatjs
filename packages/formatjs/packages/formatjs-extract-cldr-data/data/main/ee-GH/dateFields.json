@@ -1,0 +1,450 @@
+{
+  "main": {
+    "ee-GH": {
+      "identity": {
+        "version": {
+          "_cldrVersion": "26",
+          "_number": "$Revision: 10669 $"
+        },
+        "generation": {
+          "_date": "$Date: 2014-07-23 16:10:33 -0500 (Wed, 23 Jul 2014) $"
+        },
+        "language": "ee",
+        "territory": "GH"
+      },
+      "dates": {
+        "fields": {
+          "era": {
+            "displayName": "ŋɔli"
+          },
+          "year": {
+            "displayName": "ƒe",
+            "relative-type--1": "ƒe si va yi",
+            "relative-type-0": "ƒe sia",
+            "relative-type-1": "ƒe si gbɔ na",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le ƒe {0} me",
+              "relativeTimePattern-count-other": "le ƒe {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "ƒe {0} si va yi",
+              "relativeTimePattern-count-other": "ƒe {0} si wo va yi"
+            }
+          },
+          "year-short": {
+            "displayName": "ƒe",
+            "relative-type--1": "ƒe si va yi",
+            "relative-type-0": "ƒe sia",
+            "relative-type-1": "ƒe si gbɔ na",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le ƒe {0} wo me",
+              "relativeTimePattern-count-other": "le ƒe {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "ƒe {0} si wo va yi",
+              "relativeTimePattern-count-other": "ƒe {0} si wo va yi"
+            }
+          },
+          "year-narrow": {
+            "displayName": "ƒe",
+            "relative-type--1": "ƒe si va yi",
+            "relative-type-0": "ƒe sia",
+            "relative-type-1": "ƒe si gbɔ na",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le ƒe {0} wo me",
+              "relativeTimePattern-count-other": "le ƒe {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "ƒe {0} si wo va yi",
+              "relativeTimePattern-count-other": "ƒe {0} si wo va yi"
+            }
+          },
+          "quarter": {
+            "displayName": "kɔta",
+            "relative-type--1": "last quarter",
+            "relative-type-0": "this quarter",
+            "relative-type-1": "next quarter",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Q"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Q"
+            }
+          },
+          "quarter-short": {
+            "displayName": "kɔta",
+            "relative-type--1": "last quarter",
+            "relative-type-0": "this quarter",
+            "relative-type-1": "next quarter",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Q"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Q"
+            }
+          },
+          "quarter-narrow": {
+            "displayName": "kɔta",
+            "relative-type--1": "last quarter",
+            "relative-type-0": "this quarter",
+            "relative-type-1": "next quarter",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Q"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Q"
+            }
+          },
+          "month": {
+            "displayName": "ɣleti",
+            "relative-type--1": "ɣleti si va yi",
+            "relative-type-0": "ɣleti sia",
+            "relative-type-1": "ɣleti si gbɔ na",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le ɣleti {0} me",
+              "relativeTimePattern-count-other": "le ɣleti {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "ɣleti {0} si va yi",
+              "relativeTimePattern-count-other": "ɣleti {0} si wo va yi"
+            }
+          },
+          "month-short": {
+            "displayName": "ɣleti",
+            "relative-type--1": "ɣleti si va yi",
+            "relative-type-0": "ɣleti sia",
+            "relative-type-1": "ɣleti si gbɔ na",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le ɣleti {0} wo me",
+              "relativeTimePattern-count-other": "le ɣleti {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "ɣleti {0} si wo va yi",
+              "relativeTimePattern-count-other": "ɣleti {0} si wo va yi"
+            }
+          },
+          "month-narrow": {
+            "displayName": "ɣleti",
+            "relative-type--1": "ɣleti si va yi",
+            "relative-type-0": "ɣleti sia",
+            "relative-type-1": "ɣleti si gbɔ na",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le ɣleti {0} wo me",
+              "relativeTimePattern-count-other": "le ɣleti {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "ɣleti {0} si wo va yi",
+              "relativeTimePattern-count-other": "ɣleti {0} si wo va yi"
+            }
+          },
+          "week": {
+            "displayName": "kɔsiɖa ɖeka",
+            "relative-type--1": "kɔsiɖa si va yi",
+            "relative-type-0": "kɔsiɖa sia",
+            "relative-type-1": "kɔsiɖa si gbɔ na",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le kɔsiɖa {0} me",
+              "relativeTimePattern-count-other": "le kɔsiɖa {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "kɔsiɖa {0} si va yi",
+              "relativeTimePattern-count-other": "kɔsiɖa {0} si wo va yi"
+            }
+          },
+          "week-short": {
+            "displayName": "kɔsiɖa ɖeka",
+            "relative-type--1": "kɔsiɖa si va yi",
+            "relative-type-0": "kɔsiɖa sia",
+            "relative-type-1": "kɔsiɖa si gbɔ na",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le kɔsiɖa {0} wo me",
+              "relativeTimePattern-count-other": "le kɔsiɖa {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "kɔsiɖa {0} si wo va yi",
+              "relativeTimePattern-count-other": "kɔsiɖa {0} si wo va yi"
+            }
+          },
+          "week-narrow": {
+            "displayName": "kɔsiɖa ɖeka",
+            "relative-type--1": "kɔsiɖa si va yi",
+            "relative-type-0": "kɔsiɖa sia",
+            "relative-type-1": "kɔsiɖa si gbɔ na",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le kɔsiɖa {0} wo me",
+              "relativeTimePattern-count-other": "le kɔsiɖa {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "kɔsiɖa {0} si wo va yi",
+              "relativeTimePattern-count-other": "kɔsiɖa {0} si wo va yi"
+            }
+          },
+          "day": {
+            "displayName": "ŋkeke",
+            "relative-type--1": "etsɔ si va yi",
+            "relative-type--2": "nyitsɔ si va yi",
+            "relative-type-0": "egbe",
+            "relative-type-1": "etsɔ si gbɔna",
+            "relative-type-2": "nyitsɔ si gbɔna",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le ŋkeke {0} me",
+              "relativeTimePattern-count-other": "le ŋkeke {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "ŋkeke {0} si va yi",
+              "relativeTimePattern-count-other": "ŋkeke {0} si wo va yi"
+            }
+          },
+          "day-short": {
+            "displayName": "ŋkeke",
+            "relative-type--1": "etsɔ si va yi",
+            "relative-type--2": "nyitsɔ si va yi",
+            "relative-type-0": "egbe",
+            "relative-type-1": "etsɔ si gbɔna",
+            "relative-type-2": "nyitsɔ si gbɔna",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le ŋkeke {0} wo me",
+              "relativeTimePattern-count-other": "le ŋkeke {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "ŋkeke {0} si wo va yi",
+              "relativeTimePattern-count-other": "ŋkeke {0} si wo va yi"
+            }
+          },
+          "day-narrow": {
+            "displayName": "ŋkeke",
+            "relative-type--1": "etsɔ si va yi",
+            "relative-type--2": "nyitsɔ si va yi",
+            "relative-type-0": "egbe",
+            "relative-type-1": "etsɔ si gbɔna",
+            "relative-type-2": "nyitsɔ si gbɔna",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le ŋkeke {0} wo me",
+              "relativeTimePattern-count-other": "le ŋkeke {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "ŋkeke {0} si wo va yi",
+              "relativeTimePattern-count-other": "ŋkeke {0} si wo va yi"
+            }
+          },
+          "weekday": {
+            "displayName": "kɔsiɖa me ŋkeke"
+          },
+          "sun": {
+            "relative-type--1": "kɔsiɖa si va yi",
+            "relative-type-0": "kɔsiɖa sia",
+            "relative-type-1": "kɔsiɖa si gbɔ na"
+          },
+          "sun-short": {
+            "relative-type--1": "kɔsiɖa si va yi",
+            "relative-type-0": "kɔsiɖa sia",
+            "relative-type-1": "kɔsiɖa si gbɔ na"
+          },
+          "sun-narrow": {
+            "relative-type--1": "kɔsiɖa si va yi",
+            "relative-type-0": "kɔsiɖa sia",
+            "relative-type-1": "kɔsiɖa si gbɔ na"
+          },
+          "mon": {
+            "relative-type--1": "dzoɖa si va yi",
+            "relative-type-0": "dzoɖa sia",
+            "relative-type-1": "dzoɖa si gbɔ na"
+          },
+          "mon-short": {
+            "relative-type--1": "dzoɖa si va yi",
+            "relative-type-0": "dzoɖa sia",
+            "relative-type-1": "dzoɖa si gbɔ na"
+          },
+          "mon-narrow": {
+            "relative-type--1": "dzoɖa si va yi",
+            "relative-type-0": "dzoɖa sia",
+            "relative-type-1": "dzoɖa si gbɔ na"
+          },
+          "tue": {
+            "relative-type--1": "blaɖa si va yi",
+            "relative-type-0": "blaɖa sia",
+            "relative-type-1": "blaɖa si gbɔ na"
+          },
+          "tue-short": {
+            "relative-type--1": "blaɖa si va yi",
+            "relative-type-0": "blaɖa sia",
+            "relative-type-1": "blaɖa si gbɔ na"
+          },
+          "tue-narrow": {
+            "relative-type--1": "blaɖa si va yi",
+            "relative-type-0": "blaɖa sia",
+            "relative-type-1": "blaɖa si gbɔ na"
+          },
+          "wed": {
+            "relative-type--1": "kuɖa si va yi",
+            "relative-type-0": "kuɖa sia",
+            "relative-type-1": "kuɖa si gbɔ na"
+          },
+          "wed-short": {
+            "relative-type--1": "kuɖa si va yi",
+            "relative-type-0": "kuɖa sia",
+            "relative-type-1": "kuɖa si gbɔ na"
+          },
+          "wed-narrow": {
+            "relative-type--1": "kuɖa si va yi",
+            "relative-type-0": "kuɖa sia",
+            "relative-type-1": "kuɖa si gbɔ na"
+          },
+          "thu": {
+            "relative-type--1": "yawoɖa si va yi",
+            "relative-type-0": "yawoɖa sia",
+            "relative-type-1": "yawoɖa si gbɔ na"
+          },
+          "thu-short": {
+            "relative-type--1": "yawoɖa si va yi",
+            "relative-type-0": "yawoɖa sia",
+            "relative-type-1": "yawoɖa si gbɔ na"
+          },
+          "thu-narrow": {
+            "relative-type--1": "yawoɖa si va yi",
+            "relative-type-0": "yawoɖa sia",
+            "relative-type-1": "yawoɖa si gbɔ na"
+          },
+          "fri": {
+            "relative-type--1": "fiɖa si va yi",
+            "relative-type-0": "fiɖa sia",
+            "relative-type-1": "fiɖa si gbɔ na"
+          },
+          "fri-short": {
+            "relative-type--1": "fiɖa si va yi",
+            "relative-type-0": "fiɖa sia",
+            "relative-type-1": "fiɖa si gbɔ na"
+          },
+          "fri-narrow": {
+            "relative-type--1": "fiɖa si va yi",
+            "relative-type-0": "fiɖa sia",
+            "relative-type-1": "fiɖa si gbɔ na"
+          },
+          "sat": {
+            "relative-type--1": "memleɖa si va yi",
+            "relative-type-0": "memleɖa sia",
+            "relative-type-1": "memleɖa si gbɔ na"
+          },
+          "sat-short": {
+            "relative-type--1": "memleɖa si va yi",
+            "relative-type-0": "memleɖa sia",
+            "relative-type-1": "memleɖa si gbɔ na"
+          },
+          "sat-narrow": {
+            "relative-type--1": "memleɖa si va yi",
+            "relative-type-0": "memleɖa sia",
+            "relative-type-1": "memleɖa si gbɔ na"
+          },
+          "dayperiod": {
+            "displayName": "ŋkekea me"
+          },
+          "hour": {
+            "displayName": "gaƒoƒo",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le gaƒoƒo {0} me",
+              "relativeTimePattern-count-other": "le gaƒoƒo {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "gaƒoƒo {0} si va yi",
+              "relativeTimePattern-count-other": "gaƒoƒo {0} si wo va yi"
+            }
+          },
+          "hour-short": {
+            "displayName": "gaƒoƒo",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le gaƒoƒo {0} wo me",
+              "relativeTimePattern-count-other": "le gaƒoƒo {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "gaƒoƒo {0} si wo va yi",
+              "relativeTimePattern-count-other": "gaƒoƒo {0} si wo va yi"
+            }
+          },
+          "hour-narrow": {
+            "displayName": "gaƒoƒo",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le gaƒoƒo {0} wo me",
+              "relativeTimePattern-count-other": "le gaƒoƒo {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "gaƒoƒo {0} si wo va yi",
+              "relativeTimePattern-count-other": "gaƒoƒo {0} si wo va yi"
+            }
+          },
+          "minute": {
+            "displayName": "aɖabaƒoƒo",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le aɖabaƒoƒo {0} me",
+              "relativeTimePattern-count-other": "le aɖabaƒoƒo {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "aɖabaƒoƒo {0} si va yi",
+              "relativeTimePattern-count-other": "aɖabaƒoƒo {0} si wo va yi"
+            }
+          },
+          "minute-short": {
+            "displayName": "aɖabaƒoƒo",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le aɖabaƒoƒo {0} wo me",
+              "relativeTimePattern-count-other": "le aɖabaƒoƒo {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "aɖabaƒoƒo {0} si wo va yi",
+              "relativeTimePattern-count-other": "aɖabaƒoƒo {0} si wo va yi"
+            }
+          },
+          "minute-narrow": {
+            "displayName": "aɖabaƒoƒo",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le aɖabaƒoƒo {0} wo me",
+              "relativeTimePattern-count-other": "le aɖabaƒoƒo {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "aɖabaƒoƒo {0} si wo va yi",
+              "relativeTimePattern-count-other": "aɖabaƒoƒo {0} si wo va yi"
+            }
+          },
+          "second": {
+            "displayName": "sekend",
+            "relative-type-0": "fifi",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le sekend {0} me",
+              "relativeTimePattern-count-other": "le sekend {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "sekend {0} si va yi",
+              "relativeTimePattern-count-other": "sekend {0} si wo va yi"
+            }
+          },
+          "second-short": {
+            "displayName": "sekend",
+            "relative-type-0": "fifi",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le sekend {0} wo me",
+              "relativeTimePattern-count-other": "le sekend {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "sekend {0} si wo va yi",
+              "relativeTimePattern-count-other": "sekend {0} si wo va yi"
+            }
+          },
+          "second-narrow": {
+            "displayName": "sekend",
+            "relative-type-0": "fifi",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "le sekend {0} wo me",
+              "relativeTimePattern-count-other": "le sekend {0} wo me"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "sekend {0} si wo va yi",
+              "relativeTimePattern-count-other": "sekend {0} si wo va yi"
+            }
+          },
+          "zone": {
+            "displayName": "nutomegaƒoƒo"
+          }
+        }
+      }
+    }
+  }
+}
