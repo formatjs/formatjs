@@ -4,7 +4,7 @@
   "description": "Utility library that extracts the CLDR data that's needed by the FormatJS libraries.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "istanbul cover -- _mocha test/unit/ --reporter spec"
   },
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "license": "BSD",
