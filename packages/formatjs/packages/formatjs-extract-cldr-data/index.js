@@ -22,7 +22,7 @@ module.exports = function extractData(options) {
     // hierarchical; e.g.:
     //
     // ['zh-Hant-TW'] --> ['zh-Hant-TW', 'zh-Hant', 'zh']
-    var locales = options.locales && expandLocales(options.locales);
+    var locales = expandLocales(options.locales);
 
     // Each type of data has the structure: `{"<locale>": {"<field>": <data>}}`,
     // which is well suited for merging into a single object per locale. This

@@ -9,6 +9,8 @@ var makePlural = require('make-plural');
 var path       = require('path');
 var UglifyJS   = require('uglify-js');
 
+var availableLocales = require('./locales').localesWithPlurals;
+
 var CLDR_PATH = path.resolve(__dirname, '..', 'data');
 
 module.exports = function extractPluralRules(locales) {
@@ -18,16 +20,12 @@ module.exports = function extractPluralRules(locales) {
         path.join(CLDR_PATH, 'supplemental', 'ordinals')
     );
 
-    // When a `locales` collection is not specified, all of the locales that the
-    // make-plural lib has are used.
-    if (!locales) {
-        locales = Object.keys(makePlural.rules.cardinal);
-    }
-
     return locales.reduce(function (pluralRules, locale) {
+        locale = availableLocales.normalize(locale);
+
         // Collects `pluralRuleFunction`s for each `locale` that's both
-        // specified in `locales` and that make-plural has data for.
-        if (makePlural.rules.cardinal[locale]) {
+        // specified in `locales` and that the CLDR has data for.
+        if (availableLocales.has(locale)) {
             // The make-plural lib returns a function with a `toString()` method
             // that is then minified. The function is serialized, minified, then
             // unserialized using `eval()`.

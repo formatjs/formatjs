@@ -9,6 +9,8 @@ var fs   = require('fs');
 var glob = require('glob');
 var path = require('path');
 
+var availableLocales = require('./locales').localesWithDateFields;
+
 var CLDR_PATH = path.resolve(__dirname, '..', 'data');
 
 // The set of CLDR date field names that are used in FormatJS.
@@ -22,16 +24,6 @@ var FIELD_NAMES = [
 ];
 
 module.exports = function extractRelativeFields(locales) {
-    // When a `locales` collection is not specified, all of the locales that the
-    // have date fields in the CLDR are used.
-    if (!locales) {
-        locales = glob.sync('*/dateFields.json', {
-            cwd: path.join(CLDR_PATH, 'main')
-        }).map(function (filename) {
-            return path.dirname(filename);
-        });
-    }
-
     var data   = loadRelativeFieldsData(locales);
     var hashes = {};
 
@@ -78,7 +70,9 @@ module.exports = function extractRelativeFields(locales) {
 };
 
 function loadRelativeFieldsData(locales) {
-    return locales.reduce(function (data, locale) {
+    return locales.filter(function (locale) {
+        return availableLocales.has(locale);
+    }).reduce(function (data, locale) {
         var filename = path.join(CLDR_PATH, 'main', locale, 'dateFields.json');
         var fields   = require(filename).main[locale].dates.fields;
 

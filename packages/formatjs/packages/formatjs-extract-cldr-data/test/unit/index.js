@@ -151,6 +151,10 @@ describe('extractData()', function () {
                 expect(extractData).withArgs({locales: 'en'}).to.throwException();
             });
 
+            it('should throw when no data exists for a locale', function () {
+                expect(extractData).withArgs({locales: ['foo-bar']}).to.throwException();
+            });
+
             it('should recusively expand `locales` to their roots', function () {
                 var data = extractData({
                     locales       : ['en-US', 'zh-Hant-TW'],
@@ -159,6 +163,19 @@ describe('extractData()', function () {
                 });
 
                 expect(data).to.have.keys('en', 'zh', 'zh-Hant');
+            });
+
+            it('should accept `locales` of any case and normalize them', function () {
+                expect(extractData({
+                    locales     : ['en-us', 'ZH-HANT-HK'],
+                    pluralRules : true,
+                })).to.have.keys('en', 'zh');
+
+                expect(extractData({
+                    locales       : ['en-us', 'ZH-HANT-HK'],
+                    pluralRules   : true,
+                    relativeFields: true,
+                })).to.have.keys('en', 'zh', 'zh-Hant', 'zh-Hant-HK');
             });
         });
 

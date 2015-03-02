@@ -5,10 +5,19 @@
  */
 'use strict';
 
+var glob = require('glob');
+var path = require('path');
+
+var availableLocales = require('./locales').locales;
+
 // Language tags have a hierarchical meaning which this function uses to expand
 // the specificed `locales` up to their root locales and returns a collection of
 // unique language tags.
 module.exports = function expandLocales(locales) {
+    if (!locales) {
+        return availableLocales.toArray();
+    }
+
     if (!Array.isArray(locales)) {
         throw new Error('locales must be an array of strings');
     }
@@ -20,7 +29,8 @@ module.exports = function expandLocales(locales) {
 
         var parts = locale.split('-');
         while (parts.length) {
-            hash[parts.join('-')] = true;
+            locale = normalizeLocale(parts.join('-'));
+            hash[locale] = true;
             parts.pop();
         }
 
@@ -29,3 +39,12 @@ module.exports = function expandLocales(locales) {
 
     return Object.keys(hash);
 };
+
+function normalizeLocale(locale) {
+    var normalizedLocale = availableLocales.normalize(locale);
+    if (normalizedLocale) {
+        return normalizedLocale;
+    }
+
+    throw new Error('No locale data for: "' + locale + '"');
+}
