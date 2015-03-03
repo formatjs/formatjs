@@ -63,6 +63,8 @@ In order for any data to be returned, the value `true` must be assigned to eithe
 
 An optional array of locales to extract data for, specified as string language tags. By default, data will be returned for all locales in the CLDR.
 
+**Note:** This package leverages the language tag hierarchy to de-duplicate data and also normalizes the casing of language tags. This can lead to specifying `locales` which don't show up in that exact form in the extracted data; e.g., `"EN"` will be normalized to `"en"`, and `"en-US"` will be de-duplicated to `"en"`.
+
 #### `pluralRules`
 
 Boolean for whether or not `pluralRuleFunction`s should be extracted for the specified `locales`. These functions will support both cardinal and ordinal pluralization. These functions are generated using the [make-plural][] project.
