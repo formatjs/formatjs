@@ -34,8 +34,9 @@ module.exports = function (grunt) {
                 src   : [
                     '*-license.*',
                     'main/*/dateFields.json',
-                    'supplemental/ordinals.json',
+                    'supplemental/parentLocales.json',
                     'supplemental/plurals.json',
+                    'supplemental/ordinals.json',
                 ]
             },
         },

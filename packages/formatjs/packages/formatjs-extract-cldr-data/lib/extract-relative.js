@@ -5,13 +5,11 @@
  */
 'use strict';
 
-var fs   = require('fs');
-var glob = require('glob');
 var path = require('path');
 
-var availableLocales = require('./locales').localesWithDateFields;
-
-var CLDR_PATH = path.resolve(__dirname, '..', 'data');
+var getParentLocale = require('./locales').getParentLocale;
+var hasDateFields   = require('./locales').hasDateFields;
+var normalizeLocale = require('./locales').normalizeLocale;
 
 // The set of CLDR date field names that are used in FormatJS.
 var FIELD_NAMES = [
@@ -24,76 +22,120 @@ var FIELD_NAMES = [
 ];
 
 module.exports = function extractRelativeFields(locales) {
-    // Filter the specified `locales` to just those for which we have Date
-    // Fields CLDR data.
-    locales = locales.filter(function (locale) {
-        return availableLocales.has(locale);
-    });
+    // The CLDR states that the "root" locale's data should be used to fill in
+    // any missing data as its data is the default.
+    var defaultFields = loadRelativeFields('root');
 
-    var data   = loadRelativeFieldsData(locales);
+    var fields = {};
     var hashes = {};
 
-    function hashFields(locale, fields) {
-        if (hashes[locale]) {
-            return hashes[locale];
+    // Loads and caches the relative fields for a given `locale` because loading
+    // and transforming the data is expensive.
+    function getRelativeFields(locale) {
+        var relativeFields = fields[locale];
+        if (relativeFields) {
+            return relativeFields;
         }
 
-        return (hashes[locale] = JSON.stringify(fields));
+        if (hasDateFields(locale)) {
+            relativeFields = fields[locale] = loadRelativeFields(locale);
+            return relativeFields;
+        }
     }
 
-    // To produce a collection of locales and their data that's unique, the fact
-    // that language tags are hierarchical is used to determine if the current
-    // locale's field data is represented by another, more generic, locale
-    // within its hierarchy.
-    return Object.keys(data).reduce(function (relativeFields, locale) {
-        var fields = data[locale];
-        var parts  = locale.split('-');
-        var parentLocale;
-        var hash;
+    // Hashes and caches the `fields` for a given `locale` to avoid hashing more
+    // than once since it could be expensive.
+    function hashFields(locale, fields) {
+        var hash = hashes[locale];
+        if (hash) {
+            return hash;
+        }
 
-        // Walk up the locale hierarchy to determine if the current locale's
-        // field data is already represented by one of its parent locales.
-        while (parts.length > 1) {
-            // Remove the last segment of the language tag.
-            parts.pop();
+        hash = hashes[locale] = JSON.stringify(fields);
+        return hash;
+    }
 
-            parentLocale = parts.join('-');
-            hash         = hashFields(locale, fields);
+    // We want to de-dup data that can be referenced from upstream in the
+    // `locale`'s hierarchy when that locale's relative fields are the _exact_
+    // same as one of its ancestors. This will traverse the hierarchy for the
+    // given `locale` until it finds an ancestor with same same relative fields.
+    // When an ancestor can't be found, a data entry must be created for the
+    // `locale` since its relative fields are unique.
+    function findGreatestAncestor(locale) {
+        // The "root" locale is not a suitable ancestor, because there won't be
+        // an entry for "root" in the final data object.
+        var parentLocale = getParentLocale(locale);
+        if (!parentLocale || parentLocale === 'root') {
+            return locale;
+        }
 
-            // No-ops if the field data already exists in the hierarchy.
-            if (data[parentLocale] &&
-                    hash === hashFields(parentLocale, data[parentLocale])) {
-                return relativeFields;
+        // When the `locale` doesn't have fields data, we need to traverse up
+        // its hierarchy to find suitable relative fields data.
+        if (!hasDateFields(locale)) {
+            return findGreatestAncestor(parentLocale);
+        }
+
+        var fields;
+        var parentFields;
+        if (hasDateFields(parentLocale)) {
+            fields       = getRelativeFields(locale);
+            parentFields = getRelativeFields(parentLocale);
+
+            // We can only use this ancestor's fields if they hash to the
+            // _exact_ same value as `locale`'s fields. If the ancestor is
+            // suitable, we keep looking up its hierarchy until the relative
+            // fields are determined to be unique.
+            if (hashFields(locale, fields) ===
+                hashFields(parentLocale, parentFields)) {
+
+                return findGreatestAncestor(parentLocale);
             }
         }
 
+        return locale;
+    }
+
+    return locales.reduce(function (relativeFields, locale) {
+        // Walk the `locale`'s hierarchy to look for suitable ancestor with the
+        // _exact_ same relative fields. If no ancestor is found, the given
+        // `locale` will be returned.
+        locale = findGreatestAncestor(normalizeLocale(locale));
+
+        // The "root" locale is ignored because the built-in `Intl` libraries in
+        // JavaScript have no notion of a "root" locale; instead they use the
+        // IANA Language Subtag Registry.
+        if (locale === 'root') {
+            return relativeFields;
+        }
+
+        // Add an entry for the `locale`, which might be an ancestor. If the
+        // locale doesn't have relative fields, then we fallback to the "root"
+        // locale's fields.
         relativeFields[locale] = {
-            fields: fields,
+            fields: getRelativeFields(locale) || defaultFields,
         };
 
         return relativeFields;
     }, {});
 };
 
-function loadRelativeFieldsData(locales) {
-    return locales.reduce(function (data, locale) {
-        var filename = path.join(CLDR_PATH, 'main', locale, 'dateFields.json');
-        var fields   = require(filename).main[locale].dates.fields;
+function loadRelativeFields(locale) {
+    var filename = path.join('..', 'data', 'main', locale, 'dateFields.json');
+    var fields   = require(filename).main[locale].dates.fields;
 
-        // Reduce the date fields data down to whitelist of fields needed in the
-        // FormatJS libs.
-        data[locale] = FIELD_NAMES.reduce(function (relative, field) {
-            // Transform the fields data from the CLDR structure to one that's
-            // easier to override and customize (if needed). This is also
-            // required back-compat in v1.x of the FormatJS libs.
-            relative[field] = transformFieldData(fields[field]);
-            return relative;
-        }, {});
-
-        return data;
+    // Reduce the date fields data down to whitelist of fields needed in the
+    // FormatJS libs.
+    return FIELD_NAMES.reduce(function (relative, field) {
+        // Transform the fields data from the CLDR structure to one that's
+        // easier to override and customize (if needed). This is also required
+        // back-compat in v1.x of the FormatJS libs.
+        relative[field] = transformFieldData(fields[field]);
+        return relative;
     }, {});
 }
 
+// Transforms the CLDR's data structure for the relative fields into a structure
+// that's more concise and easier to override to supply custom data.
 function transformFieldData(data) {
     Object.keys(data).forEach(function (key) {
         var type = key.match(/^(relative|relativeTime)-type-(.+)$/) || [];

@@ -22,15 +22,19 @@ var data = extractData({
     pluralRules: true
 });
 
-console.log(data);
-// => { en: { locale: 'en', pluralRuleFunction: [Function] } }
+console.log(data); // =>
+
+{ 'en-US': { locale: 'en-US', parentLocale: 'en' },
+  'en-GB': { locale: 'en-GB', parentLocale: 'en-001' },
+  'en-001': { locale: 'en-001', parentLocale: 'en' } },
+  en: { locale: 'en', pluralRuleFunction: [Function] }
 ```
 
-Since the `pluralRuleFunction` for the root locale `"en"` is the same as used in the locales: `"en-US"` and `"en-GB"`, it is returned.
+Since the `pluralRuleFunction` for the root locale `"en"` is the same as used in the locales: `"en-US"` and `"en-GB"`, the function is located in the "en" entry. The entries for the `en-*` locales all contain a `parentLocale` property which can be followed up to `"en"`.
 
 ### Data Shape
 
-The data object returned from this package will have the following shape, here's the data for English:
+The data object returned from this package will have the following shape, here's the data for US English:
 
 ```js
 { en:
@@ -63,7 +67,8 @@ In order for any data to be returned, the value `true` must be assigned to eithe
 
 An optional array of locales to extract data for, specified as string language tags. By default, data will be returned for all locales in the CLDR.
 
-**Note:** This package leverages the language tag hierarchy to de-duplicate data and also normalizes the casing of language tags. This can lead to specifying `locales` which don't show up in that exact form in the extracted data; e.g., `"EN"` will be normalized to `"en"`, and `"en-US"` will be de-duplicated to `"en"`.
+**Note:** This package leverages the language tag hierarchy to de-duplicate data and also normalizes the casing of language tags. There will be an entry for every locale specified in `locales`, _plus_ an entry to each parent locale up to the root. When a locale has a parent, a `parentLocale` field will be present in
+that locale's entry.
 
 #### `pluralRules`
 

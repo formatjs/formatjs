@@ -10,24 +10,23 @@ var assign = require('object.assign');
 var expandLocales         = require('./lib/expand-locales');
 var extractPluralRules    = require('./lib/extract-plurals');
 var extractRelativeFields = require('./lib/extract-relative');
+var getAllLocales         = require('./lib/locales').getAllLocales;
 
 module.exports = function extractData(options) {
     options = assign({
-        locales       : undefined,
+        locales       : null,
         pluralRules   : false,
         relativeFields: false,
     }, options);
 
-    // The specified `locales` need to be expanded because the CLDR data is
-    // hierarchical; e.g.:
-    //
-    // ['zh-Hant-TW'] --> ['zh-Hant-TW', 'zh-Hant', 'zh']
-    var locales = expandLocales(options.locales);
+    // Default to all CLDR locales if none have been provided.
+    var locales = options.locales || getAllLocales();
 
-    // Each type of data has the structure: `{"<locale>": {"<field>": <data>}}`,
+    // Each type of data has the structure: `{"<locale>": {"<key>": <value>}}`,
     // which is well suited for merging into a single object per locale. This
     // performs that deep merge and returns the aggregated result.
     return mergeData(
+        expandLocales(locales),
         options.pluralRules && extractPluralRules(locales),
         options.relativeFields && extractRelativeFields(locales)
     );
@@ -37,8 +36,7 @@ function mergeData(/*...sources*/) {
     var sources = [].slice.call(arguments);
     return sources.reduce(function (data, source) {
         Object.keys(source || {}).forEach(function (locale) {
-            data[locale] || (data[locale] = {locale: locale});
-            assign(data[locale], source[locale]);
+            data[locale] = assign(data[locale] || {}, source[locale]);
         });
 
         return data;
