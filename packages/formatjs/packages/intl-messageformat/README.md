@@ -149,13 +149,45 @@ To create a message to format, use the `IntlMessageFormat` constructor. The cons
 
  - **message** - _{String | AST}_ - String message (or pre-parsed AST) that serves as formatting pattern.
 
- - **locales** - _{String | String[]}_ - A string with a BCP 47 language tag, or an array of such strings. If you do not provide a locale, the default locale will be used, but you should _always_ provide one!
+ - **locales** - _{String | String[]}_ - A string with a BCP 47 language tag, or an array of such strings. If you do not provide a locale, the default locale will be used. When an array of locales is provided, each item and its ancestor locales are checked and the first one with registered locale data is returned. **See: [Locale Resolution](#locale-resolution) for more details.**
 
  - **[formats]** - _{Object}_ - Optional object with user defined options for format styles.
 
 ```js
 var msg = new IntlMessageFormat('My name is {name}.', 'en-US');
 ```
+
+#### Locale Resolution
+
+`IntlMessageFormat` uses a locale resolution process similar to that of the built-in `Intl` APIs to determine which locale data to use based on the `locales` value passed to the constructor. The result of this resolution process can be determined by call the `resolvedOptions()` prototype method.
+
+The following are the abstract steps `IntlMessageFormat` goes through to resolve the locale value:
+
+* If no extra locale data is loaded, the locale will _always_ resolved to `"en"`.
+
+* If locale data is missing for a leaf locale like `"fr-FR"`, but there _is_ data for one of its ancestors, `"fr"` in this case, then its ancestor will be used.
+
+* If there's data for the specified locale, then that locale will be resolved; i.e.,
+
+    ```js
+    var mf = new IntlMessageFormat('', 'en-US');
+    assert(mf.resolvedOptions().locale === 'en-US'); // true
+    ```
+
+* The resolved locales are now normalized; e.g., `"en-us"` will resolve to: `"en-US"`.
+
+_Note: When an array is provided for `locales`, the above steps happen for each item in that array until a match is found._
+
+#### `resolvedOptions()` Method
+
+This method returns an object with the options values that were resolved during instance creation. It currently only contains a `locale` property; here's an example:
+
+```js
+var msg = new IntlMessageFormat('', 'en-us');
+console.log(msg.resolvedOptions().locale); // => "en-US"
+```
+
+Notice how the specified locale was the all lower-case value: `"en-us"`, but it was resolved and normalized to: `"en-US"`.
 
 #### `format(values)` Method
 
@@ -166,7 +198,7 @@ var output = msg.format({name: "Eric"});
 console.log(output); // => "My name is Eric."
 ```
 
-**Note:** A value _must_ be supplied for every argument in the message pattern the instance was constructed with.
+_Note: A value **must** be supplied for every argument in the message pattern the instance was constructed with._
 
 #### User Defined Formats
 
@@ -217,7 +249,7 @@ console.log(msg.format({numPhotos: 1}));    // => "You have one photo."
 console.log(msg.format({numPhotos: 1000})); // => "You have 1,000 photos."
 ```
 
-_Note how when `numPhotos` was `1000`, the number is formatted with the correct thousands separator._
+_Note: how when `numPhotos` was `1000`, the number is formatted with the correct thousands separator._
 
 
 License
