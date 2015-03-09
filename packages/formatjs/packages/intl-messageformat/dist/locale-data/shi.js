@@ -1,1 +1,5 @@
-IntlMessageFormat.__addLocaleData({"locale":"shi","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";if(n===Math.floor(n)&&n>=2&&n<=10)return"few";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"shi","pluralRuleFunction":function (n,ord){var s=String(n).split("."),t0=Number(s[0])==n;if(ord)return"other";return n>=0&&n<=1?"one":t0&&n>=2&&n<=10?"few":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"shi-Latn","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"shi-Latn-MA","parentLocale":"shi-Latn"});
+IntlMessageFormat.__addLocaleData({"locale":"shi-Tfng","parentLocale":"shi"});
+IntlMessageFormat.__addLocaleData({"locale":"shi-Tfng-MA","parentLocale":"shi-Tfng"});

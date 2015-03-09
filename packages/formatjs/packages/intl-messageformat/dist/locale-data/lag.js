@@ -1,1 +1,2 @@
-IntlMessageFormat.__addLocaleData({"locale":"lag","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(n===0)return"zero";if((i===0||i===1)&&(n!==0))return"one";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"lag","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0];if(ord)return"other";return n==0?"zero":(i==0||i==1)&&n!=0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"lag-TZ","parentLocale":"lag"});

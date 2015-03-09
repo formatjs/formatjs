@@ -1,1 +1,2 @@
-IntlMessageFormat.__addLocaleData({"locale":"hu","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"hu","pluralRuleFunction":function (n,ord){if(ord)return n==1||n==5?"one":"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"hu-HU","parentLocale":"hu"});

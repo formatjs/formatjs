@@ -1,1 +1,3 @@
-IntlMessageFormat.__addLocaleData({"locale":"da","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),t=parseInt(n.toString().replace(/^[^.]*\.?|0+$/g,""),10);n=Math.floor(n);if(n===1||(t!==0)&&(i===0||i===1))return"one";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"da","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],t0=Number(s[0])==n;if(ord)return"other";return n==1||!t0&&(i==0||i==1)?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"da-DK","parentLocale":"da"});
+IntlMessageFormat.__addLocaleData({"locale":"da-GL","parentLocale":"da"});

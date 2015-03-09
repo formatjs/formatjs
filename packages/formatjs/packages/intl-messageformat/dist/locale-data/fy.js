@@ -1,1 +1,2 @@
-IntlMessageFormat.__addLocaleData({"locale":"fy","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"fy","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1];if(ord)return"other";return n==1&&v0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"fy-NL","parentLocale":"fy"});

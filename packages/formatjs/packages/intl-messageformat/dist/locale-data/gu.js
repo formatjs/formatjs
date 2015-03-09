@@ -1,1 +1,2 @@
-IntlMessageFormat.__addLocaleData({"locale":"gu","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"gu","pluralRuleFunction":function (n,ord){if(ord)return n==1?"one":n==2||n==3?"two":n==4?"few":n==6?"many":"other";return n>=0&&n<=1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"gu-IN","parentLocale":"gu"});

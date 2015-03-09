@@ -1,1 +1,2 @@
-IntlMessageFormat.__addLocaleData({"locale":"wae","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"wae","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"wae-CH","parentLocale":"wae"});

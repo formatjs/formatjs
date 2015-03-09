@@ -1,1 +1,2 @@
-IntlMessageFormat.__addLocaleData({"locale":"be","pluralRuleFunction":function (n) {n=Math.floor(n);if(n%10===1&&(n%100!==11))return"one";if(n%10===Math.floor(n%10)&&n%10>=2&&n%10<=4&&!(n%100>=12&&n%100<=14))return"few";if(n%10===0||n%10===Math.floor(n%10)&&n%10>=5&&n%10<=9||n%100===Math.floor(n%100)&&n%100>=11&&n%100<=14)return"many";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"be","pluralRuleFunction":function (n,ord){var s=String(n).split("."),t0=Number(s[0])==n,n10=t0&&s[0].slice(-1),n100=t0&&s[0].slice(-2);if(ord)return"other";return n10==1&&n100!=11?"one":n10>=2&&n10<=4&&(n100<12||n100>14)?"few":t0&&n10==0||n10>=5&&n10<=9||n100>=11&&n100<=14?"many":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"be-BY","parentLocale":"be"});

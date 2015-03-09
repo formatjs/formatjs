@@ -1,1 +1,2 @@
-IntlMessageFormat.__addLocaleData({"locale":"sl","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(v===0&&i%100===1)return"one";if(v===0&&i%100===2)return"two";if(v===0&&(i%100===Math.floor(i%100)&&i%100>=3&&i%100<=4||(v!==0)))return"few";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"sl","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],v0=!s[1],i100=i.slice(-2);if(ord)return"other";return v0&&i100==1?"one":v0&&i100==2?"two":v0&&(i100==3||i100==4)||!v0?"few":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"sl-SI","parentLocale":"sl"});

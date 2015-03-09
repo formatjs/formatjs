@@ -159,7 +159,9 @@
 
             case 'pluralFormat':
                 options = this.compileOptions(element);
-                return new $$compiler$$PluralFormat(element.id, format.offset, options, pluralFn);
+                return new $$compiler$$PluralFormat(
+                    element.id, format.ordinal, format.offset, options, pluralFn
+                );
 
             case 'selectFormat':
                 options = this.compileOptions(element);
@@ -176,8 +178,8 @@
             optionsHash = {};
 
         // Save the current plural element, if any, then set it to a new value when
-        // compiling the options sub-patterns. This conform's the spec's algorithm
-        // for handling `"#"` synax in message text.
+        // compiling the options sub-patterns. This conforms the spec's algorithm
+        // for handling `"#"` syntax in message text.
         this.pluralStack.push(this.currentPlural);
         this.currentPlural = format.type === 'pluralFormat' ? element : null;
 
@@ -190,7 +192,7 @@
             optionsHash[option.selector] = this.compileMessage(option.value);
         }
 
-        // Pop the plural stack to put back the original currnet plural value.
+        // Pop the plural stack to put back the original current plural value.
         this.currentPlural = this.pluralStack.pop();
 
         return optionsHash;
@@ -210,18 +212,19 @@
         return typeof value === 'string' ? value : String(value);
     };
 
-    function $$compiler$$PluralFormat(id, offset, options, pluralFn) {
-        this.id       = id;
-        this.offset   = offset;
-        this.options  = options;
-        this.pluralFn = pluralFn;
+    function $$compiler$$PluralFormat(id, useOrdinal, offset, options, pluralFn) {
+        this.id         = id;
+        this.useOrdinal = useOrdinal;
+        this.offset     = offset;
+        this.options    = options;
+        this.pluralFn   = pluralFn;
     }
 
     $$compiler$$PluralFormat.prototype.getOption = function (value) {
         var options = this.options;
 
         var option = options['=' + value] ||
-                options[this.pluralFn(value - this.offset)];
+                options[this.pluralFn(value - this.offset, this.useOrdinal)];
 
         return option || options.other;
     };
@@ -343,67 +346,85 @@
                 },
             peg$c22 = "plural",
             peg$c23 = { type: "literal", value: "plural", description: "\"plural\"" },
-            peg$c24 = function(offset, options) {
+            peg$c24 = function(pluralStyle) {
                     return {
-                        type   : 'pluralFormat',
-                        offset : offset || 0,
-                        options: options
+                        type   : pluralStyle.type,
+                        ordinal: false,
+                        offset : pluralStyle.offset || 0,
+                        options: pluralStyle.options
+                    };
+                },
+            peg$c25 = "selectordinal",
+            peg$c26 = { type: "literal", value: "selectordinal", description: "\"selectordinal\"" },
+            peg$c27 = function(pluralStyle) {
+                    return {
+                        type   : pluralStyle.type,
+                        ordinal: true,
+                        offset : pluralStyle.offset || 0,
+                        options: pluralStyle.options
                     }
                 },
-            peg$c25 = "select",
-            peg$c26 = { type: "literal", value: "select", description: "\"select\"" },
-            peg$c27 = function(options) {
+            peg$c28 = "select",
+            peg$c29 = { type: "literal", value: "select", description: "\"select\"" },
+            peg$c30 = function(options) {
                     return {
                         type   : 'selectFormat',
                         options: options
-                    }
+                    };
                 },
-            peg$c28 = "=",
-            peg$c29 = { type: "literal", value: "=", description: "\"=\"" },
-            peg$c30 = function(selector, pattern) {
+            peg$c31 = "=",
+            peg$c32 = { type: "literal", value: "=", description: "\"=\"" },
+            peg$c33 = function(selector, pattern) {
                     return {
                         type    : 'optionalFormatPattern',
                         selector: selector,
                         value   : pattern
                     };
                 },
-            peg$c31 = "offset:",
-            peg$c32 = { type: "literal", value: "offset:", description: "\"offset:\"" },
-            peg$c33 = function(number) {
+            peg$c34 = "offset:",
+            peg$c35 = { type: "literal", value: "offset:", description: "\"offset:\"" },
+            peg$c36 = function(number) {
                     return number;
                 },
-            peg$c34 = { type: "other", description: "whitespace" },
-            peg$c35 = /^[ \t\n\r]/,
-            peg$c36 = { type: "class", value: "[ \\t\\n\\r]", description: "[ \\t\\n\\r]" },
-            peg$c37 = { type: "other", description: "optionalWhitespace" },
-            peg$c38 = /^[0-9]/,
-            peg$c39 = { type: "class", value: "[0-9]", description: "[0-9]" },
-            peg$c40 = /^[0-9a-f]/i,
-            peg$c41 = { type: "class", value: "[0-9a-f]i", description: "[0-9a-f]i" },
-            peg$c42 = "0",
-            peg$c43 = { type: "literal", value: "0", description: "\"0\"" },
-            peg$c44 = /^[1-9]/,
-            peg$c45 = { type: "class", value: "[1-9]", description: "[1-9]" },
-            peg$c46 = function(digits) {
+            peg$c37 = function(offset, options) {
+                    return {
+                        type   : 'pluralFormat',
+                        offset : offset,
+                        options: options
+                    };
+                },
+            peg$c38 = { type: "other", description: "whitespace" },
+            peg$c39 = /^[ \t\n\r]/,
+            peg$c40 = { type: "class", value: "[ \\t\\n\\r]", description: "[ \\t\\n\\r]" },
+            peg$c41 = { type: "other", description: "optionalWhitespace" },
+            peg$c42 = /^[0-9]/,
+            peg$c43 = { type: "class", value: "[0-9]", description: "[0-9]" },
+            peg$c44 = /^[0-9a-f]/i,
+            peg$c45 = { type: "class", value: "[0-9a-f]i", description: "[0-9a-f]i" },
+            peg$c46 = "0",
+            peg$c47 = { type: "literal", value: "0", description: "\"0\"" },
+            peg$c48 = /^[1-9]/,
+            peg$c49 = { type: "class", value: "[1-9]", description: "[1-9]" },
+            peg$c50 = function(digits) {
                 return parseInt(digits, 10);
             },
-            peg$c47 = /^[^{}\\\0-\x1F \t\n\r]/,
-            peg$c48 = { type: "class", value: "[^{}\\\\\\0-\\x1F \\t\\n\\r]", description: "[^{}\\\\\\0-\\x1F \\t\\n\\r]" },
-            peg$c49 = "\\#",
-            peg$c50 = { type: "literal", value: "\\#", description: "\"\\\\#\"" },
-            peg$c51 = function() { return '\\#'; },
-            peg$c52 = "\\{",
-            peg$c53 = { type: "literal", value: "\\{", description: "\"\\\\{\"" },
-            peg$c54 = function() { return '\u007B'; },
-            peg$c55 = "\\}",
-            peg$c56 = { type: "literal", value: "\\}", description: "\"\\\\}\"" },
-            peg$c57 = function() { return '\u007D'; },
-            peg$c58 = "\\u",
-            peg$c59 = { type: "literal", value: "\\u", description: "\"\\\\u\"" },
-            peg$c60 = function(digits) {
+            peg$c51 = /^[^{}\\\0-\x1F \t\n\r]/,
+            peg$c52 = { type: "class", value: "[^{}\\\\\\0-\\x1F \\t\\n\\r]", description: "[^{}\\\\\\0-\\x1F \\t\\n\\r]" },
+            peg$c53 = "\\#",
+            peg$c54 = { type: "literal", value: "\\#", description: "\"\\\\#\"" },
+            peg$c55 = function() { return '\\#'; },
+            peg$c56 = "\\{",
+            peg$c57 = { type: "literal", value: "\\{", description: "\"\\\\{\"" },
+            peg$c58 = function() { return '\u007B'; },
+            peg$c59 = "\\}",
+            peg$c60 = { type: "literal", value: "\\}", description: "\"\\\\}\"" },
+            peg$c61 = function() { return '\u007D'; },
+            peg$c62 = "\\u",
+            peg$c63 = { type: "literal", value: "\\u", description: "\"\\\\u\"" },
+            peg$c64 = function(digits) {
                     return String.fromCharCode(parseInt(digits, 16));
                 },
-            peg$c61 = function(chars) { return chars.join(''); },
+            peg$c65 = function(chars) { return chars.join(''); },
 
             peg$currPos          = 0,
             peg$reportedPos      = 0,
@@ -832,7 +853,10 @@
           if (s0 === peg$FAILED) {
             s0 = peg$parsepluralFormat();
             if (s0 === peg$FAILED) {
-              s0 = peg$parseselectFormat();
+              s0 = peg$parseselectOrdinalFormat();
+              if (s0 === peg$FAILED) {
+                s0 = peg$parseselectFormat();
+              }
             }
           }
 
@@ -922,7 +946,7 @@
         }
 
         function peg$parsepluralFormat() {
-          var s0, s1, s2, s3, s4, s5, s6, s7, s8;
+          var s0, s1, s2, s3, s4, s5;
 
           s0 = peg$currPos;
           if (input.substr(peg$currPos, 6) === peg$c22) {
@@ -945,35 +969,64 @@
               if (s3 !== peg$FAILED) {
                 s4 = peg$parse_();
                 if (s4 !== peg$FAILED) {
-                  s5 = peg$parseoffset();
-                  if (s5 === peg$FAILED) {
-                    s5 = peg$c9;
-                  }
+                  s5 = peg$parsepluralStyle();
                   if (s5 !== peg$FAILED) {
-                    s6 = peg$parse_();
-                    if (s6 !== peg$FAILED) {
-                      s7 = [];
-                      s8 = peg$parseoptionalFormatPattern();
-                      if (s8 !== peg$FAILED) {
-                        while (s8 !== peg$FAILED) {
-                          s7.push(s8);
-                          s8 = peg$parseoptionalFormatPattern();
-                        }
-                      } else {
-                        s7 = peg$c2;
-                      }
-                      if (s7 !== peg$FAILED) {
-                        peg$reportedPos = s0;
-                        s1 = peg$c24(s5, s7);
-                        s0 = s1;
-                      } else {
-                        peg$currPos = s0;
-                        s0 = peg$c2;
-                      }
-                    } else {
-                      peg$currPos = s0;
-                      s0 = peg$c2;
-                    }
+                    peg$reportedPos = s0;
+                    s1 = peg$c24(s5);
+                    s0 = s1;
+                  } else {
+                    peg$currPos = s0;
+                    s0 = peg$c2;
+                  }
+                } else {
+                  peg$currPos = s0;
+                  s0 = peg$c2;
+                }
+              } else {
+                peg$currPos = s0;
+                s0 = peg$c2;
+              }
+            } else {
+              peg$currPos = s0;
+              s0 = peg$c2;
+            }
+          } else {
+            peg$currPos = s0;
+            s0 = peg$c2;
+          }
+
+          return s0;
+        }
+
+        function peg$parseselectOrdinalFormat() {
+          var s0, s1, s2, s3, s4, s5;
+
+          s0 = peg$currPos;
+          if (input.substr(peg$currPos, 13) === peg$c25) {
+            s1 = peg$c25;
+            peg$currPos += 13;
+          } else {
+            s1 = peg$FAILED;
+            if (peg$silentFails === 0) { peg$fail(peg$c26); }
+          }
+          if (s1 !== peg$FAILED) {
+            s2 = peg$parse_();
+            if (s2 !== peg$FAILED) {
+              if (input.charCodeAt(peg$currPos) === 44) {
+                s3 = peg$c10;
+                peg$currPos++;
+              } else {
+                s3 = peg$FAILED;
+                if (peg$silentFails === 0) { peg$fail(peg$c11); }
+              }
+              if (s3 !== peg$FAILED) {
+                s4 = peg$parse_();
+                if (s4 !== peg$FAILED) {
+                  s5 = peg$parsepluralStyle();
+                  if (s5 !== peg$FAILED) {
+                    peg$reportedPos = s0;
+                    s1 = peg$c27(s5);
+                    s0 = s1;
                   } else {
                     peg$currPos = s0;
                     s0 = peg$c2;
@@ -1002,12 +1055,12 @@
           var s0, s1, s2, s3, s4, s5, s6;
 
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 6) === peg$c25) {
-            s1 = peg$c25;
+          if (input.substr(peg$currPos, 6) === peg$c28) {
+            s1 = peg$c28;
             peg$currPos += 6;
           } else {
             s1 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c26); }
+            if (peg$silentFails === 0) { peg$fail(peg$c29); }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parse_();
@@ -1034,7 +1087,7 @@
                   }
                   if (s5 !== peg$FAILED) {
                     peg$reportedPos = s0;
-                    s1 = peg$c27(s5);
+                    s1 = peg$c30(s5);
                     s0 = s1;
                   } else {
                     peg$currPos = s0;
@@ -1066,11 +1119,11 @@
           s0 = peg$currPos;
           s1 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 61) {
-            s2 = peg$c28;
+            s2 = peg$c31;
             peg$currPos++;
           } else {
             s2 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c29); }
+            if (peg$silentFails === 0) { peg$fail(peg$c32); }
           }
           if (s2 !== peg$FAILED) {
             s3 = peg$parsenumber();
@@ -1129,7 +1182,7 @@
                         }
                         if (s8 !== peg$FAILED) {
                           peg$reportedPos = s0;
-                          s1 = peg$c30(s2, s6);
+                          s1 = peg$c33(s2, s6);
                           s0 = s1;
                         } else {
                           peg$currPos = s0;
@@ -1171,12 +1224,12 @@
           var s0, s1, s2, s3;
 
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 7) === peg$c31) {
-            s1 = peg$c31;
+          if (input.substr(peg$currPos, 7) === peg$c34) {
+            s1 = peg$c34;
             peg$currPos += 7;
           } else {
             s1 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c32); }
+            if (peg$silentFails === 0) { peg$fail(peg$c35); }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parse_();
@@ -1184,7 +1237,48 @@
               s3 = peg$parsenumber();
               if (s3 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c33(s3);
+                s1 = peg$c36(s3);
+                s0 = s1;
+              } else {
+                peg$currPos = s0;
+                s0 = peg$c2;
+              }
+            } else {
+              peg$currPos = s0;
+              s0 = peg$c2;
+            }
+          } else {
+            peg$currPos = s0;
+            s0 = peg$c2;
+          }
+
+          return s0;
+        }
+
+        function peg$parsepluralStyle() {
+          var s0, s1, s2, s3, s4;
+
+          s0 = peg$currPos;
+          s1 = peg$parseoffset();
+          if (s1 === peg$FAILED) {
+            s1 = peg$c9;
+          }
+          if (s1 !== peg$FAILED) {
+            s2 = peg$parse_();
+            if (s2 !== peg$FAILED) {
+              s3 = [];
+              s4 = peg$parseoptionalFormatPattern();
+              if (s4 !== peg$FAILED) {
+                while (s4 !== peg$FAILED) {
+                  s3.push(s4);
+                  s4 = peg$parseoptionalFormatPattern();
+                }
+              } else {
+                s3 = peg$c2;
+              }
+              if (s3 !== peg$FAILED) {
+                peg$reportedPos = s0;
+                s1 = peg$c37(s1, s3);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -1207,22 +1301,22 @@
 
           peg$silentFails++;
           s0 = [];
-          if (peg$c35.test(input.charAt(peg$currPos))) {
+          if (peg$c39.test(input.charAt(peg$currPos))) {
             s1 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c36); }
+            if (peg$silentFails === 0) { peg$fail(peg$c40); }
           }
           if (s1 !== peg$FAILED) {
             while (s1 !== peg$FAILED) {
               s0.push(s1);
-              if (peg$c35.test(input.charAt(peg$currPos))) {
+              if (peg$c39.test(input.charAt(peg$currPos))) {
                 s1 = input.charAt(peg$currPos);
                 peg$currPos++;
               } else {
                 s1 = peg$FAILED;
-                if (peg$silentFails === 0) { peg$fail(peg$c36); }
+                if (peg$silentFails === 0) { peg$fail(peg$c40); }
               }
             }
           } else {
@@ -1231,7 +1325,7 @@
           peg$silentFails--;
           if (s0 === peg$FAILED) {
             s1 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c34); }
+            if (peg$silentFails === 0) { peg$fail(peg$c38); }
           }
 
           return s0;
@@ -1255,7 +1349,7 @@
           peg$silentFails--;
           if (s0 === peg$FAILED) {
             s1 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c37); }
+            if (peg$silentFails === 0) { peg$fail(peg$c41); }
           }
 
           return s0;
@@ -1264,12 +1358,12 @@
         function peg$parsedigit() {
           var s0;
 
-          if (peg$c38.test(input.charAt(peg$currPos))) {
+          if (peg$c42.test(input.charAt(peg$currPos))) {
             s0 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s0 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c39); }
+            if (peg$silentFails === 0) { peg$fail(peg$c43); }
           }
 
           return s0;
@@ -1278,12 +1372,12 @@
         function peg$parsehexDigit() {
           var s0;
 
-          if (peg$c40.test(input.charAt(peg$currPos))) {
+          if (peg$c44.test(input.charAt(peg$currPos))) {
             s0 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s0 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c41); }
+            if (peg$silentFails === 0) { peg$fail(peg$c45); }
           }
 
           return s0;
@@ -1294,21 +1388,21 @@
 
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 48) {
-            s1 = peg$c42;
+            s1 = peg$c46;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c43); }
+            if (peg$silentFails === 0) { peg$fail(peg$c47); }
           }
           if (s1 === peg$FAILED) {
             s1 = peg$currPos;
             s2 = peg$currPos;
-            if (peg$c44.test(input.charAt(peg$currPos))) {
+            if (peg$c48.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
-              if (peg$silentFails === 0) { peg$fail(peg$c45); }
+              if (peg$silentFails === 0) { peg$fail(peg$c49); }
             }
             if (s3 !== peg$FAILED) {
               s4 = [];
@@ -1335,7 +1429,7 @@
           }
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c46(s1);
+            s1 = peg$c50(s1);
           }
           s0 = s1;
 
@@ -1345,63 +1439,63 @@
         function peg$parsechar() {
           var s0, s1, s2, s3, s4, s5, s6, s7;
 
-          if (peg$c47.test(input.charAt(peg$currPos))) {
+          if (peg$c51.test(input.charAt(peg$currPos))) {
             s0 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s0 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c48); }
+            if (peg$silentFails === 0) { peg$fail(peg$c52); }
           }
           if (s0 === peg$FAILED) {
             s0 = peg$currPos;
-            if (input.substr(peg$currPos, 2) === peg$c49) {
-              s1 = peg$c49;
+            if (input.substr(peg$currPos, 2) === peg$c53) {
+              s1 = peg$c53;
               peg$currPos += 2;
             } else {
               s1 = peg$FAILED;
-              if (peg$silentFails === 0) { peg$fail(peg$c50); }
+              if (peg$silentFails === 0) { peg$fail(peg$c54); }
             }
             if (s1 !== peg$FAILED) {
               peg$reportedPos = s0;
-              s1 = peg$c51();
+              s1 = peg$c55();
             }
             s0 = s1;
             if (s0 === peg$FAILED) {
               s0 = peg$currPos;
-              if (input.substr(peg$currPos, 2) === peg$c52) {
-                s1 = peg$c52;
+              if (input.substr(peg$currPos, 2) === peg$c56) {
+                s1 = peg$c56;
                 peg$currPos += 2;
               } else {
                 s1 = peg$FAILED;
-                if (peg$silentFails === 0) { peg$fail(peg$c53); }
+                if (peg$silentFails === 0) { peg$fail(peg$c57); }
               }
               if (s1 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c54();
+                s1 = peg$c58();
               }
               s0 = s1;
               if (s0 === peg$FAILED) {
                 s0 = peg$currPos;
-                if (input.substr(peg$currPos, 2) === peg$c55) {
-                  s1 = peg$c55;
+                if (input.substr(peg$currPos, 2) === peg$c59) {
+                  s1 = peg$c59;
                   peg$currPos += 2;
                 } else {
                   s1 = peg$FAILED;
-                  if (peg$silentFails === 0) { peg$fail(peg$c56); }
+                  if (peg$silentFails === 0) { peg$fail(peg$c60); }
                 }
                 if (s1 !== peg$FAILED) {
                   peg$reportedPos = s0;
-                  s1 = peg$c57();
+                  s1 = peg$c61();
                 }
                 s0 = s1;
                 if (s0 === peg$FAILED) {
                   s0 = peg$currPos;
-                  if (input.substr(peg$currPos, 2) === peg$c58) {
-                    s1 = peg$c58;
+                  if (input.substr(peg$currPos, 2) === peg$c62) {
+                    s1 = peg$c62;
                     peg$currPos += 2;
                   } else {
                     s1 = peg$FAILED;
-                    if (peg$silentFails === 0) { peg$fail(peg$c59); }
+                    if (peg$silentFails === 0) { peg$fail(peg$c63); }
                   }
                   if (s1 !== peg$FAILED) {
                     s2 = peg$currPos;
@@ -1438,7 +1532,7 @@
                     s2 = s3;
                     if (s2 !== peg$FAILED) {
                       peg$reportedPos = s0;
-                      s1 = peg$c60(s2);
+                      s1 = peg$c64(s2);
                       s0 = s1;
                     } else {
                       peg$currPos = s0;
@@ -1472,7 +1566,7 @@
           }
           if (s1 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c61(s1);
+            s1 = peg$c65(s1);
           }
           s0 = s1;
 
@@ -1518,12 +1612,11 @@
         // Defined first because it's used to build the format pattern.
         $$es5$$defineProperty(this, '_locale',  {value: this._resolveLocale(locales)});
 
-        var pluralFn = $$core$$MessageFormat.__localeData__[this._locale].pluralRuleFunction;
-
         // Compile the `ast` to a pattern that is highly optimized for repeated
         // `format()` invocations. **Note:** This passes the `locales` set provided
         // to the constructor instead of just the resolved locale.
-        var pattern = this._compilePattern(ast, locales, formats, pluralFn);
+        var pluralFn = this._findPluralRuleFunction(this._locale);
+        var pattern  = this._compilePattern(ast, locales, formats, pluralFn);
 
         // "Bind" `format()` method to `this` so it can be passed by reference like
         // the other `Intl` APIs.
@@ -1616,17 +1709,7 @@
             );
         }
 
-        if (!data.pluralRuleFunction) {
-            throw new Error(
-                'Locale data provided to IntlMessageFormat is missing a ' +
-                '`pluralRuleFunction` property'
-            );
-        }
-
-        // Message format locale data only requires the first part of the tag.
-        var locale = data.locale.toLowerCase().split('-')[0];
-
-        $$core$$MessageFormat.__localeData__[locale] = data;
+        $$core$$MessageFormat.__localeData__[data.locale.toLowerCase()] = data;
     }});
 
     // Defines `__parse()` static method as an exposed private.
@@ -1650,6 +1733,26 @@
     $$core$$MessageFormat.prototype._compilePattern = function (ast, locales, formats, pluralFn) {
         var compiler = new $$compiler$$default(locales, formats, pluralFn);
         return compiler.compile(ast);
+    };
+
+    $$core$$MessageFormat.prototype._findPluralRuleFunction = function (locale) {
+        var localeData = $$core$$MessageFormat.__localeData__;
+        var data       = localeData[locale.toLowerCase()];
+
+        // The locale data is de-duplicated, so we have to traverse the locale's
+        // hierarchy until we find a `pluralRuleFunction` to return.
+        while (data) {
+            if (data.pluralRuleFunction) {
+                return data.pluralRuleFunction;
+            }
+
+            data = data.parentLocale && localeData[data.parentLocale.toLowerCase()];
+        }
+
+        throw new Error(
+            'Locale data added to IntlMessageFormat is missing a ' +
+            '`pluralRuleFunction` for :' + locale
+        );
     };
 
     $$core$$MessageFormat.prototype._format = function (pattern, values) {
@@ -1705,41 +1808,43 @@
     };
 
     $$core$$MessageFormat.prototype._resolveLocale = function (locales) {
-        if (!locales) {
-            locales = $$core$$MessageFormat.defaultLocale;
-        }
-
         if (typeof locales === 'string') {
             locales = [locales];
         }
 
+        // Create a copy of the array so we can push on the default locale.
+        locales = (locales || []).concat($$core$$MessageFormat.defaultLocale);
+
         var localeData = $$core$$MessageFormat.__localeData__;
-        var i, len, locale;
+        var i, len, localeParts, data;
 
+        // Using the set of locales + the default locale, we look for the first one
+        // which that has been registered. When data does not exist for a locale, we
+        // traverse its ancestors to find something that's been registered within
+        // its hierarchy of locales. Since we lack the proper `parentLocale` data
+        // here, we must take a naive approach to traversal.
         for (i = 0, len = locales.length; i < len; i += 1) {
-            // We just need the root part of the langage tag.
-            locale = locales[i].split('-')[0].toLowerCase();
+            localeParts = locales[i].toLowerCase().split('-');
 
-            // Validate that the langage tag is structurally valid.
-            if (!/[a-z]{2,3}/.test(locale)) {
-                throw new Error(
-                    'Language tag provided to IntlMessageFormat is not ' +
-                    'structrually valid: ' + locale
-                );
-            }
+            while (localeParts.length) {
+                data = localeData[localeParts.join('-')];
+                if (data) {
+                    // Return the normalized locale string; e.g., we return "en-US",
+                    // instead of "en-us".
+                    return data.locale;
+                }
 
-            // Return the first locale for which we have CLDR data registered.
-            if ($$utils$$hop.call(localeData, locale)) {
-                return locale;
+                localeParts.pop();
             }
         }
 
+        var defaultLocale = locales.pop();
         throw new Error(
             'No locale data has been added to IntlMessageFormat for: ' +
-            locales.join(', ')
+            locales.join(', ') + ', or the default locale: ' + defaultLocale
         );
     };
-    var $$en$$default = {"locale":"en","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}};
+    var $$en$$default = {"locale":"en","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1],t0=Number(s[0])==n,n10=t0&&s[0].slice(-1),n100=t0&&s[0].slice(-2);if(ord)return n10==1&&n100!=11?"one":n10==2&&n100!=12?"two":n10==3&&n100!=13?"few":"other";return n==1&&v0?"one":"other"}};
 
     $$core$$default.__addLocaleData($$en$$default);
     $$core$$default.defaultLocale = 'en';
@@ -1749,164 +1854,986 @@
 }).call(this);
 
 //
-IntlMessageFormat.__addLocaleData({"locale":"af","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ak","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===Math.floor(n)&&n>=0&&n<=1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"am","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ar","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===0)return"zero";if(n===1)return"one";if(n===2)return"two";if(n%100===Math.floor(n%100)&&n%100>=3&&n%100<=10)return"few";if(n%100===Math.floor(n%100)&&n%100>=11&&n%100<=99)return"many";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"as","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"asa","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ast","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"az","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"be","pluralRuleFunction":function (n) {n=Math.floor(n);if(n%10===1&&(n%100!==11))return"one";if(n%10===Math.floor(n%10)&&n%10>=2&&n%10<=4&&!(n%100>=12&&n%100<=14))return"few";if(n%10===0||n%10===Math.floor(n%10)&&n%10>=5&&n%10<=9||n%100===Math.floor(n%100)&&n%100>=11&&n%100<=14)return"many";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"bem","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"bez","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"bg","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"bm","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"bn","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"bo","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"br","pluralRuleFunction":function (n) {n=Math.floor(n);if(n%10===1&&!(n%100===11||n%100===71||n%100===91))return"one";if(n%10===2&&!(n%100===12||n%100===72||n%100===92))return"two";if(n%10===Math.floor(n%10)&&(n%10>=3&&n%10<=4||n%10===9)&&!(n%100>=10&&n%100<=19||n%100>=70&&n%100<=79||n%100>=90&&n%100<=99))return"few";if((n!==0)&&n%1e6===0)return"many";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"brx","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"bs","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length,f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(v===0&&i%10===1&&((i%100!==11)||f%10===1&&(f%100!==11)))return"one";if(v===0&&i%10===Math.floor(i%10)&&i%10>=2&&i%10<=4&&(!(i%100>=12&&i%100<=14)||f%10===Math.floor(f%10)&&f%10>=2&&f%10<=4&&!(f%100>=12&&f%100<=14)))return"few";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ca","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"cgg","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"chr","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"cs","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";if(i===Math.floor(i)&&i>=2&&i<=4&&v===0)return"few";if((v!==0))return"many";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"cy","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===0)return"zero";if(n===1)return"one";if(n===2)return"two";if(n===3)return"few";if(n===6)return"many";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"da","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),t=parseInt(n.toString().replace(/^[^.]*\.?|0+$/g,""),10);n=Math.floor(n);if(n===1||(t!==0)&&(i===0||i===1))return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"de","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"dz","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ee","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"el","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"en","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"eo","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"es","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"et","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"eu","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"fa","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ff","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||i===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"fi","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"fil","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length,f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(v===0&&(i===1||i===2||i===3||v===0&&(!(i%10===4||i%10===6||i%10===9)||(v!==0)&&!(f%10===4||f%10===6||f%10===9))))return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"fo","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"fr","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||i===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"fur","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"fy","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ga","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";if(n===2)return"two";if(n===Math.floor(n)&&n>=3&&n<=6)return"few";if(n===Math.floor(n)&&n>=7&&n<=10)return"many";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"gd","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1||n===11)return"one";if(n===2||n===12)return"two";if(n===Math.floor(n)&&(n>=3&&n<=10||n>=13&&n<=19))return"few";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"gl","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"gsw","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"gu","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"gv","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(v===0&&i%10===1)return"one";if(v===0&&i%10===2)return"two";if(v===0&&(i%100===0||i%100===20||i%100===40||i%100===60||i%100===80))return"few";if((v!==0))return"many";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ha","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"haw","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"he","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";if(i===2&&v===0)return"two";if(v===0&&!(n>=0&&n<=10)&&n%10===0)return"many";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"hi","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"hr","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length,f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(v===0&&i%10===1&&((i%100!==11)||f%10===1&&(f%100!==11)))return"one";if(v===0&&i%10===Math.floor(i%10)&&i%10>=2&&i%10<=4&&(!(i%100>=12&&i%100<=14)||f%10===Math.floor(f%10)&&f%10>=2&&f%10<=4&&!(f%100>=12&&f%100<=14)))return"few";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"hu","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"hy","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||i===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"id","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ig","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ii","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"is","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),t=parseInt(n.toString().replace(/^[^.]*\.?|0+$/g,""),10);n=Math.floor(n);if(t===0&&i%10===1&&((i%100!==11)||(t!==0)))return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"it","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ja","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"jgo","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"jmc","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ka","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"kab","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||i===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"kde","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"kea","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"kk","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"kkj","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"kl","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"km","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"kn","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ko","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ks","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ksb","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ksh","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===0)return"zero";if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"kw","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";if(n===2)return"two";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ky","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"lag","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(n===0)return"zero";if((i===0||i===1)&&(n!==0))return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"lg","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"lkt","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ln","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===Math.floor(n)&&n>=0&&n<=1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"lo","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"lt","pluralRuleFunction":function (n) {var f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(n%10===1&&!(n%100>=11&&n%100<=19))return"one";if(n%10===Math.floor(n%10)&&n%10>=2&&n%10<=9&&!(n%100>=11&&n%100<=19))return"few";if((f!==0))return"many";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"lv","pluralRuleFunction":function (n) {var v=n.toString().replace(/^[^.]*\.?/,"").length,f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(n%10===0||n%100===Math.floor(n%100)&&n%100>=11&&n%100<=19||v===2&&f%100===Math.floor(f%100)&&f%100>=11&&f%100<=19)return"zero";if(n%10===1&&((n%100!==11)||v===2&&f%10===1&&((f%100!==11)||(v!==2)&&f%10===1)))return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"mas","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"mg","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===Math.floor(n)&&n>=0&&n<=1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"mgo","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"mk","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length,f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(v===0&&(i%10===1||f%10===1))return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ml","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"mn","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"mr","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ms","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"mt","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";if(n===0||n%100===Math.floor(n%100)&&n%100>=2&&n%100<=10)return"few";if(n%100===Math.floor(n%100)&&n%100>=11&&n%100<=19)return"many";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"my","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"naq","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";if(n===2)return"two";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"nb","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"nd","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ne","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"nl","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"nn","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"nnh","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"nr","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"nso","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===Math.floor(n)&&n>=0&&n<=1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"nyn","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"om","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"or","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"os","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"pa","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===Math.floor(n)&&n>=0&&n<=1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"pl","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";if(v===0&&i%10===Math.floor(i%10)&&i%10>=2&&i%10<=4&&!(i%100>=12&&i%100<=14))return"few";if(v===0&&(i!==1)&&(i%10===Math.floor(i%10)&&i%10>=0&&i%10<=1||v===0&&(i%10===Math.floor(i%10)&&i%10>=5&&i%10<=9||v===0&&i%100===Math.floor(i%100)&&i%100>=12&&i%100<=14)))return"many";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ps","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"pt","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length,t=parseInt(n.toString().replace(/^[^.]*\.?|0+$/g,""),10);n=Math.floor(n);if(i===1&&(v===0||i===0&&t===1))return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"rm","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ro","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";if((v!==0)||n===0||(n!==1)&&n%100===Math.floor(n%100)&&n%100>=1&&n%100<=19)return"few";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"rof","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ru","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(v===0&&i%10===1&&(i%100!==11))return"one";if(v===0&&i%10===Math.floor(i%10)&&i%10>=2&&i%10<=4&&!(i%100>=12&&i%100<=14))return"few";if(v===0&&(i%10===0||v===0&&(i%10===Math.floor(i%10)&&i%10>=5&&i%10<=9||v===0&&i%100===Math.floor(i%100)&&i%100>=11&&i%100<=14)))return"many";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"rwk","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"sah","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"saq","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"se","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";if(n===2)return"two";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"seh","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ses","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"sg","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"shi","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";if(n===Math.floor(n)&&n>=2&&n<=10)return"few";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"si","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(n===0||n===1||i===0&&f===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"sk","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";if(i===Math.floor(i)&&i>=2&&i<=4&&v===0)return"few";if((v!==0))return"many";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"sl","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(v===0&&i%100===1)return"one";if(v===0&&i%100===2)return"two";if(v===0&&(i%100===Math.floor(i%100)&&i%100>=3&&i%100<=4||(v!==0)))return"few";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"sn","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"so","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"sq","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"sr","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length,f=parseInt(n.toString().replace(/^[^.]*\.?/,""),10);n=Math.floor(n);if(v===0&&i%10===1&&((i%100!==11)||f%10===1&&(f%100!==11)))return"one";if(v===0&&i%10===Math.floor(i%10)&&i%10>=2&&i%10<=4&&(!(i%100>=12&&i%100<=14)||f%10===Math.floor(f%10)&&f%10>=2&&f%10<=4&&!(f%100>=12&&f%100<=14)))return"few";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ss","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ssy","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"st","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"sv","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"sw","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ta","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"te","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"teo","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"th","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ti","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===Math.floor(n)&&n>=0&&n<=1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"tig","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"tn","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"to","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"tr","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ts","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"tzm","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===Math.floor(n)&&n>=0&&n<=1||n===Math.floor(n)&&n>=11&&n<=99)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ug","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"uk","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(v===0&&i%10===1&&(i%100!==11))return"one";if(v===0&&i%10===Math.floor(i%10)&&i%10>=2&&i%10<=4&&!(i%100>=12&&i%100<=14))return"few";if(v===0&&(i%10===0||v===0&&(i%10===Math.floor(i%10)&&i%10>=5&&i%10<=9||v===0&&i%100===Math.floor(i%100)&&i%100>=11&&i%100<=14)))return"many";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ur","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n)),v=n.toString().replace(/^[^.]*\.?/,"").length;n=Math.floor(n);if(i===1&&v===0)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"uz","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"ve","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"vi","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"vo","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"vun","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"wae","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"xh","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"xog","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===1)return"one";return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"yo","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"zh","pluralRuleFunction":function (n) {return"other";}});
-IntlMessageFormat.__addLocaleData({"locale":"zu","pluralRuleFunction":function (n) {var i=Math.floor(Math.abs(n));n=Math.floor(n);if(i===0||n===1)return"one";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"aa","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"aa-DJ","parentLocale":"aa"});
+IntlMessageFormat.__addLocaleData({"locale":"aa-ER","parentLocale":"aa"});
+IntlMessageFormat.__addLocaleData({"locale":"aa-ET","parentLocale":"aa"});
+
+IntlMessageFormat.__addLocaleData({"locale":"af","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"af-NA","parentLocale":"af"});
+IntlMessageFormat.__addLocaleData({"locale":"af-ZA","parentLocale":"af"});
+
+IntlMessageFormat.__addLocaleData({"locale":"agq","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"agq-CM","parentLocale":"agq"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ak","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==0||n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ak-GH","parentLocale":"ak"});
+
+IntlMessageFormat.__addLocaleData({"locale":"am","pluralRuleFunction":function (n,ord){if(ord)return"other";return n>=0&&n<=1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"am-ET","parentLocale":"am"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ar","pluralRuleFunction":function (n,ord){var s=String(n).split("."),t0=Number(s[0])==n,n100=t0&&s[0].slice(-2);if(ord)return"other";return n==0?"zero":n==1?"one":n==2?"two":n100>=3&&n100<=10?"few":n100>=11&&n100<=99?"many":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ar-001","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-AE","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-BH","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-DJ","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-DZ","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-EG","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-EH","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-ER","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-IL","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-IQ","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-JO","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-KM","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-KW","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-LB","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-LY","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-MA","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-MR","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-OM","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-PS","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-QA","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-SA","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-SD","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-SO","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-SS","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-SY","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-TD","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-TN","parentLocale":"ar"});
+IntlMessageFormat.__addLocaleData({"locale":"ar-YE","parentLocale":"ar"});
+
+IntlMessageFormat.__addLocaleData({"locale":"as","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"as-IN","parentLocale":"as"});
+
+IntlMessageFormat.__addLocaleData({"locale":"asa","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"asa-TZ","parentLocale":"asa"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ast","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1];if(ord)return"other";return n==1&&v0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ast-ES","parentLocale":"ast"});
+
+IntlMessageFormat.__addLocaleData({"locale":"az","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],i10=i.slice(-1),i100=i.slice(-2),i1000=i.slice(-3);if(ord)return i10==1||i10==2||i10==5||i10==7||i10==8||(i100==20||i100==50||i100==70||i100==80)?"one":i10==3||i10==4||(i1000==100||i1000==200||i1000==300||i1000==400||i1000==500||i1000==600||i1000==700||i1000==800||i1000==900)?"few":i==0||i10==6||(i100==40||i100==60||i100==90)?"many":"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"az-Cyrl","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"az-Cyrl-AZ","parentLocale":"az-Cyrl"});
+IntlMessageFormat.__addLocaleData({"locale":"az-Latn","parentLocale":"az"});
+IntlMessageFormat.__addLocaleData({"locale":"az-Latn-AZ","parentLocale":"az-Latn"});
+
+IntlMessageFormat.__addLocaleData({"locale":"bas","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"bas-CM","parentLocale":"bas"});
+
+IntlMessageFormat.__addLocaleData({"locale":"be","pluralRuleFunction":function (n,ord){var s=String(n).split("."),t0=Number(s[0])==n,n10=t0&&s[0].slice(-1),n100=t0&&s[0].slice(-2);if(ord)return"other";return n10==1&&n100!=11?"one":n10>=2&&n10<=4&&(n100<12||n100>14)?"few":t0&&n10==0||n10>=5&&n10<=9||n100>=11&&n100<=14?"many":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"be-BY","parentLocale":"be"});
+
+IntlMessageFormat.__addLocaleData({"locale":"bem","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"bem-ZM","parentLocale":"bem"});
+
+IntlMessageFormat.__addLocaleData({"locale":"bez","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"bez-TZ","parentLocale":"bez"});
+
+IntlMessageFormat.__addLocaleData({"locale":"bg","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"bg-BG","parentLocale":"bg"});
+
+IntlMessageFormat.__addLocaleData({"locale":"bh","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==0||n==1?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"bm","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"bm-Latn","parentLocale":"bm"});
+IntlMessageFormat.__addLocaleData({"locale":"bm-Latn-ML","parentLocale":"bm-Latn"});
+IntlMessageFormat.__addLocaleData({"locale":"bm-Nkoo","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"bn","pluralRuleFunction":function (n,ord){if(ord)return n==1||n==5||n==7||n==8||n==9||n==10?"one":n==2||n==3?"two":n==4?"few":n==6?"many":"other";return n>=0&&n<=1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"bn-BD","parentLocale":"bn"});
+IntlMessageFormat.__addLocaleData({"locale":"bn-IN","parentLocale":"bn"});
+
+IntlMessageFormat.__addLocaleData({"locale":"bo","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"bo-CN","parentLocale":"bo"});
+IntlMessageFormat.__addLocaleData({"locale":"bo-IN","parentLocale":"bo"});
+
+IntlMessageFormat.__addLocaleData({"locale":"br","pluralRuleFunction":function (n,ord){var s=String(n).split("."),t0=Number(s[0])==n,n10=t0&&s[0].slice(-1),n100=t0&&s[0].slice(-2),n1000000=t0&&s[0].slice(-6);if(ord)return"other";return n10==1&&n100!=11&&n100!=71&&n100!=91?"one":n10==2&&n100!=12&&n100!=72&&n100!=92?"two":(n10==3||n10==4||n10==9)&&(n100<10||n100>19)&&(n100<70||n100>79)&&(n100<90||n100>99)?"few":n!=0&&t0&&n1000000==0?"many":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"br-FR","parentLocale":"br"});
+
+IntlMessageFormat.__addLocaleData({"locale":"brx","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"brx-IN","parentLocale":"brx"});
+
+IntlMessageFormat.__addLocaleData({"locale":"bs","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],f=s[1]||"",v0=!s[1],i10=i.slice(-1),i100=i.slice(-2),f10=f.slice(-1),f100=f.slice(-2);if(ord)return"other";return v0&&i10==1&&i100!=11||f10==1&&f100!=11?"one":v0&&(i10>=2&&i10<=4)&&(i100<12||i100>14)||f10>=2&&f10<=4&&(f100<12||f100>14)?"few":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"bs-Cyrl","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"bs-Cyrl-BA","parentLocale":"bs-Cyrl"});
+IntlMessageFormat.__addLocaleData({"locale":"bs-Latn","parentLocale":"bs"});
+IntlMessageFormat.__addLocaleData({"locale":"bs-Latn-BA","parentLocale":"bs-Latn"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ca","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1];if(ord)return n==1||n==3?"one":n==2?"two":n==4?"few":"other";return n==1&&v0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ca-AD","parentLocale":"ca"});
+IntlMessageFormat.__addLocaleData({"locale":"ca-ES","parentLocale":"ca"});
+IntlMessageFormat.__addLocaleData({"locale":"ca-ES-VALENCIA","parentLocale":"ca-ES"});
+IntlMessageFormat.__addLocaleData({"locale":"ca-FR","parentLocale":"ca"});
+IntlMessageFormat.__addLocaleData({"locale":"ca-IT","parentLocale":"ca"});
+
+IntlMessageFormat.__addLocaleData({"locale":"cgg","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"cgg-UG","parentLocale":"cgg"});
+
+IntlMessageFormat.__addLocaleData({"locale":"chr","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"chr-US","parentLocale":"chr"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ckb","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"cs","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],v0=!s[1];if(ord)return"other";return n==1&&v0?"one":i>=2&&i<=4&&v0?"few":!v0?"many":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"cs-CZ","parentLocale":"cs"});
+
+IntlMessageFormat.__addLocaleData({"locale":"cy","pluralRuleFunction":function (n,ord){if(ord)return n==0||n==7||n==8||n==9?"zero":n==1?"one":n==2?"two":n==3||n==4?"few":n==5||n==6?"many":"other";return n==0?"zero":n==1?"one":n==2?"two":n==3?"few":n==6?"many":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"cy-GB","parentLocale":"cy"});
+
+IntlMessageFormat.__addLocaleData({"locale":"da","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],t0=Number(s[0])==n;if(ord)return"other";return n==1||!t0&&(i==0||i==1)?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"da-DK","parentLocale":"da"});
+IntlMessageFormat.__addLocaleData({"locale":"da-GL","parentLocale":"da"});
+
+IntlMessageFormat.__addLocaleData({"locale":"dav","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"dav-KE","parentLocale":"dav"});
+
+IntlMessageFormat.__addLocaleData({"locale":"de","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1];if(ord)return"other";return n==1&&v0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"de-AT","parentLocale":"de"});
+IntlMessageFormat.__addLocaleData({"locale":"de-BE","parentLocale":"de"});
+IntlMessageFormat.__addLocaleData({"locale":"de-CH","parentLocale":"de"});
+IntlMessageFormat.__addLocaleData({"locale":"de-DE","parentLocale":"de"});
+IntlMessageFormat.__addLocaleData({"locale":"de-LI","parentLocale":"de"});
+IntlMessageFormat.__addLocaleData({"locale":"de-LU","parentLocale":"de"});
+
+IntlMessageFormat.__addLocaleData({"locale":"dje","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"dje-NE","parentLocale":"dje"});
+
+IntlMessageFormat.__addLocaleData({"locale":"dsb","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],f=s[1]||"",v0=!s[1],i100=i.slice(-2),f100=f.slice(-2);if(ord)return"other";return v0&&i100==1||f100==1?"one":v0&&i100==2||f100==2?"two":v0&&(i100==3||i100==4)||(f100==3||f100==4)?"few":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"dsb-DE","parentLocale":"dsb"});
+
+IntlMessageFormat.__addLocaleData({"locale":"dua","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"dua-CM","parentLocale":"dua"});
+
+IntlMessageFormat.__addLocaleData({"locale":"dv","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"dyo","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"dyo-SN","parentLocale":"dyo"});
+
+IntlMessageFormat.__addLocaleData({"locale":"dz","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"dz-BT","parentLocale":"dz"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ebu","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ebu-KE","parentLocale":"ebu"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ee","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ee-GH","parentLocale":"ee"});
+IntlMessageFormat.__addLocaleData({"locale":"ee-TG","parentLocale":"ee"});
+
+IntlMessageFormat.__addLocaleData({"locale":"el","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"el-CY","parentLocale":"el"});
+IntlMessageFormat.__addLocaleData({"locale":"el-GR","parentLocale":"el"});
+
+IntlMessageFormat.__addLocaleData({"locale":"en","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1],t0=Number(s[0])==n,n10=t0&&s[0].slice(-1),n100=t0&&s[0].slice(-2);if(ord)return n10==1&&n100!=11?"one":n10==2&&n100!=12?"two":n10==3&&n100!=13?"few":"other";return n==1&&v0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"en-001","parentLocale":"en"});
+IntlMessageFormat.__addLocaleData({"locale":"en-150","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-GB","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-AG","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-AI","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-AS","parentLocale":"en"});
+IntlMessageFormat.__addLocaleData({"locale":"en-AU","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-BB","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-BE","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-BM","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-BS","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-BW","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-BZ","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-CA","parentLocale":"en"});
+IntlMessageFormat.__addLocaleData({"locale":"en-CC","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-CK","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-CM","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-CX","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-DG","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-DM","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-Dsrt","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"en-ER","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-FJ","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-FK","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-FM","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-GD","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-GG","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-GH","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-GI","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-GM","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-GU","parentLocale":"en"});
+IntlMessageFormat.__addLocaleData({"locale":"en-GY","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-HK","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-IE","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-IM","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-IN","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-IO","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-JE","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-JM","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-KE","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-KI","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-KN","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-KY","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-LC","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-LR","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-LS","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-MG","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-MH","parentLocale":"en"});
+IntlMessageFormat.__addLocaleData({"locale":"en-MO","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-MP","parentLocale":"en"});
+IntlMessageFormat.__addLocaleData({"locale":"en-MS","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-MT","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-MU","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-MW","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-MY","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-NA","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-NF","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-NG","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-NR","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-NU","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-NZ","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-PG","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-PH","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-PK","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-PN","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-PR","parentLocale":"en"});
+IntlMessageFormat.__addLocaleData({"locale":"en-PW","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-RW","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-SB","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-SC","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-SD","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-SG","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-SH","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-SL","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-SS","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-SX","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-SZ","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-TC","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-TK","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-TO","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-TT","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-TV","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-TZ","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-UG","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-UM","parentLocale":"en"});
+IntlMessageFormat.__addLocaleData({"locale":"en-US","parentLocale":"en"});
+IntlMessageFormat.__addLocaleData({"locale":"en-US-POSIX","parentLocale":"en-US"});
+IntlMessageFormat.__addLocaleData({"locale":"en-VC","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-VG","parentLocale":"en-GB"});
+IntlMessageFormat.__addLocaleData({"locale":"en-VI","parentLocale":"en"});
+IntlMessageFormat.__addLocaleData({"locale":"en-VU","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-WS","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-ZA","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-ZM","parentLocale":"en-001"});
+IntlMessageFormat.__addLocaleData({"locale":"en-ZW","parentLocale":"en-001"});
+
+IntlMessageFormat.__addLocaleData({"locale":"eo","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"eo-001","parentLocale":"eo"});
+
+IntlMessageFormat.__addLocaleData({"locale":"es","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"es-419","parentLocale":"es"});
+IntlMessageFormat.__addLocaleData({"locale":"es-AR","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-BO","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-CL","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-CO","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-CR","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-CU","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-DO","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-EA","parentLocale":"es"});
+IntlMessageFormat.__addLocaleData({"locale":"es-EC","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-ES","parentLocale":"es"});
+IntlMessageFormat.__addLocaleData({"locale":"es-GQ","parentLocale":"es"});
+IntlMessageFormat.__addLocaleData({"locale":"es-GT","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-HN","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-IC","parentLocale":"es"});
+IntlMessageFormat.__addLocaleData({"locale":"es-MX","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-NI","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-PA","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-PE","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-PH","parentLocale":"es"});
+IntlMessageFormat.__addLocaleData({"locale":"es-PR","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-PY","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-SV","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-US","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-UY","parentLocale":"es-419"});
+IntlMessageFormat.__addLocaleData({"locale":"es-VE","parentLocale":"es-419"});
+
+IntlMessageFormat.__addLocaleData({"locale":"et","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1];if(ord)return"other";return n==1&&v0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"et-EE","parentLocale":"et"});
+
+IntlMessageFormat.__addLocaleData({"locale":"eu","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"eu-ES","parentLocale":"eu"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ewo","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ewo-CM","parentLocale":"ewo"});
+
+IntlMessageFormat.__addLocaleData({"locale":"fa","pluralRuleFunction":function (n,ord){if(ord)return"other";return n>=0&&n<=1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"fa-AF","parentLocale":"fa"});
+IntlMessageFormat.__addLocaleData({"locale":"fa-IR","parentLocale":"fa"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ff","pluralRuleFunction":function (n,ord){if(ord)return"other";return n>=0&&n<2?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ff-CM","parentLocale":"ff"});
+IntlMessageFormat.__addLocaleData({"locale":"ff-GN","parentLocale":"ff"});
+IntlMessageFormat.__addLocaleData({"locale":"ff-MR","parentLocale":"ff"});
+IntlMessageFormat.__addLocaleData({"locale":"ff-SN","parentLocale":"ff"});
+
+IntlMessageFormat.__addLocaleData({"locale":"fi","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1];if(ord)return"other";return n==1&&v0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"fi-FI","parentLocale":"fi"});
+
+IntlMessageFormat.__addLocaleData({"locale":"fil","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],f=s[1]||"",v0=!s[1],i10=i.slice(-1),f10=f.slice(-1);if(ord)return n==1?"one":"other";return v0&&(i==1||i==2||i==3)||v0&&i10!=4&&i10!=6&&i10!=9||!v0&&f10!=4&&f10!=6&&f10!=9?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"fil-PH","parentLocale":"fil"});
+
+IntlMessageFormat.__addLocaleData({"locale":"fo","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"fo-FO","parentLocale":"fo"});
+
+IntlMessageFormat.__addLocaleData({"locale":"fr","pluralRuleFunction":function (n,ord){if(ord)return n==1?"one":"other";return n>=0&&n<2?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"fr-BE","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-BF","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-BI","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-BJ","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-BL","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-CA","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-CD","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-CF","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-CG","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-CH","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-CI","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-CM","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-DJ","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-DZ","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-FR","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-GA","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-GF","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-GN","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-GP","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-GQ","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-HT","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-KM","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-LU","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-MA","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-MC","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-MF","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-MG","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-ML","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-MQ","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-MR","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-MU","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-NC","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-NE","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-PF","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-PM","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-RE","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-RW","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-SC","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-SN","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-SY","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-TD","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-TG","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-TN","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-VU","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-WF","parentLocale":"fr"});
+IntlMessageFormat.__addLocaleData({"locale":"fr-YT","parentLocale":"fr"});
+
+IntlMessageFormat.__addLocaleData({"locale":"fur","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"fur-IT","parentLocale":"fur"});
+
+IntlMessageFormat.__addLocaleData({"locale":"fy","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1];if(ord)return"other";return n==1&&v0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"fy-NL","parentLocale":"fy"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ga","pluralRuleFunction":function (n,ord){var s=String(n).split("."),t0=Number(s[0])==n;if(ord)return"other";return n==1?"one":n==2?"two":t0&&n>=3&&n<=6?"few":t0&&n>=7&&n<=10?"many":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ga-IE","parentLocale":"ga"});
+
+IntlMessageFormat.__addLocaleData({"locale":"gd","pluralRuleFunction":function (n,ord){var s=String(n).split("."),t0=Number(s[0])==n;if(ord)return"other";return n==1||n==11?"one":n==2||n==12?"two":t0&&n>=3&&n<=10||t0&&n>=13&&n<=19?"few":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"gd-GB","parentLocale":"gd"});
+
+IntlMessageFormat.__addLocaleData({"locale":"gl","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1];if(ord)return"other";return n==1&&v0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"gl-ES","parentLocale":"gl"});
+
+IntlMessageFormat.__addLocaleData({"locale":"gsw","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"gsw-CH","parentLocale":"gsw"});
+IntlMessageFormat.__addLocaleData({"locale":"gsw-FR","parentLocale":"gsw"});
+IntlMessageFormat.__addLocaleData({"locale":"gsw-LI","parentLocale":"gsw"});
+
+IntlMessageFormat.__addLocaleData({"locale":"gu","pluralRuleFunction":function (n,ord){if(ord)return n==1?"one":n==2||n==3?"two":n==4?"few":n==6?"many":"other";return n>=0&&n<=1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"gu-IN","parentLocale":"gu"});
+
+IntlMessageFormat.__addLocaleData({"locale":"guw","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==0||n==1?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"guz","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"guz-KE","parentLocale":"guz"});
+
+IntlMessageFormat.__addLocaleData({"locale":"gv","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],v0=!s[1],i10=i.slice(-1),i100=i.slice(-2);if(ord)return"other";return v0&&i10==1?"one":v0&&i10==2?"two":v0&&(i100==0||i100==20||i100==40||i100==60||i100==80)?"few":!v0?"many":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"gv-IM","parentLocale":"gv"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ha","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ha-Arab","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ha-Latn","parentLocale":"ha"});
+IntlMessageFormat.__addLocaleData({"locale":"ha-Latn-GH","parentLocale":"ha-Latn"});
+IntlMessageFormat.__addLocaleData({"locale":"ha-Latn-NE","parentLocale":"ha-Latn"});
+IntlMessageFormat.__addLocaleData({"locale":"ha-Latn-NG","parentLocale":"ha-Latn"});
+
+IntlMessageFormat.__addLocaleData({"locale":"haw","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"haw-US","parentLocale":"haw"});
+
+IntlMessageFormat.__addLocaleData({"locale":"he","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],v0=!s[1],t0=Number(s[0])==n,n10=t0&&s[0].slice(-1);if(ord)return"other";return n==1&&v0?"one":i==2&&v0?"two":v0&&(n<0||n>10)&&t0&&n10==0?"many":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"he-IL","parentLocale":"he"});
+
+IntlMessageFormat.__addLocaleData({"locale":"hi","pluralRuleFunction":function (n,ord){if(ord)return n==1?"one":n==2||n==3?"two":n==4?"few":n==6?"many":"other";return n>=0&&n<=1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"hi-IN","parentLocale":"hi"});
+
+IntlMessageFormat.__addLocaleData({"locale":"hr","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],f=s[1]||"",v0=!s[1],i10=i.slice(-1),i100=i.slice(-2),f10=f.slice(-1),f100=f.slice(-2);if(ord)return"other";return v0&&i10==1&&i100!=11||f10==1&&f100!=11?"one":v0&&(i10>=2&&i10<=4)&&(i100<12||i100>14)||f10>=2&&f10<=4&&(f100<12||f100>14)?"few":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"hr-BA","parentLocale":"hr"});
+IntlMessageFormat.__addLocaleData({"locale":"hr-HR","parentLocale":"hr"});
+
+IntlMessageFormat.__addLocaleData({"locale":"hsb","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],f=s[1]||"",v0=!s[1],i100=i.slice(-2),f100=f.slice(-2);if(ord)return"other";return v0&&i100==1||f100==1?"one":v0&&i100==2||f100==2?"two":v0&&(i100==3||i100==4)||(f100==3||f100==4)?"few":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"hsb-DE","parentLocale":"hsb"});
+
+IntlMessageFormat.__addLocaleData({"locale":"hu","pluralRuleFunction":function (n,ord){if(ord)return n==1||n==5?"one":"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"hu-HU","parentLocale":"hu"});
+
+IntlMessageFormat.__addLocaleData({"locale":"hy","pluralRuleFunction":function (n,ord){if(ord)return n==1?"one":"other";return n>=0&&n<2?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"hy-AM","parentLocale":"hy"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ia","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ia-FR","parentLocale":"ia"});
+
+IntlMessageFormat.__addLocaleData({"locale":"id","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"id-ID","parentLocale":"id"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ig","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ig-NG","parentLocale":"ig"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ii","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ii-CN","parentLocale":"ii"});
+
+IntlMessageFormat.__addLocaleData({"locale":"in","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"is","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],t0=Number(s[0])==n,i10=i.slice(-1),i100=i.slice(-2);if(ord)return"other";return t0&&i10==1&&i100!=11||!t0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"is-IS","parentLocale":"is"});
+
+IntlMessageFormat.__addLocaleData({"locale":"it","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1];if(ord)return n==11||n==8||n==80||n==800?"many":"other";return n==1&&v0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"it-CH","parentLocale":"it"});
+IntlMessageFormat.__addLocaleData({"locale":"it-IT","parentLocale":"it"});
+IntlMessageFormat.__addLocaleData({"locale":"it-SM","parentLocale":"it"});
+
+IntlMessageFormat.__addLocaleData({"locale":"iu","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":n==2?"two":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"iw","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],v0=!s[1],t0=Number(s[0])==n,n10=t0&&s[0].slice(-1);if(ord)return"other";return n==1&&v0?"one":i==2&&v0?"two":v0&&(n<0||n>10)&&t0&&n10==0?"many":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"ja","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ja-JP","parentLocale":"ja"});
+
+IntlMessageFormat.__addLocaleData({"locale":"jbo","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"jgo","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"jgo-CM","parentLocale":"jgo"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ji","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1];if(ord)return"other";return n==1&&v0?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"jmc","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"jmc-TZ","parentLocale":"jmc"});
+
+IntlMessageFormat.__addLocaleData({"locale":"jv","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"jw","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"ka","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],i100=i.slice(-2);if(ord)return i==1?"one":i==0||(i100>=2&&i100<=20||i100==40||i100==60||i100==80)?"many":"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ka-GE","parentLocale":"ka"});
+
+IntlMessageFormat.__addLocaleData({"locale":"kab","pluralRuleFunction":function (n,ord){if(ord)return"other";return n>=0&&n<2?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"kab-DZ","parentLocale":"kab"});
+
+IntlMessageFormat.__addLocaleData({"locale":"kaj","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"kam","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"kam-KE","parentLocale":"kam"});
+
+IntlMessageFormat.__addLocaleData({"locale":"kcg","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"kde","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"kde-TZ","parentLocale":"kde"});
+
+IntlMessageFormat.__addLocaleData({"locale":"kea","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"kea-CV","parentLocale":"kea"});
+
+IntlMessageFormat.__addLocaleData({"locale":"khq","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"khq-ML","parentLocale":"khq"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ki","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ki-KE","parentLocale":"ki"});
+
+IntlMessageFormat.__addLocaleData({"locale":"kk","pluralRuleFunction":function (n,ord){var s=String(n).split("."),t0=Number(s[0])==n,n10=t0&&s[0].slice(-1);if(ord)return n10==6||n10==9||t0&&n10==0&&n!=0?"many":"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"kk-Cyrl","parentLocale":"kk"});
+IntlMessageFormat.__addLocaleData({"locale":"kk-Cyrl-KZ","parentLocale":"kk-Cyrl"});
+
+IntlMessageFormat.__addLocaleData({"locale":"kkj","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"kkj-CM","parentLocale":"kkj"});
+
+IntlMessageFormat.__addLocaleData({"locale":"kl","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"kl-GL","parentLocale":"kl"});
+
+IntlMessageFormat.__addLocaleData({"locale":"kln","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"kln-KE","parentLocale":"kln"});
+
+IntlMessageFormat.__addLocaleData({"locale":"km","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"km-KH","parentLocale":"km"});
+
+IntlMessageFormat.__addLocaleData({"locale":"kn","pluralRuleFunction":function (n,ord){if(ord)return"other";return n>=0&&n<=1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"kn-IN","parentLocale":"kn"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ko","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ko-KP","parentLocale":"ko"});
+IntlMessageFormat.__addLocaleData({"locale":"ko-KR","parentLocale":"ko"});
+
+IntlMessageFormat.__addLocaleData({"locale":"kok","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"kok-IN","parentLocale":"kok"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ks","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ks-Arab","parentLocale":"ks"});
+IntlMessageFormat.__addLocaleData({"locale":"ks-Arab-IN","parentLocale":"ks-Arab"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ksb","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ksb-TZ","parentLocale":"ksb"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ksf","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ksf-CM","parentLocale":"ksf"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ksh","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==0?"zero":n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ksh-DE","parentLocale":"ksh"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ku","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"kw","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":n==2?"two":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"kw-GB","parentLocale":"kw"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ky","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ky-Cyrl","parentLocale":"ky"});
+IntlMessageFormat.__addLocaleData({"locale":"ky-Cyrl-KG","parentLocale":"ky-Cyrl"});
+
+IntlMessageFormat.__addLocaleData({"locale":"lag","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0];if(ord)return"other";return n==0?"zero":(i==0||i==1)&&n!=0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"lag-TZ","parentLocale":"lag"});
+
+IntlMessageFormat.__addLocaleData({"locale":"lb","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"lb-LU","parentLocale":"lb"});
+
+IntlMessageFormat.__addLocaleData({"locale":"lg","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"lg-UG","parentLocale":"lg"});
+
+IntlMessageFormat.__addLocaleData({"locale":"lkt","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"lkt-US","parentLocale":"lkt"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ln","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==0||n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ln-AO","parentLocale":"ln"});
+IntlMessageFormat.__addLocaleData({"locale":"ln-CD","parentLocale":"ln"});
+IntlMessageFormat.__addLocaleData({"locale":"ln-CF","parentLocale":"ln"});
+IntlMessageFormat.__addLocaleData({"locale":"ln-CG","parentLocale":"ln"});
+
+IntlMessageFormat.__addLocaleData({"locale":"lo","pluralRuleFunction":function (n,ord){if(ord)return n==1?"one":"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"lo-LA","parentLocale":"lo"});
+
+IntlMessageFormat.__addLocaleData({"locale":"lt","pluralRuleFunction":function (n,ord){var s=String(n).split("."),f=s[1]||"",t0=Number(s[0])==n,n10=t0&&s[0].slice(-1),n100=t0&&s[0].slice(-2);if(ord)return"other";return n10==1&&(n100<11||n100>19)?"one":n10>=2&&n10<=9&&(n100<11||n100>19)?"few":f!=0?"many":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"lt-LT","parentLocale":"lt"});
+
+IntlMessageFormat.__addLocaleData({"locale":"lu","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"lu-CD","parentLocale":"lu"});
+
+IntlMessageFormat.__addLocaleData({"locale":"luo","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"luo-KE","parentLocale":"luo"});
+
+IntlMessageFormat.__addLocaleData({"locale":"luy","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"luy-KE","parentLocale":"luy"});
+
+IntlMessageFormat.__addLocaleData({"locale":"lv","pluralRuleFunction":function (n,ord){var s=String(n).split("."),f=s[1]||"",v=f.length,t0=Number(s[0])==n,n10=t0&&s[0].slice(-1),n100=t0&&s[0].slice(-2),f100=f.slice(-2),f10=f.slice(-1);if(ord)return"other";return t0&&n10==0||n100>=11&&n100<=19||v==2&&(f100>=11&&f100<=19)?"zero":n10==1&&n100!=11||v==2&&f10==1&&f100!=11||v!=2&&f10==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"lv-LV","parentLocale":"lv"});
+
+IntlMessageFormat.__addLocaleData({"locale":"mas","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"mas-KE","parentLocale":"mas"});
+IntlMessageFormat.__addLocaleData({"locale":"mas-TZ","parentLocale":"mas"});
+
+IntlMessageFormat.__addLocaleData({"locale":"mer","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"mer-KE","parentLocale":"mer"});
+
+IntlMessageFormat.__addLocaleData({"locale":"mfe","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"mfe-MU","parentLocale":"mfe"});
+
+IntlMessageFormat.__addLocaleData({"locale":"mg","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==0||n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"mg-MG","parentLocale":"mg"});
+
+IntlMessageFormat.__addLocaleData({"locale":"mgh","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"mgh-MZ","parentLocale":"mgh"});
+
+IntlMessageFormat.__addLocaleData({"locale":"mgo","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"mgo-CM","parentLocale":"mgo"});
+
+IntlMessageFormat.__addLocaleData({"locale":"mk","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],f=s[1]||"",v0=!s[1],i10=i.slice(-1),i100=i.slice(-2),f10=f.slice(-1);if(ord)return i10==1&&i100!=11?"one":i10==2&&i100!=12?"two":(i10==7||i10==8)&&i100!=17&&i100!=18?"many":"other";return v0&&i10==1||f10==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"mk-MK","parentLocale":"mk"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ml","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ml-IN","parentLocale":"ml"});
+
+IntlMessageFormat.__addLocaleData({"locale":"mn","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"mn-Cyrl","parentLocale":"mn"});
+IntlMessageFormat.__addLocaleData({"locale":"mn-Cyrl-MN","parentLocale":"mn-Cyrl"});
+IntlMessageFormat.__addLocaleData({"locale":"mn-Mong","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"mo","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1],t0=Number(s[0])==n,n100=t0&&s[0].slice(-2);if(ord)return n==1?"one":"other";return n==1&&v0?"one":!v0||n==0||n!=1&&(n100>=1&&n100<=19)?"few":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"mr","pluralRuleFunction":function (n,ord){if(ord)return n==1?"one":n==2||n==3?"two":n==4?"few":"other";return n>=0&&n<=1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"mr-IN","parentLocale":"mr"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ms","pluralRuleFunction":function (n,ord){if(ord)return n==1?"one":"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ms-Arab","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ms-Latn","parentLocale":"ms"});
+IntlMessageFormat.__addLocaleData({"locale":"ms-Latn-BN","parentLocale":"ms-Latn"});
+IntlMessageFormat.__addLocaleData({"locale":"ms-Latn-MY","parentLocale":"ms-Latn"});
+IntlMessageFormat.__addLocaleData({"locale":"ms-Latn-SG","parentLocale":"ms-Latn"});
+
+IntlMessageFormat.__addLocaleData({"locale":"mt","pluralRuleFunction":function (n,ord){var s=String(n).split("."),t0=Number(s[0])==n,n100=t0&&s[0].slice(-2);if(ord)return"other";return n==1?"one":n==0||n100>=2&&n100<=10?"few":n100>=11&&n100<=19?"many":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"mt-MT","parentLocale":"mt"});
+
+IntlMessageFormat.__addLocaleData({"locale":"mua","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"mua-CM","parentLocale":"mua"});
+
+IntlMessageFormat.__addLocaleData({"locale":"my","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"my-MM","parentLocale":"my"});
+
+IntlMessageFormat.__addLocaleData({"locale":"nah","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"naq","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":n==2?"two":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"naq-NA","parentLocale":"naq"});
+
+IntlMessageFormat.__addLocaleData({"locale":"nb","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"nb-NO","parentLocale":"nb"});
+IntlMessageFormat.__addLocaleData({"locale":"nb-SJ","parentLocale":"nb"});
+
+IntlMessageFormat.__addLocaleData({"locale":"nd","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"nd-ZW","parentLocale":"nd"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ne","pluralRuleFunction":function (n,ord){var s=String(n).split("."),t0=Number(s[0])==n;if(ord)return t0&&n>=1&&n<=4?"one":"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ne-IN","parentLocale":"ne"});
+IntlMessageFormat.__addLocaleData({"locale":"ne-NP","parentLocale":"ne"});
+
+IntlMessageFormat.__addLocaleData({"locale":"nl","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1];if(ord)return"other";return n==1&&v0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"nl-AW","parentLocale":"nl"});
+IntlMessageFormat.__addLocaleData({"locale":"nl-BE","parentLocale":"nl"});
+IntlMessageFormat.__addLocaleData({"locale":"nl-BQ","parentLocale":"nl"});
+IntlMessageFormat.__addLocaleData({"locale":"nl-CW","parentLocale":"nl"});
+IntlMessageFormat.__addLocaleData({"locale":"nl-NL","parentLocale":"nl"});
+IntlMessageFormat.__addLocaleData({"locale":"nl-SR","parentLocale":"nl"});
+IntlMessageFormat.__addLocaleData({"locale":"nl-SX","parentLocale":"nl"});
+
+IntlMessageFormat.__addLocaleData({"locale":"nmg","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"nmg-CM","parentLocale":"nmg"});
+
+IntlMessageFormat.__addLocaleData({"locale":"nn","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"nn-NO","parentLocale":"nn"});
+
+IntlMessageFormat.__addLocaleData({"locale":"nnh","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"nnh-CM","parentLocale":"nnh"});
+
+IntlMessageFormat.__addLocaleData({"locale":"no","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"nqo","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"nr","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"nr-ZA","parentLocale":"nr"});
+
+IntlMessageFormat.__addLocaleData({"locale":"nso","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==0||n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"nso-ZA","parentLocale":"nso"});
+
+IntlMessageFormat.__addLocaleData({"locale":"nus","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"nus-SD","parentLocale":"nus"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ny","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"nyn","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"nyn-UG","parentLocale":"nyn"});
+
+IntlMessageFormat.__addLocaleData({"locale":"om","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"om-ET","parentLocale":"om"});
+IntlMessageFormat.__addLocaleData({"locale":"om-KE","parentLocale":"om"});
+
+IntlMessageFormat.__addLocaleData({"locale":"or","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"or-IN","parentLocale":"or"});
+
+IntlMessageFormat.__addLocaleData({"locale":"os","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"os-GE","parentLocale":"os"});
+IntlMessageFormat.__addLocaleData({"locale":"os-RU","parentLocale":"os"});
+
+IntlMessageFormat.__addLocaleData({"locale":"pa","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==0||n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"pa-Arab","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"pa-Arab-PK","parentLocale":"pa-Arab"});
+IntlMessageFormat.__addLocaleData({"locale":"pa-Guru","parentLocale":"pa"});
+IntlMessageFormat.__addLocaleData({"locale":"pa-Guru-IN","parentLocale":"pa-Guru"});
+
+IntlMessageFormat.__addLocaleData({"locale":"pap","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"pl","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],v0=!s[1],i10=i.slice(-1),i100=i.slice(-2);if(ord)return"other";return n==1&&v0?"one":v0&&(i10>=2&&i10<=4)&&(i100<12||i100>14)?"few":v0&&i!=1&&(i10==0||i10==1)||v0&&(i10>=5&&i10<=9)||v0&&(i100>=12&&i100<=14)?"many":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"pl-PL","parentLocale":"pl"});
+
+IntlMessageFormat.__addLocaleData({"locale":"prg","pluralRuleFunction":function (n,ord){var s=String(n).split("."),f=s[1]||"",v=f.length,t0=Number(s[0])==n,n10=t0&&s[0].slice(-1),n100=t0&&s[0].slice(-2),f100=f.slice(-2),f10=f.slice(-1);if(ord)return"other";return t0&&n10==0||n100>=11&&n100<=19||v==2&&(f100>=11&&f100<=19)?"zero":n10==1&&n100!=11||v==2&&f10==1&&f100!=11||v!=2&&f10==1?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"ps","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ps-AF","parentLocale":"ps"});
+
+IntlMessageFormat.__addLocaleData({"locale":"pt","pluralRuleFunction":function (n,ord){var s=String(n).split("."),t0=Number(s[0])==n;if(ord)return"other";return t0&&n>=0&&n<=2&&n!=2?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"pt-AO","parentLocale":"pt-PT"});
+IntlMessageFormat.__addLocaleData({"locale":"pt-PT","parentLocale":"pt","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1];if(ord)return"other";return n==1&&v0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"pt-BR","parentLocale":"pt"});
+IntlMessageFormat.__addLocaleData({"locale":"pt-CV","parentLocale":"pt-PT"});
+IntlMessageFormat.__addLocaleData({"locale":"pt-GW","parentLocale":"pt-PT"});
+IntlMessageFormat.__addLocaleData({"locale":"pt-MO","parentLocale":"pt-PT"});
+IntlMessageFormat.__addLocaleData({"locale":"pt-MZ","parentLocale":"pt-PT"});
+IntlMessageFormat.__addLocaleData({"locale":"pt-ST","parentLocale":"pt-PT"});
+IntlMessageFormat.__addLocaleData({"locale":"pt-TL","parentLocale":"pt-PT"});
+
+IntlMessageFormat.__addLocaleData({"locale":"qu","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"qu-BO","parentLocale":"qu"});
+IntlMessageFormat.__addLocaleData({"locale":"qu-EC","parentLocale":"qu"});
+IntlMessageFormat.__addLocaleData({"locale":"qu-PE","parentLocale":"qu"});
+
+IntlMessageFormat.__addLocaleData({"locale":"rm","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"rm-CH","parentLocale":"rm"});
+
+IntlMessageFormat.__addLocaleData({"locale":"rn","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"rn-BI","parentLocale":"rn"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ro","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1],t0=Number(s[0])==n,n100=t0&&s[0].slice(-2);if(ord)return n==1?"one":"other";return n==1&&v0?"one":!v0||n==0||n!=1&&(n100>=1&&n100<=19)?"few":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ro-MD","parentLocale":"ro"});
+IntlMessageFormat.__addLocaleData({"locale":"ro-RO","parentLocale":"ro"});
+
+IntlMessageFormat.__addLocaleData({"locale":"rof","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"rof-TZ","parentLocale":"rof"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ru","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],v0=!s[1],i10=i.slice(-1),i100=i.slice(-2);if(ord)return"other";return v0&&i10==1&&i100!=11?"one":v0&&(i10>=2&&i10<=4)&&(i100<12||i100>14)?"few":v0&&i10==0||v0&&(i10>=5&&i10<=9)||v0&&(i100>=11&&i100<=14)?"many":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ru-BY","parentLocale":"ru"});
+IntlMessageFormat.__addLocaleData({"locale":"ru-KG","parentLocale":"ru"});
+IntlMessageFormat.__addLocaleData({"locale":"ru-KZ","parentLocale":"ru"});
+IntlMessageFormat.__addLocaleData({"locale":"ru-MD","parentLocale":"ru"});
+IntlMessageFormat.__addLocaleData({"locale":"ru-RU","parentLocale":"ru"});
+IntlMessageFormat.__addLocaleData({"locale":"ru-UA","parentLocale":"ru"});
+
+IntlMessageFormat.__addLocaleData({"locale":"rw","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"rw-RW","parentLocale":"rw"});
+
+IntlMessageFormat.__addLocaleData({"locale":"rwk","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"rwk-TZ","parentLocale":"rwk"});
+
+IntlMessageFormat.__addLocaleData({"locale":"sah","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"sah-RU","parentLocale":"sah"});
+
+IntlMessageFormat.__addLocaleData({"locale":"saq","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"saq-KE","parentLocale":"saq"});
+
+IntlMessageFormat.__addLocaleData({"locale":"sbp","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"sbp-TZ","parentLocale":"sbp"});
+
+IntlMessageFormat.__addLocaleData({"locale":"se","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":n==2?"two":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"se-FI","parentLocale":"se"});
+IntlMessageFormat.__addLocaleData({"locale":"se-NO","parentLocale":"se"});
+IntlMessageFormat.__addLocaleData({"locale":"se-SE","parentLocale":"se"});
+
+IntlMessageFormat.__addLocaleData({"locale":"seh","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"seh-MZ","parentLocale":"seh"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ses","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ses-ML","parentLocale":"ses"});
+
+IntlMessageFormat.__addLocaleData({"locale":"sg","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"sg-CF","parentLocale":"sg"});
+
+IntlMessageFormat.__addLocaleData({"locale":"sh","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],f=s[1]||"",v0=!s[1],i10=i.slice(-1),i100=i.slice(-2),f10=f.slice(-1),f100=f.slice(-2);if(ord)return"other";return v0&&i10==1&&i100!=11||f10==1&&f100!=11?"one":v0&&(i10>=2&&i10<=4)&&(i100<12||i100>14)||f10>=2&&f10<=4&&(f100<12||f100>14)?"few":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"shi","pluralRuleFunction":function (n,ord){var s=String(n).split("."),t0=Number(s[0])==n;if(ord)return"other";return n>=0&&n<=1?"one":t0&&n>=2&&n<=10?"few":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"shi-Latn","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"shi-Latn-MA","parentLocale":"shi-Latn"});
+IntlMessageFormat.__addLocaleData({"locale":"shi-Tfng","parentLocale":"shi"});
+IntlMessageFormat.__addLocaleData({"locale":"shi-Tfng-MA","parentLocale":"shi-Tfng"});
+
+IntlMessageFormat.__addLocaleData({"locale":"si","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],f=s[1]||"";if(ord)return"other";return n==0||n==1||i==0&&f==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"si-LK","parentLocale":"si"});
+
+IntlMessageFormat.__addLocaleData({"locale":"sk","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],v0=!s[1];if(ord)return"other";return n==1&&v0?"one":i>=2&&i<=4&&v0?"few":!v0?"many":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"sk-SK","parentLocale":"sk"});
+
+IntlMessageFormat.__addLocaleData({"locale":"sl","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],v0=!s[1],i100=i.slice(-2);if(ord)return"other";return v0&&i100==1?"one":v0&&i100==2?"two":v0&&(i100==3||i100==4)||!v0?"few":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"sl-SI","parentLocale":"sl"});
+
+IntlMessageFormat.__addLocaleData({"locale":"sma","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":n==2?"two":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"smi","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":n==2?"two":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"smj","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":n==2?"two":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"smn","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":n==2?"two":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"smn-FI","parentLocale":"smn"});
+
+IntlMessageFormat.__addLocaleData({"locale":"sms","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":n==2?"two":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"sn","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"sn-ZW","parentLocale":"sn"});
+
+IntlMessageFormat.__addLocaleData({"locale":"so","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"so-DJ","parentLocale":"so"});
+IntlMessageFormat.__addLocaleData({"locale":"so-ET","parentLocale":"so"});
+IntlMessageFormat.__addLocaleData({"locale":"so-KE","parentLocale":"so"});
+IntlMessageFormat.__addLocaleData({"locale":"so-SO","parentLocale":"so"});
+
+IntlMessageFormat.__addLocaleData({"locale":"sq","pluralRuleFunction":function (n,ord){var s=String(n).split("."),t0=Number(s[0])==n,n10=t0&&s[0].slice(-1),n100=t0&&s[0].slice(-2);if(ord)return n==1?"one":n10==4&&n100!=14?"many":"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"sq-AL","parentLocale":"sq"});
+IntlMessageFormat.__addLocaleData({"locale":"sq-MK","parentLocale":"sq"});
+IntlMessageFormat.__addLocaleData({"locale":"sq-XK","parentLocale":"sq"});
+
+IntlMessageFormat.__addLocaleData({"locale":"sr","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],f=s[1]||"",v0=!s[1],i10=i.slice(-1),i100=i.slice(-2),f10=f.slice(-1),f100=f.slice(-2);if(ord)return"other";return v0&&i10==1&&i100!=11||f10==1&&f100!=11?"one":v0&&(i10>=2&&i10<=4)&&(i100<12||i100>14)||f10>=2&&f10<=4&&(f100<12||f100>14)?"few":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"sr-Cyrl","parentLocale":"sr"});
+IntlMessageFormat.__addLocaleData({"locale":"sr-Cyrl-BA","parentLocale":"sr-Cyrl"});
+IntlMessageFormat.__addLocaleData({"locale":"sr-Cyrl-ME","parentLocale":"sr-Cyrl"});
+IntlMessageFormat.__addLocaleData({"locale":"sr-Cyrl-RS","parentLocale":"sr-Cyrl"});
+IntlMessageFormat.__addLocaleData({"locale":"sr-Cyrl-XK","parentLocale":"sr-Cyrl"});
+IntlMessageFormat.__addLocaleData({"locale":"sr-Latn","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"sr-Latn-BA","parentLocale":"sr-Latn"});
+IntlMessageFormat.__addLocaleData({"locale":"sr-Latn-ME","parentLocale":"sr-Latn"});
+IntlMessageFormat.__addLocaleData({"locale":"sr-Latn-RS","parentLocale":"sr-Latn"});
+IntlMessageFormat.__addLocaleData({"locale":"sr-Latn-XK","parentLocale":"sr-Latn"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ss","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ss-SZ","parentLocale":"ss"});
+IntlMessageFormat.__addLocaleData({"locale":"ss-ZA","parentLocale":"ss"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ssy","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ssy-ER","parentLocale":"ssy"});
+
+IntlMessageFormat.__addLocaleData({"locale":"st","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"sv","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1],t0=Number(s[0])==n,n10=t0&&s[0].slice(-1),n100=t0&&s[0].slice(-2);if(ord)return(n10==1||n10==2)&&n100!=11&&n100!=12?"one":"other";return n==1&&v0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"sv-AX","parentLocale":"sv"});
+IntlMessageFormat.__addLocaleData({"locale":"sv-FI","parentLocale":"sv"});
+IntlMessageFormat.__addLocaleData({"locale":"sv-SE","parentLocale":"sv"});
+
+IntlMessageFormat.__addLocaleData({"locale":"sw","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1];if(ord)return"other";return n==1&&v0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"sw-KE","parentLocale":"sw"});
+IntlMessageFormat.__addLocaleData({"locale":"sw-TZ","parentLocale":"sw"});
+IntlMessageFormat.__addLocaleData({"locale":"sw-UG","parentLocale":"sw"});
+
+IntlMessageFormat.__addLocaleData({"locale":"swc","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"swc-CD","parentLocale":"swc"});
+
+IntlMessageFormat.__addLocaleData({"locale":"syr","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"ta","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ta-IN","parentLocale":"ta"});
+IntlMessageFormat.__addLocaleData({"locale":"ta-LK","parentLocale":"ta"});
+IntlMessageFormat.__addLocaleData({"locale":"ta-MY","parentLocale":"ta"});
+IntlMessageFormat.__addLocaleData({"locale":"ta-SG","parentLocale":"ta"});
+
+IntlMessageFormat.__addLocaleData({"locale":"te","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"te-IN","parentLocale":"te"});
+
+IntlMessageFormat.__addLocaleData({"locale":"teo","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"teo-KE","parentLocale":"teo"});
+IntlMessageFormat.__addLocaleData({"locale":"teo-UG","parentLocale":"teo"});
+
+IntlMessageFormat.__addLocaleData({"locale":"th","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"th-TH","parentLocale":"th"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ti","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==0||n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ti-ER","parentLocale":"ti"});
+IntlMessageFormat.__addLocaleData({"locale":"ti-ET","parentLocale":"ti"});
+
+IntlMessageFormat.__addLocaleData({"locale":"tig","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"tk","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"tl","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],f=s[1]||"",v0=!s[1],i10=i.slice(-1),f10=f.slice(-1);if(ord)return n==1?"one":"other";return v0&&(i==1||i==2||i==3)||v0&&i10!=4&&i10!=6&&i10!=9||!v0&&f10!=4&&f10!=6&&f10!=9?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"tn","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"tn-BW","parentLocale":"tn"});
+IntlMessageFormat.__addLocaleData({"locale":"tn-ZA","parentLocale":"tn"});
+
+IntlMessageFormat.__addLocaleData({"locale":"to","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"to-TO","parentLocale":"to"});
+
+IntlMessageFormat.__addLocaleData({"locale":"tr","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"tr-CY","parentLocale":"tr"});
+IntlMessageFormat.__addLocaleData({"locale":"tr-TR","parentLocale":"tr"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ts","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ts-ZA","parentLocale":"ts"});
+
+IntlMessageFormat.__addLocaleData({"locale":"twq","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"twq-NE","parentLocale":"twq"});
+
+IntlMessageFormat.__addLocaleData({"locale":"tzm","pluralRuleFunction":function (n,ord){var s=String(n).split("."),t0=Number(s[0])==n;if(ord)return"other";return n==0||n==1||t0&&n>=11&&n<=99?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"tzm-Latn","parentLocale":"tzm"});
+IntlMessageFormat.__addLocaleData({"locale":"tzm-Latn-MA","parentLocale":"tzm-Latn"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ug","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ug-Arab","parentLocale":"ug"});
+IntlMessageFormat.__addLocaleData({"locale":"ug-Arab-CN","parentLocale":"ug-Arab"});
+
+IntlMessageFormat.__addLocaleData({"locale":"uk","pluralRuleFunction":function (n,ord){var s=String(n).split("."),i=s[0],v0=!s[1],t0=Number(s[0])==n,n10=t0&&s[0].slice(-1),n100=t0&&s[0].slice(-2),i10=i.slice(-1),i100=i.slice(-2);if(ord)return n10==3&&n100!=13?"few":"other";return v0&&i10==1&&i100!=11?"one":v0&&(i10>=2&&i10<=4)&&(i100<12||i100>14)?"few":v0&&i10==0||v0&&(i10>=5&&i10<=9)||v0&&(i100>=11&&i100<=14)?"many":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"uk-UA","parentLocale":"uk"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ur","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1];if(ord)return"other";return n==1&&v0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ur-IN","parentLocale":"ur"});
+IntlMessageFormat.__addLocaleData({"locale":"ur-PK","parentLocale":"ur"});
+
+IntlMessageFormat.__addLocaleData({"locale":"uz","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"uz-Arab","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"uz-Arab-AF","parentLocale":"uz-Arab"});
+IntlMessageFormat.__addLocaleData({"locale":"uz-Cyrl","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"uz-Cyrl-UZ","parentLocale":"uz-Cyrl"});
+IntlMessageFormat.__addLocaleData({"locale":"uz-Latn","parentLocale":"uz"});
+IntlMessageFormat.__addLocaleData({"locale":"uz-Latn-UZ","parentLocale":"uz-Latn"});
+
+IntlMessageFormat.__addLocaleData({"locale":"vai","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"vai-Latn","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"vai-Latn-LR","parentLocale":"vai-Latn"});
+IntlMessageFormat.__addLocaleData({"locale":"vai-Vaii","parentLocale":"vai"});
+IntlMessageFormat.__addLocaleData({"locale":"vai-Vaii-LR","parentLocale":"vai-Vaii"});
+
+IntlMessageFormat.__addLocaleData({"locale":"ve","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ve-ZA","parentLocale":"ve"});
+
+IntlMessageFormat.__addLocaleData({"locale":"vi","pluralRuleFunction":function (n,ord){if(ord)return n==1?"one":"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"vi-VN","parentLocale":"vi"});
+
+IntlMessageFormat.__addLocaleData({"locale":"vo","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"vo-001","parentLocale":"vo"});
+
+IntlMessageFormat.__addLocaleData({"locale":"vun","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"vun-TZ","parentLocale":"vun"});
+
+IntlMessageFormat.__addLocaleData({"locale":"wa","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==0||n==1?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"wae","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"wae-CH","parentLocale":"wae"});
+
+IntlMessageFormat.__addLocaleData({"locale":"wo","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"xh","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+
+IntlMessageFormat.__addLocaleData({"locale":"xog","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"xog-UG","parentLocale":"xog"});
+
+IntlMessageFormat.__addLocaleData({"locale":"yav","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"yav-CM","parentLocale":"yav"});
+
+IntlMessageFormat.__addLocaleData({"locale":"yi","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1];if(ord)return"other";return n==1&&v0?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"yi-001","parentLocale":"yi"});
+
+IntlMessageFormat.__addLocaleData({"locale":"yo","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"yo-BJ","parentLocale":"yo"});
+IntlMessageFormat.__addLocaleData({"locale":"yo-NG","parentLocale":"yo"});
+
+IntlMessageFormat.__addLocaleData({"locale":"zgh","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"zgh-MA","parentLocale":"zgh"});
+
+IntlMessageFormat.__addLocaleData({"locale":"zh","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"zh-Hans","parentLocale":"zh"});
+IntlMessageFormat.__addLocaleData({"locale":"zh-Hans-CN","parentLocale":"zh-Hans"});
+IntlMessageFormat.__addLocaleData({"locale":"zh-Hans-HK","parentLocale":"zh-Hans"});
+IntlMessageFormat.__addLocaleData({"locale":"zh-Hans-MO","parentLocale":"zh-Hans"});
+IntlMessageFormat.__addLocaleData({"locale":"zh-Hans-SG","parentLocale":"zh-Hans"});
+IntlMessageFormat.__addLocaleData({"locale":"zh-Hant","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"zh-Hant-HK","parentLocale":"zh-Hant"});
+IntlMessageFormat.__addLocaleData({"locale":"zh-Hant-MO","parentLocale":"zh-Hant-HK"});
+IntlMessageFormat.__addLocaleData({"locale":"zh-Hant-TW","parentLocale":"zh-Hant"});
+
+IntlMessageFormat.__addLocaleData({"locale":"zu","pluralRuleFunction":function (n,ord){if(ord)return"other";return n>=0&&n<=1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"zu-ZA","parentLocale":"zu"});
+
 //# sourceMappingURL=intl-messageformat-with-locales.js.map

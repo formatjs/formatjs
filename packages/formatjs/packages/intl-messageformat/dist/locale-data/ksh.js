@@ -1,1 +1,2 @@
-IntlMessageFormat.__addLocaleData({"locale":"ksh","pluralRuleFunction":function (n) {n=Math.floor(n);if(n===0)return"zero";if(n===1)return"one";return"other";}});
+IntlMessageFormat.__addLocaleData({"locale":"ksh","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==0?"zero":n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ksh-DE","parentLocale":"ksh"});
