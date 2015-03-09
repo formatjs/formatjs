@@ -7,8 +7,8 @@ Formats ICU Message strings with number, date, plural, and select placeholders t
 [![Build Status][travis-badge]][travis]
 [![Dependency Status][david-badge]][david]
 
+[![Sauce Test Status][sauce-badge]][sauce]
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/intl-messageformat.svg)](https://saucelabs.com/u/intl-messageformat)
 
 Overview
 --------
@@ -29,7 +29,7 @@ Messages are provided into the constructor as a `String` message, or a [pre-pars
 var msg = new IntlMessageFormat(message, locales, [formats]);
 ```
 
-The string `message` is parsed, then stored internally in a compiled form that is optimized for the `format()` method to produce the formatted string for display to the user.
+The string `message` is parsed, then stored internally in a compiled form that is optimized for the `format()` method to produce the formatted string for displaying to the user.
 
 ```js
 var output = msg.format(values);
@@ -37,7 +37,7 @@ var output = msg.format(values);
 
 ### Common Usage Example
 
-A very common example is formatting messages that have numbers with plural lables. With this package you can make sure that the string is properly formatted for a person's locale, e.g.:
+A very common example is formatting messages that have numbers with plural labels. With this package you can make sure that the string is properly formatted for a person's locale, e.g.:
 
 ```js
 var MESSAGES = {
@@ -75,7 +75,7 @@ The message syntax that this package uses is not proprietary, in fact it's a com
 
 * Uses industry standards: [ICU Message syntax][ICU] and [CLDR locale data][CLDR].
 
-* Supports **plural** and **select** message arguments.
+* Supports **plural**, **select**, and **selectordinal** message arguments.
 
 * Formats numbers and dates/times in messages using [`Intl.NumberFormat`][Intl-NF] and [`Intl.DateTimeFormat`][Intl-DTF], respectively.
 
@@ -124,21 +124,13 @@ _Note: When using the Intl.js Polyfill in Node.js, it will automatically load th
 <script src="intl-messageformat/intl-messageformat.min.js"></script>
 ```
 
-By default, Intl MessageFormat ships with the locale data for English built-in to the runtime library. When you need to format data in another locale, include its data; e.g., for French:
+By default, Intl MessageFormat ships with the locale data for English (`en`) built-in to the library's runtime. When you need to format data in another locale, include its data; e.g., for French:
 
 ```html
 <script src="intl-messageformat/locale-data/fr.js"></script>
 ```
 
-_Note: All 150+ locales supported by this package use their root BCP 47 langage tag; i.e., the part before the first hyphen (if any)._
-
-#### Using Raw Git CDN
-
-If you'd like to load this package via a CDN, instead of hosting it yourself, one option is using [Raw Git][rawgit]. **Be sure to reference a `dist/` file using a Git tag:**
-
-```html
-<script src="https://cdn.rawgit.com/yahoo/intl-messageformat/v1.0.1/dist/intl-messageformat.min.js"></script>
-```
+_Note: All 200+ languages supported by this package use their root BCP 47 language tag; i.e., the part before the first hyphen (if any)._
 
 ### Loading Intl MessageFormat in Node.js
 
@@ -148,7 +140,7 @@ Simply `require()` this package:
 var IntlMessageFormat = require('intl-messageformat');
 ```
 
-_Note: in Node.js, the data for all 150+ locales is loaded along with the library._
+_Note: in Node.js, the data for all 200+ languages is loaded along with the library._
 
 ### Public API
 
@@ -241,6 +233,8 @@ See the [LICENSE file][LICENSE] for license text and copyright information.
 [david-badge]: https://img.shields.io/david/yahoo/intl-messageformat.svg?style=flat-square
 [travis]: https://travis-ci.org/yahoo/intl-messageformat
 [travis-badge]: https://img.shields.io/travis/yahoo/intl-messageformat.svg?style=flat-square
+[sauce]: https://saucelabs.com/u/intl-messageformat
+[sauce-badge]: https://saucelabs.com/browser-matrix/intl-messageformat.svg
 [strawman]: http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting
 [parser]: https://github.com/yahoo/intl-messageformat-parser
 [ICU]: http://userguide.icu-project.org/formatparse/messages
