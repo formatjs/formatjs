@@ -9,7 +9,6 @@
 'use strict';
 
 describe('IntlMessageFormat', function () {
-
     it('should be a function', function () {
         expect(IntlMessageFormat).to.be.a('function');
     });
@@ -22,123 +21,95 @@ describe('IntlMessageFormat', function () {
         });
     });
 
-    // CONSTRUCTOR PROPERTIES
-
-    describe('#_locale', function () {
-        var defaultLocale = IntlMessageFormat.defaultLocale;
-
-        afterEach(function () {
-            IntlMessageFormat.defaultLocale = defaultLocale;
-        });
-
-        it('should be a default value', function () {
-            // Set defaultLocale to "en".
-            IntlMessageFormat.defaultLocale = 'en';
-
-            var msgFmt = new IntlMessageFormat('');
-            expect(msgFmt._locale).to.equal('en');
-        });
-
-        it('should be equal to the second parameter\'s language code', function () {
-            var msgFmt = new IntlMessageFormat('', 'en-US');
-            expect(msgFmt._locale).to.equal('en');
-        });
-
-    });
-
-    describe('#_pluralLocale', function () {
-        var msgFmt = new IntlMessageFormat('');
-
-        it('should be undefined', function () {
-            /*jshint expr:true */
-            expect(msgFmt._pluralLocale).to.be(undefined);
-        });
-    });
-
-    describe('#_pluralFunc', function () {
-        var msgFmt = new IntlMessageFormat('');
-
-        it('should be undefined', function () {
-            /*jshint expr:true */
-            expect(msgFmt._pluralFunc).to.be(undefined);
-        });
-    });
-
-    describe('#pattern', function () {
-        it('should be undefined', function () {
-            var msgFmt = new IntlMessageFormat('');
-            /*jshint expr:true */
-            expect(msgFmt.pattern).to.not.be.ok();
-        });
-
-        it('should be undefined when first parameter is ommited', function () {
-            var msgFmt = new IntlMessageFormat('');
-            /*jshint expr:true */
-            expect(msgFmt.pattern).to.not.be.ok();
-        });
-    });
-
     // INSTANCE METHODS
 
     describe('#resolvedOptions( )', function () {
-        var msgFmt;
-
-        beforeEach(function () {
-            msgFmt = new IntlMessageFormat('');
-        });
-
         it('should be a function', function () {
-            expect(msgFmt.resolvedOptions).to.be.a('function');
+            var mf = new IntlMessageFormat('');
+            expect(mf.resolvedOptions).to.be.a('function');
         });
 
-        it('should return an empty object', function () {
-            var p, pCount = 0,
-                resolvedOptions;
+        it('should have a `locale` property', function () {
+            var mf = new IntlMessageFormat('');
+            expect(mf.resolvedOptions()).to.have.key('locale');
+        });
 
-            resolvedOptions = msgFmt.resolvedOptions();
+        describe('`locale`', function () {
+            var IMFLocaleData = IntlMessageFormat.__localeData__;
+            var localeData    = {};
 
-            for (p in resolvedOptions) {
-                if (resolvedOptions.hasOwnProperty(p)) {
-                    pCount++;
+            // Helper to remove and replace the locale data available during the
+            // the different tests.
+            function transferLocaleData(from, to) {
+                for (var locale in from) {
+                    if (Object.prototype.hasOwnProperty.call(from, locale)) {
+                        if (locale === IntlMessageFormat.defaultLocale) {
+                            continue;
+                        }
+
+                        to[locale] = from[locale];
+                        delete from[locale];
+                    }
                 }
             }
 
-            expect(pCount).to.equal(1);
+            beforeEach(function () {
+                transferLocaleData(IMFLocaleData, localeData);
+            });
+
+            afterEach(function () {
+                transferLocaleData(localeData, IMFLocaleData);
+            });
+
+            it('should default to "en"', function () {
+                var mf = new IntlMessageFormat('');
+                expect(mf.resolvedOptions().locale).to.equal('en');
+            });
+
+            it('should normalize the casing', function () {
+                transferLocaleData(localeData, IMFLocaleData);
+
+                var mf = new IntlMessageFormat('', 'en-us');
+                expect(mf.resolvedOptions().locale).to.equal('en-US');
+
+                mf = new IntlMessageFormat('', 'EN-US');
+                expect(mf.resolvedOptions().locale).to.equal('en-US');
+            });
+
+            it('should be a fallback value when data is missing', function () {
+                IMFLocaleData.fr = localeData.fr;
+
+                var mf = new IntlMessageFormat('', 'fr-FR');
+                expect(mf.resolvedOptions().locale).to.equal('fr');
+
+                mf = new IntlMessageFormat('', 'pt');
+                expect(mf.resolvedOptions().locale).to.equal('en');
+            });
         });
     });
 
     describe('#format( [object] )', function () {
         it('should be a function', function () {
-            var msgFmt = new IntlMessageFormat('');
-            expect(msgFmt.format).to.be.a('function');
+            var mf = new IntlMessageFormat('');
+            expect(mf.format).to.be.a('function');
+        });
+
+        it('should return a string', function () {
+            var mf = new IntlMessageFormat('');
+            expect(mf.format()).to.be.a('string');
         });
     });
 
     describe('using a string pattern', function () {
-
-        // TODO: Determine if spaces are valid in argument names in Yala; and if
-        // not, then remove this test.
-        // it('should fail if there is no argument in the string', function () {
-        //     var msgFmt = new IntlMessageFormat('My name is {FIRST LAST}'),
-        //         m = msgFmt.format({
-        //                 FIRST: 'Anthony',
-        //                 LAST: 'Pipkin'
-        //             });
-        //
-        //     expect(m).to.equal('My name is {FIRST LAST}');
-        // });
-
         it('should properly replace direct arguments in the string', function () {
-            var msgFmt = new IntlMessageFormat('My name is {FIRST} {LAST}.'),
-                m = msgFmt.format({
-                    FIRST: 'Anthony',
-                    LAST : 'Pipkin'
-                });
+            var mf = new IntlMessageFormat('My name is {FIRST} {LAST}.');
+            var output = mf.format({
+                FIRST: 'Anthony',
+                LAST : 'Pipkin'
+            });
 
-            expect(m).to.be.a('string');
-            expect(m).to.equal('My name is Anthony Pipkin.');
+            expect(output).to.equal('My name is Anthony Pipkin.');
         });
-
     });
 
     describe('and plurals under the Arabic locale', function () {
@@ -280,7 +251,6 @@ describe('IntlMessageFormat', function () {
     });
 
     describe('and change the locale with different counts', function () {
-
         var messages = {
             en: '{COMPANY_COUNT, plural, ' +
                     '=1 {One company}' +
@@ -315,18 +285,6 @@ describe('IntlMessageFormat', function () {
         });
     });
 
-    describe('with empty language tags', function () {
-        it('should fail and throw an error', function () {
-            function createWithInvalidLocale() {
-                return new IntlMessageFormat('{NAME}', ' ');
-            }
-
-            expect(createWithInvalidLocale).to.throwException(function (e) {
-                expect(e).to.be.an(Error);
-            });
-        });
-    });
-
     describe('arguments with', function () {
 
         describe('no spaces', function() {
@@ -353,14 +311,6 @@ describe('IntlMessageFormat', function () {
                 expect(msg.format({ STATE: state })).to.equal(state);
             });
         });
-
-        // TODO: Determine if spaces are valid in argument names in Yala; and if
-        // not, then remove this test.
-        // describe('a space', function() {
-        //     it('should return the same string as no tokens are discovered', function () {
-        //         expect(new IntlMessageFormat('{ST ATE}').format({'ST ATE': 'Missouri'})).to.equal('{ST ATE}');
-        //     });
-        // });
 
         describe('a numeral', function() {
             var msg   = new IntlMessageFormat('{ST1ATE}'),
@@ -389,6 +339,40 @@ describe('IntlMessageFormat', function () {
             it('should succeed when the argument is correct', function () {
                 expect(msg.format({ ST1ATE: state })).to.equal(state);
             });
+        });
+    });
+
+    describe('selectordinal arguments', function () {
+        var msg = 'This is my {year, selectordinal, one{#st} two{#nd} few{#rd} other{#th}} birthday.';
+
+        it('should parse without errors', function () {
+            expect(IntlMessageFormat.__parse).withArgs(msg).to.not.throwException();
+        });
+
+        it('should use ordinal pluralization rules', function () {
+            var mf = new IntlMessageFormat(msg, 'en');
+
+            expect(mf.format({year: 1})).to.equal('This is my 1st birthday.');
+            expect(mf.format({year: 2})).to.equal('This is my 2nd birthday.');
+            expect(mf.format({year: 3})).to.equal('This is my 3rd birthday.');
+            expect(mf.format({year: 4})).to.equal('This is my 4th birthday.');
+            expect(mf.format({year: 11})).to.equal('This is my 11th birthday.');
+            expect(mf.format({year: 21})).to.equal('This is my 21st birthday.');
+            expect(mf.format({year: 22})).to.equal('This is my 22nd birthday.');
+            expect(mf.format({year: 33})).to.equal('This is my 33rd birthday.');
+            expect(mf.format({year: 44})).to.equal('This is my 44th birthday.');
+            expect(mf.format({year: 1024})).to.equal('This is my 1,024th birthday.');
+        });
+    });
+
+    describe('exceptions', function () {
+        it('should use the correct PT plural rules', function () {
+            var msg  = '{num, plural, one{one} other{other}}';
+            var pt   = new IntlMessageFormat(msg, 'pt');
+            var ptMZ = new IntlMessageFormat(msg, 'pt-MZ');
+
+            expect(pt.format({num: 0})).to.equal('one');
+            expect(ptMZ.format({num: 0})).to.equal('other');
         });
     });
 });

@@ -31,12 +31,11 @@ function MessageFormat(message, locales, formats) {
     // Defined first because it's used to build the format pattern.
     defineProperty(this, '_locale',  {value: this._resolveLocale(locales)});
 
-    var pluralFn = MessageFormat.__localeData__[this._locale].pluralRuleFunction;
-
     // Compile the `ast` to a pattern that is highly optimized for repeated
     // `format()` invocations. **Note:** This passes the `locales` set provided
     // to the constructor instead of just the resolved locale.
-    var pattern = this._compilePattern(ast, locales, formats, pluralFn);
+    var pluralFn = this._findPluralRuleFunction(this._locale);
+    var pattern  = this._compilePattern(ast, locales, formats, pluralFn);
 
     // "Bind" `format()` method to `this` so it can be passed by reference like
     // the other `Intl` APIs.
@@ -129,17 +128,7 @@ defineProperty(MessageFormat, '__addLocaleData', {value: function (data) {
         );
     }
 
-    if (!data.pluralRuleFunction) {
-        throw new Error(
-            'Locale data provided to IntlMessageFormat is missing a ' +
-            '`pluralRuleFunction` property'
-        );
-    }
-
-    // Message format locale data only requires the first part of the tag.
-    var locale = data.locale.toLowerCase().split('-')[0];
-
-    MessageFormat.__localeData__[locale] = data;
+    MessageFormat.__localeData__[data.locale.toLowerCase()] = data;
 }});
 
 // Defines `__parse()` static method as an exposed private.
@@ -163,6 +152,26 @@ MessageFormat.prototype.resolvedOptions = function () {
 MessageFormat.prototype._compilePattern = function (ast, locales, formats, pluralFn) {
     var compiler = new Compiler(locales, formats, pluralFn);
     return compiler.compile(ast);
+};
+
+MessageFormat.prototype._findPluralRuleFunction = function (locale) {
+    var localeData = MessageFormat.__localeData__;
+    var data       = localeData[locale.toLowerCase()];
+
+    // The locale data is de-duplicated, so we have to traverse the locale's
+    // hierarchy until we find a `pluralRuleFunction` to return.
+    while (data) {
+        if (data.pluralRuleFunction) {
+            return data.pluralRuleFunction;
+        }
+
+        data = data.parentLocale && localeData[data.parentLocale.toLowerCase()];
+    }
+
+    throw new Error(
+        'Locale data added to IntlMessageFormat is missing a ' +
+        '`pluralRuleFunction` for :' + locale
+    );
 };
 
 MessageFormat.prototype._format = function (pattern, values) {
@@ -218,37 +227,39 @@ MessageFormat.prototype._mergeFormats = function (defaults, formats) {
 };
 
 MessageFormat.prototype._resolveLocale = function (locales) {
-    if (!locales) {
-        locales = MessageFormat.defaultLocale;
-    }
-
     if (typeof locales === 'string') {
         locales = [locales];
     }
 
+    // Create a copy of the array so we can push on the default locale.
+    locales = (locales || []).concat(MessageFormat.defaultLocale);
+
     var localeData = MessageFormat.__localeData__;
-    var i, len, locale;
+    var i, len, localeParts, data;
 
+    // Using the set of locales + the default locale, we look for the first one
+    // which that has been registered. When data does not exist for a locale, we
+    // traverse its ancestors to find something that's been registered within
+    // its hierarchy of locales. Since we lack the proper `parentLocale` data
+    // here, we must take a naive approach to traversal.
     for (i = 0, len = locales.length; i < len; i += 1) {
-        // We just need the root part of the langage tag.
-        locale = locales[i].split('-')[0].toLowerCase();
+        localeParts = locales[i].toLowerCase().split('-');
 
-        // Validate that the langage tag is structurally valid.
-        if (!/[a-z]{2,3}/.test(locale)) {
-            throw new Error(
-                'Language tag provided to IntlMessageFormat is not ' +
-                'structrually valid: ' + locale
-            );
-        }
+        while (localeParts.length) {
+            data = localeData[localeParts.join('-')];
+            if (data) {
+                // Return the normalized locale string; e.g., we return "en-US",
+                // instead of "en-us".
+                return data.locale;
+            }
 
-        // Return the first locale for which we have CLDR data registered.
-        if (hop.call(localeData, locale)) {
-            return locale;
+            localeParts.pop();
         }
     }
 
+    var defaultLocale = locales.pop();
     throw new Error(
         'No locale data has been added to IntlMessageFormat for: ' +
-        locales.join(', ')
+        locales.join(', ') + ', or the default locale: ' + defaultLocale
     );
 };

@@ -110,7 +110,9 @@ Compiler.prototype.compileArgument = function (element) {
 
         case 'pluralFormat':
             options = this.compileOptions(element);
-            return new PluralFormat(element.id, format.offset, options, pluralFn);
+            return new PluralFormat(
+                element.id, format.ordinal, format.offset, options, pluralFn
+            );
 
         case 'selectFormat':
             options = this.compileOptions(element);
@@ -127,8 +129,8 @@ Compiler.prototype.compileOptions = function (element) {
         optionsHash = {};
 
     // Save the current plural element, if any, then set it to a new value when
-    // compiling the options sub-patterns. This conform's the spec's algorithm
-    // for handling `"#"` synax in message text.
+    // compiling the options sub-patterns. This conforms the spec's algorithm
+    // for handling `"#"` syntax in message text.
     this.pluralStack.push(this.currentPlural);
     this.currentPlural = format.type === 'pluralFormat' ? element : null;
 
@@ -141,7 +143,7 @@ Compiler.prototype.compileOptions = function (element) {
         optionsHash[option.selector] = this.compileMessage(option.value);
     }
 
-    // Pop the plural stack to put back the original currnet plural value.
+    // Pop the plural stack to put back the original current plural value.
     this.currentPlural = this.pluralStack.pop();
 
     return optionsHash;
@@ -161,18 +163,19 @@ StringFormat.prototype.format = function (value) {
     return typeof value === 'string' ? value : String(value);
 };
 
-function PluralFormat(id, offset, options, pluralFn) {
-    this.id       = id;
-    this.offset   = offset;
-    this.options  = options;
-    this.pluralFn = pluralFn;
+function PluralFormat(id, useOrdinal, offset, options, pluralFn) {
+    this.id         = id;
+    this.useOrdinal = useOrdinal;
+    this.offset     = offset;
+    this.options    = options;
+    this.pluralFn   = pluralFn;
 }
 
 PluralFormat.prototype.getOption = function (value) {
     var options = this.options;
 
     var option = options['=' + value] ||
-            options[this.pluralFn(value - this.offset)];
+            options[this.pluralFn(value - this.offset, this.useOrdinal)];
 
     return option || options.other;
 };
