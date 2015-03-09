@@ -213,6 +213,12 @@ describe('IntlRelativeFormat', function () {
             var output = rt.format(future(1 * 1000));
             expect(output).to.equal('dentro de 1 segundo');
         });
+
+        it('should accept a custom value for now', function() {
+            var now = 1425839825400;
+            var output = rt.format(new Date(now-(60 * 1000)), {now: new Date(now)});
+            expect(output).to.equal('hace 1 minuto');
+        });
     });
 
     describe('and relative time under the English locale', function () {
@@ -321,6 +327,37 @@ describe('IntlRelativeFormat', function () {
         it('should return 1 second future', function () {
             var output = rt.format(future(1 * 1000));
             expect(output).to.equal('in 1 second');
+        });
+
+        it('should accept a custom value for now', function() {
+            var now = 1425839825400;
+            var output = rt.format(new Date(now-(60 * 1000)), {now: new Date(now)});
+            expect(output).to.equal('1 minute ago');
+        });
+    });
+
+    describe('the now option', function () {
+        var rt = new IntlRelativeFormat('en');
+
+        it('should accept the epoch value', function () {
+            var output = rt.format(new Date(60000), {now: 0});
+            expect(output).to.equal('in 1 minute');
+        });
+
+        it('should use the real value of now when undefined', function () {
+            var output = rt.format(past(2 * 60 * 1000), {now: undefined});
+            expect(output).to.equal('2 minutes ago');
+        });
+
+        it('should throw on non-finite values', function() {
+            expect(function () {
+                rt.format(past(2 * 60 * 1000), {now: Infinity});
+            }).to.throwException();
+        });
+
+        it('should treat null like the epoch', function () {
+            var output = rt.format(new Date(120000), {now: null});
+            expect(output).to.equal('in 2 minutes');
         });
     });
 
