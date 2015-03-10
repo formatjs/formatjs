@@ -8,17 +8,17 @@ See the accompanying LICENSE file for terms.
 
 var round = Math.round;
 
-function daysToYears (days) {
+function daysToYears(days) {
     // 400 years have 146097 days (taking into account leap year rules)
     return days * 400 / 146097;
 }
 
-export default function (dfrom, dto) {
+export default function (from, to) {
     // Convert to ms timestamps.
-    dfrom = +dfrom;
-    dto   = +dto;
+    from = +from;
+    to   = +to;
 
-    var millisecond = round(dto - dfrom),
+    var millisecond = round(to - from),
         second      = round(millisecond / 1000),
         minute      = round(second / 60),
         hour        = round(minute / 60),

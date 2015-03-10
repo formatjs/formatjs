@@ -6,9 +6,15 @@ See the accompanying LICENSE file for terms.
 
 /* jslint esnext: true */
 
-import {defineProperty, objCreate, arrIndexOf, isArray, dateNow} from './es5';
 import IntlMessageFormat from 'intl-messageformat';
 import diff from './diff';
+import {
+    defineProperty,
+    objCreate,
+    arrIndexOf,
+    isArray,
+    dateNow
+} from './es5';
 
 export default RelativeFormat;
 
@@ -29,12 +35,13 @@ function RelativeFormat(locales, options) {
     }
 
     defineProperty(this, '_locale', {value: this._resolveLocale(locales)});
-    defineProperty(this, '_locales', {value: locales});
     defineProperty(this, '_options', {value: {
         style: this._resolveStyle(options.style),
         units: this._isValidUnits(options.units) && options.units
     }});
 
+    defineProperty(this, '_locales', {value: locales});
+    defineProperty(this, '_fields', {value: this._findFields(this._locale)});
     defineProperty(this, '_messages', {value: objCreate(null)});
 
     // "Bind" `format()` method to `this` so it can be passed by reference like
@@ -55,25 +62,15 @@ defineProperty(RelativeFormat, '__addLocaleData', {value: function (data) {
         );
     }
 
-    if (!data.fields) {
-        throw new Error(
-            'Locale data provided to IntlRelativeFormat is missing a ' +
-            '`fields` property value'
-        );
-    }
+    RelativeFormat.__localeData__[data.locale.toLowerCase()] = data;
 
     // Add data to IntlMessageFormat.
     IntlMessageFormat.__addLocaleData(data);
-
-    // Relative format locale data only requires the first part of the tag.
-    var locale = data.locale.toLowerCase().split('-')[0];
-
-    RelativeFormat.__localeData__[locale] = data;
 }});
 
 // Define public `defaultLocale` property which can be set by the developer, or
-// it will be set when the first RelativeFormat instance is created by leveraging
-// the resolved locale from `Intl`.
+// it will be set when the first RelativeFormat instance is created by
+// leveraging the resolved locale from `Intl`.
 defineProperty(RelativeFormat, 'defaultLocale', {
     enumerable: true,
     writable  : true,
@@ -103,13 +100,12 @@ RelativeFormat.prototype.resolvedOptions = function () {
 };
 
 RelativeFormat.prototype._compileMessage = function (units) {
-    // `this._locales` is the original set of locales the user specificed to the
+    // `this._locales` is the original set of locales the user specified to the
     // constructor, while `this._locale` is the resolved root locale.
     var locales        = this._locales;
     var resolvedLocale = this._locale;
 
-    var localeData   = RelativeFormat.__localeData__;
-    var field        = localeData[resolvedLocale].fields[units];
+    var field        = this._fields[units];
     var relativeTime = field.relativeTime;
     var future       = '';
     var past         = '';
@@ -138,17 +134,61 @@ RelativeFormat.prototype._compileMessage = function (units) {
     return new IntlMessageFormat(message, locales);
 };
 
+RelativeFormat.prototype._getMessage = function (units) {
+    var messages = this._messages;
+
+    // Create a new synthetic message based on the locale data from CLDR.
+    if (!messages[units]) {
+        messages[units] = this._compileMessage(units);
+    }
+
+    return messages[units];
+};
+
+RelativeFormat.prototype._getRelativeUnits = function (diff, units) {
+    var field = this._fields[units];
+
+    if (field.relative) {
+        return field.relative[diff];
+    }
+};
+
+RelativeFormat.prototype._findFields = function (locale) {
+    var localeData = RelativeFormat.__localeData__;
+    var data       = localeData[locale.toLowerCase()];
+
+    // The locale data is de-duplicated, so we have to traverse the locale's
+    // hierarchy until we find `fields` to return.
+    while (data) {
+        if (data.fields) {
+            return data.fields;
+        }
+
+        data = data.parentLocale && localeData[data.parentLocale.toLowerCase()];
+    }
+
+    throw new Error(
+        'Locale data added to IntlRelativeFormat is missing `fields` for :' +
+        locale
+    );
+};
+
 RelativeFormat.prototype._format = function (date, options) {
     var now = options && options.now !== undefined ? options.now : dateNow();
+
+    if (date === undefined) {
+        date = now;
+    }
+
+    // Determine if the `date` and optional `now` values are valid, and throw a
+    // similar error to what `Intl.DateTimeFormat#format()` would throw.
     if (!isFinite(now)) {
         throw new RangeError(
-            'The now option provided to IntlRelativeFormat#format() is not ' +
+            'The `now` option provided to IntlRelativeFormat#format() is not ' +
             'in valid range.'
         );
     }
 
-    // Determine if the `date` is valid, and throw a similar error to what
-    // `Intl.DateTimeFormat#format()` would throw.
     if (!isFinite(date)) {
         throw new RangeError(
             'The date value provided to IntlRelativeFormat#format() is not ' +
@@ -161,13 +201,13 @@ RelativeFormat.prototype._format = function (date, options) {
     var diffInUnits = diffReport[units];
 
     if (this._options.style !== 'numeric') {
-        var relativeUnits = this._resolveRelativeUnits(diffInUnits, units);
+        var relativeUnits = this._getRelativeUnits(diffInUnits, units);
         if (relativeUnits) {
             return relativeUnits;
         }
     }
 
-    return this._resolveMessage(units).format({
+    return this._getMessage(units).format({
         '0' : Math.abs(diffInUnits),
         when: diffInUnits < 0 ? 'past' : 'future'
     });
@@ -195,59 +235,41 @@ RelativeFormat.prototype._isValidUnits = function (units) {
 };
 
 RelativeFormat.prototype._resolveLocale = function (locales) {
-    if (!locales) {
-        locales = RelativeFormat.defaultLocale;
-    }
-
     if (typeof locales === 'string') {
         locales = [locales];
     }
 
-    var hop        = Object.prototype.hasOwnProperty;
+    // Create a copy of the array so we can push on the default locale.
+    locales = (locales || []).concat(RelativeFormat.defaultLocale);
+
     var localeData = RelativeFormat.__localeData__;
-    var i, len, locale;
+    var i, len, localeParts, data;
 
+    // Using the set of locales + the default locale, we look for the first one
+    // which that has been registered. When data does not exist for a locale, we
+    // traverse its ancestors to find something that's been registered within
+    // its hierarchy of locales. Since we lack the proper `parentLocale` data
+    // here, we must take a naive approach to traversal.
     for (i = 0, len = locales.length; i < len; i += 1) {
-        // We just need the root part of the language tag.
-        locale = locales[i].split('-')[0].toLowerCase();
+        localeParts = locales[i].toLowerCase().split('-');
 
-        // Validate that the language tag is structurally valid.
-        if (!/[a-z]{2,3}/.test(locale)) {
-            throw new Error(
-                'Language tag provided to IntlRelativeFormat is not ' +
-                'structrually valid: ' + locale
-            );
-        }
+        while (localeParts.length) {
+            data = localeData[localeParts.join('-')];
+            if (data) {
+                // Return the normalized locale string; e.g., we return "en-US",
+                // instead of "en-us".
+                return data.locale;
+            }
 
-        // Return the first locale for which we have CLDR data registered.
-        if (hop.call(localeData, locale)) {
-            return locale;
+            localeParts.pop();
         }
     }
 
+    var defaultLocale = locales.pop();
     throw new Error(
         'No locale data has been added to IntlRelativeFormat for: ' +
-        locales.join(', ')
+        locales.join(', ') + ', or the default locale: ' + defaultLocale
     );
-};
-
-RelativeFormat.prototype._resolveMessage = function (units) {
-    var messages = this._messages;
-
-    // Create a new synthetic message based on the locale data from CLDR.
-    if (!messages[units]) {
-        messages[units] = this._compileMessage(units);
-    }
-
-    return messages[units];
-};
-
-RelativeFormat.prototype._resolveRelativeUnits = function (diff, units) {
-    var field = RelativeFormat.__localeData__[this._locale].fields[units];
-
-    if (field.relative) {
-        return field.relative[diff];
-    }
 };
 
 RelativeFormat.prototype._resolveStyle = function (style) {

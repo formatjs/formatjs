@@ -36,33 +36,74 @@ describe('IntlRelativeFormat', function () {
         });
     });
 
-    // CONSTRUCTOR PROPERTIES
+    // INSTANCE METHODS
 
-    describe('#_locale', function () {
-        var defaultLocale = IntlRelativeFormat.defaultLocale;
-
-        afterEach(function () {
-            IntlRelativeFormat.defaultLocale = defaultLocale;
-        });
-
-        it('should be a default value', function () {
-            // Set defaultLocale to "en".
-            IntlRelativeFormat.defaultLocale = 'en';
-
+    describe('#resolvedOptions()', function () {
+        it('should be a function', function () {
             var rf = new IntlRelativeFormat();
-            expect(rf._locale).to.equal('en');
+            expect(rf.resolvedOptions).to.be.a('function');
         });
 
-        it('should be equal to the second parameter\'s language code', function () {
-            var rf = new IntlRelativeFormat('en-US');
-            expect(rf._locale).to.equal('en');
+        it('should contain `locale`, `style`, and `units` properties', function () {
+            var rf = new IntlRelativeFormat();
+            expect(rf.resolvedOptions()).to.have.keys(['locale', 'style', 'units']);
         });
 
-    });
+        describe('locale', function () {
+            var IRFLocaleData = IntlRelativeFormat.__localeData__;
+            var localeData    = {};
 
-    describe('options', function () {
+            // Helper to remove and replace the locale data available during the
+            // the different tests.
+            function transferLocaleData(from, to) {
+                for (var locale in from) {
+                    if (Object.prototype.hasOwnProperty.call(from, locale)) {
+                        if (locale === IntlRelativeFormat.defaultLocale) {
+                            continue;
+                        }
+
+                        to[locale] = from[locale];
+                        delete from[locale];
+                    }
+                }
+            }
+
+            beforeEach(function () {
+                transferLocaleData(IRFLocaleData, localeData);
+            });
+
+            afterEach(function () {
+                transferLocaleData(localeData, IRFLocaleData);
+            });
+
+            it('should default to "en"', function () {
+                var rf = new IntlRelativeFormat();
+                expect(rf.resolvedOptions().locale).to.equal('en');
+            });
+
+            it('should normalize the casing', function () {
+                transferLocaleData(localeData, IRFLocaleData);
+
+                var rf = new IntlRelativeFormat('en-us');
+                expect(rf.resolvedOptions().locale).to.equal('en-US');
+
+                rf = new IntlRelativeFormat('EN-US');
+                expect(rf.resolvedOptions().locale).to.equal('en-US');
+            });
+
+            it('should be a fallback value when data is missing', function () {
+                IRFLocaleData.fr = localeData.fr;
+
+                var rf = new IntlRelativeFormat('fr-FR');
+                expect(rf.resolvedOptions().locale).to.equal('fr');
+
+                rf = new IntlRelativeFormat('pt');
+                expect(rf.resolvedOptions().locale).to.equal('en');
+            });
+        });
+
         describe('style', function () {
-            it('should defaul to "best fit"', function () {
+            it('should default to "best fit"', function () {
                 var resolvedOptions = new IntlRelativeFormat().resolvedOptions();
 
                 expect(resolvedOptions).to.have.property('style');
@@ -131,25 +172,6 @@ describe('IntlRelativeFormat', function () {
         });
     });
 
-    // INSTANCE METHODS
-
-    describe('#resolvedOptions( )', function () {
-        var rf;
-
-        beforeEach(function () {
-            rf = new IntlRelativeFormat();
-        });
-
-        it('should be a function', function () {
-            expect(rf.resolvedOptions).to.be.a('function');
-        });
-
-        it('should contain `locale`, `style`, and `units` properties', function () {
-            var resolvedOptions = rf.resolvedOptions();
-            expect(resolvedOptions).to.have.keys(['locale', 'style', 'units']);
-        });
-    });
-
     describe('#format( [object] )', function () {
         var rf;
 
@@ -174,190 +196,307 @@ describe('IntlRelativeFormat', function () {
             expect(rf.format(0)).to.be.a('string');
             expect(rf.format(-1)).to.be.a('string');
         });
-    });
 
-    describe('and relative time under the Spanish locale', function () {
-        var rt = new IntlRelativeFormat('es');
+        describe('with "es" locale', function () {
+            var rf = new IntlRelativeFormat('es');
 
-        it('should return right now', function () {
-            var output = rt.format(past());
-            expect(output).to.equal('ahora');
+            it('should return right now', function () {
+                var output = rf.format(past());
+                expect(output).to.equal('ahora');
+            });
+
+            it('should return 1 second past', function () {
+                var output = rf.format(past(1000));
+                expect(output).to.equal('hace 1 segundo');
+            });
+
+            it('should return 10 second past', function () {
+                var output = rf.format(past(10 * 1000));
+                expect(output).to.equal('hace 10 segundos');
+            });
+
+            it('should return 2 minutes past', function () {
+                var output = rf.format(past(2 * 60 * 1000));
+                expect(output).to.equal('hace 2 minutos');
+            });
+
+            it('should return 2 minutes future', function () {
+                var output = rf.format(future(2 * 60 * 1000));
+                expect(output).to.equal('dentro de 2 minutos');
+            });
+
+            it('should return 10 seconds future', function () {
+                var output = rf.format(future(10 * 1000));
+                expect(output).to.equal('dentro de 10 segundos');
+            });
+
+            it('should return 1 seconds future', function () {
+                var output = rf.format(future(1 * 1000));
+                expect(output).to.equal('dentro de 1 segundo');
+            });
+
+            it('should accept a custom value for now', function() {
+                var now = 1425839825400;
+                var output = rf.format(new Date(now-(60 * 1000)), {now: new Date(now)});
+                expect(output).to.equal('hace 1 minuto');
+            });
         });
 
-        it('should return 1 second past', function () {
-            var output = rt.format(past(1000));
-            expect(output).to.equal('hace 1 segundo');
+        describe('with "en" locale', function () {
+            var rf = new IntlRelativeFormat('en');
+
+            it('should return right now', function () {
+                var output = rf.format(past());
+                expect(output).to.equal('now');
+            });
+
+            it('should return 1 second past', function () {
+                var output = rf.format(past(1000));
+                expect(output).to.equal('1 second ago');
+            });
+
+            it('should return 10 second past', function () {
+                var output = rf.format(past(10 * 1000));
+                expect(output).to.equal('10 seconds ago');
+            });
+
+            it('should return 2 minutes past', function () {
+                var output = rf.format(past(2 * 60 * 1000));
+                expect(output).to.equal('2 minutes ago');
+            });
+
+            it('should return 1 hour past', function () {
+                var output = rf.format(past(60 * 60 * 1000));
+                expect(output).to.equal('1 hour ago');
+            });
+
+            it('should return 2 hours past', function () {
+                var output = rf.format(past(2 * 60 * 60 * 1000));
+                expect(output).to.equal('2 hours ago');
+            });
+
+            it('should return 1 day past', function () {
+                var output = rf.format(past(24 * 60 * 60 * 1000));
+                expect(output).to.equal('yesterday');
+            });
+
+            it('should return 2 days past', function () {
+                var output = rf.format(past(2 * 24 * 60 * 60 * 1000));
+                expect(output).to.equal('2 days ago');
+            });
+
+            it('should return 1 month past', function () {
+                var output = rf.format(past(30 * 24 * 60 * 60 * 1000));
+                expect(output).to.equal('last month');
+            });
+
+            it('should return 2 months past', function () {
+                var output = rf.format(past(2 * 30 * 24 * 60 * 60 * 1000));
+                expect(output).to.equal('2 months ago');
+            });
+
+            it('should return 1 year past', function () {
+                var output = rf.format(past(356 * 24 * 60 * 60 * 1000));
+                expect(output).to.equal('last year');
+            });
+
+            it('should return 2 years past', function () {
+                var output = rf.format(past(2 * 365 * 24 * 60 * 60 * 1000));
+                expect(output).to.equal('2 years ago');
+            });
+
+            it('should return 2 years future', function () {
+                var output = rf.format(future(2 * 365 * 24 * 60 * 60 * 1000));
+                expect(output).to.equal('in 2 years');
+            });
+
+            it('should return 1 year future', function () {
+                var output = rf.format(future(356 * 24 * 60 * 60 * 1000));
+                expect(output).to.equal('next year');
+            });
+
+            it('should return 2 months future', function () {
+                var output = rf.format(future(2 * 30 * 24 * 60 * 60 * 1000));
+                expect(output).to.equal('in 2 months');
+            });
+
+            it('should return 1 month future', function () {
+                var output = rf.format(future(30 * 24 * 60 * 60 * 1000));
+                expect(output).to.equal('next month');
+            });
+
+            it('should return 2 days future', function () {
+                var output = rf.format(future(2 * 24 * 60 * 60 * 1000));
+                expect(output).to.equal('in 2 days');
+            });
+
+            it('should return 1 day future', function () {
+                var output = rf.format(future(24 * 60 * 60 * 1000));
+                expect(output).to.equal('tomorrow');
+            });
+
+            it('should return 2 minutes future', function () {
+                var output = rf.format(future(2 * 60 * 1000));
+                expect(output).to.equal('in 2 minutes');
+            });
+
+            it('should return 10 seconds future', function () {
+                var output = rf.format(future(10 * 1000));
+                expect(output).to.equal('in 10 seconds');
+            });
+
+            it('should return 1 second future', function () {
+                var output = rf.format(future(1 * 1000));
+                expect(output).to.equal('in 1 second');
+            });
+
+            it('should accept a custom value for now', function() {
+                var now = 1425839825400;
+                var output = rf.format(new Date(now-(60 * 1000)), {now: new Date(now)});
+                expect(output).to.equal('1 minute ago');
+            });
         });
 
-        it('should returun 10 second past', function () {
-            var output = rt.format(past(10 * 1000));
-            expect(output).to.equal('hace 10 segundos');
+        describe('with "zh" locale', function () {
+            var rf = new IntlRelativeFormat('zh');
+
+            it('should return right now', function () {
+                var output = rf.format(now());
+                expect(output).to.equal('现在');
+            });
+
+            it('should return 1 second past', function () {
+                var output = rf.format(past(1000));
+                expect(output).to.equal('1秒钟前');
+            });
+
+            it('should return 10 seconds future', function () {
+                var output = rf.format(future(10 * 1000));
+                expect(output).to.equal('10秒钟后');
+            });
+
+            it('should return 3 minutes past', function () {
+                var output = rf.format(past(3 * 60 * 1000));
+                expect(output).to.equal('3分钟前');
+            });
+
+            it('should return 3 minutes future', function () {
+                var output = rf.format(future(3 * 60 * 1000));
+                expect(output).to.equal('3分钟后');
+            });
+
+            it('should return yesterday', function () {
+                var output = rf.format(past(1 * 24 * 60 * 60 * 1000));
+                expect(output).to.equal('昨天');
+            });
+
+            it('should return 2 days future', function () {
+                var output = rf.format(future(2 * 24 * 60 * 60 * 1000));
+                expect(output).to.equal('后天');
+            });
         });
 
-        it('should return 2 minutes past', function () {
-            var output = rt.format(past(2 * 60 * 1000));
-            expect(output).to.equal('hace 2 minutos');
+        describe('with "zh-Hant-TW" locale', function () {
+            var rf = new IntlRelativeFormat('zh-Hant-TW');
+
+            it('should return right now', function () {
+                var output = rf.format(now());
+                expect(output).to.equal('現在');
+            });
+
+            it('should return 1 second past', function () {
+                var output = rf.format(past(1000));
+                expect(output).to.equal('1 秒前');
+            });
+
+            it('should return 10 seconds future', function () {
+                var output = rf.format(future(10 * 1000));
+                expect(output).to.equal('10 秒後');
+            });
+
+            it('should return 3 minutes past', function () {
+                var output = rf.format(past(3 * 60 * 1000));
+                expect(output).to.equal('3 分鐘前');
+            });
+
+            it('should return 3 minutes future', function () {
+                var output = rf.format(future(3 * 60 * 1000));
+                expect(output).to.equal('3 分鐘後');
+            });
+
+            it('should return yesterday', function () {
+                var output = rf.format(past(1 * 24 * 60 * 60 * 1000));
+                expect(output).to.equal('昨天');
+            });
+
+            it('should return 2 days future', function () {
+                var output = rf.format(future(2 * 24 * 60 * 60 * 1000));
+                expect(output).to.equal('後天');
+            });
         });
 
-        it('should return 2 minutes future', function () {
-            var output = rt.format(future(2 * 60 * 1000));
-            expect(output).to.equal('dentro de 2 minutos');
+        describe('with "zh-Hant-HK" locale', function () {
+            var rf = new IntlRelativeFormat('zh-Hant-HK');
+
+            it('should return right now', function () {
+                var output = rf.format(now());
+                expect(output).to.equal('現在');
+            });
+
+            it('should return 1 second past', function () {
+                var output = rf.format(past(1000));
+                expect(output).to.equal('1 秒前');
+            });
+
+            it('should return 10 seconds future', function () {
+                var output = rf.format(future(10 * 1000));
+                expect(output).to.equal('10 秒後');
+            });
+
+            it('should return 3 minutes past', function () {
+                var output = rf.format(past(3 * 60 * 1000));
+                expect(output).to.equal('3 分鐘前');
+            });
+
+            it('should return 3 minutes future', function () {
+                var output = rf.format(future(3 * 60 * 1000));
+                expect(output).to.equal('3 分鐘後');
+            });
+
+            it('should return yesterday', function () {
+                var output = rf.format(past(1 * 24 * 60 * 60 * 1000));
+                expect(output).to.equal('昨日');
+            });
+
+            it('should return 2 days future', function () {
+                var output = rf.format(future(2 * 24 * 60 * 60 * 1000));
+                expect(output).to.equal('後日');
+            });
         });
 
-        it('should return 10 seconds future', function () {
-            var output = rt.format(future(10 * 1000));
-            expect(output).to.equal('dentro de 10 segundos');
-        });
+        describe('with `now` option', function () {
+            var rf = new IntlRelativeFormat('en');
 
-        it('should return 1 seconds future', function () {
-            var output = rt.format(future(1 * 1000));
-            expect(output).to.equal('dentro de 1 segundo');
-        });
+            it('should accept the epoch value', function () {
+                var output = rf.format(new Date(60000), {now: 0});
+                expect(output).to.equal('in 1 minute');
+            });
 
-        it('should accept a custom value for now', function() {
-            var now = 1425839825400;
-            var output = rt.format(new Date(now-(60 * 1000)), {now: new Date(now)});
-            expect(output).to.equal('hace 1 minuto');
-        });
-    });
+            it('should use the real value of now when undefined', function () {
+                var output = rf.format(past(2 * 60 * 1000), {now: undefined});
+                expect(output).to.equal('2 minutes ago');
+            });
 
-    describe('and relative time under the English locale', function () {
-        var rt = new IntlRelativeFormat('en');
+            it('should throw on non-finite values', function() {
+                expect(function () {
+                    rf.format(past(2 * 60 * 1000), {now: Infinity});
+                }).to.throwException();
+            });
 
-        it('should return right now', function () {
-            var output = rt.format(past());
-            expect(output).to.equal('now');
-        });
-
-        it('should return 1 second past', function () {
-            var output = rt.format(past(1000));
-            expect(output).to.equal('1 second ago');
-        });
-
-        it('should returun 10 second past', function () {
-            var output = rt.format(past(10 * 1000));
-            expect(output).to.equal('10 seconds ago');
-        });
-
-        it('should return 2 minutes past', function () {
-            var output = rt.format(past(2 * 60 * 1000));
-            expect(output).to.equal('2 minutes ago');
-        });
-
-        it('should return 1 hour past', function () {
-            var output = rt.format(past(60 * 60 * 1000));
-            expect(output).to.equal('1 hour ago');
-        });
-
-        it('should return 2 hours past', function () {
-            var output = rt.format(past(2 * 60 * 60 * 1000));
-            expect(output).to.equal('2 hours ago');
-        });
-
-        it('should return 1 day past', function () {
-            var output = rt.format(past(24 * 60 * 60 * 1000));
-            expect(output).to.equal('yesterday');
-        });
-
-        it('should return 2 days past', function () {
-            var output = rt.format(past(2 * 24 * 60 * 60 * 1000));
-            expect(output).to.equal('2 days ago');
-        });
-
-        it('should return 1 month past', function () {
-            var output = rt.format(past(30 * 24 * 60 * 60 * 1000));
-            expect(output).to.equal('last month');
-        });
-
-        it('should return 2 months past', function () {
-            var output = rt.format(past(2 * 30 * 24 * 60 * 60 * 1000));
-            expect(output).to.equal('2 months ago');
-        });
-
-        it('should return 1 year past', function () {
-            var output = rt.format(past(356 * 24 * 60 * 60 * 1000));
-            expect(output).to.equal('last year');
-        });
-
-        it('should return 2 years past', function () {
-            var output = rt.format(past(2 * 365 * 24 * 60 * 60 * 1000));
-            expect(output).to.equal('2 years ago');
-        });
-
-        it('should return 2 years future', function () {
-            var output = rt.format(future(2 * 365 * 24 * 60 * 60 * 1000));
-            expect(output).to.equal('in 2 years');
-        });
-
-        it('should return 1 year future', function () {
-            var output = rt.format(future(356 * 24 * 60 * 60 * 1000));
-            expect(output).to.equal('next year');
-        });
-
-        it('should return 2 months future', function () {
-            var output = rt.format(future(2 * 30 * 24 * 60 * 60 * 1000));
-            expect(output).to.equal('in 2 months');
-        });
-
-        it('should return 1 month future', function () {
-            var output = rt.format(future(30 * 24 * 60 * 60 * 1000));
-            expect(output).to.equal('next month');
-        });
-
-        it('should return 2 days future', function () {
-            var output = rt.format(future(2 * 24 * 60 * 60 * 1000));
-            expect(output).to.equal('in 2 days');
-        });
-
-        it('should return 1 day future', function () {
-            var output = rt.format(future(24 * 60 * 60 * 1000));
-            expect(output).to.equal('tomorrow');
-        });
-
-        it('should return 2 minutes future', function () {
-            var output = rt.format(future(2 * 60 * 1000));
-            expect(output).to.equal('in 2 minutes');
-        });
-
-        it('should return 10 seconds future', function () {
-            var output = rt.format(future(10 * 1000));
-            expect(output).to.equal('in 10 seconds');
-        });
-
-        it('should return 1 second future', function () {
-            var output = rt.format(future(1 * 1000));
-            expect(output).to.equal('in 1 second');
-        });
-
-        it('should accept a custom value for now', function() {
-            var now = 1425839825400;
-            var output = rt.format(new Date(now-(60 * 1000)), {now: new Date(now)});
-            expect(output).to.equal('1 minute ago');
-        });
-    });
-
-    describe('the now option', function () {
-        var rt = new IntlRelativeFormat('en');
-
-        it('should accept the epoch value', function () {
-            var output = rt.format(new Date(60000), {now: 0});
-            expect(output).to.equal('in 1 minute');
-        });
-
-        it('should use the real value of now when undefined', function () {
-            var output = rt.format(past(2 * 60 * 1000), {now: undefined});
-            expect(output).to.equal('2 minutes ago');
-        });
-
-        it('should throw on non-finite values', function() {
-            expect(function () {
-                rt.format(past(2 * 60 * 1000), {now: Infinity});
-            }).to.throwException();
-        });
-
-        it('should treat null like the epoch', function () {
-            var output = rt.format(new Date(120000), {now: null});
-            expect(output).to.equal('in 2 minutes');
+            it('should treat null like the epoch', function () {
+                var output = rf.format(new Date(120000), {now: null});
+                expect(output).to.equal('in 2 minutes');
+            });
         });
     });
 
