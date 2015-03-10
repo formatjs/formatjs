@@ -51,8 +51,7 @@
     "istanbul": "^0.3.2",
     "mocha": "^2.0.1",
     "moment": "^2.8.2",
-    "xunit-file": "0.0.6",
-    "yeti": "^0.2.29"
+    "xunit-file": "0.0.6"
   },
   "scripts": {
     "test": "istanbul cover -x lib/locales.js -- _mocha tests/runner.js --reporter spec",
