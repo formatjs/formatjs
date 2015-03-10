@@ -44,7 +44,7 @@ export default {
         }
     },
 
-    propsTypes       : typesSpec,
+    propTypes        : typesSpec,
     contextTypes     : typesSpec,
     childContextTypes: typesSpec,
 
