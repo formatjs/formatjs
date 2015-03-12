@@ -161,4 +161,14 @@ describe('React Intl', function () {
         expect(testNode.firstChild.innerHTML).to.equal('You have one photo.');
     });
 
+    it('Formats relative times correctly using FormattedRelative component', function () {
+        var testNode = document.getElementById('test4');
+
+        React.render(FormattedRelative({
+            value: new Date().getTime()
+        }), testNode);
+
+        expect(testNode.firstChild.innerHTML).to.contain('now');
+    });
+
 });
