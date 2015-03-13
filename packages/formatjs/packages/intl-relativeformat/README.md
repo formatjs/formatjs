@@ -17,7 +17,7 @@ Overview
 
 This package aims to provide a way to format different variations of relative time. You can use this package in the browser and on the server via Node.js.
 
-This implementation is very similar to [moment.js][], in concept, although it provides only formatting features based on the Unicode [CLDR][] locale data, an industry standard that supports more than 150 locales.
+This implementation is very similar to [moment.js][], in concept, although it provides only formatting features based on the Unicode [CLDR][] locale data, an industry standard that supports more than 200 languages.
 
 _Note: This `IntlRelativeFormat` API may change to stay in sync with ECMA-402, but this package will follow [semver][]._
 
@@ -25,58 +25,66 @@ _Note: This `IntlRelativeFormat` API may change to stay in sync with ECMA-402, b
 
 This API is very similar to [ECMA 402][]'s [DateTimeFormat][] and [NumberFormat][].
 
-#### `IntlRelativeFormat` Constructor
-
-To format a date to relative time, use the `IntlRelativeFormat` constructor. The constructor takes two parameters:
-
- - **locales** - _{String | String[]}_ - A string with a BCP 47 language tag, or an array of such strings. If you do not provide a locale, the default locale will be used, but you should _always_ provide one!
-
- - **options** - _{Object}_ - Optional object with user defined options for format styles.
-
-Here is the most basic example:
-
 ```js
-var rf = new IntlRelativeFormat('en');
-var output = rf.format(dateValue);
+var rf = new IntlRelativeFormat(locales, [options]);
 ```
 
-The format method (_which takes a JavaScript date or timestamp_) will compares it with `now`, and returns the formatted string; e.g., "3 hours ago" in the corresponding locale passed into the constructor.
-
-_Note: The `rf` instance should be enough for your entire application, unless you want to use custom options._
-
-### Custom Options
-
-The optional second argument `options` provides a way to customize how the relative time will be formatted.
-
-#### Units
-
-By default, the relative time is computed to the best fit unit, but you can explicitly call it to force `units` to be displayed in `"second"`, `"minute"`, `"hour"`, `"day"`, `"month"` or `"year"`:
+The `locales` can either be a single language tag, e.g., `"en-US"` or an array of them from which the first match will be used. `options` provides a way to control the output of the formatted relative time string.
 
 ```js
-var rf = new IntlRelativeFormat('en', {
-    units: 'day'
+var output = rf.format(someDate, [options]);
+```
+
+### Common Usage Example
+
+The most common way to use this library is to construct an `IntlRelativeFormat` instance and reuse it many times for formatting different date values; e.g.:
+
+```js
+var rf = new IntlRelativeFormat('en-US');
+
+var posts = [
+    {
+        id   : 1,
+        title: 'Some Blog Post',
+        date : new Date(1426271670524)
+    },
+    {
+        id   : 2,
+        title: 'Another Blog Post',
+        date : new Date(1426278870524)
+    }
+];
+
+posts.forEach(function (post) {
+    console.log(rf.format(post.date));
 });
-var output = rf.format(dateValue);
+// => "3 hours ago"
+// => "1 hour ago"
 ```
 
-As a result, the output will be "70 days ago" instead of "2 months ago".
+### Features
 
-#### Style
+* Uses industry standards [CLDR locale data][CLDR].
 
-By default, the relative time is computed as `"best fit"`, which means that instead of "1 day ago", it will display "yesterday", or "in 1 year" will be "next year", etc. But you can force to always use the "numeric" alternative:
+* Style options for `"best fit"` ("yesterday") and `"numeric"` ("1 day ago") output.
 
-```js
-var rf = new IntlRelativeFormat('en', {
-    style: 'numeric'
-});
-var output = rf.format(dateValue);
-```
+* Units options for always rendering in a particular unit; e.g. "30 days ago", instead of "1 month ago".
 
-As a result, the output will be "1 day ago" instead of "yesterday".
+* Ability to specify the "now" value from which the relative time is calculated, allowing `format()`.
+
+*  Formats numbers in relative time strings using [`Intl.NumberFormat`][NumberFormat].
+
+* Optimized for repeated calls to an `IntlRelativeFormat` instance's `format()` method.
 
 
 Usage
 -----
+
+### `Intl` Dependency
+
+This package assumes that the [`Intl`][Intl] global object exists in the runtime. `Intl` is present in all modern browsers _except_ Safari, and there's work happening to [integrate `Intl` into Node.js][Intl-Node].
+
+**Luckly, there's the [Intl.js][] polyfill!** You will need to conditionally load the polyfill if you want to support runtimes which `Intl` is not already built-in.
 
 ### Loading IntlRelativeFormat in Node.js
 
@@ -98,30 +106,9 @@ var rf = new IntlRelativeFormat('en');
 var output = rf.format(dateValue);
 ```
 
-_Note: in Node.js, the data for all 150+ locales is loaded along with the library._
-
+_Note: in Node.js, the data for all 200+ languages is loaded along with the library._
 
 ### Loading IntlRelativeFormat in a browser
-
-Include the library in your page:
-
-```html
-<script src="intl-relativeformat/dist/intl-relativeformat.min.js"></script>
-```
-
-By default, Intl RelativeFormat ships with the locale data for English built-in to the runtime library. When you need to format data in another locale, include its data; e.g., for French:
-
-```html
-<script src="intl-relativeformat/dist/locale-data/fr.js"></script>
-```
-
-_Note: All 150+ locales supported by this package use their root BCP 47 langage tag; i.e., the part before the first hyphen (if any)._
-
-#### `Intl` Dependency
-
-This package assumes that the [`Intl`][Intl] global object exists in the runtime. `Intl` is present in all modern browsers _except_ Safari, and there's work happening to [integrate `Intl` into Node.js][Intl-Node].
-
-**Luckly, there's the [Intl.js][] polyfill!** You will need to conditionally load the polyfill if you want to support runtimes which `Intl` is not already built-in.
 
 If the browser does not already have the `Intl` APIs built-in, the Intl.js Polyfill will need to be loaded on the page along with the locale data for any locales that need to be supported:
 
@@ -131,6 +118,106 @@ If the browser does not already have the `Intl` APIs built-in, the Intl.js Polyf
 ```
 
 _Note: Modern browsers already have the `Intl` APIs built-in, so you can load the Intl.js Polyfill conditionally, by for checking for `window.Intl`._
+
+Include the library in your page:
+
+```html
+<script src="intl-relativeformat/dist/intl-relativeformat.min.js"></script>
+```
+
+By default, Intl RelativeFormat ships with the locale data for English (`en`) built-in to the runtime library. When you need to format data in another locale, include its data; e.g., for French:
+
+```html
+<script src="intl-relativeformat/dist/locale-data/fr.js"></script>
+```
+
+_Note: All 200+ languages supported by this package use their root BCP 47 language tag; i.e., the part before the first hyphen (if any)._
+
+### Public API
+
+#### `IntlRelativeFormat` Constructor
+
+To format a date to relative time, use the `IntlRelativeFormat` constructor. The constructor takes two parameters:
+
+ - **locales** - _{String | String[]}_ - A string with a BCP 47 language tag, or an array of such strings. If you do not provide a locale, the default locale will be used. When an array of locales is provided, each item and its ancestor locales are checked and the first one with registered locale data is returned. **See: [Locale Resolution](#locale-resolution) for more details.**
+
+ - **[options]** - _{Object}_ - Optional object with user defined options for format styles.
+ **See: [Custom Options](#custom-options) for more details.**
+
+_Note: The `rf` instance should be enough for your entire application, unless you want to use custom options._
+
+#### Locale Resolution
+
+`IntlRelativeFormat` uses a locale resolution process similar to that of the built-in `Intl` APIs to determine which locale data to use based on the `locales` value passed to the constructor. The result of this resolution process can be determined by call the `resolvedOptions()` prototype method.
+
+The following are the abstract steps `IntlRelativeFormat` goes through to resolve the locale value:
+
+* If no extra locale data is loaded, the locale will _always_ resolved to `"en"`.
+
+* If locale data is missing for a leaf locale like `"fr-FR"`, but there _is_ data for one of its ancestors, `"fr"` in this case, then its ancestor will be used.
+
+* If there's data for the specified locale, then that locale will be resolved; i.e.,
+
+    ```js
+    var rf = new IntlRelativeFormat('en-US');
+    assert(rf.resolvedOptions().locale === 'en-US'); // true
+    ```
+
+* The resolved locales are now normalized; e.g., `"en-us"` will resolve to: `"en-US"`.
+
+_Note: When an array is provided for `locales`, the above steps happen for each item in that array until a match is found._
+
+#### Custom Options
+
+The optional second argument `options` provides a way to customize how the relative time will be formatted.
+
+##### Units
+
+By default, the relative time is computed to the best fit unit, but you can explicitly call it to force `units` to be displayed in `"second"`, `"minute"`, `"hour"`, `"day"`, `"month"` or `"year"`:
+
+```js
+var rf = new IntlRelativeFormat('en', {
+    units: 'day'
+});
+var output = rf.format(dateValue);
+```
+
+As a result, the output will be "70 days ago" instead of "2 months ago".
+
+##### Style
+
+By default, the relative time is computed as `"best fit"`, which means that instead of "1 day ago", it will display "yesterday", or "in 1 year" will be "next year", etc. But you can force to always use the "numeric" alternative:
+
+```js
+var rf = new IntlRelativeFormat('en', {
+    style: 'numeric'
+});
+var output = rf.format(dateValue);
+```
+
+As a result, the output will be "1 day ago" instead of "yesterday".
+
+#### `resolvedOptions()` Method
+
+This method returns an object with the options values that were resolved during instance creation. It currently only contains a `locale` property; here's an example:
+
+```js
+var rf = new IntlRelativeFormat('en-us');
+console.log(rf.resolvedOptions().locale); // => "en-US"
+```
+
+Notice how the specified locale was the all lower-case value: `"en-us"`, but it was resolved and normalized to: `"en-US"`.
+
+#### `format(date, [options])` Method
+
+The format method (_which takes a JavaScript date or timestamp_) and optional `options` arguments will compare the `date` with "now" (or `options.now`), and returns the formatted string; e.g., "3 hours ago" in the corresponding locale passed into the constructor.
+
+```js
+var output = rf.format(new Date());
+console.log(output); // => "now"
+```
+
+If you wish to specify a "now" value, it can be provided via `options.now` and will be used instead of querying `Date.now()` to get the current "now" value.
 
 
 License
