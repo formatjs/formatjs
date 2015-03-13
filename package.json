@@ -28,8 +28,8 @@
   },
   "dependencies": {
     "intl-format-cache": "2.0.4",
-    "intl-messageformat": "1.0.4",
-    "intl-relativeformat": "1.0.3",
+    "intl-messageformat": "1.1.0",
+    "intl-relativeformat": "1.1.0",
     "react": ">=0.11.2 <1.0.0"
   },
   "devDependencies": {
@@ -45,7 +45,7 @@
     "grunt-contrib-copy": "^0.8.0",
     "grunt-contrib-jshint": "^0.11.0",
     "grunt-contrib-uglify": "^0.8.0",
-    "grunt-extract-cldr-data": "1.1.0",
+    "grunt-extract-cldr-data": "2.1.1",
     "grunt-json-remove-fields": "git://github.com/ericf/grunt-json-remove-fields#improve-files-and-output",
     "grunt-saucelabs": "^8.3.2",
     "intl": "^0.1.4",
