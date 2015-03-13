@@ -33,7 +33,7 @@
     "react": ">=0.11.2 <1.0.0"
   },
   "devDependencies": {
-    "es5-shim": "^4.0.3",
+    "es5-shim": "^4.1.0",
     "expect.js": "^0.3.1",
     "grunt": "^0.4.5",
     "grunt-browserify": "^3.3.0",
@@ -42,9 +42,9 @@
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-concat": "^0.5.0",
     "grunt-contrib-connect": "^0.9.0",
-    "grunt-contrib-copy": "^0.7.0",
+    "grunt-contrib-copy": "^0.8.0",
     "grunt-contrib-jshint": "^0.11.0",
-    "grunt-contrib-uglify": "^0.7.0",
+    "grunt-contrib-uglify": "^0.8.0",
     "grunt-extract-cldr-data": "1.1.0",
     "grunt-json-remove-fields": "git://github.com/ericf/grunt-json-remove-fields#improve-files-and-output",
     "grunt-saucelabs": "^8.3.2",
