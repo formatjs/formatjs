@@ -76,10 +76,10 @@ export default {
         return this._format('time', date, options);
     },
 
-    formatRelative: function (date, options) {
+    formatRelative: function (date, options, formatOptions) {
         date = new Date(date);
         assertIsDate(date, 'A date or timestamp must be provided to formatRelative()');
-        return this._format('relative', date, options);
+        return this._format('relative', date, options, formatOptions);
     },
 
     formatNumber: function (num, options) {
@@ -140,7 +140,7 @@ export default {
         return format;
     },
 
-    _format: function (type, value, options) {
+    _format: function (type, value, options, formatOptions) {
         var locales = this.props.locales || this.context.locales;
 
         if (options && typeof options === 'string') {
@@ -154,7 +154,7 @@ export default {
             case 'number':
                 return this.getNumberFormat(locales, options).format(value);
             case 'relative':
-                return this.getRelativeFormat(locales, options).format(value);
+                return this.getRelativeFormat(locales, options).format(value, formatOptions);
             default:
                 throw new Error('Unrecognized format type: ' + type);
         }

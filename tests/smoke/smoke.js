@@ -171,4 +171,15 @@ describe('React Intl', function () {
         expect(testNode.firstChild.innerHTML).to.contain('now');
     });
 
+    it('Supports passing `now` to the FormattedRelative component', function () {
+        var testNode = document.getElementById('test4');
+
+        React.render(FormattedRelative({
+            value: 2000,
+            now  : 0
+        }), testNode);
+
+        expect(testNode.firstChild.innerHTML).to.contain('in 2 seconds');
+    });
+
 });
