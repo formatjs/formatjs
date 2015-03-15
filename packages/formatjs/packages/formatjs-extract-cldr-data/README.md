@@ -104,7 +104,7 @@ The CLDR data contained in this packaged is licensed under the Apache, ICU, and 
 [david]: https://david-dm.org/yahoo/formatjs-extract-cldr-data
 [david-badge]: https://img.shields.io/david/yahoo/formatjs-extract-cldr-data.svg?style=flat-square
 [travis]: https://travis-ci.org/yahoo/formatjs-extract-cldr-data
-[travis-badge]: https://img.shields.io/travis/yahoo/formatjs-extract-cldr-data.svg?style=flat-square
+[travis-badge]: https://img.shields.io/travis/yahoo/formatjs-extract-cldr-data/master.svg?style=flat-square
 [make-plural]: https://github.com/eemeli/make-plural.js
 [LICENSE file]: https://github.com/yahoo/formatjs-extract-cldr-data/blob/master/LICENSE.md
 [CLDR license files]: https://github.com/yahoo/formatjs-extract-cldr-data/tree/master/data
