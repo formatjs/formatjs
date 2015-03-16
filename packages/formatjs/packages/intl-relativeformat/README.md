@@ -232,7 +232,7 @@ See the [LICENSE file][LICENSE] for license text and copyright information.
 [david]: https://david-dm.org/yahoo/intl-relativeformat
 [david-badge]: https://img.shields.io/david/yahoo/intl-relativeformat.svg?style=flat-square
 [travis]: https://travis-ci.org/yahoo/intl-relativeformat
-[travis-badge]: https://img.shields.io/travis/yahoo/intl-relativeformat.svg?style=flat-square
+[travis-badge]: https://img.shields.io/travis/yahoo/intl-relativeformat/master.svg?style=flat-square
 [parser]: https://github.com/yahoo/intl-relativeformat-parser
 [CLDR]: http://cldr.unicode.org/
 [Intl]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl
