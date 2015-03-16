@@ -264,7 +264,7 @@ See the [LICENSE file][LICENSE] for license text and copyright information.
 [david]: https://david-dm.org/yahoo/intl-messageformat
 [david-badge]: https://img.shields.io/david/yahoo/intl-messageformat.svg?style=flat-square
 [travis]: https://travis-ci.org/yahoo/intl-messageformat
-[travis-badge]: https://img.shields.io/travis/yahoo/intl-messageformat.svg?style=flat-square
+[travis-badge]: https://img.shields.io/travis/yahoo/intl-messageformat/master.svg?style=flat-square
 [sauce]: https://saucelabs.com/u/intl-messageformat
 [sauce-badge]: https://saucelabs.com/browser-matrix/intl-messageformat.svg
 [strawman]: http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting
