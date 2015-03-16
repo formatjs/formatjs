@@ -91,7 +91,7 @@ See the [LICENSE file][] for license text and copyright information.
 [david]: https://david-dm.org/yahoo/react-intl
 [david-badge]: https://img.shields.io/david/yahoo/react-intl.svg?style=flat-square
 [travis]: https://travis-ci.org/yahoo/react-intl
-[travis-badge]: https://img.shields.io/travis/yahoo/react-intl.svg?style=flat-square
+[travis-badge]: https://img.shields.io/travis/yahoo/react-intl/master.svg?style=flat-square
 [React]: http://facebook.github.io/react/
 [FormatJS]: http://formatjs.io/
 [FormatJS GitHub]: http://formatjs.io/github/
