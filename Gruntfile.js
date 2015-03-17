@@ -34,8 +34,8 @@ module.exports = function (grunt) {
 
         extract_cldr_data: {
             options: {
-                fields : ['second', 'minute', 'hour', 'day', 'month', 'year'],
-                plurals: true
+                pluralRules   : true,
+                relativeFields: true
             },
 
             src_en: {
@@ -156,7 +156,7 @@ module.exports = function (grunt) {
                         'http://127.0.0.1:9999/tests/smoke/index.html',
                         'http://127.0.0.1:9999/tests/browserify/index.html'
                     ],
-                    
+
                     build: process.env.TRAVIS_BUILD_NUMBER,
                     sauceConfig: {
                         'record-video': true,

@@ -17,7 +17,8 @@ var FormattedRelative = React.createClass({
 
     propTypes: {
         format: React.PropTypes.string,
-        value : React.PropTypes.any.isRequired
+        value : React.PropTypes.any.isRequired,
+        now   : React.PropTypes.any
     },
 
     render: function () {
@@ -27,7 +28,11 @@ var FormattedRelative = React.createClass({
         var defaults = format && this.getNamedFormat('relative', format);
         var options  = FormattedRelative.filterFormatOptions(props, defaults);
 
-        return React.DOM.span(null, this.formatRelative(value, options));
+        var formattedRelativeTime = this.formatRelative(value, options, {
+            now: props.now
+        });
+
+        return React.DOM.span(null, formattedRelativeTime);
     }
 });
 
