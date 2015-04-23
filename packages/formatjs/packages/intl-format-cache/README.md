@@ -10,7 +10,7 @@ A memoizer factory for Intl format constructors.
 Overview
 --------
 
-This is an helper package used within [Yahoo's FormatJS suite][FormatJS]. It provides a factory for creating memoizers of [`Intl`][Intl] format constructors: [`IntlNumberFormat`][Intl-NF], [`Intl.DateTimeFormat`][Intl-DTF], [`IntlMessageFormat`][Intl-MF], and [`IntlRelativeFormat`][Intl-RF].
+This is an helper package used within [Yahoo's FormatJS suite][FormatJS]. It provides a factory for creating memoizers of [`Intl`][Intl] format constructors: [`Intl.NumberFormat`][Intl-NF], [`Intl.DateTimeFormat`][Intl-DTF], [`IntlMessageFormat`][Intl-MF], and [`IntlRelativeFormat`][Intl-RF].
 
 Creating instances of these `Intl` formats is an expensive operation, and the APIs are designed such that developers should re-use format instances instead of always creating new ones. This package is simply to make it easier to create a cache of format instances of a particular type to aid in their reuse.
 
@@ -42,7 +42,7 @@ var nf2 = getNumberFormat('en');
 var nf3 = getNumberFormat('fr');
 
 console.log(nf1 === nf2); // => true
-console.log(nf1 === nf3); // => fase
+console.log(nf1 === nf3); // => false
 
 console.log(nf1.format(1000)); // => "1,000"
 console.log(nf3.format(1000)); // => "1 000"
