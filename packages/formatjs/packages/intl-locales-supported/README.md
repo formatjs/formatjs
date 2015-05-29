@@ -1,0 +1,2 @@
+intl-locales-supported
+======================
