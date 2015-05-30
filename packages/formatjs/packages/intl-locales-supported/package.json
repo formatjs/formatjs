@@ -1,0 +1,26 @@
+{
+  "name": "intl-locales-supported",
+  "version": "0.0.0",
+  "description": "Utility to help you polyfill the Node.js runtime when the Intl APIs are missing, or if the built-in Intl is missing locale data that you need.",
+  "main": "index.js",
+  "author": "Eric Ferraiuolo <edf@ericf.me>",
+  "license": "BSD",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yahoo/intl-locales-supported.git"
+  },
+  "keywords": [
+    "i18n",
+    "intl",
+    "internationalization",
+    "localization",
+    "globalization"
+  ],
+  "bugs": {
+    "url": "https://github.com/yahoo/intl-locales-supported/issues"
+  },
+  "homepage": "https://github.com/yahoo/intl-locales-supported",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
