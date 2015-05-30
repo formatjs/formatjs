@@ -21,6 +21,14 @@
   },
   "homepage": "https://github.com/yahoo/intl-locales-supported",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/unit/*.js"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "intl": "^0.1.4",
+    "mocha": "^2.2.5"
   }
 }
