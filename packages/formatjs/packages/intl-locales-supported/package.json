@@ -1,6 +1,6 @@
 {
   "name": "intl-locales-supported",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Utility to help you polyfill the Node.js runtime when the Intl APIs are missing, or if the built-in Intl is missing locale data that you need.",
   "main": "index.js",
   "author": "Eric Ferraiuolo <edf@ericf.me>",
