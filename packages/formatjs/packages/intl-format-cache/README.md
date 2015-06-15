@@ -10,7 +10,7 @@ A memoizer factory for Intl format constructors.
 Overview
 --------
 
-This is an helper package used within [Yahoo's FormatJS suite][FormatJS]. It provides a factory for creating memoizers of [`Intl`][Intl] format constructors: [`Intl.NumberFormat`][Intl-NF], [`Intl.DateTimeFormat`][Intl-DTF], [`IntlMessageFormat`][Intl-MF], and [`IntlRelativeFormat`][Intl-RF].
+This is a helper package used within [Yahoo's FormatJS suite][FormatJS]. It provides a factory for creating memoizers of [`Intl`][Intl] format constructors: [`Intl.NumberFormat`][Intl-NF], [`Intl.DateTimeFormat`][Intl-DTF], [`IntlMessageFormat`][Intl-MF], and [`IntlRelativeFormat`][Intl-RF].
 
 Creating instances of these `Intl` formats is an expensive operation, and the APIs are designed such that developers should re-use format instances instead of always creating new ones. This package is simply to make it easier to create a cache of format instances of a particular type to aid in their reuse.
 
