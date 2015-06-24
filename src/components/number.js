@@ -25,12 +25,13 @@ var FormattedNumber = React.createClass({
 
     render: function () {
         var props    = this.props;
+        var tagName  = props.tagName || 'span';
         var value    = props.value;
         var format   = props.format;
         var defaults = format && this.getNamedFormat('number', format);
         var options  = FormattedNumber.filterFormatOptions(props, defaults);
 
-        return React.DOM.span(null, this.formatNumber(value, options));
+        return React.DOM[tagName](null, this.formatNumber(value, options));
     }
 });
 

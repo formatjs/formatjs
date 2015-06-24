@@ -24,12 +24,13 @@ var FormattedDate = React.createClass({
 
     render: function () {
         var props    = this.props;
+        var tagName  = props.tagName || 'span';
         var value    = props.value;
         var format   = props.format;
         var defaults = format && this.getNamedFormat('date', format);
         var options  = FormattedDate.filterFormatOptions(props, defaults);
 
-        return React.DOM.span(null, this.formatDate(value, options));
+        return React.DOM[tagName](null, this.formatDate(value, options));
     }
 });
 

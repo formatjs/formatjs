@@ -23,6 +23,7 @@ var FormattedRelative = React.createClass({
 
     render: function () {
         var props    = this.props;
+        var tagName  = props.tagName || 'span';
         var value    = props.value;
         var format   = props.format;
         var defaults = format && this.getNamedFormat('relative', format);
@@ -32,7 +33,7 @@ var FormattedRelative = React.createClass({
             now: props.now
         });
 
-        return React.DOM.span(null, formattedRelativeTime);
+        return React.DOM[tagName](null, formattedRelativeTime);
     }
 });
 

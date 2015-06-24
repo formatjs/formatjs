@@ -24,12 +24,13 @@ var FormattedTime = React.createClass({
 
     render: function () {
         var props    = this.props;
+        var tagName  = props.tagName || 'span';
         var value    = props.value;
         var format   = props.format;
         var defaults = format && this.getNamedFormat('time', format);
         var options  = FormattedTime.filterFormatOptions(props, defaults);
 
-        return React.DOM.span(null, this.formatTime(value, options));
+        return React.DOM[tagName](null, this.formatTime(value, options));
     }
 });
 
