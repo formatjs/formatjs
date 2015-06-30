@@ -70,6 +70,9 @@ React.render(
 
 This example would render: **"Posted 3 days ago, 1,000 comments"** into the container element on the page. The `post.meta` message is written in the industry standard [ICU Message syntax][], which you can also learn about on the [FormatJS website][FormatJS].
 
+**CDLR pluralization rules:** In some languages you have more then `one` and `other`. For example in `ru` there are the following plural rules: `one`, `few`, `many` and `other`.
+Check out the official CDLR documentation from unicode.org http://www.unicode.org/cldr/charts/27/supplemental/language_plural_rules.html for all languages.
+
 Contribute
 ---------
 
