@@ -18,18 +18,25 @@ var FormattedTime = React.createClass({
     },
 
     propTypes: {
-        format: React.PropTypes.string,
-        value : React.PropTypes.any.isRequired
+        format   : React.PropTypes.string,
+        value    : React.PropTypes.any.isRequired,
+        className: React.PropTypes.string,
+        style   : React.PropTypes.object
     },
 
     render: function () {
-        var props    = this.props;
-        var value    = props.value;
-        var format   = props.format;
-        var defaults = format && this.getNamedFormat('time', format);
-        var options  = FormattedTime.filterFormatOptions(props, defaults);
+        var props     = this.props;
+        var value     = props.value;
+        var format    = props.format;
+        var className = props.className;
+        var style     = props.style;
+        var defaults  = format && this.getNamedFormat('time', format);
+        var options   = FormattedTime.filterFormatOptions(props, defaults);
 
-        return React.DOM.span(null, this.formatTime(value, options));
+        return React.DOM.span({
+            className: className,
+            style    : style
+        }, this.formatTime(value, options));
     }
 });
 

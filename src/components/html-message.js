@@ -11,8 +11,10 @@ var FormattedHTMLMessage = React.createClass({
     mixins     : [IntlMixin],
 
     propTypes: {
-        tagName: React.PropTypes.string,
-        message: React.PropTypes.string.isRequired
+        tagName  : React.PropTypes.string,
+        message  : React.PropTypes.string.isRequired,
+        className: React.PropTypes.string,
+        style    : React.PropTypes.object
     },
 
     getDefaultProps: function () {
@@ -20,9 +22,11 @@ var FormattedHTMLMessage = React.createClass({
     },
 
     render: function () {
-        var props   = this.props;
-        var tagName = props.tagName;
-        var message = props.message;
+        var props     = this.props;
+        var tagName   = props.tagName;
+        var message   = props.message;
+        var className = props.className;
+        var style     = props.style;
 
         // Process all the props before they are used as values when formatting
         // the ICU Message string. Since the formatted message will be injected
@@ -53,7 +57,9 @@ var FormattedHTMLMessage = React.createClass({
         return React.DOM[tagName]({
             dangerouslySetInnerHTML: {
                 __html: this.formatMessage(message, values)
-            }
+            },
+            className: className,
+            style    : style
         });
     }
 });

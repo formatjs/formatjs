@@ -10,8 +10,10 @@ var FormattedMessage = React.createClass({
     mixins     : [IntlMixin],
 
     propTypes: {
-        tagName: React.PropTypes.string,
-        message: React.PropTypes.string.isRequired
+        tagName  : React.PropTypes.string,
+        message  : React.PropTypes.string.isRequired,
+        className: React.PropTypes.string,
+        style    : React.PropTypes.object
     },
 
     getDefaultProps: function () {
@@ -19,9 +21,11 @@ var FormattedMessage = React.createClass({
     },
 
     render: function () {
-        var props   = this.props;
-        var tagName = props.tagName;
-        var message = props.message;
+        var props     = this.props;
+        var tagName   = props.tagName;
+        var message   = props.message;
+        var className = props.className;
+        var style     = props.style;
 
         // Creates a token with a random guid that should not be guessable or
         // conflict with other parts of the `message` string.
@@ -74,7 +78,10 @@ var FormattedMessage = React.createClass({
                 return elements[part] || part;
             });
 
-        var elementArgs = [tagName, null].concat(children);
+        var elementArgs = [tagName, {
+            className: className,
+            style    : style
+        }].concat(children);
         return React.createElement.apply(null, elementArgs);
     }
 });
