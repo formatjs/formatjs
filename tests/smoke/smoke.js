@@ -67,6 +67,19 @@ describe('React Intl', function () {
         expect(testNode.firstChild.innerHTML).to.equal('$99.95');
     });
 
+    it('Supports passing `className` and `style` to the FormattedNumber component', function () {
+        var testNode = document.getElementById('test1');
+
+        React.render(FormattedNumber({
+            locales: ['en-US'],
+            className: 'test-class',
+            style: {color: 'red'}
+        }), testNode);
+
+        expect(testNode.firstChild.className).to.equal('test-class');
+        expect(testNode.firstChild.style.color).to.equal('red');
+    });
+
     it('Formats dates correctly', function () {
         var FormattedDateComponent = React.createClass({
             displayName: 'FormattedDate',
@@ -121,6 +134,20 @@ describe('React Intl', function () {
         expect(testNode.firstChild.innerHTML).to.contain('Thursday');
     });
 
+    it('Supports passing `className` and `style` to the FormattedDate component', function () {
+        var testNode = document.getElementById('test2');
+
+        React.render(FormattedDate({
+            locales: ['en-US'],
+            date: 0,
+            className: 'test-class',
+            style: {color: 'red'}
+        }), testNode);
+
+        expect(testNode.firstChild.className).to.equal('test-class');
+        expect(testNode.firstChild.style.color).to.equal('red');
+    });
+
     it('Formats messages correctly', function () {
         var FormattedMessageComponent = React.createClass({
             displayName: 'FormattedMessage',
@@ -161,6 +188,20 @@ describe('React Intl', function () {
         expect(testNode.firstChild.innerHTML).to.equal('You have one photo.');
     });
 
+    it('Supports passing `className` and `style` to the FormattedMessage component', function () {
+        var testNode = document.getElementById('test3');
+
+        React.render(FormattedMessage({
+            locales: ['en-US'],
+            numPhotos: 1,
+            className: 'test-class',
+            style: {color: 'red'}
+        }), testNode);
+
+        expect(testNode.firstChild.className).to.equal('test-class');
+        expect(testNode.firstChild.style.color).to.equal('red');
+    });
+
     it('Formats relative times correctly using FormattedRelative component', function () {
         var testNode = document.getElementById('test4');
 
@@ -180,6 +221,20 @@ describe('React Intl', function () {
         }), testNode);
 
         expect(testNode.firstChild.innerHTML).to.contain('in 2 seconds');
+    });
+
+    it('Supports passing `className` and `style` to the FormattedRelative component', function () {
+        var testNode = document.getElementById('test4');
+
+        React.render(FormattedRelative({
+            value: 2000,
+            now  : 0,
+            className: 'test-class',
+            style: {color: 'red'}
+        }), testNode);
+
+        expect(testNode.firstChild.className).to.equal('test-class');
+        expect(testNode.firstChild.style.color).to.equal('red');
     });
 
 });
