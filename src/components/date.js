@@ -22,14 +22,19 @@ var FormattedDate = React.createClass({
         value : React.PropTypes.any.isRequired
     },
 
+    getDefaultProps: function () {
+        return {tagName: 'span'};
+    },
+
     render: function () {
         var props    = this.props;
+        var tagName  = props.tagName;
         var value    = props.value;
         var format   = props.format;
         var defaults = format && this.getNamedFormat('date', format);
         var options  = FormattedDate.filterFormatOptions(props, defaults);
 
-        return React.DOM.span(null, this.formatDate(value, options));
+        return React.DOM[tagName](null, this.formatDate(value, options));
     }
 });
 
