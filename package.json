@@ -29,8 +29,10 @@
   "dependencies": {
     "intl-format-cache": "2.0.4",
     "intl-messageformat": "1.1.0",
-    "intl-relativeformat": "1.1.0",
-    "react": ">=0.11.2 <1.0.0"
+    "intl-relativeformat": "1.1.0"
+  },
+  "peerDependencies": {
+    "react": "^0.13.3"
   },
   "devDependencies": {
     "es5-shim": "^4.1.0",
