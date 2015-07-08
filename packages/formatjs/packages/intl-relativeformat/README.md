@@ -133,6 +133,24 @@ By default, Intl RelativeFormat ships with the locale data for English (`en`) bu
 
 _Note: All 200+ languages supported by this package use their root BCP 47 language tag; i.e., the part before the first hyphen (if any)._
 
+### Bundling IntlRelativeFormat with Browserify/Webpack
+
+Install package:
+
+```bash
+npm install intl-relativeformat --save
+```
+
+Simply `require()` this package and the specific locales you wish to support in the bundle:
+
+```js
+var IntlRelativeFormat = require('intl-relativeformat');
+require('intl-relativeformat/dist/locale-data/en.js');
+require('intl-relativeformat/dist/locale-data/fr.js');
+```
+
+_Note: in Node.js, the data for all 200+ languages is loaded along with the library, but when bundling it with Browserify/Webpack, the data is intentionally ignored (see `package.json` for more details) to avoid blowing up the size of the bundle with data that you might not need._
+
 ### Public API
 
 #### `IntlRelativeFormat` Constructor
