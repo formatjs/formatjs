@@ -3,6 +3,7 @@
 // TODO: Use `import React from "react";` when external modules are supported.
 import React from './react';
 
+import Intl from 'intl';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 import createFormatCache from 'intl-format-cache';
