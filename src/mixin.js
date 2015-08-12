@@ -16,7 +16,8 @@ var typesSpec = {
     ]),
 
     formats : React.PropTypes.object,
-    messages: React.PropTypes.object
+    messages: React.PropTypes.object,
+    lang    : React.PropTypes.string
 };
 
 function assertIsDate(date, errMsg) {
@@ -60,7 +61,8 @@ export default {
         return {
             locales:  props.locales  || context.locales,
             formats:  props.formats  || context.formats,
-            messages: props.messages || context.messages
+            messages: props.messages || context.messages,
+            lang: props.lang || context.lang
         };
     },
 
@@ -105,7 +107,14 @@ export default {
     },
 
     getIntlMessage: function (path) {
-        var messages  = this.props.messages || this.context.messages;
+        var messages = '';
+
+        if (this.props.lang) {
+            messages = this.props.messages[this.props.lang] || this.context.messages[this.context.lang];
+        } else {
+            messages  = this.props.messages || this.context.messages;
+        }
+        
         var pathParts = path.split('.');
 
         var message;
