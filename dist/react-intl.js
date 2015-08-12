@@ -2361,7 +2361,8 @@
         ]),
 
         formats : $$react$$default.PropTypes.object,
-        messages: $$react$$default.PropTypes.object
+        messages: $$react$$default.PropTypes.object,
+        lang    : $$react$$default.PropTypes.string
     };
 
     function $$mixin$$assertIsDate(date, errMsg) {
@@ -2405,7 +2406,8 @@
             return {
                 locales:  props.locales  || context.locales,
                 formats:  props.formats  || context.formats,
-                messages: props.messages || context.messages
+                messages: props.messages || context.messages,
+                lang: props.lang || context.lang
             };
         },
 
@@ -2450,7 +2452,14 @@
         },
 
         getIntlMessage: function (path) {
-            var messages  = this.props.messages || this.context.messages;
+            var messages = '';
+
+            if (this.props.lang) {
+                messages = this.props.messages[this.props.lang] || this.context.messages[this.context.lang];
+            } else {
+                messages  = this.props.messages || this.context.messages;
+            }
+            
             var pathParts = path.split('.');
 
             var message;
@@ -2523,14 +2532,19 @@
             value : $$react$$default.PropTypes.any.isRequired
         },
 
+        getDefaultProps: function () {
+            return {tagName: 'span'};
+        },
+
         render: function () {
             var props    = this.props;
+            var tagName  = props.tagName;
             var value    = props.value;
             var format   = props.format;
             var defaults = format && this.getNamedFormat('date', format);
             var options  = $$components$date$$FormattedDate.filterFormatOptions(props, defaults);
 
-            return $$react$$default.DOM.span(null, this.formatDate(value, options));
+            return $$react$$default.DOM[tagName](null, this.formatDate(value, options));
         }
     });
 
@@ -2553,14 +2567,19 @@
             value : $$react$$default.PropTypes.any.isRequired
         },
 
+        getDefaultProps: function () {
+            return {tagName: 'span'};
+        },
+
         render: function () {
             var props    = this.props;
+            var tagName  = props.tagName;
             var value    = props.value;
             var format   = props.format;
             var defaults = format && this.getNamedFormat('time', format);
             var options  = $$components$time$$FormattedTime.filterFormatOptions(props, defaults);
 
-            return $$react$$default.DOM.span(null, this.formatTime(value, options));
+            return $$react$$default.DOM[tagName](null, this.formatTime(value, options));
         }
     });
 
@@ -2582,8 +2601,13 @@
             now   : $$react$$default.PropTypes.any
         },
 
+        getDefaultProps: function () {
+            return {tagName: 'span'};
+        },
+
         render: function () {
             var props    = this.props;
+            var tagName  = props.tagName;
             var value    = props.value;
             var format   = props.format;
             var defaults = format && this.getNamedFormat('relative', format);
@@ -2593,7 +2617,7 @@
                 now: props.now
             });
 
-            return $$react$$default.DOM.span(null, formattedRelativeTime);
+            return $$react$$default.DOM[tagName](null, formattedRelativeTime);
         }
     });
 
@@ -2617,14 +2641,19 @@
             value : $$react$$default.PropTypes.any.isRequired
         },
 
+        getDefaultProps: function () {
+            return {tagName: 'span'};
+        },
+
         render: function () {
             var props    = this.props;
+            var tagName  = props.tagName;
             var value    = props.value;
             var format   = props.format;
             var defaults = format && this.getNamedFormat('number', format);
             var options  = $$components$number$$FormattedNumber.filterFormatOptions(props, defaults);
 
-            return $$react$$default.DOM.span(null, this.formatNumber(value, options));
+            return $$react$$default.DOM[tagName](null, this.formatNumber(value, options));
         }
     });
 
