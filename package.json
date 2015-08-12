@@ -1,6 +1,6 @@
 {
-  "name": "react-intl",
-  "version": "1.2.0",
+  "name": "react-intl-custom",
+  "version": "1.0.0",
   "description": "React Components for internationalization.",
   "keywords": [
     "intl",
@@ -8,17 +8,14 @@
     "react",
     "reactjs"
   ],
-  "author": "Caridy Patino <caridy@gmail.com>",
-  "contributors": [
-    "Eric Ferraiuolo <eferraiuolo@gmail.com>"
-  ],
+  "author": "Sergio Daniel Xalambrí <sergio@xalambri.com.ar>",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/yahoo/react-intl/issues"
+    "url": "https://github.com/sergiodxa/react-intl/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:yahoo/react-intl.git"
+    "url": "git@github.com:sergiodxa/react-intl.git"
   },
   "main": "index.js",
   "jsnext:main": "src/main.js",
@@ -55,5 +52,5 @@
     "prepublish": "grunt",
     "travis": "./tests/smoke/saucelabs.sh"
   },
-  "homepage": "https://github.com/yahoo/react-intl"
+  "homepage": "https://github.com/sergiodxa/react-intl"
 }
