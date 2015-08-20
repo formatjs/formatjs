@@ -1,31 +1,27 @@
-/* jshint esnext: true */
+import {__addLocaleData as addIMFLocaleData} from 'intl-messageformat';
+import {__addLocaleData as addIRFLocaleData} from 'intl-relativeformat';
+import defaultLocaleData from './en';
 
-import IntlMessageFormat from 'intl-messageformat';
-import IntlRelativeFormat from 'intl-relativeformat';
+export {default as IntlProvider} from './components/intl';
+export {default as FormattedGroup} from './components/group';
+export {default as FormattedDate} from './components/date';
+export {default as FormattedTime} from './components/time';
+export {default as FormattedRelative} from './components/relative';
+export {default as FormattedNumber} from './components/number';
+export {default as FormattedPlural} from './components/plural';
+export {default as FormattedMessage} from './components/message';
+export {default as FormattedHTMLMessage} from './components/html-message';
 
-import defaultLocale from './en';
+export * from './format';
+export {intlContextTypes} from './types';
 
-import IntlMixin from './mixin';
-import FormattedDate from './components/date';
-import FormattedTime from './components/time';
-import FormattedRelative from './components/relative';
-import FormattedNumber from './components/number';
-import FormattedMessage from './components/message';
-import FormattedHTMLMessage from './components/html-message';
+export function addLocaleData(data = []) {
+    let locales = Array.isArray(data) ? data : [data];
 
-export {
-    IntlMixin,
-    FormattedDate,
-    FormattedTime,
-    FormattedRelative,
-    FormattedNumber,
-    FormattedMessage,
-    FormattedHTMLMessage
-};
-
-export function __addLocaleData(data) {
-    IntlMessageFormat.__addLocaleData(data);
-    IntlRelativeFormat.__addLocaleData(data);
+    locales.forEach((localeData) => {
+        addIMFLocaleData(localeData);
+        addIRFLocaleData(localeData);
+    });
 }
 
-__addLocaleData(defaultLocale);
+addLocaleData(defaultLocaleData);

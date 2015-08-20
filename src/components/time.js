@@ -1,36 +1,34 @@
-/* jshint esnext:true */
+import {Component, DOM, PropTypes} from 'react';
+import {intlContextTypes, dateTimeFormatPropTypes} from '../types';
+import {formatTime} from '../format';
+import {shouldIntlComponentUpdate} from '../utils';
 
-// TODO: Use `import React from "react";` when external modules are supported.
-import React from '../react';
-
-import IntlMixin from '../mixin';
-
-var FormattedTime = React.createClass({
-    displayName: 'FormattedTime',
-    mixins     : [IntlMixin],
-
-    statics: {
-        formatOptions: [
-            'localeMatcher', 'timeZone', 'hour12', 'formatMatcher', 'weekday',
-            'era', 'year', 'month', 'day', 'hour', 'minute', 'second',
-            'timeZoneName'
-        ]
-    },
-
-    propTypes: {
-        format: React.PropTypes.string,
-        value : React.PropTypes.any.isRequired
-    },
-
-    render: function () {
-        var props    = this.props;
-        var value    = props.value;
-        var format   = props.format;
-        var defaults = format && this.getNamedFormat('time', format);
-        var options  = FormattedTime.filterFormatOptions(props, defaults);
-
-        return React.DOM.span(null, this.formatTime(value, options));
+class FormattedTime extends Component {
+    shouldComponentUpdate(...next) {
+        return shouldIntlComponentUpdate(this, ...next);
     }
+
+    render() {
+        const {intl} = this.context;
+        const props  = this.props;
+
+        let formattedTime = formatTime(intl, props.value, props);
+
+        if (typeof props.children === 'function') {
+            return props.children(formattedTime);
+        }
+
+        return DOM.span(null, formattedTime);
+    }
+}
+
+FormattedTime.propTypes = Object.assign({}, dateTimeFormatPropTypes, {
+    format: PropTypes.string,
+    value : PropTypes.any.isRequired,
 });
+
+FormattedTime.contextTypes = {
+    intl: PropTypes.shape(intlContextTypes).isRequired,
+};
 
 export default FormattedTime;
