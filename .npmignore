@@ -1,4 +1,6 @@
 example/
+examples/
+tests/
 tmp/
 tests/
 Gruntfile.js
