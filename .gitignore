@@ -1,4 +1,5 @@
 build/
 lib/
 node_modules/
+src/locale-data/
 tmp/

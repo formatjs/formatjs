@@ -20,40 +20,62 @@
     "type": "git",
     "url": "git@github.com:yahoo/react-intl.git"
   },
-  "main": "index.js",
-  "jsnext:main": "src/main.js",
-  "browser": {
-    "./lib/locales": false,
-    "./lib/locales.js": false
-  },
+  "main": "lib/react-intl-with-locales.js",
+  "jsnext:main": "src/react-intl.js",
+  "browser": "./lib/react-intl.js",
   "dependencies": {
+    "babel-runtime": "^5.8.20",
     "intl-format-cache": "2.0.4",
     "intl-messageformat": "1.1.0",
-    "intl-relativeformat": "1.1.0",
-    "react": ">=0.11.2 <1.0.0"
+    "intl-relativeformat": "1.1.0"
+  },
+  "peerDependencies": {
+    "react": ">=0.13.0 <0.15.0 || 0.14.0-beta1"
   },
   "devDependencies": {
-    "es5-shim": "^4.1.0",
+    "babel": "^5.8.21",
+    "babelify": "^6.1.3",
+    "browserify": "^11.0.1",
+    "browserify-shim": "^3.8.10",
+    "bundle-collapser": "^1.2.1",
+    "envify": "^3.4.0",
+    "es5-shim": "^4.1.10",
+    "exorcist": "^0.4.0",
     "expect.js": "^0.3.1",
+    "formatjs-extract-cldr-data": "^1.1.1",
     "grunt": "^0.4.5",
-    "grunt-browserify": "^3.3.0",
-    "grunt-bundle-jsnext-lib": "^0.5.0",
+    "grunt-browserify": "^3.8.0",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-concat": "^0.5.0",
-    "grunt-contrib-connect": "^0.9.0",
+    "grunt-contrib-connect": "^0.10.1",
     "grunt-contrib-copy": "^0.8.0",
-    "grunt-contrib-jshint": "^0.11.0",
-    "grunt-contrib-uglify": "^0.8.0",
+    "grunt-contrib-uglify": "^0.9.1",
     "grunt-extract-cldr-data": "2.1.1",
     "grunt-json-remove-fields": "git://github.com/ericf/grunt-json-remove-fields#improve-files-and-output",
-    "grunt-saucelabs": "^8.3.2",
-    "intl": "^0.1.4",
-    "mocha": "^2.0.1"
+    "grunt-saucelabs": "^8.6.1",
+    "intl": "^1.0.0",
+    "mkdirp": "^0.5.1",
+    "mocha": "^2.2.5",
+    "react": "^0.13.3",
+    "serialize-javascript": "^1.0.0",
+    "uglifyify": "^3.0.1"
   },
   "scripts": {
-    "prepublish": "grunt",
-    "travis": "./tests/smoke/saucelabs.sh"
+    "travis": "./tests/smoke/saucelabs.sh",
+    "build": "npm run clean && npm run build-locale-data && npm run transpile && npm run bundle && npm run minify",
+    "clean": "rm -rf src/locale-data/ lib/ dist/",
+    "build-locale-data": "babel-node scripts/build-locale-data.js",
+    "transpile": "babel src/ --out-dir lib/",
+    "bundle": "npm run bundle-react-intl && npm run bundle-react-intl-with-locales",
+    "bundle-react-intl": "browserify src/react-intl.js -d -s ReactIntl -p bundle-collapser/plugin -t babelify -t browserify-shim | exorcist -b ./ dist/react-intl.js.map > dist/react-intl.js",
+    "bundle-react-intl-with-locales": "browserify src/react-intl-with-locales.js -d -s ReactIntl -p bundle-collapser/plugin -t babelify -t browserify-shim | exorcist -b ./ dist/react-intl-with-locales.js.map > dist/react-intl-with-locales.js",
+    "minify": "npm run minify-react-intl && npm run minify-react-intl-with-locales",
+    "minify-react-intl": "uglifyjs dist/react-intl.js -c -m --stats -o dist/react-intl.min.js",
+    "minify-react-intl-with-locales": "uglifyjs dist/react-intl-with-locales.js -c -m --stats -o dist/react-intl-with-locales.min.js"
   },
-  "homepage": "https://github.com/yahoo/react-intl"
+  "homepage": "https://github.com/yahoo/react-intl",
+  "browserify-shim": {
+    "react": "global:React"
+  }
 }
