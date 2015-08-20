@@ -1,41 +1,34 @@
-/* jshint esnext:true */
+import {Component, DOM, PropTypes} from 'react';
+import {intlContextTypes, dateTimeFormatPropTypes} from '../types';
+import {formatDate} from '../format';
+import {shouldIntlComponentUpdate} from '../utils';
 
-// TODO: Use `import React from "react";` when external modules are supported.
-import React from '../react';
-
-import IntlMixin from '../mixin';
-
-var FormattedDate = React.createClass({
-    displayName: 'FormattedDate',
-    mixins     : [IntlMixin],
-
-    statics: {
-        formatOptions: [
-            'localeMatcher', 'timeZone', 'hour12', 'formatMatcher', 'weekday',
-            'era', 'year', 'month', 'day', 'hour', 'minute', 'second',
-            'timeZoneName'
-        ]
-    },
-
-    propTypes: {
-        format: React.PropTypes.string,
-        value : React.PropTypes.any.isRequired
-    },
-
-    getDefaultProps: function () {
-        return {tagName: 'span'};
-    },
-
-    render: function () {
-        var props    = this.props;
-        var tagName  = props.tagName;
-        var value    = props.value;
-        var format   = props.format;
-        var defaults = format && this.getNamedFormat('date', format);
-        var options  = FormattedDate.filterFormatOptions(props, defaults);
-
-        return React.DOM[tagName](null, this.formatDate(value, options));
+class FormattedDate extends Component {
+    shouldComponentUpdate(...next) {
+        return shouldIntlComponentUpdate(this, ...next);
     }
+
+    render() {
+        const {intl} = this.context;
+        const props  = this.props;
+
+        let formattedDate = formatDate(intl, props.value, props);
+
+        if (typeof props.children === 'function') {
+            return props.children(formattedDate);
+        }
+
+        return DOM.span(null, formattedDate);
+    }
+}
+
+FormattedDate.propTypes = Object.assign({}, dateTimeFormatPropTypes, {
+    format: PropTypes.string,
+    value : PropTypes.any.isRequired,
 });
+
+FormattedDate.contextTypes = {
+    intl: PropTypes.shape(intlContextTypes).isRequired,
+};
 
 export default FormattedDate;

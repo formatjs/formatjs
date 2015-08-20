@@ -1,44 +1,34 @@
-/* jshint esnext:true */
+import {Component, DOM, PropTypes} from 'react';
+import {intlContextTypes, relativeFormatPropTypes} from '../types';
+import {formatRelative} from '../format';
+import {shouldIntlComponentUpdate} from '../utils';
 
-// TODO: Use `import React from "react";` when external modules are supported.
-import React from '../react';
-
-import IntlMixin from '../mixin';
-
-var FormattedRelative = React.createClass({
-    displayName: 'FormattedRelative',
-    mixins     : [IntlMixin],
-
-    statics: {
-        formatOptions: [
-            'style', 'units'
-        ]
-    },
-
-    propTypes: {
-        format: React.PropTypes.string,
-        value : React.PropTypes.any.isRequired,
-        now   : React.PropTypes.any
-    },
-
-    getDefaultProps: function () {
-        return {tagName: 'span'};
-    },
-
-    render: function () {
-        var props    = this.props;
-        var tagName  = props.tagName;
-        var value    = props.value;
-        var format   = props.format;
-        var defaults = format && this.getNamedFormat('relative', format);
-        var options  = FormattedRelative.filterFormatOptions(props, defaults);
-
-        var formattedRelativeTime = this.formatRelative(value, options, {
-            now: props.now
-        });
-
-        return React.DOM[tagName](null, formattedRelativeTime);
+class FormattedRelative extends Component {
+    shouldComponentUpdate(...next) {
+        return shouldIntlComponentUpdate(this, ...next);
     }
+
+    render() {
+        const {intl} = this.context;
+        const props  = this.props;
+
+        let formattedRelative = formatRelative(intl, props.value, props);
+
+        if (typeof props.children === 'function') {
+            return props.children(formattedRelative);
+        }
+
+        return DOM.span(null, formattedRelative);
+    }
+}
+
+FormattedRelative.propTypes = Object.assign({}, relativeFormatPropTypes, {
+    format: PropTypes.string,
+    value : PropTypes.any.isRequired,
 });
+
+FormattedRelative.contextTypes = {
+    intl: PropTypes.shape(intlContextTypes).isRequired,
+};
 
 export default FormattedRelative;

@@ -1,61 +1,76 @@
-/* jshint esnext:true */
+// TODO: Remove this component from 2.0?
 
-// TODO: Use `import React from "react";` when external modules are supported.
-import React from '../react';
+import {Component, PropTypes, createElement} from 'react';
+import {intlContextTypes} from '../types';
+import {formatMessage} from '../format';
+import {shallowEquals, shouldIntlComponentUpdate} from '../utils';
 
-import escape from '../escape';
-import IntlMixin from '../mixin';
+class FormattedHTMLMessage extends Component {
+    shouldComponentUpdate(nextProps, ...next) {
+        const values     = this.props.values;
+        const nextValues = nextProps.values;
 
-var FormattedHTMLMessage = React.createClass({
-    displayName: 'FormattedHTMLMessage',
-    mixins     : [IntlMixin],
+        if (!shallowEquals(nextValues, values)) {
+            return true;
+        }
 
-    propTypes: {
-        tagName: React.PropTypes.string,
-        message: React.PropTypes.string.isRequired
-    },
+        return shouldIntlComponentUpdate(this,
+            Object.assign({}, nextProps, {values: null}),
+            ...next
+        );
+    }
 
-    getDefaultProps: function () {
-        return {tagName: 'span'};
-    },
+    render() {
+        const {intl} = this.context;
+        const props  = this.props;
 
-    render: function () {
-        var props   = this.props;
-        var tagName = props.tagName;
-        var message = props.message;
+        let {
+            id,
+            description,
+            defaultMessage,
+            values,
+            tagName,
+        } = props;
 
-        // Process all the props before they are used as values when formatting
-        // the ICU Message string. Since the formatted message will be injected
-        // via `innerHTML`, all String-based values need to be HTML-escaped. Any
-        // React Elements that are passed as props will be rendered to a static
-        // markup string that is presumed to be safe.
-        var values = Object.keys(props).reduce(function (values, name) {
-            var value = props[name];
+        let descriptor           = {id, description, defaultMessage};
+        let formattedHTMLMessage = formatHTMLMessage(intl, descriptor, values);
 
-            if (typeof value === 'string') {
-                value = escape(value);
-            } else if (React.isValidElement(value)) {
-                value = React.renderToStaticMarkup(value);
-            }
-
-            values[name] = value;
-            return values;
-        }, {});
+        if (typeof props.children === 'function') {
+            return props.children(formattedHTMLMessage);
+        }
 
         // Since the message presumably has HTML in it, we need to set
         // `innerHTML` in order for it to be rendered and not escaped by React.
         // To be safe, all string prop values were escaped before formatting the
-        // message. It is assumed that the message is not UGC, and came from
-        // the developer making it more like a template.
+        // message. It is assumed that the message is not UGC, and came from the
+        // developer making it more like a template.
         //
         // Note: There's a perf impact of using this component since there's no
         // way for React to do its virtual DOM diffing.
-        return React.DOM[tagName]({
+        return createElement(tagName, {
             dangerouslySetInnerHTML: {
-                __html: this.formatMessage(message, values)
+                __html: formattedHTMLMessage
             }
         });
     }
-});
+}
+
+FormattedHTMLMessage.propTypes = {
+    id            : PropTypes.string,
+    description   : PropTypes.string,
+    defaultMessage: PropTypes.string,
+
+    values : PropTypes.object,
+    tagName: PropTypes.string,
+};
+
+FormattedHTMLMessage.contextTypes = {
+    intl: PropTypes.shape(intlContextTypes).isRequired,
+};
+
+FormattedHTMLMessage.defaultProps = {
+    tagName: 'span',
+    values : {},
+};
 
 export default FormattedHTMLMessage;

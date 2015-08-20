@@ -1,42 +1,34 @@
-/* jshint esnext:true */
+import {Component, DOM, PropTypes} from 'react';
+import {intlContextTypes, numberFormatPropTypes} from '../types';
+import {formatNumber} from '../format';
+import {shouldIntlComponentUpdate} from '../utils';
 
-// TODO: Use `import React from "react";` when external modules are supported.
-import React from '../react';
-
-import IntlMixin from '../mixin';
-
-var FormattedNumber = React.createClass({
-    displayName: 'FormattedNumber',
-    mixins     : [IntlMixin],
-
-    statics: {
-        formatOptions: [
-            'localeMatcher', 'style', 'currency', 'currencyDisplay',
-            'useGrouping', 'minimumIntegerDigits', 'minimumFractionDigits',
-            'maximumFractionDigits', 'minimumSignificantDigits',
-            'maximumSignificantDigits'
-        ]
-    },
-
-    propTypes: {
-        format: React.PropTypes.string,
-        value : React.PropTypes.any.isRequired
-    },
-
-    getDefaultProps: function () {
-        return {tagName: 'span'};
-    },
-
-    render: function () {
-        var props    = this.props;
-        var tagName  = props.tagName;
-        var value    = props.value;
-        var format   = props.format;
-        var defaults = format && this.getNamedFormat('number', format);
-        var options  = FormattedNumber.filterFormatOptions(props, defaults);
-
-        return React.DOM[tagName](null, this.formatNumber(value, options));
+class FormattedNumber extends Component {
+    shouldComponentUpdate(...next) {
+        return shouldIntlComponentUpdate(this, ...next);
     }
+
+    render() {
+        const {intl} = this.context;
+        const props  = this.props;
+
+        let formattedNumber = formatNumber(intl, props.value, props);
+
+        if (typeof props.children === 'function') {
+            return props.children(formattedNumber);
+        }
+
+        return DOM.span(null, formattedNumber);
+    }
+}
+
+FormattedNumber.propTypes = Object.assign({}, numberFormatPropTypes, {
+    format: PropTypes.string,
+    value : PropTypes.any.isRequired,
 });
+
+FormattedNumber.contextTypes = {
+    intl: PropTypes.shape(intlContextTypes).isRequired,
+};
 
 export default FormattedNumber;
