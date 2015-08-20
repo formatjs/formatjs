@@ -145,17 +145,21 @@ export default function ({Plugin, types: t}) {
                     const messagesDir = getMessagesDir(file.opts);
                     const {basename, filename} = file.opts;
 
-                    let messagesFilename = p.join(
-                        messagesDir,
-                        p.dirname(p.relative(process.cwd(), filename)),
-                        basename + '.json'
-                    );
+                    let descriptors = [...messages.values()];
+                    file.metadata['react-intl'] = {messages: descriptors};
 
-                    let descriptors  = [...messages.values()];
-                    let messagesFile = JSON.stringify(descriptors, null, 2);
+                    if (messagesDir) {
+                        let messagesFilename = p.join(
+                            messagesDir,
+                            p.dirname(p.relative(process.cwd(), filename)),
+                            basename + '.json'
+                        );
 
-                    mkdirpSync(p.dirname(messagesFilename));
-                    writeFileSync(messagesFilename, messagesFile);
+                        let messagesFile = JSON.stringify(descriptors, null, 2);
+
+                        mkdirpSync(p.dirname(messagesFilename));
+                        writeFileSync(messagesFilename, messagesFile);
+                    }
                 }
             },
 
