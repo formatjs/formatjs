@@ -42,7 +42,7 @@ function getMessage(messages, id) {
     if (messages) {
         return messages[id];
     }
-    
+
     // TODO: warn in dev when message is missing.
 }
 
@@ -74,6 +74,7 @@ export function formatTime(intl, value, options = {}) {
 
 export function formatRelative(intl, value, options = {}) {
     let date     = new Date(value);
+    let {now}    = options;
     let {format} = options;
     let defaults = format && getNamedFormat(intl.formats, 'relative', format);
 
@@ -82,7 +83,7 @@ export function formatRelative(intl, value, options = {}) {
         options, defaults
     );
 
-    return intl.getRelativeFormat(intl.locale, filteredOptions).format(date);
+    return intl.getRelativeFormat(intl.locale, filteredOptions).format(date, {now});
 }
 
 export function formatNumber(intl, value, options = {}) {
