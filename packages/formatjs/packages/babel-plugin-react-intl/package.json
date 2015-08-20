@@ -1,14 +1,18 @@
 {
   "name": "babel-plugin-react-intl",
-  "version": "1.0.0",
+  "version": "1.0.0-beta-1",
   "description": "Extracts string messages from modules that use react-intl.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yahoo/babel-react-intl.git"
+    "url": "git+https://github.com/yahoo/babel-plugin-react-intl.git"
   },
   "license": "BSD-3-Clause",
   "main": "lib/index.js",
   "author": "Eric Ferraiuolo <edf@ericf.me>",
+  "dependencies": {
+    "babel-runtime": "^5.8.20",
+    "mkdirp": "^0.5.1"
+  },
   "devDependencies": {
     "babel": "^5.8.21"
   },
@@ -18,15 +22,11 @@
     "test": "babel-plugin test"
   },
   "keywords": [
-    "babel-plugin"
+    "babel-plugin",
+    "react-intl"
   ],
   "bugs": {
-    "url": "https://github.com/yahoo/babel-react-intl/issues"
+    "url": "https://github.com/yahoo/babel-plugin-react-intl/issues"
   },
-  "homepage": "https://github.com/yahoo/babel-react-intl#readme",
-  "dependencies": {
-    "babel": "^5.8.20",
-    "babel-runtime": "^5.8.20",
-    "mkdirp": "^0.5.1"
-  }
+  "homepage": "https://github.com/yahoo/babel-plugin-react-intl#readme"
 }
