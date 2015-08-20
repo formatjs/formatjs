@@ -25,6 +25,7 @@ class FormattedRelative extends Component {
 FormattedRelative.propTypes = Object.assign({}, relativeFormatPropTypes, {
     format: PropTypes.string,
     value : PropTypes.any.isRequired,
+    now   : PropTypes.any,
 });
 
 FormattedRelative.contextTypes = {
