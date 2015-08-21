@@ -5,10 +5,11 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "build": "npm run bundle && npm run translate",
-    "bundle": "mkdirp build && browserify src/client/index.js -d -t babelify -t browserify-shim -o build/bundle.js",
-    "translate": "babel-node scripts/translate.js",
-    "start": "node src/server/index.js"
+    "clean": "rimraf build",
+    "build:bundle": "mkdirp build && browserify src/client/index.js -d -t babelify -t browserify-shim > build/bundle.js",
+    "build:langs": "babel-node scripts/translate.js",
+    "build": "npm run build:bundle && npm run build:langs",
+    "start": "babel-node src/server/index.js"
   },
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "license": "BSD-3-Clause",
@@ -25,7 +26,8 @@
     "browserify": "^11.0.1",
     "browserify-shim": "^3.8.10",
     "intl-messageformat-parser": "^1.1.0",
-    "mkdirp": "^0.5.1"
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.4.2"
   },
   "browser": {
     "react-intl": "../../lib/react-intl.js"
