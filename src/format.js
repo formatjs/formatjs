@@ -25,25 +25,16 @@ function filterFormatOptions(whitelist, obj, defaults = {}) {
 }
 
 function getNamedFormat(formats, type, name) {
-    let format;
-
-    try {
-        format = formats[type][name];
-    } finally {
-        if (!format) {
-            // TODO: warn in dev.
-        }
+    let format = formats && formats[type] && formats[type][name];
+    if (format) {
+        return format;
     }
 
-    return format;
-}
-
-function getMessage(messages, id) {
-    if (messages) {
-        return messages[id];
+    if (process.env.NODE_ENV !== 'production') {
+        console.error(
+            `[React Intl] No ${type} format named: ${name}`
+        );
     }
-
-    // TODO: warn in dev when message is missing.
 }
 
 export function formatDate(intl, value, options = {}) {
@@ -117,10 +108,20 @@ export function formatMessage(intl, messageDescriptor, values = {}) {
         defaultMessage,
     } = messageDescriptor;
 
-    let message = getMessage(messages, id);
+    // TODO: What should we do when the message descriptor doesn't have an `id`?
+    // Should we return some placeholder value, not care, or throw?
+
+    let message = messages && messages[id];
 
     if (!(message || defaultMessage)) {
-        // TODO: warn in dev.
+        if (process.env.NODE_ENV !== 'production') {
+            console.error(
+                `[React Intl] Cannot format message. ` +
+                `Missing message: "${id}" for locale: "${locale}", ` +
+                `and no default message was provided.`
+            );
+        }
+
         return id;
     }
 
@@ -134,7 +135,11 @@ export function formatMessage(intl, messageDescriptor, values = {}) {
 
             formattedMessage = formatter.format(values);
         } catch (e) {
-            // TODO: warn in dev.
+            if (process.env.NODE_ENV !== 'production') {
+                console.error(
+                    `[React Intl] Error formatting message: "${id}"\n${e}`
+                );
+            }
         }
     }
 
@@ -146,12 +151,25 @@ export function formatMessage(intl, messageDescriptor, values = {}) {
 
             formattedMessage = formatter.format(values);
         } catch (e) {
-            // TODO: warn in dev.
+            if (process.env.NODE_ENV !== 'production') {
+                console.error(
+                    `[React Intl] Error formatting the default message for: ` +
+                    `"${id}"\n${e}`
+                );
+            }
+        }
+    }
+
+    if (!formattedMessage) {
+        if (process.env.NODE_ENV !== 'production') {
+            console.warn(
+                `[React Intl] Using source fallback for message: "${id}"`
+            );
         }
     }
 
     // TODO: Should the string first be trimmed? This will support strings
-    // defined using template literals.
+    // defined using template literals. <pre> rendering would be the counter.
     return formattedMessage || message || defaultMessage || id;
 }
 
