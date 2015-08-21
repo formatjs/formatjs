@@ -13,6 +13,7 @@
     "Eric Ferraiuolo <eferraiuolo@gmail.com>"
   ],
   "license": "BSD-3-Clause",
+  "homepage": "https://github.com/yahoo/react-intl",
   "bugs": {
     "url": "https://github.com/yahoo/react-intl/issues"
   },
@@ -23,6 +24,9 @@
   "main": "lib/react-intl-with-locales.js",
   "jsnext:main": "src/react-intl.js",
   "browser": "./lib/react-intl.js",
+  "browserify-shim": {
+    "react": "global:React"
+  },
   "dependencies": {
     "babel-runtime": "^5.8.20",
     "intl-format-cache": "2.0.4",
@@ -40,6 +44,8 @@
     "bundle-collapser": "^1.2.1",
     "envify": "^3.4.0",
     "es5-shim": "^4.1.10",
+    "eslint": "^1.2.1",
+    "eslint-plugin-react": "^3.2.3",
     "exorcist": "^0.4.0",
     "expect.js": "^0.3.1",
     "formatjs-extract-cldr-data": "^1.1.1",
@@ -52,6 +58,7 @@
   },
   "scripts": {
     "clean": "rimraf src/locale-data/ lib/ dist/",
+    "lint": "eslint src/ scripts/ examples/",
     "build:data": "babel-node scripts/build-locale-data.js",
     "build:lib": "babel src/ --out-dir lib/",
     "build:dist:main": "browserify src/react-intl.js -s ReactIntl -p bundle-collapser/plugin -g [envify --NODE_ENV development] -t babelify -t browserify-shim -d | exorcist -b ./ dist/react-intl.js.map > dist/react-intl.js",
@@ -61,9 +68,5 @@
     "build:dist": "npm run build:dist:main && npm run build:dist:main:min && npm run build:dist:with-data && npm run build:dist:with-data:min",
     "build": "npm run build:data && npm run build:lib && npm run build:dist",
     "prepublish": "npm run clean && npm run build"
-  },
-  "homepage": "https://github.com/yahoo/react-intl",
-  "browserify-shim": {
-    "react": "global:React"
   }
 }
