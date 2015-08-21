@@ -1,5 +1,3 @@
-// TODO: Remove this component from 2.0?
-
 import {Component, PropTypes, createElement} from 'react';
 import {intlContextTypes} from '../types';
 import {formatHTMLMessage} from '../format';
