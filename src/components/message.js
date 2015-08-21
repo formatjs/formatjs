@@ -38,7 +38,7 @@ class FormattedMessage extends Component {
         let generateToken = (() => {
             let counter = 0;
             return () => `@__ELEMENT-${guid}-${counter += 1}__@`;
-        }());
+        })();
 
         let tokenizedValues = {};
         let elements        = {};

@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import {FormattedMessage} from 'react-intl';
 import LocalesMenu from './locales-menu';
 import Greeting from './greeting';
@@ -12,7 +12,7 @@ export default class App extends Component {
                 name         : 'Eric',
                 unreadCount  : 4,
                 lastLoginTime: Date.now() - 1000 * 60 * 60 * 24,
-            }
+            },
         };
     }
 

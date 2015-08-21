@@ -20,7 +20,7 @@ class Group extends Component {
 }
 
 Group.propTypes = {
-    children: PropTypes.func.isRequired
+    children: PropTypes.func.isRequired,
 };
 
 export default Group;

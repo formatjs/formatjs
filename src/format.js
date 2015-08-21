@@ -24,7 +24,7 @@ function filterFormatOptions(whitelist, obj, defaults = {}) {
     }, {});
 }
 
-function getNamedFormat(formats, types, name) {
+function getNamedFormat(formats, type, name) {
     let format;
 
     try {
@@ -159,8 +159,8 @@ export function formatHTMLMessage(intl, messageDescriptor, rawValues = {}) {
     // Process all the values before they are used when formatting the ICU
     // Message string. Since the formatted message might be injected via
     // `innerHTML`, all String-based values need to be HTML-escaped.
-    let escapedValues = Object.keys(values).reduce((escaped, name) => {
-        let value = values[name];
+    let escapedValues = Object.keys(rawValues).reduce((escaped, name) => {
+        let value = rawValues[name];
         escaped[name] = typeof value === 'string' ? escape(value) : value;
         return escaped;
     }, {});

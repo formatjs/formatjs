@@ -6,7 +6,7 @@ import * as path from 'path';
 const translations = globSync('./build/lang/*.json')
     .map((filename) => [
         path.basename(filename, '.json'),
-        readFileSync(filename, 'utf8')
+        readFileSync(filename, 'utf8'),
     ])
     .map(([locale, file]) => [locale, JSON.parse(file)])
     .reduce((collection, [locale, messages]) => {

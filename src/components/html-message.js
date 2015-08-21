@@ -2,7 +2,7 @@
 
 import {Component, PropTypes, createElement} from 'react';
 import {intlContextTypes} from '../types';
-import {formatMessage} from '../format';
+import {formatHTMLMessage} from '../format';
 import {shallowEquals, shouldIntlComponentUpdate} from '../utils';
 
 class FormattedHTMLMessage extends Component {
@@ -49,8 +49,8 @@ class FormattedHTMLMessage extends Component {
         // way for React to do its virtual DOM diffing.
         return createElement(tagName, {
             dangerouslySetInnerHTML: {
-                __html: formattedHTMLMessage
-            }
+                __html: formattedHTMLMessage,
+            },
         });
     }
 }

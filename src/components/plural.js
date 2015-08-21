@@ -35,7 +35,7 @@ FormattedPlural.propTypes = Object.assign({}, pluralFormatPropTypes, {
 
 formatPlural.defaultProps = {
     style: 'cardinal',
-}
+};
 
 FormattedPlural.contextTypes = {
     intl: PropTypes.shape(intlContextTypes).isRequired,

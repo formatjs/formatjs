@@ -1,5 +1,5 @@
-import React, {Component, PropTypes} from 'react'
-import {FormattedMessage, intlContextTypes, formatMessage} from 'react-intl';
+import React, {Component, PropTypes} from 'react';
+import {intlContextTypes, formatMessage} from 'react-intl';
 
 class LocalesMenu extends Component {
     render() {
