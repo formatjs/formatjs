@@ -67,6 +67,6 @@
     "build:dist:with-data:min": "browserify src/react-intl-with-locales.js -s ReactIntl -p bundle-collapser/plugin -g [envify --NODE_ENV production] -t babelify -t browserify-shim | uglifyjs -c -m > dist/react-intl-with-locales.min.js",
     "build:dist": "npm run build:dist:main && npm run build:dist:main:min && npm run build:dist:with-data && npm run build:dist:with-data:min",
     "build": "npm run build:data && npm run build:lib && npm run build:dist",
-    "prepublish": "npm run clean && npm run build"
+    "prepublish": "npm run lint && npm run clean && npm run build"
   }
 }
