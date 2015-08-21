@@ -28,47 +28,46 @@ Overview
 
 ### Example
 
-There are many examples [on the website][React Intl], but here's a comprehensive one:
+There are many examples [on the website][React Intl], but here's a hello world one:
 
-```jsx
-var IntlMixin         = ReactIntl.IntlMixin;
-var FormattedMessage  = ReactIntl.FormattedMessage;
-var FormattedRelative = ReactIntl.FormattedRelative;
+```js
+import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
+import {IntlProvider, FormattedNumber, FormattedPlural} from 'react-intl';
 
-var PostMeta = React.createClass({
-    mixins: [IntlMixin],
+class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            name       : 'Eric',
+            unreadCount: 1000,
+        };
+    }
 
-    render: function () {
+    render() {
         return (
-            <FormattedMessage
-                message={this.getIntlMessage('post.meta')}
-                num={this.props.post.comments.length}
-                ago={<FormattedRelative value={this.props.post.date} />} />
+            <p>
+                Hello <b>{this.state.name}</b>, you have {' '}
+                <FormattedNumber value={this.state.unreadCount} />
+                <FormattedPlural value={this.state.unreadCount}
+                    one=" unread message."
+                    other=" unread messages."
+                />
+            </p>
         );
     }
-});
+}
 
-var post = {
-    date    : 1422046290531,
-    comments: [/*...*/]
-};
-
-var intlData = {
-    locales : ['en-US'],
-    messages: {
-        post: {
-            meta: 'Posted {ago}, {num, plural, one{# comment} other{# comments}}'
-        }
-    }
-};
-
-React.render(
-    <PostMeta post={post} {...intlData} />,
+ReactDOM.render(
+    <IntlProvider>
+        <App />
+    </IntlProvider>,
     document.getElementById('container')
 );
+
 ```
 
-This example would render: **"Posted 3 days ago, 1,000 comments"** into the container element on the page. The `post.meta` message is written in the industry standard [ICU Message syntax][], which you can also learn about on the [FormatJS website][FormatJS].
+This example would render: "Hello **Eric**, you have 1,000 unread messages." into the container element on the page.
 
 Contribute
 ---------
