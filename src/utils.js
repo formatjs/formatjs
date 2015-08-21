@@ -14,7 +14,7 @@ const ESCAPED_CHARS = {
     '>' : '&gt;',
     '<' : '&lt;',
     '"' : '&quot;',
-    '\'': '&#x27;'
+    '\'': '&#x27;',
 };
 
 const UNSAFE_CHARS_REGEX = /[&><"']/g;
