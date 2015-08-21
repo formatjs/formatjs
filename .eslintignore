@@ -1,0 +1,5 @@
+src/en.js
+src/locale-data/
+examples/*/node_modules/
+examples/*/build/
+examples/hello-world/bundle.js
