@@ -147,10 +147,11 @@ number = digits:('0' / $([1-9] digit*)) {
 
 char
     = [^{}\\\0-\x1F\x7f \t\n\r]
-    / '\\#' { return '\\#'; }
-    / '\\{' { return '\u007B'; }
-    / '\\}' { return '\u007D'; }
-    / '\\u' digits:$(hexDigit hexDigit hexDigit hexDigit) {
+    / '\\\\' { return '\\'; }
+    / '\\#'  { return '\\#'; }
+    / '\\{'  { return '\u007B'; }
+    / '\\}'  { return '\u007D'; }
+    / '\\u'  digits:$(hexDigit hexDigit hexDigit hexDigit) {
         return String.fromCharCode(parseInt(digits, 16));
     }
 

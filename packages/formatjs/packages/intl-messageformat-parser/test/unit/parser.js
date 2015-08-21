@@ -333,5 +333,10 @@ describe('parse()', function () {
             // the runtime doesn't replace it when in a `pluralFormat` option.
             expect(parse('\\#').elements[0].value).to.equal('\\#');
         });
+
+        it('should allow backslash chars in `messageTextElement`s', function () {
+            expect(parse('\\u005c').elements[0].value).to.equal('\\');
+            expect(parse('\\\\').elements[0].value).to.equal('\\');
+        });
     });
 });
