@@ -54,7 +54,8 @@
     "mocha": "^2.2.5",
     "react": "^0.14.0-beta3",
     "rimraf": "^2.4.2",
-    "serialize-javascript": "^1.0.0"
+    "serialize-javascript": "^1.0.0",
+    "uglify-js": "^2.4.24"
   },
   "scripts": {
     "clean": "rimraf src/locale-data/ lib/ dist/",
