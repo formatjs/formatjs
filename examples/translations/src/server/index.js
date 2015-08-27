@@ -2,6 +2,7 @@ import express from 'express';
 import {sync as globSync} from 'glob';
 import {readFileSync} from 'fs';
 import * as path from 'path';
+import serialize from 'serialize-javascript';
 
 const translations = globSync('./build/lang/*.json')
     .map((filename) => [
@@ -38,10 +39,7 @@ app.get('/', (req, res) => {
 <body>
     <div id="container"></div>
     <script>
-        window.App = {
-            locale  : ${JSON.stringify(locale)},
-            messages: ${JSON.stringify(messages, null, 2)}
-        };
+        window.App = ${serialize({locale, messages})};
     </script>
     <script src="https://cdn.polyfill.io/v1/polyfill.min.js?features=Intl.~locale.en"></script>
     <script src="react/dist/react.js"></script>
@@ -53,5 +51,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(8080, () => {
-    console.log('React Intl Example server listening at: http://localhost:3000');
+    console.log('React Intl Example server listening at: http://localhost:8080');
 });

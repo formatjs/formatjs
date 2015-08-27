@@ -18,7 +18,8 @@
     "express": "^4.13.3",
     "glob": "^5.0.14",
     "react": "^0.14.0-beta3",
-    "react-dom": "^0.14.0-beta3"
+    "react-dom": "^0.14.0-beta3",
+    "serialize-javascript": "^1.1.0"
   },
   "devDependencies": {
     "babel-plugin-react-intl": "^1.0.0-beta-1",
