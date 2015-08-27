@@ -48,19 +48,22 @@
     "eslint": "^1.2.1",
     "eslint-plugin-react": "^3.2.3",
     "exorcist": "^0.4.0",
-    "expect.js": "^0.3.1",
+    "expect": "^1.9.0",
     "formatjs-extract-cldr-data": "^1.1.1",
     "intl": "^1.0.0",
+    "jsdom": "^3.1.2",
     "mkdirp": "^0.5.1",
     "mocha": "^2.2.5",
+    "mocha-jsdom": "^1.0.0",
     "react": "^0.14.0-beta3",
+    "react-addons-test-utils": "^0.14.0-beta3",
     "rimraf": "^2.4.2",
     "serialize-javascript": "^1.1.1",
     "uglify-js": "^2.4.24"
   },
   "scripts": {
+    "lint": "eslint src/ test/ scripts/ examples/",
     "clean": "rimraf src/locale-data/ lib/ dist/",
-    "lint": "eslint src/ scripts/ examples/",
     "build:data": "babel-node scripts/build-locale-data.js",
     "build:lib": "babel src/ --out-dir lib/",
     "build:dist:main": "browserify src/react-intl.js -s ReactIntl -p bundle-collapser/plugin -g [envify --NODE_ENV development] -t babelify -t browserify-shim -d | exorcist -b ./ dist/react-intl.js.map > dist/react-intl.js",
@@ -69,6 +72,8 @@
     "build:dist:with-data:min": "browserify src/react-intl-with-locales.js -s ReactIntl -p bundle-collapser/plugin -g [envify --NODE_ENV production] -t babelify -t browserify-shim | uglifyjs -c -m > dist/react-intl-with-locales.min.js",
     "build:dist": "npm run build:dist:main && npm run build:dist:main:min && npm run build:dist:with-data && npm run build:dist:with-data:min",
     "build": "npm run build:data && npm run build:lib && npm run build:dist",
-    "prepublish": "npm run lint && npm run clean && npm run build"
+    "test:unit": "mocha --compilers js:babel/register --recursive test/unit/",
+    "test": "npm run test:unit",
+    "prepublish": "npm run lint && npm run clean && npm run build && npm test"
   }
 }
