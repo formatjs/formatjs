@@ -1,6 +1,7 @@
-src/en.js
-src/locale-data/
-lib/
+dist/
 examples/*/node_modules/
 examples/*/build/
 examples/hello-world/bundle.js
+lib/
+src/en.js
+src/locale-data/
