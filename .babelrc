@@ -1,5 +1,10 @@
 {
     "stage": 4,
-    "optional": ["runtime"],
-    "loose": ["es6.modules", "es6.classes"]
+    "optional": [
+        "runtime"
+    ],
+    "loose": [
+        "es6.modules",
+        "es6.classes"
+    ]
 }
