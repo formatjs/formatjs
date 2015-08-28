@@ -1,18 +1,17 @@
 import {Component, DOM, PropTypes} from 'react';
 import {intlContextTypes, pluralFormatPropTypes} from '../types';
-import {formatPlural} from '../format';
 import {shouldIntlComponentUpdate} from '../utils';
 
-class FormattedPlural extends Component {
+export default class FormattedPlural extends Component {
     shouldComponentUpdate(...next) {
         return shouldIntlComponentUpdate(this, ...next);
     }
 
     render() {
-        const {intl} = this.context;
-        const props  = this.props;
+        const {formatPlural} = this.context.intl;
+        const props          = this.props;
 
-        let pluralCategory  = formatPlural(intl, props.value, props);
+        let pluralCategory  = formatPlural(props.value, props);
         let formattedPlural = props[pluralCategory] || props.other;
 
         if (typeof props.children === 'function') {
@@ -33,12 +32,10 @@ FormattedPlural.propTypes = Object.assign({}, pluralFormatPropTypes, {
     many : PropTypes.node,
 });
 
-formatPlural.defaultProps = {
+FormattedPlural.defaultProps = {
     style: 'cardinal',
 };
 
 FormattedPlural.contextTypes = {
     intl: PropTypes.shape(intlContextTypes).isRequired,
 };
-
-export default FormattedPlural;

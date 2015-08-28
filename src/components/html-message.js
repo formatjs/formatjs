@@ -1,9 +1,8 @@
 import {Component, PropTypes, createElement} from 'react';
 import {intlContextTypes} from '../types';
-import {formatHTMLMessage} from '../format';
 import {shallowEquals, shouldIntlComponentUpdate} from '../utils';
 
-class FormattedHTMLMessage extends Component {
+export default class FormattedHTMLMessage extends Component {
     shouldComponentUpdate(nextProps, ...next) {
         const values     = this.props.values;
         const nextValues = nextProps.values;
@@ -19,8 +18,8 @@ class FormattedHTMLMessage extends Component {
     }
 
     render() {
-        const {intl} = this.context;
-        const props  = this.props;
+        const {formatHTMLMessage} = this.context.intl;
+        const props               = this.props;
 
         let {
             id,
@@ -31,7 +30,7 @@ class FormattedHTMLMessage extends Component {
         } = props;
 
         let descriptor           = {id, description, defaultMessage};
-        let formattedHTMLMessage = formatHTMLMessage(intl, descriptor, values);
+        let formattedHTMLMessage = formatHTMLMessage(descriptor, values);
 
         if (typeof props.children === 'function') {
             return props.children(formattedHTMLMessage);
@@ -70,5 +69,3 @@ FormattedHTMLMessage.defaultProps = {
     tagName: 'span',
     values : {},
 };
-
-export default FormattedHTMLMessage;
