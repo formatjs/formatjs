@@ -19,7 +19,8 @@
   "scripts": {
     "build": "babel-plugin build",
     "push": "babel-plugin publish",
-    "test": "babel-plugin test"
+    "test": "babel-plugin test",
+    "prepublish": "npm run build"
   },
   "keywords": [
     "babel-plugin",
