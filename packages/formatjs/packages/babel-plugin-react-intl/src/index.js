@@ -14,8 +14,7 @@ const COMPONENT_NAMES = [
 ];
 
 const FUNCTION_NAMES = [
-    'formatMessage',
-    'formatHTMLMessage',
+    'defineMessage',
 ];
 
 const IMPORTED_NAMES   = new Set([...COMPONENT_NAMES, ...FUNCTION_NAMES]);
@@ -188,7 +187,7 @@ export default function ({Plugin, types: t}) {
                 let callee = this.get('callee');
 
                 if (referencesImport(callee, moduleSourceName, FUNCTION_NAMES)) {
-                    let messageArg = this.get('arguments')[1];
+                    let messageArg = this.get('arguments')[0];
                     if (!messageArg) {
                         throw file.errorWithNode(node,
                             `[React Intl] \`${callee.node.name}()\` requires ` +
