@@ -1,23 +1,16 @@
 import {PropTypes} from 'react';
 
-const {bool, number, string, object, func, oneOf} = PropTypes;
+const {bool, number, string, func, oneOf} = PropTypes;
 
-export const intlPropTypes = {
-    locale  : string,
-    formats : object,
-    messages: object,
-
-    defaultLocale : string,
-    defaultFormats: object,
+export const intlContextTypes = {
+    formatDate       : func.isRequired,
+    formatTime       : func.isRequired,
+    formatRelative   : func.isRequired,
+    formatNumber     : func.isRequired,
+    formatPlural     : func.isRequired,
+    formatMessage    : func.isRequired,
+    formatHTMLMessage: func.isRequired,
 };
-
-export const intlContextTypes = Object.assign({}, intlPropTypes, {
-    getDateTimeFormat: func.isRequired,
-    getNumberFormat  : func.isRequired,
-    getMessageFormat : func.isRequired,
-    getRelativeFormat: func.isRequired,
-    getPluralFormat  : func.isRequired,
-});
 
 export const dateTimeFormatPropTypes = {
     localeMatcher: oneOf(['best fit', 'lookup']),

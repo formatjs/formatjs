@@ -1,18 +1,17 @@
 import {Component, DOM, PropTypes} from 'react';
 import {intlContextTypes, relativeFormatPropTypes} from '../types';
-import {formatRelative} from '../format';
 import {shouldIntlComponentUpdate} from '../utils';
 
-class FormattedRelative extends Component {
+export default class FormattedRelative extends Component {
     shouldComponentUpdate(...next) {
         return shouldIntlComponentUpdate(this, ...next);
     }
 
     render() {
-        const {intl} = this.context;
-        const props  = this.props;
+        const {formatRelative} = this.context.intl;
+        const props            = this.props;
 
-        let formattedRelative = formatRelative(intl, props.value, props);
+        let formattedRelative = formatRelative(props.value, props);
 
         if (typeof props.children === 'function') {
             return props.children(formattedRelative);
@@ -31,5 +30,3 @@ FormattedRelative.propTypes = Object.assign({}, relativeFormatPropTypes, {
 FormattedRelative.contextTypes = {
     intl: PropTypes.shape(intlContextTypes).isRequired,
 };
-
-export default FormattedRelative;
