@@ -1,6 +1,6 @@
 import {Component, PropTypes, cloneElement, isValidElement} from 'react';
 
-class Group extends Component {
+export default class Group extends Component {
     render() {
         const props = this.props;
 
@@ -22,5 +22,3 @@ class Group extends Component {
 Group.propTypes = {
     children: PropTypes.func.isRequired,
 };
-
-export default Group;

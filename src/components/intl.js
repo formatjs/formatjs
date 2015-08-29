@@ -4,9 +4,17 @@ import IntlRelativeFormat from 'intl-relativeformat';
 import IntlPluralFormat from '../plural';
 import createFormatCache from 'intl-format-cache';
 import {shouldIntlComponentUpdate} from '../utils';
-import {intlPropTypes, intlContextTypes} from '../types';
+import {intlContextTypes} from '../types';
+import * as format from '../format';
 
-class IntlProvider extends Component {
+function bindFormatFns(intl, localeData) {
+    return Object.keys(intlContextTypes).reduce((types, name) => {
+        types[name] = format[name].bind(null, intl, localeData);
+        return types;
+    }, {});
+}
+
+export default class IntlProvider extends Component {
     constructor(props) {
         super(props);
 
@@ -24,17 +32,11 @@ class IntlProvider extends Component {
     }
 
     getChildContext() {
-        const props = this.props;
+        const intl       = this.state;
+        const localeData = this.props;
 
-        let intl =  Object.assign({
-            locale        : props.locale,
-            formats       : props.formats,
-            messages      : props.messages,
-            defaultLocale : props.defaultLocale,
-            defaultFormats: props.defaultFormats,
-        }, this.state);
-
-        return {intl};
+        // Reduce intl + localeData to just the format functions.
+        return {intl: bindFormatFns(intl, localeData)};
     }
 
     render() {
@@ -52,7 +54,14 @@ class IntlProvider extends Component {
     }
 }
 
-IntlProvider.propTypes = intlPropTypes;
+IntlProvider.propTypes = {
+    locale  : PropTypes.string,
+    formats : PropTypes.object,
+    messages: PropTypes.object,
+
+    defaultLocale : PropTypes.string,
+    defaultFormats: PropTypes.object,
+};
 
 IntlProvider.defaultProps = {
     // TODO: Should `locale` default to 'en'? Or would that cause issues with
@@ -67,5 +76,3 @@ IntlProvider.defaultProps = {
 IntlProvider.childContextTypes = {
     intl: PropTypes.shape(intlContextTypes),
 };
-
-export default IntlProvider;
