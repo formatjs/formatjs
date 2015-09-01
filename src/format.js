@@ -37,8 +37,8 @@ function getNamedFormat(formats, type, name) {
     }
 }
 
-export function formatDate(intl, localeData, value, options = {}) {
-    const {locale, formats} = localeData;
+export function formatDate(intl, config, value, options = {}) {
+    const {locale, formats} = config;
     const {format}          = options;
 
     let date     = new Date(value);
@@ -52,8 +52,8 @@ export function formatDate(intl, localeData, value, options = {}) {
     return intl.getDateTimeFormat(locale, filteredOptions).format(date);
 }
 
-export function formatTime(intl, localeData, value, options = {}) {
-    const {locale, formats} = localeData;
+export function formatTime(intl, config, value, options = {}) {
+    const {locale, formats} = config;
     const {format}          = options;
 
     let date     = new Date(value);
@@ -67,8 +67,8 @@ export function formatTime(intl, localeData, value, options = {}) {
     return intl.getDateTimeFormat(locale, filteredOptions).format(date);
 }
 
-export function formatRelative(intl, localeData, value, options = {}) {
-    const {locale, formats} = localeData;
+export function formatRelative(intl, config, value, options = {}) {
+    const {locale, formats} = config;
     const {now, format}     = options;
 
     let date     = new Date(value);
@@ -82,8 +82,8 @@ export function formatRelative(intl, localeData, value, options = {}) {
     return intl.getRelativeFormat(locale, filteredOptions).format(date, {now});
 }
 
-export function formatNumber(intl, localeData, value, options = {}) {
-    const {locale, formats} = localeData;
+export function formatNumber(intl, config, value, options = {}) {
+    const {locale, formats} = config;
     const {format}          = options;
 
     let defaults = format && getNamedFormat(formats, 'number', format);
@@ -96,20 +96,20 @@ export function formatNumber(intl, localeData, value, options = {}) {
     return intl.getNumberFormat(locale, filteredOptions).format(value);
 }
 
-export function formatPlural(intl, localeData, value, options = {}) {
-    const {locale} = localeData;
+export function formatPlural(intl, config, value, options = {}) {
+    const {locale} = config;
     let filteredOptions = filterFormatOptions(PLURAL_FORMAT_OPTIONS, options);
     return intl.getPluralFormat(locale, filteredOptions).format(value);
 }
 
-export function formatMessage(intl, localeData, messageDescriptor, values = {}) {
+export function formatMessage(intl, config, messageDescriptor, values = {}) {
     const {
         locale,
         formats,
         messages,
         defaultLocale,
         defaultFormats,
-    } = localeData;
+    } = config;
 
     const {
         id,
@@ -181,7 +181,7 @@ export function formatMessage(intl, localeData, messageDescriptor, values = {}) 
     return formattedMessage || message || defaultMessage || id;
 }
 
-export function formatHTMLMessage(intl, localeData, messageDescriptor, rawValues = {}) {
+export function formatHTMLMessage(intl, config, messageDescriptor, rawValues = {}) {
     // Process all the values before they are used when formatting the ICU
     // Message string. Since the formatted message might be injected via
     // `innerHTML`, all String-based values need to be HTML-escaped.
@@ -191,5 +191,5 @@ export function formatHTMLMessage(intl, localeData, messageDescriptor, rawValues
         return escaped;
     }, {});
 
-    return formatMessage(intl, localeData, messageDescriptor, escapedValues);
+    return formatMessage(intl, config, messageDescriptor, escapedValues);
 }

@@ -2,7 +2,16 @@ import {PropTypes} from 'react';
 
 const {bool, number, string, func, oneOf} = PropTypes;
 
-export const intlContextTypes = {
+export const intlPropTypes = {
+    locale  : PropTypes.string,
+    formats : PropTypes.object,
+    messages: PropTypes.object,
+
+    defaultLocale : PropTypes.string,
+    defaultFormats: PropTypes.object,
+};
+
+export const intlFormatPropTypes = {
     formatDate       : func.isRequired,
     formatTime       : func.isRequired,
     formatRelative   : func.isRequired,
@@ -11,6 +20,11 @@ export const intlContextTypes = {
     formatMessage    : func.isRequired,
     formatHTMLMessage: func.isRequired,
 };
+
+export const intlContextTypes = Object.assign({},
+    intlPropTypes,
+    intlFormatPropTypes
+);
 
 export const dateTimeFormatPropTypes = {
     localeMatcher: oneOf(['best fit', 'lookup']),

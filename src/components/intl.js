@@ -4,20 +4,19 @@ import IntlRelativeFormat from 'intl-relativeformat';
 import IntlPluralFormat from '../plural';
 import createFormatCache from 'intl-format-cache';
 import {shouldIntlComponentUpdate} from '../utils';
-import {intlContextTypes} from '../types';
+import {intlPropTypes, intlFormatPropTypes, intlContextTypes} from '../types';
 import * as format from '../format';
 
-function bindFormatFns(intl, localeData) {
-    return Object.keys(intlContextTypes).reduce((types, name) => {
-        types[name] = format[name].bind(null, intl, localeData);
-        return types;
-    }, {});
-}
+const intlPropNames       = Object.keys(intlPropTypes);
+const intlFormatPropNames = Object.keys(intlFormatPropTypes);
 
 export default class IntlProvider extends Component {
     constructor(props) {
         super(props);
 
+        // Creating `Intl*` formatters is expensive so these format caches
+        // memoize the `Intl*` constructors and have the same lifecycle as this
+        // IntlProvider instance.
         this.state = {
             getDateTimeFormat: createFormatCache(Intl.DateTimeFormat),
             getNumberFormat  : createFormatCache(Intl.NumberFormat),
@@ -27,16 +26,32 @@ export default class IntlProvider extends Component {
         };
     }
 
-    shouldComponentUpdate(...next) {
-        return shouldIntlComponentUpdate(this, ...next);
+    getConfig(props = this.props) {
+        return intlPropNames.reduce((config, name) => {
+            config[name] = props[name];
+            return config;
+        }, {});
+    }
+
+    getBoundFormatFns(intl, config) {
+        return intlFormatPropNames.reduce((boundFormatFns, name) => {
+            boundFormatFns[name] = format[name].bind(null, intl, config);
+            return boundFormatFns;
+        }, {});
     }
 
     getChildContext() {
-        const intl       = this.state;
-        const localeData = this.props;
+        const intl   = this.state;
+        const config = this.getConfig();
 
-        // Reduce intl + localeData to just the format functions.
-        return {intl: bindFormatFns(intl, localeData)};
+        // Bind intl factories and current config to the format functions.
+        let boundFormatFns = this.getBoundFormatFns(intl, config);
+
+        return {intl: Object.assign({}, config, boundFormatFns)};
+    }
+
+    shouldComponentUpdate(...next) {
+        return shouldIntlComponentUpdate(this, ...next);
     }
 
     render() {
@@ -54,14 +69,7 @@ export default class IntlProvider extends Component {
     }
 }
 
-IntlProvider.propTypes = {
-    locale  : PropTypes.string,
-    formats : PropTypes.object,
-    messages: PropTypes.object,
-
-    defaultLocale : PropTypes.string,
-    defaultFormats: PropTypes.object,
-};
+IntlProvider.propTypes = intlPropTypes;
 
 IntlProvider.defaultProps = {
     // TODO: Should `locale` default to 'en'? Or would that cause issues with
@@ -74,5 +82,5 @@ IntlProvider.defaultProps = {
 };
 
 IntlProvider.childContextTypes = {
-    intl: PropTypes.shape(intlContextTypes),
+    intl: PropTypes.shape(intlContextTypes).isRequired,
 };
