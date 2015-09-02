@@ -12,7 +12,7 @@ export default class FormattedHTMLMessage extends Component {
         }
 
         return shouldIntlComponentUpdate(this,
-            Object.assign({}, nextProps, {values: null}),
+            {...nextProps, values: null},
             ...next
         );
     }

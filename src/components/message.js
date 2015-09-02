@@ -12,7 +12,7 @@ export default class FormattedMessage extends Component {
         }
 
         return shouldIntlComponentUpdate(this,
-            Object.assign({}, nextProps, {values: null}),
+            {...nextProps, values: null},
             ...next
         );
     }

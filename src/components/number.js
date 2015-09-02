@@ -21,10 +21,11 @@ export default class FormattedNumber extends Component {
     }
 }
 
-FormattedNumber.propTypes = Object.assign({}, numberFormatPropTypes, {
+FormattedNumber.propTypes = {
+    ...numberFormatPropTypes,
     format: PropTypes.string,
     value : PropTypes.any.isRequired,
-});
+};
 
 FormattedNumber.contextTypes = {
     intl: intlShape.isRequired,
