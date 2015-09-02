@@ -1,5 +1,5 @@
 import {Component, DOM, PropTypes} from 'react';
-import {intlContextTypes, pluralFormatPropTypes} from '../types';
+import {intlShape, pluralFormatPropTypes} from '../types';
 import {shouldIntlComponentUpdate} from '../utils';
 
 export default class FormattedPlural extends Component {
@@ -37,5 +37,5 @@ FormattedPlural.defaultProps = {
 };
 
 FormattedPlural.contextTypes = {
-    intl: PropTypes.shape(intlContextTypes).isRequired,
+    intl: intlShape.isRequired,
 };

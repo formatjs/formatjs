@@ -1,14 +1,14 @@
 import {PropTypes} from 'react';
 
-const {bool, number, string, func, oneOf} = PropTypes;
+const {bool, number, string, func, object, oneOf, shape} = PropTypes;
 
 export const intlPropTypes = {
-    locale  : PropTypes.string,
-    formats : PropTypes.object,
-    messages: PropTypes.object,
+    locale  : string,
+    formats : object,
+    messages: object,
 
-    defaultLocale : PropTypes.string,
-    defaultFormats: PropTypes.object,
+    defaultLocale : string,
+    defaultFormats: object,
 };
 
 export const intlFormatPropTypes = {
@@ -21,10 +21,7 @@ export const intlFormatPropTypes = {
     formatHTMLMessage: func.isRequired,
 };
 
-export const intlContextTypes = Object.assign({},
-    intlPropTypes,
-    intlFormatPropTypes
-);
+export const intlShape = shape({...intlPropTypes, ...intlFormatPropTypes});
 
 export const dateTimeFormatPropTypes = {
     localeMatcher: oneOf(['best fit', 'lookup']),

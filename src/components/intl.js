@@ -1,10 +1,10 @@
-import {Component, PropTypes} from 'react';
+import {Component} from 'react';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 import IntlPluralFormat from '../plural';
 import createFormatCache from 'intl-format-cache';
 import {shouldIntlComponentUpdate} from '../utils';
-import {intlPropTypes, intlFormatPropTypes, intlContextTypes} from '../types';
+import {intlPropTypes, intlFormatPropTypes, intlShape} from '../types';
 import * as format from '../format';
 
 const intlPropNames       = Object.keys(intlPropTypes);
@@ -82,5 +82,5 @@ IntlProvider.defaultProps = {
 };
 
 IntlProvider.childContextTypes = {
-    intl: PropTypes.shape(intlContextTypes).isRequired,
+    intl: intlShape.isRequired,
 };

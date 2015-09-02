@@ -1,5 +1,5 @@
 import {Component, DOM, PropTypes} from 'react';
-import {intlContextTypes, numberFormatPropTypes} from '../types';
+import {intlShape, numberFormatPropTypes} from '../types';
 import {shouldIntlComponentUpdate} from '../utils';
 
 export default class FormattedNumber extends Component {
@@ -27,5 +27,5 @@ FormattedNumber.propTypes = Object.assign({}, numberFormatPropTypes, {
 });
 
 FormattedNumber.contextTypes = {
-    intl: PropTypes.shape(intlContextTypes).isRequired,
+    intl: intlShape.isRequired,
 };

@@ -1,5 +1,5 @@
 import {Component, DOM, PropTypes} from 'react';
-import {intlContextTypes, dateTimeFormatPropTypes} from '../types';
+import {intlShape, dateTimeFormatPropTypes} from '../types';
 import {shouldIntlComponentUpdate} from '../utils';
 
 export default class FormattedDate extends Component {
@@ -27,5 +27,5 @@ FormattedDate.propTypes = Object.assign({}, dateTimeFormatPropTypes, {
 });
 
 FormattedDate.contextTypes = {
-    intl: PropTypes.shape(intlContextTypes).isRequired,
+    intl: intlShape.isRequired,
 };
