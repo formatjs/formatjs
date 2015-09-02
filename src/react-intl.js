@@ -12,7 +12,7 @@ export {default as FormattedPlural} from './components/plural';
 export {default as FormattedMessage} from './components/message';
 export {default as FormattedHTMLMessage} from './components/html-message';
 
-export {intlContextTypes} from './types';
+export {intlShape} from './types';
 
 export function defineMessage(messageDescriptor) {
     // TODO: Type check in dev? Return something different?

@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {intlContextTypes, defineMessage} from 'react-intl';
+import {intlShape, defineMessage} from 'react-intl';
 
 const enUSDescription = defineMessage({
     id: 'menu.item_en_us_description',
@@ -40,7 +40,7 @@ class LocalesMenu extends Component {
 }
 
 LocalesMenu.contextTypes = {
-    intl: PropTypes.shape(intlContextTypes).isRequired,
+    intl: intlShape.isRequired,
 };
 
 export default LocalesMenu;

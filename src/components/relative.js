@@ -1,5 +1,5 @@
 import {Component, DOM, PropTypes} from 'react';
-import {intlContextTypes, relativeFormatPropTypes} from '../types';
+import {intlShape, relativeFormatPropTypes} from '../types';
 import {shouldIntlComponentUpdate} from '../utils';
 
 export default class FormattedRelative extends Component {
@@ -28,5 +28,5 @@ FormattedRelative.propTypes = Object.assign({}, relativeFormatPropTypes, {
 });
 
 FormattedRelative.contextTypes = {
-    intl: PropTypes.shape(intlContextTypes).isRequired,
+    intl: intlShape.isRequired,
 };
