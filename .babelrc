@@ -1,7 +1,8 @@
 {
     "stage": 4,
     "optional": [
-        "runtime"
+        "runtime",
+        "es7.objectRestSpread"
     ],
     "loose": [
         "es6.modules",
