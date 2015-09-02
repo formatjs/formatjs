@@ -174,10 +174,19 @@ export default function ({Plugin, types: t}) {
 
                 if (referencesImport(name, moduleSourceName, COMPONENT_NAMES)) {
                     let attributes = this.get('attributes')
+                        .filter((attr) => attr.isJSXAttribute())
                         .map((attr) => [attr.get('name'), attr.get('value')]);
 
                     let descriptor = getMessageDescriptor(new Map(attributes));
-                    storeMessage(descriptor, node, file);
+
+                    // In order for a default message to be extracted when
+                    // declaring a JSX element, it must be done with standard
+                    // `key=value` attributes. But it's completely valid to
+                    // write `<FormattedMessage {...descriptor} />`, because it
+                    // will be skipped here and extracted elsewhere.
+                    if (descriptor.id) {
+                        storeMessage(descriptor, node, file);
+                    }
                 }
             },
 
@@ -188,21 +197,12 @@ export default function ({Plugin, types: t}) {
 
                 if (referencesImport(callee, moduleSourceName, FUNCTION_NAMES)) {
                     let messageArg = this.get('arguments')[0];
-                    if (!messageArg) {
-                        throw file.errorWithNode(node,
-                            `[React Intl] \`${callee.node.name}()\` requires ` +
-                            `a message descriptor as the second argument.`
-                        );
-                    }
-
                     if (!(messageArg && messageArg.isObjectExpression())) {
-                        let {loc} = messageArg.node;
-                        file.log.warn(
-                            `[React Intl] Line ${loc.start.line}: ` +
-                            `\`${callee.node.name}()\` must use an inline ` +
-                            `object expression for the message to be extracted.`
+                        throw file.errorWithNode(node,
+                            `[React Intl] \`${callee.node.name}()\` must be ` +
+                            `called with message descriptor defined via an ` +
+                            `object expression.`
                         );
-                        return;
                     }
 
                     let properties = messageArg.get('properties')
