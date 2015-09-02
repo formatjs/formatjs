@@ -21,10 +21,11 @@ export default class FormattedTime extends Component {
     }
 }
 
-FormattedTime.propTypes = Object.assign({}, dateTimeFormatPropTypes, {
+FormattedTime.propTypes = {
+    ...dateTimeFormatPropTypes,
     format: PropTypes.string,
     value : PropTypes.any.isRequired,
-});
+};
 
 FormattedTime.contextTypes = {
     intl: intlShape.isRequired,

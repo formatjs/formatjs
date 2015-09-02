@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import {intlShape, defineMessage} from 'react-intl';
 
 const enUSDescription = defineMessage({

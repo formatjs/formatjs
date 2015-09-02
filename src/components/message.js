@@ -11,10 +11,12 @@ export default class FormattedMessage extends Component {
             return true;
         }
 
-        return shouldIntlComponentUpdate(this,
-            Object.assign({}, nextProps, {values: null}),
-            ...next
-        );
+        let nextPropsToCheck = {
+            ...nextProps,
+            values: null,
+        };
+
+        return shouldIntlComponentUpdate(this, nextPropsToCheck, ...next);
     }
 
     render() {

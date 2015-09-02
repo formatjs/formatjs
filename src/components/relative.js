@@ -21,11 +21,12 @@ export default class FormattedRelative extends Component {
     }
 }
 
-FormattedRelative.propTypes = Object.assign({}, relativeFormatPropTypes, {
+FormattedRelative.propTypes = {
+    ...relativeFormatPropTypes,
     format: PropTypes.string,
     value : PropTypes.any.isRequired,
     now   : PropTypes.any,
-});
+};
 
 FormattedRelative.contextTypes = {
     intl: intlShape.isRequired,

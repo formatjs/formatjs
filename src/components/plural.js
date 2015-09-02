@@ -22,7 +22,8 @@ export default class FormattedPlural extends Component {
     }
 }
 
-FormattedPlural.propTypes = Object.assign({}, pluralFormatPropTypes, {
+FormattedPlural.propTypes = {
+    ...pluralFormatPropTypes,
     value: PropTypes.any.isRequired,
     other: PropTypes.node.isRequired,
     zero : PropTypes.node,
@@ -30,7 +31,7 @@ FormattedPlural.propTypes = Object.assign({}, pluralFormatPropTypes, {
     two  : PropTypes.node,
     few  : PropTypes.node,
     many : PropTypes.node,
-});
+};
 
 FormattedPlural.defaultProps = {
     style: 'cardinal',
