@@ -25,6 +25,10 @@ export default class FormattedPlural extends Component {
 FormattedPlural.propTypes = {
     ...pluralFormatPropTypes,
     value: PropTypes.any.isRequired,
+
+    // TODO: Should these be functions instead nodes (or?), so that complex
+    // nested elements don't have to incur the cost of rendering when they are
+    // not used?
     other: PropTypes.node.isRequired,
     zero : PropTypes.node,
     one  : PropTypes.node,
