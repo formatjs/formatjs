@@ -1,5 +1,4 @@
-example/
 examples/
 scripts/
 tests/
-Gruntfile.js
+.*
