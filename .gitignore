@@ -1,4 +1,4 @@
-build/
+dist/
 lib/
 node_modules/
 src/locale-data/
