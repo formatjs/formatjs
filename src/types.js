@@ -1,3 +1,9 @@
+/*
+ * Copyright 2015, Yahoo Inc.
+ * Copyrights licensed under the New BSD License.
+ * See the accompanying LICENSE file for terms.
+ */
+
 import {PropTypes} from 'react';
 
 const {bool, number, string, func, object, oneOf, shape} = PropTypes;

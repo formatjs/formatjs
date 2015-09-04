@@ -1,3 +1,9 @@
+/*
+ * Copyright 2015, Yahoo Inc.
+ * Copyrights licensed under the New BSD License.
+ * See the accompanying LICENSE file for terms.
+ */
+
 import {Component, DOM, PropTypes} from 'react';
 import {intlShape, pluralFormatPropTypes} from '../types';
 import {shouldIntlComponentUpdate} from '../utils';
