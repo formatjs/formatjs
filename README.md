@@ -1,13 +1,11 @@
 [React Intl][]
 ==============
 
-This library provides [React][] Components and a Mixin for internationalizing React web apps. The components provide a declarative way to format dates, numbers, and string messages, including pluralization.
+Internationalize [React][] apps declaratively. This library provides React components and an API to format dates, numbers, and string messages, including pluralization.
 
 [![npm Version][npm-badge]][npm]
 [![Build Status][travis-badge]][travis]
 [![Dependency Status][david-badge]][david]
-
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/react-intl.svg)](https://saucelabs.com/u/react-intl)
 
 Overview
 --------
@@ -45,14 +43,16 @@ class App extends Component {
     }
 
     render() {
+        const {name, unreadCount} = this.state;
+
         return (
             <p>
-                Hello <b>{this.state.name}</b>, you have {' '}
-                <FormattedNumber value={this.state.unreadCount} />
-                <FormattedPlural value={this.state.unreadCount}
-                    one=" unread message."
-                    other=" unread messages."
-                />
+                Hello <b>{name}</b>, you have {' '}
+                <FormattedNumber value={unreadCount} /> {' '}
+                <FormattedPlural value={unreadCount}
+                    one="message"
+                    other="messages"
+                />.
             </p>
         );
     }
@@ -67,7 +67,7 @@ ReactDOM.render(
 
 ```
 
-This example would render: "Hello **Eric**, you have 1,000 unread messages." into the container element on the page.
+This example would render: "Hello **Eric**, you have 1,000 messages." into the container element on the page.
 
 **CDLR pluralization rules:** In some languages you have more then `one` and `other`. For example in `ru` there are the following plural rules: `one`, `few`, `many` and `other`.
 Check out the official CDLR documentation from unicode.org http://www.unicode.org/cldr/charts/27/supplemental/language_plural_rules.html for all languages.
