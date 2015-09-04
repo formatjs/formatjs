@@ -12,14 +12,16 @@ class App extends Component {
     }
 
     render() {
+        const {name, unreadCount} = this.state;
+
         return (
             <p>
-                Hello <b>{this.state.name}</b>, you have {' '}
-                <FormattedNumber value={this.state.unreadCount} />
-                <FormattedPlural value={this.state.unreadCount}
-                    one=" unread message."
-                    other=" unread messages."
-                />
+                Hello <b>{name}</b>, you have {' '}
+                <FormattedNumber value={unreadCount} /> {' '}
+                <FormattedPlural value={unreadCount}
+                    one="message"
+                    other="messages"
+                />.
             </p>
         );
     }
