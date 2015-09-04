@@ -1,3 +1,9 @@
+/*
+ * Copyright 2015, Yahoo Inc.
+ * Copyrights licensed under the New BSD License.
+ * See the accompanying LICENSE file for terms.
+ */
+
 import {__addLocaleData as addIMFLocaleData} from 'intl-messageformat';
 import {__addLocaleData as addIRFLocaleData} from 'intl-relativeformat';
 import defaultLocaleData from './en';

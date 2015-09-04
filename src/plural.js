@@ -1,3 +1,9 @@
+/*
+ * Copyright 2015, Yahoo Inc.
+ * Copyrights licensed under the New BSD License.
+ * See the accompanying LICENSE file for terms.
+ */
+
 // This is a "hack" until a proper `intl-pluralformat` package is created.
 
 import IntlMessageFormat from 'intl-messageformat';
