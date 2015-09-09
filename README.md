@@ -7,6 +7,7 @@ Internationalize [React][] apps declaratively. This library provides React compo
 [![Build Status][travis-badge]][travis]
 [![Dependency Status][david-badge]][david]
 
+
 Overview
 --------
 
@@ -69,6 +70,9 @@ ReactDOM.render(
 
 This example would render: "Hello **Eric**, you have 1,000 messages." into the container element on the page.
 
+**CDLR pluralization rules:** In some languages you have more then `one` and `other`. For example in `ru` there are the following plural rules: `one`, `few`, `many` and `other`. Check out the official [CDLR Charts][] for the plural rules for all languages.
+
+
 Contribute
 ---------
 
@@ -94,6 +98,6 @@ See the [LICENSE file][] for license text and copyright information.
 [React]: http://facebook.github.io/react/
 [FormatJS]: http://formatjs.io/
 [FormatJS GitHub]: http://formatjs.io/github/
-[ICU Message syntax]: http://formatjs.io/guide/#messageformat-syntax
+[CLDR Charts]: http://www.unicode.org/cldr/charts/27/supplemental/language_plural_rules.html
 [CONTRIBUTING]: https://github.com/yahoo/react-intl/blob/master/CONTRIBUTING.md
 [LICENSE file]: https://github.com/yahoo/react-intl/blob/master/LICENSE.md
