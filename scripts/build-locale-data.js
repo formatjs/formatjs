@@ -28,7 +28,7 @@ export default ${serialize(localeData)};
     );
 }
 
-function createDataDistFile(localeData) {
+function createDistDataScript(localeData) {
     return (
 `// GENERATED FILE
 ReactIntl.addLocaleData(${serialize(localeData)});
@@ -51,5 +51,5 @@ fs.writeFileSync('src/locale-data/index.js',
 
 dataByLang.forEach((data, lang) => {
     fs.writeFileSync(`src/locale-data/${lang}.js`, createDataModule(data));
-    fs.writeFileSync(`dist/locale-data/${lang}.js`, createDataDistFile(data));
+    fs.writeFileSync(`dist/locale-data/${lang}.js`, createDistDataScript(data));
 });

@@ -54,7 +54,10 @@ export default class IntlProvider extends Component {
         let boundFormatFns = this.getBoundFormatFns(intl, config);
 
         return {
-            intl: {...config, ...boundFormatFns},
+            intl: {
+                ...config,
+                ...boundFormatFns,
+            },
         };
     }
 

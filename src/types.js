@@ -27,7 +27,10 @@ export const intlFormatPropTypes = {
     formatHTMLMessage: func.isRequired,
 };
 
-export const intlShape = shape({...intlPropTypes, ...intlFormatPropTypes});
+export const intlShape = shape({
+    ...intlPropTypes,
+    ...intlFormatPropTypes,
+});
 
 export const dateTimeFormatPropTypes = {
     localeMatcher: oneOf(['best fit', 'lookup']),
