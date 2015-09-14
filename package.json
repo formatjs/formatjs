@@ -28,7 +28,6 @@
     "react": "global:React"
   },
   "dependencies": {
-    "babel-runtime": "^5.8.20",
     "intl-format-cache": "2.0.4",
     "intl-messageformat": "1.1.0",
     "intl-relativeformat": "1.1.0"
