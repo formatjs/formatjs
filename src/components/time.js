@@ -14,7 +14,7 @@ export default class FormattedTime extends Component {
     }
 
     render() {
-        const {formatTime} = this.context;
+        const {formatTime} = this.context.intl;
         const props        = this.props;
 
         let formattedTime = formatTime(props.value, props);
