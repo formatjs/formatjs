@@ -5,6 +5,16 @@ This is a very simple — yet runnable app — showing how to use React Intl to 
 
 ## Running
 
+**You first need to build the main React Intl library:**
+
+```
+$ cd ../..
+$ npm run build
+$ cd examples/hello-world/
+```
+
+Then you can run this example:
+
 ```
 $ npm install
 $ npm start

@@ -7,6 +7,16 @@ This example app fakes translation via the `scripts/translate.js` script which "
 
 ## Running
 
+**You first need to build the main React Intl library:**
+
+```
+$ cd ../..
+$ npm run build
+$ cd examples/translations/
+```
+
+Then you can build and run this example:
+
 ```
 $ npm install
 $ npm run build
