@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {Component, DOM, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {intlShape, dateTimeFormatPropTypes} from '../types';
 import {shouldIntlComponentUpdate} from '../utils';
 
@@ -23,7 +23,7 @@ export default class FormattedDate extends Component {
             return props.children(formattedDate);
         }
 
-        return DOM.span(null, formattedDate);
+        return <span>{formattedDate}</span>;
     }
 }
 

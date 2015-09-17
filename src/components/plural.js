@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {Component, DOM, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {intlShape, pluralFormatPropTypes} from '../types';
 import {shouldIntlComponentUpdate} from '../utils';
 
@@ -24,7 +24,7 @@ export default class FormattedPlural extends Component {
             return props.children(formattedPlural);
         }
 
-        return DOM.span(null, formattedPlural);
+        return <span>{formattedPlural}</span>;
     }
 }
 

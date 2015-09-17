@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {Component, DOM, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {intlShape, relativeFormatPropTypes} from '../types';
 import {shouldIntlComponentUpdate} from '../utils';
 
@@ -23,7 +23,7 @@ export default class FormattedRelative extends Component {
             return props.children(formattedRelative);
         }
 
-        return DOM.span(null, formattedRelative);
+        return <span>{formattedRelative}</span>;
     }
 }
 

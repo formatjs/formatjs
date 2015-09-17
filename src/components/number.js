@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {Component, DOM, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {intlShape, numberFormatPropTypes} from '../types';
 import {shouldIntlComponentUpdate} from '../utils';
 
@@ -23,7 +23,7 @@ export default class FormattedNumber extends Component {
             return props.children(formattedNumber);
         }
 
-        return DOM.span(null, formattedNumber);
+        return <span>{formattedNumber}</span>;
     }
 }
 
