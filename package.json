@@ -57,13 +57,14 @@
     "react-addons-test-utils": "^0.14.0-beta3",
     "rimraf": "^2.4.2",
     "serialize-javascript": "^1.1.1",
-    "uglify-js": "^2.4.24"
+    "uglify-js": "^2.4.24",
+    "uglifyify": "^3.0.1"
   },
   "scripts": {
     "lint": "eslint src/ test/ scripts/ examples/",
     "clean": "rimraf src/en.js src/locale-data/ lib/ dist/",
     "build:data": "babel-node scripts/build-locale-data.js",
-    "build:lib": "babel src/ --out-dir lib/",
+    "build:lib": "babel src/ --ignore src/locale-data/ --out-dir lib/",
     "build:dist:main": "browserify src/react-intl.js -s ReactIntl -g [envify --NODE_ENV development] -t babelify -t browserify-shim -d | exorcist -b ./ -r react-intl:/// dist/react-intl.js.map > dist/react-intl.js",
     "build:dist:main:min": "browserify src/react-intl.js -s ReactIntl -g [envify --NODE_ENV production] -t babelify -t browserify-shim | uglifyjs -c -m > dist/react-intl.min.js",
     "build:dist:with-data": "browserify src/react-intl-with-locales.js -s ReactIntl -g [envify --NODE_ENV development] -t babelify -t browserify-shim -d | exorcist -b ./ -r react-intl:/// dist/react-intl-with-locales.js.map > dist/react-intl-with-locales.js",
