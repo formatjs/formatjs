@@ -6,9 +6,14 @@
 
 import React, {Component, PropTypes} from 'react';
 import {intlShape, dateTimeFormatPropTypes} from '../types';
-import {shouldIntlComponentUpdate} from '../utils';
+import {assertIntlContext, shouldIntlComponentUpdate} from '../utils';
 
 export default class FormattedTime extends Component {
+    constructor(props, context) {
+        super(props, context);
+        assertIntlContext(context);
+    }
+
     shouldComponentUpdate(...next) {
         return shouldIntlComponentUpdate(this, ...next);
     }
@@ -34,5 +39,5 @@ FormattedTime.propTypes = {
 };
 
 FormattedTime.contextTypes = {
-    intl: intlShape.isRequired,
+    intl: intlShape,
 };

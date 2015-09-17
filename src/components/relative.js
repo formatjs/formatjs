@@ -6,9 +6,14 @@
 
 import React, {Component, PropTypes} from 'react';
 import {intlShape, relativeFormatPropTypes} from '../types';
-import {shouldIntlComponentUpdate} from '../utils';
+import {assertIntlContext, shouldIntlComponentUpdate} from '../utils';
 
 export default class FormattedRelative extends Component {
+    constructor(props, context) {
+        super(props, context);
+        assertIntlContext(context);
+    }
+
     shouldComponentUpdate(...next) {
         return shouldIntlComponentUpdate(this, ...next);
     }
@@ -35,5 +40,5 @@ FormattedRelative.propTypes = {
 };
 
 FormattedRelative.contextTypes = {
-    intl: intlShape.isRequired,
+    intl: intlShape,
 };
