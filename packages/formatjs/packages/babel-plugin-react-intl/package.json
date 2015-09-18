@@ -14,9 +14,12 @@
     "mkdirp": "^0.5.1"
   },
   "devDependencies": {
-    "babel": "^5.8.21"
+    "babel": "^5.8.21",
+    "babel-eslint": "^4.1.2",
+    "eslint": "^1.4.3"
   },
   "scripts": {
+    "lint": "eslint src/",
     "build": "babel-plugin build",
     "push": "babel-plugin publish",
     "test": "babel-plugin test",

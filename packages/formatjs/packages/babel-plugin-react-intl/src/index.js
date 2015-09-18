@@ -20,7 +20,7 @@ const FUNCTION_NAMES = [
 const IMPORTED_NAMES   = new Set([...COMPONENT_NAMES, ...FUNCTION_NAMES]);
 const DESCRIPTOR_PROPS = new Set(['id', 'description', 'defaultMessage']);
 
-export default function ({Plugin, types: t}) {
+export default function ({Plugin}) {
     function getModuleSourceName(options) {
         const reactIntlOptions = options.extra['react-intl'] || {};
         return reactIntlOptions.moduleSourceName || 'react-intl';
@@ -165,7 +165,7 @@ export default function ({Plugin, types: t}) {
                         mkdirpSync(p.dirname(messagesFilename));
                         writeFileSync(messagesFilename, messagesFile);
                     }
-                }
+                },
             },
 
             JSXOpeningElement(node, parent, scope, file) {
@@ -211,7 +211,7 @@ export default function ({Plugin, types: t}) {
                     let descriptor = getMessageDescriptor(new Map(properties));
                     storeMessage(descriptor, node, file);
                 }
-            }
-        }
+            },
+        },
     });
 }

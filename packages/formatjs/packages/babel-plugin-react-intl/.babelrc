@@ -1,3 +1,7 @@
 {
-    "optional": ["runtime"]
+    "stage": 4,
+    "optional": [
+        "runtime",
+        "es7.objectRestSpread"
+    ]
 }
