@@ -20,12 +20,6 @@ export {default as FormattedHTMLMessage} from './components/html-message';
 
 export {intlShape} from './types';
 
-// TODO: Can we get rid of this nad only go with the multiple version?
-export function defineMessage(messageDescriptor) {
-    // TODO: Type check in dev? Return something different?
-    return messageDescriptor;
-}
-
 export function defineMessages(messageDescriptors) {
     // TODO: Type check in dev? Return something different?
     return messageDescriptors;
