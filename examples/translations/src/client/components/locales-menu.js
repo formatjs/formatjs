@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
-import {intlShape, defineMessage} from 'react-intl';
+import {intlShape, defineMessages} from 'react-intl';
 
-const enUSDescription = defineMessage({
-    id: 'menu.item_en_us_description',
-    defaultMessage: 'The default locale of this example app.',
-});
-
-const enUPPERDescription = defineMessage({
-    id: 'menu.item_en_upper_description',
-    defaultMessage: 'The fake, all uppercase "locale" for this example app.',
+const messages = defineMessages({
+    enUSDescription: {
+        id: 'menu.item_en_us_description',
+        defaultMessage: 'The default locale of this example app.',
+    },
+    enUPPERDescription: {
+        id: 'menu.item_en_upper_description',
+        defaultMessage: 'The fake, all uppercase "locale" for this example app.',
+    },
 });
 
 class LocalesMenu extends Component {
@@ -20,7 +21,7 @@ class LocalesMenu extends Component {
                 <li>
                     <a
                         href="/?locale=en-US"
-                        title={formatMessage(enUSDescription)}
+                        title={formatMessage(messages.enUSDescription)}
                     >
                         en-US
                     </a>
@@ -29,7 +30,7 @@ class LocalesMenu extends Component {
                 <li>
                     <a
                         href="/?locale=en-UPPER"
-                        title={formatMessage(enUPPERDescription)}
+                        title={formatMessage(messages.enUPPERDescription)}
                     >
                         en-UPPER
                     </a>
