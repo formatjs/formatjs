@@ -21,13 +21,18 @@ $ npm install babel-plugin-react-intl
   "plugins": ["react-intl"],
   "extra": {
     "react-intl": {
-        "messagesDir": "./build/messages/"
+        "messagesDir": "./build/messages/",
+        "enforceDescriptions": true
     }
   }
 }
 ```
 
-The `messagesDir` option is the target location where the plugin will output a `.json` file corresponding to each component from which React Intl messages were extracted.
+#### Options
+
+- **`messagesDir`**: The target location where the plugin will output a `.json` file corresponding to each component from which React Intl messages were extracted.
+
+- **`enforceDescriptions`**: Whether or not message declarations _must_ contain a `description` to provide context to translators.
 
 ### Via CLI
 

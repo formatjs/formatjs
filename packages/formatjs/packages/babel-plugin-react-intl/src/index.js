@@ -7,6 +7,7 @@
 import * as p from 'path';
 import {writeFileSync} from 'fs';
 import {sync as mkdirpSync} from 'mkdirp';
+import printICUMessage from './print-icu-message';
 
 const COMPONENT_NAMES = [
     'FormattedMessage',
@@ -14,40 +15,19 @@ const COMPONENT_NAMES = [
 ];
 
 const FUNCTION_NAMES = [
-    'defineMessage',
+    'defineMessages',
 ];
 
 const IMPORTED_NAMES   = new Set([...COMPONENT_NAMES, ...FUNCTION_NAMES]);
 const DESCRIPTOR_PROPS = new Set(['id', 'description', 'defaultMessage']);
 
-export default function ({Plugin}) {
+export default function ({Plugin, types: t}) {
+    function getReactIntlOptions(options) {
+        return options.extra['react-intl'] || {};
+    }
+
     function getModuleSourceName(options) {
-        const reactIntlOptions = options.extra['react-intl'] || {};
-        return reactIntlOptions.moduleSourceName || 'react-intl';
-    }
-
-    function getMessagesDir(options) {
-        const reactIntlOptions = options.extra['react-intl'] || {};
-        return reactIntlOptions.messagesDir;
-    }
-
-    function getMessageDescriptor(propertiesMap) {
-        // Force property order on descriptors.
-        let descriptor = [...DESCRIPTOR_PROPS].reduce((descriptor, key) => {
-            descriptor[key] = undefined;
-            return descriptor;
-        }, {});
-
-        for (let [key, value] of propertiesMap) {
-            key = getMessageDescriptorKey(key);
-
-            if (DESCRIPTOR_PROPS.has(key)) {
-                // TODO: Should this be trimming values?
-                descriptor[key] = getMessageDescriptorValue(value).trim();
-            }
-        }
-
-        return descriptor;
+        return getReactIntlOptions(options).moduleSourceName || 'react-intl';
     }
 
     function getMessageDescriptorKey(path) {
@@ -84,9 +64,38 @@ export default function ({Plugin}) {
         );
     }
 
-    function storeMessage(descriptor, node, file) {
-        const {id}       = descriptor;
-        const {messages} = file.get('react-intl');
+    function createMessageDescriptor(propPaths) {
+        return propPaths.reduce((hash, [keyPath, valuePath]) => {
+            let key = getMessageDescriptorKey(keyPath);
+
+            if (DESCRIPTOR_PROPS.has(key)) {
+                let value = getMessageDescriptorValue(valuePath).trim();
+
+                if (key === 'defaultMessage') {
+                    try {
+                        hash[key] = printICUMessage(value);
+                    } catch (e) {
+                        throw valuePath.errorWithNode(
+                            `[React Intl] Message failed to parse: ${e} ` +
+                            'See: http://formatjs.io/guides/message-syntax/'
+                        );
+                    }
+                } else {
+                    hash[key] = value;
+                }
+            }
+
+            return hash;
+        }, {});
+    }
+
+    function createPropNode(key, value) {
+        return t.property('init', t.literal(key), t.literal(value));
+    }
+
+    function storeMessage({id, description, defaultMessage}, node, file) {
+        const {enforceDescriptions} = getReactIntlOptions(file.opts);
+        const {messages}            = file.get('react-intl');
 
         if (!id) {
             throw file.errorWithNode(node,
@@ -95,22 +104,35 @@ export default function ({Plugin}) {
         }
 
         if (messages.has(id)) {
-            throw file.errorWithNode(node,
-                `[React Intl] Duplicate message id: "${id}"`
-            );
+            let existing = messages.get(id);
+
+            if (description !== existing.description ||
+                defaultMessage !== existing.defaultMessage) {
+
+                throw file.errorWithNode(node,
+                    `[React Intl] Duplicate message id: "${id}", ` +
+                    'but the `description` and/or `defaultMessage` are different.'
+                );
+            }
         }
 
-        if (!descriptor.defaultMessage) {
+        if (!defaultMessage) {
             let {loc} = node;
             file.log.warn(
                 `[React Intl] Line ${loc.start.line}: ` +
-                `Message "${id}" is missing a \`defaultMessage\` ` +
-                `and will not be extracted.`
+                'Message is missing a `defaultMessage` and will not be extracted.'
             );
+
             return;
         }
 
-        messages.set(id, descriptor);
+        if (enforceDescriptions && !description) {
+            throw file.errorWithNode(node,
+                '[React Intl] Message must have a `description`.'
+            );
+        }
+
+        messages.set(id, {id, description, defaultMessage});
     }
 
     function referencesImport(path, mod, importedNames) {
@@ -147,7 +169,7 @@ export default function ({Plugin}) {
 
                 exit(node, parent, scope, file) {
                     const {messages}  = file.get('react-intl');
-                    const messagesDir = getMessagesDir(file.opts);
+                    const {messagesDir} = getReactIntlOptions(file.opts);
                     const {basename, filename} = file.opts;
 
                     let descriptors = [...messages.values()];
@@ -170,22 +192,38 @@ export default function ({Plugin}) {
 
             JSXOpeningElement(node, parent, scope, file) {
                 const moduleSourceName = getModuleSourceName(file.opts);
+
                 let name = this.get('name');
 
                 if (referencesImport(name, moduleSourceName, COMPONENT_NAMES)) {
                     let attributes = this.get('attributes')
-                        .filter((attr) => attr.isJSXAttribute())
-                        .map((attr) => [attr.get('name'), attr.get('value')]);
+                        .filter((attr) => attr.isJSXAttribute());
 
-                    let descriptor = getMessageDescriptor(new Map(attributes));
+                    let descriptor = createMessageDescriptor(
+                        attributes.map((attr) => [
+                            attr.get('name'),
+                            attr.get('value'),
+                        ])
+                    );
 
                     // In order for a default message to be extracted when
                     // declaring a JSX element, it must be done with standard
                     // `key=value` attributes. But it's completely valid to
                     // write `<FormattedMessage {...descriptor} />`, because it
-                    // will be skipped here and extracted elsewhere.
-                    if (descriptor.id) {
+                    // will be skipped here and extracted elsewhere. When
+                    // _either_ an `id` or `defaultMessage` prop exists, the
+                    // descriptor will be checked; this way mixing an object
+                    // spread with props will fail.
+                    if (descriptor.id || descriptor.defaultMessage) {
                         storeMessage(descriptor, node, file);
+
+                        attributes
+                            .filter((attr) => {
+                                let keyPath = attr.get('name');
+                                let key = getMessageDescriptorKey(keyPath);
+                                return key === 'description';
+                            })
+                            .forEach((attr) => attr.dangerouslyRemove());
                     }
                 }
             },
@@ -193,11 +231,8 @@ export default function ({Plugin}) {
             CallExpression(node, parent, scope, file) {
                 const moduleSourceName = getModuleSourceName(file.opts);
 
-                let callee = this.get('callee');
-
-                if (referencesImport(callee, moduleSourceName, FUNCTION_NAMES)) {
-                    let messageArg = this.get('arguments')[0];
-                    if (!(messageArg && messageArg.isObjectExpression())) {
+                function processMessageObject(messageObj) {
+                    if (!(messageObj && messageObj.isObjectExpression())) {
                         throw file.errorWithNode(node,
                             `[React Intl] \`${callee.node.name}()\` must be ` +
                             `called with message descriptor defined via an ` +
@@ -205,11 +240,31 @@ export default function ({Plugin}) {
                         );
                     }
 
-                    let properties = messageArg.get('properties')
-                        .map((prop) => [prop.get('key'), prop.get('value')]);
+                    let properties = messageObj.get('properties');
 
-                    let descriptor = getMessageDescriptor(new Map(properties));
+                    let descriptor = createMessageDescriptor(
+                        properties.map((prop) => [
+                            prop.get('key'),
+                            prop.get('value'),
+                        ])
+                    );
+
                     storeMessage(descriptor, node, file);
+
+                    messageObj.replaceWith(t.objectExpression([
+                        createPropNode('id', descriptor.id),
+                        createPropNode('defaultMessage', descriptor.defaultMessage),
+                    ]));
+                }
+
+                let callee = this.get('callee');
+
+                if (referencesImport(callee, moduleSourceName, FUNCTION_NAMES)) {
+                    let firstArg = this.get('arguments')[0];
+
+                    firstArg.get('properties')
+                        .map((prop) => prop.get('value'))
+                        .forEach(processMessageObject);
                 }
             },
         },
