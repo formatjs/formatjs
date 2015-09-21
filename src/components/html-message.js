@@ -6,9 +6,18 @@
 
 import {Component, PropTypes, createElement} from 'react';
 import {intlShape} from '../types';
-import {shallowEquals, shouldIntlComponentUpdate} from '../utils';
+import {
+    assertIntlContext,
+    shallowEquals,
+    shouldIntlComponentUpdate,
+} from '../utils';
 
 export default class FormattedHTMLMessage extends Component {
+    constructor(props, context) {
+        super(props, context);
+        assertIntlContext(context);
+    }
+
     shouldComponentUpdate(nextProps, ...next) {
         const values     = this.props.values;
         const nextValues = nextProps.values;
@@ -70,7 +79,7 @@ FormattedHTMLMessage.propTypes = {
 };
 
 FormattedHTMLMessage.contextTypes = {
-    intl: intlShape.isRequired,
+    intl: intlShape,
 };
 
 FormattedHTMLMessage.defaultProps = {

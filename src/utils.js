@@ -51,6 +51,17 @@ export function shallowEquals(objA, objB) {
     return true;
 }
 
+export function assertIntlContext({intl} = {}) {
+    if (process.env.NODE_ENV !== 'production') {
+        if (!intl) {
+            console.error(
+                '[React Intl] Could not find required `intl` object. ' +
+                '`IntlProvider` needs to exist in the component ancestry.'
+            );
+        }
+    }
+}
+
 export function shouldIntlComponentUpdate(instance, nextProps, nextState, nextContext = {}) {
     const context  = instance.context || {};
     const intl     = context.intl || {};

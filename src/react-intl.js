@@ -17,6 +17,7 @@ export {default as FormattedNumber} from './components/number';
 export {default as FormattedPlural} from './components/plural';
 export {default as FormattedMessage} from './components/message';
 export {default as FormattedHTMLMessage} from './components/html-message';
+export {default as injectIntl} from './inject';
 
 export {intlShape} from './types';
 
