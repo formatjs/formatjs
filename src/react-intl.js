@@ -20,10 +20,9 @@ export {default as FormattedHTMLMessage} from './components/html-message';
 
 export {intlShape} from './types';
 
-// TODO Should there be a `defineMessages()` function that takes a collection?
-export function defineMessage(messageDescriptor) {
+export function defineMessages(messageDescriptors) {
     // TODO: Type check in dev? Return something different?
-    return messageDescriptor;
+    return messageDescriptors;
 }
 
 export function addLocaleData(data = []) {

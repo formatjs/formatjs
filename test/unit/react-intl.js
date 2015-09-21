@@ -7,8 +7,8 @@ describe('react-intl', () => {
             expect(ReactIntl.addLocaleData).toBeA('function');
         });
 
-        it('exports `defineMessage`', () => {
-            expect(ReactIntl.defineMessage).toBeA('function');
+        it('exports `defineMessages`', () => {
+            expect(ReactIntl.defineMessages).toBeA('function');
         });
 
         describe('React Components', () => {
