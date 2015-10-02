@@ -49,7 +49,6 @@
     "expect": "^1.9.0",
     "formatjs-extract-cldr-data": "^1.1.1",
     "intl": "^1.0.0",
-    "jsdom": "^3.1.2",
     "mkdirp": "^0.5.1",
     "mocha": "^2.2.5",
     "mocha-jsdom": "^1.0.0",
