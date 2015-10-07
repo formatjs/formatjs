@@ -43,7 +43,7 @@ app.get('/', (req, res) => {
     </script>
     <script src="https://cdn.polyfill.io/v1/polyfill.min.js?features=Intl.~locale.en"></script>
     <script src="react/dist/react.js"></script>
-    <script src="react/dist/react-dom.js"></script>
+    <script src="react-dom/dist/react-dom.js"></script>
     <script src="bundle.js"></script>
 </body>
 </html>

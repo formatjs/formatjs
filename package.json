@@ -33,7 +33,7 @@
     "intl-relativeformat": "1.1.0"
   },
   "peerDependencies": {
-    "react": "^0.14.0 || 0.14.0-rc1"
+    "react": "^0.14.0"
   },
   "devDependencies": {
     "babel": "^5.8.21",
@@ -51,8 +51,8 @@
     "intl": "^1.0.0",
     "mkdirp": "^0.5.1",
     "mocha": "^2.2.5",
-    "react": "^0.14.0-rc1",
-    "react-addons-test-utils": "^0.14.0-rc1",
+    "react": "^0.14.0",
+    "react-addons-test-utils": "^0.14.0",
     "rimraf": "^2.4.2",
     "serialize-javascript": "^1.1.1",
     "uglify-js": "^2.4.24",

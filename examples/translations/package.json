@@ -17,8 +17,8 @@
     "babel": "^5.8.21",
     "express": "^4.13.3",
     "glob": "^5.0.14",
-    "react": "^0.14.0-rc1",
-    "react-dom": "^0.14.0-rc1",
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0",
     "serialize-javascript": "^1.1.0"
   },
   "devDependencies": {
