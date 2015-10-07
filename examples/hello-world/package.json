@@ -11,8 +11,8 @@
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "react": "^0.14.0-beta3",
-    "react-dom": "^0.14.0-beta3",
+    "react": "^0.14.0-rc1",
+    "react-dom": "^0.14.0-rc1",
     "node-static": "^0.7.7"
   },
   "devDependencies": {

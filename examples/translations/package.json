@@ -17,12 +17,12 @@
     "babel": "^5.8.21",
     "express": "^4.13.3",
     "glob": "^5.0.14",
-    "react": "^0.14.0-beta3",
-    "react-dom": "^0.14.0-beta3",
+    "react": "^0.14.0-rc1",
+    "react-dom": "^0.14.0-rc1",
     "serialize-javascript": "^1.1.0"
   },
   "devDependencies": {
-    "babel-plugin-react-intl": "^1.0.0-beta-3",
+    "babel-plugin-react-intl": "^1.0.0-beta-4",
     "babelify": "^6.1.3",
     "browserify": "^11.0.1",
     "browserify-shim": "^3.8.10",
@@ -35,6 +35,6 @@
   },
   "browserify-shim": {
     "react": "global:React",
-    "react-dom": "global:React"
+    "react-dom": "global:ReactDOM"
   }
 }
