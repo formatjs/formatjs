@@ -33,7 +33,7 @@
     "intl-relativeformat": "1.1.0"
   },
   "peerDependencies": {
-    "react": "^0.14.0"
+    "react": "^0.13.0"
   },
   "devDependencies": {
     "babel": "^5.8.21",
