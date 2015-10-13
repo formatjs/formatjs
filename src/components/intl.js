@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {Component} from 'react';
+import {Component, Children} from 'react';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 import IntlPluralFormat from '../plural';
@@ -66,17 +66,7 @@ export default class IntlProvider extends Component {
     }
 
     render() {
-        const {children} = this.props;
-
-        if (typeof children === 'function') {
-            // TODO: Pass the result of `this.getChildContext()` to the child fn?
-            // Or just `{...this.props, ...this.state}`? Or nothing!? Passing
-            // stuff would expose the underlying info and make it part of the
-            // public API.
-            return children();
-        }
-
-        return children;
+        return Children.only(this.props.children);
     }
 }
 
