@@ -19,11 +19,7 @@ describe('react-intl-with-locales', () => {
             it('exports `IntlProvider`', () => {
                 expect(ReactIntl.IntlProvider).toBeA('function');
             });
-
-            it('exports `FormattedGroup`', () => {
-                expect(ReactIntl.FormattedGroup).toBeA('function');
-            });
-
+            
             it('exports `FormattedDate`', () => {
                 expect(ReactIntl.FormattedDate).toBeA('function');
             });

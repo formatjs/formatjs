@@ -9,7 +9,6 @@ import {__addLocaleData as addIRFLocaleData} from 'intl-relativeformat';
 import defaultLocaleData from './en';
 
 export {default as IntlProvider} from './components/intl';
-export {default as FormattedGroup} from './components/group';
 export {default as FormattedDate} from './components/date';
 export {default as FormattedTime} from './components/time';
 export {default as FormattedRelative} from './components/relative';
