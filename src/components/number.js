@@ -32,12 +32,14 @@ export default class FormattedNumber extends Component {
     }
 }
 
+FormattedNumber.displayName = 'FormattedNumber';
+
+FormattedNumber.contextTypes = {
+    intl: intlShape,
+};
+
 FormattedNumber.propTypes = {
     ...numberFormatPropTypes,
     format: PropTypes.string,
     value : PropTypes.any.isRequired,
-};
-
-FormattedNumber.contextTypes = {
-    intl: intlShape,
 };

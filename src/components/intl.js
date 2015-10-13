@@ -80,6 +80,12 @@ export default class IntlProvider extends Component {
     }
 }
 
+IntlProvider.displayName = 'IntlProvider';
+
+IntlProvider.childContextTypes = {
+    intl: intlShape.isRequired,
+};
+
 IntlProvider.propTypes = intlPropTypes;
 
 IntlProvider.defaultProps = {
@@ -90,8 +96,4 @@ IntlProvider.defaultProps = {
 
     defaultLocale : 'en',
     defaultFormats: {},
-};
-
-IntlProvider.childContextTypes = {
-    intl: intlShape.isRequired,
 };

@@ -69,6 +69,12 @@ export default class FormattedHTMLMessage extends Component {
     }
 }
 
+FormattedHTMLMessage.displayName = 'FormattedHTMLMessage';
+
+FormattedHTMLMessage.contextTypes = {
+    intl: intlShape,
+};
+
 FormattedHTMLMessage.propTypes = {
     id            : PropTypes.string,
     description   : PropTypes.string,
@@ -76,10 +82,6 @@ FormattedHTMLMessage.propTypes = {
 
     values : PropTypes.object,
     tagName: PropTypes.string,
-};
-
-FormattedHTMLMessage.contextTypes = {
-    intl: intlShape,
 };
 
 FormattedHTMLMessage.defaultProps = {

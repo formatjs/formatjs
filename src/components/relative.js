@@ -32,13 +32,15 @@ export default class FormattedRelative extends Component {
     }
 }
 
+FormattedRelative.displayName = 'FormattedRelative';
+
+FormattedRelative.contextTypes = {
+    intl: intlShape,
+};
+
 FormattedRelative.propTypes = {
     ...relativeFormatPropTypes,
     format: PropTypes.string,
     value : PropTypes.any.isRequired,
     now   : PropTypes.any,
-};
-
-FormattedRelative.contextTypes = {
-    intl: intlShape,
 };

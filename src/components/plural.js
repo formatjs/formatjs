@@ -33,6 +33,12 @@ export default class FormattedPlural extends Component {
     }
 }
 
+FormattedPlural.displayName = 'FormattedPlural';
+
+FormattedPlural.contextTypes = {
+    intl: intlShape,
+};
+
 FormattedPlural.propTypes = {
     ...pluralFormatPropTypes,
     value: PropTypes.any.isRequired,
@@ -50,8 +56,4 @@ FormattedPlural.propTypes = {
 
 FormattedPlural.defaultProps = {
     style: 'cardinal',
-};
-
-FormattedPlural.contextTypes = {
-    intl: intlShape,
 };

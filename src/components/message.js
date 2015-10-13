@@ -96,6 +96,12 @@ export default class FormattedMessage extends Component {
     }
 }
 
+FormattedMessage.displayName = 'FormattedMessage';
+
+FormattedMessage.contextTypes = {
+    intl: intlShape,
+};
+
 FormattedMessage.propTypes = {
     id            : PropTypes.string.isRequired,
     description   : PropTypes.string,
@@ -103,10 +109,6 @@ FormattedMessage.propTypes = {
 
     values : PropTypes.object,
     tagName: PropTypes.string,
-};
-
-FormattedMessage.contextTypes = {
-    intl: intlShape,
 };
 
 FormattedMessage.defaultProps = {

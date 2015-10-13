@@ -32,12 +32,14 @@ export default class FormattedTime extends Component {
     }
 }
 
+FormattedTime.displayName = 'FormattedTime';
+
+FormattedTime.contextTypes = {
+    intl: intlShape,
+};
+
 FormattedTime.propTypes = {
     ...dateTimeFormatPropTypes,
     format: PropTypes.string,
     value : PropTypes.any.isRequired,
-};
-
-FormattedTime.contextTypes = {
-    intl: intlShape,
 };
