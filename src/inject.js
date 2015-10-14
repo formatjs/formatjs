@@ -6,7 +6,7 @@
 
 import React, {Component} from 'react';
 import {intlShape} from './types';
-import {assertIntlContext} from './utils';
+import {invariantIntlContext} from './utils';
 
 function getDisplayName(Component) {
     return Component.displayName || Component.name || 'Component';
@@ -18,7 +18,7 @@ export default function injectIntl(WrappedComponent, options = {}) {
     class InjectIntl extends Component {
         constructor(props, context) {
             super(props, context);
-            assertIntlContext(context);
+            invariantIntlContext(context);
         }
 
         render() {

@@ -4,6 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
+import invariant from 'invariant';
+
 import {
     dateTimeFormatPropTypes,
     numberFormatPropTypes,
@@ -122,8 +124,7 @@ export function formatMessage(intl, config, messageDescriptor, values = {}) {
         defaultMessage,
     } = messageDescriptor;
 
-    // TODO: What should we do when the message descriptor doesn't have an `id`?
-    // Should we return some placeholder value, not care, or throw?
+    invariant(id, '[React Intl] An `id` must be provided to format a message.');
 
     let message = messages && messages[id];
 
@@ -182,8 +183,6 @@ export function formatMessage(intl, config, messageDescriptor, values = {}) {
         }
     }
 
-    // TODO: Should the string first be trimmed? This will support strings
-    // defined using template literals. <pre> rendering would be the counter.
     return formattedMessage || message || defaultMessage || id;
 }
 

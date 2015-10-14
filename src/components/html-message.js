@@ -7,7 +7,7 @@
 import {Component, PropTypes, createElement} from 'react';
 import {intlShape} from '../types';
 import {
-    assertIntlContext,
+    invariantIntlContext,
     shallowEquals,
     shouldIntlComponentUpdate,
 } from '../utils';
@@ -15,7 +15,7 @@ import {
 export default class FormattedHTMLMessage extends Component {
     constructor(props, context) {
         super(props, context);
-        assertIntlContext(context);
+        invariantIntlContext(context);
     }
 
     shouldComponentUpdate(nextProps, ...next) {
