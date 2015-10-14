@@ -19,16 +19,19 @@ export default class FormattedMessage extends Component {
     }
 
     shouldComponentUpdate(nextProps, ...next) {
-        const values     = this.props.values;
-        const nextValues = nextProps.values;
+        const {values}             = this.props;
+        const {values: nextValues} = nextProps;
 
         if (!shallowEquals(nextValues, values)) {
             return true;
         }
 
+        // Since `values` has already been checked, we know they're not
+        // different, so the current `values` are carried over so the shallow
+        // equals comparison on the other props isn't affected by the `values`.
         let nextPropsToCheck = {
             ...nextProps,
-            values: null,
+            values,
         };
 
         return shouldIntlComponentUpdate(this, nextPropsToCheck, ...next);
