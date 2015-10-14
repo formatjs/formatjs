@@ -59,7 +59,7 @@ class App extends Component {
 }
 
 ReactDOM.render(
-    <IntlProvider>
+    <IntlProvider locale="en">
         <App />
     </IntlProvider>,
     document.getElementById('container')

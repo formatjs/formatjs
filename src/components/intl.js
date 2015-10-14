@@ -12,6 +12,7 @@ import createFormatCache from 'intl-format-cache';
 import {shouldIntlComponentUpdate} from '../utils';
 import {intlPropTypes, intlFormatPropTypes, intlShape} from '../types';
 import * as format from '../format';
+import {hasLocaleData} from '../locale-data-registry';
 
 const intlPropNames       = Object.keys(intlPropTypes);
 const intlFormatPropNames = Object.keys(intlFormatPropTypes);
@@ -32,11 +33,40 @@ export default class IntlProvider extends Component {
         };
     }
 
-    getConfig(props = this.props) {
-        return intlPropNames.reduce((config, name) => {
-            config[name] = props[name];
+    getConfig() {
+        let config = intlPropNames.reduce((config, name) => {
+            config[name] = this.props[name];
             return config;
         }, {});
+
+        if (!hasLocaleData(config.locale)) {
+            const {
+                locale,
+                defaultLocale,
+                defaultFormats,
+            } = config;
+
+            if (process.env.NODE_ENV !== 'production') {
+                console.error(
+                    `[React Intl] Missing locale data for: "${locale}". ` +
+                    `Using default locale: "${defaultLocale}" as fallback.`
+                );
+            }
+
+            // Since there's no registered locale data for `locale`, this will
+            // fallback to the `defaultLocale` to make sure things can render.
+            // The `messages` are overridden to the `defaultProps` empty object
+            // to maintain referential equality across re-renders. It's assumed
+            // each <FormattedMessage> contains a `defaultMessage` prop.
+            config = {
+                ...config,
+                locale  : defaultLocale,
+                formats : defaultFormats,
+                messages: IntlProvider.defaultProps.messages,
+            };
+        }
+
+        return config;
     }
 
     getBoundFormatFns(intl, config) {
@@ -79,8 +109,6 @@ IntlProvider.childContextTypes = {
 IntlProvider.propTypes = intlPropTypes;
 
 IntlProvider.defaultProps = {
-    // TODO: Should `locale` default to 'en'? Or would that cause issues with
-    // the meaning of no-locale, which means the user's default.
     formats : {},
     messages: {},
 

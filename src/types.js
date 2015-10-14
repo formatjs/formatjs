@@ -9,7 +9,7 @@ import {PropTypes} from 'react';
 const {bool, number, string, func, object, oneOf, shape} = PropTypes;
 
 export const intlPropTypes = {
-    locale  : string,
+    locale  : string.isRequired,
     formats : object,
     messages: object,
 
