@@ -9,6 +9,8 @@ This source code is licensed under the BSD-style license found in the LICENSE
 file in the root directory of React's source tree.
 */
 
+import invariant from 'invariant';
+
 const ESCAPED_CHARS = {
     '&' : '&amp;',
     '>' : '&gt;',
@@ -21,6 +23,14 @@ const UNSAFE_CHARS_REGEX = /[&><"']/g;
 
 export function escape(str) {
     return ('' + str).replace(UNSAFE_CHARS_REGEX, (match) => ESCAPED_CHARS[match]);
+}
+
+export function invariantIntlContext({intl} = {}) {
+    invariant(
+        intl,
+        '[React Intl] Could not find required `intl` object. ' +
+        '<IntlProvider> needs to exist in the component ancestry.'
+    );
 }
 
 export function shallowEquals(objA, objB) {
@@ -49,17 +59,6 @@ export function shallowEquals(objA, objB) {
     }
 
     return true;
-}
-
-export function assertIntlContext({intl} = {}) {
-    if (process.env.NODE_ENV !== 'production') {
-        if (!intl) {
-            console.error(
-                '[React Intl] Could not find required `intl` object. ' +
-                '`IntlProvider` needs to exist in the component ancestry.'
-            );
-        }
-    }
 }
 
 export function shouldIntlComponentUpdate(instance, nextProps, nextState, nextContext = {}) {
