@@ -7,7 +7,7 @@ This library provides [React][] Components and a Mixin for internationalizing Re
 [![Build Status][travis-badge]][travis]
 [![Dependency Status][david-badge]][david]
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/react-intl.svg)](https://saucelabs.com/u/react-intl)
+[![Sauce Test Status][sauce-badge]][sauce]
 
 Overview
 --------
@@ -91,7 +91,9 @@ See the [LICENSE file][] for license text and copyright information.
 [david]: https://david-dm.org/yahoo/react-intl
 [david-badge]: https://img.shields.io/david/yahoo/react-intl.svg?style=flat-square
 [travis]: https://travis-ci.org/yahoo/react-intl
-[travis-badge]: https://img.shields.io/travis/yahoo/react-intl/master.svg?style=flat-square
+[travis-badge]: https://img.shields.io/travis/yahoo/react-intl/1.x.svg?style=flat-square
+[sauce]: https://saucelabs.com/u/react-intl
+[sauce-badge]: https://saucelabs.com/browser-matrix/react-intl.svg
 [React]: http://facebook.github.io/react/
 [FormatJS]: http://formatjs.io/
 [FormatJS GitHub]: http://formatjs.io/github/
