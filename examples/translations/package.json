@@ -31,7 +31,8 @@
     "rimraf": "^2.4.2"
   },
   "browser": {
-    "react-intl": "../../lib/react-intl.js"
+    "react-intl": "../../lib/react-intl.js",
+    "react-intl/locale-data/en": "../../lib/locale-data/en.js"
   },
   "browserify-shim": {
     "react": "global:React",
