@@ -45,7 +45,7 @@ function getNamedFormat(formats, type, name) {
     }
 }
 
-export function formatDate(intl, config, value, options = {}) {
+export function formatDate(config, state, value, options = {}) {
     const {locale, formats} = config;
     const {format}          = options;
 
@@ -57,10 +57,10 @@ export function formatDate(intl, config, value, options = {}) {
         options, defaults
     );
 
-    return intl.getDateTimeFormat(locale, filteredOptions).format(date);
+    return state.getDateTimeFormat(locale, filteredOptions).format(date);
 }
 
-export function formatTime(intl, config, value, options = {}) {
+export function formatTime(config, state, value, options = {}) {
     const {locale, formats} = config;
     const {format}          = options;
 
@@ -72,10 +72,10 @@ export function formatTime(intl, config, value, options = {}) {
         options, defaults
     );
 
-    return intl.getDateTimeFormat(locale, filteredOptions).format(date);
+    return state.getDateTimeFormat(locale, filteredOptions).format(date);
 }
 
-export function formatRelative(intl, config, value, options = {}) {
+export function formatRelative(config, state, value, options = {}) {
     const {locale, formats} = config;
     const {now, format}     = options;
 
@@ -87,10 +87,10 @@ export function formatRelative(intl, config, value, options = {}) {
         options, defaults
     );
 
-    return intl.getRelativeFormat(locale, filteredOptions).format(date, {now});
+    return state.getRelativeFormat(locale, filteredOptions).format(date, {now});
 }
 
-export function formatNumber(intl, config, value, options = {}) {
+export function formatNumber(config, state, value, options = {}) {
     const {locale, formats} = config;
     const {format}          = options;
 
@@ -101,16 +101,18 @@ export function formatNumber(intl, config, value, options = {}) {
         options, defaults
     );
 
-    return intl.getNumberFormat(locale, filteredOptions).format(value);
+    return state.getNumberFormat(locale, filteredOptions).format(value);
 }
 
-export function formatPlural(intl, config, value, options = {}) {
+export function formatPlural(config, state, value, options = {}) {
     const {locale} = config;
+
     let filteredOptions = filterFormatOptions(PLURAL_FORMAT_OPTIONS, options);
-    return intl.getPluralFormat(locale, filteredOptions).format(value);
+
+    return state.getPluralFormat(locale, filteredOptions).format(value);
 }
 
-export function formatMessage(intl, config, messageDescriptor, values = {}) {
+export function formatMessage(config, state, messageDescriptor, values = {}) {
     const {
         locale,
         formats,
@@ -144,7 +146,7 @@ export function formatMessage(intl, config, messageDescriptor, values = {}) {
 
     if (message) {
         try {
-            let formatter = intl.getMessageFormat(
+            let formatter = state.getMessageFormat(
                 message, locale, formats
             );
 
@@ -160,7 +162,7 @@ export function formatMessage(intl, config, messageDescriptor, values = {}) {
 
     if (!formattedMessage && defaultMessage) {
         try {
-            let formatter = intl.getMessageFormat(
+            let formatter = state.getMessageFormat(
                 defaultMessage, defaultLocale, defaultFormats
             );
 
@@ -186,7 +188,7 @@ export function formatMessage(intl, config, messageDescriptor, values = {}) {
     return formattedMessage || message || defaultMessage || id;
 }
 
-export function formatHTMLMessage(intl, config, messageDescriptor, rawValues = {}) {
+export function formatHTMLMessage(config, state, messageDescriptor, rawValues = {}) {
     // Process all the values before they are used when formatting the ICU
     // Message string. Since the formatted message might be injected via
     // `innerHTML`, all String-based values need to be HTML-escaped.
@@ -196,5 +198,5 @@ export function formatHTMLMessage(intl, config, messageDescriptor, rawValues = {
         return escaped;
     }, {});
 
-    return formatMessage(intl, config, messageDescriptor, escapedValues);
+    return formatMessage(config, state, messageDescriptor, escapedValues);
 }

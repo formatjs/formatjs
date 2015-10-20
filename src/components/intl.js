@@ -69,19 +69,18 @@ export default class IntlProvider extends Component {
         return config;
     }
 
-    getBoundFormatFns(intl, config) {
+    getBoundFormatFns(config, state) {
         return intlFormatPropNames.reduce((boundFormatFns, name) => {
-            boundFormatFns[name] = format[name].bind(null, intl, config);
+            boundFormatFns[name] = format[name].bind(null, config, state);
             return boundFormatFns;
         }, {});
     }
 
     getChildContext() {
-        const intl   = this.state;
         const config = this.getConfig();
 
         // Bind intl factories and current config to the format functions.
-        let boundFormatFns = this.getBoundFormatFns(intl, config);
+        let boundFormatFns = this.getBoundFormatFns(config, this.state);
 
         return {
             intl: {
