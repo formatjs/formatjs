@@ -87,7 +87,9 @@ export function formatRelative(config, state, value, options = {}) {
         options, defaults
     );
 
-    return state.getRelativeFormat(locale, filteredOptions).format(date, {now});
+    return state.getRelativeFormat(locale, filteredOptions).format(date, {
+        now: isFinite(now) ? now : state.now(),
+    });
 }
 
 export function formatNumber(config, state, value, options = {}) {

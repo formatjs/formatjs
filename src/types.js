@@ -30,6 +30,7 @@ export const intlFormatPropTypes = {
 export const intlShape = shape({
     ...intlPropTypes,
     ...intlFormatPropTypes,
+    now: func.isRequired,
 });
 
 export const dateTimeFormatPropTypes = {
