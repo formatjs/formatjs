@@ -26,8 +26,7 @@ export function escape(str) {
 }
 
 export function invariantIntlContext({intl} = {}) {
-    invariant(
-        intl,
+    invariant(intl,
         '[React Intl] Could not find required `intl` object. ' +
         '<IntlProvider> needs to exist in the component ancestry.'
     );

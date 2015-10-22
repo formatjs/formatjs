@@ -4,7 +4,11 @@
  * See the accompanying LICENSE file for terms.
  */
 
+// Inspired by react-redux's `connect()` HOC factory function implementation:
+// https://github.com/rackt/react-redux
+
 import React, {Component} from 'react';
+import invariant from 'invariant';
 import {intlShape} from './types';
 import {invariantIntlContext} from './utils';
 
@@ -13,7 +17,10 @@ function getDisplayName(Component) {
 }
 
 export default function injectIntl(WrappedComponent, options = {}) {
-    const {intlPropName = 'intl'} = options;
+    const {
+        intlPropName = 'intl',
+        withRef      = false,
+    } = options;
 
     class InjectIntl extends Component {
         constructor(props, context) {
@@ -21,12 +28,20 @@ export default function injectIntl(WrappedComponent, options = {}) {
             invariantIntlContext(context);
         }
 
+        getWrappedInstance() {
+            invariant(withRef,
+                '[React Intl] To access the wrapped instance, ' +
+                'the `{withRef: true}` option must be set when calling: ' +
+                '`injectIntl()`'
+            );
+        }
+
         render() {
             return (
                 <WrappedComponent
                     {...this.props}
                     {...{[intlPropName]: this.context.intl}}
-                    ref='wrappedElement'
+                    ref={withRef ? 'wrappedInstance' : null}
                 />
             );
         }
