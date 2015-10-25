@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {Component, Children} from 'react';
+import {Component, Children, PropTypes} from 'react';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 import IntlPluralFormat from '../plural';
@@ -21,15 +21,25 @@ export default class IntlProvider extends Component {
     constructor(props) {
         super(props);
 
-        // Creating `Intl*` formatters is expensive so these format caches
-        // memoize the `Intl*` constructors and have the same lifecycle as this
-        // IntlProvider instance.
+        // Used to stabilize time when performing an initial rendering so that
+        // all relative times use the same reference "now" time.
+        let initialNow = isFinite(props.initialNow) ?
+                Number(props.initialNow) : Date.now();
+
         this.state = {
+            // Creating `Intl*` formatters is expensive so these format caches
+            // memoize the `Intl*` constructors and have the same lifecycle as
+            // this IntlProvider instance.
             getDateTimeFormat: createFormatCache(Intl.DateTimeFormat),
             getNumberFormat  : createFormatCache(Intl.NumberFormat),
             getMessageFormat : createFormatCache(IntlMessageFormat),
             getRelativeFormat: createFormatCache(IntlRelativeFormat),
             getPluralFormat  : createFormatCache(IntlPluralFormat),
+
+            // Wrapper to provide stable "now" time for initial render.
+            now: () => {
+                return this._didDisplay ? Date.now() : initialNow;
+            },
         };
     }
 
@@ -86,12 +96,17 @@ export default class IntlProvider extends Component {
             intl: {
                 ...config,
                 ...boundFormatFns,
+                now: this.state.now,
             },
         };
     }
 
     shouldComponentUpdate(...next) {
         return shouldIntlComponentUpdate(this, ...next);
+    }
+
+    componentDidMount() {
+        this._didDisplay = true;
     }
 
     render() {
@@ -105,7 +120,10 @@ IntlProvider.childContextTypes = {
     intl: intlShape.isRequired,
 };
 
-IntlProvider.propTypes = intlPropTypes;
+IntlProvider.propTypes = {
+    ...intlPropTypes,
+    initialNow: PropTypes.any,
+};
 
 IntlProvider.defaultProps = {
     formats : {},
