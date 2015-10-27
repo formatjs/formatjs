@@ -12,6 +12,7 @@ import printICUMessage from './print-icu-message';
 const COMPONENT_NAMES = [
     'FormattedMessage',
     'FormattedHTMLMessage',
+    'FormattedPlural',
 ];
 
 const FUNCTION_NAMES = [
@@ -209,6 +210,17 @@ export default function ({Plugin, types: t}) {
                 const moduleSourceName = getModuleSourceName(file.opts);
 
                 let name = this.get('name');
+
+                if (name.referencesImport(moduleSourceName, 'FormattedPlural')) {
+                    let {loc} = node;
+                    file.log.warn(
+                        `[React Intl] Line ${loc.start.line}: ` +
+                        'Default messages are not extracted from ' +
+                        '<FormattedPlural>, use <FormattedMessage> instead.'
+                    );
+
+                    return;
+                }
 
                 if (referencesImport(name, moduleSourceName, COMPONENT_NAMES)) {
                     let attributes = this.get('attributes')
