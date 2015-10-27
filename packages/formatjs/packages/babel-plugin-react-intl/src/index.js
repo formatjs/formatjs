@@ -263,8 +263,8 @@ export default function ({Plugin, types: t}) {
                     if (!(messageObj && messageObj.isObjectExpression())) {
                         throw file.errorWithNode(node,
                             `[React Intl] \`${callee.node.name}()\` must be ` +
-                            `called with message descriptor defined via an ` +
-                            `object expression.`
+                            `called with message descriptors defined as ` +
+                            `object expressions.`
                         );
                     }
 
@@ -288,9 +288,9 @@ export default function ({Plugin, types: t}) {
                 let callee = this.get('callee');
 
                 if (referencesImport(callee, moduleSourceName, FUNCTION_NAMES)) {
-                    let firstArg = this.get('arguments')[0];
+                    let messagesObj = this.get('arguments')[0];
 
-                    firstArg.get('properties')
+                    messagesObj.get('properties')
                         .map((prop) => prop.get('value'))
                         .forEach(processMessageObject);
                 }
