@@ -6,6 +6,15 @@
 
 import {parse} from 'intl-messageformat-parser';
 
+const ESCAPED_CHARS = {
+    '\\' : '\\\\',
+    '\\#': '\\#',
+    '{'  : '\\{',
+    '}'  : '\\}',
+};
+
+const ESAPE_CHARS_REGEXP = /\\#|[{}\\]/g;
+
 export default function (message) {
     let ast = parse(message);
     return printICUMessage(ast);
@@ -14,7 +23,7 @@ export default function (message) {
 function printICUMessage(ast) {
     let printedNodes = ast.elements.map((node) => {
         if (node.type === 'messageTextElement') {
-            return node.value;
+            return printMessageTextASTNode(node);
         }
 
         if (!node.format) {
@@ -41,16 +50,18 @@ function getArgumentType(astType) {
     return astType.replace(/Format$/, '').toLowerCase();
 }
 
-function printSimpleFormatASTNode(node) {
-    let {id, format} = node;
+function printMessageTextASTNode({value}) {
+    return value.replace(ESAPE_CHARS_REGEXP, (char) => ESCAPED_CHARS[char]);
+}
+
+function printSimpleFormatASTNode({id, format}) {
     let argumentType = getArgumentType(format.type);
     let style = format.style ? `, ${format.style}` : '';
 
     return `{${id}, ${argumentType}${style}}`;
 }
 
-function printOptionalFormatASTNode(node) {
-    let {id, format} = node;
+function printOptionalFormatASTNode({id, format}) {
     let argumentType = getArgumentType(format.type);
     let offset = format.offset ? `, offset:${format.offset}` : '';
 

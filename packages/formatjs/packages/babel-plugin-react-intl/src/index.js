@@ -64,7 +64,9 @@ export default function ({Plugin, types: t}) {
         );
     }
 
-    function createMessageDescriptor(propPaths) {
+    function createMessageDescriptor(propPaths, options = {}) {
+        const {isJSXSource = false} = options;
+
         return propPaths.reduce((hash, [keyPath, valuePath]) => {
             let key = getMessageDescriptorKey(keyPath);
 
@@ -75,6 +77,19 @@ export default function ({Plugin, types: t}) {
                     try {
                         hash[key] = printICUMessage(value);
                     } catch (e) {
+                        if (isJSXSource &&
+                            valuePath.isLiteral() &&
+                            value.indexOf('\\\\') >= 0) {
+
+                            throw valuePath.errorWithNode(
+                                '[React Intl] Message failed to parse. ' +
+                                'It looks like `\\`s were used for escaping, ' +
+                                'this won\'t work with JSX string literals. ' +
+                                'Wrap with `{}`. ' +
+                                'See: http://facebook.github.io/react/docs/jsx-gotchas.html'
+                            );
+                        }
+
                         throw valuePath.errorWithNode(
                             `[React Intl] Message failed to parse: ${e} ` +
                             'See: http://formatjs.io/guides/message-syntax/'
@@ -203,7 +218,8 @@ export default function ({Plugin, types: t}) {
                         attributes.map((attr) => [
                             attr.get('name'),
                             attr.get('value'),
-                        ])
+                        ]),
+                        {isJSXSource: true}
                     );
 
                     // In order for a default message to be extracted when
