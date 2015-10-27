@@ -133,8 +133,9 @@ FormattedRelative.propTypes = {
     ...relativeFormatPropTypes,
     value         : PropTypes.any.isRequired,
     format        : PropTypes.string,
-    initialNow    : PropTypes.any,
     updateInterval: PropTypes.number,
+    initialNow    : PropTypes.any,
+    children      : PropTypes.func,
 };
 
 FormattedRelative.defaultProps = {

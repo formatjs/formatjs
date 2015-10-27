@@ -110,11 +110,12 @@ FormattedMessage.propTypes = {
     description   : PropTypes.string,
     defaultMessage: PropTypes.string,
 
-    values : PropTypes.object,
-    tagName: PropTypes.string,
+    values  : PropTypes.object,
+    tagName : PropTypes.string,
+    children: PropTypes.func,
 };
 
 FormattedMessage.defaultProps = {
-    tagName: 'span',
     values : {},
+    tagName: 'span',
 };

@@ -40,6 +40,7 @@ FormattedNumber.contextTypes = {
 
 FormattedNumber.propTypes = {
     ...numberFormatPropTypes,
-    format: PropTypes.string,
-    value : PropTypes.any.isRequired,
+    value   : PropTypes.any.isRequired,
+    format  : PropTypes.string,
+    children: PropTypes.func,
 };

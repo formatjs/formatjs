@@ -122,6 +122,7 @@ IntlProvider.childContextTypes = {
 
 IntlProvider.propTypes = {
     ...intlPropTypes,
+    children  : PropTypes.element.isRequired,
     initialNow: PropTypes.any,
 };
 

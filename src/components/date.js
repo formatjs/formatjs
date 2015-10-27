@@ -40,6 +40,7 @@ FormattedDate.contextTypes = {
 
 FormattedDate.propTypes = {
     ...dateTimeFormatPropTypes,
-    format: PropTypes.string,
-    value : PropTypes.any.isRequired,
+    value   : PropTypes.any.isRequired,
+    format  : PropTypes.string,
+    children: PropTypes.func,
 };
