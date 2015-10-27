@@ -66,5 +66,5 @@
   "directories": {
     "test": "tests"
   },
-  "license": "BSD"
+  "license": "BSD-3-Clause"
 }
