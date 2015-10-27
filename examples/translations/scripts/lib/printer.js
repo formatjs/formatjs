@@ -1,9 +1,20 @@
+const ESCAPED_CHARS = {
+    '\\' : '\\\\',
+    '\\#': '\\#',
+    '{'  : '\\{',
+    '}'  : '\\}',
+};
+
+const ESAPE_CHARS_REGEXP = /\\#|[{}\\]/g;
+
 export default function printICUMessage(ast) {
     return ast.elements.reduce((message, el) => {
         let {format, id, type, value} = el;
 
         if (type === 'messageTextElement') {
-            return message + value;
+            return message + value.replace(ESAPE_CHARS_REGEXP, (char) => {
+                return ESCAPED_CHARS[char];
+            });
         }
 
         if (!format) {
