@@ -24,7 +24,7 @@
     "icu"
   ],
   "author": "Eric Ferraiuolo <eferraiuolo@gmail.com>",
-  "license": "BSD",
+  "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/yahoo/intl-messageformat-parser/issues"
   },
