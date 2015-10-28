@@ -19,16 +19,19 @@ export default class FormattedHTMLMessage extends Component {
     }
 
     shouldComponentUpdate(nextProps, ...next) {
-        const values     = this.props.values;
-        const nextValues = nextProps.values;
+        const {values}             = this.props;
+        const {values: nextValues} = nextProps;
 
         if (!shallowEquals(nextValues, values)) {
             return true;
         }
 
+        // Since `values` has already been checked, we know they're not
+        // different, so the current `values` are carried over so the shallow
+        // equals comparison on the other props isn't affected by the `values`.
         let nextPropsToCheck = {
             ...nextProps,
-            values: null,
+            values,
         };
 
         return shouldIntlComponentUpdate(this, nextPropsToCheck, ...next);
@@ -42,12 +45,12 @@ export default class FormattedHTMLMessage extends Component {
             id,
             description,
             defaultMessage,
-            values,
+            values: rawValues,
             tagName,
         } = props;
 
         let descriptor           = {id, description, defaultMessage};
-        let formattedHTMLMessage = formatHTMLMessage(descriptor, values);
+        let formattedHTMLMessage = formatHTMLMessage(descriptor, rawValues);
 
         if (typeof props.children === 'function') {
             return props.children(formattedHTMLMessage);
@@ -55,7 +58,7 @@ export default class FormattedHTMLMessage extends Component {
 
         // Since the message presumably has HTML in it, we need to set
         // `innerHTML` in order for it to be rendered and not escaped by React.
-        // To be safe, all string prop values were escaped before formatting the
+        // To be safe, all string prop values were escaped when formatting the
         // message. It is assumed that the message is not UGC, and came from the
         // developer making it more like a template.
         //
