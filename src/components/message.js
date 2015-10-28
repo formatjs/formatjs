@@ -39,15 +39,15 @@ export default class FormattedMessage extends Component {
 
     render() {
         const {formatMessage} = this.context.intl;
-        const props           = this.props;
 
-        let {
+        const {
             id,
             description,
             defaultMessage,
             values,
             tagName,
-        } = props;
+            children,
+        } = this.props;
 
         // Creates a token with a random UID that should not be guessable or
         // conflict with other parts of the `message` string.
@@ -91,8 +91,8 @@ export default class FormattedMessage extends Component {
             .filter((part) => !!part)
             .map((part) => elements[part] || part);
 
-        if (typeof props.children === 'function') {
-            return props.children(...nodes);
+        if (typeof children === 'function') {
+            return children(...nodes);
         }
 
         return createElement(tagName, null, ...nodes);

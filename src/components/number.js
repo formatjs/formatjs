@@ -19,13 +19,13 @@ export default class FormattedNumber extends Component {
     }
 
     render() {
-        const {formatNumber} = this.context.intl;
-        const props          = this.props;
+        const {formatNumber}    = this.context.intl;
+        const {value, children} = this.props;
 
-        let formattedNumber = formatNumber(props.value, props);
+        let formattedNumber = formatNumber(value, this.props);
 
-        if (typeof props.children === 'function') {
-            return props.children(formattedNumber);
+        if (typeof children === 'function') {
+            return children(formattedNumber);
         }
 
         return <span>{formattedNumber}</span>;

@@ -19,13 +19,13 @@ export default class FormattedTime extends Component {
     }
 
     render() {
-        const {formatTime} = this.context.intl;
-        const props        = this.props;
+        const {formatTime}      = this.context.intl;
+        const {value, children} = this.props;
 
-        let formattedTime = formatTime(props.value, props);
+        let formattedTime = formatTime(value, this.props);
 
-        if (typeof props.children === 'function') {
-            return props.children(formattedTime);
+        if (typeof children === 'function') {
+            return children(formattedTime);
         }
 
         return <span>{formattedTime}</span>;

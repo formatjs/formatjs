@@ -19,14 +19,14 @@ export default class FormattedPlural extends Component {
     }
 
     render() {
-        const {formatPlural} = this.context.intl;
-        const props          = this.props;
+        const {formatPlural}           = this.context.intl;
+        const {value, other, children} = this.props;
 
-        let pluralCategory  = formatPlural(props.value, props);
-        let formattedPlural = props[pluralCategory] || props.other;
+        let pluralCategory  = formatPlural(value, this.props);
+        let formattedPlural = this.props[pluralCategory] || other;
 
-        if (typeof props.children === 'function') {
-            return props.children(formattedPlural);
+        if (typeof children === 'function') {
+            return children(formattedPlural);
         }
 
         return <span>{formattedPlural}</span>;
@@ -42,7 +42,7 @@ FormattedPlural.contextTypes = {
 FormattedPlural.propTypes = {
     ...pluralFormatPropTypes,
     value: PropTypes.any.isRequired,
-    
+
     other: PropTypes.node.isRequired,
     zero : PropTypes.node,
     one  : PropTypes.node,

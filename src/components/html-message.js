@@ -39,21 +39,21 @@ export default class FormattedHTMLMessage extends Component {
 
     render() {
         const {formatHTMLMessage} = this.context.intl;
-        const props               = this.props;
 
-        let {
+        const {
             id,
             description,
             defaultMessage,
             values: rawValues,
             tagName,
-        } = props;
+            children,
+        } = this.props;
 
         let descriptor           = {id, description, defaultMessage};
         let formattedHTMLMessage = formatHTMLMessage(descriptor, rawValues);
 
-        if (typeof props.children === 'function') {
-            return props.children(formattedHTMLMessage);
+        if (typeof children === 'function') {
+            return children(formattedHTMLMessage);
         }
 
         // Since the message presumably has HTML in it, we need to set

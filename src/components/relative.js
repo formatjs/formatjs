@@ -107,16 +107,16 @@ export default class FormattedRelative extends Component {
     }
 
     render() {
-        const {formatRelative} = this.context.intl;
-        const {props, state}   = this;
+        const {formatRelative}  = this.context.intl;
+        const {value, children} = this.props;
 
-        let formattedRelative = formatRelative(props.value, {
-            ...props,
-            ...state,
+        let formattedRelative = formatRelative(value, {
+            ...this.props,
+            ...this.state,
         });
 
-        if (typeof props.children === 'function') {
-            return props.children(formattedRelative);
+        if (typeof children === 'function') {
+            return children(formattedRelative);
         }
 
         return <span>{formattedRelative}</span>;

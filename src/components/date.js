@@ -19,13 +19,13 @@ export default class FormattedDate extends Component {
     }
 
     render() {
-        const {formatDate} = this.context.intl;
-        const props        = this.props;
+        const {formatDate}      = this.context.intl;
+        const {value, children} = this.props;
 
-        let formattedDate = formatDate(props.value, props);
+        let formattedDate = formatDate(value, this.props);
 
-        if (typeof props.children === 'function') {
-            return props.children(formattedDate);
+        if (typeof children === 'function') {
+            return children(formattedDate);
         }
 
         return <span>{formattedDate}</span>;
