@@ -28,6 +28,7 @@
     "react": "global:React"
   },
   "dependencies": {
+    "hoist-non-react-statics": "^1.0.3",
     "intl-format-cache": "2.0.4",
     "intl-messageformat": "1.2.0",
     "intl-relativeformat": "1.2.0",
