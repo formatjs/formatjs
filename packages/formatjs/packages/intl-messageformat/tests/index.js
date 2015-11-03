@@ -259,6 +259,7 @@ describe('IntlMessageFormat', function () {
 
             ru: '{COMPANY_COUNT, plural, ' +
                     'one {Одна компания опубликовала}' +
+                    'few {# компании опубликовали}' +
                     'many {# компаний опубликовали}' +
                     'other {# компаний опубликовали}}' +
                 ' новые книги.'
@@ -279,7 +280,7 @@ describe('IntlMessageFormat', function () {
 
             expect(msgFmt.format({COMPANY_COUNT: 0})).to.equal('0 компаний опубликовали новые книги.');
             expect(msgFmt.format({COMPANY_COUNT: 1})).to.equal('Одна компания опубликовала новые книги.');
-            expect(msgFmt.format({COMPANY_COUNT: 2})).to.equal('2 компаний опубликовали новые книги.');
+            expect(msgFmt.format({COMPANY_COUNT: 2})).to.equal('2 компании опубликовали новые книги.');
             expect(msgFmt.format({COMPANY_COUNT: 5})).to.equal('5 компаний опубликовали новые книги.');
             expect(msgFmt.format({COMPANY_COUNT: 10})).to.equal('10 компаний опубликовали новые книги.');
         });
