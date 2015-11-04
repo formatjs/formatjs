@@ -18,7 +18,6 @@ $ cd examples/translations/
 Then you can build and run this example:
 
 ```
-$ npm install
 $ npm run build
 $ npm start
 ```

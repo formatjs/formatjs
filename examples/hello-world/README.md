@@ -16,6 +16,6 @@ $ cd examples/hello-world/
 Then you can run this example:
 
 ```
-$ npm install
+$ npm run build
 $ npm start
 ```

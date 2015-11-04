@@ -17,9 +17,6 @@ const translations = globSync('./build/lang/*.json')
 
 const app = express();
 
-app.use(express.static('node_modules'));
-app.use(express.static('build'));
-
 app.get('/', (req, res) => {
     let locale   = req.query.locale || 'en-US';
     let messages = translations[locale];
@@ -50,6 +47,9 @@ app.get('/', (req, res) => {
 `
     );
 });
+
+app.use(express.static('build'));
+app.use(express.static('../../node_modules'));
 
 app.listen(8080, () => {
     console.log('React Intl Example server listening at: http://localhost:8080');
