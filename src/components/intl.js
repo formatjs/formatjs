@@ -10,11 +10,11 @@ import IntlRelativeFormat from 'intl-relativeformat';
 import IntlPluralFormat from '../plural';
 import createFormatCache from 'intl-format-cache';
 import {shouldIntlComponentUpdate} from '../utils';
-import {intlPropTypes, intlFormatPropTypes, intlShape} from '../types';
+import {intlConfigPropTypes, intlFormatPropTypes, intlShape} from '../types';
 import * as format from '../format';
 import {hasLocaleData} from '../locale-data-registry';
 
-const intlPropNames       = Object.keys(intlPropTypes);
+const intlConfigPropNames = Object.keys(intlConfigPropTypes);
 const intlFormatPropNames = Object.keys(intlFormatPropTypes);
 
 export default class IntlProvider extends Component {
@@ -44,7 +44,7 @@ export default class IntlProvider extends Component {
     }
 
     getConfig() {
-        let config = intlPropNames.reduce((config, name) => {
+        let config = intlConfigPropNames.reduce((config, name) => {
             config[name] = this.props[name];
             return config;
         }, {});
@@ -121,7 +121,7 @@ IntlProvider.childContextTypes = {
 };
 
 IntlProvider.propTypes = {
-    ...intlPropTypes,
+    ...intlConfigPropTypes,
     children  : PropTypes.element.isRequired,
     initialNow: PropTypes.any,
 };

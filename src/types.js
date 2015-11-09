@@ -8,7 +8,7 @@ import {PropTypes} from 'react';
 
 const {bool, number, string, func, object, oneOf, shape} = PropTypes;
 
-export const intlPropTypes = {
+export const intlConfigPropTypes = {
     locale  : string.isRequired,
     formats : object,
     messages: object,
@@ -28,7 +28,7 @@ export const intlFormatPropTypes = {
 };
 
 export const intlShape = shape({
-    ...intlPropTypes,
+    ...intlConfigPropTypes,
     ...intlFormatPropTypes,
     now: func.isRequired,
 });
