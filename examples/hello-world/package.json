@@ -5,6 +5,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
+    "clean": "../../node_modules/.bin/rimraf build",
     "build": "../../node_modules/.bin/mkdirp build && ../../node_modules/.bin/browserify index.js -d -t babelify -t browserify-shim > build/bundle.js",
     "start": "../../node_modules/.bin/babel-node server.js"
   },
