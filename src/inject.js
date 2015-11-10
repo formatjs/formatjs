@@ -34,6 +34,8 @@ export default function injectIntl(WrappedComponent, options = {}) {
                 'the `{withRef: true}` option must be set when calling: ' +
                 '`injectIntl()`'
             );
+
+            return this.refs.wrappedInstance;
         }
 
         render() {
