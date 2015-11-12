@@ -67,7 +67,9 @@ ReactDOM.render(
 
 #### Update to `injectIntl()`
 
-The `IntlMixin` also provided the imperative API for custom components to use the `format*()` methods; e.g., `formatDate()` to get formatted strings for using in places like `title` and `aria` attribute. Remove the `IntlMixin` and instead use the `injectIntl()` Hight Order Component (HOC) factory function to inject the imperative API via `props`:
+The `IntlMixin` also provided the imperative API for custom components to use the `format*()` methods; e.g., `formatDate()` to get formatted strings for using in places like `title` and `aria` attribute. Remove the `IntlMixin` and instead use the `injectIntl()` Hight Order Component (HOC) factory function to inject the imperative API via `props`.
+
+Here's an example of a custom `<RelativeTime>` stateless component which uses `injectIntl()` and the imperative API:
 
 ```js
 import React from 'react';
