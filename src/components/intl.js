@@ -8,7 +8,7 @@ import {Component, Children, PropTypes} from 'react';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 import IntlPluralFormat from '../plural';
-import createFormatCache from 'intl-format-cache';
+import memoizeIntlConstructor from 'intl-format-cache';
 import {shouldIntlComponentUpdate} from '../utils';
 import {intlConfigPropTypes, intlFormatPropTypes, intlShape} from '../types';
 import * as format from '../format';
@@ -18,23 +18,29 @@ const intlConfigPropNames = Object.keys(intlConfigPropTypes);
 const intlFormatPropNames = Object.keys(intlFormatPropTypes);
 
 export default class IntlProvider extends Component {
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
 
         // Used to stabilize time when performing an initial rendering so that
         // all relative times use the same reference "now" time.
-        let initialNow = isFinite(props.initialNow) ?
-                Number(props.initialNow) : Date.now();
+        let initialNow = isFinite(props.initialNow) && Number(props.initialNow);
+
+        // When an `initialNow` isn't provided via `props`, look to see an
+        // <IntlProvider> exists in the ancestry and call its `now()` function
+        // to propagate its value for "now".
+        if (!initialNow) {
+            initialNow = context.intl ? context.intl.now() : Date.now();
+        }
 
         this.state = {
             // Creating `Intl*` formatters is expensive so these format caches
             // memoize the `Intl*` constructors and have the same lifecycle as
             // this IntlProvider instance.
-            getDateTimeFormat: createFormatCache(Intl.DateTimeFormat),
-            getNumberFormat  : createFormatCache(Intl.NumberFormat),
-            getMessageFormat : createFormatCache(IntlMessageFormat),
-            getRelativeFormat: createFormatCache(IntlRelativeFormat),
-            getPluralFormat  : createFormatCache(IntlPluralFormat),
+            getDateTimeFormat: memoizeIntlConstructor(Intl.DateTimeFormat),
+            getNumberFormat  : memoizeIntlConstructor(Intl.NumberFormat),
+            getMessageFormat : memoizeIntlConstructor(IntlMessageFormat),
+            getRelativeFormat: memoizeIntlConstructor(IntlRelativeFormat),
+            getPluralFormat  : memoizeIntlConstructor(IntlPluralFormat),
 
             // Wrapper to provide stable "now" time for initial render.
             now: () => {
@@ -44,8 +50,12 @@ export default class IntlProvider extends Component {
     }
 
     getConfig() {
+        const {intl: intlContext = {}} = this.context;
+
+        // Build a whitelisted config object from `props` and `context.intl`, if
+        // an <IntlProvider> exists in the ancestry.
         let config = intlConfigPropNames.reduce((config, name) => {
-            config[name] = this.props[name];
+            config[name] = this.props[name] || intlContext[name];
             return config;
         }, {});
 
@@ -58,7 +68,7 @@ export default class IntlProvider extends Component {
 
             if (process.env.NODE_ENV !== 'production') {
                 console.error(
-                    `[React Intl] Missing locale data for: "${locale}". ` +
+                    `[React Intl] Missing locale data for locale: "${locale}". ` +
                     `Using default locale: "${defaultLocale}" as fallback.`
                 );
             }
@@ -115,6 +125,10 @@ export default class IntlProvider extends Component {
 }
 
 IntlProvider.displayName = 'IntlProvider';
+
+IntlProvider.contextTypes = {
+    intl: intlShape,
+};
 
 IntlProvider.childContextTypes = {
     intl: intlShape.isRequired,
