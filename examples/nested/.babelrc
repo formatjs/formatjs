@@ -1,0 +1,8 @@
+{
+    "plugins": ["react-intl"],
+    "extra": {
+        "react-intl": {
+            "messagesDir": "./build/messages/"
+        }
+    }
+}
