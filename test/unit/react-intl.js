@@ -12,7 +12,7 @@ describe('react-intl', () => {
         });
 
         it('exports `injectIntl`', () => {
-            expect(ReactIntl.defineMessages).toBeA('function');
+            expect(ReactIntl.injectIntl).toBeA('function');
         });
 
         describe('React Components', () => {
