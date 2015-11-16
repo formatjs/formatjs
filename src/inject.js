@@ -55,5 +55,7 @@ export default function injectIntl(WrappedComponent, options = {}) {
         intl: intlShape,
     };
 
+    InjectIntl.WrappedComponent = WrappedComponent;
+
     return InjectIntl;
 }
