@@ -22,13 +22,12 @@ The default message descriptors for the app's default language will be extracted
 
 ```json
 {
-  "plugins": ["react-intl"],
-  "extra": {
-    "react-intl": {
+  "plugins": [
+    ["react-intl", {
         "messagesDir": "./build/messages/",
         "enforceDescriptions": true
-    }
-  }
+    }]
+  ]
 }
 ```
 
@@ -51,8 +50,8 @@ $ babel --plugins react-intl script.js
 The extract message descriptors are available via the `metadata` property on the object returned from Babel's `transform()` API:
 
 ```javascript
-require("babel-core").transform("code", {
-  plugins: ["react-intl"]
+require('babel-core').transform('code', {
+  plugins: ['react-intl']
 }) // => { code, map, ast, metadata['react-intl'].messages };
 ```
 

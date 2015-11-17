@@ -1,7 +1,9 @@
 {
-    "stage": 4,
-    "optional": [
-        "runtime",
-        "es7.objectRestSpread"
+    "presets": [
+        "es2015"
+    ],
+    "plugins": [
+        "transform-object-rest-spread",
+        "transform-runtime"
     ]
 }

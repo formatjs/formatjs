@@ -12,23 +12,17 @@ import printICUMessage from './print-icu-message';
 const COMPONENT_NAMES = [
     'FormattedMessage',
     'FormattedHTMLMessage',
-    'FormattedPlural',
 ];
 
 const FUNCTION_NAMES = [
     'defineMessages',
 ];
 
-const IMPORTED_NAMES   = new Set([...COMPONENT_NAMES, ...FUNCTION_NAMES]);
 const DESCRIPTOR_PROPS = new Set(['id', 'description', 'defaultMessage']);
 
-export default function ({Plugin, types: t}) {
-    function getReactIntlOptions(options) {
-        return options.extra['react-intl'] || {};
-    }
-
-    function getModuleSourceName(options) {
-        return getReactIntlOptions(options).moduleSourceName || 'react-intl';
+export default function ({types: t}) {
+    function getModuleSourceName(opts) {
+        return opts.moduleSourceName || 'react-intl';
     }
 
     function getMessageDescriptorKey(path) {
@@ -40,6 +34,10 @@ export default function ({Plugin, types: t}) {
         if (evaluated.confident) {
             return evaluated.value;
         }
+
+        throw path.buildCodeFrameError(
+            '[React Intl] Messages must be statically evaluate-able for extraction.'
+        );
     }
 
     function getMessageDescriptorValue(path) {
@@ -52,15 +50,7 @@ export default function ({Plugin, types: t}) {
             return evaluated.value;
         }
 
-        if (path.isTemplateLiteral() && path.get('expressions').length === 0) {
-            let str = path.get('quasis')
-                .map((quasi) => quasi.node.value.cooked)
-                .reduce((str, value) => str + value);
-
-            return str;
-        }
-
-        throw path.errorWithNode(
+        throw path.buildCodeFrameError(
             '[React Intl] Messages must be statically evaluate-able for extraction.'
         );
     }
@@ -71,84 +61,72 @@ export default function ({Plugin, types: t}) {
         return propPaths.reduce((hash, [keyPath, valuePath]) => {
             let key = getMessageDescriptorKey(keyPath);
 
-            if (DESCRIPTOR_PROPS.has(key)) {
-                let value = getMessageDescriptorValue(valuePath).trim();
+            if (!DESCRIPTOR_PROPS.has(key)) {
+                return hash;
+            }
 
-                if (key === 'defaultMessage') {
-                    try {
-                        hash[key] = printICUMessage(value);
-                    } catch (e) {
-                        if (isJSXSource &&
-                            valuePath.isLiteral() &&
-                            value.indexOf('\\\\') >= 0) {
+            let value = getMessageDescriptorValue(valuePath).trim();
 
-                            throw valuePath.errorWithNode(
-                                '[React Intl] Message failed to parse. ' +
-                                'It looks like `\\`s were used for escaping, ' +
-                                'this won\'t work with JSX string literals. ' +
-                                'Wrap with `{}`. ' +
-                                'See: http://facebook.github.io/react/docs/jsx-gotchas.html'
-                            );
-                        }
+            if (key === 'defaultMessage') {
+                try {
+                    hash[key] = printICUMessage(value);
+                } catch (parseError) {
+                    if (isJSXSource &&
+                        valuePath.isLiteral() &&
+                        value.indexOf('\\\\') >= 0) {
 
-                        throw valuePath.errorWithNode(
-                            `[React Intl] Message failed to parse: ${e} ` +
-                            'See: http://formatjs.io/guides/message-syntax/'
+                        throw valuePath.buildCodeFrameError(
+                            '[React Intl] Message failed to parse. ' +
+                            'It looks like `\\`s were used for escaping, ' +
+                            'this won\'t work with JSX string literals. ' +
+                            'Wrap with `{}`. ' +
+                            'See: http://facebook.github.io/react/docs/jsx-gotchas.html'
                         );
                     }
-                } else {
-                    hash[key] = value;
+
+                    throw valuePath.buildCodeFrameError(
+                        '[React Intl] Message failed to parse. ' +
+                        'See: http://formatjs.io/guides/message-syntax/',
+                        parseError
+                    );
                 }
+            } else {
+                hash[key] = value;
             }
 
             return hash;
         }, {});
     }
 
-    function createPropNode(key, value) {
-        return t.property('init', t.literal(key), t.literal(value));
-    }
+    function storeMessage({id, description, defaultMessage}, path, state) {
+        const {opts, reactIntl} = state;
 
-    function storeMessage({id, description, defaultMessage}, node, file) {
-        const {enforceDescriptions} = getReactIntlOptions(file.opts);
-        const {messages}            = file.get('react-intl');
-
-        if (!id) {
-            throw file.errorWithNode(node,
-                '[React Intl] Message is missing an `id`.'
+        if (!(id && defaultMessage)) {
+            throw path.buildCodeFrameError(
+                '[React Intl] Message Descriptors require an `id` and `defaultMessage`.'
             );
         }
 
-        if (messages.has(id)) {
-            let existing = messages.get(id);
+        if (reactIntl.messages.has(id)) {
+            let existing = reactIntl.messages.get(id);
 
             if (description !== existing.description ||
                 defaultMessage !== existing.defaultMessage) {
 
-                throw file.errorWithNode(node,
+                throw path.buildCodeFrameError(
                     `[React Intl] Duplicate message id: "${id}", ` +
                     'but the `description` and/or `defaultMessage` are different.'
                 );
             }
         }
 
-        if (!defaultMessage) {
-            let {loc} = node;
-            file.log.warn(
-                `[React Intl] Line ${loc.start.line}: ` +
-                'Message is missing a `defaultMessage` and will not be extracted.'
-            );
-
-            return;
-        }
-
-        if (enforceDescriptions && !description) {
-            throw file.errorWithNode(node,
+        if (opts.enforceDescriptions && !description) {
+            throw path.buildCodeFrameError(
                 '[React Intl] Message must have a `description`.'
             );
         }
 
-        messages.set(id, {id, description, defaultMessage});
+        reactIntl.messages.set(id, {id, description, defaultMessage});
     }
 
     function referencesImport(path, mod, importedNames) {
@@ -159,41 +137,25 @@ export default function ({Plugin, types: t}) {
         return importedNames.some((name) => path.referencesImport(mod, name));
     }
 
-    return new Plugin('react-intl', {
+    return {
         visitor: {
             Program: {
-                enter(node, parent, scope, file) {
-                    const moduleSourceName = getModuleSourceName(file.opts);
-                    const {imports} = file.metadata.modules;
-
-                    let mightHaveReactIntlMessages = imports.some((mod) => {
-                        if (mod.source === moduleSourceName) {
-                            return mod.imported.some((name) => {
-                                return IMPORTED_NAMES.has(name);
-                            });
-                        }
-                    });
-
-                    if (mightHaveReactIntlMessages) {
-                        file.set('react-intl', {
-                            messages: new Map(),
-                        });
-                    } else {
-                        this.skip();
-                    }
+                enter(path, state) {
+                    state.reactIntl = {
+                        messages: new Map(),
+                    };
                 },
 
-                exit(node, parent, scope, file) {
-                    const {messages}  = file.get('react-intl');
-                    const {messagesDir} = getReactIntlOptions(file.opts);
-                    const {basename, filename} = file.opts;
+                exit(path, state) {
+                    const {file, opts, reactIntl} = state;
+                    const {basename, filename}    = file.opts;
 
-                    let descriptors = [...messages.values()];
+                    let descriptors = [...reactIntl.messages.values()];
                     file.metadata['react-intl'] = {messages: descriptors};
 
-                    if (messagesDir) {
+                    if (opts.messagesDir && descriptors.length > 0) {
                         let messagesFilename = p.join(
-                            messagesDir,
+                            opts.messagesDir,
                             p.dirname(p.relative(process.cwd(), filename)),
                             basename + '.json'
                         );
@@ -206,15 +168,15 @@ export default function ({Plugin, types: t}) {
                 },
             },
 
-            JSXOpeningElement(node, parent, scope, file) {
-                const moduleSourceName = getModuleSourceName(file.opts);
+            JSXOpeningElement(path, state) {
+                const {file, opts}     = state;
+                const moduleSourceName = getModuleSourceName(opts);
 
-                let name = this.get('name');
+                let name = path.get('name');
 
                 if (name.referencesImport(moduleSourceName, 'FormattedPlural')) {
-                    let {loc} = node;
                     file.log.warn(
-                        `[React Intl] Line ${loc.start.line}: ` +
+                        `[React Intl] Line ${path.node.loc.start.line}: ` +
                         'Default messages are not extracted from ' +
                         '<FormattedPlural>, use <FormattedMessage> instead.'
                     );
@@ -223,7 +185,7 @@ export default function ({Plugin, types: t}) {
                 }
 
                 if (referencesImport(name, moduleSourceName, COMPONENT_NAMES)) {
-                    let attributes = this.get('attributes')
+                    let attributes = path.get('attributes')
                         .filter((attr) => attr.isJSXAttribute());
 
                     let descriptor = createMessageDescriptor(
@@ -238,12 +200,11 @@ export default function ({Plugin, types: t}) {
                     // declaring a JSX element, it must be done with standard
                     // `key=value` attributes. But it's completely valid to
                     // write `<FormattedMessage {...descriptor} />`, because it
-                    // will be skipped here and extracted elsewhere. When
-                    // _either_ an `id` or `defaultMessage` prop exists, the
-                    // descriptor will be checked; this way mixing an object
-                    // spread with props will fail.
-                    if (descriptor.id || descriptor.defaultMessage) {
-                        storeMessage(descriptor, node, file);
+                    // will be skipped here and extracted elsewhere. When the
+                    // `defaultMessage` prop exists, the descriptor will be
+                    // checked.
+                    if (descriptor.defaultMessage) {
+                        storeMessage(descriptor, path, state);
 
                         attributes
                             .filter((attr) => {
@@ -251,17 +212,17 @@ export default function ({Plugin, types: t}) {
                                 let key = getMessageDescriptorKey(keyPath);
                                 return key === 'description';
                             })
-                            .forEach((attr) => attr.dangerouslyRemove());
+                            .forEach((attr) => attr.remove());
                     }
                 }
             },
 
-            CallExpression(node, parent, scope, file) {
-                const moduleSourceName = getModuleSourceName(file.opts);
+            CallExpression(path, state) {
+                const moduleSourceName = getModuleSourceName(state.opts);
 
                 function processMessageObject(messageObj) {
                     if (!(messageObj && messageObj.isObjectExpression())) {
-                        throw file.errorWithNode(node,
+                        throw path.buildCodeFrameError(
                             `[React Intl] \`${callee.node.name}()\` must be ` +
                             `called with message descriptors defined as ` +
                             `object expressions.`
@@ -277,18 +238,30 @@ export default function ({Plugin, types: t}) {
                         ])
                     );
 
-                    storeMessage(descriptor, node, file);
+                    if (!descriptor.defaultMessage) {
+                        throw path.buildCodeFrameError(
+                            '[React Intl] Message is missing a `defaultMessage`.'
+                        );
+                    }
+
+                    storeMessage(descriptor, path, state);
 
                     messageObj.replaceWith(t.objectExpression([
-                        createPropNode('id', descriptor.id),
-                        createPropNode('defaultMessage', descriptor.defaultMessage),
+                        t.ObjectProperty(
+                            t.stringLiteral('id'),
+                            t.stringLiteral(descriptor.id)
+                        ),
+                        t.ObjectProperty(
+                            t.stringLiteral('defaultMessage'),
+                            t.stringLiteral(descriptor.defaultMessage)
+                        ),
                     ]));
                 }
 
-                let callee = this.get('callee');
+                let callee = path.get('callee');
 
                 if (referencesImport(callee, moduleSourceName, FUNCTION_NAMES)) {
-                    let messagesObj = this.get('arguments')[0];
+                    let messagesObj = path.get('arguments')[0];
 
                     messagesObj.get('properties')
                         .map((prop) => prop.get('value'))
@@ -296,5 +269,5 @@ export default function ({Plugin, types: t}) {
                 }
             },
         },
-    });
+    };
 }
