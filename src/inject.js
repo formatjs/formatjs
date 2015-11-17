@@ -49,7 +49,7 @@ export default function injectIntl(WrappedComponent, options = {}) {
         }
     }
 
-    InjectIntl.displayName = `IntjectIntl(${getDisplayName(WrappedComponent)})`;
+    InjectIntl.displayName = `InjectIntl(${getDisplayName(WrappedComponent)})`;
 
     InjectIntl.contextTypes = {
         intl: intlShape,

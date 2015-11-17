@@ -77,6 +77,7 @@
     "build": "npm run build:data && npm run build:lib && npm run build:dist",
     "test:unit": "mocha --compilers js:babel/register --recursive test/unit/",
     "test": "npm run test:unit",
+    "postinstall": "npm run clean && npm run build",
     "prepublish": "npm run lint && npm run clean && npm run build && npm test"
   }
 }
