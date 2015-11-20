@@ -6,7 +6,7 @@ See the accompanying LICENSE file for terms.
 
 /* jshint esnext: true */
 
-import {objCreate} from './es5';
+import {bind} from './es5';
 
 export default createFormatCache;
 
@@ -21,8 +21,7 @@ function createFormatCache(FormatConstructor) {
         var format  = cacheId && cache[cacheId];
 
         if (!format) {
-            format = objCreate(FormatConstructor.prototype);
-            FormatConstructor.apply(format, args);
+            format = new (bind.apply(FormatConstructor, [null].concat(args)))();
 
             if (cacheId) {
                 cache[cacheId] = format;
