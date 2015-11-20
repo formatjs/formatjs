@@ -22,7 +22,7 @@ function createFormatCache(FormatConstructor) {
 
         if (!format) {
             format = objCreate(FormatConstructor.prototype);
-            format = FormatConstructor.apply(format, args);
+            FormatConstructor.apply(format, args);
 
             if (cacheId) {
                 cache[cacheId] = format;
