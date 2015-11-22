@@ -2,7 +2,7 @@
 
 Extracts string messages for translation from modules that use [React Intl][].
 
-_**Note:** This Babel plugin works with React Intl v2 which is [in development][v2-discussion]._
+_**Note:** This Babel plugin works with React Intl v2 which is [in development][v2-discussion], and **1.x of this plugin works with Babel 5**._
 
 ## Installation
 
