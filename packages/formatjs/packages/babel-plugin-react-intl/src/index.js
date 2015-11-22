@@ -247,11 +247,11 @@ export default function ({types: t}) {
                     storeMessage(descriptor, path, state);
 
                     messageObj.replaceWith(t.objectExpression([
-                        t.ObjectProperty(
+                        t.objectProperty(
                             t.stringLiteral('id'),
                             t.stringLiteral(descriptor.id)
                         ),
-                        t.ObjectProperty(
+                        t.objectProperty(
                             t.stringLiteral('defaultMessage'),
                             t.stringLiteral(descriptor.defaultMessage)
                         ),
