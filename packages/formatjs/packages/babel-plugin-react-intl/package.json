@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-react-intl",
-  "version": "1.0.0-beta-5",
+  "version": "1.0.0",
   "description": "Extracts string messages for translation from modules that use React Intl.",
   "repository": {
     "type": "git",
