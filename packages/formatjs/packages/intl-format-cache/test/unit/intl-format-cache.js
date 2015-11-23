@@ -1,15 +1,5 @@
 'use strict';
 
-if (!global.Intl) {
-    global.Intl = require('intl');
-}
-
-var expect                   = require('expect');
-var memoizeFormatConstructor = require('../..');
-
-var IntlMessageFormat  = require('intl-messageformat');
-var IntlRelativeFormat = require('intl-relativeformat');
-
 describe('intl-format-cache', function () {
     it('has a function as the default export', function () {
         expect(memoizeFormatConstructor)
