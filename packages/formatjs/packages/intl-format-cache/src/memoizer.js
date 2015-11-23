@@ -6,7 +6,7 @@ See the accompanying LICENSE file for terms.
 
 /* jshint esnext: true */
 
-import {bind} from './es5';
+import {bind, objCreate} from './es5';
 
 export default createFormatCache;
 
