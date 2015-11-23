@@ -1,7 +1,12 @@
 sudo: false
 language: node_js
 node_js:
-  - "0.10"
-  - "0.12"
-  - "4.2"
-  - "5"
+- '0.10'
+- '0.12'
+- '4.2'
+- '5'
+script: npm run travis
+env:
+  global:
+  - secure: hUY1MRfIsmk/t3BdLfEmDiObbaeHE2xodP5dMkBfm2/li6QIyFA/9pfGI1HTwLT5AnJmZt4+m0fR84AGiH/SXt4ExPYGXfYLasPUmD8O4wtVyhsoJwpru3qrcH+Dx3NhZ1C+q7ueVJTPsa1uv3fNubeJevAcJNysbEWbrULPQ28=
+  - secure: oygxyfvLeuJjo5KjczOzpw75DJPtDGxiaWHeJaORK6uaykyAjoi7lW+KhWw2+o37w/KdSMNcgW065EAy/dbEFNZT0iknKh1u6mlnnxEh5ZyUYrvt5eA5E0YU1R68oDHrzzKiA+VVHdzX/wgdFQ02EwmoExAX6UvmpkkwhTURPJ4=

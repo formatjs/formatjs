@@ -7,8 +7,10 @@
   "scripts": {
     "prepublish": "grunt",
     "browserify": "browserify index.js -s memoizeFormatConstructor > tmp/intl-format-cache.js",
+    "test:browser": "npm run browserify && grunt saucelabs",
     "test:unit": "mocha --require test/setup/node-unit --recursive test/unit/",
-    "test": "npm run test:unit"
+    "test": "npm run test:unit",
+    "travis": "npm test && npm run test:browser"
   },
   "repository": {
     "type": "git",
@@ -32,7 +34,9 @@
     "grunt-bundle-jsnext-lib": "^0.5.0",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-connect": "^0.11.2",
     "grunt-contrib-copy": "^0.7.0",
+    "grunt-saucelabs": "^8.6.1",
     "intl": "^1.0.1",
     "intl-messageformat": "^1.2.0",
     "intl-relativeformat": "^1.2.0",
