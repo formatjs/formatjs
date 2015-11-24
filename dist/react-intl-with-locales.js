@@ -2242,6 +2242,32 @@
     var $$en$$default = {"locale":"en","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1],t0=Number(s[0])==n,n10=t0&&s[0].slice(-1),n100=t0&&s[0].slice(-2);if(ord)return n10==1&&n100!=11?"one":n10==2&&n100!=12?"two":n10==3&&n100!=13?"few":"other";return n==1&&v0?"one":"other"},"fields":{"year":{"displayName":"Year","relative":{"0":"this year","1":"next year","-1":"last year"},"relativeTime":{"future":{"one":"in {0} year","other":"in {0} years"},"past":{"one":"{0} year ago","other":"{0} years ago"}}},"month":{"displayName":"Month","relative":{"0":"this month","1":"next month","-1":"last month"},"relativeTime":{"future":{"one":"in {0} month","other":"in {0} months"},"past":{"one":"{0} month ago","other":"{0} months ago"}}},"day":{"displayName":"Day","relative":{"0":"today","1":"tomorrow","-1":"yesterday"},"relativeTime":{"future":{"one":"in {0} day","other":"in {0} days"},"past":{"one":"{0} day ago","other":"{0} days ago"}}},"hour":{"displayName":"Hour","relativeTime":{"future":{"one":"in {0} hour","other":"in {0} hours"},"past":{"one":"{0} hour ago","other":"{0} hours ago"}}},"minute":{"displayName":"Minute","relativeTime":{"future":{"one":"in {0} minute","other":"in {0} minutes"},"past":{"one":"{0} minute ago","other":"{0} minutes ago"}}},"second":{"displayName":"Second","relative":{"0":"now"},"relativeTime":{"future":{"one":"in {0} second","other":"in {0} seconds"},"past":{"one":"{0} second ago","other":"{0} seconds ago"}}}}};
     var $$react$$default = React;
 
+    var $$es52$$bind = Function.prototype.bind || function (oThis) {
+        if (typeof this !== 'function') {
+          // closest thing possible to the ECMAScript 5
+          // internal IsCallable function
+          throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+        }
+
+        var aArgs   = Array.prototype.slice.call(arguments, 1),
+            fToBind = this,
+            fNOP    = function() {},
+            fBound  = function() {
+              return fToBind.apply(this instanceof fNOP
+                     ? this
+                     : oThis,
+                     aArgs.concat(Array.prototype.slice.call(arguments)));
+            };
+
+        if (this.prototype) {
+          // native functions don't have a prototype
+          fNOP.prototype = this.prototype;
+        }
+        fBound.prototype = new fNOP();
+
+        return fBound;
+    };
+
     // Purposely using the same implementation as the Intl.js `Intl` polyfill.
     // Copyright 2013 Andy Earnshaw, MIT License
 
@@ -2279,6 +2305,7 @@
 
         return obj;
     };
+
     var intl$format$cache$$default = intl$format$cache$$createFormatCache;
 
     // -----------------------------------------------------------------------------
@@ -2292,8 +2319,7 @@
             var format  = cacheId && cache[cacheId];
 
             if (!format) {
-                format = $$es52$$objCreate(FormatConstructor.prototype);
-                FormatConstructor.apply(format, args);
+                format = new ($$es52$$bind.apply(FormatConstructor, [null].concat(args)))();
 
                 if (cacheId) {
                     cache[cacheId] = format;
