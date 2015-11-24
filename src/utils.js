@@ -1,3 +1,4 @@
+
 /*
 HTML escaping and shallow-equals implementations are the same as React's
 (on purpose.) Therefore, it has the following Copyright and Licensing:
@@ -60,14 +61,16 @@ export function shallowEquals(objA, objB) {
     return true;
 }
 
-export function shouldIntlComponentUpdate(instance, nextProps, nextState, nextContext = {}) {
-    const context  = instance.context || {};
-    const intl     = context.intl || {};
-    const nextIntl = nextContext.intl || {};
+export function shouldIntlComponentUpdate(
+    {props, state, context = {}},
+    nextProps, nextState, nextContext = {}
+) {
+    const {intl = {}} = context;
+    const {intl: nextIntl = {}} = nextContext;
 
     return (
-        !shallowEquals(nextProps, instance.props) ||
-        !shallowEquals(nextState, instance.state) ||
+        !shallowEquals(nextProps, props) ||
+        !shallowEquals(nextState, state) ||
         !shallowEquals(nextIntl, intl)
     );
 }

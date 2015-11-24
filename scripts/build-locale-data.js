@@ -2,7 +2,6 @@ import * as fs from 'fs';
 import {sync as mkdirpSync} from 'mkdirp';
 import extractCLDRData from 'formatjs-extract-cldr-data';
 import serialize from 'serialize-javascript';
-import {transform} from 'babel';
 import browserify from 'browserify';
 import uglifyify from 'uglifyify';
 
@@ -24,11 +23,21 @@ const cldrDataByLang = [...cldrDataByLocale].reduce((map, [locale, data]) => {
 }, new Map());
 
 function createDataModule(localeData) {
-    return (
+    let serializedLocaleData = serialize(localeData);
+
+    return {
+        es6: (
 `// GENERATED FILE
-export default ${serialize(localeData)};
+export default ${serializedLocaleData};
 `
-    );
+        ),
+
+        commonjs: (
+`// GENERATED FILE
+module.exports = ${serializedLocaleData};
+`
+        ),
+    };
 }
 
 function throwIfError(error) {
@@ -44,19 +53,18 @@ mkdirpSync('lib/locale-data/');
 mkdirpSync('src/locale-data/');
 
 fs.writeFile('src/en.js',
-    createDataModule(cldrDataByLocale.get(DEFAULT_LOCALE)),
+    createDataModule(cldrDataByLocale.get(DEFAULT_LOCALE)).es6,
     throwIfError
 );
 
 let allData = createDataModule([...cldrDataByLocale.values()]);
-fs.writeFile('src/locale-data/index.js', allData, throwIfError);
-fs.writeFile('lib/locale-data/index.js', transform(allData).code, throwIfError);
+fs.writeFile('src/locale-data/index.js', allData.es6, throwIfError);
+fs.writeFile('lib/locale-data/index.js', allData.commonjs, throwIfError);
 
 cldrDataByLang.forEach((cldrData, lang) => {
     let data = createDataModule(cldrData);
-
-    fs.writeFile(`src/locale-data/${lang}.js`, data, throwIfError);
-    fs.writeFile(`lib/locale-data/${lang}.js`, transform(data).code, (err) => {
+    fs.writeFile(`src/locale-data/${lang}.js`, data.es6, throwIfError);
+    fs.writeFile(`lib/locale-data/${lang}.js`, data.commonjs, (err) => {
         throwIfError(err);
 
         browserify({standalone: `ReactIntlLocaleData.${lang}`})
