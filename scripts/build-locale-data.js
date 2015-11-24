@@ -1,4 +1,6 @@
 import * as fs from 'fs';
+import * as p from 'path';
+import {Readable} from 'stream';
 import {sync as mkdirpSync} from 'mkdirp';
 import extractCLDRData from 'formatjs-extract-cldr-data';
 import serialize from 'serialize-javascript';
@@ -40,6 +42,22 @@ module.exports = ${serializedLocaleData};
     };
 }
 
+function writeUMDFile(filename, code) {
+    let lang        = p.basename(filename, '.js');
+    let readStream  = new Readable();
+    let writeStream = fs.createWriteStream(filename);
+
+    browserify({standalone: `ReactIntlLocaleData.${lang}`})
+        .add(readStream)
+        .transform(uglifyify)
+        .bundle()
+        .on('error', throwIfError)
+        .pipe(writeStream);
+
+    readStream.push(code, 'utf8');
+    readStream.push(null);
+}
+
 function throwIfError(error) {
     if (error) {
         throw error;
@@ -48,9 +66,9 @@ function throwIfError(error) {
 
 // -----------------------------------------------------------------------------
 
-mkdirpSync('dist/locale-data/');
-mkdirpSync('lib/locale-data/');
 mkdirpSync('src/locale-data/');
+mkdirpSync('lib/locale-data/');
+mkdirpSync('dist/locale-data/');
 
 fs.writeFile('src/en.js',
     createDataModule(cldrDataByLocale.get(DEFAULT_LOCALE)).es6,
@@ -60,18 +78,11 @@ fs.writeFile('src/en.js',
 let allData = createDataModule([...cldrDataByLocale.values()]);
 fs.writeFile('src/locale-data/index.js', allData.es6, throwIfError);
 fs.writeFile('lib/locale-data/index.js', allData.commonjs, throwIfError);
+writeUMDFile('dist/locale-data/index.js', allData.commonjs);
 
 cldrDataByLang.forEach((cldrData, lang) => {
     let data = createDataModule(cldrData);
     fs.writeFile(`src/locale-data/${lang}.js`, data.es6, throwIfError);
-    fs.writeFile(`lib/locale-data/${lang}.js`, data.commonjs, (err) => {
-        throwIfError(err);
-
-        browserify({standalone: `ReactIntlLocaleData.${lang}`})
-            .add(`lib/locale-data/${lang}.js`)
-            .transform(uglifyify)
-            .bundle()
-            .on('error', throwIfError)
-            .pipe(fs.createWriteStream(`dist/locale-data/${lang}.js`));
-    });
+    fs.writeFile(`lib/locale-data/${lang}.js`, data.commonjs, throwIfError);
+    writeUMDFile(`dist/locale-data/${lang}.js`, data.commonjs);
 });
