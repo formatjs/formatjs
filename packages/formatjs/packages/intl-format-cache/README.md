@@ -25,18 +25,18 @@ This package works as an ES6 or Node.js module, in either case it has a single d
 
 ```js
 // In an ES6 module.
-import createFormatCache from 'intl-format-cache';
+import memoizeFormatConstructor from 'intl-format-cache';
 ```
 
 ```js
 // In Node.
-var createFormatCache = require('intl-format-cache');
+var memoizeFormatConstructor = require('intl-format-cache');
 ```
 
 This default export is a factory function which can be passed an `Intl` format constructor and it will return a memoizer that will create or reuse an `Intl` format instance and return it.
 
 ```js
-var getNumberFormat = createFormatCache(Intl.NumberFormat);
+var getNumberFormat = memoizeFormatConstructor(Intl.NumberFormat);
 
 var nf1 = getNumberFormat('en');
 var nf2 = getNumberFormat('en');
