@@ -24,4 +24,4 @@ fi
 echo build $build
 
 echo
-npm run test:browser
+npm run test:saucelabs

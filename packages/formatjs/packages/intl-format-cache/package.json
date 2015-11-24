@@ -7,10 +7,10 @@
   "scripts": {
     "prepublish": "grunt",
     "browserify": "browserify index.js -s memoizeFormatConstructor > tmp/intl-format-cache.js",
-    "test:browser": "npm run browserify && grunt saucelabs",
+    "test:saucelabs": "npm run browserify && grunt saucelabs",
     "test:unit": "mocha --require test/setup/node-unit --recursive test/unit/",
     "test": "npm run test:unit",
-    "travis": "npm test && npm run test:browser"
+    "travis": "npm test && npm run test:saucelabs"
   },
   "repository": {
     "type": "git",

@@ -78,11 +78,6 @@ module.exports = function (grunt) {
                             platform: 'Windows 10',
                             version: 'beta'
                         },
-                        {
-                            browserName: 'firefox',
-                            platform: 'Windows 10',
-                            version: 'dev'
-                        },
 
                         // IE/Edge
                         {

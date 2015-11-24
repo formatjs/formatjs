@@ -4,6 +4,7 @@ Intl Format Cache
 A memoizer factory for Intl format constructors.
 
 [![npm Version][npm-badge]][npm]
+[![Build Status][travis-badge]][travis]
 [![Dependency Status][david-badge]][david]
 
 
@@ -60,6 +61,8 @@ See the [LICENSE file][LICENSE] for license text and copyright information.
 [npm-badge]: https://img.shields.io/npm/v/intl-format-cache.svg?style=flat-square
 [david]: https://david-dm.org/yahoo/intl-format-cache
 [david-badge]: https://img.shields.io/david/yahoo/intl-format-cache.svg?style=flat-square
+[travis]: https://travis-ci.org/yahoo/intl-format-cache
+[travis-badge]: https://img.shields.io/travis/yahoo/intl-format-cache/master.svg?style=flat-square
 [Intl]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl
 [Intl-NF]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
 [Intl-DTF]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
