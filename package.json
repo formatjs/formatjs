@@ -40,7 +40,7 @@
     "babel-cli": "^6.1.18",
     "babel-core": "^6.1.21",
     "babel-eslint": "^4.1.1",
-    "babel-plugin-react-intl": "^1.0.0-beta-5",
+    "babel-plugin-react-intl": "^2.0.0",
     "babel-plugin-transform-object-rest-spread": "^6.1.18",
     "babel-preset-es2015": "^6.1.18",
     "babel-preset-es2015-rollup": "^1.0.0",
