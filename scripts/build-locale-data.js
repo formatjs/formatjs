@@ -43,19 +43,19 @@ module.exports = ${serializedLocaleData};
 }
 
 function writeUMDFile(filename, code) {
-    let lang        = p.basename(filename, '.js');
+    const lang = p.basename(filename, '.js');
+
     let readStream  = new Readable();
-    let writeStream = fs.createWriteStream(filename);
+    readStream._read = function noop() {};
+    readStream.push(code, 'utf8');
+    readStream.push(null);
 
     browserify({standalone: `ReactIntlLocaleData.${lang}`})
         .add(readStream)
         .transform(uglifyify)
         .bundle()
         .on('error', throwIfError)
-        .pipe(writeStream);
-
-    readStream.push(code, 'utf8');
-    readStream.push(null);
+        .pipe(fs.createWriteStream(filename));
 }
 
 function throwIfError(error) {
