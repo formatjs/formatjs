@@ -45,6 +45,7 @@
     "babel-preset-es2015": "^6.1.18",
     "babel-preset-es2015-rollup": "^1.0.0",
     "babel-preset-react": "^6.1.18",
+    "babel-register": "^6.2.0",
     "babelify": "^7.2.0",
     "browserify": "^12.0.1",
     "browserify-shim": "^3.8.11",
@@ -76,13 +77,13 @@
   "scripts": {
     "lint": "eslint src/ test/ scripts/ examples/",
     "clean": "rimraf src/en.js src/locale-data/ lib/ dist/",
-    "build:data": "babel-node --presets es2015 scripts/build-locale-data",
-    "build:lib": "babel --presets es2015,react src/ --ignore src/locale-data/ --out-dir lib/",
-    "build:dist:dev": "babel-node --presets es2015 scripts/build-dist",
-    "build:dist:min": "NODE_ENV=production babel-node --presets es2015 scripts/build-dist",
-    "build:dist": "npm run build:dist:dev && npm run build:dist:min",
+    "build:data": "babel-node scripts/build-locale-data",
+    "build:lib": "babel src/ --ignore src/locale-data/ --out-dir lib/",
+    "build:dist:dev": "NODE_ENV=development babel-node scripts/build-dist",
+    "build:dist:prod": "NODE_ENV=production babel-node scripts/build-dist",
+    "build:dist": "npm run build:dist:dev && npm run build:dist:prod",
     "build": "npm run build:data && npm run build:lib && npm run build:dist",
-    "test:unit": "mocha --compilers js:./test/setup/babel-register --recursive test/unit/",
+    "test:unit": "mocha --compilers js:babel-register --recursive test/unit/",
     "test": "npm run test:unit",
     "prepublish": "npm run lint && npm run clean && npm run build && npm test"
   }

@@ -20,6 +20,5 @@
   "browserify-shim": {
     "react": "global:React",
     "react-dom": "global:ReactDOM"
-  },
-  "devDependencies": {}
+  }
 }
