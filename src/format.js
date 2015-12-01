@@ -77,9 +77,10 @@ export function formatTime(config, state, value, options = {}) {
 
 export function formatRelative(config, state, value, options = {}) {
     const {locale, formats} = config;
-    const {now, format}     = options;
+    const {format}          = options;
 
     let date     = new Date(value);
+    let now      = new Date(options.now);
     let defaults = format && getNamedFormat(formats, 'relative', format);
 
     let filteredOptions = filterFormatOptions(
@@ -114,7 +115,7 @@ export function formatPlural(config, state, value, options = {}) {
     return state.getPluralFormat(locale, filteredOptions).format(value);
 }
 
-export function formatMessage(config, state, messageDescriptor, values = {}) {
+export function formatMessage(config, state, messageDescriptor = {}, values = {}) {
     const {
         locale,
         formats,
