@@ -5,7 +5,7 @@
  */
 
 import {Component, PropTypes, createElement} from 'react';
-import {intlShape} from '../types';
+import {intlShape, messageDescriptorPropTypes} from '../types';
 import {
     invariantIntlContext,
     shallowEquals,
@@ -79,10 +79,7 @@ FormattedHTMLMessage.contextTypes = {
 };
 
 FormattedHTMLMessage.propTypes = {
-    id            : PropTypes.string,
-    description   : PropTypes.string,
-    defaultMessage: PropTypes.string,
-
+    ...messageDescriptorPropTypes,
     values  : PropTypes.object,
     tagName : PropTypes.string,
     children: PropTypes.func,

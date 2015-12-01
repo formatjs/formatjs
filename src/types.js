@@ -33,6 +33,12 @@ export const intlShape = shape({
     now: func.isRequired,
 });
 
+export const messageDescriptorPropTypes = {
+    id            : string.isRequired,
+    description   : string,
+    defaultMessage: string,
+};
+
 export const dateTimeFormatPropTypes = {
     localeMatcher: oneOf(['best fit', 'lookup']),
     formatMatcher: oneOf(['basic', 'best fit']),
