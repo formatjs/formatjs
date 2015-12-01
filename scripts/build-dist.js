@@ -69,7 +69,7 @@ function writeBundle(bundle, {minify = false}) {
             fromString: true,
             inSourceMap: result.map,
             outSourceMap: `${filename}.map`,
-            warnings: true,
+            warnings: false,
         });
 
         result.map = JSON.parse(result.map);

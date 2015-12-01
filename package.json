@@ -37,9 +37,8 @@
     "react": "^0.14.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.1.18",
-    "babel-core": "^6.1.21",
-    "babel-eslint": "^4.1.1",
+    "babel-cli": "^6.2.0",
+    "babel-eslint": "^5.0.0-beta4",
     "babel-plugin-react-intl": "^2.0.0",
     "babel-plugin-transform-object-rest-spread": "^6.1.18",
     "babel-preset-es2015": "^6.1.18",
@@ -59,6 +58,7 @@
     "glob": "^6.0.1",
     "intl": "^1.0.0",
     "intl-messageformat-parser": "^1.2.0",
+    "isparta": "^4.0.0",
     "mkdirp": "^0.5.1",
     "mocha": "^2.2.5",
     "react": "^0.14.2",
@@ -76,14 +76,16 @@
   },
   "scripts": {
     "lint": "eslint src/ test/ scripts/ examples/",
-    "clean": "rimraf src/en.js src/locale-data/ lib/ dist/",
+    "clean": "rimraf src/en.js src/locale-data/ coverage/ dist/ lib/",
     "build:data": "babel-node scripts/build-locale-data",
     "build:lib": "babel src/ --ignore src/locale-data/ --out-dir lib/",
     "build:dist:dev": "NODE_ENV=development babel-node scripts/build-dist",
     "build:dist:prod": "NODE_ENV=production babel-node scripts/build-dist",
     "build:dist": "npm run build:dist:dev && npm run build:dist:prod",
     "build": "npm run build:data && npm run build:lib && npm run build:dist",
-    "test:unit": "mocha --compilers js:babel-register --recursive test/unit/",
+    "test:unit": "mocha --compilers js:babel-register --require intl --recursive test/unit/",
+    "test:unit:watch": "npm run test:unit -- --watch",
+    "test:unit:cov": "babel-node $(npm bin)/isparta cover --report text --report html node_modules/mocha/bin/_mocha -- --require intl --recursive test/unit/",
     "test": "npm run test:unit",
     "prepublish": "npm run lint && npm run clean && npm run build && npm test"
   }
