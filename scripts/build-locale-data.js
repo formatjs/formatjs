@@ -1,8 +1,9 @@
 import * as fs from 'fs';
+import * as p from 'path';
+import {Readable} from 'stream';
 import {sync as mkdirpSync} from 'mkdirp';
 import extractCLDRData from 'formatjs-extract-cldr-data';
 import serialize from 'serialize-javascript';
-import {transform} from 'babel';
 import browserify from 'browserify';
 import uglifyify from 'uglifyify';
 
@@ -24,11 +25,37 @@ const cldrDataByLang = [...cldrDataByLocale].reduce((map, [locale, data]) => {
 }, new Map());
 
 function createDataModule(localeData) {
-    return (
+    let serializedLocaleData = serialize(localeData);
+
+    return {
+        es6: (
 `// GENERATED FILE
-export default ${serialize(localeData)};
+export default ${serializedLocaleData};
 `
-    );
+        ),
+
+        commonjs: (
+`// GENERATED FILE
+module.exports = ${serializedLocaleData};
+`
+        ),
+    };
+}
+
+function writeUMDFile(filename, code) {
+    const lang = p.basename(filename, '.js');
+
+    let readStream  = new Readable();
+    readStream._read = function noop() {};
+    readStream.push(code, 'utf8');
+    readStream.push(null);
+
+    browserify({standalone: `ReactIntlLocaleData.${lang}`})
+        .add(readStream)
+        .transform(uglifyify)
+        .bundle()
+        .on('error', throwIfError)
+        .pipe(fs.createWriteStream(filename));
 }
 
 function throwIfError(error) {
@@ -39,31 +66,23 @@ function throwIfError(error) {
 
 // -----------------------------------------------------------------------------
 
-mkdirpSync('dist/locale-data/');
-mkdirpSync('lib/locale-data/');
 mkdirpSync('src/locale-data/');
+mkdirpSync('lib/locale-data/');
+mkdirpSync('dist/locale-data/');
 
 fs.writeFile('src/en.js',
-    createDataModule(cldrDataByLocale.get(DEFAULT_LOCALE)),
+    createDataModule(cldrDataByLocale.get(DEFAULT_LOCALE)).es6,
     throwIfError
 );
 
 let allData = createDataModule([...cldrDataByLocale.values()]);
-fs.writeFile('src/locale-data/index.js', allData, throwIfError);
-fs.writeFile('lib/locale-data/index.js', transform(allData).code, throwIfError);
+fs.writeFile('src/locale-data/index.js', allData.es6, throwIfError);
+fs.writeFile('lib/locale-data/index.js', allData.commonjs, throwIfError);
+writeUMDFile('dist/locale-data/index.js', allData.commonjs);
 
 cldrDataByLang.forEach((cldrData, lang) => {
     let data = createDataModule(cldrData);
-
-    fs.writeFile(`src/locale-data/${lang}.js`, data, throwIfError);
-    fs.writeFile(`lib/locale-data/${lang}.js`, transform(data).code, (err) => {
-        throwIfError(err);
-
-        browserify({standalone: `ReactIntlLocaleData.${lang}`})
-            .add(`lib/locale-data/${lang}.js`)
-            .transform(uglifyify)
-            .bundle()
-            .on('error', throwIfError)
-            .pipe(fs.createWriteStream(`dist/locale-data/${lang}.js`));
-    });
+    fs.writeFile(`src/locale-data/${lang}.js`, data.es6, throwIfError);
+    fs.writeFile(`lib/locale-data/${lang}.js`, data.commonjs, throwIfError);
+    writeUMDFile(`dist/locale-data/${lang}.js`, data.commonjs);
 });
