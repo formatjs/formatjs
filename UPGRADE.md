@@ -78,10 +78,14 @@ import {
     FormattedRelative,
 } from 'react-intl';
 
+const to2Digits = (num) => `${num < 10 ? `0${num}` : num}`;
+
 const RelativeTime = ({date, intl}) => {
-    let year  = intl.formatDate(date, {year: 'numeric'});
-    let month = intl.formatDate(date, {month: '2-digit'});
-    let day   = intl.formatDate(date, {day: '2-digit'});
+    date = new Date(date);
+
+    let year  = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day   = date.getDate();
 
     let formattedDate = intl.formatDate(date, {
         year : 'long',
@@ -91,7 +95,7 @@ const RelativeTime = ({date, intl}) => {
 
     return (
         <time
-            datetime={`${year}-${month}-${day}`}
+            datetime={`${year}-${to2Digits(month)}-${to2Digits(day)}`}
             title={formattedDate}
         >
             <FormattedRelative value={date} />
