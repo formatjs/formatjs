@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {IntlProvider, FormattedMessage} from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 import Greeting from './widgets/greeting';
 
 class App extends Component {
@@ -24,12 +24,11 @@ class App extends Component {
                         defaultMessage="React Intl Nested Messages Example"
                     />
                 </h1>
-
-                <IntlProvider
+                <Greeting
                     messages={this.props.getIntlMessages('greeting')}
-                >
-                    <Greeting {...this.state.user} />
-                </IntlProvider>
+                    messages={this.context.intl.locale}
+                    {...this.state.user}
+                />
             </div>
         );
     }
