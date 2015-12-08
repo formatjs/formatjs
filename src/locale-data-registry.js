@@ -22,5 +22,6 @@ export function addLocaleData(data = []) {
 }
 
 export function hasLocaleData(locale) {
-    return !!registeredLocales[locale && locale.toLowerCase()];
+    locale = locale && locale.toLowerCase();
+    return !!registeredLocales[locale] || !!(IntlMessageFormat.__localeData__[locale] && IntlRelativeFormat.__localeData__[locale]);
 }
