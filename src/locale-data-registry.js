@@ -7,20 +7,20 @@
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 
-const registeredLocales = Object.create(null);
-
 export function addLocaleData(data = []) {
     let locales = Array.isArray(data) ? data : [data];
 
     locales.forEach((localeData) => {
         IntlMessageFormat.__addLocaleData(localeData);
         IntlRelativeFormat.__addLocaleData(localeData);
-
-        let {locale} = localeData;
-        registeredLocales[locale.toLowerCase()] = locale;
     });
 }
 
 export function hasLocaleData(locale) {
-    return !!registeredLocales[locale && locale.toLowerCase()];
+    let normalizedLocale = locale && locale.toLowerCase();
+
+    return !!(
+        IntlMessageFormat.__localeData__[normalizedLocale] &&
+        IntlRelativeFormat.__localeData__[normalizedLocale]
+    );
 }
