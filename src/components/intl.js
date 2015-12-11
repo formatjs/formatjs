@@ -23,12 +23,13 @@ export default class IntlProvider extends Component {
 
         // Used to stabilize time when performing an initial rendering so that
         // all relative times use the same reference "now" time.
-        let initialNow = isFinite(props.initialNow) && Number(props.initialNow);
-
-        // When an `initialNow` isn't provided via `props`, look to see an
-        // <IntlProvider> exists in the ancestry and call its `now()` function
-        // to propagate its value for "now".
-        if (!initialNow) {
+        let initialNow;
+        if (isFinite(props.initialNow)) {
+            initialNow = Number(props.initialNow);
+        } else {
+            // When an `initialNow` isn't provided via `props`, look to see an
+            // <IntlProvider> exists in the ancestry and call its `now()`
+            // function to propagate its value for "now".
             initialNow = context.intl ? context.intl.now() : Date.now();
         }
 
