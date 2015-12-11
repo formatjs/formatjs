@@ -9,6 +9,7 @@ import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 import IntlPluralFormat from '../plural';
 import memoizeIntlConstructor from 'intl-format-cache';
+import invariant from 'invariant';
 import {shouldIntlComponentUpdate} from '../utils';
 import {intlConfigPropTypes, intlFormatPropTypes, intlShape} from '../types';
 import * as format from '../format';
@@ -20,6 +21,12 @@ const intlFormatPropNames = Object.keys(intlFormatPropTypes);
 export default class IntlProvider extends Component {
     constructor(props, context) {
         super(props, context);
+
+        invariant(Intl,
+            '[React Intl] The `Intl` APIs must be available in the runtime, ' +
+            'and do not appear to be built-in. An `Intl` polyfill should be loaded.\n' +
+            'See: http://formatjs.io/guides/runtime-environments/'
+        );
 
         // Used to stabilize time when performing an initial rendering so that
         // all relative times use the same reference "now" time.
