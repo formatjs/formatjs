@@ -1,0 +1,24 @@
+{
+  "name": "react-intl-example-async",
+  "version": "1.0.0",
+  "description": "React Intl Async Example",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "clean": "../../node_modules/.bin/rimraf build",
+    "build": "../../node_modules/.bin/mkdirp build && ../../node_modules/.bin/browserify index.js -d -t babelify -t browserify-shim > build/bundle.js",
+    "start": "../../node_modules/.bin/babel-node server.js"
+  },
+  "author": "James Kyle <me@thejameskyle.com>",
+  "license": "BSD-3-Clause",
+  "browser": {
+    "react-intl": "../../lib/react-intl.js"
+  },
+  "browserify-shim": {
+    "react": "global:React",
+    "react-dom": "global:ReactDOM"
+  },
+  "dependencies": {
+    "superagent": "^1.5.0"
+  }
+}
