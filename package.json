@@ -71,6 +71,7 @@
     "rollup-plugin-npm": "^1.1.0",
     "rollup-plugin-replace": "^1.1.0",
     "serialize-javascript": "^1.1.1",
+    "superagent": "^1.5.0",
     "uglify-js": "^2.4.24",
     "uglifyify": "^3.0.1"
   },
