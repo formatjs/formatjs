@@ -1,6 +1,6 @@
 {
   "name": "react-intl",
-  "version": "2.0.0-beta-1",
+  "version": "2.0.0-beta-2",
   "description": "Internationalize React apps declaratively. This library provides React components and an API to format dates, numbers, and string messages, including pluralization.",
   "keywords": [
     "intl",
