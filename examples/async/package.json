@@ -17,8 +17,5 @@
   "browserify-shim": {
     "react": "global:React",
     "react-dom": "global:ReactDOM"
-  },
-  "dependencies": {
-    "superagent": "^1.5.0"
   }
 }

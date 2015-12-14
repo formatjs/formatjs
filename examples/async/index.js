@@ -1,28 +1,23 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import {IntlProvider, injectIntl} from 'react-intl';
+import {IntlProvider, FormattedMessage} from 'react-intl';
 import request from 'superagent';
 
-class App extends Component {
-    render() {
-        const {formatMessage} = this.props.intl;
-        return (
-            <h1>
-                {formatMessage({ id: 'hello' }) + ' ' + formatMessage({ id: 'world' })}
-            </h1>
-        );
-    }
-}
-
-App = injectIntl(App);
+const App = () => (
+    <h1>
+        <FormattedMessage id="hello" />{' '}
+        <FormattedMessage id="world" />
+    </h1>
+);
 
 class Root extends Component {
     constructor() {
         super();
         this.state = {
-            translations: null
+            translations: null,
         };
     }
+
     componentWillMount() {
         request.get('/translations', (err, res) => {
             this.setState({
@@ -47,6 +42,6 @@ class Root extends Component {
 }
 
 ReactDOM.render(
-    <Root/>,
+    <Root />,
     document.getElementById('container')
 );
