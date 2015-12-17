@@ -579,36 +579,36 @@ describe('format API', () => {
         });
 
         it('formats basic messages', () => {
-            let {locale, messages} = config;
-            let mf = new IntlMessageFormat(messages.no_args, locale);
+            const {locale, messages} = config;
+            const mf = new IntlMessageFormat(messages.no_args, locale);
 
             expect(formatMessage({id: 'no_args'})).toBe(mf.format());
         });
 
         it('formats messages with placeholders', () => {
-            let {locale, messages} = config;
-            let mf = new IntlMessageFormat(messages.with_arg, locale);
-            let values = {name: 'Eric'};
+            const {locale, messages} = config;
+            const mf = new IntlMessageFormat(messages.with_arg, locale);
+            const values = {name: 'Eric'};
 
             expect(formatMessage({id: 'with_arg'}, values)).toBe(mf.format(values));
         });
 
         it('formats messages with named formats', () => {
-            let {locale, messages, formats} = config;
-            let mf = new IntlMessageFormat(messages.with_named_format, locale, formats);
-            let values = {now: Date.now()};
+            const {locale, messages, formats} = config;
+            const mf = new IntlMessageFormat(messages.with_named_format, locale, formats);
+            const values = {now: Date.now()};
 
             expect(formatMessage({id: 'with_named_format'}, values)).toBe(mf.format(values));
         });
 
         it('avoids formatting when no values and in production', () => {
-            let {messages} = config;
+            const {messages} = config;
 
             process.env.NODE_ENV = 'production';
             expect(formatMessage({id: 'no_args'})).toBe(messages.no_args);
             expect(state.getMessageFormat.calls.length).toBe(0);
 
-            let values = {foo: 'foo'};
+            const values = {foo: 'foo'};
             expect(formatMessage({id: 'no_args'}, values)).toBe(messages.no_args);
             expect(state.getMessageFormat.calls.length).toBe(1);
 
@@ -619,18 +619,18 @@ describe('format API', () => {
 
         describe('fallbacks', () => {
             it('formats message with missing named formats', () => {
-                let {locale, messages} = config;
-                let mf = new IntlMessageFormat(messages.missing_named_format, locale);
-                let values = {now: Date.now()};
+                const {locale, messages} = config;
+                const mf = new IntlMessageFormat(messages.missing_named_format, locale);
+                const values = {now: Date.now()};
 
                 expect(formatMessage({id: 'missing_named_format'}, values)).toBe(mf.format(values));
             });
 
             it('formats `defaultMessage` when message is missing', () => {
-                let {locale, messages} = config;
-                let mf = new IntlMessageFormat(messages.with_arg, locale);
-                let id = 'missing';
-                let values = {name: 'Eric'};
+                const {locale, messages} = config;
+                const mf = new IntlMessageFormat(messages.with_arg, locale);
+                const id = 'missing';
+                const values = {name: 'Eric'};
 
                 expect(formatMessage({
                     id: id,
@@ -679,10 +679,10 @@ describe('format API', () => {
             });
 
             it('formats `defaultMessage` when message has a syntax error', () => {
-                let {locale, messages} = config;
-                let mf = new IntlMessageFormat(messages.with_arg, locale);
-                let id = 'invalid';
-                let values = {name: 'Eric'};
+                const {locale, messages} = config;
+                const mf = new IntlMessageFormat(messages.with_arg, locale);
+                const id = 'invalid';
+                const values = {name: 'Eric'};
 
                 expect(formatMessage({
                     id: id,
@@ -696,10 +696,10 @@ describe('format API', () => {
             });
 
             it('formats `defaultMessage` when message has missing values', () => {
-                let {locale, messages} = config;
-                let mf = new IntlMessageFormat(messages.with_arg, locale);
-                let id = 'missing_value';
-                let values = {name: 'Eric'};
+                const {locale, messages} = config;
+                const mf = new IntlMessageFormat(messages.with_arg, locale);
+                const id = 'missing_value';
+                const values = {name: 'Eric'};
 
                 expect(formatMessage({
                     id: id,
@@ -713,8 +713,8 @@ describe('format API', () => {
             });
 
             it('returns message source when message and `defaultMessage` have formatting errors', () => {
-                let {locale, messages} = config;
-                let id = 'missing_value';
+                const {locale, messages} = config;
+                const id = 'missing_value';
 
                 expect(formatMessage({
                     id: id,
@@ -734,8 +734,8 @@ describe('format API', () => {
             });
 
             it('returns message source when formatting error and missing `defaultMessage`', () => {
-                let {locale, messages} = config;
-                let id = 'missing_value';
+                const {locale, messages} = config;
+                const id = 'missing_value';
 
                 expect(formatMessage({
                     id: id,
@@ -754,8 +754,8 @@ describe('format API', () => {
             it('returns `defaultMessage` source when formatting errors and missing message', () => {
                 config.locale = 'en-US';
 
-                let {locale, messages} = config;
-                let id = 'missing';
+                const {locale, messages} = config;
+                const id = 'missing';
 
                 expect(formatMessage({
                     id: id,
@@ -775,7 +775,7 @@ describe('format API', () => {
             });
 
             it('returns message `id` when message and `defaultMessage` are missing', () => {
-                let id = 'missing';
+                const id = 'missing';
 
                 expect(formatMessage({id: id})).toBe(id);
 
@@ -789,8 +789,8 @@ describe('format API', () => {
             });
 
             it('returns message `id` when message and `defaultMessage` are empty', () => {
-                let {locale, messages} = config;
-                let id = 'empty';
+                const {locale, messages} = config;
+                const id = 'empty';
 
                 expect(formatMessage({
                     id: id,
@@ -816,18 +816,18 @@ describe('format API', () => {
         });
 
         it('formats HTML messages', () => {
-            let {locale, messages} = config;
-            let mf = new IntlMessageFormat(messages.with_html, locale);
-            let values = {name: 'Eric'};
+            const {locale, messages} = config;
+            const mf = new IntlMessageFormat(messages.with_html, locale);
+            const values = {name: 'Eric'};
 
             expect(formatHTMLMessage({id: 'with_html'}, values)).toBe(mf.format(values));
         });
 
         it('html-escapes string values', () => {
-            let {locale, messages} = config;
-            let mf = new IntlMessageFormat(messages.with_html, locale);
-            let values = {name: '<i>Eric</i>'};
-            let escapedValues = {name: '&lt;i&gt;Eric&lt;/i&gt;'};
+            const {locale, messages} = config;
+            const mf = new IntlMessageFormat(messages.with_html, locale);
+            const values = {name: '<i>Eric</i>'};
+            const escapedValues = {name: '&lt;i&gt;Eric&lt;/i&gt;'};
 
             expect(formatHTMLMessage({id: 'with_html'}, values)).toBe(mf.format(escapedValues));
         });
