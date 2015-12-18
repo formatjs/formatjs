@@ -13,24 +13,15 @@ import {
     pluralFormatPropTypes,
 } from './types';
 
-import {escape} from './utils';
+import {
+    escape,
+    filterProps,
+} from './utils';
 
 const DATE_TIME_FORMAT_OPTIONS = Object.keys(dateTimeFormatPropTypes);
 const NUMBER_FORMAT_OPTIONS    = Object.keys(numberFormatPropTypes);
 const RELATIVE_FORMAT_OPTIONS  = Object.keys(relativeFormatPropTypes);
 const PLURAL_FORMAT_OPTIONS    = Object.keys(pluralFormatPropTypes);
-
-function filterFormatOptions(whitelist, obj, defaults = {}) {
-    return whitelist.reduce((opts, name) => {
-        if (obj.hasOwnProperty(name)) {
-            opts[name] = obj[name];
-        } else if (defaults.hasOwnProperty(name)) {
-            opts[name] = defaults[name];
-        }
-
-        return opts;
-    }, {});
-}
 
 function getNamedFormat(formats, type, name) {
     let format = formats && formats[type] && formats[type][name];
@@ -49,13 +40,9 @@ export function formatDate(config, state, value, options = {}) {
     const {locale, formats} = config;
     const {format}          = options;
 
-    let date     = new Date(value);
-    let defaults = format && getNamedFormat(formats, 'date', format);
-
-    let filteredOptions = filterFormatOptions(
-        DATE_TIME_FORMAT_OPTIONS,
-        options, defaults
-    );
+    let date            = new Date(value);
+    let defaults        = format && getNamedFormat(formats, 'date', format);
+    let filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, defaults);
 
     return state.getDateTimeFormat(locale, filteredOptions).format(date);
 }
@@ -64,13 +51,9 @@ export function formatTime(config, state, value, options = {}) {
     const {locale, formats} = config;
     const {format}          = options;
 
-    let date     = new Date(value);
-    let defaults = format && getNamedFormat(formats, 'time', format);
-
-    let filteredOptions = filterFormatOptions(
-        DATE_TIME_FORMAT_OPTIONS,
-        options, defaults
-    );
+    let date            = new Date(value);
+    let defaults        = format && getNamedFormat(formats, 'time', format);
+    let filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, defaults);
 
     return state.getDateTimeFormat(locale, filteredOptions).format(date);
 }
@@ -79,14 +62,10 @@ export function formatRelative(config, state, value, options = {}) {
     const {locale, formats} = config;
     const {format}          = options;
 
-    let date     = new Date(value);
-    let now      = new Date(options.now);
-    let defaults = format && getNamedFormat(formats, 'relative', format);
-
-    let filteredOptions = filterFormatOptions(
-        RELATIVE_FORMAT_OPTIONS,
-        options, defaults
-    );
+    let date            = new Date(value);
+    let now             = new Date(options.now);
+    let defaults        = format && getNamedFormat(formats, 'relative', format);
+    let filteredOptions = filterProps(options, RELATIVE_FORMAT_OPTIONS, defaults);
 
     return state.getRelativeFormat(locale, filteredOptions).format(date, {
         now: isFinite(now) ? now : state.now(),
@@ -97,12 +76,8 @@ export function formatNumber(config, state, value, options = {}) {
     const {locale, formats} = config;
     const {format}          = options;
 
-    let defaults = format && getNamedFormat(formats, 'number', format);
-
-    let filteredOptions = filterFormatOptions(
-        NUMBER_FORMAT_OPTIONS,
-        options, defaults
-    );
+    let defaults        = format && getNamedFormat(formats, 'number', format);
+    let filteredOptions = filterProps(options, NUMBER_FORMAT_OPTIONS, defaults);
 
     return state.getNumberFormat(locale, filteredOptions).format(value);
 }
@@ -110,7 +85,7 @@ export function formatNumber(config, state, value, options = {}) {
 export function formatPlural(config, state, value, options = {}) {
     const {locale} = config;
 
-    let filteredOptions = filterFormatOptions(PLURAL_FORMAT_OPTIONS, options);
+    let filteredOptions = filterProps(options, PLURAL_FORMAT_OPTIONS);
 
     return state.getPluralFormat(locale, filteredOptions).format(value);
 }

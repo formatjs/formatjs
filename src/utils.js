@@ -11,6 +11,9 @@ file in the root directory of React's source tree.
 */
 
 import invariant from 'invariant';
+import {intlConfigPropTypes} from './types';
+
+const intlConfigPropNames = Object.keys(intlConfigPropTypes);
 
 const ESCAPED_CHARS = {
     '&' : '&amp;',
@@ -24,6 +27,18 @@ const UNSAFE_CHARS_REGEX = /[&><"']/g;
 
 export function escape(str) {
     return ('' + str).replace(UNSAFE_CHARS_REGEX, (match) => ESCAPED_CHARS[match]);
+}
+
+export function filterProps(obj, whitelist, defaults = {}) {
+    return whitelist.reduce((filtered, name) => {
+        if (obj.hasOwnProperty(name)) {
+            filtered[name] = obj[name];
+        } else if (defaults.hasOwnProperty(name)) {
+            filtered[name] = defaults[name];
+        }
+
+        return filtered;
+    }, {});
 }
 
 export function invariantIntlContext({intl} = {}) {
@@ -71,6 +86,9 @@ export function shouldIntlComponentUpdate(
     return (
         !shallowEquals(nextProps, props) ||
         !shallowEquals(nextState, state) ||
-        !shallowEquals(nextIntl, intl)
+        !shallowEquals(
+            filterProps(nextIntl, intlConfigPropNames),
+            filterProps(intl, intlConfigPropNames)
+        )
     );
 }

@@ -10,7 +10,7 @@ import IntlRelativeFormat from 'intl-relativeformat';
 import IntlPluralFormat from '../plural';
 import memoizeIntlConstructor from 'intl-format-cache';
 import invariant from 'invariant';
-import {shouldIntlComponentUpdate} from '../utils';
+import {shouldIntlComponentUpdate, filterProps} from '../utils';
 import {intlConfigPropTypes, intlFormatPropTypes, intlShape} from '../types';
 import * as format from '../format';
 import {hasLocaleData} from '../locale-data-registry';
@@ -62,10 +62,7 @@ export default class IntlProvider extends Component {
 
         // Build a whitelisted config object from `props` and `context.intl`, if
         // an <IntlProvider> exists in the ancestry.
-        let config = intlConfigPropNames.reduce((config, name) => {
-            config[name] = this.props[name] || intlContext[name];
-            return config;
-        }, {});
+        let config = filterProps(this.props, intlConfigPropNames, intlContext);
 
         if (!hasLocaleData(config.locale)) {
             const {
