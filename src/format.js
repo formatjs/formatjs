@@ -161,10 +161,17 @@ export function formatMessage(config, state, messageDescriptor = {}, values = {}
         }
     } else {
         if (process.env.NODE_ENV !== 'production') {
-            console.error(
-                `[React Intl] Missing message: "${id}" for locale: "${locale}"` +
-                (defaultMessage ? ', using default message as fallback.' : '')
-            );
+            // This prevents warnings from littering the console in development
+            // when no `messages` are passed into the <IntlProvider> for the
+            // default locale, and a default message is in the source.
+            if (!defaultMessage ||
+                (locale && locale.toLowerCase() !== defaultLocale.toLowerCase())) {
+
+                console.error(
+                    `[React Intl] Missing message: "${id}" for locale: "${locale}"` +
+                    (defaultMessage ? ', using default message as fallback.' : '')
+                );
+            }
         }
     }
 
