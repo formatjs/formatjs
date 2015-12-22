@@ -20,7 +20,7 @@ export default class FormattedDate extends Component {
 
     render() {
         const {formatDate}      = this.context.intl;
-        const {value, children} = this.props;
+        const {value, children, style, className} = this.props;
 
         let formattedDate = formatDate(value, this.props);
 
@@ -28,7 +28,7 @@ export default class FormattedDate extends Component {
             return children(formattedDate);
         }
 
-        return <span>{formattedDate}</span>;
+        return <span style={style} className={className}>{formattedDate}</span>;
     }
 }
 
@@ -40,7 +40,9 @@ FormattedDate.contextTypes = {
 
 FormattedDate.propTypes = {
     ...dateTimeFormatPropTypes,
-    value   : PropTypes.any.isRequired,
-    format  : PropTypes.string,
-    children: PropTypes.func,
+    value     : PropTypes.any.isRequired,
+    format    : PropTypes.string,
+    children  : PropTypes.func,
+    style     : PropTypes.any,
+    className : PropTypes.any,
 };
