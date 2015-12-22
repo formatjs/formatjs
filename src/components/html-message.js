@@ -19,8 +19,12 @@ export default class FormattedHTMLMessage extends Component {
     }
 
     shouldComponentUpdate(nextProps, ...next) {
-        const {values}             = this.props;
-        const {values: nextValues} = nextProps;
+        const {values, style, className} = this.props;
+        const {
+            values: nextValues, 
+            style: nextStyle, 
+            className: nextClassName,
+        } = nextProps;
 
         if (!shallowEquals(nextValues, values) || 
             !shallowEquals(nextStyle, style) || 
