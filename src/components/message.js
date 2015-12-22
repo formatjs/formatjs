@@ -19,10 +19,16 @@ export default class FormattedMessage extends Component {
     }
 
     shouldComponentUpdate(nextProps, ...next) {
-        const {values}             = this.props;
-        const {values: nextValues} = nextProps;
+        const {values, style, className} = this.props;
+        const {
+            values: nextValues, 
+            style: nextStyle, 
+            className: nextClassName,
+        } = nextProps;
 
-        if (!shallowEquals(nextValues, values)) {
+        if (!shallowEquals(nextValues, values) || 
+            !shallowEquals(nextStyle, style) || 
+            !shallowEquals(nextClassName, className)) {
             return true;
         }
 
@@ -47,6 +53,8 @@ export default class FormattedMessage extends Component {
             values,
             tagName,
             children,
+            style,
+            className,
         } = this.props;
 
         // Creates a token with a random UID that should not be guessable or
@@ -95,7 +103,7 @@ export default class FormattedMessage extends Component {
             return children(...nodes);
         }
 
-        return createElement(tagName, null, ...nodes);
+        return createElement(tagName, {style, className}, ...nodes);
     }
 }
 
@@ -107,9 +115,11 @@ FormattedMessage.contextTypes = {
 
 FormattedMessage.propTypes = {
     ...messageDescriptorPropTypes,
-    values  : PropTypes.object,
-    tagName : PropTypes.string,
-    children: PropTypes.func,
+    values   : PropTypes.object,
+    tagName  : PropTypes.string,
+    children : PropTypes.func,
+    style    : PropTypes.any,
+    className: PropTypes.any,
 };
 
 FormattedMessage.defaultProps = {
