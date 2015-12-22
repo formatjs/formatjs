@@ -9,7 +9,7 @@ import {intlShape, numberFormatPropTypes} from '../types';
 import {
     invariantIntlContext,
     shouldIntlComponentUpdate,
-    prepareIntlStyleOption
+    prepareIntlStyleOption,
 } from '../utils';
 
 export default class FormattedNumber extends Component {

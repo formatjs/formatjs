@@ -81,16 +81,16 @@ export function prepareIntlStyleOption(props) {
 
     if (!hasStyle && !hasIntlStyle) {
         return props;
-    } else {
-        let newProps = {...props};
-
-        if (hasIntlStyle) {
-            newProps['style'] = newProps['intlStyle'];
-            delete newProps['intlStyle'];
-        } else if (hasStyle) {
-            delete newProps['style'];
-        }
-
-        return newProps;
     }
+
+    let newProps = {...props};
+
+    if (hasIntlStyle) {
+        newProps['style'] = newProps['intlStyle'];
+        delete newProps['intlStyle'];
+    } else if (hasStyle) {
+        delete newProps['style'];
+    }
+
+    return newProps;
 }
