@@ -6,7 +6,11 @@
 
 import React, {Component, PropTypes} from 'react';
 import {intlShape, pluralFormatPropTypes} from '../types';
-import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
+import {
+    invariantIntlContext,
+    shouldIntlComponentUpdate,
+    prepareIntlStyleOption,
+} from '../utils';
 
 export default class FormattedPlural extends Component {
     constructor(props, context) {
@@ -22,7 +26,7 @@ export default class FormattedPlural extends Component {
         const {formatPlural}           = this.context.intl;
         const {value, other, children} = this.props;
 
-        let pluralCategory  = formatPlural(value, this.props);
+        let pluralCategory  = formatPlural(value, prepareIntlStyleOption(this.props));
         let formattedPlural = this.props[pluralCategory] || other;
 
         if (typeof children === 'function') {
@@ -54,5 +58,5 @@ FormattedPlural.propTypes = {
 };
 
 FormattedPlural.defaultProps = {
-    style: 'cardinal',
+    intlStyle: 'cardinal',
 };

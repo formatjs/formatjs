@@ -6,7 +6,11 @@
 
 import React, {Component, PropTypes} from 'react';
 import {intlShape, relativeFormatPropTypes} from '../types';
-import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
+import {
+    invariantIntlContext,
+    shouldIntlComponentUpdate,
+    prepareIntlStyleOption,
+} from '../utils';
 
 const SECOND = 1000;
 const MINUTE = 1000 * 60;
@@ -110,10 +114,10 @@ export default class FormattedRelative extends Component {
         const {formatRelative}  = this.context.intl;
         const {value, children} = this.props;
 
-        let formattedRelative = formatRelative(value, {
+        let formattedRelative = formatRelative(value, prepareIntlStyleOption({
             ...this.props,
             ...this.state,
-        });
+        }));
 
         if (typeof children === 'function') {
             return children(formattedRelative);

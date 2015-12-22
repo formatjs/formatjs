@@ -6,7 +6,11 @@
 
 import React, {Component, PropTypes} from 'react';
 import {intlShape, numberFormatPropTypes} from '../types';
-import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
+import {
+    invariantIntlContext,
+    shouldIntlComponentUpdate,
+    prepareIntlStyleOption
+} from '../utils';
 
 export default class FormattedNumber extends Component {
     constructor(props, context) {
@@ -22,7 +26,7 @@ export default class FormattedNumber extends Component {
         const {formatNumber}    = this.context.intl;
         const {value, children} = this.props;
 
-        let formattedNumber = formatNumber(value, this.props);
+        let formattedNumber = formatNumber(value, prepareIntlStyleOption(this.props) );
 
         if (typeof children === 'function') {
             return children(formattedNumber);
