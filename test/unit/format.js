@@ -182,7 +182,11 @@ describe('format API', () => {
         let formatTime;
 
         beforeEach(() => {
-            df = new Intl.DateTimeFormat(config.locale);
+            df = new Intl.DateTimeFormat(config.locale, {
+                hour: 'numeric',
+                minute: 'numeric',
+            });
+
             formatTime = f.formatTime.bind(null, config, state);
         });
 
@@ -254,8 +258,6 @@ describe('format API', () => {
             it('handles missing named formats and warns', () => {
                 const date   = new Date();
                 const format = 'missing';
-
-                df = new Intl.DateTimeFormat(config.locale);
 
                 expect(formatTime(date, {format})).toBe(df.format(date));
                 expect(consoleError.calls.length).toBe(1);
