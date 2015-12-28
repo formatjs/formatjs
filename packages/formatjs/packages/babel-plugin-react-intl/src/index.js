@@ -20,7 +20,7 @@ const FUNCTION_NAMES = [
 
 const DESCRIPTOR_PROPS = new Set(['id', 'description', 'defaultMessage']);
 
-export default function ({types: t}) {
+export default function () {
     function getModuleSourceName(opts) {
         return opts.moduleSourceName || 'react-intl';
     }
@@ -205,14 +205,6 @@ export default function ({types: t}) {
                     // checked.
                     if (descriptor.defaultMessage) {
                         storeMessage(descriptor, path, state);
-
-                        attributes
-                            .filter((attr) => {
-                                let keyPath = attr.get('name');
-                                let key = getMessageDescriptorKey(keyPath);
-                                return key === 'description';
-                            })
-                            .forEach((attr) => attr.remove());
                     }
                 }
             },
@@ -245,17 +237,6 @@ export default function ({types: t}) {
                     }
 
                     storeMessage(descriptor, path, state);
-
-                    messageObj.replaceWith(t.objectExpression([
-                        t.objectProperty(
-                            t.stringLiteral('id'),
-                            t.stringLiteral(descriptor.id)
-                        ),
-                        t.objectProperty(
-                            t.stringLiteral('defaultMessage'),
-                            t.stringLiteral(descriptor.defaultMessage)
-                        ),
-                    ]));
                 }
 
                 let callee = path.get('callee');
