@@ -62,6 +62,9 @@ describe('format API', () => {
                     missing: undefined,
                 },
             },
+
+            defaultLocale: 'en',
+            defaultFormats: {},
         };
 
         state = {
@@ -633,10 +636,45 @@ describe('format API', () => {
                     id: id,
                     defaultMessage: messages.with_arg,
                 }, values)).toBe(mf.format(values));
+            });
+
+            it('warns when `message` is missing and locales are different', () => {
+                config.locale = 'fr';
+
+                let {locale, messages, defaultLocale} = config;
+                let mf = new IntlMessageFormat(messages.with_arg, locale);
+                let id = 'missing';
+                let values = {name: 'Eric'};
+
+                expect(locale).toNotEqual(defaultLocale);
+
+                expect(formatMessage({
+                    id: id,
+                    defaultMessage: messages.with_arg,
+                }, values)).toBe(mf.format(values));
 
                 expect(consoleError.calls.length).toBe(1);
                 expect(consoleError.calls[0].arguments[0]).toContain(
                     `[React Intl] Missing message: "${id}" for locale: "${locale}", using default message as fallback.`
+                );
+            });
+
+            it('warns when `message` and `defaultMessage` are missing', () => {
+                let {locale, messages} = config;
+                let id = 'missing';
+                let values = {name: 'Eric'};
+
+                expect(formatMessage({
+                    id: id,
+                    defaultMessage: messages.missing,
+                }, values)).toBe(id);
+
+                expect(consoleError.calls.length).toBe(2);
+                expect(consoleError.calls[0].arguments[0]).toContain(
+                    `[React Intl] Missing message: "${id}" for locale: "${locale}"`
+                );
+                expect(consoleError.calls[1].arguments[0]).toContain(
+                    `[React Intl] Cannot format message: "${id}", using message id as fallback.`
                 );
             });
 
@@ -714,6 +752,8 @@ describe('format API', () => {
             });
 
             it('returns `defaultMessage` source when formatting errors and missing message', () => {
+                config.locale = 'en-US';
+
                 let {locale, messages} = config;
                 let id = 'missing';
 
