@@ -28,6 +28,8 @@ function createBundle() {
                 ],
                 plugins: [
                     'transform-object-rest-spread',
+                    'transform-es3-member-expression-literals',
+                    'transform-es3-property-literals',
                 ],
             }),
             npm({
