@@ -18,11 +18,21 @@ import {hasLocaleData} from '../locale-data-registry';
 const intlConfigPropNames = Object.keys(intlConfigPropTypes);
 const intlFormatPropNames = Object.keys(intlFormatPropTypes);
 
+// These are not a static property on the `IntlProvider` class so the intl
+// config values can be inherited from an <IntlProvider> ancestor.
+const defaultProps = {
+    formats : {},
+    messages: {},
+
+    defaultLocale : 'en',
+    defaultFormats: {},
+};
+
 export default class IntlProvider extends Component {
     constructor(props, context) {
         super(props, context);
 
-        invariant(Intl,
+        invariant(typeof Intl !== 'undefined',
             '[React Intl] The `Intl` APIs must be available in the runtime, ' +
             'and do not appear to be built-in. An `Intl` polyfill should be loaded.\n' +
             'See: http://formatjs.io/guides/runtime-environments/'
@@ -60,9 +70,12 @@ export default class IntlProvider extends Component {
     getConfig() {
         const {intl: intlContext = {}} = this.context;
 
-        // Build a whitelisted config object from `props` and `context.intl`, if
-        // an <IntlProvider> exists in the ancestry.
-        let config = filterProps(this.props, intlConfigPropNames, intlContext);
+        // Build a whitelisted config object from `props`, defaults, and
+        // `context.intl`, if an <IntlProvider> exists in the ancestry.
+        let config = {
+            ...defaultProps,
+            ...filterProps(this.props, intlConfigPropNames, intlContext),
+        };
 
         if (!hasLocaleData(config.locale)) {
             const {
@@ -87,7 +100,7 @@ export default class IntlProvider extends Component {
                 ...config,
                 locale  : defaultLocale,
                 formats : defaultFormats,
-                messages: IntlProvider.defaultProps.messages,
+                messages: defaultProps.messages,
             };
         }
 
@@ -143,12 +156,4 @@ IntlProvider.propTypes = {
     ...intlConfigPropTypes,
     children  : PropTypes.element.isRequired,
     initialNow: PropTypes.any,
-};
-
-IntlProvider.defaultProps = {
-    formats : {},
-    messages: {},
-
-    defaultLocale : 'en',
-    defaultFormats: {},
 };
