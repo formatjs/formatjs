@@ -5,11 +5,11 @@ node_js:
     - 0.12
     - 4.2
     - 5
-script: npm test
+script: npm run test:cov
 notifications:
     email:
         recipients:
-            - ypt-team@yahoo-inc.com
+            - edf@ericf.me
         on_success: change
         on_failure: always
 env:
