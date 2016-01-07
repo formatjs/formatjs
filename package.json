@@ -88,9 +88,10 @@
     "build:dist": "npm run build:dist:dev && npm run build:dist:prod",
     "build": "npm run build:data && npm run build:lib && npm run build:dist",
     "test:unit": "mocha --compilers js:babel-register --require babel-polyfill --require intl --recursive test/unit/",
-    "test:unit:watch": "npm run test:unit -- --watch --reporter min",
     "test:unit:cov": "babel-node $(npm bin)/isparta cover --report text --report html node_modules/mocha/bin/_mocha -- --require babel-polyfill --require intl --recursive test/unit/",
+    "test:unit:watch": "npm run test:unit -- --watch --reporter min",
     "test": "npm run test:unit",
+    "test:cov": "npm run test:unit:cov",
     "prepublish": "npm run lint && npm run clean && npm run build && npm test"
   }
 }
