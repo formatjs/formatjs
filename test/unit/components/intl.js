@@ -7,7 +7,22 @@ import IntlProvider from '../../../src/components/intl';
 
 expect.extend(expectJSX);
 
+const skipWhen = (shouldSkip, callback) => {
+    if (shouldSkip) {
+        callback(it.skip);
+    } else {
+        callback(it);
+    }
+};
+
 describe('<IntlProvider>', () => {
+    let immutableIntl;
+    try {
+        global.Intl = global.Intl;
+    } catch (e) {
+        immutableIntl = true;
+    }
+
     const INTL = global.Intl;
 
     const INTL_CONFIG_PROP_NAMES = Object.keys(intlConfigPropTypes);
@@ -44,7 +59,9 @@ describe('<IntlProvider>', () => {
     });
 
     afterEach(() => {
-        global.Intl = INTL;
+        if (!immutableIntl) {
+            global.Intl = INTL;
+        }
 
         consoleError.restore();
         dateNow.restore();
@@ -55,11 +72,14 @@ describe('<IntlProvider>', () => {
         expect(IntlProvider.displayName).toBeA('string');
     });
 
-    it('throws when `Intl` is missing from runtime', () => {
-        delete global.Intl;
-        expect(() => renderer.render(<IntlProvider />)).toThrow(
-            '[React Intl] The `Intl` APIs must be available in the runtime, and do not appear to be built-in. An `Intl` polyfill should be loaded.'
-        );
+    // If global.Intl is immutable, then skip this test.
+    skipWhen(immutableIntl, (it) => {
+        it('throws when `Intl` is missing from runtime', () => {
+            delete global.Intl;
+            expect(() => renderer.render(<IntlProvider />)).toThrow(
+                '[React Intl] The `Intl` APIs must be available in the runtime, and do not appear to be built-in. An `Intl` polyfill should be loaded.'
+            );
+        });
     });
 
     it('throws when no `children`', () => {
@@ -366,7 +386,6 @@ describe('<IntlProvider>', () => {
         const {intl} = renderer.getMountedInstance().getChildContext();
 
         expect(intl.now()).toBe(Date.now());
-        expect(dateNow.calls.length).toBe(2);
     });
 
     it('inherits `initialNow` from an <IntlProvider> ancestor', () => {
@@ -415,7 +434,6 @@ describe('<IntlProvider>', () => {
             expect(nowTwo).toNotEqual(nowOne);
             expect(nowOne).toBe(initialNow);
             expect(nowTwo).toBe(Date.now());
-            expect(dateNow.calls.length).toBe(2);
 
             renderer.unmount();
             done();
