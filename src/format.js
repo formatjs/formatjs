@@ -55,6 +55,15 @@ export function formatTime(config, state, value, options = {}) {
     let defaults        = format && getNamedFormat(formats, 'time', format);
     let filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, defaults);
 
+    // When no formatting options have been specified, default to outputting a
+    // time; e.g.: "9:42 AM".
+    if (Object.keys(filteredOptions).length === 0) {
+        filteredOptions = {
+            hour  : 'numeric',
+            minute: 'numeric',
+        };
+    }
+
     return state.getDateTimeFormat(locale, filteredOptions).format(date);
 }
 
