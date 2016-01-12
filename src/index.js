@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import allLocaleData from './locale-data/index';
+import allLocaleData from '../locale-data/index';
 import {addLocaleData} from './react-intl';
 
 export * from './react-intl';

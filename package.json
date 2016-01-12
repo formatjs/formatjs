@@ -21,9 +21,12 @@
     "type": "git",
     "url": "git@github.com:yahoo/react-intl.git"
   },
-  "main": "./lib/react-intl-with-locales.js",
-  "jsnext:main": "./src/react-intl.js",
-  "browser": "./lib/react-intl.js",
+  "main": "./lib/index.js",
+  "jsnext:main": "./lib/index.es.js",
+  "browser": {
+    "./locale-data/index": false,
+    "./locale-data/index.js": false
+  },
   "browserify-shim": {
     "react": "global:React"
   },
@@ -51,10 +54,9 @@
     "babelify": "^7.2.0",
     "browserify": "^12.0.1",
     "browserify-shim": "^3.8.11",
-    "es5-shim": "^4.1.10",
+    "es6-promise": "^3.0.2",
     "eslint": "^1.2.1",
     "eslint-plugin-react": "^3.2.3",
-    "exorcist": "^0.4.0",
     "expect": "^1.9.0",
     "expect-jsx": "^2.2.1",
     "express": "^4.13.3",
@@ -69,20 +71,21 @@
     "react-addons-test-utils": "^0.14.3",
     "react-dom": "^0.14.2",
     "rimraf": "^2.4.2",
-    "rollup": "^0.23.1",
+    "rollup": "^0.24.1",
     "rollup-plugin-babel": "^2.3.3",
     "rollup-plugin-commonjs": "^2.1.0",
+    "rollup-plugin-memory": "^1.0.0",
     "rollup-plugin-npm": "^1.1.0",
     "rollup-plugin-replace": "^1.1.0",
+    "rollup-plugin-uglify": "^0.1.0",
     "serialize-javascript": "^1.1.1",
-    "superagent": "^1.5.0",
-    "uglify-js": "^2.4.24"
+    "superagent": "^1.5.0"
   },
   "scripts": {
     "lint": "eslint src/ test/ scripts/ examples/",
-    "clean": "rimraf src/en.js src/locale-data/ coverage/ dist/ lib/",
-    "build:data": "babel-node scripts/build-locale-data",
-    "build:lib": "babel src/ --ignore src/locale-data/ --out-dir lib/",
+    "clean": "rimraf src/en.js coverage/ dist/ lib/ locale-data/",
+    "build:data": "babel-node scripts/build-data",
+    "build:lib": "babel-node scripts/build-lib",
     "build:dist:dev": "NODE_ENV=development babel-node scripts/build-dist",
     "build:dist:prod": "NODE_ENV=production babel-node scripts/build-dist",
     "build:dist": "npm run build:dist:dev && npm run build:dist:prod",

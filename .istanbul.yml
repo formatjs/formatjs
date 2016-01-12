@@ -1,4 +1,4 @@
 instrumentation:
     excludes:
+        - locale-data/*
         - src/en.js
-        - src/locale-data/*

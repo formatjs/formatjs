@@ -14,8 +14,8 @@
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "license": "BSD-3-Clause",
   "browser": {
-    "react-intl": "../../lib/react-intl.js",
-    "react-intl/locale-data/en": "../../lib/locale-data/en.js"
+    "react-intl": "../../lib/index.js",
+    "react-intl/locale-data/en": "../../locale-data/en.js"
   },
   "browserify-shim": {
     "react": "global:React",

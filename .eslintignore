@@ -3,5 +3,6 @@ examples/**/node_modules/**/*.js
 examples/**/build/**/*.js
 examples/hello-world/bundle.js
 lib/**/*.js
+locale-data/**/*.js
 src/en.js
 src/locale-data/*.js

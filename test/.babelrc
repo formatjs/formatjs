@@ -4,8 +4,6 @@
         "react"
     ],
     "plugins": [
-        ["react-intl", {
-            "messagesDir": "./build/messages/"
-        }]
+        "transform-object-rest-spread"
     ]
 }

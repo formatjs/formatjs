@@ -11,8 +11,10 @@ export function addLocaleData(data = []) {
     let locales = Array.isArray(data) ? data : [data];
 
     locales.forEach((localeData) => {
-        IntlMessageFormat.__addLocaleData(localeData);
-        IntlRelativeFormat.__addLocaleData(localeData);
+        if (localeData && localeData.locale) {
+            IntlMessageFormat.__addLocaleData(localeData);
+            IntlRelativeFormat.__addLocaleData(localeData);
+        }
     });
 }
 
