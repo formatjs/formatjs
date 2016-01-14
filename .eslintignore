@@ -1,3 +1,4 @@
+coverage/**/*.js
 dist/**/*.js
 examples/**/node_modules/**/*.js
 examples/**/build/**/*.js
