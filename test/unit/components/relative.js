@@ -196,7 +196,7 @@ describe('<FormattedRelative>', () => {
 
             renderer.unmount();
             done();
-        }, 1);
+        }, 10);
     });
 
     it('does not update when `updateInterval` prop is falsy', (done) => {
@@ -224,6 +224,6 @@ describe('<FormattedRelative>', () => {
 
             renderer.unmount();
             done();
-        }, 1);
+        }, 10);
     });
 });

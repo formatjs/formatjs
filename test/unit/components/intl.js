@@ -437,6 +437,6 @@ describe('<IntlProvider>', () => {
 
             renderer.unmount();
             done();
-        }, 1);
+        }, 10);
     });
 });
