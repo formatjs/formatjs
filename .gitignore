@@ -1,6 +1,6 @@
 coverage/
 dist/
 lib/
+locale-data/
 node_modules/
-src/locale-data/
 src/en.js

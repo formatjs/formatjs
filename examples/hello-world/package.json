@@ -12,7 +12,7 @@
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "license": "BSD-3-Clause",
   "browser": {
-    "react-intl": "../../lib/react-intl.js"
+    "react-intl": "../../lib/index.js"
   },
   "browserify-shim": {
     "react": "global:React",

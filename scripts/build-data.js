@@ -3,8 +3,9 @@ import * as p from 'path';
 import {sync as mkdirpSync} from 'mkdirp';
 import extractCLDRData from 'formatjs-extract-cldr-data';
 import serialize from 'serialize-javascript';
-import rollup from 'rollup';
-import uglify from 'uglify-js';
+import {rollup} from 'rollup';
+import memory from 'rollup-plugin-memory';
+import uglify from 'rollup-plugin-uglify';
 
 const DEFAULT_LOCALE = 'en';
 
@@ -24,41 +25,33 @@ const cldrDataByLang = [...cldrDataByLocale].reduce((map, [locale, data]) => {
 }, new Map());
 
 function createDataModule(localeData) {
-    const serializedLocaleData = serialize(localeData);
-
-    return {
-        es6: (
+    return (
 `// GENERATED FILE
-export default ${serializedLocaleData};
+export default ${serialize(localeData)};
 `
-        ),
-
-        commonjs: (
-`// GENERATED FILE
-module.exports = ${serializedLocaleData};
-`
-        ),
-    };
+    );
 }
 
-function generateUMDFile(srcFilename) {
-    const lang = p.basename(srcFilename, '.js');
+function writeUMDFile(filename, module) {
+    const lang = p.basename(filename, '.js');
 
-    return rollup.rollup({
-        entry: srcFilename,
+    return rollup({
+        entry: filename,
+        plugins: [
+            memory({
+                contents: module,
+            }),
+            uglify(),
+        ],
     })
     .then((bundle) => {
-        return bundle.generate({
+        return bundle.write({
+            dest      : filename,
             format    : 'umd',
             moduleName: `ReactIntlLocaleData.${lang}`,
         });
     })
-    .then(({code}) => {
-        return uglify.minify(code, {
-            fromString: true,
-            warnings  : false,
-        }).code;
-    });
+    .then(() => filename);
 }
 
 function writeFile(filename, contents) {
@@ -75,31 +68,17 @@ function writeFile(filename, contents) {
 
 // -----------------------------------------------------------------------------
 
-process.on('unhandledRejection', (reason) => {throw reason;});
-
-mkdirpSync('src/locale-data/');
-mkdirpSync('lib/locale-data/');
-mkdirpSync('dist/locale-data/');
+mkdirpSync('locale-data/');
 
 const defaultData = createDataModule(cldrDataByLocale.get(DEFAULT_LOCALE));
-writeFile(`src/${DEFAULT_LOCALE}.js`, defaultData.es6);
+writeFile(`src/${DEFAULT_LOCALE}.js`, defaultData);
 
 const allData = createDataModule([...cldrDataByLocale.values()]);
-writeFile('lib/locale-data/index.js', allData.commonjs);
-writeFile('src/locale-data/index.js', allData.es6)
-    .then(generateUMDFile)
-    .then((umdFile) => {
-        writeFile('dist/locale-data/index.js', umdFile);
-    });
+writeUMDFile('locale-data/index.js', allData);
 
 cldrDataByLang.forEach((cldrData, lang) => {
-    const data = createDataModule(cldrData);
-    writeFile(`lib/locale-data/${lang}.js`, data.commonjs);
-    writeFile(`src/locale-data/${lang}.js`, data.es6)
-        .then(generateUMDFile)
-        .then((umdFile) => {
-            writeFile(`dist/locale-data/${lang}.js`, umdFile);
-        });
+    writeUMDFile(`locale-data/${lang}.js`, createDataModule(cldrData));
 });
 
+process.on('unhandledRejection', (reason) => {throw reason;});
 console.log('Writing locale data files...');

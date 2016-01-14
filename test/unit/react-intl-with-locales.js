@@ -1,6 +1,6 @@
 import expect from 'expect';
 import * as ReactIntl from '../../src/react-intl';
-import * as ReactIntlWL from '../../src/react-intl-with-locales';
+import * as ReactIntlWL from '../../src/index';
 
 describe('react-intl-with-locales', () => {
     describe('exports', () => {

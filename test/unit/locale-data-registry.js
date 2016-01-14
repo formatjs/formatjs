@@ -2,7 +2,7 @@ import expect from 'expect';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 import * as registry from '../../src/locale-data-registry';
-import allLocaleData from '../../src/locale-data';
+import allLocaleData from '../../locale-data';
 import defaultLocaleData from '../../src/en';
 
 describe('locale data registry', () => {

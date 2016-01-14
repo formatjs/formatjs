@@ -1,11 +1,13 @@
 import * as p from 'path';
 import * as fs from 'fs';
-import rollup from 'rollup';
+import {rollup} from 'rollup';
 import babel from 'rollup-plugin-babel';
 import npm from 'rollup-plugin-npm';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
-import uglify from 'uglify-js';
+import uglify from 'rollup-plugin-uglify';
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 const copyright = (
 `/*
@@ -16,92 +18,51 @@ const copyright = (
 `
 );
 
-function createBundle() {
-    let bundle = rollup.rollup({
-        entry: p.resolve('src/react-intl.js'),
-        plugins: [
-            babel({
-                babelrc: false,
-                presets: [
-                    'es2015-rollup',
-                    'react',
-                ],
-                plugins: [
-                    'transform-object-rest-spread',
-                    'transform-es3-member-expression-literals',
-                    'transform-es3-property-literals',
-                ],
-            }),
-            npm({
-                jsnext: true,
-                skip: [
-                    'react',
-                ],
-            }),
-            commonjs({
-                sourceMap: true,
-            }),
-            replace({
-                'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-            }),
+const entry = p.resolve('src/react-intl.js');
+const dest  = p.resolve(`dist/react-intl.${isProduction ? 'min.js' : 'js'}`);
+
+const bundleConfig = {
+    dest,
+    format: 'umd',
+    moduleName: 'ReactIntl',
+    banner: copyright,
+    sourceMap: true,
+    globals: {
+        react: 'React',
+    },
+};
+
+let babelConfig = JSON.parse(fs.readFileSync('src/.babelrc', 'utf8'));
+babelConfig.babelrc = false;
+babelConfig.presets = babelConfig.presets.map((preset) => {
+    return preset === 'es2015' ? 'es2015-rollup' : preset;
+});
+
+let plugins = [
+    babel(babelConfig),
+    npm({
+        jsnext: true,
+        skip: [
+            'react',
         ],
-    });
-
-    // Cast as native Promise.
-    return Promise.resolve(bundle);
-}
-
-function writeBundle(bundle, {minify = false}) {
-    const filename = `react-intl${minify ? '.min.js' : '.js'}`;
-    const dest = p.resolve(`dist/${filename}`);
-
-    let result = bundle.generate({
-        format: 'umd',
-        moduleName: 'ReactIntl',
-        banner: copyright,
+    }),
+    commonjs({
         sourceMap: true,
-        sourceMapFile: dest,
-        globals: {
-            react: 'React',
-        },
-    });
+    }),
+    replace({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    }),
+];
 
-    if (minify) {
-        result = uglify.minify(result.code, {
-            fromString: true,
-            inSourceMap: result.map,
-            outSourceMap: `${filename}.map`,
+if (isProduction) {
+    plugins.push(
+        uglify({
             warnings: false,
-        });
-
-        result.map = JSON.parse(result.map);
-    } else {
-        result.code += `\n//# sourceMappingURL=${filename}.map`;
-    }
-
-    let {code, map} = result;
-
-    // Tweak source paths.
-    map.sources = map.sources.map((path) => p.relative('..', path));
-    map.sourceRoot = 'react-intl:///';
-
-    const throwIfError = (err) => {
-        if (err) {
-            throw err;
-        }
-    };
-
-    fs.writeFile(dest, code, throwIfError);
-    fs.writeFile(`${dest}.map`, JSON.stringify(map), throwIfError);
-
-    console.log(`Writing: ${p.relative('.', dest)}`);
-    console.log(`Writing: ${p.relative('.', `${dest}.map`)}`);
+        })
+    );
 }
 
-// -----------------------------------------------------------------------------
+let bundle = Promise.resolve(rollup({entry, plugins}));
+bundle.then(({write}) => write(bundleConfig));
 
 process.on('unhandledRejection', (reason) => {throw reason;});
-
-createBundle().then((bundle) => {
-    writeBundle(bundle, {minify: process.env.NODE_ENV === 'production'});
-});
