@@ -58,5 +58,5 @@ export default function injectIntl(WrappedComponent, options = {}) {
 
     InjectIntl.WrappedComponent = WrappedComponent;
 
-    return hoistStatics(WrappedComponent, InjectIntl);
+    return hoistStatics(InjectIntl, WrappedComponent);
 }
