@@ -11,6 +11,7 @@ import React, {Component} from 'react';
 import invariant from 'invariant';
 import {intlShape} from './types';
 import {invariantIntlContext} from './utils';
+import hoistStatics from 'hoist-non-react-statics';
 
 function getDisplayName(Component) {
     return Component.displayName || Component.name || 'Component';
@@ -57,5 +58,5 @@ export default function injectIntl(WrappedComponent, options = {}) {
 
     InjectIntl.WrappedComponent = WrappedComponent;
 
-    return InjectIntl;
+    return hoistStatics(WrappedComponent, InjectIntl);
 }
