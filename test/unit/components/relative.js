@@ -199,6 +199,29 @@ describe('<FormattedRelative>', () => {
         }, 10);
     });
 
+    it('updates at maximum of `updateInterval` with a string `value`', (done) => {
+        const {intl} = intlProvider.getChildContext();
+        const date = new Date().toString();
+
+        // `toString()` rounds the date to the nearest second, this makes sure
+        // `date` and `now` are equal.
+        spyOn(intl, 'now').andCall(Date.now);
+
+        // Force scheduler by rendering twice with different props because
+        renderer.render(<FormattedRelative value={date} updateInterval={10} />, {intl});
+
+        // Shallow Renderer doesn't call `componentDidMount()`.
+        renderer.getMountedInstance().componentDidMount();
+
+        setTimeout(() => {
+            // Make sure setTimeout wasn't called with `NaN`, which is like `0`.
+            expect(intl.now.calls.length).toBe(1);
+
+            renderer.unmount();
+            done();
+        }, 10);
+    });
+
     it('does not update when `updateInterval` prop is falsy', (done) => {
         const {intl} = intlProvider.getChildContext();
         const date = new Date();

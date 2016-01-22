@@ -69,7 +69,8 @@ export default class FormattedRelative extends Component {
             return;
         }
 
-        let delta = Number(props.value) - state.now;
+        let time  = new Date(props.value).getTime();
+        let delta = time - state.now;
         let units = props.units || selectUnits(delta);
 
         let unitDelay     = getUnitDelay(units);
