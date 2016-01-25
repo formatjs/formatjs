@@ -1,4 +1,6 @@
 instrumentation:
     excludes:
+        - dist/*
+        - lib/*
         - locale-data/*
         - src/en.js
