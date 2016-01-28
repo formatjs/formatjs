@@ -154,6 +154,9 @@ IntlProvider.childContextTypes = {
 
 IntlProvider.propTypes = {
     ...intlConfigPropTypes,
-    children  : PropTypes.element.isRequired,
+    children  : PropTypes.oneOfType([
+        PropTypes.arrayOf(_react.PropTypes.node),
+        PropTypes.node
+    ]).isRequired,
     initialNow: PropTypes.any,
 };
