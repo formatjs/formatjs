@@ -154,9 +154,16 @@ export default function () {
                     file.metadata['react-intl'] = {messages: descriptors};
 
                     if (opts.messagesDir && descriptors.length > 0) {
+                        // Make sure the relative path is "absolute" before
+                        // joining it with the `messagesDir`.
+                        let relativePath = p.join(
+                            path.sep,
+                            p.relative(process.cwd(), filename)
+                        );
+
                         let messagesFilename = p.join(
                             opts.messagesDir,
-                            p.dirname(p.relative(process.cwd(), filename)),
+                            p.dirname(relativePath),
                             basename + '.json'
                         );
 
