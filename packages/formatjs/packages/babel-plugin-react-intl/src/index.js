@@ -157,7 +157,7 @@ export default function () {
                         // Make sure the relative path is "absolute" before
                         // joining it with the `messagesDir`.
                         let relativePath = p.join(
-                            path.sep,
+                            p.sep,
                             p.relative(process.cwd(), filename)
                         );
 
