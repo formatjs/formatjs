@@ -14,7 +14,7 @@ $ npm install babel-plugin-react-intl
 
 **This Babel plugin only visits ES6 modules which `import` React Intl.**
 
-The default message descriptors for the app's default language will be extracted from: `defineMessages()`, `<FormattedMessage>`, and `<FormattedHTMLMeessage>`; all of which are named exports of the React Intl package.
+The default message descriptors for the app's default language will be extracted from: `defineMessages()`, `<FormattedMessage>`, and `<FormattedHTMLMessage>`; all of which are named exports of the React Intl package.
 
 ### Via `.babelrc` (Recommended)
 
