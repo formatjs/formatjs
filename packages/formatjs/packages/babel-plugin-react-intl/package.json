@@ -27,7 +27,8 @@
     "lint": "eslint src/",
     "clean": "rimraf lib/",
     "build": "babel src/ --out-dir lib/",
-    "prepublish": "npm run lint && npm run clean && npm run build"
+    "preversion": "npm run lint && npm run clean && npm run build",
+    "prepublish": "npm run clean && npm run build"
   },
   "keywords": [
     "babel-plugin",
