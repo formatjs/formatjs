@@ -76,6 +76,14 @@ Check out the official CLDR documentation from unicode.org http://www.unicode.or
 
 _Note:  You could also write ` =0 { No comments yet }`_
 
+
+Safari Compatibility
+---------
+
+As the "Intl" window object is not available in Safari, enabling compatibility requires the "intl" polyfill https://www.npmjs.com/package/intl
+*Note you will need to load in the base data for the languages you intend to use from this polyfill as well as from react-intl
+
+
 Contribute
 ---------
 
