@@ -1,5 +1,4 @@
 coverage/
 node_modules/
 test/
-tmp/
-Gruntfile.js
+.*
