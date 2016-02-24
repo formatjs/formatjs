@@ -23,7 +23,10 @@ var PLURAL_LOCALES_HASH = require('cldr-core/supplemental/plurals.json')
     .supplemental['plurals-type-cardinal'];
 
 var DATE_FIELDS_LOCALES_HASH = glob.sync('*/dateFields.json', {
-    cwd: p.resolve(__dirname, '..', 'node_modules', 'cldr-dates-full', 'main'),
+    cwd: p.resolve(
+        p.dirname(require.resolve('cldr-dates-full/package.json')),
+        './main'
+    ),
 }).reduce(function (hash, filename) {
     hash[p.dirname(filename)] = true;
     return hash;
