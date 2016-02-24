@@ -81,13 +81,9 @@ Boolean for whether or not `fields` should be extracted for the specified `local
 
 ## Updating the CLDR Data
 
-The CLDR version and data used by this package can be easily updated by running the Grunt task:
+The CLDR version and data used by this package can be easily updated by changing the `cldr-*` package versions in `package.json`.
 
-```shell
-$ grunt update-cldr-data
-```
-
-Running this task will download the latest version of the CLDR's official JSON files and copy the files required by this package into the `data/` directory.
+**Note:** It's recommended to keep the package versions exact and **not** use `~` or `^` modifiers.
 
 
 ## License
