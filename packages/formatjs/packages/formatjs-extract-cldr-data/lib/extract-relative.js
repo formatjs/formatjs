@@ -5,7 +5,7 @@
  */
 'use strict';
 
-var path = require('path');
+var p = require('path');
 
 var getParentLocale = require('./locales').getParentLocale;
 var hasDateFields   = require('./locales').hasDateFields;
@@ -120,7 +120,7 @@ module.exports = function extractRelativeFields(locales) {
 };
 
 function loadRelativeFields(locale) {
-    var filename = path.join('..', 'data', 'main', locale, 'dateFields.json');
+    var filename = p.join('cldr-dates-full', 'main', locale, 'dateFields.json');
     var fields   = require(filename).main[locale].dates.fields;
 
     // Reduce the date fields data down to whitelist of fields needed in the

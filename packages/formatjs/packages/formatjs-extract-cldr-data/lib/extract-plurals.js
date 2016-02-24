@@ -15,8 +15,8 @@ var normalizeLocale = require('./locales').normalizeLocale;
 module.exports = function extractPluralRules(locales) {
     // Force make-plural to use our CLDR data.
     makePlural.load(
-        require('../data/supplemental/plurals.json'),
-        require('../data/supplemental/ordinals.json')
+        require('cldr-core/supplemental/plurals.json'),
+        require('cldr-core/supplemental/ordinals.json')
     );
 
     // The CLDR states that the "root" locale's data should be used to fill in

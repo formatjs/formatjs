@@ -5,8 +5,8 @@
  */
 'use strict';
 
+var p    = require('path');
 var glob = require('glob');
-var path = require('path');
 
 exports.getAllLocales   = getAllLocales;
 exports.getParentLocale = getParentLocale;
@@ -16,16 +16,16 @@ exports.normalizeLocale = normalizeLocale;
 
 // These are the exceptions to the default algorithm for determining a locale's
 // parent locale.
-var PARENT_LOCALES_HASH = require('../data/supplemental/parentLocales.json')
+var PARENT_LOCALES_HASH = require('cldr-core/supplemental/parentLocales.json')
     .supplemental.parentLocales.parentLocale;
 
-var PLURAL_LOCALES_HASH = require('../data/supplemental/plurals.json')
+var PLURAL_LOCALES_HASH = require('cldr-core/supplemental/plurals.json')
     .supplemental['plurals-type-cardinal'];
 
 var DATE_FIELDS_LOCALES_HASH = glob.sync('*/dateFields.json', {
-    cwd: path.resolve(__dirname, '..', 'data', 'main'),
+    cwd: p.resolve(__dirname, '..', 'node_modules', 'cldr-dates-full', 'main'),
 }).reduce(function (hash, filename) {
-    hash[path.dirname(filename)] = true;
+    hash[p.dirname(filename)] = true;
     return hash;
 }, {});
 
@@ -36,6 +36,12 @@ var ALL_LOCALES_HASH =
     Object.keys(PARENT_LOCALES_HASH)
     .concat(Object.keys(PLURAL_LOCALES_HASH))
     .concat(Object.keys(DATE_FIELDS_LOCALES_HASH))
+    .map(function (locale) {
+        if (locale === 'en-US-POSIX') {
+            return 'en-US';
+        }
+        return locale;
+    })
     .sort()
     .reduce(function (hash, locale) {
         hash[locale.toLowerCase()] = locale;
@@ -47,7 +53,9 @@ function getAllLocales() {
 }
 
 function getParentLocale(locale) {
-    locale = normalizeLocale(locale);
+    try {
+        locale = normalizeLocale(locale);
+    } catch (e) {}
 
     // If we don't know about the locale, or if it's the "root" locale, then its
     // parent should be `undefined`.
@@ -88,5 +96,5 @@ function normalizeLocale(locale) {
         return normalizedLocale;
     }
 
-    throw new Error('No locale data for: "' + locale + '"');
+    return locale;
 }
