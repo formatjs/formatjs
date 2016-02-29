@@ -44,7 +44,11 @@ export default function (ReactIntl) {
             renderer.render(el, intlProvider.getChildContext());
             expect(renderer.getRenderOutput()).toEqualJSX(
                 <span>
-                    {`${hours > 12 ? (hours % 12) : hours}:${minutes} ${hours < 12 ? 'AM' : 'PM'}`}
+                    {
+                        `${hours > 12 ? (hours % 12) : hours}:` +
+                        `${minutes < 10 ? `0${minutes}` : minutes} ` +
+                        `${hours < 12 ? 'AM' : 'PM'}`
+                    }
                 </span>
             );
         });
