@@ -64,7 +64,7 @@
     "express": "^4.13.3",
     "formatjs-extract-cldr-data": "^1.1.1",
     "glob": "^6.0.1",
-    "intl": "^1.0.0",
+    "intl": "1.0.x",
     "intl-messageformat-parser": "^1.2.0",
     "isparta": "^4.0.0",
     "mkdirp": "^0.5.1",
