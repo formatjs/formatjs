@@ -96,11 +96,16 @@ describe('<FormattedNumber>', () => {
         );
     });
 
-    it('throws on invalid Intl.NumberFormat options', () => {
+    it('fallsback and warns on invalid Intl.NumberFormat options', () => {
         const {intl} = intlProvider.getChildContext();
         const el = <FormattedNumber value={0} style="invalid" />;
 
-        expect(() => renderer.render(el, {intl})).toThrow();
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <span>{String(0)}</span>
+        );
+
+        expect(consoleError.calls.length).toBeGreaterThan(0);
     });
 
     it('accepts `format` prop', () => {

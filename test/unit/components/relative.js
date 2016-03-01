@@ -43,9 +43,15 @@ describe('<FormattedRelative>', () => {
     it('requires a finite `value` prop', () => {
         const {intl} = intlProvider.getChildContext();
 
-        expect(() => renderer.render(<FormattedRelative />, {intl})).toThrow(RangeError);
+        renderer.render(<FormattedRelative value={0} />, {intl});
         expect(isFinite(0)).toBe(true);
-        expect(() => renderer.render(<FormattedRelative value={0} />, {intl})).toNotThrow();
+        expect(consoleError.calls.length).toBe(0);
+
+        renderer.render(<FormattedRelative />, {intl});
+        expect(consoleError.calls.length).toBe(1);
+        expect(consoleError.calls[0].arguments[0]).toContain(
+            '[React Intl] Error formatting relative time.\nRangeError'
+        );
     });
 
     it('renders a formatted relative time in a <span>', () => {
@@ -107,11 +113,16 @@ describe('<FormattedRelative>', () => {
         );
     });
 
-    it('throws on invalid IntlRelativeFormat options', () => {
+    it('fallsback and warns on invalid IntlRelativeFormat options', () => {
         const {intl} = intlProvider.getChildContext();
         const el = <FormattedRelative value={0} units="invalid" />;
 
-        expect(() => renderer.render(el, {intl})).toThrow();
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <span>{String(new Date(0))}</span>
+        );
+
+        expect(consoleError.calls.length).toBeGreaterThan(0);
     });
 
     it('accepts `format` prop', () => {

@@ -45,7 +45,7 @@ export default function (ReactIntl) {
             expect(renderer.getRenderOutput()).toEqualJSX(
                 <span>
                     {
-                        `${hours > 12 ? (hours % 12) : hours}:` +
+                        `${hours > 12 ? (hours % 12) : (hours || '12')}:` +
                         `${minutes < 10 ? `0${minutes}` : minutes} ` +
                         `${hours < 12 ? 'AM' : 'PM'}`
                     }
