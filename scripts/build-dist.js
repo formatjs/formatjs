@@ -2,7 +2,7 @@ import * as p from 'path';
 import * as fs from 'fs';
 import {rollup} from 'rollup';
 import babel from 'rollup-plugin-babel';
-import npm from 'rollup-plugin-npm';
+import nodeResolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
 import uglify from 'rollup-plugin-uglify';
@@ -40,7 +40,7 @@ babelConfig.presets = babelConfig.presets.map((preset) => {
 
 let plugins = [
     babel(babelConfig),
-    npm({
+    nodeResolve({
         jsnext: true,
         skip: [
             'react',
