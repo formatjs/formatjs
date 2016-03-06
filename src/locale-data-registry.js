@@ -19,6 +19,20 @@ export function addLocaleData(data = []) {
 }
 
 export function hasLocaleData(locale) {
+    let localeParts = (locale || '').split('-');
+
+    while (localeParts.length > 0) {
+        if (hasIMFAndIRFLocaleData(localeParts.join('-'))) {
+            return true;
+        }
+
+        localeParts.pop();
+    }
+
+    return false;
+}
+
+function hasIMFAndIRFLocaleData(locale) {
     let normalizedLocale = locale && locale.toLowerCase();
 
     return !!(
