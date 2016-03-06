@@ -9,7 +9,6 @@ IntlMessageFormat.__addLocaleData({"locale":"es-CU","parentLocale":"es-419"});
 IntlMessageFormat.__addLocaleData({"locale":"es-DO","parentLocale":"es-419"});
 IntlMessageFormat.__addLocaleData({"locale":"es-EA","parentLocale":"es"});
 IntlMessageFormat.__addLocaleData({"locale":"es-EC","parentLocale":"es-419"});
-IntlMessageFormat.__addLocaleData({"locale":"es-ES","parentLocale":"es"});
 IntlMessageFormat.__addLocaleData({"locale":"es-GQ","parentLocale":"es"});
 IntlMessageFormat.__addLocaleData({"locale":"es-GT","parentLocale":"es-419"});
 IntlMessageFormat.__addLocaleData({"locale":"es-HN","parentLocale":"es-419"});

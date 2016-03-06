@@ -2,4 +2,3 @@ IntlMessageFormat.__addLocaleData({"locale":"ff","pluralRuleFunction":function (
 IntlMessageFormat.__addLocaleData({"locale":"ff-CM","parentLocale":"ff"});
 IntlMessageFormat.__addLocaleData({"locale":"ff-GN","parentLocale":"ff"});
 IntlMessageFormat.__addLocaleData({"locale":"ff-MR","parentLocale":"ff"});
-IntlMessageFormat.__addLocaleData({"locale":"ff-SN","parentLocale":"ff"});

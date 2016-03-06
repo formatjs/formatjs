@@ -2,10 +2,8 @@ IntlMessageFormat.__addLocaleData({"locale":"sr","pluralRuleFunction":function (
 IntlMessageFormat.__addLocaleData({"locale":"sr-Cyrl","parentLocale":"sr"});
 IntlMessageFormat.__addLocaleData({"locale":"sr-Cyrl-BA","parentLocale":"sr-Cyrl"});
 IntlMessageFormat.__addLocaleData({"locale":"sr-Cyrl-ME","parentLocale":"sr-Cyrl"});
-IntlMessageFormat.__addLocaleData({"locale":"sr-Cyrl-RS","parentLocale":"sr-Cyrl"});
 IntlMessageFormat.__addLocaleData({"locale":"sr-Cyrl-XK","parentLocale":"sr-Cyrl"});
 IntlMessageFormat.__addLocaleData({"locale":"sr-Latn","pluralRuleFunction":function (n,ord){if(ord)return"other";return"other"}});
 IntlMessageFormat.__addLocaleData({"locale":"sr-Latn-BA","parentLocale":"sr-Latn"});
 IntlMessageFormat.__addLocaleData({"locale":"sr-Latn-ME","parentLocale":"sr-Latn"});
-IntlMessageFormat.__addLocaleData({"locale":"sr-Latn-RS","parentLocale":"sr-Latn"});
 IntlMessageFormat.__addLocaleData({"locale":"sr-Latn-XK","parentLocale":"sr-Latn"});

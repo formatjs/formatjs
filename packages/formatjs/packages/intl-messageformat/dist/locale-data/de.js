@@ -2,6 +2,5 @@ IntlMessageFormat.__addLocaleData({"locale":"de","pluralRuleFunction":function (
 IntlMessageFormat.__addLocaleData({"locale":"de-AT","parentLocale":"de"});
 IntlMessageFormat.__addLocaleData({"locale":"de-BE","parentLocale":"de"});
 IntlMessageFormat.__addLocaleData({"locale":"de-CH","parentLocale":"de"});
-IntlMessageFormat.__addLocaleData({"locale":"de-DE","parentLocale":"de"});
 IntlMessageFormat.__addLocaleData({"locale":"de-LI","parentLocale":"de"});
 IntlMessageFormat.__addLocaleData({"locale":"de-LU","parentLocale":"de"});

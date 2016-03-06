@@ -13,7 +13,6 @@ IntlMessageFormat.__addLocaleData({"locale":"fr-CI","parentLocale":"fr"});
 IntlMessageFormat.__addLocaleData({"locale":"fr-CM","parentLocale":"fr"});
 IntlMessageFormat.__addLocaleData({"locale":"fr-DJ","parentLocale":"fr"});
 IntlMessageFormat.__addLocaleData({"locale":"fr-DZ","parentLocale":"fr"});
-IntlMessageFormat.__addLocaleData({"locale":"fr-FR","parentLocale":"fr"});
 IntlMessageFormat.__addLocaleData({"locale":"fr-GA","parentLocale":"fr"});
 IntlMessageFormat.__addLocaleData({"locale":"fr-GF","parentLocale":"fr"});
 IntlMessageFormat.__addLocaleData({"locale":"fr-GN","parentLocale":"fr"});

@@ -2,4 +2,3 @@ IntlMessageFormat.__addLocaleData({"locale":"so","pluralRuleFunction":function (
 IntlMessageFormat.__addLocaleData({"locale":"so-DJ","parentLocale":"so"});
 IntlMessageFormat.__addLocaleData({"locale":"so-ET","parentLocale":"so"});
 IntlMessageFormat.__addLocaleData({"locale":"so-KE","parentLocale":"so"});
-IntlMessageFormat.__addLocaleData({"locale":"so-SO","parentLocale":"so"});
