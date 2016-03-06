@@ -28,6 +28,23 @@ const defaultProps = {
     defaultFormats: {},
 };
 
+// Creating `Intl*` formatters is expensive so these format caches memoize the
+// `Intl*` constructors.
+let memoizedIntlConstructors;
+const getMemoizedIntlConstructors = () => {
+    if (!memoizedIntlConstructors) {
+        memoizedIntlConstructors = {
+            getDateTimeFormat: memoizeIntlConstructor(Intl.DateTimeFormat),
+            getNumberFormat  : memoizeIntlConstructor(Intl.NumberFormat),
+            getMessageFormat : memoizeIntlConstructor(IntlMessageFormat),
+            getRelativeFormat: memoizeIntlConstructor(IntlRelativeFormat),
+            getPluralFormat  : memoizeIntlConstructor(IntlPluralFormat),
+        };
+    }
+
+    return memoizedIntlConstructors;
+};
+
 export default class IntlProvider extends Component {
     constructor(props, context) {
         super(props, context);
@@ -51,14 +68,7 @@ export default class IntlProvider extends Component {
         }
 
         this.state = {
-            // Creating `Intl*` formatters is expensive so these format caches
-            // memoize the `Intl*` constructors and have the same lifecycle as
-            // this IntlProvider instance.
-            getDateTimeFormat: memoizeIntlConstructor(Intl.DateTimeFormat),
-            getNumberFormat  : memoizeIntlConstructor(Intl.NumberFormat),
-            getMessageFormat : memoizeIntlConstructor(IntlMessageFormat),
-            getRelativeFormat: memoizeIntlConstructor(IntlRelativeFormat),
-            getPluralFormat  : memoizeIntlConstructor(IntlPluralFormat),
+            ...getMemoizedIntlConstructors(),
 
             // Wrapper to provide stable "now" time for initial render.
             now: () => {
