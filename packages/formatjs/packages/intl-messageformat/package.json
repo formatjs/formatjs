@@ -49,7 +49,7 @@
     "grunt-contrib-copy": "^0.8.0",
     "grunt-contrib-jshint": "^0.11.0",
     "grunt-contrib-uglify": "^0.8.0",
-    "grunt-extract-cldr-data": "^2.1.1",
+    "grunt-extract-cldr-data": "^3.0.0",
     "grunt-json-remove-fields": "git://github.com/ericf/grunt-json-remove-fields#improve-files-and-output",
     "grunt-saucelabs": "^8.4.1",
     "intl": "^0.1.4",
