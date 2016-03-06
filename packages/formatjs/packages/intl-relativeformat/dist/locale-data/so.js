@@ -2,4 +2,3 @@ IntlRelativeFormat.__addLocaleData({"locale":"so","pluralRuleFunction":function 
 IntlRelativeFormat.__addLocaleData({"locale":"so-DJ","parentLocale":"so"});
 IntlRelativeFormat.__addLocaleData({"locale":"so-ET","parentLocale":"so"});
 IntlRelativeFormat.__addLocaleData({"locale":"so-KE","parentLocale":"so"});
-IntlRelativeFormat.__addLocaleData({"locale":"so-SO","parentLocale":"so"});
