@@ -32,8 +32,8 @@
   },
   "dependencies": {
     "intl-format-cache": "^2.0.5",
-    "intl-messageformat": "^1.2.0",
-    "intl-relativeformat": "^1.2.0",
+    "intl-messageformat": "^1.3.0",
+    "intl-relativeformat": "^1.3.0",
     "invariant": "^2.1.1"
   },
   "peerDependencies": {
