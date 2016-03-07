@@ -49,47 +49,61 @@ export default class FormattedMessage extends Component {
             children,
         } = this.props;
 
-        // Creates a token with a random UID that should not be guessable or
-        // conflict with other parts of the `message` string.
-        let uid = Math.floor(Math.random() * 0x10000000000).toString(16);
-        let tokenRegexp = new RegExp(`(@__ELEMENT-${uid}-\\d+__@)`, 'g');
+        let tokenRegexp;
+        let tokenizedValues;
+        let elements;
 
-        let generateToken = (() => {
-            let counter = 0;
-            return () => `@__ELEMENT-${uid}-${counter += 1}__@`;
-        })();
+        let hasValues = values && Object.keys(values).length > 0;
+        if (hasValues) {
+            // Creates a token with a random UID that should not be guessable or
+            // conflict with other parts of the `message` string.
+            let uid = Math.floor(Math.random() * 0x10000000000).toString(16);
 
-        let tokenizedValues = {};
-        let elements        = {};
+            let generateToken = (() => {
+                let counter = 0;
+                return () => `@__ELEMENT-${uid}-${counter += 1}__@`;
+            })();
 
-        // Iterates over the `props` to keep track of any React Element values
-        // so they can be represented by the `token` as a placeholder when the
-        // `message` is formatted. This allows the formatted message to then be
-        // broken-up into parts with references to the React Elements inserted
-        // back in.
-        Object.keys(values).forEach((name) => {
-            let value = values[name];
+            tokenRegexp     = new RegExp(`(@__ELEMENT-${uid}-\\d+__@)`, 'g');
+            tokenizedValues = {};
+            elements        = {};
 
-            if (isValidElement(value)) {
-                let token = generateToken();
-                tokenizedValues[name] = token;
-                elements[token]       = value;
-            } else {
-                tokenizedValues[name] = value;
-            }
-        });
+            // Iterates over the `props` to keep track of any React Element
+            // values so they can be represented by the `token` as a placeholder
+            // when the `message` is formatted. This allows the formatted
+            // message to then be broken-up into parts with references to the
+            // React Elements inserted back in.
+            Object.keys(values).forEach((name) => {
+                let value = values[name];
+
+                if (isValidElement(value)) {
+                    let token = generateToken();
+                    tokenizedValues[name] = token;
+                    elements[token]       = value;
+                } else {
+                    tokenizedValues[name] = value;
+                }
+            });
+        }
 
         let descriptor       = {id, description, defaultMessage};
-        let formattedMessage = formatMessage(descriptor, tokenizedValues);
+        let formattedMessage = formatMessage(descriptor, tokenizedValues || values);
 
-        // Split the message into parts so the React Element values captured
-        // above can be inserted back into the rendered message. This approach
-        // allows messages to render with React Elements while keeping React's
-        // virtual diffing working properly.
-        let nodes = formattedMessage
-            .split(tokenRegexp)
-            .filter((part) => !!part)
-            .map((part) => elements[part] || part);
+        let nodes;
+
+        let hasElements = elements && Object.keys(elements).length > 0;
+        if (hasElements) {
+            // Split the message into parts so the React Element values captured
+            // above can be inserted back into the rendered message. This
+            // approach allows messages to render with React Elements while
+            // keeping React's virtual diffing working properly.
+            nodes = formattedMessage
+                .split(tokenRegexp)
+                .filter((part) => !!part)
+                .map((part) => elements[part] || part);
+        } else {
+            nodes = [formattedMessage];
+        }
 
         if (typeof children === 'function') {
             return children(...nodes);
