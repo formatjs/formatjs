@@ -35,9 +35,15 @@ describe('<FormattedDate>', () => {
     it('requires a finite `value` prop', () => {
         const {intl} = intlProvider.getChildContext();
 
-        expect(() => renderer.render(<FormattedDate />, {intl})).toThrow(RangeError);
+        renderer.render(<FormattedDate value={0} />, {intl});
         expect(isFinite(0)).toBe(true);
-        expect(() => renderer.render(<FormattedDate value={0} />, {intl})).toNotThrow();
+        expect(consoleError.calls.length).toBe(0);
+
+        renderer.render(<FormattedDate />, {intl});
+        expect(consoleError.calls.length).toBe(1);
+        expect(consoleError.calls[0].arguments[0]).toContain(
+            '[React Intl] Error formatting date.\nRangeError'
+        );
     });
 
     it('renders a formatted date in a <span>', () => {
@@ -99,11 +105,16 @@ describe('<FormattedDate>', () => {
         );
     });
 
-    it('throws on invalid Intl.DateTimeFormat options', () => {
+    it('fallsback and warns on invalid Intl.DateTimeFormat options', () => {
         const {intl} = intlProvider.getChildContext();
         const el = <FormattedDate value={0} year="invalid" />;
 
-        expect(() => renderer.render(el, {intl})).toThrow();
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <span>{String(new Date(0))}</span>
+        );
+
+        expect(consoleError.calls.length).toBeGreaterThan(0);
     });
 
     it('accepts `format` prop', () => {

@@ -100,13 +100,18 @@ describe('format API', () => {
             formatDate = f.formatDate.bind(null, config, state);
         });
 
-        it('throws when no value is provided', () => {
-            expect(formatDate).toThrow();
+        it('fallsback and warns when no value is provided', () => {
+            expect(formatDate()).toBe('Invalid Date');
+            expect(consoleError.calls.length).toBe(1);
+            expect(consoleError.calls[0].arguments[0]).toContain(
+                '[React Intl] Error formatting date.\nRangeError'
+            );
         });
 
-        it('throws when a non-finite value is provided', () => {
-            expect(() => formatDate(NaN)).toThrow();
-            expect(() => formatDate('')).toThrow();
+        it('fallsback and warns when a non-finite value is provided', () => {
+            expect(formatDate(NaN)).toBe('Invalid Date');
+            expect(formatDate('')).toBe('Invalid Date');
+            expect(consoleError.calls.length).toBe(2);
         });
 
         it('formats falsy finite values', () => {
@@ -137,8 +142,12 @@ describe('format API', () => {
                 expect(() => formatDate(0, {year: 'numeric'})).toNotThrow();
             });
 
-            it('throws on invalid Intl.DateTimeFormat options', () => {
-                expect(() => formatDate(0, {year: 'invalid'})).toThrow();
+            it('fallsback and warns on invalid Intl.DateTimeFormat options', () => {
+                expect(formatDate(0, {year: 'invalid'})).toBe(String(new Date(0)));
+                expect(consoleError.calls.length).toBe(1);
+                expect(consoleError.calls[0].arguments[0]).toContain(
+                    '[React Intl] Error formatting date.\nRangeError'
+                );
             });
 
             it('uses configured named formats', () => {
@@ -193,13 +202,18 @@ describe('format API', () => {
             formatTime = f.formatTime.bind(null, config, state);
         });
 
-        it('throws when no value is provided', () => {
-            expect(formatTime).toThrow();
+        it('fallsback and warns when no value is provided', () => {
+            expect(formatTime()).toBe('Invalid Date');
+            expect(consoleError.calls.length).toBe(1);
+            expect(consoleError.calls[0].arguments[0]).toContain(
+                '[React Intl] Error formatting time.\nRangeError'
+            );
         });
 
-        it('throws when a non-finite value is provided', () => {
-            expect(() => formatTime(NaN)).toThrow();
-            expect(() => formatTime('')).toThrow();
+        it('fallsback and warns when a non-finite value is provided', () => {
+            expect(formatTime(NaN)).toBe('Invalid Date');
+            expect(formatTime('')).toBe('Invalid Date');
+            expect(consoleError.calls.length).toBe(2);
         });
 
         it('formats falsy finite values', () => {
@@ -230,8 +244,12 @@ describe('format API', () => {
                 expect(() => formatTime(0, {hour: '2-digit'})).toNotThrow();
             });
 
-            it('throws on invalid Intl.DateTimeFormat options', () => {
-                expect(() => formatTime(0, {hour: 'invalid'})).toThrow();
+            it('fallsback and warns on invalid Intl.DateTimeFormat options', () => {
+                expect(formatTime(0, {hour: 'invalid'})).toBe(String(new Date(0)));
+                expect(consoleError.calls.length).toBe(1);
+                expect(consoleError.calls[0].arguments[0]).toContain(
+                    '[React Intl] Error formatting time.\nRangeError'
+                );
             });
 
             it('uses configured named formats', () => {
@@ -282,13 +300,18 @@ describe('format API', () => {
             formatRelative = f.formatRelative.bind(null, config, state);
         });
 
-        it('throws when no value is provided', () => {
-            expect(formatRelative).toThrow();
+        it('fallsback and warns when no value is provided', () => {
+            expect(formatRelative()).toBe('Invalid Date');
+            expect(consoleError.calls.length).toBe(1);
+            expect(consoleError.calls[0].arguments[0]).toContain(
+                '[React Intl] Error formatting relative time.\nRangeError'
+            );
         });
 
-        it('throws when a non-finite value is provided', () => {
-            expect(() => formatRelative(NaN)).toThrow();
-            expect(() => formatRelative('')).toThrow();
+        it('fallsback and warns when a non-finite value is provided', () => {
+            expect(formatRelative(NaN)).toBe('Invalid Date');
+            expect(formatRelative('')).toBe('Invalid Date');
+            expect(consoleError.calls.length).toBe(2);
         });
 
         it('formats falsy finite values', () => {
@@ -319,8 +342,12 @@ describe('format API', () => {
                 expect(() => formatRelative(0, {units: 'second'})).toNotThrow();
             });
 
-            it('throws on invalid IntlRelativeFormat options', () => {
-                expect(() => formatRelative(0, {units: 'invalid'})).toThrow();
+            it('fallsback and wanrs on invalid IntlRelativeFormat options', () => {
+                expect(formatRelative(0, {units: 'invalid'})).toBe(String(new Date(0)));
+                expect(consoleError.calls.length).toBe(1);
+                expect(consoleError.calls[0].arguments[0]).toBe(
+                    '[React Intl] Error formatting relative time.\nError: "invalid" is not a valid IntlRelativeFormat `units` value, it must be one of: "second", "minute", "hour", "day", "month", "year"'
+                );
             });
 
             it('uses configured named formats', () => {
@@ -373,9 +400,10 @@ describe('format API', () => {
                     expect(formatRelative(1000)).toBe(rf.format(1000, {now}));
                 });
 
-                it('does not throw when a non-finite value is provided', () => {
+                it('does not throw or warn when a non-finite value is provided', () => {
                     expect(() => formatRelative(0, {now: NaN})).toNotThrow();
                     expect(() => formatRelative(0, {now: ''})).toNotThrow();
+                    expect(consoleError.calls.length).toBe(0);
                 });
 
                 it('formats falsy finite values', () => {
@@ -450,8 +478,12 @@ describe('format API', () => {
                 expect(() => formatNumber(0, {style: 'percent'})).toNotThrow();
             });
 
-            it('throws on invalid Intl.NumberFormat options', () => {
-                expect(() => formatNumber(0, {style: 'invalid'})).toThrow();
+            it('fallsback and warns on invalid Intl.NumberFormat options', () => {
+                expect(formatNumber(0, {style: 'invalid'})).toBe(String(0));
+                expect(consoleError.calls.length).toBe(1);
+                expect(consoleError.calls[0].arguments[0]).toContain(
+                    '[React Intl] Error formatting number.\nRangeError'
+                );
             });
 
             it('uses configured named formats', () => {
