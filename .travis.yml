@@ -5,7 +5,7 @@ node_js:
     - 0.12
     - 4.2
     - 5
-script: npm run test:cov
+script: npm run test:cov && npm run test:perf
 notifications:
     email:
         recipients:
