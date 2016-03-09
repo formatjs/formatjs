@@ -1,0 +1,21 @@
+{
+  "name": "react-intl-example-react-router",
+  "version": "1.0.0",
+  "description": "React Intl + React Router Example",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "clean": "../../node_modules/.bin/rimraf build",
+    "build": "../../node_modules/.bin/mkdirp build && ../../node_modules/.bin/browserify index.js -d -t babelify -t browserify-shim > build/bundle.js",
+    "start": "../../node_modules/.bin/babel-node server.js"
+  },
+  "author": "Eric Ferraiuolo <edf@ericf.me>",
+  "license": "BSD-3-Clause",
+  "browser": {
+    "react-intl": "../../lib/index.js"
+  },
+  "browserify-shim": {
+    "react": "global:React",
+    "react-dom": "global:ReactDOM"
+  }
+}
