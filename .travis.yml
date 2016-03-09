@@ -5,7 +5,8 @@ node_js:
     - 0.12
     - 4.2
     - 5
-script: npm run test:cov && npm run test:perf
+before_install: if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
+script: npm run test:all
 notifications:
     email:
         recipients:

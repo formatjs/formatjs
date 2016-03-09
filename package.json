@@ -37,7 +37,7 @@
     "invariant": "^2.1.1"
   },
   "peerDependencies": {
-    "react": "^0.14.0"
+    "react": "^0.14.0 || ^15.0.0-rc.1"
   },
   "devDependencies": {
     "babel-cli": "^6.2.0",
@@ -91,14 +91,17 @@
     "build:dist:prod": "NODE_ENV=production babel-node scripts/build-dist",
     "build:dist": "npm run build:dist:dev && npm run build:dist:prod",
     "build": "npm run build:data && npm run build:lib && npm run build:dist",
+    "react:clean": "rimraf node_modules/{react,react-dom,react-addons-test-utils}",
+    "react:14": "npm run react:clean && npm i react@0.14 react-dom@0.14 react-addons-test-utils@0.14",
+    "react:15": "npm run react:clean && npm i react@15.0.0-rc.1 react-dom@15.0.0-rc.1 react-addons-test-utils@15.0.0-rc.1",
     "lint": "eslint .",
     "test": "mocha --compilers js:babel-register --require babel-polyfill --require intl --recursive test/unit/ test/functional/",
     "test:cov": "babel-node $(npm bin)/isparta cover --report text --report html node_modules/mocha/bin/_mocha -- --require babel-polyfill --require intl --recursive test/unit/ test/functional/",
+    "test:react": "npm run react:14 && npm run test -- --reporter dot && npm run react:15 && npm run test -- --reporter dot",
+    "test:all": "npm run lint && npm run test:cov && npm run test:react",
     "test:watch": "npm run test -- --watch --reporter min",
     "test:perf": "NODE_ENV=production babel-node test/perf",
-    "pretest": "npm run lint",
-    "pretest:cov": "npm run lint",
-    "preversion": "npm run clean && npm run build && npm run test",
+    "preversion": "npm run clean && npm run build && npm run test:all",
     "prepublish": "npm run clean && npm run build"
   }
 }
