@@ -10,11 +10,14 @@ Internationalize [React][] apps declaratively. This library provides React compo
 Overview
 --------
 
+**React Intl is part of [FormatJS][].**
+
+### Documentation
+
+- __`v1`:__ <http://formatjs.io/react/>
+- __`v2`:__ <https://github.com/yahoo/react-intl/wiki> (WIP)
+
 **An overview and discussion of React Intl v2 can be found in [#162](https://github.com/yahoo/react-intl/issues/162)**
-
-**React Intl is part of [FormatJS][], the v1 docs can be found on the website:**
-
-**<http://formatjs.io/react/>**
 
 ### Features
 
