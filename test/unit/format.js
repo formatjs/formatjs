@@ -7,6 +7,7 @@ import * as f from '../../src/format';
 
 describe('format API', () => {
     const {NODE_ENV} = process.env;
+    const IRF_THRESHOLDS = {...IntlRelativeFormat.thresholds};
 
     let consoleError;
     let config;
@@ -331,6 +332,16 @@ describe('format API', () => {
         it('formats date ms timestamp values', () => {
             const timestamp = Date.now();
             expect(formatRelative(timestamp)).toBe(rf.format(timestamp, {now}));
+        });
+
+        it('formats with the expected thresholds', () => {
+            const timestamp = now - (1000 * 59);
+            expect(IntlRelativeFormat.thresholds).toEqual(IRF_THRESHOLDS);
+            expect(formatRelative(timestamp)).toNotBe(rf.format(timestamp, {now}));
+            expect(formatRelative(timestamp)).toBe('59 seconds ago');
+            expect(IntlRelativeFormat.thresholds).toEqual(IRF_THRESHOLDS);
+            expect(formatRelative(NaN)).toBe('Invalid Date');
+            expect(IntlRelativeFormat.thresholds).toEqual(IRF_THRESHOLDS);
         });
 
         describe('options', () => {
