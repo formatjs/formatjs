@@ -9,6 +9,7 @@ import {
     FormattedNumber,
     FormattedDate,
     FormattedMessage,
+    FormattedRelative,
 } from '../../lib/';
 
 const suite = new Suite('renderToString', {
@@ -96,6 +97,22 @@ suite.add('100 x <FormattedMessage> with placeholder', function () {
     ReactDOMServer.renderToString(
         <IntlProvider locale='en' messages={messages}>
             <div>{formattedMessages}</div>
+        </IntlProvider>
+    );
+});
+
+suite.add('100 x <FormattedRelative>', function () {
+    let now = Date.now();
+    let formattedRelativeTimes = [];
+    for (let i = 0, len = 100; i < len; i += 1) {
+        formattedRelativeTimes.push(
+            <FormattedRelative value={now - (1000 * 60 * i)} key={i} />
+        );
+    }
+
+    ReactDOMServer.renderToString(
+        <IntlProvider locale='en'>
+            <div>{formattedRelativeTimes}</div>
         </IntlProvider>
     );
 });
