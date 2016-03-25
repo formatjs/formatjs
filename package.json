@@ -57,7 +57,7 @@
     "browserify": "^13.0.0",
     "browserify-shim": "^3.8.11",
     "es6-promise": "^3.0.2",
-    "eslint": "^1.2.1",
+    "eslint": "^2.5.0",
     "eslint-plugin-react": "^3.2.3",
     "expect": "^1.9.0",
     "expect-jsx": "^2.2.1",
