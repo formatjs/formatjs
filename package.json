@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.2.0",
-    "babel-eslint": "^5.0.0-beta4",
+    "babel-eslint": "^6.0.0",
     "babel-plugin-react-intl": "^2.0.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.4.0",
     "babel-plugin-transform-es3-member-expression-literals": "^6.3.13",
