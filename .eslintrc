@@ -23,7 +23,7 @@
         "indent": [2, 4],
         "linebreak-style": [2, "unix"],
         "prefer-arrow-callback": 2,
-        "quotes": [2, "single"],
+        "quotes": [2, "single", "avoid-escape"],
         "semi": [2, "always"],
         "strict": [2, "never"],
         "yoda": [2, "never"],
@@ -36,6 +36,7 @@
         "no-var": 2,
         "no-warning-comments": 1,
 
-        "react/jsx-uses-react": 2
+        "react/jsx-uses-react": 2,
+        "react/jsx-uses-vars": 2
     }
 }
