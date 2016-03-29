@@ -23,18 +23,20 @@ export default function printICUMessage(ast) {
 
         let formatType = format.type.replace(/Format$/, '');
 
+        let style, offset, options;
+
         switch (formatType) {
         case 'number':
         case 'date':
         case 'time':
-            let style = format.style ? `, ${format.style}` : '';
+            style = format.style ? `, ${format.style}` : '';
             return message + `{${id}, ${formatType}${style}}`;
 
         case 'plural':
         case 'selectOrdinal':
         case 'select':
-            let offset = format.offset ? `, offset:${format.offset}` : '';
-            let options = format.options.reduce((str, option) => {
+            offset = format.offset ? `, offset:${format.offset}` : '';
+            options = format.options.reduce((str, option) => {
                 let optionValue = printICUMessage(option.value);
                 return str + ` ${option.selector} {${optionValue}}`;
             }, '');
