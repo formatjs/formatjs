@@ -14,7 +14,7 @@ export {intlShape} from './types';
 export {default as injectIntl} from './inject';
 export {default as defineMessages} from './define-messages';
 
-export {default as IntlProvider} from './components/intl';
+export {default as IntlProvider} from './components/provider';
 export {default as FormattedDate} from './components/date';
 export {default as FormattedTime} from './components/time';
 export {default as FormattedRelative} from './components/relative';

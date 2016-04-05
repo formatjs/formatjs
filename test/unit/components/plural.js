@@ -2,7 +2,7 @@ import expect, {spyOn} from 'expect';
 import expectJSX from 'expect-jsx';
 import React from 'react';
 import {createRenderer} from 'react-addons-test-utils';
-import IntlProvider from '../../../src/components/intl';
+import IntlProvider from '../../../src/components/provider';
 import FormattedPlural from '../../../src/components/plural';
 
 expect.extend(expectJSX);
