@@ -3,7 +3,7 @@ import expectJSX from 'expect-jsx';
 import React from 'react';
 import {createRenderer} from 'react-addons-test-utils';
 import {intlShape} from '../../src/types';
-import IntlProvider from '../../src/components/intl';
+import IntlProvider from '../../src/components/provider';
 import injectIntl from '../../src/inject';
 
 expect.extend(expectJSX);
