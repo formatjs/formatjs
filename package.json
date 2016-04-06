@@ -1,16 +1,24 @@
 {
   "name": "react-intl",
   "version": "2.0.0-rc-1",
-  "description": "Internationalize React apps declaratively. This library provides React components and an API to format dates, numbers, and string messages, including pluralization.",
+  "description": "Internationalize React apps. This library provides React components and an API to format dates, numbers, and strings, including pluralization and handling translations.",
   "keywords": [
     "intl",
     "i18n",
+    "internationalization",
+    "locale",
+    "localization",
+    "globalization",
     "react",
-    "reactjs"
+    "reactjs",
+    "format",
+    "formatting",
+    "translate",
+    "translation"
   ],
-  "author": "Caridy Patino <caridy@gmail.com>",
+  "author": "Eric Ferraiuolo <edf@ericf.me>",
   "contributors": [
-    "Eric Ferraiuolo <eferraiuolo@gmail.com>"
+    "Caridy Patino <caridy@gmail.com>"
   ],
   "license": "BSD-3-Clause",
   "homepage": "https://github.com/yahoo/react-intl",
