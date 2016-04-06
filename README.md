@@ -1,7 +1,7 @@
 [React Intl][]
 ==============
 
-Internationalize [React][] apps declaratively. This library provides React components and an API to format dates, numbers, and string messages, including pluralization.
+Internationalize [React][] apps. This library provides React components and an API to format dates, numbers, and strings, including pluralization and handling translations.
 
 [![npm Version][npm-badge]][npm]
 [![Build Status][travis-badge]][travis]
@@ -10,14 +10,13 @@ Internationalize [React][] apps declaratively. This library provides React compo
 Overview
 --------
 
-**React Intl is part of [FormatJS][].**
+**React Intl is part of [FormatJS][].** It provides bindings to React via its components and API.
 
-### Documentation
+### [Documentation][]
 
-- __`v1`:__ <http://formatjs.io/react/>
-- __`v2`:__ <https://github.com/yahoo/react-intl/wiki> (WIP)
+React Intl's docs are in this GitHub repo's [Wiki][Documentation], [__Get Started__][Getting Started]. There are also several [runnable example apps][Examples] which you can reference to learn how all the pieces fit together.
 
-**An overview and discussion of React Intl v2 can be found in [#162](https://github.com/yahoo/react-intl/issues/162)**
+_(If you're looking for React Intl v1, you can find it [here][v1-docs].)_
 
 ### Features
 
@@ -31,7 +30,7 @@ Overview
 
 ### Example
 
-There are many examples [on the website][React Intl], but here's a hello world one:
+There are several [runnable examples][Examples] in this Git repo, but here's a Hello World one:
 
 ```js
 import React, {Component} from 'react';
@@ -74,10 +73,8 @@ ReactDOM.render(
 
 This example would render: "Hello **Eric**, you have 1,000 messages." into the container element on the page.
 
-**CLDR pluralization rules:** In some languages you have more then `one` and `other`. For example in `ru` there are the following plural rules: `one`, `few`, `many` and `other`.
-Check out the official CLDR documentation from unicode.org http://www.unicode.org/cldr/charts/27/supplemental/language_plural_rules.html for all languages.
-
-_Note:  You could also write ` =0 { No comments yet }`_
+**Pluralization rules:** In some languages you have more then `one` and `other`. For example in `ru` there are the following plural rules: `one`, `few`, `many` and `other`.
+Check out the official [Unicode CLDR documentation](http://www.unicode.org/cldr/charts/28/supplemental/language_plural_rules.html).
 
 Contribute
 ---------
@@ -104,6 +101,10 @@ See the [LICENSE file][] for license text and copyright information.
 [React]: http://facebook.github.io/react/
 [FormatJS]: http://formatjs.io/
 [FormatJS GitHub]: http://formatjs.io/github/
+[Documentation]: https://github.com/yahoo/react-intl/wiki
+[Getting Started]: https://github.com/yahoo/react-intl/wiki#getting-started
+[Examples]: https://github.com/yahoo/react-intl/tree/master/examples
+[v1-docs]: http://formatjs.io/react/v1/
 [ICU Message syntax]: http://formatjs.io/guide/#messageformat-syntax
 [CONTRIBUTING]: https://github.com/yahoo/react-intl/blob/master/CONTRIBUTING.md
 [LICENSE file]: https://github.com/yahoo/react-intl/blob/master/LICENSE.md
