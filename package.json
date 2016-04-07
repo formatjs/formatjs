@@ -1,6 +1,6 @@
 {
   "name": "react-intl",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Internationalize React apps. This library provides React components and an API to format dates, numbers, and strings, including pluralization and handling translations.",
   "keywords": [
     "intl",
@@ -110,6 +110,7 @@
     "test:watch": "npm run test -- --watch --reporter min",
     "test:perf": "NODE_ENV=production babel-node test/perf",
     "preversion": "npm run clean && npm run build && npm run test:all",
+    "postversion": "echo 'Uninstall react-router to fix npm issue' && npm uninstall react-router",
     "prepublish": "npm run clean && npm run build"
   }
 }
