@@ -28,7 +28,7 @@ export default class FormattedDate extends Component {
             return children(formattedDate);
         }
 
-        return <span>{formattedDate}</span>;
+        return <time datetime={value}>{formattedDate}</time>;
     }
 }
 
