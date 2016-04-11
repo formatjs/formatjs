@@ -1,5 +1,5 @@
-[React Intl][]
-==============
+React Intl
+==========
 
 Internationalize [React][] apps. This library provides React components and an API to format dates, numbers, and strings, including pluralization and handling translations.
 
@@ -91,7 +91,6 @@ This software is free to use under the Yahoo Inc. BSD license.
 See the [LICENSE file][] for license text and copyright information.
 
 
-[React Intl]: http://formatjs.io/react/
 [npm]: https://www.npmjs.org/package/react-intl
 [npm-badge]: https://img.shields.io/npm/v/react-intl.svg?style=flat-square
 [david]: https://david-dm.org/yahoo/react-intl
@@ -105,6 +104,5 @@ See the [LICENSE file][] for license text and copyright information.
 [Getting Started]: https://github.com/yahoo/react-intl/wiki#getting-started
 [Examples]: https://github.com/yahoo/react-intl/tree/master/examples
 [v1-docs]: http://formatjs.io/react/v1/
-[ICU Message syntax]: http://formatjs.io/guide/#messageformat-syntax
 [CONTRIBUTING]: https://github.com/yahoo/react-intl/blob/master/CONTRIBUTING.md
 [LICENSE file]: https://github.com/yahoo/react-intl/blob/master/LICENSE.md
