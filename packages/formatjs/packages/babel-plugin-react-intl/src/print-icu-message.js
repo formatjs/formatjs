@@ -30,7 +30,7 @@ function printICUMessage(ast) {
             return `{${node.id}}`;
         }
 
-        switch (getArgumentType(node.format.type)) {
+        switch (getArgumentType(node.format)) {
         case 'number':
         case 'date':
         case 'time':
@@ -46,8 +46,15 @@ function printICUMessage(ast) {
     return printedNodes.join('');
 }
 
-function getArgumentType(astType) {
-    return astType.replace(/Format$/, '').toLowerCase();
+function getArgumentType(format) {
+    const {type, ordinal} = format;
+
+    // Special-case ordinal plurals to use `selectordinal` instead of `plural`.
+    if (type === 'pluralFormat' && ordinal) {
+        return 'selectordinal';
+    }
+
+    return type.replace(/Format$/, '').toLowerCase();
 }
 
 function printMessageTextASTNode({value}) {
@@ -55,14 +62,14 @@ function printMessageTextASTNode({value}) {
 }
 
 function printSimpleFormatASTNode({id, format}) {
-    let argumentType = getArgumentType(format.type);
+    let argumentType = getArgumentType(format);
     let style = format.style ? `, ${format.style}` : '';
 
     return `{${id}, ${argumentType}${style}}`;
 }
 
 function printOptionalFormatASTNode({id, format}) {
-    let argumentType = getArgumentType(format.type);
+    let argumentType = getArgumentType(format);
     let offset = format.offset ? `, offset:${format.offset}` : '';
 
     let options = format.options.map((option) => {
