@@ -67,7 +67,7 @@
     "eslint": "^2.5.3",
     "eslint-plugin-react": "^4.2.3",
     "expect": "^1.9.0",
-    "expect-jsx": "^2.2.1",
+    "expect-jsx": "^2.5.0",
     "express": "^4.13.3",
     "formatjs-extract-cldr-data": "^2.0.0",
     "glob": "^7.0.0",
