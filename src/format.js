@@ -24,6 +24,25 @@ const NUMBER_FORMAT_OPTIONS    = Object.keys(numberFormatPropTypes);
 const RELATIVE_FORMAT_OPTIONS  = Object.keys(relativeFormatPropTypes);
 const PLURAL_FORMAT_OPTIONS    = Object.keys(pluralFormatPropTypes);
 
+const RELATIVE_FORMAT_THRESHOLDS = {
+    second: 60, // seconds to minute
+    minute: 60, // minutes to hour
+    hour  : 24, // hours to day
+    day   : 30, // days to month
+    month : 12, // months to year
+};
+
+function updateRelativeFormatThresholds(newThresholds) {
+    const {thresholds} = IntlRelativeFormat;
+    ({
+        second: thresholds.second,
+        minute: thresholds.minute,
+        hour  : thresholds.hour,
+        day   : thresholds.day,
+        month : thresholds.month,
+    } = newThresholds);
+}
+
 function getNamedFormat(formats, type, name) {
     let format = formats && formats[type] && formats[type][name];
     if (format) {
@@ -99,14 +118,8 @@ export function formatRelative(config, state, value, options = {}) {
 
     // Capture the current threshold values, then temporarily override them with
     // specific values just for this render.
-    const thresholds = {...IntlRelativeFormat.thresholds};
-    Object.assign(IntlRelativeFormat.thresholds, {
-        second: 60, // seconds to minute
-        minute: 60, // minutes to hour
-        hour  : 24, // hours to day
-        day   : 30, // days to month
-        month : 12, // months to year
-    });
+    const oldThresholds = {...IntlRelativeFormat.thresholds};
+    updateRelativeFormatThresholds(RELATIVE_FORMAT_THRESHOLDS);
 
     try {
         return state.getRelativeFormat(locale, filteredOptions).format(date, {
@@ -119,7 +132,7 @@ export function formatRelative(config, state, value, options = {}) {
             );
         }
     } finally {
-        Object.assign(IntlRelativeFormat.thresholds, thresholds);
+        updateRelativeFormatThresholds(oldThresholds);
     }
 
     return String(date);
