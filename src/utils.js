@@ -29,10 +29,10 @@ export function escape(str) {
     return ('' + str).replace(UNSAFE_CHARS_REGEX, (match) => ESCAPED_CHARS[match]);
 }
 
-export function filterProps(obj, whitelist, defaults = {}) {
+export function filterProps(props, whitelist, defaults = {}) {
     return whitelist.reduce((filtered, name) => {
-        if (obj.hasOwnProperty(name)) {
-            filtered[name] = obj[name];
+        if (props.hasOwnProperty(name)) {
+            filtered[name] = props[name];
         } else if (defaults.hasOwnProperty(name)) {
             filtered[name] = defaults[name];
         }
@@ -86,9 +86,9 @@ export function shouldIntlComponentUpdate(
     return (
         !shallowEquals(nextProps, props) ||
         !shallowEquals(nextState, state) ||
-        !shallowEquals(
+        !(nextIntl === intl || shallowEquals(
             filterProps(nextIntl, intlConfigPropNames),
             filterProps(intl, intlConfigPropNames)
-        )
+        ))
     );
 }
