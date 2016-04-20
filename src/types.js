@@ -30,6 +30,7 @@ export const intlFormatPropTypes = {
 export const intlShape = shape({
     ...intlConfigPropTypes,
     ...intlFormatPropTypes,
+    formatters: object,
     now: func.isRequired,
 });
 
