@@ -38,6 +38,8 @@ export default class IntlProvider extends Component {
             'See: http://formatjs.io/guides/runtime-environments/'
         );
 
+        const {intl: intlContext} = context;
+
         // Used to stabilize time when performing an initial rendering so that
         // all relative times use the same reference "now" time.
         let initialNow;
@@ -47,18 +49,23 @@ export default class IntlProvider extends Component {
             // When an `initialNow` isn't provided via `props`, look to see an
             // <IntlProvider> exists in the ancestry and call its `now()`
             // function to propagate its value for "now".
-            initialNow = context.intl ? context.intl.now() : Date.now();
+            initialNow = intlContext ? intlContext.now() : Date.now();
         }
 
-        this.state = {
-            // Creating `Intl*` formatters is expensive so these format caches
-            // memoize the `Intl*` constructors and have the same lifecycle as
-            // this IntlProvider instance.
+        // Creating `Intl*` formatters is expensive. If there's a parent
+        // `<IntlProvider>`, then its formatters will be used. Otherwise, this
+        // memoize the `Intl*` constructors and cache them for the lifecycle of
+        // this IntlProvider instance.
+        const {formatters = {
             getDateTimeFormat: memoizeIntlConstructor(Intl.DateTimeFormat),
             getNumberFormat  : memoizeIntlConstructor(Intl.NumberFormat),
             getMessageFormat : memoizeIntlConstructor(IntlMessageFormat),
             getRelativeFormat: memoizeIntlConstructor(IntlRelativeFormat),
             getPluralFormat  : memoizeIntlConstructor(IntlPluralFormat),
+        }} = (intlContext || {});
+
+        this.state = {
+            ...formatters,
 
             // Wrapper to provide stable "now" time for initial render.
             now: () => {
@@ -68,7 +75,7 @@ export default class IntlProvider extends Component {
     }
 
     getConfig() {
-        const {intl: intlContext = {}} = this.context;
+        const {intl: intlContext} = this.context;
 
         // Build a whitelisted config object from `props`, defaults, and
         // `context.intl`, if an <IntlProvider> exists in the ancestry.
@@ -118,13 +125,16 @@ export default class IntlProvider extends Component {
         const config = this.getConfig();
 
         // Bind intl factories and current config to the format functions.
-        let boundFormatFns = this.getBoundFormatFns(config, this.state);
+        const boundFormatFns = this.getBoundFormatFns(config, this.state);
+
+        const {now, ...formatters} = this.state;
 
         return {
             intl: {
                 ...config,
                 ...boundFormatFns,
-                now: this.state.now,
+                formatters,
+                now,
             },
         };
     }
