@@ -48,7 +48,7 @@
     "react": "^0.14.0 || ^15.0.0-0"
   },
   "devDependencies": {
-    "babel-cli": "^6.2.0",
+    "babel-cli": "^6.7.7",
     "babel-plugin-react-intl": "^2.0.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.4.0",
     "babel-plugin-transform-es3-member-expression-literals": "^6.3.13",
