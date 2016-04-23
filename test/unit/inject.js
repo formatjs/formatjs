@@ -63,6 +63,18 @@ describe('injectIntl()', () => {
         expect(renderer.getRenderOutput()).toEqualJSX(<Wrapped foo="foo" intl={intl} />);
     });
 
+    it('hoists all static methods from <WrappedComponent>', () => {
+        class Wrapped extends React.Component {
+            static staticMethod() { return 'foo'; }
+            render() {
+                return <div />;
+            }
+        }
+
+        const Injected = injectIntl(Wrapped);
+        expect(Injected.staticMethod).toEqual(Wrapped.staticMethod);
+    });
+
     describe('options', () => {
         describe('intlPropName', () => {
             it('sets <WrappedComponent>\'s `props[intlPropName]` to `context.intl`', () => {
