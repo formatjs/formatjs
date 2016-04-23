@@ -109,7 +109,14 @@ export default class FormattedMessage extends Component {
             return children(...nodes);
         }
 
-        return createElement(tagName, null, ...nodes);
+        const props = { ...this.props };
+        delete props.id;
+        delete props.description;
+        delete props.defaultMessage;
+        delete props.values;
+        delete props.tagName;
+        delete props.children;
+        return createElement(tagName, props, ...nodes);
     }
 }
 

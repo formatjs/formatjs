@@ -153,6 +153,21 @@ describe('<FormattedMessage>', () => {
         );
     });
 
+    it('pass props to child component', () => {
+        const {intl} = intlProvider.getChildContext();
+        const descriptor = {
+            id: 'hello',
+            defaultMessage: 'Hello, World!',
+        };
+
+        const el = <FormattedMessage {...descriptor} tagName="a" href="?intl" className="css" />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <a href="?intl" className="css">{intl.formatMessage(descriptor)}</a>
+        );
+    });
+
     it('supports function-as-child pattern', () => {
         const {intl} = intlProvider.getChildContext();
         const descriptor = {
