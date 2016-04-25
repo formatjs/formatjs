@@ -183,6 +183,27 @@ describe('<IntlProvider>', () => {
         });
     });
 
+    it('provides `context.intl` with values from `defaultProps` for missing or undefined props', () => {
+        const props = {
+            locale: 'en-US',
+            defaultLocale: undefined,
+        };
+
+        const el = (
+            <IntlProvider {...props}>
+                <Child />
+            </IntlProvider>
+        );
+
+        renderer.render(el);
+        const {intl} = renderer.getMountedInstance().getChildContext();
+
+        expect(intl.defaultLocale).toNotBe(undefined);
+        expect(intl.defaultLocale).toBe('en');
+        expect(intl.messages).toNotBe(undefined);
+        expect(intl.messages).toBeAn('object');
+    });
+
     it('provides `context.intl` with format methods bound to intl config props', () => {
         const el = (
             <IntlProvider

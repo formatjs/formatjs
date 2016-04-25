@@ -1,4 +1,3 @@
-
 /*
 HTML escaping and shallow-equals implementations are the same as React's
 (on purpose.) Therefore, it has the following Copyright and Licensing:
