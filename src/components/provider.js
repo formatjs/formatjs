@@ -79,10 +79,16 @@ export default class IntlProvider extends Component {
 
         // Build a whitelisted config object from `props`, defaults, and
         // `context.intl`, if an <IntlProvider> exists in the ancestry.
-        let config = {
-            ...defaultProps,
-            ...filterProps(this.props, intlConfigPropNames, intlContext),
-        };
+        let config = filterProps(this.props, intlConfigPropNames, intlContext);
+
+        // Apply default props. This must be applied last after the props have
+        // been resolved and inherited from any <IntlProvider> in the ancestry.
+        // This matches how React resolves `defaultProps`.
+        for (let propName in defaultProps) {
+            if (config[propName] === undefined) {
+                config[propName] = defaultProps[propName];
+            }
+        }
 
         if (!hasLocaleData(config.locale)) {
             const {
