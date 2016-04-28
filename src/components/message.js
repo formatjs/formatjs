@@ -49,7 +49,7 @@ export default class FormattedMessage extends Component {
             children,
         } = this.props;
 
-        let tokenRegexp;
+        let tokenDelimiter;
         let tokenizedValues;
         let elements;
 
@@ -61,10 +61,13 @@ export default class FormattedMessage extends Component {
 
             let generateToken = (() => {
                 let counter = 0;
-                return () => `@__ELEMENT-${uid}-${counter += 1}__@`;
+                return () => `ELEMENT-${uid}-${counter += 1}`;
             })();
 
-            tokenRegexp     = new RegExp(`(@__ELEMENT-${uid}-\\d+__@)`, 'g');
+            // Splitting with a delimiter to support IE8. When using a regex
+            // with a capture group IE8 does not include the capture group in
+            // the resulting array.
+            tokenDelimiter  = `@__${uid}__@`;
             tokenizedValues = {};
             elements        = {};
 
@@ -78,7 +81,7 @@ export default class FormattedMessage extends Component {
 
                 if (isValidElement(value)) {
                     let token = generateToken();
-                    tokenizedValues[name] = token;
+                    tokenizedValues[name] = tokenDelimiter + token + tokenDelimiter;
                     elements[token]       = value;
                 } else {
                     tokenizedValues[name] = value;
@@ -98,7 +101,7 @@ export default class FormattedMessage extends Component {
             // approach allows messages to render with React Elements while
             // keeping React's virtual diffing working properly.
             nodes = formattedMessage
-                .split(tokenRegexp)
+                .split(tokenDelimiter)
                 .filter((part) => !!part)
                 .map((part) => elements[part] || part);
         } else {
