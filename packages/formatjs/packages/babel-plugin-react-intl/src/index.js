@@ -218,15 +218,21 @@ export default function () {
 
             CallExpression(path, state) {
                 const moduleSourceName = getModuleSourceName(state.opts);
+                const callee = path.get('callee');
 
-                function processMessageObject(messageObj) {
-                    if (!(messageObj && messageObj.isObjectExpression())) {
+                function assertObjectExpression(node) {
+                    if (!(node && node.isObjectExpression())) {
                         throw path.buildCodeFrameError(
                             `[React Intl] \`${callee.node.name}()\` must be ` +
-                            'called with message descriptors defined as ' +
-                            'object expressions.'
+                            'called with an object expression with values ' +
+                            'that are React Intl Message Descriptors, also ' +
+                            'defined as object expressions.'
                         );
                     }
+                }
+
+                function processMessageObject(messageObj) {
+                    assertObjectExpression(messageObj);
 
                     let properties = messageObj.get('properties');
 
@@ -246,10 +252,10 @@ export default function () {
                     storeMessage(descriptor, path, state);
                 }
 
-                let callee = path.get('callee');
-
                 if (referencesImport(callee, moduleSourceName, FUNCTION_NAMES)) {
                     let messagesObj = path.get('arguments')[0];
+
+                    assertObjectExpression(messagesObj);
 
                     messagesObj.get('properties')
                         .map((prop) => prop.get('value'))
