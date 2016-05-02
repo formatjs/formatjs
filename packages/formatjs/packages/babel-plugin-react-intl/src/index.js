@@ -223,8 +223,8 @@ export default function () {
                     if (!(messageObj && messageObj.isObjectExpression())) {
                         throw path.buildCodeFrameError(
                             `[React Intl] \`${callee.node.name}()\` must be ` +
-                            `called with message descriptors defined as ` +
-                            `object expressions.`
+                            'called with message descriptors defined as ' +
+                            'object expressions.'
                         );
                     }
 

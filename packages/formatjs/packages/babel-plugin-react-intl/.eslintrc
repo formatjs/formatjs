@@ -1,12 +1,15 @@
 {
-    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true
+        }
+    },
     "extends": "eslint:recommended",
     "env": {
         "es6": true,
         "node": true
-    },
-    "ecmaFeatures": {
-        "modules": true
     },
     "rules": {
         "no-console": 0,
@@ -17,7 +20,7 @@
         "indent": [2, 4],
         "linebreak-style": [2, "unix"],
         "prefer-arrow-callback": 2,
-        "quotes": [2, "single"],
+        "quotes": [2, "single", "avoid-escape"],
         "semi": [2, "always"],
         "strict": [2, "never"],
         "yoda": [2, "never"],
