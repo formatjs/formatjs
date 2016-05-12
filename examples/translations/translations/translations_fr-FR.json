@@ -1,0 +1,8 @@
+﻿{
+  "app.title": "Example d'application React Intl",
+  "app.locales_menu_heading": "Langues:",
+  "greeting.welcome_message": "Bonjour {name}, vous {unreadCount, plural, =0 {n'avez pas reçu de message} one {avez reçu {formattedUnreadCount} message} other {avez reçu {formattedUnreadCount} messages}} depuis {formattedLastLoginTime}.",
+  "menu.item_en_us_description": "La langue par défaut de cette application.",
+  "menu.item_en_upper_description": "Une langue qui change tout en lettre majuscule.",
+  "menu.item_fr_upper_description": "Version française de cette application."
+}

@@ -15,7 +15,8 @@
   "license": "BSD-3-Clause",
   "browser": {
     "react-intl": "../../lib/index.js",
-    "react-intl/locale-data/en": "../../locale-data/en.js"
+    "react-intl/locale-data/en": "../../locale-data/en.js",
+    "react-intl/locale-data/fr": "../../locale-data/fr.js"
   },
   "browserify-shim": {
     "react": "global:React",

@@ -10,6 +10,10 @@ const messages = defineMessages({
         id: 'menu.item_en_upper_description',
         defaultMessage: 'The fake, all uppercase "locale" for this example app.',
     },
+    frFRDescription: {
+        id: 'menu.item_fr_upper_description',
+        defaultMessage: 'French version of the application.',
+    },
 });
 
 class LocalesMenu extends Component {
@@ -33,6 +37,14 @@ class LocalesMenu extends Component {
                         title={formatMessage(messages.enUPPERDescription)}
                     >
                         en-UPPER
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="/?locale=fr-FR"
+                        title={formatMessage(messages.frFRDescription)}
+                    >
+                        fr-FR
                     </a>
                 </li>
             </menu>

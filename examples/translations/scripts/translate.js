@@ -38,6 +38,15 @@ let uppercaseMessages = Object.keys(defaultMessages)
         return collection;
     }, {});
 
+let knownFrenchTranslations = require('../translations/translations_fr-FR.json');
+let frenchMessages = Object.keys(defaultMessages)
+	.map((id) => [id, defaultMessages[id]])
+    .reduce((collection, [id, defaultMessage]) => {
+        collection[id] = knownFrenchTranslations[id] || defaultMessage;
+        return collection;
+    }, {});
+	
 mkdirpSync(LANG_DIR);
 fs.writeFileSync(LANG_DIR + 'en-US.json', JSON.stringify(defaultMessages, null, 2));
 fs.writeFileSync(LANG_DIR + 'en-UPPER.json', JSON.stringify(uppercaseMessages, null, 2));
+fs.writeFileSync(LANG_DIR + 'fr-FR.json', JSON.stringify(frenchMessages, null, 2));
