@@ -89,7 +89,7 @@
     "rollup-plugin-replace": "^1.1.0",
     "rollup-plugin-uglify": "^0.3.1",
     "serialize-javascript": "^1.1.1",
-    "superagent": "^1.5.0"
+    "superagent": "^2.0.0"
   },
   "scripts": {
     "clean": "rimraf src/en.js coverage/ dist/ lib/ locale-data/",
