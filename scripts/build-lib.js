@@ -28,9 +28,6 @@ let bundle = rollup({
     ],
 });
 
-// Cast to native Promise.
-bundle = Promise.resolve(bundle);
-
 bundle.then(({write}) => write({
     dest: p.resolve('lib/index.js'),
     format: 'cjs',
