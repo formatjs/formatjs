@@ -199,12 +199,12 @@ export function formatMessage(config, state, messageDescriptor = {}, values = {}
     // Avoid expensive message formatting for simple messages without values. In
     // development messages will always be formatted in case of missing values.
     if (!hasValues && process.env.NODE_ENV === 'production') {
-        return message || defaultMessage || id;
+        return typeof message === 'string' ? message : (defaultMessage || id);
     }
 
     let formattedMessage;
 
-    if (message) {
+    if (typeof message === 'string') {
         try {
             let formatter = state.getMessageFormat(
                 message, locale, formats
@@ -236,7 +236,7 @@ export function formatMessage(config, state, messageDescriptor = {}, values = {}
         }
     }
 
-    if (!formattedMessage && defaultMessage) {
+    if (formattedMessage === undefined && defaultMessage) {
         try {
             let formatter = state.getMessageFormat(
                 defaultMessage, defaultLocale, defaultFormats
@@ -253,16 +253,18 @@ export function formatMessage(config, state, messageDescriptor = {}, values = {}
         }
     }
 
-    if (!formattedMessage) {
+    if (formattedMessage === undefined) {
         if (process.env.NODE_ENV !== 'production') {
             console.error(
                 `[React Intl] Cannot format message: "${id}", ` +
-                `using message ${message || defaultMessage ? 'source' : 'id'} as fallback.`
+                `using message ${typeof message === 'string' || defaultMessage ? 'source' : 'id'} as fallback.`
             );
         }
     }
 
-    return formattedMessage || message || defaultMessage || id;
+    return formattedMessage !== undefined ?
+      formattedMessage
+      : typeof message === 'string' ? message : (defaultMessage || id);
 }
 
 export function formatHTMLMessage(config, state, messageDescriptor, rawValues = {}) {
