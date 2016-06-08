@@ -62,7 +62,7 @@ if (isProduction) {
     );
 }
 
-let bundle = Promise.resolve(rollup({entry, plugins}));
+let bundle = rollup({entry, plugins});
 bundle.then(({write}) => write(bundleConfig));
 
 process.on('unhandledRejection', (reason) => {throw reason;});

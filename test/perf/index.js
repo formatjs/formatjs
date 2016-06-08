@@ -24,14 +24,14 @@ suite.on('error', function (e) {
 
 const intlProvider = new IntlProvider({locale: 'en'}, {});
 
-suite.add('intlProvider.getChildContext()', function () {
+suite.add('IntlProvider#getChildContext()', function () {
     intlProvider.getChildContext();
 });
 
 const intlProviderContext = intlProvider.getChildContext();
 const intlProvider2 = new IntlProvider({locale: 'en'}, intlProviderContext);
 
-suite.add('intlProvider.shouldComponentUpdate()', function () {
+suite.add('IntlProvider#shouldComponentUpdate()', function () {
     intlProvider2.shouldComponentUpdate(
         {locale: 'en'},
         intlProvider2.state,
@@ -108,6 +108,23 @@ suite.add('100 x <FormattedMessage> with placeholder', function () {
         messages[i] = `message {${i}, number}`;
         formattedMessages.push(
             <FormattedMessage id={`${i}`} values={{[i]: i}} key={i} />
+        );
+    }
+
+    ReactDOMServer.renderToString(
+        <IntlProvider locale='en' messages={messages}>
+            <div>{formattedMessages}</div>
+        </IntlProvider>
+    );
+});
+
+suite.add('100 x <FormattedMessage> with placeholder, cached', function () {
+    let messages = {};
+    let formattedMessages = [];
+    for (let i = 0, len = 100; i < len; i += 1) {
+        messages[i] = `message {${0}, number}`;
+        formattedMessages.push(
+            <FormattedMessage id={`${i}`} values={{0: i}} key={i} />
         );
     }
 
