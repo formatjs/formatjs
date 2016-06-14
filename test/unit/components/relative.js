@@ -210,6 +210,29 @@ describe('<FormattedRelative>', () => {
         }, 10);
     });
 
+    it('updates when the `value` prop changes', () => {
+        const {intl} = intlProvider.getChildContext();
+        const now = intl.now();
+
+        renderer.render(<FormattedRelative value={now} updateInterval={1} />, {intl});
+        const renderedOne = renderer.getRenderOutput();
+
+        // Shallow Renderer doesn't call `componentDidMount()`. This forces the
+        // scheduler to schedule an update based on the `updateInterval`.
+        renderer.getMountedInstance().componentDidMount();
+
+        // Update `now()` to act like the <IntlProvider> is mounted.
+        const nextNow = now + 1000;
+        intl.now = () => nextNow;
+
+        renderer.render(<FormattedRelative value={nextNow} updateInterval={1} />, {intl});
+        const renderedTwo = renderer.getRenderOutput();
+
+        expect(renderedTwo).toEqualJSX(renderedOne);
+
+        renderer.unmount();
+    });
+
     it('updates at maximum of `updateInterval` with a string `value`', (done) => {
         const {intl} = intlProvider.getChildContext();
 
