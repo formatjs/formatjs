@@ -47,6 +47,17 @@ function getUnitDelay(units) {
     }
 }
 
+function isSameDate(a, b) {
+    if (a === b) {
+        return true;
+    }
+
+    let aTime = new Date(a).getTime();
+    let bTime = new Date(b).getTime();
+
+    return isFinite(aTime) && isFinite(bTime) && aTime === bTime;
+}
+
 export default class FormattedRelative extends Component {
     constructor(props, context) {
         super(props, context);
@@ -91,16 +102,24 @@ export default class FormattedRelative extends Component {
         }, delay);
     }
 
+    componentDidMount() {
+        this.scheduleNextUpdate(this.props, this.state);
+    }
+
+    componentWillReceiveProps({value: nextValue}) {
+        // When the `props.value` date changes, `state.now` needs to be updated,
+        // and the next update can be rescheduled.
+        if (!isSameDate(nextValue, this.props.value)) {
+            this.setState({now: this.context.intl.now()});
+        }
+    }
+
     shouldComponentUpdate(...next) {
         return shouldIntlComponentUpdate(this, ...next);
     }
 
     componentWillUpdate(nextProps, nextState) {
         this.scheduleNextUpdate(nextProps, nextState);
-    }
-
-    componentDidMount() {
-        this.scheduleNextUpdate(this.props, this.state);
     }
 
     componentWillUnmount() {
