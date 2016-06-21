@@ -36,7 +36,7 @@ bundle.then(({write}) => write({
 
 bundle.then(({write}) => write({
     dest: p.resolve('lib/index.es.js'),
-    format: 'es6',
+    format: 'es',
     banner: copyright,
 }));
 
