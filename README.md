@@ -73,7 +73,7 @@ ReactDOM.render(
 
 This example would render: "Hello **Eric**, you have 1,000 messages." into the container element on the page.
 
-**Pluralization rules:** In some languages you have more then `one` and `other`. For example in `ru` there are the following plural rules: `one`, `few`, `many` and `other`.
+**Pluralization rules:** In some languages you have more than `one` and `other`. For example in `ru` there are the following plural rules: `one`, `few`, `many` and `other`.
 Check out the official [Unicode CLDR documentation](http://www.unicode.org/cldr/charts/28/supplemental/language_plural_rules.html).
 
 Contribute
