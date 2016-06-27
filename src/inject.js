@@ -55,6 +55,11 @@ export default function injectIntl(WrappedComponent, options = {}) {
         intl: intlShape,
     };
 
+    InjectIntl.propTypes = {
+        ...WrappedComponent.propTypes,
+        [intlPropName]: intlShape,
+    };
+
     InjectIntl.WrappedComponent = WrappedComponent;
 
     return InjectIntl;
