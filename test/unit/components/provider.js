@@ -23,6 +23,8 @@ describe('<IntlProvider>', () => {
         immutableIntl = true;
     }
 
+    const now = Date.now();
+
     const INTL = global.Intl;
 
     const INTL_CONFIG_PROP_NAMES = Object.keys(intlConfigPropTypes);
@@ -44,7 +46,7 @@ describe('<IntlProvider>', () => {
 
     beforeEach(() => {
         consoleError       = spyOn(console, 'error');
-        dateNow            = spyOn(Date, 'now').andReturn(0);
+        dateNow            = spyOn(Date, 'now').andReturn(now);
         IntlProviderRender = spyOn(IntlProvider.prototype, 'render').andCallThrough();
 
         renderer = createRenderer();
@@ -394,7 +396,6 @@ describe('<IntlProvider>', () => {
         const {intl} = renderer.getMountedInstance().getChildContext();
 
         expect(intl.now()).toBe(initialNow);
-        expect(dateNow).toNotHaveBeenCalled();
     });
 
     it('defaults `initialNow` to `Date.now()`', () => {
@@ -406,7 +407,7 @@ describe('<IntlProvider>', () => {
 
         const {intl} = renderer.getMountedInstance().getChildContext();
 
-        expect(intl.now()).toBe(Date.now());
+        expect(intl.now()).toBe(now);
     });
 
     it('inherits `initialNow` from an <IntlProvider> ancestor', () => {
@@ -426,7 +427,6 @@ describe('<IntlProvider>', () => {
         const {intl} = renderer.getMountedInstance().getChildContext();
 
         expect(intl.now()).toBe(initialNow);
-        expect(dateNow).toNotHaveBeenCalled();
     });
 
     it('updates `now()` to return the current date when mounted', (done) => {
@@ -454,7 +454,7 @@ describe('<IntlProvider>', () => {
 
             expect(nowTwo).toNotEqual(nowOne);
             expect(nowOne).toBe(initialNow);
-            expect(nowTwo).toBe(Date.now());
+            expect(nowTwo).toBe(now);
 
             renderer.unmount();
             done();
