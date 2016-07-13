@@ -63,7 +63,7 @@
     "benchmark": "^2.1.0",
     "browserify": "^13.0.0",
     "browserify-shim": "^3.8.11",
-    "cross-env": "^1.0.8",
+    "cross-env": "^2.0.0",
     "es6-promise": "^3.0.2",
     "eslint": "^2.5.3",
     "eslint-plugin-react": "^5.0.1",
