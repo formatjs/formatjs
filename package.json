@@ -73,7 +73,7 @@
     "browserify-shim": "^3.8.11",
     "cross-env": "^2.0.0",
     "es6-promise": "^3.0.2",
-    "eslint": "^2.5.3",
+    "eslint": "^3.1.1",
     "eslint-plugin-react": "^5.0.1",
     "expect": "^1.9.0",
     "expect-jsx": "^2.2.1",
