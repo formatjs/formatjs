@@ -83,7 +83,7 @@
     "intl": "^1.2.1",
     "intl-messageformat-parser": "^1.2.0",
     "mkdirp": "^0.5.1",
-    "mocha": "^2.2.5",
+    "mocha": "^3.0.1",
     "nyc": "^7.1.0",
     "react": "^15.0.0",
     "react-addons-test-utils": "^15.0.0",
