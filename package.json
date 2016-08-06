@@ -30,6 +30,7 @@
     "url": "git@github.com:yahoo/react-intl.git"
   },
   "main": "./lib/index.js",
+  "module": "./lib/index.es.js",
   "jsnext:main": "./lib/index.es.js",
   "browser": {
     "./locale-data/index": false,
