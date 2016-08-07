@@ -20,7 +20,7 @@ export default class FormattedNumber extends Component {
 
     render() {
         const {formatNumber}    = this.context.intl;
-        const {value, children} = this.props;
+        const {value, children, style, className} = this.props;
 
         let formattedNumber = formatNumber(value, this.props);
 
@@ -28,7 +28,7 @@ export default class FormattedNumber extends Component {
             return children(formattedNumber);
         }
 
-        return <span>{formattedNumber}</span>;
+        return <span style={style} className={className}>{formattedNumber}</span>;
     }
 }
 
@@ -40,7 +40,9 @@ FormattedNumber.contextTypes = {
 
 FormattedNumber.propTypes = {
     ...numberFormatPropTypes,
-    value   : PropTypes.any.isRequired,
-    format  : PropTypes.string,
-    children: PropTypes.func,
+    value    : PropTypes.any.isRequired,
+    format   : PropTypes.string,
+    children : PropTypes.func,
+    style    : PropTypes.any,
+    className: PropTypes.any,
 };
