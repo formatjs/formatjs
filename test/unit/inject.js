@@ -63,6 +63,20 @@ describe('injectIntl()', () => {
         expect(renderer.getRenderOutput()).toEqualJSX(<Wrapped foo="foo" intl={intl} />);
     });
 
+    it('adds all props from <WrappedComponent> to <InjectIntl>', () => {
+        Wrapped.propTypes = {
+            ...Wrapped.propTypes,
+            foo: React.PropTypes.string,
+            bar: React.PropTypes.string.isRequired,
+        };
+
+        const Injected = injectIntl(Wrapped);
+        const {intl} = intlProvider.getChildContext();
+
+        renderer.render(<Injected foo="foo" bar="bar" />, {intl});
+        expect(Injected.propTypes).toEqual(Wrapped.propTypes);
+    });
+
     describe('options', () => {
         describe('intlPropName', () => {
             it('sets <WrappedComponent>\'s `props[intlPropName]` to `context.intl`', () => {
