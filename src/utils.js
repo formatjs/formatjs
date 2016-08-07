@@ -91,3 +91,23 @@ export function shouldIntlComponentUpdate(
         ))
     );
 }
+
+export function prepareIntlStyleOption(props) {
+    const hasStyle     = 'style' in props;
+    const hasIntlStyle = 'intlStyle' in props;
+
+    if (!hasStyle && !hasIntlStyle) {
+        return props;
+    }
+
+    let newProps = {...props};
+
+    if (hasIntlStyle) {
+        newProps['style'] = newProps['intlStyle'];
+        delete newProps['intlStyle'];
+    } else if (hasStyle) {
+        delete newProps['style'];
+    }
+
+    return newProps;
+}
