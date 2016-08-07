@@ -20,13 +20,13 @@ export default function (ReactIntl) {
         let intlProvider;
 
         beforeEach(() => {
-            renderer     = createRenderer();
-            intlProvider = new IntlProvider({locale: 'en'}, {});
+            renderer = createRenderer();
+            intlProvider = new IntlProvider({ locale: 'en' }, {});
         });
 
         it('formats dates', () => {
             const date = new Date();
-            const el   = <FormattedDate value={date} month="numeric" />;
+            const el = <FormattedDate value={date} month="numeric" />;
 
             renderer.render(el, intlProvider.getChildContext());
             expect(renderer.getRenderOutput()).toEqualJSX(
@@ -36,9 +36,9 @@ export default function (ReactIntl) {
 
         it('formats times', () => {
             const date = new Date();
-            const el   = <FormattedTime value={date} />;
+            const el = <FormattedTime value={date} />;
 
-            const hours   = date.getHours();
+            const hours = date.getHours();
             const minutes = date.getMinutes();
 
             renderer.render(el, intlProvider.getChildContext());
@@ -55,7 +55,7 @@ export default function (ReactIntl) {
 
         it('formats dates relative to "now"', () => {
             const now = Date.now();
-            const el  = <FormattedRelative value={now - 1000} initialNow={now} />;
+            const el = <FormattedRelative value={now - 1000} initialNow={now} />;
 
             renderer.render(el, intlProvider.getChildContext());
             expect(renderer.getRenderOutput()).toEqualJSX(
@@ -89,12 +89,60 @@ export default function (ReactIntl) {
                     values={{
                         emails: 1000,
                     }}
-                />
+                    />
             );
 
             renderer.render(el, intlProvider.getChildContext());
             expect(renderer.getRenderOutput()).toEqualJSX(
                 <span>You have 1,000 emails.</span>
+            );
+        });
+        it('pluralizes one value in strings', () => {
+            const el = (
+                <FormattedMessage
+                    id="num_emails"
+                    defaultMessage="You have {emails, plural, one {# email} other {# emails}}."
+                    values={{
+                        emails: 1,
+                    }}
+                    />
+            );
+
+            renderer.render(el, intlProvider.getChildContext());
+            expect(renderer.getRenderOutput()).toEqualJSX(
+                <span>You have 1 email.</span>
+            );
+        });
+        it('pluralizes zero value in strings', () => {
+            const el = (
+                <FormattedMessage
+                    id="num_emails"
+                    defaultMessage="You have {emails, plural, =0 {no} one {one} other {many} } email."
+                    values={{
+                        emails: 0,
+                    }}
+                    />
+            );
+
+            renderer.render(el, intlProvider.getChildContext());
+            expect(renderer.getRenderOutput()).toEqualJSX(
+                <span>You have no email.</span>
+            );
+        });
+           it('pluralizes other value in strings', () => {
+            const el = (
+                <FormattedMessage
+                    id="num_emails"
+                    defaultMessage="You have {emails, plural, =0 {zero} one {one} other {an unusual amount of} } email."
+                    values={{
+                        emails: "lots",
+                    }}
+                    />
+            );
+
+            renderer.render(el, intlProvider.getChildContext());
+            expect(renderer.getRenderOutput()).toEqualJSX(
+                <span>You have an unsual amount of email.</span>
             );
         });
     });
