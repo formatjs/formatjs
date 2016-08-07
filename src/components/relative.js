@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import React, {Component, PropTypes} from 'react';
+import {Component, PropTypes, createElement} from 'react';
 import {intlShape, relativeFormatPropTypes} from '../types';
 import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
 
@@ -128,7 +128,7 @@ export default class FormattedRelative extends Component {
 
     render() {
         const {formatRelative}  = this.context.intl;
-        const {value, children} = this.props;
+        const {value, children, tagName} = this.props;
 
         let formattedRelative = formatRelative(value, {
             ...this.props,
@@ -139,7 +139,7 @@ export default class FormattedRelative extends Component {
             return children(formattedRelative);
         }
 
-        return <span>{formattedRelative}</span>;
+        return createElement(tagName, null, formattedRelative);
     }
 }
 
@@ -156,8 +156,10 @@ FormattedRelative.propTypes = {
     updateInterval: PropTypes.number,
     initialNow    : PropTypes.any,
     children      : PropTypes.func,
+    tagName       : PropTypes.string,
 };
 
 FormattedRelative.defaultProps = {
     updateInterval: 1000 * 10,
+    tagName: 'span',
 };

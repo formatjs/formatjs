@@ -66,6 +66,17 @@ describe('<FormattedRelative>', () => {
         );
     });
 
+    it('accepts `tagName` prop', () => {
+        const {intl} = intlProvider.getChildContext();
+        const date = new Date();
+        const el = <FormattedRelative value={date} tagName='time' />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <time>{intl.formatRelative(date)}</time>
+        );
+    });
+
     it('should not re-render when props and context are the same', () => {
         intlProvider = new IntlProvider({locale: 'en'}, {});
         renderer.render(<FormattedRelative value={0} />, intlProvider.getChildContext());
