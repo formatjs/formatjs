@@ -19,10 +19,16 @@ export default class FormattedHTMLMessage extends Component {
     }
 
     shouldComponentUpdate(nextProps, ...next) {
-        const {values}             = this.props;
-        const {values: nextValues} = nextProps;
+        const {values, style, className} = this.props;
+        const {
+            values: nextValues, 
+            style: nextStyle, 
+            className: nextClassName,
+        } = nextProps;
 
-        if (!shallowEquals(nextValues, values)) {
+        if (!shallowEquals(nextValues, values) || 
+            !shallowEquals(nextStyle, style) || 
+            !shallowEquals(nextClassName, className)) {
             return true;
         }
 
@@ -47,6 +53,8 @@ export default class FormattedHTMLMessage extends Component {
             values: rawValues,
             tagName,
             children,
+            style,
+            className,
         } = this.props;
 
         let descriptor           = {id, description, defaultMessage};
@@ -68,6 +76,8 @@ export default class FormattedHTMLMessage extends Component {
             dangerouslySetInnerHTML: {
                 __html: formattedHTMLMessage,
             },
+            style, 
+            className,
         });
     }
 }
@@ -80,9 +90,11 @@ FormattedHTMLMessage.contextTypes = {
 
 FormattedHTMLMessage.propTypes = {
     ...messageDescriptorPropTypes,
-    values  : PropTypes.object,
-    tagName : PropTypes.string,
-    children: PropTypes.func,
+    values   : PropTypes.object,
+    tagName  : PropTypes.string,
+    children : PropTypes.func,
+    style    : PropTypes.any,
+    className: PropTypes.any,
 };
 
 FormattedHTMLMessage.defaultProps = {
