@@ -90,7 +90,7 @@
     "react-dom": "^15.0.0",
     "react-router": "^2.0.0",
     "rimraf": "^2.4.2",
-    "rollup": "^0.34.1",
+    "rollup": "^0.34.8",
     "rollup-plugin-babel": "^2.3.9",
     "rollup-plugin-commonjs": "^3.0.0",
     "rollup-plugin-memory": "^1.0.0",
