@@ -25,11 +25,7 @@ export default function () {
         return opts.moduleSourceName || 'react-intl';
     }
 
-    function getMessageDescriptorKey(path) {
-        if (path.isIdentifier() || path.isJSXIdentifier()) {
-            return path.node.name;
-        }
-
+    function evaluatePath(path) {
         let evaluated = path.evaluate();
         if (evaluated.confident) {
             return evaluated.value;
@@ -38,6 +34,14 @@ export default function () {
         throw path.buildCodeFrameError(
             '[React Intl] Messages must be statically evaluate-able for extraction.'
         );
+    }
+
+    function getMessageDescriptorKey(path) {
+        if (path.isIdentifier() || path.isJSXIdentifier()) {
+            return path.node.name;
+        }
+
+        return evaluatePath(path);
     }
 
     function getMessageDescriptorValue(path) {
@@ -45,57 +49,61 @@ export default function () {
             path = path.get('expression');
         }
 
-        let evaluated = path.evaluate();
-        if (evaluated.confident) {
-            return evaluated.value;
-        }
-
-        throw path.buildCodeFrameError(
-            '[React Intl] Messages must be statically evaluate-able for extraction.'
-        );
+        // Always trim the Message Descriptor values.
+        return evaluatePath(path).trim();
     }
 
-    function createMessageDescriptor(propPaths, options = {}) {
-        const {isJSXSource = false} = options;
+    function getICUMessageValue(messagePath, {isJSXSource = false} = {}) {
+        let message = getMessageDescriptorValue(messagePath);
 
+        try {
+            return printICUMessage(message);
+        } catch (parseError) {
+            if (isJSXSource &&
+                messagePath.isLiteral() &&
+                message.indexOf('\\\\') >= 0) {
+
+                throw messagePath.buildCodeFrameError(
+                    '[React Intl] Message failed to parse. ' +
+                    'It looks like `\\`s were used for escaping, ' +
+                    'this won\'t work with JSX string literals. ' +
+                    'Wrap with `{}`. ' +
+                    'See: http://facebook.github.io/react/docs/jsx-gotchas.html'
+                );
+            }
+
+            throw messagePath.buildCodeFrameError(
+                '[React Intl] Message failed to parse. ' +
+                'See: http://formatjs.io/guides/message-syntax/' +
+                `\n${parseError}`
+            );
+        }
+    }
+
+    function createMessageDescriptor(propPaths) {
         return propPaths.reduce((hash, [keyPath, valuePath]) => {
             let key = getMessageDescriptorKey(keyPath);
 
-            if (!DESCRIPTOR_PROPS.has(key)) {
-                return hash;
-            }
-
-            let value = getMessageDescriptorValue(valuePath).trim();
-
-            if (key === 'defaultMessage') {
-                try {
-                    hash[key] = printICUMessage(value);
-                } catch (parseError) {
-                    if (isJSXSource &&
-                        valuePath.isLiteral() &&
-                        value.indexOf('\\\\') >= 0) {
-
-                        throw valuePath.buildCodeFrameError(
-                            '[React Intl] Message failed to parse. ' +
-                            'It looks like `\\`s were used for escaping, ' +
-                            'this won\'t work with JSX string literals. ' +
-                            'Wrap with `{}`. ' +
-                            'See: http://facebook.github.io/react/docs/jsx-gotchas.html'
-                        );
-                    }
-
-                    throw valuePath.buildCodeFrameError(
-                        '[React Intl] Message failed to parse. ' +
-                        'See: http://formatjs.io/guides/message-syntax/',
-                        parseError
-                    );
-                }
-            } else {
-                hash[key] = value;
+            if (DESCRIPTOR_PROPS.has(key)) {
+                hash[key] = valuePath;
             }
 
             return hash;
         }, {});
+    }
+
+    function evaluateMessageDescriptor({...descriptor}, {isJSXSource = false} = {}) {
+        Object.keys(descriptor).forEach((key) => {
+            let valuePath = descriptor[key];
+
+            if (key === 'defaultMessage') {
+                descriptor[key] = getICUMessageValue(valuePath, {isJSXSource});
+            } else {
+                descriptor[key] = getMessageDescriptorValue(valuePath);
+            }
+        });
+
+        return descriptor;
     }
 
     function storeMessage({id, description, defaultMessage}, path, state) {
@@ -199,18 +207,22 @@ export default function () {
                         attributes.map((attr) => [
                             attr.get('name'),
                             attr.get('value'),
-                        ]),
-                        {isJSXSource: true}
+                        ])
                     );
 
                     // In order for a default message to be extracted when
                     // declaring a JSX element, it must be done with standard
                     // `key=value` attributes. But it's completely valid to
-                    // write `<FormattedMessage {...descriptor} />`, because it
-                    // will be skipped here and extracted elsewhere. When the
-                    // `defaultMessage` prop exists, the descriptor will be
-                    // checked.
+                    // write `<FormattedMessage {...descriptor} />` or
+                    // `<FormattedMessage id={dynamicId} />`, because it will be
+                    // skipped here and extracted elsewhere. The descriptor will
+                    // be extracted only if a `defaultMessage` prop exists.
                     if (descriptor.defaultMessage) {
+                        // Evaluate the Message Descriptor values in a JSX
+                        // context, then store it.
+                        descriptor = evaluateMessageDescriptor(descriptor, {
+                            isJSXSource: true,
+                        });
                         storeMessage(descriptor, path, state);
                     }
                 }
@@ -243,12 +255,8 @@ export default function () {
                         ])
                     );
 
-                    if (!descriptor.defaultMessage) {
-                        throw path.buildCodeFrameError(
-                            '[React Intl] Message is missing a `defaultMessage`.'
-                        );
-                    }
-
+                    // Evaluate the Message Descriptor values, then store it.
+                    descriptor = evaluateMessageDescriptor(descriptor);
                     storeMessage(descriptor, path, state);
                 }
 
