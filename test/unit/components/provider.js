@@ -85,9 +85,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('throws when no `children`', () => {
-        expect(() => renderer.render(<IntlProvider />)).toThrow(
-            'onlyChild must be passed a children with exactly one child.'
-        );
+        expect(() => renderer.render(<IntlProvider />)).toThrow();
     });
 
     it('throws when more than one `children`', () => {
@@ -98,9 +96,7 @@ describe('<IntlProvider>', () => {
             </IntlProvider>
         );
 
-        expect(() => renderer.render(el)).toThrow(
-            'onlyChild must be passed a children with exactly one child.'
-        );
+        expect(() => renderer.render(el)).toThrow();
     });
 
     it('warns when no `locale` prop is provided', () => {
