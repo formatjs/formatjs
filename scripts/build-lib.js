@@ -18,7 +18,7 @@ babelConfig.presets = babelConfig.presets.map((preset) => {
     return preset === 'es2015' ? 'es2015-rollup' : preset;
 });
 
-let bundle = rollup({
+let bundle = () => rollup({
     entry: p.resolve('src/index.js'),
     external: [
         p.resolve('locale-data/index.js'),
@@ -28,13 +28,13 @@ let bundle = rollup({
     ],
 });
 
-bundle.then(({write}) => write({
+bundle().then(({write}) => write({
     dest: p.resolve('lib/index.js'),
     format: 'cjs',
     banner: copyright,
 }));
 
-bundle.then(({write}) => write({
+bundle().then(({write}) => write({
     dest: p.resolve('lib/index.es.js'),
     format: 'es',
     banner: copyright,
