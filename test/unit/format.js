@@ -287,6 +287,38 @@ describe('format API', () => {
                     `[React Intl] No time format named: ${format}`
                 );
             });
+
+            it('should set default values', () => {
+                const date = new Date();
+                const {locale} = config;
+                const day = 'numeric';
+                df = new Intl.DateTimeFormat(locale, {hour: 'numeric', minute: 'numeric', day});
+                expect(formatTime(date, {day})).toBe(df.format(date));
+            });
+
+            it('should not set default values when second is provided', () => {
+                const date = new Date();
+                const {locale} = config;
+                const second = 'numeric';
+                df = new Intl.DateTimeFormat(locale, {second});
+                expect(formatTime(date, {second})).toBe(df.format(date));
+            });
+
+            it('should not set default values when minute is provided', () => {
+                const date = new Date();
+                const {locale} = config;
+                const minute = 'numeric';
+                df = new Intl.DateTimeFormat(locale, {minute});
+                expect(formatTime(date, {minute})).toBe(df.format(date));
+            });
+
+            it('should not set default values when hour is provided', () => {
+                const date = new Date();
+                const {locale} = config;
+                const hour = 'numeric';
+                df = new Intl.DateTimeFormat(locale, {hour});
+                expect(formatTime(date, {hour})).toBe(df.format(date));
+            });
         });
     });
 
