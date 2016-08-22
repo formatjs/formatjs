@@ -3,7 +3,8 @@
         "ecmaVersion": 6,
         "sourceType": "module",
         "ecmaFeatures": {
-            "experimentalObjectRestSpread": true
+            "experimentalObjectRestSpread": true,
+            "jsx": true
         }
     },
     "extends": "eslint:recommended",

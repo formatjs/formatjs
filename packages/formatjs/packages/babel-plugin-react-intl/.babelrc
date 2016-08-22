@@ -5,5 +5,13 @@
     "plugins": [
         "transform-object-rest-spread",
         "transform-runtime"
-    ]
+    ],
+    "env": {
+        "test": {
+            "plugins": [
+                // Makes power-assert work
+                "espower"
+            ]
+        }
+    }
 }
