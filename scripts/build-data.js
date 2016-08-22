@@ -36,11 +36,12 @@ function writeUMDFile(filename, module) {
     const lang = p.basename(filename, '.js');
 
     return rollup({
-        entry: filename,
+        entry: {
+            path: filename,
+            contents: module,
+        },
         plugins: [
-            memory({
-                contents: module,
-            }),
+            memory(),
             uglify(),
         ],
     })
