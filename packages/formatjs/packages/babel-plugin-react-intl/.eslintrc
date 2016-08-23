@@ -3,15 +3,19 @@
         "ecmaVersion": 6,
         "sourceType": "module",
         "ecmaFeatures": {
-            "experimentalObjectRestSpread": true,
-            "jsx": true
+            "jsx": true,
+            "experimentalObjectRestSpread": true
         }
     },
     "extends": "eslint:recommended",
     "env": {
         "es6": true,
-        "node": true
+        "node": true,
+        "mocha": true
     },
+    "plugins": [
+        "react"
+    ],
     "rules": {
         "no-console": 0,
 
@@ -32,6 +36,9 @@
         "no-this-before-super": 2,
         "no-unexpected-multiline": 2,
         "no-var": 2,
-        "no-warning-comments": 1
+        "no-warning-comments": 1,
+
+        "react/jsx-uses-react": 2,
+        "react/jsx-uses-vars": 2
     }
 }

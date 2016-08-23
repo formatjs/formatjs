@@ -1,24 +1,25 @@
-import {defineMessages} from 'react-intl';
-import React from 'react';
+import React, {Component} from 'react';
+import {defineMessages, FormattedMessage} from 'react-intl';
 
-export default class Foo extends React.Component {
+const msgs = defineMessages({
+    header: {
+        id: 'foo.bar.baz',
+        defaultMessage: 'Hello World!',
+        description: 'The default message',
+    },
+    content: {
+        id: 'foo.bar.biff',
+        defaultMessage: 'Hello Nurse!',
+        description: 'Another message',
+    },
+});
+
+export default class Foo extends Component {
     render() {
-        const msgs = defineMessages({
-            header: {
-                id: 'foo.bar.baz',
-                defaultMessage: 'Hello World!',
-                description: 'The default message',
-            },
-            content: {
-                id: 'foo.bar.biff',
-                defaultMessage: 'Hello Nurse!',
-                description: 'Another message',
-            },
-        });
         return (
             <div>
-                <h1>{this.props.intl.formatMessage(msgs.header)}</h1>
-                <p>{this.props.intl.formatMessage(msgs.content)}</p>
+                <h1><FormattedMessage {...msgs.header}/></h1>
+                <p><FormattedMessage {...msgs.content}/></p>
             </div>
         );
     }

@@ -1,6 +1,5 @@
-/* global describe,it */
-import path from 'path';
-import fs from 'fs';
+import * as path from 'path';
+import * as fs from 'fs';
 import assert from 'power-assert';
 import * as babel from 'babel-core';
 import plugin from '../src/index';
@@ -10,6 +9,7 @@ function trim(str) {
 }
 
 const skipTests = [
+    '.babelrc',
     '.DS_Store',
     'enforceDescriptions',
     'moduleSourceName',
@@ -61,7 +61,9 @@ describe('options', () => {
         const fixtureDir = path.join(fixturesDir, 'enforceDescriptions');
 
         try {
-            transform(path.join(fixtureDir, 'actual.js'), {enforceDescriptions: false});
+            transform(path.join(fixtureDir, 'actual.js'), {
+                enforceDescriptions: false,
+            });
             assert(true);
         } catch (e) {
             console.error(e);
@@ -73,7 +75,9 @@ describe('options', () => {
         const fixtureDir = path.join(fixturesDir, 'moduleSourceName');
 
         try {
-            transform(path.join(fixtureDir, 'actual.js'), {moduleSourceName: 'react-i18n'});
+            transform(path.join(fixtureDir, 'actual.js'), {
+                moduleSourceName: 'react-i18n',
+            });
             assert(true);
         } catch (e) {
             console.error(e);
@@ -99,18 +103,18 @@ describe('errors', () => {
 });
 
 
-const BASE_OPTIONS = {messagesDir: baseDir, enforceDescriptions: true};
+const BASE_OPTIONS = {
+    messagesDir: baseDir,
+    enforceDescriptions: true,
+};
+
 function transform(filePath, options = {}) {
-    return babel.transformFileSync(
-        filePath, {
-            babelrc: false,
-            presets: [
-                'es2015',
-                'react',
-            ],
-            plugins: [
-                [plugin, {...BASE_OPTIONS, ...options}],
-            ],
-        }
-    ).code;
+    return babel.transformFileSync(filePath, {
+        plugins: [
+            [plugin, {
+                ...BASE_OPTIONS,
+                ...options,
+            }],
+        ],
+    }).code;
 }

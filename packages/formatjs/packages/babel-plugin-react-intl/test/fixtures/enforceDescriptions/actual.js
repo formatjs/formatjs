@@ -1,8 +1,13 @@
+import React, {Component} from 'react';
 import {FormattedMessage} from 'react-intl';
-import React from 'react';
 
-export default class Foo extends React.Component {
+export default class Foo extends Component {
     render() {
-        return <FormattedMessage id="foo.bar.baz" defaultMessage="Hello World!" />
+        return (
+            <FormattedMessage
+                id='foo.bar.baz'
+                defaultMessage='Hello World!'
+            />
+        );
     }
 }

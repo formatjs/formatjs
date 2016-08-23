@@ -1,17 +1,18 @@
+import React, {Component} from 'react';
 import {FormattedMessage} from 'react-intl';
-import React from 'react';
 
-export default class Foo extends React.Component {
+export default class Foo extends Component {
     render() {
         // This is bad syntax (object property in message)
         return (
-          <FormattedMessage
-              id="foo.bar.baz"
-              defaultMessage="Hello, {foo.baz}!"
-              description="Broken message"
-              values={{
-                  foo: {baz: 'biff'},
-              }} />
+            <FormattedMessage
+                id='foo.bar.baz'
+                defaultMessage='Hello, {foo.baz}!'
+                description='Broken message'
+                values={{
+                    foo: {baz: 'biff'},
+                }}
+            />
         );
     }
 }
