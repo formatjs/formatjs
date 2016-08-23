@@ -1,20 +1,36 @@
 import expect from 'expect';
-import defineMessages from '../../src/define-messages';
+import {defineMessages, message} from '../../src/define-messages';
 
-describe('defineMessages()', () => {
-    it('exports a default function', () => {
-        expect(defineMessages).toBeA('function');
+describe('Message Definition', () => {
+    describe('exports', () => {
+        it('exports `defineMessages`', () => {
+            expect(defineMessages).toBeA('function');
+        });
+
+        it('exports `message`', () => {
+            expect(message).toBeA('function');
+        });
     });
 
-    it('retuns the passed-in Message Descriptors', () => {
-        const descriptors = {
-            foo: {
-                id: 'foo',
-                description: 'For translator',
-                defaultMessage: 'Hello, World!',
-            },
-        };
+    describe('defineMessages()', () => {
+        it('returns the passed-in Message Descriptors', () => {
+            const descriptors = {
+                foo: {
+                    id: 'foo',
+                    description: 'For translator',
+                    defaultMessage: 'Hello, World!',
+                },
+            };
 
-        expect(defineMessages(descriptors)).toBe(descriptors);
+            expect(defineMessages(descriptors)).toBe(descriptors);
+        });
+    });
+
+    describe('message()', () => {
+        it('returns a Message Descriptor', () => {
+            const descriptor = message`foo bar`;
+            expect(descriptor.defaultMessage).toBe('foo bar');
+            expect(descriptor.id).toBe(descriptor.defaultMessage);
+        });
     });
 });

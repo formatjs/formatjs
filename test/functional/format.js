@@ -8,6 +8,7 @@ expect.extend(expectJSX);
 export default function (ReactIntl) {
     describe('format', () => {
         const {
+            message,
             IntlProvider,
             FormattedDate,
             FormattedTime,
@@ -89,6 +90,19 @@ export default function (ReactIntl) {
                     values={{
                         emails: 1000,
                     }}
+                />
+            );
+
+            renderer.render(el, intlProvider.getChildContext());
+            expect(renderer.getRenderOutput()).toEqualJSX(
+                <span>You have 1,000 emails.</span>
+            );
+        });
+
+        it('formats messages created with shorthand `message`', () => {
+            const el = (
+                <FormattedMessage
+                    {...message`You have {${1000}, plural, one {# email} other {# emails}}.`}
                 />
             );
 
