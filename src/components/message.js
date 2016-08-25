@@ -124,7 +124,10 @@ FormattedMessage.contextTypes = {
 
 FormattedMessage.propTypes = {
     ...messageDescriptorPropTypes,
-    values  : PropTypes.object,
+    values  : PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object,
+    ]),
     tagName : PropTypes.string,
     children: PropTypes.func,
 };
