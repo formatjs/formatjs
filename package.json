@@ -99,7 +99,8 @@
     "rollup-plugin-replace": "^1.1.0",
     "rollup-plugin-uglify": "^1.0.0",
     "serialize-javascript": "^1.1.1",
-    "superagent": "^2.0.0"
+    "superagent": "^2.0.0",
+    "watchify": "^3.7.0"
   },
   "scripts": {
     "clean": "rimraf src/en.js coverage/ dist/ lib/ locale-data/",
