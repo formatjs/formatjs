@@ -21,3 +21,10 @@ Then you can build and run this example:
 $ npm run build
 $ npm start
 ```
+
+or you can edit any source in `src/client` and recompile the example on the fly:
+
+```
+$ npm run watch
+$ npm start
+```

@@ -19,3 +19,10 @@ Then you can build and run this example:
 $ npm run build
 $ npm start
 ```
+
+or you can edit the source in `index.js` and recompile the example on fly :
+
+```
+$ npm run watch
+$ npm start
+```
