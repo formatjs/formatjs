@@ -93,7 +93,7 @@
     "rimraf": "^2.4.2",
     "rollup": "^0.34.10",
     "rollup-plugin-babel": "^2.3.9",
-    "rollup-plugin-commonjs": "^3.0.0",
+    "rollup-plugin-commonjs": "^4.0.1",
     "rollup-plugin-memory": "^2.0.0",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-replace": "^1.1.0",
