@@ -18,6 +18,13 @@ const copyright = (
 `
 );
 
+const reactCheck = (
+`if (typeof React === 'undefined') {
+    throw new ReferenceError('React must be loaded before ReactIntl.');
+}
+`
+);
+
 const entry = p.resolve('src/react-intl.js');
 const dest  = p.resolve(`dist/react-intl.${isProduction ? 'min.js' : 'js'}`);
 
@@ -26,6 +33,7 @@ const bundleConfig = {
     format: 'umd',
     moduleName: 'ReactIntl',
     banner: copyright,
+    intro: reactCheck,
     sourceMap: true,
     globals: {
         react: 'React',
