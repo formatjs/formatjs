@@ -39,7 +39,7 @@ var Foo = function (_Component) {
     function Foo() {
         _classCallCheck(this, Foo);
 
-        return _possibleConstructorReturn(this, Object.getPrototypeOf(Foo).apply(this, arguments));
+        return _possibleConstructorReturn(this, (Foo.__proto__ || Object.getPrototypeOf(Foo)).apply(this, arguments));
     }
 
     _createClass(Foo, [{
@@ -66,4 +66,3 @@ var Foo = function (_Component) {
 }(_react.Component);
 
 exports.default = Foo;
-

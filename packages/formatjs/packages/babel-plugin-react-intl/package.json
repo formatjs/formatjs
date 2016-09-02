@@ -34,6 +34,7 @@
     "clean": "rimraf lib/",
     "test": "cross-env NODE_ENV=test mocha --compilers js:babel-register",
     "build": "babel src/ --out-dir lib/",
+    "build:fixtures": "babel-node ./scripts/build-fixtures.js",
     "preversion": "npm run lint && npm run clean && npm run build",
     "prepublish": "npm run clean && npm run build"
   },
