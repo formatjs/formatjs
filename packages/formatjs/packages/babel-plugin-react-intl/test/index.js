@@ -15,6 +15,7 @@ const skipTests = [
     'extractSourceLocation',
     'moduleSourceName',
     'icuSyntax',
+    'removeDescriptions',
 ];
 
 const fixturesDir = path.join(__dirname, 'fixtures');
@@ -66,6 +67,22 @@ describe('options', () => {
         try {
             transform(path.join(fixtureDir, 'actual.js'), {
                 enforceDescriptions: false,
+            });
+            assert(true);
+        } catch (e) {
+            console.error(e);
+            assert(false);
+        }
+    });
+
+    it('removes descriptions when plugin is applied more than once', () => {
+        const fixtureDir = path.join(fixturesDir, 'removeDescriptions');
+
+        try {
+            transform(path.join(fixtureDir, 'actual.js'), {
+                enforceDescriptions: true,
+            }, {
+                multiplePasses: true,
             });
             assert(true);
         } catch (e) {
@@ -133,13 +150,18 @@ const BASE_OPTIONS = {
     messagesDir: baseDir,
 };
 
-function transform(filePath, options = {}) {
+function transform(filePath, options = {}, {multiplePasses = false} = {}) {
+    function getPluginConfig() {
+        return [plugin, {
+            ...BASE_OPTIONS,
+            ...options,
+        }];
+    }
+
     return babel.transformFileSync(filePath, {
-        plugins: [
-            [plugin, {
-                ...BASE_OPTIONS,
-                ...options,
-            }],
-        ],
+        plugins: multiplePasses ? [
+            getPluginConfig(),
+            getPluginConfig(),
+        ] : [getPluginConfig()],
     }).code;
 }

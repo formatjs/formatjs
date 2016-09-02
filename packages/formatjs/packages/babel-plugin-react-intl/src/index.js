@@ -20,7 +20,9 @@ const FUNCTION_NAMES = [
 
 const DESCRIPTOR_PROPS = new Set(['id', 'description', 'defaultMessage']);
 
-export default function () {
+const EXTRACTED_TAG = Symbol('ReactIntlExtracted');
+
+export default function ({types: t}) {
     function getModuleSourceName(opts) {
         return opts.moduleSourceName || 'react-intl';
     }
@@ -153,6 +155,14 @@ export default function () {
         return importedNames.some((name) => path.referencesImport(mod, name));
     }
 
+    function tagAsExtracted(path) {
+        path.node[EXTRACTED_TAG] = true;
+    }
+
+    function wasExtracted(path) {
+        return !!path.node[EXTRACTED_TAG];
+    }
+
     return {
         visitor: {
             Program: {
@@ -192,10 +202,13 @@ export default function () {
             },
 
             JSXOpeningElement(path, state) {
-                const {file, opts}     = state;
-                const moduleSourceName = getModuleSourceName(opts);
+                if (wasExtracted(path)) {
+                    return;
+                }
 
-                let name = path.get('name');
+                const {file, opts} = state;
+                const moduleSourceName = getModuleSourceName(opts);
+                const name = path.get('name');
 
                 if (name.referencesImport(moduleSourceName, 'FormattedPlural')) {
                     file.log.warn(
@@ -231,7 +244,20 @@ export default function () {
                         descriptor = evaluateMessageDescriptor(descriptor, {
                             isJSXSource: true,
                         });
+
                         storeMessage(descriptor, path, state);
+
+                        // Remove description since it's not used at runtime.
+                        attributes.some((attr) => {
+                            let ketPath = attr.get('name');
+                            if (getMessageDescriptorKey(ketPath) === 'description') {
+                                attr.remove();
+                                return true;
+                            }
+                        });
+
+                        // Tag the AST node so we don't try to extract it twice.
+                        tagAsExtracted(path);
                     }
                 }
             },
@@ -254,6 +280,10 @@ export default function () {
                 function processMessageObject(messageObj) {
                     assertObjectExpression(messageObj);
 
+                    if (wasExtracted(messageObj)) {
+                        return;
+                    }
+
                     let properties = messageObj.get('properties');
 
                     let descriptor = createMessageDescriptor(
@@ -266,6 +296,21 @@ export default function () {
                     // Evaluate the Message Descriptor values, then store it.
                     descriptor = evaluateMessageDescriptor(descriptor);
                     storeMessage(descriptor, messageObj, state);
+
+                    // Remove description since it's not used at runtime.
+                    messageObj.replaceWith(t.objectExpression([
+                        t.objectProperty(
+                            t.stringLiteral('id'),
+                            t.stringLiteral(descriptor.id)
+                        ),
+                        t.objectProperty(
+                            t.stringLiteral('defaultMessage'),
+                            t.stringLiteral(descriptor.defaultMessage)
+                        ),
+                    ]));
+
+                    // Tag the AST node so we don't try to extract it twice.
+                    tagAsExtracted(messageObj);
                 }
 
                 if (referencesImport(callee, moduleSourceName, FUNCTION_NAMES)) {

@@ -16,6 +16,8 @@ $ npm install babel-plugin-react-intl
 
 The default message descriptors for the app's default language will be extracted from: `defineMessages()`, `<FormattedMessage>`, and `<FormattedHTMLMessage>`; all of which are named exports of the React Intl package.
 
+If a message descriptor has a `description`, it'll be removed from the source after it's extracted to save bytes since it isn't used at runtime.
+
 ### Via `.babelrc` (Recommended)
 
 **.babelrc**
