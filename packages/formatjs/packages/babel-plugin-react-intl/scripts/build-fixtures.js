@@ -7,6 +7,9 @@ const baseDir = p.resolve(`${__dirname}/../test/fixtures`);
 
 const fixtures = [
     'defineMessages',
+    ['extractSourceLocation', {
+        extractSourceLocation: true,
+    }],
     'FormattedHTMLMessage',
     'FormattedMessage',
     ['moduleSourceName', {

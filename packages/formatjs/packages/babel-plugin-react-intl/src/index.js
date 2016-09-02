@@ -107,7 +107,7 @@ export default function () {
     }
 
     function storeMessage({id, description, defaultMessage}, path, state) {
-        const {opts, reactIntl} = state;
+        const {file, opts, reactIntl} = state;
 
         if (!(id && defaultMessage)) {
             throw path.buildCodeFrameError(
@@ -134,7 +134,15 @@ export default function () {
             );
         }
 
-        reactIntl.messages.set(id, {id, description, defaultMessage});
+        let loc;
+        if (opts.extractSourceLocation) {
+            loc = {
+                file: p.relative(process.cwd(), file.opts.filename),
+                ...path.node.loc,
+            };
+        }
+
+        reactIntl.messages.set(id, {id, description, defaultMessage, ...loc});
     }
 
     function referencesImport(path, mod, importedNames) {
@@ -257,7 +265,7 @@ export default function () {
 
                     // Evaluate the Message Descriptor values, then store it.
                     descriptor = evaluateMessageDescriptor(descriptor);
-                    storeMessage(descriptor, path, state);
+                    storeMessage(descriptor, messageObj, state);
                 }
 
                 if (referencesImport(callee, moduleSourceName, FUNCTION_NAMES)) {

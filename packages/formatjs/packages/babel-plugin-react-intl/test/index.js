@@ -12,6 +12,7 @@ const skipTests = [
     '.babelrc',
     '.DS_Store',
     'enforceDescriptions',
+    'extractSourceLocation',
     'moduleSourceName',
     'icuSyntax',
 ];
@@ -49,7 +50,9 @@ describe('options', () => {
         const fixtureDir = path.join(fixturesDir, 'enforceDescriptions');
 
         try {
-            transform(path.join(fixtureDir, 'actual.js'));
+            transform(path.join(fixtureDir, 'actual.js'), {
+                enforceDescriptions: true,
+            });
             assert(false);
         } catch (e) {
             assert(e);
@@ -83,6 +86,30 @@ describe('options', () => {
             console.error(e);
             assert(false);
         }
+
+        // Check message output
+        const expectedMessages = fs.readFileSync(path.join(fixtureDir, 'expected.json'));
+        const actualMessages = fs.readFileSync(path.join(fixtureDir, 'actual.json'));
+        assert.equal(trim(actualMessages), trim(expectedMessages));
+    });
+
+    it('respects extractSourceLocation', () => {
+        const fixtureDir = path.join(fixturesDir, 'extractSourceLocation');
+
+        try {
+            transform(path.join(fixtureDir, 'actual.js'), {
+                extractSourceLocation: true,
+            });
+            assert(true);
+        } catch (e) {
+            console.error(e);
+            assert(false);
+        }
+
+        // Check message output
+        const expectedMessages = fs.readFileSync(path.join(fixtureDir, 'expected.json'));
+        const actualMessages = fs.readFileSync(path.join(fixtureDir, 'actual.json'));
+        assert.equal(trim(actualMessages), trim(expectedMessages));
     });
 });
 
@@ -99,13 +126,11 @@ describe('errors', () => {
             assert(/Expected .* but "\." found/.test(e.message));
         }
     });
-
 });
 
 
 const BASE_OPTIONS = {
     messagesDir: baseDir,
-    enforceDescriptions: true,
 };
 
 function transform(filePath, options = {}) {
