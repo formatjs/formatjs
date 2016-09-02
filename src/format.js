@@ -172,7 +172,11 @@ export function formatPlural(config, state, value, options = {}) {
     return 'other';
 }
 
-export function formatMessage(config, state, messageDescriptor = {}, values = {}) {
+export function formatMessage(
+    config, state,
+    messageDescriptor = {},
+    values = messageDescriptor.values || {}
+) {
     const {
         locale,
         formats,
@@ -261,7 +265,11 @@ export function formatMessage(config, state, messageDescriptor = {}, values = {}
     return formattedMessage || message || defaultMessage || id;
 }
 
-export function formatHTMLMessage(config, state, messageDescriptor, rawValues = {}) {
+export function formatHTMLMessage(
+    config, state,
+    messageDescriptor = {},
+    rawValues = messageDescriptor.values || {}
+) {
     // Process all the values before they are used when formatting the ICU
     // Message string. Since the formatted message might be injected via
     // `innerHTML`, all String-based values need to be HTML-escaped.
@@ -271,5 +279,8 @@ export function formatHTMLMessage(config, state, messageDescriptor, rawValues = 
         return escaped;
     }, {});
 
-    return formatMessage(config, state, messageDescriptor, escapedValues);
+    return formatMessage(config, state, {
+        ...messageDescriptor,
+        values: escapedValues,
+    });
 }
