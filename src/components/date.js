@@ -9,6 +9,19 @@ import {intlShape, dateTimeFormatPropTypes} from '../types';
 import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
 
 export default class FormattedDate extends Component {
+    static displayName = 'FormattedDate';
+
+    static contextTypes = {
+        intl: intlShape,
+    };
+
+    static propTypes = {
+        ...dateTimeFormatPropTypes,
+        value   : PropTypes.any.isRequired,
+        format  : PropTypes.string,
+        children: PropTypes.func,
+    };
+
     constructor(props, context) {
         super(props, context);
         invariantIntlContext(context);
@@ -31,16 +44,3 @@ export default class FormattedDate extends Component {
         return <span>{formattedDate}</span>;
     }
 }
-
-FormattedDate.displayName = 'FormattedDate';
-
-FormattedDate.contextTypes = {
-    intl: intlShape,
-};
-
-FormattedDate.propTypes = {
-    ...dateTimeFormatPropTypes,
-    value   : PropTypes.any.isRequired,
-    format  : PropTypes.string,
-    children: PropTypes.func,
-};

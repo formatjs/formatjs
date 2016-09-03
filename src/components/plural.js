@@ -9,6 +9,30 @@ import {intlShape, pluralFormatPropTypes} from '../types';
 import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
 
 export default class FormattedPlural extends Component {
+    static displayName = 'FormattedPlural';
+
+    static contextTypes = {
+        intl: intlShape,
+    };
+
+    static propTypes = {
+        ...pluralFormatPropTypes,
+        value: PropTypes.any.isRequired,
+
+        other: PropTypes.node.isRequired,
+        zero : PropTypes.node,
+        one  : PropTypes.node,
+        two  : PropTypes.node,
+        few  : PropTypes.node,
+        many : PropTypes.node,
+
+        children: PropTypes.func,
+    };
+
+    static defaultProps = {
+        style: 'cardinal',
+    };
+
     constructor(props, context) {
         super(props, context);
         invariantIntlContext(context);
@@ -32,27 +56,3 @@ export default class FormattedPlural extends Component {
         return <span>{formattedPlural}</span>;
     }
 }
-
-FormattedPlural.displayName = 'FormattedPlural';
-
-FormattedPlural.contextTypes = {
-    intl: intlShape,
-};
-
-FormattedPlural.propTypes = {
-    ...pluralFormatPropTypes,
-    value: PropTypes.any.isRequired,
-
-    other: PropTypes.node.isRequired,
-    zero : PropTypes.node,
-    one  : PropTypes.node,
-    two  : PropTypes.node,
-    few  : PropTypes.node,
-    many : PropTypes.node,
-
-    children: PropTypes.func,
-};
-
-FormattedPlural.defaultProps = {
-    style: 'cardinal',
-};

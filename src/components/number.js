@@ -9,6 +9,19 @@ import {intlShape, numberFormatPropTypes} from '../types';
 import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
 
 export default class FormattedNumber extends Component {
+    static displayName = 'FormattedNumber';
+
+    static contextTypes = {
+        intl: intlShape,
+    };
+
+    static propTypes = {
+        ...numberFormatPropTypes,
+        value   : PropTypes.any.isRequired,
+        format  : PropTypes.string,
+        children: PropTypes.func,
+    };
+
     constructor(props, context) {
         super(props, context);
         invariantIntlContext(context);
@@ -31,16 +44,3 @@ export default class FormattedNumber extends Component {
         return <span>{formattedNumber}</span>;
     }
 }
-
-FormattedNumber.displayName = 'FormattedNumber';
-
-FormattedNumber.contextTypes = {
-    intl: intlShape,
-};
-
-FormattedNumber.propTypes = {
-    ...numberFormatPropTypes,
-    value   : PropTypes.any.isRequired,
-    format  : PropTypes.string,
-    children: PropTypes.func,
-};

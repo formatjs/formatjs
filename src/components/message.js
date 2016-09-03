@@ -13,6 +13,24 @@ import {
 } from '../utils';
 
 export default class FormattedMessage extends Component {
+    static displayName = 'FormattedMessage';
+
+    static contextTypes = {
+        intl: intlShape,
+    };
+
+    static propTypes = {
+        ...messageDescriptorPropTypes,
+        values  : PropTypes.object,
+        tagName : PropTypes.string,
+        children: PropTypes.func,
+    };
+
+    static defaultProps = {
+        values : {},
+        tagName: 'span',
+    };
+
     constructor(props, context) {
         super(props, context);
         invariantIntlContext(context);
@@ -115,21 +133,3 @@ export default class FormattedMessage extends Component {
         return createElement(tagName, null, ...nodes);
     }
 }
-
-FormattedMessage.displayName = 'FormattedMessage';
-
-FormattedMessage.contextTypes = {
-    intl: intlShape,
-};
-
-FormattedMessage.propTypes = {
-    ...messageDescriptorPropTypes,
-    values  : PropTypes.object,
-    tagName : PropTypes.string,
-    children: PropTypes.func,
-};
-
-FormattedMessage.defaultProps = {
-    values : {},
-    tagName: 'span',
-};

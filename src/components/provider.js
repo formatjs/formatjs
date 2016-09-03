@@ -29,6 +29,22 @@ const defaultProps = {
 };
 
 export default class IntlProvider extends Component {
+    static displayName = 'IntlProvider';
+
+    static contextTypes = {
+        intl: intlShape,
+    };
+
+    static childContextTypes = {
+        intl: intlShape.isRequired,
+    };
+
+    static propTypes = {
+        ...intlConfigPropTypes,
+        children  : PropTypes.element.isRequired,
+        initialNow: PropTypes.any,
+    };
+
     constructor(props, context) {
         super(props, context);
 
@@ -157,19 +173,3 @@ export default class IntlProvider extends Component {
         return Children.only(this.props.children);
     }
 }
-
-IntlProvider.displayName = 'IntlProvider';
-
-IntlProvider.contextTypes = {
-    intl: intlShape,
-};
-
-IntlProvider.childContextTypes = {
-    intl: intlShape.isRequired,
-};
-
-IntlProvider.propTypes = {
-    ...intlConfigPropTypes,
-    children  : PropTypes.element.isRequired,
-    initialNow: PropTypes.any,
-};
