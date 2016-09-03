@@ -34,8 +34,7 @@ var Foo = function (_Component) {
         value: function render() {
             return _react2.default.createElement(_reactIntl.FormattedMessage, {
                 id: 'foo.bar.baz',
-                defaultMessage: 'Hello World!',
-                description: 'The default message.'
+                defaultMessage: 'Hello World!'
             });
         }
     }]);

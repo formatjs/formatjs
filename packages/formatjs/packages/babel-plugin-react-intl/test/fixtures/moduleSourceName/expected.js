@@ -54,8 +54,7 @@ var Foo = function (_Component) {
                 null,
                 _react2.default.createElement(_reactI18n.FormattedMessage, {
                     id: 'foo.bar.baz',
-                    defaultMessage: 'Hello World!',
-                    description: 'The default message.'
+                    defaultMessage: 'Hello World!'
                 }),
                 msgs
             );
