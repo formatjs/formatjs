@@ -59,6 +59,25 @@ function isSameDate(a, b) {
 }
 
 export default class FormattedRelative extends Component {
+    static displayName = 'FormattedRelative';
+
+    static contextTypes = {
+        intl: intlShape,
+    };
+
+    static propTypes = {
+        ...relativeFormatPropTypes,
+        value         : PropTypes.any.isRequired,
+        format        : PropTypes.string,
+        updateInterval: PropTypes.number,
+        initialNow    : PropTypes.any,
+        children      : PropTypes.func,
+    };
+
+    static defaultProps = {
+        updateInterval: 1000 * 10,
+    };
+
     constructor(props, context) {
         super(props, context);
         invariantIntlContext(context);
@@ -142,22 +161,3 @@ export default class FormattedRelative extends Component {
         return <span>{formattedRelative}</span>;
     }
 }
-
-FormattedRelative.displayName = 'FormattedRelative';
-
-FormattedRelative.contextTypes = {
-    intl: intlShape,
-};
-
-FormattedRelative.propTypes = {
-    ...relativeFormatPropTypes,
-    value         : PropTypes.any.isRequired,
-    format        : PropTypes.string,
-    updateInterval: PropTypes.number,
-    initialNow    : PropTypes.any,
-    children      : PropTypes.func,
-};
-
-FormattedRelative.defaultProps = {
-    updateInterval: 1000 * 10,
-};

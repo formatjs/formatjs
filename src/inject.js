@@ -23,6 +23,14 @@ export default function injectIntl(WrappedComponent, options = {}) {
     } = options;
 
     class InjectIntl extends Component {
+        static displayName = `InjectIntl(${getDisplayName(WrappedComponent)})`;
+
+        static contextTypes = {
+            intl: intlShape,
+        };
+
+        static WrappedComponent = WrappedComponent;
+
         constructor(props, context) {
             super(props, context);
             invariantIntlContext(context);
@@ -48,14 +56,6 @@ export default function injectIntl(WrappedComponent, options = {}) {
             );
         }
     }
-
-    InjectIntl.displayName = `InjectIntl(${getDisplayName(WrappedComponent)})`;
-
-    InjectIntl.contextTypes = {
-        intl: intlShape,
-    };
-
-    InjectIntl.WrappedComponent = WrappedComponent;
 
     return InjectIntl;
 }
