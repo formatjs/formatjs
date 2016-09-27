@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import {IntlProvider, FormattedMessage} from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 
 class App extends Component {
     constructor(props) {
@@ -29,9 +28,5 @@ class App extends Component {
     }
 }
 
-ReactDOM.render(
-    <IntlProvider locale="en">
-        <App />
-    </IntlProvider>,
-    document.getElementById('container')
-);
+
+export default App;
