@@ -3,8 +3,6 @@ React Intl Hello World Example
 
 This is a very simple — yet runnable app — showing how to use React Intl to format message (string) that contains a placeholder, plural, and number.
 
-**This project template was built with [Create React App](https://github.com/facebookincubator/create-react-app).**
-
 ## Running Example
 
 **In the project directory, run:**
