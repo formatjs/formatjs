@@ -74,7 +74,7 @@
     "benchmark": "^2.1.0",
     "browserify": "^13.0.0",
     "browserify-shim": "^3.8.11",
-    "cross-env": "^2.0.0",
+    "cross-env": "^3.1.0",
     "es6-promise": "^4.0.3",
     "eslint": "^2.13.1",
     "eslint-plugin-react": "^6.1.0",
