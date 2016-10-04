@@ -4,19 +4,19 @@
   "description": "React Intl + React Router Example",
   "private": true,
   "main": "index.js",
+  "devDependencies": {
+    "react-scripts": "0.6.1"
+  },
+  "dependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-intl": "^2.1.5",
+    "react-router": "^4.0.0-alpha.4"
+  },
   "scripts": {
-    "clean": "../../node_modules/.bin/rimraf build",
-    "build": "../../node_modules/.bin/mkdirp build && ../../node_modules/.bin/browserify index.js -d -t babelify -t browserify-shim > build/bundle.js",
-    "watch": "../../node_modules/.bin/mkdirp build && ../../node_modules/.bin/watchify index.js -d -t babelify -t browserify-shim -o build/bundle.js -v",
-    "start": "../../node_modules/.bin/babel-node server.js"
+    "start": "react-scripts start",
+    "build": "react-scripts build"
   },
   "author": "Eric Ferraiuolo <edf@ericf.me>",
-  "license": "BSD-3-Clause",
-  "browser": {
-    "react-intl": "../../lib/index.js"
-  },
-  "browserify-shim": {
-    "react": "global:React",
-    "react-dom": "global:ReactDOM"
-  }
+  "license": "BSD-3-Clause"
 }
