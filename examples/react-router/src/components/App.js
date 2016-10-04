@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
-import { Link } from 'react-router';
+import { Match, Link } from 'react-router';
+
+import Home from './Home';
+import Inbox from './Inbox';
 
 class App extends Component {
     render() {
@@ -10,7 +13,8 @@ class App extends Component {
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/inbox">Inbox</Link></li>
                 </ul>
-                {this.props.children}
+                <Match exactly pattern="/" component={Home} />
+                <Match pattern="/inbox" component={Inbox} />
             </div>
         );
     }
