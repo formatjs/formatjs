@@ -20,7 +20,7 @@
         "arrow-parens": [2, "always"],
         "comma-dangle": [2, "always-multiline"],
         "eqeqeq": 2,
-        "eol-last": ["error", "always"],
+        "eol-last": 2,
         "indent": [2, 4],
         "linebreak-style": [2, "unix"],
         "prefer-arrow-callback": 2,
