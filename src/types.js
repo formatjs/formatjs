@@ -7,6 +7,10 @@
 import {PropTypes} from 'react';
 
 const {bool, number, string, func, object, oneOf, shape} = PropTypes;
+const localeMatcher = oneOf(['best fit', 'lookup']);
+const narrowShortLong = oneOf(['narrow', 'short', 'long']);
+const numeric2digit = oneOf(['numeric', '2-digit']);
+const funcReq = func.isRequired;
 
 export const intlConfigPropTypes = {
     locale  : string,
@@ -18,20 +22,20 @@ export const intlConfigPropTypes = {
 };
 
 export const intlFormatPropTypes = {
-    formatDate       : func.isRequired,
-    formatTime       : func.isRequired,
-    formatRelative   : func.isRequired,
-    formatNumber     : func.isRequired,
-    formatPlural     : func.isRequired,
-    formatMessage    : func.isRequired,
-    formatHTMLMessage: func.isRequired,
+    formatDate       : funcReq,
+    formatTime       : funcReq,
+    formatRelative   : funcReq,
+    formatNumber     : funcReq,
+    formatPlural     : funcReq,
+    formatMessage    : funcReq,
+    formatHTMLMessage: funcReq,
 };
 
 export const intlShape = shape({
     ...intlConfigPropTypes,
     ...intlFormatPropTypes,
     formatters: object,
-    now: func.isRequired,
+    now: funcReq,
 });
 
 export const messageDescriptorPropTypes = {
@@ -41,25 +45,25 @@ export const messageDescriptorPropTypes = {
 };
 
 export const dateTimeFormatPropTypes = {
-    localeMatcher: oneOf(['best fit', 'lookup']),
+    localeMatcher,
     formatMatcher: oneOf(['basic', 'best fit']),
 
     timeZone: string,
     hour12  : bool,
 
-    weekday     : oneOf(['narrow', 'short', 'long']),
-    era         : oneOf(['narrow', 'short', 'long']),
-    year        : oneOf(['numeric', '2-digit']),
+    weekday     : narrowShortLong,
+    era         : narrowShortLong,
+    year        : numeric2digit,
     month       : oneOf(['numeric', '2-digit', 'narrow', 'short', 'long']),
-    day         : oneOf(['numeric', '2-digit']),
-    hour        : oneOf(['numeric', '2-digit']),
-    minute      : oneOf(['numeric', '2-digit']),
-    second      : oneOf(['numeric', '2-digit']),
+    day         : numeric2digit,
+    hour        : numeric2digit,
+    minute      : numeric2digit,
+    second      : numeric2digit,
     timeZoneName: oneOf(['short', 'long']),
 };
 
 export const numberFormatPropTypes = {
-    localeMatcher: oneOf(['best fit', 'lookup']),
+    localeMatcher,
 
     style          : oneOf(['decimal', 'currency', 'percent']),
     currency       : string,
