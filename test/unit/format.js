@@ -188,6 +188,58 @@ describe('format API', () => {
                 );
             });
         });
+
+        describe('defaultFormats', () => {
+            let dateDefaultFormats;
+
+            beforeEach(() => {
+                dateDefaultFormats = {
+                    era: 'narrow'
+                };
+                df = new Intl.DateTimeFormat(config.locale, dateDefaultFormats);
+                config.defaultFormats.date = dateDefaultFormats
+            });
+
+            it('uses defaultFormats when specified', () => {
+                expect(formatDate(0)).toBe(df.format(0));
+            });
+
+            it('is replaced when options are explicitly passed', () => {
+                let longEraDF = new Intl.DateTimeFormat(config.locale, {
+                    era: 'long'
+                });
+                expect(formatDate(0, {
+                    era: 'long'
+                })).toBe(longEraDF.format(0));
+                expect(formatDate(0, {
+                    era: 'long'
+                })).toNotBe(df.format(0));
+            });
+
+            it('accepts valid Intl.DateTimeFormat options', () => {
+                dateDefaultFormats.year = 'numeric';
+                expect(() => formatDate(0)).toNotThrow();
+            });
+
+            it('fallsback and warns on invalid Intl.DateTimeFormat options', () => {
+                dateDefaultFormats.year = 'invalid';
+                expect(formatDate(0)).toBe(String(new Date(0)));
+                expect(consoleError.calls.length).toBe(1);
+                expect(consoleError.calls[0].arguments[0]).toContain(
+                    '[React Intl] Error formatting date.\nRangeError'
+                );
+            });
+
+            it('uses configured named formats over defaultFormats', () => {
+                const date   = new Date();
+                const format = 'year-only';
+
+                const {locale, formats} = config;
+                df = new Intl.DateTimeFormat(locale, formats.date[format]);
+
+                expect(formatDate(date, {format})).toBe(df.format(date));
+            });
+        });
     });
 
     describe('formatTime()', () => {
