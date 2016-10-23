@@ -385,7 +385,7 @@ describe('format API', () => {
                 expect(() => formatRelative(0, {units: 'second'})).toNotThrow();
             });
 
-            it('fallsback and wanrs on invalid IntlRelativeFormat options', () => {
+            it('fallsback and warns on invalid IntlRelativeFormat options', () => {
                 expect(formatRelative(0, {units: 'invalid'})).toBe(String(new Date(0)));
                 expect(consoleError.calls.length).toBe(1);
                 expect(consoleError.calls[0].arguments[0]).toBe(
