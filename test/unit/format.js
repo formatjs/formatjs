@@ -724,6 +724,61 @@ describe('format API', () => {
                 );
             });
         });
+
+        describe('defaultFormats', () => {
+            let numberDefaultFormats;
+
+            beforeEach(() => {
+                numberDefaultFormats = {
+                    style: 'percent'
+                };
+                nf = new Intl.NumberFormat(config.locale, numberDefaultFormats);
+                config.defaultFormats.number = numberDefaultFormats
+            });
+
+            it('uses defaultFormats when specified', () => {
+                expect(formatNumber(84)).toBe(nf.format(84));
+            });
+
+            it('is replaced when options are explicitly passed', () => {
+                let currencyNF = new Intl.NumberFormat(config.locale, {
+                    style: 'currency',
+                    currency: 'USD'
+                });
+                expect(formatNumber(31, {
+                    style: 'currency',
+                    currency: 'USD'
+                })).toBe(currencyNF.format(31));
+                expect(formatNumber(13, {
+                    style: 'currency',
+                    currency: 'USD'
+                })).toNotBe(nf.format(0));
+            });
+
+            it('accepts valid Intl.NumberFormat options', () => {
+                numberDefaultFormats.minimumIntegerDigits = 10;
+                expect(() => formatNumber(0)).toNotThrow();
+            });
+
+            it('fallsback and warns on invalid Intl.NumberFormat options', () => {
+                numberDefaultFormats.minimumIntegerDigits = 33;
+                expect(formatNumber(56)).toBe('56');
+                expect(consoleError.calls.length).toBe(1);
+                expect(consoleError.calls[0].arguments[0]).toContain(
+                    '[React Intl] Error formatting number.\nRangeError'
+                );
+            });
+
+            it('uses configured named formats over defaultFormats', () => {
+                const number = 73.452;
+                const format = 'decimals';
+
+                const {locale, formats} = config;
+                nf = new Intl.NumberFormat(locale, formats.number[format]);
+
+                expect(formatNumber(number, {format})).toBe(nf.format(number));
+            });
+        });
     });
 
     describe('formatPlural()', () => {

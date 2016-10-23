@@ -135,10 +135,10 @@ export function formatRelative(config, state, value, options = {}) {
 }
 
 export function formatNumber(config, state, value, options = {}) {
-    const {locale, formats} = config;
+    const {locale, defaultFormats, formats} = config;
     const {format}          = options;
 
-    let defaults        = format && getNamedFormat(formats, 'number', format);
+    let defaults        = format ? getNamedFormat(formats, 'number', format) : defaultFormats.number;
     let filteredOptions = filterProps(options, NUMBER_FORMAT_OPTIONS, defaults);
 
     try {
