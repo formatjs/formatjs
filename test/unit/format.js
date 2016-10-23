@@ -578,6 +578,58 @@ describe('format API', () => {
                 });
             });
         });
+
+        describe('defaultFormats', () => {
+            let relativeDefaultFormats;
+
+            beforeEach(() => {
+                relativeDefaultFormats = {
+                    units: 'second'
+                };
+                rf = new IntlRelativeFormat(config.locale, relativeDefaultFormats);
+                config.defaultFormats.relative = relativeDefaultFormats
+            });
+
+            it('uses defaultFormats when specified', () => {
+                expect(formatRelative(0)).toBe(rf.format(0, {now}));
+            });
+
+            it('is replaced when options are explicitly passed', () => {
+                let hourRF = new IntlRelativeFormat(config.locale, {
+                    units: 'hour'
+                });
+                expect(formatRelative(0, {
+                    units: 'hour'
+                })).toBe(hourRF.format(0, {now}));
+                expect(formatRelative(0, {
+                    units: 'hour'
+                })).toNotBe(rf.format(0, {now}));
+            });
+
+            it('accepts valid IntlRelativeFormat options', () => {
+                relativeDefaultFormats.units = 'day';
+                expect(() => formatRelative(0)).toNotThrow();
+            });
+
+            it('fallsback and warns on invalid IntlRelativeFormat options', () => {
+                relativeDefaultFormats.units = 'invalid';
+                expect(formatRelative(0)).toBe(String(new Date(0)));
+                expect(consoleError.calls.length).toBe(1);
+                expect(consoleError.calls[0].arguments[0]).toBe(
+                    '[React Intl] Error formatting relative time.\nError: "invalid" is not a valid IntlRelativeFormat `units` value, it must be one of: "second", "minute", "hour", "day", "month", "year"'
+                );
+            });
+
+            it('uses configured named formats over defaultFormats', () => {
+                const date   = -(1000 * 120);
+                const format = 'hours';
+
+                const {locale, formats} = config;
+                rf = new IntlRelativeFormat(locale, formats.relative[format]);
+
+                expect(formatRelative(date, {format})).toBe(rf.format(date, {now}));
+            });
+        });
     });
 
     describe('formatNumber()', () => {

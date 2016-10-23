@@ -104,12 +104,12 @@ export function formatTime(config, state, value, options = {}) {
 }
 
 export function formatRelative(config, state, value, options = {}) {
-    const {locale, formats} = config;
+    const {locale, defaultFormats, formats} = config;
     const {format}          = options;
 
     let date            = new Date(value);
     let now             = new Date(options.now);
-    let defaults        = format && getNamedFormat(formats, 'relative', format);
+    let defaults        = format ? getNamedFormat(formats, 'relative', format) : defaultFormats.relative;
     let filteredOptions = filterProps(options, RELATIVE_FORMAT_OPTIONS, defaults);
 
     // Capture the current threshold values, then temporarily override them with
