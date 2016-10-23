@@ -63,6 +63,7 @@ export function formatDate(config, state, value, options = {}) {
     let date            = new Date(value);
     let defaults        = format ? getNamedFormat(formats, 'date', format) : defaultFormats.date;
     let filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, defaults);
+
     try {
         return state.getDateTimeFormat(locale, filteredOptions).format(date);
     } catch (e) {
@@ -77,11 +78,11 @@ export function formatDate(config, state, value, options = {}) {
 }
 
 export function formatTime(config, state, value, options = {}) {
-    const {locale, formats} = config;
+    const {locale, defaultFormats, formats} = config;
     const {format}          = options;
 
     let date            = new Date(value);
-    let defaults        = format && getNamedFormat(formats, 'time', format);
+    let defaults        = format ? getNamedFormat(formats, 'time', format) : defaultFormats.time;
     let filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, defaults);
 
     if (!filteredOptions.hour && !filteredOptions.minute && !filteredOptions.second) {

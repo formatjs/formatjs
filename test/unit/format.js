@@ -372,6 +372,60 @@ describe('format API', () => {
                 expect(formatTime(date, {hour})).toBe(df.format(date));
             });
         });
+
+        describe('defaultFormats', () => {
+            let timeDefaultFormats;
+
+            beforeEach(() => {
+                timeDefaultFormats = {
+                    timeZone: 'Pacific/Wake'
+                };
+                df = new Intl.DateTimeFormat(config.locale, {...timeDefaultFormats, hour: 'numeric', minute: 'numeric' });
+                config.defaultFormats.time = timeDefaultFormats
+            });
+
+            it('uses defaultFormats when specified', () => {
+                expect(formatTime(0)).toBe(df.format(0));
+            });
+
+            it('is replaced when options are explicitly passed', () => {
+                let johannesburgDF = new Intl.DateTimeFormat(config.locale, {
+                    timeZone: 'Africa/Johannesburg',
+                    hour: 'numeric',
+                    minute: 'numeric'
+                });
+                expect(formatTime(0, {
+                    timeZone: 'Africa/Johannesburg'
+                })).toBe(johannesburgDF.format(0));
+                expect(formatTime(0, {
+                    timeZone: 'Africa/Johannesburg'
+                })).toNotBe(df.format(0));
+            });
+
+            it('accepts valid Intl.DateTimeFormat options', () => {
+                timeDefaultFormats.hour = 'numeric';
+                expect(() => formatTime(0)).toNotThrow();
+            });
+
+            it('fallsback and warns on invalid Intl.DateTimeFormat options', () => {
+                timeDefaultFormats.hour = 'invalid';
+                expect(formatTime(0)).toBe(String(new Date(0)));
+                expect(consoleError.calls.length).toBe(1);
+                expect(consoleError.calls[0].arguments[0]).toContain(
+                    '[React Intl] Error formatting time.\nRangeError'
+                );
+            });
+
+            it('uses configured named formats over defaultFormats', () => {
+                const date   = new Date();
+                const format = 'hour-only';
+
+                const {locale, formats} = config;
+                df = new Intl.DateTimeFormat(locale, formats.time[format]);
+
+                expect(formatTime(date, {format})).toBe(df.format(date));
+            });
+        });
     });
 
     describe('formatRelative()', () => {
