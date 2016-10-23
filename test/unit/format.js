@@ -194,10 +194,10 @@ describe('format API', () => {
 
             beforeEach(() => {
                 dateDefaultFormats = {
-                    era: 'narrow'
+                    era: 'narrow',
                 };
                 df = new Intl.DateTimeFormat(config.locale, dateDefaultFormats);
-                config.defaultFormats.date = dateDefaultFormats
+                config.defaultFormats.date = dateDefaultFormats;
             });
 
             it('uses defaultFormats when specified', () => {
@@ -206,13 +206,13 @@ describe('format API', () => {
 
             it('is replaced when options are explicitly passed', () => {
                 let longEraDF = new Intl.DateTimeFormat(config.locale, {
-                    era: 'long'
+                    era: 'long',
                 });
                 expect(formatDate(0, {
-                    era: 'long'
+                    era: 'long',
                 })).toBe(longEraDF.format(0));
                 expect(formatDate(0, {
-                    era: 'long'
+                    era: 'long',
                 })).toNotBe(df.format(0));
             });
 
@@ -378,10 +378,10 @@ describe('format API', () => {
 
             beforeEach(() => {
                 timeDefaultFormats = {
-                    timeZone: 'Pacific/Wake'
+                    timeZone: 'Pacific/Wake',
                 };
                 df = new Intl.DateTimeFormat(config.locale, {...timeDefaultFormats, hour: 'numeric', minute: 'numeric' });
-                config.defaultFormats.time = timeDefaultFormats
+                config.defaultFormats.time = timeDefaultFormats;
             });
 
             it('uses defaultFormats when specified', () => {
@@ -392,13 +392,13 @@ describe('format API', () => {
                 let johannesburgDF = new Intl.DateTimeFormat(config.locale, {
                     timeZone: 'Africa/Johannesburg',
                     hour: 'numeric',
-                    minute: 'numeric'
+                    minute: 'numeric',
                 });
                 expect(formatTime(0, {
-                    timeZone: 'Africa/Johannesburg'
+                    timeZone: 'Africa/Johannesburg',
                 })).toBe(johannesburgDF.format(0));
                 expect(formatTime(0, {
-                    timeZone: 'Africa/Johannesburg'
+                    timeZone: 'Africa/Johannesburg',
                 })).toNotBe(df.format(0));
             });
 
@@ -584,10 +584,10 @@ describe('format API', () => {
 
             beforeEach(() => {
                 relativeDefaultFormats = {
-                    units: 'second'
+                    units: 'second',
                 };
                 rf = new IntlRelativeFormat(config.locale, relativeDefaultFormats);
-                config.defaultFormats.relative = relativeDefaultFormats
+                config.defaultFormats.relative = relativeDefaultFormats;
             });
 
             it('uses defaultFormats when specified', () => {
@@ -596,13 +596,13 @@ describe('format API', () => {
 
             it('is replaced when options are explicitly passed', () => {
                 let hourRF = new IntlRelativeFormat(config.locale, {
-                    units: 'hour'
+                    units: 'hour',
                 });
                 expect(formatRelative(0, {
-                    units: 'hour'
+                    units: 'hour',
                 })).toBe(hourRF.format(0, {now}));
                 expect(formatRelative(0, {
-                    units: 'hour'
+                    units: 'hour',
                 })).toNotBe(rf.format(0, {now}));
             });
 
@@ -730,10 +730,10 @@ describe('format API', () => {
 
             beforeEach(() => {
                 numberDefaultFormats = {
-                    style: 'percent'
+                    style: 'percent',
                 };
                 nf = new Intl.NumberFormat(config.locale, numberDefaultFormats);
-                config.defaultFormats.number = numberDefaultFormats
+                config.defaultFormats.number = numberDefaultFormats;
             });
 
             it('uses defaultFormats when specified', () => {
@@ -743,15 +743,15 @@ describe('format API', () => {
             it('is replaced when options are explicitly passed', () => {
                 let currencyNF = new Intl.NumberFormat(config.locale, {
                     style: 'currency',
-                    currency: 'USD'
+                    currency: 'USD',
                 });
                 expect(formatNumber(31, {
                     style: 'currency',
-                    currency: 'USD'
+                    currency: 'USD',
                 })).toBe(currencyNF.format(31));
                 expect(formatNumber(13, {
                     style: 'currency',
-                    currency: 'USD'
+                    currency: 'USD',
                 })).toNotBe(nf.format(0));
             });
 

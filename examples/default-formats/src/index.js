@@ -6,8 +6,8 @@ import App from './App';
 ReactDOM.render(
     <IntlProvider locale="en" defaultFormats={{
         time: {
-            timeZone: 'Asia/Tokyo'
-        }
+            timeZone: 'Asia/Tokyo',
+        },
     }}>
         <App />
     </IntlProvider>,
