@@ -142,12 +142,12 @@ describe('format API', () => {
                 timeZone: 'Pacific/Wake',
             });
             expect(formatDate(timestamp)).toBe(wakeDf.format(timestamp));
-            config = {...config, timeZone: 'Pacific/Samoa'};
+            config = {...config, timeZone: 'Asia/Shanghai'};
             formatDate = f.formatDate.bind(null, config, state);
-            const samoaDf = new Intl.DateTimeFormat(config.locale, {
-                timeZone: 'Pacific/Samoa',
+            const shanghaiDf = new Intl.DateTimeFormat(config.locale, {
+                timeZone: 'Asia/Shanghai',
             });
-            expect(formatDate(timestamp)).toBe(samoaDf.format(timestamp));
+            expect(formatDate(timestamp)).toBe(shanghaiDf.format(timestamp));
         });
 
         describe('options', () => {
@@ -208,10 +208,10 @@ describe('format API', () => {
                 const timestamp = Date.now();
                 config = {...config, timeZone: 'Pacific/Wake'};
                 formatDate = f.formatDate.bind(null, config, state);
-                const samoaDf = new Intl.DateTimeFormat(config.locale, {
-                    timeZone: 'Pacific/Samoa',
+                const shanghaiDf = new Intl.DateTimeFormat(config.locale, {
+                    timeZone: 'Asia/Shanghai',
                 });
-                expect(formatDate(timestamp, {timeZone: 'Pacific/Samoa'})).toBe(samoaDf.format(timestamp));
+                expect(formatDate(timestamp, {timeZone: 'Asia/Shanghai'})).toBe(shanghaiDf.format(timestamp));
             });
         });
     });
