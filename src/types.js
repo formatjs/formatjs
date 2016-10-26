@@ -14,6 +14,7 @@ const funcReq = func.isRequired;
 
 export const intlConfigPropTypes = {
     locale       : string,
+    timeZone     : string,
     formats      : object,
     messages     : object,
     textComponent: any,
