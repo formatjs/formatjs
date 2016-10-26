@@ -129,7 +129,7 @@ describe('<IntlProvider>', () => {
         );
     });
 
-    it('renderes its `children`', () => {
+    it('renders its `children`', () => {
         const el = (
             <IntlProvider locale="en">
                 <Child />
@@ -186,7 +186,7 @@ describe('<IntlProvider>', () => {
 
     it('provides `context.intl` with timeZone from intl config props when it is specified', () => {
         const props = {
-            timeZone: 'Europe/Paris'
+            timeZone: 'Europe/Paris',
         };
 
         const el = (

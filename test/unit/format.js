@@ -139,13 +139,13 @@ describe('format API', () => {
             config = {...config, timeZone: 'Pacific/Wake'};
             formatDate = f.formatDate.bind(null, config, state);
             const wakeDf = new Intl.DateTimeFormat(config.locale, {
-                timeZone: 'Pacific/Wake'
+                timeZone: 'Pacific/Wake',
             });
             expect(formatDate(timestamp)).toBe(wakeDf.format(timestamp));
             config = {...config, timeZone: 'Pacific/Samoa'};
             formatDate = f.formatDate.bind(null, config, state);
             const samoaDf = new Intl.DateTimeFormat(config.locale, {
-                timeZone: 'Pacific/Samoa'
+                timeZone: 'Pacific/Samoa',
             });
             expect(formatDate(timestamp)).toBe(samoaDf.format(timestamp));
         });
@@ -209,7 +209,7 @@ describe('format API', () => {
                 config = {...config, timeZone: 'Pacific/Wake'};
                 formatDate = f.formatDate.bind(null, config, state);
                 const samoaDf = new Intl.DateTimeFormat(config.locale, {
-                    timeZone: 'Pacific/Samoa'
+                    timeZone: 'Pacific/Samoa',
                 });
                 expect(formatDate(timestamp, {timeZone: 'Pacific/Samoa'})).toBe(samoaDf.format(timestamp));
             });
@@ -269,7 +269,7 @@ describe('format API', () => {
             const johannesburgDf = new Intl.DateTimeFormat(config.locale, {
                 hour: 'numeric',
                 minute: 'numeric',
-                timeZone: 'Africa/Johannesburg'
+                timeZone: 'Africa/Johannesburg',
             });
             expect(formatTime(timestamp)).toBe(johannesburgDf.format(timestamp));
             config = {...config, timeZone: 'America/Chicago'};
@@ -277,7 +277,7 @@ describe('format API', () => {
             const chicagoDf = new Intl.DateTimeFormat(config.locale, {
                 hour: 'numeric',
                 minute: 'numeric',
-                timeZone: 'America/Chicago'
+                timeZone: 'America/Chicago',
             });
             expect(formatTime(timestamp)).toBe(chicagoDf.format(timestamp));
         });
@@ -373,7 +373,7 @@ describe('format API', () => {
                 const chicagoDf = new Intl.DateTimeFormat(config.locale, {
                     hour: 'numeric',
                     minute: 'numeric',
-                    timeZone: 'America/Chicago'
+                    timeZone: 'America/Chicago',
                 });
                 expect(formatTime(timestamp, {timeZone: 'America/Chicago'})).toBe(chicagoDf.format(timestamp));
             });
