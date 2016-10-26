@@ -52,15 +52,16 @@ function getNamedFormat(formats, type, name) {
 }
 
 export function formatDate(config, state, value, options = {}) {
-  const {locale, formats} = config;
+  const {locale, formats, timeZone} = config;
   const {format} = options;
 
   let date = new Date(value);
   let defaults = format && getNamedFormat(formats, 'date', format);
+  let configTimeZone = timeZone ? {timeZone} : {};
   let filteredOptions = filterProps(
     options,
     DATE_TIME_FORMAT_OPTIONS,
-    defaults
+    {...configTimeZone, ...defaults}
   );
 
   try {
@@ -75,15 +76,16 @@ export function formatDate(config, state, value, options = {}) {
 }
 
 export function formatTime(config, state, value, options = {}) {
-  const {locale, formats} = config;
+  const {locale, formats, timeZone} = config;
   const {format} = options;
 
   let date = new Date(value);
   let defaults = format && getNamedFormat(formats, 'time', format);
+  let configTimeZone = timeZone ? {timeZone} : {};
   let filteredOptions = filterProps(
     options,
     DATE_TIME_FORMAT_OPTIONS,
-    defaults
+    {...configTimeZone, ...defaults}
   );
 
   if (
