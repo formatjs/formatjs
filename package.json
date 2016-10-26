@@ -57,7 +57,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.2.0",
-    "babel-eslint": "^6.1.2",
+    "babel-eslint": "^7.1.0",
     "babel-plugin-istanbul": "^2.0.0",
     "babel-plugin-react-intl": "^2.0.0",
     "babel-plugin-transform-class-properties": "^6.11.5",
