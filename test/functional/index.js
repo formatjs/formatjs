@@ -1,11 +1,12 @@
-import buildTests from './build';
-import formatTests from './format';
+import * as p from 'path';
+import buildTests from './support/build';
+import formatTests from './support/format';
 
 const builds = {
-    'ES'      : '../../lib/index.es.js',
-    'CJS'     : '../../lib/index.js',
-    'UMD-dev' : '../../dist/react-intl.js',
-    'UMD-prod': '../../dist/react-intl.min.js',
+    'ES'      : p.resolve('lib/index.es.js'),
+    'CJS'     : p.resolve('lib/index.js'),
+    'UMD-dev' : p.resolve('dist/react-intl.js'),
+    'UMD-prod': p.resolve('dist/react-intl.min.js'),
 };
 
 Object.keys(builds).forEach((name) => {
