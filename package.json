@@ -118,7 +118,7 @@
     "react:15": "npm run react:clean && npm i react@^15 react-dom@^15 react-addons-test-utils@^15",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "mocha --compilers js:babel-register --require babel-polyfill --require intl --recursive test/unit/ test/functional/",
+    "test": "mocha --require babel-polyfill --require intl --require babel-register --recursive test/unit/ test/functional/",
     "test:cov": "cross-env NODE_ENV=test nyc --reporter text --reporter text-summary --reporter html npm test",
     "posttest:cov": "nyc check-coverage --statements 95 --branches 85 --functions 100 --lines 95",
     "test:react": "npm run react:14 && npm run test -- --reporter dot && npm run react:15 && npm run test -- --reporter dot",
