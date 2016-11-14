@@ -1,10 +1,9 @@
 sudo: false
 language: node_js
 node_js:
-    - 0.12
     - 4.2
-    - 5
     - 6
+    - 7
 before_install: if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 script: npm run test:all
 notifications:
