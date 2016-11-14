@@ -3,7 +3,8 @@ import expect from 'expect';
 import {sync as globSync} from 'glob';
 
 describe('locale data', () => {
-    it('has generated locale data modules with correct shape', () => {
+    it('has generated locale data modules with correct shape', function () {
+        this.timeout(5000);
         const localeDataFiles = globSync('./locale-data/*.js');
 
         expect(localeDataFiles.length).toBeGreaterThan(0);
