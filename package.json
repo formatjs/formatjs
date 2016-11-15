@@ -88,7 +88,7 @@
     "intl-messageformat-parser": "^1.2.0",
     "mkdirp": "^0.5.1",
     "mocha": "^3.0.2",
-    "nyc": "^8.1.0",
+    "nyc": "^9.0.1",
     "react": "^15.0.0",
     "react-addons-test-utils": "^15.0.0",
     "react-dom": "^15.0.0",
