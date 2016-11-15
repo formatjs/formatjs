@@ -39,12 +39,29 @@
   "browserify-shim": {
     "react": "global:React"
   },
-  "nyc": {
-    "exclude": [
-      "src/en.js"
+  "jest": {
+    "testRegex": "/test/(unit|functional)/.*\\.js",
+    "testPathIgnorePatterns": [
+      "/test/functional/support/"
     ],
-    "instrument": false,
-    "sourceMap": false
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/en.js"
+    ],
+    "coverageReporters": [
+      "lcov",
+      "text",
+      "text-summary",
+      "html"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 85,
+        "functions": 100,
+        "lines": 95,
+        "statements": 95
+      }
+    }
   },
   "dependencies": {
     "intl-format-cache": "^2.0.5",
@@ -58,7 +75,7 @@
   "devDependencies": {
     "babel-cli": "^6.2.0",
     "babel-eslint": "^6.1.2",
-    "babel-plugin-istanbul": "^2.0.0",
+    "babel-jest": "^16.0.0",
     "babel-plugin-react-intl": "^2.0.0",
     "babel-plugin-transform-class-properties": "^6.11.5",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.4.0",
@@ -70,13 +87,11 @@
     "babel-preset-es2015": "^6.1.18",
     "babel-preset-es2015-rollup": "^1.1.1",
     "babel-preset-react": "^6.1.18",
-    "babel-register": "^6.2.0",
     "babelify": "^7.2.0",
     "benchmark": "^2.1.0",
     "browserify": "^13.0.0",
     "browserify-shim": "^3.8.11",
     "cross-env": "^2.0.0",
-    "es6-promise": "^4.0.3",
     "eslint": "^2.13.1",
     "eslint-plugin-react": "^6.2.0",
     "expect": "^1.9.0",
@@ -86,9 +101,8 @@
     "glob": "^7.0.0",
     "intl": "^1.2.1",
     "intl-messageformat-parser": "^1.2.0",
+    "jest": "^16.0.2",
     "mkdirp": "^0.5.1",
-    "mocha": "^3.0.2",
-    "nyc": "^8.1.0",
     "react": "^15.0.0",
     "react-addons-test-utils": "^15.0.0",
     "react-dom": "^15.0.0",
@@ -118,12 +132,11 @@
     "react:15": "npm run react:clean && npm i react@^15 react-dom@^15 react-addons-test-utils@^15",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "mocha --require babel-polyfill --require intl --require babel-register --recursive test/unit/ test/functional/",
-    "test:cov": "cross-env NODE_ENV=test nyc --reporter text --reporter text-summary --reporter html npm test",
-    "posttest:cov": "nyc check-coverage --statements 95 --branches 85 --functions 100 --lines 95",
-    "test:react": "npm run react:14 && npm run test -- --reporter dot && npm run react:15 && npm run test -- --reporter dot",
+    "test": "jest --verbose",
+    "test:cov": "npm test -- --coverage",
+    "test:react": "npm run react:14 && npm run test -- --verbose false && npm run react:15 && npm run test -- --verbose false",
     "test:all": "npm run lint && npm run test:cov && npm run test:react",
-    "test:watch": "npm run test -- --watch --reporter min",
+    "test:watch": "npm run test -- --watch --verbose false",
     "test:perf": "cross-env NODE_ENV=production babel-node test/perf",
     "preversion": "npm run clean && npm run build && npm run test:all",
     "postversion": "echo 'Uninstall react-router to fix npm issue' && npm uninstall react-router",

@@ -16,7 +16,7 @@ const skipWhen = (shouldSkip, callback) => {
 };
 
 describe('<IntlProvider>', () => {
-    let immutableIntl;
+    let immutableIntl = false;
     try {
         global.Intl = global.Intl;
     } catch (e) {
@@ -77,7 +77,7 @@ describe('<IntlProvider>', () => {
     // If global.Intl is immutable, then skip this test.
     skipWhen(immutableIntl, (it) => {
         it('throws when `Intl` is missing from runtime', () => {
-            delete global.Intl;
+            global.Intl = undefined;
             expect(() => renderer.render(<IntlProvider />)).toThrow(
                 '[React Intl] The `Intl` APIs must be available in the runtime, and do not appear to be built-in. An `Intl` polyfill should be loaded.'
             );
