@@ -31,7 +31,7 @@ class App extends Component {
 
 const localStyle = StyleSheet.create({
     bold:{
-      fontWeight:'bold',
+        fontWeight:'bold',
     },
 });
 

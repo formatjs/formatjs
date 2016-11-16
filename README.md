@@ -90,7 +90,7 @@ If you wish to add custom styling to the Text element, we suggest that you creat
 
 import { Text } from 'react-native';
 
-<IntlProvider locale="en" textElement={Text}>
+<IntlProvider locale="en" textComponent={Text}>
     <App />
 </IntlProvider>,
 

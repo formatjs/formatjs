@@ -162,7 +162,7 @@ describe('<IntlProvider>', () => {
             locale  : 'fr-FR',
             formats : {},
             messages: {},
-            textElement :  'span',
+            textComponent :  'span',
 
             defaultLocale : 'en-US',
             defaultFormats: {},
@@ -246,7 +246,7 @@ describe('<IntlProvider>', () => {
             messages: {
                 hello: 'Hello, World!',
             },
-            textElement: 'span',
+            textComponent: 'span',
 
             defaultLocale : 'fr',
             defaultFormats: {
@@ -309,7 +309,7 @@ describe('<IntlProvider>', () => {
                 messages={{}}
                 defaultLocale="en"
                 defaultFormats={{}}
-                textElement="span"
+                textComponent="span"
             >
                 <Child />
             </IntlProvider>

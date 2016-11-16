@@ -16,7 +16,7 @@ export const intlConfigPropTypes = {
     locale  : string,
     formats : object,
     messages: object,
-    textElement: node,
+    textComponent: node,
 
     defaultLocale : string,
     defaultFormats: object,

@@ -23,8 +23,8 @@ const intlFormatPropNames = Object.keys(intlFormatPropTypes);
 const defaultProps = {
     formats : {},
     messages: {},
-    textElement: 'span',
-    
+    textComponent: 'span',
+
     defaultLocale : 'en',
     defaultFormats: {},
 };

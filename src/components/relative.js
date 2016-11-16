@@ -146,7 +146,7 @@ export default class FormattedRelative extends Component {
     }
 
     render() {
-        const {formatRelative, textElement}  = this.context.intl;
+        const {formatRelative, textComponent}  = this.context.intl;
         const {value, children} = this.props;
 
         let formattedRelative = formatRelative(value, {
@@ -158,6 +158,6 @@ export default class FormattedRelative extends Component {
             return children(formattedRelative);
         }
 
-        return React.createElement(textElement, undefined, formattedRelative);
+        return React.createElement(textComponent, undefined, formattedRelative);
     }
 }
