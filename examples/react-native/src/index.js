@@ -6,9 +6,9 @@ import App from './App';
 export default class Root extends React.Component{
     render(){
         return (
-          <IntlProvider locale="en" textComponent={Text}>
-              <App />
-          </IntlProvider>
+            <IntlProvider locale="en" textComponent={Text}>
+                <App />
+            </IntlProvider>
         );
     }
 }
