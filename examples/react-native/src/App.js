@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
 import {FormattedMessage} from 'react-intl';
 
 class App extends Component {
@@ -30,10 +30,10 @@ class App extends Component {
 }
 
 const localStyle = StyleSheet.create({
-  bold:{
-    fontWeight:'bold'
-  }
-})
+    bold:{
+      fontWeight:'bold',
+    },
+});
 
 
 export default App;
