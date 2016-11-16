@@ -28,7 +28,6 @@ export default class FormattedMessage extends Component {
 
     static defaultProps = {
         values : {},
-        tagName: 'span',
     };
 
     constructor(props, context) {
@@ -56,7 +55,7 @@ export default class FormattedMessage extends Component {
     }
 
     render() {
-        const {formatMessage} = this.context.intl;
+        const {formatMessage, textElement} = this.context.intl;
 
         const {
             id,
@@ -130,6 +129,6 @@ export default class FormattedMessage extends Component {
             return children(...nodes);
         }
 
-        return createElement(tagName, null, ...nodes);
+        return createElement(tagName || textElement, null, ...nodes);
     }
 }

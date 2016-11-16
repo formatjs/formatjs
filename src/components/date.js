@@ -32,7 +32,7 @@ export default class FormattedDate extends Component {
     }
 
     render() {
-        const {formatDate}      = this.context.intl;
+        const {formatDate, textElement}      = this.context.intl;
         const {value, children} = this.props;
 
         let formattedDate = formatDate(value, this.props);
@@ -41,6 +41,6 @@ export default class FormattedDate extends Component {
             return children(formattedDate);
         }
 
-        return <span>{formattedDate}</span>;
+        return React.createElement(textElement, undefined, formattedDate);
     }
 }

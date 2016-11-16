@@ -78,6 +78,24 @@ This example would render: "Hello **Eric**, you have 1,000 messages." into the c
 **Pluralization rules:** In some languages you have more than `one` and `other`. For example in `ru` there are the following plural rules: `one`, `few`, `many` and `other`.
 Check out the official [Unicode CLDR documentation](http://www.unicode.org/cldr/charts/28/supplemental/language_plural_rules.html).
 
+### Example
+
+React Intl uses the `span` element by default to render text. On React Native we need to use a `Text` element.
+
+In order to achieve this, you need to pass the `Text` element to the `IntlProvider`.
+
+If you wish to add custom styling to the Text element, we suggest that you create a custom React component `MyText` that contains that styling and pass that component in stead of `Text`.
+
+```
+
+import { Text } from 'react-native';
+
+<IntlProvider locale="en" textElement={Text}>
+    <App />
+</IntlProvider>,
+
+```
+
 Contribute
 ---------
 
