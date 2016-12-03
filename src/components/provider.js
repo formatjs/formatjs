@@ -45,7 +45,7 @@ export default class IntlProvider extends Component {
         initialNow: PropTypes.any,
     };
 
-    constructor(props, context) {
+    constructor(props, context = {}) {
         super(props, context);
 
         invariant(typeof Intl !== 'undefined',
