@@ -43,7 +43,7 @@ export default class FormattedPlural extends Component {
     }
 
     render() {
-        const {formatPlural, textComponent} = this.context.intl;
+        const {formatPlural, textComponent: Text} = this.context.intl;
         const {value, other, children} = this.props;
 
         let pluralCategory  = formatPlural(value, this.props);
@@ -53,6 +53,6 @@ export default class FormattedPlural extends Component {
             return children(formattedPlural);
         }
 
-        return React.createElement(textComponent, undefined, formattedPlural);
+        return <Text>{formattedPlural}</Text>;
     }
 }

@@ -55,7 +55,7 @@ export default class FormattedMessage extends Component {
     }
 
     render() {
-        const {formatMessage, textComponent} = this.context.intl;
+        const {formatMessage, textComponent: Text} = this.context.intl;
 
         const {
             id,
@@ -129,6 +129,6 @@ export default class FormattedMessage extends Component {
             return children(...nodes);
         }
 
-        return createElement(tagName || textComponent, null, ...nodes);
+        return createElement(tagName || Text, null, ...nodes);
     }
 }

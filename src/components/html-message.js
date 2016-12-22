@@ -55,7 +55,7 @@ export default class FormattedHTMLMessage extends Component {
     }
 
     render() {
-        const {formatHTMLMessage, textComponent} = this.context.intl;
+        const {formatHTMLMessage, textComponent: Text} = this.context.intl;
 
         const {
             id,
@@ -81,7 +81,7 @@ export default class FormattedHTMLMessage extends Component {
         //
         // Note: There's a perf impact of using this component since there's no
         // way for React to do its virtual DOM diffing.
-        return createElement(tagName || textComponent, {
+        return createElement(tagName || Text, {
             dangerouslySetInnerHTML: {
                 __html: formattedHTMLMessage,
             },
