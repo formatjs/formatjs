@@ -32,7 +32,7 @@ export default class FormattedNumber extends Component {
     }
 
     render() {
-        const {formatNumber}    = this.context.intl;
+        const {formatNumber, textComponent: Text}    = this.context.intl;
         const {value, children} = this.props;
 
         let formattedNumber = formatNumber(value, this.props);
@@ -41,6 +41,6 @@ export default class FormattedNumber extends Component {
             return children(formattedNumber);
         }
 
-        return <span>{formattedNumber}</span>;
+        return <Text>{formattedNumber}</Text>;
     }
 }
