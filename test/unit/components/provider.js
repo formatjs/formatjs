@@ -159,10 +159,10 @@ describe('<IntlProvider>', () => {
 
     it('provides `context.intl` with values from intl config props', () => {
         const props = {
-            locale  : 'fr-FR',
-            formats : {},
-            messages: {},
-            textComponent :  'span',
+            locale       : 'fr-FR',
+            formats      : {},
+            messages     : {},
+            textComponent: 'span',
 
             defaultLocale : 'en-US',
             defaultFormats: {},

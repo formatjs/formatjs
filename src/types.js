@@ -13,9 +13,9 @@ const numeric2digit = oneOf(['numeric', '2-digit']);
 const funcReq = func.isRequired;
 
 export const intlConfigPropTypes = {
-    locale  : string,
-    formats : object,
-    messages: object,
+    locale       : string,
+    formats      : object,
+    messages     : object,
     textComponent: node,
 
     defaultLocale : string,

@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {Component, PropTypes, createElement, isValidElement} from 'react';
+import React, {Component, PropTypes, isValidElement} from 'react';
 import {intlShape, messageDescriptorPropTypes} from '../types';
 import {
     invariantIntlContext,
@@ -62,7 +62,7 @@ export default class FormattedMessage extends Component {
             description,
             defaultMessage,
             values,
-            tagName,
+            tagName: Component = Text,
             children,
         } = this.props;
 
@@ -129,6 +129,6 @@ export default class FormattedMessage extends Component {
             return children(...nodes);
         }
 
-        return createElement(tagName || Text, null, ...nodes);
+        return <Component>{nodes}</Component>;
     }
 }

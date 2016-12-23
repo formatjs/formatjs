@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {Component, PropTypes, createElement} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {intlShape, messageDescriptorPropTypes} from '../types';
 import {
     invariantIntlContext,
@@ -27,7 +27,7 @@ export default class FormattedHTMLMessage extends Component {
     };
 
     static defaultProps = {
-        values : {},
+        values: {},
     };
 
     constructor(props, context) {
@@ -62,7 +62,7 @@ export default class FormattedHTMLMessage extends Component {
             description,
             defaultMessage,
             values: rawValues,
-            tagName,
+            tagName: Component = Text,
             children,
         } = this.props;
 
@@ -81,10 +81,7 @@ export default class FormattedHTMLMessage extends Component {
         //
         // Note: There's a perf impact of using this component since there's no
         // way for React to do its virtual DOM diffing.
-        return createElement(tagName || Text, {
-            dangerouslySetInnerHTML: {
-                __html: formattedHTMLMessage,
-            },
-        });
+        const html = {__html: formattedHTMLMessage};
+        return <Component dangerouslySetInnerHTML={html}/>;
     }
 }
