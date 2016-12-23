@@ -146,7 +146,7 @@ export default class FormattedRelative extends Component {
     }
 
     render() {
-        const {formatRelative, textComponent: Text}  = this.context.intl;
+        const {formatRelative, textComponent: Text} = this.context.intl;
         const {value, children} = this.props;
 
         let formattedRelative = formatRelative(value, {
