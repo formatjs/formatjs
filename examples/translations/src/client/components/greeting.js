@@ -17,13 +17,18 @@ class Greeting extends Component {
                         } since {formattedLastLoginTime}.
                     `}
                     values={{
-                        name: <b>{user.name}</b>,
+                        name: <b key='name'>{user.name}</b>,
                         unreadCount: user.unreadCount,
                         formattedUnreadCount: (
-                            <b><FormattedNumber value={user.unreadCount} /></b>
+                            <b key='formattedUnreadCount'>
+                                <FormattedNumber value={user.unreadCount} />
+                            </b>
                         ),
                         formattedLastLoginTime: (
-                            <FormattedRelative value={user.lastLoginTime} />
+                            <FormattedRelative
+                                key='formattedLastLoginTime'
+                                value={user.lastLoginTime}
+                            />
                         ),
                     }}
                 />

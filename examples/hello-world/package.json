@@ -7,7 +7,7 @@
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "license": "BSD-3-Clause",
   "devDependencies": {
-    "react-scripts": "0.6.0"
+    "react-scripts": "0.8.4"
   },
   "dependencies": {
     "react": "^15.3.2",
