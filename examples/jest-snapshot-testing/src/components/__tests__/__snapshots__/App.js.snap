@@ -12,7 +12,7 @@ exports[`test app should be rendered 1`] = `
   </header>
   <main
     className="app-main"
-    onClick={[Function anonymous]}>
+    onClick={[Function]}>
     <div
       className="app-main__counter">
       <span>

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "react-scripts": "0.6.1",
+    "react-scripts": "0.8.4",
     "react-test-renderer": "^15.3.2"
   },
   "dependencies": {

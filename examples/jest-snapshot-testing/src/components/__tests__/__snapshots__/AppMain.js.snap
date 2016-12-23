@@ -1,7 +1,7 @@
 exports[`test app main should be rendered 1`] = `
 <main
   className="app-main"
-  onClick={[Function anonymous]}>
+  onClick={[Function]}>
   <div
     className="app-main__counter">
     <span>
@@ -14,7 +14,7 @@ exports[`test app main should be rendered 1`] = `
 exports[`test app main should be rendered 2`] = `
 <main
   className="app-main"
-  onClick={[Function anonymous]}>
+  onClick={[Function]}>
   <div
     className="app-main__counter">
     <span>

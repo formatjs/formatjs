@@ -5,13 +5,13 @@
   "private": true,
   "main": "index.js",
   "devDependencies": {
-    "react-scripts": "0.6.1"
+    "react-scripts": "0.8.4"
   },
   "dependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-intl": "^2.1.5",
-    "react-router": "^4.0.0-alpha.4"
+    "react-router": "^4.0.0-alpha.6"
   },
   "scripts": {
     "start": "react-scripts start",

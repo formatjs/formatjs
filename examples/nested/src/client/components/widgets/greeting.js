@@ -17,13 +17,16 @@ const Greeting = ({name, unreadCount, lastLoginTime}) => (
                 } since {formattedLastLoginTime}.
             `}
             values={{
-                name: <b>{name}</b>,
+                name: <b key='name'>{name}</b>,
                 unreadCount: unreadCount,
                 formattedUnreadCount: (
-                    <b><FormattedNumber value={unreadCount} /></b>
+                    <b key='formattedUnreadCount'>
+                        <FormattedNumber value={unreadCount} />
+                    </b>
                 ),
                 formattedLastLoginTime: (
                     <FormattedRelative
+                        key='formattedLastLoginTime'
                         value={lastLoginTime}
                         updateInterval={1000}
                     />
