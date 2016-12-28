@@ -6,7 +6,7 @@
 
 import {PropTypes} from 'react';
 
-const {bool, number, string, func, object, oneOf, shape, node} = PropTypes;
+const {bool, number, string, func, object, oneOf, shape, any} = PropTypes;
 const localeMatcher = oneOf(['best fit', 'lookup']);
 const narrowShortLong = oneOf(['narrow', 'short', 'long']);
 const numeric2digit = oneOf(['numeric', '2-digit']);
@@ -16,7 +16,7 @@ export const intlConfigPropTypes = {
     locale       : string,
     formats      : object,
     messages     : object,
-    textComponent: node,
+    textComponent: any,
 
     defaultLocale : string,
     defaultFormats: object,
