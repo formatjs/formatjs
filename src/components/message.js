@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import React, {Component, PropTypes, isValidElement} from 'react';
+import {Component, PropTypes, createElement, isValidElement} from 'react';
 import {intlShape, messageDescriptorPropTypes} from '../types';
 import {
     invariantIntlContext,
@@ -129,6 +129,8 @@ export default class FormattedMessage extends Component {
             return children(...nodes);
         }
 
-        return <Component>{nodes}</Component>;
+        // Needs to use `createElement()` instead of JSX, otherwise React will
+        // warn about a missing `key` prop with rich-text message formatting.
+        return createElement(Component, null, ...nodes);
     }
 }
