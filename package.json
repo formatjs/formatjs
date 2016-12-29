@@ -136,6 +136,8 @@
     "test:all": "npm run lint && npm run test && npm run test:react",
     "test:watch": "jest --watch",
     "test:perf": "cross-env NODE_ENV=production babel-node test/perf",
+    "examples:install": "babel-node scripts/examples npm install",
+    "examples:link": "npm link && babel-node scripts/examples npm link react-intl",
     "preversion": "npm run clean && npm run build && npm run test:all",
     "prepublish": "npm run clean && npm run build"
   }
