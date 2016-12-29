@@ -50,6 +50,19 @@ describe('<FormattedMessage>', () => {
         );
     });
 
+    it('should not cause a unique "key" prop warning', () => {
+        const {intl} = intlProvider.getChildContext();
+        const descriptor = {
+            id: 'hello',
+            defaultMessage: 'Hello, {name}!',
+        };
+
+        const el = <FormattedMessage {...descriptor} values={{name: <b>Eric</b>}} />;
+
+        renderer.render(el, {intl});
+        expect(consoleError.calls.length).toBe(0);
+    });
+
     it('should not re-render when props and context are the same', () => {
         intlProvider = new IntlProvider({locale: 'en', defaultLocale: 'en'}, {});
         renderer.render(
