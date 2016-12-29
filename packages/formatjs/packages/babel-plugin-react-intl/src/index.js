@@ -52,7 +52,12 @@ export default function ({types: t}) {
         }
 
         // Always trim the Message Descriptor values.
-        return evaluatePath(path).trim();
+        const descriptorValue = evaluatePath(path);
+
+        if(typeof descriptorValue === 'string'){
+            return descriptorValue.trim();
+        }
+        return descriptorValue;
     }
 
     function getICUMessageValue(messagePath, {isJSXSource = false} = {}) {

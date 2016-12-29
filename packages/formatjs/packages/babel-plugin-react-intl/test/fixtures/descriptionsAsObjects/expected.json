@@ -1,0 +1,10 @@
+[
+  {
+    "id": "foo.bar.baz",
+    "description": {
+      "text": "The default message.",
+      "metadata": "metadata content"
+    },
+    "defaultMessage": "Hello World!"
+  }
+]
