@@ -2,8 +2,8 @@
   {
     "id": "foo.bar.baz",
     "description": {
-      "text": "The default message.",
-      "metadata": "metadata content"
+      "text": "Something for the translator.",
+      "metadata": "Additional metadata content."
     },
     "defaultMessage": "Hello World!"
   }

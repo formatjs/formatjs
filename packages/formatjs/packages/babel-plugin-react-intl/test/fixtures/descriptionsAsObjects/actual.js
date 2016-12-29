@@ -7,7 +7,10 @@ export default class Foo extends Component {
             <FormattedMessage
                 id='foo.bar.baz'
                 defaultMessage='Hello World!'
-                description={{ text:'The default message.', metadata:'metadata content'}}
+                description={{
+                    text: 'Something for the translator.',
+                    metadata: 'Additional metadata content.',
+                }}
             />
         );
     }

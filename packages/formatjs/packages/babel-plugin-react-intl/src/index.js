@@ -54,9 +54,10 @@ export default function ({types: t}) {
         // Always trim the Message Descriptor values.
         const descriptorValue = evaluatePath(path);
 
-        if(typeof descriptorValue === 'string'){
+        if (typeof descriptorValue === 'string') {
             return descriptorValue.trim();
         }
+
         return descriptorValue;
     }
 
@@ -135,10 +136,15 @@ export default function ({types: t}) {
             }
         }
 
-        if (opts.enforceDescriptions && !description) {
-            throw path.buildCodeFrameError(
-                '[React Intl] Message must have a `description`.'
-            );
+        if (opts.enforceDescriptions) {
+            if (
+                !description ||
+                (typeof description === 'object' && Object.keys(description).length < 1)
+            ) {
+                throw path.buildCodeFrameError(
+                    '[React Intl] Message must have a `description`.'
+                );
+            }
         }
 
         let loc;
