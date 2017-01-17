@@ -8,14 +8,18 @@ import FormattedRelative from '../../../src/components/relative';
 expect.extend(expectJSX);
 
 describe('<FormattedRelative>', () => {
+    const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
+
     let consoleError;
     let renderer;
     let intlProvider;
+    let setState;
 
     beforeEach(() => {
         consoleError = spyOn(console, 'error');
         renderer     = createRenderer();
         intlProvider = new IntlProvider({locale: 'en'}, {});
+        setState     = spyOn(FormattedRelative.prototype, 'setState').andCallThrough();
 
         // TODO: Remove when this feature is released to react-addons-test-utils
         // https://github.com/facebook/react/pull/4918
@@ -28,6 +32,7 @@ describe('<FormattedRelative>', () => {
 
     afterEach(() => {
         consoleError.restore();
+        setState.restore();
     });
 
     it('has a `displayName`', () => {
@@ -40,18 +45,27 @@ describe('<FormattedRelative>', () => {
         );
     });
 
-    it('requires a finite `value` prop', () => {
+    it('requires a finite `value` prop', async () => {
         const {intl} = intlProvider.getChildContext();
 
         renderer.render(<FormattedRelative value={0} />, {intl});
         expect(isFinite(0)).toBe(true);
         expect(consoleError.calls.length).toBe(0);
 
-        renderer.render(<FormattedRelative />, {intl});
+        renderer.render(<FormattedRelative value={NaN} />, {intl});
         expect(consoleError.calls.length).toBe(1);
         expect(consoleError.calls[0].arguments[0]).toContain(
             '[React Intl] Error formatting relative time.\nRangeError'
         );
+
+        // Shallow Renderer doesn't call `componentDidMount()`. This forces the
+        // scheduler to schedule an update based on the `updateInterval`.
+        renderer.getMountedInstance().componentDidMount();
+
+        // Should avoid update scheduling tight-loop.
+        await sleep(10);
+        expect(setState.calls.length).toBe(1, '`setState()` called unexpectedly');
+        renderer.unmount();
     });
 
     it('renders a formatted relative time in a <span>', () => {

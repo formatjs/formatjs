@@ -91,30 +91,30 @@ export default class FormattedRelative extends Component {
     }
 
     scheduleNextUpdate(props, state) {
-        const {updateInterval} = props;
+        // Cancel and pending update because we're scheduling a new update.
+        clearTimeout(this._timer);
 
-        // If the `updateInterval` is falsy, including `0`, then auto updates
-        // have been turned off, so we bail and skip scheduling an update.
-        if (!updateInterval) {
+        const {value, units, updateInterval} = props;
+        const time = new Date(value).getTime();
+
+        // If the `updateInterval` is falsy, including `0` or we don't have a
+        // valid date, then auto updates have been turned off, so we bail and
+        // skip scheduling an update.
+        if (!updateInterval || !isFinite(time)) {
             return;
         }
 
-        let time  = new Date(props.value).getTime();
-        let delta = time - state.now;
-        let units = props.units || selectUnits(delta);
-
-        let unitDelay     = getUnitDelay(units);
-        let unitRemainder = Math.abs(delta % unitDelay);
+        const delta         = time - state.now;
+        const unitDelay     = getUnitDelay(units || selectUnits(delta));
+        const unitRemainder = Math.abs(delta % unitDelay);
 
         // We want the largest possible timer delay which will still display
         // accurate information while reducing unnecessary re-renders. The delay
         // should be until the next "interesting" moment, like a tick from
         // "1 minute ago" to "2 minutes ago" when the delta is 120,000ms.
-        let delay = delta < 0 ?
+        const delay = delta < 0 ?
             Math.max(updateInterval, unitDelay - unitRemainder) :
             Math.max(updateInterval, unitRemainder);
-
-        clearTimeout(this._timer);
 
         this._timer = setTimeout(() => {
             this.setState({now: this.context.intl.now()});
