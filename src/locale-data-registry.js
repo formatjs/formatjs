@@ -8,35 +8,33 @@ import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 
 export function addLocaleData(data = []) {
-    let locales = Array.isArray(data) ? data : [data];
+  let locales = Array.isArray(data) ? data : [data];
 
-    locales.forEach((localeData) => {
-        if (localeData && localeData.locale) {
-            IntlMessageFormat.__addLocaleData(localeData);
-            IntlRelativeFormat.__addLocaleData(localeData);
-        }
-    });
+  locales.forEach(localeData => {
+    if (localeData && localeData.locale) {
+      IntlMessageFormat.__addLocaleData(localeData);
+      IntlRelativeFormat.__addLocaleData(localeData);
+    }
+  });
 }
 
 export function hasLocaleData(locale) {
-    let localeParts = (locale || '').split('-');
+  let localeParts = (locale || '').split('-');
 
-    while (localeParts.length > 0) {
-        if (hasIMFAndIRFLocaleData(localeParts.join('-'))) {
-            return true;
-        }
-
-        localeParts.pop();
+  while (localeParts.length > 0) {
+    if (hasIMFAndIRFLocaleData(localeParts.join('-'))) {
+      return true;
     }
 
-    return false;
+    localeParts.pop();
+  }
+
+  return false;
 }
 
 function hasIMFAndIRFLocaleData(locale) {
-    let normalizedLocale = locale && locale.toLowerCase();
+  let normalizedLocale = locale && locale.toLowerCase();
 
-    return !!(
-        IntlMessageFormat.__localeData__[normalizedLocale] &&
-        IntlRelativeFormat.__localeData__[normalizedLocale]
-    );
+  return !!(IntlMessageFormat.__localeData__[normalizedLocale] &&
+    IntlRelativeFormat.__localeData__[normalizedLocale]);
 }
