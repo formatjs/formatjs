@@ -103,6 +103,7 @@
     "intl-messageformat-parser": "^1.2.0",
     "jest": "^18.0.0",
     "mkdirp": "^0.5.1",
+    "prettier": "0.0.9",
     "react": "^15.0.0",
     "react-addons-test-utils": "^15.0.0",
     "react-dom": "^15.0.0",
@@ -119,6 +120,7 @@
     "watchify": "^3.7.0"
   },
   "scripts": {
+    "format": "prettier --write --single-quote --trailing-comma --bracket-spacing false *.js scripts/*.js src/{*.js,**/*.js}",
     "clean": "rimraf src/en.js coverage/ dist/ lib/ locale-data/",
     "build:data": "babel-node scripts/build-data",
     "build:lib": "rollup -c rollup.config.lib.js",

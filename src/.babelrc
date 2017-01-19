@@ -1,34 +1,34 @@
 {
-    "presets": [
-        ["es2015", {
-            "modules": false
-        }],
-        "react"
-    ],
-    "plugins": [
-        "transform-object-rest-spread",
-        "transform-class-properties",
-        "transform-es3-member-expression-literals",
-        "transform-es3-property-literals",
-        ["transform-react-remove-prop-types", {
-            "mode": "wrap"
-        }]
-    ],
-    "env": {
-        "development": {
-            "plugins": [
-                "external-helpers"
-            ]
-        },
-        "production": {
-            "plugins": [
-                "external-helpers"
-            ]
-        },
-        "test": {
-            "plugins": [
-                "transform-es2015-modules-commonjs"
-            ]
-        }
+  "presets": [
+    ["es2015", {
+      "modules": false
+    }],
+    "react"
+  ],
+  "plugins": [
+    "transform-object-rest-spread",
+    "transform-class-properties",
+    "transform-es3-member-expression-literals",
+    "transform-es3-property-literals",
+    ["transform-react-remove-prop-types", {
+      "mode": "wrap"
+    }]
+  ],
+  "env": {
+    "development": {
+      "plugins": [
+        "external-helpers"
+      ]
+    },
+    "production": {
+      "plugins": [
+        "external-helpers"
+      ]
+    },
+    "test": {
+      "plugins": [
+        "transform-es2015-modules-commonjs"
+      ]
     }
+  }
 }
