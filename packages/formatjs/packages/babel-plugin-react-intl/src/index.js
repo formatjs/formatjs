@@ -20,7 +20,8 @@ const FUNCTION_NAMES = [
 
 const DESCRIPTOR_PROPS = new Set(['id', 'description', 'defaultMessage']);
 
-const EXTRACTED_TAG = Symbol('ReactIntlExtracted');
+const EXTRACTED = Symbol('ReactIntlExtracted');
+const MESSAGES  = Symbol('ReactIntlMessages');
 
 export default function ({types: t}) {
     function getModuleSourceName(opts) {
@@ -28,7 +29,7 @@ export default function ({types: t}) {
     }
 
     function evaluatePath(path) {
-        let evaluated = path.evaluate();
+        const evaluated = path.evaluate();
         if (evaluated.confident) {
             return evaluated.value;
         }
@@ -62,7 +63,7 @@ export default function ({types: t}) {
     }
 
     function getICUMessageValue(messagePath, {isJSXSource = false} = {}) {
-        let message = getMessageDescriptorValue(messagePath);
+        const message = getMessageDescriptorValue(messagePath);
 
         try {
             return printICUMessage(message);
@@ -90,7 +91,7 @@ export default function ({types: t}) {
 
     function createMessageDescriptor(propPaths) {
         return propPaths.reduce((hash, [keyPath, valuePath]) => {
-            let key = getMessageDescriptorKey(keyPath);
+            const key = getMessageDescriptorKey(keyPath);
 
             if (DESCRIPTOR_PROPS.has(key)) {
                 hash[key] = valuePath;
@@ -102,7 +103,7 @@ export default function ({types: t}) {
 
     function evaluateMessageDescriptor({...descriptor}, {isJSXSource = false} = {}) {
         Object.keys(descriptor).forEach((key) => {
-            let valuePath = descriptor[key];
+            const valuePath = descriptor[key];
 
             if (key === 'defaultMessage') {
                 descriptor[key] = getICUMessageValue(valuePath, {isJSXSource});
@@ -115,7 +116,7 @@ export default function ({types: t}) {
     }
 
     function storeMessage({id, description, defaultMessage}, path, state) {
-        const {file, opts, reactIntl} = state;
+        const {file, opts} = state;
 
         if (!(id && defaultMessage)) {
             throw path.buildCodeFrameError(
@@ -123,8 +124,9 @@ export default function ({types: t}) {
             );
         }
 
-        if (reactIntl.messages.has(id)) {
-            let existing = reactIntl.messages.get(id);
+        const messages = file.get(MESSAGES);
+        if (messages.has(id)) {
+            const existing = messages.get(id);
 
             if (description !== existing.description ||
                 defaultMessage !== existing.defaultMessage) {
@@ -155,7 +157,7 @@ export default function ({types: t}) {
             };
         }
 
-        reactIntl.messages.set(id, {id, description, defaultMessage, ...loc});
+        messages.set(id, {id, description, defaultMessage, ...loc});
     }
 
     function referencesImport(path, mod, importedNames) {
@@ -167,51 +169,50 @@ export default function ({types: t}) {
     }
 
     function tagAsExtracted(path) {
-        path.node[EXTRACTED_TAG] = true;
+        path.node[EXTRACTED] = true;
     }
 
     function wasExtracted(path) {
-        return !!path.node[EXTRACTED_TAG];
+        return !!path.node[EXTRACTED];
     }
 
     return {
+        pre(file) {
+            if (!file.has(MESSAGES)) {
+                file.set(MESSAGES, new Map());
+            }
+        },
+
+        post(file) {
+            const {opts} = this;
+            const {basename, filename} = file.opts;
+
+            const messages = file.get(MESSAGES);
+            const descriptors = [...messages.values()];
+            file.metadata['react-intl'] = {messages: descriptors};
+
+            if (opts.messagesDir && descriptors.length > 0) {
+                // Make sure the relative path is "absolute" before
+                // joining it with the `messagesDir`.
+                const relativePath = p.join(
+                    p.sep,
+                    p.relative(process.cwd(), filename)
+                );
+
+                const messagesFilename = p.join(
+                    opts.messagesDir,
+                    p.dirname(relativePath),
+                    basename + '.json'
+                );
+
+                const messagesFile = JSON.stringify(descriptors, null, 2);
+
+                mkdirpSync(p.dirname(messagesFilename));
+                writeFileSync(messagesFilename, messagesFile);
+            }
+        },
+
         visitor: {
-            Program: {
-                enter(path, state) {
-                    state.reactIntl = {
-                        messages: new Map(),
-                    };
-                },
-
-                exit(path, state) {
-                    const {file, opts, reactIntl} = state;
-                    const {basename, filename}    = file.opts;
-
-                    let descriptors = [...reactIntl.messages.values()];
-                    file.metadata['react-intl'] = {messages: descriptors};
-
-                    if (opts.messagesDir && descriptors.length > 0) {
-                        // Make sure the relative path is "absolute" before
-                        // joining it with the `messagesDir`.
-                        let relativePath = p.join(
-                            p.sep,
-                            p.relative(process.cwd(), filename)
-                        );
-
-                        let messagesFilename = p.join(
-                            opts.messagesDir,
-                            p.dirname(relativePath),
-                            basename + '.json'
-                        );
-
-                        let messagesFile = JSON.stringify(descriptors, null, 2);
-
-                        mkdirpSync(p.dirname(messagesFilename));
-                        writeFileSync(messagesFilename, messagesFile);
-                    }
-                },
-            },
-
             JSXOpeningElement(path, state) {
                 if (wasExtracted(path)) {
                     return;
@@ -232,7 +233,7 @@ export default function ({types: t}) {
                 }
 
                 if (referencesImport(name, moduleSourceName, COMPONENT_NAMES)) {
-                    let attributes = path.get('attributes')
+                    const attributes = path.get('attributes')
                         .filter((attr) => attr.isJSXAttribute());
 
                     let descriptor = createMessageDescriptor(
@@ -260,7 +261,7 @@ export default function ({types: t}) {
 
                         // Remove description since it's not used at runtime.
                         attributes.some((attr) => {
-                            let ketPath = attr.get('name');
+                            const ketPath = attr.get('name');
                             if (getMessageDescriptorKey(ketPath) === 'description') {
                                 attr.remove();
                                 return true;
@@ -295,7 +296,7 @@ export default function ({types: t}) {
                         return;
                     }
 
-                    let properties = messageObj.get('properties');
+                    const properties = messageObj.get('properties');
 
                     let descriptor = createMessageDescriptor(
                         properties.map((prop) => [
@@ -325,7 +326,7 @@ export default function ({types: t}) {
                 }
 
                 if (referencesImport(callee, moduleSourceName, FUNCTION_NAMES)) {
-                    let messagesObj = path.get('arguments')[0];
+                    const messagesObj = path.get('arguments')[0];
 
                     assertObjectExpression(messagesObj);
 
