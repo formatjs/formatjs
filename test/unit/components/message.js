@@ -208,4 +208,31 @@ describe('<FormattedMessage>', () => {
             <span>Hello, <b>Eric</b>!</span>
         );
     });
+
+    it('supports rich-text message formatting in function-as-child pattern', () => {
+        const {intl} = intlProvider.getChildContext();
+
+        const el = (
+            <FormattedMessage
+                id="hello"
+                defaultMessage="Hello, {name}!"
+                values={{
+                    name: <b>Prem</b>,
+                }}
+            >
+                {(formattedMessage) => (
+                    <strong>{formattedMessage}</strong>
+                )}
+
+            </FormattedMessage>
+        );
+
+        renderer.render(el, {intl});
+        const rendered = renderer.getRenderOutput();
+
+        expect(rendered.props.children).toBeAn('array');
+        expect(rendered).toEqualJSX(
+            <strong>Hello, <b>Prem</b>!</strong>
+        );
+    });
 });
