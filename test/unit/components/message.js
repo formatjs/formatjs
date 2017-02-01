@@ -220,7 +220,7 @@ describe('<FormattedMessage>', () => {
                     name: <b>Prem</b>,
                 }}
             >
-                {(formattedMessage) => (
+                {(...formattedMessage) => (
                     <strong>{formattedMessage}</strong>
                 )}
 
