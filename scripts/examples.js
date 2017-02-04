@@ -8,8 +8,8 @@ globSync('./examples/*/').forEach((exampleDir) => {
         cwd: exampleDir,
         stdio: 'inherit',
     };
-
-    const result = spawnSync(command, args, opts);
+    let envCommand=command+ (/^win/.test(process.platform) ? '.cmd' : '');
+    const result = spawnSync(envCommand, args, opts);
     if (result.status !== 0) {
         throw new Error('Linking examples exited with non-zero');
     }

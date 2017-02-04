@@ -22,7 +22,7 @@
         "eqeqeq": 2,
         "eol-last": 2,
         "indent": [2, 4],
-        "linebreak-style": [2, "unix"],
+        "linebreak-style": [1, "unix"],
         "prefer-arrow-callback": 2,
         "quotes": [2, "single", "avoid-escape"],
         "semi": [2, "always"],

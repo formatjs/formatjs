@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FormattedMessage} from 'react-intl';
+import {FormattedMessage,FormattedRelative} from 'react-intl';
 
 class App extends Component {
     constructor(props) {
@@ -14,6 +14,7 @@ class App extends Component {
         const {name, unreadCount} = this.state;
 
         return (
+            <div>
             <p>
                 <FormattedMessage
                     id="welcome"
@@ -24,6 +25,8 @@ class App extends Component {
                     values={{name: <b>{name}</b>, unreadCount}}
                 />
             </p>
+            <p> Last update <FormattedRelative value={Date.now()-3600000}/> </p>
+            </div>
         );
     }
 }
