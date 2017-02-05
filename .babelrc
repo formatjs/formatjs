@@ -1,12 +1,12 @@
 {
-    "env": {
-        "test": {
-            "plugins": [
-                "transform-es2015-modules-commonjs"
-            ],
-            "only": [
-                "lib/index.es.js"
-            ]
-        }
+  "env": {
+    "test": {
+      "plugins": [
+        "transform-es2015-modules-commonjs"
+      ],
+      "only": [
+        "lib/index.es.js"
+      ]
     }
+  }
 }

@@ -7,130 +7,123 @@
 import {Component, PropTypes, createElement, isValidElement} from 'react';
 import {intlShape, messageDescriptorPropTypes} from '../types';
 import {
-    invariantIntlContext,
-    shallowEquals,
-    shouldIntlComponentUpdate,
+  invariantIntlContext,
+  shallowEquals,
+  shouldIntlComponentUpdate,
 } from '../utils';
 
 export default class FormattedMessage extends Component {
-    static displayName = 'FormattedMessage';
+  static displayName = 'FormattedMessage';
 
-    static contextTypes = {
-        intl: intlShape,
-    };
+  static contextTypes = {intl: intlShape};
 
-    static propTypes = {
-        ...messageDescriptorPropTypes,
-        values  : PropTypes.object,
-        tagName : PropTypes.string,
-        children: PropTypes.func,
-    };
+  static propTypes = {
+    ...messageDescriptorPropTypes,
+    values: PropTypes.object,
+    tagName: PropTypes.string,
+    children: PropTypes.func,
+  };
 
-    static defaultProps = {
-        values : {},
-    };
+  static defaultProps = {values: {}};
 
-    constructor(props, context) {
-        super(props, context);
-        invariantIntlContext(context);
+  constructor(props, context) {
+    super(props, context);
+    invariantIntlContext(context);
+  }
+
+  shouldComponentUpdate(nextProps, ...next) {
+    const {values} = this.props;
+    const {values: nextValues} = nextProps;
+
+    if (!shallowEquals(nextValues, values)) {
+      return true;
     }
 
-    shouldComponentUpdate(nextProps, ...next) {
-        const {values}             = this.props;
-        const {values: nextValues} = nextProps;
+    // Since `values` has already been checked, we know they're not
+    // different, so the current `values` are carried over so the shallow
+    // equals comparison on the other props isn't affected by the `values`.
+    let nextPropsToCheck = {...nextProps, values};
 
-        if (!shallowEquals(nextValues, values)) {
-            return true;
-        }
+    return shouldIntlComponentUpdate(this, nextPropsToCheck, ...next);
+  }
 
-        // Since `values` has already been checked, we know they're not
-        // different, so the current `values` are carried over so the shallow
-        // equals comparison on the other props isn't affected by the `values`.
-        let nextPropsToCheck = {
-            ...nextProps,
-            values,
-        };
+  render() {
+    const {formatMessage, textComponent: Text} = this.context.intl;
 
-        return shouldIntlComponentUpdate(this, nextPropsToCheck, ...next);
-    }
+    const {
+      id,
+      description,
+      defaultMessage,
+      values,
+      tagName: Component = Text,
+      children,
+    } = this.props;
 
-    render() {
-        const {formatMessage, textComponent: Text} = this.context.intl;
+    let tokenDelimiter;
+    let tokenizedValues;
+    let elements;
 
-        const {
-            id,
-            description,
-            defaultMessage,
-            values,
-            tagName: Component = Text,
-            children,
-        } = this.props;
+    let hasValues = values && Object.keys(values).length > 0;
+    if (hasValues) {
+      // Creates a token with a random UID that should not be guessable or
+      // conflict with other parts of the `message` string.
+      let uid = Math.floor(Math.random() * 0x10000000000).toString(16);
 
-        let tokenDelimiter;
-        let tokenizedValues;
-        let elements;
+      let generateToken = (() => {
+        let counter = 0;
+        return () => `ELEMENT-${uid}-${counter += 1}`;
+      })();
 
-        let hasValues = values && Object.keys(values).length > 0;
-        if (hasValues) {
-            // Creates a token with a random UID that should not be guessable or
-            // conflict with other parts of the `message` string.
-            let uid = Math.floor(Math.random() * 0x10000000000).toString(16);
+      // Splitting with a delimiter to support IE8. When using a regex
+      // with a capture group IE8 does not include the capture group in
+      // the resulting array.
+      tokenDelimiter = `@__${uid}__@`;
+      tokenizedValues = {};
+      elements = {};
 
-            let generateToken = (() => {
-                let counter = 0;
-                return () => `ELEMENT-${uid}-${counter += 1}`;
-            })();
+      // Iterates over the `props` to keep track of any React Element
+      // values so they can be represented by the `token` as a placeholder
+      // when the `message` is formatted. This allows the formatted
+      // message to then be broken-up into parts with references to the
+      // React Elements inserted back in.
+      Object.keys(values).forEach(name => {
+        let value = values[name];
 
-            // Splitting with a delimiter to support IE8. When using a regex
-            // with a capture group IE8 does not include the capture group in
-            // the resulting array.
-            tokenDelimiter  = `@__${uid}__@`;
-            tokenizedValues = {};
-            elements        = {};
-
-            // Iterates over the `props` to keep track of any React Element
-            // values so they can be represented by the `token` as a placeholder
-            // when the `message` is formatted. This allows the formatted
-            // message to then be broken-up into parts with references to the
-            // React Elements inserted back in.
-            Object.keys(values).forEach((name) => {
-                let value = values[name];
-
-                if (isValidElement(value)) {
-                    let token = generateToken();
-                    tokenizedValues[name] = tokenDelimiter + token + tokenDelimiter;
-                    elements[token]       = value;
-                } else {
-                    tokenizedValues[name] = value;
-                }
-            });
-        }
-
-        let descriptor       = {id, description, defaultMessage};
-        let formattedMessage = formatMessage(descriptor, tokenizedValues || values);
-
-        let nodes;
-
-        let hasElements = elements && Object.keys(elements).length > 0;
-        if (hasElements) {
-            // Split the message into parts so the React Element values captured
-            // above can be inserted back into the rendered message. This
-            // approach allows messages to render with React Elements while
-            // keeping React's virtual diffing working properly.
-            nodes = formattedMessage
-                .split(tokenDelimiter)
-                .filter((part) => !!part)
-                .map((part) => elements[part] || part);
+        if (isValidElement(value)) {
+          let token = generateToken();
+          tokenizedValues[name] = tokenDelimiter + token + tokenDelimiter;
+          elements[token] = value;
         } else {
-            nodes = [formattedMessage];
+          tokenizedValues[name] = value;
         }
-
-        if (typeof children === 'function') {
-            return children(...nodes);
-        }
-
-        // Needs to use `createElement()` instead of JSX, otherwise React will
-        // warn about a missing `key` prop with rich-text message formatting.
-        return createElement(Component, null, ...nodes);
+      });
     }
+
+    let descriptor = {id, description, defaultMessage};
+    let formattedMessage = formatMessage(descriptor, tokenizedValues || values);
+
+    let nodes;
+
+    let hasElements = elements && Object.keys(elements).length > 0;
+    if (hasElements) {
+      // Split the message into parts so the React Element values captured
+      // above can be inserted back into the rendered message. This
+      // approach allows messages to render with React Elements while
+      // keeping React's virtual diffing working properly.
+      nodes = formattedMessage
+        .split(tokenDelimiter)
+        .filter(part => !!part)
+        .map(part => elements[part] || part);
+    } else {
+      nodes = [formattedMessage];
+    }
+
+    if (typeof children === 'function') {
+      return children(...nodes);
+    }
+
+    // Needs to use `createElement()` instead of JSX, otherwise React will
+    // warn about a missing `key` prop with rich-text message formatting.
+    return createElement(Component, null, ...nodes);
+  }
 }
