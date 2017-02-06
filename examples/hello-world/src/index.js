@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {IntlProvider,addLocaleData} from 'react-intl';
+import {IntlProvider} from 'react-intl';
 import App from './App';
-import fr from 'react-intl/locale-data/fr';
-addLocaleData(fr);
+
 ReactDOM.render(
-    <IntlProvider locale="fr">
+    <IntlProvider locale="en">
         <App />
     </IntlProvider>,
     document.getElementById('root')
