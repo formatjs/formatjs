@@ -5,13 +5,13 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "clean": "../../node_modules/.bin/rimraf build",
-    "build:bundle": "../../node_modules/.bin/mkdirp build && ../../node_modules/.bin/browserify src/client/index.js -d -t babelify -t browserify-shim > build/bundle.js",
-    "build:langs": "../../node_modules/.bin/babel-node scripts/translate.js",
+    "clean": "cross-env ../../node_modules/.bin/rimraf build",
+    "build:bundle": "cross-env ../../node_modules/.bin/mkdirp build && cross-env ../../node_modules/.bin/browserify src/client/index.js -d -t babelify -t browserify-shim > build/bundle.js",
+    "build:langs": "cross-env ../../node_modules/.bin/babel-node scripts/translate.js",
     "build": "npm run build:bundle && npm run build:langs",
-    "watch:bundle": "../../node_modules/.bin/mkdirp build && ../../node_modules/.bin/watchify src/client/index.js -d -t babelify -t browserify-shim -o build/bundle.js -v",
+    "watch:bundle": "cross-env ../../node_modules/.bin/mkdirp build && cross-env ../../node_modules/.bin/watchify src/client/index.js -d -t babelify -t browserify-shim -o build/bundle.js -v",
     "watch": "npm run build:langs && npm run watch:bundle",
-    "start": "../../node_modules/.bin/babel-node src/server/index.js"
+    "start": "cross-env ../../node_modules/.bin/babel-node src/server/index.js"
   },
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "license": "BSD-3-Clause",
