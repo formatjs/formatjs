@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {IntlProvider, addLocaleData} from 'react-intl';
 
-if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined' && window.ReactIntlLocaleData) {
   Object.keys(window.ReactIntlLocaleData).forEach((lang) => {
     addLocaleData(window.ReactIntlLocaleData[lang]);
   });
@@ -15,7 +15,7 @@ export default (WrappedComponent) => class PageWithIntl extends Component {
     }
 
     const {req} = context;
-    const {locale, messages} = req ? req : window.__REACT_INTL__;
+    const {locale, messages} = req ? req : window.__NEXT_DATA__.props;
 
     return {
       ...props,

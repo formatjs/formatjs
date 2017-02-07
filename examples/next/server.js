@@ -4,6 +4,7 @@ Intl.DateTimeFormat = IntlPolyfill.DateTimeFormat;
 
 const {readFileSync} = require('fs');
 const {createServer} = require('http');
+
 const accepts = require('accepts');
 const glob = require('glob');
 const next = require('next');
