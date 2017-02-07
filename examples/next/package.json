@@ -1,0 +1,22 @@
+{
+  "name": "react-intl-example-next",
+  "version": "1.0.0",
+  "description": "React Intl Next.js Example App",
+  "private": true,
+  "author": "Eric Ferraiuolo <edf@ericf.me>",
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "dev": "node server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js"
+  },
+  "dependencies": {
+    "accepts": "^1.3.3",
+    "babel-plugin-react-intl": "^2.3.1",
+    "glob-promise": "^3.1.0",
+    "intl": "^1.2.5",
+    "mz": "^2.6.0",
+    "next": "beta",
+    "react-intl": "^2.2.3"
+  }
+}

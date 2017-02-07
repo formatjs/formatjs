@@ -3,6 +3,7 @@ dist/**/*.js
 examples/**/node_modules/**/*.js
 examples/**/build/**/*.js
 examples/hello-world/bundle.js
+examples/next/**/*.js
 lib/**/*.js
 locale-data/**/*.js
 src/en.js
