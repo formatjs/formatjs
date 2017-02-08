@@ -19,7 +19,7 @@ export default (Page) => {
 
       const {req} = context;
       const {locale, messages} = req ? req : window.__NEXT_DATA__.props;
-      const now = req ? req.now : Date.now();
+      const now = Date.now();
 
       return {...props, locale, messages, now};
     }

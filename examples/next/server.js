@@ -46,7 +46,6 @@ app.prepare().then(() => {
     req.locale = locale;
     req.localeDataScript = getLocaleDataScript(locale);
     req.messages = dev ? {} : getMessages(locale);
-    req.now = Date.now();
     handle(req, res);
   }).listen(3000, (err) => {
     if (err) throw err;
