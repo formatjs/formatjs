@@ -5,33 +5,17 @@ import {
   FormattedMessage,
   FormattedNumber,
   defineMessages,
-  injectIntl,
 } from 'react-intl';
 import pageWithIntl from '../components/PageWithIntl';
+import Layout from '../components/Layout';
 
-const messages = defineMessages({
-  title: {
-    id: 'title',
-    defaultMessage: 'React Intl Next.js Example',
-  },
-  greeting: {
-    id: 'greeting',
-    defaultMessage: 'Hello World!',
-  },
-});
-
-const Index = injectIntl(({intl}) => (
-  <div>
-    <Head>
-      <title>{intl.formatMessage(messages.title)}</title>
-    </Head>
+export default pageWithIntl(({intl}) => (
+  <Layout>
     <p>
-      <FormattedMessage {...messages.greeting}/>
+      <FormattedMessage id='greeting' defaultMessage='Hello, World!'/>
     </p>
     <p>
       <FormattedNumber value={1000}/>
     </p>
-  </div>
+  </Layout>
 ));
-
-export default pageWithIntl(Index);

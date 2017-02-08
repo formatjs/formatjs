@@ -1,3 +1,4 @@
 .next/
-messages/
+lang/.messages/
+lang/en.json
 node_modules/
