@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {FormattedMessage, FormattedRelative} from 'react-intl';
-import Link from 'next/link';
 import pageWithIntl from '../components/PageWithIntl';
 import Layout from '../components/Layout';
 

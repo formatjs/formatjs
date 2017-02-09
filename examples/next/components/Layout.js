@@ -22,5 +22,6 @@ export default injectIntl(({intl, title, children}) => (
     </header>
 
     {children}
+
   </div>
 ));
