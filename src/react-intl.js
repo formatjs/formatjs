@@ -5,11 +5,11 @@
  */
 
 import defaultLocaleData from './en';
-import {addLocaleData} from './locale-data-registry';
+import {addLocaleData, hasLocaleData} from './locale-data-registry';
 
 addLocaleData(defaultLocaleData);
 
-export {addLocaleData};
+export {addLocaleData, hasLocaleData};
 export {intlShape} from './types';
 export {default as injectIntl} from './inject';
 export {default as defineMessages} from './define-messages';

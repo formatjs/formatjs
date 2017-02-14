@@ -6,6 +6,10 @@ describe('react-intl', () => {
         it('exports `addLocaleData`', () => {
             expect(ReactIntl.addLocaleData).toBeA('function');
         });
+        
+        it('exports `hasLocaleData`', () => {
+            expect(ReactIntl.hasLocaleData).toBeA('function');
+        });
 
         it('exports `defineMessages`', () => {
             expect(ReactIntl.defineMessages).toBeA('function');
