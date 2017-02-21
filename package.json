@@ -101,7 +101,7 @@
     "glob": "^7.0.0",
     "intl": "^1.2.1",
     "intl-messageformat-parser": "^1.2.0",
-    "jest": "^18.0.0",
+    "jest": "^19.0.0",
     "mkdirp": "^0.5.1",
     "react": "^15.0.0",
     "react-addons-test-utils": "^15.0.0",
