@@ -82,4 +82,4 @@ cldrDataByLang.forEach((cldrData, lang) => {
 });
 
 process.on('unhandledRejection', (reason) => {throw reason;});
-console.log('Writing locale data files...');
+console.log('> Writing locale data files...');
