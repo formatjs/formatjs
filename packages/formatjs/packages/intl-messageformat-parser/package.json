@@ -37,7 +37,7 @@
     "grunt-cli": "^0.1.13",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-copy": "^0.7.0",
-    "grunt-peg": "^1.5.0",
+    "grunt-peg": "^2.0.1",
     "istanbul": "^0.3.2",
     "mocha": "^2.0.1",
     "xunit-file": "0.0.6"

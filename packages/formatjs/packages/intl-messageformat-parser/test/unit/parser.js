@@ -50,6 +50,11 @@ describe('parse()', function () {
             expect(element.type).to.equal('messageTextElement');
             expect(element).to.have.property('value');
             expect(element.value).to.equal(msg);
+            expect(element).to.have.property('location');
+            expect(element.location).to.eql({
+                start: { offset: 0, line: 1, column: 1 },
+                end: { offset: 13, line: 1, column: 14 },
+            });
         });
     });
 
@@ -64,6 +69,11 @@ describe('parse()', function () {
         it('should first contain a `messageTextElement`', function () {
             var element = ast.elements[0];
             expect(element.value).to.equal('Hello, ');
+            expect(element).to.have.property('location');
+            expect(element.location).to.eql({
+                start: { offset: 0, line: 1, column: 1 },
+                end: { offset: 7, line: 1, column: 8 },
+            });
         });
 
         it('should then contain an `argumentElement`', function () {
@@ -75,11 +85,21 @@ describe('parse()', function () {
             expect(element.id).to.equal('name');
             expect(element).to.have.property('format');
             expect(element.format).to.equal(null);
+            expect(element).to.have.property('location');
+            expect(element.location).to.eql({
+                start: { offset: 7, line: 1, column: 8 },
+                end: { offset: 13, line: 1, column: 14 },
+            });
         });
 
         it('should finally contain a `messageTextElement`', function () {
             var element = ast.elements[2];
             expect(element.value).to.equal('!');
+            expect(element).to.have.property('location');
+            expect(element.location).to.eql({
+                start: { offset: 13, line: 1, column: 14 },
+                end: { offset: 14, line: 1, column: 15 },
+            });
         });
     });
 
@@ -98,6 +118,11 @@ describe('parse()', function () {
             expect(element.type).to.equal('argumentElement');
             expect(element).to.have.property('id');
             expect(element.id).to.equal('num');
+            expect(element).to.have.property('location');
+            expect(element.location).to.eql({
+                start: { offset: 0, line: 1, column: 1 },
+                end: { offset: 22, line: 1, column: 23 },
+            });
             expect(element).to.have.property('format');
 
             var format = element.format;
@@ -106,6 +131,11 @@ describe('parse()', function () {
             expect(format.type).to.equal('numberFormat');
             expect(format).to.have.property('style');
             expect(format.style).to.equal('percent');
+            expect(format).to.have.property('location');
+            expect(format.location).to.eql({
+                start: { offset: 6, line: 1, column: 7 },
+                end: { offset: 21, line: 1, column: 22 },
+            });
         });
     });
 
@@ -124,6 +154,11 @@ describe('parse()', function () {
             expect(element.type).to.equal('argumentElement');
             expect(element).to.have.property('id');
             expect(element.id).to.equal('numPhotos');
+            expect(element).to.have.property('location');
+            expect(element.location).to.eql({
+                start: { offset: 0, line: 1, column: 1 },
+                end: { offset: 64, line: 1, column: 65 },
+            });
             expect(element).to.have.property('format');
 
             var format = element.format;
@@ -132,6 +167,11 @@ describe('parse()', function () {
             expect(format.type).to.equal('pluralFormat');
             expect(format).to.have.property('offset');
             expect(format.offset).to.equal(0);
+            expect(format).to.have.property('location');
+            expect(format.location).to.eql({
+                start: { offset: 12, line: 1, column: 13 },
+                end: { offset: 63, line: 1, column: 64 },
+            });
         });
 
         it('should contain 3 `options`', function () {
@@ -146,6 +186,11 @@ describe('parse()', function () {
             expect(option.selector).to.equal('=0');
             expect(option).to.have.property('value');
             expect(option.value).to.be.an('object');
+            expect(option).to.have.property('location');
+            expect(option.location).to.eql({
+                start: { offset: 20, line: 1, column: 21 },
+                end: { offset: 33, line: 1, column: 34 },
+            });
 
             expect(options[1].selector).to.equal('=1');
             expect(options[2].selector).to.equal('other');
@@ -167,6 +212,11 @@ describe('parse()', function () {
             expect(element.type).to.equal('messageTextElement');
             expect(element).to.have.property('value');
             expect(element.value).to.equal('no photos');
+            expect(element).to.have.property('location');
+            expect(element.location).to.eql({
+                start: { offset: 23, line: 1, column: 24 },
+                end: { offset: 32, line: 1, column: 33 },
+            });
 
             expect(options[1].value.elements[0].value).to.equal('one photo');
             expect(options[2].value.elements[0].value).to.equal('# photos');
@@ -188,6 +238,11 @@ describe('parse()', function () {
             expect(element.type).to.equal('argumentElement');
             expect(element).to.have.property('id');
             expect(element.id).to.equal('floor');
+            expect(element).to.have.property('location');
+            expect(element.location).to.eql({
+                start: { offset: 0, line: 1, column: 1 },
+                end: { offset: 72, line: 1, column: 73 },
+            });
             expect(element).to.have.property('format');
 
             var format = element.format;
@@ -197,6 +252,11 @@ describe('parse()', function () {
             expect(format).to.have.property('offset');
             expect(format.offset).to.equal(0);
             expect(format.ordinal).to.equal(true);
+            expect(format).to.have.property('location');
+            expect(format.location).to.eql({
+                start: { offset: 8, line: 1, column: 9 },
+                end: { offset: 71, line: 1, column: 72 },
+            });
         });
 
         it('should contain 5 `options`', function () {
@@ -211,6 +271,11 @@ describe('parse()', function () {
             expect(option.selector).to.equal('=0');
             expect(option).to.have.property('value');
             expect(option.value).to.be.an('object');
+            expect(option).to.have.property('location');
+            expect(option.location).to.eql({
+                start: { offset: 23, line: 1, column: 24 },
+                end: { offset: 33, line: 1, column: 34 },
+            });
 
             expect(options[1].selector).to.equal('one');
             expect(options[2].selector).to.equal('two');
@@ -234,6 +299,11 @@ describe('parse()', function () {
             expect(element.type).to.equal('messageTextElement');
             expect(element).to.have.property('value');
             expect(element.value).to.equal('ground');
+            expect(element).to.have.property('location');
+            expect(element.location).to.eql({
+                start: { offset: 26, line: 1, column: 27 },
+                end: { offset: 32, line: 1, column: 33 },
+            });
 
             expect(options[0].value.elements[0].value).to.equal('ground');
             expect(options[1].value.elements[0].value).to.equal('#st');
@@ -258,12 +328,22 @@ describe('parse()', function () {
             expect(element.type).to.equal('argumentElement');
             expect(element).to.have.property('id');
             expect(element.id).to.equal('gender');
+            expect(element).to.have.property('location');
+            expect(element.location).to.eql({
+                start: { offset: 0, line: 1, column: 1 },
+                end: { offset: 58, line: 1, column: 59 },
+            });
             expect(element).to.have.property('format');
 
             var format = element.format;
             expect(format).to.be.an('object');
             expect(format).to.have.property('type');
             expect(format.type).to.equal('selectFormat');
+            expect(format).to.have.property('location');
+            expect(format.location).to.eql({
+                start: { offset: 9, line: 1, column: 10 },
+                end: { offset: 57, line: 1, column: 58 },
+            });
         });
 
         it('should contain 3 `options`', function () {
@@ -278,6 +358,11 @@ describe('parse()', function () {
             expect(option.selector).to.equal('female');
             expect(option).to.have.property('value');
             expect(option.value).to.be.an('object');
+            expect(option).to.have.property('location');
+            expect(option.location).to.eql({
+                start: { offset: 17, line: 1, column: 18 },
+                end: { offset: 31, line: 1, column: 32 },
+            });
 
             expect(options[1].selector).to.equal('male');
             expect(options[2].selector).to.equal('other');
@@ -299,6 +384,11 @@ describe('parse()', function () {
             expect(element.type).to.equal('messageTextElement');
             expect(element).to.have.property('value');
             expect(element.value).to.equal('woman');
+            expect(element).to.have.property('location');
+            expect(element.location).to.eql({
+                start: { offset: 25, line: 1, column: 26 },
+                end: { offset: 30, line: 1, column: 31 },
+            });
 
             expect(options[1].value.elements[0].value).to.equal('man');
             expect(options[2].value.elements[0].value).to.equal('person');

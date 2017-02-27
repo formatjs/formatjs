@@ -18,7 +18,8 @@ messageFormatPattern
     = elements:messageFormatElement* {
         return {
             type    : 'messageFormatPattern',
-            elements: elements
+            elements: elements,
+            location: location()
         };
     }
 
@@ -47,7 +48,8 @@ messageTextElement
     = messageText:messageText {
         return {
             type : 'messageTextElement',
-            value: messageText
+            value: messageText,
+            location: location()
         };
     }
 
@@ -60,7 +62,8 @@ argumentElement
         return {
             type  : 'argumentElement',
             id    : id,
-            format: format && format[2]
+            format: format && format[2],
+            location: location()
         };
     }
 
@@ -74,7 +77,8 @@ simpleFormat
     = type:('number' / 'date' / 'time') _ style:(',' _ chars)? {
         return {
             type : type + 'Format',
-            style: style && style[2]
+            style: style && style[2],
+            location: location()
         };
     }
 
@@ -84,7 +88,8 @@ pluralFormat
             type   : pluralStyle.type,
             ordinal: false,
             offset : pluralStyle.offset || 0,
-            options: pluralStyle.options
+            options: pluralStyle.options,
+            location: location()
         };
     }
 
@@ -94,7 +99,8 @@ selectOrdinalFormat
             type   : pluralStyle.type,
             ordinal: true,
             offset : pluralStyle.offset || 0,
-            options: pluralStyle.options
+            options: pluralStyle.options,
+            location: location()
         }
     }
 
@@ -102,7 +108,8 @@ selectFormat
     = 'select' _ ',' _ options:optionalFormatPattern+ {
         return {
             type   : 'selectFormat',
-            options: options
+            options: options,
+            location: location()
         };
     }
 
@@ -115,7 +122,8 @@ optionalFormatPattern
         return {
             type    : 'optionalFormatPattern',
             selector: selector,
-            value   : pattern
+            value   : pattern,
+            location: location()
         };
     }
 
@@ -129,7 +137,8 @@ pluralStyle
         return {
             type   : 'pluralFormat',
             offset : offset,
-            options: options
+            options: options,
+            location: location()
         };
     }
 
