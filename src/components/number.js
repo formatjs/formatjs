@@ -17,10 +17,11 @@ export default class FormattedNumber extends Component {
 
     static propTypes = {
         ...numberFormatPropTypes,
-        value   : PropTypes.any.isRequired,
-        format  : PropTypes.string,
-        tagName : PropTypes.string,
-        children: PropTypes.func,
+        value     : PropTypes.any.isRequired,
+        format    : PropTypes.string,
+        tagName   : PropTypes.string,
+        className : PropTypes.string,
+        children  : PropTypes.func,
     };
 
     constructor(props, context) {
@@ -37,6 +38,7 @@ export default class FormattedNumber extends Component {
         const {
             value,
             tagName: Component = Text,
+            className,
             children,
         } = this.props;
 
@@ -46,6 +48,13 @@ export default class FormattedNumber extends Component {
             return children(formattedNumber);
         }
 
-        return <Component>{formattedNumber}</Component>;
+        const componentProps = {
+            children: formattedNumber,
+        };
+        if (className) {
+            Object.assign(componentProps, {className});
+        }
+
+        return <Component {...componentProps} />;
     }
 }

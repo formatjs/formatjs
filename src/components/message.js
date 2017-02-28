@@ -21,9 +21,10 @@ export default class FormattedMessage extends Component {
 
     static propTypes = {
         ...messageDescriptorPropTypes,
-        values  : PropTypes.object,
-        tagName : PropTypes.string,
-        children: PropTypes.func,
+        values   : PropTypes.object,
+        tagName  : PropTypes.string,
+        className: PropTypes.string,
+        children : PropTypes.func,
     };
 
     static defaultProps = {
@@ -63,6 +64,7 @@ export default class FormattedMessage extends Component {
             defaultMessage,
             values,
             tagName: Component = Text,
+            className,
             children,
         } = this.props;
 
@@ -97,7 +99,7 @@ export default class FormattedMessage extends Component {
                 let value = values[name];
 
                 if (isValidElement(value)) {
-                    let token = generateToken();
+                    let token             = generateToken();
                     tokenizedValues[name] = tokenDelimiter + token + tokenDelimiter;
                     elements[token]       = value;
                 } else {
@@ -129,8 +131,13 @@ export default class FormattedMessage extends Component {
             return children(...nodes);
         }
 
+        const componentProps = {};
+        if (className) {
+            Object.assign(componentProps, {className});
+        }
+
         // Needs to use `createElement()` instead of JSX, otherwise React will
         // warn about a missing `key` prop with rich-text message formatting.
-        return createElement(Component, null, ...nodes);
+        return createElement(Component, componentProps, ...nodes);
     }
 }

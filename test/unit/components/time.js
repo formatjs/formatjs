@@ -154,6 +154,18 @@ describe('<FormattedTime>', () => {
         );
     });
 
+    it('accepts `className` prop', () => {
+        const {intl} = intlProvider.getChildContext();
+        const date   = new Date();
+
+        const el = <FormattedTime value={date} className="foo" />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <span className="foo">{intl.formatTime(date)}</span>
+        );
+    });
+
     it('supports function-as-child pattern', () => {
         const {intl} = intlProvider.getChildContext();
         const date   = new Date();

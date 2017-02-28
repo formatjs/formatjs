@@ -175,6 +175,18 @@ describe('<FormattedRelative>', () => {
         );
     });
 
+    it('accepts `className` prop', () => {
+        const {intl} = intlProvider.getChildContext();
+        const date   = new Date();
+
+        const el = <FormattedRelative value={date} className="foo" />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <span className="foo">{intl.formatRelative(date)}</span>
+        );
+    });
+
     it('accepts `initialNow` prop', () => {
         const {intl} = intlProvider.getChildContext();
         const date   = 0;

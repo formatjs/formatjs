@@ -16,7 +16,7 @@ describe('<FormattedMessage>', () => {
         consoleError = spyOn(console, 'error');
         renderer     = createRenderer();
         intlProvider = new IntlProvider({
-            locale       : 'en',
+            locale: 'en',
             defaultLocale: 'en',
         }, {});
     });
@@ -36,7 +36,7 @@ describe('<FormattedMessage>', () => {
     });
 
     it('renders a formatted message in a <span>', () => {
-        const {intl} = intlProvider.getChildContext();
+        const {intl}     = intlProvider.getChildContext();
         const descriptor = {
             id: 'hello',
             defaultMessage: 'Hello, World!',
@@ -51,7 +51,7 @@ describe('<FormattedMessage>', () => {
     });
 
     it('should not cause a unique "key" prop warning', () => {
-        const {intl} = intlProvider.getChildContext();
+        const {intl}     = intlProvider.getChildContext();
         const descriptor = {
             id: 'hello',
             defaultMessage: 'Hello, {name}!',
@@ -116,12 +116,12 @@ describe('<FormattedMessage>', () => {
     });
 
     it('accepts `values` prop', () => {
-        const {intl} = intlProvider.getChildContext();
+        const {intl}     = intlProvider.getChildContext();
         const descriptor = {
             id: 'hello',
             defaultMessage: 'Hello, {name}!',
         };
-        const values = {name: 'Eric'};
+        const values     = {name: 'Eric'};
 
         const el = <FormattedMessage {...descriptor} values={values} />;
 
@@ -132,7 +132,7 @@ describe('<FormattedMessage>', () => {
     });
 
     it('should re-render when `values` are different', () => {
-        const {intl} = intlProvider.getChildContext();
+        const {intl}     = intlProvider.getChildContext();
         const descriptor = {
             id: 'hello',
             defaultMessage: 'Hello, {name}!',
@@ -152,7 +152,7 @@ describe('<FormattedMessage>', () => {
     });
 
     it('accepts `tagName` prop', () => {
-        const {intl} = intlProvider.getChildContext();
+        const {intl}     = intlProvider.getChildContext();
         const descriptor = {
             id: 'hello',
             defaultMessage: 'Hello, World!',
@@ -166,8 +166,23 @@ describe('<FormattedMessage>', () => {
         );
     });
 
+    it('accepts `className` prop', () => {
+        const {intl}     = intlProvider.getChildContext();
+        const descriptor = {
+            id: 'hello',
+            defaultMessage: 'Hello, World!',
+        };
+
+        const el = <FormattedMessage {...descriptor} className="foo" />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <span className="foo">{intl.formatMessage(descriptor)}</span>
+        );
+    });
+
     it('supports function-as-child pattern', () => {
-        const {intl} = intlProvider.getChildContext();
+        const {intl}     = intlProvider.getChildContext();
         const descriptor = {
             id: 'hello',
             defaultMessage: 'Hello, World!',

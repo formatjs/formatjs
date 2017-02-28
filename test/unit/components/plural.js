@@ -118,6 +118,18 @@ describe('<FormattedPlural>', () => {
         );
     });
 
+    it('accepts `className` prop', () => {
+        const {intl} = intlProvider.getChildContext();
+        const num    = 1;
+
+        const el = <FormattedPlural value={num} one="foo" other="bar" className="foo" />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <span className="foo">{el.props[intl.formatPlural(num)]}</span>
+        );
+    });
+
     it('supports function-as-child pattern', () => {
         const {intl} = intlProvider.getChildContext();
         const num    = 1;

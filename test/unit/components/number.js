@@ -145,6 +145,18 @@ describe('<FormattedNumber>', () => {
         );
     });
 
+    it('accepts `className` prop', () => {
+        const {intl} = intlProvider.getChildContext();
+        const num    = 1000;
+
+        const el = <FormattedNumber value={num} className="foo" />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <span className="foo">{intl.formatNumber(num)}</span>
+        );
+    });
+
     it('supports function-as-child pattern', () => {
         const {intl} = intlProvider.getChildContext();
         const num    = new Date();

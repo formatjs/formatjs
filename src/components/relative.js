@@ -72,6 +72,7 @@ export default class FormattedRelative extends Component {
         updateInterval: PropTypes.number,
         initialNow    : PropTypes.any,
         tagName       : PropTypes.string,
+        className     : PropTypes.string,
         children      : PropTypes.func,
     };
 
@@ -151,6 +152,7 @@ export default class FormattedRelative extends Component {
         const {
           value,
           tagName: Component = Text,
+          className,
           children,
         } = this.props;
 
@@ -163,6 +165,13 @@ export default class FormattedRelative extends Component {
             return children(formattedRelative);
         }
 
-        return <Component>{formattedRelative}</Component>;
+        const componentProps = {
+            children: formattedRelative,
+        };
+        if (className) {
+            Object.assign(componentProps, {className});
+        }
+
+        return <Component {...componentProps} />;
     }
 }
