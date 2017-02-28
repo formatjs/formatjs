@@ -19,6 +19,7 @@ export default class FormattedNumber extends Component {
         ...numberFormatPropTypes,
         value   : PropTypes.any.isRequired,
         format  : PropTypes.string,
+        tagName : PropTypes.string,
         children: PropTypes.func,
     };
 
@@ -33,7 +34,11 @@ export default class FormattedNumber extends Component {
 
     render() {
         const {formatNumber, textComponent: Text} = this.context.intl;
-        const {value, children} = this.props;
+        const {
+            value,
+            tagName: Component = Text,
+            children,
+        } = this.props;
 
         let formattedNumber = formatNumber(value, this.props);
 
@@ -41,6 +46,6 @@ export default class FormattedNumber extends Component {
             return children(formattedNumber);
         }
 
-        return <Text>{formattedNumber}</Text>;
+        return <Component>{formattedNumber}</Component>;
     }
 }

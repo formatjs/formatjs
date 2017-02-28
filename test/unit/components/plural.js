@@ -49,7 +49,7 @@ describe('<FormattedPlural>', () => {
 
     it('renders a formatted plural in a <span>', () => {
         const {intl} = intlProvider.getChildContext();
-        const num = 1;
+        const num    = 1;
 
         const el = <FormattedPlural value={num} one="foo" other="bar" />;
 
@@ -94,8 +94,8 @@ describe('<FormattedPlural>', () => {
     });
 
     it('accepts valid IntlPluralFormat options as props', () => {
-        const {intl} = intlProvider.getChildContext();
-        const num = 22;
+        const {intl}  = intlProvider.getChildContext();
+        const num     = 22;
         const options = {style: 'ordinal'};
 
         const el = <FormattedPlural value={num} two="nd" {...options} />;
@@ -106,9 +106,21 @@ describe('<FormattedPlural>', () => {
         );
     });
 
+    it('accepts `tagName` prop', () => {
+        const {intl} = intlProvider.getChildContext();
+        const num    = 1;
+
+        const el = <FormattedPlural value={num} one="foo" other="bar" tagName="p" />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <p>{el.props[intl.formatPlural(num)]}</p>
+        );
+    });
+
     it('supports function-as-child pattern', () => {
         const {intl} = intlProvider.getChildContext();
-        const num = 1;
+        const num    = 1;
 
         const el = (
             <FormattedPlural value={num} one="foo">

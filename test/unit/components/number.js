@@ -39,7 +39,7 @@ describe('<FormattedNumber>', () => {
 
     it('renders a formatted number in a <span>', () => {
         const {intl} = intlProvider.getChildContext();
-        const num = 1000;
+        const num    = 1000;
 
         const el = <FormattedNumber value={num} />;
 
@@ -84,8 +84,8 @@ describe('<FormattedNumber>', () => {
     });
 
     it('accepts valid Intl.NumberFormat options as props', () => {
-        const {intl} = intlProvider.getChildContext();
-        const num = 0.5;
+        const {intl}  = intlProvider.getChildContext();
+        const num     = 0.5;
         const options = {style: 'percent'};
 
         const el = <FormattedNumber value={num} {...options} />;
@@ -98,7 +98,7 @@ describe('<FormattedNumber>', () => {
 
     it('fallsback and warns on invalid Intl.NumberFormat options', () => {
         const {intl} = intlProvider.getChildContext();
-        const el = <FormattedNumber value={0} style="invalid" />;
+        const el     = <FormattedNumber value={0} style="invalid" />;
 
         renderer.render(el, {intl});
         expect(renderer.getRenderOutput()).toEqualJSX(
@@ -122,7 +122,7 @@ describe('<FormattedNumber>', () => {
         }, {});
 
         const {intl} = intlProvider.getChildContext();
-        const num   = 0.505;
+        const num    = 0.505;
         const format = 'percent';
 
         const el = <FormattedNumber value={num} format={format} />;
@@ -133,9 +133,21 @@ describe('<FormattedNumber>', () => {
         );
     });
 
+    it('accepts `tagName` prop', () => {
+        const {intl} = intlProvider.getChildContext();
+        const num    = 1000;
+
+        const el = <FormattedNumber value={num} tagName="p" />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <p>{intl.formatNumber(num)}</p>
+        );
+    });
+
     it('supports function-as-child pattern', () => {
         const {intl} = intlProvider.getChildContext();
-        const num   = new Date();
+        const num    = new Date();
 
         const el = (
             <FormattedNumber value={num}>

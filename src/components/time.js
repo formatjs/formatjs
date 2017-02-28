@@ -19,6 +19,7 @@ export default class FormattedTime extends Component {
         ...dateTimeFormatPropTypes,
         value   : PropTypes.any.isRequired,
         format  : PropTypes.string,
+        tagName : PropTypes.string,
         children: PropTypes.func,
     };
 
@@ -33,7 +34,11 @@ export default class FormattedTime extends Component {
 
     render() {
         const {formatTime, textComponent: Text} = this.context.intl;
-        const {value, children} = this.props;
+        const {
+            value,
+            tagName: Component = Text,
+            children,
+        } = this.props;
 
         let formattedTime = formatTime(value, this.props);
 
@@ -41,6 +46,6 @@ export default class FormattedTime extends Component {
             return children(formattedTime);
         }
 
-        return <Text>{formattedTime}</Text>;
+        return <Component>{formattedTime}</Component>;
     }
 }
