@@ -11,6 +11,7 @@ import {
     shallowEquals,
     shouldIntlComponentUpdate,
 } from '../utils';
+import {replacePlaceholders} from '../placeholders';
 
 export default class FormattedMessage extends Component {
     static displayName = 'FormattedMessage';
@@ -122,7 +123,7 @@ export default class FormattedMessage extends Component {
                 .filter((part) => !!part)
                 .map((part) => elements[part] || part);
         } else {
-            nodes = [formattedMessage];
+            nodes = replacePlaceholders(formattedMessage, values);
         }
 
         if (typeof children === 'function') {
