@@ -66,6 +66,8 @@ describe('format API', () => {
 
             defaultLocale: 'en',
             defaultFormats: {},
+
+            onError: consoleError,
         };
 
         state = {

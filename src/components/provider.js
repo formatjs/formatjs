@@ -11,7 +11,12 @@ import IntlRelativeFormat from 'intl-relativeformat';
 import IntlPluralFormat from '../plural';
 import memoizeIntlConstructor from 'intl-format-cache';
 import invariant from 'invariant';
-import {shouldIntlComponentUpdate, filterProps} from '../utils';
+import {
+  createError,
+  defaultErrorHandler,
+  shouldIntlComponentUpdate,
+  filterProps,
+} from '../utils';
 import {intlConfigPropTypes, intlFormatPropTypes, intlShape} from '../types';
 import * as format from '../format';
 import {hasLocaleData} from '../locale-data-registry';
@@ -29,6 +34,8 @@ const defaultProps = {
 
   defaultLocale: 'en',
   defaultFormats: {},
+
+  onError: defaultErrorHandler,
 };
 
 export default class IntlProvider extends Component {
@@ -84,7 +91,8 @@ export default class IntlProvider extends Component {
         getRelativeFormat: memoizeIntlConstructor(IntlRelativeFormat),
         getPluralFormat: memoizeIntlConstructor(IntlPluralFormat),
       },
-    } = intlContext || {};
+    } =
+      intlContext || {};
 
     this.state = {
       ...formatters,
@@ -113,14 +121,14 @@ export default class IntlProvider extends Component {
     }
 
     if (!hasLocaleData(config.locale)) {
-      const {locale, defaultLocale, defaultFormats} = config;
+      const {locale, defaultLocale, defaultFormats, onError} = config;
 
-      if (process.env.NODE_ENV !== 'production') {
-        console.error(
-          `[React Intl] Missing locale data for locale: "${locale}". ` +
+      onError(
+        createError(
+          `Missing locale data for locale: "${locale}". ` +
             `Using default locale: "${defaultLocale}" as fallback.`
-        );
-      }
+        )
+      );
 
       // Since there's no registered locale data for `locale`, this will
       // fallback to the `defaultLocale` to make sure things can render.

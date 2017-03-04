@@ -101,3 +101,14 @@ export function shouldIntlComponentUpdate(
     )
   );
 }
+
+export function createError(message, exception) {
+  const eMsg = exception ? `\n${exception}` : '';
+  return `[React Intl] ${message}${eMsg}`;
+}
+
+export function defaultErrorHandler(error) {
+  if (process.env.NODE_ENV !== 'production') {
+    console.error(error);
+  }
+}
