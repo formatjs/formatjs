@@ -17,6 +17,12 @@ describe('replacePlaceholders()', () => {
         })).toEqual(['Some ', ['awesome'], ' text']);
     });
 
+    it('should replace the placeholder with newline in the content', () => {
+        expect(replacePlaceholders('Some <x:a>awesome\n</x:a> text', {
+            a: (text) => text,
+        })).toEqual(['Some ', ['awesome\n'], ' text']);
+    });
+
     it('should replace nested placeholders', () => {
         expect(replacePlaceholders('Some <x:a> <x:b>inner</x:b> </x:a> text', {
             a: (children) => children,

@@ -22,7 +22,7 @@ const addFragment = (fragments, fragment) => {
  */
 const extract = (translation) => {
     const placeholder = '[A-Za-z0-9_]+';
-    const re = new RegExp(`<x:(${placeholder})>(.*?)</x:\\1>`, 'g');
+    const re = new RegExp(`<x:(${placeholder})>([\\s\\S]*?)</x:\\1>`, 'g');
     let fragments = [];
     let startIndex = 0;
 
