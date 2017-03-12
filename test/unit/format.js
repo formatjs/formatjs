@@ -136,13 +136,13 @@ describe('format API', () => {
 
         it('uses the time zone specified by the provider', () => {
             const timestamp = Date.now();
-            config = {...config, timeZone: 'Pacific/Wake'};
+            config.timeZone =  'Pacific/Wake';
             formatDate = f.formatDate.bind(null, config, state);
             const wakeDf = new Intl.DateTimeFormat(config.locale, {
                 timeZone: 'Pacific/Wake',
             });
             expect(formatDate(timestamp)).toBe(wakeDf.format(timestamp));
-            config = {...config, timeZone: 'Asia/Shanghai'};
+            config.timeZone = 'Asia/Shanghai';
             formatDate = f.formatDate.bind(null, config, state);
             const shanghaiDf = new Intl.DateTimeFormat(config.locale, {
                 timeZone: 'Asia/Shanghai',
@@ -206,7 +206,7 @@ describe('format API', () => {
 
             it('uses time zone specified in options over the one passed through by the provider', () => {
                 const timestamp = Date.now();
-                config = {...config, timeZone: 'Pacific/Wake'};
+                config.timeZone = 'Pacific/Wake';
                 formatDate = f.formatDate.bind(null, config, state);
                 const shanghaiDf = new Intl.DateTimeFormat(config.locale, {
                     timeZone: 'Asia/Shanghai',
@@ -264,7 +264,7 @@ describe('format API', () => {
 
         it('uses the time zone specified by the provider', () => {
             const timestamp = Date.now();
-            config = {...config, timeZone: 'Africa/Johannesburg'};
+            config.timeZone = 'Africa/Johannesburg';
             formatTime = f.formatTime.bind(null, config, state);
             const johannesburgDf = new Intl.DateTimeFormat(config.locale, {
                 hour: 'numeric',
@@ -272,7 +272,7 @@ describe('format API', () => {
                 timeZone: 'Africa/Johannesburg',
             });
             expect(formatTime(timestamp)).toBe(johannesburgDf.format(timestamp));
-            config = {...config, timeZone: 'America/Chicago'};
+            config.timeZone = 'America/Chicago';
             formatTime = f.formatTime.bind(null, config, state);
             const chicagoDf = new Intl.DateTimeFormat(config.locale, {
                 hour: 'numeric',
@@ -368,7 +368,7 @@ describe('format API', () => {
 
             it('uses time zone specified in options over the one passed through by the provider', () => {
                 const timestamp = Date.now();
-                config = {...config, timeZone: 'Africa/Johannesburg'};
+                config.timeZone = 'Africa/Johannesburg';
                 formatTime = f.formatTime.bind(null, config, state);
                 const chicagoDf = new Intl.DateTimeFormat(config.locale, {
                     hour: 'numeric',

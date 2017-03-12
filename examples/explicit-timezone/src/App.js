@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {FormattedDate, FormattedTime} from 'react-intl';
 
 class App extends Component {
     render() {
-        const currentTime = new Date();
+        const {currentTime} = this.props;
 
         return <p>
             The date in Tokyo is: <FormattedDate value={currentTime} />
@@ -13,5 +13,12 @@ class App extends Component {
     }
 }
 
+App.propTypes = {
+    currentTime: PropTypes.object,
+};
+
+App.defaultProps = {
+    currentTime: new Date(),
+};
 
 export default App;
