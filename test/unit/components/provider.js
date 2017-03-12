@@ -153,15 +153,14 @@ describe('<IntlProvider>', () => {
         const {intl} = renderer.getMountedInstance().getChildContext();
 
         INTL_SHAPE_PROP_NAMES.forEach((propName) => {
-            if(propName !== 'timeZone') {
-                expect(intl[propName]).toExist(`Missing context.intl prop: ${propName}`);
-            }
+            expect(intl[propName]).toNotBe(undefined, `Missing context.intl prop: ${propName}`);
         });
     });
 
     it('provides `context.intl` with values from intl config props', () => {
         const props = {
             locale       : 'fr-FR',
+            timeZone     : 'UTC',
             formats      : {},
             messages     : {},
             textComponent: 'span',
@@ -255,6 +254,7 @@ describe('<IntlProvider>', () => {
     it('inherits from an <IntlProvider> ancestor', () => {
         const props = {
             locale  : 'en',
+            timeZone: 'UTC',
             formats : {
                 date: {
                     'year-only': {
