@@ -7,6 +7,13 @@ Internationalize [React][] apps. This library provides React components and an A
 [![Build Status][travis-badge]][travis]
 [![Dependency Status][david-badge]][david]
 
+Install
+--------
+
+```
+$ npm install react-intl --save
+```
+
 Overview
 --------
 
