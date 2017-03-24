@@ -33,3 +33,23 @@ Pull requests are very welcome, but should be within the scope of the project, a
 
 [pr]: https://github.com/yahoo/react-intl/compare/
 [fork]: https://github.com/yahoo/react-intl/fork/
+
+## Releasing a new version
+
+The following the process to release a new version of the `react-intl` package on npm. This repo uses a protected `master` branch so the process involves creating a Pull Request for the version bump:
+
+1. Make sure local `node_modules` is up to date: `rm -rf node_modules && npm install`.
+
+2. Create a release branch from `master`: `git checkout -b release`
+
+3. Bump version using `npm version` and choose appropriate `patch`, `minor`, `major` argument.
+
+4. Create a Pull Request for your local `release` branch so Travis CI tests run.
+
+5. If all the tests pass successfully, publish your local `release` branch to npm: `npm publish`.
+
+6. Push the Git tag to the main fork: `git push upstream --tags`.
+
+7. Merge the `release` branch PR into `master` **and make sure to create a merge commit** so the Git tag matches.
+
+8. Create a [release](https://github.com/yahoo/react-intl/releases) post for the new release Git tag.
