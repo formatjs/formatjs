@@ -104,7 +104,7 @@
     "jest": "^19.0.0",
     "mkdirp": "^0.5.1",
     "react": "^15.0.0",
-    "react-addons-test-utils": "^15.0.0",
+    "react-addons-test-utils": "^15.0.2",
     "react-dom": "^15.0.0",
     "rimraf": "^2.4.2",
     "rollup": "^0.41.4",
