@@ -12,7 +12,7 @@
   "dependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "react-intl": "file:../../"
+    "react-intl": "^2.2.3"
   },
   "scripts": {
     "start": "react-scripts start",

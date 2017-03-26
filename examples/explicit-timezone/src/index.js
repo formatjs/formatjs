@@ -5,7 +5,7 @@ import App from './App';
 
 ReactDOM.render(
     <IntlProvider locale="en" timeZone="Asia/Tokyo">
-        <App />
+        <App currentTime={new Date()} />
     </IntlProvider>,
     document.getElementById('root')
 );
