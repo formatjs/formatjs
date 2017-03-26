@@ -86,8 +86,8 @@ export function formatTime(config, state, value, options = {}) {
 
     let date            = new Date(value);
     let defaults = {
-      ...(timeZone ? {timeZone} : {}),
-      ...(format && getNamedFormat(formats, 'time', format))
+        ...(timeZone ? {timeZone} : {}),
+        ...(format && getNamedFormat(formats, 'time', format)),
     };
     let filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, defaults);
 
