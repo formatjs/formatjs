@@ -153,9 +153,7 @@ describe('<IntlProvider>', () => {
         const {intl} = renderer.getMountedInstance().getChildContext();
 
         INTL_SHAPE_PROP_NAMES.forEach((propName) => {
-            if(propName !== 'timeZone') {
-                expect(intl[propName]).toExist(`Missing context.intl prop: ${propName}`);
-            }
+            expect(intl[propName]).toNotBe(undefined, `Missing context.intl prop: ${propName}`);
         });
     });
 
@@ -164,6 +162,7 @@ describe('<IntlProvider>', () => {
             locale       : 'fr-FR',
             formats      : {},
             messages     : {},
+            timeZone     : 'Asia/Calcutta',
             textComponent: 'span',
 
             defaultLocale : 'en-US',
@@ -265,6 +264,7 @@ describe('<IntlProvider>', () => {
             messages: {
                 hello: 'Hello, World!',
             },
+            timeZone: 'UTC',
             textComponent: 'span',
 
             defaultLocale : 'fr',
