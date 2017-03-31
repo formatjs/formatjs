@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {addLocaleData, IntlProvider} from 'react-intl';
-import enLocaleData from 'react-intl/locale-data/en';
+import enLocaleData from 'react-intl/lib/locale-data/en';
 import App from './components/app';
 
 // This example app only uses English. A fake `"en-UPPER"` locale is created so
