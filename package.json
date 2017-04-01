@@ -111,7 +111,7 @@
     "rollup-plugin-babel": "^2.3.9",
     "rollup-plugin-commonjs": "^7.0.0",
     "rollup-plugin-memory": "^2.0.0",
-    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-replace": "^1.1.0",
     "rollup-plugin-uglify": "^1.0.0",
     "serialize-javascript": "^1.1.1",
