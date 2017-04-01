@@ -10,6 +10,7 @@
     "babel-cli": "^6.24.0",
     "babel-plugin-react-intl": "^2.3.1",
     "babel-preset-react-app": "^2.2.0",
+    "cross-env": "^4.0.0",
     "env-cmd": "^5.0.0",
     "react-scripts": "0.8.4"
   },
@@ -21,7 +22,6 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "translate": "NODE_ENV=production babel ./src >/dev/null",
-    "translate-for-windows": "env-cmd ./.env-prod babel ./src"
+    "translate": "cross-env NODE_ENV=production babel ./src > NUL"
   }
 }
