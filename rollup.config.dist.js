@@ -43,6 +43,7 @@ export default {
             jsnext: true,
             skip: [
                 'react',
+                'prop-types',
             ],
         }),
         commonjs({
