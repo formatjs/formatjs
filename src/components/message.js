@@ -4,7 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {Component, PropTypes, createElement, isValidElement} from 'react';
+import {Component, createElement, isValidElement} from 'react';
+import {PropTypes} from 'prop-types';
 import {intlShape, messageDescriptorPropTypes} from '../types';
 import {
     invariantIntlContext,
