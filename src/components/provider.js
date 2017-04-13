@@ -5,7 +5,7 @@
  */
 
 import {Component, Children} from 'react';
-import {PropTypes} from 'prop-types';
+import PropTypes from 'prop-types';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 import IntlPluralFormat from '../plural';

@@ -5,7 +5,7 @@
  */
 
 import React, {Component} from 'react';
-import {PropTypes} from 'prop-types';
+import PropTypes from 'prop-types';
 import {intlShape, numberFormatPropTypes} from '../types';
 import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
 

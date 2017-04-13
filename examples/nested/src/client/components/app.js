@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {PropTypes} from 'prop-types';
+import PropTypes from 'prop-types';
 import {IntlProvider, FormattedMessage} from 'react-intl';
 import Greeting from './widgets/greeting';
 
