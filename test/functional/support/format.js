@@ -1,7 +1,7 @@
 import expect from 'expect';
 import expectJSX from 'expect-jsx';
 import React from 'react';
-import {createRenderer} from '../../renderer';
+import {createRenderer} from '../../react-compat';
 
 expect.extend(expectJSX);
 
