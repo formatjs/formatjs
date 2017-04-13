@@ -166,6 +166,7 @@ describe('<IntlProvider>', () => {
 
             defaultLocale : 'en-US',
             defaultFormats: {},
+            defaultMessages: {},
         };
 
         const el = (
@@ -256,6 +257,7 @@ describe('<IntlProvider>', () => {
                     },
                 },
             },
+            defaultMessages: {},
         };
 
         const parentIntlProvider = new IntlProvider(props, {});
@@ -310,6 +312,7 @@ describe('<IntlProvider>', () => {
                 defaultLocale="en"
                 defaultFormats={{}}
                 textComponent="span"
+                defaultMessages={{}}
             >
                 <Child />
             </IntlProvider>

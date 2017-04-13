@@ -179,12 +179,15 @@ export function formatMessage(config, state, messageDescriptor = {}, values = {}
         messages,
         defaultLocale,
         defaultFormats,
+        defaultMessages,
     } = config;
 
     const {
         id,
-        defaultMessage,
     } = messageDescriptor;
+
+    const defaultMessage =
+      messageDescriptor.defaultMessage || defaultMessages[id];
 
     // `id` is a required field of a Message Descriptor.
     invariant(id, '[React Intl] An `id` must be provided to format a message.');
@@ -221,12 +224,9 @@ export function formatMessage(config, state, messageDescriptor = {}, values = {}
             // This prevents warnings from littering the console in development
             // when no `messages` are passed into the <IntlProvider> for the
             // default locale, and a default message is in the source.
-            if (!defaultMessage ||
-                (locale && locale.toLowerCase() !== defaultLocale.toLowerCase())) {
-
+            if (!defaultMessage) {
                 console.error(
-                    `[React Intl] Missing message: "${id}" for locale: "${locale}"` +
-                    (defaultMessage ? ', using default message as fallback.' : '')
+                    `[React Intl] Missing message: "${id}" for locale: "${locale}"`
                 );
             }
         }

@@ -13,13 +13,14 @@ const numeric2digit = oneOf(['numeric', '2-digit']);
 const funcReq = func.isRequired;
 
 export const intlConfigPropTypes = {
-    locale       : string,
-    formats      : object,
-    messages     : object,
-    textComponent: any,
+    locale         : string,
+    formats        : object,
+    messages       : object,
+    textComponent  : any,
 
-    defaultLocale : string,
-    defaultFormats: object,
+    defaultLocale  : string,
+    defaultFormats : object,
+    defaultMessages: object
 };
 
 export const intlFormatPropTypes = {

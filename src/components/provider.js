@@ -27,6 +27,7 @@ const defaultProps = {
 
     defaultLocale : 'en',
     defaultFormats: {},
+    defaultMessages: {},
 };
 
 export default class IntlProvider extends Component {
@@ -131,6 +132,7 @@ export default class IntlProvider extends Component {
                 locale  : defaultLocale,
                 formats : defaultFormats,
                 messages: defaultProps.messages,
+                defaultMessages: defaultProps.defaultMessages,
             };
         }
 
