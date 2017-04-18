@@ -78,6 +78,14 @@ This example would render: "Hello **Eric**, you have 1,000 messages." into the c
 **Pluralization rules:** In some languages you have more than `one` and `other`. For example in `ru` there are the following plural rules: `one`, `few`, `many` and `other`.
 Check out the official [Unicode CLDR documentation](http://www.unicode.org/cldr/charts/28/supplemental/language_plural_rules.html).
 
+
+Safari Compatibility
+---------
+
+As the "Intl" window object is not available in Safari, enabling compatibility requires the "intl" polyfill https://www.npmjs.com/package/intl
+*Note you will need to load in the base data for the languages you intend to use from this polyfill as well as from react-intl
+
+
 Contribute
 ---------
 
