@@ -4,7 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {intlShape, messageDescriptorPropTypes} from '../types';
 import {
     invariantIntlContext,

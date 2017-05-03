@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {PropTypes} from 'react';
+import PropTypes from 'prop-types';
 
 const {bool, number, string, func, object, oneOf, shape, any} = PropTypes;
 const localeMatcher = oneOf(['best fit', 'lookup']);

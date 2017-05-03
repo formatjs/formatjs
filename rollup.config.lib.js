@@ -23,6 +23,7 @@ export default {
         'intl-relativeformat',
         'invariant',
         'react',
+        'prop-types',
         p.resolve('locale-data/index.js'),
     ],
     plugins: [
