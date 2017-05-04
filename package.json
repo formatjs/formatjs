@@ -64,6 +64,7 @@
     }
   },
   "dependencies": {
+    "intl": "^1.2.1",
     "intl-format-cache": "^2.0.5",
     "intl-messageformat": "^1.3.0",
     "intl-relativeformat": "^1.3.0",
@@ -101,7 +102,6 @@
     "express": "^4.13.3",
     "formatjs-extract-cldr-data": "^2.0.0",
     "glob": "^7.0.0",
-    "intl": "^1.2.1",
     "intl-messageformat-parser": "^1.2.0",
     "jest": "^19.0.0",
     "mkdirp": "^0.5.1",
