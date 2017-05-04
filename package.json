@@ -67,7 +67,8 @@
     "intl-format-cache": "^2.0.5",
     "intl-messageformat": "^1.3.0",
     "intl-relativeformat": "^1.3.0",
-    "invariant": "^2.1.1"
+    "invariant": "^2.1.1",
+    "postinstall-build": "^3.0.1"
   },
   "peerDependencies": {
     "react": "^0.14.9 || ^15.0.0",
@@ -140,6 +141,7 @@
     "test:perf": "cross-env NODE_ENV=production babel-node test/perf",
     "examples:install": "babel-node scripts/examples npm install",
     "examples:link": "npm link && babel-node scripts/examples npm link react-intl",
+    "postinstall": "postinstall-build lib",
     "preversion": "npm run clean && npm run build && npm run test:all",
     "prepublish": "npm run clean && npm run build"
   }
