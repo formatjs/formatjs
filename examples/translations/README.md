@@ -11,6 +11,7 @@ This example app fakes translation via the `scripts/translate.js` script which "
 
 ```
 $ cd ../..
+$ npm install
 $ npm run build
 $ cd examples/translations/
 ```
