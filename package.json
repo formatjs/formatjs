@@ -115,7 +115,7 @@
     "rollup-plugin-memory": "^2.0.0",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-replace": "^1.1.0",
-    "rollup-plugin-uglify": "^1.0.0",
+    "rollup-plugin-uglify": "^2.0.0",
     "serialize-javascript": "^1.1.1",
     "superagent": "^3.0.0",
     "watchify": "^3.7.0"
