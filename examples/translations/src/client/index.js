@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {addLocaleData, IntlProvider} from 'react-intl';
 import enLocaleData from 'react-intl/locale-data/en';
+import frLocaleData from 'react-intl/locale-data/fr';
 import App from './components/app';
 
 // This example app only uses English. A fake `"en-UPPER"` locale is created so
@@ -11,6 +12,7 @@ addLocaleData({
     locale: 'en-UPPER',
     parentLocale: 'en',
 });
+addLocaleData(frLocaleData);
 
 const {locale, messages} = window.App;
 
