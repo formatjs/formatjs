@@ -33,18 +33,16 @@ export default {
     sourceMap: true,
     globals: {
         react: 'React',
+        'prop-types': 'PropTypes',
     },
     external: [
         'react',
+        'prop-types',
     ],
     plugins: [
         babel(),
         nodeResolve({
             jsnext: true,
-            skip: [
-                'react',
-                'prop-types',
-            ],
         }),
         commonjs({
             sourceMap: true,
