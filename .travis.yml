@@ -1,15 +1,13 @@
 sudo: false
 language: node_js
 node_js:
-    - 4.2
+    - 4
     - 6
     - 7
 before_install: if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 script: npm run test:all
 notifications:
     email:
-        recipients:
-            - edf@ericf.me
         on_success: change
         on_failure: always
 env:
