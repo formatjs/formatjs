@@ -48,7 +48,7 @@ describe('<FormattedTime>', () => {
 
     it('renders a formatted time in a <span>', () => {
         const {intl} = intlProvider.getChildContext();
-        const date = new Date();
+        const date   = new Date();
 
         const el = <FormattedTime value={date} />;
 
@@ -93,8 +93,8 @@ describe('<FormattedTime>', () => {
     });
 
     it('accepts valid Intl.DateTimeFormat options as props', () => {
-        const {intl} = intlProvider.getChildContext();
-        const date = new Date();
+        const {intl}  = intlProvider.getChildContext();
+        const date    = new Date();
         const options = {hour: '2-digit'};
 
         const el = <FormattedTime value={date} {...options} />;
@@ -107,7 +107,7 @@ describe('<FormattedTime>', () => {
 
     it('fallsback and warns on invalid Intl.DateTimeFormat options', () => {
         const {intl} = intlProvider.getChildContext();
-        const el = <FormattedTime value={0} hour="invalid" />;
+        const el     = <FormattedTime value={0} hour="invalid" />;
 
         renderer.render(el, {intl});
         expect(renderer.getRenderOutput()).toEqualJSX(
@@ -139,6 +139,30 @@ describe('<FormattedTime>', () => {
         renderer.render(el, {intl});
         expect(renderer.getRenderOutput()).toEqualJSX(
             <span>{intl.formatTime(date, {format})}</span>
+        );
+    });
+
+    it('accepts `tagName` prop', () => {
+        const {intl} = intlProvider.getChildContext();
+        const date   = new Date();
+
+        const el = <FormattedTime value={date} tagName="p" />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <p>{intl.formatTime(date)}</p>
+        );
+    });
+
+    it('accepts `className` prop', () => {
+        const {intl} = intlProvider.getChildContext();
+        const date   = new Date();
+
+        const el = <FormattedTime value={date} className="foo" />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <span className="foo">{intl.formatTime(date)}</span>
         );
     });
 

@@ -190,6 +190,26 @@ describe('<FormattedHTMLMessage>', () => {
         );
     });
 
+    it('accepts `className` prop', () => {
+        const {intl} = intlProvider.getChildContext();
+        const descriptor = {
+            id: 'hello',
+            defaultMessage: 'Hello, <b>World</b>!',
+        };
+
+        const el = <FormattedHTMLMessage {...descriptor} className="foo" />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <span
+                className="foo"
+                dangerouslySetInnerHTML={{
+                    __html: intl.formatHTMLMessage(descriptor),
+                }}
+            />
+        );
+    });
+
     it('supports function-as-child pattern', () => {
         const {intl} = intlProvider.getChildContext();
         const descriptor = {

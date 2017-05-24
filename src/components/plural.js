@@ -27,7 +27,9 @@ export default class FormattedPlural extends Component {
         few  : PropTypes.node,
         many : PropTypes.node,
 
-        children: PropTypes.func,
+        tagName  : PropTypes.string,
+        className: PropTypes.string,
+        children : PropTypes.func,
     };
 
     static defaultProps = {
@@ -45,7 +47,13 @@ export default class FormattedPlural extends Component {
 
     render() {
         const {formatPlural, textComponent: Text} = this.context.intl;
-        const {value, other, children} = this.props;
+        const {
+            value,
+            other,
+            tagName: Component = Text,
+            className,
+            children,
+        } = this.props;
 
         let pluralCategory  = formatPlural(value, this.props);
         let formattedPlural = this.props[pluralCategory] || other;
@@ -54,6 +62,13 @@ export default class FormattedPlural extends Component {
             return children(formattedPlural);
         }
 
-        return <Text>{formattedPlural}</Text>;
+        const componentProps = {
+            children: formattedPlural,
+        };
+        if (className) {
+            Object.assign(componentProps, {className});
+        }
+
+        return <Component {...componentProps} />;
     }
 }

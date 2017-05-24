@@ -22,9 +22,10 @@ export default class FormattedHTMLMessage extends Component {
 
     static propTypes = {
         ...messageDescriptorPropTypes,
-        values  : PropTypes.object,
-        tagName : PropTypes.string,
-        children: PropTypes.func,
+        values    : PropTypes.object,
+        tagName   : PropTypes.string,
+        className : PropTypes.string,
+        children  : PropTypes.func,
     };
 
     static defaultProps = {
@@ -64,6 +65,7 @@ export default class FormattedHTMLMessage extends Component {
             defaultMessage,
             values: rawValues,
             tagName: Component = Text,
+            className,
             children,
         } = this.props;
 
@@ -82,7 +84,14 @@ export default class FormattedHTMLMessage extends Component {
         //
         // Note: There's a perf impact of using this component since there's no
         // way for React to do its virtual DOM diffing.
-        const html = {__html: formattedHTMLMessage};
-        return <Component dangerouslySetInnerHTML={html}/>;
+
+        const componentProps = {
+            dangerouslySetInnerHTML: {__html: formattedHTMLMessage},
+        };
+        if (className) {
+            Object.assign(componentProps, {className});
+        }
+
+        return <Component {...componentProps} />;
     }
 }

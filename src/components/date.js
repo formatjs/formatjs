@@ -18,9 +18,11 @@ export default class FormattedDate extends Component {
 
     static propTypes = {
         ...dateTimeFormatPropTypes,
-        value   : PropTypes.any.isRequired,
-        format  : PropTypes.string,
-        children: PropTypes.func,
+        value    : PropTypes.any.isRequired,
+        format   : PropTypes.string,
+        tagName  : PropTypes.string,
+        className: PropTypes.string,
+        children : PropTypes.func,
     };
 
     constructor(props, context) {
@@ -34,7 +36,12 @@ export default class FormattedDate extends Component {
 
     render() {
         const {formatDate, textComponent: Text} = this.context.intl;
-        const {value, children} = this.props;
+        const {
+            value,
+            tagName: Component = Text,
+            className,
+            children,
+        } = this.props;
 
         let formattedDate = formatDate(value, this.props);
 
@@ -42,6 +49,13 @@ export default class FormattedDate extends Component {
             return children(formattedDate);
         }
 
-        return <Text>{formattedDate}</Text>;
+        const componentProps = {
+            children: formattedDate,
+        };
+        if (className) {
+            Object.assign(componentProps, {className});
+        }
+
+        return <Component {...componentProps} />;
     }
 }

@@ -70,7 +70,7 @@ describe('<FormattedRelative>', () => {
 
     it('renders a formatted relative time in a <span>', () => {
         const {intl} = intlProvider.getChildContext();
-        const date = new Date();
+        const date   = new Date();
 
         const el = <FormattedRelative value={date} />;
 
@@ -115,8 +115,8 @@ describe('<FormattedRelative>', () => {
     });
 
     it('accepts valid IntlRelativeFormat options as props', () => {
-        const {intl} = intlProvider.getChildContext();
-        const date = intl.now() - 60 * 1000;
+        const {intl}  = intlProvider.getChildContext();
+        const date    = intl.now() - 60 * 1000;
         const options = {units: 'second'};
 
         const el = <FormattedRelative value={date} {...options} />;
@@ -129,7 +129,7 @@ describe('<FormattedRelative>', () => {
 
     it('fallsback and warns on invalid IntlRelativeFormat options', () => {
         const {intl} = intlProvider.getChildContext();
-        const el = <FormattedRelative value={0} units="invalid" />;
+        const el     = <FormattedRelative value={0} units="invalid" />;
 
         renderer.render(el, {intl});
         expect(renderer.getRenderOutput()).toEqualJSX(
@@ -163,10 +163,34 @@ describe('<FormattedRelative>', () => {
         );
     });
 
+    it('accepts `tagName` prop', () => {
+        const {intl} = intlProvider.getChildContext();
+        const date   = new Date();
+
+        const el = <FormattedRelative value={date} tagName="p" />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <p>{intl.formatRelative(date)}</p>
+        );
+    });
+
+    it('accepts `className` prop', () => {
+        const {intl} = intlProvider.getChildContext();
+        const date   = new Date();
+
+        const el = <FormattedRelative value={date} className="foo" />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <span className="foo">{intl.formatRelative(date)}</span>
+        );
+    });
+
     it('accepts `initialNow` prop', () => {
         const {intl} = intlProvider.getChildContext();
-        const date = 0;
-        const now = 1000;
+        const date   = 0;
+        const now    = 1000;
 
         expect(now).toNotEqual(intl.now());
 
@@ -198,8 +222,8 @@ describe('<FormattedRelative>', () => {
 
     it('updates automatically', (done) => {
         const {intl} = intlProvider.getChildContext();
-        const date = new Date();
-        const now = intl.now();
+        const date   = new Date();
+        const now    = intl.now();
 
         renderer.render(<FormattedRelative value={date} updateInterval={1} />, {intl});
         const renderedOne = renderer.getRenderOutput();
@@ -226,7 +250,7 @@ describe('<FormattedRelative>', () => {
 
     it('updates when the `value` prop changes', () => {
         const {intl} = intlProvider.getChildContext();
-        const now = intl.now();
+        const now    = intl.now();
 
         renderer.render(<FormattedRelative value={now} updateInterval={1} />, {intl});
         const renderedOne = renderer.getRenderOutput();
@@ -237,7 +261,7 @@ describe('<FormattedRelative>', () => {
 
         // Update `now()` to act like the <IntlProvider> is mounted.
         const nextNow = now + 1000;
-        intl.now = () => nextNow;
+        intl.now      = () => nextNow;
 
         renderer.render(<FormattedRelative value={nextNow} updateInterval={1} />, {intl});
         const renderedTwo = renderer.getRenderOutput();
@@ -253,7 +277,7 @@ describe('<FormattedRelative>', () => {
         // `toString()` rounds the date to the nearest second, this makes sure
         // `date` and `now` are exactly 1000ms apart so the scheduler will wait
         // 1000ms before the next interesting moment.
-        const now = 2000;
+        const now  = 2000;
         const date = new Date(now - 1000).toString();
 
         spyOn(intl, 'now').andReturn(now);
@@ -275,8 +299,8 @@ describe('<FormattedRelative>', () => {
 
     it('does not update when `updateInterval` prop is falsy', (done) => {
         const {intl} = intlProvider.getChildContext();
-        const date = new Date();
-        const now = intl.now();
+        const date   = new Date();
+        const now    = intl.now();
 
         renderer.render(<FormattedRelative value={date} updateInterval={0} />, {intl});
         const renderedOne = renderer.getRenderOutput();
