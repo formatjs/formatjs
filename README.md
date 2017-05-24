@@ -1,6 +1,8 @@
 React Intl
 ==========
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/yahoo/react-intl.svg)](https://greenkeeper.io/)
+
 Internationalize [React][] apps. This library provides React components and an API to format dates, numbers, and strings, including pluralization and handling translations.
 
 [![npm Version][npm-badge]][npm]
