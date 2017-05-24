@@ -865,22 +865,16 @@ describe('format API', () => {
                 );
             });
 
-            it('returns message `id` when message and `defaultMessage` are empty', () => {
-                const {locale, messages} = config;
+            it('returns message when message and `defaultMessage` are empty', () => {
+                const {messages} = config;
                 const id = 'empty';
 
                 expect(formatMessage({
                     id: id,
                     defaultMessage: messages[id],
-                })).toBe(id);
+                })).toBe(messages[id]);
 
-                expect(consoleError.calls.length).toBe(2);
-                expect(consoleError.calls[0].arguments[0]).toContain(
-                    `[React Intl] Missing message: "${id}" for locale: "${locale}"`
-                );
-                expect(consoleError.calls[1].arguments[0]).toContain(
-                    `[React Intl] Cannot format message: "${id}", using message id as fallback.`
-                );
+                expect(consoleError.calls.length).toBe(0);
             });
         });
     });
