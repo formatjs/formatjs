@@ -24,6 +24,7 @@ const intlFormatPropNames = Object.keys(intlFormatPropTypes);
 const defaultProps = {
     formats : {},
     messages: {},
+    timeZone: null,
     textComponent: 'span',
 
     defaultLocale : 'en',
@@ -129,9 +130,9 @@ export default class IntlProvider extends Component {
             // each <FormattedMessage> contains a `defaultMessage` prop.
             config = {
                 ...config,
-                locale  : defaultLocale,
-                formats : defaultFormats,
-                messages: defaultProps.messages,
+                locale   : defaultLocale,
+                formats  : defaultFormats,
+                messages : defaultProps.messages,
             };
         }
 

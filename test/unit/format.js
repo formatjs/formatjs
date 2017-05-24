@@ -134,6 +134,22 @@ describe('format API', () => {
             expect(formatDate(timestamp)).toBe(df.format(timestamp));
         });
 
+        it('uses the time zone specified by the provider', () => {
+            const timestamp = Date.now();
+            config.timeZone = 'Pacific/Wake';
+            formatDate = f.formatDate.bind(null, config, state);
+            const wakeDf = new Intl.DateTimeFormat(config.locale, {
+                timeZone: 'Pacific/Wake',
+            });
+            expect(formatDate(timestamp)).toBe(wakeDf.format(timestamp));
+            config.timeZone = 'Asia/Shanghai';
+            formatDate = f.formatDate.bind(null, config, state);
+            const shanghaiDf = new Intl.DateTimeFormat(config.locale, {
+                timeZone: 'Asia/Shanghai',
+            });
+            expect(formatDate(timestamp)).toBe(shanghaiDf.format(timestamp));
+        });
+
         describe('options', () => {
             it('accepts empty options', () => {
                 expect(formatDate(0, {})).toBe(df.format(0));
@@ -187,6 +203,16 @@ describe('format API', () => {
                     `[React Intl] No date format named: ${format}`
                 );
             });
+
+            it('uses time zone specified in options over the one passed through by the provider', () => {
+                const timestamp = Date.now();
+                config.timeZone = 'Pacific/Wake';
+                formatDate = f.formatDate.bind(null, config, state);
+                const shanghaiDf = new Intl.DateTimeFormat(config.locale, {
+                    timeZone: 'Asia/Shanghai',
+                });
+                expect(formatDate(timestamp, {timeZone: 'Asia/Shanghai'})).toBe(shanghaiDf.format(timestamp));
+            });
         });
     });
 
@@ -234,6 +260,26 @@ describe('format API', () => {
         it('formats date ms timestamp values', () => {
             const timestamp = Date.now();
             expect(formatTime(timestamp)).toBe(df.format(timestamp));
+        });
+
+        it('uses the time zone specified by the provider', () => {
+            const timestamp = Date.now();
+            config.timeZone = 'Africa/Johannesburg';
+            formatTime = f.formatTime.bind(null, config, state);
+            const johannesburgDf = new Intl.DateTimeFormat(config.locale, {
+                hour: 'numeric',
+                minute: 'numeric',
+                timeZone: 'Africa/Johannesburg',
+            });
+            expect(formatTime(timestamp)).toBe(johannesburgDf.format(timestamp));
+            config.timeZone = 'America/Chicago';
+            formatTime = f.formatTime.bind(null, config, state);
+            const chicagoDf = new Intl.DateTimeFormat(config.locale, {
+                hour: 'numeric',
+                minute: 'numeric',
+                timeZone: 'America/Chicago',
+            });
+            expect(formatTime(timestamp)).toBe(chicagoDf.format(timestamp));
         });
 
         describe('options', () => {
@@ -318,6 +364,18 @@ describe('format API', () => {
                 const hour = 'numeric';
                 df = new Intl.DateTimeFormat(locale, {hour});
                 expect(formatTime(date, {hour})).toBe(df.format(date));
+            });
+
+            it('uses time zone specified in options over the one passed through by the provider', () => {
+                const timestamp = Date.now();
+                config.timeZone = 'Africa/Johannesburg';
+                formatTime = f.formatTime.bind(null, config, state);
+                const chicagoDf = new Intl.DateTimeFormat(config.locale, {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    timeZone: 'America/Chicago',
+                });
+                expect(formatTime(timestamp, {timeZone: 'America/Chicago'})).toBe(chicagoDf.format(timestamp));
             });
         });
     });
