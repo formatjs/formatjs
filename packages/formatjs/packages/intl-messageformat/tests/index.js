@@ -110,6 +110,26 @@ describe('IntlMessageFormat', function () {
 
             expect(output).to.equal('My name is Anthony Pipkin.');
         });
+
+        it('should not ignore zero values', function() {
+            var mf = new IntlMessageFormat('I am {age} years old.');
+            var output = mf.format({
+                age: 0
+            });
+
+            expect(output).to.equal('I am 0 years old.');
+        });
+
+        it('should ignore false, null, and undefined', function() {
+            var mf = new IntlMessageFormat('{a}{b}{c}');
+            var output = mf.format({
+                a: false,
+                b: null,
+                c: undefined
+            });
+
+            expect(output).to.equal('');
+        });
     });
 
     describe('and plurals under the Arabic locale', function () {
