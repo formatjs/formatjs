@@ -12,7 +12,7 @@ module.exports = function (grunt) {
             tmp: {
                 expand: true,
                 cwd   : 'tmp/src/',
-                src   : '**/*.js',
+                src   : ['**/*.js', '**/*.map'],
                 dest  : 'lib/'
             }
         },
