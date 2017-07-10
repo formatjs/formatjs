@@ -8,8 +8,6 @@ See the accompanying LICENSE file for terms.
 
 import {hop} from './utils';
 
-export {defineProperty, objCreate};
-
 // Purposely using the same implementation as the Intl.js `Intl` polyfill.
 // Copyright 2013 Andy Earnshaw, MIT License
 
@@ -45,3 +43,5 @@ var objCreate = Object.create || function (proto, props) {
 
     return obj;
 };
+
+export {defineProperty, objCreate};
