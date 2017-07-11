@@ -6,8 +6,6 @@ See the accompanying LICENSE file for terms.
 
 /* jslint esnext: true */
 
-export {defineProperty, objCreate, arrIndexOf, isArray, dateNow};
-
 // Purposely using the same implementation as the Intl.js `Intl` polyfill.
 // Copyright 2013 Andy Earnshaw, MIT License
 
@@ -70,3 +68,5 @@ var isArray = Array.isArray || function (obj) {
 var dateNow = Date.now || function () {
     return new Date().getTime();
 };
+
+export {defineProperty, objCreate, arrIndexOf, isArray, dateNow};
