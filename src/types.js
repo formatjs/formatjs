@@ -6,7 +6,7 @@
 
 import PropTypes from 'prop-types';
 
-const {bool, number, string, func, object, oneOf, shape, any} = PropTypes;
+const {bool, number, string, func, object, oneOf, shape, any, oneOfType} = PropTypes;
 const localeMatcher = oneOf(['best fit', 'lookup']);
 const narrowShortLong = oneOf(['narrow', 'short', 'long']);
 const numeric2digit = oneOf(['numeric', '2-digit']);
@@ -41,7 +41,7 @@ export const intlShape = shape({
 
 export const messageDescriptorPropTypes = {
     id            : string.isRequired,
-    description   : string,
+    description   : oneOfType([string,object]),
     defaultMessage: string,
 };
 
