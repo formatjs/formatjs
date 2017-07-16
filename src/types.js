@@ -41,7 +41,7 @@ export const intlShape = shape({
 
 export const messageDescriptorPropTypes = {
     id            : string.isRequired,
-    description   : oneOfType([string,object]),
+    description   : oneOfType([string, object]),
     defaultMessage: string,
 };
 

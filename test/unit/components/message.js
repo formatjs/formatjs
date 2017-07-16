@@ -63,6 +63,37 @@ describe('<FormattedMessage>', () => {
         expect(consoleError.calls.length).toBe(0);
     });
 
+    it('should not cause a prop warning when description is a string', () => {
+        const {intl} = intlProvider.getChildContext();
+        const descriptor = {
+            id: 'hello',
+            description: 'Greeting',
+            defaultMessage: 'Hello, {name}!',
+        };
+
+        const el = <FormattedMessage {...descriptor} values={{name: <b>Eric</b>}} />;
+
+        renderer.render(el, {intl});
+        expect(consoleError.calls.length).toBe(0);
+    });
+
+    it('should not cause a prop warning when description is an object', () => {
+        const {intl} = intlProvider.getChildContext();
+        const descriptor = {
+            id: 'hello',
+            description: {
+                text: 'Greeting',
+                ticket: 'GTP-1234',
+            },
+            defaultMessage: 'Hello, {name}!',
+        };
+
+        const el = <FormattedMessage {...descriptor} values={{name: <b>Eric</b>}} />;
+
+        renderer.render(el, {intl});
+        expect(consoleError.calls.length).toBe(0);
+    });
+
     it('should not re-render when props and context are the same', () => {
         intlProvider = new IntlProvider({locale: 'en', defaultLocale: 'en'}, {});
         renderer.render(
