@@ -11,7 +11,7 @@ import IntlRelativeFormat from 'intl-relativeformat';
 import IntlPluralFormat from '../plural';
 import memoizeIntlConstructor from 'intl-format-cache';
 import invariant from 'invariant';
-import {shouldIntlComponentUpdate, filterProps} from '../utils';
+import {shouldIntlComponentUpdate, filterProps, flattenMessages} from '../utils';
 import {intlConfigPropTypes, intlFormatPropTypes, intlShape} from '../types';
 import * as format from '../format';
 import {hasLocaleData} from '../locale-data-registry';
@@ -131,7 +131,7 @@ export default class IntlProvider extends Component {
                 ...config,
                 locale  : defaultLocale,
                 formats : defaultFormats,
-                messages: defaultProps.messages,
+                messages: flattenMessages(defaultProps.messages),
             };
         }
 
