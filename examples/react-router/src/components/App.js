@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Match, Link } from 'react-router';
+import { Route, Link } from 'react-router-dom';
 
 import Home from './Home';
 import Inbox from './Inbox';
@@ -13,8 +13,8 @@ class App extends Component {
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/inbox">Inbox</Link></li>
                 </ul>
-                <Match exactly pattern="/" component={Home} />
-                <Match pattern="/inbox" component={Inbox} />
+                <Route exact path="/" component={Home} />
+                <Route path="/inbox" component={Inbox} />
             </div>
         );
     }
