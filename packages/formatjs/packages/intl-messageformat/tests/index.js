@@ -317,6 +317,7 @@ describe('IntlMessageFormat', function () {
             it('should fail when the argument in the pattern is not provided', function () {
                 expect(msg.format).to.throwException(function (e) {
                     expect(e).to.be.an(Error);
+                    expect(e.message).to.match(/The intl string context variable 'STATE' was not provided to the string '{STATE}'/);
                 });
             });
 
@@ -327,6 +328,7 @@ describe('IntlMessageFormat', function () {
 
                 expect(formatWithValueNameTypo).to.throwException(function (e) {
                     expect(e).to.be.an(Error);
+                    expect(e.message).to.match(/The intl string context variable 'STATE' was not provided to the string '{STATE}'/);
                 });
             });
 
@@ -346,6 +348,7 @@ describe('IntlMessageFormat', function () {
 
                 expect(formatWithMissingValue).to.throwException(function (e) {
                     expect(e).to.be.an(Error);
+                    expect(e.message).to.match(/The intl string context variable 'ST1ATE' was not provided to the string '{ST1ATE}'/);
                 });
             });
 
@@ -356,6 +359,7 @@ describe('IntlMessageFormat', function () {
 
                 expect(formatWithMissingValue).to.throwException(function (e) {
                     expect(e).to.be.an(Error);
+                    expect(e.message).to.match(/The intl string context variable 'ST1ATE' was not provided to the string '{ST1ATE}'/);
                 });
             });
 
