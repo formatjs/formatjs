@@ -55,6 +55,7 @@
 
         return obj;
     };
+
     var $$compiler$$default = $$compiler$$Compiler;
 
     function $$compiler$$Compiler(locales, formats, pluralFn) {
@@ -205,7 +206,7 @@
     }
 
     $$compiler$$StringFormat.prototype.format = function (value) {
-        if (!value) {
+        if (!value && typeof value !== 'number') {
             return '';
         }
 
@@ -1640,7 +1641,18 @@
         // the other `Intl` APIs.
         var messageFormat = this;
         this.format = function (values) {
+          try {
             return messageFormat._format(pattern, values);
+          } catch (e) {
+            if (e.variableId) {
+              throw new Error(
+                'The intl string context variable \'' + e.variableId + '\'' +
+                ' was not provided to the string \'' + message + '\''
+              );
+            } else {
+              throw e;
+            }
+          }
         };
     }
 
@@ -1775,7 +1787,7 @@
 
     $$core$$MessageFormat.prototype._format = function (pattern, values) {
         var result = '',
-            i, len, part, id, value;
+            i, len, part, id, value, err;
 
         for (i = 0, len = pattern.length; i < len; i += 1) {
             part = pattern[i];
@@ -1790,7 +1802,9 @@
 
             // Enforce that all required values are provided by the caller.
             if (!(values && $$utils$$hop.call(values, id))) {
-                throw new Error('A value must be provided for: ' + id);
+              err = new Error('A value must be provided for: ' + id);
+              err.variableId = id;
+              throw err;
             }
 
             value = values[id];
