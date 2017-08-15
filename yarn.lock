@@ -2429,6 +2429,12 @@ intl-messageformat@^2.0.0:
   dependencies:
     intl-messageformat-parser "1.2.0"
 
+intl-messageformat@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-2.1.0.tgz#1c51da76f02a3f7b360654cdc51bbc4d3fa6c72c"
+  dependencies:
+    intl-messageformat-parser "1.2.0"
+
 intl-relativeformat@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/intl-relativeformat/-/intl-relativeformat-2.0.0.tgz#d6ba9dc6c625819bc0abdb1d4e238138b7488f26"
