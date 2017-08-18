@@ -1162,17 +1162,17 @@ circular-json@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.3.1.tgz#be8b36aefccde8b3ca7aa2d6afc07a37242c0d2d"
 
-cldr-core@28.0.0:
-  version "28.0.0"
-  resolved "https://registry.yarnpkg.com/cldr-core/-/cldr-core-28.0.0.tgz#46db6208292da7fe9f03b7b79f8ca90ceb84c6ad"
+cldr-core@^31.0.1:
+  version "31.0.1"
+  resolved "https://registry.yarnpkg.com/cldr-core/-/cldr-core-31.0.1.tgz#24b3d59359ef890595665e5a8ca29e53901c6d54"
 
-cldr-dates-full@28.0.0:
-  version "28.0.0"
-  resolved "https://registry.yarnpkg.com/cldr-dates-full/-/cldr-dates-full-28.0.0.tgz#a46e52cc9221c68ea58b66664a8b98ae6ba8d962"
+cldr-dates-full@^31.0.1:
+  version "31.0.1"
+  resolved "https://registry.yarnpkg.com/cldr-dates-full/-/cldr-dates-full-31.0.1.tgz#c49a4740250646148cfb55e02f20d7ae2c917f89"
 
-cldr-numbers-full@28.0.0:
-  version "28.0.0"
-  resolved "https://registry.yarnpkg.com/cldr-numbers-full/-/cldr-numbers-full-28.0.0.tgz#491334c2188a2d11761758a7572c3f52e1f77f7a"
+cldr-numbers-full@^31.0.1:
+  version "31.0.1"
+  resolved "https://registry.yarnpkg.com/cldr-numbers-full/-/cldr-numbers-full-31.0.1.tgz#a78774e1544fbf9616d8f6812a312b10f4aaafbe"
 
 cli-cursor@^1.0.1:
   version "1.0.2"
@@ -2060,13 +2060,13 @@ form-data@^2.1.1, form-data@~2.1.1:
     combined-stream "^1.0.5"
     mime-types "^2.1.12"
 
-formatjs-extract-cldr-data@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/formatjs-extract-cldr-data/-/formatjs-extract-cldr-data-2.0.0.tgz#34f970fa58e9f4b4c2bb1bcf36202e39fd100afb"
+formatjs-extract-cldr-data@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/formatjs-extract-cldr-data/-/formatjs-extract-cldr-data-4.0.0.tgz#72b8c36f92a855989a381fa6c194566b34a1539f"
   dependencies:
-    cldr-core "28.0.0"
-    cldr-dates-full "28.0.0"
-    cldr-numbers-full "28.0.0"
+    cldr-core "^31.0.1"
+    cldr-dates-full "^31.0.1"
+    cldr-numbers-full "^31.0.1"
     glob "^5.0.1"
     make-plural "^2.1.3"
     object.assign "^4.0.3"
