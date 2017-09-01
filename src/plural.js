@@ -9,20 +9,20 @@
 import IntlMessageFormat from 'intl-messageformat';
 
 function resolveLocale(locales) {
-    // IntlMessageFormat#_resolveLocale() does not depend on `this`.
-    return IntlMessageFormat.prototype._resolveLocale(locales);
+  // IntlMessageFormat#_resolveLocale() does not depend on `this`.
+  return IntlMessageFormat.prototype._resolveLocale(locales);
 }
 
 function findPluralFunction(locale) {
-    // IntlMessageFormat#_findPluralFunction() does not depend on `this`.
-    return IntlMessageFormat.prototype._findPluralRuleFunction(locale);
+  // IntlMessageFormat#_findPluralFunction() does not depend on `this`.
+  return IntlMessageFormat.prototype._findPluralRuleFunction(locale);
 }
 
 export default class IntlPluralFormat {
-    constructor(locales, options = {}) {
-        let useOrdinal = options.style === 'ordinal';
-        let pluralFn   = findPluralFunction(resolveLocale(locales));
+  constructor(locales, options = {}) {
+    let useOrdinal = options.style === 'ordinal';
+    let pluralFn = findPluralFunction(resolveLocale(locales));
 
-        this.format = (value) => pluralFn(value, useOrdinal);
-    }
+    this.format = value => pluralFn(value, useOrdinal);
+  }
 }

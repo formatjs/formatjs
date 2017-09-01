@@ -10,50 +10,50 @@ import {intlShape, pluralFormatPropTypes} from '../types';
 import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
 
 export default class FormattedPlural extends Component {
-    static displayName = 'FormattedPlural';
+  static displayName = 'FormattedPlural';
 
-    static contextTypes = {
-        intl: intlShape,
-    };
+  static contextTypes = {
+    intl: intlShape,
+  };
 
-    static propTypes = {
-        ...pluralFormatPropTypes,
-        value: PropTypes.any.isRequired,
+  static propTypes = {
+    ...pluralFormatPropTypes,
+    value: PropTypes.any.isRequired,
 
-        other: PropTypes.node.isRequired,
-        zero : PropTypes.node,
-        one  : PropTypes.node,
-        two  : PropTypes.node,
-        few  : PropTypes.node,
-        many : PropTypes.node,
+    other: PropTypes.node.isRequired,
+    zero: PropTypes.node,
+    one: PropTypes.node,
+    two: PropTypes.node,
+    few: PropTypes.node,
+    many: PropTypes.node,
 
-        children: PropTypes.func,
-    };
+    children: PropTypes.func,
+  };
 
-    static defaultProps = {
-        style: 'cardinal',
-    };
+  static defaultProps = {
+    style: 'cardinal',
+  };
 
-    constructor(props, context) {
-        super(props, context);
-        invariantIntlContext(context);
+  constructor(props, context) {
+    super(props, context);
+    invariantIntlContext(context);
+  }
+
+  shouldComponentUpdate(...next) {
+    return shouldIntlComponentUpdate(this, ...next);
+  }
+
+  render() {
+    const {formatPlural, textComponent: Text} = this.context.intl;
+    const {value, other, children} = this.props;
+
+    let pluralCategory = formatPlural(value, this.props);
+    let formattedPlural = this.props[pluralCategory] || other;
+
+    if (typeof children === 'function') {
+      return children(formattedPlural);
     }
 
-    shouldComponentUpdate(...next) {
-        return shouldIntlComponentUpdate(this, ...next);
-    }
-
-    render() {
-        const {formatPlural, textComponent: Text} = this.context.intl;
-        const {value, other, children} = this.props;
-
-        let pluralCategory  = formatPlural(value, this.props);
-        let formattedPlural = this.props[pluralCategory] || other;
-
-        if (typeof children === 'function') {
-            return children(formattedPlural);
-        }
-
-        return <Text>{formattedPlural}</Text>;
-    }
+    return <Text>{formattedPlural}</Text>;
+  }
 }
