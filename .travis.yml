@@ -1,15 +1,15 @@
 sudo: false
 language: node_js
 node_js:
-    - 4
-    - 6
-    - 7
+  - 4
+  - 6
+  - 8
 before_install: if [[ `npm -v` != 3* ]]; then npm i -g npm@3; fi
 script: npm run test:all
 notifications:
-    email:
-        on_success: change
-        on_failure: always
+  email:
+    on_success: change
+    on_failure: always
 env:
   global:
     - secure: dtJpzQPi6/UYsySz8cUIxja7JiiEvDhtKkKpSZa3skB1Es1NNo/tYmVHZyw4MkLpdvXuJx0020dR5ao7UTag9CZspeSimqmr5Q4AV3eBv7Da6d36Gtm5SCGfWHXTldbPYL19ai1EWPSiifQbWxlN3gew9awCFgoBvOKcZoSJQ1M=
