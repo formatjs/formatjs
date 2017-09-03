@@ -200,7 +200,7 @@ export function formatMessage(config, state, messageDescriptor = {}, values = {}
 
     let formattedMessage;
 
-    if (message) {
+    if (Object.prototype.toString.apply(message) === '[object String]') {
         try {
             let formatter = state.getMessageFormat(
                 message, locale, formats
