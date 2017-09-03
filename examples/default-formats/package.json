@@ -1,0 +1,21 @@
+{
+  "name": "react-intl-example-default-formats-example",
+  "version": "1.0.0",
+  "description": "React Intl Default Formats Example",
+  "private": true,
+  "main": "index.js",
+  "author": "Bryan Richards <brichardssa@gmail.com>",
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "react-scripts": "0.6.0"
+  },
+  "dependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-intl": "file:../../"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build"
+  }
+}

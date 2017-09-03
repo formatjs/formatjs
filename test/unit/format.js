@@ -188,6 +188,58 @@ describe('format API', () => {
                 );
             });
         });
+
+        describe('defaultFormats', () => {
+            let dateDefaultFormats;
+
+            beforeEach(() => {
+                dateDefaultFormats = {
+                    era: 'narrow',
+                };
+                df = new Intl.DateTimeFormat(config.locale, dateDefaultFormats);
+                config.defaultFormats.date = dateDefaultFormats;
+            });
+
+            it('uses defaultFormats when specified', () => {
+                expect(formatDate(0)).toBe(df.format(0));
+            });
+
+            it('is replaced when options are explicitly passed', () => {
+                let longEraDF = new Intl.DateTimeFormat(config.locale, {
+                    era: 'long',
+                });
+                expect(formatDate(0, {
+                    era: 'long',
+                })).toBe(longEraDF.format(0));
+                expect(formatDate(0, {
+                    era: 'long',
+                })).toNotBe(df.format(0));
+            });
+
+            it('accepts valid Intl.DateTimeFormat options', () => {
+                dateDefaultFormats.year = 'numeric';
+                expect(() => formatDate(0)).toNotThrow();
+            });
+
+            it('fallsback and warns on invalid Intl.DateTimeFormat options', () => {
+                dateDefaultFormats.year = 'invalid';
+                expect(formatDate(0)).toBe(String(new Date(0)));
+                expect(consoleError.calls.length).toBe(1);
+                expect(consoleError.calls[0].arguments[0]).toContain(
+                    '[React Intl] Error formatting date.\nRangeError'
+                );
+            });
+
+            it('uses configured named formats over defaultFormats', () => {
+                const date   = new Date();
+                const format = 'year-only';
+
+                const {locale, formats} = config;
+                df = new Intl.DateTimeFormat(locale, formats.date[format]);
+
+                expect(formatDate(date, {format})).toBe(df.format(date));
+            });
+        });
     });
 
     describe('formatTime()', () => {
@@ -320,6 +372,60 @@ describe('format API', () => {
                 expect(formatTime(date, {hour})).toBe(df.format(date));
             });
         });
+
+        describe('defaultFormats', () => {
+            let timeDefaultFormats;
+
+            beforeEach(() => {
+                timeDefaultFormats = {
+                    timeZone: 'Pacific/Wake',
+                };
+                df = new Intl.DateTimeFormat(config.locale, {...timeDefaultFormats, hour: 'numeric', minute: 'numeric' });
+                config.defaultFormats.time = timeDefaultFormats;
+            });
+
+            it('uses defaultFormats when specified', () => {
+                expect(formatTime(0)).toBe(df.format(0));
+            });
+
+            it('is replaced when options are explicitly passed', () => {
+                let johannesburgDF = new Intl.DateTimeFormat(config.locale, {
+                    timeZone: 'Africa/Johannesburg',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                });
+                expect(formatTime(0, {
+                    timeZone: 'Africa/Johannesburg',
+                })).toBe(johannesburgDF.format(0));
+                expect(formatTime(0, {
+                    timeZone: 'Africa/Johannesburg',
+                })).toNotBe(df.format(0));
+            });
+
+            it('accepts valid Intl.DateTimeFormat options', () => {
+                timeDefaultFormats.hour = 'numeric';
+                expect(() => formatTime(0)).toNotThrow();
+            });
+
+            it('fallsback and warns on invalid Intl.DateTimeFormat options', () => {
+                timeDefaultFormats.hour = 'invalid';
+                expect(formatTime(0)).toBe(String(new Date(0)));
+                expect(consoleError.calls.length).toBe(1);
+                expect(consoleError.calls[0].arguments[0]).toContain(
+                    '[React Intl] Error formatting time.\nRangeError'
+                );
+            });
+
+            it('uses configured named formats over defaultFormats', () => {
+                const date   = new Date();
+                const format = 'hour-only';
+
+                const {locale, formats} = config;
+                df = new Intl.DateTimeFormat(locale, formats.time[format]);
+
+                expect(formatTime(date, {format})).toBe(df.format(date));
+            });
+        });
     });
 
     describe('formatRelative()', () => {
@@ -385,7 +491,7 @@ describe('format API', () => {
                 expect(() => formatRelative(0, {units: 'second'})).toNotThrow();
             });
 
-            it('fallsback and wanrs on invalid IntlRelativeFormat options', () => {
+            it('fallsback and warns on invalid IntlRelativeFormat options', () => {
                 expect(formatRelative(0, {units: 'invalid'})).toBe(String(new Date(0)));
                 expect(consoleError.calls.length).toBe(1);
                 expect(consoleError.calls[0].arguments[0]).toBe(
@@ -470,6 +576,58 @@ describe('format API', () => {
                     now = 1000;
                     expect(formatRelative(0, {now})).toBe(rf.format(0, {now}));
                 });
+            });
+        });
+
+        describe('defaultFormats', () => {
+            let relativeDefaultFormats;
+
+            beforeEach(() => {
+                relativeDefaultFormats = {
+                    units: 'second',
+                };
+                rf = new IntlRelativeFormat(config.locale, relativeDefaultFormats);
+                config.defaultFormats.relative = relativeDefaultFormats;
+            });
+
+            it('uses defaultFormats when specified', () => {
+                expect(formatRelative(0)).toBe(rf.format(0, {now}));
+            });
+
+            it('is replaced when options are explicitly passed', () => {
+                let hourRF = new IntlRelativeFormat(config.locale, {
+                    units: 'hour',
+                });
+                expect(formatRelative(0, {
+                    units: 'hour',
+                })).toBe(hourRF.format(0, {now}));
+                expect(formatRelative(0, {
+                    units: 'hour',
+                })).toNotBe(rf.format(0, {now}));
+            });
+
+            it('accepts valid IntlRelativeFormat options', () => {
+                relativeDefaultFormats.units = 'day';
+                expect(() => formatRelative(0)).toNotThrow();
+            });
+
+            it('fallsback and warns on invalid IntlRelativeFormat options', () => {
+                relativeDefaultFormats.units = 'invalid';
+                expect(formatRelative(0)).toBe(String(new Date(0)));
+                expect(consoleError.calls.length).toBe(1);
+                expect(consoleError.calls[0].arguments[0]).toBe(
+                    '[React Intl] Error formatting relative time.\nError: "invalid" is not a valid IntlRelativeFormat `units` value, it must be one of: "second", "minute", "hour", "day", "month", "year"'
+                );
+            });
+
+            it('uses configured named formats over defaultFormats', () => {
+                const date   = -(1000 * 120);
+                const format = 'hours';
+
+                const {locale, formats} = config;
+                rf = new IntlRelativeFormat(locale, formats.relative[format]);
+
+                expect(formatRelative(date, {format})).toBe(rf.format(date, {now}));
             });
         });
     });
@@ -564,6 +722,61 @@ describe('format API', () => {
                 expect(consoleError.calls[0].arguments[0]).toBe(
                     `[React Intl] No number format named: ${format}`
                 );
+            });
+        });
+
+        describe('defaultFormats', () => {
+            let numberDefaultFormats;
+
+            beforeEach(() => {
+                numberDefaultFormats = {
+                    style: 'percent',
+                };
+                nf = new Intl.NumberFormat(config.locale, numberDefaultFormats);
+                config.defaultFormats.number = numberDefaultFormats;
+            });
+
+            it('uses defaultFormats when specified', () => {
+                expect(formatNumber(84)).toBe(nf.format(84));
+            });
+
+            it('is replaced when options are explicitly passed', () => {
+                let currencyNF = new Intl.NumberFormat(config.locale, {
+                    style: 'currency',
+                    currency: 'USD',
+                });
+                expect(formatNumber(31, {
+                    style: 'currency',
+                    currency: 'USD',
+                })).toBe(currencyNF.format(31));
+                expect(formatNumber(13, {
+                    style: 'currency',
+                    currency: 'USD',
+                })).toNotBe(nf.format(0));
+            });
+
+            it('accepts valid Intl.NumberFormat options', () => {
+                numberDefaultFormats.minimumIntegerDigits = 10;
+                expect(() => formatNumber(0)).toNotThrow();
+            });
+
+            it('fallsback and warns on invalid Intl.NumberFormat options', () => {
+                numberDefaultFormats.minimumIntegerDigits = 33;
+                expect(formatNumber(56)).toBe('56');
+                expect(consoleError.calls.length).toBe(1);
+                expect(consoleError.calls[0].arguments[0]).toContain(
+                    '[React Intl] Error formatting number.\nRangeError'
+                );
+            });
+
+            it('uses configured named formats over defaultFormats', () => {
+                const number = 73.452;
+                const format = 'decimals';
+
+                const {locale, formats} = config;
+                nf = new Intl.NumberFormat(locale, formats.number[format]);
+
+                expect(formatNumber(number, {format})).toBe(nf.format(number));
             });
         });
     });

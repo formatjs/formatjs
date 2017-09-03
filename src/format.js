@@ -57,11 +57,11 @@ function getNamedFormat(formats, type, name) {
 }
 
 export function formatDate(config, state, value, options = {}) {
-    const {locale, formats} = config;
+    const {locale, defaultFormats, formats} = config;
     const {format}          = options;
 
     let date            = new Date(value);
-    let defaults        = format && getNamedFormat(formats, 'date', format);
+    let defaults        = format ? getNamedFormat(formats, 'date', format) : defaultFormats.date;
     let filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, defaults);
 
     try {
@@ -78,11 +78,11 @@ export function formatDate(config, state, value, options = {}) {
 }
 
 export function formatTime(config, state, value, options = {}) {
-    const {locale, formats} = config;
+    const {locale, defaultFormats, formats} = config;
     const {format}          = options;
 
     let date            = new Date(value);
-    let defaults        = format && getNamedFormat(formats, 'time', format);
+    let defaults        = format ? getNamedFormat(formats, 'time', format) : defaultFormats.time;
     let filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, defaults);
 
     if (!filteredOptions.hour && !filteredOptions.minute && !filteredOptions.second) {
@@ -104,12 +104,12 @@ export function formatTime(config, state, value, options = {}) {
 }
 
 export function formatRelative(config, state, value, options = {}) {
-    const {locale, formats} = config;
+    const {locale, defaultFormats, formats} = config;
     const {format}          = options;
 
     let date            = new Date(value);
     let now             = new Date(options.now);
-    let defaults        = format && getNamedFormat(formats, 'relative', format);
+    let defaults        = format ? getNamedFormat(formats, 'relative', format) : defaultFormats.relative;
     let filteredOptions = filterProps(options, RELATIVE_FORMAT_OPTIONS, defaults);
 
     // Capture the current threshold values, then temporarily override them with
@@ -135,10 +135,10 @@ export function formatRelative(config, state, value, options = {}) {
 }
 
 export function formatNumber(config, state, value, options = {}) {
-    const {locale, formats} = config;
+    const {locale, defaultFormats, formats} = config;
     const {format}          = options;
 
-    let defaults        = format && getNamedFormat(formats, 'number', format);
+    let defaults        = format ? getNamedFormat(formats, 'number', format) : defaultFormats.number;
     let filteredOptions = filterProps(options, NUMBER_FORMAT_OPTIONS, defaults);
 
     try {
