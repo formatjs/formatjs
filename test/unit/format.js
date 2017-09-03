@@ -66,6 +66,16 @@ describe('format API', () => {
 
             defaultLocale: 'en',
             defaultFormats: {},
+
+            defaultMessages: {
+                no_args: 'Hello, World!',
+                with_arg: 'Hello, {name}!',
+                with_named_format: 'It is {now, date, year-only}',
+                with_html: 'Hello, <b>{name}</b>!',
+
+                empty: '',
+                missing_named_format: 'missing {now, date, format_missing}',
+            },
         };
 
         state = {
@@ -729,11 +739,6 @@ describe('format API', () => {
                     id: id,
                     defaultMessage: messages.with_arg,
                 }, values)).toBe(mf.format(values));
-
-                expect(consoleError.calls.length).toBe(1);
-                expect(consoleError.calls[0].arguments[0]).toContain(
-                    `[React Intl] Missing message: "${id}" for locale: "${locale}", using default message as fallback.`
-                );
             });
 
             it('warns when `message` and `defaultMessage` are missing', () => {
@@ -839,14 +844,11 @@ describe('format API', () => {
                     defaultMessage: messages.invalid,
                 })).toBe(messages.invalid);
 
-                expect(consoleError.calls.length).toBe(3);
+                expect(consoleError.calls.length).toBe(2);
                 expect(consoleError.calls[0].arguments[0]).toContain(
-                    `[React Intl] Missing message: "${id}" for locale: "${locale}", using default message as fallback.`
-                );
-                expect(consoleError.calls[1].arguments[0]).toContain(
                     `[React Intl] Error formatting the default message for: "${id}"`
                 );
-                expect(consoleError.calls[2].arguments[0]).toContain(
+                expect(consoleError.calls[1].arguments[0]).toContain(
                     `[React Intl] Cannot format message: "${id}", using message source as fallback.`
                 );
             });
