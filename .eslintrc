@@ -1,44 +1,34 @@
 {
-    "parser": "babel-eslint",
-    "parserOptions": {
-        "sourceType": "module",
-        "allowImportExportEverywhere": false
-    },
-    "extends": "eslint:recommended",
-    "env": {
-        "es6": true,
-        "node": true,
-        "browser": true,
-        "jest": true
-    },
-    "plugins": [
-        "react"
-    ],
-    "rules": {
-        "no-console": 0,
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": false
+  },
+  "extends": "eslint:recommended",
+  "env": {
+    "es6": true,
+    "node": true,
+    "browser": true,
+    "jest": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "eqeqeq": 2,
+    "prefer-arrow-callback": 2,
+    "strict": [2, "never"],
+    "yoda": [2, "never"],
 
-        "arrow-parens": [2, "always"],
-        "comma-dangle": [2, "always-multiline"],
-        "eqeqeq": 2,
-        "eol-last": 2,
-        "indent": [2, 4],
-        "linebreak-style": [1, "unix"],
-        "prefer-arrow-callback": 2,
-        "quotes": [2, "single", "avoid-escape"],
-        "semi": [2, "always"],
-        "strict": [2, "never"],
-        "yoda": [2, "never"],
+    "no-alert": 2,
+    "no-console": 0,
+    "no-const-assign": 2,
+    "no-else-return": 2,
+    "no-this-before-super": 2,
+    "no-unexpected-multiline": 2,
+    "no-var": 2,
 
-        "no-alert": 2,
-        "no-const-assign": 2,
-        "no-else-return": 2,
-        "no-this-before-super": 2,
-        "no-unexpected-multiline": 2,
-        "no-var": 2,
-        "no-warning-comments": 1,
-
-        "react/jsx-uses-react": 2,
-        "react/jsx-uses-vars": 2,
-        "react/jsx-indent": ["error", 4],
-    }
+    "react/jsx-uses-react": 2,
+    "react/jsx-uses-vars": 2,
+  }
 }

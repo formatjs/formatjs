@@ -13,49 +13,47 @@ import {intlShape} from './types';
 import {invariantIntlContext} from './utils';
 
 function getDisplayName(Component) {
-    return Component.displayName || Component.name || 'Component';
+  return Component.displayName || Component.name || 'Component';
 }
 
 export default function injectIntl(WrappedComponent, options = {}) {
-    const {
-        intlPropName = 'intl',
-        withRef      = false,
-    } = options;
+  const {intlPropName = 'intl', withRef = false} = options;
 
-    class InjectIntl extends Component {
-        static displayName = `InjectIntl(${getDisplayName(WrappedComponent)})`;
+  class InjectIntl extends Component {
+    static displayName = `InjectIntl(${getDisplayName(WrappedComponent)})`;
 
-        static contextTypes = {
-            intl: intlShape,
-        };
+    static contextTypes = {
+      intl: intlShape,
+    };
 
-        static WrappedComponent = WrappedComponent;
+    static WrappedComponent = WrappedComponent;
 
-        constructor(props, context) {
-            super(props, context);
-            invariantIntlContext(context);
-        }
-
-        getWrappedInstance() {
-            invariant(withRef,
-                '[React Intl] To access the wrapped instance, ' +
-                'the `{withRef: true}` option must be set when calling: ' +
-                '`injectIntl()`'
-            );
-
-            return this.refs.wrappedInstance;
-        }
-
-        render() {
-            return (
-                <WrappedComponent
-                    {...this.props}
-                    {...{[intlPropName]: this.context.intl}}
-                    ref={withRef ? 'wrappedInstance' : null}
-                />
-            );
-        }
+    constructor(props, context) {
+      super(props, context);
+      invariantIntlContext(context);
     }
 
-    return InjectIntl;
+    getWrappedInstance() {
+      invariant(
+        withRef,
+        '[React Intl] To access the wrapped instance, ' +
+          'the `{withRef: true}` option must be set when calling: ' +
+          '`injectIntl()`'
+      );
+
+      return this.refs.wrappedInstance;
+    }
+
+    render() {
+      return (
+        <WrappedComponent
+          {...this.props}
+          {...{[intlPropName]: this.context.intl}}
+          ref={withRef ? 'wrappedInstance' : null}
+        />
+      );
+    }
+  }
+
+  return InjectIntl;
 }

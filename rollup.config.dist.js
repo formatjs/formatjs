@@ -7,51 +7,45 @@ import uglify from 'rollup-plugin-uglify';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-const copyright = (
-`/*
+const copyright = `/*
  * Copyright ${new Date().getFullYear()}, Yahoo Inc.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-`
-);
+`;
 
-const reactCheck = (
-`if (typeof React === 'undefined') {
+const reactCheck = `if (typeof React === 'undefined') {
     throw new ReferenceError('React must be loaded before ReactIntl.');
 }
-`
-);
+`;
 
 export default {
-    entry: p.resolve('src/react-intl.js'),
-    dest: p.resolve(`dist/react-intl.${isProduction ? 'min.js' : 'js'}`),
-    format: 'umd',
-    moduleName: 'ReactIntl',
-    banner: copyright,
-    intro: reactCheck,
-    sourceMap: true,
-    globals: {
-        react: 'React',
-        'prop-types': 'PropTypes',
-    },
-    external: [
-        'react',
-        'prop-types',
-    ],
-    plugins: [
-        babel(),
-        nodeResolve({
-            jsnext: true,
-        }),
-        commonjs({
-            sourceMap: true,
-        }),
-        replace({
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-        }),
-        isProduction && uglify({
-            warnings: false,
-        }),
-    ].filter(Boolean),
+  entry: p.resolve('src/react-intl.js'),
+  dest: p.resolve(`dist/react-intl.${isProduction ? 'min.js' : 'js'}`),
+  format: 'umd',
+  moduleName: 'ReactIntl',
+  banner: copyright,
+  intro: reactCheck,
+  sourceMap: true,
+  globals: {
+    react: 'React',
+    'prop-types': 'PropTypes',
+  },
+  external: ['react', 'prop-types'],
+  plugins: [
+    babel(),
+    nodeResolve({
+      jsnext: true,
+    }),
+    commonjs({
+      sourceMap: true,
+    }),
+    replace({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    }),
+    isProduction &&
+      uglify({
+        warnings: false,
+      }),
+  ].filter(Boolean),
 };

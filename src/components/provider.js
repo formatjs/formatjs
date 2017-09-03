@@ -22,156 +22,156 @@ const intlFormatPropNames = Object.keys(intlFormatPropTypes);
 // These are not a static property on the `IntlProvider` class so the intl
 // config values can be inherited from an <IntlProvider> ancestor.
 const defaultProps = {
-    formats : {},
-    messages: {},
-    textComponent: 'span',
+  formats: {},
+  messages: {},
+  textComponent: 'span',
 
-    defaultLocale : 'en',
-    defaultFormats: {},
+  defaultLocale: 'en',
+  defaultFormats: {},
 };
 
 export default class IntlProvider extends Component {
-    static displayName = 'IntlProvider';
+  static displayName = 'IntlProvider';
 
-    static contextTypes = {
-        intl: intlShape,
+  static contextTypes = {
+    intl: intlShape,
+  };
+
+  static childContextTypes = {
+    intl: intlShape.isRequired,
+  };
+
+  static propTypes = {
+    ...intlConfigPropTypes,
+    children: PropTypes.element.isRequired,
+    initialNow: PropTypes.any,
+  };
+
+  constructor(props, context = {}) {
+    super(props, context);
+
+    invariant(
+      typeof Intl !== 'undefined',
+      '[React Intl] The `Intl` APIs must be available in the runtime, ' +
+        'and do not appear to be built-in. An `Intl` polyfill should be loaded.\n' +
+        'See: http://formatjs.io/guides/runtime-environments/'
+    );
+
+    const {intl: intlContext} = context;
+
+    // Used to stabilize time when performing an initial rendering so that
+    // all relative times use the same reference "now" time.
+    let initialNow;
+    if (isFinite(props.initialNow)) {
+      initialNow = Number(props.initialNow);
+    } else {
+      // When an `initialNow` isn't provided via `props`, look to see an
+      // <IntlProvider> exists in the ancestry and call its `now()`
+      // function to propagate its value for "now".
+      initialNow = intlContext ? intlContext.now() : Date.now();
+    }
+
+    // Creating `Intl*` formatters is expensive. If there's a parent
+    // `<IntlProvider>`, then its formatters will be used. Otherwise, this
+    // memoize the `Intl*` constructors and cache them for the lifecycle of
+    // this IntlProvider instance.
+    const {
+      formatters = {
+        getDateTimeFormat: memoizeIntlConstructor(Intl.DateTimeFormat),
+        getNumberFormat: memoizeIntlConstructor(Intl.NumberFormat),
+        getMessageFormat: memoizeIntlConstructor(IntlMessageFormat),
+        getRelativeFormat: memoizeIntlConstructor(IntlRelativeFormat),
+        getPluralFormat: memoizeIntlConstructor(IntlPluralFormat),
+      },
+    } =
+      intlContext || {};
+
+    this.state = {
+      ...formatters,
+
+      // Wrapper to provide stable "now" time for initial render.
+      now: () => {
+        return this._didDisplay ? Date.now() : initialNow;
+      },
     };
+  }
 
-    static childContextTypes = {
-        intl: intlShape.isRequired,
-    };
+  getConfig() {
+    const {intl: intlContext} = this.context;
 
-    static propTypes = {
-        ...intlConfigPropTypes,
-        children  : PropTypes.element.isRequired,
-        initialNow: PropTypes.any,
-    };
+    // Build a whitelisted config object from `props`, defaults, and
+    // `context.intl`, if an <IntlProvider> exists in the ancestry.
+    let config = filterProps(this.props, intlConfigPropNames, intlContext);
 
-    constructor(props, context = {}) {
-        super(props, context);
+    // Apply default props. This must be applied last after the props have
+    // been resolved and inherited from any <IntlProvider> in the ancestry.
+    // This matches how React resolves `defaultProps`.
+    for (let propName in defaultProps) {
+      if (config[propName] === undefined) {
+        config[propName] = defaultProps[propName];
+      }
+    }
 
-        invariant(typeof Intl !== 'undefined',
-            '[React Intl] The `Intl` APIs must be available in the runtime, ' +
-            'and do not appear to be built-in. An `Intl` polyfill should be loaded.\n' +
-            'See: http://formatjs.io/guides/runtime-environments/'
+    if (!hasLocaleData(config.locale)) {
+      const {locale, defaultLocale, defaultFormats} = config;
+
+      if (process.env.NODE_ENV !== 'production') {
+        console.error(
+          `[React Intl] Missing locale data for locale: "${locale}". ` +
+            `Using default locale: "${defaultLocale}" as fallback.`
         );
+      }
 
-        const {intl: intlContext} = context;
-
-        // Used to stabilize time when performing an initial rendering so that
-        // all relative times use the same reference "now" time.
-        let initialNow;
-        if (isFinite(props.initialNow)) {
-            initialNow = Number(props.initialNow);
-        } else {
-            // When an `initialNow` isn't provided via `props`, look to see an
-            // <IntlProvider> exists in the ancestry and call its `now()`
-            // function to propagate its value for "now".
-            initialNow = intlContext ? intlContext.now() : Date.now();
-        }
-
-        // Creating `Intl*` formatters is expensive. If there's a parent
-        // `<IntlProvider>`, then its formatters will be used. Otherwise, this
-        // memoize the `Intl*` constructors and cache them for the lifecycle of
-        // this IntlProvider instance.
-        const {formatters = {
-            getDateTimeFormat: memoizeIntlConstructor(Intl.DateTimeFormat),
-            getNumberFormat  : memoizeIntlConstructor(Intl.NumberFormat),
-            getMessageFormat : memoizeIntlConstructor(IntlMessageFormat),
-            getRelativeFormat: memoizeIntlConstructor(IntlRelativeFormat),
-            getPluralFormat  : memoizeIntlConstructor(IntlPluralFormat),
-        }} = (intlContext || {});
-
-        this.state = {
-            ...formatters,
-
-            // Wrapper to provide stable "now" time for initial render.
-            now: () => {
-                return this._didDisplay ? Date.now() : initialNow;
-            },
-        };
+      // Since there's no registered locale data for `locale`, this will
+      // fallback to the `defaultLocale` to make sure things can render.
+      // The `messages` are overridden to the `defaultProps` empty object
+      // to maintain referential equality across re-renders. It's assumed
+      // each <FormattedMessage> contains a `defaultMessage` prop.
+      config = {
+        ...config,
+        locale: defaultLocale,
+        formats: defaultFormats,
+        messages: defaultProps.messages,
+      };
     }
 
-    getConfig() {
-        const {intl: intlContext} = this.context;
+    return config;
+  }
 
-        // Build a whitelisted config object from `props`, defaults, and
-        // `context.intl`, if an <IntlProvider> exists in the ancestry.
-        let config = filterProps(this.props, intlConfigPropNames, intlContext);
+  getBoundFormatFns(config, state) {
+    return intlFormatPropNames.reduce((boundFormatFns, name) => {
+      boundFormatFns[name] = format[name].bind(null, config, state);
+      return boundFormatFns;
+    }, {});
+  }
 
-        // Apply default props. This must be applied last after the props have
-        // been resolved and inherited from any <IntlProvider> in the ancestry.
-        // This matches how React resolves `defaultProps`.
-        for (let propName in defaultProps) {
-            if (config[propName] === undefined) {
-                config[propName] = defaultProps[propName];
-            }
-        }
+  getChildContext() {
+    const config = this.getConfig();
 
-        if (!hasLocaleData(config.locale)) {
-            const {
-                locale,
-                defaultLocale,
-                defaultFormats,
-            } = config;
+    // Bind intl factories and current config to the format functions.
+    const boundFormatFns = this.getBoundFormatFns(config, this.state);
 
-            if (process.env.NODE_ENV !== 'production') {
-                console.error(
-                    `[React Intl] Missing locale data for locale: "${locale}". ` +
-                    `Using default locale: "${defaultLocale}" as fallback.`
-                );
-            }
+    const {now, ...formatters} = this.state;
 
-            // Since there's no registered locale data for `locale`, this will
-            // fallback to the `defaultLocale` to make sure things can render.
-            // The `messages` are overridden to the `defaultProps` empty object
-            // to maintain referential equality across re-renders. It's assumed
-            // each <FormattedMessage> contains a `defaultMessage` prop.
-            config = {
-                ...config,
-                locale  : defaultLocale,
-                formats : defaultFormats,
-                messages: defaultProps.messages,
-            };
-        }
+    return {
+      intl: {
+        ...config,
+        ...boundFormatFns,
+        formatters,
+        now,
+      },
+    };
+  }
 
-        return config;
-    }
+  shouldComponentUpdate(...next) {
+    return shouldIntlComponentUpdate(this, ...next);
+  }
 
-    getBoundFormatFns(config, state) {
-        return intlFormatPropNames.reduce((boundFormatFns, name) => {
-            boundFormatFns[name] = format[name].bind(null, config, state);
-            return boundFormatFns;
-        }, {});
-    }
+  componentDidMount() {
+    this._didDisplay = true;
+  }
 
-    getChildContext() {
-        const config = this.getConfig();
-
-        // Bind intl factories and current config to the format functions.
-        const boundFormatFns = this.getBoundFormatFns(config, this.state);
-
-        const {now, ...formatters} = this.state;
-
-        return {
-            intl: {
-                ...config,
-                ...boundFormatFns,
-                formatters,
-                now,
-            },
-        };
-    }
-
-    shouldComponentUpdate(...next) {
-        return shouldIntlComponentUpdate(this, ...next);
-    }
-
-    componentDidMount() {
-        this._didDisplay = true;
-    }
-
-    render() {
-        return Children.only(this.props.children);
-    }
+  render() {
+    return Children.only(this.props.children);
+  }
 }
