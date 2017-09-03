@@ -91,3 +91,20 @@ export function shouldIntlComponentUpdate(
         ))
     );
 }
+
+export function flattenMessages(
+    nestedMessages,
+    flatMessages = {},
+    currentKey = ''
+) {
+    for (let k in nestedMessages) {
+        const v = nestedMessages[k];
+        const newKey = currentKey === '' ? k : currentKey + '.' + k;
+        if (typeof v !== 'string') {
+            flattenMessages(v, flatMessages, newKey);
+        } else {
+            flatMessages[`${newKey}`] = v;
+        }
+    }
+    return flatMessages;
+}
