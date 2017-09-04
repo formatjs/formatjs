@@ -2423,13 +2423,7 @@ intl-messageformat-parser@1.2.0, intl-messageformat-parser@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/intl-messageformat-parser/-/intl-messageformat-parser-1.2.0.tgz#5906b7f953ab7470e0dc8549097b648b991892ff"
 
-intl-messageformat@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-2.0.0.tgz#3d56982583425aee23b76c8b985fb9b0aae5be3c"
-  dependencies:
-    intl-messageformat-parser "1.2.0"
-
-intl-messageformat@^2.1.0:
+intl-messageformat@^2.0.0, intl-messageformat@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-2.1.0.tgz#1c51da76f02a3f7b360654cdc51bbc4d3fa6c72c"
   dependencies:
@@ -3630,6 +3624,10 @@ prelude-ls@~1.1.2:
 preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
+
+prettier@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.6.1.tgz#850f411a3116226193e32ea5acfc21c0f9a76d7d"
 
 pretty-format@^19.0.0:
   version "19.0.0"
