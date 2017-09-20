@@ -20,13 +20,15 @@ const reactCheck = `if (typeof React === 'undefined') {
 `;
 
 export default {
-  entry: p.resolve('src/react-intl.js'),
-  dest: p.resolve(`dist/react-intl.${isProduction ? 'min.js' : 'js'}`),
-  format: 'umd',
-  moduleName: 'ReactIntl',
+  input: p.resolve('src/react-intl.js'),
+  output: {
+    file: p.resolve(`dist/react-intl.${isProduction ? 'min.js' : 'js'}`),
+    format: 'umd',
+  },
+  name: 'ReactIntl',
   banner: copyright,
   intro: reactCheck,
-  sourceMap: true,
+  sourcemap: true,
   globals: {
     react: 'React',
     'prop-types': 'PropTypes',
@@ -38,7 +40,7 @@ export default {
       jsnext: true,
     }),
     commonjs({
-      sourceMap: true,
+      sourcemap: true,
     }),
     replace({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
