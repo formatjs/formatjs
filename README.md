@@ -53,9 +53,10 @@ class App extends Component {
             <p>
                 <FormattedMessage
                     id="welcome"
-                    defaultMessage={`Hello {name}, you have {unreadCount, number} {unreadCount, plural,
-                      one {message}
-                      other {messages}
+                    defaultMessage={`Hello {name}, you have {unreadCount, plural,
+                      =0 {no messages}
+                      one {one message}
+                      other {# messages}
                     }`}
                     values={{name: <b>{name}</b>, unreadCount}}
                 />
