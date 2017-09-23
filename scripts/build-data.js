@@ -34,17 +34,20 @@ function writeUMDFile(filename, module) {
   const lang = p.basename(filename, '.js');
 
   return rollup({
-    entry: {
-      path: filename,
-      contents: module,
-    },
-    plugins: [memory(), uglify()],
+    input: filename,
+    plugins: [
+      memory({
+        path: filename,
+        contents: module,
+      }),
+      uglify(),
+    ],
   })
     .then(bundle => {
       return bundle.write({
-        dest: filename,
+        file: filename,
         format: 'umd',
-        moduleName: `ReactIntlLocaleData.${lang}`,
+        name: `ReactIntlLocaleData.${lang}`,
       });
     })
     .then(() => filename);

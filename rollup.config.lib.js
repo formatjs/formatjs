@@ -9,10 +9,10 @@ const copyright = `/*
 `;
 
 export default {
-  entry: p.resolve('src/index.js'),
-  targets: [
-    {dest: 'lib/index.js', format: 'cjs'},
-    {dest: 'lib/index.es.js', format: 'es'},
+  input: p.resolve('src/index.js'),
+  output: [
+    {file: 'lib/index.js', format: 'cjs'},
+    {file: 'lib/index.es.js', format: 'es'},
   ],
   banner: copyright,
   external: [
