@@ -14,11 +14,17 @@ var normalizeLocale = require('./locales').normalizeLocale;
 // The set of CLDR date field names that are used in FormatJS.
 var FIELD_NAMES = [
     'year',
+    'year-short',
     'month',
+    'month-short',
     'day',
+    'day-short',
     'hour',
+    'hour-short',
     'minute',
+    'minute-short',
     'second',
+    'second-short',
 ];
 
 module.exports = function extractRelativeFields(locales) {

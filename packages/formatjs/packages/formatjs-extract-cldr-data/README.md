@@ -42,11 +42,17 @@ The data object returned from this package will have the following shape, here's
      pluralRuleFunction: [Function],
      fields:
       { year: [Object],
+        "year-short": [Object],
         month: [Object],
+        "month-short": [Object],
         day: [Object],
+        "day-short": [Object],
         hour: [Object],
+        "hour-short": [Object],
         minute: [Object],
-        second: [Object] } } }
+        "minute-short": [Object],
+        second: [Object],
+        "second-short": [Object] } } }
 ```
 
 Each field has the following shape, here's the data for English `year`:
