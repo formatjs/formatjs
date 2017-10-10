@@ -191,7 +191,7 @@ The optional second argument `options` provides a way to customize how the relat
 
 ##### Units
 
-By default, the relative time is computed to the best fit unit, but you can explicitly call it to force `units` to be displayed in `"second"`, `"minute"`, `"hour"`, `"day"`, `"month"` or `"year"`:
+By default, the relative time is computed to the best fit unit, but you can explicitly call it to force `units` to be displayed in `"second"`, `"second-short"`, `"minute"`, `"minute-short"`, `"hour"`, `"hour-short"`, `"day"`, `"day-short"`, `"month"`, `"month-short"`, `"year"` or `"year-short"`:
 
 ```js
 var rf = new IntlRelativeFormat('en', {

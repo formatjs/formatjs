@@ -20,7 +20,14 @@ export default RelativeFormat;
 
 // -----------------------------------------------------------------------------
 
-var FIELDS = ['second', 'minute', 'hour', 'day', 'month', 'year'];
+var FIELDS = [
+    'second', 'second-short',
+    'minute', 'minute-short',
+    'hour', 'hour-short',
+    'day', 'day-short',
+    'month', 'month-short',
+    'year', 'year-short'
+];
 var STYLES = ['best fit', 'numeric'];
 
 // -- RelativeFormat -----------------------------------------------------------
@@ -83,11 +90,11 @@ defineProperty(RelativeFormat, 'thresholds', {
     enumerable: true,
 
     value: {
-        second: 45,  // seconds to minute
-        minute: 45,  // minutes to hour
-        hour  : 22,  // hours to day
-        day   : 26,  // days to month
-        month : 11   // months to year
+        second: 45, 'second-short': 45,  // seconds to minute
+        minute: 45, 'minute-short': 45, // minutes to hour
+        hour  : 22, 'hour-short': 22, // hours to day
+        day   : 26, 'day-short': 26, // days to month
+        month : 11, 'month-short': 11 // months to year
     }
 });
 
@@ -290,9 +297,12 @@ RelativeFormat.prototype._resolveStyle = function (style) {
 
 RelativeFormat.prototype._selectUnits = function (diffReport) {
     var i, l, units;
+    var fields = FIELDS.filter(function(field) {
+        return field.indexOf('-short') < 1;
+    });
 
-    for (i = 0, l = FIELDS.length; i < l; i += 1) {
-        units = FIELDS[i];
+    for (i = 0, l = fields.length; i < l; i += 1) {
+        units = fields[i];
 
         if (Math.abs(diffReport[units]) < RelativeFormat.thresholds[units]) {
             break;

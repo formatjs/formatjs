@@ -30,13 +30,20 @@ export default function (from, to) {
         year     = round(rawYears);
 
     return {
-        millisecond: millisecond,
-        second     : second,
-        minute     : minute,
-        hour       : hour,
-        day        : day,
-        week       : week,
-        month      : month,
-        year       : year
+        millisecond    : millisecond,
+        second         : second,
+        'second-short' : second,
+        minute         : minute,
+        'minute-short' : minute,
+        hour           : hour,
+        'hour-short'   : hour,
+        day            : day,
+        'day-short'    : day,
+        week           : week,
+        'week-short'   : week,
+        month          : month,
+        'month-short'  : month,
+        year           : year,
+        'year-short'   : year
     };
 }

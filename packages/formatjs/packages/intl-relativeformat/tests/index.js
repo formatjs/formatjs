@@ -157,6 +157,16 @@ describe('IntlRelativeFormat', function () {
                 expect(rf.format(future(30 * 24 * 60 * 60 * 1000))).to.equal('in 30 days');
             });
 
+            it('should handle short unit formats', function () {
+                var rf = new IntlRelativeFormat('en', {units: 'minute-short'});
+
+                expect(rf.format(now())).to.equal('this minute');
+                expect(rf.format(past(24 * 60 * 60 * 1000))).to.equal('1,440 min. ago');
+                expect(rf.format(past(30 * 24 * 60 * 60 * 1000))).to.equal('43,200 min. ago');
+                expect(rf.format(future(24 * 60 * 60 * 1000))).to.equal('in 1,440 min.');
+                expect(rf.format(future(30 * 24 * 60 * 60 * 1000))).to.equal('in 43,200 min.');
+            });
+
             it('should validate the specified units', function () {
                 function createInstance(options) {
                     return function () {
