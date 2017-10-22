@@ -12,7 +12,7 @@ module.exports = function (grunt) {
             tmp: {
                 expand : true,
                 flatten: true,
-                src    : ['tmp/src/*.js'],
+                src    : ['tmp/src/*.js', 'tmp/src/*.map'],
                 dest   : 'lib/'
             }
         },
