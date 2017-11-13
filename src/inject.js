@@ -9,6 +9,7 @@
 
 import React, {Component} from 'react';
 import invariant from 'invariant';
+import hoistStatics from 'hoist-non-react-statics';
 import {intlShape} from './types';
 import {invariantIntlContext} from './utils';
 
@@ -55,5 +56,5 @@ export default function injectIntl(WrappedComponent, options = {}) {
     }
   }
 
-  return InjectIntl;
+  return hoistStatics(InjectIntl, WrappedComponent);
 }
