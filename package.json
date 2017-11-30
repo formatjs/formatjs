@@ -67,7 +67,8 @@
     "intl-format-cache": "^2.0.5",
     "intl-messageformat": "^2.1.0",
     "intl-relativeformat": "^2.0.0",
-    "invariant": "^2.1.1"
+    "invariant": "^2.1.1",
+    "react-addons-test-utils": "^0.14.8"
   },
   "peerDependencies": {
     "react": "^0.14.9 || ^15.0.0 || ^16.0.0",
@@ -103,11 +104,12 @@
     "intl": "^1.2.1",
     "intl-messageformat-parser": "^1.2.0",
     "jest": "^19.0.0",
+    "jest-cli": "^21.2.1",
     "mkdirp": "^0.5.1",
     "prettier": "^1.6.1",
     "prop-types": "^15.5.4",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
+    "react": "^0.14.9",
+    "react-dom": "^0.14.9",
     "react-test-renderer": "^15.5.4",
     "rimraf": "^2.4.2",
     "rollup": "^0.50.0",
@@ -133,6 +135,7 @@
     "react:clean": "rimraf node_modules/{react,react-dom,react-addons-test-utils}",
     "react:14": "npm run react:clean && npm i react@^0.14 react-dom@^0.14 react-addons-test-utils@^0.14",
     "react:15": "npm run react:clean && npm i react@^15 react-dom@^15",
+    "react:16": "npm run react:clean && npm i react@^16 react-dom@^16",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "jest --coverage --verbose",

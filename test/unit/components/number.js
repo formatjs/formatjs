@@ -1,6 +1,6 @@
 import expect, {spyOn} from 'expect';
 import expectJSX from 'expect-jsx';
-import React from 'react';
+import React, {Fragment} from 'react';
 import {createRenderer} from '../../react-compat';
 import IntlProvider from '../../../src/components/provider';
 import FormattedNumber from '../../../src/components/number';
@@ -35,6 +35,19 @@ describe('<FormattedNumber>', () => {
     it('renders "NaN" in a <span> when no `value` prop is provided', () => {
         renderer.render(<FormattedNumber />, intlProvider.getChildContext());
         expect(renderer.getRenderOutput()).toEqualJSX(<span>NaN</span>);
+    });
+
+    it('renders a formatted number without a wrapper component', () => {
+        intlProvider = new IntlProvider({locale: 'en', textComponent: null}, {});
+        const {intl} = intlProvider.getChildContext();
+        const num = 1000;
+
+        const el = <FormattedNumber value={num} />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqual(
+            <Fragment>{intl.formatNumber(num)}</Fragment>
+        );
     });
 
     it('renders a formatted number in a <span>', () => {

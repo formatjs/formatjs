@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {intlShape, numberFormatPropTypes} from '../types';
 import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
@@ -40,6 +40,10 @@ export default class FormattedNumber extends Component {
 
     if (typeof children === 'function') {
       return children(formattedNumber);
+    }
+
+    if (!Text) {
+      return <Fragment>{formattedNumber}</Fragment>;
     }
 
     return <Text>{formattedNumber}</Text>;

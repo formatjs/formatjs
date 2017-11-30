@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {intlShape, relativeFormatPropTypes} from '../types';
 import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
@@ -164,6 +164,10 @@ export default class FormattedRelative extends Component {
 
     if (typeof children === 'function') {
       return children(formattedRelative);
+    }
+
+    if(!Text) {
+      return <Fragment>{formattedRelative}</Fragment>
     }
 
     return <Text>{formattedRelative}</Text>;

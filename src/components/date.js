@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {intlShape, dateTimeFormatPropTypes} from '../types';
 import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
@@ -40,6 +40,10 @@ export default class FormattedDate extends Component {
 
     if (typeof children === 'function') {
       return children(formattedDate);
+    }
+
+    if(!Text) {
+      return <Fragment>{formattedDate}</Fragment>;
     }
 
     return <Text>{formattedDate}</Text>;

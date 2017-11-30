@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FormattedMessage} from 'react-intl';
+import {FormattedMessage} from '../../../lib/index.js';
 
 class App extends Component {
     constructor(props) {

@@ -83,6 +83,13 @@ export default class FormattedHTMLMessage extends Component {
     // Note: There's a perf impact of using this component since there's no
     // way for React to do its virtual DOM diffing.
     const html = {__html: formattedHTMLMessage};
+
+    // React does not support props on <Fragment /> components (yet) which
+    // means we should fall back to <span />
+    if(!Component) {
+      return <span dangerouslySetInnerHTML={html} />;
+    }
+
     return <Component dangerouslySetInnerHTML={html} />;
   }
 }
