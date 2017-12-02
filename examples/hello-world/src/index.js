@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {IntlProvider} from '../../../lib/index.js';
+import {IntlProvider} from 'react-intl';
 import App from './App';
 
 ReactDOM.render(
