@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {intlShape, pluralFormatPropTypes} from '../types';
 import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
@@ -52,6 +52,10 @@ export default class FormattedPlural extends Component {
 
     if (typeof children === 'function') {
       return children(formattedPlural);
+    }
+
+    if(!Text) {
+      return <Fragment>{formattedPlural}</Fragment>
     }
 
     return <Text>{formattedPlural}</Text>;

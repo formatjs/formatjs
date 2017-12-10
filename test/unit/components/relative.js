@@ -1,6 +1,6 @@
 import expect, {spyOn} from 'expect';
 import expectJSX from 'expect-jsx';
-import React from 'react';
+import React, {Fragment} from 'react';
 import {createRenderer} from '../../react-compat';
 import IntlProvider from '../../../src/components/provider';
 import FormattedRelative from '../../../src/components/relative';
@@ -77,6 +77,19 @@ describe('<FormattedRelative>', () => {
         renderer.render(el, {intl});
         expect(renderer.getRenderOutput()).toEqualJSX(
             <span>{intl.formatRelative(date)}</span>
+        );
+    });
+
+    it('renders a formatted relative time without a wrapper component', () => {
+        intlProvider = new IntlProvider({locale: 'en', textComponent: null}, {});        
+        const {intl} = intlProvider.getChildContext();
+        const date = new Date();
+
+        const el = <FormattedRelative value={date} />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqual(
+            <Fragment>{intl.formatRelative(date)}</Fragment>
         );
     });
 

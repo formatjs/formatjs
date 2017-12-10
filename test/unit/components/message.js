@@ -1,6 +1,6 @@
 import expect, {spyOn} from 'expect';
 import expectJSX from 'expect-jsx';
-import React from 'react';
+import React, {Fragment} from 'react';
 import {createRenderer} from '../../react-compat';
 import IntlProvider from '../../../src/components/provider';
 import FormattedMessage from '../../../src/components/message';
@@ -61,6 +61,23 @@ describe('<FormattedMessage>', () => {
 
         renderer.render(el, {intl});
         expect(consoleError.calls.length).toBe(0);
+    });
+
+    it('should render a message without a wrapper component', () => {
+        intlProvider = new IntlProvider({locale: 'en', defaultLocale: 'en', textComponent: null}, {});
+
+        const descriptor = {
+            id: 'hello',
+            description: 'Greeting',
+            defaultMessage: 'Hello, {name}!',
+        };
+
+        const el = <FormattedMessage {...descriptor} values={{name: <b>Vernon</b>}} />;
+
+        renderer.render(el, intlProvider.getChildContext());
+
+        const rendered = renderer.getRenderOutput();
+        expect(rendered).toEqual(<Fragment>Hello, <b>Vernon</b>!</Fragment>);
     });
 
     it('should not cause a prop warning when description is a string', () => {

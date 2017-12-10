@@ -1,6 +1,6 @@
 import expect, {spyOn} from 'expect';
 import expectJSX from 'expect-jsx';
-import React from 'react';
+import React, {Fragment} from 'react';
 import {createRenderer} from '../../react-compat';
 import IntlProvider from '../../../src/components/provider';
 import FormattedTime from '../../../src/components/time';
@@ -55,6 +55,19 @@ describe('<FormattedTime>', () => {
         renderer.render(el, {intl});
         expect(renderer.getRenderOutput()).toEqualJSX(
             <span>{intl.formatTime(date)}</span>
+        );
+    });
+
+    it('renders a formatted time without a wrapper component', () => {
+        intlProvider = new IntlProvider({locale: 'en', textComponent: null}, {});        
+        const {intl} = intlProvider.getChildContext();
+        const date = new Date();
+
+        const el = <FormattedTime value={date} />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqual(
+            <Fragment>{intl.formatTime(date)}</Fragment>
         );
     });
 

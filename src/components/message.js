@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {Component, createElement, isValidElement} from 'react';
+import {Component, createElement, isValidElement, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {intlShape, messageDescriptorPropTypes} from '../types';
 import {
@@ -128,6 +128,10 @@ export default class FormattedMessage extends Component {
 
     if (typeof children === 'function') {
       return children(...nodes);
+    }
+
+    if(!Component) {
+      return createElement(Fragment, null, ...nodes);
     }
 
     // Needs to use `createElement()` instead of JSX, otherwise React will

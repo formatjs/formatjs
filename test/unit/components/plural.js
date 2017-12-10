@@ -1,6 +1,6 @@
 import expect, {spyOn} from 'expect';
 import expectJSX from 'expect-jsx';
-import React from 'react';
+import React, {Fragment} from 'react';
 import {createRenderer} from '../../react-compat';
 import IntlProvider from '../../../src/components/provider';
 import FormattedPlural from '../../../src/components/plural';
@@ -47,6 +47,12 @@ describe('<FormattedPlural>', () => {
         expect(renderer.getRenderOutput()).toEqualJSX(<span>foo</span>);
     });
 
+    it('renders `other` without a wrapper component when no `value` prop is provided', () => {
+        intlProvider = new IntlProvider({locale: 'en', textComponent: null}, {});        
+        renderer.render(<FormattedPlural other="foo" />, intlProvider.getChildContext());
+        expect(renderer.getRenderOutput()).toEqual(<Fragment>foo</Fragment>);
+    });
+
     it('renders a formatted plural in a <span>', () => {
         const {intl} = intlProvider.getChildContext();
         const num = 1;
@@ -56,6 +62,19 @@ describe('<FormattedPlural>', () => {
         renderer.render(el, {intl});
         expect(renderer.getRenderOutput()).toEqualJSX(
             <span>{el.props[intl.formatPlural(num)]}</span>
+        );
+    });
+
+    it('renders a formatted plural without a wrapper component', () => {
+        intlProvider = new IntlProvider({locale: 'en', textComponent: null}, {});
+        const {intl} = intlProvider.getChildContext();        
+        const num = 1;
+
+        const el = <FormattedPlural value={num} one="foo" other="bar" />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqual(
+            <Fragment>{el.props[intl.formatPlural(num)]}</Fragment>
         );
     });
 

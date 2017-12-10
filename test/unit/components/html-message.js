@@ -35,6 +35,27 @@ describe('<FormattedHTMLMessage>', () => {
         );
     });
 
+    it('should fall back to a <span /> element if no textComponent is providedl', () => {
+        intlProvider = new IntlProvider({locale: 'en', defaultLocale: 'en', textComponent: null}, {});
+        
+        const {intl} = intlProvider.getChildContext();
+        const descriptor = {
+            id: 'hello',
+            defaultMessage: 'Hello, <b>World</b>!',
+        };
+
+        const el = <FormattedHTMLMessage {...descriptor} />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <span
+                dangerouslySetInnerHTML={{
+                    __html: intl.formatHTMLMessage(descriptor),
+                }}
+            />
+        );
+    });
+
     it('renders a formatted HTML message in a <span>', () => {
         const {intl} = intlProvider.getChildContext();
         const descriptor = {

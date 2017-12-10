@@ -1,6 +1,6 @@
 import expect, {spyOn} from 'expect';
 import expectJSX from 'expect-jsx';
-import React from 'react';
+import React, {Fragment} from 'react';
 import {createRenderer} from '../../react-compat';
 import IntlProvider from '../../../src/components/provider';
 import FormattedDate from '../../../src/components/date';
@@ -55,6 +55,19 @@ describe('<FormattedDate>', () => {
         renderer.render(el, {intl});
         expect(renderer.getRenderOutput()).toEqualJSX(
             <span>{intl.formatDate(date)}</span>
+        );
+    });
+
+    it('renders a formatted date without a wrapper component', () => {
+        intlProvider = new IntlProvider({locale: 'en', textComponent: null}, {});
+        const {intl} = intlProvider.getChildContext();
+        const date = new Date();
+
+        const el = <FormattedDate value={date} />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqual(
+            <Fragment>{intl.formatDate(date)}</Fragment>
         );
     });
 
