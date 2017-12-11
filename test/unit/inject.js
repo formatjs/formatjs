@@ -19,6 +19,7 @@ describe('injectIntl()', () => {
         Wrapped.propTypes = {
             intl: intlShape.isRequired,
         };
+        Wrapped.staticMethod = () => {};
 
         renderer     = createRenderer();
         intlProvider = new IntlProvider({locale: 'en'}, {});
@@ -61,6 +62,12 @@ describe('injectIntl()', () => {
 
         renderer.render(<Injected foo="foo" />, {intl});
         expect(renderer.getRenderOutput()).toEqualJSX(<Wrapped foo="foo" intl={intl} />);
+    });
+
+    it('hoists <WrappedComponent> statics', () => {
+        const Injected = injectIntl(Wrapped);
+
+        expect(Injected.staticMethod).toBe(Wrapped.staticMethod);
     });
 
     describe('options', () => {
