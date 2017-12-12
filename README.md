@@ -28,6 +28,13 @@ _(If you're looking for React Intl v1, you can find it [here][v1-docs].)_
 - Runs in the browser and Node.js.
 - Built on standards.
 
+### Installation
+
+```bash
+npm install react-intl
+```
+
+
 ### Example
 
 There are several [runnable examples][Examples] in this Git repo, but here's a Hello World one:
