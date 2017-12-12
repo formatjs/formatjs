@@ -1,0 +1,11 @@
+{
+  "presets": ["react-app"],
+  "plugins": [
+    [
+      "react-intl", {
+      "messagesDir": "translations/messages",
+      "enforceDescriptions": false
+    }
+    ]
+  ]
+}

@@ -1,0 +1,6 @@
+[
+  {
+    "id": "welcome",
+    "defaultMessage": "Hello {name}, you have {unreadCount, number} {unreadCount, plural, one {message} other {messages}}"
+  }
+]
