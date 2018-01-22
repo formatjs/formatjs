@@ -30,6 +30,7 @@ export const intlConfigPropTypes = {
 
   defaultLocale: string,
   defaultFormats: object,
+  useWestDigits: bool
 };
 
 export const intlFormatPropTypes = {
