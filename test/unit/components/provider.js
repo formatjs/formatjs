@@ -153,7 +153,7 @@ describe('<IntlProvider>', () => {
         const {intl} = renderer.getMountedInstance().getChildContext();
 
         INTL_SHAPE_PROP_NAMES.forEach((propName) => {
-            expect(intl[propName]).toExist(`Missing context.intl prop: ${propName}`);
+            expect(intl[propName]).toNotBeAn(typeof INTL_SHAPE_PROP_NAMES[propName], `Missing context.intl prop: ${propName}`);
         });
     });
 
@@ -166,6 +166,7 @@ describe('<IntlProvider>', () => {
 
             defaultLocale : 'en-US',
             defaultFormats: {},
+            useWestDigits: true
         };
 
         const el = (
@@ -256,6 +257,7 @@ describe('<IntlProvider>', () => {
                     },
                 },
             },
+            useWestDigits: false
         };
 
         const parentIntlProvider = new IntlProvider(props, {});

@@ -92,6 +92,13 @@ describe('format API', () => {
         });
     });
 
+    describe('useWestDigits', () => {
+        it('convert date from Arabic to wist with useWestDigits true', () => {
+            expect(f.convertDigitsToWest('١/١/١٩٧٠')).toBe('1/1/1970');
+        });
+
+    });
+
     describe('formatDate()', () => {
         let df;
         let formatDate;

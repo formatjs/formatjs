@@ -29,6 +29,7 @@ const RELATIVE_FORMAT_THRESHOLDS = {
   month: 12, // months to year
 };
 
+
 function updateRelativeFormatThresholds(newThresholds) {
   const {thresholds} = IntlRelativeFormat;
   ({
@@ -51,8 +52,20 @@ function getNamedFormat(formats, type, name) {
   }
 }
 
+export function convertDigitsToWest(str) {
+    const DIGIT_COVERT_MAP = {
+                              '١': '1', '٢': '2', '٣': '3', '٤': '4', '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9',
+                              '٠': '0', '०': '0','१': '1', '२': '2', '३': '3', '४': '4', '५': '5', '६': '6', '७': '7',
+                              '८': '8', '९': '9', '১': '1', '২': '2', '৩': '3', '৪': '4', '৫': '5', '৬': '6', '৭': '7',
+                              '৮': '8', '৯': '9', '۴': '4', '۵': '5', '۶': '6'
+                          };
+
+    const DIGIT_REGEX = /[١٢٣٤٥٦٧٨٩٠०१२३४५६७८९১২৩৪৫৬৭৮৯۴۵۶]/g;
+
+    return ('' + str).replace(DIGIT_REGEX, match => DIGIT_COVERT_MAP[match]);
+}
 export function formatDate(config, state, value, options = {}) {
-  const {locale, formats} = config;
+  const {locale, formats, useWestDigits} = config;
   const {format} = options;
 
   let date = new Date(value);
@@ -64,7 +77,13 @@ export function formatDate(config, state, value, options = {}) {
   );
 
   try {
-    return state.getDateTimeFormat(locale, filteredOptions).format(date);
+    let result =   state.getDateTimeFormat(locale, filteredOptions).format(date);
+
+    if (useWestDigits) {
+        return convertDigitsToWest(result);
+    }
+
+    return result;
   } catch (e) {
     if (process.env.NODE_ENV !== 'production') {
       console.error(`[React Intl] Error formatting date.\n${e}`);
@@ -75,7 +94,7 @@ export function formatDate(config, state, value, options = {}) {
 }
 
 export function formatTime(config, state, value, options = {}) {
-  const {locale, formats} = config;
+  const {locale, formats, useWestDigits} = config;
   const {format} = options;
 
   let date = new Date(value);
@@ -96,7 +115,13 @@ export function formatTime(config, state, value, options = {}) {
   }
 
   try {
-    return state.getDateTimeFormat(locale, filteredOptions).format(date);
+    let result =  state.getDateTimeFormat(locale, filteredOptions).format(date);
+
+    if (useWestDigits) {
+        return convertDigitsToWest(result);
+    }
+
+    return result;
   } catch (e) {
     if (process.env.NODE_ENV !== 'production') {
       console.error(`[React Intl] Error formatting time.\n${e}`);
@@ -107,7 +132,7 @@ export function formatTime(config, state, value, options = {}) {
 }
 
 export function formatRelative(config, state, value, options = {}) {
-  const {locale, formats} = config;
+  const {locale, formats, useWestDigits} = config;
   const {format} = options;
 
   let date = new Date(value);
@@ -121,9 +146,15 @@ export function formatRelative(config, state, value, options = {}) {
   updateRelativeFormatThresholds(RELATIVE_FORMAT_THRESHOLDS);
 
   try {
-    return state.getRelativeFormat(locale, filteredOptions).format(date, {
+    let result = state.getRelativeFormat(locale, filteredOptions).format(date, {
       now: isFinite(now) ? now : state.now(),
     });
+
+    if (useWestDigits) {
+        return convertDigitsToWest(result);
+    }
+
+    return result;
   } catch (e) {
     if (process.env.NODE_ENV !== 'production') {
       console.error(`[React Intl] Error formatting relative time.\n${e}`);
@@ -136,14 +167,19 @@ export function formatRelative(config, state, value, options = {}) {
 }
 
 export function formatNumber(config, state, value, options = {}) {
-  const {locale, formats} = config;
+  const {locale, formats, useWestDigits} = config;
   const {format} = options;
 
   let defaults = format && getNamedFormat(formats, 'number', format);
   let filteredOptions = filterProps(options, NUMBER_FORMAT_OPTIONS, defaults);
 
   try {
-    return state.getNumberFormat(locale, filteredOptions).format(value);
+      let result = state.getNumberFormat(locale, filteredOptions).format(value);
+      if (useWestDigits) {
+          return convertDigitsToWest(result);
+      }
+
+      return result;
   } catch (e) {
     if (process.env.NODE_ENV !== 'production') {
       console.error(`[React Intl] Error formatting number.\n${e}`);
@@ -154,12 +190,17 @@ export function formatNumber(config, state, value, options = {}) {
 }
 
 export function formatPlural(config, state, value, options = {}) {
-  const {locale} = config;
+  const {locale, useWestDigits} = config;
 
   let filteredOptions = filterProps(options, PLURAL_FORMAT_OPTIONS);
 
   try {
-    return state.getPluralFormat(locale, filteredOptions).format(value);
+    let result = state.getPluralFormat(locale, filteredOptions).format(value);
+    if (useWestDigits) {
+        return convertDigitsToWest(result);
+    }
+
+    return result;
   } catch (e) {
     if (process.env.NODE_ENV !== 'production') {
       console.error(`[React Intl] Error formatting plural.\n${e}`);
@@ -175,7 +216,7 @@ export function formatMessage(
   messageDescriptor = {},
   values = {}
 ) {
-  const {locale, formats, messages, defaultLocale, defaultFormats} = config;
+  const {locale, formats, messages, defaultLocale, defaultFormats, useWestDigits} = config;
 
   const {id, defaultMessage} = messageDescriptor;
 
@@ -254,7 +295,13 @@ export function formatMessage(
     }
   }
 
-  return formattedMessage || message || defaultMessage || id;
+  let result  = formattedMessage || message || defaultMessage || id;
+
+  if (useWestDigits) {
+      return convertDigitsToWest(result);
+  }
+
+  return result;
 }
 
 export function formatHTMLMessage(

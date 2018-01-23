@@ -28,6 +28,7 @@ const defaultProps = {
 
   defaultLocale: 'en',
   defaultFormats: {},
+  useWestDigits: false
 };
 
 export default class IntlProvider extends Component {
@@ -131,7 +132,7 @@ export default class IntlProvider extends Component {
         ...config,
         locale: defaultLocale,
         formats: defaultFormats,
-        messages: defaultProps.messages,
+        messages: defaultProps.messages
       };
     }
 
