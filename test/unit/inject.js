@@ -39,14 +39,6 @@ describe('injectIntl()', () => {
         });
     });
 
-    it('throws when <IntlProvider> is missing from ancestry', () => {
-        const Injected = injectIntl(Wrapped);
-
-        expect(() => renderer.render(<Injected />)).toThrow(
-            '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
-        );
-    });
-
     it('renders <WrappedComponent> with `intl` prop', () => {
         const Injected = injectIntl(Wrapped);
         const {intl} = intlProvider.getChildContext();

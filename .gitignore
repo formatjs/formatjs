@@ -4,3 +4,5 @@ lib/
 locale-data/
 node_modules/
 src/en.js
+
+\.idea/

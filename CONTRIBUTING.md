@@ -15,24 +15,20 @@ Pull requests are very welcome, but should be within the scope of the project, a
 
 ## Submitting a pull request
 
-1. At Yahoo, we have a single [Yahoo Open Source Contributor License Agreement](https://yahoocla.herokuapp.com/) that we ask contributors to electronically sign before merging in their Pull Requests. Here's the CLA's human-readable summary:
+1. [Fork][fork] the repository.
 
-> You are saying that you have the right to give us this code, which is either your own code, or code that your company allows you to publish. You want to give us this code. We may decide to use this code. You are not going to sue people who use this code, because, after all, you are giving it to an open source project! And if you include code that you didn't write, you'll tell us about it by including the open source license to such code in your contribution so we'll know about it. You are not promising that this code works well, or that you will support it, and we're OK with that.
+2. Ensure that all tests are passing prior to submitting.
 
-2. [Fork][fork] the repository.
+3. If you are adding new functionality, or fixing a bug, provide test coverage.
 
-3. Ensure that all tests are passing prior to submitting.
+4. Follow syntax guidelines detailed below.
 
-4. If you are adding new functionality, or fixing a bug, provide test coverage.
+5. Push the changes to your fork and submit a pull request.  If this resolves any issues, please mark in the body `resolve #ID` within the body of your pull request.  This allows for github to automatically close the related issue once the pull request is merged.
 
-5. Follow syntax guidelines detailed below.
+6. Last step, [submit the pull request][pr]!
 
-6. Push the changes to your fork and submit a pull request.  If this resolves any issues, please mark in the body `resolve #ID` within the body of your pull request.  This allows for github to automatically close the related issue once the pull request is merged.
-
-7. Last step, [submit the pull request][pr]!
-
-[pr]: https://github.com/yahoo/react-intl/compare/
-[fork]: https://github.com/yahoo/react-intl/fork/
+[pr]: https://github.com/Freedombase/react-intl/compare/
+[fork]: https://github.com/Freedombase/react-intl/fork/
 
 ## Releasing a new version
 
@@ -52,4 +48,4 @@ The following the process to release a new version of the `react-intl` package o
 
 7. Merge the `release` branch PR into `master` **and make sure to create a merge commit** so the Git tag matches.
 
-8. Create a [release](https://github.com/yahoo/react-intl/releases) post for the new release Git tag.
+8. Create a [release](https://github.com/Freedombase/react-intl/releases) post for the new release Git tag.

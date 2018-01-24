@@ -24,14 +24,14 @@ export default {
   output: {
     file: p.resolve(`dist/react-intl.${isProduction ? 'min.js' : 'js'}`),
     format: 'umd',
-  },
-  name: 'ReactIntl',
-  banner: copyright,
-  intro: reactCheck,
-  sourcemap: true,
-  globals: {
-    react: 'React',
-    'prop-types': 'PropTypes',
+    name: 'ReactIntl',
+    sourcemap: true,
+    globals: {
+      react: 'React',
+      'prop-types': 'PropTypes',
+    },
+    banner: copyright,
+    intro: reactCheck,
   },
   external: ['react', 'prop-types'],
   plugins: [

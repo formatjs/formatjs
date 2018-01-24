@@ -10,7 +10,7 @@
 import React, {Component} from 'react';
 import invariant from 'invariant';
 import {intlShape} from './types';
-import {invariantIntlContext} from './utils';
+import IntlProvider from './components/provider';
 
 function getDisplayName(Component) {
   return Component.displayName || Component.name || 'Component';
@@ -30,7 +30,6 @@ export default function injectIntl(WrappedComponent, options = {}) {
 
     constructor(props, context) {
       super(props, context);
-      invariantIntlContext(context);
     }
 
     getWrappedInstance() {
@@ -45,12 +44,21 @@ export default function injectIntl(WrappedComponent, options = {}) {
     }
 
     render() {
-      return (
-        <WrappedComponent
-          {...this.props}
-          {...{[intlPropName]: this.context.intl}}
-          ref={withRef ? 'wrappedInstance' : null}
-        />
+      if (!this.context.intl) {
+        const DeepWrappedComponent = injectIntl(WrappedComponent);
+        return (
+          <IntlProvider>
+            <DeepWrappedComponent />
+          </IntlProvider>
+        );
+      }
+
+     return (
+       <WrappedComponent
+         {...this.props}
+         {...{[intlPropName]: this.context.intl}}
+         ref={withRef ? 'wrappedInstance' : null}
+       />
       );
     }
   }
