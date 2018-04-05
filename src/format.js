@@ -5,6 +5,7 @@
  */
 
 import invariant from 'invariant';
+import warning from 'warning';
 import IntlRelativeFormat from 'intl-relativeformat';
 
 import {
@@ -180,7 +181,7 @@ export function formatMessage(
   const {id, defaultMessage} = messageDescriptor;
 
   // `id` is a required field of a Message Descriptor.
-  invariant(id, '[React Intl] An `id` must be provided to format a message.');
+  warning(id, '[React Intl] An `id` must be provided to format a message.');
 
   const message = messages && messages[id];
   const hasValues = Object.keys(values).length > 0;
