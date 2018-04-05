@@ -5,7 +5,7 @@
  */
 
 import invariant from 'invariant';
-import wraning from 'warning';
+import warning from 'warning';
 import IntlRelativeFormat from 'intl-relativeformat';
 
 import {
