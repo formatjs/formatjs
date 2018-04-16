@@ -45,6 +45,7 @@ describe('<IntlProvider>', () => {
     let renderer;
 
     beforeEach(() => {
+        // checking for console `warn`s instead of `error` for React Native debug
         consoleWarn        = spyOn(console, 'warn');
         dateNow            = spyOn(Date, 'now').andReturn(now);
         IntlProviderRender = spyOn(IntlProvider.prototype, 'render').andCallThrough();
