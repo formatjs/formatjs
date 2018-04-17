@@ -8,12 +8,12 @@ import FormattedHTMLMessage from '../../../src/components/html-message';
 expect.extend(expectJSX);
 
 describe('<FormattedHTMLMessage>', () => {
-    let consoleError;
+    let consoleWarn;
     let renderer;
     let intlProvider;
 
     beforeEach(() => {
-        consoleError = spyOn(console, 'error');
+        consoleWarn  = spyOn(console, 'warn');
         renderer     = createRenderer();
         intlProvider = new IntlProvider({
             locale       : 'en',
@@ -22,7 +22,7 @@ describe('<FormattedHTMLMessage>', () => {
     });
 
     afterEach(() => {
-        consoleError.restore();
+        consoleWarn.restore();
     });
 
     it('has a `displayName`', () => {

@@ -8,18 +8,18 @@ import FormattedNumber from '../../../src/components/number';
 expect.extend(expectJSX);
 
 describe('<FormattedNumber>', () => {
-    let consoleError;
+    let consoleWarn;
     let renderer;
     let intlProvider;
 
     beforeEach(() => {
-        consoleError = spyOn(console, 'error');
+        consoleWarn = spyOn(console, 'warn');
         renderer     = createRenderer();
         intlProvider = new IntlProvider({locale: 'en'}, {});
     });
 
     afterEach(() => {
-        consoleError.restore();
+        consoleWarn.restore();
     });
 
     it('has a `displayName`', () => {
@@ -105,7 +105,7 @@ describe('<FormattedNumber>', () => {
             <span>{String(0)}</span>
         );
 
-        expect(consoleError.calls.length).toBeGreaterThan(0);
+        expect(consoleWarn.calls.length).toBeGreaterThan(0);
     });
 
     it('accepts `format` prop', () => {
