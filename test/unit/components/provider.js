@@ -38,14 +38,15 @@ describe('<IntlProvider>', () => {
 
     const Child = () => null;
 
-    let consoleError;
+    let consoleWarn;
     let dateNow;
     let IntlProviderRender;
 
     let renderer;
 
     beforeEach(() => {
-        consoleError       = spyOn(console, 'error');
+        // checking for console `warn`s instead of `error` for React Native debug
+        consoleWarn        = spyOn(console, 'warn');
         dateNow            = spyOn(Date, 'now').andReturn(now);
         IntlProviderRender = spyOn(IntlProvider.prototype, 'render').andCallThrough();
 
@@ -65,7 +66,7 @@ describe('<IntlProvider>', () => {
             global.Intl = INTL;
         }
 
-        consoleError.restore();
+        consoleWarn.restore();
         dateNow.restore();
         IntlProviderRender.restore();
     });
@@ -107,8 +108,8 @@ describe('<IntlProvider>', () => {
         );
 
         renderer.render(el);
-        expect(consoleError.calls.length).toBe(1);
-        expect(consoleError.calls[0].arguments[0]).toContain(
+        expect(consoleWarn.calls.length).toBe(1);
+        expect(consoleWarn.calls[0].arguments[0]).toContain(
             '[React Intl] Missing locale data for locale: "undefined". Using default locale: "en" as fallback.'
         );
     });
@@ -123,8 +124,8 @@ describe('<IntlProvider>', () => {
         const {locale} = el.props;
 
         renderer.render(el);
-        expect(consoleError.calls.length).toBe(1);
-        expect(consoleError.calls[0].arguments[0]).toContain(
+        expect(consoleWarn.calls.length).toBe(1);
+        expect(consoleWarn.calls[0].arguments[0]).toContain(
             `[React Intl] Missing locale data for locale: "${locale}". Using default locale: "en" as fallback.`
         );
     });
@@ -269,7 +270,7 @@ describe('<IntlProvider>', () => {
         renderer.render(el, parentIntlProvider.getChildContext());
         const {intl} = renderer.getMountedInstance().getChildContext();
 
-        expect(consoleError.calls.length).toBe(0);
+        expect(consoleWarn.calls.length).toBe(0);
 
         INTL_CONFIG_PROP_NAMES.forEach((propName) => {
             expect(intl[propName]).toBe(props[propName]);
@@ -318,7 +319,7 @@ describe('<IntlProvider>', () => {
         renderer.render(el, parentIntlProvider.getChildContext());
         const {intl} = renderer.getMountedInstance().getChildContext();
 
-        expect(consoleError.calls.length).toBe(0);
+        expect(consoleWarn.calls.length).toBe(0);
 
         INTL_CONFIG_PROP_NAMES.forEach((propName) => {
             expect(intl[propName]).toNotBe(props[propName]);

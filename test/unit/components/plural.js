@@ -8,18 +8,18 @@ import FormattedPlural from '../../../src/components/plural';
 expect.extend(expectJSX);
 
 describe('<FormattedPlural>', () => {
-    let consoleError;
+    let consoleWarn;
     let renderer;
     let intlProvider;
 
     beforeEach(() => {
-        consoleError = spyOn(console, 'error');
+        consoleWarn = spyOn(console, 'warn');
         renderer     = createRenderer();
         intlProvider = new IntlProvider({locale: 'en'}, {});
     });
 
     afterEach(() => {
-        consoleError.restore();
+        consoleWarn.restore();
     });
 
     it('has a `displayName`', () => {

@@ -8,18 +8,18 @@ import FormattedTime from '../../../src/components/time';
 expect.extend(expectJSX);
 
 describe('<FormattedTime>', () => {
-    let consoleError;
+    let consoleWarn;
     let renderer;
     let intlProvider;
 
     beforeEach(() => {
-        consoleError = spyOn(console, 'error');
+        consoleWarn = spyOn(console, 'warn');
         renderer     = createRenderer();
         intlProvider = new IntlProvider({locale: 'en'}, {});
     });
 
     afterEach(() => {
-        consoleError.restore();
+        consoleWarn.restore();
     });
 
     it('has a `displayName`', () => {
@@ -37,11 +37,11 @@ describe('<FormattedTime>', () => {
 
         renderer.render(<FormattedTime value={0} />, {intl});
         expect(isFinite(0)).toBe(true);
-        expect(consoleError.calls.length).toBe(0);
+        expect(consoleWarn.calls.length).toBe(0);
 
         renderer.render(<FormattedTime />, {intl});
-        expect(consoleError.calls.length).toBe(1);
-        expect(consoleError.calls[0].arguments[0]).toContain(
+        expect(consoleWarn.calls.length).toBe(1);
+        expect(consoleWarn.calls[0].arguments[0]).toContain(
             '[React Intl] Error formatting time.\nRangeError'
         );
     });
@@ -114,7 +114,7 @@ describe('<FormattedTime>', () => {
             <span>{String(new Date(0))}</span>
         );
 
-        expect(consoleError.calls.length).toBeGreaterThan(0);
+        expect(consoleWarn.calls.length).toBeGreaterThan(0);
     });
 
     it('accepts `format` prop', () => {

@@ -8,12 +8,12 @@ import FormattedMessage from '../../../src/components/message';
 expect.extend(expectJSX);
 
 describe('<FormattedMessage>', () => {
-    let consoleError;
+    let consoleWarn;
     let renderer;
     let intlProvider;
 
     beforeEach(() => {
-        consoleError = spyOn(console, 'error');
+        consoleWarn = spyOn(console, 'warn');
         renderer     = createRenderer();
         intlProvider = new IntlProvider({
             locale       : 'en',
@@ -22,7 +22,7 @@ describe('<FormattedMessage>', () => {
     });
 
     afterEach(() => {
-        consoleError.restore();
+        consoleWarn.restore();
     });
 
     it('has a `displayName`', () => {
@@ -60,7 +60,7 @@ describe('<FormattedMessage>', () => {
         const el = <FormattedMessage {...descriptor} values={{name: <b>Eric</b>}} />;
 
         renderer.render(el, {intl});
-        expect(consoleError.calls.length).toBe(0);
+        expect(consoleWarn.calls.length).toBe(0);
     });
 
     it('should not cause a prop warning when description is a string', () => {
@@ -74,7 +74,7 @@ describe('<FormattedMessage>', () => {
         const el = <FormattedMessage {...descriptor} values={{name: <b>Eric</b>}} />;
 
         renderer.render(el, {intl});
-        expect(consoleError.calls.length).toBe(0);
+        expect(consoleWarn.calls.length).toBe(0);
     });
 
     it('should not cause a prop warning when description is an object', () => {
@@ -91,7 +91,7 @@ describe('<FormattedMessage>', () => {
         const el = <FormattedMessage {...descriptor} values={{name: <b>Eric</b>}} />;
 
         renderer.render(el, {intl});
-        expect(consoleError.calls.length).toBe(0);
+        expect(consoleWarn.calls.length).toBe(0);
     });
 
     it('should not re-render when props and context are the same', () => {
