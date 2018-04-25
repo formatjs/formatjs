@@ -82,9 +82,9 @@ Usage
 
 ### `Intl` Dependency
 
-This package assumes that the [`Intl`][Intl] global object exists in the runtime. `Intl` is present in all modern browsers _except_ Safari, and there's work happening to [integrate `Intl` into Node.js][Intl-Node].
+This package assumes that the [`Intl`][Intl] global object exists in the runtime. `Intl` is present in all modern browsers, and there's work happening to [integrate `Intl` into Node.js][Intl-Node].
 
-**Luckly, there's the [Intl.js][] polyfill!** You will need to conditionally load the polyfill if you want to support runtimes which `Intl` is not already built-in.
+**Luckly, there's the [Intl.js][] polyfill!** You will need to conditionally load the polyfill if you want to support runtimes which `Intl` is not already built-in. See [Browser compatibility table](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Browser_compatibility) if you have doubts.
 
 ### Loading IntlRelativeFormat in Node.js
 
