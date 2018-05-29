@@ -71,7 +71,7 @@
     "react-addons-test-utils": "^0.14.8"
   },
   "peerDependencies": {
-    "react": "^0.14.9 || ^15.0.0 || ^16.0.0",
+    "react": ">= 16.3.1",
     "prop-types": "^15.5.4"
   },
   "devDependencies": {
