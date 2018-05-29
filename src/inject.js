@@ -57,5 +57,5 @@ export default function injectIntl(WrappedComponent, options = {}) {
     }
   }
 
-  return hoistNonReactStatics(InjectIntl, WrappedComponent);
+  return hoistNonReactStatics(withIntlContext(InjectIntl), WrappedComponent);
 }
