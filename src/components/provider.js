@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {Component, Children, createContext} from 'react';
+import React, {Component, Children} from 'react';
 import PropTypes from 'prop-types';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
@@ -31,7 +31,7 @@ const defaultProps = {
   defaultFormats: {},
 };
 
-const IntlContext = createContext();
+const IntlContext = React.createContext();
 export const Consumer = IntlContext.Consumer
 
 function getConfig(filteredProps) {
