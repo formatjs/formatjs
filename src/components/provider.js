@@ -72,8 +72,10 @@ function getConfig(filteredProps) {
 }
 
 function getBoundFormatFns(config, state) {
+  const formatterState = { ...state.context.formatters, now: state.context.now }
+  
   return intlFormatPropNames.reduce((boundFormatFns, name) => {
-    boundFormatFns[name] = format[name].bind(null, config, {...state.context.formatters});
+    boundFormatFns[name] = format[name].bind(null, config, formatterState);
     return boundFormatFns;
   }, {});
 }
