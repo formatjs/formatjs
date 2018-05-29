@@ -150,7 +150,7 @@ export default class IntlProvider extends Component {
     const filteredProps = filterProps(nextProps, intlConfigPropNames/*, intlContext */);
 
     if (!shallowEquals(filteredProps, prevState.filteredProps)) {
-      const config = getConfig(filterProps);
+      const config = getConfig(filteredProps);
       const boundFormatFns = getBoundFormatFns(config, prevState);
 
       return {
