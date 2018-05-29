@@ -156,6 +156,7 @@ export default class IntlProvider extends Component {
       return {
         filteredProps,
         context: {
+          ...prevState.context,
           ...config,
           ...boundFormatFns
         }
