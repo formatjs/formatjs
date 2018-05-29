@@ -8,6 +8,7 @@ import {Component, createElement, isValidElement} from 'react';
 import PropTypes from 'prop-types';
 import IntlMessageFormat from 'intl-messageformat';
 import memoizeIntlConstructor from 'intl-format-cache';
+import withIntlContext from './withIntlContext';
 import {intlShape, messageDescriptorPropTypes} from '../types';
 import {
   invariantIntlContext,
@@ -30,15 +31,12 @@ const defaultFormatMessage = (descriptor, values) => {
   );
 };
 
-export default class FormattedMessage extends Component {
+class FormattedMessage extends Component {
   static displayName = 'FormattedMessage';
-
-  static contextTypes = {
-    intl: intlShape,
-  };
 
   static propTypes = {
     ...messageDescriptorPropTypes,
+    intl: intlShape,
     values: PropTypes.object,
     tagName: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     children: PropTypes.func,
@@ -55,7 +53,7 @@ export default class FormattedMessage extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, ...next) {
+  shouldComponentUpdate(nextProps, nextState) {
     const {values} = this.props;
     const {values: nextValues} = nextProps;
 
@@ -71,7 +69,7 @@ export default class FormattedMessage extends Component {
       values,
     };
 
-    return shouldIntlComponentUpdate(this, nextPropsToCheck, ...next);
+    return shouldIntlComponentUpdate(this, nextPropsToCheck, nextState);
   }
 
   render() {
@@ -155,3 +153,5 @@ export default class FormattedMessage extends Component {
     return createElement(Component, null, ...nodes);
   }
 }
+
+export default withIntlContext(FormattedMessage)
