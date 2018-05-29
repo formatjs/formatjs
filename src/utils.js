@@ -81,23 +81,12 @@ export function shallowEquals(objA, objB) {
 }
 
 export function shouldIntlComponentUpdate(
-  {props, state, context = {}},
+  {props, state},
   nextProps,
-  nextState,
-  nextContext = {}
+  nextState
 ) {
-  const {intl = {}} = context;
-  const {intl: nextIntl = {}} = nextContext;
-
   return (
     !shallowEquals(nextProps, props) ||
-    !shallowEquals(nextState, state) ||
-    !(
-      nextIntl === intl ||
-      shallowEquals(
-        filterProps(nextIntl, intlConfigPropNames),
-        filterProps(intl, intlConfigPropNames)
-      )
-    )
+    !shallowEquals(nextState, state)
   );
 }
