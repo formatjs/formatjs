@@ -109,7 +109,7 @@
     "prop-types": "^15.6.1",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
-    "react-test-renderer": "^16.4.0",
+    "react-test-renderer": "^16.3.0",
     "rimraf": "^2.4.2",
     "rollup": "^0.50.0",
     "rollup-plugin-babel": "^3.0.2",
