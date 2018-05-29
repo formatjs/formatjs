@@ -56,5 +56,5 @@ export default function injectIntl(WrappedComponent, options = {}) {
     }
   }
 
-  return InjectIntl;
+  return withIntlContext(InjectIntl);
 }
