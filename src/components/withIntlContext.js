@@ -1,17 +1,17 @@
 import React from 'react';
-import {Provider as IntlProvider} from './provider.js';
+import {Consumer as IntlConsumer} from './provider.js';
 
 export default function withIntlContext(Component) {
   return function WithIntlContext(props) {
     return (
-      <IntlProvider>
+      <IntlConsumer>
         {(intl) => (
           <Component
             {...props}
             intl={intl}
           />
         )}
-      </IntlProvider>
+      </IntlConsumer>
     )
   }
 }
