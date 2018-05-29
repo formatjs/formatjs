@@ -31,7 +31,7 @@ const defaultProps = {
 };
 
 const IntlContext = createContext();
-export const Provider = IntlContext.Provider
+export const Consumer = IntlContext.Consumer
 
 function getConfig(filteredProps) {
   let config = filteredProps;
