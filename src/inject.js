@@ -10,6 +10,7 @@
 import React, {Component} from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import invariant from 'invariant';
+import withIntlContext from './components/withIntlContext'
 import {intlShape} from './types';
 import {invariantIntlContext} from './utils';
 
@@ -23,15 +24,15 @@ export default function injectIntl(WrappedComponent, options = {}) {
   class InjectIntl extends Component {
     static displayName = `InjectIntl(${getDisplayName(WrappedComponent)})`;
 
-    static contextTypes = {
+    static propTypes = {
       intl: intlShape,
     };
 
     static WrappedComponent = WrappedComponent;
 
-    constructor(props, context) {
-      super(props, context);
-      invariantIntlContext(context);
+    constructor(props) {
+      super(props);
+      invariantIntlContext(props);
     }
 
     getWrappedInstance() {
@@ -49,7 +50,7 @@ export default function injectIntl(WrappedComponent, options = {}) {
       return (
         <WrappedComponent
           {...this.props}
-          {...{[intlPropName]: this.context.intl}}
+          {...{[intlPropName]: this.props.intl}}
           ref={withRef ? 'wrappedInstance' : null}
         />
       );
