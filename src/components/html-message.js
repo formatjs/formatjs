@@ -6,6 +6,7 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import withIntlContext from './withIntlContext';
 import {intlShape, messageDescriptorPropTypes} from '../types';
 import {
   invariantIntlContext,
@@ -13,15 +14,12 @@ import {
   shouldIntlComponentUpdate,
 } from '../utils';
 
-export default class FormattedHTMLMessage extends Component {
+class FormattedHTMLMessage extends Component {
   static displayName = 'FormattedHTMLMessage';
-
-  static contextTypes = {
-    intl: intlShape,
-  };
 
   static propTypes = {
     ...messageDescriptorPropTypes,
+    intl: intlShape,
     values: PropTypes.object,
     tagName: PropTypes.string,
     children: PropTypes.func,
@@ -31,12 +29,12 @@ export default class FormattedHTMLMessage extends Component {
     values: {},
   };
 
-  constructor(props, context) {
-    super(props, context);
-    invariantIntlContext(context);
+  constructor(props) {
+    super(props);
+    invariantIntlContext(props);
   }
 
-  shouldComponentUpdate(nextProps, ...next) {
+  shouldComponentUpdate(nextProps, nextState) {
     const {values} = this.props;
     const {values: nextValues} = nextProps;
 
@@ -52,11 +50,11 @@ export default class FormattedHTMLMessage extends Component {
       values,
     };
 
-    return shouldIntlComponentUpdate(this, nextPropsToCheck, ...next);
+    return shouldIntlComponentUpdate(this, nextPropsToCheck, nextState);
   }
 
   render() {
-    const {formatHTMLMessage, textComponent: Text} = this.context.intl;
+    const {formatHTMLMessage, textComponent: Text} = this.props.intl;
 
     const {
       id,
@@ -86,3 +84,5 @@ export default class FormattedHTMLMessage extends Component {
     return <Component dangerouslySetInnerHTML={html} />;
   }
 }
+
+export default withIntlContext(FormattedHTMLMessage)
