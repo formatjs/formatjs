@@ -34,7 +34,7 @@ const IntlContext = createContext();
 export const Provider = IntlContext.Provider
 
 function getConfig(filteredProps) {
-  const config = filteredProps;
+  let config = filteredProps;
 
   // Apply default props. This must be applied last after the props have
   // been resolved and inherited from any <IntlProvider> in the ancestry.
@@ -73,7 +73,7 @@ function getConfig(filteredProps) {
 
 function getBoundFormatFns(config, state) {
   return intlFormatPropNames.reduce((boundFormatFns, name) => {
-    boundFormatFns[name] = format[name].bind(null, config, {...state.context.formatters, state.context.now});
+    boundFormatFns[name] = format[name].bind(null, config, {...state.context.formatters});
     return boundFormatFns;
   }, {});
 }
@@ -147,7 +147,7 @@ export default class IntlProvider extends Component {
 
     // Build a whitelisted config object from `props`, defaults, and
     // `context.intl`, if an <IntlProvider> exists in the ancestry.
-    const filteredProps = filterProps(this.props, intlConfigPropNames/*, intlContext */);
+    const filteredProps = filterProps(nextProps, intlConfigPropNames/*, intlContext */);
 
     if (!shallowEquals(filteredProps, prevState.filteredProps)) {
       const config = getConfig(filterProps);
