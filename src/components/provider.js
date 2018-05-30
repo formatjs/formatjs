@@ -6,6 +6,7 @@
 
 import React, {Component, Children} from 'react';
 import PropTypes from 'prop-types';
+import withIntlContext from './withIntlContext';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 import IntlPluralFormat from '../plural';
@@ -73,14 +74,14 @@ function getConfig(filteredProps) {
 
 function getBoundFormatFns(config, state) {
   const formatterState = { ...state.context.formatters, now: state.context.now }
-  
+
   return intlFormatPropNames.reduce((boundFormatFns, name) => {
     boundFormatFns[name] = format[name].bind(null, config, formatterState);
     return boundFormatFns;
   }, {});
 }
 
-export default class IntlProvider extends Component {
+class IntlProvider extends Component {
   static displayName = 'IntlProvider';
 
   static propTypes = {
@@ -99,19 +100,18 @@ export default class IntlProvider extends Component {
         'See: http://formatjs.io/guides/runtime-environments/'
     );
 
+    const {intl: intlContext} = props;
+
     // Used to stabilize time when performing an initial rendering so that
     // all relative times use the same reference "now" time.
     let initialNow;
     if (isFinite(props.initialNow)) {
       initialNow = Number(props.initialNow);
     } else {
-      // *************************************************
-      // DISABLED DUE TO NEW CONTEXT API (HELP IS WELCOME)
-      // *************************************************
       // When an `initialNow` isn't provided via `props`, look to see an
       // <IntlProvider> exists in the ancestry and call its `now()`
       // function to propagate its value for "now".
-      initialNow = /*intlContext ? intlContext.now() : */Date.now();
+      initialNow = intlContext ? intlContext.now() : Date.now();
     }
 
     // Creating `Intl*` formatters is expensive. If there's a parent
@@ -126,8 +126,7 @@ export default class IntlProvider extends Component {
         getRelativeFormat: memoizeIntlConstructor(IntlRelativeFormat),
         getPluralFormat: memoizeIntlConstructor(IntlPluralFormat),
       },
-    } =
-      /*intlContext || */{};
+    } = (intlContext || {});
 
     this.state = {
       context: {
@@ -142,14 +141,11 @@ export default class IntlProvider extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    // *************************************************
-    // DISABLED DUE TO NEW CONTEXT API (HELP IS WELCOME)
-    // *************************************************
-    // const {intl: intlContext} = this.context;
+    const {intl: intlContext} = this.props;
 
     // Build a whitelisted config object from `props`, defaults, and
-    // `context.intl`, if an <IntlProvider> exists in the ancestry.
-    const filteredProps = filterProps(nextProps, intlConfigPropNames/*, intlContext */);
+    // `props.intl`, if an <IntlProvider> exists in the ancestry.
+    const filteredProps = filterProps(nextProps, intlConfigPropNames, intlContext);
 
     if (!shallowEquals(filteredProps, prevState.filteredProps)) {
       const config = getConfig(filteredProps);
@@ -188,3 +184,5 @@ export default class IntlProvider extends Component {
     );
   }
 }
+
+export default withIntlContext(IntlProvider) // to be able to inherit values from parent providers
