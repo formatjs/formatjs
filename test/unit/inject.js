@@ -19,6 +19,9 @@ describe('injectIntl()', () => {
         Wrapped.propTypes = {
             intl: intlShape.isRequired,
         };
+        Wrapped.someNonReactStatic = {
+            foo: true
+        };
 
         renderer     = createRenderer();
         intlProvider = new IntlProvider({locale: 'en'}, {});
@@ -27,6 +30,10 @@ describe('injectIntl()', () => {
     it('allows introspection access to the wrapped component', () => {
         expect(injectIntl(Wrapped).WrappedComponent).toBe(Wrapped);
     });
+
+    it('hoists non-react statics',() => {
+        expect(injectIntl(Wrapped).someNonReactStatic.foo).toBe(true)
+    })
 
     describe('displayName', () => {
         it('is descriptive by default', () => {
