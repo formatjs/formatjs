@@ -37,6 +37,11 @@ function updateRelativeFormatThresholds(newThresholds) {
     hour: thresholds.hour,
     day: thresholds.day,
     month: thresholds.month,
+    'second-short': thresholds['second-short'],
+    'minute-short': thresholds['minute-short'],
+    'hour-short': thresholds['hour-short'],
+    'day-short': thresholds['day-short'],
+    'month-short': thresholds['month-short']
   } = newThresholds);
 }
 
