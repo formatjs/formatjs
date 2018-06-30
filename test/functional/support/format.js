@@ -17,18 +17,21 @@ export default function (ReactIntl) {
         } = ReactIntl;
 
         let renderer;
-        let intlProvider;
+        const renderWithIntlProvider = (Element, providerProps) => renderer.render(
+          <IntlProvider locale='en' {...providerProps}>
+            { Element }
+          </IntlProvider>
+        );
 
         beforeEach(() => {
             renderer     = createRenderer();
-            intlProvider = new IntlProvider({locale: 'en'}, {});
         });
 
         it('formats dates', () => {
             const date = new Date();
             const el   = <FormattedDate value={date} month="numeric" />;
 
-            renderer.render(el, intlProvider.getChildContext());
+            renderWithIntlProvider(el);
             expect(renderer.getRenderOutput()).toEqualJSX(
                 <span>{date.getMonth() + 1}</span>
             );
@@ -41,7 +44,7 @@ export default function (ReactIntl) {
             const hours   = date.getHours();
             const minutes = date.getMinutes();
 
-            renderer.render(el, intlProvider.getChildContext());
+            renderWithIntlProvider(el);
             expect(renderer.getRenderOutput()).toEqualJSX(
                 <span>
                     {
@@ -57,7 +60,7 @@ export default function (ReactIntl) {
             const now = Date.now();
             const el  = <FormattedRelative value={now - 1000} initialNow={now} />;
 
-            renderer.render(el, intlProvider.getChildContext());
+            renderWithIntlProvider(el);
             expect(renderer.getRenderOutput()).toEqualJSX(
                 <span>1 second ago</span>
             );
@@ -66,7 +69,7 @@ export default function (ReactIntl) {
         it('formats numbers with thousands separators', () => {
             const el = <FormattedNumber value={1000} />;
 
-            renderer.render(el, intlProvider.getChildContext());
+            renderWithIntlProvider(el);
             expect(renderer.getRenderOutput()).toEqualJSX(
                 <span>1,000</span>
             );
@@ -75,7 +78,7 @@ export default function (ReactIntl) {
         it('formats numbers with decimal separators', () => {
             const el = <FormattedNumber value={0.1} minimumFractionDigits={2} />;
 
-            renderer.render(el, intlProvider.getChildContext());
+            renderWithIntlProvider(el);
             expect(renderer.getRenderOutput()).toEqualJSX(
                 <span>0.10</span>
             );
@@ -92,7 +95,7 @@ export default function (ReactIntl) {
                 />
             );
 
-            renderer.render(el, intlProvider.getChildContext());
+            renderWithIntlProvider(el);
             expect(renderer.getRenderOutput()).toEqualJSX(
                 <span>You have 1,000 emails.</span>
             );
