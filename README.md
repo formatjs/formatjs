@@ -12,6 +12,9 @@ Overview
 
 **React Intl is part of [FormatJS][].** It provides bindings to React via its components and API.
 
+**Slack:** Join us on Slack at [react-intl.slack.com](https://react-intl.slack.com/) for help, general conversation and more 💬🎊🎉
+You can sign-up using this [invitation link](https://join.slack.com/t/react-intl/shared_invite/enQtNDAxMjc5MTQxMDkwLWNiYWM5Njc5NjA3ZWVkOTQ3MzBhYjFlY2NkNmM3NzEyNDUzZmNhZDE2MmUwNWVjYmExMWUxZTRhMzEzMWYxYzY).
+
 ### [Documentation][]
 
 React Intl's docs are in this GitHub repo's [Wiki][Documentation], [__Get Started__][Getting Started]. There are also several [runnable example apps][Examples] which you can reference to learn how all the pieces fit together.
