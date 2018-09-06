@@ -8,6 +8,7 @@
 // https://github.com/rackt/react-redux
 
 import React, {Component} from 'react';
+import hoistNonReactStatics from 'hoist-non-react-statics';
 import invariant from 'invariant';
 import {intlShape} from './types';
 import {invariantIntlContext} from './utils';
@@ -55,5 +56,5 @@ export default function injectIntl(WrappedComponent, options = {}) {
     }
   }
 
-  return InjectIntl;
+  return hoistNonReactStatics(InjectIntl, WrappedComponent);
 }
