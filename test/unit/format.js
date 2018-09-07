@@ -366,6 +366,11 @@ describe('format API', () => {
             expect(formatRelative(timestamp)).toBe(rf.format(timestamp, {now}));
         });
 
+        it('formats with short format', () => {
+            const timestamp = now - (1000 * 59);
+            expect(formatRelative(timestamp, {units: 'second-short'})).toBe('59 sec. ago');
+        });
+
         it('formats with the expected thresholds', () => {
             const timestamp = now - (1000 * 59);
             expect(IntlRelativeFormat.thresholds).toEqual(IRF_THRESHOLDS);
@@ -383,6 +388,7 @@ describe('format API', () => {
 
             it('accepts valid IntlRelativeFormat options', () => {
                 expect(() => formatRelative(0, {units: 'second'})).toNotThrow();
+                expect(() => formatRelative(0, {units: 'second-short'})).toNotThrow();
             });
 
             it('falls back and warns on invalid IntlRelativeFormat options', () => {
