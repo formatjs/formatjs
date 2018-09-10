@@ -1,0 +1,22 @@
+{
+  "name": "reactIntlWithRedux",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "babel-plugin-react-intl": "^2.2.0",
+    "react-scripts": "0.7.0"
+  },
+  "dependencies": {
+    "react": "^15.4.0",
+    "react-dom": "^15.4.0",
+    "react-intl": "^2.1.5",
+    "react-redux": "^4.4.6",
+    "redux": "^3.6.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
