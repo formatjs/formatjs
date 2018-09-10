@@ -129,7 +129,7 @@ describe('<IntlProvider>', () => {
         );
     });
 
-    it('renderes its `children`', () => {
+    it('renders its `children`', () => {
         const el = (
             <IntlProvider locale="en">
                 <Child />
@@ -153,13 +153,14 @@ describe('<IntlProvider>', () => {
         const {intl} = renderer.getMountedInstance().getChildContext();
 
         INTL_SHAPE_PROP_NAMES.forEach((propName) => {
-            expect(intl[propName]).toExist(`Missing context.intl prop: ${propName}`);
+            expect(intl[propName]).toNotBe(undefined, `Missing context.intl prop: ${propName}`);
         });
     });
 
     it('provides `context.intl` with values from intl config props', () => {
         const props = {
             locale       : 'fr-FR',
+            timeZone     : 'UTC',
             formats      : {},
             messages     : {},
             textComponent: 'span',
@@ -180,6 +181,23 @@ describe('<IntlProvider>', () => {
         INTL_CONFIG_PROP_NAMES.forEach((propName) => {
             expect(intl[propName]).toBe(props[propName]);
         });
+    });
+
+    it('provides `context.intl` with timeZone from intl config props when it is specified', () => {
+        const props = {
+            timeZone: 'Europe/Paris',
+        };
+
+        const el = (
+            <IntlProvider {...props}>
+                <Child />
+            </IntlProvider>
+        );
+
+        renderer.render(el);
+        const {intl} = renderer.getMountedInstance().getChildContext();
+
+        expect(intl.timeZone).toBe('Europe/Paris');
     });
 
     it('provides `context.intl` with values from `defaultProps` for missing or undefined props', () => {
@@ -236,6 +254,7 @@ describe('<IntlProvider>', () => {
     it('inherits from an <IntlProvider> ancestor', () => {
         const props = {
             locale  : 'en',
+            timeZone: 'UTC',
             formats : {
                 date: {
                     'year-only': {
@@ -279,6 +298,7 @@ describe('<IntlProvider>', () => {
     it('shadows inherited intl config props from an <IntlProvider> ancestor', () => {
         const props = {
             locale  : 'en',
+            timeZone  : 'Australia/Adelaide',
             formats : {
                 date: {
                     'year-only': {
@@ -305,6 +325,7 @@ describe('<IntlProvider>', () => {
         const el = (
             <IntlProvider
                 locale="fr"
+                timeZone="Atlantic/Azores"
                 formats={{}}
                 messages={{}}
                 defaultLocale="en"

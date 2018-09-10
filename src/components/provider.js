@@ -24,6 +24,7 @@ const intlFormatPropNames = Object.keys(intlFormatPropTypes);
 const defaultProps = {
   formats: {},
   messages: {},
+  timeZone: null,
   textComponent: 'span',
 
   defaultLocale: 'en',
