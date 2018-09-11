@@ -29,10 +29,18 @@ describe('<FormattedMessage>', () => {
         expect(FormattedMessage.displayName).toBeA('string');
     });
 
-    it('throws when <IntlProvider> is missing from ancestry', () => {
+    it('throws when <IntlProvider> is missing from ancestry and there is no defaultMessage', () => {
         expect(() => renderer.render(<FormattedMessage />)).toThrow(
             '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
         );
+    });
+
+    it('should work if <IntlProvider> is missing from ancestry but there is defaultMessage', () => {
+        renderer.render(<FormattedMessage id="hello" defaultMessage="Hello" />);
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <span>Hello</span>
+        );
+        expect(consoleError.calls.length).toBe(1);
     });
 
     it('renders a formatted message in a <span>', () => {

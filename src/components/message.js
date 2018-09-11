@@ -6,12 +6,29 @@
 
 import {Component, createElement, isValidElement} from 'react';
 import PropTypes from 'prop-types';
+import IntlMessageFormat from 'intl-messageformat';
+import memoizeIntlConstructor from 'intl-format-cache';
 import {intlShape, messageDescriptorPropTypes} from '../types';
 import {
   invariantIntlContext,
   shallowEquals,
   shouldIntlComponentUpdate,
 } from '../utils';
+import {formatMessage as baseFormatMessage} from '../format';
+
+const defaultFormatMessage = (descriptor, values) => {
+  if (process.env.NODE_ENV !== 'production') {
+    console.error(
+      '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry. Using default message as fallback.'
+    );
+  }
+  return baseFormatMessage(
+    {},
+    {getMessageFormat: memoizeIntlConstructor(IntlMessageFormat)},
+    descriptor,
+    values
+  );
+};
 
 export default class FormattedMessage extends Component {
   static displayName = 'FormattedMessage';
@@ -33,7 +50,9 @@ export default class FormattedMessage extends Component {
 
   constructor(props, context) {
     super(props, context);
-    invariantIntlContext(context);
+    if (!props.defaultMessage) {
+      invariantIntlContext(context);
+    }
   }
 
   shouldComponentUpdate(nextProps, ...next) {
@@ -56,7 +75,8 @@ export default class FormattedMessage extends Component {
   }
 
   render() {
-    const {formatMessage, textComponent: Text} = this.context.intl;
+    const {formatMessage = defaultFormatMessage, textComponent: Text = 'span'} =
+      this.context.intl || {};
 
     const {
       id,
