@@ -1,8 +1,9 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import assert from 'power-assert';
-import * as babel from 'babel-core';
+import * as babel from '@babel/core';
 import plugin from '../src/index';
+import uuidv1 from 'uuid/v1';
 
 function trim(str) {
     return str.toString().replace(/^\s+|\s+$/, '');
@@ -155,7 +156,7 @@ function transform(filePath, options = {}, {multiplePasses = false} = {}) {
         return [plugin, {
             ...BASE_OPTIONS,
             ...options,
-        }];
+        }, uuidv1()];
     }
 
     return babel.transformFileSync(filePath, {

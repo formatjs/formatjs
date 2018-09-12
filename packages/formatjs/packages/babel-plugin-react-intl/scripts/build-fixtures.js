@@ -1,6 +1,6 @@
 import * as p from 'path';
 import * as fs from 'fs';
-import {transformFileSync} from 'babel-core';
+import {transformFileSync} from '@babel/core';
 import plugin from '../src/index';
 
 const baseDir = p.resolve(`${__dirname}/../test/fixtures`);
