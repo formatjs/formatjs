@@ -41,7 +41,7 @@ function updateRelativeFormatThresholds(newThresholds) {
     'minute-short': thresholds['minute-short'],
     'hour-short': thresholds['hour-short'],
     'day-short': thresholds['day-short'],
-    'month-short': thresholds['month-short']
+    'month-short': thresholds['month-short'],
   } = newThresholds);
 }
 
@@ -65,7 +65,11 @@ export function formatDate(config, state, value, options = {}) {
     ...(timeZone && {timeZone}),
     ...(format && getNamedFormat(formats, 'date', format)),
   };
-  let filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, defaults);
+  let filteredOptions = filterProps(
+    options,
+    DATE_TIME_FORMAT_OPTIONS,
+    defaults
+  );
 
   try {
     return state.getDateTimeFormat(locale, filteredOptions).format(date);
@@ -87,7 +91,11 @@ export function formatTime(config, state, value, options = {}) {
     ...(timeZone && {timeZone}),
     ...(format && getNamedFormat(formats, 'time', format)),
   };
-  let filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, defaults);
+  let filteredOptions = filterProps(
+    options,
+    DATE_TIME_FORMAT_OPTIONS,
+    defaults
+  );
 
   if (
     !filteredOptions.hour &&
@@ -250,9 +258,9 @@ export function formatMessage(
     if (process.env.NODE_ENV !== 'production') {
       console.error(
         `[React Intl] Cannot format message: "${id}", ` +
-          `using message ${message || defaultMessage
-            ? 'source'
-            : 'id'} as fallback.`
+          `using message ${
+            message || defaultMessage ? 'source' : 'id'
+          } as fallback.`
       );
     }
   }

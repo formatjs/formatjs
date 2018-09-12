@@ -144,6 +144,6 @@
     "examples:install": "babel-node scripts/examples npm install",
     "examples:link": "npm link && babel-node scripts/examples npm link react-intl",
     "preversion": "npm run clean && npm run build && npm run test:all",
-    "prepublish": "npm run clean && npm run build"
+    "prepare": "npm run clean && npm run build"
   }
 }

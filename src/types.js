@@ -91,8 +91,20 @@ export const numberFormatPropTypes = {
 
 export const relativeFormatPropTypes = {
   style: oneOf(['best fit', 'numeric']),
-  units: oneOf(['second', 'minute', 'hour', 'day', 'month', 'year',
-    'second-short', 'minute-short', 'hour-short', 'day-short', 'month-short', 'year-short']),
+  units: oneOf([
+    'second',
+    'minute',
+    'hour',
+    'day',
+    'month',
+    'year',
+    'second-short',
+    'minute-short',
+    'hour-short',
+    'day-short',
+    'month-short',
+    'year-short',
+  ]),
 };
 
 export const pluralFormatPropTypes = {
