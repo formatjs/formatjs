@@ -84,8 +84,7 @@ export default class IntlProvider extends Component {
         getRelativeFormat: memoizeIntlConstructor(IntlRelativeFormat),
         getPluralFormat: memoizeIntlConstructor(IntlPluralFormat),
       },
-    } =
-      intlContext || {};
+    } = intlContext || {};
 
     this.state = {
       ...formatters,
