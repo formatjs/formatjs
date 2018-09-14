@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {IntlProvider, FormattedMessage} from 'react-intl';
 import Greeting from './widgets/greeting';
+import Container from './widgets/container';
 
 class App extends Component {
     constructor(props) {
@@ -31,6 +32,11 @@ class App extends Component {
                 >
                     <Greeting {...this.state.user} />
                 </IntlProvider>
+
+                <Container
+                    getIntlMessages={this.props.getIntlMessages}
+                    app={<FormattedMessage id="app" defaultMessage={'App'} />}
+                />
             </div>
         );
     }
