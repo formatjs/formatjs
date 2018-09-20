@@ -1,5 +1,5 @@
 import expect from 'expect';
-import * as ReactIntl from '../../src/';
+import * as ReactIntl from '../../../src/';
 
 export default function (buildPath) {
     describe('build', () => {

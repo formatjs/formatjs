@@ -1,0 +1,11 @@
+exports[`test app footer should be rendered 1`] = `
+<footer
+  className="app-footer">
+  <div
+    className="app-footer__copyright">
+    <span>
+      © 2017 Future Testing
+    </span>
+  </div>
+</footer>
+`;

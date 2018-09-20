@@ -1,0 +1,25 @@
+exports[`test app main should be rendered 1`] = `
+<main
+  className="app-main"
+  onClick={[Function]}>
+  <div
+    className="app-main__counter">
+    <span>
+      Counter 1
+    </span>
+  </div>
+</main>
+`;
+
+exports[`test app main should be rendered 2`] = `
+<main
+  className="app-main"
+  onClick={[Function]}>
+  <div
+    className="app-main__counter">
+    <span>
+      Counter 2
+    </span>
+  </div>
+</main>
+`;

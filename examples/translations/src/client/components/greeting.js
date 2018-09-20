@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {FormattedMessage, FormattedNumber, FormattedRelative} from 'react-intl';
 
 class Greeting extends Component {
@@ -20,7 +21,9 @@ class Greeting extends Component {
                         name: <b>{user.name}</b>,
                         unreadCount: user.unreadCount,
                         formattedUnreadCount: (
-                            <b><FormattedNumber value={user.unreadCount} /></b>
+                            <b>
+                                <FormattedNumber value={user.unreadCount} />
+                            </b>
                         ),
                         formattedLastLoginTime: (
                             <FormattedRelative value={user.lastLoginTime} />

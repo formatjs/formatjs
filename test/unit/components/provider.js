@@ -1,7 +1,7 @@
 import expect, {spyOn} from 'expect';
 import expectJSX from 'expect-jsx';
 import React from 'react';
-import {createRenderer} from 'react-addons-test-utils';
+import {createRenderer} from '../../react-compat';
 import {intlConfigPropTypes, intlFormatPropTypes} from '../../../src/types';
 import IntlProvider from '../../../src/components/provider';
 
@@ -16,7 +16,7 @@ const skipWhen = (shouldSkip, callback) => {
 };
 
 describe('<IntlProvider>', () => {
-    let immutableIntl;
+    let immutableIntl = false;
     try {
         global.Intl = global.Intl;
     } catch (e) {
@@ -77,7 +77,7 @@ describe('<IntlProvider>', () => {
     // If global.Intl is immutable, then skip this test.
     skipWhen(immutableIntl, (it) => {
         it('throws when `Intl` is missing from runtime', () => {
-            delete global.Intl;
+            global.Intl = undefined;
             expect(() => renderer.render(<IntlProvider />)).toThrow(
                 '[React Intl] The `Intl` APIs must be available in the runtime, and do not appear to be built-in. An `Intl` polyfill should be loaded.'
             );
@@ -85,9 +85,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('throws when no `children`', () => {
-        expect(() => renderer.render(<IntlProvider />)).toThrow(
-            'onlyChild must be passed a children with exactly one child.'
-        );
+        expect(() => renderer.render(<IntlProvider />)).toThrow();
     });
 
     it('throws when more than one `children`', () => {
@@ -98,9 +96,7 @@ describe('<IntlProvider>', () => {
             </IntlProvider>
         );
 
-        expect(() => renderer.render(el)).toThrow(
-            'onlyChild must be passed a children with exactly one child.'
-        );
+        expect(() => renderer.render(el)).toThrow();
     });
 
     it('warns when no `locale` prop is provided', () => {
@@ -133,7 +129,7 @@ describe('<IntlProvider>', () => {
         );
     });
 
-    it('renderes its `children`', () => {
+    it('renders its `children`', () => {
         const el = (
             <IntlProvider locale="en">
                 <Child />
@@ -157,15 +153,17 @@ describe('<IntlProvider>', () => {
         const {intl} = renderer.getMountedInstance().getChildContext();
 
         INTL_SHAPE_PROP_NAMES.forEach((propName) => {
-            expect(intl[propName]).toExist(`Missing context.intl prop: ${propName}`);
+            expect(intl[propName]).toNotBe(undefined, `Missing context.intl prop: ${propName}`);
         });
     });
 
     it('provides `context.intl` with values from intl config props', () => {
         const props = {
-            locale  : 'fr-FR',
-            formats : {},
-            messages: {},
+            locale       : 'fr-FR',
+            timeZone     : 'UTC',
+            formats      : {},
+            messages     : {},
+            textComponent: 'span',
 
             defaultLocale : 'en-US',
             defaultFormats: {},
@@ -183,6 +181,23 @@ describe('<IntlProvider>', () => {
         INTL_CONFIG_PROP_NAMES.forEach((propName) => {
             expect(intl[propName]).toBe(props[propName]);
         });
+    });
+
+    it('provides `context.intl` with timeZone from intl config props when it is specified', () => {
+        const props = {
+            timeZone: 'Europe/Paris',
+        };
+
+        const el = (
+            <IntlProvider {...props}>
+                <Child />
+            </IntlProvider>
+        );
+
+        renderer.render(el);
+        const {intl} = renderer.getMountedInstance().getChildContext();
+
+        expect(intl.timeZone).toBe('Europe/Paris');
     });
 
     it('provides `context.intl` with values from `defaultProps` for missing or undefined props', () => {
@@ -239,6 +254,7 @@ describe('<IntlProvider>', () => {
     it('inherits from an <IntlProvider> ancestor', () => {
         const props = {
             locale  : 'en',
+            timeZone: 'UTC',
             formats : {
                 date: {
                     'year-only': {
@@ -249,6 +265,7 @@ describe('<IntlProvider>', () => {
             messages: {
                 hello: 'Hello, World!',
             },
+            textComponent: 'span',
 
             defaultLocale : 'fr',
             defaultFormats: {
@@ -281,6 +298,7 @@ describe('<IntlProvider>', () => {
     it('shadows inherited intl config props from an <IntlProvider> ancestor', () => {
         const props = {
             locale  : 'en',
+            timeZone  : 'Australia/Adelaide',
             formats : {
                 date: {
                     'year-only': {
@@ -307,10 +325,12 @@ describe('<IntlProvider>', () => {
         const el = (
             <IntlProvider
                 locale="fr"
+                timeZone="Atlantic/Azores"
                 formats={{}}
                 messages={{}}
                 defaultLocale="en"
                 defaultFormats={{}}
+                textComponent="span"
             >
                 <Child />
             </IntlProvider>

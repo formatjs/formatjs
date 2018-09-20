@@ -1,7 +1,7 @@
 import expect, {spyOn} from 'expect';
 import expectJSX from 'expect-jsx';
 import React from 'react';
-import {createRenderer} from 'react-addons-test-utils';
+import {createRenderer} from '../../react-compat';
 import IntlProvider from '../../../src/components/provider';
 import FormattedMessage from '../../../src/components/message';
 
@@ -29,10 +29,18 @@ describe('<FormattedMessage>', () => {
         expect(FormattedMessage.displayName).toBeA('string');
     });
 
-    it('throws when <IntlProvider> is missing from ancestry', () => {
+    it('throws when <IntlProvider> is missing from ancestry and there is no defaultMessage', () => {
         expect(() => renderer.render(<FormattedMessage />)).toThrow(
             '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
         );
+    });
+
+    it('should work if <IntlProvider> is missing from ancestry but there is defaultMessage', () => {
+        renderer.render(<FormattedMessage id="hello" defaultMessage="Hello" />);
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <span>Hello</span>
+        );
+        expect(consoleError.calls.length).toBe(1);
     });
 
     it('renders a formatted message in a <span>', () => {
@@ -48,6 +56,50 @@ describe('<FormattedMessage>', () => {
         expect(renderer.getRenderOutput()).toEqualJSX(
             <span>{intl.formatMessage(descriptor)}</span>
         );
+    });
+
+    it('should not cause a unique "key" prop warning', () => {
+        const {intl} = intlProvider.getChildContext();
+        const descriptor = {
+            id: 'hello',
+            defaultMessage: 'Hello, {name}!',
+        };
+
+        const el = <FormattedMessage {...descriptor} values={{name: <b>Eric</b>}} />;
+
+        renderer.render(el, {intl});
+        expect(consoleError.calls.length).toBe(0);
+    });
+
+    it('should not cause a prop warning when description is a string', () => {
+        const {intl} = intlProvider.getChildContext();
+        const descriptor = {
+            id: 'hello',
+            description: 'Greeting',
+            defaultMessage: 'Hello, {name}!',
+        };
+
+        const el = <FormattedMessage {...descriptor} values={{name: <b>Eric</b>}} />;
+
+        renderer.render(el, {intl});
+        expect(consoleError.calls.length).toBe(0);
+    });
+
+    it('should not cause a prop warning when description is an object', () => {
+        const {intl} = intlProvider.getChildContext();
+        const descriptor = {
+            id: 'hello',
+            description: {
+                text: 'Greeting',
+                ticket: 'GTP-1234',
+            },
+            defaultMessage: 'Hello, {name}!',
+        };
+
+        const el = <FormattedMessage {...descriptor} values={{name: <b>Eric</b>}} />;
+
+        renderer.render(el, {intl});
+        expect(consoleError.calls.length).toBe(0);
     });
 
     it('should not re-render when props and context are the same', () => {
@@ -138,7 +190,7 @@ describe('<FormattedMessage>', () => {
         expect(renderedThree).toNotBe(renderedOne);
     });
 
-    it('accepts `tagName` prop', () => {
+    it('accepts string as `tagName` prop', () => {
         const {intl} = intlProvider.getChildContext();
         const descriptor = {
             id: 'hello',
@@ -150,6 +202,22 @@ describe('<FormattedMessage>', () => {
         renderer.render(el, {intl});
         expect(renderer.getRenderOutput()).toEqualJSX(
             <p>{intl.formatMessage(descriptor)}</p>
+        );
+    });
+
+    it('accepts an react element as `tagName` prop', () => {
+        const {intl} = intlProvider.getChildContext();
+        const descriptor = {
+            id: 'hello',
+            defaultMessage: 'Hello, World!',
+        };
+
+        const H1 = (children) => <h1>{children}</h1>
+        const el = <FormattedMessage {...descriptor} tagName={H1} />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <H1>{intl.formatMessage(descriptor)}</H1>
         );
     });
 
@@ -193,6 +261,33 @@ describe('<FormattedMessage>', () => {
         expect(rendered.props.children).toBeAn('array');
         expect(rendered).toEqualJSX(
             <span>Hello, <b>Eric</b>!</span>
+        );
+    });
+
+    it('supports rich-text message formatting in function-as-child pattern', () => {
+        const {intl} = intlProvider.getChildContext();
+
+        const el = (
+            <FormattedMessage
+                id="hello"
+                defaultMessage="Hello, {name}!"
+                values={{
+                    name: <b>Prem</b>,
+                }}
+            >
+                {(...formattedMessage) => (
+                    <strong>{formattedMessage}</strong>
+                )}
+
+            </FormattedMessage>
+        );
+
+        renderer.render(el, {intl});
+        const rendered = renderer.getRenderOutput();
+
+        expect(rendered.props.children).toBeAn('array');
+        expect(rendered).toEqualJSX(
+            <strong>Hello, <b>Prem</b>!</strong>
         );
     });
 });

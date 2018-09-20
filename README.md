@@ -12,6 +12,9 @@ Overview
 
 **React Intl is part of [FormatJS][].** It provides bindings to React via its components and API.
 
+**Slack:** Join us on Slack at [react-intl.slack.com](https://react-intl.slack.com/) for help, general conversation and more 💬🎊🎉
+You can sign-up using this [invitation link](https://join.slack.com/t/react-intl/shared_invite/enQtNDAxMjc5MTQxMDkwLWNiYWM5Njc5NjA3ZWVkOTQ3MzBhYjFlY2NkNmM3NzEyNDUzZmNhZDE2MmUwNWVjYmExMWUxZTRhMzEzMWYxYzY).
+
 ### [Documentation][]
 
 React Intl's docs are in this GitHub repo's [Wiki][Documentation], [__Get Started__][Getting Started]. There are also several [runnable example apps][Examples] which you can reference to learn how all the pieces fit together.
@@ -35,7 +38,7 @@ There are several [runnable examples][Examples] in this Git repo, but here's a H
 ```js
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import {IntlProvider, FormattedNumber, FormattedPlural} from 'react-intl';
+import {IntlProvider, FormattedMessage} from 'react-intl';
 
 class App extends Component {
     constructor(props) {
@@ -51,12 +54,14 @@ class App extends Component {
 
         return (
             <p>
-                Hello <b>{name}</b>, you have {' '}
-                <FormattedNumber value={unreadCount} /> {' '}
-                <FormattedPlural value={unreadCount}
-                    one="message"
-                    other="messages"
-                />.
+                <FormattedMessage
+                    id="welcome"
+                    defaultMessage={`Hello {name}, you have {unreadCount, number} {unreadCount, plural,
+                      one {message}
+                      other {messages}
+                    }`}
+                    values={{name: <b>{name}</b>, unreadCount}}
+                />
             </p>
         );
     }

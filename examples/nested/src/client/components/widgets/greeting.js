@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {
     FormattedMessage,
     FormattedNumber,
@@ -20,7 +21,9 @@ const Greeting = ({name, unreadCount, lastLoginTime}) => (
                 name: <b>{name}</b>,
                 unreadCount: unreadCount,
                 formattedUnreadCount: (
-                    <b><FormattedNumber value={unreadCount} /></b>
+                    <b>
+                        <FormattedNumber value={unreadCount} />
+                    </b>
                 ),
                 formattedLastLoginTime: (
                     <FormattedRelative

@@ -1,0 +1,33 @@
+exports[`test app should be rendered 1`] = `
+<div
+  className="app">
+  <header
+    className="app-header">
+    <div
+      className="app-header__title">
+      <span>
+        React Intl + Jest Snapshot Testing Example
+      </span>
+    </div>
+  </header>
+  <main
+    className="app-main"
+    onClick={[Function]}>
+    <div
+      className="app-main__counter">
+      <span>
+        Counter 1
+      </span>
+    </div>
+  </main>
+  <footer
+    className="app-footer">
+    <div
+      className="app-footer__copyright">
+      <span>
+        © 2017 Future Testing
+      </span>
+    </div>
+  </footer>
+</div>
+`;

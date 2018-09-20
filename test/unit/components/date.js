@@ -1,7 +1,7 @@
 import expect, {spyOn} from 'expect';
 import expectJSX from 'expect-jsx';
 import React from 'react';
-import {createRenderer} from 'react-addons-test-utils';
+import {createRenderer} from '../../react-compat';
 import IntlProvider from '../../../src/components/provider';
 import FormattedDate from '../../../src/components/date';
 

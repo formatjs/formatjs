@@ -1,0 +1,11 @@
+exports[`test app header should be rendered 1`] = `
+<header
+  className="app-header">
+  <div
+    className="app-header__title">
+    <span>
+      React Intl + Jest Snapshot Testing Example
+    </span>
+  </div>
+</header>
+`;

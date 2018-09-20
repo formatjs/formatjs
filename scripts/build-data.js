@@ -10,60 +10,59 @@ import uglify from 'rollup-plugin-uglify';
 const DEFAULT_LOCALE = 'en';
 
 const cldrData = extractCLDRData({
-    pluralRules   : true,
-    relativeFields: true,
+  pluralRules: true,
+  relativeFields: true,
 });
 
 const cldrDataByLocale = new Map(
-    Object.keys(cldrData).map((locale) => [locale, cldrData[locale]])
+  Object.keys(cldrData).map(locale => [locale, cldrData[locale]])
 );
 
 const cldrDataByLang = [...cldrDataByLocale].reduce((map, [locale, data]) => {
-    const [lang]   = locale.split('-');
-    const langData = map.get(lang) || [];
-    return map.set(lang, langData.concat(data));
+  const [lang] = locale.split('-');
+  const langData = map.get(lang) || [];
+  return map.set(lang, langData.concat(data));
 }, new Map());
 
 function createDataModule(localeData) {
-    return (
-`// GENERATED FILE
+  return `// GENERATED FILE
 export default ${serialize(localeData)};
-`
-    );
+`;
 }
 
 function writeUMDFile(filename, module) {
-    const lang = p.basename(filename, '.js');
+  const lang = p.basename(filename, '.js');
 
-    return rollup({
-        entry: filename,
-        plugins: [
-            memory({
-                contents: module,
-            }),
-            uglify(),
-        ],
-    })
-    .then((bundle) => {
-        return bundle.write({
-            dest      : filename,
-            format    : 'umd',
-            moduleName: `ReactIntlLocaleData.${lang}`,
-        });
+  return rollup({
+    input: filename,
+    plugins: [
+      memory({
+        path: filename,
+        contents: module,
+      }),
+      uglify(),
+    ],
+  })
+    .then(bundle => {
+      return bundle.write({
+        file: filename,
+        format: 'umd',
+        name: `ReactIntlLocaleData.${lang}`,
+      });
     })
     .then(() => filename);
 }
 
 function writeFile(filename, contents) {
-    return new Promise((resolve, reject) => {
-        fs.writeFile(filename, contents, (err) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(p.resolve(filename));
-            }
-        });
+  return new Promise((resolve, reject) => {
+    fs.writeFile(filename, contents, err => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(p.resolve(filename));
+      }
     });
+  });
 }
 
 // -----------------------------------------------------------------------------
@@ -77,8 +76,10 @@ const allData = createDataModule([...cldrDataByLocale.values()]);
 writeUMDFile('locale-data/index.js', allData);
 
 cldrDataByLang.forEach((cldrData, lang) => {
-    writeUMDFile(`locale-data/${lang}.js`, createDataModule(cldrData));
+  writeUMDFile(`locale-data/${lang}.js`, createDataModule(cldrData));
 });
 
-process.on('unhandledRejection', (reason) => {throw reason;});
-console.log('Writing locale data files...');
+process.on('unhandledRejection', reason => {
+  throw reason;
+});
+console.log('> Writing locale data files...');

@@ -8,54 +8,53 @@
 // https://github.com/rackt/react-redux
 
 import React, {Component} from 'react';
+import hoistNonReactStatics from 'hoist-non-react-statics';
 import invariant from 'invariant';
 import {intlShape} from './types';
 import {invariantIntlContext} from './utils';
 
 function getDisplayName(Component) {
-    return Component.displayName || Component.name || 'Component';
+  return Component.displayName || Component.name || 'Component';
 }
 
 export default function injectIntl(WrappedComponent, options = {}) {
-    const {
-        intlPropName = 'intl',
-        withRef      = false,
-    } = options;
+  const {intlPropName = 'intl', withRef = false} = options;
 
-    class InjectIntl extends Component {
-        constructor(props, context) {
-            super(props, context);
-            invariantIntlContext(context);
-        }
+  class InjectIntl extends Component {
+    static displayName = `InjectIntl(${getDisplayName(WrappedComponent)})`;
 
-        getWrappedInstance() {
-            invariant(withRef,
-                '[React Intl] To access the wrapped instance, ' +
-                'the `{withRef: true}` option must be set when calling: ' +
-                '`injectIntl()`'
-            );
-
-            return this.refs.wrappedInstance;
-        }
-
-        render() {
-            return (
-                <WrappedComponent
-                    {...this.props}
-                    {...{[intlPropName]: this.context.intl}}
-                    ref={withRef ? 'wrappedInstance' : null}
-                />
-            );
-        }
-    }
-
-    InjectIntl.displayName = `InjectIntl(${getDisplayName(WrappedComponent)})`;
-
-    InjectIntl.contextTypes = {
-        intl: intlShape,
+    static contextTypes = {
+      intl: intlShape,
     };
 
-    InjectIntl.WrappedComponent = WrappedComponent;
+    static WrappedComponent = WrappedComponent;
 
-    return InjectIntl;
+    constructor(props, context) {
+      super(props, context);
+      invariantIntlContext(context);
+    }
+
+    getWrappedInstance() {
+      invariant(
+        withRef,
+        '[React Intl] To access the wrapped instance, ' +
+          'the `{withRef: true}` option must be set when calling: ' +
+          '`injectIntl()`'
+      );
+
+      return this.refs.wrappedInstance;
+    }
+
+    render() {
+      return (
+        <WrappedComponent
+          {...this.props}
+          {...{[intlPropName]: this.context.intl}}
+          ref={withRef ? 'wrappedInstance' : null}
+        />
+      );
+    }
+  }
+
+  return hoistNonReactStatics(InjectIntl, WrappedComponent);
 }

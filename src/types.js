@@ -4,80 +4,109 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {PropTypes} from 'react';
+import PropTypes from 'prop-types';
 
-const {bool, number, string, func, object, oneOf, shape} = PropTypes;
+const {
+  bool,
+  number,
+  string,
+  func,
+  object,
+  oneOf,
+  shape,
+  any,
+  oneOfType,
+} = PropTypes;
+const localeMatcher = oneOf(['best fit', 'lookup']);
+const narrowShortLong = oneOf(['narrow', 'short', 'long']);
+const numeric2digit = oneOf(['numeric', '2-digit']);
+const funcReq = func.isRequired;
 
 export const intlConfigPropTypes = {
-    locale  : string,
-    formats : object,
-    messages: object,
+  locale: string,
+  timeZone: string,
+  formats: object,
+  messages: object,
+  textComponent: any,
 
-    defaultLocale : string,
-    defaultFormats: object,
+  defaultLocale: string,
+  defaultFormats: object,
 };
 
 export const intlFormatPropTypes = {
-    formatDate       : func.isRequired,
-    formatTime       : func.isRequired,
-    formatRelative   : func.isRequired,
-    formatNumber     : func.isRequired,
-    formatPlural     : func.isRequired,
-    formatMessage    : func.isRequired,
-    formatHTMLMessage: func.isRequired,
+  formatDate: funcReq,
+  formatTime: funcReq,
+  formatRelative: funcReq,
+  formatNumber: funcReq,
+  formatPlural: funcReq,
+  formatMessage: funcReq,
+  formatHTMLMessage: funcReq,
 };
 
 export const intlShape = shape({
-    ...intlConfigPropTypes,
-    ...intlFormatPropTypes,
-    formatters: object,
-    now: func.isRequired,
+  ...intlConfigPropTypes,
+  ...intlFormatPropTypes,
+  formatters: object,
+  now: funcReq,
 });
 
 export const messageDescriptorPropTypes = {
-    id            : string.isRequired,
-    description   : string,
-    defaultMessage: string,
+  id: string.isRequired,
+  description: oneOfType([string, object]),
+  defaultMessage: string,
 };
 
 export const dateTimeFormatPropTypes = {
-    localeMatcher: oneOf(['best fit', 'lookup']),
-    formatMatcher: oneOf(['basic', 'best fit']),
+  localeMatcher,
+  formatMatcher: oneOf(['basic', 'best fit']),
 
-    timeZone: string,
-    hour12  : bool,
+  timeZone: string,
+  hour12: bool,
 
-    weekday     : oneOf(['narrow', 'short', 'long']),
-    era         : oneOf(['narrow', 'short', 'long']),
-    year        : oneOf(['numeric', '2-digit']),
-    month       : oneOf(['numeric', '2-digit', 'narrow', 'short', 'long']),
-    day         : oneOf(['numeric', '2-digit']),
-    hour        : oneOf(['numeric', '2-digit']),
-    minute      : oneOf(['numeric', '2-digit']),
-    second      : oneOf(['numeric', '2-digit']),
-    timeZoneName: oneOf(['short', 'long']),
+  weekday: narrowShortLong,
+  era: narrowShortLong,
+  year: numeric2digit,
+  month: oneOf(['numeric', '2-digit', 'narrow', 'short', 'long']),
+  day: numeric2digit,
+  hour: numeric2digit,
+  minute: numeric2digit,
+  second: numeric2digit,
+  timeZoneName: oneOf(['short', 'long']),
 };
 
 export const numberFormatPropTypes = {
-    localeMatcher: oneOf(['best fit', 'lookup']),
+  localeMatcher,
 
-    style          : oneOf(['decimal', 'currency', 'percent']),
-    currency       : string,
-    currencyDisplay: oneOf(['symbol', 'code', 'name']),
-    useGrouping    : bool,
+  style: oneOf(['decimal', 'currency', 'percent']),
+  currency: string,
+  currencyDisplay: oneOf(['symbol', 'code', 'name']),
+  useGrouping: bool,
 
-    minimumIntegerDigits    : number,
-    minimumFractionDigits   : number,
-    maximumFractionDigits   : number,
-    minimumSignificantDigits: number,
-    maximumSignificantDigits: number,
+  minimumIntegerDigits: number,
+  minimumFractionDigits: number,
+  maximumFractionDigits: number,
+  minimumSignificantDigits: number,
+  maximumSignificantDigits: number,
 };
 
 export const relativeFormatPropTypes = {
-    style: oneOf(['best fit', 'numeric']),
-    units: oneOf(['second', 'minute', 'hour', 'day', 'month', 'year']),
+  style: oneOf(['best fit', 'numeric']),
+  units: oneOf([
+    'second',
+    'minute',
+    'hour',
+    'day',
+    'month',
+    'year',
+    'second-short',
+    'minute-short',
+    'hour-short',
+    'day-short',
+    'month-short',
+    'year-short',
+  ]),
 };
 
 export const pluralFormatPropTypes = {
-    style: oneOf(['cardinal', 'ordinal']),
+  style: oneOf(['cardinal', 'ordinal']),
 };

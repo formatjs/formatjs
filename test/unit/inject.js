@@ -1,7 +1,7 @@
 import expect from 'expect';
 import expectJSX from 'expect-jsx';
 import React from 'react';
-import {createRenderer} from 'react-addons-test-utils';
+import {createRenderer} from '../react-compat';
 import {intlShape} from '../../src/types';
 import IntlProvider from '../../src/components/provider';
 import injectIntl from '../../src/inject';
@@ -19,6 +19,9 @@ describe('injectIntl()', () => {
         Wrapped.propTypes = {
             intl: intlShape.isRequired,
         };
+        Wrapped.someNonReactStatic = {
+            foo: true
+        };
 
         renderer     = createRenderer();
         intlProvider = new IntlProvider({locale: 'en'}, {});
@@ -27,6 +30,10 @@ describe('injectIntl()', () => {
     it('allows introspection access to the wrapped component', () => {
         expect(injectIntl(Wrapped).WrappedComponent).toBe(Wrapped);
     });
+
+    it('hoists non-react statics',() => {
+        expect(injectIntl(Wrapped).someNonReactStatic.foo).toBe(true)
+    })
 
     describe('displayName', () => {
         it('is descriptive by default', () => {

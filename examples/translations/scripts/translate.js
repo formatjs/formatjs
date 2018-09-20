@@ -29,7 +29,7 @@ let defaultMessages = globSync(MESSAGES_PATTERN)
 // the app's default messages are "translated" into this new "locale" by simply
 // UPPERCASING all of the message text. In a real app this would be through some
 // offline process to get the app's messages translated by machine or
-// processional translators.
+// professional translators.
 let uppercaseTranslator = new Translator((text) => text.toUpperCase());
 let uppercaseMessages = Object.keys(defaultMessages)
     .map((id) => [id, defaultMessages[id]])
