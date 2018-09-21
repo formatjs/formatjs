@@ -141,7 +141,7 @@ class IntlProvider extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const {intl: intlContext} = this.props;
+    const { intl: intlContext } = nextProps;
 
     // Build a whitelisted config object from `props`, defaults, and
     // `props.intl`, if an <IntlProvider> exists in the ancestry.
