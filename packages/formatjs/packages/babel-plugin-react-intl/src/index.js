@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import * as p from 'upath';
+import * as p from 'path';
 import {writeFileSync} from 'fs';
 import {sync as mkdirpSync} from 'mkdirp';
 import printICUMessage from './print-icu-message';
@@ -152,7 +152,7 @@ export default function ({types: t}) {
         let loc;
         if (opts.extractSourceLocation) {
             loc = {
-                file: p.toUnix(p.relative(process.cwd(), file.opts.filename)),
+                file: p.relative(process.cwd(), file.opts.filename),
                 ...path.node.loc,
             };
         }

@@ -30,7 +30,6 @@
     "mocha": "^3.0.2",
     "power-assert": "^1.4.1",
     "rimraf": "^2.4.3",
-    "upath": "^1.1.0",
     "uuid": "^3.3.2"
   },
   "scripts": {
