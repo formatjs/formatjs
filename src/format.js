@@ -6,6 +6,7 @@
 
 import invariant from 'invariant';
 import IntlRelativeFormat from 'intl-relativeformat';
+import {isValidElement} from 'react';
 
 import {
   dateTimeFormatPropTypes,
@@ -182,6 +183,12 @@ export function formatMessage(
   const {locale, formats, messages, defaultLocale, defaultFormats} = config;
 
   const {id, defaultMessage} = messageDescriptor;
+
+  // Produce a better error if the user calls `intl.formatMessage(element)`
+  if (process.env.NODE_ENV !== 'production') {
+      invariant(!isValidElement(config), '[React Intl] Don\'t pass React elements to ' +
+          'formatMessage(), pass `.props`.');
+  }
 
   // `id` is a required field of a Message Descriptor.
   invariant(id, '[React Intl] An `id` must be provided to format a message.');
