@@ -154,6 +154,39 @@ describe('<FormattedMessage>', () => {
         expect(renderedOne).toNotBe(renderedTwo);
     });
 
+    it('should re-render when context changes and blocked by parent sCU', () => {
+        intlProvider = new IntlProvider({locale: 'en', defaultLocale: 'en'}, {});
+
+        class IronDome extends React.Component {
+            shouldComponentUpdate() {
+                return false;
+            }
+
+            render() {
+                return React.Children.only(this.props.children);
+            }
+        }
+
+        renderer.render(
+            <IronDome>
+                <FormattedMessage id="hello" defaultMessage="Hello, World!" />
+            </IronDome>,
+            intlProvider.getChildContext()
+        );
+        const renderedOne = renderer.getRenderOutput();
+
+        intlProvider = new IntlProvider({locale: 'en-US', defaultLocale: 'en-US'}, {});
+        renderer.render(
+            <IronDome>
+                <FormattedMessage id="hello" defaultMessage="Hello, World!" />
+            </IronDome>,
+            intlProvider.getChildContext()
+        );
+        const renderedTwo = renderer.getRenderOutput();
+
+        expect(renderedOne).toNotBe(renderedTwo);
+    });
+
     it('accepts `values` prop', () => {
         const {intl} = intlProvider.getChildContext();
         const descriptor = {
