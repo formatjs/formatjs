@@ -1,7 +1,7 @@
 import expect, {createSpy, spyOn} from 'expect';
 import React from 'react';
 import {mount} from 'enzyme';
-import {getIntlContext, mockIntlContext, shallowDeep} from '../utils';
+import {generateIntlContext, mockIntlContext, shallowDeep} from '../utils';
 import FormattedMessage from '../../../src/components/message';
 
 const mockContext = (intl) => {
@@ -16,15 +16,10 @@ describe('<FormattedMessage>', () => {
     let intl;
 
     beforeEach(() => {
-        jest.resetModules();
-
-        mockIntlContext();
-        const IntlProvider = require('../../../src/components/provider').default;
-        intl = getIntlContext(
-          <IntlProvider locale='en' defaultLocale='en'>
-            <div />
-          </IntlProvider>
-        );
+        intl = generateIntlContext({
+          locale: 'en',
+          defaultLocale: 'en'
+        });
 
         consoleError = spyOn(console, 'error');
     });
@@ -258,15 +253,10 @@ describe('<FormattedMessage>', () => {
     });
 
     it('should re-render when context changes', () => {
-        jest.resetModules();
-
-        mockIntlContext();
-        const IntlProvider = require('../../../src/components/provider').default;
-        const changedIntl = getIntlContext(
-          <IntlProvider locale='en-US' defaultLocale='en'>
-            <div />
-          </IntlProvider>
-        );
+        const changedIntl = generateIntlContext({
+          locale: 'en-US',
+          defaultLocale: 'en-US'
+        });
 
         const FormattedMessage = mockContext(intl);
         const props = {

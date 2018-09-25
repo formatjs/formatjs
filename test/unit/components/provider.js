@@ -1,7 +1,7 @@
 import expect, {createSpy, spyOn} from 'expect';
 import React from 'react';
 import {mount} from 'enzyme';
-import {getIntlContext, shallowDeep, mockIntlContext, SpyComponent} from '../utils'
+import {shallowDeep, mockIntlContext, SpyComponent} from '../utils'
 import {intlConfigPropTypes, intlFormatPropTypes} from '../../../src/types';
 import IntlProvider from '../../../src/components/provider';
 
@@ -16,6 +16,11 @@ const skipWhen = (shouldSkip, callback) => {
 const mockContext = (intl) => {
   mockIntlContext(intl);
   return require('../../../src/components/provider').default;
+}
+
+const getIntlContext = (el) => {
+  const provider = shallowDeep(el, 2).first();
+  return provider.prop('value');
 }
 
 describe('<IntlProvider>', () => {
