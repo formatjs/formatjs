@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme';
 
-export const mockIntlContext = (intl) => {
+export const mockIntlContext = (intl = null) => {
   jest.doMock(
     '../../src/components/withIntlContext',
     () => ({

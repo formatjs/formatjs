@@ -143,7 +143,7 @@ class IntlProvider extends Component {
 
     // Build a whitelisted config object from `props`, defaults, and
     // `props.intl`, if an <IntlProvider> exists in the ancestry.
-    const filteredProps = filterProps(nextProps, intlConfigPropNames, intlContext);
+    const filteredProps = filterProps(nextProps, intlConfigPropNames, intlContext || {});
 
     if (!shallowEquals(filteredProps, prevState.filteredProps)) {
       const config = getConfig(filteredProps);

@@ -2,7 +2,7 @@ import React from 'react';
 import getDisplayName from 'react-display-name';
 import createContext from 'create-react-context';
 
-const IntlContext = createContext();
+const IntlContext = createContext(null);
 const {
   Consumer: IntlConsumer,
   Provider: IntlProvider
