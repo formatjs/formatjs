@@ -1,15 +1,12 @@
 import expect, {createSpy, spyOn} from 'expect';
 import React from 'react';
 import {mount} from 'enzyme';
-import {generateIntlContext, mockIntlContext, shallowDeep} from '../utils';
+import {generateIntlContext, makeMockContext, shallowDeep} from '../utils';
 import FormattedMessage from '../../../src/components/message';
 
-const mockContext = (intl) => {
-  jest.resetModules();
-  mockIntlContext(intl);
-
-  return require('../../../src/components/message').default
-}
+const mockContext = makeMockContext(
+  require.resolve('../../../src/components/message')
+);
 
 describe('<FormattedMessage>', () => {
     let consoleError;

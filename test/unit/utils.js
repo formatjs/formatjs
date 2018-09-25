@@ -1,7 +1,8 @@
 import React from 'react'
 import {shallow} from 'enzyme';
 
-export const mockIntlContext = (intl = null) => {
+export const makeMockContext = (modulePath, exportName = 'default') => (intl = null) => {
+  jest.resetModules();
   jest.doMock(
     '../../src/components/withIntlContext',
     () => ({
@@ -36,6 +37,8 @@ export const mockIntlContext = (intl = null) => {
       )
     })
   )
+
+  return require(modulePath)[exportName]
 }
 
 export const shallowDeep = (componentInstance, depth, options) => {
@@ -66,11 +69,10 @@ export class SpyComponent extends React.Component {
   }
 }
 
+const mockProviderContext = makeMockContext('../../src/components/provider');
 export const generateIntlContext = (intl) => {
-  jest.resetModules();
-  mockIntlContext();
+  const IntlProvider = mockProviderContext();
 
-  const IntlProvider = require('../../src/components/provider').default;
   return shallowDeep(
     <IntlProvider {...intl}>
       <div />

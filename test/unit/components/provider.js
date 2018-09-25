@@ -1,7 +1,7 @@
 import expect, {createSpy, spyOn} from 'expect';
 import React from 'react';
 import {mount} from 'enzyme';
-import {shallowDeep, mockIntlContext, SpyComponent} from '../utils'
+import {makeMockContext, shallowDeep, SpyComponent} from '../utils'
 import {intlConfigPropTypes, intlFormatPropTypes} from '../../../src/types';
 import IntlProvider from '../../../src/components/provider';
 
@@ -13,10 +13,9 @@ const skipWhen = (shouldSkip, callback) => {
     }
 };
 
-const mockContext = (intl) => {
-  mockIntlContext(intl);
-  return require('../../../src/components/provider').default;
-}
+const mockContext = makeMockContext(
+  require.resolve('../../../src/components/provider')
+);
 
 const getIntlContext = (el) => {
   const provider = shallowDeep(el, 2).first();
@@ -50,8 +49,6 @@ describe('<IntlProvider>', () => {
     let dateNow;
 
     beforeEach(() => {
-        jest.resetModules()
-
         consoleError       = spyOn(console, 'error');
         dateNow            = spyOn(Date, 'now').andReturn(now);
     });
@@ -267,7 +264,6 @@ describe('<IntlProvider>', () => {
           </IntlProvider>
         );
 
-        jest.resetModules(); // to make mockContext() work again
         IntlProvider = mockContext(parentContext);
         const el = (
             <IntlProvider>
@@ -315,7 +311,6 @@ describe('<IntlProvider>', () => {
           </IntlProvider>
         );
 
-        jest.resetModules();
         IntlProvider = mockContext(parentContext);
         const el = (
             <IntlProvider
@@ -347,9 +342,7 @@ describe('<IntlProvider>', () => {
           </IntlProvider>
         );
 
-        jest.resetModules();
         IntlProvider = mockContext(parentContext);
-
         const el = (
             <IntlProvider>
                 <SpyComponent />
@@ -372,9 +365,7 @@ describe('<IntlProvider>', () => {
           </IntlProvider>
         );
 
-        jest.resetModules();
         IntlProvider = mockContext(parentContext);
-
         const Child = createSpy().andReturn(null);
 
         const intlProvider = mount(
@@ -403,9 +394,7 @@ describe('<IntlProvider>', () => {
           </IntlProvider>
         );
 
-        jest.resetModules();
         IntlProvider = mockContext(initialParentContext);
-
         const Child = createSpy().andReturn(null);
 
         const el = (
