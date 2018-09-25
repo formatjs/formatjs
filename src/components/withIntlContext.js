@@ -1,4 +1,5 @@
 import React from 'react';
+import getDisplayName from 'react-display-name';
 import createContext from 'create-react-context';
 
 const IntlContext = createContext();
@@ -10,7 +11,7 @@ const {
 export const Provider = IntlProvider
 
 export default function withIntlContext(Component) {
-  return function (props) {
+  const componentWithIntl = function (props) {
     return (
       <IntlConsumer>
         {(intl) => (
@@ -22,4 +23,8 @@ export default function withIntlContext(Component) {
       </IntlConsumer>
     )
   }
+
+  componentWithIntl.displayName = `withIntl(${getDisplayName(Component)})`
+
+  return componentWithIntl
 }
