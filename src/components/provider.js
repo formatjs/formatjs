@@ -6,14 +6,14 @@
 
 import React, {Component, Children} from 'react';
 import PropTypes from 'prop-types';
-import withIntlContext from './withIntlContext';
+import withIntlContext, {Provider} from './withIntlContext';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 import IntlPluralFormat from '../plural';
 import memoizeIntlConstructor from 'intl-format-cache';
 import invariant from 'invariant';
 import {shouldIntlComponentUpdate, filterProps, shallowEquals} from '../utils';
-import {intlConfigPropTypes, intlFormatPropTypes, intlShape} from '../types';
+import {intlConfigPropTypes, intlFormatPropTypes} from '../types';
 import * as format from '../format';
 import {hasLocaleData} from '../locale-data-registry';
 
@@ -30,9 +30,6 @@ const defaultProps = {
   defaultLocale: 'en',
   defaultFormats: {},
 };
-
-const IntlContext = React.createContext();
-export const Consumer = IntlContext.Consumer
 
 function getConfig(filteredProps) {
   let config = filteredProps;
@@ -178,9 +175,9 @@ class IntlProvider extends Component {
 
   render() {
     return (
-      <IntlContext.Provider value={this.getContext()}>
+      <Provider value={this.getContext()}>
         { Children.only(this.props.children) }
-      </IntlContext.Provider>
+      </Provider>
     );
   }
 }

@@ -1,5 +1,13 @@
 import React from 'react';
-import {Consumer as IntlConsumer} from './provider.js';
+import createContext from 'create-react-context';
+
+const IntlContext = createContext();
+const {
+  Consumer: IntlConsumer,
+  Provider: IntlProvider
+} = IntlContext
+
+export const Provider = IntlProvider
 
 export default function withIntlContext(Component) {
   return function (props) {

@@ -65,6 +65,7 @@
     "setupTestFrameworkScriptFile": "./test/unit/setup.js"
   },
   "dependencies": {
+    "create-react-context": "^0.2.3",
     "intl-format-cache": "^2.0.5",
     "intl-messageformat": "^2.1.0",
     "intl-relativeformat": "^2.1.0",
@@ -72,7 +73,7 @@
     "react-addons-test-utils": "^0.14.8"
   },
   "peerDependencies": {
-    "react": ">= 16.3.1",
+    "react": "^0.14.9 || ^15.0.0 || ^16.0.0",
     "prop-types": "^15.5.4"
   },
   "devDependencies": {
@@ -144,7 +145,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "jest --coverage --verbose",
-    "test:react": "jest",
+    "test:react": "npm run react:14 && jest && npm run react:15 && jest && npm run react:16 && jest",
     "test:all": "npm run lint && npm run test && npm run test:react",
     "test:watch": "jest --watch",
     "test:perf": "cross-env NODE_ENV=production babel-node test/perf",
