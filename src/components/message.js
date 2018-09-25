@@ -134,4 +134,6 @@ class FormattedMessage extends Component {
   }
 }
 
+export const BaseFormattedMessage = FormattedMessage
+
 export default withIntlContext(FormattedMessage)

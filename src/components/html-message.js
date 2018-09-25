@@ -4,54 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import withIntlContext from './withIntlContext';
-import {intlShape, messageDescriptorPropTypes} from '../types';
-import {
-  invariantIntlContext,
-  shallowEquals,
-  shouldIntlComponentUpdate,
-} from '../utils';
+import {BaseFormattedMessage} from './message';
 
-class FormattedHTMLMessage extends Component {
-  static displayName = 'FormattedHTMLMessage';
-
-  static propTypes = {
-    ...messageDescriptorPropTypes,
-    intl: intlShape,
-    values: PropTypes.object,
-    tagName: PropTypes.string,
-    children: PropTypes.func,
-  };
-
-  static defaultProps = {
-    values: {},
-  };
-
-  constructor(props) {
-    super(props);
-    invariantIntlContext(props);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const {values} = this.props;
-    const {values: nextValues} = nextProps;
-
-    if (!shallowEquals(nextValues, values)) {
-      return true;
-    }
-
-    // Since `values` has already been checked, we know they're not
-    // different, so the current `values` are carried over so the shallow
-    // equals comparison on the other props isn't affected by the `values`.
-    let nextPropsToCheck = {
-      ...nextProps,
-      values,
-    };
-
-    return shouldIntlComponentUpdate(this, nextPropsToCheck, nextState);
-  }
+class FormattedHTMLMessage extends BaseFormattedMessage {
+  static displayName = 'FormattedHTMLMessage'
 
   render() {
     const {formatHTMLMessage, textComponent: Text} = this.props.intl;
@@ -85,4 +43,6 @@ class FormattedHTMLMessage extends Component {
   }
 }
 
-export default withIntlContext(FormattedHTMLMessage)
+export const BaseFormattedHTMLMessage = FormattedHTMLMessage // testing purpose only
+
+export default withIntlContext(FormattedHTMLMessage);
