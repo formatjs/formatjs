@@ -111,7 +111,7 @@
     "glob": "^7.0.0",
     "intl": "^1.2.1",
     "intl-messageformat-parser": "^1.2.0",
-    "jest": "^19.0.0",
+    "jest": "^23.6.0",
     "mkdirp": "^0.5.1",
     "prettier": "^1.6.1",
     "prop-types": "^15.6.1",
