@@ -1,12 +1,9 @@
 import expect, {createSpy, spyOn} from 'expect';
-import expectJSX from 'expect-jsx';
 import React from 'react';
 import {mount} from 'enzyme';
 import {shallowDeep, mockIntlContext, SpyComponent} from '../utils'
 import {intlConfigPropTypes, intlFormatPropTypes} from '../../../src/types';
 import IntlProvider from '../../../src/components/provider';
-
-expect.extend(expectJSX);
 
 const skipWhen = (shouldSkip, callback) => {
     if (shouldSkip) {
