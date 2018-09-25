@@ -39,10 +39,10 @@ export const mockIntlContext = (intl = null) => {
 }
 
 export const shallowDeep = (componentInstance, depth, options) => {
-  let rendered = shallow(componentInstance, options)
+  let rendered = shallow(componentInstance, options);
 
   for (let i = 1; i < depth; i++) {
-    rendered = rendered.dive()
+    rendered = rendered.dive();
   }
 
   return rendered
