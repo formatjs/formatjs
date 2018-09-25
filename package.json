@@ -70,8 +70,8 @@
     "intl-messageformat": "^2.1.0",
     "intl-relativeformat": "^2.1.0",
     "invariant": "^2.1.1",
-    "react-addons-test-utils": "^0.14.8",
-    "react-display-name": "^0.2.4"
+    "react-display-name": "^0.2.4",
+    "react-lifecycles-compat": "^3.0.4"
   },
   "peerDependencies": {
     "react": "^0.14.9 || ^15.0.0 || ^16.0.0",
@@ -116,6 +116,7 @@
     "prettier": "^1.6.1",
     "prop-types": "^15.6.1",
     "react": "^16.3.1",
+    "react-addons-test-utils": "^0.14.8",
     "react-dom": "^16.3.3",
     "react-test-renderer": "^16.3.1",
     "rimraf": "^2.4.2",
