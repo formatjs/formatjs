@@ -65,3 +65,8 @@ export class SpyComponent extends React.Component {
     return null
   }
 }
+
+export const getIntlContext = (el) => {
+  const provider = shallowDeep(el, 2).first();
+  return provider.prop('value');
+}
