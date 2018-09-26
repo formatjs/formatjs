@@ -42,7 +42,8 @@
   "jest": {
     "testRegex": "/test/(unit|functional)/.*\\.js",
     "testPathIgnorePatterns": [
-      "/test/functional/support/"
+      "/test/functional/support/",
+      "/test/unit/utils"
     ],
     "collectCoverageFrom": [
       "src/**/*.js",
