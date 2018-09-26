@@ -63,7 +63,7 @@
         "statements": 95
       }
     },
-    "setupTestFrameworkScriptFile": "./test/unit/setup.js"
+    "setupTestFrameworkScriptFile": "./test/setup.js"
   },
   "dependencies": {
     "create-react-context": "^0.2.3",
