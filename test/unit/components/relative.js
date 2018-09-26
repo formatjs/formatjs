@@ -1,38 +1,38 @@
-import expect, {spyOn} from 'expect';
-import expectJSX from 'expect-jsx';
+import expect, {createSpy, spyOn} from 'expect';
 import React from 'react';
-import {createRenderer} from '../../react-compat';
-import IntlProvider from '../../../src/components/provider';
-import FormattedRelative from '../../../src/components/relative';
+import {mount} from 'enzyme';
+import {generateIntlContext, makeMockContext, shallowDeep} from '../utils';
+import FormattedRelative, {BaseFormattedRelative} from '../../../src/components/relative';
 
-expect.extend(expectJSX);
+const mockContext = makeMockContext(
+  require.resolve('../../../src/components/relative')
+);
+
+const spySetState = () => {
+  return spyOn(
+    require('../../../src/components/relative').BaseFormattedRelative.prototype,
+    'setState'
+  );
+}
 
 describe('<FormattedRelative>', () => {
     const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
     let consoleError;
-    let renderer;
-    let intlProvider;
+    let intl;
     let setState;
 
     beforeEach(() => {
         consoleError = spyOn(console, 'error');
-        renderer     = createRenderer();
-        intlProvider = new IntlProvider({locale: 'en'}, {});
-        setState     = spyOn(FormattedRelative.prototype, 'setState').andCallThrough();
-
-        // TODO: Remove when this feature is released to react-addons-test-utils
-        // https://github.com/facebook/react/pull/4918
-        if (!renderer.getMountedInstance) {
-            renderer.getMountedInstance = function () {
-                return this._instance ? this._instance._instance : null;
-            };
-        }
+        intl = generateIntlContext({
+          locale: 'en'
+        });
+        setState = null;
     });
 
     afterEach(() => {
         consoleError.restore();
-        setState.restore();
+        setState && setState.restore();
     });
 
     it('has a `displayName`', () => {
@@ -40,107 +40,140 @@ describe('<FormattedRelative>', () => {
     });
 
     it('throws when <IntlProvider> is missing from ancestry', () => {
-        expect(() => renderer.render(<FormattedRelative />)).toThrow(
+        const FormattedRelative = mockContext();
+        expect(() => shallowDeep(<FormattedRelative />, 2)).toThrow(
             '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
         );
     });
 
     it('requires a finite `value` prop', async () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedRelative = mockContext(intl);
+        setState = spySetState();
 
-        renderer.render(<FormattedRelative value={0} />, {intl});
-        expect(isFinite(0)).toBe(true);
+        expect(setState.calls.length).toBe(0);
+        const date = Date.now();
+
+        const withIntlContext = mount(
+          <FormattedRelative value={date} />
+        );
         expect(consoleError.calls.length).toBe(0);
 
-        renderer.render(<FormattedRelative value={NaN} />, {intl});
+        withIntlContext.setProps({
+          ...withIntlContext.props(),
+          value: NaN
+        });
+
         expect(consoleError.calls.length).toBe(1);
         expect(consoleError.calls[0].arguments[0]).toContain(
             '[React Intl] Error formatting relative time.\nRangeError'
         );
 
-        // Shallow Renderer doesn't call `componentDidMount()`. This forces the
-        // scheduler to schedule an update based on the `updateInterval`.
-        renderer.getMountedInstance().componentDidMount();
-
         // Should avoid update scheduling tight-loop.
         await sleep(10);
         expect(setState.calls.length).toBe(1, '`setState()` called unexpectedly');
-        renderer.unmount();
+
+        withIntlContext.unmount();
     });
 
     it('renders a formatted relative time in a <span>', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedRelative = mockContext(intl);
         const date = new Date();
 
-        const el = <FormattedRelative value={date} />;
+        const rendered = shallowDeep(
+          <FormattedRelative value={date} />,
+          2
+        );
 
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span>{intl.formatRelative(date)}</span>
+        expect(rendered.type()).toBe('span');
+        expect(rendered.text()).toBe(
+          intl.formatRelative(date)
         );
     });
 
     it('should not re-render when props and context are the same', () => {
-        intlProvider = new IntlProvider({locale: 'en'}, {});
-        renderer.render(<FormattedRelative value={0} />, intlProvider.getChildContext());
-        const renderedOne = renderer.getRenderOutput();
+        const FormattedRelative = mockContext(intl);
 
-        intlProvider = new IntlProvider({locale: 'en'}, {});
-        renderer.render(<FormattedRelative value={0} />, intlProvider.getChildContext());
-        const renderedTwo = renderer.getRenderOutput();
+        const spy = createSpy().andReturn(null);
+        const withIntlContext = mount(
+          <FormattedRelative value={Date.now()}>
+            { spy }
+          </FormattedRelative>
+        );
 
-        expect(renderedOne).toBe(renderedTwo);
+        withIntlContext.setProps({
+          ...withIntlContext.props()
+        });
+        withIntlContext.instance().mockContext(intl);
+
+        expect(spy.calls.length).toBe(1);
     });
 
     it('should re-render when props change', () => {
-        renderer.render(<FormattedRelative value={0} />, intlProvider.getChildContext());
-        const renderedOne = renderer.getRenderOutput();
+        const FormattedRelative = mockContext(intl);
 
-        renderer.render(<FormattedRelative value={1000} />, intlProvider.getChildContext());
-        const renderedTwo = renderer.getRenderOutput();
+        const spy = createSpy().andReturn(null);
+        const withIntlContext = mount(
+          <FormattedRelative value={Date.now()}>
+            { spy }
+          </FormattedRelative>
+        );
 
-        expect(renderedOne).toNotBe(renderedTwo);
+        withIntlContext.setProps({
+          ...withIntlContext.props(),
+          value: withIntlContext.prop('value') + 1
+        });
+
+        expect(spy.calls.length).toBe(2);
     });
 
     it('should re-render when context changes', () => {
-        intlProvider = new IntlProvider({locale: 'en'}, {});
-        renderer.render(<FormattedRelative value={0} />, intlProvider.getChildContext());
-        const renderedOne = renderer.getRenderOutput();
+        const FormattedRelative = mockContext(intl);
 
-        intlProvider = new IntlProvider({locale: 'en-US'}, {});
-        renderer.render(<FormattedRelative value={0} />, intlProvider.getChildContext());
-        const renderedTwo = renderer.getRenderOutput();
+        const spy = createSpy().andReturn(null);
+        const withIntlContext = mount(
+          <FormattedRelative value={Date.now()}>
+            { spy }
+          </FormattedRelative>
+        );
 
-        expect(renderedOne).toNotBe(renderedTwo);
+        const otherIntl = generateIntlContext({
+          locale: 'en-US'
+        });
+        withIntlContext.instance().mockContext(otherIntl);
+
+        expect(spy.calls.length).toBe(2);
     });
 
     it('accepts valid IntlRelativeFormat options as props', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedRelative = mockContext(intl);
         const date = intl.now() - 60 * 1000;
         const options = {units: 'second'};
 
-        const el = <FormattedRelative value={date} {...options} />;
+        const rendered = shallowDeep(
+          <FormattedRelative value={date} {...options} />,
+          2
+        );
 
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span>{intl.formatRelative(date, options)}</span>
+        expect(rendered.text()).toBe(
+          intl.formatRelative(date, options)
         );
     });
 
     it('fallsback and warns on invalid IntlRelativeFormat options', () => {
-        const {intl} = intlProvider.getChildContext();
-        const el = <FormattedRelative value={0} units="invalid" />;
+        const FormattedRelative = mockContext(intl);
+        const date = new Date();
 
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span>{String(new Date(0))}</span>
+        const rendered = shallowDeep(
+          <FormattedRelative value={date} units="invalid" />,
+          2
         );
 
+        expect(rendered.text()).toBe(String(date));
         expect(consoleError.calls.length).toBeGreaterThan(0);
     });
 
     it('accepts `format` prop', () => {
-        intlProvider = new IntlProvider({
+        intl = generateIntlContext({
             locale: 'en',
             formats: {
                 relative: {
@@ -151,104 +184,108 @@ describe('<FormattedRelative>', () => {
             },
         }, {});
 
-        const {intl} = intlProvider.getChildContext();
+        const FormattedRelative = mockContext(intl);
         const date   = intl.now() - 60 * 1000;
         const format = 'seconds';
 
-        const el = <FormattedRelative value={date} format={format} />;
+        const rendered = shallowDeep(
+          <FormattedRelative value={date} format={format} />,
+          2
+        );
 
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span>{intl.formatRelative(date, {format})}</span>
+        expect(rendered.text()).toBe(
+          intl.formatRelative(date, {format})
         );
     });
 
     it('accepts `initialNow` prop', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedRelative = mockContext(intl);
         const date = 0;
         const now = 1000;
 
         expect(now).toNotEqual(intl.now());
 
-        const el = <FormattedRelative value={date} initialNow={now} />;
+        const rendered = shallowDeep(
+          <FormattedRelative value={date} initialNow={now} />,
+          2
+        );
 
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span>{intl.formatRelative(date, {now})}</span>
+        expect(rendered.text()).toBe(
+          intl.formatRelative(date, {now})
         );
     });
 
     it('supports function-as-child pattern', () => {
-        const {intl} = intlProvider.getChildContext();
-        const date   = new Date();
+        const FormattedRelative = mockContext(intl);
+        const date = new Date();
 
-        const el = (
-            <FormattedRelative value={date}>
-                {(formattedRelative) => (
-                    <b>{formattedRelative}</b>
-                )}
-            </FormattedRelative>
+        const spy = createSpy().andReturn(<b>Jest</b>);
+        const rendered = shallowDeep(
+          <FormattedRelative value={date}>
+            { spy }
+          </FormattedRelative>,
+          2
         );
 
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <b>{intl.formatRelative(date)}</b>
-        );
+        expect(spy.calls.length).toBe(1);
+        expect(spy.calls[0].arguments).toEqual([
+          intl.formatRelative(date)
+        ]);
+
+        expect(rendered.type()).toBe('b');
+        expect(rendered.text()).toBe('Jest');
     });
 
     it('updates automatically', (done) => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedRelative = mockContext(intl);
         const date = new Date();
         const now = intl.now();
 
-        renderer.render(<FormattedRelative value={date} updateInterval={1} />, {intl});
-        const renderedOne = renderer.getRenderOutput();
-
-        // Shallow Renderer doesn't call `componentDidMount()`. This forces the
-        // scheduler to schedule an update based on the `updateInterval`.
-        renderer.getMountedInstance().componentDidMount();
+        const withIntlContext = shallowDeep(
+          <FormattedRelative value={date} updateInterval={1} />
+        );
+        const text = withIntlContext.dive().text();
 
         // Update `now()` to act like the <IntlProvider> is mounted.
         intl.now = () => now + 1000;
 
         setTimeout(() => {
-            const renderedTwo = renderer.getRenderOutput();
+            const textAfterUpdate = withIntlContext.dive().text();
 
-            expect(renderedTwo).toNotEqualJSX(renderedOne);
-            expect(renderedTwo).toEqualJSX(
-                <span>{intl.formatRelative(date, {now: intl.now()})}</span>
+            expect(textAfterUpdate).toNotBe(text);
+            expect(textAfterUpdate).toBe(
+                intl.formatRelative(date, {now: intl.now()})
             );
 
-            renderer.unmount();
             done();
         }, 10);
     });
 
     it('updates when the `value` prop changes', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedRelative = mockContext(intl);
         const now = intl.now();
 
-        renderer.render(<FormattedRelative value={now} updateInterval={1} />, {intl});
-        const renderedOne = renderer.getRenderOutput();
-
-        // Shallow Renderer doesn't call `componentDidMount()`. This forces the
-        // scheduler to schedule an update based on the `updateInterval`.
-        renderer.getMountedInstance().componentDidMount();
+        const withIntlContext = shallowDeep(
+          <FormattedRelative value={now} updateInterval={1} />
+        );
+        const textBefore = withIntlContext.dive().text();
 
         // Update `now()` to act like the <IntlProvider> is mounted.
-        const nextNow = now + 1000;
+        const nextNow = now + 10000;
         intl.now = () => nextNow;
 
-        renderer.render(<FormattedRelative value={nextNow} updateInterval={1} />, {intl});
-        const renderedTwo = renderer.getRenderOutput();
+        withIntlContext.setProps({
+          ...withIntlContext.props(),
+          value: nextNow
+        });
 
-        expect(renderedTwo).toEqualJSX(renderedOne);
-
-        renderer.unmount();
+        expect(
+          withIntlContext.dive().text()
+        ).toBe(textBefore);
     });
 
     it('updates at maximum of `updateInterval` with a string `value`', (done) => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedRelative = mockContext(intl);
 
         // `toString()` rounds the date to the nearest second, this makes sure
         // `date` and `now` are exactly 1000ms apart so the scheduler will wait
@@ -258,45 +295,40 @@ describe('<FormattedRelative>', () => {
 
         spyOn(intl, 'now').andReturn(now);
 
-        renderer.render(<FormattedRelative value={date} updateInterval={1} />, {intl});
-
-        // Shallow Renderer doesn't call `componentDidMount()`. This forces the
-        // scheduler to schedule an update based on the `updateInterval`.
-        renderer.getMountedInstance().componentDidMount();
+        shallowDeep(
+          <FormattedRelative value={date} updateInterval={1} />,
+          2
+        );
 
         setTimeout(() => {
             // Make sure setTimeout wasn't called with `NaN`, which is like `0`.
             expect(intl.now.calls.length).toBe(1);
 
-            renderer.unmount();
             done();
         }, 10);
     });
 
     it('does not update when `updateInterval` prop is falsy', (done) => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedRelative = mockContext(intl);
         const date = new Date();
         const now = intl.now();
 
-        renderer.render(<FormattedRelative value={date} updateInterval={0} />, {intl});
-        const renderedOne = renderer.getRenderOutput();
-
-        // Shallow Renderer doesn't call `componentDidMount()`. This forces the
-        // scheduler to schedule an update based on the `updateInterval`.
-        renderer.getMountedInstance().componentDidMount();
+        const withIntlContext = mount(
+          <FormattedRelative value={date} updateInterval={0} />
+        );
+        const textBefore = withIntlContext.text();
 
         // Update `now()` to act like the <IntlProvider> is mounted.
         intl.now = () => now + 1000;
 
         setTimeout(() => {
-            const renderedTwo = renderer.getRenderOutput();
+            const textAfter = withIntlContext.text();
 
-            expect(renderedTwo).toEqualJSX(renderedOne);
-            expect(renderedTwo).toNotEqualJSX(
-                <span>{intl.formatRelative(date, {now: intl.now()})}</span>
+            expect(textAfter).toBe(textBefore);
+            expect(textAfter).toNotBe(
+                intl.formatRelative(date, {now: intl.now()})
             );
 
-            renderer.unmount();
             done();
         }, 10);
     });

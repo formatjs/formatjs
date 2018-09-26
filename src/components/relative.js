@@ -168,4 +168,6 @@ class FormattedRelative extends Component {
   }
 }
 
+export const BaseFormattedRelative = FormattedRelative
+
 export default withIntlContext(FormattedRelative)
