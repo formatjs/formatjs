@@ -4,7 +4,7 @@ import {shallow} from 'enzyme';
 export const makeMockContext = (modulePath, exportName = 'default') => (intl = null) => {
   jest.resetModules();
   jest.doMock(
-    '../../src/components/withIntlContext',
+    '../../src/components/withIntl',
     () => ({
       __esModule: true,
       default: (WrappedComponent) => {

@@ -6,7 +6,7 @@
 
 import {Component, createElement, isValidElement} from 'react';
 import PropTypes from 'prop-types';
-import withIntlContext from './withIntlContext';
+import withIntl from './withIntl';
 import {intlShape, messageDescriptorPropTypes} from '../types';
 import {
   invariantIntlContext,
@@ -136,4 +136,4 @@ class FormattedMessage extends Component {
 
 export const BaseFormattedMessage = FormattedMessage
 
-export default withIntlContext(FormattedMessage)
+export default withIntl(FormattedMessage)

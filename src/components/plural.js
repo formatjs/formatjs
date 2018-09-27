@@ -6,7 +6,7 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import withIntlContext from './withIntlContext';
+import withIntl from './withIntl';
 import {intlShape, pluralFormatPropTypes} from '../types';
 import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
 
@@ -56,4 +56,4 @@ class FormattedPlural extends Component {
   }
 }
 
-export default withIntlContext(FormattedPlural)
+export default withIntl(FormattedPlural)

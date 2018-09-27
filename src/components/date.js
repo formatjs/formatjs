@@ -6,7 +6,7 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import withIntlContext from './withIntlContext';
+import withIntl from './withIntl';
 import {intlShape, dateTimeFormatPropTypes} from '../types';
 import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
 
@@ -44,4 +44,4 @@ class FormattedDate extends Component {
   }
 }
 
-export default withIntlContext(FormattedDate)
+export default withIntl(FormattedDate)

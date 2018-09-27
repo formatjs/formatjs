@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import withIntlContext from './withIntlContext';
+import withIntl from './withIntl';
 import {BaseFormattedMessage} from './message';
 
 class FormattedHTMLMessage extends BaseFormattedMessage {
@@ -45,4 +45,4 @@ class FormattedHTMLMessage extends BaseFormattedMessage {
 
 export const BaseFormattedHTMLMessage = FormattedHTMLMessage // testing purpose only
 
-export default withIntlContext(FormattedHTMLMessage);
+export default withIntl(FormattedHTMLMessage);

@@ -6,7 +6,7 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import withIntlContext from './withIntlContext';
+import withIntl from './withIntl';
 import {intlShape, relativeFormatPropTypes} from '../types';
 import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
 
@@ -170,4 +170,4 @@ class FormattedRelative extends Component {
 
 export const BaseFormattedRelative = FormattedRelative
 
-export default withIntlContext(FormattedRelative)
+export default withIntl(FormattedRelative)

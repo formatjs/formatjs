@@ -6,7 +6,7 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import withIntlContext from './withIntlContext';
+import withIntl from './withIntl';
 import {intlShape, numberFormatPropTypes} from '../types';
 import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
 
@@ -44,4 +44,4 @@ class FormattedNumber extends Component {
   }
 }
 
-export default withIntlContext(FormattedNumber)
+export default withIntl(FormattedNumber)
