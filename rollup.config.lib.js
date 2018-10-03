@@ -1,5 +1,7 @@
 import * as p from 'path';
 import babel from 'rollup-plugin-babel';
+import commonjs from 'rollup-plugin-commonjs';
+import nodeResolve from 'rollup-plugin-node-resolve';
 
 const copyright = `/*
  * Copyright ${new Date().getFullYear()}, Yahoo Inc.
@@ -11,10 +13,9 @@ const copyright = `/*
 export default {
   input: p.resolve('src/index.js'),
   output: [
-    {file: 'lib/index.js', format: 'cjs'},
-    {file: 'lib/index.es.js', format: 'es'},
+    {file: 'lib/index.js', format: 'cjs', banner: copyright},
+    {file: 'lib/index.es.js', format: 'es', banner: copyright},
   ],
-  banner: copyright,
   external: [
     'intl-format-cache',
     'intl-messageformat',
@@ -24,5 +25,11 @@ export default {
     'prop-types',
     p.resolve('locale-data/index.js'),
   ],
-  plugins: [babel()],
+  plugins: [
+    babel(),
+    commonjs(),
+    nodeResolve({
+      jsnext: true
+    })
+  ],
 };

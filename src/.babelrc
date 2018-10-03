@@ -1,33 +1,23 @@
 {
     "presets": [
-        ["es2015", {
+        ["@babel/preset-env", {
             "modules": false
         }],
-        "react"
+        "@babel/preset-react"
     ],
     "plugins": [
-        "transform-object-rest-spread",
-        "transform-class-properties",
-        "transform-es3-member-expression-literals",
-        "transform-es3-property-literals",
-        ["transform-react-remove-prop-types", {
+        "@babel/plugin-proposal-object-rest-spread",
+        "@babel/plugin-proposal-class-properties",
+        "babel-plugin-transform-member-expression-literals",
+        "babel-plugin-transform-property-literals",
+        ["babel-plugin-transform-react-remove-prop-types", {
             "mode": "wrap"
         }]
     ],
     "env": {
-        "development": {
-            "plugins": [
-                "external-helpers"
-            ]
-        },
-        "production": {
-            "plugins": [
-                "external-helpers"
-            ]
-        },
         "test": {
             "plugins": [
-                "transform-es2015-modules-commonjs"
+                "@babel/plugin-transform-modules-commonjs"
             ]
         }
     }
