@@ -33,6 +33,7 @@ export default ${serialize(localeData)};
 function writeUMDFile(filename, module) {
   const lang = p.basename(filename, '.js');
 
+  console.log(lang)
   return rollup({
     input: filename,
     plugins: [
@@ -69,10 +70,10 @@ function writeFile(filename, contents) {
 mkdirpSync('locale-data/');
 
 const defaultData = createDataModule(cldrDataByLocale.get(DEFAULT_LOCALE));
-writeFile(`src/${DEFAULT_LOCALE}.js`, defaultData)
+writeFile(`src/${DEFAULT_LOCALE}.js`, defaultData);
 
 const allData = createDataModule([...cldrDataByLocale.values()]);
-writeUMDFile('locale-data/index.js', allData)
+writeUMDFile('locale-data/index.js', allData);
 
 let promiseChain = Promise.resolve()
 cldrDataByLang.forEach((cldrData, lang) => {
