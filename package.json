@@ -18,7 +18,8 @@
   ],
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "contributors": [
-    "Caridy Patino <caridy@gmail.com>"
+    "Caridy Patino <caridy@gmail.com>",
+    "Marces Engel <dev.dragonraider5@gmail.com>"
   ],
   "license": "BSD-3-Clause",
   "homepage": "https://github.com/yahoo/react-intl",
