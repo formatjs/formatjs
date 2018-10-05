@@ -167,6 +167,8 @@ describe('<IntlProvider>', () => {
 
             defaultLocale : 'en-US',
             defaultFormats: {},
+
+            onError: consoleError
         };
 
         const el = (
@@ -275,6 +277,8 @@ describe('<IntlProvider>', () => {
                     },
                 },
             },
+
+            onError: consoleError
         };
 
         const parentIntlProvider = new IntlProvider(props, {});
