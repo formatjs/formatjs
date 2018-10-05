@@ -1,7 +1,7 @@
 import expect, {createSpy, spyOn} from 'expect';
 import React from 'react';
 import {mount} from 'enzyme';
-import {generateIntlContext, makeMockContext, shallowDeep} from '../utils';
+import {generateIntlContext, makeMockContext, shallowDeep} from '../testUtils';
 import FormattedTime from '../../../src/components/time';
 
 const mockContext = makeMockContext(

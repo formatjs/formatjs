@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import hoistNonReactStatics from 'hoist-non-react-statics';
 import invariant from 'invariant';
 import createContext from 'create-react-context';
 import {invariantIntlContext} from '../utils';
@@ -22,12 +23,12 @@ export default function withIntl(WrappedComponent, options = {}) {
     enforceContext = true
   } = options;
 
-  return class withIntl extends Component {
+  class withIntl extends Component {
     static displayName = `withIntl(${getDisplayName(WrappedComponent)})`;
     static WrappedComponent = WrappedComponent;
 
     wrappedInstance = (ref) => {
-      this.wrappedInstance.current = ref
+      this.wrappedInstance.current = ref;
     }
 
     getWrappedInstance() {
@@ -63,4 +64,6 @@ export default function withIntl(WrappedComponent, options = {}) {
       )
     }
   }
+
+  return hoistNonReactStatics(withIntl, WrappedComponent);
 }

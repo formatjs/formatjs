@@ -1,8 +1,8 @@
 import expect, {createSpy, spyOn} from 'expect';
 import React from 'react';
 import {mount} from 'enzyme';
-import {generateIntlContext, makeMockContext, shallowDeep} from '../utils';
-import FormattedRelative, {BaseFormattedRelative} from '../../../src/components/relative';
+import {generateIntlContext, makeMockContext, shallowDeep} from '../testUtils';
+import FormattedRelative from '../../../src/components/relative';
 
 const mockContext = makeMockContext(
   require.resolve('../../../src/components/relative')

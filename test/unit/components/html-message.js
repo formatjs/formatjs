@@ -1,6 +1,6 @@
 import expect, {createSpy, spyOn} from 'expect';
 import React from 'react';
-import {generateIntlContext, makeMockContext, shallowDeep} from '../utils';
+import {generateIntlContext, makeMockContext, shallowDeep} from '../testUtils';
 import FormattedHTMLMessage, {BaseFormattedHTMLMessage} from '../../../src/components/html-message';
 import {BaseFormattedMessage} from '../../../src/components/message';
 

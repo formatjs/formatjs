@@ -13,7 +13,13 @@ import IntlRelativeFormat from 'intl-relativeformat';
 import IntlPluralFormat from '../plural';
 import memoizeIntlConstructor from 'intl-format-cache';
 import invariant from 'invariant';
-import {shouldIntlComponentUpdate, filterProps, shallowEquals} from '../utils';
+import {
+  createError,
+  defaultErrorHandler,
+  shouldIntlComponentUpdate,
+  filterProps,
+  shallowEquals
+} from '../utils';
 import {intlConfigPropTypes, intlFormatPropTypes} from '../types';
 import * as format from '../format';
 import {hasLocaleData} from '../locale-data-registry';
@@ -26,14 +32,17 @@ const intlFormatPropNames = Object.keys(intlFormatPropTypes);
 const defaultProps = {
   formats: {},
   messages: {},
+  timeZone: null,
   textComponent: 'span',
 
   defaultLocale: 'en',
   defaultFormats: {},
+
+  onError: defaultErrorHandler,
 };
 
 function getConfig(filteredProps) {
-  let config = filteredProps;
+  let config = { ...filteredProps };
 
   // Apply default props. This must be applied last after the props have
   // been resolved and inherited from any <IntlProvider> in the ancestry.
@@ -45,14 +54,14 @@ function getConfig(filteredProps) {
   }
 
   if (!hasLocaleData(config.locale)) {
-    const {locale, defaultLocale, defaultFormats} = config;
+    const {locale, defaultLocale, defaultFormats, onError} = config;
 
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(
-        `[React Intl] Missing locale data for locale: "${locale}". ` +
+    onError(
+      createError(
+        `Missing locale data for locale: "${locale}". ` +
           `Using default locale: "${defaultLocale}" as fallback.`
-      );
-    }
+      )
+    );
 
     // Since there's no registered locale data for `locale`, this will
     // fallback to the `defaultLocale` to make sure things can render.
@@ -63,7 +72,7 @@ function getConfig(filteredProps) {
       ...config,
       locale: defaultLocale,
       formats: defaultFormats,
-      messages: defaultProps.messages,
+      messages: defaultProps.messages
     };
   }
 

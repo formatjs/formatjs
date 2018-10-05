@@ -1,7 +1,7 @@
 import expect, {createSpy, spyOn} from 'expect';
 import React from 'react';
 import {mount} from 'enzyme';
-import {generateIntlContext, makeMockContext, shallowDeep} from '../utils';
+import {generateIntlContext, makeMockContext, shallowDeep} from '../testUtils';
 import FormattedMessage from '../../../src/components/message';
 
 const mockContext = makeMockContext(
@@ -29,11 +29,28 @@ describe('<FormattedMessage>', () => {
         expect(FormattedMessage.displayName).toBeA('string');
     });
 
-    it('throws when <IntlProvider> is missing from ancestry', () => {
+    it('throws when <IntlProvider> is missing from ancestry and there is no defaultMessage', () => {
         const FormattedMessage = mockContext(null);
         expect(() => shallowDeep(<FormattedMessage />, 2)).toThrow(
             '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
         );
+    });
+
+    it('should work if <IntlProvider> is missing from ancestry but there is defaultMessage', () => {
+        const FormattedMessage = mockContext(null);
+
+        const rendered = shallowDeep(
+          <FormattedMessage
+            id="hello"
+            defaultMessage="Hello"
+          />,
+          2
+        );
+
+        expect(rendered.type()).toBe('span');
+        expect(rendered.text()).toBe('Hello');
+
+        expect(consoleError.calls.length).toBe(1);
     });
 
     it('renders a formatted message in a <span>', () => {
@@ -127,7 +144,7 @@ describe('<FormattedMessage>', () => {
         );
     });
 
-    it('accepts `tagName` prop', () => {
+    it('accepts string as `tagName` prop', () => {
         const FormattedMessage = mockContext(intl);
         const descriptor = {
             id: 'hello',
@@ -136,11 +153,36 @@ describe('<FormattedMessage>', () => {
         const tagName = 'p';
 
         const rendered = shallowDeep(
-          <FormattedMessage {...descriptor} tagName={tagName} />,
+          <FormattedMessage
+            {...descriptor}
+            tagName={tagName}
+          />,
           2
         );
 
         expect(rendered.type()).toBe(tagName);
+    });
+
+    it('accepts an react element as `tagName` prop', () => {
+        const FormattedMessage = mockContext(intl);
+        const descriptor = {
+            id: 'hello',
+            defaultMessage: 'Hello, World!',
+        };
+
+        const H1 = ({ children }) => <h1>{children}</h1>
+        const rendered = shallowDeep(
+          <FormattedMessage
+            {...descriptor}
+            tagName={H1}
+          />,
+          2
+        );
+
+        expect(rendered.type()).toBe(H1);
+        expect(rendered.dive().text()).toBe(
+          intl.formatMessage(descriptor)
+        );
     });
 
     it('supports function-as-child pattern', () => {

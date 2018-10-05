@@ -6,6 +6,7 @@
 
 import invariant from 'invariant';
 import IntlRelativeFormat from 'intl-relativeformat';
+import {isValidElement} from 'react';
 
 import {
   dateTimeFormatPropTypes,
@@ -14,7 +15,7 @@ import {
   pluralFormatPropTypes,
 } from './types';
 
-import {escape, filterProps} from './utils';
+import {createError, defaultErrorHandler, escape, filterProps} from './utils';
 
 const DATE_TIME_FORMAT_OPTIONS = Object.keys(dateTimeFormatPropTypes);
 const NUMBER_FORMAT_OPTIONS = Object.keys(numberFormatPropTypes);
@@ -37,26 +38,33 @@ function updateRelativeFormatThresholds(newThresholds) {
     hour: thresholds.hour,
     day: thresholds.day,
     month: thresholds.month,
+    'second-short': thresholds['second-short'],
+    'minute-short': thresholds['minute-short'],
+    'hour-short': thresholds['hour-short'],
+    'day-short': thresholds['day-short'],
+    'month-short': thresholds['month-short'],
   } = newThresholds);
 }
 
-function getNamedFormat(formats, type, name) {
+function getNamedFormat(formats, type, name, onError) {
   let format = formats && formats[type] && formats[type][name];
   if (format) {
     return format;
   }
 
-  if (process.env.NODE_ENV !== 'production') {
-    console.error(`[React Intl] No ${type} format named: ${name}`);
-  }
+  onError(createError(`No ${type} format named: ${name}`));
 }
 
 export function formatDate(config, state, value, options = {}) {
-  const {locale, formats} = config;
+  const {locale, formats, timeZone} = config;
   const {format} = options;
 
+  let onError = config.onError || defaultErrorHandler;
   let date = new Date(value);
-  let defaults = format && getNamedFormat(formats, 'date', format);
+  let defaults = {
+    ...(timeZone && {timeZone}),
+    ...(format && getNamedFormat(formats, 'date', format, onError)),
+  };
   let filteredOptions = filterProps(
     options,
     DATE_TIME_FORMAT_OPTIONS,
@@ -66,20 +74,22 @@ export function formatDate(config, state, value, options = {}) {
   try {
     return state.getDateTimeFormat(locale, filteredOptions).format(date);
   } catch (e) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(`[React Intl] Error formatting date.\n${e}`);
-    }
+    onError(createError('Error formatting date.', e));
   }
 
   return String(date);
 }
 
 export function formatTime(config, state, value, options = {}) {
-  const {locale, formats} = config;
+  const {locale, formats, timeZone} = config;
   const {format} = options;
 
+  let onError = config.onError || defaultErrorHandler;
   let date = new Date(value);
-  let defaults = format && getNamedFormat(formats, 'time', format);
+  let defaults = {
+    ...(timeZone && {timeZone}),
+    ...(format && getNamedFormat(formats, 'time', format, onError)),
+  };
   let filteredOptions = filterProps(
     options,
     DATE_TIME_FORMAT_OPTIONS,
@@ -98,9 +108,7 @@ export function formatTime(config, state, value, options = {}) {
   try {
     return state.getDateTimeFormat(locale, filteredOptions).format(date);
   } catch (e) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(`[React Intl] Error formatting time.\n${e}`);
-    }
+    onError(createError('Error formatting time.', e));
   }
 
   return String(date);
@@ -110,9 +118,10 @@ export function formatRelative(config, state, value, options = {}) {
   const {locale, formats} = config;
   const {format} = options;
 
+  let onError = config.onError || defaultErrorHandler;
   let date = new Date(value);
   let now = new Date(options.now);
-  let defaults = format && getNamedFormat(formats, 'relative', format);
+  let defaults = format && getNamedFormat(formats, 'relative', format, onError);
   let filteredOptions = filterProps(options, RELATIVE_FORMAT_OPTIONS, defaults);
 
   // Capture the current threshold values, then temporarily override them with
@@ -125,9 +134,7 @@ export function formatRelative(config, state, value, options = {}) {
       now: isFinite(now) ? now : state.now(),
     });
   } catch (e) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(`[React Intl] Error formatting relative time.\n${e}`);
-    }
+    onError(createError('Error formatting relative time.', e));
   } finally {
     updateRelativeFormatThresholds(oldThresholds);
   }
@@ -139,15 +146,14 @@ export function formatNumber(config, state, value, options = {}) {
   const {locale, formats} = config;
   const {format} = options;
 
-  let defaults = format && getNamedFormat(formats, 'number', format);
+  let onError = config.onError || defaultErrorHandler;
+  let defaults = format && getNamedFormat(formats, 'number', format, onError);
   let filteredOptions = filterProps(options, NUMBER_FORMAT_OPTIONS, defaults);
 
   try {
     return state.getNumberFormat(locale, filteredOptions).format(value);
   } catch (e) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(`[React Intl] Error formatting number.\n${e}`);
-    }
+    onError(createError('Error formatting number.', e));
   }
 
   return String(value);
@@ -157,13 +163,12 @@ export function formatPlural(config, state, value, options = {}) {
   const {locale} = config;
 
   let filteredOptions = filterProps(options, PLURAL_FORMAT_OPTIONS);
+  let onError = config.onError || defaultErrorHandler;
 
   try {
     return state.getPluralFormat(locale, filteredOptions).format(value);
   } catch (e) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(`[React Intl] Error formatting plural.\n${e}`);
-    }
+    onError(createError('Error formatting plural.', e));
   }
 
   return 'other';
@@ -179,6 +184,12 @@ export function formatMessage(
 
   const {id, defaultMessage} = messageDescriptor;
 
+  // Produce a better error if the user calls `intl.formatMessage(element)`
+  if (process.env.NODE_ENV !== 'production') {
+      invariant(!isValidElement(config), '[React Intl] Don\'t pass React elements to ' +
+          'formatMessage(), pass `.props`.');
+  }
+
   // `id` is a required field of a Message Descriptor.
   invariant(id, '[React Intl] An `id` must be provided to format a message.');
 
@@ -192,6 +203,7 @@ export function formatMessage(
   }
 
   let formattedMessage;
+  let onError = config.onError || defaultErrorHandler;
 
   if (message) {
     try {
@@ -199,28 +211,28 @@ export function formatMessage(
 
       formattedMessage = formatter.format(values);
     } catch (e) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.error(
-          `[React Intl] Error formatting message: "${id}" for locale: "${locale}"` +
-            (defaultMessage ? ', using default message as fallback.' : '') +
-            `\n${e}`
-        );
-      }
+      onError(
+        createError(
+          `Error formatting message: "${id}" for locale: "${locale}"` +
+            (defaultMessage ? ', using default message as fallback.' : ''),
+          e
+        )
+      );
     }
   } else {
-    if (process.env.NODE_ENV !== 'production') {
-      // This prevents warnings from littering the console in development
-      // when no `messages` are passed into the <IntlProvider> for the
-      // default locale, and a default message is in the source.
-      if (
-        !defaultMessage ||
-        (locale && locale.toLowerCase() !== defaultLocale.toLowerCase())
-      ) {
-        console.error(
-          `[React Intl] Missing message: "${id}" for locale: "${locale}"` +
+    // This prevents warnings from littering the console in development
+    // when no `messages` are passed into the <IntlProvider> for the
+    // default locale, and a default message is in the source.
+    if (
+      !defaultMessage ||
+      (locale && locale.toLowerCase() !== defaultLocale.toLowerCase())
+    ) {
+      onError(
+        createError(
+          `Missing message: "${id}" for locale: "${locale}"` +
             (defaultMessage ? ', using default message as fallback.' : '')
-        );
-      }
+        )
+      );
     }
   }
 
@@ -234,24 +246,21 @@ export function formatMessage(
 
       formattedMessage = formatter.format(values);
     } catch (e) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.error(
-          `[React Intl] Error formatting the default message for: "${id}"` +
-            `\n${e}`
-        );
-      }
+      onError(
+        createError(`Error formatting the default message for: "${id}"`, e)
+      );
     }
   }
 
   if (!formattedMessage) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(
-        `[React Intl] Cannot format message: "${id}", ` +
+    onError(
+      createError(
+        `Cannot format message: "${id}", ` +
           `using message ${message || defaultMessage
             ? 'source'
             : 'id'} as fallback.`
-      );
-    }
+      )
+    );
   }
 
   return formattedMessage || message || defaultMessage || id;

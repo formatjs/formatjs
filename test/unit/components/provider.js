@@ -1,7 +1,7 @@
 import expect, {createSpy, spyOn} from 'expect';
 import React from 'react';
 import {mount} from 'enzyme';
-import {makeMockContext, shallowDeep, SpyComponent} from '../utils'
+import {makeMockContext, shallowDeep, SpyComponent} from '../testUtils'
 import {intlConfigPropTypes, intlFormatPropTypes} from '../../../src/types';
 import IntlProvider from '../../../src/components/provider';
 
@@ -128,7 +128,7 @@ describe('<IntlProvider>', () => {
         );
     });
 
-    it('renderes its `children`', () => {
+    it('renders its `children`', () => {
         const IntlProvider = mockContext();
         const el = (
             <IntlProvider locale="en">
@@ -152,7 +152,7 @@ describe('<IntlProvider>', () => {
         const intl = getIntlContext(el);
 
         INTL_SHAPE_PROP_NAMES.forEach((propName) => {
-            expect(intl[propName]).toExist(`Missing context.intl prop: ${propName}`);
+            expect(intl[propName]).toNotBe(undefined, `Missing context.intl prop: ${propName}`);
         });
     });
 
@@ -160,6 +160,7 @@ describe('<IntlProvider>', () => {
         const IntlProvider = mockContext();
         const props = {
             locale       : 'fr-FR',
+            timeZone     : 'UTC',
             formats      : {},
             messages     : {},
             textComponent: 'span',
@@ -179,6 +180,23 @@ describe('<IntlProvider>', () => {
         INTL_CONFIG_PROP_NAMES.forEach((propName) => {
             expect(intl[propName]).toBe(props[propName]);
         });
+    });
+
+    it('provides `context.intl` with timeZone from intl config props when it is specified', () => {
+        const IntlProvider = mockContext();
+        const props = {
+            timeZone: 'Europe/Paris',
+        };
+
+        const el = (
+            <IntlProvider {...props}>
+                <Child />
+            </IntlProvider>
+        );
+
+        const intl = getIntlContext(el);
+
+        expect(intl.timeZone).toBe('Europe/Paris');
     });
 
     it('provides `context.intl` with values from `defaultProps` for missing or undefined props', () => {
@@ -236,6 +254,7 @@ describe('<IntlProvider>', () => {
         let IntlProvider = mockContext();
         const props = {
             locale  : 'en',
+            timeZone: 'UTC',
             formats : {
                 date: {
                     'year-only': {
@@ -284,6 +303,7 @@ describe('<IntlProvider>', () => {
         let IntlProvider = mockContext()
         const props = {
             locale  : 'en',
+            timeZone  : 'Australia/Adelaide',
             formats : {
                 date: {
                     'year-only': {
@@ -315,6 +335,7 @@ describe('<IntlProvider>', () => {
         const el = (
             <IntlProvider
                 locale="fr"
+                timeZone="Atlantic/Azores"
                 formats={{}}
                 messages={{}}
                 defaultLocale="en"

@@ -1,6 +1,6 @@
 {
   "name": "react-intl",
-  "version": "2.4.0",
+  "version": "2.7.0",
   "description": "Internationalize React apps. This library provides React components and an API to format dates, numbers, and strings, including pluralization and handling translations.",
   "keywords": [
     "intl",
@@ -42,8 +42,8 @@
   "jest": {
     "testRegex": "/test/(unit|functional)/.*\\.js",
     "testPathIgnorePatterns": [
-      "/test/functional/support/",
-      "/test/unit/utils"
+      "test/functional/support",
+      "/test/unit/testUtils"
     ],
     "collectCoverageFrom": [
       "src/**/*.js",
@@ -67,6 +67,7 @@
   },
   "dependencies": {
     "create-react-context": "^0.2.3",
+    "hoist-non-react-statics": "^2.5.5",
     "intl-format-cache": "^2.0.5",
     "intl-messageformat": "^2.1.0",
     "intl-relativeformat": "^2.1.0",
@@ -76,8 +77,8 @@
     "rollup-plugin-virtual": "^1.0.1"
   },
   "peerDependencies": {
-    "react": "^0.14.9 || ^15.0.0 || ^16.0.0",
-    "prop-types": "^15.5.4"
+    "prop-types": "^15.5.4",
+    "react": "^0.14.9 || ^15.0.0 || ^16.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
@@ -156,6 +157,6 @@
     "examples:install": "babel-node scripts/examples npm install",
     "examples:link": "npm link && babel-node scripts/examples npm link react-intl",
     "preversion": "npm run clean && npm run build && npm run test:all",
-    "prepublish": "npm run clean && npm run build"
+    "prepare": "npm run clean && npm run build"
   }
 }

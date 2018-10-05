@@ -21,6 +21,9 @@ describe('withIntl()', () => {
         Wrapped.propTypes = {
             intl: intlShape.isRequired,
         };
+        Wrapped.someNonReactStatic = {
+            foo: true
+        };
         rendered = null;
     });
 
@@ -31,6 +34,10 @@ describe('withIntl()', () => {
     it('allows introspection access to the wrapped component', () => {
         expect(withIntl(Wrapped).WrappedComponent).toBe(Wrapped);
     });
+
+    it('hoists non-react statics',() => {
+        expect(withIntl(Wrapped).someNonReactStatic.foo).toBe(true)
+    })
 
     describe('displayName', () => {
         it('is descriptive by default', () => {
