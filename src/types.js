@@ -31,6 +31,8 @@ export const intlConfigPropTypes = {
 
   defaultLocale: string,
   defaultFormats: object,
+
+  onError: func,
 };
 
 export const intlFormatPropTypes = {
