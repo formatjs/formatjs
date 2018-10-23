@@ -50,7 +50,7 @@ export default function injectIntl(WrappedComponent, options = {}) {
         <WrappedComponent
           {...this.props}
           {...{[intlPropName]: this.context.intl}}
-          ref={withRef ? (ref => this._wrappedInstance = ref) : null}
+          ref={withRef ? /* istanbul ignore next */ (ref => this._wrappedInstance = ref) : null}
         />
       );
     }
