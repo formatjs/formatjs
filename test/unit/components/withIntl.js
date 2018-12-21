@@ -111,6 +111,7 @@ describe('withIntl()', () => {
                     expect(wrapped.prop(propName)).toBe(
                     intlProvider.instance().getContext()
                     );
+                }
                 else {
                     expect(true).toEqual(true);
                 }
