@@ -67,14 +67,11 @@ describe('withIntl()', () => {
         const intlProvider = rendered.find(IntlProvider).childAt(0);
         const wrappedComponent = rendered.find(Wrapped);
 
-        if (React.version.startsWith('16')) {
-            // Only 16 has getContext
-            expect(
+        const intlProvider = React.version.startsWith('0.14') ? rendered.find(IntlProvider).childAt(0).childAt(0) : rendered.find(IntlProvider).childAt(0);
+   
+        expect(
             wrappedComponent.prop('intl')
-            ).toBe(intlProvider.instance().getContext());
-        } else {
-            expect(true).toEqual(true);
-        }
+        ).toBe(intlProvider.instance().getContext());
     });
 
     it('propagates all props to <WrappedComponent>', () => {
@@ -105,16 +102,11 @@ describe('withIntl()', () => {
                 rendered = mountWithProvider(<Injected />);
                 const intlProvider = rendered.find(IntlProvider).childAt(0);
                 const wrapped = rendered.find(Wrapped);
-
-                if (React.version.startsWith('16')) {
-                    // Only 16 has getContext
-                    expect(wrapped.prop(propName)).toBe(
+                const intlProvider = React.version.startsWith('0.14') ? rendered.find(IntlProvider).childAt(0).childAt(0) : rendered.find(IntlProvider).childAt(0);
+   
+                expect(wrapped.prop(propName)).toBe(
                     intlProvider.instance().getContext()
-                    );
-                }
-                else {
-                    expect(true).toEqual(true);
-                }
+                );               
             });
         });
 
