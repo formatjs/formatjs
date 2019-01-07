@@ -40,7 +40,11 @@ export default class FormattedMessage extends Component {
   static propTypes = {
     ...messageDescriptorPropTypes,
     values: PropTypes.object,
-    tagName: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    tagName: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.func,
+      PropTypes.shape({render: PropTypes.func.isRequired}),
+    ]),
     children: PropTypes.func,
   };
 

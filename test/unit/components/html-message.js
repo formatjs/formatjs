@@ -190,6 +190,26 @@ describe('<FormattedHTMLMessage>', () => {
         );
     });
 
+    it('accepts a react component as `tagName` prop', () => {
+        const {intl} = intlProvider.getChildContext();
+        const descriptor = {
+            id: 'hello',
+            defaultMessage: 'Hello, World!',
+        };
+
+        const H1 = (children) => <h1>{children}</h1>
+        const el = <FormattedHTMLMessage {...descriptor} tagName={H1} />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <H1
+                dangerouslySetInnerHTML={{
+                    __html: intl.formatHTMLMessage(descriptor),
+                }}
+            />
+        );
+    });
+
     it('supports function-as-child pattern', () => {
         const {intl} = intlProvider.getChildContext();
         const descriptor = {

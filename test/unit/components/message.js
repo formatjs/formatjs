@@ -205,7 +205,7 @@ describe('<FormattedMessage>', () => {
         );
     });
 
-    it('accepts an react element as `tagName` prop', () => {
+    it('accepts a react component as `tagName` prop', () => {
         const {intl} = intlProvider.getChildContext();
         const descriptor = {
             id: 'hello',
