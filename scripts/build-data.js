@@ -6,8 +6,11 @@ import serialize from 'serialize-javascript';
 import {rollup} from 'rollup';
 import virtual from 'rollup-plugin-virtual';
 import {uglify} from 'rollup-plugin-uglify';
+import ProgressBar from 'progress';
+import PromiseQueue from 'promise-queue';
 
 const DEFAULT_LOCALE = 'en';
+const CONCURRENCY = require('os').cpus().length - 1;
 
 const cldrData = extractCLDRData({
   pluralRules: true,
@@ -33,7 +36,6 @@ export default ${serialize(localeData)};
 function writeUMDFile(filename, module) {
   const lang = p.basename(filename, '.js');
 
-  console.log(lang)
   return rollup({
     input: filename,
     plugins: [
@@ -69,19 +71,35 @@ function writeFile(filename, contents) {
 
 mkdirpSync('locale-data/');
 
+console.log('Building locale data...');
+
+const progressBar = new ProgressBar(':percent [:bar] eta. :etas', {
+  callback: () => console.log('...done!'),
+  clear: true,
+  total: cldrDataByLang.size + 1
+});
+
 const defaultData = createDataModule(cldrDataByLocale.get(DEFAULT_LOCALE));
-writeFile(`src/${DEFAULT_LOCALE}.js`, defaultData);
+writeFile(`src/${DEFAULT_LOCALE}.js`, defaultData)
+  .then(() => progressBar.tick())
 
 const allData = createDataModule([...cldrDataByLocale.values()]);
-writeUMDFile('locale-data/index.js', allData);
+writeUMDFile('locale-data/index.js', allData)
+  .then(() => progressBar.tick())
 
-let promiseChain = Promise.resolve()
+const promiseQueue = new PromiseQueue(CONCURRENCY, Infinity);
+
 cldrDataByLang.forEach((cldrData, lang) => {
-  promiseChain = promiseChain
-    .then(() => writeUMDFile(`locale-data/${lang}.js`, createDataModule(cldrData)))
+  if (lang === DEFAULT_LOCALE) {
+    return;
+  }
+
+  promiseQueue.add(() =>
+    writeUMDFile(`locale-data/${lang}.js`, createDataModule(cldrData))
+      .then(() => progressBar.tick())
+  );
 });
 
 process.on('unhandledRejection', reason => {
   throw reason;
 });
-console.log('> Writing locale data files...');

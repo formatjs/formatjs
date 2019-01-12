@@ -117,6 +117,8 @@
     "jest": "^23.6.0",
     "mkdirp": "^0.5.1",
     "prettier": "^1.6.1",
+    "progress": "^2.0.3",
+    "promise-queue": "^2.2.5",
     "prop-types": "^15.6.1",
     "react": "^16.3.1",
     "react-addons-test-utils": "^0.14",
