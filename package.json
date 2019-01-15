@@ -99,7 +99,7 @@
     "expect": "^1.9.0",
     "expect-jsx": "^3.0.0",
     "express": "^4.13.3",
-    "formatjs-extract-cldr-data": "^4.0.0",
+    "formatjs-extract-cldr-data": "^6.0.0",
     "glob": "^7.0.0",
     "intl": "^1.2.1",
     "intl-messageformat-parser": "^1.2.0",
