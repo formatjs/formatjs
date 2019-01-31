@@ -76,7 +76,7 @@ console.log('Building locale data...');
 const progressBar = new ProgressBar(':percent [:bar] eta. :etas', {
   callback: () => console.log('...done!'),
   clear: true,
-  total: cldrDataByLang.size + 1
+  total: cldrDataByLang.size + 2
 });
 
 const defaultData = createDataModule(cldrDataByLocale.get(DEFAULT_LOCALE));
@@ -90,10 +90,6 @@ writeUMDFile('locale-data/index.js', allData)
 const promiseQueue = new PromiseQueue(CONCURRENCY, Infinity);
 
 cldrDataByLang.forEach((cldrData, lang) => {
-  if (lang === DEFAULT_LOCALE) {
-    return;
-  }
-
   promiseQueue.add(() =>
     writeUMDFile(`locale-data/${lang}.js`, createDataModule(cldrData))
       .then(() => progressBar.tick())
