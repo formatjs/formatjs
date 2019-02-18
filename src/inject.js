@@ -21,7 +21,7 @@ export default function injectIntl(WrappedComponent, options = {}) {
   const {intlPropName = 'intl', withRef = false} = options;
 
   class InjectIntl extends Component {
-    static displayName = `InjectIntl(${getDisplayName(WrappedComponent)})`;
+    static displayName = process.env.NODE_ENV === 'production' ? 'Unknown' : `InjectIntl(${getDisplayName(WrappedComponent)})`;
 
     static contextTypes = {
       intl: intlShape,
