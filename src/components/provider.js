@@ -5,7 +5,6 @@
  */
 
 import React, {Component, Children} from 'react';
-import {polyfill as polyfillLifecycles} from 'react-lifecycles-compat';
 import PropTypes from 'prop-types';
 import withIntl, {Provider} from './withIntl';
 import IntlMessageFormat from 'intl-messageformat';
@@ -191,7 +190,5 @@ class IntlProvider extends Component {
     );
   }
 }
-
-polyfillLifecycles(IntlProvider);
 
 export default withIntl(IntlProvider, { enforceContext: false }); // to be able to inherit values from parent providers

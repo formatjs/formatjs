@@ -1,7 +1,6 @@
-import React, {Component} from 'react';
+import React, {Component, createContext} from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import invariant from 'invariant';
-import createContext from 'create-react-context';
 import {invariantIntlContext} from '../utils';
 
 function getDisplayName(Component) {

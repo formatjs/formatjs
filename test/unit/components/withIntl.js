@@ -66,9 +66,8 @@ describe('withIntl()', () => {
         rendered = mountWithProvider(<Injected />);
         const wrappedComponent = rendered.find(Wrapped);
         // React 16 renders different in the wrapper
-        const intlProvider = React.version.startsWith('16') ?  
-            rendered.find(IntlProvider).childAt(0) : rendered.find(IntlProvider).childAt(0).childAt(0);
-   
+        const intlProvider = rendered.find(IntlProvider).childAt(0);
+
         expect(
             wrappedComponent.prop('intl')
         ).toBe(intlProvider.instance().getContext());
@@ -102,12 +101,12 @@ describe('withIntl()', () => {
                 rendered = mountWithProvider(<Injected />);
                 const wrapped = rendered.find(Wrapped);
                 // React 16 renders differently
-                const intlProvider = React.version.startsWith('16') ? 
+                const intlProvider = React.version.startsWith('16') ?
                     rendered.find(IntlProvider).childAt(0) : rendered.find(IntlProvider).childAt(0).childAt(0);
-   
+
                 expect(wrapped.prop(propName)).toBe(
                     intlProvider.instance().getContext()
-                );               
+                );
             });
         });
 
