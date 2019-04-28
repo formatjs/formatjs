@@ -14,6 +14,7 @@ const {
 } = IntlContext
 
 export const Provider = IntlProvider
+export const Consumer = IntlConsumer
 
 export default function withIntl(WrappedComponent, options = {}) {
   const {
