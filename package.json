@@ -101,8 +101,6 @@
     "browserify-shim": "^3.8.11",
     "cross-env": "^4.0.0",
     "enzyme": "^3.6.0",
-    "enzyme-adapter-react-14": "^1.1.0",
-    "enzyme-adapter-react-15": "^1.1.0",
     "enzyme-adapter-react-16": "^1.5.0",
     "eslint": "^3.10.2",
     "eslint-plugin-react": "^7.0.1",
