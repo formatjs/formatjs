@@ -2498,28 +2498,6 @@ entities@^1.1.1, entities@~1.1.1:
   resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.2.tgz#bdfa735299664dfafd34529ed4f8522a275fea56"
   integrity sha512-f2LZMYl1Fzu7YSBKg+RoROelpOaNrcGmE9AZubeDfrCEia483oW4MI4VyFd5VNHIgQ/7qm1I0wUHK1eJnn2y2w==
 
-enzyme-adapter-react-14@^1.1.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/enzyme-adapter-react-14/-/enzyme-adapter-react-14-1.4.0.tgz#b53fd1703c6d4f92698e096c10a5989da6760275"
-  integrity sha512-PwFOHYPrrgxjFPuwsD/9wTj0Vaek4OpV+wO70wbHZgc/UkZPiQhNYZuWYz5KpoM61OE+uRel0e49wFelPW6v5Q==
-  dependencies:
-    enzyme-adapter-utils "^1.10.1"
-    object.assign "^4.1.0"
-    object.values "^1.1.0"
-    prop-types "^15.7.2"
-    react-is "^16.8.6"
-
-enzyme-adapter-react-15@^1.1.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/enzyme-adapter-react-15/-/enzyme-adapter-react-15-1.4.0.tgz#4abd648205a8f25f88beedb8f431dc4809eb45a4"
-  integrity sha512-PHLE4JzUUDhk9RpoLb0MPVaGhVe2i/nowVjzPhbk6cL8rqOHegh/KMOVlndelf3GBZfp0axl2C9OCbYhrSBtqg==
-  dependencies:
-    enzyme-adapter-utils "^1.10.1"
-    object.assign "^4.1.0"
-    object.values "^1.1.0"
-    prop-types "^15.7.2"
-    react-is "^16.8.6"
-
 enzyme-adapter-react-16@^1.5.0:
   version "1.12.1"
   resolved "https://registry.yarnpkg.com/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.12.1.tgz#6a2d74c80559d35ac0a91ca162fa45f4186290cf"
@@ -2533,7 +2511,7 @@ enzyme-adapter-react-16@^1.5.0:
     react-test-renderer "^16.0.0-0"
     semver "^5.6.0"
 
-enzyme-adapter-utils@^1.10.1, enzyme-adapter-utils@^1.11.0:
+enzyme-adapter-utils@^1.11.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/enzyme-adapter-utils/-/enzyme-adapter-utils-1.11.0.tgz#6ffff782b1b57dd46c72a845a91fc4103956a117"
   integrity sha512-0VZeoE9MNx+QjTfsjmO1Mo+lMfunucYB4wt5ficU85WB/LoetTJrbuujmHP3PJx6pSoaAuLA+Mq877x4LoxdNg==
@@ -5979,7 +5957,7 @@ react-is@^16.8.1, react-is@^16.8.6:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
   integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
 
-react-test-renderer@^16.0.0-0, react-test-renderer@^16.3.1:
+react-test-renderer@^16.0.0-0:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.8.6.tgz#188d8029b8c39c786f998aa3efd3ffe7642d5ba1"
   integrity sha512-H2srzU5IWYT6cZXof6AhUcx/wEyJddQ8l7cLM/F7gDXYyPr4oq+vCIxJYXVGhId1J706sqziAjuOEjyNkfgoEw==
