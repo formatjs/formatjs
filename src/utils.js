@@ -10,22 +10,19 @@ file in the root directory of React's source tree.
 */
 
 import invariant from 'invariant';
-import {intlConfigPropTypes} from './types';
-
-const intlConfigPropNames = Object.keys(intlConfigPropTypes);
 
 const ESCAPED_CHARS = {
-  '&': '&amp;',
-  '>': '&gt;',
-  '<': '&lt;',
-  '"': '&quot;',
-  "'": '&#x27;',
+  38: '&amp;',
+  62: '&gt;',
+  60: '&lt;',
+  34: '&quot;',
+  39: '&#x27;',
 };
 
 const UNSAFE_CHARS_REGEX = /[&><"']/g;
 
 export function escape(str) {
-  return ('' + str).replace(UNSAFE_CHARS_REGEX, match => ESCAPED_CHARS[match]);
+  return ('' + str).replace(UNSAFE_CHARS_REGEX, match => ESCAPED_CHARS[match.charCodeAt()]);
 }
 
 export function filterProps(props, whitelist, defaults = {}) {
@@ -81,24 +78,13 @@ export function shallowEquals(objA, objB) {
 }
 
 export function shouldIntlComponentUpdate(
-  {props, state, context = {}},
+  {props, state},
   nextProps,
-  nextState,
-  nextContext = {}
+  nextState
 ) {
-  const {intl = {}} = context;
-  const {intl: nextIntl = {}} = nextContext;
-
   return (
     !shallowEquals(nextProps, props) ||
-    !shallowEquals(nextState, state) ||
-    !(
-      nextIntl === intl ||
-      shallowEquals(
-        filterProps(nextIntl, intlConfigPropNames),
-        filterProps(intl, intlConfigPropNames)
-      )
-    )
+    !shallowEquals(nextState, state)
   );
 }
 

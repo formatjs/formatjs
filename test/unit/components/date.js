@@ -1,21 +1,22 @@
-import expect, {spyOn} from 'expect';
-import expectJSX from 'expect-jsx';
+import expect, {createSpy, spyOn} from 'expect';
 import React from 'react';
-import {createRenderer} from '../../react-compat';
-import IntlProvider from '../../../src/components/provider';
+import {mount} from 'enzyme';
+import {generateIntlContext, makeMockContext, shallowDeep} from '../testUtils';
 import FormattedDate from '../../../src/components/date';
 
-expect.extend(expectJSX);
+const mockContext = makeMockContext(
+  require.resolve('../../../src/components/date')
+);
 
 describe('<FormattedDate>', () => {
     let consoleError;
-    let renderer;
-    let intlProvider;
+    let intl;
 
     beforeEach(() => {
         consoleError = spyOn(console, 'error');
-        renderer     = createRenderer();
-        intlProvider = new IntlProvider({locale: 'en'}, {});
+        intl = generateIntlContext({
+          locale: 'en'
+        });
     });
 
     afterEach(() => {
@@ -27,19 +28,27 @@ describe('<FormattedDate>', () => {
     });
 
     it('throws when <IntlProvider> is missing from ancestry', () => {
-        expect(() => renderer.render(<FormattedDate />)).toThrow(
+        const FormattedDate = mockContext();
+        expect(() => shallowDeep(<FormattedDate />, 2)).toThrow(
             '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
         );
     });
 
     it('requires a finite `value` prop', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedDate = mockContext(intl);
+        const value = Date.now();
 
-        renderer.render(<FormattedDate value={0} />, {intl});
-        expect(isFinite(0)).toBe(true);
+        shallowDeep(
+          <FormattedDate value={value} />,
+          2
+        );
+        expect(isFinite(value)).toBe(true);
         expect(consoleError.calls.length).toBe(0);
 
-        renderer.render(<FormattedDate />, {intl});
+        shallowDeep(
+          <FormattedDate />,
+          2
+        );
         expect(consoleError.calls.length).toBe(1);
         expect(consoleError.calls[0].arguments[0]).toContain(
             '[React Intl] Error formatting date.\nRangeError'
@@ -47,113 +56,142 @@ describe('<FormattedDate>', () => {
     });
 
     it('renders a formatted date in a <span>', () => {
-        const {intl} = intlProvider.getChildContext();
-        const date = new Date();
+        const FormattedDate = mockContext(intl);
+        const date = Date.now();
 
-        const el = <FormattedDate value={date} />;
-
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span>{intl.formatDate(date)}</span>
+        const rendered = shallowDeep(
+          <FormattedDate value={date} />,
+          2
         );
+
+        expect(rendered.type()).toBe('span');
+        expect(rendered.text()).toBe(intl.formatDate(date));
     });
 
     it('should not re-render when props and context are the same', () => {
-        intlProvider = new IntlProvider({locale: 'en'}, {});
-        renderer.render(<FormattedDate value={0} />, intlProvider.getChildContext());
-        const renderedOne = renderer.getRenderOutput();
+        const FormattedDate = mockContext(intl);
+        const date = Date.now();
 
-        intlProvider = new IntlProvider({locale: 'en'}, {});
-        renderer.render(<FormattedDate value={0} />, intlProvider.getChildContext());
-        const renderedTwo = renderer.getRenderOutput();
+        const spy = createSpy().andReturn(null);
+        const withInlContext = mount(
+          <FormattedDate value={date}>
+            { spy }
+          </FormattedDate>
+        );
 
-        expect(renderedOne).toBe(renderedTwo);
+        withInlContext.setProps({
+          ...withInlContext.props()
+        });
+        withInlContext.instance().mockContext(intl);
+
+        expect(spy.calls.length).toBe(1);
     });
 
     it('should re-render when props change', () => {
-        renderer.render(<FormattedDate value={0} />, intlProvider.getChildContext());
-        const renderedOne = renderer.getRenderOutput();
+      const FormattedDate = mockContext(intl);
+      const date = Date.now();
 
-        renderer.render(<FormattedDate value={1} />, intlProvider.getChildContext());
-        const renderedTwo = renderer.getRenderOutput();
+      const spy = createSpy().andReturn(null);
+      const withInlContext = mount(
+        <FormattedDate value={date}>
+          { spy }
+        </FormattedDate>
+      );
 
-        expect(renderedOne).toNotBe(renderedTwo);
+      withInlContext.setProps({
+        ...withInlContext.props(),
+        value: withInlContext.prop('value') + 1
+      });
+
+      expect(spy.calls.length).toBe(2);
     });
 
     it('should re-render when context changes', () => {
-        intlProvider = new IntlProvider({locale: 'en'}, {});
-        renderer.render(<FormattedDate value={0} />, intlProvider.getChildContext());
-        const renderedOne = renderer.getRenderOutput();
+      const FormattedDate = mockContext(intl);
+      const date = Date.now();
 
-        intlProvider = new IntlProvider({locale: 'en-US'}, {});
-        renderer.render(<FormattedDate value={0} />, intlProvider.getChildContext());
-        const renderedTwo = renderer.getRenderOutput();
+      const spy = createSpy().andReturn(null);
+      const withInlContext = mount(
+        <FormattedDate value={date}>
+          { spy }
+        </FormattedDate>
+      );
 
-        expect(renderedOne).toNotBe(renderedTwo);
+      const otherIntl = generateIntlContext({
+        locale: 'en-US'
+      });
+      withInlContext.instance().mockContext(otherIntl);
+
+      expect(spy.calls.length).toBe(2);
     });
 
     it('accepts valid Intl.DateTimeFormat options as props', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedDate = mockContext(intl);
         const date = new Date();
         const options = {year: 'numeric'};
 
-        const el = <FormattedDate value={date} {...options} />;
+        const rendered = shallowDeep(
+          <FormattedDate value={date} {...options} />,
+          2
+        );
 
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span>{intl.formatDate(date, options)}</span>
+        expect(rendered.text()).toBe(
+          intl.formatDate(date, options)
         );
     });
 
     it('fallsback and warns on invalid Intl.DateTimeFormat options', () => {
-        const {intl} = intlProvider.getChildContext();
-        const el = <FormattedDate value={0} year="invalid" />;
-
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span>{String(new Date(0))}</span>
+        const FormattedDate = mockContext(intl);
+        const date = new Date();
+        const rendered = shallowDeep(
+          <FormattedDate value={date} year='invalid' />,
+          2
         );
 
+        expect(rendered.text()).toBe(String(date));
         expect(consoleError.calls.length).toBeGreaterThan(0);
     });
 
     it('accepts `format` prop', () => {
-        intlProvider = new IntlProvider({
+        intl = generateIntlContext({
             locale: 'en',
             formats: {
                 date: {
                     'year-only': {year: 'numeric'},
                 },
             },
-        }, {});
+        });
 
-        const {intl} = intlProvider.getChildContext();
+        const FormattedDate = mockContext(intl);
         const date   = new Date();
         const format = 'year-only';
 
-        const el = <FormattedDate value={date} format={format} />;
-
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span>{intl.formatDate(date, {format})}</span>
+        const rendered = shallowDeep(
+          <FormattedDate value={date} format={format} />,
+          2
         );
+
+        expect(rendered.text()).toBe(intl.formatDate(date, {format}));
     });
 
     it('supports function-as-child pattern', () => {
-        const {intl} = intlProvider.getChildContext();
-        const date   = new Date();
+        const FormattedDate = mockContext(intl);
+        const date = Date.now();
 
-        const el = (
-            <FormattedDate value={date}>
-                {(formattedDate) => (
-                    <b>{formattedDate}</b>
-                )}
-            </FormattedDate>
+        const spy = createSpy().andReturn(<b>Jest</b>);
+        const rendered = shallowDeep(
+          <FormattedDate value={date}>
+            { spy }
+          </FormattedDate>,
+          2
         );
 
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <b>{intl.formatDate(date)}</b>
-        );
+        expect(spy.calls.length).toBe(1);
+        expect(spy.calls[0].arguments).toEqual([
+          intl.formatDate(date)
+        ]);
+
+        expect(rendered.type()).toBe('b');
+        expect(rendered.text()).toBe('Jest');
     });
 });

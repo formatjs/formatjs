@@ -6,34 +6,32 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import withIntl from './withIntl';
 import {intlShape, numberFormatPropTypes} from '../types';
 import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
 
-export default class FormattedNumber extends Component {
+class FormattedNumber extends Component {
   static displayName = 'FormattedNumber';
-
-  static contextTypes = {
-    intl: intlShape,
-  };
 
   static propTypes = {
     ...numberFormatPropTypes,
+    intl: intlShape,
     value: PropTypes.any.isRequired,
     format: PropTypes.string,
     children: PropTypes.func,
   };
 
-  constructor(props, context) {
-    super(props, context);
-    invariantIntlContext(context);
+  constructor(props) {
+    super(props);
+    invariantIntlContext(props);
   }
 
-  shouldComponentUpdate(...next) {
-    return shouldIntlComponentUpdate(this, ...next);
+  shouldComponentUpdate(nextProps, nextState) {
+    return shouldIntlComponentUpdate(this, nextProps, nextState);
   }
 
   render() {
-    const {formatNumber, textComponent: Text} = this.context.intl;
+    const {formatNumber, textComponent: Text} = this.props.intl;
     const {value, children} = this.props;
 
     let formattedNumber = formatNumber(value, this.props);
@@ -45,3 +43,5 @@ export default class FormattedNumber extends Component {
     return <Text>{formattedNumber}</Text>;
   }
 }
+
+export default withIntl(FormattedNumber)

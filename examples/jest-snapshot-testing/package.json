@@ -4,11 +4,11 @@
   "private": true,
   "devDependencies": {
     "react-scripts": "0.8.4",
-    "react-test-renderer": "^15.3.2"
+    "react-test-renderer": "^16.3.1"
   },
   "dependencies": {
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
     "react-intl": "^2.1.5"
   },
   "scripts": {

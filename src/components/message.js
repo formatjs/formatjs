@@ -6,6 +6,7 @@
 
 import {Component, createElement, isValidElement} from 'react';
 import PropTypes from 'prop-types';
+import withIntl from './withIntl';
 import IntlMessageFormat from 'intl-messageformat';
 import memoizeIntlConstructor from 'intl-format-cache';
 import {intlShape, messageDescriptorPropTypes} from '../types';
@@ -22,6 +23,7 @@ const defaultFormatMessage = (descriptor, values) => {
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry. Using default message as fallback.'
     );
   }
+
   return baseFormatMessage(
     {},
     {getMessageFormat: memoizeIntlConstructor(IntlMessageFormat)},
@@ -30,15 +32,12 @@ const defaultFormatMessage = (descriptor, values) => {
   );
 };
 
-export default class FormattedMessage extends Component {
+class FormattedMessage extends Component {
   static displayName = 'FormattedMessage';
-
-  static contextTypes = {
-    intl: intlShape,
-  };
 
   static propTypes = {
     ...messageDescriptorPropTypes,
+    intl: intlShape,
     values: PropTypes.object,
     tagName: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     children: PropTypes.func,
@@ -48,14 +47,14 @@ export default class FormattedMessage extends Component {
     values: {},
   };
 
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
     if (!props.defaultMessage) {
-      invariantIntlContext(context);
+      invariantIntlContext(props);
     }
   }
 
-  shouldComponentUpdate(nextProps, ...next) {
+  shouldComponentUpdate(nextProps, nextState) {
     const {values} = this.props;
     const {values: nextValues} = nextProps;
 
@@ -71,12 +70,14 @@ export default class FormattedMessage extends Component {
       values,
     };
 
-    return shouldIntlComponentUpdate(this, nextPropsToCheck, ...next);
+    return shouldIntlComponentUpdate(this, nextPropsToCheck, nextState);
   }
 
   render() {
-    const {formatMessage = defaultFormatMessage, textComponent: Text = 'span'} =
-      this.context.intl || {};
+    const {
+      formatMessage = defaultFormatMessage,
+      textComponent: Text = 'span'
+    } = this.props.intl || {};
 
     const {
       id,
@@ -155,3 +156,7 @@ export default class FormattedMessage extends Component {
     return createElement(Component, null, ...nodes);
   }
 }
+
+export const BaseFormattedMessage = FormattedMessage
+
+export default withIntl(FormattedMessage)

@@ -6,18 +6,16 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import withIntl from './withIntl';
 import {intlShape, pluralFormatPropTypes} from '../types';
 import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
 
-export default class FormattedPlural extends Component {
+class FormattedPlural extends Component {
   static displayName = 'FormattedPlural';
-
-  static contextTypes = {
-    intl: intlShape,
-  };
 
   static propTypes = {
     ...pluralFormatPropTypes,
+    intl: intlShape,
     value: PropTypes.any.isRequired,
 
     other: PropTypes.node.isRequired,
@@ -34,17 +32,17 @@ export default class FormattedPlural extends Component {
     style: 'cardinal',
   };
 
-  constructor(props, context) {
-    super(props, context);
-    invariantIntlContext(context);
+  constructor(props) {
+    super(props);
+    invariantIntlContext(props);
   }
 
-  shouldComponentUpdate(...next) {
-    return shouldIntlComponentUpdate(this, ...next);
+  shouldComponentUpdate(nextProps, nextState) {
+    return shouldIntlComponentUpdate(this, nextProps, nextState);
   }
 
   render() {
-    const {formatPlural, textComponent: Text} = this.context.intl;
+    const {formatPlural, textComponent: Text} = this.props.intl;
     const {value, other, children} = this.props;
 
     let pluralCategory = formatPlural(value, this.props);
@@ -57,3 +55,5 @@ export default class FormattedPlural extends Component {
     return <Text>{formattedPlural}</Text>;
   }
 }
+
+export default withIntl(FormattedPlural)

@@ -1,21 +1,22 @@
-import expect, {spyOn} from 'expect';
-import expectJSX from 'expect-jsx';
+import expect, {createSpy, spyOn} from 'expect';
 import React from 'react';
-import {createRenderer} from '../../react-compat';
-import IntlProvider from '../../../src/components/provider';
+import {mount} from 'enzyme';
+import {generateIntlContext, makeMockContext, shallowDeep} from '../testUtils';
 import FormattedNumber from '../../../src/components/number';
 
-expect.extend(expectJSX);
+const mockContext = makeMockContext(
+  require.resolve('../../../src/components/number')
+);
 
 describe('<FormattedNumber>', () => {
     let consoleError;
-    let renderer;
-    let intlProvider;
+    let intl;
 
     beforeEach(() => {
         consoleError = spyOn(console, 'error');
-        renderer     = createRenderer();
-        intlProvider = new IntlProvider({locale: 'en'}, {});
+        intl = generateIntlContext({
+          locale: 'en'
+        });
     });
 
     afterEach(() => {
@@ -27,89 +28,120 @@ describe('<FormattedNumber>', () => {
     });
 
     it('throws when <IntlProvider> is missing from ancestry', () => {
-        expect(() => renderer.render(<FormattedNumber />)).toThrow(
+        const FormattedNumber = mockContext();
+        expect(() => shallowDeep(<FormattedNumber />, 2)).toThrow(
             '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
         );
     });
 
     it('renders "NaN" in a <span> when no `value` prop is provided', () => {
-        renderer.render(<FormattedNumber />, intlProvider.getChildContext());
-        expect(renderer.getRenderOutput()).toEqualJSX(<span>NaN</span>);
+        const FormattedNumber = mockContext(intl);
+
+        const rendered = shallowDeep(
+          <FormattedNumber />,
+          2
+        );
+
+        expect(rendered.type()).toBe('span');
+        expect(rendered.text()).toBe('NaN');
     });
 
     it('renders a formatted number in a <span>', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedNumber = mockContext(intl);
         const num = 1000;
 
-        const el = <FormattedNumber value={num} />;
-
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span>{intl.formatNumber(num)}</span>
+        const rendered = shallowDeep(
+          <FormattedNumber value={num} />,
+          2
         );
+
+        expect(rendered.type()).toBe('span');
+        expect(rendered.text()).toBe(intl.formatNumber(num));
     });
 
     it('should not re-render when props and context are the same', () => {
-        intlProvider = new IntlProvider({locale: 'en'}, {});
-        renderer.render(<FormattedNumber value={1000} />, intlProvider.getChildContext());
-        const renderedOne = renderer.getRenderOutput();
+        const FormattedNumber = mockContext(intl);
+        const num = 1000;
 
-        intlProvider = new IntlProvider({locale: 'en'}, {});
-        renderer.render(<FormattedNumber value={1000} />, intlProvider.getChildContext());
-        const renderedTwo = renderer.getRenderOutput();
+        const spy = createSpy().andReturn(null);
+        const withIntlContext = mount(
+          <FormattedNumber value={num}>
+            { spy }
+          </FormattedNumber>
+        );
 
-        expect(renderedOne).toBe(renderedTwo);
+        withIntlContext.setProps({
+          ...withIntlContext.props()
+        });
+        withIntlContext.instance().mockContext(intl);
+
+        expect(spy.calls.length).toBe(1);
     });
 
     it('should re-render when props change', () => {
-        renderer.render(<FormattedNumber value={1000} />, intlProvider.getChildContext());
-        const renderedOne = renderer.getRenderOutput();
+      const FormattedNumber = mockContext(intl);
+      const num = 1000;
 
-        renderer.render(<FormattedNumber value={2000} />, intlProvider.getChildContext());
-        const renderedTwo = renderer.getRenderOutput();
+      const spy = createSpy().andReturn(null);
+      const withIntlContext = mount(
+        <FormattedNumber value={num}>
+          { spy }
+        </FormattedNumber>
+      );
 
-        expect(renderedOne).toNotBe(renderedTwo);
+      withIntlContext.setProps({
+        ...withIntlContext.props(),
+        value: num + 1
+      });
+
+      expect(spy.calls.length).toBe(2);
     });
 
     it('should re-render when context changes', () => {
-        intlProvider = new IntlProvider({locale: 'en'}, {});
-        renderer.render(<FormattedNumber value={1000} />, intlProvider.getChildContext());
-        const renderedOne = renderer.getRenderOutput();
+      const FormattedNumber = mockContext(intl);
+      const num = 1000;
 
-        intlProvider = new IntlProvider({locale: 'en-US'}, {});
-        renderer.render(<FormattedNumber value={1000} />, intlProvider.getChildContext());
-        const renderedTwo = renderer.getRenderOutput();
+      const spy = createSpy().andReturn(null);
+      const withIntlContext = mount(
+        <FormattedNumber value={num}>
+          { spy }
+        </FormattedNumber>
+      );
 
-        expect(renderedOne).toNotBe(renderedTwo);
+      const otherIntl = generateIntlContext({ locale: 'en-US' });
+      withIntlContext.instance().mockContext(otherIntl);
+
+      expect(spy.calls.length).toBe(2);
     });
 
     it('accepts valid Intl.NumberFormat options as props', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedNumber = mockContext(intl);
         const num = 0.5;
         const options = {style: 'percent'};
 
-        const el = <FormattedNumber value={num} {...options} />;
+        const rendered = shallowDeep(
+          <FormattedNumber value={num} {...options} />,
+          2
+        );
 
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span>{intl.formatNumber(num, options)}</span>
+        expect(rendered.text()).toBe(
+          intl.formatNumber(num, options)
         );
     });
 
     it('fallsback and warns on invalid Intl.NumberFormat options', () => {
-        const {intl} = intlProvider.getChildContext();
-        const el = <FormattedNumber value={0} style="invalid" />;
-
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span>{String(0)}</span>
+        const FormattedNumber = mockContext(intl);
+        const rendered = shallowDeep(
+          <FormattedNumber value={0} style="invalid" />,
+          2
         );
 
+        expect(rendered.text()).toBe('0');
         expect(consoleError.calls.length).toBeGreaterThan(0);
     });
 
     it('accepts `format` prop', () => {
-        intlProvider = new IntlProvider({
+        intl = generateIntlContext({
             locale: 'en',
             formats: {
                 number: {
@@ -121,33 +153,38 @@ describe('<FormattedNumber>', () => {
             },
         }, {});
 
-        const {intl} = intlProvider.getChildContext();
+        const FormattedNumber = mockContext(intl);
         const num   = 0.505;
         const format = 'percent';
 
-        const el = <FormattedNumber value={num} format={format} />;
+        const rendered = shallowDeep(
+          <FormattedNumber value={num} format={format} />,
+          2
+        );
 
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span>{intl.formatNumber(num, {format})}</span>
+        expect(rendered.text()).toBe(
+          intl.formatNumber(num, {format})
         );
     });
 
     it('supports function-as-child pattern', () => {
-        const {intl} = intlProvider.getChildContext();
-        const num   = new Date();
+        const FormattedNumber = mockContext(intl);
+        const num = new Date();
 
-        const el = (
-            <FormattedNumber value={num}>
-                {(formattedNumber) => (
-                    <b>{formattedNumber}</b>
-                )}
-            </FormattedNumber>
+        const spy = createSpy().andReturn(<span>Jest</span>);
+        const rendered = shallowDeep(
+          <FormattedNumber value={num}>
+            { spy }
+          </FormattedNumber>,
+          2
         );
 
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <b>{intl.formatNumber(num)}</b>
-        );
+        expect(spy.calls.length).toBe(1);
+        expect(spy.calls[0].arguments).toEqual([
+          intl.formatNumber(num)
+        ]);
+
+        expect(rendered.type()).toBe('span');
+        expect(rendered.text()).toBe('Jest');
     });
 });

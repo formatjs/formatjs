@@ -1,24 +1,24 @@
-import expect, {spyOn} from 'expect';
-import expectJSX from 'expect-jsx';
+import expect, {createSpy, spyOn} from 'expect';
 import React from 'react';
-import {createRenderer} from '../../react-compat';
-import IntlProvider from '../../../src/components/provider';
+import {mount} from 'enzyme';
+import {generateIntlContext, makeMockContext, shallowDeep} from '../testUtils';
 import FormattedMessage from '../../../src/components/message';
 
-expect.extend(expectJSX);
+const mockContext = makeMockContext(
+  require.resolve('../../../src/components/message')
+);
 
 describe('<FormattedMessage>', () => {
     let consoleError;
-    let renderer;
-    let intlProvider;
+    let intl;
 
     beforeEach(() => {
+        intl = generateIntlContext({
+          locale: 'en',
+          defaultLocale: 'en'
+        });
+
         consoleError = spyOn(console, 'error');
-        renderer     = createRenderer();
-        intlProvider = new IntlProvider({
-            locale       : 'en',
-            defaultLocale: 'en',
-        }, {});
     });
 
     afterEach(() => {
@@ -30,63 +30,82 @@ describe('<FormattedMessage>', () => {
     });
 
     it('throws when <IntlProvider> is missing from ancestry and there is no defaultMessage', () => {
-        expect(() => renderer.render(<FormattedMessage />)).toThrow(
+        const FormattedMessage = mockContext(null);
+        expect(() => shallowDeep(<FormattedMessage />, 2)).toThrow(
             '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
         );
     });
 
     it('should work if <IntlProvider> is missing from ancestry but there is defaultMessage', () => {
-        renderer.render(<FormattedMessage id="hello" defaultMessage="Hello" />);
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span>Hello</span>
+        const FormattedMessage = mockContext(null);
+
+        const rendered = shallowDeep(
+          <FormattedMessage
+            id="hello"
+            defaultMessage="Hello"
+          />,
+          2
         );
+
+        expect(rendered.type()).toBe('span');
+        expect(rendered.text()).toBe('Hello');
+
         expect(consoleError.calls.length).toBe(1);
     });
 
     it('renders a formatted message in a <span>', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedMessage = mockContext(intl);
         const descriptor = {
             id: 'hello',
             defaultMessage: 'Hello, World!',
         };
 
-        const el = <FormattedMessage {...descriptor} />;
-
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span>{intl.formatMessage(descriptor)}</span>
+        const rendered = shallowDeep(
+          <FormattedMessage {...descriptor} />,
+          2
         );
+        expect(rendered.type()).toBe('span');
+        expect(rendered.text()).toBe(intl.formatMessage(descriptor))
     });
 
     it('should not cause a unique "key" prop warning', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedMessage = mockContext(intl);
         const descriptor = {
             id: 'hello',
             defaultMessage: 'Hello, {name}!',
         };
 
-        const el = <FormattedMessage {...descriptor} values={{name: <b>Eric</b>}} />;
+        shallowDeep(
+          <FormattedMessage
+            {...descriptor}
+            values={{name: <b>Jest</b>}}
+          />,
+          2
+        );
 
-        renderer.render(el, {intl});
         expect(consoleError.calls.length).toBe(0);
     });
 
     it('should not cause a prop warning when description is a string', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedMessage = mockContext(intl);
         const descriptor = {
             id: 'hello',
             description: 'Greeting',
             defaultMessage: 'Hello, {name}!',
         };
 
-        const el = <FormattedMessage {...descriptor} values={{name: <b>Eric</b>}} />;
+        shallowDeep(
+          <FormattedMessage
+            {...descriptor}
+            values={{name: <b>Jest</b>}}
+          />
+        );
 
-        renderer.render(el, {intl});
         expect(consoleError.calls.length).toBe(0);
     });
 
     it('should not cause a prop warning when description is an object', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedMessage = mockContext(intl);
         const descriptor = {
             id: 'hello',
             description: {
@@ -96,198 +115,239 @@ describe('<FormattedMessage>', () => {
             defaultMessage: 'Hello, {name}!',
         };
 
-        const el = <FormattedMessage {...descriptor} values={{name: <b>Eric</b>}} />;
+        shallowDeep(
+          <FormattedMessage
+            {...descriptor}
+            values={{name: <b>Jest</b>}}
+          />
+        );
 
-        renderer.render(el, {intl});
         expect(consoleError.calls.length).toBe(0);
     });
 
-    it('should not re-render when props and context are the same', () => {
-        intlProvider = new IntlProvider({locale: 'en', defaultLocale: 'en'}, {});
-        renderer.render(
-            <FormattedMessage id="hello" defaultMessage="Hello, World!" />,
-            intlProvider.getChildContext()
-        );
-        const renderedOne = renderer.getRenderOutput();
-
-        intlProvider = new IntlProvider({locale: 'en', defaultLocale: 'en'}, {});
-        renderer.render(
-            <FormattedMessage id="hello" defaultMessage="Hello, World!" />,
-            intlProvider.getChildContext()
-        );
-        const renderedTwo = renderer.getRenderOutput();
-
-        expect(renderedOne).toBe(renderedTwo);
-    });
-
-    it('should re-render when props change', () => {
-        renderer.render(
-            <FormattedMessage id="hello" defaultMessage="Hello, World!" />,
-            intlProvider.getChildContext()
-        );
-        const renderedOne = renderer.getRenderOutput();
-
-        renderer.render(
-            <FormattedMessage id="hello" defaultMessage="Hello, Galaxy!" />,
-            intlProvider.getChildContext()
-        );
-        const renderedTwo = renderer.getRenderOutput();
-
-        expect(renderedOne).toNotBe(renderedTwo);
-    });
-
-    it('should re-render when context changes', () => {
-        intlProvider = new IntlProvider({locale: 'en', defaultLocale: 'en'}, {});
-        renderer.render(
-            <FormattedMessage id="hello" defaultMessage="Hello, World!" />,
-            intlProvider.getChildContext()
-        );
-        const renderedOne = renderer.getRenderOutput();
-
-        intlProvider = new IntlProvider({locale: 'en-US', defaultLocale: 'en-US'}, {});
-        renderer.render(
-            <FormattedMessage id="hello" defaultMessage="Hello, World!" />,
-            intlProvider.getChildContext()
-        );
-        const renderedTwo = renderer.getRenderOutput();
-
-        expect(renderedOne).toNotBe(renderedTwo);
-    });
-
     it('accepts `values` prop', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedMessage = mockContext(intl);
         const descriptor = {
             id: 'hello',
             defaultMessage: 'Hello, {name}!',
         };
-        const values = {name: 'Eric'};
+        const values = {name: 'Jest'};
 
-        const el = <FormattedMessage {...descriptor} values={values} />;
-
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span>{intl.formatMessage(descriptor, values)}</span>
+        const rendered = shallowDeep(
+          <FormattedMessage {...descriptor} values={values} />,
+          2
         );
-    });
 
-    it('should re-render when `values` are different', () => {
-        const {intl} = intlProvider.getChildContext();
-        const descriptor = {
-            id: 'hello',
-            defaultMessage: 'Hello, {name}!',
-        };
-
-        renderer.render(<FormattedMessage {...descriptor} values={{name: 'Eric'}} />, {intl});
-        const renderedOne = renderer.getRenderOutput();
-
-        renderer.render(<FormattedMessage {...descriptor} values={{name: 'Eric'}} />, {intl});
-        const renderedTwo = renderer.getRenderOutput();
-
-        renderer.render(<FormattedMessage {...descriptor} values={{name: 'Marissa'}} />, {intl});
-        const renderedThree = renderer.getRenderOutput();
-
-        expect(renderedOne).toBe(renderedTwo);
-        expect(renderedThree).toNotBe(renderedOne);
+        expect(rendered.type()).toBe('span');
+        expect(rendered.text()).toBe(
+          intl.formatMessage(descriptor, values)
+        );
     });
 
     it('accepts string as `tagName` prop', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedMessage = mockContext(intl);
         const descriptor = {
             id: 'hello',
             defaultMessage: 'Hello, World!',
         };
+        const tagName = 'p';
 
-        const el = <FormattedMessage {...descriptor} tagName="p" />;
-
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <p>{intl.formatMessage(descriptor)}</p>
+        const rendered = shallowDeep(
+          <FormattedMessage
+            {...descriptor}
+            tagName={tagName}
+          />,
+          2
         );
+
+        expect(rendered.type()).toBe(tagName);
     });
 
     it('accepts an react element as `tagName` prop', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedMessage = mockContext(intl);
         const descriptor = {
             id: 'hello',
             defaultMessage: 'Hello, World!',
         };
 
-        const H1 = (children) => <h1>{children}</h1>
-        const el = <FormattedMessage {...descriptor} tagName={H1} />;
+        const H1 = ({ children }) => <h1>{children}</h1>
+        const rendered = shallowDeep(
+          <FormattedMessage
+            {...descriptor}
+            tagName={H1}
+          />,
+          2
+        );
 
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <H1>{intl.formatMessage(descriptor)}</H1>
+        expect(rendered.type()).toBe(H1);
+        expect(rendered.dive().text()).toBe(
+          intl.formatMessage(descriptor)
         );
     });
 
     it('supports function-as-child pattern', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedMessage = mockContext(intl);
         const descriptor = {
             id: 'hello',
             defaultMessage: 'Hello, World!',
         };
 
-        const el = (
+        const spy = createSpy().andReturn(<p>Jest</p>);
+
+        const rendered = shallowDeep(
             <FormattedMessage {...descriptor}>
-                {(formattedMessage) => (
-                    <b>{formattedMessage}</b>
-                )}
-            </FormattedMessage>
+                { spy }
+            </FormattedMessage>,
+            2
         );
 
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <b>{intl.formatMessage(descriptor)}</b>
-        );
+        expect(spy.calls.length).toBe(1);
+        expect(spy.calls[0].arguments).toEqual([
+          intl.formatMessage(descriptor)
+        ]);
+
+        expect(rendered.type()).toBe('p');
+        expect(rendered.text()).toBe('Jest');
     });
 
     it('supports rich-text message formatting', () => {
-        const {intl} = intlProvider.getChildContext();
-
-        const el = (
-            <FormattedMessage
-                id="hello"
-                defaultMessage="Hello, {name}!"
-                values={{
-                    name: <b>Eric</b>,
-                }}
-            />
+        const FormattedMessage = mockContext(intl);
+        const rendered = shallowDeep(
+          <FormattedMessage
+              id="hello"
+              defaultMessage="Hello, {name}!"
+              values={{
+                  name: <b>Jest</b>,
+              }}
+          />,
+          2
         );
 
-        renderer.render(el, {intl});
-        const rendered = renderer.getRenderOutput();
-
-        expect(rendered.props.children).toBeAn('array');
-        expect(rendered).toEqualJSX(
-            <span>Hello, <b>Eric</b>!</span>
-        );
+        const nameNode = rendered.childAt(1);
+        expect(nameNode.type()).toBe('b');
+        expect(nameNode.text()).toBe('Jest');
     });
 
     it('supports rich-text message formatting in function-as-child pattern', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedMessage = mockContext(intl);
+        const rendered = shallowDeep(
+          <FormattedMessage
+              id="hello"
+              defaultMessage="Hello, {name}!"
+              values={{
+                  name: <b>Jest</b>,
+              }}
+          >
+              {(...formattedMessage) => (
+                  <strong>{formattedMessage}</strong>
+              )}
 
-        const el = (
-            <FormattedMessage
-                id="hello"
-                defaultMessage="Hello, {name}!"
-                values={{
-                    name: <b>Prem</b>,
-                }}
-            >
-                {(...formattedMessage) => (
-                    <strong>{formattedMessage}</strong>
-                )}
-
-            </FormattedMessage>
+          </FormattedMessage>,
+          2
         );
 
-        renderer.render(el, {intl});
-        const rendered = renderer.getRenderOutput();
+        const nameNode = rendered.childAt(1);
+        expect(nameNode.type()).toBe('b');
+        expect(nameNode.text()).toBe('Jest');
+    });
 
-        expect(rendered.props.children).toBeAn('array');
-        expect(rendered).toEqualJSX(
-            <strong>Hello, <b>Prem</b>!</strong>
+    it('should not re-render when props and context are the same', () => {
+        const FormattedMessage = mockContext(intl);
+        const props = {
+          id: 'hello',
+          defaultMessage: 'Hello, World!'
+        }
+
+        const spy = createSpy().andReturn(null);
+        const rendered = mount(
+          <FormattedMessage {...props}>
+            { spy }
+          </FormattedMessage>
         );
+        rendered.instance().mockContext(intl);
+        rendered.setProps(props);
+
+        expect(spy.calls.length).toBe(1);
+    });
+
+    it('should re-render when props change', () => {
+        const FormattedMessage = mockContext(intl);
+        const props = {
+          id: 'hello',
+          defaultMessage: 'Hello, World!'
+        }
+
+        const spy = createSpy().andReturn(null);
+        const rendered = mount(
+          <FormattedMessage {...props}>
+            { spy }
+          </FormattedMessage>
+        );
+        rendered.setProps({
+          ...props,
+          defaultMessage: 'Hello, Galaxy!'
+        });
+
+        expect(spy.calls.length).toBe(2);
+    });
+
+    it('should re-render when context changes', () => {
+        const changedIntl = generateIntlContext({
+          locale: 'en-US',
+          defaultLocale: 'en-US'
+        });
+
+        const FormattedMessage = mockContext(intl);
+        const props = {
+          id: 'hello',
+          defaultMessage: 'Hello, World!'
+        }
+
+        const spy = createSpy().andReturn(null);
+        const withIntlContext = mount(
+          <FormattedMessage {...props}>
+            { spy }
+          </FormattedMessage>
+        );
+        withIntlContext.instance().mockContext(changedIntl);
+
+        expect(spy.calls.length).toBe(2);
+    });
+
+    it('should re-render when `values` are different', () => {
+        const FormattedMessage = mockContext(intl);
+        const descriptor = {
+            id: 'hello',
+            defaultMessage: 'Hello, {name}!',
+        };
+        const values = {
+          name: 'Jest'
+        };
+
+        const spy = createSpy().andReturn(null);
+        const withIntlContext = mount(
+          <FormattedMessage
+            {...descriptor}
+            values={values}
+          >
+            { spy }
+          </FormattedMessage>
+        );
+
+        withIntlContext.setProps({
+          ...descriptor,
+          values: {
+            ...values // create new object instance with same values to test shallow equality check
+          }
+        });
+        expect(spy.calls.length).toBe(1); // expect only 1 render as the value object instance changed but not its values
+
+        withIntlContext.setProps({
+          ...descriptor,
+          values: {
+            name: 'Enzyme'
+          }
+        });
+        expect(spy.calls.length).toBe(2); // expect a rerender after having changed the name
     });
 });

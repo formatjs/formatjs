@@ -4,59 +4,15 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {intlShape, messageDescriptorPropTypes} from '../types';
-import {
-  invariantIntlContext,
-  shallowEquals,
-  shouldIntlComponentUpdate,
-} from '../utils';
+import React from 'react';
+import withIntl from './withIntl';
+import {BaseFormattedMessage} from './message';
 
-export default class FormattedHTMLMessage extends Component {
-  static displayName = 'FormattedHTMLMessage';
-
-  static contextTypes = {
-    intl: intlShape,
-  };
-
-  static propTypes = {
-    ...messageDescriptorPropTypes,
-    values: PropTypes.object,
-    tagName: PropTypes.string,
-    children: PropTypes.func,
-  };
-
-  static defaultProps = {
-    values: {},
-  };
-
-  constructor(props, context) {
-    super(props, context);
-    invariantIntlContext(context);
-  }
-
-  shouldComponentUpdate(nextProps, ...next) {
-    const {values} = this.props;
-    const {values: nextValues} = nextProps;
-
-    if (!shallowEquals(nextValues, values)) {
-      return true;
-    }
-
-    // Since `values` has already been checked, we know they're not
-    // different, so the current `values` are carried over so the shallow
-    // equals comparison on the other props isn't affected by the `values`.
-    let nextPropsToCheck = {
-      ...nextProps,
-      values,
-    };
-
-    return shouldIntlComponentUpdate(this, nextPropsToCheck, ...next);
-  }
+class FormattedHTMLMessage extends BaseFormattedMessage {
+  static displayName = 'FormattedHTMLMessage'
 
   render() {
-    const {formatHTMLMessage, textComponent: Text} = this.context.intl;
+    const {formatHTMLMessage, textComponent: Text} = this.props.intl;
 
     const {
       id,
@@ -86,3 +42,7 @@ export default class FormattedHTMLMessage extends Component {
     return <Component dangerouslySetInnerHTML={html} />;
   }
 }
+
+export const BaseFormattedHTMLMessage = FormattedHTMLMessage // testing purpose only
+
+export default withIntl(FormattedHTMLMessage);

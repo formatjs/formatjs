@@ -6,34 +6,32 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import withIntl from './withIntl';
 import {intlShape, dateTimeFormatPropTypes} from '../types';
 import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
 
-export default class FormattedDate extends Component {
+class FormattedDate extends Component {
   static displayName = 'FormattedDate';
-
-  static contextTypes = {
-    intl: intlShape,
-  };
 
   static propTypes = {
     ...dateTimeFormatPropTypes,
+    intl: intlShape,
     value: PropTypes.any.isRequired,
     format: PropTypes.string,
     children: PropTypes.func,
   };
 
-  constructor(props, context) {
-    super(props, context);
-    invariantIntlContext(context);
+  constructor(props) {
+    super(props);
+    invariantIntlContext(props);
   }
 
-  shouldComponentUpdate(...next) {
-    return shouldIntlComponentUpdate(this, ...next);
+  shouldComponentUpdate(nextProps, nextState) {
+    return shouldIntlComponentUpdate(this, nextProps, nextState);
   }
 
   render() {
-    const {formatDate, textComponent: Text} = this.context.intl;
+    const {formatDate, textComponent: Text} = this.props.intl;
     const {value, children} = this.props;
 
     let formattedDate = formatDate(value, this.props);
@@ -45,3 +43,5 @@ export default class FormattedDate extends Component {
     return <Text>{formattedDate}</Text>;
   }
 }
+
+export default withIntl(FormattedDate)

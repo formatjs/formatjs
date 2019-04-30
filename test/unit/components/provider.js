@@ -1,11 +1,9 @@
-import expect, {spyOn} from 'expect';
-import expectJSX from 'expect-jsx';
+import expect, {createSpy, spyOn} from 'expect';
 import React from 'react';
-import {createRenderer} from '../../react-compat';
+import {mount} from 'enzyme';
+import {makeMockContext, shallowDeep, SpyComponent} from '../testUtils'
 import {intlConfigPropTypes, intlFormatPropTypes} from '../../../src/types';
 import IntlProvider from '../../../src/components/provider';
-
-expect.extend(expectJSX);
 
 const skipWhen = (shouldSkip, callback) => {
     if (shouldSkip) {
@@ -14,6 +12,15 @@ const skipWhen = (shouldSkip, callback) => {
         callback(it);
     }
 };
+
+const mockContext = makeMockContext(
+  require.resolve('../../../src/components/provider')
+);
+
+const getIntlContext = (el) => {
+  const provider = shallowDeep(el, 2).first();
+  return provider.prop('value');
+}
 
 describe('<IntlProvider>', () => {
     let immutableIntl = false;
@@ -40,24 +47,10 @@ describe('<IntlProvider>', () => {
 
     let consoleError;
     let dateNow;
-    let IntlProviderRender;
-
-    let renderer;
 
     beforeEach(() => {
         consoleError       = spyOn(console, 'error');
         dateNow            = spyOn(Date, 'now').andReturn(now);
-        IntlProviderRender = spyOn(IntlProvider.prototype, 'render').andCallThrough();
-
-        renderer = createRenderer();
-
-        // TODO: Remove when this feature is released to react-addons-test-utils
-        // https://github.com/facebook/react/pull/4918
-        if (!renderer.getMountedInstance) {
-            renderer.getMountedInstance = function () {
-                return this._instance ? this._instance._instance : null;
-            };
-        }
     });
 
     afterEach(() => {
@@ -67,7 +60,6 @@ describe('<IntlProvider>', () => {
 
         consoleError.restore();
         dateNow.restore();
-        IntlProviderRender.restore();
     });
 
     it('has a `displayName`', () => {
@@ -77,18 +69,23 @@ describe('<IntlProvider>', () => {
     // If global.Intl is immutable, then skip this test.
     skipWhen(immutableIntl, (it) => {
         it('throws when `Intl` is missing from runtime', () => {
+            const IntlProvider = mockContext();
             global.Intl = undefined;
-            expect(() => renderer.render(<IntlProvider />)).toThrow(
+
+            expect(() => shallowDeep(<IntlProvider />, 2)).toThrow(
                 '[React Intl] The `Intl` APIs must be available in the runtime, and do not appear to be built-in. An `Intl` polyfill should be loaded.'
             );
         });
     });
 
     it('throws when no `children`', () => {
-        expect(() => renderer.render(<IntlProvider />)).toThrow();
+        const IntlProvider = mockContext();
+
+        expect(() => shallowDeep(<IntlProvider />, 2)).toThrow();
     });
 
     it('throws when more than one `children`', () => {
+        const IntlProvider = mockContext();
         const el = (
             <IntlProvider>
                 <Child />
@@ -96,17 +93,18 @@ describe('<IntlProvider>', () => {
             </IntlProvider>
         );
 
-        expect(() => renderer.render(el)).toThrow();
+        expect(() => shallowDeep(el, 2)).toThrow();
     });
 
     it('warns when no `locale` prop is provided', () => {
+        const IntlProvider = mockContext();
         const el = (
             <IntlProvider>
                 <Child />
             </IntlProvider>
         );
 
-        renderer.render(el);
+        shallowDeep(el, 2);
         expect(consoleError.calls.length).toBe(1);
         expect(consoleError.calls[0].arguments[0]).toContain(
             '[React Intl] Missing locale data for locale: "undefined". Using default locale: "en" as fallback.'
@@ -114,6 +112,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('warns when `locale` prop provided has no locale data', () => {
+        const IntlProvider = mockContext();
         const el = (
             <IntlProvider locale="missing">
                 <Child />
@@ -122,7 +121,7 @@ describe('<IntlProvider>', () => {
 
         const {locale} = el.props;
 
-        renderer.render(el);
+        shallowDeep(el, 2);
         expect(consoleError.calls.length).toBe(1);
         expect(consoleError.calls[0].arguments[0]).toContain(
             `[React Intl] Missing locale data for locale: "${locale}". Using default locale: "en" as fallback.`
@@ -130,27 +129,27 @@ describe('<IntlProvider>', () => {
     });
 
     it('renders its `children`', () => {
+        const IntlProvider = mockContext();
         const el = (
             <IntlProvider locale="en">
                 <Child />
             </IntlProvider>
         );
 
-        renderer.render(el);
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <Child />
-        );
+        const rendered = shallowDeep(el, 2);
+        expect(rendered.children().length).toBe(1);
+        expect(rendered.children().contains(<Child />)).toBe(true);
     });
 
     it('provides `context.intl` with `intlShape` props', () => {
+        const IntlProvider = mockContext();
         const el = (
             <IntlProvider locale="en">
                 <Child />
             </IntlProvider>
         );
 
-        renderer.render(el);
-        const {intl} = renderer.getMountedInstance().getChildContext();
+        const intl = getIntlContext(el);
 
         INTL_SHAPE_PROP_NAMES.forEach((propName) => {
             expect(intl[propName]).toNotBe(undefined, `Missing context.intl prop: ${propName}`);
@@ -158,6 +157,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('provides `context.intl` with values from intl config props', () => {
+        const IntlProvider = mockContext();
         const props = {
             locale       : 'fr-FR',
             timeZone     : 'UTC',
@@ -177,8 +177,7 @@ describe('<IntlProvider>', () => {
             </IntlProvider>
         );
 
-        renderer.render(el);
-        const {intl} = renderer.getMountedInstance().getChildContext();
+        const intl = getIntlContext(el);
 
         INTL_CONFIG_PROP_NAMES.forEach((propName) => {
             expect(intl[propName]).toBe(props[propName]);
@@ -186,6 +185,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('provides `context.intl` with timeZone from intl config props when it is specified', () => {
+        const IntlProvider = mockContext();
         const props = {
             timeZone: 'Europe/Paris',
         };
@@ -196,13 +196,13 @@ describe('<IntlProvider>', () => {
             </IntlProvider>
         );
 
-        renderer.render(el);
-        const {intl} = renderer.getMountedInstance().getChildContext();
+        const intl = getIntlContext(el);
 
         expect(intl.timeZone).toBe('Europe/Paris');
     });
 
     it('provides `context.intl` with values from `defaultProps` for missing or undefined props', () => {
+        const IntlProvider = mockContext();
         const props = {
             locale: 'en-US',
             defaultLocale: undefined,
@@ -214,8 +214,7 @@ describe('<IntlProvider>', () => {
             </IntlProvider>
         );
 
-        renderer.render(el);
-        const {intl} = renderer.getMountedInstance().getChildContext();
+        const intl = getIntlContext(el);
 
         expect(intl.defaultLocale).toNotBe(undefined);
         expect(intl.defaultLocale).toBe('en');
@@ -224,23 +223,23 @@ describe('<IntlProvider>', () => {
     });
 
     it('provides `context.intl` with format methods bound to intl config props', () => {
+        const IntlProvider = mockContext();
         const el = (
             <IntlProvider
                 locale="en"
                 formats={{
                     date: {
                         'year-only': {
-                            year: 'numeric',
-                        },
-                    },
+                            year: 'numeric'
+                        }
+                    }
                 }}
             >
                 <Child />
             </IntlProvider>
         );
 
-        renderer.render(el);
-        const {intl} = renderer.getMountedInstance().getChildContext();
+        const intl = getIntlContext(el);
 
         INTL_FORMAT_PROP_NAMES.forEach((propName) => {
             expect(intl[propName]).toExist(`Missing context.intl prop: ${propName}`);
@@ -254,6 +253,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('inherits from an <IntlProvider> ancestor', () => {
+        let IntlProvider = mockContext();
         const props = {
             locale  : 'en',
             timeZone: 'UTC',
@@ -281,16 +281,20 @@ describe('<IntlProvider>', () => {
             onError: consoleError
         };
 
-        const parentIntlProvider = new IntlProvider(props, {});
+        const parentContext = getIntlContext(
+          <IntlProvider {...props}>
+            <Child />
+          </IntlProvider>
+        );
 
+        IntlProvider = mockContext(parentContext);
         const el = (
             <IntlProvider>
                 <Child />
             </IntlProvider>
         );
 
-        renderer.render(el, parentIntlProvider.getChildContext());
-        const {intl} = renderer.getMountedInstance().getChildContext();
+        const intl = getIntlContext(el);
 
         expect(consoleError.calls.length).toBe(0);
 
@@ -300,6 +304,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('shadows inherited intl config props from an <IntlProvider> ancestor', () => {
+        let IntlProvider = mockContext()
         const props = {
             locale  : 'en',
             timeZone  : 'Australia/Adelaide',
@@ -324,8 +329,13 @@ describe('<IntlProvider>', () => {
             },
         };
 
-        const parentIntlProvider = new IntlProvider(props, {});
+        const parentContext = getIntlContext(
+          <IntlProvider {...props}>
+            <Child />
+          </IntlProvider>
+        );
 
+        IntlProvider = mockContext(parentContext);
         const el = (
             <IntlProvider
                 locale="fr"
@@ -340,8 +350,7 @@ describe('<IntlProvider>', () => {
             </IntlProvider>
         );
 
-        renderer.render(el, parentIntlProvider.getChildContext());
-        const {intl} = renderer.getMountedInstance().getChildContext();
+        const intl = getIntlContext(el);
 
         expect(consoleError.calls.length).toBe(0);
 
@@ -351,64 +360,93 @@ describe('<IntlProvider>', () => {
     });
 
     it('should not re-render when props and context are the same', () => {
-        const parentIntlProvider = new IntlProvider({locale: 'en'}, {});
+        let IntlProvider = mockContext()
+        const parentContext = getIntlContext(
+          <IntlProvider locale='en'>
+            <Child />
+          </IntlProvider>
+        );
 
+        IntlProvider = mockContext(parentContext);
         const el = (
             <IntlProvider>
-                <Child />
+                <SpyComponent />
             </IntlProvider>
         );
 
-        renderer.render(el, parentIntlProvider.getChildContext());
-        renderer.render(el, parentIntlProvider.getChildContext());
+        const intlProvider = mount(el);
+        intlProvider.setProps({}); // set props in order to test wether it rerenders
+        intlProvider.instance().mockContext(parentContext); // mock context with same value to see if it rerenders
 
-        expect(IntlProviderRender.calls.length).toBe(1);
+        const spy = intlProvider.find(SpyComponent).instance();
+        expect(spy.getRenderCount()).toBe(1);
     });
 
     it('should re-render when props change', () => {
-        const parentIntlProvider = new IntlProvider({locale: 'en'}, {});
+        let IntlProvider = mockContext()
+        const parentContext = getIntlContext(
+          <IntlProvider locale='en'>
+            <Child />
+          </IntlProvider>
+        );
 
-        const child = <Child />;
+        IntlProvider = mockContext(parentContext);
+        const Child = createSpy().andReturn(null);
 
-        renderer.render(
+        const intlProvider = mount(
             <IntlProvider locale="en">
-                {child}
-            </IntlProvider>,
-            parentIntlProvider.getChildContext()
+                <SpyComponent />
+            </IntlProvider>
         );
+        intlProvider.setProps({
+          locale: 'en-US'
+        })
 
-        renderer.render(
-            <IntlProvider locale="en-US">
-                {child}
-            </IntlProvider>,
-            parentIntlProvider.getChildContext()
-        );
-
-        expect(IntlProviderRender.calls.length).toBe(2);
+        const spy = intlProvider.find(SpyComponent).instance();
+        expect(spy.getRenderCount()).toBe(2);
     });
 
     it('should re-render when context changes', () => {
+        let IntlProvider = mockContext()
+        const initialParentContext = getIntlContext(
+          <IntlProvider locale='en'>
+            <Child />
+          </IntlProvider>
+        );
+        const changedParentContext = getIntlContext(
+          <IntlProvider locale='en-US'>
+            <Child />
+          </IntlProvider>
+        );
+
+        IntlProvider = mockContext(initialParentContext);
+        const Child = createSpy().andReturn(null);
+
         const el = (
             <IntlProvider>
-                <Child />
+                <SpyComponent />
             </IntlProvider>
         );
 
-        let parentIntlProvider;
+        const intlProvider = mount(el);
+        intlProvider.instance().mockContext(changedParentContext);
 
-        parentIntlProvider = new IntlProvider({locale: 'en'}, {});
-        renderer.render(el, parentIntlProvider.getChildContext());
-
-        parentIntlProvider = new IntlProvider({locale: 'en-US'}, {});
-        renderer.render(el, parentIntlProvider.getChildContext());
-
-        expect(IntlProviderRender.calls.length).toBe(2);
+        const spy = intlProvider.find(SpyComponent).instance();
+        expect(spy.getRenderCount()).toBe(2);
     });
 
     it('accepts `initialNow` prop', () => {
+        const IntlProvider = mockContext();
         const initialNow = 1234;
 
-        renderer.render(
+        // doing this to get the actual "now" at render time
+        const Child = ({ intl }) => ( // mocked provider injects context as 'intl' into children
+          <div>
+            { intl.now() }
+          </div>
+        )
+
+        const el = (
             <IntlProvider
                 locale="en"
                 initialNow={initialNow}
@@ -417,71 +455,67 @@ describe('<IntlProvider>', () => {
             </IntlProvider>
         );
 
-        const {intl} = renderer.getMountedInstance().getChildContext();
-
-        expect(intl.now()).toBe(initialNow);
+        // can't do shallow rendering as this first mounts the Provider and then the children, bypassing initialNow
+        const now = +mount(el).find(Child).text();
+        expect(now).toBe(initialNow);
     });
 
     it('defaults `initialNow` to `Date.now()`', () => {
-        renderer.render(
-            <IntlProvider locale="en">
+        const IntlProvider = mockContext();
+        const Child = ({ intl }) => ( // see above
+          <div>
+            { intl.now() }
+          </div>
+        )
+
+        const el = (
+            <IntlProvider
+                locale="en"
+            >
                 <Child />
             </IntlProvider>
         );
 
-        const {intl} = renderer.getMountedInstance().getChildContext();
-
-        expect(intl.now()).toBe(now);
+        const now = +mount(el).find(Child).text(); // see above
+        expect(now).toBe(now);
     });
 
     it('inherits `initialNow` from an <IntlProvider> ancestor', () => {
         const initialNow = 1234;
-        const parentIntlProvider = new IntlProvider({
-            locale: 'en',
-            initialNow,
-        }, {});
+        const IntlProvider = mockContext({
+          now: () => initialNow
+        });
+
+        // see above
+        const Child = ({ intl }) => (
+          <div>
+            { intl.now() }
+          </div>
+        )
 
         const el = (
-            <IntlProvider >
+            <IntlProvider locale="en">
                 <Child />
             </IntlProvider>
         );
 
-        renderer.render(el, parentIntlProvider.getChildContext());
-        const {intl} = renderer.getMountedInstance().getChildContext();
-
-        expect(intl.now()).toBe(initialNow);
+        const now = +mount(el).find(Child).text(); // see above
+        expect(now).toBe(initialNow);
     });
 
-    it('updates `now()` to return the current date when mounted', (done) => {
+    it('updates `now()` to return the current date when mounted', () => {
+        const IntlProvider = mockContext();
         const initialNow = 1234;
 
-        renderer.render(
-            <IntlProvider
-                locale="en"
-                initialNow={initialNow}
-            >
-                <Child />
-            </IntlProvider>
-        );
+        const intl = getIntlContext(
+          <IntlProvider
+              locale="en"
+              initialNow={initialNow}
+          >
+              <Child />
+          </IntlProvider>
+        )
 
-        const instance = renderer.getMountedInstance();
-        const {intl}   = instance.getChildContext();
-
-        const nowOne = intl.now();
-
-        // Shallow Renderer doesn't call `componentDidMount()`.
-        instance.componentDidMount();
-
-        setTimeout(() => {
-            const nowTwo = intl.now();
-
-            expect(nowTwo).toNotEqual(nowOne);
-            expect(nowOne).toBe(initialNow);
-            expect(nowTwo).toBe(now);
-
-            renderer.unmount();
-            done();
-        }, 10);
+        expect(intl.now()).toBe(now)
     });
 });

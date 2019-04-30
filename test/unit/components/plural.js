@@ -1,21 +1,22 @@
-import expect, {spyOn} from 'expect';
-import expectJSX from 'expect-jsx';
+import expect, {createSpy, spyOn} from 'expect';
 import React from 'react';
-import {createRenderer} from '../../react-compat';
-import IntlProvider from '../../../src/components/provider';
+import {mount} from 'enzyme';
+import {generateIntlContext, makeMockContext, shallowDeep} from '../testUtils';
 import FormattedPlural from '../../../src/components/plural';
 
-expect.extend(expectJSX);
+const mockContext = makeMockContext(
+  require.resolve('../../../src/components/plural')
+);
 
 describe('<FormattedPlural>', () => {
     let consoleError;
-    let renderer;
-    let intlProvider;
+    let intl;
 
     beforeEach(() => {
         consoleError = spyOn(console, 'error');
-        renderer     = createRenderer();
-        intlProvider = new IntlProvider({locale: 'en'}, {});
+        intl = generateIntlContext({
+          locale: 'en'
+        });
     });
 
     afterEach(() => {
@@ -27,100 +28,150 @@ describe('<FormattedPlural>', () => {
     });
 
     it('throws when <IntlProvider> is missing from ancestry', () => {
-        expect(() => renderer.render(<FormattedPlural />)).toThrow(
+        const FormattedPlural = mockContext();
+        expect(() => shallowDeep(<FormattedPlural />, 2)).toThrow(
             '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
         );
     });
 
     it('renders an empty <span> when no `other` prop is provided', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedPlural = mockContext(intl);
 
-        renderer.render(<FormattedPlural />, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(<span />);
+        const rendered = shallowDeep(
+          <FormattedPlural />,
+          2
+        );
+        expect(rendered.type()).toBe('span');
+        expect(rendered.text()).toBe('');
 
-        renderer.render(<FormattedPlural value={1} />, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(<span />);
+        const renderedWithValue = shallowDeep(
+          <FormattedPlural value={1} />,
+          2
+        );
+        expect(renderedWithValue.type()).toBe('span');
+        expect(renderedWithValue.text()).toBe('');
     });
 
     it('renders `other` in a <span> when no `value` prop is provided', () => {
-        renderer.render(<FormattedPlural other="foo" />, intlProvider.getChildContext());
-        expect(renderer.getRenderOutput()).toEqualJSX(<span>foo</span>);
+        const FormattedPlural = mockContext(intl);
+        const other = 'Jest';
+
+        const rendered = shallowDeep(
+          <FormattedPlural other={other} />,
+          2
+        );
+        expect(rendered.type()).toBe('span');
+        expect(rendered.text()).toBe(other);
     });
 
     it('renders a formatted plural in a <span>', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedPlural = mockContext(intl);
         const num = 1;
+        const one = 'foo';
+        const other = 'bar';
 
-        const el = <FormattedPlural value={num} one="foo" other="bar" />;
-
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span>{el.props[intl.formatPlural(num)]}</span>
+        const rendered = shallowDeep(
+          <FormattedPlural value={num} one={one} other={other} />,
+          2
+        );
+        expect(rendered.type()).toBe('span');
+        expect(rendered.text()).toBe(
+          num === 1
+            ? one
+            : other
         );
     });
 
     it('should not re-render when props and context are the same', () => {
-        intlProvider = new IntlProvider({locale: 'en'}, {});
-        renderer.render(<FormattedPlural value={0} other="foo" />, intlProvider.getChildContext());
-        const renderedOne = renderer.getRenderOutput();
+        const FormattedPlural = mockContext(intl);
 
-        intlProvider = new IntlProvider({locale: 'en'}, {});
-        renderer.render(<FormattedPlural value={0} other="foo" />, intlProvider.getChildContext());
-        const renderedTwo = renderer.getRenderOutput();
+        const spy = createSpy().andReturn(null);
+        const withInlContext = mount(
+          <FormattedPlural value={1} one='foo' other='bar'>
+            { spy }
+          </FormattedPlural>
+        );
 
-        expect(renderedOne).toBe(renderedTwo);
+        withInlContext.setProps({
+          ...withInlContext.props()
+        });
+        withInlContext.instance().mockContext(intl);
+
+        expect(spy.calls.length).toBe(1);
     });
 
     it('should re-render when props change', () => {
-        renderer.render(<FormattedPlural value={0} one="foo" other="bar" />, intlProvider.getChildContext());
-        const renderedOne = renderer.getRenderOutput();
+        const FormattedPlural = mockContext(intl);
 
-        renderer.render(<FormattedPlural value={1} one="foo" other="bar" />, intlProvider.getChildContext());
-        const renderedTwo = renderer.getRenderOutput();
+        const spy = createSpy().andReturn(null);
+        const withInlContext = mount(
+          <FormattedPlural value={0} one='foo' other='bar'>
+            { spy }
+          </FormattedPlural>
+        );
 
-        expect(renderedOne).toNotBe(renderedTwo);
+        withInlContext.setProps({
+          ...withInlContext.props(),
+          value: withInlContext.prop('value') + 1
+        });
+
+        expect(spy.calls.length).toBe(2);
     });
 
     it('should re-render when context changes', () => {
-        intlProvider = new IntlProvider({locale: 'en'}, {});
-        renderer.render(<FormattedPlural value={0} other="foo" />, intlProvider.getChildContext());
-        const renderedOne = renderer.getRenderOutput();
+        const FormattedPlural = mockContext(intl);
 
-        intlProvider = new IntlProvider({locale: 'en-US'}, {});
-        renderer.render(<FormattedPlural value={0} other="foo" />, intlProvider.getChildContext());
-        const renderedTwo = renderer.getRenderOutput();
+        const spy = createSpy().andReturn(null);
+        const withInlContext = mount(
+          <FormattedPlural value={0} one='foo' other='bar'>
+            { spy }
+          </FormattedPlural>
+        );
 
-        expect(renderedOne).toNotBe(renderedTwo);
+        const otherIntl = generateIntlContext({
+          locale: 'en-US'
+        });
+        withInlContext.instance().mockContext(otherIntl);
+
+        expect(spy.calls.length).toBe(2);
     });
 
     it('accepts valid IntlPluralFormat options as props', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedPlural = mockContext(intl);
         const num = 22;
+        const props = {two: 'nd'};
         const options = {style: 'ordinal'};
 
-        const el = <FormattedPlural value={num} two="nd" {...options} />;
+        const rendered = shallowDeep(
+          <FormattedPlural value={num} {...props} {...options} />,
+          2
+        );
 
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span>{el.props[intl.formatPlural(num, options)]}</span>
+        expect(rendered.type()).toBe('span');
+        expect(rendered.text()).toBe(
+          props[intl.formatPlural(num, options)]
         );
     });
 
     it('supports function-as-child pattern', () => {
-        const {intl} = intlProvider.getChildContext();
+        const FormattedPlural = mockContext(intl);
+        const props = {one: 'foo'};
         const num = 1;
 
-        const el = (
-            <FormattedPlural value={num} one="foo">
-                {(formattedPlural) => (
-                    <b>{formattedPlural}</b>
-                )}
-            </FormattedPlural>
+        const spy = createSpy().andReturn(<b>Jest</b>);
+        const rendered = shallowDeep(
+          <FormattedPlural {...props} value={num}>
+            { spy }
+          </FormattedPlural>,
+          2
         );
 
-        renderer.render(el, {intl});
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <b>{el.props[intl.formatPlural(num)]}</b>
-        );
+        expect(spy.calls.length).toBe(1);
+        expect(spy.calls[0].arguments).toEqual([
+          props[intl.formatPlural(num)]
+        ]);
+
+        expect(rendered.type()).toBe('b');
+        expect(rendered.text()).toBe('Jest');
     });
 });

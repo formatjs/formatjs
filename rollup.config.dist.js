@@ -3,7 +3,7 @@ import babel from 'rollup-plugin-babel';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
-import uglify from 'rollup-plugin-uglify';
+import {uglify} from 'rollup-plugin-uglify';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -24,14 +24,14 @@ export default {
   output: {
     file: p.resolve(`dist/react-intl.${isProduction ? 'min.js' : 'js'}`),
     format: 'umd',
-  },
-  name: 'ReactIntl',
-  banner: copyright,
-  intro: reactCheck,
-  sourcemap: true,
-  globals: {
-    react: 'React',
-    'prop-types': 'PropTypes',
+    name: 'ReactIntl',
+    banner: copyright,
+    intro: reactCheck,
+    sourcemap: true,
+    globals: {
+      react: 'React',
+      'prop-types': 'PropTypes',
+    },
   },
   external: ['react', 'prop-types'],
   plugins: [
