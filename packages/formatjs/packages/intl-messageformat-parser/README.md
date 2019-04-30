@@ -161,6 +161,6 @@ See the [LICENSE file][] for license text and copyright information.
 [travis-badge]: https://img.shields.io/travis/yahoo/intl-messageformat-parser.svg?style=flat-square
 [ICU]: http://userguide.icu-project.org/formatparse/messages
 [intl-mf]: https://github.com/yahoo/intl-messageformat
-[PEG.js]: http://pegjs.majda.cz
+[PEG.js]: https://pegjs.org/
 [messageformat.js]: https://github.com/SlexAxton/messageformat.js
 [LICENSE file]: https://github.com/yahoo/intl-messageformat-parser/blob/master/LICENSE
