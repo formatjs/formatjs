@@ -1,5 +1,4 @@
 type Selector = string
-type Format = null | SimpleFormat | PluralFormat | SelectFormat | SelectOrdinalFormat
 interface LocationDetails {
     offset: number
     line: number
@@ -14,25 +13,18 @@ interface SimpleFormat {
     style: string
     location: Location
 }
-interface PluralFormat {
-    type: 'pluralFormat'
+interface PluralFormat extends PluralStyle {
     ordinal: false
-    offset: number
-    options: OptionalFormatPattern[]
-    location: Location 
 }
 interface SelectFormat {
     type: 'selectFormat'
     options: OptionalFormatPattern[],
     location: Location
 }
-interface SelectOrdinalFormat {
-    type: 'selectordinalFormat',
+interface SelectOrdinalFormat extends PluralStyle {
     ordinal: true,
-    offset: number,
-    options: OptionalFormatPattern[]
-    location: Location
 }
+type ElementFormat = SimpleFormat | PluralFormat | SelectOrdinalFormat | SelectFormat
 interface OptionalFormatPattern {
     type: 'optionalFormatPattern',
     selector: Selector
@@ -42,7 +34,7 @@ interface OptionalFormatPattern {
 interface PluralStyle {
     type: 'pluralFormat',
     offset: number
-    options: OptionalFormatPattern,
+    options: OptionalFormatPattern[],
     location: Location
 }
 interface MessageTextElement {
@@ -53,14 +45,14 @@ interface MessageTextElement {
 interface ArgumentElement {
     type: 'argumentElement'
     id: string
-    format: Format
+    format: ElementFormat
     location: Location 
 }
-type ICUElement = MessageTextElement | ArgumentElement
+type Element = MessageTextElement | ArgumentElement
 
-interface MessageFormatPattern {
+export interface MessageFormatPattern {
     type: 'messageFormatPattern',
-    elements: Array<ICUElement>,
+    elements: Array<Element>,
     location: Location
 }
 interface Parser {
