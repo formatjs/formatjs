@@ -3,3 +3,12 @@ node_js:
 - 8
 - 10
 - 12
+deploy:
+  provider: npm
+  email: seth@bertalotto.net
+  api_key:
+    secure: jyGb7oBDKjLL6+mzCq2na8wCqMgoiClXTRG+QczR41mvHY3dTflyjKYw8o3F7q3AKfSIUJly3Newe8CyckIxh6PJ1hM1RWxD8S7lhA6cbPcl7JlO3IYKQIzCaETIGenr2nJ7bAgN858fYlpFunL9izGxEhkgJ97xyAvj75uQAxA=
+  on:
+    branch: master
+    # tags: true
+  skip_cleanup: true
