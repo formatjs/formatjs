@@ -67,7 +67,7 @@
     "setupTestFrameworkScriptFile": "./test/setup.js"
   },
   "dependencies": {
-    "hoist-non-react-statics": "^2.5.5",
+    "hoist-non-react-statics": "^3.3.0",
     "intl-format-cache": "^2.0.5",
     "intl-messageformat": "^2.1.0",
     "intl-relativeformat": "^2.1.0",
