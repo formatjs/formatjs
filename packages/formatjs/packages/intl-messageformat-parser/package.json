@@ -9,7 +9,7 @@
     "clean": "rimraf dist lib",
     "test": "nyc mocha test/unit/ --reporter spec",
     "build": "npm run clean && ./build.js",
-    "benchmark": "test/benchmark",
+    "benchmark": "./test/benchmark.js",
     "prepublish": "npm run build"
   },
   "contributors": [
