@@ -12,6 +12,14 @@
     "benchmark": "test/benchmark",
     "prepublish": "npm run build"
   },
+  "contributors": [
+    "Eric Ferraiuolo <eferraiuolo@gmail.com>",
+    "Long Ho <holevietlong@gmail.com>",
+    "Ryuichi Okumura <okuryu@okuryu.com>",
+    "Seth Bertalotto <seth@bertalotto.net>",
+    "Song Seunggeun <giff.song@gmail.com>",
+    "Tobias Bieniek <tobias.bieniek@gmail.com>"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/yahoo/intl-messageformat-parser.git"
