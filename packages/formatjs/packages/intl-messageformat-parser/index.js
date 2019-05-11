@@ -1,4 +1,6 @@
 'use strict';
 
-exports = module.exports = require('./lib/parser')['default'];
-exports['default'] = exports;
+var parser = require('./lib/parser')
+
+module.exports = parser
+module.exports['default'] = parser

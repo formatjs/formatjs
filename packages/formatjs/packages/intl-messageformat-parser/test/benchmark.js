@@ -1,8 +1,9 @@
+#!/usr/bin/env node
 'use strict';
+const benchmark = require('benchmark')
+var parser = require('../');
 
-var parser = require('../../');
-
-var msg = '' +
+const complexMsg = '' +
     '{gender_of_host, select, ' +
       'female {' +
         '{num_guests, plural, offset:1 ' +
@@ -23,6 +24,23 @@ var msg = '' +
           '=2 {{host} invites {guest} and one other person to their party.}' +
           'other {{host} invites {guest} and # other people to their party.}}}}';
 
-module.exports = function () {
-    parser.parse(msg);
-};
+const normalMsg = '' +
+          'Yo, {firstName} {lastName} has ' +
+          '{numBooks, number, integer} ' +
+          '{numBooks, plural, ' +
+              'one {book} ' +
+              'other {books}}.';
+              
+const simpleMsg = 'Hello, {name}!';
+
+const stringMsg = 'Hello, world!';
+
+new benchmark.Suite()
+.add('complex_msg', () => parser.parse(complexMsg))
+.add('normal_msg', () => parser.parse(normalMsg))
+.add('simple_msg', () => parser.parse(simpleMsg))
+.add('string_msg', () => parser.parse(stringMsg))
+.on('cycle', function(event) {
+  console.log(String(event.target));
+})
+.run()

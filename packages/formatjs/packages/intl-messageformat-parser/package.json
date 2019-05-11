@@ -4,9 +4,13 @@
   "description": "Parses ICU Message strings into an AST via JavaScript.",
   "main": "index.js",
   "jsnext:main": "src/parser.js",
+  "browser": "dist/parser.js",
   "scripts": {
+    "clean": "rimraf dist lib tmp",
     "test": "nyc mocha test/unit/ --reporter spec",
-    "prepublish": "grunt"
+    "build": "npm run clean && ./build.js",
+    "benchmark": "test/benchmark",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -30,16 +34,14 @@
   },
   "homepage": "https://github.com/yahoo/intl-messageformat-parser",
   "devDependencies": {
+    "benchmark": "^2.1.4",
     "expect.js": "^0.3.1",
-    "grunt": "^1.0.4",
-    "grunt-benchmark": "^1.0.0",
-    "grunt-bundle-jsnext-lib": "^0.5.0",
-    "grunt-cli": "^1.3.2",
-    "grunt-contrib-clean": "^2.0.0",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-peg": "^2.0.1",
+    "fs-extra": "^7.0.1",
+    "mkdirp": "^0.5.1",
     "mocha": "^6.1.4",
     "nyc": "^14.0.0",
+    "pegjs": "^0.10.0",
+    "rimraf": "^2.6.3",
     "xunit-file": "^1.0.0"
   }
 }
