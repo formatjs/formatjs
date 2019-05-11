@@ -6,7 +6,7 @@
   "jsnext:main": "src/parser.js",
   "browser": "dist/parser.js",
   "scripts": {
-    "clean": "rimraf dist lib tmp",
+    "clean": "rimraf dist lib",
     "test": "nyc mocha test/unit/ --reporter spec",
     "build": "npm run clean && ./build.js",
     "benchmark": "test/benchmark",
@@ -37,7 +37,6 @@
     "benchmark": "^2.1.4",
     "expect.js": "^0.3.1",
     "fs-extra": "^7.0.1",
-    "mkdirp": "^0.5.1",
     "mocha": "^6.1.4",
     "nyc": "^14.0.0",
     "pegjs": "^0.10.0",
