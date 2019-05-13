@@ -1,0 +1,38 @@
+{
+  "name": "formatjs-repo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "This repository is the home of FormatJS and related libraries.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/formatjs/formatjs"
+  },
+  "scripts": {
+    "build": "npm run build:bootstrap && npm run build:packages",
+    "build:bootstrap": "lerna bootstrap --hoist --since --include-filtered-dependencies --no-ci",
+    "build:packages": "lerna run build --since master --stream",
+    "cover": "lerna run cover --since",
+    "cover:collect": "mkdir -p ./.nyc_output/ && for d in $(find packages -type d -name '.nyc_output' -maxdepth 2 -exec find '{}' -type f ';'); do (cp $d ./.nyc_output/); done; nyc report --reporter=lcov --report-dir=${COVERAGE_DIR:-artifacts/coverage}",
+    "dev:lint": "lerna run lint --since master --stream",
+    "dev:test": "lerna run test --since master --stream",
+    "lint": "eslint .",
+    "test": "lerna run lint --since --stream && lerna run test --since --stream"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "coveralls": "^3.0.3",
+    "eslint": "^5.16.0",
+    "lerna": "^3.13.4",
+    "nyc": "^14.1.1"
+  },
+  "devEngines": {
+    "node": "8.x || 10.x || 12.x",
+    "npm": "6.x"
+  },
+  "pre-commit": [
+    "dev:lint",
+    "dev:test"
+  ],
+  "author": "Seth Bertalotto <sbertal@verizonmedia.com>",
+  "license": "BSD-3-Clause"
+}
