@@ -13,6 +13,7 @@ exports.getParentLocale = getParentLocale;
 exports.hasDateFields   = hasDateFields;
 exports.hasPluralRule   = hasPluralRule;
 exports.normalizeLocale = normalizeLocale;
+exports.hasOrdinalRule  = hasOrdinalRule;
 
 // These are the exceptions to the default algorithm for determining a locale's
 // parent locale.
@@ -21,6 +22,9 @@ var PARENT_LOCALES_HASH = require('cldr-core/supplemental/parentLocales.json')
 
 var PLURAL_LOCALES_HASH = require('cldr-core/supplemental/plurals.json')
     .supplemental['plurals-type-cardinal'];
+
+var ORDINAL_LOCALES_HASH = require('cldr-core/supplemental/ordinals.json')
+    .supplemental['plurals-type-ordinal'];
 
 var DATE_FIELDS_LOCALES_HASH = glob.sync('*/dateFields.json', {
     cwd: p.resolve(
@@ -91,6 +95,10 @@ function hasDateFields(locale) {
 
 function hasPluralRule(locale) {
     return PLURAL_LOCALES_HASH.hasOwnProperty(normalizeLocale(locale));
+}
+
+function hasOrdinalRule(locale) {
+    return ORDINAL_LOCALES_HASH.hasOwnProperty(normalizeLocale(locale))
 }
 
 function normalizeLocale(locale) {

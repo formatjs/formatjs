@@ -4,7 +4,7 @@
   "description": "Utility library that extracts the CLDR data that's needed by the FormatJS libraries.",
   "main": "index.js",
   "scripts": {
-    "test": "istanbul cover -- _mocha test/unit/ --reporter spec"
+    "test": "nyc mocha test/unit/ --reporter spec"
   },
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "license": "BSD-3-Clause",
@@ -12,15 +12,15 @@
     "cldr-core": "^34.0.0",
     "cldr-dates-full": "^34.0.0",
     "cldr-numbers-full": "^34.0.0",
-    "glob": "^5.0.1",
-    "make-plural": "^2.1.3",
+    "glob": "^7.0.0",
+    "make-plural": "^4.0.0",
     "object.assign": "^4.0.3",
-    "uglify-js": "^2.6.2"
+    "uglify-js": "^3.0.0"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
-    "istanbul": "^0.4.2",
-    "mocha": "^2.1.0"
+    "mocha": "^6.0.0",
+    "nyc": "^14.1.1"
   },
   "repository": {
     "type": "git",

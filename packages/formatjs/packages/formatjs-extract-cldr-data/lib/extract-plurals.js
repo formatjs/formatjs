@@ -5,23 +5,24 @@
  */
 'use strict';
 
-var makePlural = require('make-plural');
+var MakePlural = require('make-plural/make-plural');
 var UglifyJS   = require('uglify-js');
 
 var getParentLocale = require('./locales').getParentLocale;
 var hasPluralRule   = require('./locales').hasPluralRule;
+var hasOrdinalRule  = require('./locales').hasOrdinalRule;
 var normalizeLocale = require('./locales').normalizeLocale;
 
 module.exports = function extractPluralRules(locales) {
     // Force make-plural to use our CLDR data.
-    makePlural.load(
+    MakePlural.load(
         require('cldr-core/supplemental/plurals.json'),
         require('cldr-core/supplemental/ordinals.json')
     );
 
     // The CLDR states that the "root" locale's data should be used to fill in
     // any missing data as its data is the default.
-    var defaultPluralFn = makePlural('root', {ordinals: true});
+    var defaultPluralFn = new MakePlural('root', {ordinals: true});
 
     return locales.reduce(function (pluralRules, locale) {
         locale = normalizeLocale(locale);
@@ -49,7 +50,7 @@ module.exports = function extractPluralRules(locales) {
             // We try to use the `locale`'s plural rule function if it has one,
             // otherwise we fallback to the root's.
             var fn = hasPluralRule(locale) ?
-                    makePlural(locale, {ordinals: true}) : defaultPluralFn;
+                    new MakePlural(locale, {cardinals: true, ordinals: hasOrdinalRule(locale)}) : defaultPluralFn;
 
             // The make-plural lib returns a function with a `toString()` method
             // that is then minified. The function is serialized, minified, then
