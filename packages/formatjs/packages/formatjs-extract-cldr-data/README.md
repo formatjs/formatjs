@@ -45,6 +45,8 @@ The data object returned from this package will have the following shape, here's
         "year-short": [Object],
         month: [Object],
         "month-short": [Object],
+        week: [Object],
+        "week-short": [Object],
         day: [Object],
         "day-short": [Object],
         hour: [Object],

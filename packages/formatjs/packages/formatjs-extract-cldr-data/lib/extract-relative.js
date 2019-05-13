@@ -17,6 +17,8 @@ var FIELD_NAMES = [
     'year-short',
     'month',
     'month-short',
+    'week',
+    'week-short',
     'day',
     'day-short',
     'hour',

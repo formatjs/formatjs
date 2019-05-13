@@ -76,6 +76,26 @@ describe('Data shape', function () {
                 expect(field.relativeTime).to.be.an('object');
             });
 
+            it('should contain all fields', function () {
+                var fields = [
+                    'year',
+                    'year-short',
+                    'month',
+                    'month-short',
+                    'week',
+                    'week-short',
+                    'day',
+                    'day-short',
+                    'hour',
+                    'hour-short',
+                    'minute',
+                    'minute-short',
+                    'second',
+                    'second-short',
+                ];
+                expect(data.en.fields).to.have.keys(fields)
+            });
+
             describe('`relative` object', function () {
                 var keys = Object.keys(field.relative);
 
