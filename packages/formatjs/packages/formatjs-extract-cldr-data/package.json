@@ -4,7 +4,8 @@
   "description": "Utility library that extracts the CLDR data that's needed by the FormatJS libraries.",
   "main": "index.js",
   "scripts": {
-    "test": "nyc mocha test/unit/ --reporter spec"
+    "test": "mocha test/unit/ --reporter spec",
+    "cover": "nyc npm t"
   },
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "license": "BSD-3-Clause",
@@ -16,11 +17,6 @@
     "make-plural": "^4.0.0",
     "object.assign": "^4.0.3",
     "uglify-js": "^3.0.0"
-  },
-  "devDependencies": {
-    "expect.js": "^0.3.1",
-    "mocha": "^6.0.0",
-    "nyc": "^14.1.1"
   },
   "repository": {
     "type": "git",
