@@ -18,9 +18,7 @@
     "lint": "eslint .",
     "test": "lerna run lint --since --stream && lerna run test --since --stream"
   },
-  "dependencies": {
-    "intl-messageformat-parser": "file:packages/intl-messageformat-parser"
-  },
+  "dependencies": {},
   "devDependencies": {
     "benchmark": "^2.1.4",
     "coveralls": "^3.0.3",
