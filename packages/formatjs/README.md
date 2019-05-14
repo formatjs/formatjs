@@ -1,4 +1,4 @@
-# FormatJS
+# FormatJS [![Build Status](https://travis-ci.org/formatjs/formatjs.svg?branch=master)](https://travis-ci.org/formatjs/formatjs)
 
 This repository is the home of [FormatJS](http://formatjs.io/) and related libraries.
 
