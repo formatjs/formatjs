@@ -105,10 +105,10 @@ The CLDR data contained in this packaged is licensed under the Apache, ICU, and 
 [FormatJS]: http://formatjs.io/
 [npm]: https://www.npmjs.org/package/formatjs-extract-cldr-data
 [npm-badge]: https://img.shields.io/npm/v/formatjs-extract-cldr-data.svg?style=flat-square
-[david]: https://david-dm.org/yahoo/formatjs-extract-cldr-data
-[david-badge]: https://img.shields.io/david/yahoo/formatjs-extract-cldr-data.svg?style=flat-square
-[travis]: https://travis-ci.org/yahoo/formatjs-extract-cldr-data
-[travis-badge]: https://img.shields.io/travis/yahoo/formatjs-extract-cldr-data/master.svg?style=flat-square
-[make-plural]: https://github.com/eemeli/make-plural.js
-[LICENSE file]: https://github.com/yahoo/formatjs-extract-cldr-data/blob/master/LICENSE.md
-[CLDR license files]: https://github.com/yahoo/formatjs-extract-cldr-data/tree/master/data
+[david]: https://david-dm.org/formatjs/formatjs
+[david-badge]: https://img.shields.io/david/formatjs/formatjs.svg?style=flat-square
+[travis]: https://travis-ci.org/formatjs/formatjs
+[travis-badge]: https://img.shields.io/travis/formatjs/formatjs/master.svg?style=flat-square
+[make-plural]: https://github.com/eemeli/make-plural
+[LICENSE file]: https://github.com/formatjs/formatjs/blob/master/LICENSE.md
+[CLDR license files]: https://github.com/formatjs/formatjs/tree/master/data
