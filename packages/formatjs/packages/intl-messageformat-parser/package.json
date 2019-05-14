@@ -7,7 +7,8 @@
   "browser": "dist/parser.js",
   "scripts": {
     "clean": "rimraf dist lib",
-    "test": "nyc mocha test/unit/ --reporter spec",
+    "test": "mocha test/unit/ --reporter spec",
+    "cover": "nyc npm t",
     "build": "npm run clean && ./build.js",
     "benchmark": "./test/benchmark.js",
     "prepublish": "npm run build"
@@ -22,7 +23,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/yahoo/intl-messageformat-parser.git"
+    "url": "git://github.com/formatjs/formatjs.git"
   },
   "keywords": [
     "i18n",
@@ -38,16 +39,7 @@
   "author": "Eric Ferraiuolo <eferraiuolo@gmail.com>",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/yahoo/intl-messageformat-parser/issues"
+    "url": "https://github.com/formatjs/formatjs/issues"
   },
-  "homepage": "https://github.com/yahoo/intl-messageformat-parser",
-  "devDependencies": {
-    "benchmark": "^2.1.4",
-    "expect.js": "^0.3.1",
-    "fs-extra": "^7.0.1",
-    "mocha": "^6.1.4",
-    "nyc": "^14.0.0",
-    "pegjs": "^0.10.0",
-    "rimraf": "^2.6.3"
-  }
+  "homepage": "https://github.com/formatjs/formatjs"
 }

@@ -18,12 +18,20 @@
     "lint": "eslint .",
     "test": "lerna run lint --since --stream && lerna run test --since --stream"
   },
-  "dependencies": {},
+  "dependencies": {
+    "intl-messageformat-parser": "file:packages/intl-messageformat-parser"
+  },
   "devDependencies": {
+    "benchmark": "^2.1.4",
     "coveralls": "^3.0.3",
     "eslint": "^5.16.0",
+    "expect.js": "^0.3.1",
+    "fs-extra": "^7.0.1",
     "lerna": "^3.13.4",
-    "nyc": "^14.1.1"
+    "mocha": "^6.1.4",
+    "nyc": "^14.0.0",
+    "pegjs": "^0.10.0",
+    "rimraf": "^2.6.3"
   },
   "devEngines": {
     "node": "8.x || 10.x || 12.x",
