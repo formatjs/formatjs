@@ -1,5 +1,9 @@
 <!-- Thank you so much for filing this issue! Please provide the detail about your problem! -->
 
+### Which package?
+
+<!-- Since this is a monorepo with multiple packages, please list which package this issue pertains to. -->
+
 ### Is this a BUG REPORT or FEATURE REQUEST? (choose one)
 <!--
 If this is a BUG REPORT, please:
