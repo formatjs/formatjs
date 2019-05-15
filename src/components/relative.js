@@ -131,11 +131,11 @@ class FormattedRelative extends Component {
     this.scheduleNextUpdate(this.props, this.state);
   }
 
-  static getDerivedStateFromProps({ value }, { prevValue }) {
+  static getDerivedStateFromProps({ value, intl }, { prevValue }) {
     // When the `props.value` date changes, `state.now` needs to be updated,
     // and the next update can be rescheduled.
     if (!isSameDate(value, prevValue)) {
-      return {now: this.props.intl.now(), prevValue: value};
+      return {now: intl.now(), prevValue: value};
     }
     return null;
   }
