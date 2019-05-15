@@ -7,13 +7,14 @@ Internationalize [React][] apps. This library provides React components and an A
 [![Build Status][travis-badge]][travis]
 [![Dependency Status][david-badge]][david]
 
+
 Overview
 --------
 
 **React Intl is part of [FormatJS][].** It provides bindings to React via its components and API.
 
-**Slack:** Join us on Slack at [react-intl.slack.com](https://react-intl.slack.com/) for help, general conversation and more 💬🎊🎉
-You can sign-up using this [invitation link](https://join.slack.com/t/react-intl/shared_invite/enQtNDAxMjc5MTQxMDkwLWNiYWM5Njc5NjA3ZWVkOTQ3MzBhYjFlY2NkNmM3NzEyNDUzZmNhZDE2MmUwNWVjYmExMWUxZTRhMzEzMWYxYzY).
+**Slack:** Join us on Slack at [formatjs.slack.com](https://formatjs.slack.com/) for help, general conversation and more 💬🎊🎉
+You can sign-up using this [invitation link](https://join.slack.com/t/formatjs/shared_invite/enQtNjM2MjM4NjE4ODIxLTMyMWE0YTNhMTlmMzZlNzJlNjEzMWY0YjM2ODUxYjlmNDE2YzQyMDIxZDg3Y2Q5YWNlMzhhYzRiNDk0OGQwNGI).
 
 ### [Documentation][]
 
@@ -98,16 +99,16 @@ See the [LICENSE file][] for license text and copyright information.
 
 [npm]: https://www.npmjs.org/package/react-intl
 [npm-badge]: https://img.shields.io/npm/v/react-intl.svg?style=flat-square
-[david]: https://david-dm.org/yahoo/react-intl
-[david-badge]: https://img.shields.io/david/yahoo/react-intl.svg?style=flat-square
-[travis]: https://travis-ci.org/yahoo/react-intl
-[travis-badge]: https://img.shields.io/travis/yahoo/react-intl/master.svg?style=flat-square
+[david]: https://david-dm.org/formatjs/react-intl
+[david-badge]: https://img.shields.io/david/formatjs/react-intl.svg?style=flat-square
+[travis]: https://travis-ci.org/formatjs/react-intl
+[travis-badge]: https://img.shields.io/travis/formatjs/react-intl/master.svg?style=flat-square
 [React]: http://facebook.github.io/react/
 [FormatJS]: http://formatjs.io/
 [FormatJS GitHub]: http://formatjs.io/github/
-[Documentation]: https://github.com/yahoo/react-intl/wiki
-[Getting Started]: https://github.com/yahoo/react-intl/wiki#getting-started
-[Examples]: https://github.com/yahoo/react-intl/tree/master/examples
+[Documentation]: https://github.com/formatjs/react-intl/wiki
+[Getting Started]: https://github.com/formatjs/react-intl/wiki#getting-started
+[Examples]: https://github.com/formatjs/react-intl/tree/master/examples
 [v1-docs]: http://formatjs.io/react/v1/
-[CONTRIBUTING]: https://github.com/yahoo/react-intl/blob/master/CONTRIBUTING.md
-[LICENSE file]: https://github.com/yahoo/react-intl/blob/master/LICENSE.md
+[CONTRIBUTING]: https://github.com/formatjs/react-intl/blob/master/CONTRIBUTING.md
+[LICENSE file]: https://github.com/formatjs/react-intl/blob/master/LICENSE.md
