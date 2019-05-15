@@ -1,4 +1,6 @@
-# FormatJS [![Build Status](https://travis-ci.org/formatjs/formatjs.svg?branch=master)](https://travis-ci.org/formatjs/formatjs)
+# FormatJS [![Build Status](https://travis-ci.org/formatjs/formatjs.svg?branch=master)](https://travis-ci.org/formatjs/formatjs) [![Slack FormatJS](https://img.shields.io/badge/slack-@formatjs-green.svg?logo=slack)](https://join.slack.com/t/formatjs/shared_invite/enQtNjM2MjM4NjE4ODIxLTMyMWE0YTNhMTlmMzZlNzJlNjEzMWY0YjM2ODUxYjlmNDE2YzQyMDIxZDg3Y2Q5YWNlMzhhYzRiNDk0OGQwNGI)
+
+
 
 This repository is the home of [FormatJS](http://formatjs.io/) and related libraries.
 
