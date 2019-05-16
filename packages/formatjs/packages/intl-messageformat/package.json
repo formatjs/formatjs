@@ -1,6 +1,6 @@
 {
   "name": "intl-messageformat",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.",
   "keywords": [
     "i18n",
@@ -51,6 +51,7 @@
     "grunt-json-remove-fields": "git://github.com/ericf/grunt-json-remove-fields.git#improve-files-and-output",
     "grunt-saucelabs": "^8.4.1",
     "intl": "^1.2.0",
+    "intl-pluralrules": "^1.0.1",
     "mocha": "^6.0.0",
     "nyc": "^14.1.1",
     "prettier": "^1.17.1",

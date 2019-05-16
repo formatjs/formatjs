@@ -8,8 +8,6 @@ declare class IntlMessageFormat {
     format(context?: any): string;
 
     static defaultLocale: string;
-    static __localeData__: LocaleData;
-    static __addLocaleData: (localeData: LocaleData | LocaleData[]) => void;
 }
 
 export default IntlMessageFormat;

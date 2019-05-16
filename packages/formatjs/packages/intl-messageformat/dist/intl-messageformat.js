@@ -68,10 +68,9 @@
 
     var $$compiler$$default = $$compiler$$Compiler;
 
-    function $$compiler$$Compiler(locales, formats, pluralFn) {
+    function $$compiler$$Compiler(locales, formats) {
       this.locales = locales;
       this.formats = formats;
-      this.pluralFn = pluralFn;
     }
 
     $$compiler$$Compiler.prototype.compile = function(ast) {
@@ -144,7 +143,6 @@
 
       var formats = this.formats,
         locales = this.locales,
-        pluralFn = this.pluralFn,
         options;
 
       switch (format.type) {
@@ -176,7 +174,7 @@
             format.ordinal,
             format.offset,
             options,
-            pluralFn
+            locales
           );
 
         case "selectFormat":
@@ -228,12 +226,14 @@
       return typeof value === "string" ? value : String(value);
     };
 
-    function $$compiler$$PluralFormat(id, useOrdinal, offset, options, pluralFn) {
+    function $$compiler$$PluralFormat(id, useOrdinal, offset, options, locales) {
       this.id = id;
       this.useOrdinal = useOrdinal;
       this.offset = offset;
       this.options = options;
-      this.pluralFn = pluralFn;
+      this.pluralRules = new Intl.PluralRules(locales, {
+        type: useOrdinal ? "ordinal" : "cardinal"
+      });
     }
 
     $$compiler$$PluralFormat.prototype.getOption = function(value) {
@@ -241,7 +241,7 @@
 
       var option =
         options["=" + value] ||
-        options[this.pluralFn(value - this.offset, this.useOrdinal)];
+        options[this.pluralRules.select(value - this.offset)];
 
       return option || options.other;
     };
@@ -1690,8 +1690,7 @@
       // Compile the `ast` to a pattern that is highly optimized for repeated
       // `format()` invocations. **Note:** This passes the `locales` set provided
       // to the constructor instead of just the resolved locale.
-      var pluralFn = this._findPluralRuleFunction(this._locale);
-      var pattern = this._compilePattern(ast, locales, formats, pluralFn);
+      var pattern = this._compilePattern(ast, locales, formats);
 
       // "Bind" `format()` method to `this` so it can be passed by reference like
       // the other `Intl` APIs.
@@ -1822,35 +1821,9 @@
       };
     };
 
-    $$core$$MessageFormat.prototype._compilePattern = function(
-      ast,
-      locales,
-      formats,
-      pluralFn
-    ) {
-      var compiler = new $$compiler$$default(locales, formats, pluralFn);
+    $$core$$MessageFormat.prototype._compilePattern = function(ast, locales, formats) {
+      var compiler = new $$compiler$$default(locales, formats);
       return compiler.compile(ast);
-    };
-
-    $$core$$MessageFormat.prototype._findPluralRuleFunction = function(locale) {
-      var localeData = $$core$$MessageFormat.__localeData__;
-      var data = localeData[locale.toLowerCase()];
-
-      // The locale data is de-duplicated, so we have to traverse the locale's
-      // hierarchy until we find a `pluralRuleFunction` to return.
-      while (data) {
-        if (data.pluralRuleFunction) {
-          return data.pluralRuleFunction;
-        }
-
-        data = data.parentLocale && localeData[data.parentLocale.toLowerCase()];
-      }
-
-      throw new Error(
-        "Locale data added to IntlMessageFormat is missing a " +
-          "`pluralRuleFunction` for :" +
-          locale
-      );
     };
 
     $$core$$MessageFormat.prototype._format = function(pattern, values) {
@@ -1954,7 +1927,7 @@
           defaultLocale
       );
     };
-    var $$en$$default = {"locale":"en","pluralRuleFunction":function(n,ord){var s=String(n).split("."),v0=!s[1],t0=Number(s[0])==n,n10=t0&&s[0].slice(-1),n100=t0&&s[0].slice(-2);if(ord)return n10==1&&n100!=11?"one":n10==2&&n100!=12?"two":n10==3&&n100!=13?"few":"other";return n==1&&v0?"one":"other"}};
+    var $$en$$default = {"locale":"en"};
 
     $$core$$default.__addLocaleData($$en$$default);
     $$core$$default.defaultLocale = "en";

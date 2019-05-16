@@ -34,8 +34,7 @@ function MessageFormat(message, locales, formats) {
   // Compile the `ast` to a pattern that is highly optimized for repeated
   // `format()` invocations. **Note:** This passes the `locales` set provided
   // to the constructor instead of just the resolved locale.
-  var pluralFn = this._findPluralRuleFunction(this._locale);
-  var pattern = this._compilePattern(ast, locales, formats, pluralFn);
+  var pattern = this._compilePattern(ast, locales, formats);
 
   // "Bind" `format()` method to `this` so it can be passed by reference like
   // the other `Intl` APIs.
@@ -166,35 +165,9 @@ MessageFormat.prototype.resolvedOptions = function() {
   };
 };
 
-MessageFormat.prototype._compilePattern = function(
-  ast,
-  locales,
-  formats,
-  pluralFn
-) {
-  var compiler = new Compiler(locales, formats, pluralFn);
+MessageFormat.prototype._compilePattern = function(ast, locales, formats) {
+  var compiler = new Compiler(locales, formats);
   return compiler.compile(ast);
-};
-
-MessageFormat.prototype._findPluralRuleFunction = function(locale) {
-  var localeData = MessageFormat.__localeData__;
-  var data = localeData[locale.toLowerCase()];
-
-  // The locale data is de-duplicated, so we have to traverse the locale's
-  // hierarchy until we find a `pluralRuleFunction` to return.
-  while (data) {
-    if (data.pluralRuleFunction) {
-      return data.pluralRuleFunction;
-    }
-
-    data = data.parentLocale && localeData[data.parentLocale.toLowerCase()];
-  }
-
-  throw new Error(
-    "Locale data added to IntlMessageFormat is missing a " +
-      "`pluralRuleFunction` for :" +
-      locale
-  );
 };
 
 MessageFormat.prototype._format = function(pattern, values) {

@@ -30,7 +30,7 @@ module.exports = function (grunt) {
 
         extract_cldr_data: {
             options: {
-                pluralRules: true
+                pluralRules: false
             },
 
             src_en: {

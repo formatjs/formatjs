@@ -8,10 +8,9 @@ See the accompanying LICENSE file for terms.
 
 export default Compiler;
 
-function Compiler(locales, formats, pluralFn) {
+function Compiler(locales, formats) {
   this.locales = locales;
   this.formats = formats;
-  this.pluralFn = pluralFn;
 }
 
 Compiler.prototype.compile = function(ast) {
@@ -84,7 +83,6 @@ Compiler.prototype.compileArgument = function(element) {
 
   var formats = this.formats,
     locales = this.locales,
-    pluralFn = this.pluralFn,
     options;
 
   switch (format.type) {
@@ -116,7 +114,7 @@ Compiler.prototype.compileArgument = function(element) {
         format.ordinal,
         format.offset,
         options,
-        pluralFn
+        locales
       );
 
     case "selectFormat":
@@ -168,12 +166,14 @@ StringFormat.prototype.format = function(value) {
   return typeof value === "string" ? value : String(value);
 };
 
-function PluralFormat(id, useOrdinal, offset, options, pluralFn) {
+function PluralFormat(id, useOrdinal, offset, options, locales) {
   this.id = id;
   this.useOrdinal = useOrdinal;
   this.offset = offset;
   this.options = options;
-  this.pluralFn = pluralFn;
+  this.pluralRules = new Intl.PluralRules(locales, {
+    type: useOrdinal ? "ordinal" : "cardinal"
+  });
 }
 
 PluralFormat.prototype.getOption = function(value) {
@@ -181,7 +181,7 @@ PluralFormat.prototype.getOption = function(value) {
 
   var option =
     options["=" + value] ||
-    options[this.pluralFn(value - this.offset, this.useOrdinal)];
+    options[this.pluralRules.select(value - this.offset)];
 
   return option || options.other;
 };

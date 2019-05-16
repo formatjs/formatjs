@@ -442,7 +442,9 @@ describe("IntlMessageFormat", function() {
       var ptMZ = new IntlMessageFormat(msg, "pt-MZ");
 
       expect(pt.format({ num: 0 })).to.equal("one");
-      expect(ptMZ.format({ num: 0 })).to.equal("other");
+      // According to https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/plurals.json#L599-L606
+      expect(ptMZ.format({ num: 0 })).to.equal("one");
+      expect(ptMZ.format({ num: 100 })).to.equal("other");
     });
   });
 });
