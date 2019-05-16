@@ -127,15 +127,6 @@ module.exports = function (grunt) {
             }
         },
 
-        benchmark: {
-            construct: {
-                src: ['tests/benchmark/new*.js']
-            },
-            format: {
-                src: ['tests/benchmark/format*.js']
-            }
-        },
-
         connect: {
             server: {
                 options: {
@@ -218,9 +209,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-benchmark');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-bundle-jsnext-lib');
     grunt.loadNpmTasks('grunt-extract-cldr-data');
@@ -237,7 +226,6 @@ module.exports = function (grunt) {
     grunt.registerTask('cldr', ['extract_cldr_data']);
 
     grunt.registerTask('default', [
-        'jshint',
         'clean',
         'cldr',
         'bundle_jsnext',
