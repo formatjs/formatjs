@@ -4,7 +4,8 @@
         "@babel/preset-react"
     ],
     "plugins": [
-        ["babel-plugin-transform-react-remove-prop-types", {
+        "babel-plugin-transform-react-remove-prop-types",
+        ["react-intl", {
             "messagesDir": "./build/messages/"
         }]
     ]
