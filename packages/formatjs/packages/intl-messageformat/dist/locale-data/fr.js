@@ -1,4 +1,4 @@
-IntlMessageFormat.__addLocaleData({"locale":"fr","pluralRuleFunction":function (n,ord){if(ord)return n==1?"one":"other";return n>=0&&n<2?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"fr","pluralRuleFunction":function(n,ord){if(ord)return n==1?"one":"other";return n>=0&&n<2?"one":"other"}});
 IntlMessageFormat.__addLocaleData({"locale":"fr-BE","parentLocale":"fr"});
 IntlMessageFormat.__addLocaleData({"locale":"fr-BF","parentLocale":"fr"});
 IntlMessageFormat.__addLocaleData({"locale":"fr-BI","parentLocale":"fr"});

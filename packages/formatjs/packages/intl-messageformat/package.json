@@ -52,14 +52,15 @@
     "grunt-extract-cldr-data": "^3.0.0",
     "grunt-json-remove-fields": "git://github.com/ericf/grunt-json-remove-fields#improve-files-and-output",
     "grunt-saucelabs": "^8.4.1",
-    "intl": "^0.1.4",
-    "istanbul": "^0.3.0",
-    "mocha": "^2.0.1",
-    "xunit-file": "0.0.6"
+    "intl": "^1.2.0",
+    "mocha": "^4.0.0",
+    "nyc": "^14.1.1",
+    "xunit-file": "1.0.0"
   },
   "scripts": {
-    "test": "istanbul cover -x lib/locales.js -- _mocha tests/runner.js --reporter spec",
-    "travis": "istanbul cover -x lib/locales.js -- _mocha tests/runner.js --reporter spec && tests/saucelabs.sh",
+    "test": "mocha tests/runner.js --reporter spec",
+    "cover": "nyc -x lib/locales.js npm t",
+    "travis": "npm run cover && tests/saucelabs.sh",
     "prepublish": "grunt"
   },
   "homepage": "https://github.com/yahoo/intl-messageformat",

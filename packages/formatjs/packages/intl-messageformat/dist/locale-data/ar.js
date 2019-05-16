@@ -1,4 +1,4 @@
-IntlMessageFormat.__addLocaleData({"locale":"ar","pluralRuleFunction":function (n,ord){var s=String(n).split("."),t0=Number(s[0])==n,n100=t0&&s[0].slice(-2);if(ord)return"other";return n==0?"zero":n==1?"one":n==2?"two":n100>=3&&n100<=10?"few":n100>=11&&n100<=99?"many":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"ar","pluralRuleFunction":function(n,ord){var s=String(n).split("."),t0=Number(s[0])==n,n100=t0&&s[0].slice(-2);if(ord)return"other";return n==0?"zero":n==1?"one":n==2?"two":n100>=3&&n100<=10?"few":n100>=11&&n100<=99?"many":"other"}});
 IntlMessageFormat.__addLocaleData({"locale":"ar-AE","parentLocale":"ar"});
 IntlMessageFormat.__addLocaleData({"locale":"ar-BH","parentLocale":"ar"});
 IntlMessageFormat.__addLocaleData({"locale":"ar-DJ","parentLocale":"ar"});

@@ -1,4 +1,4 @@
-IntlMessageFormat.__addLocaleData({"locale":"es","pluralRuleFunction":function (n,ord){if(ord)return"other";return n==1?"one":"other"}});
+IntlMessageFormat.__addLocaleData({"locale":"es","pluralRuleFunction":function(n,ord){if(ord)return"other";return n==1?"one":"other"}});
 IntlMessageFormat.__addLocaleData({"locale":"es-419","parentLocale":"es"});
 IntlMessageFormat.__addLocaleData({"locale":"es-AR","parentLocale":"es-419"});
 IntlMessageFormat.__addLocaleData({"locale":"es-BO","parentLocale":"es-419"});
