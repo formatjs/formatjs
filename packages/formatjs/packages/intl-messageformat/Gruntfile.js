@@ -28,10 +28,6 @@ module.exports = function (grunt) {
             }
         },
 
-        jshint: {
-            all: ['index.js', 'src/*.js', '!src/en.js', 'tests/*.js']
-        },
-
         extract_cldr_data: {
             options: {
                 pluralRules: true
