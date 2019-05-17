@@ -7,7 +7,7 @@
   "license": "BSD",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yahoo/intl-locales-supported.git"
+    "url": "https://github.com/formatjs/formatjs.git"
   },
   "keywords": [
     "i18n",
@@ -17,18 +17,13 @@
     "globalization"
   ],
   "bugs": {
-    "url": "https://github.com/yahoo/intl-locales-supported/issues"
+    "url": "https://github.com/formatjs/formatjs/issues"
   },
-  "homepage": "https://github.com/yahoo/intl-locales-supported",
+  "homepage": "https://github.com/formatjs/formatjs",
   "scripts": {
     "test": "mocha test/unit/*.js"
   },
   "directories": {
     "test": "test"
-  },
-  "devDependencies": {
-    "expect.js": "^0.3.1",
-    "intl": "^0.1.4",
-    "mocha": "^2.2.5"
   }
 }
