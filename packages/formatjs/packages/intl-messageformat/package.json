@@ -15,9 +15,10 @@
   ],
   "author": "Eric Ferraiuolo <eferraiuolo@gmail.com>",
   "contributors": [
-    "Drew Folta <drew@folta.net>",
+    "Anthony Pipkin <a.pipkin@yahoo.com>",
     "Caridy Patino <caridy@gmail.com>",
-    "Anthony Pipkin <a.pipkin@yahoo.com>"
+    "Drew Folta <drew@folta.net>",
+    "Long Ho <holevietlong@gmail.com"
   ],
   "bugs": {
     "url": "https://github.com/formatjs/intl-messageformat/issues"

@@ -447,4 +447,24 @@ describe("IntlMessageFormat", function() {
       expect(ptMZ.format({ num: 100 })).to.equal("other");
     });
   });
+
+  it("custom formats should work", function() {
+    var msg = "Today is {time, date, verbose}";
+    var mf = new IntlMessageFormat(msg, "pt", {
+      date: {
+        verbose: {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+          timeZoneName: "short"
+        }
+      }
+    });
+    expect(mf.format({ time: 0 })).to.contain(
+      "Today is 31 de dezembro de 1969 19:00:00"
+    );
+  });
 });

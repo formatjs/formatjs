@@ -1,2 +1,2 @@
 // GENERATED FILE
-export default {"locale":"en"};
+export default { locale: "en" };
