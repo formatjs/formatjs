@@ -1,3 +1,4 @@
+/* @generated */
 IntlMessageFormat.__addLocaleData({"locale":"uz"});
 IntlMessageFormat.__addLocaleData({"locale":"uz-Arab"});
 IntlMessageFormat.__addLocaleData({"locale":"uz-Cyrl"});

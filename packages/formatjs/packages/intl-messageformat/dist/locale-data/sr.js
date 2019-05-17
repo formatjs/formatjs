@@ -1,3 +1,4 @@
+/* @generated */
 IntlMessageFormat.__addLocaleData({"locale":"sr"});
 IntlMessageFormat.__addLocaleData({"locale":"sr-Cyrl","parentLocale":"sr"});
 IntlMessageFormat.__addLocaleData({"locale":"sr-Cyrl-BA","parentLocale":"sr-Cyrl"});

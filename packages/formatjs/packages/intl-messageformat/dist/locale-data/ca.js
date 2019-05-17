@@ -1,3 +1,4 @@
+/* @generated */
 IntlMessageFormat.__addLocaleData({"locale":"ca"});
 IntlMessageFormat.__addLocaleData({"locale":"ca-AD","parentLocale":"ca"});
 IntlMessageFormat.__addLocaleData({"locale":"ca-ES-VALENCIA","parentLocale":"ca-ES"});

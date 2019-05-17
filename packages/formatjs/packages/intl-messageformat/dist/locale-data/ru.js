@@ -1,3 +1,4 @@
+/* @generated */
 IntlMessageFormat.__addLocaleData({"locale":"ru"});
 IntlMessageFormat.__addLocaleData({"locale":"ru-BY","parentLocale":"ru"});
 IntlMessageFormat.__addLocaleData({"locale":"ru-KG","parentLocale":"ru"});

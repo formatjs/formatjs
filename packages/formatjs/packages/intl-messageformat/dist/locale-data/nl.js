@@ -1,3 +1,4 @@
+/* @generated */
 IntlMessageFormat.__addLocaleData({"locale":"nl"});
 IntlMessageFormat.__addLocaleData({"locale":"nl-AW","parentLocale":"nl"});
 IntlMessageFormat.__addLocaleData({"locale":"nl-BE","parentLocale":"nl"});

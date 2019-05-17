@@ -1,3 +1,4 @@
+/* @generated */
 IntlMessageFormat.__addLocaleData({"locale":"fr"});
 IntlMessageFormat.__addLocaleData({"locale":"fr-BE","parentLocale":"fr"});
 IntlMessageFormat.__addLocaleData({"locale":"fr-BF","parentLocale":"fr"});

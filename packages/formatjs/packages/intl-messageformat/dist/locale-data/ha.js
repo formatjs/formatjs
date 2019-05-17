@@ -1,3 +1,4 @@
+/* @generated */
 IntlMessageFormat.__addLocaleData({"locale":"ha"});
 IntlMessageFormat.__addLocaleData({"locale":"ha-Arab"});
 IntlMessageFormat.__addLocaleData({"locale":"ha-GH","parentLocale":"ha"});

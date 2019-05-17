@@ -1,3 +1,4 @@
+/* @generated */
 IntlMessageFormat.__addLocaleData({"locale":"ar"});
 IntlMessageFormat.__addLocaleData({"locale":"ar-AE","parentLocale":"ar"});
 IntlMessageFormat.__addLocaleData({"locale":"ar-BH","parentLocale":"ar"});

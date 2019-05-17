@@ -1,3 +1,4 @@
+/* @generated */
 IntlMessageFormat.__addLocaleData({"locale":"zh"});
 IntlMessageFormat.__addLocaleData({"locale":"zh-Hans","parentLocale":"zh"});
 IntlMessageFormat.__addLocaleData({"locale":"zh-Hans-HK","parentLocale":"zh-Hans"});
