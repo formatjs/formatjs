@@ -1,8 +1,8 @@
-/artifacts
-/.nyc_output
-/coverage
-/dist
-/node_modules
+artifacts
+.nyc_output
+coverage
+dist
+node_modules
 *.log
 *.tgz
 package-lock.json

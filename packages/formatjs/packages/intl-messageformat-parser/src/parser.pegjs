@@ -28,19 +28,10 @@ messageFormatElement
     / argumentElement
 
 messageText
-    = text:(_ chars _)+ {
-        var string = '',
-            i, j, outerLen, inner, innerLen;
-
-        for (i = 0, outerLen = text.length; i < outerLen; i += 1) {
-            inner = text[i];
-
-            for (j = 0, innerLen = inner.length; j < innerLen; j += 1) {
-                string += inner[j];
-            }
-        }
-
-        return string;
+    = chunks:(_ chars _)+ {
+        return chunks.reduce(function (all, chunk) {
+            return all.concat(chunk)
+        }, []).join('')
     }
     / $(ws)
 
@@ -118,7 +109,7 @@ selector
     / chars
 
 optionalFormatPattern
-    = _ selector:selector _ '{' _ pattern:messageFormatPattern _ '}' {
+    = _ selector:selector _ '{' pattern:messageFormatPattern '}' {
         return {
             type    : 'optionalFormatPattern',
             selector: selector,

@@ -411,6 +411,14 @@ describe('parse()', function () {
             expect(element.format.type).to.equal('numberFormat');
             expect(element.format.style).to.equal('percent');
         });
+        it('should capture whitespace in nested pattern', function () {
+            var msg = '{c, plural, =1 { {text} project} other { {text} projects}}'
+            var ast = parse(msg)
+            expect(ast.elements[0].format.options[0].value.elements).to.have.length(3)
+            expect(ast.elements[0].format.options[0].value.elements[0].value).to.equal(' ')
+            expect(ast.elements[0].format.options[0].value.elements[1].id).to.equal('text')
+            expect(ast.elements[0].format.options[0].value.elements[2].value).to.equal(' project')
+        })
     });
 
     describe('escaping', function () {
