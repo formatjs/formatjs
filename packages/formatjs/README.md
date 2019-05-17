@@ -19,5 +19,11 @@ Releases can be done with the following steps:
 This software is free to use under the Yahoo Inc. BSD license.
 See the [LICENSE file][] for license text and copyright information.
 
+## Big Thanks
+
+Cross-browser Testing Platform and Open Source <3 Provided by [Sauce Labs][saucelabs]
+
+
 [LICENSE file]: https://github.com/formatjs/formatjs/blob/master/LICENSE.md
 [Lerna]: https://lernajs.io/
+[saucelabs]: https://saucelabs.com
