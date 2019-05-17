@@ -10,7 +10,7 @@
   "scripts": {
     "build": "npm run build:bootstrap && npm run build:packages",
     "build:bootstrap": "lerna bootstrap --hoist --since --include-filtered-dependencies --no-ci",
-    "build:packages": "lerna run build --since master --stream",
+    "build:packages": "lerna run build --since --stream",
     "cover": "lerna run cover --since",
     "cover:collect": "mkdir -p ./.nyc_output/ && for d in $(find packages -type d -name '.nyc_output' -maxdepth 2 -exec find '{}' -type f ';'); do (cp $d ./.nyc_output/); done; nyc report --reporter=lcov --report-dir=${COVERAGE_DIR:-artifacts/coverage}",
     "dev:lint": "lerna run lint --since master --stream",
