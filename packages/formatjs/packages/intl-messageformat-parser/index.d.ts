@@ -1,54 +1,54 @@
-type Selector = string
-interface LocationDetails {
+export type Selector = string
+export interface LocationDetails {
     offset: number
     line: number
     column: number
 }
-interface Location {
+export interface Location {
     start: LocationDetails, 
     end: LocationDetails
 }
-interface SimpleFormat {
+export interface SimpleFormat {
     type: 'numberFormat' | 'dateFormat' | 'timeFormat'
     style: string
     location: Location
 }
-interface PluralFormat extends PluralStyle {
+export interface PluralFormat extends PluralStyle {
     ordinal: false
 }
-interface SelectFormat {
+export interface SelectFormat {
     type: 'selectFormat'
     options: OptionalFormatPattern[],
     location: Location
 }
-interface SelectOrdinalFormat extends PluralStyle {
+export interface SelectOrdinalFormat extends PluralStyle {
     ordinal: true,
 }
-type ElementFormat = SimpleFormat | PluralFormat | SelectOrdinalFormat | SelectFormat
-interface OptionalFormatPattern {
+export type ElementFormat = SimpleFormat | PluralFormat | SelectOrdinalFormat | SelectFormat
+export interface OptionalFormatPattern {
     type: 'optionalFormatPattern',
     selector: Selector
     value: MessageFormatPattern
     location: Location
 }
-interface PluralStyle {
+export interface PluralStyle {
     type: 'pluralFormat',
     offset: number
     options: OptionalFormatPattern[],
     location: Location
 }
-interface MessageTextElement {
+export interface MessageTextElement {
     type: 'messageTextElement'
     value: string
     location: Location
 }
-interface ArgumentElement {
+export interface ArgumentElement {
     type: 'argumentElement'
     id: string
     format: ElementFormat
     location: Location 
 }
-type Element = MessageTextElement | ArgumentElement
+export type Element = MessageTextElement | ArgumentElement
 
 export interface MessageFormatPattern {
     type: 'messageFormatPattern',
