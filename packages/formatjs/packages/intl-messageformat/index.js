@@ -2,7 +2,7 @@
 
 'use strict';
 
-var IntlMessageFormat = require('./lib/main')['default'];
+var IntlMessageFormat = require('./lib')['default'];
 
 // Add all locale data to `IntlMessageFormat`. This module will be ignored when
 // bundling for the browser with Browserify/Webpack.

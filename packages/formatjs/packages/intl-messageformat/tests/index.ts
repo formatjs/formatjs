@@ -3,10 +3,10 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-
-/*jshint node:true */
-/*global describe,it,beforeEach,afterEach,expect,IntlMessageFormat */
 "use strict";
+require("intl-pluralrules");
+const expect = require("expect.js");
+import IntlMessageFormat from "../src/locales";
 
 describe("IntlMessageFormat", function() {
   it("should be a function", function() {
@@ -36,11 +36,14 @@ describe("IntlMessageFormat", function() {
 
     describe("`locale`", function() {
       var IMFLocaleData = IntlMessageFormat.__localeData__;
-      var localeData = {};
+      var localeData: Record<string, string> = {};
 
       // Helper to remove and replace the locale data available during the
       // the different tests.
-      function transferLocaleData(from, to) {
+      function transferLocaleData(
+        from: Record<string, string>,
+        to: Record<string, string>
+      ) {
         for (var locale in from) {
           if (Object.prototype.hasOwnProperty.call(from, locale)) {
             if (locale === IntlMessageFormat.defaultLocale) {
@@ -345,7 +348,7 @@ describe("IntlMessageFormat", function() {
         state = "Missouri";
 
       it("should fail when the argument in the pattern is not provided", function() {
-        expect(msg.format).to.throwException(function(e) {
+        expect(msg.format).to.throwException(function(e: Error) {
           expect(e).to.be.an(Error);
           expect(e.message).to.match(
             /The intl string context variable 'STATE' was not provided to the string '{STATE}'/
@@ -358,7 +361,7 @@ describe("IntlMessageFormat", function() {
           return msg.format({ "ST ATE": state });
         }
 
-        expect(formatWithValueNameTypo).to.throwException(function(e) {
+        expect(formatWithValueNameTypo).to.throwException(function(e: Error) {
           expect(e).to.be.an(Error);
           expect(e.message).to.match(
             /The intl string context variable 'STATE' was not provided to the string '{STATE}'/
@@ -380,7 +383,7 @@ describe("IntlMessageFormat", function() {
           return msg.format({ FOO: state });
         }
 
-        expect(formatWithMissingValue).to.throwException(function(e) {
+        expect(formatWithMissingValue).to.throwException(function(e: Error) {
           expect(e).to.be.an(Error);
           expect(e.message).to.match(
             /The intl string context variable 'ST1ATE' was not provided to the string '{ST1ATE}'/
@@ -393,7 +396,7 @@ describe("IntlMessageFormat", function() {
           msg.format({ "ST ATE": state });
         }
 
-        expect(formatWithMissingValue).to.throwException(function(e) {
+        expect(formatWithMissingValue).to.throwException(function(e: Error) {
           expect(e).to.be.an(Error);
           expect(e.message).to.match(
             /The intl string context variable 'ST1ATE' was not provided to the string '{ST1ATE}'/
@@ -463,8 +466,6 @@ describe("IntlMessageFormat", function() {
         }
       }
     });
-    expect(mf.format({ time: 0 })).to.contain(
-      "00:00"
-    );
+    expect(mf.format({ time: 0 })).to.contain("00:00");
   });
 });

@@ -1,4 +1,3 @@
-lib/
 node_modules/
-tmp/
 .nyc_output
+src/locales.ts
