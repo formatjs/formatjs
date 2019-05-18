@@ -52,14 +52,11 @@
     "prettier": "^1.17.1",
     "rimraf": "^2.6.3",
     "rollup": "^1.12.2",
-    "rollup-plugin-typescript": "^1.0.1",
     "rollup-plugin-uglify": "^6.0.2",
     "serialize-javascript": "^1.7.0",
     "source-map-support": "^0.5.12",
     "ts-node": "^8.1.0",
-    "tslib": "^1.9.3",
-    "typescript": "^3.4.5",
-    "xunit-file": "1.0.0"
+    "typescript": "^3.4.5"
   },
   "scripts": {
     "benchmark": "node tests/benchmark",
@@ -68,7 +65,7 @@
     "clean": "rimraf dist lib",
     "cover": "nyc -x lib/locales.ts npm t",
     "prepublishOnly": "npm run build",
-    "prettier": "prettier --write '{src,tests,scripts}/**/*.ts'",
+    "prettier": "prettier --write '{src,tests,scripts}/**/*.{ts,js}' 'rollup.config.js'",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' mocha -r ts-node/register -r source-map-support/register tests/index.ts --reporter spec",
     "travis": "npm run build && npm run cover"
   },
