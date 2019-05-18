@@ -16,6 +16,7 @@
     "dev:lint": "lerna run lint --since master --stream",
     "dev:test": "lerna run test --since master --stream",
     "lint": "eslint .",
+    "prettier": "prettier --write 'packages/*/{lib,test,tests,src}/**/*.js'",
     "test": "lerna run lint --since --stream && lerna run test --since --stream"
   },
   "dependencies": {},
@@ -30,6 +31,7 @@
     "mocha": "^6.1.4",
     "nyc": "^14.0.0",
     "pegjs": "^0.10.0",
+    "prettier": "^1.17.1",
     "rimraf": "^2.6.3"
   },
   "devEngines": {
@@ -41,5 +43,8 @@
     "dev:test"
   ],
   "author": "Seth Bertalotto <sbertal@verizonmedia.com>",
-  "license": "BSD-3-Clause"
+  "license": "BSD-3-Clause",
+  "prettier": {
+    "singleQuote": true
+  }
 }
