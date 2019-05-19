@@ -1,4 +1,4 @@
-import { MessageFormatPattern, MessageTextElement, ArgumentElement } from "intl-messageformat-parser";
+import { MessageFormatPattern, MessageTextElement, ArgumentElement } from 'intl-messageformat-parser';
 export interface Formats {
     number: Record<string, Intl.NumberFormatOptions>;
     date: Record<string, Intl.DateTimeFormatOptions>;
@@ -16,7 +16,7 @@ export default class Compiler {
     compileMessage(ast: MessageFormatPattern): Pattern[];
     compileMessageText(element: MessageTextElement): string | PluralOffsetString;
     compileArgument(element: ArgumentElement): PluralFormat | SelectFormat | StringFormat;
-    compileOptions(element: ArgumentElement): Record<string, Pattern[]>;
+    compileOptions(element: ArgumentElement): {};
 }
 declare abstract class Formatter {
     id: string;

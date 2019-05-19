@@ -28,8 +28,8 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 /* jslint esnext: true */
-import Compiler, { isSelectOrPluralFormat } from "./compiler";
-import parser from "intl-messageformat-parser";
+import Compiler, { isSelectOrPluralFormat } from './compiler';
+import parser from 'intl-messageformat-parser';
 var MessageFormat = /** @class */ (function () {
     function MessageFormat(message, locales, overrideFormats) {
         var _this = this;
@@ -41,12 +41,7 @@ var MessageFormat = /** @class */ (function () {
             }
             catch (e) {
                 if (e.variableId) {
-                    throw new Error("The intl string context variable '" +
-                        e.variableId +
-                        "'" +
-                        " was not provided to the string '" +
-                        _this.message +
-                        "'");
+                    throw new Error("The intl string context variable '" + e.variableId + "' was not provided to the string '" + _this.message + "'");
                 }
                 else {
                     throw e;
@@ -54,9 +49,9 @@ var MessageFormat = /** @class */ (function () {
             }
         };
         // Parse string messages into an AST.
-        var ast = typeof message === "string" ? MessageFormat.__parse(message) : message;
-        if (!(ast && ast.type === "messageFormatPattern")) {
-            throw new TypeError("A message must be provided as a String or AST.");
+        var ast = typeof message === 'string' ? MessageFormat.__parse(message) : message;
+        if (!(ast && ast.type === 'messageFormatPattern')) {
+            throw new TypeError('A message must be provided as a String or AST.');
         }
         // Creates a new object with the specified `formats` merged with the default
         // formats.
@@ -76,8 +71,8 @@ var MessageFormat = /** @class */ (function () {
         }
         data.forEach(function (datum) {
             if (!(datum && datum.locale)) {
-                throw new Error("Locale data provided to IntlMessageFormat is missing a " +
-                    "`locale` property");
+                throw new Error('Locale data provided to IntlMessageFormat is missing a ' +
+                    '`locale` property');
             }
             MessageFormat.__localeData__[datum.locale.toLowerCase()] = datum;
         });
@@ -86,22 +81,22 @@ var MessageFormat = /** @class */ (function () {
         return { locale: this._locale };
     };
     MessageFormat.prototype._resolveLocale = function (locales) {
-        if (typeof locales === "string") {
+        if (typeof locales === 'string') {
             locales = [locales];
         }
         // Create a copy of the array so we can push on the default locale.
         locales = (locales || []).concat(MessageFormat.defaultLocale);
         var localeData = MessageFormat.__localeData__;
-        var i, len, localeParts, data;
         // Using the set of locales + the default locale, we look for the first one
         // which that has been registered. When data does not exist for a locale, we
         // traverse its ancestors to find something that's been registered within
         // its hierarchy of locales. Since we lack the proper `parentLocale` data
         // here, we must take a naive approach to traversal.
-        for (i = 0, len = locales.length; i < len; i += 1) {
-            localeParts = locales[i].toLowerCase().split("-");
+        for (var _i = 0, locales_1 = locales; _i < locales_1.length; _i++) {
+            var locale = locales_1[_i];
+            var localeParts = locale.toLowerCase().split('-');
             while (localeParts.length) {
-                data = localeData[localeParts.join("-")];
+                var data = localeData[localeParts.join('-')];
                 if (data) {
                     // Return the normalized locale string; e.g., we return "en-US",
                     // instead of "en-us".
@@ -111,30 +106,26 @@ var MessageFormat = /** @class */ (function () {
             }
         }
         var defaultLocale = locales.pop();
-        throw new Error("No locale data has been added to IntlMessageFormat for: " +
-            locales.join(", ") +
-            ", or the default locale: " +
-            defaultLocale);
+        throw new Error("No locale data has been added to IntlMessageFormat for: " + locales.join(', ') + ", or the default locale: " + defaultLocale);
     };
     MessageFormat.prototype._compilePattern = function (ast, locales, formats) {
-        var compiler = new Compiler(locales, formats);
-        return compiler.compile(ast);
+        return new Compiler(locales, formats).compile(ast);
     };
     MessageFormat.prototype._format = function (pattern, values) {
-        var result = "", i, len, part, id, value;
-        for (i = 0, len = pattern.length; i < len; i += 1) {
-            part = pattern[i];
+        var result = '';
+        for (var _i = 0, pattern_1 = pattern; _i < pattern_1.length; _i++) {
+            var part = pattern_1[_i];
             // Exist early for string parts.
-            if (typeof part === "string") {
+            if (typeof part === 'string') {
                 result += part;
                 continue;
             }
-            id = part.id;
+            var id = part.id;
             // Enforce that all required values are provided by the caller.
             if (!(values && id in values)) {
                 throw new FormatError("A value must be provided for: " + id, id);
             }
-            value = values[id];
+            var value = values[id];
             // Recursively format plural and select parts' option — which can be a
             // nested pattern structure. The choosing of the option to use is
             // abstracted-by and delegated-to the part helper object.
@@ -147,7 +138,7 @@ var MessageFormat = /** @class */ (function () {
         }
         return result;
     };
-    MessageFormat.defaultLocale = "en";
+    MessageFormat.defaultLocale = 'en';
     MessageFormat.__localeData__ = {};
     // Default format options used as the prototype of the `formats` provided to the
     // constructor. These are used when constructing the internal Intl.NumberFormat
@@ -155,56 +146,56 @@ var MessageFormat = /** @class */ (function () {
     MessageFormat.formats = {
         number: {
             currency: {
-                style: "currency"
+                style: 'currency'
             },
             percent: {
-                style: "percent"
+                style: 'percent'
             }
         },
         date: {
             short: {
-                month: "numeric",
-                day: "numeric",
-                year: "2-digit"
+                month: 'numeric',
+                day: 'numeric',
+                year: '2-digit'
             },
             medium: {
-                month: "short",
-                day: "numeric",
-                year: "numeric"
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
             },
             long: {
-                month: "long",
-                day: "numeric",
-                year: "numeric"
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
             },
             full: {
-                weekday: "long",
-                month: "long",
-                day: "numeric",
-                year: "numeric"
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
             }
         },
         time: {
             short: {
-                hour: "numeric",
-                minute: "numeric"
+                hour: 'numeric',
+                minute: 'numeric'
             },
             medium: {
-                hour: "numeric",
-                minute: "numeric",
-                second: "numeric"
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric'
             },
             long: {
-                hour: "numeric",
-                minute: "numeric",
-                second: "numeric",
-                timeZoneName: "short"
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                timeZoneName: 'short'
             },
             full: {
-                hour: "numeric",
-                minute: "numeric",
-                second: "numeric",
-                timeZoneName: "short"
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                timeZoneName: 'short'
             }
         }
     };

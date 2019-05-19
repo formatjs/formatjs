@@ -97,7 +97,7 @@ export default class MessageFormat {
     overrideFormats?: Partial<Formats>
   ) {
     // Parse string messages into an AST.
-    var ast =
+    const ast =
       typeof message === 'string' ? MessageFormat.__parse(message) : message;
 
     if (!(ast && ast.type === 'messageFormatPattern')) {
@@ -143,12 +143,9 @@ export default class MessageFormat {
     } catch (e) {
       if (e.variableId) {
         throw new Error(
-          "The intl string context variable '" +
-            e.variableId +
-            "'" +
-            " was not provided to the string '" +
-            this.message +
-            "'"
+          `The intl string context variable '${
+            e.variableId
+          }' was not provided to the string '${this.message}'`
         );
       } else {
         throw e;
@@ -167,19 +164,18 @@ export default class MessageFormat {
     // Create a copy of the array so we can push on the default locale.
     locales = (locales || []).concat(MessageFormat.defaultLocale);
 
-    var localeData = MessageFormat.__localeData__;
-    var i, len, localeParts, data;
+    const { __localeData__: localeData } = MessageFormat;
 
     // Using the set of locales + the default locale, we look for the first one
     // which that has been registered. When data does not exist for a locale, we
     // traverse its ancestors to find something that's been registered within
     // its hierarchy of locales. Since we lack the proper `parentLocale` data
     // here, we must take a naive approach to traversal.
-    for (i = 0, len = locales.length; i < len; i += 1) {
-      localeParts = locales[i].toLowerCase().split('-');
+    for (const locale of locales) {
+      const localeParts = locale.toLowerCase().split('-');
 
       while (localeParts.length) {
-        data = localeData[localeParts.join('-')];
+        const data = localeData[localeParts.join('-')];
         if (data) {
           // Return the normalized locale string; e.g., we return "en-US",
           // instead of "en-us".
@@ -190,12 +186,11 @@ export default class MessageFormat {
       }
     }
 
-    var defaultLocale = locales.pop();
+    const defaultLocale = locales.pop();
     throw new Error(
-      'No locale data has been added to IntlMessageFormat for: ' +
-        locales.join(', ') +
-        ', or the default locale: ' +
-        defaultLocale
+      `No locale data has been added to IntlMessageFormat for: ${locales.join(
+        ', '
+      )}, or the default locale: ${defaultLocale}`
     );
   }
   _compilePattern(
@@ -203,37 +198,28 @@ export default class MessageFormat {
     locales: string | string[],
     formats: Formats
   ) {
-    var compiler = new Compiler(locales, formats);
-    return compiler.compile(ast);
+    return new Compiler(locales, formats).compile(ast);
   }
   _format(
     pattern: Pattern[],
     values?: Record<string, string | number | boolean | null | undefined>
   ) {
-    var result = '',
-      i,
-      len,
-      part,
-      id,
-      value;
-
-    for (i = 0, len = pattern.length; i < len; i += 1) {
-      part = pattern[i];
-
+    let result = '';
+    for (const part of pattern) {
       // Exist early for string parts.
       if (typeof part === 'string') {
         result += part;
         continue;
       }
 
-      id = part.id;
+      const { id } = part;
 
       // Enforce that all required values are provided by the caller.
       if (!(values && id in values)) {
-        throw new FormatError('A value must be provided for: ' + id, id);
+        throw new FormatError(`A value must be provided for: ${id}`, id);
       }
 
-      value = values[id];
+      const value = values[id];
 
       // Recursively format plural and select parts' option — which can be a
       // nested pattern structure. The choosing of the option to use is

@@ -38,21 +38,21 @@ var Compiler = /** @class */ (function () {
     };
     Compiler.prototype.compileMessage = function (ast) {
         var _this = this;
-        if (!(ast && ast.type === "messageFormatPattern")) {
+        if (!(ast && ast.type === 'messageFormatPattern')) {
             throw new Error('Message AST is not of type: "messageFormatPattern"');
         }
         var elements = ast.elements;
         var pattern = elements
             .filter(function (el) {
-            return el.type === "messageTextElement" || el.type === "argumentElement";
+            return el.type === 'messageTextElement' || el.type === 'argumentElement';
         })
             .map(function (el) {
-            return el.type === "messageTextElement"
+            return el.type === 'messageTextElement'
                 ? _this.compileMessageText(el)
                 : _this.compileArgument(el);
         });
         if (pattern.length !== elements.length) {
-            throw new Error("Message element does not have a valid type");
+            throw new Error('Message element does not have a valid type');
         }
         return pattern;
     };
@@ -69,7 +69,7 @@ var Compiler = /** @class */ (function () {
             return new PluralOffsetString(this.currentPlural.id, this.currentPlural.format.offset, this.pluralNumberFormat, element.value);
         }
         // Unescape the escaped '#'s in the message text.
-        return element.value.replace(/\\#/g, "#");
+        return element.value.replace(/\\#/g, '#');
     };
     Compiler.prototype.compileArgument = function (element) {
         var format = element.format, id = element.id;
@@ -78,47 +78,46 @@ var Compiler = /** @class */ (function () {
         }
         var _a = this, formats = _a.formats, locales = _a.locales;
         switch (format.type) {
-            case "numberFormat":
+            case 'numberFormat':
                 return {
                     id: id,
                     format: new Intl.NumberFormat(locales, formats.number[format.style])
                         .format
                 };
-            case "dateFormat":
+            case 'dateFormat':
                 return {
                     id: id,
                     format: new Intl.DateTimeFormat(locales, formats.date[format.style])
                         .format
                 };
-            case "timeFormat":
+            case 'timeFormat':
                 return {
                     id: id,
                     format: new Intl.DateTimeFormat(locales, formats.time[format.style])
                         .format
                 };
-            case "pluralFormat":
+            case 'pluralFormat':
                 return new PluralFormat(id, format.ordinal, format.offset, this.compileOptions(element), locales);
-            case "selectFormat":
+            case 'selectFormat':
                 return new SelectFormat(id, this.compileOptions(element));
             default:
-                throw new Error("Message element does not have a valid format type");
+                throw new Error('Message element does not have a valid format type');
         }
     };
     Compiler.prototype.compileOptions = function (element) {
+        var _this = this;
         var format = element.format;
         var options = format.options;
-        var optionsHash = {};
         // Save the current plural element, if any, then set it to a new value when
         // compiling the options sub-patterns. This conforms the spec's algorithm
         // for handling `"#"` syntax in message text.
         this.pluralStack.push(this.currentPlural);
-        this.currentPlural = format.type === "pluralFormat" ? element : null;
-        var i, len, option;
-        for (i = 0, len = options.length; i < len; i += 1) {
-            option = options[i];
+        this.currentPlural = format.type === 'pluralFormat' ? element : null;
+        var optionsHash = options.reduce(function (all, option) {
             // Compile the sub-pattern and save it under the options's selector.
-            optionsHash[option.selector] = this.compileMessage(option.value);
-        }
+            all[option.selector] = _this.compileMessage(option.value);
+            return all;
+        }, {});
         // Pop the plural stack to put back the original current plural value.
         this.currentPlural = this.pluralStack.pop();
         return optionsHash;
@@ -139,10 +138,10 @@ var StringFormat = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     StringFormat.prototype.format = function (value) {
-        if (!value && typeof value !== "number") {
-            return "";
+        if (!value && typeof value !== 'number') {
+            return '';
         }
-        return typeof value === "string" ? value : String(value);
+        return typeof value === 'string' ? value : String(value);
     };
     return StringFormat;
 }(Formatter));
@@ -153,12 +152,12 @@ var PluralFormat = /** @class */ (function () {
         this.offset = offset;
         this.options = options;
         this.pluralRules = new Intl.PluralRules(locales, {
-            type: useOrdinal ? "ordinal" : "cardinal"
+            type: useOrdinal ? 'ordinal' : 'cardinal'
         });
     }
     PluralFormat.prototype.getOption = function (value) {
         var options = this.options;
-        var option = options["=" + value] ||
+        var option = options['=' + value] ||
             options[this.pluralRules.select(value - this.offset)];
         return option || options.other;
     };
@@ -177,8 +176,8 @@ var PluralOffsetString = /** @class */ (function (_super) {
     PluralOffsetString.prototype.format = function (value) {
         var number = this.numberFormat.format(value - this.offset);
         return this.string
-            .replace(/(^|[^\\])#/g, "$1" + number)
-            .replace(/\\#/g, "#");
+            .replace(/(^|[^\\])#/g, '$1' + number)
+            .replace(/\\#/g, '#');
     };
     return PluralOffsetString;
 }(Formatter));

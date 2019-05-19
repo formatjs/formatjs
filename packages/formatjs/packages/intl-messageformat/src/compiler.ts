@@ -144,22 +144,20 @@ export default class Compiler {
   compileOptions(element: ArgumentElement) {
     const format = element.format as ParserPluralFormat | ParserSelectFormat;
     const { options } = format;
-    const optionsHash: Record<string, Array<Pattern>> = {};
 
     // Save the current plural element, if any, then set it to a new value when
     // compiling the options sub-patterns. This conforms the spec's algorithm
     // for handling `"#"` syntax in message text.
     this.pluralStack.push(this.currentPlural);
     this.currentPlural = format.type === 'pluralFormat' ? element : null;
-
-    var i, len, option;
-
-    for (i = 0, len = options.length; i < len; i += 1) {
-      option = options[i];
-
-      // Compile the sub-pattern and save it under the options's selector.
-      optionsHash[option.selector] = this.compileMessage(option.value);
-    }
+    const optionsHash = options.reduce(
+      (all: Record<string, Array<Pattern>>, option) => {
+        // Compile the sub-pattern and save it under the options's selector.
+        all[option.selector] = this.compileMessage(option.value);
+        return all;
+      },
+      {}
+    );
 
     // Pop the plural stack to put back the original current plural value.
     this.currentPlural = this.pluralStack.pop();
@@ -236,7 +234,7 @@ export class PluralOffsetString extends Formatter {
   }
 
   format(value: number) {
-    var number = this.numberFormat.format(value - this.offset);
+    const number = this.numberFormat.format(value - this.offset);
 
     return this.string
       .replace(/(^|[^\\])#/g, '$1' + number)
@@ -253,7 +251,7 @@ export class SelectFormat {
   }
 
   getOption(value: string) {
-    var options = this.options;
+    const { options } = this;
     return options[value] || options.other;
   }
 }

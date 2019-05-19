@@ -1,5 +1,5 @@
-import { Formats, Pattern } from "./compiler";
-import { MessageFormatPattern } from "intl-messageformat-parser";
+import { Formats, Pattern } from './compiler';
+import { MessageFormatPattern } from 'intl-messageformat-parser';
 export interface LocaleData {
     locale: string;
     parentLocale?: string;
