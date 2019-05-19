@@ -52,6 +52,7 @@
     "prettier": "^1.17.1",
     "rimraf": "^2.6.3",
     "rollup": "^1.12.2",
+    "rollup-plugin-node-resolve": "^5.0.0",
     "rollup-plugin-uglify": "^6.0.2",
     "serialize-javascript": "^1.7.0",
     "source-map-support": "^0.5.12",
@@ -60,7 +61,7 @@
   },
   "scripts": {
     "benchmark": "node tests/benchmark",
-    "build": "npm run clean && npm run cldr && tsc && rollup -c rollup.config.js",
+    "build": "npm run clean && npm run cldr && tsc && npm run prettier && rollup -c rollup.config.js",
     "cldr": "node scripts/cldr",
     "clean": "rimraf dist lib",
     "cover": "nyc -x lib/locales.ts npm t",
@@ -75,6 +76,7 @@
   },
   "license": "BSD-3-Clause",
   "prettier": {
-    "parser": "typescript"
+    "parser": "typescript",
+    "singleQuote": true
   }
 }

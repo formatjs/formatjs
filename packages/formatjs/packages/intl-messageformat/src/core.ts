@@ -6,19 +6,19 @@ See the accompanying LICENSE file for terms.
 
 /* jslint esnext: true */
 
-import Compiler, { Formats, isSelectOrPluralFormat, Pattern } from "./compiler";
-import parser, { MessageFormatPattern } from "intl-messageformat-parser";
+import Compiler, { Formats, isSelectOrPluralFormat, Pattern } from './compiler';
+import parser, { MessageFormatPattern } from 'intl-messageformat-parser';
 
 // -- MessageFormat --------------------------------------------------------
 
 export interface LocaleData {
-  locale: string
-  parentLocale?: string
-  [k: string]: any
+  locale: string;
+  parentLocale?: string;
+  [k: string]: any;
 }
 
 export default class MessageFormat {
-  public static defaultLocale: string = "en";
+  public static defaultLocale: string = 'en';
   public static __localeData__: Record<string, LocaleData> = {};
   // Default format options used as the prototype of the `formats` provided to the
   // constructor. These are used when constructing the internal Intl.NumberFormat
@@ -26,65 +26,65 @@ export default class MessageFormat {
   public static readonly formats: Formats = {
     number: {
       currency: {
-        style: "currency"
+        style: 'currency'
       },
 
       percent: {
-        style: "percent"
+        style: 'percent'
       }
     },
 
     date: {
       short: {
-        month: "numeric",
-        day: "numeric",
-        year: "2-digit"
+        month: 'numeric',
+        day: 'numeric',
+        year: '2-digit'
       },
 
       medium: {
-        month: "short",
-        day: "numeric",
-        year: "numeric"
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
       },
 
       long: {
-        month: "long",
-        day: "numeric",
-        year: "numeric"
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
       },
 
       full: {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        year: "numeric"
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
       }
     },
 
     time: {
       short: {
-        hour: "numeric",
-        minute: "numeric"
+        hour: 'numeric',
+        minute: 'numeric'
       },
 
       medium: {
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric"
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
       },
 
       long: {
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-        timeZoneName: "short"
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        timeZoneName: 'short'
       },
 
       full: {
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-        timeZoneName: "short"
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        timeZoneName: 'short'
       }
     }
   };
@@ -98,10 +98,10 @@ export default class MessageFormat {
   ) {
     // Parse string messages into an AST.
     var ast =
-      typeof message === "string" ? MessageFormat.__parse(message) : message;
+      typeof message === 'string' ? MessageFormat.__parse(message) : message;
 
-    if (!(ast && ast.type === "messageFormatPattern")) {
-      throw new TypeError("A message must be provided as a String or AST.");
+    if (!(ast && ast.type === 'messageFormatPattern')) {
+      throw new TypeError('A message must be provided as a String or AST.');
     }
 
     // Creates a new object with the specified `formats` merged with the default
@@ -122,13 +122,13 @@ export default class MessageFormat {
     data.forEach(datum => {
       if (!(datum && datum.locale)) {
         throw new Error(
-          "Locale data provided to IntlMessageFormat is missing a " +
-            "`locale` property"
+          'Locale data provided to IntlMessageFormat is missing a ' +
+            '`locale` property'
         );
       }
-  
+
       MessageFormat.__localeData__[datum.locale.toLowerCase()] = datum;
-    })
+    });
   }
 
   public static __parse = parser.parse;
@@ -160,7 +160,7 @@ export default class MessageFormat {
   }
 
   _resolveLocale(locales: string | string[]): string {
-    if (typeof locales === "string") {
+    if (typeof locales === 'string') {
       locales = [locales];
     }
 
@@ -176,10 +176,10 @@ export default class MessageFormat {
     // its hierarchy of locales. Since we lack the proper `parentLocale` data
     // here, we must take a naive approach to traversal.
     for (i = 0, len = locales.length; i < len; i += 1) {
-      localeParts = locales[i].toLowerCase().split("-");
+      localeParts = locales[i].toLowerCase().split('-');
 
       while (localeParts.length) {
-        data = localeData[localeParts.join("-")];
+        data = localeData[localeParts.join('-')];
         if (data) {
           // Return the normalized locale string; e.g., we return "en-US",
           // instead of "en-us".
@@ -192,9 +192,9 @@ export default class MessageFormat {
 
     var defaultLocale = locales.pop();
     throw new Error(
-      "No locale data has been added to IntlMessageFormat for: " +
-        locales.join(", ") +
-        ", or the default locale: " +
+      'No locale data has been added to IntlMessageFormat for: ' +
+        locales.join(', ') +
+        ', or the default locale: ' +
         defaultLocale
     );
   }
@@ -210,7 +210,7 @@ export default class MessageFormat {
     pattern: Pattern[],
     values?: Record<string, string | number | boolean | null | undefined>
   ) {
-    var result = "",
+    var result = '',
       i,
       len,
       part,
@@ -221,7 +221,7 @@ export default class MessageFormat {
       part = pattern[i];
 
       // Exist early for string parts.
-      if (typeof part === "string") {
+      if (typeof part === 'string') {
         result += part;
         continue;
       }
@@ -230,7 +230,7 @@ export default class MessageFormat {
 
       // Enforce that all required values are provided by the caller.
       if (!(values && id in values)) {
-        throw new FormatError("A value must be provided for: " + id, id);
+        throw new FormatError('A value must be provided for: ' + id, id);
       }
 
       value = values[id];

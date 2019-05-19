@@ -10,7 +10,7 @@ import {
   ArgumentElement,
   PluralFormat as ParserPluralFormat,
   SelectFormat as ParserSelectFormat
-} from "intl-messageformat-parser";
+} from 'intl-messageformat-parser';
 
 export interface Formats {
   number: Record<string, Intl.NumberFormatOptions>;
@@ -50,22 +50,22 @@ export default class Compiler {
   }
 
   compileMessage(ast: MessageFormatPattern) {
-    if (!(ast && ast.type === "messageFormatPattern")) {
+    if (!(ast && ast.type === 'messageFormatPattern')) {
       throw new Error('Message AST is not of type: "messageFormatPattern"');
     }
     const { elements } = ast;
     const pattern = elements
       .filter<MessageTextElement | ArgumentElement>(
         (el): el is MessageTextElement | ArgumentElement =>
-          el.type === "messageTextElement" || el.type === "argumentElement"
+          el.type === 'messageTextElement' || el.type === 'argumentElement'
       )
       .map(el =>
-        el.type === "messageTextElement"
+        el.type === 'messageTextElement'
           ? this.compileMessageText(el)
           : this.compileArgument(el)
       );
     if (pattern.length !== elements.length) {
-      throw new Error("Message element does not have a valid type");
+      throw new Error('Message element does not have a valid type');
     }
 
     return pattern;
@@ -91,7 +91,7 @@ export default class Compiler {
     }
 
     // Unescape the escaped '#'s in the message text.
-    return element.value.replace(/\\#/g, "#");
+    return element.value.replace(/\\#/g, '#');
   }
 
   compileArgument(element: ArgumentElement) {
@@ -103,28 +103,28 @@ export default class Compiler {
 
     const { formats, locales } = this;
     switch (format.type) {
-      case "numberFormat":
+      case 'numberFormat':
         return {
           id,
           format: new Intl.NumberFormat(locales, formats.number[format.style])
             .format
         };
 
-      case "dateFormat":
+      case 'dateFormat':
         return {
           id,
           format: new Intl.DateTimeFormat(locales, formats.date[format.style])
             .format
         };
 
-      case "timeFormat":
+      case 'timeFormat':
         return {
           id,
           format: new Intl.DateTimeFormat(locales, formats.time[format.style])
             .format
         };
 
-      case "pluralFormat":
+      case 'pluralFormat':
         return new PluralFormat(
           id,
           format.ordinal,
@@ -133,11 +133,11 @@ export default class Compiler {
           locales
         );
 
-      case "selectFormat":
+      case 'selectFormat':
         return new SelectFormat(id, this.compileOptions(element));
 
       default:
-        throw new Error("Message element does not have a valid format type");
+        throw new Error('Message element does not have a valid format type');
     }
   }
 
@@ -150,7 +150,7 @@ export default class Compiler {
     // compiling the options sub-patterns. This conforms the spec's algorithm
     // for handling `"#"` syntax in message text.
     this.pluralStack.push(this.currentPlural);
-    this.currentPlural = format.type === "pluralFormat" ? element : null;
+    this.currentPlural = format.type === 'pluralFormat' ? element : null;
 
     var i, len, option;
 
@@ -180,11 +180,11 @@ abstract class Formatter {
 
 export class StringFormat extends Formatter {
   format(value: number | string) {
-    if (!value && typeof value !== "number") {
-      return "";
+    if (!value && typeof value !== 'number') {
+      return '';
     }
 
-    return typeof value === "string" ? value : String(value);
+    return typeof value === 'string' ? value : String(value);
   }
 }
 
@@ -204,7 +204,7 @@ export class PluralFormat {
     this.offset = offset;
     this.options = options;
     this.pluralRules = new Intl.PluralRules(locales, {
-      type: useOrdinal ? "ordinal" : "cardinal"
+      type: useOrdinal ? 'ordinal' : 'cardinal'
     });
   }
 
@@ -212,7 +212,7 @@ export class PluralFormat {
     const { options } = this;
 
     const option =
-      options["=" + value] ||
+      options['=' + value] ||
       options[this.pluralRules.select(value - this.offset)];
 
     return option || options.other;
@@ -239,8 +239,8 @@ export class PluralOffsetString extends Formatter {
     var number = this.numberFormat.format(value - this.offset);
 
     return this.string
-      .replace(/(^|[^\\])#/g, "$1" + number)
-      .replace(/\\#/g, "#");
+      .replace(/(^|[^\\])#/g, '$1' + number)
+      .replace(/\\#/g, '#');
   }
 }
 

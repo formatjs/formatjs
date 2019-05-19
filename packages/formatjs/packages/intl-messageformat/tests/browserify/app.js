@@ -1,3 +1,3 @@
-"use strict";
+'use strict';
 
-window.IntlMessageFormat = require("../../");
+window.IntlMessageFormat = require('../../');
