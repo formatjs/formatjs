@@ -27,7 +27,7 @@ export default {
   ],
   plugins: [
     babel(),
-    commonjs(),
+    commonjs({namedExports: {'react-is': ['isValidElementType']}}),
     nodeResolve({
       jsnext: true
     })

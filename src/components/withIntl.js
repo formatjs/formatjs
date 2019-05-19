@@ -1,4 +1,5 @@
 import React, {Component, createContext} from 'react';
+import {isValidElementType} from 'react-is';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import invariant from 'invariant';
 import {invariantIntlContext} from '../utils';
@@ -13,7 +14,17 @@ const {Consumer: IntlConsumer, Provider: IntlProvider} = IntlContext;
 export const Provider = IntlProvider;
 export const Context = IntlContext;
 
-export default function withIntl(WrappedComponent, options = {}) {
+export default function withIntl(componentOrOptions, options) {
+  if (isValidElementType(componentOrOptions)) {
+    // use call to make `options` available on `this`
+    return createWrapper.call({options}, componentOrOptions);
+  }
+  // return a function with `options` bound to `this`
+  return createWrapper.bind({options: componentOrOptions});
+}
+
+function createWrapper(WrappedComponent) {
+  let options = (this && this.options) || {};
   const {
     intlPropName = 'intl',
     forwardRef = false,

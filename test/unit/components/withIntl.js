@@ -140,5 +140,29 @@ describe('withIntl()', () => {
         expect(wrapperRef.current).toBe(wrapped.instance());
       });
     });
+
+    it('can also be used with a bound function', () => {
+      Wrapped = class extends React.Component {
+        render() {
+          return null;
+        }
+      };
+      const propName = 'myPropName';
+      const customWithIntl = withIntl({
+        forwardRef: true,
+        intlPropName: propName,
+      });
+      const wrapperRef = React.createRef();
+      const Injected = customWithIntl(Wrapped);
+
+      rendered = mountWithProvider(<Injected ref={wrapperRef} />);
+      const wrapped = rendered.find(Wrapped);
+
+      expect(wrapperRef.current).toBe(wrapped.instance());
+
+      const intlProvider = rendered.find(IntlProvider).childAt(0);
+
+      expect(wrapped.prop(propName)).toBe(intlProvider.instance().getContext());
+    });
   });
 });
