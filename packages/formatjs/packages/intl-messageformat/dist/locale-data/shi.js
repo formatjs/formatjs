@@ -1,4 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"shi"});
-IntlMessageFormat.__addLocaleData({"locale":"shi-Latn"});
-IntlMessageFormat.__addLocaleData({"locale":"shi-Tfng","parentLocale":"shi"});
+IntlMessageFormat.__addLocaleData({"locale":"shi"},{"locale":"shi-Latn"},{"locale":"shi-Tfng","parentLocale":"shi"})

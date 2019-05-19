@@ -1,2 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"tk"});
+IntlMessageFormat.__addLocaleData({"locale":"tk"})

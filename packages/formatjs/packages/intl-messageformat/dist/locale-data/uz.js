@@ -1,5 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"uz"});
-IntlMessageFormat.__addLocaleData({"locale":"uz-Arab"});
-IntlMessageFormat.__addLocaleData({"locale":"uz-Cyrl"});
-IntlMessageFormat.__addLocaleData({"locale":"uz-Latn","parentLocale":"uz"});
+IntlMessageFormat.__addLocaleData({"locale":"uz"},{"locale":"uz-Arab"},{"locale":"uz-Cyrl"},{"locale":"uz-Latn","parentLocale":"uz"})

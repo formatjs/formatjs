@@ -1,4 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"sv"});
-IntlMessageFormat.__addLocaleData({"locale":"sv-AX","parentLocale":"sv"});
-IntlMessageFormat.__addLocaleData({"locale":"sv-FI","parentLocale":"sv"});
+IntlMessageFormat.__addLocaleData({"locale":"sv"},{"locale":"sv-AX","parentLocale":"sv"},{"locale":"sv-FI","parentLocale":"sv"})

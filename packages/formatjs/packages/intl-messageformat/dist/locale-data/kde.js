@@ -1,2 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"kde"});
+IntlMessageFormat.__addLocaleData({"locale":"kde"})

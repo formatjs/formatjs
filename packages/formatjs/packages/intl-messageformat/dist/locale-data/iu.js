@@ -1,3 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"iu"});
-IntlMessageFormat.__addLocaleData({"locale":"iu-Latn"});
+IntlMessageFormat.__addLocaleData({"locale":"iu"},{"locale":"iu-Latn"})

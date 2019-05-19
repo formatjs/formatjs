@@ -1,5 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"so"});
-IntlMessageFormat.__addLocaleData({"locale":"so-DJ","parentLocale":"so"});
-IntlMessageFormat.__addLocaleData({"locale":"so-ET","parentLocale":"so"});
-IntlMessageFormat.__addLocaleData({"locale":"so-KE","parentLocale":"so"});
+IntlMessageFormat.__addLocaleData({"locale":"so"},{"locale":"so-DJ","parentLocale":"so"},{"locale":"so-ET","parentLocale":"so"},{"locale":"so-KE","parentLocale":"so"})

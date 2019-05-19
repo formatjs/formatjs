@@ -1,4 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"yue"});
-IntlMessageFormat.__addLocaleData({"locale":"yue-Hans"});
-IntlMessageFormat.__addLocaleData({"locale":"yue-Hant","parentLocale":"yue"});
+IntlMessageFormat.__addLocaleData({"locale":"yue"},{"locale":"yue-Hans"},{"locale":"yue-Hant","parentLocale":"yue"})

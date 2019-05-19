@@ -1,2 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"twq"});
+IntlMessageFormat.__addLocaleData({"locale":"twq"})

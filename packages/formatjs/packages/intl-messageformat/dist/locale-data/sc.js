@@ -1,2 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"sc"});
+IntlMessageFormat.__addLocaleData({"locale":"sc"})

@@ -1,2 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"nqo"});
+IntlMessageFormat.__addLocaleData({"locale":"nqo"})

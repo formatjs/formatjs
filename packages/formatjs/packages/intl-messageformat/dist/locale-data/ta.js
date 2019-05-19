@@ -1,5 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"ta"});
-IntlMessageFormat.__addLocaleData({"locale":"ta-LK","parentLocale":"ta"});
-IntlMessageFormat.__addLocaleData({"locale":"ta-MY","parentLocale":"ta"});
-IntlMessageFormat.__addLocaleData({"locale":"ta-SG","parentLocale":"ta"});
+IntlMessageFormat.__addLocaleData({"locale":"ta"},{"locale":"ta-LK","parentLocale":"ta"},{"locale":"ta-MY","parentLocale":"ta"},{"locale":"ta-SG","parentLocale":"ta"})

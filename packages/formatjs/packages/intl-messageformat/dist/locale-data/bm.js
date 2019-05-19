@@ -1,3 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"bm"});
-IntlMessageFormat.__addLocaleData({"locale":"bm-Nkoo"});
+IntlMessageFormat.__addLocaleData({"locale":"bm"},{"locale":"bm-Nkoo"})

@@ -1,2 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"pap"});
+IntlMessageFormat.__addLocaleData({"locale":"pap"})

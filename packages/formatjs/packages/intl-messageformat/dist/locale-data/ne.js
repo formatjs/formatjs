@@ -1,3 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"ne"});
-IntlMessageFormat.__addLocaleData({"locale":"ne-IN","parentLocale":"ne"});
+IntlMessageFormat.__addLocaleData({"locale":"ne"},{"locale":"ne-IN","parentLocale":"ne"})

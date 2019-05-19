@@ -1,4 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"gsw"});
-IntlMessageFormat.__addLocaleData({"locale":"gsw-FR","parentLocale":"gsw"});
-IntlMessageFormat.__addLocaleData({"locale":"gsw-LI","parentLocale":"gsw"});
+IntlMessageFormat.__addLocaleData({"locale":"gsw"},{"locale":"gsw-FR","parentLocale":"gsw"},{"locale":"gsw-LI","parentLocale":"gsw"})

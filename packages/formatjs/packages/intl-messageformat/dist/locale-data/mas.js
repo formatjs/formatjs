@@ -1,3 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"mas"});
-IntlMessageFormat.__addLocaleData({"locale":"mas-TZ","parentLocale":"mas"});
+IntlMessageFormat.__addLocaleData({"locale":"mas"},{"locale":"mas-TZ","parentLocale":"mas"})

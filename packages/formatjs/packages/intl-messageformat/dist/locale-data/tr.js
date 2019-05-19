@@ -1,3 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"tr"});
-IntlMessageFormat.__addLocaleData({"locale":"tr-CY","parentLocale":"tr"});
+IntlMessageFormat.__addLocaleData({"locale":"tr"},{"locale":"tr-CY","parentLocale":"tr"})

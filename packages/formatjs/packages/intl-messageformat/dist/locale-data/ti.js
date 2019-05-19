@@ -1,3 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"ti"});
-IntlMessageFormat.__addLocaleData({"locale":"ti-ER","parentLocale":"ti"});
+IntlMessageFormat.__addLocaleData({"locale":"ti"},{"locale":"ti-ER","parentLocale":"ti"})

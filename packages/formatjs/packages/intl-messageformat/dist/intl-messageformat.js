@@ -231,7 +231,6 @@
         };
         return __assign.apply(this, arguments);
     };
-    // -- MessageFormat --------------------------------------------------------
     var MessageFormat = /** @class */ (function () {
         function MessageFormat(message, locales, overrideFormats) {
             var _this = this;
@@ -271,12 +270,18 @@
             this.pattern = this._compilePattern(ast, locales || [], formats);
             this.message = message;
         }
-        MessageFormat.__addLocaleData = function (data) {
-            if (!(data && data.locale)) {
-                throw new Error("Locale data provided to IntlMessageFormat is missing a " +
-                    "`locale` property");
+        MessageFormat.__addLocaleData = function () {
+            var data = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                data[_i] = arguments[_i];
             }
-            MessageFormat.__localeData__[data.locale.toLowerCase()] = data;
+            data.forEach(function (datum) {
+                if (!(datum && datum.locale)) {
+                    throw new Error("Locale data provided to IntlMessageFormat is missing a " +
+                        "`locale` property");
+                }
+                MessageFormat.__localeData__[datum.locale.toLowerCase()] = datum;
+            });
         };
         MessageFormat.prototype.resolvedOptions = function () {
             return { locale: this._locale };
@@ -343,7 +348,7 @@
             }
             return result;
         };
-        MessageFormat.defaultLocale = 'en';
+        MessageFormat.defaultLocale = "en";
         MessageFormat.__localeData__ = {};
         // Default format options used as the prototype of the `formats` provided to the
         // constructor. These are used when constructing the internal Intl.NumberFormat

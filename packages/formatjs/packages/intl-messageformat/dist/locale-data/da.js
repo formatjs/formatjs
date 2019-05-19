@@ -1,3 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"da"});
-IntlMessageFormat.__addLocaleData({"locale":"da-GL","parentLocale":"da"});
+IntlMessageFormat.__addLocaleData({"locale":"da"},{"locale":"da-GL","parentLocale":"da"})

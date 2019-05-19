@@ -1,2 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"lag"});
+IntlMessageFormat.__addLocaleData({"locale":"lag"})

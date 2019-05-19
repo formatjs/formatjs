@@ -1,8 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"nl"});
-IntlMessageFormat.__addLocaleData({"locale":"nl-AW","parentLocale":"nl"});
-IntlMessageFormat.__addLocaleData({"locale":"nl-BE","parentLocale":"nl"});
-IntlMessageFormat.__addLocaleData({"locale":"nl-BQ","parentLocale":"nl"});
-IntlMessageFormat.__addLocaleData({"locale":"nl-CW","parentLocale":"nl"});
-IntlMessageFormat.__addLocaleData({"locale":"nl-SR","parentLocale":"nl"});
-IntlMessageFormat.__addLocaleData({"locale":"nl-SX","parentLocale":"nl"});
+IntlMessageFormat.__addLocaleData({"locale":"nl"},{"locale":"nl-AW","parentLocale":"nl"},{"locale":"nl-BE","parentLocale":"nl"},{"locale":"nl-BQ","parentLocale":"nl"},{"locale":"nl-CW","parentLocale":"nl"},{"locale":"nl-SR","parentLocale":"nl"},{"locale":"nl-SX","parentLocale":"nl"})

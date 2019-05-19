@@ -1,5 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"sw"});
-IntlMessageFormat.__addLocaleData({"locale":"sw-CD","parentLocale":"sw"});
-IntlMessageFormat.__addLocaleData({"locale":"sw-KE","parentLocale":"sw"});
-IntlMessageFormat.__addLocaleData({"locale":"sw-UG","parentLocale":"sw"});
+IntlMessageFormat.__addLocaleData({"locale":"sw"},{"locale":"sw-CD","parentLocale":"sw"},{"locale":"sw-KE","parentLocale":"sw"},{"locale":"sw-UG","parentLocale":"sw"})

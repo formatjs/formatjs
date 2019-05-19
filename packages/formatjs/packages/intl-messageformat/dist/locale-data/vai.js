@@ -1,4 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"vai"});
-IntlMessageFormat.__addLocaleData({"locale":"vai-Latn"});
-IntlMessageFormat.__addLocaleData({"locale":"vai-Vaii","parentLocale":"vai"});
+IntlMessageFormat.__addLocaleData({"locale":"vai"},{"locale":"vai-Latn"},{"locale":"vai-Vaii","parentLocale":"vai"})

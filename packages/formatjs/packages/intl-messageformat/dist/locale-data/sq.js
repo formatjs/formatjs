@@ -1,4 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"sq"});
-IntlMessageFormat.__addLocaleData({"locale":"sq-MK","parentLocale":"sq"});
-IntlMessageFormat.__addLocaleData({"locale":"sq-XK","parentLocale":"sq"});
+IntlMessageFormat.__addLocaleData({"locale":"sq"},{"locale":"sq-MK","parentLocale":"sq"},{"locale":"sq-XK","parentLocale":"sq"})

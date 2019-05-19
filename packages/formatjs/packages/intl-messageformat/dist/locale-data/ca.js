@@ -1,7 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"ca"});
-IntlMessageFormat.__addLocaleData({"locale":"ca-AD","parentLocale":"ca"});
-IntlMessageFormat.__addLocaleData({"locale":"ca-ES-VALENCIA","parentLocale":"ca-ES"});
-IntlMessageFormat.__addLocaleData({"locale":"ca-ES","parentLocale":"ca"});
-IntlMessageFormat.__addLocaleData({"locale":"ca-FR","parentLocale":"ca"});
-IntlMessageFormat.__addLocaleData({"locale":"ca-IT","parentLocale":"ca"});
+IntlMessageFormat.__addLocaleData({"locale":"ca"},{"locale":"ca-AD","parentLocale":"ca"},{"locale":"ca-ES-VALENCIA","parentLocale":"ca-ES"},{"locale":"ca-ES","parentLocale":"ca"},{"locale":"ca-FR","parentLocale":"ca"},{"locale":"ca-IT","parentLocale":"ca"})

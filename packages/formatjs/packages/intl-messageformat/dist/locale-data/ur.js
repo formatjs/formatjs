@@ -1,3 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"ur"});
-IntlMessageFormat.__addLocaleData({"locale":"ur-IN","parentLocale":"ur"});
+IntlMessageFormat.__addLocaleData({"locale":"ur"},{"locale":"ur-IN","parentLocale":"ur"})

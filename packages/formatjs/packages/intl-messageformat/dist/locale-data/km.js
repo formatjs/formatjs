@@ -1,2 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"km"});
+IntlMessageFormat.__addLocaleData({"locale":"km"})

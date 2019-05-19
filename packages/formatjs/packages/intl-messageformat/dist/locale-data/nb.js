@@ -1,3 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"nb"});
-IntlMessageFormat.__addLocaleData({"locale":"nb-SJ","parentLocale":"nb"});
+IntlMessageFormat.__addLocaleData({"locale":"nb"},{"locale":"nb-SJ","parentLocale":"nb"})

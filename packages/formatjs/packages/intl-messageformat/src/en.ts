@@ -1,2 +1,2 @@
 /* @generated */
-export default { locale: "en" };
+export default {"locale":"en"};

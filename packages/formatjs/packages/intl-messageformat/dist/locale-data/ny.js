@@ -1,2 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"ny"});
+IntlMessageFormat.__addLocaleData({"locale":"ny"})

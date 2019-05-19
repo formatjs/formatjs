@@ -1,3 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"ckb"});
-IntlMessageFormat.__addLocaleData({"locale":"ckb-IR","parentLocale":"ckb"});
+IntlMessageFormat.__addLocaleData({"locale":"ckb"},{"locale":"ckb-IR","parentLocale":"ckb"})

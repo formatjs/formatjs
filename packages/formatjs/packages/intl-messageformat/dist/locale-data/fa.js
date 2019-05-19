@@ -1,3 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"fa"});
-IntlMessageFormat.__addLocaleData({"locale":"fa-AF","parentLocale":"fa"});
+IntlMessageFormat.__addLocaleData({"locale":"fa"},{"locale":"fa-AF","parentLocale":"fa"})

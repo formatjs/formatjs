@@ -1,2 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"tig"});
+IntlMessageFormat.__addLocaleData({"locale":"tig"})

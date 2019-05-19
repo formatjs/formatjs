@@ -1,3 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"hr"});
-IntlMessageFormat.__addLocaleData({"locale":"hr-BA","parentLocale":"hr"});
+IntlMessageFormat.__addLocaleData({"locale":"hr"},{"locale":"hr-BA","parentLocale":"hr"})

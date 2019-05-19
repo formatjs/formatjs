@@ -1,3 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"el"});
-IntlMessageFormat.__addLocaleData({"locale":"el-CY","parentLocale":"el"});
+IntlMessageFormat.__addLocaleData({"locale":"el"},{"locale":"el-CY","parentLocale":"el"})

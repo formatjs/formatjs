@@ -1,3 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"teo"});
-IntlMessageFormat.__addLocaleData({"locale":"teo-KE","parentLocale":"teo"});
+IntlMessageFormat.__addLocaleData({"locale":"teo"},{"locale":"teo-KE","parentLocale":"teo"})

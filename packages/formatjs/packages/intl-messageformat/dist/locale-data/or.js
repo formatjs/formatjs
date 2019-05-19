@@ -1,2 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"or"});
+IntlMessageFormat.__addLocaleData({"locale":"or"})

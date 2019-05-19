@@ -11,6 +11,12 @@ import parser, { MessageFormatPattern } from "intl-messageformat-parser";
 
 // -- MessageFormat --------------------------------------------------------
 
+interface LocaleData {
+  locale: string
+  parentLocale?: string
+  [k: string]: any
+}
+
 export default class MessageFormat {
   public static defaultLocale: string = "en";
   public static __localeData__: Record<string, any> = {};
@@ -112,15 +118,17 @@ export default class MessageFormat {
 
     this.message = message;
   }
-  static __addLocaleData(data: { locale: string; [locale: string]: any }) {
-    if (!(data && data.locale)) {
-      throw new Error(
-        "Locale data provided to IntlMessageFormat is missing a " +
-          "`locale` property"
-      );
-    }
-
-    MessageFormat.__localeData__[data.locale.toLowerCase()] = data;
+  static __addLocaleData(...data: LocaleData[]) {
+    data.forEach(datum => {
+      if (!(datum && datum.locale)) {
+        throw new Error(
+          "Locale data provided to IntlMessageFormat is missing a " +
+            "`locale` property"
+        );
+      }
+  
+      MessageFormat.__localeData__[datum.locale.toLowerCase()] = datum;
+    })
   }
 
   public static __parse = parser.parse;

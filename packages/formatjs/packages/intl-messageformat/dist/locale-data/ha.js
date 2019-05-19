@@ -1,5 +1,2 @@
 /* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"ha"});
-IntlMessageFormat.__addLocaleData({"locale":"ha-Arab"});
-IntlMessageFormat.__addLocaleData({"locale":"ha-GH","parentLocale":"ha"});
-IntlMessageFormat.__addLocaleData({"locale":"ha-NE","parentLocale":"ha"});
+IntlMessageFormat.__addLocaleData({"locale":"ha"},{"locale":"ha-Arab"},{"locale":"ha-GH","parentLocale":"ha"},{"locale":"ha-NE","parentLocale":"ha"})

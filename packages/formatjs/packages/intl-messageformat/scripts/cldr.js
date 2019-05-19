@@ -5,21 +5,15 @@ const serialize = require("serialize-javascript");
 
 const data = extractData();
 
-function serializeEntry(entry, wrapFn) {
-  var serialized = serialize(entry);
-
-  if (typeof wrapFn === "function") {
-    return wrapFn(serialized);
-  }
-
-  return serialized;
-}
-
-function extractLocales(wrapFn, locales) {
+function extractLocales(locales) {
   return Object.keys(data).reduce(function(files, locale) {
     if (!Array.isArray(locales) || locales.includes(locale)) {
       var lang = locale.split("-")[0];
-      files[lang] = (files[lang] || "") + serializeEntry(data[locale], wrapFn);
+      if (!files[lang]) {
+        files[lang] = serialize(data[locale])
+      } else {
+        files[lang] += ',' + serialize(data[locale])
+      }
     }
     return files;
   }, {});
@@ -28,15 +22,13 @@ function extractLocales(wrapFn, locales) {
 const allLocaleDistDir = resolve(__dirname, "../dist/locale-data");
 
 // Dist all locale files to dist/locale-data
-const allLocaleFiles = extractLocales(function(entry) {
-  return "IntlMessageFormat.__addLocaleData(" + entry + ");\n";
-});
+const allLocaleFiles = extractLocales();
 Object.keys(allLocaleFiles).forEach(function(lang) {
   const destFile = join(allLocaleDistDir, lang + ".js");
   outputFileSync(
     destFile,
     `/* @generated */
-${allLocaleFiles[lang]}`
+IntlMessageFormat.__addLocaleData(${allLocaleFiles[lang]})`
   );
 });
 
@@ -45,15 +37,16 @@ outputFileSync(
   resolve(__dirname, "../src/locales.ts"),
   `/* @generated */
 import IntlMessageFormat from './core';\n
-${Object.keys(allLocaleFiles)
+IntlMessageFormat.__addLocaleData(
+  ${Object.keys(allLocaleFiles)
   .map(lang => allLocaleFiles[lang])
-  .join("\n")}
+  .join(",\n")})
 export default IntlMessageFormat;
   `
 );
 
 // Extract src/en.js
-const en = extractLocales(undefined, ["en"]);
+const en = extractLocales(["en"]);
 outputFileSync(
   resolve(__dirname, "../src/en.ts"),
   `/* @generated */
