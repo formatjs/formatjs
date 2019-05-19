@@ -7,6 +7,7 @@
 require("intl-pluralrules");
 const expect = require("expect.js");
 import IntlMessageFormat from "../src/locales";
+import { LocaleData } from "../src/core";
 
 describe("IntlMessageFormat", function() {
   it("should be a function", function() {
@@ -36,13 +37,13 @@ describe("IntlMessageFormat", function() {
 
     describe("`locale`", function() {
       var IMFLocaleData = IntlMessageFormat.__localeData__;
-      var localeData: Record<string, string> = {};
+      var localeData: Record<string, LocaleData> = {};
 
       // Helper to remove and replace the locale data available during the
       // the different tests.
       function transferLocaleData(
-        from: Record<string, string>,
-        to: Record<string, string>
+        from: Record<string, LocaleData>,
+        to: Record<string, LocaleData>
       ) {
         for (var locale in from) {
           if (Object.prototype.hasOwnProperty.call(from, locale)) {

@@ -11,7 +11,7 @@ import parser, { MessageFormatPattern } from "intl-messageformat-parser";
 
 // -- MessageFormat --------------------------------------------------------
 
-interface LocaleData {
+export interface LocaleData {
   locale: string
   parentLocale?: string
   [k: string]: any
@@ -19,7 +19,7 @@ interface LocaleData {
 
 export default class MessageFormat {
   public static defaultLocale: string = "en";
-  public static __localeData__: Record<string, any> = {};
+  public static __localeData__: Record<string, LocaleData> = {};
   // Default format options used as the prototype of the `formats` provided to the
   // constructor. These are used when constructing the internal Intl.NumberFormat
   // and Intl.DateTimeFormat instances.
@@ -89,7 +89,7 @@ export default class MessageFormat {
     }
   };
   private _locale: string;
-  private pattern: ReturnType<Compiler["compile"]>;
+  private pattern: Pattern[];
   private message: string;
   constructor(
     message: string,

@@ -1,13 +1,13 @@
 import { Formats, Pattern } from "./compiler";
 import { MessageFormatPattern } from "intl-messageformat-parser";
-interface LocaleData {
+export interface LocaleData {
     locale: string;
     parentLocale?: string;
     [k: string]: any;
 }
 export default class MessageFormat {
     static defaultLocale: string;
-    static __localeData__: Record<string, any>;
+    static __localeData__: Record<string, LocaleData>;
     static readonly formats: Formats;
     private _locale;
     private pattern;
@@ -23,4 +23,3 @@ export default class MessageFormat {
     _compilePattern(ast: MessageFormatPattern, locales: string | string[], formats: Formats): Pattern[];
     _format(pattern: Pattern[], values?: Record<string, string | number | boolean | null | undefined>): string;
 }
-export {};
