@@ -8,8 +8,8 @@ Formats ICU Message strings with number, date, plural, and select placeholders t
 [![Dependency Status][david-badge]][david]
 
 
-![core gzip size](https://img.badgesize.io/formatjs/intl-messageformat/blob/master/dist/intl-messageformat.min.js?compression=gzip&label=core+gzip+size)
-![core + all locales gzip size](https://img.badgesize.io/formatjs/intl-messageformat/blob/master/dist/intl-messageformat-with-locales.min.js?compression=gzip&label=all+locales+gzip+size)
+![core gzip size](https://img.badgesize.io/formatjs/intl-messageformat/master/dist/intl-messageformat.min.js?compression=gzip&label=core+gzip+size)
+![core + all locales gzip size](https://img.badgesize.io/formatjs/intl-messageformat/master/dist/intl-messageformat-with-locales.min.js?compression=gzip&label=all+locales+gzip+size)
 
 [![Sauce Test Status][sauce-badge]][sauce]
 
