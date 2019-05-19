@@ -7,8 +7,11 @@ Formats ICU Message strings with number, date, plural, and select placeholders t
 [![Build Status][travis-badge]][travis]
 [![Dependency Status][david-badge]][david]
 
-[![Sauce Test Status][sauce-badge]][sauce]
 
+![core gzip size](https://img.badgesize.io/formatjs/intl-messageformat/blob/master/dist/intl-messageformat.min.js?compression=gzip&label=core+gzip+size)
+![core + all locales gzip size](https://img.badgesize.io/formatjs/intl-messageformat/blob/master/dist/intl-messageformat-with-locales.min.js?compression=gzip&label=all+locales+gzip+size)
+
+[![Sauce Test Status][sauce-badge]][sauce]
 
 Overview
 --------
