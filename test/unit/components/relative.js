@@ -70,7 +70,7 @@ describe('<FormattedRelative>', () => {
 
         // Should avoid update scheduling tight-loop.
         await sleep(10);
-        expect(setState.calls.length).toBe(1, '`setState()` called unexpectedly');
+        expect(setState.calls.length).toBe(0, '`setState()` called unexpectedly');
 
         withIntlContext.unmount();
     });
