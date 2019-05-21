@@ -224,7 +224,8 @@ export default function ({types: t}) {
                 const name = path.get('name');
 
                 if (name.referencesImport(moduleSourceName, 'FormattedPlural')) {
-                    file.log.warn(
+                    const warn = file.log ? file.log.warn : console.warn;
+                    warn(
                         `[React Intl] Line ${path.node.loc.start.line}: ` +
                         'Default messages are not extracted from ' +
                         '<FormattedPlural>, use <FormattedMessage> instead.'
