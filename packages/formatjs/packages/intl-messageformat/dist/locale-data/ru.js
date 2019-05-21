@@ -1,2 +1,0 @@
-/* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"ru"},{"locale":"ru-BY","parentLocale":"ru"},{"locale":"ru-KG","parentLocale":"ru"},{"locale":"ru-KZ","parentLocale":"ru"},{"locale":"ru-MD","parentLocale":"ru"},{"locale":"ru-UA","parentLocale":"ru"})

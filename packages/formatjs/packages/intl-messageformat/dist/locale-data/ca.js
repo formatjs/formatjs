@@ -1,2 +1,0 @@
-/* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"ca"},{"locale":"ca-AD","parentLocale":"ca"},{"locale":"ca-ES-VALENCIA","parentLocale":"ca-ES"},{"locale":"ca-ES","parentLocale":"ca"},{"locale":"ca-FR","parentLocale":"ca"},{"locale":"ca-IT","parentLocale":"ca"})

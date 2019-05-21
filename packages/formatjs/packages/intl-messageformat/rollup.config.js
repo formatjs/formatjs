@@ -1,5 +1,8 @@
 import { uglify } from 'rollup-plugin-uglify';
 import resolve from 'rollup-plugin-node-resolve';
+import typescript from 'rollup-plugin-typescript';
+import commonjs from 'rollup-plugin-commonjs';
+
 const resolveConfig = resolve({
   mainFields: ['jsnext:main', 'module', 'main']
 });
@@ -16,16 +19,6 @@ export default [
     plugins: [resolveConfig]
   },
   {
-    input: './lib/locales.js',
-    output: {
-      sourcemap: true,
-      file: 'dist/intl-messageformat-with-locales.js',
-      format: 'umd',
-      name: 'IntlMessageFormat'
-    },
-    plugins: [resolveConfig]
-  },
-  {
     input: './lib/index.js',
     output: {
       sourcemap: true,
@@ -36,13 +29,12 @@ export default [
     plugins: [resolveConfig, uglifyConfig]
   },
   {
-    input: './lib/locales.js',
+    input: './tests/index.ts',
     output: {
       sourcemap: true,
-      file: 'dist/intl-messageformat-with-locales.min.js',
-      format: 'umd',
-      name: 'IntlMessageFormat'
+      file: 'tests/browser.js',
+      format: 'umd'
     },
-    plugins: [resolveConfig, uglifyConfig]
+    plugins: [typescript(), resolveConfig, commonjs()]
   }
 ];

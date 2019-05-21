@@ -1,10 +1,7 @@
-'use strict';
+import { Suite, Event } from 'benchmark';
+import IntlMessageFormat from '../src';
 
-global.Intl || require('intl');
-const benchmark = require('benchmark');
-var IntlMessageFormat = require('../');
-
-var msg =
+const msg =
   '' +
   '{gender_of_host, select, ' +
   'female {' +
@@ -53,7 +50,7 @@ const preparsedMsg = IntlMessageFormat.__parse(
     'other {{host} invites {guest} and # other people to their party.}}}}'
 );
 
-new benchmark.Suite()
+new Suite()
   .add('format_cached_complex_msg', () =>
     mf.format({
       gender_of_host: 'male',
@@ -69,7 +66,7 @@ new benchmark.Suite()
   )
   .add('new_complex_msg', () => new IntlMessageFormat(msg, 'en-US'))
   .add('new_string_msg', () => new IntlMessageFormat(stringMsg, 'en-US'))
-  .on('cycle', function(event) {
+  .on('cycle', function(event: Event) {
     console.log(String(event.target));
   })
   .run();

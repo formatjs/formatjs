@@ -1,3 +1,5 @@
 node_modules/
 .nyc_output
-src/locales.ts
+lib
+tests/*.js*
+tmp

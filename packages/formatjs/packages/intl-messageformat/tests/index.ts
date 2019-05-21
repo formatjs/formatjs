@@ -4,22 +4,16 @@
  * See the accompanying LICENSE file for terms.
  */
 'use strict';
-require('intl-pluralrules');
-const expect = require('expect.js');
-import IntlMessageFormat from '../src/locales';
+import 'intl-pluralrules';
+import IntlMessageFormat from '../src';
 import { LocaleData } from '../src/core';
+import { expect as chaiExpect } from 'chai';
+
+declare var expect: typeof chaiExpect;
 
 describe('IntlMessageFormat', function() {
   it('should be a function', function() {
     expect(IntlMessageFormat).to.be.a('function');
-  });
-
-  // STATIC
-
-  describe('.__addLocaleData( [obj] )', function() {
-    it('should respond to .__addLocaleData()', function() {
-      expect(IntlMessageFormat.__addLocaleData).to.be.a('function');
-    });
   });
 
   // INSTANCE METHODS
@@ -36,58 +30,17 @@ describe('IntlMessageFormat', function() {
     });
 
     describe('`locale`', function() {
-      var IMFLocaleData = IntlMessageFormat.__localeData__;
-      var localeData: Record<string, LocaleData> = {};
-
-      // Helper to remove and replace the locale data available during the
-      // the different tests.
-      function transferLocaleData(
-        from: Record<string, LocaleData>,
-        to: Record<string, LocaleData>
-      ) {
-        for (var locale in from) {
-          if (Object.prototype.hasOwnProperty.call(from, locale)) {
-            if (locale === IntlMessageFormat.defaultLocale) {
-              continue;
-            }
-
-            to[locale] = from[locale];
-            delete from[locale];
-          }
-        }
-      }
-
-      beforeEach(function() {
-        transferLocaleData(IMFLocaleData, localeData);
-      });
-
-      afterEach(function() {
-        transferLocaleData(localeData, IMFLocaleData);
-      });
-
       it('should default to "en"', function() {
         var mf = new IntlMessageFormat('');
         expect(mf.resolvedOptions().locale).to.equal('en');
       });
 
       it('should normalize the casing', function() {
-        transferLocaleData(localeData, IMFLocaleData);
-
         var mf = new IntlMessageFormat('', 'en-us');
         expect(mf.resolvedOptions().locale).to.equal('en-US');
 
         mf = new IntlMessageFormat('', 'EN-US');
         expect(mf.resolvedOptions().locale).to.equal('en-US');
-      });
-
-      it('should be a fallback value when data is missing', function() {
-        IMFLocaleData.fr = localeData.fr;
-
-        var mf = new IntlMessageFormat('', 'fr-FR');
-        expect(mf.resolvedOptions().locale).to.equal('fr');
-
-        mf = new IntlMessageFormat('', 'pt');
-        expect(mf.resolvedOptions().locale).to.equal('en');
       });
     });
   });
@@ -349,12 +302,10 @@ describe('IntlMessageFormat', function() {
         state = 'Missouri';
 
       it('should fail when the argument in the pattern is not provided', function() {
-        expect(msg.format).to.throwException(function(e: Error) {
-          expect(e).to.be.an(Error);
-          expect(e.message).to.match(
-            /The intl string context variable 'STATE' was not provided to the string '{STATE}'/
-          );
-        });
+        expect(msg.format).to.throw(
+          Error,
+          /The intl string context variable 'STATE' was not provided to the string '{STATE}'/
+        );
       });
 
       it('should fail when the argument in the pattern has a typo', function() {
@@ -362,12 +313,10 @@ describe('IntlMessageFormat', function() {
           return msg.format({ 'ST ATE': state });
         }
 
-        expect(formatWithValueNameTypo).to.throwException(function(e: Error) {
-          expect(e).to.be.an(Error);
-          expect(e.message).to.match(
-            /The intl string context variable 'STATE' was not provided to the string '{STATE}'/
-          );
-        });
+        expect(formatWithValueNameTypo).to.throw(
+          Error,
+          /The intl string context variable 'STATE' was not provided to the string '{STATE}'/
+        );
       });
 
       it('should succeed when the argument is correct', function() {
@@ -384,12 +333,10 @@ describe('IntlMessageFormat', function() {
           return msg.format({ FOO: state });
         }
 
-        expect(formatWithMissingValue).to.throwException(function(e: Error) {
-          expect(e).to.be.an(Error);
-          expect(e.message).to.match(
-            /The intl string context variable 'ST1ATE' was not provided to the string '{ST1ATE}'/
-          );
-        });
+        expect(formatWithMissingValue).to.throw(
+          Error,
+          /The intl string context variable 'ST1ATE' was not provided to the string '{ST1ATE}'/
+        );
       });
 
       it('should fail when the argument in the pattern has a typo', function() {
@@ -397,12 +344,10 @@ describe('IntlMessageFormat', function() {
           msg.format({ 'ST ATE': state });
         }
 
-        expect(formatWithMissingValue).to.throwException(function(e: Error) {
-          expect(e).to.be.an(Error);
-          expect(e.message).to.match(
-            /The intl string context variable 'ST1ATE' was not provided to the string '{ST1ATE}'/
-          );
-        });
+        expect(formatWithMissingValue).to.throw(
+          Error,
+          /The intl string context variable 'ST1ATE' was not provided to the string '{ST1ATE}'/
+        );
       });
 
       it('should succeed when the argument is correct', function() {
@@ -416,9 +361,7 @@ describe('IntlMessageFormat', function() {
       'This is my {year, selectordinal, one{#st} two{#nd} few{#rd} other{#th}} birthday.';
 
     it('should parse without errors', function() {
-      expect(IntlMessageFormat.__parse)
-        .withArgs(msg)
-        .to.not.throwException();
+      expect(() => IntlMessageFormat.__parse(msg)).to.not.throw();
     });
 
     it('should use ordinal pluralization rules', function() {
@@ -468,5 +411,29 @@ describe('IntlMessageFormat', function() {
       }
     });
     expect(mf.format({ time: 0 })).to.contain('00:00');
+  });
+
+  describe('no locale', function() {
+    describe('no locale provided', function() {
+      it('should default to English', function() {
+        var msg = new IntlMessageFormat(
+          'I have {NUM_BOOKS, plural, =1 {1 book} other {# books}}.'
+        );
+        expect(msg.resolvedOptions().locale).to.equal('en');
+        expect(msg.format({ NUM_BOOKS: 2 })).to.equal('I have 2 books.');
+      });
+    });
+
+    describe('invalid locale default', function() {
+      it('should fallback to default locale', function() {
+        var msg = new IntlMessageFormat(
+          '{COMPANY_COUNT, plural, =1 {One company} other {# companies}} published new books.',
+          'fu-baz'
+        );
+        var m = msg.format({ COMPANY_COUNT: 1 });
+
+        expect(m).to.equal('One company published new books.');
+      });
+    });
   });
 });

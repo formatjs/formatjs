@@ -1,2 +1,0 @@
-/* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"sr"},{"locale":"sr-Cyrl","parentLocale":"sr"},{"locale":"sr-Cyrl-BA","parentLocale":"sr-Cyrl"},{"locale":"sr-Cyrl-ME","parentLocale":"sr-Cyrl"},{"locale":"sr-Cyrl-XK","parentLocale":"sr-Cyrl"},{"locale":"sr-Latn"},{"locale":"sr-Latn-BA","parentLocale":"sr-Latn"},{"locale":"sr-Latn-ME","parentLocale":"sr-Latn"},{"locale":"sr-Latn-XK","parentLocale":"sr-Latn"})

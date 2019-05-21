@@ -8,8 +8,7 @@ Formats ICU Message strings with number, date, plural, and select placeholders t
 [![Dependency Status][david-badge]][david]
 
 
-![core gzip size](https://img.badgesize.io/formatjs/intl-messageformat/master/dist/intl-messageformat.min.js?compression=gzip&label=core+gzip+size)
-![core + all locales gzip size](https://img.badgesize.io/formatjs/intl-messageformat/master/dist/intl-messageformat-with-locales.min.js?compression=gzip&label=all+locales+gzip+size)
+![gzip size](https://img.badgesize.io/formatjs/intl-messageformat/master/dist/intl-messageformat.min.js?compression=gzip&label=core+gzip+size)
 
 [![Sauce Test Status][sauce-badge]][sauce]
 
@@ -92,48 +91,19 @@ The message syntax that this package uses is not proprietary, in fact it's a com
 Usage
 -----
 
-### `Intl` Dependency
+### Modern `Intl` Dependency
 
-This package assumes that the [`Intl`][Intl] global object exists in the runtime. `Intl` is present in all modern browsers and there's work happening to [integrate `Intl` into Node.js][Intl-Node].
+This package assumes that the [`Intl`][Intl] global object exists in the runtime. `Intl` is present in all modern browsers (IE11+) and Node (with full ICU). The `Intl` methods we rely on are:
 
-**Luckly, there's the [Intl.js][] polyfill!** You will need to conditionally load the polyfill if you want to support runtimes which `Intl` is not already built-in.
-
-#### Loading Intl.js Polyfill in a browser
-
-If the browser does not already have the `Intl` APIs built-in, the Intl.js Polyfill will need to be loaded on the page along with the locale data for any locales that need to be supported:
-
-```html
-<script src="intl/Intl.min.js"></script>
-<script src="intl/locale-data/jsonp/en-US.js"></script>
-```
-
-_Note: Modern browsers already have the `Intl` APIs built-in, so you can load the Intl.js Polyfill conditionally, by for checking for `window.Intl`._
-
-#### Loading Intl.js Polyfill in Node.js
-
-Conditionally require the Intl.js Polyfill if it doesn't already exist in the runtime. As of Node <= 0.10, this polyfill will be required.
-
-```js
-if (!global.Intl) {
-    require('intl');
-}
-```
-
-_Note: When using the Intl.js Polyfill in Node.js, it will automatically load the locale data for all supported locales._
+1. `Intl.NumberFormat` for number formatting (can be polyfilled using [Intl.js][])
+2. `Intl.DateTimeFormat` for date time formatting (can be polyfilled using [Intl.js][])
+3. `Intl.PluralRules` for plural/ordinal formatting (can be polyfilled using [intl-pluralrules][])
 
 ### Loading Intl MessageFormat in a browser
 
 ```html
 <script src="intl-messageformat/intl-messageformat.min.js"></script>
 ```
-
-By default, Intl MessageFormat ships with the locale data for English (`en`) built-in to the library's runtime. When you need to format data in another locale, include its data; e.g., for French:
-
-```html
-<script src="intl-messageformat/locale-data/fr.js"></script>
-```
-
-_Note: All 200+ languages supported by this package use their root BCP 47 language tag; i.e., the part before the first hyphen (if any)._
 
 ### Loading Intl MessageFormat in Node.js
 
@@ -143,7 +113,7 @@ Simply `require()` this package:
 var IntlMessageFormat = require('intl-messageformat');
 ```
 
-_Note: in Node.js, the data for all 200+ languages is loaded along with the library._
+**NOTE: Your Node has to include [full ICU](https://nodejs.org/api/intl.html)**
 
 ### Public API
 
@@ -162,24 +132,7 @@ var msg = new IntlMessageFormat('My name is {name}.', 'en-US');
 
 #### Locale Resolution
 
-`IntlMessageFormat` uses a locale resolution process similar to that of the built-in `Intl` APIs to determine which locale data to use based on the `locales` value passed to the constructor. The result of this resolution process can be determined by call the `resolvedOptions()` prototype method.
-
-The following are the abstract steps `IntlMessageFormat` goes through to resolve the locale value:
-
-* If no extra locale data is loaded, the locale will _always_ resolved to `"en"`.
-
-* If locale data is missing for a leaf locale like `"fr-FR"`, but there _is_ data for one of its ancestors, `"fr"` in this case, then its ancestor will be used.
-
-* If there's data for the specified locale, then that locale will be resolved; i.e.,
-
-    ```js
-    var mf = new IntlMessageFormat('', 'en-US');
-    assert(mf.resolvedOptions().locale === 'en-US'); // true
-    ```
-
-* The resolved locales are now normalized; e.g., `"en-us"` will resolve to: `"en-US"`.
-
-_Note: When an array is provided for `locales`, the above steps happen for each item in that array until a match is found._
+`IntlMessageFormat` uses `Intl.NumberFormat.supportedLocalesOf()` to determine which locale data to use based on the `locales` value passed to the constructor. The result of this resolution process can be determined by call the `resolvedOptions()` prototype method.
 
 #### `resolvedOptions()` Method
 
@@ -282,3 +235,4 @@ See the [LICENSE file][LICENSE] for license text and copyright information.
 [rawgit]: https://rawgit.com/
 [semver]: http://semver.org/
 [LICENSE]: https://github.com/formatjs/intl-messageformat/blob/master/LICENSE
+[intl-pluralrules]: https://github.com/eemeli/intl-pluralrules

@@ -17,9 +17,94 @@ export interface LocaleData {
   [k: string]: any;
 }
 
+function resolveLocale(locales: string | string[]): string {
+  if (typeof locales === 'string') {
+    locales = [locales];
+  }
+  try {
+    return Intl.NumberFormat.supportedLocalesOf(locales, {
+      localeMatcher: 'lookup'
+    })[0];
+  } catch (e) {
+    return MessageFormat.defaultLocale;
+  }
+}
+
+function formatPatterns(
+  pattern: Pattern[],
+  values?: Record<string, string | number | boolean | null | undefined>
+) {
+  let result = '';
+  for (const part of pattern) {
+    // Exist early for string parts.
+    if (typeof part === 'string') {
+      result += part;
+      continue;
+    }
+
+    const { id } = part;
+
+    // Enforce that all required values are provided by the caller.
+    if (!(values && id in values)) {
+      throw new FormatError(`A value must be provided for: ${id}`, id);
+    }
+
+    const value = values[id];
+
+    // Recursively format plural and select parts' option — which can be a
+    // nested pattern structure. The choosing of the option to use is
+    // abstracted-by and delegated-to the part helper object.
+    if (isSelectOrPluralFormat(part)) {
+      result += formatPatterns(part.getOption(value as any), values);
+    } else {
+      result += part.format(value as any);
+    }
+  }
+
+  return result;
+}
+
+function mergeConfig(c1: Record<string, object>, c2?: Record<string, object>) {
+  if (!c2) {
+    return c1;
+  }
+  return {
+    ...(c1 || {}),
+    ...(c2 || {}),
+    ...Object.keys(c1).reduce((all: Record<string, object>, k) => {
+      all[k] = {
+        ...c1[k],
+        ...(c2[k] || {})
+      };
+      return all;
+    }, {})
+  };
+}
+
+function mergeConfigs(
+  defaultConfig: Formats,
+  configs?: Partial<Formats>
+): Formats {
+  if (!configs) {
+    return defaultConfig;
+  }
+
+  return {
+    ...defaultConfig,
+    date: mergeConfig(defaultConfig.date, configs.date)
+  };
+}
+
+class FormatError extends Error {
+  public readonly variableId?: string;
+  constructor(msg?: string, variableId?: string) {
+    super(msg);
+    this.variableId = variableId;
+  }
+}
+
 export default class MessageFormat {
   public static defaultLocale: string = 'en';
-  public static __localeData__: Record<string, LocaleData> = {};
   // Default format options used as the prototype of the `formats` provided to the
   // constructor. These are used when constructing the internal Intl.NumberFormat
   // and Intl.DateTimeFormat instances.
@@ -90,10 +175,10 @@ export default class MessageFormat {
   };
   private _locale: string;
   private pattern: Pattern[];
-  private message: string;
+  private message: string | MessageFormatPattern;
   constructor(
-    message: string,
-    locales?: string | string[],
+    message: string | MessageFormatPattern,
+    locales: string | string[] = MessageFormat.defaultLocale,
     overrideFormats?: Partial<Formats>
   ) {
     // Parse string messages into an AST.
@@ -109,28 +194,15 @@ export default class MessageFormat {
     const formats = mergeConfigs(MessageFormat.formats, overrideFormats);
 
     // Defined first because it's used to build the format pattern.
-    this._locale = this._resolveLocale(locales || []);
+    this._locale = resolveLocale(locales || []);
 
     // Compile the `ast` to a pattern that is highly optimized for repeated
     // `format()` invocations. **Note:** This passes the `locales` set provided
     // to the constructor instead of just the resolved locale.
-    this.pattern = this._compilePattern(ast, locales || [], formats);
+    this.pattern = new Compiler(locales, formats).compile(ast);
 
     this.message = message;
   }
-  static __addLocaleData(...data: LocaleData[]) {
-    data.forEach(datum => {
-      if (!(datum && datum.locale)) {
-        throw new Error(
-          'Locale data provided to IntlMessageFormat is missing a ' +
-            '`locale` property'
-        );
-      }
-
-      MessageFormat.__localeData__[datum.locale.toLowerCase()] = datum;
-    });
-  }
-
   public static __parse = parser.parse;
 
   // "Bind" `format()` method to `this` so it can be passed by reference like
@@ -139,7 +211,7 @@ export default class MessageFormat {
     values?: Record<string, string | number | boolean | null | undefined>
   ) => {
     try {
-      return this._format(this.pattern, values);
+      return formatPatterns(this.pattern, values);
     } catch (e) {
       if (e.variableId) {
         throw new Error(
@@ -154,122 +226,5 @@ export default class MessageFormat {
   };
   resolvedOptions() {
     return { locale: this._locale };
-  }
-
-  _resolveLocale(locales: string | string[]): string {
-    if (typeof locales === 'string') {
-      locales = [locales];
-    }
-
-    // Create a copy of the array so we can push on the default locale.
-    locales = (locales || []).concat(MessageFormat.defaultLocale);
-
-    const { __localeData__: localeData } = MessageFormat;
-
-    // Using the set of locales + the default locale, we look for the first one
-    // which that has been registered. When data does not exist for a locale, we
-    // traverse its ancestors to find something that's been registered within
-    // its hierarchy of locales. Since we lack the proper `parentLocale` data
-    // here, we must take a naive approach to traversal.
-    for (const locale of locales) {
-      const localeParts = locale.toLowerCase().split('-');
-
-      while (localeParts.length) {
-        const data = localeData[localeParts.join('-')];
-        if (data) {
-          // Return the normalized locale string; e.g., we return "en-US",
-          // instead of "en-us".
-          return data.locale;
-        }
-
-        localeParts.pop();
-      }
-    }
-
-    const defaultLocale = locales.pop();
-    throw new Error(
-      `No locale data has been added to IntlMessageFormat for: ${locales.join(
-        ', '
-      )}, or the default locale: ${defaultLocale}`
-    );
-  }
-  _compilePattern(
-    ast: MessageFormatPattern,
-    locales: string | string[],
-    formats: Formats
-  ) {
-    return new Compiler(locales, formats).compile(ast);
-  }
-  _format(
-    pattern: Pattern[],
-    values?: Record<string, string | number | boolean | null | undefined>
-  ) {
-    let result = '';
-    for (const part of pattern) {
-      // Exist early for string parts.
-      if (typeof part === 'string') {
-        result += part;
-        continue;
-      }
-
-      const { id } = part;
-
-      // Enforce that all required values are provided by the caller.
-      if (!(values && id in values)) {
-        throw new FormatError(`A value must be provided for: ${id}`, id);
-      }
-
-      const value = values[id];
-
-      // Recursively format plural and select parts' option — which can be a
-      // nested pattern structure. The choosing of the option to use is
-      // abstracted-by and delegated-to the part helper object.
-      if (isSelectOrPluralFormat(part)) {
-        result += this._format(part.getOption(value as any), values);
-      } else {
-        result += part.format(value as any);
-      }
-    }
-
-    return result;
-  }
-}
-
-function mergeConfig(c1: Record<string, object>, c2?: Record<string, object>) {
-  if (!c2) {
-    return c1;
-  }
-  return {
-    ...(c1 || {}),
-    ...(c2 || {}),
-    ...Object.keys(c1).reduce((all: Record<string, object>, k) => {
-      all[k] = {
-        ...c1[k],
-        ...(c2[k] || {})
-      };
-      return all;
-    }, {})
-  };
-}
-
-function mergeConfigs(
-  defaultConfig: Formats,
-  configs?: Partial<Formats>
-): Formats {
-  if (!configs) {
-    return defaultConfig;
-  }
-
-  return {
-    ...defaultConfig,
-    date: mergeConfig(defaultConfig.date, configs.date)
-  };
-}
-
-class FormatError extends Error {
-  public readonly variableId?: string;
-  constructor(msg?: string, variableId?: string) {
-    super(msg);
-    this.variableId = variableId;
   }
 }

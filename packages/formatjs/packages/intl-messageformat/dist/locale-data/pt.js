@@ -1,2 +1,0 @@
-/* @generated */
-IntlMessageFormat.__addLocaleData({"locale":"pt"},{"locale":"pt-AO","parentLocale":"pt-PT"},{"locale":"pt-PT","parentLocale":"pt"},{"locale":"pt-CH","parentLocale":"pt-PT"},{"locale":"pt-CV","parentLocale":"pt-PT"},{"locale":"pt-GQ","parentLocale":"pt-PT"},{"locale":"pt-GW","parentLocale":"pt-PT"},{"locale":"pt-LU","parentLocale":"pt-PT"},{"locale":"pt-MO","parentLocale":"pt-PT"},{"locale":"pt-MZ","parentLocale":"pt-PT"},{"locale":"pt-ST","parentLocale":"pt-PT"},{"locale":"pt-TL","parentLocale":"pt-PT"})

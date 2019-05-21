@@ -9,11 +9,10 @@
   <body>
     <div id="mocha"></div>
     <script src="../node_modules/mocha/mocha.js"></script><!-- provides `describe` and `it` globals -->
-    <script src="../node_modules/expect.js/index.js"></script><!-- provides `chai` global -->
-    <script src="../node_modules/intl/Intl.complete.js"></script> <!-- provides `Intl` polyfill -->
-    <script src="../dist/intl-messageformat-with-locales.min.js"></script><!-- provides `IntlMessageFormat` global -->
-    <script>mocha.setup('bdd')</script>
-    <script src="index.js"></script>
+    <script src="../node_modules/intl/dist/Intl.complete.js"></script> <!-- provides `Intl` polyfill -->
+    <script src="../node_modules/chai/chai.js"></script>
+    <script>mocha.setup('bdd');window.expect = chai.expect</script>
+    <script src="./browser.js"></script><!-- provides `IntlMessageFormat` global -->
     <script>
     (function () {
       var runner = mocha.run();

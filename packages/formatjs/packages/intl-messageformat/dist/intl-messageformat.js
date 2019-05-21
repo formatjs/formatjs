@@ -1631,14 +1631,79 @@
         };
         return __assign.apply(this, arguments);
     };
+    function resolveLocale(locales) {
+        if (typeof locales === 'string') {
+            locales = [locales];
+        }
+        try {
+            return Intl.NumberFormat.supportedLocalesOf(locales, {
+                localeMatcher: 'lookup'
+            })[0];
+        }
+        catch (e) {
+            return MessageFormat.defaultLocale;
+        }
+    }
+    function formatPatterns(pattern, values) {
+        var result = '';
+        for (var _i = 0, pattern_1 = pattern; _i < pattern_1.length; _i++) {
+            var part = pattern_1[_i];
+            // Exist early for string parts.
+            if (typeof part === 'string') {
+                result += part;
+                continue;
+            }
+            var id = part.id;
+            // Enforce that all required values are provided by the caller.
+            if (!(values && id in values)) {
+                throw new FormatError("A value must be provided for: " + id, id);
+            }
+            var value = values[id];
+            // Recursively format plural and select parts' option — which can be a
+            // nested pattern structure. The choosing of the option to use is
+            // abstracted-by and delegated-to the part helper object.
+            if (isSelectOrPluralFormat(part)) {
+                result += formatPatterns(part.getOption(value), values);
+            }
+            else {
+                result += part.format(value);
+            }
+        }
+        return result;
+    }
+    function mergeConfig(c1, c2) {
+        if (!c2) {
+            return c1;
+        }
+        return __assign({}, (c1 || {}), (c2 || {}), Object.keys(c1).reduce(function (all, k) {
+            all[k] = __assign({}, c1[k], (c2[k] || {}));
+            return all;
+        }, {}));
+    }
+    function mergeConfigs(defaultConfig, configs) {
+        if (!configs) {
+            return defaultConfig;
+        }
+        return __assign({}, defaultConfig, { date: mergeConfig(defaultConfig.date, configs.date) });
+    }
+    var FormatError = /** @class */ (function (_super) {
+        __extends$1(FormatError, _super);
+        function FormatError(msg, variableId) {
+            var _this = _super.call(this, msg) || this;
+            _this.variableId = variableId;
+            return _this;
+        }
+        return FormatError;
+    }(Error));
     var MessageFormat = /** @class */ (function () {
         function MessageFormat(message, locales, overrideFormats) {
             var _this = this;
+            if (locales === void 0) { locales = MessageFormat.defaultLocale; }
             // "Bind" `format()` method to `this` so it can be passed by reference like
             // the other `Intl` APIs.
             this.format = function (values) {
                 try {
-                    return _this._format(_this.pattern, values);
+                    return formatPatterns(_this.pattern, values);
                 }
                 catch (e) {
                     if (e.variableId) {
@@ -1658,89 +1723,17 @@
             // formats.
             var formats = mergeConfigs(MessageFormat.formats, overrideFormats);
             // Defined first because it's used to build the format pattern.
-            this._locale = this._resolveLocale(locales || []);
+            this._locale = resolveLocale(locales || []);
             // Compile the `ast` to a pattern that is highly optimized for repeated
             // `format()` invocations. **Note:** This passes the `locales` set provided
             // to the constructor instead of just the resolved locale.
-            this.pattern = this._compilePattern(ast, locales || [], formats);
+            this.pattern = new Compiler(locales, formats).compile(ast);
             this.message = message;
         }
-        MessageFormat.__addLocaleData = function () {
-            var data = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                data[_i] = arguments[_i];
-            }
-            data.forEach(function (datum) {
-                if (!(datum && datum.locale)) {
-                    throw new Error('Locale data provided to IntlMessageFormat is missing a ' +
-                        '`locale` property');
-                }
-                MessageFormat.__localeData__[datum.locale.toLowerCase()] = datum;
-            });
-        };
         MessageFormat.prototype.resolvedOptions = function () {
             return { locale: this._locale };
         };
-        MessageFormat.prototype._resolveLocale = function (locales) {
-            if (typeof locales === 'string') {
-                locales = [locales];
-            }
-            // Create a copy of the array so we can push on the default locale.
-            locales = (locales || []).concat(MessageFormat.defaultLocale);
-            var localeData = MessageFormat.__localeData__;
-            // Using the set of locales + the default locale, we look for the first one
-            // which that has been registered. When data does not exist for a locale, we
-            // traverse its ancestors to find something that's been registered within
-            // its hierarchy of locales. Since we lack the proper `parentLocale` data
-            // here, we must take a naive approach to traversal.
-            for (var _i = 0, locales_1 = locales; _i < locales_1.length; _i++) {
-                var locale = locales_1[_i];
-                var localeParts = locale.toLowerCase().split('-');
-                while (localeParts.length) {
-                    var data = localeData[localeParts.join('-')];
-                    if (data) {
-                        // Return the normalized locale string; e.g., we return "en-US",
-                        // instead of "en-us".
-                        return data.locale;
-                    }
-                    localeParts.pop();
-                }
-            }
-            var defaultLocale = locales.pop();
-            throw new Error("No locale data has been added to IntlMessageFormat for: " + locales.join(', ') + ", or the default locale: " + defaultLocale);
-        };
-        MessageFormat.prototype._compilePattern = function (ast, locales, formats) {
-            return new Compiler(locales, formats).compile(ast);
-        };
-        MessageFormat.prototype._format = function (pattern, values) {
-            var result = '';
-            for (var _i = 0, pattern_1 = pattern; _i < pattern_1.length; _i++) {
-                var part = pattern_1[_i];
-                // Exist early for string parts.
-                if (typeof part === 'string') {
-                    result += part;
-                    continue;
-                }
-                var id = part.id;
-                // Enforce that all required values are provided by the caller.
-                if (!(values && id in values)) {
-                    throw new FormatError("A value must be provided for: " + id, id);
-                }
-                var value = values[id];
-                // Recursively format plural and select parts' option — which can be a
-                // nested pattern structure. The choosing of the option to use is
-                // abstracted-by and delegated-to the part helper object.
-                if (isSelectOrPluralFormat(part)) {
-                    result += this._format(part.getOption(value), values);
-                }
-                else {
-                    result += part.format(value);
-                }
-            }
-            return result;
-        };
         MessageFormat.defaultLocale = 'en';
-        MessageFormat.__localeData__ = {};
         // Default format options used as the prototype of the `formats` provided to the
         // constructor. These are used when constructing the internal Intl.NumberFormat
         // and Intl.DateTimeFormat instances.
@@ -1803,37 +1796,6 @@
         MessageFormat.__parse = parser.parse;
         return MessageFormat;
     }());
-    function mergeConfig(c1, c2) {
-        if (!c2) {
-            return c1;
-        }
-        return __assign({}, (c1 || {}), (c2 || {}), Object.keys(c1).reduce(function (all, k) {
-            all[k] = __assign({}, c1[k], (c2[k] || {}));
-            return all;
-        }, {}));
-    }
-    function mergeConfigs(defaultConfig, configs) {
-        if (!configs) {
-            return defaultConfig;
-        }
-        return __assign({}, defaultConfig, { date: mergeConfig(defaultConfig.date, configs.date) });
-    }
-    var FormatError = /** @class */ (function (_super) {
-        __extends$1(FormatError, _super);
-        function FormatError(msg, variableId) {
-            var _this = _super.call(this, msg) || this;
-            _this.variableId = variableId;
-            return _this;
-        }
-        return FormatError;
-    }(Error));
-
-    /* @generated */
-    var defaultLocale = { "locale": "en" };
-
-    /* jslint esnext: true */
-    MessageFormat.__addLocaleData(defaultLocale);
-    MessageFormat.defaultLocale = 'en';
 
     return MessageFormat;
 
