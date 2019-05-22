@@ -1,29 +1,29 @@
-import * as path from "path";
-import * as fs from "fs";
-import assert from "power-assert";
-import * as babel from "@babel/core";
-import plugin from "../src/index";
-import uuidv1 from "uuid/v1";
+import * as path from 'path';
+import * as fs from 'fs';
+import assert from 'power-assert';
+import * as babel from '@babel/core';
+import plugin from '../src/index';
+import uuidv1 from 'uuid/v1';
 
 function trim(str) {
-  return str.toString().replace(/^\s+|\s+$/, "");
+  return str.toString().replace(/^\s+|\s+$/, '');
 }
 
 const skipTests = [
-  ".babelrc",
-  ".DS_Store",
-  "enforceDescriptions",
-  "extractSourceLocation",
-  "moduleSourceName",
-  "icuSyntax",
-  "removeDescriptions",
-  "overrideIdFn"
+  '.babelrc',
+  '.DS_Store',
+  'enforceDescriptions',
+  'extractSourceLocation',
+  'moduleSourceName',
+  'icuSyntax',
+  'removeDescriptions',
+  'overrideIdFn'
 ];
 
-const fixturesDir = path.join(__dirname, "fixtures");
-const baseDir = path.join(__dirname, "..");
+const fixturesDir = path.join(__dirname, 'fixtures');
+const baseDir = path.join(__dirname, '..');
 
-describe("emit asserts for: ", () => {
+describe('emit asserts for: ', () => {
   fs.readdirSync(fixturesDir).map(caseName => {
     if (skipTests.indexOf(caseName) >= 0) return;
 
@@ -31,33 +31,33 @@ describe("emit asserts for: ", () => {
       const fixtureDir = path.join(fixturesDir, caseName);
 
       // Ensure messages are deleted
-      const actualMessagesPath = path.join(fixtureDir, "actual.json");
+      const actualMessagesPath = path.join(fixtureDir, 'actual.json');
       if (fs.existsSync(actualMessagesPath)) fs.unlinkSync(actualMessagesPath);
 
-      const actual = transform(path.join(fixtureDir, "actual.js"));
+      const actual = transform(path.join(fixtureDir, 'actual.js'));
 
       // Check code output
-      const expected = fs.readFileSync(path.join(fixtureDir, "expected.js"));
+      const expected = fs.readFileSync(path.join(fixtureDir, 'expected.js'));
       assert.equal(trim(actual), trim(expected));
 
       // Check message output
       const expectedMessages = fs.readFileSync(
-        path.join(fixtureDir, "expected.json")
+        path.join(fixtureDir, 'expected.json')
       );
       const actualMessages = fs.readFileSync(
-        path.join(fixtureDir, "actual.json")
+        path.join(fixtureDir, 'actual.json')
       );
       assert.equal(trim(actualMessages), trim(expectedMessages));
     });
   });
 });
 
-describe("options", () => {
-  it("enforces descriptions when enforceDescriptions=true", () => {
-    const fixtureDir = path.join(fixturesDir, "enforceDescriptions");
+describe('options', () => {
+  it('enforces descriptions when enforceDescriptions=true', () => {
+    const fixtureDir = path.join(fixturesDir, 'enforceDescriptions');
 
     try {
-      transform(path.join(fixtureDir, "actual.js"), {
+      transform(path.join(fixtureDir, 'actual.js'), {
         enforceDescriptions: true
       });
       assert(false);
@@ -67,34 +67,34 @@ describe("options", () => {
     }
   });
 
-  it("correctly overrides the id when overrideIdFn is provided", () => {
-    const fixtureDir = path.join(fixturesDir, "overrideIdFn");
+  it('correctly overrides the id when overrideIdFn is provided', () => {
+    const fixtureDir = path.join(fixturesDir, 'overrideIdFn');
 
-    const actual = transform(path.join(fixtureDir, "actual.js"), {
+    const actual = transform(path.join(fixtureDir, 'actual.js'), {
       overrideIdFn: (id, defaultMessage, description) => {
         return `HELLO.${id}.${defaultMessage.length}.${typeof description}`;
       }
     });
 
     // Check code output
-    const expected = fs.readFileSync(path.join(fixtureDir, "expected.js"));
+    const expected = fs.readFileSync(path.join(fixtureDir, 'expected.js'));
     assert.equal(trim(actual), trim(expected));
 
     // Check message output
     const expectedMessages = fs.readFileSync(
-      path.join(fixtureDir, "expected.json")
+      path.join(fixtureDir, 'expected.json')
     );
     const actualMessages = fs.readFileSync(
-      path.join(fixtureDir, "actual.json")
+      path.join(fixtureDir, 'actual.json')
     );
     assert.equal(trim(actualMessages), trim(expectedMessages));
   });
 
-  it("allows no description when enforceDescription=false", () => {
-    const fixtureDir = path.join(fixturesDir, "enforceDescriptions");
+  it('allows no description when enforceDescription=false', () => {
+    const fixtureDir = path.join(fixturesDir, 'enforceDescriptions');
 
     try {
-      transform(path.join(fixtureDir, "actual.js"), {
+      transform(path.join(fixtureDir, 'actual.js'), {
         enforceDescriptions: false
       });
       assert(true);
@@ -104,12 +104,12 @@ describe("options", () => {
     }
   });
 
-  it("removes descriptions when plugin is applied more than once", () => {
-    const fixtureDir = path.join(fixturesDir, "removeDescriptions");
+  it('removes descriptions when plugin is applied more than once', () => {
+    const fixtureDir = path.join(fixturesDir, 'removeDescriptions');
 
     try {
       transform(
-        path.join(fixtureDir, "actual.js"),
+        path.join(fixtureDir, 'actual.js'),
         {
           enforceDescriptions: true
         },
@@ -124,12 +124,12 @@ describe("options", () => {
     }
   });
 
-  it("respects moduleSourceName", () => {
-    const fixtureDir = path.join(fixturesDir, "moduleSourceName");
+  it('respects moduleSourceName', () => {
+    const fixtureDir = path.join(fixturesDir, 'moduleSourceName');
 
     try {
-      transform(path.join(fixtureDir, "actual.js"), {
-        moduleSourceName: "react-i18n"
+      transform(path.join(fixtureDir, 'actual.js'), {
+        moduleSourceName: 'react-i18n'
       });
       assert(true);
     } catch (e) {
@@ -139,19 +139,19 @@ describe("options", () => {
 
     // Check message output
     const expectedMessages = fs.readFileSync(
-      path.join(fixtureDir, "expected.json")
+      path.join(fixtureDir, 'expected.json')
     );
     const actualMessages = fs.readFileSync(
-      path.join(fixtureDir, "actual.json")
+      path.join(fixtureDir, 'actual.json')
     );
     assert.equal(trim(actualMessages), trim(expectedMessages));
   });
 
-  it("respects extractSourceLocation", () => {
-    const fixtureDir = path.join(fixturesDir, "extractSourceLocation");
+  it('respects extractSourceLocation', () => {
+    const fixtureDir = path.join(fixturesDir, 'extractSourceLocation');
 
     try {
-      transform(path.join(fixtureDir, "actual.js"), {
+      transform(path.join(fixtureDir, 'actual.js'), {
         extractSourceLocation: true
       });
       assert(true);
@@ -162,21 +162,21 @@ describe("options", () => {
 
     // Check message output
     const expectedMessages = fs.readFileSync(
-      path.join(fixtureDir, "expected.json")
+      path.join(fixtureDir, 'expected.json')
     );
     const actualMessages = fs.readFileSync(
-      path.join(fixtureDir, "actual.json")
+      path.join(fixtureDir, 'actual.json')
     );
     assert.equal(trim(actualMessages), trim(expectedMessages));
   });
 });
 
-describe("errors", () => {
-  it("Properly throws parse errors", () => {
-    const fixtureDir = path.join(fixturesDir, "icuSyntax");
+describe('errors', () => {
+  it('Properly throws parse errors', () => {
+    const fixtureDir = path.join(fixturesDir, 'icuSyntax');
 
     try {
-      transform(path.join(fixtureDir, "actual.js"));
+      transform(path.join(fixtureDir, 'actual.js'));
       assert(false);
     } catch (e) {
       assert(e);

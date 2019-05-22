@@ -4,13 +4,13 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import { parse } from "intl-messageformat-parser";
+import { parse } from 'intl-messageformat-parser';
 
 const ESCAPED_CHARS = {
-  "\\": "\\\\",
-  "\\#": "\\#",
-  "{": "\\{",
-  "}": "\\}"
+  '\\': '\\\\',
+  '\\#': '\\#',
+  '{': '\\{',
+  '}': '\\}'
 };
 
 const ESAPE_CHARS_REGEXP = /\\#|[{}\\]/g;
@@ -22,7 +22,7 @@ export default function(message) {
 
 function printICUMessage(ast) {
   let printedNodes = ast.elements.map(node => {
-    if (node.type === "messageTextElement") {
+    if (node.type === 'messageTextElement') {
       return printMessageTextASTNode(node);
     }
 
@@ -31,30 +31,30 @@ function printICUMessage(ast) {
     }
 
     switch (getArgumentType(node.format)) {
-      case "number":
-      case "date":
-      case "time":
+      case 'number':
+      case 'date':
+      case 'time':
         return printSimpleFormatASTNode(node);
 
-      case "plural":
-      case "selectordinal":
-      case "select":
+      case 'plural':
+      case 'selectordinal':
+      case 'select':
         return printOptionalFormatASTNode(node);
     }
   });
 
-  return printedNodes.join("");
+  return printedNodes.join('');
 }
 
 function getArgumentType(format) {
   const { type, ordinal } = format;
 
   // Special-case ordinal plurals to use `selectordinal` instead of `plural`.
-  if (type === "pluralFormat" && ordinal) {
-    return "selectordinal";
+  if (type === 'pluralFormat' && ordinal) {
+    return 'selectordinal';
   }
 
-  return type.replace(/Format$/, "").toLowerCase();
+  return type.replace(/Format$/, '').toLowerCase();
 }
 
 function printMessageTextASTNode({ value }) {
@@ -63,19 +63,19 @@ function printMessageTextASTNode({ value }) {
 
 function printSimpleFormatASTNode({ id, format }) {
   let argumentType = getArgumentType(format);
-  let style = format.style ? `, ${format.style}` : "";
+  let style = format.style ? `, ${format.style}` : '';
 
   return `{${id}, ${argumentType}${style}}`;
 }
 
 function printOptionalFormatASTNode({ id, format }) {
   let argumentType = getArgumentType(format);
-  let offset = format.offset ? `, offset:${format.offset}` : "";
+  let offset = format.offset ? `, offset:${format.offset}` : '';
 
   let options = format.options.map(option => {
     let optionValue = printICUMessage(option.value);
     return ` ${option.selector} {${optionValue}}`;
   });
 
-  return `{${id}, ${argumentType}${offset},${options.join("")}}`;
+  return `{${id}, ${argumentType}${offset},${options.join('')}}`;
 }

@@ -50,5 +50,8 @@
   "bugs": {
     "url": "https://github.com/formatjs/babel-plugin-react-intl/issues"
   },
-  "homepage": "https://github.com/formatjs/babel-plugin-react-intl#readme"
+  "homepage": "https://github.com/formatjs/babel-plugin-react-intl#readme",
+  "prettier": {
+    "singleQuote": true
+  }
 }
