@@ -297,7 +297,12 @@ export default function({ types: t }) {
             // Remove description since it's not used at runtime.
             attributes.forEach(attr => {
               const ketPath = attr.get('name');
-              if (getMessageDescriptorKey(ketPath) === 'description') {
+              const msgDescriptorKey = getMessageDescriptorKey(ketPath);
+              if (
+                msgDescriptorKey === 'description' ||
+                (opts.removeDefaultMessage &&
+                  msgDescriptorKey === 'defaultMessage')
+              ) {
                 attr.remove();
               } else if (
                 opts.overrideIdFn &&
@@ -355,10 +360,14 @@ export default function({ types: t }) {
                 t.stringLiteral('id'),
                 t.stringLiteral(descriptor.id)
               ),
-              t.objectProperty(
-                t.stringLiteral('defaultMessage'),
-                t.stringLiteral(descriptor.defaultMessage)
-              )
+              ...(!opts.removeDefaultMessage
+                ? [
+                    t.objectProperty(
+                      t.stringLiteral('defaultMessage'),
+                      t.stringLiteral(descriptor.defaultMessage)
+                    )
+                  ]
+                : [])
             ])
           );
 

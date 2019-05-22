@@ -24,10 +24,12 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
     "babel-plugin-espower": "^3.0.1",
+    "chai": "^4.2.0",
     "cross-env": "^5.2.0",
     "eslint": "^5.12.1",
     "eslint-plugin-react": "^7.12.4",
     "mocha": "^6.0.0",
+    "nyc": "^14.1.1",
     "power-assert": "^1.6.1",
     "prettier": "^1.17.1",
     "rimraf": "^2.6.3",
@@ -38,10 +40,11 @@
     "lint": "eslint src/",
     "clean": "rimraf lib/",
     "test": "cross-env NODE_ENV=test mocha -r @babel/register",
+    "cover": "nyc npm t",
     "build": "babel src/ --out-dir lib/",
     "build:fixtures": "babel-node ./scripts/build-fixtures.js",
-    "preversion": "npm run lint && npm run clean && npm run build",
-    "prepublish": "npm run clean && npm run build"
+    "preversion": "npm run lint && npm run clean && npm run prettier && npm run build",
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "keywords": [
     "babel-plugin",

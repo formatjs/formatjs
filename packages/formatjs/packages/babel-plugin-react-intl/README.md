@@ -53,6 +53,8 @@ If a message descriptor has a `description`, it'll be removed from the source af
 
 - **`overrideIdFn`**: A function with the signature `(id: string, defaultMessage: string, description: string|object) => string` which allows you to override the ID both in the extracted javascript and messages.
 
+- **`removeDefaultMessage`**: Remove `defaultMessage` field in generated js after extraction. 
+
 ### Via Node API
 
 The extract message descriptors are available via the `metadata` property on the object returned from Babel's `transform()` API:

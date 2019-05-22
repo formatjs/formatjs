@@ -1,9 +1,9 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import assert from 'power-assert';
 import * as babel from '@babel/core';
-import plugin from '../src/index';
+import plugin from '../src';
 import uuidv1 from 'uuid/v1';
+import { expect } from 'chai';
 
 function trim(str) {
   return str.toString().replace(/^\s+|\s+$/, '');
@@ -17,7 +17,8 @@ const skipTests = [
   'moduleSourceName',
   'icuSyntax',
   'removeDescriptions',
-  'overrideIdFn'
+  'overrideIdFn',
+  'removeDefaultMessage'
 ];
 
 const fixturesDir = path.join(__dirname, 'fixtures');
@@ -38,7 +39,7 @@ describe('emit asserts for: ', () => {
 
       // Check code output
       const expected = fs.readFileSync(path.join(fixtureDir, 'expected.js'));
-      assert.equal(trim(actual), trim(expected));
+      expect(trim(actual)).to.equal(trim(expected));
 
       // Check message output
       const expectedMessages = fs.readFileSync(
@@ -47,24 +48,39 @@ describe('emit asserts for: ', () => {
       const actualMessages = fs.readFileSync(
         path.join(fixtureDir, 'actual.json')
       );
-      assert.equal(trim(actualMessages), trim(expectedMessages));
+      expect(trim(actualMessages)).to.equal(trim(expectedMessages));
     });
   });
 });
 
 describe('options', () => {
+  it('removeDefaultMessage should remove default message', () => {
+    const fixtureDir = path.join(fixturesDir, 'removeDefaultMessage');
+
+    const actual = transform(path.join(fixtureDir, 'actual.js'), {
+      removeDefaultMessage: true
+    });
+
+    // Check code output
+    const expected = fs.readFileSync(path.join(fixtureDir, 'expected.js'));
+    expect(trim(actual)).to.equal(trim(expected));
+
+    // Check message output
+    const expectedMessages = fs.readFileSync(
+      path.join(fixtureDir, 'expected.json')
+    );
+    const actualMessages = fs.readFileSync(
+      path.join(fixtureDir, 'actual.json')
+    );
+    expect(trim(actualMessages)).to.equal(trim(expectedMessages));
+  });
   it('enforces descriptions when enforceDescriptions=true', () => {
     const fixtureDir = path.join(fixturesDir, 'enforceDescriptions');
-
-    try {
+    expect(() =>
       transform(path.join(fixtureDir, 'actual.js'), {
         enforceDescriptions: true
-      });
-      assert(false);
-    } catch (e) {
-      assert(e);
-      assert(/Message must have a `description`/.test(e.message));
-    }
+      })
+    ).to.throw(Error, /Message must have a `description`/);
   });
 
   it('correctly overrides the id when overrideIdFn is provided', () => {
@@ -78,7 +94,7 @@ describe('options', () => {
 
     // Check code output
     const expected = fs.readFileSync(path.join(fixtureDir, 'expected.js'));
-    assert.equal(trim(actual), trim(expected));
+    expect(trim(actual)).to.equal(trim(expected));
 
     // Check message output
     const expectedMessages = fs.readFileSync(
@@ -87,27 +103,21 @@ describe('options', () => {
     const actualMessages = fs.readFileSync(
       path.join(fixtureDir, 'actual.json')
     );
-    assert.equal(trim(actualMessages), trim(expectedMessages));
+    expect(trim(actualMessages)).to.equal(trim(expectedMessages));
   });
 
   it('allows no description when enforceDescription=false', () => {
     const fixtureDir = path.join(fixturesDir, 'enforceDescriptions');
-
-    try {
+    expect(() =>
       transform(path.join(fixtureDir, 'actual.js'), {
         enforceDescriptions: false
-      });
-      assert(true);
-    } catch (e) {
-      console.error(e);
-      assert(false);
-    }
+      })
+    ).to.not.throw();
   });
 
   it('removes descriptions when plugin is applied more than once', () => {
     const fixtureDir = path.join(fixturesDir, 'removeDescriptions');
-
-    try {
+    expect(() =>
       transform(
         path.join(fixtureDir, 'actual.js'),
         {
@@ -116,26 +126,17 @@ describe('options', () => {
         {
           multiplePasses: true
         }
-      );
-      assert(true);
-    } catch (e) {
-      console.error(e);
-      assert(false);
-    }
+      )
+    ).to.not.throw();
   });
 
   it('respects moduleSourceName', () => {
     const fixtureDir = path.join(fixturesDir, 'moduleSourceName');
-
-    try {
+    expect(() =>
       transform(path.join(fixtureDir, 'actual.js'), {
         moduleSourceName: 'react-i18n'
-      });
-      assert(true);
-    } catch (e) {
-      console.error(e);
-      assert(false);
-    }
+      })
+    ).to.not.throw();
 
     // Check message output
     const expectedMessages = fs.readFileSync(
@@ -144,21 +145,16 @@ describe('options', () => {
     const actualMessages = fs.readFileSync(
       path.join(fixtureDir, 'actual.json')
     );
-    assert.equal(trim(actualMessages), trim(expectedMessages));
+    expect(trim(actualMessages)).to.equal(trim(expectedMessages));
   });
 
   it('respects extractSourceLocation', () => {
     const fixtureDir = path.join(fixturesDir, 'extractSourceLocation');
-
-    try {
+    expect(() =>
       transform(path.join(fixtureDir, 'actual.js'), {
         extractSourceLocation: true
-      });
-      assert(true);
-    } catch (e) {
-      console.error(e);
-      assert(false);
-    }
+      })
+    ).to.not.throw();
 
     // Check message output
     const expectedMessages = fs.readFileSync(
@@ -167,22 +163,17 @@ describe('options', () => {
     const actualMessages = fs.readFileSync(
       path.join(fixtureDir, 'actual.json')
     );
-    assert.equal(trim(actualMessages), trim(expectedMessages));
+    expect(trim(actualMessages)).to.equal(trim(expectedMessages));
   });
 });
 
 describe('errors', () => {
   it('Properly throws parse errors', () => {
     const fixtureDir = path.join(fixturesDir, 'icuSyntax');
-
-    try {
-      transform(path.join(fixtureDir, 'actual.js'));
-      assert(false);
-    } catch (e) {
-      assert(e);
-      assert(/Message failed to parse/.test(e.message));
-      assert(/Expected .* but "\." found/.test(e.message));
-    }
+    expect(() => transform(path.join(fixtureDir, 'actual.js'))).to.throw(
+      Error,
+      /Expected .* but "\." found/
+    );
   });
 });
 

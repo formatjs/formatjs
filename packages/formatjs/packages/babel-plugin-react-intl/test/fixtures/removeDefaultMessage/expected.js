@@ -3,15 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _reactI18n = require("react-i18n");
-
 var _reactIntl = require("react-intl");
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -31,18 +29,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-// These should be ignored because the `moduleSourceName` is configured to be:
-// `react-i18n`.
-var msgs = (0, _reactIntl.defineMessages)({
-  header: {
-    id: 'header',
-    defaultMessage: 'Hello World!',
-    description: 'The default message'
-  },
-  content: {
-    id: 'content',
-    defaultMessage: 'Hello Nurse!',
-    description: 'Another message'
+var messages = (0, _reactIntl.defineMessages)({
+  foo: {
+    "id": "greeting-user"
   }
 });
 
@@ -60,14 +49,13 @@ function (_Component) {
   _createClass(Foo, [{
     key: "render",
     value: function render() {
-      return _react["default"].createElement("div", null, _react["default"].createElement(_reactI18n.FormattedMessage, {
-        id: "foo.bar.baz",
-        defaultMessage: "Hello World!"
-      }), msgs);
+      return _react.default.createElement(_reactIntl.FormattedMessage, {
+        id: "greeting-world"
+      });
     }
   }]);
 
   return Foo;
 }(_react.Component);
 
-exports["default"] = Foo;
+exports.default = Foo;
