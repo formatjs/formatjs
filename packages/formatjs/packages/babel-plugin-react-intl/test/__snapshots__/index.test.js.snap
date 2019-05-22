@@ -1,0 +1,226 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`emit asserts for:  output match: FormattedHTMLMessage 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require(\\"react\\"));
+
+var _reactIntl = require(\\"react-intl\\");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+class Foo extends _react.Component {
+  render() {
+    return _react.default.createElement(_reactIntl.FormattedHTMLMessage, {
+      id: \\"foo.bar.baz\\",
+      defaultMessage: \\"<h1>Hello World!</h1>\\"
+    });
+  }
+
+}
+
+exports.default = Foo;"
+`;
+
+exports[`emit asserts for:  output match: FormattedMessage 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require(\\"react\\"));
+
+var _reactIntl = require(\\"react-intl\\");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+class Foo extends _react.Component {
+  render() {
+    return _react.default.createElement(_reactIntl.FormattedMessage, {
+      id: \\"foo.bar.baz\\",
+      defaultMessage: \\"Hello World!\\"
+    });
+  }
+
+}
+
+exports.default = Foo;"
+`;
+
+exports[`emit asserts for:  output match: defineMessages 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require(\\"react\\"));
+
+var _reactIntl = require(\\"react-intl\\");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+const msgs = (0, _reactIntl.defineMessages)({
+  header: {
+    \\"id\\": \\"foo.bar.baz\\",
+    \\"defaultMessage\\": \\"Hello World!\\"
+  },
+  content: {
+    \\"id\\": \\"foo.bar.biff\\",
+    \\"defaultMessage\\": \\"Hello Nurse!\\"
+  }
+});
+
+class Foo extends _react.Component {
+  render() {
+    return _react.default.createElement(\\"div\\", null, _react.default.createElement(\\"h1\\", null, _react.default.createElement(_reactIntl.FormattedMessage, msgs.header)), _react.default.createElement(\\"p\\", null, _react.default.createElement(_reactIntl.FormattedMessage, msgs.content)));
+  }
+
+}
+
+exports.default = Foo;"
+`;
+
+exports[`emit asserts for:  output match: descriptionsAsObjects 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require(\\"react\\"));
+
+var _reactIntl = require(\\"react-intl\\");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+class Foo extends _react.Component {
+  render() {
+    return _react.default.createElement(_reactIntl.FormattedMessage, {
+      id: \\"foo.bar.baz\\",
+      defaultMessage: \\"Hello World!\\"
+    });
+  }
+
+}
+
+exports.default = Foo;"
+`;
+
+exports[`emit asserts for:  output match: formatMessage 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require(\\"react\\"));
+
+var _reactIntl = require(\\"react-intl\\");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+class Foo extends _react.Component {
+  render() {
+    const msgs = {
+      baz: this.props.intl.formatMessage({
+        \\"id\\": \\"foo.bar.baz\\",
+        \\"defaultMessage\\": \\"Hello World!\\"
+      }),
+      biff: this.props.intl.formatMessage({
+        \\"id\\": \\"foo.bar.biff\\",
+        \\"defaultMessage\\": \\"Hello Nurse!\\"
+      })
+    };
+    return _react.default.createElement(\\"div\\", null, _react.default.createElement(\\"h1\\", null, msgs.header), _react.default.createElement(\\"p\\", null, msgs.content));
+  }
+
+}
+
+var _default = (0, _reactIntl.injectIntl)(Foo);
+
+exports.default = _default;"
+`;
+
+exports[`options correctly overrides the id when overrideIdFn is provided 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require(\\"react\\"));
+
+var _reactIntl = require(\\"react-intl\\");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+const msgs = (0, _reactIntl.defineMessages)({
+  header: {
+    \\"id\\": \\"HELLO.foo.bar.baz.12.string\\",
+    \\"defaultMessage\\": \\"Hello World!\\"
+  },
+  content: {
+    \\"id\\": \\"HELLO.foo.bar.biff.12.object\\",
+    \\"defaultMessage\\": \\"Hello Nurse!\\"
+  }
+});
+
+class Foo extends _react.Component {
+  render() {
+    return _react.default.createElement(\\"div\\", null, _react.default.createElement(\\"h1\\", null, _react.default.createElement(_reactIntl.FormattedMessage, msgs.header)), _react.default.createElement(\\"p\\", null, _react.default.createElement(_reactIntl.FormattedMessage, msgs.content)), _react.default.createElement(_reactIntl.FormattedMessage, {
+      id: \\"HELLO.foo.bar.zoo.12.object\\",
+      defaultMessage: \\"Hello World!\\"
+    }), _react.default.createElement(_reactIntl.FormattedHTMLMessage, {
+      id: \\"HELLO.foo.bar.delta.21.string\\",
+      defaultMessage: \\"<h1>Hello World!</h1>\\"
+    }));
+  }
+
+}
+
+exports.default = Foo;"
+`;
+
+exports[`options removeDefaultMessage should remove default message 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require(\\"react\\"));
+
+var _reactIntl = require(\\"react-intl\\");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+const messages = (0, _reactIntl.defineMessages)({
+  foo: {
+    \\"id\\": \\"greeting-user\\"
+  }
+});
+
+class Foo extends _react.Component {
+  render() {
+    return _react.default.createElement(_reactIntl.FormattedMessage, {
+      id: \\"greeting-world\\"
+    });
+  }
+
+}
+
+exports.default = Foo;"
+`;

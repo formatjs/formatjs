@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import * as babel from '@babel/core';
 import plugin from '../src';
 import uuidv1 from 'uuid/v1';
-import { expect } from 'chai';
 
 function trim(str) {
   return str.toString().replace(/^\s+|\s+$/, '');
@@ -38,8 +37,8 @@ describe('emit asserts for: ', () => {
       const actual = transform(path.join(fixtureDir, 'actual.js'));
 
       // Check code output
-      const expected = fs.readFileSync(path.join(fixtureDir, 'expected.js'));
-      expect(trim(actual)).to.equal(trim(expected));
+      
+      expect(trim(actual)).toMatchSnapshot();
 
       // Check message output
       const expectedMessages = fs.readFileSync(
@@ -48,7 +47,7 @@ describe('emit asserts for: ', () => {
       const actualMessages = fs.readFileSync(
         path.join(fixtureDir, 'actual.json')
       );
-      expect(trim(actualMessages)).to.equal(trim(expectedMessages));
+      expect(trim(actualMessages)).toEqual(trim(expectedMessages));
     });
   });
 });
@@ -62,8 +61,7 @@ describe('options', () => {
     });
 
     // Check code output
-    const expected = fs.readFileSync(path.join(fixtureDir, 'expected.js'));
-    expect(trim(actual)).to.equal(trim(expected));
+    expect(trim(actual)).toMatchSnapshot()
 
     // Check message output
     const expectedMessages = fs.readFileSync(
@@ -72,7 +70,7 @@ describe('options', () => {
     const actualMessages = fs.readFileSync(
       path.join(fixtureDir, 'actual.json')
     );
-    expect(trim(actualMessages)).to.equal(trim(expectedMessages));
+    expect(trim(actualMessages)).toEqual(trim(expectedMessages));
   });
   it('enforces descriptions when enforceDescriptions=true', () => {
     const fixtureDir = path.join(fixturesDir, 'enforceDescriptions');
@@ -80,7 +78,7 @@ describe('options', () => {
       transform(path.join(fixtureDir, 'actual.js'), {
         enforceDescriptions: true
       })
-    ).to.throw(Error, /Message must have a `description`/);
+    ).toThrow(/Message must have a `description`/);
   });
 
   it('correctly overrides the id when overrideIdFn is provided', () => {
@@ -93,8 +91,8 @@ describe('options', () => {
     });
 
     // Check code output
-    const expected = fs.readFileSync(path.join(fixtureDir, 'expected.js'));
-    expect(trim(actual)).to.equal(trim(expected));
+    
+    expect(trim(actual)).toMatchSnapshot();
 
     // Check message output
     const expectedMessages = fs.readFileSync(
@@ -103,7 +101,7 @@ describe('options', () => {
     const actualMessages = fs.readFileSync(
       path.join(fixtureDir, 'actual.json')
     );
-    expect(trim(actualMessages)).to.equal(trim(expectedMessages));
+    expect(trim(actualMessages)).toEqual(trim(expectedMessages));
   });
 
   it('allows no description when enforceDescription=false', () => {
@@ -112,7 +110,7 @@ describe('options', () => {
       transform(path.join(fixtureDir, 'actual.js'), {
         enforceDescriptions: false
       })
-    ).to.not.throw();
+    ).not.toThrow();
   });
 
   it('removes descriptions when plugin is applied more than once', () => {
@@ -127,7 +125,7 @@ describe('options', () => {
           multiplePasses: true
         }
       )
-    ).to.not.throw();
+    ).not.toThrow();
   });
 
   it('respects moduleSourceName', () => {
@@ -136,7 +134,7 @@ describe('options', () => {
       transform(path.join(fixtureDir, 'actual.js'), {
         moduleSourceName: 'react-i18n'
       })
-    ).to.not.throw();
+    ).not.toThrow();
 
     // Check message output
     const expectedMessages = fs.readFileSync(
@@ -145,7 +143,7 @@ describe('options', () => {
     const actualMessages = fs.readFileSync(
       path.join(fixtureDir, 'actual.json')
     );
-    expect(trim(actualMessages)).to.equal(trim(expectedMessages));
+    expect(trim(actualMessages)).toEqual(trim(expectedMessages));
   });
 
   it('respects extractSourceLocation', () => {
@@ -154,7 +152,7 @@ describe('options', () => {
       transform(path.join(fixtureDir, 'actual.js'), {
         extractSourceLocation: true
       })
-    ).to.not.throw();
+    ).not.toThrow();
 
     // Check message output
     const expectedMessages = fs.readFileSync(
@@ -163,15 +161,14 @@ describe('options', () => {
     const actualMessages = fs.readFileSync(
       path.join(fixtureDir, 'actual.json')
     );
-    expect(trim(actualMessages)).to.equal(trim(expectedMessages));
+    expect(trim(actualMessages)).toEqual(trim(expectedMessages));
   });
 });
 
 describe('errors', () => {
   it('Properly throws parse errors', () => {
     const fixtureDir = path.join(fixturesDir, 'icuSyntax');
-    expect(() => transform(path.join(fixtureDir, 'actual.js'))).to.throw(
-      Error,
+    expect(() => transform(path.join(fixtureDir, 'actual.js'))).toThrow(
       /Expected .* but "\." found/
     );
   });
