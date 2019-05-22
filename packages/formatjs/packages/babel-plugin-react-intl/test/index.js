@@ -17,6 +17,7 @@ const skipTests = [
     'moduleSourceName',
     'icuSyntax',
     'removeDescriptions',
+    'overrideIdFn',
 ];
 
 const fixturesDir = path.join(__dirname, 'fixtures');
@@ -60,6 +61,25 @@ describe('options', () => {
             assert(e);
             assert(/Message must have a `description`/.test(e.message));
         }
+    });
+
+    it('correctly overrides the id when overrideIdFn is provided', () => {
+        const fixtureDir = path.join(fixturesDir, 'overrideIdFn');
+
+        const actual = transform(path.join(fixtureDir, 'actual.js'), {
+            overrideIdFn: (id, defaultMessage, description) => {
+                return `HELLO.${id}.${defaultMessage.length}.${typeof description}`;
+            },
+        });
+
+        // Check code output
+        const expected = fs.readFileSync(path.join(fixtureDir, 'expected.js'));
+        assert.equal(trim(actual), trim(expected));
+
+        // Check message output
+        const expectedMessages = fs.readFileSync(path.join(fixtureDir, 'expected.json'));
+        const actualMessages = fs.readFileSync(path.join(fixtureDir, 'actual.json'));
+        assert.equal(trim(actualMessages), trim(expectedMessages));
     });
 
     it('allows no description when enforceDescription=false', () => {

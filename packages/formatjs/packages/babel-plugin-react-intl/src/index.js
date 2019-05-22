@@ -101,7 +101,7 @@ export default function ({types: t}) {
         }, {});
     }
 
-    function evaluateMessageDescriptor({...descriptor}, {isJSXSource = false} = {}) {
+    function evaluateMessageDescriptor({...descriptor}, {isJSXSource = false, overrideIdFn} = {}) {
         Object.keys(descriptor).forEach((key) => {
             const valuePath = descriptor[key];
 
@@ -111,6 +111,10 @@ export default function ({types: t}) {
                 descriptor[key] = getMessageDescriptorValue(valuePath);
             }
         });
+
+        if (overrideIdFn) {
+            descriptor.id = overrideIdFn(descriptor.id, descriptor.defaultMessage, descriptor.description);
+        }
 
         return descriptor;
     }
@@ -275,16 +279,18 @@ export default function ({types: t}) {
                         // context, then store it.
                         descriptor = evaluateMessageDescriptor(descriptor, {
                             isJSXSource: true,
+                            overrideIdFn: opts.overrideIdFn,
                         });
 
                         storeMessage(descriptor, path, state);
 
                         // Remove description since it's not used at runtime.
-                        attributes.some((attr) => {
+                        attributes.forEach((attr) => {
                             const ketPath = attr.get('name');
                             if (getMessageDescriptorKey(ketPath) === 'description') {
                                 attr.remove();
-                                return true;
+                            } else if (opts.overrideIdFn && getMessageDescriptorKey(ketPath) === 'id') {
+                                attr.get('value').replaceWith(t.stringLiteral(descriptor.id));
                             }
                         });
 
@@ -297,6 +303,7 @@ export default function ({types: t}) {
             CallExpression(path, state) {
                 const moduleSourceName = getModuleSourceName(state.opts);
                 const callee = path.get('callee');
+                const {opts} = state;
 
                 function assertObjectExpression(node) {
                     if (!(node && node.isObjectExpression())) {
@@ -326,7 +333,7 @@ export default function ({types: t}) {
                     );
 
                     // Evaluate the Message Descriptor values, then store it.
-                    descriptor = evaluateMessageDescriptor(descriptor);
+                    descriptor = evaluateMessageDescriptor(descriptor, {overrideIdFn: opts.overrideIdFn});
                     storeMessage(descriptor, messageObj, state);
 
                     // Remove description since it's not used at runtime.
