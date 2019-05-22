@@ -2,7 +2,7 @@
 
 'use strict';
 
-var IntlMessageFormat = require('./lib')['default'];
+var IntlMessageFormat = require('./dist/intl-messageformat');
 
 // Re-export `IntlMessageFormat` as the CommonJS default exports with all the
 // locale data registered, and with English set as the default locale. Define

@@ -6,7 +6,6 @@
 'use strict';
 import 'intl-pluralrules';
 import IntlMessageFormat from '../src';
-import { LocaleData } from '../src/core';
 import { expect as chaiExpect } from 'chai';
 
 declare var expect: typeof chaiExpect;
