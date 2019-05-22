@@ -1,5 +1,7 @@
 # babel-plugin-react-intl
 
+![travis](https://travis-ci.org/formatjs/babel-plugin-react-intl.svg?branch=master)
+
 Extracts string messages for translation from modules that use [React Intl][].
 ## Dependencies
 

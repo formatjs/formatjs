@@ -27,7 +27,7 @@
     "cross-env": "^5.2.0",
     "eslint": "^5.12.1",
     "eslint-plugin-react": "^7.12.4",
-    "mocha": "^5.2.0",
+    "mocha": "^6.0.0",
     "power-assert": "^1.6.1",
     "rimraf": "^2.6.3",
     "uuid": "^3.3.2"
@@ -35,7 +35,7 @@
   "scripts": {
     "lint": "eslint src/",
     "clean": "rimraf lib/",
-    "test": "cross-env NODE_ENV=test mocha --compilers js:@babel/register",
+    "test": "cross-env NODE_ENV=test mocha -r @babel/register",
     "build": "babel src/ --out-dir lib/",
     "build:fixtures": "babel-node ./scripts/build-fixtures.js",
     "preversion": "npm run lint && npm run clean && npm run build",
