@@ -217,10 +217,19 @@ export default function ({types: t}) {
             if (opts.messagesDir && descriptors.length > 0) {
                 // Make sure the relative path is "absolute" before
                 // joining it with the `messagesDir`.
-                const relativePath = p.join(
+                let relativePath = p.join(
                     p.sep,
                     p.relative(process.cwd(), filename)
                 );
+                // Solve when the window user has symlink on the directory, because
+                // process.cwd on windows returns the symlink root,
+                // and filename (from babel) returns the original root
+                if(process.platform === 'win32'){
+                    const { name } = p.parse(process.cwd());
+                    if(relativePath.includes(name)){
+                        relativePath = relativePath.slice(relativePath.indexOf(name) + name.length);
+                    }
+                }
 
                 const messagesFilename = p.join(
                     opts.messagesDir,
