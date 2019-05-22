@@ -3,8 +3,7 @@
   "version": "1.6.1",
   "description": "Parses ICU Message strings into an AST via JavaScript.",
   "main": "index.js",
-  "jsnext:main": "src/parser.js",
-  "browser": "dist/parser.js",
+  "module": "src/parser.js",
   "scripts": {
     "clean": "rimraf dist lib",
     "test": "mocha test/unit/ --reporter spec",
