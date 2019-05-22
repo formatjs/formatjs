@@ -1,5 +1,6 @@
 {
   "reporter": "lcov",
   "sourceMap": false,
-  "instrument": false
+  "instrument": false,
+  "extends": "@istanbuljs/nyc-config-typescript"
 }

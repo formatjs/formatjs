@@ -1,3 +1,0 @@
-{
-    "extends": "@istanbuljs/nyc-config-typescript"
-}
