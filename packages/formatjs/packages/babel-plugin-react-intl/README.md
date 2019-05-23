@@ -55,6 +55,8 @@ If a message descriptor has a `description`, it'll be removed from the source af
 
 - **`removeDefaultMessage`**: Remove `defaultMessage` field in generated js after extraction. 
 
+- **`additionalComponentNames`**: Additional component names to extract messages from, e.g: `['FormattedFooBarMessage']`. **NOTE**: By default we check for the fact that `FormattedMessage` & `FormattedHTMLMessage` are imported from `moduleSourceName` to make sure variable alias works. This option does not do that so it's less safe.
+
 ### Via Node API
 
 The extract message descriptors are available via the `metadata` property on the object returned from Babel's `transform()` API:

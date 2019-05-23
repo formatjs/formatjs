@@ -9,7 +9,7 @@ import { writeFileSync } from 'fs';
 import { sync as mkdirpSync } from 'mkdirp';
 import printICUMessage from './print-icu-message';
 
-const COMPONENT_NAMES = ['FormattedMessage', 'FormattedHTMLMessage'];
+const DEFAULT_COMPONENT_NAMES = ['FormattedMessage', 'FormattedHTMLMessage'];
 
 const FUNCTION_NAMES = ['defineMessages'];
 
@@ -268,7 +268,8 @@ export default function({ types: t }) {
           return;
         }
 
-        if (referencesImport(name, moduleSourceName, COMPONENT_NAMES)) {
+        const {additionalComponentNames = []} = opts;
+        if (referencesImport(name, moduleSourceName, DEFAULT_COMPONENT_NAMES) || additionalComponentNames.includes(name.node.name)) {
           const attributes = path
             .get('attributes')
             .filter(attr => attr.isJSXAttribute());

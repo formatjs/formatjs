@@ -17,7 +17,8 @@ const skipTests = [
   'icuSyntax',
   'removeDescriptions',
   'overrideIdFn',
-  'removeDefaultMessage'
+  'removeDefaultMessage',
+  'additionalComponentNames'
 ];
 
 const fixturesDir = path.join(__dirname, 'fixtures');
@@ -61,7 +62,7 @@ describe('options', () => {
     });
 
     // Check code output
-    expect(trim(actual)).toMatchSnapshot()
+    expect(trim(actual)).toMatchSnapshot();
 
     // Check message output
     const expectedMessages = fs.readFileSync(
@@ -151,6 +152,24 @@ describe('options', () => {
     expect(() =>
       transform(path.join(fixtureDir, 'actual.js'), {
         extractSourceLocation: true
+      })
+    ).not.toThrow();
+
+    // Check message output
+    const expectedMessages = fs.readFileSync(
+      path.join(fixtureDir, 'expected.json')
+    );
+    const actualMessages = fs.readFileSync(
+      path.join(fixtureDir, 'actual.json')
+    );
+    expect(trim(actualMessages)).toEqual(trim(expectedMessages));
+  });
+
+  it('additionalComponentNames', () => {
+    const fixtureDir = path.join(fixturesDir, 'additionalComponentNames');
+    expect(() =>
+      transform(path.join(fixtureDir, 'actual.js'), {
+        additionalComponentNames: ['CustomMessage']
       })
     ).not.toThrow();
 
