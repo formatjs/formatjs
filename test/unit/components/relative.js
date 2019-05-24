@@ -56,7 +56,6 @@ describe('<FormattedRelative>', () => {
         const withIntlContext = mount(
           <FormattedRelative value={date} />
         );
-        console.log(consoleError.calls)
         expect(consoleError.calls.length).toBe(0);
 
         withIntlContext.setProps({
