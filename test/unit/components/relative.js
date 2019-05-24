@@ -8,11 +8,11 @@ const mockContext = makeMockContext(
   require.resolve('../../../src/components/relative')
 );
 
-const spySetState = () => {
+const spyGetDerivedStateFromProps = () => {
   return spyOn(
-    require('../../../src/components/relative').BaseFormattedRelative.prototype,
-    'setState'
-  );
+    require('../../../src/components/relative').BaseFormattedRelative,
+    'getDerivedStateFromProps'
+  ).andCallThrough();
 }
 
 describe('<FormattedRelative>', () => {
@@ -20,19 +20,19 @@ describe('<FormattedRelative>', () => {
 
     let consoleError;
     let intl;
-    let setState;
+    let getDerivedStateFromProps;
 
     beforeEach(() => {
         consoleError = spyOn(console, 'error');
         intl = generateIntlContext({
           locale: 'en'
         });
-        setState = null;
+        getDerivedStateFromProps = null;
     });
 
     afterEach(() => {
         consoleError.restore();
-        setState && setState.restore();
+        getDerivedStateFromProps && getDerivedStateFromProps.restore();
     });
 
     it('has a `displayName`', () => {
@@ -48,9 +48,9 @@ describe('<FormattedRelative>', () => {
 
     it('requires a finite `value` prop', async () => {
         const FormattedRelative = mockContext(intl);
-        setState = spySetState();
+        getDerivedStateFromProps = spyGetDerivedStateFromProps();
 
-        expect(setState.calls.length).toBe(0);
+        expect(getDerivedStateFromProps.calls.length).toBe(0);
         const date = Date.now();
 
         const withIntlContext = mount(
@@ -70,7 +70,8 @@ describe('<FormattedRelative>', () => {
 
         // Should avoid update scheduling tight-loop.
         await sleep(10);
-        expect(setState.calls.length).toBe(1, '`setState()` called unexpectedly');
+        // `getDerivedStateFromProps` is called on mount and when context updates.
+        expect(getDerivedStateFromProps.calls.length).toBe(2, '`getDerivedStateFromProps()` called unexpectedly');
 
         withIntlContext.unmount();
     });

@@ -92,7 +92,7 @@ class FormattedRelative extends Component {
 
     // `now` is stored as state so that `render()` remains a function of
     // props + state, instead of accessing `Date.now()` inside `render()`.
-    this.state = {now};
+    this.state = {now, prevValue: props.value};
   }
 
   scheduleNextUpdate(props, state) {
@@ -131,20 +131,21 @@ class FormattedRelative extends Component {
     this.scheduleNextUpdate(this.props, this.state);
   }
 
-  componentWillReceiveProps({value: nextValue}) {
+  static getDerivedStateFromProps({ value, intl }, { prevValue }) {
     // When the `props.value` date changes, `state.now` needs to be updated,
     // and the next update can be rescheduled.
-    if (!isSameDate(nextValue, this.props.value)) {
-      this.setState({now: this.props.intl.now()});
+    if (!isSameDate(value, prevValue)) {
+      return {now: intl.now(), prevValue: value};
     }
+    return null;
   }
 
   shouldComponentUpdate(...next) {
     return shouldIntlComponentUpdate(this, ...next);
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    this.scheduleNextUpdate(nextProps, nextState);
+  componentDidUpdate() {
+    this.scheduleNextUpdate(this.props, this.state);
   }
 
   componentWillUnmount() {
