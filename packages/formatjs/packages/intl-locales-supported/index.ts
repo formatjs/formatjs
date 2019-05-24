@@ -5,9 +5,7 @@
  */
 'use strict';
 
-module.exports = areIntlLocalesSupported;
-
-function areIntlLocalesSupported(locales) {
+function areIntlLocalesSupported(locales: string | string[]): boolean {
     if (typeof Intl === 'undefined') {
         return false;
     }
@@ -20,20 +18,20 @@ function areIntlLocalesSupported(locales) {
         locales = [locales];
     }
 
-    var intlConstructors = [
+    const intlConstructors = [
         Intl.Collator,
         Intl.DateTimeFormat,
         Intl.NumberFormat
-    ].filter(function (intlConstructor) {
-        return intlConstructor;
-    });
+    ].filter(Boolean);
 
     if (intlConstructors.length === 0) {
         return false;
     }
 
-    return intlConstructors.every(function (intlConstructor) {
-        var supportedLocales = intlConstructor.supportedLocalesOf(locales);
-        return supportedLocales.length === locales.length;
-    });
+    return intlConstructors.every(intlConstructor => 
+        intlConstructor.supportedLocalesOf(locales).length === locales.length
+    );
 }
+
+module.exports = areIntlLocalesSupported;
+module.exports.default = areIntlLocalesSupported 

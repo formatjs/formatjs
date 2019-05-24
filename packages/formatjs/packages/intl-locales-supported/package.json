@@ -21,9 +21,7 @@
   },
   "homepage": "https://github.com/formatjs/formatjs",
   "scripts": {
+    "build": "tsc",
     "test": "mocha test/unit/*.js"
-  },
-  "directories": {
-    "test": "test"
   }
 }
