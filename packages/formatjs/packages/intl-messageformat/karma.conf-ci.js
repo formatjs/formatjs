@@ -7,12 +7,11 @@ module.exports = function (config) {
     // Browsers to run on Sauce Labs
     // Check out https://saucelabs.com/platforms for all browser/OS combos
     let customLaunchers
-    if (process.env.TRAVIS_PULL_REQUEST) {
+    if (process.env.TRAVIS_PULL_REQUEST_SHA) {
         customLaunchers = {
             sl_chrome: {
                 base: 'SauceLabs',
-                browserName: 'chrome',
-                version: '74'
+                browserName: 'chrome'
             },
         }
     } else {
@@ -20,22 +19,18 @@ module.exports = function (config) {
             sl_safari: {
                 base: 'SauceLabs',
                 browserName: 'safari',
-                version: '12'
             },
             sl_edge: {
                 base: 'SauceLabs',
                 browserName: 'edge',
-                version: '16'
             },
             sl_chrome: {
                 base: 'SauceLabs',
                 browserName: 'chrome',
-                version: '74'
             },
             sl_firefox: {
                 base: 'SauceLabs',
                 browserName: 'firefox',
-                version: '67'
             },
             sl_ie_11: {
                 base: 'SauceLabs',
