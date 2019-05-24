@@ -4,13 +4,10 @@ Intl MessageFormat
 Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.
 
 [![npm Version][npm-badge]][npm]
-[![Build Status][travis-badge]][travis]
-[![Dependency Status][david-badge]][david]
-
 
 ![gzip size](https://img.badgesize.io/formatjs/intl-messageformat/master/dist/intl-messageformat.min.js?compression=gzip&label=core+gzip+size)
 
-[![Sauce Test Status][sauce-badge]][sauce]
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/formatjsproject.svg)](https://saucelabs.com/u/formatjsproject)
 
 Overview
 --------
@@ -217,14 +214,8 @@ See the [LICENSE file][LICENSE] for license text and copyright information.
 
 [npm]: https://www.npmjs.org/package/intl-messageformat
 [npm-badge]: https://img.shields.io/npm/v/intl-messageformat.svg?style=flat-square
-[david]: https://david-dm.org/formatjs/intl-messageformat
-[david-badge]: https://img.shields.io/david/formatjs/intl-messageformat.svg?style=flat-square
-[travis]: https://travis-ci.org/formatjs/intl-messageformat
-[travis-badge]: https://img.shields.io/travis/formatjs/intl-messageformat/master.svg?style=flat-square
-[sauce]: https://saucelabs.com/u/intl-messageformat
-[sauce-badge]: https://saucelabs.com/browser-matrix/intl-messageformat.svg
 [strawman]: http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting
-[parser]: https://github.com/formatjs/intl-messageformat-parser
+[parser]: https://github.com/formatjs/formatjs/blob/master/packages/intl-messageformat-parser
 [ICU]: http://userguide.icu-project.org/formatparse/messages
 [CLDR]: http://cldr.unicode.org/
 [Intl]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl
@@ -234,5 +225,5 @@ See the [LICENSE file][LICENSE] for license text and copyright information.
 [Intl.js]: https://github.com/andyearnshaw/Intl.js
 [rawgit]: https://rawgit.com/
 [semver]: http://semver.org/
-[LICENSE]: https://github.com/formatjs/intl-messageformat/blob/master/LICENSE
+[LICENSE]: https://github.com/formatjs/formatjs/blob/master/LICENSE
 [intl-pluralrules]: https://github.com/eemeli/intl-pluralrules
