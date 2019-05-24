@@ -1637,7 +1637,9 @@
         }
         try {
             return Intl.NumberFormat.supportedLocalesOf(locales, {
-                localeMatcher: 'lookup'
+                // IE11 localeMatcher `lookup` seems to convert `en` -> `en-US`
+                // but not other browsers,
+                localeMatcher: 'best fit'
             })[0];
         }
         catch (e) {

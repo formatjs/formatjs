@@ -11,18 +11,20 @@ module.exports = function (config) {
         customLaunchers = {
             sl_chrome: {
                 base: 'SauceLabs',
-                browserName: 'chrome'
+                browserName: 'internet explorer',
+                version: '11'
             },
         }
     } else {
         customLaunchers = {
-            sl_safari: {
-                base: 'SauceLabs',
-                browserName: 'safari',
-            },
+            // Sauce Labs keeps failing to get a safari instance
+            // sl_safari: {
+            //     base: 'SauceLabs',
+            //     browserName: 'safari',
+            // },
             sl_edge: {
                 base: 'SauceLabs',
-                browserName: 'edge',
+                browserName: 'MicrosoftEdge',
             },
             sl_chrome: {
                 base: 'SauceLabs',
