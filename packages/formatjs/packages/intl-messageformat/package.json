@@ -34,10 +34,10 @@
     "intl-messageformat-parser": "1.6.2"
   },
   "scripts": {
-    "benchmark": "ts-node --project tsconfig.all.json tests/benchmark",
-    "build": "npm run clean && tsc && npm run prettier && npm run rollup",
+    "benchmark": "ts-node --project tests/tsconfig.json tests/benchmark",
+    "build": "npm run clean && tsc -p src && npm run prettier && npm run rollup",
     "rollup": "rollup -c rollup.config.js",
-    "clean": "rimraf dist lib",
+    "clean": "rimraf dist lib tests/*.js tests/*.d.ts",
     "cover": "nyc npm t",
     "prepublishOnly": "npm run build",
     "prettier": "prettier --write '{src,tests,scripts}/**/*.ts' 'rollup.config.js'",

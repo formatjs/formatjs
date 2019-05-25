@@ -4,10 +4,8 @@
         "moduleResolution": "node",
         "target": "es5",
         "lib": ["es6", "dom", "es2018.intl"],
-        "outDir": "lib",
         "declaration": true,
         "strict": true,
         "sourceMap": true
-    },
-    "include": ["src/*.ts"]
+    }
 }
