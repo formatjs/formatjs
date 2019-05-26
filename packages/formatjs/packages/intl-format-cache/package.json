@@ -1,6 +1,6 @@
 {
   "name": "intl-format-cache",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "A memoizer factory for Intl format constructors.",
   "main": "index.js",
   "module": "lib/index.js",
@@ -27,9 +27,8 @@
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "homepage": "https://github.com/formatjs/formatjs",
-  "dependencies": {},
   "devDependencies": {
-    "intl-messageformat": "3",
+    "intl-messageformat": "^3.1.2",
     "intl-relativeformat": "^2.1.0"
   },
   "prettier": {
