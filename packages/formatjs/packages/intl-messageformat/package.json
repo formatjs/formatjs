@@ -31,7 +31,8 @@
   "module": "lib/index.js",
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "intl-messageformat-parser": "1.6.2"
+    "intl-messageformat-parser": "1.6.2",
+    "intl-pluralrules": "^1.0.1"
   },
   "scripts": {
     "benchmark": "ts-node --project tests/tsconfig.json tests/benchmark",
