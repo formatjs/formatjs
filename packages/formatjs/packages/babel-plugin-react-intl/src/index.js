@@ -6,7 +6,7 @@
 
 import * as p from 'path';
 import { writeFileSync } from 'fs';
-import { sync as mkdirpSync } from 'mkdirp';
+import { mkdirpSync } from 'fs-extra';
 import printICUMessage from './print-icu-message';
 
 const DEFAULT_COMPONENT_NAMES = ['FormattedMessage', 'FormattedHTMLMessage'];
@@ -268,8 +268,11 @@ export default function({ types: t }) {
           return;
         }
 
-        const {additionalComponentNames = []} = opts;
-        if (referencesImport(name, moduleSourceName, DEFAULT_COMPONENT_NAMES) || additionalComponentNames.includes(name.node.name)) {
+        const { additionalComponentNames = [] } = opts;
+        if (
+          referencesImport(name, moduleSourceName, DEFAULT_COMPONENT_NAMES) ||
+          additionalComponentNames.includes(name.node.name)
+        ) {
           const attributes = path
             .get('attributes')
             .filter(attr => attr.isJSXAttribute());

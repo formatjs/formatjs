@@ -10,43 +10,31 @@
   "main": "lib/index.js",
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "dependencies": {
-    "@babel/runtime": "^7.3.1",
     "intl-messageformat-parser": "^1.4.0",
-    "mkdirp": "^0.5.1"
+    "fs-extra": "^8.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
-    "@babel/node": "^7.2.2",
-    "@babel/plugin-proposal-object-rest-spread": "^7.3.1",
-    "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
-    "@babel/register": "^7.0.0",
     "babel-jest": "^24.8.0",
-    "babel-plugin-espower": "^3.0.1",
-    "chai": "^4.2.0",
     "cross-env": "^5.2.0",
     "eslint": "^5.12.1",
     "eslint-plugin-react": "^7.12.4",
-    "fs-extra": "^8.0.1",
     "jest": "^24.8.0",
-    "mocha": "^6.0.0",
-    "nyc": "^14.1.1",
-    "power-assert": "^1.6.1",
     "prettier": "^1.17.1",
-    "rimraf": "^2.6.3",
-    "uuid": "^3.3.2"
+    "rimraf": "^2.6.3"
   },
   "scripts": {
     "prettier": "prettier --write '{src,scripts}/*.js' test/index.js",
-    "lint": "eslint src/",
-    "clean": "rimraf lib/",
+    "lint": "eslint src --fix",
+    "clean": "rimraf lib test/fixtures/**/actual.json",
     "test": "cross-env NODE_ENV=test jest",
     "cover": "nyc npm t",
-    "build": "babel src/ --out-dir lib/",
-    "preversion": "npm run lint && npm run clean && npm run prettier && npm run build",
-    "prepublishOnly": "npm run clean && npm run build"
+    "build": "npm run clean && babel src --out-dir lib",
+    "preversion": "npm run lint && npm run prettier && npm run build",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "babel-plugin",

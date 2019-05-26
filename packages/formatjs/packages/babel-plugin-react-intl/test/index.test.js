@@ -2,7 +2,6 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as babel from '@babel/core';
 import plugin from '../src';
-import uuidv1 from 'uuid/v1';
 
 function trim(str) {
   return str.toString().replace(/^\s+|\s+$/, '');
@@ -197,6 +196,8 @@ const BASE_OPTIONS = {
   messagesDir: baseDir
 };
 
+let cacheBust = 1
+
 function transform(filePath, options = {}, { multiplePasses = false } = {}) {
   function getPluginConfig() {
     return [
@@ -205,7 +206,7 @@ function transform(filePath, options = {}, { multiplePasses = false } = {}) {
         ...BASE_OPTIONS,
         ...options
       },
-      uuidv1()
+      Date.now() + '' + (++cacheBust)
     ];
   }
 
