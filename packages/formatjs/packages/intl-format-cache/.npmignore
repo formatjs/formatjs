@@ -1,4 +1,3 @@
 test/
-tmp/
 .travis.yml
-Gruntfile.js
+.nyc_output

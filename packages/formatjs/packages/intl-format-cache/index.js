@@ -1,4 +1,4 @@
 'use strict';
 
-exports = module.exports = require('./lib/memoizer')['default'];
+exports = module.exports = require('./dist')['default'];
 exports['default'] = exports;

@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "module": "es6",
+        "target": "es5",
+        "declaration": true,
+        "sourceMap": true,
+        "moduleResolution": "node",
+        "lib": ["dom", "es2018.intl", "es6"]
+    }
+}

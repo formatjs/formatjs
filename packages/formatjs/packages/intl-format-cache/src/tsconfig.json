@@ -1,0 +1,9 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "../lib",
+        "composite": true,
+        "declaration": true
+    },
+    "include": ["*.ts"]
+}

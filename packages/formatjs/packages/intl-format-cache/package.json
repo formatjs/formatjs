@@ -3,14 +3,15 @@
   "version": "2.1.0",
   "description": "A memoizer factory for Intl format constructors.",
   "main": "index.js",
-  "jsnext:main": "src/memoizer.js",
+  "module": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "scripts": {
-    "prepublish": "grunt",
-    "browserify": "browserify index.js -s memoizeFormatConstructor > tmp/intl-format-cache.js",
-    "test:saucelabs": "npm run browserify && grunt saucelabs",
-    "test:unit": "mocha --require test/setup/node-unit --recursive test/unit/",
-    "test": "npm run test:unit",
-    "travis": "npm test && npm run test:saucelabs"
+    "build": "tsc -p src && tsc -p src/tsconfig.cjs.json",
+    "clean": "rimraf lib dist",
+    "cover": "nyc npm t",
+    "prepublishOnly": "npm run clean && npm run build",
+    "prettier": "prettier --write {src,tests}/*.ts",
+    "test": "TS_NODE_PROJECT='tests/tsconfig.json' mocha -r ts-node/register -r source-map-support/register -r chai/register-expect tests/index.ts --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -28,18 +29,21 @@
   "homepage": "https://github.com/yahoo/intl-format-cache",
   "dependencies": {},
   "devDependencies": {
-    "browserify": "^12.0.1",
-    "expect": "^1.13.0",
-    "grunt": "^0.4.5",
-    "grunt-bundle-jsnext-lib": "^0.5.0",
-    "grunt-cli": "^0.1.13",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-connect": "^0.11.2",
-    "grunt-contrib-copy": "^0.7.0",
-    "grunt-saucelabs": "^8.6.1",
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.6",
+    "chai": "^4.2.0",
     "intl": "^1.0.1",
-    "intl-messageformat": "^1.2.0",
-    "intl-relativeformat": "^1.2.0",
-    "mocha": "^2.3.4"
+    "intl-messageformat": "3",
+    "intl-relativeformat": "^2.1.0",
+    "mocha": "^6.1.0",
+    "nyc": "^14.1.1",
+    "prettier": "^1.17.1",
+    "rimraf": "^2.6.3",
+    "source-map-support": "^0.5.12",
+    "ts-node": "^8.2.0",
+    "typescript": "^3.4.5"
+  },
+  "prettier": {
+    "singleQuote": true
   }
 }
