@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yahoo/intl-format-cache.git"
+    "url": "https://github.com/formatjs/formatjs.git"
   },
   "keywords": [
     "intl",
@@ -24,24 +24,13 @@
   "author": "Eric Ferraiuolo <eferraiuolo@gmail.com>",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/yahoo/intl-format-cache/issues"
+    "url": "https://github.com/formatjs/formatjs/issues"
   },
-  "homepage": "https://github.com/yahoo/intl-format-cache",
+  "homepage": "https://github.com/formatjs/formatjs",
   "dependencies": {},
   "devDependencies": {
-    "@types/chai": "^4.1.7",
-    "@types/mocha": "^5.2.6",
-    "chai": "^4.2.0",
-    "intl": "^1.0.1",
     "intl-messageformat": "3",
-    "intl-relativeformat": "^2.1.0",
-    "mocha": "^6.1.0",
-    "nyc": "^14.1.1",
-    "prettier": "^1.17.1",
-    "rimraf": "^2.6.3",
-    "source-map-support": "^0.5.12",
-    "ts-node": "^8.2.0",
-    "typescript": "^3.4.5"
+    "intl-relativeformat": "^2.1.0"
   },
   "prettier": {
     "singleQuote": true
