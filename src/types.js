@@ -110,5 +110,5 @@ export const relativeFormatPropTypes = {
 };
 
 export const pluralFormatPropTypes = {
-  style: oneOf(['cardinal', 'ordinal']),
+  type: oneOf(['cardinal', 'ordinal']),
 };

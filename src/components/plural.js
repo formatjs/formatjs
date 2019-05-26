@@ -29,7 +29,7 @@ class FormattedPlural extends Component {
   };
 
   static defaultProps = {
-    style: 'cardinal',
+    type: 'cardinal',
   };
 
   constructor(props) {

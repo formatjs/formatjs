@@ -1,7 +1,6 @@
 import expect, {createSpy, spyOn} from 'expect';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
-import IntlPluralFormat from '../../src/plural';
 import {intlFormatPropTypes} from '../../src/types';
 import * as f from '../../src/format';
 
@@ -75,7 +74,7 @@ describe('format API', () => {
             getNumberFormat  : createSpy().andCall((...args) => new Intl.NumberFormat(...args)),
             getMessageFormat : createSpy().andCall((...args) => new IntlMessageFormat(...args)),
             getRelativeFormat: createSpy().andCall((...args) => new IntlRelativeFormat(...args)),
-            getPluralFormat  : createSpy().andCall((...args) => new IntlPluralFormat(...args)),
+            getPluralRules  : createSpy().andCall((...args) => new Intl.PluralRules(...args)),
 
             now: () => 0,
         };
@@ -639,7 +638,7 @@ describe('format API', () => {
         let formatPlural;
 
         beforeEach(() => {
-            pf = new IntlPluralFormat(config.locale);
+            pf = new Intl.PluralRules(config.locale);
             formatPlural = f.formatPlural.bind(null, config, state);
         });
 
@@ -682,13 +681,13 @@ describe('format API', () => {
             });
 
             it('accepts valid IntlPluralFormat options', () => {
-                expect(() => formatPlural(22, {style: 'ordinal'})).toNotThrow();
+                expect(() => formatPlural(22, {type: 'ordinal'})).toNotThrow();
             });
 
             describe('ordinals', () => {
                 it('formats using ordinal plural rules', () => {
-                    const opts = {style: 'ordinal'};
-                    pf = new IntlPluralFormat(config.locale, opts);
+                    const opts = {type: 'ordinal'};
+                    pf = new Intl.PluralRules(config.locale, opts);
 
                     expect(formatPlural(22, opts)).toBe(pf.format(22));
                 });
