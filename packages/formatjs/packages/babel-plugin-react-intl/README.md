@@ -1,7 +1,5 @@
 # babel-plugin-react-intl
 
-![travis](https://travis-ci.org/formatjs/babel-plugin-react-intl.svg?branch=master)
-
 Extracts string messages for translation from modules that use [React Intl][].
 ## Dependencies
 
@@ -66,6 +64,5 @@ require('@babel/core').transform('code', {
   plugins: ['react-intl']
 }) // => { code, map, ast, metadata['react-intl'].messages };
 ```
-
 
 [React Intl]: http://formatjs.io/react/

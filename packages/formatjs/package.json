@@ -54,7 +54,15 @@
     "source-map-support": "^0.5.12",
     "ts-node": "^8.1.0",
     "tslib": "^1.9.3",
-    "typescript": "^3.4.5"
+    "typescript": "^3.4.5",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-react": "^7.0.0",
+    "babel-jest": "^24.8.0",
+    "cross-env": "^5.2.0",
+    "eslint-plugin-react": "^7.12.4",
+    "jest": "^24.8.0"
   },
   "devEngines": {
     "node": "8.x || 10.x || 12.x",
