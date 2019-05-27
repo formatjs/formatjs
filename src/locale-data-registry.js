@@ -4,7 +4,6 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 
 export function addLocaleData(data = []) {
@@ -12,7 +11,6 @@ export function addLocaleData(data = []) {
 
   locales.forEach(localeData => {
     if (localeData && localeData.locale) {
-      IntlMessageFormat.__addLocaleData(localeData);
       IntlRelativeFormat.__addLocaleData(localeData);
     }
   });
@@ -36,7 +34,6 @@ function hasIMFAndIRFLocaleData(locale) {
   let normalizedLocale = locale && locale.toLowerCase();
 
   return !!(
-    IntlMessageFormat.__localeData__[normalizedLocale] &&
     IntlRelativeFormat.__localeData__[normalizedLocale]
   );
 }

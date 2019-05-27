@@ -140,7 +140,7 @@ describe('<FormattedPlural>', () => {
         const FormattedPlural = mockContext(intl);
         const num = 22;
         const props = {two: 'nd'};
-        const options = {style: 'ordinal'};
+        const options = {type: 'ordinal'};
 
         const rendered = shallowDeep(
           <FormattedPlural value={num} {...props} {...options} />,
