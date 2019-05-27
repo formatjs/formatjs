@@ -41,6 +41,7 @@ export default {
     }),
     commonjs({
       sourcemap: true,
+      namedExports: {'react-is': ['isValidElementType']},
     }),
     replace({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
