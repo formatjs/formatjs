@@ -13,7 +13,6 @@ const DEFAULT_LOCALE = 'en';
 const CONCURRENCY = require('os').cpus().length - 1;
 
 const cldrData = extractCLDRData({
-  pluralRules: true,
   relativeFields: true,
 });
 

@@ -70,6 +70,7 @@
     "hoist-non-react-statics": "^3.3.0",
     "intl-format-cache": "^2.0.5",
     "intl-messageformat": "^2.1.0",
+    "intl-pluralrules": "^1.0.1",
     "intl-relativeformat": "^2.1.0",
     "invariant": "^2.1.1",
     "react-display-name": "^0.2.4"
