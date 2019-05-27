@@ -18,7 +18,7 @@ describe('useIntl() hook', () => {
     consoleError.mockRestore();
   });
 
-  it('spy on the returned value from hook', () => {
+  it('hooks onto the intl context', () => {
     const spy = jest.fn();
     const rendered = mount(
       <IntlProvider locale='en'>
