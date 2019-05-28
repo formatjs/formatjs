@@ -23,6 +23,7 @@
   "homepage": "https://github.com/formatjs/formatjs",
   "scripts": {
     "build": "tsc",
+    "prepublishOnly": "tsc",
     "test": "mocha test/unit/*.js"
   }
 }
