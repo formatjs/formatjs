@@ -7,18 +7,18 @@ function trim(str) {
   return str.toString().replace(/^\s+|\s+$/, '');
 }
 
-const skipTests = [
+const skipOutputTests = [
   '.babelrc',
   '.DS_Store',
   'enforceDescriptions',
   'extractSourceLocation',
+  'extractFromFormatMessageCall',
   'moduleSourceName',
   'icuSyntax',
   'removeDescriptions',
   'overrideIdFn',
   'removeDefaultMessage',
-  'additionalComponentNames',
-  'formatMessage'
+  'additionalComponentNames'
 ];
 
 const fixturesDir = path.join(__dirname, 'fixtures');
@@ -26,7 +26,7 @@ const baseDir = path.join(__dirname, '..');
 
 describe('emit asserts for: ', () => {
   fs.readdirSync(fixturesDir).map(caseName => {
-    if (skipTests.indexOf(caseName) >= 0) return;
+    if (skipOutputTests.indexOf(caseName) >= 0) return;
 
     it(`output match: ${caseName}`, () => {
       const fixtureDir = path.join(fixturesDir, caseName);
@@ -38,7 +38,6 @@ describe('emit asserts for: ', () => {
       const actual = transform(path.join(fixtureDir, 'actual.js'));
 
       // Check code output
-      
       expect(trim(actual)).toMatchSnapshot();
 
       // Check message output
@@ -92,7 +91,6 @@ describe('options', () => {
     });
 
     // Check code output
-    
     expect(trim(actual)).toMatchSnapshot();
 
     // Check message output
@@ -165,8 +163,8 @@ describe('options', () => {
     expect(trim(actualMessages)).toEqual(trim(expectedMessages));
   });
 
-  it('respects formatMessage', () => {
-    const fixtureDir = path.join(fixturesDir, 'formatMessage');
+  it('respects extractFromFormatMessageCall', () => {
+    const fixtureDir = path.join(fixturesDir, 'extractFromFormatMessageCall');
     expect(() =>
       transform(path.join(fixtureDir, 'actual.js'), {
         extractFromFormatMessageCall: true

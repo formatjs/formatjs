@@ -116,7 +116,7 @@ class Foo extends _react.Component {
 exports.default = Foo;"
 `;
 
-exports[`emit asserts for:  output match: extractFromFormatMessageCallFalse 1`] = `
+exports[`emit asserts for:  output match: formatMessageCall 1`] = `
 "\\"use strict\\";
 
 Object.defineProperty(exports, \\"__esModule\\", {
@@ -130,6 +130,12 @@ var _reactIntl = require(\\"react-intl\\");
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
+const objectPointer = {
+  id: 'foo.bar.invalid',
+  defaultMessage: 'This cannot be extracted',
+  description: 'the plugin only supports inline objects'
+};
+
 class Foo extends _react.Component {
   render() {
     const msgs = {
@@ -142,7 +148,8 @@ class Foo extends _react.Component {
         id: 'foo.bar.biff',
         defaultMessage: 'Hello Nurse!',
         description: 'Another message'
-      })
+      }),
+      invalid: this.props.intl.formatMessage(objectPointer)
     };
     return _react.default.createElement(\\"div\\", null, _react.default.createElement(\\"h1\\", null, msgs.header), _react.default.createElement(\\"p\\", null, msgs.content), _react.default.createElement(\\"span\\", null, _react.default.createElement(_reactIntl.FormattedMessage, {
       id: \\"foo\\",

@@ -392,7 +392,9 @@ export default function({ types: t }) {
 
         if (opts.extractFromFormatMessageCall && isFormatMessageCall(callee)) {
           const messagesObj = path.get('arguments')[0];
-          processMessageObject(messagesObj);
+          if (messagesObj.type === 'ObjectExpression') {
+            processMessageObject(messagesObj);
+          }
         }
       }
     }

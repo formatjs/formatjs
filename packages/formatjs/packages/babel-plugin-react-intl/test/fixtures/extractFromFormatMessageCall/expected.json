@@ -8,5 +8,10 @@
     "id": "foo.bar.biff",
     "description": "Another message",
     "defaultMessage": "Hello Nurse!"
+  },
+  {
+    "id": "foo",
+    "description": "baz",
+    "defaultMessage": "bar"
   }
 ]

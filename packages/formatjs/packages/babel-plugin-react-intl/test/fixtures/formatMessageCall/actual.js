@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
 import {injectIntl, FormattedMessage} from 'react-intl';
 
+const objectPointer = {
+    id: 'foo.bar.invalid',
+    defaultMessage: 'This cannot be extracted',
+    description: 'the plugin only supports inline objects'
+};
+
 class Foo extends Component {
     render() {
         const msgs = {
@@ -14,6 +20,7 @@ class Foo extends Component {
                 defaultMessage: 'Hello Nurse!',
                 description: 'Another message',
             }),
+            invalid: this.props.intl.formatMessage(objectPointer),
         };
 
         return (
