@@ -1,8 +1,20 @@
-(function() {
-    "use strict";
-    var $$utils$$hop = Object.prototype.hasOwnProperty;
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    (global = global || self, global.IntlRelativeFormat = factory());
+}(this, function () { 'use strict';
 
-    function $$utils$$extend(obj) {
+    /*
+    Copyright (c) 2014, Yahoo! Inc. All rights reserved.
+    Copyrights licensed under the New BSD License.
+    See the accompanying LICENSE file for terms.
+    */
+
+    /* jslint esnext: true */
+
+    var hop = Object.prototype.hasOwnProperty;
+
+    function extend(obj) {
         var sources = Array.prototype.slice.call(arguments, 1),
             i, len, source, key;
 
@@ -11,7 +23,7 @@
             if (!source) { continue; }
 
             for (key in source) {
-                if ($$utils$$hop.call(source, key)) {
+                if (hop.call(source, key)) {
                     obj[key] = source[key];
                 }
             }
@@ -20,27 +32,31 @@
         return obj;
     }
 
+    /*
+    Copyright (c) 2014, Yahoo! Inc. All rights reserved.
+    Copyrights licensed under the New BSD License.
+    See the accompanying LICENSE file for terms.
+    */
+
     // Purposely using the same implementation as the Intl.js `Intl` polyfill.
     // Copyright 2013 Andy Earnshaw, MIT License
 
-    var $$es51$$realDefineProp = (function () {
+    var realDefineProp = (function () {
         try { return !!Object.defineProperty({}, 'a', {}); }
         catch (e) { return false; }
     })();
 
-    var $$es51$$es3 = !$$es51$$realDefineProp && !Object.prototype.__defineGetter__;
-
-    var $$es51$$defineProperty = $$es51$$realDefineProp ? Object.defineProperty :
+    var defineProperty = realDefineProp ? Object.defineProperty :
             function (obj, name, desc) {
 
         if ('get' in desc && obj.__defineGetter__) {
             obj.__defineGetter__(name, desc.get);
-        } else if (!$$utils$$hop.call(obj, name) || 'value' in desc) {
+        } else if (!hop.call(obj, name) || 'value' in desc) {
             obj[name] = desc.value;
         }
     };
 
-    var $$es51$$objCreate = Object.create || function (proto, props) {
+    var objCreate = Object.create || function (proto, props) {
         var obj, k;
 
         function F() {}
@@ -48,23 +64,27 @@
         obj = new F();
 
         for (k in props) {
-            if ($$utils$$hop.call(props, k)) {
-                $$es51$$defineProperty(obj, k, props[k]);
+            if (hop.call(props, k)) {
+                defineProperty(obj, k, props[k]);
             }
         }
 
         return obj;
     };
 
-    var $$compiler$$default = $$compiler$$Compiler;
+    /*
+    Copyright (c) 2014, Yahoo! Inc. All rights reserved.
+    Copyrights licensed under the New BSD License.
+    See the accompanying LICENSE file for terms.
+    */
 
-    function $$compiler$$Compiler(locales, formats, pluralFn) {
+    function Compiler(locales, formats, pluralFn) {
         this.locales  = locales;
         this.formats  = formats;
         this.pluralFn = pluralFn;
     }
 
-    $$compiler$$Compiler.prototype.compile = function (ast) {
+    Compiler.prototype.compile = function (ast) {
         this.pluralStack        = [];
         this.currentPlural      = null;
         this.pluralNumberFormat = null;
@@ -72,7 +92,7 @@
         return this.compileMessage(ast);
     };
 
-    $$compiler$$Compiler.prototype.compileMessage = function (ast) {
+    Compiler.prototype.compileMessage = function (ast) {
         if (!(ast && ast.type === 'messageFormatPattern')) {
             throw new Error('Message AST is not of type: "messageFormatPattern"');
         }
@@ -102,7 +122,7 @@
         return pattern;
     };
 
-    $$compiler$$Compiler.prototype.compileMessageText = function (element) {
+    Compiler.prototype.compileMessageText = function (element) {
         // When this `element` is part of plural sub-pattern and its value contains
         // an unescaped '#', use a `PluralOffsetString` helper to properly output
         // the number with the correct offset in the string.
@@ -113,7 +133,7 @@
                 this.pluralNumberFormat = new Intl.NumberFormat(this.locales);
             }
 
-            return new $$compiler$$PluralOffsetString(
+            return new PluralOffsetString(
                     this.currentPlural.id,
                     this.currentPlural.format.offset,
                     this.pluralNumberFormat,
@@ -124,11 +144,11 @@
         return element.value.replace(/\\#/g, '#');
     };
 
-    $$compiler$$Compiler.prototype.compileArgument = function (element) {
+    Compiler.prototype.compileArgument = function (element) {
         var format = element.format;
 
         if (!format) {
-            return new $$compiler$$StringFormat(element.id);
+            return new StringFormat(element.id);
         }
 
         var formats  = this.formats,
@@ -160,20 +180,20 @@
 
             case 'pluralFormat':
                 options = this.compileOptions(element);
-                return new $$compiler$$PluralFormat(
+                return new PluralFormat(
                     element.id, format.ordinal, format.offset, options, pluralFn
                 );
 
             case 'selectFormat':
                 options = this.compileOptions(element);
-                return new $$compiler$$SelectFormat(element.id, options);
+                return new SelectFormat(element.id, options);
 
             default:
                 throw new Error('Message element does not have a valid format type');
         }
     };
 
-    $$compiler$$Compiler.prototype.compileOptions = function (element) {
+    Compiler.prototype.compileOptions = function (element) {
         var format      = element.format,
             options     = format.options,
             optionsHash = {};
@@ -201,11 +221,11 @@
 
     // -- Compiler Helper Classes --------------------------------------------------
 
-    function $$compiler$$StringFormat(id) {
+    function StringFormat(id) {
         this.id = id;
     }
 
-    $$compiler$$StringFormat.prototype.format = function (value) {
+    StringFormat.prototype.format = function (value) {
         if (!value && typeof value !== 'number') {
             return '';
         }
@@ -213,7 +233,7 @@
         return typeof value === 'string' ? value : String(value);
     };
 
-    function $$compiler$$PluralFormat(id, useOrdinal, offset, options, pluralFn) {
+    function PluralFormat(id, useOrdinal, offset, options, pluralFn) {
         this.id         = id;
         this.useOrdinal = useOrdinal;
         this.offset     = offset;
@@ -221,7 +241,7 @@
         this.pluralFn   = pluralFn;
     }
 
-    $$compiler$$PluralFormat.prototype.getOption = function (value) {
+    PluralFormat.prototype.getOption = function (value) {
         var options = this.options;
 
         var option = options['=' + value] ||
@@ -230,14 +250,14 @@
         return option || options.other;
     };
 
-    function $$compiler$$PluralOffsetString(id, offset, numberFormat, string) {
+    function PluralOffsetString(id, offset, numberFormat, string) {
         this.id           = id;
         this.offset       = offset;
         this.numberFormat = numberFormat;
         this.string       = string;
     }
 
-    $$compiler$$PluralOffsetString.prototype.format = function (value) {
+    PluralOffsetString.prototype.format = function (value) {
         var number = this.numberFormat.format(value - this.offset);
 
         return this.string
@@ -245,21 +265,22 @@
                 .replace(/\\#/g, '#');
     };
 
-    function $$compiler$$SelectFormat(id, options) {
+    function SelectFormat(id, options) {
         this.id      = id;
         this.options = options;
     }
 
-    $$compiler$$SelectFormat.prototype.getOption = function (value) {
+    SelectFormat.prototype.getOption = function (value) {
         var options = this.options;
         return options[value] || options.other;
     };
 
-    var intl$messageformat$parser$$default = (function() {
+    var parser = (function() {
+
       /*
-       * Generated by PEG.js 0.8.0.
+       * Generated by PEG.js 0.9.0.
        *
-       * http://pegjs.majda.cz/
+       * http://pegjs.org/
        */
 
       function peg$subclass(child, parent) {
@@ -268,36 +289,35 @@
         child.prototype = new ctor();
       }
 
-      function SyntaxError(message, expected, found, offset, line, column) {
+      function peg$SyntaxError(message, expected, found, location) {
         this.message  = message;
         this.expected = expected;
         this.found    = found;
-        this.offset   = offset;
-        this.line     = line;
-        this.column   = column;
-
+        this.location = location;
         this.name     = "SyntaxError";
+
+        if (typeof Error.captureStackTrace === "function") {
+          Error.captureStackTrace(this, peg$SyntaxError);
+        }
       }
 
-      peg$subclass(SyntaxError, Error);
+      peg$subclass(peg$SyntaxError, Error);
 
-      function parse(input) {
+      function peg$parse(input) {
         var options = arguments.length > 1 ? arguments[1] : {},
-
             peg$FAILED = {},
 
             peg$startRuleFunctions = { start: peg$parsestart },
             peg$startRuleFunction  = peg$parsestart,
 
-            peg$c0 = [],
-            peg$c1 = function(elements) {
+            peg$c0 = function(elements) {
                     return {
                         type    : 'messageFormatPattern',
-                        elements: elements
+                        elements: elements,
+                        location: location()
                     };
                 },
-            peg$c2 = peg$FAILED,
-            peg$c3 = function(text) {
+            peg$c1 = function(text) {
                     var string = '',
                         i, j, outerLen, inner, innerLen;
 
@@ -311,129 +331,135 @@
 
                     return string;
                 },
-            peg$c4 = function(messageText) {
+            peg$c2 = function(messageText) {
                     return {
                         type : 'messageTextElement',
-                        value: messageText
+                        value: messageText,
+                        location: location()
                     };
                 },
-            peg$c5 = /^[^ \t\n\r,.+={}#]/,
-            peg$c6 = { type: "class", value: "[^ \\t\\n\\r,.+={}#]", description: "[^ \\t\\n\\r,.+={}#]" },
-            peg$c7 = "{",
-            peg$c8 = { type: "literal", value: "{", description: "\"{\"" },
-            peg$c9 = null,
-            peg$c10 = ",",
-            peg$c11 = { type: "literal", value: ",", description: "\",\"" },
-            peg$c12 = "}",
-            peg$c13 = { type: "literal", value: "}", description: "\"}\"" },
-            peg$c14 = function(id, format) {
+            peg$c3 = /^[^ \t\n\r,.+={}#]/,
+            peg$c4 = { type: "class", value: "[^ \\t\\n\\r,.+={}#]", description: "[^ \\t\\n\\r,.+={}#]" },
+            peg$c5 = "{",
+            peg$c6 = { type: "literal", value: "{", description: "\"{\"" },
+            peg$c7 = ",",
+            peg$c8 = { type: "literal", value: ",", description: "\",\"" },
+            peg$c9 = "}",
+            peg$c10 = { type: "literal", value: "}", description: "\"}\"" },
+            peg$c11 = function(id, format) {
                     return {
                         type  : 'argumentElement',
                         id    : id,
-                        format: format && format[2]
+                        format: format && format[2],
+                        location: location()
                     };
                 },
-            peg$c15 = "number",
-            peg$c16 = { type: "literal", value: "number", description: "\"number\"" },
-            peg$c17 = "date",
-            peg$c18 = { type: "literal", value: "date", description: "\"date\"" },
-            peg$c19 = "time",
-            peg$c20 = { type: "literal", value: "time", description: "\"time\"" },
-            peg$c21 = function(type, style) {
+            peg$c12 = "number",
+            peg$c13 = { type: "literal", value: "number", description: "\"number\"" },
+            peg$c14 = "date",
+            peg$c15 = { type: "literal", value: "date", description: "\"date\"" },
+            peg$c16 = "time",
+            peg$c17 = { type: "literal", value: "time", description: "\"time\"" },
+            peg$c18 = function(type, style) {
                     return {
                         type : type + 'Format',
-                        style: style && style[2]
+                        style: style && style[2],
+                        location: location()
                     };
                 },
-            peg$c22 = "plural",
-            peg$c23 = { type: "literal", value: "plural", description: "\"plural\"" },
-            peg$c24 = function(pluralStyle) {
+            peg$c19 = "plural",
+            peg$c20 = { type: "literal", value: "plural", description: "\"plural\"" },
+            peg$c21 = function(pluralStyle) {
                     return {
                         type   : pluralStyle.type,
                         ordinal: false,
                         offset : pluralStyle.offset || 0,
-                        options: pluralStyle.options
+                        options: pluralStyle.options,
+                        location: location()
                     };
                 },
-            peg$c25 = "selectordinal",
-            peg$c26 = { type: "literal", value: "selectordinal", description: "\"selectordinal\"" },
-            peg$c27 = function(pluralStyle) {
+            peg$c22 = "selectordinal",
+            peg$c23 = { type: "literal", value: "selectordinal", description: "\"selectordinal\"" },
+            peg$c24 = function(pluralStyle) {
                     return {
                         type   : pluralStyle.type,
                         ordinal: true,
                         offset : pluralStyle.offset || 0,
-                        options: pluralStyle.options
+                        options: pluralStyle.options,
+                        location: location()
                     }
                 },
-            peg$c28 = "select",
-            peg$c29 = { type: "literal", value: "select", description: "\"select\"" },
-            peg$c30 = function(options) {
+            peg$c25 = "select",
+            peg$c26 = { type: "literal", value: "select", description: "\"select\"" },
+            peg$c27 = function(options) {
                     return {
                         type   : 'selectFormat',
-                        options: options
+                        options: options,
+                        location: location()
                     };
                 },
-            peg$c31 = "=",
-            peg$c32 = { type: "literal", value: "=", description: "\"=\"" },
-            peg$c33 = function(selector, pattern) {
+            peg$c28 = "=",
+            peg$c29 = { type: "literal", value: "=", description: "\"=\"" },
+            peg$c30 = function(selector, pattern) {
                     return {
                         type    : 'optionalFormatPattern',
                         selector: selector,
-                        value   : pattern
+                        value   : pattern,
+                        location: location()
                     };
                 },
-            peg$c34 = "offset:",
-            peg$c35 = { type: "literal", value: "offset:", description: "\"offset:\"" },
-            peg$c36 = function(number) {
+            peg$c31 = "offset:",
+            peg$c32 = { type: "literal", value: "offset:", description: "\"offset:\"" },
+            peg$c33 = function(number) {
                     return number;
                 },
-            peg$c37 = function(offset, options) {
+            peg$c34 = function(offset, options) {
                     return {
                         type   : 'pluralFormat',
                         offset : offset,
-                        options: options
+                        options: options,
+                        location: location()
                     };
                 },
-            peg$c38 = { type: "other", description: "whitespace" },
-            peg$c39 = /^[ \t\n\r]/,
-            peg$c40 = { type: "class", value: "[ \\t\\n\\r]", description: "[ \\t\\n\\r]" },
-            peg$c41 = { type: "other", description: "optionalWhitespace" },
-            peg$c42 = /^[0-9]/,
-            peg$c43 = { type: "class", value: "[0-9]", description: "[0-9]" },
-            peg$c44 = /^[0-9a-f]/i,
-            peg$c45 = { type: "class", value: "[0-9a-f]i", description: "[0-9a-f]i" },
-            peg$c46 = "0",
-            peg$c47 = { type: "literal", value: "0", description: "\"0\"" },
-            peg$c48 = /^[1-9]/,
-            peg$c49 = { type: "class", value: "[1-9]", description: "[1-9]" },
-            peg$c50 = function(digits) {
+            peg$c35 = { type: "other", description: "whitespace" },
+            peg$c36 = /^[ \t\n\r]/,
+            peg$c37 = { type: "class", value: "[ \\t\\n\\r]", description: "[ \\t\\n\\r]" },
+            peg$c38 = { type: "other", description: "optionalWhitespace" },
+            peg$c39 = /^[0-9]/,
+            peg$c40 = { type: "class", value: "[0-9]", description: "[0-9]" },
+            peg$c41 = /^[0-9a-f]/i,
+            peg$c42 = { type: "class", value: "[0-9a-f]i", description: "[0-9a-f]i" },
+            peg$c43 = "0",
+            peg$c44 = { type: "literal", value: "0", description: "\"0\"" },
+            peg$c45 = /^[1-9]/,
+            peg$c46 = { type: "class", value: "[1-9]", description: "[1-9]" },
+            peg$c47 = function(digits) {
                 return parseInt(digits, 10);
             },
-            peg$c51 = /^[^{}\\\0-\x1F \t\n\r]/,
-            peg$c52 = { type: "class", value: "[^{}\\\\\\0-\\x1F \\t\\n\\r]", description: "[^{}\\\\\\0-\\x1F \\t\\n\\r]" },
-            peg$c53 = "\\\\",
-            peg$c54 = { type: "literal", value: "\\\\", description: "\"\\\\\\\\\"" },
-            peg$c55 = function() { return '\\'; },
-            peg$c56 = "\\#",
-            peg$c57 = { type: "literal", value: "\\#", description: "\"\\\\#\"" },
-            peg$c58 = function() { return '\\#'; },
-            peg$c59 = "\\{",
-            peg$c60 = { type: "literal", value: "\\{", description: "\"\\\\{\"" },
-            peg$c61 = function() { return '\u007B'; },
-            peg$c62 = "\\}",
-            peg$c63 = { type: "literal", value: "\\}", description: "\"\\\\}\"" },
-            peg$c64 = function() { return '\u007D'; },
-            peg$c65 = "\\u",
-            peg$c66 = { type: "literal", value: "\\u", description: "\"\\\\u\"" },
-            peg$c67 = function(digits) {
+            peg$c48 = /^[^{}\\\0-\x1F \t\n\r]/,
+            peg$c49 = { type: "class", value: "[^{}\\\\\\0-\\x1F\\x7f \\t\\n\\r]", description: "[^{}\\\\\\0-\\x1F\\x7f \\t\\n\\r]" },
+            peg$c50 = "\\\\",
+            peg$c51 = { type: "literal", value: "\\\\", description: "\"\\\\\\\\\"" },
+            peg$c52 = function() { return '\\'; },
+            peg$c53 = "\\#",
+            peg$c54 = { type: "literal", value: "\\#", description: "\"\\\\#\"" },
+            peg$c55 = function() { return '\\#'; },
+            peg$c56 = "\\{",
+            peg$c57 = { type: "literal", value: "\\{", description: "\"\\\\{\"" },
+            peg$c58 = function() { return '\u007B'; },
+            peg$c59 = "\\}",
+            peg$c60 = { type: "literal", value: "\\}", description: "\"\\\\}\"" },
+            peg$c61 = function() { return '\u007D'; },
+            peg$c62 = "\\u",
+            peg$c63 = { type: "literal", value: "\\u", description: "\"\\\\u\"" },
+            peg$c64 = function(digits) {
                     return String.fromCharCode(parseInt(digits, 16));
                 },
-            peg$c68 = function(chars) { return chars.join(''); },
+            peg$c65 = function(chars) { return chars.join(''); },
 
             peg$currPos          = 0,
-            peg$reportedPos      = 0,
-            peg$cachedPos        = 0,
-            peg$cachedPosDetails = { line: 1, column: 1, seenCR: false },
+            peg$savedPos         = 0,
+            peg$posDetailsCache  = [{ line: 1, column: 1, seenCR: false }],
             peg$maxFailPos       = 0,
             peg$maxFailExpected  = [],
             peg$silentFails      = 0,
@@ -448,39 +474,30 @@
           peg$startRuleFunction = peg$startRuleFunctions[options.startRule];
         }
 
-        function text() {
-          return input.substring(peg$reportedPos, peg$currPos);
-        }
-
-        function offset() {
-          return peg$reportedPos;
-        }
-
-        function line() {
-          return peg$computePosDetails(peg$reportedPos).line;
-        }
-
-        function column() {
-          return peg$computePosDetails(peg$reportedPos).column;
-        }
-
-        function expected(description) {
-          throw peg$buildException(
-            null,
-            [{ type: "other", description: description }],
-            peg$reportedPos
-          );
-        }
-
-        function error(message) {
-          throw peg$buildException(message, null, peg$reportedPos);
+        function location() {
+          return peg$computeLocation(peg$savedPos, peg$currPos);
         }
 
         function peg$computePosDetails(pos) {
-          function advance(details, startPos, endPos) {
-            var p, ch;
+          var details = peg$posDetailsCache[pos],
+              p, ch;
 
-            for (p = startPos; p < endPos; p++) {
+          if (details) {
+            return details;
+          } else {
+            p = pos - 1;
+            while (!peg$posDetailsCache[p]) {
+              p--;
+            }
+
+            details = peg$posDetailsCache[p];
+            details = {
+              line:   details.line,
+              column: details.column,
+              seenCR: details.seenCR
+            };
+
+            while (p < pos) {
               ch = input.charAt(p);
               if (ch === "\n") {
                 if (!details.seenCR) { details.line++; }
@@ -494,19 +511,31 @@
                 details.column++;
                 details.seenCR = false;
               }
-            }
-          }
 
-          if (peg$cachedPos !== pos) {
-            if (peg$cachedPos > pos) {
-              peg$cachedPos = 0;
-              peg$cachedPosDetails = { line: 1, column: 1, seenCR: false };
+              p++;
             }
-            advance(peg$cachedPosDetails, peg$cachedPos, pos);
-            peg$cachedPos = pos;
-          }
 
-          return peg$cachedPosDetails;
+            peg$posDetailsCache[pos] = details;
+            return details;
+          }
+        }
+
+        function peg$computeLocation(startPos, endPos) {
+          var startPosDetails = peg$computePosDetails(startPos),
+              endPosDetails   = peg$computePosDetails(endPos);
+
+          return {
+            start: {
+              offset: startPos,
+              line:   startPosDetails.line,
+              column: startPosDetails.column
+            },
+            end: {
+              offset: endPos,
+              line:   endPosDetails.line,
+              column: endPosDetails.column
+            }
+          };
         }
 
         function peg$fail(expected) {
@@ -520,7 +549,7 @@
           peg$maxFailExpected.push(expected);
         }
 
-        function peg$buildException(message, expected, pos) {
+        function peg$buildException(message, expected, found, location) {
           function cleanupExpected(expected) {
             var i = 1;
 
@@ -557,8 +586,8 @@
                 .replace(/\r/g,   '\\r')
                 .replace(/[\x00-\x07\x0B\x0E\x0F]/g, function(ch) { return '\\x0' + hex(ch); })
                 .replace(/[\x10-\x1F\x80-\xFF]/g,    function(ch) { return '\\x'  + hex(ch); })
-                .replace(/[\u0180-\u0FFF]/g,         function(ch) { return '\\u0' + hex(ch); })
-                .replace(/[\u1080-\uFFFF]/g,         function(ch) { return '\\u'  + hex(ch); });
+                .replace(/[\u0100-\u0FFF]/g,         function(ch) { return '\\u0' + hex(ch); })
+                .replace(/[\u1000-\uFFFF]/g,         function(ch) { return '\\u'  + hex(ch); });
             }
 
             var expectedDescs = new Array(expected.length),
@@ -579,20 +608,15 @@
             return "Expected " + expectedDesc + " but " + foundDesc + " found.";
           }
 
-          var posDetails = peg$computePosDetails(pos),
-              found      = pos < input.length ? input.charAt(pos) : null;
-
           if (expected !== null) {
             cleanupExpected(expected);
           }
 
-          return new SyntaxError(
+          return new peg$SyntaxError(
             message !== null ? message : buildMessage(expected, found),
             expected,
             found,
-            pos,
-            posDetails.line,
-            posDetails.column
+            location
           );
         }
 
@@ -615,8 +639,8 @@
             s2 = peg$parsemessageFormatElement();
           }
           if (s1 !== peg$FAILED) {
-            peg$reportedPos = s0;
-            s1 = peg$c1(s1);
+            peg$savedPos = s0;
+            s1 = peg$c0(s1);
           }
           s0 = s1;
 
@@ -650,15 +674,15 @@
                 s2 = s3;
               } else {
                 peg$currPos = s2;
-                s2 = peg$c2;
+                s2 = peg$FAILED;
               }
             } else {
               peg$currPos = s2;
-              s2 = peg$c2;
+              s2 = peg$FAILED;
             }
           } else {
             peg$currPos = s2;
-            s2 = peg$c2;
+            s2 = peg$FAILED;
           }
           if (s2 !== peg$FAILED) {
             while (s2 !== peg$FAILED) {
@@ -674,32 +698,33 @@
                     s2 = s3;
                   } else {
                     peg$currPos = s2;
-                    s2 = peg$c2;
+                    s2 = peg$FAILED;
                   }
                 } else {
                   peg$currPos = s2;
-                  s2 = peg$c2;
+                  s2 = peg$FAILED;
                 }
               } else {
                 peg$currPos = s2;
-                s2 = peg$c2;
+                s2 = peg$FAILED;
               }
             }
           } else {
-            s1 = peg$c2;
+            s1 = peg$FAILED;
           }
           if (s1 !== peg$FAILED) {
-            peg$reportedPos = s0;
-            s1 = peg$c3(s1);
+            peg$savedPos = s0;
+            s1 = peg$c1(s1);
           }
           s0 = s1;
           if (s0 === peg$FAILED) {
             s0 = peg$currPos;
             s1 = peg$parsews();
             if (s1 !== peg$FAILED) {
-              s1 = input.substring(s0, peg$currPos);
+              s0 = input.substring(s0, peg$currPos);
+            } else {
+              s0 = s1;
             }
-            s0 = s1;
           }
 
           return s0;
@@ -711,8 +736,8 @@
           s0 = peg$currPos;
           s1 = peg$parsemessageText();
           if (s1 !== peg$FAILED) {
-            peg$reportedPos = s0;
-            s1 = peg$c4(s1);
+            peg$savedPos = s0;
+            s1 = peg$c2(s1);
           }
           s0 = s1;
 
@@ -726,31 +751,32 @@
           if (s0 === peg$FAILED) {
             s0 = peg$currPos;
             s1 = [];
-            if (peg$c5.test(input.charAt(peg$currPos))) {
+            if (peg$c3.test(input.charAt(peg$currPos))) {
               s2 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s2 = peg$FAILED;
-              if (peg$silentFails === 0) { peg$fail(peg$c6); }
+              if (peg$silentFails === 0) { peg$fail(peg$c4); }
             }
             if (s2 !== peg$FAILED) {
               while (s2 !== peg$FAILED) {
                 s1.push(s2);
-                if (peg$c5.test(input.charAt(peg$currPos))) {
+                if (peg$c3.test(input.charAt(peg$currPos))) {
                   s2 = input.charAt(peg$currPos);
                   peg$currPos++;
                 } else {
                   s2 = peg$FAILED;
-                  if (peg$silentFails === 0) { peg$fail(peg$c6); }
+                  if (peg$silentFails === 0) { peg$fail(peg$c4); }
                 }
               }
             } else {
-              s1 = peg$c2;
+              s1 = peg$FAILED;
             }
             if (s1 !== peg$FAILED) {
-              s1 = input.substring(s0, peg$currPos);
+              s0 = input.substring(s0, peg$currPos);
+            } else {
+              s0 = s1;
             }
-            s0 = s1;
           }
 
           return s0;
@@ -761,11 +787,11 @@
 
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 123) {
-            s1 = peg$c7;
+            s1 = peg$c5;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c8); }
+            if (peg$silentFails === 0) { peg$fail(peg$c6); }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parse_();
@@ -776,11 +802,11 @@
                 if (s4 !== peg$FAILED) {
                   s5 = peg$currPos;
                   if (input.charCodeAt(peg$currPos) === 44) {
-                    s6 = peg$c10;
+                    s6 = peg$c7;
                     peg$currPos++;
                   } else {
                     s6 = peg$FAILED;
-                    if (peg$silentFails === 0) { peg$fail(peg$c11); }
+                    if (peg$silentFails === 0) { peg$fail(peg$c8); }
                   }
                   if (s6 !== peg$FAILED) {
                     s7 = peg$parse_();
@@ -791,60 +817,60 @@
                         s5 = s6;
                       } else {
                         peg$currPos = s5;
-                        s5 = peg$c2;
+                        s5 = peg$FAILED;
                       }
                     } else {
                       peg$currPos = s5;
-                      s5 = peg$c2;
+                      s5 = peg$FAILED;
                     }
                   } else {
                     peg$currPos = s5;
-                    s5 = peg$c2;
+                    s5 = peg$FAILED;
                   }
                   if (s5 === peg$FAILED) {
-                    s5 = peg$c9;
+                    s5 = null;
                   }
                   if (s5 !== peg$FAILED) {
                     s6 = peg$parse_();
                     if (s6 !== peg$FAILED) {
                       if (input.charCodeAt(peg$currPos) === 125) {
-                        s7 = peg$c12;
+                        s7 = peg$c9;
                         peg$currPos++;
                       } else {
                         s7 = peg$FAILED;
-                        if (peg$silentFails === 0) { peg$fail(peg$c13); }
+                        if (peg$silentFails === 0) { peg$fail(peg$c10); }
                       }
                       if (s7 !== peg$FAILED) {
-                        peg$reportedPos = s0;
-                        s1 = peg$c14(s3, s5);
+                        peg$savedPos = s0;
+                        s1 = peg$c11(s3, s5);
                         s0 = s1;
                       } else {
                         peg$currPos = s0;
-                        s0 = peg$c2;
+                        s0 = peg$FAILED;
                       }
                     } else {
                       peg$currPos = s0;
-                      s0 = peg$c2;
+                      s0 = peg$FAILED;
                     }
                   } else {
                     peg$currPos = s0;
-                    s0 = peg$c2;
+                    s0 = peg$FAILED;
                   }
                 } else {
                   peg$currPos = s0;
-                  s0 = peg$c2;
+                  s0 = peg$FAILED;
                 }
               } else {
                 peg$currPos = s0;
-                s0 = peg$c2;
+                s0 = peg$FAILED;
               }
             } else {
               peg$currPos = s0;
-              s0 = peg$c2;
+              s0 = peg$FAILED;
             }
           } else {
             peg$currPos = s0;
-            s0 = peg$c2;
+            s0 = peg$FAILED;
           }
 
           return s0;
@@ -871,28 +897,28 @@
           var s0, s1, s2, s3, s4, s5, s6;
 
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 6) === peg$c15) {
-            s1 = peg$c15;
+          if (input.substr(peg$currPos, 6) === peg$c12) {
+            s1 = peg$c12;
             peg$currPos += 6;
           } else {
             s1 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c16); }
+            if (peg$silentFails === 0) { peg$fail(peg$c13); }
           }
           if (s1 === peg$FAILED) {
-            if (input.substr(peg$currPos, 4) === peg$c17) {
-              s1 = peg$c17;
+            if (input.substr(peg$currPos, 4) === peg$c14) {
+              s1 = peg$c14;
               peg$currPos += 4;
             } else {
               s1 = peg$FAILED;
-              if (peg$silentFails === 0) { peg$fail(peg$c18); }
+              if (peg$silentFails === 0) { peg$fail(peg$c15); }
             }
             if (s1 === peg$FAILED) {
-              if (input.substr(peg$currPos, 4) === peg$c19) {
-                s1 = peg$c19;
+              if (input.substr(peg$currPos, 4) === peg$c16) {
+                s1 = peg$c16;
                 peg$currPos += 4;
               } else {
                 s1 = peg$FAILED;
-                if (peg$silentFails === 0) { peg$fail(peg$c20); }
+                if (peg$silentFails === 0) { peg$fail(peg$c17); }
               }
             }
           }
@@ -901,11 +927,11 @@
             if (s2 !== peg$FAILED) {
               s3 = peg$currPos;
               if (input.charCodeAt(peg$currPos) === 44) {
-                s4 = peg$c10;
+                s4 = peg$c7;
                 peg$currPos++;
               } else {
                 s4 = peg$FAILED;
-                if (peg$silentFails === 0) { peg$fail(peg$c11); }
+                if (peg$silentFails === 0) { peg$fail(peg$c8); }
               }
               if (s4 !== peg$FAILED) {
                 s5 = peg$parse_();
@@ -916,34 +942,34 @@
                     s3 = s4;
                   } else {
                     peg$currPos = s3;
-                    s3 = peg$c2;
+                    s3 = peg$FAILED;
                   }
                 } else {
                   peg$currPos = s3;
-                  s3 = peg$c2;
+                  s3 = peg$FAILED;
                 }
               } else {
                 peg$currPos = s3;
-                s3 = peg$c2;
+                s3 = peg$FAILED;
               }
               if (s3 === peg$FAILED) {
-                s3 = peg$c9;
+                s3 = null;
               }
               if (s3 !== peg$FAILED) {
-                peg$reportedPos = s0;
-                s1 = peg$c21(s1, s3);
+                peg$savedPos = s0;
+                s1 = peg$c18(s1, s3);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
-                s0 = peg$c2;
+                s0 = peg$FAILED;
               }
             } else {
               peg$currPos = s0;
-              s0 = peg$c2;
+              s0 = peg$FAILED;
             }
           } else {
             peg$currPos = s0;
-            s0 = peg$c2;
+            s0 = peg$FAILED;
           }
 
           return s0;
@@ -953,50 +979,50 @@
           var s0, s1, s2, s3, s4, s5;
 
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 6) === peg$c22) {
-            s1 = peg$c22;
+          if (input.substr(peg$currPos, 6) === peg$c19) {
+            s1 = peg$c19;
             peg$currPos += 6;
           } else {
             s1 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c23); }
+            if (peg$silentFails === 0) { peg$fail(peg$c20); }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parse_();
             if (s2 !== peg$FAILED) {
               if (input.charCodeAt(peg$currPos) === 44) {
-                s3 = peg$c10;
+                s3 = peg$c7;
                 peg$currPos++;
               } else {
                 s3 = peg$FAILED;
-                if (peg$silentFails === 0) { peg$fail(peg$c11); }
+                if (peg$silentFails === 0) { peg$fail(peg$c8); }
               }
               if (s3 !== peg$FAILED) {
                 s4 = peg$parse_();
                 if (s4 !== peg$FAILED) {
                   s5 = peg$parsepluralStyle();
                   if (s5 !== peg$FAILED) {
-                    peg$reportedPos = s0;
-                    s1 = peg$c24(s5);
+                    peg$savedPos = s0;
+                    s1 = peg$c21(s5);
                     s0 = s1;
                   } else {
                     peg$currPos = s0;
-                    s0 = peg$c2;
+                    s0 = peg$FAILED;
                   }
                 } else {
                   peg$currPos = s0;
-                  s0 = peg$c2;
+                  s0 = peg$FAILED;
                 }
               } else {
                 peg$currPos = s0;
-                s0 = peg$c2;
+                s0 = peg$FAILED;
               }
             } else {
               peg$currPos = s0;
-              s0 = peg$c2;
+              s0 = peg$FAILED;
             }
           } else {
             peg$currPos = s0;
-            s0 = peg$c2;
+            s0 = peg$FAILED;
           }
 
           return s0;
@@ -1006,50 +1032,50 @@
           var s0, s1, s2, s3, s4, s5;
 
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 13) === peg$c25) {
-            s1 = peg$c25;
+          if (input.substr(peg$currPos, 13) === peg$c22) {
+            s1 = peg$c22;
             peg$currPos += 13;
           } else {
             s1 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c26); }
+            if (peg$silentFails === 0) { peg$fail(peg$c23); }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parse_();
             if (s2 !== peg$FAILED) {
               if (input.charCodeAt(peg$currPos) === 44) {
-                s3 = peg$c10;
+                s3 = peg$c7;
                 peg$currPos++;
               } else {
                 s3 = peg$FAILED;
-                if (peg$silentFails === 0) { peg$fail(peg$c11); }
+                if (peg$silentFails === 0) { peg$fail(peg$c8); }
               }
               if (s3 !== peg$FAILED) {
                 s4 = peg$parse_();
                 if (s4 !== peg$FAILED) {
                   s5 = peg$parsepluralStyle();
                   if (s5 !== peg$FAILED) {
-                    peg$reportedPos = s0;
-                    s1 = peg$c27(s5);
+                    peg$savedPos = s0;
+                    s1 = peg$c24(s5);
                     s0 = s1;
                   } else {
                     peg$currPos = s0;
-                    s0 = peg$c2;
+                    s0 = peg$FAILED;
                   }
                 } else {
                   peg$currPos = s0;
-                  s0 = peg$c2;
+                  s0 = peg$FAILED;
                 }
               } else {
                 peg$currPos = s0;
-                s0 = peg$c2;
+                s0 = peg$FAILED;
               }
             } else {
               peg$currPos = s0;
-              s0 = peg$c2;
+              s0 = peg$FAILED;
             }
           } else {
             peg$currPos = s0;
-            s0 = peg$c2;
+            s0 = peg$FAILED;
           }
 
           return s0;
@@ -1059,22 +1085,22 @@
           var s0, s1, s2, s3, s4, s5, s6;
 
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 6) === peg$c28) {
-            s1 = peg$c28;
+          if (input.substr(peg$currPos, 6) === peg$c25) {
+            s1 = peg$c25;
             peg$currPos += 6;
           } else {
             s1 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c29); }
+            if (peg$silentFails === 0) { peg$fail(peg$c26); }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parse_();
             if (s2 !== peg$FAILED) {
               if (input.charCodeAt(peg$currPos) === 44) {
-                s3 = peg$c10;
+                s3 = peg$c7;
                 peg$currPos++;
               } else {
                 s3 = peg$FAILED;
-                if (peg$silentFails === 0) { peg$fail(peg$c11); }
+                if (peg$silentFails === 0) { peg$fail(peg$c8); }
               }
               if (s3 !== peg$FAILED) {
                 s4 = peg$parse_();
@@ -1087,31 +1113,31 @@
                       s6 = peg$parseoptionalFormatPattern();
                     }
                   } else {
-                    s5 = peg$c2;
+                    s5 = peg$FAILED;
                   }
                   if (s5 !== peg$FAILED) {
-                    peg$reportedPos = s0;
-                    s1 = peg$c30(s5);
+                    peg$savedPos = s0;
+                    s1 = peg$c27(s5);
                     s0 = s1;
                   } else {
                     peg$currPos = s0;
-                    s0 = peg$c2;
+                    s0 = peg$FAILED;
                   }
                 } else {
                   peg$currPos = s0;
-                  s0 = peg$c2;
+                  s0 = peg$FAILED;
                 }
               } else {
                 peg$currPos = s0;
-                s0 = peg$c2;
+                s0 = peg$FAILED;
               }
             } else {
               peg$currPos = s0;
-              s0 = peg$c2;
+              s0 = peg$FAILED;
             }
           } else {
             peg$currPos = s0;
-            s0 = peg$c2;
+            s0 = peg$FAILED;
           }
 
           return s0;
@@ -1123,11 +1149,11 @@
           s0 = peg$currPos;
           s1 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 61) {
-            s2 = peg$c31;
+            s2 = peg$c28;
             peg$currPos++;
           } else {
             s2 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c32); }
+            if (peg$silentFails === 0) { peg$fail(peg$c29); }
           }
           if (s2 !== peg$FAILED) {
             s3 = peg$parsenumber();
@@ -1136,16 +1162,17 @@
               s1 = s2;
             } else {
               peg$currPos = s1;
-              s1 = peg$c2;
+              s1 = peg$FAILED;
             }
           } else {
             peg$currPos = s1;
-            s1 = peg$c2;
+            s1 = peg$FAILED;
           }
           if (s1 !== peg$FAILED) {
-            s1 = input.substring(s0, peg$currPos);
+            s0 = input.substring(s0, peg$currPos);
+          } else {
+            s0 = s1;
           }
-          s0 = s1;
           if (s0 === peg$FAILED) {
             s0 = peg$parsechars();
           }
@@ -1164,11 +1191,11 @@
               s3 = peg$parse_();
               if (s3 !== peg$FAILED) {
                 if (input.charCodeAt(peg$currPos) === 123) {
-                  s4 = peg$c7;
+                  s4 = peg$c5;
                   peg$currPos++;
                 } else {
                   s4 = peg$FAILED;
-                  if (peg$silentFails === 0) { peg$fail(peg$c8); }
+                  if (peg$silentFails === 0) { peg$fail(peg$c6); }
                 }
                 if (s4 !== peg$FAILED) {
                   s5 = peg$parse_();
@@ -1178,47 +1205,47 @@
                       s7 = peg$parse_();
                       if (s7 !== peg$FAILED) {
                         if (input.charCodeAt(peg$currPos) === 125) {
-                          s8 = peg$c12;
+                          s8 = peg$c9;
                           peg$currPos++;
                         } else {
                           s8 = peg$FAILED;
-                          if (peg$silentFails === 0) { peg$fail(peg$c13); }
+                          if (peg$silentFails === 0) { peg$fail(peg$c10); }
                         }
                         if (s8 !== peg$FAILED) {
-                          peg$reportedPos = s0;
-                          s1 = peg$c33(s2, s6);
+                          peg$savedPos = s0;
+                          s1 = peg$c30(s2, s6);
                           s0 = s1;
                         } else {
                           peg$currPos = s0;
-                          s0 = peg$c2;
+                          s0 = peg$FAILED;
                         }
                       } else {
                         peg$currPos = s0;
-                        s0 = peg$c2;
+                        s0 = peg$FAILED;
                       }
                     } else {
                       peg$currPos = s0;
-                      s0 = peg$c2;
+                      s0 = peg$FAILED;
                     }
                   } else {
                     peg$currPos = s0;
-                    s0 = peg$c2;
+                    s0 = peg$FAILED;
                   }
                 } else {
                   peg$currPos = s0;
-                  s0 = peg$c2;
+                  s0 = peg$FAILED;
                 }
               } else {
                 peg$currPos = s0;
-                s0 = peg$c2;
+                s0 = peg$FAILED;
               }
             } else {
               peg$currPos = s0;
-              s0 = peg$c2;
+              s0 = peg$FAILED;
             }
           } else {
             peg$currPos = s0;
-            s0 = peg$c2;
+            s0 = peg$FAILED;
           }
 
           return s0;
@@ -1228,32 +1255,32 @@
           var s0, s1, s2, s3;
 
           s0 = peg$currPos;
-          if (input.substr(peg$currPos, 7) === peg$c34) {
-            s1 = peg$c34;
+          if (input.substr(peg$currPos, 7) === peg$c31) {
+            s1 = peg$c31;
             peg$currPos += 7;
           } else {
             s1 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c35); }
+            if (peg$silentFails === 0) { peg$fail(peg$c32); }
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parse_();
             if (s2 !== peg$FAILED) {
               s3 = peg$parsenumber();
               if (s3 !== peg$FAILED) {
-                peg$reportedPos = s0;
-                s1 = peg$c36(s3);
+                peg$savedPos = s0;
+                s1 = peg$c33(s3);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
-                s0 = peg$c2;
+                s0 = peg$FAILED;
               }
             } else {
               peg$currPos = s0;
-              s0 = peg$c2;
+              s0 = peg$FAILED;
             }
           } else {
             peg$currPos = s0;
-            s0 = peg$c2;
+            s0 = peg$FAILED;
           }
 
           return s0;
@@ -1265,7 +1292,7 @@
           s0 = peg$currPos;
           s1 = peg$parseoffset();
           if (s1 === peg$FAILED) {
-            s1 = peg$c9;
+            s1 = null;
           }
           if (s1 !== peg$FAILED) {
             s2 = peg$parse_();
@@ -1278,23 +1305,23 @@
                   s4 = peg$parseoptionalFormatPattern();
                 }
               } else {
-                s3 = peg$c2;
+                s3 = peg$FAILED;
               }
               if (s3 !== peg$FAILED) {
-                peg$reportedPos = s0;
-                s1 = peg$c37(s1, s3);
+                peg$savedPos = s0;
+                s1 = peg$c34(s1, s3);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
-                s0 = peg$c2;
+                s0 = peg$FAILED;
               }
             } else {
               peg$currPos = s0;
-              s0 = peg$c2;
+              s0 = peg$FAILED;
             }
           } else {
             peg$currPos = s0;
-            s0 = peg$c2;
+            s0 = peg$FAILED;
           }
 
           return s0;
@@ -1305,31 +1332,31 @@
 
           peg$silentFails++;
           s0 = [];
-          if (peg$c39.test(input.charAt(peg$currPos))) {
+          if (peg$c36.test(input.charAt(peg$currPos))) {
             s1 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c40); }
+            if (peg$silentFails === 0) { peg$fail(peg$c37); }
           }
           if (s1 !== peg$FAILED) {
             while (s1 !== peg$FAILED) {
               s0.push(s1);
-              if (peg$c39.test(input.charAt(peg$currPos))) {
+              if (peg$c36.test(input.charAt(peg$currPos))) {
                 s1 = input.charAt(peg$currPos);
                 peg$currPos++;
               } else {
                 s1 = peg$FAILED;
-                if (peg$silentFails === 0) { peg$fail(peg$c40); }
+                if (peg$silentFails === 0) { peg$fail(peg$c37); }
               }
             }
           } else {
-            s0 = peg$c2;
+            s0 = peg$FAILED;
           }
           peg$silentFails--;
           if (s0 === peg$FAILED) {
             s1 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c38); }
+            if (peg$silentFails === 0) { peg$fail(peg$c35); }
           }
 
           return s0;
@@ -1347,13 +1374,14 @@
             s2 = peg$parsews();
           }
           if (s1 !== peg$FAILED) {
-            s1 = input.substring(s0, peg$currPos);
+            s0 = input.substring(s0, peg$currPos);
+          } else {
+            s0 = s1;
           }
-          s0 = s1;
           peg$silentFails--;
           if (s0 === peg$FAILED) {
             s1 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c41); }
+            if (peg$silentFails === 0) { peg$fail(peg$c38); }
           }
 
           return s0;
@@ -1362,12 +1390,12 @@
         function peg$parsedigit() {
           var s0;
 
-          if (peg$c42.test(input.charAt(peg$currPos))) {
+          if (peg$c39.test(input.charAt(peg$currPos))) {
             s0 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s0 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c43); }
+            if (peg$silentFails === 0) { peg$fail(peg$c40); }
           }
 
           return s0;
@@ -1376,12 +1404,12 @@
         function peg$parsehexDigit() {
           var s0;
 
-          if (peg$c44.test(input.charAt(peg$currPos))) {
+          if (peg$c41.test(input.charAt(peg$currPos))) {
             s0 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s0 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c45); }
+            if (peg$silentFails === 0) { peg$fail(peg$c42); }
           }
 
           return s0;
@@ -1392,21 +1420,21 @@
 
           s0 = peg$currPos;
           if (input.charCodeAt(peg$currPos) === 48) {
-            s1 = peg$c46;
+            s1 = peg$c43;
             peg$currPos++;
           } else {
             s1 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c47); }
+            if (peg$silentFails === 0) { peg$fail(peg$c44); }
           }
           if (s1 === peg$FAILED) {
             s1 = peg$currPos;
             s2 = peg$currPos;
-            if (peg$c48.test(input.charAt(peg$currPos))) {
+            if (peg$c45.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
-              if (peg$silentFails === 0) { peg$fail(peg$c49); }
+              if (peg$silentFails === 0) { peg$fail(peg$c46); }
             }
             if (s3 !== peg$FAILED) {
               s4 = [];
@@ -1420,20 +1448,21 @@
                 s2 = s3;
               } else {
                 peg$currPos = s2;
-                s2 = peg$c2;
+                s2 = peg$FAILED;
               }
             } else {
               peg$currPos = s2;
-              s2 = peg$c2;
+              s2 = peg$FAILED;
             }
             if (s2 !== peg$FAILED) {
-              s2 = input.substring(s1, peg$currPos);
+              s1 = input.substring(s1, peg$currPos);
+            } else {
+              s1 = s2;
             }
-            s1 = s2;
           }
           if (s1 !== peg$FAILED) {
-            peg$reportedPos = s0;
-            s1 = peg$c50(s1);
+            peg$savedPos = s0;
+            s1 = peg$c47(s1);
           }
           s0 = s1;
 
@@ -1443,77 +1472,77 @@
         function peg$parsechar() {
           var s0, s1, s2, s3, s4, s5, s6, s7;
 
-          if (peg$c51.test(input.charAt(peg$currPos))) {
+          if (peg$c48.test(input.charAt(peg$currPos))) {
             s0 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s0 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c52); }
+            if (peg$silentFails === 0) { peg$fail(peg$c49); }
           }
           if (s0 === peg$FAILED) {
             s0 = peg$currPos;
-            if (input.substr(peg$currPos, 2) === peg$c53) {
-              s1 = peg$c53;
+            if (input.substr(peg$currPos, 2) === peg$c50) {
+              s1 = peg$c50;
               peg$currPos += 2;
             } else {
               s1 = peg$FAILED;
-              if (peg$silentFails === 0) { peg$fail(peg$c54); }
+              if (peg$silentFails === 0) { peg$fail(peg$c51); }
             }
             if (s1 !== peg$FAILED) {
-              peg$reportedPos = s0;
-              s1 = peg$c55();
+              peg$savedPos = s0;
+              s1 = peg$c52();
             }
             s0 = s1;
             if (s0 === peg$FAILED) {
               s0 = peg$currPos;
-              if (input.substr(peg$currPos, 2) === peg$c56) {
-                s1 = peg$c56;
+              if (input.substr(peg$currPos, 2) === peg$c53) {
+                s1 = peg$c53;
                 peg$currPos += 2;
               } else {
                 s1 = peg$FAILED;
-                if (peg$silentFails === 0) { peg$fail(peg$c57); }
+                if (peg$silentFails === 0) { peg$fail(peg$c54); }
               }
               if (s1 !== peg$FAILED) {
-                peg$reportedPos = s0;
-                s1 = peg$c58();
+                peg$savedPos = s0;
+                s1 = peg$c55();
               }
               s0 = s1;
               if (s0 === peg$FAILED) {
                 s0 = peg$currPos;
-                if (input.substr(peg$currPos, 2) === peg$c59) {
-                  s1 = peg$c59;
+                if (input.substr(peg$currPos, 2) === peg$c56) {
+                  s1 = peg$c56;
                   peg$currPos += 2;
                 } else {
                   s1 = peg$FAILED;
-                  if (peg$silentFails === 0) { peg$fail(peg$c60); }
+                  if (peg$silentFails === 0) { peg$fail(peg$c57); }
                 }
                 if (s1 !== peg$FAILED) {
-                  peg$reportedPos = s0;
-                  s1 = peg$c61();
+                  peg$savedPos = s0;
+                  s1 = peg$c58();
                 }
                 s0 = s1;
                 if (s0 === peg$FAILED) {
                   s0 = peg$currPos;
-                  if (input.substr(peg$currPos, 2) === peg$c62) {
-                    s1 = peg$c62;
+                  if (input.substr(peg$currPos, 2) === peg$c59) {
+                    s1 = peg$c59;
                     peg$currPos += 2;
                   } else {
                     s1 = peg$FAILED;
-                    if (peg$silentFails === 0) { peg$fail(peg$c63); }
+                    if (peg$silentFails === 0) { peg$fail(peg$c60); }
                   }
                   if (s1 !== peg$FAILED) {
-                    peg$reportedPos = s0;
-                    s1 = peg$c64();
+                    peg$savedPos = s0;
+                    s1 = peg$c61();
                   }
                   s0 = s1;
                   if (s0 === peg$FAILED) {
                     s0 = peg$currPos;
-                    if (input.substr(peg$currPos, 2) === peg$c65) {
-                      s1 = peg$c65;
+                    if (input.substr(peg$currPos, 2) === peg$c62) {
+                      s1 = peg$c62;
                       peg$currPos += 2;
                     } else {
                       s1 = peg$FAILED;
-                      if (peg$silentFails === 0) { peg$fail(peg$c66); }
+                      if (peg$silentFails === 0) { peg$fail(peg$c63); }
                     }
                     if (s1 !== peg$FAILED) {
                       s2 = peg$currPos;
@@ -1530,35 +1559,36 @@
                               s3 = s4;
                             } else {
                               peg$currPos = s3;
-                              s3 = peg$c2;
+                              s3 = peg$FAILED;
                             }
                           } else {
                             peg$currPos = s3;
-                            s3 = peg$c2;
+                            s3 = peg$FAILED;
                           }
                         } else {
                           peg$currPos = s3;
-                          s3 = peg$c2;
+                          s3 = peg$FAILED;
                         }
                       } else {
                         peg$currPos = s3;
-                        s3 = peg$c2;
+                        s3 = peg$FAILED;
                       }
                       if (s3 !== peg$FAILED) {
-                        s3 = input.substring(s2, peg$currPos);
+                        s2 = input.substring(s2, peg$currPos);
+                      } else {
+                        s2 = s3;
                       }
-                      s2 = s3;
                       if (s2 !== peg$FAILED) {
-                        peg$reportedPos = s0;
-                        s1 = peg$c67(s2);
+                        peg$savedPos = s0;
+                        s1 = peg$c64(s2);
                         s0 = s1;
                       } else {
                         peg$currPos = s0;
-                        s0 = peg$c2;
+                        s0 = peg$FAILED;
                       }
                     } else {
                       peg$currPos = s0;
-                      s0 = peg$c2;
+                      s0 = peg$FAILED;
                     }
                   }
                 }
@@ -1581,11 +1611,11 @@
               s2 = peg$parsechar();
             }
           } else {
-            s1 = peg$c2;
+            s1 = peg$FAILED;
           }
           if (s1 !== peg$FAILED) {
-            peg$reportedPos = s0;
-            s1 = peg$c68(s1);
+            peg$savedPos = s0;
+            s1 = peg$c65(s1);
           }
           s0 = s1;
 
@@ -1601,24 +1631,35 @@
             peg$fail({ type: "end", description: "end of input" });
           }
 
-          throw peg$buildException(null, peg$maxFailExpected, peg$maxFailPos);
+          throw peg$buildException(
+            null,
+            peg$maxFailExpected,
+            peg$maxFailPos < input.length ? input.charAt(peg$maxFailPos) : null,
+            peg$maxFailPos < input.length
+              ? peg$computeLocation(peg$maxFailPos, peg$maxFailPos + 1)
+              : peg$computeLocation(peg$maxFailPos, peg$maxFailPos)
+          );
         }
       }
 
       return {
-        SyntaxError: SyntaxError,
-        parse:       parse
+        SyntaxError: peg$SyntaxError,
+        parse:       peg$parse
       };
     })();
 
-    var $$core1$$default = $$core1$$MessageFormat;
+    /*
+    Copyright (c) 2014, Yahoo! Inc. All rights reserved.
+    Copyrights licensed under the New BSD License.
+    See the accompanying LICENSE file for terms.
+    */
 
     // -- MessageFormat --------------------------------------------------------
 
-    function $$core1$$MessageFormat(message, locales, formats) {
+    function MessageFormat(message, locales, formats) {
         // Parse string messages into an AST.
         var ast = typeof message === 'string' ?
-                $$core1$$MessageFormat.__parse(message) : message;
+                MessageFormat.__parse(message) : message;
 
         if (!(ast && ast.type === 'messageFormatPattern')) {
             throw new TypeError('A message must be provided as a String or AST.');
@@ -1626,10 +1667,10 @@
 
         // Creates a new object with the specified `formats` merged with the default
         // formats.
-        formats = this._mergeFormats($$core1$$MessageFormat.formats, formats);
+        formats = this._mergeFormats(MessageFormat.formats, formats);
 
         // Defined first because it's used to build the format pattern.
-        $$es51$$defineProperty(this, '_locale',  {value: this._resolveLocale(locales)});
+        defineProperty(this, '_locale',  {value: this._resolveLocale(locales)});
 
         // Compile the `ast` to a pattern that is highly optimized for repeated
         // `format()` invocations. **Note:** This passes the `locales` set provided
@@ -1659,7 +1700,7 @@
     // Default format options used as the prototype of the `formats` provided to the
     // constructor. These are used when constructing the internal Intl.NumberFormat
     // and Intl.DateTimeFormat instances.
-    $$es51$$defineProperty($$core1$$MessageFormat, 'formats', {
+    defineProperty(MessageFormat, 'formats', {
         enumerable: true,
 
         value: {
@@ -1730,8 +1771,8 @@
     });
 
     // Define internal private properties for dealing with locale data.
-    $$es51$$defineProperty($$core1$$MessageFormat, '__localeData__', {value: $$es51$$objCreate(null)});
-    $$es51$$defineProperty($$core1$$MessageFormat, '__addLocaleData', {value: function (data) {
+    defineProperty(MessageFormat, '__localeData__', {value: objCreate(null)});
+    defineProperty(MessageFormat, '__addLocaleData', {value: function (data) {
         if (!(data && data.locale)) {
             throw new Error(
                 'Locale data provided to IntlMessageFormat is missing a ' +
@@ -1739,34 +1780,34 @@
             );
         }
 
-        $$core1$$MessageFormat.__localeData__[data.locale.toLowerCase()] = data;
+        MessageFormat.__localeData__[data.locale.toLowerCase()] = data;
     }});
 
     // Defines `__parse()` static method as an exposed private.
-    $$es51$$defineProperty($$core1$$MessageFormat, '__parse', {value: intl$messageformat$parser$$default.parse});
+    defineProperty(MessageFormat, '__parse', {value: parser.parse});
 
     // Define public `defaultLocale` property which defaults to English, but can be
     // set by the developer.
-    $$es51$$defineProperty($$core1$$MessageFormat, 'defaultLocale', {
+    defineProperty(MessageFormat, 'defaultLocale', {
         enumerable: true,
         writable  : true,
         value     : undefined
     });
 
-    $$core1$$MessageFormat.prototype.resolvedOptions = function () {
+    MessageFormat.prototype.resolvedOptions = function () {
         // TODO: Provide anything else?
         return {
             locale: this._locale
         };
     };
 
-    $$core1$$MessageFormat.prototype._compilePattern = function (ast, locales, formats, pluralFn) {
-        var compiler = new $$compiler$$default(locales, formats, pluralFn);
+    MessageFormat.prototype._compilePattern = function (ast, locales, formats, pluralFn) {
+        var compiler = new Compiler(locales, formats, pluralFn);
         return compiler.compile(ast);
     };
 
-    $$core1$$MessageFormat.prototype._findPluralRuleFunction = function (locale) {
-        var localeData = $$core1$$MessageFormat.__localeData__;
+    MessageFormat.prototype._findPluralRuleFunction = function (locale) {
+        var localeData = MessageFormat.__localeData__;
         var data       = localeData[locale.toLowerCase()];
 
         // The locale data is de-duplicated, so we have to traverse the locale's
@@ -1785,7 +1826,7 @@
         );
     };
 
-    $$core1$$MessageFormat.prototype._format = function (pattern, values) {
+    MessageFormat.prototype._format = function (pattern, values) {
         var result = '',
             i, len, part, id, value, err;
 
@@ -1801,7 +1842,7 @@
             id = part.id;
 
             // Enforce that all required values are provided by the caller.
-            if (!(values && $$utils$$hop.call(values, id))) {
+            if (!(values && hop.call(values, id))) {
               err = new Error('A value must be provided for: ' + id);
               err.variableId = id;
               throw err;
@@ -1822,32 +1863,32 @@
         return result;
     };
 
-    $$core1$$MessageFormat.prototype._mergeFormats = function (defaults, formats) {
+    MessageFormat.prototype._mergeFormats = function (defaults, formats) {
         var mergedFormats = {},
             type, mergedType;
 
         for (type in defaults) {
-            if (!$$utils$$hop.call(defaults, type)) { continue; }
+            if (!hop.call(defaults, type)) { continue; }
 
-            mergedFormats[type] = mergedType = $$es51$$objCreate(defaults[type]);
+            mergedFormats[type] = mergedType = objCreate(defaults[type]);
 
-            if (formats && $$utils$$hop.call(formats, type)) {
-                $$utils$$extend(mergedType, formats[type]);
+            if (formats && hop.call(formats, type)) {
+                extend(mergedType, formats[type]);
             }
         }
 
         return mergedFormats;
     };
 
-    $$core1$$MessageFormat.prototype._resolveLocale = function (locales) {
+    MessageFormat.prototype._resolveLocale = function (locales) {
         if (typeof locales === 'string') {
             locales = [locales];
         }
 
         // Create a copy of the array so we can push on the default locale.
-        locales = (locales || []).concat($$core1$$MessageFormat.defaultLocale);
+        locales = (locales || []).concat(MessageFormat.defaultLocale);
 
-        var localeData = $$core1$$MessageFormat.__localeData__;
+        var localeData = MessageFormat.__localeData__;
         var i, len, localeParts, data;
 
         // Using the set of locales + the default locale, we look for the first one
@@ -1876,35 +1917,45 @@
             locales.join(', ') + ', or the default locale: ' + defaultLocale
         );
     };
-    var $$en1$$default = {"locale":"en","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1],t0=Number(s[0])==n,n10=t0&&s[0].slice(-1),n100=t0&&s[0].slice(-2);if(ord)return n10==1&&n100!=11?"one":n10==2&&n100!=12?"two":n10==3&&n100!=13?"few":"other";return n==1&&v0?"one":"other"}};
 
-    $$core1$$default.__addLocaleData($$en1$$default);
-    $$core1$$default.defaultLocale = 'en';
+    // GENERATED FILE
+    var defaultLocale = {"locale":"en","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1],t0=Number(s[0])==n,n10=t0&&s[0].slice(-1),n100=t0&&s[0].slice(-2);if(ord)return n10==1&&n100!=11?"one":n10==2&&n100!=12?"two":n10==3&&n100!=13?"few":"other";return n==1&&v0?"one":"other"}};
 
-    var intl$messageformat$$default = $$core1$$default;
+    /* jslint esnext: true */
 
-    var $$diff$$round = Math.round;
+    MessageFormat.__addLocaleData(defaultLocale);
+    MessageFormat.defaultLocale = 'en';
 
-    function $$diff$$daysToYears(days) {
+    /*
+    Copyright (c) 2014, Yahoo! Inc. All rights reserved.
+    Copyrights licensed under the New BSD License.
+    See the accompanying LICENSE file for terms.
+    */
+
+    /* jslint esnext: true */
+
+    var round = Math.round;
+
+    function daysToYears(days) {
         // 400 years have 146097 days (taking into account leap year rules)
         return days * 400 / 146097;
     }
 
-    var $$diff$$default = function (from, to) {
+    function diff (from, to) {
         // Convert to ms timestamps.
         from = +from;
         to   = +to;
 
-        var millisecond = $$diff$$round(to - from),
-            second      = $$diff$$round(millisecond / 1000),
-            minute      = $$diff$$round(second / 60),
-            hour        = $$diff$$round(minute / 60),
-            day         = $$diff$$round(hour / 24),
-            week        = $$diff$$round(day / 7);
+        var millisecond = round(to - from),
+            second      = round(millisecond / 1000),
+            minute      = round(second / 60),
+            hour        = round(minute / 60),
+            day         = round(hour / 24),
+            week        = round(day / 7);
 
-        var rawYears = $$diff$$daysToYears(day),
-            month    = $$diff$$round(rawYears * 12),
-            year     = $$diff$$round(rawYears);
+        var rawYears = daysToYears(day),
+            month    = round(rawYears * 12),
+            year     = round(rawYears);
 
         return {
             millisecond    : millisecond,
@@ -1923,29 +1974,38 @@
             year           : year,
             'year-short'   : year
         };
-    };
+    }
 
-    var $$es5$$hop = Object.prototype.hasOwnProperty;
-    var $$es5$$toString = Object.prototype.toString;
+    /*
+    Copyright (c) 2014, Yahoo! Inc. All rights reserved.
+    Copyrights licensed under the New BSD License.
+    See the accompanying LICENSE file for terms.
+    */
 
-    var $$es5$$realDefineProp = (function () {
+    /* jslint esnext: true */
+
+    // Purposely using the same implementation as the Intl.js `Intl` polyfill.
+    // Copyright 2013 Andy Earnshaw, MIT License
+
+    var hop$1 = Object.prototype.hasOwnProperty;
+    var toString = Object.prototype.toString;
+
+    var realDefineProp$1 = (function () {
         try { return !!Object.defineProperty({}, 'a', {}); }
         catch (e) { return false; }
     })();
 
-    var $$es5$$es3 = !$$es5$$realDefineProp && !Object.prototype.__defineGetter__;
-
-    var $$es5$$defineProperty = $$es5$$realDefineProp ? Object.defineProperty :
+    var defineProperty$1 = realDefineProp$1 ? Object.defineProperty :
             function (obj, name, desc) {
 
         if ('get' in desc && obj.__defineGetter__) {
             obj.__defineGetter__(name, desc.get);
-        } else if (!$$es5$$hop.call(obj, name) || 'value' in desc) {
+        } else if (!hop$1.call(obj, name) || 'value' in desc) {
             obj[name] = desc.value;
         }
     };
 
-    var $$es5$$objCreate = Object.create || function (proto, props) {
+    var objCreate$1 = Object.create || function (proto, props) {
         var obj, k;
 
         function F() {}
@@ -1953,15 +2013,15 @@
         obj = new F();
 
         for (k in props) {
-            if ($$es5$$hop.call(props, k)) {
-                $$es5$$defineProperty(obj, k, props[k]);
+            if (hop$1.call(props, k)) {
+                defineProperty$1(obj, k, props[k]);
             }
         }
 
         return obj;
     };
 
-    var $$es5$$arrIndexOf = Array.prototype.indexOf || function (search, fromIndex) {
+    var arrIndexOf = Array.prototype.indexOf || function (search, fromIndex) {
         /*jshint validthis:true */
         var arr = this;
         if (!arr.length) {
@@ -1977,19 +2037,23 @@
         return -1;
     };
 
-    var $$es5$$isArray = Array.isArray || function (obj) {
-        return $$es5$$toString.call(obj) === '[object Array]';
+    var isArray = Array.isArray || function (obj) {
+        return toString.call(obj) === '[object Array]';
     };
 
-    var $$es5$$dateNow = Date.now || function () {
+    var dateNow = Date.now || function () {
         return new Date().getTime();
     };
 
-    var $$core$$default = $$core$$RelativeFormat;
+    /*
+    Copyright (c) 2014, Yahoo! Inc. All rights reserved.
+    Copyrights licensed under the New BSD License.
+    See the accompanying LICENSE file for terms.
+    */
 
     // -----------------------------------------------------------------------------
 
-    var $$core$$FIELDS = [
+    var FIELDS = [
         'second', 'second-short',
         'minute', 'minute-short',
         'hour', 'hour-short',
@@ -1997,28 +2061,28 @@
         'month', 'month-short',
         'year', 'year-short'
     ];
-    var $$core$$STYLES = ['best fit', 'numeric'];
+    var STYLES = ['best fit', 'numeric'];
 
     // -- RelativeFormat -----------------------------------------------------------
 
-    function $$core$$RelativeFormat(locales, options) {
+    function RelativeFormat(locales, options) {
         options = options || {};
 
         // Make a copy of `locales` if it's an array, so that it doesn't change
         // since it's used lazily.
-        if ($$es5$$isArray(locales)) {
+        if (isArray(locales)) {
             locales = locales.concat();
         }
 
-        $$es5$$defineProperty(this, '_locale', {value: this._resolveLocale(locales)});
-        $$es5$$defineProperty(this, '_options', {value: {
+        defineProperty$1(this, '_locale', {value: this._resolveLocale(locales)});
+        defineProperty$1(this, '_options', {value: {
             style: this._resolveStyle(options.style),
             units: this._isValidUnits(options.units) && options.units
         }});
 
-        $$es5$$defineProperty(this, '_locales', {value: locales});
-        $$es5$$defineProperty(this, '_fields', {value: this._findFields(this._locale)});
-        $$es5$$defineProperty(this, '_messages', {value: $$es5$$objCreate(null)});
+        defineProperty$1(this, '_locales', {value: locales});
+        defineProperty$1(this, '_fields', {value: this._findFields(this._locale)});
+        defineProperty$1(this, '_messages', {value: objCreate$1(null)});
 
         // "Bind" `format()` method to `this` so it can be passed by reference like
         // the other `Intl` APIs.
@@ -2029,25 +2093,28 @@
     }
 
     // Define internal private properties for dealing with locale data.
-    $$es5$$defineProperty($$core$$RelativeFormat, '__localeData__', {value: $$es5$$objCreate(null)});
-    $$es5$$defineProperty($$core$$RelativeFormat, '__addLocaleData', {value: function (data) {
-        if (!(data && data.locale)) {
-            throw new Error(
-                'Locale data provided to IntlRelativeFormat is missing a ' +
-                '`locale` property value'
-            );
+    defineProperty$1(RelativeFormat, '__localeData__', {value: objCreate$1(null)});
+    defineProperty$1(RelativeFormat, '__addLocaleData', {value: function () {
+        for (var i = 0; i < arguments.length; i++) {
+            var datum = arguments[i];
+            if (!(datum && datum.locale)) {
+                throw new Error(
+                    'Locale data provided to IntlRelativeFormat is missing a ' +
+                    '`locale` property value'
+                );
+            }
+        
+            RelativeFormat.__localeData__[datum.locale.toLowerCase()] = datum;
+        
+            // Add data to IntlMessageFormat.
+            MessageFormat.__addLocaleData(datum);
         }
-
-        $$core$$RelativeFormat.__localeData__[data.locale.toLowerCase()] = data;
-
-        // Add data to IntlMessageFormat.
-        intl$messageformat$$default.__addLocaleData(data);
     }});
 
     // Define public `defaultLocale` property which can be set by the developer, or
     // it will be set when the first RelativeFormat instance is created by
     // leveraging the resolved locale from `Intl`.
-    $$es5$$defineProperty($$core$$RelativeFormat, 'defaultLocale', {
+    defineProperty$1(RelativeFormat, 'defaultLocale', {
         enumerable: true,
         writable  : true,
         value     : undefined
@@ -2055,7 +2122,7 @@
 
     // Define public `thresholds` property which can be set by the developer, and
     // defaults to relative time thresholds from moment.js.
-    $$es5$$defineProperty($$core$$RelativeFormat, 'thresholds', {
+    defineProperty$1(RelativeFormat, 'thresholds', {
         enumerable: true,
 
         value: {
@@ -2067,7 +2134,7 @@
         }
     });
 
-    $$core$$RelativeFormat.prototype.resolvedOptions = function () {
+    RelativeFormat.prototype.resolvedOptions = function () {
         return {
             locale: this._locale,
             style : this._options.style,
@@ -2075,7 +2142,7 @@
         };
     };
 
-    $$core$$RelativeFormat.prototype._compileMessage = function (units) {
+    RelativeFormat.prototype._compileMessage = function (units) {
         // `this._locales` is the original set of locales the user specified to the
         // constructor, while `this._locale` is the resolved root locale.
         var locales        = this._locales;
@@ -2107,10 +2174,10 @@
         // Create the synthetic IntlMessageFormat instance using the original
         // locales value specified by the user when constructing the the parent
         // IntlRelativeFormat instance.
-        return new intl$messageformat$$default(message, locales);
+        return new MessageFormat(message, locales);
     };
 
-    $$core$$RelativeFormat.prototype._getMessage = function (units) {
+    RelativeFormat.prototype._getMessage = function (units) {
         var messages = this._messages;
 
         // Create a new synthetic message based on the locale data from CLDR.
@@ -2121,7 +2188,7 @@
         return messages[units];
     };
 
-    $$core$$RelativeFormat.prototype._getRelativeUnits = function (diff, units) {
+    RelativeFormat.prototype._getRelativeUnits = function (diff, units) {
         var field = this._fields[units];
 
         if (field.relative) {
@@ -2129,8 +2196,8 @@
         }
     };
 
-    $$core$$RelativeFormat.prototype._findFields = function (locale) {
-        var localeData = $$core$$RelativeFormat.__localeData__;
+    RelativeFormat.prototype._findFields = function (locale) {
+        var localeData = RelativeFormat.__localeData__;
         var data       = localeData[locale.toLowerCase()];
 
         // The locale data is de-duplicated, so we have to traverse the locale's
@@ -2149,8 +2216,8 @@
         );
     };
 
-    $$core$$RelativeFormat.prototype._format = function (date, options) {
-        var now = options && options.now !== undefined ? options.now : $$es5$$dateNow();
+    RelativeFormat.prototype._format = function (date, options) {
+        var now = options && options.now !== undefined ? options.now : dateNow();
 
         if (date === undefined) {
             date = now;
@@ -2172,7 +2239,7 @@
             );
         }
 
-        var diffReport  = $$diff$$default(now, date);
+        var diffReport  = diff(now, date);
         var units       = this._options.units || this._selectUnits(diffReport);
         var diffInUnits = diffReport[units];
 
@@ -2189,14 +2256,14 @@
         });
     };
 
-    $$core$$RelativeFormat.prototype._isValidUnits = function (units) {
-        if (!units || $$es5$$arrIndexOf.call($$core$$FIELDS, units) >= 0) {
+    RelativeFormat.prototype._isValidUnits = function (units) {
+        if (!units || arrIndexOf.call(FIELDS, units) >= 0) {
             return true;
         }
 
         if (typeof units === 'string') {
             var suggestion = /s$/.test(units) && units.substr(0, units.length - 1);
-            if (suggestion && $$es5$$arrIndexOf.call($$core$$FIELDS, suggestion) >= 0) {
+            if (suggestion && arrIndexOf.call(FIELDS, suggestion) >= 0) {
                 throw new Error(
                     '"' + units + '" is not a valid IntlRelativeFormat `units` ' +
                     'value, did you mean: ' + suggestion
@@ -2206,19 +2273,19 @@
 
         throw new Error(
             '"' + units + '" is not a valid IntlRelativeFormat `units` value, it ' +
-            'must be one of: "' + $$core$$FIELDS.join('", "') + '"'
+            'must be one of: "' + FIELDS.join('", "') + '"'
         );
     };
 
-    $$core$$RelativeFormat.prototype._resolveLocale = function (locales) {
+    RelativeFormat.prototype._resolveLocale = function (locales) {
         if (typeof locales === 'string') {
             locales = [locales];
         }
 
         // Create a copy of the array so we can push on the default locale.
-        locales = (locales || []).concat($$core$$RelativeFormat.defaultLocale);
+        locales = (locales || []).concat(RelativeFormat.defaultLocale);
 
-        var localeData = $$core$$RelativeFormat.__localeData__;
+        var localeData = RelativeFormat.__localeData__;
         var i, len, localeParts, data;
 
         // Using the set of locales + the default locale, we look for the first one
@@ -2248,45 +2315,57 @@
         );
     };
 
-    $$core$$RelativeFormat.prototype._resolveStyle = function (style) {
+    RelativeFormat.prototype._resolveStyle = function (style) {
         // Default to "best fit" style.
         if (!style) {
-            return $$core$$STYLES[0];
+            return STYLES[0];
         }
 
-        if ($$es5$$arrIndexOf.call($$core$$STYLES, style) >= 0) {
+        if (arrIndexOf.call(STYLES, style) >= 0) {
             return style;
         }
 
         throw new Error(
             '"' + style + '" is not a valid IntlRelativeFormat `style` value, it ' +
-            'must be one of: "' + $$core$$STYLES.join('", "') + '"'
+            'must be one of: "' + STYLES.join('", "') + '"'
         );
     };
 
-    $$core$$RelativeFormat.prototype._selectUnits = function (diffReport) {
+    RelativeFormat.prototype._selectUnits = function (diffReport) {
         var i, l, units;
-        var fields = $$core$$FIELDS.filter(function(field) {
+        var fields = FIELDS.filter(function(field) {
             return field.indexOf('-short') < 1;
         });
 
         for (i = 0, l = fields.length; i < l; i += 1) {
             units = fields[i];
 
-            if (Math.abs(diffReport[units]) < $$core$$RelativeFormat.thresholds[units]) {
+            if (Math.abs(diffReport[units]) < RelativeFormat.thresholds[units]) {
                 break;
             }
         }
 
         return units;
     };
-    var $$en$$default = {"locale":"en","pluralRuleFunction":function (n,ord){var s=String(n).split("."),v0=!s[1],t0=Number(s[0])==n,n10=t0&&s[0].slice(-1),n100=t0&&s[0].slice(-2);if(ord)return n10==1&&n100!=11?"one":n10==2&&n100!=12?"two":n10==3&&n100!=13?"few":"other";return n==1&&v0?"one":"other"},"fields":{"year":{"displayName":"year","relative":{"0":"this year","1":"next year","-1":"last year"},"relativeTime":{"future":{"one":"in {0} year","other":"in {0} years"},"past":{"one":"{0} year ago","other":"{0} years ago"}}},"year-short":{"displayName":"yr.","relative":{"0":"this yr.","1":"next yr.","-1":"last yr."},"relativeTime":{"future":{"one":"in {0} yr.","other":"in {0} yr."},"past":{"one":"{0} yr. ago","other":"{0} yr. ago"}}},"month":{"displayName":"month","relative":{"0":"this month","1":"next month","-1":"last month"},"relativeTime":{"future":{"one":"in {0} month","other":"in {0} months"},"past":{"one":"{0} month ago","other":"{0} months ago"}}},"month-short":{"displayName":"mo.","relative":{"0":"this mo.","1":"next mo.","-1":"last mo."},"relativeTime":{"future":{"one":"in {0} mo.","other":"in {0} mo."},"past":{"one":"{0} mo. ago","other":"{0} mo. ago"}}},"day":{"displayName":"day","relative":{"0":"today","1":"tomorrow","-1":"yesterday"},"relativeTime":{"future":{"one":"in {0} day","other":"in {0} days"},"past":{"one":"{0} day ago","other":"{0} days ago"}}},"day-short":{"displayName":"day","relative":{"0":"today","1":"tomorrow","-1":"yesterday"},"relativeTime":{"future":{"one":"in {0} day","other":"in {0} days"},"past":{"one":"{0} day ago","other":"{0} days ago"}}},"hour":{"displayName":"hour","relative":{"0":"this hour"},"relativeTime":{"future":{"one":"in {0} hour","other":"in {0} hours"},"past":{"one":"{0} hour ago","other":"{0} hours ago"}}},"hour-short":{"displayName":"hr.","relative":{"0":"this hour"},"relativeTime":{"future":{"one":"in {0} hr.","other":"in {0} hr."},"past":{"one":"{0} hr. ago","other":"{0} hr. ago"}}},"minute":{"displayName":"minute","relative":{"0":"this minute"},"relativeTime":{"future":{"one":"in {0} minute","other":"in {0} minutes"},"past":{"one":"{0} minute ago","other":"{0} minutes ago"}}},"minute-short":{"displayName":"min.","relative":{"0":"this minute"},"relativeTime":{"future":{"one":"in {0} min.","other":"in {0} min."},"past":{"one":"{0} min. ago","other":"{0} min. ago"}}},"second":{"displayName":"second","relative":{"0":"now"},"relativeTime":{"future":{"one":"in {0} second","other":"in {0} seconds"},"past":{"one":"{0} second ago","other":"{0} seconds ago"}}},"second-short":{"displayName":"sec.","relative":{"0":"now"},"relativeTime":{"future":{"one":"in {0} sec.","other":"in {0} sec."},"past":{"one":"{0} sec. ago","other":"{0} sec. ago"}}}}};
 
-    $$core$$default.__addLocaleData($$en$$default);
-    $$core$$default.defaultLocale = 'en';
+    /* @generated */	
+    var defaultLocale$1 = {"locale":"en","pluralRuleFunction":function(n, ord
+    ) {
+      var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n,
+          n10 = t0 && s[0].slice(-1), n100 = t0 && s[0].slice(-2);
+      if (ord) return (n10 == 1 && n100 != 11) ? 'one'
+          : (n10 == 2 && n100 != 12) ? 'two'
+          : (n10 == 3 && n100 != 13) ? 'few'
+          : 'other';
+      return (n == 1 && v0) ? 'one' : 'other';
+    },"fields":{"year":{"displayName":"year","relative":{"0":"this year","1":"next year","-1":"last year"},"relativeTime":{"future":{"one":"in {0} year","other":"in {0} years"},"past":{"one":"{0} year ago","other":"{0} years ago"}}},"year-short":{"displayName":"yr.","relative":{"0":"this yr.","1":"next yr.","-1":"last yr."},"relativeTime":{"future":{"one":"in {0} yr.","other":"in {0} yr."},"past":{"one":"{0} yr. ago","other":"{0} yr. ago"}}},"month":{"displayName":"month","relative":{"0":"this month","1":"next month","-1":"last month"},"relativeTime":{"future":{"one":"in {0} month","other":"in {0} months"},"past":{"one":"{0} month ago","other":"{0} months ago"}}},"month-short":{"displayName":"mo.","relative":{"0":"this mo.","1":"next mo.","-1":"last mo."},"relativeTime":{"future":{"one":"in {0} mo.","other":"in {0} mo."},"past":{"one":"{0} mo. ago","other":"{0} mo. ago"}}},"week":{"displayName":"week","relativePeriod":"the week of {0}","relative":{"0":"this week","1":"next week","-1":"last week"},"relativeTime":{"future":{"one":"in {0} week","other":"in {0} weeks"},"past":{"one":"{0} week ago","other":"{0} weeks ago"}}},"week-short":{"displayName":"wk.","relativePeriod":"the week of {0}","relative":{"0":"this wk.","1":"next wk.","-1":"last wk."},"relativeTime":{"future":{"one":"in {0} wk.","other":"in {0} wk."},"past":{"one":"{0} wk. ago","other":"{0} wk. ago"}}},"day":{"displayName":"day","relative":{"0":"today","1":"tomorrow","-1":"yesterday"},"relativeTime":{"future":{"one":"in {0} day","other":"in {0} days"},"past":{"one":"{0} day ago","other":"{0} days ago"}}},"day-short":{"displayName":"day","relative":{"0":"today","1":"tomorrow","-1":"yesterday"},"relativeTime":{"future":{"one":"in {0} day","other":"in {0} days"},"past":{"one":"{0} day ago","other":"{0} days ago"}}},"hour":{"displayName":"hour","relative":{"0":"this hour"},"relativeTime":{"future":{"one":"in {0} hour","other":"in {0} hours"},"past":{"one":"{0} hour ago","other":"{0} hours ago"}}},"hour-short":{"displayName":"hr.","relative":{"0":"this hour"},"relativeTime":{"future":{"one":"in {0} hr.","other":"in {0} hr."},"past":{"one":"{0} hr. ago","other":"{0} hr. ago"}}},"minute":{"displayName":"minute","relative":{"0":"this minute"},"relativeTime":{"future":{"one":"in {0} minute","other":"in {0} minutes"},"past":{"one":"{0} minute ago","other":"{0} minutes ago"}}},"minute-short":{"displayName":"min.","relative":{"0":"this minute"},"relativeTime":{"future":{"one":"in {0} min.","other":"in {0} min."},"past":{"one":"{0} min. ago","other":"{0} min. ago"}}},"second":{"displayName":"second","relative":{"0":"now"},"relativeTime":{"future":{"one":"in {0} second","other":"in {0} seconds"},"past":{"one":"{0} second ago","other":"{0} seconds ago"}}},"second-short":{"displayName":"sec.","relative":{"0":"now"},"relativeTime":{"future":{"one":"in {0} sec.","other":"in {0} sec."},"past":{"one":"{0} sec. ago","other":"{0} sec. ago"}}}}};
 
-    var src$main$$default = $$core$$default;
-    this['IntlRelativeFormat'] = src$main$$default;
-}).call(this);
+    /* jslint esnext: true */
 
+    RelativeFormat.__addLocaleData(defaultLocale$1);
+    RelativeFormat.defaultLocale = 'en';
+
+    return RelativeFormat;
+
+}));
 //# sourceMappingURL=intl-relativeformat.js.map

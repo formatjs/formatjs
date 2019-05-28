@@ -3,6 +3,6 @@ if (typeof global.Intl === 'undefined'){
 }
 
 global.IntlRelativeFormat = require('../');
-global.expect = require('expect.js');
+global.expect = require('chai').expect;
 
 require('./index');

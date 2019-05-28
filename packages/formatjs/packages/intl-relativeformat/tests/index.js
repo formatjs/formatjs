@@ -174,10 +174,8 @@ describe('IntlRelativeFormat', function () {
                     };
                 }
 
-                expect(createInstance({units: 'bla'})).to.throwException(function (e) {
-                    expect(e).to.be.an(Error);
-                });
-                expect(createInstance({units: 'hours'})).to.throwException(/did you mean: hour/);
+                expect(createInstance({units: 'bla'})).to.throw();
+                expect(createInstance({units: 'hours'})).to.throw(/did you mean: hour/);
             });
         });
     });
@@ -198,7 +196,7 @@ describe('IntlRelativeFormat', function () {
             expect(rf.format(new Date())).to.be.a('string');
             expect(function () {
                 return rf.format('foo');
-            }).to.throwException();
+            }).to.throw();
         });
 
         it('should handle dates on and around the epoch', function () {
@@ -500,7 +498,7 @@ describe('IntlRelativeFormat', function () {
             it('should throw on non-finite values', function() {
                 expect(function () {
                     rf.format(past(2 * 60 * 1000), {now: Infinity});
-                }).to.throwException();
+                }).to.throw();
             });
 
             it('should treat null like the epoch', function () {

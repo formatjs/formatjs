@@ -1,14 +1,7 @@
 language: node_js
 node_js:
-  - 4
-  - 6
   - 8
-script: npm run travis
-notifications:
-  email:
-    on_success: change
-    on_failure: always
-env:
-  global:
-    - secure: R42YRoSR/KHl3ZodzZotnkEFP5xt1gafFSDga75Bg+kdC5CVMQ9PoJGLkLOPJU6gEUWZc1Tr+dliWdQjWRC/yRaDEsHq3nH7lx6pTc55Sv0UJ2Wi871szsEkq3u4I6ksy3YJZ8asvSOR6AmT/hxFbcymYzqis76DKeXoYp5eKyk=
-    - secure: aHKTOLTgleUFnQ3TWknkhJv07aSa6PaB5CJ2sm5PzLPHEMYae3HrNOL3qCbchYcFWCGWksKbvKLEKc3Q0Lg4Vd6gLor3YIfdMUf+yQIpo7pztUBp/Xx9RLj0VONVOLAL4yY8cf56PMwSAsNQL/rPZRijGahu7Ah8wnWk5b0oHMg=
+  - 10
+  - 12
+before_script: npm run build
+script: npm run cover

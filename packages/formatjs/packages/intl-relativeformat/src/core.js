@@ -61,18 +61,21 @@ function RelativeFormat(locales, options) {
 
 // Define internal private properties for dealing with locale data.
 defineProperty(RelativeFormat, '__localeData__', {value: objCreate(null)});
-defineProperty(RelativeFormat, '__addLocaleData', {value: function (data) {
-    if (!(data && data.locale)) {
-        throw new Error(
-            'Locale data provided to IntlRelativeFormat is missing a ' +
-            '`locale` property value'
-        );
+defineProperty(RelativeFormat, '__addLocaleData', {value: function () {
+    for (var i = 0; i < arguments.length; i++) {
+        var datum = arguments[i]
+        if (!(datum && datum.locale)) {
+            throw new Error(
+                'Locale data provided to IntlRelativeFormat is missing a ' +
+                '`locale` property value'
+            );
+        }
+    
+        RelativeFormat.__localeData__[datum.locale.toLowerCase()] = datum;
+    
+        // Add data to IntlMessageFormat.
+        IntlMessageFormat.__addLocaleData(datum);
     }
-
-    RelativeFormat.__localeData__[data.locale.toLowerCase()] = data;
-
-    // Add data to IntlMessageFormat.
-    IntlMessageFormat.__addLocaleData(data);
 }});
 
 // Define public `defaultLocale` property which can be set by the developer, or
