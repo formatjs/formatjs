@@ -1697,107 +1697,104 @@
         }
         return FormatError;
     }(Error));
-    var MessageFormat = /** @class */ (function () {
-        function MessageFormat(message, locales, overrideFormats) {
-            var _this = this;
-            if (locales === void 0) { locales = MessageFormat.defaultLocale; }
-            // "Bind" `format()` method to `this` so it can be passed by reference like
-            // the other `Intl` APIs.
-            this.format = function (values) {
+    var MessageFormat = (function (message, locales, overrideFormats) {
+        if (locales === void 0) { locales = MessageFormat.defaultLocale; }
+        // Parse string messages into an AST.
+        var ast = typeof message === 'string' ? MessageFormat.__parse(message) : message;
+        if (!(ast && ast.type === 'messageFormatPattern')) {
+            throw new TypeError('A message must be provided as a String or AST.');
+        }
+        // Creates a new object with the specified `formats` merged with the default
+        // formats.
+        var formats = mergeConfigs(MessageFormat.formats, overrideFormats);
+        // Defined first because it's used to build the format pattern.
+        var locale = resolveLocale(locales || []);
+        // Compile the `ast` to a pattern that is highly optimized for repeated
+        // `format()` invocations. **Note:** This passes the `locales` set provided
+        // to the constructor instead of just the resolved locale.
+        var pattern = new Compiler(locales, formats).compile(ast);
+        // "Bind" `format()` method to `this` so it can be passed by reference like
+        // the other `Intl` APIs.
+        return {
+            format: function (values) {
                 try {
-                    return formatPatterns(_this.pattern, values);
+                    return formatPatterns(pattern, values);
                 }
                 catch (e) {
                     if (e.variableId) {
-                        throw new Error("The intl string context variable '" + e.variableId + "' was not provided to the string '" + _this.message + "'");
+                        throw new Error("The intl string context variable '" + e.variableId + "' was not provided to the string '" + message + "'");
                     }
                     else {
                         throw e;
                     }
                 }
-            };
-            // Parse string messages into an AST.
-            var ast = typeof message === 'string' ? MessageFormat.__parse(message) : message;
-            if (!(ast && ast.type === 'messageFormatPattern')) {
-                throw new TypeError('A message must be provided as a String or AST.');
+            },
+            resolvedOptions: function () {
+                return { locale: locale };
             }
-            // Creates a new object with the specified `formats` merged with the default
-            // formats.
-            var formats = mergeConfigs(MessageFormat.formats, overrideFormats);
-            // Defined first because it's used to build the format pattern.
-            this._locale = resolveLocale(locales || []);
-            // Compile the `ast` to a pattern that is highly optimized for repeated
-            // `format()` invocations. **Note:** This passes the `locales` set provided
-            // to the constructor instead of just the resolved locale.
-            this.pattern = new Compiler(locales, formats).compile(ast);
-            this.message = message;
+        };
+    });
+    MessageFormat.defaultLocale = 'en';
+    // Default format options used as the prototype of the `formats` provided to the
+    // constructor. These are used when constructing the internal Intl.NumberFormat
+    // and Intl.DateTimeFormat instances.
+    MessageFormat.formats = {
+        number: {
+            currency: {
+                style: 'currency'
+            },
+            percent: {
+                style: 'percent'
+            }
+        },
+        date: {
+            short: {
+                month: 'numeric',
+                day: 'numeric',
+                year: '2-digit'
+            },
+            medium: {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            },
+            long: {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            },
+            full: {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            }
+        },
+        time: {
+            short: {
+                hour: 'numeric',
+                minute: 'numeric'
+            },
+            medium: {
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric'
+            },
+            long: {
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                timeZoneName: 'short'
+            },
+            full: {
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                timeZoneName: 'short'
+            }
         }
-        MessageFormat.prototype.resolvedOptions = function () {
-            return { locale: this._locale };
-        };
-        MessageFormat.defaultLocale = 'en';
-        // Default format options used as the prototype of the `formats` provided to the
-        // constructor. These are used when constructing the internal Intl.NumberFormat
-        // and Intl.DateTimeFormat instances.
-        MessageFormat.formats = {
-            number: {
-                currency: {
-                    style: 'currency'
-                },
-                percent: {
-                    style: 'percent'
-                }
-            },
-            date: {
-                short: {
-                    month: 'numeric',
-                    day: 'numeric',
-                    year: '2-digit'
-                },
-                medium: {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric'
-                },
-                long: {
-                    month: 'long',
-                    day: 'numeric',
-                    year: 'numeric'
-                },
-                full: {
-                    weekday: 'long',
-                    month: 'long',
-                    day: 'numeric',
-                    year: 'numeric'
-                }
-            },
-            time: {
-                short: {
-                    hour: 'numeric',
-                    minute: 'numeric'
-                },
-                medium: {
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    second: 'numeric'
-                },
-                long: {
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    second: 'numeric',
-                    timeZoneName: 'short'
-                },
-                full: {
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    second: 'numeric',
-                    timeZoneName: 'short'
-                }
-            }
-        };
-        MessageFormat.__parse = parser.parse;
-        return MessageFormat;
-    }());
+    };
+    MessageFormat.__parse = parser.parse;
 
     return MessageFormat;
 

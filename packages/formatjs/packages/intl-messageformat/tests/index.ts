@@ -15,6 +15,16 @@ describe('IntlMessageFormat', function() {
     expect(IntlMessageFormat).to.be.a('function');
   });
 
+  it('should work w/o new', function() {
+    var mf = IntlMessageFormat('My name is {FIRST} {LAST}.');
+    var output = mf.format({
+      FIRST: 'Anthony',
+      LAST: 'Pipkin'
+    });
+
+    expect(output).to.equal('My name is Anthony Pipkin.');
+  });
+
   // INSTANCE METHODS
 
   describe('#resolvedOptions( )', function() {
