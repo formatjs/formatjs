@@ -15,7 +15,7 @@ This is a helper package used within [Yahoo's FormatJS suite][FormatJS]. It prov
 
 Creating instances of these `Intl` formats is an expensive operation, and the APIs are designed such that developers should re-use format instances instead of always creating new ones. This package is simply to make it easier to create a cache of format instances of a particular type to aid in their reuse.
 
-Under the hood, this package creates a cache key based on the arguments passed to the memoized constructor (it will even order the keys of the `options` argument) it uses `JSON.stringify()` to create the string key. If the runtime does not have built-in or polyfilled support for `JSON`, new instances will be created each time the memoizer function is called.
+Under the hood, this package creates a cache key based on the arguments passed to the memoized constructor (it will even order the keys of the `options` argument) it uses `JSON.stringify()` to create the string key.
 
 
 Usage
@@ -49,6 +49,41 @@ console.log(nf1.format(1000)); // => "1,000"
 console.log(nf3.format(1000)); // => "1 000"
 ```
 
+# Benchmark
+
+```
+fast-memoize x 19,610 ops/sec ±1.86% (73 runs sampled)
+intl-format-cache x 18,854 ops/sec ±4.95% (81 runs sampled)
+--- NumberFormat cache set: Fastest is fast-memoize,intl-format-cache ---
+
+fast-memoize x 1,051,977 ops/sec ±1.53% (89 runs sampled)
+intl-format-cache x 1,134,171 ops/sec ±1.19% (91 runs sampled)
+not cached x 23,002 ops/sec ±2.23% (83 runs sampled)
+--- NumberFormat cache get: Fastest is intl-format-cache ---
+
+fast-memoize x 6,466 ops/sec ±6.56% (72 runs sampled)
+intl-format-cache x 7,384 ops/sec ±50.43% (64 runs sampled)
+--- DateTimeFormat cache set: Fastest is fast-memoize ---
+
+fast-memoize x 965,874 ops/sec ±17.87% (90 runs sampled)
+intl-format-cache x 1,048,234 ops/sec ±0.79% (89 runs sampled)
+not cached x 13,543 ops/sec ±2.61% (85 runs sampled)
+--- DateTimeFormat cache get: Fastest is intl-format-cache ---
+
+fast-memoize x 72,531 ops/sec ±26.27% (79 runs sampled)
+intl-format-cache x 88,729 ops/sec ±0.51% (91 runs sampled)
+--- IntlMessageFormat cache set: Fastest is intl-format-cache ---
+
+fast-memoize x 665,420 ops/sec ±2.61% (90 runs sampled)
+intl-format-cache x 649,186 ops/sec ±2.19% (90 runs sampled)
+not cached x 127,110 ops/sec ±0.35% (91 runs sampled)
+--- IntlMessageFormat cache get: Fastest is fast-memoize ---
+
+fast-memoize x 1,294,591 ops/sec ±1.10% (94 runs sampled)
+intl-format-cache x 1,905,746 ops/sec ±0.71% (91 runs sampled)
+not cached x 152,118 ops/sec ±0.47% (94 runs sampled)
+--- IntlMessageFormat cache get simple arg: Fastest is intl-format-cache ---
+```
 
 License
 -------

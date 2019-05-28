@@ -39,6 +39,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.12.4",
     "expect.js": "^0.3.1",
+    "fast-memoize": "^2.5.1",
     "fs-extra": "^8.0.1",
     "intl": "^1.2.5",
     "intl-pluralrules": "^1.0.1",

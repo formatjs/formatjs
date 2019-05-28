@@ -6,6 +6,7 @@
   "module": "lib/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
+    "benchmark": "ts-node --project tests/tsconfig.json tests/benchmark",
     "build": "tsc -p src && tsc -p src/tsconfig.cjs.json",
     "clean": "rimraf lib dist",
     "cover": "nyc npm t",

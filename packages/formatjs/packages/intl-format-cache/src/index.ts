@@ -21,7 +21,7 @@ interface RelativeTimeFormatOptions {
   numeric: 'always' | 'auto';
   style: 'long' | 'short' | 'narrow';
 }
-var RelativeTimeFormat: {
+let RelativeTimeFormat: {
   new (
     locales?: string | string[],
     opts?: RelativeTimeFormatOptions
@@ -65,21 +65,20 @@ interface MemoizeFormatConstructorFn {
   (constructor: any): (...args: any[]) => any;
 }
 
-const memoizeFormatConstructor: MemoizeFormatConstructorFn = FormatConstructor => {
-  var cache = {};
-
-  return (...args) => {
-    const cacheId = getCacheId(args);
-    let format = cacheId && cache[cacheId];
-    if (!format) {
-      format = new (FormatConstructor as any)(...args);
-      if (cacheId) {
-        cache[cacheId] = format;
-      }
+const memoizeFormatConstructor: MemoizeFormatConstructorFn = (
+  FormatConstructor,
+  cache = {}
+) => (...args) => {
+  const cacheId = getCacheId(args);
+  let format = cacheId && cache[cacheId];
+  if (!format) {
+    format = new (FormatConstructor as any)(...args);
+    if (cacheId) {
+      cache[cacheId] = format;
     }
+  }
 
-    return format;
-  };
+  return format;
 };
 
 export default memoizeFormatConstructor;
