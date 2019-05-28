@@ -31,21 +31,6 @@
     "intl-messageformat": "^2.0.0"
   },
   "devDependencies": {
-    "benchmark": "^2.0.0",
-    "chai": "^4.2.0",
-    "formatjs-extract-cldr-data": "^6.1.1",
-    "fs-extra": "^8.0.1",
-    "intl": "^1.0.0",
-    "intl-pluralrules": "^1.0.1",
-    "mocha": "^6.0.0",
-    "moment": "^2.8.2",
-    "nyc": "^14.1.1",
-    "rimraf": "^2.6.3",
-    "rollup": "^1.12.4",
-    "rollup-plugin-commonjs": "^10.0.0",
-    "rollup-plugin-node-resolve": "^5.0.0",
-    "rollup-plugin-uglify": "^6.0.2",
-    "typescript": "^3.4.5"
   },
   "scripts": {
     "clean": "rimraf dist lib",

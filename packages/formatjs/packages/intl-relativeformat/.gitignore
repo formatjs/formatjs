@@ -1,4 +1,3 @@
-coverage/
-lib/
+.nyc_output
+lib
 node_modules/
-tmp/
