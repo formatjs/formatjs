@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-react-intl",
-  "version": "3.0.2",
+  "version": "3.1.0",
   "description": "Extracts string messages for translation from modules that use React Intl.",
   "repository": {
     "type": "git",
@@ -11,7 +11,7 @@
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "dependencies": {
     "fs-extra": "^8.0.1",
-    "intl-messageformat-parser": "^1.4.0"
+    "intl-messageformat-parser": "^1.6.3"
   },
   "scripts": {
     "prettier": "prettier --write '{src,scripts}/*.js' test/index.js",
