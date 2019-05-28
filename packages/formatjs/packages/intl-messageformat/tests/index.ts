@@ -469,7 +469,35 @@ describe('IntlMessageFormat', function() {
     });
   });
 
-  it('custom formats should work', function() {
+  it('custom formats should work for time', function() {
+    var msg = 'Today is {time, time, verbose}';
+    var mf = new IntlMessageFormat(msg, 'en', {
+      time: {
+        verbose: {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          timeZoneName: 'short'
+        }
+      }
+    });
+    expect(mf.format({ time: 0 })).to.include(
+      new Intl.DateTimeFormat('en', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        timeZoneName: 'short'
+      }).format(0)
+    );
+  });
+
+  it('custom formats should work for date', function() {
     var msg = 'Today is {time, date, verbose}';
     var mf = new IntlMessageFormat(msg, 'en', {
       date: {
@@ -494,6 +522,24 @@ describe('IntlMessageFormat', function() {
         second: 'numeric',
         timeZoneName: 'short'
       }).format(0)
+    );
+  });
+
+  it('custom formats should work for number', function() {
+    var msg = 'Today is {time, number, verbose}';
+    var mf = new IntlMessageFormat(msg, 'en', {
+      number: {
+        verbose: {
+          minimumFractionDigits: 5,
+          maximumFractionDigits: 5
+        }
+      }
+    });
+    expect(mf.format({ time: 0.1234567 })).to.include(
+      new Intl.NumberFormat('en', {
+        minimumFractionDigits: 5,
+        maximumFractionDigits: 5
+      }).format(0.1234567)
     );
   });
 

@@ -1686,7 +1686,10 @@
         if (!configs) {
             return defaultConfig;
         }
-        return __assign({}, defaultConfig, { date: mergeConfig(defaultConfig.date, configs.date) });
+        return Object.keys(defaultConfig).reduce(function (all, k) {
+            all[k] = mergeConfig(defaultConfig[k], configs[k]);
+            return all;
+        }, __assign({}, defaultConfig));
     }
     var FormatError = /** @class */ (function (_super) {
         __extends$1(FormatError, _super);
