@@ -17,7 +17,8 @@ const skipTests = [
   'removeDescriptions',
   'overrideIdFn',
   'removeDefaultMessage',
-  'additionalComponentNames'
+  'additionalComponentNames',
+  'formatMessage'
 ];
 
 const fixturesDir = path.join(__dirname, 'fixtures');
@@ -151,6 +152,24 @@ describe('options', () => {
     expect(() =>
       transform(path.join(fixtureDir, 'actual.js'), {
         extractSourceLocation: true
+      })
+    ).not.toThrow();
+
+    // Check message output
+    const expectedMessages = fs.readFileSync(
+      path.join(fixtureDir, 'expected.json')
+    );
+    const actualMessages = fs.readFileSync(
+      path.join(fixtureDir, 'actual.json')
+    );
+    expect(trim(actualMessages)).toEqual(trim(expectedMessages));
+  });
+
+  it('respects formatMessage', () => {
+    const fixtureDir = path.join(fixturesDir, 'formatMessage');
+    expect(() =>
+      transform(path.join(fixtureDir, 'actual.js'), {
+        extractFromFormatMessageCall: true
       })
     ).not.toThrow();
 

@@ -1,0 +1,7 @@
+[
+  {
+    "id": "foo",
+    "description": "baz",
+    "defaultMessage": "bar"
+  }
+]

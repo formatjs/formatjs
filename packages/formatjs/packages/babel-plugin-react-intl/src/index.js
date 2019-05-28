@@ -390,7 +390,7 @@ export default function({ types: t }) {
             .forEach(processMessageObject);
         }
 
-        if (isFormatMessageCall(callee)) {
+        if (opts.extractFromFormatMessageCall && isFormatMessageCall(callee)) {
           const messagesObj = path.get('arguments')[0];
           processMessageObject(messagesObj);
         }

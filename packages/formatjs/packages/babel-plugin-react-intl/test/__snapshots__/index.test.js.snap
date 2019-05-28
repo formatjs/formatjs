@@ -116,7 +116,7 @@ class Foo extends _react.Component {
 exports.default = Foo;"
 `;
 
-exports[`emit asserts for:  output match: formatMessage 1`] = `
+exports[`emit asserts for:  output match: extractFromFormatMessageCallFalse 1`] = `
 "\\"use strict\\";
 
 Object.defineProperty(exports, \\"__esModule\\", {
@@ -134,15 +134,20 @@ class Foo extends _react.Component {
   render() {
     const msgs = {
       baz: this.props.intl.formatMessage({
-        \\"id\\": \\"foo.bar.baz\\",
-        \\"defaultMessage\\": \\"Hello World!\\"
+        id: 'foo.bar.baz',
+        defaultMessage: 'Hello World!',
+        description: 'The default message'
       }),
       biff: this.props.intl.formatMessage({
-        \\"id\\": \\"foo.bar.biff\\",
-        \\"defaultMessage\\": \\"Hello Nurse!\\"
+        id: 'foo.bar.biff',
+        defaultMessage: 'Hello Nurse!',
+        description: 'Another message'
       })
     };
-    return _react.default.createElement(\\"div\\", null, _react.default.createElement(\\"h1\\", null, msgs.header), _react.default.createElement(\\"p\\", null, msgs.content));
+    return _react.default.createElement(\\"div\\", null, _react.default.createElement(\\"h1\\", null, msgs.header), _react.default.createElement(\\"p\\", null, msgs.content), _react.default.createElement(\\"span\\", null, _react.default.createElement(_reactIntl.FormattedMessage, {
+      id: \\"foo\\",
+      defaultMessage: \\"bar\\"
+    })));
   }
 
 }
