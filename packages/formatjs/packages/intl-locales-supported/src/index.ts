@@ -3,9 +3,7 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-'use strict';
-
-function areIntlLocalesSupported(locales: string | string[]): boolean {
+export default function areIntlLocalesSupported(locales: string | string[]): boolean {
     if (typeof Intl === 'undefined') {
         return false;
     }
@@ -32,6 +30,3 @@ function areIntlLocalesSupported(locales: string | string[]): boolean {
         intlConstructor.supportedLocalesOf(locales).length === locales.length
     );
 }
-
-module.exports = areIntlLocalesSupported;
-module.exports.default = areIntlLocalesSupported 
