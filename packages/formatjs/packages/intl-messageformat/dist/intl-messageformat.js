@@ -1631,6 +1631,7 @@
         };
         return __assign.apply(this, arguments);
     };
+    // -- MessageFormat --------------------------------------------------------
     function resolveLocale(locales) {
         if (typeof locales === 'string') {
             locales = [locales];

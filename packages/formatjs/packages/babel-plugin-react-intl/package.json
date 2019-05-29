@@ -14,13 +14,12 @@
     "intl-messageformat-parser": "^1.6.3"
   },
   "scripts": {
-    "prettier": "prettier --write '{src,scripts}/*.js' test/index.js",
     "lint": "eslint src --fix",
     "clean": "rimraf lib test/fixtures/**/actual.json",
     "test": "cross-env NODE_ENV=test jest",
     "cover": "nyc npm t",
     "build": "npm run clean && babel src --out-dir lib",
-    "preversion": "npm run lint && npm run prettier && npm run build",
+    "preversion": "npm run lint && npm run build",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -30,8 +29,5 @@
   "bugs": {
     "url": "https://github.com/formatjs/babel-plugin-react-intl/issues"
   },
-  "homepage": "https://github.com/formatjs/babel-plugin-react-intl#readme",
-  "prettier": {
-    "singleQuote": true
-  }
+  "homepage": "https://github.com/formatjs/babel-plugin-react-intl#readme"
 }

@@ -22,13 +22,9 @@
     "url": "git@github.com:yahoo/intl-relativeformat.git"
   },
   "main": "index.js",
-  "jsnext:main": "src/main.js",
-  "browser": {
-    "./lib/locales": false,
-    "./lib/locales.js": false
-  },
+  "typings": "lib/main.js",
   "dependencies": {
-    "intl-messageformat": "^2.0.0"
+    "intl-messageformat": "^3.0.0"
   },
   "scripts": {
     "build": "npm run clean && npm run cldr && tsc -p src && rollup -c rollup.config.js",
@@ -36,7 +32,7 @@
     "clean": "rimraf dist lib",
     "cover": "nyc -x lib/locales.js npm t",
     "prepublishOnly": "npm run build",
-    "test": "mocha -r chai/register-expect tests/index.js --reporter spec"
+    "test": "TS_NODE_PROJECT='tests/tsconfig.json' mocha -r ts-node/register -r source-map-support/register -r chai/register-expect tests/index.ts --reporter spec"
   },
   "homepage": "https://github.com/yahoo/intl-relativeformat",
   "directories": {

@@ -11,12 +11,6 @@ import parser, { MessageFormatPattern } from 'intl-messageformat-parser';
 
 // -- MessageFormat --------------------------------------------------------
 
-export interface LocaleData {
-  locale: string;
-  parentLocale?: string;
-  [k: string]: any;
-}
-
 function resolveLocale(locales: string | string[]): string {
   if (typeof locales === 'string') {
     locales = [locales];
@@ -108,14 +102,7 @@ class FormatError extends Error {
   }
 }
 
-interface IntlMessageFormat {
-  format(
-    values?: Record<string, string | number | boolean | null | undefined>
-  ): string;
-  resolvedOptions(): { locale: string };
-}
-
-let IntlMessageFormat: {
+export interface IntlMessageFormat {
   new (
     message: string | MessageFormatPattern,
     locales?: string | string[],
@@ -126,12 +113,16 @@ let IntlMessageFormat: {
     locales?: string | string[],
     overrideFormats?: Partial<Formats>
   ): IntlMessageFormat;
+  format(
+    values?: Record<string, string | number | boolean | null | undefined>
+  ): string;
+  resolvedOptions(): { locale: string };
   defaultLocale: string;
   formats: Formats;
   __parse: typeof parser['parse'];
-};
+}
 
-const MessageFormat: typeof IntlMessageFormat = ((
+const MessageFormat: IntlMessageFormat = ((
   message: string | MessageFormatPattern,
   locales: string | string[] = MessageFormat.defaultLocale,
   overrideFormats?: Partial<Formats>

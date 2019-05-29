@@ -24,13 +24,11 @@ describe('areIntlLocalesSupported()', function() {
     });
   });
 
-  describe('built-in', function() {
-    it('should return `true` for "en"', function() {
-      expect(areIntlLocalesSupported('en')).to.be.true;
-    });
+  it('should return `true` for "en"', function() {
+    expect(areIntlLocalesSupported('en')).to.be.true;
+  });
 
-    it('should return `true` for "fr"', function() {
-      expect(areIntlLocalesSupported('fr')).to.be.true;
-    });
+  it('should return `true` for "fr"', function() {
+    expect(areIntlLocalesSupported('fr')).to.be.true;
   });
 });
