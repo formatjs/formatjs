@@ -4,11 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-/*jshint node:true */
-/*global describe,it,beforeEach,afterEach,expect,Intl,IntlRelativeFormat */
-'use strict';
-
-var TS = 1409810798651;
+const IntlRelativeFormat = require('../')
 
 function past(v) {
     return new Date().getTime() - (v || 0);

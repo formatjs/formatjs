@@ -1,5 +1,7 @@
 import { uglify } from 'rollup-plugin-uglify';
 import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs'
+import typescript from 'rollup-plugin-typescript'
 
 const resolveConfig = resolve({
   mainFields: ['jsnext:main', 'module', 'main']
@@ -45,5 +47,15 @@ export default [
       name: 'IntlRelativeFormat'
     },
     plugins: [resolveConfig, uglifyConfig]
+  },
+  {
+    input: './tests/index.js',
+    output: {
+      sourcemap: true,
+      file: 'tests/browser.js',
+      format: 'umd',
+      name: 'Test'
+    },
+    plugins: [typescript(), resolveConfig, commonjs()]
   }
 ];

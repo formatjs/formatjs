@@ -1,0 +1,11 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "module": "commonjs",
+        "composite": true,
+        "sourceMap": false
+    },
+    "references": [
+        {"path": "../src"}
+    ]
+}

@@ -1,3 +1,4 @@
 .nyc_output
 lib
 node_modules/
+tests/browser.*

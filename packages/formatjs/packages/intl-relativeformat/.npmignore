@@ -1,6 +1,2 @@
-coverage/
-tasks/
 tests/
-tmp/
-.travis.yml
-Gruntfile.js
+.nyc_output
