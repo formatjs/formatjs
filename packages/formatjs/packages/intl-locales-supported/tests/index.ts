@@ -29,8 +29,8 @@ describe('areIntlLocalesSupported()', function() {
       expect(areIntlLocalesSupported('en')).to.be.true;
     });
 
-    it('should return `false` for "fr"', function() {
-      expect(areIntlLocalesSupported('fr')).to.be.false;
+    it('should return `true` for "fr"', function() {
+      expect(areIntlLocalesSupported('fr')).to.be.true;
     });
   });
 });
