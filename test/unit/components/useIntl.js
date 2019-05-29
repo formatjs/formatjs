@@ -4,8 +4,8 @@ import {IntlProvider} from '../../../src/react-intl'
 import useIntl from '../../../src/components/useIntl';
 
 const FunctionComponent = ({ spy }) => {
-  const intl = useIntl();
-  spy(intl);
+  const hookReturns = useIntl();
+  spy(hookReturns);
   return null;
 };
 
@@ -25,10 +25,9 @@ describe('useIntl() hook', () => {
         <FunctionComponent spy={spy} />
       </IntlProvider>
     );
-    const intlProvider = rendered.find(IntlProvider).childAt(0);
 
-    expect(spy).toHaveBeenCalledWith(
-      intlProvider.instance().getContext()
-    );
+    const providedIntl = rendered.find(IntlProvider).childAt(0).instance().getContext();
+    const expectedHookReturns = [providedIntl.formatMessage, providedIntl];
+    expect(spy).toHaveBeenCalledWith(expectedHookReturns);
   });
 });
