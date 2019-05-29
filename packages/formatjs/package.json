@@ -16,7 +16,7 @@
     "dev:lint": "lerna run lint --since master --stream",
     "dev:test": "lerna run test --since master --stream",
     "lint": "eslint .",
-    "prettier": "prettier --write 'packages/*/{lib,test,tests,src}/**/*.js'",
+    "prettier": "prettier --write 'packages/*/{lib,test,tests,src}/**/*.ts'",
     "test": "lerna run lint --since --stream && lerna run test --since --stream",
     "test:ci": "lerna run karma:ci --since --stream"
   },
@@ -78,6 +78,7 @@
   "author": "Seth Bertalotto <sbertal@verizonmedia.com>",
   "license": "BSD-3-Clause",
   "prettier": {
+    "parser": "typescript",
     "singleQuote": true
   }
 }

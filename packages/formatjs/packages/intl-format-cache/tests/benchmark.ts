@@ -146,7 +146,6 @@ new Suite('IntlMessageFormat cache get', {
   )
   .run();
 
-  
 mfm('message {token}', 'ar');
 mffc('message {token}', 'ar');
 new Suite('IntlMessageFormat cache get simple arg', {
@@ -154,15 +153,7 @@ new Suite('IntlMessageFormat cache get simple arg', {
   onError: console.log,
   onComplete
 })
-  .add('fast-memoize', () =>
-    mfm('message {token}', 'ar')
-  )
-  .add('intl-format-cache', () =>
-    mffc('message {token}', 'ar')
-  )
-  .add(
-    'not cached',
-    () =>
-      new IntlMessageFormat('message {token}', 'ar')
-  )
+  .add('fast-memoize', () => mfm('message {token}', 'ar'))
+  .add('intl-format-cache', () => mffc('message {token}', 'ar'))
+  .add('not cached', () => new IntlMessageFormat('message {token}', 'ar'))
   .run();

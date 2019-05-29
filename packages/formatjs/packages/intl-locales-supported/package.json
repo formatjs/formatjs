@@ -23,7 +23,7 @@
   "homepage": "https://github.com/formatjs/formatjs",
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": "tsc",
-    "test": "mocha test/unit/*.js"
+    "prepublishOnly": "npm run build",
+    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' mocha -r ts-node/register -r source-map-support/register -r chai/register-expect tests/index.ts --reporter spec"
   }
 }
