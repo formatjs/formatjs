@@ -25,9 +25,7 @@ describe('useIntl() hook', () => {
         <FunctionComponent spy={spy} />
       </IntlProvider>
     );
-
-    const providedIntl = rendered.find(IntlProvider).childAt(0).instance().getContext();
-    const expectedHookReturns = [providedIntl.formatMessage, providedIntl];
-    expect(spy).toHaveBeenCalledWith(expectedHookReturns);
+    const intl = rendered.find(IntlProvider).childAt(0).instance().getContext();
+    expect(spy).toHaveBeenCalledWith([intl.formatMessage, intl]);
   });
 });
