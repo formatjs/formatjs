@@ -18,6 +18,14 @@ function now() {
     return (new Date()).getTime();
 }
 
+function early() {
+    return new Date().setHours(1);
+}
+
+function late() {
+    return new Date().setHours(23);
+}
+
 describe('IntlRelativeFormat', function () {
 
     it('should be a function', function () {
@@ -151,6 +159,20 @@ describe('IntlRelativeFormat', function () {
                 expect(rf.format(past(30 * 24 * 60 * 60 * 1000))).to.equal('30 days ago');
                 expect(rf.format(future(24 * 60 * 60 * 1000))).to.equal('tomorrow');
                 expect(rf.format(future(30 * 24 * 60 * 60 * 1000))).to.equal('in 30 days');
+            });
+
+            it('should always output in the specified units - morning', function () {
+                var rf = new IntlRelativeFormat('en', {units: 'day'});
+
+                expect(rf.format(early(), { now: new Date().setHours(0) })).to.equal('today');
+                expect(rf.format(late(), { now: new Date().setHours(0) })).to.equal('today');
+            });
+
+            it('should always output in the specified units - evening', function () {
+                var rf = new IntlRelativeFormat('en', {units: 'day'});
+
+                expect(rf.format(early(), { now: new Date().setHours(23) })).to.equal('today');
+                expect(rf.format(late(), { now: new Date().setHours(23) })).to.equal('today');
             });
 
             it('should handle short unit formats', function () {
