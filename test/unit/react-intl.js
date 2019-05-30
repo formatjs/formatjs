@@ -15,6 +15,10 @@ describe('react-intl', () => {
             expect(ReactIntl.injectIntl).toBeA('function');
         });
 
+        it('exports `useIntl`', () => {
+            expect(ReactIntl.useIntl).toBeA('function');
+        });
+
         describe('React Components', () => {
             it('exports `IntlProvider`', () => {
                 expect(ReactIntl.IntlProvider).toBeA('function');
