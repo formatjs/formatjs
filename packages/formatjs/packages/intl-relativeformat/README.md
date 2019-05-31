@@ -4,10 +4,6 @@ Intl RelativeFormat
 Formats JavaScript dates to relative time strings (e.g., "3 hours ago").
 
 [![npm Version][npm-badge]][npm]
-[![Build Status][travis-badge]][travis]
-[![Dependency Status][david-badge]][david]
-
-[![Sauce Test Status][sauce-badge]][sauce]
 
 
 Overview
@@ -247,11 +243,7 @@ See the [LICENSE file][LICENSE] for license text and copyright information.
 
 [npm]: https://www.npmjs.org/package/intl-relativeformat
 [npm-badge]: https://img.shields.io/npm/v/intl-relativeformat.svg?style=flat-square
-[david]: https://david-dm.org/yahoo/intl-relativeformat
-[david-badge]: https://img.shields.io/david/yahoo/intl-relativeformat.svg?style=flat-square
-[travis]: https://travis-ci.org/yahoo/intl-relativeformat
-[travis-badge]: https://img.shields.io/travis/yahoo/intl-relativeformat/master.svg?style=flat-square
-[parser]: https://github.com/yahoo/intl-relativeformat-parser
+[parser]: https://github.com/formatjs/formatjs
 [CLDR]: http://cldr.unicode.org/
 [Intl]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl
 [Intl-NF]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
@@ -260,10 +252,8 @@ See the [LICENSE file][LICENSE] for license text and copyright information.
 [Intl.js]: https://github.com/andyearnshaw/Intl.js
 [rawgit]: https://rawgit.com/
 [semver]: http://semver.org/
-[LICENSE]: https://github.com/yahoo/intl-relativeformat/blob/master/LICENSE
+[LICENSE]: https://github.com/formatjs/formatjs/blob/master/LICENSE
 [moment.js]: http://momentjs.com/
-[sauce]: https://saucelabs.com/u/intl-relativeformat
-[sauce-badge]: https://saucelabs.com/browser-matrix/intl-relativeformat.svg
 [ECMA 402]: http://www.ecma-international.org/ecma-402/1.0/index.html
 [DateTimeFormat]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
 [NumberFormat]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
