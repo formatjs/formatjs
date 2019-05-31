@@ -71,7 +71,7 @@
     "intl-format-cache": "^2.0.5",
     "intl-messageformat": "^3.1.1",
     "intl-pluralrules": "^1.0.1",
-    "intl-relativeformat": "^3.0.1",
+    "intl-relativeformat": "^3.1.0",
     "invariant": "^2.1.1",
     "react-display-name": "^0.2.4",
     "react-is": "^16.3.1"

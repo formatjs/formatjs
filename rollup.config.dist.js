@@ -35,10 +35,8 @@ export default {
   },
   external: ['react', 'prop-types'],
   plugins: [
+    nodeResolve(),
     babel(),
-    nodeResolve({
-      jsnext: true,
-    }),
     commonjs({
       sourcemap: true,
       namedExports: {'react-is': ['isValidElementType']},
