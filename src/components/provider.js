@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import withIntl, {Provider} from './withIntl';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
-import IntlPluralFormat from '../plural';
 import memoizeIntlConstructor from 'intl-format-cache';
 import invariant from 'invariant';
 import {
@@ -22,6 +21,7 @@ import {
 import {intlConfigPropTypes, intlFormatPropTypes} from '../types';
 import * as format from '../format';
 import {hasLocaleData} from '../locale-data-registry';
+import 'intl-pluralrules'
 
 const intlConfigPropNames = Object.keys(intlConfigPropTypes);
 const intlFormatPropNames = Object.keys(intlFormatPropTypes);
@@ -130,7 +130,7 @@ class IntlProvider extends Component {
         getNumberFormat: memoizeIntlConstructor(Intl.NumberFormat),
         getMessageFormat: memoizeIntlConstructor(IntlMessageFormat),
         getRelativeFormat: memoizeIntlConstructor(IntlRelativeFormat),
-        getPluralFormat: memoizeIntlConstructor(IntlPluralFormat),
+        getPluralRules: memoizeIntlConstructor(Intl.PluralRules),
       },
     } = (intlContext || {});
 

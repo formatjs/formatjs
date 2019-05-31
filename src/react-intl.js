@@ -6,6 +6,7 @@
 
 import defaultLocaleData from './en';
 import {addLocaleData} from './locale-data-registry';
+import 'intl-pluralrules'
 
 addLocaleData(defaultLocaleData);
 

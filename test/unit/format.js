@@ -1,7 +1,6 @@
 import expect, {createSpy, spyOn} from 'expect';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
-import IntlPluralFormat from '../../src/plural';
 import {intlFormatPropTypes} from '../../src/types';
 import * as f from '../../src/format';
 
@@ -75,7 +74,7 @@ describe('format API', () => {
             getNumberFormat  : createSpy().andCall((...args) => new Intl.NumberFormat(...args)),
             getMessageFormat : createSpy().andCall((...args) => new IntlMessageFormat(...args)),
             getRelativeFormat: createSpy().andCall((...args) => new IntlRelativeFormat(...args)),
-            getPluralFormat  : createSpy().andCall((...args) => new IntlPluralFormat(...args)),
+            getPluralRules  : createSpy().andCall((...args) => new Intl.PluralRules(...args)),
 
             now: () => 0,
         };
@@ -454,9 +453,10 @@ describe('format API', () => {
             it('falls back and warns on invalid IntlRelativeFormat options', () => {
                 expect(formatRelative(0, {units: 'invalid'})).toBe(String(new Date(0)));
                 expect(consoleError.calls.length).toBe(1);
-                expect(consoleError.calls[0].arguments[0].startsWith(
-                    '[React Intl] Error formatting relative time.\nError: "invalid" is not a valid IntlRelativeFormat `units` value, it must be one of'
-                )).toBeTruthy();
+                expect(consoleError.calls[0].arguments[0]).toEqual(
+                    `[React Intl] Error formatting relative time.
+Error: "invalid" is not a valid IntlRelativeFormat 'units' value, it must be one of: second", "second-short", "minute", "minute-short", "hour", "hour-short", "day", "day-short", "month", "month-short", "year", "year-short`
+                )
             });
 
             it('uses configured named formats', () => {
@@ -639,58 +639,58 @@ describe('format API', () => {
         let formatPlural;
 
         beforeEach(() => {
-            pf = new IntlPluralFormat(config.locale);
+            pf = new Intl.PluralRules(config.locale);
             formatPlural = f.formatPlural.bind(null, config, state);
         });
 
         it('formats falsy values', () => {
-            expect(formatPlural(undefined)).toBe(pf.format(undefined));
-            expect(formatPlural(false)).toBe(pf.format(false));
-            expect(formatPlural(null)).toBe(pf.format(null));
-            expect(formatPlural(NaN)).toBe(pf.format(NaN));
-            expect(formatPlural('')).toBe(pf.format(''));
-            expect(formatPlural(0)).toBe(pf.format(0));
+            expect(formatPlural(undefined)).toBe(pf.select(undefined));
+            expect(formatPlural(false)).toBe(pf.select(false));
+            expect(formatPlural(null)).toBe(pf.select(null));
+            expect(formatPlural(NaN)).toBe(pf.select(NaN));
+            expect(formatPlural('')).toBe(pf.select(''));
+            expect(formatPlural(0)).toBe(pf.select(0));
         });
 
         it('formats integer values', () => {
-            expect(formatPlural(0)).toBe(pf.format(0));
-            expect(formatPlural(1)).toBe(pf.format(1));
-            expect(formatPlural(2)).toBe(pf.format(2));
+            expect(formatPlural(0)).toBe(pf.select(0));
+            expect(formatPlural(1)).toBe(pf.select(1));
+            expect(formatPlural(2)).toBe(pf.select(2));
         });
 
         it('formats decimal values', () => {
-            expect(formatPlural(0.1)).toBe(pf.format(0.1));
-            expect(formatPlural(1.0)).toBe(pf.format(1.0));
-            expect(formatPlural(1.1)).toBe(pf.format(1.1));
+            expect(formatPlural(0.1)).toBe(pf.select(0.1));
+            expect(formatPlural(1.0)).toBe(pf.select(1.0));
+            expect(formatPlural(1.1)).toBe(pf.select(1.1));
         });
 
         it('formats string values parsed as numbers', () => {
             expect(Number('0')).toBe(0);
-            expect(formatPlural('0')).toBe(pf.format('0'));
+            expect(formatPlural('0')).toBe(pf.select('0'));
             expect(Number('1')).toBe(1);
-            expect(formatPlural('1')).toBe(pf.format('1'));
+            expect(formatPlural('1')).toBe(pf.select('1'));
 
             expect(Number('0.1')).toBe(0.1);
-            expect(formatPlural('0.1')).toBe(pf.format('0.1'));
+            expect(formatPlural('0.1')).toBe(pf.select('0.1'));
             expect(Number('1.0')).toBe(1.0);
-            expect(formatPlural('1.0')).toBe(pf.format('1.0'));
+            expect(formatPlural('1.0')).toBe(pf.select('1.0'));
         });
 
         describe('options', () => {
             it('accepts empty options', () => {
-                expect(formatPlural(0, {})).toBe(pf.format(0));
+                expect(formatPlural(0, {})).toBe(pf.select(0));
             });
 
             it('accepts valid IntlPluralFormat options', () => {
-                expect(() => formatPlural(22, {style: 'ordinal'})).toNotThrow();
+                expect(() => formatPlural(22, {type: 'ordinal'})).toNotThrow();
             });
 
             describe('ordinals', () => {
                 it('formats using ordinal plural rules', () => {
-                    const opts = {style: 'ordinal'};
-                    pf = new IntlPluralFormat(config.locale, opts);
+                    const opts = {type: 'ordinal'};
+                    pf = new Intl.PluralRules(config.locale, opts);
 
-                    expect(formatPlural(22, opts)).toBe(pf.format(22));
+                    expect(formatPlural(22, opts)).toBe(pf.select(22));
                 });
             });
         });

@@ -166,7 +166,7 @@ export function formatPlural(config, state, value, options = {}) {
   let onError = config.onError || defaultErrorHandler;
 
   try {
-    return state.getPluralFormat(locale, filteredOptions).format(value);
+    return state.getPluralRules(locale, filteredOptions).select(value);
   } catch (e) {
     onError(createError('Error formatting plural.', e));
   }
