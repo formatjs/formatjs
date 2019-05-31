@@ -1,6 +1,6 @@
 {
   "name": "intl-relativeformat",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "Formats JavaScript dates to relative time strings.",
   "keywords": [
     "intl",
@@ -15,11 +15,11 @@
     "Eric Ferraiuolo <edf@ericf.me>"
   ],
   "bugs": {
-    "url": "https://github.com/yahoo/intl-relativeformat/issues"
+    "url": "https://github.com/formatjs/formatjs/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:yahoo/intl-relativeformat.git"
+    "url": "git@github.com:formatjs/formatjs.git"
   },
   "main": "index.js",
   "typings": "lib/main.js",
@@ -34,7 +34,7 @@
     "prepublishOnly": "npm run build",
     "test": "TS_NODE_PROJECT='tests/tsconfig.json' mocha -r ts-node/register -r source-map-support/register -r chai/register-expect tests/index.ts --reporter spec"
   },
-  "homepage": "https://github.com/yahoo/intl-relativeformat",
+  "homepage": "https://github.com/formatjs/formatjs",
   "directories": {
     "test": "tests"
   },
