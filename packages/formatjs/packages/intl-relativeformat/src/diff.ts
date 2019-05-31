@@ -25,8 +25,8 @@ function startOfDay(dirtyDate: ConstructorParameters<typeof Date>[0]) {
 }
 
 function differenceInCalendarDays(
-  dirtyDateLeft: ConstructorParameters<typeof Date>[0],
-  dirtyDateRight: ConstructorParameters<typeof Date>[0]
+  dirtyDateLeft: Parameters<typeof startOfDay>[0],
+  dirtyDateRight: Parameters<typeof startOfDay>[0]
 ) {
   var startOfDayLeft = startOfDay(dirtyDateLeft);
   var startOfDayRight = startOfDay(dirtyDateRight);
@@ -45,8 +45,8 @@ function differenceInCalendarDays(
 }
 
 export default function diff(
-  from: ConstructorParameters<typeof Date>[0],
-  to: ConstructorParameters<typeof Date>[0]
+  from: Date | number,
+  to: Date | number
 ): Record<FIELD, number> {
   // Convert to ms timestamps.
   from = +from;

@@ -26,9 +26,5 @@
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
   },
-  "homepage": "https://github.com/formatjs/formatjs",
-  "devDependencies": {
-    "intl-messageformat": "^3.1.4",
-    "intl-relativeformat": "^2.2.0"
-  }
+  "homepage": "https://github.com/formatjs/formatjs"
 }

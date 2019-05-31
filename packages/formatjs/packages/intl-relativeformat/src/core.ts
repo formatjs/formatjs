@@ -234,8 +234,8 @@ const RelativeFormat: IntlRelativeFormat = ((
 
   return {
     format(
-      date?: ConstructorParameters<typeof Date>[0],
-      options?: { now?: number | null }
+      date?: Date | number,
+      options?: { now?: number | Date | null }
     ) {
       const now =
         options && options.now !== undefined
