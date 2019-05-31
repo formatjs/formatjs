@@ -1,6 +1,6 @@
 {
   "name": "intl-relativeformat",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Formats JavaScript dates to relative time strings.",
   "keywords": [
     "intl",
@@ -24,7 +24,7 @@
   "main": "index.js",
   "typings": "lib/main.js",
   "dependencies": {
-    "intl-messageformat": "^3.0.0"
+    "intl-messageformat": "^3.1.4"
   },
   "scripts": {
     "build": "npm run clean && npm run cldr && tsc -p src && rollup -c rollup.config.js",
