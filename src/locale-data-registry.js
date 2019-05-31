@@ -9,11 +9,7 @@ import IntlRelativeFormat from 'intl-relativeformat';
 export function addLocaleData(data = []) {
   let locales = Array.isArray(data) ? data : [data];
 
-  locales.forEach(localeData => {
-    if (localeData && localeData.locale) {
-      IntlRelativeFormat.__addLocaleData(localeData);
-    }
-  });
+  IntlRelativeFormat.__addLocaleData(...locales.filter(l => !!l.locale))
 }
 
 export function hasLocaleData(locale) {
