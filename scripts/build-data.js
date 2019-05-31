@@ -5,7 +5,6 @@ import extractCLDRData from 'formatjs-extract-cldr-data';
 import serialize from 'serialize-javascript';
 import {rollup} from 'rollup';
 import virtual from 'rollup-plugin-virtual';
-import {uglify} from 'rollup-plugin-uglify';
 import ProgressBar from 'progress';
 import PromiseQueue from 'promise-queue';
 
@@ -42,7 +41,6 @@ function writeUMDFile(filename, module) {
       virtual({
         [filename]: module
       }),
-      uglify(),
     ],
   })
     .then(bundle => {
