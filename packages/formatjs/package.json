@@ -8,17 +8,18 @@
     "url": "https://github.com/formatjs/formatjs"
   },
   "scripts": {
-    "build": "npm run build:bootstrap && npm run build:packages",
     "build:bootstrap": "lerna bootstrap --hoist --since --include-filtered-dependencies --no-ci",
     "build:packages": "lerna run build --since --stream",
-    "cover": "lerna run cover --since",
+    "build": "npm run build:bootstrap && npm run build:packages",
     "cover:collect": "mkdir -p ./.nyc_output/ && for d in $(find packages -type d -name '.nyc_output' -maxdepth 2 -exec find '{}' -type f ';'); do (cp $d ./.nyc_output/); done; nyc report --reporter=lcov --report-dir=${COVERAGE_DIR:-artifacts/coverage}",
+    "cover": "lerna run cover --since",
     "dev:lint": "lerna run lint --since master --stream",
     "dev:test": "lerna run test --since master --stream",
+    "karma:ci": "karma start karma.conf-ci.js",
+    "karma:local": "karma start karma.conf.js",
     "lint": "eslint .",
     "prettier": "prettier --write 'packages/*/{lib,test,tests,src}/**/*.ts' '{src,scripts,test,tests}/*.js'",
-    "test": "lerna run lint --since --stream && lerna run test --since --stream",
-    "test:ci": "lerna run karma:ci --since --stream"
+    "test": "lerna run lint --since --stream && lerna run test --since --stream"
   },
   "dependencies": {},
   "devDependencies": {

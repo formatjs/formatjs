@@ -46,13 +46,15 @@ module.exports = function (config) {
         basePath: '',
         frameworks: ['mocha', 'chai'],
         files: [
-            'tests/browser.js'
+            'packages/intl-relativeformat/tests/browser.js',
+            'packages/intl-messageformat/tests/browser.js',
         ],
         reporters: ['progress', 'saucelabs'],
         port: 9876,
         colors: true,
+        concurrency: 5,
         sauceLabs: {
-            testName: 'intl-messageformat',
+            testName: 'formatjs',
             build: process.env.TRAVIS_BUILD_ID,
             recordScreenshots: false,
             connectOptions: {
