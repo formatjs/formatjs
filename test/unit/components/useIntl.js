@@ -26,6 +26,6 @@ describe('useIntl() hook', () => {
       </IntlProvider>
     );
     const intl = rendered.find(IntlProvider).childAt(0).instance().getContext();
-    expect(spy).toHaveBeenCalledWith([intl.formatMessage, intl]);
+    expect(spy).toHaveBeenCalledWith(intl);
   });
 });
