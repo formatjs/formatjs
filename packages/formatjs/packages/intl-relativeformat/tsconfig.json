@@ -1,10 +1,8 @@
 {
+    "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "module": "esnext",
-        "moduleResolution": "node",
-        "target": "es5",
-        "lib": ["es6", "dom", "es2018.intl"],
-        "strict": true,
-        "sourceMap": true,
-    }
+        "outDir": "lib",
+        "rootDir": "src"
+    },
+    "include": ["src/*.ts"]
 }

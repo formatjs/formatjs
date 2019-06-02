@@ -35,13 +35,10 @@
     "intl-pluralrules": "^1.0.1"
   },
   "scripts": {
+    "clean": "rimraf dist lib",
     "benchmark": "ts-node --project tests/tsconfig.json tests/benchmark",
-    "build": "npm run clean && tsc -p src && npm run rollup",
-    "rollup": "rollup -c rollup.config.js",
-    "clean": "rimraf dist lib tests/*.js tests/*.d.ts",
-    "cover": "nyc npm t",
-    "prepublishOnly": "npm run build",
-    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' mocha -r ts-node/register -r source-map-support/register -r chai/register-expect tests/index.ts --reporter spec",
+    "build": "tsc && rollup -c rollup.config.js",
+    "test": "mocha --opts ../../mocha.opts tests/index.ts",
     "karma:local": "karma start karma.conf.js",
     "karma:ci": "karma start karma.conf-ci.js"
   },

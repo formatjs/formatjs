@@ -6,12 +6,15 @@
   "module": "lib/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
+    "clean": "rimraf dist lib",
     "benchmark": "ts-node --project tests/tsconfig.json tests/benchmark",
-    "build": "tsc -p src && tsc -p src/tsconfig.cjs.json",
-    "clean": "rimraf lib dist",
-    "cover": "nyc npm t",
-    "prepublishOnly": "npm run clean && npm run build",
-    "test": "TS_NODE_PROJECT='tests/tsconfig.json' mocha -r ts-node/register -r source-map-support/register -r chai/register-expect tests/index.ts --reporter spec"
+    "build": "tsc && tsc -p src/tsconfig.cjs.json && rollup -c rollup.config.js",
+    "test": "mocha --opts ../../mocha.opts tests/index.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "intl-messageformat": "3",
+    "intl-relativeformat": "3"
   },
   "repository": {
     "type": "git",

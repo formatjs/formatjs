@@ -6,11 +6,10 @@
   "module": "src/parser.js",
   "scripts": {
     "clean": "rimraf dist lib",
-    "test": "mocha test/unit/ --reporter spec",
-    "cover": "nyc npm t",
-    "build": "npm run clean && ./build.js",
+    "build": "./build.js",
     "benchmark": "./test/benchmark.js",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "test": "mocha --opts ../../mocha.opts tests/index.ts"
   },
   "contributors": [
     "Eric Ferraiuolo <eferraiuolo@gmail.com>",

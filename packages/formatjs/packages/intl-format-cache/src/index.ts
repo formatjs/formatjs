@@ -46,7 +46,7 @@ function getCacheId(inputs: any[]) {
   );
 }
 
-function orderedProps(obj: object) {
+function orderedProps(obj: Record<string, any>) {
   return Object.keys(obj)
     .sort()
     .map(k => ({ [k]: obj[k] }));
@@ -66,9 +66,9 @@ interface MemoizeFormatConstructorFn {
 }
 
 const memoizeFormatConstructor: MemoizeFormatConstructorFn = (
-  FormatConstructor,
-  cache = {}
-) => (...args) => {
+  FormatConstructor: any,
+  cache: Record<string, any> = {}
+) => (...args: any[]) => {
   const cacheId = getCacheId(args);
   let format = cacheId && cache[cacheId];
   if (!format) {

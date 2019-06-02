@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/formatjs/formatjs",
   "scripts": {
+    "clean": "rimraf dist lib",
     "build": "tsc",
-    "prepublishOnly": "npm run build",
-    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' mocha -r ts-node/register -r source-map-support/register -r chai/register-expect tests/index.ts --reporter spec"
+    "test": "mocha --opts ../../mocha.opts tests/index.ts"
   }
 }

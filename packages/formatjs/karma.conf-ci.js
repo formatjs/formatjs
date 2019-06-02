@@ -1,8 +1,11 @@
+const {sync: globSync} = require('glob')
 module.exports = function (config) {
     if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
         console.log('Make sure the SAUCE_USERNAME and SAUCE_ACCESS_KEY environment variables are set.')
         process.exit(1)
     }
+
+    const FILES = globSync('./packages/*/tests/browser.js')
 
     // Browsers to run on Sauce Labs
     // Check out https://saucelabs.com/platforms for all browser/OS combos
@@ -45,10 +48,7 @@ module.exports = function (config) {
     config.set({
         basePath: '',
         frameworks: ['mocha', 'chai'],
-        files: [
-            'packages/intl-relativeformat/tests/browser.js',
-            'packages/intl-messageformat/tests/browser.js',
-        ],
+        files: FILES,
         reporters: ['progress', 'saucelabs'],
         port: 9876,
         colors: true,

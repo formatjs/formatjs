@@ -57,6 +57,7 @@ export interface MessageFormatPattern {
 }
 interface Parser {
     parse (msg: string): MessageFormatPattern
+    SyntaxError: Error
 }
 declare const parser: Parser
 export default parser 

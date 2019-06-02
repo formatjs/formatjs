@@ -7,10 +7,10 @@
 
 var assign = require('object.assign');
 
-var expandLocales         = require('./lib/expand-locales');
-var extractPluralRules    = require('./lib/extract-plurals');
-var extractRelativeFields = require('./lib/extract-relative');
-var getAllLocales         = require('./lib/locales').getAllLocales;
+var expandLocales         = require('./src/expand-locales');
+var extractPluralRules    = require('./src/extract-plurals');
+var extractRelativeFields = require('./src/extract-relative');
+var getAllLocales         = require('./src/locales').getAllLocales;
 
 module.exports = function extractData(options) {
     options = assign({

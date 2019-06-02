@@ -14,12 +14,10 @@
     "intl-messageformat-parser": "^1.6.3"
   },
   "scripts": {
-    "lint": "eslint src --fix",
     "clean": "rimraf lib test/fixtures/**/actual.json",
     "test": "cross-env NODE_ENV=test jest",
-    "cover": "nyc npm t",
-    "build": "npm run clean && babel src --out-dir lib",
-    "preversion": "npm run lint && npm run build",
+    "cover": "npm t -- --coverage",
+    "build": "babel src --out-dir lib",
     "prepublishOnly": "npm run build"
   },
   "keywords": [

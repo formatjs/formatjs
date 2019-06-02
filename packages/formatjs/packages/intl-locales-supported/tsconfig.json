@@ -1,13 +1,8 @@
 {
+    "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "target": "es5",
-        "lib": ["es6", "dom", "es2018.intl"],
-        "declaration": true,
-        "strict": true,
-        "sourceMap": true,
-        "outDir": "lib"
+        "outDir": "lib",
+        "rootDir": "src"
     },
     "include": ["src/*.ts"]
 }

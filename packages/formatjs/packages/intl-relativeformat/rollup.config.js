@@ -1,10 +1,9 @@
 import { uglify } from 'rollup-plugin-uglify';
 import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs'
-import typescript from 'rollup-plugin-typescript'
+import testRollupConfig from '../../rollup.config'
 
 const resolveConfig = resolve({
-  mainFields: ['jsnext:main', 'module', 'main']
+  mainFields: ['module', 'main']
 });
 const uglifyConfig = uglify();
 export default [
@@ -48,14 +47,5 @@ export default [
     },
     plugins: [resolveConfig, uglifyConfig]
   },
-  {
-    input: './tests/index.ts',
-    output: {
-      sourcemap: true,
-      file: 'tests/browser.js',
-      format: 'umd',
-      name: 'Test'
-    },
-    plugins: [typescript(), resolveConfig, commonjs()]
-  }
+  ...testRollupConfig
 ];

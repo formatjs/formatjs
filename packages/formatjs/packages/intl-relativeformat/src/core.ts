@@ -233,10 +233,7 @@ const RelativeFormat: IntlRelativeFormat = ((
   }
 
   return {
-    format(
-      date?: Date | number,
-      options?: { now?: number | Date | null }
-    ) {
+    format(date?: Date | number, options?: { now?: number | Date | null }) {
       const now =
         options && options.now !== undefined
           ? options.now === null

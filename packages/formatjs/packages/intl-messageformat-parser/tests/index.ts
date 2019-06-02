@@ -1,8 +1,19 @@
 /* global describe, it */
 'use strict';
 
-var expect = require('expect.js');
-var parser = require('../../');
+import parser, {
+  MessageTextElement,
+  ArgumentElement,
+  PluralFormat,
+  SimpleFormat,
+  MessageFormatPattern,
+  SelectFormat,
+  SelectOrdinalFormat
+} from '..';
+import { expect as chaiExpect } from 'chai';
+declare global {
+  var expect: typeof chaiExpect;
+}
 
 describe('exports', function() {
   it('should have a `parse` export', function() {
@@ -19,28 +30,12 @@ describe('exports', function() {
 describe('parse()', function() {
   var parse = parser.parse;
 
-  it('should expect a String argument', function() {
-    expect(parse)
-      .withArgs('')
-      .to.not.throwException();
-
-    expect(parse)
-      .withArgs()
-      .to.throwException();
-    expect(parse)
-      .withArgs(undefined)
-      .to.throwException();
-    expect(parse)
-      .withArgs(null)
-      .to.throwException();
-  });
-
   it('should return an AST object', function() {
     var ast = parse('');
     expect(ast).to.be.an('object');
     expect(ast.type).to.equal('messageFormatPattern');
     expect(ast.elements).to.be.an('array');
-    expect(ast.elements).to.be.empty(0);
+    expect(ast.elements).to.be.empty;
   });
 
   describe('parse("Hello, World!")', function() {
@@ -57,7 +52,7 @@ describe('parse()', function() {
       expect(element).to.have.property('type');
       expect(element.type).to.equal('messageTextElement');
       expect(element).to.have.property('value');
-      expect(element.value).to.equal(msg);
+      expect((element as MessageTextElement).value).to.equal(msg);
       expect(element).to.have.property('location');
       expect(element.location).to.eql({
         start: { offset: 0, line: 1, column: 1 },
@@ -76,7 +71,7 @@ describe('parse()', function() {
 
     it('should first contain a `messageTextElement`', function() {
       var element = ast.elements[0];
-      expect(element.value).to.equal('Hello, ');
+      expect((element as MessageTextElement).value).to.equal('Hello, ');
       expect(element).to.have.property('location');
       expect(element.location).to.eql({
         start: { offset: 0, line: 1, column: 1 },
@@ -90,9 +85,9 @@ describe('parse()', function() {
       expect(element).to.have.property('type');
       expect(element.type).to.equal('argumentElement');
       expect(element).to.have.property('id');
-      expect(element.id).to.equal('name');
+      expect((element as ArgumentElement).id).to.equal('name');
       expect(element).to.have.property('format');
-      expect(element.format).to.equal(null);
+      expect((element as ArgumentElement).format).to.equal(null);
       expect(element).to.have.property('location');
       expect(element.location).to.eql({
         start: { offset: 7, line: 1, column: 8 },
@@ -102,7 +97,7 @@ describe('parse()', function() {
 
     it('should finally contain a `messageTextElement`', function() {
       var element = ast.elements[2];
-      expect(element.value).to.equal('!');
+      expect((element as MessageTextElement).value).to.equal('!');
       expect(element).to.have.property('location');
       expect(element.location).to.eql({
         start: { offset: 13, line: 1, column: 14 },
@@ -125,7 +120,7 @@ describe('parse()', function() {
       expect(element).to.have.property('type');
       expect(element.type).to.equal('argumentElement');
       expect(element).to.have.property('id');
-      expect(element.id).to.equal('num');
+      expect((element as ArgumentElement).id).to.equal('num');
       expect(element).to.have.property('location');
       expect(element.location).to.eql({
         start: { offset: 0, line: 1, column: 1 },
@@ -133,7 +128,8 @@ describe('parse()', function() {
       });
       expect(element).to.have.property('format');
 
-      var format = element.format;
+      var format: SimpleFormat = (element as ArgumentElement)
+        .format as SimpleFormat;
       expect(format).to.be.an('object');
       expect(format).to.have.property('type');
       expect(format.type).to.equal('numberFormat');
@@ -162,7 +158,7 @@ describe('parse()', function() {
       expect(element).to.have.property('type');
       expect(element.type).to.equal('argumentElement');
       expect(element).to.have.property('id');
-      expect(element.id).to.equal('numPhotos');
+      expect((element as ArgumentElement).id).to.equal('numPhotos');
       expect(element).to.have.property('location');
       expect(element.location).to.eql({
         start: { offset: 0, line: 1, column: 1 },
@@ -170,7 +166,7 @@ describe('parse()', function() {
       });
       expect(element).to.have.property('format');
 
-      var format = element.format;
+      var format = (element as ArgumentElement).format as PluralFormat;
       expect(format).to.be.an('object');
       expect(format).to.have.property('type');
       expect(format.type).to.equal('pluralFormat');
@@ -184,7 +180,8 @@ describe('parse()', function() {
     });
 
     it('should contain 3 `options`', function() {
-      var options = ast.elements[0].format.options;
+      var options = ((ast.elements[0] as ArgumentElement)
+        .format as PluralFormat).options;
       expect(options).to.have.length(3);
 
       var option = options[0];
@@ -206,7 +203,8 @@ describe('parse()', function() {
     });
 
     it('should contain nested `messageFormatPattern` values for each option', function() {
-      var options = ast.elements[0].format.options;
+      var options = ((ast.elements[0] as ArgumentElement)
+        .format as PluralFormat).options;
 
       var value = options[0].value;
       expect(value).to.have.property('type');
@@ -220,15 +218,19 @@ describe('parse()', function() {
       expect(element).to.have.property('type');
       expect(element.type).to.equal('messageTextElement');
       expect(element).to.have.property('value');
-      expect(element.value).to.equal('no photos');
+      expect((element as MessageTextElement).value).to.equal('no photos');
       expect(element).to.have.property('location');
       expect(element.location).to.eql({
         start: { offset: 23, line: 1, column: 24 },
         end: { offset: 32, line: 1, column: 33 }
       });
 
-      expect(options[1].value.elements[0].value).to.equal('one photo');
-      expect(options[2].value.elements[0].value).to.equal('# photos');
+      expect(
+        (options[1].value.elements[0] as MessageTextElement).value
+      ).to.equal('one photo');
+      expect(
+        (options[2].value.elements[0] as MessageTextElement).value
+      ).to.equal('# photos');
     });
   });
 
@@ -247,7 +249,7 @@ describe('parse()', function() {
       expect(element).to.have.property('type');
       expect(element.type).to.equal('argumentElement');
       expect(element).to.have.property('id');
-      expect(element.id).to.equal('floor');
+      expect((element as ArgumentElement).id).to.equal('floor');
       expect(element).to.have.property('location');
       expect(element.location).to.eql({
         start: { offset: 0, line: 1, column: 1 },
@@ -255,7 +257,7 @@ describe('parse()', function() {
       });
       expect(element).to.have.property('format');
 
-      var format = element.format;
+      var format = (element as ArgumentElement).format as PluralFormat;
       expect(format).to.be.an('object');
       expect(format).to.have.property('type');
       expect(format.type).to.equal('pluralFormat');
@@ -270,7 +272,8 @@ describe('parse()', function() {
     });
 
     it('should contain 5 `options`', function() {
-      var options = ast.elements[0].format.options;
+      var options = ((ast.elements[0] as ArgumentElement)
+        .format as SelectOrdinalFormat).options;
       expect(options).to.have.length(5);
 
       var option = options[0];
@@ -294,7 +297,8 @@ describe('parse()', function() {
     });
 
     it('should contain nested `messageFormatPattern` values for each option', function() {
-      var options = ast.elements[0].format.options;
+      var options = ((ast.elements[0] as ArgumentElement)
+        .format as SelectFormat).options;
 
       var value = options[0].value;
       expect(value).to.have.property('type');
@@ -308,18 +312,28 @@ describe('parse()', function() {
       expect(element).to.have.property('type');
       expect(element.type).to.equal('messageTextElement');
       expect(element).to.have.property('value');
-      expect(element.value).to.equal('ground');
+      expect((element as MessageTextElement).value).to.equal('ground');
       expect(element).to.have.property('location');
       expect(element.location).to.eql({
         start: { offset: 26, line: 1, column: 27 },
         end: { offset: 32, line: 1, column: 33 }
       });
 
-      expect(options[0].value.elements[0].value).to.equal('ground');
-      expect(options[1].value.elements[0].value).to.equal('#st');
-      expect(options[2].value.elements[0].value).to.equal('#nd');
-      expect(options[3].value.elements[0].value).to.equal('#rd');
-      expect(options[4].value.elements[0].value).to.equal('#th');
+      expect(
+        (options[0].value.elements[0] as MessageTextElement).value
+      ).to.equal('ground');
+      expect(
+        (options[1].value.elements[0] as MessageTextElement).value
+      ).to.equal('#st');
+      expect(
+        (options[2].value.elements[0] as MessageTextElement).value
+      ).to.equal('#nd');
+      expect(
+        (options[3].value.elements[0] as MessageTextElement).value
+      ).to.equal('#rd');
+      expect(
+        (options[4].value.elements[0] as MessageTextElement).value
+      ).to.equal('#th');
     });
   });
 
@@ -337,7 +351,7 @@ describe('parse()', function() {
       expect(element).to.have.property('type');
       expect(element.type).to.equal('argumentElement');
       expect(element).to.have.property('id');
-      expect(element.id).to.equal('gender');
+      expect((element as ArgumentElement).id).to.equal('gender');
       expect(element).to.have.property('location');
       expect(element.location).to.eql({
         start: { offset: 0, line: 1, column: 1 },
@@ -345,7 +359,7 @@ describe('parse()', function() {
       });
       expect(element).to.have.property('format');
 
-      var format = element.format;
+      var format = (element as ArgumentElement).format;
       expect(format).to.be.an('object');
       expect(format).to.have.property('type');
       expect(format.type).to.equal('selectFormat');
@@ -357,7 +371,8 @@ describe('parse()', function() {
     });
 
     it('should contain 3 `options`', function() {
-      var options = ast.elements[0].format.options;
+      var options = ((ast.elements[0] as ArgumentElement)
+        .format as SelectFormat).options;
       expect(options).to.have.length(3);
 
       var option = options[0];
@@ -379,7 +394,8 @@ describe('parse()', function() {
     });
 
     it('should contain nested `messageFormatPattern` values for each option', function() {
-      var options = ast.elements[0].format.options;
+      var options = ((ast.elements[0] as ArgumentElement)
+        .format as SelectFormat).options;
 
       var value = options[0].value;
       expect(value).to.have.property('type');
@@ -393,15 +409,19 @@ describe('parse()', function() {
       expect(element).to.have.property('type');
       expect(element.type).to.equal('messageTextElement');
       expect(element).to.have.property('value');
-      expect(element.value).to.equal('woman');
+      expect((element as MessageTextElement).value).to.equal('woman');
       expect(element).to.have.property('location');
       expect(element.location).to.eql({
         start: { offset: 25, line: 1, column: 26 },
         end: { offset: 30, line: 1, column: 31 }
       });
 
-      expect(options[1].value.elements[0].value).to.equal('man');
-      expect(options[2].value.elements[0].value).to.equal('person');
+      expect(
+        (options[1].value.elements[0] as MessageTextElement).value
+      ).to.equal('man');
+      expect(
+        (options[2].value.elements[0] as MessageTextElement).value
+      ).to.equal('person');
     });
   });
 
@@ -409,7 +429,7 @@ describe('parse()', function() {
     it('should allow whitespace in and around `messageTextElement`s', function() {
       var msg = '   some random test   ';
       var ast = parse(msg);
-      expect(ast.elements[0].value).to.equal(msg);
+      expect((ast.elements[0] as MessageTextElement).value).to.equal(msg);
     });
 
     it('should allow whitespace in `argumentElement`s', function() {
@@ -417,42 +437,60 @@ describe('parse()', function() {
       var ast = parse(msg);
 
       var element = ast.elements[0];
-      expect(element.id).to.equal('num');
-      expect(element.format.type).to.equal('numberFormat');
-      expect(element.format.style).to.equal('percent');
+      expect((element as ArgumentElement).id).to.equal('num');
+      expect((element as ArgumentElement).format.type).to.equal('numberFormat');
+      expect(
+        ((element as ArgumentElement).format as SimpleFormat).style
+      ).to.equal('percent');
     });
     it('should capture whitespace in nested pattern', function() {
       var msg = '{c, plural, =1 { {text} project} other { {text} projects}}';
       var ast = parse(msg);
-      expect(ast.elements[0].format.options[0].value.elements).to.have.length(
-        3
-      );
       expect(
-        ast.elements[0].format.options[0].value.elements[0].value
+        ((ast.elements[0] as ArgumentElement).format as PluralFormat).options[0]
+          .value.elements
+      ).to.have.length(3);
+      expect(
+        (((ast.elements[0] as ArgumentElement).format as PluralFormat)
+          .options[0].value.elements[0] as MessageTextElement).value
       ).to.equal(' ');
-      expect(ast.elements[0].format.options[0].value.elements[1].id).to.equal(
-        'text'
-      );
       expect(
-        ast.elements[0].format.options[0].value.elements[2].value
+        (((ast.elements[0] as ArgumentElement).format as PluralFormat)
+          .options[0].value.elements[1] as ArgumentElement).id
+      ).to.equal('text');
+      expect(
+        (((ast.elements[0] as ArgumentElement).format as PluralFormat)
+          .options[0].value.elements[2] as MessageTextElement).value
       ).to.equal(' project');
     });
   });
 
   describe('escaping', function() {
     it('should allow escaping of syntax chars via `\\\\`', function() {
-      expect(parse('\\{').elements[0].value).to.equal('{');
-      expect(parse('\\}').elements[0].value).to.equal('}');
-      expect(parse('\\u003C').elements[0].value).to.equal('<');
+      expect((parse('\\{').elements[0] as MessageTextElement).value).to.equal(
+        '{'
+      );
+      expect((parse('\\}').elements[0] as MessageTextElement).value).to.equal(
+        '}'
+      );
+      expect(
+        (parse('\\u003C').elements[0] as MessageTextElement).value
+      ).to.equal('<');
 
       // Escaping "#" needs to be special-cased so it remains escaped so
       // the runtime doesn't replace it when in a `pluralFormat` option.
-      expect(parse('\\#').elements[0].value).to.equal('\\#');
+      expect((parse('\\#').elements[0] as MessageTextElement).value).to.equal(
+        '\\#'
+      );
     });
 
     it('should allow backslash chars in `messageTextElement`s', function() {
-      expect(parse('\\u005c').elements[0].value).to.equal('\\');
-      expect(parse('\\\\').elements[0].value).to.equal('\\');
+      expect(
+        (parse('\\u005c').elements[0] as MessageTextElement).value
+      ).to.equal('\\');
+      expect((parse('\\\\').elements[0] as MessageTextElement).value).to.equal(
+        '\\'
+      );
     });
   });
 });

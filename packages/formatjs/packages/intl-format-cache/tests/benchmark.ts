@@ -5,11 +5,11 @@ const memoize = require('fast-memoize');
 import memoizeIntl from '../src';
 import IntlMessageFormat from 'intl-messageformat';
 
-function onCycle(ev) {
+function onCycle(ev: any) {
   console.log(String(ev.target));
 }
 
-function onComplete() {
+function onComplete(this: any) {
   console.log(
     `--- ${this.name}: Fastest is ${this.filter('fastest').map('name')} ---`
   );
