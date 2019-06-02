@@ -153,6 +153,10 @@ console.log(output); // => "My name is Eric."
 
 _Note: A value **must** be supplied for every argument in the message pattern the instance was constructed with._
 
+#### `getAst` Method
+
+Return the underlying AST for the compiled message
+
 #### User Defined Formats
 
 Define custom format styles is useful you need supply a set of options to the underlying formatter; e.g., outputting a number in USD:

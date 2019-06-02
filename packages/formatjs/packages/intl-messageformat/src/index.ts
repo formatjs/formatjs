@@ -117,6 +117,7 @@ export interface IntlMessageFormat {
     values?: Record<string, string | number | boolean | null | undefined>
   ): string;
   resolvedOptions(): { locale: string };
+  getAst(): ReturnType<typeof parser['parse']>;
   defaultLocale: string;
   formats: Formats;
   __parse: typeof parser['parse'];
@@ -169,6 +170,9 @@ const MessageFormat: IntlMessageFormat = ((
     },
     resolvedOptions() {
       return { locale };
+    },
+    getAst() {
+      return ast;
     }
   };
 }) as any;

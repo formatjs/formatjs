@@ -1735,6 +1735,9 @@
             },
             resolvedOptions: function () {
                 return { locale: locale };
+            },
+            getAst: function () {
+                return ast;
             }
         };
     });
