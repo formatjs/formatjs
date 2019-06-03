@@ -1,9 +1,9 @@
 import {useContext} from 'react';
-import {IntlContext} from './../react-intl';
+import {Context} from './withIntl';
 import {invariantIntlContext} from '../utils';
 
 export default function useIntl() {
-  const intl = useContext(IntlContext);
+  const intl = useContext(Context);
   invariantIntlContext({ intl });
-  return [intl.formatMessage,  intl];
+  return intl;
 }
