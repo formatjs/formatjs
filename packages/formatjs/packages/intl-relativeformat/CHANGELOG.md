@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/formatjs/formatjs/compare/intl-relativeformat@3.1.0...intl-relativeformat@4.0.0) (2019-06-03)
+
+
+### Features
+
+* **formatjs-extract-cldr-data:** add quarter data ([#53](https://github.com/formatjs/formatjs/issues/53)) ([e37a242](https://github.com/formatjs/formatjs/commit/e37a242))
+* **formatjs-extract-cldr-data:** rm plural ([#52](https://github.com/formatjs/formatjs/issues/52)) ([62a6de4](https://github.com/formatjs/formatjs/commit/62a6de4))
+* **intl-messageformat:** Add `getAst` method ([3d6c289](https://github.com/formatjs/formatjs/commit/3d6c289))
+
+
+### BREAKING CHANGES
+
+* **formatjs-extract-cldr-data:** Remove plural extraction since we rely on native
+Intl.PluralRules
+- Upgrade CLDR to v35
+- Extract `*-narrow` rules for relative fields
+- Remove es-AR since as of CLDRv35 it cannot be de-duped
+
+
+
+
+
 # [3.1.0](https://github.com/formatjs/formatjs/compare/intl-relativeformat@3.0.1...intl-relativeformat@3.1.0) (2019-05-31)
 
 
