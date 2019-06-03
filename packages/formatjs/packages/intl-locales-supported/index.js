@@ -3,6 +3,6 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-var areIntlLocalesSupported = require('./lib')['default']
+var areIntlLocalesSupported = require('./dist')['default']
 module.exports = areIntlLocalesSupported;
 module.exports.default = areIntlLocalesSupported;
