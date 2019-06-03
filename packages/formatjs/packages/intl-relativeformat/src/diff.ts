@@ -1,4 +1,4 @@
-import { FIELD } from './types';
+import { SUPPORTED_FIELD } from './types';
 
 /*
 Copyright (c) 2014, Yahoo! Inc. All rights reserved.
@@ -47,7 +47,7 @@ function differenceInCalendarDays(
 export default function diff(
   from: Date | number,
   to: Date | number
-): Record<FIELD, number> {
+): Record<SUPPORTED_FIELD, number> {
   // Convert to ms timestamps.
   from = +from;
   to = +to;

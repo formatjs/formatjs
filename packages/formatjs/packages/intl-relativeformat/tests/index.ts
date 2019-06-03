@@ -6,7 +6,7 @@
 
 import IntlRelativeFormat from '../src/locales';
 import { expect as chaiExpect } from 'chai';
-import { LocaleData, STYLE, FIELD } from '../src/types';
+import { LocaleData, STYLE, SUPPORTED_FIELD } from '../src/types';
 import { IntlRelativeFormatOptions } from '../src/core';
 declare global {
   var expect: typeof chaiExpect;
@@ -161,7 +161,9 @@ describe('IntlRelativeFormat', function() {
       });
 
       it('should always output in the specified units', function() {
-        var rf = new IntlRelativeFormat('en', { units: 'day' as FIELD });
+        var rf = new IntlRelativeFormat('en', {
+          units: 'day' as SUPPORTED_FIELD
+        });
 
         expect(rf.format(Date.now())).to.equal('today');
         expect(rf.format(past(24 * 60 * 60 * 1000))).to.equal('yesterday');
@@ -175,7 +177,9 @@ describe('IntlRelativeFormat', function() {
       });
 
       it('should always output in the specified units - morning', function() {
-        var rf = new IntlRelativeFormat('en', { units: 'day' as FIELD });
+        var rf = new IntlRelativeFormat('en', {
+          units: 'day' as SUPPORTED_FIELD
+        });
 
         expect(rf.format(early(), { now: new Date().setHours(0) })).to.equal(
           'today'
@@ -186,7 +190,9 @@ describe('IntlRelativeFormat', function() {
       });
 
       it('should always output in the specified units - evening', function() {
-        var rf = new IntlRelativeFormat('en', { units: 'day' as FIELD });
+        var rf = new IntlRelativeFormat('en', {
+          units: 'day' as SUPPORTED_FIELD
+        });
 
         expect(rf.format(early(), { now: new Date().setHours(23) })).to.equal(
           'today'
@@ -198,7 +204,7 @@ describe('IntlRelativeFormat', function() {
 
       it('should handle short unit formats', function() {
         var rf = new IntlRelativeFormat('en', {
-          units: 'minute-short' as FIELD
+          units: 'minute-short' as SUPPORTED_FIELD
         });
 
         expect(rf.format(Date.now())).to.equal('this minute');
@@ -574,7 +580,7 @@ describe('IntlRelativeFormat', function() {
   //         var expected = new Intl.NumberFormat('en-GB').resolvedOptions();
 
   //         var rf = new IntlRelativeFormat('en-GB');
-  //         var internalMF = rf._compileMessage('second' as FIELD);
+  //         var internalMF = rf._compileMessage('second' as SUPPORTED_FIELD);
 
   //         function checkInternalMessagePattern(pattern: any) {
   //             var subPattern = pattern[0].options.future[0].options.other[0];

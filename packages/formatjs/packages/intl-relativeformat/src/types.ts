@@ -1,4 +1,31 @@
-export const enum FIELD {
+export const enum DATA_FIELD {
+  second = 'second',
+  secondShort = 'second-short',
+  secondNarrow = 'second-narrow',
+  minute = 'minute',
+  minuteShort = 'minute-short',
+  minuteNarrow = 'minute-narrow',
+  hour = 'hour',
+  hourShort = 'hour-short',
+  hourNarrow = 'hour-narrow',
+  day = 'day',
+  dayShort = 'day-short',
+  dayNarrow = 'day-narrow',
+  week = 'week',
+  weekShort = 'week-short',
+  weekNarrow = 'week-narrow',
+  month = 'month',
+  monthShort = 'month-short',
+  monthNarrow = 'month-narrow',
+  quarter = 'quarter',
+  quarterShort = 'quarter-short',
+  quarterNarrow = 'quarter-narrow',
+  year = 'year',
+  yearShort = 'year-short',
+  yearNarrow = 'year-narrow'
+}
+
+export const enum SUPPORTED_FIELD {
   second = 'second',
   secondShort = 'second-short',
   secondNarrow = 'second-narrow',
@@ -31,7 +58,7 @@ export interface LocaleData {
   locale: string;
   parentLocale?: string;
   fields?: {
-    [f in FIELD]: {
+    [f in DATA_FIELD]: {
       displayName: string;
       relative: Record<string, string>;
       relativePeriod?: string;

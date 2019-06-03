@@ -8,30 +8,30 @@ See the accompanying LICENSE file for terms.
 
 import IntlMessageFormat from 'intl-messageformat';
 import diff from './diff';
-import { FIELD, STYLE, LocaleData } from './types';
+import { SUPPORTED_FIELD, STYLE, LocaleData } from './types';
 
 // -----------------------------------------------------------------------------
 
-const FIELDS = [
-  FIELD.second,
-  FIELD.secondShort,
-  FIELD.minute,
-  FIELD.minuteShort,
-  FIELD.hour,
-  FIELD.hourShort,
-  FIELD.day,
-  FIELD.dayShort,
-  FIELD.month,
-  FIELD.monthShort,
-  FIELD.year,
-  FIELD.yearShort
+const SUPPORTED_FIELDS = [
+  SUPPORTED_FIELD.second,
+  SUPPORTED_FIELD.secondShort,
+  SUPPORTED_FIELD.minute,
+  SUPPORTED_FIELD.minuteShort,
+  SUPPORTED_FIELD.hour,
+  SUPPORTED_FIELD.hourShort,
+  SUPPORTED_FIELD.day,
+  SUPPORTED_FIELD.dayShort,
+  SUPPORTED_FIELD.month,
+  SUPPORTED_FIELD.monthShort,
+  SUPPORTED_FIELD.year,
+  SUPPORTED_FIELD.yearShort
 ];
 
 // -- RelativeFormat -----------------------------------------------------------
 
 export interface IntlRelativeFormatOptions {
   style?: STYLE;
-  units?: FIELD;
+  units?: SUPPORTED_FIELD;
 }
 
 interface IntlRelativeFormat {
@@ -54,19 +54,22 @@ interface IntlRelativeFormat {
   resolvedOptions(): {
     locale: string;
     style: STYLE;
-    units?: FIELD;
+    units?: SUPPORTED_FIELD;
   };
-  _compileMessage(units: FIELD): typeof IntlMessageFormat;
+  _compileMessage(units: SUPPORTED_FIELD): typeof IntlMessageFormat;
 }
 
-function isValidUnits(units?: FIELD) {
-  if (!units || ~FIELDS.indexOf(units)) {
+function isValidUnits(units?: SUPPORTED_FIELD) {
+  if (!units || ~SUPPORTED_FIELDS.indexOf(units)) {
     return true;
   }
 
   if (typeof units === 'string') {
     var suggestion = /s$/.test(units) && units.substr(0, units.length - 1);
-    if (suggestion && ~FIELDS.indexOf(suggestion as FIELD)) {
+    if (
+      suggestion &&
+      ~SUPPORTED_FIELDS.indexOf(suggestion as SUPPORTED_FIELD)
+    ) {
       throw new Error(
         `"${units}" is not a valid IntlRelativeFormat 'units' value, did you mean: ${suggestion}`
       );
@@ -74,7 +77,7 @@ function isValidUnits(units?: FIELD) {
   }
 
   throw new Error(
-    `"${units}" is not a valid IntlRelativeFormat 'units' value, it must be one of: ${FIELDS.join(
+    `"${units}" is not a valid IntlRelativeFormat 'units' value, it must be one of: ${SUPPORTED_FIELDS.join(
       '", "'
     )}`
   );
@@ -156,8 +159,8 @@ function resolveStyle(style?: IntlRelativeFormatOptions['style']) {
   );
 }
 
-function selectUnits(diffReport: Record<FIELD, number>) {
-  const fields = FIELDS.filter(function(field) {
+function selectUnits(diffReport: Record<SUPPORTED_FIELD, number>) {
+  const fields = SUPPORTED_FIELDS.filter(function(field) {
     return field.indexOf('-short') < 1;
   });
   let units = fields[0];
@@ -188,7 +191,7 @@ const RelativeFormat: IntlRelativeFormat = ((
   const fields = findFields(locale);
   const messages: Record<string, typeof IntlMessageFormat> = {};
 
-  function getRelativeUnits(difference: string, units: FIELD) {
+  function getRelativeUnits(difference: string, units: SUPPORTED_FIELD) {
     var field = fields[units];
 
     if (field.relative) {
@@ -196,7 +199,7 @@ const RelativeFormat: IntlRelativeFormat = ((
     }
   }
 
-  function getMessage(units: FIELD) {
+  function getMessage(units: SUPPORTED_FIELD) {
     // Create a new synthetic message based on the locale data from CLDR.
     if (!messages[units]) {
       messages[units] = compileMessage(units);
@@ -205,7 +208,7 @@ const RelativeFormat: IntlRelativeFormat = ((
     return messages[units];
   }
 
-  function compileMessage(units: FIELD) {
+  function compileMessage(units: SUPPORTED_FIELD) {
     const { relativeTime } = fields[units];
     const future = Object.keys(relativeTime.future).reduce(
       (future: string, i) =>
