@@ -11,20 +11,12 @@ var glob = require('glob');
 exports.getAllLocales = getAllLocales;
 exports.getParentLocale = getParentLocale;
 exports.hasDateFields = hasDateFields;
-exports.hasPluralRule = hasPluralRule;
 exports.normalizeLocale = normalizeLocale;
-exports.hasOrdinalRule = hasOrdinalRule;
 
 // These are the exceptions to the default algorithm for determining a locale's
 // parent locale.
 var PARENT_LOCALES_HASH = require('cldr-core/supplemental/parentLocales.json')
   .supplemental.parentLocales.parentLocale;
-
-var PLURAL_LOCALES_HASH = require('cldr-core/supplemental/plurals.json')
-  .supplemental['plurals-type-cardinal'];
-
-var ORDINAL_LOCALES_HASH = require('cldr-core/supplemental/ordinals.json')
-  .supplemental['plurals-type-ordinal'];
 
 var DATE_FIELDS_LOCALES_HASH = glob
   .sync('*/dateFields.json', {
@@ -42,7 +34,6 @@ var DATE_FIELDS_LOCALES_HASH = glob
 // file, and visa versa, so this creates a unique collection of all locales in
 // the CLDR for which we need data from.
 var ALL_LOCALES_HASH = Object.keys(PARENT_LOCALES_HASH)
-  .concat(Object.keys(PLURAL_LOCALES_HASH))
   .concat(Object.keys(DATE_FIELDS_LOCALES_HASH))
   .map(function(locale) {
     if (locale === 'en-US-POSIX') {
@@ -92,14 +83,6 @@ function getParentLocale(locale) {
 
 function hasDateFields(locale) {
   return DATE_FIELDS_LOCALES_HASH.hasOwnProperty(normalizeLocale(locale));
-}
-
-function hasPluralRule(locale) {
-  return PLURAL_LOCALES_HASH.hasOwnProperty(normalizeLocale(locale));
-}
-
-function hasOrdinalRule(locale) {
-  return ORDINAL_LOCALES_HASH.hasOwnProperty(normalizeLocale(locale));
 }
 
 function normalizeLocale(locale) {

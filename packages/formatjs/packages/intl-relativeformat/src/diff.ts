@@ -71,17 +71,24 @@ export default function diff(
   return {
     second,
     'second-short': second,
+    'second-narrow': second,
     minute,
     'minute-short': minute,
+    'minute-narrow': minute,
     hour,
     'hour-short': hour,
+    'hour-narrow': hour,
     day,
     'day-short': day,
+    'day-narrow': day,
     week,
     'week-short': week,
+    'week-narrow': week,
     month,
     'month-short': month,
+    'month-narrow': month,
     year,
-    'year-short': year
+    'year-short': year,
+    'year-narrow': year
   };
 }

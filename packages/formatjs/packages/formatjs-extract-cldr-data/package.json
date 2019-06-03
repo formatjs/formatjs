@@ -10,13 +10,10 @@
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "cldr-core": "^34.0.0",
-    "cldr-dates-full": "^34.0.0",
-    "cldr-numbers-full": "^34.0.0",
+    "cldr-core": "^35.0.0",
+    "cldr-dates-full": "^35.0.0",
     "glob": "^7.0.0",
-    "make-plural": "^4.0.0",
-    "object.assign": "^4.0.3",
-    "uglify-js": "^3.0.0"
+    "object.assign": "^4.0.3"
   },
   "repository": {
     "type": "git",

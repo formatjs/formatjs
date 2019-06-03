@@ -15,18 +15,25 @@ var normalizeLocale = require('./locales').normalizeLocale;
 var FIELD_NAMES = [
   'year',
   'year-short',
+  'year-narrow',
   'month',
   'month-short',
+  'month-narrow',
   'week',
   'week-short',
+  'week-narrow',
   'day',
   'day-short',
+  'day-narrow',
   'hour',
   'hour-short',
+  'hour-narrow',
   'minute',
   'minute-short',
+  'minute-narrow',
   'second',
-  'second-short'
+  'second-short',
+  'second-narrow'
 ];
 
 module.exports = function extractRelativeFields(locales) {

@@ -27,6 +27,9 @@
   "dependencies": {
     "intl-messageformat": "^3.1.4"
   },
+  "devDependencies": {
+    "formatjs-extract-cldr-data": "6"
+  },
   "scripts": {
     "clean": "rimraf dist lib",
     "build": "npm run cldr && tsc && rollup -c rollup.config.js",

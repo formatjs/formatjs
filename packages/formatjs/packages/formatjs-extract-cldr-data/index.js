@@ -8,14 +8,12 @@
 var assign = require('object.assign');
 
 var expandLocales         = require('./src/expand-locales');
-var extractPluralRules    = require('./src/extract-plurals');
 var extractRelativeFields = require('./src/extract-relative');
 var getAllLocales         = require('./src/locales').getAllLocales;
 
 module.exports = function extractData(options) {
     options = assign({
         locales       : null,
-        pluralRules   : false,
         relativeFields: false,
     }, options);
 
@@ -27,7 +25,6 @@ module.exports = function extractData(options) {
     // performs that deep merge and returns the aggregated result.
     return mergeData(
         expandLocales(locales),
-        options.pluralRules && extractPluralRules(locales),
         options.relativeFields && extractRelativeFields(locales)
     );
 };
