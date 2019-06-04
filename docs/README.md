@@ -7,7 +7,7 @@ The docs are broken up into different guides to provide as much detailed informa
 All guides are listed below:
 
 - [Getting Started](./Getting-Started.md)
-- [Components](./Components.md);
+- [Components](./Components.md)
 - [API](./API.md)
 - [Testing with `react-intl`](./Testing-with-React-intl.md)
 - [IDE Plugins](./IDE-plugins-&-Tools.md)
