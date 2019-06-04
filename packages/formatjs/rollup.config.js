@@ -3,8 +3,13 @@ import typescript from 'rollup-plugin-typescript';
 import commonjs from 'rollup-plugin-commonjs';
 
 const resolveConfig = resolve({
-  mainFields: ['module', 'main']
-});
+  customResolveOptions: {
+    'intl-messageformat': './packages/intl-messageformat',
+    'intl-messageformat-parser': './packages/intl-messageformat-parser',
+    'intl-relativeformat': './packages/intl-relativeformat',
+    'intl-relativetimeformat': './packages/intl-relativetimeformat'
+  }
+})
 export default [
   {
     input: './tests/index.ts',
@@ -13,6 +18,6 @@ export default [
       file: 'tests/browser.js',
       format: 'umd'
     },
-    plugins: [typescript({rootDir: __dirname}), resolveConfig, commonjs()]
+    plugins: [resolveConfig, typescript({rootDir: __dirname, module: 'esnext'}) , commonjs()]
   }
 ];
