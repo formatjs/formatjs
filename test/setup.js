@@ -1,5 +1,6 @@
 import { configure } from 'enzyme';
 import React from 'react';
+import 'intl-pluralrules'
 
 let reactMajorVersion = Number.parseInt(React.version.slice(0, 2));
 if (reactMajorVersion === 0) {
