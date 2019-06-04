@@ -74,10 +74,8 @@ class FormattedMessage extends Component {
   }
 
   render() {
-    const {
-      formatMessage = defaultFormatMessage,
-      textComponent: Text = 'span'
-    } = this.props.intl || {};
+    const {formatMessage = defaultFormatMessage, textComponent: Text = 'span'} =
+      this.props.intl || {};
 
     const {
       id,
@@ -157,6 +155,6 @@ class FormattedMessage extends Component {
   }
 }
 
-export const BaseFormattedMessage = FormattedMessage
+export const BaseFormattedMessage = FormattedMessage;
 
-export default withIntl(FormattedMessage)
+export default withIntl(FormattedMessage);

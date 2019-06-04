@@ -22,7 +22,10 @@ const ESCAPED_CHARS = {
 const UNSAFE_CHARS_REGEX = /[&><"']/g;
 
 export function escape(str) {
-  return ('' + str).replace(UNSAFE_CHARS_REGEX, match => ESCAPED_CHARS[match.charCodeAt()]);
+  return ('' + str).replace(
+    UNSAFE_CHARS_REGEX,
+    match => ESCAPED_CHARS[match.charCodeAt()]
+  );
 }
 
 export function filterProps(props, whitelist, defaults = {}) {
@@ -82,10 +85,7 @@ export function shouldIntlComponentUpdate(
   nextProps,
   nextState
 ) {
-  return (
-    !shallowEquals(nextProps, props) ||
-    !shallowEquals(nextState, state)
-  );
+  return !shallowEquals(nextProps, props) || !shallowEquals(nextState, state);
 }
 
 export function createError(message, exception) {

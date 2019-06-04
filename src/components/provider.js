@@ -16,7 +16,7 @@ import {
   defaultErrorHandler,
   shouldIntlComponentUpdate,
   filterProps,
-  shallowEquals
+  shallowEquals,
 } from '../utils';
 import {intlConfigPropTypes, intlFormatPropTypes} from '../types';
 import * as format from '../format';
@@ -40,7 +40,7 @@ const defaultProps = {
 };
 
 function getConfig(filteredProps) {
-  let config = { ...filteredProps };
+  let config = {...filteredProps};
 
   // Apply default props. This must be applied last after the props have
   // been resolved and inherited from any <IntlProvider> in the ancestry.
@@ -70,7 +70,7 @@ function getConfig(filteredProps) {
       ...config,
       locale: defaultLocale,
       formats: defaultFormats,
-      messages: defaultProps.messages
+      messages: defaultProps.messages,
     };
   }
 
@@ -78,7 +78,7 @@ function getConfig(filteredProps) {
 }
 
 function getBoundFormatFns(config, state) {
-  const formatterState = { ...state.context.formatters, now: state.context.now }
+  const formatterState = {...state.context.formatters, now: state.context.now};
 
   return intlFormatPropNames.reduce((boundFormatFns, name) => {
     boundFormatFns[name] = format[name].bind(null, config, formatterState);
@@ -131,7 +131,7 @@ class IntlProvider extends Component {
         getRelativeFormat: memoizeIntlConstructor(IntlRelativeFormat),
         getPluralRules: memoizeIntlConstructor(Intl.PluralRules),
       },
-    } = (intlContext || {});
+    } = intlContext || {};
 
     this.state = {
       context: {
@@ -141,16 +141,20 @@ class IntlProvider extends Component {
         now: () => {
           return this._didDisplay ? Date.now() : initialNow;
         },
-      }
+      },
     };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { intl: intlContext } = nextProps;
+    const {intl: intlContext} = nextProps;
 
     // Build a whitelisted config object from `props`, defaults, and
     // `props.intl`, if an <IntlProvider> exists in the ancestry.
-    const filteredProps = filterProps(nextProps, intlConfigPropNames, intlContext || {});
+    const filteredProps = filterProps(
+      nextProps,
+      intlConfigPropNames,
+      intlContext || {}
+    );
 
     if (!shallowEquals(filteredProps, prevState.filteredProps)) {
       const config = getConfig(filteredProps);
@@ -161,8 +165,8 @@ class IntlProvider extends Component {
         context: {
           ...prevState.context,
           ...config,
-          ...boundFormatFns
-        }
+          ...boundFormatFns,
+        },
       };
     }
 
@@ -184,10 +188,10 @@ class IntlProvider extends Component {
   render() {
     return (
       <Provider value={this.getContext()}>
-        { Children.only(this.props.children) }
+        {Children.only(this.props.children)}
       </Provider>
     );
   }
 }
 
-export default withIntl(IntlProvider, { enforceContext: false }); // to be able to inherit values from parent providers
+export default withIntl(IntlProvider, {enforceContext: false}); // to be able to inherit values from parent providers

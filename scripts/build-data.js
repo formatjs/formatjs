@@ -38,7 +38,7 @@ function writeUMDFile(filename, module) {
     input: filename,
     plugins: [
       virtual({
-        [filename]: module
+        [filename]: module,
       }),
     ],
   })
@@ -73,23 +73,24 @@ console.log('Building locale data...');
 const progressBar = new ProgressBar(':percent [:bar] eta. :etas', {
   callback: () => console.log('...done!'),
   clear: true,
-  total: cldrDataByLang.size + 2
+  total: cldrDataByLang.size + 2,
 });
 
 const defaultData = createDataModule(cldrDataByLocale.get(DEFAULT_LOCALE));
-writeFile(`src/${DEFAULT_LOCALE}.js`, defaultData)
-  .then(() => progressBar.tick())
+writeFile(`src/${DEFAULT_LOCALE}.js`, defaultData).then(() =>
+  progressBar.tick()
+);
 
 const allData = createDataModule([...cldrDataByLocale.values()]);
-writeUMDFile('locale-data/index.js', allData)
-  .then(() => progressBar.tick())
+writeUMDFile('locale-data/index.js', allData).then(() => progressBar.tick());
 
 const promiseQueue = new PromiseQueue(CONCURRENCY, Infinity);
 
 cldrDataByLang.forEach((cldrData, lang) => {
   promiseQueue.add(() =>
-    writeUMDFile(`locale-data/${lang}.js`, createDataModule(cldrData))
-      .then(() => progressBar.tick())
+    writeUMDFile(`locale-data/${lang}.js`, createDataModule(cldrData)).then(
+      () => progressBar.tick()
+    )
   );
 });
 

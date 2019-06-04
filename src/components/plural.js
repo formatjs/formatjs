@@ -56,4 +56,4 @@ class FormattedPlural extends Component {
   }
 }
 
-export default withIntl(FormattedPlural)
+export default withIntl(FormattedPlural);

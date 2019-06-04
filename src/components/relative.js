@@ -131,7 +131,7 @@ class FormattedRelative extends Component {
     this.scheduleNextUpdate(this.props, this.state);
   }
 
-  static getDerivedStateFromProps({ value, intl }, { prevValue }) {
+  static getDerivedStateFromProps({value, intl}, {prevValue}) {
     // When the `props.value` date changes, `state.now` needs to be updated,
     // and the next update can be rescheduled.
     if (!isSameDate(value, prevValue)) {
@@ -169,6 +169,6 @@ class FormattedRelative extends Component {
   }
 }
 
-export const BaseFormattedRelative = FormattedRelative
+export const BaseFormattedRelative = FormattedRelative;
 
-export default withIntl(FormattedRelative)
+export default withIntl(FormattedRelative);

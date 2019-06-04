@@ -44,4 +44,4 @@ class FormattedNumber extends Component {
   }
 }
 
-export default withIntl(FormattedNumber)
+export default withIntl(FormattedNumber);

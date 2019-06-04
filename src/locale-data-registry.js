@@ -9,7 +9,7 @@ import IntlRelativeFormat from 'intl-relativeformat';
 export function addLocaleData(data = []) {
   let locales = Array.isArray(data) ? data : [data];
 
-  IntlRelativeFormat.__addLocaleData(...locales.filter(l => !!l.locale))
+  IntlRelativeFormat.__addLocaleData(...locales.filter(l => !!l.locale));
 }
 
 export function hasLocaleData(locale) {
@@ -29,7 +29,5 @@ export function hasLocaleData(locale) {
 function hasIMFAndIRFLocaleData(locale) {
   let normalizedLocale = locale && locale.toLowerCase();
 
-  return !!(
-    IntlRelativeFormat.__localeData__[normalizedLocale]
-  );
+  return !!IntlRelativeFormat.__localeData__[normalizedLocale];
 }
