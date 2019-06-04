@@ -31,8 +31,7 @@
   "module": "lib/index.js",
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "intl-messageformat-parser": "^1.6.5",
-    "intl-pluralrules": "^1.0.1"
+    "intl-messageformat-parser": "^1.6.5"
   },
   "scripts": {
     "clean": "rimraf dist lib",

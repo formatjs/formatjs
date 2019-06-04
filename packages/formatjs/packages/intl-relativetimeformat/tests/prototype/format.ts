@@ -23,7 +23,7 @@ function always(s: string) {
 }
 
 function isIE11(): boolean {
-  return typeof Symbol === 'undefined'
+  return typeof Symbol === 'undefined';
 }
 
 function verifyProperty(obj: any, property: string, desc: PropertyDescriptor) {

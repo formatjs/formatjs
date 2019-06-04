@@ -1,5 +1,4 @@
 'use strict';
-require('intl-pluralrules');
 var IntlMessageFormat = require('./dist/intl-messageformat');
 
 // Re-export `IntlMessageFormat` as the CommonJS default exports with all the
