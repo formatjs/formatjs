@@ -11,7 +11,7 @@ export default [
     input: './lib/index.js',
     output: {
       sourcemap: true,
-      file: 'dist/intl-relativetimeformat.js',
+      file: 'dist/umd/intl-relativetimeformat.js',
       format: 'umd',
       name: 'IntlRelativeTimeFormat'
     },
@@ -21,7 +21,7 @@ export default [
     input: './lib/index.js',
     output: {
       sourcemap: true,
-      file: 'dist/intl-relativetimeformat.min.js',
+      file: 'dist/umd/intl-relativetimeformat.min.js',
       format: 'umd',
       name: 'IntlRelativeTimeFormat'
     },
@@ -31,7 +31,7 @@ export default [
     input: './lib/locales.js',
     output: {
       sourcemap: true,
-      file: 'dist/intl-relativetimeformat-with-locales.js',
+      file: 'dist/umd/intl-relativetimeformat-with-locales.js',
       format: 'umd',
       name: 'IntlRelativeTimeFormat'
     },
@@ -41,7 +41,7 @@ export default [
     input: './lib/locales.js',
     output: {
       sourcemap: true,
-      file: 'dist/intl-relativetimeformat-with-locales.min.js',
+      file: 'dist/umd/intl-relativetimeformat-with-locales.min.js',
       format: 'umd',
       name: 'IntlRelativeTimeFormat'
     },

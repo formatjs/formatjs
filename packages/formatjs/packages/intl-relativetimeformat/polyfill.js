@@ -1,4 +1,4 @@
-var IntlRelativeTimeFormat = require('./dist/intl-relativetimeformat').default;
+var IntlRelativeTimeFormat = require('./dist').default;
 
 if (
   typeof Intl !== 'undefined' &&

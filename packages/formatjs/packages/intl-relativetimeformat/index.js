@@ -2,7 +2,7 @@
 
 'use strict';
 
-var IntlRelativeTimeFormat = require('./dist/intl-relativetimeformat-with-locales');
+var IntlRelativeTimeFormat = require('./dist/umd/intl-relativetimeformat-with-locales');
 
 // Re-export `IntlRelativeTimeFormat` as the CommonJS default exports with all the
 // locale data registered, and with English set as the default locale. Define
