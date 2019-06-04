@@ -18,7 +18,7 @@ You can sign-up using this [invitation link](https://join.slack.com/t/formatjs/s
 
 ### [Documentation][]
 
-React Intl's docs are in this GitHub repo's [Wiki][Documentation], [__Get Started__][Getting Started]. There are also several [runnable example apps][Examples] which you can reference to learn how all the pieces fit together.
+React Intl's docs are in this GitHub [`/docs`](Documentation) folder, [__Get Started__][Getting Started]. There are also several [runnable example apps][Examples] which you can reference to learn how all the pieces fit together.
 
 _(If you're looking for React Intl v1, you can find it [here][v1-docs].)_
 
@@ -106,8 +106,8 @@ See the [LICENSE file][] for license text and copyright information.
 [React]: http://facebook.github.io/react/
 [FormatJS]: http://formatjs.io/
 [FormatJS GitHub]: http://formatjs.io/github/
-[Documentation]: https://github.com/formatjs/react-intl/wiki
-[Getting Started]: https://github.com/formatjs/react-intl/wiki#getting-started
+[Documentation]: https://github.com/formatjs/react-intl/blob/master/docs/README.md
+[Getting Started]: https://github.com/formatjs/react-intl/blob/master/docs/Getting-Started.md
 [Examples]: https://github.com/formatjs/react-intl/tree/master/examples
 [v1-docs]: http://formatjs.io/react/v1/
 [CONTRIBUTING]: https://github.com/formatjs/react-intl/blob/master/CONTRIBUTING.md
