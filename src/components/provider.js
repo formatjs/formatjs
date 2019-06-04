@@ -21,7 +21,6 @@ import {
 import {intlConfigPropTypes, intlFormatPropTypes} from '../types';
 import * as format from '../format';
 import {hasLocaleData} from '../locale-data-registry';
-import 'intl-pluralrules'
 
 const intlConfigPropNames = Object.keys(intlConfigPropTypes);
 const intlFormatPropNames = Object.keys(intlFormatPropTypes);
