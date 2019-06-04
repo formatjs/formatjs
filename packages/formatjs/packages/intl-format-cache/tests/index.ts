@@ -1,4 +1,5 @@
 'use strict';
+import 'intl-pluralrules';
 import 'intl-relativetimeformat/polyfill-locales';
 import memoizeFormatConstructor from '../src';
 import IntlMessageFormat from 'intl-messageformat';
