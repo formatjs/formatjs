@@ -18,7 +18,7 @@ You can sign-up using this [invitation link](https://join.slack.com/t/formatjs/s
 
 ### [Documentation][]
 
-React Intl's docs are in this GitHub [`/docs`](Documentation) folder, [__Get Started__][Getting Started]. There are also several [runnable example apps][Examples] which you can reference to learn how all the pieces fit together.
+React Intl's docs are in this GitHub [`/docs`][Documentation] folder, [__Get Started__][Getting Started]. There are also several [runnable example apps][Examples] which you can reference to learn how all the pieces fit together.
 
 _(If you're looking for React Intl v1, you can find it [here][v1-docs].)_
 
