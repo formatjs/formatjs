@@ -26,7 +26,7 @@
   "module": "lib/index.js",
   "typings": "lib/index.d.ts",
   "devDependencies": {
-    "intl-relativetimeformat": "1"
+    "intl-relativetimeformat": "0.1"
   },
   "scripts": {
     "clean": "rimraf dist lib",
