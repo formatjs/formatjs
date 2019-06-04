@@ -30,7 +30,7 @@
   },
   "scripts": {
     "clean": "rimraf dist lib",
-    "build": "tsc && rollup -c rollup.config.js",
+    "build": "tsc && tsc -p tsconfig.cjs.json && rollup -c rollup.config.js",
     "test": "mocha --opts ../../mocha.opts tests/index.ts"
   },
   "homepage": "https://github.com/formatjs/formatjs",
