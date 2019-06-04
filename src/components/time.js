@@ -44,4 +44,4 @@ class FormattedTime extends Component {
   }
 }
 
-export default withIntl(FormattedTime)
+export default withIntl(FormattedTime);

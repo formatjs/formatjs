@@ -9,7 +9,7 @@ import withIntl from './withIntl';
 import {BaseFormattedMessage} from './message';
 
 class FormattedHTMLMessage extends BaseFormattedMessage {
-  static displayName = 'FormattedHTMLMessage'
+  static displayName = 'FormattedHTMLMessage';
 
   render() {
     const {formatHTMLMessage, textComponent: Text} = this.props.intl;
@@ -43,6 +43,6 @@ class FormattedHTMLMessage extends BaseFormattedMessage {
   }
 }
 
-export const BaseFormattedHTMLMessage = FormattedHTMLMessage // testing purpose only
+export const BaseFormattedHTMLMessage = FormattedHTMLMessage; // testing purpose only
 
 export default withIntl(FormattedHTMLMessage);

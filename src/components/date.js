@@ -44,4 +44,4 @@ class FormattedDate extends Component {
   }
 }
 
-export default withIntl(FormattedDate)
+export default withIntl(FormattedDate);

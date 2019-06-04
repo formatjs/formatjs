@@ -29,7 +29,7 @@ export default {
     babel(),
     commonjs({namedExports: {'react-is': ['isValidElementType']}}),
     nodeResolve({
-      jsnext: true
-    })
+      jsnext: true,
+    }),
   ],
 };
