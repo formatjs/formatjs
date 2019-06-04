@@ -2,4 +2,3 @@ lib
 tests/*.js*
 !tests/tsconfig.json
 .tsbuildinfo
-!dist

@@ -14,7 +14,8 @@
   },
   "devDependencies": {
     "intl-messageformat": "^3.3.0",
-    "intl-relativeformat": "^5.0.0"
+    "intl-relativeformat": "^5.0.0",
+    "intl-relativetimeformat": "1"
   },
   "repository": {
     "type": "git",

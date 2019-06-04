@@ -15,11 +15,7 @@ This package aims to provide a way to format different variations of relative ti
 
 This implementation is very similar to [moment.js][], in concept, although it provides only formatting features based on the Unicode [CLDR][] locale data, an industry standard that supports more than 200 languages.
 
-_Note: This `IntlRelativeFormat` API may change to stay in sync with ECMA-402, but this package will follow [semver][]._
-
 ### How It Works
-
-This API is very similar to [ECMA 402][]'s [DateTimeFormat][] and [NumberFormat][].
 
 ```js
 var rf = new IntlRelativeFormat(locales, [options]);
@@ -60,15 +56,13 @@ posts.forEach(function (post) {
 
 ### Features
 
-* Uses industry standards [CLDR locale data][CLDR].
-
-* Style options for `"best fit"` ("yesterday") and `"numeric"` ("1 day ago") output.
+* Style options for `"best fit"` ("yesterday") and `"numeric"` ("1 day ago") output based on thresholds.
 
 * Units options for always rendering in a particular unit; e.g. "30 days ago", instead of "1 month ago".
 
 * Ability to specify the "now" value from which the relative time is calculated, allowing `format()`.
 
-*  Formats numbers in relative time strings using [`Intl.NumberFormat`][NumberFormat].
+* Format output in relative time strings using [`Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat)
 
 * Optimized for repeated calls to an `IntlRelativeFormat` instance's `format()` method.
 
@@ -78,25 +72,29 @@ Usage
 
 ### `Intl` Dependency
 
-This package assumes that the [`Intl`][Intl] global object exists in the runtime. `Intl` is present in all modern browsers, and there's work happening to [integrate `Intl` into Node.js][Intl-Node].
+This package assumes the following capabilities from `Intl`:
 
-**Luckly, there's the [Intl.js][] polyfill!** You will need to conditionally load the polyfill if you want to support runtimes which `Intl` is not already built-in. See [Browser compatibility table](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Browser_compatibility) if you have doubts.
+1. [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules)
+2. [`Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat)
+
+If your environment does not support those, feel free to grab polyfills:
+
+1. https://www.npmjs.com/package/intl-pluralrules
+2. https://www.npmjs.com/package/intl-relativetimeformat
 
 ### Loading IntlRelativeFormat in Node.js
 
 Install package and polyfill:
 
 ```bash
-npm install intl-relativeformat --save
-npm install intl --save
+npm install intl-relativeformat intl-pluralrules intl-relativetimeformat --save
 ```
 
 Simply `require()` this package:
 
 ```js
-if (!global.Intl) {
-    global.Intl = require('intl'); // polyfill for `Intl`
-}
+require('intl-pluralrules')
+require('intl-relativetimeformat/polyfill-locales')
 var IntlRelativeFormat = require('intl-relativeformat');
 var rf = new IntlRelativeFormat('en');
 var output = rf.format(dateValue);
@@ -104,45 +102,22 @@ var output = rf.format(dateValue);
 
 _Note: in Node.js, the data for all 200+ languages is loaded along with the library._
 
-### Loading IntlRelativeFormat in a browser
-
-If the browser does not already have the `Intl` APIs built-in, the Intl.js Polyfill will need to be loaded on the page along with the locale data for any locales that need to be supported:
-
-```html
-<script src="intl/Intl.min.js"></script>
-<script src="intl/locale-data/jsonp/en-US.js"></script>
-```
-
-_Note: Modern browsers already have the `Intl` APIs built-in, so you can load the Intl.js Polyfill conditionally, by for checking for `window.Intl`._
-
-Include the library in your page:
-
-```html
-<script src="intl-relativeformat/dist/intl-relativeformat.min.js"></script>
-```
-
-By default, Intl RelativeFormat ships with the locale data for English (`en`) built-in to the runtime library. When you need to format data in another locale, include its data; e.g., for French:
-
-```html
-<script src="intl-relativeformat/dist/locale-data/fr.js"></script>
-```
-
-_Note: All 200+ languages supported by this package use their root BCP 47 language tag; i.e., the part before the first hyphen (if any)._
-
-### Bundling IntlRelativeFormat with Browserify/Webpack
+### Bundling IntlRelativeFormat with Browserify/Webpack/Rollup
 
 Install package:
 
 ```bash
-npm install intl-relativeformat --save
+npm install intl-relativeformat intl-pluralrules intl-relativetimeformat --save
 ```
 
 Simply `require()` this package and the specific locales you wish to support in the bundle:
 
 ```js
+require('intl-pluralrules')
+require('intl-relativetimeformat/polyfill')
+require('intl-relativetimeformat/dist/locale-data/en.js')   // Load 'en' locale
+require('intl-relativetimeformat/dist/locale-data/fr.js')   // Load 'fr' locale
 var IntlRelativeFormat = require('intl-relativeformat');
-require('intl-relativeformat/dist/locale-data/en.js');
-require('intl-relativeformat/dist/locale-data/fr.js');
 ```
 
 _Note: in Node.js, the data for all 200+ languages is loaded along with the library, but when bundling it with Browserify/Webpack, the data is intentionally ignored (see `package.json` for more details) to avoid blowing up the size of the bundle with data that you might not need._

@@ -1,0 +1,36 @@
+{
+  "name": "intl-relativetimeformat",
+  "version": "1.0.0",
+  "description": "Formats JavaScript dates to relative time strings.",
+  "keywords": [
+    "intl",
+    "i18n",
+    "relative",
+    "time",
+    "moment",
+    "format",
+    "date"
+  ],
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:formatjs/formatjs.git"
+  },
+  "devDependencies": {
+    "formatjs-extract-cldr-data": "^8.0.0"
+  },
+  "main": "index.js",
+  "module": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "clean": "rimraf dist lib",
+    "build": "npm run cldr && tsc && rollup -c rollup.config.js",
+    "cldr": "node scripts/cldr",
+    "test": "mocha --opts ../../mocha.opts tests/index.ts"
+  },
+  "homepage": "https://github.com/formatjs/formatjs",
+  "license": "BSD-3-Clause"
+}

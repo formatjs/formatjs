@@ -12,7 +12,8 @@
   ],
   "author": "Caridy Patino <caridy@gmail.com>",
   "contributors": [
-    "Eric Ferraiuolo <edf@ericf.me>"
+    "Eric Ferraiuolo <edf@ericf.me>",
+    "Long Ho <holevietlong@gmail.com>"
   ],
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
@@ -22,18 +23,14 @@
     "url": "git@github.com:formatjs/formatjs.git"
   },
   "main": "index.js",
-  "module": "lib/main.js",
-  "typings": "lib/main.js",
-  "dependencies": {
-    "intl-messageformat": "^3.3.0"
-  },
+  "module": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "devDependencies": {
-    "formatjs-extract-cldr-data": "^8.0.0"
+    "intl-relativetimeformat": "1"
   },
   "scripts": {
     "clean": "rimraf dist lib",
-    "build": "npm run cldr && tsc && rollup -c rollup.config.js",
-    "cldr": "node scripts/cldr",
+    "build": "tsc && rollup -c rollup.config.js",
     "test": "mocha --opts ../../mocha.opts tests/index.ts"
   },
   "homepage": "https://github.com/formatjs/formatjs",

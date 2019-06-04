@@ -2,7 +2,7 @@
 
 'use strict';
 
-var IntlRelativeFormat = require('./dist/intl-relativeformat-with-locales');
+var IntlRelativeFormat = require('./dist/intl-relativeformat');
 
 // Re-export `IntlRelativeFormat` as the CommonJS default exports with all the
 // locale data registered, and with English set as the default locale. Define
