@@ -37,9 +37,9 @@ import IntlRelativeTimeFormat from 'intl-relativetimeformat'
 ```
 
 By default, this library comes with `en` data. To load additional locale, you can include them on demand:
-```
+```js
 import 'intl-relativetimeformat/polyfill'
-import 'intl-relativetimeformat/dist/locale-data/de'
+import 'intl-relativetimeformat/dist/locale-data/de' // Add locale data for de
 ```
 
 If you want to polyfill all locales (e.g for Node):

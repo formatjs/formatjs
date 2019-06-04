@@ -75,7 +75,7 @@ Usage
 This package assumes the following capabilities from `Intl`:
 
 1. [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules)
-2. [`Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat)
+2. [`Intl.RelativeTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat)
 
 If your environment does not support those, feel free to grab polyfills:
 
@@ -87,36 +87,28 @@ If your environment does not support those, feel free to grab polyfills:
 Install package and polyfill:
 
 ```bash
-npm install intl-relativeformat intl-pluralrules intl-relativetimeformat --save
+npm install intl-relativeformat --save
 ```
 
 Simply `require()` this package:
 
 ```js
-require('intl-pluralrules')
-require('intl-relativetimeformat/polyfill-locales')
 var IntlRelativeFormat = require('intl-relativeformat');
 var rf = new IntlRelativeFormat('en');
 var output = rf.format(dateValue);
 ```
-
-_Note: in Node.js, the data for all 200+ languages is loaded along with the library._
 
 ### Bundling IntlRelativeFormat with Browserify/Webpack/Rollup
 
 Install package:
 
 ```bash
-npm install intl-relativeformat intl-pluralrules intl-relativetimeformat --save
+npm install intl-relativeformat --save
 ```
 
 Simply `require()` this package and the specific locales you wish to support in the bundle:
 
 ```js
-require('intl-pluralrules')
-require('intl-relativetimeformat/polyfill')
-require('intl-relativetimeformat/dist/locale-data/en.js')   // Load 'en' locale
-require('intl-relativetimeformat/dist/locale-data/fr.js')   // Load 'fr' locale
 var IntlRelativeFormat = require('intl-relativeformat');
 ```
 
@@ -162,7 +154,7 @@ The optional second argument `options` provides a way to customize how the relat
 
 ##### Units
 
-By default, the relative time is computed to the best fit unit, but you can explicitly call it to force `units` to be displayed in `"second"`, `"second-short"`, `"minute"`, `"minute-short"`, `"hour"`, `"hour-short"`, `"day"`, `"day-short"`, `"month"`, `"month-short"`, `"year"` or `"year-short"`:
+By default, the relative time is computed to the best fit unit, but you can explicitly call it to force `units` to be displayed in `"second"`, `"second-short"`, `"second-narrow"`, `"minute"`, `"minute-short"`, `"minute-narrow"`, `"hour"`, `"hour-short"`, `"hour-narrow"`, `"day"`, `"day-short"`, `"day-narrow"`, `"month"`, `"month-short"`, `"month-narrow"`, `"year"`, `"year-short"` or `"year-narrow"`:
 
 ```js
 var rf = new IntlRelativeFormat('en', {
