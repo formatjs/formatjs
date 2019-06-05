@@ -105,6 +105,15 @@ const MyComponentWithHook = (props) => {
 
 To keep the API surface clean and simple, we only provide `useIntl` hook in the package. If preferable, user can wrap this built-in hook to make customized hook like `useFormatMessage` easily. Please visit React's official website for more general [introduction on React hooks](https://reactjs.org/docs/hooks-intro.html).
 
+### Migrate to using native Intl API
+
+React Intl v3 no longer comes with CLDR data and rely on native Intl API instead. Specifically the
+new APIs we're relying on are:
+
+- [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules): This can be polyfilled using [this package](https://www.npmjs.com/package/intl-pluralrules).
+- [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat): This can be polyfilled using [this package](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat).
+
+This shift is meant to future-proof React Intl as these APIs are all stable and being implemented in modern browsers.
 
 ## 2.0.0
 
