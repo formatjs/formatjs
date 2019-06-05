@@ -1,6 +1,6 @@
 'use strict';
 import 'intl-pluralrules';
-import 'intl-relativetimeformat/polyfill-locales';
+import '@formatjs/intl-relativetimeformat/polyfill-locales';
 import memoizeFormatConstructor from '../src';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';

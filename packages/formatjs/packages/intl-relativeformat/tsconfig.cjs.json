@@ -6,7 +6,7 @@
         "baseUrl": ".",
         "module": "commonjs",
         "paths": {
-            "intl-relativetimeformat": ["../intl-relativetimeformat"]
+            "@formatjs/intl-relativetimeformat": ["../intl-relativetimeformat"]
         }
     },
     "include": ["src/*.ts"]

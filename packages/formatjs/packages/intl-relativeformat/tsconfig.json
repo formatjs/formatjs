@@ -5,7 +5,7 @@
         "rootDir": "src",
         "baseUrl": ".",
         "paths": {
-            "intl-relativetimeformat": ["../intl-relativetimeformat"]
+            "@formatjs/intl-relativetimeformat": ["../intl-relativetimeformat"]
         }
     },
     "include": ["src/*.ts"]

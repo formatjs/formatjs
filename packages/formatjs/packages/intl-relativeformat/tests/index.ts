@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 import 'intl-pluralrules';
-import 'intl-relativetimeformat/polyfill-locales';
+import '@formatjs/intl-relativetimeformat/polyfill-locales';
 import IntlRelativeFormat, { IntlRelativeFormatOptions } from '../src';
 import { expect as chaiExpect } from 'chai';
 import { LocaleData, STYLE, SUPPORTED_FIELD } from '../src/types';

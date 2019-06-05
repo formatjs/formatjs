@@ -9,7 +9,7 @@ See the accompanying LICENSE file for terms.
 import {
   IntlRelativeTimeFormat,
   FormattableUnit
-} from 'intl-relativetimeformat';
+} from '@formatjs/intl-relativetimeformat';
 import diff from './diff';
 import { SUPPORTED_FIELD, STYLE, LocaleData } from './types';
 declare global {
