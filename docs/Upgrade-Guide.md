@@ -4,6 +4,7 @@
 
 - [Use React 16.3 and upwards](#use-react-163-and-upwards)
 - [Migrate withRef to forwardRef](#migrate-withref-to-forwardref)
+- [New useIntl hook as an alternative of injectIntl HOC](#new-useintl-hook-as-an-alternative-of-injectintl-hoc)
 
 ### Use React 16.3 and upwards
 
@@ -79,6 +80,31 @@ class Parent extends React.Component {
   }
 }
 ```
+
+### New useIntl hook as an alternative of injectIntl HOC
+
+This v3 release also supports the latest React hook API for user with React `>= 16.8`. You can now take `useIntl` hook as an alternative to `injectIntl` HOC on _function components_. Both methods allow you to access the `intl` instance, here is a quick comparison:
+
+```js
+// injectIntl
+import { injectIntl } from 'react-intl'
+
+const MyComponentWithHOC = injectIntl(({ intl, ...props }) => {
+  // do something
+})
+
+// useIntl
+import { useIntl } from 'react-intl'
+
+const MyComponentWithHook = (props) => {
+  const intl = useIntl();
+
+  // do something
+}
+```
+
+To keep the API surface clean and simple, we only provide `useIntl` hook in the package. If preferable, user can wrap this built-in hook to make customized hook like `useFormatMessage` easily. Please visit React's official website for more general [introduction on React hooks](https://reactjs.org/docs/hooks-intro.html).
+
 
 ## 2.0.0
 
