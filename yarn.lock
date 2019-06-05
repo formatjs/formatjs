@@ -745,6 +745,11 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
+"@formatjs/intl-relativetimeformat@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-relativetimeformat/-/intl-relativetimeformat-1.0.0.tgz#5efe5c6ff18648faab2732ed62435f2d1102c780"
+  integrity sha512-+TPQs61lPB4DIH6VyGGUCRQZTvbOw6wCDURJcDkw51wYj1yvFi4PHjs2rVcnzaT7lGVBn9AW7064Mh16XGooVg==
+
 "@types/estree@0.0.39":
   version "0.0.39"
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
@@ -3663,23 +3668,32 @@ interpret@^1.0.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.2.0.tgz#d5061a6224be58e8083985f5014d844359576296"
   integrity sha512-mT34yGKMNceBQUoVn7iCDKDntA7SC6gycMAWzGx1z/CMCTV7b2AAtXlo3nRyHZ1FelRkQbQjprHSYGwzLtkVbw==
 
-intl-format-cache@^2.0.5:
-  version "2.2.6"
-  resolved "https://registry.yarnpkg.com/intl-format-cache/-/intl-format-cache-2.2.6.tgz#69839624a2b60c737e240341507c644b8124adc2"
-  integrity sha512-8adofiGDGj6Zo9WswzRtQojtKDSLeiZz6r8dMnttM3MYwcqVhkBBvAJ0TxOHQol4VV5PFoFirMg5Xi43Y3AMIA==
+intl-format-cache@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/intl-format-cache/-/intl-format-cache-3.0.1.tgz#80536ff53ce9274128f643e9727a129d3886abea"
+  integrity sha512-oUPqT8bdlvll98FNOZimVxCpjRnWfgr5cS+8cKJXeiKtBrLY9l5iW4AlI7hi0a2DyaZQRZFzj2OejKaYVbVyiw==
 
-intl-messageformat-parser@^1.2.0, intl-messageformat-parser@^1.6.3:
+intl-locales-supported@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/intl-locales-supported/-/intl-locales-supported-1.0.10.tgz#e90ba9e2e7de58c54dc3083d0d979ecce1108a64"
+  integrity sha512-4OI+xzh35rMxs6uR9o1vkUgtp5xMENLDz/6ogYkXfRjGuiS1g7FvQKj29plPNaxjxSfNx6Ghwa8arfD2Ty4SDA==
+
+intl-messageformat-parser@^1.2.0:
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/intl-messageformat-parser/-/intl-messageformat-parser-1.6.3.tgz#26e5363f013f2d54e900de0d180f8b04db0e635b"
   integrity sha512-QslP7jJxG0VCCA2Dy8GfUECzEGEN+duCO5/N6LdOPTf/EOs5B3C6apkznzQ57dUKqtVt4TYJyIS/5Gern/y04A==
 
-intl-messageformat@^3.1.1, intl-messageformat@^3.1.4:
-  version "3.1.4"
-  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-3.1.4.tgz#c35efbaf8ddd3840ec316b39c96089d77c55e912"
-  integrity sha512-6f+Kpc8OI0CUCcGNySdoxJIjbYChrrgekIlnIpZVXddEx3kV5Sb+NPOcch/zah2CDQ5O7QOWV4K/zg3/OXh/rg==
+intl-messageformat-parser@^1.6.5:
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/intl-messageformat-parser/-/intl-messageformat-parser-1.6.5.tgz#40f5fc19855f203389a3fc926cc3c88d7a573496"
+  integrity sha512-hngOkdq6FZxT6iEpEqOzGO/8rshM/v+sShGBl6yv8SQmU6lCc4vtfBHNqpSC0Dxuq4tedMkYFQGnKy5b1Tx5GA==
+
+intl-messageformat@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-4.0.0.tgz#9f5ac2c0b88157cec58b26d870e3ba3901fd976c"
+  integrity sha512-ux1JQde2jN5vWe8G0epTzw4HW/QTqb55vtsSIRDV4vBk4iuiZ5myY+2l3FYeOfnz1KEyLP4hdvUjabLvUWudWg==
   dependencies:
-    intl-messageformat-parser "^1.6.3"
-    intl-pluralrules "^1.0.1"
+    intl-messageformat-parser "^1.6.5"
 
 intl-pluralrules@^1.0.1:
   version "1.0.2"
@@ -3688,12 +3702,10 @@ intl-pluralrules@^1.0.1:
   dependencies:
     make-plural "^4.3.0"
 
-intl-relativeformat@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/intl-relativeformat/-/intl-relativeformat-3.1.0.tgz#19caf303d1d833b0a0457620c94b5b64d4e334ac"
-  integrity sha512-+fH2Kg4c9ZUvFFjmT+uiiXlZL2/ZNv691jfA8Z0m4vy+JSWgD237tHh3fZ5X7BgLJOS6QO2kC8t7140mI8ILcw==
-  dependencies:
-    intl-messageformat "^3.1.4"
+intl-relativeformat@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/intl-relativeformat/-/intl-relativeformat-6.1.0.tgz#4c6896aeb84f93c8a2aee2aa32f7bbea9dd341c2"
+  integrity sha512-a2qMIiJQ0iMNJGVco9+Z575TT6vuMdtl5gSthCAnn3z7gXBDfSTW1V0Gjz/r0DzvL+o3/MoHkksY0/1jhtYmDw==
 
 intl@^1.2.1:
   version "1.2.5"

@@ -20,7 +20,7 @@ import {
 } from '../utils';
 import {intlConfigPropTypes, intlFormatPropTypes} from '../types';
 import * as format from '../format';
-import {hasLocaleData} from '../locale-data-registry';
+import areIntlLocalesSupported from 'intl-locales-supported';
 
 const intlConfigPropNames = Object.keys(intlConfigPropTypes);
 const intlFormatPropNames = Object.keys(intlFormatPropTypes);
@@ -51,7 +51,7 @@ function getConfig(filteredProps) {
     }
   }
 
-  if (!hasLocaleData(config.locale)) {
+  if (!config.locale || !areIntlLocalesSupported(config.locale)) {
     const {locale, defaultLocale, defaultFormats, onError} = config;
 
     onError(

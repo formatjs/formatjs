@@ -23,7 +23,6 @@ export default {
     'invariant',
     'react',
     'prop-types',
-    p.resolve('locale-data/index.js'),
   ],
   plugins: [
     babel(),
