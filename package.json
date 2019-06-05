@@ -134,7 +134,8 @@
     "watchify": "^3.7.0"
   },
   "scripts": {
-    "format": "prettier --write --single-quote --trailing-comma=es5 --bracket-spacing false *.js scripts/*.js src/{*.js,**/*.js}",
+    "format": "prettier --check *.js scripts/*.js src/{*.js,**/*.js}",
+    "format:fix": "prettier --write *.js scripts/*.js src/{*.js,**/*.js}",
     "clean": "rimraf src/en.js coverage/ dist/ lib/ locale-data/ test/renderer.js",
     "build:data": "babel-node scripts/build-data",
     "build:lib": "rollup -c rollup.config.lib.js",
@@ -146,7 +147,7 @@
     "lint:fix": "eslint . --fix",
     "test": "jest --coverage --verbose",
     "test:react": "jest",
-    "test:all": "yarn run lint && yarn run test && yarn run test:react",
+    "test:all": "yarn run lint && yarn run format && yarn run test && yarn run test:react",
     "test:watch": "jest --watch",
     "test:perf": "cross-env NODE_ENV=production babel-node test/perf",
     "examples:install": "babel-node scripts/examples yarn install",
