@@ -38,13 +38,17 @@ type IntlConfig = {
     defaultLocale?: string = 'en',
     defaultFormats?: object = {},
 
-    textComponent? node = 'span',
+    textComponent?: node = 'span',
+
+    onError?: func,
 };
 ```
 
 `locale`, `formats`, and `messages` are for the user's current locale and what the app should be rendered in. While `defaultLocale` and `defaultFormats` are for fallbacks or during development and represent the app's default. Notice how there is no `defaultMessages`, that's because each [Message Descriptor](#message-descriptor) provides a `defaultMessage`.
 
 `textComponent` provides a way to configure React Intl to work with React Native. React Intl's `<Formatted*>` components are required to render React elements, by default they render `<span>` elements. However in React Native, there is no `<span>`, there's `<Text>`; therefore if you're using React Intl in React Native set: `<IntlProvider textComponent={Text}>`.
+
+`onError` allows the user to provide a custom error handler. By default, error messages are logged using `console.error` if `NODE_ENV` is not set to `production`.
 
 These configuration props are combined with the `<IntlProvider>`'s component-specific props:
 
