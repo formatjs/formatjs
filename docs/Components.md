@@ -137,7 +137,7 @@ type DateTimeFormatOptions = {
 
 ### `<FormattedDate>`
 
-This component uses the [`formatDate`](API#formatdate) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above.
+This component uses the [`formatDate`](API.md#formatdate) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above.
 
 **Props Types:**
 ```js
@@ -173,7 +173,7 @@ By default `<FormattedDate>` will render the formatted date into a `<span>`. If 
 
 ### `<FormattedTime>`
 
-This component uses the [`formatTime`](API#formattime) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above, with the following defaults:
+This component uses the [`formatTime`](API.md#formattime) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above, with the following defaults:
 
 ```js
 {
@@ -203,7 +203,7 @@ By default `<FormattedTime>` will render the formatted time into a `<span>`. If 
 
 ### `<FormattedRelative>`
 
-This component uses the [`formatRelative`](API#formatrelative) API and has `props` that correspond to the following relative formatting options:
+This component uses the [`formatRelative`](API.md#formatrelative) API and has `props` that correspond to the following relative formatting options:
 
 ```js
 type RelativeFormatOptions = {
@@ -252,7 +252,7 @@ React Intl provides two components to format numbers:
 
 ### `<FormattedNumber>`
 
-This component uses the [`formatNumber`](API#formatnumber) and [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) APIs and has `props` that correspond to the following number formatting options:
+This component uses the [`formatNumber`](API.md#formatnumber) and [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) APIs and has `props` that correspond to the following number formatting options:
 
 ```js
 type NumberFormatOptions = {
@@ -294,7 +294,7 @@ By default `<FormattedNumber>` will render the formatted number into a `<span>`.
 
 ### `<FormattedPlural>`
 
-This component uses the [`formatPlural`](API#formatplural) API and has `props` that correspond to the following plural formatting options:
+This component uses the [`formatPlural`](API.md#formatplural) API and has `props` that correspond to the following plural formatting options:
 
 ```js
 type PluralFormatOptions = {
@@ -377,7 +377,7 @@ type MessageDescriptor = {
 };
 ```
 
-A common practice is to use the [`defineMessages`](API#definemessages) API to define all of a component's strings, then _spread_ the Message Descriptor as props to the component.
+A common practice is to use the [`defineMessages`](API.md#definemessages) API to define all of a component's strings, then _spread_ the Message Descriptor as props to the component.
 
 **Note:** The [babel-plugin-react-intl](https://github.com/formatjs/formatjs/tree/master/packages/babel-plugin-react-intl) package can be used to extract Message Descriptors defined in JavaScript source files.
 
@@ -393,7 +393,7 @@ The message formatting APIs go the extra mile to provide fallbacks for the commo
 
 ### `<FormattedMessage>`
 
-This component uses the [`formatMessage`](API#formatmessage) API and has `props` that correspond to a [Message Descriptor](#message-descriptor).
+This component uses the [`formatMessage`](API.md#formatmessage) API and has `props` that correspond to a [Message Descriptor](#message-descriptor).
 
 **Props Types:**
 ```js
@@ -460,7 +460,7 @@ This allows messages to still be defined as a plain string _without_ HTML — ma
 
 **Note:** This component is provided for apps that have legacy external strings which contain HTML, but is not recommended, use [`<FormattedMessage>`](#formattedmessage) instead, if you can.
 
-This component uses the [`formatHTMLMessage`](API#formathtmlmessage) API and has the same props as `<FormattedMessage>`, but it will accept messages that contain HTML. In order to protect against XSS, all string `values` will be HTML-escaped and the resulting formatted message will be set via `dangerouslySetInnerHTML`. This means that `values` _cannot_ contain React element like `<FormattedMessage>` and this component will be less performant.
+This component uses the [`formatHTMLMessage`](API.md#formathtmlmessage) API and has the same props as `<FormattedMessage>`, but it will accept messages that contain HTML. In order to protect against XSS, all string `values` will be HTML-escaped and the resulting formatted message will be set via `dangerouslySetInnerHTML`. This means that `values` _cannot_ contain React element like `<FormattedMessage>` and this component will be less performant.
 
 ### Using React-Intl with React Native
 

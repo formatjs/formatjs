@@ -81,18 +81,18 @@ We've made React Intl work well with module bundlers like: Browserify, Webpack, 
 
 Whether you use the ES6, CommonJS, or UMD version of React Intl, they all provide the same named exports:
 
-- [`addLocaleData`](API#addlocaledata)
-- [`intlShape`](API#intlshape)
-- [`injectIntl`](API#injectintl)
-- [`defineMessages`](API#definemessages)
-- [`IntlProvider`](Components#intlprovider)
-- [`FormattedDate`](Components#formatteddate)
-- [`FormattedTime`](Components#formattedtime)
-- [`FormattedRelative`](Components#formattedrelative)
-- [`FormattedNumber`](Components#formattednumber)
-- [`FormattedPlural`](Components#formattedplural)
-- [`FormattedMessage`](Components#formattedmessage)
-- [`FormattedHTMLMessage`](Components#formattedhtmlmessage)
+- [`addLocaleData`](API.md#addlocaledata)
+- [`intlShape`](API.md#intlshape)
+- [`injectIntl`](API.md#injectintl)
+- [`defineMessages`](API.md#definemessages)
+- [`IntlProvider`](Components.md#intlprovider)
+- [`FormattedDate`](Components.md#formatteddate)
+- [`FormattedTime`](Components.md#formattedtime)
+- [`FormattedRelative`](Components.md#formattedrelative)
+- [`FormattedNumber`](Components.md#formattednumber)
+- [`FormattedPlural`](Components.md#formattedplural)
+- [`FormattedMessage`](Components.md#formattedmessage)
+- [`FormattedHTMLMessage`](Components.md#formattedhtmlmessage)
 
 **Note:** When using the UMD version of React Intl _without_ a module system, it will expect `react` to exist on the global variable: __`React`__, and put the above named exports on the global variable: __`ReactIntl`__.
 
@@ -174,7 +174,7 @@ ReactDOM.render(
 
 React Intl has two ways to format data, through [React components][Components] and its [API][API]. The components provide an idiomatic-React way of integrating internationalization into a React app, and the `<Formatted*>` components have [benefits](./Components.md#why-components) over always using the imperative API directly. The API should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
 
-React Intl's imperative API is accessed via [__`injectIntl`__](API#injectintl), a High-Order Component (HOC) factory. It will wrap the passed-in React component with another React component which provides the imperative formatting API into the wrapped component via its `props`. (This is similar to the connect-to-stores pattern found in many Flux implementations.)
+React Intl's imperative API is accessed via [__`injectIntl`__](API.md#injectintl), a High-Order Component (HOC) factory. It will wrap the passed-in React component with another React component which provides the imperative formatting API into the wrapped component via its `props`. (This is similar to the connect-to-stores pattern found in many Flux implementations.)
 
 Here's an example using `<IntlProvider>`, `<Formatted*>` components, and the imperative API to setup an i18n context and format data:
 
