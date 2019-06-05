@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/formatjs/formatjs/compare/intl-relativeformat@6.0.0...intl-relativeformat@6.1.0) (2019-06-05)
+
+
+### Features
+
+* **intl-relativetimeformat:** rename due to npm squatting ([b4476e0](https://github.com/formatjs/formatjs/commit/b4476e0))
+
+
+
+
+
 # [6.0.0](https://github.com/formatjs/formatjs/compare/intl-relativeformat@5.0.0...intl-relativeformat@6.0.0) (2019-06-05)
 
 
