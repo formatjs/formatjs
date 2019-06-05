@@ -133,7 +133,7 @@ The locale data modules in React Intl v2 have been refactored to _provide_ data,
 
 #### Add Call to `addLocaleData()` in Browser
 
-There is now an [`addLocaleData()`](API#addlocaledata) function that needs to be called with the locale data that has been loaded. You can do the following in your main client JavaScript entry point:
+There is now an [`addLocaleData()`](API.md#addlocaledata) function that needs to be called with the locale data that has been loaded. You can do the following in your main client JavaScript entry point:
 
 This assumes a locale data `<script>` is added based on the request; e.g., for French speaking users:
 
@@ -165,7 +165,7 @@ if ('ReactIntlLocaleData' in window) {
 
 ### Remove Intl Mixin
 
-**The `IntlMixin` has been removed from React Intl v2.** The mixin did two things: it automatically propagated `locales`, `formats`, and `messages` throughout an app's hierarchy, and it provided an imperative API via `format*()` functions. These jobs are now handled by [`<IntlProvider>`](Components#intlprovider) and [`injectIntl()`](API#injection-api), respectively:
+**The `IntlMixin` has been removed from React Intl v2.** The mixin did two things: it automatically propagated `locales`, `formats`, and `messages` throughout an app's hierarchy, and it provided an imperative API via `format*()` functions. These jobs are now handled by [`<IntlProvider>`](Components#intlprovider) and [`injectIntl()`](API.md#injection-api), respectively:
 
 #### Update to `<IntlProvider>`
 
@@ -187,9 +187,9 @@ ReactDOM.render(
 
 #### Update to `injectIntl()`
 
-The `IntlMixin` also provided the imperative API for custom components to use the `format*()` methods; e.g., `formatDate()` to get formatted strings for using in places like `title` and `aria` attribute. Remove the `IntlMixin` and instead use the [`injectIntl()`](API#injectintl) Hight Order Component (HOC) factory function to inject the imperative API via `props`.
+The `IntlMixin` also provided the imperative API for custom components to use the `format*()` methods; e.g., `formatDate()` to get formatted strings for using in places like `title` and `aria` attribute. Remove the `IntlMixin` and instead use the [`injectIntl()`](API.md#injectintl) Hight Order Component (HOC) factory function to inject the imperative API via `props`.
 
-Here's an example of a custom `<RelativeTime>` stateless component which uses `injectIntl()` and the imperative [`formatDate()`](API#formatdate) API:
+Here's an example of a custom `<RelativeTime>` stateless component which uses `injectIntl()` and the imperative [`formatDate()`](API.md#formatdate) API:
 
 ```js
 import React from 'react';
@@ -232,7 +232,7 @@ export default injectIntl(RelativeTime);
 
 **The way string messages are formatted in React Intl v2 has changed significantly!** This is the most disruptive set of change when upgrading from v1 to v2; but it enables many great new features.
 
-React Intl v2 introduces a new [**Message Descriptor**](API#message-descriptor) concept which can be used to define an app's default string messages. A Message Descriptor is an object with the following properties, `id` is the only required prop:
+React Intl v2 introduces a new [**Message Descriptor**](API.md#message-descriptor) concept which can be used to define an app's default string messages. A Message Descriptor is an object with the following properties, `id` is the only required prop:
 
 - **`id`**: A unique, stable identifier for the message
 - **`description`**: Context for the translator about how it's used in the UI
@@ -297,7 +297,7 @@ let message = this.formatMessage(this.getIntlMessage('some.message.id'), values)
 let message = this.props.intl.formatMessage({id: 'some.message.id'}, values);
 ```
 
-**Note:** In React Intl v2, the [`formatMessage()`](API#formatmessage) function is injected via [`injectIntl()`](API#injectintl).
+**Note:** In React Intl v2, the [`formatMessage()`](API.md#formatmessage) function is injected via [`injectIntl()`](API.md#injectintl).
 
 #### Update `<FormattedMessage>` and `<FormattedHTMLMessage>` Instances
 
@@ -360,4 +360,4 @@ let relative = this.props.intl.formatRelative(date, {
 });
 ```
 
-**Note:** In React Intl v2, the [`formatRelative()`](API#formatrelative) function is injected via [`injectIntl()`](API#injectintl).
+**Note:** In React Intl v2, the [`formatRelative()`](API.md#formatrelative) function is injected via [`injectIntl()`](API.md#injectintl).
