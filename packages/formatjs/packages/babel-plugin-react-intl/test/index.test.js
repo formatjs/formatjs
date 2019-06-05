@@ -1,5 +1,5 @@
-import * as path from 'path';
-import * as fs from 'fs';
+import path from 'path';
+import fs from 'fs';
 import * as babel from '@babel/core';
 import plugin from '../src';
 
@@ -11,6 +11,7 @@ const skipOutputTests = [
   '.babelrc',
   '.DS_Store',
   'enforceDescriptions',
+  'enforceDefaultMessage',
   'extractSourceLocation',
   'extractFromFormatMessageCall',
   'moduleSourceName',
@@ -110,6 +111,25 @@ describe('options', () => {
         enforceDescriptions: false
       })
     ).not.toThrow();
+  });
+
+  it('allows no description when enforceDefaultMessage=false', () => {
+    const fixtureDir = path.join(fixturesDir, 'enforceDefaultMessage');
+    expect(() =>
+      transform(path.join(fixtureDir, 'actual.js'), {
+        enforceDefaultMessage: false
+      })
+    ).not.toThrow();
+
+    // Check message output
+    const expectedMessages = fs.readFileSync(
+      path.join(fixtureDir, 'expected.json')
+    );
+    const actualMessages = fs.readFileSync(
+      path.join(fixtureDir, 'actual.json')
+    );
+
+    expect(trim(actualMessages)).toEqual(trim(expectedMessages));
   });
 
   it('removes descriptions when plugin is applied more than once', () => {
@@ -213,7 +233,7 @@ const BASE_OPTIONS = {
   messagesDir: baseDir
 };
 
-let cacheBust = 1
+let cacheBust = 1;
 
 function transform(filePath, options = {}, { multiplePasses = false } = {}) {
   function getPluginConfig() {
@@ -223,7 +243,7 @@ function transform(filePath, options = {}, { multiplePasses = false } = {}) {
         ...BASE_OPTIONS,
         ...options
       },
-      Date.now() + '' + (++cacheBust)
+      Date.now() + '' + ++cacheBust
     ];
   }
 
