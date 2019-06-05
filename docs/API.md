@@ -446,4 +446,4 @@ The React components provided by React Intl allow for a declarative, idiomatic-R
 
 **See:** The [Components](Components) page.
 
-[Components]: ./Components.md
+[Components]: Components.md
