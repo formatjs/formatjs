@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/formatjs/formatjs/compare/intl-relativeformat@5.0.0...intl-relativeformat@6.0.0) (2019-06-05)
+
+
+### Features
+
+* add package intl-relativetimeformat ([#51](https://github.com/formatjs/formatjs/issues/51)) ([48c0f43](https://github.com/formatjs/formatjs/commit/48c0f43))
+* **intl-relativeformat:** rm rolluped dist ([c6f94e4](https://github.com/formatjs/formatjs/commit/c6f94e4))
+* **intl-relativeformat:** Use Intl.RelativeTimeFormat ([c014ce0](https://github.com/formatjs/formatjs/commit/c014ce0))
+
+
+### BREAKING CHANGES
+
+* **intl-relativeformat:** This changes the list of assets we package. However,
+entry point is still intact.
+* **intl-relativeformat:** We now use Intl.RelativeTimeFormat in
+intl-relativeformat so consuming env should polyfill this accordingly
+
+
+
+
+
 # [5.0.0](https://github.com/formatjs/formatjs/compare/intl-relativeformat@3.1.0...intl-relativeformat@5.0.0) (2019-06-03)
 
 
