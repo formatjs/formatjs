@@ -9,7 +9,7 @@ A spec-compliant polyfill/ponyfill for Intl.RelativeTimeFormat.
 Installation
 ---
 ```
-npm install intl-relativetimeformat
+npm install @formatjs/intl-relativetimeformat
 ```
 
 Requirements
@@ -25,7 +25,7 @@ Usage
 To use the polyfill, just import it to make sure that a fully functional Intl.RelativeTimeFormat is available in your environment:
 
 ```
-import 'intl-relativetimeformat/polyfill'
+import '@formatjs/intl-relativetimeformat/polyfill'
 ```
 
 If Intl.RelativeTimeFormat already exists, the polyfill will not be loaded.
@@ -33,18 +33,18 @@ If Intl.RelativeTimeFormat already exists, the polyfill will not be loaded.
 To use this as a ponyfill:
 
 ```
-import IntlRelativeTimeFormat from 'intl-relativetimeformat'
+import IntlRelativeTimeFormat from '@formatjs/intl-relativetimeformat'
 ```
 
 By default, this library comes with `en` data. To load additional locale, you can include them on demand:
 ```js
-import 'intl-relativetimeformat/polyfill'
-import 'intl-relativetimeformat/dist/locale-data/de' // Add locale data for de
+import '@formatjs/intl-relativetimeformat/polyfill'
+import '@formatjs/intl-relativetimeformat/dist/locale-data/de' // Add locale data for de
 ```
 
 If you want to polyfill all locales (e.g for Node):
 ```
-import 'intl-relativetimeformat/polyfill-locales'
+import '@formatjs/intl-relativetimeformat/polyfill-locales'
 ```
 
 Tests
@@ -59,5 +59,5 @@ This software is free to use under the Yahoo! Inc. BSD license.
 See the [LICENSE file][LICENSE] for license text and copyright information.
 
 
-[npm]: https://www.npmjs.org/package/intl-relativetimeformat
-[npm-badge]: https://img.shields.io/npm/v/intl-relativetimeformat.svg?style=flat-square
+[npm]: https://www.npmjs.org/package/@formatjs/intl-relativetimeformat
+[npm-badge]: https://img.shields.io/npm/v/@formatjs/intl-relativetimeformat.svg?style=flat-square

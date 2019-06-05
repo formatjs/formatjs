@@ -80,7 +80,7 @@ This package assumes the following capabilities from `Intl`:
 If your environment does not support those, feel free to grab polyfills:
 
 1. https://www.npmjs.com/package/intl-pluralrules
-2. https://www.npmjs.com/package/intl-relativetimeformat
+2. https://www.npmjs.com/package/@formatjs/intl-relativetimeformat
 
 ### Loading IntlRelativeFormat in Node.js
 
