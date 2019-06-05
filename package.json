@@ -33,10 +33,6 @@
   "main": "./lib/index.js",
   "module": "./lib/index.es.js",
   "jsnext:main": "./lib/index.es.js",
-  "browser": {
-    "./locale-data/index": false,
-    "./locale-data/index.js": false
-  },
   "browserify-shim": {
     "react": "global:React"
   },
@@ -68,9 +64,10 @@
   },
   "dependencies": {
     "hoist-non-react-statics": "^3.3.0",
-    "intl-format-cache": "^2.0.5",
-    "intl-messageformat": "^3.1.1",
-    "intl-relativeformat": "^3.1.0",
+    "intl-format-cache": "^3.0.0",
+    "intl-messageformat": "^4.0.0",
+    "intl-relativeformat": "^6.1.0",
+    "intl-locales-supported": "^1.0.10",
     "invariant": "^2.1.1",
     "react-display-name": "^0.2.4",
     "react-is": "^16.3.1"
@@ -113,6 +110,7 @@
     "intl": "^1.2.1",
     "intl-messageformat-parser": "^1.2.0",
     "intl-pluralrules": "^1.0.1",
+    "@formatjs/intl-relativetimeformat": "^1.0.0",
     "jest": "^23.6.0",
     "mkdirp": "^0.5.1",
     "prettier": "^1.6.1",
@@ -136,13 +134,12 @@
   "scripts": {
     "format": "prettier --check *.js scripts/*.js src/{*.js,**/*.js}",
     "format:fix": "prettier --write *.js scripts/*.js src/{*.js,**/*.js}",
-    "clean": "rimraf src/en.js coverage/ dist/ lib/ locale-data/ test/renderer.js",
-    "build:data": "babel-node scripts/build-data",
+    "clean": "rimraf src/en.js coverage/ dist/ lib/ test/renderer.js",
     "build:lib": "rollup -c rollup.config.lib.js",
     "build:dist:dev": "cross-env NODE_ENV=development rollup -c rollup.config.dist.js",
     "build:dist:prod": "cross-env NODE_ENV=production rollup -c rollup.config.dist.js",
     "build:dist": "yarn run build:dist:dev && yarn run build:dist:prod",
-    "build": "yarn run build:data && yarn run build:lib && yarn run build:dist",
+    "build": "yarn run build:lib && yarn run build:dist",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "jest --coverage --verbose",

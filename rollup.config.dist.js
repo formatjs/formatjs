@@ -20,7 +20,7 @@ const reactCheck = `if (typeof React === 'undefined') {
 `;
 
 export default {
-  input: p.resolve('src/react-intl.js'),
+  input: p.resolve('src/index.js'),
   output: {
     file: p.resolve(`dist/react-intl.${isProduction ? 'min.js' : 'js'}`),
     format: 'umd',

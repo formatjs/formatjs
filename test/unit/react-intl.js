@@ -1,12 +1,8 @@
 import expect from 'expect';
-import * as ReactIntl from '../../src/react-intl';
+import * as ReactIntl from '../../src';
 
 describe('react-intl', () => {
     describe('exports', () => {
-        it('exports `addLocaleData`', () => {
-            expect(ReactIntl.addLocaleData).toBeA('function');
-        });
-
         it('exports `defineMessages`', () => {
             expect(ReactIntl.defineMessages).toBeA('function');
         });

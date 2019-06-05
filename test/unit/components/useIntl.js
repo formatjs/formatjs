@@ -1,6 +1,6 @@
 import React from 'react';
 import {mount} from 'enzyme';
-import {IntlProvider} from '../../../src/react-intl'
+import {IntlProvider} from '../../../src'
 import useIntl from '../../../src/components/useIntl';
 
 const FunctionComponent = ({ spy }) => {
