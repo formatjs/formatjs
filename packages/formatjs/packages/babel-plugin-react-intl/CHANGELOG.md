@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/formatjs/babel-plugin-react-intl/compare/babel-plugin-react-intl@3.1.3...babel-plugin-react-intl@3.2.0) (2019-06-05)
+
+
+### Features
+
+* **babel-plugin-react-intl:** Add enforceDefaultMessage ([#61](https://github.com/formatjs/babel-plugin-react-intl/issues/61)) ([8dbb1c3](https://github.com/formatjs/babel-plugin-react-intl/commit/8dbb1c3))
+
+
+
+
+
 ## [3.1.3](https://github.com/formatjs/babel-plugin-react-intl/compare/babel-plugin-react-intl@3.1.1...babel-plugin-react-intl@3.1.3) (2019-06-03)
 
 **Note:** Version bump only for package babel-plugin-react-intl
