@@ -1,6 +1,6 @@
 # API
 
-There are a few API layers that React Intl provides and is built on. When using React Intl you'll be interacting with its API (documented here) and its React [components](Components).
+There are a few API layers that React Intl provides and is built on. When using React Intl you'll be interacting with its API (documented here) and its React [components][Components].
 
 1. [ECMAScript Internationalization API](#ecmascript-internationalization-api)
 2. [FormatJS Internationalization Formatters](#formatjs-internationalization-formatters)
@@ -444,6 +444,6 @@ function formatHTMLMessage(
 
 The React components provided by React Intl allow for a declarative, idiomatic-React way of providing internationalization configuration and format dates, numbers, and strings/messages in your app.
 
-**See:** The [Components](Components) page.
+**See:** The [Components][Components] page.
 
 [Components]: Components.md

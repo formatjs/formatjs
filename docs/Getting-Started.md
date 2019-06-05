@@ -172,7 +172,7 @@ ReactDOM.render(
 
 ### Formatting Data
 
-React Intl has two ways to format data, through [React components](Components) and its [API](API). The components provide an idiomatic-React way of integrating internationalization into a React app, and the `<Formatted*>` components have [benefits](./Components.md#why-components) over always using the imperative API directly. The API should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
+React Intl has two ways to format data, through [React components][Components] and its [API][API]. The components provide an idiomatic-React way of integrating internationalization into a React app, and the `<Formatted*>` components have [benefits](./Components.md#why-components) over always using the imperative API directly. The API should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
 
 React Intl's imperative API is accessed via [__`injectIntl`__](API#injectintl), a High-Order Component (HOC) factory. It will wrap the passed-in React component with another React component which provides the imperative formatting API into the wrapped component via its `props`. (This is similar to the connect-to-stores pattern found in many Flux implementations.)
 
@@ -225,7 +225,7 @@ Assuming `navigator.language` is `"en-us"`:
 </div>
 ```
 
-**See:** The [__API docs__](API) and [__Component docs__](Components) for more details.
+**See:** The [__API docs__][API] and [__Component docs__][Components] for more details.
 
 ## Core Concepts
 
@@ -247,8 +247,8 @@ There are several [**runnable example apps**](https://github.com/formatjs/react-
 There are a few API layers that React Intl provides and is built on. When using React Intl you'll be interacting with `Intl` built-ins, React Intl's API, and its React components:
 
 - [ECMAScript Internationalization API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl)
-- [React Intl API](API)
-- [React Intl Components](Components)
+- [React Intl API][API]
+- [React Intl Components][Components]
 
 [API]: ./API.md
 [Components]: ./Components.md
