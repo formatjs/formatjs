@@ -50,15 +50,15 @@ $ npm install react-intl --save
 
 The `react-intl` npm package distributes the following modules (links from [unpkg](https://unpkg.com/)):
 
-- [__CommonJS__](https://unpkg.com/react-intl@latest/lib/index.js):
+- [**CommonJS**](https://unpkg.com/react-intl@latest/lib/index.js):
   unbundled dependencies, `"main"` in `package.json`, warnings in dev.
-- [__ES6__](https://unpkg.com/react-intl@latest/lib/index.es.js):
+- [**ES6**](https://unpkg.com/react-intl@latest/lib/index.es.js):
   unbundled dependencies, `"jsnext:main"` and `"module"` in `package.json`, warnings in dev.
-- [__UMD dev__](https://unpkg.com/react-intl@latest/dist/react-intl.js):
+- [**UMD dev**](https://unpkg.com/react-intl@latest/dist/react-intl.js):
   bundled dependencies (except `react`), browser or Node, warnings.
-- [__UMD prod__](https://unpkg.com/react-intl@latest/dist/react-intl.min.js):
+- [**UMD prod**](https://unpkg.com/react-intl@latest/dist/react-intl.min.js):
   minified, bundled dependencies (except `react`), browser or Node, no warnings.
-- [__UMD Locale Data__](https://unpkg.com/react-intl@latest/locale-data/):
+- [**UMD Locale Data**](https://unpkg.com/react-intl@latest/locale-data/):
   grouped by language, browser or Node, `index.js` contains all locales.
 
 **Note:** React Intl's locale data is in a directory at the package's root. This allows the locale data to be `import`-ed or `require`-d relative to the package. For example:
@@ -94,7 +94,7 @@ Whether you use the ES6, CommonJS, or UMD version of React Intl, they all provid
 - [`FormattedMessage`](Components.md#formattedmessage)
 - [`FormattedHTMLMessage`](Components.md#formattedhtmlmessage)
 
-**Note:** When using the UMD version of React Intl _without_ a module system, it will expect `react` to exist on the global variable: __`React`__, and put the above named exports on the global variable: __`ReactIntl`__.
+**Note:** When using the UMD version of React Intl _without_ a module system, it will expect `react` to exist on the global variable: **`React`**, and put the above named exports on the global variable: **`ReactIntl`**.
 
 ### Loading Locale Data
 
@@ -106,15 +106,15 @@ Because of these differences in how the locale data is organized, you'll need to
 
 #### Locale Data in Node.js
 
-When using React Intl in Node.js (same for the Intl.js polyfill), __all locale data will be loaded into memory.__ This makes it easier to write a universal/isomorphic React app with React Intl since you won't have to worry about dynamically loading locale data on the server.
+When using React Intl in Node.js (same for the Intl.js polyfill), **all locale data will be loaded into memory.** This makes it easier to write a universal/isomorphic React app with React Intl since you won't have to worry about dynamically loading locale data on the server.
 
 **Note:** As mentioned [above](#module-bundlers), when using Browserify/Webpack/Rollup to bundle React Intl for the browser, only basic English locale data will be included.
 
 #### Locale Data in Browsers
 
-When using React Intl in browsers, it will only contain locale data for basic English by default. __This means you'll need to either bundle locale data with your app code, or dynamically load a [locale data UMD module](#the-react-intl-package) based on the current user's locale.__
+When using React Intl in browsers, it will only contain locale data for basic English by default. **This means you'll need to either bundle locale data with your app code, or dynamically load a [locale data UMD module](#the-react-intl-package) based on the current user's locale.**
 
-React Intl provides an [__`addLocaleData` API__](./API.md#addlocaledata) which can be passed the contents of a locale data module and will register it in its locale data registry.
+React Intl provides an [**`addLocaleData` API**](./API.md#addlocaledata) which can be passed the contents of a locale data module and will register it in its locale data registry.
 
 If your app only supports a few languages, we recommend bundling React Intl's locale data for those languages with your app code as this approach is simpler. Here's an example of an app that supports English, French, and Spanish:
 
@@ -129,7 +129,7 @@ addLocaleData([...en, ...fr, ...es]);
 // ...
 ```
 
-If your app supports many locales, you can also dynamically load the locale data needed for the current user's language. This would involve outputting a different HTML document per users which includes a `<script>` to the correct locale data file. When loading a locale data file in a runtime _without_ a module system, it will be added to a global variable: __`ReactIntlLocaleData`__. Here's an example of loading React Intl and locale data for a French user:
+If your app supports many locales, you can also dynamically load the locale data needed for the current user's language. This would involve outputting a different HTML document per users which includes a `<script>` to the correct locale data file. When loading a locale data file in a runtime _without_ a module system, it will be added to a global variable: **`ReactIntlLocaleData`**. Here's an example of loading React Intl and locale data for a French user:
 
 ```html
 <!-- Load React and ReactDOM if they're not already on the page. -->
@@ -140,7 +140,7 @@ If your app supports many locales, you can also dynamically load the locale data
 <script src="https://unpkg.com/react-intl@latest/dist/react-intl.min.js"></script>
 <script src="https://unpkg.com/react-intl@latest/locale-data/fr.js"></script>
 <script>
-    ReactIntl.addLocaleData(ReactIntlLocaleData.fr);
+  ReactIntl.addLocaleData(ReactIntlLocaleData.fr);
 </script>
 ```
 
@@ -158,74 +158,71 @@ The most common usage is to wrap your root React component with `<IntlProvider>`
 
 ```js
 ReactDOM.render(
-    <IntlProvider
-        locale={usersLocale}
-        messages={translationsForUsersLocale}
-    >
-        <App/>
-    </IntlProvider>,
-    document.getElementById('container')
+  <IntlProvider locale={usersLocale} messages={translationsForUsersLocale}>
+    <App />
+  </IntlProvider>,
+  document.getElementById('container')
 );
 ```
 
-**See:** The [__`<IntlProvider>` docs__](./Components.md#intlprovider) for more details.
+**See:** The [**`<IntlProvider>` docs**](./Components.md#intlprovider) for more details.
 
 ### Formatting Data
 
-React Intl has two ways to format data, through [React components][Components] and its [API][API]. The components provide an idiomatic-React way of integrating internationalization into a React app, and the `<Formatted*>` components have [benefits](./Components.md#why-components) over always using the imperative API directly. The API should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
+React Intl has two ways to format data, through [React components][components] and its [API][api]. The components provide an idiomatic-React way of integrating internationalization into a React app, and the `<Formatted*>` components have [benefits](./Components.md#why-components) over always using the imperative API directly. The API should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
 
-React Intl's imperative API is accessed via [__`injectIntl`__](API.md#injectintl), a High-Order Component (HOC) factory. It will wrap the passed-in React component with another React component which provides the imperative formatting API into the wrapped component via its `props`. (This is similar to the connect-to-stores pattern found in many Flux implementations.)
+React Intl's imperative API is accessed via [**`injectIntl`**](API.md#injectintl), a High-Order Component (HOC) factory. It will wrap the passed-in React component with another React component which provides the imperative formatting API into the wrapped component via its `props`. (This is similar to the connect-to-stores pattern found in many Flux implementations.)
 
 Here's an example using `<IntlProvider>`, `<Formatted*>` components, and the imperative API to setup an i18n context and format data:
 
 ```js
 import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
-import {
-    injectIntl,
-    IntlProvider,
-    FormattedRelative,
-} from 'react-intl';
+import {injectIntl, IntlProvider, FormattedRelative} from 'react-intl';
 
 const PostDate = injectIntl(({date, intl}) => (
-    <span title={intl.formatDate(date)}>
-        <FormattedRelative value={date}/>
-    </span>
+  <span title={intl.formatDate(date)}>
+    <FormattedRelative value={date} />
+  </span>
 ));
 
 const App = ({post}) => (
-    <div>
-        <h1>{post.title}</h1>
-        <p><PostDate date={post.date}/></p>
-        <div>{post.body}</div>
-    </div>
+  <div>
+    <h1>{post.title}</h1>
+    <p>
+      <PostDate date={post.date} />
+    </p>
+    <div>{post.body}</div>
+  </div>
 );
 
 ReactDOM.render(
-    <IntlProvider locale={navigator.language}>
-        <App
-            post={{
-                title: 'Hello, World!',
-                date: new Date(1459913574887),
-                body: 'Amazing content.',
-            }}
-        />
-    </IntlProvider>,
-    document.getElementById('container')
+  <IntlProvider locale={navigator.language}>
+    <App
+      post={{
+        title: 'Hello, World!',
+        date: new Date(1459913574887),
+        body: 'Amazing content.',
+      }}
+    />
+  </IntlProvider>,
+  document.getElementById('container')
 );
 ```
+
 Assuming `navigator.language` is `"en-us"`:
+
 ```html
 <div>
-    <h1>Hello, World!</h1>
-    <p><span title="4/5/2016">yesterday</span></p>
-    <div>
-        Amazing content.
-    </div>
+  <h1>Hello, World!</h1>
+  <p><span title="4/5/2016">yesterday</span></p>
+  <div>
+    Amazing content.
+  </div>
 </div>
 ```
 
-**See:** The [__API docs__][API] and [__Component docs__][Components] for more details.
+**See:** The [**API docs**][api] and [**Component docs**][components] for more details.
 
 ## Core Concepts
 
@@ -247,8 +244,8 @@ There are several [**runnable example apps**](https://github.com/formatjs/react-
 There are a few API layers that React Intl provides and is built on. When using React Intl you'll be interacting with `Intl` built-ins, React Intl's API, and its React components:
 
 - [ECMAScript Internationalization API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl)
-- [React Intl API][API]
-- [React Intl Components][Components]
+- [React Intl API][api]
+- [React Intl Components][components]
 
-[API]: ./API.md
-[Components]: ./Components.md
+[api]: ./API.md
+[components]: ./Components.md

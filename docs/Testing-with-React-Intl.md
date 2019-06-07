@@ -56,13 +56,13 @@ The following examples will assume `mocha`, `expect`, and `expect-jsx` test fram
 import React from 'react';
 import {FormattedDate} from 'react-intl';
 
-const ShortDate = (props) => (
-    <FormattedDate
-        value={props.date}
-        year='numeric'
-        month='short'
-        day='2-digit'
-    />
+const ShortDate = props => (
+  <FormattedDate
+    value={props.date}
+    year="numeric"
+    month="short"
+    day="2-digit"
+  />
 );
 
 export default ShortDate;
@@ -80,21 +80,16 @@ import ShortDate from '../short-date';
 
 expect.extend(expectJSX);
 
-describe('<ShortDate>', function () {
-    it('renders', function () {
-        const renderer = createRenderer();
-        const date = new Date();
+describe('<ShortDate>', function() {
+  it('renders', function() {
+    const renderer = createRenderer();
+    const date = new Date();
 
-        renderer.render(<ShortDate date={date}/>);
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <FormattedDate
-                value={date}
-                year='numeric'
-                month='short'
-                day='2-digit'
-            />
-        );
-    });
+    renderer.render(<ShortDate date={date} />);
+    expect(renderer.getRenderOutput()).toEqualJSX(
+      <FormattedDate value={date} year="numeric" month="short" day="2-digit" />
+    );
+  });
 });
 ```
 
@@ -104,10 +99,10 @@ describe('<ShortDate>', function () {
 import React, {Component} from 'react';
 import {injectIntl, FormattedRelative} from 'react-intl';
 
-const RelativeDate = (props) => (
-    <span title={props.intl.formatDate(props.value)}>
-        <FormattedRelative value={props.value}/>
-    </span>
+const RelativeDate = props => (
+  <span title={props.intl.formatDate(props.value)}>
+    <FormattedRelative value={props.value} />
+  </span>
 );
 
 // Using `injectIntl()` to make React Intl's imperative API available to format
@@ -126,45 +121,37 @@ import expect from 'expect';
 import expectJSX from 'expect-jsx';
 import React from 'react';
 import {createRenderer} from 'react-addons-test-utils';
-import {
-    IntlProvider,
-    FormattedRelative,
-} from 'react-intl';
+import {IntlProvider, FormattedRelative} from 'react-intl';
 import RelativeDate from '../relative-date';
 
 expect.extend(expectJSX);
 
-describe('<RelativeDate>', function () {
-    it('renders', function () {
-        const renderer = createRenderer();
-        const date = new Date();
+describe('<RelativeDate>', function() {
+  it('renders', function() {
+    const renderer = createRenderer();
+    const date = new Date();
 
-        // Construct a new `IntlProvider` instance by passing `props` and
-        // `context` as React would, then call `getChildContext()` to get the
-        // React Intl API, complete with the `format*()` functions.
-        const intlProvider = new IntlProvider({locale: 'en'}, {});
-        const {intl} = intlProvider.getChildContext();
+    // Construct a new `IntlProvider` instance by passing `props` and
+    // `context` as React would, then call `getChildContext()` to get the
+    // React Intl API, complete with the `format*()` functions.
+    const intlProvider = new IntlProvider({locale: 'en'}, {});
+    const {intl} = intlProvider.getChildContext();
 
-        // Access the underlying `<RelativeDate>` component from the wrapper
-        // component returned from calling `injectIntl()`, and create an
-        // element making sure to pass the `intl` API as a prop to the to
-        // simulate what `injectIntl()` does.
-        renderer.render(
-            <RelativeDate.WrappedComponent
-                date={date}
-                intl={intl}
-            />
-        );
+    // Access the underlying `<RelativeDate>` component from the wrapper
+    // component returned from calling `injectIntl()`, and create an
+    // element making sure to pass the `intl` API as a prop to the to
+    // simulate what `injectIntl()` does.
+    renderer.render(<RelativeDate.WrappedComponent date={date} intl={intl} />);
 
-        // Use the `intl` API directly to format the date for the expected
-        // output. This is important when testing absolute dates since their
-        // values will differ based on the timezone where the test is running.
-        expect(renderer.getRenderOutput()).toEqualJSX(
-            <span title={intl.formatDate(date)}>
-                <FormattedRelative value={date}/>
-            </span>
-        );
-    });
+    // Use the `intl` API directly to format the date for the expected
+    // output. This is important when testing absolute dates since their
+    // values will differ based on the timezone where the test is running.
+    expect(renderer.getRenderOutput()).toEqualJSX(
+      <span title={intl.formatDate(date)}>
+        <FormattedRelative value={date} />
+      </span>
+    );
+  });
 });
 ```
 
@@ -173,7 +160,11 @@ describe('<RelativeDate>', function () {
 If you use the DOM in your tests, you need to supply the `IntlProvider` context to your components using composition:
 
 ```js
-let element = ReactTestUtils.renderIntoDocument(<IntlProvider><MyComponent /></IntlProvider>);
+let element = ReactTestUtils.renderIntoDocument(
+  <IntlProvider>
+    <MyComponent />
+  </IntlProvider>
+);
 ```
 
 However this means that the `element` reference is now pointing to the `IntlProvider` instead of your component. To retrieve a reference to your wrapped component, you can use "refs" with these changes to the code:
@@ -193,7 +184,9 @@ In your test, add a "ref" to extract the reference to your tested component:
 ```js
 let element;
 let root = ReactTestUtils.renderIntoDocument(
-  <IntlProvider><MyComponent ref={(c) => element = c.refs.wrappedInstance} /></IntlProvider>
+  <IntlProvider>
+    <MyComponent ref={c => (element = c.refs.wrappedInstance)} />
+  </IntlProvider>
 );
 ```
 
@@ -213,7 +206,9 @@ function renderWithIntl(element) {
 
   ReactTestUtils.renderIntoDocument(
     <IntlProvider>
-      {React.cloneElement(element, {ref: (c) => instance = c.refs.wrappedInstance})}
+      {React.cloneElement(element, {
+        ref: c => (instance = c.refs.wrappedInstance),
+      })}
     </IntlProvider>
   );
 
@@ -232,7 +227,7 @@ element.myClassFn();
 
 Testing with Enzyme works in a similar fashion as written above. Your `mount()`ed and `shallow()`ed components will need access to the `intl` context. Below is a helper function which you can import and use to mount your components which make use of any of React-Intl's library (either `<Formatted* />` components or `format*()` methods through `injectIntl`).
 
-### Helper function 
+### Helper function
 
 ```js
 /**
@@ -243,42 +238,39 @@ Testing with Enzyme works in a similar fashion as written above. Your `mount()`e
  */
 
 import React from 'react';
-import { IntlProvider, intlShape } from 'react-intl';
-import { mount, shallow } from 'enzyme';
+import {IntlProvider, intlShape} from 'react-intl';
+import {mount, shallow} from 'enzyme';
 
 // You can pass your messages to the IntlProvider. Optional: remove if unneeded.
 const messages = require('../locales/en'); // en.json
 
 // Create the IntlProvider to retrieve context for wrapping around.
-const intlProvider = new IntlProvider({ locale: 'en', messages }, {});
-const { intl } = intlProvider.getChildContext();
+const intlProvider = new IntlProvider({locale: 'en', messages}, {});
+const {intl} = intlProvider.getChildContext();
 
 /**
  * When using React-Intl `injectIntl` on components, props.intl is required.
  */
 function nodeWithIntlProp(node) {
-    return React.cloneElement(node, { intl });
+  return React.cloneElement(node, {intl});
 }
 
-export function shallowWithIntl(node, { context, ...additionalOptions } = {}) {
-    return shallow(
-        nodeWithIntlProp(node),
-        {
-            context: Object.assign({}, context, {intl}),
-            ...additionalOptions,
-        }
-    );
+export function shallowWithIntl(node, {context, ...additionalOptions} = {}) {
+  return shallow(nodeWithIntlProp(node), {
+    context: Object.assign({}, context, {intl}),
+    ...additionalOptions,
+  });
 }
 
-export function mountWithIntl(node, { context, childContextTypes, ...additionalOptions } = {}) {
-    return mount(
-        nodeWithIntlProp(node),
-        {
-            context: Object.assign({}, context, {intl}),
-            childContextTypes: Object.assign({}, { intl: intlShape }, childContextTypes),
-            ...additionalOptions,
-        }
-    );
+export function mountWithIntl(
+  node,
+  {context, childContextTypes, ...additionalOptions} = {}
+) {
+  return mount(nodeWithIntlProp(node), {
+    context: Object.assign({}, context, {intl}),
+    childContextTypes: Object.assign({}, {intl: intlShape}, childContextTypes),
+    ...additionalOptions,
+  });
 }
 ```
 
@@ -289,13 +281,11 @@ Create a file with the above helper in e.g. `helpers/intl-enzyme-test-helper.js`
 ```js
 // intl-enzyme-test-helper.js
 
-import { mountWithIntl } from 'helpers/intl-enzyme-test-helper.js';
+import {mountWithIntl} from 'helpers/intl-enzyme-test-helper.js';
 
-const wrapper = mountWithIntl(
-  <CustomComponent />
-);
+const wrapper = mountWithIntl(<CustomComponent />);
 
-expect(wrapper.state('foo')).to.equal('bar');    // OK
+expect(wrapper.state('foo')).to.equal('bar'); // OK
 expect(wrapper.text()).to.equal('Hello World!'); // OK
 ```
 
@@ -314,15 +304,11 @@ Snapshot testing is a new feature of Jest that automatically generates text snap
 ```js
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { IntlProvider } from 'react-intl';
+import {IntlProvider} from 'react-intl';
 
-const createComponentWithIntl = (children, props = { locale: 'en' }) => {
-  return renderer.create(
-    <IntlProvider {...props}>
-      {children}
-    </IntlProvider>
-  );
-}
+const createComponentWithIntl = (children, props = {locale: 'en'}) => {
+  return renderer.create(<IntlProvider {...props}>{children}</IntlProvider>);
+};
 
 export default createComponentWithIntl;
 ```
@@ -335,7 +321,7 @@ import createComponentWithIntl from '../../utils/createComponentWithIntl';
 import AppMain from '../AppMain';
 
 test('app main should be rendered', () => {
-  const component = createComponentWithIntl(<AppMain/>);
+  const component = createComponentWithIntl(<AppMain />);
 
   let tree = component.toJSON();
 
@@ -353,7 +339,7 @@ You can find runnable example [here](https://github.com/formatjs/react-intl/tree
 
 #### Jest mock
 
-Following mock is simplified version of injectIntl, formatMessage just places defaultMessage. Should be placed in the root of your project (where node_modules reside) under __mocks__ subfolder:
+Following mock is simplified version of injectIntl, formatMessage just places defaultMessage. Should be placed in the root of your project (where node_modules reside) under **mocks** subfolder:
 
 ```js
 // ./__mocks__/react-intl.js
@@ -362,14 +348,12 @@ const Intl = jest.genMockFromModule('react-intl');
 
 // Here goes intl context injected into component, feel free to extend
 const intl = {
-  formatMessage: ({defaultMessage}) => defaultMessage
+  formatMessage: ({defaultMessage}) => defaultMessage,
 };
 
-Intl.injectIntl = (Node) => {
+Intl.injectIntl = Node => {
   const renderWrapped = props => <Node {...props} intl={intl} />;
-  renderWrapped.displayName = Node.displayName
-    || Node.name
-    || 'Component'
+  renderWrapped.displayName = Node.displayName || Node.name || 'Component';
   return renderWrapped;
 };
 
@@ -382,13 +366,13 @@ Jest will automatically mock react-intl, so no any extra implementation is neede
 
 ```js
 import React from 'react';
-import { shallow } from 'enzyme';
+import {shallow} from 'enzyme';
 import AppMain from '../AppMain';
 
 test('app main should be rendered', () => {
-  const wrapper = shallow(<AppMain/>);
+  const wrapper = shallow(<AppMain />);
   expect(wrapper).toMatchSnapshot();
-})
+});
 ```
 
 ### DOM Testing
@@ -410,22 +394,22 @@ You can check the [docs](https://testing-library.com/docs/example-react-intl).
 And can find a functional example [here](https://github.com/testing-library/react-testing-library/blob/master/examples/__tests__/react-intl.js)
 
 ```jsx
-import React from 'react'
-import 'jest-dom/extend-expect'
-import { render, cleanup, getByTestId } from 'react-testing-library'
-import { IntlProvider, FormattedDate } from 'react-intl'
-import IntlPolyfill from 'intl'
-import 'intl/locale-data/jsonp/pt'
+import React from 'react';
+import 'jest-dom/extend-expect';
+import {render, cleanup, getByTestId} from 'react-testing-library';
+import {IntlProvider, FormattedDate} from 'react-intl';
+import IntlPolyfill from 'intl';
+import 'intl/locale-data/jsonp/pt';
 
 const setupTests = () => {
   // https://formatjs.io/guides/runtime-environments/#server
   if (global.Intl) {
-    Intl.NumberFormat = IntlPolyfill.NumberFormat
-    Intl.DateTimeFormat = IntlPolyfill.DateTimeFormat
+    Intl.NumberFormat = IntlPolyfill.NumberFormat;
+    Intl.DateTimeFormat = IntlPolyfill.DateTimeFormat;
   } else {
-    global.Intl = IntlPolyfill
+    global.Intl = IntlPolyfill;
   }
-}
+};
 
 const FormatDateView = () => {
   return (
@@ -438,18 +422,20 @@ const FormatDateView = () => {
         year="numeric"
       />
     </div>
-  )
-}
+  );
+};
 
 const renderWithReactIntl = component => {
-  return render(<IntlProvider locale="pt">{component}</IntlProvider>)
-}
+  return render(<IntlProvider locale="pt">{component}</IntlProvider>);
+};
 
-setupTests()
-afterEach(cleanup)
+setupTests();
+afterEach(cleanup);
 
 test('it should render FormattedDate and have a formated pt date', () => {
-  const { container } = renderWithReactIntl(<FormatDateView />)
-  expect(getByTestId(container, 'date-display')).toHaveTextContent('11/03/2019')
-})
+  const {container} = renderWithReactIntl(<FormatDateView />);
+  expect(getByTestId(container, 'date-display')).toHaveTextContent(
+    '11/03/2019'
+  );
+});
 ```
