@@ -18,65 +18,65 @@ With the update to React `>= 16.3` we got the option to use the new `React.forwa
 When `forwardRef` is set to true, you can now simply pretend the HOC wasn't there at all.
 
 Intl v2:
+
 ```js
-import React from 'react'
-import { injectIntl } from 'react-intl'
+import React from 'react';
+import {injectIntl} from 'react-intl';
 
 class MyComponent extends React.Component {
-  doSomething = () => console.log(this.state || null)
+  doSomething = () => console.log(this.state || null);
 
-  render () {
-    return (
-      <div>Hello World</div>
-    )
+  render() {
+    return <div>Hello World</div>;
   }
 }
 
-export default injectIntl(MyComponent, { withRef: true })
+export default injectIntl(MyComponent, {withRef: true});
 
 // somewhere else
 class Parent extends React.Component {
-  componentDidMount () {
-    this.myComponentRef.getWrappedInstance().doSomething()
+  componentDidMount() {
+    this.myComponentRef.getWrappedInstance().doSomething();
   }
 
-  render () {
+  render() {
     return (
-      <MyComponent ref={(ref) => {this.myComponentRef = ref}} />
-    )
+      <MyComponent
+        ref={ref => {
+          this.myComponentRef = ref;
+        }}
+      />
+    );
   }
 }
 ```
 
 Intl v3:
+
 ```js
-import React from 'react'
-import { injectIntl } from 'react-intl'
+import React from 'react';
+import {injectIntl} from 'react-intl';
 
 class MyComponent extends React.Component {
-  doSomething = () => console.log(this.state || null)
+  doSomething = () => console.log(this.state || null);
 
-  render () {
-    return (
-      <div>Hello World</div>
-    )
+  render() {
+    return <div>Hello World</div>;
   }
 }
 
-export default injectIntl(MyComponent, { forwardRef: true })
+export default injectIntl(MyComponent, {forwardRef: true});
 
 // somewhere else
 class Parent extends React.Component {
-  myComponentRef = React.createRef()
+  myComponentRef = React.createRef();
 
-  componentDidMount () {
-    this.myComponentRef.doSomething() // no need to call getWrappedInstance()
+  componentDidMount() {
+    this.myComponentRef.doSomething(); // no need to call getWrappedInstance()
   }
 
-  render () {
-    return (
-      <MyComponent ref={this.myComponentRef} />
-    )
+  render() {
+    return <MyComponent ref={this.myComponentRef} />;
   }
 }
 ```
@@ -87,20 +87,20 @@ This v3 release also supports the latest React hook API for user with React `>= 
 
 ```js
 // injectIntl
-import { injectIntl } from 'react-intl'
+import {injectIntl} from 'react-intl';
 
-const MyComponentWithHOC = injectIntl(({ intl, ...props }) => {
+const MyComponentWithHOC = injectIntl(({intl, ...props}) => {
   // do something
-})
+});
 
 // useIntl
-import { useIntl } from 'react-intl'
+import {useIntl} from 'react-intl';
 
-const MyComponentWithHook = (props) => {
+const MyComponentWithHook = props => {
   const intl = useIntl();
 
   // do something
-}
+};
 ```
 
 To keep the API surface clean and simple, we only provide `useIntl` hook in the package. If preferable, user can wrap this built-in hook to make customized hook like `useFormatMessage` easily. Please visit React's official website for more general [introduction on React hooks](https://reactjs.org/docs/hooks-intro.html).
@@ -142,22 +142,24 @@ This assumes a locale data `<script>` is added based on the request; e.g., for F
 ```
 
 **Using `<script src="react-intl/dist/react-intl.js>`:**
+
 ```js
 if ('ReactIntl' in window && 'ReactIntlLocaleData' in window) {
-    Object.keys(ReactIntlLocaleData).forEach((lang) => {
-        ReactIntl.addLocaleData(ReactIntlLocaleData[lang]);
-    });
+  Object.keys(ReactIntlLocaleData).forEach(lang => {
+    ReactIntl.addLocaleData(ReactIntlLocaleData[lang]);
+  });
 }
 ```
 
 **Using Browserify/Webpack to Load React Intl:**
+
 ```js
 import {addLocaleData} from 'react-intl';
 
 if ('ReactIntlLocaleData' in window) {
-    Object.keys(ReactIntlLocaleData).forEach((lang) => {
-        addLocaleData(ReactIntlLocaleData[lang]);
-    });
+  Object.keys(ReactIntlLocaleData).forEach(lang => {
+    addLocaleData(ReactIntlLocaleData[lang]);
+  });
 }
 ```
 
@@ -176,10 +178,10 @@ import ReactDOM from 'react-dom';
 import {IntlProvider} from 'react-intl';
 
 ReactDOM.render(
-    <IntlProvider locale='en'>
-        <App/>
-    </IntlProvider>,
-    document.getElementById('container')
+  <IntlProvider locale="en">
+    <App />
+  </IntlProvider>,
+  document.getElementById('container')
 );
 ```
 
@@ -193,34 +195,31 @@ Here's an example of a custom `<RelativeTime>` stateless component which uses `i
 
 ```js
 import React from 'react';
-import {
-    injectIntl,
-    FormattedRelative,
-} from 'react-intl';
+import {injectIntl, FormattedRelative} from 'react-intl';
 
-const to2Digits = (num) => `${num < 10 ? `0${num}` : num}`;
+const to2Digits = num => `${num < 10 ? `0${num}` : num}`;
 
 const RelativeTime = ({date, intl}) => {
-    date = new Date(date);
+  date = new Date(date);
 
-    let year  = date.getFullYear();
-    let month = date.getMonth() + 1;
-    let day   = date.getDate();
+  let year = date.getFullYear();
+  let month = date.getMonth() + 1;
+  let day = date.getDate();
 
-    let formattedDate = intl.formatDate(date, {
-        year : 'long',
-        month: 'numeric',
-        day  : 'numeric'
-    });
+  let formattedDate = intl.formatDate(date, {
+    year: 'long',
+    month: 'numeric',
+    day: 'numeric',
+  });
 
-    return (
-        <time
-            dateTime={`${year}-${to2Digits(month)}-${to2Digits(day)}`}
-            title={formattedDate}
-        >
-            <FormattedRelative value={date}/>
-        </time>
-    );
+  return (
+    <time
+      dateTime={`${year}-${to2Digits(month)}-${to2Digits(day)}`}
+      title={formattedDate}
+    >
+      <FormattedRelative value={date} />
+    </time>
+  );
 };
 
 export default injectIntl(RelativeTime);
@@ -248,18 +247,18 @@ Apps using a nested `messages` object structure could use the following function
 
 ```js
 function flattenMessages(nestedMessages, prefix = '') {
-    return Object.keys(nestedMessages).reduce((messages, key) => {
-        let value       = nestedMessages[key];
-        let prefixedKey = prefix ? `${prefix}.${key}` : key;
+  return Object.keys(nestedMessages).reduce((messages, key) => {
+    let value = nestedMessages[key];
+    let prefixedKey = prefix ? `${prefix}.${key}` : key;
 
-        if (typeof value === 'string') {
-            messages[prefixedKey] = value;
-        } else {
-            Object.assign(messages, flattenMessages(value, prefixedKey));
-        }
+    if (typeof value === 'string') {
+      messages[prefixedKey] = value;
+    } else {
+      Object.assign(messages, flattenMessages(value, prefixedKey));
+    }
 
-        return messages;
-    }, {});
+    return messages;
+  }, {});
 }
 
 let messages = flattenMessages(nestedMessages);
@@ -274,13 +273,17 @@ The `getIntlMessage()` method that was provided by the `IntlMixin` has been remo
 All calls to `getIntlMessage()` need to be replaced with a Message Descriptor.
 
 **Replace:**
+
 ```js
-this.getIntlMessage('some.message.id')
+this.getIntlMessage('some.message.id');
 ```
 
 **With:**
+
 ```js
-{id: 'some.message.id'}
+{
+  id: 'some.message.id';
+}
 ```
 
 #### Update `formatMessage()` Calls
@@ -288,11 +291,16 @@ this.getIntlMessage('some.message.id')
 A typical pattern when calling `formatMessage()` is to nest a call to `getIntlMessage()`. These can be easily updated:
 
 **1.0:**
+
 ```js
-let message = this.formatMessage(this.getIntlMessage('some.message.id'), values);
+let message = this.formatMessage(
+  this.getIntlMessage('some.message.id'),
+  values
+);
 ```
 
 **2.0:**
+
 ```js
 let message = this.props.intl.formatMessage({id: 'some.message.id'}, values);
 ```
@@ -308,19 +316,15 @@ The new `values` prop groups all of the message's placeholder values together in
 The following example shows up to update a `<FormattedMessage>` instance to use the new props and remove the call to `getIntlMessage()`:
 
 **1.0:**
+
 ```js
-<FormattedMessage
-    message={this.getIntlMessage('greeting')}
-    name='Eric'
-/>
+<FormattedMessage message={this.getIntlMessage('greeting')} name="Eric" />
 ```
 
 **2.0:**
+
 ```js
-<FormattedMessage
-    id='greeting'
-    values={{name: 'Eric'}}
-/>
+<FormattedMessage id="greeting" values={{name: 'Eric'}} />
 ```
 
 ### Update How Relative Times are Formatted
@@ -332,13 +336,15 @@ Minor changes have been made to how the "now" reference time is specified when f
 A new feature has been added to [`<FormattedRelative>`](Components#formattedrelative) instances in React Intl v2, they now "tick" and stay up to date. Since time moves forward, it was confusing to have a prop named `now`, so it has been renamed to `initialNow`. Any `<FormattedRelative>` instances that use `now` should update to prop name to `initialNow`:
 
 **1.0:**
+
 ```js
-<FormattedRelative value={date} now={otherDate}/>
+<FormattedRelative value={date} now={otherDate} />
 ```
 
 **2.0:**
+
 ```js
-<FormattedRelative value={date} initialNow={otherDate}/>
+<FormattedRelative value={date} initialNow={otherDate} />
 ```
 
 **Note:** The [`<IntlProvider>`](Components#intlprovider) component also has a `initialNow` prop which can be assigned a value to stabilize the "now" reference time for _all_ [`<FormattedRelative>`](Components#formattedrelative) instances. This is useful for universal/isomorphic apps to proper React checksums between the server and client initial render.
@@ -348,15 +354,17 @@ A new feature has been added to [`<FormattedRelative>`](Components#formattedrela
 The signature of the `formatRelative()` function has been aligned with the other `format*()` functions and in React Intl v2, it only accepts two arguments: `value` and `options`. To specify a "now" reference time, add it to the `options` argument, and remove the third `formatOptions` argument:
 
 **1.0:**
+
 ```js
 let relative = this.formatRelative(date, {units: 'hour'}, {now: otherDate});
 ```
 
 **2.0:**
+
 ```js
 let relative = this.props.intl.formatRelative(date, {
-    units: 'hour',
-    now  : otherDate
+  units: 'hour',
+  now: otherDate,
 });
 ```
 

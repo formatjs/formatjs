@@ -53,6 +53,7 @@ type IntlConfig = {
 These configuration props are combined with the `<IntlProvider>`'s component-specific props:
 
 **Prop Types:**
+
 ```js
 props: IntlConfig & {
     children: ReactElement,
@@ -65,27 +66,30 @@ props: IntlConfig & {
 Finally, a **single child** element _must_ be supplied to `<IntlProvider>`.
 
 **Example:**
+
 ```js
 const App = ({importantDate}) => (
-    <div>
-        <FormattedDate
-            value={importantDate}
-            year='numeric'
-            month='long'
-            day='numeric'
-            weekday='long'
-        />
-    </div>
+  <div>
+    <FormattedDate
+      value={importantDate}
+      year="numeric"
+      month="long"
+      day="numeric"
+      weekday="long"
+    />
+  </div>
 );
 
 ReactDOM.render(
-    <IntlProvider locale={navigator.language}>
-        <App importantDate={new Date(1459913574887)}/>
-    </IntlProvider>,
-    document.getElementById('container')
+  <IntlProvider locale={navigator.language}>
+    <App importantDate={new Date(1459913574887)} />
+  </IntlProvider>,
+  document.getElementById('container')
 );
 ```
+
 Assuming `navigator.language` is `"fr"`:
+
 ```html
 <div><span>mardi 5 avril 2016</span></div>
 ```
@@ -103,6 +107,7 @@ By default, changes to the `locale` at runtime may not trigger a re-render of ch
   <App />
 </IntlProvider>
 ```
+
 (See [Issue #243](https://github.com/formatjs/react-intl/issues/243).)
 
 ## Date Formatting Components
@@ -140,6 +145,7 @@ type DateTimeFormatOptions = {
 This component uses the [`formatDate`](API.md#formatdate) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above.
 
 **Props Types:**
+
 ```js
 props: DateTimeFormatOptions & {
     value: any,
@@ -151,22 +157,26 @@ props: DateTimeFormatOptions & {
 By default `<FormattedDate>` will render the formatted date into a `<span>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
 
 **Example:**
+
 ```js
-<FormattedDate value={new Date(1459832991883)}/>
+<FormattedDate value={new Date(1459832991883)} />
 ```
+
 ```html
 <span>4/5/2016</span>
 ```
 
 **Example with Options:**
+
 ```js
 <FormattedDate
   value={new Date(1459832991883)}
-  year='numeric'
-  month='long'
-  day='2-digit'
+  year="numeric"
+  month="long"
+  day="2-digit"
 />
 ```
+
 ```html
 <span>April 05, 2016</span>
 ```
@@ -183,6 +193,7 @@ This component uses the [`formatTime`](API.md#formattime) and [`Intl.DateTimeFor
 ```
 
 **Props Types:**
+
 ```js
 props: DateTimeFormatOptions & {
     value: any,
@@ -194,9 +205,11 @@ props: DateTimeFormatOptions & {
 By default `<FormattedTime>` will render the formatted time into a `<span>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
 
 **Example:**
+
 ```js
-<FormattedTime value={new Date(1459832991883)}/>
+<FormattedTime value={new Date(1459832991883)} />
 ```
+
 ```html
 <span>1:09 AM</span>
 ```
@@ -213,6 +226,7 @@ type RelativeFormatOptions = {
 ```
 
 **Prop Types:**
+
 ```js
 props: RelativeFormatOptions & {
     value: any,
@@ -226,17 +240,23 @@ props: RelativeFormatOptions & {
 By default `<FormattedRelative>` will render the formatted relative time into a `<span>`, **and update it a maximum of every 10 seconds**. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
 
 **Example:**
+
 ```js
-<FormattedRelative value={Date.now()}/>
+<FormattedRelative value={Date.now()} />
 ```
+
 ```html
 <span>now</span>
 ```
+
 …10 seconds later:
+
 ```html
 <span>10 seconds ago</span>
 ```
+
 …60 seconds later:
+
 ```html
 <span>1 minute ago</span>
 ```
@@ -274,6 +294,7 @@ type NumberFormatOptions = {
 ```
 
 **Props Types:**
+
 ```js
 props: NumberFormatOptions & {
     value: any,
@@ -285,9 +306,11 @@ props: NumberFormatOptions & {
 By default `<FormattedNumber>` will render the formatted number into a `<span>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
 
 **Example:**
+
 ```js
-<FormattedNumber value={1000}/>
+<FormattedNumber value={1000} />
 ```
+
 ```html
 <span>1,000</span>
 ```
@@ -303,6 +326,7 @@ type PluralFormatOptions = {
 ```
 
 **Props Types:**
+
 ```js
 props: PluralFormatOptions & {
     value: any,
@@ -321,13 +345,11 @@ props: PluralFormatOptions & {
 By default `<FormattedPlural>` will select a [plural category](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) (`zero`, `one`, `two`, `few`, `many`, or `other`) and render the corresponding React element into a `<span>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
 
 **Example:**
+
 ```js
-<FormattedPlural
-    value={10}
-    one='message'
-    other='messages'
-/>
+<FormattedPlural value={10} one="message" other="messages" />
 ```
+
 ```html
 <span>messages</span>
 ```
@@ -346,11 +368,13 @@ It is recommended that you use `<FormattedMessage>` because it provides greater 
 String/Message formatting is a paramount feature of React Intl and it builds on [ICU Message Formatting](http://userguide.icu-project.org/formatparse/messages) by using the [ICU Message Syntax](http://formatjs.io/guides/message-syntax/). This message syntax allows for simple to complex messages to be defined, translated, and then formatted at runtime.
 
 **Simple Message:**
+
 ```
 Hello, {name}
 ```
 
 **Complex Message:**
+
 ```
 Hello, {name}, you have {itemCount, plural,
     =0 {no items}
@@ -365,15 +389,15 @@ Hello, {name}, you have {itemCount, plural,
 
 React Intl has a Message Descriptor concept which is used to define your app's default messages/strings. `<FormattedMessage>` and `<FormattedHTMLMessage>` have props which correspond to a Message Descriptor. The Message Descriptors work very well for providing the data necessary for having the strings/messages translated, and they contain the following properties:
 
-- __`id`:__ A unique, stable identifier for the message
-- __`description`:__ Context for the translator about how it's used in the UI
-- __`defaultMessage`:__ The default message (probably in English)
+- **`id`:** A unique, stable identifier for the message
+- **`description`:** Context for the translator about how it's used in the UI
+- **`defaultMessage`:** The default message (probably in English)
 
 ```js
 type MessageDescriptor = {
-    id: string,
-    defaultMessage?: string,
-    description?: string | object,
+  id: string,
+  defaultMessage?: string,
+  description?: string | object,
 };
 ```
 
@@ -396,6 +420,7 @@ The message formatting APIs go the extra mile to provide fallbacks for the commo
 This component uses the [`formatMessage`](API.md#formatmessage) API and has `props` that correspond to a [Message Descriptor](#message-descriptor).
 
 **Props Types:**
+
 ```js
 props: MessageDescriptor & {
     values?: object,
@@ -407,29 +432,28 @@ props: MessageDescriptor & {
 By default `<FormattedMessage>` will render the formatted string into a `<span>`. If you need to customize rendering, you can either wrap it with another React element (recommended), specify a different `tagName` (e.g., `'div'`), or pass a function as the child.
 
 **Example:**
+
 ```js
 <FormattedMessage
-    id='app.greeting'
-    description='Greeting to welcome the user to the app'
-    defaultMessage='Hello, {name}!'
-    values={{
-        name: 'Eric'
-    }}
+  id="app.greeting"
+  description="Greeting to welcome the user to the app"
+  defaultMessage="Hello, {name}!"
+  values={{
+    name: 'Eric',
+  }}
 />
 ```
+
 ```html
 <span>Hello, Eric!</span>
 ```
+
 **Example:** function as the child
+
 ```js
-<FormattedMessage id="title">
-    {(txt) => (
-        <H1>
-            {txt}
-        </H1>
-    )}
-</FormattedMessage>
+<FormattedMessage id="title">{txt => <H1>{txt}</H1>}</FormattedMessage>
 ```
+
 ```html
 <h1>Hello, Eric!</h1>
 ```
@@ -442,14 +466,15 @@ By default `<FormattedMessage>` will render the formatted string into a `<span>`
 
 ```js
 <FormattedMessage
-    id='app.greeting'
-    description='Greeting to welcome the user to the app'
-    defaultMessage='Hello, {name}!'
-    values={{
-        name: <b>Eric</b>
-    }}
+  id="app.greeting"
+  description="Greeting to welcome the user to the app"
+  defaultMessage="Hello, {name}!"
+  values={{
+    name: <b>Eric</b>,
+  }}
 />
 ```
+
 ```html
 <span>Hello, <b>Eric</b>!</span>
 ```

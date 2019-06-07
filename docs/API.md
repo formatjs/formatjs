@@ -1,6 +1,6 @@
 # API
 
-There are a few API layers that React Intl provides and is built on. When using React Intl you'll be interacting with its API (documented here) and its React [components][Components].
+There are a few API layers that React Intl provides and is built on. When using React Intl you'll be interacting with its API (documented here) and its React [components][components].
 
 1. [ECMAScript Internationalization API](#ecmascript-internationalization-api)
 2. [FormatJS Internationalization Formatters](#formatjs-internationalization-formatters)
@@ -80,11 +80,11 @@ This function is exported by the `react-intl` package and is simply a _hook_ for
 import {defineMessages} from 'react-intl';
 
 const messages = defineMessages({
-    greeting: {
-        id: 'app.home.greeting',
-        description: 'Message to greet the user.',
-        defaultMessage: 'Hello, {name}!',
-    },
+  greeting: {
+    id: 'app.home.greeting',
+    description: 'Message to greet the user.',
+    defaultMessage: 'Hello, {name}!',
+  },
 });
 ```
 
@@ -113,14 +113,14 @@ import React, {PropTypes} from 'react';
 import {injectIntl, intlShape, FormattedRelative} from 'react-intl';
 
 const Component = ({date, intl}) => (
-    <span title={intl.formatDate(date)}>
-        <FormattedRelative value={date}/>
-    </span>
+  <span title={intl.formatDate(date)}>
+    <FormattedRelative value={date} />
+  </span>
 );
 
 Component.propTypes = {
-    date: PropTypes.any.isRequired,
-    intl: intlShape.isRequired,
+  date: PropTypes.any.isRequired,
+  intl: intlShape.isRequired,
 };
 
 export default injectIntl(Component);
@@ -155,9 +155,9 @@ This function is exported by the `react-intl` package and provides an object-sha
 
 The definition above shows what the `props.intl` object will look like that's injected to your component via `injectintl`. It's made up of three parts:
 
-- __`IntlConfig`:__ The intl metadata passed as props into the parent `<IntlProvider>`.
-- __`IntlFormat`:__ The imperative formatting API described below.
-- __`now`:__ A function that returns the current time.
+- **`IntlConfig`:** The intl metadata passed as props into the parent `<IntlProvider>`.
+- **`IntlFormat`:** The imperative formatting API described below.
+- **`now`:** A function that returns the current time.
 
 ### Date Formatting APIs
 
@@ -206,9 +206,9 @@ This function will return a formatted date string. It expects a `value` which ca
 
 ```js
 formatDate(Date.now(), {
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
 }); // "3/4/2016"
 ```
 
@@ -222,6 +222,7 @@ function formatTime(
 ```
 
 This function will return a formatted date string, but it differs from [`formatDate`](#formatdate) by having the following default options:
+
 ```js
 {
     hour: 'numeric',
@@ -355,11 +356,13 @@ These APIs are used by their corresponding `<FormattedMessage>`, and `<Formatted
 String/Message formatting is a paramount feature of React Intl and it builds on [ICU Message Formatting](http://userguide.icu-project.org/formatparse/messages) by using the [ICU Message Syntax](http://formatjs.io/guides/message-syntax/). This message syntax allows for simple to complex messages to be defined, translated, and then formatted at runtime.
 
 **Simple Message:**
+
 ```
 Hello, {name}
 ```
 
 **Complex Message:**
+
 ```
 Hello, {name}, you have {itemCount, plural,
     =0 {no items}
@@ -374,15 +377,15 @@ Hello, {name}, you have {itemCount, plural,
 
 React Intl has a Message Descriptor concept which is used to define your app's default messages/strings and is passed into `formatMessage` and `formatHTMLMessage`. The Message Descriptors work very well for providing the data necessary for having the strings/messages translated, and they contain the following properties:
 
-- __`id`:__ A unique, stable identifier for the message
-- __`description`:__ Context for the translator about how it's used in the UI
-- __`defaultMessage`:__ The default message (probably in English)
+- **`id`:** A unique, stable identifier for the message
+- **`description`:** Context for the translator about how it's used in the UI
+- **`defaultMessage`:** The default message (probably in English)
 
 ```js
 type MessageDescriptor = {
-    id: string,
-    defaultMessage?: string,
-    description?: string | object,
+  id: string,
+  defaultMessage?: string,
+  description?: string | object,
 };
 ```
 
@@ -415,11 +418,11 @@ If a translated message with the `id` has been passed to the `<IntlProvider>` vi
 
 ```js
 const messages = defineMessages({
-    greeting: {
-        id: 'app.greeting',
-        defaultMessage: 'Hello, {name}!',
-        description: 'Greeting to welcome the user to the app',
-    },
+  greeting: {
+    id: 'app.greeting',
+    defaultMessage: 'Hello, {name}!',
+    description: 'Greeting to welcome the user to the app',
+  },
 });
 
 formatMessage(messages.greeting, {name: 'Eric'}); // "Hello, Eric!"
@@ -444,6 +447,6 @@ function formatHTMLMessage(
 
 The React components provided by React Intl allow for a declarative, idiomatic-React way of providing internationalization configuration and format dates, numbers, and strings/messages in your app.
 
-**See:** The [Components][Components] page.
+**See:** The [Components][components] page.
 
-[Components]: Components.md
+[components]: Components.md
