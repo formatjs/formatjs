@@ -9,6 +9,7 @@
 - [Migrate to using native Intl APIs](#migrate-to-using-native-intl-apis)
 
 ### Breaking API Changes
+
 - `addLocaleData` has been removed. See [Migrate to using native Intl APIs](#migrate-to-using-native-intl-apis) for more details.
 - `ReactIntlLocaleData` has been removed. See [Migrate to using native Intl APIs](#migrate-to-using-native-intl-apis) for more details.
 
