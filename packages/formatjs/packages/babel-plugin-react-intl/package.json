@@ -4,7 +4,7 @@
   "description": "Extracts string messages for translation from modules that use React Intl.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/formatjs/babel-plugin-react-intl.git"
+    "url": "git+https://github.com/formatjs/formatjs.git"
   },
   "license": "BSD-3-Clause",
   "main": "lib/index.js",
@@ -25,7 +25,7 @@
     "react-intl"
   ],
   "bugs": {
-    "url": "https://github.com/formatjs/babel-plugin-react-intl/issues"
+    "url": "https://github.com/formatjs/formatjs/issues"
   },
-  "homepage": "https://github.com/formatjs/babel-plugin-react-intl#readme"
+  "homepage": "https://github.com/formatjs/formatjs#readme"
 }

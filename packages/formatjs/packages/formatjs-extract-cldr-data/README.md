@@ -4,8 +4,6 @@ FormatJS Extract CLDR Data
 Utility library that extracts the [CLDR][] data that's needed by the [FormatJS][] libraries.
 
 [![npm Version][npm-badge]][npm]
-[![Build Status][travis-badge]][travis]
-[![Dependency Status][david-badge]][david]
 
 
 ## Usage
@@ -105,10 +103,6 @@ The CLDR data contained in this packaged is licensed under the Apache, ICU, and 
 [FormatJS]: http://formatjs.io/
 [npm]: https://www.npmjs.org/package/formatjs-extract-cldr-data
 [npm-badge]: https://img.shields.io/npm/v/formatjs-extract-cldr-data.svg?style=flat-square
-[david]: https://david-dm.org/formatjs/formatjs
-[david-badge]: https://img.shields.io/david/formatjs/formatjs.svg?style=flat-square
-[travis]: https://travis-ci.org/formatjs/formatjs
-[travis-badge]: https://img.shields.io/travis/formatjs/formatjs/master.svg?style=flat-square
 [make-plural]: https://github.com/eemeli/make-plural
 [LICENSE file]: https://github.com/formatjs/formatjs/blob/master/LICENSE.md
 [CLDR license files]: https://github.com/formatjs/formatjs/tree/master/data

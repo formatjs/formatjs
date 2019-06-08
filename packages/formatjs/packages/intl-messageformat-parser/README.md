@@ -4,8 +4,6 @@ Intl MessageFormat Parser
 Parses [ICU Message strings][ICU] into an AST via JavaScript.
 
 [![npm Version][npm-badge]][npm]
-[![Build Status][travis-badge]][travis]
-[![Dependency Status][david-badge]][david]
 
 
 Overview
@@ -155,12 +153,8 @@ See the [LICENSE file][] for license text and copyright information.
 
 [npm]: https://www.npmjs.org/package/intl-messageformat-parser
 [npm-badge]: https://img.shields.io/npm/v/intl-messageformat-parser.svg?style=flat-square
-[david]: https://david-dm.org/formatjs/formatjs
-[david-badge]: https://img.shields.io/david/formatjs/formatjs.svg?style=flat-square
-[travis]: https://travis-ci.org/formatjs/formatjs
-[travis-badge]: https://img.shields.io/travis/formatjs/formatjs.svg?style=flat-square
 [ICU]: http://userguide.icu-project.org/formatparse/messages
-[intl-mf]: https://github.com/yahoo/intl-messageformat
+[intl-mf]: https://github.com/formatjs/formatjs
 [PEG.js]: https://pegjs.org/
 [messageformat.js]: https://github.com/SlexAxton/messageformat.js
 [LICENSE file]: https://github.com/formatjs/formatjs/blob/master/LICENSE

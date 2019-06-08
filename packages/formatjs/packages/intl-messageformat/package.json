@@ -21,11 +21,11 @@
     "Long Ho <holevietlong@gmail.com"
   ],
   "bugs": {
-    "url": "https://github.com/formatjs/intl-messageformat/issues"
+    "url": "https://github.com/formatjs/formatjs/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:formatjs/intl-messageformat.git"
+    "url": "git@github.com:formatjs/formatjs.git"
   },
   "main": "index.js",
   "module": "lib/index.js",
@@ -41,7 +41,7 @@
     "karma:local": "karma start karma.conf.js",
     "karma:ci": "karma start karma.conf-ci.js"
   },
-  "homepage": "https://github.com/formatjs/intl-messageformat",
+  "homepage": "https://github.com/formatjs/formatjs",
   "directories": {
     "test": "tests"
   },
