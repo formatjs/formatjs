@@ -11,4 +11,4 @@ All guides are listed below:
 - [API](./API.md)
 - [Testing with `react-intl`](./Testing-with-React-intl.md)
 - [IDE Plugins](./IDE-plugins-&-Tools.md)
-- [Upgrade Guide](./Updated-Guide.md)
+- [Upgrade Guide](./Upgrade-Guide.md)
