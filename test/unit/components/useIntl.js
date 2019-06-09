@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {mount} from 'enzyme';
 import {IntlProvider} from '../../../src'
 import useIntl from '../../../src/components/useIntl';

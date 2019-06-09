@@ -4,8 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import React, {PureComponent, Children} from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import withIntl, {Provider} from './withIntl';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
@@ -81,7 +81,7 @@ function getBoundFormatFns(config, state) {
   }, {});
 }
 
-class IntlProvider extends PureComponent {
+class IntlProvider extends React.PureComponent {
   static propTypes = {
     ...intlConfigPropTypes,
     children: PropTypes.element.isRequired,
@@ -177,7 +177,7 @@ class IntlProvider extends PureComponent {
   render() {
     return (
       <Provider value={this.getContext()}>
-        {Children.only(this.props.children)}
+        {React.Children.only(this.props.children)}
       </Provider>
     );
   }

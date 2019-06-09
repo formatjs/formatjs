@@ -4,10 +4,11 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import withIntl from './withIntl';
 import {intlShape, relativeFormatPropTypes} from '../types';
+import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
 
 const SECOND = 1000;
 const MINUTE = 1000 * 60;
@@ -64,7 +65,9 @@ function isSameDate(a, b) {
   return isFinite(aTime) && isFinite(bTime) && aTime === bTime;
 }
 
-class FormattedRelative extends PureComponent {
+class FormattedRelative extends React.Component {
+  static displayName = 'FormattedRelative';
+
   static propTypes = {
     ...relativeFormatPropTypes,
     intl: intlShape,
@@ -81,6 +84,7 @@ class FormattedRelative extends PureComponent {
 
   constructor(props) {
     super(props);
+    invariantIntlContext(props);
 
     let now = isFinite(props.initialNow)
       ? Number(props.initialNow)
@@ -134,6 +138,10 @@ class FormattedRelative extends PureComponent {
       return {now: intl.now(), prevValue: value};
     }
     return null;
+  }
+
+  shouldComponentUpdate(...next) {
+    return shouldIntlComponentUpdate(this, ...next);
   }
 
   componentDidUpdate() {

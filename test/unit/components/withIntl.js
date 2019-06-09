@@ -1,5 +1,6 @@
-import expect, {spyOn} from 'expect';
-import React from 'react';
+import * as expect from 'expect'
+import {spyOn} from 'expect';
+import * as React from 'react';
 import {mount} from 'enzyme';
 import {intlShape} from '../../../src/types';
 import IntlProvider from '../../../src/components/provider';

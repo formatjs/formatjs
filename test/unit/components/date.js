@@ -1,5 +1,4 @@
-import expect, {createSpy, spyOn} from 'expect';
-import React from 'react';
+import * as React from 'react';
 import {mount} from 'enzyme';
 import {generateIntlContext, makeMockContext, shallowDeep} from '../testUtils';
 import FormattedDate from '../../../src/components/date';
@@ -13,7 +12,7 @@ describe('<FormattedDate>', () => {
     let intl;
 
     beforeEach(() => {
-        consoleError = spyOn(console, 'error');
+        consoleError = jest.spyOn(console, 'error');
         intl = generateIntlContext({
           locale: 'en'
         });
@@ -75,7 +74,7 @@ describe('<FormattedDate>', () => {
       const FormattedDate = mockContext(intl);
       const date = Date.now();
 
-      const spy = createSpy().andReturn(null);
+      const spy = jest.fn().mockImplementation(() => null)
       const withInlContext = mount(
         <FormattedDate value={date}>
           { spy }
@@ -94,7 +93,7 @@ describe('<FormattedDate>', () => {
       const FormattedDate = mockContext(intl);
       const date = Date.now();
 
-      const spy = createSpy().andReturn(null);
+      const spy = jest.fn().mockImplementation(() => null)
       const withInlContext = mount(
         <FormattedDate value={date}>
           { spy }
@@ -162,7 +161,7 @@ describe('<FormattedDate>', () => {
         const FormattedDate = mockContext(intl);
         const date = Date.now();
 
-        const spy = createSpy().andReturn(<b>Jest</b>);
+        const spy = jest.fn().mockImplementation(() => <b>Jest</b>)
         const rendered = shallowDeep(
           <FormattedDate value={date}>
             { spy }

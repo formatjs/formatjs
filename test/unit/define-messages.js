@@ -1,4 +1,4 @@
-import expect from 'expect';
+import * as expect from 'expect';
 import defineMessages from '../../src/define-messages';
 
 describe('defineMessages()', () => {

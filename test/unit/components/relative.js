@@ -1,5 +1,6 @@
-import expect, {createSpy, spyOn} from 'expect';
-import React from 'react';
+import * as expect from 'expect'
+import {createSpy, spyOn} from 'expect';
+import * as React from 'react';
 import {mount} from 'enzyme';
 import {generateIntlContext, makeMockContext, shallowDeep} from '../testUtils';
 import FormattedRelative from '../../../src/components/relative';

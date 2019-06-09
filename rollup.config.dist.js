@@ -1,9 +1,9 @@
 import * as p from 'path';
-import babel from 'rollup-plugin-babel';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
 import {uglify} from 'rollup-plugin-uglify';
+import typescript from 'rollup-plugin-typescript';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -14,11 +14,6 @@ const copyright = `/*
  */
 `;
 
-const reactCheck = `if (typeof React === 'undefined') {
-    throw new ReferenceError('React must be loaded before ReactIntl.');
-}
-`;
-
 export default {
   input: p.resolve('src/index.js'),
   output: {
@@ -26,7 +21,7 @@ export default {
     format: 'umd',
     name: 'ReactIntl',
     banner: copyright,
-    intro: reactCheck,
+    exports: 'named',
     sourcemap: true,
     globals: {
       react: 'React',
@@ -35,14 +30,21 @@ export default {
   },
   external: ['react', 'prop-types'],
   plugins: [
+    replace({
+      replaces: {
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      },
+    }),
     nodeResolve(),
-    babel(),
+    typescript({
+      target: 'es5',
+      module: 'commonjs',
+      incremental: false,
+      include: ['*.js+(|x)', '**/*.js+(|x)'],
+    }),
     commonjs({
       sourcemap: true,
       namedExports: {'react-is': ['isValidElementType']},
-    }),
-    replace({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     }),
     isProduction &&
       uglify({

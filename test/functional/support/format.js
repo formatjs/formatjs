@@ -1,5 +1,5 @@
-import expect from 'expect';
-import React from 'react';
+import * as expect from 'expect';
+import * as React from 'react';
 import {mount} from 'enzyme';
 
 export default function (ReactIntl) {

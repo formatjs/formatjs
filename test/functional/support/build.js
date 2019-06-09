@@ -1,4 +1,4 @@
-import expect from 'expect';
+import * as expect from 'expect';
 import * as ReactIntl from '../../../src/';
 
 export default function (buildPath) {
@@ -7,12 +7,9 @@ export default function (buildPath) {
             expect(require(buildPath)).toExist();
         });
 
-        it('has all React Intl exports', () => {
+        Object.keys(ReactIntl).forEach(name => it(name, function () {
             const ReactIntlBuild = require(buildPath);
-
-            Object.keys(ReactIntl).forEach((name) => {
-                expect(ReactIntlBuild[name]).toBeA(typeof ReactIntl[name]);
-            });
-        });
+            expect(ReactIntlBuild[name]).toBeA(typeof ReactIntl[name]);
+        }))
     });
 }

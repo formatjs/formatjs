@@ -4,9 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import PropTypes from 'prop-types';
-
-const {
+import {
   bool,
   number,
   string,
@@ -16,7 +14,7 @@ const {
   shape,
   any,
   oneOfType,
-} = PropTypes;
+} from 'prop-types';
 const localeMatcher = oneOf(['best fit', 'lookup']);
 const narrowShortLong = oneOf(['narrow', 'short', 'long']);
 const numeric2digit = oneOf(['numeric', '2-digit']);

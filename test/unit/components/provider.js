@@ -1,5 +1,4 @@
-import expect, {createSpy, spyOn} from 'expect';
-import React from 'react';
+import * as React from 'react';
 import {mount} from 'enzyme';
 import {makeMockContext, shallowDeep, SpyComponent} from '../testUtils'
 import {intlConfigPropTypes, intlFormatPropTypes} from '../../../src/types';
@@ -49,8 +48,8 @@ describe('<IntlProvider>', () => {
     let dateNow;
 
     beforeEach(() => {
-        consoleError       = spyOn(console, 'error');
-        dateNow            = spyOn(Date, 'now').andReturn(now);
+        consoleError       = jest.spyOn(console, 'error');
+        dateNow            = jest.spyOn(Date, 'now').andReturn(now);
     });
 
     afterEach(() => {
@@ -391,7 +390,7 @@ describe('<IntlProvider>', () => {
         );
 
         IntlProvider = mockContext(parentContext);
-        const Child = createSpy().andReturn(null);
+        const Child = jest.fn().mockImplementation(() => null)
 
         const intlProvider = mount(
             <IntlProvider locale="en">
@@ -420,7 +419,7 @@ describe('<IntlProvider>', () => {
         );
 
         IntlProvider = mockContext(initialParentContext);
-        const Child = createSpy().andReturn(null);
+        const Child = jest.fn().mockImplementation(() => null)
 
         const el = (
             <IntlProvider>

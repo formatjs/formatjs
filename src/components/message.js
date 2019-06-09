@@ -4,8 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {Component, createElement, isValidElement} from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import withIntl from './withIntl';
 import IntlMessageFormat from 'intl-messageformat';
 import memoizeIntlConstructor from 'intl-format-cache';
@@ -29,7 +29,7 @@ const defaultFormatMessage = (descriptor, values) => {
   );
 };
 
-class FormattedMessage extends Component {
+class FormattedMessage extends React.Component {
   static propTypes = {
     ...messageDescriptorPropTypes,
     intl: intlShape,
@@ -114,7 +114,7 @@ class FormattedMessage extends Component {
       Object.keys(values).forEach(name => {
         let value = values[name];
 
-        if (isValidElement(value)) {
+        if (React.isValidElement(value)) {
           let token = generateToken();
           tokenizedValues[name] = tokenDelimiter + token + tokenDelimiter;
           elements[token] = value;
@@ -149,7 +149,7 @@ class FormattedMessage extends Component {
 
     // Needs to use `createElement()` instead of JSX, otherwise React will
     // warn about a missing `key` prop with rich-text message formatting.
-    return createElement(Component, null, ...nodes);
+    return React.createElement(Component, null, ...nodes);
   }
 }
 

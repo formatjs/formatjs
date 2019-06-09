@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "module": "es6",
+        "target": "es6",
+        "allowJs": true,
+        "outDir": "lib",
+        "jsx": "react",
+        "types": ["node"],
+        "incremental": true
+    },
+    "include": ["src/*.ts*", "src/*.js*"]
+}

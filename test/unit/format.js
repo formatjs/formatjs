@@ -1,4 +1,5 @@
-import expect, {createSpy, spyOn} from 'expect';
+import * as expect from 'expect'
+import {createSpy, spyOn} from 'expect';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 import {intlFormatPropTypes} from '../../src/types';

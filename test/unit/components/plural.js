@@ -1,5 +1,4 @@
-import expect, {createSpy, spyOn} from 'expect';
-import React from 'react';
+import * as React from 'react';
 import {mount} from 'enzyme';
 import {generateIntlContext, makeMockContext, shallowDeep} from '../testUtils';
 import FormattedPlural from '../../../src/components/plural';
@@ -13,7 +12,7 @@ describe('<FormattedPlural>', () => {
     let intl;
 
     beforeEach(() => {
-        consoleError = spyOn(console, 'error');
+        consoleError = jest.spyOn(console, 'error');
         intl = generateIntlContext({
           locale: 'en'
         });
@@ -86,7 +85,7 @@ describe('<FormattedPlural>', () => {
     it('should re-render when props change', () => {
         const FormattedPlural = mockContext(intl);
 
-        const spy = createSpy().andReturn(null);
+        const spy = jest.fn().mockImplementation(() => null)
         const withInlContext = mount(
           <FormattedPlural value={0} one='foo' other='bar'>
             { spy }
@@ -104,7 +103,7 @@ describe('<FormattedPlural>', () => {
     it('should re-render when context changes', () => {
         const FormattedPlural = mockContext(intl);
 
-        const spy = createSpy().andReturn(null);
+        const spy = jest.fn().mockImplementation(() => null)
         const withInlContext = mount(
           <FormattedPlural value={0} one='foo' other='bar'>
             { spy }
@@ -141,7 +140,7 @@ describe('<FormattedPlural>', () => {
         const props = {one: 'foo'};
         const num = 1;
 
-        const spy = createSpy().andReturn(<b>Jest</b>);
+        const spy = jest.fn().mockImplementation(() => <b>Jest</b>);
         const rendered = shallowDeep(
           <FormattedPlural {...props} value={num}>
             { spy }
