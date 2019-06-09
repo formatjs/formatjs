@@ -3,8 +3,8 @@ import buildTests from './support/build';
 import formatTests from './support/format';
 
 const builds = {
-    'ES'      : p.resolve(require('../../package.json').module),
-    'CJS'     : p.resolve(require('../../package.json').main),
+    'ES'      : p.resolve('lib/index.js'),
+    'CJS'     : p.resolve('dist/index.js'),
     'UMD-dev' : p.resolve('dist/react-intl.js'),
     'UMD-prod': p.resolve('dist/react-intl.min.js'),
 };
