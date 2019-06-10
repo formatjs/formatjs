@@ -92,8 +92,8 @@ const messages = defineMessages({
 
 React Intl provides:
 
-1. `useIntl` Hook: to _hook_ the imperative formatting API into a React function component (with React version >= 16.8).
-2. `injectIntl` HOC: to _inject_ the imperative formatting API into a React class or function component via its `props`.
+1. [`useIntl` Hook](#useintl-hook): to _hook_ the imperative formatting API into a React function component (with React version >= 16.8).
+2. [`injectIntl` HOC](#injectintl-hoc): to _inject_ the imperative formatting API into a React class or function component via its `props`.
 
 These should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
 
@@ -121,7 +121,7 @@ FunctionComponent.propTypes = {
 export default FunctionComponent;
 ```
 
-To keep the API surface clean and simple, we only provide `useIntl` hook in the package. If preferable, user can wrap this built-in hook to make customized hook like `useFormatMessage` easily. Please visit React's official website for more general [introduction on React hooks](https://reactjs.org/docs/hooks-intro.html)
+To keep the API surface clean and simple, we only provide `useIntl` hook in the package. If preferable, user can wrap this built-in hook to make customized hook like `useFormatMessage` easily. Please visit React's official website for more general [introduction on React hooks](https://reactjs.org/docs/hooks-intro.html).
 
 #### `injectIntl` HOC
 
