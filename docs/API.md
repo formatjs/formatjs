@@ -105,7 +105,7 @@ If a component can be expressed in a form of function component, using `useIntl`
 import React, {PropTypes} from 'react';
 import {useIntl, FormattedRelative} from 'react-intl';
 
-const FunctionComponent = ({ date }) => {
+const FunctionComponent = ({date}) => {
   const intl = useIntl();
   return (
     <span title={intl.formatDate(date)}>
@@ -145,7 +145,7 @@ import {injectIntl, intlShape, FormattedRelative} from 'react-intl';
 
 class ClassComponent extends React.Component {
   render() {
-    const { date, intl } = this.props;
+    const {date, intl} = this.props;
     return (
       <span title={intl.formatDate(date)}>
         <FormattedRelative value={date} />
