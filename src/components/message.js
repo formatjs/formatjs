@@ -4,17 +4,14 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {Component, createElement, isValidElement} from 'react';
+import {PureComponent, createElement, isValidElement} from 'react';
 import PropTypes from 'prop-types';
 import withIntl from './withIntl';
 import IntlMessageFormat from 'intl-messageformat';
 import memoizeIntlConstructor from 'intl-format-cache';
 import {intlShape, messageDescriptorPropTypes} from '../types';
-import {
-  invariantIntlContext,
-  shallowEquals,
-  shouldIntlComponentUpdate,
-} from '../utils';
+import {invariantIntlContext} from '../utils';
+import shallowEquals from 'shallow-equal/objects';
 import {formatMessage as baseFormatMessage} from '../format';
 
 const defaultFormatMessage = (descriptor, values) => {
@@ -32,7 +29,7 @@ const defaultFormatMessage = (descriptor, values) => {
   );
 };
 
-class FormattedMessage extends Component {
+class FormattedMessage extends PureComponent {
   static displayName = 'FormattedMessage';
 
   static propTypes = {
@@ -70,7 +67,10 @@ class FormattedMessage extends Component {
       values,
     };
 
-    return shouldIntlComponentUpdate(this, nextPropsToCheck, nextState);
+    return (
+      !shallowEquals(this.props, nextPropsToCheck) ||
+      !shallowEquals(this.state, nextState)
+    );
   }
 
   render() {

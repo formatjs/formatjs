@@ -4,13 +4,13 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import withIntl from './withIntl';
 import {intlShape, pluralFormatPropTypes} from '../types';
-import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
+import {invariantIntlContext} from '../utils';
 
-class FormattedPlural extends Component {
+class FormattedPlural extends PureComponent {
   static displayName = 'FormattedPlural';
 
   static propTypes = {
@@ -35,10 +35,6 @@ class FormattedPlural extends Component {
   constructor(props) {
     super(props);
     invariantIntlContext(props);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shouldIntlComponentUpdate(this, nextProps, nextState);
   }
 
   render() {

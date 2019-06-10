@@ -4,13 +4,13 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import withIntl from './withIntl';
 import {intlShape, dateTimeFormatPropTypes} from '../types';
-import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
+import {invariantIntlContext} from '../utils';
 
-class FormattedDate extends Component {
+class FormattedDate extends PureComponent {
   static displayName = 'FormattedDate';
 
   static propTypes = {
@@ -24,10 +24,6 @@ class FormattedDate extends Component {
   constructor(props) {
     super(props);
     invariantIntlContext(props);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shouldIntlComponentUpdate(this, nextProps, nextState);
   }
 
   render() {
