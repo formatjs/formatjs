@@ -82,23 +82,6 @@ describe('<FormattedPlural>', () => {
         );
     });
 
-    it('should not re-render when props and context are the same', () => {
-        const FormattedPlural = mockContext(intl);
-
-        const spy = createSpy().andReturn(null);
-        const withInlContext = mount(
-          <FormattedPlural value={1} one='foo' other='bar'>
-            { spy }
-          </FormattedPlural>
-        );
-
-        withInlContext.setProps({
-          ...withInlContext.props()
-        });
-        withInlContext.instance().mockContext(intl);
-
-        expect(spy.calls.length).toBe(1);
-    });
 
     it('should re-render when props change', () => {
         const FormattedPlural = mockContext(intl);

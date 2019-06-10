@@ -69,7 +69,7 @@ describe('<IntlProvider>', () => {
     // If global.Intl is immutable, then skip this test.
     skipWhen(immutableIntl, (it) => {
         it('throws when `Intl` is missing from runtime', () => {
-            const IntlProvider = mockContext();
+            const IntlProvider = mockContext(null, false);
             global.Intl = undefined;
 
             expect(() => shallowDeep(<IntlProvider />, 2)).toThrow(
@@ -79,13 +79,13 @@ describe('<IntlProvider>', () => {
     });
 
     it('throws when no `children`', () => {
-        const IntlProvider = mockContext();
+        const IntlProvider = mockContext(null, false);
 
         expect(() => shallowDeep(<IntlProvider />, 2)).toThrow();
     });
 
     it('throws when more than one `children`', () => {
-        const IntlProvider = mockContext();
+        const IntlProvider = mockContext(null, false);
         const el = (
             <IntlProvider>
                 <Child />
@@ -97,7 +97,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('warns when no `locale` prop is provided', () => {
-        const IntlProvider = mockContext();
+        const IntlProvider = mockContext(null, false);
         const el = (
             <IntlProvider>
                 <Child />
@@ -112,7 +112,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('warns when `locale` prop provided has no locale data', () => {
-        const IntlProvider = mockContext();
+        const IntlProvider = mockContext(null, false);
         const el = (
             <IntlProvider locale="missing">
                 <Child />
@@ -129,7 +129,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('renders its `children`', () => {
-        const IntlProvider = mockContext();
+        const IntlProvider = mockContext(null, false);
         const el = (
             <IntlProvider locale="en">
                 <Child />
@@ -142,7 +142,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('provides `context.intl` with `intlShape` props', () => {
-        const IntlProvider = mockContext();
+        const IntlProvider = mockContext(null, false);
         const el = (
             <IntlProvider locale="en">
                 <Child />
@@ -157,7 +157,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('provides `context.intl` with values from intl config props', () => {
-        const IntlProvider = mockContext();
+        const IntlProvider = mockContext(null, false);
         const props = {
             locale       : 'fr-FR',
             timeZone     : 'UTC',
@@ -185,7 +185,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('provides `context.intl` with timeZone from intl config props when it is specified', () => {
-        const IntlProvider = mockContext();
+        const IntlProvider = mockContext(null, false);
         const props = {
             timeZone: 'Europe/Paris',
         };
@@ -202,7 +202,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('provides `context.intl` with values from `defaultProps` for missing or undefined props', () => {
-        const IntlProvider = mockContext();
+        const IntlProvider = mockContext(null, false);
         const props = {
             locale: 'en-US',
             defaultLocale: undefined,
@@ -223,7 +223,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('provides `context.intl` with format methods bound to intl config props', () => {
-        const IntlProvider = mockContext();
+        const IntlProvider = mockContext(null, false);
         const el = (
             <IntlProvider
                 locale="en"
@@ -253,7 +253,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('inherits from an <IntlProvider> ancestor', () => {
-        let IntlProvider = mockContext();
+        let IntlProvider = mockContext(null, false);
         const props = {
             locale  : 'en',
             timeZone: 'UTC',
@@ -304,7 +304,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('shadows inherited intl config props from an <IntlProvider> ancestor', () => {
-        let IntlProvider = mockContext()
+        let IntlProvider = mockContext(null, false)
         const props = {
             locale  : 'en',
             timeZone  : 'Australia/Adelaide',
@@ -360,7 +360,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('should not re-render when props and context are the same', () => {
-        let IntlProvider = mockContext()
+        let IntlProvider = mockContext(null, false)
         const parentContext = getIntlContext(
           <IntlProvider locale='en'>
             <Child />
@@ -383,7 +383,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('should re-render when props change', () => {
-        let IntlProvider = mockContext()
+        let IntlProvider = mockContext(null, false)
         const parentContext = getIntlContext(
           <IntlProvider locale='en'>
             <Child />
@@ -407,7 +407,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('should re-render when context changes', () => {
-        let IntlProvider = mockContext()
+        let IntlProvider = mockContext(null, false)
         const initialParentContext = getIntlContext(
           <IntlProvider locale='en'>
             <Child />
@@ -436,7 +436,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('accepts `initialNow` prop', () => {
-        const IntlProvider = mockContext();
+        const IntlProvider = mockContext(null, false);
         const initialNow = 1234;
 
         // doing this to get the actual "now" at render time
@@ -461,7 +461,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('defaults `initialNow` to `Date.now()`', () => {
-        const IntlProvider = mockContext();
+        const IntlProvider = mockContext(null, false);
         const Child = ({ intl }) => ( // see above
           <div>
             { intl.now() }
@@ -504,7 +504,7 @@ describe('<IntlProvider>', () => {
     });
 
     it('updates `now()` to return the current date when mounted', () => {
-        const IntlProvider = mockContext();
+        const IntlProvider = mockContext(null, false);
         const initialNow = 1234;
 
         const intl = getIntlContext(

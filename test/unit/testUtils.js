@@ -1,13 +1,14 @@
 import React from 'react'
 import {shallow} from 'enzyme';
+import { invariantIntlContext } from '../../src/utils';
 
-export const makeMockContext = (modulePath, exportName = 'default') => (intl = null) => {
+export const makeMockContext = (modulePath, exportName = 'default') => (intl = null, enforceContext = true) => {
   jest.resetModules();
   jest.doMock(
     '../../src/components/withIntl',
     () => ({
       __esModule: true,
-      default: (WrappedComponent) => {
+      default: (WrappedComponent, opts = {}) => {
         return class extends React.Component {
           constructor (props) {
             super(props)
@@ -22,6 +23,11 @@ export const makeMockContext = (modulePath, exportName = 'default') => (intl = n
           }
 
           render () {
+            const _enforceContext = opts.enforceContext !== undefined ? opts.enforceContext : enforceContext
+            // Represents withIntl more accurately
+            if (_enforceContext) {
+              invariantIntlContext({intl: this.state.intl || intl})
+            }
             return (
               <WrappedComponent
                 {...this.props}
@@ -71,7 +77,7 @@ export class SpyComponent extends React.Component {
 
 const mockProviderContext = makeMockContext('../../src/components/provider');
 export const generateIntlContext = (intl) => {
-  const IntlProvider = mockProviderContext();
+  const IntlProvider = mockProviderContext(null, false);
 
   return shallowDeep(
     <IntlProvider {...intl}>

@@ -4,15 +4,15 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {PureComponent, createElement, isValidElement} from 'react';
+import {Component, createElement, isValidElement} from 'react';
 import PropTypes from 'prop-types';
 import withIntl from './withIntl';
 import IntlMessageFormat from 'intl-messageformat';
 import memoizeIntlConstructor from 'intl-format-cache';
 import {intlShape, messageDescriptorPropTypes} from '../types';
-import {invariantIntlContext} from '../utils';
 import shallowEquals from 'shallow-equal/objects';
 import {formatMessage as baseFormatMessage} from '../format';
+import {invariantIntlContext} from '../utils';
 
 const defaultFormatMessage = (descriptor, values) => {
   if (process.env.NODE_ENV !== 'production') {
@@ -29,7 +29,7 @@ const defaultFormatMessage = (descriptor, values) => {
   );
 };
 
-class FormattedMessage extends PureComponent {
+class FormattedMessage extends Component {
   static propTypes = {
     ...messageDescriptorPropTypes,
     intl: intlShape,
@@ -41,6 +41,13 @@ class FormattedMessage extends PureComponent {
   static defaultProps = {
     values: {},
   };
+
+  constructor(props) {
+    super(props);
+    if (!props.defaultMessage) {
+      invariantIntlContext(props);
+    }
+  }
 
   shouldComponentUpdate(nextProps, nextState) {
     const {values} = this.props;
@@ -148,4 +155,4 @@ class FormattedMessage extends PureComponent {
 
 export const BaseFormattedMessage = FormattedMessage;
 
-export default withIntl(FormattedMessage);
+export default withIntl(FormattedMessage, {enforceContext: false});

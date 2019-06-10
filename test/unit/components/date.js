@@ -49,9 +49,12 @@ describe('<FormattedDate>', () => {
           <FormattedDate />,
           2
         );
-        expect(consoleError.calls.length).toBe(1);
+        expect(consoleError.calls.length).toBe(2);
         expect(consoleError.calls[0].arguments[0]).toContain(
-            '[React Intl] Error formatting date.\nRangeError'
+          'Warning: Failed prop type: The prop `value` is marked as required in `FormattedDate`, but its value is `undefined`.'
+        );
+        expect(consoleError.calls[1].arguments[0]).toContain(
+          '[React Intl] Error formatting date.\nRangeError'
         );
     });
 
@@ -67,26 +70,7 @@ describe('<FormattedDate>', () => {
         expect(rendered.type()).toBe('span');
         expect(rendered.text()).toBe(intl.formatDate(date));
     });
-
-    it('should not re-render when props and context are the same', () => {
-        const FormattedDate = mockContext(intl);
-        const date = Date.now();
-
-        const spy = createSpy().andReturn(null);
-        const withInlContext = mount(
-          <FormattedDate value={date}>
-            { spy }
-          </FormattedDate>
-        );
-
-        withInlContext.setProps({
-          ...withInlContext.props()
-        });
-        withInlContext.instance().mockContext(intl);
-
-        expect(spy.calls.length).toBe(1);
-    });
-
+    
     it('should re-render when props change', () => {
       const FormattedDate = mockContext(intl);
       const date = Date.now();
