@@ -66,8 +66,6 @@ function isSameDate(a, b) {
 }
 
 class FormattedRelative extends PureComponent {
-  static displayName = 'FormattedRelative';
-
   static propTypes = {
     ...relativeFormatPropTypes,
     intl: intlShape,

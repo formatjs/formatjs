@@ -30,8 +30,6 @@ const defaultFormatMessage = (descriptor, values) => {
 };
 
 class FormattedMessage extends PureComponent {
-  static displayName = 'FormattedMessage';
-
   static propTypes = {
     ...messageDescriptorPropTypes,
     intl: intlShape,

@@ -82,8 +82,6 @@ function getBoundFormatFns(config, state) {
 }
 
 class IntlProvider extends PureComponent {
-  static displayName = 'IntlProvider';
-
   static propTypes = {
     ...intlConfigPropTypes,
     children: PropTypes.element.isRequired,

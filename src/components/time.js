@@ -4,40 +4,35 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import React, {PureComponent} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import withIntl from './withIntl';
 import {intlShape, dateTimeFormatPropTypes} from '../types';
-import {invariantIntlContext} from '../utils';
 
-class FormattedTime extends PureComponent {
-  static displayName = 'FormattedTime';
+function FormattedTime(props) {
+  const {
+    value,
+    children,
+    intl: {formatTime, textComponent: Text},
+  } = props;
 
-  static propTypes = {
-    ...dateTimeFormatPropTypes,
-    intl: intlShape,
-    value: PropTypes.any.isRequired,
-    format: PropTypes.string,
-    children: PropTypes.func,
-  };
+  let formattedTime = formatTime(value, props);
 
-  constructor(props) {
-    super(props);
-    invariantIntlContext(props);
+  if (typeof children === 'function') {
+    return children(formattedTime);
   }
 
-  render() {
-    const {formatTime, textComponent: Text} = this.props.intl;
-    const {value, children} = this.props;
-
-    let formattedTime = formatTime(value, this.props);
-
-    if (typeof children === 'function') {
-      return children(formattedTime);
-    }
-
-    return <Text>{formattedTime}</Text>;
-  }
+  return <Text>{formattedTime}</Text>;
 }
+
+FormattedTime.propTypes = {
+  ...dateTimeFormatPropTypes,
+  intl: intlShape,
+  value: PropTypes.any.isRequired,
+  format: PropTypes.string,
+  children: PropTypes.func,
+};
+
+FormattedTime.displayName = 'FormattedTime';
 
 export default withIntl(FormattedTime);
