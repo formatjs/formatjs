@@ -90,9 +90,40 @@ const messages = defineMessages({
 
 ### Injection API
 
-React Intl provides an API to _inject_ the imperative formatting API into a React component via its `props`. This should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
+React Intl provides:
 
-#### `injectIntl`
+1. `useIntl` Hook: to _hook_ the imperative formatting API into a React function component (with React version >= 16.8).
+2. `injectIntl` HOC: to _inject_ the imperative formatting API into a React class or function component via its `props`.
+
+These should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
+
+#### `useIntl` hook
+
+If a component can be expressed in a form of function component, using `useIntl` HOC can be handy. This `useIntl` hook do not expect any option as its argument when being called. Typically, here is how you would like to use:
+
+```js
+import React, {PropTypes} from 'react';
+import {useIntl, FormattedRelative} from 'react-intl';
+
+const FunctionComponent = ({ date }) => {
+  const intl = useIntl();
+  return (
+    <span title={intl.formatDate(date)}>
+      <FormattedRelative value={date} />
+    </span>
+  );
+};
+
+FunctionComponent.propTypes = {
+  date: PropTypes.any.isRequired,
+};
+
+export default FunctionComponent;
+```
+
+To keep the API surface clean and simple, we only provide `useIntl` hook in the package. If preferable, user can wrap this built-in hook to make customized hook like `useFormatMessage` easily. Please visit React's official website for more general [introduction on React hooks](https://reactjs.org/docs/hooks-intro.html)
+
+#### `injectIntl` HOC
 
 ```js
 function injectIntl(
@@ -112,18 +143,23 @@ By default, the formatting API will be provided to the wrapped component via `pr
 import React, {PropTypes} from 'react';
 import {injectIntl, intlShape, FormattedRelative} from 'react-intl';
 
-const Component = ({date, intl}) => (
-  <span title={intl.formatDate(date)}>
-    <FormattedRelative value={date} />
-  </span>
-);
+class ClassComponent extends React.Component {
+  render() {
+    const { date, intl } = this.props;
+    return (
+      <span title={intl.formatDate(date)}>
+        <FormattedRelative value={date} />
+      </span>
+    );
+  }
+}
 
-Component.propTypes = {
+ClassComponent.propTypes = {
   date: PropTypes.any.isRequired,
   intl: intlShape.isRequired,
 };
 
-export default injectIntl(Component);
+export default injectIntl(ClassComponent);
 ```
 
 #### `intlShape`
