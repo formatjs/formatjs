@@ -42,13 +42,6 @@ class FormattedMessage extends PureComponent {
     values: {},
   };
 
-  constructor(props) {
-    super(props);
-    if (!props.defaultMessage) {
-      invariantIntlContext(props);
-    }
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
     const {values} = this.props;
     const {values: nextValues} = nextProps;

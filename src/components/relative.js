@@ -8,7 +8,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import withIntl from './withIntl';
 import {intlShape, relativeFormatPropTypes} from '../types';
-import {invariantIntlContext} from '../utils';
 
 const SECOND = 1000;
 const MINUTE = 1000 * 60;
@@ -82,7 +81,6 @@ class FormattedRelative extends PureComponent {
 
   constructor(props) {
     super(props);
-    invariantIntlContext(props);
 
     let now = isFinite(props.initialNow)
       ? Number(props.initialNow)
