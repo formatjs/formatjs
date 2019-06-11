@@ -82,6 +82,7 @@
   "license": "BSD-3-Clause",
   "prettier": {
     "parser": "typescript",
-    "singleQuote": true
+    "singleQuote": true,
+    "endOfLine": "lf"
   }
 }
