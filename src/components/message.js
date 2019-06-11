@@ -10,7 +10,7 @@ import withIntl from './withIntl';
 import IntlMessageFormat from 'intl-messageformat';
 import memoizeIntlConstructor from 'intl-format-cache';
 import {intlShape, messageDescriptorPropTypes} from '../types';
-import shallowEquals from 'shallow-equal/objects';
+import * as shallowEquals from 'shallow-equal/objects';
 import {formatMessage as baseFormatMessage} from '../format';
 import {invariantIntlContext} from '../utils';
 
