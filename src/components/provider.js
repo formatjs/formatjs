@@ -4,23 +4,18 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import React, {Component, Children} from 'react';
+import React, {PureComponent, Children} from 'react';
 import PropTypes from 'prop-types';
 import withIntl, {Provider} from './withIntl';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 import memoizeIntlConstructor from 'intl-format-cache';
 import invariant from 'invariant';
-import {
-  createError,
-  defaultErrorHandler,
-  shouldIntlComponentUpdate,
-  filterProps,
-  shallowEquals,
-} from '../utils';
+import {createError, defaultErrorHandler, filterProps} from '../utils';
 import {intlConfigPropTypes, intlFormatPropTypes} from '../types';
 import * as format from '../format';
 import areIntlLocalesSupported from 'intl-locales-supported';
+import shallowEquals from 'shallow-equal/objects';
 
 const intlConfigPropNames = Object.keys(intlConfigPropTypes);
 const intlFormatPropNames = Object.keys(intlFormatPropTypes);
@@ -86,9 +81,7 @@ function getBoundFormatFns(config, state) {
   }, {});
 }
 
-class IntlProvider extends Component {
-  static displayName = 'IntlProvider';
-
+class IntlProvider extends PureComponent {
   static propTypes = {
     ...intlConfigPropTypes,
     children: PropTypes.element.isRequired,
@@ -175,10 +168,6 @@ class IntlProvider extends Component {
 
   getContext() {
     return this.state.context;
-  }
-
-  shouldComponentUpdate(...next) {
-    return shouldIntlComponentUpdate(this, ...next);
   }
 
   componentDidMount() {

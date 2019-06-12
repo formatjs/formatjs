@@ -59,24 +59,6 @@ describe('<FormattedNumber>', () => {
         expect(rendered.text()).toBe(intl.formatNumber(num));
     });
 
-    it('should not re-render when props and context are the same', () => {
-        const FormattedNumber = mockContext(intl);
-        const num = 1000;
-
-        const spy = createSpy().andReturn(null);
-        const withIntlContext = mount(
-          <FormattedNumber value={num}>
-            { spy }
-          </FormattedNumber>
-        );
-
-        withIntlContext.setProps({
-          ...withIntlContext.props()
-        });
-        withIntlContext.instance().mockContext(intl);
-
-        expect(spy.calls.length).toBe(1);
-    });
 
     it('should re-render when props change', () => {
       const FormattedNumber = mockContext(intl);

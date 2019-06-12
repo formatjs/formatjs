@@ -1,4 +1,4 @@
-import React, {Component, createContext} from 'react';
+import React, {createContext} from 'react';
 import {isValidElementType} from 'react-is';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import invariant from 'invariant';
@@ -39,32 +39,30 @@ function createWrapper(WrappedComponent) {
       "instead use the 'forwardRef' option and create a ref directly on the wrapped component."
   );
 
-  class WithIntl extends Component {
-    static displayName = `withIntl(${getDisplayName(WrappedComponent)})`;
-    static WrappedComponent = WrappedComponent;
+  function WithIntl(props) {
+    return (
+      <IntlConsumer>
+        {intl => {
+          if (enforceContext) {
+            invariantIntlContext({intl});
+          }
 
-    render() {
-      return (
-        <IntlConsumer>
-          {intl => {
-            if (enforceContext) {
-              invariantIntlContext({intl});
-            }
-
-            return (
-              <WrappedComponent
-                {...{
-                  ...this.props,
-                  [intlPropName]: intl,
-                }}
-                ref={forwardRef ? this.props.forwardedRef : null}
-              />
-            );
-          }}
-        </IntlConsumer>
-      );
-    }
+          return (
+            <WrappedComponent
+              {...{
+                ...props,
+                [intlPropName]: intl,
+              }}
+              ref={forwardRef ? props.forwardedRef : null}
+            />
+          );
+        }}
+      </IntlConsumer>
+    );
   }
+
+  WithIntl.displayName = `withIntl(${getDisplayName(WrappedComponent)})`;
+  WithIntl.WrappedComponent = WrappedComponent;
 
   if (forwardRef) {
     return hoistNonReactStatics(

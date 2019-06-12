@@ -7,3 +7,6 @@ src/en.js
 
 # IntelliJ
 .idea/
+
+# VS Code
+.vscode

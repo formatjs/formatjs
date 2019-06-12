@@ -10,12 +10,9 @@ import withIntl from './withIntl';
 import IntlMessageFormat from 'intl-messageformat';
 import memoizeIntlConstructor from 'intl-format-cache';
 import {intlShape, messageDescriptorPropTypes} from '../types';
-import {
-  invariantIntlContext,
-  shallowEquals,
-  shouldIntlComponentUpdate,
-} from '../utils';
+import shallowEquals from 'shallow-equal/objects';
 import {formatMessage as baseFormatMessage} from '../format';
+import {invariantIntlContext} from '../utils';
 
 const defaultFormatMessage = (descriptor, values) => {
   if (process.env.NODE_ENV !== 'production') {
@@ -33,8 +30,6 @@ const defaultFormatMessage = (descriptor, values) => {
 };
 
 class FormattedMessage extends Component {
-  static displayName = 'FormattedMessage';
-
   static propTypes = {
     ...messageDescriptorPropTypes,
     intl: intlShape,
@@ -70,7 +65,10 @@ class FormattedMessage extends Component {
       values,
     };
 
-    return shouldIntlComponentUpdate(this, nextPropsToCheck, nextState);
+    return (
+      !shallowEquals(this.props, nextPropsToCheck) ||
+      !shallowEquals(this.state, nextState)
+    );
   }
 
   render() {
@@ -157,4 +155,4 @@ class FormattedMessage extends Component {
 
 export const BaseFormattedMessage = FormattedMessage;
 
-export default withIntl(FormattedMessage);
+export default withIntl(FormattedMessage, {enforceContext: false});

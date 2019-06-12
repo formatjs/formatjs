@@ -4,44 +4,35 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import withIntl from './withIntl';
 import {intlShape, dateTimeFormatPropTypes} from '../types';
-import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
 
-class FormattedDate extends Component {
-  static displayName = 'FormattedDate';
+function FormattedDate(props) {
+  const {
+    value,
+    children,
+    intl: {formatDate, textComponent: Text},
+  } = props;
 
-  static propTypes = {
-    ...dateTimeFormatPropTypes,
-    intl: intlShape,
-    value: PropTypes.any.isRequired,
-    format: PropTypes.string,
-    children: PropTypes.func,
-  };
+  let formattedDate = formatDate(value, props);
 
-  constructor(props) {
-    super(props);
-    invariantIntlContext(props);
+  if (typeof children === 'function') {
+    return children(formattedDate);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shouldIntlComponentUpdate(this, nextProps, nextState);
-  }
-
-  render() {
-    const {formatDate, textComponent: Text} = this.props.intl;
-    const {value, children} = this.props;
-
-    let formattedDate = formatDate(value, this.props);
-
-    if (typeof children === 'function') {
-      return children(formattedDate);
-    }
-
-    return <Text>{formattedDate}</Text>;
-  }
+  return <Text>{formattedDate}</Text>;
 }
+
+FormattedDate.propTypes = {
+  ...dateTimeFormatPropTypes,
+  intl: intlShape,
+  value: PropTypes.any.isRequired,
+  format: PropTypes.string,
+  children: PropTypes.func,
+};
+
+FormattedDate.displayName = 'FormattedDate';
 
 export default withIntl(FormattedDate);
