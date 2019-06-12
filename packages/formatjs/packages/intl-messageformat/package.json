@@ -1,6 +1,6 @@
 {
   "name": "intl-messageformat",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.",
   "keywords": [
     "i18n",
@@ -31,7 +31,7 @@
   "module": "lib/index.js",
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "intl-messageformat-parser": "^1.6.5"
+    "intl-messageformat-parser": "^1.6.6"
   },
   "scripts": {
     "clean": "rimraf dist lib",
