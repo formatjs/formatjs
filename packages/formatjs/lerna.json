@@ -1,4 +1,10 @@
 {
   "registry": "https://registry.npmjs.org/",
-  "version": "independent"
+  "version": "independent",
+  "command": {
+    "version": {
+      "conventionalCommits": true,
+      "createRelease": "github"
+    }
+  }
 }
