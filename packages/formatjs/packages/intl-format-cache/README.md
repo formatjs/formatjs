@@ -81,6 +81,16 @@ fast-memoize x 1,294,591 ops/sec ±1.10% (94 runs sampled)
 intl-format-cache x 1,905,746 ops/sec ±0.71% (91 runs sampled)
 not cached x 152,118 ops/sec ±0.47% (94 runs sampled)
 --- IntlMessageFormat cache get simple arg: Fastest is intl-format-cache ---
+
+number x 536,024 ops/sec ±0.99% (86 runs sampled)
+datetime x 397,275 ops/sec ±0.92% (90 runs sampled)
+messageformat x 1,278,072 ops/sec ±1.31% (89 runs sampled)
+--- all formats: Fastest is messageformat ---
+
+number x 532,863 ops/sec ±0.79% (93 runs sampled)
+datetime x 377,391 ops/sec ±1.11% (89 runs sampled)
+messageformat x 709,020 ops/sec ±3.19% (81 runs sampled)
+--- all formats random input: Fastest is messageformat ---
 ```
 
 License
