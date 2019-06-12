@@ -7,7 +7,7 @@
   "typings": "lib/index.d.ts",
   "scripts": {
     "clean": "rimraf dist lib",
-    "benchmark": "ts-node --project tests/tsconfig.json tests/benchmark",
+    "benchmark": "ts-node --project tsconfig.cjs.json tests/benchmark",
     "build": "tsc && tsc -p src/tsconfig.cjs.json && rollup -c rollup.config.js",
     "test": "mocha --opts ../../mocha.opts tests/index.ts",
     "prepublishOnly": "npm run build"
