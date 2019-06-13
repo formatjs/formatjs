@@ -1,6 +1,5 @@
 /* eslint prefer-arrow-callback:0 */
 
-import 'intl';
 import {Suite} from 'benchmark';
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
