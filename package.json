@@ -30,9 +30,8 @@
     "type": "git",
     "url": "git@github.com:yahoo/react-intl.git"
   },
-  "main": "./lib/index.js",
-  "module": "./lib/index.es.js",
-  "jsnext:main": "./lib/index.es.js",
+  "main": "./dist/index.js",
+  "module": "./lib/index.js",
   "browserify-shim": {
     "react": "global:React"
   },

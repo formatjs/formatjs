@@ -11,7 +11,7 @@ const spyGetDerivedStateFromProps = () => {
   return jest.spyOn(
     require('../../../src/components/relative').BaseFormattedRelative,
     'getDerivedStateFromProps'
-  ).andCallThrough();
+  )
 }
 
 describe('<FormattedRelative>', () => {

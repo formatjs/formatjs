@@ -241,7 +241,7 @@ describe('<IntlProvider>', () => {
         const intl = getIntlContext(el);
 
         INTL_FORMAT_PROP_NAMES.forEach((propName) => {
-            expect(intl[propName]).toExist(`Missing context.intl prop: ${propName}`);
+            expect(intl[propName]).toBeDefined();
             expect(intl[propName]).toBeA('function');
         });
 
@@ -383,6 +383,7 @@ describe('<IntlProvider>', () => {
 
     it('should re-render when props change', () => {
         let IntlProvider = mockContext(null, false)
+        const Child = jest.fn().mockImplementation(() => null)
         const parentContext = getIntlContext(
           <IntlProvider locale='en'>
             <Child />
@@ -390,7 +391,6 @@ describe('<IntlProvider>', () => {
         );
 
         IntlProvider = mockContext(parentContext);
-        const Child = jest.fn().mockImplementation(() => null)
 
         const intlProvider = mount(
             <IntlProvider locale="en">
@@ -407,6 +407,7 @@ describe('<IntlProvider>', () => {
 
     it('should re-render when context changes', () => {
         let IntlProvider = mockContext(null, false)
+        const Child = jest.fn().mockImplementation(() => null)
         const initialParentContext = getIntlContext(
           <IntlProvider locale='en'>
             <Child />
@@ -419,7 +420,6 @@ describe('<IntlProvider>', () => {
         );
 
         IntlProvider = mockContext(initialParentContext);
-        const Child = jest.fn().mockImplementation(() => null)
 
         const el = (
             <IntlProvider>

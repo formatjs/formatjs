@@ -3,7 +3,7 @@ import * as ReactIntl from '../../../src/';
 export default function (buildPath) {
     describe('build', () => {
         it('evaluates', () => {
-            expect(require(buildPath)).toExist();
+            expect(require(buildPath)).toBeDefined();
         });
 
         Object.keys(ReactIntl).forEach(name => it(name, function () {
