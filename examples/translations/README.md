@@ -1,5 +1,4 @@
-React Intl Translations Example
-===============================
+# React Intl Translations Example
 
 This is a runnable example showing how to use React Intl and the `babel-plugin-react-intl` to extract string messages from components so that they can be translated.
 

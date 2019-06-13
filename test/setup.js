@@ -1,4 +1,4 @@
-import { configure } from 'enzyme';
+import {configure} from 'enzyme';
 import * as React from 'react';
 import 'intl-pluralrules';
 import '@formatjs/intl-relativetimeformat/polyfill-locales';
@@ -9,31 +9,28 @@ if (reactMajorVersion === 0) {
 }
 const Adapter = require(`enzyme-adapter-react-${reactMajorVersion}`);
 
-configure({ adapter: new Adapter() });
+configure({adapter: new Adapter()});
 
 function toBeA(received, typeNameOrObj) {
-  let pass
+  let pass;
   if (typeof typeNameOrObj === 'string') {
-    pass = typeof received === typeNameOrObj
+    pass = typeof received === typeNameOrObj;
   } else {
-    pass = received instanceof typeNameOrObj
+    pass = received instanceof typeNameOrObj;
   }
   if (pass) {
     return {
-      message: () =>
-        `expected ${received} to have type ${typeNameOrObj}`,
+      message: () => `expected ${received} to have type ${typeNameOrObj}`,
       pass: true,
     };
-  } 
-    return {
-      message: () =>
-        `expected ${received} not to have type ${typeNameOrObj}`,
-      pass: false,
-    };
-  
+  }
+  return {
+    message: () => `expected ${received} not to have type ${typeNameOrObj}`,
+    pass: false,
+  };
 }
 
 expect.extend({
   toBeA,
-  toBeAn: toBeA
-})
+  toBeAn: toBeA,
+});

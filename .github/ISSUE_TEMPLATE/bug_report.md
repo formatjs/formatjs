@@ -4,7 +4,6 @@ about: Create a report to help us improve
 title: ''
 labels: ''
 assignees: ''
-
 ---
 
 <!-- Thank you so much for filing this issue! Please provide the detail about your problem! -->
@@ -15,12 +14,15 @@ assignees: ''
 -->
 
 ### Expected behavior
+
 <!-- Please describe the behavior you expected. -->
 
 ### Current behavior
+
 <!-- Please describe what happens instead of your expected behavior. -->
 
 ### Step to reproduce for BUG REPORT
+
 <!-- Please describe steps to reproduce this bug as minimally and precisely as possible.
 
 For example:
@@ -30,19 +32,21 @@ For example:
 -->
 
 ### Your Environment
+
 <!-- Please describe your environment information. -->
 <!-- Please describe your OS and browser information if your problem occurs on a specific OS or browser. -->
 
-| Executable | Version |
-| ---: | :--- |
+|          Executable | Version |
+| ------------------: | :------ |
 | `npm ls react-intl` | VERSION |
-| `npm ls react` | VERSION |
-| `npm --version` | VERSION |
-| `node --version` | VERSION |
+|      `npm ls react` | VERSION |
+|     `npm --version` | VERSION |
+|    `node --version` | VERSION |
 
-| OS | Version |
-| --- | --- |
+| OS   | Version |
+| ---- | ------- |
 | NAME | VERSION |
+
 <!-- For example:
 | macOS Sierra | 10.12.3 |
 | Windows 10 | 1607 |
@@ -50,8 +54,9 @@ For example:
 -->
 
 | Browser | Version |
-| --- | --- |
-| NAME | VERSION |
+| ------- | ------- |
+| NAME    | VERSION |
+
 <!-- For example:
 | Chrome | 61.0.3163.71 |
 | Safari | 10.1.2 |

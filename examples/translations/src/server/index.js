@@ -5,28 +5,28 @@ import * as path from 'path';
 import serialize from 'serialize-javascript';
 
 const translations = globSync('./build/lang/*.json')
-    .map((filename) => [
-        path.basename(filename, '.json'),
-        readFileSync(filename, 'utf8'),
-    ])
-    .map(([locale, file]) => [locale, JSON.parse(file)])
-    .reduce((collection, [locale, messages]) => {
-        collection[locale] = messages;
-        return collection;
-    }, {});
+  .map(filename => [
+    path.basename(filename, '.json'),
+    readFileSync(filename, 'utf8'),
+  ])
+  .map(([locale, file]) => [locale, JSON.parse(file)])
+  .reduce((collection, [locale, messages]) => {
+    collection[locale] = messages;
+    return collection;
+  }, {});
 
 const app = express();
 
 app.get('/', (req, res) => {
-    let locale   = req.query.locale || 'en-US';
-    let messages = translations[locale];
+  let locale = req.query.locale || 'en-US';
+  let messages = translations[locale];
 
-    if (!messages) {
-        return res.status(404).send('Locale is not supported.');
-    }
+  if (!messages) {
+    return res.status(404).send('Locale is not supported.');
+  }
 
-    res.send(
-`
+  res.send(
+    `
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,12 +45,12 @@ app.get('/', (req, res) => {
 </body>
 </html>
 `
-    );
+  );
 });
 
 app.use(express.static('build'));
 app.use(express.static('../../node_modules'));
 
 app.listen(8080, () => {
-    console.log('React Intl Example server listening at: http://localhost:8080');
+  console.log('React Intl Example server listening at: http://localhost:8080');
 });
