@@ -1,17 +1,8 @@
-import expect, {createSpy, spyOn} from 'expect';
-import React from 'react';
+import * as React from 'react';
 import {mount} from 'enzyme';
 import {makeMockContext, shallowDeep, SpyComponent} from '../testUtils'
 import {intlConfigPropTypes, intlFormatPropTypes} from '../../../src/types';
 import IntlProvider from '../../../src/components/provider';
-
-const skipWhen = (shouldSkip, callback) => {
-    if (shouldSkip) {
-        callback(it.skip);
-    } else {
-        callback(it);
-    }
-};
 
 const mockContext = makeMockContext(
   require.resolve('../../../src/components/provider')
@@ -23,16 +14,7 @@ const getIntlContext = (el) => {
 }
 
 describe('<IntlProvider>', () => {
-    let immutableIntl = false;
-    try {
-        global.Intl = global.Intl;
-    } catch (e) {
-        immutableIntl = true;
-    }
-
     const now = Date.now();
-
-    const INTL = global.Intl;
 
     const INTL_CONFIG_PROP_NAMES = Object.keys(intlConfigPropTypes);
     const INTL_FORMAT_PROP_NAMES = Object.keys(intlFormatPropTypes);
@@ -49,33 +31,17 @@ describe('<IntlProvider>', () => {
     let dateNow;
 
     beforeEach(() => {
-        consoleError       = spyOn(console, 'error');
-        dateNow            = spyOn(Date, 'now').andReturn(now);
+        consoleError       = jest.spyOn(console, 'error');
+        dateNow            = jest.spyOn(Date, 'now').mockImplementation(() => now);
     });
 
     afterEach(() => {
-        if (!immutableIntl) {
-            global.Intl = INTL;
-        }
-
-        consoleError.restore();
-        dateNow.restore();
+        consoleError.mockRestore();
+        dateNow.mockRestore();
     });
 
     it('has a `displayName`', () => {
         expect(IntlProvider.displayName).toBeA('string');
-    });
-
-    // If global.Intl is immutable, then skip this test.
-    skipWhen(immutableIntl, (it) => {
-        it('throws when `Intl` is missing from runtime', () => {
-            const IntlProvider = mockContext(null, false);
-            global.Intl = undefined;
-
-            expect(() => shallowDeep(<IntlProvider />, 2)).toThrow(
-                '[React Intl] The `Intl` APIs must be available in the runtime, and do not appear to be built-in. An `Intl` polyfill should be loaded.'
-            );
-        });
     });
 
     it('throws when no `children`', () => {
@@ -105,8 +71,8 @@ describe('<IntlProvider>', () => {
         );
 
         shallowDeep(el, 2);
-        expect(consoleError.calls.length).toBe(1);
-        expect(consoleError.calls[0].arguments[0]).toContain(
+        expect(consoleError).toHaveBeenCalledTimes(1);
+        expect(consoleError.mock.calls[0][0]).toContain(
             '[React Intl] Missing locale data for locale: "undefined". Using default locale: "en" as fallback.'
         );
     });
@@ -122,8 +88,8 @@ describe('<IntlProvider>', () => {
         const {locale} = el.props;
 
         shallowDeep(el, 2);
-        expect(consoleError.calls.length).toBe(1);
-        expect(consoleError.calls[0].arguments[0]).toContain(
+        expect(consoleError).toHaveBeenCalledTimes(1);
+        expect(consoleError.mock.calls[0][0]).toContain(
             `[React Intl] Missing locale data for locale: "${locale}". Using default locale: "en" as fallback.`
         );
     });
@@ -152,7 +118,7 @@ describe('<IntlProvider>', () => {
         const intl = getIntlContext(el);
 
         INTL_SHAPE_PROP_NAMES.forEach((propName) => {
-            expect(intl[propName]).toNotBe(undefined, `Missing context.intl prop: ${propName}`);
+            expect(intl[propName]).not.toBe(undefined, `Missing context.intl prop: ${propName}`);
         });
     });
 
@@ -216,9 +182,9 @@ describe('<IntlProvider>', () => {
 
         const intl = getIntlContext(el);
 
-        expect(intl.defaultLocale).toNotBe(undefined);
+        expect(intl.defaultLocale).not.toBe(undefined);
         expect(intl.defaultLocale).toBe('en');
-        expect(intl.messages).toNotBe(undefined);
+        expect(intl.messages).not.toBe(undefined);
         expect(intl.messages).toBeAn('object');
     });
 
@@ -242,7 +208,7 @@ describe('<IntlProvider>', () => {
         const intl = getIntlContext(el);
 
         INTL_FORMAT_PROP_NAMES.forEach((propName) => {
-            expect(intl[propName]).toExist(`Missing context.intl prop: ${propName}`);
+            expect(intl[propName]).toBeDefined();
             expect(intl[propName]).toBeA('function');
         });
 
@@ -296,7 +262,7 @@ describe('<IntlProvider>', () => {
 
         const intl = getIntlContext(el);
 
-        expect(consoleError.calls.length).toBe(0);
+        expect(consoleError).toHaveBeenCalledTimes(0);
 
         INTL_CONFIG_PROP_NAMES.forEach((propName) => {
             expect(intl[propName]).toBe(props[propName]);
@@ -352,10 +318,10 @@ describe('<IntlProvider>', () => {
 
         const intl = getIntlContext(el);
 
-        expect(consoleError.calls.length).toBe(0);
+        expect(consoleError).toHaveBeenCalledTimes(0);
 
         INTL_CONFIG_PROP_NAMES.forEach((propName) => {
-            expect(intl[propName]).toNotBe(props[propName]);
+            expect(intl[propName]).not.toBe(props[propName]);
         });
     });
 
@@ -384,6 +350,7 @@ describe('<IntlProvider>', () => {
 
     it('should re-render when props change', () => {
         let IntlProvider = mockContext(null, false)
+        const Child = jest.fn().mockImplementation(() => null)
         const parentContext = getIntlContext(
           <IntlProvider locale='en'>
             <Child />
@@ -391,7 +358,6 @@ describe('<IntlProvider>', () => {
         );
 
         IntlProvider = mockContext(parentContext);
-        const Child = createSpy().andReturn(null);
 
         const intlProvider = mount(
             <IntlProvider locale="en">
@@ -408,6 +374,7 @@ describe('<IntlProvider>', () => {
 
     it('should re-render when context changes', () => {
         let IntlProvider = mockContext(null, false)
+        const Child = jest.fn().mockImplementation(() => null)
         const initialParentContext = getIntlContext(
           <IntlProvider locale='en'>
             <Child />
@@ -420,7 +387,6 @@ describe('<IntlProvider>', () => {
         );
 
         IntlProvider = mockContext(initialParentContext);
-        const Child = createSpy().andReturn(null);
 
         const el = (
             <IntlProvider>

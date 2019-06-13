@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import {FormattedDate, FormattedTime} from 'react-intl';
 
 class App extends Component {

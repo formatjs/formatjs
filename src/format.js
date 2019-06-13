@@ -4,9 +4,14 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import invariant from 'invariant';
 import IntlRelativeFormat from 'intl-relativeformat';
 import {isValidElement} from 'react';
+import * as invariant_ from 'invariant';
+// Since rollup cannot deal with namespace being a function,
+// this is to interop with TypeScript since `invariant`
+// does not export a default
+// https://github.com/rollup/rollup/issues/1267
+const invariant = invariant_;
 
 import {
   dateTimeFormatPropTypes,

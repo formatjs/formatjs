@@ -1,5 +1,4 @@
-import expect, {createSpy, spyOn} from 'expect';
-import React from 'react';
+import * as React from 'react';
 import {generateIntlContext, makeMockContext, shallowDeep} from '../testUtils';
 import FormattedHTMLMessage, {BaseFormattedHTMLMessage} from '../../../src/components/html-message';
 import {BaseFormattedMessage} from '../../../src/components/message';
@@ -13,7 +12,7 @@ describe('<FormattedHTMLMessage>', () => {
     let intl;
 
     beforeEach(() => {
-        consoleError = spyOn(console, 'error');
+        consoleError = jest.spyOn(console, 'error');
         intl = generateIntlContext({
           locale: 'en',
           defaultLocale: 'en-US'
@@ -21,7 +20,7 @@ describe('<FormattedHTMLMessage>', () => {
     });
 
     afterEach(() => {
-        consoleError.restore();
+        consoleError.mockRestore();
     });
 
     it('has a `displayName`', () => {
@@ -110,7 +109,7 @@ describe('<FormattedHTMLMessage>', () => {
             defaultMessage: 'Hello, <b>World</b>!',
         };
 
-        const spy = createSpy().andReturn(<p>Jest</p>);
+        const spy = jest.fn().mockImplementation(() => <p>Jest</p>);
         const rendered = shallowDeep(
             <FormattedHTMLMessage {...descriptor}>
                 { spy }
@@ -118,8 +117,8 @@ describe('<FormattedHTMLMessage>', () => {
             2
         );
 
-        expect(spy.calls.length).toBe(1);
-        expect(spy.calls[0].arguments).toEqual([
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy.mock.calls[0]).toEqual([
           intl.formatHTMLMessage(descriptor)
         ]);
 

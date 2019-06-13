@@ -9,7 +9,12 @@ This source code is licensed under the BSD-style license found in the LICENSE
 file in the root directory of React's source tree.
 */
 
-import invariant from 'invariant';
+import * as invariant_ from 'invariant';
+// Since rollup cannot deal with namespace being a function,
+// this is to interop with TypeScript since `invariant`
+// does not export a default
+// https://github.com/rollup/rollup/issues/1267
+const invariant = invariant_;
 
 const ESCAPED_CHARS = {
   38: '&amp;',

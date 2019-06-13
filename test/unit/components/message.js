@@ -1,5 +1,4 @@
-import expect, {createSpy, spyOn} from 'expect';
-import React from 'react';
+import * as React from 'react';
 import {mount} from 'enzyme';
 import {generateIntlContext, makeMockContext, shallowDeep} from '../testUtils';
 import FormattedMessage from '../../../src/components/message';
@@ -18,11 +17,11 @@ describe('<FormattedMessage>', () => {
           defaultLocale: 'en'
         });
 
-        consoleError = spyOn(console, 'error');
+        consoleError = jest.spyOn(console, 'error');
     });
 
     afterEach(() => {
-        consoleError.restore();
+        consoleError.mockRestore();
     });
 
     it('has a `displayName`', () => {
@@ -50,7 +49,7 @@ describe('<FormattedMessage>', () => {
         expect(rendered.type()).toBe('span');
         expect(rendered.text()).toBe('Hello');
 
-        expect(consoleError.calls.length).toBe(1);
+        expect(consoleError).toHaveBeenCalledTimes(1);
     });
 
     it('renders a formatted message in a <span>', () => {
@@ -83,7 +82,7 @@ describe('<FormattedMessage>', () => {
           2
         );
 
-        expect(consoleError.calls.length).toBe(0);
+        expect(consoleError).toHaveBeenCalledTimes(0);
     });
 
     it('should not cause a prop warning when description is a string', () => {
@@ -101,7 +100,7 @@ describe('<FormattedMessage>', () => {
           />
         );
 
-        expect(consoleError.calls.length).toBe(0);
+        expect(consoleError).toHaveBeenCalledTimes(0);
     });
 
     it('should not cause a prop warning when description is an object', () => {
@@ -122,7 +121,7 @@ describe('<FormattedMessage>', () => {
           />
         );
 
-        expect(consoleError.calls.length).toBe(0);
+        expect(consoleError).toHaveBeenCalledTimes(0);
     });
 
     it('accepts `values` prop', () => {
@@ -192,7 +191,7 @@ describe('<FormattedMessage>', () => {
             defaultMessage: 'Hello, World!',
         };
 
-        const spy = createSpy().andReturn(<p>Jest</p>);
+        const spy = jest.fn().mockImplementation(() => <p>Jest</p>);
 
         const rendered = shallowDeep(
             <FormattedMessage {...descriptor}>
@@ -201,8 +200,8 @@ describe('<FormattedMessage>', () => {
             2
         );
 
-        expect(spy.calls.length).toBe(1);
-        expect(spy.calls[0].arguments).toEqual([
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy.mock.calls[0]).toEqual([
           intl.formatMessage(descriptor)
         ]);
 
@@ -258,7 +257,7 @@ describe('<FormattedMessage>', () => {
           defaultMessage: 'Hello, World!'
         }
 
-        const spy = createSpy().andReturn(null);
+        const spy = jest.fn().mockImplementation(() => null);
         const rendered = mount(
           <FormattedMessage {...props}>
             { spy }
@@ -267,7 +266,7 @@ describe('<FormattedMessage>', () => {
         rendered.instance().mockContext(intl);
         rendered.setProps(props);
 
-        expect(spy.calls.length).toBe(1);
+        expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should re-render when props change', () => {
@@ -277,7 +276,7 @@ describe('<FormattedMessage>', () => {
           defaultMessage: 'Hello, World!'
         }
 
-        const spy = createSpy().andReturn(null);
+        const spy = jest.fn().mockImplementation(() => null);
         const rendered = mount(
           <FormattedMessage {...props}>
             { spy }
@@ -288,7 +287,7 @@ describe('<FormattedMessage>', () => {
           defaultMessage: 'Hello, Galaxy!'
         });
 
-        expect(spy.calls.length).toBe(2);
+        expect(spy).toHaveBeenCalledTimes(2);
     });
 
     it('should re-render when context changes', () => {
@@ -303,7 +302,7 @@ describe('<FormattedMessage>', () => {
           defaultMessage: 'Hello, World!'
         }
 
-        const spy = createSpy().andReturn(null);
+        const spy = jest.fn().mockImplementation(() => null);
         const withIntlContext = mount(
           <FormattedMessage {...props}>
             { spy }
@@ -311,7 +310,7 @@ describe('<FormattedMessage>', () => {
         );
         withIntlContext.instance().mockContext(changedIntl);
 
-        expect(spy.calls.length).toBe(2);
+        expect(spy).toHaveBeenCalledTimes(2);
     });
 
     it('should re-render when `values` are different', () => {
@@ -324,7 +323,7 @@ describe('<FormattedMessage>', () => {
           name: 'Jest'
         };
 
-        const spy = createSpy().andReturn(null);
+        const spy = jest.fn().mockImplementation(() => null);
         const withIntlContext = mount(
           <FormattedMessage
             {...descriptor}
@@ -340,7 +339,7 @@ describe('<FormattedMessage>', () => {
             ...values // create new object instance with same values to test shallow equality check
           }
         });
-        expect(spy.calls.length).toBe(1); // expect only 1 render as the value object instance changed but not its values
+        expect(spy).toHaveBeenCalledTimes(1); // expect only 1 render as the value object instance changed but not its values
 
         withIntlContext.setProps({
           ...descriptor,
@@ -348,6 +347,6 @@ describe('<FormattedMessage>', () => {
             name: 'Enzyme'
           }
         });
-        expect(spy.calls.length).toBe(2); // expect a rerender after having changed the name
+        expect(spy).toHaveBeenCalledTimes(2); // expect a rerender after having changed the name
     });
 });

@@ -1,4 +1,3 @@
-import expect from 'expect';
 import * as ReactIntl from '../../src';
 
 describe('react-intl', () => {

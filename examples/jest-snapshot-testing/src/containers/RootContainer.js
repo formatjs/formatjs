@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { IntlProvider } from 'react-intl';
 import App from '../components/App';
 

@@ -4,12 +4,10 @@ node_js:
   - 8
   - 10
   - 12
+before_script:
+  - npm run build
 script: NODE_ICU_DATA=$(pwd)/node_modules/full-icu npm run test:all
 notifications:
   email:
     on_success: change
     on_failure: always
-env:
-  global:
-    - secure: dtJpzQPi6/UYsySz8cUIxja7JiiEvDhtKkKpSZa3skB1Es1NNo/tYmVHZyw4MkLpdvXuJx0020dR5ao7UTag9CZspeSimqmr5Q4AV3eBv7Da6d36Gtm5SCGfWHXTldbPYL19ai1EWPSiifQbWxlN3gew9awCFgoBvOKcZoSJQ1M=
-    - secure: Rt/5r/rYFrlPApkVRm2eWvpIJ3ZlLi45LmJVwVp7ruEihxnO4zbjRcO++Co2zhKkjZKHbM/zDiLHGNyPt1GGAjJKdtVyPzMdEvd9Jx8G2J938UoWCAsI7q5twrP96dQcgIsya7LXNlYxnAw5P5jaFJB2ipktk3VHlm/qZXkEgSc=

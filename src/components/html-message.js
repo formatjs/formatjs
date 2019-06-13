@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import React from 'react';
+import * as React from 'react';
 import withIntl from './withIntl';
 import {BaseFormattedMessage} from './message';
 

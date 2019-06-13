@@ -1,5 +1,4 @@
-import expect, {spyOn} from 'expect';
-import React from 'react';
+import * as React from 'react';
 import {mount} from 'enzyme';
 import {intlShape} from '../../../src/types';
 import IntlProvider from '../../../src/components/provider';
@@ -50,11 +49,11 @@ describe('withIntl()', () => {
   it('throws when <IntlProvider> is missing from ancestry', () => {
     const Injected = withIntl(Wrapped);
 
-    const consoleError = spyOn(console, 'error'); // surpress console error from JSDom
+    const consoleError = jest.spyOn(console, 'error'); // surpress console error from JSDom
     expect(() => (rendered = mount(<Injected />))).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     );
-    consoleError.restore();
+    consoleError.mockRestore();
   });
 
   it('renders <WrappedComponent> with `intl` prop', () => {
