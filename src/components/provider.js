@@ -21,7 +21,7 @@ import {intlConfigPropTypes, intlFormatPropTypes} from '../types';
 import * as format from '../format';
 import areIntlLocalesSupported from 'intl-locales-supported';
 import * as shallowEquals_ from 'shallow-equal/objects';
-const shallowEquals = shallowEquals_
+const shallowEquals = shallowEquals_;
 
 const intlConfigPropNames = Object.keys(intlConfigPropTypes);
 const intlFormatPropNames = Object.keys(intlFormatPropTypes);

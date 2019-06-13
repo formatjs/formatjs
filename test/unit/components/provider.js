@@ -4,14 +4,6 @@ import {makeMockContext, shallowDeep, SpyComponent} from '../testUtils'
 import {intlConfigPropTypes, intlFormatPropTypes} from '../../../src/types';
 import IntlProvider from '../../../src/components/provider';
 
-const skipWhen = (shouldSkip, callback) => {
-    if (shouldSkip) {
-        callback(it.skip);
-    } else {
-        callback(it);
-    }
-};
-
 const mockContext = makeMockContext(
   require.resolve('../../../src/components/provider')
 );
@@ -22,16 +14,7 @@ const getIntlContext = (el) => {
 }
 
 describe('<IntlProvider>', () => {
-    let immutableIntl = false;
-    try {
-        global.Intl = global.Intl;
-    } catch (e) {
-        immutableIntl = true;
-    }
-
     const now = Date.now();
-
-    const INTL = global.Intl;
 
     const INTL_CONFIG_PROP_NAMES = Object.keys(intlConfigPropTypes);
     const INTL_FORMAT_PROP_NAMES = Object.keys(intlFormatPropTypes);
@@ -53,28 +36,12 @@ describe('<IntlProvider>', () => {
     });
 
     afterEach(() => {
-        if (!immutableIntl) {
-            global.Intl = INTL;
-        }
-
         consoleError.mockRestore();
         dateNow.mockRestore();
     });
 
     it('has a `displayName`', () => {
         expect(IntlProvider.displayName).toBeA('string');
-    });
-
-    // If global.Intl is immutable, then skip this test.
-    skipWhen(immutableIntl, (it) => {
-        it('throws when `Intl` is missing from runtime', () => {
-            const IntlProvider = mockContext(null, false);
-            global.Intl = undefined;
-
-            expect(() => shallowDeep(<IntlProvider />, 2)).toThrow(
-                '[React Intl] The `Intl` APIs must be available in the runtime, and do not appear to be built-in. An `Intl` polyfill should be loaded.'
-            );
-        });
     });
 
     it('throws when no `children`', () => {
