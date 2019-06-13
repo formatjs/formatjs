@@ -1,4 +1,3 @@
-import * as expect from 'expect';
 import * as ReactIntl from '../../../src/';
 
 export default function (buildPath) {

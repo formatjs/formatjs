@@ -19,7 +19,7 @@ describe('<FormattedPlural>', () => {
     });
 
     afterEach(() => {
-        consoleError.restore();
+        consoleError.mockRestore();
     });
 
     it('has a `displayName`', () => {
@@ -97,7 +97,7 @@ describe('<FormattedPlural>', () => {
           value: withInlContext.prop('value') + 1
         });
 
-        expect(spy.calls.length).toBe(2);
+        expect(spy).toHaveBeenCalledTimes(2);
     });
 
     it('should re-render when context changes', () => {
@@ -115,7 +115,7 @@ describe('<FormattedPlural>', () => {
         });
         withInlContext.instance().mockContext(otherIntl);
 
-        expect(spy.calls.length).toBe(2);
+        expect(spy).toHaveBeenCalledTimes(2);
     });
 
     it('accepts valid IntlPluralFormat options as props', () => {
@@ -148,8 +148,8 @@ describe('<FormattedPlural>', () => {
           2
         );
 
-        expect(spy.calls.length).toBe(1);
-        expect(spy.calls[0].arguments).toEqual([
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy.mock.calls[0]).toEqual([
           props[intl.formatPlural(num)]
         ]);
 

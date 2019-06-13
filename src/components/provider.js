@@ -10,12 +10,18 @@ import withIntl, {Provider} from './withIntl';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 import memoizeIntlConstructor from 'intl-format-cache';
-import invariant from 'invariant';
+import * as invariant_ from 'invariant';
+// Since rollup cannot deal with namespace being a function,
+// this is to interop with TypeScript since `invariant`
+// does not export a default
+// https://github.com/rollup/rollup/issues/1267
+const invariant = invariant_;
 import {createError, defaultErrorHandler, filterProps} from '../utils';
 import {intlConfigPropTypes, intlFormatPropTypes} from '../types';
 import * as format from '../format';
 import areIntlLocalesSupported from 'intl-locales-supported';
-import shallowEquals from 'shallow-equal/objects';
+import * as shallowEquals_ from 'shallow-equal/objects';
+const shallowEquals = shallowEquals_
 
 const intlConfigPropNames = Object.keys(intlConfigPropTypes);
 const intlFormatPropNames = Object.keys(intlFormatPropTypes);

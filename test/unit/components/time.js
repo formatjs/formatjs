@@ -19,7 +19,7 @@ describe('<FormattedTime>', () => {
     });
 
     afterEach(() => {
-        consoleError.restore();
+        consoleError.mockRestore();
     });
 
     it('has a `displayName`', () => {
@@ -39,17 +39,17 @@ describe('<FormattedTime>', () => {
         const withIntlContext = mount(
           <FormattedTime value={0} />
         );
-        expect(consoleError.calls.length).toBe(0);
+        expect(consoleError).toHaveBeenCalledTimes(0);
 
         withIntlContext.setProps({
           ...withIntlContext.props(),
           value: undefined
         });
-        expect(consoleError.calls.length).toBe(2);
-        expect(consoleError.calls[0].arguments[0]).toContain(
+        expect(consoleError).toHaveBeenCalledTimes(2);
+        expect(consoleError.mock.calls[0][0]).toContain(
           'Warning: Failed prop type: The prop `value` is marked as required in `FormattedTime`, but its value is `undefined`.'
       );
-        expect(consoleError.calls[1].arguments[0]).toContain(
+        expect(consoleError.mock.calls[1][0]).toContain(
             '[React Intl] Error formatting time.\nRangeError'
         );
     });
@@ -83,7 +83,7 @@ describe('<FormattedTime>', () => {
         value: date + 1
       });
 
-      expect(spy.calls.length).toBe(2);
+      expect(spy).toHaveBeenCalledTimes(2);
     });
 
     it('should re-render when context changes', () => {
@@ -100,7 +100,7 @@ describe('<FormattedTime>', () => {
       const otherIntl = generateIntlContext({ locale: 'en-US' });
       withIntlContext.instance().mockContext(otherIntl);
 
-      expect(spy.calls.length).toBe(2);
+      expect(spy).toHaveBeenCalledTimes(2);
     });
 
     it('accepts valid Intl.DateTimeFormat options as props', () => {
@@ -128,7 +128,7 @@ describe('<FormattedTime>', () => {
         );
 
         expect(rendered.text()).toBe(String(date));
-        expect(consoleError.calls.length).toBeGreaterThan(0);
+        expect(consoleError.mock.calls.length).toBeGreaterThan(0);
     });
 
     it('accepts `format` prop', () => {
@@ -173,8 +173,8 @@ describe('<FormattedTime>', () => {
         expect(rendered.type()).toBe('b');
         expect(rendered.text()).toBe('Jest');
 
-        expect(spy.calls.length).toBe(1);
-        expect(spy.calls[0].arguments).toEqual([
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy.mock.calls[0]).toEqual([
           intl.formatTime(date)
         ]);
     });

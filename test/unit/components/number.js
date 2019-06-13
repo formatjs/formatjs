@@ -19,7 +19,7 @@ describe('<FormattedNumber>', () => {
     });
 
     afterEach(() => {
-        consoleError.restore();
+        consoleError.mockRestore();
     });
 
     it('has a `displayName`', () => {
@@ -75,7 +75,7 @@ describe('<FormattedNumber>', () => {
         value: num + 1
       });
 
-      expect(spy.calls.length).toBe(2);
+      expect(spy).toHaveBeenCalledTimes(2);
     });
 
     it('should re-render when context changes', () => {
@@ -92,7 +92,7 @@ describe('<FormattedNumber>', () => {
       const otherIntl = generateIntlContext({ locale: 'en-US' });
       withIntlContext.instance().mockContext(otherIntl);
 
-      expect(spy.calls.length).toBe(2);
+      expect(spy).toHaveBeenCalledTimes(2);
     });
 
     it('accepts valid Intl.NumberFormat options as props', () => {
@@ -118,7 +118,7 @@ describe('<FormattedNumber>', () => {
         );
 
         expect(rendered.text()).toBe('0');
-        expect(consoleError.calls.length).toBeGreaterThan(0);
+        expect(consoleError.mock.calls.length).toBeGreaterThan(0);
     });
 
     it('accepts `format` prop', () => {
@@ -160,8 +160,8 @@ describe('<FormattedNumber>', () => {
           2
         );
 
-        expect(spy.calls.length).toBe(1);
-        expect(spy.calls[0].arguments).toEqual([
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy.mock.calls[0]).toEqual([
           intl.formatNumber(num)
         ]);
 

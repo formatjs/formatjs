@@ -10,3 +10,30 @@ if (reactMajorVersion === 0) {
 const Adapter = require(`enzyme-adapter-react-${reactMajorVersion}`);
 
 configure({ adapter: new Adapter() });
+
+function toBeA(received, typeNameOrObj) {
+  let pass
+  if (typeof typeNameOrObj === 'string') {
+    pass = typeof received === typeNameOrObj
+  } else {
+    pass = received instanceof typeNameOrObj
+  }
+  if (pass) {
+    return {
+      message: () =>
+        `expected ${received} to have type ${typeNameOrObj}`,
+      pass: true,
+    };
+  } 
+    return {
+      message: () =>
+        `expected ${received} not to have type ${typeNameOrObj}`,
+      pass: false,
+    };
+  
+}
+
+expect.extend({
+  toBeA,
+  toBeAn: toBeA
+})

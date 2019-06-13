@@ -19,7 +19,7 @@ describe('<FormattedDate>', () => {
     });
 
     afterEach(() => {
-        consoleError.restore();
+        consoleError.mockRestore();
     });
 
     it('has a `displayName`', () => {
@@ -42,17 +42,17 @@ describe('<FormattedDate>', () => {
           2
         );
         expect(isFinite(value)).toBe(true);
-        expect(consoleError.calls.length).toBe(0);
+        expect(consoleError).toHaveBeenCalledTimes(0);
 
         shallowDeep(
           <FormattedDate />,
           2
         );
-        expect(consoleError.calls.length).toBe(2);
-        expect(consoleError.calls[0].arguments[0]).toContain(
+        expect(consoleError).toHaveBeenCalledTimes(2);
+        expect(consoleError.mock.calls[0][0]).toContain(
           'Warning: Failed prop type: The prop `value` is marked as required in `FormattedDate`, but its value is `undefined`.'
         );
-        expect(consoleError.calls[1].arguments[0]).toContain(
+        expect(consoleError.mock.calls[1][0]).toContain(
           '[React Intl] Error formatting date.\nRangeError'
         );
     });
@@ -86,7 +86,7 @@ describe('<FormattedDate>', () => {
         value: withInlContext.prop('value') + 1
       });
 
-      expect(spy.calls.length).toBe(2);
+      expect(spy).toHaveBeenCalledTimes(2);
     });
 
     it('should re-render when context changes', () => {
@@ -105,7 +105,7 @@ describe('<FormattedDate>', () => {
       });
       withInlContext.instance().mockContext(otherIntl);
 
-      expect(spy.calls.length).toBe(2);
+      expect(spy).toHaveBeenCalledTimes(2);
     });
 
     it('accepts valid Intl.DateTimeFormat options as props', () => {
@@ -132,7 +132,7 @@ describe('<FormattedDate>', () => {
         );
 
         expect(rendered.text()).toBe(String(date));
-        expect(consoleError.calls.length).toBeGreaterThan(0);
+        expect(consoleError.mock.calls.length).toBeGreaterThan(0);
     });
 
     it('accepts `format` prop', () => {
@@ -169,8 +169,8 @@ describe('<FormattedDate>', () => {
           2
         );
 
-        expect(spy.calls.length).toBe(1);
-        expect(spy.calls[0].arguments).toEqual([
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy.mock.calls[0]).toEqual([
           intl.formatDate(date)
         ]);
 
