@@ -2,7 +2,7 @@ module.exports = {
   preset: 'ts-jest/presets/js-with-babel',
   testRegex: '/test/(unit|functional)/.*\\.js',
   testPathIgnorePatterns: ['test/functional/support', '/test/unit/testUtils'],
-  collectCoverageFrom: ['src/**/*.js'],
+  collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
   coverageReporters: ['lcov', 'text', 'text-summary', 'html'],
   coverageThreshold: {
     global: {

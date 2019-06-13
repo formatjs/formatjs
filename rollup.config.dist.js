@@ -15,7 +15,7 @@ const copyright = `/*
 `;
 
 export default {
-  input: p.resolve('src/index.js'),
+  input: p.resolve('lib/index.js'),
   output: {
     file: p.resolve(`dist/react-intl.${isProduction ? 'min.js' : 'js'}`),
     format: 'umd',

@@ -5,21 +5,21 @@ import * as p from 'path';
 import serialize from 'serialize-javascript';
 
 const messages = globSync('./build/lang/*/en-US.json')
-    .map((filename) => [
-        p.basename(p.dirname(filename)),
-        readFileSync(filename, 'utf8'),
-    ])
-    .map(([namespace, file]) => [namespace, JSON.parse(file)])
-    .reduce((messages, [namespace, collection]) => {
-        messages[namespace] = collection;
-        return messages;
-    }, {});
+  .map(filename => [
+    p.basename(p.dirname(filename)),
+    readFileSync(filename, 'utf8'),
+  ])
+  .map(([namespace, file]) => [namespace, JSON.parse(file)])
+  .reduce((messages, [namespace, collection]) => {
+    messages[namespace] = collection;
+    return messages;
+  }, {});
 
 const app = express();
 
 app.get('/', (req, res) => {
-    res.send(
-`
+  res.send(
+    `
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,12 +38,12 @@ app.get('/', (req, res) => {
 </body>
 </html>
 `
-    );
+  );
 });
 
 app.use(express.static('build'));
 app.use(express.static('../../node_modules'));
 
 app.listen(8080, () => {
-    console.log('React Intl Example server listening at: http://localhost:8080');
+  console.log('React Intl Example server listening at: http://localhost:8080');
 });

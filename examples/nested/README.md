@@ -1,5 +1,4 @@
-React Intl Nested Example
-=========================
+# React Intl Nested Example
 
 This is a runnable example showing how to use React Intl with nested collections of string messages from different "widgets" that could be defined in separate npm packages and combined in one app.
 
