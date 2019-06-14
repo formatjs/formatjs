@@ -2,11 +2,13 @@
     "compilerOptions": {
         "module": "es6",
         "target": "es6",
-        "allowJs": true,
         "outDir": "lib",
         "jsx": "react",
         "types": ["node"],
-        "incremental": true
+        "incremental": true,
+        "declaration": true,
+        "strict": true,
+        "moduleResolution": "node"
     },
-    "include": ["src/*.ts*", "src/*.js*"]
+    "include": ["src/*.ts*"]
 }

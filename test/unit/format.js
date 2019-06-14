@@ -1,6 +1,5 @@
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
-import {intlFormatPropTypes} from '../../src/types';
 import * as f from '../../src/format';
 
 describe('format API', () => {
@@ -95,7 +94,15 @@ describe('format API', () => {
   });
 
   describe('exports', () => {
-    Object.keys(intlFormatPropTypes).forEach(name => {
+    [
+      'formatDate',
+      'formatTime',
+      'formatRelative',
+      'formatNumber',
+      'formatPlural',
+      'formatMessage',
+      'formatHTMLMessage',
+    ].forEach(name => {
       it(`exports \`${name}\``, () => {
         expect(f[name]).toBeA('function');
       });

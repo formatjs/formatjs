@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {isValidElementType} from 'react-is';
 import * as invariant_ from 'invariant';
 // Since rollup cannot deal with namespace being a function,
 // this is to interop with TypeScript since `invariant`
@@ -13,35 +12,47 @@ import * as hoistNonReactStatics_ from 'hoist-non-react-statics';
 // https://github.com/rollup/rollup/issues/1267
 const hoistNonReactStatics = hoistNonReactStatics_;
 import {invariantIntlContext} from '../utils';
+import {IntlShape} from '../types';
 
-function getDisplayName(Component) {
+function getDisplayName(Component: React.ComponentType<any>) {
   return Component.displayName || Component.name || 'Component';
 }
 
-const IntlContext = React.createContext(null);
+// TODO: We should provide initial value here
+const IntlContext = React.createContext<IntlShape>(null as any);
 const {Consumer: IntlConsumer, Provider: IntlProvider} = IntlContext;
 
 export const Provider = IntlProvider;
 export const Context = IntlContext;
 
-export default function withIntl(componentOrOptions, options) {
-  if (isValidElementType(componentOrOptions)) {
-    // use call to make `options` available on `this`
-    return createWrapper.call({options}, componentOrOptions);
-  }
-  // return a function with `options` bound to `this`
-  return createWrapper.bind({options: componentOrOptions});
+export interface Opts {
+  intlPropName?: string;
+  forwardRef?: boolean;
+  withRef?: boolean;
+  enforceContext?: boolean;
 }
 
-function createWrapper(WrappedComponent) {
-  let options = (this && this.options) || {};
+export interface WrappedComponentProps {
+  intl?: IntlShape;
+}
+
+type WithIntlProps<P> = Omit<P, keyof WrappedComponentProps> & {
+  forwardedRef?: React.Ref<any>;
+};
+
+export default function withIntl<P extends WrappedComponentProps>(
+  WrappedComponent: React.ComponentType<P>,
+  options?: Opts
+): React.ComponentType<WithIntlProps<P>> & {
+  WrappedComponent: typeof WrappedComponent;
+} {
   const {
     intlPropName = 'intl',
     forwardRef = false,
     // DEPRECATED - use forwardRef and ref on injected component
     withRef = false,
     enforceContext = true,
-  } = options;
+  } = options || {};
 
   invariant(
     !withRef,
@@ -49,7 +60,9 @@ function createWrapper(WrappedComponent) {
       "instead use the 'forwardRef' option and create a ref directly on the wrapped component."
   );
 
-  function WithIntl(props) {
+  const WithIntl: React.FC<P & {forwardedRef?: React.Ref<any>}> & {
+    WrappedComponent: typeof WrappedComponent;
+  } = props => {
     return (
       <IntlConsumer>
         {intl => {
@@ -59,8 +72,8 @@ function createWrapper(WrappedComponent) {
 
           return (
             <WrappedComponent
+              {...props}
               {...{
-                ...props,
                 [intlPropName]: intl,
               }}
               ref={forwardRef ? props.forwardedRef : null}
@@ -69,19 +82,19 @@ function createWrapper(WrappedComponent) {
         }}
       </IntlConsumer>
     );
-  }
+  };
 
   WithIntl.displayName = `withIntl(${getDisplayName(WrappedComponent)})`;
   WithIntl.WrappedComponent = WrappedComponent;
 
   if (forwardRef) {
     return hoistNonReactStatics(
-      React.forwardRef((props, ref) => (
+      React.forwardRef((props: P, ref) => (
         <WithIntl {...props} forwardedRef={ref} />
       )),
       WrappedComponent
-    );
+    ) as any;
   }
 
-  return hoistNonReactStatics(WithIntl, WrappedComponent);
+  return hoistNonReactStatics(WithIntl, WrappedComponent) as any;
 }

@@ -36,14 +36,14 @@ export function escape(str: string): string {
 export function filterProps<T extends Record<string, any>, K extends string>(
   props: T,
   whitelist: Array<K>,
-  defaults: T = {} as T
+  defaults: Partial<T> = {}
 ) {
   return whitelist.reduce(
     (filtered, name) => {
       if (props.hasOwnProperty(name)) {
         filtered[name] = props[name];
       } else if (defaults.hasOwnProperty(name)) {
-        filtered[name] = defaults[name];
+        filtered[name] = defaults[name]!;
       }
 
       return filtered;
@@ -60,12 +60,12 @@ export function invariantIntlContext({intl}: {intl?: any} = {}) {
   );
 }
 
-export function createError(message: string, exception?: string) {
+export function createError(message: string, exception?: Error) {
   const eMsg = exception ? `\n${exception}` : '';
   return `[React Intl] ${message}${eMsg}`;
 }
 
-export function defaultErrorHandler(error: Error) {
+export function defaultErrorHandler(error: string) {
   if (process.env.NODE_ENV !== 'production') {
     console.error(error);
   }

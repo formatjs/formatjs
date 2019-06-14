@@ -5,11 +5,16 @@
  */
 
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import withIntl from './withIntl';
-import {intlShape, dateTimeFormatPropTypes} from '../types';
+import {FormatDateOptions, IntlShape} from '../types';
 
-function FormattedDate(props) {
+interface Props extends FormatDateOptions {
+  value: Date | number;
+  intl: IntlShape;
+  children?(val: string): React.ReactElement | null;
+}
+
+const FormattedDate: React.FC<Props> = props => {
   const {
     value,
     children,
@@ -23,14 +28,6 @@ function FormattedDate(props) {
   }
 
   return <Text>{formattedDate}</Text>;
-}
-
-FormattedDate.propTypes = {
-  ...dateTimeFormatPropTypes,
-  intl: intlShape,
-  value: PropTypes.any.isRequired,
-  format: PropTypes.string,
-  children: PropTypes.func,
 };
 
 FormattedDate.displayName = 'FormattedDate';

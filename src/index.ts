@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-export {intlShape} from './types';
+export * from './types';
 export {default as defineMessages} from './define-messages';
 
 export {

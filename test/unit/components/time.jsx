@@ -43,11 +43,8 @@ describe('<FormattedTime>', () => {
       ...withIntlContext.props(),
       value: undefined,
     });
-    expect(consoleError).toHaveBeenCalledTimes(2);
+    expect(consoleError).toHaveBeenCalledTimes(1);
     expect(consoleError.mock.calls[0][0]).toContain(
-      'Warning: Failed prop type: The prop `value` is marked as required in `FormattedTime`, but its value is `undefined`.'
-    );
-    expect(consoleError.mock.calls[1][0]).toContain(
       '[React Intl] Error formatting time.\nRangeError'
     );
   });

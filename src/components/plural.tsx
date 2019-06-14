@@ -5,11 +5,22 @@
  */
 
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import withIntl from './withIntl';
-import {intlShape, pluralFormatPropTypes} from '../types';
+import {IntlShape, FormatPluralOptions} from '../types';
 
-function FormattedPlural(props) {
+interface Props extends FormatPluralOptions {
+  value: number;
+  intl: IntlShape;
+  other: React.ReactNode;
+  zero?: React.ReactNode;
+  one?: React.ReactNode;
+  two?: React.ReactNode;
+  few?: React.ReactNode;
+  many?: React.ReactNode;
+  children?(value: React.ReactNode): React.ReactElement | null;
+}
+
+const FormattedPlural: React.FC<Props> = props => {
   const {
     value,
     other,
@@ -18,28 +29,13 @@ function FormattedPlural(props) {
   } = props;
 
   let pluralCategory = formatPlural(value, props);
-  let formattedPlural = props[pluralCategory] || other;
+  let formattedPlural = props[pluralCategory as 'one'] || other;
 
   if (typeof children === 'function') {
     return children(formattedPlural);
   }
 
   return <Text>{formattedPlural}</Text>;
-}
-
-FormattedPlural.propTypes = {
-  ...pluralFormatPropTypes,
-  intl: intlShape,
-  value: PropTypes.any.isRequired,
-
-  other: PropTypes.node.isRequired,
-  zero: PropTypes.node,
-  one: PropTypes.node,
-  two: PropTypes.node,
-  few: PropTypes.node,
-  many: PropTypes.node,
-
-  children: PropTypes.func,
 };
 
 FormattedPlural.defaultProps = {
