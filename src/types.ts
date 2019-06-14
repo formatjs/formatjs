@@ -9,18 +9,18 @@ import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 
 export interface IntlConfig {
-  locale?: string;
+  locale: string;
   timeZone?: string;
-  formats?: CustomFormats;
-  textComponent?: any;
-  messages?: Record<string, string>;
+  formats: CustomFormats;
+  textComponent: React.ComponentType | keyof React.ReactHTML;
+  messages: Record<string, string>;
   defaultLocale: string;
-  defaultFormats?: CustomFormats;
-  onError?(err: string): void;
+  defaultFormats: CustomFormats;
+  onError(err: string): void;
 }
 
-export interface CustomFormats extends Formats {
-  relative: Record<string, IntlRelativeFormatOptions>;
+export interface CustomFormats extends Partial<Formats> {
+  relative?: Record<string, IntlRelativeFormatOptions>;
 }
 
 export interface CustomFormatConfig {

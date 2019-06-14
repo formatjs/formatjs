@@ -100,7 +100,11 @@ function getNamedFormat<T extends keyof CustomFormats>(
   name: string,
   onError: (err: string) => void
 ) {
-  let format = formats && formats[type] && formats[type][name];
+  const formatType = formats && formats[type];
+  let format;
+  if (formatType) {
+    format = formatType[name];
+  }
   if (format) {
     return format;
   }
@@ -109,15 +113,17 @@ function getNamedFormat<T extends keyof CustomFormats>(
 }
 
 export function formatDate(
-  config: IntlConfig,
+  {
+    locale,
+    formats,
+    onError,
+    timeZone,
+  }: Pick<IntlConfig, 'locale' | 'formats' | 'onError' | 'timeZone'>,
   state: Formatters,
   value: number | Date,
   options: FormatDateOptions = {}
 ) {
-  const {locale, formats, timeZone} = config;
   const {format} = options;
-
-  let onError = config.onError || defaultErrorHandler;
   let date = new Date(value);
   let defaults = {
     ...(timeZone && {timeZone}),
@@ -139,15 +145,17 @@ export function formatDate(
 }
 
 export function formatTime(
-  config: IntlConfig,
+  {
+    locale,
+    formats,
+    onError,
+    timeZone,
+  }: Pick<IntlConfig, 'locale' | 'formats' | 'onError' | 'timeZone'>,
   state: Formatters,
   value: number,
   options: FormatDateOptions = {}
 ) {
-  const {locale, formats, timeZone} = config;
   const {format} = options;
-
-  let onError = config.onError || defaultErrorHandler;
   let date = new Date(value);
   let defaults = {
     ...(timeZone && {timeZone}),
@@ -178,15 +186,17 @@ export function formatTime(
 }
 
 export function formatRelative(
-  config: IntlConfig,
+  {
+    locale,
+    formats,
+    onError,
+  }: Pick<IntlConfig, 'locale' | 'formats' | 'onError'>,
   state: Formatters & {now(): number},
   value: number,
   options: FormatRelativeOptions = {}
 ) {
-  const {locale, formats} = config;
   const {format} = options;
 
-  let onError = config.onError || defaultErrorHandler;
   let date = new Date(value);
   let now = options.now ? new Date(options.now) : Infinity;
   let defaults =
@@ -216,15 +226,16 @@ export function formatRelative(
 }
 
 export function formatNumber(
-  config: IntlConfig,
+  {
+    locale,
+    formats,
+    onError,
+  }: Pick<IntlConfig, 'locale' | 'formats' | 'onError'>,
   state: Formatters,
   value: number,
   options: FormatNumberOptions = {}
 ) {
-  const {locale, formats} = config;
   const {format} = options;
-
-  let onError = config.onError || defaultErrorHandler;
   let defaults =
     (format && getNamedFormat(formats!, 'number', format, onError)) || {};
   let filteredOptions = filterProps(options, NUMBER_FORMAT_OPTIONS, defaults);
@@ -239,15 +250,12 @@ export function formatNumber(
 }
 
 export function formatPlural(
-  config: IntlConfig,
+  {locale, onError}: Pick<IntlConfig, 'locale' | 'onError'>,
   state: Formatters,
   value: number,
   options: FormatPluralOptions = {}
 ) {
-  const {locale} = config;
-
   let filteredOptions = filterProps(options, PLURAL_FORMAT_OPTIONS);
-  let onError = config.onError || defaultErrorHandler;
 
   try {
     return state.getPluralRules(locale, filteredOptions).select(value);
@@ -259,23 +267,27 @@ export function formatPlural(
 }
 
 export function formatMessage(
-  config: IntlConfig,
+  {
+    locale,
+    formats,
+    messages,
+    defaultLocale,
+    defaultFormats,
+    onError,
+  }: Pick<
+    IntlConfig,
+    | 'locale'
+    | 'formats'
+    | 'messages'
+    | 'defaultLocale'
+    | 'defaultFormats'
+    | 'onError'
+  >,
   state: {getMessageFormat: Formatters['getMessageFormat']},
   messageDescriptor: MessageDescriptor = {id: ''},
   values: Record<string, any> = {}
 ) {
-  const {locale, formats, messages, defaultLocale, defaultFormats} = config;
-
   const {id, defaultMessage} = messageDescriptor;
-
-  // Produce a better error if the user calls `intl.formatMessage(element)`
-  if (process.env.NODE_ENV !== 'production') {
-    invariant(
-      !isValidElement(config),
-      "[React Intl] Don't pass React elements to " +
-        'formatMessage(), pass `.props`.'
-    );
-  }
 
   // `id` is a required field of a Message Descriptor.
   invariant(id, '[React Intl] An `id` must be provided to format a message.');
@@ -290,7 +302,6 @@ export function formatMessage(
   }
 
   let formattedMessage;
-  let onError = config.onError || defaultErrorHandler;
 
   if (message) {
     try {
@@ -353,12 +364,8 @@ export function formatMessage(
   return formattedMessage || message || defaultMessage || id;
 }
 
-export function formatHTMLMessage(
-  config: IntlConfig,
-  state: Formatters,
-  messageDescriptor: MessageDescriptor,
-  rawValues: Record<string, any> = {}
-) {
+export function formatHTMLMessage(...args: Parameters<typeof formatMessage>) {
+  const rawValues = args[3] || {};
   // Process all the values before they are used when formatting the ICU
   // Message string. Since the formatted message might be injected via
   // `innerHTML`, all String-based values need to be HTML-escaped.
@@ -371,7 +378,7 @@ export function formatHTMLMessage(
     {}
   );
 
-  return formatMessage(config, state, messageDescriptor, escapedValues);
+  return formatMessage(args[0], args[1], args[2], escapedValues);
 }
 
 export const formatters = {
