@@ -13,6 +13,7 @@ export default [
       sourcemap: true,
       file: 'dist/umd/intl-relativetimeformat.js',
       format: 'umd',
+      exports: 'named',
       name: 'IntlRelativeTimeFormat'
     },
     plugins: [resolveConfig]
@@ -23,6 +24,7 @@ export default [
       sourcemap: true,
       file: 'dist/umd/intl-relativetimeformat.min.js',
       format: 'umd',
+      exports: 'named',
       name: 'IntlRelativeTimeFormat'
     },
     plugins: [resolveConfig, uglifyConfig]
@@ -33,6 +35,7 @@ export default [
       sourcemap: true,
       file: 'dist/umd/intl-relativetimeformat-with-locales.js',
       format: 'umd',
+      exports: 'named',
       name: 'IntlRelativeTimeFormat'
     },
     plugins: [resolveConfig]
@@ -43,6 +46,7 @@ export default [
       sourcemap: true,
       file: 'dist/umd/intl-relativetimeformat-with-locales.min.js',
       format: 'umd',
+      exports: 'named',
       name: 'IntlRelativeTimeFormat'
     },
     plugins: [resolveConfig, uglifyConfig]

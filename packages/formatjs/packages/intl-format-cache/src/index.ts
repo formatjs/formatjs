@@ -4,38 +4,6 @@ Copyrights licensed under the New BSD License.
 See the accompanying LICENSE file for terms.
 */
 
-// -----------------------------------------------------------------------------
-
-// TODO: Remove this once Intl.RelativeTimeFormat is no longer a draft
-interface RelativeTimeFormat {
-  format(value: number, unit: string): string;
-  formatToParts(value: number, unit: string): { value: string }[];
-  resolvedOptions(): ResolvedRelativeTimeFormatOptions;
-}
-interface ResolvedRelativeTimeFormatOptions
-  extends Pick<RelativeTimeFormatOptions, 'numeric' | 'style'> {
-  locale: string;
-}
-interface RelativeTimeFormatOptions {
-  localeMatcher: 'best fit' | 'lookup';
-  numeric: 'always' | 'auto';
-  style: 'long' | 'short' | 'narrow';
-}
-let RelativeTimeFormat: {
-  new (
-    locales?: string | string[],
-    opts?: RelativeTimeFormatOptions
-  ): RelativeTimeFormat;
-  (
-    locales?: string | string[],
-    opts?: RelativeTimeFormatOptions
-  ): RelativeTimeFormat;
-  supportedLocalesOf(
-    locales: string | string[],
-    opts?: Pick<RelativeTimeFormatOptions, 'localeMatcher'>
-  ): string[];
-};
-
 // -- Utilities ----------------------------------------------------------------
 
 function getCacheId(inputs: any[]) {
@@ -52,17 +20,17 @@ function orderedProps(obj: Record<string, any>) {
     .map(k => ({ [k]: obj[k] }));
 }
 
-interface MemoizeFormatConstructorFn {
-  (constructor: typeof Intl.NumberFormat): (
-    ...args: ConstructorParameters<typeof Intl.NumberFormat>
-  ) => Intl.NumberFormat;
-  (constructor: typeof Intl.DateTimeFormat): (
-    ...args: ConstructorParameters<typeof Intl.DateTimeFormat>
-  ) => Intl.DateTimeFormat;
-  (constructor: typeof RelativeTimeFormat): (
-    ...args: ConstructorParameters<typeof RelativeTimeFormat>
-  ) => RelativeTimeFormat;
-  (constructor: any): (...args: any[]) => any;
+export type CacheValue =
+  | Intl.NumberFormat
+  | Intl.DateTimeFormat
+  | Intl.PluralRules
+  | any;
+
+export interface MemoizeFormatConstructorFn {
+  <T extends { new (...args: any[]): any }>(
+    constructor: T,
+    cache?: Record<string, CacheValue>
+  ): (...args: ConstructorParameters<T>) => any;
 }
 
 const memoizeFormatConstructor: MemoizeFormatConstructorFn = (

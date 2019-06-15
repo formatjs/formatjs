@@ -158,23 +158,29 @@ new Suite('IntlMessageFormat cache get simple arg', {
   .add('not cached', () => new IntlMessageFormat('message {token}', 'ar'))
   .run();
 
-const now = Date.now()
+const now = Date.now();
 new Suite('all formats', {
   onCycle,
   onError: console.log,
   onComplete
 })
-.add('number', () => nffc('de', { style: 'percent' }).format(0.788))
-.add('datetime', () => dtfc('de', { month: 'short' }).format(now))
-.add('messageformat', () => mffc('message {token}', 'ar').format({token: 'foo'}))
-.run()
+  .add('number', () => nffc('de', { style: 'percent' }).format(0.788))
+  .add('datetime', () => dtfc('de', { month: 'short' }).format(now))
+  .add('messageformat', () =>
+    mffc('message {token}', 'ar').format({ token: 'foo' })
+  )
+  .run();
 
 new Suite('all formats random input', {
   onCycle,
   onError: console.log,
   onComplete
 })
-.add('number', () => nffc('de', { style: 'percent' }).format(Math.random()))
-.add('datetime', () => dtfc('de', { month: 'short' }).format(Math.random() * 1000 + Date.now()))
-.add('messageformat', () => mffc('message {token}', 'ar').format({token: Math.random() * 10000}))
-.run()
+  .add('number', () => nffc('de', { style: 'percent' }).format(Math.random()))
+  .add('datetime', () =>
+    dtfc('de', { month: 'short' }).format(Math.random() * 1000 + Date.now())
+  )
+  .add('messageformat', () =>
+    mffc('message {token}', 'ar').format({ token: Math.random() * 10000 })
+  )
+  .run();

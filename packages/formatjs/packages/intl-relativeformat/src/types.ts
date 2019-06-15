@@ -66,6 +66,6 @@ export interface LocaleData {
         future: Record<string, string>;
         past: Record<string, string>;
       };
-    }
+    };
   };
 }

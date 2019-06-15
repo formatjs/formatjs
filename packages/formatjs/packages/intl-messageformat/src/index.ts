@@ -159,9 +159,7 @@ const MessageFormat: IntlMessageFormat = ((
       } catch (e) {
         if (e.variableId) {
           throw new Error(
-            `The intl string context variable '${
-              e.variableId
-            }' was not provided to the string '${message}'`
+            `The intl string context variable '${e.variableId}' was not provided to the string '${message}'`
           );
         } else {
           throw e;
@@ -249,4 +247,5 @@ MessageFormat.formats = {
 
 MessageFormat.__parse = parser.parse;
 
+export { Formats, Pattern } from './compiler';
 export default MessageFormat;

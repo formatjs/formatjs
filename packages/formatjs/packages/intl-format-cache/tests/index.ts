@@ -68,7 +68,9 @@ describe('intl-format-cache', function() {
       expect(rf.format(0, { now: 1000 })).to.equal('1 second ago');
 
       expect(getRelativeFormat('en')).to.equal(rf);
-      expect(getRelativeFormat('en', { units: 'hour' })).not.to.equal(rf);
+      expect(getRelativeFormat('en', { units: 'hour' as any })).not.to.equal(
+        rf
+      );
     });
   });
 });
