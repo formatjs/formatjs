@@ -97,15 +97,6 @@ describe('withIntl()', () => {
       });
     });
 
-    describe('withRef', () => {
-      it('throws when true', () => {
-        expect(() => withIntl(Wrapped, {withRef: true})).toThrow(
-          '[React Intl] withRef and getWrappedInstance() are deprecated, ' +
-            "instead use the 'forwardRef' option and create a ref directly on the wrapped component."
-        );
-      });
-    });
-
     describe('forwardRef', () => {
       it("doesn't forward the ref when forwardRef is `false`", () => {
         const Injected = withIntl(Wrapped);

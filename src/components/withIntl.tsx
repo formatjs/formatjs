@@ -1,10 +1,4 @@
 import * as React from 'react';
-import * as invariant_ from 'invariant';
-// Since rollup cannot deal with namespace being a function,
-// this is to interop with TypeScript since `invariant`
-// does not export a default
-// https://github.com/rollup/rollup/issues/1267
-const invariant = invariant_;
 import * as hoistNonReactStatics_ from 'hoist-non-react-statics';
 // Since rollup cannot deal with namespace being a function,
 // this is to interop with TypeScript since `invariant`
@@ -25,40 +19,31 @@ const {Consumer: IntlConsumer, Provider: IntlProvider} = IntlContext;
 export const Provider = IntlProvider;
 export const Context = IntlContext;
 
-export interface Opts {
-  intlPropName?: string;
+export interface Opts<IntlPropName extends string = 'intl'> {
+  intlPropName?: IntlPropName;
   forwardRef?: boolean;
-  withRef?: boolean;
   enforceContext?: boolean;
 }
 
-export interface WrappedComponentProps {
-  intl?: IntlShape;
+export type WrappedComponentProps<IntlPropName extends string = 'intl'> = {
+  [k in IntlPropName]: IntlShape;
 }
 
 type WithIntlProps<P> = Omit<P, keyof WrappedComponentProps> & {
   forwardedRef?: React.Ref<any>;
 };
 
-export default function withIntl<P extends WrappedComponentProps>(
+export default function withIntl<P extends WrappedComponentProps, IntlPropName extends string = 'intl'>(
   WrappedComponent: React.ComponentType<P>,
-  options?: Opts
+  options?: Opts<IntlPropName>
 ): React.ComponentType<WithIntlProps<P>> & {
   WrappedComponent: typeof WrappedComponent;
 } {
   const {
     intlPropName = 'intl',
     forwardRef = false,
-    // DEPRECATED - use forwardRef and ref on injected component
-    withRef = false,
     enforceContext = true,
   } = options || {};
-
-  invariant(
-    !withRef,
-    '[React Intl] withRef and getWrappedInstance() are deprecated, ' +
-      "instead use the 'forwardRef' option and create a ref directly on the wrapped component."
-  );
 
   const WithIntl: React.FC<P & {forwardedRef?: React.Ref<any>}> & {
     WrappedComponent: typeof WrappedComponent;

@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import withIntl, {Provider} from './withIntl';
+import withIntl, {Provider, WrappedComponentProps} from './withIntl';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 import memoizeIntlConstructor from 'intl-format-cache';
@@ -112,10 +112,9 @@ function getBoundFormatFns(config: IntlConfig, state: State) {
   ) as IntlFormatters;
 }
 
-interface Props extends IntlConfig {
+interface Props extends IntlConfig, WrappedComponentProps {
   children: React.ElementType<any>;
   initialNow?: number;
-  intl?: IntlShape;
 }
 
 interface State {
