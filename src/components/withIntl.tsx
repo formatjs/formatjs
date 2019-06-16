@@ -27,23 +27,23 @@ export interface Opts<IntlPropName extends string = 'intl'> {
 
 export type WrappedComponentProps<IntlPropName extends string = 'intl'> = {
   [k in IntlPropName]: IntlShape;
-}
+};
 
 type WithIntlProps<P> = Omit<P, keyof WrappedComponentProps> & {
   forwardedRef?: React.Ref<any>;
 };
 
-export default function withIntl<P extends WrappedComponentProps, IntlPropName extends string = 'intl'>(
+export default function withIntl<
+  P extends WrappedComponentProps,
+  IntlPropName extends string = 'intl'
+>(
   WrappedComponent: React.ComponentType<P>,
   options?: Opts<IntlPropName>
 ): React.ComponentType<WithIntlProps<P>> & {
   WrappedComponent: typeof WrappedComponent;
 } {
-  const {
-    intlPropName = 'intl',
-    forwardRef = false,
-    enforceContext = true,
-  } = options || {};
+  const {intlPropName = 'intl', forwardRef = false, enforceContext = true} =
+    options || {};
 
   const WithIntl: React.FC<P & {forwardedRef?: React.Ref<any>}> & {
     WrappedComponent: typeof WrappedComponent;
