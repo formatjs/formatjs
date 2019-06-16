@@ -43,7 +43,7 @@ export default {
       include: ['*.js+(|x)', '**/*.js+(|x)'],
     }),
     commonjs({
-      sourcemap: true
+      sourcemap: true,
     }),
     isProduction &&
       uglify({
