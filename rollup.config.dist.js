@@ -43,8 +43,7 @@ export default {
       include: ['*.js+(|x)', '**/*.js+(|x)'],
     }),
     commonjs({
-      sourcemap: true,
-      namedExports: {'react-is': ['isValidElementType']},
+      sourcemap: true
     }),
     isProduction &&
       uglify({
