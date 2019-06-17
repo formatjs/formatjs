@@ -137,11 +137,11 @@ function injectIntl(
 
 This function is exported by the `react-intl` package and is a High-Order Component (HOC) factory. It will wrap the passed-in React component with another React component which provides the imperative formatting API into the wrapped component via its `props`. (This is similar to the connect-to-stores pattern found in many Flux implementations.)
 
-By default, the formatting API will be provided to the wrapped component via `props.intl`, but this can be overridden when specifying `options.intlPropName`. The value of the prop will be of type [`intlShape`](#intlshape), defined in the next section.
+By default, the formatting API will be provided to the wrapped component via `props.intl`, but this can be overridden when specifying `options.intlPropName`. The value of the prop will be of type [`IntlShape`](#Intlshape), defined in the next section.
 
 ```js
 import React, {PropTypes} from 'react';
-import {injectIntl, intlShape, FormattedRelative} from 'react-intl';
+import {withIntl, FormattedRelative} from 'react-intl';
 
 class ClassComponent extends React.Component {
   render() {
@@ -156,35 +156,41 @@ class ClassComponent extends React.Component {
 
 ClassComponent.propTypes = {
   date: PropTypes.any.isRequired,
-  intl: intlShape.isRequired,
 };
 
-export default injectIntl(ClassComponent);
+export default withIntl(ClassComponent);
 ```
 
-#### `intlShape`
+#### `IntlShape`
 
-```js
-type IntlConfig = {
-    locale: string,
-    formats: object,
-    messages: {[id: string]: string},
+```ts
+interface IntlConfig {
+  locale?: string;
+  timeZone?: string;
+  formats?: CustomFormats;
+  textComponent?: any;
+  messages?: Record<string, string>;
+  defaultLocale: string;
+  defaultFormats?: CustomFormats;
+  onError?(err: string): void;
+}
 
-    defaultLocale: string = 'en',
-    defaultFormats: object = {},
-};
+interface IntlFormatters {
+  formatDate(value: number | Date, opts: FormatDateOptions): string;
+  formatTime(value: number | Date, opts: FormatDateOptions): string;
+  formatRelative(value: number, opts: FormatRelativeOptions): string;
+  formatNumber(value: number, opts: FormatNumberOptions): string;
+  formatPlural(
+    value: number,
+    opts: FormatPluralOptions
+  ): ReturnType<Intl.PluralRules['select']>;
+  formatMessage(descriptor: MessageDescriptor, values: any): string;
+  formatHTMLMessage: Function;
+}
 
-type IntlFormat = {
-    formatDate: (value: any, options?: object) => string,
-    formatTime: (value: any, options?: object) => string,
-    formatRelative: (value: any, options?: object) => string,
-    formatNumber: (value: any, options?: object) => string,
-    formatPlural: (value: any, options?: object) => string,
-    formatMessage: (messageDescriptor: MessageDescriptor, values?: object) => string,
-    formatHTMLMessage: (messageDescriptor: MessageDescriptor, values?: object) => string,
-};
-
-const intlShape: IntlConfig & IntlFormat & {now: () => number};
+interface IntlShape extends IntlConfig, IntlFormatters {
+  now(): number;
+}
 ```
 
 This function is exported by the `react-intl` package and provides an object-shape [React prop validator](http://facebook.github.io/react/docs/reusable-components.html#prop-validation) that can be used in conjunction with the [`injectIntl`](#injectintl) HOC factory function.
@@ -303,7 +309,7 @@ formatRelative(now - 1000 * 60 * 60 * 24, {units: 'hour'}); // "24 hours ago"
 
 By default, the `value` is compared with the current time at the time the function is called, but this reference time value can be explicitly specified via the `now` option.
 
-**Note:** The reason [`intlShape`](#intlshape) has a `now` function is to allow both `<IntlProvider>` and `<FormattedRelative>` components to provide an `initialNow` prop. This allows for the current time to be fixed for things like testing or server-side rendering in an isomorphic/universal React app.
+**Note:** The reason [`IntlShape`](#Intlshape) has a `now` function is to allow both `<IntlProvider>` and `<FormattedRelative>` components to provide an `initialNow` prop. This allows for the current time to be fixed for things like testing or server-side rendering in an isomorphic/universal React app.
 
 ### Number Formatting APIs
 

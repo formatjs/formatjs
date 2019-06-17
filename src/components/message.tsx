@@ -5,17 +5,19 @@
  */
 
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import withIntl from './withIntl';
 import IntlMessageFormat from 'intl-messageformat';
 import memoizeIntlConstructor from 'intl-format-cache';
-import {intlShape, messageDescriptorPropTypes} from '../types';
+import {MessageDescriptor, IntlShape} from '../types';
 import * as shallowEquals_ from 'shallow-equal/objects';
 const shallowEquals = shallowEquals_;
 import {formatMessage as baseFormatMessage} from '../format';
 import {invariantIntlContext} from '../utils';
 
-const defaultFormatMessage = (descriptor, values) => {
+const defaultFormatMessage: IntlShape['formatMessage'] = (
+  descriptor,
+  values
+) => {
   if (process.env.NODE_ENV !== 'production') {
     console.error(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry. Using default message as fallback.'
@@ -23,34 +25,33 @@ const defaultFormatMessage = (descriptor, values) => {
   }
 
   return baseFormatMessage(
-    {},
+    {defaultLocale: 'en'},
     {getMessageFormat: memoizeIntlConstructor(IntlMessageFormat)},
     descriptor,
     values
   );
 };
 
-class FormattedMessage extends React.Component {
-  static propTypes = {
-    ...messageDescriptorPropTypes,
-    intl: intlShape,
-    values: PropTypes.object,
-    tagName: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-    children: PropTypes.func,
-  };
+export interface Props extends MessageDescriptor {
+  intl: IntlShape;
+  values?: any;
+  tagName: React.ElementType<any>;
+  children?(...nodes: Array<React.ReactNode>): React.ReactNode;
+}
 
+export class BaseFormattedMessage extends React.Component<Props> {
   static defaultProps = {
     values: {},
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     if (!props.defaultMessage) {
       invariantIntlContext(props);
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: Props) {
     const {values} = this.props;
     const {values: nextValues} = nextProps;
 
@@ -66,10 +67,7 @@ class FormattedMessage extends React.Component {
       values,
     };
 
-    return (
-      !shallowEquals(this.props, nextPropsToCheck) ||
-      !shallowEquals(this.state, nextState)
-    );
+    return !shallowEquals(this.props, nextPropsToCheck);
   }
 
   render() {
@@ -85,9 +83,9 @@ class FormattedMessage extends React.Component {
       children,
     } = this.props;
 
-    let tokenDelimiter;
-    let tokenizedValues;
-    let elements;
+    let tokenDelimiter: string = '';
+    let tokenizedValues: Record<string, string> = {};
+    let elements: Record<string, string | React.ReactChild> = {};
 
     let hasValues = values && Object.keys(values).length > 0;
     if (hasValues) {
@@ -104,8 +102,6 @@ class FormattedMessage extends React.Component {
       // with a capture group IE8 does not include the capture group in
       // the resulting array.
       tokenDelimiter = `@__${uid}__@`;
-      tokenizedValues = {};
-      elements = {};
 
       // Iterates over the `props` to keep track of any React Element
       // values so they can be represented by the `token` as a placeholder
@@ -128,7 +124,7 @@ class FormattedMessage extends React.Component {
     let descriptor = {id, description, defaultMessage};
     let formattedMessage = formatMessage(descriptor, tokenizedValues || values);
 
-    let nodes;
+    let nodes: Array<string | React.ReactChild>;
 
     let hasElements = elements && Object.keys(elements).length > 0;
     if (hasElements) {
@@ -154,6 +150,4 @@ class FormattedMessage extends React.Component {
   }
 }
 
-export const BaseFormattedMessage = FormattedMessage;
-
-export default withIntl(FormattedMessage, {enforceContext: false});
+export default withIntl(BaseFormattedMessage, {enforceContext: false});

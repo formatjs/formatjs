@@ -3,110 +3,89 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
+import {Formats} from 'intl-messageformat/lib/compiler';
+import {IntlRelativeFormatOptions} from 'intl-relativeformat';
+import IntlMessageFormat from 'intl-messageformat';
+import IntlRelativeFormat from 'intl-relativeformat';
 
-import {
-  bool,
-  number,
-  string,
-  func,
-  object,
-  oneOf,
-  shape,
-  any,
-  oneOfType,
-} from 'prop-types';
-const localeMatcher = oneOf(['best fit', 'lookup']);
-const narrowShortLong = oneOf(['narrow', 'short', 'long']);
-const numeric2digit = oneOf(['numeric', '2-digit']);
-const funcReq = func.isRequired;
+export interface IntlConfig {
+  locale?: string;
+  timeZone?: string;
+  formats?: CustomFormats;
+  textComponent?: any;
+  messages?: Record<string, string>;
+  defaultLocale: string;
+  defaultFormats?: CustomFormats;
+  onError?(err: string): void;
+}
 
-export const intlConfigPropTypes = {
-  locale: string,
-  timeZone: string,
-  formats: object,
-  messages: object,
-  textComponent: any,
+export interface CustomFormats extends Formats {
+  relative: Record<string, IntlRelativeFormatOptions>;
+}
 
-  defaultLocale: string,
-  defaultFormats: object,
+export interface CustomFormatConfig {
+  format?: string;
+}
 
-  onError: func,
-};
+export type FormatDateOptions = Exclude<
+  Intl.DateTimeFormatOptions,
+  'localeMatcher'
+> &
+  CustomFormatConfig;
+export type FormatNumberOptions = Exclude<
+  Intl.NumberFormatOptions,
+  'localeMatcher'
+> &
+  CustomFormatConfig;
+export type FormatRelativeOptions = Exclude<
+  IntlRelativeFormatOptions,
+  'localeMatcher'
+> &
+  CustomFormatConfig & {now?: number};
+export type FormatPluralOptions = Exclude<
+  Intl.PluralRulesOptions,
+  'localeMatcher'
+> &
+  CustomFormatConfig;
 
-export const intlFormatPropTypes = {
-  formatDate: funcReq,
-  formatTime: funcReq,
-  formatRelative: funcReq,
-  formatNumber: funcReq,
-  formatPlural: funcReq,
-  formatMessage: funcReq,
-  formatHTMLMessage: funcReq,
-};
+export interface IntlFormatters {
+  formatDate(value: number | Date, opts: FormatDateOptions): string;
+  formatTime(value: number | Date, opts: FormatDateOptions): string;
+  formatRelative(value: number, opts: FormatRelativeOptions): string;
+  formatNumber(value: number, opts: FormatNumberOptions): string;
+  formatPlural(
+    value: number,
+    opts: FormatPluralOptions
+  ): ReturnType<Intl.PluralRules['select']>;
+  formatMessage(descriptor: MessageDescriptor, values: any): string;
+  formatHTMLMessage: Function;
+}
 
-export const intlShape = shape({
-  ...intlConfigPropTypes,
-  ...intlFormatPropTypes,
-  formatters: object,
-  now: funcReq,
-});
+export interface Formatters {
+  getDateTimeFormat(
+    ...args: ConstructorParameters<typeof Intl.DateTimeFormat>
+  ): Intl.DateTimeFormat;
+  getNumberFormat(
+    ...args: ConstructorParameters<typeof Intl.NumberFormat>
+  ): Intl.NumberFormat;
+  getMessageFormat(
+    ...args: ConstructorParameters<typeof IntlMessageFormat>
+  ): typeof IntlMessageFormat;
+  getRelativeFormat(
+    ...args: ConstructorParameters<typeof IntlRelativeFormat>
+  ): typeof IntlRelativeFormat;
+  getPluralRules(
+    ...args: ConstructorParameters<typeof Intl.PluralRules>
+  ): Intl.PluralRules;
+}
 
-export const messageDescriptorPropTypes = {
-  id: string.isRequired,
-  description: oneOfType([string, object]),
-  defaultMessage: string,
-};
+export interface IntlShape extends IntlConfig, IntlFormatters {
+  formatters: Formatters;
+  now(): number;
+}
 
-export const dateTimeFormatPropTypes = {
-  localeMatcher,
-  formatMatcher: oneOf(['basic', 'best fit']),
-
-  timeZone: string,
-  hour12: bool,
-
-  weekday: narrowShortLong,
-  era: narrowShortLong,
-  year: numeric2digit,
-  month: oneOf(['numeric', '2-digit', 'narrow', 'short', 'long']),
-  day: numeric2digit,
-  hour: numeric2digit,
-  minute: numeric2digit,
-  second: numeric2digit,
-  timeZoneName: oneOf(['short', 'long']),
-};
-
-export const numberFormatPropTypes = {
-  localeMatcher,
-
-  style: oneOf(['decimal', 'currency', 'percent']),
-  currency: string,
-  currencyDisplay: oneOf(['symbol', 'code', 'name']),
-  useGrouping: bool,
-
-  minimumIntegerDigits: number,
-  minimumFractionDigits: number,
-  maximumFractionDigits: number,
-  minimumSignificantDigits: number,
-  maximumSignificantDigits: number,
-};
-
-export const relativeFormatPropTypes = {
-  style: oneOf(['best fit', 'numeric']),
-  units: oneOf([
-    'second',
-    'minute',
-    'hour',
-    'day',
-    'month',
-    'year',
-    'second-short',
-    'minute-short',
-    'hour-short',
-    'day-short',
-    'month-short',
-    'year-short',
-  ]),
-};
-
-export const pluralFormatPropTypes = {
-  type: oneOf(['cardinal', 'ordinal']),
-};
+export interface MessageDescriptor {
+  id: string;
+  description?: string | object;
+  defaultMessage?: string;
+}

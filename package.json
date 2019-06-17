@@ -62,20 +62,17 @@
     "setupTestFrameworkScriptFile": "./test/setup.js"
   },
   "dependencies": {
+    "@types/hoist-non-react-statics": "^3.3.1",
     "@types/invariant": "^2.2.29",
-    "@types/prop-types": "^15.7.1",
+    "@types/react": "^16.8.20",
     "hoist-non-react-statics": "^3.3.0",
-    "intl-format-cache": "^3.0.0",
+    "intl-format-cache": "^3.0.2",
     "intl-locales-supported": "^1.0.10",
     "intl-messageformat": "^4.0.0",
     "intl-relativeformat": "^6.1.0",
     "invariant": "^2.1.1",
-    "react-is": "^16.3.1",
+    "react": "^16.3.0",
     "shallow-equal": "^1.1.0"
-  },
-  "peerDependencies": {
-    "prop-types": "^15.5.4",
-    "react": "^16.3.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
@@ -89,6 +86,7 @@
     "@babel/preset-react": "^7.0.0",
     "@formatjs/intl-relativetimeformat": "^1.0.0",
     "@types/jest": "^24.0.13",
+    "@types/prop-types": "^15.7.1",
     "@typescript-eslint/eslint-plugin": "^1.10.2",
     "@typescript-eslint/parser": "^1.10.2",
     "babel-jest": "^24.8.0",
@@ -116,8 +114,7 @@
     "prettier": "^1.6.1",
     "progress": "^2.0.3",
     "promise-queue": "^2.2.5",
-    "prop-types": "^15.6.1",
-    "react": "^16.8.6",
+    "prop-types": "^15.7.2",
     "react-dom": "^16.8.6",
     "rimraf": "^2.4.2",
     "rollup": "^1.13.0",

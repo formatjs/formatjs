@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {intlShape, injectIntl, defineMessages} from 'react-intl';
+import {injectIntl, defineMessages} from 'react-intl';
 
 const messages = defineMessages({
   enUSDescription: {
@@ -39,9 +39,5 @@ class LocalesMenu extends Component {
     );
   }
 }
-
-LocalesMenu.propTypes = {
-  intl: intlShape.isRequired,
-};
 
 export default injectIntl(LocalesMenu);

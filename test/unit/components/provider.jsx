@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
 import {makeMockContext, shallowDeep, SpyComponent} from '../testUtils';
-import {intlConfigPropTypes, intlFormatPropTypes} from '../../../src/types';
 import IntlProvider from '../../../src/components/provider';
 
 const mockContext = makeMockContext(
@@ -16,13 +15,24 @@ const getIntlContext = el => {
 describe('<IntlProvider>', () => {
   const now = Date.now();
 
-  const INTL_CONFIG_PROP_NAMES = Object.keys(intlConfigPropTypes);
-  const INTL_FORMAT_PROP_NAMES = Object.keys(intlFormatPropTypes);
-
-  const INTL_SHAPE_PROP_NAMES = [
-    ...INTL_CONFIG_PROP_NAMES,
-    ...INTL_FORMAT_PROP_NAMES,
-    'now',
+  const INTL_CONFIG_PROP_NAMES = [
+    'locale',
+    'timeZone',
+    'formats',
+    'textComponent',
+    'messages',
+    'defaultLocale',
+    'defaultFormats',
+    'onError',
+  ];
+  const INTL_FORMAT_PROP_NAMES = [
+    'formatDate',
+    'formatTime',
+    'formatRelative',
+    'formatNumber',
+    'formatPlural',
+    'formatMessage',
+    'formatHTMLMessage',
   ];
 
   const Child = () => null;
@@ -105,24 +115,6 @@ describe('<IntlProvider>', () => {
     const rendered = shallowDeep(el, 2);
     expect(rendered.children().length).toBe(1);
     expect(rendered.children().contains(<Child />)).toBe(true);
-  });
-
-  it('provides `context.intl` with `intlShape` props', () => {
-    const IntlProvider = mockContext(null, false);
-    const el = (
-      <IntlProvider locale="en">
-        <Child />
-      </IntlProvider>
-    );
-
-    const intl = getIntlContext(el);
-
-    INTL_SHAPE_PROP_NAMES.forEach(propName => {
-      expect(intl[propName]).not.toBe(
-        undefined,
-        `Missing context.intl prop: ${propName}`
-      );
-    });
   });
 
   it('provides `context.intl` with values from intl config props', () => {

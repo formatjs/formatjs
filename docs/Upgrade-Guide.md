@@ -7,11 +7,13 @@
 - [Migrate withRef to forwardRef](#migrate-withref-to-forwardref)
 - [New useIntl hook as an alternative of injectIntl HOC](#new-useintl-hook-as-an-alternative-of-injectintl-hoc)
 - [Migrate to using native Intl APIs](#migrate-to-using-native-intl-apis)
+- [TypeScript Support](#typescript-support)
 
 ### Breaking API Changes
 
 - `addLocaleData` has been removed. See [Migrate to using native Intl APIs](#migrate-to-using-native-intl-apis) for more details.
 - `ReactIntlLocaleData` has been removed. See [Migrate to using native Intl APIs](#migrate-to-using-native-intl-apis) for more details.
+- `intlShape` has been removed. See [TypeScript Support](#typescript-support) for more details.
 
 ### Use React 16.3 and upwards
 
@@ -131,6 +133,19 @@ If you previously were using `addLocaleData` to support older browsers, we recom
 import '@formatjs/intl-relativetimeformat/polyfill';
 import '@formatjs/intl-relativetimeformat/dist/locale-data/de'; // Add locale data for de
 ```
+
+### TypeScript Support
+
+`react-intl` has been rewritten in TypeScript and thus has native TypeScript support. Therefore, we've also removed `prop-types` dependency and expose `IntlShape` as an interface instead.
+
+All types should be available from top level `index` file without importing from specific subfiles. For example:
+
+```ts
+import {IntlShape} from 'react-intl'; // Correct
+import {IntlShape} from 'react-intl/lib/types'; // Incorrect
+```
+
+If we're missing any interface top level support, please let us know and/or submitting a PR is greatly appreciated :)
 
 ## 2.0.0
 

@@ -238,7 +238,7 @@ Testing with Enzyme works in a similar fashion as written above. Your `mount()`e
  */
 
 import React from 'react';
-import {IntlProvider, intlShape} from 'react-intl';
+import {IntlProvider} from 'react-intl';
 import {mount, shallow} from 'enzyme';
 
 // You can pass your messages to the IntlProvider. Optional: remove if unneeded.

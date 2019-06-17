@@ -42,11 +42,8 @@ describe('<FormattedDate>', () => {
     expect(consoleError).toHaveBeenCalledTimes(0);
 
     shallowDeep(<FormattedDate />, 2);
-    expect(consoleError).toHaveBeenCalledTimes(2);
+    expect(consoleError).toHaveBeenCalledTimes(1);
     expect(consoleError.mock.calls[0][0]).toContain(
-      'Warning: Failed prop type: The prop `value` is marked as required in `FormattedDate`, but its value is `undefined`.'
-    );
-    expect(consoleError.mock.calls[1][0]).toContain(
       '[React Intl] Error formatting date.\nRangeError'
     );
   });

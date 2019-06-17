@@ -5,11 +5,16 @@
  */
 
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import withIntl from './withIntl';
-import {intlShape, numberFormatPropTypes} from '../types';
+import {IntlShape, FormatNumberOptions} from '../types';
 
-function FormattedNumber(props) {
+interface Props extends FormatNumberOptions {
+  value: number;
+  intl: IntlShape;
+  children?(value: string): React.ReactElement | null;
+}
+
+const FormattedNumber: React.FC<Props> = props => {
   const {
     value,
     children,
@@ -23,14 +28,6 @@ function FormattedNumber(props) {
   }
 
   return <Text>{formattedNumber}</Text>;
-}
-
-FormattedNumber.propTypes = {
-  ...numberFormatPropTypes,
-  intl: intlShape,
-  value: PropTypes.any.isRequired,
-  format: PropTypes.string,
-  children: PropTypes.func,
 };
 
 FormattedNumber.displayName = 'FormattedNumber';

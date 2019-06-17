@@ -5,8 +5,7 @@
  */
 
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import withIntl, {Provider} from './withIntl';
+import withIntl, {Provider, WrappedComponentProps} from './withIntl';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 import memoizeIntlConstructor from 'intl-format-cache';
@@ -17,21 +16,40 @@ import * as invariant_ from 'invariant';
 // https://github.com/rollup/rollup/issues/1267
 const invariant = invariant_;
 import {createError, defaultErrorHandler, filterProps} from '../utils';
-import {intlConfigPropTypes, intlFormatPropTypes} from '../types';
-import * as format from '../format';
+import {IntlConfig, IntlShape, IntlFormatters} from '../types';
+import {formatters} from '../format';
 import areIntlLocalesSupported from 'intl-locales-supported';
 import * as shallowEquals_ from 'shallow-equal/objects';
 const shallowEquals = shallowEquals_;
 
-const intlConfigPropNames = Object.keys(intlConfigPropTypes);
-const intlFormatPropNames = Object.keys(intlFormatPropTypes);
+const intlConfigPropNames: Array<keyof IntlConfig> = [
+  'locale',
+  'timeZone',
+  'formats',
+  'messages',
+  'textComponent',
+
+  'defaultLocale',
+  'defaultFormats',
+
+  'onError',
+];
+const intlFormatPropNames: Array<keyof IntlFormatters> = [
+  'formatDate',
+  'formatTime',
+  'formatRelative',
+  'formatNumber',
+  'formatPlural',
+  'formatMessage',
+  'formatHTMLMessage',
+];
 
 // These are not a static property on the `IntlProvider` class so the intl
 // config values can be inherited from an <IntlProvider> ancestor.
 const defaultProps = {
   formats: {},
   messages: {},
-  timeZone: null,
+  timeZone: undefined,
   textComponent: 'span',
 
   defaultLocale: 'en',
@@ -40,27 +58,27 @@ const defaultProps = {
   onError: defaultErrorHandler,
 };
 
-function getConfig(filteredProps) {
+function getConfig(filteredProps: IntlConfig): IntlConfig {
   let config = {...filteredProps};
 
   // Apply default props. This must be applied last after the props have
   // been resolved and inherited from any <IntlProvider> in the ancestry.
   // This matches how React resolves `defaultProps`.
-  for (let propName in defaultProps) {
-    if (config[propName] === undefined) {
-      config[propName] = defaultProps[propName];
+  for (const propName in defaultProps) {
+    if (config[propName as 'timeZone'] === undefined) {
+      config[propName as 'timeZone'] = defaultProps[propName as 'timeZone'];
     }
   }
 
   if (!config.locale || !areIntlLocalesSupported(config.locale)) {
     const {locale, defaultLocale, defaultFormats, onError} = config;
-
-    onError(
-      createError(
-        `Missing locale data for locale: "${locale}". ` +
-          `Using default locale: "${defaultLocale}" as fallback.`
-      )
-    );
+    if (typeof onError === 'function')
+      onError(
+        createError(
+          `Missing locale data for locale: "${locale}". ` +
+            `Using default locale: "${defaultLocale}" as fallback.`
+        )
+      );
 
     // Since there's no registered locale data for `locale`, this will
     // fallback to the `defaultLocale` to make sure things can render.
@@ -78,23 +96,35 @@ function getConfig(filteredProps) {
   return config;
 }
 
-function getBoundFormatFns(config, state) {
+function getBoundFormatFns(config: IntlConfig, state: State) {
   const formatterState = {...state.context.formatters, now: state.context.now};
 
-  return intlFormatPropNames.reduce((boundFormatFns, name) => {
-    boundFormatFns[name] = format[name].bind(null, config, formatterState);
-    return boundFormatFns;
-  }, {});
+  return intlFormatPropNames.reduce(
+    (boundFormatFns: IntlFormatters, name) => {
+      boundFormatFns[name] = (formatters[name] as any).bind(
+        undefined,
+        config,
+        formatterState
+      );
+      return boundFormatFns;
+    },
+    {} as any
+  ) as IntlFormatters;
 }
 
-class IntlProvider extends React.PureComponent {
-  static propTypes = {
-    ...intlConfigPropTypes,
-    children: PropTypes.element.isRequired,
-    initialNow: PropTypes.any,
-  };
+interface Props extends IntlConfig, WrappedComponentProps {
+  children: React.ElementType<any>;
+  initialNow?: number;
+}
 
-  constructor(props) {
+interface State {
+  context: IntlShape;
+  filteredProps?: IntlConfig;
+}
+
+class IntlProvider extends React.PureComponent<Props, State> {
+  private _didDisplay?: boolean;
+  constructor(props: Props) {
     super(props);
 
     invariant(
@@ -108,8 +138,8 @@ class IntlProvider extends React.PureComponent {
 
     // Used to stabilize time when performing an initial rendering so that
     // all relative times use the same reference "now" time.
-    let initialNow;
-    if (isFinite(props.initialNow)) {
+    let initialNow: number;
+    if (isFinite(props.initialNow || Infinity)) {
       initialNow = Number(props.initialNow);
     } else {
       // When an `initialNow` isn't provided via `props`, look to see an
@@ -134,6 +164,7 @@ class IntlProvider extends React.PureComponent {
 
     this.state = {
       context: {
+        ...intlContext!,
         formatters,
 
         // Wrapper to provide stable "now" time for initial render.
@@ -144,7 +175,7 @@ class IntlProvider extends React.PureComponent {
     };
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
     const {intl: intlContext} = nextProps;
 
     // Build a whitelisted config object from `props`, defaults, and

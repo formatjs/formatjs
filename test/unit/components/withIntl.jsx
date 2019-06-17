@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
-import {intlShape} from '../../../src/types';
 import IntlProvider from '../../../src/components/provider';
 import withIntl from '../../../src/components/withIntl';
 
@@ -14,9 +13,6 @@ describe('withIntl()', () => {
   beforeEach(() => {
     Wrapped = () => <div />;
     Wrapped.displayName = 'Wrapped';
-    Wrapped.propTypes = {
-      intl: intlShape.isRequired,
-    };
     Wrapped.someNonReactStatic = {
       foo: true,
     };
@@ -87,9 +83,6 @@ describe('withIntl()', () => {
     describe('intlPropName', () => {
       it("sets <WrappedComponent>'s `props[intlPropName]` to `context.intl`", () => {
         const propName = 'myIntl';
-        Wrapped.propTypes = {
-          [propName]: intlShape.isRequired,
-        };
         const Injected = withIntl(Wrapped, {
           intlPropName: propName,
         });
@@ -100,15 +93,6 @@ describe('withIntl()', () => {
 
         expect(wrapped.prop(propName)).toBe(
           intlProvider.instance().getContext()
-        );
-      });
-    });
-
-    describe('withRef', () => {
-      it('throws when true', () => {
-        expect(() => withIntl(Wrapped, {withRef: true})).toThrow(
-          '[React Intl] withRef and getWrappedInstance() are deprecated, ' +
-            "instead use the 'forwardRef' option and create a ref directly on the wrapped component."
         );
       });
     });
@@ -147,12 +131,11 @@ describe('withIntl()', () => {
         }
       };
       const propName = 'myPropName';
-      const customWithIntl = withIntl({
+      const wrapperRef = React.createRef();
+      const Injected = withIntl(Wrapped, {
         forwardRef: true,
         intlPropName: propName,
       });
-      const wrapperRef = React.createRef();
-      const Injected = customWithIntl(Wrapped);
 
       rendered = mountWithProvider(<Injected ref={wrapperRef} />);
       const wrapped = rendered.find(Wrapped);

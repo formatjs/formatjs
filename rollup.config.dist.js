@@ -44,7 +44,6 @@ export default {
     }),
     commonjs({
       sourcemap: true,
-      namedExports: {'react-is': ['isValidElementType']},
     }),
     isProduction &&
       uglify({

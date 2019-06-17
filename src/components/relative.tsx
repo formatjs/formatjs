@@ -5,9 +5,9 @@
  */
 
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import withIntl from './withIntl';
-import {intlShape, relativeFormatPropTypes} from '../types';
+import {IntlShape, FormatRelativeOptions} from '../types';
+import {SUPPORTED_FIELD} from 'intl-relativeformat/lib/types';
 
 const SECOND = 1000;
 const MINUTE = 1000 * 60;
@@ -18,27 +18,27 @@ const DAY = 1000 * 60 * 60 * 24;
 // See: https://mdn.io/setTimeout
 const MAX_TIMER_DELAY = 2147483647;
 
-function selectUnits(delta) {
+function selectUnits(delta: number): SUPPORTED_FIELD {
   let absDelta = Math.abs(delta);
 
   if (absDelta < MINUTE) {
-    return 'second';
+    return 'second' as SUPPORTED_FIELD;
   }
 
   if (absDelta < HOUR) {
-    return 'minute';
+    return 'minute' as SUPPORTED_FIELD;
   }
 
   if (absDelta < DAY) {
-    return 'hour';
+    return 'hour' as SUPPORTED_FIELD;
   }
 
   // The maximum scheduled delay will be measured in days since the maximum
   // timer delay is less than the number of milliseconds in 25 days.
-  return 'day';
+  return 'day' as SUPPORTED_FIELD;
 }
 
-function getUnitDelay(units) {
+function getUnitDelay(units: SUPPORTED_FIELD): number {
   switch (units) {
     case 'second':
       return SECOND;
@@ -53,7 +53,7 @@ function getUnitDelay(units) {
   }
 }
 
-function isSameDate(a, b) {
+function isSameDate(a: Date | number | string, b: Date | number | string) {
   if (a === b) {
     return true;
   }
@@ -64,25 +64,29 @@ function isSameDate(a, b) {
   return isFinite(aTime) && isFinite(bTime) && aTime === bTime;
 }
 
-class FormattedRelative extends React.PureComponent {
-  static propTypes = {
-    ...relativeFormatPropTypes,
-    intl: intlShape,
-    value: PropTypes.any.isRequired,
-    format: PropTypes.string,
-    updateInterval: PropTypes.number,
-    initialNow: PropTypes.any,
-    children: PropTypes.func,
-  };
+export interface Props extends FormatRelativeOptions {
+  intl: IntlShape;
+  value: number;
+  updateInterval?: number;
+  initialNow?: Date | number;
+  children?(value: string): React.ReactChild;
+}
 
-  static defaultProps = {
+interface State {
+  now: number;
+  prevValue: number;
+}
+
+class FormattedRelative extends React.PureComponent<Props, State> {
+  private _timer?: number;
+  static defaultProps: Partial<Props> = {
     updateInterval: 1000 * 10,
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
-    let now = isFinite(props.initialNow)
+    let now = isFinite(props.initialNow as number)
       ? Number(props.initialNow)
       : props.intl.now();
 
@@ -91,9 +95,9 @@ class FormattedRelative extends React.PureComponent {
     this.state = {now, prevValue: props.value};
   }
 
-  scheduleNextUpdate(props, state) {
+  scheduleNextUpdate(props: Props, state: State) {
     // Cancel and pending update because we're scheduling a new update.
-    clearTimeout(this._timer);
+    window.clearTimeout(this._timer);
 
     const {value, units, updateInterval} = props;
     const time = new Date(value).getTime();
@@ -118,7 +122,7 @@ class FormattedRelative extends React.PureComponent {
         ? Math.max(updateInterval, unitDelay - unitRemainder)
         : Math.max(updateInterval, unitRemainder);
 
-    this._timer = setTimeout(() => {
+    this._timer = window.setTimeout(() => {
       this.setState({now: this.props.intl.now()});
     }, delay);
   }
@@ -127,7 +131,7 @@ class FormattedRelative extends React.PureComponent {
     this.scheduleNextUpdate(this.props, this.state);
   }
 
-  static getDerivedStateFromProps({value, intl}, {prevValue}) {
+  static getDerivedStateFromProps({value, intl}: Props, {prevValue}: State) {
     // When the `props.value` date changes, `state.now` needs to be updated,
     // and the next update can be rescheduled.
     if (!isSameDate(value, prevValue)) {

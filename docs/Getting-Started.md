@@ -82,7 +82,6 @@ We've made React Intl work well with module bundlers like: Browserify, Webpack, 
 Whether you use the ES6, CommonJS, or UMD version of React Intl, they all provide the same named exports:
 
 - [`addLocaleData`](API.md#addlocaledata)
-- [`intlShape`](API.md#intlshape)
 - [`injectIntl`](API.md#injectintl)
 - [`defineMessages`](API.md#definemessages)
 - [`IntlProvider`](Components.md#intlprovider)

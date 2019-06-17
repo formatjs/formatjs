@@ -47,11 +47,5 @@ describe('react-intl', () => {
         expect(ReactIntl.FormattedHTMLMessage).toBeA('function');
       });
     });
-
-    describe('PropTypes Definitions', () => {
-      it('exports `intlShape`', () => {
-        expect(ReactIntl.intlShape).toBeAn('function');
-      });
-    });
   });
 });

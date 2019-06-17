@@ -4,7 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import IntlRelativeFormat from 'intl-relativeformat';
+import IntlRelativeFormat, {
+  IntlRelativeFormatOptions,
+} from 'intl-relativeformat';
 import {isValidElement} from 'react';
 import * as invariant_ from 'invariant';
 // Since rollup cannot deal with namespace being a function,
@@ -14,18 +16,57 @@ import * as invariant_ from 'invariant';
 const invariant = invariant_;
 
 import {
-  dateTimeFormatPropTypes,
-  numberFormatPropTypes,
-  relativeFormatPropTypes,
-  pluralFormatPropTypes,
+  Formatters,
+  IntlConfig,
+  FormatDateOptions,
+  FormatRelativeOptions,
+  CustomFormats,
+  FormatNumberOptions,
+  FormatPluralOptions,
+  MessageDescriptor,
 } from './types';
 
 import {createError, defaultErrorHandler, escape, filterProps} from './utils';
 
-const DATE_TIME_FORMAT_OPTIONS = Object.keys(dateTimeFormatPropTypes);
-const NUMBER_FORMAT_OPTIONS = Object.keys(numberFormatPropTypes);
-const RELATIVE_FORMAT_OPTIONS = Object.keys(relativeFormatPropTypes);
-const PLURAL_FORMAT_OPTIONS = Object.keys(pluralFormatPropTypes);
+const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
+  'localeMatcher',
+  'formatMatcher',
+
+  'timeZone',
+  'hour12',
+
+  'weekday',
+  'era',
+  'year',
+  'month',
+  'day',
+  'hour',
+  'minute',
+  'second',
+  'timeZoneName',
+];
+const NUMBER_FORMAT_OPTIONS: Array<keyof Intl.NumberFormatOptions> = [
+  'localeMatcher',
+
+  'style',
+  'currency',
+  'currencyDisplay',
+  'useGrouping',
+
+  'minimumIntegerDigits',
+  'minimumFractionDigits',
+  'maximumFractionDigits',
+  'minimumSignificantDigits',
+  'maximumSignificantDigits',
+];
+const RELATIVE_FORMAT_OPTIONS: Array<keyof IntlRelativeFormatOptions> = [
+  'style',
+  'units',
+];
+const PLURAL_FORMAT_OPTIONS: Array<keyof Intl.PluralRulesOptions> = [
+  'localeMatcher',
+  'type',
+];
 
 const RELATIVE_FORMAT_THRESHOLDS = {
   second: 60, // seconds to minute
@@ -35,7 +76,9 @@ const RELATIVE_FORMAT_THRESHOLDS = {
   month: 12, // months to year
 };
 
-function updateRelativeFormatThresholds(newThresholds) {
+function updateRelativeFormatThresholds(
+  newThresholds: typeof IntlRelativeFormat['thresholds']
+) {
   const {thresholds} = IntlRelativeFormat;
   ({
     second: thresholds.second,
@@ -51,7 +94,12 @@ function updateRelativeFormatThresholds(newThresholds) {
   } = newThresholds);
 }
 
-function getNamedFormat(formats, type, name, onError) {
+function getNamedFormat<T extends keyof CustomFormats>(
+  formats: CustomFormats,
+  type: T,
+  name: string,
+  onError: (err: string) => void
+) {
   let format = formats && formats[type] && formats[type][name];
   if (format) {
     return format;
@@ -60,7 +108,12 @@ function getNamedFormat(formats, type, name, onError) {
   onError(createError(`No ${type} format named: ${name}`));
 }
 
-export function formatDate(config, state, value, options = {}) {
+export function formatDate(
+  config: IntlConfig,
+  state: Formatters,
+  value: number | Date,
+  options: FormatDateOptions = {}
+) {
   const {locale, formats, timeZone} = config;
   const {format} = options;
 
@@ -68,7 +121,7 @@ export function formatDate(config, state, value, options = {}) {
   let date = new Date(value);
   let defaults = {
     ...(timeZone && {timeZone}),
-    ...(format && getNamedFormat(formats, 'date', format, onError)),
+    ...(format && getNamedFormat(formats!, 'date', format, onError)),
   };
   let filteredOptions = filterProps(
     options,
@@ -85,7 +138,12 @@ export function formatDate(config, state, value, options = {}) {
   return String(date);
 }
 
-export function formatTime(config, state, value, options = {}) {
+export function formatTime(
+  config: IntlConfig,
+  state: Formatters,
+  value: number,
+  options: FormatDateOptions = {}
+) {
   const {locale, formats, timeZone} = config;
   const {format} = options;
 
@@ -93,7 +151,7 @@ export function formatTime(config, state, value, options = {}) {
   let date = new Date(value);
   let defaults = {
     ...(timeZone && {timeZone}),
-    ...(format && getNamedFormat(formats, 'time', format, onError)),
+    ...(format && getNamedFormat(formats!, 'time', format, onError)),
   };
   let filteredOptions = filterProps(
     options,
@@ -119,15 +177,25 @@ export function formatTime(config, state, value, options = {}) {
   return String(date);
 }
 
-export function formatRelative(config, state, value, options = {}) {
+export function formatRelative(
+  config: IntlConfig,
+  state: Formatters & {now(): number},
+  value: number,
+  options: FormatRelativeOptions = {}
+) {
   const {locale, formats} = config;
   const {format} = options;
 
   let onError = config.onError || defaultErrorHandler;
   let date = new Date(value);
-  let now = new Date(options.now);
-  let defaults = format && getNamedFormat(formats, 'relative', format, onError);
-  let filteredOptions = filterProps(options, RELATIVE_FORMAT_OPTIONS, defaults);
+  let now = options.now ? new Date(options.now) : Infinity;
+  let defaults =
+    (!!format && getNamedFormat(formats!, 'relative', format, onError)) || {};
+  let filteredOptions = filterProps(
+    options,
+    RELATIVE_FORMAT_OPTIONS,
+    defaults as IntlRelativeFormatOptions
+  );
 
   // Capture the current threshold values, then temporarily override them with
   // specific values just for this render.
@@ -136,7 +204,7 @@ export function formatRelative(config, state, value, options = {}) {
 
   try {
     return state.getRelativeFormat(locale, filteredOptions).format(date, {
-      now: isFinite(now) ? now : state.now(),
+      now: isFinite(+now) ? now : state.now(),
     });
   } catch (e) {
     onError(createError('Error formatting relative time.', e));
@@ -147,12 +215,18 @@ export function formatRelative(config, state, value, options = {}) {
   return String(date);
 }
 
-export function formatNumber(config, state, value, options = {}) {
+export function formatNumber(
+  config: IntlConfig,
+  state: Formatters,
+  value: number,
+  options: FormatNumberOptions = {}
+) {
   const {locale, formats} = config;
   const {format} = options;
 
   let onError = config.onError || defaultErrorHandler;
-  let defaults = format && getNamedFormat(formats, 'number', format, onError);
+  let defaults =
+    (format && getNamedFormat(formats!, 'number', format, onError)) || {};
   let filteredOptions = filterProps(options, NUMBER_FORMAT_OPTIONS, defaults);
 
   try {
@@ -164,7 +238,12 @@ export function formatNumber(config, state, value, options = {}) {
   return String(value);
 }
 
-export function formatPlural(config, state, value, options = {}) {
+export function formatPlural(
+  config: IntlConfig,
+  state: Formatters,
+  value: number,
+  options: FormatPluralOptions = {}
+) {
   const {locale} = config;
 
   let filteredOptions = filterProps(options, PLURAL_FORMAT_OPTIONS);
@@ -180,10 +259,10 @@ export function formatPlural(config, state, value, options = {}) {
 }
 
 export function formatMessage(
-  config,
-  state,
-  messageDescriptor = {},
-  values = {}
+  config: IntlConfig,
+  state: {getMessageFormat: Formatters['getMessageFormat']},
+  messageDescriptor: MessageDescriptor = {id: ''},
+  values: Record<string, any> = {}
 ) {
   const {locale, formats, messages, defaultLocale, defaultFormats} = config;
 
@@ -275,19 +354,32 @@ export function formatMessage(
 }
 
 export function formatHTMLMessage(
-  config,
-  state,
-  messageDescriptor,
-  rawValues = {}
+  config: IntlConfig,
+  state: Formatters,
+  messageDescriptor: MessageDescriptor,
+  rawValues: Record<string, any> = {}
 ) {
   // Process all the values before they are used when formatting the ICU
   // Message string. Since the formatted message might be injected via
   // `innerHTML`, all String-based values need to be HTML-escaped.
-  let escapedValues = Object.keys(rawValues).reduce((escaped, name) => {
-    let value = rawValues[name];
-    escaped[name] = typeof value === 'string' ? escape(value) : value;
-    return escaped;
-  }, {});
+  let escapedValues = Object.keys(rawValues).reduce(
+    (escaped: Record<string, any>, name) => {
+      let value = rawValues[name];
+      escaped[name] = typeof value === 'string' ? escape(value) : value;
+      return escaped;
+    },
+    {}
+  );
 
   return formatMessage(config, state, messageDescriptor, escapedValues);
 }
+
+export const formatters = {
+  formatNumber,
+  formatDate,
+  formatTime,
+  formatMessage,
+  formatPlural,
+  formatHTMLMessage,
+  formatRelative,
+};
