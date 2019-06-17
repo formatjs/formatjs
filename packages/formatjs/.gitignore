@@ -8,4 +8,4 @@ node_modules
 package-lock.json
 functional-tests/
 *.tsbuildinfo
-.rpt2_cache/
+.rpt2_cache

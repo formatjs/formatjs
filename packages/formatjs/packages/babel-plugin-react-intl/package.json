@@ -7,17 +7,22 @@
     "url": "git+https://github.com/formatjs/formatjs.git"
   },
   "license": "BSD-3-Clause",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "dependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/helper-plugin-utils": "^7.0.0",
+    "@types/babel__core": "^7.1.2",
     "fs-extra": "^8.0.1",
     "intl-messageformat-parser": "^1.6.6"
   },
   "scripts": {
     "clean": "rimraf lib test/fixtures/**/actual.json",
-    "test": "cross-env NODE_ENV=test jest",
+    "test": "TS_NODE_PROJECT='./tsconfig.cjs.json' cross-env NODE_ENV=test jest",
     "cover": "npm t -- --coverage",
-    "build": "babel src --out-dir lib",
+    "build": "tsc && tsc -p tsconfig.cjs.json",
     "prepublishOnly": "npm run build"
   },
   "keywords": [

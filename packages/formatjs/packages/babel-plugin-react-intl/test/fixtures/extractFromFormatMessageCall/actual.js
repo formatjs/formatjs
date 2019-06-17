@@ -9,13 +9,14 @@ const objectPointer = {
 
 class Foo extends Component {
     render() {
+        const {intl} = this.props
         const msgs = {
             baz: this.props.intl.formatMessage({
                 id: 'foo.bar.baz',
                 defaultMessage: 'Hello World!',
                 description: 'The default message',
             }),
-            biff: this.props.intl.formatMessage({
+            biff: intl.formatMessage({
                 id: 'foo.bar.biff',
                 defaultMessage: 'Hello Nurse!',
                 description: 'Another message',

@@ -1,10 +1,10 @@
-import path from 'path';
-import fs from 'fs';
-import * as babel from '@babel/core';
+import * as path from 'path';
+import * as fs from 'fs';
+import { transformFileSync } from '@babel/core';
 import plugin from '../src';
 
-function trim(str) {
-  return str.toString().replace(/^\s+|\s+$/, '');
+function trim(str?: string | null) {
+  return String(str).replace(/^\s+|\s+$/, '');
 }
 
 const skipOutputTests = [
@@ -43,10 +43,12 @@ describe('emit asserts for: ', () => {
 
       // Check message output
       const expectedMessages = fs.readFileSync(
-        path.join(fixtureDir, 'expected.json')
+        path.join(fixtureDir, 'expected.json'),
+        'utf-8'
       );
       const actualMessages = fs.readFileSync(
-        path.join(fixtureDir, 'actual.json')
+        path.join(fixtureDir, 'actual.json'),
+        'utf-8'
       );
       expect(trim(actualMessages)).toEqual(trim(expectedMessages));
     });
@@ -66,10 +68,12 @@ describe('options', () => {
 
     // Check message output
     const expectedMessages = fs.readFileSync(
-      path.join(fixtureDir, 'expected.json')
+      path.join(fixtureDir, 'expected.json'),
+      'utf-8'
     );
     const actualMessages = fs.readFileSync(
-      path.join(fixtureDir, 'actual.json')
+      path.join(fixtureDir, 'actual.json'),
+      'utf-8'
     );
     expect(trim(actualMessages)).toEqual(trim(expectedMessages));
   });
@@ -86,7 +90,11 @@ describe('options', () => {
     const fixtureDir = path.join(fixturesDir, 'overrideIdFn');
 
     const actual = transform(path.join(fixtureDir, 'actual.js'), {
-      overrideIdFn: (id, defaultMessage, description) => {
+      overrideIdFn: (
+        id: string,
+        defaultMessage: string,
+        description: string
+      ) => {
         return `HELLO.${id}.${defaultMessage.length}.${typeof description}`;
       }
     });
@@ -96,10 +104,12 @@ describe('options', () => {
 
     // Check message output
     const expectedMessages = fs.readFileSync(
-      path.join(fixtureDir, 'expected.json')
+      path.join(fixtureDir, 'expected.json'),
+      'utf-8'
     );
     const actualMessages = fs.readFileSync(
-      path.join(fixtureDir, 'actual.json')
+      path.join(fixtureDir, 'actual.json'),
+      'utf-8'
     );
     expect(trim(actualMessages)).toEqual(trim(expectedMessages));
   });
@@ -123,10 +133,12 @@ describe('options', () => {
 
     // Check message output
     const expectedMessages = fs.readFileSync(
-      path.join(fixtureDir, 'expected.json')
+      path.join(fixtureDir, 'expected.json'),
+      'utf-8'
     );
     const actualMessages = fs.readFileSync(
-      path.join(fixtureDir, 'actual.json')
+      path.join(fixtureDir, 'actual.json'),
+      'utf-8'
     );
 
     expect(trim(actualMessages)).toEqual(trim(expectedMessages));
@@ -157,10 +169,12 @@ describe('options', () => {
 
     // Check message output
     const expectedMessages = fs.readFileSync(
-      path.join(fixtureDir, 'expected.json')
+      path.join(fixtureDir, 'expected.json'),
+      'utf-8'
     );
     const actualMessages = fs.readFileSync(
-      path.join(fixtureDir, 'actual.json')
+      path.join(fixtureDir, 'actual.json'),
+      'utf-8'
     );
     expect(trim(actualMessages)).toEqual(trim(expectedMessages));
   });
@@ -175,10 +189,12 @@ describe('options', () => {
 
     // Check message output
     const expectedMessages = fs.readFileSync(
-      path.join(fixtureDir, 'expected.json')
+      path.join(fixtureDir, 'expected.json'),
+      'utf-8'
     );
     const actualMessages = fs.readFileSync(
-      path.join(fixtureDir, 'actual.json')
+      path.join(fixtureDir, 'actual.json'),
+      'utf-8'
     );
     expect(trim(actualMessages)).toEqual(trim(expectedMessages));
   });
@@ -193,10 +209,12 @@ describe('options', () => {
 
     // Check message output
     const expectedMessages = fs.readFileSync(
-      path.join(fixtureDir, 'expected.json')
+      path.join(fixtureDir, 'expected.json'),
+      'utf-8'
     );
     const actualMessages = fs.readFileSync(
-      path.join(fixtureDir, 'actual.json')
+      path.join(fixtureDir, 'actual.json'),
+      'utf-8'
     );
     expect(trim(actualMessages)).toEqual(trim(expectedMessages));
   });
@@ -211,10 +229,12 @@ describe('options', () => {
 
     // Check message output
     const expectedMessages = fs.readFileSync(
-      path.join(fixtureDir, 'expected.json')
+      path.join(fixtureDir, 'expected.json'),
+      'utf-8'
     );
     const actualMessages = fs.readFileSync(
-      path.join(fixtureDir, 'actual.json')
+      path.join(fixtureDir, 'actual.json'),
+      'utf-8'
     );
     expect(trim(actualMessages)).toEqual(trim(expectedMessages));
   });
@@ -235,7 +255,11 @@ const BASE_OPTIONS = {
 
 let cacheBust = 1;
 
-function transform(filePath, options = {}, { multiplePasses = false } = {}) {
+function transform(
+  filePath: string,
+  options = {},
+  { multiplePasses = false } = {}
+) {
   function getPluginConfig() {
     return [
       plugin,
@@ -247,9 +271,9 @@ function transform(filePath, options = {}, { multiplePasses = false } = {}) {
     ];
   }
 
-  return babel.transformFileSync(filePath, {
+  return transformFileSync(filePath, {
     plugins: multiplePasses
       ? [getPluginConfig(), getPluginConfig()]
       : [getPluginConfig()]
-  }).code;
+  })!.code;
 }

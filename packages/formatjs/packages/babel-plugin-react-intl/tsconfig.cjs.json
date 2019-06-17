@@ -1,12 +1,13 @@
 {
+    "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "module": "es6",
-        "moduleResolution": "node",
-        "target": "es5",
-        "lib": ["es6", "dom", "es2018.intl"],
-        "declaration": true,
-        "strict": true,
-        "sourceMap": true,
+        "outDir": "dist",
+        "rootDir": "src",
+        "baseUrl": ".",
+        "module": "commonjs",
+        "paths": {
+            "@formatjs/intl-relativetimeformat": ["../intl-relativetimeformat"]
+        },
         "types": [
             "babel__core",
             "babel__generator",
@@ -19,12 +20,14 @@
             "istanbul-lib-coverage",
             "istanbul-lib-report",
             "istanbul-reports",
-            // Don't include jest here
-            "mocha",
+            // Don't include mocha here
+            "jest",
+            "jest-diff",
             "node",
             "resolve",
             "stack-utils",
             "yargs"
         ]
-    }
+    },
+    "include": ["src/*.ts"]
 }
