@@ -71,7 +71,7 @@
     "intl-messageformat": "^4.0.0",
     "intl-relativeformat": "^6.1.0",
     "invariant": "^2.1.1",
-    "react": "^16.8.0",
+    "react": "^16.3.0",
     "shallow-equal": "^1.1.0"
   },
   "devDependencies": {
