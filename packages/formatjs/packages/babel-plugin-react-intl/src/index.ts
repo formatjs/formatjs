@@ -340,7 +340,7 @@ export default declare((api: any) => {
       }
     },
 
-    post() {
+    post(state) {
       const {
         file: {
           opts: { filename }
@@ -350,6 +350,7 @@ export default declare((api: any) => {
       const basename = p.basename(filename, p.extname(filename));
       const { ReactIntlMessages: messages } = this;
       const descriptors = Array.from(messages.values());
+      state.metadata['react-intl'] = { messages: descriptors };
 
       if (messagesDir && descriptors.length > 0) {
         // Make sure the relative path is "absolute" before

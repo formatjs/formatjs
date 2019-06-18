@@ -36,8 +36,10 @@ describe('emit asserts for: ', () => {
       const actualMessagesPath = path.join(fixtureDir, 'actual.json');
       if (fs.existsSync(actualMessagesPath)) fs.unlinkSync(actualMessagesPath);
 
-      const actual = transform(path.join(fixtureDir, 'actual.js'));
-
+      const { code: actual, metadata } = transform(
+        path.join(fixtureDir, 'actual.js')
+      )!;
+      expect((metadata as any)['react-intl']).toMatchSnapshot();
       // Check code output
       expect(trim(actual)).toMatchSnapshot();
 
@@ -61,7 +63,7 @@ describe('options', () => {
 
     const actual = transform(path.join(fixtureDir, 'actual.js'), {
       removeDefaultMessage: true
-    });
+    })!.code;
 
     // Check code output
     expect(trim(actual)).toMatchSnapshot();
@@ -97,7 +99,7 @@ describe('options', () => {
       ) => {
         return `HELLO.${id}.${defaultMessage.length}.${typeof description}`;
       }
-    });
+    })!.code;
 
     // Check code output
     expect(trim(actual)).toMatchSnapshot();
@@ -275,5 +277,5 @@ function transform(
     plugins: multiplePasses
       ? [getPluginConfig(), getPluginConfig()]
       : [getPluginConfig()]
-  })!.code;
+  });
 }

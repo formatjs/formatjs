@@ -1,6 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`emit asserts for:  output match: FormattedHTMLMessage 1`] = `
+Object {
+  "messages": Array [
+    Object {
+      "defaultMessage": "<h1>Hello World!</h1>",
+      "description": "The default message.",
+      "id": "foo.bar.baz",
+    },
+  ],
+}
+`;
+
+exports[`emit asserts for:  output match: FormattedHTMLMessage 2`] = `
 "\\"use strict\\";
 
 Object.defineProperty(exports, \\"__esModule\\", {
@@ -28,6 +40,18 @@ exports.default = Foo;"
 `;
 
 exports[`emit asserts for:  output match: FormattedMessage 1`] = `
+Object {
+  "messages": Array [
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": "The default message.",
+      "id": "foo.bar.baz",
+    },
+  ],
+}
+`;
+
+exports[`emit asserts for:  output match: FormattedMessage 2`] = `
 "\\"use strict\\";
 
 Object.defineProperty(exports, \\"__esModule\\", {
@@ -55,6 +79,23 @@ exports.default = Foo;"
 `;
 
 exports[`emit asserts for:  output match: defineMessages 1`] = `
+Object {
+  "messages": Array [
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": "The default message",
+      "id": "foo.bar.baz",
+    },
+    Object {
+      "defaultMessage": "Hello Nurse!",
+      "description": "Another message",
+      "id": "foo.bar.biff",
+    },
+  ],
+}
+`;
+
+exports[`emit asserts for:  output match: defineMessages 2`] = `
 "\\"use strict\\";
 
 Object.defineProperty(exports, \\"__esModule\\", {
@@ -90,6 +131,21 @@ exports.default = Foo;"
 `;
 
 exports[`emit asserts for:  output match: descriptionsAsObjects 1`] = `
+Object {
+  "messages": Array [
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": Object {
+        "metadata": "Additional metadata content.",
+        "text": "Something for the translator.",
+      },
+      "id": "foo.bar.baz",
+    },
+  ],
+}
+`;
+
+exports[`emit asserts for:  output match: descriptionsAsObjects 2`] = `
 "\\"use strict\\";
 
 Object.defineProperty(exports, \\"__esModule\\", {
@@ -117,6 +173,18 @@ exports.default = Foo;"
 `;
 
 exports[`emit asserts for:  output match: formatMessageCall 1`] = `
+Object {
+  "messages": Array [
+    Object {
+      "defaultMessage": "bar",
+      "description": "baz",
+      "id": "foo",
+    },
+  ],
+}
+`;
+
+exports[`emit asserts for:  output match: formatMessageCall 2`] = `
 "\\"use strict\\";
 
 Object.defineProperty(exports, \\"__esModule\\", {
