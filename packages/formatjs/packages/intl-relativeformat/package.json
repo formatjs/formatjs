@@ -1,6 +1,6 @@
 {
   "name": "intl-relativeformat",
-  "version": "6.2.1",
+  "version": "6.2.2",
   "description": "Formats JavaScript dates to relative time strings.",
   "keywords": [
     "intl",
@@ -26,7 +26,7 @@
   "module": "lib/index.js",
   "typings": "lib/index.d.ts",
   "devDependencies": {
-    "@formatjs/intl-relativetimeformat": "^2.0.1"
+    "@formatjs/intl-relativetimeformat": "^2.0.2"
   },
   "scripts": {
     "clean": "rimraf dist lib",
