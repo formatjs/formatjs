@@ -1,3 +1,9 @@
-.nyc_output/
-coverage/
+node_modules/
+scripts/
 test/
+tests/
+*.log
+.rpt2_cache
+coverage
+rollup.config.js
+tsconfig.*

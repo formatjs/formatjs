@@ -1,5 +1,9 @@
 node_modules/
 scripts/
-src/
 test/
+tests/
 *.log
+.rpt2_cache
+coverage
+rollup.config.js
+tsconfig.*
