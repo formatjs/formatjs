@@ -81,7 +81,7 @@ We've made React Intl work well with module bundlers like: Browserify, Webpack, 
 
 Whether you use the ES6, CommonJS, or UMD version of React Intl, they all provide the same named exports:
 
-- [`withIntl`](API.md#withintl)
+- [`injectIntl`](API.md#injectintl)
 - [`defineMessages`](API.md#definemessages)
 - [`IntlProvider`](Components.md#intlprovider)
 - [`FormattedDate`](Components.md#formatteddate)
@@ -150,16 +150,16 @@ ReactDOM.render(
 
 React Intl has two ways to format data, through [React components][components] and its [API][api]. The components provide an idiomatic-React way of integrating internationalization into a React app, and the `<Formatted*>` components have [benefits](./Components.md#why-components) over always using the imperative API directly. The API should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
 
-React Intl's imperative API is accessed via [**`withIntl`**](API.md#withintl), a High-Order Component (HOC) factory. It will wrap the passed-in React component with another React component which provides the imperative formatting API into the wrapped component via its `props`. (This is similar to the connect-to-stores pattern found in many Flux implementations.)
+React Intl's imperative API is accessed via [**`injectIntl`**](API.md#injectintl), a High-Order Component (HOC) factory. It will wrap the passed-in React component with another React component which provides the imperative formatting API into the wrapped component via its `props`. (This is similar to the connect-to-stores pattern found in many Flux implementations.)
 
 Here's an example using `<IntlProvider>`, `<Formatted*>` components, and the imperative API to setup an i18n context and format data:
 
 ```js
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {withIntl, IntlProvider, FormattedRelative} from 'react-intl';
+import {injectIntl, IntlProvider, FormattedRelative} from 'react-intl';
 
-const PostDate = withIntl(({date, intl}) => (
+const PostDate = injectIntl(({date, intl}) => (
   <span title={intl.formatDate(date)}>
     <FormattedRelative value={date} />
   </span>

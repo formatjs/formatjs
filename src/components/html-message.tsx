@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import withIntl from './withIntl';
+import withIntl from './injectIntl';
 import {BaseFormattedMessage} from './message';
 
 class FormattedHTMLMessage extends BaseFormattedMessage {

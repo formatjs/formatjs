@@ -38,7 +38,7 @@ If you're using [Karma](https://karma-runner.github.io/) as your test runner and
 
 ## Shallow Rendering
 
-React's `react-addons-test-utils` package contains a [shallow rendering](http://facebook.github.io/react/docs/test-utils.html#shallow-rendering) feature which you might use to test your app's React components. If a component you're trying to test using `ReactShallowRenderer` uses React Intl — specifically `withIntl()` — you'll need to do extra setup work because React Intl components expect to be nested inside an `<IntlProvider>`.
+React's `react-addons-test-utils` package contains a [shallow rendering](http://facebook.github.io/react/docs/test-utils.html#shallow-rendering) feature which you might use to test your app's React components. If a component you're trying to test using `ReactShallowRenderer` uses React Intl — specifically `injectIntl()` — you'll need to do extra setup work because React Intl components expect to be nested inside an `<IntlProvider>`.
 
 ### Testing Example Components That Use React Intl
 
@@ -87,11 +87,11 @@ describe('<ShortDate>', function() {
 });
 ```
 
-#### `<RelativeDate>` (Advanced, Uses `withIntl()`)
+#### `<RelativeDate>` (Advanced, Uses `injectIntl()`)
 
 ```js
 import React, {Component} from 'react';
-import {withIntl, FormattedRelative} from 'react-intl';
+import {injectIntl, FormattedRelative} from 'react-intl';
 
 const RelativeDate = props => (
   <span title={props.intl.formatDate(props.value)}>
@@ -99,16 +99,16 @@ const RelativeDate = props => (
   </span>
 );
 
-// Using `withIntl()` to make React Intl's imperative API available to format
+// Using `injectIntl()` to make React Intl's imperative API available to format
 // the date to a string value for the `title` attribute.
-export default withIntl(RelativeDate);
+export default injectIntl(RelativeDate);
 ```
 
-Testing the `<RelativeDate>` example component is more complicated because it uses `withIntl()` which creates a wrapper component around the component you defined in your app.
+Testing the `<RelativeDate>` example component is more complicated because it uses `injectIntl()` which creates a wrapper component around the component you defined in your app.
 
-Shallow rendering only tests one level deep and we want to test the rendering of the component defined for our app, so we need to access it via the wrapper's `WrappedComponent` property. Its value will be the component we passed into `withIntl()`.
+Shallow rendering only tests one level deep and we want to test the rendering of the component defined for our app, so we need to access it via the wrapper's `WrappedComponent` property. Its value will be the component we passed into `injectIntl()`.
 
-Under the hood, `withIntl()` passes `context.intl` which was created from the `<IntlProvider>` in the component's ancestry to `props.intl`. What we need to do is simulate this for our shallow rendering test:
+Under the hood, `injectIntl()` passes `context.intl` which was created from the `<IntlProvider>` in the component's ancestry to `props.intl`. What we need to do is simulate this for our shallow rendering test:
 
 ```js
 import expect from 'expect';
@@ -132,9 +132,9 @@ describe('<RelativeDate>', function() {
     const {intl} = intlProvider.getChildContext();
 
     // Access the underlying `<RelativeDate>` component from the wrapper
-    // component returned from calling `withIntl()`, and create an
+    // component returned from calling `injectIntl()`, and create an
     // element making sure to pass the `intl` API as a prop to the to
-    // simulate what `withIntl()` does.
+    // simulate what `injectIntl()` does.
     renderer.render(<RelativeDate.WrappedComponent date={date} intl={intl} />);
 
     // Use the `intl` API directly to format the date for the expected
@@ -163,14 +163,14 @@ let element = ReactTestUtils.renderIntoDocument(
 
 However this means that the `element` reference is now pointing to the `IntlProvider` instead of your component. To retrieve a reference to your wrapped component, you can use "refs" with these changes to the code:
 
-In your component, remember to add `{withRef: true}` when calling `withIntl()`:
+In your component, remember to add `{withRef: true}` when calling `injectIntl()`:
 
 ```js
 class MyComponent extends React.Component {
   ...
   myClassFn() { ... }
 }
-export default withIntl(MyComponent, {withRef: true});
+export default injectIntl(MyComponent, {withRef: true});
 ```
 
 In your test, add a "ref" to extract the reference to your tested component:
@@ -219,7 +219,7 @@ element.myClassFn();
 
 ## Enzyme
 
-Testing with Enzyme works in a similar fashion as written above. Your `mount()`ed and `shallow()`ed components will need access to the `intl` context. Below is a helper function which you can import and use to mount your components which make use of any of React-Intl's library (either `<Formatted* />` components or `format*()` methods through `withIntl`).
+Testing with Enzyme works in a similar fashion as written above. Your `mount()`ed and `shallow()`ed components will need access to the `intl` context. Below is a helper function which you can import and use to mount your components which make use of any of React-Intl's library (either `<Formatted* />` components or `format*()` methods through `injectIntl`).
 
 ### Helper function
 
@@ -243,7 +243,7 @@ const intlProvider = new IntlProvider({locale: 'en', messages}, {});
 const {intl} = intlProvider.getChildContext();
 
 /**
- * When using React-Intl `withIntl` on components, props.intl is required.
+ * When using React-Intl `injectIntl` on components, props.intl is required.
  */
 function nodeWithIntlProp(node) {
   return React.cloneElement(node, {intl});
@@ -333,7 +333,7 @@ You can find runnable example [here](https://github.com/formatjs/react-intl/tree
 
 #### Jest mock
 
-Following mock is simplified version of withIntl, formatMessage just places defaultMessage. Should be placed in the root of your project (where node_modules reside) under **mocks** subfolder:
+Following mock is simplified version of injectIntl, formatMessage just places defaultMessage. Should be placed in the root of your project (where node_modules reside) under **mocks** subfolder:
 
 ```js
 // ./__mocks__/react-intl.js
@@ -345,7 +345,7 @@ const intl = {
   formatMessage: ({defaultMessage}) => defaultMessage,
 };
 
-Intl.withIntl = Node => {
+Intl.injectIntl = Node => {
   const renderWrapped = props => <Node {...props} intl={intl} />;
   renderWrapped.displayName = Node.displayName || Node.name || 'Component';
   return renderWrapped;

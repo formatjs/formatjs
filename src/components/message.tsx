@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import withIntl from './withIntl';
+import withIntl from './injectIntl';
 import IntlMessageFormat from 'intl-messageformat';
 import memoizeIntlConstructor from 'intl-format-cache';
 import {MessageDescriptor, IntlShape} from '../types';

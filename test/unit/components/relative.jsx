@@ -52,11 +52,11 @@ describe('<FormattedRelative>', () => {
     expect(getDerivedStateFromProps).toHaveBeenCalledTimes(0);
     const date = Date.now();
 
-    const withIntlContext = mount(<FormattedRelative value={date} />);
+    const injectIntlContext = mount(<FormattedRelative value={date} />);
     expect(consoleError).toHaveBeenCalledTimes(0);
 
-    withIntlContext.setProps({
-      ...withIntlContext.props(),
+    injectIntlContext.setProps({
+      ...injectIntlContext.props(),
       value: NaN,
     });
 
@@ -73,7 +73,7 @@ describe('<FormattedRelative>', () => {
       '`getDerivedStateFromProps()` called unexpectedly'
     );
 
-    withIntlContext.unmount();
+    injectIntlContext.unmount();
   });
 
   it('renders a formatted relative time in a <span>', () => {
@@ -90,14 +90,14 @@ describe('<FormattedRelative>', () => {
     const FormattedRelative = mockContext(intl);
 
     const spy = jest.fn().mockImplementation(() => null);
-    const withIntlContext = mount(
+    const injectIntlContext = mount(
       <FormattedRelative value={Date.now()}>{spy}</FormattedRelative>
     );
 
-    withIntlContext.setProps({
-      ...withIntlContext.props(),
+    injectIntlContext.setProps({
+      ...injectIntlContext.props(),
     });
-    withIntlContext.instance().mockContext(intl);
+    injectIntlContext.instance().mockContext(intl);
 
     expect(spy).toHaveBeenCalledTimes(1);
   });
@@ -106,13 +106,13 @@ describe('<FormattedRelative>', () => {
     const FormattedRelative = mockContext(intl);
 
     const spy = jest.fn().mockImplementation(() => null);
-    const withIntlContext = mount(
+    const injectIntlContext = mount(
       <FormattedRelative value={Date.now()}>{spy}</FormattedRelative>
     );
 
-    withIntlContext.setProps({
-      ...withIntlContext.props(),
-      value: withIntlContext.prop('value') + 1,
+    injectIntlContext.setProps({
+      ...injectIntlContext.props(),
+      value: injectIntlContext.prop('value') + 1,
     });
 
     expect(spy).toHaveBeenCalledTimes(2);
@@ -122,14 +122,14 @@ describe('<FormattedRelative>', () => {
     const FormattedRelative = mockContext(intl);
 
     const spy = jest.fn().mockImplementation(() => null);
-    const withIntlContext = mount(
+    const injectIntlContext = mount(
       <FormattedRelative value={Date.now()}>{spy}</FormattedRelative>
     );
 
     const otherIntl = generateIntlContext({
       locale: 'en-US',
     });
-    withIntlContext.instance().mockContext(otherIntl);
+    injectIntlContext.instance().mockContext(otherIntl);
 
     expect(spy).toHaveBeenCalledTimes(2);
   });
@@ -224,16 +224,16 @@ describe('<FormattedRelative>', () => {
     const date = new Date();
     const now = intl.now();
 
-    const withIntlContext = shallowDeep(
+    const injectIntlContext = shallowDeep(
       <FormattedRelative value={date} updateInterval={1} />
     );
-    const text = withIntlContext.dive().text();
+    const text = injectIntlContext.dive().text();
 
     // Update `now()` to act like the <IntlProvider> is mounted.
     intl.now = () => now + 1000;
 
     setTimeout(() => {
-      const textAfterUpdate = withIntlContext.dive().text();
+      const textAfterUpdate = injectIntlContext.dive().text();
 
       expect(textAfterUpdate).not.toBe(text);
       expect(textAfterUpdate).toBe(
@@ -248,21 +248,21 @@ describe('<FormattedRelative>', () => {
     const FormattedRelative = mockContext(intl);
     const now = intl.now();
 
-    const withIntlContext = shallowDeep(
+    const injectIntlContext = shallowDeep(
       <FormattedRelative value={now} updateInterval={1} />
     );
-    const textBefore = withIntlContext.dive().text();
+    const textBefore = injectIntlContext.dive().text();
 
     // Update `now()` to act like the <IntlProvider> is mounted.
     const nextNow = now + 10000;
     intl.now = () => nextNow;
 
-    withIntlContext.setProps({
-      ...withIntlContext.props(),
+    injectIntlContext.setProps({
+      ...injectIntlContext.props(),
       value: nextNow,
     });
 
-    expect(withIntlContext.dive().text()).toBe(textBefore);
+    expect(injectIntlContext.dive().text()).toBe(textBefore);
   });
 
   it('updates at maximum of `updateInterval` with a string `value`', done => {
@@ -291,16 +291,16 @@ describe('<FormattedRelative>', () => {
     const date = new Date();
     const now = intl.now();
 
-    const withIntlContext = mount(
+    const injectIntlContext = mount(
       <FormattedRelative value={date} updateInterval={0} />
     );
-    const textBefore = withIntlContext.text();
+    const textBefore = injectIntlContext.text();
 
     // Update `now()` to act like the <IntlProvider> is mounted.
     intl.now = () => now + 1000;
 
     setTimeout(() => {
-      const textAfter = withIntlContext.text();
+      const textAfter = injectIntlContext.text();
 
       expect(textAfter).toBe(textBefore);
       expect(textAfter).not.toBe(intl.formatRelative(date, {now: intl.now()}));

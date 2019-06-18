@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import withIntl from './withIntl';
+import withIntl from './injectIntl';
 import {IntlShape, FormatPluralOptions} from '../types';
 
 interface Props extends FormatPluralOptions {

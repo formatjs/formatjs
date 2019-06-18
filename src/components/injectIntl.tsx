@@ -33,7 +33,7 @@ type WithIntlProps<P> = Omit<P, keyof WrappedComponentProps> & {
   forwardedRef?: React.Ref<any>;
 };
 
-export default function withIntl<
+export default function injectIntl<
   IntlPropName extends string = 'intl',
   P extends WrappedComponentProps<IntlPropName> = WrappedComponentProps<any>
 >(
@@ -69,7 +69,7 @@ export default function withIntl<
     );
   };
 
-  WithIntl.displayName = `withIntl(${getDisplayName(WrappedComponent)})`;
+  WithIntl.displayName = `injectIntl(${getDisplayName(WrappedComponent)})`;
   WithIntl.WrappedComponent = WrappedComponent;
 
   if (forwardRef) {

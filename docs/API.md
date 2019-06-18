@@ -69,7 +69,7 @@ const messages = defineMessages({
 React Intl provides:
 
 1. [`useIntl` hook](#useintl-hook): to _hook_ the imperative formatting API into a React function component (with React version >= 16.8).
-2. [`withIntl` HOC](#withintl-hoc): to _inject_ the imperative formatting API into a React class or function component via its `props`.
+2. [`injectIntl` HOC](#injectintl-hoc): to _inject_ the imperative formatting API into a React class or function component via its `props`.
 
 These should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
 
@@ -95,7 +95,7 @@ export default FunctionComponent;
 
 To keep the API surface clean and simple, we only provide `useIntl` hook in the package. If preferable, user can wrap this built-in hook to make customized hook like `useFormatMessage` easily. Please visit React's official website for more general [introduction on React hooks](https://reactjs.org/docs/hooks-intro.html).
 
-#### `withIntl` HOC
+#### `injectIntl` HOC
 
 ```ts
 type WrappedComponentProps<IntlPropName extends string = 'intl'> = {
@@ -106,7 +106,7 @@ type WithIntlProps<P> = Omit<P, keyof WrappedComponentProps> & {
   forwardedRef?: React.Ref<any>;
 };
 
-function withIntl<
+function injectIntl<
   IntlPropName extends string = 'intl',
   P extends WrappedComponentProps<IntlPropName> = WrappedComponentProps<any>
 >(
@@ -123,7 +123,7 @@ By default, the formatting API will be provided to the wrapped component via `pr
 
 ```tsx
 import React, {PropTypes} from 'react';
-import {withIntl, FormattedRelative} from 'react-intl';
+import {injectIntl, FormattedRelative} from 'react-intl';
 
 interface Props {
   date: Date | number;
@@ -132,7 +132,7 @@ interface Props {
 const ClassComponent: React.FC<Props> = props => {
   const {
     date,
-    intl, // Injected by `withIntl`
+    intl, // Injected by `injectIntl`
   } = props;
   return (
     <span title={intl.formatDate(date)}>
@@ -141,7 +141,7 @@ const ClassComponent: React.FC<Props> = props => {
   );
 };
 
-export default withIntl(ClassComponent);
+export default injectIntl(ClassComponent);
 ```
 
 #### `IntlShape`
@@ -173,9 +173,9 @@ interface IntlShape extends IntlConfig, IntlFormatters {
 }
 ```
 
-This interface is exported by the `react-intl` package that can be used in conjunction with the [`withIntl`](#withintl) HOC factory function.
+This interface is exported by the `react-intl` package that can be used in conjunction with the [`injectIntl`](#injectintl) HOC factory function.
 
-The definition above shows what the `props.intl` object will look like that's injected to your component via `withIntl`. It's made up of three parts:
+The definition above shows what the `props.intl` object will look like that's injected to your component via `injectIntl`. It's made up of three parts:
 
 - **`IntlConfig`:** The intl metadata passed as props into the parent `<IntlProvider>`.
 - **`IntlFormatters`:** The imperative formatting API described below.
@@ -189,7 +189,7 @@ React Intl provides three functions to format dates:
 - [`formatTime`](#formattime)
 - [`formatRelative`](#formatrelative)
 
-These APIs are used by their corresponding [`<FormattedDate>`](./Components.md#formatteddate), [`<FormattedTime>`](./Components.md#formattedtime), and [`<FormattedRelative>`](./Components.md#formattedrelative) components and can be [injected](#withintl) into your component via its `props`.
+These APIs are used by their corresponding [`<FormattedDate>`](./Components.md#formatteddate), [`<FormattedTime>`](./Components.md#formattedtime), and [`<FormattedRelative>`](./Components.md#formattedrelative) components and can be [injected](#injectintl) into your component via its `props`.
 
 Each of these APIs support custom named formats via their `format` option which can be specified on `<IntlProvider>`. Both `formatDate` and `formatTime` use [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) options
 
@@ -300,7 +300,7 @@ React Intl provides two functions to format numbers:
 - [`formatNumber`](#formatnumber)
 - [`formatPlural`](#formatplural)
 
-These APIs are used by their corresponding [`<FormattedNumber>`](./Components.md#formattednumber), and [`<FormattedPlural>`](./Components.md#formattedplural) components and can be [injected](#withintl) into your component via its `props`.
+These APIs are used by their corresponding [`<FormattedNumber>`](./Components.md#formattednumber), and [`<FormattedPlural>`](./Components.md#formattedplural) components and can be [injected](#injectintl) into your component via its `props`.
 
 #### `formatNumber`
 
@@ -356,7 +356,7 @@ React Intl provides two functions to format strings/messages:
 - [`formatMessage`](#formatmessage)
 - [`formatHTMLMessage`](#formathtmlmessage)
 
-These APIs are used by their corresponding `<FormattedMessage>`, and `<FormattedHTMLMessage>` components and can be [injected](#withintl) into your component via its `props`.
+These APIs are used by their corresponding `<FormattedMessage>`, and `<FormattedHTMLMessage>` components and can be [injected](#injectintl) into your component via its `props`.
 
 #### Message Syntax
 

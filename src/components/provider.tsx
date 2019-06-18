@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import withIntl, {Provider, WrappedComponentProps} from './withIntl';
+import withIntl, {Provider, WrappedComponentProps} from './injectIntl';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 import memoizeIntlConstructor from 'intl-format-cache';
