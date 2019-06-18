@@ -7,3 +7,4 @@ tests/
 coverage
 rollup.config.js
 tsconfig.*
+.nyc_output
