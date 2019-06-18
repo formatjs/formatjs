@@ -34,8 +34,8 @@ type WithIntlProps<P> = Omit<P, keyof WrappedComponentProps> & {
 };
 
 export default function withIntl<
-  P extends WrappedComponentProps,
-  IntlPropName extends string = 'intl'
+  IntlPropName extends string = 'intl',
+  P extends WrappedComponentProps<IntlPropName> = WrappedComponentProps<any>
 >(
   WrappedComponent: React.ComponentType<P>,
   options?: Opts<IntlPropName>
