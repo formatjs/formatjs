@@ -1,0 +1,4 @@
+{
+    "extends": "../tsconfig.cjs.json",
+    "include": ["*.ts"]
+}

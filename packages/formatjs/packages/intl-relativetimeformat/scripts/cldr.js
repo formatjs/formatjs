@@ -1,4 +1,4 @@
-const extractData = require('formatjs-extract-cldr-data');	
+const extractData = require('formatjs-extract-cldr-data').default;	
 const { resolve, join } = require('path');	
 const { outputFileSync } = require('fs-extra');	
 const serialize = require('serialize-javascript');	
