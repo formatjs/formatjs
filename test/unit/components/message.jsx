@@ -267,10 +267,10 @@ describe('<FormattedMessage>', () => {
     };
 
     const spy = jest.fn().mockImplementation(() => null);
-    const withIntlContext = mount(
+    const injectIntlContext = mount(
       <FormattedMessage {...props}>{spy}</FormattedMessage>
     );
-    withIntlContext.instance().mockContext(changedIntl);
+    injectIntlContext.instance().mockContext(changedIntl);
 
     expect(spy).toHaveBeenCalledTimes(2);
   });
@@ -286,13 +286,13 @@ describe('<FormattedMessage>', () => {
     };
 
     const spy = jest.fn().mockImplementation(() => null);
-    const withIntlContext = mount(
+    const injectIntlContext = mount(
       <FormattedMessage {...descriptor} values={values}>
         {spy}
       </FormattedMessage>
     );
 
-    withIntlContext.setProps({
+    injectIntlContext.setProps({
       ...descriptor,
       values: {
         ...values, // create new object instance with same values to test shallow equality check
@@ -300,7 +300,7 @@ describe('<FormattedMessage>', () => {
     });
     expect(spy).toHaveBeenCalledTimes(1); // expect only 1 render as the value object instance changed but not its values
 
-    withIntlContext.setProps({
+    injectIntlContext.setProps({
       ...descriptor,
       values: {
         name: 'Enzyme',

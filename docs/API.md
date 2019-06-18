@@ -20,6 +20,8 @@ Specifically, the built-in API is used to format dates/times and numbers in Reac
 
 - [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat)
 - [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat)
+- [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules)
+- [`Intl.RelativeTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat)
 
 React Intl wraps these APIs in a consistent way making them easier to use, more performant through memoization, and gracefully fallsback when they throw errors.
 
@@ -34,49 +36,23 @@ React Intl wraps these APIs in the same way it wraps the built-in Intl APIs.
 
 ## React Intl API
 
-### Locale Data APIs
-
-React Intl provides the following APIs relating to locale data:
-
-#### `addLocaleData`
-
-```js
-type LocaleData = {
-    locale: string,
-    [key: string]: any,
-}
-
-function addLocaleData(data: LocaleData | Array<LocaleData>): void;
-```
-
-This function is exported by the `react-intl` package and provides a way to register locale data with the library. The locale data added with this function supports plural and relative-time formatting features as described in [Loading Locale Data](https://github.com/formatjs/react-intl/blob/master/docs/Getting-Started.md#loading-locale-data).
-
-```js
-import {addLocaleData} from 'react-intl';
-import frLocaleData from 'react-intl/locale-data/fr';
-
-addLocaleData(frLocaleData);
-```
-
-**Note:** This function mutates a shared locale data registry which is used by all importers of the module instance.
-
 #### `defineMessages`
 
-```js
-type MessageDescriptor = {
-    id: string,
-    defaultMessage: string,
-    description?: string | object,
-};
+```ts
+interface MessageDescriptor {
+  id: string;
+  description?: string | object;
+  defaultMessage?: string;
+}
 
-type MessageDescriptorMap = {[key: string]: MessageDescriptor};
-
-function defineMessages(messageDescriptors: MessageDescriptorMap): MessageDescriptorMap;
+function defineMessages(
+  messageDescriptors: Record<string, MessageDescriptor>
+): Record<string, MessageDescriptor>;
 ```
 
 This function is exported by the `react-intl` package and is simply a _hook_ for the [babel-plugin-react-intl](https://github.com/formatjs/formatjs/tree/master/packages/babel-plugin-react-intl) package to use when extracting default messages defined in JavaScript source files. This function simply returns the Message Descriptor map object that's passed-in.
 
-```js
+```ts
 import {defineMessages} from 'react-intl';
 
 const messages = defineMessages({
@@ -101,21 +77,17 @@ These should be used when your React component needs to format data to a string 
 
 If a component can be expressed in a form of function component, using `useIntl` HOC can be handy. This `useIntl` hook do not expect any option as its argument when being called. Typically, here is how you would like to use:
 
-```js
-import React, {PropTypes} from 'react';
+```tsx
+import React from 'react';
 import {useIntl, FormattedRelative} from 'react-intl';
 
-const FunctionComponent = ({date}) => {
+const FunctionComponent: React.FC<{date: number | Date}> = ({date}) => {
   const intl = useIntl();
   return (
     <span title={intl.formatDate(date)}>
       <FormattedRelative value={date} />
     </span>
   );
-};
-
-FunctionComponent.propTypes = {
-  date: PropTypes.any.isRequired,
 };
 
 export default FunctionComponent;
@@ -125,40 +97,51 @@ To keep the API surface clean and simple, we only provide `useIntl` hook in the 
 
 #### `injectIntl` HOC
 
-```js
-function injectIntl(
-    WrappedComponent: ReactClass,
-    options?: {
-        intlPropName?: string = 'intl',
-        withRef?: boolean = false,
-    }
-): ReactClass;
+```ts
+type WrappedComponentProps<IntlPropName extends string = 'intl'> = {
+  [k in IntlPropName]: IntlShape;
+};
+
+type WithIntlProps<P> = Omit<P, keyof WrappedComponentProps> & {
+  forwardedRef?: React.Ref<any>;
+};
+
+function injectIntl<
+  IntlPropName extends string = 'intl',
+  P extends WrappedComponentProps<IntlPropName> = WrappedComponentProps<any>
+>(
+  WrappedComponent: React.ComponentType<P>,
+  options?: Opts<IntlPropName>
+): React.ComponentType<WithIntlProps<P>> & {
+  WrappedComponent: typeof WrappedComponent;
+};
 ```
 
 This function is exported by the `react-intl` package and is a High-Order Component (HOC) factory. It will wrap the passed-in React component with another React component which provides the imperative formatting API into the wrapped component via its `props`. (This is similar to the connect-to-stores pattern found in many Flux implementations.)
 
 By default, the formatting API will be provided to the wrapped component via `props.intl`, but this can be overridden when specifying `options.intlPropName`. The value of the prop will be of type [`IntlShape`](#Intlshape), defined in the next section.
 
-```js
+```tsx
 import React, {PropTypes} from 'react';
-import {withIntl, FormattedRelative} from 'react-intl';
+import {injectIntl, FormattedRelative} from 'react-intl';
 
-class ClassComponent extends React.Component {
-  render() {
-    const {date, intl} = this.props;
-    return (
-      <span title={intl.formatDate(date)}>
-        <FormattedRelative value={date} />
-      </span>
-    );
-  }
+interface Props {
+  date: Date | number;
 }
 
-ClassComponent.propTypes = {
-  date: PropTypes.any.isRequired,
+const ClassComponent: React.FC<Props> = props => {
+  const {
+    date,
+    intl, // Injected by `injectIntl`
+  } = props;
+  return (
+    <span title={intl.formatDate(date)}>
+      <FormattedRelative value={date} />
+    </span>
+  );
 };
 
-export default withIntl(ClassComponent);
+export default injectIntl(ClassComponent);
 ```
 
 #### `IntlShape`
@@ -180,10 +163,7 @@ interface IntlFormatters {
   formatTime(value: number | Date, opts: FormatDateOptions): string;
   formatRelative(value: number, opts: FormatRelativeOptions): string;
   formatNumber(value: number, opts: FormatNumberOptions): string;
-  formatPlural(
-    value: number,
-    opts: FormatPluralOptions
-  ): ReturnType<Intl.PluralRules['select']>;
+  formatPlural(value: number, opts: FormatPluralOptions): string;
   formatMessage(descriptor: MessageDescriptor, values: any): string;
   formatHTMLMessage: Function;
 }
@@ -193,12 +173,12 @@ interface IntlShape extends IntlConfig, IntlFormatters {
 }
 ```
 
-This function is exported by the `react-intl` package and provides an object-shape [React prop validator](http://facebook.github.io/react/docs/reusable-components.html#prop-validation) that can be used in conjunction with the [`injectIntl`](#injectintl) HOC factory function.
+This interface is exported by the `react-intl` package that can be used in conjunction with the [`injectIntl`](#injectintl) HOC factory function.
 
-The definition above shows what the `props.intl` object will look like that's injected to your component via `injectintl`. It's made up of three parts:
+The definition above shows what the `props.intl` object will look like that's injected to your component via `injectIntl`. It's made up of three parts:
 
 - **`IntlConfig`:** The intl metadata passed as props into the parent `<IntlProvider>`.
-- **`IntlFormat`:** The imperative formatting API described below.
+- **`IntlFormatters`:** The imperative formatting API described below.
 - **`now`:** A function that returns the current time.
 
 ### Date Formatting APIs
@@ -211,27 +191,7 @@ React Intl provides three functions to format dates:
 
 These APIs are used by their corresponding [`<FormattedDate>`](./Components.md#formatteddate), [`<FormattedTime>`](./Components.md#formattedtime), and [`<FormattedRelative>`](./Components.md#formattedrelative) components and can be [injected](#injectintl) into your component via its `props`.
 
-Each of these APIs support custom named formats via their `format` option which can be specified on `<IntlProvider>`. Both `formatDate` and `formatTime` use [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) which allows them to provide the following formatting options:
-
-```js
-type DateTimeFormatOptions = {
-    localeMatcher: 'best fit' | 'lookup' = 'best fit',
-    formatMatcher: 'basic' | 'best fit' = 'best fit',
-
-    timeZone: string,
-    hour12  : boolean,
-
-    weekday     : 'narrow' | 'short' | 'long',
-    era         : 'narrow' | 'short' | 'long',
-    year        : 'numeric' | '2-digit',
-    month       : 'numeric' | '2-digit' | 'narrow' | 'short' | 'long',
-    day         : 'numeric' | '2-digit',
-    hour        : 'numeric' | '2-digit',
-    minute      : 'numeric' | '2-digit',
-    second      : 'numeric' | '2-digit',
-    timeZoneName: 'short' | 'long',
-};
-```
+Each of these APIs support custom named formats via their `format` option which can be specified on `<IntlProvider>`. Both `formatDate` and `formatTime` use [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) options
 
 **See:** The [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) docs for details on each of these options.
 
@@ -239,8 +199,8 @@ type DateTimeFormatOptions = {
 
 ```js
 function formatDate(
-    value: any,
-    options?: DateTimeFormatOptions & {format?: string}
+    value: number | Date,
+    options?: Intl.DateTimeFormatOptions & {format?: string}
 ): string;
 ```
 
@@ -258,8 +218,8 @@ formatDate(Date.now(), {
 
 ```js
 function formatTime(
-    value: any,
-    options?: DateTimeFormatOptions & {format?: string}
+    value: number | Date,
+    options?: Intl.DateTimeFormatOptions & {format?: string}
 ): string;
 ```
 
@@ -283,14 +243,35 @@ formatTime(Date.now()); // "4:03 PM"
 ```js
 type RelativeFormatOptions = {
     style?: 'best fit' | 'numeric' = 'best fit',
-    units?: 'second' | 'minute' | 'hour' | 'day' | 'month' | 'year',
+    units?:
+      'second' |
+      'second-short' |
+      'second-narrow' |
+      'minute' |
+      'minute-short' |
+      'minute-narrow' |
+      'hour' |
+      'hour-short' |
+      'hour-narrow' |
+      'day' |
+      'day-short' |
+      'day-narrow' |
+      'week' |
+      'week-short' |
+      'week-narrow' |
+      'month' |
+      'month-short' |
+      'month-narrow' |
+      'year' |
+      'year-short'|
+      'year-narrow',
 };
 
 function formatRelative(
-    value: any,
+    value: number | Date,
     options?: RelativeFormatOptions & {
         format?: string,
-        now?: any
+        now?: number
     }
 ): string;
 ```
@@ -305,6 +286,7 @@ formatRelative(now + 1000 * 60 * 60); // "in 1 hour"
 formatRelative(now - 1000 * 60 * 60 * 24); // "yesterday"
 formatRelative(now - 1000 * 60 * 60 * 24, {style: 'numeric'}); // "1 day ago"
 formatRelative(now - 1000 * 60 * 60 * 24, {units: 'hour'}); // "24 hours ago"
+formatRelative(now - 1000 * 60 * 60 * 24, {units: 'hour-narrow'}); // "24 hr. ago"
 ```
 
 By default, the `value` is compared with the current time at the time the function is called, but this reference time value can be explicitly specified via the `now` option.
@@ -322,29 +304,12 @@ These APIs are used by their corresponding [`<FormattedNumber>`](./Components.md
 
 #### `formatNumber`
 
-This function uses [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) which allows them to provide the following formatting options:
+This function uses [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) options.
 
-```js
-type NumberFormatOptions = {
-    localeMatcher: 'best fit' | 'lookup' = 'best fit',
-
-    style: 'decimal' | 'currency' | 'percent' = 'decimal',
-
-    currency       : string,
-    currencyDisplay: 'symbol' | 'code' | 'name' = 'symbol',
-
-    useGrouping: boolean = true,
-
-    minimumIntegerDigits    : number = 1,
-    minimumFractionDigits   : number,
-    maximumFractionDigits   : number,
-    minimumSignificantDigits: number = 1,
-    maximumSignificantDigits: number,
-};
-
+```ts
 function formatNumber(
-    value: any,
-    options?: NumberFormatOptions & {format?: string}
+  value: number,
+  options?: Intl.NumberFormatOptions & {format?: string}
 ): string;
 ```
 
@@ -358,14 +323,14 @@ formatNumber(1000, {style: 'currency', currency: 'USD'}); // $1,000
 
 #### `formatPlural`
 
-```js
+```ts
 type PluralFormatOptions = {
-    style?: 'cardinal' | 'ordinal' = 'cardinal',
+  type?: 'cardinal' | 'ordinal' = 'cardinal';
 };
 
 function formatPlural(
-    value: any,
-    options?: PluralFormatOptions
+  value: number,
+  options?: Intl.PluralFormatOptions
 ): 'zero' | 'one' | 'two' | 'few' | 'many' | 'other';
 ```
 

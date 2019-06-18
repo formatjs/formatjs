@@ -84,7 +84,7 @@
     "@babel/plugin-transform-modules-commonjs": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "@formatjs/intl-relativetimeformat": "^1.0.0",
+    "@formatjs/intl-relativetimeformat": "^2.0.0",
     "@types/jest": "^24.0.13",
     "@types/prop-types": "^15.7.1",
     "@typescript-eslint/eslint-plugin": "^1.10.2",

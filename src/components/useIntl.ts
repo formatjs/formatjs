@@ -1,5 +1,5 @@
 import {useContext} from 'react';
-import {Context} from './withIntl';
+import {Context} from './injectIntl';
 import {invariantIntlContext} from '../utils';
 
 export default function useIntl() {

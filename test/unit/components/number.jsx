@@ -57,12 +57,12 @@ describe('<FormattedNumber>', () => {
     const num = 1000;
 
     const spy = jest.fn().mockImplementation(() => null);
-    const withIntlContext = mount(
+    const injectIntlContext = mount(
       <FormattedNumber value={num}>{spy}</FormattedNumber>
     );
 
-    withIntlContext.setProps({
-      ...withIntlContext.props(),
+    injectIntlContext.setProps({
+      ...injectIntlContext.props(),
       value: num + 1,
     });
 
@@ -74,12 +74,12 @@ describe('<FormattedNumber>', () => {
     const num = 1000;
 
     const spy = jest.fn().mockImplementation(() => null);
-    const withIntlContext = mount(
+    const injectIntlContext = mount(
       <FormattedNumber value={num}>{spy}</FormattedNumber>
     );
 
     const otherIntl = generateIntlContext({locale: 'en-US'});
-    withIntlContext.instance().mockContext(otherIntl);
+    injectIntlContext.instance().mockContext(otherIntl);
 
     expect(spy).toHaveBeenCalledTimes(2);
   });

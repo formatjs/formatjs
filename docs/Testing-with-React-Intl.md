@@ -1,6 +1,6 @@
 # Testing with React-Intl
 
-- [`Intl` Polyfill](#intl-polyfill)
+- [`Intl` APIs requirements](#intl-apis-requirements)
 - [Shallow Rendering](#shallow-rendering)
 - [DOM rendering](#dom-rendering)
 - [Enzyme](#enzyme)
@@ -8,9 +8,9 @@
 - [Storybook](#storybook)
 - [react-testing-library](#react-testing-library)
 
-## `Intl` Polyfill
+## `Intl` APIs requirements
 
-React Intl uses the built-in [`Intl` APIs](https://mdn.io/intl) in JavaScript. This means that the environment in which the tests are running _must_ have the `Intl` APIs. If you're testing in an older browser, Node < 0.12, or PhantomJS, you'll need to load the [Intl Polyfill](https://github.com/andyearnshaw/Intl.js).
+React Intl uses the built-in [`Intl` APIs](https://mdn.io/intl) in JavaScript. Make sure your environment satisfy the requirements listed in [`Intl` APIs requirements](Getting-Started.md##intl-apis-requirements)
 
 ### Mocha
 
@@ -18,16 +18,10 @@ If you're using [Mocha](https://mochajs.org/) as your test runner and testing on
 
 #### Command Line
 
-Make sure the `intl` package is installed as a `devDependency`:
-
-```
-$ npm i --save-dev intl
-```
-
 Run `mocha` and auto-polyfill the runtime if needed:
 
 ```
-$ mocha --require intl --recursive test/
+$ mocha --recursive test/
 ```
 
 #### Browser

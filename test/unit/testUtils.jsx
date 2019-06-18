@@ -7,7 +7,7 @@ export const makeMockContext = (modulePath, exportName = 'default') => (
   enforceContext = true
 ) => {
   jest.resetModules();
-  jest.doMock('../../src/components/withIntl', () => ({
+  jest.doMock('../../src/components/injectIntl', () => ({
     __esModule: true,
     default: (WrappedComponent, opts = {}) => {
       return class extends React.Component {
@@ -28,7 +28,7 @@ export const makeMockContext = (modulePath, exportName = 'default') => (
             opts.enforceContext !== undefined
               ? opts.enforceContext
               : enforceContext;
-          // Represents withIntl more accurately
+          // Represents injectIntl more accurately
           if (_enforceContext) {
             invariantIntlContext({intl: this.state.intl || intl});
           }

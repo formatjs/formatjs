@@ -134,6 +134,14 @@ import '@formatjs/intl-relativetimeformat/polyfill';
 import '@formatjs/intl-relativetimeformat/dist/locale-data/de'; // Add locale data for de
 ```
 
+When using React Intl in Node.js, your `node` binary has to either:
+
+- Get compiled with `full-icu` using these [instructions](https://nodejs.org/api/intl.html)
+
+**OR**
+
+- Uses [`full-icu` npm package](https://www.npmjs.com/package/full-icu)
+
 ### TypeScript Support
 
 `react-intl` has been rewritten in TypeScript and thus has native TypeScript support. Therefore, we've also removed `prop-types` dependency and expose `IntlShape` as an interface instead.

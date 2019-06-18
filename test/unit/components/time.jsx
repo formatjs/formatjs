@@ -36,11 +36,11 @@ describe('<FormattedTime>', () => {
   it('requires a finite `value` prop', () => {
     const FormattedTime = mockContext(intl);
 
-    const withIntlContext = mount(<FormattedTime value={0} />);
+    const injectIntlContext = mount(<FormattedTime value={0} />);
     expect(consoleError).toHaveBeenCalledTimes(0);
 
-    withIntlContext.setProps({
-      ...withIntlContext.props(),
+    injectIntlContext.setProps({
+      ...injectIntlContext.props(),
       value: undefined,
     });
     expect(consoleError).toHaveBeenCalledTimes(1);
@@ -64,12 +64,12 @@ describe('<FormattedTime>', () => {
     const date = Date.now();
 
     const spy = jest.fn().mockImplementation(() => null);
-    const withIntlContext = mount(
+    const injectIntlContext = mount(
       <FormattedTime value={date}>{spy}</FormattedTime>
     );
 
-    withIntlContext.setProps({
-      ...withIntlContext.props(),
+    injectIntlContext.setProps({
+      ...injectIntlContext.props(),
       value: date + 1,
     });
 
@@ -81,12 +81,12 @@ describe('<FormattedTime>', () => {
     const date = Date.now();
 
     const spy = jest.fn().mockImplementation(() => null);
-    const withIntlContext = mount(
+    const injectIntlContext = mount(
       <FormattedTime value={date}>{spy}</FormattedTime>
     );
 
     const otherIntl = generateIntlContext({locale: 'en-US'});
-    withIntlContext.instance().mockContext(otherIntl);
+    injectIntlContext.instance().mockContext(otherIntl);
 
     expect(spy).toHaveBeenCalledTimes(2);
   });

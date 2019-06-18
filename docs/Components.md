@@ -16,8 +16,7 @@ Beyond providing an idiomatic-React way of integrating internationalization into
 - Render React elements that seamlessly compose with other React components.
 - Support rich-text string/message formatting in `<FormattedMessage>`.
 - Implement advanced features like `<FormattedRelative>`'s updating over time.
-- Implement `shouldComponentUpdate` to avoid costly formatting operations.
-- Provide Prop Type warnings for formatting options.
+- Provide TypeScript type definitions.
 
 ## Intl Provider Component
 
@@ -29,19 +28,17 @@ React Intl uses the provider pattern to scope an i18n context to a tree of compo
 
 This component is used to setup the i18n context for a tree. Usually, this component will wrap an app's root component so that the entire app will be within the configured i18n context. The following are the i18n configuration props that can be set:
 
-```js
-type IntlConfig = {
-    locale?: string,
-    formats?: object,
-    messages?: {[id: string]: string},
-
-    defaultLocale?: string = 'en',
-    defaultFormats?: object = {},
-
-    textComponent?: node = 'span',
-
-    onError?: func,
-};
+```ts
+interface IntlConfig {
+  locale: string;
+  timeZone?: string;
+  formats: CustomFormats;
+  textComponent: React.ComponentType | keyof React.ReactHTML;
+  messages: Record<string, string>;
+  defaultLocale: string;
+  defaultFormats: CustomFormats;
+  onError(err: string): void;
+}
 ```
 
 `locale`, `formats`, and `messages` are for the user's current locale and what the app should be rendered in. While `defaultLocale` and `defaultFormats` are for fallbacks or during development and represent the app's default. Notice how there is no `defaultMessages`, that's because each [Message Descriptor](#message-descriptor) provides a `defaultMessage`.
@@ -52,7 +49,7 @@ type IntlConfig = {
 
 These configuration props are combined with the `<IntlProvider>`'s component-specific props:
 
-**Prop Types:**
+**Props:**
 
 ```js
 props: IntlConfig & {
@@ -118,40 +115,21 @@ React Intl provides three components to format dates:
 - [`<FormattedTime>`](#formattedtime)
 - [`<FormattedRelative>`](#formattedrelative)
 
-Both `<FormattedDate>` and `<FormattedTime>` use [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) which allows them to provide the following formatting options:
-
-```js
-type DateTimeFormatOptions = {
-    localeMatcher: 'best fit' | 'lookup' = 'best fit',
-    formatMatcher: 'basic' | 'best fit' = 'best fit',
-
-    timeZone: string,
-    hour12  : boolean,
-
-    weekday     : 'narrow' | 'short' | 'long',
-    era         : 'narrow' | 'short' | 'long',
-    year        : 'numeric' | '2-digit',
-    month       : 'numeric' | '2-digit' | 'narrow' | 'short' | 'long',
-    day         : 'numeric' | '2-digit',
-    hour        : 'numeric' | '2-digit',
-    minute      : 'numeric' | '2-digit',
-    second      : 'numeric' | '2-digit',
-    timeZoneName: 'short' | 'long',
-};
-```
+Both `<FormattedDate>` and `<FormattedTime>` use [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) options.
 
 ### `<FormattedDate>`
 
 This component uses the [`formatDate`](API.md#formatdate) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above.
 
-**Props Types:**
+**Props:**
 
-```js
-props: DateTimeFormatOptions & {
+```ts
+props: Intl.DateTimeFormatOptions &
+  {
     value: any,
-    format?: string,
-    children?: (formattedDate: string) => ReactElement,
-}
+    format: string,
+    children: (formattedDate: string) => ReactElement,
+  };
 ```
 
 By default `<FormattedDate>` will render the formatted date into a `<span>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
@@ -192,7 +170,7 @@ This component uses the [`formatTime`](API.md#formattime) and [`Intl.DateTimeFor
 }
 ```
 
-**Props Types:**
+**Props:**
 
 ```js
 props: DateTimeFormatOptions & {
@@ -218,23 +196,45 @@ By default `<FormattedTime>` will render the formatted time into a `<span>`. If 
 
 This component uses the [`formatRelative`](API.md#formatrelative) API and has `props` that correspond to the following relative formatting options:
 
-```js
+```ts
 type RelativeFormatOptions = {
-    style?: 'best fit' | 'numeric' = 'best fit',
-    units?: 'second' | 'minute' | 'hour' | 'day' | 'month' | 'year',
+  style?: 'best fit' | 'numeric' = 'best fit';
+  units?:
+    | 'second'
+    | 'second-short'
+    | 'second-narrow'
+    | 'minute'
+    | 'minute-short'
+    | 'minute-narrow'
+    | 'hour'
+    | 'hour-short'
+    | 'hour-narrow'
+    | 'day'
+    | 'day-short'
+    | 'day-narrow'
+    | 'week'
+    | 'week-short'
+    | 'week-narrow'
+    | 'month'
+    | 'month-short'
+    | 'month-narrow'
+    | 'year'
+    | 'year-short'
+    | 'year-narrow';
 };
 ```
 
 **Prop Types:**
 
-```js
-props: RelativeFormatOptions & {
+```ts
+props: RelativeFormatOptions &
+  {
     value: any,
-    format?: string,
-    updateInterval?: number,
-    initialNow?: any,
-    children?: (formattedDate: string) => ReactElement,
-}
+    format: string,
+    updateInterval: number,
+    initialNow: any,
+    children: (formattedDate: string) => ReactElement,
+  };
 ```
 
 By default `<FormattedRelative>` will render the formatted relative time into a `<span>`, **and update it a maximum of every 10 seconds**. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
@@ -272,74 +272,51 @@ React Intl provides two components to format numbers:
 
 ### `<FormattedNumber>`
 
-This component uses the [`formatNumber`](API.md#formatnumber) and [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) APIs and has `props` that correspond to the following number formatting options:
+This component uses the [`formatNumber`](API.md#formatnumber) and [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) APIs and has `props` that correspond to `Intl.NumberFormatOptions`.
 
-```js
-type NumberFormatOptions = {
-    localeMatcher: 'best fit' | 'lookup' = 'best fit',
+**Props:**
 
-    style: 'decimal' | 'currency' | 'percent' = 'decimal',
-
-    currency       : string,
-    currencyDisplay: 'symbol' | 'code' | 'name' = 'symbol',
-
-    useGrouping: boolean = true,
-
-    minimumIntegerDigits    : number = 1,
-    minimumFractionDigits   : number,
-    maximumFractionDigits   : number,
-    minimumSignificantDigits: number = 1,
-    maximumSignificantDigits: number,
-};
-```
-
-**Props Types:**
-
-```js
-props: NumberFormatOptions & {
-    value: any,
-    format?: string,
-    children?: (formattedNumber: string) => ReactElement,
-}
+```ts
+props: NumberFormatOptions &
+  {
+    value: number,
+    format: string,
+    children: (formattedNumber: string) => ReactElement,
+  };
 ```
 
 By default `<FormattedNumber>` will render the formatted number into a `<span>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
 
 **Example:**
 
-```js
+```tsx
 <FormattedNumber value={1000} />
 ```
 
-```html
+```tsx
 <span>1,000</span>
 ```
 
 ### `<FormattedPlural>`
 
-This component uses the [`formatPlural`](API.md#formatplural) API and has `props` that correspond to the following plural formatting options:
+This component uses the [`formatPlural`](API.md#formatplural) API and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) has `props` that correspond to `Intl.PluralRulesOptions`.
 
-```js
-type PluralFormatOptions = {
-    style?: 'cardinal' | 'ordinal' = 'cardinal',
-};
-```
+**Props:**
 
-**Props Types:**
-
-```js
-props: PluralFormatOptions & {
+```ts
+props: PluralFormatOptions &
+  {
     value: any,
 
     other: ReactElement,
-    zero?: ReactElement,
-    one?: ReactElement,
-    two?: ReactElement,
-    few?: ReactElement,
-    many?: ReactElement,
+    zero: ReactElement,
+    one: ReactElement,
+    two: ReactElement,
+    few: ReactElement,
+    many: ReactElement,
 
-    children?: (formattedPlural: ReactElement) => ReactElement,
-}
+    children: (formattedPlural: ReactElement) => ReactElement,
+  };
 ```
 
 By default `<FormattedPlural>` will select a [plural category](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) (`zero`, `one`, `two`, `few`, `many`, or `other`) and render the corresponding React element into a `<span>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
@@ -419,7 +396,7 @@ The message formatting APIs go the extra mile to provide fallbacks for the commo
 
 This component uses the [`formatMessage`](API.md#formatmessage) API and has `props` that correspond to a [Message Descriptor](#message-descriptor).
 
-**Props Types:**
+**Props:**
 
 ```js
 props: MessageDescriptor & {

@@ -81,7 +81,6 @@ We've made React Intl work well with module bundlers like: Browserify, Webpack, 
 
 Whether you use the ES6, CommonJS, or UMD version of React Intl, they all provide the same named exports:
 
-- [`addLocaleData`](API.md#addlocaledata)
 - [`injectIntl`](API.md#injectintl)
 - [`defineMessages`](API.md#definemessages)
 - [`IntlProvider`](Components.md#intlprovider)
@@ -95,55 +94,36 @@ Whether you use the ES6, CommonJS, or UMD version of React Intl, they all provid
 
 **Note:** When using the UMD version of React Intl _without_ a module system, it will expect `react` to exist on the global variable: **`React`**, and put the above named exports on the global variable: **`ReactIntl`**.
 
-### Loading Locale Data
+### `Intl` APIs requirements
 
-React Intl relies on locale data to support its plural and relative-time formatting features. This locale data is split out from the main library because it's 39KB gz, and instead grouped per **language**; e.g., `en.js`, `fr.js`, `zh.js`, etc.
+React Intl relies on these `Intl` APIs:
 
-If you are targeting browsers or Node versions which don't have the `Intl` APIs built-in, you'll need to polyfill the runtime using the Intl.js polyfill ([See above for details](#i18n-in-javascript).) This polyfill also has its locale data separated into files that are organized by **locale tag**; e.g., `en-US.js`, `fr.js`, `zh-Hant-TW.js`, etc.
+- [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat): Available on IE11+
+- [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat): Available on IE11+
+- [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules): This can be polyfilled using [this package](https://www.npmjs.com/package/intl-pluralrules).
+- [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat): This can be polyfilled using [this package](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat).
 
-Because of these differences in how the locale data is organized, you'll need to put extra attention on the locale data files available for the Intl.js polyfill and React Intl when loading locale data dynamically.
+If you need to support older browsers, we recommend you do the following:
 
-#### Locale Data in Node.js
-
-When using React Intl in Node.js (same for the Intl.js polyfill), **all locale data will be loaded into memory.** This makes it easier to write a universal/isomorphic React app with React Intl since you won't have to worry about dynamically loading locale data on the server.
-
-**Note:** As mentioned [above](#module-bundlers), when using Browserify/Webpack/Rollup to bundle React Intl for the browser, only basic English locale data will be included.
-
-#### Locale Data in Browsers
-
-When using React Intl in browsers, it will only contain locale data for basic English by default. **This means you'll need to either bundle locale data with your app code, or dynamically load a [locale data UMD module](#the-react-intl-package) based on the current user's locale.**
-
-React Intl provides an [**`addLocaleData` API**](./API.md#addlocaledata) which can be passed the contents of a locale data module and will register it in its locale data registry.
-
-If your app only supports a few languages, we recommend bundling React Intl's locale data for those languages with your app code as this approach is simpler. Here's an example of an app that supports English, French, and Spanish:
+1. If you're supporting browsers that do not have [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](https://www.npmjs.com/package/intl-pluralrules) in your build.
+2. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat) in your build along with individual CLDR data for each locale you support.
 
 ```js
-// app.js
-import {addLocaleData} from 'react-intl';
-import en from 'react-intl/locale-data/en';
-import fr from 'react-intl/locale-data/fr';
-import es from 'react-intl/locale-data/es';
-
-addLocaleData([...en, ...fr, ...es]);
-// ...
+import '@formatjs/intl-relativetimeformat/polyfill';
+import '@formatjs/intl-relativetimeformat/dist/locale-data/de'; // Add locale data for de
 ```
 
-If your app supports many locales, you can also dynamically load the locale data needed for the current user's language. This would involve outputting a different HTML document per users which includes a `<script>` to the correct locale data file. When loading a locale data file in a runtime _without_ a module system, it will be added to a global variable: **`ReactIntlLocaleData`**. Here's an example of loading React Intl and locale data for a French user:
+#### Intl in Node.js
 
-```html
-<!-- Load React and ReactDOM if they're not already on the page. -->
-<script src="https://unpkg.com/react@latest/dist/react.min.js"></script>
-<script src="https://unpkg.com/react-dom@latest/dist/react-dom.min.js"></script>
+When using React Intl in Node.js, your `node` binary has to either:
 
-<!-- Load ReactIntl and its locale data for French. -->
-<script src="https://unpkg.com/react-intl@latest/dist/react-intl.min.js"></script>
-<script src="https://unpkg.com/react-intl@latest/locale-data/fr.js"></script>
-<script>
-  ReactIntl.addLocaleData(ReactIntlLocaleData.fr);
-</script>
-```
+- Get compiled with `full-icu` using these [instructions](https://nodejs.org/api/intl.html)
 
-**Note:** Since `ReactIntl` and `ReactIntlLocaleData` are separate global variables they are decoupled and this means you could set the `async` attribute on the `<script src="">` scripts.
+**OR**
+
+- Uses [`full-icu` npm package](https://www.npmjs.com/package/full-icu)
+
+If your `node` version is missing any of the `Intl` APIs above, you'd have to polyfill them accordingly.
 
 ### Creating an I18n Context
 
@@ -175,7 +155,7 @@ React Intl's imperative API is accessed via [**`injectIntl`**](API.md#injectintl
 Here's an example using `<IntlProvider>`, `<Formatted*>` components, and the imperative API to setup an i18n context and format data:
 
 ```js
-import React, {PropTypes} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import {injectIntl, IntlProvider, FormattedRelative} from 'react-intl';
 
@@ -225,7 +205,6 @@ Assuming `navigator.language` is `"en-us"`:
 
 ## Core Concepts
 
-- Locale data
 - Formatters (Date, Number, Message, Relative)
 - Provider and Injector
 - API and Components
