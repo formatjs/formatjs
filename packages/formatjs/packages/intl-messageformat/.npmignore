@@ -5,6 +5,6 @@ tests/
 *.log
 .rpt2_cache
 coverage
-rollup.config.js
+*.config.js
 tsconfig.*
 .nyc_output
