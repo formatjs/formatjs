@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.0.0](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@8.0.1...formatjs-extract-cldr-data@9.0.0) (2019-06-18)
+
+
+### Features
+
+* **formatjs-extract-cldr-data:** migrate to TS ([#91](https://github.com/formatjs/formatjs/issues/91)) ([c012d6e](https://github.com/formatjs/formatjs/commit/c012d6e))
+
+
+### BREAKING CHANGES
+
+* **formatjs-extract-cldr-data:** Export main function via `default` in index file.
+If you're using `require('formatjs-extract-cldr-data')`, change it to
+`require('formatjs-extract-cldr-data').default`.
+
+
+
+
+
 ## [8.0.1](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@8.0.0...formatjs-extract-cldr-data@8.0.1) (2019-06-12)
 
 **Note:** Version bump only for package formatjs-extract-cldr-data

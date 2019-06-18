@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@3.2.1...babel-plugin-react-intl@3.3.0) (2019-06-18)
+
+
+### Features
+
+* **babel-plugin-react-intl:** rewrite using new babel 7 APIs ([#89](https://github.com/formatjs/formatjs/issues/89)) ([5bc18b0](https://github.com/formatjs/formatjs/commit/5bc18b0))
+
+
+
+
+
 ## [3.2.1](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@3.2.0...babel-plugin-react-intl@3.2.1) (2019-06-12)
 
 **Note:** Version bump only for package babel-plugin-react-intl

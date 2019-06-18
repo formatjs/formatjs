@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/formatjs/formatjs/compare/intl-format-cache@3.0.2...intl-format-cache@3.1.0) (2019-06-18)
+
+
+### Features
+
+* **intl-format-cache:** fix TS definition ([71ae9eb](https://github.com/formatjs/formatjs/commit/71ae9eb))
+
+
+
+
+
 ## [3.0.2](https://github.com/formatjs/formatjs/compare/intl-format-cache@3.0.1...intl-format-cache@3.0.2) (2019-06-12)
 
 **Note:** Version bump only for package intl-format-cache
