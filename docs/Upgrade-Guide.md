@@ -9,6 +9,12 @@
 - [Migrate to using native Intl APIs](#migrate-to-using-native-intl-apis)
 - [TypeScript Support](#typescript-support)
 
+### New APIs
+
+- [`useIntl` hook](#useIntl-hook)
+- [FormattedRelativeTime](Components.md#formattedrelativetime)
+- [formatRelativeTime](API.md#formatrelativetime)
+
 ### Breaking API Changes
 
 - `addLocaleData` has been removed. See [Migrate to using native Intl APIs](#migrate-to-using-native-intl-apis) for more details.
@@ -95,7 +101,7 @@ class Parent extends React.Component {
 }
 ```
 
-### New useIntl hook as an alternative of injectIntl HOC
+### useIntl Hook
 
 This v3 release also supports the latest React hook API for user with React `>= 16.8`. You can now take `useIntl` hook as an alternative to `injectIntl` HOC on _function components_. Both methods allow you to access the `intl` instance, here is a quick comparison:
 

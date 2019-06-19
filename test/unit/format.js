@@ -102,6 +102,7 @@ describe('format API', () => {
       'formatPlural',
       'formatMessage',
       'formatHTMLMessage',
+      'formatRelativeTime',
     ].forEach(name => {
       it(`exports \`${name}\``, () => {
         expect(f[name]).toBeA('function');

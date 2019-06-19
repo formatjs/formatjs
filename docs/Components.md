@@ -109,11 +109,12 @@ By default, changes to the `locale` at runtime may not trigger a re-render of ch
 
 ## Date Formatting Components
 
-React Intl provides three components to format dates:
+React Intl provides 4 components to format dates:
 
 - [`<FormattedDate>`](#formatteddate)
 - [`<FormattedTime>`](#formattedtime)
 - [`<FormattedRelative>`](#formattedrelative)
+- [`<FormattedRelativeTime>`](#formattedrelativetime)
 
 Both `<FormattedDate>` and `<FormattedTime>` use [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) options.
 
@@ -262,6 +263,47 @@ By default `<FormattedRelative>` will render the formatted relative time into a 
 ```
 
 **Note:** You can adjust the maximum interval that the component will re-render by setting the `updateInterval` in `ms`. A falsy value will turn off auto-updating. The updating is smart and will schedule the next update for the next _interesting moment_.
+
+### `<FormattedRelativeTime>`
+
+This component uses the [`formatRelativeTime`](API.md#formatrelativetime) API and has `props` that correspond to the following relative formatting options:
+
+```ts
+type RelativeTimeFormatOptions = {
+  numeric?: 'auto' | 'always';
+  style?: 'long' | 'short' | 'narrow';
+};
+```
+
+**Prop Types:**
+
+```ts
+props: RelativeTimeFormatOptions &
+  {
+    value: number,
+    unit: FormattableUnit,
+    format: string,
+    children: (formattedDate: string) => ReactElement,
+  };
+```
+
+By default `<FormattedRelativeTime>` will render the formatted relative time into a `<span>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
+
+**Example:**
+
+```tsx
+<FormattedRelativeTime value={0} unit="second" />
+<span>now</span>
+
+<FormattedRelativeTime value={-1} unit="hour" numeric="always" />
+<span>1 hour ago</span>
+
+<FormattedRelativeTime value={-1} unit="hour" numeric="auto" />
+<span>last hour</span>
+
+<FormattedRelativeTime value={4} unit="day" />
+<span>in 4 days</span>
+```
 
 ## Number Formatting Components
 

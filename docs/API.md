@@ -293,6 +293,31 @@ By default, the `value` is compared with the current time at the time the functi
 
 **Note:** The reason [`IntlShape`](#Intlshape) has a `now` function is to allow both `<IntlProvider>` and `<FormattedRelative>` components to provide an `initialNow` prop. This allows for the current time to be fixed for things like testing or server-side rendering in an isomorphic/universal React app.
 
+#### `formatRelativeTime`
+
+```ts
+function formatRelativeTime(
+  value: number,
+  unit: FormattableUnit,
+  options?: RelativeFormatOptions & {
+    format?: string;
+    now?: number;
+  }
+): string;
+```
+
+This function will return a formatted relative time string (e.g., "1 hour ago"). It expects a `value` which is a number, a `unit` (`second`, `minute`...) and accepts `options` that conform to `Intl.RelativeTimeFormatOptions`.
+
+```ts
+formatRelativeTime(0); // "now"
+formatRelative(-1, 'second'); // "1 second ago"
+formatRelative(1, 'hour'); // "in 1 hour"
+formatRelative(-1, 'day', {numeric: 'auto'}); // "yesterday"
+formatRelative(-1, 'day', {numeric: 'always'}); // "1 day ago"
+formatRelative(-24, 'hour'); // "24 hours ago"
+formatRelative(-24, 'hour', {style: 'narrow'}); // "24 hr. ago"
+```
+
 ### Number Formatting APIs
 
 React Intl provides two functions to format numbers:

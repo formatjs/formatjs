@@ -7,6 +7,10 @@ import {Formats} from 'intl-messageformat/lib/compiler';
 import {IntlRelativeFormatOptions} from 'intl-relativeformat';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
+import IntlRelativeTimeFormat, {
+  IntlRelativeTimeFormatOptions,
+  FormattableUnit,
+} from '@formatjs/intl-relativetimeformat';
 
 export interface IntlConfig {
   locale: string;
@@ -21,37 +25,30 @@ export interface IntlConfig {
 
 export interface CustomFormats extends Partial<Formats> {
   relative?: Record<string, IntlRelativeFormatOptions>;
+  relativeTime?: Record<string, IntlRelativeTimeFormatOptions>;
 }
 
 export interface CustomFormatConfig {
   format?: string;
 }
 
-export type FormatDateOptions = Exclude<
-  Intl.DateTimeFormatOptions,
-  'localeMatcher'
-> &
-  CustomFormatConfig;
-export type FormatNumberOptions = Exclude<
-  Intl.NumberFormatOptions,
-  'localeMatcher'
-> &
-  CustomFormatConfig;
-export type FormatRelativeOptions = Exclude<
-  IntlRelativeFormatOptions,
-  'localeMatcher'
-> &
+export type FormatDateOptions = Intl.DateTimeFormatOptions & CustomFormatConfig;
+export type FormatNumberOptions = Intl.NumberFormatOptions & CustomFormatConfig;
+export type FormatRelativeOptions = IntlRelativeFormatOptions &
   CustomFormatConfig & {now?: number};
-export type FormatPluralOptions = Exclude<
-  Intl.PluralRulesOptions,
-  'localeMatcher'
-> &
+export type FormatPluralOptions = Intl.PluralRulesOptions & CustomFormatConfig;
+export type FormatRelativeTimeOptions = IntlRelativeTimeFormatOptions &
   CustomFormatConfig;
 
 export interface IntlFormatters {
   formatDate(value: number | Date, opts: FormatDateOptions): string;
   formatTime(value: number | Date, opts: FormatDateOptions): string;
   formatRelative(value: number, opts: FormatRelativeOptions): string;
+  formatRelativeTime(
+    value: number,
+    unit: FormattableUnit,
+    opts: FormatRelativeTimeOptions
+  ): string;
   formatNumber(value: number, opts: FormatNumberOptions): string;
   formatPlural(
     value: number,
@@ -77,6 +74,9 @@ export interface Formatters {
   getPluralRules(
     ...args: ConstructorParameters<typeof Intl.PluralRules>
   ): Intl.PluralRules;
+  getRelativeTimeFormat(
+    ...args: ConstructorParameters<typeof IntlRelativeTimeFormat>
+  ): typeof IntlRelativeTimeFormat;
 }
 
 export interface IntlShape extends IntlConfig, IntlFormatters {

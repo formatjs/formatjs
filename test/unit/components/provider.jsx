@@ -33,6 +33,7 @@ describe('<IntlProvider>', () => {
     'formatPlural',
     'formatMessage',
     'formatHTMLMessage',
+    'formatRelativeTime',
   ];
 
   const Child = () => null;

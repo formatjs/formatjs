@@ -111,6 +111,11 @@ function getBoundFormatFns(config: IntlConfig, state: State): IntlFormatters {
       config,
       formatterState
     ),
+    formatRelativeTime: formatters.formatRelativeTime.bind(
+      undefined,
+      config,
+      formatterState
+    )
   };
 }
 

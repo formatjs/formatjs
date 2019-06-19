@@ -7,7 +7,6 @@
 import IntlRelativeFormat, {
   IntlRelativeFormatOptions,
 } from 'intl-relativeformat';
-import {isValidElement} from 'react';
 import * as invariant_ from 'invariant';
 // Since rollup cannot deal with namespace being a function,
 // this is to interop with TypeScript since `invariant`
@@ -24,9 +23,14 @@ import {
   FormatNumberOptions,
   FormatPluralOptions,
   MessageDescriptor,
+  FormatRelativeTimeOptions,
 } from './types';
 
 import {createError, escape, filterProps} from './utils';
+import {
+  FormattableUnit,
+  IntlRelativeTimeFormatOptions,
+} from '@formatjs/intl-relativetimeformat';
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'localeMatcher',
@@ -67,6 +71,9 @@ const PLURAL_FORMAT_OPTIONS: Array<keyof Intl.PluralRulesOptions> = [
   'localeMatcher',
   'type',
 ];
+const RELATIVE_TIME_FORMAT_OPTIONS: Array<
+  keyof IntlRelativeTimeFormatOptions
+> = ['localeMatcher', 'numeric', 'style'];
 
 const RELATIVE_FORMAT_THRESHOLDS = {
   second: 60, // seconds to minute
@@ -249,6 +256,38 @@ export function formatNumber(
   return String(value);
 }
 
+export function formatRelativeTime(
+  {
+    locale,
+    formats,
+    onError,
+  }: Pick<IntlConfig, 'locale' | 'formats' | 'onError'>,
+  state: Formatters,
+  value: number,
+  unit: FormattableUnit,
+  options: FormatRelativeTimeOptions = {}
+) {
+  const {format} = options;
+  let defaults = ((format &&
+    getNamedFormat(formats!, 'relativeTime', format, onError)) ||
+    {}) as IntlRelativeTimeFormatOptions;
+  let filteredOptions = filterProps(
+    options,
+    RELATIVE_TIME_FORMAT_OPTIONS,
+    defaults
+  );
+
+  try {
+    return state
+      .getRelativeTimeFormat(locale, filteredOptions)
+      .format(value, unit);
+  } catch (e) {
+    onError(createError('Error formatting relative time.', e));
+  }
+
+  return String(value);
+}
+
 export function formatPlural(
   {locale, onError}: Pick<IntlConfig, 'locale' | 'onError'>,
   state: Formatters,
@@ -389,4 +428,5 @@ export const formatters = {
   formatPlural,
   formatHTMLMessage,
   formatRelative,
+  formatRelativeTime,
 };
