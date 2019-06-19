@@ -115,7 +115,7 @@ function getBoundFormatFns(config: IntlConfig, state: State): IntlFormatters {
       undefined,
       config,
       formatterState
-    )
+    ),
   };
 }
 

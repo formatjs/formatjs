@@ -105,4 +105,5 @@ export const DEFAULT_FORMATTERS = {
   getMessageFormat: memoizeIntlConstructor(IntlMessageFormat),
   getRelativeFormat: memoizeIntlConstructor(IntlRelativeFormat),
   getPluralRules: memoizeIntlConstructor(Intl.PluralRules),
+  getRelativeTimeFormat: memoizeIntlConstructor(Intl.RelativeTimeFormat),
 };
