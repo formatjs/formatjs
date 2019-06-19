@@ -23,7 +23,7 @@ export default function(ReactIntl) {
       const date = new Date();
       const el = <FormattedDate id="test" value={date} month="numeric" />;
 
-      const rendered = renderWithIntlProvider(el).find('#test > span');
+      const rendered = renderWithIntlProvider(el);
       expect(rendered.text()).toBe(String(date.getMonth() + 1));
     });
 
@@ -34,7 +34,7 @@ export default function(ReactIntl) {
       const hours = date.getHours();
       const minutes = date.getMinutes();
 
-      const rendered = renderWithIntlProvider(el).find('#test > span');
+      const rendered = renderWithIntlProvider(el);
       expect(rendered.text()).toBe(
         `${hours > 12 ? hours % 12 : hours || '12'}:` +
           `${minutes < 10 ? `0${minutes}` : minutes} ` +
@@ -48,14 +48,14 @@ export default function(ReactIntl) {
         <FormattedRelative id="test" value={now - 1000} initialNow={now} />
       );
 
-      const rendered = renderWithIntlProvider(el).find('#test > span');
+      const rendered = renderWithIntlProvider(el);
       expect(rendered.text()).toBe('1 second ago');
     });
 
     it('formats numbers with thousands separators', () => {
       const el = <FormattedNumber id="test" value={1000} />;
 
-      const rendered = renderWithIntlProvider(el).find('#test > span');
+      const rendered = renderWithIntlProvider(el);
       expect(rendered.text()).toBe('1,000');
     });
 
@@ -64,7 +64,7 @@ export default function(ReactIntl) {
         <FormattedNumber id="test" value={0.1} minimumFractionDigits={2} />
       );
 
-      const rendered = renderWithIntlProvider(el).find('#test > span');
+      const rendered = renderWithIntlProvider(el);
       expect(rendered.text()).toBe('0.10');
     });
 
@@ -79,7 +79,7 @@ export default function(ReactIntl) {
         />
       );
 
-      const rendered = renderWithIntlProvider(el).find('#test > span');
+      const rendered = renderWithIntlProvider(el);
       expect(rendered.text()).toBe('You have 1,000 emails.');
     });
   });

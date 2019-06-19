@@ -111,6 +111,7 @@
     "intl-pluralrules": "^1.0.1",
     "jest": "^24.8.0",
     "mkdirp": "^0.5.1",
+    "pre-commit": "^1.2.2",
     "prettier": "^1.6.1",
     "progress": "^2.0.3",
     "promise-queue": "^2.2.5",
@@ -149,5 +150,9 @@
     "examples:link": "yarn link && babel-node scripts/examples yarn link react-intl",
     "preversion": "yarn run clean && yarn run build && yarn run test:all",
     "prepare": "yarn run clean && yarn run build"
-  }
+  },
+  "pre-commit": [
+    "format:fix",
+    "lint:fix"
+  ]
 }

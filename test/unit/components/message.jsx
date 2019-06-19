@@ -43,13 +43,13 @@ describe('<FormattedMessage>', () => {
       2
     );
 
-    expect(rendered.type()).toBe('span');
+    expect(typeof rendered.type()).toBe('symbol');
     expect(rendered.text()).toBe('Hello');
 
     expect(consoleError).toHaveBeenCalledTimes(1);
   });
 
-  it('renders a formatted message in a <span>', () => {
+  it('renders a formatted message in a <>', () => {
     const FormattedMessage = mockContext(intl);
     const descriptor = {
       id: 'hello',
@@ -57,7 +57,7 @@ describe('<FormattedMessage>', () => {
     };
 
     const rendered = shallowDeep(<FormattedMessage {...descriptor} />, 2);
-    expect(rendered.type()).toBe('span');
+    expect(typeof rendered.type()).toBe('symbol');
     expect(rendered.text()).toBe(intl.formatMessage(descriptor));
   });
 
@@ -122,7 +122,7 @@ describe('<FormattedMessage>', () => {
       2
     );
 
-    expect(rendered.type()).toBe('span');
+    expect(typeof rendered.type()).toBe('symbol');
     expect(rendered.text()).toBe(intl.formatMessage(descriptor, values));
   });
 

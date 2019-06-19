@@ -11,6 +11,10 @@ file in the root directory of React's source tree.
 
 import * as invariant_ from 'invariant';
 import {IntlConfig} from './types';
+import * as React from 'react';
+import IntlMessageFormat from 'intl-messageformat';
+import IntlRelativeFormat from 'intl-relativeformat';
+import memoizeIntlConstructor from 'intl-format-cache';
 // Since rollup cannot deal with namespace being a function,
 // this is to interop with TypeScript since `invariant`
 // does not export a default
@@ -87,10 +91,18 @@ export const DEFAULT_INTL_CONFIG: Pick<
   formats: {},
   messages: {},
   timeZone: undefined,
-  textComponent: 'span',
+  textComponent: React.Fragment,
 
   defaultLocale: 'en',
   defaultFormats: {},
 
   onError: defaultErrorHandler,
+};
+
+export const DEFAULT_FORMATTERS = {
+  getDateTimeFormat: memoizeIntlConstructor(Intl.DateTimeFormat),
+  getNumberFormat: memoizeIntlConstructor(Intl.NumberFormat),
+  getMessageFormat: memoizeIntlConstructor(IntlMessageFormat),
+  getRelativeFormat: memoizeIntlConstructor(IntlRelativeFormat),
+  getPluralRules: memoizeIntlConstructor(Intl.PluralRules),
 };

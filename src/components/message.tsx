@@ -74,8 +74,10 @@ export class BaseFormattedMessage extends React.Component<Props> {
   }
 
   render() {
-    const {formatMessage = defaultFormatMessage, textComponent: Text = 'span'} =
-      this.props.intl || {};
+    const {
+      formatMessage = defaultFormatMessage,
+      textComponent: Text = React.Fragment,
+    } = this.props.intl || {};
 
     const {
       id,

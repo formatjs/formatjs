@@ -38,7 +38,7 @@ describe('<FormattedNumber>', () => {
 
     const rendered = shallowDeep(<FormattedNumber />, 2);
 
-    expect(rendered.type()).toBe('span');
+    expect(typeof rendered.type()).toBe('symbol');
     expect(rendered.text()).toBe('NaN');
   });
 
@@ -48,7 +48,7 @@ describe('<FormattedNumber>', () => {
 
     const rendered = shallowDeep(<FormattedNumber value={num} />, 2);
 
-    expect(rendered.type()).toBe('span');
+    expect(typeof rendered.type()).toBe('symbol');
     expect(rendered.text()).toBe(intl.formatNumber(num));
   });
 
