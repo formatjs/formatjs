@@ -14,6 +14,7 @@
 - `addLocaleData` has been removed. See [Migrate to using native Intl APIs](#migrate-to-using-native-intl-apis) for more details.
 - `ReactIntlLocaleData` has been removed. See [Migrate to using native Intl APIs](#migrate-to-using-native-intl-apis) for more details.
 - `intlShape` has been removed. See [TypeScript Support](#typescript-support) for more details.
+- Default `textComponent` in `IntlProvider` is `React.Fragment` instead of `span`.
 
 ### Use React 16.3 and upwards
 

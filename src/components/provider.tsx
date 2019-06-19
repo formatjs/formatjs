@@ -6,16 +6,14 @@
 
 import * as React from 'react';
 import withIntl, {Provider, WrappedComponentProps} from './injectIntl';
-import IntlMessageFormat from 'intl-messageformat';
-import IntlRelativeFormat from 'intl-relativeformat';
-import memoizeIntlConstructor from 'intl-format-cache';
+
 import * as invariant_ from 'invariant';
 // Since rollup cannot deal with namespace being a function,
 // this is to interop with TypeScript since `invariant`
 // does not export a default
 // https://github.com/rollup/rollup/issues/1267
 const invariant = invariant_;
-import {createError, filterProps, DEFAULT_INTL_CONFIG} from '../utils';
+import {createError, filterProps, DEFAULT_INTL_CONFIG, DEFAULT_FORMATTERS} from '../utils';
 import {IntlConfig, IntlShape, IntlFormatters} from '../types';
 import {formatters} from '../format';
 import areIntlLocalesSupported from 'intl-locales-supported';
@@ -33,15 +31,6 @@ const intlConfigPropNames: Array<keyof IntlConfig> = [
   'defaultFormats',
 
   'onError',
-];
-const intlFormatPropNames: Array<keyof IntlFormatters> = [
-  'formatDate',
-  'formatTime',
-  'formatRelative',
-  'formatNumber',
-  'formatPlural',
-  'formatMessage',
-  'formatHTMLMessage',
 ];
 
 function getConfig(filteredProps: OptionalIntlConfig): IntlConfig {
@@ -86,20 +75,18 @@ function getConfig(filteredProps: OptionalIntlConfig): IntlConfig {
   return config;
 }
 
-function getBoundFormatFns(config: IntlConfig, state: State) {
+function getBoundFormatFns(config: IntlConfig, state: State): IntlFormatters {
   const formatterState = {...state.context.formatters, now: state.context.now};
 
-  return intlFormatPropNames.reduce(
-    (boundFormatFns: IntlFormatters, name) => {
-      boundFormatFns[name] = (formatters[name] as any).bind(
-        undefined,
-        config,
-        formatterState
-      );
-      return boundFormatFns;
-    },
-    {} as any
-  ) as IntlFormatters;
+  return {
+    formatNumber: formatters.formatNumber.bind(undefined, config, formatterState),
+    formatRelative: formatters.formatRelative.bind(undefined, config, formatterState),
+    formatDate: formatters.formatDate.bind(undefined, config, formatterState),
+    formatTime: formatters.formatTime.bind(undefined, config, formatterState),
+    formatPlural: formatters.formatPlural.bind(undefined, config, formatterState),
+    formatMessage: formatters.formatMessage.bind(undefined, config, formatterState),
+    formatHTMLMessage: formatters.formatHTMLMessage.bind(undefined, config, formatterState),
+  }
 }
 
 interface InternalProps {
@@ -150,13 +137,7 @@ class IntlProvider extends React.PureComponent<ResolvedProps, State> {
     // memoize the `Intl*` constructors and cache them for the lifecycle of
     // this IntlProvider instance.
     const {
-      formatters = {
-        getDateTimeFormat: memoizeIntlConstructor(Intl.DateTimeFormat),
-        getNumberFormat: memoizeIntlConstructor(Intl.NumberFormat),
-        getMessageFormat: memoizeIntlConstructor(IntlMessageFormat),
-        getRelativeFormat: memoizeIntlConstructor(IntlRelativeFormat),
-        getPluralRules: memoizeIntlConstructor(Intl.PluralRules),
-      },
+      formatters = DEFAULT_FORMATTERS,
     } = intlContext || {};
 
     this.state = {

@@ -37,11 +37,11 @@ describe('<FormattedPlural>', () => {
     const FormattedPlural = mockContext(intl);
 
     const rendered = shallowDeep(<FormattedPlural />, 2);
-    expect(rendered.type()).toBe('span');
+    expect(typeof rendered.type()).toBe('symbol');
     expect(rendered.text()).toBe('');
 
     const renderedWithValue = shallowDeep(<FormattedPlural value={1} />, 2);
-    expect(renderedWithValue.type()).toBe('span');
+    expect(typeof renderedWithValue.type()).toBe('symbol');
     expect(renderedWithValue.text()).toBe('');
   });
 
@@ -50,7 +50,7 @@ describe('<FormattedPlural>', () => {
     const other = 'Jest';
 
     const rendered = shallowDeep(<FormattedPlural other={other} />, 2);
-    expect(rendered.type()).toBe('span');
+    expect(typeof rendered.type()).toBe('symbol');
     expect(rendered.text()).toBe(other);
   });
 
@@ -64,7 +64,7 @@ describe('<FormattedPlural>', () => {
       <FormattedPlural value={num} one={one} other={other} />,
       2
     );
-    expect(rendered.type()).toBe('span');
+    expect(typeof rendered.type()).toBe('symbol');
     expect(rendered.text()).toBe(num === 1 ? one : other);
   });
 
@@ -115,7 +115,7 @@ describe('<FormattedPlural>', () => {
       2
     );
 
-    expect(rendered.type()).toBe('span');
+    expect(typeof rendered.type()).toBe('symbol');
     expect(rendered.text()).toBe(props[intl.formatPlural(num, options)]);
   });
 

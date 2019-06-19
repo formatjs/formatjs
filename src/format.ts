@@ -26,7 +26,7 @@ import {
   MessageDescriptor,
 } from './types';
 
-import {createError, defaultErrorHandler, escape, filterProps} from './utils';
+import {createError, escape, filterProps} from './utils';
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'localeMatcher',
