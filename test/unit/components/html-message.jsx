@@ -42,7 +42,7 @@ describe('<FormattedHTMLMessage>', () => {
 
     const rendered = shallowDeep(<FormattedHTMLMessage {...descriptor} />, 2);
 
-    expect(typeof rendered.type()).toBe('symbol')
+    expect(typeof rendered.type()).toBe('symbol');
     expect(rendered.prop('dangerouslySetInnerHTML')).toEqual({
       __html: intl.formatHTMLMessage(descriptor),
     });

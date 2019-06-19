@@ -54,7 +54,7 @@ describe('<FormattedDate>', () => {
 
     const rendered = shallowDeep(<FormattedDate value={date} />, 2);
 
-    expect(typeof rendered.type()).toBe('symbol')
+    expect(typeof rendered.type()).toBe('symbol');
     expect(rendered.text()).toBe(intl.formatDate(date));
   });
 

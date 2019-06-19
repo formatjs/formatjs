@@ -13,7 +13,12 @@ import * as invariant_ from 'invariant';
 // does not export a default
 // https://github.com/rollup/rollup/issues/1267
 const invariant = invariant_;
-import {createError, filterProps, DEFAULT_INTL_CONFIG, DEFAULT_FORMATTERS} from '../utils';
+import {
+  createError,
+  filterProps,
+  DEFAULT_INTL_CONFIG,
+  DEFAULT_FORMATTERS,
+} from '../utils';
 import {IntlConfig, IntlShape, IntlFormatters} from '../types';
 import {formatters} from '../format';
 import areIntlLocalesSupported from 'intl-locales-supported';
@@ -79,14 +84,34 @@ function getBoundFormatFns(config: IntlConfig, state: State): IntlFormatters {
   const formatterState = {...state.context.formatters, now: state.context.now};
 
   return {
-    formatNumber: formatters.formatNumber.bind(undefined, config, formatterState),
-    formatRelative: formatters.formatRelative.bind(undefined, config, formatterState),
+    formatNumber: formatters.formatNumber.bind(
+      undefined,
+      config,
+      formatterState
+    ),
+    formatRelative: formatters.formatRelative.bind(
+      undefined,
+      config,
+      formatterState
+    ),
     formatDate: formatters.formatDate.bind(undefined, config, formatterState),
     formatTime: formatters.formatTime.bind(undefined, config, formatterState),
-    formatPlural: formatters.formatPlural.bind(undefined, config, formatterState),
-    formatMessage: formatters.formatMessage.bind(undefined, config, formatterState),
-    formatHTMLMessage: formatters.formatHTMLMessage.bind(undefined, config, formatterState),
-  }
+    formatPlural: formatters.formatPlural.bind(
+      undefined,
+      config,
+      formatterState
+    ),
+    formatMessage: formatters.formatMessage.bind(
+      undefined,
+      config,
+      formatterState
+    ),
+    formatHTMLMessage: formatters.formatHTMLMessage.bind(
+      undefined,
+      config,
+      formatterState
+    ),
+  };
 }
 
 interface InternalProps {
@@ -136,9 +161,7 @@ class IntlProvider extends React.PureComponent<ResolvedProps, State> {
     // `<IntlProvider>`, then its formatters will be used. Otherwise, this
     // memoize the `Intl*` constructors and cache them for the lifecycle of
     // this IntlProvider instance.
-    const {
-      formatters = DEFAULT_FORMATTERS,
-    } = intlContext || {};
+    const {formatters = DEFAULT_FORMATTERS} = intlContext || {};
 
     this.state = {
       context: {
