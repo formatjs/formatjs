@@ -23,7 +23,7 @@ export default function(ReactIntl) {
       const date = new Date();
       const el = <FormattedDate id="test" value={date} month="numeric" />;
 
-      const rendered = renderWithIntlProvider(el)
+      const rendered = renderWithIntlProvider(el);
       expect(rendered.text()).toBe(String(date.getMonth() + 1));
     });
 

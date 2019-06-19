@@ -153,8 +153,6 @@
   },
   "pre-commit": [
     "format:fix",
-    "lint:fix",
-    "build",
-    "test"
+    "lint:fix"
   ]
 }
