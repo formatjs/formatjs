@@ -42,7 +42,7 @@
     "chai": "^4.2.0",
     "coveralls": "^3.0.4",
     "cross-env": "^5.2.0",
-    "eslint": "^5.16.0",
+    "eslint": "^6.0.0",
     "eslint-plugin-react": "^7.12.4",
     "fast-memoize": "^2.5.1",
     "fs-extra": "^8.0.1",
