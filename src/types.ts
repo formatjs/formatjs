@@ -7,6 +7,7 @@ import {Formats} from 'intl-messageformat/lib/compiler';
 import {IntlRelativeFormatOptions} from 'intl-relativeformat';
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
+import IntlRelativeTimeFormat, { IntlRelativeTimeFormatOptions, FormattableUnit } from '@formatjs/intl-relativetimeformat';
 
 export interface IntlConfig {
   locale: string;
@@ -37,11 +38,11 @@ export type FormatNumberOptions = Exclude<
   'localeMatcher'
 > &
   CustomFormatConfig;
-export type FormatRelativeOptions = Exclude<
-  IntlRelativeFormatOptions,
+export type FormatRelativeTimeOptions = Exclude<
+  IntlRelativeTimeFormatOptions,
   'localeMatcher'
 > &
-  CustomFormatConfig & {now?: number};
+  CustomFormatConfig & {now?: number, date?: number};
 export type FormatPluralOptions = Exclude<
   Intl.PluralRulesOptions,
   'localeMatcher'
@@ -51,7 +52,7 @@ export type FormatPluralOptions = Exclude<
 export interface IntlFormatters {
   formatDate(value: number | Date, opts: FormatDateOptions): string;
   formatTime(value: number | Date, opts: FormatDateOptions): string;
-  formatRelative(value: number, opts: FormatRelativeOptions): string;
+  formatRelativeTime(value: number, unit?: FormattableUnit, opts?: FormatRelativeTimeOptions): string;
   formatNumber(value: number, opts: FormatNumberOptions): string;
   formatPlural(
     value: number,
@@ -71,9 +72,9 @@ export interface Formatters {
   getMessageFormat(
     ...args: ConstructorParameters<typeof IntlMessageFormat>
   ): typeof IntlMessageFormat;
-  getRelativeFormat(
-    ...args: ConstructorParameters<typeof IntlRelativeFormat>
-  ): typeof IntlRelativeFormat;
+  getRelativeTimeFormat(
+    ...args: ConstructorParameters<typeof IntlRelativeTimeFormat>
+  ): typeof IntlRelativeTimeFormat;
   getPluralRules(
     ...args: ConstructorParameters<typeof Intl.PluralRules>
   ): Intl.PluralRules;

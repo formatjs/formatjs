@@ -6,8 +6,10 @@
 
 import * as React from 'react';
 import withIntl from './injectIntl';
-import {IntlShape, FormatRelativeOptions} from '../types';
+import {IntlShape, FormatRelativeTimeOptions} from '../types';
 import {SUPPORTED_FIELD} from 'intl-relativeformat/lib/types';
+import * as invariant from 'invariant';
+import { FormattableUnit } from '@formatjs/intl-relativetimeformat';
 
 const SECOND = 1000;
 const MINUTE = 1000 * 60;
@@ -38,7 +40,7 @@ function selectUnits(delta: number): SUPPORTED_FIELD {
   return 'day' as SUPPORTED_FIELD;
 }
 
-function getUnitDelay(units: SUPPORTED_FIELD): number {
+function getUnitDelay(units: FormattableUnit): number {
   switch (units) {
     case 'second':
       return SECOND;
@@ -64,9 +66,11 @@ function isSameDate(a: Date | number | string, b: Date | number | string) {
   return isFinite(aTime) && isFinite(bTime) && aTime === bTime;
 }
 
-export interface Props extends FormatRelativeOptions {
+export interface Props extends FormatRelativeTimeOptions {
   intl: IntlShape;
-  value: number;
+  value?: number;
+  date?: number;
+  unit: FormattableUnit;
   updateInterval?: number;
   initialNow?: Date | number;
   children?(value: string): React.ReactChild;
@@ -77,7 +81,7 @@ interface State {
   prevValue: number;
 }
 
-class FormattedRelative extends React.PureComponent<Props, State> {
+class FormattedRelativeTime extends React.PureComponent<Props, State> {
   private _timer?: number;
   static defaultProps: Partial<Props> = {
     updateInterval: 1000 * 10,
@@ -89,18 +93,24 @@ class FormattedRelative extends React.PureComponent<Props, State> {
     let now = isFinite(props.initialNow as number)
       ? Number(props.initialNow)
       : props.intl.now();
+    invariant(props.date || props.value, 'Either `date` or `value` must be set ')
 
-    // `now` is stored as state so that `render()` remains a function of
-    // props + state, instead of accessing `Date.now()` inside `render()`.
-    this.state = {now, prevValue: props.value};
+    if (props.date) {
+      // `now` is stored as state so that `render()` remains a function of
+      // props + state, instead of accessing `Date.now()` inside `render()`.
+      this.state = {now, prevValue: props.date};
+    }
   }
 
   scheduleNextUpdate(props: Props, state: State) {
     // Cancel and pending update because we're scheduling a new update.
     window.clearTimeout(this._timer);
-
-    const {value, units, updateInterval} = props;
-    const time = new Date(value).getTime();
+    // If date is not set, don't do anything
+    if (!props.date) {
+      return
+    }
+    const {date, unit, updateInterval} = props;
+    const time = new Date(date).getTime();
 
     // If the `updateInterval` is falsy, including `0` or we don't have a
     // valid date, then auto updates have been turned off, so we bail and
@@ -110,7 +120,7 @@ class FormattedRelative extends React.PureComponent<Props, State> {
     }
 
     const delta = time - state.now;
-    const unitDelay = getUnitDelay(units || selectUnits(delta));
+    const unitDelay = getUnitDelay(unit || selectUnits(delta));
     const unitRemainder = Math.abs(delta % unitDelay);
 
     // We want the largest possible timer delay which will still display
@@ -131,11 +141,11 @@ class FormattedRelative extends React.PureComponent<Props, State> {
     this.scheduleNextUpdate(this.props, this.state);
   }
 
-  static getDerivedStateFromProps({value, intl}: Props, {prevValue}: State) {
-    // When the `props.value` date changes, `state.now` needs to be updated,
+  static getDerivedStateFromProps({date, intl}: Props, {prevValue}: State) {
+    // When the `props.date` date changes, `state.now` needs to be updated,
     // and the next update can be rescheduled.
-    if (!isSameDate(value, prevValue)) {
-      return {now: intl.now(), prevValue: value};
+    if (date && !isSameDate(date, prevValue)) {
+      return {now: intl.now(), prevValue: date};
     }
     return null;
   }
@@ -149,22 +159,22 @@ class FormattedRelative extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const {formatRelative, textComponent: Text} = this.props.intl;
-    const {value, children} = this.props;
+    const {formatRelativeTime, textComponent: Text} = this.props.intl;
+    const {value, date, unit, children} = this.props;
 
-    let formattedRelative = formatRelative(value, {
+    let formattedRelativeTime = value ? formatRelativeTime(value, unit, {
       ...this.props,
       ...this.state,
-    });
+    }) : formatRelativeTime(0, undefined, {...this.props, now: this.state.now, date} )
 
     if (typeof children === 'function') {
-      return children(formattedRelative);
+      return children(formattedRelativeTime);
     }
 
-    return <Text>{formattedRelative}</Text>;
+    return <Text>{formattedRelativeTime}</Text>;
   }
 }
 
-export const BaseFormattedRelative = FormattedRelative;
+export const BaseFormattedRelativeTime = FormattedRelativeTime;
 
-export default withIntl(FormattedRelative);
+export default withIntl(FormattedRelativeTime);

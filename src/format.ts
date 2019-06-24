@@ -19,7 +19,7 @@ import {
   Formatters,
   IntlConfig,
   FormatDateOptions,
-  FormatRelativeOptions,
+  FormatRelativeTimeOptions,
   CustomFormats,
   FormatNumberOptions,
   FormatPluralOptions,
@@ -193,7 +193,7 @@ export function formatRelative(
   }: Pick<IntlConfig, 'locale' | 'formats' | 'onError'>,
   state: Formatters & {now(): number},
   value: number,
-  options: FormatRelativeOptions = {}
+  options: FormatRelativeTimeOptions = {}
 ) {
   const {format} = options;
 
@@ -204,7 +204,7 @@ export function formatRelative(
   let filteredOptions = filterProps(
     options,
     RELATIVE_FORMAT_OPTIONS,
-    defaults as IntlRelativeFormatOptions
+    defaults as FormatRelativeTimeOptions
   );
 
   // Capture the current threshold values, then temporarily override them with
@@ -213,7 +213,7 @@ export function formatRelative(
   updateRelativeFormatThresholds(RELATIVE_FORMAT_THRESHOLDS);
 
   try {
-    return state.getRelativeFormat(locale, filteredOptions).format(date, {
+    return state.getRelativeTimeFormat(locale, filteredOptions).format(date, {
       now: isFinite(+now) ? now : state.now(),
     });
   } catch (e) {
