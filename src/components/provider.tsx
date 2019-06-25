@@ -89,7 +89,7 @@ function getBoundFormatFns(config: IntlConfig, state: State): IntlFormatters {
       config,
       formatterState
     ),
-    formatRelative: formatters.formatRelative.bind(
+    formatRelativeTime: formatters.formatRelativeTime.bind(
       undefined,
       config,
       formatterState

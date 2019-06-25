@@ -27,10 +27,9 @@ React Intl wraps these APIs in a consistent way making them easier to use, more 
 
 ## FormatJS Internationalization Formatters
 
-Beyond number and date formatting, React Intl provides relative time and string/message formatting. These formatters are part of the [FormatJS](http://formatjs.io/) project, which React Intl is also a part of. These formatters were developed in the same style as the built-in formatters.
+Beyond number, date & relative time formatting, React Intl provides string/message formatting. This formatter is part of the [FormatJS](http://formatjs.io/) project, which React Intl is also a part of. This formatter was developed in the same style as the built-in formatters.
 
 - [`IntlMessageFormat`](https://github.com/formatjs/formatjs/tree/master/packages/intl-messageformat)
-- [`IntlRelativeFormat`](https://github.com/formatjs/formatjs/tree/master/packages/intl-relativeformat)
 
 React Intl wraps these APIs in the same way it wraps the built-in Intl APIs.
 
