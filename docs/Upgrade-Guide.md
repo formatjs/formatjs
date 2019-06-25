@@ -194,7 +194,16 @@ When we introduced `FormattedRelative`, the spec for [`Intl.RelativeTimeFormat`]
 <FormattedRelativeTime value={2} unit="second" style="narrow" />
 ```
 
-5. `updateInterval` becomes `updateIntervalInSeconds` and will only take the time delta in seconds.
+5. `updateInterval` becomes `updateIntervalInSeconds` and will only take the time delta in seconds. Update behavior remains the same, e.g:
+
+```tsx
+<FormattedRelativeTime value={2} numeric="auto" unit="second" style="narrow" updateIntervalInSeconds={1} /> 
+// Initially prints: `in 2s`
+// 1 second later: `in 1s`
+// 1 second later: `now`
+// 1 second later: `1s ago`
+// 60 seconds later: `1m ago`
+```
 
 6. `initialNow` has been removed.
 
