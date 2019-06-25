@@ -1,6 +1,9 @@
 module.exports = {
   preset: 'ts-jest/presets/js-with-babel',
-  testRegex: '/test/(unit|functional)/.*\\.js',
+  testRegex: [
+    '/test/functional/.*\\.(js|ts)',
+    '/test/unit/.*\\.(js|ts)'
+  ],
   testPathIgnorePatterns: ['test/functional/support', '/test/unit/testUtils'],
   collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
   coverageReporters: ['lcov', 'text', 'text-summary', 'html'],

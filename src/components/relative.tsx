@@ -84,12 +84,18 @@ interface State {
 
 class FormattedRelativeTime extends React.PureComponent<Props, State> {
   private _timer?: number;
+  public static defaultProps: Pick<Props, 'unit'> = {
+    unit: 'second'
+  }
+  state: State = {
+    deltaInSeconds: 0
+  }
 
   constructor(props: Props) {
     super(props);
-    invariant(
-      props.updateIntervalInSeconds &&
-        !['day', 'week', 'month', 'quarter', 'year'].includes(props.unit),
+    invariant(!props.updateIntervalInSeconds ||
+      (props.updateIntervalInSeconds &&
+        !['day', 'week', 'month', 'quarter', 'year'].includes(props.unit)),
       'Cannot schedule update with unit longer than hour'
     );
   }
@@ -139,9 +145,9 @@ class FormattedRelativeTime extends React.PureComponent<Props, State> {
   }
 
   componentWillReceiveProps({updateIntervalInSeconds, unit, value}: Props) {
-    invariant(
-      updateIntervalInSeconds &&
-        !['day', 'week', 'month', 'quarter', 'year'].includes(unit),
+    invariant(!updateIntervalInSeconds ||
+      (updateIntervalInSeconds &&
+        !['day', 'week', 'month', 'quarter', 'year'].includes(unit)),
       'Cannot schedule update with unit longer than hour'
     );
     // Reset if value or unit changes
@@ -166,7 +172,7 @@ class FormattedRelativeTime extends React.PureComponent<Props, State> {
           ...this.props,
           ...this.state,
         })
-      : formatRelativeTime(0, undefined, {...this.props});
+      : formatRelativeTime(0, 'second', {...this.props});
 
     if (typeof children === 'function') {
       return children(formattedRelativeTime);
