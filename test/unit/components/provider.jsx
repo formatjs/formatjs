@@ -28,7 +28,7 @@ describe('<IntlProvider>', () => {
   const INTL_FORMAT_PROP_NAMES = [
     'formatDate',
     'formatTime',
-    'formatRelative',
+    'formatRelativeTime',
     'formatNumber',
     'formatPlural',
     'formatMessage',

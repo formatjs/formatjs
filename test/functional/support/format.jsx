@@ -7,7 +7,7 @@ export default function(ReactIntl) {
       IntlProvider,
       FormattedDate,
       FormattedTime,
-      FormattedRelative,
+      FormattedRelativeTime,
       FormattedNumber,
       FormattedMessage,
     } = ReactIntl;
@@ -43,9 +43,8 @@ export default function(ReactIntl) {
     });
 
     it('formats dates relative to "now"', () => {
-      const now = Date.now();
       const el = (
-        <FormattedRelative id="test" value={now - 1000} initialNow={now} />
+        <FormattedRelativeTime id="test" value={-1} />
       );
 
       const rendered = renderWithIntlProvider(el);

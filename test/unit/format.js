@@ -45,7 +45,7 @@ describe('format API', () => {
 
         relative: {
           seconds: {
-            units: 'second',
+            style: 'narrow'
           },
           missing: undefined,
         },
@@ -75,14 +75,12 @@ describe('format API', () => {
       getMessageFormat: jest
         .fn()
         .mockImplementation((...args) => new IntlMessageFormat(...args)),
-      getRelativeFormat: jest
+      getRelativeTimeFormat: jest
         .fn()
-        .mockImplementation((...args) => new IntlRelativeFormat(...args)),
+        .mockImplementation((...args) => new Intl.RelativeTimeFormat(...args)),
       getPluralRules: jest
         .fn()
         .mockImplementation((...args) => new Intl.PluralRules(...args)),
-
-      now: () => 0,
     };
   });
 
@@ -95,7 +93,7 @@ describe('format API', () => {
     [
       'formatDate',
       'formatTime',
-      'formatRelative',
+      'formatRelativeTime',
       'formatNumber',
       'formatPlural',
       'formatMessage',
@@ -403,19 +401,17 @@ describe('format API', () => {
     });
   });
 
-  describe('formatRelative()', () => {
-    let now;
+  describe('formatRelativeTime()', () => {
     let rf;
-    let formatRelative;
+    let formatRelativeTime;
 
     beforeEach(() => {
-      now = state.now();
-      rf = new IntlRelativeFormat(config.locale);
-      formatRelative = f.formatRelative.bind(null, config, state);
+      rf = new Intl.RelativeTimeFormat(config.locale);
+      formatRelativeTime = f.formatRelativeTime.bind(null, config, state);
     });
 
     it('fallsback and warns when no value is provided', () => {
-      expect(formatRelative()).toBe('Invalid Date');
+      expect(formatRelativeTime()).toBe('undefined');
       expect(consoleError).toHaveBeenCalledTimes(1);
       expect(consoleError.mock.calls[0][0]).toContain(
         '[React Intl] Error formatting relative time.\nRangeError'
@@ -423,143 +419,75 @@ describe('format API', () => {
     });
 
     it('fallsback and warns when a non-finite value is provided', () => {
-      expect(formatRelative(NaN)).toBe('Invalid Date');
-      expect(formatRelative('')).toBe('Invalid Date');
-      expect(consoleError).toHaveBeenCalledTimes(2);
+      expect(formatRelativeTime(NaN)).toBe('NaN');
+      expect(consoleError).toHaveBeenCalledTimes(1);
     });
 
     it('formats falsy finite values', () => {
-      expect(formatRelative(false)).toBe(rf.format(false, {now}));
-      expect(formatRelative(null)).toBe(rf.format(null, {now}));
-      expect(formatRelative(0)).toBe(rf.format(0, {now}));
-    });
-
-    it('formats date instance values', () => {
-      expect(formatRelative(new Date(0))).toBe(rf.format(new Date(0), {now}));
-    });
-
-    it('formats date string values', () => {
-      expect(formatRelative(new Date(0).toString())).toBe(
-        rf.format(new Date(0), {now})
-      );
-    });
-
-    it('formats date ms timestamp values', () => {
-      const timestamp = Date.now();
-      expect(formatRelative(timestamp)).toBe(rf.format(timestamp, {now}));
+      expect(formatRelativeTime(false)).toBe('in 0 seconds');
+      expect(formatRelativeTime(null)).toBe('in 0 seconds');
+      expect(formatRelativeTime(0)).toBe(rf.format(0, 'second'));
     });
 
     it('formats with short format', () => {
-      const timestamp = now - 1000 * 59;
-      expect(formatRelative(timestamp, {units: 'second-short'})).toBe(
+      expect(formatRelativeTime(-59, 'second', {style: 'short'})).toBe(
         '59 sec. ago'
       );
     });
 
     describe('options', () => {
       it('accepts empty options', () => {
-        expect(formatRelative(0, {})).toBe(rf.format(0, {now}));
+        expect(formatRelativeTime(0, 'second', {})).toBe(rf.format(0, 'second'));
       });
 
       it('accepts valid IntlRelativeFormat options', () => {
-        expect(() => formatRelative(0, {units: 'second'})).not.toThrow();
-        expect(() => formatRelative(0, {units: 'second-short'})).not.toThrow();
+        expect(() => formatRelativeTime(0, 'second', {numeric: 'auto'})).not.toThrow();
+        expect(() => formatRelativeTime(0, 'second', {style: 'short'})).not.toThrow();
       });
 
       it('falls back and warns on invalid IntlRelativeFormat options', () => {
-        expect(formatRelative(0, {units: 'invalid'})).toBe(String(new Date(0)));
+        expect(formatRelativeTime(0, 'invalid',)).toBe('0');
         expect(consoleError).toHaveBeenCalledTimes(1);
         expect(consoleError.mock.calls[0][0]).toEqual(
           `[React Intl] Error formatting relative time.
-Error: "invalid" is not a valid IntlRelativeFormat 'units' value, it must be one of: second", "second-short", "minute", "minute-short", "hour", "hour-short", "day", "day-short", "month", "month-short", "year", "year-short`
+RangeError: Invalid unit argument for format() 'invalid'`
         );
       });
 
       it('uses configured named formats', () => {
-        const date = -(1000 * 120);
         const format = 'seconds';
 
         const {locale, formats} = config;
-        rf = new IntlRelativeFormat(locale, formats.relative[format]);
+        rf = new Intl.RelativeTimeFormat(locale, formats.relative[format]);
 
-        expect(formatRelative(date, {format})).toBe(rf.format(date, {now}));
+        expect(formatRelativeTime(-120, 'second', {format})).toBe(rf.format(-120, 'second', {style: 'narrow'} ));
       });
 
       it('uses named formats as defaults', () => {
-        const date = 0;
-        const opts = {style: 'numeric'};
+        const opts = {numeric: 'auto'};
         const format = 'seconds';
 
         const {locale, formats} = config;
-        rf = new IntlRelativeFormat(locale, {
+        rf = new Intl.RelativeTimeFormat(locale, {
           ...opts,
           ...formats.relative[format],
         });
 
-        expect(formatRelative(date, {...opts, format})).toBe(
-          rf.format(date, {now})
+        expect(formatRelativeTime(0, 'minute', {...opts, format})).toBe(
+          rf.format(0, 'minute', {numeric: 'auto'})
         );
       });
 
       it('handles missing named formats and warns', () => {
-        const date = new Date();
         const format = 'missing';
 
-        rf = new IntlRelativeFormat(config.locale);
+        rf = new Intl.RelativeTimeFormat(config.locale);
 
-        expect(formatRelative(date, {format})).toBe(rf.format(date, {now}));
+        expect(formatRelativeTime(-1, 'second', {format})).toBe(rf.format(-1, 'second'));
         expect(consoleError).toHaveBeenCalledTimes(1);
         expect(consoleError.mock.calls[0][0]).toBe(
           `[React Intl] No relative format named: ${format}`
         );
-      });
-
-      describe('now', () => {
-        it('accepts a `now` option', () => {
-          now = 1000;
-          expect(formatRelative(0, {now})).toBe(rf.format(0, {now}));
-        });
-
-        it('defaults to `state.now()` when no value is provided', () => {
-          now = 2000;
-          state.now = () => now;
-
-          expect(formatRelative(1000)).toBe(rf.format(1000, {now}));
-        });
-
-        it('does not throw or warn when a non-finite value is provided', () => {
-          expect(() => formatRelative(0, {now: NaN})).not.toThrow();
-          expect(() => formatRelative(0, {now: ''})).not.toThrow();
-          expect(consoleError).toHaveBeenCalledTimes(0);
-        });
-
-        it('formats falsy finite values', () => {
-          expect(formatRelative(0, {now: false})).toBe(
-            rf.format(0, {now: false})
-          );
-          expect(formatRelative(0, {now: null})).toBe(
-            rf.format(0, {now: null})
-          );
-          expect(formatRelative(0, {now: 0})).toBe(rf.format(0, {now: 0}));
-        });
-
-        it('formats date instance values', () => {
-          now = new Date(1000);
-          expect(formatRelative(0, {now})).toBe(rf.format(0, {now}));
-        });
-
-        it('formats date string values', () => {
-          now = 1000;
-          const dateString = new Date(now).toString();
-          expect(formatRelative(0, {now: dateString})).toBe(
-            rf.format(0, {now})
-          );
-        });
-
-        it('formats date ms timestamp values', () => {
-          now = 1000;
-          expect(formatRelative(0, {now})).toBe(rf.format(0, {now}));
-        });
       });
     });
   });
