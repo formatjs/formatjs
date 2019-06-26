@@ -1,22 +1,26 @@
-# Getting Started
+## Table of Contents
+
+<!-- toc -->
 
 - [Introduction](#introduction)
+  - [Intro Guides](#intro-guides)
+  - [I18n in JavaScript](#i18n-in-javascript)
+  - [The `react-intl` Package](#the-react-intl-package)
+    - [Module Bundlers](#module-bundlers)
+  - [The React Intl Module](#the-react-intl-module)
+  - [`Intl` APIs requirements](#intl-apis-requirements)
+    - [Intl in Node.js](#intl-in-nodejs)
+  - [Creating an I18n Context](#creating-an-i18n-context)
+  - [Formatting Data](#formatting-data)
 - [Core Concepts](#core-concepts)
 - [Example Apps](#example-apps)
 - [API Reference](#api-reference)
 
-## Introduction
+<!-- tocstop -->
 
-- [Intro Guides](#intro-guides)
-- [I18n in JavaScript](#i18n-in-javascript)
-- [The `react-intl` Package](#the-react-intl-package)
-  - [Module Bundlers](#module-bundlers)
-- [The React Intl Module](#the-react-intl-module)
-- [Loading Locale Data](#loading-locale-data)
-  - [Locale Data in Node.js](#locale-data-in-nodejs)
-  - [Locale Data in Browsers](#locale-data-in-browsers)
-- [Creating an I18n Context](#creating-an-i18n-context)
-- [Formatting Data](#formatting-data)
+# Getting Started
+
+## Introduction
 
 ### Intro Guides
 
