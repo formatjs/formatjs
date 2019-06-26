@@ -454,9 +454,9 @@ describe('format API', () => {
       it('falls back and warns on invalid IntlRelativeFormat options', () => {
         expect(formatRelativeTime(0, 'invalid')).toBe('0');
         expect(consoleError).toHaveBeenCalledTimes(1);
-        expect(consoleError.mock.calls[0][0]).toEqual(
+        expect(consoleError.mock.calls[0][0]).toContain(
           `[React Intl] Error formatting relative time.
-RangeError: Invalid unit argument for format() 'invalid'`
+RangeError: Invalid unit argument`
         );
       });
 
