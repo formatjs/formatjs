@@ -42,10 +42,8 @@ export default function(ReactIntl) {
       );
     });
 
-    it('formats dates relative to "now"', () => {
-      const el = (
-        <FormattedRelativeTime id="test" value={-1} />
-      );
+    it('formats relative time', () => {
+      const el = <FormattedRelativeTime id="test" value={-1} />;
 
       const rendered = renderWithIntlProvider(el);
       expect(rendered.text()).toBe('1 second ago');

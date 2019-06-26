@@ -45,7 +45,7 @@ describe('format API', () => {
 
         relative: {
           seconds: {
-            style: 'narrow'
+            style: 'narrow',
           },
           missing: undefined,
         },
@@ -437,16 +437,22 @@ describe('format API', () => {
 
     describe('options', () => {
       it('accepts empty options', () => {
-        expect(formatRelativeTime(0, 'second', {})).toBe(rf.format(0, 'second'));
+        expect(formatRelativeTime(0, 'second', {})).toBe(
+          rf.format(0, 'second')
+        );
       });
 
       it('accepts valid IntlRelativeFormat options', () => {
-        expect(() => formatRelativeTime(0, 'second', {numeric: 'auto'})).not.toThrow();
-        expect(() => formatRelativeTime(0, 'second', {style: 'short'})).not.toThrow();
+        expect(() =>
+          formatRelativeTime(0, 'second', {numeric: 'auto'})
+        ).not.toThrow();
+        expect(() =>
+          formatRelativeTime(0, 'second', {style: 'short'})
+        ).not.toThrow();
       });
 
       it('falls back and warns on invalid IntlRelativeFormat options', () => {
-        expect(formatRelativeTime(0, 'invalid',)).toBe('0');
+        expect(formatRelativeTime(0, 'invalid')).toBe('0');
         expect(consoleError).toHaveBeenCalledTimes(1);
         expect(consoleError.mock.calls[0][0]).toEqual(
           `[React Intl] Error formatting relative time.
@@ -460,7 +466,9 @@ RangeError: Invalid unit argument for format() 'invalid'`
         const {locale, formats} = config;
         rf = new Intl.RelativeTimeFormat(locale, formats.relative[format]);
 
-        expect(formatRelativeTime(-120, 'second', {format})).toBe(rf.format(-120, 'second', {style: 'narrow'} ));
+        expect(formatRelativeTime(-120, 'second', {format})).toBe(
+          rf.format(-120, 'second', {style: 'narrow'})
+        );
       });
 
       it('uses named formats as defaults', () => {
@@ -483,7 +491,9 @@ RangeError: Invalid unit argument for format() 'invalid'`
 
         rf = new Intl.RelativeTimeFormat(config.locale);
 
-        expect(formatRelativeTime(-1, 'second', {format})).toBe(rf.format(-1, 'second'));
+        expect(formatRelativeTime(-1, 'second', {format})).toBe(
+          rf.format(-1, 'second')
+        );
         expect(consoleError).toHaveBeenCalledTimes(1);
         expect(consoleError.mock.calls[0][0]).toBe(
           `[React Intl] No relative format named: ${format}`
@@ -593,6 +603,11 @@ RangeError: Invalid unit argument for format() 'invalid'`
     beforeEach(() => {
       pf = new Intl.PluralRules(config.locale);
       formatPlural = f.formatPlural.bind(null, config, state);
+    });
+
+    it('should warn for invalid opt', function() {
+      expect(formatPlural(0, {type: 'invalid'})).toBe('other');
+      expect(consoleError).toHaveBeenCalled();
     });
 
     it('formats falsy values', () => {

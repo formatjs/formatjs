@@ -7,7 +7,7 @@
 import * as React from 'react';
 import withIntl from './injectIntl';
 import {IntlShape, FormatRelativeTimeOptions} from '../types';
-import {FormattableUnit, Unit} from '@formatjs/intl-relativetimeformat';
+import {Unit} from '@formatjs/intl-relativetimeformat';
 import * as invariant from 'invariant';
 
 const MINUTE = 60;
@@ -41,32 +41,22 @@ function getDurationInSeconds(unit?: Unit): number {
     case 'hour':
       return HOUR;
     default:
-      throw new Error('Unsupported for unit longer than hour');
+      return DAY;
   }
 }
 
-function valueToSeconds(
-  value?: number,
-  unit: FormattableUnit = 'second'
-): number {
+function valueToSeconds(value?: number, unit?: Unit): number {
   if (!value) {
     return 0;
   }
-  if (!unit) {
-    return value;
-  }
   switch (unit) {
     case 'second':
-    case 'seconds':
       return value;
     case 'minute':
-    case 'minutes':
       return value * MINUTE;
-    case 'hour':
-    case 'hours':
+    default:
       return value * HOUR;
   }
-  throw new RangeError('cannot convert to unit longer than day');
 }
 
 export interface Props extends FormatRelativeTimeOptions {
@@ -78,28 +68,32 @@ export interface Props extends FormatRelativeTimeOptions {
 }
 
 interface State {
-  deltaInSeconds: number;
+  currentValueInSeconds: number;
 }
 
 const INCREMENTABLE_UNITS: Unit[] = ['second', 'minute', 'hour'];
+function canIncrement(unit: Unit = 'second') {
+  return INCREMENTABLE_UNITS.includes(unit);
+}
 
 function verifyProps(updateIntervalInSeconds?: number, unit?: Unit) {
   invariant(
-    !updateIntervalInSeconds ||
-      (updateIntervalInSeconds &&
-        INCREMENTABLE_UNITS.includes(unit || 'second')),
+    !updateIntervalInSeconds || (updateIntervalInSeconds && canIncrement(unit)),
     'Cannot schedule update with unit longer than hour'
   );
 }
 
 class FormattedRelativeTime extends React.PureComponent<Props, State> {
-  private _updateInterval: any;
+  // Public for testing
+  _updateTimer: any = null;
   static defaultProps: Pick<Props, 'unit' | 'value'> = {
     value: 0,
     unit: 'second',
   };
   state: State = {
-    deltaInSeconds: 0,
+    currentValueInSeconds: canIncrement(this.props.unit)
+      ? valueToSeconds(this.props.value, this.props.unit)
+      : 0,
   };
 
   constructor(props: Props) {
@@ -107,74 +101,95 @@ class FormattedRelativeTime extends React.PureComponent<Props, State> {
     verifyProps(props.updateIntervalInSeconds, props.unit);
   }
 
-  update = () => {
-    const {updateIntervalInSeconds} = this.props;
-    const {deltaInSeconds} = this.state;
-    if (!updateIntervalInSeconds) {
+  scheduleNextUpdate(
+    {updateIntervalInSeconds, unit}: Props,
+    {currentValueInSeconds}: State
+  ) {
+    clearTimeout(this._updateTimer);
+    this._updateTimer = null;
+    // If there's no interval and we cannot increment this unit, do nothing
+    if (!updateIntervalInSeconds || !canIncrement(unit)) {
       return;
     }
-    this.setState({
-      deltaInSeconds: deltaInSeconds + updateIntervalInSeconds,
-    });
-  };
-
-  scheduleUpdate({updateIntervalInSeconds}: Props) {
-    clearInterval(this._updateInterval);
-    if (updateIntervalInSeconds) {
-      this._updateInterval = setInterval(
-        this.update,
-        updateIntervalInSeconds * 1e3
-      );
+    // Figure out the next interesting time
+    const nextValueInSeconds = currentValueInSeconds - updateIntervalInSeconds;
+    const nextUnit = selectUnit(nextValueInSeconds);
+    // We've reached the max auto incrementable unit, don't schedule another update
+    if (nextUnit === 'day') {
+      return this.setState({
+        currentValueInSeconds: nextValueInSeconds < 0 ? -DAY : DAY,
+      });
     }
+
+    const unitDuration = getDurationInSeconds(nextUnit);
+    const remainder = Math.abs(nextValueInSeconds) % unitDuration;
+    const nextInterestingValueInSeconds = remainder
+      ? nextValueInSeconds - unitDuration + remainder
+      : nextValueInSeconds;
+    const delayInSeconds = Math.abs(
+      nextInterestingValueInSeconds - currentValueInSeconds
+    );
+
+    this._updateTimer = setTimeout(
+      () =>
+        this.setState({
+          currentValueInSeconds: nextInterestingValueInSeconds,
+        }),
+      delayInSeconds * 1e3
+    );
   }
 
   componentDidMount() {
-    this.scheduleUpdate(this.props);
+    this.scheduleNextUpdate(this.props, this.state);
   }
 
-  componentDidUpdate(prevProps: Props) {
-    if (
-      prevProps.value !== this.props.value ||
-      prevProps.unit !== this.props.unit ||
-      prevProps.updateIntervalInSeconds !== this.props.updateIntervalInSeconds
-    ) {
-      this.scheduleUpdate(this.props);
-    }
+  componentDidUpdate() {
+    this.scheduleNextUpdate(this.props, this.state);
   }
 
   componentWillUnmount() {
-    clearInterval(this._updateInterval);
+    clearTimeout(this._updateTimer);
+    this._updateTimer = null;
   }
 
-  componentWillReceiveProps (nextProps: Props) {
+  componentWillReceiveProps(nextProps: Props) {
     if (
-      nextProps.value !== this.props.value ||
-      nextProps.unit !== this.props.unit
+      this.props.value !== nextProps.value ||
+      this.props.unit !== nextProps.unit
     ) {
       this.setState({
-        deltaInSeconds: 0
-      })
+        currentValueInSeconds: canIncrement(nextProps.unit)
+          ? valueToSeconds(nextProps.value, nextProps.unit)
+          : 0,
+      });
     }
   }
 
   render() {
     const {formatRelativeTime, textComponent: Text} = this.props.intl;
-    const {children, value, unit} = this.props;
-    const {deltaInSeconds} = this.state;
+    const {children, value, unit, updateIntervalInSeconds} = this.props;
+    const {currentValueInSeconds} = this.state;
     let currentValue = value || 0;
     let currentUnit = unit;
-    if (deltaInSeconds) {
-      const currentValueInSeconds = valueToSeconds(value) - deltaInSeconds;
+
+    if (
+      canIncrement(unit) &&
+      currentValueInSeconds &&
+      updateIntervalInSeconds
+    ) {
       currentUnit = selectUnit(currentValueInSeconds);
-      currentValue = Math.round(
-        currentValueInSeconds / getDurationInSeconds(currentUnit)
-      );
+      const unitDuration = getDurationInSeconds(currentUnit);
+      currentValue = Math.round(currentValueInSeconds / unitDuration);
     }
 
-    const formattedRelativeTime = formatRelativeTime(currentValue, currentUnit, {
-      ...this.props,
-    });
-    
+    const formattedRelativeTime = formatRelativeTime(
+      currentValue,
+      currentUnit,
+      {
+        ...this.props,
+      }
+    );
+
     if (typeof children === 'function') {
       return children(formattedRelativeTime);
     }

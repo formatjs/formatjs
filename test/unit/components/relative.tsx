@@ -1,16 +1,29 @@
 import * as React from 'react';
-import {mount} from 'enzyme';
-import {generateIntlContext, makeMockContext, shallowDeep} from '../testUtils';
-import FormattedRelativeTime from '../../../src/components/relative';
+
+jest.useFakeTimers();
+
+import {mount, ReactWrapper, render} from 'enzyme';
+import {generateIntlContext} from '../testUtils';
+import FormattedRelativeTime, {
+  Props,
+  BaseFormattedRelativeTime,
+} from '../../../src/components/relative';
 import Provider from '../../../src/components/provider';
 
-const mockContext = makeMockContext(
-  require.resolve('../../../src/components/relative')
-);
+function mountWithProvider(
+  props: Partial<Props>,
+  providerProps: any = {locale: 'en'}
+) {
+  return mount(
+    <FormattedRelativeTime {...props} />,
+    {
+      wrappingComponent: Provider,
+      wrappingComponentProps: providerProps,
+    } as any // Seems like DefinitelyTyped types are outdated
+  );
+}
 
 describe('<FormattedRelative>', () => {
-  const sleep = delay => new Promise(resolve => setTimeout(resolve, delay));
-
   let consoleError;
   let intl;
   let getDerivedStateFromProps;
@@ -29,81 +42,38 @@ describe('<FormattedRelative>', () => {
   });
 
   it('has a `displayName`', () => {
-    expect(FormattedRelativeTime.displayName).toBeA('string');
+    expect(FormattedRelativeTime.displayName).toBe(
+      'injectIntl(FormattedRelativeTime)'
+    );
   });
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
-    const FormattedRelative = mockContext();
-    expect(() => shallowDeep(<FormattedRelative />, 2)).toThrow(
+    expect(() => mount(<FormattedRelativeTime />)).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     );
   });
 
-  it('renders a formatted relative time in a <>', () => {
-    const FormattedRelativeTime = mockContext(intl);
-
-    const rendered = shallowDeep(<FormattedRelativeTime value={0} />, 2);
-
-    expect(typeof rendered.type()).toBe('symbol');
-    expect(rendered.text()).toBe(intl.formatRelativeTime(0));
-  });
-
-  it('should not re-render when props and context are the same', () => {
-    const FormattedRelativeTime = mockContext(intl);
-
-    const spy = jest.fn().mockImplementation(() => null);
-    const injectIntlContext = mount(
-      <FormattedRelativeTime value={0}>{spy}</FormattedRelativeTime>
-    );
-
-    injectIntlContext.setProps({
-      ...injectIntlContext.props(),
-    });
-    injectIntlContext.instance().mockContext(intl);
-
-    expect(spy).toHaveBeenCalledTimes(1);
-  });
-
   it('should re-render when props change', () => {
-    const FormattedRelativeTime = mockContext(intl);
-
     const spy = jest.fn().mockImplementation(() => null);
-    const injectIntlContext = mount(
-      <FormattedRelativeTime value={0}>{spy}</FormattedRelativeTime>
-    );
-
-    injectIntlContext.setProps({
-      ...injectIntlContext.props(),
-      value: injectIntlContext.prop('value') + 1,
-    });
-
+    mountWithProvider({value: 0, children: spy}, intl);
+    mountWithProvider({value: 1, children: spy}, intl);
     expect(spy).toHaveBeenCalledTimes(2);
   });
 
   it('should re-render when context changes', () => {
-    const FormattedRelativeTime = mockContext(intl);
-
-    const spy = jest.fn().mockImplementation(() => null);
-    const injectIntlContext = mount(
-      <FormattedRelativeTime value={0}>{spy}</FormattedRelativeTime>
-    );
-
     const otherIntl = generateIntlContext({
       locale: 'en-US',
     });
-    injectIntlContext.instance().mockContext(otherIntl);
+    const spy = jest.fn().mockImplementation(() => null);
+    mountWithProvider({value: 0, children: spy}, intl);
+    mountWithProvider({value: 0, children: spy}, {otherIntl});
 
     expect(spy).toHaveBeenCalledTimes(2);
   });
 
   it('accepts valid IntlRelativeTimeFormat options as props', () => {
-    const FormattedRelativeTime = mockContext(intl);
-    const options = {style: 'narrow'};
-
-    const rendered = shallowDeep(
-      <FormattedRelativeTime value={-60} {...options} />,
-      2
-    );
+    const options = {style: 'narrow' as 'narrow'};
+    const rendered = mountWithProvider({value: -60, ...options});
 
     expect(rendered.text()).toBe(
       intl.formatRelativeTime(-60, 'second', options)
@@ -111,35 +81,25 @@ describe('<FormattedRelative>', () => {
   });
 
   it('throws an error for invalid unit', () => {
-    const FormattedRelativeTime = mockContext(intl);
-
-    const rendered = shallowDeep(
-      <FormattedRelativeTime value={0} unit="invalid" />,
-      2
-    );
+    const rendered = mountWithProvider({value: 0, unit: 'invalid' as any});
     expect(rendered.text()).toBe('0');
     expect(consoleError.mock.calls.length).toBeGreaterThan(0);
   });
 
   it('accepts `format` prop', () => {
+    const format = 'seconds';
     intl = generateIntlContext({
       locale: 'en',
       formats: {
         relative: {
-          seconds: {
+          [format]: {
             style: 'narrow',
           },
         },
       },
     });
 
-    const FormattedRelativeTime = mockContext(intl);
-    const format = 'seconds';
-
-    const rendered = shallowDeep(
-      <FormattedRelativeTime value={-60} format={format} />,
-      2
-    );
+    const rendered = mountWithProvider({value: -60, format}, intl);
 
     expect(rendered.text()).toBe(
       intl.formatRelativeTime(-60, 'second', {format})
@@ -147,49 +107,104 @@ describe('<FormattedRelative>', () => {
   });
 
   it('supports function-as-child pattern', () => {
-    const FormattedRelativeTime = mockContext(intl);
-
     const spy = jest.fn().mockImplementation(() => <b>Jest</b>);
-    const rendered = shallowDeep(
-      <FormattedRelativeTime value={0}>{spy}</FormattedRelativeTime>,
-      2
-    );
+    const rendered = mountWithProvider({value: 0, children: spy}, intl);
 
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy.mock.calls[0]).toEqual([intl.formatRelativeTime(0)]);
 
-    expect(rendered.type()).toBe('b');
+    expect(
+      rendered
+        .children()
+        .children()
+        .type()
+    ).toBe('b');
     expect(rendered.text()).toBe('Jest');
   });
 
-  it('updates automatically', async () => {
+  it('updates automatically', () => {
     // span bc enzyme support for </> seems buggy
-    const comp = mount(
-      <Provider locale="en" textComponent="span">
-        <FormattedRelativeTime value={0} updateIntervalInSeconds={1} />
-      </Provider>
+    const rendered = mountWithProvider(
+      {value: 0, updateIntervalInSeconds: 1},
+      {intl, textComponent: 'span'}
     );
-    const text = comp.text();
-    await sleep(1010);
-    
-    const textAfterUpdate = comp.text();
+    const text = rendered.text();
+    jest.advanceTimersByTime(1010);
+
+    const textAfterUpdate = rendered.text();
     expect(textAfterUpdate).not.toBe(text);
     expect(textAfterUpdate).toBe(intl.formatRelativeTime(-1, 'second'));
   });
 
   it('updates when the `value` prop changes', () => {
-    const FormattedRelativeTime = mockContext(intl);
-
-    const injectIntlContext = shallowDeep(
-      <FormattedRelativeTime value={0} updateIntervalInSeconds={1} />
+    const rendered = mountWithProvider(
+      {value: 0, updateIntervalInSeconds: 1},
+      {intl, textComponent: 'span'}
     );
-    const textBefore = injectIntlContext.dive().text();
-
-    injectIntlContext.setProps({
-      ...injectIntlContext.props(),
+    rendered.setProps({
       value: 10,
     });
 
-    expect(injectIntlContext.dive().text()).not.toBe(textBefore);
+    expect(rendered.text()).toBe('in 10 seconds');
+    jest.advanceTimersByTime(1010);
+    expect(rendered.text()).toBe('in 9 seconds');
+  });
+
+  it('should adjust unit to min correctly', function() {
+    // span bc enzyme support for </> seems buggy
+    const rendered = mountWithProvider(
+      {value: -59, updateIntervalInSeconds: 1},
+      {intl, textComponent: 'span'}
+    );
+    jest.advanceTimersByTime(1010);
+    expect(rendered.text()).toBe(intl.formatRelativeTime(-1, 'minute'));
+  });
+  it('should adjust unit to hour correctly', function() {
+    // span bc enzyme support for </> seems buggy
+    const rendered = mountWithProvider(
+      {value: -59, unit: 'minute', updateIntervalInSeconds: 1},
+      {intl, textComponent: 'span'}
+    );
+    // Advance 1 min
+    jest.advanceTimersByTime(1000 * 60);
+    expect(rendered.text()).toBe(intl.formatRelativeTime(-1, 'hour'));
+  });
+  it('should adjust unit to day correctly and stop', function() {
+    // span bc enzyme support for </> seems buggy
+    const rendered = mountWithProvider(
+      {value: -23, unit: 'hour', updateIntervalInSeconds: 1},
+      {intl, textComponent: 'span'}
+    ).find(BaseFormattedRelativeTime);
+    expect(
+      (rendered.find(BaseFormattedRelativeTime).instance() as any)._updateTimer
+    ).not.toBeNull();
+    // Advance 1 hour
+    jest.advanceTimersByTime(1000 * 60 * 60);
+    expect(rendered.text()).toBe(intl.formatRelativeTime(-1, 'day'));
+    expect(
+      (rendered.find(BaseFormattedRelativeTime).instance() as any)._updateTimer
+    ).toBeNull();
+  });
+  it('should throw if try to increment in day', function() {
+    // span bc enzyme support for </> seems buggy
+    expect(() =>
+      mountWithProvider(
+        {value: 5, unit: 'day', updateIntervalInSeconds: 1},
+        {intl, textComponent: 'span'}
+      ).find(BaseFormattedRelativeTime)
+    ).toThrow('Cannot schedule update with unit longer than hour');
+  });
+  it('should clear timer on unmount', function() {
+    // span bc enzyme support for </> seems buggy
+    const rendered = mountWithProvider(
+      {value: 0, updateIntervalInSeconds: 1},
+      {intl, textComponent: 'span'}
+    );
+    const clearTimeoutSpy = jest.spyOn(window, 'clearTimeout');
+    const comp = rendered.find(BaseFormattedRelativeTime);
+    const updateTimer = (comp.instance() as any)._updateTimer;
+    expect(updateTimer).not.toBeNull();
+    rendered.unmount();
+    expect(clearTimeoutSpy).toHaveBeenCalledWith(updateTimer);
   });
 });

@@ -87,7 +87,6 @@ export interface Formatters {
 
 export interface IntlShape extends IntlConfig, IntlFormatters {
   formatters: Formatters;
-  now(): number;
 }
 
 export interface MessageDescriptor {

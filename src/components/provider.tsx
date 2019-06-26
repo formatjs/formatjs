@@ -81,7 +81,7 @@ function getConfig(filteredProps: OptionalIntlConfig): IntlConfig {
 }
 
 function getBoundFormatFns(config: IntlConfig, state: State): IntlFormatters {
-  const formatterState = {...state.context.formatters, now: state.context.now};
+  const formatterState = {...state.context.formatters};
 
   return {
     formatNumber: formatters.formatNumber.bind(
@@ -114,10 +114,6 @@ function getBoundFormatFns(config: IntlConfig, state: State): IntlFormatters {
   };
 }
 
-interface InternalProps {
-  initialNow?: number;
-}
-
 interface State {
   context: IntlShape;
   filteredProps?: IntlConfig;
@@ -126,10 +122,9 @@ interface State {
 type OptionalIntlConfig = Omit<IntlConfig, keyof typeof DEFAULT_INTL_CONFIG> &
   Partial<typeof DEFAULT_INTL_CONFIG>;
 
-type ResolvedProps = WrappedComponentProps & InternalProps & OptionalIntlConfig;
+type ResolvedProps = WrappedComponentProps & OptionalIntlConfig;
 
 class IntlProvider extends React.PureComponent<ResolvedProps, State> {
-  private _didDisplay?: boolean;
   constructor(props: ResolvedProps) {
     super(props);
 
@@ -142,18 +137,6 @@ class IntlProvider extends React.PureComponent<ResolvedProps, State> {
 
     const {intl: intlContext} = props;
 
-    // Used to stabilize time when performing an initial rendering so that
-    // all relative times use the same reference "now" time.
-    let initialNow: number;
-    if (isFinite(props.initialNow || Infinity)) {
-      initialNow = Number(props.initialNow);
-    } else {
-      // When an `initialNow` isn't provided via `props`, look to see an
-      // <IntlProvider> exists in the ancestry and call its `now()`
-      // function to propagate its value for "now".
-      initialNow = intlContext ? intlContext.now() : Date.now();
-    }
-
     // Creating `Intl*` formatters is expensive. If there's a parent
     // `<IntlProvider>`, then its formatters will be used. Otherwise, this
     // memoize the `Intl*` constructors and cache them for the lifecycle of
@@ -164,11 +147,6 @@ class IntlProvider extends React.PureComponent<ResolvedProps, State> {
       context: {
         ...intlContext!,
         formatters,
-
-        // Wrapper to provide stable "now" time for initial render.
-        now: () => {
-          return this._didDisplay ? Date.now() : initialNow;
-        },
       },
     };
   }
@@ -201,17 +179,9 @@ class IntlProvider extends React.PureComponent<ResolvedProps, State> {
     return null;
   }
 
-  getContext() {
-    return this.state.context;
-  }
-
-  componentDidMount() {
-    this._didDisplay = true;
-  }
-
   render() {
     return (
-      <Provider value={this.getContext()}>
+      <Provider value={this.state.context}>
         {React.Children.only(this.props.children)}
       </Provider>
     );
