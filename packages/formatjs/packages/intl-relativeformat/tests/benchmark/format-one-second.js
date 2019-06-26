@@ -1,7 +1,5 @@
 'use strict';
 
-global.Intl || require('intl');
-
 var IntlRelativeFormat = require('../../');
 
 var o = new IntlRelativeFormat('en');

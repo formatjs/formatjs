@@ -70,41 +70,12 @@ export interface RelativeTimeFormatNumberPart extends Intl.NumberFormatPart {
   unit: FormattableUnit;
 }
 
-export interface IntlRelativeTimeFormat {
-  new (
-    locales?: string | string[],
-    opts?: IntlRelativeTimeFormatOptions
-  ): IntlRelativeTimeFormat;
-  (
-    locales?: string | string[],
-    opts?: IntlRelativeTimeFormatOptions
-  ): IntlRelativeTimeFormat;
-  format(value: number, unit: FormattableUnit): string;
-  formatToParts(value: number, unit: FormattableUnit): Part[];
-  resolvedOptions(): ResolvedIntlRelativeTimeFormatOptions;
-  supportedLocalesOf(
-    locales: string | string[],
-    opts?: Pick<IntlRelativeTimeFormatOptions, 'localeMatcher'>
-  ): string[];
-  polyfilled: true;
-
-  /**
-   * PRIVATE METHODS/PROPERTIES
-   */
-  _resolvedOptions: ResolvedIntlRelativeTimeFormatOptions;
-  __localeData__: Record<string, LocaleData>;
-  __addLocaleData(...data: LocaleData[]): void;
-  _fields: LocaleFieldsData;
-  _pluralRules: Intl.PluralRules;
-  _nf: Intl.NumberFormat;
-}
-
 /**
  * Find the correct field data in our CLDR data
  * @param locale locale
  */
 function findFields(locale: string) {
-  const localeData = IntlRelativeTimeFormatFn.__localeData__;
+  const localeData = RelativeTimeFormat.__localeData__;
   let data: LocaleData | undefined = localeData[locale.toLowerCase()];
 
   // The locale data is de-duplicated, so we have to traverse the locale's
@@ -120,17 +91,16 @@ function findFields(locale: string) {
   }
 
   throw new Error(
-    `Locale data added to IntlRelativeTimeFormat is missing 'fields' for "${locale}"`
+    `Locale data added to RelativeTimeFormat is missing 'fields' for "${locale}"`
   );
 }
 
-function resolveLocale(locales: string | string[] = []) {
-  if (typeof locales === 'string') {
-    locales = [locales];
-  }
-
-  // Create a copy of the array so we can push on the default locale.
-  locales = (locales || []).concat('en');
+function resolveLocale(locales: Array<string | undefined>) {
+  let resolvedLocales: string[] = [
+    ...(Array.isArray(locales) ? locales : [locales]),
+    // default locale
+    DEFAULT_LOCALE
+  ].filter<string>((s): s is string => typeof s === 'string');
 
   var localeData = RelativeTimeFormat.__localeData__;
   var i, len, localeParts, data;
@@ -140,8 +110,8 @@ function resolveLocale(locales: string | string[] = []) {
   // traverse its ancestors to find something that's been registered within
   // its hierarchy of locales. Since we lack the proper `parentLocale` data
   // here, we must take a naive approach to traversal.
-  for (i = 0, len = locales.length; i < len; i += 1) {
-    localeParts = locales[i].toLowerCase().split('-');
+  for (i = 0, len = resolvedLocales.length; i < len; i += 1) {
+    localeParts = resolvedLocales[i].toLowerCase().split('-');
 
     while (localeParts.length) {
       data = localeData[localeParts.join('-')];
@@ -155,10 +125,10 @@ function resolveLocale(locales: string | string[] = []) {
     }
   }
 
-  var defaultLocale = locales.pop();
+  const defaultLocale = resolvedLocales.pop();
   throw new Error(
     'No locale data has been added to IntlRelativeTimeFormat for: ' +
-      locales.join(', ') +
+      resolvedLocales.join(', ') +
       ', or the default locale: ' +
       defaultLocale
   );
@@ -169,10 +139,10 @@ function findFieldData(
   unit: Unit,
   style: IntlRelativeTimeFormatOptions['style']
 ) {
-  if (style === 'long') {
+  if (style == 'long') {
     return fields[unit as 'day'];
   }
-  if (style === 'narrow') {
+  if (style == 'narrow') {
     return (
       fields[`${unit}-narrow` as 'day-narrow'] ||
       fields[`${unit}-short` as 'day-short']
@@ -180,12 +150,6 @@ function findFieldData(
   }
   return fields[`${unit}-short` as 'day-short'];
 }
-
-const DEFAULT_OPTIONS: IntlRelativeTimeFormatOptions = {
-  localeMatcher: 'best fit',
-  style: 'long',
-  numeric: 'always'
-};
 
 function objectIs(x: any, y: any) {
   if (Object.is) {
@@ -201,144 +165,6 @@ function objectIs(x: any, y: any) {
   return x !== x && y !== y;
 }
 
-function RelativeTimeFormat(
-  this: IntlRelativeTimeFormat,
-  locales?: string | string[],
-  opts?: IntlRelativeTimeFormatOptions
-) {
-  const options = { ...DEFAULT_OPTIONS, ...(opts || {}) };
-  this._nf = new Intl.NumberFormat(locales, {
-    localeMatcher: options.localeMatcher
-  });
-  this._pluralRules = new Intl.PluralRules(locales, {
-    localeMatcher: options.localeMatcher
-  });
-  const { numberingSystem } = this._nf.resolvedOptions();
-  const locale = resolveLocale(locales);
-  this._resolvedOptions = {
-    locale,
-    style: options.style,
-    numeric: options.numeric,
-    numberingSystem
-  };
-  this._fields = findFields(locale);
-}
-
-const IntlRelativeTimeFormatFn = RelativeTimeFormat as IntlRelativeTimeFormat;
-
-function validateInstance(instance: any, method: string) {
-  if (!(instance instanceof IntlRelativeTimeFormatFn)) {
-    throw new TypeError(
-      `Method Intl.RelativeTimeFormat.prototype.${method} called on incompatible receiver ${String(
-        instance
-      )}`
-    );
-  }
-}
-
-function validateUnit(unit: any) {
-  if (!~VALID_UNITS.indexOf(unit)) {
-    throw new RangeError(
-      `Invalid unit argument for format() '${String(unit)}'`
-    );
-  }
-}
-
-Object.defineProperty(RelativeTimeFormat, 'prototype', {
-  writable: false,
-  enumerable: false,
-  configurable: false
-});
-Object.defineProperty(RelativeTimeFormat.prototype, 'format', {
-  value: function format(
-    this: IntlRelativeTimeFormat,
-    value: number,
-    unit: FormattableUnit
-  ): string {
-    validateInstance(this, 'format');
-    validateUnit(unit);
-    const resolvedUnit = (unit[unit.length - 1] === 's'
-      ? unit.slice(0, unit.length - 1)
-      : unit) as Unit;
-    const { style, numeric } = this._resolvedOptions;
-    const fieldData = findFieldData(this._fields, resolvedUnit, style);
-    if (!fieldData) {
-      throw new Error(`Unsupported unit ${unit}`);
-    }
-    const { relative, relativeTime } = fieldData;
-    let result: string = '';
-    // We got a match for things like yesterday
-    if (numeric === 'auto' && (result = relative[String(value) as '0'] || '')) {
-      return result;
-    }
-    const absValue = Math.abs(value);
-    // TODO: No need to Math.abs for Intl.PluralRules once
-    // https://github.com/eemeli/intl-pluralrules/pull/6 is merged
-    const selector = this._pluralRules.select(absValue) as RelativeTimeOpt;
-    const futureOrPastData = relativeTime[resolvePastOrFuture(value)];
-    const msg = futureOrPastData[selector] || futureOrPastData.other;
-    return msg!.replace(/\{0\}/, this._nf.format(absValue));
-  },
-  writable: true,
-  enumerable: false,
-  configurable: true
-});
-RelativeTimeFormat.prototype.formatToParts = function formatToParts(
-  this: IntlRelativeTimeFormat,
-  value: number,
-  unit: FormattableUnit
-): Part[] {
-  validateInstance(this, 'format');
-  validateUnit(unit);
-  const resolvedUnit = (unit[unit.length - 1] === 's'
-    ? unit.slice(0, unit.length - 1)
-    : unit) as Unit;
-  const { style, numeric } = this._resolvedOptions;
-  const fieldData = findFieldData(this._fields, resolvedUnit, style);
-  if (!fieldData) {
-    throw new Error(`Unsupported unit ${unit}`);
-  }
-  const { relative, relativeTime } = fieldData;
-  let result: string = '';
-  // We got a match for things like yesterday
-  if (numeric === 'auto' && (result = relative[String(value) as '0'] || '')) {
-    return [
-      {
-        type: 'literal',
-        value: result
-      }
-    ];
-  }
-
-  const selector = this._pluralRules.select(value) as RelativeTimeOpt;
-  const futureOrPastData = relativeTime[resolvePastOrFuture(value)];
-  const msg = futureOrPastData[selector] || futureOrPastData.other;
-  const valueParts = this._nf
-    .formatToParts(Math.abs(value))
-    .map(p => ({ ...p, unit }));
-  return msg!
-    .split(/(\{0\})/)
-    .filter<string>(isString)
-    .reduce(
-      (parts: Part[], str) => [
-        ...parts,
-        ...(str === '{0}'
-          ? valueParts
-          : [{ type: 'literal', value: str } as LiteralPart])
-      ],
-      []
-    );
-};
-
-RelativeTimeFormat.prototype.polyfilled = true;
-
-RelativeTimeFormat.prototype.resolvedOptions = function resolvedOptions(
-  this: IntlRelativeTimeFormat
-): ResolvedIntlRelativeTimeFormatOptions {
-  validateInstance(this, 'resolvedOptions');
-  return this._resolvedOptions;
-};
-
 function resolvePastOrFuture(value: number): 'past' | 'future' {
   return objectIs(value, -0)
     ? 'past'
@@ -349,29 +175,308 @@ function resolvePastOrFuture(value: number): 'past' | 'future' {
     : 'future';
 }
 
+function validateInstance(instance: any, method: string) {
+  if (!(instance instanceof RelativeTimeFormat)) {
+    throw new TypeError(
+      `Method Intl.RelativeTimeFormat.prototype.${method} called on incompatible receiver ${String(
+        instance
+      )}`
+    );
+  }
+}
+
+function validateUnit(unit: any): Unit {
+  // `unit + ''` to guard against `Symbol()`
+  if (!~VALID_UNITS.indexOf(unit + '')) {
+    throw new RangeError(
+      `Invalid unit argument for format() '${String(unit)}'`
+    );
+  }
+  const resolvedUnit = (unit[unit.length - 1] === 's'
+    ? unit.slice(0, unit.length - 1)
+    : unit) as Unit;
+  return resolvedUnit;
+}
+
+function validateValue(value: number | string, method = 'format') {
+  const parsedValue =
+    typeof value === 'string' ? new Number(value).valueOf() : value;
+  if (!isFinite(parsedValue)) {
+    throw new RangeError(
+      `Value need to be finite number for Intl.RelativeTimeFormat.prototype.${method}()`
+    );
+  }
+  return parsedValue;
+}
+
 function isString(s?: string): s is string {
   return !!s;
 }
 
-RelativeTimeFormat.supportedLocalesOf = (
-  locales: string | string[],
-  opts?: Pick<IntlRelativeTimeFormatOptions, 'localeMatcher'>
-) => {
-  return Intl.PluralRules.supportedLocalesOf(locales, opts);
-};
+function toObject<T>(
+  arg: T
+): T extends null ? never : T extends undefined ? never : T {
+  if (arg == null) {
+    throw new TypeError('undefined/null cannot be converted to object');
+  }
+  return Object(arg);
+}
 
-RelativeTimeFormat.__localeData__ = {} as Record<string, LocaleData>;
-RelativeTimeFormat.__addLocaleData = (...data: LocaleData[]) => {
-  for (const datum of data) {
-    if (!(datum && datum.locale)) {
-      throw new Error(
-        'Locale data provided to IntlRelativeTimeFormat is missing a ' +
-          '`locale` property value'
+/**
+ * https://tc39.es/ecma402/#sec-getoption
+ * @param opts
+ * @param prop
+ * @param type
+ * @param values
+ * @param fallback
+ */
+function getOption<T extends object, K extends keyof T>(
+  opts: T,
+  prop: K,
+  type: 'string' | 'boolean',
+  values?: T[K][],
+  fallback?: T[K]
+): T[K] | undefined {
+  // const descriptor = Object.getOwnPropertyDescriptor(opts, prop);
+  let value: any = opts[prop];
+  if (value !== undefined) {
+    if (type !== 'boolean' && type !== 'string') {
+      throw new TypeError('invalid type');
+    }
+    if (type === 'boolean') {
+      value = new Boolean(value);
+    }
+    if (type === 'string') {
+      value = new String(value);
+    }
+    if (values !== undefined && !values.filter(val => val == value).length) {
+      throw new RangeError(`${value} in not within ${values}`);
+    }
+    return value;
+  }
+  return fallback;
+}
+
+function intersection(
+  arr1: Array<string | undefined>,
+  arr2: Array<string | undefined>
+): Array<string | undefined> {
+  return arr1.filter(s => ~arr2.indexOf(s as string));
+}
+
+const DEFAULT_LOCALE = new Intl.NumberFormat().resolvedOptions().locale;
+
+export default class RelativeTimeFormat {
+  private readonly _nf: Intl.NumberFormat;
+  private readonly _pl: Intl.PluralRules;
+  private readonly _fields: LocaleFieldsData;
+  private readonly _locale: string;
+  private readonly _style: IntlRelativeTimeFormatOptions['style'];
+  private readonly _numeric: IntlRelativeTimeFormatOptions['numeric'];
+  private readonly _localeMatcher: IntlRelativeTimeFormatOptions['localeMatcher'];
+  private readonly _numberingSystem: string;
+  constructor(
+    ...[locales, options]: [
+      string | string[] | undefined,
+      IntlRelativeTimeFormatOptions | undefined
+    ]
+  ) {
+    // test262/test/intl402/RelativeTimeFormat/constructor/constructor/newtarget-undefined.js
+    // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
+    const newTarget =
+      this && this instanceof RelativeTimeFormat ? this.constructor : void 0;
+    if (!newTarget) {
+      throw new TypeError("Intl.RelativeTimeFormat must be called with 'new'");
+    }
+    const opts =
+      options === undefined ? Object.create(null) : toObject(options);
+    if (locales === undefined) {
+      this._locale = DEFAULT_LOCALE;
+    } else {
+      this._locale = resolveLocale(
+        intersection(
+          Intl.NumberFormat.supportedLocalesOf(locales),
+          Intl.PluralRules.supportedLocalesOf(locales)
+        )
       );
     }
 
-    IntlRelativeTimeFormatFn.__localeData__[datum.locale.toLowerCase()] = datum;
-  }
-};
+    this._localeMatcher = getOption(
+      opts,
+      'localeMatcher',
+      'string',
+      ['best fit', 'lookup'],
+      'best fit'
+    );
+    this._style = getOption(
+      opts,
+      'style',
+      'string',
+      ['long', 'narrow', 'short'],
+      'long'
+    );
+    this._numeric = getOption(
+      opts,
+      'numeric',
+      'string',
+      ['always', 'auto'],
+      'always'
+    );
+    this._fields = findFields(this._locale);
 
-export default IntlRelativeTimeFormatFn;
+    this._nf = new Intl.NumberFormat(this._locale);
+    this._pl = new Intl.PluralRules(this._locale);
+    this._numberingSystem = this._nf.resolvedOptions().numberingSystem;
+  }
+  format(value: number | string, unit: FormattableUnit): string {
+    validateInstance(this, 'format');
+    const resolvedUnit = validateUnit(unit);
+    const parsedValue = validateValue(value);
+    const { _style: style, _numeric: numeric } = this;
+    const fieldData = findFieldData(this._fields, resolvedUnit, style);
+    if (!fieldData) {
+      throw new Error(`Unsupported unit ${unit}`);
+    }
+    const { relative, relativeTime } = fieldData;
+    let result: string = '';
+    // We got a match for things like yesterday
+    if (
+      numeric == 'auto' &&
+      (result = relative[String(parsedValue) as '0'] || '')
+    ) {
+      return result;
+    }
+
+    const selector = this._pl.select(parsedValue) as RelativeTimeOpt;
+    const futureOrPastData = relativeTime[resolvePastOrFuture(parsedValue)];
+    const msg = futureOrPastData[selector] || futureOrPastData.other;
+    return msg!.replace(/\{0\}/, this._nf.format(Math.abs(parsedValue)));
+  }
+  formatToParts(value: number | string, unit: FormattableUnit): Part[] {
+    validateInstance(this, 'format');
+    const resolvedUnit = validateUnit(unit);
+    const parsedValue = validateValue(value, 'formatToParts');
+    const { _style: style, _numeric: numeric } = this;
+    const fieldData = findFieldData(this._fields, resolvedUnit, style);
+    if (!fieldData) {
+      throw new Error(`Unsupported unit ${unit}`);
+    }
+    const { relative, relativeTime } = fieldData;
+    let result: string = '';
+    // We got a match for things like yesterday
+    if (
+      numeric == 'auto' &&
+      (result = relative[String(parsedValue) as '0'] || '')
+    ) {
+      return [
+        {
+          type: 'literal',
+          value: result
+        }
+      ];
+    }
+
+    const selector = this._pl.select(parsedValue) as RelativeTimeOpt;
+    const futureOrPastData = relativeTime[resolvePastOrFuture(parsedValue)];
+    const msg = futureOrPastData[selector] || futureOrPastData.other;
+    const valueParts = this._nf
+      .formatToParts(Math.abs(parsedValue))
+      .map(p => ({ ...p, unit: resolvedUnit }));
+    return msg!
+      .split(/(\{0\})/)
+      .filter<string>(isString)
+      .reduce(
+        (parts: Part[], str) => [
+          ...parts,
+          ...(str === '{0}'
+            ? valueParts
+            : [{ type: 'literal', value: str } as LiteralPart])
+        ],
+        []
+      );
+  }
+
+  resolvedOptions(): ResolvedIntlRelativeTimeFormatOptions {
+    validateInstance(this, 'resolvedOptions');
+
+    // test262/test/intl402/RelativeTimeFormat/prototype/resolvedOptions/type.js
+    const opts = Object.create(Object.prototype);
+    Object.defineProperties(opts, {
+      locale: {
+        value: this._locale,
+        writable: true,
+        enumerable: true,
+        configurable: true
+      },
+      style: {
+        value: (this._style as String).valueOf(),
+        writable: true,
+        enumerable: true,
+        configurable: true
+      },
+      numeric: {
+        value: (this._numeric as String).valueOf(),
+        writable: true,
+        enumerable: true,
+        configurable: true
+      },
+      numberingSystem: {
+        value: (this._numberingSystem as String).valueOf(),
+        writable: true,
+        enumerable: true,
+        configurable: true
+      }
+    });
+    return opts;
+  }
+
+  toString() {
+    return '[object Intl.RelativeTimeFormat]';
+  }
+
+  public static supportedLocalesOf = (
+    locales: string | string[],
+    ...[opts]: [
+      Pick<IntlRelativeTimeFormatOptions, 'localeMatcher'> | undefined
+    ]
+  ) => {
+    // test262/test/intl402/RelativeTimeFormat/constructor/supportedLocalesOf/options-toobject.js
+    let localeMatcher: IntlRelativeTimeFormatOptions['localeMatcher'] =
+      'best fit';
+    // test262/test/intl402/RelativeTimeFormat/constructor/supportedLocalesOf/options-null.js
+    if (opts === null) {
+      throw new TypeError('opts cannot be null');
+    }
+    if (opts) {
+      localeMatcher = getOption(
+        opts,
+        'localeMatcher',
+        'string',
+        ['best fit', 'lookup'],
+        'best fit'
+      );
+    }
+    // test262/test/intl402/RelativeTimeFormat/constructor/supportedLocalesOf/result-type.js
+    return [
+      ...intersection(
+        Intl.NumberFormat.supportedLocalesOf(locales, { localeMatcher }),
+        Intl.PluralRules.supportedLocalesOf(locales, { localeMatcher })
+      )
+    ];
+  };
+
+  static __localeData__ = {} as Record<string, LocaleData>;
+  public static __addLocaleData(...data: LocaleData[]) {
+    for (const datum of data) {
+      if (!(datum && datum.locale)) {
+        throw new Error(
+          'Locale data provided to RelativeTimeFormat is missing a ' +
+            '`locale` property value'
+        );
+      }
+
+      RelativeTimeFormat.__localeData__[datum.locale.toLowerCase()] = datum;
+    }
+  }
+  public static polyfilled = true;
+}

@@ -1,5 +1,6 @@
 import { Suite, Event } from 'benchmark';
 import IntlMessageFormat from '../src';
+import 'intl-pluralrules';
 
 const msg =
   '' +

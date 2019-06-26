@@ -7,14 +7,14 @@ See the accompanying LICENSE file for terms.
 /* jslint esnext: true */
 
 import {
-  IntlRelativeTimeFormat,
+  default as IntlRelativeTimeFormat,
   FormattableUnit
 } from '@formatjs/intl-relativetimeformat';
 import diff from './diff';
 import { SUPPORTED_FIELD, STYLE, LocaleData } from './types';
 declare global {
   namespace Intl {
-    var RelativeTimeFormat: IntlRelativeTimeFormat;
+    var RelativeTimeFormat: typeof IntlRelativeTimeFormat;
   }
 }
 // -----------------------------------------------------------------------------

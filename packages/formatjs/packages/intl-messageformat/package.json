@@ -35,7 +35,7 @@
   },
   "scripts": {
     "clean": "rimraf dist lib",
-    "benchmark": "ts-node --project tests/tsconfig.json tests/benchmark",
+    "benchmark": "ts-node --project ./tsconfig.cjs.json tests/benchmark",
     "build": "tsc && tsc -p tsconfig.cjs.json && rollup -c rollup.config.js",
     "test": "mocha --opts ../../mocha.opts tests/index.ts",
     "karma:local": "karma start karma.conf.js",
