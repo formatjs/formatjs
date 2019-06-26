@@ -280,7 +280,13 @@ export function formatMessage(
 
   if (message) {
     try {
-      let formatter = state.getMessageFormat(message, locale, formats);
+      let formatter = state.getMessageFormat(message, locale, formats, {
+        formatters: {
+          getNumberFormat: state.getNumberFormat,
+          getDateTimeFormat: state.getDateTimeFormat,
+          getPluralRules: state.getPluralRules
+        }
+      });
 
       formattedMessage = formatter.format(values);
     } catch (e) {
