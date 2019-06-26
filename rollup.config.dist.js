@@ -24,7 +24,7 @@ export default {
     exports: 'named',
     sourcemap: true,
     globals: {
-      react: 'React'
+      react: 'React',
     },
   },
   external: ['react'],
