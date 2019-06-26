@@ -159,6 +159,15 @@ describe('<FormattedRelative>', () => {
     jest.advanceTimersByTime(1010);
     expect(rendered.text()).toBe(intl.formatRelativeTime(-1, 'minute'));
   });
+  it('should adjust unit to min correctly even if updateIntervalInSeconds goes past that ts', function() {
+    // span bc enzyme support for </> seems buggy
+    const rendered = mountWithProvider(
+      {value: -59, updateIntervalInSeconds: 2},
+      {intl, textComponent: 'span'}
+    );
+    jest.advanceTimersByTime(1010);
+    expect(rendered.text()).toBe(intl.formatRelativeTime(-1, 'minute'));
+  });
   it('should adjust unit to hour correctly', function() {
     // span bc enzyme support for </> seems buggy
     const rendered = mountWithProvider(

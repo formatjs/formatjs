@@ -78,13 +78,13 @@ If a component can be expressed in a form of function component, using `useIntl`
 
 ```tsx
 import React from 'react';
-import {useIntl, FormattedRelative} from 'react-intl';
+import {useIntl, FormattedDate} from 'react-intl';
 
 const FunctionComponent: React.FC<{date: number | Date}> = ({date}) => {
   const intl = useIntl();
   return (
     <span title={intl.formatDate(date)}>
-      <FormattedRelative value={date} />
+      <FormattedDate value={date} />
     </span>
   );
 };
@@ -122,7 +122,7 @@ By default, the formatting API will be provided to the wrapped component via `pr
 
 ```tsx
 import React, {PropTypes} from 'react';
-import {injectIntl, FormattedRelative} from 'react-intl';
+import {injectIntl, FormattedDate} from 'react-intl';
 
 interface Props {
   date: Date | number;
@@ -135,7 +135,7 @@ const ClassComponent: React.FC<Props> = props => {
   } = props;
   return (
     <span title={intl.formatDate(date)}>
-      <FormattedRelative value={date} />
+      <FormattedDate value={date} />
     </span>
   );
 };
@@ -160,16 +160,18 @@ interface IntlConfig {
 interface IntlFormatters {
   formatDate(value: number | Date, opts: FormatDateOptions): string;
   formatTime(value: number | Date, opts: FormatDateOptions): string;
-  formatRelative(value: number, opts: FormatRelativeOptions): string;
+  formatRelativeTime(
+    value: number,
+    unit: Unit,
+    opts: FormatRelativeOptions
+  ): string;
   formatNumber(value: number, opts: FormatNumberOptions): string;
   formatPlural(value: number, opts: FormatPluralOptions): string;
   formatMessage(descriptor: MessageDescriptor, values: any): string;
   formatHTMLMessage: Function;
 }
 
-interface IntlShape extends IntlConfig, IntlFormatters {
-  now(): number;
-}
+type IntlShape = IntlConfig & IntlFormatters;
 ```
 
 This interface is exported by the `react-intl` package that can be used in conjunction with the [`injectIntl`](#injectintl) HOC factory function.
@@ -178,7 +180,6 @@ The definition above shows what the `props.intl` object will look like that's in
 
 - **`IntlConfig`:** The intl metadata passed as props into the parent `<IntlProvider>`.
 - **`IntlFormatters`:** The imperative formatting API described below.
-- **`now`:** A function that returns the current time.
 
 ### Date Formatting APIs
 
@@ -186,9 +187,9 @@ React Intl provides three functions to format dates:
 
 - [`formatDate`](#formatdate)
 - [`formatTime`](#formattime)
-- [`formatRelative`](#formatrelative)
+- [`formatRelativeTime`](#formatrelativetime)
 
-These APIs are used by their corresponding [`<FormattedDate>`](./Components.md#formatteddate), [`<FormattedTime>`](./Components.md#formattedtime), and [`<FormattedRelative>`](./Components.md#formattedrelative) components and can be [injected](#injectintl) into your component via its `props`.
+These APIs are used by their corresponding [`<FormattedDate>`](./Components.md#formatteddate), [`<FormattedTime>`](./Components.md#formattedtime), and [`<FormattedRelativeTime>`](./Components.md#formattedrelative) components and can be [injected](#injectintl) into your component via its `props`.
 
 Each of these APIs support custom named formats via their `format` option which can be specified on `<IntlProvider>`. Both `formatDate` and `formatTime` use [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) options
 
@@ -237,60 +238,44 @@ It expects a `value` which can be parsed as a date (i.e., `isFinite(new Date(val
 formatTime(Date.now()); // "4:03 PM"
 ```
 
-#### `formatRelative`
+#### `formatRelativeTime`
 
 ```js
-type RelativeFormatOptions = {
-    style?: 'best fit' | 'numeric' = 'best fit',
-    units?:
-      'second' |
-      'second-short' |
-      'second-narrow' |
-      'minute' |
-      'minute-short' |
-      'minute-narrow' |
-      'hour' |
-      'hour-short' |
-      'hour-narrow' |
-      'day' |
-      'day-short' |
-      'day-narrow' |
-      'week' |
-      'week-short' |
-      'week-narrow' |
-      'month' |
-      'month-short' |
-      'month-narrow' |
-      'year' |
-      'year-short'|
-      'year-narrow',
+type Unit =
+  | 'second'
+  | 'minute'
+  | 'hour'
+  | 'day'
+  | 'week'
+  | 'month'
+  | 'quarter'
+  | 'year';
+
+type RelativeTimeFormatOptions = {
+    numeric?: 'always' | 'auto'
+    style?: 'long' | 'short' | 'narrow'
 };
 
-function formatRelative(
-    value: number | Date,
-    options?: RelativeFormatOptions & {
-        format?: string,
-        now?: number
+function formatRelativeTime(
+    value: number,
+    unit: Unit,
+    options?: Intl.RelativeTimeFormatOptions & {
+        format?: string
     }
 ): string;
 ```
 
-This function will return a formatted relative time string (e.g., "1 hour ago"). It expects a `value` which can be parsed as a date (i.e., `isFinite(new Date(value))`), and accepts `options` that conform to `RelativeFormatOptions`.
+This function will return a formatted relative time string (e.g., "1 hour ago"). It expects a `value` which is a number, a `unit` and `options` that conform to `Intl.RelativeTimeFormatOptions`.
 
 ```js
-const now = Date.now();
-formatRelative(now); // "now"
-formatRelative(now - 1000); // "1 second ago"
-formatRelative(now + 1000 * 60 * 60); // "in 1 hour"
-formatRelative(now - 1000 * 60 * 60 * 24); // "yesterday"
-formatRelative(now - 1000 * 60 * 60 * 24, {style: 'numeric'}); // "1 day ago"
-formatRelative(now - 1000 * 60 * 60 * 24, {units: 'hour'}); // "24 hours ago"
-formatRelative(now - 1000 * 60 * 60 * 24, {units: 'hour-narrow'}); // "24 hr. ago"
+formatRelativeTime(0); // "now"
+formatRelativeTime(-1); // "1 second ago"
+formatRelativeTime(1, 'hour'); // "in 1 hour"
+formatRelativeTime(-1, 'day', {numeric: 'auto'}); // "yesterday"
+formatRelativeTime(-1, 'day'); // "1 day ago"
+formatRelativeTime(-24, 'hour'); // "24 hours ago"
+formatRelativeTime(-24, 'hour', {style: 'narrow'}); // "24 hr. ago"
 ```
-
-By default, the `value` is compared with the current time at the time the function is called, but this reference time value can be explicitly specified via the `now` option.
-
-**Note:** The reason [`IntlShape`](#Intlshape) has a `now` function is to allow both `<IntlProvider>` and `<FormattedRelative>` components to provide an `initialNow` prop. This allows for the current time to be fixed for things like testing or server-side rendering in an isomorphic/universal React app.
 
 ### Number Formatting APIs
 

@@ -122,10 +122,12 @@ class FormattedRelativeTime extends React.PureComponent<Props, State> {
     }
 
     const unitDuration = getDurationInSeconds(nextUnit);
-    const remainder = Math.abs(nextValueInSeconds) % unitDuration;
-    const nextInterestingValueInSeconds = remainder
-      ? nextValueInSeconds - unitDuration + remainder
-      : nextValueInSeconds;
+    const remainder = nextValueInSeconds % unitDuration;
+    const prevInterestingValueInSeconds = nextValueInSeconds - remainder;
+    const nextInterestingValueInSeconds =
+      prevInterestingValueInSeconds >= currentValueInSeconds
+        ? prevInterestingValueInSeconds - unitDuration
+        : prevInterestingValueInSeconds;
     const delayInSeconds = Math.abs(
       nextInterestingValueInSeconds - currentValueInSeconds
     );

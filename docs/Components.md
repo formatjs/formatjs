@@ -15,7 +15,7 @@ Beyond providing an idiomatic-React way of integrating internationalization into
 
 - Render React elements that seamlessly compose with other React components.
 - Support rich-text string/message formatting in `<FormattedMessage>`.
-- Implement advanced features like `<FormattedRelative>`'s updating over time.
+- Implement advanced features like `<FormattedRelativeTime>`'s updating over time.
 - Provide TypeScript type definitions.
 
 ## Intl Provider Component
@@ -113,7 +113,7 @@ React Intl provides three components to format dates:
 
 - [`<FormattedDate>`](#formatteddate)
 - [`<FormattedTime>`](#formattedtime)
-- [`<FormattedRelative>`](#formattedrelative)
+- [`<FormattedRelativeTime>`](#formattedrelativetime)
 
 Both `<FormattedDate>` and `<FormattedTime>` use [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) options.
 
@@ -192,76 +192,65 @@ By default `<FormattedTime>` will render the formatted time into a `<span>`. If 
 <span>1:09 AM</span>
 ```
 
-### `<FormattedRelative>`
+### `<FormattedRelativeTime>`
 
-This component uses the [`formatRelative`](API.md#formatrelative) API and has `props` that correspond to the following relative formatting options:
+This component uses the [`formatRelativeTime`](API.md#formatrelativetime) API and has `props` that correspond to the following relative formatting options:
 
 ```ts
-type RelativeFormatOptions = {
-  style?: 'best fit' | 'numeric' = 'best fit';
-  units?:
-    | 'second'
-    | 'second-short'
-    | 'second-narrow'
-    | 'minute'
-    | 'minute-short'
-    | 'minute-narrow'
-    | 'hour'
-    | 'hour-short'
-    | 'hour-narrow'
-    | 'day'
-    | 'day-short'
-    | 'day-narrow'
-    | 'week'
-    | 'week-short'
-    | 'week-narrow'
-    | 'month'
-    | 'month-short'
-    | 'month-narrow'
-    | 'year'
-    | 'year-short'
-    | 'year-narrow';
+type RelativeTimeFormatOptions = {
+  numeric?: 'always' | 'auto';
+  style?: 'long' | 'short' | 'narrow';
 };
 ```
 
 **Prop Types:**
 
 ```ts
-props: RelativeFormatOptions &
+props: RelativeTimeFormatOptions &
   {
-    value: any,
+    value: number,
+    unit: Unit,
     format: string,
-    updateInterval: number,
-    initialNow: any,
+    updateIntervalInSeconds: number,
     children: (formattedDate: string) => ReactElement,
   };
 ```
 
-By default `<FormattedRelative>` will render the formatted relative time into a `<span>`, **and update it a maximum of every 10 seconds**. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
+By default `<FormattedRelativeTime>` will render the formatted relative time into a `<>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
 
 **Example:**
 
-```js
-<FormattedRelative value={Date.now()} />
+```tsx
+<FormattedRelativeTime value={0} />
 ```
 
 ```html
-<span>now</span>
+now
 ```
 
 …10 seconds later:
 
 ```html
-<span>10 seconds ago</span>
+10 seconds ago
 ```
 
 …60 seconds later:
 
 ```html
-<span>1 minute ago</span>
+1 minute ago
 ```
 
-**Note:** You can adjust the maximum interval that the component will re-render by setting the `updateInterval` in `ms`. A falsy value will turn off auto-updating. The updating is smart and will schedule the next update for the next _interesting moment_.
+**Note:** You can adjust the maximum interval that the component will re-render by setting the `updateIntervalInSeconds`. A falsy value will turn off auto-updating. The updating is smart and will schedule the next update for the next _interesting moment_.
+
+An _interesting moment_ is defined as the next non-fractional `value` for that `unit`. For example:
+
+```tsx
+<FormattedRelativeTime value={-59} updateIntervalInSeconds={1} />
+```
+
+This will initially renders `59 seconds ago`, after 1 second, will render `1 minute ago`, and will not re-render until a full minute goes by, it'll render `2 minutes ago`. It will not try to render `1.2 minutes ago`.
+
+**Note:** `updateIntervalInSeconds` cannot be enabled for `unit` longer than `hour` (so not for `day`, `week`, `quarter`, `year`). This is primarily because it doesn't make sense to schedule a timeout in `day`s, and the number of `ms` in a day is larger than the max timeout that `setTimeout` accepts.
 
 ## Number Formatting Components
 
