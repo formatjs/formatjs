@@ -27,6 +27,7 @@ import {
   IntlRelativeTimeFormatOptions,
   FormattableUnit,
 } from '@formatjs/intl-relativetimeformat';
+import {MessageTextElement} from 'intl-messageformat-parser';
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'localeMatcher',
@@ -251,7 +252,7 @@ export function formatMessage(
   state: {getMessageFormat: Formatters['getMessageFormat']},
   messageDescriptor: MessageDescriptor = {id: ''},
   values: Record<string, any> = {}
-) {
+): string {
   const {id, defaultMessage} = messageDescriptor;
 
   // `id` is a required field of a Message Descriptor.
@@ -263,7 +264,16 @@ export function formatMessage(
   // Avoid expensive message formatting for simple messages without values. In
   // development messages will always be formatted in case of missing values.
   if (!hasValues && process.env.NODE_ENV === 'production') {
-    return message || defaultMessage || id;
+    const val = message || defaultMessage || id;
+    if (typeof val === 'string') {
+      return val;
+    }
+    invariant(
+      val.elements.length === 1 &&
+        val.elements[0].type === 'messageTextElement',
+      'Message has placeholders but no values was provided'
+    );
+    return (val.elements[0] as MessageTextElement).value;
   }
 
   let formattedMessage;
@@ -325,8 +335,10 @@ export function formatMessage(
       )
     );
   }
-
-  return formattedMessage || message || defaultMessage || id;
+  if (typeof message === 'string') {
+    return formattedMessage || message || defaultMessage || id;
+  }
+  return formattedMessage || defaultMessage || id;
 }
 
 export function formatHTMLMessage(...args: Parameters<typeof formatMessage>) {

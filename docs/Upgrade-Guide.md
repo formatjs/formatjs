@@ -8,6 +8,7 @@
 - [New useIntl hook as an alternative of injectIntl HOC](#new-useintl-hook-as-an-alternative-of-injectintl-hoc)
 - [Migrate to using native Intl APIs](#migrate-to-using-native-intl-apis)
 - [TypeScript Support](#typescript-support)
+- [FormattedRelativeTime](#formattedrelativetime)
 
 ### Breaking API Changes
 

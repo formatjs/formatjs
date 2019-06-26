@@ -1,6 +1,6 @@
 import IntlMessageFormat from 'intl-messageformat';
 import * as f from '../../src/format';
-
+import parser from 'intl-messageformat-parser';
 describe('format API', () => {
   const {NODE_ENV} = process.env;
 
@@ -25,6 +25,8 @@ describe('format API', () => {
         invalid: 'invalid {}',
         missing_value: 'missing {arg_missing}',
         missing_named_format: 'missing {now, date, format_missing}',
+        ast_simple: parser.parse('hello world'),
+        ast_var: parser.parse('hello there, {name}'),
       },
 
       formats: {
@@ -695,12 +697,39 @@ RangeError: Invalid unit argument`
       expect(formatMessage({id: 'no_args'})).toBe(mf.format());
     });
 
+    it('formats basic AST messages', () => {
+      const {locale, messages} = config;
+      const mf = new IntlMessageFormat(messages.ast_simple, locale);
+
+      expect(formatMessage({id: 'ast_simple'})).toBe(mf.format());
+    });
+
+    it('formats basic AST messages in prod', () => {
+      const {locale, messages} = config;
+      const mf = new IntlMessageFormat(messages.ast_simple, locale);
+      process.env.NODE_ENV = 'production';
+      expect(formatMessage({id: 'ast_simple'})).toBe(mf.format());
+    });
+
+    it('should throw if format AST message w/o values', () => {
+      process.env.NODE_ENV = 'production';
+      expect(() => formatMessage({id: 'ast_var'})).toThrow();
+    });
+
     it('formats messages with placeholders', () => {
       const {locale, messages} = config;
       const mf = new IntlMessageFormat(messages.with_arg, locale);
       const values = {name: 'Eric'};
 
       expect(formatMessage({id: 'with_arg'}, values)).toBe(mf.format(values));
+    });
+
+    it('formats AST message with placeholders', () => {
+      const {locale, messages} = config;
+      const mf = new IntlMessageFormat(messages.ast_var, locale);
+      const values = {name: 'Eric'};
+
+      expect(formatMessage({id: 'ast_var'}, values)).toBe(mf.format(values));
     });
 
     it('formats messages with named formats', () => {

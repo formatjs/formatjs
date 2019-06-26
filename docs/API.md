@@ -394,6 +394,30 @@ The message formatting APIs go the extra mile to provide fallbacks for the commo
 
 Above, "source" refers to using the template as is, without any substitutions made.
 
+#### Advanced Usage
+
+For scenarios where performance is needed, you can pass in `messages` that contains `intl-messageformat`'s `AST` as values to `IntlProvider` to save compilation time when formatting messages. This is especially useful for:
+
+1. Server-side rendering where you can cache the AST and don't have to pay compilation costs multiple time.
+2. Desktop apps using Electron or CEF where you can preload/precompile things in advanced before runtime.
+
+Example:
+
+```tsx
+import parser from 'intl-messageformat-parser';
+import * as ReactDOM from 'react-dom';
+const messages = {
+  ast_simple: parser.parse('hello world'),
+  ast_var: parser.parse('hello world, {name}'),
+};
+
+ReactDOM.render(
+  <IntlProvider messages={messages}>
+    <FormattedMessage id="ast_simple" />
+  </IntlProvider>
+); // will render `hello world`
+```
+
 #### `formatMessage`
 
 ```js

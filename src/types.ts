@@ -9,13 +9,14 @@ import IntlRelativeTimeFormat, {
   IntlRelativeTimeFormatOptions,
   FormattableUnit,
 } from '@formatjs/intl-relativetimeformat';
+import {MessageFormatPattern} from 'intl-messageformat-parser';
 
 export interface IntlConfig {
   locale: string;
   timeZone?: string;
   formats: CustomFormats;
   textComponent: React.ComponentType | keyof React.ReactHTML;
-  messages: Record<string, string>;
+  messages: Record<string, string> | Record<string, MessageFormatPattern>;
   defaultLocale: string;
   defaultFormats: CustomFormats;
   onError(err: string): void;
