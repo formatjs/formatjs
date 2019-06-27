@@ -1,5 +1,3 @@
-/* eslint prefer-arrow-callback:0 */
-
 import {Suite} from 'benchmark';
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
@@ -8,44 +6,32 @@ import {
   FormattedNumber,
   FormattedDate,
   FormattedMessage,
-  FormattedRelative,
-} from '../../lib/';
+  // FormattedRelativeTime,
+} from '../../dist';
 
 const suite = new Suite('renderToString', {
-  onCycle: function(e) {
+  onCycle: function(e: any) {
     console.log(String(e.target));
   },
 });
 
-suite.on('error', function(e) {
+suite.on('error', function(e: any) {
+  console.log(e)
   throw e.target.error;
-});
-
-const intlProvider = new IntlProvider({locale: 'en'}, {});
-
-suite.add('IntlProvider#getChildContext()', function() {
-  intlProvider.getChildContext();
-});
-
-const intlProviderContext = intlProvider.getChildContext();
-const intlProvider2 = new IntlProvider({locale: 'en'}, intlProviderContext);
-
-suite.add('IntlProvider#shouldComponentUpdate()', function() {
-  intlProvider2.shouldComponentUpdate(
-    {locale: 'en'},
-    intlProvider2.state,
-    intlProviderContext
-  );
 });
 
 suite.add('<div>', function() {
   ReactDOMServer.renderToString(<div />);
 });
 
-suite.add('<IntlProvider>', function() {
+suite.add('100 x <div/>', function() {
+  const divs = []
+  for (let i = 0, len = 100; i < len; i += 1) {
+    divs.push(<div key={i}/>)
+  }
   ReactDOMServer.renderToString(
     <IntlProvider locale="en">
-      <div />
+      {divs}
     </IntlProvider>
   );
 });
@@ -58,7 +44,7 @@ suite.add('100 x <FormattedNumber>', function() {
 
   ReactDOMServer.renderToString(
     <IntlProvider locale="en">
-      <div>{formattedNumbers}</div>
+      {formattedNumbers}
     </IntlProvider>
   );
 });
@@ -72,13 +58,13 @@ suite.add('100 x <FormattedDate>', function() {
 
   ReactDOMServer.renderToString(
     <IntlProvider locale="en">
-      <div>{formattedDates}</div>
+      {formattedDates}
     </IntlProvider>
   );
 });
 
 suite.add('100 x <FormattedMessage>', function() {
-  let messages = {};
+  let messages: Record<number, string> = {};
   let formattedMessages = [];
   for (let i = 0, len = 100; i < len; i += 1) {
     messages[i] = `message ${i}`;
@@ -87,59 +73,59 @@ suite.add('100 x <FormattedMessage>', function() {
 
   ReactDOMServer.renderToString(
     <IntlProvider locale="en" messages={messages}>
-      <div>{formattedMessages}</div>
+      {formattedMessages}
     </IntlProvider>
   );
 });
 
 suite.add('100 x <FormattedMessage> with placeholder', function() {
-  let messages = {};
+  let messages: Record<number, string> = {};
   let formattedMessages = [];
   for (let i = 0, len = 100; i < len; i += 1) {
-    messages[i] = `message {${i}, number}`;
+    const varName = `var${i}`
+    messages[i] = `{${varName}, plural, =0{{${varName}, number} message} =1{{${varName}, number} messages}}`;
     formattedMessages.push(
-      <FormattedMessage id={`${i}`} values={{[i]: i}} key={i} />
+      <FormattedMessage id={`${i}`} values={{[varName]: i}} key={i} />
     );
   }
 
   ReactDOMServer.renderToString(
     <IntlProvider locale="en" messages={messages}>
-      <div>{formattedMessages}</div>
+      {formattedMessages}
     </IntlProvider>
   );
 });
 
 suite.add('100 x <FormattedMessage> with placeholder, cached', function() {
-  let messages = {};
+  let messages: Record<number, string> = {};
   let formattedMessages = [];
   for (let i = 0, len = 100; i < len; i += 1) {
-    messages[i] = `message {${0}, number}`;
+    messages[i] = `{var0, plural, =0{{var0, number} message} =1{{var0, number} messages}}`;
     formattedMessages.push(
-      <FormattedMessage id={`${i}`} values={{0: i}} key={i} />
+      <FormattedMessage id={`${i}`} values={{var0: i}} key={i} />
     );
   }
 
   ReactDOMServer.renderToString(
     <IntlProvider locale="en" messages={messages}>
-      <div>{formattedMessages}</div>
+      {formattedMessages}
     </IntlProvider>
   );
 });
 
-suite.add('100 x <FormattedRelative>', function() {
-  let now = Date.now();
-  let formattedRelativeTimes = [];
-  for (let i = 0, len = 100; i < len; i += 1) {
-    formattedRelativeTimes.push(
-      <FormattedRelative value={now - 1000 * 60 * i} key={i} />
-    );
-  }
+// suite.add('100 x <FormattedRelative>', function() {
+//   let formattedRelativeTimes = [];
+//   for (let i = 0, len = 100; i < len; i += 1) {
+//     formattedRelativeTimes.push(
+//       <FormattedRelativeTime value={-60 * i} key={i} />
+//     );
+//   }
 
-  ReactDOMServer.renderToString(
-    <IntlProvider locale="en">
-      <div>{formattedRelativeTimes}</div>
-    </IntlProvider>
-  );
-});
+//   ReactDOMServer.renderToString(
+//     <IntlProvider locale="en">
+//       <div>{formattedRelativeTimes}</div>
+//     </IntlProvider>
+//   );
+// });
 
 suite.run();

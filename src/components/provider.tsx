@@ -182,7 +182,7 @@ class IntlProvider extends React.PureComponent<ResolvedProps, State> {
   render() {
     return (
       <Provider value={this.state.context}>
-        {React.Children.only(this.props.children)}
+        {this.props.children}
       </Provider>
     );
   }
