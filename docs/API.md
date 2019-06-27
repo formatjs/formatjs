@@ -73,7 +73,7 @@ React Intl provides:
 
 These should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
 
-#### `useIntl` hook
+#### `useIntl` hook (currently available in 3.0.0 beta)
 
 If a component can be expressed in a form of function component, using `useIntl` HOC can be handy. This `useIntl` hook do not expect any option as its argument when being called. Typically, here is how you would like to use:
 
