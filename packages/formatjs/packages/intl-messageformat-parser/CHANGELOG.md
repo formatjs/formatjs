@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@1.7.1...intl-messageformat-parser@1.8.0) (2019-06-27)
+
+
+### Features
+
+* **intl-messageformat:** allow passing in formatters ([#107](https://github.com/formatjs/formatjs/issues/107)) ([3605693](https://github.com/formatjs/formatjs/commit/3605693))
+
+
+
+
+
 ## [1.7.1](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@1.7.0...intl-messageformat-parser@1.7.1) (2019-06-26)
 
 ### Bug Fixes

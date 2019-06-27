@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.4.0](https://github.com/formatjs/formatjs/compare/intl-relativeformat@6.3.1...intl-relativeformat@6.4.0) (2019-06-27)
+
+
+### Features
+
+* **intl-messageformat:** allow passing in formatters ([#107](https://github.com/formatjs/formatjs/issues/107)) ([3605693](https://github.com/formatjs/formatjs/commit/3605693))
+
+
+
+
+
 ## [6.3.1](https://github.com/formatjs/formatjs/compare/intl-relativeformat@6.3.0...intl-relativeformat@6.3.1) (2019-06-26)
 
 **Note:** Version bump only for package intl-relativeformat
