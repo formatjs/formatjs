@@ -672,6 +672,21 @@ RangeError: Invalid unit argument`
       formatMessage = f.formatMessage.bind(null, config, state);
     });
 
+    ['Hello, World!\\{foo\\}', '\\ud83d\\udc04'].forEach(msg =>
+      it(`should render escaped msg ${msg} properly in production`, () => {
+        process.env.NODE_ENV = 'production';
+
+        const descriptor = {
+          id: 'hello',
+          defaultMessage: msg,
+        };
+
+        const mf = new IntlMessageFormat(msg, 'en');
+
+        expect(formatMessage(descriptor)).toBe(mf.format());
+      })
+    );
+
     it('throws when no Message Descriptor is provided', () => {
       expect(() => formatMessage()).toThrow(
         '[React Intl] An `id` must be provided to format a message.'

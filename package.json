@@ -138,7 +138,7 @@
     "watchify": "^3.7.0"
   },
   "scripts": {
-    "benchmark": "TS_NODE_PROJECT='test/perf/tsconfig.json' ts-node test/perf/index.tsx",
+    "benchmark": "NODE_ENV=production TS_NODE_PROJECT='test/perf/tsconfig.json' ts-node test/perf/index.tsx",
     "build:dist:dev": "cross-env NODE_ENV=development rollup -c rollup.config.dist.js",
     "build:dist:prod": "cross-env NODE_ENV=production rollup -c rollup.config.dist.js",
     "build:dist": "npm run build:dist:dev && npm run build:dist:prod",

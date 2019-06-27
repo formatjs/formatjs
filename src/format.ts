@@ -87,6 +87,19 @@ function getNamedFormat<T extends keyof CustomFormats>(
   onError(createError(`No ${type} format named: ${name}`));
 }
 
+/**
+ * Escape a raw msg when we run in prod mode
+ * https://github.com/formatjs/formatjs/blob/master/packages/intl-messageformat-parser/src/parser.pegjs#L155
+ */
+function escapeUnformattedMessage(msg: string): string {
+  return msg
+    .replace(/\\u([\da-fA-F]{4})/g, (_, digits) =>
+      String.fromCharCode(parseInt(digits, 16))
+    )
+    .replace(/\\\{/g, '\u007B')
+    .replace(/\\\}/g, '\u007D');
+}
+
 export function formatDate(
   {
     locale,
@@ -266,7 +279,7 @@ export function formatMessage(
   if (!hasValues && process.env.NODE_ENV === 'production') {
     const val = message || defaultMessage || id;
     if (typeof val === 'string') {
-      return val;
+      return escapeUnformattedMessage(val);
     }
     invariant(
       val.elements.length === 1 &&
