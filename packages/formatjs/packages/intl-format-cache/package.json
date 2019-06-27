@@ -30,5 +30,6 @@
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
   },
-  "homepage": "https://github.com/formatjs/formatjs"
+  "homepage": "https://github.com/formatjs/formatjs",
+  "gitHead": "8b0baec8eda5002715cf893274fe59782fc2d371"
 }

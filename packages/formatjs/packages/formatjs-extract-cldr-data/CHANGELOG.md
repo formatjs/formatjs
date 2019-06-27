@@ -5,14 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [9.1.0](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.0.2...formatjs-extract-cldr-data@9.1.0) (2019-06-27)
 
-
 ### Features
 
-* **intl-utils:** Add intl-utils ([#98](https://github.com/formatjs/formatjs/issues/98)) ([2329c57](https://github.com/formatjs/formatjs/commit/2329c57))
-
-
-
-
+- **intl-utils:** Add intl-utils ([#98](https://github.com/formatjs/formatjs/issues/98)) ([2329c57](https://github.com/formatjs/formatjs/commit/2329c57))
 
 ## [9.0.2](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.0.1...formatjs-extract-cldr-data@9.0.2) (2019-06-18)
 

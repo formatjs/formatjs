@@ -35,5 +35,6 @@
   },
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "BSD-3-Clause",
-  "deprecated": true
+  "deprecated": true,
+  "gitHead": "8b0baec8eda5002715cf893274fe59782fc2d371"
 }
