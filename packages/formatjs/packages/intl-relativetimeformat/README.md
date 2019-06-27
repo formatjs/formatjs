@@ -1,6 +1,6 @@
 # Intl RelativeTimeFormat
 
-A spec-compliant polyfill/ponyfill for Intl.RelativeTimeFormat.
+A spec-compliant polyfill/ponyfill for Intl.RelativeTimeFormat fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
 
 [![npm Version][npm-badge]][npm]
 
@@ -50,7 +50,7 @@ import '@formatjs/intl-relativetimeformat/polyfill-locales'
 
 ## Tests
 
-The majority of our tests come from [tc39/test262](https://github.com/tc39/test262/tree/master/test/intl402/RelativeTimeFormat).
+This library is fully [test262](https://github.com/tc39/test262/tree/master/test/intl402/RelativeTimeFormat)-compliant.
 
 ## License
 

@@ -1,5 +1,3 @@
-/* jslint esnext: true */
-
 import IntlRelativeTimeFormat from './core';
 import defaultLocale from './en';
 
