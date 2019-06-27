@@ -5,14 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [4.3.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@4.2.1...intl-messageformat@4.3.0) (2019-06-27)
 
-
 ### Features
 
-* **intl-messageformat:** allow passing in formatters ([#107](https://github.com/formatjs/formatjs/issues/107)) ([3605693](https://github.com/formatjs/formatjs/commit/3605693))
-
-
-
-
+- **intl-messageformat:** allow passing in formatters ([#107](https://github.com/formatjs/formatjs/issues/107)) ([3605693](https://github.com/formatjs/formatjs/commit/3605693))
 
 ## [4.2.1](https://github.com/formatjs/formatjs/compare/intl-messageformat@4.2.0...intl-messageformat@4.2.1) (2019-06-26)
 

@@ -5,25 +5,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [1.3.1](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.3.0...intl-locales-supported@1.3.1) (2019-07-02)
 
-
 ### Bug Fixes
 
-* **intl-locales-supported:** Fix license identifier ([#109](https://github.com/formatjs/formatjs/issues/109)) ([e50c762](https://github.com/formatjs/formatjs/commit/e50c762))
-
-
-
-
+- **intl-locales-supported:** Fix license identifier ([#109](https://github.com/formatjs/formatjs/issues/109)) ([e50c762](https://github.com/formatjs/formatjs/commit/e50c762))
 
 # [1.3.0](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.2.1...intl-locales-supported@1.3.0) (2019-06-27)
 
-
 ### Features
 
-* **intl-messageformat:** allow passing in formatters ([#107](https://github.com/formatjs/formatjs/issues/107)) ([3605693](https://github.com/formatjs/formatjs/commit/3605693))
-
-
-
-
+- **intl-messageformat:** allow passing in formatters ([#107](https://github.com/formatjs/formatjs/issues/107)) ([3605693](https://github.com/formatjs/formatjs/commit/3605693))
 
 ## [1.2.1](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.2.0...intl-locales-supported@1.2.1) (2019-06-26)
 

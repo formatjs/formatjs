@@ -5,14 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [3.5.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@3.4.1...babel-plugin-react-intl@3.5.0) (2019-06-27)
 
-
 ### Features
 
-* **intl-messageformat:** allow passing in formatters ([#107](https://github.com/formatjs/formatjs/issues/107)) ([3605693](https://github.com/formatjs/formatjs/commit/3605693))
-
-
-
-
+- **intl-messageformat:** allow passing in formatters ([#107](https://github.com/formatjs/formatjs/issues/107)) ([3605693](https://github.com/formatjs/formatjs/commit/3605693))
 
 ## [3.4.1](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@3.4.0...babel-plugin-react-intl@3.4.1) (2019-06-26)
 

@@ -5,25 +5,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [2.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.3.0...@formatjs/intl-relativetimeformat@2.3.1) (2019-07-02)
 
-
 ### Bug Fixes
 
-* **@formatjs/intl-relativetimeformat:** fix polyfill import ([#110](https://github.com/formatjs/formatjs/issues/110)) ([3adffc8](https://github.com/formatjs/formatjs/commit/3adffc8))
-
-
-
-
+- **@formatjs/intl-relativetimeformat:** fix polyfill import ([#110](https://github.com/formatjs/formatjs/issues/110)) ([3adffc8](https://github.com/formatjs/formatjs/commit/3adffc8))
 
 # [2.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.2.0...@formatjs/intl-relativetimeformat@2.3.0) (2019-06-27)
 
-
 ### Features
 
-* **intl-messageformat:** allow passing in formatters ([#107](https://github.com/formatjs/formatjs/issues/107)) ([3605693](https://github.com/formatjs/formatjs/commit/3605693))
-
-
-
-
+- **intl-messageformat:** allow passing in formatters ([#107](https://github.com/formatjs/formatjs/issues/107)) ([3605693](https://github.com/formatjs/formatjs/commit/3605693))
 
 # [2.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.1.0...@formatjs/intl-relativetimeformat@2.2.0) (2019-06-26)
 
