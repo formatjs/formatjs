@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.0.2...@formatjs/intl-relativetimeformat@2.1.0) (2019-06-27)
+
+
+### Features
+
+* **intl-relativetimeformat:** make intl-relativetimeformat test262-compliant ([#95](https://github.com/formatjs/formatjs/issues/95)) ([91669a3](https://github.com/formatjs/formatjs/commit/91669a3))
+* **intl-utils:** Add intl-utils ([#98](https://github.com/formatjs/formatjs/issues/98)) ([2329c57](https://github.com/formatjs/formatjs/commit/2329c57))
+
+
+
+
+
 ## [2.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.0.1...@formatjs/intl-relativetimeformat@2.0.2) (2019-06-18)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat
