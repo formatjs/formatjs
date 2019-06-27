@@ -1,23 +1,18 @@
-Intl Format Cache
-=================
+# Intl Format Cache
 
 A memoizer factory for Intl format constructors.
 
 [![npm Version][npm-badge]][npm]
 
+## Overview
 
-Overview
---------
-
-This is a helper package used within [Yahoo's FormatJS suite][FormatJS]. It provides a factory for creating memoizers of [`Intl`][Intl] format constructors: [`Intl.NumberFormat`][Intl-NF], [`Intl.DateTimeFormat`][Intl-DTF], [`IntlMessageFormat`][Intl-MF], and [`IntlRelativeFormat`][Intl-RF].
+This is a helper package used within [Yahoo's FormatJS suite][formatjs]. It provides a factory for creating memoizers of [`Intl`][intl] format constructors: [`Intl.NumberFormat`][intl-nf], [`Intl.DateTimeFormat`][intl-dtf], [`IntlMessageFormat`][intl-mf], and [`IntlRelativeFormat`][intl-rf].
 
 Creating instances of these `Intl` formats is an expensive operation, and the APIs are designed such that developers should re-use format instances instead of always creating new ones. This package is simply to make it easier to create a cache of format instances of a particular type to aid in their reuse.
 
 Under the hood, this package creates a cache key based on the arguments passed to the memoized constructor (it will even order the keys of the `options` argument) it uses `JSON.stringify()` to create the string key.
 
-
-Usage
------
+## Usage
 
 This package works as an ES6 or Node.js module, in either case it has a single default export function; e.g.:
 
@@ -93,19 +88,17 @@ messageformat x 709,020 ops/sec ±3.19% (81 runs sampled)
 --- all formats random input: Fastest is messageformat ---
 ```
 
-License
--------
+## License
 
 This software is free to use under the Yahoo! Inc. BSD license.
-See the [LICENSE file][LICENSE] for license text and copyright information.
-
+See the [LICENSE file][license] for license text and copyright information.
 
 [npm]: https://www.npmjs.org/package/intl-format-cache
 [npm-badge]: https://img.shields.io/npm/v/intl-format-cache.svg?style=flat-square
-[Intl]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl
-[Intl-NF]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
-[Intl-DTF]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-[Intl-MF]: https://github.com/formatjs/formatjs
-[Intl-RF]: https://github.com/formatjs/formatjs
-[FormatJS]: http://formatjs.io/
-[LICENSE]: https://github.com/formatjs/formatjs/blob/master/LICENSE
+[intl]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl
+[intl-nf]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
+[intl-dtf]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+[intl-mf]: https://github.com/formatjs/formatjs
+[intl-rf]: https://github.com/formatjs/formatjs
+[formatjs]: http://formatjs.io/
+[license]: https://github.com/formatjs/formatjs/blob/master/LICENSE

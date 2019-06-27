@@ -1,10 +1,8 @@
-FormatJS Extract CLDR Data
-==========================
+# FormatJS Extract CLDR Data
 
 Utility library that extracts the [CLDR][] data that's needed by the [FormatJS][] libraries.
 
 [![npm Version][npm-badge]][npm]
-
 
 ## Usage
 
@@ -84,13 +82,11 @@ Boolean for whether or not `pluralRuleFunction`s should be extracted for the spe
 
 Boolean for whether or not `fields` should be extracted for the specified `locales`. The field data that's extracted is limited to the data required to support FormatJS' relative time formatting features, and it's organized in the shape described above.
 
-
 ## Updating the CLDR Data
 
 The CLDR version and data used by this package can be easily updated by changing the `cldr-*` package versions in `package.json`.
 
 **Note:** It's recommended to keep the package versions exact and **not** use `~` or `^` modifiers.
-
 
 ## License
 
@@ -98,11 +94,10 @@ This software is free to use under the Yahoo Inc. BSD license. See the [LICENSE 
 
 The CLDR data contained in this packaged is licensed under the Apache, ICU, and Unicode licenses. See the [CLDR license files][] for their license text and copyright information.
 
-
-[CLDR]: http://cldr.unicode.org/
-[FormatJS]: http://formatjs.io/
+[cldr]: http://cldr.unicode.org/
+[formatjs]: http://formatjs.io/
 [npm]: https://www.npmjs.org/package/formatjs-extract-cldr-data
 [npm-badge]: https://img.shields.io/npm/v/formatjs-extract-cldr-data.svg?style=flat-square
 [make-plural]: https://github.com/eemeli/make-plural
-[LICENSE file]: https://github.com/formatjs/formatjs/blob/master/LICENSE.md
-[CLDR license files]: https://github.com/formatjs/formatjs/tree/master/data
+[license file]: https://github.com/formatjs/formatjs/blob/master/LICENSE.md
+[cldr license files]: https://github.com/formatjs/formatjs/tree/master/data

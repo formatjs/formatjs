@@ -5,6 +5,7 @@
 <!-- Since this is a monorepo with multiple packages, please list which package this issue pertains to. -->
 
 ### Is this a BUG REPORT or FEATURE REQUEST? (choose one)
+
 <!--
 If this is a BUG REPORT, please:
 
@@ -16,12 +17,15 @@ If this is a FEATURE REQUEST, please:
 -->
 
 ### Expected behavior
+
 <!-- Please describe the behavior you expected. -->
 
 ### Current behavior
+
 <!-- Please describe what happens instead of your expected behavior. -->
 
 ### Step to reproduce for BUG REPORT
+
 <!-- Please describe steps to reproduce this bug as minimally and precisely as possible.
 
 For example:
@@ -31,18 +35,20 @@ For example:
 -->
 
 ### Your Environment
+
 <!-- Please describe your environment information. -->
 <!-- Please describe your OS and browser information if your problem occurs on a specific OS or browser. -->
 
-| Executable | Version |
-| ---: | :--- |
+|              Executable | Version |
+| ----------------------: | :------ |
 | `npm ls <package name>` | VERSION |
-| `npm --version` | VERSION |
-| `node --version` | VERSION |
+|         `npm --version` | VERSION |
+|        `node --version` | VERSION |
 
-| OS | Version |
-| --- | --- |
+| OS   | Version |
+| ---- | ------- |
 | NAME | VERSION |
+
 <!-- For example:
 | macOS Sierra | 10.14.4 |
 | Windows 10 | 1607 |
@@ -50,8 +56,9 @@ For example:
 -->
 
 | Browser | Version |
-| --- | --- |
-| NAME | VERSION |
+| ------- | ------- |
+| NAME    | VERSION |
+
 <!-- For example:
 | Chrome | 74.0.3729.131 |
 | Safari | 12.1 |

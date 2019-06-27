@@ -1,5 +1,4 @@
-Intl MessageFormat
-==================
+# Intl MessageFormat
 
 Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.
 
@@ -9,8 +8,7 @@ Formats ICU Message strings with number, date, plural, and select placeholders t
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/formatjsproject.svg)](https://saucelabs.com/u/formatjsproject)
 
-Overview
---------
+## Overview
 
 ### Goals
 
@@ -40,57 +38,57 @@ A very common example is formatting messages that have numbers with plural label
 
 ```js
 var MESSAGES = {
-    'en-US': {
-        NUM_PHOTOS: 'You have {numPhotos, plural, ' +
-            '=0 {no photos.}' +
-            '=1 {one photo.}' +
-            'other {# photos.}}'
-    },
+  'en-US': {
+    NUM_PHOTOS:
+      'You have {numPhotos, plural, ' +
+      '=0 {no photos.}' +
+      '=1 {one photo.}' +
+      'other {# photos.}}'
+  },
 
-    'es-MX': {
-        NUM_PHOTOS: 'Usted {numPhotos, plural, ' +
-            '=0 {no tiene fotos.}' +
-            '=1 {tiene una foto.}' +
-            'other {tiene # fotos.}}'
-    }
+  'es-MX': {
+    NUM_PHOTOS:
+      'Usted {numPhotos, plural, ' +
+      '=0 {no tiene fotos.}' +
+      '=1 {tiene una foto.}' +
+      'other {tiene # fotos.}}'
+  }
 };
 
 var output;
 
 var enNumPhotos = new IntlMessageFormat(MESSAGES['en-US'].NUM_PHOTOS, 'en-US');
-output = enNumPhotos.format({numPhotos: 1000});
+output = enNumPhotos.format({ numPhotos: 1000 });
 console.log(output); // => "You have 1,000 photos."
 
 var esNumPhotos = new IntlMessageFormat(MESSAGES['es-MX'].NUM_PHOTOS, 'es-MX');
-output = esNumPhotos.format({numPhotos: 1000});
+output = esNumPhotos.format({ numPhotos: 1000 });
 console.log(output); // => "Usted tiene 1,000 fotos."
 ```
 
 ### Message Syntax
 
-The message syntax that this package uses is not proprietary, in fact it's a common standard message syntax that works across programming languages and one that professional translators are familiar with. This package uses the **[ICU Message syntax][ICU]** and works for all [CLDR languages][CLDR] which have pluralization rules defined.
+The message syntax that this package uses is not proprietary, in fact it's a common standard message syntax that works across programming languages and one that professional translators are familiar with. This package uses the **[ICU Message syntax][icu]** and works for all [CLDR languages][cldr] which have pluralization rules defined.
 
 ### Features
 
-* Uses industry standards: [ICU Message syntax][ICU] and [CLDR locale data][CLDR].
+- Uses industry standards: [ICU Message syntax][icu] and [CLDR locale data][cldr].
 
-* Supports **plural**, **select**, and **selectordinal** message arguments.
+- Supports **plural**, **select**, and **selectordinal** message arguments.
 
-* Formats numbers and dates/times in messages using [`Intl.NumberFormat`][Intl-NF] and [`Intl.DateTimeFormat`][Intl-DTF], respectively.
+- Formats numbers and dates/times in messages using [`Intl.NumberFormat`][intl-nf] and [`Intl.DateTimeFormat`][intl-dtf], respectively.
 
-* Optimized for repeated calls to an `IntlMessageFormat` instance's `format()` method.
+- Optimized for repeated calls to an `IntlMessageFormat` instance's `format()` method.
 
-* Supports defining custom format styles/options.
+- Supports defining custom format styles/options.
 
-* Supports escape sequences for message syntax chars, e.g.: `"\\{foo\\}"` will output: `"{foo}"` in the formatted output instead of interpreting it as a `foo` argument.
+- Supports escape sequences for message syntax chars, e.g.: `"\\{foo\\}"` will output: `"{foo}"` in the formatted output instead of interpreting it as a `foo` argument.
 
-
-Usage
------
+## Usage
 
 ### Modern `Intl` Dependency
 
-This package assumes that the [`Intl`][Intl] global object exists in the runtime. `Intl` is present in all modern browsers (IE11+) and Node (with full ICU). The `Intl` methods we rely on are:
+This package assumes that the [`Intl`][intl] global object exists in the runtime. `Intl` is present in all modern browsers (IE11+) and Node (with full ICU). The `Intl` methods we rely on are:
 
 1. `Intl.NumberFormat` for number formatting (can be polyfilled using [Intl.js][])
 2. `Intl.DateTimeFormat` for date time formatting (can be polyfilled using [Intl.js][])
@@ -115,13 +113,14 @@ var IntlMessageFormat = require('intl-messageformat');
 ### Public API
 
 #### `IntlMessageFormat` Constructor
+
 To create a message to format, use the `IntlMessageFormat` constructor. The constructor takes three parameters:
 
- - **message** - _{String | AST}_ - String message (or pre-parsed AST) that serves as formatting pattern.
+- **message** - _{String | AST}_ - String message (or pre-parsed AST) that serves as formatting pattern.
 
- - **locales** - _{String | String[]}_ - A string with a BCP 47 language tag, or an array of such strings. If you do not provide a locale, the default locale will be used. When an array of locales is provided, each item and its ancestor locales are checked and the first one with registered locale data is returned. **See: [Locale Resolution](#locale-resolution) for more details.**
+- **locales** - _{String | String[]}_ - A string with a BCP 47 language tag, or an array of such strings. If you do not provide a locale, the default locale will be used. When an array of locales is provided, each item and its ancestor locales are checked and the first one with registered locale data is returned. **See: [Locale Resolution](#locale-resolution) for more details.**
 
- - **[formats]** - _{Object}_ - Optional object with user defined options for format styles.
+- **[formats]** - _{Object}_ - Optional object with user defined options for format styles.
 
 ```js
 var msg = new IntlMessageFormat('My name is {name}.', 'en-US');
@@ -147,7 +146,7 @@ Notice how the specified locale was the all lower-case value: `"en-us"`, but it 
 Once the message is created, formatting the message is done by calling the `format()` method on the instance and passing a collection of `values`:
 
 ```js
-var output = msg.format({name: "Eric"});
+var output = msg.format({ name: 'Eric' });
 console.log(output); // => "My name is Eric."
 ```
 
@@ -163,27 +162,25 @@ Define custom format styles is useful you need supply a set of options to the un
 
 ```js
 var msg = new IntlMessageFormat('The price is: {price, number, USD}', 'en-US', {
-    number: {
-        USD: {
-            style   : 'currency',
-            currency: 'USD'
-        }
+  number: {
+    USD: {
+      style: 'currency',
+      currency: 'USD'
     }
+  }
 });
 
-var output = msg.format({price: 100});
+var output = msg.format({ price: 100 });
 console.log(output); // => "The price is: $100.00"
 ```
 
 In this example, we're defining a `USD` number format style which is passed to the underlying `Intl.NumberFormat` instance as its options.
 
-
-Examples
---------
+## Examples
 
 ### Plural Label
 
-This example shows how to use the [ICU Message syntax][ICU] to define a message that has a plural label; e.g., ``"You have 10 photos"``:
+This example shows how to use the [ICU Message syntax][icu] to define a message that has a plural label; e.g., `"You have 10 photos"`:
 
 ```
 You have {numPhotos, plural,
@@ -208,26 +205,23 @@ console.log(msg.format({numPhotos: 1000})); // => "You have 1,000 photos."
 
 _Note: how when `numPhotos` was `1000`, the number is formatted with the correct thousands separator._
 
-
-License
--------
+## License
 
 This software is free to use under the Yahoo! Inc. BSD license.
-See the [LICENSE file][LICENSE] for license text and copyright information.
-
+See the [LICENSE file][license] for license text and copyright information.
 
 [npm]: https://www.npmjs.org/package/intl-messageformat
 [npm-badge]: https://img.shields.io/npm/v/intl-messageformat.svg?style=flat-square
 [strawman]: http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting
 [parser]: https://github.com/formatjs/formatjs/blob/master/packages/intl-messageformat-parser
-[ICU]: http://userguide.icu-project.org/formatparse/messages
-[CLDR]: http://cldr.unicode.org/
-[Intl]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl
-[Intl-NF]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
-[Intl-DTF]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-[Intl-Node]: https://github.com/joyent/node/issues/6371
-[Intl.js]: https://github.com/andyearnshaw/Intl.js
+[icu]: http://userguide.icu-project.org/formatparse/messages
+[cldr]: http://cldr.unicode.org/
+[intl]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl
+[intl-nf]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
+[intl-dtf]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+[intl-node]: https://github.com/joyent/node/issues/6371
+[intl.js]: https://github.com/andyearnshaw/Intl.js
 [rawgit]: https://rawgit.com/
 [semver]: http://semver.org/
-[LICENSE]: https://github.com/formatjs/formatjs/blob/master/LICENSE
+[license]: https://github.com/formatjs/formatjs/blob/master/LICENSE
 [intl-pluralrules]: https://github.com/eemeli/intl-pluralrules

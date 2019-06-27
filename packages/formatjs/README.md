@@ -1,10 +1,9 @@
-# FormatJS 
+# FormatJS
 
-[![Build Status](https://travis-ci.org/formatjs/formatjs.svg?branch=master)](https://travis-ci.org/formatjs/formatjs) 
+[![Build Status](https://travis-ci.org/formatjs/formatjs.svg?branch=master)](https://travis-ci.org/formatjs/formatjs)
 [![Slack FormatJS](https://img.shields.io/badge/slack-@formatjs-green.svg?logo=slack)](https://join.slack.com/t/formatjs/shared_invite/enQtNjM2MjM4NjE4ODIxLTMyMWE0YTNhMTlmMzZlNzJlNjEzMWY0YjM2ODUxYjlmNDE2YzQyMDIxZDg3Y2Q5YWNlMzhhYzRiNDk0OGQwNGI)
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/formatjsproject.svg)](https://saucelabs.com/u/formatjsproject)
-
 
 This repository is the home of [FormatJS](http://formatjs.io/) and related libraries.
 
@@ -27,7 +26,6 @@ See the [LICENSE file][] for license text and copyright information.
 
 Cross-browser Testing Platform and Open Source <3 Provided by [Sauce Labs][saucelabs]
 
-
-[LICENSE file]: https://github.com/formatjs/formatjs/blob/master/LICENSE.md
-[Lerna]: https://lernajs.io/
+[license file]: https://github.com/formatjs/formatjs/blob/master/LICENSE.md
+[lerna]: https://lernajs.io/
 [saucelabs]: https://saucelabs.com

@@ -1,15 +1,12 @@
-Intl MessageFormat Parser
-=========================
+# Intl MessageFormat Parser
 
-Parses [ICU Message strings][ICU] into an AST via JavaScript.
+Parses [ICU Message strings][icu] into an AST via JavaScript.
 
 [![npm Version][npm-badge]][npm]
 
+## Overview
 
-Overview
---------
-
-This package implements a parser in JavaScript that parses the industry standard [ICU Message strings][ICU] — used for internationalization — into an AST. The produced AST can then be used by a compiler, like [`intl-messageformat`][intl-mf], to produce localized formatted strings for display to users.
+This package implements a parser in JavaScript that parses the industry standard [ICU Message strings][icu] — used for internationalization — into an AST. The produced AST can then be used by a compiler, like [`intl-messageformat`][intl-mf], to produce localized formatted strings for display to users.
 
 This parser is written in [PEG.js][], a parser generator for JavaScript. This parser's implementation was inspired by and derived from Alex Sexton's [messageformat.js][] project. The differences from Alex's implementation are:
 
@@ -18,9 +15,7 @@ This parser is written in [PEG.js][], a parser generator for JavaScript. This pa
 - The produced AST is more descriptive and uses recursive structures.
 - The keywords used in the AST match the ICU Message "spec".
 
-
-Usage
------
+## Usage
 
 ### Loading in the Browser
 
@@ -29,7 +24,7 @@ The `dist/` folder contains the version of this package for use in the browser, 
 ```html
 <script src="intl-messageformat-parser/dist/parser.min.js"></script>
 <script>
-    IntlMessageFormatParser.parse('...');
+  IntlMessageFormatParser.parse('...');
 </script>
 ```
 
@@ -63,98 +58,95 @@ This parser will produce this AST:
 
 ```json
 {
-    "type": "messageFormatPattern",
-    "elements": [
-        {
-            "type": "messageTextElement",
-            "value": "On "
-        },
-        {
-            "type": "argumentElement",
-            "id": "takenDate",
-            "format": {
-                "type": "dateFormat",
-                "style": "short"
+  "type": "messageFormatPattern",
+  "elements": [
+    {
+      "type": "messageTextElement",
+      "value": "On "
+    },
+    {
+      "type": "argumentElement",
+      "id": "takenDate",
+      "format": {
+        "type": "dateFormat",
+        "style": "short"
+      }
+    },
+    {
+      "type": "messageTextElement",
+      "value": " "
+    },
+    {
+      "type": "argumentElement",
+      "id": "name",
+      "format": null
+    },
+    {
+      "type": "messageTextElement",
+      "value": " took "
+    },
+    {
+      "type": "argumentElement",
+      "id": "numPhotos",
+      "format": {
+        "type": "pluralFormat",
+        "offset": 0,
+        "options": [
+          {
+            "type": "optionalFormatPattern",
+            "selector": "=0",
+            "value": {
+              "type": "messageFormatPattern",
+              "elements": [
+                {
+                  "type": "messageTextElement",
+                  "value": "no photos."
+                }
+              ]
             }
-        },
-        {
-            "type": "messageTextElement",
-            "value": " "
-        },
-        {
-            "type": "argumentElement",
-            "id": "name",
-            "format": null
-        },
-        {
-            "type": "messageTextElement",
-            "value": " took "
-        },
-        {
-            "type": "argumentElement",
-            "id": "numPhotos",
-            "format": {
-                "type": "pluralFormat",
-                "offset": 0,
-                "options": [
-                    {
-                        "type": "optionalFormatPattern",
-                        "selector": "=0",
-                        "value": {
-                            "type": "messageFormatPattern",
-                            "elements": [
-                                {
-                                    "type": "messageTextElement",
-                                    "value": "no photos."
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "type": "optionalFormatPattern",
-                        "selector": "=1",
-                        "value": {
-                            "type": "messageFormatPattern",
-                            "elements": [
-                                {
-                                    "type": "messageTextElement",
-                                    "value": "one photo."
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "type": "optionalFormatPattern",
-                        "selector": "other",
-                        "value": {
-                            "type": "messageFormatPattern",
-                            "elements": [
-                                {
-                                    "type": "messageTextElement",
-                                    "value": "# photos."
-                                }
-                            ]
-                        }
-                    }
-                ]
+          },
+          {
+            "type": "optionalFormatPattern",
+            "selector": "=1",
+            "value": {
+              "type": "messageFormatPattern",
+              "elements": [
+                {
+                  "type": "messageTextElement",
+                  "value": "one photo."
+                }
+              ]
             }
-        }
-    ]
+          },
+          {
+            "type": "optionalFormatPattern",
+            "selector": "other",
+            "value": {
+              "type": "messageFormatPattern",
+              "elements": [
+                {
+                  "type": "messageTextElement",
+                  "value": "# photos."
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
 }
 ```
 
-
-License
--------
+## License
 
 This software is free to use under the Yahoo! Inc. BSD license.
 See the [LICENSE file][] for license text and copyright information.
 
-
 [npm]: https://www.npmjs.org/package/intl-messageformat-parser
 [npm-badge]: https://img.shields.io/npm/v/intl-messageformat-parser.svg?style=flat-square
-[ICU]: http://userguide.icu-project.org/formatparse/messages
+[icu]: http://userguide.icu-project.org/formatparse/messages
 [intl-mf]: https://github.com/formatjs/formatjs
-[PEG.js]: https://pegjs.org/
+[peg.js]: https://pegjs.org/
 [messageformat.js]: https://github.com/SlexAxton/messageformat.js
-[LICENSE file]: https://github.com/formatjs/formatjs/blob/master/LICENSE
+[license file]: https://github.com/formatjs/formatjs/blob/master/LICENSE

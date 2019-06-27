@@ -1,13 +1,106 @@
-Intl RelativeFormat
-===================
+# THIS PACKAGE HAS BEEN DEPRECATED
+
+# Migration Guide
+
+This package has deviated from the [`Intl.RelativeTimeFormat` spec](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) rather heavily. Therefore, we've deprecated this package and add [`@formatjs/intl-relativetimeformat](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat) as the spec-compliant polyfill.
+
+1. All `units` (such as `day-short`) should be migrated similarly to:
+
+```ts
+new IntlRelativeFormat('en', { units: 'second-short' }).format(
+  Date.now() - 1000
+);
+// will be
+new Intl.RelativeTimeFormat('en', { style: 'short' }).format(-1, 'second');
+
+new IntlRelativeFormat('en', { units: 'day-narrow' }).format(
+  Date.now() - 48 * 3600 * 1000
+);
+// will be
+new Intl.RelativeTimeFormat('en', { style: 'narrow' }).format(-2, 'day');
+```
+
+2. `style: numeric` will become `numeric: always` per spec (which is also the default)
+
+```ts
+new IntlRelativeFormat('en', {
+  units: 'second-short',
+  style: 'numeric'
+}).format(Date.now() - 1000);
+// will be
+new Intl.RelativeTimeFormat('en', { style: 'short' }).format(-1, 'second');
+```
+
+```ts
+new IntlRelativeFormat('en', { units: 'day-narrow', style: 'numeric' }).format(
+  Date.now() - 48 * 3600 * 1000
+);
+// will be
+new Intl.RelativeTimeFormat('en', { style: 'narrow' }).format(-2, 'day');
+```
+
+3. `style: 'best fit'` is a little trickier but we have released `@formatjs/intl-utils` to ease the transition:
+
+```ts
+new IntlRelativeFormat('en', { style: 'best fit' }).format(Date.now() - 1000);
+// will be
+import { selectUnit } from '@formatjs/intl-utils';
+const diff = selectUnit(Date.now() - 1000);
+new Intl.RelativeTimeFormat('en', { numeric: 'auto' }).format(
+  diff.value,
+  diff.unit
+);
+```
+
+```ts
+new IntlRelativeFormat('en', { style: 'best fit' }).format(
+  Date.now() - 48 * 3600 * 1000
+);
+// will be
+import { selectUnit } from '@formatjs/intl-utils';
+const diff = selectUnit(Date.now() - 48 * 3600 * 1000);
+new Intl.RelativeTimeFormat('en', { numeric: 'auto' }).format(
+  diff.value,
+  diff.unit
+);
+```
+
+4. If you were using `options.now` in `format`, you can use `formatjs/intl-utils` to transition as well
+
+```ts
+new IntlRelativeFormat('en', { style: 'best fit' }).format(Date.now() - 1000, {
+  now: Date.now() + 1000
+});
+// will be
+import { selectUnit } from '@formatjs/intl-utils';
+const diff = selectUnit(Date.now() - 1000, Date.now() + 1000);
+new Intl.RelativeTimeFormat('en', { numeric: 'auto' }).format(
+  diff.value,
+  diff.unit
+);
+```
+
+```ts
+new IntlRelativeFormat('en', { style: 'best fit' }).format(
+  Date.now() - 48 * 3600 * 1000,
+  { now: Date.now() + 1000 }
+);
+// will be
+import { selectUnit } from '@formatjs/intl-utils';
+const diff = selectUnit(Date.now() - 48 * 3600 * 1000, Date.now() + 1000);
+new Intl.RelativeTimeFormat('en', { numeric: 'auto' }).format(
+  diff.value,
+  diff.unit
+);
+```
+
+# Intl RelativeFormat
 
 Formats JavaScript dates to relative time strings (e.g., "3 hours ago").
 
 [![npm Version][npm-badge]][npm]
 
-
-Overview
---------
+## Overview
 
 ### Goals
 
@@ -35,20 +128,20 @@ The most common way to use this library is to construct an `IntlRelativeFormat` 
 var rf = new IntlRelativeFormat('en-US');
 
 var posts = [
-    {
-        id   : 1,
-        title: 'Some Blog Post',
-        date : new Date(1426271670524)
-    },
-    {
-        id   : 2,
-        title: 'Another Blog Post',
-        date : new Date(1426278870524)
-    }
+  {
+    id: 1,
+    title: 'Some Blog Post',
+    date: new Date(1426271670524)
+  },
+  {
+    id: 2,
+    title: 'Another Blog Post',
+    date: new Date(1426278870524)
+  }
 ];
 
-posts.forEach(function (post) {
-    console.log(rf.format(post.date));
+posts.forEach(function(post) {
+  console.log(rf.format(post.date));
 });
 // => "3 hours ago"
 // => "1 hour ago"
@@ -56,19 +149,17 @@ posts.forEach(function (post) {
 
 ### Features
 
-* Style options for `"best fit"` ("yesterday") and `"numeric"` ("1 day ago") output based on thresholds.
+- Style options for `"best fit"` ("yesterday") and `"numeric"` ("1 day ago") output based on thresholds.
 
-* Units options for always rendering in a particular unit; e.g. "30 days ago", instead of "1 month ago".
+- Units options for always rendering in a particular unit; e.g. "30 days ago", instead of "1 month ago".
 
-* Ability to specify the "now" value from which the relative time is calculated, allowing `format()`.
+- Ability to specify the "now" value from which the relative time is calculated, allowing `format()`.
 
-* Format output in relative time strings using [`Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat)
+- Format output in relative time strings using [`Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat)
 
-* Optimized for repeated calls to an `IntlRelativeFormat` instance's `format()` method.
+- Optimized for repeated calls to an `IntlRelativeFormat` instance's `format()` method.
 
-
-Usage
------
+## Usage
 
 ### `Intl` Dependency
 
@@ -120,10 +211,10 @@ _Note: in Node.js, the data for all 200+ languages is loaded along with the libr
 
 To format a date to relative time, use the `IntlRelativeFormat` constructor. The constructor takes two parameters:
 
- - **locales** - _{String | String[]}_ - A string with a BCP 47 language tag, or an array of such strings. If you do not provide a locale, the default locale will be used. When an array of locales is provided, each item and its ancestor locales are checked and the first one with registered locale data is returned. **See: [Locale Resolution](#locale-resolution) for more details.**
+- **locales** - _{String | String[]}_ - A string with a BCP 47 language tag, or an array of such strings. If you do not provide a locale, the default locale will be used. When an array of locales is provided, each item and its ancestor locales are checked and the first one with registered locale data is returned. **See: [Locale Resolution](#locale-resolution) for more details.**
 
- - **[options]** - _{Object}_ - Optional object with user defined options for format styles.
- **See: [Custom Options](#custom-options) for more details.**
+- **[options]** - _{Object}_ - Optional object with user defined options for format styles.
+  **See: [Custom Options](#custom-options) for more details.**
 
 _Note: The `rf` instance should be enough for your entire application, unless you want to use custom options._
 
@@ -133,18 +224,18 @@ _Note: The `rf` instance should be enough for your entire application, unless yo
 
 The following are the abstract steps `IntlRelativeFormat` goes through to resolve the locale value:
 
-* If no extra locale data is loaded, the locale will _always_ resolved to `"en"`.
+- If no extra locale data is loaded, the locale will _always_ resolved to `"en"`.
 
-* If locale data is missing for a leaf locale like `"fr-FR"`, but there _is_ data for one of its ancestors, `"fr"` in this case, then its ancestor will be used.
+- If locale data is missing for a leaf locale like `"fr-FR"`, but there _is_ data for one of its ancestors, `"fr"` in this case, then its ancestor will be used.
 
-* If there's data for the specified locale, then that locale will be resolved; i.e.,
+- If there's data for the specified locale, then that locale will be resolved; i.e.,
 
-    ```js
-    var rf = new IntlRelativeFormat('en-US');
-    assert(rf.resolvedOptions().locale === 'en-US'); // true
-    ```
+  ```js
+  var rf = new IntlRelativeFormat('en-US');
+  assert(rf.resolvedOptions().locale === 'en-US'); // true
+  ```
 
-* The resolved locales are now normalized; e.g., `"en-us"` will resolve to: `"en-US"`.
+- The resolved locales are now normalized; e.g., `"en-us"` will resolve to: `"en-US"`.
 
 _Note: When an array is provided for `locales`, the above steps happen for each item in that array until a match is found._
 
@@ -158,7 +249,7 @@ By default, the relative time is computed to the best fit unit, but you can expl
 
 ```js
 var rf = new IntlRelativeFormat('en', {
-    units: 'day'
+  units: 'day'
 });
 var output = rf.format(dateValue);
 ```
@@ -171,7 +262,7 @@ By default, the relative time is computed as `"best fit"`, which means that inst
 
 ```js
 var rf = new IntlRelativeFormat('en', {
-    style: 'numeric'
+  style: 'numeric'
 });
 var output = rf.format(dateValue);
 ```
@@ -200,27 +291,24 @@ console.log(output); // => "now"
 
 If you wish to specify a "now" value, it can be provided via `options.now` and will be used instead of querying `Date.now()` to get the current "now" value.
 
-
-License
--------
+## License
 
 This software is free to use under the Yahoo! Inc. BSD license.
-See the [LICENSE file][LICENSE] for license text and copyright information.
-
+See the [LICENSE file][license] for license text and copyright information.
 
 [npm]: https://www.npmjs.org/package/intl-relativeformat
 [npm-badge]: https://img.shields.io/npm/v/intl-relativeformat.svg?style=flat-square
 [parser]: https://github.com/formatjs/formatjs
-[CLDR]: http://cldr.unicode.org/
-[Intl]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl
-[Intl-NF]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
-[Intl-DTF]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-[Intl-Node]: https://github.com/joyent/node/issues/6371
-[Intl.js]: https://github.com/andyearnshaw/Intl.js
+[cldr]: http://cldr.unicode.org/
+[intl]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl
+[intl-nf]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
+[intl-dtf]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+[intl-node]: https://github.com/joyent/node/issues/6371
+[intl.js]: https://github.com/andyearnshaw/Intl.js
 [rawgit]: https://rawgit.com/
 [semver]: http://semver.org/
-[LICENSE]: https://github.com/formatjs/formatjs/blob/master/LICENSE
+[license]: https://github.com/formatjs/formatjs/blob/master/LICENSE
 [moment.js]: http://momentjs.com/
-[ECMA 402]: http://www.ecma-international.org/ecma-402/1.0/index.html
-[DateTimeFormat]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-[NumberFormat]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
+[ecma 402]: http://www.ecma-international.org/ecma-402/1.0/index.html
+[datetimeformat]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+[numberformat]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
