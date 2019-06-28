@@ -3,6 +3,7 @@
 A spec-compliant polyfill/ponyfill for Intl.RelativeTimeFormat fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
 
 [![npm Version][npm-badge]][npm]
+![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-relativetimeformat)
 
 ## Installation
 
