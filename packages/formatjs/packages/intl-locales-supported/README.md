@@ -3,6 +3,7 @@
 Utility to help you determine if your runtime has modern Intl API & locales support. This specifically checks for `Intl.NumberFormat`, `Intl.PluralRules` & `Intl.RelativeTimeFormat` and is being used by `react-intl`.
 
 [![npm Version](https://badgen.net/npm/v/intl-locales-supported)](https://www.npmjs.org/package/intl-locales-supported)
+![size](https://badgen.net/bundlephobia/minzip/intl-locales-supported)
 
 ## Usage
 
