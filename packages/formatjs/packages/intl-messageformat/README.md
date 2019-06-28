@@ -4,10 +4,8 @@ Formats ICU Message strings with number, date, plural, and select placeholders t
 
 [![npm Version][npm-badge]][npm]
 
-| Package                   | Minzipped Size |
-| ------------------------- | -------------- |
-| `intl-messageformat`      | `5.14kB`       |
-| `intl-messageformat/core` | `2.19kB`       |
+![`intl-messageformat` minzipped size](https://badgen.net/badgesize/normal/https://unpkg.com/intl-messageformat/dist/umd/intl-messageformat.min.js?label=intl-messageformat+minzipped+size)
+![`intl-messageformat/core` minzipped size](https://badgen.net/badgesize/normal/https://unpkg.com/intl-messageformat/core.js?label=intl-messageformat/core+minzipped+size)
 
 ## Overview
 

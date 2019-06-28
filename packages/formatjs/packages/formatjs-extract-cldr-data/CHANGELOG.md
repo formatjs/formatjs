@@ -7,10 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package formatjs-extract-cldr-data
 
-
-
-
-
 # [9.2.0](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.1.1...formatjs-extract-cldr-data@9.2.0) (2019-06-27)
 
 ### Features

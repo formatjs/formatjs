@@ -5,14 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [1.3.2](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.3.1...intl-locales-supported@1.3.2) (2019-06-28)
 
-
 ### Bug Fixes
 
-* **intl-locales-supported:** update README ([5c7daab](https://github.com/formatjs/formatjs/commit/5c7daab))
-
-
-
-
+- **intl-locales-supported:** update README ([5c7daab](https://github.com/formatjs/formatjs/commit/5c7daab))
 
 ## [1.3.1](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.3.0...intl-locales-supported@1.3.1) (2019-07-02)
 

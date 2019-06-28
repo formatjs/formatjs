@@ -7,10 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package intl-relativeformat
 
-
-
-
-
 ## [6.4.1](https://github.com/formatjs/formatjs/compare/intl-relativeformat@6.4.0...intl-relativeformat@6.4.1) (2019-07-02)
 
 **Note:** Version bump only for package intl-relativeformat

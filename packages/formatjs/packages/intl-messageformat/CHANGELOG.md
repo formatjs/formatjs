@@ -5,14 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [4.4.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@4.3.0...intl-messageformat@4.4.0) (2019-06-28)
 
-
 ### Features
 
-* **intl-messageformat:** export core entry point ([ca7eeae](https://github.com/formatjs/formatjs/commit/ca7eeae))
-
-
-
-
+- **intl-messageformat:** export core entry point ([ca7eeae](https://github.com/formatjs/formatjs/commit/ca7eeae))
 
 # [4.3.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@4.2.1...intl-messageformat@4.3.0) (2019-06-27)
 

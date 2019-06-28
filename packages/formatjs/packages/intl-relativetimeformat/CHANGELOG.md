@@ -7,10 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat
 
-
-
-
-
 ## [2.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.3.0...@formatjs/intl-relativetimeformat@2.3.1) (2019-07-02)
 
 ### Bug Fixes
