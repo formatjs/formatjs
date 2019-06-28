@@ -165,7 +165,7 @@ export function formatRelativeTime(
     formats,
     onError,
   }: Pick<IntlConfig, 'locale' | 'formats' | 'onError'>,
-  state: Formatters & {now(): number},
+  state: Formatters,
   value: number,
   unit: FormattableUnit = 'second',
   options: FormatRelativeTimeOptions = {}
@@ -179,7 +179,6 @@ export function formatRelativeTime(
     RELATIVE_FORMAT_OPTIONS,
     defaults as FormatRelativeTimeOptions
   );
-
   try {
     return state
       .getRelativeTimeFormat(locale, filteredOptions)

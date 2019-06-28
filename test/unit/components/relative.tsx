@@ -41,7 +41,7 @@ describe('<FormattedRelative>', () => {
 
   it('renders a formatted relative time in a <>', () => {
     const FormattedRelativeTime = mockContext(intl);
-    
+
     const rendered = shallowDeep(<FormattedRelativeTime value={0} />, 2);
 
     expect(typeof rendered.type()).toBe('symbol');
@@ -105,7 +105,9 @@ describe('<FormattedRelative>', () => {
       2
     );
 
-    expect(rendered.text()).toBe(intl.formatRelativeTime(-60, 'second', options));
+    expect(rendered.text()).toBe(
+      intl.formatRelativeTime(-60, 'second', options)
+    );
   });
 
   it('throws an error for invalid unit', () => {
@@ -114,24 +116,22 @@ describe('<FormattedRelative>', () => {
     const rendered = shallowDeep(
       <FormattedRelativeTime value={0} unit="invalid" />,
       2
-    )
+    );
     expect(rendered.text()).toBe('0');
     expect(consoleError.mock.calls.length).toBeGreaterThan(0);
   });
 
   it('accepts `format` prop', () => {
-    intl = generateIntlContext(
-      {
-        locale: 'en',
-        formats: {
-          relative: {
-            seconds: {
-              style: 'narrow',
-            },
+    intl = generateIntlContext({
+      locale: 'en',
+      formats: {
+        relative: {
+          seconds: {
+            style: 'narrow',
           },
         },
       },
-    );
+    });
 
     const FormattedRelativeTime = mockContext(intl);
     const format = 'seconds';
@@ -141,13 +141,14 @@ describe('<FormattedRelative>', () => {
       2
     );
 
-    expect(rendered.text()).toBe(intl.formatRelativeTime(-60, 'second', {format}));
+    expect(rendered.text()).toBe(
+      intl.formatRelativeTime(-60, 'second', {format})
+    );
   });
-
 
   it('supports function-as-child pattern', () => {
     const FormattedRelativeTime = mockContext(intl);
-    
+
     const spy = jest.fn().mockImplementation(() => <b>Jest</b>);
     const rendered = shallowDeep(
       <FormattedRelativeTime value={0}>{spy}</FormattedRelativeTime>,
@@ -162,25 +163,23 @@ describe('<FormattedRelative>', () => {
   });
 
   it('updates automatically', async () => {
+    // span bc enzyme support for </> seems buggy
     const comp = mount(
-      <Provider locale="en">
+      <Provider locale="en" textComponent="span">
         <FormattedRelativeTime value={0} updateIntervalInSeconds={1} />
       </Provider>
     );
     const text = comp.text();
-    await sleep(1000)
+    await sleep(1010);
     
-    const textAfterUpdate = comp.text()
-
+    const textAfterUpdate = comp.text();
     expect(textAfterUpdate).not.toBe(text);
-    expect(textAfterUpdate).toBe(
-      intl.formatRelativeTime(-1, 'second')
-    );
+    expect(textAfterUpdate).toBe(intl.formatRelativeTime(-1, 'second'));
   });
 
   it('updates when the `value` prop changes', () => {
     const FormattedRelativeTime = mockContext(intl);
-    
+
     const injectIntlContext = shallowDeep(
       <FormattedRelativeTime value={0} updateIntervalInSeconds={1} />
     );
