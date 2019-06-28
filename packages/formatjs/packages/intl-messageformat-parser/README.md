@@ -3,6 +3,7 @@
 Parses [ICU Message strings][icu] into an AST via JavaScript.
 
 [![npm Version][npm-badge]][npm]
+![size](https://badgen.net/bundlephobia/minzip/intl-relativetimeformat-parser)
 
 ## Overview
 
