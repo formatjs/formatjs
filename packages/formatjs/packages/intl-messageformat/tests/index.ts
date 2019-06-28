@@ -468,7 +468,7 @@ describe('IntlMessageFormat', function() {
       'This is my {year, selectordinal, one{#st} two{#nd} few{#rd} other{#th}} birthday.';
 
     it('should parse without errors', function() {
-      expect(() => IntlMessageFormat.__parse(msg)).to.not.throw();
+      expect(() => IntlMessageFormat.__parse!(msg)).to.not.throw();
     });
 
     it('should use ordinal pluralization rules', function() {

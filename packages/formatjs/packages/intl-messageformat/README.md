@@ -4,9 +4,10 @@ Formats ICU Message strings with number, date, plural, and select placeholders t
 
 [![npm Version][npm-badge]][npm]
 
-![gzip size](https://img.badgesize.io/formatjs/intl-messageformat/master/dist/intl-messageformat.min.js?compression=gzip&label=core+gzip+size)
-
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/formatjsproject.svg)](https://saucelabs.com/u/formatjsproject)
+| Package                   | Minzipped Size |
+| ------------------------- | -------------- |
+| `intl-messageformat`      | `5.14kB`       |
+| `intl-messageformat/core` | `2.19kB`       |
 
 ## Overview
 

@@ -34,7 +34,7 @@ export default [
       file: 'core.js',
       format: 'cjs'
     },
-    plugins: [resolveConfig]
+    plugins: [resolveConfig, uglifyConfig]
   },
   ...testRollupConfig
 ];

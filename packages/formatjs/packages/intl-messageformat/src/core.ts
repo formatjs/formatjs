@@ -129,19 +129,26 @@ export class IntlMessageFormat {
   private ast: MessageFormatPattern;
   private locale: string;
   private pattern: Pattern[];
-  private message: string;
+  private message: string | MessageFormatPattern;
   constructor(
     message: string | MessageFormatPattern,
     locales: string | string[] = IntlMessageFormat.defaultLocale,
     overrideFormats?: Partial<Formats>,
     opts?: Options
   ) {
-    // Parse string messages into an AST.
-    this.ast =
-      typeof message === 'string'
-        ? IntlMessageFormat.__parse(message)
-        : message;
-    this.message = typeof message === 'string' ? message : '';
+    if (typeof message === 'string') {
+      if (!IntlMessageFormat.__parse) {
+        throw new TypeError(
+          'IntlMessageFormat.__parse must be set to process `message` of type `string`'
+        );
+      }
+      // Parse string messages into an AST.
+      this.ast = IntlMessageFormat.__parse(message);
+    } else {
+      this.ast = message;
+    }
+
+    this.message = message;
 
     if (!(this.ast && this.ast.type === 'messageFormatPattern')) {
       throw new TypeError('A message must be provided as a String or AST.');
@@ -187,7 +194,7 @@ export class IntlMessageFormat {
     return this.ast;
   }
   static defaultLocale = 'en';
-  static __parse = parser.parse;
+  static __parse: typeof parser['parse'] | undefined = undefined;
   // Default format options used as the prototype of the `formats` provided to the
   // constructor. These are used when constructing the internal Intl.NumberFormat
   // and Intl.DateTimeFormat instances.
