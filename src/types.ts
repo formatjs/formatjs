@@ -79,7 +79,7 @@ export interface Formatters {
   ): typeof IntlMessageFormat;
   getRelativeTimeFormat(
     ...args: ConstructorParameters<typeof IntlRelativeTimeFormat>
-  ): typeof IntlRelativeTimeFormat;
+  ): IntlRelativeTimeFormat;
   getPluralRules(
     ...args: ConstructorParameters<typeof Intl.PluralRules>
   ): Intl.PluralRules;

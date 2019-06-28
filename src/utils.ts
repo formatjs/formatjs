@@ -23,7 +23,7 @@ const invariant = invariant_;
 
 declare global {
   namespace Intl {
-    var RelativeTimeFormat: typeof IntlRelativeTimeFormat;
+    const RelativeTimeFormat: typeof IntlRelativeTimeFormat;
   }
 }
 

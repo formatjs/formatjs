@@ -2,17 +2,11 @@ import * as React from 'react';
 import {mount} from 'enzyme';
 import {generateIntlContext, makeMockContext, shallowDeep} from '../testUtils';
 import FormattedRelativeTime from '../../../src/components/relative';
+import Provider from '../../../src/components/provider';
 
 const mockContext = makeMockContext(
   require.resolve('../../../src/components/relative')
 );
-
-const spyGetDerivedStateFromProps = () => {
-  return jest.spyOn(
-    require('../../../src/components/relative').BaseFormattedRelative,
-    'getDerivedStateFromProps'
-  );
-};
 
 describe('<FormattedRelative>', () => {
   const sleep = delay => new Promise(resolve => setTimeout(resolve, delay));
@@ -104,7 +98,7 @@ describe('<FormattedRelative>', () => {
 
   it('accepts valid IntlRelativeTimeFormat options as props', () => {
     const FormattedRelativeTime = mockContext(intl);
-    const options = {unit: 'second'};
+    const options = {style: 'narrow'};
 
     const rendered = shallowDeep(
       <FormattedRelativeTime value={-60} {...options} />,
@@ -114,14 +108,13 @@ describe('<FormattedRelative>', () => {
     expect(rendered.text()).toBe(intl.formatRelativeTime(-60, 'second', options));
   });
 
-  it('fallsback and warns on invalid IntlRelativeFormat options', () => {
+  it('throws an error for invalid unit', () => {
     const FormattedRelativeTime = mockContext(intl);
 
     const rendered = shallowDeep(
       <FormattedRelativeTime value={0} unit="invalid" />,
       2
-    );
-
+    )
     expect(rendered.text()).toBe('0');
     expect(consoleError.mock.calls.length).toBeGreaterThan(0);
   });
@@ -168,24 +161,21 @@ describe('<FormattedRelative>', () => {
     expect(rendered.text()).toBe('Jest');
   });
 
-  it('updates automatically', done => {
-    const FormattedRelativeTime = mockContext(intl);
-    
-    const injectIntlContext = shallowDeep(
-      <FormattedRelativeTime value={0} updateIntervalInSeconds={1} />
+  it('updates automatically', async () => {
+    const comp = mount(
+      <Provider locale="en">
+        <FormattedRelativeTime value={0} updateIntervalInSeconds={1} />
+      </Provider>
     );
-    const text = injectIntlContext.dive().text();
+    const text = comp.text();
+    await sleep(1000)
+    
+    const textAfterUpdate = comp.text()
 
-    setTimeout(() => {
-      const textAfterUpdate = injectIntlContext.dive().text();
-
-      expect(textAfterUpdate).not.toBe(text);
-      expect(textAfterUpdate).toBe(
-        intl.formatRelativeTime(-1, 'second')
-      );
-
-      done();
-    }, 1000);
+    expect(textAfterUpdate).not.toBe(text);
+    expect(textAfterUpdate).toBe(
+      intl.formatRelativeTime(-1, 'second')
+    );
   });
 
   it('updates when the `value` prop changes', () => {
@@ -201,6 +191,6 @@ describe('<FormattedRelative>', () => {
       value: 10,
     });
 
-    expect(injectIntlContext.dive().text()).toBe(textBefore);
+    expect(injectIntlContext.dive().text()).not.toBe(textBefore);
   });
 });

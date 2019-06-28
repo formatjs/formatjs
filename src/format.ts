@@ -25,7 +25,6 @@ import {
 import {createError, escape, filterProps} from './utils';
 import {
   IntlRelativeTimeFormatOptions,
-  Unit,
   FormattableUnit,
 } from '@formatjs/intl-relativetimeformat';
 
@@ -68,14 +67,6 @@ const PLURAL_FORMAT_OPTIONS: Array<keyof Intl.PluralRulesOptions> = [
   'localeMatcher',
   'type',
 ];
-
-const RELATIVE_FORMAT_THRESHOLDS = {
-  second: 60, // seconds to minute
-  minute: 60, // minutes to hour
-  hour: 24, // hours to day
-  day: 30, // days to month
-  month: 12, // months to year
-};
 
 function getNamedFormat<T extends keyof CustomFormats>(
   formats: CustomFormats,
@@ -176,7 +167,7 @@ export function formatRelativeTime(
   }: Pick<IntlConfig, 'locale' | 'formats' | 'onError'>,
   state: Formatters & {now(): number},
   value: number,
-  unit: FormattableUnit,
+  unit: FormattableUnit = 'second',
   options: FormatRelativeTimeOptions = {}
 ) {
   const {format} = options;

@@ -115,11 +115,8 @@ function getBoundFormatFns(config: IntlConfig, state: State): IntlFormatters {
 }
 
 interface InternalProps {
-  children: React.ElementType<any>;
   initialNow?: number;
 }
-
-type Props = IntlConfig & WrappedComponentProps & InternalProps;
 
 interface State {
   context: IntlShape;
