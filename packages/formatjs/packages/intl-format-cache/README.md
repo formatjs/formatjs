@@ -3,6 +3,7 @@
 A memoizer factory for Intl format constructors.
 
 [![npm Version][npm-badge]][npm]
+![size](https://badgen.net/bundlephobia/minzip/intl-format-cache)
 
 ## Overview
 
