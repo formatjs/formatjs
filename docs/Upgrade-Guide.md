@@ -15,6 +15,8 @@
 - `ReactIntlLocaleData` has been removed. See [Migrate to using native Intl APIs](#migrate-to-using-native-intl-apis) for more details.
 - `intlShape` has been removed. See [TypeScript Support](#typescript-support) for more details.
 - Change default `textComponent` in `IntlProvider` to `React.Fragment`. In order to keep the old behavior, you can explicitly set `textComponent` to `span`.
+- `FormattedRelative` has been renamed to `FormattedRelativeTime` and its API has changed significantly. See [FormattedRelativeTime](#formattedrelativetime) for more details.
+- `formatRelative` has been renamed to `formatRelativeTime` and its API has changed significantly. See [FormattedRelativeTime](#formattedrelativetime) for more details.
 
 ```tsx
 <IntlProvider textComponent="span" />
@@ -159,6 +161,63 @@ import {IntlShape} from 'react-intl/lib/types'; // Incorrect
 ```
 
 If we're missing any interface top level support, please let us know and/or submitting a PR is greatly appreciated :)
+
+### FormattedRelativeTime
+
+When we introduced `FormattedRelative`, the spec for [`Intl.RelativeTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) was still unstable. It has now reached stage 3 and multiple browsers have implemented it. However, its API is different from `FormattedRelative` so we've adjusted its API to match the spec which means it's not backwards compatible.
+
+1. All `units` (such as `day-short`) becomes a combination of `unit` & `style`:
+
+```tsx
+<FormattedRelative units="second-short"/>
+// will be
+<FormattedRelativeTime unit="second" style="short"/>
+```
+
+2. `style` becomes `numeric` (which is the default):
+
+```tsx
+<FormattedRelative style="numeric"/>
+// will be
+<FormattedRelativeTime />
+
+<FormattedRelative style="best fit"/>
+// will be
+<FormattedRelativeTime numeric="auto"/>
+```
+
+3. Type of `value` is no longer `Date`, but rather `delta` in the specified `unit`:
+
+```tsx
+<FormattedRelative value={Date.now() - 1000} units="second-narrow"/>
+// will be
+<FormattedRelativeTime value={-1} unit="second" style="narrow" />
+
+<FormattedRelative value={Date.now() + 2000} units="second-narrow"/>
+// will be
+<FormattedRelativeTime value={2} unit="second" style="narrow" />
+```
+
+5. `updateInterval` becomes `updateIntervalInSeconds` and will only take the time delta in seconds. Update behavior remains the same, e.g:
+
+```tsx
+<FormattedRelativeTime
+  value={2}
+  numeric="auto"
+  unit="second"
+  style="narrow"
+  updateIntervalInSeconds={1}
+/>
+// Initially prints: `in 2s`
+// 1 second later: `in 1s`
+// 1 second later: `now`
+// 1 second later: `1s ago`
+// 60 seconds later: `1m ago`
+```
+
+6. `initialNow` has been removed.
+
+Similarly, the functional counterpart of this component which is `formatRelative` has been renamed to `formatRelativeTime` and its parameters have been changed to reflect this component's props accordingly.
 
 ## 2.0.0
 

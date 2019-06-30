@@ -23,7 +23,7 @@ let namespacedMessages = globSync(MESSAGES_PATTERN)
         collection = collections[namespace] = {};
       }
 
-      if (collection.hasOwnProperty(id)) {
+      if (id in collection) {
         throw new Error(`Duplicate message id: ${id}`);
       }
 

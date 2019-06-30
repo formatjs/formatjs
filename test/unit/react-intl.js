@@ -27,8 +27,8 @@ describe('react-intl', () => {
         expect(ReactIntl.FormattedTime).toBeA('function');
       });
 
-      it('exports `FormattedRelative`', () => {
-        expect(ReactIntl.FormattedRelative).toBeA('function');
+      it('exports `FormattedRelativeTime`', () => {
+        expect(ReactIntl.FormattedRelativeTime).toBeA('function');
       });
 
       it('exports `FormattedNumber`', () => {

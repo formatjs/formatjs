@@ -60,9 +60,7 @@ describe('injectIntl()', () => {
     // React 16 renders different in the wrapper
     const intlProvider = rendered.find(IntlProvider).childAt(0);
 
-    expect(wrappedComponent.prop('intl')).toBe(
-      intlProvider.instance().getContext()
-    );
+    expect(wrappedComponent.prop('intl')).toBe(intlProvider.state('context'));
   });
 
   it('propagates all props to <WrappedComponent>', () => {
@@ -91,9 +89,7 @@ describe('injectIntl()', () => {
         const wrapped = rendered.find(Wrapped);
         const intlProvider = rendered.find(IntlProvider).childAt(0);
 
-        expect(wrapped.prop(propName)).toBe(
-          intlProvider.instance().getContext()
-        );
+        expect(wrapped.prop(propName)).toBe(intlProvider.state('context'));
       });
     });
 
@@ -144,7 +140,7 @@ describe('injectIntl()', () => {
 
       const intlProvider = rendered.find(IntlProvider).childAt(0);
 
-      expect(wrapped.prop(propName)).toBe(intlProvider.instance().getContext());
+      expect(wrapped.prop(propName)).toBe(intlProvider.state('context'));
     });
   });
 });

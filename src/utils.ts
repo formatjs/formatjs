@@ -13,13 +13,19 @@ import * as invariant_ from 'invariant';
 import {IntlConfig} from './types';
 import * as React from 'react';
 import IntlMessageFormat from 'intl-messageformat';
-import IntlRelativeFormat from 'intl-relativeformat';
 import memoizeIntlConstructor from 'intl-format-cache';
+import IntlRelativeTimeFormat from '@formatjs/intl-relativetimeformat';
 // Since rollup cannot deal with namespace being a function,
 // this is to interop with TypeScript since `invariant`
 // does not export a default
 // https://github.com/rollup/rollup/issues/1267
 const invariant = invariant_;
+
+declare global {
+  namespace Intl {
+    const RelativeTimeFormat: typeof IntlRelativeTimeFormat;
+  }
+}
 
 const ESCAPED_CHARS: Record<number, string> = {
   38: '&amp;',
@@ -103,6 +109,6 @@ export const DEFAULT_FORMATTERS = {
   getDateTimeFormat: memoizeIntlConstructor(Intl.DateTimeFormat),
   getNumberFormat: memoizeIntlConstructor(Intl.NumberFormat),
   getMessageFormat: memoizeIntlConstructor(IntlMessageFormat),
-  getRelativeFormat: memoizeIntlConstructor(IntlRelativeFormat),
+  getRelativeTimeFormat: memoizeIntlConstructor(Intl.RelativeTimeFormat),
   getPluralRules: memoizeIntlConstructor(Intl.PluralRules),
 };

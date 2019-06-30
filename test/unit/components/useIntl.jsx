@@ -30,8 +30,7 @@ describe('useIntl() hook', () => {
     const intl = rendered
       .find(IntlProvider)
       .childAt(0)
-      .instance()
-      .getContext();
+      .state('context');
     expect(spy).toHaveBeenCalledWith(intl);
   });
 });

@@ -4,10 +4,6 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import IntlRelativeFormat, {
-  IntlRelativeFormatOptions,
-} from 'intl-relativeformat';
-import {isValidElement} from 'react';
 import * as invariant_ from 'invariant';
 // Since rollup cannot deal with namespace being a function,
 // this is to interop with TypeScript since `invariant`
@@ -19,7 +15,7 @@ import {
   Formatters,
   IntlConfig,
   FormatDateOptions,
-  FormatRelativeOptions,
+  FormatRelativeTimeOptions,
   CustomFormats,
   FormatNumberOptions,
   FormatPluralOptions,
@@ -27,6 +23,10 @@ import {
 } from './types';
 
 import {createError, escape, filterProps} from './utils';
+import {
+  IntlRelativeTimeFormatOptions,
+  FormattableUnit,
+} from '@formatjs/intl-relativetimeformat';
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'localeMatcher',
@@ -59,40 +59,14 @@ const NUMBER_FORMAT_OPTIONS: Array<keyof Intl.NumberFormatOptions> = [
   'minimumSignificantDigits',
   'maximumSignificantDigits',
 ];
-const RELATIVE_FORMAT_OPTIONS: Array<keyof IntlRelativeFormatOptions> = [
+const RELATIVE_FORMAT_OPTIONS: Array<keyof IntlRelativeTimeFormatOptions> = [
+  'numeric',
   'style',
-  'units',
 ];
 const PLURAL_FORMAT_OPTIONS: Array<keyof Intl.PluralRulesOptions> = [
   'localeMatcher',
   'type',
 ];
-
-const RELATIVE_FORMAT_THRESHOLDS = {
-  second: 60, // seconds to minute
-  minute: 60, // minutes to hour
-  hour: 24, // hours to day
-  day: 30, // days to month
-  month: 12, // months to year
-};
-
-function updateRelativeFormatThresholds(
-  newThresholds: typeof IntlRelativeFormat['thresholds']
-) {
-  const {thresholds} = IntlRelativeFormat;
-  ({
-    second: thresholds.second,
-    minute: thresholds.minute,
-    hour: thresholds.hour,
-    day: thresholds.day,
-    month: thresholds.month,
-    'second-short': thresholds['second-short'],
-    'minute-short': thresholds['minute-short'],
-    'hour-short': thresholds['hour-short'],
-    'day-short': thresholds['day-short'],
-    'month-short': thresholds['month-short'],
-  } = newThresholds);
-}
 
 function getNamedFormat<T extends keyof CustomFormats>(
   formats: CustomFormats,
@@ -185,44 +159,35 @@ export function formatTime(
   return String(date);
 }
 
-export function formatRelative(
+export function formatRelativeTime(
   {
     locale,
     formats,
     onError,
   }: Pick<IntlConfig, 'locale' | 'formats' | 'onError'>,
-  state: Formatters & {now(): number},
+  state: Formatters,
   value: number,
-  options: FormatRelativeOptions = {}
+  unit: FormattableUnit = 'second',
+  options: FormatRelativeTimeOptions = {}
 ) {
   const {format} = options;
 
-  let date = new Date(value);
-  let now = options.now ? new Date(options.now) : Infinity;
   let defaults =
     (!!format && getNamedFormat(formats!, 'relative', format, onError)) || {};
   let filteredOptions = filterProps(
     options,
     RELATIVE_FORMAT_OPTIONS,
-    defaults as IntlRelativeFormatOptions
+    defaults as FormatRelativeTimeOptions
   );
-
-  // Capture the current threshold values, then temporarily override them with
-  // specific values just for this render.
-  const oldThresholds = {...IntlRelativeFormat.thresholds};
-  updateRelativeFormatThresholds(RELATIVE_FORMAT_THRESHOLDS);
-
   try {
-    return state.getRelativeFormat(locale, filteredOptions).format(date, {
-      now: isFinite(+now) ? now : state.now(),
-    });
+    return state
+      .getRelativeTimeFormat(locale, filteredOptions)
+      .format(value, unit);
   } catch (e) {
     onError(createError('Error formatting relative time.', e));
-  } finally {
-    updateRelativeFormatThresholds(oldThresholds);
   }
 
-  return String(date);
+  return String(value);
 }
 
 export function formatNumber(
@@ -388,5 +353,5 @@ export const formatters = {
   formatMessage,
   formatPlural,
   formatHTMLMessage,
-  formatRelative,
+  formatRelativeTime,
 };

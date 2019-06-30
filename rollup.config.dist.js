@@ -25,10 +25,9 @@ export default {
     sourcemap: true,
     globals: {
       react: 'React',
-      'prop-types': 'PropTypes',
     },
   },
-  external: ['react', 'prop-types'],
+  external: ['react'],
   plugins: [
     replace({
       replaces: {

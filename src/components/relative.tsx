@@ -6,138 +6,143 @@
 
 import * as React from 'react';
 import withIntl from './injectIntl';
-import {IntlShape, FormatRelativeOptions} from '../types';
-import {SUPPORTED_FIELD} from 'intl-relativeformat/lib/types';
+import {IntlShape, FormatRelativeTimeOptions} from '../types';
+import {Unit} from '@formatjs/intl-relativetimeformat';
+import * as invariant from 'invariant';
 
-const SECOND = 1000;
-const MINUTE = 1000 * 60;
-const HOUR = 1000 * 60 * 60;
-const DAY = 1000 * 60 * 60 * 24;
+const MINUTE = 60;
+const HOUR = 60 * 60;
+const DAY = 60 * 60 * 24;
 
-// The maximum timer delay value is a 32-bit signed integer.
-// See: https://mdn.io/setTimeout
-const MAX_TIMER_DELAY = 2147483647;
+function selectUnit(seconds: number): Unit {
+  const absValue = Math.abs(seconds);
 
-function selectUnits(delta: number): SUPPORTED_FIELD {
-  let absDelta = Math.abs(delta);
-
-  if (absDelta < MINUTE) {
-    return 'second' as SUPPORTED_FIELD;
+  if (absValue < MINUTE) {
+    return 'second';
   }
 
-  if (absDelta < HOUR) {
-    return 'minute' as SUPPORTED_FIELD;
+  if (absValue < HOUR) {
+    return 'minute';
   }
 
-  if (absDelta < DAY) {
-    return 'hour' as SUPPORTED_FIELD;
+  if (absValue < DAY) {
+    return 'hour';
   }
 
-  // The maximum scheduled delay will be measured in days since the maximum
-  // timer delay is less than the number of milliseconds in 25 days.
-  return 'day' as SUPPORTED_FIELD;
+  return 'day';
 }
 
-function getUnitDelay(units: SUPPORTED_FIELD): number {
-  switch (units) {
+function getDurationInSeconds(unit?: Unit): number {
+  switch (unit) {
     case 'second':
-      return SECOND;
+      return 1;
     case 'minute':
       return MINUTE;
     case 'hour':
       return HOUR;
-    case 'day':
-      return DAY;
     default:
-      return MAX_TIMER_DELAY;
+      return DAY;
   }
 }
 
-function isSameDate(a: Date | number | string, b: Date | number | string) {
-  if (a === b) {
-    return true;
+function valueToSeconds(value?: number, unit?: Unit): number {
+  if (!value) {
+    return 0;
   }
-
-  let aTime = new Date(a).getTime();
-  let bTime = new Date(b).getTime();
-
-  return isFinite(aTime) && isFinite(bTime) && aTime === bTime;
+  switch (unit) {
+    case 'second':
+      return value;
+    case 'minute':
+      return value * MINUTE;
+    default:
+      return value * HOUR;
+  }
 }
 
-export interface Props extends FormatRelativeOptions {
+export interface Props extends FormatRelativeTimeOptions {
   intl: IntlShape;
-  value: number;
-  updateInterval?: number;
-  initialNow?: Date | number;
+  value?: number;
+  unit?: Unit;
+  updateIntervalInSeconds?: number;
   children?(value: string): React.ReactChild;
 }
 
 interface State {
-  now: number;
-  prevValue: number;
+  currentValueInSeconds: number;
 }
 
-class FormattedRelative extends React.PureComponent<Props, State> {
-  private _timer?: number;
-  static defaultProps: Partial<Props> = {
-    updateInterval: 1000 * 10,
+const INCREMENTABLE_UNITS: Unit[] = ['second', 'minute', 'hour'];
+function canIncrement(unit: Unit = 'second') {
+  return INCREMENTABLE_UNITS.includes(unit);
+}
+
+function verifyProps(updateIntervalInSeconds?: number, unit?: Unit) {
+  invariant(
+    !updateIntervalInSeconds || (updateIntervalInSeconds && canIncrement(unit)),
+    'Cannot schedule update with unit longer than hour'
+  );
+}
+
+class FormattedRelativeTime extends React.PureComponent<Props, State> {
+  // Public for testing
+  _updateTimer: any = null;
+  static defaultProps: Pick<Props, 'unit' | 'value'> = {
+    value: 0,
+    unit: 'second',
+  };
+  state: State = {
+    currentValueInSeconds: canIncrement(this.props.unit)
+      ? valueToSeconds(this.props.value, this.props.unit)
+      : 0,
   };
 
   constructor(props: Props) {
     super(props);
-
-    let now = isFinite(props.initialNow as number)
-      ? Number(props.initialNow)
-      : props.intl.now();
-
-    // `now` is stored as state so that `render()` remains a function of
-    // props + state, instead of accessing `Date.now()` inside `render()`.
-    this.state = {now, prevValue: props.value};
+    verifyProps(props.updateIntervalInSeconds, props.unit);
   }
 
-  scheduleNextUpdate(props: Props, state: State) {
-    // Cancel and pending update because we're scheduling a new update.
-    window.clearTimeout(this._timer);
-
-    const {value, units, updateInterval} = props;
-    const time = new Date(value).getTime();
-
-    // If the `updateInterval` is falsy, including `0` or we don't have a
-    // valid date, then auto updates have been turned off, so we bail and
-    // skip scheduling an update.
-    if (!updateInterval || !isFinite(time)) {
+  scheduleNextUpdate(
+    {updateIntervalInSeconds, unit}: Props,
+    {currentValueInSeconds}: State
+  ) {
+    clearTimeout(this._updateTimer);
+    this._updateTimer = null;
+    // If there's no interval and we cannot increment this unit, do nothing
+    if (!updateIntervalInSeconds || !canIncrement(unit)) {
       return;
     }
+    // Figure out the next interesting time
+    const nextValueInSeconds = currentValueInSeconds - updateIntervalInSeconds;
+    const nextUnit = selectUnit(nextValueInSeconds);
+    // We've reached the max auto incrementable unit, don't schedule another update
+    if (nextUnit === 'day') {
+      return this.setState({
+        currentValueInSeconds: nextValueInSeconds < 0 ? -DAY : DAY,
+      });
+    }
 
-    const delta = time - state.now;
-    const unitDelay = getUnitDelay(units || selectUnits(delta));
-    const unitRemainder = Math.abs(delta % unitDelay);
+    const unitDuration = getDurationInSeconds(nextUnit);
+    const remainder = nextValueInSeconds % unitDuration;
+    const prevInterestingValueInSeconds = nextValueInSeconds - remainder;
+    const nextInterestingValueInSeconds =
+      prevInterestingValueInSeconds >= currentValueInSeconds
+        ? prevInterestingValueInSeconds - unitDuration
+        : prevInterestingValueInSeconds;
+    const delayInSeconds = Math.abs(
+      nextInterestingValueInSeconds - currentValueInSeconds
+    );
 
-    // We want the largest possible timer delay which will still display
-    // accurate information while reducing unnecessary re-renders. The delay
-    // should be until the next "interesting" moment, like a tick from
-    // "1 minute ago" to "2 minutes ago" when the delta is 120,000ms.
-    const delay =
-      delta < 0
-        ? Math.max(updateInterval, unitDelay - unitRemainder)
-        : Math.max(updateInterval, unitRemainder);
-
-    this._timer = window.setTimeout(() => {
-      this.setState({now: this.props.intl.now()});
-    }, delay);
+    this._updateTimer = setTimeout(
+      () =>
+        this.setState({
+          currentValueInSeconds: nextInterestingValueInSeconds,
+        }),
+      delayInSeconds * 1e3
+    );
   }
 
   componentDidMount() {
     this.scheduleNextUpdate(this.props, this.state);
-  }
-
-  static getDerivedStateFromProps({value, intl}: Props, {prevValue}: State) {
-    // When the `props.value` date changes, `state.now` needs to be updated,
-    // and the next update can be rescheduled.
-    if (!isSameDate(value, prevValue)) {
-      return {now: intl.now(), prevValue: value};
-    }
-    return null;
   }
 
   componentDidUpdate() {
@@ -145,26 +150,55 @@ class FormattedRelative extends React.PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    clearTimeout(this._timer);
+    clearTimeout(this._updateTimer);
+    this._updateTimer = null;
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (
+      this.props.value !== nextProps.value ||
+      this.props.unit !== nextProps.unit
+    ) {
+      this.setState({
+        currentValueInSeconds: canIncrement(nextProps.unit)
+          ? valueToSeconds(nextProps.value, nextProps.unit)
+          : 0,
+      });
+    }
   }
 
   render() {
-    const {formatRelative, textComponent: Text} = this.props.intl;
-    const {value, children} = this.props;
+    const {formatRelativeTime, textComponent: Text} = this.props.intl;
+    const {children, value, unit, updateIntervalInSeconds} = this.props;
+    const {currentValueInSeconds} = this.state;
+    let currentValue = value || 0;
+    let currentUnit = unit;
 
-    let formattedRelative = formatRelative(value, {
-      ...this.props,
-      ...this.state,
-    });
-
-    if (typeof children === 'function') {
-      return children(formattedRelative);
+    if (
+      canIncrement(unit) &&
+      currentValueInSeconds &&
+      updateIntervalInSeconds
+    ) {
+      currentUnit = selectUnit(currentValueInSeconds);
+      const unitDuration = getDurationInSeconds(currentUnit);
+      currentValue = Math.round(currentValueInSeconds / unitDuration);
     }
 
-    return <Text>{formattedRelative}</Text>;
+    const formattedRelativeTime = formatRelativeTime(
+      currentValue,
+      currentUnit,
+      {
+        ...this.props,
+      }
+    );
+
+    if (typeof children === 'function') {
+      return children(formattedRelativeTime);
+    }
+    return <Text>{formattedRelativeTime}</Text>;
   }
 }
 
-export const BaseFormattedRelative = FormattedRelative;
+export const BaseFormattedRelativeTime = FormattedRelativeTime;
 
-export default withIntl(FormattedRelative);
+export default withIntl(FormattedRelativeTime);
