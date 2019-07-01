@@ -176,6 +176,23 @@ console.log(output); // => "The price is: $100.00"
 
 In this example, we're defining a `USD` number format style which is passed to the underlying `Intl.NumberFormat` instance as its options.
 
+## Advanced Usage
+
+We also expose another entry point via `intl-messageformat/core` that does not contain the parser from `intl-messageformat-parser`. This is significantly smaller than the regular package but expects the message passed in to be in `AST` form instead of string. E.g:
+
+```ts
+import IntlMessageFormat from 'intl-messageformat';
+new IntlMessageFormat('hello').format(); // prints out hello
+
+// is equivalent to
+
+import IntlMessageFormat from 'intl-messageformat/core';
+import parser from 'intl-messageformat-parser';
+new IntlMessageFormat(parser.parse('hello')).format(); // prints out hello
+```
+
+This helps performance for cases like SSR or preload/precompilation-supported platforms since `AST` can be cached.
+
 ## Examples
 
 ### Plural Label

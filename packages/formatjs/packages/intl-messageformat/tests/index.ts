@@ -6,6 +6,8 @@
 'use strict';
 import 'intl-pluralrules';
 import IntlMessageFormat from '../src';
+import IntlMessageFormatCore from '../src/core';
+import parser from 'intl-messageformat-parser';
 import { expect as chaiExpect } from 'chai';
 
 declare var expect: typeof chaiExpect;
@@ -63,6 +65,25 @@ describe('IntlMessageFormat', function() {
     it('should return a string', function() {
       var mf = new IntlMessageFormat('');
       expect(mf.format()).to.be.a('string');
+    });
+  });
+
+  describe('#format([ast])', function() {
+    it('should format ast', function() {
+      var mf = new IntlMessageFormat(parser.parse('hello world'));
+      expect(mf.format()).to.equal('hello world');
+    });
+    it('should format ast w/ placeholders', function() {
+      var mf = new IntlMessageFormat(parser.parse('hello world, {name}'));
+      expect(mf.format({ name: 'foo' })).to.equal('hello world, foo');
+    });
+    it('should format ast w/o parser', function() {
+      var mf = new IntlMessageFormatCore(parser.parse('hello world'));
+      expect(mf.format()).to.equal('hello world');
+    });
+    it('should format ast w/ placeholders w/o parser', function() {
+      var mf = new IntlMessageFormatCore(parser.parse('hello world, {name}'));
+      expect(mf.format({ name: 'foo' })).to.equal('hello world, foo');
     });
   });
 
