@@ -1,5 +1,8 @@
 [
   {
+    "id": "TRANSLATION_KEY"
+  },
+  {
     "id": "foo.bar.baz"
   }
 ]

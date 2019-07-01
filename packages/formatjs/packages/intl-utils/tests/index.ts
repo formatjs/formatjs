@@ -14,18 +14,6 @@ function future(v?: number) {
   return Date.now() + (v || 0);
 }
 
-function early() {
-  return new Date().setHours(1);
-}
-
-function late() {
-  return new Date().setHours(23);
-}
-
-function expectNoNumberInOutput(output: string) {
-  expect(/\d+/.test(output)).to.be.false;
-}
-
 const SEC = 1e3;
 const MIN = SEC * 60;
 const HOUR = MIN * 60;
@@ -79,11 +67,11 @@ describe('selectUnit', function() {
     });
   });
   it('should work for day', function() {
-    expect(selectUnit(past(23 * HOUR), Date.now())).to.deep.equal({
+    expect(selectUnit(new Date(2019, 1, 5), new Date(2019, 1, 6))).to.deep.equal({
       value: -1,
       unit: 'day'
     });
-    expect(selectUnit(future(26 * HOUR), Date.now())).to.deep.equal({
+    expect(selectUnit(new Date(2019, 1, 6), new Date(2019, 1, 5))).to.deep.equal({
       value: 1,
       unit: 'day'
     });
