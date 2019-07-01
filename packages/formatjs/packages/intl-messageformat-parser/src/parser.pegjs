@@ -46,8 +46,8 @@ messageTextElement
 
 argument
     = number
-    / $([^ \t\n\r,.+={}#]+)
-
+    / chars:quoteEscapedChar* { return chars.join(''); }
+    
 argumentElement
     = '{' _ id:argument _ format:(',' _ elementFormat)? _ '}' {
         return {
@@ -145,8 +145,17 @@ number = digits:('0' / $([1-9] digit*)) {
     return parseInt(digits, 10);
 }
 
+quoteEscapedChar = 
+  !("'" / [ \t\n\r,.+={}#]) char:. { return char; }
+  / "'" sequence:escape { return sequence; }
+ 
+apostrophe = "'"
+escape = [ \t\n\r,.+={}#] / apostrophe
+
 char
-    = [^{}\\\0-\x1F\x7f \t\n\r]
+    = 
+    "'" sequence:apostrophe { return sequence; }
+    / [^{}\\\0-\x1F\x7f \t\n\r]
     / '\\\\' { return '\\'; }
     / '\\#'  { return '\\#'; }
     / '\\{'  { return '\u007B'; }

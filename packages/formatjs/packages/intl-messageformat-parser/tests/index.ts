@@ -492,5 +492,21 @@ describe('parse()', function() {
         '\\'
       );
     });
+
+    /**
+     * @see http://userguide.icu-project.org/formatparse/messages#TOC-Quoting-Escaping
+     * @see https://github.com/formatjs/formatjs/issues/97
+     */
+    it('should escape a pair of ASCII apostrophes to represent one ASCII apostrophe', function() {
+      expect(
+        (parse("This '{isn''t}' obvious").elements[1] as ArgumentElement).id
+      ).to.equal("isn't");
+      expect(
+        (parse("''{name}''").elements[0] as MessageTextElement).value
+      ).to.equal("'");
+      expect(
+        (parse("''{name}''").elements[2] as MessageTextElement).value
+      ).to.equal("'");
+    });
   });
 });
