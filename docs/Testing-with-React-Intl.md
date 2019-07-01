@@ -1,12 +1,33 @@
 # Testing with React-Intl
 
+<!-- toc -->
+
 - [`Intl` APIs requirements](#intl-apis-requirements)
+  - [Mocha](#mocha)
+    - [Command Line](#command-line)
+    - [Browser](#browser)
+  - [Karma](#karma)
 - [Shallow Rendering](#shallow-rendering)
-- [DOM rendering](#dom-rendering)
+  - [Testing Example Components That Use React Intl](#testing-example-components-that-use-react-intl)
+    - [`` (Basic)](#-basic)
+    - [`` (Advanced, Uses `injectIntl()`)](#-advanced-uses-injectintl)
+- [DOM Rendering](#dom-rendering)
+  - [Helper function](#helper-function)
 - [Enzyme](#enzyme)
+  - [Helper function](#helper-function-1)
+  - [Usage](#usage)
 - [Jest](#jest)
+  - [Snapshot Testing](#snapshot-testing)
+    - [Helper function](#helper-function-2)
+    - [Usage](#usage-1)
+    - [Jest mock](#jest-mock)
+    - [Usage with Jest & enzyme](#usage-with-jest--enzyme)
+  - [DOM Testing](#dom-testing)
 - [Storybook](#storybook)
+  - [Intl](#intl)
 - [react-testing-library](#react-testing-library)
+
+<!-- tocstop -->
 
 ## `Intl` APIs requirements
 

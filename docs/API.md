@@ -2,15 +2,33 @@
 
 There are a few API layers that React Intl provides and is built on. When using React Intl you'll be interacting with its API (documented here) and its React [components][components].
 
-1. [ECMAScript Internationalization API](#ecmascript-internationalization-api)
-2. [FormatJS Internationalization Formatters](#formatjs-internationalization-formatters)
-3. [React Intl API](#react-intl-api)
-   - [Locale Data APIs](#locale-data-apis)
-   - [Injection API](#injection-api)
-   - [Date Formatting APIs](#date-formatting-apis)
-   - [Number Formatting APIs](#number-formatting-apis)
-   - [String Formatting APIs](#string-formatting-apis)
-4. [React Intl Components](#react-intl-components)
+<!-- toc -->
+
+- [ECMAScript Internationalization API](#ecmascript-internationalization-api)
+- [FormatJS Internationalization Formatters](#formatjs-internationalization-formatters)
+- [React Intl API](#react-intl-api)
+  - [`defineMessages`](#definemessages)
+  - [Injection API](#injection-api)
+    - [`useIntl` hook (currently available in 3.0.0 beta)](#useintl-hook-currently-available-in-300-beta)
+    - [`injectIntl` HOC](#injectintl-hoc)
+    - [`IntlShape`](#intlshape)
+  - [Date Formatting APIs](#date-formatting-apis)
+    - [`formatDate`](#formatdate)
+    - [`formatTime`](#formattime)
+    - [`formatRelativeTime`](#formatrelativetime)
+  - [Number Formatting APIs](#number-formatting-apis)
+    - [`formatNumber`](#formatnumber)
+    - [`formatPlural`](#formatplural)
+  - [String Formatting APIs](#string-formatting-apis)
+    - [Message Syntax](#message-syntax)
+    - [Message Descriptor](#message-descriptor)
+    - [Message Formatting Fallbacks](#message-formatting-fallbacks)
+    - [Advanced Usage](#advanced-usage)
+    - [`formatMessage`](#formatmessage)
+    - [`formatHTMLMessage`](#formathtmlmessage)
+- [React Intl Components](#react-intl-components)
+
+<!-- tocstop -->
 
 ## ECMAScript Internationalization API
 
@@ -393,6 +411,30 @@ The message formatting APIs go the extra mile to provide fallbacks for the commo
 5. Fallback to the literal message `id`.
 
 Above, "source" refers to using the template as is, without any substitutions made.
+
+#### Advanced Usage
+
+For scenarios where performance is needed, you can pass in `messages` that contains `intl-messageformat`'s `AST` as values to `IntlProvider` to save compilation time when formatting messages. This is especially useful for:
+
+1. Server-side rendering where you can cache the AST and don't have to pay compilation costs multiple time.
+2. Desktop apps using Electron or CEF where you can preload/precompile things in advanced before runtime.
+
+Example:
+
+```tsx
+import parser from 'intl-messageformat-parser';
+import * as ReactDOM from 'react-dom';
+const messages = {
+  ast_simple: parser.parse('hello world'),
+  ast_var: parser.parse('hello world, {name}'),
+};
+
+ReactDOM.render(
+  <IntlProvider messages={messages}>
+    <FormattedMessage id="ast_simple" />
+  </IntlProvider>
+); // will render `hello world`
+```
 
 #### `formatMessage`
 

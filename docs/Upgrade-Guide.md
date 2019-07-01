@@ -1,13 +1,34 @@
 # Upgrade Guide
 
-## 3.0.0 [WIP]
+<!-- toc -->
 
-- [Breaking API Changes](#breaking-api-changes)
-- [Use React 16.3 and upwards](#use-react-163-and-upwards)
-- [Migrate withRef to forwardRef](#migrate-withref-to-forwardref)
-- [New useIntl hook as an alternative of injectIntl HOC](#new-useintl-hook-as-an-alternative-of-injectintl-hoc)
-- [Migrate to using native Intl APIs](#migrate-to-using-native-intl-apis)
-- [TypeScript Support](#typescript-support)
+- [3.0.0 [WIP]](#300-wip)
+  - [Breaking API Changes](#breaking-api-changes)
+  - [Use React 16.3 and upwards](#use-react-163-and-upwards)
+  - [Migrate withRef to forwardRef](#migrate-withref-to-forwardref)
+  - [New useIntl hook as an alternative of injectIntl HOC](#new-useintl-hook-as-an-alternative-of-injectintl-hoc)
+  - [Migrate to using native Intl APIs](#migrate-to-using-native-intl-apis)
+  - [TypeScript Support](#typescript-support)
+  - [FormattedRelativeTime](#formattedrelativetime)
+- [2.0.0](#200)
+  - [Use React 0.14 or 15](#use-react-014-or-15)
+  - [Update How Locale Data is Added](#update-how-locale-data-is-added)
+    - [Add Call to `addLocaleData()` in Browser](#add-call-to-addlocaledata-in-browser)
+  - [Remove Intl Mixin](#remove-intl-mixin)
+    - [Update to ``](#update-to-)
+    - [Update to `injectIntl()`](#update-to-injectintl)
+  - [Change How Messages are Formatted](#change-how-messages-are-formatted)
+    - [Flatten `messages` Object](#flatten-messages-object)
+    - [Replace `getIntlMessage()` Calls with Message Descriptors](#replace-getintlmessage-calls-with-message-descriptors)
+    - [Update `formatMessage()` Calls](#update-formatmessage-calls)
+    - [Update `and` Instances](#update--and--instances)
+  - [Update How Relative Times are Formatted](#update-how-relative-times-are-formatted)
+    - [Rename ``'s `now` Prop to `initialNow`](#rename-s-now-prop-to-initialnow)
+    - [Merge `formatRelative()`'s Second and Third Arguments](#merge-formatrelatives-second-and-third-arguments)
+
+<!-- tocstop -->
+
+## 3.0.0 [WIP]
 
 ### Breaking API Changes
 
