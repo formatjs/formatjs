@@ -5,5 +5,8 @@ const {outputFileSync} = require('fs-extra');
 const {readFileSync} = require('fs');
 globSync(resolve(__dirname, '../docs/*.md')).forEach(fn => {
   console.log(`Adding TOC to ${fn}`);
-  outputFileSync(fn, toc.insert(readFileSync(fn, 'utf-8'), {firsth1: false}));
+  outputFileSync(
+    fn,
+    toc.insert(readFileSync(fn, 'utf-8'), {bullets: '-', firsth1: false})
+  );
 });

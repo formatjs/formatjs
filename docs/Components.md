@@ -1,33 +1,30 @@
-## Table of Contents
-
-<!-- toc -->
-
-- [Why Components?](#why-components)
-- [Intl Provider Component](#intl-provider-component)
-  - [``](#)
-    - [Multiple Intl Contexts](#multiple-intl-contexts)
-    - [Dynamic Language Selection](#dynamic-language-selection)
-- [Date Formatting Components](#date-formatting-components)
-  - [``](#)
-  - [``](#)
-  - [``](#)
-- [Number Formatting Components](#number-formatting-components)
-  - [``](#)
-  - [``](#)
-- [String Formatting Components](#string-formatting-components)
-  - [Message Syntax](#message-syntax)
-  - [Message Descriptor](#message-descriptor)
-  - [Message Formatting Fallbacks](#message-formatting-fallbacks)
-  - [``](#)
-    - [Rich Text Formatting](#rich-text-formatting)
-  - [``](#)
-  - [Using React-Intl with React Native](#using-react-intl-with-react-native)
-
-<!-- tocstop -->
-
 # Components
 
 React Intl has a set of React components that provide a declarative way to setup an i18n context and format dates, numbers, and strings for display in a web UI. The components render React elements by building on React Intl's imperative [API](API).
+
+<!-- toc -->
+
+- [Intl Provider Component](#intl-provider-component)
+- [``](#)
+  - [Multiple Intl Contexts](#multiple-intl-contexts)
+  - [Dynamic Language Selection](#dynamic-language-selection)
+- [Date Formatting Components](#date-formatting-components)
+- [``](#)
+- [``](#)
+- [``](#)
+- [Number Formatting Components](#number-formatting-components)
+- [``](#)
+- [``](#)
+- [String Formatting Components](#string-formatting-components)
+- [Message Syntax](#message-syntax)
+- [Message Descriptor](#message-descriptor)
+- [Message Formatting Fallbacks](#message-formatting-fallbacks)
+- [``](#)
+  - [Rich Text Formatting](#rich-text-formatting)
+- [``](#)
+- [Using React-Intl with React Native](#using-react-intl-with-react-native)
+
+<!-- tocstop -->
 
 ## Why Components?
 
