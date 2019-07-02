@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.3.0...intl-locales-supported@1.3.1) (2019-07-02)
+
+
+### Bug Fixes
+
+* **intl-locales-supported:** Fix license identifier ([#109](https://github.com/formatjs/formatjs/issues/109)) ([e50c762](https://github.com/formatjs/formatjs/commit/e50c762))
+
+
+
+
+
 # [1.3.0](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.2.1...intl-locales-supported@1.3.0) (2019-06-27)
 
 

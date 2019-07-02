@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.3.0...@formatjs/intl-relativetimeformat@2.3.1) (2019-07-02)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** fix polyfill import ([#110](https://github.com/formatjs/formatjs/issues/110)) ([3adffc8](https://github.com/formatjs/formatjs/commit/3adffc8))
+
+
+
+
+
 # [2.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.2.0...@formatjs/intl-relativetimeformat@2.3.0) (2019-06-27)
 
 
