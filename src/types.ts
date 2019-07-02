@@ -73,7 +73,10 @@ export interface IntlFormatters {
     descriptor: MessageDescriptor,
     values?: FormatMessageValues
   ): string;
-  formatHTMLMessage: Function;
+  formatHTMLMessage(
+    descriptor: MessageDescriptor,
+    values?: FormatMessageValues
+  ): string;
 }
 
 export interface Formatters {
