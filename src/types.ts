@@ -64,7 +64,7 @@ export interface IntlFormatters {
     value: number,
     opts: FormatPluralOptions
   ): ReturnType<Intl.PluralRules['select']>;
-  formatMessage(descriptor: MessageDescriptor, values: any): string;
+  formatMessage(descriptor: MessageDescriptor, values?: any): string;
   formatHTMLMessage: Function;
 }
 
