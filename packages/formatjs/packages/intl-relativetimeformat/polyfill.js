@@ -1,2 +1,2 @@
 var polyfill = require('./dist/polyfill').default
-polyfill(require('./dist'))
+polyfill(require('./dist').default)
