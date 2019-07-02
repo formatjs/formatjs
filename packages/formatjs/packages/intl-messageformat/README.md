@@ -23,7 +23,7 @@ _Note: This `IntlMessageFormat` API may change to stay in sync with ECMA-402, bu
 Messages are provided into the constructor as a `String` message, or a [pre-parsed AST][parser] object.
 
 ```js
-var msg = new IntlMessageFormat(message, locales, [formats]);
+var msg = new IntlMessageFormat(message, locales, [formats], [opts]);
 ```
 
 The string `message` is parsed, then stored internally in a compiled form that is optimized for the `format()` method to produce the formatted string for displaying to the user.
@@ -122,6 +122,9 @@ To create a message to format, use the `IntlMessageFormat` constructor. The cons
 
 - **[formats]** - _{Object}_ - Optional object with user defined options for format styles.
 
+- **[opts]** - `{ formatters?: Formatters }`: Optional options.
+  - `formatters`: Map containing memoized formatters for performance.
+
 ```js
 var msg = new IntlMessageFormat('My name is {name}.', 'en-US');
 ```
@@ -178,6 +181,8 @@ In this example, we're defining a `USD` number format style which is passed to t
 
 ## Advanced Usage
 
+### Core entry point
+
 We also expose another entry point via `intl-messageformat/core` that does not contain the parser from `intl-messageformat-parser`. This is significantly smaller than the regular package but expects the message passed in to be in `AST` form instead of string. E.g:
 
 ```ts
@@ -192,6 +197,25 @@ new IntlMessageFormat(parser.parse('hello')).format(); // prints out hello
 ```
 
 This helps performance for cases like SSR or preload/precompilation-supported platforms since `AST` can be cached.
+
+### Formatters
+
+For complex messages, initializing `Intl.*` constructors can be expensive. Therefore, we allow user to pass in `formatters` to provide memoized instances of these `Intl` objects. This opts combines with passing in AST + using [core entry point](#core-entry-point) and `intl-format-cache` can speed things up by 30x per the benchmark down below.
+
+For example:
+
+```ts
+import IntlMessageFormat from 'intl-messageformat';
+import memoizeIntlConstructor from 'intl-format-cache';
+const formatters = {
+  getNumberFormat: memoizeIntlConstructor(Intl.NumberFormat),
+  getDateTimeFormat: memoizeIntlConstructor(Intl.DateTimeFormat),
+  getPluralRules: memoizeIntlConstructor(Intl.PluralRules)
+};
+new IntlMessageFormat('hello {number, number}', 'en', undefined, {
+  formatters
+}).format({ number: 3 }); // prints out `hello, 3`
+```
 
 ## Examples
 
@@ -221,6 +245,19 @@ console.log(msg.format({numPhotos: 1000})); // => "You have 1,000 photos."
 ```
 
 _Note: how when `numPhotos` was `1000`, the number is formatted with the correct thousands separator._
+
+## Benchmark
+
+```
+format_cached_complex_msg x 539,674 ops/sec ±1.87% (87 runs sampled)
+format_cached_string_msg x 99,311,640 ops/sec ±2.15% (87 runs sampled)
+new_complex_msg_preparsed x 1,490 ops/sec ±8.37% (54 runs sampled)
+new_complex_msg x 836 ops/sec ±31.96% (67 runs sampled)
+new_string_msg x 27,752 ops/sec ±8.25% (65 runs sampled)
+complex msg format x 799 ops/sec ±9.38% (55 runs sampled)
+complex msg w/ formatters format x 1,878 ops/sec ±16.63% (64 runs sampled)
+complex preparsed msg w/ formatters format x 26,482 ops/sec ±2.55% (84 runs sampled)
+```
 
 ## License
 

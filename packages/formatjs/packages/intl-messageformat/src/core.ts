@@ -6,7 +6,12 @@ See the accompanying LICENSE file for terms.
 
 /* jslint esnext: true */
 
-import Compiler, { Formats, isSelectOrPluralFormat, Pattern } from './compiler';
+import Compiler, {
+  Formats,
+  isSelectOrPluralFormat,
+  Pattern,
+  Formatters
+} from './compiler';
 import parser, { MessageFormatPattern } from 'intl-messageformat-parser';
 
 // -- MessageFormat --------------------------------------------------------
@@ -22,7 +27,7 @@ function resolveLocale(locales: string | string[]): string {
       localeMatcher: 'best fit'
     })[0];
   } catch (e) {
-    return MessageFormat.defaultLocale;
+    return IntlMessageFormat.defaultLocale;
   }
 }
 
@@ -102,148 +107,156 @@ class FormatError extends Error {
   }
 }
 
-export interface IntlMessageFormat {
-  new (
-    message: string | MessageFormatPattern,
-    locales?: string | string[],
-    overrideFormats?: Partial<Formats>
-  ): IntlMessageFormat;
-  (
-    message: string | MessageFormatPattern,
-    locales?: string | string[],
-    overrideFormats?: Partial<Formats>
-  ): IntlMessageFormat;
-  format(
-    values?: Record<string, string | number | boolean | null | undefined>
-  ): string;
-  resolvedOptions(): { locale: string };
-  getAst(): ReturnType<typeof parser['parse']>;
-  defaultLocale: string;
-  formats: Formats;
-  __parse: typeof parser['parse'];
+export interface Options {
+  formatters?: Formatters;
 }
 
-export const MessageFormat: IntlMessageFormat = ((
-  message: string | MessageFormatPattern,
-  locales: string | string[] = MessageFormat.defaultLocale,
-  overrideFormats?: Partial<Formats>
-) => {
-  // Parse string messages into an AST.
-  const ast =
-    typeof message === 'string' ? MessageFormat.__parse(message) : message;
-
-  if (!(ast && ast.type === 'messageFormatPattern')) {
-    throw new TypeError('A message must be provided as a String or AST.');
-  }
-
-  // Creates a new object with the specified `formats` merged with the default
-  // formats.
-  const formats = mergeConfigs(MessageFormat.formats, overrideFormats);
-
-  // Defined first because it's used to build the format pattern.
-  const locale = resolveLocale(locales || []);
-
-  // Compile the `ast` to a pattern that is highly optimized for repeated
-  // `format()` invocations. **Note:** This passes the `locales` set provided
-  // to the constructor instead of just the resolved locale.
-  const pattern = new Compiler(locales, formats).compile(ast);
-
-  // "Bind" `format()` method to `this` so it can be passed by reference like
-  // the other `Intl` APIs.
+export function createDefaultFormatters(): Formatters {
   return {
-    format(
-      values?: Record<string, string | number | boolean | null | undefined>
-    ) {
-      try {
-        return formatPatterns(pattern, values);
-      } catch (e) {
-        if (e.variableId) {
-          throw new Error(
-            `The intl string context variable '${e.variableId}' was not provided to the string '${message}'`
-          );
-        } else {
-          throw e;
-        }
-      }
+    getNumberFormat(...args) {
+      return new Intl.NumberFormat(...args);
     },
-    resolvedOptions() {
-      return { locale };
+    getDateTimeFormat(...args) {
+      return new Intl.DateTimeFormat(...args);
     },
-    getAst() {
-      return ast;
+    getPluralRules(...args) {
+      return new Intl.PluralRules(...args);
     }
   };
-}) as any;
+}
 
-MessageFormat.defaultLocale = 'en';
-// Default format options used as the prototype of the `formats` provided to the
-// constructor. These are used when constructing the internal Intl.NumberFormat
-// and Intl.DateTimeFormat instances.
-MessageFormat.formats = {
-  number: {
-    currency: {
-      style: 'currency'
-    },
+export class IntlMessageFormat {
+  private ast: MessageFormatPattern;
+  private locale: string;
+  private pattern: Pattern[];
+  private message: string;
+  constructor(
+    message: string | MessageFormatPattern,
+    locales: string | string[] = IntlMessageFormat.defaultLocale,
+    overrideFormats?: Partial<Formats>,
+    opts?: Options
+  ) {
+    // Parse string messages into an AST.
+    this.ast =
+      typeof message === 'string'
+        ? IntlMessageFormat.__parse(message)
+        : message;
+    this.message = typeof message === 'string' ? message : '';
 
-    percent: {
-      style: 'percent'
+    if (!(this.ast && this.ast.type === 'messageFormatPattern')) {
+      throw new TypeError('A message must be provided as a String or AST.');
     }
-  },
 
-  date: {
-    short: {
-      month: 'numeric',
-      day: 'numeric',
-      year: '2-digit'
-    },
+    // Creates a new object with the specified `formats` merged with the default
+    // formats.
+    const formats = mergeConfigs(IntlMessageFormat.formats, overrideFormats);
 
-    medium: {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    },
+    // Defined first because it's used to build the format pattern.
+    this.locale = resolveLocale(locales || []);
 
-    long: {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric'
-    },
+    let formatters = (opts && opts.formatters) || createDefaultFormatters();
 
-    full: {
-      weekday: 'long',
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric'
-    }
-  },
+    // Compile the `ast` to a pattern that is highly optimized for repeated
+    // `format()` invocations. **Note:** This passes the `locales` set provided
+    // to the constructor instead of just the resolved locale.
+    this.pattern = new Compiler(locales, formats, formatters).compile(this.ast);
 
-  time: {
-    short: {
-      hour: 'numeric',
-      minute: 'numeric'
-    },
-
-    medium: {
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric'
-    },
-
-    long: {
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      timeZoneName: 'short'
-    },
-
-    full: {
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      timeZoneName: 'short'
-    }
+    // "Bind" `format()` method to `this` so it can be passed by reference like
+    // the other `Intl` APIs.
   }
-};
+
+  format = (
+    values?: Record<string, string | number | boolean | null | undefined>
+  ) => {
+    try {
+      return formatPatterns(this.pattern, values);
+    } catch (e) {
+      if (e.variableId) {
+        throw new Error(
+          `The intl string context variable '${e.variableId}' was not provided to the string '${this.message}'`
+        );
+      } else {
+        throw e;
+      }
+    }
+  };
+  resolvedOptions() {
+    return { locale: this.locale };
+  }
+  getAst() {
+    return this.ast;
+  }
+  static defaultLocale = 'en';
+  static __parse = parser.parse;
+  // Default format options used as the prototype of the `formats` provided to the
+  // constructor. These are used when constructing the internal Intl.NumberFormat
+  // and Intl.DateTimeFormat instances.
+  static formats = {
+    number: {
+      currency: {
+        style: 'currency'
+      },
+
+      percent: {
+        style: 'percent'
+      }
+    },
+
+    date: {
+      short: {
+        month: 'numeric',
+        day: 'numeric',
+        year: '2-digit'
+      },
+
+      medium: {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      },
+
+      long: {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      },
+
+      full: {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      }
+    },
+
+    time: {
+      short: {
+        hour: 'numeric',
+        minute: 'numeric'
+      },
+
+      medium: {
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+      },
+
+      long: {
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        timeZoneName: 'short'
+      },
+
+      full: {
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        timeZoneName: 'short'
+      }
+    }
+  };
+}
 
 export { Formats, Pattern } from './compiler';
-export default MessageFormat;
+export default IntlMessageFormat;

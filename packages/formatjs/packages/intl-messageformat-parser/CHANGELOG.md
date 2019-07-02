@@ -5,14 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [1.7.1](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@1.7.0...intl-messageformat-parser@1.7.1) (2019-06-26)
 
-
 ### Bug Fixes
 
-* **intl-messageformat-parser:** Escape double-' to a single ' ([#103](https://github.com/formatjs/formatjs/issues/103)) ([4d0cd1f](https://github.com/formatjs/formatjs/commit/4d0cd1f))
-
-
-
-
+- **intl-messageformat-parser:** Escape double-' to a single ' ([#103](https://github.com/formatjs/formatjs/issues/103)) ([4d0cd1f](https://github.com/formatjs/formatjs/commit/4d0cd1f))
 
 # [1.7.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@1.6.8...intl-messageformat-parser@1.7.0) (2019-06-27)
 

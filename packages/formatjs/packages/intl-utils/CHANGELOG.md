@@ -7,10 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @formatjs/intl-utils
 
-
-
-
-
 # 0.2.0 (2019-06-27)
 
 ### Features

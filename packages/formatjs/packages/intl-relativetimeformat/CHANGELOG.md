@@ -5,14 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [2.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.1.0...@formatjs/intl-relativetimeformat@2.2.0) (2019-06-26)
 
-
 ### Features
 
-* **intl-relativetimeformat:** update LICENSE & README ([#100](https://github.com/formatjs/formatjs/issues/100)) ([3b1d11b](https://github.com/formatjs/formatjs/commit/3b1d11b))
-
-
-
-
+- **intl-relativetimeformat:** update LICENSE & README ([#100](https://github.com/formatjs/formatjs/issues/100)) ([3b1d11b](https://github.com/formatjs/formatjs/commit/3b1d11b))
 
 # [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.0.2...@formatjs/intl-relativetimeformat@2.1.0) (2019-06-27)
 

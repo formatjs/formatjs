@@ -18,6 +18,18 @@ export interface Formats {
   time: Record<string, Intl.DateTimeFormatOptions>;
 }
 
+export interface Formatters {
+  getNumberFormat(
+    ...args: ConstructorParameters<typeof Intl.NumberFormat>
+  ): Intl.NumberFormat;
+  getDateTimeFormat(
+    ...args: ConstructorParameters<typeof Intl.DateTimeFormat>
+  ): Intl.DateTimeFormat;
+  getPluralRules(
+    ...args: ConstructorParameters<typeof Intl.PluralRules>
+  ): Intl.PluralRules;
+}
+
 export type Pattern =
   | string
   | PluralOffsetString
@@ -35,10 +47,16 @@ export default class Compiler {
   private pluralNumberFormat: Intl.NumberFormat | null = null;
   private currentPlural: ArgumentElement | null | undefined = null;
   private pluralStack: Array<ArgumentElement | null | undefined> = [];
+  private formatters: Formatters;
 
-  constructor(locales: string | string[], formats: Formats) {
+  constructor(
+    locales: string | string[],
+    formats: Formats,
+    formatters: Formatters
+  ) {
     this.locales = locales;
     this.formats = formats;
+    this.formatters = formatters;
   }
 
   compile(ast: MessageFormatPattern): Pattern[] {
@@ -96,6 +114,7 @@ export default class Compiler {
 
   compileArgument(element: ArgumentElement) {
     const { format, id } = element;
+    const { formatters } = this;
 
     if (!format) {
       return new StringFormat(id);
@@ -106,31 +125,38 @@ export default class Compiler {
       case 'numberFormat':
         return {
           id,
-          format: new Intl.NumberFormat(locales, formats.number[format.style])
-            .format
+          format: formatters.getNumberFormat(
+            locales,
+            formats.number[format.style]
+          ).format
         };
 
       case 'dateFormat':
         return {
           id,
-          format: new Intl.DateTimeFormat(locales, formats.date[format.style])
-            .format
+          format: formatters.getDateTimeFormat(
+            locales,
+            formats.date[format.style]
+          ).format
         };
 
       case 'timeFormat':
         return {
           id,
-          format: new Intl.DateTimeFormat(locales, formats.time[format.style])
-            .format
+          format: formatters.getDateTimeFormat(
+            locales,
+            formats.time[format.style]
+          ).format
         };
 
       case 'pluralFormat':
         return new PluralFormat(
           id,
-          format.ordinal,
           format.offset,
           this.compileOptions(element),
-          locales
+          formatters.getPluralRules(locales, {
+            type: format.ordinal ? 'ordinal' : 'cardinal'
+          })
         );
 
       case 'selectFormat':
@@ -176,7 +202,7 @@ abstract class Formatter {
   abstract format(value: string | number): string;
 }
 
-export class StringFormat extends Formatter {
+class StringFormat extends Formatter {
   format(value: number | string) {
     if (!value && typeof value !== 'number') {
       return '';
@@ -186,24 +212,21 @@ export class StringFormat extends Formatter {
   }
 }
 
-export class PluralFormat {
+class PluralFormat {
   public id: string;
   private offset: number;
   private options: Record<string, Pattern[]>;
   private pluralRules: Intl.PluralRules;
   constructor(
     id: string,
-    useOrdinal: boolean,
     offset: number,
     options: Record<string, Pattern[]>,
-    locales: string | string[]
+    pluralRules: Intl.PluralRules
   ) {
     this.id = id;
     this.offset = offset;
     this.options = options;
-    this.pluralRules = new Intl.PluralRules(locales, {
-      type: useOrdinal ? 'ordinal' : 'cardinal'
-    });
+    this.pluralRules = pluralRules;
   }
 
   getOption(value: number) {

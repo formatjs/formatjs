@@ -67,11 +67,15 @@ describe('selectUnit', function() {
     });
   });
   it('should work for day', function() {
-    expect(selectUnit(new Date(2019, 1, 5), new Date(2019, 1, 6))).to.deep.equal({
+    expect(
+      selectUnit(new Date(2019, 1, 5), new Date(2019, 1, 6))
+    ).to.deep.equal({
       value: -1,
       unit: 'day'
     });
-    expect(selectUnit(new Date(2019, 1, 6), new Date(2019, 1, 5))).to.deep.equal({
+    expect(
+      selectUnit(new Date(2019, 1, 6), new Date(2019, 1, 5))
+    ).to.deep.equal({
       value: 1,
       unit: 'day'
     });

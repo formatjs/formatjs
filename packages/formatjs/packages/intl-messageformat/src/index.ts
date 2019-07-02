@@ -5,9 +5,11 @@ See the accompanying LICENSE file for terms.
 */
 
 import parser from 'intl-messageformat-parser';
-import MessageFormat from './core';
+import IntlMessageFormat from './core';
 
-MessageFormat.__parse = parser.parse;
+IntlMessageFormat.__parse = parser.parse;
 
 export { Formats, Pattern } from './compiler';
-export default MessageFormat;
+export * from './core';
+export { Formatters } from './compiler';
+export default IntlMessageFormat;
