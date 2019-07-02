@@ -6,7 +6,7 @@
   "module": "lib/index.js",
   "typings": "lib/index.d.ts",
   "author": "Eric Ferraiuolo <edf@ericf.me>",
-  "license": "BSD",
+  "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
     "url": "https://github.com/formatjs/formatjs.git"
