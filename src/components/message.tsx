@@ -38,7 +38,7 @@ const defaultFormatMessage: IntlShape['formatMessage'] = (
 export interface Props extends MessageDescriptor {
   intl: IntlShape;
   values?: any;
-  tagName: React.ElementType<any>;
+  tagName?: React.ElementType<any>;
   children?(...nodes: Array<React.ReactNode>): React.ReactNode;
 }
 
