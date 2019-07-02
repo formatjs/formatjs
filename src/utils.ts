@@ -105,10 +105,12 @@ export const DEFAULT_INTL_CONFIG: Pick<
   onError: defaultErrorHandler,
 };
 
-export const DEFAULT_FORMATTERS = {
-  getDateTimeFormat: memoizeIntlConstructor(Intl.DateTimeFormat),
-  getNumberFormat: memoizeIntlConstructor(Intl.NumberFormat),
-  getMessageFormat: memoizeIntlConstructor(IntlMessageFormat),
-  getRelativeTimeFormat: memoizeIntlConstructor(Intl.RelativeTimeFormat),
-  getPluralRules: memoizeIntlConstructor(Intl.PluralRules),
-};
+export function createDefaultFormatters() {
+  return {
+    getDateTimeFormat: memoizeIntlConstructor(Intl.DateTimeFormat),
+    getNumberFormat: memoizeIntlConstructor(Intl.NumberFormat),
+    getMessageFormat: memoizeIntlConstructor(IntlMessageFormat),
+    getRelativeTimeFormat: memoizeIntlConstructor(Intl.RelativeTimeFormat),
+    getPluralRules: memoizeIntlConstructor(Intl.PluralRules),
+  };
+}

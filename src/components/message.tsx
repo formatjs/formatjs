@@ -10,7 +10,11 @@ import {MessageDescriptor, IntlShape} from '../types';
 import * as shallowEquals_ from 'shallow-equal/objects';
 const shallowEquals = shallowEquals_;
 import {formatMessage as baseFormatMessage} from '../format';
-import {invariantIntlContext, DEFAULT_INTL_CONFIG, DEFAULT_FORMATTERS} from '../utils';
+import {
+  invariantIntlContext,
+  DEFAULT_INTL_CONFIG,
+  createDefaultFormatters,
+} from '../utils';
 
 const defaultFormatMessage: IntlShape['formatMessage'] = (
   descriptor,
@@ -27,7 +31,7 @@ const defaultFormatMessage: IntlShape['formatMessage'] = (
       ...DEFAULT_INTL_CONFIG,
       locale: 'en',
     },
-    DEFAULT_FORMATTERS,
+    createDefaultFormatters(),
     descriptor,
     values
   );

@@ -281,7 +281,7 @@ export function formatMessage(
   if (message) {
     try {
       let formatter = state.getMessageFormat(message, locale, formats, {
-        formatters: state
+        formatters: state,
       });
 
       formattedMessage = formatter.format(values);
