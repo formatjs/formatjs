@@ -6,13 +6,15 @@
 
 import * as React from 'react';
 import withIntl from './injectIntl';
-import IntlMessageFormat from 'intl-messageformat';
-import memoizeIntlConstructor from 'intl-format-cache';
 import {MessageDescriptor, IntlShape} from '../types';
 import * as shallowEquals_ from 'shallow-equal/objects';
 const shallowEquals = shallowEquals_;
 import {formatMessage as baseFormatMessage} from '../format';
-import {invariantIntlContext, DEFAULT_INTL_CONFIG} from '../utils';
+import {
+  invariantIntlContext,
+  DEFAULT_INTL_CONFIG,
+  createDefaultFormatters,
+} from '../utils';
 
 const defaultFormatMessage: IntlShape['formatMessage'] = (
   descriptor,
@@ -29,7 +31,7 @@ const defaultFormatMessage: IntlShape['formatMessage'] = (
       ...DEFAULT_INTL_CONFIG,
       locale: 'en',
     },
-    {getMessageFormat: memoizeIntlConstructor(IntlMessageFormat)},
+    createDefaultFormatters(),
     descriptor,
     values
   );

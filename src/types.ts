@@ -77,7 +77,7 @@ export interface Formatters {
   ): Intl.NumberFormat;
   getMessageFormat(
     ...args: ConstructorParameters<typeof IntlMessageFormat>
-  ): typeof IntlMessageFormat;
+  ): IntlMessageFormat;
   getRelativeTimeFormat(
     ...args: ConstructorParameters<typeof IntlRelativeTimeFormat>
   ): IntlRelativeTimeFormat;

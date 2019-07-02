@@ -54,24 +54,6 @@ describe('<IntlProvider>', () => {
     expect(IntlProvider.displayName).toBeA('string');
   });
 
-  it('throws when no `children`', () => {
-    const IntlProvider = mockContext(null, false);
-
-    expect(() => shallowDeep(<IntlProvider />, 2)).toThrow();
-  });
-
-  it('throws when more than one `children`', () => {
-    const IntlProvider = mockContext(null, false);
-    const el = (
-      <IntlProvider>
-        <Child />
-        <Child />
-      </IntlProvider>
-    );
-
-    expect(() => shallowDeep(el, 2)).toThrow();
-  });
-
   it('warns when no `locale` prop is provided', () => {
     const IntlProvider = mockContext(null, false);
     const el = (

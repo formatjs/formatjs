@@ -17,7 +17,7 @@ import {
   createError,
   filterProps,
   DEFAULT_INTL_CONFIG,
-  DEFAULT_FORMATTERS,
+  createDefaultFormatters,
 } from '../utils';
 import {IntlConfig, IntlShape, IntlFormatters} from '../types';
 import {formatters} from '../format';
@@ -141,7 +141,7 @@ class IntlProvider extends React.PureComponent<ResolvedProps, State> {
     // `<IntlProvider>`, then its formatters will be used. Otherwise, this
     // memoize the `Intl*` constructors and cache them for the lifecycle of
     // this IntlProvider instance.
-    const {formatters = DEFAULT_FORMATTERS} = intlContext || {};
+    const {formatters = createDefaultFormatters()} = intlContext || {};
 
     this.state = {
       context: {
@@ -181,9 +181,7 @@ class IntlProvider extends React.PureComponent<ResolvedProps, State> {
 
   render() {
     return (
-      <Provider value={this.state.context}>
-        {React.Children.only(this.props.children)}
-      </Provider>
+      <Provider value={this.state.context}>{this.props.children}</Provider>
     );
   }
 }

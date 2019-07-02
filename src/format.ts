@@ -249,7 +249,7 @@ export function formatMessage(
     | 'defaultFormats'
     | 'onError'
   >,
-  state: {getMessageFormat: Formatters['getMessageFormat']},
+  state: Formatters,
   messageDescriptor: MessageDescriptor = {id: ''},
   values: Record<string, any> = {}
 ): string {
@@ -280,7 +280,9 @@ export function formatMessage(
 
   if (message) {
     try {
-      let formatter = state.getMessageFormat(message, locale, formats);
+      let formatter = state.getMessageFormat(message, locale, formats, {
+        formatters: state,
+      });
 
       formattedMessage = formatter.format(values);
     } catch (e) {
