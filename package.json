@@ -73,9 +73,6 @@
     "react": "^16.3.0",
     "shallow-equal": "^1.1.0"
   },
-  "peerDependencies": {
-    "typescript": "3"
-  },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
