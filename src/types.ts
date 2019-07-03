@@ -51,6 +51,11 @@ export type FormatPluralOptions = Exclude<
 > &
   CustomFormatConfig;
 
+export type FormatMessageValues = Record<
+  string,
+  string | number | boolean | null | undefined
+>;
+
 export interface IntlFormatters {
   formatDate(value: number | Date, opts: FormatDateOptions): string;
   formatTime(value: number | Date, opts: FormatDateOptions): string;
@@ -64,8 +69,14 @@ export interface IntlFormatters {
     value: number,
     opts: FormatPluralOptions
   ): ReturnType<Intl.PluralRules['select']>;
-  formatMessage(descriptor: MessageDescriptor, values: any): string;
-  formatHTMLMessage: Function;
+  formatMessage(
+    descriptor: MessageDescriptor,
+    values?: FormatMessageValues
+  ): string;
+  formatHTMLMessage(
+    descriptor: MessageDescriptor,
+    values?: FormatMessageValues
+  ): string;
 }
 
 export interface Formatters {
