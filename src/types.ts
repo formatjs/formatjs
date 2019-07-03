@@ -106,3 +106,5 @@ export interface MessageDescriptor {
   description?: string | object;
   defaultMessage?: string;
 }
+
+export type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;
