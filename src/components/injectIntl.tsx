@@ -29,7 +29,7 @@ export type WrappedComponentProps<IntlPropName extends string = 'intl'> = {
   [k in IntlPropName]: IntlShape;
 };
 
-type WithIntlProps<P> = Omit<P, keyof WrappedComponentProps> & {
+export type WithIntlProps<P> = Omit<P, keyof WrappedComponentProps> & {
   forwardedRef?: React.Ref<any>;
 };
 
