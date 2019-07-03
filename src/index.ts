@@ -10,6 +10,7 @@ export {default as defineMessages} from './define-messages';
 export {
   default as injectIntl,
   Context as IntlContext,
+  WithIntlProps,
 } from './components/injectIntl';
 export {default as useIntl} from './components/useIntl';
 export {default as IntlProvider} from './components/provider';
