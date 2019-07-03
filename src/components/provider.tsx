@@ -19,7 +19,7 @@ import {
   DEFAULT_INTL_CONFIG,
   createDefaultFormatters,
 } from '../utils';
-import {IntlConfig, IntlShape, IntlFormatters} from '../types';
+import {IntlConfig, IntlShape, IntlFormatters, Omit} from '../types';
 import {formatters} from '../format';
 import areIntlLocalesSupported from 'intl-locales-supported';
 import * as shallowEquals_ from 'shallow-equal/objects';

@@ -38,7 +38,6 @@ export default {
     typescript({
       target: 'es5',
       module: 'commonjs',
-      incremental: false,
       include: ['*.js+(|x)', '**/*.js+(|x)'],
     }),
     commonjs({

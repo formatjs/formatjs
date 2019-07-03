@@ -73,6 +73,9 @@
     "react": "^16.3.0",
     "shallow-equal": "^1.1.0"
   },
+  "peerDependencies": {
+    "typescript": "3"
+  },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
@@ -134,7 +137,7 @@
     "ts-jest": "^24.0.2",
     "ts-node": "^8.3.0",
     "tslib": "^1.9.3",
-    "typescript": "^3.5.1",
+    "typescript": "~3.3.0",
     "watchify": "^3.7.0"
   },
   "scripts": {
@@ -151,8 +154,7 @@
     "format": "prettier --check '**/*.{js,md,jsx,ts,tsx}'",
     "lint:fix": "eslint . --fix",
     "lint": "eslint .",
-    "prepare": "npm run clean && npm run build",
-    "preversion": "npm run clean && npm run build && npm run test:all",
+    "prerelease": "npm run clean && npm run build && npm run test:all",
     "release": "standard-version",
     "test:all": "npm run lint && npm run format && npm run test",
     "test:perf": "cross-env NODE_ENV=production babel-node test/perf",
