@@ -11,6 +11,7 @@ export {
   default as injectIntl,
   Context as IntlContext,
   WithIntlProps,
+  WrappedComponentProps,
 } from './components/injectIntl';
 export {default as useIntl} from './components/useIntl';
 export {default as IntlProvider} from './components/provider';
