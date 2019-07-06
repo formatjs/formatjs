@@ -408,7 +408,7 @@ describe('format API', () => {
     let formatRelativeTime;
 
     beforeEach(() => {
-      rf = new Intl.RelativeTimeFormat(config.locale);
+      rf = new Intl.RelativeTimeFormat(config.locale, undefined);
       formatRelativeTime = f.formatRelativeTime.bind(null, config, state);
     });
 
@@ -491,7 +491,7 @@ RangeError: Invalid unit argument`
       it('handles missing named formats and warns', () => {
         const format = 'missing';
 
-        rf = new Intl.RelativeTimeFormat(config.locale);
+        rf = new Intl.RelativeTimeFormat(config.locale, undefined);
 
         expect(formatRelativeTime(-1, 'second', {format})).toBe(
           rf.format(-1, 'second')
@@ -656,7 +656,7 @@ RangeError: Invalid unit argument`
 
       describe('ordinals', () => {
         it('formats using ordinal plural rules', () => {
-          const opts = {type: 'ordinal'};
+          const opts = {type: 'ordinal'} as Intl.PluralRulesOptions;
           pf = new Intl.PluralRules(config.locale, opts);
 
           expect(formatPlural(22, opts)).toBe(pf.select(22));

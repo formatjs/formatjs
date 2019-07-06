@@ -35,32 +35,6 @@
   "browserify-shim": {
     "react": "global:React"
   },
-  "jest": {
-    "testRegex": "/test/(unit|functional)/.*\\.js",
-    "testPathIgnorePatterns": [
-      "test/functional/support",
-      "/test/unit/testUtils"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.js",
-      "!src/en.js"
-    ],
-    "coverageReporters": [
-      "lcov",
-      "text",
-      "text-summary",
-      "html"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 85,
-        "functions": 100,
-        "lines": 95,
-        "statements": 95
-      }
-    },
-    "setupTestFrameworkScriptFile": "./test/setup.js"
-  },
   "dependencies": {
     "@formatjs/intl-relativetimeformat": "^2.3.1",
     "@types/hoist-non-react-statics": "^3.3.1",

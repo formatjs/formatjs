@@ -28,7 +28,7 @@ describe('injectIntl()', () => {
   });
 
   it('hoists non-react statics', () => {
-    expect(injectIntl(Wrapped).someNonReactStatic.foo).toBe(true);
+    expect((injectIntl(Wrapped) as any).someNonReactStatic.foo).toBe(true);
   });
 
   describe('displayName', () => {
@@ -64,7 +64,7 @@ describe('injectIntl()', () => {
   });
 
   it('propagates all props to <WrappedComponent>', () => {
-    const Injected = injectIntl(Wrapped);
+    const Injected = injectIntl(Wrapped) as any;
     const props = {
       foo: 'bar',
     };
@@ -95,7 +95,7 @@ describe('injectIntl()', () => {
 
     describe('forwardRef', () => {
       it("doesn't forward the ref when forwardRef is `false`", () => {
-        const Injected = injectIntl(Wrapped);
+        const Injected = injectIntl(Wrapped) as any;
         const wrapperRef = React.createRef();
 
         rendered = mountWithProvider(<Injected ref={wrapperRef} />);
@@ -110,7 +110,7 @@ describe('injectIntl()', () => {
             return null;
           }
         };
-        const Injected = injectIntl(Wrapped, {forwardRef: true});
+        const Injected = injectIntl(Wrapped, {forwardRef: true}) as any;
         const wrapperRef = React.createRef();
 
         rendered = mountWithProvider(<Injected ref={wrapperRef} />);
@@ -131,7 +131,7 @@ describe('injectIntl()', () => {
       const Injected = injectIntl(Wrapped, {
         forwardRef: true,
         intlPropName: propName,
-      });
+      }) as any;
 
       rendered = mountWithProvider(<Injected ref={wrapperRef} />);
       const wrapped = rendered.find(Wrapped);

@@ -6,20 +6,19 @@
 
 import * as React from 'react';
 import withIntl, {Provider, WrappedComponentProps} from './injectIntl';
-
-import * as invariant_ from 'invariant';
-// Since rollup cannot deal with namespace being a function,
-// this is to interop with TypeScript since `invariant`
-// does not export a default
-// https://github.com/rollup/rollup/issues/1267
-const invariant = invariant_;
 import {
   createError,
   filterProps,
   DEFAULT_INTL_CONFIG,
   createDefaultFormatters,
 } from '../utils';
-import {IntlConfig, IntlShape, IntlFormatters, Omit} from '../types';
+import {
+  IntlConfig,
+  IntlShape,
+  IntlFormatters,
+  Omit,
+  Formatters,
+} from '../types';
 import {formatters} from '../format';
 import areIntlLocalesSupported from 'intl-locales-supported';
 import * as shallowEquals_ from 'shallow-equal/objects';
@@ -80,36 +79,30 @@ function getConfig(filteredProps: OptionalIntlConfig): IntlConfig {
   return config;
 }
 
-function getBoundFormatFns(config: IntlConfig, state: State): IntlFormatters {
-  const formatterState = {...state.context.formatters};
-
+// Public primarily for testing
+export function getBoundFormatFns(
+  config: IntlConfig,
+  formatterFns: Formatters
+): IntlFormatters {
   return {
-    formatNumber: formatters.formatNumber.bind(
-      undefined,
-      config,
-      formatterState
-    ),
+    formatNumber: formatters.formatNumber.bind(undefined, config, formatterFns),
     formatRelativeTime: formatters.formatRelativeTime.bind(
       undefined,
       config,
-      formatterState
+      formatterFns
     ),
-    formatDate: formatters.formatDate.bind(undefined, config, formatterState),
-    formatTime: formatters.formatTime.bind(undefined, config, formatterState),
-    formatPlural: formatters.formatPlural.bind(
-      undefined,
-      config,
-      formatterState
-    ),
+    formatDate: formatters.formatDate.bind(undefined, config, formatterFns),
+    formatTime: formatters.formatTime.bind(undefined, config, formatterFns),
+    formatPlural: formatters.formatPlural.bind(undefined, config, formatterFns),
     formatMessage: formatters.formatMessage.bind(
       undefined,
       config,
-      formatterState
+      formatterFns
     ),
     formatHTMLMessage: formatters.formatHTMLMessage.bind(
       undefined,
       config,
-      formatterState
+      formatterFns
     ),
   };
 }
@@ -119,21 +112,17 @@ interface State {
   filteredProps?: IntlConfig;
 }
 
-type OptionalIntlConfig = Omit<IntlConfig, keyof typeof DEFAULT_INTL_CONFIG> &
+export type OptionalIntlConfig = Omit<
+  IntlConfig,
+  keyof typeof DEFAULT_INTL_CONFIG
+> &
   Partial<typeof DEFAULT_INTL_CONFIG>;
 
-type ResolvedProps = WrappedComponentProps & OptionalIntlConfig;
+export type Props = WrappedComponentProps & OptionalIntlConfig;
 
-class IntlProvider extends React.PureComponent<ResolvedProps, State> {
-  constructor(props: ResolvedProps) {
+class IntlProvider extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props);
-
-    invariant(
-      typeof Intl !== 'undefined',
-      '[React Intl] The `Intl` APIs must be available in the runtime, ' +
-        'and do not appear to be built-in. An `Intl` polyfill should be loaded.\n' +
-        'See: http://formatjs.io/guides/runtime-environments/'
-    );
 
     const {intl: intlContext} = props;
 
@@ -151,7 +140,7 @@ class IntlProvider extends React.PureComponent<ResolvedProps, State> {
     };
   }
 
-  static getDerivedStateFromProps(nextProps: ResolvedProps, prevState: State) {
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
     const {intl: intlContext} = nextProps;
 
     // Build a whitelisted config object from `props`, defaults, and
@@ -164,7 +153,9 @@ class IntlProvider extends React.PureComponent<ResolvedProps, State> {
 
     if (!shallowEquals(filteredProps, prevState.filteredProps)) {
       const config = getConfig(filteredProps);
-      const boundFormatFns = getBoundFormatFns(config, prevState);
+      const boundFormatFns = getBoundFormatFns(config, {
+        ...prevState.context.formatters,
+      });
 
       return {
         filteredProps,
