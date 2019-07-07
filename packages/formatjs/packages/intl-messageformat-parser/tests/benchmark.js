@@ -37,6 +37,11 @@ const simpleMsg = 'Hello, {name}!';
 
 const stringMsg = 'Hello, world!';
 
+console.log('complex_msg AST length', JSON.stringify(parser.parse(complexMsg)).length)
+console.log('normal_msg AST length', JSON.stringify(parser.parse(normalMsg)).length)
+console.log('simple_msg AST length', JSON.stringify(parser.parse(simpleMsg)).length)
+console.log('string_msg AST length', JSON.stringify(parser.parse(stringMsg)).length)
+
 new benchmark.Suite()
   .add('complex_msg', () => parser.parse(complexMsg))
   .add('normal_msg', () => parser.parse(normalMsg))

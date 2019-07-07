@@ -7,7 +7,7 @@
   "scripts": {
     "clean": "rimraf dist lib",
     "build": "./build.js",
-    "benchmark": "./test/benchmark.js",
+    "benchmark": "node ./tests/benchmark.js",
     "prepublish": "npm run build",
     "test": "mocha --opts ../../mocha.opts tests/index.ts"
   },
