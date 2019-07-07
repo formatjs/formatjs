@@ -52,6 +52,16 @@ describe('<FormattedDate>', () => {
 
     expect(rendered.text()).toBe(intl.formatDate(date));
   });
+  it('renders a formatted date w/o textComponent', () => {
+    const date = Date.now();
+
+    const rendered = mountWithProvider(
+      {value: date},
+      {...intl, textComponent: ''}
+    );
+
+    expect(rendered.text()).toBe(intl.formatDate(date));
+  });
 
   it('accepts valid Intl.DateTimeFormat options as props', () => {
     const date = new Date();

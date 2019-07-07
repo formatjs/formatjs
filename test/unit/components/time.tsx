@@ -46,10 +46,21 @@ describe('<FormattedTime>', () => {
     );
   });
 
-  it('renders a formatted time in a <span>', () => {
+  it('renders a formatted time in a <>', () => {
     const date = new Date();
 
     const rendered = mountWithProvider({value: date}, intl);
+
+    expect(rendered.text()).toBe(intl.formatTime(date));
+  });
+
+  it('renders a formatted time w/o textComponent', () => {
+    const date = new Date();
+
+    const rendered = mountWithProvider(
+      {value: date},
+      {...intl, textComponent: null}
+    );
 
     expect(rendered.text()).toBe(intl.formatTime(date));
   });

@@ -62,6 +62,18 @@ describe('<FormattedPlural>', () => {
     expect(rendered.text()).toBe(num === 1 ? one : other);
   });
 
+  it('renders a formatted plural w/o textComponent', () => {
+    const num = 1;
+    const one = 'foo';
+    const other = 'bar';
+
+    const rendered = mountWithProvider(
+      {value: num, one, other},
+      {...intl, textComponent: null}
+    );
+    expect(rendered.text()).toBe(num === 1 ? one : other);
+  });
+
   it('accepts valid IntlPluralFormat options as props', () => {
     const num = 22;
     const props = {two: 'nd'};

@@ -41,7 +41,7 @@ export interface Props extends MessageDescriptor {
   intl: IntlShape;
   values?: any;
   tagName?: React.ElementType<any>;
-  children?(...nodes: Array<React.ReactNode>): React.ReactNode;
+  children?(...nodes: React.ReactNodeArray): React.ReactNode;
 }
 
 export class BaseFormattedMessage extends React.Component<Props> {
@@ -92,7 +92,7 @@ export class BaseFormattedMessage extends React.Component<Props> {
 
     let tokenDelimiter: string = '';
     let tokenizedValues: Record<string, string> = {};
-    let elements: Record<string, string | React.ReactChild> = {};
+    let elements: Record<string, React.ReactChild> = {};
 
     let hasValues = values && Object.keys(values).length > 0;
     if (hasValues) {
@@ -131,7 +131,7 @@ export class BaseFormattedMessage extends React.Component<Props> {
     let descriptor = {id, description, defaultMessage};
     let formattedMessage = formatMessage(descriptor, tokenizedValues || values);
 
-    let nodes: Array<string | React.ReactChild>;
+    let nodes: React.ReactNodeArray;
 
     let hasElements = elements && Object.keys(elements).length > 0;
     if (hasElements) {
@@ -141,7 +141,7 @@ export class BaseFormattedMessage extends React.Component<Props> {
       // keeping React's virtual diffing working properly.
       nodes = formattedMessage
         .split(tokenDelimiter)
-        .filter(part => !!part)
+        .filter(Boolean)
         .map(part => elements[part] || part);
     } else {
       nodes = [formattedMessage];
@@ -151,9 +151,12 @@ export class BaseFormattedMessage extends React.Component<Props> {
       return children(...nodes);
     }
 
-    // Needs to use `createElement()` instead of JSX, otherwise React will
-    // warn about a missing `key` prop with rich-text message formatting.
-    return React.createElement(Component, null, ...nodes);
+    if (Component) {
+      // Needs to use `createElement()` instead of JSX, otherwise React will
+      // warn about a missing `key` prop with rich-text message formatting.
+      return <Component>{nodes}</Component>;
+    }
+    return nodes;
   }
 }
 

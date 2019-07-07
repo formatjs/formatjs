@@ -56,44 +56,6 @@ describe('<FormattedMessage>', () => {
     expect(rendered.text()).toBe(intl.formatMessage(descriptor));
   });
 
-  it('should not cause a unique "key" prop warning', () => {
-    const descriptor = {
-      id: 'hello',
-      defaultMessage: 'Hello, {name}!',
-    };
-
-    mountWithProvider({...descriptor, values: {name: <b>Jest</b>}}, intl);
-
-    expect(consoleError).toHaveBeenCalledTimes(0);
-  });
-
-  it('should not cause a prop warning when description is a string', () => {
-    const descriptor = {
-      id: 'hello',
-      description: 'Greeting',
-      defaultMessage: 'Hello, {name}!',
-    };
-
-    mountWithProvider({...descriptor, values: {name: <b>Jest</b>}}, intl);
-
-    expect(consoleError).toHaveBeenCalledTimes(0);
-  });
-
-  it('should not cause a prop warning when description is an object', () => {
-    const descriptor = {
-      id: 'hello',
-      description: {
-        text: 'Greeting',
-        ticket: 'GTP-1234',
-      },
-      defaultMessage: 'Hello, {name}!',
-    };
-
-    mountWithProvider({...descriptor, values: {name: <b>Jest</b>}}, intl);
-
-    expect(consoleError).toHaveBeenCalledTimes(0);
-  });
-
   it('accepts `values` prop', () => {
     const descriptor = {
       id: 'hello',

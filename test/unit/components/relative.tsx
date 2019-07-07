@@ -68,6 +68,18 @@ describe('<FormattedRelative>', () => {
     );
   });
 
+  it('can render in null textComponent', () => {
+    const options = {style: 'narrow' as 'narrow'};
+    const rendered = mountWithProvider(
+      {value: -60, ...options},
+      {...intl, textComponent: null}
+    );
+
+    expect(rendered.text()).toBe(
+      intl.formatRelativeTime(-60, 'second', options)
+    );
+  });
+
   it('throws an error for invalid unit', () => {
     const rendered = mountWithProvider({value: 0, unit: 'invalid' as any});
     expect(rendered.text()).toBe('0');

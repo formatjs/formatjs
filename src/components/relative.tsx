@@ -195,7 +195,10 @@ class FormattedRelativeTime extends React.PureComponent<Props, State> {
     if (typeof children === 'function') {
       return children(formattedRelativeTime);
     }
-    return <Text>{formattedRelativeTime}</Text>;
+    if (Text) {
+      return <Text>{formattedRelativeTime}</Text>;
+    }
+    return formattedRelativeTime;
   }
 }
 
