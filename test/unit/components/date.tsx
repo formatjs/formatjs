@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
-import FormattedDate from '../../../src/components/date';
+import {FormattedDate} from '../../../src';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 import {generateIntlContext} from '../../../src/test-utils';
 

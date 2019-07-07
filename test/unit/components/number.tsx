@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
-
-import FormattedNumber from '../../../src/components/number';
+import {FormattedNumber} from '../../../src';
 import {generateIntlContext} from '../../../src/test-utils';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedNumber);
