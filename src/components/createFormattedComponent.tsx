@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from 'react';
 import {IntlShape, FormatDateOptions, FormatNumberOptions} from '../types';
 import withIntl from './injectIntl';
 
