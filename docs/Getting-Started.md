@@ -60,14 +60,6 @@ The `react-intl` npm package distributes the following modules (links from [unpk
   bundled dependencies (except `react`), browser or Node, warnings.
 - [**UMD prod**](https://unpkg.com/react-intl@latest/dist/react-intl.min.js):
   minified, bundled dependencies (except `react`), browser or Node, no warnings.
-- [**UMD Locale Data**](https://unpkg.com/react-intl@latest/locale-data/):
-  grouped by language, browser or Node, `index.js` contains all locales.
-
-**Note:** React Intl's locale data is in a directory at the package's root. This allows the locale data to be `import`-ed or `require`-d relative to the package. For example:
-
-```js
-import englishLocaleData from 'react-intl/locale-data/en';
-```
 
 #### Module Bundlers
 
@@ -88,7 +80,7 @@ Whether you use the ES6, CommonJS, or UMD version of React Intl, they all provid
 - [`IntlProvider`](Components.md#intlprovider)
 - [`FormattedDate`](Components.md#formatteddate)
 - [`FormattedTime`](Components.md#formattedtime)
-- [`FormattedRelative`](Components.md#formattedrelative)
+- [`FormattedRelativeTime`](Components.md#formattedrelativetime)
 - [`FormattedNumber`](Components.md#formattednumber)
 - [`FormattedPlural`](Components.md#formattedplural)
 - [`FormattedMessage`](Components.md#formattedmessage)
@@ -115,6 +107,10 @@ import '@formatjs/intl-relativetimeformat/polyfill';
 import '@formatjs/intl-relativetimeformat/dist/locale-data/de'; // Add locale data for de
 ```
 
+#### Intl in browser
+
+We officially support IE11 along with modern browsers (Chrome/FF/Edge/Safari).
+
 #### Intl in Node.js
 
 When using React Intl in Node.js, your `node` binary has to either:
@@ -126,6 +122,13 @@ When using React Intl in Node.js, your `node` binary has to either:
 - Uses [`full-icu` npm package](https://www.npmjs.com/package/full-icu)
 
 If your `node` version is missing any of the `Intl` APIs above, you'd have to polyfill them accordingly.
+
+#### Intl in React Native
+
+If you're using `react-intl` in React Native, make sure your runtime has built-in `Intl` support (similar to [JSC International variant](https://github.com/react-native-community/jsc-android-buildscripts#international-variant)). See these issues for more details:
+
+- https://github.com/formatjs/react-intl/issues/1356
+- https://github.com/formatjs/react-intl/issues/992
 
 ### Creating an I18n Context
 
