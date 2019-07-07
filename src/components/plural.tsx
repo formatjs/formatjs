@@ -34,8 +34,11 @@ const FormattedPlural: React.FC<Props> = props => {
   if (typeof children === 'function') {
     return children(formattedPlural);
   }
-
-  return <Text>{formattedPlural}</Text>;
+  if (Text) {
+    return <Text>{formattedPlural}</Text>;
+  }
+  // Work around @types/react where React.FC cannot return string
+  return formattedPlural as any;
 };
 
 FormattedPlural.defaultProps = {

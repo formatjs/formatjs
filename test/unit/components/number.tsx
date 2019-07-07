@@ -45,6 +45,17 @@ describe('<FormattedNumber>', () => {
     expect(rendered.text()).toBe(intl.formatNumber(num));
   });
 
+  it('renders a formatted number w/o textComponent', () => {
+    const num = 1000;
+
+    const rendered = mountWithProvider(
+      {value: num},
+      {...intl, textComponent: null}
+    );
+
+    expect(rendered.text()).toBe(intl.formatNumber(num));
+  });
+
   it('accepts valid Intl.NumberFormat options as props', () => {
     const num = 0.5;
     const options = {style: 'percent'};

@@ -26,8 +26,11 @@ const FormattedNumber: React.FC<Props> = props => {
   if (typeof children === 'function') {
     return children(formattedNumber);
   }
-
-  return <Text>{formattedNumber}</Text>;
+  if (Text) {
+    return <Text>{formattedNumber}</Text>;
+  }
+  // Work around @types/react where React.FC cannot return string
+  return formattedNumber as any;
 };
 
 FormattedNumber.displayName = 'FormattedNumber';

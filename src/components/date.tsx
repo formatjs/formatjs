@@ -26,8 +26,11 @@ const FormattedDate: React.FC<Props> = props => {
   if (typeof children === 'function') {
     return children(formattedDate);
   }
-
-  return <Text>{formattedDate}</Text>;
+  if (Text) {
+    return <Text>{formattedDate}</Text>;
+  }
+  // Work around @types/react where React.FC cannot return string
+  return formattedDate as any;
 };
 
 FormattedDate.displayName = 'FormattedDate';
