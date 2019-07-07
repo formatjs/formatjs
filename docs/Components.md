@@ -6,23 +6,23 @@ React Intl has a set of React components that provide a declarative way to setup
 
 - [Why Components?](#why-components)
 - [Intl Provider Component](#intl-provider-component)
-  - [\<IntlProvider\>](#intlprovider)
+  - [`IntlProvider`](#intlprovider)
     - [Multiple Intl Contexts](#multiple-intl-contexts)
     - [Dynamic Language Selection](#dynamic-language-selection)
 - [Date Formatting Components](#date-formatting-components)
-  - [\<FormattedDate\>](#formatteddate)
-  - [\<FormattedTime\>](#formattedtime)
-  - [\<FormattedRelativeTime\>](#formattedrelativetime)
+  - [`FormattedDate`](#formatteddate)
+  - [`FormattedTime`](#formattedtime)
+  - [`FormattedRelativeTime`](#formattedrelativetime)
 - [Number Formatting Components](#number-formatting-components)
-  - [\<FormattedNumber\>](#formattednumber)
-  - [\<FormattedPlural\>](#formattedplural)
+  - [`FormattedNumber`](#formattednumber)
+  - [`FormattedPlural`](#formattedplural)
 - [String Formatting Components](#string-formatting-components)
   - [Message Syntax](#message-syntax)
   - [Message Descriptor](#message-descriptor)
   - [Message Formatting Fallbacks](#message-formatting-fallbacks)
-  - [\<FormattedMessage\>](#formattedmessage)
+  - [`FormattedMessage`](#formattedmessage)
     - [Rich Text Formatting](#rich-text-formatting)
-  - [\<FormattedHTMLMessage\>](#formattedhtmlmessage)
+  - [`FormattedHTMLMessage`](#formattedhtmlmessage)
   - [Using React-Intl with React Native](#using-react-intl-with-react-native)
 
 <!-- tocstop -->
@@ -42,7 +42,7 @@ React Intl uses the provider pattern to scope an i18n context to a tree of compo
 
 **All apps using React Intl must use the `<IntlProvider>` component.**
 
-### `<IntlProvider>`
+### `IntlProvider`
 
 This component is used to setup the i18n context for a tree. Usually, this component will wrap an app's root component so that the entire app will be within the configured i18n context. The following are the i18n configuration props that can be set:
 
@@ -135,7 +135,7 @@ React Intl provides three components to format dates:
 
 Both `<FormattedDate>` and `<FormattedTime>` use [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) options.
 
-### `<FormattedDate>`
+### `FormattedDate`
 
 This component uses the [`formatDate`](API.md#formatdate) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above.
 
@@ -177,7 +177,7 @@ By default `<FormattedDate>` will render the formatted date into a `<span>`. If 
 <span>April 05, 2016</span>
 ```
 
-### `<FormattedTime>`
+### `FormattedTime`
 
 This component uses the [`formatTime`](API.md#formattime) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above, with the following defaults:
 
@@ -210,7 +210,7 @@ By default `<FormattedTime>` will render the formatted time into a `<span>`. If 
 <span>1:09 AM</span>
 ```
 
-### `<FormattedRelativeTime>`
+### `FormattedRelativeTime`
 
 This component uses the [`formatRelativeTime`](API.md#formatrelativetime) API and has `props` that correspond to the following relative formatting options:
 
@@ -277,7 +277,7 @@ React Intl provides two components to format numbers:
 - [`<FormattedNumber>`](#formattednumber)
 - [`<FormattedPlural>`](#formattedplural)
 
-### `<FormattedNumber>`
+### `FormattedNumber`
 
 This component uses the [`formatNumber`](API.md#formatnumber) and [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) APIs and has `props` that correspond to `Intl.NumberFormatOptions`.
 
@@ -304,7 +304,7 @@ By default `<FormattedNumber>` will render the formatted number into a `<span>`.
 <span>1,000</span>
 ```
 
-### `<FormattedPlural>`
+### `FormattedPlural`
 
 This component uses the [`formatPlural`](API.md#formatplural) API and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) has `props` that correspond to `Intl.PluralRulesOptions`.
 
@@ -399,7 +399,7 @@ The message formatting APIs go the extra mile to provide fallbacks for the commo
 4. Fallback to `defaultMessage` source.
 5. Fallback to the literal message `id`.
 
-### `<FormattedMessage>`
+### `FormattedMessage`
 
 This component uses the [`formatMessage`](API.md#formatmessage) API and has `props` that correspond to a [Message Descriptor](#message-descriptor).
 
@@ -465,7 +465,7 @@ By default `<FormattedMessage>` will render the formatted string into a `<span>`
 
 This allows messages to still be defined as a plain string _without_ HTML — making it easier for it to be translated. At runtime, React will also optimize this by only re-rendering the variable parts of the message when they change. In the above example, if the user changed their name, React would only need to update the contents of the `<b>` element.
 
-### `<FormattedHTMLMessage>`
+### `FormattedHTMLMessage`
 
 **Note:** This component is provided for apps that have legacy external strings which contain HTML, but is not recommended, use [`<FormattedMessage>`](#formattedmessage) instead, if you can.
 
