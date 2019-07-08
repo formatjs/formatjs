@@ -15,15 +15,15 @@
   - [Update How Locale Data is Added](#update-how-locale-data-is-added)
     - [Add Call to `addLocaleData()` in Browser](#add-call-to-addlocaledata-in-browser)
   - [Remove Intl Mixin](#remove-intl-mixin)
-    - [Update to ``](#update-to-)
+    - [Update to `IntlProvider`](#update-to-intlprovider)
     - [Update to `injectIntl()`](#update-to-injectintl)
   - [Change How Messages are Formatted](#change-how-messages-are-formatted)
     - [Flatten `messages` Object](#flatten-messages-object)
     - [Replace `getIntlMessage()` Calls with Message Descriptors](#replace-getintlmessage-calls-with-message-descriptors)
     - [Update `formatMessage()` Calls](#update-formatmessage-calls)
-    - [Update `and` Instances](#update--and--instances)
+    - [Update `FormattedMessage` and `FormattedHTMLMessage` Instances](#update-formattedmessage-and-formattedhtmlmessage-instances)
   - [Update How Relative Times are Formatted](#update-how-relative-times-are-formatted)
-    - [Rename ``'s `now` Prop to `initialNow`](#rename-s-now-prop-to-initialnow)
+    - [Rename `FormattedRelative`'s `now` Prop to `initialNow`](#rename-formattedrelatives-now-prop-to-initialnow)
     - [Merge `formatRelative()`'s Second and Third Arguments](#merge-formatrelatives-second-and-third-arguments)
 
 <!-- tocstop -->
@@ -294,7 +294,7 @@ if ('ReactIntlLocaleData' in window) {
 
 **The `IntlMixin` has been removed from React Intl v2.** The mixin did two things: it automatically propagated `locales`, `formats`, and `messages` throughout an app's hierarchy, and it provided an imperative API via `format*()` functions. These jobs are now handled by [`<IntlProvider>`](Components#intlprovider) and [`injectIntl()`](API.md#injection-api), respectively:
 
-#### Update to `<IntlProvider>`
+#### Update to `IntlProvider`
 
 In React Intl v1, you would add the `IntlMixin` to your root component; e.g., `<App>`. Remove the `IntlMixin` and instead wrap your root component with [`<IntlProvider>`](Components#intlprovider):
 
@@ -432,7 +432,7 @@ let message = this.props.intl.formatMessage({id: 'some.message.id'}, values);
 
 **Note:** In React Intl v2, the [`formatMessage()`](API.md#formatmessage) function is injected via [`injectIntl()`](API.md#injectintl).
 
-#### Update `<FormattedMessage>` and `<FormattedHTMLMessage>` Instances
+#### Update `FormattedMessage` and `FormattedHTMLMessage` Instances
 
 The props for these two components have completely changed in React Intl v2. Instead of taking a `message` prop and treating all other props as values to fill in placeholders in a message, [`<FormattedMessage>`](Components#formattedmessage) and [`<FormattedHTMLMessage>`](Components#formattedhtmlmessage) now the same props as a Message Descriptor plus a new `values` prop.
 
@@ -456,7 +456,7 @@ The following example shows up to update a `<FormattedMessage>` instance to use 
 
 Minor changes have been made to how the "now" reference time is specified when formatting relative times in React Intl v2. It's uncommon to specify this value outside of test code, so it might not exist in your app.
 
-#### Rename `<FormattedRelative>`'s `now` Prop to `initialNow`
+#### Rename `FormattedRelative`'s `now` Prop to `initialNow`
 
 A new feature has been added to [`<FormattedRelative>`](Components#formattedrelative) instances in React Intl v2, they now "tick" and stay up to date. Since time moves forward, it was confusing to have a prop named `now`, so it has been renamed to `initialNow`. Any `<FormattedRelative>` instances that use `now` should update to prop name to `initialNow`:
 
