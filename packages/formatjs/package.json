@@ -8,19 +8,19 @@
     "url": "https://github.com/formatjs/formatjs"
   },
   "scripts": {
-    "build:bootstrap": "lerna bootstrap --hoist --include-filtered-dependencies --no-ci",
-    "build:packages": "lerna run clean --stream && lerna run build --stream",
+    "build:bootstrap": "lerna bootstrap",
+    "build:packages": "lerna run clean && lerna run build",
     "build": "npm run build:bootstrap && npm run prettier && npm run build:packages",
     "cover:collect": "mkdir -p ./.nyc_output/ && for d in $(find packages -type d -name '.nyc_output' -maxdepth 2 -exec find '{}' -type f ';'); do (cp $d ./.nyc_output/); done; nyc report --reporter=lcov --report-dir=${COVERAGE_DIR:-artifacts/coverage}",
     "cover": "lerna run cover --since",
-    "dev:lint": "lerna run lint --since master --stream",
-    "dev:test": "lerna run test --since master --stream",
+    "dev:lint": "lerna run lint --since master",
+    "dev:test": "lerna run test --since master",
     "karma:ci": "karma start karma.conf-ci.js",
     "karma:local": "karma start karma.conf.js",
     "lint": "eslint .",
     "prepublishOnly": "npm run build",
     "prettier": "prettier --write 'packages/*/{test,tests,src}/**/*.ts' '{src,scripts,test,tests}/*.js' '**/*.md'",
-    "test": "lerna run lint --stream && TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' lerna run test --stream"
+    "test": "lerna run lint && TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' lerna run test"
   },
   "dependencies": {},
   "devDependencies": {

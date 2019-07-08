@@ -5,6 +5,15 @@
     "version": {
       "conventionalCommits": true,
       "createRelease": "github"
+    },
+    "run": {
+      "stream": true
+    },
+    "bootstrap": {
+      "hoist": true,
+      "includeFilteredDependencies": true,
+      "ci": false
     }
-  }
+  },
+  "ignore": "intl-relativeformat"
 }
