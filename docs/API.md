@@ -23,10 +23,11 @@ There are a few API layers that React Intl provides and is built on. When using 
     - [Message Syntax](#message-syntax)
     - [Message Descriptor](#message-descriptor)
     - [Message Formatting Fallbacks](#message-formatting-fallbacks)
-    - [Advanced Usage](#advanced-usage)
     - [`formatMessage`](#formatmessage)
     - [`formatHTMLMessage`](#formathtmlmessage)
 - [React Intl Components](#react-intl-components)
+- [Advanced Usage](#advanced-usage)
+  - [Size](#size)
 
 <!-- tocstop -->
 
@@ -412,30 +413,6 @@ The message formatting APIs go the extra mile to provide fallbacks for the commo
 
 Above, "source" refers to using the template as is, without any substitutions made.
 
-#### Advanced Usage
-
-For scenarios where performance is needed, you can pass in `messages` that contains `intl-messageformat`'s `AST` as values to `IntlProvider` to save compilation time when formatting messages. This is especially useful for:
-
-1. Server-side rendering where you can cache the AST and don't have to pay compilation costs multiple time.
-2. Desktop apps using Electron or CEF where you can preload/precompile things in advanced before runtime.
-
-Example:
-
-```tsx
-import parser from 'intl-messageformat-parser';
-import * as ReactDOM from 'react-dom';
-const messages = {
-  ast_simple: parser.parse('hello world'),
-  ast_var: parser.parse('hello world, {name}'),
-};
-
-ReactDOM.render(
-  <IntlProvider messages={messages}>
-    <FormattedMessage id="ast_simple" />
-  </IntlProvider>
-); // will render `hello world`
-```
-
 #### `formatMessage`
 
 ```js
@@ -483,3 +460,46 @@ The React components provided by React Intl allow for a declarative, idiomatic-R
 **See:** The [Components][components] page.
 
 [components]: Components.md
+
+## Advanced Usage
+
+For scenarios where performance is needed, you can pass in `messages` that contains `intl-messageformat`'s `AST` as values to `IntlProvider` to save compilation time when formatting messages. This is especially useful for:
+
+1. Server-side rendering where you can cache the AST and don't have to pay compilation costs multiple time.
+2. Desktop apps using Electron or CEF where you can preload/precompile things in advanced before runtime.
+
+Example:
+
+```tsx
+import parser from 'intl-messageformat-parser';
+import * as ReactDOM from 'react-dom';
+const messages = {
+  ast_simple: parser.parse('hello world'),
+  ast_var: parser.parse('hello world, {name}'),
+};
+
+ReactDOM.render(
+  <IntlProvider messages={messages}>
+    <FormattedMessage id="ast_simple" />
+  </IntlProvider>
+); // will render `hello world`
+```
+
+If you're guaranteed to always provide `react-intl`, you can use our core bundle which is significantly smaller in size by swapping out `react-intl` `import`:
+
+```tsx
+// Before
+import {IntlProvider} from 'react-intl';
+
+// After
+import {IntlProvider} from 'react-intl/lib/core'; // ES6 import
+// OR
+import {IntlProvider} from 'react-intl/dist/core'; // ES5 commonjs
+```
+
+### Size
+
+| Package           | Minified Size | Minzipped Size |
+| ----------------- | ------------- | -------------- |
+| `react-intl`      | `29K`         | `9.07K`        |
+| `react-intl` core | `19K`         | `6.32K`        |

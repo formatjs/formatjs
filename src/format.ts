@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import * as invariant_ from 'invariant';
 // Since rollup cannot deal with namespace being a function,
 // this is to interop with TypeScript since `invariant`
 // does not export a default
 // https://github.com/rollup/rollup/issues/1267
-const invariant = invariant_;
+import * as invariant_ from 'invariant';
+const invariant: typeof invariant_ = require('invariant');
 
 import {
   Formatters,

@@ -3,7 +3,7 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import IntlMessageFormat, {Formats} from 'intl-messageformat';
+import {IntlMessageFormat, Formats} from 'intl-messageformat/lib/core';
 import IntlRelativeTimeFormat, {
   IntlRelativeTimeFormatOptions,
   FormattableUnit,

@@ -8,8 +8,8 @@ import * as React from 'react';
 import withIntl from './injectIntl';
 import {IntlShape, FormatRelativeTimeOptions} from '../types';
 import {Unit} from '@formatjs/intl-relativetimeformat';
-import * as invariant from 'invariant';
-
+import * as invariant_ from 'invariant';
+const invariant: typeof invariant_ = require('invariant');
 const MINUTE = 60;
 const HOUR = 60 * 60;
 const DAY = 60 * 60 * 24;

@@ -4,7 +4,7 @@ import * as hoistNonReactStatics_ from 'hoist-non-react-statics';
 // this is to interop with TypeScript since `invariant`
 // does not export a default
 // https://github.com/rollup/rollup/issues/1267
-const hoistNonReactStatics = hoistNonReactStatics_;
+const hoistNonReactStatics: typeof hoistNonReactStatics_ = require('hoist-non-react-statics');
 import {invariantIntlContext} from '../utils';
 import {IntlShape, Omit} from '../types';
 

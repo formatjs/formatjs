@@ -9,17 +9,17 @@ This source code is licensed under the BSD-style license found in the LICENSE
 file in the root directory of React's source tree.
 */
 
-import * as invariant_ from 'invariant';
 import {IntlConfig} from './types';
 import * as React from 'react';
-import IntlMessageFormat from 'intl-messageformat';
+import {IntlMessageFormat} from 'intl-messageformat/lib/core';
 import memoizeIntlConstructor from 'intl-format-cache';
 import IntlRelativeTimeFormat from '@formatjs/intl-relativetimeformat';
 // Since rollup cannot deal with namespace being a function,
 // this is to interop with TypeScript since `invariant`
 // does not export a default
 // https://github.com/rollup/rollup/issues/1267
-const invariant = invariant_;
+import * as invariant_ from 'invariant';
+const invariant: typeof invariant_ = require('invariant');
 
 declare global {
   namespace Intl {
