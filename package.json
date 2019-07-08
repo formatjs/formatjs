@@ -125,6 +125,7 @@
     "format": "prettier --check '**/*.{js,md,jsx,ts,tsx}'",
     "lint:fix": "eslint . --fix",
     "lint": "eslint .",
+    "postchangelog": "npm run toc && npm run format:fix",
     "prerelease": "npm run clean && npm run build && npm run test:all",
     "release": "standard-version",
     "test:all": "npm run lint && npm run format && npm run test",
