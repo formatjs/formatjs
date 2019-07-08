@@ -3,6 +3,52 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@4.4.0...intl-messageformat@5.0.0) (2019-07-08)
+
+
+### Features
+
+* **intl-messageformat-parser:** Rewrite grammar ([#112](https://github.com/formatjs/formatjs/issues/112)) ([093de35](https://github.com/formatjs/formatjs/commit/093de35))
+
+
+### BREAKING CHANGES
+
+* **intl-messageformat-parser:** This completely changes the AST produced by the parser
+
+Before:
+```
+complex_msg AST length 12567
+normal_msg AST length 2638
+simple_msg AST length 567
+string_msg AST length 288
+complex_msg x 3,405 ops/sec ±5.44% (81 runs sampled)
+normal_msg x 27,513 ops/sec ±2.14% (87 runs sampled)
+simple_msg x 113,043 ops/sec ±1.20% (89 runs sampled)
+string_msg x 147,838 ops/sec ±0.78% (90 runs sampled)
+```
+
+After:
+```
+complex_msg AST length 2053
+normal_msg AST length 410
+simple_msg AST length 79
+string_msg AST length 36
+complex_msg x 3,926 ops/sec ±2.37% (90 runs sampled)
+normal_msg x 27,641 ops/sec ±3.93% (86 runs sampled)
+simple_msg x 100,764 ops/sec ±5.35% (79 runs sampled)
+string_msg x 120,362 ops/sec ±7.11% (74 runs sampled)
+```
+
+* feat: normalize hashtag token in plural
+
+* feat(intl-messageformat): adapt to new AST
+
+* feat(babel-plugin-react-intl): adapt to new AST
+
+
+
+
+
 # [4.4.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@4.3.0...intl-messageformat@4.4.0) (2019-06-28)
 
 ### Features
