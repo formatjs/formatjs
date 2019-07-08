@@ -8,7 +8,7 @@ import {
   FormattedMessage,
   // FormattedRelativeTime,
 } from '../../dist';
-import parser, {MessageFormatPattern} from 'intl-messageformat-parser';
+import {parse, MessageFormatElement} from 'intl-messageformat-parser';
 
 const suite = new Suite('renderToString', {
   onCycle: function(e: any) {
@@ -97,10 +97,10 @@ suite.add('100 x <FormattedMessage> with placeholder', function() {
   );
 });
 
-let messageAsts: Record<number, MessageFormatPattern> = {};
+let messageAsts: Record<number, MessageFormatElement[]> = {};
 for (let i = 0, len = 100; i < len; i += 1) {
   const varName = `var${i}`;
-  messageAsts[i] = parser.parse(
+  messageAsts[i] = parse(
     `{${varName}, plural, 
       zero {{${varName}, number} message} 
       one {{${varName}, number} message} 
@@ -151,7 +151,7 @@ suite.add('100 x <FormattedMessage> with placeholder, cached', function() {
   );
 });
 
-const cachedAst = parser.parse(
+const cachedAst = parse(
   `{var0, plural, 
     zero {{var0, number} message} 
     one {{var0, number} message} 
@@ -163,7 +163,7 @@ const cachedAst = parser.parse(
 suite.add(
   '100 x <FormattedMessage> with placeholder, cached in AST form',
   function() {
-    let messages: Record<number, MessageFormatPattern> = {};
+    let messages: Record<number, MessageFormatElement[]> = {};
     let formattedMessages = [];
     for (let i = 0, len = 100; i < len; i += 1) {
       messages[i] = cachedAst;

@@ -3,20 +3,19 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import {Formats} from 'intl-messageformat/lib/compiler';
-import IntlMessageFormat from 'intl-messageformat';
+import IntlMessageFormat, {Formats} from 'intl-messageformat';
 import IntlRelativeTimeFormat, {
   IntlRelativeTimeFormatOptions,
   FormattableUnit,
 } from '@formatjs/intl-relativetimeformat';
-import {MessageFormatPattern} from 'intl-messageformat-parser';
+import {MessageFormatElement} from 'intl-messageformat-parser';
 
 export interface IntlConfig {
   locale: string;
   timeZone?: string;
   formats: CustomFormats;
   textComponent: React.ComponentType | keyof React.ReactHTML;
-  messages: Record<string, string> | Record<string, MessageFormatPattern>;
+  messages: Record<string, string> | Record<string, MessageFormatElement[]>;
   defaultLocale: string;
   defaultFormats: CustomFormats;
   onError(err: string): void;
