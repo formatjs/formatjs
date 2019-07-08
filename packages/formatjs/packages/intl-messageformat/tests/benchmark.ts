@@ -29,7 +29,7 @@ const mf = new IntlMessageFormat(msg, 'en-US');
 const stringMsg = 'Hello, world!';
 const stringMf = new IntlMessageFormat(stringMsg, 'en-US');
 
-const preparsedMsg = IntlMessageFormat.__parse(msg);
+const preparsedMsg = IntlMessageFormat.__parse!(msg);
 
 const formatters: Formatters = {
   getNumberFormat: memoize(
@@ -102,6 +102,9 @@ new Suite()
       guest: 'bar'
     })
   )
+  .on('error', function (ev: Event) {
+    console.error(ev)
+  })
   .on('cycle', function(event: Event) {
     console.log(String(event.target));
   })
