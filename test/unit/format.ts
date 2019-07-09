@@ -1,6 +1,6 @@
 import IntlMessageFormat from 'intl-messageformat';
 import * as f from '../../src/format';
-import parser from 'intl-messageformat-parser';
+import {parse} from 'intl-messageformat-parser';
 describe('format API', () => {
   const {NODE_ENV} = process.env;
 
@@ -25,8 +25,8 @@ describe('format API', () => {
         invalid: 'invalid {}',
         missing_value: 'missing {arg_missing}',
         missing_named_format: 'missing {now, date, format_missing}',
-        ast_simple: parser.parse('hello world'),
-        ast_var: parser.parse('hello there, {name}'),
+        ast_simple: parse('hello world'),
+        ast_var: parse('hello there, {name}'),
       },
 
       formats: {

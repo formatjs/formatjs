@@ -27,7 +27,7 @@ import {
   IntlRelativeTimeFormatOptions,
   FormattableUnit,
 } from '@formatjs/intl-relativetimeformat';
-import {MessageTextElement} from 'intl-messageformat-parser';
+import {LiteralElement, TYPE} from 'intl-messageformat-parser';
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'localeMatcher',
@@ -282,11 +282,10 @@ export function formatMessage(
       return escapeUnformattedMessage(val);
     }
     invariant(
-      val.elements.length === 1 &&
-        val.elements[0].type === 'messageTextElement',
+      val.length === 1 && val[0].type === TYPE.literal,
       'Message has placeholders but no values was provided'
     );
-    return (val.elements[0] as MessageTextElement).value;
+    return (val[0] as LiteralElement).value;
   }
 
   let formattedMessage;
