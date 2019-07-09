@@ -18,6 +18,7 @@
     "karma:ci": "karma start karma.conf-ci.js",
     "karma:local": "karma start karma.conf.js",
     "lint": "eslint .",
+    "postchangelog": "npm run prettier",
     "prepublishOnly": "npm run build",
     "prettier": "prettier --write 'packages/*/{test,tests,src}/**/*.ts' '{src,scripts,test,tests}/*.js' '**/*.md'",
     "test": "lerna run lint && TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' lerna run test"
@@ -61,7 +62,6 @@
     "moment": "^2.8.2",
     "nyc": "^14.0.0",
     "pegjs": "^0.10.0",
-    "postchangelog": "npm run prettier",
     "pre-commit": "^1.2.2",
     "prettier": "^1.18.2",
     "rimraf": "^2.6.3",
