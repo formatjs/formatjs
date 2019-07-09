@@ -506,3 +506,4 @@ The package size is also roughly 30% smaller:
 
 - Since this approach uses `AST` as the data source, changes to `intl-messageformat-parser`'s `AST` will require cache invalidation
 - `AST` is also larger in size than regular `string` messages but can be efficiently compressed
+- Since `react-intl/core` does not have a parser, it will not be able to process string-based `defaultMessage` (will render the string as is w/o any token value replacement).
