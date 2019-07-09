@@ -497,10 +497,10 @@ ReactDOM.render(
 
 The package size is also roughly 30% smaller:
 
-| Package           | Minified Size | Minzipped Size |
-| ----------------- | ------------- | -------------- |
-| `react-intl`      | `29K`         | `9.07K`        |
-| `react-intl.core` | `19K`         | `6.32K`        |
+| Package           | Minified Size                                                                                                       | Minzipped Size                                                                                                          |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `react-intl`      | ![minified size](https://badgen.net/badgesize/normal/https://unpkg.com/react-intl@next/dist/react-intl.min.js)      | ![minzipped size](https://badgen.net/badgesize/gzip/https://unpkg.com/react-intl@next/dist/react-intl.min.js)           |
+| `react-intl/core` | ![core min size](https://badgen.net/badgesize/normal/https://unpkg.com/react-intl@next/dist/react-intl-core.min.js) | ![core minzipped size](https://badgen.net/badgesize/gzip/https://unpkg.com/react-intl@next/dist/react-intl-core.min.js) |
 
 #### Caveats
 
