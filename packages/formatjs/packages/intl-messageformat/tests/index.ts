@@ -3,8 +3,8 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-'use strict';
 import 'intl-pluralrules';
+import * as React from 'react';
 import IntlMessageFormat from '../src';
 import {
   IntlMessageFormat as IntlMessageFormatCore,
@@ -578,6 +578,19 @@ describe('IntlMessageFormat', function() {
         maximumFractionDigits: 5
       }).format(0.1234567)
     );
+  });
+
+  describe('formatToParts', function() {
+    it('should be able to take React Element', function() {
+      const parts = new IntlMessageFormat(
+        'a react {element}',
+        'en'
+      ).formatToParts({
+        element: React.createElement('span', null, 'foo')
+      });
+      expect(parts).to.have.length(2);
+      expect(typeof parts[1]).to.equal('object');
+    });
   });
 
   describe('no locale', function() {

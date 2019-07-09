@@ -98,24 +98,71 @@ function prewarmFormatters(
 
 const ESCAPE_HASH_REGEX = /\\#/g;
 
-function formatPatterns(
+const enum PART_TYPE {
+  literal,
+  argument
+}
+
+interface LiteralPart {
+  type: PART_TYPE.literal;
+  value: string;
+}
+
+interface ArgumentPart {
+  type: PART_TYPE.argument;
+  value: any;
+}
+
+type MessageFormatPart = LiteralPart | ArgumentPart;
+
+function mergeLiteral(parts: MessageFormatPart[]): MessageFormatPart[] {
+  if (parts.length < 2) {
+    return parts;
+  }
+  return parts.reduce(
+    (all, part) => {
+      const lastPart = all[all.length - 1];
+      if (
+        !lastPart ||
+        lastPart.type !== PART_TYPE.literal ||
+        part.type !== PART_TYPE.literal
+      ) {
+        all.push(part);
+      } else {
+        lastPart.value += part.value;
+      }
+      return all;
+    },
+    [] as MessageFormatPart[]
+  );
+}
+
+function formatToParts(
   els: MessageFormatElement[],
   locales: string | string[],
   formatters: Formatters,
   formats: Formats,
-  values?: Record<string, string | number | boolean | null | undefined>,
+  values?: Record<string, any>,
   // For debugging
   originalMessage?: string
-): string {
+): MessageFormatPart[] {
   // Hot path for straight simple msg translations
   if (els.length === 1 && isLiteralElement(els[0])) {
-    return els[0].value;
+    return [
+      {
+        type: PART_TYPE.literal,
+        value: els[0].value.replace(ESCAPE_HASH_REGEX, '#')
+      }
+    ];
   }
-  let result = '';
+  const result: MessageFormatPart[] = [];
   for (const el of els) {
     // Exit early for string parts.
     if (isLiteralElement(el)) {
-      result += el.value.replace(ESCAPE_HASH_REGEX, '#');
+      result.push({
+        type: PART_TYPE.literal,
+        value: el.value.replace(ESCAPE_HASH_REGEX, '#')
+      });
       continue;
     }
     const { value: varName } = el;
@@ -129,8 +176,20 @@ function formatPatterns(
 
     const value = values[varName];
     if (isArgumentElement(el)) {
-      result +=
-        typeof value === 'string' || typeof value === 'number' ? value : '';
+      if (!value || typeof value === 'string' || typeof value === 'number') {
+        result.push({
+          type: PART_TYPE.literal,
+          value:
+            typeof value === 'string' || typeof value === 'number'
+              ? String(value)
+              : ''
+        });
+      } else {
+        result.push({
+          type: PART_TYPE.argument,
+          value
+        });
+      }
       continue;
     }
 
@@ -139,23 +198,32 @@ function formatPatterns(
     // abstracted-by and delegated-to the part helper object.
     if (isDateElement(el)) {
       const style = el.style ? formats.date[el.style] : undefined;
-      result += formatters
-        .getDateTimeFormat(locales, style)
-        .format(value as number);
+      result.push({
+        type: PART_TYPE.literal,
+        value: formatters
+          .getDateTimeFormat(locales, style)
+          .format(value as number)
+      });
       continue;
     }
     if (isTimeElement(el)) {
       const style = el.style ? formats.time[el.style] : undefined;
-      result += formatters
-        .getDateTimeFormat(locales, style)
-        .format(value as number);
+      result.push({
+        type: PART_TYPE.literal,
+        value: formatters
+          .getDateTimeFormat(locales, style)
+          .format(value as number)
+      });
       continue;
     }
     if (isNumberElement(el)) {
       const style = el.style ? formats.number[el.style] : undefined;
-      result += formatters
-        .getNumberFormat(locales, style)
-        .format(value as number);
+      result.push({
+        type: PART_TYPE.literal,
+        value: formatters
+          .getNumberFormat(locales, style)
+          .format(value as number)
+      });
       continue;
     }
     if (isSelectElement(el)) {
@@ -167,7 +235,9 @@ function formatPatterns(
           }": "${value}". Options are "${Object.keys(el.options).join('", "')}"`
         );
       }
-      result += formatPatterns(opt.value, locales, formatters, formats, values);
+      result.push(
+        ...formatToParts(opt.value, locales, formatters, formats, values)
+      );
       continue;
     }
     if (isPluralElement(el)) {
@@ -185,11 +255,37 @@ function formatPatterns(
           }": "${value}". Options are "${Object.keys(el.options).join('", "')}"`
         );
       }
-      result += formatPatterns(opt.value, locales, formatters, formats, values);
+      result.push(
+        ...formatToParts(opt.value, locales, formatters, formats, values)
+      );
       continue;
     }
   }
-  return result;
+  return mergeLiteral(result);
+}
+
+function formatToString(
+  els: MessageFormatElement[],
+  locales: string | string[],
+  formatters: Formatters,
+  formats: Formats,
+  values?: Record<string, string | number | boolean | null | undefined>,
+  // For debugging
+  originalMessage?: string
+): string {
+  const parts = formatToParts(
+    els,
+    locales,
+    formatters,
+    formats,
+    values,
+    originalMessage
+  );
+  // Hot path for straight simple msg translations
+  if (parts.length === 1) {
+    return parts[0].value;
+  }
+  return parts.reduce((all, part) => (all += part.value), '');
 }
 
 function mergeConfig(c1: Record<string, object>, c2?: Record<string, object>) {
@@ -304,7 +400,17 @@ export class IntlMessageFormat {
   format = (
     values?: Record<string, string | number | boolean | null | undefined>
   ) => {
-    return formatPatterns(
+    return formatToString(
+      this.ast,
+      this.locale,
+      this.formatters,
+      this.formats,
+      values,
+      this.message
+    );
+  };
+  formatToParts = (values?: Record<string, any>) => {
+    return formatToParts(
       this.ast,
       this.locale,
       this.formatters,
