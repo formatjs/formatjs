@@ -10,3 +10,6 @@ src/en.js
 
 # VS Code
 .vscode
+
+core.js
+core.d.ts

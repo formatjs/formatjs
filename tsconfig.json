@@ -2,7 +2,6 @@
     "compilerOptions": {
         "module": "es6",
         "target": "es6",
-        "outDir": "lib",
         "jsx": "react",
         "types": ["node"],
         "declaration": true,
@@ -10,6 +9,5 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "moduleResolution": "node"
-    },
-    "include": ["src/*.ts*"]
+    }
 }

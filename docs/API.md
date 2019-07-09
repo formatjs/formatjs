@@ -463,20 +463,29 @@ The React components provided by React Intl allow for a declarative, idiomatic-R
 
 ## Advanced Usage
 
-For scenarios where performance is needed, you can pass in `messages` that contains `intl-messageformat`'s `AST` as values to `IntlProvider` to save compilation time when formatting messages. This is especially useful for:
+### Core `react-intl`
 
-1. Server-side rendering where you can cache the AST and don't have to pay compilation costs multiple time.
+We've also provided a core package that has the same API as the full `react-intl` package but without our parser. What this means is that you would have to pre-parse all messages into `AST` using [`intl-messageformat-parser`](https://www.npmjs.com/package/intl-messageformat-parser) and pass that into `IntlProvider`.
+
+This is especially faster since it saves us time parsing `string` into `AST`. The use cases for this support are:
+
+1. Server-side rendering or pre-parsing where you can cache the AST and don't have to pay compilation costs multiple time.
 2. Desktop apps using Electron or CEF where you can preload/precompile things in advanced before runtime.
 
 Example:
 
 ```tsx
+// Pre-processed
 import parser from 'intl-messageformat-parser';
-import * as ReactDOM from 'react-dom';
 const messages = {
   ast_simple: parser.parse('hello world'),
   ast_var: parser.parse('hello world, {name}'),
 };
+
+// During runtime
+// ES6 import
+import {IntlProvider, FormattedMessage} from 'react-intl/core';
+import * as ReactDOM from 'react-dom';
 
 ReactDOM.render(
   <IntlProvider messages={messages}>
@@ -485,21 +494,14 @@ ReactDOM.render(
 ); // will render `hello world`
 ```
 
-If you're guaranteed to always provide `react-intl`, you can use our core bundle which is significantly smaller in size by swapping out `react-intl` `import`:
-
-```tsx
-// Before
-import {IntlProvider} from 'react-intl';
-
-// After
-import {IntlProvider} from 'react-intl/lib/core'; // ES6 import
-// OR
-import {IntlProvider} from 'react-intl/dist/core'; // ES5 commonjs
-```
-
-### Size
+The package size is also roughly 30% smaller:
 
 | Package           | Minified Size | Minzipped Size |
 | ----------------- | ------------- | -------------- |
 | `react-intl`      | `29K`         | `9.07K`        |
-| `react-intl` core | `19K`         | `6.32K`        |
+| `react-intl.core` | `19K`         | `6.32K`        |
+
+#### Caveats
+
+- Since this approach uses `AST` as the data source, changes to `intl-messageformat-parser`'s `AST` will require cache invalidation
+- `AST` is also larger in size than regular `string` messages but can be efficiently compressed 

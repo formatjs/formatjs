@@ -112,13 +112,13 @@
     "watchify": "^3.7.0"
   },
   "scripts": {
-    "benchmark": "NODE_ENV=production TS_NODE_PROJECT='test/perf/tsconfig.json' ts-node test/perf/index.tsx",
+    "benchmark": "NODE_ENV=production TS_NODE_PROJECT='./tsconfig.cjs.json' ts-node test/perf/index.tsx",
     "build:dist:dev": "cross-env NODE_ENV=development rollup -c rollup.config.dist.js",
     "build:dist:prod": "cross-env NODE_ENV=production rollup -c rollup.config.dist.js",
     "build:dist": "npm run build:dist:dev && npm run build:dist:prod",
-    "build:lib": "tsc && tsc -p tsconfig.cjs.json",
+    "build:lib": "tsc -p src/tsconfig.json && tsc -p src/tsconfig.cjs.json && tsc -p tsconfig.core.json",
     "build": "npm run build:lib && npm run build:dist",
-    "clean": "rimraf src/en.js coverage/ dist/ lib/ test/renderer.js",
+    "clean": "rimraf coverage/ dist/ lib/ core.js core.d.ts",
     "examples:install": "babel-node scripts/examples npm install",
     "examples:link": "npm link && babel-node scripts/examples npm link react-intl",
     "format:fix": "prettier --write '**/*.{js,md,jsx,ts,tsx}'",
