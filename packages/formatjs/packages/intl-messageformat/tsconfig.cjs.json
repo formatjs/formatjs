@@ -3,7 +3,11 @@
     "compilerOptions": {
         "outDir": "dist",
         "rootDir": "src",
-        "module": "commonjs"
+        "module": "commonjs",
+        "baseUrl": ".",
+        "paths": {
+            "intl-format-cache": ["../intl-format-cache"]
+        }
     },
     "include": ["src/*.ts"]
 }

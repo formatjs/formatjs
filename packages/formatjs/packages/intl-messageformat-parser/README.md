@@ -2,19 +2,14 @@
 
 Parses [ICU Message strings][icu] into an AST via JavaScript.
 
-[![npm Version][npm-badge]][npm]
-![size](https://badgen.net/bundlephobia/minzip/intl-messageformat-parser)
+[![npm Version](https://badgen.net/npm/v/intl-messageformat-parser)(https://www.npmjs.com/package/intl-messageformat-parser)
+[![size](https://badgen.net/bundlephobia/minzip/intl-messageformat-parser)](https://bundlephobia.com/result?p=intl-messageformat-parser)
 
 ## Overview
 
 This package implements a parser in JavaScript that parses the industry standard [ICU Message strings][icu] — used for internationalization — into an AST. The produced AST can then be used by a compiler, like [`intl-messageformat`][intl-mf], to produce localized formatted strings for display to users.
 
-This parser is written in [PEG.js][], a parser generator for JavaScript. This parser's implementation was inspired by and derived from Alex Sexton's [messageformat.js][] project. The differences from Alex's implementation are:
-
-- This project is standalone.
-- It's authored as ES6 modules compiled to CommonJS and the Bundle format for the browser.
-- The produced AST is more descriptive and uses recursive structures.
-- The keywords used in the AST match the ICU Message "spec".
+This parser is written in [PEG.js][], a parser generator for JavaScript.
 
 ## Usage
 
@@ -58,85 +53,77 @@ parser.parse(msg);
 This parser will produce this AST:
 
 ```json
-{
-  "type": "messageFormatPattern",
-  "elements": [
-    {
-      "type": "messageTextElement",
-      "value": "On "
-    },
-    {
-      "type": "argumentElement",
-      "id": "takenDate",
-      "format": {
-        "type": "dateFormat",
-        "style": "short"
-      }
-    },
-    {
-      "type": "messageTextElement",
-      "value": " "
-    },
-    {
-      "type": "argumentElement",
-      "id": "name",
-      "format": null
-    },
-    {
-      "type": "messageTextElement",
-      "value": " took "
-    },
-    {
-      "type": "argumentElement",
-      "id": "numPhotos",
-      "format": {
-        "type": "pluralFormat",
-        "offset": 0,
-        "options": [
+[
+  {
+    "type": 0,
+    "value": "On "
+  },
+  {
+    "type": 3,
+    "style": "short",
+    "value": "takenDate"
+  },
+  {
+    "type": 0,
+    "value": " "
+  },
+  {
+    "type": 1,
+    "value": "name"
+  },
+  {
+    "type": 0,
+    "value": " took "
+  },
+  {
+    "type": 6,
+    "pluralType": "cardinal",
+    "value": "numPhotos",
+    "offset": 0,
+    "options": [
+      {
+        "id": "=0",
+        "value": [
           {
-            "type": "optionalFormatPattern",
-            "selector": "=0",
-            "value": {
-              "type": "messageFormatPattern",
-              "elements": [
-                {
-                  "type": "messageTextElement",
-                  "value": "no photos."
-                }
-              ]
-            }
-          },
+            "type": 0,
+            "value": "no photos."
+          }
+        ]
+      },
+      {
+        "id": "=1",
+        "value": [
           {
-            "type": "optionalFormatPattern",
-            "selector": "=1",
-            "value": {
-              "type": "messageFormatPattern",
-              "elements": [
-                {
-                  "type": "messageTextElement",
-                  "value": "one photo."
-                }
-              ]
-            }
-          },
+            "type": 0,
+            "value": "one photo."
+          }
+        ]
+      },
+      {
+        "id": "other",
+        "value": [
           {
-            "type": "optionalFormatPattern",
-            "selector": "other",
-            "value": {
-              "type": "messageFormatPattern",
-              "elements": [
-                {
-                  "type": "messageTextElement",
-                  "value": "# photos."
-                }
-              ]
-            }
+            "type": 0,
+            "value": "# photos."
           }
         ]
       }
-    }
-  ]
-}
+    ]
+  }
+]
+```
+
+## Benchmarks
+
+```
+complex_msg AST length 2053
+normal_msg AST length 410
+simple_msg AST length 79
+string_msg AST length 36
+complex_msg x 3,926 ops/sec ±2.37% (90 runs sampled)
+normal_msg x 27,641 ops/sec ±3.93% (86 runs sampled)
+simple_msg x 100,764 ops/sec ±5.35% (79 runs sampled)
+string_msg x 120,362 ops/sec ±7.11% (74 runs sampled)
 ```
 
 ## License
@@ -144,10 +131,7 @@ This parser will produce this AST:
 This software is free to use under the Yahoo! Inc. BSD license.
 See the [LICENSE file][] for license text and copyright information.
 
-[npm]: https://www.npmjs.org/package/intl-messageformat-parser
-[npm-badge]: https://img.shields.io/npm/v/intl-messageformat-parser.svg?style=flat-square
 [icu]: http://userguide.icu-project.org/formatparse/messages
 [intl-mf]: https://github.com/formatjs/formatjs
 [peg.js]: https://pegjs.org/
-[messageformat.js]: https://github.com/SlexAxton/messageformat.js
 [license file]: https://github.com/formatjs/formatjs/blob/master/LICENSE

@@ -6,9 +6,13 @@
 'use strict';
 import 'intl-pluralrules';
 import IntlMessageFormat from '../src';
-import IntlMessageFormatCore, { createDefaultFormatters } from '../src/core';
-import parser from 'intl-messageformat-parser';
+import {
+  IntlMessageFormat as IntlMessageFormatCore,
+  createDefaultFormatters
+} from '../src/core';
+import { parse } from 'intl-messageformat-parser';
 import { expect as chaiExpect } from 'chai';
+import memoizeFormatConstructor from 'intl-format-cache';
 
 declare var expect: typeof chaiExpect;
 
@@ -82,19 +86,19 @@ describe('IntlMessageFormat', function() {
 
   describe('#format([ast])', function() {
     it('should format ast', function() {
-      var mf = new IntlMessageFormat(parser.parse('hello world'));
+      var mf = new IntlMessageFormat(parse('hello world'));
       expect(mf.format()).to.equal('hello world');
     });
     it('should format ast w/ placeholders', function() {
-      var mf = new IntlMessageFormat(parser.parse('hello world, {name}'));
+      var mf = new IntlMessageFormat(parse('hello world, {name}'));
       expect(mf.format({ name: 'foo' })).to.equal('hello world, foo');
     });
     it('should format ast w/o parser', function() {
-      var mf = new IntlMessageFormatCore(parser.parse('hello world'));
+      var mf = new IntlMessageFormatCore(parse('hello world'));
       expect(mf.format()).to.equal('hello world');
     });
     it('should format ast w/ placeholders w/o parser', function() {
-      var mf = new IntlMessageFormatCore(parser.parse('hello world, {name}'));
+      var mf = new IntlMessageFormatCore(parse('hello world, {name}'));
       expect(mf.format({ name: 'foo' })).to.equal('hello world, foo');
     });
   });
@@ -598,5 +602,19 @@ describe('IntlMessageFormat', function() {
         expect(m).to.equal('One company published new books.');
       });
     });
+  });
+});
+
+describe('intl-format-cache', function() {
+  var getMessageFormat = memoizeFormatConstructor(IntlMessageFormat);
+
+  it('memoizes IntlMessageFormat', function() {
+    var mf = getMessageFormat('foo', 'en');
+
+    expect(mf.resolvedOptions().locale).to.equal('en');
+    expect(mf.format()).to.equal('foo');
+
+    expect(getMessageFormat('foo', 'en')).to.equal(mf);
+    expect(getMessageFormat('bar', 'en')).not.to.equal(mf);
   });
 });

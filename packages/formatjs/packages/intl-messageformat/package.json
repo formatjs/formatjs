@@ -31,13 +31,14 @@
   "module": "lib/index.js",
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "intl-messageformat-parser": "^1.8.1"
+    "intl-messageformat-parser": "^1.8.1",
+    "intl-format-cache": "3"
   },
   "scripts": {
     "clean": "rimraf dist lib",
     "benchmark": "ts-node --project ./tsconfig.cjs.json tests/benchmark",
     "build": "tsc && tsc -p tsconfig.cjs.json && rollup -c rollup.config.js",
-    "test": "mocha --opts ../../mocha.opts tests/index.ts",
+    "test": "TS_NODE_PROJECT='./tsconfig.cjs.json' mocha --opts ../../mocha.opts tests/index.ts",
     "karma:local": "karma start karma.conf.js",
     "karma:ci": "karma start karma.conf-ci.js"
   },

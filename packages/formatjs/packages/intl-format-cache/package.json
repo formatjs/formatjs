@@ -14,7 +14,6 @@
   },
   "devDependencies": {
     "@formatjs/intl-relativetimeformat": "^2.3.2",
-    "intl-messageformat": "^4.4.0",
     "intl-relativeformat": "^6.4.2"
   },
   "repository": {

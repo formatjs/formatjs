@@ -1,0 +1,1019 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parse() escaping should allow backslash chars in \`literalElement\`s 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "\\\\",
+  },
+]
+`;
+
+exports[`parse() escaping should allow backslash chars in \`literalElement\`s 2`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "\\\\",
+  },
+]
+`;
+
+exports[`parse() escaping should allow escaping of syntax chars via \`\\\\\` 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "{",
+  },
+]
+`;
+
+exports[`parse() escaping should allow escaping of syntax chars via \`\\\\\` 2`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "}",
+  },
+]
+`;
+
+exports[`parse() escaping should allow escaping of syntax chars via \`\\\\\` 3`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "<",
+  },
+]
+`;
+
+exports[`parse() escaping should allow escaping of syntax chars via \`\\\\\` 4`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "\\\\#",
+  },
+]
+`;
+
+exports[`parse() escaping should escape a pair of ASCII apostrophes to represent one ASCII apostrophe 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "This '",
+  },
+  Object {
+    "type": 1,
+    "value": "isn't",
+  },
+  Object {
+    "type": 0,
+    "value": "' obvious",
+  },
+]
+`;
+
+exports[`parse() escaping should escape a pair of ASCII apostrophes to represent one ASCII apostrophe 2`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "'",
+  },
+  Object {
+    "type": 1,
+    "value": "name",
+  },
+  Object {
+    "type": 0,
+    "value": "'",
+  },
+]
+`;
+
+exports[`parse() escaping should escape a pair of ASCII apostrophes to represent one ASCII apostrophe 3`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "'",
+  },
+  Object {
+    "type": 1,
+    "value": "name",
+  },
+  Object {
+    "type": 0,
+    "value": "'",
+  },
+]
+`;
+
+exports[`parse() nested plural 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "Foo ",
+  },
+  Object {
+    "offset": 0,
+    "options": Object {
+      "=0": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "style": null,
+            "type": 2,
+            "value": "var1",
+          },
+          Object {
+            "type": 0,
+            "value": " var1",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "offset": 0,
+            "options": Object {
+              "=0": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "style": null,
+                    "type": 2,
+                    "value": "var2",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " var2",
+                  },
+                ],
+              },
+              "other": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "style": null,
+                    "type": 2,
+                    "value": "var2",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " var2-other",
+                  },
+                ],
+              },
+            },
+            "pluralType": "cardinal",
+            "type": 6,
+            "value": "var2",
+          },
+          Object {
+            "type": 0,
+            "value": " ",
+          },
+          Object {
+            "style": null,
+            "type": 2,
+            "value": "var1",
+          },
+          Object {
+            "type": 0,
+            "value": " other",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "var1",
+  },
+]
+`;
+
+exports[`parse() parse("{floor, selectordinal, =0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor") 1`] = `
+Array [
+  Object {
+    "offset": 0,
+    "options": Object {
+      "=0": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "ground",
+          },
+        ],
+      },
+      "few": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "style": null,
+            "type": 2,
+            "value": "floor",
+          },
+          Object {
+            "type": 0,
+            "value": "rd",
+          },
+        ],
+      },
+      "one": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "style": null,
+            "type": 2,
+            "value": "floor",
+          },
+          Object {
+            "type": 0,
+            "value": "st",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "style": null,
+            "type": 2,
+            "value": "floor",
+          },
+          Object {
+            "type": 0,
+            "value": "th",
+          },
+        ],
+      },
+      "two": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "style": null,
+            "type": 2,
+            "value": "floor",
+          },
+          Object {
+            "type": 0,
+            "value": "nd",
+          },
+        ],
+      },
+    },
+    "pluralType": "ordinal",
+    "type": 6,
+    "value": "floor",
+  },
+  Object {
+    "type": 0,
+    "value": " floor",
+  },
+]
+`;
+
+exports[`parse() parse("{gender, select, female {woman} male {man} other {person}}") 1`] = `
+Array [
+  Object {
+    "options": Object {
+      "female": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "woman",
+          },
+        ],
+      },
+      "male": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "man",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "person",
+          },
+        ],
+      },
+    },
+    "type": 5,
+    "value": "gender",
+  },
+]
+`;
+
+exports[`parse() parse("{num, number, percent}") 1`] = `
+Array [
+  Object {
+    "style": "percent",
+    "type": 2,
+    "value": "num",
+  },
+]
+`;
+
+exports[`parse() parse("{numPhotos, plural, =0{no photos} =1{one photo} other{# photos}}") 1`] = `
+Array [
+  Object {
+    "offset": 0,
+    "options": Object {
+      "=0": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "no photos",
+          },
+        ],
+      },
+      "=1": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "one photo",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "style": null,
+            "type": 2,
+            "value": "numPhotos",
+          },
+          Object {
+            "type": 0,
+            "value": " photos",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "numPhotos",
+  },
+]
+`;
+
+exports[`parse() parse("Hello, {name}!") 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "Hello, ",
+  },
+  Object {
+    "type": 1,
+    "value": "name",
+  },
+  Object {
+    "type": 0,
+    "value": "!",
+  },
+]
+`;
+
+exports[`parse() parse("Hello, World!") 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "Hello, World!",
+  },
+]
+`;
+
+exports[`parse() simple formats 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "My name is ",
+  },
+  Object {
+    "type": 1,
+    "value": "FIRST",
+  },
+  Object {
+    "type": 0,
+    "value": " ",
+  },
+  Object {
+    "type": 1,
+    "value": "LAST",
+  },
+  Object {
+    "type": 0,
+    "value": ", age ",
+  },
+  Object {
+    "style": null,
+    "type": 2,
+    "value": "age",
+  },
+  Object {
+    "type": 0,
+    "value": ", time ",
+  },
+  Object {
+    "style": null,
+    "type": 4,
+    "value": "time",
+  },
+  Object {
+    "type": 0,
+    "value": ", date ",
+  },
+  Object {
+    "style": null,
+    "type": 3,
+    "value": "date",
+  },
+  Object {
+    "type": 0,
+    "value": ".",
+  },
+]
+`;
+
+exports[`parse() whitespace should allow whitespace in \`argumentElement\`s 1`] = `
+Array [
+  Object {
+    "style": "percent",
+    "type": 2,
+    "value": "num",
+  },
+]
+`;
+
+exports[`parse() whitespace should allow whitespace in and around \`literalElement\`s 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "   some random test   ",
+  },
+]
+`;
+
+exports[`parse() whitespace should capture whitespace in nested pattern 1`] = `
+Array [
+  Object {
+    "offset": 0,
+    "options": Object {
+      "=1": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": " ",
+          },
+          Object {
+            "type": 1,
+            "value": "text",
+          },
+          Object {
+            "type": 0,
+            "value": " project",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": " ",
+          },
+          Object {
+            "type": 1,
+            "value": "text",
+          },
+          Object {
+            "type": 0,
+            "value": " projects",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "c",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) escaping should allow backslash chars in \`literalElement\`s 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "\\\\",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) escaping should allow backslash chars in \`literalElement\`s 2`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "\\\\",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) escaping should allow escaping of syntax chars via \`\\\\\` 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "{",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) escaping should allow escaping of syntax chars via \`\\\\\` 2`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "}",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) escaping should allow escaping of syntax chars via \`\\\\\` 3`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "<",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) escaping should allow escaping of syntax chars via \`\\\\\` 4`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "\\\\#",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) escaping should escape a pair of ASCII apostrophes to represent one ASCII apostrophe 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "This '",
+  },
+  Object {
+    "type": 1,
+    "value": "isn't",
+  },
+  Object {
+    "type": 0,
+    "value": "' obvious",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) escaping should escape a pair of ASCII apostrophes to represent one ASCII apostrophe 2`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "'",
+  },
+  Object {
+    "type": 1,
+    "value": "name",
+  },
+  Object {
+    "type": 0,
+    "value": "'",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) escaping should escape a pair of ASCII apostrophes to represent one ASCII apostrophe 3`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "'",
+  },
+  Object {
+    "type": 1,
+    "value": "name",
+  },
+  Object {
+    "type": 0,
+    "value": "'",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) nested plural 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "Foo ",
+  },
+  Object {
+    "offset": 0,
+    "options": Object {
+      "=0": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "style": null,
+            "type": 2,
+            "value": "var1",
+          },
+          Object {
+            "type": 0,
+            "value": " var1",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "offset": 0,
+            "options": Object {
+              "=0": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "style": null,
+                    "type": 2,
+                    "value": "var2",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " var2",
+                  },
+                ],
+              },
+              "other": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "style": null,
+                    "type": 2,
+                    "value": "var2",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " var2-other",
+                  },
+                ],
+              },
+            },
+            "pluralType": "cardinal",
+            "type": 6,
+            "value": "var2",
+          },
+          Object {
+            "type": 0,
+            "value": " ",
+          },
+          Object {
+            "style": null,
+            "type": 2,
+            "value": "var1",
+          },
+          Object {
+            "type": 0,
+            "value": " other",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "var1",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) parse("{floor, selectordinal, =0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor") 1`] = `
+Array [
+  Object {
+    "offset": 0,
+    "options": Object {
+      "=0": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "ground",
+          },
+        ],
+      },
+      "few": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "style": null,
+            "type": 2,
+            "value": "floor",
+          },
+          Object {
+            "type": 0,
+            "value": "rd",
+          },
+        ],
+      },
+      "one": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "style": null,
+            "type": 2,
+            "value": "floor",
+          },
+          Object {
+            "type": 0,
+            "value": "st",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "style": null,
+            "type": 2,
+            "value": "floor",
+          },
+          Object {
+            "type": 0,
+            "value": "th",
+          },
+        ],
+      },
+      "two": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "style": null,
+            "type": 2,
+            "value": "floor",
+          },
+          Object {
+            "type": 0,
+            "value": "nd",
+          },
+        ],
+      },
+    },
+    "pluralType": "ordinal",
+    "type": 6,
+    "value": "floor",
+  },
+  Object {
+    "type": 0,
+    "value": " floor",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) parse("{gender, select, female {woman} male {man} other {person}}") 1`] = `
+Array [
+  Object {
+    "options": Object {
+      "female": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "woman",
+          },
+        ],
+      },
+      "male": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "man",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "person",
+          },
+        ],
+      },
+    },
+    "type": 5,
+    "value": "gender",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) parse("{num, number, percent}") 1`] = `
+Array [
+  Object {
+    "style": "percent",
+    "type": 2,
+    "value": "num",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) parse("{numPhotos, plural, =0{no photos} =1{one photo} other{# photos}}") 1`] = `
+Array [
+  Object {
+    "offset": 0,
+    "options": Object {
+      "=0": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "no photos",
+          },
+        ],
+      },
+      "=1": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "one photo",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "style": null,
+            "type": 2,
+            "value": "numPhotos",
+          },
+          Object {
+            "type": 0,
+            "value": " photos",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "numPhotos",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) parse("Hello, {name}!") 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "Hello, ",
+  },
+  Object {
+    "type": 1,
+    "value": "name",
+  },
+  Object {
+    "type": 0,
+    "value": "!",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) parse("Hello, World!") 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "Hello, World!",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) simple formats 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "My name is ",
+  },
+  Object {
+    "type": 1,
+    "value": "FIRST",
+  },
+  Object {
+    "type": 0,
+    "value": " ",
+  },
+  Object {
+    "type": 1,
+    "value": "LAST",
+  },
+  Object {
+    "type": 0,
+    "value": ", age ",
+  },
+  Object {
+    "style": null,
+    "type": 2,
+    "value": "age",
+  },
+  Object {
+    "type": 0,
+    "value": ", time ",
+  },
+  Object {
+    "style": null,
+    "type": 4,
+    "value": "time",
+  },
+  Object {
+    "type": 0,
+    "value": ", date ",
+  },
+  Object {
+    "style": null,
+    "type": 3,
+    "value": "date",
+  },
+  Object {
+    "type": 0,
+    "value": ".",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) whitespace should allow whitespace in \`argumentElement\`s 1`] = `
+Array [
+  Object {
+    "style": "percent",
+    "type": 2,
+    "value": "num",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) whitespace should allow whitespace in and around \`literalElement\`s 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "   some random test   ",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) whitespace should capture whitespace in nested pattern 1`] = `
+Array [
+  Object {
+    "offset": 0,
+    "options": Object {
+      "=1": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": " ",
+          },
+          Object {
+            "type": 1,
+            "value": "text",
+          },
+          Object {
+            "type": 0,
+            "value": " project",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": " ",
+          },
+          Object {
+            "type": 1,
+            "value": "text",
+          },
+          Object {
+            "type": 0,
+            "value": " projects",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "c",
+  },
+]
+`;

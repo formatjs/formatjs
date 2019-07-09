@@ -1,7 +1,7 @@
 import { Suite, Event } from 'benchmark';
 import IntlMessageFormat, { Formatters } from '../src';
 import 'intl-pluralrules';
-const memoize = require('fast-memoize');
+import memoize from 'intl-format-cache';
 
 const msg =
   '' +
@@ -32,18 +32,9 @@ const stringMf = new IntlMessageFormat(stringMsg, 'en-US');
 const preparsedMsg = IntlMessageFormat.__parse!(msg);
 
 const formatters: Formatters = {
-  getNumberFormat: memoize(
-    (...args: ConstructorParameters<typeof Intl.NumberFormat>) =>
-      new Intl.NumberFormat(...args)
-  ),
-  getDateTimeFormat: memoize(
-    (...args: ConstructorParameters<typeof Intl.DateTimeFormat>) =>
-      new Intl.DateTimeFormat(...args)
-  ),
-  getPluralRules: memoize(
-    (...args: ConstructorParameters<typeof Intl.PluralRules>) =>
-      new Intl.PluralRules(...args)
-  )
+  getNumberFormat: memoize(Intl.NumberFormat),
+  getDateTimeFormat: memoize(Intl.DateTimeFormat),
+  getPluralRules: memoize(Intl.PluralRules)
 };
 
 new Suite()
@@ -102,8 +93,8 @@ new Suite()
       guest: 'bar'
     })
   )
-  .on('error', function (ev: Event) {
-    console.error(ev)
+  .on('error', function(event: Event) {
+    console.log(String(event.target));
   })
   .on('cycle', function(event: Event) {
     console.log(String(event.target));

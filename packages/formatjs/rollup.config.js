@@ -5,7 +5,6 @@ import commonjs from 'rollup-plugin-commonjs';
 const resolveConfig = resolve({
   customResolveOptions: {
     'intl-messageformat': './packages/intl-messageformat',
-    'intl-messageformat-parser': './packages/intl-messageformat-parser',
     'intl-relativeformat': './packages/intl-relativeformat',
     '@formatjs/intl-utils': './packages/intl-utils',
     '@formatjs/intl-relativetimeformat': './packages/intl-relativetimeformat'

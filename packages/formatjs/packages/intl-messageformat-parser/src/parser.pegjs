@@ -5,27 +5,28 @@ See the accompanying LICENSE file for terms.
 */
 
 /*
-Inspired by and derivied from:
-messageformat.js https://github.com/SlexAxton/messageformat.js
-Copyright 2014 Alex Sexton
-Apache License, Version 2.0
-*/
+ * IMPORTANT: `TYPE` comes from `types.ts`
+ */
+
+{
+    function insertLocation () {
+        return options && options.captureLocation ? {
+            location: location()
+        }: {}
+    }
+}
 
 start
-    = messageFormatPattern
+    = message
 
-messageFormatPattern
-    = elements:messageFormatElement* {
-        return {
-            type    : 'messageFormatPattern',
-            elements: elements,
-            location: location()
-        };
-    }
+message = messageElement*
 
-messageFormatElement
-    = messageTextElement
+messageElement
+    = literalElement
     / argumentElement
+    / simpleFormatElement
+    / pluralElement
+    / selectElement
 
 messageText
     = chunks:(_ chars _)+ {
@@ -35,101 +36,98 @@ messageText
     }
     / $(ws)
 
-messageTextElement
+literalElement
     = messageText:messageText {
         return {
-            type : 'messageTextElement',
+            type : TYPE.literal,
             value: messageText,
-            location: location()
+            ...insertLocation()
         };
     }
 
-argument
+varName
     = number
     / chars:quoteEscapedChar* { return chars.join(''); }
-    
-argumentElement
-    = '{' _ id:argument _ format:(',' _ elementFormat)? _ '}' {
-        return {
-            type  : 'argumentElement',
-            id    : id,
-            format: format && format[2],
-            location: location()
-        };
-    }
 
-elementFormat
-    = simpleFormat
-    / pluralFormat
-    / selectOrdinalFormat
-    / selectFormat
-
-simpleFormat
-    = type:('number' / 'date' / 'time') _ style:(',' _ chars)? {
+argumentElement 'argumentElement'
+    = '{' _ value:varName _ '}' {
         return {
-            type : type + 'Format',
-            style: style && style[2],
-            location: location()
-        };
-    }
-
-pluralFormat
-    = 'plural' _ ',' _ pluralStyle:pluralStyle {
-        return {
-            type   : pluralStyle.type,
-            ordinal: false,
-            offset : pluralStyle.offset || 0,
-            options: pluralStyle.options,
-            location: location()
-        };
-    }
-
-selectOrdinalFormat
-    = 'selectordinal' _ ',' _ pluralStyle:pluralStyle {
-        return {
-            type   : pluralStyle.type,
-            ordinal: true,
-            offset : pluralStyle.offset || 0,
-            options: pluralStyle.options,
-            location: location()
+            type: TYPE.argument,
+            value,
+            ...insertLocation()
         }
     }
 
-selectFormat
-    = 'select' _ ',' _ options:optionalFormatPattern+ {
+simpleFormatElement 
+    = '{' _ value:varName _ ',' _ type:('number' / 'date' / 'time') _ style:(',' _ chars)? _ '}' {
         return {
-            type   : 'selectFormat',
-            options: options,
-            location: location()
+            type    : type === 'number' ? TYPE.number : type === 'date' ? TYPE.date : TYPE.time,
+            style   : style && style[2],
+            value,
+            ...insertLocation()
         };
     }
 
-selector
-    = $('=' number)
-    / chars
-
-optionalFormatPattern
-    = _ selector:selector _ '{' pattern:messageFormatPattern '}' {
+pluralElement
+    = '{' _ value:varName _ ',' _ pluralType:('plural' / 'selectordinal') _ ',' _ offset:('offset:' _ number)? _ options:pluralOption+ _ '}' {
         return {
-            type    : 'optionalFormatPattern',
-            selector: selector,
-            value   : pattern,
-            location: location()
+            type   : TYPE.plural,
+            pluralType: pluralType === 'plural' ? 'cardinal' : 'ordinal',
+            value,
+            offset : offset ? offset[2] : 0,
+            options: options.reduce((all, {id, value, location}) => {
+                all[id] = {
+                    value,
+                    location
+                }
+                return all
+            }, {}),
+            ...insertLocation()
         };
     }
 
-offset
-    = 'offset:' _ number:number {
-        return number;
+selectElement
+    = '{' _ value:varName _ ',' _ 'select' _ ',' _ options:selectOption+ _ '}' {
+        return {
+            type   : TYPE.select,
+            value,
+            options: options.reduce((all, {id, value, location}) => {
+                all[id] = {
+                    value,
+                    location
+                }
+                return all
+            }, {}),
+            ...insertLocation()
+        };
     }
 
-pluralStyle
-    = offset:offset? _ options:optionalFormatPattern+ {
+pluralRuleSelectValue
+    = '=0'
+    / '=1'
+    / '=2'
+    / 'zero'
+    / 'one'
+    / 'two'
+    / 'few'
+    / 'many'
+    / 'other'
+
+selectOption
+    = _ id:chars _ '{' value:message '}' {
         return {
-            type   : 'pluralFormat',
-            offset : offset,
-            options: options,
-            location: location()
+            id,
+            value,
+            ...insertLocation()
+        }
+    }
+
+pluralOption
+    = _ id:pluralRuleSelectValue _ '{' value:message '}' {
+        return {
+            id,
+            value,
+            ...insertLocation()
         };
     }
 
@@ -141,15 +139,15 @@ _ 'optionalWhitespace' = $(ws*)
 digit    = [0-9]
 hexDigit = [0-9a-f]i
 
-number = digits:('0' / $([1-9] digit*)) {
-    return parseInt(digits, 10);
+number = digits:digit+ {
+    return parseInt(digits.join(''), 10);
 }
 
 quoteEscapedChar = 
   !("'" / [ \t\n\r,.+={}#]) char:. { return char; }
   / "'" sequence:escape { return sequence; }
  
-apostrophe = "'"
+apostrophe 'apostrophe' = "'"
 escape = [ \t\n\r,.+={}#] / apostrophe
 
 char
