@@ -3,7 +3,7 @@ import * as React from 'react';
 import 'intl-pluralrules';
 import '@formatjs/intl-relativetimeformat/polyfill-locales';
 import {parse} from 'intl-messageformat-parser';
-import IntlMessageFormat from 'intl-messageformat/lib/core';
+import {IntlMessageFormat} from 'intl-messageformat/core';
 IntlMessageFormat.__parse = parse;
 
 let reactMajorVersion = Number.parseInt(React.version.slice(0, 2));

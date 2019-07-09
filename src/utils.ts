@@ -11,7 +11,7 @@ file in the root directory of React's source tree.
 
 import {IntlConfig} from './types';
 import * as React from 'react';
-import {IntlMessageFormat} from 'intl-messageformat/lib/core';
+import {IntlMessageFormat} from 'intl-messageformat/core';
 import memoizeIntlConstructor from 'intl-format-cache';
 import IntlRelativeTimeFormat from '@formatjs/intl-relativetimeformat';
 // Since rollup cannot deal with namespace being a function,

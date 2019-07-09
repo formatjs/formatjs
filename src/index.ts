@@ -6,7 +6,7 @@
 
 export * from './types';
 import {parse} from 'intl-messageformat-parser';
-import IntlMessageFormat from 'intl-messageformat/lib/core';
+import {IntlMessageFormat} from 'intl-messageformat/core';
 IntlMessageFormat.__parse = parse;
 export {
   defineMessages,

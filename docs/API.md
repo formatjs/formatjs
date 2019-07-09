@@ -27,7 +27,8 @@ There are a few API layers that React Intl provides and is built on. When using 
     - [`formatHTMLMessage`](#formathtmlmessage)
 - [React Intl Components](#react-intl-components)
 - [Advanced Usage](#advanced-usage)
-  - [Size](#size)
+  - [Core `react-intl`](#core-react-intl)
+    - [Caveats](#caveats)
 
 <!-- tocstop -->
 
@@ -504,4 +505,4 @@ The package size is also roughly 30% smaller:
 #### Caveats
 
 - Since this approach uses `AST` as the data source, changes to `intl-messageformat-parser`'s `AST` will require cache invalidation
-- `AST` is also larger in size than regular `string` messages but can be efficiently compressed 
+- `AST` is also larger in size than regular `string` messages but can be efficiently compressed
