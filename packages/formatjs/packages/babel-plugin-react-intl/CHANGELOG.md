@@ -7,10 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package babel-plugin-react-intl
 
-
-
-
-
 # [4.0.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@3.5.1...babel-plugin-react-intl@4.0.0) (2019-07-08)
 
 ### Features

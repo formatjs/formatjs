@@ -7,7 +7,7 @@
 import * as p from 'path';
 import { writeFileSync } from 'fs';
 import { mkdirpSync } from 'fs-extra';
-import printICUMessage from './print-icu-message';
+import { printAST, parse } from 'intl-messageformat-parser';
 const { declare } = require('@babel/helper-plugin-utils') as any;
 import { types as t, PluginObj } from '@babel/core';
 import {
@@ -101,7 +101,7 @@ function getICUMessageValue(
   const message = getMessageDescriptorValue(messagePath);
 
   try {
-    return printICUMessage(message);
+    return printAST(parse(message));
   } catch (parseError) {
     if (
       isJSXSource &&

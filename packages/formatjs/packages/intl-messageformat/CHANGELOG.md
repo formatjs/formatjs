@@ -7,10 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package intl-messageformat
 
-
-
-
-
 # [5.0.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@4.4.0...intl-messageformat@5.0.0) (2019-07-08)
 
 ### Features

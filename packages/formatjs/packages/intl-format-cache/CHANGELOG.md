@@ -7,10 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package intl-format-cache
 
-
-
-
-
 # [4.0.0](https://github.com/formatjs/formatjs/compare/intl-format-cache@3.3.2...intl-format-cache@4.0.0) (2019-07-08)
 
 ### Features

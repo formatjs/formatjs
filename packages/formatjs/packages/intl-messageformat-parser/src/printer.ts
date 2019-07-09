@@ -5,7 +5,6 @@
  */
 
 import {
-  parse,
   MessageFormatElement,
   isLiteralElement,
   LiteralElement,
@@ -21,7 +20,7 @@ import {
   isTimeElement,
   isNumberElement,
   isPluralElement
-} from 'intl-messageformat-parser';
+} from './types';
 
 const ESCAPED_CHARS: Record<string, string> = {
   '\\': '\\\\',
@@ -32,12 +31,7 @@ const ESCAPED_CHARS: Record<string, string> = {
 
 const ESAPE_CHARS_REGEXP = /\\#|[{}\\]/g;
 
-export default function printICUMessage(message: string) {
-  let ast = parse(message);
-  return _printICUMessage(ast);
-}
-
-function _printICUMessage(ast: MessageFormatElement[]): string {
+export function printAST(ast: MessageFormatElement[]): string {
   let printedNodes = ast.map(el => {
     if (isLiteralElement(el)) {
       return printLiteralElement(el);
@@ -80,7 +74,7 @@ function printSelectElement(el: SelectElement) {
     el.value,
     'select',
     Object.keys(el.options)
-      .map(id => `${id}{${_printICUMessage(el.options[id].value)}}`)
+      .map(id => `${id}{${printAST(el.options[id].value)}}`)
       .join(' ')
   ].join(',');
   return `{${msg}}`;
@@ -93,7 +87,7 @@ function printPluralElement(el: PluralElement) {
     type,
     el.offset ? `offset:${el.offset}` : '',
     Object.keys(el.options)
-      .map(id => `${id}{${_printICUMessage(el.options[id].value)}}`)
+      .map(id => `${id}{${printAST(el.options[id].value)}}`)
       .join(' ')
   ].join(',');
   return `{${msg}}`;
