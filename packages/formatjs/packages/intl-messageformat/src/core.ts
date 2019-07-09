@@ -98,22 +98,22 @@ function prewarmFormatters(
 
 const ESCAPE_HASH_REGEX = /\\#/g;
 
-const enum PART_TYPE {
+export const enum PART_TYPE {
   literal,
   argument
 }
 
-interface LiteralPart {
+export interface LiteralPart {
   type: PART_TYPE.literal;
   value: string;
 }
 
-interface ArgumentPart {
+export interface ArgumentPart {
   type: PART_TYPE.argument;
   value: any;
 }
 
-type MessageFormatPart = LiteralPart | ArgumentPart;
+export type MessageFormatPart = LiteralPart | ArgumentPart;
 
 function mergeLiteral(parts: MessageFormatPart[]): MessageFormatPart[] {
   if (parts.length < 2) {
