@@ -122,7 +122,7 @@ describe('<FormattedHTMLMessage>', () => {
     ).find('span');
 
     expect((rendered.prop('dangerouslySetInnerHTML') as any).__html).toBe(
-      'Hello, <b></b>!'
+      'Hello, <b>[object Object]</b>!'
     );
   });
 });

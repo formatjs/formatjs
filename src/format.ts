@@ -28,6 +28,7 @@ import {
   FormattableUnit,
 } from '@formatjs/intl-relativetimeformat';
 import {LiteralElement, TYPE} from 'intl-messageformat-parser';
+import { MessageFormatPart, PART_TYPE } from 'intl-messageformat/core';
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'localeMatcher',
@@ -355,6 +356,113 @@ export function formatMessage(
   return formattedMessage || defaultMessage || id;
 }
 
+export function formatMessageToParts(
+  {
+    locale,
+    formats,
+    messages,
+    defaultLocale,
+    defaultFormats,
+    onError,
+  }: Pick<
+    IntlConfig,
+    | 'locale'
+    | 'formats'
+    | 'messages'
+    | 'defaultLocale'
+    | 'defaultFormats'
+    | 'onError'
+  >,
+  state: Formatters,
+  messageDescriptor: MessageDescriptor = {id: ''},
+  values: Record<string, any> = {}
+): React.ReactNodeArray {
+  const {id, defaultMessage} = messageDescriptor;
+
+  // `id` is a required field of a Message Descriptor.
+  invariant(id, '[React Intl] An `id` must be provided to format a message.');
+
+  const message = messages && messages[id];
+  const hasValues = Object.keys(values).length > 0;
+
+  // Avoid expensive message formatting for simple messages without values. In
+  // development messages will always be formatted in case of missing values.
+  if (!hasValues && process.env.NODE_ENV === 'production') {
+    const val = message || defaultMessage || id;
+    if (typeof val === 'string') {
+      return [escapeUnformattedMessage(val)]
+    }
+    invariant(
+      val.length === 1 && val[0].type === TYPE.literal,
+      'Message has placeholders but no values was provided'
+    );
+    return [(val[0] as LiteralElement).value]
+  }
+
+  let formattedMessageParts: MessageFormatPart[] = [];
+
+  if (message) {
+    try {
+      let formatter = state.getMessageFormat(message, locale, formats, {
+        formatters: state,
+      });
+
+      formattedMessageParts = formatter.formatToParts(values);
+    } catch (e) {
+      onError(
+        createError(
+          `Error formatting message: "${id}" for locale: "${locale}"` +
+            (defaultMessage ? ', using default message as fallback.' : ''),
+          e
+        )
+      );
+    }
+  } else {
+    // This prevents warnings from littering the console in development
+    // when no `messages` are passed into the <IntlProvider> for the
+    // default locale, and a default message is in the source.
+    if (
+      !defaultMessage ||
+      (locale && locale.toLowerCase() !== defaultLocale.toLowerCase())
+    ) {
+      onError(
+        createError(
+          `Missing message: "${id}" for locale: "${locale}"` +
+            (defaultMessage ? ', using default message as fallback.' : '')
+        )
+      );
+    }
+  }
+
+  if (!formattedMessageParts.length && defaultMessage) {
+    try {
+      let formatter = state.getMessageFormat(
+        defaultMessage,
+        defaultLocale,
+        defaultFormats
+      );
+
+      formattedMessageParts = formatter.formatToParts(values);
+    } catch (e) {
+      onError(
+        createError(`Error formatting the default message for: "${id}"`, e)
+      );
+    }
+  }
+
+  if (!formattedMessageParts.length) {
+    onError(
+      createError(
+        `Cannot format message: "${id}", ` +
+          `using message ${
+            message || defaultMessage ? 'source' : 'id'
+          } as fallback.`
+      )
+    );
+  }
+  return formattedMessageParts.map(part => part.value);
+}
+
 export function formatHTMLMessage(...args: Parameters<typeof formatMessage>) {
   const rawValues = args[3] || {};
   // Process all the values before they are used when formatting the ICU
@@ -377,6 +485,7 @@ export const formatters = {
   formatDate,
   formatTime,
   formatMessage,
+  formatMessageToParts,
   formatPlural,
   formatHTMLMessage,
   formatRelativeTime,

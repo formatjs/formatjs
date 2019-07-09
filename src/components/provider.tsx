@@ -98,6 +98,7 @@ export function getBoundFormatFns(
       config,
       formatterFns
     ),
+    formatMessageToParts: formatters.formatMessageToParts.bind(undefined, config, formatterFns),
     formatHTMLMessage: formatters.formatHTMLMessage.bind(
       undefined,
       config,

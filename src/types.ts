@@ -3,7 +3,7 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import {IntlMessageFormat, Formats} from 'intl-messageformat/core';
+import {IntlMessageFormat, Formats, MessageFormatPart} from 'intl-messageformat/core';
 import IntlRelativeTimeFormat, {
   IntlRelativeTimeFormatOptions,
   FormattableUnit,
@@ -72,6 +72,10 @@ export interface IntlFormatters {
     descriptor: MessageDescriptor,
     values?: FormatMessageValues
   ): string;
+  formatMessageToParts(
+    descriptor: MessageDescriptor,
+    values?: Record<string, any>
+  ): React.ReactNodeArray;
   formatHTMLMessage(
     descriptor: MessageDescriptor,
     values?: FormatMessageValues
