@@ -23,10 +23,12 @@ There are a few API layers that React Intl provides and is built on. When using 
     - [Message Syntax](#message-syntax)
     - [Message Descriptor](#message-descriptor)
     - [Message Formatting Fallbacks](#message-formatting-fallbacks)
-    - [Advanced Usage](#advanced-usage)
     - [`formatMessage`](#formatmessage)
     - [`formatHTMLMessage`](#formathtmlmessage)
 - [React Intl Components](#react-intl-components)
+- [Advanced Usage](#advanced-usage)
+  - [Core `react-intl`](#core-react-intl)
+    - [Caveats](#caveats)
 
 <!-- tocstop -->
 
@@ -412,30 +414,6 @@ The message formatting APIs go the extra mile to provide fallbacks for the commo
 
 Above, "source" refers to using the template as is, without any substitutions made.
 
-#### Advanced Usage
-
-For scenarios where performance is needed, you can pass in `messages` that contains `intl-messageformat`'s `AST` as values to `IntlProvider` to save compilation time when formatting messages. This is especially useful for:
-
-1. Server-side rendering where you can cache the AST and don't have to pay compilation costs multiple time.
-2. Desktop apps using Electron or CEF where you can preload/precompile things in advanced before runtime.
-
-Example:
-
-```tsx
-import parser from 'intl-messageformat-parser';
-import * as ReactDOM from 'react-dom';
-const messages = {
-  ast_simple: parser.parse('hello world'),
-  ast_var: parser.parse('hello world, {name}'),
-};
-
-ReactDOM.render(
-  <IntlProvider messages={messages}>
-    <FormattedMessage id="ast_simple" />
-  </IntlProvider>
-); // will render `hello world`
-```
-
 #### `formatMessage`
 
 ```js
@@ -483,3 +461,48 @@ The React components provided by React Intl allow for a declarative, idiomatic-R
 **See:** The [Components][components] page.
 
 [components]: Components.md
+
+## Advanced Usage
+
+### Core `react-intl`
+
+We've also provided a core package that has the same API as the full `react-intl` package but without our parser. What this means is that you would have to pre-parse all messages into `AST` using [`intl-messageformat-parser`](https://www.npmjs.com/package/intl-messageformat-parser) and pass that into `IntlProvider`.
+
+This is especially faster since it saves us time parsing `string` into `AST`. The use cases for this support are:
+
+1. Server-side rendering or pre-parsing where you can cache the AST and don't have to pay compilation costs multiple time.
+2. Desktop apps using Electron or CEF where you can preload/precompile things in advanced before runtime.
+
+Example:
+
+```tsx
+// Pre-processed
+import parser from 'intl-messageformat-parser';
+const messages = {
+  ast_simple: parser.parse('hello world'),
+  ast_var: parser.parse('hello world, {name}'),
+};
+
+// During runtime
+// ES6 import
+import {IntlProvider, FormattedMessage} from 'react-intl/core';
+import * as ReactDOM from 'react-dom';
+
+ReactDOM.render(
+  <IntlProvider messages={messages}>
+    <FormattedMessage id="ast_simple" />
+  </IntlProvider>
+); // will render `hello world`
+```
+
+The package size is also roughly 30% smaller:
+
+| Package           | Minified Size | Minzipped Size |
+| ----------------- | ------------- | -------------- |
+| `react-intl`      | `29K`         | `9.07K`        |
+| `react-intl.core` | `19K`         | `6.32K`        |
+
+#### Caveats
+
+- Since this approach uses `AST` as the data source, changes to `intl-messageformat-parser`'s `AST` will require cache invalidation
+- `AST` is also larger in size than regular `string` messages but can be efficiently compressed

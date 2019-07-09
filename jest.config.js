@@ -1,9 +1,12 @@
 module.exports = {
   preset: 'ts-jest/presets/js-with-babel',
-  testRegex: ['/test/functional/.*\\.(js|ts)', '/test/unit/.*\\.(js|ts)'],
+  testRegex: ['/test/(functional|unit)/.*\\.(ts|tsx)'],
   testPathIgnorePatterns: ['test/functional/support', '/test/unit/testUtils'],
-  collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
+  collectCoverageFrom: ['src/**/*.{ts,tsx}'],
   coverageReporters: ['lcov', 'text', 'text-summary', 'html'],
+  transformIgnorePatterns: [
+    '/node_modules/(?!intl-messageformat|intl-messageformat-parser).+\\.js$',
+  ],
   coverageThreshold: {
     global: {
       branches: 85,

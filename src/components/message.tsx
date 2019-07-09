@@ -7,8 +7,7 @@
 import * as React from 'react';
 import withIntl from './injectIntl';
 import {MessageDescriptor, IntlShape} from '../types';
-import * as shallowEquals_ from 'shallow-equal/objects';
-const shallowEquals = shallowEquals_;
+const shallowEquals = require('shallow-equal/objects');
 import {formatMessage as baseFormatMessage} from '../format';
 import {
   invariantIntlContext,

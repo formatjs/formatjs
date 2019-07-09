@@ -21,8 +21,7 @@ import {
 } from '../types';
 import {formatters} from '../format';
 import areIntlLocalesSupported from 'intl-locales-supported';
-import * as shallowEquals_ from 'shallow-equal/objects';
-const shallowEquals = shallowEquals_;
+const shallowEquals = require('shallow-equal/objects');
 
 const intlConfigPropNames: Array<keyof IntlConfig> = [
   'locale',

@@ -5,27 +5,23 @@
  */
 
 export * from './types';
-export {default as defineMessages} from './define-messages';
-import createFormattedComponent from './components/createFormattedComponent';
+import {parse} from 'intl-messageformat-parser';
+import {IntlMessageFormat} from 'intl-messageformat/core';
+IntlMessageFormat.__parse = parse;
 export {
-  default as injectIntl,
-  Context as IntlContext,
+  defineMessages,
+  FormattedDate,
+  FormattedHTMLMessage,
+  FormattedMessage,
+  FormattedNumber,
+  FormattedPlural,
+  FormattedRelativeTime,
+  FormattedTime,
+  generateIntlContext,
+  injectIntl,
+  IntlContext,
+  IntlProvider,
+  useIntl,
   WithIntlProps,
   WrappedComponentProps,
-} from './components/injectIntl';
-export {default as useIntl} from './components/useIntl';
-export {default as IntlProvider} from './components/provider';
-export const {Component: FormattedDate} = createFormattedComponent(
-  'formatDate'
-);
-export const {Component: FormattedTime} = createFormattedComponent(
-  'formatTime'
-);
-export const {Component: FormattedNumber} = createFormattedComponent(
-  'formatNumber'
-);
-export {default as FormattedRelativeTime} from './components/relative';
-export {default as FormattedPlural} from './components/plural';
-export {default as FormattedMessage} from './components/message';
-export {default as FormattedHTMLMessage} from './components/html-message';
-export {generateIntlContext} from './test-utils';
+} from './core';
