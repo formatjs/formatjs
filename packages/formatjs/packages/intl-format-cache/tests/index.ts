@@ -1,7 +1,6 @@
 import 'intl-pluralrules';
 import '@formatjs/intl-relativetimeformat/polyfill-locales';
 import memoizeFormatConstructor from '../src';
-import IntlRelativeFormat from 'intl-relativeformat';
 import { expect as chaiExpect } from 'chai';
 
 declare var expect: typeof chaiExpect;
@@ -39,22 +38,6 @@ describe('intl-format-cache', function() {
         expect(getNumberFormat('en')).to.equal(nf);
         expect(getNumberFormat('en', { style: 'percent' })).not.to.equal(nf);
       });
-    });
-  });
-
-  describe('IntlRelativeFormat', function() {
-    var getRelativeFormat = memoizeFormatConstructor(IntlRelativeFormat);
-
-    it('memoizes IntlRelativeFormat', function() {
-      var rf = getRelativeFormat('en');
-
-      expect(rf.resolvedOptions().locale).to.equal('en');
-      expect(rf.format(0, { now: 1000 })).to.equal('1 second ago');
-
-      expect(getRelativeFormat('en')).to.equal(rf);
-      expect(getRelativeFormat('en', { units: 'hour' as any })).not.to.equal(
-        rf
-      );
     });
   });
 });

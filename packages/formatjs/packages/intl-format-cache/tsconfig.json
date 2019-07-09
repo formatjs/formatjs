@@ -6,7 +6,6 @@
         "baseUrl": ".",
         "paths": {
             "@formatjs/intl-relativetimeformat": ["../intl-relativetimeformat"],
-            "intl-relativeformat": ["../intl-relativeformat"],
             "intl-messageformat": ["../intl-messageformat"]
         }
     },
