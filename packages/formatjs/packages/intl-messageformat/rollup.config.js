@@ -27,14 +27,5 @@ export default [
     },
     plugins: [resolveConfig, uglifyConfig]
   },
-  {
-    input: './lib/core.js',
-    output: {
-      sourcemap: false,
-      file: 'core.js',
-      format: 'cjs'
-    },
-    plugins: [resolveConfig, uglifyConfig]
-  },
   ...testRollupConfig
 ];

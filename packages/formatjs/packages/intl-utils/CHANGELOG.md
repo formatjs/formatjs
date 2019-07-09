@@ -7,10 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @formatjs/intl-utils
 
-
-
-
-
 ## [0.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@0.3.1...@formatjs/intl-utils@0.3.2) (2019-06-28)
 
 **Note:** Version bump only for package @formatjs/intl-utils

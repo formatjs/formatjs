@@ -6,7 +6,6 @@
         "lib": ["es6", "dom", "es2018.intl"],
         "declaration": true,
         "strict": true,
-        "sourceMap": true,
         "resolveJsonModule": true,
         "types": [
             "babel__core",

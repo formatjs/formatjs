@@ -35,12 +35,15 @@
     "intl-messageformat-parser": "^2.0.0"
   },
   "scripts": {
-    "clean": "rimraf dist lib",
     "benchmark": "ts-node --project ./tsconfig.cjs.json tests/benchmark",
-    "build": "tsc && tsc -p tsconfig.cjs.json && rollup -c rollup.config.js",
-    "test": "TS_NODE_PROJECT='./tsconfig.cjs.json' mocha --opts ../../mocha.opts tests/index.ts",
+    "build": "npm run tsc && npm run tsc:core && npm run rollup",
+    "clean": "rimraf dist lib",
+    "karma:ci": "karma start karma.conf-ci.js",
     "karma:local": "karma start karma.conf.js",
-    "karma:ci": "karma start karma.conf-ci.js"
+    "rollup": "rollup -c rollup.config.js",
+    "test": "TS_NODE_PROJECT='./tsconfig.cjs.json' mocha --opts ../../mocha.opts tests/index.ts",
+    "tsc:core": "tsc -p tsconfig.core.json",
+    "tsc": "tsc -p src/tsconfig.json && tsc -p src/tsconfig.cjs.json"
   },
   "homepage": "https://github.com/formatjs/formatjs",
   "directories": {

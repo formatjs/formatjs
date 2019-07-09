@@ -1,7 +1,8 @@
 {
-    "extends": "../../tsconfig.json",
+    "extends": "./tsconfig.json",
     "compilerOptions": {
-        "baseUrl": ".",
+        "outDir": "../dist",
+        "module": "commonjs",
         "paths": {
             "intl-format-cache": ["../intl-format-cache"]
         }
