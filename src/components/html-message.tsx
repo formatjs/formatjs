@@ -21,7 +21,8 @@ class FormattedHTMLMessage extends BaseFormattedMessage {
       description,
       defaultMessage,
       values: rawValues,
-      tagName: Component = Text,
+      // This is bc of TS3.3 doesn't recognize `defaultProps`
+      tagName: Component = Text || 'span',
       children,
     } = this.props;
 
