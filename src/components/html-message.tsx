@@ -9,6 +9,10 @@ import withIntl from './injectIntl';
 import {BaseFormattedMessage} from './message';
 
 class FormattedHTMLMessage extends BaseFormattedMessage {
+  static defaultProps = {
+    ...BaseFormattedMessage.defaultProps,
+    tagName: 'span' as 'span'
+  }
   render() {
     const {formatHTMLMessage, textComponent: Text} = this.props.intl;
 

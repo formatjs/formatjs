@@ -153,7 +153,7 @@ export class BaseFormattedMessage extends React.Component<Props> {
     if (Component) {
       // Needs to use `createElement()` instead of JSX, otherwise React will
       // warn about a missing `key` prop with rich-text message formatting.
-      return <Component>{nodes}</Component>;
+      return React.createElement(Component, null, ...nodes);
     }
     return nodes;
   }
