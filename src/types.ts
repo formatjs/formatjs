@@ -14,7 +14,7 @@ export interface IntlConfig {
   locale: string;
   timeZone?: string;
   formats: CustomFormats;
-  textComponent: React.ComponentType | keyof React.ReactHTML;
+  textComponent?: React.ComponentType | keyof React.ReactHTML;
   messages: Record<string, string> | Record<string, MessageFormatElement[]>;
   defaultLocale: string;
   defaultFormats: CustomFormats;

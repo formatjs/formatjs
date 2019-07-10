@@ -9,6 +9,10 @@ import withIntl from './injectIntl';
 import {BaseFormattedMessage} from './message';
 
 class FormattedHTMLMessage extends BaseFormattedMessage {
+  static defaultProps = {
+    ...BaseFormattedMessage.defaultProps,
+    tagName: 'span' as 'span',
+  };
   render() {
     const {formatHTMLMessage, textComponent: Text} = this.props.intl;
 
@@ -17,7 +21,8 @@ class FormattedHTMLMessage extends BaseFormattedMessage {
       description,
       defaultMessage,
       values: rawValues,
-      tagName: Component = Text,
+      // This is bc of TS3.3 doesn't recognize `defaultProps`
+      tagName: Component = Text || 'span',
       children,
     } = this.props;
 
