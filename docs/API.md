@@ -416,11 +416,16 @@ Above, "source" refers to using the template as is, without any substitutions ma
 
 #### `formatMessage`
 
-```js
+```ts
+type MessageFormatPrimitiveValue = string | number | boolean | null | undefined;
 function formatMessage(
-    messageDescriptor: MessageDescriptor,
-    values?: object
+  descriptor: MessageDescriptor,
+  values?: Record<string, MessageFormatPrimitiveValue>
 ): string;
+function formatMessage(
+  descriptor: MessageDescriptor,
+  values?: Record<string, MessageFormatPrimitiveValue | React.ReactElement>
+): string | React.ReactNodeArray;
 ```
 
 This function will return a formatted message string. It expects a `MessageDescriptor` with at least an `id` property, and accepts a shallow `values` object which are used to fill placeholders in the message.
@@ -437,6 +442,20 @@ const messages = defineMessages({
 });
 
 formatMessage(messages.greeting, {name: 'Eric'}); // "Hello, Eric!"
+```
+
+with `ReactElement`
+
+```tsx
+const messages = defineMessages({
+  greeting: {
+    id: 'app.greeting',
+    defaultMessage: 'Hello, {name}!',
+    description: 'Greeting to welcome the user to the app',
+  },
+});
+
+formatMessage(messages.greeting, {name: <b>Eric</b>}); // ['Hello, ', <b>Eric</b>, '!']
 ```
 
 The message we defined using [`defineMessages`](#definemessages) to support extraction via `babel-plugin-react-intl`, but it doesn't have to be if you're not using the Babel plugin.

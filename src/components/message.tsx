@@ -6,8 +6,13 @@
 
 import * as React from 'react';
 import withIntl from './injectIntl';
-import {MessageDescriptor, IntlShape} from '../types';
+import {
+  MessageDescriptor,
+  IntlShape,
+  MessageFormatPrimitiveValue,
+} from '../types';
 const shallowEquals = require('shallow-equal/objects');
+
 import {formatMessage as baseFormatMessage} from '../format';
 import {
   invariantIntlContext,
@@ -15,9 +20,9 @@ import {
   createDefaultFormatters,
 } from '../utils';
 
-const defaultFormatMessage: IntlShape['formatMessage'] = (
-  descriptor,
-  values
+const defaultFormatMessage = (
+  descriptor: MessageDescriptor,
+  values?: Record<string, MessageFormatPrimitiveValue | React.ReactElement>
 ) => {
   if (process.env.NODE_ENV !== 'production') {
     console.error(
@@ -32,30 +37,35 @@ const defaultFormatMessage: IntlShape['formatMessage'] = (
     },
     createDefaultFormatters(),
     descriptor,
-    values
+    values as any
   );
 };
 
-export interface Props extends MessageDescriptor {
+export interface Props<V extends React.ReactNode = React.ReactNode>
+  extends MessageDescriptor {
   intl: IntlShape;
-  values?: any;
+  values?: Record<string, V>;
   tagName?: React.ElementType<any>;
   children?(...nodes: React.ReactNodeArray): React.ReactNode;
 }
 
-export class BaseFormattedMessage extends React.Component<Props> {
+export class BaseFormattedMessage<
+  V extends MessageFormatPrimitiveValue | React.ReactElement =
+    | MessageFormatPrimitiveValue
+    | React.ReactElement
+> extends React.Component<Props<V>> {
   static defaultProps = {
     values: {},
   };
 
-  constructor(props: Props) {
+  constructor(props: Props<V>) {
     super(props);
     if (!props.defaultMessage) {
       invariantIntlContext(props);
     }
   }
 
-  shouldComponentUpdate(nextProps: Props) {
+  shouldComponentUpdate(nextProps: Props<V>) {
     const {values} = this.props;
     const {values: nextValues} = nextProps;
 
@@ -89,61 +99,14 @@ export class BaseFormattedMessage extends React.Component<Props> {
       children,
     } = this.props;
 
-    let tokenDelimiter: string = '';
-    let tokenizedValues: Record<string, string> = {};
-    let elements: Record<string, React.ReactChild> = {};
+    const descriptor = {id, description, defaultMessage};
+    let nodes: string | React.ReactNodeArray = formatMessage(
+      descriptor,
+      values
+    );
 
-    let hasValues = values && Object.keys(values).length > 0;
-    if (hasValues) {
-      // Creates a token with a random UID that should not be guessable or
-      // conflict with other parts of the `message` string.
-      let uid = Math.floor(Math.random() * 0x10000000000).toString(16);
-
-      let generateToken = (() => {
-        let counter = 0;
-        return () => `ELEMENT-${uid}-${(counter += 1)}`;
-      })();
-
-      // Splitting with a delimiter to support IE8. When using a regex
-      // with a capture group IE8 does not include the capture group in
-      // the resulting array.
-      tokenDelimiter = `@__${uid}__@`;
-
-      // Iterates over the `props` to keep track of any React Element
-      // values so they can be represented by the `token` as a placeholder
-      // when the `message` is formatted. This allows the formatted
-      // message to then be broken-up into parts with references to the
-      // React Elements inserted back in.
-      Object.keys(values).forEach(name => {
-        let value = values[name];
-
-        if (React.isValidElement(value)) {
-          let token = generateToken();
-          tokenizedValues[name] = tokenDelimiter + token + tokenDelimiter;
-          elements[token] = value;
-        } else {
-          tokenizedValues[name] = value;
-        }
-      });
-    }
-
-    let descriptor = {id, description, defaultMessage};
-    let formattedMessage = formatMessage(descriptor, tokenizedValues || values);
-
-    let nodes: React.ReactNodeArray;
-
-    let hasElements = elements && Object.keys(elements).length > 0;
-    if (hasElements) {
-      // Split the message into parts so the React Element values captured
-      // above can be inserted back into the rendered message. This
-      // approach allows messages to render with React Elements while
-      // keeping React's virtual diffing working properly.
-      nodes = formattedMessage
-        .split(tokenDelimiter)
-        .filter(Boolean)
-        .map(part => elements[part] || part);
-    } else {
-      nodes = [formattedMessage];
+    if (!Array.isArray(nodes)) {
+      nodes = [nodes];
     }
 
     if (typeof children === 'function') {

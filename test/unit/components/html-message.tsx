@@ -110,7 +110,7 @@ describe('<FormattedHTMLMessage>', () => {
   });
 
   it('does not support rich-text message formatting', () => {
-    const rendered = mountWithProvider(
+    const renderedHtml = mountWithProvider(
       {
         id: 'hello',
         defaultMessage: 'Hello, <b>{name}</b>!',
@@ -119,10 +119,8 @@ describe('<FormattedHTMLMessage>', () => {
         },
       },
       intl
-    ).find('span');
+    ).html();
 
-    expect((rendered.prop('dangerouslySetInnerHTML') as any).__html).toBe(
-      'Hello, <b></b>!'
-    );
+    expect(renderedHtml).toBe('<span>Hello, <b>,[object Object],</b>!</span>');
   });
 });

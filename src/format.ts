@@ -4,6 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
+import * as React from 'react';
 // Since rollup cannot deal with namespace being a function,
 // this is to interop with TypeScript since `invariant`
 // does not export a default
@@ -20,6 +21,7 @@ import {
   FormatNumberOptions,
   FormatPluralOptions,
   MessageDescriptor,
+  MessageFormatPrimitiveValue,
 } from './types';
 
 import {createError, escape, filterProps} from './utils';
@@ -28,6 +30,7 @@ import {
   FormattableUnit,
 } from '@formatjs/intl-relativetimeformat';
 import {LiteralElement, TYPE} from 'intl-messageformat-parser';
+import {MessageFormatPart} from 'intl-messageformat/core';
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'localeMatcher',
@@ -263,9 +266,30 @@ export function formatMessage(
     | 'onError'
   >,
   state: Formatters,
+  messageDescriptor?: MessageDescriptor,
+  values?: Record<string, MessageFormatPrimitiveValue>
+): string;
+export function formatMessage(
+  {
+    locale,
+    formats,
+    messages,
+    defaultLocale,
+    defaultFormats,
+    onError,
+  }: Pick<
+    IntlConfig,
+    | 'locale'
+    | 'formats'
+    | 'messages'
+    | 'defaultLocale'
+    | 'defaultFormats'
+    | 'onError'
+  >,
+  state: Formatters,
   messageDescriptor: MessageDescriptor = {id: ''},
-  values: Record<string, any> = {}
-): string {
+  values: Record<string, MessageFormatPrimitiveValue | React.ReactElement> = {}
+): string | React.ReactNodeArray {
   const {id, defaultMessage} = messageDescriptor;
 
   // `id` is a required field of a Message Descriptor.
@@ -288,7 +312,7 @@ export function formatMessage(
     return (val[0] as LiteralElement).value;
   }
 
-  let formattedMessage;
+  let formattedMessageParts: MessageFormatPart[] = [];
 
   if (message) {
     try {
@@ -296,7 +320,7 @@ export function formatMessage(
         formatters: state,
       });
 
-      formattedMessage = formatter.format(values);
+      formattedMessageParts = formatter.formatToParts(values);
     } catch (e) {
       onError(
         createError(
@@ -323,7 +347,7 @@ export function formatMessage(
     }
   }
 
-  if (!formattedMessage && defaultMessage) {
+  if (!formattedMessageParts.length && defaultMessage) {
     try {
       let formatter = state.getMessageFormat(
         defaultMessage,
@@ -331,7 +355,7 @@ export function formatMessage(
         defaultFormats
       );
 
-      formattedMessage = formatter.format(values);
+      formattedMessageParts = formatter.formatToParts(values);
     } catch (e) {
       onError(
         createError(`Error formatting the default message for: "${id}"`, e)
@@ -339,7 +363,7 @@ export function formatMessage(
     }
   }
 
-  if (!formattedMessage) {
+  if (!formattedMessageParts.length) {
     onError(
       createError(
         `Cannot format message: "${id}", ` +
@@ -348,15 +372,30 @@ export function formatMessage(
           } as fallback.`
       )
     );
+    if (typeof message === 'string') {
+      return message || defaultMessage || id;
+    }
+    return defaultMessage || id;
   }
-  if (typeof message === 'string') {
-    return formattedMessage || message || defaultMessage || id;
-  }
-  return formattedMessage || defaultMessage || id;
+  return formattedMessageParts.length === 1
+    ? formattedMessageParts[0].value || defaultMessage || id
+    : formattedMessageParts.map(part => part.value);
 }
 
-export function formatHTMLMessage(...args: Parameters<typeof formatMessage>) {
-  const rawValues = args[3] || {};
+export function formatHTMLMessage(
+  config: Pick<
+    IntlConfig,
+    | 'locale'
+    | 'formats'
+    | 'messages'
+    | 'defaultLocale'
+    | 'defaultFormats'
+    | 'onError'
+  >,
+  state: Formatters,
+  messageDescriptor: MessageDescriptor = {id: ''},
+  rawValues: Record<string, MessageFormatPrimitiveValue> = {}
+) {
   // Process all the values before they are used when formatting the ICU
   // Message string. Since the formatted message might be injected via
   // `innerHTML`, all String-based values need to be HTML-escaped.
@@ -369,7 +408,7 @@ export function formatHTMLMessage(...args: Parameters<typeof formatMessage>) {
     {}
   );
 
-  return formatMessage(args[0], args[1], args[2], escapedValues);
+  return formatMessage(config, state, messageDescriptor, escapedValues);
 }
 
 export const formatters = {

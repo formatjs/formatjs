@@ -1,13 +1,13 @@
 import {Suite} from 'benchmark';
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
-import {
+const {
   IntlProvider,
   FormattedNumber,
   FormattedDate,
   FormattedMessage,
   // FormattedRelativeTime,
-} from '../../dist';
+} = require('../../dist/react-intl');
 import {parse, MessageFormatElement} from 'intl-messageformat-parser';
 
 const suite = new Suite('renderToString', {
