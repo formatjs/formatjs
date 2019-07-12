@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import * as React from 'react'
+import * as React from 'react';
 // Since rollup cannot deal with namespace being a function,
 // this is to interop with TypeScript since `invariant`
 // does not export a default
@@ -30,7 +30,7 @@ import {
   FormattableUnit,
 } from '@formatjs/intl-relativetimeformat';
 import {LiteralElement, TYPE} from 'intl-messageformat-parser';
-import { MessageFormatPart } from 'intl-messageformat/core';
+import {MessageFormatPart} from 'intl-messageformat/core';
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'localeMatcher',
@@ -375,24 +375,27 @@ export function formatMessage(
     if (typeof message === 'string') {
       return message || defaultMessage || id;
     }
-    return defaultMessage || id
+    return defaultMessage || id;
   }
-  return formattedMessageParts.length === 1 ? formattedMessageParts[0].value || defaultMessage || id: formattedMessageParts.map(part => part.value);
+  return formattedMessageParts.length === 1
+    ? formattedMessageParts[0].value || defaultMessage || id
+    : formattedMessageParts.map(part => part.value);
 }
 
 export function formatHTMLMessage(
   config: Pick<
-  IntlConfig,
-  | 'locale'
-  | 'formats'
-  | 'messages'
-  | 'defaultLocale'
-  | 'defaultFormats'
-  | 'onError'
->,
-state: Formatters,
-messageDescriptor: MessageDescriptor = {id: ''},
-rawValues: Record<string, MessageFormatPrimitiveValue> = {}) {
+    IntlConfig,
+    | 'locale'
+    | 'formats'
+    | 'messages'
+    | 'defaultLocale'
+    | 'defaultFormats'
+    | 'onError'
+  >,
+  state: Formatters,
+  messageDescriptor: MessageDescriptor = {id: ''},
+  rawValues: Record<string, MessageFormatPrimitiveValue> = {}
+) {
   // Process all the values before they are used when formatting the ICU
   // Message string. Since the formatted message might be injected via
   // `innerHTML`, all String-based values need to be HTML-escaped.

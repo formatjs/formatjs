@@ -10,6 +10,7 @@
   - [Migrate to using native Intl APIs](#migrate-to-using-native-intl-apis)
   - [TypeScript Support](#typescript-support)
   - [FormattedRelativeTime](#formattedrelativetime)
+  - [`formatMessage` now supports `ReactElement`](#formatmessage-now-supports-reactelement)
 - [2.0.0](#200)
   - [Use React 0.14 or 15](#use-react-014-or-15)
   - [Update How Locale Data is Added](#update-how-locale-data-is-added)
@@ -239,6 +240,34 @@ When we introduced `FormattedRelative`, the spec for [`Intl.RelativeTimeFormat`]
 6. `initialNow` has been removed.
 
 Similarly, the functional counterpart of this component which is `formatRelative` has been renamed to `formatRelativeTime` and its parameters have been changed to reflect this component's props accordingly.
+
+### `formatMessage` now supports `ReactElement`
+
+The imperative API `formatMessage` now supports `ReactElement` in values and will resolve type correctly. This change should be backwards-compatible since for regular non-`ReactElement` values it will still return a `string`, but for rich text like the example down below, it will return a `Array<string, React.ReactElement>`:
+
+```ts
+const messages = defineMessages({
+  greeting: {
+    id: 'app.greeting',
+    defaultMessage: 'Hello, {name}!',
+    description: 'Greeting to welcome the user to the app',
+  },
+});
+
+formatMessage(messages.greeting, {name: 'Eric'}); // "Hello, Eric!"
+```
+
+```tsx
+const messages = defineMessages({
+  greeting: {
+    id: 'app.greeting',
+    defaultMessage: 'Hello, {name}!',
+    description: 'Greeting to welcome the user to the app',
+  },
+});
+
+formatMessage(messages.greeting, {name: <b>Eric</b>}); // ['Hello, ', <b>Eric</b>, '!']
+```
 
 ## 2.0.0
 

@@ -3,7 +3,7 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import * as React from 'react'
+import * as React from 'react';
 import {IntlMessageFormat, Formats} from 'intl-messageformat/core';
 import IntlRelativeTimeFormat, {
   IntlRelativeTimeFormatOptions,
@@ -51,7 +51,12 @@ export type FormatPluralOptions = Exclude<
 > &
   CustomFormatConfig;
 
-export type MessageFormatPrimitiveValue = string | number | boolean | null | undefined
+export type MessageFormatPrimitiveValue =
+  | string
+  | number
+  | boolean
+  | null
+  | undefined;
 
 export interface IntlFormatters {
   formatDate(value: number | Date, opts: FormatDateOptions): string;

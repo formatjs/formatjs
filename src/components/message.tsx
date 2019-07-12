@@ -6,7 +6,11 @@
 
 import * as React from 'react';
 import withIntl from './injectIntl';
-import {MessageDescriptor, IntlShape, MessageFormatPrimitiveValue} from '../types';
+import {
+  MessageDescriptor,
+  IntlShape,
+  MessageFormatPrimitiveValue,
+} from '../types';
 const shallowEquals = require('shallow-equal/objects');
 
 import {formatMessage as baseFormatMessage} from '../format';
@@ -37,14 +41,19 @@ const defaultFormatMessage = (
   );
 };
 
-export interface Props<V extends React.ReactNode = React.ReactNode> extends MessageDescriptor {
+export interface Props<V extends React.ReactNode = React.ReactNode>
+  extends MessageDescriptor {
   intl: IntlShape;
   values?: Record<string, V>;
   tagName?: React.ElementType<any>;
   children?(...nodes: React.ReactNodeArray): React.ReactNode;
 }
 
-export class BaseFormattedMessage<V extends MessageFormatPrimitiveValue | React.ReactElement = MessageFormatPrimitiveValue | React.ReactElement> extends React.Component<Props<V>> {
+export class BaseFormattedMessage<
+  V extends MessageFormatPrimitiveValue | React.ReactElement =
+    | MessageFormatPrimitiveValue
+    | React.ReactElement
+> extends React.Component<Props<V>> {
   static defaultProps = {
     values: {},
   };
@@ -91,10 +100,13 @@ export class BaseFormattedMessage<V extends MessageFormatPrimitiveValue | React.
     } = this.props;
 
     const descriptor = {id, description, defaultMessage};
-    let nodes: string | React.ReactNodeArray = formatMessage(descriptor, values);
+    let nodes: string | React.ReactNodeArray = formatMessage(
+      descriptor,
+      values
+    );
 
     if (!Array.isArray(nodes)) {
-      nodes = [nodes]
+      nodes = [nodes];
     }
 
     if (typeof children === 'function') {
