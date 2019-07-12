@@ -7,10 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package intl-locales-supported
 
-
-
-
-
 # [1.4.0](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.3.4...intl-locales-supported@1.4.0) (2019-07-12)
 
 ### Features
