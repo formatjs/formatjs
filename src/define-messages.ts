@@ -6,7 +6,9 @@ import {MessageDescriptor} from './types';
  * See the accompanying LICENSE file for terms.
  */
 
-type Messages<Names extends keyof any = string> = { [key in Names]: MessageDescriptor }
+type Messages<Names extends keyof any = string> = {
+  [key in Names]: MessageDescriptor;
+};
 
 export default function defineMessages<Names extends keyof any>(
   messageDescriptors: Messages<Names>
