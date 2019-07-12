@@ -9,6 +9,7 @@ All guides are listed below:
 - [Getting Started](./Getting-Started.md)
 - [Components](./Components.md)
 - [API](./API.md)
+- [Advanced Usage](./Advanced-Usage.md)
 - [Testing with `react-intl`](./Testing-with-React-Intl.md)
 - [IDE Plugins](./IDE-plugins-&-Tools.md)
 - [Upgrade Guide](./Upgrade-Guide.md)
