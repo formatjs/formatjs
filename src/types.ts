@@ -3,7 +3,8 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import {IntlMessageFormat, Formats, MessageFormatPart} from 'intl-messageformat/core';
+import * as React from 'react'
+import {IntlMessageFormat, Formats} from 'intl-messageformat/core';
 import IntlRelativeTimeFormat, {
   IntlRelativeTimeFormatOptions,
   FormattableUnit,
@@ -50,10 +51,7 @@ export type FormatPluralOptions = Exclude<
 > &
   CustomFormatConfig;
 
-export type FormatMessageValues = Record<
-  string,
-  string | number | boolean | null | undefined
->;
+export type MessageFormatPrimitiveValue = string | number | boolean | null | undefined
 
 export interface IntlFormatters {
   formatDate(value: number | Date, opts: FormatDateOptions): string;
@@ -70,15 +68,15 @@ export interface IntlFormatters {
   ): ReturnType<Intl.PluralRules['select']>;
   formatMessage(
     descriptor: MessageDescriptor,
-    values?: FormatMessageValues
+    values?: Record<string, MessageFormatPrimitiveValue>
   ): string;
-  formatMessageToParts(
+  formatMessage(
     descriptor: MessageDescriptor,
-    values?: Record<string, any>
-  ): React.ReactNodeArray;
+    values?: Record<string, MessageFormatPrimitiveValue | React.ReactElement>
+  ): string | React.ReactNodeArray;
   formatHTMLMessage(
     descriptor: MessageDescriptor,
-    values?: FormatMessageValues
+    values?: Record<string, MessageFormatPrimitiveValue>
   ): string;
 }
 

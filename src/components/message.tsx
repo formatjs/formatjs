@@ -6,19 +6,19 @@
 
 import * as React from 'react';
 import withIntl from './injectIntl';
-import {MessageDescriptor, IntlShape} from '../types';
+import {MessageDescriptor, IntlShape, MessageFormatPrimitiveValue} from '../types';
 const shallowEquals = require('shallow-equal/objects');
 
-import {formatMessageToParts as baseFormatMessageToParts} from '../format';
+import {formatMessage as baseFormatMessage} from '../format';
 import {
   invariantIntlContext,
   DEFAULT_INTL_CONFIG,
   createDefaultFormatters,
 } from '../utils';
 
-const defaultFormatMessageToParts: IntlShape['formatMessageToParts'] = (
-  descriptor,
-  values
+const defaultFormatMessage = (
+  descriptor: MessageDescriptor,
+  values?: Record<string, MessageFormatPrimitiveValue | React.ReactElement>
 ) => {
   if (process.env.NODE_ENV !== 'production') {
     console.error(
@@ -26,37 +26,37 @@ const defaultFormatMessageToParts: IntlShape['formatMessageToParts'] = (
     );
   }
 
-  return baseFormatMessageToParts(
+  return baseFormatMessage(
     {
       ...DEFAULT_INTL_CONFIG,
       locale: 'en',
     },
     createDefaultFormatters(),
     descriptor,
-    values
+    values as any
   );
 };
 
-export interface Props extends MessageDescriptor {
+export interface Props<V extends React.ReactNode = React.ReactNode> extends MessageDescriptor {
   intl: IntlShape;
-  values?: any;
+  values?: Record<string, V>;
   tagName?: React.ElementType<any>;
   children?(...nodes: React.ReactNodeArray): React.ReactNode;
 }
 
-export class BaseFormattedMessage extends React.Component<Props> {
+export class BaseFormattedMessage<V extends MessageFormatPrimitiveValue | React.ReactElement = MessageFormatPrimitiveValue | React.ReactElement> extends React.Component<Props<V>> {
   static defaultProps = {
     values: {},
   };
 
-  constructor(props: Props) {
+  constructor(props: Props<V>) {
     super(props);
     if (!props.defaultMessage) {
       invariantIntlContext(props);
     }
   }
 
-  shouldComponentUpdate(nextProps: Props) {
+  shouldComponentUpdate(nextProps: Props<V>) {
     const {values} = this.props;
     const {values: nextValues} = nextProps;
 
@@ -77,7 +77,7 @@ export class BaseFormattedMessage extends React.Component<Props> {
 
   render() {
     const {
-      formatMessageToParts = defaultFormatMessageToParts,
+      formatMessage = defaultFormatMessage,
       textComponent: Text = React.Fragment,
     } = this.props.intl || {};
 
@@ -91,7 +91,11 @@ export class BaseFormattedMessage extends React.Component<Props> {
     } = this.props;
 
     const descriptor = {id, description, defaultMessage};
-    const nodes: React.ReactNodeArray = formatMessageToParts(descriptor, values);
+    let nodes: string | React.ReactNodeArray = formatMessage(descriptor, values);
+
+    if (!Array.isArray(nodes)) {
+      nodes = [nodes]
+    }
 
     if (typeof children === 'function') {
       return children(...nodes);
