@@ -27,5 +27,5 @@ See the [LICENSE file][] for license text and copyright information.
 Cross-browser Testing Platform and Open Source <3 Provided by [Sauce Labs][saucelabs]
 
 [license file]: https://github.com/formatjs/formatjs/blob/master/LICENSE.md
-[lerna]: https://lernajs.io/
+[lerna]: https://lerna.js.org/
 [saucelabs]: https://saucelabs.com
