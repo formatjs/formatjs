@@ -18,7 +18,7 @@
     "karma:ci": "karma start karma.conf-ci.js",
     "karma:local": "karma start karma.conf.js",
     "lint": "eslint .",
-    "postchangelog": "npm run prettier",
+    "postversion": "npm run prettier",
     "prepublishOnly": "npm run build",
     "prettier": "prettier --write 'packages/*/{test,tests,src}/**/*.ts' '{src,scripts,test,tests}/*.js' '**/*.md'",
     "test": "lerna run lint && TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' lerna run test"
