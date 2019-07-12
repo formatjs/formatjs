@@ -5,14 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [9.3.0](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.2.3...formatjs-extract-cldr-data@9.3.0) (2019-07-12)
 
-
 ### Features
 
-* **intl-messageformat-parser:** add printer to print AST to string ([ec0eaa2](https://github.com/formatjs/formatjs/commit/ec0eaa2))
-
-
-
-
+- **intl-messageformat-parser:** add printer to print AST to string ([ec0eaa2](https://github.com/formatjs/formatjs/commit/ec0eaa2))
 
 ## [9.2.3](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.2.2...formatjs-extract-cldr-data@9.2.3) (2019-07-09)
 
