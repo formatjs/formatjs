@@ -372,9 +372,10 @@ export function formatMessage(
           } as fallback.`
       )
     );
-  }
-  if (typeof message === 'string') {
-    return formattedMessageParts.length === 1 ? formattedMessageParts[0].value || message || defaultMessage || id : formattedMessageParts.map(part => part.value);
+    if (typeof message === 'string') {
+      return message || defaultMessage || id;
+    }
+    return defaultMessage || id
   }
   return formattedMessageParts.length === 1 ? formattedMessageParts[0].value || defaultMessage || id: formattedMessageParts.map(part => part.value);
 }
