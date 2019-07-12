@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@5.0.1...intl-messageformat@5.1.0) (2019-07-12)
+
+
+### Features
+
+* **intl-messageformat:** Add `formatToParts` ([0680f58](https://github.com/formatjs/formatjs/commit/0680f58))
+* **intl-messageformat:** export Part types ([450c495](https://github.com/formatjs/formatjs/commit/450c495))
+* **intl-messageformat-parser:** add printer to print AST to string ([ec0eaa2](https://github.com/formatjs/formatjs/commit/ec0eaa2))
+
+
+
+
+
 ## [5.0.1](https://github.com/formatjs/formatjs/compare/intl-messageformat@5.0.0...intl-messageformat@5.0.1) (2019-07-09)
 
 **Note:** Version bump only for package intl-messageformat
