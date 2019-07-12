@@ -4,11 +4,11 @@
  * See the accompanying LICENSE file for terms.
  */
 import 'intl-pluralrules';
-import * as React from 'react';
 import IntlMessageFormat from '../src';
 import {
   IntlMessageFormat as IntlMessageFormatCore,
-  createDefaultFormatters
+  createDefaultFormatters,
+  PART_TYPE
 } from '../src/core';
 import { parse } from 'intl-messageformat-parser';
 import { expect as chaiExpect } from 'chai';
@@ -582,14 +582,17 @@ describe('IntlMessageFormat', function() {
 
   describe('formatToParts', function() {
     it('should be able to take React Element', function() {
+      const element = {};
       const parts = new IntlMessageFormat(
         'a react {element}',
         'en'
       ).formatToParts({
-        element: React.createElement('span', null, 'foo')
+        element
       });
-      expect(parts).to.have.length(2);
-      expect(typeof parts[1]).to.equal('object');
+      expect(parts).to.deep.equal([
+        { type: PART_TYPE.literal, value: 'a react ' },
+        { type: PART_TYPE.argument, value: element }
+      ]);
     });
   });
 
