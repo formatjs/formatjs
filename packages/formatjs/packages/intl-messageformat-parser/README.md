@@ -2,7 +2,7 @@
 
 Parses [ICU Message strings][icu] into an AST via JavaScript.
 
-[![npm Version](https://badgen.net/npm/v/intl-messageformat-parser)(https://www.npmjs.com/package/intl-messageformat-parser)
+[![npm Version](https://badgen.net/npm/v/intl-messageformat-parser)](https://www.npmjs.com/package/intl-messageformat-parser)
 [![size](https://badgen.net/bundlephobia/minzip/intl-messageformat-parser)](https://bundlephobia.com/result?p=intl-messageformat-parser)
 
 ## Overview
@@ -134,4 +134,4 @@ See the [LICENSE file][] for license text and copyright information.
 [icu]: http://userguide.icu-project.org/formatparse/messages
 [intl-mf]: https://github.com/formatjs/formatjs
 [peg.js]: https://pegjs.org/
-[license file]: https://github.com/formatjs/formatjs/blob/master/LICENSE
+[license file]: https://github.com/formatjs/formatjs/blob/master/LICENSE.md
