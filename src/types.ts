@@ -59,8 +59,8 @@ export type MessageFormatPrimitiveValue =
   | undefined;
 
 export interface IntlFormatters {
-  formatDate(value: number | Date, opts: FormatDateOptions): string;
-  formatTime(value: number | Date, opts: FormatDateOptions): string;
+  formatDate(value: string | number | Date, opts: FormatDateOptions): string;
+  formatTime(value: string | number | Date, opts: FormatDateOptions): string;
   formatRelativeTime(
     value: number,
     unit?: FormattableUnit,
