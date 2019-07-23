@@ -244,11 +244,12 @@ Similarly, the functional counterpart of this component which is `formatRelative
 7. Implementing `FormattedRelative` behavior
 
 You can use `@formatjs/intl-utils` to get close to the previous behavior like this:
+
 ```js
-import { selectUnit } from '@formatjs/intl-utils';
+import {selectUnit} from '@formatjs/intl-utils';
 const {value, unit} = selectUnit(Date.now() - 48 * 3600 * 1000);
 // render
-<FormattedRelativeTime value={value} unit={unit} />
+<FormattedRelativeTime value={value} unit={unit} />;
 ```
 
 ### `formatMessage` now supports `ReactElement`
