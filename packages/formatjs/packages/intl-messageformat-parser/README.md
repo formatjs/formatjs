@@ -14,8 +14,8 @@ This parser is written in [PEG.js][], a parser generator for JavaScript.
 ## Usage
 
 ```ts
-import { parse } from 'intl-messageformat-parser'
-const ast = parse('this is {count, plural, one{# dog} other{# dogs}}')
+import { parse } from 'intl-messageformat-parser';
+const ast = parse('this is {count, plural, one{# dog} other{# dogs}}');
 ```
 
 ### Example

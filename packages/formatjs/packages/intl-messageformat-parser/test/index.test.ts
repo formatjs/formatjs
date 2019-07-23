@@ -1,135 +1,40 @@
 import { parse, ParseOptions, printAST } from '../src';
 
 function allTests(opts?: ParseOptions) {
-  it('parse("Hello, World!")', function() {
-    expect(parse('Hello, World!', opts)).toMatchSnapshot();
-  });
-
-  it('parse("Hello, {name}!")', function() {
-    expect(parse('Hello, {name}!', opts)).toMatchSnapshot();
-  });
-
-  it('simple formats', function() {
-    expect(
-      parse(
-        'My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}.'
-      )
-    ).toMatchSnapshot();
-  });
-
-  it('parse("{num, number, percent}")', function() {
-    expect(parse('{num, number, percent}', opts)).toMatchSnapshot();
-  });
-
-  it('parse("{numPhotos, plural, =0{no photos} =1{one photo} other{# photos}}")', function() {
-    expect(
-      parse(
-        '{numPhotos, plural, =0{no photos} =1{one photo} other{# photos}}',
-        opts
-      )
-    ).toMatchSnapshot();
-  });
-
-  it('nested plural', function() {
-    expect(
-      parse(
-        'Foo {var1, plural, =0{# var1} other{{var2, plural, =0{# var2} other{# var2-other}} # other}}',
-        opts
-      )
-    ).toMatchSnapshot();
-  });
-
-  it('parse("{floor, selectordinal, =0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor")', function() {
-    expect(
-      parse(
-        '{floor, selectordinal, =0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor',
-        opts
-      )
-    ).toMatchSnapshot();
-  });
-
-  it('parse("{gender, select, female {woman} male {man} other {person}}")', function() {
-    expect(
-      parse('{gender, select, female {woman} male {man} other {person}}', opts)
-    ).toMatchSnapshot();
-  });
-
-  describe('whitespace', function() {
-    it('should allow whitespace in and around `literalElement`s', function() {
-      expect(parse('   some random test   ', opts)).toMatchSnapshot();
-    });
-
-    it('should allow whitespace in `argumentElement`s', function() {
-      expect(parse('{  num , number,percent  }', opts)).toMatchSnapshot();
-    });
-    it('should capture whitespace in nested pattern', function() {
-      expect(
-        parse(
-          '{c, plural, =1 { {text} project} other { {text} projects}}',
-          opts
-        )
-      ).toMatchSnapshot();
-    });
-  });
-
-  describe('escaping', function() {
-    it('should allow escaping of syntax chars via `\\\\`', function() {
-      expect(parse('\\{', opts)).toMatchSnapshot();
-      expect(parse('\\}', opts)).toMatchSnapshot();
-      expect(parse('\\u003C', opts)).toMatchSnapshot();
-
-      // Escaping "#" needs to be special-cased so it remains escaped so
-      // the runtime doesn't replace it when in a `pluralFormat` option.
-      expect(parse('\\#', opts)).toMatchSnapshot();
-    });
-
-    it('should allow backslash chars in `literalElement`s', function() {
-      expect(parse('\\u005c', opts)).toMatchSnapshot();
-      expect(parse('\\\\', opts)).toMatchSnapshot();
-    });
-
+  [
+    'Hello, World!',
+    'Hello, {name}!',
+    'My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}.',
+    '{num, number, percent}',
+    '{count, time}',
+    '{numPhotos, plural, =0{no photos} =1{one photo} other{# photos}}',
+    'Foo {var1, plural, =0{# var1} other{{var2, plural, =0{# var2} other{# var2-other}} # other}}',
+    '{floor, selectordinal, =0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor',
+    '{gender, select, female {woman} male {man} other {person}}',
+    '   some random test   ',
+    '{  num , number,percent  }',
+    '{c, plural, =1 { {text} project} other { {text} projects}}',
+    '\\{',
+    '\\}',
+    '\\u003C',
+    // Escaping "#" needs to be special-cased so it remains escaped so
+    // the runtime doesn't replace it when in a `pluralFormat` option.
+    '\\#',
     /**
      * @see http://userguide.icu-project.org/formatparse/messages#TOC-Quoting-Escaping
      * @see https://github.com/formatjs/formatjs/issues/97
      */
-    it('should escape a pair of ASCII apostrophes to represent one ASCII apostrophe', function() {
-      expect(parse("This '{isn''t}' obvious", opts)).toMatchSnapshot();
-      expect(parse("''{name}''", opts)).toMatchSnapshot();
-      expect(parse("''{name}''", opts)).toMatchSnapshot();
+    "This '{isn''t}' obvious",
+    "''{name}''",
+    "''{name}''",
+    'this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}'
+  ].forEach(mess => {
+    const ast = parse(mess, opts);
+    it(`can parse '${mess}'`, function() {
+      expect(ast).toMatchSnapshot();
     });
-  });
-
-  describe('printer', function() {
-    describe('plural', function() {
-      it('should print w/o offset correctly', function() {
-        const ast = parse(
-          'this is {count, plural, one {# dog} other {# dogs}}'
-        );
-        expect(printAST(ast)).toEqual(
-          'this is {count,plural,one{{count, number} dog} other{{count, number} dogs}}'
-        );
-      });
-      it('should print w offset correctly', function() {
-        const ast = parse(
-          'this is {count,plural,offset:1 one {# dog} other {# dogs}}'
-        );
-        expect(printAST(ast)).toEqual(
-          'this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}'
-        );
-      });
-      it('should print selectordinal correctly', function() {
-        const ast = parse(
-          'this is {count, selectordinal, offset:1 one {#st dog} other {#th dogs}}'
-        );
-        expect(printAST(ast)).toEqual(
-          'this is {count,selectordinal,offset:1 one{{count, number}st dog} other{{count, number}th dogs}}'
-        );
-      });
-    });
-
-    it('should print simple format correctly', function() {
-      const ast = parse('this is {count, time}');
-      expect(printAST(ast)).toEqual('this is {count, time}');
+    it(`can print AST from '${mess}'`, function() {
+      expect(printAST(ast)).toMatchSnapshot();
     });
   });
 }
