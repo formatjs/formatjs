@@ -13,24 +13,9 @@ This parser is written in [PEG.js][], a parser generator for JavaScript.
 
 ## Usage
 
-### Loading in the Browser
-
-The `dist/` folder contains the version of this package for use in the browser, and it can be loaded and used like this:
-
-```html
-<script src="intl-messageformat-parser/dist/parser.min.js"></script>
-<script>
-  IntlMessageFormatParser.parse('...');
-</script>
-```
-
-### Loading in Node.js
-
-This package can also be `require()`-ed in Node.js:
-
-```js
-var parser = require('intl-messageformat-parser');
-parser.parse('...');
+```ts
+import { parse } from 'intl-messageformat-parser'
+const ast = parse('this is {count, plural, one{# dog} other{# dogs}}')
 ```
 
 ### Example
@@ -47,7 +32,7 @@ On {takenDate, date, short} {name} took {numPhotos, plural,
 
 ```js
 // Assume `msg` is the string above.
-parser.parse(msg);
+parse(msg);
 ```
 
 This parser will produce this AST:
