@@ -19,7 +19,8 @@ import {
   isDateElement,
   isTimeElement,
   isNumberElement,
-  isPluralElement
+  isPluralElement,
+  TYPE
 } from './types';
 
 const ESCAPED_CHARS: Record<string, string> = {
@@ -67,16 +68,16 @@ function printArgumentElement({ value }: ArgumentElement) {
 function printSimpleFormatElement(
   el: DateElement | TimeElement | NumberElement
 ) {
-  return `{${el.value}, ${el.type}${el.style ? `, ${el.style}` : ''}}`;
+  return `{${el.value}, ${TYPE[el.type]}${el.style ? `, ${el.style}` : ''}}`;
 }
 function printSelectElement(el: SelectElement) {
   const msg = [
     el.value,
     'select',
     Object.keys(el.options)
-      .map(id => `${id}{${printAST(el.options[id].value)}}`)
+      .map(id => `${id} {${printAST(el.options[id].value)}}`)
       .join(' ')
-  ].join(',');
+  ].join(', ');
   return `{${msg}}`;
 }
 
@@ -85,10 +86,10 @@ function printPluralElement(el: PluralElement) {
   const msg = [
     el.value,
     type,
-    el.offset ? `offset:${el.offset}` : '',
+    el.offset ? `offset: ${el.offset}` : '',
     Object.keys(el.options)
-      .map(id => `${id}{${printAST(el.options[id].value)}}`)
+      .map(id => `${id} {${printAST(el.options[id].value)}}`)
       .join(' ')
-  ].join(',');
+  ].filter(t => t !== '').join(', ');
   return `{${msg}}`;
 }
