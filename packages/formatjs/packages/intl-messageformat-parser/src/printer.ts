@@ -75,9 +75,9 @@ function printSelectElement(el: SelectElement) {
     el.value,
     'select',
     Object.keys(el.options)
-      .map(id => `${id} {${printAST(el.options[id].value)}}`)
+      .map(id => `${id}{${printAST(el.options[id].value)}}`)
       .join(' ')
-  ].join(', ');
+  ].join(',');
   return `{${msg}}`;
 }
 
@@ -86,10 +86,14 @@ function printPluralElement(el: PluralElement) {
   const msg = [
     el.value,
     type,
-    el.offset ? `offset: ${el.offset}` : '',
-    Object.keys(el.options)
-      .map(id => `${id} {${printAST(el.options[id].value)}}`)
+    [
+      el.offset ? `offset:${el.offset}` : '',
+      ...Object.keys(el.options).map(
+        id => `${id}{${printAST(el.options[id].value)}}`
+      )
+    ]
+      .filter(Boolean)
       .join(' ')
-  ].filter(t => t !== '').join(', ');
+  ].join(',');
   return `{${msg}}`;
 }

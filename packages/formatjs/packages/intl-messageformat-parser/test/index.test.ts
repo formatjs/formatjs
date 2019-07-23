@@ -1,4 +1,4 @@
-import { parse, ParseOptions } from '../src';
+import { parse, ParseOptions, printAST } from '../src';
 
 function allTests(opts?: ParseOptions) {
   it('parse("Hello, World!")', function() {
@@ -96,6 +96,40 @@ function allTests(opts?: ParseOptions) {
       expect(parse("This '{isn''t}' obvious", opts)).toMatchSnapshot();
       expect(parse("''{name}''", opts)).toMatchSnapshot();
       expect(parse("''{name}''", opts)).toMatchSnapshot();
+    });
+  });
+
+  describe('printer', function() {
+    describe('plural', function() {
+      it('should print w/o offset correctly', function() {
+        const ast = parse(
+          'this is {count, plural, one {# dog} other {# dogs}}'
+        );
+        expect(printAST(ast)).toEqual(
+          'this is {count,plural,one{{count, number} dog} other{{count, number} dogs}}'
+        );
+      });
+      it('should print w offset correctly', function() {
+        const ast = parse(
+          'this is {count,plural,offset:1 one {# dog} other {# dogs}}'
+        );
+        expect(printAST(ast)).toEqual(
+          'this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}'
+        );
+      });
+      it('should print selectordinal correctly', function() {
+        const ast = parse(
+          'this is {count, selectordinal, offset:1 one {#st dog} other {#th dogs}}'
+        );
+        expect(printAST(ast)).toEqual(
+          'this is {count,selectordinal,offset:1 one{{count, number}st dog} other{{count, number}th dogs}}'
+        );
+      });
+    });
+
+    it('should print simple format correctly', function() {
+      const ast = parse('this is {count, time}');
+      expect(printAST(ast)).toEqual('this is {count, time}');
     });
   });
 }

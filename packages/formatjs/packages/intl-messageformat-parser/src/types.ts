@@ -1,4 +1,4 @@
-export const enum TYPE {
+export enum TYPE {
   /**
    * Raw text
    */
