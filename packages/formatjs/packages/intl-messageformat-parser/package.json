@@ -1,6 +1,6 @@
 {
   "name": "intl-messageformat-parser",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Parses ICU Message strings into an AST via JavaScript.",
   "main": "dist/index.js",
   "module": "lib/index.js",

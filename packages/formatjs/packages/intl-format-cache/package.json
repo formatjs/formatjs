@@ -1,6 +1,6 @@
 {
   "name": "intl-format-cache",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "description": "A memoizer factory for Intl format constructors.",
   "main": "index.js",
   "module": "lib/index.js",
@@ -13,7 +13,7 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@formatjs/intl-relativetimeformat": "^2.4.1"
+    "@formatjs/intl-relativetimeformat": "^2.4.2"
   },
   "repository": {
     "type": "git",

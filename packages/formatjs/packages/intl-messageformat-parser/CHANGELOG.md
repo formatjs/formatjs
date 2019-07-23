@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.2](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@2.1.1...intl-messageformat-parser@2.1.2) (2019-07-23)
+
+
+### Bug Fixes
+
+* **intl-messageformat-parser:** add tests, fix offset printing ([bebdf95](https://github.com/formatjs/formatjs/commit/bebdf95))
+* **intl-messageformat-parser:** Fix AST printer to print white-spaces, commas and element types… ([#120](https://github.com/formatjs/formatjs/issues/120)) ([37448e2](https://github.com/formatjs/formatjs/commit/37448e2)), closes [#117](https://github.com/formatjs/formatjs/issues/117)
+
+
+
+
+
 ## [2.1.1](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@2.1.0...intl-messageformat-parser@2.1.1) (2019-07-12)
 
 **Note:** Version bump only for package intl-messageformat-parser
