@@ -7,9 +7,9 @@ import 'intl-pluralrules';
 import IntlMessageFormat from '../src';
 import {
   IntlMessageFormat as IntlMessageFormatCore,
-  createDefaultFormatters,
-  PART_TYPE
+  createDefaultFormatters
 } from '../src/core';
+import { PART_TYPE } from '../src/formatters';
 import { parse } from 'intl-messageformat-parser';
 import { expect as chaiExpect } from 'chai';
 import memoizeFormatConstructor from 'intl-format-cache';

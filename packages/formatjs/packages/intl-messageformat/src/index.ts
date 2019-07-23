@@ -9,5 +9,6 @@ import IntlMessageFormat from './core';
 
 IntlMessageFormat.__parse = parse;
 
+export * from './formatters';
 export * from './core';
 export default IntlMessageFormat;
