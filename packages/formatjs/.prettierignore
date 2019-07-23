@@ -3,3 +3,4 @@ packages/intl-relativetimeformat/src/en.ts
 packages/formatjs-extract-cldr-data/src/dateFields.ts
 packages/intl-messageformat-parser/src/parser.ts
 test262/
+packages/*/CHANGELOG.md
