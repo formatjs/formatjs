@@ -241,6 +241,16 @@ When we introduced `FormattedRelative`, the spec for [`Intl.RelativeTimeFormat`]
 
 Similarly, the functional counterpart of this component which is `formatRelative` has been renamed to `formatRelativeTime` and its parameters have been changed to reflect this component's props accordingly.
 
+7. Implementing `FormattedRelative` behavior
+
+You can use `@formatjs/intl-utils` to get close to the previous behavior like this:
+```js
+import { selectUnit } from '@formatjs/intl-utils';
+const {value, unit} = selectUnit(Date.now() - 48 * 3600 * 1000);
+// render
+<FormattedRelativeTime value={value} unit={unit} />
+```
+
 ### `formatMessage` now supports `ReactElement`
 
 The imperative API `formatMessage` now supports `ReactElement` in values and will resolve type correctly. This change should be backwards-compatible since for regular non-`ReactElement` values it will still return a `string`, but for rich text like the example down below, it will return a `Array<string, React.ReactElement>`:
