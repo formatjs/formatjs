@@ -246,6 +246,16 @@ function generateId() {
   return `${Date.now()}_${++counter}`;
 }
 
+function restoreRichPlaceholderMessage(
+  text: string,
+  objectParts: Record<string, any>
+): Array<string | object> {
+  return text
+    .split(TOKEN_REGEX)
+    .filter(Boolean)
+    .map(c => objectParts[c] || c);
+}
+
 export function formatXMLMessage(
   els: MessageFormatElement[],
   locales: string | string[],
@@ -275,7 +285,7 @@ export function formatXMLMessage(
 
   // Not designed to filter out aggressively
   if (!~formattedMessage.indexOf('<')) {
-    return [formattedMessage];
+    return restoreRichPlaceholderMessage(formattedMessage, objectParts);
   }
   if (!values) {
     throw new FormatError('Message has placeholders but no values was given');
@@ -308,7 +318,7 @@ export function formatXMLMessage(
 
   // No tags to format
   if (!tagsToFormat.length) {
-    return [formattedMessage];
+    return restoreRichPlaceholderMessage(formattedMessage, objectParts);
   }
 
   const childNodes = Array.prototype.slice.call(content.childNodes);
@@ -316,22 +326,21 @@ export function formatXMLMessage(
     (reconstructedChunks, { tagName, outerHTML, textContent }: Element) => {
       // Regular text
       if (!tagName) {
-        const chunks = (textContent || '').split(TOKEN_REGEX).filter(Boolean);
-        return reconstructedChunks.concat(
-          ...chunks.map(c => objectParts[c] || c)
+        const chunks = restoreRichPlaceholderMessage(
+          textContent || '',
+          objectParts
         );
+        return reconstructedChunks.concat(chunks);
       }
 
       // Legacy HTML
       if (!values[tagName]) {
-        const chunks = outerHTML.split(TOKEN_REGEX).filter(Boolean);
+        const chunks = restoreRichPlaceholderMessage(outerHTML, objectParts);
         if (chunks.length === 1) {
           return reconstructedChunks.concat([chunks[0]]);
         }
 
-        return reconstructedChunks.concat(
-          ...chunks.map(c => objectParts[c] || c)
-        );
+        return reconstructedChunks.concat(chunks);
       }
 
       // XML Tag replacement
@@ -342,10 +351,8 @@ export function formatXMLMessage(
             formatFnOrValue(textContent || undefined)
           ]);
         }
-        const chunks = textContent.split(TOKEN_REGEX).filter(Boolean);
-        return reconstructedChunks.concat([
-          formatFnOrValue(...chunks.map(c => objectParts[c] || c))
-        ]);
+        const chunks = restoreRichPlaceholderMessage(textContent, objectParts);
+        return reconstructedChunks.concat([formatFnOrValue(...chunks)]);
       }
       return reconstructedChunks.concat([formatFnOrValue as object]);
     },

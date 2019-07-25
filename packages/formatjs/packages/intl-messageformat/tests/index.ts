@@ -515,6 +515,14 @@ describe('IntlMessageFormat', function() {
       ]);
     });
     it('simple message w/ placeholder', function() {
+      var mf = new IntlMessageFormat('hello {placeholder}', 'en');
+      expect(
+        mf.formatXMLMessage({
+          placeholder: { name: 'gaga' }
+        })
+      ).to.deep.equal(['hello ', { name: 'gaga' }]);
+    });
+    it('simple message w/ placeholder', function() {
       var mf = new IntlMessageFormat(
         'hello <b>world</b> <a>{placeholder}</a>',
         'en'
