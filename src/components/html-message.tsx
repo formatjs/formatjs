@@ -7,10 +7,10 @@
 import * as React from 'react';
 import withIntl from './injectIntl';
 import {BaseFormattedMessage} from './message';
-import {MessageFormatPrimitiveValue} from '../types';
+import { PrimitiveType } from 'intl-messageformat/core';
 
 class FormattedHTMLMessage extends BaseFormattedMessage<
-  MessageFormatPrimitiveValue
+  PrimitiveType
 > {
   static defaultProps = {
     ...BaseFormattedMessage.defaultProps,
