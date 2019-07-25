@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.2](https://github.com/formatjs/formatjs/compare/intl-messageformat@5.4.1...intl-messageformat@5.4.2) (2019-07-25)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** Include Date in PrimitiveType ([1feca57](https://github.com/formatjs/formatjs/commit/1feca57)), closes [#127](https://github.com/formatjs/formatjs/issues/127)
+
+
+
+
+
 ## [5.4.1](https://github.com/formatjs/formatjs/compare/intl-messageformat@5.4.0...intl-messageformat@5.4.1) (2019-07-25)
 
 
