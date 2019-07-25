@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.1](https://github.com/formatjs/formatjs/compare/intl-messageformat@5.4.0...intl-messageformat@5.4.1) (2019-07-25)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** fix formatXMLMessage w/o tag ([8d3bfcd](https://github.com/formatjs/formatjs/commit/8d3bfcd))
+
+
+
+
+
 # [5.4.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@5.3.0...intl-messageformat@5.4.0) (2019-07-25)
 
 
