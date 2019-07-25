@@ -50,7 +50,7 @@ export interface ArgumentPart {
 
 export type MessageFormatPart = LiteralPart | ArgumentPart;
 
-export type PrimitiveType = string | number | boolean | null | undefined;
+export type PrimitiveType = string | number | boolean | null | undefined | Date;
 
 const ESCAPE_HASH_REGEX = /\\#/g;
 

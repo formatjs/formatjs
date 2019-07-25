@@ -591,7 +591,7 @@ describe('IntlMessageFormat', function() {
         }
       }
     });
-    expect(mf.format({ time: 0 })).to.include(
+    expect(mf.format({ time: new Date(0) })).to.include(
       new Intl.DateTimeFormat('en', {
         month: 'long',
         day: 'numeric',
