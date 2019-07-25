@@ -538,6 +538,14 @@ describe('IntlMessageFormat', function() {
         })
       ).to.deep.equal(['hello <b>world</b> <a>gaga</a>']);
     });
+    it('should handle self-closing tag', function() {
+      var mf = new IntlMessageFormat('hello <foo/> test', 'en');
+      expect(
+        mf.formatXMLMessage({
+          foo: {}
+        })
+      ).to.deep.equal(['hello ', {}, ' test']);
+    });
   });
 
   it('custom formats should work for time', function() {

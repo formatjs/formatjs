@@ -245,7 +245,7 @@ export function formatXMLMessage(
   locales: string | string[],
   formatters: Formatters,
   formats: Formats,
-  values?: Record<string, PrimitiveType | FormatXMLElementFn>,
+  values?: Record<string, PrimitiveType | object | FormatXMLElementFn>,
   // For debugging
   originalMessage?: string
 ): Array<string | object> {
@@ -308,8 +308,14 @@ export function formatXMLMessage(
       // Legacy HTML
       reconstructedChunks.push(node.outerHTML);
     } else {
-      const formatFn = values[tagName] as FormatXMLElementFn;
-      reconstructedChunks.push(formatFn(node.textContent || undefined));
+      const formatFnOrValue = values[tagName];
+      if (typeof formatFnOrValue === 'function') {
+        reconstructedChunks.push(
+          formatFnOrValue(node.textContent || undefined)
+        );
+      } else {
+        reconstructedChunks.push(formatFnOrValue as object);
+      }
     }
   }
   return reconstructedChunks;

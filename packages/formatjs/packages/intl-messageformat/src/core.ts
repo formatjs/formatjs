@@ -203,7 +203,7 @@ export class IntlMessageFormat {
       this.message
     );
   formatXMLMessage = (
-    values?: Record<string, PrimitiveType | FormatXMLElementFn>
+    values?: Record<string, PrimitiveType | object | FormatXMLElementFn>
   ) =>
     formatXMLMessage(
       this.ast,
