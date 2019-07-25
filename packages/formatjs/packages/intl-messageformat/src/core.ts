@@ -21,7 +21,10 @@ import {
   Formatters,
   Formats,
   formatToString,
-  formatToParts
+  formatToParts,
+  FormatXMLElementFn,
+  formatXMLMessage,
+  PrimitiveType
 } from './formatters';
 
 // -- MessageFormat --------------------------------------------------------
@@ -180,9 +183,7 @@ export class IntlMessageFormat {
     prewarmFormatters(this.ast, this.locale, this.formatters, this.formats);
   }
 
-  format = (
-    values?: Record<string, string | number | boolean | null | undefined>
-  ) =>
+  format = (values?: Record<string, PrimitiveType>) =>
     formatToString(
       this.ast,
       this.locale,
@@ -194,6 +195,17 @@ export class IntlMessageFormat {
 
   formatToParts = (values?: Record<string, any>) =>
     formatToParts(
+      this.ast,
+      this.locale,
+      this.formatters,
+      this.formats,
+      values,
+      this.message
+    );
+  formatXMLMessage = (
+    values?: Record<string, PrimitiveType | FormatXMLElementFn>
+  ) =>
+    formatXMLMessage(
       this.ast,
       this.locale,
       this.formatters,

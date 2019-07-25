@@ -77,7 +77,8 @@
     "ts-node": "^8.1.0",
     "ts-pegjs": "^0.2.5",
     "tslib": "^1.10.0",
-    "typescript": "^3.4.5"
+    "typescript": "^3.4.5",
+    "xmldom": "^0.1.27"
   },
   "devEngines": {
     "node": "8.x || 10.x || 12.x",

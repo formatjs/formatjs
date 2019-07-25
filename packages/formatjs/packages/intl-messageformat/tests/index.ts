@@ -506,6 +506,40 @@ describe('IntlMessageFormat', function() {
     });
   });
 
+  describe('xml', function() {
+    it('simple message', function() {
+      var mf = new IntlMessageFormat('hello <b>world</b>', 'en');
+      expect(mf.formatXMLMessage({ b: str => ({ str }) })).to.deep.equal([
+        'hello ',
+        { str: 'world' }
+      ]);
+    });
+    it('simple message w/ placeholder', function() {
+      var mf = new IntlMessageFormat(
+        'hello <b>world</b> <a>{placeholder}</a>',
+        'en'
+      );
+      expect(
+        mf.formatXMLMessage({
+          b: str => ({ str }),
+          placeholder: 'gaga',
+          a: str => ({ str })
+        })
+      ).to.deep.equal(['hello ', { str: 'world' }, ' ', { str: 'gaga' }]);
+    });
+    it('should treat tag as legacy HTML if no value is provided', function() {
+      var mf = new IntlMessageFormat(
+        'hello <b>world</b> <a>{placeholder}</a>',
+        'en'
+      );
+      expect(
+        mf.formatXMLMessage({
+          placeholder: 'gaga'
+        })
+      ).to.deep.equal(['hello <b>world</b> <a>gaga</a>']);
+    });
+  });
+
   it('custom formats should work for time', function() {
     var msg = 'Today is {time, time, verbose}';
     var mf = new IntlMessageFormat(msg, 'en', {

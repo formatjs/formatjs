@@ -41,7 +41,7 @@
     "karma:ci": "karma start karma.conf-ci.js",
     "karma:local": "karma start karma.conf.js",
     "rollup": "rollup -c rollup.config.js",
-    "test": "TS_NODE_PROJECT='./tsconfig.cjs.json' mocha --opts ../../mocha.opts tests/index.ts",
+    "test": "TS_NODE_PROJECT='./tsconfig.cjs.json' mocha --opts ../../mocha.opts -r tests/setup.js tests/index.ts",
     "tsc:core": "tsc -p tsconfig.core.json",
     "tsc": "tsc -p src/tsconfig.json && tsc -p src/tsconfig.cjs.json"
   },

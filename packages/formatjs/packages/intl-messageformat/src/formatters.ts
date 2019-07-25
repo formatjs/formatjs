@@ -50,6 +50,8 @@ export interface ArgumentPart {
 
 export type MessageFormatPart = LiteralPart | ArgumentPart;
 
+export type PrimitiveType = string | number | boolean | null | undefined;
+
 const ESCAPE_HASH_REGEX = /\\#/g;
 
 class FormatError extends Error {
@@ -214,7 +216,7 @@ export function formatToString(
   locales: string | string[],
   formatters: Formatters,
   formats: Formats,
-  values?: Record<string, string | number | boolean | null | undefined>,
+  values?: Record<string, PrimitiveType>,
   // For debugging
   originalMessage?: string
 ): string {
@@ -231,4 +233,84 @@ export function formatToString(
     return parts[0].value;
   }
   return parts.reduce((all, part) => (all += part.value), '');
+}
+
+export type FormatXMLElementFn = (str?: string) => string | object;
+
+// Singleton
+let domParser: DOMParser;
+
+export function formatXMLMessage(
+  els: MessageFormatElement[],
+  locales: string | string[],
+  formatters: Formatters,
+  formats: Formats,
+  values?: Record<string, PrimitiveType | FormatXMLElementFn>,
+  // For debugging
+  originalMessage?: string
+): Array<string | object> {
+  const parts = formatToParts(
+    els,
+    locales,
+    formatters,
+    formats,
+    values,
+    originalMessage
+  );
+  const formattedMessage = parts.reduce((all, part) => (all += part.value), '');
+
+  // Not designed to filter out aggressively
+  if (!~formattedMessage.indexOf('<')) {
+    return [formattedMessage];
+  }
+  if (!values) {
+    throw new FormatError('Message has placeholders but no values was given');
+  }
+  if (typeof DOMParser === 'undefined') {
+    throw new FormatError('Cannot format XML message without DOMParser');
+  }
+  if (!domParser) {
+    domParser = new DOMParser();
+  }
+  // XML, not HTML since HTMl is strict about self-closing tag
+  const dom = domParser.parseFromString(
+    `<template>${formattedMessage}</template>`,
+    'application/xml'
+  );
+  if (dom.getElementsByTagName('parsererror').length) {
+    throw new FormatError(
+      `Malformed XML message ${
+        dom.getElementsByTagName('parsererror')[0].innerHTML
+      }`
+    );
+  }
+  const content = dom.firstChild as Element;
+  if (!content) {
+    throw new FormatError(`Malformed XML message ${formattedMessage}`);
+  }
+  const tagsToFormat = Object.keys(values).filter(
+    varName => !!dom.getElementsByTagName(varName).length
+  );
+
+  // No tags to format
+  if (!tagsToFormat.length) {
+    return [formattedMessage];
+  }
+
+  const reconstructedChunks: Array<string | object> = [];
+  for (let i = 0; i < content.childNodes.length; i++) {
+    const node = content.childNodes[i] as Element;
+    const { tagName } = node;
+    if (!tagName) {
+      // Regular text
+      reconstructedChunks.push(node.textContent || '');
+    } else if (!values[tagName]) {
+      // Legacy HTML
+      reconstructedChunks.push(node.outerHTML);
+    } else {
+      const formatFn = values[tagName] as FormatXMLElementFn;
+      reconstructedChunks.push(formatFn(node.textContent || undefined));
+    }
+  }
+  return reconstructedChunks;
 }

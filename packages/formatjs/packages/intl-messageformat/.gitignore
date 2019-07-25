@@ -4,3 +4,4 @@ tests/*.js*
 .tsbuildinfo
 core.js
 core.d.ts
+!tests/setup.js

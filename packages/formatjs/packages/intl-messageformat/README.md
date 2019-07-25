@@ -158,6 +158,16 @@ _Note: A value **must** be supplied for every argument in the message pattern th
 
 Return the underlying AST for the compiled message
 
+#### `formatXMLMessage` method
+
+Formats message containing XML tags & can be used to embed rich text formatters such as React. For example:
+
+```tsx
+var mf = new IntlMessageFormat('hello <b>world</b>', 'en');
+mf.formatXMLMessage({ b: str => <span>{str}</span> });
+// returns ['hello ', React element rendered as <span>world</span>]
+```
+
 #### User Defined Formats
 
 Define custom format styles is useful you need supply a set of options to the underlying formatter; e.g., outputting a number in USD:
