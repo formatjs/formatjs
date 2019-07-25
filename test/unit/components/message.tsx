@@ -111,7 +111,7 @@ describe('<FormattedMessage>', () => {
     expect(rendered.text()).toBe('Jest');
   });
 
-  describe('rich text', function () {
+  describe('rich text', function() {
     it('supports legacy behavior', () => {
       const rendered = mountWithProvider(
         {
@@ -123,7 +123,7 @@ describe('<FormattedMessage>', () => {
         },
         intl
       );
-  
+
       const nameNode = rendered.find('b');
       expect(nameNode.type()).toBe('b');
       expect(nameNode.text()).toBe('Jest');
@@ -140,12 +140,12 @@ describe('<FormattedMessage>', () => {
         },
         intl
       );
-  
+
       const nameNode = rendered.find('b');
       expect(nameNode.type()).toBe('b');
       expect(nameNode.text()).toBe('Jest');
     });
-  
+
     it('supports rich-text message formatting w/ self-closing tag', () => {
       const rendered = mountWithProvider(
         {
@@ -157,12 +157,12 @@ describe('<FormattedMessage>', () => {
         },
         intl
       );
-  
+
       const nameNode = rendered.find('b');
       expect(nameNode.type()).toBe('b');
       expect(nameNode.text()).toBe('Jest');
     });
-  
+
     it('supports rich-text message formatting in function-as-child pattern', () => {
       const rendered = mountWithProvider(
         {
@@ -175,14 +175,12 @@ describe('<FormattedMessage>', () => {
         },
         intl
       );
-  
+
       const nameNode = rendered.find('b');
       expect(nameNode.type()).toBe('b');
       expect(nameNode.text()).toBe('Jest');
     });
-  })
-
-  
+  });
 
   it('should re-render when `values` are different', () => {
     const descriptor = {
