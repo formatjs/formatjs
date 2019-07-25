@@ -31,8 +31,6 @@
 <IntlProvider textComponent="span" />
 ```
 
-- Rich text formatting enhancement in `FormattedMessage` & `formatMessage`
-
 ## Use React 16.3 and upwards
 
 React Intl v3 supports the new context API, fixing all kinds of tree update problems :tada:
@@ -280,15 +278,17 @@ The change solves several issues:
 1. Contextual information was lost when you need to style part of the string: In this example above, `link` effectively is a blackbox placeholder to a translator. It can be a person, an animal, or a timestamp. Conveying contextual information via `description` & `placeholder` variable is often not enough since the variable can get sufficiently complicated.
 2. This brings feature-parity with other translation libs, such as [fluent](https://projectfluent.org/) by Mozilla (using Overlays).
 
-However, in cases where we allow placeholders to be a ReactElement will have to be rewritten to 1 of the 2 syntax down below:
+If previously in cases where you pass in a `ReactElement` to a placeholder we highly recommend that you rethink the structure so that as much text is declared as possible:
 
 ### Before
 
 ```tsx
 <FormattedMessage
-  defaultMessage="Hello, {name}"
+  defaultMessage="Hello, {name} is {awesome} and {fun}"
   values={{
     name: <b>John</b>,
+    awesome: <span style="font-weight: bold;">awesome</span>
+    fun: <span>fun and <FormattedTime value={Date.now()}/></span>
   }}
 />
 ```
@@ -297,20 +297,11 @@ However, in cases where we allow placeholders to be a ReactElement will have to 
 
 ```tsx
 <FormattedMessage
-  defaultMessage="Hello, <b>John</b>"
+  defaultMessage="Hello, <b>John</b> is <custom>awesome</custom> and <more>fun and {ts, time}</more>"
   values={{
     b: name => <b>{name}</b>,
-  }}
-/>
-```
-
-OR (NOT RECOMMENDED)
-
-```tsx
-<FormattedMessage
-  defaultMessage="Hello, <name/>"
-  values={{
-    name: <b>{John}</b>,
+    custom: str => <span style="font-weight: bold;">{str}</span>,
+    more: (...chunks) => <span>{chunks}</span>,
   }}
 />
 ```
