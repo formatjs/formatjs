@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.4.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@5.3.0...intl-messageformat@5.4.0) (2019-07-25)
+
+
+### Features
+
+* **intl-messageformat:** allow mixed placeholder & XML together… ([#126](https://github.com/formatjs/formatjs/issues/126)) ([4a624c0](https://github.com/formatjs/formatjs/commit/4a624c0))
+
+
+
+
+
 # [5.3.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@5.2.0...intl-messageformat@5.3.0) (2019-07-25)
 
 
