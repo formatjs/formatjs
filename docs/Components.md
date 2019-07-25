@@ -452,10 +452,10 @@ By default `<FormattedMessage>` will render the formatted string into a `<span>`
 <FormattedMessage
   id="app.greeting"
   description="Greeting to welcome the user to the app"
-  defaultMessage="Hello, <b>Eric</b> <icon/>"
+  defaultMessage="Hello, <b>Eric</b> {icon}"
   values={{
     b: msg => <b>{msg}</b>,
-    icon: () => <svg />,
+    icon: <svg />,
   }}
 />
 ```
