@@ -8,10 +8,10 @@
   - [The `react-intl` Package](#the-react-intl-package)
     - [Module Bundlers](#module-bundlers)
   - [The React Intl Module](#the-react-intl-module)
-  - [`Intl` APIs requirements](#intl-apis-requirements)
-    - [Intl in browser](#intl-in-browser)
-    - [Intl in Node.js](#intl-in-nodejs)
-    - [Intl in React Native](#intl-in-react-native)
+  - [Runtime Requirements](#runtime-requirements)
+    - [Browser](#browser)
+    - [Node.js](#nodejs)
+    - [React Native](#react-native)
   - [Creating an I18n Context](#creating-an-i18n-context)
   - [Formatting Data](#formatting-data)
 - [Core Concepts](#core-concepts)
@@ -90,7 +90,7 @@ Whether you use the ES6, CommonJS, or UMD version of React Intl, they all provid
 
 **Note:** When using the UMD version of React Intl _without_ a module system, it will expect `react` to exist on the global variable: **`React`**, and put the above named exports on the global variable: **`ReactIntl`**.
 
-### `Intl` APIs requirements
+### Runtime Requirements
 
 React Intl relies on these `Intl` APIs:
 
@@ -109,11 +109,11 @@ import '@formatjs/intl-relativetimeformat/polyfill';
 import '@formatjs/intl-relativetimeformat/dist/locale-data/de'; // Add locale data for de
 ```
 
-#### Intl in browser
+#### Browser
 
 We officially support IE11 along with modern browsers (Chrome/FF/Edge/Safari).
 
-#### Intl in Node.js
+#### Node.js
 
 When using React Intl in Node.js, your `node` binary has to either:
 
@@ -125,12 +125,16 @@ When using React Intl in Node.js, your `node` binary has to either:
 
 If your `node` version is missing any of the `Intl` APIs above, you'd have to polyfill them accordingly.
 
-#### Intl in React Native
+We also rely on `DOMParser` to format rich text, thus for Node will need to polyfill using [xmldom](https://github.com/jindw/xmldom).
+
+#### React Native
 
 If you're using `react-intl` in React Native, make sure your runtime has built-in `Intl` support (similar to [JSC International variant](https://github.com/react-native-community/jsc-android-buildscripts#international-variant)). See these issues for more details:
 
 - https://github.com/formatjs/react-intl/issues/1356
 - https://github.com/formatjs/react-intl/issues/992
+
+We also rely on `DOMParser` to format rich text, thus for JSC will need to polyfill using [xmldom](https://github.com/jindw/xmldom).
 
 ### Creating an I18n Context
 

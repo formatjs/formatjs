@@ -446,15 +446,16 @@ By default `<FormattedMessage>` will render the formatted string into a `<span>`
 
 #### Rich Text Formatting
 
-`<FormattedMessage>` also supports rich-text formatting by passing React elements to the `values` prop. In the message you need to use a simple argument (e.g., `{name}`); here's an example:
+`<FormattedMessage>` also supports rich-text formatting by specifying a XML tag in the message & resolving that tag in the `values` prop. Here's an example:
 
-```js
+```tsx
 <FormattedMessage
   id="app.greeting"
   description="Greeting to welcome the user to the app"
-  defaultMessage="Hello, {name}!"
+  defaultMessage="Hello, <b>Eric</b> <icon/>"
   values={{
-    name: <b>Eric</b>,
+    b: msg => <b>{msg}</b>,
+    icon: () => <svg />,
   }}
 />
 ```
@@ -463,7 +464,25 @@ By default `<FormattedMessage>` will render the formatted string into a `<span>`
 <span>Hello, <b>Eric</b>!</span>
 ```
 
-This allows messages to still be defined as a plain string _without_ HTML — making it easier for it to be translated. At runtime, React will also optimize this by only re-rendering the variable parts of the message when they change. In the above example, if the user changed their name, React would only need to update the contents of the `<b>` element.
+By allowing embedding XML tag we want to make sure contextual information is not lost when you need to style part of the string. In a more complicated example like:
+
+```tsx
+<FormattedMessage
+  defaultMessage="To buy a shoe, <a>visit our website</a> and <cta>buy a shoe</cta>"
+  values={{
+    link: msg => (
+      <a class="external_link" target="_blank" href="https://www.shoe.com/">
+        {msg}
+      </a>
+    ),
+    cta: msg => <strong class="important">{msg}</strong>,
+  }}
+/>
+```
+
+All the rich text gets translated together which yields higher quality output. This brings feature-parity with other translation libs as well, such as [fluent](https://projectfluent.org/) by Mozilla (using `overlays` concept).
+
+Extending this also allows users to potentially utilizing other rich text format, like [Markdown](https://daringfireball.net/projects/markdown/).
 
 ### `FormattedHTMLMessage`
 

@@ -6,11 +6,7 @@
 
 import * as React from 'react';
 import withIntl from './injectIntl';
-import {
-  MessageDescriptor,
-  IntlShape,
-  MessageFormatPrimitiveValue,
-} from '../types';
+import {MessageDescriptor, IntlShape} from '../types';
 const shallowEquals = require('shallow-equal/objects');
 
 import {formatMessage as baseFormatMessage} from '../format';
@@ -19,10 +15,11 @@ import {
   DEFAULT_INTL_CONFIG,
   createDefaultFormatters,
 } from '../utils';
+import {PrimitiveType, FormatXMLElementFn} from 'intl-messageformat/core';
 
 const defaultFormatMessage = (
   descriptor: MessageDescriptor,
-  values?: Record<string, MessageFormatPrimitiveValue | React.ReactElement>
+  values?: Record<string, PrimitiveType | FormatXMLElementFn>
 ) => {
   if (process.env.NODE_ENV !== 'production') {
     console.error(
@@ -50,9 +47,9 @@ export interface Props<V extends React.ReactNode = React.ReactNode>
 }
 
 export class BaseFormattedMessage<
-  V extends MessageFormatPrimitiveValue | React.ReactElement =
-    | MessageFormatPrimitiveValue
-    | React.ReactElement
+  V extends PrimitiveType | FormatXMLElementFn =
+    | PrimitiveType
+    | FormatXMLElementFn
 > extends React.Component<Props<V>> {
   static defaultProps = {
     values: {},

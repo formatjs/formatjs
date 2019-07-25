@@ -9,7 +9,9 @@
 - [Migrate to using native Intl APIs](#migrate-to-using-native-intl-apis)
 - [TypeScript Support](#typescript-support)
 - [FormattedRelativeTime](#formattedrelativetime)
-- [`formatMessage` now supports `ReactElement`](#formatmessage-now-supports-reactelement)
+- [Enhanced `FormattedMessage` & `formatMessage` rich text formatting](#enhanced-formattedmessage--formatmessage-rich-text-formatting)
+  - [Before](#before)
+  - [After](#after)
 - [ESM Build](#esm-build)
   - [Jest](#jest)
   - [webpack babel-loader](#webpack-babel-loader)
@@ -28,6 +30,8 @@
 ```tsx
 <IntlProvider textComponent="span" />
 ```
+
+- Rich text formatting enhancement in `FormattedMessage` & `formatMessage`
 
 ## Use React 16.3 and upwards
 
@@ -237,32 +241,78 @@ const {value, unit} = selectUnit(Date.now() - 48 * 3600 * 1000);
 <FormattedRelativeTime value={value} unit={unit} />;
 ```
 
-## `formatMessage` now supports `ReactElement`
+## Enhanced `FormattedMessage` & `formatMessage` rich text formatting
 
-The imperative API `formatMessage` now supports `ReactElement` in values and will resolve type correctly. This change should be backwards-compatible since for regular non-`ReactElement` values it will still return a `string`, but for rich text like the example down below, it will return a `Array<string, React.ReactElement>`:
-
-```ts
-const messages = defineMessages({
-  greeting: {
-    id: 'app.greeting',
-    defaultMessage: 'Hello, {name}!',
-    description: 'Greeting to welcome the user to the app',
-  },
-});
-
-formatMessage(messages.greeting, {name: 'Eric'}); // "Hello, Eric!"
-```
+In v2, in order to do rich text formatting (embedding a `ReactElement`), you had to do this:
 
 ```tsx
-const messages = defineMessages({
-  greeting: {
-    id: 'app.greeting',
-    defaultMessage: 'Hello, {name}!',
-    description: 'Greeting to welcome the user to the app',
-  },
-});
+<FormattedMessage
+  defaultMessage="To buy a shoe, { link } and { cta }"
+  values={{
+    link: (
+      <a class="external_link" target="_blank" href="https://www.shoe.com/">
+        visit our website
+      </a>
+    ),
+    cta: <strong class="important">eat a shoe</strong>,
+  }}
+/>
+```
 
-formatMessage(messages.greeting, {name: <b>Eric</b>}); // ['Hello, ', <b>Eric</b>, '!']
+Now you can do:
+
+```tsx
+<FormattedMessage
+  defaultMessage="To buy a shoe, <a>visit our website</a> and <cta>eat a shoe</cta>"
+  values={{
+    link: msg => (
+      <a class="external_link" target="_blank" href="https://www.shoe.com/">
+        {msg}
+      </a>
+    ),
+    cta: msg => <strong class="important">{msg}</strong>,
+  }}
+/>
+```
+
+The change solves several issues:
+
+1. Contextual information was lost when you need to style part of the string: In this example above, `link` effectively is a blackbox placeholder to a translator. It can be a person, an animal, or a timestamp. Conveying contextual information via `description` & `placeholder` variable is often not enough since the variable can get sufficiently complicated.
+2. This brings feature-parity with other translation libs, such as [fluent](https://projectfluent.org/) by Mozilla (using Overlays).
+
+However, in cases where we allow placeholders to be a ReactElement will have to be rewritten to 1 of the 2 syntax down below:
+
+### Before
+
+```tsx
+<FormattedMessage
+  defaultMessage="Hello, {name}"
+  values={{
+    name: <b>John</b>,
+  }}
+/>
+```
+
+### After
+
+```tsx
+<FormattedMessage
+  defaultMessage="Hello, <b>John</b>"
+  values={{
+    b: name => <b>{name}</b>,
+  }}
+/>
+```
+
+OR (NOT RECOMMENDED)
+
+```tsx
+<FormattedMessage
+  defaultMessage="Hello, <name/>"
+  values={{
+    name: () => <b>{John}</b>,
+  }}
+/>
 ```
 
 ## ESM Build

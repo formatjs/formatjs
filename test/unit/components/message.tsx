@@ -1,7 +1,5 @@
 import * as React from 'react';
-import FormattedMessage, {
-  BaseFormattedMessage,
-} from '../../../src/components/message';
+import FormattedMessage from '../../../src/components/message';
 import {generateIntlContext} from '../../../src/test-utils';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 import {mount} from 'enzyme';
@@ -117,9 +115,27 @@ describe('<FormattedMessage>', () => {
     const rendered = mountWithProvider(
       {
         id: 'hello',
-        defaultMessage: 'Hello, {name}!',
+        defaultMessage: 'Hello, <b>{name}</b>!',
         values: {
-          name: <b>Jest</b>,
+          name: 'Jest',
+          b: (name: string) => <b>{name}</b>,
+        },
+      },
+      intl
+    );
+
+    const nameNode = rendered.find('b');
+    expect(nameNode.type()).toBe('b');
+    expect(nameNode.text()).toBe('Jest');
+  });
+
+  it('supports rich-text message formatting w/ self-closing tag', () => {
+    const rendered = mountWithProvider(
+      {
+        id: 'hello',
+        defaultMessage: 'Hello, <name/>',
+        values: {
+          name: () => <b>Jest</b>,
         },
       },
       intl
@@ -134,11 +150,12 @@ describe('<FormattedMessage>', () => {
     const rendered = mountWithProvider(
       {
         id: 'hello',
-        defaultMessage: 'Hello, {name}!',
+        defaultMessage: 'Hello, <b>{name}</b>!',
         values: {
-          name: <b>Jest</b>,
+          name: 'Jest',
+          b: (name: string) => <b>{name}</b>,
         },
-        children: (...formattedMessage) => <strong>{formattedMessage}</strong>,
+        children: (...chunks) => <strong>{chunks}</strong>,
       },
       intl
     );

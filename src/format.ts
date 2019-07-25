@@ -21,7 +21,6 @@ import {
   FormatNumberOptions,
   FormatPluralOptions,
   MessageDescriptor,
-  MessageFormatPrimitiveValue,
 } from './types';
 
 import {createError, escape, filterProps} from './utils';
@@ -30,7 +29,7 @@ import {
   FormattableUnit,
 } from '@formatjs/intl-relativetimeformat';
 import {LiteralElement, TYPE} from 'intl-messageformat-parser';
-import {MessageFormatPart} from 'intl-messageformat/core';
+import {FormatXMLElementFn, PrimitiveType} from 'intl-messageformat/core';
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'localeMatcher',
@@ -267,7 +266,7 @@ export function formatMessage(
   >,
   state: Formatters,
   messageDescriptor?: MessageDescriptor,
-  values?: Record<string, MessageFormatPrimitiveValue>
+  values?: Record<string, PrimitiveType>
 ): string;
 export function formatMessage(
   {
@@ -288,7 +287,7 @@ export function formatMessage(
   >,
   state: Formatters,
   messageDescriptor: MessageDescriptor = {id: ''},
-  values: Record<string, MessageFormatPrimitiveValue | React.ReactElement> = {}
+  values: Record<string, PrimitiveType | FormatXMLElementFn> = {}
 ): string | React.ReactNodeArray {
   const {id, defaultMessage} = messageDescriptor;
 
@@ -312,7 +311,7 @@ export function formatMessage(
     return (val[0] as LiteralElement).value;
   }
 
-  let formattedMessageParts: MessageFormatPart[] = [];
+  let formattedMessageParts: Array<string | object> = [];
 
   if (message) {
     try {
@@ -320,7 +319,7 @@ export function formatMessage(
         formatters: state,
       });
 
-      formattedMessageParts = formatter.formatToParts(values);
+      formattedMessageParts = formatter.formatXMLMessage(values);
     } catch (e) {
       onError(
         createError(
@@ -355,7 +354,7 @@ export function formatMessage(
         defaultFormats
       );
 
-      formattedMessageParts = formatter.formatToParts(values);
+      formattedMessageParts = formatter.formatXMLMessage(values);
     } catch (e) {
       onError(
         createError(`Error formatting the default message for: "${id}"`, e)
@@ -377,9 +376,13 @@ export function formatMessage(
     }
     return defaultMessage || id;
   }
-  return formattedMessageParts.length === 1
-    ? formattedMessageParts[0].value || defaultMessage || id
-    : formattedMessageParts.map(part => part.value);
+  if (
+    formattedMessageParts.length === 1 &&
+    typeof formattedMessageParts[0] === 'string'
+  ) {
+    return (formattedMessageParts[0] as string) || defaultMessage || id;
+  }
+  return formattedMessageParts;
 }
 
 export function formatHTMLMessage(
@@ -394,7 +397,7 @@ export function formatHTMLMessage(
   >,
   state: Formatters,
   messageDescriptor: MessageDescriptor = {id: ''},
-  rawValues: Record<string, MessageFormatPrimitiveValue> = {}
+  rawValues: Record<string, PrimitiveType> = {}
 ) {
   // Process all the values before they are used when formatting the ICU
   // Message string. Since the formatted message might be injected via
