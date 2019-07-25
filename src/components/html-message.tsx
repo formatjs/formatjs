@@ -7,11 +7,9 @@
 import * as React from 'react';
 import withIntl from './injectIntl';
 import {BaseFormattedMessage} from './message';
-import {MessageFormatPrimitiveValue} from '../types';
+import {PrimitiveType} from 'intl-messageformat/core';
 
-class FormattedHTMLMessage extends BaseFormattedMessage<
-  MessageFormatPrimitiveValue
-> {
+class FormattedHTMLMessage extends BaseFormattedMessage<PrimitiveType> {
   static defaultProps = {
     ...BaseFormattedMessage.defaultProps,
     tagName: 'span' as 'span',

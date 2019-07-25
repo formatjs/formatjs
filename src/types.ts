@@ -4,7 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 import * as React from 'react';
-import {IntlMessageFormat, Formats} from 'intl-messageformat/core';
+import {
+  IntlMessageFormat,
+  Formats,
+  PrimitiveType,
+  FormatXMLElementFn,
+} from 'intl-messageformat/core';
 import IntlRelativeTimeFormat, {
   IntlRelativeTimeFormatOptions,
   FormattableUnit,
@@ -51,13 +56,6 @@ export type FormatPluralOptions = Exclude<
 > &
   CustomFormatConfig;
 
-export type MessageFormatPrimitiveValue =
-  | string
-  | number
-  | boolean
-  | null
-  | undefined;
-
 export interface IntlFormatters {
   formatDate(value: string | number | Date, opts: FormatDateOptions): string;
   formatTime(value: string | number | Date, opts: FormatDateOptions): string;
@@ -73,15 +71,15 @@ export interface IntlFormatters {
   ): ReturnType<Intl.PluralRules['select']>;
   formatMessage(
     descriptor: MessageDescriptor,
-    values?: Record<string, MessageFormatPrimitiveValue>
+    values?: Record<string, PrimitiveType>
   ): string;
   formatMessage(
     descriptor: MessageDescriptor,
-    values?: Record<string, MessageFormatPrimitiveValue | React.ReactElement>
+    values?: Record<string, PrimitiveType | FormatXMLElementFn>
   ): string | React.ReactNodeArray;
   formatHTMLMessage(
     descriptor: MessageDescriptor,
-    values?: Record<string, MessageFormatPrimitiveValue>
+    values?: Record<string, PrimitiveType>
   ): string;
 }
 

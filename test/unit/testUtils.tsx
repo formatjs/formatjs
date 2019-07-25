@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {shallow, mount} from 'enzyme';
-import {
-  invariantIntlContext,
-  createDefaultFormatters,
-  DEFAULT_INTL_CONFIG,
-} from '../../src/utils';
+import {mount} from 'enzyme';
 import {WithIntlProps} from '../../src/components/injectIntl';
 import Provider, {Props as ProviderProps} from '../../src/components/provider';
 
