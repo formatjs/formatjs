@@ -75,7 +75,10 @@ export interface IntlFormatters {
   ): string;
   formatMessage(
     descriptor: MessageDescriptor,
-    values?: Record<string, PrimitiveType | FormatXMLElementFn>
+    values?: Record<
+      string,
+      PrimitiveType | React.ReactElement | FormatXMLElementFn
+    >
   ): string | React.ReactNodeArray;
   formatHTMLMessage(
     descriptor: MessageDescriptor,

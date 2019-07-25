@@ -1,28 +1,31 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import {FormattedMessage, FormattedNumber, FormattedRelative} from 'react-intl';
+import {
+  FormattedMessage,
+  FormattedNumber,
+  FormattedRelativeTime,
+} from 'react-intl';
 
 const Greeting = ({name, unreadCount, lastLoginTime}) => (
   <p>
     <FormattedMessage
       id="greeting.welcome_message"
       defaultMessage={`
-                Welcome {name}, you have received {unreadCount, plural,
-                    =0 {no new messages}
-                    one {{formattedUnreadCount} new message}
-                    other {{formattedUnreadCount} new messages}
-                } since {formattedLastLoginTime}.
-            `}
+                    Welcome <b>{name}</b>, you have received {unreadCount, plural,
+                        =0 {no new messages}
+                        one {<b>#</b> new message}
+                        other {<b>#</b> new messages}
+                    } since <formattedLastLoginTime/>.
+                `}
       values={{
-        name: <b>{name}</b>,
-        unreadCount: unreadCount,
-        formattedUnreadCount: (
-          <b>
-            <FormattedNumber value={unreadCount} />
-          </b>
-        ),
-        formattedLastLoginTime: (
-          <FormattedRelative value={lastLoginTime} updateInterval={1000} />
+        name,
+        b: msg => <b>{msg}</b>,
+        unreadCount,
+        formattedLastLoginTime: () => (
+          <FormattedRelativeTime
+            value={lastLoginTime}
+            updateIntervalInSeconds={1}
+          />
         ),
       }}
     />

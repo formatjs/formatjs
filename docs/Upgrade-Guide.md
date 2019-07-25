@@ -310,7 +310,7 @@ OR (NOT RECOMMENDED)
 <FormattedMessage
   defaultMessage="Hello, <name/>"
   values={{
-    name: () => <b>{John}</b>,
+    name: <b>{John}</b>,
   }}
 />
 ```

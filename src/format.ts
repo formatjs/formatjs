@@ -287,7 +287,10 @@ export function formatMessage(
   >,
   state: Formatters,
   messageDescriptor: MessageDescriptor = {id: ''},
-  values: Record<string, PrimitiveType | FormatXMLElementFn> = {}
+  values: Record<
+    string,
+    PrimitiveType | React.ReactElement | FormatXMLElementFn
+  > = {}
 ): string | React.ReactNodeArray {
   const {id, defaultMessage} = messageDescriptor;
 

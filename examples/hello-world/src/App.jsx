@@ -17,11 +17,11 @@ class App extends Component {
       <p>
         <FormattedMessage
           id="welcome"
-          defaultMessage={`Hello {name}, you have {unreadCount, number} {unreadCount, plural,
+          defaultMessage={`Hello <name/>, you have {unreadCount, number} {unreadCount, plural,
                       one {message}
                       other {messages}
                     }`}
-          values={{name: <b>{name}</b>, unreadCount}}
+          values={{name: () => <b>{name}</b>, unreadCount}}
         />
       </p>
     );

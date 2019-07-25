@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import * as PropTypes from 'prop-types';
-import {FormattedMessage, FormattedNumber, FormattedRelative} from 'react-intl';
+import {FormattedMessage, FormattedRelative} from 'react-intl';
 
 class Greeting extends Component {
   render() {
@@ -11,21 +11,17 @@ class Greeting extends Component {
         <FormattedMessage
           id="greeting.welcome_message"
           defaultMessage={`
-                        Welcome {name}, you have received {unreadCount, plural,
+                        Welcome <b>{name}</b>, you have received {unreadCount, plural,
                             =0 {no new messages}
-                            one {{formattedUnreadCount} new message}
-                            other {{formattedUnreadCount} new messages}
-                        } since {formattedLastLoginTime}.
+                            one {<b>#</b> new message}
+                            other {<b>#</b> new messages}
+                        } since <formattedLastLoginTime/>.
                     `}
           values={{
-            name: <b>{user.name}</b>,
+            name: user.name,
+            b: msg => <b>{msg}</b>,
             unreadCount: user.unreadCount,
-            formattedUnreadCount: (
-              <b>
-                <FormattedNumber value={user.unreadCount} />
-              </b>
-            ),
-            formattedLastLoginTime: (
+            formattedLastLoginTime: () => (
               <FormattedRelative value={user.lastLoginTime} />
             ),
           }}

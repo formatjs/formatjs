@@ -19,7 +19,10 @@ import {PrimitiveType, FormatXMLElementFn} from 'intl-messageformat/core';
 
 const defaultFormatMessage = (
   descriptor: MessageDescriptor,
-  values?: Record<string, PrimitiveType | FormatXMLElementFn>
+  values?: Record<
+    string,
+    PrimitiveType | React.ReactElement | FormatXMLElementFn
+  >
 ) => {
   if (process.env.NODE_ENV !== 'production') {
     console.error(
@@ -47,8 +50,9 @@ export interface Props<V extends React.ReactNode = React.ReactNode>
 }
 
 export class BaseFormattedMessage<
-  V extends PrimitiveType | FormatXMLElementFn =
+  V extends PrimitiveType | React.ReactElement | FormatXMLElementFn =
     | PrimitiveType
+    | React.ReactElement
     | FormatXMLElementFn
 > extends React.Component<Props<V>> {
   static defaultProps = {

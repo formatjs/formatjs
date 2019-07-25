@@ -135,7 +135,7 @@ describe('<FormattedMessage>', () => {
         id: 'hello',
         defaultMessage: 'Hello, <name/>',
         values: {
-          name: () => <b>Jest</b>,
+          name: <b>Jest</b>,
         },
       },
       intl
@@ -150,10 +150,9 @@ describe('<FormattedMessage>', () => {
     const rendered = mountWithProvider(
       {
         id: 'hello',
-        defaultMessage: 'Hello, <b>{name}</b>!',
+        defaultMessage: 'Hello, <name/>',
         values: {
-          name: 'Jest',
-          b: (name: string) => <b>{name}</b>,
+          name: <b>Jest</b>,
         },
         children: (...chunks) => <strong>{chunks}</strong>,
       },
