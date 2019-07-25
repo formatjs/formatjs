@@ -121,6 +121,6 @@ describe('<FormattedHTMLMessage>', () => {
       intl
     ).html();
 
-    expect(renderedHtml).toBe('<span>Hello, <b>[object Object]</b>!</span>');
+    expect(renderedHtml).not.toBe('<span>Hello, <b><i>Eric</i></b>!</span>');
   });
 });

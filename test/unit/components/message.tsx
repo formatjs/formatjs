@@ -111,58 +111,78 @@ describe('<FormattedMessage>', () => {
     expect(rendered.text()).toBe('Jest');
   });
 
-  it('supports rich-text message formatting', () => {
-    const rendered = mountWithProvider(
-      {
-        id: 'hello',
-        defaultMessage: 'Hello, <b>{name}</b>!',
-        values: {
-          name: 'Jest',
-          b: (name: string) => <b>{name}</b>,
+  describe('rich text', function () {
+    it('supports legacy behavior', () => {
+      const rendered = mountWithProvider(
+        {
+          id: 'hello',
+          defaultMessage: 'Hello, {name}!',
+          values: {
+            name: <b>Jest</b>,
+          },
         },
-      },
-      intl
-    );
-
-    const nameNode = rendered.find('b');
-    expect(nameNode.type()).toBe('b');
-    expect(nameNode.text()).toBe('Jest');
-  });
-
-  it('supports rich-text message formatting w/ self-closing tag', () => {
-    const rendered = mountWithProvider(
-      {
-        id: 'hello',
-        defaultMessage: 'Hello, <name/>',
-        values: {
-          name: <b>Jest</b>,
+        intl
+      );
+  
+      const nameNode = rendered.find('b');
+      expect(nameNode.type()).toBe('b');
+      expect(nameNode.text()).toBe('Jest');
+    });
+    it('supports rich-text message formatting', () => {
+      const rendered = mountWithProvider(
+        {
+          id: 'hello',
+          defaultMessage: 'Hello, <b>{name}</b>!',
+          values: {
+            name: 'Jest',
+            b: (name: string) => <b>{name}</b>,
+          },
         },
-      },
-      intl
-    );
-
-    const nameNode = rendered.find('b');
-    expect(nameNode.type()).toBe('b');
-    expect(nameNode.text()).toBe('Jest');
-  });
-
-  it('supports rich-text message formatting in function-as-child pattern', () => {
-    const rendered = mountWithProvider(
-      {
-        id: 'hello',
-        defaultMessage: 'Hello, <name/>',
-        values: {
-          name: <b>Jest</b>,
+        intl
+      );
+  
+      const nameNode = rendered.find('b');
+      expect(nameNode.type()).toBe('b');
+      expect(nameNode.text()).toBe('Jest');
+    });
+  
+    it('supports rich-text message formatting w/ self-closing tag', () => {
+      const rendered = mountWithProvider(
+        {
+          id: 'hello',
+          defaultMessage: 'Hello, <name/>',
+          values: {
+            name: <b>Jest</b>,
+          },
         },
-        children: (...chunks) => <strong>{chunks}</strong>,
-      },
-      intl
-    );
+        intl
+      );
+  
+      const nameNode = rendered.find('b');
+      expect(nameNode.type()).toBe('b');
+      expect(nameNode.text()).toBe('Jest');
+    });
+  
+    it('supports rich-text message formatting in function-as-child pattern', () => {
+      const rendered = mountWithProvider(
+        {
+          id: 'hello',
+          defaultMessage: 'Hello, <name/>',
+          values: {
+            name: <b>Jest</b>,
+          },
+          children: (...chunks) => <strong>{chunks}</strong>,
+        },
+        intl
+      );
+  
+      const nameNode = rendered.find('b');
+      expect(nameNode.type()).toBe('b');
+      expect(nameNode.text()).toBe('Jest');
+    });
+  })
 
-    const nameNode = rendered.find('b');
-    expect(nameNode.type()).toBe('b');
-    expect(nameNode.text()).toBe('Jest');
-  });
+  
 
   it('should re-render when `values` are different', () => {
     const descriptor = {
