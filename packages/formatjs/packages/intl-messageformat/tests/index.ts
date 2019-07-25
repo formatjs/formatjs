@@ -515,12 +515,13 @@ describe('IntlMessageFormat', function() {
       ]);
     });
     it('simple message w/ placeholder', function() {
-      var mf = new IntlMessageFormat('hello {placeholder}', 'en');
+      var mf = new IntlMessageFormat('hello {placeholder} {var2}', 'en');
       expect(
         mf.formatXMLMessage({
-          placeholder: { name: 'gaga' }
+          placeholder: { name: 'gaga' },
+          var2: {foo: 1}
         })
-      ).to.deep.equal(['hello ', { name: 'gaga' }]);
+      ).to.deep.equal(['hello ', { name: 'gaga' }, ' ', {foo:1}]);
     });
     it('simple message w/ placeholder', function() {
       var mf = new IntlMessageFormat(

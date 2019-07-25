@@ -240,7 +240,7 @@ export type FormatXMLElementFn = (...args: any[]) => string | object;
 // Singleton
 let domParser: DOMParser;
 const TOKEN_DELIMITER = '@@';
-const TOKEN_REGEX = /@@(.*)@@/;
+const TOKEN_REGEX = /@@(.*?)@@/g;
 let counter = 0;
 function generateId() {
   return `${Date.now()}_${++counter}`;
