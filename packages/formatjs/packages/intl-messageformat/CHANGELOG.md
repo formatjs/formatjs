@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.3.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@5.2.0...intl-messageformat@5.3.0) (2019-07-25)
+
+
+### Features
+
+* **intl-messageformat:** allow passing in object to formatXMLMessage ([ce05b8a](https://github.com/formatjs/formatjs/commit/ce05b8a))
+
+
+
+
+
 # [5.2.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@5.1.2...intl-messageformat@5.2.0) (2019-07-25)
 
 
