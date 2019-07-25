@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.4.2...@formatjs/intl-relativetimeformat@2.4.3) (2019-07-25)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** Ignore error when setting name function properties on iOS 9 ([#129](https://github.com/formatjs/formatjs/issues/129)) ([62d4b06](https://github.com/formatjs/formatjs/commit/62d4b06)), closes [#128](https://github.com/formatjs/formatjs/issues/128)
+
+
+
+
+
 ## [2.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.4.1...@formatjs/intl-relativetimeformat@2.4.2) (2019-07-23)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat
