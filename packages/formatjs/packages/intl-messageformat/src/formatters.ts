@@ -235,10 +235,16 @@ export function formatToString(
   return parts.reduce((all, part) => (all += part.value), '');
 }
 
-export type FormatXMLElementFn = (str?: string) => string | object;
+export type FormatXMLElementFn = (...args: any[]) => string | object;
 
 // Singleton
 let domParser: DOMParser;
+const TOKEN_DELIMITER = '@@';
+const TOKEN_REGEX = /@@(.*)@@/;
+let counter = 0;
+function generateId() {
+  return `${Date.now()}_${++counter}`;
+}
 
 export function formatXMLMessage(
   els: MessageFormatElement[],
@@ -257,7 +263,15 @@ export function formatXMLMessage(
     values,
     originalMessage
   );
-  const formattedMessage = parts.reduce((all, part) => (all += part.value), '');
+  const objectParts: Record<string, ArgumentPart['value']> = {};
+  const formattedMessage = parts.reduce((all, part) => {
+    if (typeof part.value === 'string' || part.type === PART_TYPE.literal) {
+      return (all += part.value);
+    }
+    const id = generateId();
+    objectParts[id] = part.value;
+    return (all += `${TOKEN_DELIMITER}${id}${TOKEN_DELIMITER}`);
+  }, '');
 
   // Not designed to filter out aggressively
   if (!~formattedMessage.indexOf('<')) {
@@ -297,26 +311,44 @@ export function formatXMLMessage(
     return [formattedMessage];
   }
 
-  const reconstructedChunks: Array<string | object> = [];
-  for (let i = 0; i < content.childNodes.length; i++) {
-    const node = content.childNodes[i] as Element;
-    const { tagName } = node;
-    if (!tagName) {
+  const childNodes = Array.prototype.slice.call(content.childNodes);
+  return childNodes.reduce(
+    (reconstructedChunks, { tagName, outerHTML, textContent }: Element) => {
       // Regular text
-      reconstructedChunks.push(node.textContent || '');
-    } else if (!values[tagName]) {
+      if (!tagName) {
+        const chunks = (textContent || '').split(TOKEN_REGEX).filter(Boolean);
+        return reconstructedChunks.concat(
+          ...chunks.map(c => objectParts[c] || c)
+        );
+      }
+
       // Legacy HTML
-      reconstructedChunks.push(node.outerHTML);
-    } else {
+      if (!values[tagName]) {
+        const chunks = outerHTML.split(TOKEN_REGEX).filter(Boolean);
+        if (chunks.length === 1) {
+          return reconstructedChunks.concat([chunks[0]]);
+        }
+
+        return reconstructedChunks.concat(
+          ...chunks.map(c => objectParts[c] || c)
+        );
+      }
+
+      // XML Tag replacement
       const formatFnOrValue = values[tagName];
       if (typeof formatFnOrValue === 'function') {
-        reconstructedChunks.push(
-          formatFnOrValue(node.textContent || undefined)
-        );
-      } else {
-        reconstructedChunks.push(formatFnOrValue as object);
+        if (textContent == null) {
+          return reconstructedChunks.concat([
+            formatFnOrValue(textContent || undefined)
+          ]);
+        }
+        const chunks = textContent.split(TOKEN_REGEX).filter(Boolean);
+        return reconstructedChunks.concat([
+          formatFnOrValue(...chunks.map(c => objectParts[c] || c))
+        ]);
       }
-    }
-  }
-  return reconstructedChunks;
+      return reconstructedChunks.concat([formatFnOrValue as object]);
+    },
+    []
+  );
 }

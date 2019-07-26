@@ -546,6 +546,26 @@ describe('IntlMessageFormat', function() {
         })
       ).to.deep.equal(['hello ', {}, ' test']);
     });
+    it('should handle self-closing tag w/ rich text', function() {
+      var mf = new IntlMessageFormat('hello <foo/> {bar} test', 'en');
+      expect(
+        mf.formatXMLMessage({
+          foo: {},
+          bar: {}
+        })
+      ).to.deep.equal(['hello ', {}, ' ', {}, ' test']);
+    });
+    it('should handle tag w/ rich text', function() {
+      var mf = new IntlMessageFormat('hello <foo>{bar}</foo> test', 'en');
+      expect(
+        mf.formatXMLMessage({
+          foo: obj => ({
+            obj
+          }),
+          bar: { bar: 1 }
+        })
+      ).to.deep.equal(['hello ', { obj: { bar: 1 } }, ' test']);
+    });
   });
 
   it('custom formats should work for time', function() {
