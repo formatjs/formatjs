@@ -58,20 +58,25 @@ export default function polyfill(
     configurable: false
   });
 
-  // This is bc transpilation process sets class properties to anonymous function
-  Object.defineProperty(RelativeTimeFormat.prototype.resolvedOptions, 'name', {
-    value: 'resolvedOptions'
-  });
+  try {
+    // This is bc transpilation process sets class properties to anonymous function
+    Object.defineProperty(RelativeTimeFormat.prototype.resolvedOptions, 'name', {
+      value: 'resolvedOptions'
+    });
 
-  Object.defineProperty(RelativeTimeFormat.prototype.format, 'name', {
-    value: 'format'
-  });
+    Object.defineProperty(RelativeTimeFormat.prototype.format, 'name', {
+      value: 'format'
+    });
 
-  Object.defineProperty(RelativeTimeFormat.prototype.formatToParts, 'name', {
-    value: 'formatToParts'
-  });
+    Object.defineProperty(RelativeTimeFormat.prototype.formatToParts, 'name', {
+      value: 'formatToParts'
+    });
 
-  Object.defineProperty(RelativeTimeFormat.supportedLocalesOf, 'name', {
-    value: 'supportedLocalesOf'
-  });
+    Object.defineProperty(RelativeTimeFormat.supportedLocalesOf, 'name', {
+      value: 'supportedLocalesOf'
+    });
+  } catch (ex) {
+    // This crashes due to a bug in JSC on iOS 9. We can safely ignore the error.
+    // See https://github.com/formatjs/formatjs/issues/128.
+  }
 }
