@@ -468,7 +468,7 @@ By allowing embedding XML tag we want to make sure contextual information is not
 
 ```tsx
 <FormattedMessage
-  defaultMessage="To buy a shoe, <a>visit our website</a> and <cta>buy a shoe</cta>"
+  defaultMessage="To buy a shoe, <link>visit our website</link> and <cta>buy a shoe</cta>"
   values={{
     link: msg => (
       <a class="external_link" target="_blank" href="https://www.shoe.com/">
