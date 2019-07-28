@@ -14,6 +14,7 @@ function allTests(opts?: ParseOptions) {
     '   some random test   ',
     '{  num , number,percent  }',
     '{c, plural, =1 { {text} project} other { {text} projects}}',
+    '{c, plural, =99 { {text} project} other { {text} projects}}',
     '\\{',
     '\\}',
     '\\u003C',

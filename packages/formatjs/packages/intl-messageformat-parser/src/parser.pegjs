@@ -164,9 +164,9 @@ selectElement
     }
 
 pluralRuleSelectValue
-    = '=0'
-    / '=1'
-    / '=2'
+    = '=' n:number {
+        return `=${n}`
+    }
     / 'zero'
     / 'one'
     / 'two'

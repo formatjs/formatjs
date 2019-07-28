@@ -136,6 +136,53 @@ Array [
 ]
 `;
 
+exports[`parse() can parse '{c, plural, =99 { {text} project} other { {text} projects}}' 1`] = `
+Array [
+  Object {
+    "offset": 0,
+    "options": Object {
+      "=99": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": " ",
+          },
+          Object {
+            "type": 1,
+            "value": "text",
+          },
+          Object {
+            "type": 0,
+            "value": " project",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": " ",
+          },
+          Object {
+            "type": 1,
+            "value": "text",
+          },
+          Object {
+            "type": 0,
+            "value": " projects",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "c",
+  },
+]
+`;
+
 exports[`parse() can parse '{count, time}' 1`] = `
 Array [
   Object {
@@ -564,6 +611,8 @@ exports[`parse() can print AST from '{  num , number,percent  }' 1`] = `"{num, n
 
 exports[`parse() can print AST from '{c, plural, =1 { {text} project} other { {text} projects}}' 1`] = `"{c,plural,=1{ {text} project} other{ {text} projects}}"`;
 
+exports[`parse() can print AST from '{c, plural, =99 { {text} project} other { {text} projects}}' 1`] = `"{c,plural,=99{ {text} project} other{ {text} projects}}"`;
+
 exports[`parse() can print AST from '{count, time}' 1`] = `"{count, time}"`;
 
 exports[`parse() can print AST from '{floor, selectordinal, =0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor' 1`] = `"{floor,selectordinal,=0{ground} one{{floor, number}st} two{{floor, number}nd} few{{floor, number}rd} other{{floor, number}th}} floor"`;
@@ -681,6 +730,53 @@ Array [
     "offset": 0,
     "options": Object {
       "=1": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": " ",
+          },
+          Object {
+            "type": 1,
+            "value": "text",
+          },
+          Object {
+            "type": 0,
+            "value": " project",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": " ",
+          },
+          Object {
+            "type": 1,
+            "value": "text",
+          },
+          Object {
+            "type": 0,
+            "value": " projects",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "c",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) can parse '{c, plural, =99 { {text} project} other { {text} projects}}' 1`] = `
+Array [
+  Object {
+    "offset": 0,
+    "options": Object {
+      "=99": Object {
         "location": undefined,
         "value": Array [
           Object {
@@ -1149,6 +1245,8 @@ exports[`parse({ captureLocation: true }) can print AST from '\\u003C' 1`] = `"<
 exports[`parse({ captureLocation: true }) can print AST from '{  num , number,percent  }' 1`] = `"{num, number, percent}"`;
 
 exports[`parse({ captureLocation: true }) can print AST from '{c, plural, =1 { {text} project} other { {text} projects}}' 1`] = `"{c,plural,=1{ {text} project} other{ {text} projects}}"`;
+
+exports[`parse({ captureLocation: true }) can print AST from '{c, plural, =99 { {text} project} other { {text} projects}}' 1`] = `"{c,plural,=99{ {text} project} other{ {text} projects}}"`;
 
 exports[`parse({ captureLocation: true }) can print AST from '{count, time}' 1`] = `"{count, time}"`;
 
