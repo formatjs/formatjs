@@ -81,7 +81,7 @@ The message syntax that this package uses is not proprietary, in fact it's a com
 
 - Supports defining custom format styles/options.
 
-- Supports escape sequences for message syntax chars, e.g.: `"\\{foo\\}"` will output: `"{foo}"` in the formatted output instead of interpreting it as a `foo` argument.
+- Supports escape sequences for message syntax chars, e.g.: `"'{foo}'"` will output: `"{foo}"` in the formatted output instead of interpreting it as a `foo` argument.
 
 ## Usage
 

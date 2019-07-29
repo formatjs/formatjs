@@ -118,7 +118,7 @@ export function formatToParts(
     // Enforce that all required values are provided by the caller.
     if (!(values && varName in values)) {
       throw new FormatError(
-        `The intl string context variable '${varName}' was not provided to the string '${originalMessage}'`
+        `The intl string context variable "${varName}" was not provided to the string "${originalMessage}"`
       );
     }
 
