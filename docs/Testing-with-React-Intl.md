@@ -9,8 +9,8 @@
   - [Karma](#karma)
 - [Shallow Rendering](#shallow-rendering)
   - [Testing Example Components That Use React Intl](#testing-example-components-that-use-react-intl)
-    - [`` (Basic)](#-basic)
-    - [`` (Advanced, Uses `injectIntl()`)](#-advanced-uses-injectintl)
+    - [(Basic)](#-basic)
+    - [(Advanced, Uses `injectIntl()`)](#-advanced-uses-injectintl)
 - [DOM Rendering](#dom-rendering)
   - [Helper function](#helper-function)
 - [Enzyme](#enzyme)
@@ -149,7 +149,7 @@ describe('<RelativeDate>', function() {
     const intl = generateIntlContext({
       locale: 'en',
       defaultLocale: 'en',
-    })
+    });
 
     // Access the underlying `<RelativeDate>` component from the wrapper
     // component returned from calling `injectIntl()`, and create an
@@ -261,12 +261,10 @@ const messages = require('../locales/en'); // en.json
 const intl = generateIntlContext({
   locale: 'en',
   defaultLocale: 'en',
-  messages
+  messages,
 });
 
-export function mountWithIntl(
-  node: React.ReactElement
-) {
+export function mountWithIntl(node: React.ReactElement) {
   return mount(
     node,
     {
