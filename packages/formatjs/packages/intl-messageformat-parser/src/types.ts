@@ -29,6 +29,11 @@ export enum TYPE {
   plural
 }
 
+export const enum SKELETON_TYPE {
+  number,
+  date
+}
+
 export interface LocationDetails {
   offset: number;
   line: number;
@@ -95,6 +100,25 @@ export type MessageFormatElement =
   | SelectElement
   | PluralElement;
 
+export interface SkeletonToken {
+  stem: string;
+  options: string[];
+}
+
+export interface NumberSkeleton {
+  type: SKELETON_TYPE.number;
+  tokens: SkeletonToken[];
+  location?: Location;
+}
+
+export interface DateSkeleton {
+  type: SKELETON_TYPE.date;
+  pattern: string;
+  location?: Location;
+}
+
+export type Skeleton = NumberSkeleton | DateSkeleton;
+
 /**
  * Type Guards
  */
@@ -122,6 +146,12 @@ export function isSelectElement(el: MessageFormatElement): el is SelectElement {
 }
 export function isPluralElement(el: MessageFormatElement): el is PluralElement {
   return el.type === TYPE.plural;
+}
+export function isNumberSkeleton(el: Skeleton): el is NumberSkeleton {
+  return el.type === SKELETON_TYPE.number;
+}
+export function isDateSkeleton(el: Skeleton): el is DateSkeleton {
+  return el.type === SKELETON_TYPE.date;
 }
 
 export function createLiteralElement(value: string): LiteralElement {

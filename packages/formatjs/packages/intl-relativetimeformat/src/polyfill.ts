@@ -60,9 +60,13 @@ export default function polyfill(
 
   try {
     // This is bc transpilation process sets class properties to anonymous function
-    Object.defineProperty(RelativeTimeFormat.prototype.resolvedOptions, 'name', {
-      value: 'resolvedOptions'
-    });
+    Object.defineProperty(
+      RelativeTimeFormat.prototype.resolvedOptions,
+      'name',
+      {
+        value: 'resolvedOptions'
+      }
+    );
 
     Object.defineProperty(RelativeTimeFormat.prototype.format, 'name', {
       value: 'format'

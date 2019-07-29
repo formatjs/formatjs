@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`case: "@@#" 1`] = `
+Array [
+  Object {
+    "style": Object {
+      "tokens": Array [
+        Object {
+          "options": Array [],
+          "stem": "@@#",
+        },
+      ],
+      "type": 0,
+    },
+    "type": 2,
+    "value": 0,
+  },
+]
+`;
+
+exports[`case: "compact-short currency/GBP" 1`] = `
+Array [
+  Object {
+    "style": Object {
+      "tokens": Array [
+        Object {
+          "options": Array [],
+          "stem": "compact-short",
+        },
+        Object {
+          "options": Array [
+            "GBP",
+          ],
+          "stem": "currency",
+        },
+      ],
+      "type": 0,
+    },
+    "type": 2,
+    "value": 0,
+  },
+]
+`;
+
+exports[`case: "currency/CAD unit-width-narrow" 1`] = `
+Array [
+  Object {
+    "style": Object {
+      "tokens": Array [
+        Object {
+          "options": Array [
+            "CAD",
+          ],
+          "stem": "currency",
+        },
+        Object {
+          "options": Array [],
+          "stem": "unit-width-narrow",
+        },
+      ],
+      "type": 0,
+    },
+    "type": 2,
+    "value": 0,
+  },
+]
+`;

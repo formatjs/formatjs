@@ -519,9 +519,9 @@ describe('IntlMessageFormat', function() {
       expect(
         mf.formatXMLMessage({
           placeholder: { name: 'gaga' },
-          var2: {foo: 1}
+          var2: { foo: 1 }
         })
-      ).to.deep.equal(['hello ', { name: 'gaga' }, ' ', {foo:1}]);
+      ).to.deep.equal(['hello ', { name: 'gaga' }, ' ', { foo: 1 }]);
     });
     it('simple message w/ placeholder', function() {
       var mf = new IntlMessageFormat(

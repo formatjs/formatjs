@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`case: "EEE, MMM d, 'yy" 1`] = `
+Array [
+  Object {
+    "style": Object {
+      "pattern": "EEE, MMM d, 'yy",
+      "type": 1,
+    },
+    "type": 3,
+    "value": 0,
+  },
+]
+`;
+
+exports[`case: "h:mm a" 1`] = `
+Array [
+  Object {
+    "style": Object {
+      "pattern": "h:mm a",
+      "type": 1,
+    },
+    "type": 3,
+    "value": 0,
+  },
+]
+`;
+
+exports[`case: "yyyy.MM.dd G at HH:mm:ss vvvv" 1`] = `
+Array [
+  Object {
+    "style": Object {
+      "pattern": "yyyy.MM.dd G at HH:mm:ss vvvv",
+      "type": 1,
+    },
+    "type": 3,
+    "value": 0,
+  },
+]
+`;
