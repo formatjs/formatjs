@@ -45,7 +45,7 @@ describe('<FormattedRelative>', () => {
     const spy = jest.fn().mockImplementation(() => null);
     mountWithProvider({value: 0, children: spy}, intl);
     mountWithProvider({value: 1, children: spy}, intl);
-    expect(spy).toHaveBeenCalledTimes(2);
+    expect(spy).toHaveBeenCalledTimes(4);
   });
 
   it('should re-render when context changes', () => {
@@ -56,7 +56,7 @@ describe('<FormattedRelative>', () => {
     mountWithProvider({value: 0, children: spy}, intl);
     mountWithProvider({value: 0, children: spy}, otherIntl);
 
-    expect(spy).toHaveBeenCalledTimes(2);
+    expect(spy).toHaveBeenCalledTimes(4);
   });
 
   it('accepts valid IntlRelativeTimeFormat options as props', () => {
@@ -110,7 +110,7 @@ describe('<FormattedRelative>', () => {
     const spy = jest.fn().mockImplementation(() => <b>Jest</b>);
     const rendered = mountWithProvider({value: 0, children: spy}, intl);
 
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledTimes(2);
     expect(spy.mock.calls[0]).toEqual([intl.formatRelativeTime(0)]);
 
     expect(

@@ -68,6 +68,8 @@ export interface Props extends FormatRelativeTimeOptions {
 }
 
 interface State {
+  prevUnit?: Unit;
+  prevValue?: number;
   currentValueInSeconds: number;
 }
 
@@ -91,6 +93,8 @@ class FormattedRelativeTime extends React.PureComponent<Props, State> {
     unit: 'second',
   };
   state: State = {
+    prevUnit: this.props.unit,
+    prevValue: this.props.value,
     currentValueInSeconds: canIncrement(this.props.unit)
       ? valueToSeconds(this.props.value, this.props.unit)
       : 0,
@@ -152,17 +156,17 @@ class FormattedRelativeTime extends React.PureComponent<Props, State> {
     this._updateTimer = null;
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (
-      this.props.value !== nextProps.value ||
-      this.props.unit !== nextProps.unit
-    ) {
-      this.setState({
-        currentValueInSeconds: canIncrement(nextProps.unit)
-          ? valueToSeconds(nextProps.value, nextProps.unit)
+  static getDerivedStateFromProps(props: Props, state: State) {
+    if (props.unit !== state.prevUnit || props.value !== state.prevValue) {
+      return {
+        prevValue: props.value,
+        prevUnit: props.unit,
+        currentValueInSeconds: canIncrement(props.unit)
+          ? valueToSeconds(props.value, props.unit)
           : 0,
-      });
+      };
     }
+    return null;
   }
 
   render() {

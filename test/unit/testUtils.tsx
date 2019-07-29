@@ -3,6 +3,14 @@ import {mount} from 'enzyme';
 import {WithIntlProps} from '../../src/components/injectIntl';
 import Provider, {Props as ProviderProps} from '../../src/components/provider';
 
+function StrictProvider(props: ProviderProps) {
+  return (
+    <React.StrictMode>
+      <Provider {...props} />
+    </React.StrictMode>
+  );
+}
+
 export function mountFormattedComponentWithProvider<P>(
   Comp: React.ComponentType<P>
 ) {
@@ -13,7 +21,7 @@ export function mountFormattedComponentWithProvider<P>(
     return mount(
       <Comp {...props} />,
       {
-        wrappingComponent: Provider,
+        wrappingComponent: StrictProvider,
         wrappingComponentProps: providerProps,
       } as any // Seems like DefinitelyTyped types are outdated
     );

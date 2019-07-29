@@ -105,7 +105,7 @@ describe('<FormattedMessage>', () => {
 
     const rendered = mountWithProvider({...descriptor, children: spy}, intl);
 
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledTimes(2);
     expect(spy.mock.calls[0]).toEqual([intl.formatMessage(descriptor)]);
 
     expect(rendered.text()).toBe('Jest');
@@ -207,7 +207,7 @@ describe('<FormattedMessage>', () => {
         ...values, // create new object instance with same values to test shallow equality check
       },
     });
-    expect(spy).toHaveBeenCalledTimes(1); // expect only 1 render as the value object instance changed but not its values
+    expect(spy).toHaveBeenCalledTimes(2); // expect only 1 render as the value object instance changed but not its values
 
     injectIntlContext.setProps({
       ...descriptor,
@@ -215,6 +215,6 @@ describe('<FormattedMessage>', () => {
         name: 'Enzyme',
       },
     });
-    expect(spy).toHaveBeenCalledTimes(2); // expect a rerender after having changed the name
+    expect(spy).toHaveBeenCalledTimes(4); // expect a rerender after having changed the name
   });
 });

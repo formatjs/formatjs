@@ -103,7 +103,7 @@ describe('<FormattedHTMLMessage>', () => {
     const spy = jest.fn().mockImplementation(() => <p>Jest</p>);
     const rendered = mountWithProvider({...descriptor, children: spy}, intl);
 
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledTimes(2);
     expect(spy.mock.calls[0]).toEqual([intl.formatHTMLMessage(descriptor)]);
 
     expect(rendered.text()).toBe('Jest');
