@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.4.3...@formatjs/intl-relativetimeformat@2.5.0) (2019-07-29)
+
+
+### Features
+
+* **intl-messageformat-parser:** add parser for number skeleton and date skeleton ([#131](https://github.com/formatjs/formatjs/issues/131)) ([dbe6799](https://github.com/formatjs/formatjs/commit/dbe6799))
+
+
+
+
+
 ## [2.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.4.2...@formatjs/intl-relativetimeformat@2.4.3) (2019-07-25)
 
 

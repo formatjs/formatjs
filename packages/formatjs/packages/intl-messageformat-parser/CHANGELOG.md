@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@2.1.3...intl-messageformat-parser@3.0.0) (2019-07-29)
+
+
+### Bug Fixes
+
+* **intl-messageformat-parser:** fix plural =xx grammar ([1c3c1fc](https://github.com/formatjs/formatjs/commit/1c3c1fc))
+
+
+### Features
+
+* **intl-messageformat-parser:** add parser for number skeleton and date skeleton ([#131](https://github.com/formatjs/formatjs/issues/131)) ([dbe6799](https://github.com/formatjs/formatjs/commit/dbe6799))
+* **intl-messageformat-parser:** revamped quote rule ([#134](https://github.com/formatjs/formatjs/issues/134)) ([5661177](https://github.com/formatjs/formatjs/commit/5661177))
+* **intl-messageformat-parser:** support argument skeleton for AST printers ([#133](https://github.com/formatjs/formatjs/issues/133)) ([f1f937d](https://github.com/formatjs/formatjs/commit/f1f937d))
+
+
+### BREAKING CHANGES
+
+* **intl-messageformat-parser:** This changes how we escape chars in messages, instead of `\` we now use apostrophe which is more aligned with ICU4J & ICU4C
+
+
+
+
+
 ## [2.1.3](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@2.1.2...intl-messageformat-parser@2.1.3) (2019-07-25)
 
 **Note:** Version bump only for package intl-messageformat-parser

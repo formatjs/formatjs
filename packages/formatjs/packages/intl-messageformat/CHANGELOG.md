@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@5.4.3...intl-messageformat@6.0.0) (2019-07-29)
+
+
+### Features
+
+* **intl-messageformat-parser:** add parser for number skeleton and date skeleton ([#131](https://github.com/formatjs/formatjs/issues/131)) ([dbe6799](https://github.com/formatjs/formatjs/commit/dbe6799))
+* **intl-messageformat-parser:** revamped quote rule ([#134](https://github.com/formatjs/formatjs/issues/134)) ([5661177](https://github.com/formatjs/formatjs/commit/5661177))
+
+
+### BREAKING CHANGES
+
+* **intl-messageformat-parser:** This changes how we escape chars in messages, instead of `\` we now use apostrophe which is more aligned with ICU4J & ICU4C
+
+
+
+
+
 ## [5.4.3](https://github.com/formatjs/formatjs/compare/intl-messageformat@5.4.2...intl-messageformat@5.4.3) (2019-07-25)
 
 
