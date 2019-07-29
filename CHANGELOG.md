@@ -4,15 +4,13 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [3.0.0-beta.22](https://github.com/yahoo/react-intl/compare/v3.0.0-beta.21...v3.0.0-beta.22) (2019-07-29)
 
-
 ### Bug Fixes
 
-* rm componentWillReceiveProps from relative ([964159b](https://github.com/yahoo/react-intl/commit/964159b))
-
+- rm componentWillReceiveProps from relative ([964159b](https://github.com/yahoo/react-intl/commit/964159b))
 
 ### Features
 
-* upgrade intl-messageformat with new apostrophe escape ([f59607e](https://github.com/yahoo/react-intl/commit/f59607e))
+- upgrade intl-messageformat with new apostrophe escape ([f59607e](https://github.com/yahoo/react-intl/commit/f59607e))
 
 ## [3.0.0-beta.21](https://github.com/yahoo/react-intl/compare/v3.0.0-beta.20...v3.0.0-beta.21) (2019-07-28)
 
