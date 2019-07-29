@@ -27,11 +27,12 @@
 - Change default `textComponent` in `IntlProvider` to `React.Fragment`. In order to keep the old behavior, you can explicitly set `textComponent` to `span`.
 - `FormattedRelative` has been renamed to `FormattedRelativeTime` and its API has changed significantly. See [FormattedRelativeTime](#formattedrelativetime) for more details.
 - `formatRelative` has been renamed to `formatRelativeTime` and its API has changed significantly. See [FormattedRelativeTime](#formattedrelativetime) for more details.
-- Escape character has been changed to apostrophe (`'`). See [Apostrophe Escape](#apostropheescape) for more details
 
 ```tsx
 <IntlProvider textComponent="span" />
 ```
+
+- Escape character has been changed to apostrophe (`'`). See [Apostrophe Escape](#apostropheescape) for more details
 
 ## Use React 16.3 and upwards
 
