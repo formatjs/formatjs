@@ -341,9 +341,12 @@ include: [
 
 Previously while we were using ICU message format syntax, our escape char was backslash (`\`). This however creates issues with strict ICU translation vendors that support other implementations like ICU4J/ICU4C. Thanks to [@pyrocat101](https://github.com/pyrocat101) we've changed this behavior to be spec-compliant. This means:
 
-```js
-const a = `\\{foo\\}`; // before
-const a = `'{foo}'`; // after
+```tsx
+// Before
+<FormattedMessage defaultMessage="\\{foo\\}" /> //prints out "{foo}"
+
+// After
+<FormattedMessage defaultMessage="'{foo}'" /> //prints out "{foo}"
 ```
 
 We highly recommend reading the spec to learn more about how quote/escaping works [here](http://userguide.icu-project.org/formatparse/messages) under **Quoting/Escaping** section.
