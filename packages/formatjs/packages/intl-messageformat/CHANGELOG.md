@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/formatjs/formatjs/compare/intl-messageformat@6.0.0...intl-messageformat@6.0.1) (2019-07-29)
+
+
+### Bug Fixes
+
+* **intl-messageformat-parser:** argStyleText can contain syntax characters and quoted string now ([#136](https://github.com/formatjs/formatjs/issues/136)) ([b39ea08](https://github.com/formatjs/formatjs/commit/b39ea08)), closes [#135](https://github.com/formatjs/formatjs/issues/135)
+
+
+
+
+
 # [6.0.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@5.4.3...intl-messageformat@6.0.0) (2019-07-29)
 
 
