@@ -136,7 +136,7 @@ import expect from 'expect';
 import expectJSX from 'expect-jsx';
 import React from 'react';
 import {createRenderer} from 'react-addons-test-utils';
-import {IntlProvider, FormattedRelative, generateIntlContext} from 'react-intl';
+import {IntlProvider, FormattedRelative, createIntl} from 'react-intl';
 import RelativeDate from '../relative-date';
 
 expect.extend(expectJSX);
@@ -146,7 +146,7 @@ describe('<RelativeDate>', function() {
     const renderer = createRenderer();
     const date = new Date();
 
-    const intl = generateIntlContext({
+    const intl = createIntl({
       locale: 'en',
       defaultLocale: 'en',
     });
@@ -252,13 +252,13 @@ Testing with Enzyme works in a similar fashion as written above. Your `mount()`e
  */
 
 import React from 'react';
-import {IntlProvider, generateIntlContext} from 'react-intl';
+import {IntlProvider, createIntl} from 'react-intl';
 import {mount, shallow} from 'enzyme';
 
 // You can pass your messages to the IntlProvider. Optional: remove if unneeded.
 const messages = require('../locales/en'); // en.json
 
-const intl = generateIntlContext({
+const intl = createIntl({
   locale: 'en',
   defaultLocale: 'en',
   messages,

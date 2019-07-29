@@ -108,6 +108,14 @@ export interface IntlShape extends IntlConfig, IntlFormatters {
   formatters: Formatters;
 }
 
+export interface IntlCache {
+  dateTime: Record<string, Intl.DateTimeFormat>;
+  number: Record<string, Intl.NumberFormat>;
+  message: Record<string, IntlMessageFormat>;
+  relativeTime: Record<string, IntlRelativeTimeFormat>;
+  pluralRules: Record<string, Intl.PluralRules>;
+}
+
 export interface MessageDescriptor {
   id: string;
   description?: string | object;

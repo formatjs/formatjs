@@ -7,7 +7,7 @@ React Intl has a set of React components that provide a declarative way to setup
 - [Why Components?](#why-components)
 - [Intl Provider Component](#intl-provider-component)
   - [`IntlProvider`](#intlprovider)
-    - [Multiple Intl Contexts](#multiple-intl-contexts)
+  - [`RawIntlProvider`](#rawintlprovider)
     - [Dynamic Language Selection](#dynamic-language-selection)
 - [Date Formatting Components](#date-formatting-components)
   - [`FormattedDate`](#formatteddate)
@@ -109,9 +109,25 @@ Assuming `navigator.language` is `"fr"`:
 <div><span>mardi 5 avril 2016</span></div>
 ```
 
-#### Multiple Intl Contexts
+### `RawIntlProvider`
 
-Nested `<IntlProvider>` components can be used to provide a different, or modified i18n context to a subtree of the app. In these cases, the nested `<IntlProvider>` will inherit from its nearest ancestor `<IntlProvider>`. A nested strategy can be employed to provide a subset of translations to a subtree. See: [Nested Example app](https://github.com/formatjs/react-intl/tree/master/examples/nested)
+This is the underlying `React.Context.Provider` object that `IntlProvider` use. It can be used in conjunction with `createIntl`:
+
+```tsx
+import {createIntl, createIntlCache, RawIntlProvider} from 'react-intl'
+
+// This is optional but highly recommended
+// since it prevents memory leak
+const cache = createIntlCache()
+
+const intl = createIntl({
+  locale: 'fr-FR',
+  messages: {}
+}, cache)
+
+// Pass it to IntlProvider
+<RawIntlProvider value={intl}>{foo}</RawIntlProvider>
+```
 
 #### Dynamic Language Selection
 

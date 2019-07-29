@@ -2,7 +2,7 @@ import * as React from 'react';
 import {mount} from 'enzyme';
 import {FormattedTime} from '../../../src';
 import {mountFormattedComponentWithProvider} from '../testUtils';
-import {generateIntlContext} from '../../../src/test-utils';
+import {createIntl} from '../../../src/components/provider';
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedTime);
 
@@ -12,7 +12,7 @@ describe('<FormattedTime>', () => {
 
   beforeEach(() => {
     consoleError = jest.spyOn(console, 'error');
-    intl = generateIntlContext({
+    intl = createIntl({
       locale: 'en',
     });
   });
@@ -83,7 +83,7 @@ describe('<FormattedTime>', () => {
   });
 
   it('accepts `format` prop', () => {
-    intl = generateIntlContext({
+    intl = createIntl({
       locale: 'en',
       formats: {
         time: {

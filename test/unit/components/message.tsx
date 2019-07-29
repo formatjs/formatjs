@@ -1,21 +1,23 @@
 import * as React from 'react';
 import FormattedMessage from '../../../src/components/message';
-import {generateIntlContext} from '../../../src/test-utils';
+import {Props, createIntl} from '../../../src/components/provider';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 import {mount} from 'enzyme';
+import {IntlShape} from '../../../src';
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedMessage);
 
 describe('<FormattedMessage>', () => {
   let consoleError;
-  let intl;
+  let providerProps: Props;
+  let intl: IntlShape;
 
   beforeEach(() => {
-    intl = generateIntlContext({
+    providerProps = {
       locale: 'en',
       defaultLocale: 'en',
-    });
-
+    };
+    intl = createIntl(providerProps);
     consoleError = jest.spyOn(console, 'error');
   });
 
@@ -48,8 +50,7 @@ describe('<FormattedMessage>', () => {
       id: 'hello',
       defaultMessage: 'Hello, World!',
     };
-
-    const rendered = mountWithProvider(descriptor, intl);
+    const rendered = mountWithProvider(descriptor, providerProps);
 
     expect(rendered.text()).toBe(intl.formatMessage(descriptor));
   });
@@ -60,8 +61,7 @@ describe('<FormattedMessage>', () => {
       defaultMessage: 'Hello, {name}!',
     };
     const values = {name: 'Jest'};
-
-    const rendered = mountWithProvider({...descriptor, values}, intl);
+    const rendered = mountWithProvider({...descriptor, values}, providerProps);
 
     expect(rendered.text()).toBe(intl.formatMessage(descriptor, values));
   });
@@ -73,9 +73,10 @@ describe('<FormattedMessage>', () => {
     };
     const tagName = 'p';
 
-    const rendered = mountWithProvider({...descriptor, tagName}, intl).find(
-      'p'
-    );
+    const rendered = mountWithProvider(
+      {...descriptor, tagName},
+      providerProps
+    ).find('p');
 
     expect(rendered.type()).toBe(tagName);
   });
@@ -87,9 +88,10 @@ describe('<FormattedMessage>', () => {
     };
 
     const H1 = ({children}) => <h1>{children}</h1>;
-    const rendered = mountWithProvider({...descriptor, tagName: H1}, intl).find(
-      H1
-    );
+    const rendered = mountWithProvider(
+      {...descriptor, tagName: H1},
+      providerProps
+    ).find(H1);
 
     expect(rendered.type()).toBe(H1);
     expect(rendered.text()).toBe(intl.formatMessage(descriptor));
@@ -103,7 +105,10 @@ describe('<FormattedMessage>', () => {
 
     const spy = jest.fn().mockImplementation(() => <p>Jest</p>);
 
-    const rendered = mountWithProvider({...descriptor, children: spy}, intl);
+    const rendered = mountWithProvider(
+      {...descriptor, children: spy},
+      providerProps
+    );
 
     expect(spy).toHaveBeenCalledTimes(2);
     expect(spy.mock.calls[0]).toEqual([intl.formatMessage(descriptor)]);
@@ -121,7 +126,7 @@ describe('<FormattedMessage>', () => {
             name: <b>Jest</b>,
           },
         },
-        intl
+        providerProps
       );
 
       const nameNode = rendered.find('b');
@@ -138,7 +143,7 @@ describe('<FormattedMessage>', () => {
             b: (name: string) => <b>{name}</b>,
           },
         },
-        intl
+        providerProps
       );
 
       const nameNode = rendered.find('b');
@@ -155,7 +160,7 @@ describe('<FormattedMessage>', () => {
             name: <b>Jest</b>,
           },
         },
-        intl
+        providerProps
       );
 
       const nameNode = rendered.find('b');
@@ -173,7 +178,7 @@ describe('<FormattedMessage>', () => {
           },
           children: (...chunks) => <strong>{chunks}</strong>,
         },
-        intl
+        providerProps
       );
 
       const nameNode = rendered.find('b');
@@ -198,16 +203,18 @@ describe('<FormattedMessage>', () => {
         values,
         children: spy,
       },
-      intl
+      providerProps
     );
 
+    expect(spy).toHaveBeenCalled();
+    spy.mockClear();
     injectIntlContext.setProps({
       ...descriptor,
       values: {
         ...values, // create new object instance with same values to test shallow equality check
       },
     });
-    expect(spy).toHaveBeenCalledTimes(2); // expect only 1 render as the value object instance changed but not its values
+    expect(spy).not.toHaveBeenCalled();
 
     injectIntlContext.setProps({
       ...descriptor,
@@ -215,6 +222,6 @@ describe('<FormattedMessage>', () => {
         name: 'Enzyme',
       },
     });
-    expect(spy).toHaveBeenCalledTimes(4); // expect a rerender after having changed the name
+    expect(spy).toHaveBeenCalled();
   });
 });

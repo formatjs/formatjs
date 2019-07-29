@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
 import {FormattedNumber} from '../../../src';
-import {generateIntlContext} from '../../../src/test-utils';
+import {createIntl} from '../../../src/components/provider';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedNumber);
 
@@ -11,7 +11,7 @@ describe('<FormattedNumber>', () => {
 
   beforeEach(() => {
     consoleError = jest.spyOn(console, 'error');
-    intl = generateIntlContext({
+    intl = createIntl({
       locale: 'en',
     });
   });
@@ -72,7 +72,7 @@ describe('<FormattedNumber>', () => {
   });
 
   it('accepts `format` prop', () => {
-    intl = generateIntlContext({
+    intl = createIntl({
       locale: 'en',
       formats: {
         number: {

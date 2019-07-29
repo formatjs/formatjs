@@ -2,17 +2,18 @@ import * as React from 'react';
 import {mount} from 'enzyme';
 import {FormattedDate} from '../../../src';
 import {mountFormattedComponentWithProvider} from '../testUtils';
-import {generateIntlContext} from '../../../src/test-utils';
+import {createIntl} from '../../../src/components/provider';
+import {IntlShape} from '../../../src';
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedDate);
 
 describe('<FormattedDate>', () => {
   let consoleError;
-  let intl;
+  let intl: IntlShape;
 
   beforeEach(() => {
     consoleError = jest.spyOn(console, 'error');
-    intl = generateIntlContext({
+    intl = createIntl({
       locale: 'en',
     });
   });
@@ -81,7 +82,7 @@ describe('<FormattedDate>', () => {
   });
 
   it('accepts `format` prop', () => {
-    intl = generateIntlContext({
+    intl = createIntl({
       locale: 'en',
       formats: {
         date: {

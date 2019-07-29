@@ -4,7 +4,7 @@ import FormattedHTMLMessage, {
   BaseFormattedHTMLMessage,
 } from '../../../src/components/html-message';
 import {BaseFormattedMessage} from '../../../src/components/message';
-import {generateIntlContext} from '../../../src/test-utils';
+import {createIntl} from '../../../src/components/provider';
 
 const mountWithProvider = mountFormattedComponentWithProvider(
   FormattedHTMLMessage
@@ -16,7 +16,7 @@ describe('<FormattedHTMLMessage>', () => {
 
   beforeEach(() => {
     consoleError = jest.spyOn(console, 'error');
-    intl = generateIntlContext({
+    intl = createIntl({
       locale: 'en',
       defaultLocale: 'en-US',
       textComponent: 'span',

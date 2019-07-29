@@ -6,7 +6,7 @@ import {mount} from 'enzyme';
 import FormattedRelativeTime, {
   BaseFormattedRelativeTime,
 } from '../../../src/components/relative';
-import {generateIntlContext} from '../../../src/test-utils';
+import {createIntl} from '../../../src/components/provider';
 import {IntlShape} from '../../../src/types';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 
@@ -20,7 +20,7 @@ describe('<FormattedRelative>', () => {
 
   beforeEach(() => {
     consoleError = jest.spyOn(console, 'error');
-    intl = generateIntlContext({
+    intl = createIntl({
       locale: 'en',
     });
   });
@@ -49,7 +49,7 @@ describe('<FormattedRelative>', () => {
   });
 
   it('should re-render when context changes', () => {
-    const otherIntl = generateIntlContext({
+    const otherIntl = createIntl({
       locale: 'en-US',
     });
     const spy = jest.fn().mockImplementation(() => null);
@@ -88,7 +88,7 @@ describe('<FormattedRelative>', () => {
 
   it('accepts `format` prop', () => {
     const format = 'seconds';
-    intl = generateIntlContext({
+    intl = createIntl({
       locale: 'en',
       formats: {
         relative: {
