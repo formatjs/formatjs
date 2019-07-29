@@ -25,12 +25,13 @@
 - `ReactIntlLocaleData` has been removed. See [Migrate to using native Intl APIs](#migrate-to-using-native-intl-apis) for more details.
 - `intlShape` has been removed. See [TypeScript Support](#typescript-support) for more details.
 - Change default `textComponent` in `IntlProvider` to `React.Fragment`. In order to keep the old behavior, you can explicitly set `textComponent` to `span`.
-- `FormattedRelative` has been renamed to `FormattedRelativeTime` and its API has changed significantly. See [FormattedRelativeTime](#formattedrelativetime) for more details.
-- `formatRelative` has been renamed to `formatRelativeTime` and its API has changed significantly. See [FormattedRelativeTime](#formattedrelativetime) for more details.
 
 ```tsx
 <IntlProvider textComponent="span" />
 ```
+
+- `FormattedRelative` has been renamed to `FormattedRelativeTime` and its API has changed significantly. See [FormattedRelativeTime](#formattedrelativetime) for more details.
+- `formatRelative` has been renamed to `formatRelativeTime` and its API has changed significantly. See [FormattedRelativeTime](#formattedrelativetime) for more details.
 
 - Escape character has been changed to apostrophe (`'`). See [Apostrophe Escape](#apostropheescape) for more details
 
