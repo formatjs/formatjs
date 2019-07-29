@@ -15,6 +15,7 @@
 - [ESM Build](#esm-build)
   - [Jest](#jest)
   - [webpack babel-loader](#webpack-babel-loader)
+- [Apostrophe Escape](#apostrophe-escape)
 
 <!-- tocstop -->
 
@@ -26,6 +27,7 @@
 - Change default `textComponent` in `IntlProvider` to `React.Fragment`. In order to keep the old behavior, you can explicitly set `textComponent` to `span`.
 - `FormattedRelative` has been renamed to `FormattedRelativeTime` and its API has changed significantly. See [FormattedRelativeTime](#formattedrelativetime) for more details.
 - `formatRelative` has been renamed to `formatRelativeTime` and its API has changed significantly. See [FormattedRelativeTime](#formattedrelativetime) for more details.
+- Escape character has been changed to apostrophe (`'`). See [Apostrophe Escape](#apostropheescape) for more details
 
 ```tsx
 <IntlProvider textComponent="span" />
@@ -333,3 +335,14 @@ include: [
   path.join(__dirname, "node_modules/intl-messageformat-parser"),
 ],
 ```
+
+## Apostrophe Escape
+
+Previously while we were using ICU message format syntax, our escape char was backslash (`\`). This however creates issues with strict ICU translation vendors that support other implementations like ICU4J/ICU4C. Thanks to [@pyrocat101](https://github.com/pyrocat101) we've changed this behavior to be spec-compliant. This means:
+
+```js
+const a = `\\{foo\\}`; // before
+const a = `'{foo}'`; // after
+```
+
+We highly recommend reading the spec to learn more about how quote/escaping works [here](http://userguide.icu-project.org/formatparse/messages) under **Quoting/Escaping** section.
