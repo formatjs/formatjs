@@ -94,12 +94,7 @@ function getNamedFormat<T extends keyof CustomFormats>(
  * https://github.com/formatjs/formatjs/blob/master/packages/intl-messageformat-parser/src/parser.pegjs#L155
  */
 function escapeUnformattedMessage(msg: string): string {
-  return msg
-    .replace(/\\u([\da-fA-F]{4})/g, (_, digits) =>
-      String.fromCharCode(parseInt(digits, 16))
-    )
-    .replace(/\\\{/g, '\u007B')
-    .replace(/\\\}/g, '\u007D');
+  return msg.replace(/'\{(.*?)\}'/g, `{$1}`);
 }
 
 export function formatDate(

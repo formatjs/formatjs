@@ -17,7 +17,7 @@ describe('format API', () => {
       messages: {
         no_args: 'Hello, World!',
         with_arg: 'Hello, {name}!',
-        with_named_format: 'It is {now, date, year-only}',
+        with_named_format: 'It is {now, date, year_only}',
         with_html: 'Hello, <b>{name}</b>!',
 
         missing: undefined,
@@ -672,7 +672,7 @@ RangeError: Invalid unit argument`
       formatMessage = f.formatMessage.bind(null, config, state);
     });
 
-    ['Hello, World!\\{foo\\}', '\\ud83d\\udc04'].forEach(msg =>
+    [`Hello, World!'{foo}'`, `'\ud83d'\udc04`].forEach(msg =>
       it(`should render escaped msg ${msg} properly in production`, () => {
         process.env.NODE_ENV = 'production';
 
