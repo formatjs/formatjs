@@ -65,7 +65,7 @@ React's `react-addons-test-utils` package contains a [shallow rendering](http://
 
 The following examples will assume `mocha`, `expect`, and `expect-jsx` test framework.
 
-#### `<ShortDate>` (Basic)
+#### <ShortDate> (Basic)
 
 ```js
 import React from 'react';
@@ -108,7 +108,7 @@ describe('<ShortDate>', function() {
 });
 ```
 
-#### `<RelativeDate>` (Advanced, Uses `injectIntl()`)
+#### <RelativeDate> (Advanced, Uses `injectIntl()`)
 
 ```js
 import React, {Component} from 'react';
@@ -136,7 +136,7 @@ import expect from 'expect';
 import expectJSX from 'expect-jsx';
 import React from 'react';
 import {createRenderer} from 'react-addons-test-utils';
-import {IntlProvider, FormattedRelative} from 'react-intl';
+import {IntlProvider, FormattedRelative, generateIntlContext} from 'react-intl';
 import RelativeDate from '../relative-date';
 
 expect.extend(expectJSX);
@@ -146,11 +146,10 @@ describe('<RelativeDate>', function() {
     const renderer = createRenderer();
     const date = new Date();
 
-    // Construct a new `IntlProvider` instance by passing `props` and
-    // `context` as React would, then call `getChildContext()` to get the
-    // React Intl API, complete with the `format*()` functions.
-    const intlProvider = new IntlProvider({locale: 'en'}, {});
-    const {intl} = intlProvider.getChildContext();
+    const intl = generateIntlContext({
+      locale: 'en',
+      defaultLocale: 'en',
+    })
 
     // Access the underlying `<RelativeDate>` component from the wrapper
     // component returned from calling `injectIntl()`, and create an
@@ -244,7 +243,7 @@ Testing with Enzyme works in a similar fashion as written above. Your `mount()`e
 
 ### Helper function
 
-```js
+```tsx
 /**
  * Components using the react-intl module require access to the intl context.
  * This is not available when mounting single components in Enzyme.
@@ -253,39 +252,28 @@ Testing with Enzyme works in a similar fashion as written above. Your `mount()`e
  */
 
 import React from 'react';
-import {IntlProvider} from 'react-intl';
+import {IntlProvider, generateIntlContext} from 'react-intl';
 import {mount, shallow} from 'enzyme';
 
 // You can pass your messages to the IntlProvider. Optional: remove if unneeded.
 const messages = require('../locales/en'); // en.json
 
-// Create the IntlProvider to retrieve context for wrapping around.
-const intlProvider = new IntlProvider({locale: 'en', messages}, {});
-const {intl} = intlProvider.getChildContext();
-
-/**
- * When using React-Intl `injectIntl` on components, props.intl is required.
- */
-function nodeWithIntlProp(node) {
-  return React.cloneElement(node, {intl});
-}
-
-export function shallowWithIntl(node, {context, ...additionalOptions} = {}) {
-  return shallow(nodeWithIntlProp(node), {
-    context: Object.assign({}, context, {intl}),
-    ...additionalOptions,
-  });
-}
+const intl = generateIntlContext({
+  locale: 'en',
+  defaultLocale: 'en',
+  messages
+});
 
 export function mountWithIntl(
-  node,
-  {context, childContextTypes, ...additionalOptions} = {}
+  node: React.ReactElement
 ) {
-  return mount(nodeWithIntlProp(node), {
-    context: Object.assign({}, context, {intl}),
-    childContextTypes: Object.assign({}, {intl: intlShape}, childContextTypes),
-    ...additionalOptions,
-  });
+  return mount(
+    node,
+    {
+      wrappingComponent: IntlProvider,
+      wrappingComponentProps: intl,
+    } as any // Seems like DefinitelyTyped types are outdated
+  );
 }
 ```
 
