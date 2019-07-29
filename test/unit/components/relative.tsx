@@ -194,6 +194,17 @@ describe('<FormattedRelative>', () => {
       (rendered.find(BaseFormattedRelativeTime).instance() as any)._updateTimer
     ).toBeNull();
   });
+  it('should show high seconds values as days with no timer', function() {
+    // span bc enzyme support for </> seems buggy
+    const rendered = mountWithProvider(
+      {value: -(60 * 60 * 24 * 3), unit: 'second', updateIntervalInSeconds: 1},
+      {...intl, textComponent: 'span'}
+    ).find(BaseFormattedRelativeTime);
+    expect(rendered.text()).toBe(intl.formatRelativeTime(-3, 'day'));
+    expect(
+      (rendered.find(BaseFormattedRelativeTime).instance() as any)._updateTimer
+    ).toBeNull();
+  });
   it('should throw if try to increment in day', function() {
     // span bc enzyme support for </> seems buggy
     expect(() =>

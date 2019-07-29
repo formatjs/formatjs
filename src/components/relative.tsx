@@ -116,9 +116,7 @@ class FormattedRelativeTime extends React.PureComponent<Props, State> {
     const nextUnit = selectUnit(nextValueInSeconds);
     // We've reached the max auto incrementable unit, don't schedule another update
     if (nextUnit === 'day') {
-      return this.setState({
-        currentValueInSeconds: nextValueInSeconds < 0 ? -DAY : DAY,
-      });
+      return;
     }
 
     const unitDuration = getDurationInSeconds(nextUnit);
