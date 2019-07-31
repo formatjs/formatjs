@@ -101,14 +101,14 @@ export type MessageFormatElement =
   | SelectElement
   | PluralElement;
 
-export interface SkeletonToken {
+export interface NumberSkeletonToken {
   stem: string;
   options: string[];
 }
 
 export interface NumberSkeleton {
   type: SKELETON_TYPE.number;
-  tokens: SkeletonToken[];
+  tokens: NumberSkeletonToken[];
   location?: Location;
 }
 

@@ -18,6 +18,8 @@ Array [
 ]
 `;
 
+exports[`case: "@@#" 2`] = `"{0, number, ::@@#}"`;
+
 exports[`case: "compact-short currency/GBP" 1`] = `
 Array [
   Object {
@@ -42,6 +44,8 @@ Array [
 ]
 `;
 
+exports[`case: "compact-short currency/GBP" 2`] = `"{0, number, ::compact-short currency/GBP}"`;
+
 exports[`case: "currency/CAD unit-width-narrow" 1`] = `
 Array [
   Object {
@@ -65,3 +69,5 @@ Array [
   },
 ]
 `;
+
+exports[`case: "currency/CAD unit-width-narrow" 2`] = `"{0, number, ::currency/CAD unit-width-narrow}"`;

@@ -20,7 +20,10 @@ import {
   isTimeElement,
   isNumberElement,
   isPluralElement,
-  TYPE
+  TYPE,
+  Skeleton,
+  SKELETON_TYPE,
+  NumberSkeletonToken
 } from './types';
 
 const ESCAPED_CHARS: Record<string, string> = {
@@ -57,8 +60,12 @@ export function printAST(ast: MessageFormatElement[]): string {
   return printedNodes.join('');
 }
 
+function printEscapedMessage(message: string): string {
+  return message.replace(ESAPE_CHARS_REGEXP, char => ESCAPED_CHARS[char]);
+}
+
 function printLiteralElement({ value }: LiteralElement) {
-  return value.replace(ESAPE_CHARS_REGEXP, char => ESCAPED_CHARS[char]);
+  return printEscapedMessage(value);
 }
 
 function printArgumentElement({ value }: ArgumentElement) {
@@ -68,8 +75,28 @@ function printArgumentElement({ value }: ArgumentElement) {
 function printSimpleFormatElement(
   el: DateElement | TimeElement | NumberElement
 ) {
-  return `{${el.value}, ${TYPE[el.type]}${el.style ? `, ${el.style}` : ''}}`;
+  return `{${el.value}, ${TYPE[el.type]}${
+    el.style ? `, ${printArgumentStyle(el.style)}` : ''
+  }}`;
 }
+
+function printNumberSkeletonToken(token: NumberSkeletonToken): string {
+  const { stem, options } = token;
+  return options.length === 0
+    ? stem
+    : `${stem}${options.map(o => `/${o}`).join('')}`;
+}
+
+function printArgumentStyle(style: string | Skeleton) {
+  if (typeof style === 'string') {
+    return style;
+  } else if (style.type === SKELETON_TYPE.date) {
+    return `::${printEscapedMessage(style.pattern)}`;
+  } else {
+    return `::${style.tokens.map(printNumberSkeletonToken).join(' ')}`;
+  }
+}
+
 function printSelectElement(el: SelectElement) {
   const msg = [
     el.value,
