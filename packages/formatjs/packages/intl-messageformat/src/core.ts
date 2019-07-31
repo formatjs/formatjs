@@ -44,6 +44,7 @@ function resolveLocale(locales: string | string[]): string {
   }
 }
 
+// TODO(skeleton): add skeleton support
 function prewarmFormatters(
   els: MessageFormatElement[],
   locales: string | string[],
@@ -57,25 +58,28 @@ function prewarmFormatters(
       // nested pattern structure. The choosing of the option to use is
       // abstracted-by and delegated-to the part helper object.
       if (isDateElement(el)) {
-        const style = el.style ? formats.date[el.style] : undefined;
-        return formatters.getDateTimeFormat(locales, style);
+        const style =
+          typeof el.style === 'string' ? formats.date[el.style] : undefined;
+        formatters.getDateTimeFormat(locales, style);
       }
       if (isTimeElement(el)) {
-        const style = el.style ? formats.time[el.style] : undefined;
-        return formatters.getDateTimeFormat(locales, style);
+        const style =
+          typeof el.style === 'string' ? formats.time[el.style] : undefined;
+        formatters.getDateTimeFormat(locales, style);
       }
       if (isNumberElement(el)) {
-        const style = el.style ? formats.number[el.style] : undefined;
-        return formatters.getNumberFormat(locales, style);
+        const style =
+          typeof el.style === 'string' ? formats.number[el.style] : undefined;
+        formatters.getNumberFormat(locales, style);
       }
       if (isSelectElement(el)) {
-        return Object.keys(el.options).forEach(id =>
+        Object.keys(el.options).forEach(id =>
           prewarmFormatters(el.options[id].value, locales, formatters, formats)
         );
       }
       if (isPluralElement(el)) {
         formatters.getPluralRules(locales, { type: el.pluralType });
-        return Object.keys(el.options).forEach(id =>
+        Object.keys(el.options).forEach(id =>
           prewarmFormatters(el.options[id].value, locales, formatters, formats)
         );
       }

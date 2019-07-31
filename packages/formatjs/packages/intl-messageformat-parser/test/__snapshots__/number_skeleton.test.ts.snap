@@ -13,7 +13,7 @@ Array [
       "type": 0,
     },
     "type": 2,
-    "value": 0,
+    "value": "0",
   },
 ]
 `;
@@ -37,7 +37,7 @@ Array [
       "type": 0,
     },
     "type": 2,
-    "value": 0,
+    "value": "0",
   },
 ]
 `;
@@ -61,7 +61,7 @@ Array [
       "type": 0,
     },
     "type": 2,
-    "value": 0,
+    "value": "0",
   },
 ]
 `;

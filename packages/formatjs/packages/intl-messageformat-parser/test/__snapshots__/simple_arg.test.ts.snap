@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`date & time arg 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "Your meeting is scheduled for the ",
+  },
+  Object {
+    "style": null,
+    "type": 3,
+    "value": "dateVal",
+  },
+  Object {
+    "type": 0,
+    "value": " at ",
+  },
+  Object {
+    "style": null,
+    "type": 4,
+    "value": "timeVal",
+  },
+]
+`;
+
+exports[`date & time arg with style 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "Your meeting is scheduled for the ",
+  },
+  Object {
+    "style": "long",
+    "type": 3,
+    "value": "dateVal",
+  },
+  Object {
+    "type": 0,
+    "value": " at ",
+  },
+  Object {
+    "style": "short",
+    "type": 4,
+    "value": "timeVal",
+  },
+]
+`;
+
+exports[`number arg 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "I have ",
+  },
+  Object {
+    "style": null,
+    "type": 2,
+    "value": "numCats",
+  },
+  Object {
+    "type": 0,
+    "value": " cats.",
+  },
+]
+`;
+
+exports[`number arg with style 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "Almost ",
+  },
+  Object {
+    "style": "percent",
+    "type": 2,
+    "value": "pctBlack",
+  },
+  Object {
+    "type": 0,
+    "value": " of them are black.",
+  },
+]
+`;

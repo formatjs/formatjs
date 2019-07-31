@@ -9,50 +9,16 @@ Array [
 ]
 `;
 
-exports[`parse() can parse '''{name}''' 1`] = `
+exports[`parse() can parse ''#'' 1`] = `
 Array [
   Object {
     "type": 0,
-    "value": "'",
-  },
-  Object {
-    "type": 1,
-    "value": "name",
-  },
-  Object {
-    "type": 0,
-    "value": "'",
+    "value": "'#'",
   },
 ]
 `;
 
-exports[`parse() can parse '''{name}''' 2`] = `
-Array [
-  Object {
-    "type": 0,
-    "value": "'",
-  },
-  Object {
-    "type": 1,
-    "value": "name",
-  },
-  Object {
-    "type": 0,
-    "value": "'",
-  },
-]
-`;
-
-exports[`parse() can parse '\\#' 1`] = `
-Array [
-  Object {
-    "type": 0,
-    "value": "\\\\#",
-  },
-]
-`;
-
-exports[`parse() can parse '\\{' 1`] = `
+exports[`parse() can parse ''{'' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -61,20 +27,20 @@ Array [
 ]
 `;
 
-exports[`parse() can parse '\\}' 1`] = `
+exports[`parse() can parse ''{name}'' 1`] = `
 Array [
   Object {
     "type": 0,
-    "value": "}",
+    "value": "{name}",
   },
 ]
 `;
 
-exports[`parse() can parse '\\u003C' 1`] = `
+exports[`parse() can parse ''}'' 1`] = `
 Array [
   Object {
     "type": 0,
-    "value": "<",
+    "value": "}",
   },
 ]
 `;
@@ -535,15 +501,7 @@ exports[`parse() can parse 'This '{isn''t}' obvious' 1`] = `
 Array [
   Object {
     "type": 0,
-    "value": "This '",
-  },
-  Object {
-    "type": 1,
-    "value": "isn't",
-  },
-  Object {
-    "type": 0,
-    "value": "' obvious",
+    "value": "This {isn't} obvious",
   },
 ]
 `;
@@ -595,17 +553,13 @@ Array [
 
 exports[`parse() can print AST from '   some random test   ' 1`] = `"   some random test   "`;
 
-exports[`parse() can print AST from '''{name}''' 1`] = `"'{name}'"`;
+exports[`parse() can print AST from ''#'' 1`] = `"'#'"`;
 
-exports[`parse() can print AST from '''{name}''' 2`] = `"'{name}'"`;
+exports[`parse() can print AST from ''{'' 1`] = `"\\\\{"`;
 
-exports[`parse() can print AST from '\\#' 1`] = `"\\\\#"`;
+exports[`parse() can print AST from ''{name}'' 1`] = `"\\\\{name\\\\}"`;
 
-exports[`parse() can print AST from '\\{' 1`] = `"\\\\{"`;
-
-exports[`parse() can print AST from '\\}' 1`] = `"\\\\}"`;
-
-exports[`parse() can print AST from '\\u003C' 1`] = `"<"`;
+exports[`parse() can print AST from ''}'' 1`] = `"\\\\}"`;
 
 exports[`parse() can print AST from '{  num , number,percent  }' 1`] = `"{num, number, percent}"`;
 
@@ -631,7 +585,7 @@ exports[`parse() can print AST from 'Hello, World!' 1`] = `"Hello, World!"`;
 
 exports[`parse() can print AST from 'My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}.' 1`] = `"My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}."`;
 
-exports[`parse() can print AST from 'This '{isn''t}' obvious' 1`] = `"This '{isn't}' obvious"`;
+exports[`parse() can print AST from 'This '{isn''t}' obvious' 1`] = `"This \\\\{isn't\\\\} obvious"`;
 
 exports[`parse() can print AST from 'this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}' 1`] = `"this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}"`;
 
@@ -644,50 +598,16 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse '''{name}''' 1`] = `
+exports[`parse({ captureLocation: true }) can parse ''#'' 1`] = `
 Array [
   Object {
     "type": 0,
-    "value": "'",
-  },
-  Object {
-    "type": 1,
-    "value": "name",
-  },
-  Object {
-    "type": 0,
-    "value": "'",
+    "value": "'#'",
   },
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse '''{name}''' 2`] = `
-Array [
-  Object {
-    "type": 0,
-    "value": "'",
-  },
-  Object {
-    "type": 1,
-    "value": "name",
-  },
-  Object {
-    "type": 0,
-    "value": "'",
-  },
-]
-`;
-
-exports[`parse({ captureLocation: true }) can parse '\\#' 1`] = `
-Array [
-  Object {
-    "type": 0,
-    "value": "\\\\#",
-  },
-]
-`;
-
-exports[`parse({ captureLocation: true }) can parse '\\{' 1`] = `
+exports[`parse({ captureLocation: true }) can parse ''{'' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -696,20 +616,20 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse '\\}' 1`] = `
+exports[`parse({ captureLocation: true }) can parse ''{name}'' 1`] = `
 Array [
   Object {
     "type": 0,
-    "value": "}",
+    "value": "{name}",
   },
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse '\\u003C' 1`] = `
+exports[`parse({ captureLocation: true }) can parse ''}'' 1`] = `
 Array [
   Object {
     "type": 0,
-    "value": "<",
+    "value": "}",
   },
 ]
 `;
@@ -1170,15 +1090,7 @@ exports[`parse({ captureLocation: true }) can parse 'This '{isn''t}' obvious' 1`
 Array [
   Object {
     "type": 0,
-    "value": "This '",
-  },
-  Object {
-    "type": 1,
-    "value": "isn't",
-  },
-  Object {
-    "type": 0,
-    "value": "' obvious",
+    "value": "This {isn't} obvious",
   },
 ]
 `;
@@ -1230,17 +1142,13 @@ Array [
 
 exports[`parse({ captureLocation: true }) can print AST from '   some random test   ' 1`] = `"   some random test   "`;
 
-exports[`parse({ captureLocation: true }) can print AST from '''{name}''' 1`] = `"'{name}'"`;
+exports[`parse({ captureLocation: true }) can print AST from ''#'' 1`] = `"'#'"`;
 
-exports[`parse({ captureLocation: true }) can print AST from '''{name}''' 2`] = `"'{name}'"`;
+exports[`parse({ captureLocation: true }) can print AST from ''{'' 1`] = `"\\\\{"`;
 
-exports[`parse({ captureLocation: true }) can print AST from '\\#' 1`] = `"\\\\#"`;
+exports[`parse({ captureLocation: true }) can print AST from ''{name}'' 1`] = `"\\\\{name\\\\}"`;
 
-exports[`parse({ captureLocation: true }) can print AST from '\\{' 1`] = `"\\\\{"`;
-
-exports[`parse({ captureLocation: true }) can print AST from '\\}' 1`] = `"\\\\}"`;
-
-exports[`parse({ captureLocation: true }) can print AST from '\\u003C' 1`] = `"<"`;
+exports[`parse({ captureLocation: true }) can print AST from ''}'' 1`] = `"\\\\}"`;
 
 exports[`parse({ captureLocation: true }) can print AST from '{  num , number,percent  }' 1`] = `"{num, number, percent}"`;
 
@@ -1266,6 +1174,6 @@ exports[`parse({ captureLocation: true }) can print AST from 'Hello, World!' 1`]
 
 exports[`parse({ captureLocation: true }) can print AST from 'My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}.' 1`] = `"My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}."`;
 
-exports[`parse({ captureLocation: true }) can print AST from 'This '{isn''t}' obvious' 1`] = `"This '{isn't}' obvious"`;
+exports[`parse({ captureLocation: true }) can print AST from 'This '{isn''t}' obvious' 1`] = `"This \\\\{isn't\\\\} obvious"`;
 
 exports[`parse({ captureLocation: true }) can print AST from 'this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}' 1`] = `"this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}"`;

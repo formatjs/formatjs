@@ -5,3 +5,4 @@ tests/*.js*
 core.js
 core.d.ts
 !tests/setup.js
+.rpt2_cache

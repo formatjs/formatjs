@@ -1,0 +1,298 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`plural arg nested inside select arg 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "      ",
+  },
+  Object {
+    "options": Object {
+      "female": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "
+          ",
+          },
+          Object {
+            "offset": 1,
+            "options": Object {
+              "=0": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "type": 1,
+                    "value": "host",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " does not give a party.",
+                  },
+                ],
+              },
+              "=1": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "type": 1,
+                    "value": "host",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " invites ",
+                  },
+                  Object {
+                    "type": 1,
+                    "value": "guest",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " to her party.",
+                  },
+                ],
+              },
+              "=2": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "type": 1,
+                    "value": "host",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " invites ",
+                  },
+                  Object {
+                    "type": 1,
+                    "value": "guest",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " and one other person to her party.",
+                  },
+                ],
+              },
+              "other": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "type": 1,
+                    "value": "host",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " invites ",
+                  },
+                  Object {
+                    "type": 1,
+                    "value": "guest",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " and # other people to her party.",
+                  },
+                ],
+              },
+            },
+            "pluralType": "cardinal",
+            "type": 6,
+            "value": "num_guests",
+          },
+        ],
+      },
+      "male": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "
+          ",
+          },
+          Object {
+            "offset": 1,
+            "options": Object {
+              "=0": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "type": 1,
+                    "value": "host",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " does not give a party.",
+                  },
+                ],
+              },
+              "=1": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "type": 1,
+                    "value": "host",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " invites ",
+                  },
+                  Object {
+                    "type": 1,
+                    "value": "guest",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " to his party.",
+                  },
+                ],
+              },
+              "=2": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "type": 1,
+                    "value": "host",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " invites ",
+                  },
+                  Object {
+                    "type": 1,
+                    "value": "guest",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " and one other person to his party.",
+                  },
+                ],
+              },
+              "other": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "type": 1,
+                    "value": "host",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " invites ",
+                  },
+                  Object {
+                    "type": 1,
+                    "value": "guest",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " and # other people to his party.",
+                  },
+                ],
+              },
+            },
+            "pluralType": "cardinal",
+            "type": 6,
+            "value": "num_guests",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "
+          ",
+          },
+          Object {
+            "offset": 1,
+            "options": Object {
+              "=0": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "type": 1,
+                    "value": "host",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " does not give a party.",
+                  },
+                ],
+              },
+              "=1": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "type": 1,
+                    "value": "host",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " invites ",
+                  },
+                  Object {
+                    "type": 1,
+                    "value": "guest",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " to their party.",
+                  },
+                ],
+              },
+              "=2": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "type": 1,
+                    "value": "host",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " invites ",
+                  },
+                  Object {
+                    "type": 1,
+                    "value": "guest",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " and one other person to their party.",
+                  },
+                ],
+              },
+              "other": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "type": 1,
+                    "value": "host",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " invites ",
+                  },
+                  Object {
+                    "type": 1,
+                    "value": "guest",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " and # other people to their party.",
+                  },
+                ],
+              },
+            },
+            "pluralType": "cardinal",
+            "type": 6,
+            "value": "num_guests",
+          },
+        ],
+      },
+    },
+    "type": 5,
+    "value": "gender_of_host",
+  },
+]
+`;

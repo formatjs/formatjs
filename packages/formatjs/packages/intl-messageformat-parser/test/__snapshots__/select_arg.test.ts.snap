@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`nested arguments 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "      ",
+  },
+  Object {
+    "options": Object {
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "No taxes apply.",
+          },
+        ],
+      },
+      "yes": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "An additional ",
+          },
+          Object {
+            "style": "percent",
+            "type": 2,
+            "value": "taxRate",
+          },
+          Object {
+            "type": 0,
+            "value": " tax will be collected.",
+          },
+        ],
+      },
+    },
+    "type": 5,
+    "value": "taxableArea",
+  },
+  Object {
+    "type": 0,
+    "value": "
+    ",
+  },
+]
+`;
+
+exports[`trivial 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "      ",
+  },
+  Object {
+    "options": Object {
+      "female": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "She",
+          },
+        ],
+      },
+      "male": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "He",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "They",
+          },
+        ],
+      },
+    },
+    "type": 5,
+    "value": "gender",
+  },
+  Object {
+    "type": 0,
+    "value": " will respond shortly.
+    ",
+  },
+]
+`;

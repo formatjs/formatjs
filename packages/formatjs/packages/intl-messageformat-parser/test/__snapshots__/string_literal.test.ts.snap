@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`does not start quoted text if apostrophe does not immediately precede a character 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "'aa'b'",
+  },
+]
+`;
+
+exports[`does not start quoted text if apostrophe does not immediately precede a character 2`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "I don't know",
+  },
+]
+`;
+
+exports[`starts quoted text if apostrophe immediately precedes a character 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "{a'b}",
+  },
+]
+`;
+
+exports[`starts quoted text if apostrophe immediately precedes a character 2`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "}a'b{",
+  },
+]
+`;
+
+exports[`starts quoted text if apostrophe immediately precedes a character 3`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "aaa{",
+  },
+]
+`;
+
+exports[`starts quoted text if apostrophe immediately precedes a character 4`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "aaa}",
+  },
+]
+`;
+
+exports[`treats double apostrophes as one apostrophe 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "a'b",
+  },
+]
+`;
+
+exports[`unescaped string literals 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "line1
+  line2",
+  },
+]
+`;

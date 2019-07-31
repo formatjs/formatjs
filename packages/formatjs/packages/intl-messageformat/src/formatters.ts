@@ -84,6 +84,7 @@ function mergeLiteral(parts: MessageFormatPart[]): MessageFormatPart[] {
   );
 }
 
+// TODO(skeleton): add skeleton support
 export function formatToParts(
   els: MessageFormatElement[],
   locales: string | string[],
@@ -144,7 +145,8 @@ export function formatToParts(
     // nested pattern structure. The choosing of the option to use is
     // abstracted-by and delegated-to the part helper object.
     if (isDateElement(el)) {
-      const style = el.style ? formats.date[el.style] : undefined;
+      const style =
+        typeof el.style === 'string' ? formats.date[el.style] : undefined;
       result.push({
         type: PART_TYPE.literal,
         value: formatters
@@ -154,7 +156,8 @@ export function formatToParts(
       continue;
     }
     if (isTimeElement(el)) {
-      const style = el.style ? formats.time[el.style] : undefined;
+      const style =
+        typeof el.style === 'string' ? formats.time[el.style] : undefined;
       result.push({
         type: PART_TYPE.literal,
         value: formatters
@@ -164,7 +167,8 @@ export function formatToParts(
       continue;
     }
     if (isNumberElement(el)) {
-      const style = el.style ? formats.number[el.style] : undefined;
+      const style =
+        typeof el.style === 'string' ? formats.number[el.style] : undefined;
       result.push({
         type: PART_TYPE.literal,
         value: formatters

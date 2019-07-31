@@ -15,19 +15,17 @@ function allTests(opts?: ParseOptions) {
     '{  num , number,percent  }',
     '{c, plural, =1 { {text} project} other { {text} projects}}',
     '{c, plural, =99 { {text} project} other { {text} projects}}',
-    '\\{',
-    '\\}',
-    '\\u003C',
+    `'{'`,
+    `'}'`,
     // Escaping "#" needs to be special-cased so it remains escaped so
     // the runtime doesn't replace it when in a `pluralFormat` option.
-    '\\#',
+    `'#'`,
     /**
      * @see http://userguide.icu-project.org/formatparse/messages#TOC-Quoting-Escaping
      * @see https://github.com/formatjs/formatjs/issues/97
      */
     "This '{isn''t}' obvious",
-    "''{name}''",
-    "''{name}''",
+    "'{name}'",
     'this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}'
   ].forEach(mess => {
     const ast = parse(mess, opts);

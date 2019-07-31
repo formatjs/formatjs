@@ -49,6 +49,8 @@ import {
     pluralOption: 'PluralOrSelectOption',
     numberSkeleton: 'NumberSkeleton',
     dateOrTimeSkeleton: 'DateSkeleton',
+    numberArgStyle: 'string | NumberSkeleton',
+    dateOrTimeArgStyle: 'string | DateSkeleton',
     simpleFormatElement: `
 | NumberElement
 | DateElement

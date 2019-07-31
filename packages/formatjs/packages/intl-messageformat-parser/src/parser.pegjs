@@ -29,12 +29,9 @@ messageElement
     / selectElement
 
 messageText
-    = chunks:(_ chars _)+ {
-        return chunks.reduce(function (all, chunk) {
-            return all.concat(chunk)
-        }, []).join('')
+    = parts:(doubleApostrophes / quotedString / unquotedString)+ {
+        return parts.join('');
     }
-    / $(ws)
 
 literalElement
     = messageText:messageText {
@@ -45,18 +42,19 @@ literalElement
         };
     }
 
-varName
-    = number
-    / chars:quoteEscapedChar* { return chars.join(''); }
+argName = $(number / keyword)
 
 argumentElement 'argumentElement'
-    = '{' _ value:varName _ '}' {
+    = '{' _ value:argName _ '}' {
         return {
             type: TYPE.argument,
             value,
             ...insertLocation()
         }
     }
+
+numberSkeletonId 'numberSkeletonId'
+    = $(!(patternWhiteSpace / [\'\/{}]) .)+
 
 numberSkeletonTokenOption 'numberSkeletonTokenOption'
     = '/' option:numberSkeletonId { return option; }
@@ -68,20 +66,21 @@ numberSkeletonToken 'numberSkeletonToken'
 
 // See also:
 // https://github.com/unicode-org/icu/blob/master/docs/userguide/format_parse/numbers/skeletons.md
-numberSkeleton = tokens:(numberSkeletonToken+) {
-    return {
-        type: SKELETON_TYPE.number,
-        tokens,
-        ...insertLocation()
+numberSkeleton
+    = tokens:(numberSkeletonToken+) {
+        return {
+            type: SKELETON_TYPE.number,
+            tokens,
+            ...insertLocation()
+        }
     }
-}
 
 numberArgStyle
     = '::' skeleton:numberSkeleton { return skeleton; }
-    / chars
+    / keyword
 
 numberFormatElement
-    = '{' _ value:varName _ ',' _ type:'number' _ style:(',' _ numberArgStyle)? _ '}' {
+    = '{' _ value:argName _ ',' _ type:'number' _ style:(',' _ numberArgStyle)? _ '}' {
         return {
             type    : type === 'number' ? TYPE.number : type === 'date' ? TYPE.date : TYPE.time,
             style   : style && style[2],
@@ -89,36 +88,26 @@ numberFormatElement
             ...insertLocation()
         };
     }
-
-// Starting with ICU 4.8, an ASCII apostrophe only starts quoted text if it immediately precedes
-// a character that requires quoting (that is, "only where needed"), and works the same in
-// nested messages as on the top level of the pattern. The new behavior is otherwise compatible.
-// TODO: use this rule for message text literal.
-quotedString = "'" escapedChar:([\{\}]) quotedChars:$([^'] / "''")+ "'" {
-    return escapedChar + quotedChars.replace(`''`, `'`);
-}
-doubleApostrophes = "''" { return `'`; }
-unquotedString = matches:$(!("''" / '{' / '}' / "'{" "'}") .)+ { return matches; }
 
 // See also:
 // - http://cldr.unicode.org/translation/date-time-patterns
 // - http://www.icu-project.org/apiref/icu4j/com/ibm/icu/text/SimpleDateFormat.html
 // Here we implement the ICU >= 4.8 quoting behavior.
 dateOrTimeSkeleton
-    = parts:(quotedString / doubleApostrophes / unquotedString)+ {
+    = pattern:messageText {
         return {
             type: SKELETON_TYPE.date,
-            pattern: parts.join(''),
+            pattern,
             ...insertLocation(),
         }
     }
 
 dateOrTimeArgStyle
     = '::' skeleton:dateOrTimeSkeleton { return skeleton; }
-    / chars
+    / keyword
 
 dateOrTimeFormatElement
-    = '{' _ value:varName _ ',' _ type:('date' / 'time') _ style:(',' _ dateOrTimeArgStyle)? _ '}' {
+    = '{' _ value:argName _ ',' _ type:('date' / 'time') _ style:(',' _ dateOrTimeArgStyle)? _ '}' {
         return {
             type    : type === 'number' ? TYPE.number : type === 'date' ? TYPE.date : TYPE.time,
             style   : style && style[2],
@@ -127,10 +116,11 @@ dateOrTimeFormatElement
         };
     }
 
-simpleFormatElement = numberFormatElement / dateOrTimeFormatElement
+simpleFormatElement
+    = numberFormatElement / dateOrTimeFormatElement
 
 pluralElement
-    = '{' _ value:varName _ ',' _ pluralType:('plural' / 'selectordinal') _ ',' _ offset:('offset:' _ number)? _ options:pluralOption+ _ '}' {
+    = '{' _ value:argName _ ',' _ pluralType:('plural' / 'selectordinal') _ ',' _ offset:('offset:' _ number)? _ options:pluralOption+ _ '}' {
         return {
             type   : TYPE.plural,
             pluralType: pluralType === 'plural' ? 'cardinal' : 'ordinal',
@@ -148,7 +138,7 @@ pluralElement
     }
 
 selectElement
-    = '{' _ value:varName _ ',' _ 'select' _ ',' _ options:selectOption+ _ '}' {
+    = '{' _ value:argName _ ',' _ 'select' _ ',' _ options:selectOption+ _ '}' {
         return {
             type   : TYPE.select,
             value,
@@ -164,18 +154,10 @@ selectElement
     }
 
 pluralRuleSelectValue
-    = '=' n:number {
-        return `=${n}`
-    }
-    / 'zero'
-    / 'one'
-    / 'two'
-    / 'few'
-    / 'many'
-    / 'other'
+    = $('=' number) / keyword
 
 selectOption
-    = _ id:chars _ '{' value:message '}' {
+    = _ id:keyword _ '{' value:message '}' {
         return {
             id,
             value,
@@ -194,39 +176,27 @@ pluralOption
 
 // -- Helpers ------------------------------------------------------------------
 
-ws 'whitespace' = [ \t\n\r]+
-_ 'optionalWhitespace' = $(ws*)
+// Equivalence of \p{Pattern_White_Space}
+// See: https://github.com/mathiasbynens/unicode-11.0.0/blob/master/Binary_Property/Pattern_White_Space/regex.js
+patternWhiteSpace = [\t-\r \x85\u200E\u200F\u2028\u2029]
+// Equivalence of \p{Pattern_Syntax}
+// See: https://github.com/mathiasbynens/unicode-11.0.0/blob/master/Binary_Property/Pattern_Syntax/regex.js
+patternSyntax = [!-\/:-@\[-\^`\{-~\xA1-\xA7\xA9\xAB\xAC\xAE\xB0\xB1\xB6\xBB\xBF\xD7\xF7\u2010-\u2027\u2030-\u203E\u2041-\u2053\u2055-\u205E\u2190-\u245F\u2500-\u2775\u2794-\u2BFF\u2E00-\u2E7F\u3001-\u3003\u3008-\u3020\u3030\uFD3E\uFD3F\uFE45\uFE46]
 
-digit    = [0-9]
-hexDigit = [0-9a-f]i
+_ 'optional whitespace' = $(patternWhiteSpace*)
 
-number = digits:digit+ {
+number = digits:[0-9]+ {
     return parseInt(digits.join(''), 10);
 }
 
-quoteEscapedChar =
-  !("'" / [ \t\n\r,.+={}#]) char:. { return char; }
-  / "'" sequence:escape { return sequence; }
-
 apostrophe 'apostrophe' = "'"
-escape = [ \t\n\r,.+={}#] / apostrophe
+doubleApostrophes 'double apostrophes' = "''" { return `'`; }
+// Starting with ICU 4.8, an ASCII apostrophe only starts quoted text if it immediately precedes
+// a character that requires quoting (that is, "only where needed"), and works the same in
+// nested messages as on the top level of the pattern. The new behavior is otherwise compatible.
+quotedString = "'" escapedChar:([{}]) quotedChars:$("''" / [^'])* "'" {
+    return escapedChar + quotedChars.replace(`''`, `'`);
+}
+unquotedString = $([^{}]);
 
-char
-    =
-    "'" sequence:apostrophe { return sequence; }
-    / [^{}\\\0-\x1F\x7f \t\n\r]
-    / '\\\\' { return '\\'; }
-    / '\\#'  { return '\\#'; }
-    / '\\{'  { return '\u007B'; }
-    / '\\}'  { return '\u007D'; }
-    / '\\u'  digits:$(hexDigit hexDigit hexDigit hexDigit) {
-        return String.fromCharCode(parseInt(digits, 16));
-    }
-
-chars = chars:char+ { return chars.join(''); }
-
-// Equivalence of \p{Pattern_White_Space}
-// See: https://github.com/mathiasbynens/unicode-11.0.0/blob/master/Binary_Property/Pattern_White_Space/regex.js
-patternWhiteSpace = [\t-\r \x85\u200E\u200F\u2028\u2029];
-
-numberSkeletonId 'numberSkeletonId' = $(!(patternWhiteSpace / [\'\/{}]) .)+;
+keyword 'keyword' = $((!(patternWhiteSpace / patternSyntax) .)+)

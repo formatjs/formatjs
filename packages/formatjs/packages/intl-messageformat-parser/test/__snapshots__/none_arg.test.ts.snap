@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`trivial 1`] = `
+Array [
+  Object {
+    "type": 1,
+    "value": "0",
+  },
+]
+`;
+
+exports[`trivial 2`] = `
+Array [
+  Object {
+    "type": 1,
+    "value": "arg",
+  },
+]
+`;
+
+exports[`trivial 3`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "hello ",
+  },
+  Object {
+    "type": 1,
+    "value": "name",
+  },
+]
+`;

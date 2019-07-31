@@ -53,13 +53,14 @@ export interface BaseElement<T extends TYPE> {
 export type LiteralElement = BaseElement<TYPE.literal>;
 export type ArgumentElement = BaseElement<TYPE.argument>;
 
-export interface SimpleFormatElement<T extends TYPE> extends BaseElement<T> {
-  style?: string;
+export interface SimpleFormatElement<T extends TYPE, S extends Skeleton>
+  extends BaseElement<T> {
+  style?: string | S | null;
 }
 
-export type NumberElement = SimpleFormatElement<TYPE.number>;
-export type DateElement = SimpleFormatElement<TYPE.date>;
-export type TimeElement = SimpleFormatElement<TYPE.time>;
+export type NumberElement = SimpleFormatElement<TYPE.number, NumberSkeleton>;
+export type DateElement = SimpleFormatElement<TYPE.date, DateSkeleton>;
+export type TimeElement = SimpleFormatElement<TYPE.time, DateSkeleton>;
 
 export interface SelectOption {
   id: string;
@@ -163,7 +164,7 @@ export function createLiteralElement(value: string): LiteralElement {
 
 export function createNumberElement(
   value: string,
-  style?: string
+  style?: string | null
 ): NumberElement {
   return {
     type: TYPE.number,

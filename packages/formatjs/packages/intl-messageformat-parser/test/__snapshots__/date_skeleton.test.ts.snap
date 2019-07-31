@@ -8,7 +8,7 @@ Array [
       "type": 1,
     },
     "type": 3,
-    "value": 0,
+    "value": "0",
   },
 ]
 `;
@@ -21,7 +21,7 @@ Array [
       "type": 1,
     },
     "type": 3,
-    "value": 0,
+    "value": "0",
   },
 ]
 `;
@@ -34,7 +34,7 @@ Array [
       "type": 1,
     },
     "type": 3,
-    "value": 0,
+    "value": "0",
   },
 ]
 `;
