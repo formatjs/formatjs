@@ -26,15 +26,6 @@ import {
   NumberSkeletonToken
 } from './types';
 
-const ESCAPED_CHARS: Record<string, string> = {
-  '\\': '\\\\',
-  '\\#': '\\#',
-  '{': '\\{',
-  '}': '\\}'
-};
-
-const ESAPE_CHARS_REGEXP = /\\#|[{}\\]/g;
-
 export function printAST(ast: MessageFormatElement[]): string {
   let printedNodes = ast.map(el => {
     if (isLiteralElement(el)) {
@@ -61,7 +52,7 @@ export function printAST(ast: MessageFormatElement[]): string {
 }
 
 function printEscapedMessage(message: string): string {
-  return message.replace(ESAPE_CHARS_REGEXP, char => ESCAPED_CHARS[char]);
+  return message.replace(/([{}](?:.*[{}])?)/su, `'$1'`);
 }
 
 function printLiteralElement({ value }: LiteralElement) {
@@ -89,7 +80,7 @@ function printNumberSkeletonToken(token: NumberSkeletonToken): string {
 
 function printArgumentStyle(style: string | Skeleton) {
   if (typeof style === 'string') {
-    return style;
+    return printEscapedMessage(style);
   } else if (style.type === SKELETON_TYPE.date) {
     return `::${printEscapedMessage(style.pattern)}`;
   } else {

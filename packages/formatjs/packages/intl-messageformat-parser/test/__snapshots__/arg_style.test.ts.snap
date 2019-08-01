@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`argStyleText test case: "{0,date,y-M-d HH:mm:ss zzzz}" 1`] = `
+Array [
+  Object {
+    "style": "y-M-d HH:mm:ss zzzz",
+    "type": 3,
+    "value": "0",
+  },
+]
+`;
+
+exports[`argStyleText test case: "{0,date,y-M-d HH:mm:ss zzzz}" 2`] = `"{0, date, y-M-d HH:mm:ss zzzz}"`;
+
+exports[`argStyleText test case: "{0,date,y-M-d HH:mm:ss}" 1`] = `
+Array [
+  Object {
+    "style": "y-M-d HH:mm:ss",
+    "type": 3,
+    "value": "0",
+  },
+]
+`;
+
+exports[`argStyleText test case: "{0,date,y-M-d HH:mm:ss}" 2`] = `"{0, date, y-M-d HH:mm:ss}"`;
+
+exports[`argStyleText test case: "{0,date,y-M-d,HH:mm:ss,zzzz}" 1`] = `
+Array [
+  Object {
+    "style": "y-M-d,HH:mm:ss,zzzz",
+    "type": 3,
+    "value": "0",
+  },
+]
+`;
+
+exports[`argStyleText test case: "{0,date,y-M-d,HH:mm:ss,zzzz}" 2`] = `"{0, date, y-M-d,HH:mm:ss,zzzz}"`;
+
+exports[`argStyleText test case: "{0,number,''}" 1`] = `
+Array [
+  Object {
+    "style": "'",
+    "type": 2,
+    "value": "0",
+  },
+]
+`;
+
+exports[`argStyleText test case: "{0,number,''}" 2`] = `"{0, number, '}"`;
+
+exports[`argStyleText test case: "{0,number,'{}'}" 1`] = `
+Array [
+  Object {
+    "style": "{}",
+    "type": 2,
+    "value": "0",
+  },
+]
+`;
+
+exports[`argStyleText test case: "{0,number,'{}'}" 2`] = `"{0, number, '{}'}"`;
+
+exports[`argStyleText test case: "{0,number,y-M-d HH:mm:ss zzzz}" 1`] = `
+Array [
+  Object {
+    "style": "y-M-d HH:mm:ss zzzz",
+    "type": 2,
+    "value": "0",
+  },
+]
+`;
+
+exports[`argStyleText test case: "{0,number,y-M-d HH:mm:ss zzzz}" 2`] = `"{0, number, y-M-d HH:mm:ss zzzz}"`;
+
+exports[`argStyleText test case: "{0,number,y-M-d HH:mm:ss}" 1`] = `
+Array [
+  Object {
+    "style": "y-M-d HH:mm:ss",
+    "type": 2,
+    "value": "0",
+  },
+]
+`;
+
+exports[`argStyleText test case: "{0,number,y-M-d HH:mm:ss}" 2`] = `"{0, number, y-M-d HH:mm:ss}"`;
+
+exports[`argStyleText test case: "{0,number,y-M-d,HH:mm:ss,zzzz}" 1`] = `
+Array [
+  Object {
+    "style": "y-M-d,HH:mm:ss,zzzz",
+    "type": 2,
+    "value": "0",
+  },
+]
+`;
+
+exports[`argStyleText test case: "{0,number,y-M-d,HH:mm:ss,zzzz}" 2`] = `"{0, number, y-M-d,HH:mm:ss,zzzz}"`;

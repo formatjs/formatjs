@@ -415,7 +415,7 @@ describe('IntlMessageFormat', function() {
       it('should fail when the argument in the pattern is not provided', function() {
         expect(msg.format).to.throw(
           Error,
-          /The intl string context variable 'STATE' was not provided to the string '{STATE}'/
+          /The intl string context variable "STATE" was not provided to the string "{STATE}"/
         );
       });
 
@@ -426,7 +426,7 @@ describe('IntlMessageFormat', function() {
 
         expect(formatWithValueNameTypo).to.throw(
           Error,
-          /The intl string context variable 'STATE' was not provided to the string '{STATE}'/
+          /The intl string context variable "STATE" was not provided to the string "{STATE}"/
         );
       });
 
@@ -446,7 +446,7 @@ describe('IntlMessageFormat', function() {
 
         expect(formatWithMissingValue).to.throw(
           Error,
-          /The intl string context variable 'ST1ATE' was not provided to the string '{ST1ATE}'/
+          /The intl string context variable "ST1ATE" was not provided to the string "{ST1ATE}"/
         );
       });
 
@@ -457,7 +457,7 @@ describe('IntlMessageFormat', function() {
 
         expect(formatWithMissingValue).to.throw(
           Error,
-          /The intl string context variable 'ST1ATE' was not provided to the string '{ST1ATE}'/
+          /The intl string context variable "ST1ATE" was not provided to the string "{ST1ATE}"/
         );
       });
 

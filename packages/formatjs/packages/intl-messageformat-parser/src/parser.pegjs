@@ -77,7 +77,7 @@ numberSkeleton
 
 numberArgStyle
     = '::' skeleton:numberSkeleton { return skeleton; }
-    / keyword
+    / style:messageText { return style.replace(/\s*$/, ''); }
 
 numberFormatElement
     = '{' _ value:argName _ ',' _ type:'number' _ style:(',' _ numberArgStyle)? _ '}' {
@@ -104,7 +104,7 @@ dateOrTimeSkeleton
 
 dateOrTimeArgStyle
     = '::' skeleton:dateOrTimeSkeleton { return skeleton; }
-    / keyword
+    / style:messageText { return style.replace(/\s*$/, ''); }
 
 dateOrTimeFormatElement
     = '{' _ value:argName _ ',' _ type:('date' / 'time') _ style:(',' _ dateOrTimeArgStyle)? _ '}' {
