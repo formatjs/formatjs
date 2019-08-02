@@ -2,3 +2,4 @@ dist
 lib
 coverage
 .vscode
+CHANGELOG.md

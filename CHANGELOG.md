@@ -4,10 +4,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [3.0.0-beta.23](https://github.com/yahoo/react-intl/compare/v3.0.0-beta.22...v3.0.0-beta.23) (2019-08-02)
 
-
 ### Features
 
-* simplify provider inheritance, add new APIs ([#1387](https://github.com/yahoo/react-intl/issues/1387)) ([227a444](https://github.com/yahoo/react-intl/commit/227a444)), closes [#1386](https://github.com/yahoo/react-intl/issues/1386) [#1376](https://github.com/yahoo/react-intl/issues/1376)
+- simplify provider inheritance, add new APIs ([#1387](https://github.com/yahoo/react-intl/issues/1387)) ([227a444](https://github.com/yahoo/react-intl/commit/227a444)), closes [#1386](https://github.com/yahoo/react-intl/issues/1386) [#1376](https://github.com/yahoo/react-intl/issues/1376)
 
 ## [3.0.0-beta.22](https://github.com/yahoo/react-intl/compare/v3.0.0-beta.21...v3.0.0-beta.22) (2019-07-29)
 
