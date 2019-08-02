@@ -4,7 +4,7 @@
 
 <!-- toc -->
 
-- [Pre-parsing messages](#core-react-intl--pre-parsing-messages)
+- [Pre-parsing messages](#pre-parsing-messages)
   - [Caveats](#caveats)
 - [Imperative APIs](#imperative-apis)
 
