@@ -9,6 +9,7 @@ import {parse} from 'intl-messageformat-parser';
 import {IntlMessageFormat} from 'intl-messageformat/core';
 IntlMessageFormat.__parse = parse;
 export {
+  createIntl,
   defineMessages,
   FormattedDate,
   FormattedHTMLMessage,
@@ -17,10 +18,10 @@ export {
   FormattedPlural,
   FormattedRelativeTime,
   FormattedTime,
-  generateIntlContext,
   injectIntl,
   IntlContext,
   IntlProvider,
+  RawIntlProvider,
   useIntl,
   WithIntlProps,
   WrappedComponentProps,

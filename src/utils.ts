@@ -9,7 +9,7 @@ This source code is licensed under the BSD-style license found in the LICENSE
 file in the root directory of React's source tree.
 */
 
-import {IntlConfig} from './types';
+import {IntlConfig, IntlCache} from './types';
 import * as React from 'react';
 import {IntlMessageFormat} from 'intl-messageformat/core';
 import memoizeIntlConstructor from 'intl-format-cache';
@@ -82,8 +82,6 @@ export function defaultErrorHandler(error: string) {
   }
 }
 
-// These are not a static property on the `IntlProvider` class so the intl
-// config values can be inherited from an <IntlProvider> ancestor.
 export const DEFAULT_INTL_CONFIG: Pick<
   IntlConfig,
   | 'formats'
@@ -105,12 +103,32 @@ export const DEFAULT_INTL_CONFIG: Pick<
   onError: defaultErrorHandler,
 };
 
-export function createDefaultFormatters() {
+export function createIntlCache(): IntlCache {
   return {
-    getDateTimeFormat: memoizeIntlConstructor(Intl.DateTimeFormat),
-    getNumberFormat: memoizeIntlConstructor(Intl.NumberFormat),
-    getMessageFormat: memoizeIntlConstructor(IntlMessageFormat),
-    getRelativeTimeFormat: memoizeIntlConstructor(Intl.RelativeTimeFormat),
-    getPluralRules: memoizeIntlConstructor(Intl.PluralRules),
+    dateTime: {},
+    number: {},
+    message: {},
+    relativeTime: {},
+    pluralRules: {},
+  };
+}
+
+/**
+ * Create intl formatters and populate cache
+ * @param cache explicit cache to prevent leaking memory
+ */
+export function createFormatters(cache: IntlCache = createIntlCache()) {
+  return {
+    getDateTimeFormat: memoizeIntlConstructor(
+      Intl.DateTimeFormat,
+      cache.dateTime
+    ),
+    getNumberFormat: memoizeIntlConstructor(Intl.NumberFormat, cache.number),
+    getMessageFormat: memoizeIntlConstructor(IntlMessageFormat, cache.message),
+    getRelativeTimeFormat: memoizeIntlConstructor(
+      Intl.RelativeTimeFormat,
+      cache.relativeTime
+    ),
+    getPluralRules: memoizeIntlConstructor(Intl.PluralRules, cache.pluralRules),
   };
 }

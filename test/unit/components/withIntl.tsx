@@ -58,9 +58,9 @@ describe('injectIntl()', () => {
     rendered = mountWithProvider(<Injected />);
     const wrappedComponent = rendered.find(Wrapped);
     // React 16 renders different in the wrapper
-    const intlProvider = rendered.find(IntlProvider).childAt(0);
+    const intl = rendered.state('intl');
 
-    expect(wrappedComponent.prop('intl')).toBe(intlProvider.state('context'));
+    expect(wrappedComponent.prop('intl')).toBe(intl);
   });
 
   it('propagates all props to <WrappedComponent>', () => {
@@ -87,9 +87,9 @@ describe('injectIntl()', () => {
 
         rendered = mountWithProvider(<Injected />);
         const wrapped = rendered.find(Wrapped);
-        const intlProvider = rendered.find(IntlProvider).childAt(0);
+        const intl = rendered.state('intl');
 
-        expect(wrapped.prop(propName)).toBe(intlProvider.state('context'));
+        expect(wrapped.prop(propName)).toBe(intl);
       });
     });
 
@@ -138,9 +138,9 @@ describe('injectIntl()', () => {
 
       expect(wrapperRef.current).toBe(wrapped.instance());
 
-      const intlProvider = rendered.find(IntlProvider).childAt(0);
+      const intl = rendered.state('intl');
 
-      expect(wrapped.prop(propName)).toBe(intlProvider.state('context'));
+      expect(wrapped.prop(propName)).toBe(intl);
     });
   });
 });

@@ -16,6 +16,7 @@
   - [Jest](#jest)
   - [webpack babel-loader](#webpack-babel-loader)
 - [Apostrophe Escape](#apostrophe-escape)
+- [Creating intl without using Provider](#creating-intl-without-using-provider)
 
 <!-- tocstop -->
 
@@ -32,7 +33,8 @@
 
 - `FormattedRelative` has been renamed to `FormattedRelativeTime` and its API has changed significantly. See [FormattedRelativeTime](#formattedrelativetime) for more details.
 - `formatRelative` has been renamed to `formatRelativeTime` and its API has changed significantly. See [FormattedRelativeTime](#formattedrelativetime) for more details.
-- Escape character has been changed to apostrophe (`'`). See [Apostrophe Escape](#apostrophe-escape) for more details
+- Escape character has been changed to apostrophe (`'`). See [Apostrophe Escape](#apostrophe-escape) for more details.
+- `IntlProvider` no longer inherits from upstream `IntlProvider`.
 
 ## Use React 16.3 and upwards
 
@@ -350,3 +352,28 @@ Previously while we were using ICU message format syntax, our escape char was ba
 ```
 
 We highly recommend reading the spec to learn more about how quote/escaping works [here](http://userguide.icu-project.org/formatparse/messages) under **Quoting/Escaping** section.
+
+## Creating intl without using Provider
+
+We've added a new API called `createIntl` that allows you to create an `IntlShape` object without using `Provider`. This allows you to format things outside of React lifecycle while reusing the same `intl` object. For example:
+
+```tsx
+import {createIntl, createIntlCache, RawIntlProvider} from 'react-intl'
+
+// This is optional but highly recommended
+// since it prevents memory leak
+const cache = createIntlCache()
+
+const intl = createIntl({
+  locale: 'fr-FR',
+  messages: {}
+}, cache)
+
+// Call imperatively
+intl.formatNumber(20)
+
+// Pass it to IntlProvider
+<RawIntlProvider value={intl}>{foo}</RawIntlProvider>
+```
+
+This is especially beneficial in SSR where you can reuse the same `intl` object across requests.

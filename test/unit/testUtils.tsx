@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
-import {WithIntlProps} from '../../src/components/injectIntl';
 import Provider, {Props as ProviderProps} from '../../src/components/provider';
 
 function StrictProvider(props: ProviderProps) {
@@ -14,10 +13,7 @@ function StrictProvider(props: ProviderProps) {
 export function mountFormattedComponentWithProvider<P>(
   Comp: React.ComponentType<P>
 ) {
-  return (
-    props: P,
-    providerProps: WithIntlProps<ProviderProps> = {locale: 'en'}
-  ) => {
+  return (props: P, providerProps: ProviderProps = {locale: 'en'}) => {
     return mount(
       <Comp {...props} />,
       {

@@ -184,51 +184,6 @@ describe('<IntlProvider>', () => {
     expect(intl.formatDate(date, {format: 'year-only'})).toBe(df.format(date));
   });
 
-  it('inherits from an <IntlProvider> ancestor', () => {
-    const props: WithIntlProps<Props> = {
-      locale: 'en',
-      timeZone: 'UTC',
-      formats: {
-        date: {
-          'year-only': {
-            year: 'numeric',
-          },
-        },
-      },
-      messages: {
-        hello: 'Hello, World!',
-      },
-      textComponent: 'span',
-
-      defaultLocale: 'fr',
-      defaultFormats: {
-        date: {
-          'year-only': {
-            year: 'numeric',
-          },
-        },
-      },
-
-      onError: consoleError,
-    };
-
-    const intl = mount(
-      <IntlProvider {...props}>
-        <IntlProvider>
-          <IntlChild />
-        </IntlProvider>
-      </IntlProvider>
-    )
-      .find(Child)
-      .prop('intl');
-
-    expect(consoleError).toHaveBeenCalledTimes(0);
-
-    INTL_CONFIG_PROP_NAMES.forEach(propName => {
-      expect(intl[propName]).toBe(props[propName]);
-    });
-  });
-
   it('shadows inherited intl config props from an <IntlProvider> ancestor', () => {
     const props = {
       locale: 'en',

@@ -13,7 +13,7 @@ import {formatMessage as baseFormatMessage} from '../format';
 import {
   invariantIntlContext,
   DEFAULT_INTL_CONFIG,
-  createDefaultFormatters,
+  createFormatters,
 } from '../utils';
 import {PrimitiveType, FormatXMLElementFn} from 'intl-messageformat/core';
 
@@ -35,7 +35,7 @@ const defaultFormatMessage = (
       ...DEFAULT_INTL_CONFIG,
       locale: 'en',
     },
-    createDefaultFormatters(),
+    createFormatters(),
     descriptor,
     values as any
   );
@@ -67,22 +67,12 @@ export class BaseFormattedMessage<
   }
 
   shouldComponentUpdate(nextProps: Props<V>) {
-    const {values} = this.props;
-    const {values: nextValues} = nextProps;
-
-    if (!shallowEquals(nextValues, values)) {
-      return true;
-    }
-
-    // Since `values` has already been checked, we know they're not
-    // different, so the current `values` are carried over so the shallow
-    // equals comparison on the other props isn't affected by the `values`.
-    let nextPropsToCheck = {
-      ...nextProps,
-      values,
-    };
-
-    return !shallowEquals(this.props, nextPropsToCheck);
+    const {values, ...otherProps} = this.props;
+    const {values: nextValues, ...nextOtherProps} = nextProps;
+    return (
+      !shallowEquals(nextValues, values) ||
+      !shallowEquals(otherProps, nextOtherProps)
+    );
   }
 
   render() {

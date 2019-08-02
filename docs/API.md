@@ -12,6 +12,7 @@ There are a few API layers that React Intl provides and is built on. When using 
     - [`useIntl` hook (currently available in 3.0.0 beta)](#useintl-hook-currently-available-in-300-beta)
     - [`injectIntl` HOC](#injectintl-hoc)
     - [`IntlShape`](#intlshape)
+    - [`createIntl`](#createintl)
   - [Date Formatting APIs](#date-formatting-apis)
     - [`formatDate`](#formatdate)
     - [`formatTime`](#formattime)
@@ -86,6 +87,7 @@ React Intl provides:
 
 1. [`useIntl` hook](#useintl-hook): to _hook_ the imperative formatting API into a React function component (with React version >= 16.8).
 2. [`injectIntl` HOC](#injectintl-hoc): to _inject_ the imperative formatting API into a React class or function component via its `props`.
+3. [`createIntl`](#createintl): to create `IntlShape` object outside of React lifecycle.
 
 These should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
 
@@ -197,6 +199,29 @@ The definition above shows what the `props.intl` object will look like that's in
 
 - **`IntlConfig`:** The intl metadata passed as props into the parent `<IntlProvider>`.
 - **`IntlFormatters`:** The imperative formatting API described below.
+
+#### `createIntl`
+
+This allows you to create an `IntlShape` object without using `Provider`. This allows you to format things outside of React lifecycle while reusing the same `intl` object. For example:
+
+```tsx
+import {createIntl, createIntlCache, RawIntlProvider} from 'react-intl'
+
+// This is optional but highly recommended
+// since it prevents memory leak
+const cache = createIntlCache()
+
+const intl = createIntl({
+  locale: 'fr-FR',
+  messages: {}
+}, cache)
+
+// Call imperatively
+intl.formatNumber(20)
+
+// Pass it to IntlProvider
+<RawIntlProvider value={intl}>{foo}</RawIntlProvider>
+```
 
 ### Date Formatting APIs
 

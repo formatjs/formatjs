@@ -2,7 +2,7 @@ import * as React from 'react';
 import {mount} from 'enzyme';
 import FormattedPlural from '../../../src/components/plural';
 import {mountFormattedComponentWithProvider} from '../testUtils';
-import {generateIntlContext} from '../../../src/test-utils';
+import {createIntl} from '../../../src/components/provider';
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedPlural);
 
@@ -12,7 +12,7 @@ describe('<FormattedPlural>', () => {
 
   beforeEach(() => {
     consoleError = jest.spyOn(console, 'error');
-    intl = generateIntlContext({
+    intl = createIntl({
       locale: 'en',
     });
   });
