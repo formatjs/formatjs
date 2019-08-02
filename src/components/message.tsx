@@ -41,19 +41,20 @@ const defaultFormatMessage = (
   );
 };
 
-export interface Props<V extends React.ReactNode = React.ReactNode>
-  extends MessageDescriptor {
+export interface Props<
+  V extends Record<string, any> = Record<string, React.ReactNode>
+> extends MessageDescriptor {
   intl: IntlShape;
-  values?: Record<string, V>;
+  values?: V;
   tagName?: React.ElementType<any>;
   children?(...nodes: React.ReactNodeArray): React.ReactNode;
 }
 
 export class BaseFormattedMessage<
-  V extends PrimitiveType | React.ReactElement | FormatXMLElementFn =
-    | PrimitiveType
-    | React.ReactElement
-    | FormatXMLElementFn
+  V extends Record<string, any> = Record<
+    string,
+    PrimitiveType | React.ReactElement | FormatXMLElementFn
+  >
 > extends React.Component<Props<V>> {
   static defaultProps = {
     values: {},
@@ -77,18 +78,21 @@ export class BaseFormattedMessage<
 
   render() {
     const {
-      formatMessage = defaultFormatMessage,
-      textComponent: Text = React.Fragment,
-    } = this.props.intl || {};
-
-    const {
       id,
       description,
       defaultMessage,
       values,
-      tagName: Component = Text,
       children,
+      intl,
     } = this.props;
+    const {
+      formatMessage = defaultFormatMessage,
+      textComponent: Text = React.Fragment,
+    } = intl || {};
+
+    const {
+      tagName: Component = Text,
+    } = this.props
 
     const descriptor = {id, description, defaultMessage};
     let nodes: string | React.ReactNodeArray = formatMessage(
