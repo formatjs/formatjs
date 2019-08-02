@@ -51,7 +51,7 @@ export default function injectIntl<
     <IntlConsumer>
       {intl => {
         if (enforceContext) {
-          invariantIntlContext({intl});
+          invariantIntlContext(intl);
         }
 
         return (

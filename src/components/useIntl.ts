@@ -4,6 +4,6 @@ import {invariantIntlContext} from '../utils';
 
 export default function useIntl() {
   const intl = useContext(Context);
-  invariantIntlContext({intl});
+  invariantIntlContext(intl);
   return intl;
 }

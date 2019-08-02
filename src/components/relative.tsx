@@ -5,10 +5,11 @@
  */
 
 import * as React from 'react';
-import withIntl from './injectIntl';
-import {IntlShape, FormatRelativeTimeOptions} from '../types';
+import {Context} from './injectIntl';
+import {FormatRelativeTimeOptions} from '../types';
 import {Unit} from '@formatjs/intl-relativetimeformat';
 import * as invariant_ from 'invariant';
+import {invariantIntlContext} from '../../dist/utils';
 const invariant: typeof invariant_ = require('invariant');
 const MINUTE = 60;
 const HOUR = 60 * 60;
@@ -60,7 +61,6 @@ function valueToSeconds(value?: number, unit?: Unit): number {
 }
 
 export interface Props extends FormatRelativeTimeOptions {
-  intl: IntlShape;
   value?: number;
   unit?: Unit;
   updateIntervalInSeconds?: number;
@@ -85,13 +85,19 @@ function verifyProps(updateIntervalInSeconds?: number, unit?: Unit) {
   );
 }
 
-class FormattedRelativeTime extends React.PureComponent<Props, State> {
+export default class FormattedRelativeTime extends React.PureComponent<
+  Props,
+  State
+> {
   // Public for testing
   _updateTimer: any = null;
+  static displayName = 'FormattedRelativeTime';
   static defaultProps: Pick<Props, 'unit' | 'value'> = {
     value: 0,
     unit: 'second',
   };
+  static contextType = Context;
+  context!: React.ContextType<typeof Context>;
   state: State = {
     prevUnit: this.props.unit,
     prevValue: this.props.value,
@@ -100,8 +106,9 @@ class FormattedRelativeTime extends React.PureComponent<Props, State> {
       : 0,
   };
 
-  constructor(props: Props) {
+  constructor(props: Props, context: React.ContextType<typeof Context>) {
     super(props);
+    invariantIntlContext(context);
     verifyProps(props.updateIntervalInSeconds, props.unit);
   }
 
@@ -170,7 +177,7 @@ class FormattedRelativeTime extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const {formatRelativeTime, textComponent: Text} = this.props.intl;
+    const {formatRelativeTime, textComponent: Text} = this.context;
     const {children, value, unit, updateIntervalInSeconds} = this.props;
     const {currentValueInSeconds} = this.state;
     let currentValue = value || 0;
@@ -203,7 +210,3 @@ class FormattedRelativeTime extends React.PureComponent<Props, State> {
     return formattedRelativeTime;
   }
 }
-
-export const BaseFormattedRelativeTime = FormattedRelativeTime;
-
-export default withIntl(FormattedRelativeTime);

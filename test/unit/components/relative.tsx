@@ -3,9 +3,7 @@ import * as React from 'react';
 jest.useFakeTimers();
 
 import {mount} from 'enzyme';
-import FormattedRelativeTime, {
-  BaseFormattedRelativeTime,
-} from '../../../src/components/relative';
+import FormattedRelativeTime from '../../../src/components/relative';
 import {createIntl} from '../../../src/components/provider';
 import {IntlShape} from '../../../src/types';
 import {mountFormattedComponentWithProvider} from '../testUtils';
@@ -14,7 +12,7 @@ const mountWithProvider = mountFormattedComponentWithProvider(
   FormattedRelativeTime
 );
 
-describe('<FormattedRelative>', () => {
+describe('<FormattedRelativeTime>', () => {
   let consoleError: jest.SpyInstance;
   let intl: IntlShape;
 
@@ -30,9 +28,7 @@ describe('<FormattedRelative>', () => {
   });
 
   it('has a `displayName`', () => {
-    expect(FormattedRelativeTime.displayName).toBe(
-      'injectIntl(FormattedRelativeTime)'
-    );
+    expect(FormattedRelativeTime.displayName).toBe('FormattedRelativeTime');
   });
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
@@ -113,12 +109,7 @@ describe('<FormattedRelative>', () => {
     expect(spy).toHaveBeenCalledTimes(2);
     expect(spy.mock.calls[0]).toEqual([intl.formatRelativeTime(0)]);
 
-    expect(
-      rendered
-        .children()
-        .children()
-        .type()
-    ).toBe('b');
+    expect(rendered.children().type()).toBe('b');
     expect(rendered.text()).toBe('Jest');
   });
 
@@ -183,15 +174,15 @@ describe('<FormattedRelative>', () => {
     const rendered = mountWithProvider(
       {value: -23, unit: 'hour', updateIntervalInSeconds: 1},
       {...intl, textComponent: 'span'}
-    ).find(BaseFormattedRelativeTime);
+    ).find(FormattedRelativeTime);
     expect(
-      (rendered.find(BaseFormattedRelativeTime).instance() as any)._updateTimer
+      (rendered.find(FormattedRelativeTime).instance() as any)._updateTimer
     ).not.toBeNull();
     // Advance 1 hour
     jest.advanceTimersByTime(1000 * 60 * 60);
     expect(rendered.text()).toBe(intl.formatRelativeTime(-1, 'day'));
     expect(
-      (rendered.find(BaseFormattedRelativeTime).instance() as any)._updateTimer
+      (rendered.find(FormattedRelativeTime).instance() as any)._updateTimer
     ).toBeNull();
   });
   it('should show high seconds values as days with no timer', function() {
@@ -199,10 +190,10 @@ describe('<FormattedRelative>', () => {
     const rendered = mountWithProvider(
       {value: -(60 * 60 * 24 * 3), unit: 'second', updateIntervalInSeconds: 1},
       {...intl, textComponent: 'span'}
-    ).find(BaseFormattedRelativeTime);
+    ).find(FormattedRelativeTime);
     expect(rendered.text()).toBe(intl.formatRelativeTime(-3, 'day'));
     expect(
-      (rendered.find(BaseFormattedRelativeTime).instance() as any)._updateTimer
+      (rendered.find(FormattedRelativeTime).instance() as any)._updateTimer
     ).toBeNull();
   });
   it('should throw if try to increment in day', function() {
@@ -211,7 +202,7 @@ describe('<FormattedRelative>', () => {
       mountWithProvider(
         {value: 5, unit: 'day', updateIntervalInSeconds: 1},
         {...intl, textComponent: 'span'}
-      ).find(BaseFormattedRelativeTime)
+      ).find(FormattedRelativeTime)
     ).toThrow('Cannot schedule update with unit longer than hour');
   });
   it('should clear timer on unmount', function() {
@@ -221,7 +212,7 @@ describe('<FormattedRelative>', () => {
       {...intl, textComponent: 'span'}
     );
     const clearTimeoutSpy = jest.spyOn(window, 'clearTimeout');
-    const comp = rendered.find(BaseFormattedRelativeTime);
+    const comp = rendered.find(FormattedRelativeTime);
     const updateTimer = (comp.instance() as any)._updateTimer;
     expect(updateTimer).not.toBeNull();
     rendered.unmount();

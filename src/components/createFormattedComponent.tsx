@@ -41,7 +41,6 @@ export default function createFormattedComponent<
       ? 'FormattedTime'
       : 'FormattedNumber';
   return {
-    BaseComponent: Component,
     Component: withIntl(Component),
   };
 }

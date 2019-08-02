@@ -5,8 +5,8 @@
  */
 
 import * as React from 'react';
-import withIntl from './injectIntl';
-import {MessageDescriptor, IntlShape} from '../types';
+import {Context} from './injectIntl';
+import {MessageDescriptor} from '../types';
 const shallowEquals = require('shallow-equal/objects');
 
 import {formatMessage as baseFormatMessage} from '../format';
@@ -16,6 +16,7 @@ import {
   createFormatters,
 } from '../utils';
 import {PrimitiveType, FormatXMLElementFn} from 'intl-messageformat/core';
+import {IntlContext} from '../core';
 
 const defaultFormatMessage = (
   descriptor: MessageDescriptor,
@@ -44,13 +45,12 @@ const defaultFormatMessage = (
 export interface Props<
   V extends Record<string, any> = Record<string, React.ReactNode>
 > extends MessageDescriptor {
-  intl: IntlShape;
   values?: V;
   tagName?: React.ElementType<any>;
   children?(...nodes: React.ReactNodeArray): React.ReactNode;
 }
 
-export class BaseFormattedMessage<
+export default class FormattedMessage<
   V extends Record<string, any> = Record<
     string,
     PrimitiveType | React.ReactElement | FormatXMLElementFn
@@ -59,11 +59,14 @@ export class BaseFormattedMessage<
   static defaultProps = {
     values: {},
   };
+  static displayName = 'FormattedMessage';
+  static contextType = Context;
+  context!: React.ContextType<typeof Context>;
 
-  constructor(props: Props<V>) {
+  constructor(props: Props<V>, context: React.ContextType<typeof IntlContext>) {
     super(props);
     if (!props.defaultMessage) {
-      invariantIntlContext(props);
+      invariantIntlContext(context);
     }
   }
 
@@ -78,21 +81,17 @@ export class BaseFormattedMessage<
 
   render() {
     const {
+      formatMessage = defaultFormatMessage,
+      textComponent: Text = React.Fragment,
+    } = this.context || {};
+    const {
       id,
       description,
       defaultMessage,
       values,
       children,
-      intl,
-    } = this.props;
-    const {
-      formatMessage = defaultFormatMessage,
-      textComponent: Text = React.Fragment,
-    } = intl || {};
-
-    const {
       tagName: Component = Text,
-    } = this.props
+    } = this.props;
 
     const descriptor = {id, description, defaultMessage};
     let nodes: string | React.ReactNodeArray = formatMessage(
@@ -116,5 +115,3 @@ export class BaseFormattedMessage<
     return nodes;
   }
 }
-
-export default withIntl(BaseFormattedMessage, {enforceContext: false});

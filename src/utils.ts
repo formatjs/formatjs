@@ -63,7 +63,7 @@ export function filterProps<T extends Record<string, any>, K extends string>(
   );
 }
 
-export function invariantIntlContext({intl}: {intl?: any} = {}) {
+export function invariantIntlContext(intl?: any) {
   invariant(
     intl,
     '[React Intl] Could not find required `intl` object. ' +
