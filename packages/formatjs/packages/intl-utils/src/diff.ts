@@ -11,24 +11,28 @@ import {
 export function selectUnit(
   from: Date | number,
   to: Date | number = Date.now(),
-  thresholds = DEFAULT_THRESHOLDS
+  thresholds: Partial<Thresholds> = {}
 ): { value: number; unit: Unit } {
+  const resolvedThresholds: Thresholds = {
+    ...DEFAULT_THRESHOLDS,
+    ...(thresholds || {})
+  };
   const secs = differenceInSeconds(from, to);
-  if (Math.abs(secs) < thresholds.second) {
+  if (Math.abs(secs) < resolvedThresholds.second) {
     return {
       value: Math.round(secs),
       unit: 'second'
     };
   }
   const mins = secs / 60;
-  if (Math.abs(mins) < thresholds.minute) {
+  if (Math.abs(mins) < resolvedThresholds.minute) {
     return {
       value: Math.round(mins),
       unit: 'minute'
     };
   }
   const hours = mins / 60;
-  if (Math.abs(hours) < thresholds.hour) {
+  if (Math.abs(hours) < resolvedThresholds.hour) {
     return {
       value: Math.round(hours),
       unit: 'hour'
@@ -42,9 +46,8 @@ export function selectUnit(
       unit: 'year'
     };
   }
-  const shouldCheckQuarter = !!thresholds.quarter;
 
-  if (shouldCheckQuarter) {
+  if (resolvedThresholds.quarter) {
     const quarters = differenceInCalendarQuarters(from, to);
     if (Math.abs(quarters) > 0) {
       return {
@@ -75,10 +78,12 @@ export function selectUnit(
   };
 }
 
-export const DEFAULT_THRESHOLDS: Record<
+type Thresholds = Record<
   'second' | 'minute' | 'hour' | 'quarter',
   number | boolean
-> = {
+>;
+
+export const DEFAULT_THRESHOLDS: Thresholds = {
   second: 45, // seconds to minute
   minute: 45, // minutes to hour
   hour: 22, // hour to day
