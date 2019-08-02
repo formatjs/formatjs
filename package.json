@@ -39,7 +39,7 @@
     "@formatjs/intl-relativetimeformat": "^2.5.0",
     "@types/hoist-non-react-statics": "^3.3.1",
     "@types/invariant": "^2.2.30",
-    "@types/react": "^16.8.23",
+    "@types/react": "^16.0.0",
     "hoist-non-react-statics": "^3.3.0",
     "intl-format-cache": "^4.1.4",
     "intl-locales-supported": "^1.4.2",
