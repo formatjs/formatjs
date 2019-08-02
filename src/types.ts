@@ -65,7 +65,7 @@ export interface IntlFormatters {
   ): string;
   formatRelativeTime(
     value: Parameters<IntlRelativeTimeFormat['format']>[0],
-    unit?: Parameters<IntlRelativeTimeFormat['format']>[0],
+    unit?: Parameters<IntlRelativeTimeFormat['format']>[1],
     opts?: FormatRelativeTimeOptions
   ): string;
   formatNumber(
