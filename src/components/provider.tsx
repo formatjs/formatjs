@@ -78,7 +78,7 @@ export default class IntlProvider extends React.PureComponent<
       defaultFormats,
       onError,
     } = props;
-    const filteredProps = {
+    const filteredProps: OptionalIntlConfig = {
       locale,
       timeZone,
       formats,
@@ -90,7 +90,7 @@ export default class IntlProvider extends React.PureComponent<
     };
     if (!shallowEquals(prevProps, filteredProps)) {
       return {
-        intl: createIntl(props, cache),
+        intl: createIntl(filteredProps, cache),
         prevProps: filteredProps,
       };
     }
