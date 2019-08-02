@@ -47,6 +47,4 @@ class FormattedHTMLMessage extends BaseFormattedMessage<PrimitiveType> {
   }
 }
 
-export const BaseFormattedHTMLMessage = FormattedHTMLMessage; // testing purpose only
-
 export default withIntl(FormattedHTMLMessage);

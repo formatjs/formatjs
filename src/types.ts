@@ -12,7 +12,6 @@ import {
 } from 'intl-messageformat/core';
 import IntlRelativeTimeFormat, {
   IntlRelativeTimeFormatOptions,
-  FormattableUnit,
 } from '@formatjs/intl-relativetimeformat';
 import {MessageFormatElement} from 'intl-messageformat-parser';
 
@@ -57,17 +56,26 @@ export type FormatPluralOptions = Exclude<
   CustomFormatConfig;
 
 export interface IntlFormatters {
-  formatDate(value: string | number | Date, opts: FormatDateOptions): string;
-  formatTime(value: string | number | Date, opts: FormatDateOptions): string;
+  formatDate(
+    value: Parameters<Intl.DateTimeFormat['format']>[0],
+    opts?: FormatDateOptions
+  ): string;
+  formatTime(
+    value: Parameters<Intl.DateTimeFormat['format']>[0],
+    opts?: FormatDateOptions
+  ): string;
   formatRelativeTime(
-    value: number,
-    unit?: FormattableUnit,
+    value: Parameters<IntlRelativeTimeFormat['format']>[0],
+    unit?: Parameters<IntlRelativeTimeFormat['format']>[0],
     opts?: FormatRelativeTimeOptions
   ): string;
-  formatNumber(value: number, opts: FormatNumberOptions): string;
+  formatNumber(
+    value: Parameters<Intl.NumberFormat['format']>[0],
+    opts?: FormatNumberOptions
+  ): string;
   formatPlural(
-    value: number,
-    opts: FormatPluralOptions
+    value: Parameters<Intl.PluralRules['select']>[0],
+    opts?: FormatPluralOptions
   ): ReturnType<Intl.PluralRules['select']>;
   formatMessage(
     descriptor: MessageDescriptor,

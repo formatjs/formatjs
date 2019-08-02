@@ -39,7 +39,7 @@ describe('<FormattedDate>', () => {
     expect(isFinite(value)).toBe(true);
     expect(consoleError).toHaveBeenCalledTimes(0);
 
-    mountWithProvider({value: undefined}, intl);
+    mountWithProvider({value: NaN}, intl);
     expect(consoleError).toHaveBeenCalledTimes(1);
     expect(consoleError.mock.calls[0][0]).toContain(
       '[React Intl] Error formatting date.\nRangeError'

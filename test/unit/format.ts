@@ -116,18 +116,14 @@ describe('format API', () => {
       formatDate = f.formatDate.bind(null, config, state);
     });
 
-    it('fallsback and warns when no value is provided', () => {
-      expect(formatDate()).toBe('Invalid Date');
-      expect(consoleError).toHaveBeenCalledTimes(1);
-      expect(consoleError.mock.calls[0][0]).toContain(
-        '[React Intl] Error formatting date.\nRangeError'
-      );
+    it('no value should render today', () => {
+      expect(formatDate()).toBe(df.format());
     });
 
     it('fallsback and warns when a non-finite value is provided', () => {
-      expect(formatDate(NaN)).toBe('Invalid Date');
-      expect(formatDate('')).toBe('Invalid Date');
-      expect(consoleError).toHaveBeenCalledTimes(2);
+      expect(formatDate(NaN)).toBe('NaN');
+      expect(formatDate('')).toBe(df.format(''));
+      expect(consoleError).toHaveBeenCalledTimes(1);
     });
 
     it('formats falsy finite values', () => {
@@ -141,7 +137,7 @@ describe('format API', () => {
     });
 
     it('formats date string values', () => {
-      expect(formatDate(new Date(0).toString())).toBe(df.format(new Date(0)));
+      expect(formatDate(new Date(0).toString())).toBe(new Date(0).toString());
     });
 
     it('formats date ms timestamp values', () => {
@@ -175,7 +171,7 @@ describe('format API', () => {
       });
 
       it('fallsback and warns on invalid Intl.DateTimeFormat options', () => {
-        expect(formatDate(0, {year: 'invalid'})).toBe(String(new Date(0)));
+        expect(formatDate(0, {year: 'invalid'})).toBe('0');
         expect(consoleError).toHaveBeenCalledTimes(1);
         expect(consoleError.mock.calls[0][0]).toContain(
           '[React Intl] Error formatting date.\nRangeError'
@@ -246,18 +242,14 @@ describe('format API', () => {
       formatTime = f.formatTime.bind(null, config, state);
     });
 
-    it('fallsback and warns when no value is provided', () => {
-      expect(formatTime()).toBe('Invalid Date');
-      expect(consoleError).toHaveBeenCalledTimes(1);
-      expect(consoleError.mock.calls[0][0]).toContain(
-        '[React Intl] Error formatting time.\nRangeError'
-      );
+    it('render now if no value is provided', () => {
+      expect(formatTime()).toBe(df.format());
     });
 
     it('fallsback and warns when a non-finite value is provided', () => {
-      expect(formatTime(NaN)).toBe('Invalid Date');
-      expect(formatTime('')).toBe('Invalid Date');
-      expect(consoleError).toHaveBeenCalledTimes(2);
+      expect(formatTime(NaN)).toBe('NaN');
+      expect(formatTime('')).toBe(df.format(''));
+      expect(consoleError).toHaveBeenCalledTimes(1);
     });
 
     it('formats falsy finite values', () => {
@@ -271,7 +263,7 @@ describe('format API', () => {
     });
 
     it('formats date string values', () => {
-      expect(formatTime(new Date(0).toString())).toBe(df.format(new Date(0)));
+      expect(formatTime(new Date(0).toString())).toBe(new Date(0).toString());
     });
 
     it('formats date ms timestamp values', () => {
@@ -309,7 +301,7 @@ describe('format API', () => {
       });
 
       it('fallsback and warns on invalid Intl.DateTimeFormat options', () => {
-        expect(formatTime(0, {hour: 'invalid'})).toBe(String(new Date(0)));
+        expect(formatTime(0, {hour: 'invalid'})).toBe('0');
         expect(consoleError).toHaveBeenCalledTimes(1);
         expect(consoleError.mock.calls[0][0]).toContain(
           '[React Intl] Error formatting time.\nRangeError'

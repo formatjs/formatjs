@@ -24,9 +24,8 @@ import {
 } from './types';
 
 import {createError, escape, filterProps} from './utils';
-import {
+import IntlRelativeTimeFormat, {
   IntlRelativeTimeFormatOptions,
-  FormattableUnit,
 } from '@formatjs/intl-relativetimeformat';
 import {LiteralElement, TYPE} from 'intl-messageformat-parser';
 import {FormatXMLElementFn, PrimitiveType} from 'intl-messageformat/core';
@@ -105,11 +104,10 @@ export function formatDate(
     timeZone,
   }: Pick<IntlConfig, 'locale' | 'formats' | 'onError' | 'timeZone'>,
   state: Formatters,
-  value: number | Date,
+  value: Parameters<Intl.DateTimeFormat['format']>[0],
   options: FormatDateOptions = {}
 ) {
   const {format} = options;
-  let date = new Date(value);
   let defaults = {
     ...(timeZone && {timeZone}),
     ...(format && getNamedFormat(formats!, 'date', format, onError)),
@@ -121,12 +119,12 @@ export function formatDate(
   );
 
   try {
-    return state.getDateTimeFormat(locale, filteredOptions).format(date);
+    return state.getDateTimeFormat(locale, filteredOptions).format(value);
   } catch (e) {
     onError(createError('Error formatting date.', e));
   }
 
-  return String(date);
+  return String(value);
 }
 
 export function formatTime(
@@ -137,11 +135,10 @@ export function formatTime(
     timeZone,
   }: Pick<IntlConfig, 'locale' | 'formats' | 'onError' | 'timeZone'>,
   state: Formatters,
-  value: number,
+  value: Parameters<Intl.DateTimeFormat['format']>[0],
   options: FormatDateOptions = {}
 ) {
   const {format} = options;
-  let date = new Date(value);
   let defaults = {
     ...(timeZone && {timeZone}),
     ...(format && getNamedFormat(formats!, 'time', format, onError)),
@@ -162,12 +159,12 @@ export function formatTime(
   }
 
   try {
-    return state.getDateTimeFormat(locale, filteredOptions).format(date);
+    return state.getDateTimeFormat(locale, filteredOptions).format(value);
   } catch (e) {
     onError(createError('Error formatting time.', e));
   }
 
-  return String(date);
+  return String(value);
 }
 
 export function formatRelativeTime(
@@ -177,8 +174,8 @@ export function formatRelativeTime(
     onError,
   }: Pick<IntlConfig, 'locale' | 'formats' | 'onError'>,
   state: Formatters,
-  value: number,
-  unit: FormattableUnit = 'second',
+  value: Parameters<IntlRelativeTimeFormat['format']>[0],
+  unit: Parameters<IntlRelativeTimeFormat['format']>[1] = 'second',
   options: FormatRelativeTimeOptions = {}
 ) {
   const {format} = options;
@@ -208,7 +205,7 @@ export function formatNumber(
     onError,
   }: Pick<IntlConfig, 'locale' | 'formats' | 'onError'>,
   state: Formatters,
-  value: number,
+  value: Parameters<Intl.NumberFormat['format']>[0],
   options: FormatNumberOptions = {}
 ) {
   const {format} = options;
@@ -228,7 +225,7 @@ export function formatNumber(
 export function formatPlural(
   {locale, onError}: Pick<IntlConfig, 'locale' | 'onError'>,
   state: Formatters,
-  value: number,
+  value: Parameters<Intl.PluralRules['select']>[0],
   options: FormatPluralOptions = {}
 ) {
   let filteredOptions = filterProps(options, PLURAL_FORMAT_OPTIONS);

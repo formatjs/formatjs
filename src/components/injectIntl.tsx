@@ -47,28 +47,25 @@ export default function injectIntl<
 
   const WithIntl: React.FC<P & {forwardedRef?: React.Ref<any>}> & {
     WrappedComponent: typeof WrappedComponent;
-  } = props => {
-    return (
-      <IntlConsumer>
-        {intl => {
-          if (enforceContext) {
-            invariantIntlContext({intl});
-          }
+  } = props => (
+    <IntlConsumer>
+      {intl => {
+        if (enforceContext) {
+          invariantIntlContext({intl});
+        }
 
-          return (
-            <WrappedComponent
-              {...props}
-              {...{
-                [intlPropName]: intl,
-              }}
-              ref={forwardRef ? props.forwardedRef : null}
-            />
-          );
-        }}
-      </IntlConsumer>
-    );
-  };
-
+        return (
+          <WrappedComponent
+            {...props}
+            {...{
+              [intlPropName]: intl,
+            }}
+            ref={forwardRef ? props.forwardedRef : null}
+          />
+        );
+      }}
+    </IntlConsumer>
+  );
   WithIntl.displayName = `injectIntl(${getDisplayName(WrappedComponent)})`;
   WithIntl.WrappedComponent = WrappedComponent;
 

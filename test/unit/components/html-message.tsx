@@ -1,9 +1,6 @@
 import * as React from 'react';
 import {mountFormattedComponentWithProvider} from '../testUtils';
-import FormattedHTMLMessage, {
-  BaseFormattedHTMLMessage,
-} from '../../../src/components/html-message';
-import {BaseFormattedMessage} from '../../../src/components/message';
+import FormattedHTMLMessage from '../../../src/components/html-message';
 import {createIntl} from '../../../src/components/provider';
 
 const mountWithProvider = mountFormattedComponentWithProvider(
@@ -29,10 +26,6 @@ describe('<FormattedHTMLMessage>', () => {
 
   it('has a `displayName`', () => {
     expect(FormattedHTMLMessage.displayName).toBeA('string');
-  });
-
-  it('extends FormattedMessage', () => {
-    expect(BaseFormattedHTMLMessage.prototype).toBeA(BaseFormattedMessage);
   });
 
   it('renders a formatted HTML message in a <span>', () => {

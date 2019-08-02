@@ -37,7 +37,7 @@ describe('<FormattedTime>', () => {
 
     injectIntlContext.setProps({
       ...injectIntlContext.props(),
-      value: undefined,
+      value: NaN,
     });
     expect(consoleError).toHaveBeenCalledTimes(1);
     expect(consoleError.mock.calls[0][0]).toContain(
