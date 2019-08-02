@@ -14,7 +14,7 @@
   - [After](#after)
 - [ESM Build](#esm-build)
   - [Jest](#jest)
-  - [webpack babel-loader](#webpack-babel-loader)
+  - [webpack](#webpack)
 - [Apostrophe Escape](#apostrophe-escape)
 - [Creating intl without using Provider](#creating-intl-without-using-provider)
 
@@ -327,9 +327,9 @@ Add `transformIgnorePatterns` to always include those libraries, e.g:
 }
 ```
 
-### webpack babel-loader
+### webpack
 
-Add those libraries in `include`, e.g:
+If you're using `babel-loader`, add those libraries in `include`, e.g:
 
 ```js
 include: [
@@ -337,6 +337,24 @@ include: [
   path.join(__dirname, "node_modules/intl-messageformat"),
   path.join(__dirname, "node_modules/intl-messageformat-parser"),
 ],
+```
+
+Also configure webpack to treat `mjs` as `javascript/auto`:
+
+```js
+{
+  module: {
+    rules: [
+        {
+            test: /\.mjs$/,
+            type: 'javascript/auto',
+        }
+    ]
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.mjs', '.js']
+  }
+}
 ```
 
 ## Apostrophe Escape
