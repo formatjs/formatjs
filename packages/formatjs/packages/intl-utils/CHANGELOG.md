@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@0.4.4...@formatjs/intl-utils@0.5.0) (2019-08-02)
+
+
+### Features
+
+* **@formatjs/intl-utils:** allow passing in partial thresholds to selectUnit ([6b5e556](https://github.com/formatjs/formatjs/commit/6b5e556))
+* **@formatjs/intl-utils:** support intl-utils toggle quarter selection ([#138](https://github.com/formatjs/formatjs/issues/138)) ([cdf3ffe](https://github.com/formatjs/formatjs/commit/cdf3ffe))
+
+
+
+
+
 ## [0.4.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@0.4.3...@formatjs/intl-utils@0.4.4) (2019-07-29)
 
 **Note:** Version bump only for package @formatjs/intl-utils
