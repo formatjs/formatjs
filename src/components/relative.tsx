@@ -9,7 +9,7 @@ import {Context} from './injectIntl';
 import {FormatRelativeTimeOptions} from '../types';
 import {Unit} from '@formatjs/intl-relativetimeformat';
 import * as invariant_ from 'invariant';
-import {invariantIntlContext} from '../../dist/utils';
+import {invariantIntlContext} from '../utils';
 const invariant: typeof invariant_ = require('invariant');
 const MINUTE = 60;
 const HOUR = 60 * 60;
