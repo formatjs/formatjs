@@ -31,8 +31,9 @@ Object.keys(allLocaleFiles).forEach(function(lang) {
     destFile,	
     `/* @generated */	
 // prettier-ignore
-const IntlRelativeTimeFormat = require('../').default;
-IntlRelativeTimeFormat.__addLocaleData(${allLocaleFiles[lang]})`	
+if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData === 'function') {
+  Intl.RelativeTimeFormat.__addLocaleData(${allLocaleFiles[lang]})
+}`	
   );	
 });	
 
