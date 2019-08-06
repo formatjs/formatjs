@@ -3,7 +3,7 @@ import nodeResolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
 import {uglify} from 'rollup-plugin-uglify';
-import typescript from 'rollup-plugin-typescript';
+import babel from 'rollup-plugin-babel';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -21,10 +21,20 @@ const plugins = [
     },
   }),
   nodeResolve(),
-  typescript({
-    target: 'es5',
-    module: 'es6',
-    include: ['*.js+(|x)', '**/*.js+(|x)'],
+  babel({
+    configFile: false,
+    presets: [
+      [
+        '@babel/preset-env',
+        {
+          targets: {
+            ie: '11',
+            esmodules: true,
+          },
+          modules: false,
+        },
+      ],
+    ],
   }),
   commonjs({
     sourcemap: true,
@@ -37,7 +47,7 @@ const plugins = [
 
 export default [
   {
-    input: p.resolve('lib/index.js'),
+    input: p.resolve('dist/index.mjs'),
     output: {
       file: p.resolve(`dist/react-intl.${isProduction ? 'min.js' : 'js'}`),
       format: 'umd',

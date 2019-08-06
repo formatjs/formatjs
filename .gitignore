@@ -14,3 +14,4 @@ src/en.js
 core.js
 core.d.ts
 .cache
+.rpt2_cache
