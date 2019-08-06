@@ -91,6 +91,11 @@ Object {
       "description": "Another message",
       "id": "foo.bar.biff",
     },
+    Object {
+      "defaultMessage": "{count,plural,=0{😭} one{{count, number} kitten} other{{count, number} kittens}}",
+      "description": "Counts kittens",
+      "id": "app.home.kittens",
+    },
   ],
 }
 `;
@@ -117,12 +122,16 @@ const msgs = (0, _reactIntl.defineMessages)({
   content: {
     \\"id\\": \\"foo.bar.biff\\",
     \\"defaultMessage\\": \\"Hello Nurse!\\"
+  },
+  kittens: {
+    \\"id\\": \\"app.home.kittens\\",
+    \\"defaultMessage\\": \\"{count,plural,=0{\\\\uD83D\\\\uDE2D} one{{count, number} kitten} other{{count, number} kittens}}\\"
   }
 });
 
 class Foo extends _react.Component {
   render() {
-    return _react.default.createElement(\\"div\\", null, _react.default.createElement(\\"h1\\", null, _react.default.createElement(_reactIntl.FormattedMessage, msgs.header)), _react.default.createElement(\\"p\\", null, _react.default.createElement(_reactIntl.FormattedMessage, msgs.content)));
+    return _react.default.createElement(\\"div\\", null, _react.default.createElement(\\"h1\\", null, _react.default.createElement(_reactIntl.FormattedMessage, msgs.header)), _react.default.createElement(\\"p\\", null, _react.default.createElement(_reactIntl.FormattedMessage, msgs.content)), _react.default.createElement(\\"p\\", null, _react.default.createElement(_reactIntl.FormattedMessage, msgs.kittens)));
   }
 
 }

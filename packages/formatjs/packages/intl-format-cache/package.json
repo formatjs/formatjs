@@ -2,13 +2,14 @@
   "name": "intl-format-cache",
   "version": "4.1.5",
   "description": "A memoizer factory for Intl format constructors.",
-  "main": "index.js",
-  "module": "lib/index.js",
-  "typings": "lib/index.d.ts",
+  "main": "dist/index",
+  "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "clean": "rimraf dist lib",
+    "mjs": "find ./dist -depth -name \"*.js\" -exec sh -c 'f=\"{}\"; mv -- \"$f\" \"${f%.js}.mjs\"' \\;",
     "benchmark": "ts-node --project tsconfig.cjs.json tests/benchmark",
-    "build": "tsc && tsc -p src/tsconfig.cjs.json && rollup -c rollup.config.js",
+    "build": "tsc && npm run mjs && tsc -p src/tsconfig.cjs.json && rollup -c rollup.config.js",
     "test": "mocha --opts ../../mocha.opts tests/index.ts",
     "prepublishOnly": "npm run build"
   },

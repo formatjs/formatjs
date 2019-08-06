@@ -7,9 +7,8 @@
     "url": "git+https://github.com/formatjs/formatjs.git"
   },
   "license": "BSD-3-Clause",
-  "main": "dist/index.js",
-  "module": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "dist/index",
+  "types": "dist/index.d.ts",
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "dependencies": {
     "@babel/core": "^7.4.5",
@@ -20,9 +19,10 @@
   },
   "scripts": {
     "clean": "rimraf lib test/fixtures/**/actual.json",
+    "mjs": "find ./dist -depth -name \"*.js\" -exec sh -c 'f=\"{}\"; mv -- \"$f\" \"${f%.js}.mjs\"' \\;",
     "test": "TS_NODE_PROJECT='./tsconfig.cjs.json' cross-env NODE_ENV=test jest",
     "cover": "npm t -- --coverage",
-    "build": "tsc && tsc -p tsconfig.cjs.json",
+    "build": "tsc && npm run mjs && tsc -p tsconfig.cjs.json",
     "prepublishOnly": "npm run build"
   },
   "keywords": [

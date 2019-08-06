@@ -2,12 +2,14 @@
   "name": "intl-messageformat-parser",
   "version": "3.0.1",
   "description": "Parses ICU Message strings into an AST via JavaScript.",
-  "main": "dist/index.js",
-  "module": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "dist/index",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "clean": "rimraf dist lib",
-    "build": "./build.js && tsc && tsc -p tsconfig.cjs.json",
+    "mjs": "find ./dist -depth -name \"*.js\" -exec sh -c 'f=\"{}\"; mv -- \"$f\" \"${f%.js}.mjs\"' \\;",
+    "build": "./build.js && tsc && npm run mjs && tsc -p tsconfig.cjs.json",
     "benchmark": "node ./test/benchmark.js",
     "prepublish": "npm run build",
     "test": "TS_NODE_PROJECT='./tsconfig.cjs.json' cross-env NODE_ENV=test jest"

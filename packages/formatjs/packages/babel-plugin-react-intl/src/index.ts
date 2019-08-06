@@ -7,7 +7,8 @@
 import * as p from 'path';
 import { writeFileSync } from 'fs';
 import { mkdirpSync } from 'fs-extra';
-import { printAST, parse } from 'intl-messageformat-parser';
+import { parse } from 'intl-messageformat-parser/dist';
+import { printAST } from 'intl-messageformat-parser/dist/printer';
 const { declare } = require('@babel/helper-plugin-utils') as any;
 import { types as t, PluginObj } from '@babel/core';
 import {

@@ -2,13 +2,14 @@
   "name": "formatjs-extract-cldr-data",
   "version": "9.3.2",
   "description": "Utility library that extracts the CLDR data that's needed by the FormatJS libraries.",
-  "main": "dist/index.js",
-  "module": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "dist/index",
+  "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "test": "jest",
+    "mjs": "find ./dist -depth -name \"*.js\" -exec sh -c 'f=\"{}\"; mv -- \"$f\" \"${f%.js}.mjs\"' \\;",
     "cldr": "TS_NODE_PROJECT='scripts/tsconfig.json' ts-node scripts/aggregateLocaleFiles",
-    "build": "npm run cldr && tsc && tsc -p tsconfig.cjs.json",
+    "build": "npm run cldr && tsc && npm run mjs && tsc -p tsconfig.cjs.json",
     "cover": "npm t -- --coverage"
   },
   "author": "Eric Ferraiuolo <edf@ericf.me>",

@@ -1,27 +1,7 @@
 {
-    "extends": "../../tsconfig.json",
+    "extends": "./tsconfig.json",
     "compilerOptions": {
-        "outDir": "dist",
-        "rootDir": "src",
-        "baseUrl": ".",
         "module": "commonjs",
-        "noImplicitAny": false,
-        "types": [
-            "benchmark",
-            "chai",
-            "estree",
-            "fs-extra",
-            "istanbul-lib-coverage",
-            "istanbul-lib-report",
-            "istanbul-reports",
-            // Don't include mocha here
-            "jest",
-            "jest-diff",
-            "node",
-            "resolve",
-            "stack-utils",
-            "yargs"
-        ]
     },
     "include": ["src/*.ts"]
 }

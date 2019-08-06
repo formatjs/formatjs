@@ -1,10 +1,6 @@
 {
     "extends": "./tsconfig.json",
     "compilerOptions": {
-        "outDir": "../dist",
-        "module": "commonjs",
-        "paths": {
-            "intl-format-cache": ["../intl-format-cache"]
-        }
+        "module": "commonjs"
     }
 }

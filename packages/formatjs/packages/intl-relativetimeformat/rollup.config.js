@@ -7,7 +7,7 @@ const resolveConfig = resolve({
 const uglifyConfig = uglify();
 export default [
   {
-    input: './lib/index.js',
+    input: './dist/index.mjs',
     output: {
       sourcemap: true,
       file: 'dist/umd/intl-relativetimeformat.js',
@@ -18,7 +18,7 @@ export default [
     plugins: [resolveConfig]
   },
   {
-    input: './lib/index.js',
+    input: './dist/index.mjs',
     output: {
       sourcemap: true,
       file: 'dist/umd/intl-relativetimeformat.min.js',
@@ -29,7 +29,7 @@ export default [
     plugins: [resolveConfig, uglifyConfig]
   },
   {
-    input: './lib/locales.js',
+    input: './dist/locales.mjs',
     output: {
       sourcemap: true,
       file: 'dist/umd/intl-relativetimeformat-with-locales.js',
@@ -40,7 +40,7 @@ export default [
     plugins: [resolveConfig]
   },
   {
-    input: './lib/locales.js',
+    input: './dist/locales.mjs',
     output: {
       sourcemap: true,
       file: 'dist/umd/intl-relativetimeformat-with-locales.min.js',
@@ -51,7 +51,7 @@ export default [
     plugins: [resolveConfig, uglifyConfig]
   },
   {
-    input: './lib/polyfill-locales.js',
+    input: './dist/polyfill-locales.mjs',
     output: {
       sourcemap: true,
       file: 'dist/polyfill-with-locales.js',

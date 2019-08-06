@@ -37,7 +37,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
   );	
 });	
 
- // Aggregate all into lib/locales.ts	
+ // Aggregate all into src/locales.ts	
 outputFileSync(	
   resolve(__dirname, '../src/locales.ts'),	
   `/* @generated */	

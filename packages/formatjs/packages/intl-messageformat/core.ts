@@ -1,2 +1,2 @@
-export * from './lib/formatters';
-export * from './lib/core';
+export * from './dist/formatters';
+export * from './dist/core';

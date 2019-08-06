@@ -8,5 +8,10 @@
     "id": "foo.bar.biff",
     "description": "Another message",
     "defaultMessage": "Hello Nurse!"
+  },
+  {
+    "id": "app.home.kittens",
+    "description": "Counts kittens",
+    "defaultMessage": "{count,plural,=0{😭} one{{count, number} kitten} other{{count, number} kittens}}"
   }
 ]

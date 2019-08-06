@@ -12,6 +12,11 @@ const msgs = defineMessages({
         defaultMessage: 'Hello Nurse!',
         description: 'Another message',
     },
+    kittens: {
+        id: "app.home.kittens",
+        description: "Counts kittens",
+        defaultMessage: "{count, plural, =0 {😭} one {# kitten} other {# kittens}}"
+    }
 });
 
 export default class Foo extends Component {
@@ -20,6 +25,7 @@ export default class Foo extends Component {
             <div>
                 <h1><FormattedMessage {...msgs.header}/></h1>
                 <p><FormattedMessage {...msgs.content}/></p>
+                <p><FormattedMessage {...msgs.kittens}/></p>
             </div>
         );
     }

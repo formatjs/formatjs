@@ -1,4 +1,5 @@
-import { parse, ParseOptions, printAST } from '../src';
+import { parse, ParseOptions } from '../src';
+import { printAST } from '../src/printer';
 
 function allTests(opts?: ParseOptions) {
   [
