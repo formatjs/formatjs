@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/yahoo/react-intl/compare/v3.0.0-beta.23...v3.0.0) (2019-08-06)
+
+
+### Bug Fixes
+
+* rm core pkg for now ([223d2cf](https://github.com/yahoo/react-intl/commit/223d2cf))
+* rm rollup for core, reduce @types/react version ([336d365](https://github.com/yahoo/react-intl/commit/336d365))
+* type definitions and make behavior match spec more ([2030bdd](https://github.com/yahoo/react-intl/commit/2030bdd))
+
 ## [3.0.0-beta.23](https://github.com/yahoo/react-intl/compare/v3.0.0-beta.22...v3.0.0-beta.23) (2019-08-02)
 
 ### Features
