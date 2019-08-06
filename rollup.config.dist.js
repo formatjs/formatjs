@@ -52,20 +52,4 @@ export default [
     external: ['react'],
     plugins,
   },
-  {
-    input: p.resolve('lib/core.js'),
-    output: {
-      file: p.resolve(`dist/react-intl-core.${isProduction ? 'min.js' : 'js'}`),
-      format: 'umd',
-      name: 'ReactIntl',
-      banner: copyright,
-      exports: 'named',
-      sourcemap: true,
-      globals: {
-        react: 'React',
-      },
-    },
-    external: ['react'],
-    plugins,
-  },
 ];
