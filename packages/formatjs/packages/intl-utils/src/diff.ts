@@ -42,13 +42,18 @@ export function selectUnit(
       unit: 'year'
     };
   }
-  const quarters = differenceInCalendarQuarters(from, to);
-  if (Math.abs(quarters) > 0) {
-    return {
-      value: Math.round(quarters),
-      unit: 'quarter'
-    };
+  const shouldCheckQuarter = !!thresholds.quarter;
+
+  if (shouldCheckQuarter) {
+    const quarters = differenceInCalendarQuarters(from, to);
+    if (Math.abs(quarters) > 0) {
+      return {
+        value: Math.round(quarters),
+        unit: 'quarter'
+      };
+    }
   }
+
   const months = differenceInCalendarMonths(from, to);
   if (Math.abs(months) > 0) {
     return {
@@ -71,10 +76,11 @@ export function selectUnit(
 }
 
 export const DEFAULT_THRESHOLDS: Record<
-  'second' | 'minute' | 'hour',
-  number
+  'second' | 'minute' | 'hour' | 'quarter',
+  number | boolean
 > = {
   second: 45, // seconds to minute
   minute: 45, // minutes to hour
-  hour: 22 // hour to day
+  hour: 22, // hour to day
+  quarter: true
 };

@@ -170,6 +170,52 @@ describe('selectUnit', function() {
       unit: 'quarter'
     });
   });
+  it('should skip quarter caculation if turned off', function() {
+    expect(
+      selectUnit(new Date(2019, 0, 10), new Date(2019, 3, 27), {
+        second: 45,
+        minute: 45,
+        hour: 22,
+        quarter: false
+      })
+    ).to.deep.equal({
+      value: -3,
+      unit: 'month'
+    });
+    expect(
+      selectUnit(new Date(2019, 3, 10), new Date(2019, 0, 27), {
+        second: 45,
+        minute: 45,
+        hour: 22,
+        quarter: false
+      })
+    ).to.deep.equal({
+      value: 3,
+      unit: 'month'
+    });
+    expect(
+      selectUnit(new Date(2019, 0, 10), new Date(2019, 11, 27), {
+        second: 45,
+        minute: 45,
+        hour: 22,
+        quarter: false
+      })
+    ).to.deep.equal({
+      value: -11,
+      unit: 'month'
+    });
+    expect(
+      selectUnit(new Date(2019, 11, 10), new Date(2019, 0, 27), {
+        second: 45,
+        minute: 45,
+        hour: 22,
+        quarter: false
+      })
+    ).to.deep.equal({
+      value: 11,
+      unit: 'month'
+    });
+  });
   it('should work for year', function() {
     expect(selectUnit(past(360 * DAY), Date.now())).to.deep.equal({
       value: -1,
