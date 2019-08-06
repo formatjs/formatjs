@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 import FormattedMessage from './message';
-import {PrimitiveType} from 'intl-messageformat/core';
+import {PrimitiveType} from 'intl-messageformat';
 
 export default class FormattedHTMLMessage extends FormattedMessage<
   Record<string, PrimitiveType>

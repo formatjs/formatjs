@@ -28,7 +28,7 @@ import IntlRelativeTimeFormat, {
   IntlRelativeTimeFormatOptions,
 } from '@formatjs/intl-relativetimeformat';
 import {LiteralElement, TYPE} from 'intl-messageformat-parser';
-import {FormatXMLElementFn, PrimitiveType} from 'intl-messageformat/core';
+import {FormatXMLElementFn, PrimitiveType} from 'intl-messageformat';
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'localeMatcher',

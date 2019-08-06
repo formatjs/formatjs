@@ -11,7 +11,7 @@ file in the root directory of React's source tree.
 
 import {IntlConfig, IntlCache} from './types';
 import * as React from 'react';
-import {IntlMessageFormat} from 'intl-messageformat/core';
+import IntlMessageFormat from 'intl-messageformat';
 import memoizeIntlConstructor from 'intl-format-cache';
 import IntlRelativeTimeFormat from '@formatjs/intl-relativetimeformat';
 // Since rollup cannot deal with namespace being a function,
@@ -72,7 +72,7 @@ export function invariantIntlContext(intl?: any) {
 }
 
 export function createError(message: string, exception?: Error) {
-  const eMsg = exception ? `\n${exception}` : '';
+  const eMsg = exception ? `\n${exception.stack}` : '';
   return `[React Intl] ${message}${eMsg}`;
 }
 

@@ -6,10 +6,9 @@ Internationalize [React][] apps. This library provides React components and an A
 [![npm Version](https://badgen.net/npm/v/react-intl/next)][npm]
 [![Build Status][travis-badge]][travis]
 
-| Package           | Minified Size                                                                                                       | Minzipped Size                                                                                                          |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `react-intl`      | ![minified size](https://badgen.net/badgesize/normal/https://unpkg.com/react-intl@next/dist/react-intl.min.js)      | ![minzipped size](https://badgen.net/badgesize/gzip/https://unpkg.com/react-intl@next/dist/react-intl.min.js)           |
-| `react-intl/core` | ![core min size](https://badgen.net/badgesize/normal/https://unpkg.com/react-intl@next/dist/react-intl-core.min.js) | ![core minzipped size](https://badgen.net/badgesize/gzip/https://unpkg.com/react-intl@next/dist/react-intl-core.min.js) |
+| Package      | Minified Size                                                                                                  | Minzipped Size                                                                                                |
+| ------------ | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `react-intl` | ![minified size](https://badgen.net/badgesize/normal/https://unpkg.com/react-intl@next/dist/react-intl.min.js) | ![minzipped size](https://badgen.net/badgesize/gzip/https://unpkg.com/react-intl@next/dist/react-intl.min.js) |
 
 ## Overview
 

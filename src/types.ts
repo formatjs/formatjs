@@ -4,12 +4,11 @@
  * See the accompanying LICENSE file for terms.
  */
 import * as React from 'react';
-import {
-  IntlMessageFormat,
+import IntlMessageFormat, {
   Formats,
   PrimitiveType,
   FormatXMLElementFn,
-} from 'intl-messageformat/core';
+} from 'intl-messageformat';
 import IntlRelativeTimeFormat, {
   IntlRelativeTimeFormatOptions,
 } from '@formatjs/intl-relativetimeformat';

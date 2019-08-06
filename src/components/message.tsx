@@ -15,8 +15,7 @@ import {
   DEFAULT_INTL_CONFIG,
   createFormatters,
 } from '../utils';
-import {PrimitiveType, FormatXMLElementFn} from 'intl-messageformat/core';
-import {IntlContext} from '../core';
+import {PrimitiveType, FormatXMLElementFn} from 'intl-messageformat';
 
 const defaultFormatMessage = (
   descriptor: MessageDescriptor,
@@ -63,7 +62,7 @@ export default class FormattedMessage<
   static contextType = Context;
   context!: React.ContextType<typeof Context>;
 
-  constructor(props: Props<V>, context: React.ContextType<typeof IntlContext>) {
+  constructor(props: Props<V>, context: React.ContextType<typeof Context>) {
     super(props);
     if (!props.defaultMessage) {
       invariantIntlContext(context);
