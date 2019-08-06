@@ -32,6 +32,7 @@
   },
   "main": "./dist/index.js",
   "module": "./lib/index.js",
+  "types": "./dist/index.d.ts",
   "browserify-shim": {
     "react": "global:React"
   },
