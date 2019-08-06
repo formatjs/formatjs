@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/yahoo/react-intl/compare/v3.0.0...v3.1.0) (2019-08-06)
+
+
+### Bug Fixes
+
+* add "types" property to package.json ([#1394](https://github.com/yahoo/react-intl/issues/1394)) ([a82ddd0](https://github.com/yahoo/react-intl/commit/a82ddd0))
+* add createIntlCache to top level index, fixes [#1393](https://github.com/yahoo/react-intl/issues/1393) ([19398d7](https://github.com/yahoo/react-intl/commit/19398d7))
+
+
+### Features
+
+* generate .mjs instead of lib ([5fd070d](https://github.com/yahoo/react-intl/commit/5fd070d))
+
 ## [3.0.0](https://github.com/yahoo/react-intl/compare/v3.0.0-beta.23...v3.0.0) (2019-08-06)
 
 
