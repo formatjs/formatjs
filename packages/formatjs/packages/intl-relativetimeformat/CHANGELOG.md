@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.5.1...@formatjs/intl-relativetimeformat@2.5.2) (2019-08-06)
+
+
+### Bug Fixes
+
+* generate .mjs instead of lib ([0c34ee4](https://github.com/formatjs/formatjs/commit/0c34ee4))
+
+
+
+
+
 ## [2.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.5.0...@formatjs/intl-relativetimeformat@2.5.1) (2019-08-02)
 
 

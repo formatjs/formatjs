@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.3.3](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.3.2...formatjs-extract-cldr-data@9.3.3) (2019-08-06)
+
+
+### Bug Fixes
+
+* generate .mjs instead of lib ([0c34ee4](https://github.com/formatjs/formatjs/commit/0c34ee4))
+
+
+
+
+
 ## [9.3.2](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.3.1...formatjs-extract-cldr-data@9.3.2) (2019-07-23)
 
 **Note:** Version bump only for package formatjs-extract-cldr-data

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@0.5.0...@formatjs/intl-utils@0.5.1) (2019-08-06)
+
+
+### Bug Fixes
+
+* generate .mjs instead of lib ([0c34ee4](https://github.com/formatjs/formatjs/commit/0c34ee4))
+
+
+
+
+
 # [0.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@0.4.4...@formatjs/intl-utils@0.5.0) (2019-08-02)
 
 
