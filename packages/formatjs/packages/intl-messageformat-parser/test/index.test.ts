@@ -27,7 +27,27 @@ function allTests(opts?: ParseOptions) {
      */
     "This '{isn''t}' obvious",
     "'{name}'",
-    'this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}'
+    'this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}',
+    `{type, select,
+      drop {
+        {units, plural,
+          one {# drop}
+          other {# drops}
+        }
+      }
+      teaspoon {
+        {units, plural,
+          one {# teaspoon}
+          other {# teaspoons}
+        }
+      }
+      tablespoon {
+        {units, plural,
+          one {# tablespoon}
+          other {# tablespoons}
+        }
+      }
+    }`
   ].forEach(mess => {
     const ast = parse(mess, opts);
     it(`can parse '${mess}'`, function() {

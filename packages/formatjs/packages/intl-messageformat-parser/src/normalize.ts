@@ -2,7 +2,8 @@ import {
   MessageFormatElement,
   isPluralElement,
   isLiteralElement,
-  LiteralElement
+  LiteralElement,
+  isSelectElement
 } from './types';
 import { parse } from './parser';
 
@@ -17,7 +18,7 @@ const PLURAL_HASHTAG_REGEX = /(^|[^\\])#/g;
 export function normalizeHashtagInPlural(els: MessageFormatElement[]) {
   els.forEach(el => {
     // If we're encountering a plural el
-    if (!isPluralElement(el)) {
+    if (!isPluralElement(el) && !isSelectElement(el)) {
       return;
     }
     // Go down the options and search for # in any literal element
