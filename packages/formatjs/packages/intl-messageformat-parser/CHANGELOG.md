@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.3](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.0.2...intl-messageformat-parser@3.0.3) (2019-08-07)
+
+
+### Bug Fixes
+
+* **intl-messageformat-parser:** normalize plural in nested select, fixes [#145](https://github.com/formatjs/formatjs/issues/145) ([215aa6d](https://github.com/formatjs/formatjs/commit/215aa6d))
+
+
+
+
+
 ## [3.0.2](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.0.1...intl-messageformat-parser@3.0.2) (2019-08-06)
 
 
