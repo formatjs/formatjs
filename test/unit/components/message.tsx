@@ -1,11 +1,17 @@
 import * as React from 'react';
 import FormattedMessage from '../../../src/components/message';
-import {Props, createIntl} from '../../../src/components/provider';
+import IntlProvider, {
+  Props,
+  createIntl,
+} from '../../../src/components/provider';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 import {mount} from 'enzyme';
 import {IntlShape} from '../../../src';
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedMessage);
+
+const dummyContext = React.createContext('');
+const {Provider: DummyProvider, Consumer: DummyConsumer} = dummyContext;
 
 describe('<FormattedMessage>', () => {
   let consoleError;
@@ -43,6 +49,34 @@ describe('<FormattedMessage>', () => {
     expect(rendered.text()).toBe('Hello');
 
     expect(consoleError).toHaveBeenCalledTimes(1);
+  });
+
+  it('should work w/ multiple context', function() {
+    const descriptor = {
+      id: 'hello',
+      defaultMessage: 'hello world',
+    };
+    function Foo() {
+      return (
+        <DummyConsumer>{id => <FormattedMessage id={id} />}</DummyConsumer>
+      );
+    }
+    const rendered = mount(
+      <DummyProvider value={descriptor.id}>
+        <Foo />
+      </DummyProvider>,
+      {
+        wrappingComponent: IntlProvider,
+        wrappingComponentProps: {
+          locale: 'en',
+          messages: {
+            [descriptor.id]: descriptor.defaultMessage,
+          },
+        },
+      }
+    );
+
+    expect(rendered.text()).toBe(intl.formatMessage(descriptor));
   });
 
   it('renders a formatted message in a <>', () => {
