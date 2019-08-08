@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.4](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.0.3...intl-messageformat-parser@3.0.4) (2019-08-08)
+
+
+### Bug Fixes
+
+* **intl-messageformat-parser:** make date time skeleton compatib… ([#140](https://github.com/formatjs/formatjs/issues/140)) ([b6ea222](https://github.com/formatjs/formatjs/commit/b6ea222))
+
+
+
+
+
 ## [3.0.3](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.0.2...intl-messageformat-parser@3.0.3) (2019-08-07)
 
 
