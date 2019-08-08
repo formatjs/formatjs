@@ -89,21 +89,24 @@ numberFormatElement
         };
     }
 
+dateTimeSkeletonLiteral = "'" (doubleApostrophes / [^'])+ "'" / (doubleApostrophes / [^a-zA-Z'{}])+
+dateTimeSkeletonPattern = [a-zA-Z]+
+
 // See also:
+// - http://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
 // - http://cldr.unicode.org/translation/date-time-patterns
 // - http://www.icu-project.org/apiref/icu4j/com/ibm/icu/text/SimpleDateFormat.html
-// Here we implement the ICU >= 4.8 quoting behavior.
-dateOrTimeSkeleton
-    = pattern:messageText {
+dateTimeSkeleton
+    = pattern:$(dateTimeSkeletonLiteral / dateTimeSkeletonPattern)+ {
         return {
-            type: SKELETON_TYPE.date,
+            type: SKELETON_TYPE.dateTime,
             pattern,
             ...insertLocation(),
         }
     }
 
 dateOrTimeArgStyle
-    = '::' skeleton:dateOrTimeSkeleton { return skeleton; }
+    = '::' skeleton:dateTimeSkeleton { return skeleton; }
     / style:messageText { return style.replace(/\s*$/, ''); }
 
 dateOrTimeFormatElement

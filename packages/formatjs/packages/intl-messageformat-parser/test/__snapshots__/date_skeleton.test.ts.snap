@@ -1,10 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`case: "EEE, MMM d, 'yy" 1`] = `
+exports[`case: "" 1`] = `
+Array [
+  Object {
+    "style": "::",
+    "type": 3,
+    "value": "0",
+  },
+]
+`;
+
+exports[`case: "" 2`] = `"{0, date, ::}"`;
+
+exports[`case: "EEE, MMM d, ''yy" 1`] = `
 Array [
   Object {
     "style": Object {
-      "pattern": "EEE, MMM d, 'yy",
+      "pattern": "EEE, MMM d, ''yy",
       "type": 1,
     },
     "type": 3,
@@ -13,7 +25,7 @@ Array [
 ]
 `;
 
-exports[`case: "EEE, MMM d, 'yy" 2`] = `"{0, date, ::EEE, MMM d, 'yy}"`;
+exports[`case: "EEE, MMM d, ''yy" 2`] = `"{0, date, ::EEE, MMM d, ''yy}"`;
 
 exports[`case: "h:mm a" 1`] = `
 Array [
@@ -30,11 +42,11 @@ Array [
 
 exports[`case: "h:mm a" 2`] = `"{0, date, ::h:mm a}"`;
 
-exports[`case: "yyyy.MM.dd G at HH:mm:ss vvvv" 1`] = `
+exports[`case: "yyyy.MM.dd G 'at' HH:mm:ss vvvv" 1`] = `
 Array [
   Object {
     "style": Object {
-      "pattern": "yyyy.MM.dd G at HH:mm:ss vvvv",
+      "pattern": "yyyy.MM.dd G 'at' HH:mm:ss vvvv",
       "type": 1,
     },
     "type": 3,
@@ -43,4 +55,4 @@ Array [
 ]
 `;
 
-exports[`case: "yyyy.MM.dd G at HH:mm:ss vvvv" 2`] = `"{0, date, ::yyyy.MM.dd G at HH:mm:ss vvvv}"`;
+exports[`case: "yyyy.MM.dd G 'at' HH:mm:ss vvvv" 2`] = `"{0, date, ::yyyy.MM.dd G 'at' HH:mm:ss vvvv}"`;

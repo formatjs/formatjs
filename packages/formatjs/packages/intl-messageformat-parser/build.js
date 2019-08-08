@@ -22,7 +22,7 @@ import {
     PluralElement,
     PluralOrSelectOption,
     NumberSkeleton,
-    DateSkeleton,
+    DateTimeSkeleton,
     SKELETON_TYPE,
     TYPE,
 } from './types'`
@@ -48,9 +48,9 @@ import {
     selectOption: 'PluralOrSelectOption',
     pluralOption: 'PluralOrSelectOption',
     numberSkeleton: 'NumberSkeleton',
-    dateOrTimeSkeleton: 'DateSkeleton',
+    dateTimeSkeleton: 'DateTimeSkeleton',
     numberArgStyle: 'string | NumberSkeleton',
-    dateOrTimeArgStyle: 'string | DateSkeleton',
+    dateTimeArgStyle: 'string | DateTimeSkeleton',
     simpleFormatElement: `
 | NumberElement
 | DateElement

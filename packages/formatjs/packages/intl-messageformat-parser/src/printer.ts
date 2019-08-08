@@ -23,7 +23,8 @@ import {
   TYPE,
   Skeleton,
   SKELETON_TYPE,
-  NumberSkeletonToken
+  NumberSkeletonToken,
+  DateTimeSkeleton
 } from './types';
 
 export function printAST(ast: MessageFormatElement[]): string {
@@ -81,11 +82,15 @@ function printNumberSkeletonToken(token: NumberSkeletonToken): string {
 function printArgumentStyle(style: string | Skeleton) {
   if (typeof style === 'string') {
     return printEscapedMessage(style);
-  } else if (style.type === SKELETON_TYPE.date) {
-    return `::${printEscapedMessage(style.pattern)}`;
+  } else if (style.type === SKELETON_TYPE.dateTime) {
+    return `::${printDateTimeSkeleton(style)}`;
   } else {
     return `::${style.tokens.map(printNumberSkeletonToken).join(' ')}`;
   }
+}
+
+export function printDateTimeSkeleton(style: DateTimeSkeleton): string {
+  return style.pattern;
 }
 
 function printSelectElement(el: SelectElement) {

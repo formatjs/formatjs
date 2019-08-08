@@ -31,7 +31,7 @@ export enum TYPE {
 
 export const enum SKELETON_TYPE {
   number,
-  date
+  dateTime
 }
 
 export interface LocationDetails {
@@ -59,8 +59,8 @@ export interface SimpleFormatElement<T extends TYPE, S extends Skeleton>
 }
 
 export type NumberElement = SimpleFormatElement<TYPE.number, NumberSkeleton>;
-export type DateElement = SimpleFormatElement<TYPE.date, DateSkeleton>;
-export type TimeElement = SimpleFormatElement<TYPE.time, DateSkeleton>;
+export type DateElement = SimpleFormatElement<TYPE.date, DateTimeSkeleton>;
+export type TimeElement = SimpleFormatElement<TYPE.time, DateTimeSkeleton>;
 
 export interface SelectOption {
   id: string;
@@ -112,13 +112,13 @@ export interface NumberSkeleton {
   location?: Location;
 }
 
-export interface DateSkeleton {
-  type: SKELETON_TYPE.date;
+export interface DateTimeSkeleton {
+  type: SKELETON_TYPE.dateTime;
   pattern: string;
   location?: Location;
 }
 
-export type Skeleton = NumberSkeleton | DateSkeleton;
+export type Skeleton = NumberSkeleton | DateTimeSkeleton;
 
 /**
  * Type Guards
@@ -151,8 +151,8 @@ export function isPluralElement(el: MessageFormatElement): el is PluralElement {
 export function isNumberSkeleton(el: Skeleton): el is NumberSkeleton {
   return el.type === SKELETON_TYPE.number;
 }
-export function isDateSkeleton(el: Skeleton): el is DateSkeleton {
-  return el.type === SKELETON_TYPE.date;
+export function isDateTimeSkeleton(el: Skeleton): el is DateTimeSkeleton {
+  return el.type === SKELETON_TYPE.dateTime;
 }
 
 export function createLiteralElement(value: string): LiteralElement {
