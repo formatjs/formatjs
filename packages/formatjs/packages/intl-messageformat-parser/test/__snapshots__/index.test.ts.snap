@@ -279,6 +279,85 @@ Array [
 ]
 `;
 
+exports[`parse() can parse '{howMany, select,      one {{actor1}}      other {          {nExtraActors, plural,          one {{actor1} and {actor2}}          other {{actor1} and {nExtraActors} others}          }}      } shared this file.' 1`] = `
+Array [
+  Object {
+    "options": Object {
+      "one": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 1,
+            "value": "actor1",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "          ",
+          },
+          Object {
+            "offset": 0,
+            "options": Object {
+              "one": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "type": 1,
+                    "value": "actor1",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " and ",
+                  },
+                  Object {
+                    "type": 1,
+                    "value": "actor2",
+                  },
+                ],
+              },
+              "other": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "type": 1,
+                    "value": "actor1",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " and ",
+                  },
+                  Object {
+                    "type": 1,
+                    "value": "nExtraActors",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " others",
+                  },
+                ],
+              },
+            },
+            "pluralType": "cardinal",
+            "type": 6,
+            "value": "nExtraActors",
+          },
+        ],
+      },
+    },
+    "type": 5,
+    "value": "howMany",
+  },
+  Object {
+    "type": 0,
+    "value": " shared this file.",
+  },
+]
+`;
+
 exports[`parse() can parse '{num, number, percent}' 1`] = `
 Array [
   Object {
@@ -756,6 +835,8 @@ exports[`parse() can print AST from '{floor, selectordinal, =0{ground} one{#st} 
 
 exports[`parse() can print AST from '{gender, select, female {woman} male {man} other {person}}' 1`] = `"{gender,select,female{woman} male{man} other{person}}"`;
 
+exports[`parse() can print AST from '{howMany, select,      one {{actor1}}      other {          {nExtraActors, plural,          one {{actor1} and {actor2}}          other {{actor1} and {nExtraActors} others}          }}      } shared this file.' 1`] = `"{howMany,select,one{{actor1}} other{          {nExtraActors,plural,one{{actor1} and {actor2}} other{{actor1} and {nExtraActors} others}}}} shared this file."`;
+
 exports[`parse() can print AST from '{num, number, percent}' 1`] = `"{num, number, percent}"`;
 
 exports[`parse() can print AST from '{numPhotos, plural, =0{no photos} =1{one photo} other{# photos}}' 1`] = `"{numPhotos,plural,=0{no photos} =1{one photo} other{{numPhotos, number} photos}}"`;
@@ -1076,6 +1157,85 @@ Array [
     },
     "type": 5,
     "value": "gender",
+  },
+]
+`;
+
+exports[`parse({ captureLocation: true }) can parse '{howMany, select,      one {{actor1}}      other {          {nExtraActors, plural,          one {{actor1} and {actor2}}          other {{actor1} and {nExtraActors} others}          }}      } shared this file.' 1`] = `
+Array [
+  Object {
+    "options": Object {
+      "one": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 1,
+            "value": "actor1",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "          ",
+          },
+          Object {
+            "offset": 0,
+            "options": Object {
+              "one": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "type": 1,
+                    "value": "actor1",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " and ",
+                  },
+                  Object {
+                    "type": 1,
+                    "value": "actor2",
+                  },
+                ],
+              },
+              "other": Object {
+                "location": undefined,
+                "value": Array [
+                  Object {
+                    "type": 1,
+                    "value": "actor1",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " and ",
+                  },
+                  Object {
+                    "type": 1,
+                    "value": "nExtraActors",
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " others",
+                  },
+                ],
+              },
+            },
+            "pluralType": "cardinal",
+            "type": 6,
+            "value": "nExtraActors",
+          },
+        ],
+      },
+    },
+    "type": 5,
+    "value": "howMany",
+  },
+  Object {
+    "type": 0,
+    "value": " shared this file.",
   },
 ]
 `;
@@ -1556,6 +1716,8 @@ exports[`parse({ captureLocation: true }) can print AST from '{count, time}' 1`]
 exports[`parse({ captureLocation: true }) can print AST from '{floor, selectordinal, =0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor' 1`] = `"{floor,selectordinal,=0{ground} one{{floor, number}st} two{{floor, number}nd} few{{floor, number}rd} other{{floor, number}th}} floor"`;
 
 exports[`parse({ captureLocation: true }) can print AST from '{gender, select, female {woman} male {man} other {person}}' 1`] = `"{gender,select,female{woman} male{man} other{person}}"`;
+
+exports[`parse({ captureLocation: true }) can print AST from '{howMany, select,      one {{actor1}}      other {          {nExtraActors, plural,          one {{actor1} and {actor2}}          other {{actor1} and {nExtraActors} others}          }}      } shared this file.' 1`] = `"{howMany,select,one{{actor1}} other{          {nExtraActors,plural,one{{actor1} and {actor2}} other{{actor1} and {nExtraActors} others}}}} shared this file."`;
 
 exports[`parse({ captureLocation: true }) can print AST from '{num, number, percent}' 1`] = `"{num, number, percent}"`;
 

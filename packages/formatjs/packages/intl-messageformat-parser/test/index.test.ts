@@ -47,7 +47,15 @@ function allTests(opts?: ParseOptions) {
           other {# tablespoons}
         }
       }
-    }`
+    }`,
+    '{howMany, select,\
+      one {{actor1}}\
+      other {\
+          {nExtraActors, plural,\
+          one {{actor1} and {actor2}}\
+          other {{actor1} and {nExtraActors} others}\
+          }}\
+      } shared this file.'
   ].forEach(mess => {
     const ast = parse(mess, opts);
     it(`can parse '${mess}'`, function() {
