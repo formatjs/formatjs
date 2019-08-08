@@ -221,7 +221,7 @@ export class IntlMessageFormat {
   resolvedOptions = () => ({ locale: this.locale });
   getAst = () => this.ast;
   static defaultLocale = 'en';
-  static __parse: typeof parse | undefined = undefined;
+  static __parse: typeof parse | undefined = parse;
   // Default format options used as the prototype of the `formats` provided to the
   // constructor. These are used when constructing the internal Intl.NumberFormat
   // and Intl.DateTimeFormat instances.

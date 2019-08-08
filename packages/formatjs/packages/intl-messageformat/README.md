@@ -190,9 +190,9 @@ In this example, we're defining a `USD` number format style which is passed to t
 
 ## Advanced Usage
 
-### Core entry point
+### Passing in AST
 
-We also expose another entry point via `intl-messageformat/core` that does not contain the parser from `intl-messageformat-parser`. This is significantly smaller than the regular package but expects the message passed in to be in `AST` form instead of string. E.g:
+You can pass in pre-parsed AST to IntlMessageFormat like this:
 
 ```ts
 import IntlMessageFormat from 'intl-messageformat';
@@ -207,9 +207,11 @@ new IntlMessageFormat(parser.parse('hello')).format(); // prints out hello
 
 This helps performance for cases like SSR or preload/precompilation-supported platforms since `AST` can be cached.
 
+If your messages are all in ASTs, you can alias `intl-messageformat-parser` to `{default: undefined}` to save some bytes during bundling.
+
 ### Formatters
 
-For complex messages, initializing `Intl.*` constructors can be expensive. Therefore, we allow user to pass in `formatters` to provide memoized instances of these `Intl` objects. This opts combines with passing in AST + using [core entry point](#core-entry-point) and `intl-format-cache` can speed things up by 30x per the benchmark down below.
+For complex messages, initializing `Intl.*` constructors can be expensive. Therefore, we allow user to pass in `formatters` to provide memoized instances of these `Intl` objects. This opts combines with [passing in AST](#passing-in-ast) and `intl-format-cache` can speed things up by 30x per the benchmark down below.
 
 For example:
 
