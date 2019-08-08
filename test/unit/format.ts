@@ -137,7 +137,7 @@ describe('format API', () => {
     });
 
     it('formats date string values', () => {
-      expect(formatDate(new Date(0).toString())).toBe(new Date(0).toString());
+      expect(formatDate(new Date(0).toString())).toBe(df.format(0));
     });
 
     it('formats date ms timestamp values', () => {
@@ -263,7 +263,7 @@ describe('format API', () => {
     });
 
     it('formats date string values', () => {
-      expect(formatTime(new Date(0).toString())).toBe(new Date(0).toString());
+      expect(formatTime(new Date(0).toString())).toBe(df.format(0));
     });
 
     it('formats date ms timestamp values', () => {

@@ -15,19 +15,14 @@ const invariant: typeof invariant_ = require('invariant');
 import {
   Formatters,
   IntlConfig,
-  FormatDateOptions,
   FormatRelativeTimeOptions,
   CustomFormats,
-  FormatNumberOptions,
-  FormatPluralOptions,
   MessageDescriptor,
   IntlFormatters,
 } from './types';
 
 import {createError, escape, filterProps} from './utils';
-import IntlRelativeTimeFormat, {
-  IntlRelativeTimeFormatOptions,
-} from '@formatjs/intl-relativetimeformat';
+import {IntlRelativeTimeFormatOptions} from '@formatjs/intl-relativetimeformat';
 import {LiteralElement, TYPE} from 'intl-messageformat-parser';
 import {FormatXMLElementFn, PrimitiveType} from 'intl-messageformat';
 
@@ -117,14 +112,14 @@ export function formatDate(
     DATE_TIME_FORMAT_OPTIONS,
     defaults
   );
-
+  const date = typeof value === 'string' ? new Date(value || 0) : value;
   try {
-    return state.getDateTimeFormat(locale, filteredOptions).format(value);
+    return state.getDateTimeFormat(locale, filteredOptions).format(date);
   } catch (e) {
     onError(createError('Error formatting date.', e));
   }
 
-  return String(value);
+  return String(date);
 }
 
 export function formatTime(
@@ -157,13 +152,15 @@ export function formatTime(
     filteredOptions = {...filteredOptions, hour: 'numeric', minute: 'numeric'};
   }
 
+  const date = typeof value === 'string' ? new Date(value || 0) : value;
+
   try {
-    return state.getDateTimeFormat(locale, filteredOptions).format(value);
+    return state.getDateTimeFormat(locale, filteredOptions).format(date);
   } catch (e) {
     onError(createError('Error formatting time.', e));
   }
 
-  return String(value);
+  return String(date);
 }
 
 export function formatRelativeTime(

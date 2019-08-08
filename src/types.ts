@@ -56,11 +56,11 @@ export type FormatPluralOptions = Exclude<
 
 export interface IntlFormatters {
   formatDate(
-    value: Parameters<Intl.DateTimeFormat['format']>[0],
+    value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
     opts?: FormatDateOptions
   ): string;
   formatTime(
-    value: Parameters<Intl.DateTimeFormat['format']>[0],
+    value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
     opts?: FormatDateOptions
   ): string;
   formatRelativeTime(
