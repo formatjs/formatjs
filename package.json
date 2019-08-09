@@ -22,13 +22,13 @@
     "Marces Engel <dev.dragonraider5@gmail.com>"
   ],
   "license": "BSD-3-Clause",
-  "homepage": "https://github.com/yahoo/react-intl",
+  "homepage": "https://github.com/formatjs/react-intl",
   "bugs": {
-    "url": "https://github.com/yahoo/react-intl/issues"
+    "url": "https://github.com/formatjs/react-intl/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:yahoo/react-intl.git"
+    "url": "git@github.com:formatjs/react-intl.git"
   },
   "main": "./dist/index",
   "types": "./dist/index.d.ts",
