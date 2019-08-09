@@ -20,9 +20,9 @@
 
 <!-- tocstop -->
 
-## Introduction
+# Introduction
 
-### Intro Guides
+## Intro Guides
 
 Internationalizing web apps is an involved and complex task. If you're new to i18n in JavaScript, it's recommended that you start by reading the following guides:
 
@@ -30,7 +30,7 @@ Internationalizing web apps is an involved and complex task. If you're new to i1
 - [Runtime Environments](http://formatjs.io/guides/runtime-environments/)
 - [Internationalization Tutorial From Smashing Magazine](https://www.smashingmagazine.com/2017/01/internationalizing-react-apps/)
 
-### I18n in JavaScript
+## I18n in JavaScript
 
 **React Intl uses and builds on the [Internationalization API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) built-in to JavaScript.**
 
@@ -44,7 +44,7 @@ For older browsers and Node you might need to polyfill the `Intl` APIs. The [Run
 
 - When polyfilling `Intl` in a browser, you'll want to dynamically load the locale data for the current user's locale. The Intl polyfill contains this data as separate `.js` files from the core implementation. In Node, the polyfill loads all locale data into memory by default.
 
-### The `react-intl` Package
+## The `react-intl` Package
 
 Install the [`react-intl` npm package](https://www.npmjs.com/package/react-intl) via npm:
 
@@ -63,7 +63,7 @@ The `react-intl` npm package distributes the following modules (links from [unpk
 - [**UMD prod**](https://unpkg.com/react-intl@latest/dist/react-intl.min.js):
   minified, bundled dependencies (except `react`), browser or Node, no warnings.
 
-#### Module Bundlers
+### Module Bundlers
 
 We've made React Intl work well with module bundlers like: Browserify, Webpack, or Rollup which can be used to bundle React Intl for the browser:
 
@@ -73,7 +73,7 @@ We've made React Intl work well with module bundlers like: Browserify, Webpack, 
 
 - Development-time warnings are wrapped with `process.env.NODE_ENV !== 'production'`, this allows you to specify `NODE_ENV` when bundling and minifying to have these code blocks removed.
 
-### The React Intl Module
+## The React Intl Module
 
 Whether you use the ES6, CommonJS, or UMD version of React Intl, they all provide the same named exports:
 
@@ -90,7 +90,7 @@ Whether you use the ES6, CommonJS, or UMD version of React Intl, they all provid
 
 **Note:** When using the UMD version of React Intl _without_ a module system, it will expect `react` to exist on the global variable: **`React`**, and put the above named exports on the global variable: **`ReactIntl`**.
 
-### Runtime Requirements
+## Runtime Requirements
 
 React Intl relies on these `Intl` APIs:
 
@@ -106,14 +106,15 @@ If you need to support older browsers, we recommend you do the following:
 
 ```js
 import '@formatjs/intl-relativetimeformat/polyfill';
+import '@formatjs/intl-relativetimeformat/dist/include-aliases'; // Optional, if you care about edge cases in locale resolution, e.g zh-CN -> zh-Hans-CN
 import '@formatjs/intl-relativetimeformat/dist/locale-data/de'; // Add locale data for de
 ```
 
-#### Browser
+### Browser
 
 We officially support IE11 along with modern browsers (Chrome/FF/Edge/Safari).
 
-#### Node.js
+### Node.js
 
 When using React Intl in Node.js, your `node` binary has to either:
 
@@ -127,7 +128,7 @@ If your `node` version is missing any of the `Intl` APIs above, you'd have to po
 
 We also rely on `DOMParser` to format rich text, thus for Node will need to polyfill using [xmldom](https://github.com/jindw/xmldom).
 
-#### React Native
+### React Native
 
 If you're using `react-intl` in React Native, make sure your runtime has built-in `Intl` support (similar to [JSC International variant](https://github.com/react-native-community/jsc-android-buildscripts#international-variant)). See these issues for more details:
 
@@ -136,7 +137,7 @@ If you're using `react-intl` in React Native, make sure your runtime has built-i
 
 We also rely on `DOMParser` to format rich text, thus for JSC will need to polyfill using [xmldom](https://github.com/jindw/xmldom).
 
-### Creating an I18n Context
+## Creating an I18n Context
 
 Now with React Intl and its locale data loaded an i18n context can be created for your React app.
 
@@ -157,7 +158,7 @@ ReactDOM.render(
 
 **See:** The [**`<IntlProvider>` docs**](./Components.md#intlprovider) for more details.
 
-### Formatting Data
+## Formatting Data
 
 React Intl has two ways to format data, through [React components][components] and its [API][api]. The components provide an idiomatic-React way of integrating internationalization into a React app, and the `<Formatted*>` components have [benefits](./Components.md#why-components) over always using the imperative API directly. The API should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
 
@@ -214,7 +215,7 @@ Assuming `navigator.language` is `"en-us"`:
 
 **See:** The [**API docs**][api] and [**Component docs**][components] for more details.
 
-## Core Concepts
+# Core Concepts
 
 - Formatters (Date, Number, Message, Relative)
 - Provider and Injector
@@ -224,11 +225,11 @@ Assuming `navigator.language` is `"en-us"`:
 - Defining default messages for extraction
 - Custom, named formats
 
-## Example Apps
+# Example Apps
 
 There are several [**runnable example apps**](https://github.com/formatjs/react-intl/tree/master/examples) in this Git repo. These are a great way to see React Intl's [core concepts](#core-concepts) in action in simplified applications.
 
-## API Reference
+# API Reference
 
 There are a few API layers that React Intl provides and is built on. When using React Intl you'll be interacting with `Intl` built-ins, React Intl's API, and its React components:
 
