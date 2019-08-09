@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.3](https://github.com/formatjs/react-intl/compare/v3.1.1...v3.1.3) (2019-08-09)
+
+
+### Bug Fixes
+
+* allow string in formatDate & formatTime ([aed8c68](https://github.com/formatjs/react-intl/commit/aed8c68)), closes [#1396](https://github.com/formatjs/react-intl/issues/1396)
+* create initial intl for Provider ([4306275](https://github.com/formatjs/react-intl/commit/4306275))
+* formatRelativeTime type def unit param ([cb7da58](https://github.com/formatjs/react-intl/commit/cb7da58))
+* remove contextType usage ([660a546](https://github.com/formatjs/react-intl/commit/660a546))
+
 ### [3.1.2](https://github.com/formatjs/react-intl/compare/v3.1.1...v3.1.2) (2019-08-09)
 
 
