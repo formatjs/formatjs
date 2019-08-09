@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import {Context} from './injectIntl';
+import injectIntl, {WrappedComponentProps} from './injectIntl';
 import {MessageDescriptor} from '../types';
 const shallowEquals = require('shallow-equal/objects');
 
@@ -43,13 +43,13 @@ const defaultFormatMessage = (
 
 export interface Props<
   V extends Record<string, any> = Record<string, React.ReactNode>
-> extends MessageDescriptor {
+> extends MessageDescriptor, WrappedComponentProps {
   values?: V;
   tagName?: React.ElementType<any>;
   children?(...nodes: React.ReactNodeArray): React.ReactNode;
 }
 
-export default class FormattedMessage<
+export class BaseFormattedMessage<
   V extends Record<string, any> = Record<
     string,
     PrimitiveType | React.ReactElement | FormatXMLElementFn
@@ -59,13 +59,11 @@ export default class FormattedMessage<
     values: {},
   };
   static displayName = 'FormattedMessage';
-  static contextType = Context;
-  context!: React.ContextType<typeof Context>;
 
-  constructor(props: Props<V>, context: React.ContextType<typeof Context>) {
+  constructor(props: Props<V>) {
     super(props);
     if (!props.defaultMessage) {
-      invariantIntlContext(context);
+      invariantIntlContext(props.intl);
     }
   }
 
@@ -82,7 +80,7 @@ export default class FormattedMessage<
     const {
       formatMessage = defaultFormatMessage,
       textComponent: Text = React.Fragment,
-    } = this.context || {};
+    } = this.props.intl || {};
     const {
       id,
       description,
@@ -114,3 +112,5 @@ export default class FormattedMessage<
     return nodes;
   }
 }
+
+export default injectIntl(BaseFormattedMessage, {enforceContext: false});

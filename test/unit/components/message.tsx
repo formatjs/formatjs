@@ -5,7 +5,7 @@ import IntlProvider, {
   createIntl,
 } from '../../../src/components/provider';
 import {mountFormattedComponentWithProvider} from '../testUtils';
-import {mount} from 'enzyme';
+import {mount, shallow} from 'enzyme';
 import {IntlShape} from '../../../src';
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedMessage);
@@ -33,6 +33,44 @@ describe('<FormattedMessage>', () => {
 
   it('has a `displayName`', () => {
     expect(FormattedMessage.displayName).toBeA('string');
+  });
+
+  it('should work with shallow enzyme', function() {
+    const wrapper = shallow(
+      <span>
+        <FormattedMessage id="foo" />
+      </span>,
+      {
+        wrappingComponent: IntlProvider,
+        wrappingComponentProps: {locale: 'en', messages: {foo: 'hello foo'}},
+      }
+    );
+    expect(wrapper.find(FormattedMessage).dive()).toMatchSnapshot();
+    expect(
+      wrapper
+        .find(FormattedMessage)
+        .dive()
+        .dive()
+    ).toMatchSnapshot();
+    expect(
+      wrapper
+        .find(FormattedMessage)
+        .dive()
+        .dive()
+        .dive()
+    ).toMatchSnapshot();
+  });
+  it('should work with mount enzyme', function() {
+    const wrapper = mount(
+      <span>
+        <FormattedMessage id="foo" />
+      </span>,
+      {
+        wrappingComponent: IntlProvider,
+        wrappingComponentProps: {locale: 'en', messages: {foo: 'hello foo'}},
+      }
+    );
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('throws when <IntlProvider> is missing from ancestry and there is no defaultMessage', () => {

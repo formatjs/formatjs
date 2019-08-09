@@ -5,18 +5,20 @@
  */
 
 import * as React from 'react';
-import FormattedMessage from './message';
-import {PrimitiveType} from 'intl-messageformat';
 
-export default class FormattedHTMLMessage extends FormattedMessage<
+import {PrimitiveType} from 'intl-messageformat';
+import {BaseFormattedMessage} from './message';
+import injectIntl from './injectIntl';
+
+export class BaseFormattedHTMLMessage extends BaseFormattedMessage<
   Record<string, PrimitiveType>
 > {
   static defaultProps = {
-    ...FormattedMessage.defaultProps,
+    ...BaseFormattedMessage.defaultProps,
     tagName: 'span' as 'span',
   };
   render() {
-    const {formatHTMLMessage, textComponent: Text} = this.context;
+    const {formatHTMLMessage, textComponent: Text} = this.props.intl;
 
     const {
       id,
@@ -47,3 +49,5 @@ export default class FormattedHTMLMessage extends FormattedMessage<
     return <Component dangerouslySetInnerHTML={html} />;
   }
 }
+
+export default injectIntl(BaseFormattedHTMLMessage, {enforceContext: false});

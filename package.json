@@ -66,6 +66,7 @@
     "cross-env": "^5.2.0",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
+    "enzyme-to-json": "^3.4.0",
     "eslint": "^6.1.0",
     "eslint-plugin-react": "^7.14.3",
     "fs-extra": "^8.1.0",

@@ -1,7 +1,11 @@
 module.exports = {
   preset: 'ts-jest/presets/js-with-babel',
   testRegex: ['/test/(functional|unit)/.*\\.(ts|tsx)'],
-  testPathIgnorePatterns: ['test/functional/support', '/test/unit/testUtils'],
+  testPathIgnorePatterns: [
+    'test/functional/support',
+    '/test/unit/testUtils',
+    '__snapshots__',
+  ],
   collectCoverageFrom: ['src/**/*.{ts,tsx}'],
   coverageReporters: ['lcov', 'text', 'text-summary', 'html'],
   transformIgnorePatterns: [
@@ -27,4 +31,5 @@ module.exports = {
       diagnostics: false,
     },
   },
+  snapshotSerializers: ['enzyme-to-json/serializer'],
 };

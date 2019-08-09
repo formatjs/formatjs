@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import {Context} from './injectIntl';
+import injectIntl, {WrappedComponentProps} from './injectIntl';
 import {FormatRelativeTimeOptions} from '../types';
 import {Unit} from '@formatjs/intl-relativetimeformat';
 import * as invariant_ from 'invariant';
@@ -60,7 +60,9 @@ function valueToSeconds(value?: number, unit?: Unit): number {
   }
 }
 
-export interface Props extends FormatRelativeTimeOptions {
+export interface Props
+  extends FormatRelativeTimeOptions,
+    WrappedComponentProps {
   value?: number;
   unit?: Unit;
   updateIntervalInSeconds?: number;
@@ -85,7 +87,7 @@ function verifyProps(updateIntervalInSeconds?: number, unit?: Unit) {
   );
 }
 
-export default class FormattedRelativeTime extends React.PureComponent<
+export class BaseFormattedRelativeTime extends React.PureComponent<
   Props,
   State
 > {
@@ -96,8 +98,6 @@ export default class FormattedRelativeTime extends React.PureComponent<
     value: 0,
     unit: 'second',
   };
-  static contextType = Context;
-  context!: React.ContextType<typeof Context>;
   state: State = {
     prevUnit: this.props.unit,
     prevValue: this.props.value,
@@ -106,9 +106,9 @@ export default class FormattedRelativeTime extends React.PureComponent<
       : 0,
   };
 
-  constructor(props: Props, context: React.ContextType<typeof Context>) {
+  constructor(props: Props) {
     super(props);
-    invariantIntlContext(context);
+    invariantIntlContext(props.intl);
     verifyProps(props.updateIntervalInSeconds, props.unit);
   }
 
@@ -177,7 +177,7 @@ export default class FormattedRelativeTime extends React.PureComponent<
   }
 
   render() {
-    const {formatRelativeTime, textComponent: Text} = this.context;
+    const {formatRelativeTime, textComponent: Text} = this.props.intl;
     const {children, value, unit, updateIntervalInSeconds} = this.props;
     const {currentValueInSeconds} = this.state;
     let currentValue = value || 0;
@@ -210,3 +210,5 @@ export default class FormattedRelativeTime extends React.PureComponent<
     return formattedRelativeTime;
   }
 }
+
+export default injectIntl(BaseFormattedRelativeTime);
