@@ -446,7 +446,10 @@ function formatMessage(
 ): string;
 function formatMessage(
   descriptor: MessageDescriptor,
-  values?: Record<string, MessageFormatPrimitiveValue | React.ReactElement>
+  values?: Record<
+    string,
+    MessageFormatPrimitiveValue | React.ReactElement | FormatXMLElementFn
+  >
 ): string | React.ReactNodeArray;
 ```
 
@@ -478,6 +481,23 @@ const messages = defineMessages({
 });
 
 formatMessage(messages.greeting, {name: <b>Eric</b>}); // ['Hello, ', <b>Eric</b>, '!']
+```
+
+with rich text formatting
+
+```tsx
+const messages = defineMessages({
+  greeting: {
+    id: 'app.greeting',
+    defaultMessage: 'Hello, <bold>{name}</bold>!',
+    description: 'Greeting to welcome the user to the app',
+  },
+});
+
+formatMessage(messages.greeting, {
+  name: 'Eric',
+  bold: str => <b>{str}</b>,
+}); // ['Hello, ', <b>Eric</b>, '!']
 ```
 
 The message we defined using [`defineMessages`](#definemessages) to support extraction via `babel-plugin-react-intl`, but it doesn't have to be if you're not using the Babel plugin.
