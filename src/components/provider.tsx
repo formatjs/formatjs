@@ -36,11 +36,11 @@ interface State {
    */
   intl?: IntlShape;
   /**
-   * list of memoized props we care about.
+   * list of memoized config we care about.
    * This is important since creating intl is
    * very expensive
    */
-  prevProps: OptionalIntlConfig;
+  prevConfig: OptionalIntlConfig;
 }
 
 export type OptionalIntlConfig = Omit<
@@ -48,6 +48,21 @@ export type OptionalIntlConfig = Omit<
   keyof typeof DEFAULT_INTL_CONFIG
 > &
   Partial<typeof DEFAULT_INTL_CONFIG>;
+
+function filterIntlConfig<P extends OptionalIntlConfig = OptionalIntlConfig>(
+  config: P
+): OptionalIntlConfig {
+  return {
+    locale: config.locale,
+    timeZone: config.timeZone,
+    formats: config.formats,
+    textComponent: config.textComponent,
+    messages: config.messages,
+    defaultLocale: config.defaultLocale,
+    defaultFormats: config.defaultFormats,
+    onError: config.onError,
+  };
+}
 
 export default class IntlProvider extends React.PureComponent<
   OptionalIntlConfig,
@@ -58,40 +73,19 @@ export default class IntlProvider extends React.PureComponent<
   private cache: IntlCache = createIntlCache();
   state: State = {
     cache: this.cache,
-    intl: undefined,
-    prevProps: {
-      locale: this.props.locale,
-    },
+    intl: createIntl(filterIntlConfig(this.props)),
+    prevConfig: filterIntlConfig(this.props),
   };
 
   static getDerivedStateFromProps(
     props: OptionalIntlConfig,
-    {prevProps, cache}: State
+    {prevConfig, cache}: State
   ) {
-    const {
-      locale,
-      timeZone,
-      formats,
-      textComponent,
-      messages,
-      defaultLocale,
-      defaultFormats,
-      onError,
-    } = props;
-    const filteredProps: OptionalIntlConfig = {
-      locale,
-      timeZone,
-      formats,
-      textComponent,
-      messages,
-      defaultLocale,
-      defaultFormats,
-      onError,
-    };
-    if (!shallowEquals(prevProps, filteredProps)) {
+    const config = filterIntlConfig(props);
+    if (!shallowEquals(prevConfig, config)) {
       return {
-        intl: createIntl(filteredProps, cache),
-        prevProps: filteredProps,
+        intl: createIntl(config, cache),
+        prevProps: config,
       };
     }
     return null;
