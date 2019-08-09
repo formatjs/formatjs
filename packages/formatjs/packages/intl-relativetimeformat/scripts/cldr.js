@@ -63,7 +63,7 @@ export default ${en.en};
 // Extract aliases
 const aliases = processAliases()
 outputFileSync(	
-  resolve(__dirname, '../dist/aliases.js'),	
+  resolve(__dirname, '../dist/include-aliases.js'),	
   `/* @generated */	
 // prettier-ignore  
 if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__setLanguageAliases === 'function') {
