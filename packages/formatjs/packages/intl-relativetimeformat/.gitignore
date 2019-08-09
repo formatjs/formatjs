@@ -4,4 +4,5 @@ node_modules/
 tests/browser.*
 src/locales.ts
 src/en.ts
+src/aliases.ts
 tests/polyfill-all.js

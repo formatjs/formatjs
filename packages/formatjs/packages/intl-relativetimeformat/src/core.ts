@@ -89,14 +89,19 @@ function findFields(locale: string) {
 }
 
 function resolveLocale(locales: Array<string | undefined>) {
+  const {
+    __localeData__: localeData,
+    __languageAliases__: languageAliases
+  } = RelativeTimeFormat;
   let resolvedLocales: string[] = [
     ...(Array.isArray(locales) ? locales : [locales]),
     // default locale
     DEFAULT_LOCALE
-  ].filter<string>((s): s is string => typeof s === 'string');
+  ]
+    .filter<string>((s): s is string => typeof s === 'string')
+    .map(l => languageAliases[l] || l);
 
-  var localeData = RelativeTimeFormat.__localeData__;
-  var i, len, localeParts, data;
+  let i, len, localeParts, data;
 
   // Using the set of locales + the default locale, we look for the first one
   // which that has been registered. When data does not exist for a locale, we
@@ -458,7 +463,7 @@ export default class RelativeTimeFormat {
     ];
   };
 
-  static __localeData__ = {} as Record<string, LocaleData>;
+  static __localeData__: Record<string, LocaleData> = {};
   public static __addLocaleData(...data: LocaleData[]) {
     for (const datum of data) {
       if (!(datum && datum.locale)) {
@@ -470,6 +475,10 @@ export default class RelativeTimeFormat {
 
       RelativeTimeFormat.__localeData__[datum.locale.toLowerCase()] = datum;
     }
+  }
+  static __languageAliases__: Record<string, string> = {};
+  public static __setLanguageAliases(aliases: Record<string, string>) {
+    RelativeTimeFormat.__languageAliases__ = aliases;
   }
   public static polyfilled = true;
 }

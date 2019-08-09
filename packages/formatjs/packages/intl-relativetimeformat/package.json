@@ -26,12 +26,13 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "clean": "rimraf dist lib",
-    "mjs": "find ./dist -depth -name \"*.js\" -exec sh -c 'f=\"{}\"; mv -- \"$f\" \"${f%.js}.mjs\"' \\;",
-    "compile": "tsc && npm run mjs && tsc -p tsconfig.cjs.json && rollup -c rollup.config.js",
     "build": "npm run cldr && npm run compile",
     "cldr": "node scripts/cldr",
-    "test": "TS_NODE_PROJECT=tsconfig.cjs.json ts-node tests/runner"
+    "clean": "rimraf dist lib",
+    "compile": "tsc && npm run mjs && tsc -p tsconfig.cjs.json && rollup -c rollup.config.js",
+    "jest": "TS_NODE_PROJECT='./tsconfig.cjs.json' cross-env NODE_ENV=test jest",
+    "mjs": "find ./dist -depth -name \"*.js\" -exec sh -c 'f=\"{}\"; mv -- \"$f\" \"${f%.js}.mjs\"' \\;",
+    "test": "npm run jest && TS_NODE_PROJECT=tsconfig.cjs.json ts-node tests/runner"
   },
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",

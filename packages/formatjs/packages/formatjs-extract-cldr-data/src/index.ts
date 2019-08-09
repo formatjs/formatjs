@@ -13,6 +13,8 @@ export interface Opts {
   relativeFields?: boolean;
 }
 
+export { process as processAliases } from './process-aliases';
+
 export default function extractData(options: Opts = {}) {
   // Default to all CLDR locales if none have been provided.
   const locales = options.locales || getAllLocales();
