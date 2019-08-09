@@ -54,9 +54,9 @@ $ npm install react-intl --save
 
 The `react-intl` npm package distributes the following modules (links from [unpkg](https://unpkg.com/)):
 
-- [**CommonJS**](https://unpkg.com/react-intl@latest/lib/index.js):
+- [**CommonJS**](https://unpkg.com/react-intl@latest/dist/index.js):
   unbundled dependencies, `"main"` in `package.json`, warnings in dev.
-- [**ES6**](https://unpkg.com/react-intl@latest/lib/index.es.js):
+- [**ES6**](https://unpkg.com/react-intl@latest/dist/index.mjs):
   unbundled dependencies, `"jsnext:main"` and `"module"` in `package.json`, warnings in dev.
 - [**UMD dev**](https://unpkg.com/react-intl@latest/dist/react-intl.js):
   bundled dependencies (except `react`), browser or Node, warnings.
