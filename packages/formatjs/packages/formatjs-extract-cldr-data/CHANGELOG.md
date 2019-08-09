@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.4.0](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.3.3...formatjs-extract-cldr-data@9.4.0) (2019-08-09)
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** add aliases support ([a2aec8c](https://github.com/formatjs/formatjs/commit/a2aec8c))
+
+
+
+
+
 ## [9.3.3](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.3.2...formatjs-extract-cldr-data@9.3.3) (2019-08-06)
 
 

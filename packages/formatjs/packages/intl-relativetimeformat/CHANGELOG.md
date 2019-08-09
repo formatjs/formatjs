@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.5.2...@formatjs/intl-relativetimeformat@2.6.0) (2019-08-09)
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** add aliases support ([a2aec8c](https://github.com/formatjs/formatjs/commit/a2aec8c))
+
+
+
+
+
 ## [2.5.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.5.1...@formatjs/intl-relativetimeformat@2.5.2) (2019-08-06)
 
 
