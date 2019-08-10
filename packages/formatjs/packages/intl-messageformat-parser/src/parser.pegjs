@@ -42,10 +42,8 @@ literalElement
         };
     }
 
-argName = $(number / keyword)
-
 argumentElement 'argumentElement'
-    = '{' _ value:argName _ '}' {
+    = '{' _ value:argNameOrNumber _ '}' {
         return {
             type: TYPE.argument,
             value,
@@ -80,7 +78,7 @@ numberArgStyle
     / style:messageText { return style.replace(/\s*$/, ''); }
 
 numberFormatElement
-    = '{' _ value:argName _ ',' _ type:'number' _ style:(',' _ numberArgStyle)? _ '}' {
+    = '{' _ value:argNameOrNumber _ ',' _ type:'number' _ style:(',' _ numberArgStyle)? _ '}' {
         return {
             type    : type === 'number' ? TYPE.number : type === 'date' ? TYPE.date : TYPE.time,
             style   : style && style[2],
@@ -110,7 +108,7 @@ dateOrTimeArgStyle
     / style:messageText { return style.replace(/\s*$/, ''); }
 
 dateOrTimeFormatElement
-    = '{' _ value:argName _ ',' _ type:('date' / 'time') _ style:(',' _ dateOrTimeArgStyle)? _ '}' {
+    = '{' _ value:argNameOrNumber _ ',' _ type:('date' / 'time') _ style:(',' _ dateOrTimeArgStyle)? _ '}' {
         return {
             type    : type === 'number' ? TYPE.number : type === 'date' ? TYPE.date : TYPE.time,
             style   : style && style[2],
@@ -123,7 +121,7 @@ simpleFormatElement
     = numberFormatElement / dateOrTimeFormatElement
 
 pluralElement
-    = '{' _ value:argName _ ',' _ pluralType:('plural' / 'selectordinal') _ ',' _ offset:('offset:' _ number)? _ options:pluralOption+ _ '}' {
+    = '{' _ value:argNameOrNumber _ ',' _ pluralType:('plural' / 'selectordinal') _ ',' _ offset:('offset:' _ number)? _ options:pluralOption+ _ '}' {
         return {
             type   : TYPE.plural,
             pluralType: pluralType === 'plural' ? 'cardinal' : 'ordinal',
@@ -141,7 +139,7 @@ pluralElement
     }
 
 selectElement
-    = '{' _ value:argName _ ',' _ 'select' _ ',' _ options:selectOption+ _ '}' {
+    = '{' _ value:argNameOrNumber _ ',' _ 'select' _ ',' _ options:selectOption+ _ '}' {
         return {
             type   : TYPE.select,
             value,
@@ -157,10 +155,11 @@ selectElement
     }
 
 pluralRuleSelectValue
-    = $('=' number) / keyword
+    = $('=' number) 
+    / argName
 
 selectOption
-    = _ id:keyword _ '{' value:message '}' {
+    = _ id:argName _ '{' value:message '}' {
         return {
             id,
             value,
@@ -181,15 +180,19 @@ pluralOption
 
 // Equivalence of \p{Pattern_White_Space}
 // See: https://github.com/mathiasbynens/unicode-11.0.0/blob/master/Binary_Property/Pattern_White_Space/regex.js
-patternWhiteSpace = [\t-\r \x85\u200E\u200F\u2028\u2029]
+patternWhiteSpace 'whitespace pattern' = [\t-\r \x85\u200E\u200F\u2028\u2029]
 // Equivalence of \p{Pattern_Syntax}
 // See: https://github.com/mathiasbynens/unicode-11.0.0/blob/master/Binary_Property/Pattern_Syntax/regex.js
-patternSyntax = [!-\/:-@\[-\^`\{-~\xA1-\xA7\xA9\xAB\xAC\xAE\xB0\xB1\xB6\xBB\xBF\xD7\xF7\u2010-\u2027\u2030-\u203E\u2041-\u2053\u2055-\u205E\u2190-\u245F\u2500-\u2775\u2794-\u2BFF\u2E00-\u2E7F\u3001-\u3003\u3008-\u3020\u3030\uFD3E\uFD3F\uFE45\uFE46]
+patternSyntax 'syntax pattern' = [!-\/:-@\[-\^`\{-~\xA1-\xA7\xA9\xAB\xAC\xAE\xB0\xB1\xB6\xBB\xBF\xD7\xF7\u2010-\u2027\u2030-\u203E\u2041-\u2053\u2055-\u205E\u2190-\u245F\u2500-\u2775\u2794-\u2BFF\u2E00-\u2E7F\u3001-\u3003\u3008-\u3020\u3030\uFD3E\uFD3F\uFE45\uFE46]
 
 _ 'optional whitespace' = $(patternWhiteSpace*)
 
-number = digits:[0-9]+ {
-    return parseInt(digits.join(''), 10);
+number 'number' = negative:'-'? num:argNumber {
+    return num 
+        ? negative 
+            ? -num 
+            : num 
+        : 0
 }
 
 apostrophe 'apostrophe' = "'"
@@ -202,4 +205,9 @@ quotedString = "'" escapedChar:([{}]) quotedChars:$("''" / [^'])* "'" {
 }
 unquotedString = $([^{}]);
 
-keyword 'keyword' = $((!(patternWhiteSpace / patternSyntax) .)+)
+argNameOrNumber 'argNameOrNumber' = $(argNumber / argName)
+argNumber 'argNumber' = '0' { return 0 }
+    / digits:([1-9][0-9]*) {
+        return parseInt(digits.join(''), 10);
+    } 
+argName 'argName' = $((!(patternWhiteSpace / patternSyntax) .)+)

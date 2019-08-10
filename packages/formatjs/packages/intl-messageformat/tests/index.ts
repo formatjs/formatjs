@@ -137,7 +137,7 @@ describe('IntlMessageFormat', function() {
 
   // This is failing in IE11 bc of https://github.com/eemeli/intl-pluralrules/issues/4
   // Once that's fixed, reinstate this test
-  describe.skip('and plurals under the Arabic locale', function() {
+  describe('and plurals under the Arabic locale', function() {
     var msg =
       '' +
       'I have {numPeople, plural,' +
@@ -503,6 +503,16 @@ describe('IntlMessageFormat', function() {
       // According to https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/plurals.json#L599-L606
       expect(ptMZ.format({ num: 0 })).to.equal('one');
       expect(ptMZ.format({ num: 100 })).to.equal('other');
+    });
+
+    it('should take negative number as plural', function() {
+      const msg =
+        '{num, plural, offset:-1 =-1{negative one} one{one} other{other}}';
+      const mf = new IntlMessageFormat(msg, 'en');
+
+      expect(mf.format({ num: -1 })).to.equal('negative one');
+      expect(mf.format({ num: 0 })).to.equal('one');
+      expect(mf.format({ num: 1 })).to.equal('other');
     });
   });
 
