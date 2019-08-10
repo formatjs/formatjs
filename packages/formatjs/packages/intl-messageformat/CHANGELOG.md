@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.2](https://github.com/formatjs/formatjs/compare/intl-messageformat@6.1.1...intl-messageformat@6.1.2) (2019-08-10)
+
+
+### Bug Fixes
+
+* **intl-messageformat-parser:** allow negative in plural rule, fixes [#146](https://github.com/formatjs/formatjs/issues/146) ([50c7710](https://github.com/formatjs/formatjs/commit/50c7710))
+
+
+
+
+
 ## [6.1.1](https://github.com/formatjs/formatjs/compare/intl-messageformat@6.1.0...intl-messageformat@6.1.1) (2019-08-09)
 
 **Note:** Version bump only for package intl-messageformat
