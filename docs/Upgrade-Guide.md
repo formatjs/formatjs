@@ -15,8 +15,10 @@
 - [ESM Build](#esm-build)
   - [Jest](#jest)
   - [webpack](#webpack)
-- [Apostrophe Escape](#apostrophe-escape)
 - [Creating intl without using Provider](#creating-intl-without-using-provider)
+- [Message Format Syntax Changes](#message-format-syntax-changes)
+  - [Escape character has been changed to apostrophe (`'`).](#escape-character-has-been-changed-to-apostrophe-)
+  - [Placeholder argument syntax change](#placeholder-argument-syntax-change)
 
 <!-- tocstop -->
 
@@ -33,7 +35,7 @@
 
 - `FormattedRelative` has been renamed to `FormattedRelativeTime` and its API has changed significantly. See [FormattedRelativeTime](#formattedrelativetime) for more details.
 - `formatRelative` has been renamed to `formatRelativeTime` and its API has changed significantly. See [FormattedRelativeTime](#formattedrelativetime) for more details.
-- Escape character has been changed to apostrophe (`'`). See [Apostrophe Escape](#apostrophe-escape) for more details.
+- Message Format syntax changes. See [Message Format Syntax Changes](#message-format-syntax-changes) for more details.
 - `IntlProvider` no longer inherits from upstream `IntlProvider`.
 
 ## Use React 16.3 and upwards
@@ -49,7 +51,7 @@ When `forwardRef` is set to true, you can now simply pretend the HOC wasn't ther
 
 Intl v2:
 
-```js
+```tsx
 import React from 'react';
 import {injectIntl} from 'react-intl';
 
@@ -83,7 +85,7 @@ class Parent extends React.Component {
 
 Intl v3:
 
-```js
+```tsx
 import React from 'react';
 import {injectIntl} from 'react-intl';
 
@@ -115,7 +117,7 @@ class Parent extends React.Component {
 
 This v3 release also supports the latest React hook API for user with React `>= 16.8`. You can now take `useIntl` hook as an alternative to `injectIntl` HOC on _function components_. Both methods allow you to access the `intl` instance, here is a quick comparison:
 
-```js
+```tsx
 // injectIntl
 import {injectIntl} from 'react-intl';
 
@@ -149,7 +151,7 @@ If you previously were using `addLocaleData` to support older browsers, we recom
 1. If you're supporting browsers that do not have [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](https://www.npmjs.com/package/intl-pluralrules) in your build.
 2. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat) in your build along with individual CLDR data for each locale you support.
 
-```js
+```tsx
 import '@formatjs/intl-relativetimeformat/polyfill';
 import '@formatjs/intl-relativetimeformat/dist/include-aliases'; // Optional, if you care about edge cases in locale resolution, e.g zh-CN -> zh-Hans-CN
 import '@formatjs/intl-relativetimeformat/dist/locale-data/de'; // Add locale data for de
@@ -237,7 +239,7 @@ Similarly, the functional counterpart of this component which is `formatRelative
 
 You can use `@formatjs/intl-utils` to get close to the previous behavior like this:
 
-```js
+```tsx
 import {selectUnit} from '@formatjs/intl-utils';
 const {value, unit} = selectUnit(Date.now() - 48 * 3600 * 1000);
 // render
@@ -319,7 +321,7 @@ If previously in cases where you pass in a `ReactElement` to a placeholder we hi
 
 Add `transformIgnorePatterns` to always include those libraries, e.g:
 
-```js
+```tsx
 {
   transformIgnorePatterns: [
     '/node_modules/(?!intl-messageformat|intl-messageformat-parser).+\\.js$',
@@ -331,7 +333,7 @@ Add `transformIgnorePatterns` to always include those libraries, e.g:
 
 If you're using `babel-loader`, add those libraries in `include`, e.g:
 
-```js
+```tsx
 include: [
   path.join(__dirname, "node_modules/react-intl"),
   path.join(__dirname, "node_modules/intl-messageformat"),
@@ -341,7 +343,7 @@ include: [
 
 Also configure webpack to treat `mjs` as `javascript/auto`:
 
-```js
+```tsx
 {
   module: {
     rules: [
@@ -356,20 +358,6 @@ Also configure webpack to treat `mjs` as `javascript/auto`:
   }
 }
 ```
-
-## Apostrophe Escape
-
-Previously while we were using ICU message format syntax, our escape char was backslash (`\`). This however creates issues with strict ICU translation vendors that support other implementations like ICU4J/ICU4C. Thanks to [@pyrocat101](https://github.com/pyrocat101) we've changed this behavior to be spec-compliant. This means:
-
-```tsx
-// Before
-<FormattedMessage defaultMessage="\\{foo\\}" /> //prints out "{foo}"
-
-// After
-<FormattedMessage defaultMessage="'{foo}'" /> //prints out "{foo}"
-```
-
-We highly recommend reading the spec to learn more about how quote/escaping works [here](http://userguide.icu-project.org/formatparse/messages) under **Quoting/Escaping** section.
 
 ## Creating intl without using Provider
 
@@ -395,3 +383,25 @@ intl.formatNumber(20)
 ```
 
 This is especially beneficial in SSR where you can reuse the same `intl` object across requests.
+
+## Message Format Syntax Changes
+
+We've rewritten our parser to be more faithful to [ICU Message Format](https://ssl.icu-project.org/apiref/icu4j/com/ibm/icu/text/MessageFormat.html), in order to potentially support skeleton. So far the backwards-incompatible changes are:
+
+### Escape character has been changed to apostrophe (`'`).
+
+Previously while we were using ICU message format syntax, our escape char was backslash (`\`). This however creates issues with strict ICU translation vendors that support other implementations like ICU4J/ICU4C. Thanks to [@pyrocat101](https://github.com/pyrocat101) we've changed this behavior to be spec-compliant. This means:
+
+```tsx
+// Before
+<FormattedMessage defaultMessage="\\{foo\\}" /> //prints out "{foo}"
+
+// After
+<FormattedMessage defaultMessage="'{foo}'" /> //prints out "{foo}"
+```
+
+We highly recommend reading the spec to learn more about how quote/escaping works [here](http://userguide.icu-project.org/formatparse/messages) under **Quoting/Escaping** section.
+
+### Placeholder argument syntax change
+
+Placeholder argument can no longer have `-` (e.g: `this is a {placeholder-var}` is invalid but `this is a {placeholder_var}` is).
