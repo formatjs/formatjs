@@ -20,7 +20,6 @@
   - [Snapshot Testing](#snapshot-testing)
     - [Helper function](#helper-function-2)
     - [Usage](#usage-1)
-    - [Jest mock](#jest-mock)
     - [Usage with Jest & enzyme](#usage-with-jest--enzyme)
   - [DOM Testing](#dom-testing)
 - [Storybook](#storybook)
@@ -258,20 +257,26 @@ import {mount, shallow} from 'enzyme';
 // You can pass your messages to the IntlProvider. Optional: remove if unneeded.
 const messages = require('../locales/en'); // en.json
 
-const intl = createIntl({
-  locale: 'en',
-  defaultLocale: 'en',
-  messages,
-});
-
 export function mountWithIntl(node: React.ReactElement) {
-  return mount(
-    node,
-    {
-      wrappingComponent: IntlProvider,
-      wrappingComponentProps: intl,
-    } as any // Seems like DefinitelyTyped types are outdated
-  );
+  return mount(node, {
+    wrappingComponent: IntlProvider,
+    wrappingComponentProps: {
+      locale: 'en',
+      defaultLocale: 'en',
+      messages,
+    },
+  });
+}
+
+export function shallowWithIntl(node: React.ReactElement) {
+  return shallow(node, {
+    wrappingComponent: IntlProvider,
+    wrappingComponentProps: {
+      locale: 'en',
+      defaultLocale: 'en',
+      messages,
+    },
+  });
 }
 ```
 
@@ -338,29 +343,6 @@ test('app main should be rendered', () => {
 
 You can find runnable example [here](https://github.com/formatjs/react-intl/tree/master/examples/jest-snapshot-testing) and more info about Jest [here](http://facebook.github.io/jest/).
 
-#### Jest mock
-
-Following mock is simplified version of injectIntl, formatMessage just places defaultMessage. Should be placed in the root of your project (where node_modules reside) under **mocks** subfolder:
-
-```js
-// ./__mocks__/react-intl.js
-import React from 'react';
-const Intl = jest.genMockFromModule('react-intl');
-
-// Here goes intl context injected into component, feel free to extend
-const intl = {
-  formatMessage: ({defaultMessage}) => defaultMessage,
-};
-
-Intl.injectIntl = Node => {
-  const renderWrapped = props => <Node {...props} intl={intl} />;
-  renderWrapped.displayName = Node.displayName || Node.name || 'Component';
-  return renderWrapped;
-};
-
-module.exports = Intl;
-```
-
 #### Usage with Jest & enzyme
 
 Jest will automatically mock react-intl, so no any extra implementation is needed, tests should work as is:
@@ -402,16 +384,6 @@ import {IntlProvider, FormattedDate} from 'react-intl';
 import IntlPolyfill from 'intl';
 import 'intl/locale-data/jsonp/pt';
 
-const setupTests = () => {
-  // https://formatjs.io/guides/runtime-environments/#server
-  if (global.Intl) {
-    Intl.NumberFormat = IntlPolyfill.NumberFormat;
-    Intl.DateTimeFormat = IntlPolyfill.DateTimeFormat;
-  } else {
-    global.Intl = IntlPolyfill;
-  }
-};
-
 const FormatDateView = () => {
   return (
     <div data-testid="date-display">
@@ -430,7 +402,6 @@ const renderWithReactIntl = component => {
   return render(<IntlProvider locale="pt">{component}</IntlProvider>);
 };
 
-setupTests();
 afterEach(cleanup);
 
 test('it should render FormattedDate and have a formated pt date', () => {
