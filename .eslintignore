@@ -1,5 +1,6 @@
 coverage/**/*.js
 dist/**/*.js
+lib/
 examples/**/node_modules/**/*.js
 examples/**/build/**/*.js
 examples/hello-world/bundle.js
