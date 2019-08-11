@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.5](https://github.com/formatjs/react-intl/compare/v3.1.4...v3.1.5) (2019-08-11)
+
+
+### Bug Fixes
+
+* drop @types/react version to 16.0 ([1669f0e](https://github.com/formatjs/react-intl/commit/1669f0e))
+
 ### [3.1.4](https://github.com/formatjs/react-intl/compare/v3.1.3...v3.1.4) (2019-08-11)
 
 
