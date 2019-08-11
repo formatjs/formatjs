@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.10](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@4.1.9...babel-plugin-react-intl@4.1.10) (2019-08-11)
+
+
+### Bug Fixes
+
+* generate lib instead of mjs ([05e63b3](https://github.com/formatjs/formatjs/commit/05e63b3))
+
+
+
+
+
 ## [4.1.9](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@4.1.8...babel-plugin-react-intl@4.1.9) (2019-08-10)
 
 **Note:** Version bump only for package babel-plugin-react-intl

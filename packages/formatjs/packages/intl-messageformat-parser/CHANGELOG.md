@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.6](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.0.5...intl-messageformat-parser@3.0.6) (2019-08-11)
+
+
+### Bug Fixes
+
+* generate lib instead of mjs ([05e63b3](https://github.com/formatjs/formatjs/commit/05e63b3))
+
+
+
+
+
 ## [3.0.5](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.0.4...intl-messageformat-parser@3.0.5) (2019-08-10)
 
 
