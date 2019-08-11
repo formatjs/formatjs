@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.4](https://github.com/formatjs/react-intl/compare/v3.1.3...v3.1.4) (2019-08-11)
+
+
+### Bug Fixes
+
+* Fix broken links in Getting Started (fix [#1403](https://github.com/formatjs/react-intl/issues/1403)) ([#1405](https://github.com/formatjs/react-intl/issues/1405)) ([57f0748](https://github.com/formatjs/react-intl/commit/57f0748))
+* generate lib instead of mjs ([99f9257](https://github.com/formatjs/react-intl/commit/99f9257)), closes [#1395](https://github.com/formatjs/react-intl/issues/1395) [#1407](https://github.com/formatjs/react-intl/issues/1407)
+
 ### [3.1.3](https://github.com/formatjs/react-intl/compare/v3.1.1...v3.1.3) (2019-08-09)
 
 
