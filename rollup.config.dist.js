@@ -47,7 +47,7 @@ const plugins = [
 
 export default [
   {
-    input: p.resolve('dist/index.mjs'),
+    input: p.resolve('lib/index.js'),
     output: {
       file: p.resolve(`dist/react-intl.${isProduction ? 'min.js' : 'js'}`),
       format: 'umd',

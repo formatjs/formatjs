@@ -341,24 +341,6 @@ include: [
 ],
 ```
 
-Also configure webpack to treat `mjs` as `javascript/auto`:
-
-```tsx
-{
-  module: {
-    rules: [
-        {
-            test: /\.mjs$/,
-            type: 'javascript/auto',
-        }
-    ]
-  },
-  resolve: {
-    extensions: ['.ts', '.tsx', '.mjs', '.js']
-  }
-}
-```
-
 ## Creating intl without using Provider
 
 We've added a new API called `createIntl` that allows you to create an `IntlShape` object without using `Provider`. This allows you to format things outside of React lifecycle while reusing the same `intl` object. For example:
