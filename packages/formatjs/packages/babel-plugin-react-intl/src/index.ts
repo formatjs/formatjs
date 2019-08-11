@@ -437,14 +437,13 @@ export default declare((api: any) => {
           // In order for a default message to be extracted when
           // declaring a JSX element, it must be done with standard
           // `key=value` attributes. But it's completely valid to
-          // write `<FormattedMessage {...descriptor} />` or
-          // `<FormattedMessage id={dynamicId} />`, because it will be
+          // write `<FormattedMessage {...descriptor} />`, because it will be
           // skipped here and extracted elsewhere. The descriptor will
-          // be extracted only if a `defaultMessage` prop exists and
-          // `enforceDefaultMessage` is `true`.
+          // be extracted only (storeMessage) if a `defaultMessage` prop
+          // exists and `enforceDefaultMessage` is `true`.
           if (
-            enforceDefaultMessage === false ||
-            descriptorPath.defaultMessage
+            descriptorPath.id &&
+            (enforceDefaultMessage === false || descriptorPath.defaultMessage)
           ) {
             // Evaluate the Message Descriptor values in a JSX
             // context, then store it.

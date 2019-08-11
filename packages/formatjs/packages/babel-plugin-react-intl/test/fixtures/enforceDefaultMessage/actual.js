@@ -7,8 +7,15 @@ defineMessages({
   },
 })
 
+const testMessage = { id: 'TRANSLATION_KEY2' };
+
 export default class Foo extends Component {
   render() {
-    return <FormattedMessage id="foo.bar.baz" />;
+    return (
+      <>
+        <FormattedMessage id="foo.bar.baz" />
+        <FormattedMessage {...testMessage} />
+      </>
+    );
   }
 }
