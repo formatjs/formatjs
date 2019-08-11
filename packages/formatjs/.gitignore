@@ -2,6 +2,7 @@ artifacts
 .nyc_output
 coverage
 dist
+lib
 node_modules
 *.log
 *.tgz

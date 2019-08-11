@@ -8,7 +8,7 @@ const resolveConfig = resolve({
 const uglifyConfig = uglify();
 export default [
   {
-    input: './dist/index.mjs',
+    input: './lib/index.js',
     output: {
       sourcemap: true,
       file: 'dist/umd/intl-messageformat.js',
@@ -18,7 +18,7 @@ export default [
     plugins: [resolveConfig]
   },
   {
-    input: './dist/index.mjs',
+    input: './lib/index.js',
     output: {
       sourcemap: true,
       file: 'dist/umd/intl-messageformat.min.js',

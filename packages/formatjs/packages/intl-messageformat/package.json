@@ -27,23 +27,22 @@
     "type": "git",
     "url": "git@github.com:formatjs/formatjs.git"
   },
-  "main": "dist/index",
+  "main": "dist/index.js",
+  "module": "lib/index.js",
   "types": "dist/index.d.ts",
-  "type": "module",
   "dependencies": {
     "intl-format-cache": "^4.1.8",
     "intl-messageformat-parser": "^3.0.5"
   },
   "scripts": {
     "benchmark": "ts-node --project ./tsconfig.cjs.json tests/benchmark",
-    "mjs": "find ./dist -depth -name \"*.js\" -exec sh -c 'f=\"{}\"; mv -- \"$f\" \"${f%.js}.mjs\"' \\;",
     "build": "npm run tsc && npm run rollup",
     "clean": "rimraf dist lib",
     "karma:ci": "karma start karma.conf-ci.js",
     "karma:local": "karma start karma.conf.js",
     "rollup": "rollup -c rollup.config.js",
     "test": "TS_NODE_PROJECT='./tsconfig.cjs.json' mocha --opts ../../mocha.opts -r tests/setup.js tests/index.ts",
-    "tsc": "tsc -p src/tsconfig.json && npm run mjs && tsc -p src/tsconfig.cjs.json"
+    "tsc": "tsc -p src/tsconfig.json && tsc -p src/tsconfig.cjs.json"
   },
   "homepage": "https://github.com/formatjs/formatjs",
   "directories": {

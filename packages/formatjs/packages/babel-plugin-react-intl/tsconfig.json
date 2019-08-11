@@ -3,6 +3,7 @@
     "compilerOptions": {
         "outDir": "dist",
         "rootDir": "src",
+        "module": "commonjs",
         "baseUrl": ".",
         "paths": {
             "intl-messageformat-parser": ["../intl-messageformat-parser"]
