@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.11](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@4.1.10...babel-plugin-react-intl@4.1.11) (2019-08-11)
+
+
+### Bug Fixes
+
+* **babel-plugin-react-intl:** check if `descriptorPath.id` is present in JSX element ([#150](https://github.com/formatjs/formatjs/issues/150)) ([5e2dffa](https://github.com/formatjs/formatjs/commit/5e2dffa))
+
+
+
+
+
 ## [4.1.10](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@4.1.9...babel-plugin-react-intl@4.1.10) (2019-08-11)
 
 
