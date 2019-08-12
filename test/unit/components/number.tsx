@@ -64,8 +64,8 @@ describe('<FormattedNumber>', () => {
 
     expect(rendered.text()).toBe('0');
     expect(console.error).toHaveBeenCalledWith(
-      expect.stringContaining(
-        '[React Intl] Error formatting number.\nRangeError: Value invalid out of range for numberformat options property style'
+      expect.stringMatching(
+        /\[React Intl\] Error formatting number.\nRangeError: Value invalid out of range for (.*) options property style/
       )
     );
     expect(console.error).toHaveBeenCalledTimes(1);

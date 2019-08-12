@@ -76,8 +76,8 @@ describe('<FormattedRelativeTime>', () => {
     const rendered = mountWithProvider({value: 0, unit: 'invalid' as any});
     expect(rendered.text()).toBe('0');
     expect(console.error).toHaveBeenCalledWith(
-      expect.stringContaining(
-        "Error formatting relative time.\nRangeError: Invalid unit argument for format() 'invalid'"
+      expect.stringMatching(
+        /Error formatting relative time.\nRangeError: Invalid unit argument for (.*) 'invalid'/
       )
     );
     expect(console.error).toHaveBeenCalledTimes(1);

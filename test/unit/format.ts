@@ -170,8 +170,8 @@ describe('format API', () => {
         expect(formatDate(0, {year: 'invalid'})).toBe('0');
         expect(config.onError).toHaveBeenCalledTimes(1);
         expect(config.onError).toHaveBeenCalledWith(
-          expect.stringContaining(
-            '[React Intl] Error formatting date.\nRangeError: Value invalid out of range for dateformat options property year'
+          expect.stringMatching(
+            /\[React Intl\] Error formatting date.\nRangeError: Value invalid out of range for (.*) options property year/
           )
         );
       });
@@ -302,8 +302,8 @@ describe('format API', () => {
         expect(formatTime(0, {hour: 'invalid'})).toBe('0');
         expect(config.onError).toHaveBeenCalledTimes(1);
         expect(config.onError).toHaveBeenCalledWith(
-          expect.stringContaining(
-            '[React Intl] Error formatting time.\nRangeError: Value invalid out of range for dateformat options property hour'
+          expect.stringMatching(
+            /\[React Intl\] Error formatting time.\nRangeError: Value invalid out of range for (.*) options property hour/
           )
         );
       });
@@ -451,8 +451,8 @@ describe('format API', () => {
         expect(formatRelativeTime(0, 'invalid')).toBe('0');
         expect(config.onError).toHaveBeenCalledTimes(1);
         expect(config.onError).toHaveBeenCalledWith(
-          expect.stringContaining(
-            "[React Intl] Error formatting relative time.\nRangeError: Invalid unit argument for format() 'invalid'"
+          expect.stringMatching(
+            /\[React Intl\] Error formatting relative time.\nRangeError: Invalid unit argument for (.*) 'invalid'/
           )
         );
       });
@@ -550,8 +550,8 @@ describe('format API', () => {
         expect(formatNumber(0, {style: 'invalid'})).toBe(String(0));
         expect(config.onError).toHaveBeenCalledTimes(1);
         expect(config.onError).toHaveBeenCalledWith(
-          expect.stringContaining(
-            '[React Intl] Error formatting number.\nRangeError: Value invalid out of range for numberformat options property style'
+          expect.stringMatching(
+            /\[React Intl\] Error formatting number.\nRangeError: Value invalid out of range for (.*) options property style/
           )
         );
       });

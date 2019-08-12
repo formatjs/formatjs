@@ -75,8 +75,8 @@ describe('<FormattedTime>', () => {
 
     expect(rendered.text()).toBe(String(date));
     expect(console.error).toHaveBeenCalledWith(
-      expect.stringContaining(
-        '[React Intl] Error formatting time.\nRangeError: Value invalid out of range for dateformat options property hour'
+      expect.stringMatching(
+        /\[React Intl\] Error formatting time.\nRangeError: Value invalid out of range for (.*) options property hour/
       )
     );
     expect(console.error).toHaveBeenCalledTimes(1);

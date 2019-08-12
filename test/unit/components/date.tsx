@@ -75,8 +75,8 @@ describe('<FormattedDate>', () => {
     expect(rendered.text()).toBe(String(date));
     expect(console.error).toHaveBeenCalledTimes(1);
     expect(console.error).toHaveBeenCalledWith(
-      expect.stringContaining(
-        'Error formatting date.\nRangeError: Value invalid out of range for dateformat options property year'
+      expect.stringMatching(
+        /Error formatting date.\nRangeError: Value invalid out of range for (.*) options property year/
       )
     );
   });
