@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import injectIntl, {WrappedComponentProps} from './injectIntl';
+import {Context, WrappedComponentProps} from './injectIntl';
 import {FormatRelativeTimeOptions} from '../types';
 import {Unit} from '@formatjs/intl-relativetimeformat';
 import * as invariant_ from 'invariant';
@@ -87,10 +87,7 @@ function verifyProps(updateIntervalInSeconds?: number, unit?: Unit) {
   );
 }
 
-export class BaseFormattedRelativeTime extends React.PureComponent<
-  Props,
-  State
-> {
+export class FormattedRelativeTime extends React.PureComponent<Props, State> {
   // Public for testing
   _updateTimer: any = null;
   static displayName = 'FormattedRelativeTime';
@@ -108,7 +105,6 @@ export class BaseFormattedRelativeTime extends React.PureComponent<
 
   constructor(props: Props) {
     super(props);
-    invariantIntlContext(props.intl);
     verifyProps(props.updateIntervalInSeconds, props.unit);
   }
 
@@ -177,38 +173,46 @@ export class BaseFormattedRelativeTime extends React.PureComponent<
   }
 
   render() {
-    const {formatRelativeTime, textComponent: Text} = this.props.intl;
-    const {children, value, unit, updateIntervalInSeconds} = this.props;
-    const {currentValueInSeconds} = this.state;
-    let currentValue = value || 0;
-    let currentUnit = unit;
+    return (
+      <Context.Consumer>
+        {intl => {
+          invariantIntlContext(intl);
 
-    if (
-      canIncrement(unit) &&
-      currentValueInSeconds &&
-      updateIntervalInSeconds
-    ) {
-      currentUnit = selectUnit(currentValueInSeconds);
-      const unitDuration = getDurationInSeconds(currentUnit);
-      currentValue = Math.round(currentValueInSeconds / unitDuration);
-    }
+          const {formatRelativeTime, textComponent: Text} = intl;
+          const {children, value, unit, updateIntervalInSeconds} = this.props;
+          const {currentValueInSeconds} = this.state;
+          let currentValue = value || 0;
+          let currentUnit = unit;
 
-    const formattedRelativeTime = formatRelativeTime(
-      currentValue,
-      currentUnit,
-      {
-        ...this.props,
-      }
+          if (
+            canIncrement(unit) &&
+            currentValueInSeconds &&
+            updateIntervalInSeconds
+          ) {
+            currentUnit = selectUnit(currentValueInSeconds);
+            const unitDuration = getDurationInSeconds(currentUnit);
+            currentValue = Math.round(currentValueInSeconds / unitDuration);
+          }
+
+          const formattedRelativeTime = formatRelativeTime(
+            currentValue,
+            currentUnit,
+            {
+              ...this.props,
+            }
+          );
+
+          if (typeof children === 'function') {
+            return children(formattedRelativeTime);
+          }
+          if (Text) {
+            return <Text>{formattedRelativeTime}</Text>;
+          }
+          return formattedRelativeTime;
+        }}
+      </Context.Consumer>
     );
-
-    if (typeof children === 'function') {
-      return children(formattedRelativeTime);
-    }
-    if (Text) {
-      return <Text>{formattedRelativeTime}</Text>;
-    }
-    return formattedRelativeTime;
   }
 }
 
-export default injectIntl(BaseFormattedRelativeTime);
+export default FormattedRelativeTime;

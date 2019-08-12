@@ -41,7 +41,7 @@ Specifically, the built-in API is used to format dates/times and numbers in Reac
 - [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules)
 - [`Intl.RelativeTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat)
 
-React Intl wraps these APIs in a consistent way making them easier to use, more performant through memoization, and gracefully fallsback when they throw errors.
+React Intl wraps these APIs in a consistent way making them easier to use, more performant through memoization, and gracefully falls back when they throw errors.
 
 ## FormatJS Internationalization Formatters
 

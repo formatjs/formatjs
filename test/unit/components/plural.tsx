@@ -7,18 +7,13 @@ import {createIntl} from '../../../src/components/provider';
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedPlural);
 
 describe('<FormattedPlural>', () => {
-  let consoleError;
   let intl;
 
   beforeEach(() => {
-    consoleError = jest.spyOn(console, 'error');
+    console.error = jest.fn();
     intl = createIntl({
       locale: 'en',
     });
-  });
-
-  afterEach(() => {
-    consoleError.mockRestore();
   });
 
   it('has a `displayName`', () => {

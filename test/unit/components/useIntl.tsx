@@ -15,14 +15,14 @@ const FC = () => {
 };
 
 describe('useIntl() hook', () => {
+  beforeEach(() => {
+    console.error = jest.fn();
+  });
+
   it('throws when <IntlProvider> is missing from ancestry', () => {
-    const consoleError = jest
-      .spyOn(console, 'error')
-      .mockImplementation(() => {}); // surpress console error from JSDom
     expect(() => mount(<FunctionComponent />)).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     );
-    consoleError.mockRestore();
   });
 
   it('hooks onto the intl context', () => {

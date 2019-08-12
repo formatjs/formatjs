@@ -5,17 +5,16 @@
  */
 
 import * as React from 'react';
-import injectIntl, {WrappedComponentProps} from './injectIntl';
+import {PrimitiveType, FormatXMLElementFn} from 'intl-messageformat';
+import {Context, WrappedComponentProps} from './injectIntl';
 import {MessageDescriptor} from '../types';
-const shallowEquals = require('shallow-equal/objects');
-
 import {formatMessage as baseFormatMessage} from '../format';
 import {
   invariantIntlContext,
   DEFAULT_INTL_CONFIG,
   createFormatters,
 } from '../utils';
-import {PrimitiveType, FormatXMLElementFn} from 'intl-messageformat';
+const shallowEquals = require('shallow-equal/objects');
 
 const defaultFormatMessage = (
   descriptor: MessageDescriptor,
@@ -49,23 +48,16 @@ export interface Props<
   children?(...nodes: React.ReactNodeArray): React.ReactNode;
 }
 
-export class BaseFormattedMessage<
+class FormattedMessage<
   V extends Record<string, any> = Record<
     string,
     PrimitiveType | React.ReactElement | FormatXMLElementFn
   >
 > extends React.Component<Props<V>> {
+  static displayName = 'FormattedMessage';
   static defaultProps = {
     values: {},
   };
-  static displayName = 'FormattedMessage';
-
-  constructor(props: Props<V>) {
-    super(props);
-    if (!props.defaultMessage) {
-      invariantIntlContext(props.intl);
-    }
-  }
 
   shouldComponentUpdate(nextProps: Props<V>) {
     const {values, ...otherProps} = this.props;
@@ -77,40 +69,50 @@ export class BaseFormattedMessage<
   }
 
   render() {
-    const {
-      formatMessage = defaultFormatMessage,
-      textComponent: Text = React.Fragment,
-    } = this.props.intl || {};
-    const {
-      id,
-      description,
-      defaultMessage,
-      values,
-      children,
-      tagName: Component = Text,
-    } = this.props;
+    return (
+      <Context.Consumer>
+        {intl => {
+          if (!this.props.defaultMessage) {
+            invariantIntlContext(intl);
+          }
 
-    const descriptor = {id, description, defaultMessage};
-    let nodes: string | React.ReactNodeArray = formatMessage(
-      descriptor,
-      values
+          const {
+            formatMessage = defaultFormatMessage,
+            textComponent: Text = React.Fragment,
+          } = intl || {};
+          const {
+            id,
+            description,
+            defaultMessage,
+            values,
+            children,
+            tagName: Component = Text,
+          } = this.props;
+
+          const descriptor = {id, description, defaultMessage};
+          let nodes: string | React.ReactNodeArray = formatMessage(
+            descriptor,
+            values
+          );
+
+          if (!Array.isArray(nodes)) {
+            nodes = [nodes];
+          }
+
+          if (typeof children === 'function') {
+            return children(...nodes);
+          }
+
+          if (Component) {
+            // Needs to use `createElement()` instead of JSX, otherwise React will
+            // warn about a missing `key` prop with rich-text message formatting.
+            return React.createElement(Component, null, ...nodes);
+          }
+          return nodes;
+        }}
+      </Context.Consumer>
     );
-
-    if (!Array.isArray(nodes)) {
-      nodes = [nodes];
-    }
-
-    if (typeof children === 'function') {
-      return children(...nodes);
-    }
-
-    if (Component) {
-      // Needs to use `createElement()` instead of JSX, otherwise React will
-      // warn about a missing `key` prop with rich-text message formatting.
-      return React.createElement(Component, null, ...nodes);
-    }
-    return nodes;
   }
 }
 
-export default injectIntl(BaseFormattedMessage, {enforceContext: false});
+export default FormattedMessage;
