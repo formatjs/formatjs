@@ -70,15 +70,13 @@ These configuration props are combined with the `<IntlProvider>`'s component-spe
 **Props:**
 
 ```js
-props: IntlConfig & {
-    children: ReactElement,
-    initialNow?: any,
-}
+props: IntlConfig &
+  {
+    children: ReactNode,
+  };
 ```
 
-`initialNow` should be set for universal/isomorphic apps. This value should be capture on the server before the app is rendered and transmitted to the client to use at its `initialNow` as well. This stabilizes the "current time" for the initial rendering of the app, which affects relative time formatting.
-
-Finally, a **single child** element _must_ be supplied to `<IntlProvider>`.
+Finally, child elements _must_ be supplied to `<IntlProvider>`.
 
 **Example:**
 
