@@ -3,14 +3,14 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-const DEFAULT_CONSTRUCTORS = [
-  Intl.DateTimeFormat,
-  Intl.NumberFormat,
-  Intl.PluralRules,
-];
+
+type IntlConstructor = {
+  supportedLocalesOf(locales: string | string[], options?: any): string[];
+};
+
 export default function areIntlLocalesSupported(
   locales: string | string[],
-  constructorsToCheck = DEFAULT_CONSTRUCTORS
+  constructorsToCheck?: Array<IntlConstructor>
 ): boolean {
   if (typeof Intl === 'undefined') {
     return false;
@@ -22,6 +22,15 @@ export default function areIntlLocalesSupported(
 
   if (!Array.isArray(locales)) {
     locales = [locales];
+  }
+
+  // Per https://github.com/formatjs/formatjs/issues/151
+  if (!constructorsToCheck) {
+    constructorsToCheck = [
+      Intl.DateTimeFormat,
+      Intl.NumberFormat,
+      Intl.PluralRules,
+    ];
   }
 
   const intlConstructors = constructorsToCheck.filter(Boolean);

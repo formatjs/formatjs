@@ -20,7 +20,7 @@
     "lint": "eslint .",
     "postversion": "npm run prettier",
     "prepublishOnly": "npm run build",
-    "prettier": "prettier --write packages/*/{test,tests,src}/**/*.ts packages/babel-plugin-react-intl/test/**/*.{js,json} {src,scripts,test,tests}/**/*.js **/*.md",
+    "prettier": "prettier --write packages/*/{test,tests,src}/**/*.ts packages/babel-plugin-react-intl/test/**/*.js {src,scripts,test,tests}/**/*.js **/*.md",
     "prettier:check": "npm run prettier -- --check",
     "test": "lerna run lint && npm run prettier:check && cross-env TS_NODE_PROJECT=tsconfig.cjs.json lerna run test"
   },

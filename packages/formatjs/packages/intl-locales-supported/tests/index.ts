@@ -26,6 +26,27 @@ describe('areIntlLocalesSupported()', function() {
     });
   });
 
+  describe('polyfill', function() {
+    const NumberFormat = global.Intl.NumberFormat;
+    beforeEach(function() {
+      global.Intl.NumberFormat = {
+        supportedLocalesOf() {
+          return [];
+        },
+      } as any;
+    });
+
+    afterEach(function() {
+      global.Intl.NumberFormat = NumberFormat;
+    });
+
+    it('should return `true` for "en" after polyfill', function() {
+      expect(areIntlLocalesSupported('en')).to.be.false;
+      global.Intl.NumberFormat = NumberFormat;
+      expect(areIntlLocalesSupported('en')).to.be.true;
+    });
+  });
+
   it('should return `true` for "en"', function() {
     expect(areIntlLocalesSupported('en')).to.be.true;
   });
