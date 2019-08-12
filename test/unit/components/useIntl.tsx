@@ -9,6 +9,11 @@ const FunctionComponent = ({spy}) => {
   return null;
 };
 
+const FC = () => {
+  const {formatNumber} = useIntl();
+  return formatNumber(10000, {style: 'currency', currency: 'USD'}) as any;
+};
+
 describe('useIntl() hook', () => {
   it('throws when <IntlProvider> is missing from ancestry', () => {
     const consoleError = jest
@@ -29,5 +34,22 @@ describe('useIntl() hook', () => {
     );
     const intl = rendered.state('intl');
     expect(spy).toHaveBeenCalledWith(intl);
+  });
+
+  it('should work when switching locale on provider', () => {
+    const rendered = mount(
+      <IntlProvider locale="en">
+        <FC />
+      </IntlProvider>
+    );
+    expect(rendered).toMatchSnapshot();
+    rendered.setProps({
+      locale: 'es',
+    });
+    expect(rendered).toMatchSnapshot();
+    rendered.setProps({
+      locale: 'en',
+    });
+    expect(rendered).toMatchSnapshot();
   });
 });

@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useIntl() hook should work when switching locale on provider 1`] = `
+<IntlProvider
+  defaultFormats={Object {}}
+  defaultLocale="en"
+  formats={Object {}}
+  locale="en"
+  messages={Object {}}
+  onError={[Function]}
+  textComponent={Symbol(react.fragment)}
+>
+  <FC>
+    $10,000.00
+  </FC>
+</IntlProvider>
+`;
+
+exports[`useIntl() hook should work when switching locale on provider 2`] = `
+<IntlProvider
+  defaultFormats={Object {}}
+  defaultLocale="en"
+  formats={Object {}}
+  locale="es"
+  messages={Object {}}
+  onError={[Function]}
+  textComponent={Symbol(react.fragment)}
+>
+  <FC>
+    10.000,00 US$
+  </FC>
+</IntlProvider>
+`;
+
+exports[`useIntl() hook should work when switching locale on provider 3`] = `
+<IntlProvider
+  defaultFormats={Object {}}
+  defaultLocale="en"
+  formats={Object {}}
+  locale="en"
+  messages={Object {}}
+  onError={[Function]}
+  textComponent={Symbol(react.fragment)}
+>
+  <FC>
+    $10,000.00
+  </FC>
+</IntlProvider>
+`;

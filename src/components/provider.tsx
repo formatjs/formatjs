@@ -73,19 +73,19 @@ export default class IntlProvider extends React.PureComponent<
   private cache: IntlCache = createIntlCache();
   state: State = {
     cache: this.cache,
-    intl: createIntl(filterIntlConfig(this.props)),
+    intl: createIntl(filterIntlConfig(this.props), this.cache),
     prevConfig: filterIntlConfig(this.props),
   };
 
   static getDerivedStateFromProps(
     props: OptionalIntlConfig,
     {prevConfig, cache}: State
-  ) {
+  ): Partial<State> | null {
     const config = filterIntlConfig(props);
     if (!shallowEquals(prevConfig, config)) {
       return {
         intl: createIntl(config, cache),
-        prevProps: config,
+        prevConfig: config,
       };
     }
     return null;
