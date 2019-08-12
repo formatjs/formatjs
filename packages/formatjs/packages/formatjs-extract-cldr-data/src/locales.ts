@@ -11,8 +11,8 @@ import * as PARENT_LOCALES from 'cldr-core/supplemental/parentLocales.json';
 const PARENT_LOCALES_HASH =
   PARENT_LOCALES.supplemental.parentLocales.parentLocale;
 
-import { dateFields } from './dateFields';
-import { Locale } from './types';
+import {dateFields} from './dateFields';
+import {Locale} from './types';
 
 // Some locales that have a `pluralRuleFunction` don't have a `dateFields.json`
 // file, and visa versa, so this creates a unique collection of all locales in

@@ -1,41 +1,41 @@
-import { Unit } from '@formatjs/intl-relativetimeformat';
+import {Unit} from '@formatjs/intl-relativetimeformat';
 import {
   differenceInCalendarDays,
   differenceInCalendarQuarters,
   differenceInCalendarYears,
   differenceInSeconds,
   differenceInCalendarMonths,
-  differenceInCalendarWeeks
+  differenceInCalendarWeeks,
 } from 'date-fns';
 
 export function selectUnit(
   from: Date | number,
   to: Date | number = Date.now(),
   thresholds: Partial<Thresholds> = {}
-): { value: number; unit: Unit } {
+): {value: number; unit: Unit} {
   const resolvedThresholds: Thresholds = {
     ...DEFAULT_THRESHOLDS,
-    ...(thresholds || {})
+    ...(thresholds || {}),
   };
   const secs = differenceInSeconds(from, to);
   if (Math.abs(secs) < resolvedThresholds.second) {
     return {
       value: Math.round(secs),
-      unit: 'second'
+      unit: 'second',
     };
   }
   const mins = secs / 60;
   if (Math.abs(mins) < resolvedThresholds.minute) {
     return {
       value: Math.round(mins),
-      unit: 'minute'
+      unit: 'minute',
     };
   }
   const hours = mins / 60;
   if (Math.abs(hours) < resolvedThresholds.hour) {
     return {
       value: Math.round(hours),
-      unit: 'hour'
+      unit: 'hour',
     };
   }
 
@@ -43,7 +43,7 @@ export function selectUnit(
   if (Math.abs(years) > 0) {
     return {
       value: Math.round(years),
-      unit: 'year'
+      unit: 'year',
     };
   }
 
@@ -52,7 +52,7 @@ export function selectUnit(
     if (Math.abs(quarters) > 0) {
       return {
         value: Math.round(quarters),
-        unit: 'quarter'
+        unit: 'quarter',
       };
     }
   }
@@ -61,20 +61,20 @@ export function selectUnit(
   if (Math.abs(months) > 0) {
     return {
       value: Math.round(months),
-      unit: 'month'
+      unit: 'month',
     };
   }
   const weeks = differenceInCalendarWeeks(from, to);
   if (Math.abs(weeks) > 0) {
     return {
       value: Math.round(weeks),
-      unit: 'week'
+      unit: 'week',
     };
   }
   const days = differenceInCalendarDays(from, to);
   return {
     value: Math.round(days),
-    unit: 'day'
+    unit: 'day',
   };
 }
 
@@ -87,5 +87,5 @@ export const DEFAULT_THRESHOLDS: Thresholds = {
   second: 45, // seconds to minute
   minute: 45, // minutes to hour
   hour: 22, // hour to day
-  quarter: true
+  quarter: true,
 };

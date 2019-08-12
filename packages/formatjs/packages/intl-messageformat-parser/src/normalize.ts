@@ -3,9 +3,9 @@ import {
   isPluralElement,
   isLiteralElement,
   LiteralElement,
-  isSelectElement
+  isSelectElement,
 } from './types';
-import { parse } from './parser';
+import {parse} from './parser';
 
 const PLURAL_HASHTAG_REGEX = /(^|[^\\])#/g;
 

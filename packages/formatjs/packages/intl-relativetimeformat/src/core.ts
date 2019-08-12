@@ -4,7 +4,7 @@ import {
   LocaleFieldsData,
   RelativeTimeOpt,
   FormattableUnit,
-  VALID_UNITS
+  VALID_UNITS,
 } from './types';
 
 // -- RelativeTimeFormat -----------------------------------------------------------
@@ -91,12 +91,12 @@ function findFields(locale: string) {
 function resolveLocale(locales: Array<string | undefined>) {
   const {
     __localeData__: localeData,
-    __languageAliases__: languageAliases
+    __languageAliases__: languageAliases,
   } = RelativeTimeFormat;
   let resolvedLocales: string[] = [
     ...(Array.isArray(locales) ? locales : [locales]),
     // default locale
-    DEFAULT_LOCALE
+    DEFAULT_LOCALE,
   ]
     .filter<string>((s): s is string => typeof s === 'string')
     .map(l => languageAliases[l] || l);
@@ -330,12 +330,12 @@ export default class RelativeTimeFormat {
     validateInstance(this, 'format');
     const resolvedUnit = validateUnit(unit);
     const parsedValue = validateValue(value);
-    const { _style: style, _numeric: numeric } = this;
+    const {_style: style, _numeric: numeric} = this;
     const fieldData = findFieldData(this._fields, resolvedUnit, style);
     if (!fieldData) {
       throw new Error(`Unsupported unit ${unit}`);
     }
-    const { relative, relativeTime } = fieldData;
+    const {relative, relativeTime} = fieldData;
     let result: string = '';
     // We got a match for things like yesterday
     if (
@@ -354,12 +354,12 @@ export default class RelativeTimeFormat {
     validateInstance(this, 'format');
     const resolvedUnit = validateUnit(unit);
     const parsedValue = validateValue(value, 'formatToParts');
-    const { _style: style, _numeric: numeric } = this;
+    const {_style: style, _numeric: numeric} = this;
     const fieldData = findFieldData(this._fields, resolvedUnit, style);
     if (!fieldData) {
       throw new Error(`Unsupported unit ${unit}`);
     }
-    const { relative, relativeTime } = fieldData;
+    const {relative, relativeTime} = fieldData;
     let result: string = '';
     // We got a match for things like yesterday
     if (
@@ -369,8 +369,8 @@ export default class RelativeTimeFormat {
       return [
         {
           type: 'literal',
-          value: result
-        }
+          value: result,
+        },
       ];
     }
 
@@ -379,7 +379,7 @@ export default class RelativeTimeFormat {
     const msg = futureOrPastData[selector] || futureOrPastData.other;
     const valueParts = this._nf
       .formatToParts(Math.abs(parsedValue))
-      .map(p => ({ ...p, unit: resolvedUnit }));
+      .map(p => ({...p, unit: resolvedUnit}));
     return msg!
       .split(/(\{0\})/)
       .filter<string>(isString)
@@ -388,7 +388,7 @@ export default class RelativeTimeFormat {
           ...parts,
           ...(str === '{0}'
             ? valueParts
-            : [{ type: 'literal', value: str } as LiteralPart])
+            : [{type: 'literal', value: str} as LiteralPart]),
         ],
         []
       );
@@ -404,26 +404,26 @@ export default class RelativeTimeFormat {
         value: this._locale,
         writable: true,
         enumerable: true,
-        configurable: true
+        configurable: true,
       },
       style: {
         value: (this._style as String).valueOf(),
         writable: true,
         enumerable: true,
-        configurable: true
+        configurable: true,
       },
       numeric: {
         value: (this._numeric as String).valueOf(),
         writable: true,
         enumerable: true,
-        configurable: true
+        configurable: true,
       },
       numberingSystem: {
         value: (this._numberingSystem as String).valueOf(),
         writable: true,
         enumerable: true,
-        configurable: true
-      }
+        configurable: true,
+      },
     });
     return opts;
   }
@@ -457,9 +457,9 @@ export default class RelativeTimeFormat {
     // test262/test/intl402/RelativeTimeFormat/constructor/supportedLocalesOf/result-type.js
     return [
       ...intersection(
-        Intl.NumberFormat.supportedLocalesOf(locales, { localeMatcher }),
-        Intl.PluralRules.supportedLocalesOf(locales, { localeMatcher })
-      )
+        Intl.NumberFormat.supportedLocalesOf(locales, {localeMatcher}),
+        Intl.PluralRules.supportedLocalesOf(locales, {localeMatcher})
+      ),
     ];
   };
 

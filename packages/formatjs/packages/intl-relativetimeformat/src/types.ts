@@ -61,7 +61,7 @@ export const VALID_UNITS = [
   'weeks',
   'months',
   'quarters',
-  'years'
+  'years',
 ];
 export type RelativeTimeOpt = 'zero' | 'one' | 'two' | 'few' | 'many' | 'other';
 
@@ -71,9 +71,9 @@ export interface LocaleData {
   fields?: LocaleFieldsData;
 }
 
-export type LocaleFieldsData = { [f in Field]: FieldData };
+export type LocaleFieldsData = {[f in Field]: FieldData};
 
-export type RelativeTimeData = { [u in RelativeTimeOpt]?: string };
+export type RelativeTimeData = {[u in RelativeTimeOpt]?: string};
 export interface FieldData {
   displayName: string;
   relative: {

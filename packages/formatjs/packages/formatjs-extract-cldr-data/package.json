@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest",
-    "cldr": "TS_NODE_PROJECT='scripts/tsconfig.json' ts-node scripts/aggregateLocaleFiles",
+    "cldr": "cross-env TS_NODE_PROJECT=scripts/tsconfig.json ts-node scripts/aggregateLocaleFiles",
     "build": "npm run cldr && tsc",
     "cover": "npm t -- --coverage"
   },

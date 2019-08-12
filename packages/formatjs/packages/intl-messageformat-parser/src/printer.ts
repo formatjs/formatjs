@@ -24,7 +24,7 @@ import {
   Skeleton,
   SKELETON_TYPE,
   NumberSkeletonToken,
-  DateTimeSkeleton
+  DateTimeSkeleton,
 } from './types';
 
 export function printAST(ast: MessageFormatElement[]): string {
@@ -56,11 +56,11 @@ function printEscapedMessage(message: string): string {
   return message.replace(/([{}](?:.*[{}])?)/su, `'$1'`);
 }
 
-function printLiteralElement({ value }: LiteralElement) {
+function printLiteralElement({value}: LiteralElement) {
   return printEscapedMessage(value);
 }
 
-function printArgumentElement({ value }: ArgumentElement) {
+function printArgumentElement({value}: ArgumentElement) {
   return `{${value}}`;
 }
 
@@ -73,7 +73,7 @@ function printSimpleFormatElement(
 }
 
 function printNumberSkeletonToken(token: NumberSkeletonToken): string {
-  const { stem, options } = token;
+  const {stem, options} = token;
   return options.length === 0
     ? stem
     : `${stem}${options.map(o => `/${o}`).join('')}`;
@@ -99,7 +99,7 @@ function printSelectElement(el: SelectElement) {
     'select',
     Object.keys(el.options)
       .map(id => `${id}{${printAST(el.options[id].value)}}`)
-      .join(' ')
+      .join(' '),
   ].join(',');
   return `{${msg}}`;
 }
@@ -113,10 +113,10 @@ function printPluralElement(el: PluralElement) {
       el.offset ? `offset:${el.offset}` : '',
       ...Object.keys(el.options).map(
         id => `${id}{${printAST(el.options[id].value)}}`
-      )
+      ),
     ]
       .filter(Boolean)
-      .join(' ')
+      .join(' '),
   ].join(',');
   return `{${msg}}`;
 }

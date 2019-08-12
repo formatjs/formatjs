@@ -6,7 +6,7 @@
 const DEFAULT_CONSTRUCTORS = [
   Intl.DateTimeFormat,
   Intl.NumberFormat,
-  Intl.PluralRules
+  Intl.PluralRules,
 ];
 export default function areIntlLocalesSupported(
   locales: string | string[],

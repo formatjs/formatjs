@@ -1,5 +1,5 @@
-import { parse, ParseOptions } from '../src';
-import { printAST } from '../src/printer';
+import {parse, ParseOptions} from '../src';
+import {printAST} from '../src/printer';
 
 function allTests(opts?: ParseOptions) {
   [
@@ -56,7 +56,7 @@ function allTests(opts?: ParseOptions) {
           one {{actor1} and {actor2}}\
           other {{actor1} and {nExtraActors} others}\
           }}\
-      } shared this file.'
+      } shared this file.',
   ].forEach(mess => {
     const ast = parse(mess, opts);
     it(`can parse '${mess}'`, function() {

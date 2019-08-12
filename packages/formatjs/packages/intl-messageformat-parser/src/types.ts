@@ -26,12 +26,12 @@ export enum TYPE {
   /**
    * Variable w/ plural format
    */
-  plural
+  plural,
 }
 
 export const enum SKELETON_TYPE {
   number,
-  dateTime
+  dateTime,
 }
 
 export interface LocationDetails {
@@ -158,7 +158,7 @@ export function isDateTimeSkeleton(el: Skeleton): el is DateTimeSkeleton {
 export function createLiteralElement(value: string): LiteralElement {
   return {
     type: TYPE.literal,
-    value
+    value,
   };
 }
 
@@ -169,7 +169,7 @@ export function createNumberElement(
   return {
     type: TYPE.number,
     value,
-    style
+    style,
   };
 }
 

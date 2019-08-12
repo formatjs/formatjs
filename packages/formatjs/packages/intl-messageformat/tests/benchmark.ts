@@ -1,5 +1,5 @@
-import { Suite, Event } from 'benchmark';
-import IntlMessageFormat, { Formatters } from '../src';
+import {Suite, Event} from 'benchmark';
+import IntlMessageFormat, {Formatters} from '../src';
 import 'intl-pluralrules';
 import memoize from 'intl-format-cache';
 
@@ -34,7 +34,7 @@ const preparsedMsg = IntlMessageFormat.__parse!(msg);
 const formatters: Formatters = {
   getNumberFormat: memoize(Intl.NumberFormat),
   getDateTimeFormat: memoize(Intl.DateTimeFormat),
-  getPluralRules: memoize(Intl.PluralRules)
+  getPluralRules: memoize(Intl.PluralRules),
 };
 
 new Suite()
@@ -43,7 +43,7 @@ new Suite()
       gender_of_host: 'male',
       num_guests: 10,
       host: 'Eric',
-      guest: 'Caridy'
+      guest: 'Caridy',
     })
   )
   .add('format_cached_string_msg', () => stringMf.format())
@@ -58,25 +58,25 @@ new Suite()
       gender_of_host: 'male',
       num_guests: 2,
       host: 'foo',
-      guest: 'bar'
+      guest: 'bar',
     })
   )
   .add('complex msg w/ formatters format', () =>
-    new IntlMessageFormat(msg, 'en-US', undefined, { formatters }).format({
+    new IntlMessageFormat(msg, 'en-US', undefined, {formatters}).format({
       gender_of_host: 'male',
       num_guests: 2,
       host: 'foo',
-      guest: 'bar'
+      guest: 'bar',
     })
   )
   .add('complex preparsed msg w/ formatters format', () =>
     new IntlMessageFormat(preparsedMsg, 'en-US', undefined, {
-      formatters
+      formatters,
     }).format({
       gender_of_host: 'male',
       num_guests: 2,
       host: 'foo',
-      guest: 'bar'
+      guest: 'bar',
     })
   )
   .add('complex preparsed msg w/ new formatters format', () =>
@@ -84,13 +84,13 @@ new Suite()
       formatters: {
         getNumberFormat: formatters.getNumberFormat,
         getDateTimeFormat: formatters.getDateTimeFormat,
-        getPluralRules: formatters.getPluralRules
-      }
+        getPluralRules: formatters.getPluralRules,
+      },
     }).format({
       gender_of_host: 'male',
       num_guests: 2,
       host: 'foo',
-      guest: 'bar'
+      guest: 'bar',
     })
   )
   .on('error', function(event: Event) {

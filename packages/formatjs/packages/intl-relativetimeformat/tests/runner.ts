@@ -1,6 +1,6 @@
-import { spawnSync } from 'child_process';
-import { resolve } from 'path';
-import { cpus } from 'os';
+import {spawnSync} from 'child_process';
+import {resolve} from 'path';
+import {cpus} from 'os';
 // import {sync as globSync } from 'glob'
 
 if (process.version.startsWith('v8')) {
@@ -43,14 +43,14 @@ const args = [
   './dist/polyfill-with-locales.js',
   '-r',
   'json',
-  PATTERN
+  PATTERN,
   // ...testsFiles,
 ];
 console.log(`Running "test262-harness ${args.join(' ')}"`);
 const result = spawnSync('test262-harness', args, {
   cwd: resolve(__dirname, '..'),
   env: process.env,
-  encoding: 'utf-8'
+  encoding: 'utf-8',
 });
 
 const json: TestResult[] = JSON.parse(result.stdout);

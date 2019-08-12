@@ -13,7 +13,7 @@ import {
   isTimeElement,
   isNumberElement,
   isSelectElement,
-  isPluralElement
+  isPluralElement,
 } from 'intl-messageformat-parser';
 import memoizeIntlConstructor from 'intl-format-cache';
 import {
@@ -24,7 +24,7 @@ import {
   formatToParts,
   FormatXMLElementFn,
   formatXMLMessage,
-  PrimitiveType
+  PrimitiveType,
 } from './formatters';
 
 // -- MessageFormat --------------------------------------------------------
@@ -37,7 +37,7 @@ function resolveLocale(locales: string | string[]): string {
     return Intl.NumberFormat.supportedLocalesOf(locales, {
       // IE11 localeMatcher `lookup` seems to convert `en` -> `en-US`
       // but not other browsers,
-      localeMatcher: 'best fit'
+      localeMatcher: 'best fit',
     })[0];
   } catch (e) {
     return IntlMessageFormat.defaultLocale;
@@ -78,7 +78,7 @@ function prewarmFormatters(
         );
       }
       if (isPluralElement(el)) {
-        formatters.getPluralRules(locales, { type: el.pluralType });
+        formatters.getPluralRules(locales, {type: el.pluralType});
         Object.keys(el.options).forEach(id =>
           prewarmFormatters(el.options[id].value, locales, formatters, formats)
         );
@@ -96,10 +96,10 @@ function mergeConfig(c1: Record<string, object>, c2?: Record<string, object>) {
     ...Object.keys(c1).reduce((all: Record<string, object>, k) => {
       all[k] = {
         ...c1[k],
-        ...(c2[k] || {})
+        ...(c2[k] || {}),
       };
       return all;
-    }, {})
+    }, {}),
   };
 }
 
@@ -116,7 +116,7 @@ function mergeConfigs(
       all[k] = mergeConfig(defaultConfig[k], configs[k]);
       return all;
     },
-    { ...defaultConfig }
+    {...defaultConfig}
   );
 }
 
@@ -128,7 +128,7 @@ export function createDefaultFormatters(
   cache: FormatterCache = {
     number: {},
     dateTime: {},
-    pluralRules: {}
+    pluralRules: {},
   }
 ): Formatters {
   return {
@@ -137,7 +137,7 @@ export function createDefaultFormatters(
       Intl.DateTimeFormat,
       cache.dateTime
     ),
-    getPluralRules: memoizeIntlConstructor(Intl.PluralRules, cache.pluralRules)
+    getPluralRules: memoizeIntlConstructor(Intl.PluralRules, cache.pluralRules),
   };
 }
 
@@ -150,7 +150,7 @@ export class IntlMessageFormat {
   private readonly formatterCache: FormatterCache = {
     number: {},
     dateTime: {},
-    pluralRules: {}
+    pluralRules: {},
   };
   constructor(
     message: string | MessageFormatElement[],
@@ -218,7 +218,7 @@ export class IntlMessageFormat {
       this.message
     );
 
-  resolvedOptions = () => ({ locale: this.locale });
+  resolvedOptions = () => ({locale: this.locale});
   getAst = () => this.ast;
   static defaultLocale = 'en';
   static __parse: typeof parse | undefined = parse;
@@ -228,67 +228,67 @@ export class IntlMessageFormat {
   static formats = {
     number: {
       currency: {
-        style: 'currency'
+        style: 'currency',
       },
 
       percent: {
-        style: 'percent'
-      }
+        style: 'percent',
+      },
     },
 
     date: {
       short: {
         month: 'numeric',
         day: 'numeric',
-        year: '2-digit'
+        year: '2-digit',
       },
 
       medium: {
         month: 'short',
         day: 'numeric',
-        year: 'numeric'
+        year: 'numeric',
       },
 
       long: {
         month: 'long',
         day: 'numeric',
-        year: 'numeric'
+        year: 'numeric',
       },
 
       full: {
         weekday: 'long',
         month: 'long',
         day: 'numeric',
-        year: 'numeric'
-      }
+        year: 'numeric',
+      },
     },
 
     time: {
       short: {
         hour: 'numeric',
-        minute: 'numeric'
+        minute: 'numeric',
       },
 
       medium: {
         hour: 'numeric',
         minute: 'numeric',
-        second: 'numeric'
+        second: 'numeric',
       },
 
       long: {
         hour: 'numeric',
         minute: 'numeric',
         second: 'numeric',
-        timeZoneName: 'short'
+        timeZoneName: 'short',
       },
 
       full: {
         hour: 'numeric',
         minute: 'numeric',
         second: 'numeric',
-        timeZoneName: 'short'
-      }
-    }
+        timeZoneName: 'short',
+      },
+    },
   };
 }
 

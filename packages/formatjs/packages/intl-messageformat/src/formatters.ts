@@ -6,7 +6,7 @@ import {
   isTimeElement,
   isNumberElement,
   isSelectElement,
-  isPluralElement
+  isPluralElement,
 } from 'intl-messageformat-parser';
 
 export interface Formats {
@@ -35,7 +35,7 @@ export interface Formatters {
 
 export const enum PART_TYPE {
   literal,
-  argument
+  argument,
 }
 
 export interface LiteralPart {
@@ -99,8 +99,8 @@ export function formatToParts(
     return [
       {
         type: PART_TYPE.literal,
-        value: els[0].value.replace(ESCAPE_HASH_REGEX, '#')
-      }
+        value: els[0].value.replace(ESCAPE_HASH_REGEX, '#'),
+      },
     ];
   }
   const result: MessageFormatPart[] = [];
@@ -109,11 +109,11 @@ export function formatToParts(
     if (isLiteralElement(el)) {
       result.push({
         type: PART_TYPE.literal,
-        value: el.value.replace(ESCAPE_HASH_REGEX, '#')
+        value: el.value.replace(ESCAPE_HASH_REGEX, '#'),
       });
       continue;
     }
-    const { value: varName } = el;
+    const {value: varName} = el;
 
     // Enforce that all required values are provided by the caller.
     if (!(values && varName in values)) {
@@ -130,12 +130,12 @@ export function formatToParts(
           value:
             typeof value === 'string' || typeof value === 'number'
               ? String(value)
-              : ''
+              : '',
         });
       } else {
         result.push({
           type: PART_TYPE.argument,
-          value
+          value,
         });
       }
       continue;
@@ -151,7 +151,7 @@ export function formatToParts(
         type: PART_TYPE.literal,
         value: formatters
           .getDateTimeFormat(locales, style)
-          .format(value as number)
+          .format(value as number),
       });
       continue;
     }
@@ -162,7 +162,7 @@ export function formatToParts(
         type: PART_TYPE.literal,
         value: formatters
           .getDateTimeFormat(locales, style)
-          .format(value as number)
+          .format(value as number),
       });
       continue;
     }
@@ -173,7 +173,7 @@ export function formatToParts(
         type: PART_TYPE.literal,
         value: formatters
           .getNumberFormat(locales, style)
-          .format(value as number)
+          .format(value as number),
       });
       continue;
     }
@@ -195,7 +195,7 @@ export function formatToParts(
       let opt = el.options[`=${value}`];
       if (!opt) {
         const rule = formatters
-          .getPluralRules(locales, { type: el.pluralType })
+          .getPluralRules(locales, {type: el.pluralType})
           .select((value as number) - (el.offset || 0));
         opt = el.options[rule] || el.options.other;
       }
@@ -327,7 +327,7 @@ export function formatXMLMessage(
 
   const childNodes = Array.prototype.slice.call(content.childNodes);
   return childNodes.reduce(
-    (reconstructedChunks, { tagName, outerHTML, textContent }: Element) => {
+    (reconstructedChunks, {tagName, outerHTML, textContent}: Element) => {
       // Regular text
       if (!tagName) {
         const chunks = restoreRichPlaceholderMessage(
@@ -352,7 +352,7 @@ export function formatXMLMessage(
       if (typeof formatFnOrValue === 'function') {
         if (textContent == null) {
           return reconstructedChunks.concat([
-            formatFnOrValue(textContent || undefined)
+            formatFnOrValue(textContent || undefined),
           ]);
         }
         const chunks = restoreRichPlaceholderMessage(textContent, objectParts);

@@ -30,7 +30,7 @@
     "cldr": "node scripts/cldr",
     "clean": "rimraf dist lib",
     "compile": "tsc && tsc -p tsconfig.cjs.json && rollup -c rollup.config.js",
-    "jest": "TS_NODE_PROJECT='./tsconfig.cjs.json' cross-env NODE_ENV=test jest",
+    "jest": "cross-env TS_NODE_PROJECT=./tsconfig.cjs.json cross-env NODE_ENV=test jest",
     "test": "npm run jest && TS_NODE_PROJECT=tsconfig.cjs.json ts-node tests/runner"
   },
   "homepage": "https://github.com/formatjs/formatjs",

@@ -1,4 +1,4 @@
-import { parse } from '../src/parser';
+import {parse} from '../src/parser';
 
 test('unescaped string literals', () => {
   expect(parse('line1\n  line2')).toMatchSnapshot();

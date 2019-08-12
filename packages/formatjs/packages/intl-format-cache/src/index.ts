@@ -17,7 +17,7 @@ function getCacheId(inputs: any[]) {
 function orderedProps(obj: Record<string, any>) {
   return Object.keys(obj)
     .sort()
-    .map(k => ({ [k]: obj[k] }));
+    .map(k => ({[k]: obj[k]}));
 }
 
 export type CacheValue =
@@ -27,7 +27,7 @@ export type CacheValue =
   | any;
 
 export interface MemoizeFormatConstructorFn {
-  <T extends { new (...args: any[]): any }>(
+  <T extends {new (...args: any[]): any}>(
     constructor: T,
     cache?: Record<string, CacheValue>
   ): (...args: ConstructorParameters<T>) => any;

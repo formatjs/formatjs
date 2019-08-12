@@ -71,7 +71,7 @@ The extract message descriptors are available via the `metadata` property on the
 
 ```javascript
 require('@babel/core').transform('code', {
-  plugins: ['react-intl']
+  plugins: ['react-intl'],
 }); // => { code, map, ast, metadata['react-intl'].messages };
 ```
 

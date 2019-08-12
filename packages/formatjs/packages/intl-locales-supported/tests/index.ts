@@ -1,5 +1,5 @@
 import areIntlLocalesSupported from '../src';
-import { expect as chaiExpect } from 'chai';
+import {expect as chaiExpect} from 'chai';
 
 declare var expect: typeof chaiExpect;
 

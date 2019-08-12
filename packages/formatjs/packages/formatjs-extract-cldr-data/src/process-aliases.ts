@@ -1,7 +1,7 @@
-import { outputFileSync } from 'fs-extra';
+import {outputFileSync} from 'fs-extra';
 import * as aliases from 'cldr-core/supplemental/aliases.json';
 
-const { languageAlias } = aliases.supplemental.metadata.alias;
+const {languageAlias} = aliases.supplemental.metadata.alias;
 /**
  * Turn aliases into Record<string, string> using _replacement
  */

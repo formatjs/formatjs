@@ -42,7 +42,7 @@ var MESSAGES = {
       'You have {numPhotos, plural, ' +
       '=0 {no photos.}' +
       '=1 {one photo.}' +
-      'other {# photos.}}'
+      'other {# photos.}}',
   },
 
   'es-MX': {
@@ -50,18 +50,18 @@ var MESSAGES = {
       'Usted {numPhotos, plural, ' +
       '=0 {no tiene fotos.}' +
       '=1 {tiene una foto.}' +
-      'other {tiene # fotos.}}'
-  }
+      'other {tiene # fotos.}}',
+  },
 };
 
 var output;
 
 var enNumPhotos = new IntlMessageFormat(MESSAGES['en-US'].NUM_PHOTOS, 'en-US');
-output = enNumPhotos.format({ numPhotos: 1000 });
+output = enNumPhotos.format({numPhotos: 1000});
 console.log(output); // => "You have 1,000 photos."
 
 var esNumPhotos = new IntlMessageFormat(MESSAGES['es-MX'].NUM_PHOTOS, 'es-MX');
-output = esNumPhotos.format({ numPhotos: 1000 });
+output = esNumPhotos.format({numPhotos: 1000});
 console.log(output); // => "Usted tiene 1,000 fotos."
 ```
 
@@ -148,7 +148,7 @@ Notice how the specified locale was the all lower-case value: `"en-us"`, but it 
 Once the message is created, formatting the message is done by calling the `format()` method on the instance and passing a collection of `values`:
 
 ```js
-var output = msg.format({ name: 'Eric' });
+var output = msg.format({name: 'Eric'});
 console.log(output); // => "My name is Eric."
 ```
 
@@ -164,7 +164,7 @@ Formats message containing XML tags & can be used to embed rich text formatters 
 
 ```tsx
 var mf = new IntlMessageFormat('hello <b>world</b>', 'en');
-mf.formatXMLMessage({ b: str => <span>{str}</span> });
+mf.formatXMLMessage({b: str => <span>{str}</span>});
 // returns ['hello ', React element rendered as <span>world</span>]
 ```
 
@@ -177,12 +177,12 @@ var msg = new IntlMessageFormat('The price is: {price, number, USD}', 'en-US', {
   number: {
     USD: {
       style: 'currency',
-      currency: 'USD'
-    }
-  }
+      currency: 'USD',
+    },
+  },
 });
 
-var output = msg.format({ price: 100 });
+var output = msg.format({price: 100});
 console.log(output); // => "The price is: $100.00"
 ```
 
@@ -221,11 +221,11 @@ import memoizeIntlConstructor from 'intl-format-cache';
 const formatters = {
   getNumberFormat: memoizeIntlConstructor(Intl.NumberFormat),
   getDateTimeFormat: memoizeIntlConstructor(Intl.DateTimeFormat),
-  getPluralRules: memoizeIntlConstructor(Intl.PluralRules)
+  getPluralRules: memoizeIntlConstructor(Intl.PluralRules),
 };
 new IntlMessageFormat('hello {number, number}', 'en', undefined, {
-  formatters
-}).format({ number: 3 }); // prints out `hello, 3`
+  formatters,
+}).format({number: 3}); // prints out `hello, 3`
 ```
 
 ## Examples

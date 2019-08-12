@@ -4,8 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import { getParentLocale, normalizeLocale } from './locales';
-import { Locale } from './types';
+import {getParentLocale, normalizeLocale} from './locales';
+import {Locale} from './types';
 
 export interface LocaleEntry {
   locale: string;
@@ -40,7 +40,7 @@ export default function expandLocales(
     // JavaScript have no notion of a "root" locale; instead they use the
     // IANA Language Subtag Registry.
     while (locale && locale !== 'root') {
-      entry = { locale };
+      entry = {locale};
       parentLocale = getParentLocale(locale);
 
       if (parentLocale && parentLocale !== 'root') {

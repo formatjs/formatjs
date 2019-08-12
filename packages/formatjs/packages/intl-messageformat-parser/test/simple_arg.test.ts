@@ -1,4 +1,4 @@
-import { parse } from '../src/parser';
+import {parse} from '../src/parser';
 
 test('number arg', () => {
   expect(parse('I have {numCats, number} cats.')).toMatchSnapshot();

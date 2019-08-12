@@ -7,10 +7,10 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "clean": "rimraf dist lib",
-    "build": "./build.js && tsc && tsc -p tsconfig.cjs.json",
+    "build": "node build.js && tsc && tsc -p tsconfig.cjs.json",
     "benchmark": "node ./test/benchmark.js",
     "prepublish": "npm run build",
-    "test": "TS_NODE_PROJECT='./tsconfig.cjs.json' cross-env NODE_ENV=test jest"
+    "test": "cross-env TS_NODE_PROJECT=./tsconfig.cjs.json cross-env NODE_ENV=test jest"
   },
   "contributors": [
     "Eric Ferraiuolo <eferraiuolo@gmail.com>",

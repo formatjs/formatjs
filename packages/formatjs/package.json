@@ -20,8 +20,9 @@
     "lint": "eslint .",
     "postversion": "npm run prettier",
     "prepublishOnly": "npm run build",
-    "prettier": "prettier --write 'packages/*/{test,tests,src}/**/*.ts' '{src,scripts,test,tests}/*.js' '**/*.md'",
-    "test": "lerna run lint && TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' lerna run test"
+    "prettier": "prettier --write packages/*/{test,tests,src}/**/*.ts {src,scripts,test,tests}/*.js **/*.md",
+    "prettier:check": "npm run prettier -- --check",
+    "test": "lerna run lint && cross-env TS_NODE_COMPILER_OPTIONS={\"module\": \"commonjs\"} lerna run test"
   },
   "dependencies": {},
   "devDependencies": {
@@ -89,9 +90,5 @@
     "test"
   ],
   "author": "Seth Bertalotto <sbertal@verizonmedia.com>",
-  "license": "BSD-3-Clause",
-  "prettier": {
-    "singleQuote": true,
-    "endOfLine": "lf"
-  }
+  "license": "BSD-3-Clause"
 }

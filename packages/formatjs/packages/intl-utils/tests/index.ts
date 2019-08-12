@@ -1,7 +1,7 @@
 import 'intl-pluralrules';
 import '@formatjs/intl-relativetimeformat/polyfill-locales';
-import { selectUnit } from '../';
-import { expect as chaiExpect } from 'chai';
+import {selectUnit} from '../';
+import {expect as chaiExpect} from 'chai';
 declare global {
   var expect: typeof chaiExpect;
 }
@@ -23,47 +23,47 @@ describe('selectUnit', function() {
   it('should work for sec', function() {
     expect(selectUnit(past(44 * SEC), Date.now())).to.deep.equal({
       value: -44,
-      unit: 'second'
+      unit: 'second',
     });
     expect(selectUnit(future(44 * SEC), Date.now())).to.deep.equal({
       value: 44,
-      unit: 'second'
+      unit: 'second',
     });
   });
   it('should work for min', function() {
     expect(selectUnit(past(45 * SEC), Date.now())).to.deep.equal({
       value: -1,
-      unit: 'minute'
+      unit: 'minute',
     });
     expect(selectUnit(future(45 * SEC), Date.now())).to.deep.equal({
       value: 1,
-      unit: 'minute'
+      unit: 'minute',
     });
     expect(selectUnit(past(44 * MIN), Date.now())).to.deep.equal({
       value: -44,
-      unit: 'minute'
+      unit: 'minute',
     });
     expect(selectUnit(future(44 * MIN), Date.now())).to.deep.equal({
       value: 44,
-      unit: 'minute'
+      unit: 'minute',
     });
   });
   it('should work for hour', function() {
     expect(selectUnit(past(45 * MIN), Date.now())).to.deep.equal({
       value: -1,
-      unit: 'hour'
+      unit: 'hour',
     });
     expect(selectUnit(future(45 * MIN), Date.now())).to.deep.equal({
       value: 1,
-      unit: 'hour'
+      unit: 'hour',
     });
     expect(selectUnit(past(21 * HOUR), Date.now())).to.deep.equal({
       value: -21,
-      unit: 'hour'
+      unit: 'hour',
     });
     expect(selectUnit(future(21 * HOUR), Date.now())).to.deep.equal({
       value: 21,
-      unit: 'hour'
+      unit: 'hour',
     });
   });
   it('should work for day', function() {
@@ -71,25 +71,25 @@ describe('selectUnit', function() {
       selectUnit(new Date(2019, 1, 5), new Date(2019, 1, 6))
     ).to.deep.equal({
       value: -1,
-      unit: 'day'
+      unit: 'day',
     });
     expect(
       selectUnit(new Date(2019, 1, 6), new Date(2019, 1, 5))
     ).to.deep.equal({
       value: 1,
-      unit: 'day'
+      unit: 'day',
     });
     expect(
       selectUnit(new Date(2019, 1, 5), new Date(2019, 1, 9))
     ).to.deep.equal({
       value: -4,
-      unit: 'day'
+      unit: 'day',
     });
     expect(
       selectUnit(new Date(2019, 1, 9), new Date(2019, 1, 5))
     ).to.deep.equal({
       value: 4,
-      unit: 'day'
+      unit: 'day',
     });
   });
   it('should work for week', function() {
@@ -97,25 +97,25 @@ describe('selectUnit', function() {
       selectUnit(new Date(2019, 1, 5), new Date(2019, 1, 10))
     ).to.deep.equal({
       value: -1,
-      unit: 'week'
+      unit: 'week',
     });
     expect(
       selectUnit(new Date(2019, 1, 10), new Date(2019, 1, 5))
     ).to.deep.equal({
       value: 1,
-      unit: 'week'
+      unit: 'week',
     });
     expect(
       selectUnit(new Date(2019, 1, 5), new Date(2019, 1, 26))
     ).to.deep.equal({
       value: -3,
-      unit: 'week'
+      unit: 'week',
     });
     expect(
       selectUnit(new Date(2019, 1, 26), new Date(2019, 1, 5))
     ).to.deep.equal({
       value: 3,
-      unit: 'week'
+      unit: 'week',
     });
   });
   it('should work for month', function() {
@@ -123,25 +123,25 @@ describe('selectUnit', function() {
       selectUnit(new Date(2019, 1, 10), new Date(2019, 2, 10))
     ).to.deep.equal({
       value: -1,
-      unit: 'month'
+      unit: 'month',
     });
     expect(
       selectUnit(new Date(2019, 2, 10), new Date(2019, 1, 10))
     ).to.deep.equal({
       value: 1,
-      unit: 'month'
+      unit: 'month',
     });
     expect(
       selectUnit(new Date(2019, 0, 10), new Date(2019, 2, 27))
     ).to.deep.equal({
       value: -2,
-      unit: 'month'
+      unit: 'month',
     });
     expect(
       selectUnit(new Date(2019, 2, 27), new Date(2019, 0, 5))
     ).to.deep.equal({
       value: 2,
-      unit: 'month'
+      unit: 'month',
     });
   });
   it('should work for quarter', function() {
@@ -149,25 +149,25 @@ describe('selectUnit', function() {
       selectUnit(new Date(2019, 0, 10), new Date(2019, 3, 27))
     ).to.deep.equal({
       value: -1,
-      unit: 'quarter'
+      unit: 'quarter',
     });
     expect(
       selectUnit(new Date(2019, 3, 10), new Date(2019, 0, 27))
     ).to.deep.equal({
       value: 1,
-      unit: 'quarter'
+      unit: 'quarter',
     });
     expect(
       selectUnit(new Date(2019, 0, 10), new Date(2019, 11, 27))
     ).to.deep.equal({
       value: -3,
-      unit: 'quarter'
+      unit: 'quarter',
     });
     expect(
       selectUnit(new Date(2019, 11, 10), new Date(2019, 0, 27))
     ).to.deep.equal({
       value: 3,
-      unit: 'quarter'
+      unit: 'quarter',
     });
   });
   it('should skip quarter caculation if turned off', function() {
@@ -176,62 +176,62 @@ describe('selectUnit', function() {
         second: 45,
         minute: 45,
         hour: 22,
-        quarter: false
+        quarter: false,
       })
     ).to.deep.equal({
       value: -3,
-      unit: 'month'
+      unit: 'month',
     });
     expect(
       selectUnit(new Date(2019, 3, 10), new Date(2019, 0, 27), {
         second: 45,
         minute: 45,
         hour: 22,
-        quarter: false
+        quarter: false,
       })
     ).to.deep.equal({
       value: 3,
-      unit: 'month'
+      unit: 'month',
     });
     expect(
       selectUnit(new Date(2019, 0, 10), new Date(2019, 11, 27), {
         second: 45,
         minute: 45,
         hour: 22,
-        quarter: false
+        quarter: false,
       })
     ).to.deep.equal({
       value: -11,
-      unit: 'month'
+      unit: 'month',
     });
     expect(
       selectUnit(new Date(2019, 11, 10), new Date(2019, 0, 27), {
         second: 45,
         minute: 45,
         hour: 22,
-        quarter: false
+        quarter: false,
       })
     ).to.deep.equal({
       value: 11,
-      unit: 'month'
+      unit: 'month',
     });
   });
   it('should work for year', function() {
     expect(selectUnit(past(360 * DAY), Date.now())).to.deep.equal({
       value: -1,
-      unit: 'year'
+      unit: 'year',
     });
     expect(selectUnit(future(360 * DAY), Date.now())).to.deep.equal({
       value: 1,
-      unit: 'year'
+      unit: 'year',
     });
     expect(selectUnit(past(1000 * DAY), Date.now())).to.deep.equal({
       value: -3,
-      unit: 'year'
+      unit: 'year',
     });
     expect(selectUnit(future(1000 * DAY), Date.now())).to.deep.equal({
       value: 3,
-      unit: 'year'
+      unit: 'year',
     });
   });
 });

@@ -18,7 +18,7 @@ describe('exports', function() {
 
 describe('Data shape', function() {
   var data = extractData({
-    relativeFields: true
+    relativeFields: true,
   });
 
   it('should be keyed by locale', function() {
@@ -96,7 +96,7 @@ describe('Data shape', function() {
           'minute-narrow',
           'second',
           'second-short',
-          'second-narrow'
+          'second-narrow',
         ];
         expect(Object.keys(data.en.fields!)).toEqual(fields);
       });
@@ -176,8 +176,8 @@ describe('extractData()', function() {
       });
 
       it('should only accept an array of strings', function() {
-        expect(() => extractData({ locales: [] })).not.toThrow();
-        expect(() => extractData({ locales: ['en'] })).not.toThrow();
+        expect(() => extractData({locales: []})).not.toThrow();
+        expect(() => extractData({locales: ['en']})).not.toThrow();
       });
 
       it.skip('should throw when no data exists for a locale', function() {
@@ -187,7 +187,7 @@ describe('extractData()', function() {
       it('should always contribute an entry for all specified `locales`', function() {
         var data = extractData({
           locales: ['en-US', 'zh-Hans-SG'],
-          relativeFields: true
+          relativeFields: true,
         });
         const locales = Object.keys(data);
 
@@ -198,7 +198,7 @@ describe('extractData()', function() {
       it('should recursively expand `locales` to their roots', function() {
         const data = extractData({
           locales: ['en-US', 'zh-Hans-SG'],
-          relativeFields: true
+          relativeFields: true,
         });
         const locales = Object.keys(data);
 
@@ -210,7 +210,7 @@ describe('extractData()', function() {
       it('should accept `locales` of any case and normalize them', function() {
         const locales = Object.keys(
           extractData({
-            locales: ['en-us', 'ZH-HANT-HK']
+            locales: ['en-us', 'ZH-HANT-HK'],
           })
         );
         expect(locales).toContain('en-US');
@@ -222,7 +222,7 @@ describe('extractData()', function() {
       it('should contribute a `fields` object property', function() {
         var data = extractData({
           locales: ['en'],
-          relativeFields: true
+          relativeFields: true,
         });
 
         expect(data.en).toHaveProperty('fields');
@@ -234,7 +234,7 @@ describe('extractData()', function() {
   describe('Locale hierarchy', function() {
     it('should determine the correct parent locale', function() {
       var data = extractData({
-        locales: ['en', 'pt-MZ', 'zh-Hant-HK']
+        locales: ['en', 'pt-MZ', 'zh-Hant-HK'],
       });
 
       expect(data['en']).not.toHaveProperty('parentLocale');
@@ -252,7 +252,7 @@ describe('extractData()', function() {
 
       var data = extractData({
         locales: locales,
-        relativeFields: true
+        relativeFields: true,
       });
 
       expect(Object.keys(data['es-MX'])).toContain('parentLocale');

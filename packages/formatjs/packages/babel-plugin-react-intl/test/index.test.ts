@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import { transformFileSync } from '@babel/core';
+import {transformFileSync} from '@babel/core';
 import plugin from '../src';
 
 function trim(str?: string | null) {
@@ -19,7 +19,7 @@ const skipOutputTests = [
   'removeDescriptions',
   'overrideIdFn',
   'removeDefaultMessage',
-  'additionalComponentNames'
+  'additionalComponentNames',
 ];
 
 const fixturesDir = path.join(__dirname, 'fixtures');
@@ -36,7 +36,7 @@ describe('emit asserts for: ', () => {
       const actualMessagesPath = path.join(fixtureDir, 'actual.json');
       if (fs.existsSync(actualMessagesPath)) fs.unlinkSync(actualMessagesPath);
 
-      const { code: actual, metadata } = transform(
+      const {code: actual, metadata} = transform(
         path.join(fixtureDir, 'actual.js')
       )!;
       expect((metadata as any)['react-intl']).toMatchSnapshot();
@@ -62,7 +62,7 @@ describe('options', () => {
     const fixtureDir = path.join(fixturesDir, 'removeDefaultMessage');
 
     const actual = transform(path.join(fixtureDir, 'actual.js'), {
-      removeDefaultMessage: true
+      removeDefaultMessage: true,
     })!.code;
 
     // Check code output
@@ -83,7 +83,7 @@ describe('options', () => {
     const fixtureDir = path.join(fixturesDir, 'enforceDescriptions');
     expect(() =>
       transform(path.join(fixtureDir, 'actual.js'), {
-        enforceDescriptions: true
+        enforceDescriptions: true,
       })
     ).toThrow(/Message must have a `description`/);
   });
@@ -98,7 +98,7 @@ describe('options', () => {
         description: string
       ) => {
         return `HELLO.${id}.${defaultMessage.length}.${typeof description}`;
-      }
+      },
     })!.code;
 
     // Check code output
@@ -120,7 +120,7 @@ describe('options', () => {
     const fixtureDir = path.join(fixturesDir, 'enforceDescriptions');
     expect(() =>
       transform(path.join(fixtureDir, 'actual.js'), {
-        enforceDescriptions: false
+        enforceDescriptions: false,
       })
     ).not.toThrow();
   });
@@ -129,7 +129,7 @@ describe('options', () => {
     const fixtureDir = path.join(fixturesDir, 'enforceDefaultMessage');
     expect(() =>
       transform(path.join(fixtureDir, 'actual.js'), {
-        enforceDefaultMessage: false
+        enforceDefaultMessage: false,
       })
     ).not.toThrow();
 
@@ -152,10 +152,10 @@ describe('options', () => {
       transform(
         path.join(fixtureDir, 'actual.js'),
         {
-          enforceDescriptions: true
+          enforceDescriptions: true,
         },
         {
-          multiplePasses: true
+          multiplePasses: true,
         }
       )
     ).not.toThrow();
@@ -165,7 +165,7 @@ describe('options', () => {
     const fixtureDir = path.join(fixturesDir, 'moduleSourceName');
     expect(() =>
       transform(path.join(fixtureDir, 'actual.js'), {
-        moduleSourceName: 'react-i18n'
+        moduleSourceName: 'react-i18n',
       })
     ).not.toThrow();
 
@@ -185,7 +185,7 @@ describe('options', () => {
     const fixtureDir = path.join(fixturesDir, 'extractSourceLocation');
     expect(() =>
       transform(path.join(fixtureDir, 'actual.js'), {
-        extractSourceLocation: true
+        extractSourceLocation: true,
       })
     ).not.toThrow();
 
@@ -205,7 +205,7 @@ describe('options', () => {
     const fixtureDir = path.join(fixturesDir, 'extractFromFormatMessageCall');
     expect(() =>
       transform(path.join(fixtureDir, 'actual.js'), {
-        extractFromFormatMessageCall: true
+        extractFromFormatMessageCall: true,
       })
     ).not.toThrow();
 
@@ -225,7 +225,7 @@ describe('options', () => {
     const fixtureDir = path.join(fixturesDir, 'additionalComponentNames');
     expect(() =>
       transform(path.join(fixtureDir, 'actual.js'), {
-        additionalComponentNames: ['CustomMessage']
+        additionalComponentNames: ['CustomMessage'],
       })
     ).not.toThrow();
 
@@ -252,7 +252,7 @@ describe('errors', () => {
 });
 
 const BASE_OPTIONS = {
-  messagesDir: baseDir
+  messagesDir: baseDir,
 };
 
 let cacheBust = 1;
@@ -260,22 +260,22 @@ let cacheBust = 1;
 function transform(
   filePath: string,
   options = {},
-  { multiplePasses = false } = {}
+  {multiplePasses = false} = {}
 ) {
   function getPluginConfig() {
     return [
       plugin,
       {
         ...BASE_OPTIONS,
-        ...options
+        ...options,
       },
-      Date.now() + '' + ++cacheBust
+      Date.now() + '' + ++cacheBust,
     ];
   }
 
   return transformFileSync(filePath, {
     plugins: multiplePasses
       ? [getPluginConfig(), getPluginConfig()]
-      : [getPluginConfig()]
+      : [getPluginConfig()],
   });
 }

@@ -15,13 +15,13 @@ export default function polyfill(
     value: RelativeTimeFormat,
     writable: true,
     enumerable: false,
-    configurable: true
+    configurable: true,
   });
 
   Object.defineProperty(RelativeTimeFormat, 'supportedLocalesOf', {
     writable: true,
     enumerable: false,
-    configurable: true
+    configurable: true,
   });
 
   // IE11 does not have Symbol
@@ -30,32 +30,32 @@ export default function polyfill(
       value: 'Intl.RelativeTimeFormat',
       writable: false,
       enumerable: false,
-      configurable: true
+      configurable: true,
     });
   }
 
   Object.defineProperty(RelativeTimeFormat.prototype, 'format', {
     writable: true,
     enumerable: false,
-    configurable: true
+    configurable: true,
   });
 
   Object.defineProperty(RelativeTimeFormat.prototype, 'formatToParts', {
     writable: true,
     enumerable: false,
-    configurable: true
+    configurable: true,
   });
 
   Object.defineProperty(RelativeTimeFormat.prototype, 'resolvedOptions', {
     writable: true,
     enumerable: false,
-    configurable: true
+    configurable: true,
   });
 
   Object.defineProperty(Intl.RelativeTimeFormat, 'prototype', {
     writable: false,
     enumerable: false,
-    configurable: false
+    configurable: false,
   });
 
   try {
@@ -64,20 +64,20 @@ export default function polyfill(
       RelativeTimeFormat.prototype.resolvedOptions,
       'name',
       {
-        value: 'resolvedOptions'
+        value: 'resolvedOptions',
       }
     );
 
     Object.defineProperty(RelativeTimeFormat.prototype.format, 'name', {
-      value: 'format'
+      value: 'format',
     });
 
     Object.defineProperty(RelativeTimeFormat.prototype.formatToParts, 'name', {
-      value: 'formatToParts'
+      value: 'formatToParts',
     });
 
     Object.defineProperty(RelativeTimeFormat.supportedLocalesOf, 'name', {
-      value: 'supportedLocalesOf'
+      value: 'supportedLocalesOf',
     });
   } catch (ex) {
     // This crashes due to a bug in JSC on iOS 9. We can safely ignore the error.

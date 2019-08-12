@@ -4,9 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 'use strict';
-import { getParentLocale, hasDateFields, normalizeLocale } from './locales';
-import { dateFields } from './dateFields';
-import { Locale } from './types';
+import {getParentLocale, hasDateFields, normalizeLocale} from './locales';
+import {dateFields} from './dateFields';
+import {Locale} from './types';
 
 // The set of CLDR date field names that are used in FormatJS.
 const FIELD_NAMES = [
@@ -33,13 +33,13 @@ const FIELD_NAMES = [
   'minute-narrow',
   'second',
   'second-short',
-  'second-narrow'
+  'second-narrow',
 ];
 
 type Fields = typeof dateFields['en']['main']['en']['dates']['fields'];
 
 export type RelativeTimeOpt = 'zero' | 'one' | 'two' | 'few' | 'many' | 'other';
-export type RelativeTimeData = { [u in RelativeTimeOpt]?: string };
+export type RelativeTimeData = {[u in RelativeTimeOpt]?: string};
 export interface FieldData {
   displayName: string;
   relative: {
@@ -60,7 +60,7 @@ export interface FieldData {
 
 export default function extractRelativeFields(
   locales: Locale[]
-): Record<Locale, { fields: Record<string, FieldData> }> {
+): Record<Locale, {fields: Record<string, FieldData>}> {
   // The CLDR states that the "root" locale's data should be used to fill in
   // any missing data as its data is the default.
   const defaultFields = loadRelativeFields('root');
@@ -136,7 +136,7 @@ export default function extractRelativeFields(
 
   return locales.reduce(
     (
-      relativeFields: Record<Locale, { fields: Record<string, FieldData> }>,
+      relativeFields: Record<Locale, {fields: Record<string, FieldData>}>,
       locale
     ) => {
       // Walk the `locale`'s hierarchy to look for suitable ancestor with the
@@ -155,7 +155,7 @@ export default function extractRelativeFields(
       // locale doesn't have relative fields, then we fallback to the "root"
       // locale's fields.
       relativeFields[locale] = {
-        fields: getRelativeFields(locale) || defaultFields
+        fields: getRelativeFields(locale) || defaultFields,
       };
 
       return relativeFields;
@@ -186,9 +186,9 @@ function transformFieldData(data: Fields['week']): FieldData {
     relative: {},
     relativeTime: {
       future: {},
-      past: {}
+      past: {},
     },
-    relativePeriod: data.relativePeriod
+    relativePeriod: data.relativePeriod,
   };
   Object.keys(data).forEach(function(key) {
     var type = key.match(/^(relative|relativeTime)-type-(.+)$/) || [];

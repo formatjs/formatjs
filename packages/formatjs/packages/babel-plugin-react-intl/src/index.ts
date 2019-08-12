@@ -5,12 +5,12 @@
  */
 
 import * as p from 'path';
-import { writeFileSync } from 'fs';
-import { mkdirpSync } from 'fs-extra';
-import { parse } from 'intl-messageformat-parser/dist';
-import { printAST } from 'intl-messageformat-parser/dist/printer';
-const { declare } = require('@babel/helper-plugin-utils') as any;
-import { types as t, PluginObj } from '@babel/core';
+import {writeFileSync} from 'fs';
+import {mkdirpSync} from 'fs-extra';
+import {parse} from 'intl-messageformat-parser/dist';
+import {printAST} from 'intl-messageformat-parser/dist/printer';
+const {declare} = require('@babel/helper-plugin-utils') as any;
+import {types as t, PluginObj} from '@babel/core';
 import {
   ObjectExpression,
   JSXAttribute,
@@ -20,9 +20,9 @@ import {
   Identifier,
   ObjectProperty,
   SourceLocation,
-  Expression
+  Expression,
 } from '@babel/types';
-import { NodePath } from '@babel/traverse';
+import {NodePath} from '@babel/traverse';
 
 const DEFAULT_COMPONENT_NAMES = ['FormattedMessage', 'FormattedHTMLMessage'];
 
@@ -37,7 +37,7 @@ interface MessageDescriptor {
 }
 
 type ExtractedMessageDescriptor = MessageDescriptor &
-  Partial<SourceLocation> & { file?: string };
+  Partial<SourceLocation> & {file?: string};
 
 type MessageDescriptorPath = Record<
   keyof MessageDescriptor,
@@ -94,7 +94,7 @@ interface State {
 
 function getICUMessageValue(
   messagePath?: NodePath<StringLiteral>,
-  { isJSXSource = false } = {}
+  {isJSXSource = false} = {}
 ) {
   if (!messagePath) {
     return '';
@@ -184,7 +184,7 @@ function createMessageDescriptor(
     {
       id: undefined,
       defaultMessage: undefined,
-      description: undefined
+      description: undefined,
     }
   );
 }
@@ -196,7 +196,7 @@ function evaluateMessageDescriptor(
 ) {
   let id = getMessageDescriptorValue(descriptorPath.id);
   const defaultMessage = getICUMessageValue(descriptorPath.defaultMessage, {
-    isJSXSource
+    isJSXSource,
   });
   const description = getMessageDescriptorValue(descriptorPath.description);
 
@@ -204,7 +204,7 @@ function evaluateMessageDescriptor(
     id = overrideIdFn(id, defaultMessage, description);
   }
   const descriptor: MessageDescriptor = {
-    id
+    id,
   };
 
   if (description) {
@@ -218,12 +218,12 @@ function evaluateMessageDescriptor(
 }
 
 function storeMessage(
-  { id, description, defaultMessage }: MessageDescriptor,
+  {id, description, defaultMessage}: MessageDescriptor,
   path: NodePath,
   {
     enforceDescriptions,
     enforceDefaultMessage = true,
-    extractSourceLocation
+    extractSourceLocation,
   }: Opts,
   filename: string,
   messages: Map<string, ExtractedMessageDescriptor>
@@ -263,11 +263,11 @@ function storeMessage(
   if (extractSourceLocation) {
     loc = {
       file: p.relative(process.cwd(), filename),
-      ...path.node.loc
+      ...path.node.loc,
     };
   }
 
-  messages.set(id, { id, description, defaultMessage, ...loc });
+  messages.set(id, {id, description, defaultMessage, ...loc});
 }
 
 function referencesImport(
@@ -344,14 +344,14 @@ export default declare((api: any) => {
     post(state) {
       const {
         file: {
-          opts: { filename }
+          opts: {filename},
         },
-        opts: { messagesDir }
+        opts: {messagesDir},
       } = this;
       const basename = p.basename(filename, p.extname(filename));
-      const { ReactIntlMessages: messages } = this;
+      const {ReactIntlMessages: messages} = this;
       const descriptors = Array.from(messages.values());
-      state.metadata['react-intl'] = { messages: descriptors };
+      state.metadata['react-intl'] = {messages: descriptors};
 
       if (messagesDir && descriptors.length > 0) {
         // Make sure the relative path is "absolute" before
@@ -361,7 +361,7 @@ export default declare((api: any) => {
         // process.cwd on windows returns the symlink root,
         // and filename (from babel) returns the original root
         if (process.platform === 'win32') {
-          const { name } = p.parse(process.cwd());
+          const {name} = p.parse(process.cwd());
           if (relativePath.includes(name)) {
             relativePath = relativePath.slice(
               relativePath.indexOf(name) + name.length
@@ -388,8 +388,8 @@ export default declare((api: any) => {
         {
           opts,
           file: {
-            opts: { filename }
-          }
+            opts: {filename},
+          },
         }
       ) {
         const {
@@ -397,7 +397,7 @@ export default declare((api: any) => {
           additionalComponentNames = [],
           enforceDefaultMessage,
           removeDefaultMessage,
-          overrideIdFn
+          overrideIdFn,
         } = opts;
         if (wasExtracted(path)) {
           return;
@@ -430,7 +430,7 @@ export default declare((api: any) => {
           let descriptorPath = createMessageDescriptor(
             attributes.map(attr => [
               attr.get('name') as NodePath<JSXIdentifier>,
-              attr.get('value') as NodePath<StringLiteral>
+              attr.get('value') as NodePath<StringLiteral>,
             ])
           );
 
@@ -490,16 +490,16 @@ export default declare((api: any) => {
         {
           opts,
           file: {
-            opts: { filename }
-          }
+            opts: {filename},
+          },
         }
       ) {
-        const { ReactIntlMessages: messages } = this;
+        const {ReactIntlMessages: messages} = this;
         const {
           moduleSourceName = 'react-intl',
           overrideIdFn,
           removeDefaultMessage,
-          extractFromFormatMessageCall
+          extractFromFormatMessageCall,
         } = opts;
         const callee = path.get('callee');
 
@@ -550,9 +550,9 @@ export default declare((api: any) => {
                     t.objectProperty(
                       t.stringLiteral('defaultMessage'),
                       t.stringLiteral(descriptor.defaultMessage)
-                    )
+                    ),
                   ]
-                : [])
+                : []),
             ])
           );
 
@@ -579,7 +579,7 @@ export default declare((api: any) => {
             processMessageObject(messageDescriptor);
           }
         }
-      }
-    }
+      },
+    },
   } as PluginObj<PluginPass<Opts> & State>;
 });
