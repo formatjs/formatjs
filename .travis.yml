@@ -6,7 +6,7 @@ node_js:
   - 12
 before_script:
   - npm run build
-script: NODE_ICU_DATA=$(pwd)/node_modules/full-icu npm run test:all
+script: npm run test:all
 notifications:
   email:
     on_success: change

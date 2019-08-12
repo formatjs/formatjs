@@ -95,7 +95,7 @@
     "typescript": "~3.3.0"
   },
   "scripts": {
-    "benchmark": "NODE_ENV=production TS_NODE_PROJECT='./tsconfig.cjs.json' ts-node test/perf/index.tsx",
+    "benchmark": "cross-env NODE_ENV=production TS_NODE_PROJECT=./tsconfig.cjs.json ts-node test/perf/index.tsx",
     "build:dist:dev": "cross-env NODE_ENV=development rollup -c rollup.config.dist.js",
     "build:dist:prod": "cross-env NODE_ENV=production rollup -c rollup.config.dist.js",
     "build:dist": "npm run build:dist:dev && npm run build:dist:prod",
@@ -113,7 +113,7 @@
     "test:all": "npm run lint && npm run format && npm run test",
     "test:perf": "cross-env NODE_ENV=production babel-node test/perf",
     "test:watch": "jest --watch",
-    "test": "jest --coverage --verbose",
+    "test": "cross-env NODE_ICU_DATA=./node_modules/full-icu jest --coverage --verbose",
     "toc": "node scripts/toc"
   },
   "pre-commit": [
