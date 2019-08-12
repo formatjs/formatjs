@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.10](https://github.com/formatjs/formatjs/compare/intl-format-cache@4.1.9...intl-format-cache@4.1.10) (2019-08-12)
+
+**Note:** Version bump only for package intl-format-cache
+
+
+
+
+
 ## [4.1.9](https://github.com/formatjs/formatjs/compare/intl-format-cache@4.1.8...intl-format-cache@4.1.9) (2019-08-11)
 
 

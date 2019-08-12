@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.5](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.4.4...intl-locales-supported@1.4.5) (2019-08-12)
+
+
+### Bug Fixes
+
+* **intl-locales-supported:** lazily default constructors, fixes [#151](https://github.com/formatjs/formatjs/issues/151) ([0cba7a6](https://github.com/formatjs/formatjs/commit/0cba7a6))
+
+
+
+
+
 ## [1.4.4](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.4.3...intl-locales-supported@1.4.4) (2019-08-11)
 
 
