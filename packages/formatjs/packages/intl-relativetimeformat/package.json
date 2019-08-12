@@ -31,7 +31,7 @@
     "clean": "rimraf dist lib",
     "compile": "tsc && tsc -p tsconfig.cjs.json && rollup -c rollup.config.js",
     "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json cross-env NODE_ENV=test jest",
-    "test": "npm run jest && cross-env TS_NODE_PROJECT=tsconfig.cjs.json ts-node tests/runner"
+    "test": "npm run jest && cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json ts-node tests/runner"
   },
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",
