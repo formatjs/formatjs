@@ -26,7 +26,7 @@
   "scripts": {
     "clean": "rimraf dist lib",
     "build": "tsc && tsc -p tsconfig.cjs.json",
-    "test": "mocha --opts ../../mocha.opts tests/index.ts"
+    "test": "cross-env NODE_ICU_DATA=../../node_modules/full-icu mocha --opts ../../mocha.opts tests/index.ts"
   },
   "gitHead": "8b0baec8eda5002715cf893274fe59782fc2d371"
 }

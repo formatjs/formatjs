@@ -8,7 +8,7 @@ before_install:
   - git submodule update --init
 before_script:
   - npm run build
-script: NODE_ICU_DATA=$(pwd)/node_modules/full-icu npm t
+script: npm t
 after_success:
   - npm run cover
   - npm run cover:collect
