@@ -29,7 +29,7 @@ export default function createFormattedComponent<Name extends keyof Formatter>(
     children?: (val: string) => React.ReactElement | null;
   };
 
-  const Component = (props: Props) => (
+  const Component: React.FC<Props> = props => (
     <Context.Consumer>
       {intl => {
         invariantIntlContext(intl);
