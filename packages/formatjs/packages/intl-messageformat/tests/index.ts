@@ -522,7 +522,7 @@ describe('IntlMessageFormat', function() {
         {str: 'world'},
       ]);
     });
-    it('simple message w/ placeholder', function() {
+    it('simple message w/ placeholder and no tag', function() {
       var mf = new IntlMessageFormat('hello {placeholder} {var2}', 'en');
       expect(
         mf.formatXMLMessage({
@@ -546,7 +546,7 @@ describe('IntlMessageFormat', function() {
     });
     it('message w/ placeholder & >', function() {
       var mf = new IntlMessageFormat(
-        '< hello <b>world</b> {token} <> <a>{placeholder}</a>',
+        '&lt; hello <b>world</b> {token} &lt;&gt; <a>{placeholder}</a>',
         'en'
       );
       expect(
@@ -560,7 +560,7 @@ describe('IntlMessageFormat', function() {
     });
     it('select message w/ placeholder & >', function() {
       var mf = new IntlMessageFormat(
-        '{gender, select, male {< hello <b>world</b> {token} <> <a>{placeholder}</a>} female {<b>foo <> bar</b>}}',
+        '{gender, select, male {&lt; hello <b>world</b> {token} &lt;&gt; <a>{placeholder}</a>} female {<b>foo &lt;&gt; bar</b>}}',
         'en'
       );
       expect(
@@ -586,9 +586,9 @@ describe('IntlMessageFormat', function() {
       );
       expect(
         mf.formatXMLMessage({
-          placeholder: 'gaga',
+          placeholder: '<foo>gaga</foo>',
         })
-      ).to.deep.equal(['hello <b>world</b> <a>gaga</a>']);
+      ).to.deep.equal(['hello <b>world</b> <a><foo>gaga</foo></a>']);
     });
     it('should handle self-closing tag', function() {
       var mf = new IntlMessageFormat('hello <foo/> test', 'en');
