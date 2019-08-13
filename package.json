@@ -41,7 +41,7 @@
     "hoist-non-react-statics": "^3.3.0",
     "intl-format-cache": "^4.1.10",
     "intl-locales-supported": "^1.4.5",
-    "intl-messageformat": "^6.1.4",
+    "intl-messageformat": "^6.1.5",
     "intl-messageformat-parser": "^3.0.7",
     "invariant": "^2.1.1",
     "react": "^16.3.0",
