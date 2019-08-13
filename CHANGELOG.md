@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.8](https://github.com/formatjs/react-intl/compare/v3.1.7...v3.1.8) (2019-08-13)
+
+
+### Bug Fixes
+
+* remove injectIntl types from component props ([#1415](https://github.com/formatjs/react-intl/issues/1415)) ([9b359ec](https://github.com/formatjs/react-intl/commit/9b359ec)), closes [#1414](https://github.com/formatjs/react-intl/issues/1414)
+
 ### [3.1.7](https://github.com/formatjs/react-intl/compare/v3.1.5...v3.1.7) (2019-08-13)
 
 
