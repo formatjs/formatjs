@@ -3,13 +3,6 @@ import {invariantIntlContext} from '../utils';
 import {IntlShape, FormatDateOptions, FormatNumberOptions} from '../types';
 import {Context} from './injectIntl';
 
-type FormatFunctionName = 'formatDate' | 'formatTime' | 'formatNumber';
-type FormatOptions<T> = T extends 'formatDate'
-  ? FormatDateOptions
-  : T extends 'formatTime'
-  ? FormatDateOptions
-  : FormatNumberOptions;
-
 const displayNames: {
   formatDate: 'FormattedDate';
   formatTime: 'FormattedTime';
@@ -20,11 +13,18 @@ const displayNames: {
   formatNumber: 'FormattedNumber',
 };
 
-export default function createFormattedComponent<T extends FormatFunctionName>(
-  type: T
+type Formatter = {
+  formatDate: FormatDateOptions;
+  formatTime: FormatDateOptions;
+  formatNumber: FormatNumberOptions;
+};
+
+export default function createFomattedComponent<Name extends keyof Formatter>(
+  name: Name
 ) {
-  type FormatFn = IntlShape[T];
-  type Props = FormatOptions<T> & {
+  type Options = Formatter[Name];
+  type FormatFn = IntlShape[Name];
+  type Props = Options & {
     value: Parameters<FormatFn>[0];
     children?: (val: string) => React.ReactElement | null;
   };
@@ -35,7 +35,7 @@ export default function createFormattedComponent<T extends FormatFunctionName>(
         invariantIntlContext(intl);
 
         const {value, children} = props;
-        const {[type]: formatFn, textComponent: Text} = intl;
+        const {[name]: formatFn, textComponent: Text} = intl;
         const formattedValue = formatFn(value as any, props);
 
         if (typeof children === 'function') {
@@ -49,6 +49,6 @@ export default function createFormattedComponent<T extends FormatFunctionName>(
       }}
     </Context.Consumer>
   );
-  Component.displayName = displayNames[type];
+  Component.displayName = displayNames[name];
   return Component;
 }
