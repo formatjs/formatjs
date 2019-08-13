@@ -43,13 +43,12 @@ describe('injectIntl()', () => {
   });
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
+    console.error = jest.fn();
     const Injected = injectIntl(Wrapped);
 
-    const consoleError = jest.spyOn(console, 'error'); // surpress console error from JSDom
     expect(() => (rendered = mount(<Injected />))).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     );
-    consoleError.mockRestore();
   });
 
   it('renders <WrappedComponent> with `intl` prop', () => {

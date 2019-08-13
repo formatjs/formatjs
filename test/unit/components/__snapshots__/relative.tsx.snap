@@ -1,42 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FormattedRelativeTime> supports function-as-child pattern 1`] = `
-<injectIntl(FormattedRelativeTime)
+<FormattedRelativeTime
+  unit="second"
   value={0}
 >
-  <FormattedRelativeTime
-    intl={
-      Object {
-        "defaultFormats": Object {},
-        "defaultLocale": "en",
-        "formatDate": [Function],
-        "formatHTMLMessage": [Function],
-        "formatMessage": [Function],
-        "formatNumber": [Function],
-        "formatPlural": [Function],
-        "formatRelativeTime": [Function],
-        "formatTime": [Function],
-        "formats": Object {},
-        "formatters": Object {
-          "getDateTimeFormat": [Function],
-          "getMessageFormat": [Function],
-          "getNumberFormat": [Function],
-          "getPluralRules": [Function],
-          "getRelativeTimeFormat": [Function],
-        },
-        "locale": "en",
-        "messages": Object {},
-        "onError": [Function],
-        "textComponent": Symbol(react.fragment),
-        "timeZone": undefined,
-      }
-    }
-    unit="second"
-    value={0}
-  >
-    <b>
-      Jest
-    </b>
-  </FormattedRelativeTime>
-</injectIntl(FormattedRelativeTime)>
+  <b>
+    Jest
+  </b>
+</FormattedRelativeTime>
 `;

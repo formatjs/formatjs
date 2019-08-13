@@ -2,44 +2,12 @@
 
 exports[`<FormattedMessage> should work with mount enzyme 1`] = `
 <span>
-  <injectIntl(FormattedMessage)
+  <FormattedMessage
     id="foo"
+    values={Object {}}
   >
-    <FormattedMessage
-      id="foo"
-      intl={
-        Object {
-          "defaultFormats": Object {},
-          "defaultLocale": "en",
-          "formatDate": [Function],
-          "formatHTMLMessage": [Function],
-          "formatMessage": [Function],
-          "formatNumber": [Function],
-          "formatPlural": [Function],
-          "formatRelativeTime": [Function],
-          "formatTime": [Function],
-          "formats": Object {},
-          "formatters": Object {
-            "getDateTimeFormat": [Function],
-            "getMessageFormat": [Function],
-            "getNumberFormat": [Function],
-            "getPluralRules": [Function],
-            "getRelativeTimeFormat": [Function],
-          },
-          "locale": "en",
-          "messages": Object {
-            "foo": "hello foo",
-          },
-          "onError": [Function],
-          "textComponent": Symbol(react.fragment),
-          "timeZone": undefined,
-        }
-      }
-      values={Object {}}
-    >
-      hello foo
-    </FormattedMessage>
-  </injectIntl(FormattedMessage)>
+    hello foo
+  </FormattedMessage>
 </span>
 `;
 
@@ -50,41 +18,6 @@ exports[`<FormattedMessage> should work with shallow enzyme 1`] = `
 `;
 
 exports[`<FormattedMessage> should work with shallow enzyme 2`] = `
-<FormattedMessage
-  id="foo"
-  intl={
-    Object {
-      "defaultFormats": Object {},
-      "defaultLocale": "en",
-      "formatDate": [Function],
-      "formatHTMLMessage": [Function],
-      "formatMessage": [Function],
-      "formatNumber": [Function],
-      "formatPlural": [Function],
-      "formatRelativeTime": [Function],
-      "formatTime": [Function],
-      "formats": Object {},
-      "formatters": Object {
-        "getDateTimeFormat": [Function],
-        "getMessageFormat": [Function],
-        "getNumberFormat": [Function],
-        "getPluralRules": [Function],
-        "getRelativeTimeFormat": [Function],
-      },
-      "locale": "en",
-      "messages": Object {
-        "foo": "hello foo",
-      },
-      "onError": [Function],
-      "textComponent": Symbol(react.fragment),
-      "timeZone": undefined,
-    }
-  }
-  values={Object {}}
-/>
-`;
-
-exports[`<FormattedMessage> should work with shallow enzyme 3`] = `
 <Fragment>
   hello foo
 </Fragment>

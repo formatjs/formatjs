@@ -8,18 +8,13 @@ import {IntlShape} from '../../../src';
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedDate);
 
 describe('<FormattedDate>', () => {
-  let consoleError;
   let intl: IntlShape;
 
   beforeEach(() => {
-    consoleError = jest.spyOn(console, 'error');
+    console.error = jest.fn();
     intl = createIntl({
       locale: 'en',
     });
-  });
-
-  afterEach(() => {
-    consoleError.mockRestore();
   });
 
   it('has a `displayName`', () => {
@@ -37,12 +32,12 @@ describe('<FormattedDate>', () => {
 
     mountWithProvider({value}, intl);
     expect(isFinite(value)).toBe(true);
-    expect(consoleError).toHaveBeenCalledTimes(0);
+    expect(console.error).toHaveBeenCalledTimes(0);
 
     mountWithProvider({value: NaN}, intl);
-    expect(consoleError).toHaveBeenCalledTimes(1);
-    expect(consoleError.mock.calls[0][0]).toContain(
-      '[React Intl] Error formatting date.\nRangeError'
+    expect(console.error).toHaveBeenCalledTimes(1);
+    expect(console.error).toHaveBeenCalledWith(
+      expect.stringContaining('[React Intl] Error formatting date.\nRangeError')
     );
   });
 
@@ -73,12 +68,17 @@ describe('<FormattedDate>', () => {
     expect(rendered.text()).toBe(intl.formatDate(date, options));
   });
 
-  it('fallsback and warns on invalid Intl.DateTimeFormat options', () => {
+  it('falls back and warns on invalid Intl.DateTimeFormat options', () => {
     const date = new Date();
     const rendered = mountWithProvider({value: date, year: 'invalid'}, intl);
 
     expect(rendered.text()).toBe(String(date));
-    expect(consoleError.mock.calls.length).toBeGreaterThan(0);
+    expect(console.error).toHaveBeenCalledTimes(1);
+    expect(console.error).toHaveBeenCalledWith(
+      expect.stringMatching(
+        /Error formatting date.\nRangeError: Value invalid out of range for (.*) options property year/
+      )
+    );
   });
 
   it('accepts `format` prop', () => {

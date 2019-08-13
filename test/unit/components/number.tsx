@@ -6,18 +6,13 @@ import {mountFormattedComponentWithProvider} from '../testUtils';
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedNumber);
 
 describe('<FormattedNumber>', () => {
-  let consoleError;
   let intl;
 
   beforeEach(() => {
-    consoleError = jest.spyOn(console, 'error');
+    console.error = jest.fn();
     intl = createIntl({
       locale: 'en',
     });
-  });
-
-  afterEach(() => {
-    consoleError.mockRestore();
   });
 
   it('has a `displayName`', () => {
@@ -64,11 +59,16 @@ describe('<FormattedNumber>', () => {
     expect(rendered.text()).toBe(intl.formatNumber(num, options));
   });
 
-  it('fallsback and warns on invalid Intl.NumberFormat options', () => {
+  it('falls back and warns on invalid Intl.NumberFormat options', () => {
     const rendered = mountWithProvider({value: 0, style: 'invalid'}, intl);
 
     expect(rendered.text()).toBe('0');
-    expect(consoleError.mock.calls.length).toBeGreaterThan(0);
+    expect(console.error).toHaveBeenCalledWith(
+      expect.stringMatching(
+        /\[React Intl\] Error formatting number.\nRangeError: Value invalid out of range for (.*) options property style/
+      )
+    );
+    expect(console.error).toHaveBeenCalledTimes(1);
   });
 
   it('accepts `format` prop', () => {

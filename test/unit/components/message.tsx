@@ -14,7 +14,6 @@ const dummyContext = React.createContext('');
 const {Provider: DummyProvider, Consumer: DummyConsumer} = dummyContext;
 
 describe('<FormattedMessage>', () => {
-  let consoleError;
   let providerProps: Props;
   let intl: IntlShape;
 
@@ -24,11 +23,7 @@ describe('<FormattedMessage>', () => {
       defaultLocale: 'en',
     };
     intl = createIntl(providerProps);
-    consoleError = jest.spyOn(console, 'error');
-  });
-
-  afterEach(() => {
-    consoleError.mockRestore();
+    console.error = jest.fn();
   });
 
   it('has a `displayName`', () => {
@@ -49,13 +44,6 @@ describe('<FormattedMessage>', () => {
     expect(
       wrapper
         .find(FormattedMessage)
-        .dive()
-        .dive()
-    ).toMatchSnapshot();
-    expect(
-      wrapper
-        .find(FormattedMessage)
-        .dive()
         .dive()
         .dive()
     ).toMatchSnapshot();
@@ -85,8 +73,7 @@ describe('<FormattedMessage>', () => {
     );
 
     expect(rendered.text()).toBe('Hello');
-
-    expect(consoleError).toHaveBeenCalledTimes(1);
+    expect(console.error).toHaveBeenCalledTimes(1);
   });
 
   it('should work w/ multiple context', function() {
@@ -182,7 +169,7 @@ describe('<FormattedMessage>', () => {
       providerProps
     );
 
-    expect(spy).toHaveBeenCalledTimes(2);
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy.mock.calls[0]).toEqual([intl.formatMessage(descriptor)]);
 
     expect(rendered.text()).toBe('Jest');

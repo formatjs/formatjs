@@ -3,7 +3,7 @@ import {mount} from 'enzyme';
 import IntlProvider, {Props} from '../../../src/components/provider';
 import {WithIntlProps} from '../../../src/components/injectIntl';
 import {IntlShape} from '../../../src/types';
-import withIntl, {Provider} from '../../../src/components/injectIntl';
+import withIntl from '../../../src/components/injectIntl';
 
 describe('<IntlProvider>', () => {
   const now = Date.now();
@@ -30,22 +30,20 @@ describe('<IntlProvider>', () => {
 
   class Child extends React.Component<any> {
     render() {
-      return 'foo';
+      return <>{'foo'}</>;
     }
   }
 
   const IntlChild = withIntl(Child);
 
-  let consoleError;
   let dateNow;
 
   beforeEach(() => {
-    consoleError = jest.spyOn(console, 'error');
+    console.error = jest.fn();
     dateNow = jest.spyOn(Date, 'now').mockImplementation(() => now);
   });
 
   afterEach(() => {
-    consoleError.mockRestore();
     dateNow.mockRestore();
   });
 
@@ -60,10 +58,10 @@ describe('<IntlProvider>', () => {
       </IntlProvider>
     );
 
-    expect(consoleError).toHaveBeenCalledTimes(1);
-    expect(consoleError.mock.calls[0][0]).toContain(
+    expect(console.error).toHaveBeenCalledWith(
       '[React Intl] Missing locale data for locale: "undefined". Using default locale: "en" as fallback.'
     );
+    expect(console.error).toHaveBeenCalledTimes(1);
   });
 
   it('warns when `locale` prop provided has no locale data', () => {
@@ -74,10 +72,10 @@ describe('<IntlProvider>', () => {
       </IntlProvider>
     );
 
-    expect(consoleError).toHaveBeenCalledTimes(1);
-    expect(consoleError.mock.calls[0][0]).toContain(
+    expect(console.error).toHaveBeenCalledWith(
       `[React Intl] Missing locale data for locale: "${locale}". Using default locale: "en" as fallback.`
     );
+    expect(console.error).toHaveBeenCalledTimes(1);
   });
 
   it('renders its `children`', () => {
@@ -103,7 +101,7 @@ describe('<IntlProvider>', () => {
       defaultLocale: 'en-US',
       defaultFormats: {},
 
-      onError: consoleError,
+      onError: jest.fn(),
     };
 
     const rendered = mount(
@@ -234,7 +232,7 @@ describe('<IntlProvider>', () => {
       .find(Child)
       .prop('intl');
 
-    expect(consoleError).toHaveBeenCalledTimes(0);
+    expect(console.error).toHaveBeenCalledTimes(0);
 
     INTL_CONFIG_PROP_NAMES.forEach(propName => {
       expect(intl[propName]).not.toBe(props[propName]);

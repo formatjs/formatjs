@@ -4,13 +4,10 @@ import {parse} from 'intl-messageformat-parser';
 describe('format API', () => {
   const {NODE_ENV} = process.env;
 
-  let consoleError;
   let config;
   let state;
 
   beforeEach(() => {
-    consoleError = jest.spyOn(console, 'error');
-
     config = {
       locale: 'en',
 
@@ -64,7 +61,7 @@ describe('format API', () => {
       defaultLocale: 'en',
       defaultFormats: {},
 
-      onError: consoleError,
+      onError: jest.fn(),
     };
 
     state = {
@@ -88,7 +85,6 @@ describe('format API', () => {
 
   afterEach(() => {
     process.env.NODE_ENV = NODE_ENV;
-    consoleError.mockRestore();
   });
 
   describe('exports', () => {
@@ -120,10 +116,10 @@ describe('format API', () => {
       expect(formatDate()).toBe(df.format());
     });
 
-    it('fallsback and warns when a non-finite value is provided', () => {
+    it('falls back and warns when a non-finite value is provided', () => {
       expect(formatDate(NaN)).toBe('NaN');
       expect(formatDate('')).toBe(df.format(''));
-      expect(consoleError).toHaveBeenCalledTimes(1);
+      expect(config.onError).toHaveBeenCalledTimes(1);
     });
 
     it('formats falsy finite values', () => {
@@ -170,11 +166,13 @@ describe('format API', () => {
         expect(() => formatDate(0, {year: 'numeric'})).not.toThrow();
       });
 
-      it('fallsback and warns on invalid Intl.DateTimeFormat options', () => {
+      it('falls back and warns on invalid Intl.DateTimeFormat options', () => {
         expect(formatDate(0, {year: 'invalid'})).toBe('0');
-        expect(consoleError).toHaveBeenCalledTimes(1);
-        expect(consoleError.mock.calls[0][0]).toContain(
-          '[React Intl] Error formatting date.\nRangeError'
+        expect(config.onError).toHaveBeenCalledTimes(1);
+        expect(config.onError).toHaveBeenCalledWith(
+          expect.stringMatching(
+            /\[React Intl\] Error formatting date.\nRangeError: Value invalid out of range for (.*) options property year/
+          )
         );
       });
 
@@ -209,8 +207,8 @@ describe('format API', () => {
         df = new Intl.DateTimeFormat(config.locale);
 
         expect(formatDate(date, {format})).toBe(df.format(date));
-        expect(consoleError).toHaveBeenCalledTimes(1);
-        expect(consoleError.mock.calls[0][0]).toBe(
+        expect(config.onError).toHaveBeenCalledTimes(1);
+        expect(config.onError).toHaveBeenCalledWith(
           `[React Intl] No date format named: ${format}`
         );
       });
@@ -246,10 +244,10 @@ describe('format API', () => {
       expect(formatTime()).toBe(df.format());
     });
 
-    it('fallsback and warns when a non-finite value is provided', () => {
+    it('falls back and warns when a non-finite value is provided', () => {
       expect(formatTime(NaN)).toBe('NaN');
       expect(formatTime('')).toBe(df.format(''));
-      expect(consoleError).toHaveBeenCalledTimes(1);
+      expect(config.onError).toHaveBeenCalledTimes(1);
     });
 
     it('formats falsy finite values', () => {
@@ -300,11 +298,13 @@ describe('format API', () => {
         expect(() => formatTime(0, {hour: '2-digit'})).not.toThrow();
       });
 
-      it('fallsback and warns on invalid Intl.DateTimeFormat options', () => {
+      it('falls back and warns on invalid Intl.DateTimeFormat options', () => {
         expect(formatTime(0, {hour: 'invalid'})).toBe('0');
-        expect(consoleError).toHaveBeenCalledTimes(1);
-        expect(consoleError.mock.calls[0][0]).toContain(
-          '[React Intl] Error formatting time.\nRangeError'
+        expect(config.onError).toHaveBeenCalledTimes(1);
+        expect(config.onError).toHaveBeenCalledWith(
+          expect.stringMatching(
+            /\[React Intl\] Error formatting time.\nRangeError: Value invalid out of range for (.*) options property hour/
+          )
         );
       });
 
@@ -337,8 +337,8 @@ describe('format API', () => {
         const format = 'missing';
 
         expect(formatTime(date, {format})).toBe(df.format(date));
-        expect(consoleError).toHaveBeenCalledTimes(1);
-        expect(consoleError.mock.calls[0][0]).toBe(
+        expect(config.onError).toHaveBeenCalledTimes(1);
+        expect(config.onError).toHaveBeenCalledWith(
           `[React Intl] No time format named: ${format}`
         );
       });
@@ -404,17 +404,19 @@ describe('format API', () => {
       formatRelativeTime = f.formatRelativeTime.bind(null, config, state);
     });
 
-    it('fallsback and warns when no value is provided', () => {
+    it('falls back and warns when no value is provided', () => {
       expect(formatRelativeTime()).toBe('undefined');
-      expect(consoleError).toHaveBeenCalledTimes(1);
-      expect(consoleError.mock.calls[0][0]).toContain(
-        '[React Intl] Error formatting relative time.\nRangeError'
+      expect(config.onError).toHaveBeenCalledTimes(1);
+      expect(config.onError).toHaveBeenCalledWith(
+        expect.stringContaining(
+          '[React Intl] Error formatting relative time.\nRangeError: Value need to be finite number for Intl.RelativeTimeFormat.prototype.format()'
+        )
       );
     });
 
-    it('fallsback and warns when a non-finite value is provided', () => {
+    it('falls back and warns when a non-finite value is provided', () => {
       expect(formatRelativeTime(NaN)).toBe('NaN');
-      expect(consoleError).toHaveBeenCalledTimes(1);
+      expect(config.onError).toHaveBeenCalledTimes(1);
     });
 
     it('formats falsy finite values', () => {
@@ -447,10 +449,11 @@ describe('format API', () => {
 
       it('falls back and warns on invalid IntlRelativeFormat options', () => {
         expect(formatRelativeTime(0, 'invalid')).toBe('0');
-        expect(consoleError).toHaveBeenCalledTimes(1);
-        expect(consoleError.mock.calls[0][0]).toContain(
-          `[React Intl] Error formatting relative time.
-RangeError: Invalid unit argument`
+        expect(config.onError).toHaveBeenCalledTimes(1);
+        expect(config.onError).toHaveBeenCalledWith(
+          expect.stringMatching(
+            /\[React Intl\] Error formatting relative time.\nRangeError: Invalid unit argument for (.*) 'invalid'/
+          )
         );
       });
 
@@ -488,8 +491,8 @@ RangeError: Invalid unit argument`
         expect(formatRelativeTime(-1, 'second', {format})).toBe(
           rf.format(-1, 'second')
         );
-        expect(consoleError).toHaveBeenCalledTimes(1);
-        expect(consoleError.mock.calls[0][0]).toBe(
+        expect(config.onError).toHaveBeenCalledTimes(1);
+        expect(config.onError).toHaveBeenCalledWith(
           `[React Intl] No relative format named: ${format}`
         );
       });
@@ -543,11 +546,13 @@ RangeError: Invalid unit argument`
         expect(() => formatNumber(0, {style: 'percent'})).not.toThrow();
       });
 
-      it('fallsback and warns on invalid Intl.NumberFormat options', () => {
+      it('falls back and warns on invalid Intl.NumberFormat options', () => {
         expect(formatNumber(0, {style: 'invalid'})).toBe(String(0));
-        expect(consoleError).toHaveBeenCalledTimes(1);
-        expect(consoleError.mock.calls[0][0]).toContain(
-          '[React Intl] Error formatting number.\nRangeError'
+        expect(config.onError).toHaveBeenCalledTimes(1);
+        expect(config.onError).toHaveBeenCalledWith(
+          expect.stringMatching(
+            /\[React Intl\] Error formatting number.\nRangeError: Value invalid out of range for (.*) options property style/
+          )
         );
       });
 
@@ -582,8 +587,8 @@ RangeError: Invalid unit argument`
         nf = new Intl.NumberFormat(config.locale);
 
         expect(formatNumber(num, {format})).toBe(nf.format(num));
-        expect(consoleError).toHaveBeenCalledTimes(1);
-        expect(consoleError.mock.calls[0][0]).toBe(
+        expect(config.onError).toHaveBeenCalledTimes(1);
+        expect(config.onError).toHaveBeenCalledWith(
           `[React Intl] No number format named: ${format}`
         );
       });
@@ -601,7 +606,7 @@ RangeError: Invalid unit argument`
 
     it('should warn for invalid opt', function() {
       expect(formatPlural(0, {type: 'invalid'})).toBe('other');
-      expect(consoleError).toHaveBeenCalled();
+      expect(config.onError).toHaveBeenCalledTimes(1);
     });
 
     it('formats falsy values', () => {
@@ -817,8 +822,8 @@ RangeError: Invalid unit argument`
           )
         ).toBe(mf.format(values));
 
-        expect(consoleError).toHaveBeenCalledTimes(1);
-        expect(consoleError.mock.calls[0][0]).toContain(
+        expect(config.onError).toHaveBeenCalledTimes(1);
+        expect(config.onError).toHaveBeenCalledWith(
           `[React Intl] Missing message: "${id}" for locale: "${locale}", using default message as fallback.`
         );
       });
@@ -838,11 +843,11 @@ RangeError: Invalid unit argument`
           )
         ).toBe(id);
 
-        expect(consoleError).toHaveBeenCalledTimes(2);
-        expect(consoleError.mock.calls[0][0]).toContain(
+        expect(config.onError).toHaveBeenCalledTimes(2);
+        expect(config.onError).toHaveBeenCalledWith(
           `[React Intl] Missing message: "${id}" for locale: "${locale}"`
         );
-        expect(consoleError.mock.calls[1][0]).toContain(
+        expect(config.onError).toHaveBeenCalledWith(
           `[React Intl] Cannot format message: "${id}", using message id as fallback.`
         );
       });
@@ -863,9 +868,11 @@ RangeError: Invalid unit argument`
           )
         ).toBe(mf.format(values));
 
-        expect(consoleError).toHaveBeenCalledTimes(1);
-        expect(consoleError.mock.calls[0][0]).toContain(
-          `[React Intl] Error formatting message: "${id}" for locale: "${locale}", using default message as fallback.`
+        expect(config.onError).toHaveBeenCalledTimes(1);
+        expect(config.onError).toHaveBeenCalledWith(
+          expect.stringContaining(
+            `[React Intl] Error formatting message: "${id}" for locale: "${locale}", using default message as fallback.`
+          )
         );
       });
 
@@ -885,9 +892,11 @@ RangeError: Invalid unit argument`
           )
         ).toBe(mf.format(values));
 
-        expect(consoleError).toHaveBeenCalledTimes(1);
-        expect(consoleError.mock.calls[0][0]).toContain(
-          `[React Intl] Error formatting message: "${id}" for locale: "${locale}", using default message as fallback.`
+        expect(config.onError).toHaveBeenCalledTimes(1);
+        expect(config.onError).toHaveBeenCalledWith(
+          expect.stringContaining(
+            `[React Intl] Error formatting message: "${id}" for locale: "${locale}", using default message as fallback.`
+          )
         );
       });
 
@@ -902,15 +911,21 @@ RangeError: Invalid unit argument`
           })
         ).toBe(messages[id]);
 
-        expect(consoleError).toHaveBeenCalledTimes(3);
-        expect(consoleError.mock.calls[0][0]).toContain(
-          `[React Intl] Error formatting message: "${id}" for locale: "${locale}"`
+        expect(config.onError).toHaveBeenCalledTimes(3);
+        expect(config.onError).toHaveBeenCalledWith(
+          expect.stringContaining(
+            `[React Intl] Error formatting message: "${id}" for locale: "${locale}"`
+          )
         );
-        expect(consoleError.mock.calls[1][0]).toContain(
-          `[React Intl] Error formatting the default message for: "${id}"`
+        expect(config.onError).toHaveBeenCalledWith(
+          expect.stringContaining(
+            `[React Intl] Error formatting the default message for: "${id}"`
+          )
         );
-        expect(consoleError.mock.calls[2][0]).toContain(
-          `[React Intl] Cannot format message: "${id}", using message source as fallback.`
+        expect(config.onError).toHaveBeenCalledWith(
+          expect.stringContaining(
+            `[React Intl] Cannot format message: "${id}", using message source as fallback.`
+          )
         );
       });
 
@@ -925,12 +940,16 @@ RangeError: Invalid unit argument`
           })
         ).toBe(messages[id]);
 
-        expect(consoleError).toHaveBeenCalledTimes(2);
-        expect(consoleError.mock.calls[0][0]).toContain(
-          `[React Intl] Error formatting message: "${id}" for locale: "${locale}"`
+        expect(config.onError).toHaveBeenCalledTimes(2);
+        expect(config.onError).toHaveBeenCalledWith(
+          expect.stringContaining(
+            `[React Intl] Error formatting message: "${id}" for locale: "${locale}"`
+          )
         );
-        expect(consoleError.mock.calls[1][0]).toContain(
-          `[React Intl] Cannot format message: "${id}", using message source as fallback.`
+        expect(config.onError).toHaveBeenCalledWith(
+          expect.stringContaining(
+            `[React Intl] Cannot format message: "${id}", using message source as fallback.`
+          )
         );
       });
 
@@ -947,15 +966,21 @@ RangeError: Invalid unit argument`
           })
         ).toBe(messages.invalid);
 
-        expect(consoleError).toHaveBeenCalledTimes(3);
-        expect(consoleError.mock.calls[0][0]).toContain(
-          `[React Intl] Missing message: "${id}" for locale: "${locale}", using default message as fallback.`
+        expect(config.onError).toHaveBeenCalledTimes(3);
+        expect(config.onError).toHaveBeenCalledWith(
+          expect.stringContaining(
+            `[React Intl] Missing message: "${id}" for locale: "${locale}", using default message as fallback.`
+          )
         );
-        expect(consoleError.mock.calls[1][0]).toContain(
-          `[React Intl] Error formatting the default message for: "${id}"`
+        expect(config.onError).toHaveBeenCalledWith(
+          expect.stringContaining(
+            `[React Intl] Error formatting the default message for: "${id}"`
+          )
         );
-        expect(consoleError.mock.calls[2][0]).toContain(
-          `[React Intl] Cannot format message: "${id}", using message source as fallback.`
+        expect(config.onError).toHaveBeenCalledWith(
+          expect.stringContaining(
+            `[React Intl] Cannot format message: "${id}", using message source as fallback.`
+          )
         );
       });
 
@@ -964,12 +989,16 @@ RangeError: Invalid unit argument`
 
         expect(formatMessage({id: id})).toBe(id);
 
-        expect(consoleError).toHaveBeenCalledTimes(2);
-        expect(consoleError.mock.calls[0][0]).toContain(
-          `[React Intl] Missing message: "${id}" for locale: "${config.locale}"`
+        expect(config.onError).toHaveBeenCalledTimes(2);
+        expect(config.onError).toHaveBeenCalledWith(
+          expect.stringContaining(
+            `[React Intl] Missing message: "${id}" for locale: "${config.locale}"`
+          )
         );
-        expect(consoleError.mock.calls[1][0]).toContain(
-          `[React Intl] Cannot format message: "${id}", using message id as fallback.`
+        expect(config.onError).toHaveBeenCalledWith(
+          expect.stringContaining(
+            `[React Intl] Cannot format message: "${id}", using message id as fallback.`
+          )
         );
       });
 
@@ -984,12 +1013,16 @@ RangeError: Invalid unit argument`
           })
         ).toBe(id);
 
-        expect(consoleError).toHaveBeenCalledTimes(2);
-        expect(consoleError.mock.calls[0][0]).toContain(
-          `[React Intl] Missing message: "${id}" for locale: "${locale}"`
+        expect(config.onError).toHaveBeenCalledTimes(2);
+        expect(config.onError).toHaveBeenCalledWith(
+          expect.stringContaining(
+            `[React Intl] Missing message: "${id}" for locale: "${locale}"`
+          )
         );
-        expect(consoleError.mock.calls[1][0]).toContain(
-          `[React Intl] Cannot format message: "${id}", using message id as fallback.`
+        expect(config.onError).toHaveBeenCalledWith(
+          expect.stringContaining(
+            `[React Intl] Cannot format message: "${id}", using message id as fallback.`
+          )
         );
       });
     });
