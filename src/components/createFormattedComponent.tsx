@@ -3,15 +3,11 @@ import {invariantIntlContext} from '../utils';
 import {IntlShape, FormatDateOptions, FormatNumberOptions} from '../types';
 import {Context} from './injectIntl';
 
-const displayNames: {
-  formatDate: 'FormattedDate';
-  formatTime: 'FormattedTime';
-  formatNumber: 'FormattedNumber';
-} = {
-  formatDate: 'FormattedDate',
-  formatTime: 'FormattedTime',
-  formatNumber: 'FormattedNumber',
-};
+enum DisplayName {
+  formatDate = 'FormattedDate',
+  formatTime = 'FormattedTime',
+  formatNumber = 'FormattedNumber',
+}
 
 type Formatter = {
   formatDate: FormatDateOptions;
@@ -44,6 +40,6 @@ export default function createFormattedComponent<Name extends keyof Formatter>(
       }}
     </Context.Consumer>
   );
-  Component.displayName = displayNames[name];
+  Component.displayName = DisplayName[name];
   return Component;
 }
