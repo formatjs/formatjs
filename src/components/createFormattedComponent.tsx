@@ -19,7 +19,7 @@ type Formatter = {
   formatNumber: FormatNumberOptions;
 };
 
-export default function createFomattedComponent<Name extends keyof Formatter>(
+export default function createFormattedComponent<Name extends keyof Formatter>(
   name: Name
 ) {
   type Options = Formatter[Name];
@@ -34,18 +34,16 @@ export default function createFomattedComponent<Name extends keyof Formatter>(
       {intl => {
         invariantIntlContext(intl);
 
-        const {value, children} = props;
-        const {[name]: formatFn, textComponent: Text} = intl;
-        const formattedValue = formatFn(value as any, props);
+        const formattedValue = intl[name](props.value as any, props);
 
-        if (typeof children === 'function') {
-          return children(formattedValue);
+        if (typeof props.children === 'function') {
+          return props.children(formattedValue);
         }
-        if (Text) {
-          return <Text>{formattedValue}</Text>;
+        if (intl.textComponent) {
+          return <intl.textComponent>{formattedValue}</intl.textComponent>;
         }
         // Work around @types/react where React.FC cannot return string
-        return <>{formattedValue as any}</>;
+        return <>{formattedValue}</>;
       }}
     </Context.Consumer>
   );
