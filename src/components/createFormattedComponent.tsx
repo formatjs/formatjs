@@ -39,11 +39,8 @@ export default function createFormattedComponent<Name extends keyof Formatter>(
         if (typeof props.children === 'function') {
           return props.children(formattedValue);
         }
-        if (intl.textComponent) {
-          return <intl.textComponent>{formattedValue}</intl.textComponent>;
-        }
-        // Work around @types/react where React.FC cannot return string
-        return <>{formattedValue}</>;
+        const Text = intl.textComponent || React.Fragment;
+        return <Text>{formattedValue}</Text>;
       }}
     </Context.Consumer>
   );
