@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 import {PrimitiveType, FormatXMLElementFn} from 'intl-messageformat';
-import {Context, WrappedComponentProps} from './injectIntl';
+import {Context} from './injectIntl';
 import {MessageDescriptor} from '../types';
 import {formatMessage as baseFormatMessage} from '../format';
 import {
@@ -42,7 +42,7 @@ const defaultFormatMessage = (
 
 export interface Props<
   V extends Record<string, any> = Record<string, React.ReactNode>
-> extends MessageDescriptor, WrappedComponentProps {
+> extends MessageDescriptor {
   values?: V;
   tagName?: React.ElementType<any>;
   children?(...nodes: React.ReactNodeArray): React.ReactNode;

@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import {Context, WrappedComponentProps} from './injectIntl';
+import {Context} from './injectIntl';
 import {FormatRelativeTimeOptions} from '../types';
 import {Unit} from '@formatjs/intl-relativetimeformat';
 import * as invariant_ from 'invariant';
@@ -60,9 +60,7 @@ function valueToSeconds(value?: number, unit?: Unit): number {
   }
 }
 
-export interface Props
-  extends FormatRelativeTimeOptions,
-    WrappedComponentProps {
+export interface Props extends FormatRelativeTimeOptions {
   value?: number;
   unit?: Unit;
   updateIntervalInSeconds?: number;

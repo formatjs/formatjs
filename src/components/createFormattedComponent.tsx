@@ -1,46 +1,45 @@
 import * as React from 'react';
+import {invariantIntlContext} from '../utils';
 import {IntlShape, FormatDateOptions, FormatNumberOptions} from '../types';
-import withIntl, {WrappedComponentProps} from './injectIntl';
+import {Context} from './injectIntl';
 
-export default function createFormattedComponent<
-  T extends 'formatDate' | 'formatTime' | 'formatNumber'
->(type: T) {
-  type FormatOptions<T> = T extends 'formatDate'
-    ? FormatDateOptions
-    : T extends 'formatTime'
-    ? FormatDateOptions
-    : FormatNumberOptions;
-  type FormatFn = IntlShape[T];
-  type Props = FormatOptions<T> &
-    WrappedComponentProps & {
-      value: Parameters<FormatFn>[0];
-      children?(val: string): React.ReactElement | null;
-    };
-  const Component: React.FC<Props> = props => {
-    const {
-      value,
-      children,
-      intl: {[type]: formatFn, textComponent: Text},
-    } = props;
+enum DisplayName {
+  formatDate = 'FormattedDate',
+  formatTime = 'FormattedTime',
+  formatNumber = 'FormattedNumber',
+}
 
-    let formattedValue = formatFn(value as any, props);
+type Formatter = {
+  formatDate: FormatDateOptions;
+  formatTime: FormatDateOptions;
+  formatNumber: FormatNumberOptions;
+};
 
-    if (typeof children === 'function') {
-      return children(formattedValue);
-    }
-    if (Text) {
-      return <Text>{formattedValue}</Text>;
-    }
-    // Work around @types/react where React.FC cannot return string
-    return formattedValue as any;
+export default function createFormattedComponent<Name extends keyof Formatter>(
+  name: Name
+) {
+  type Options = Formatter[Name];
+  type FormatFn = IntlShape[Name];
+  type Props = Options & {
+    value: Parameters<FormatFn>[0];
+    children?: (val: string) => React.ReactElement | null;
   };
-  Component.displayName =
-    type === 'formatDate'
-      ? 'FormattedDate'
-      : type === 'formatTime'
-      ? 'FormattedTime'
-      : 'FormattedNumber';
-  return {
-    Component: withIntl(Component),
-  };
+
+  const Component: React.FC<Props> = props => (
+    <Context.Consumer>
+      {intl => {
+        invariantIntlContext(intl);
+
+        const formattedValue = intl[name](props.value as any, props);
+
+        if (typeof props.children === 'function') {
+          return props.children(formattedValue);
+        }
+        const Text = intl.textComponent || React.Fragment;
+        return <Text>{formattedValue}</Text>;
+      }}
+    </Context.Consumer>
+  );
+  Component.displayName = DisplayName[name];
+  return Component;
 }
