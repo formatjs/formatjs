@@ -544,6 +544,41 @@ describe('IntlMessageFormat', function() {
         })
       ).to.deep.equal(['hello ', {str: 'world'}, ' ', {str: 'gaga'}]);
     });
+    it('message w/ placeholder & >', function() {
+      var mf = new IntlMessageFormat(
+        '< hello <b>world</b> {token} <> <a>{placeholder}</a>',
+        'en'
+      );
+      expect(
+        mf.formatXMLMessage({
+          b: str => ({str}),
+          token: '<asd>',
+          placeholder: '>',
+          a: str => ({str}),
+        })
+      ).to.deep.equal(['< hello ', {str: 'world'}, ' <asd> <> ', {str: '>'}]);
+    });
+    it('select message w/ placeholder & >', function() {
+      var mf = new IntlMessageFormat(
+        '{gender, select, male {< hello <b>world</b> {token} <> <a>{placeholder}</a>} female {<b>foo <> bar</b>}}',
+        'en'
+      );
+      expect(
+        mf.formatXMLMessage({
+          gender: 'male',
+          b: str => ({str}),
+          token: '<asd>',
+          placeholder: '>',
+          a: str => ({str}),
+        })
+      ).to.deep.equal(['< hello ', {str: 'world'}, ' <asd> <> ', {str: '>'}]);
+      expect(
+        mf.formatXMLMessage({
+          gender: 'female',
+          b: str => ({str}),
+        })
+      ).to.deep.equal([{str: 'foo <> bar'}]);
+    });
     it('should treat tag as legacy HTML if no value is provided', function() {
       var mf = new IntlMessageFormat(
         'hello <b>world</b> <a>{placeholder}</a>',

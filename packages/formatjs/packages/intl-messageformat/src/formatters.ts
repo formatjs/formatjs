@@ -122,22 +122,18 @@ export function formatToParts(
       );
     }
 
-    const value = values[varName];
+    let value = values[varName];
     if (isArgumentElement(el)) {
       if (!value || typeof value === 'string' || typeof value === 'number') {
-        result.push({
-          type: PART_TYPE.literal,
-          value:
-            typeof value === 'string' || typeof value === 'number'
-              ? String(value)
-              : '',
-        });
-      } else {
-        result.push({
-          type: PART_TYPE.argument,
-          value,
-        });
+        value =
+          typeof value === 'string' || typeof value === 'number'
+            ? String(value)
+            : '';
       }
+      result.push({
+        type: PART_TYPE.argument,
+        value,
+      });
       continue;
     }
 
@@ -257,7 +253,20 @@ function restoreRichPlaceholderMessage(
   return text
     .split(TOKEN_REGEX)
     .filter(Boolean)
-    .map(c => objectParts[c] || c);
+    .map(c => objectParts[c] || c)
+    .reduce((all, c) => {
+      if (!all.length) {
+        all.push(c);
+      } else if (
+        typeof c === 'string' &&
+        typeof all[all.length - 1] === 'string'
+      ) {
+        all[all.length - 1] += c;
+      } else {
+        all.push(c);
+      }
+      return all;
+    }, []);
 }
 
 export function formatXMLMessage(
@@ -279,7 +288,7 @@ export function formatXMLMessage(
   );
   const objectParts: Record<string, ArgumentPart['value']> = {};
   const formattedMessage = parts.reduce((all, part) => {
-    if (typeof part.value === 'string' || part.type === PART_TYPE.literal) {
+    if (part.type === PART_TYPE.literal) {
       return (all += part.value);
     }
     const id = generateId();
