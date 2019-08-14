@@ -166,14 +166,14 @@ export default injectIntl(ClassComponent);
 
 ```ts
 interface IntlConfig {
-  locale?: string;
+  locale: string;
   timeZone?: string;
-  formats?: CustomFormats;
-  textComponent?: any;
-  messages?: Record<string, string>;
+  formats: CustomFormats;
+  textComponent?: React.ComponentType | keyof React.ReactHTML;
+  messages: Record<string, string> | Record<string, MessageFormatElement[]>;
   defaultLocale: string;
-  defaultFormats?: CustomFormats;
-  onError?(err: string): void;
+  defaultFormats: CustomFormats;
+  onError(err: string): void;
 }
 
 interface IntlFormatters {

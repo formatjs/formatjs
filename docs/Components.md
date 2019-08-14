@@ -51,8 +51,8 @@ interface IntlConfig {
   locale: string;
   timeZone?: string;
   formats: CustomFormats;
-  textComponent: React.ComponentType | keyof React.ReactHTML;
-  messages: Record<string, string>;
+  textComponent?: React.ComponentType | keyof React.ReactHTML;
+  messages: Record<string, string> | Record<string, MessageFormatElement[]>;
   defaultLocale: string;
   defaultFormats: CustomFormats;
   onError(err: string): void;
