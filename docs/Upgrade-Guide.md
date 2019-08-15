@@ -270,7 +270,7 @@ Now you can do:
 <FormattedMessage
   defaultMessage="To buy a shoe, <a>visit our website</a> and <cta>eat a shoe</cta>"
   values={{
-    link: msg => (
+    a: msg => (
       <a class="external_link" target="_blank" href="https://www.shoe.com/">
         {msg}
       </a>
