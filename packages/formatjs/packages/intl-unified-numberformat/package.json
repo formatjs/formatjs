@@ -1,0 +1,40 @@
+{
+  "name": "@formatjs/intl-unified-numberformat",
+  "version": "0.1.0",
+  "description": "Ponyfill for intl unified numberformat proposal",
+  "keywords": [
+    "polyfill",
+    "i18n",
+    "numberformat",
+    "unified"
+  ],
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "homepage": "https://formatjs.io/",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/formatjs/formatjs.git"
+  },
+  "devDependencies": {
+    "formatjs-extract-cldr-data": "^9.4.2"
+  },
+  "scripts": {
+    "build": "npm run cldr && npm run compile",
+    "cldr": "node scripts/cldr",
+    "clean": "rimraf dist lib",
+    "compile": "tsc && tsc -p tsconfig.cjs.json",
+    "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json cross-env NODE_ENV=test jest",
+    "test": "npm run jest"
+  },
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  }
+}

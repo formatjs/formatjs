@@ -7,17 +7,17 @@
 /* global describe, it */
 'use strict';
 
-import extractData from '../src';
+import {extractAllRelativeFields} from '../src';
 
 describe('exports', function() {
   it('should have a single default export function', function() {
-    expect(typeof extractData).toBe('function');
-    expect(Object.keys(extractData)).toEqual([]);
+    expect(typeof extractAllRelativeFields).toBe('function');
+    expect(Object.keys(extractAllRelativeFields)).toEqual([]);
   });
 });
 
 describe('Data shape', function() {
-  var data = extractData({
+  var data = extractAllRelativeFields({
     relativeFields: true,
   });
 
@@ -162,30 +162,30 @@ describe('Data shape', function() {
   });
 });
 
-describe('extractData()', function() {
+describe('extractAllRelativeFields()', function() {
   it('should always return an object', function() {
-    expect(extractData).not.toThrow();
-    expect(typeof extractData()).toBe('object');
+    expect(extractAllRelativeFields).not.toThrow();
+    expect(typeof extractAllRelativeFields()).toBe('object');
   });
 
   describe('Options', function() {
     describe('locales', function() {
       it('should default to all available locales', function() {
-        var data = extractData();
+        var data = extractAllRelativeFields();
         expect(Object.keys(data).length).toBeGreaterThan(0);
       });
 
       it('should only accept an array of strings', function() {
-        expect(() => extractData({locales: []})).not.toThrow();
-        expect(() => extractData({locales: ['en']})).not.toThrow();
+        expect(() => extractAllRelativeFields({locales: []})).not.toThrow();
+        expect(() => extractAllRelativeFields({locales: ['en']})).not.toThrow();
       });
 
       it.skip('should throw when no data exists for a locale', function() {
-        expect(extractData).toThrow();
+        expect(extractAllRelativeFields).toThrow();
       });
 
       it('should always contribute an entry for all specified `locales`', function() {
-        var data = extractData({
+        var data = extractAllRelativeFields({
           locales: ['en-US', 'zh-Hans-SG'],
           relativeFields: true,
         });
@@ -196,7 +196,7 @@ describe('extractData()', function() {
       });
 
       it('should recursively expand `locales` to their roots', function() {
-        const data = extractData({
+        const data = extractAllRelativeFields({
           locales: ['en-US', 'zh-Hans-SG'],
           relativeFields: true,
         });
@@ -209,7 +209,7 @@ describe('extractData()', function() {
 
       it('should accept `locales` of any case and normalize them', function() {
         const locales = Object.keys(
-          extractData({
+          extractAllRelativeFields({
             locales: ['en-us', 'ZH-HANT-HK'],
           })
         );
@@ -220,7 +220,7 @@ describe('extractData()', function() {
 
     describe('relativeFields', function() {
       it('should contribute a `fields` object property', function() {
-        var data = extractData({
+        var data = extractAllRelativeFields({
           locales: ['en'],
           relativeFields: true,
         });
@@ -233,7 +233,7 @@ describe('extractData()', function() {
 
   describe('Locale hierarchy', function() {
     it('should determine the correct parent locale', function() {
-      var data = extractData({
+      var data = extractAllRelativeFields({
         locales: ['en', 'pt-MZ', 'zh-Hant-HK'],
       });
 
@@ -250,7 +250,7 @@ describe('extractData()', function() {
     it('should de-duplicate data with suitable ancestors', function() {
       var locales = ['es-MX', 'es-VE'];
 
-      var data = extractData({
+      var data = extractAllRelativeFields({
         locales: locales,
         relativeFields: true,
       });

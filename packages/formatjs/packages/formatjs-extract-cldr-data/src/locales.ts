@@ -8,11 +8,25 @@
 // These are the exceptions to the default algorithm for determining a locale's
 // parent locale.
 import * as PARENT_LOCALES from 'cldr-core/supplemental/parentLocales.json';
+import {resolve, dirname} from 'path';
 const PARENT_LOCALES_HASH =
   PARENT_LOCALES.supplemental.parentLocales.parentLocale;
-
-import {dateFields} from './dateFields';
 import {Locale} from './types';
+import {sync as globSync} from 'glob';
+
+export const dateFieldsLocales = globSync('*/dateFields.json', {
+  cwd: resolve(
+    dirname(require.resolve('cldr-dates-full/package.json')),
+    './main'
+  ),
+}).map(dirname);
+
+export const unitsLocales = globSync('*/units.json', {
+  cwd: resolve(
+    dirname(require.resolve('cldr-units-full/package.json')),
+    './main'
+  ),
+}).map(dirname);
 
 // Some locales that have a `pluralRuleFunction` don't have a `dateFields.json`
 // file, and visa versa, so this creates a unique collection of all locales in
@@ -20,7 +34,8 @@ import {Locale} from './types';
 const ALL_LOCALES_HASH: Record<Locale, Locale> = Object.keys(
   PARENT_LOCALES_HASH
 )
-  .concat(Object.keys(dateFields))
+  .concat(dateFieldsLocales)
+  .concat(unitsLocales)
   .map(function(locale) {
     if (locale === 'en-US-POSIX') {
       return 'en-US';
@@ -65,10 +80,6 @@ export function getParentLocale(locale: Locale): Locale | undefined {
 
   // When there's nothing left in the hierarchy, the parent is the "root".
   return 'root';
-}
-
-export function hasDateFields(locale: Locale): boolean {
-  return dateFields.hasOwnProperty(normalizeLocale(locale));
 }
 
 export function normalizeLocale(locale: Locale): Locale {

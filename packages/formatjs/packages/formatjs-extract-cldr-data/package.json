@@ -6,8 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest",
-    "cldr": "cross-env TS_NODE_PROJECT=scripts/tsconfig.json ts-node scripts/aggregateLocaleFiles",
-    "build": "npm run cldr && tsc",
+    "build": "tsc",
     "cover": "npm t -- --coverage"
   },
   "author": "Eric Ferraiuolo <edf@ericf.me>",
@@ -16,6 +15,7 @@
     "@types/glob": "^7.1.1",
     "cldr-core": "^35.0.0",
     "cldr-dates-full": "^35.0.0",
+    "cldr-units-full": "35.1.0",
     "glob": "^7.0.0"
   },
   "repository": {

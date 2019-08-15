@@ -1,11 +1,9 @@
-const {default: extractData, processAliases } = require('formatjs-extract-cldr-data');	
+const {extractAllRelativeFields, processAliases } = require('formatjs-extract-cldr-data');	
 const { resolve, join } = require('path');	
 const { outputFileSync } = require('fs-extra');	
 const serialize = require('serialize-javascript');	
 
- const data = extractData({
-  relativeFields: true,
- });	
+ const data = extractAllRelativeFields();	
 
  function extractLocales(locales) {	
   return Object.keys(data).reduce(function(files, locale) {	
