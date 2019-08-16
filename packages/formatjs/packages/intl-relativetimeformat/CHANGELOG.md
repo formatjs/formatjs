@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.6.4...@formatjs/intl-relativetimeformat@2.7.0) (2019-08-16)
+
+
+### Features
+
+* **formatjs-extract-cldr-data:** polyfill units ([e291eeb](https://github.com/formatjs/formatjs/commit/e291eeb))
+
+
+
+
+
 ## [2.6.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.6.3...@formatjs/intl-relativetimeformat@2.6.4) (2019-08-16)
 
 
