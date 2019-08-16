@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.6.3...@formatjs/intl-relativetimeformat@2.6.4) (2019-08-16)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** make supportedLocalesOf reflect data we have loaded, fix [#157](https://github.com/formatjs/formatjs/issues/157) ([58693be](https://github.com/formatjs/formatjs/commit/58693be))
+
+
+
+
+
 ## [2.6.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.6.2...@formatjs/intl-relativetimeformat@2.6.3) (2019-08-12)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat
