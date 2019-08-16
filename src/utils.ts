@@ -19,7 +19,7 @@ import IntlRelativeTimeFormat from '@formatjs/intl-relativetimeformat';
 // does not export a default
 // https://github.com/rollup/rollup/issues/1267
 import * as invariant_ from 'invariant';
-const invariant: typeof invariant_ = (invariant_ as any).default || invariant_
+const invariant: typeof invariant_ = (invariant_ as any).default || invariant_;
 
 declare global {
   namespace Intl {

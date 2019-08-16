@@ -10,7 +10,7 @@ import * as React from 'react';
 // does not export a default
 // https://github.com/rollup/rollup/issues/1267
 import * as invariant_ from 'invariant';
-const invariant: typeof invariant_ = (invariant_ as any).default || invariant_
+const invariant: typeof invariant_ = (invariant_ as any).default || invariant_;
 
 import {
   Formatters,

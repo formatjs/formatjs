@@ -153,13 +153,13 @@ If you previously were using `addLocaleData` to support older browsers, we recom
 
 ```js
 if (!Intl.PluralRules) {
-	require('intl-pluralrules')
+  require('intl-pluralrules');
 }
 
 if (!Intl.RelativeTimeFormat) {
-  require('@formatjs/intl-relativetimeformat/polyfill')
+  require('@formatjs/intl-relativetimeformat/polyfill');
   require('@formatjs/intl-relativetimeformat/dist/include-aliases'); // Optional, if you care about edge cases in locale resolution, e.g zh-CN -> zh-Hans-CN
-  require('@formatjs/intl-relativetimeformat/dist/locale-data/en')// Add locale data for de
+  require('@formatjs/intl-relativetimeformat/dist/locale-data/en'); // Add locale data for de
 }
 ```
 
