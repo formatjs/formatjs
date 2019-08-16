@@ -512,6 +512,18 @@ describe('IntlMessageFormat', function() {
       expect(mf.format({num: 0})).to.equal('one');
       expect(mf.format({num: 1})).to.equal('other');
     });
+    it('should take empty string value', function() {
+      const msg = '"{value}"';
+      const mf = new IntlMessageFormat(msg, 'en');
+
+      expect(mf.formatToParts({value: ''})).to.deep.equal([
+        {type: PART_TYPE.literal, value: '"'},
+        {type: PART_TYPE.argument, value: ''},
+        {type: PART_TYPE.literal, value: '"'},
+      ]);
+      expect(mf.formatXMLMessage({value: ''})).to.deep.equal(['""']);
+      expect(mf.format({value: ''})).to.equal('""');
+    });
   });
 
   describe('xml', function() {

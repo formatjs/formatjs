@@ -253,7 +253,7 @@ function restoreRichPlaceholderMessage(
   return text
     .split(TOKEN_REGEX)
     .filter(Boolean)
-    .map(c => objectParts[c] || c)
+    .map(c => (objectParts[c] != null ? objectParts[c] : c))
     .reduce((all, c) => {
       if (!all.length) {
         all.push(c);
