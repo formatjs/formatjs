@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.6](https://github.com/formatjs/formatjs/compare/intl-messageformat@6.1.5...intl-messageformat@6.1.6) (2019-08-16)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** fix empty value in formatting ([9f820ea](https://github.com/formatjs/formatjs/commit/9f820ea)), closes [#156](https://github.com/formatjs/formatjs/issues/156)
+
+
+
+
+
 ## [6.1.5](https://github.com/formatjs/formatjs/compare/intl-messageformat@6.1.4...intl-messageformat@6.1.5) (2019-08-13)
 
 
