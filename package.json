@@ -46,7 +46,7 @@
     "shallow-equal": "^1.1.0"
   },
   "peerDependencies": {
-    "@types/react": ">= 16.0.0",
+    "@types/react": ">= 16.3.0",
     "react": ">= 16.3.0"
   },
   "devDependencies": {
