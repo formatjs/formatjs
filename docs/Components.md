@@ -61,7 +61,7 @@ interface IntlConfig {
 
 `locale`, `formats`, and `messages` are for the user's current locale and what the app should be rendered in. While `defaultLocale` and `defaultFormats` are for fallbacks or during development and represent the app's default. Notice how there is no `defaultMessages`, that's because each [Message Descriptor](#message-descriptor) provides a `defaultMessage`.
 
-`textComponent` provides a way to configure React Intl to work with React Native. React Intl's `<Formatted*>` components are required to render React elements, by default they render `<span>` elements. However in React Native, there is no `<span>`, there's `<Text>`; therefore if you're using React Intl in React Native set: `<IntlProvider textComponent={Text}>`.
+`textComponent` provides a way to configure the default wrapper for React Intl's `<Formatted*>` components. If not specified, [<React.Fragment>](https://reactjs.org/docs/fragments.html) is used. Before V3, `span` was used instead; check the [migration guide](https://github.com/formatjs/react-intl/blob/core/docs/Upgrade-Guide.md) for more info.
 
 `onError` allows the user to provide a custom error handler. By default, error messages are logged using `console.error` if `NODE_ENV` is not set to `production`.
 
@@ -506,18 +506,6 @@ This component uses the [`formatHTMLMessage`](API.md#formathtmlmessage) API and 
 
 ### Using React-Intl with React Native
 
-React Intl uses the `span` element by default to render text. On React Native we need to use a `Text` element.
+Historically, it was required to provide a `textComponent` for React-Intl to work on React Native, because Fragments didn't exist at the time and React Native would break trying to render a `span` (the default `textComponent` in React-Intl V2).
 
-In order to achieve this, you need to tell the `IntlProvider` to use the `Text` component.
-
-If you wish to add custom styling to the Text element, we suggest that you create a custom React component `MyText` that contains that styling and pass that component instead of `Text`.
-
-```
-
-import { Text } from 'react-native';
-
-<IntlProvider locale="en" textComponent={Text}>
-    <App />
-</IntlProvider>
-
-```
+Starting with [React Native v0.52](https://github.com/react-native-community/releases/blob/master/CHANGELOG.md#0520---2018-01-07), which uses [React v16.2+](https://reactjs.org/blog/2017/11/28/react-v16.2.0-fragment-support.html), Fragments are supported. And since React-Intl V3's default `textComponent` is `<React.Fragment>`, such requirement no longer exists.
