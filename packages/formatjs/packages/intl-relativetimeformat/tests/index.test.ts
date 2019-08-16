@@ -1,5 +1,8 @@
 import 'intl-pluralrules';
-import '../src/polyfill-locales';
+import '../src/polyfill';
+import '../polyfill';
+import '../dist/include-aliases';
+import '../dist/locale-data/zh';
 
 describe('Intl.RelativeTimeFormat', function() {
   it('should support aliases', function() {
