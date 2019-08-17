@@ -28,7 +28,7 @@
   "scripts": {
     "clean": "rimraf dist lib",
     "build": "tsc && tsc -p tsconfig.cjs.json",
-    "test": "mocha --opts ../../mocha.opts tests/index.ts"
+    "test": "cross-env TS_NODE_PROJECT=tsconfig.cjs.json mocha --opts ../../mocha.opts tests/index.ts"
   },
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",

@@ -40,14 +40,14 @@ outputFileSync(
   resolve(__dirname, '../src/units-constants.ts'),
   `/* @generated */
 // prettier-ignore
-export const enum Unit {
+export type Unit = 
   ${
     allUnits
     .map(shortenUnit)
-    .map(unit => `'${unit}' = '${unit}'`)
-    .join(',\n')
+    .map(unit => `'${unit}'`)
+    .join(' | ')
   }
-}`
+`
 )
 
 //  // Aggregate all into src/locales.ts	

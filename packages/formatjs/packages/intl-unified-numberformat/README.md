@@ -19,19 +19,19 @@ This package requires the following capabilities:
 To use the ponyfill, import it along with its data:
 
 ```tsx
-import {UnifiedNumberFormat} from '@formatjs/intl-unified-numberformat'
+import {UnifiedNumberFormat} from '@formatjs/intl-unified-numberformat';
 UnifiedNumberFormat.__addUnitLocaleData(
   'bit',
   ...require('../dist/locale-data/bit/zh') // locale-data for zh for unit `bit`
 );
 UnifiedNumberFormat.__addUnitLocaleData(
   'bit',
-  ...require('../dist/locale-data/bit/en')  // locale-data for zh for unit `bit`
+  ...require('../dist/locale-data/bit/en') // locale-data for zh for unit `bit`
 );
 
 new UnifiedNumberFormat('zh', {
-    style: 'unit',
-    unit: 'bit',
-    unitDisplay: 'long'
-}).format(1000) // 1,000比特
+  style: 'unit',
+  unit: 'bit',
+  unitDisplay: 'long',
+}).format(1000); // 1,000比特
 ```

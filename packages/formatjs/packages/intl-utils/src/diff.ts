@@ -87,5 +87,5 @@ export const DEFAULT_THRESHOLDS: Thresholds = {
   second: 45, // seconds to minute
   minute: 45, // minutes to hour
   hour: 22, // hour to day
-  quarter: true,
+  quarter: false,
 };

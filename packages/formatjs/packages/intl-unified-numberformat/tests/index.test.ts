@@ -14,13 +14,13 @@ describe('UnifiedNumberFormat', function() {
     expect(
       new UnifiedNumberFormat('zh', {
         style: 'unit',
-        unit: 'bit' as Unit,
+        unit: 'bit',
       }).format(1000)
     ).toBe('1,000比特');
     expect(
       new UnifiedNumberFormat('en', {
         style: 'unit',
-        unit: 'bit' as Unit,
+        unit: 'bit',
       }).format(1000)
     ).toBe('1,000 bit');
   });

@@ -1,6 +1,6 @@
 import 'intl-pluralrules';
 import '@formatjs/intl-relativetimeformat/polyfill-locales';
-import {selectUnit} from '../';
+import {selectUnit} from '../src';
 import {expect as chaiExpect} from 'chai';
 declare global {
   var expect: typeof chaiExpect;
@@ -146,25 +146,25 @@ describe('selectUnit', function() {
   });
   it('should work for quarter', function() {
     expect(
-      selectUnit(new Date(2019, 0, 10), new Date(2019, 3, 27))
+      selectUnit(new Date(2019, 0, 10), new Date(2019, 3, 27), {quarter: true})
     ).to.deep.equal({
       value: -1,
       unit: 'quarter',
     });
     expect(
-      selectUnit(new Date(2019, 3, 10), new Date(2019, 0, 27))
+      selectUnit(new Date(2019, 3, 10), new Date(2019, 0, 27), {quarter: true})
     ).to.deep.equal({
       value: 1,
       unit: 'quarter',
     });
     expect(
-      selectUnit(new Date(2019, 0, 10), new Date(2019, 11, 27))
+      selectUnit(new Date(2019, 0, 10), new Date(2019, 11, 27), {quarter: true})
     ).to.deep.equal({
       value: -3,
       unit: 'quarter',
     });
     expect(
-      selectUnit(new Date(2019, 11, 10), new Date(2019, 0, 27))
+      selectUnit(new Date(2019, 11, 10), new Date(2019, 0, 27), {quarter: true})
     ).to.deep.equal({
       value: 3,
       unit: 'quarter',
