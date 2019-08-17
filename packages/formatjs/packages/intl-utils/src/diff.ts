@@ -1,4 +1,3 @@
-import {Unit} from '@formatjs/intl-relativetimeformat';
 import {
   differenceInCalendarDays,
   differenceInCalendarQuarters,
@@ -7,6 +6,16 @@ import {
   differenceInCalendarMonths,
   differenceInCalendarWeeks,
 } from 'date-fns';
+
+export declare type Unit =
+  | 'second'
+  | 'minute'
+  | 'hour'
+  | 'day'
+  | 'week'
+  | 'month'
+  | 'quarter'
+  | 'year';
 
 export function selectUnit(
   from: Date | number,
