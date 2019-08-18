@@ -8,6 +8,7 @@
 // These are the exceptions to the default algorithm for determining a locale's
 // parent locale.
 import * as PARENT_LOCALES from 'cldr-core/supplemental/parentLocales.json';
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
 import {resolve, dirname} from 'path';
 const PARENT_LOCALES_HASH =
   PARENT_LOCALES.supplemental.parentLocales.parentLocale;
@@ -31,25 +32,31 @@ export const unitsLocales = globSync('*/units.json', {
 // Some locales that have a `pluralRuleFunction` don't have a `dateFields.json`
 // file, and visa versa, so this creates a unique collection of all locales in
 // the CLDR for which we need data from.
-const ALL_LOCALES_HASH: Record<Locale, Locale> = Object.keys(
-  PARENT_LOCALES_HASH
-)
-  .concat(dateFieldsLocales)
-  .concat(unitsLocales)
-  .map(function(locale) {
-    if (locale === 'en-US-POSIX') {
-      return 'en-US';
-    }
-    return locale;
-  })
+const ALL_LOCALES_HASH: Record<
+  Locale,
+  Locale
+> = AVAILABLE_LOCALES.availableLocales.full
   .sort()
   .reduce(function(hash: Record<Locale, Locale>, locale) {
+    locale = locale === 'en-US-POSIX' ? 'en-US' : locale;
     hash[locale.toLowerCase()] = locale;
     return hash;
   }, {});
 
 export function getAllLocales() {
   return Object.keys(ALL_LOCALES_HASH);
+}
+
+export function getAllLanguages() {
+  return Object.keys(
+    AVAILABLE_LOCALES.availableLocales.full.reduce(
+      (all: Record<string, boolean>, locale) => {
+        all[locale.split('-')[0]] = true;
+        return all;
+      },
+      {}
+    )
+  );
 }
 
 export function getParentLocale(locale: Locale): Locale | undefined {

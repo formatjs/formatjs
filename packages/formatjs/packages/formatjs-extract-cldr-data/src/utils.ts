@@ -4,13 +4,10 @@ import {getParentLocale, normalizeLocale} from './locales';
 export default function generateFieldExtractorFn<
   DataType extends Record<string, any>
 >(
-  loadFieldsFn: (locale: string, field?: string) => DataType,
+  loadFieldsFn: (locale: Locale, field?: string) => DataType,
   checkCachedFieldsFn: (locale: string) => boolean
 ) {
-  return (
-    locales: Locale[],
-    field?: string
-  ): Record<Locale, {fields: DataType}> => {
+  return (locales: Locale[], field?: string) => {
     // The CLDR states that the "root" locale's data should be used to fill in
     // any missing data as its data is the default.
     const defaultFields = loadFieldsFn('root', field);
@@ -84,30 +81,25 @@ export default function generateFieldExtractorFn<
       return locale;
     }
 
-    return locales.reduce(
-      (fields: Record<Locale, {fields: DataType}>, locale) => {
-        // Walk the `locale`'s hierarchy to look for suitable ancestor with the
-        // _exact_ same relative fields. If no ancestor is found, the given
-        // `locale` will be returned.
-        locale = findGreatestAncestor(normalizeLocale(locale));
+    return locales.reduce((fields: Record<Locale, DataType>, locale) => {
+      // Walk the `locale`'s hierarchy to look for suitable ancestor with the
+      // _exact_ same relative fields. If no ancestor is found, the given
+      // `locale` will be returned.
+      locale = findGreatestAncestor(normalizeLocale(locale));
 
-        // The "root" locale is ignored because the built-in `Intl` libraries in
-        // JavaScript have no notion of a "root" locale; instead they use the
-        // IANA Language Subtag Registry.
-        if (locale === 'root') {
-          return fields;
-        }
-
-        // Add an entry for the `locale`, which might be an ancestor. If the
-        // locale doesn't have relative fields, then we fallback to the "root"
-        // locale's fields.
-        fields[locale] = {
-          fields: getFields(locale) || defaultFields,
-        };
-
+      // The "root" locale is ignored because the built-in `Intl` libraries in
+      // JavaScript have no notion of a "root" locale; instead they use the
+      // IANA Language Subtag Registry.
+      if (locale === 'root') {
         return fields;
-      },
-      {}
-    );
+      }
+
+      // Add an entry for the `locale`, which might be an ancestor. If the
+      // locale doesn't have relative fields, then we fallback to the "root"
+      // locale's fields.
+      fields[locale] = getFields(locale) || defaultFields;
+
+      return fields;
+    }, {});
   };
 }

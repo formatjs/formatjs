@@ -5,7 +5,7 @@
  */
 import expandLocales, {LocaleEntry} from './expand-locales';
 import extractRelativeFields, {FieldData} from './extract-relative';
-import extractUnits, {Units, UnitData} from './extract-units';
+import extractUnits from './extract-units';
 import {getAllLocales} from './locales';
 import {Locale} from './types';
 
@@ -33,24 +33,15 @@ export function extractAllUnits(options: Opts = {}) {
   // Default to all CLDR locales if none have been provided.
   const locales = options.locales || getAllLocales();
   const allUnitsData = extractUnits(locales);
-  return Object.keys(allUnitsData).reduce(
-    (
-      all: Record<string, Record<Locale, LocaleEntry & {fields?: UnitData}>>,
-      unit
-    ) => {
-      all[unit] = mergeData<UnitData>(
-        expandLocales(locales),
-        allUnitsData[unit]
-      );
-      return all;
-    },
-    {}
-  );
+  return {
+    units: allUnitsData,
+    locales: expandLocales(locales),
+  };
 }
 
 function mergeData<D extends Record<string, any>>(
   entries: Record<Locale, LocaleEntry> = {},
-  fields: Record<Locale, {fields: D}> = {}
+  fields: Record<Locale, D> = {}
 ): Record<Locale, LocaleEntry & {fields?: D}> {
   const data: Record<Locale, LocaleEntry & {fields?: D}> = {};
   Object.keys(entries).forEach(locale => {
@@ -60,7 +51,9 @@ function mergeData<D extends Record<string, any>>(
     if (!data[locale]) {
       data[locale] = {locale};
     }
-    data[locale] = {...data[locale], ...fields[locale]};
+    data[locale] = {...data[locale], fields: fields[locale]};
   });
   return data;
 }
+
+export {getAllLanguages, getAllLocales} from './locales';
