@@ -35,9 +35,45 @@ function resolveLocale(locales: Array<string | undefined>) {
   return supportedLocales;
 }
 
+export function isUnitSupported(unit: Unit) {
+  try {
+    new Intl.NumberFormat(undefined, {
+      style: 'unit',
+      unit,
+    } as any);
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
+
 export interface UnifiedNumberFormatOptions extends Intl.NumberFormatOptions {
   unit?: Unit;
   unitDisplay?: 'long' | 'short' | 'narrow';
+}
+
+export interface ResolvedUnifiedNumberFormatOptions
+  extends Intl.ResolvedNumberFormatOptions {
+  unit?: Unit;
+  unitDisplay?: 'long' | 'short' | 'narrow';
+}
+
+interface LocaleData {
+  locale: string;
+  parentLocale?: string;
+  units: Record<string, UnitData>;
+}
+interface UnitPattern {
+  one?: string;
+  other?: string;
+  perUnit?: string;
+}
+
+export interface UnitData {
+  displayName: string;
+  long: UnitPattern;
+  short?: UnitPattern;
+  narrow?: UnitPattern;
 }
 
 const NativeNumberFormat = Intl.NumberFormat;
@@ -47,6 +83,7 @@ export default class UnifiedNumberFormat implements Intl.NumberFormat {
   private unitDisplay: 'long' | 'short' | 'narrow' | undefined = undefined;
   private nf: Intl.NumberFormat;
   private locale: string;
+  private patternData?: UnitData;
   constructor(
     locale?: string,
     {style, unit, unitDisplay, ...options}: UnifiedNumberFormatOptions = {}
@@ -58,6 +95,7 @@ export default class UnifiedNumberFormat implements Intl.NumberFormat {
       this.unit = unit;
       this.unitDisplay = unitDisplay || 'short';
       this.locale = resolveLocale([locale])[0];
+      this.patternData = this.findUnitData(this.locale, this.unit);
     }
     this.nf = new NativeNumberFormat(locale, {
       ...options,
@@ -68,10 +106,9 @@ export default class UnifiedNumberFormat implements Intl.NumberFormat {
 
   format(num: number) {
     const formattedNum = this.nf.format(num);
-    if (this.unit) {
-      const patternData = this.findUnitData(this.locale, this.unit);
+    if (this.patternData) {
       const pl = new Intl.PluralRules(this.locale).select(num);
-      const pattern = patternData[this.unitDisplay as 'long'][
+      const pattern = this.patternData[this.unitDisplay as 'long'][
         pl === 'one' ? 'one' : 'other'
       ]!;
       return pattern.replace('{0}', formattedNum);
@@ -80,53 +117,17 @@ export default class UnifiedNumberFormat implements Intl.NumberFormat {
   }
 
   formatToParts(num: number) {
-    const formattedParts = this.nf.formatToParts(num);
-    // TODO: This is buggy
-    // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-partitionnumberpattern
-    // if (this.unit) {
-    //   const patternData = this.findUnitData(this.locale, this.unit);
-    //   const pl = new Intl.PluralRules(this.locale).select(num);
-    //   const {displayName} = patternData
-    //   const pattern = patternData[this.unitDisplay as 'long'][
-    //     pl === 'one' ? 'one' : 'other'
-    //   ]!
-    //   return pattern.split(/(\{0\})/).filter(Boolean).reduce((all: string[], chunk) => {
-    //     let displayNameIndex = chunk.indexOf(displayName)
-    //     if (~displayNameIndex) {
-    //       return all.concat(
-    //         [
-    //           chunk.substr(0, displayNameIndex),
-    //           chunk.substr(displayNameIndex, displayName.length),
-    //           chunk.substring(displayNameIndex + displayName.length, chunk.length)
-    //         ].filter(Boolean)
-    //       )
-    //     }
-    //     all.push(chunk)
-    //     return all
-    //   }, [])
-    //   .reduce((all: Intl.NumberFormatPart[], chunk) => {
-    //     if (chunk === '{0}') {
-    //       return all.concat(formattedParts)
-    //     }
-    //     if (chunk === displayName) {
-    //       all.push({
-    //         value: displayName,
-    //         type: 'unit' as any
-    //       })
-    //     } else {
-    //       all.push({
-    //         value: chunk,
-    //         type: 'literal'
-    //       })
-    //     }
-    //     return all
-    //   }, [])
-    // }
-    return formattedParts;
+    return this.nf.formatToParts(num);
   }
 
   resolvedOptions() {
-    return this.nf.resolvedOptions();
+    const ro: ResolvedUnifiedNumberFormatOptions = this.nf.resolvedOptions();
+    if (this.unit) {
+      ro.style = 'unit';
+      ro.unit = this.unit;
+      ro.unitDisplay = this.unitDisplay;
+    }
+    return ro;
   }
 
   private findUnitData(locale: string, unit: Unit): UnitData {
@@ -154,7 +155,7 @@ export default class UnifiedNumberFormat implements Intl.NumberFormat {
   ) {
     return resolveLocale(NativeNumberFormat.supportedLocalesOf(...args));
   }
-
+  static polyfilled = true;
   static __unitLocaleData__: Record<string, LocaleData> = {};
   static __addUnitLocaleData(data: Record<string, LocaleData>) {
     Object.keys(data).forEach(locale => {
@@ -170,22 +171,4 @@ export default class UnifiedNumberFormat implements Intl.NumberFormat {
       ] = datum;
     });
   }
-}
-
-interface LocaleData {
-  locale: string;
-  parentLocale?: string;
-  units: Record<string, UnitData>;
-}
-interface UnitPattern {
-  one?: string;
-  other?: string;
-  perUnit?: string;
-}
-
-export interface UnitData {
-  displayName: string;
-  long: UnitPattern;
-  short?: UnitPattern;
-  narrow?: UnitPattern;
 }

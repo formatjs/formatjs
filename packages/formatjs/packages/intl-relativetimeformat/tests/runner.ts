@@ -55,7 +55,7 @@ const result = spawnSync('test262-harness', args, {
 
 const json: TestResult[] = JSON.parse(result.stdout);
 if (!json) {
-  console.error(result.stderr, result.error)
+  console.error(result.stderr, result.error);
 }
 const failedTests = json.filter(r => !r.result.pass);
 json.forEach(t => {

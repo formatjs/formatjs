@@ -1,19 +1,24 @@
-import 'intl-pluralrules'
-import UnifiedNumberFormat from '../src/units';
-UnifiedNumberFormat.__addUnitLocaleData(require('../dist/locale-data/zh'));
+import 'intl-pluralrules';
+import '../src/polyfill';
+import UnifiedNumberFormat from '../src/core';
+if (typeof (Intl.NumberFormat as any).__addUnitLocaleData === 'function') {
+  (Intl.NumberFormat as any).__addUnitLocaleData(
+    require('../dist/locale-data/zh')
+  );
+}
 
-UnifiedNumberFormat.__addUnitLocaleData(require('../dist/locale-data/en'));
+const NumberFormat = (Intl.NumberFormat as any) as typeof UnifiedNumberFormat;
 
 describe('UnifiedNumberFormat', function() {
   it('should work', function() {
     expect(
-      new UnifiedNumberFormat('zh', {
+      new NumberFormat('zh', {
         style: 'unit',
         unit: 'bit',
       }).format(1000)
     ).toBe('1,000比特');
     expect(
-      new UnifiedNumberFormat('en', {
+      new NumberFormat('en', {
         style: 'unit',
         unit: 'bit',
       }).format(1000)
@@ -21,33 +26,34 @@ describe('UnifiedNumberFormat', function() {
   });
   it('should lookup locale correctly', function() {
     expect(
-      new UnifiedNumberFormat('en-BS', {
+      new NumberFormat('en-BS', {
         style: 'unit',
         unit: 'bit',
       }).format(1000)
     ).toBe('1,000 bit');
     expect(
-      new UnifiedNumberFormat('en-BS', {
+      new NumberFormat('en-BS', {
         style: 'unit',
         unit: 'celsius',
       }).format(1000)
     ).toBe('1,000°C');
     expect(
-      new UnifiedNumberFormat('en-BS', {
+      new NumberFormat('en-BS', {
         style: 'unit',
         unit: 'gallon',
       }).format(1000)
     ).toBe('1,000 gal US');
   });
   it('supportedLocalesOf should return correct result based on data loaded', function() {
-    expect(
-      UnifiedNumberFormat.supportedLocalesOf(['zh', 'en-us', 'af'])
-    ).toEqual(['zh', 'en']);
-    expect(UnifiedNumberFormat.supportedLocalesOf(['af'])).toEqual([]);
+    expect(NumberFormat.supportedLocalesOf(['zh', 'en-us', 'af'])).toEqual([
+      'zh',
+      'en',
+    ]);
+    expect(NumberFormat.supportedLocalesOf(['af'])).toEqual([]);
   });
   it.skip('formatToParts should work', function() {
     expect(
-      new UnifiedNumberFormat('zh', {
+      new NumberFormat('zh', {
         style: 'unit',
         unit: 'bit',
       }).formatToParts(1000)
@@ -58,7 +64,7 @@ describe('UnifiedNumberFormat', function() {
       {type: 'unit', value: '比特'},
     ]);
     expect(
-      new UnifiedNumberFormat('en', {
+      new NumberFormat('en', {
         style: 'unit',
         unit: 'bit',
       }).formatToParts(1000)

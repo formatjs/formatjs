@@ -120,12 +120,11 @@ export type Unit =
 //   `
 // );
 
-//  // Extract src/en.js
-// const en = extractLocales(['en']);
-// outputFileSync(
-//   resolve(__dirname, '../src/en.ts'),
-//   `/* @generated */
-// // prettier-ignore
-// export default ${en.en};
-// `
-// );
+// Extract src/en.ts
+outputFileSync(
+  resolve(__dirname, '../src/en.ts'),
+  `/* @generated */
+// prettier-ignore
+export default ${JSON.stringify(sanctionedUnitData.en)};
+`
+);

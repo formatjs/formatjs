@@ -1,6 +1,6 @@
 # `intl-unified-numberformat`
 
-A ponyfill for [`intl-unified-numberformat`](https://github.com/tc39/proposal-unified-intl-numberformat). This wraps `Intl.NumberFormat` and has the exact same APIs.
+A ponyfill/polyfill for [`intl-unified-numberformat`](https://github.com/tc39/proposal-unified-intl-numberformat). This wraps `Intl.NumberFormat` and has the exact same APIs.
 
 ## Installation
 
@@ -14,6 +14,14 @@ This package requires the following capabilities:
 
 - [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules)
 
+# Features
+
+1. `unit`, `unitDisplay`, `style: unit` and sanctioned units are supported
+
+## Caveats
+
+1. `formatToParts` does not include the `unit` part yet.
+
 # Usage
 
 To use the ponyfill, import it along with its data:
@@ -21,10 +29,10 @@ To use the ponyfill, import it along with its data:
 ```tsx
 import {UnifiedNumberFormat} from '@formatjs/intl-unified-numberformat';
 UnifiedNumberFormat.__addUnitLocaleData(
-  require('../dist/locale-data/zh.json') // locale-data for zh
+  require('@formatjs/intl-unified-numberformat/dist/locale-data/zh.json') // locale-data for zh
 );
 UnifiedNumberFormat.__addUnitLocaleData(
-  require('../dist/locale-data/en.json') // locale-data for en
+  require('@formatjs/intl-unified-numberformat/dist/locale-data/en.json') // locale-data for en
 );
 
 new UnifiedNumberFormat('zh', {
@@ -37,15 +45,15 @@ new UnifiedNumberFormat('zh', {
 To use this as a polyfill, override `Intl.NumberFormat` as below:
 
 ```tsx
-import {UnifiedNumberFormat} from '@formatjs/intl-unified-numberformat';
-UnifiedNumberFormat.__addUnitLocaleData(
-  require('../dist/locale-data/zh.json') // locale-data for zh
-);
-UnifiedNumberFormat.__addUnitLocaleData(
-  require('../dist/locale-data/en.json') // locale-data for en
-);
-
-Intl.NumberFormat = UnifiedNumberFormat; // Override native NumberFormat
+import '@formatjs/intl-unified-numberformat/polyfill';
+if (typeof Intl.NumberFormat.__addUnitLocaleData === 'function') {
+  Intl.NumberFormat.__addUnitLocaleData(
+    require('@formatjs/intl-unified-numberformat/dist/locale-data/zh.json') // locale-data for zh
+  );
+  Intl.NumberFormat.__addUnitLocaleData(
+    require('@formatjs/intl-unified-numberformat/dist/locale-data/en.json') // locale-data for en
+  );
+}
 
 new Intl.NumberFormat('zh', {
   style: 'unit',
