@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@0.5.7...@formatjs/intl-utils@0.6.0) (2019-08-19)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-utils:** change default quarter to false in selectUnit ([dadab10](https://github.com/formatjs/formatjs/commit/dadab10))
+* **@formatjs/intl-utils:** rm dependency on @formatjs/intl-relativetimeformat ([1cd6e93](https://github.com/formatjs/formatjs/commit/1cd6e93))
+
+
+### Features
+
+* **@formatjs/intl-untils:** add locale-lookup ([5886f16](https://github.com/formatjs/formatjs/commit/5886f16))
+* **formatjs-extract-cldr-data:** fix unit extraction ([7e54a0b](https://github.com/formatjs/formatjs/commit/7e54a0b))
+
+
+
+
+
 ## [0.5.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@0.5.6...@formatjs/intl-utils@0.5.7) (2019-08-16)
 
 **Note:** Version bump only for package @formatjs/intl-utils

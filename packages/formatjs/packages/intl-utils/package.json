@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-utils",
-  "version": "0.5.7",
+  "version": "0.6.0",
   "description": "Smartly determine best unit for relative time format",
   "keywords": [
     "intl",
