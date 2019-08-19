@@ -13,8 +13,8 @@ describe('supportedLocalesOf', function() {
     ).toEqual([]);
   }
   if (Intl.RelativeTimeFormat.polyfilled) {
-    it.skip('should return correct locales that we only have data for', test);
-  } else {
     it('should return correct locales that we only have data for', test);
+  } else {
+    it.skip('should return correct locales that we only have data for', test);
   }
 });
