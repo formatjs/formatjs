@@ -1,3 +1,4 @@
+import 'intl-pluralrules'
 import UnifiedNumberFormat from '../src/units';
 UnifiedNumberFormat.__addUnitLocaleData(require('../dist/locale-data/zh'));
 
