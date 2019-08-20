@@ -19,6 +19,9 @@ const plugins = [
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   }),
   nodeResolve(),
+  commonjs({
+    sourcemap: true,
+  }),
   babel({
     configFile: false,
     presets: [
@@ -33,9 +36,6 @@ const plugins = [
         },
       ],
     ],
-  }),
-  commonjs({
-    sourcemap: true,
   }),
   isProduction &&
     uglify({
@@ -54,11 +54,10 @@ export default [
       exports: 'named',
       sourcemap: true,
       globals: {
-        react: 'React',
-        'react-is': 'ReactIs',
+        react: 'React'
       },
     },
-    external: ['react', 'react-is'],
+    external: ['react'],
     plugins,
   },
 ];
