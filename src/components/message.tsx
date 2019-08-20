@@ -14,7 +14,9 @@ import {
   DEFAULT_INTL_CONFIG,
   createFormatters,
 } from '../utils';
-const shallowEquals = require('shallow-equal/objects');
+import * as shallowEquals_ from 'shallow-equal/objects';
+const shallowEquals: typeof shallowEquals_ =
+  (shallowEquals_ as any).default || shallowEquals_;
 
 const defaultFormatMessage = (
   descriptor: MessageDescriptor,

@@ -15,7 +15,7 @@ import {invariantIntlContext} from '../utils';
 // does not export a default
 // https://github.com/rollup/rollup/issues/1267
 import * as invariant_ from 'invariant';
-const invariant: typeof invariant_ = (invariant_ as any).default || invariant_
+const invariant: typeof invariant_ = (invariant_ as any).default || invariant_;
 const MINUTE = 60;
 const HOUR = 60 * 60;
 const DAY = 60 * 60 * 24;

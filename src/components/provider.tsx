@@ -24,7 +24,9 @@ import {
   formatMessage,
 } from '../format';
 import areIntlLocalesSupported from 'intl-locales-supported';
-const shallowEquals = require('shallow-equal/objects');
+import * as shallowEquals_ from 'shallow-equal/objects';
+const shallowEquals: typeof shallowEquals_ =
+  (shallowEquals_ as any).default || shallowEquals_;
 
 interface State {
   /**

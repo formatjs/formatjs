@@ -16,9 +16,7 @@ const copyright = `/*
 
 const plugins = [
   replace({
-    replaces: {
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-    },
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   }),
   nodeResolve(),
   babel({
@@ -57,9 +55,10 @@ export default [
       sourcemap: true,
       globals: {
         react: 'React',
+        'react-is': 'ReactIs',
       },
     },
-    external: ['react'],
+    external: ['react', 'react-is'],
     plugins,
   },
 ];
