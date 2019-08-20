@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.10](https://github.com/formatjs/react-intl/compare/v3.1.9...v3.1.10) (2019-08-20)
+
+
+### Bug Fixes
+
+* fix UMD build ([fc17473](https://github.com/formatjs/react-intl/commit/fc17473)), closes [#1423](https://github.com/formatjs/react-intl/issues/1423)
+* fix UMD build, defer react-is to external ([4731805](https://github.com/formatjs/react-intl/commit/4731805))
+
 ### [3.1.9](https://github.com/formatjs/react-intl/compare/v3.1.8...v3.1.9) (2019-08-16)
 
 
