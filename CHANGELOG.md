@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.11](https://github.com/formatjs/react-intl/compare/v3.1.10...v3.1.11) (2019-08-21)
+
+
+### Bug Fixes
+
+* remove params spread, potentially fix [#1424](https://github.com/formatjs/react-intl/issues/1424) ([aeb177c](https://github.com/formatjs/react-intl/commit/aeb177c))
+
 ### [3.1.10](https://github.com/formatjs/react-intl/compare/v3.1.9...v3.1.10) (2019-08-20)
 
 
