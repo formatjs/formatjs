@@ -26,6 +26,9 @@
   "devDependencies": {
     "formatjs-extract-cldr-data": "^9.6.0"
   },
+  "dependencies": {
+    "@formatjs/intl-utils": "^0.6.0"
+  },
   "scripts": {
     "build": "npm run cldr && npm run compile",
     "cldr": "ts-node --project tsconfig.cjs.json scripts/cldr",
