@@ -11,7 +11,11 @@
   - [Runtime Requirements](#runtime-requirements)
     - [Browser](#browser)
     - [Node.js](#nodejs)
+      - [full-icu](#full-icu)
+      - [DOMParser](#domparser)
     - [React Native](#react-native)
+      - [React Native on iOS](#react-native-on-ios)
+      - [DOMParser](#domparser-1)
   - [Creating an I18n Context](#creating-an-i18n-context)
   - [Formatting Data](#formatting-data)
 - [Core Concepts](#core-concepts)
@@ -101,8 +105,10 @@ React Intl relies on these `Intl` APIs:
 
 If you need to support older browsers, we recommend you do the following:
 
-1. If you're supporting browsers that do not have [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](https://www.npmjs.com/package/intl-pluralrules) in your build.
-2. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat) in your build along with individual CLDR data for each locale you support.
+1. Polyfill `Intl.NumberFormat` with https://github.com/andyearnshaw/Intl.js
+2. Polyfill `Intl.DateTimeFormat` with https://github.com/formatjs/date-time-format-timezone
+3. If you're supporting browsers that do not have [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](https://www.npmjs.com/package/intl-pluralrules) in your build.
+4. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat) in your build along with individual CLDR data for each locale you support.
 
 ```js
 if (!Intl.PluralRules) {
@@ -122,6 +128,8 @@ We officially support IE11 along with modern browsers (Chrome/FF/Edge/Safari).
 
 ### Node.js
 
+#### full-icu
+
 When using React Intl in Node.js, your `node` binary has to either:
 
 - Get compiled with `full-icu` using these [instructions](https://nodejs.org/api/intl.html)
@@ -132,6 +140,8 @@ When using React Intl in Node.js, your `node` binary has to either:
 
 If your `node` version is missing any of the `Intl` APIs above, you'd have to polyfill them accordingly.
 
+#### DOMParser
+
 We also rely on `DOMParser` to format rich text, thus for Node will need to polyfill using [xmldom](https://github.com/jindw/xmldom).
 
 ### React Native
@@ -140,6 +150,12 @@ If you're using `react-intl` in React Native, make sure your runtime has built-i
 
 - https://github.com/formatjs/react-intl/issues/1356
 - https://github.com/formatjs/react-intl/issues/992
+
+#### React Native on iOS
+
+If you cannot use the Intl variant of JSC (e.g on iOS), follow the instructions in [Runtime Requirements](#runtime-requirements) to polyfill those APIs accordingly.
+
+#### DOMParser
 
 We also rely on `DOMParser` to format rich text, thus for JSC will need to polyfill using [xmldom](https://github.com/jindw/xmldom).
 
