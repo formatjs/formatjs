@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FormattedDate, FormattedTime, IntlProvider} from '../dist';
+import {FormattedDate, FormattedTime, IntlProvider} from '../';
 
 interface Props {
   currentTime?: Date | number;
