@@ -22,6 +22,9 @@
   "devDependencies": {
     "formatjs-extract-cldr-data": "^9.6.0"
   },
+  "dependencies": {
+    "@formatjs/intl-utils": "^0.6.0"
+  },
   "main": "dist/index.js",
   "module": "lib/index.js",
   "types": "dist/index.d.ts",

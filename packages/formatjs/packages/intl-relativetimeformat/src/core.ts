@@ -6,6 +6,7 @@ import {
   FormattableUnit,
   VALID_UNITS,
 } from './types';
+import {resolveSupportedLocales} from '@formatjs/intl-utils';
 
 // -- RelativeTimeFormat -----------------------------------------------------------
 
@@ -86,43 +87,6 @@ function findFields(locale: string) {
   throw new Error(
     `Locale data added to RelativeTimeFormat is missing 'fields' for "${locale}"`
   );
-}
-
-function resolveLocale(locales: Array<string | undefined>) {
-  const {
-    __localeData__: localeData,
-    __languageAliases__: languageAliases,
-  } = RelativeTimeFormat;
-  let resolvedLocales: string[] = (Array.isArray(locales) ? locales : [locales])
-    .filter<string>((s): s is string => typeof s === 'string')
-    .map(l => languageAliases[l] || l);
-
-  let i, len, localeParts, data;
-
-  const supportedLocales = [];
-
-  // Using the set of locales + the default locale, we look for the first one
-  // which that has been registered. When data does not exist for a locale, we
-  // traverse its ancestors to find something that's been registered within
-  // its hierarchy of locales. Since we lack the proper `parentLocale` data
-  // here, we must take a naive approach to traversal.
-  for (i = 0, len = resolvedLocales.length; i < len; i += 1) {
-    localeParts = resolvedLocales[i].toLowerCase().split('-');
-
-    while (localeParts.length) {
-      data = localeData[localeParts.join('-')];
-      if (data) {
-        // Return the normalized locale string; e.g., we return "en-US",
-        // instead of "en-us".
-        supportedLocales.push(data.locale);
-        break;
-      }
-
-      localeParts.pop();
-    }
-  }
-
-  return supportedLocales;
 }
 
 function findFieldData(
@@ -284,13 +248,17 @@ export default class RelativeTimeFormat {
     if (locales === undefined) {
       this._locale = DEFAULT_LOCALE;
     } else {
-      const resolvedLocales = resolveLocale([
-        ...intersection(
-          Intl.NumberFormat.supportedLocalesOf(locales),
-          Intl.PluralRules.supportedLocalesOf(locales)
-        ),
-        DEFAULT_LOCALE,
-      ]);
+      const resolvedLocales = resolveSupportedLocales(
+        [
+          ...intersection(
+            Intl.NumberFormat.supportedLocalesOf(locales),
+            Intl.PluralRules.supportedLocalesOf(locales)
+          ),
+          DEFAULT_LOCALE,
+        ],
+        RelativeTimeFormat.__localeData__,
+        RelativeTimeFormat.__languageAliases__
+      );
       if (resolvedLocales.length < 1) {
         throw new Error(
           'No locale data has been added to IntlRelativeTimeFormat for: ' +
@@ -458,12 +426,16 @@ export default class RelativeTimeFormat {
       );
     }
     // test262/test/intl402/RelativeTimeFormat/constructor/supportedLocalesOf/result-type.js
-    return resolveLocale([
-      ...intersection(
-        Intl.NumberFormat.supportedLocalesOf(locales, {localeMatcher}),
-        Intl.PluralRules.supportedLocalesOf(locales, {localeMatcher})
-      ),
-    ]);
+    return resolveSupportedLocales(
+      [
+        ...intersection(
+          Intl.NumberFormat.supportedLocalesOf(locales, {localeMatcher}),
+          Intl.PluralRules.supportedLocalesOf(locales, {localeMatcher})
+        ),
+      ],
+      RelativeTimeFormat.__localeData__,
+      RelativeTimeFormat.__languageAliases__
+    );
   };
 
   static __localeData__: Record<string, LocaleData> = {};
