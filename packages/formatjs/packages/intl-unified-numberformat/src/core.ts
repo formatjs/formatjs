@@ -64,6 +64,15 @@ function findUnitData(locale: string, unit: Unit): UnitData {
   return findUnitData(parentLocale, unit);
 }
 
+function intersection(
+  arr1: Array<string | undefined>,
+  arr2: Array<string | undefined>
+): Array<string | undefined> {
+  return arr1.filter(s => ~arr2.indexOf(s as string));
+}
+
+const DEFAULT_LOCALE = new NativeNumberFormat().resolvedOptions().locale;
+
 export default class UnifiedNumberFormat implements Intl.NumberFormat {
   private unit: Unit | undefined = undefined;
   private unitDisplay: 'long' | 'short' | 'narrow' | undefined = undefined;
@@ -71,7 +80,7 @@ export default class UnifiedNumberFormat implements Intl.NumberFormat {
   private locale: string;
   private patternData?: UnitData;
   constructor(
-    locale?: string,
+    locales: string | string[],
     {style, unit, unitDisplay, ...options}: UnifiedNumberFormatOptions = {}
   ) {
     if (style === 'unit') {
@@ -80,13 +89,20 @@ export default class UnifiedNumberFormat implements Intl.NumberFormat {
       }
       this.unit = unit;
       this.unitDisplay = unitDisplay || 'short';
+
       const resolvedLocale = resolveSupportedLocales(
-        [locale],
+        [
+          ...intersection(
+            NativeNumberFormat.supportedLocalesOf(locales),
+            Intl.PluralRules.supportedLocalesOf(locales)
+          ),
+          DEFAULT_LOCALE,
+        ],
         UnifiedNumberFormat.__unitLocaleData__
       )[0];
       this.patternData = findUnitData(resolvedLocale, this.unit);
     }
-    this.nf = new NativeNumberFormat(locale, {
+    this.nf = new NativeNumberFormat(locales, {
       ...options,
       style: style === 'unit' ? 'decimal' : style,
     });
