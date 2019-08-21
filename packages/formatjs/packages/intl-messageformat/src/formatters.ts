@@ -269,6 +269,11 @@ function restoreRichPlaceholderMessage(
     }, []);
 }
 
+/**
+ * Not exhaustive, just for sanity check
+ */
+const SIMPLE_XML_REGEX = /(<[^<\s]*?>(.*?)<\/[^<\s]*?>)|(<[^<\s\/]*?\/>)/;
+
 export function formatXMLMessage(
   els: MessageFormatElement[],
   locales: string | string[],
@@ -297,7 +302,7 @@ export function formatXMLMessage(
   }, '');
 
   // Not designed to filter out aggressively
-  if (!~formattedMessage.indexOf('<')) {
+  if (!SIMPLE_XML_REGEX.test(formattedMessage)) {
     return restoreRichPlaceholderMessage(formattedMessage, objectParts);
   }
   if (!values) {
