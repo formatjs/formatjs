@@ -158,10 +158,6 @@ function getMessageDescriptorValue(
   // Always trim the Message Descriptor values.
   const descriptorValue = evaluatePath(path);
 
-  if (typeof descriptorValue === 'string') {
-    return descriptorValue.trim();
-  }
-
   return descriptorValue;
 }
 

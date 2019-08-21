@@ -17,6 +17,11 @@ const msgs = defineMessages({
     description: 'Counts kittens',
     defaultMessage: '{count, plural, =0 {😭} one {# kitten} other {# kittens}}',
   },
+  trailingWhitespace: {
+    id: 'trailing.ws',
+    description: 'Whitespace',
+    defaultMessage: '   Some whitespace   ',
+  },
 });
 
 export default class Foo extends Component {
