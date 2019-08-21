@@ -78,6 +78,26 @@ export interface UnitData {
 
 const NativeNumberFormat = Intl.NumberFormat;
 
+function findUnitData(locale: string, unit: Unit): UnitData {
+  const {__unitLocaleData__: data} = UnifiedNumberFormat;
+  let parentLocale = '';
+  locale = locale.toLowerCase();
+  if (!data[locale]) {
+    parentLocale = locale.split('-')[0];
+  } else {
+    if (data[locale].units[unit]) {
+      return data[locale].units[unit];
+    }
+    if (data[locale].parentLocale) {
+      parentLocale = data[locale].parentLocale!;
+    } else {
+      throw new RangeError(`Cannot find data for ${locale}`);
+    }
+  }
+
+  return findUnitData(parentLocale, unit);
+}
+
 export default class UnifiedNumberFormat implements Intl.NumberFormat {
   private unit: Unit | undefined = undefined;
   private unitDisplay: 'long' | 'short' | 'narrow' | undefined = undefined;
@@ -94,8 +114,8 @@ export default class UnifiedNumberFormat implements Intl.NumberFormat {
       }
       this.unit = unit;
       this.unitDisplay = unitDisplay || 'short';
-      this.locale = resolveLocale([locale])[0];
-      this.patternData = this.findUnitData(this.locale, this.unit);
+      const resolvedLocale = resolveLocale([locale])[0];
+      this.patternData = findUnitData(resolvedLocale, this.unit);
     }
     this.nf = new NativeNumberFormat(locale, {
       ...options,
@@ -128,26 +148,6 @@ export default class UnifiedNumberFormat implements Intl.NumberFormat {
       ro.unitDisplay = this.unitDisplay;
     }
     return ro;
-  }
-
-  private findUnitData(locale: string, unit: Unit): UnitData {
-    const {__unitLocaleData__: data} = UnifiedNumberFormat;
-    let parentLocale = '';
-    locale = locale.toLowerCase();
-    if (!data[locale]) {
-      parentLocale = locale.split('-')[0];
-    } else {
-      if (data[locale].units[unit]) {
-        return data[locale].units[unit];
-      }
-      if (data[locale].parentLocale) {
-        parentLocale = data[locale].parentLocale!;
-      } else {
-        throw new RangeError(`Cannot find data for ${locale}`);
-      }
-    }
-
-    return this.findUnitData(parentLocale, unit);
   }
 
   static supportedLocalesOf(
