@@ -55,7 +55,7 @@ Language aliases are useful when we have to resolve deprecated locale (e.g `zh-C
 
 ```js
 import '@formatjs/intl-relativetimeformat/polyfill';
-import '@formatjs/intl-relativetimeformat/dist/include-aliases'; // Add locale data for de
+import '@formatjs/intl-relativetimeformat/dist/include-aliases'; // Add language aliases
 ```
 
 ## Tests
