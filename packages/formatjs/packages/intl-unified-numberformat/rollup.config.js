@@ -27,5 +27,27 @@ export default [
       name: 'IntlUnifiedNumberFormat'
     },
     plugins: [resolveConfig, uglifyConfig]
-  }
+  },
+  {
+    input: './lib/locales.js',
+    output: {
+      sourcemap: true,
+      file: 'dist/umd/intl-unified-numberformat-with-locales.js',
+      format: 'umd',
+      exports: 'named',
+      name: 'IntlUnifiedNumberFormat'
+    },
+    plugins: [resolveConfig]
+  },
+  {
+    input: './lib/locales.js',
+    output: {
+      sourcemap: true,
+      file: 'dist/umd/intl-unified-numberformat-with-locales.min.js',
+      format: 'umd',
+      exports: 'named',
+      name: 'IntlUnifiedNumberFormat'
+    },
+    plugins: [resolveConfig, uglifyConfig]
+  },
 ];

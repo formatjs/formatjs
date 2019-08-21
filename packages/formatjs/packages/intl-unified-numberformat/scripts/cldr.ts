@@ -1,5 +1,5 @@
 import {extractAllUnits, getAllLanguages} from 'formatjs-extract-cldr-data';
-import {resolve, join} from 'path';
+import {resolve, join, relative} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
 
 const {locales, units: unitData} = extractAllUnits();
@@ -91,11 +91,12 @@ allUnits.forEach(unit => {
   });
 });
 
-Object.keys(sanctionedUnitData).forEach(lang => {
-  outputJSONSync(
-    join(allLocaleDistDir, lang + '.json'),
-    sanctionedUnitData[lang]
-  );
+const absoluteLocaleFiles = Object.keys(sanctionedUnitData).map(lang =>
+  join(allLocaleDistDir, lang + '.json')
+);
+
+Object.keys(sanctionedUnitData).forEach((lang, i) => {
+  outputJSONSync(absoluteLocaleFiles[i], sanctionedUnitData[lang]);
 });
 
 outputFileSync(
@@ -107,24 +108,31 @@ export type Unit =
 `
 );
 
-//  // Aggregate all into src/locales.ts
-// outputFileSync(
-//   resolve(__dirname, '../src/locales.ts'),
-//   `/* @generated */
-// // prettier-ignore
-// import IntlRelativeTimeFormat from "./core";\n
-// IntlRelativeTimeFormat.__addLocaleData(${Object.keys(allLocaleFiles)
-//   .map(lang => allLocaleFiles[lang])
-//   .join(',\n')});
-// export default IntlRelativeTimeFormat;
-//   `
-// );
-
 // Extract src/en.ts
 outputFileSync(
   resolve(__dirname, '../src/en.ts'),
   `/* @generated */
 // prettier-ignore
 export default ${JSON.stringify(sanctionedUnitData.en)};
+`
+);
+
+// Aggregate all into src/locales.ts
+outputFileSync(
+  resolve(__dirname, '../src/locales.ts'),
+  `/* @generated */
+// prettier-ignore
+import UnifiedNumberFormat, {isUnitSupported} from './core';
+${Object.keys(sanctionedUnitData)
+  .map(
+    (lang, i) =>
+      `UnifiedNumberFormat.__addUnitLocaleData(${JSON.stringify(
+        sanctionedUnitData[lang]
+      )});`
+  )
+  .join('\n')}
+if (!isUnitSupported('bit')) {
+  Intl.NumberFormat = UnifiedNumberFormat as any;
+}
 `
 );
