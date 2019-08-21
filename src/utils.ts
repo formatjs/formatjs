@@ -9,7 +9,7 @@ This source code is licensed under the BSD-style license found in the LICENSE
 file in the root directory of React's source tree.
 */
 
-import {IntlConfig, IntlCache} from './types';
+import {IntlConfig, IntlCache, CustomFormats} from './types';
 import * as React from 'react';
 import IntlMessageFormat from 'intl-messageformat';
 import memoizeIntlConstructor from 'intl-format-cache';
@@ -131,4 +131,22 @@ export function createFormatters(cache: IntlCache = createIntlCache()) {
     ),
     getPluralRules: memoizeIntlConstructor(Intl.PluralRules, cache.pluralRules),
   };
+}
+
+export function getNamedFormat<T extends keyof CustomFormats>(
+  formats: CustomFormats,
+  type: T,
+  name: string,
+  onError: (err: string) => void
+) {
+  const formatType = formats && formats[type];
+  let format;
+  if (formatType) {
+    format = formatType[name];
+  }
+  if (format) {
+    return format;
+  }
+
+  onError(createError(`No ${type} format named: ${name}`));
 }

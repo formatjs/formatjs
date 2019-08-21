@@ -14,16 +14,12 @@ import {
   createIntlCache,
 } from '../utils';
 import {IntlConfig, IntlShape, Omit, IntlCache} from '../types';
-import {
-  formatNumber,
-  formatRelativeTime,
-  formatDate,
-  formatTime,
-  formatPlural,
-  formatHTMLMessage,
-  formatMessage,
-} from '../format';
 import areIntlLocalesSupported from 'intl-locales-supported';
+import {formatNumberFactory} from '../formatters/number';
+import {formatRelativeTimeFactory} from '../formatters/relativeTime';
+import {formatDateFactory, formatTimeFactory} from '../formatters/dateTime';
+import {formatPluralFactory} from '../formatters/plural';
+import {formatMessage, formatHTMLMessage} from '../formatters/message';
 import * as shallowEquals_ from 'shallow-equal/objects';
 const shallowEquals: typeof shallowEquals_ =
   (shallowEquals_ as any).default || shallowEquals_;
@@ -134,20 +130,21 @@ export function createIntl(
   return {
     ...resolvedConfig,
     formatters,
-    formatNumber: formatNumber.bind(undefined, resolvedConfig, formatters),
-    formatRelativeTime: formatRelativeTime.bind(
-      undefined,
+    formatNumber: formatNumberFactory(
       resolvedConfig,
-      formatters
+      formatters.getNumberFormat
     ),
-    formatDate: formatDate.bind(undefined, resolvedConfig, formatters),
-    formatTime: formatTime.bind(undefined, resolvedConfig, formatters),
-    formatPlural: formatPlural.bind(undefined, resolvedConfig, formatters),
-    formatMessage: formatMessage.bind(undefined, resolvedConfig, formatters),
-    formatHTMLMessage: formatHTMLMessage.bind(
-      undefined,
+    formatRelativeTime: formatRelativeTimeFactory(
       resolvedConfig,
-      formatters
+      formatters.getRelativeTimeFormat
     ),
+    formatDate: formatDateFactory(resolvedConfig, formatters.getDateTimeFormat),
+    formatTime: formatTimeFactory(resolvedConfig, formatters.getDateTimeFormat),
+    formatPlural: formatPluralFactory(
+      resolvedConfig,
+      formatters.getPluralRules
+    ),
+    formatMessage: formatMessage.bind(null, resolvedConfig, formatters),
+    formatHTMLMessage: formatHTMLMessage.bind(null, resolvedConfig, formatters),
   };
 }
