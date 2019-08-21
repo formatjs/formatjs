@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.13](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@4.1.12...babel-plugin-react-intl@4.1.13) (2019-08-21)
+
+
+### Bug Fixes
+
+* **babel-plugin-react-intl:** dont trim ws ([f9f4e54](https://github.com/formatjs/formatjs/commit/f9f4e54)), closes [#158](https://github.com/formatjs/formatjs/issues/158)
+
+
+
+
+
 ## [4.1.12](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@4.1.11...babel-plugin-react-intl@4.1.12) (2019-08-12)
 
 **Note:** Version bump only for package babel-plugin-react-intl

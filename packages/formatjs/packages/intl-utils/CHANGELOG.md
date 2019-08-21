@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@0.6.0...@formatjs/intl-utils@0.6.1) (2019-08-21)
+
+
+### Bug Fixes
+
+* **intl-utils:** upgrade date-fns to v2 ([3758c52](https://github.com/formatjs/formatjs/commit/3758c52))
+
+
+
+
+
 # [0.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@0.5.7...@formatjs/intl-utils@0.6.0) (2019-08-19)
 
 

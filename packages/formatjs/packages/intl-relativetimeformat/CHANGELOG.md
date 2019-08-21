@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.8.0...@formatjs/intl-relativetimeformat@2.8.1) (2019-08-21)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** use locale-lookup from intl-utils ([6146194](https://github.com/formatjs/formatjs/commit/6146194))
+
+
+
+
+
 # [2.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.7.0...@formatjs/intl-relativetimeformat@2.8.0) (2019-08-19)
 
 
