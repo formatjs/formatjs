@@ -164,7 +164,7 @@ props: Intl.DateTimeFormatOptions &
   };
 ```
 
-By default `<FormattedDate>` will render the formatted date into a `<span>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
+By default `<FormattedDate>` will render the formatted date into a `<React.Fragment>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
 
 **Example:**
 
@@ -427,7 +427,7 @@ props: MessageDescriptor & {
 }
 ```
 
-By default `<FormattedMessage>` will render the formatted string into a `<span>`. If you need to customize rendering, you can either wrap it with another React element (recommended), specify a different `tagName` (e.g., `'div'`), or pass a function as the child.
+By default `<FormattedMessage>` will render the formatted string into a `<React.Fragment>`. If you need to customize rendering, you can either wrap it with another React element (recommended), specify a different `tagName` (e.g., `'div'`), or pass a function as the child.
 
 **Example:**
 
