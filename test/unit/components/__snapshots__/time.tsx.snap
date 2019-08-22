@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FormattedTimeParts> accepts \`format\` prop 1`] = `
+Array [
+  Array [
+    Array [
+      Object {
+        "type": "hour",
+        "value": "21",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`<FormattedTimeParts> accepts valid Intl.DateTimeFormat options as props 1`] = `
+Array [
+  Array [
+    Array [
+      Object {
+        "type": "hour",
+        "value": "9",
+      },
+      Object {
+        "type": "literal",
+        "value": " ",
+      },
+      Object {
+        "type": "dayperiod",
+        "value": "PM",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`<FormattedTimeParts> falls back and warns on invalid Intl.DateTimeFormat options 1`] = `
+Array [
+  Array [
+    Array [],
+  ],
+]
+`;

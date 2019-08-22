@@ -15,10 +15,10 @@ import {
 } from '../utils';
 import {IntlConfig, IntlShape, Omit, IntlCache} from '../types';
 import areIntlLocalesSupported from 'intl-locales-supported';
-import {formatNumberFactory} from '../formatters/number';
-import {formatRelativeTimeFactory} from '../formatters/relativeTime';
-import {formatDateFactory, formatTimeFactory} from '../formatters/dateTime';
-import {formatPluralFactory} from '../formatters/plural';
+import {formatNumber} from '../formatters/number';
+import {formatRelativeTime} from '../formatters/relativeTime';
+import {formatDate, formatTime} from '../formatters/dateTime';
+import {formatPlural} from '../formatters/plural';
 import {formatMessage, formatHTMLMessage} from '../formatters/message';
 import * as shallowEquals_ from 'shallow-equal/objects';
 const shallowEquals: typeof shallowEquals_ =
@@ -130,17 +130,28 @@ export function createIntl(
   return {
     ...resolvedConfig,
     formatters,
-    formatNumber: formatNumberFactory(
+    formatNumber: formatNumber.bind(
+      null,
       resolvedConfig,
       formatters.getNumberFormat
     ),
-    formatRelativeTime: formatRelativeTimeFactory(
+    formatRelativeTime: formatRelativeTime.bind(
+      null,
       resolvedConfig,
       formatters.getRelativeTimeFormat
     ),
-    formatDate: formatDateFactory(resolvedConfig, formatters.getDateTimeFormat),
-    formatTime: formatTimeFactory(resolvedConfig, formatters.getDateTimeFormat),
-    formatPlural: formatPluralFactory(
+    formatDate: formatDate.bind(
+      null,
+      resolvedConfig,
+      formatters.getDateTimeFormat
+    ),
+    formatTime: formatTime.bind(
+      null,
+      resolvedConfig,
+      formatters.getDateTimeFormat
+    ),
+    formatPlural: formatPlural.bind(
+      null,
       resolvedConfig,
       formatters.getPluralRules
     ),

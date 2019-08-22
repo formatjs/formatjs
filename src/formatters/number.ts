@@ -16,7 +16,7 @@ const NUMBER_FORMAT_OPTIONS: Array<keyof Intl.NumberFormatOptions> = [
   'maximumSignificantDigits',
 ];
 
-function getFormatter(
+export function getFormatter(
   {
     locale,
     formats,
@@ -33,20 +33,17 @@ function getFormatter(
   return getNumberFormat(locale, filteredOptions);
 }
 
-export function formatNumberFactory(
+export function formatNumber(
   config: Pick<IntlConfig, 'locale' | 'formats' | 'onError'>,
-  getNumberFormat: Formatters['getNumberFormat']
+  getNumberFormat: Formatters['getNumberFormat'],
+  value: Parameters<IntlFormatters['formatNumber']>[0],
+  options: Parameters<IntlFormatters['formatNumber']>[1] = {}
 ) {
-  return (
-    value: Parameters<IntlFormatters['formatNumber']>[0],
-    options: Parameters<IntlFormatters['formatNumber']>[1] = {}
-  ) => {
-    try {
-      return getFormatter(config, getNumberFormat, options).format(value);
-    } catch (e) {
-      config.onError(createError('Error formatting number.', e));
-    }
+  try {
+    return getFormatter(config, getNumberFormat, options).format(value);
+  } catch (e) {
+    config.onError(createError('Error formatting number.', e));
+  }
 
-    return String(value);
-  };
+  return String(value);
 }

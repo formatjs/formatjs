@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FormattedNumberParts> accepts \`format\` prop 1`] = `
+Array [
+  Array [
+    Array [
+      Object {
+        "type": "integer",
+        "value": "50",
+      },
+      Object {
+        "type": "decimal",
+        "value": ".",
+      },
+      Object {
+        "type": "fraction",
+        "value": "50",
+      },
+      Object {
+        "type": "percentSign",
+        "value": "%",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`<FormattedNumberParts> accepts valid Intl.NumberFormat options as props 1`] = `
+Array [
+  Array [
+    Array [
+      Object {
+        "type": "integer",
+        "value": "50",
+      },
+      Object {
+        "type": "percentSign",
+        "value": "%",
+      },
+    ],
+  ],
+]
+`;

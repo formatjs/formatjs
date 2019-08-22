@@ -1,5 +1,10 @@
 import * as React from 'react';
-import {FormattedDate, FormattedTime, IntlProvider} from '../';
+import {
+  FormattedDate,
+  FormattedTime,
+  IntlProvider,
+  FormattedDateParts,
+} from '../';
 
 interface Props {
   currentTime?: Date | number;
@@ -13,9 +18,20 @@ const App: React.FC<Props> = ({currentTime = Date.now()}) => {
         <br />
         The time in Tokyo is: <FormattedTime value={currentTime} />
         <br />
-        <FormattedDate value={currentTime} shouldFormatToParts>
-          {parts => <>{JSON.stringify(parts)}</>}
-        </FormattedDate>
+        <FormattedDateParts
+          value={new Date(1459832991883)}
+          year="numeric"
+          month="long"
+          day="2-digit"
+        >
+          {(parts: Intl.DateTimeFormatPart[]) => (
+            <>
+              <b>{parts[0].value}</b>
+              {parts[1].value}
+              <small>{parts[2].value}</small>
+            </>
+          )}
+        </FormattedDateParts>
       </p>
     </IntlProvider>
   );

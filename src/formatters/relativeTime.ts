@@ -29,27 +29,24 @@ function getFormatter(
   return getRelativeTimeFormat(locale, filteredOptions);
 }
 
-export function formatRelativeTimeFactory(
+export function formatRelativeTime(
   config: Pick<IntlConfig, 'locale' | 'formats' | 'onError'>,
-  getRelativeTimeFormat: Formatters['getRelativeTimeFormat']
+  getRelativeTimeFormat: Formatters['getRelativeTimeFormat'],
+  value: Parameters<IntlFormatters['formatRelativeTime']>[0],
+  unit?: Parameters<IntlFormatters['formatRelativeTime']>[1],
+  options: Parameters<IntlFormatters['formatRelativeTime']>[2] = {}
 ) {
-  return (
-    value: Parameters<IntlFormatters['formatRelativeTime']>[0],
-    unit?: Parameters<IntlFormatters['formatRelativeTime']>[1],
-    options: Parameters<IntlFormatters['formatRelativeTime']>[2] = {}
-  ) => {
-    if (!unit) {
-      unit = 'second';
-    }
-    try {
-      return getFormatter(config, getRelativeTimeFormat, options).format(
-        value,
-        unit
-      );
-    } catch (e) {
-      config.onError(createError('Error formatting relative time.', e));
-    }
+  if (!unit) {
+    unit = 'second';
+  }
+  try {
+    return getFormatter(config, getRelativeTimeFormat, options).format(
+      value,
+      unit
+    );
+  } catch (e) {
+    config.onError(createError('Error formatting relative time.', e));
+  }
 
-    return String(value);
-  };
+  return String(value);
 }

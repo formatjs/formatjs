@@ -26,7 +26,7 @@ const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'timeZoneName',
 ];
 
-function getFormatter(
+export function getFormatter(
   {
     locale,
     formats,
@@ -62,45 +62,39 @@ function getFormatter(
   return getDateTimeFormat(locale, filteredOptions);
 }
 
-export function formatDateFactory(
+export function formatDate(
   config: Pick<IntlConfig, 'locale' | 'formats' | 'onError' | 'timeZone'>,
-  getDateTimeFormat: Formatters['getDateTimeFormat']
+  getDateTimeFormat: Formatters['getDateTimeFormat'],
+  value?: Parameters<IntlFormatters['formatDate']>[0],
+  options: Parameters<IntlFormatters['formatDate']>[1] = {}
 ) {
-  return (
-    value?: Parameters<IntlFormatters['formatDate']>[0],
-    options: Parameters<IntlFormatters['formatDate']>[1] = {}
-  ) => {
-    const date = typeof value === 'string' ? new Date(value || 0) : value;
-    try {
-      return getFormatter(config, 'date', getDateTimeFormat, options).format(
-        date
-      );
-    } catch (e) {
-      config.onError(createError('Error formatting date.', e));
-    }
+  const date = typeof value === 'string' ? new Date(value || 0) : value;
+  try {
+    return getFormatter(config, 'date', getDateTimeFormat, options).format(
+      date
+    );
+  } catch (e) {
+    config.onError(createError('Error formatting date.', e));
+  }
 
-    return String(date);
-  };
+  return String(date);
 }
 
-export function formatTimeFactory(
+export function formatTime(
   config: Pick<IntlConfig, 'locale' | 'formats' | 'onError' | 'timeZone'>,
-  getDateTimeFormat: Formatters['getDateTimeFormat']
+  getDateTimeFormat: Formatters['getDateTimeFormat'],
+  value?: Parameters<IntlFormatters['formatTime']>[0],
+  options: Parameters<IntlFormatters['formatTime']>[1] = {}
 ) {
-  return (
-    value?: Parameters<IntlFormatters['formatTime']>[0],
-    options: Parameters<IntlFormatters['formatTime']>[1] = {}
-  ) => {
-    const date = typeof value === 'string' ? new Date(value || 0) : value;
+  const date = typeof value === 'string' ? new Date(value || 0) : value;
 
-    try {
-      return getFormatter(config, 'time', getDateTimeFormat, options).format(
-        date
-      );
-    } catch (e) {
-      config.onError(createError('Error formatting time.', e));
-    }
+  try {
+    return getFormatter(config, 'time', getDateTimeFormat, options).format(
+      date
+    );
+  } catch (e) {
+    config.onError(createError('Error formatting time.', e));
+  }
 
-    return String(date);
-  };
+  return String(date);
 }

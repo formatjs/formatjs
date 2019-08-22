@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FormattedDateParts> accepts \`format\` prop 1`] = `
+Array [
+  Array [
+    Array [
+      Object {
+        "type": "year",
+        "value": "2019",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`<FormattedDateParts> accepts valid Intl.DateTimeFormat options as props 1`] = `
+Array [
+  Array [
+    Array [
+      Object {
+        "type": "year",
+        "value": "2019",
+      },
+    ],
+  ],
+]
+`;
+
+exports[`<FormattedDateParts> falls back and warns on invalid Intl.DateTimeFormat options 1`] = `
+Array [
+  Array [
+    "Thu Aug 29 2019 21:48:21 GMT-0400 (Eastern Daylight Time)",
+  ],
+]
+`;

@@ -1,12 +1,12 @@
 import IntlMessageFormat from 'intl-messageformat';
 import {parse} from 'intl-messageformat-parser';
 import {
-  formatDateFactory,
-  formatTimeFactory,
+  formatDate as formatDateFn,
+  formatTime as formatTimeFn,
 } from '../../src/formatters/dateTime';
-import {formatRelativeTimeFactory} from '../../src/formatters/relativeTime';
-import {formatNumberFactory} from '../../src/formatters/number';
-import {formatPluralFactory} from '../../src/formatters/plural';
+import {formatRelativeTime as formatRelativeTimeFn} from '../../src/formatters/relativeTime';
+import {formatNumber as formatNumberFn} from '../../src/formatters/number';
+import {formatPlural as formatPluralFn} from '../../src/formatters/plural';
 import {
   formatHTMLMessage as baseFormatHTMLMessage,
   formatMessage as baseFormatMessage,
@@ -104,7 +104,7 @@ describe('format API', () => {
 
     beforeEach(() => {
       df = new Intl.DateTimeFormat(config.locale);
-      formatDate = formatDateFactory(config, state.getDateTimeFormat);
+      formatDate = formatDateFn.bind(null, config, state.getDateTimeFormat);
     });
 
     it('no value should render today', () => {
@@ -139,13 +139,13 @@ describe('format API', () => {
     it('uses the time zone specified by the provider', () => {
       const timestamp = Date.now();
       config.timeZone = 'Pacific/Wake';
-      formatDate = formatDateFactory(config, state.getDateTimeFormat);
+      formatDate = formatDateFn.bind(null, config, state.getDateTimeFormat);
       const wakeDf = new Intl.DateTimeFormat(config.locale, {
         timeZone: 'Pacific/Wake',
       });
       expect(formatDate(timestamp)).toBe(wakeDf.format(timestamp));
       config.timeZone = 'Asia/Shanghai';
-      formatDate = formatDateFactory(config, state.getDateTimeFormat);
+      formatDate = formatDateFn.bind(null, config, state.getDateTimeFormat);
       const shanghaiDf = new Intl.DateTimeFormat(config.locale, {
         timeZone: 'Asia/Shanghai',
       });
@@ -211,7 +211,7 @@ describe('format API', () => {
       it('uses time zone specified in options over the one passed through by the provider', () => {
         const timestamp = Date.now();
         config.timeZone = 'Pacific/Wake';
-        formatDate = formatDateFactory(config, state.getDateTimeFormat);
+        formatDate = formatDateFn.bind(null, config, state.getDateTimeFormat);
         const shanghaiDf = new Intl.DateTimeFormat(config.locale, {
           timeZone: 'Asia/Shanghai',
         });
@@ -232,7 +232,7 @@ describe('format API', () => {
         minute: 'numeric',
       });
 
-      formatTime = formatTimeFactory(config, state.getDateTimeFormat);
+      formatTime = formatTimeFn.bind(null, config, state.getDateTimeFormat);
     });
 
     it('render now if no value is provided', () => {
@@ -267,7 +267,7 @@ describe('format API', () => {
     it('uses the time zone specified by the provider', () => {
       const timestamp = Date.now();
       config.timeZone = 'Africa/Johannesburg';
-      formatTime = formatTimeFactory(config, state.getDateTimeFormat);
+      formatTime = formatTimeFn.bind(null, config, state.getDateTimeFormat);
       const johannesburgDf = new Intl.DateTimeFormat(config.locale, {
         hour: 'numeric',
         minute: 'numeric',
@@ -275,7 +275,7 @@ describe('format API', () => {
       });
       expect(formatTime(timestamp)).toBe(johannesburgDf.format(timestamp));
       config.timeZone = 'America/Chicago';
-      formatTime = formatTimeFactory(config, state.getDateTimeFormat);
+      formatTime = formatTimeFn.bind(null, config, state.getDateTimeFormat);
       const chicagoDf = new Intl.DateTimeFormat(config.locale, {
         hour: 'numeric',
         minute: 'numeric',
@@ -377,7 +377,7 @@ describe('format API', () => {
       it('uses time zone specified in options over the one passed through by the provider', () => {
         const timestamp = Date.now();
         config.timeZone = 'Africa/Johannesburg';
-        formatTime = formatTimeFactory(config, state.getDateTimeFormat);
+        formatTime = formatTimeFn.bind(null, config, state.getDateTimeFormat);
         const chicagoDf = new Intl.DateTimeFormat(config.locale, {
           hour: 'numeric',
           minute: 'numeric',
@@ -396,7 +396,8 @@ describe('format API', () => {
 
     beforeEach(() => {
       rf = new Intl.RelativeTimeFormat(config.locale, undefined);
-      formatRelativeTime = formatRelativeTimeFactory(
+      formatRelativeTime = formatRelativeTimeFn.bind(
+        null,
         config,
         state.getRelativeTimeFormat
       );
@@ -503,7 +504,7 @@ describe('format API', () => {
 
     beforeEach(() => {
       nf = new Intl.NumberFormat(config.locale);
-      formatNumber = formatNumberFactory(config, state.getNumberFormat);
+      formatNumber = formatNumberFn.bind(null, config, state.getNumberFormat);
     });
 
     it('returns "NaN" when no value is provided', () => {
@@ -599,7 +600,7 @@ describe('format API', () => {
 
     beforeEach(() => {
       pf = new Intl.PluralRules(config.locale);
-      formatPlural = formatPluralFactory(config, state.getPluralRules);
+      formatPlural = formatPluralFn.bind(null, config, state.getPluralRules);
     });
 
     it('should warn for invalid opt', function() {

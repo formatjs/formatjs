@@ -6,7 +6,10 @@
 
 export * from './types';
 export {default as defineMessages} from './define-messages';
-import createFormattedComponent from './components/createFormattedComponent';
+import {
+  createFormattedComponent,
+  createFormattedDateTimePartsComponent,
+} from './components/createFormattedComponent';
 export {
   default as injectIntl,
   Provider as RawIntlProvider,
@@ -19,6 +22,13 @@ export {default as IntlProvider, createIntl} from './components/provider';
 export const FormattedDate = createFormattedComponent('formatDate');
 export const FormattedTime = createFormattedComponent('formatTime');
 export const FormattedNumber = createFormattedComponent('formatNumber');
+export const FormattedDateParts = createFormattedDateTimePartsComponent(
+  'formatDate'
+);
+export const FormattedTimeParts = createFormattedDateTimePartsComponent(
+  'formatTime'
+);
+export {FormattedNumberParts} from './components/createFormattedComponent';
 export {default as FormattedRelativeTime} from './components/relative';
 export {default as FormattedPlural} from './components/plural';
 export {default as FormattedMessage} from './components/message';

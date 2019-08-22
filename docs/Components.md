@@ -11,10 +11,13 @@ React Intl has a set of React components that provide a declarative way to setup
     - [Dynamic Language Selection](#dynamic-language-selection)
 - [Date Formatting Components](#date-formatting-components)
   - [`FormattedDate`](#formatteddate)
+  - [`FormattedDateParts`](#formatteddateparts)
   - [`FormattedTime`](#formattedtime)
+  - [`FormattedTimeParts`](#formattedtimeparts)
   - [`FormattedRelativeTime`](#formattedrelativetime)
 - [Number Formatting Components](#number-formatting-components)
   - [`FormattedNumber`](#formattednumber)
+  - [`FormattedNumberParts`](#formattednumberparts)
   - [`FormattedPlural`](#formattedplural)
 - [String Formatting Components](#string-formatting-components)
   - [Message Syntax](#message-syntax)
@@ -161,9 +164,7 @@ props: Intl.DateTimeFormatOptions &
   {
     value: any,
     format: string,
-    children: (formattedDate: string | Intl.DateTimeFormatPart[]) =>
-      ReactElement,
-    shouldFormatToParts: boolean,
+    children: (formattedDate: string) => ReactElement,
   };
 ```
 
@@ -194,20 +195,40 @@ By default `<FormattedDate>` will render the formatted date into a `<React.Fragm
 <span>April 05, 2016</span>
 ```
 
-**shouldFormatToParts**
+### `FormattedDateParts`
+
+This component provides more customization to `FormattedDate` by allowing children function to have access to underlying parts of the formatted date. The available parts are listed [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/formatToParts)
+
+**Props:**
+
+```ts
+props: Intl.DateTimeFormatOptions &
+  {
+    value: any,
+    format: string,
+    children: (parts: Intl.DateTimeFormatPart[]) => ReactElement,
+  };
+```
 
 ```tsx
-<FormattedDate
+<FormattedDateParts
   value={new Date(1459832991883)}
   year="numeric"
   month="long"
   day="2-digit"
-  shouldFormatToParts={true}
-/>
+>
+  {parts => (
+    <>
+      <b>{parts[0].value}</b>
+      {parts[1].value}
+      <small>{parts[2].value}</small>
+    </>
+  )}
+</FormattedDate>
 ```
 
 ```html
-<span>April 05, 2016</span>
+<span> <b>April</b> <small>05</small> </span>
 ```
 
 ### `FormattedTime`
@@ -241,6 +262,37 @@ By default `<FormattedTime>` will render the formatted time into a `<span>`. If 
 
 ```html
 <span>1:09 AM</span>
+```
+
+### `FormattedTimeParts`
+
+This component provides more customization to `FormattedTime` by allowing children function to have access to underlying parts of the formatted date. The available parts are listed [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/formatToParts)
+
+**Props:**
+
+```ts
+props: Intl.DateTimeFormatOptions &
+  {
+    value: any,
+    format: string,
+    children: (parts: Intl.DateTimeFormatPart[]) => ReactElement,
+  };
+```
+
+```tsx
+<FormattedTimeParts value={new Date(1459832991883)}>
+  {parts => (
+    <>
+      <b>{parts[0].value}</b>
+      {parts[1].value}
+      <small>{parts[2].value}</small>
+    </>
+  )}
+</FormattedDate>
+```
+
+```html
+<span> <b>01</b>:<small>09</small> </span>
 ```
 
 ### `FormattedRelativeTime`
@@ -335,6 +387,39 @@ By default `<FormattedNumber>` will render the formatted number into a `<span>`.
 
 ```tsx
 <span>1,000</span>
+```
+
+### `FormattedNumberParts`
+
+This component provides more customization to `FormattedNumber` by allowing children function to have access to underlying parts of the formatted date. The available parts are listed [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat/formatToParts)
+
+**Props:**
+
+```ts
+props: NumberFormatOptions &
+  {
+    value: number,
+    format: string,
+    children: (parts: Intl.NumberFormatPart[]) => ReactElement,
+  };
+```
+
+**Example:**
+
+```tsx
+<FormattedNumberParts value={1000}>
+  {parts => (
+    <>
+      <b>{parts[0].value}</b>
+      {parts[1].value}
+      <small>{parts[2].value}</small>
+    </>
+  )}
+</FormattedNumberParts>
+```
+
+```html
+<span> <b>1</b>,<small>000</small> </span>
 ```
 
 ### `FormattedPlural`
