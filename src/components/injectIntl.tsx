@@ -20,9 +20,12 @@ const {Consumer: IntlConsumer, Provider: IntlProvider} = IntlContext;
 export const Provider = IntlProvider;
 export const Context = IntlContext;
 
-export interface Opts<IntlPropName extends string = 'intl'> {
+export interface Opts<
+  IntlPropName extends string = 'intl',
+  ForwardRef extends boolean = false
+> {
   intlPropName?: IntlPropName;
-  forwardRef?: boolean;
+  forwardRef?: ForwardRef;
   enforceContext?: boolean;
 }
 
@@ -35,12 +38,37 @@ export type WithIntlProps<P> = Omit<P, keyof WrappedComponentProps> & {
 };
 
 export default function injectIntl<
-  IntlPropName extends string = 'intl',
+  IntlPropName extends string,
   P extends WrappedComponentProps<IntlPropName> = WrappedComponentProps<any>
 >(
   WrappedComponent: React.ComponentType<P>,
-  options?: Opts<IntlPropName>
-): React.ComponentType<WithIntlProps<P>> & {
+  options?: Opts<IntlPropName, false>
+): React.FC<WithIntlProps<P>> & {
+  WrappedComponent: typeof WrappedComponent;
+};
+export default function injectIntl<
+  IntlPropName extends string = 'intl',
+  P extends WrappedComponentProps<IntlPropName> = WrappedComponentProps<any>,
+  T extends React.ComponentType<P> = any
+>(
+  WrappedComponent: React.ComponentType<P>,
+  options?: Opts<IntlPropName, true>
+): React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<WithIntlProps<P>> & React.RefAttributes<T>
+> & {
+  WrappedComponent: typeof WrappedComponent;
+};
+export default function injectIntl<
+  IntlPropName extends string = 'intl',
+  P extends WrappedComponentProps<IntlPropName> = WrappedComponentProps<any>,
+  ForwardRef extends boolean = false,
+  T extends React.ComponentType<P> = any
+>(
+  WrappedComponent: React.ComponentType<P>,
+  options?: Opts<IntlPropName, ForwardRef>
+): React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<WithIntlProps<P>> & React.RefAttributes<T>
+> & {
   WrappedComponent: typeof WrappedComponent;
 } {
   const {intlPropName = 'intl', forwardRef = false, enforceContext = true} =
@@ -72,7 +100,7 @@ export default function injectIntl<
 
   if (forwardRef) {
     return hoistNonReactStatics(
-      React.forwardRef((props: P, ref) => (
+      React.forwardRef<T, P>((props: P, ref) => (
         <WithIntl {...props} forwardedRef={ref} />
       )),
       WrappedComponent
