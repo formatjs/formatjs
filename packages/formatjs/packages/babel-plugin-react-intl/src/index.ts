@@ -102,7 +102,7 @@ function getICUMessageValue(
   const message = getMessageDescriptorValue(messagePath);
 
   try {
-    return printAST(parse(message));
+    parse(message);
   } catch (parseError) {
     if (
       isJSXSource &&
@@ -124,6 +124,7 @@ function getICUMessageValue(
         `\n${parseError}`
     );
   }
+  return message;
 }
 
 function evaluatePath(path: NodePath): string {

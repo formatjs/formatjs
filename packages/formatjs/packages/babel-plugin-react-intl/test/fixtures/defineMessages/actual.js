@@ -22,6 +22,11 @@ const msgs = defineMessages({
     description: 'Whitespace',
     defaultMessage: '   Some whitespace   ',
   },
+  escaped: {
+    id: 'escaped.apostrophe',
+    description: 'Escaped apostrophe',
+    defaultMessage: "A quoted value ''{value}'",
+  },
 });
 
 export default class Foo extends Component {

@@ -112,7 +112,7 @@ Object {
       "id": "foo.bar.biff",
     },
     Object {
-      "defaultMessage": "{count,plural,=0{😭} one{{count, number} kitten} other{{count, number} kittens}}",
+      "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
       "description": "Counts kittens",
       "id": "app.home.kittens",
     },
@@ -120,6 +120,11 @@ Object {
       "defaultMessage": "   Some whitespace   ",
       "description": "Whitespace",
       "id": "trailing.ws",
+    },
+    Object {
+      "defaultMessage": "A quoted value ''{value}'",
+      "description": "Escaped apostrophe",
+      "id": "escaped.apostrophe",
     },
   ],
 }
@@ -150,11 +155,15 @@ const msgs = (0, _reactIntl.defineMessages)({
   },
   kittens: {
     \\"id\\": \\"app.home.kittens\\",
-    \\"defaultMessage\\": \\"{count,plural,=0{\\\\uD83D\\\\uDE2D} one{{count, number} kitten} other{{count, number} kittens}}\\"
+    \\"defaultMessage\\": \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\"
   },
   trailingWhitespace: {
     \\"id\\": \\"trailing.ws\\",
     \\"defaultMessage\\": \\"   Some whitespace   \\"
+  },
+  escaped: {
+    \\"id\\": \\"escaped.apostrophe\\",
+    \\"defaultMessage\\": \\"A quoted value ''{value}'\\"
   }
 });
 
@@ -181,7 +190,7 @@ Array [
     "id": "foo.bar.biff",
   },
   Object {
-    "defaultMessage": "{count,plural,=0{😭} one{{count, number} kitten} other{{count, number} kittens}}",
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
     "description": "Counts kittens",
     "id": "app.home.kittens",
   },
@@ -189,6 +198,11 @@ Array [
     "defaultMessage": "   Some whitespace   ",
     "description": "Whitespace",
     "id": "trailing.ws",
+  },
+  Object {
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe",
+    "id": "escaped.apostrophe",
   },
 ]
 `;
