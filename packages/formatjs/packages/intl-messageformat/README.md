@@ -109,9 +109,9 @@ var IntlMessageFormat = require('intl-messageformat');
 
 **NOTE: Your Node has to include [full ICU](https://nodejs.org/api/intl.html)**
 
-### Public API
+## Public API
 
-#### `IntlMessageFormat` Constructor
+### `IntlMessageFormat` Constructor
 
 To create a message to format, use the `IntlMessageFormat` constructor. The constructor takes three parameters:
 
@@ -128,11 +128,11 @@ To create a message to format, use the `IntlMessageFormat` constructor. The cons
 var msg = new IntlMessageFormat('My name is {name}.', 'en-US');
 ```
 
-#### Locale Resolution
+### Locale Resolution
 
 `IntlMessageFormat` uses `Intl.NumberFormat.supportedLocalesOf()` to determine which locale data to use based on the `locales` value passed to the constructor. The result of this resolution process can be determined by call the `resolvedOptions()` prototype method.
 
-#### `resolvedOptions()` Method
+### `resolvedOptions()` Method
 
 This method returns an object with the options values that were resolved during instance creation. It currently only contains a `locale` property; here's an example:
 
@@ -143,7 +143,7 @@ console.log(msg.resolvedOptions().locale); // => "en-US"
 
 Notice how the specified locale was the all lower-case value: `"en-us"`, but it was resolved and normalized to: `"en-US"`.
 
-#### `format(values)` Method
+### `format(values)` Method
 
 Once the message is created, formatting the message is done by calling the `format()` method on the instance and passing a collection of `values`:
 
@@ -154,21 +154,29 @@ console.log(output); // => "My name is Eric."
 
 _Note: A value **must** be supplied for every argument in the message pattern the instance was constructed with._
 
-#### `getAst` Method
+### `getAst` Method
 
 Return the underlying AST for the compiled message
 
-#### `formatXMLMessage` method
+### `formatHTMLMessage` method
 
-Formats message containing XML tags & can be used to embed rich text formatters such as React. For example:
+Formats message containing HTML tags & can be used to embed rich text formatters such as React. For example:
 
 ```tsx
 var mf = new IntlMessageFormat('hello <b>world</b>', 'en');
-mf.formatXMLMessage({b: str => <span>{str}</span>});
+mf.formatHTMLMessage({b: str => <span>{str}</span>});
 // returns ['hello ', React element rendered as <span>world</span>]
 ```
 
-#### User Defined Formats
+#### Caveats
+
+This is not meant to be a full-fledged method to embed HTML, but rather to tag specific text chunk so translation can be more contextual. Therefore, the following restrictions apply:
+
+1. Nested tags are not supported.
+2. Any attributes on the HTML tag are also ignored.
+3. Self-closing tags are not supported, please use regular ICU placeholder like `{placeholder}`.
+
+### User Defined Formats
 
 Define custom format styles is useful you need supply a set of options to the underlying formatter; e.g., outputting a number in USD:
 

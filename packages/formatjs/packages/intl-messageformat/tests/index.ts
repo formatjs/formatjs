@@ -521,7 +521,7 @@ describe('IntlMessageFormat', function() {
         {type: PART_TYPE.argument, value: ''},
         {type: PART_TYPE.literal, value: '"'},
       ]);
-      expect(mf.formatXMLMessage({value: ''})).to.deep.equal(['""']);
+      expect(mf.formatHTMLMessage({value: ''})).to.deep.equal(['""']);
       expect(mf.format({value: ''})).to.equal('""');
     });
   });
@@ -529,7 +529,7 @@ describe('IntlMessageFormat', function() {
   describe('xml', function() {
     it('simple message', function() {
       var mf = new IntlMessageFormat('hello <b>world</b>', 'en');
-      expect(mf.formatXMLMessage({b: str => ({str})})).to.deep.equal([
+      expect(mf.formatHTMLMessage({b: str => ({str})})).to.deep.equal([
         'hello ',
         {str: 'world'},
       ]);
@@ -537,7 +537,7 @@ describe('IntlMessageFormat', function() {
     it('simple message w/ placeholder and no tag', function() {
       var mf = new IntlMessageFormat('hello {placeholder} {var2}', 'en');
       expect(
-        mf.formatXMLMessage({
+        mf.formatHTMLMessage({
           placeholder: {name: 'gaga'},
           var2: {foo: 1},
         })
@@ -549,12 +549,21 @@ describe('IntlMessageFormat', function() {
         'en'
       );
       expect(
-        mf.formatXMLMessage({
+        mf.formatHTMLMessage({
           b: str => ({str}),
           placeholder: 'gaga',
           a: str => ({str}),
         })
       ).to.deep.equal(['hello ', {str: 'world'}, ' ', {str: 'gaga'}]);
+    });
+    it('message w/ placeholder & HTML entities', function() {
+      var mf = new IntlMessageFormat('Hello&lt;<tag>{text}</tag>', 'en');
+      expect(
+        mf.formatHTMLMessage({
+          tag: str => ({str}),
+          text: '<asd>',
+        })
+      ).to.deep.equal(['Hello<', {str: '<asd>'}]);
     });
     it('message w/ placeholder & >', function() {
       var mf = new IntlMessageFormat(
@@ -562,7 +571,7 @@ describe('IntlMessageFormat', function() {
         'en'
       );
       expect(
-        mf.formatXMLMessage({
+        mf.formatHTMLMessage({
           b: str => ({str}),
           token: '<asd>',
           placeholder: '>',
@@ -576,7 +585,7 @@ describe('IntlMessageFormat', function() {
         'en'
       );
       expect(
-        mf.formatXMLMessage({
+        mf.formatHTMLMessage({
           gender: 'male',
           b: str => ({str}),
           token: '<asd>',
@@ -585,7 +594,7 @@ describe('IntlMessageFormat', function() {
         })
       ).to.deep.equal(['< hello ', {str: 'world'}, ' <asd> <> ', {str: '>'}]);
       expect(
-        mf.formatXMLMessage({
+        mf.formatHTMLMessage({
           gender: 'female',
           b: str => ({str}),
         })
@@ -597,7 +606,7 @@ describe('IntlMessageFormat', function() {
         'en'
       );
       expect(
-        mf.formatXMLMessage({
+        mf.formatHTMLMessage({
           placeholder: '<foo>gaga</foo>',
         })
       ).to.deep.equal(['hello <b>world</b> <a><foo>gaga</foo></a>']);
@@ -605,7 +614,7 @@ describe('IntlMessageFormat', function() {
     it('should handle self-closing tag', function() {
       var mf = new IntlMessageFormat('hello <foo/> test', 'en');
       expect(
-        mf.formatXMLMessage({
+        mf.formatHTMLMessage({
           foo: {},
         })
       ).to.deep.equal(['hello ', {}, ' test']);
@@ -613,7 +622,7 @@ describe('IntlMessageFormat', function() {
     it('should handle self-closing tag w/ rich text', function() {
       var mf = new IntlMessageFormat('hello <foo/> {bar} test', 'en');
       expect(
-        mf.formatXMLMessage({
+        mf.formatHTMLMessage({
           foo: {},
           bar: {},
         })
@@ -622,7 +631,7 @@ describe('IntlMessageFormat', function() {
     it('should handle tag w/ rich text', function() {
       var mf = new IntlMessageFormat('hello <foo>{bar}</foo> test', 'en');
       expect(
-        mf.formatXMLMessage({
+        mf.formatHTMLMessage({
           foo: obj => ({
             obj,
           }),

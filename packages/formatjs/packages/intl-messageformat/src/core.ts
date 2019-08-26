@@ -23,7 +23,7 @@ import {
   formatToString,
   formatToParts,
   FormatXMLElementFn,
-  formatXMLMessage,
+  formatHTMLMessage,
   PrimitiveType,
 } from './formatters';
 
@@ -206,10 +206,10 @@ export class IntlMessageFormat {
       values,
       this.message
     );
-  formatXMLMessage = (
+  formatHTMLMessage = (
     values?: Record<string, PrimitiveType | object | FormatXMLElementFn>
   ) =>
-    formatXMLMessage(
+    formatHTMLMessage(
       this.ast,
       this.locale,
       this.formatters,

@@ -272,9 +272,11 @@ function restoreRichPlaceholderMessage(
 /**
  * Not exhaustive, just for sanity check
  */
-const SIMPLE_XML_REGEX = /(<[^<\s]*?>(.*?)<\/[^<\s]*?>)|(<[^<\s\/]*?\/>)/;
+const SIMPLE_XML_REGEX = /(<([0-9a-zA-Z-_]*?)>(.*?)<\/([0-9a-zA-Z-_]*?)>)|(<[0-9a-zA-Z-_]*?\/>)/;
 
-export function formatXMLMessage(
+const TEMPLATE_ID = Date.now() + '@@';
+
+export function formatHTMLMessage(
   els: MessageFormatElement[],
   locales: string | string[],
   formatters: Formatters,
@@ -314,24 +316,19 @@ export function formatXMLMessage(
   if (!domParser) {
     domParser = new DOMParser();
   }
-  // XML, not HTML since HTMl is strict about self-closing tag
-  const dom = domParser.parseFromString(
-    `<template>${formattedMessage}</template>`,
-    'application/xml'
-  );
-  if (dom.getElementsByTagName('parsererror').length) {
-    throw new FormatError(
-      `Malformed XML message ${
-        dom.getElementsByTagName('parsererror')[0].innerHTML
-      }`
-    );
-  }
-  const content = dom.firstChild as Element;
+
+  const content = domParser
+    .parseFromString(
+      `<template id="${TEMPLATE_ID}">${formattedMessage}</template>`,
+      'text/html'
+    )
+    .getElementById(TEMPLATE_ID);
+
   if (!content) {
-    throw new FormatError(`Malformed XML message ${formattedMessage}`);
+    throw new FormatError(`Malformed HTML message ${formattedMessage}`);
   }
   const tagsToFormat = Object.keys(values).filter(
-    varName => !!dom.getElementsByTagName(varName).length
+    varName => !!content.getElementsByTagName(varName).length
   );
 
   // No tags to format
