@@ -336,9 +336,15 @@ export function formatHTMLMessage(
     return restoreRichPlaceholderMessage(formattedMessage, objectParts);
   }
 
-  const caseSensitiveTags = tagsToFormat.filter(tagName => tagName !== tagName.toLowerCase())
+  const caseSensitiveTags = tagsToFormat.filter(
+    tagName => tagName !== tagName.toLowerCase()
+  );
   if (caseSensitiveTags.length) {
-    throw new FormatError(`HTML tag must be lowercased but the following tags are not: ${caseSensitiveTags.join(', ')}`)
+    throw new FormatError(
+      `HTML tag must be lowercased but the following tags are not: ${caseSensitiveTags.join(
+        ', '
+      )}`
+    );
   }
 
   const childNodes = Array.prototype.slice.call(content.childNodes);
@@ -353,7 +359,7 @@ export function formatHTMLMessage(
         return reconstructedChunks.concat(chunks);
       }
 
-      tagName = tagName.toLowerCase()
+      tagName = tagName.toLowerCase();
 
       // Legacy HTML
       if (!values[tagName]) {

@@ -611,23 +611,6 @@ describe('IntlMessageFormat', function() {
         })
       ).to.deep.equal(['hello <b>world</b> <a><foo>gaga</foo></a>']);
     });
-    it('should handle self-closing tag', function() {
-      var mf = new IntlMessageFormat('hello <foo/> test', 'en');
-      expect(
-        mf.formatHTMLMessage({
-          foo: {},
-        })
-      ).to.deep.equal(['hello ', {}, ' test']);
-    });
-    it('should handle self-closing tag w/ rich text', function() {
-      var mf = new IntlMessageFormat('hello <foo/> {bar} test', 'en');
-      expect(
-        mf.formatHTMLMessage({
-          foo: {},
-          bar: {},
-        })
-      ).to.deep.equal(['hello ', {}, ' ', {}, ' test']);
-    });
     it('should handle tag w/ rich text', function() {
       var mf = new IntlMessageFormat('hello <foo>{bar}</foo> test', 'en');
       expect(
