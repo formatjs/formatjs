@@ -22,6 +22,7 @@ React Intl has a set of React components that provide a declarative way to setup
   - [Message Formatting Fallbacks](#message-formatting-fallbacks)
   - [`FormattedMessage`](#formattedmessage)
     - [Rich Text Formatting](#rich-text-formatting)
+    - [Caveats](#caveats)
   - [`FormattedHTMLMessage`](#formattedhtmlmessage)
   - [Using React-Intl with React Native](#using-react-intl-with-react-native)
 
@@ -497,6 +498,10 @@ By allowing embedding XML tag we want to make sure contextual information is not
 All the rich text gets translated together which yields higher quality output. This brings feature-parity with other translation libs as well, such as [fluent](https://projectfluent.org/) by Mozilla (using `overlays` concept).
 
 Extending this also allows users to potentially utilizing other rich text format, like [Markdown](https://daringfireball.net/projects/markdown/).
+
+#### Caveats
+
+This has the same caveats documented in [`intl-messageformat`](https://github.com/formatjs/formatjs/tree/master/packages/intl-messageformat#caveats).
 
 ### `FormattedHTMLMessage`
 

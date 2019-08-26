@@ -18,6 +18,8 @@ const messages = {
         other {#th person}
     }`,
   richtext: 'I have <bold>{num, plural, one {# dog} other {# dogs}}</bold>',
+  richertext:
+    'I have & < &nbsp; <bold>{num, plural, one {# & dog} other {# dogs}}</bold>',
 };
 
 const App: React.FC<Props> = () => {
@@ -52,6 +54,17 @@ const App: React.FC<Props> = () => {
         <br />
         <FormattedMessage
           id="richtext"
+          values={{num: 99, bold: (...chunks) => <strong>{chunks}</strong>}}
+        />
+        <br />
+        <FormattedMessage
+          id="richertext"
+          values={{num: 99, bold: (...chunks) => <strong>{chunks}</strong>}}
+        />
+        <br />
+        <FormattedMessage
+          id="random"
+          defaultMessage="I have < &nbsp; <bold>{num, plural, one {# dog} other {# & dogs}}</bold>"
           values={{num: 99, bold: (...chunks) => <strong>{chunks}</strong>}}
         />
       </p>
