@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@6.1.11...intl-messageformat@7.0.0) (2019-08-26)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** Fix case-sensitive tag ([69b6eae](https://github.com/formatjs/formatjs/commit/69b6eae))
+
+
+### Features
+
+* **intl-messageformat:** switch to text/html to parse HTML message ([f1d952f](https://github.com/formatjs/formatjs/commit/f1d952f)), closes [#152](https://github.com/formatjs/formatjs/issues/152) [#148](https://github.com/formatjs/formatjs/issues/148)
+
+
+### BREAKING CHANGES
+
+* **intl-messageformat:** Rename `formatXMLMessage` to `formatHTMLMessage`
+
+
+
+
+
 ## [6.1.11](https://github.com/formatjs/formatjs/compare/intl-messageformat@6.1.10...intl-messageformat@6.1.11) (2019-08-19)
 
 **Note:** Version bump only for package intl-messageformat
