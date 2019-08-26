@@ -175,6 +175,7 @@ This is not meant to be a full-fledged method to embed HTML, but rather to tag s
 1. Nested tags are not supported.
 2. Any attributes on the HTML tag are also ignored.
 3. Self-closing tags are not supported, please use regular ICU placeholder like `{placeholder}`.
+4. HTML tags must be all lowercased since it's case-insensitive.
 
 ### User Defined Formats
 

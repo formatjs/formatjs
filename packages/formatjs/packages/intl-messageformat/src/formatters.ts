@@ -319,7 +319,7 @@ export function formatHTMLMessage(
 
   const content = domParser
     .parseFromString(
-      `<template id="${TEMPLATE_ID}">${formattedMessage}</template>`,
+      `<formatted-message id="${TEMPLATE_ID}">${formattedMessage}</formatted-message>`,
       'text/html'
     )
     .getElementById(TEMPLATE_ID);
@@ -336,6 +336,11 @@ export function formatHTMLMessage(
     return restoreRichPlaceholderMessage(formattedMessage, objectParts);
   }
 
+  const caseSensitiveTags = tagsToFormat.filter(tagName => tagName !== tagName.toLowerCase())
+  if (caseSensitiveTags.length) {
+    throw new FormatError(`HTML tag must be lowercased but the following tags are not: ${caseSensitiveTags.join(', ')}`)
+  }
+
   const childNodes = Array.prototype.slice.call(content.childNodes);
   return childNodes.reduce(
     (reconstructedChunks, {tagName, outerHTML, textContent}: Element) => {
@@ -348,6 +353,8 @@ export function formatHTMLMessage(
         return reconstructedChunks.concat(chunks);
       }
 
+      tagName = tagName.toLowerCase()
+
       // Legacy HTML
       if (!values[tagName]) {
         const chunks = restoreRichPlaceholderMessage(outerHTML, objectParts);
@@ -358,7 +365,7 @@ export function formatHTMLMessage(
         return reconstructedChunks.concat(chunks);
       }
 
-      // XML Tag replacement
+      // HTML Tag replacement
       const formatFnOrValue = values[tagName];
       if (typeof formatFnOrValue === 'function') {
         if (textContent == null) {
