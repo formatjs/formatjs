@@ -254,7 +254,7 @@ By default `<FormattedRelativeTime>` will render the formatted relative time int
 **Example:**
 
 ```tsx
-<FormattedRelativeTime value={0} />
+<FormattedRelativeTime value={0} numeric="auto" updateIntervalInSeconds={10} />
 ```
 
 ```html
