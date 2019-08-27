@@ -507,7 +507,7 @@ This has the same caveats documented in [`intl-messageformat`](https://github.co
 
 **Note:** This component is provided for apps that have legacy external strings which contain HTML, but is not recommended, use [`<FormattedMessage>`](#formattedmessage) instead, if you can.
 
-This component uses the [`formatHTMLMessage`](API.md#formathtmlmessage) API and has the same props as `<FormattedMessage>`, but it will accept messages that contain HTML. In order to protect against XSS, all string `values` will be HTML-escaped and the resulting formatted message will be set via `dangerouslySetInnerHTML`. This means that `values` _cannot_ contain React element like `<FormattedMessage>` and this component will be less performant.
+This component uses the [`formatHTMLMessage`](API.md#formathtmlmessage) API and has the same props as `<FormattedMessage>`, but it will accept messages that contain HTML. The resulting formatted message will be set via `dangerouslySetInnerHTML`, thus input must be sanitized accordingly against XSS.
 
 ### Using React-Intl with React Native
 
