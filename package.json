@@ -108,7 +108,7 @@
     "build": "npm run build:lib && npm run build:dist",
     "clean": "rimraf coverage/ dist/ lib/ core.js core.d.ts",
     "example": "parcel examples/index.html",
-    "format:fix": "prettier --write **/*.{js,md,jsx,ts,tsx}",
+    "format:fix": "prettier --write */*.{js,md,jsx,ts,tsx} */**/*.{js,md,jsx,ts,tsx}",
     "format": "npm run format:fix -- --check",
     "lint:fix": "eslint . --fix",
     "lint": "eslint .",

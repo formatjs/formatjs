@@ -189,7 +189,7 @@ export class FormattedRelativeTime extends React.PureComponent<Props, State> {
 
           if (
             canIncrement(unit) &&
-            currentValueInSeconds &&
+            currentValueInSeconds != null &&
             updateIntervalInSeconds
           ) {
             currentUnit = selectUnit(currentValueInSeconds);
