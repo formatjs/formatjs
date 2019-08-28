@@ -40,7 +40,7 @@
     "hoist-non-react-statics": "^3.3.0",
     "intl-format-cache": "^4.1.15",
     "intl-locales-supported": "^1.4.5",
-    "intl-messageformat": "^7.0.0",
+    "intl-messageformat": "^7.1.0",
     "intl-messageformat-parser": "^3.0.7",
     "invariant": "^2.1.1",
     "shallow-equal": "^1.1.0"
@@ -88,7 +88,7 @@
     "rimraf": "^3.0.0",
     "rollup": "^1.20.2",
     "rollup-plugin-babel": "^4.3.3",
-    "rollup-plugin-commonjs": "^10.0.2",
+    "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-typescript2": "^0.23.0",
