@@ -361,6 +361,14 @@ export function formatHTMLMessage(
 
       tagName = tagName.toLowerCase();
 
+      if ([
+        'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'
+      ].indexOf(tagName) !== -1) {
+        throw new FormatError(
+          `${tagName} is a self-closing tag and can not be used, please use another tag name.`
+        )
+      }
+
       // Legacy HTML
       if (!values[tagName]) {
         const chunks = restoreRichPlaceholderMessage(outerHTML, objectParts);
