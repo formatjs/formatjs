@@ -534,6 +534,12 @@ describe('IntlMessageFormat', function() {
         {str: 'world'},
       ]);
     });
+    it('should throw if void elements are used', function() {
+      var mf = new IntlMessageFormat('hello <img/>', 'en');
+      expect(() => mf.formatHTMLMessage({img: str => ({str})})).to.throw(
+        /img is a self-closing tag and can not be used/
+      );
+    });
     it('simple message w/ placeholder and no tag', function() {
       var mf = new IntlMessageFormat('hello {placeholder} {var2}', 'en');
       expect(

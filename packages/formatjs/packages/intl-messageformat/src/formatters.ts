@@ -276,6 +276,23 @@ const SIMPLE_XML_REGEX = /(<([0-9a-zA-Z-_]*?)>(.*?)<\/([0-9a-zA-Z-_]*?)>)|(<[0-9
 
 const TEMPLATE_ID = Date.now() + '@@';
 
+const VOID_ELEMENTS = [
+  'area',
+  'base',
+  'br',
+  'col',
+  'embed',
+  'hr',
+  'img',
+  'input',
+  'link',
+  'meta',
+  'param',
+  'source',
+  'track',
+  'wbr',
+];
+
 export function formatHTMLMessage(
   els: MessageFormatElement[],
   locales: string | string[],
@@ -361,12 +378,10 @@ export function formatHTMLMessage(
 
       tagName = tagName.toLowerCase();
 
-      if ([
-        'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'
-      ].indexOf(tagName) !== -1) {
+      if (~VOID_ELEMENTS.indexOf(tagName)) {
         throw new FormatError(
           `${tagName} is a self-closing tag and can not be used, please use another tag name.`
-        )
+        );
       }
 
       // Legacy HTML
