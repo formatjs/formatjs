@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.1.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.0.0...intl-messageformat@7.1.0) (2019-08-28)
+
+
+### Features
+
+* **intl-messageformat:** throw FormatError if self-closing tag is used ([#166](https://github.com/formatjs/formatjs/issues/166)) ([3e0934d](https://github.com/formatjs/formatjs/commit/3e0934d))
+
+
+
+
+
 # [7.0.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@6.1.11...intl-messageformat@7.0.0) (2019-08-26)
 
 
