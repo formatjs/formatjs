@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.0-rc.0](https://github.com/formatjs/react-intl/compare/v3.1.2...v3.2.0-rc.0) (2019-08-29)
+
+
+### Bug Fixes
+
+* avoid wrapping components with injectIntl ([#1413](https://github.com/formatjs/react-intl/issues/1413)), fixes [#1412](https://github.com/formatjs/react-intl/issues/1412) ([ce560e7](https://github.com/formatjs/react-intl/commit/ce560e7))
+* create initial intl for Provider ([4306275](https://github.com/formatjs/react-intl/commit/4306275))
+* drop @types/react version to 16.0 ([1669f0e](https://github.com/formatjs/react-intl/commit/1669f0e))
+* Fix broken links in Getting Started (fix [#1403](https://github.com/formatjs/react-intl/issues/1403)) ([#1405](https://github.com/formatjs/react-intl/issues/1405)) ([57f0748](https://github.com/formatjs/react-intl/commit/57f0748))
+* fix state typo, fixes [#1411](https://github.com/formatjs/react-intl/issues/1411) ([46ad1c8](https://github.com/formatjs/react-intl/commit/46ad1c8))
+* fix UMD build ([fc17473](https://github.com/formatjs/react-intl/commit/fc17473)), closes [#1423](https://github.com/formatjs/react-intl/issues/1423)
+* fix UMD build ([ad78e3f](https://github.com/formatjs/react-intl/commit/ad78e3f)), closes [#1423](https://github.com/formatjs/react-intl/issues/1423)
+* fix UMD build, defer react-is to external ([4731805](https://github.com/formatjs/react-intl/commit/4731805))
+* generate lib instead of mjs ([99f9257](https://github.com/formatjs/react-intl/commit/99f9257)), closes [#1395](https://github.com/formatjs/react-intl/issues/1395) [#1407](https://github.com/formatjs/react-intl/issues/1407)
+* handle relative time when it hits 0 ([3b9df15](https://github.com/formatjs/react-intl/commit/3b9df15)), closes [#1455](https://github.com/formatjs/react-intl/issues/1455)
+* move react & @types/react to devDep, fixes [#1389](https://github.com/formatjs/react-intl/issues/1389) ([0133241](https://github.com/formatjs/react-intl/commit/0133241)), closes [/github.com/yarnpkg/yarn/issues/3951#issuecomment-316424639](https://github.com/formatjs//github.com/yarnpkg/yarn/issues/3951/issues/issuecomment-316424639)
+* remove injectIntl types from component props ([#1415](https://github.com/formatjs/react-intl/issues/1415)) ([9b359ec](https://github.com/formatjs/react-intl/commit/9b359ec)), closes [#1414](https://github.com/formatjs/react-intl/issues/1414)
+* remove params spread, potentially fix [#1424](https://github.com/formatjs/react-intl/issues/1424) ([aeb177c](https://github.com/formatjs/react-intl/commit/aeb177c))
+* rm @types/react from peerDep, fix [#1460](https://github.com/formatjs/react-intl/issues/1460) ([0b8f989](https://github.com/formatjs/react-intl/commit/0b8f989))
+* type def for forwardRef in injectIntl, fix [#1444](https://github.com/formatjs/react-intl/issues/1444) ([45887bf](https://github.com/formatjs/react-intl/commit/45887bf))
+* update intl-messageformat ([d1271b6](https://github.com/formatjs/react-intl/commit/d1271b6)), closes [#1451](https://github.com/formatjs/react-intl/issues/1451) [#1442](https://github.com/formatjs/react-intl/issues/1442)
+
+
+### Features
+
+* add support for formatToParts ([e8167f3](https://github.com/formatjs/react-intl/commit/e8167f3))
+* introduce Parts component ([a1b5ff1](https://github.com/formatjs/react-intl/commit/a1b5ff1)), closes [#1048](https://github.com/formatjs/react-intl/issues/1048)
+
 ### [3.1.13](https://github.com/formatjs/react-intl/compare/v3.1.12...v3.1.13) (2019-08-28)
 
 
