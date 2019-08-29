@@ -163,8 +163,8 @@ describe('<FormattedTimeParts>', () => {
   });
 
   it('accepts valid Intl.DateTimeFormat options as props', () => {
-    const date = new Date(1567130870626)
-    const options = {hour: '2-digit', children,  timeZone: 'UTC'};
+    const date = new Date(1567130870626);
+    const options = {hour: '2-digit', children, timeZone: 'UTC'};
 
     mountPartsWithProvider({value: date, ...options}, intl);
 
@@ -198,10 +198,13 @@ describe('<FormattedTimeParts>', () => {
       },
     });
 
-    const date = new Date(1567130870626)
+    const date = new Date(1567130870626);
     const format = 'hour-only';
 
-    mountPartsWithProvider({value: date, format, children, timeZone: 'UTC'}, intl);
+    mountPartsWithProvider(
+      {value: date, format, children, timeZone: 'UTC'},
+      intl
+    );
 
     expect(children.mock.calls).toMatchSnapshot();
   });
