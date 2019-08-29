@@ -1,0 +1,10 @@
+node_modules/
+scripts/
+test/
+tests/
+*.log
+.rpt2_cache
+coverage
+*.config.js
+tsconfig.*
+.nyc_output
