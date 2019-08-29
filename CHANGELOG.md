@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.0-rc.2](https://github.com/formatjs/react-intl/compare/v3.2.0-rc.1...v3.2.0-rc.2) (2019-08-29)
+
+
+### Bug Fixes
+
+* fix tests & add corresponding formatToParts fns ([855e272](https://github.com/formatjs/react-intl/commit/855e272))
+
+
+### Features
+
+* extend numberformat to unified ([#1462](https://github.com/formatjs/react-intl/issues/1462)) ([a7f2104](https://github.com/formatjs/react-intl/commit/a7f2104))
+
 ## [3.2.0-rc.1](https://github.com/formatjs/react-intl/compare/v3.2.0-rc.0...v3.2.0-rc.1) (2019-08-29)
 
 ## [3.2.0-rc.0](https://github.com/formatjs/react-intl/compare/v3.1.2...v3.2.0-rc.0) (2019-08-29)
