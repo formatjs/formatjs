@@ -9,16 +9,11 @@
     "unified"
   ],
   "author": "Long Ho <holevietlong@gmail.com>",
-  "homepage": "https://formatjs.io/",
+  "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",
   "main": "dist/index.js",
-  "directories": {
-    "lib": "lib",
-    "test": "tests"
-  },
-  "files": [
-    "lib"
-  ],
+  "module": "lib/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/formatjs/formatjs.git"
