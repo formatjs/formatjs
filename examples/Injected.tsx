@@ -26,10 +26,10 @@ interface Props {
 const App: React.FC<Props> = _ => {
   return (
     <IntlProvider locale="en" timeZone="Asia/Tokyo">
-      <p>
+      <div>
         <Comp />
         <Comp2WithIntl />
-      </p>
+      </div>
     </IntlProvider>
   );
 };

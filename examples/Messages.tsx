@@ -20,6 +20,7 @@ const messages = {
   richtext: 'I have <bold>{num, plural, one {# dog} other {# dogs}}</bold>',
   richertext:
     'I have & < &nbsp; <bold>{num, plural, one {# & dog} other {# dogs}}</bold>',
+  unicode: 'Hello\u0020{placeholder}',
 };
 
 const App: React.FC<Props> = () => {
@@ -66,6 +67,14 @@ const App: React.FC<Props> = () => {
           id="random"
           defaultMessage="I have < &nbsp; <bold>{num, plural, one {# dog} other {# & dogs}}</bold>"
           values={{num: 99, bold: (...chunks) => <strong>{chunks}</strong>}}
+        />
+        <br />
+        <FormattedMessage id="unicode" values={{placeholder: 'world'}} />
+        <br />
+        <FormattedMessage
+          id="whatever"
+          defaultMessage="Hello\u0020{placeholder}"
+          values={{placeholder: 'world'}}
         />
       </p>
     </IntlProvider>
