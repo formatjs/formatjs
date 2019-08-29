@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@0.6.1...@formatjs/intl-utils@0.7.0) (2019-08-29)
+
+
+### Features
+
+* **@formatjs/intl-utils:** modify diff calculation ([224ac73](https://github.com/formatjs/formatjs/commit/224ac73))
+
+
+
+
+
 ## [0.6.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@0.6.0...@formatjs/intl-utils@0.6.1) (2019-08-21)
 
 

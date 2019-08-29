@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-relativetimeformat",
-  "version": "2.8.2",
+  "version": "2.8.3",
   "description": "Formats JavaScript dates to relative time strings.",
   "keywords": [
     "intl",
@@ -23,7 +23,7 @@
     "formatjs-extract-cldr-data": "^9.6.0"
   },
   "dependencies": {
-    "@formatjs/intl-utils": "^0.6.1"
+    "@formatjs/intl-utils": "^0.7.0"
   },
   "main": "dist/index.js",
   "module": "lib/index.js",
