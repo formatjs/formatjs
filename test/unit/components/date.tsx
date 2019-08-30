@@ -157,7 +157,7 @@ describe('<FormattedDateParts>', () => {
   });
 
   it('accepts valid Intl.DateTimeFormat options as props', () => {
-    const date = new Date();
+    const date = new Date(1567130870626);
     const options = {year: 'numeric', children};
 
     mountPartsWithProvider({value: date, ...options}, intl);
@@ -166,8 +166,8 @@ describe('<FormattedDateParts>', () => {
   });
 
   it('falls back and warns on invalid Intl.DateTimeFormat options', () => {
-    const date = new Date();
-    mountWithProvider({value: date, year: 'invalid', children}, intl);
+    const date = new Date(1567130870626);
+    mountPartsWithProvider({value: date, year: 'invalid', children}, intl);
 
     expect(children.mock.calls).toMatchSnapshot();
     expect(console.error).toHaveBeenCalledTimes(1);
@@ -188,7 +188,7 @@ describe('<FormattedDateParts>', () => {
       },
     });
 
-    const date = new Date();
+    const date = new Date(1567130870626);
     const format = 'year-only';
 
     mountPartsWithProvider({value: date, format, children}, intl);

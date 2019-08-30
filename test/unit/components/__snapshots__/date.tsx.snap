@@ -29,7 +29,7 @@ Array [
 exports[`<FormattedDateParts> falls back and warns on invalid Intl.DateTimeFormat options 1`] = `
 Array [
   Array [
-    "Thu Aug 29 2019 21:48:21 GMT-0400 (Eastern Daylight Time)",
+    Array [],
   ],
 ]
 `;

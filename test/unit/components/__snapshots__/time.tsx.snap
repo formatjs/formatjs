@@ -6,7 +6,7 @@ Array [
     Array [
       Object {
         "type": "hour",
-        "value": "21",
+        "value": "02",
       },
     ],
   ],
@@ -19,7 +19,7 @@ Array [
     Array [
       Object {
         "type": "hour",
-        "value": "9",
+        "value": "2",
       },
       Object {
         "type": "literal",
@@ -27,7 +27,7 @@ Array [
       },
       Object {
         "type": "dayperiod",
-        "value": "PM",
+        "value": "AM",
       },
     ],
   ],
