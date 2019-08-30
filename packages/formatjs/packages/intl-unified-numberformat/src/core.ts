@@ -73,7 +73,7 @@ function intersection(
 
 const DEFAULT_LOCALE = new NativeNumberFormat().resolvedOptions().locale;
 
-export default class UnifiedNumberFormat implements Intl.NumberFormat {
+export class UnifiedNumberFormat implements Intl.NumberFormat {
   private unit: Unit | undefined = undefined;
   private unitDisplay: 'long' | 'short' | 'narrow' | undefined = undefined;
   private nf: Intl.NumberFormat;

@@ -1,4 +1,4 @@
-import UnifiedNumberFormat, {isUnitSupported} from './core';
+import {UnifiedNumberFormat, isUnitSupported} from './core';
 import en from './en';
 
 UnifiedNumberFormat.__addUnitLocaleData(en);

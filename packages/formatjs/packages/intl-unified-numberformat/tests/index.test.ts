@@ -1,6 +1,6 @@
 import 'intl-pluralrules';
 import '../src/polyfill';
-import UnifiedNumberFormat from '../src/core';
+import {UnifiedNumberFormat} from '../src/core';
 if (typeof (Intl.NumberFormat as any).__addUnitLocaleData === 'function') {
   (Intl.NumberFormat as any).__addUnitLocaleData(
     require('../dist/locale-data/zh')
