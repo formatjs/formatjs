@@ -1,9 +1,7 @@
 import * as React from 'react';
-import {invariantIntlContext, createError} from '../utils';
+import {invariantIntlContext} from '../utils';
 import {IntlShape, FormatDateOptions, FormatNumberOptions} from '../types';
 import {Context} from './injectIntl';
-import {getFormatter as getDateTimeFormatter} from '../formatters/dateTime';
-import {getFormatter as getNumberFormatter} from '../formatters/number';
 
 enum DisplayName {
   formatDate = 'FormattedDate',
