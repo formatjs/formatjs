@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-unified-numberformat",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Ponyfill for intl unified numberformat proposal",
   "keywords": [
     "polyfill",
