@@ -122,7 +122,7 @@ outputFileSync(
   resolve(__dirname, '../src/locales.ts'),
   `/* @generated */
 // prettier-ignore
-import UnifiedNumberFormat, {isUnitSupported} from './core';
+import {UnifiedNumberFormat, isUnitSupported} from './core';
 ${Object.keys(sanctionedUnitData)
   .map(
     (lang, i) =>
