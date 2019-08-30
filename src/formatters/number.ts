@@ -1,12 +1,15 @@
 import {IntlConfig, Formatters, IntlFormatters} from '../types';
 import {getNamedFormat, filterProps, createError} from '../utils';
+import {UnifiedNumberFormatOptions} from '@formatjs/intl-unified-numberformat';
 
-const NUMBER_FORMAT_OPTIONS: Array<keyof Intl.NumberFormatOptions> = [
+const NUMBER_FORMAT_OPTIONS: Array<keyof UnifiedNumberFormatOptions> = [
   'localeMatcher',
 
   'style',
   'currency',
   'currencyDisplay',
+  'unit',
+  'unitDisplay',
   'useGrouping',
 
   'minimumIntegerDigits',

@@ -347,6 +347,24 @@ formatNumber(0.5, {style: 'percent'}); // "50%"
 formatNumber(1000, {style: 'currency', currency: 'USD'}); // $1,000
 ```
 
+**Formatting Number using `unit`**
+
+Currently this is part of [Unified NumberFormat](https://github.com/tc39/proposal-unified-intl-numberformat) which is stage 3. We've provided a polyfill [here](https://github.com/formatjs/formatjs/tree/master/packages/intl-unified-numberformat) and `react-intl` types allow users to pass in a [sanctioned unit](https://github.com/formatjs/formatjs/tree/master/packages/intl-unified-numberformat):
+
+```js
+formatNumber(1000, {
+  style: 'unit',
+  unit: 'kilobyte',
+  unitDisplay: 'narrow',
+}); // "1,000kB"
+
+formatNumber(1000, {
+  unit: 'fahrenheit',
+  unitDisplay: 'long',
+  style: 'unit',
+}); // "1,000 degrees Fahrenheit"
+```
+
 #### `formatPlural`
 
 ```ts

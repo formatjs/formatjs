@@ -16,6 +16,7 @@
     - [React Native](#react-native)
       - [React Native on iOS](#react-native-on-ios)
       - [DOMParser](#domparser-1)
+  - [Stage-3 Intl Features](#stage-3-intl-features)
   - [Creating an I18n Context](#creating-an-i18n-context)
   - [Formatting Data](#formatting-data)
 - [Core Concepts](#core-concepts)
@@ -158,6 +159,12 @@ If you cannot use the Intl variant of JSC (e.g on iOS), follow the instructions 
 #### DOMParser
 
 We also rely on `DOMParser` to format rich text, thus for JSC will need to polyfill using [xmldom](https://github.com/jindw/xmldom).
+
+## Stage-3 Intl Features
+
+FormatJS also provides types & polyfill for the following Stage 3 Intl APIs:
+
+- Unified NumberFormat: [polyfill](https://www.npmjs.com/package/@formatjs/intl-unified-numberformat) & [spec](https://github.com/tc39/proposal-unified-intl-numberformat)
 
 ## Creating an I18n Context
 

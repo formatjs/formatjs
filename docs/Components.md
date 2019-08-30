@@ -390,6 +390,36 @@ By default `<FormattedNumber>` will render the formatted number into a `<span>`.
 <span>1,000</span>
 ```
 
+**Formatting Number using `unit`**
+
+Currently this is part of [Unified NumberFormat](https://github.com/tc39/proposal-unified-intl-numberformat) which is stage 3. We've provided a polyfill [here](https://github.com/formatjs/formatjs/tree/master/packages/intl-unified-numberformat) and `react-intl` types allow users to pass in a [sanctioned unit](https://github.com/formatjs/formatjs/tree/master/packages/intl-unified-numberformat). For example:
+
+```tsx
+<FormattedNumber
+  value={1000}
+  style="unit"
+  unit="kilobyte"
+  unitDisplay="narrow"
+/>
+```
+
+```html
+<span>1,000kB</span>
+```
+
+```tsx
+<FormattedNumber
+  value={1000}
+  unit="fahrenheit"
+  unitDisplay="long"
+  style="unit"
+/>
+```
+
+```html
+<span>1,000 degrees Fahrenheit</span>
+```
+
 ### `FormattedNumberParts`
 
 This component provides more customization to `FormattedNumber` by allowing children function to have access to underlying parts of the formatted date. The available parts are listed [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat/formatToParts)
