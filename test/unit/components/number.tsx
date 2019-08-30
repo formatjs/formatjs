@@ -145,7 +145,9 @@ describe('<FormattedNumberParts>', function() {
 
     mountPartsWithProvider({value: num, ...options}, intl);
 
-    expect(children.mock.calls).toMatchSnapshot();
+    expect(children.mock.calls[0][0]).toEqual(
+      intl.formatNumberToParts(num, options)
+    );
   });
 
   it('accepts `format` prop', () => {
@@ -165,6 +167,8 @@ describe('<FormattedNumberParts>', function() {
     const format = 'percent';
 
     mountPartsWithProvider({value: num, format, children}, intl);
-    expect(children.mock.calls).toMatchSnapshot();
+    expect(children.mock.calls[0][0]).toEqual(
+      intl.formatNumberToParts(num, {format})
+    );
   });
 });

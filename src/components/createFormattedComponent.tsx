@@ -33,18 +33,8 @@ export const FormattedNumberParts: React.FC<
   <Context.Consumer>
     {intl => {
       invariantIntlContext(intl);
-      const {value, children} = props;
-      let formattedParts: Intl.NumberFormatPart[] = [];
-      try {
-        formattedParts = getNumberFormatter(
-          intl,
-          intl.formatters.getNumberFormat,
-          props
-        ).formatToParts(value);
-      } catch (e) {
-        intl.onError(createError(`Error formatting number.`, e));
-      }
-      return children(formattedParts);
+      const {value, children, ...formatProps} = props;
+      return children(intl.formatNumberToParts(value, formatProps));
     }}
   </Context.Consumer>
 );
@@ -63,24 +53,12 @@ export function createFormattedDateTimePartsComponent<
     <Context.Consumer>
       {intl => {
         invariantIntlContext(intl);
-        const {value, children} = props;
+        const {value, children, ...formatProps} = props;
         const date = typeof value === 'string' ? new Date(value || 0) : value;
-        let formattedParts: Intl.DateTimeFormatPart[] = [];
-        try {
-          formattedParts = getDateTimeFormatter(
-            intl,
-            name === 'formatDate' ? 'date' : 'time',
-            intl.formatters.getDateTimeFormat,
-            props
-          ).formatToParts(date as Date);
-        } catch (e) {
-          intl.onError(
-            createError(
-              `Error formatting ${name === 'formatDate' ? 'date' : 'time'}.`,
-              e
-            )
-          );
-        }
+        const formattedParts: Intl.DateTimeFormatPart[] =
+          name === 'formatDate'
+            ? intl.formatDateToParts(date, formatProps)
+            : intl.formatTimeToParts(date, formatProps);
 
         return children(formattedParts);
       }}
@@ -103,8 +81,8 @@ export function createFormattedComponent<Name extends keyof Formatter>(
     <Context.Consumer>
       {intl => {
         invariantIntlContext(intl);
-        const {value, children} = props;
-        const formattedValue = intl[name](value as any, props);
+        const {value, children, ...formatProps} = props;
+        const formattedValue = intl[name](value as any, formatProps);
 
         if (typeof children === 'function') {
           return children(formattedValue as any);

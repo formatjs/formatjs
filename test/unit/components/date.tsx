@@ -162,15 +162,19 @@ describe('<FormattedDateParts>', () => {
 
     mountPartsWithProvider({value: date, ...options}, intl);
 
-    expect(children.mock.calls).toMatchSnapshot();
+    expect(children.mock.calls[0][0]).toEqual(
+      intl.formatDateToParts(date, options)
+    );
   });
 
   it('falls back and warns on invalid Intl.DateTimeFormat options', () => {
     const date = new Date(1567130870626);
     mountPartsWithProvider({value: date, year: 'invalid', children}, intl);
 
-    expect(children.mock.calls).toMatchSnapshot();
-    expect(console.error).toHaveBeenCalledTimes(1);
+    expect(children.mock.calls[0][0]).toEqual(
+      intl.formatDateToParts(date, {year: 'invalid'})
+    );
+    expect(console.error).toHaveBeenCalledTimes(2);
     expect(console.error).toHaveBeenCalledWith(
       expect.stringMatching(
         /Error formatting date.\nRangeError: Value invalid out of range for (.*) options property year/
@@ -193,6 +197,8 @@ describe('<FormattedDateParts>', () => {
 
     mountPartsWithProvider({value: date, format, children}, intl);
 
-    expect(children.mock.calls).toMatchSnapshot();
+    expect(children.mock.calls[0][0]).toEqual(
+      intl.formatDateToParts(date, {format})
+    );
   });
 });

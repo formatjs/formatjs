@@ -15,9 +15,14 @@ import {
 } from '../utils';
 import {IntlConfig, IntlShape, Omit, IntlCache} from '../types';
 import areIntlLocalesSupported from 'intl-locales-supported';
-import {formatNumber} from '../formatters/number';
+import {formatNumber, formatNumberToParts} from '../formatters/number';
 import {formatRelativeTime} from '../formatters/relativeTime';
-import {formatDate, formatTime} from '../formatters/dateTime';
+import {
+  formatDate,
+  formatTime,
+  formatDateToParts,
+  formatTimeToParts,
+} from '../formatters/dateTime';
 import {formatPlural} from '../formatters/plural';
 import {formatMessage, formatHTMLMessage} from '../formatters/message';
 import * as shallowEquals_ from 'shallow-equal/objects';
@@ -135,6 +140,11 @@ export function createIntl(
       resolvedConfig,
       formatters.getNumberFormat
     ),
+    formatNumberToParts: formatNumberToParts.bind(
+      null,
+      resolvedConfig,
+      formatters.getNumberFormat
+    ),
     formatRelativeTime: formatRelativeTime.bind(
       null,
       resolvedConfig,
@@ -145,7 +155,17 @@ export function createIntl(
       resolvedConfig,
       formatters.getDateTimeFormat
     ),
+    formatDateToParts: formatDateToParts.bind(
+      null,
+      resolvedConfig,
+      formatters.getDateTimeFormat
+    ),
     formatTime: formatTime.bind(
+      null,
+      resolvedConfig,
+      formatters.getDateTimeFormat
+    ),
+    formatTimeToParts: formatTimeToParts.bind(
       null,
       resolvedConfig,
       formatters.getDateTimeFormat

@@ -47,3 +47,18 @@ export function formatNumber(
 
   return String(value);
 }
+
+export function formatNumberToParts(
+  config: Pick<IntlConfig, 'locale' | 'formats' | 'onError'>,
+  getNumberFormat: Formatters['getNumberFormat'],
+  value: Parameters<IntlFormatters['formatNumber']>[0],
+  options: Parameters<IntlFormatters['formatNumber']>[1] = {}
+) {
+  try {
+    return getFormatter(config, getNumberFormat, options).formatToParts(value);
+  } catch (e) {
+    config.onError(createError('Error formatting number.', e));
+  }
+
+  return [];
+}

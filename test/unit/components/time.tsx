@@ -164,11 +164,13 @@ describe('<FormattedTimeParts>', () => {
 
   it('accepts valid Intl.DateTimeFormat options as props', () => {
     const date = new Date(1567130870626);
-    const options = {hour: '2-digit', children, timeZone: 'UTC'};
+    const options = {hour: '2-digit', children};
 
     mountPartsWithProvider({value: date, ...options}, intl);
 
-    expect(children.mock.calls).toMatchSnapshot();
+    expect(children.mock.calls[0][0]).toEqual(
+      intl.formatTimeToParts(date, options)
+    );
   });
 
   it('falls back and warns on invalid Intl.DateTimeFormat options', () => {
@@ -176,13 +178,15 @@ describe('<FormattedTimeParts>', () => {
 
     mountPartsWithProvider({value: date, hour: 'invalid', children}, intl);
 
-    expect(children.mock.calls).toMatchSnapshot();
+    expect(children.mock.calls[0][0]).toEqual(
+      intl.formatTimeToParts(date, {hour: 'invalid'})
+    );
     expect(console.error).toHaveBeenCalledWith(
       expect.stringMatching(
         /\[React Intl\] Error formatting time.\nRangeError: Value invalid out of range for (.*) options property hour/
       )
     );
-    expect(console.error).toHaveBeenCalledTimes(1);
+    expect(console.error).toHaveBeenCalledTimes(2);
   });
 
   it('accepts `format` prop', () => {
@@ -201,11 +205,10 @@ describe('<FormattedTimeParts>', () => {
     const date = new Date(1567130870626);
     const format = 'hour-only';
 
-    mountPartsWithProvider(
-      {value: date, format, children, timeZone: 'UTC'},
-      intl
-    );
+    mountPartsWithProvider({value: date, format, children}, intl);
 
-    expect(children.mock.calls).toMatchSnapshot();
+    expect(children.mock.calls[0][0]).toEqual(
+      intl.formatTimeToParts(date, {format})
+    );
   });
 });
