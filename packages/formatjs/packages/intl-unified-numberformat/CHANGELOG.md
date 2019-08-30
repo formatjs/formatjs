@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@0.4.3...@formatjs/intl-unified-numberformat@0.4.4) (2019-08-30)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-unified-numberformat:** export types as well ([99b886b](https://github.com/formatjs/formatjs/commit/99b886b))
+
+
+
+
+
 ## [0.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@0.4.2...@formatjs/intl-unified-numberformat@0.4.3) (2019-08-29)
 
 
