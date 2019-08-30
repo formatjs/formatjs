@@ -357,9 +357,10 @@ This will initially renders `59 seconds ago`, after 1 second, will render `1 min
 
 ## Number Formatting Components
 
-React Intl provides two components to format numbers:
+React Intl provides 3 components to format numbers:
 
 - [`<FormattedNumber>`](#formattednumber)
+- [`<FormattedNumberParts>`](#formattednumberparts)
 - [`<FormattedPlural>`](#formattedplural)
 
 ### `FormattedNumber`
@@ -596,6 +597,25 @@ By allowing embedding XML tag we want to make sure contextual information is not
     cta: msg => <strong class="important">{msg}</strong>,
   }}
 />
+```
+
+**Function as the child**
+Since rich text formatting allows embedding `ReactElement`, in function as the child scenario, function will receive a spread of chunks instead of a single message
+
+```tsx
+<FormattedMessage
+  defaultMessage="To buy a shoe, <link>visit our website</link> and <cta>buy a shoe</cta>"
+  values={{
+    link: msg => (
+      <a class="external_link" target="_blank" href="https://www.shoe.com/">
+        {msg}
+      </a>
+    ),
+    cta: msg => <strong class="important">{msg}</strong>,
+  }}
+>
+  {(...chunks) => <span>{chunks}</span>}
+</FormattedMessage>
 ```
 
 All the rich text gets translated together which yields higher quality output. This brings feature-parity with other translation libs as well, such as [fluent](https://projectfluent.org/) by Mozilla (using `overlays` concept).
