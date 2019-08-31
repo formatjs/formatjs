@@ -127,10 +127,13 @@ pluralElement
             pluralType: pluralType === 'plural' ? 'cardinal' : 'ordinal',
             value,
             offset : offset ? offset[2] : 0,
-            options: options.reduce((all, {id, value, location}) => {
+            options: options.reduce((all, {id, value, location: optionLocation}) => {
+                if (id in all) {
+                    error(`Duplicate option "${id}" in plural element: "${text()}"`, location())
+                }
                 all[id] = {
                     value,
-                    location
+                    location: optionLocation
                 }
                 return all
             }, {}),
@@ -143,10 +146,13 @@ selectElement
         return {
             type   : TYPE.select,
             value,
-            options: options.reduce((all, {id, value, location}) => {
+            options: options.reduce((all, {id, value, location: optionLocation}) => {
+                if (id in all) {
+                    error(`Duplicate option "${id}" in select element: "${text()}"`, location())
+                }
                 all[id] = {
                     value,
-                    location
+                    location: optionLocation
                 }
                 return all
             }, {}),
