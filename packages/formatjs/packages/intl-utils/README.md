@@ -25,10 +25,11 @@ interface Threshold {
   second: number;
   minute: number;
   hour: number;
+  day: number;
 }
 ```
 
-`day`, `week`, `quarter` & `year` are based on calendar, thus not customizable.
+`month` & `year` are based on calendar, thus not customizable.
 
 Example:
 

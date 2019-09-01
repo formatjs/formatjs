@@ -21,9 +21,6 @@
   "main": "dist/index.js",
   "module": "lib/index.js",
   "types": "dist/index.d.ts",
-  "dependencies": {
-    "date-fns": "^2.0.0"
-  },
   "scripts": {
     "clean": "rimraf dist lib",
     "build": "tsc && tsc -p tsconfig.cjs.json",
