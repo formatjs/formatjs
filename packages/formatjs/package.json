@@ -70,7 +70,7 @@
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-node-resolve": "^5.0.1",
     "rollup-plugin-replace": "^2.2.0",
-    "rollup-plugin-typescript2": "^0.23.0",
+    "rollup-plugin-typescript2": "^0.24.0",
     "rollup-plugin-uglify": "^6.0.2",
     "source-map-support": "^0.5.12",
     "test262-harness": "^6.3.1",
