@@ -37,14 +37,14 @@ if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') 
 
 // Aggregate all into src/locales.ts
 outputFileSync(
-  resolve(__dirname, '../src/locales.js'),
+  resolve(__dirname, '../polyfill-locales.js'),
   `/* @generated */
-// @ts-ignore-file
 // prettier-ignore
-const {PluralRules: IntlPluralRules} = require('./core')
+require('./polyfill')
+if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
 ${Object.keys(allData)
   .map(lang => `IntlPluralRules.__addLocaleData(${serialize(allData[lang])})`)
   .join('\n')}
-exports.PluralRules = IntlPluralRules
+}
 `
 );
