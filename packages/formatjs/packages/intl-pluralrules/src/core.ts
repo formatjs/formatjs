@@ -4,7 +4,7 @@ import {
   getOption,
 } from '@formatjs/intl-utils';
 
-const DEFAULT_LOCALE = new Intl.NumberFormat().resolvedOptions().locale;
+const DEFAULT_LOCALE = 'en';
 
 function validateInstance(instance: any, method: string) {
   if (!(instance instanceof PluralRules)) {
@@ -18,11 +18,19 @@ function validateInstance(instance: any, method: string) {
 
 export class PluralRules implements Intl.PluralRules {
   private readonly _locale: string;
-  private readonly _type: 'cardinal' | 'ordinal' = 'cardinal';
+  private readonly _type: Intl.PluralRulesOptions['type'] = 'cardinal';
+  private readonly _opts: Intl.PluralRulesOptions;
   private readonly _localeMatcher: Intl.PluralRulesOptions['localeMatcher'];
   private pluralRuleData: PluralRulesData;
   constructor(locales?: string | string[], options?: Intl.PluralRulesOptions) {
-    const opts =
+    // test262/test/intl402/RelativeTimeFormat/constructor/constructor/newtarget-undefined.js
+    // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
+    const newTarget =
+      this && this instanceof PluralRules ? this.constructor : void 0;
+    if (!newTarget) {
+      throw new TypeError("Intl.PluralRules must be called with 'new'");
+    }
+    this._opts =
       options === undefined ? Object.create(null) : toObject(options);
     if (locales === undefined) {
       this._locale = DEFAULT_LOCALE;
@@ -42,14 +50,14 @@ export class PluralRules implements Intl.PluralRules {
       this._locale = resolvedLocales[0];
     }
     this._type = getOption(
-      opts,
+      this._opts,
       'type',
       'string',
       ['cardinal', 'ordinal'],
       'cardinal'
     );
     this._localeMatcher = getOption(
-      opts,
+      this._opts,
       'localeMatcher',
       'string',
       ['best fit', 'lookup'],
@@ -60,6 +68,7 @@ export class PluralRules implements Intl.PluralRules {
   public resolvedOptions() {
     validateInstance(this, 'resolvedOptions');
     const opts = Object.create(Object.prototype);
+
     Object.defineProperties(opts, {
       locale: {
         value: this._locale,
@@ -73,38 +82,51 @@ export class PluralRules implements Intl.PluralRules {
         enumerable: true,
         configurable: true,
       },
-      minimumIntegerDigits: {
-        value: 0,
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      },
-      minimumSignificantDigits: {
-        value: 0,
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      },
-      maximumSignificantDigits: {
-        value: 0,
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      },
-      minimumFractionDigits: {
-        value: 0,
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      },
-      maximumFractionDigits: {
-        value: 0,
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      },
+    });
+    if (
+      !('minimumSignificantDigits' in this._opts) &&
+      !('maximumSignificantDigits' in this._opts)
+    ) {
+      Object.defineProperties(opts, {
+        minimumIntegerDigits: {
+          value: (this._opts as any).minimumIntegerDigits || 1,
+          writable: true,
+          enumerable: true,
+          configurable: true,
+        },
+        minimumFractionDigits: {
+          value: (this._opts as any).minimumFractionDigits || 0,
+          writable: true,
+          enumerable: true,
+          configurable: true,
+        },
+        maximumFractionDigits: {
+          value: (this._opts as any).maximumFractionDigits || 3,
+          writable: true,
+          enumerable: true,
+          configurable: true,
+        },
+      });
+    } else {
+      Object.defineProperties(opts, {
+        minimumSignificantDigits: {
+          value: (this._opts as any).minimumSignificantDigits,
+          writable: true,
+          enumerable: true,
+          configurable: true,
+        },
+        maximumSignificantDigits: {
+          value: (this._opts as any).maximumSignificantDigits,
+          writable: true,
+          enumerable: true,
+          configurable: true,
+        },
+      });
+    }
+
+    Object.defineProperties(opts, {
       pluralCategories: {
-        value: this.pluralRuleData.categories[this._type],
+        value: [...this.pluralRuleData.categories[this._type!]],
         writable: true,
         enumerable: true,
         configurable: true,
@@ -114,7 +136,10 @@ export class PluralRules implements Intl.PluralRules {
   }
   public select(val: number): PluralRule {
     validateInstance(this, 'select');
-    return this.pluralRuleData.fn(Math.abs(val), this._type === 'ordinal');
+    return this.pluralRuleData.fn(
+      Math.abs(Number(val)),
+      this._type === 'ordinal'
+    );
   }
   toString() {
     return '[object Intl.PluralRules]';

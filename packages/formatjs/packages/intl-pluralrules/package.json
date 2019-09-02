@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-pluralrules",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Polyfill for intl plural rules",
   "keywords": [
     "polyfill",
@@ -28,8 +28,9 @@
   "scripts": {
     "build": "npm run cldr && npm run compile",
     "cldr": "ts-node --project tsconfig.cjs.json scripts/cldr",
-    "clean": "rimraf dist lib",
-    "compile": "tsc && tsc -p tsconfig.cjs.json && rollup -c rollup.config.js",
+    "clean": "rimraf dist lib dist-test262 polyfill-locales.js",
+    "compile": "tsc && tsc -p tsconfig.cjs.json && npm run compile-test262 && rollup -c rollup.config.js",
+    "compile-test262": "tsc -p tsconfig.test262.json",
     "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json cross-env NODE_ENV=test jest",
     "test262": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json ts-node tests/runner",
     "test": "npm run jest"
