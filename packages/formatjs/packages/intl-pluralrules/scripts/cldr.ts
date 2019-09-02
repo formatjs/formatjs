@@ -35,7 +35,7 @@ if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') 
   );
 });
 
-// Aggregate all into src/locales.ts
+// Aggregate all into ../polyfill-locales.js
 outputFileSync(
   resolve(__dirname, '../polyfill-locales.js'),
   `/* @generated */
@@ -43,8 +43,22 @@ outputFileSync(
 require('./polyfill')
 if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
 ${Object.keys(allData)
-  .map(lang => `IntlPluralRules.__addLocaleData(${serialize(allData[lang])})`)
+  .map(lang => `Intl.PluralRules.__addLocaleData(${serialize(allData[lang])})`)
   .join('\n')}
 }
 `
 );
+
+
+// For test262
+outputFileSync(
+  resolve(__dirname, '../lib/polyfill-with-locales.js'),
+`
+import polyfill from './polyfill';
+import {PluralRules} from './core';
+${Object.keys(allData)
+  .map(lang => `PluralRules.__addLocaleData(${serialize(allData[lang])})`)
+  .join('\n')}
+polyfill(PluralRules);
+`
+)

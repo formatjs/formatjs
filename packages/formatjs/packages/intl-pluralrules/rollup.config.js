@@ -27,5 +27,16 @@ export default [
       name: 'IntlPluralRules'
     },
     plugins: [resolveConfig, uglifyConfig]
+  },
+  {
+    input: './lib/polyfill-with-locales.js',
+    output: {
+      sourcemap: true,
+      file: 'dist/polyfill-with-locales.js',
+      format: 'umd',
+      exports: 'named',
+      name: 'IntlPluralRules'
+    },
+    plugins: [resolveConfig, uglifyConfig]
   }
 ];
