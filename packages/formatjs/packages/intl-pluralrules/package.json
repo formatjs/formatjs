@@ -1,0 +1,39 @@
+{
+  "name": "@formatjs/intl-pluralrules",
+  "version": "0.1.0",
+  "description": "Polyfill for intl plural rules",
+  "keywords": [
+    "polyfill",
+    "i18n",
+    "intl",
+    "plural",
+    "rules"
+  ],
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "homepage": "https://github.com/formatjs/formatjs",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "lib/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/formatjs/formatjs.git"
+  },
+  "devDependencies": {
+    "formatjs-extract-cldr-data": "^9.6.0"
+  },
+  "dependencies": {
+    "@formatjs/intl-utils": "^0.7.0"
+  },
+  "scripts": {
+    "build": "npm run cldr && npm run compile",
+    "cldr": "ts-node --project tsconfig.cjs.json scripts/cldr",
+    "clean": "rimraf dist lib",
+    "compile": "tsc && tsc -p tsconfig.cjs.json && rollup -c rollup.config.js",
+    "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json cross-env NODE_ENV=test jest",
+    "test": "npm run jest"
+  },
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  }
+}

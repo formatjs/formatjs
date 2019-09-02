@@ -1,0 +1,1 @@
+export {PluralRules} from './core';
