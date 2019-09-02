@@ -77,6 +77,7 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
   private unit: Unit | undefined = undefined;
   private unitDisplay: 'long' | 'short' | 'narrow' | undefined = undefined;
   private nf: Intl.NumberFormat;
+  private pl: Intl.PluralRules;
   private locale: string;
   private patternData?: UnitData;
   constructor(
@@ -106,13 +107,14 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
       ...options,
       style: style === 'unit' ? 'decimal' : style,
     });
+    this.pl = new Intl.PluralRules(locales);
     this.locale = this.nf.resolvedOptions().locale;
   }
 
   format(num: number) {
     const formattedNum = this.nf.format(num);
     if (this.patternData) {
-      const pl = new Intl.PluralRules(this.locale).select(num);
+      const pl = this.pl.select(num);
       const pattern = this.patternData[this.unitDisplay as 'long'][
         pl === 'one' ? 'one' : 'other'
       ]!;
