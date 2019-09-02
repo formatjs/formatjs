@@ -34,6 +34,9 @@
     "intl-format-cache": "^4.1.16",
     "intl-messageformat-parser": "^3.0.8"
   },
+  "devDependencies": {
+    "@formatjs/intl-pluralrules": "^1.0.0"
+  },
   "scripts": {
     "benchmark": "ts-node --project ./tsconfig.cjs.json tests/benchmark",
     "build": "npm run tsc && npm run rollup",

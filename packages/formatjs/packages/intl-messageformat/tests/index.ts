@@ -3,7 +3,7 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import 'intl-pluralrules';
+import '@formatjs/intl-pluralrules/polyfill-locales';
 import IntlMessageFormat from '../src';
 import {
   IntlMessageFormat as IntlMessageFormatCore,

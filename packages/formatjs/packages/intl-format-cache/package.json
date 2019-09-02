@@ -13,6 +13,7 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
+    "@formatjs/intl-pluralrules": "^1.0.0",
     "@formatjs/intl-relativetimeformat": "^2.8.3"
   },
   "repository": {

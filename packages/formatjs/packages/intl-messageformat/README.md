@@ -91,7 +91,7 @@ This package assumes that the [`Intl`][intl] global object exists in the runtime
 
 1. `Intl.NumberFormat` for number formatting (can be polyfilled using [Intl.js][])
 2. `Intl.DateTimeFormat` for date time formatting (can be polyfilled using [Intl.js][])
-3. `Intl.PluralRules` for plural/ordinal formatting (can be polyfilled using [intl-pluralrules][])
+3. `Intl.PluralRules` for plural/ordinal formatting (can be polyfilled using [@formatjs/intl-pluralrules][])
 
 ### Loading Intl MessageFormat in a browser
 
@@ -301,4 +301,4 @@ See the [LICENSE file][license] for license text and copyright information.
 [rawgit]: https://rawgit.com/
 [semver]: http://semver.org/
 [license]: https://github.com/formatjs/formatjs/blob/master/LICENSE
-[intl-pluralrules]: https://github.com/eemeli/intl-pluralrules
+[@formatjs/intl-pluralrules]: https://github.com/formatjs/formatjs

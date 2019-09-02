@@ -1,4 +1,4 @@
-import 'intl-pluralrules';
+import '@formatjs/intl-pluralrules/polyfill-locales';
 import '../src/polyfill';
 import {UnifiedNumberFormat} from '../src/core';
 if (typeof (Intl.NumberFormat as any).__addUnitLocaleData === 'function') {

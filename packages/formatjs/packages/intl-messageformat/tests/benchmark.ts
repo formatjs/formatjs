@@ -1,6 +1,6 @@
 import {Suite, Event} from 'benchmark';
 import IntlMessageFormat, {Formatters} from '../src';
-import 'intl-pluralrules';
+import '@formatjs/intl-pluralrules/polyfill-locales';
 import memoize from 'intl-format-cache';
 
 const msg =
