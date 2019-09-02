@@ -49,11 +49,10 @@ ${Object.keys(allData)
 `
 );
 
-
 // For test262
 outputFileSync(
   resolve(__dirname, '../lib/polyfill-with-locales.js'),
-`
+  `
 import polyfill from './polyfill';
 import {PluralRules} from './core';
 ${Object.keys(allData)
@@ -61,4 +60,4 @@ ${Object.keys(allData)
   .join('\n')}
 polyfill(PluralRules);
 `
-)
+);
