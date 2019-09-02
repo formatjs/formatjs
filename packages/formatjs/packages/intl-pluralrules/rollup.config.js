@@ -7,7 +7,7 @@ const resolveConfig = resolve({
 const uglifyConfig = uglify();
 export default [
   {
-    input: './dist-test262/polyfill-with-locales.js',
+    input: './dist-es6/polyfill-with-locales.js',
     output: {
       sourcemap: true,
       file: 'dist/polyfill-with-locales.js',

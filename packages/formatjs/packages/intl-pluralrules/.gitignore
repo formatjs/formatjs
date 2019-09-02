@@ -2,4 +2,4 @@ src/en.ts
 src/locales.js
 src/units-constants.ts
 polyfill-locales.js
-dist-test262
+dist-es6

@@ -126,7 +126,11 @@ export class PluralRules implements Intl.PluralRules {
 
     Object.defineProperties(opts, {
       pluralCategories: {
-        value: [...this.pluralRuleData.categories[(this._type as String).valueOf() as 'cardinal']],
+        value: [
+          ...this.pluralRuleData.categories[
+            (this._type as String).valueOf() as 'cardinal'
+          ],
+        ],
         writable: true,
         enumerable: true,
         configurable: true,

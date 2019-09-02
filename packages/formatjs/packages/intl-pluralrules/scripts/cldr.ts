@@ -51,7 +51,7 @@ ${Object.keys(allData)
 
 // For test262
 outputFileSync(
-  resolve(__dirname, '../dist-test262/polyfill-with-locales.js'),
+  resolve(__dirname, '../dist-es6/polyfill-with-locales.js'),
   `
 import polyfill from './polyfill';
 import {PluralRules} from './core';
