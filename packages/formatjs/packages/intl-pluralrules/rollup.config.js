@@ -27,27 +27,5 @@ export default [
       name: 'IntlPluralRules'
     },
     plugins: [resolveConfig, uglifyConfig]
-  },
-  {
-    input: './lib/locales.js',
-    output: {
-      sourcemap: true,
-      file: 'dist/umd/intl-pluralrules-with-locales.js',
-      format: 'umd',
-      exports: 'named',
-      name: 'IntlPluralRules'
-    },
-    plugins: [resolveConfig]
-  },
-  {
-    input: './lib/locales.js',
-    output: {
-      sourcemap: true,
-      file: 'dist/umd/intl-pluralrules-with-locales.min.js',
-      format: 'umd',
-      exports: 'named',
-      name: 'IntlPluralRules'
-    },
-    plugins: [resolveConfig, uglifyConfig]
-  },
+  }
 ];

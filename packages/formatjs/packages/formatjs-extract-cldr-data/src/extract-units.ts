@@ -53,9 +53,9 @@ const extractUnits = generateFieldExtractorFn<UnitData>(loadUnits, hasUnits);
 
 export default function extract(
   locales: Locale[]
-): Record<string, Record<string, {fields: UnitData}>> {
+): Record<string, Record<string, UnitData>> {
   return allUnits.reduce(
-    (all: Record<string, Record<string, {fields: UnitData}>>, unit) => {
+    (all: Record<string, Record<string, UnitData>>, unit) => {
       all[unit] = extractUnits(locales, unit);
       return all;
     },

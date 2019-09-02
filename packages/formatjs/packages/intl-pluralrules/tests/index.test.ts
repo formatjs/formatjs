@@ -12,8 +12,14 @@ describe('Intl.PluralRules', function() {
     expect(new Intl.PluralRules(undefined, {type: 'ordinal'}).select(0)).toBe(
       'other'
     );
-    expect(new Intl.PluralRules(undefined, {type: 'ordinal'}).select(1)).toBe('one');
-    expect(new Intl.PluralRules(undefined, {type: 'ordinal'}).select(2)).toBe('two');
-    expect(new Intl.PluralRules(undefined, {type: 'ordinal'}).select(3)).toBe('few');
+    expect(new Intl.PluralRules(undefined, {type: 'ordinal'}).select(1)).toBe(
+      'one'
+    );
+    expect(new Intl.PluralRules(undefined, {type: 'ordinal'}).select(2)).toBe(
+      'two'
+    );
+    expect(new Intl.PluralRules(undefined, {type: 'ordinal'}).select(3)).toBe(
+      'few'
+    );
   });
 });
