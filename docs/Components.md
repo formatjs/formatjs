@@ -211,7 +211,7 @@ props: Intl.DateTimeFormatOptions &
 ```
 
 ```tsx
-<FormattedDateParts
+<FormattedDate
   value={new Date(1459832991883)}
   year="numeric"
   month="long"
