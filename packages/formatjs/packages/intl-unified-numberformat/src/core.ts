@@ -85,7 +85,7 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
       this.unitDisplay = unitDisplay || 'short';
 
       const resolvedLocale = resolveSupportedLocales(
-        [...Array.isArray(locales) ? locales : [locales], DEFAULT_LOCALE],
+        [...(Array.isArray(locales) ? locales : [locales]), DEFAULT_LOCALE],
         UnifiedNumberFormat.__unitLocaleData__
       )[0];
       this.patternData = findUnitData(resolvedLocale, this.unit);

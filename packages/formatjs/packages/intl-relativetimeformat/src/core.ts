@@ -202,7 +202,7 @@ export default class RelativeTimeFormat {
       this._locale = DEFAULT_LOCALE;
     } else {
       const resolvedLocales = resolveSupportedLocales(
-        [...Intl.NumberFormat.supportedLocalesOf(locales), DEFAULT_LOCALE],
+        [...(Array.isArray(locales) ? locales : [locales]), DEFAULT_LOCALE],
         RelativeTimeFormat.__localeData__
       );
       if (resolvedLocales.length < 1) {
