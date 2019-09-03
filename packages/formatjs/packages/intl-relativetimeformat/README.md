@@ -49,15 +49,6 @@ If you want to polyfill all locales (e.g for Node):
 import '@formatjs/intl-relativetimeformat/polyfill-locales'
 ```
 
-### Language Aliases
-
-Language aliases are useful when we have to resolve deprecated locale (e.g `zh-CN` is technically `zh-Hans-CN`). Without aliases we would resolve `zh-CN` to `zh` which is less accurate. In order to include lang aliases, you can do:
-
-```js
-import '@formatjs/intl-relativetimeformat/polyfill';
-import '@formatjs/intl-relativetimeformat/dist/include-aliases'; // Add language aliases
-```
-
 ## Tests
 
 This library is fully [test262](https://github.com/tc39/test262/tree/master/test/intl402/RelativeTimeFormat)-compliant.

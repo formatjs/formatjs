@@ -216,8 +216,7 @@ export default class RelativeTimeFormat {
           ),
           DEFAULT_LOCALE,
         ],
-        RelativeTimeFormat.__localeData__,
-        RelativeTimeFormat.__languageAliases__
+        RelativeTimeFormat.__localeData__
       );
       if (resolvedLocales.length < 1) {
         throw new Error(
@@ -393,8 +392,7 @@ export default class RelativeTimeFormat {
           Intl.PluralRules.supportedLocalesOf(locales, {localeMatcher})
         ),
       ],
-      RelativeTimeFormat.__localeData__,
-      RelativeTimeFormat.__languageAliases__
+      RelativeTimeFormat.__localeData__
     );
   };
 
@@ -410,10 +408,6 @@ export default class RelativeTimeFormat {
 
       RelativeTimeFormat.__localeData__[datum.locale.toLowerCase()] = datum;
     }
-  }
-  static __languageAliases__: Record<string, string> = {};
-  public static __setLanguageAliases(aliases: Record<string, string>) {
-    RelativeTimeFormat.__languageAliases__ = aliases;
   }
   public static polyfilled = true;
 }
