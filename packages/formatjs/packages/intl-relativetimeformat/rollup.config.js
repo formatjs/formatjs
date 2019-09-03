@@ -58,5 +58,14 @@ export default [
       format: 'iife'
     },
     plugins: [resolveConfig]
-  }
+  },
+  {
+    input: './lib/polyfill.js',
+    output: {
+      sourcemap: true,
+      file: 'dist/umd/polyfill-intl-relativetimeformat.js',
+      format: 'umd'
+    },
+    plugins: [resolveConfig]
+  },
 ];

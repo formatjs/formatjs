@@ -1,3 +1,3 @@
-import polyfill from './polyfill';
-import RelativeTimeFormatWithLocales from './locales';
-polyfill(RelativeTimeFormatWithLocales);
+import fixMeta from './fix-meta';
+import IntlRelativeTimeFormat from './locales';
+fixMeta(IntlRelativeTimeFormat);
