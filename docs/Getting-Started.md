@@ -22,6 +22,7 @@
 - [Core Concepts](#core-concepts)
 - [Example Apps](#example-apps)
 - [API Reference](#api-reference)
+- [TypeScript Usage](#typescript-usage)
 
 <!-- tocstop -->
 
@@ -268,3 +269,9 @@ There are a few API layers that React Intl provides and is built on. When using 
 
 [api]: ./API.md
 [components]: ./Components.md
+
+# TypeScript Usage
+
+`react-intl` is written in TypeScript, thus having 1st-class TS support.
+
+In order to use `react-intl` in TypeScript, make sure your `compilerOptions`'s `lib` config include `["esnext.intl", "es2017.intl", "es2018.intl"]`.
