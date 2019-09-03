@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@1.1.1...@formatjs/intl-pluralrules@1.1.2) (2019-09-03)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** add UMD polyfill js artifact ([0c471b0](https://github.com/formatjs/formatjs/commit/0c471b0))
+
+
+
+
+
 ## [1.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@1.1.0...@formatjs/intl-pluralrules@1.1.1) (2019-09-03)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules
