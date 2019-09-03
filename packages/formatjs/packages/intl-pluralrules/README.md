@@ -1,18 +1,15 @@
 # `intl-pluralrules`
 
-A polyfill for [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules).
+A spec-compliant polyfill/ponyfill for [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
+
+[![npm Version][npm-badge]][npm]
+![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-pluralrules)
 
 ## Installation
 
 ```
 npm install @formatjs/intl-pluralrules
 ```
-
-## Requirements
-
-This package requires the following capabilities:
-
-- [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat)
 
 # Usage
 

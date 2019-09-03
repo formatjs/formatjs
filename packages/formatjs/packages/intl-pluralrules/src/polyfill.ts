@@ -21,7 +21,7 @@ export default function polyfill(PluralRules: typeof IntlPluralRules) {
     // IE11 does not have Symbol
     if (typeof Symbol !== 'undefined') {
       Object.defineProperty(PluralRules.prototype, Symbol.toStringTag, {
-        value: 'Intl.PluralRules',
+        value: 'Object',
         writable: false,
         enumerable: false,
         configurable: true,
