@@ -3,7 +3,7 @@ import {resolve} from 'path';
 import {cpus} from 'os';
 
 if (process.version.startsWith('v10') || process.version.startsWith('v12')) {
-  console.log('Node 10/12 has native Intl.RelativeTimeFormat');
+  console.log('Node 10/12 has native Intl.PluralRules');
   process.exit(0);
 }
 
