@@ -1,13 +1,13 @@
+import aliases from './aliases'
 export function resolveSupportedLocales<
   T extends {locale: string} = {locale: string}
 >(
   locales: string | Array<string | undefined>,
   localeData: Record<string, T>,
-  aliases: Record<string, string> = {}
 ) {
   let resolvedLocales: string[] = (Array.isArray(locales) ? locales : [locales])
     .filter<string>((s): s is string => typeof s === 'string')
-    .map(l => aliases[l] || l);
+    .map(l => aliases[l as 'zh-CN'] || l);
 
   let i, len, localeParts, data;
 
