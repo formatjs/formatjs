@@ -64,13 +64,6 @@ function findUnitData(locale: string, unit: Unit): UnitData {
   return findUnitData(parentLocale, unit);
 }
 
-function intersection(
-  arr1: Array<string | undefined>,
-  arr2: Array<string | undefined>
-): Array<string | undefined> {
-  return arr1.filter(s => ~arr2.indexOf(s as string));
-}
-
 const DEFAULT_LOCALE = new NativeNumberFormat().resolvedOptions().locale;
 
 export class UnifiedNumberFormat implements Intl.NumberFormat {
@@ -92,13 +85,7 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
       this.unitDisplay = unitDisplay || 'short';
 
       const resolvedLocale = resolveSupportedLocales(
-        [
-          ...intersection(
-            NativeNumberFormat.supportedLocalesOf(locales),
-            Intl.PluralRules.supportedLocalesOf(locales)
-          ),
-          DEFAULT_LOCALE,
-        ],
+        [...Intl.PluralRules.supportedLocalesOf(locales), DEFAULT_LOCALE],
         UnifiedNumberFormat.__unitLocaleData__
       )[0];
       this.patternData = findUnitData(resolvedLocale, this.unit);
