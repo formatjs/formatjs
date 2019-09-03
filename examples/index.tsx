@@ -1,5 +1,5 @@
 import 'core-js/stable';
-import 'intl-pluralrules';
+import '@formatjs/intl-pluralrules/polyfill';
 import '@formatjs/intl-relativetimeformat/polyfill';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';

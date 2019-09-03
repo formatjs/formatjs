@@ -1,5 +1,5 @@
 import {configure} from 'enzyme';
-import 'intl-pluralrules';
+import '@formatjs/intl-pluralrules/polyfill-locales';
 import '@formatjs/intl-relativetimeformat/polyfill-locales';
 import * as Adapter from 'enzyme-adapter-react-16';
 
