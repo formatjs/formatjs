@@ -172,13 +172,6 @@ function isString(s?: string): s is string {
   return !!s;
 }
 
-function intersection(
-  arr1: Array<string | undefined>,
-  arr2: Array<string | undefined>
-): Array<string | undefined> {
-  return arr1.filter(s => ~arr2.indexOf(s as string));
-}
-
 const DEFAULT_LOCALE = new Intl.NumberFormat().resolvedOptions().locale;
 
 export default class RelativeTimeFormat {
@@ -209,13 +202,7 @@ export default class RelativeTimeFormat {
       this._locale = DEFAULT_LOCALE;
     } else {
       const resolvedLocales = resolveSupportedLocales(
-        [
-          ...intersection(
-            Intl.NumberFormat.supportedLocalesOf(locales),
-            Intl.PluralRules.supportedLocalesOf(locales)
-          ),
-          DEFAULT_LOCALE,
-        ],
+        [...Intl.PluralRules.supportedLocalesOf(locales), DEFAULT_LOCALE],
         RelativeTimeFormat.__localeData__
       );
       if (resolvedLocales.length < 1) {
@@ -386,12 +373,7 @@ export default class RelativeTimeFormat {
     }
     // test262/test/intl402/RelativeTimeFormat/constructor/supportedLocalesOf/result-type.js
     return resolveSupportedLocales(
-      [
-        ...intersection(
-          Intl.NumberFormat.supportedLocalesOf(locales, {localeMatcher}),
-          Intl.PluralRules.supportedLocalesOf(locales, {localeMatcher})
-        ),
-      ],
+      Intl.PluralRules.supportedLocalesOf(locales, {localeMatcher}),
       RelativeTimeFormat.__localeData__
     );
   };

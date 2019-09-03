@@ -1,7 +1,6 @@
 import '@formatjs/intl-pluralrules/polyfill-locales';
 import '../src/polyfill';
 import '../polyfill';
-import '../dist/include-aliases';
 import '../dist/locale-data/zh';
 
 describe('Intl.RelativeTimeFormat', function() {
