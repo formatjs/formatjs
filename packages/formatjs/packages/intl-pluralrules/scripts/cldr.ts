@@ -53,11 +53,11 @@ ${Object.keys(allData)
 outputFileSync(
   resolve(__dirname, '../dist-es6/polyfill-with-locales.js'),
   `
-import polyfill from './polyfill';
-import {PluralRules} from './core';
+import './polyfill';
+if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
 ${Object.keys(allData)
-  .map(lang => `PluralRules.__addLocaleData(${serialize(allData[lang])})`)
+  .map(lang => `Intl.PluralRules.__addLocaleData(${serialize(allData[lang])})`)
   .join('\n')}
-polyfill(PluralRules);
+}
 `
 );
