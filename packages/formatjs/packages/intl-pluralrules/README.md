@@ -23,3 +23,6 @@ TO polyfill w/ ALL locales:
 ```tsx
 import '@formatjs/intl-pluralrules/polyfill-locales';
 ```
+
+[npm]: https://www.npmjs.org/package/@formatjs/intl-pluralrules
+[npm-badge]: https://img.shields.io/npm/v/@formatjs/intl-pluralrules.svg?style=flat-square
