@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@0.4.6...@formatjs/intl-unified-numberformat@0.4.7) (2019-09-03)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** pass in raw locales to lookup ([9c2af2a](https://github.com/formatjs/formatjs/commit/9c2af2a))
+* **@formatjs/intl-unified-numberformat:** memoize Intl.PluralRules ([429a7db](https://github.com/formatjs/formatjs/commit/429a7db))
+* **@formatjs/intl-unified-numberformat:** pass in raw locales to lookup ([719c6f2](https://github.com/formatjs/formatjs/commit/719c6f2))
+* **@formatjs/intl-unified-numberformat:** rely on Intl.PluralRules supported locales instead of both PL & NumberFormat ([8c8578d](https://github.com/formatjs/formatjs/commit/8c8578d))
+
+
+
+
+
 ## [0.4.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@0.4.5...@formatjs/intl-unified-numberformat@0.4.6) (2019-08-29)
 
 **Note:** Version bump only for package @formatjs/intl-unified-numberformat

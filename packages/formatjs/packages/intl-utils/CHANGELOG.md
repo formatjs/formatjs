@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@0.7.0...@formatjs/intl-utils@1.0.0) (2019-09-03)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-utils:** add polyfill-utils like getOption/toObject ([7cf1cc4](https://github.com/formatjs/formatjs/commit/7cf1cc4))
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** use aliases from @formatjs/intl-utils ([e430944](https://github.com/formatjs/formatjs/commit/e430944))
+* **@formatjs/intl-utils:** add lang aliases to locale lookup ([5e74792](https://github.com/formatjs/formatjs/commit/5e74792))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-relativetimeformat:** Language aliases are now built in so there is no need
+to explicitly include it. This provides correctness across our polyfills
+
+
+
+
+
 # [0.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@0.6.1...@formatjs/intl-utils@0.7.0) (2019-08-29)
 
 

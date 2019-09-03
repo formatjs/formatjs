@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-utils",
-  "version": "0.7.0",
+  "version": "1.0.0",
   "description": "Smartly determine best unit for relative time format",
   "keywords": [
     "intl",
@@ -28,7 +28,7 @@
     "test": "cross-env TS_NODE_PROJECT=tsconfig.cjs.json mocha --opts ../../mocha.opts tests/*"
   },
   "devDependencies": {
-    "formatjs-extract-cldr-data": "^9.4.2"
+    "formatjs-extract-cldr-data": "^9.6.1"
   },
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",

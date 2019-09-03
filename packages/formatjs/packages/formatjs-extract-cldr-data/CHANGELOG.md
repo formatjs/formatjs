@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.6.1](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.6.0...formatjs-extract-cldr-data@9.6.1) (2019-09-03)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-utils:** add polyfill-utils like getOption/toObject ([7cf1cc4](https://github.com/formatjs/formatjs/commit/7cf1cc4))
+
+
+
+
+
 # [9.6.0](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.5.0...formatjs-extract-cldr-data@9.6.0) (2019-08-19)
 
 

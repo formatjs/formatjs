@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.8.3...@formatjs/intl-relativetimeformat@3.0.0) (2019-09-03)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** fix test262 ([025dfe3](https://github.com/formatjs/formatjs/commit/025dfe3))
+* **@formatjs/intl-relativetimeformat:** pass in raw locales to lookup ([9c2af2a](https://github.com/formatjs/formatjs/commit/9c2af2a))
+* **@formatjs/intl-relativetimeformat:** rely on Intl.PluralRules supported locales instead of both PL & NumberFormat ([cc3c05b](https://github.com/formatjs/formatjs/commit/cc3c05b))
+* **@formatjs/intl-unified-numberformat:** pass in raw locales to lookup ([719c6f2](https://github.com/formatjs/formatjs/commit/719c6f2))
+* **@formatjs/intl-utils:** add polyfill-utils like getOption/toObject ([7cf1cc4](https://github.com/formatjs/formatjs/commit/7cf1cc4))
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** use aliases from @formatjs/intl-utils ([e430944](https://github.com/formatjs/formatjs/commit/e430944))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-relativetimeformat:** Language aliases are now built in so there is no need
+to explicitly include it. This provides correctness across our polyfills
+
+
+
+
+
 ## [2.8.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@2.8.2...@formatjs/intl-relativetimeformat@2.8.3) (2019-08-29)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat
