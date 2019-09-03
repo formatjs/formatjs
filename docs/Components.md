@@ -224,7 +224,7 @@ props: Intl.DateTimeFormatOptions &
       <small>{parts[2].value}</small>
     </>
   )}
-</FormattedDate>
+</FormattedDateParts>
 ```
 
 ```html
@@ -288,7 +288,7 @@ props: Intl.DateTimeFormatOptions &
       <small>{parts[2].value}</small>
     </>
   )}
-</FormattedDate>
+</FormattedTimeParts>
 ```
 
 ```html
