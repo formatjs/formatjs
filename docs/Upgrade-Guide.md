@@ -148,18 +148,18 @@ This shift is meant to future-proof React Intl as these APIs are all stable and 
 
 If you previously were using `addLocaleData` to support older browsers, we recommend you do the following:
 
-1. If you're supporting browsers that do not have [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](https://www.npmjs.com/package/intl-pluralrules) in your build.
+1. If you're supporting browsers that do not have [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](https://www.npmjs.com/package/@formatjs/intl-pluralrules) in your build.
 2. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat) in your build along with individual CLDR data for each locale you support.
 
 ```js
 if (!Intl.PluralRules) {
-  require('@formatjs/intl-pluralrules/polyfill');
-  require('@formatjs/intl-pluralrules/dist/locale-data/en'); // Add locale data for de
+  require('intl-pluralrules/polyfill');
+  require('@formatjs/intl-pluralrules/dist/locale-data/de'); // Add locale data for de
 }
 
 if (!Intl.RelativeTimeFormat) {
   require('@formatjs/intl-relativetimeformat/polyfill');
-  require('@formatjs/intl-relativetimeformat/dist/locale-data/en'); // Add locale data for de
+  require('@formatjs/intl-relativetimeformat/dist/locale-data/de'); // Add locale data for de
 }
 ```
 
