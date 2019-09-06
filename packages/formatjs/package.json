@@ -73,7 +73,7 @@
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-typescript2": "^0.24.0",
     "rollup-plugin-uglify": "^6.0.3",
-    "serialize-javascript": "^1.9.0",
+    "serialize-javascript": "^2.1.0",
     "source-map-support": "^0.5.12",
     "test262-harness": "^6.3.1",
     "ts-jest": "^24.0.2",
