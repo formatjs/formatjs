@@ -25,6 +25,26 @@ const messages = {
   unicode: 'Hello\u0020{placeholder}',
 };
 
+/**
+ * @NOTE
+ *
+ * `<IntlProvider>` needs to exist in the component ancestry
+ * BEFORE using the `useIntl()` hook,
+ * as shown in the `App` component below
+ *
+ * ```js
+ * interface Props {}
+ *
+ * const Wrapper: React.FC<Props> = (props) => {
+ * 	return (
+ *    <IntlProvider locale="en" messages={messages}>
+ *      <Hooks {...props} />
+ *    </IntlProvider>
+ *   );
+ * };
+ * ```
+ *
+ */
 const Hooks: React.FC<Props> = () => {
   const intl = useIntl();
   const {formatMessage: f} = intl;
