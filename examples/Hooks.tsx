@@ -46,8 +46,7 @@ const messages = {
  *
  */
 const Hooks: React.FC<Props> = () => {
-  const intl = useIntl();
-  const {formatMessage: f} = intl;
+  const {formatMessage: f} = useIntl();
 
   return (
     <>
