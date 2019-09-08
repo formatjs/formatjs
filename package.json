@@ -83,7 +83,7 @@
     "parcel": "^1.12.3",
     "pre-commit": "^1.2.2",
     "prettier": "^1.6.1",
-    "react": "^16.3.0",
+    "react": "^16.8.0",
     "react-dom": "^16.9.0",
     "rimraf": "^3.0.0",
     "rollup": "^1.20.3",
