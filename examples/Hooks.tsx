@@ -1,3 +1,8 @@
+/**
+ * A very similar example using `<FormattedMessage {...} />`
+ * instead of `formatMessage({...})` is available @ `./Messages.tsx`
+ */
+
 import * as React from 'react';
 import {IntlProvider} from '../';
 
@@ -49,6 +54,7 @@ const Hooks: React.FC<Props> = () => {
   const {formatMessage: f} = useIntl();
 
   return (
+    /* <IntlProvider locale="en" messages={messages}> */
     <>
       <p>
         {/* <FormattedMessage id="simple" /> */}
@@ -103,6 +109,7 @@ const Hooks: React.FC<Props> = () => {
         )}
       </p>
     </>
+    /* </IntlProvider> */
   );
 };
 
