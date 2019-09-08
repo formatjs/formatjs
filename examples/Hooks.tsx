@@ -96,7 +96,7 @@ const Hooks: React.FC<Props> = () => {
         /> */}
         {f(
           {id: 'richtext'},
-          {num: 99, bold: (...chunks) => <strong>{chunks}</strong>}
+          {num: 99, bold: (...chunks) => <strong key={0}>{chunks}</strong>}
         )}
         <br />
         {/* <FormattedMessage
@@ -105,7 +105,7 @@ const Hooks: React.FC<Props> = () => {
         /> */}
         {f(
           {id: 'richertext'},
-          {num: 99, bold: (...chunks) => <strong>{chunks}</strong>}
+          {num: 99, bold: (...chunks) => <strong key={0}>{chunks}</strong>}
         )}
         <br />
         {/* <FormattedMessage
@@ -119,7 +119,7 @@ const Hooks: React.FC<Props> = () => {
             defaultMessage:
               'I have < &nbsp; <bold>{num, plural, one {# dog} other {# & dogs}}</bold>',
           },
-          {num: 99, bold: (...chunks) => <strong>{chunks}</strong>}
+          {num: 99, bold: (...chunks) => <strong key={0}>{chunks}</strong>}
         )}
         <br />
         {/* <FormattedMessage id="unicode" values={{placeholder: 'world'}} /> */}
