@@ -90,38 +90,6 @@ const Hooks: React.FC<Props> = () => {
         {/* <FormattedMessage id="selectordinal" values={{order: 4}} /> */}
         {f({id: 'selectordinal'}, {order: 4})}
         <br />
-        {/* <FormattedMessage
-          id="richtext"
-          values={{num: 99, bold: (...chunks) => <strong>{chunks}</strong>}}
-        /> */}
-        {f(
-          {id: 'richtext'},
-          {num: 99, bold: (...chunks) => <strong key={0}>{chunks}</strong>}
-        )}
-        <br />
-        {/* <FormattedMessage
-          id="richertext"
-          values={{num: 99, bold: (...chunks) => <strong>{chunks}</strong>}}
-        /> */}
-        {f(
-          {id: 'richertext'},
-          {num: 99, bold: (...chunks) => <strong key={0}>{chunks}</strong>}
-        )}
-        <br />
-        {/* <FormattedMessage
-          id="random"
-          defaultMessage="I have < &nbsp; <bold>{num, plural, one {# dog} other {# & dogs}}</bold>"
-          values={{num: 99, bold: (...chunks) => <strong>{chunks}</strong>}}
-		/> */}
-        {f(
-          {
-            id: 'random',
-            defaultMessage:
-              'I have < &nbsp; <bold>{num, plural, one {# dog} other {# & dogs}}</bold>',
-          },
-          {num: 99, bold: (...chunks) => <strong key={0}>{chunks}</strong>}
-        )}
-        <br />
         {/* <FormattedMessage id="unicode" values={{placeholder: 'world'}} /> */}
         {f({id: 'unicode'}, {placeholder: 'world'})}
         <br />
