@@ -25,12 +25,12 @@ const messages = {
   unicode: 'Hello\u0020{placeholder}',
 };
 
-const App: React.FC<Props> = () => {
+const Hooks: React.FC<Props> = () => {
   const intl = useIntl();
   const {formatMessage: f} = intl;
 
   return (
-    <IntlProvider locale="en" messages={messages}>
+    <>
       <p>
         {/* <FormattedMessage id="simple" /> */}
         {f({id: 'simple'})}
@@ -115,12 +115,20 @@ const App: React.FC<Props> = () => {
           {placeholder: 'world'}
         )}
       </p>
-    </IntlProvider>
+    </>
   );
 };
 
-App.defaultProps = {
+Hooks.defaultProps = {
   currentTime: new Date(),
+};
+
+const App: React.FC<Props> = props => {
+  return (
+    <IntlProvider locale="en" messages={messages}>
+      <Hooks {...props} />
+    </IntlProvider>
+  );
 };
 
 export default App;
