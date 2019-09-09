@@ -41,7 +41,7 @@
     "hoist-non-react-statics": "^3.3.0",
     "intl-format-cache": "^4.1.19",
     "intl-locales-supported": "^1.4.5",
-    "intl-messageformat": "^7.1.6",
+    "intl-messageformat": "^7.2.0",
     "intl-messageformat-parser": "^3.1.0",
     "invariant": "^2.1.1",
     "shallow-equal": "^1.1.0"
@@ -50,11 +50,11 @@
     "react": "^16.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/node": "^7.5.5",
+    "@babel/core": "^7.6.0",
+    "@babel/node": "^7.6.1",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@babel/plugin-transform-modules-commonjs": "^7.5.0",
-    "@babel/preset-env": "^7.5.5",
+    "@babel/plugin-transform-modules-commonjs": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
     "@babel/preset-react": "^7.0.0",
     "@formatjs/intl-pluralrules": "^1.1.2",
     "@types/benchmark": "^1.0.31",
@@ -86,7 +86,7 @@
     "react": "^16.8.0",
     "react-dom": "^16.9.0",
     "rimraf": "^3.0.0",
-    "rollup": "^1.20.3",
+    "rollup": "^1.21.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
