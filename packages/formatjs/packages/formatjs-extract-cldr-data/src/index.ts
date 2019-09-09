@@ -56,4 +56,8 @@ function mergeData<D extends Record<string, any>>(
   return data;
 }
 
-export {getAllLanguages, getAllLocales} from './locales';
+export {
+  getAllLanguages,
+  getAllLocales,
+  getParentLocaleHierarchy,
+} from './locales';

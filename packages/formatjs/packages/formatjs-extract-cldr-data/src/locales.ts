@@ -97,3 +97,17 @@ export function normalizeLocale(locale: Locale): Locale {
 
   return locale;
 }
+
+export function getParentLocaleHierarchy(): Record<string, string> {
+  const parentLocaleMap =
+    PARENT_LOCALES.supplemental.parentLocales.parentLocale;
+  return Object.keys(parentLocaleMap).reduce(
+    (all: Record<string, string>, locale: string) => {
+      if (parentLocaleMap[locale as 'en-150'] !== 'root') {
+        all[locale] = parentLocaleMap[locale as 'en-150'];
+      }
+      return all;
+    },
+    {}
+  );
+}
