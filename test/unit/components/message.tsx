@@ -218,12 +218,12 @@ describe('<FormattedMessage>', () => {
           values: {
             name: 'Jest',
             b: (...chunks: any[]) => <b>{...chunks}</b>,
-            i: (msg: string) => <i>{msg}</i>
+            i: (msg: string) => <i>{msg}</i>,
           },
         },
         providerProps
       );
-        expect(rendered).toMatchSnapshot()
+      expect(rendered).toMatchSnapshot();
     });
 
     it('supports rich-text message formatting in function-as-child pattern', () => {
