@@ -6,7 +6,6 @@ lib
 node_modules
 *.log
 *.tgz
-package-lock.json
 functional-tests/
 *.tsbuildinfo
 .rpt2_cache

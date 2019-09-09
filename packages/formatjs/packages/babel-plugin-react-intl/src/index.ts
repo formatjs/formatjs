@@ -8,7 +8,6 @@ import * as p from 'path';
 import {writeFileSync} from 'fs';
 import {mkdirpSync} from 'fs-extra';
 import {parse} from 'intl-messageformat-parser/dist';
-import {printAST} from 'intl-messageformat-parser/dist/printer';
 const {declare} = require('@babel/helper-plugin-utils') as any;
 import {types as t, PluginObj} from '@babel/core';
 import {
@@ -21,6 +20,7 @@ import {
   ObjectProperty,
   SourceLocation,
   Expression,
+  V8IntrinsicIdentifier,
 } from '@babel/types';
 import {NodePath} from '@babel/traverse';
 
@@ -279,7 +279,9 @@ function referencesImport(
   return importedNames.some(name => path.referencesImport(mod, name));
 }
 
-function isFormatMessageCall(callee: NodePath<Expression>) {
+function isFormatMessageCall(
+  callee: NodePath<Expression | V8IntrinsicIdentifier>
+) {
   if (!callee.isMemberExpression()) {
     return false;
   }
@@ -300,7 +302,7 @@ function isFormatMessageCall(callee: NodePath<Expression>) {
 
 function assertObjectExpression(
   path: NodePath,
-  callee: NodePath<Expression>
+  callee: NodePath<Expression | V8IntrinsicIdentifier>
 ): path is NodePath<ObjectExpression> {
   if (!path || !path.isObjectExpression()) {
     throw path.buildCodeFrameError(
