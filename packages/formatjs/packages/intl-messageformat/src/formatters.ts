@@ -297,7 +297,7 @@ function formatHTMLElement(
   el: Element,
   objectParts: Record<string, any>,
   values: Record<string, PrimitiveType | object | FormatXMLElementFn>
-) {
+): Array<PrimitiveType | object> {
   let {tagName, outerHTML, textContent, childNodes} = el;
   // Regular text
   if (!tagName) {
@@ -305,36 +305,36 @@ function formatHTMLElement(
   }
 
   tagName = tagName.toLowerCase();
+  const isVoidElement = ~VOID_ELEMENTS.indexOf(tagName);
+  const formatFnOrValue = values[tagName];
 
-  if (~VOID_ELEMENTS.indexOf(tagName)) {
+  if (formatFnOrValue && isVoidElement) {
     throw new FormatError(
       `${tagName} is a self-closing tag and can not be used, please use another tag name.`
     );
   }
 
-  // Legacy HTML
-  if (!values[tagName]) {
-    return restoreRichPlaceholderMessage(outerHTML, objectParts);
+  if (!childNodes.length) {
+    return [outerHTML];
   }
 
+  const chunks: any[] = (Array.prototype.slice.call(
+    childNodes
+  ) as ChildNode[]).reduce(
+    (all: any[], child) =>
+      all.concat(formatHTMLElement(child as HTMLElement, objectParts, values)),
+    []
+  );
+
+  // Legacy HTML
+  if (!formatFnOrValue) {
+    return [`<${tagName}>`, ...chunks, `</${tagName}>`];
+  }
   // HTML Tag replacement
-  const formatFnOrValue = values[tagName];
   if (typeof formatFnOrValue === 'function') {
-    if (!childNodes.length) {
-      return [formatFnOrValue(undefined)];
-    }
-    const chunks: any[] = (Array.prototype.slice.call(
-      childNodes
-    ) as ChildNode[]).reduce(
-      (all: any[], child) =>
-        all.concat(
-          formatHTMLElement(child as HTMLElement, objectParts, values)
-        ),
-      []
-    );
     return [formatFnOrValue(...chunks)];
   }
-  return [formatFnOrValue as object];
+  return [formatFnOrValue];
 }
 
 export function formatHTMLMessage(

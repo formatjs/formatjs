@@ -535,13 +535,48 @@ describe('IntlMessageFormat', function() {
       ]);
     });
     it('nested tag message', function() {
-      var mf = new IntlMessageFormat('hello <b>world<i>!</i></b>', 'en');
+      var mf = new IntlMessageFormat('hello <b>world<i>!</i> <br/> </b>', 'en');
       expect(
         mf.formatHTMLMessage({
           b: (...chunks) => ({chunks}),
           i: c => ({val: `$$${c}$$`}),
         })
-      ).to.deep.equal(['hello ', {chunks: ['world', {val: '$$!$$'}]}]);
+      ).to.deep.equal([
+        'hello ',
+        {chunks: ['world', {val: '$$!$$'}, ' ', '<br>', ' ']},
+      ]);
+    });
+    it('deep format nested tag message', function() {
+      var mf = new IntlMessageFormat('hello <b>world<i>!</i> <br/> </b>', 'en');
+      expect(
+        mf.formatHTMLMessage({
+          i: c => ({val: `$$${c}$$`}),
+        })
+      ).to.deep.equal([
+        'hello ',
+        '<b>',
+        'world',
+        {val: '$$!$$'},
+        ' ',
+        '<br>',
+        ' ',
+        '</b>',
+      ]);
+    });
+    it('handle no child tags', function() {
+      var mf = new IntlMessageFormat('hello <br> <foo></foo> <i>!</i>', 'en');
+      expect(
+        mf.formatHTMLMessage({
+          i: c => ({val: `$$${c}$$`}),
+        })
+      ).to.deep.equal([
+        'hello ',
+        '<br>',
+        ' ',
+        '<foo></foo>',
+        ' ',
+        {val: '$$!$$'},
+      ]);
     });
     it('should throw if void elements are used', function() {
       var mf = new IntlMessageFormat('hello <img/>', 'en');

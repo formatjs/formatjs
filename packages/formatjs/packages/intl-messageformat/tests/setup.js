@@ -1,1 +1,1 @@
-global.DOMParser = require('xmldom').DOMParser;
+global.DOMParser = new (require('jsdom').JSDOM)().window.DOMParser
