@@ -2,6 +2,5 @@
 lib
 node_modules/
 tests/browser.*
-src/locales.ts
-src/en.ts
 src/aliases.ts
+src/parentLocales.ts
