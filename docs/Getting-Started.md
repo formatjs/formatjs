@@ -40,7 +40,7 @@ Internationalizing web apps is an involved and complex task. If you're new to i1
 
 **React Intl uses and builds on the [Internationalization API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) built-in to JavaScript.**
 
-These APIs are in all modern browsers (http://caniuse.com/#search=Intl) and Node.js since 0.12.
+These APIs are in all modern browsers (https://caniuse.com/#feat=internationalization) and Node.js since 0.12.
 
 For older browsers and Node you might need to polyfill the `Intl` APIs. The [Runtime Environments guide](http://formatjs.io/guides/runtime-environments/) provides an overview of doing this, and here's some specific info:
 
