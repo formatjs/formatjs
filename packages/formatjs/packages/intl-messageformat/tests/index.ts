@@ -534,6 +534,15 @@ describe('IntlMessageFormat', function() {
         {str: 'world'},
       ]);
     });
+    it('nested tag message', function() {
+      var mf = new IntlMessageFormat('hello <b>world<i>!</i></b>', 'en');
+      expect(
+        mf.formatHTMLMessage({
+          b: (...chunks) => ({chunks}),
+          i: c => ({val: `$$${c}$$`}),
+        })
+      ).to.deep.equal(['hello ', {chunks: ['world', {val: '$$!$$'}]}]);
+    });
     it('should throw if void elements are used', function() {
       var mf = new IntlMessageFormat('hello <img/>', 'en');
       expect(() => mf.formatHTMLMessage({img: str => ({str})})).to.throw(

@@ -293,6 +293,50 @@ const VOID_ELEMENTS = [
   'wbr',
 ];
 
+function formatHTMLElement(
+  el: Element,
+  objectParts: Record<string, any>,
+  values: Record<string, PrimitiveType | object | FormatXMLElementFn>
+) {
+  let {tagName, outerHTML, textContent, childNodes} = el;
+  // Regular text
+  if (!tagName) {
+    return restoreRichPlaceholderMessage(textContent || '', objectParts);
+  }
+
+  tagName = tagName.toLowerCase();
+
+  if (~VOID_ELEMENTS.indexOf(tagName)) {
+    throw new FormatError(
+      `${tagName} is a self-closing tag and can not be used, please use another tag name.`
+    );
+  }
+
+  // Legacy HTML
+  if (!values[tagName]) {
+    return restoreRichPlaceholderMessage(outerHTML, objectParts);
+  }
+
+  // HTML Tag replacement
+  const formatFnOrValue = values[tagName];
+  if (typeof formatFnOrValue === 'function') {
+    if (!childNodes.length) {
+      return [formatFnOrValue(undefined)];
+    }
+    const chunks: any[] = (Array.prototype.slice.call(
+      childNodes
+    ) as ChildNode[]).reduce(
+      (all: any[], child) =>
+        all.concat(
+          formatHTMLElement(child as HTMLElement, objectParts, values)
+        ),
+      []
+    );
+    return [formatFnOrValue(...chunks)];
+  }
+  return [formatFnOrValue as object];
+}
+
 export function formatHTMLMessage(
   els: MessageFormatElement[],
   locales: string | string[],
@@ -364,49 +408,11 @@ export function formatHTMLMessage(
     );
   }
 
-  const childNodes = Array.prototype.slice.call(content.childNodes);
-  return childNodes.reduce(
-    (reconstructedChunks, {tagName, outerHTML, textContent}: Element) => {
-      // Regular text
-      if (!tagName) {
-        const chunks = restoreRichPlaceholderMessage(
-          textContent || '',
-          objectParts
-        );
-        return reconstructedChunks.concat(chunks);
-      }
-
-      tagName = tagName.toLowerCase();
-
-      if (~VOID_ELEMENTS.indexOf(tagName)) {
-        throw new FormatError(
-          `${tagName} is a self-closing tag and can not be used, please use another tag name.`
-        );
-      }
-
-      // Legacy HTML
-      if (!values[tagName]) {
-        const chunks = restoreRichPlaceholderMessage(outerHTML, objectParts);
-        if (chunks.length === 1) {
-          return reconstructedChunks.concat([chunks[0]]);
-        }
-
-        return reconstructedChunks.concat(chunks);
-      }
-
-      // HTML Tag replacement
-      const formatFnOrValue = values[tagName];
-      if (typeof formatFnOrValue === 'function') {
-        if (textContent == null) {
-          return reconstructedChunks.concat([
-            formatFnOrValue(textContent || undefined),
-          ]);
-        }
-        const chunks = restoreRichPlaceholderMessage(textContent, objectParts);
-        return reconstructedChunks.concat([formatFnOrValue(...chunks)]);
-      }
-      return reconstructedChunks.concat([formatFnOrValue as object]);
-    },
-    []
-  );
+  // We're doing this since top node is `<formatted-message/>` which does not have a formatter
+  return Array.prototype.slice
+    .call(content.childNodes)
+    .reduce(
+      (all, child) => all.concat(formatHTMLElement(child, objectParts, values)),
+      []
+    );
 }
