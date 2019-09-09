@@ -1,5 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<FormattedMessage> rich text supports rich-text message formatting w/ nested tag 1`] = `
+<FormattedMessage
+  defaultMessage="Hello, <b>{name}<i>!</i></b>"
+  id="hello"
+  values={
+    Object {
+      "b": [Function],
+      "i": [Function],
+      "name": "Jest",
+    }
+  }
+>
+  Hello, 
+  <b>
+    Jest
+    <i>
+      !
+    </i>
+  </b>
+</FormattedMessage>
+`;
+
 exports[`<FormattedMessage> should work with mount enzyme 1`] = `
 <span>
   <FormattedMessage
