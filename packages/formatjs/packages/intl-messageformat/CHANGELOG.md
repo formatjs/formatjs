@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.2.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.1.6...intl-messageformat@7.2.0) (2019-09-09)
+
+
+### Features
+
+* **intl-messageformat:** support nested tag, fix [#176](https://github.com/formatjs/formatjs/issues/176) ([a857239](https://github.com/formatjs/formatjs/commit/a857239))
+
+
+
+
+
 ## [7.1.6](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.1.5...intl-messageformat@7.1.6) (2019-09-03)
 
 **Note:** Version bump only for package intl-messageformat
