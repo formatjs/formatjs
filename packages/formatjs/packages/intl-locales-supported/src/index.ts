@@ -24,18 +24,19 @@ export default function areIntlLocalesSupported(
     locales = [locales];
   }
 
-  // Per https://github.com/formatjs/formatjs/issues/151
-  if (!constructorsToCheck) {
-    constructorsToCheck = [
-      Intl.DateTimeFormat,
-      Intl.NumberFormat,
-      Intl.PluralRules,
-    ];
-  }
+  let intlConstructors = constructorsToCheck || [
+    Intl.DateTimeFormat,
+    Intl.NumberFormat,
+    Intl.PluralRules,
+  ];
 
-  const intlConstructors = constructorsToCheck.filter(Boolean);
+  intlConstructors = intlConstructors.filter(Boolean);
 
-  if (intlConstructors.length === 0) {
+  if (
+    intlConstructors.length === 0 ||
+    (constructorsToCheck &&
+      intlConstructors.length !== constructorsToCheck.length)
+  ) {
     return false;
   }
 
