@@ -8,13 +8,15 @@ import * as React from 'react';
 import {PrimitiveType, FormatXMLElementFn} from 'intl-messageformat';
 import {Context} from './injectIntl';
 import {MessageDescriptor} from '../types';
-import {formatMessage as baseFormatMessage} from '../format';
+import {formatMessage} from '../formatters/message';
 import {
   invariantIntlContext,
   DEFAULT_INTL_CONFIG,
   createFormatters,
 } from '../utils';
-const shallowEquals = require('shallow-equal/objects');
+import * as shallowEquals_ from 'shallow-equal/objects';
+const shallowEquals: typeof shallowEquals_ =
+  (shallowEquals_ as any).default || shallowEquals_;
 
 const defaultFormatMessage = (
   descriptor: MessageDescriptor,
@@ -29,7 +31,7 @@ const defaultFormatMessage = (
     );
   }
 
-  return baseFormatMessage(
+  return formatMessage(
     {
       ...DEFAULT_INTL_CONFIG,
       locale: 'en',

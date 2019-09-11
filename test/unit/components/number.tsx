@@ -1,9 +1,12 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
-import {FormattedNumber} from '../../../src';
+import {FormattedNumber, FormattedNumberParts} from '../../../src';
 import {createIntl} from '../../../src/components/provider';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedNumber);
+const mountPartsWithProvider = mountFormattedComponentWithProvider(
+  FormattedNumberParts
+);
 
 describe('<FormattedNumber>', () => {
   let intl;
@@ -105,5 +108,67 @@ describe('<FormattedNumber>', () => {
 
     expect(rendered.type()).toBe('span');
     expect(rendered.text()).toBe('Jest');
+  });
+});
+
+function NOOP(_: Intl.NumberFormatPart[]) {
+  return null;
+}
+
+describe('<FormattedNumberParts>', function() {
+  let intl;
+  const children = jest.fn();
+
+  beforeEach(() => {
+    console.error = jest.fn();
+    intl = createIntl({
+      locale: 'en',
+    });
+    children.mockClear();
+  });
+
+  it('has a `displayName`', () => {
+    expect(FormattedNumberParts.displayName).toBeA('string');
+  });
+
+  it('throws when <IntlProvider> is missing from ancestry', () => {
+    expect(() =>
+      mount(<FormattedNumberParts value={0} children={NOOP} />)
+    ).toThrow(
+      '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
+    );
+  });
+
+  it('accepts valid Intl.NumberFormat options as props', () => {
+    const num = 0.5;
+    const options = {style: 'percent', children};
+
+    mountPartsWithProvider({value: num, ...options}, intl);
+
+    expect(children.mock.calls[0][0]).toEqual(
+      intl.formatNumberToParts(num, options)
+    );
+  });
+
+  it('accepts `format` prop', () => {
+    intl = createIntl({
+      locale: 'en',
+      formats: {
+        number: {
+          percent: {
+            style: 'percent',
+            minimumFractionDigits: 2,
+          },
+        },
+      },
+    });
+
+    const num = 0.505;
+    const format = 'percent';
+
+    mountPartsWithProvider({value: num, format, children}, intl);
+    expect(children.mock.calls[0][0]).toEqual(
+      intl.formatNumberToParts(num, {format})
+    );
   });
 });

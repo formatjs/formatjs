@@ -11,12 +11,18 @@
   - [Runtime Requirements](#runtime-requirements)
     - [Browser](#browser)
     - [Node.js](#nodejs)
+      - [full-icu](#full-icu)
+      - [DOMParser](#domparser)
     - [React Native](#react-native)
+      - [React Native on iOS](#react-native-on-ios)
+      - [DOMParser](#domparser-1)
+  - [Stage-3 Intl Features](#stage-3-intl-features)
   - [Creating an I18n Context](#creating-an-i18n-context)
   - [Formatting Data](#formatting-data)
 - [Core Concepts](#core-concepts)
 - [Example Apps](#example-apps)
 - [API Reference](#api-reference)
+- [TypeScript Usage](#typescript-usage)
 
 <!-- tocstop -->
 
@@ -34,7 +40,7 @@ Internationalizing web apps is an involved and complex task. If you're new to i1
 
 **React Intl uses and builds on the [Internationalization API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) built-in to JavaScript.**
 
-These APIs are in all modern browsers (http://caniuse.com/#search=Intl) and Node.js since 0.12.
+These APIs are in all modern browsers (https://caniuse.com/#feat=internationalization) and Node.js since 0.12.
 
 For older browsers and Node you might need to polyfill the `Intl` APIs. The [Runtime Environments guide](http://formatjs.io/guides/runtime-environments/) provides an overview of doing this, and here's some specific info:
 
@@ -56,7 +62,7 @@ The `react-intl` npm package distributes the following modules (links from [unpk
 
 - [**CommonJS**](https://unpkg.com/react-intl@latest/dist/index.js):
   unbundled dependencies, `"main"` in `package.json`, warnings in dev.
-- [**ES6**](https://unpkg.com/react-intl@latest/dist/index.mjs):
+- [**ES6**](https://unpkg.com/react-intl@latest/lib/index.js):
   unbundled dependencies, `"jsnext:main"` and `"module"` in `package.json`, warnings in dev.
 - [**UMD dev**](https://unpkg.com/react-intl@latest/dist/react-intl.js):
   bundled dependencies (except `react`), browser or Node, warnings.
@@ -101,13 +107,21 @@ React Intl relies on these `Intl` APIs:
 
 If you need to support older browsers, we recommend you do the following:
 
-1. If you're supporting browsers that do not have [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](https://www.npmjs.com/package/intl-pluralrules) in your build.
-2. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat) in your build along with individual CLDR data for each locale you support.
+1. Polyfill `Intl.NumberFormat` with https://github.com/andyearnshaw/Intl.js
+2. Polyfill `Intl.DateTimeFormat` with https://github.com/formatjs/date-time-format-timezone
+3. If you're supporting browsers that do not have [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](https://www.npmjs.com/package/intl-pluralrules) in your build.
+4. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat) in your build along with individual CLDR data for each locale you support.
 
 ```js
-import '@formatjs/intl-relativetimeformat/polyfill';
-import '@formatjs/intl-relativetimeformat/dist/include-aliases'; // Optional, if you care about edge cases in locale resolution, e.g zh-CN -> zh-Hans-CN
-import '@formatjs/intl-relativetimeformat/dist/locale-data/de'; // Add locale data for de
+if (!Intl.PluralRules) {
+  require('@formatjs/intl-pluralrules/polyfill');
+  require('@formatjs/intl-pluralrules/dist/locale-data/en'); // Add locale data for de
+}
+
+if (!Intl.RelativeTimeFormat) {
+  require('@formatjs/intl-relativetimeformat/polyfill');
+  require('@formatjs/intl-relativetimeformat/dist/locale-data/en'); // Add locale data for de
+}
 ```
 
 ### Browser
@@ -115,6 +129,8 @@ import '@formatjs/intl-relativetimeformat/dist/locale-data/de'; // Add locale da
 We officially support IE11 along with modern browsers (Chrome/FF/Edge/Safari).
 
 ### Node.js
+
+#### full-icu
 
 When using React Intl in Node.js, your `node` binary has to either:
 
@@ -126,6 +142,8 @@ When using React Intl in Node.js, your `node` binary has to either:
 
 If your `node` version is missing any of the `Intl` APIs above, you'd have to polyfill them accordingly.
 
+#### DOMParser
+
 We also rely on `DOMParser` to format rich text, thus for Node will need to polyfill using [xmldom](https://github.com/jindw/xmldom).
 
 ### React Native
@@ -135,7 +153,19 @@ If you're using `react-intl` in React Native, make sure your runtime has built-i
 - https://github.com/formatjs/react-intl/issues/1356
 - https://github.com/formatjs/react-intl/issues/992
 
+#### React Native on iOS
+
+If you cannot use the Intl variant of JSC (e.g on iOS), follow the instructions in [Runtime Requirements](#runtime-requirements) to polyfill those APIs accordingly.
+
+#### DOMParser
+
 We also rely on `DOMParser` to format rich text, thus for JSC will need to polyfill using [xmldom](https://github.com/jindw/xmldom).
+
+## Stage-3 Intl Features
+
+FormatJS also provides types & polyfill for the following Stage 3 Intl APIs:
+
+- Unified NumberFormat: [polyfill](https://www.npmjs.com/package/@formatjs/intl-unified-numberformat) & [spec](https://github.com/tc39/proposal-unified-intl-numberformat)
 
 ## Creating an I18n Context
 
@@ -239,3 +269,9 @@ There are a few API layers that React Intl provides and is built on. When using 
 
 [api]: ./API.md
 [components]: ./Components.md
+
+# TypeScript Usage
+
+`react-intl` is written in TypeScript, thus having 1st-class TS support.
+
+In order to use `react-intl` in TypeScript, make sure your `compilerOptions`'s `lib` config include `["esnext.intl", "es2017.intl", "es2018.intl"]`.

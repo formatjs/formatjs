@@ -14,17 +14,20 @@ import {
   createIntlCache,
 } from '../utils';
 import {IntlConfig, IntlShape, Omit, IntlCache} from '../types';
+import areIntlLocalesSupported from 'intl-locales-supported';
+import {formatNumber, formatNumberToParts} from '../formatters/number';
+import {formatRelativeTime} from '../formatters/relativeTime';
 import {
-  formatNumber,
-  formatRelativeTime,
   formatDate,
   formatTime,
-  formatPlural,
-  formatHTMLMessage,
-  formatMessage,
-} from '../format';
-import areIntlLocalesSupported from 'intl-locales-supported';
-const shallowEquals = require('shallow-equal/objects');
+  formatDateToParts,
+  formatTimeToParts,
+} from '../formatters/dateTime';
+import {formatPlural} from '../formatters/plural';
+import {formatMessage, formatHTMLMessage} from '../formatters/message';
+import * as shallowEquals_ from 'shallow-equal/objects';
+const shallowEquals: typeof shallowEquals_ =
+  (shallowEquals_ as any).default || shallowEquals_;
 
 interface State {
   /**
@@ -132,20 +135,47 @@ export function createIntl(
   return {
     ...resolvedConfig,
     formatters,
-    formatNumber: formatNumber.bind(undefined, resolvedConfig, formatters),
+    formatNumber: formatNumber.bind(
+      null,
+      resolvedConfig,
+      formatters.getNumberFormat
+    ),
+    formatNumberToParts: formatNumberToParts.bind(
+      null,
+      resolvedConfig,
+      formatters.getNumberFormat
+    ),
     formatRelativeTime: formatRelativeTime.bind(
-      undefined,
+      null,
       resolvedConfig,
-      formatters
+      formatters.getRelativeTimeFormat
     ),
-    formatDate: formatDate.bind(undefined, resolvedConfig, formatters),
-    formatTime: formatTime.bind(undefined, resolvedConfig, formatters),
-    formatPlural: formatPlural.bind(undefined, resolvedConfig, formatters),
-    formatMessage: formatMessage.bind(undefined, resolvedConfig, formatters),
-    formatHTMLMessage: formatHTMLMessage.bind(
-      undefined,
+    formatDate: formatDate.bind(
+      null,
       resolvedConfig,
-      formatters
+      formatters.getDateTimeFormat
     ),
+    formatDateToParts: formatDateToParts.bind(
+      null,
+      resolvedConfig,
+      formatters.getDateTimeFormat
+    ),
+    formatTime: formatTime.bind(
+      null,
+      resolvedConfig,
+      formatters.getDateTimeFormat
+    ),
+    formatTimeToParts: formatTimeToParts.bind(
+      null,
+      resolvedConfig,
+      formatters.getDateTimeFormat
+    ),
+    formatPlural: formatPlural.bind(
+      null,
+      resolvedConfig,
+      formatters.getPluralRules
+    ),
+    formatMessage: formatMessage.bind(null, resolvedConfig, formatters),
+    formatHTMLMessage: formatHTMLMessage.bind(null, resolvedConfig, formatters),
   };
 }

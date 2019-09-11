@@ -16,11 +16,12 @@ const copyright = `/*
 
 const plugins = [
   replace({
-    replaces: {
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-    },
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   }),
   nodeResolve(),
+  commonjs({
+    sourcemap: true,
+  }),
   babel({
     configFile: false,
     presets: [
@@ -35,9 +36,6 @@ const plugins = [
         },
       ],
     ],
-  }),
-  commonjs({
-    sourcemap: true,
   }),
   isProduction &&
     uglify({

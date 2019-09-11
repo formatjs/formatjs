@@ -117,15 +117,16 @@ describe('<FormattedRelativeTime>', () => {
   it('updates automatically', () => {
     // span bc enzyme support for </> seems buggy
     const rendered = mountWithProvider(
-      {value: 0, updateIntervalInSeconds: 1},
+      {value: 2, updateIntervalInSeconds: 1},
       {...intl, textComponent: 'span'}
     );
-    const text = rendered.text();
+    expect(rendered.text()).toBe(intl.formatRelativeTime(2, 'second'));
     jest.advanceTimersByTime(1010);
-
-    const textAfterUpdate = rendered.text();
-    expect(textAfterUpdate).not.toBe(text);
-    expect(textAfterUpdate).toBe(intl.formatRelativeTime(-1, 'second'));
+    expect(rendered.text()).toBe(intl.formatRelativeTime(1, 'second'));
+    jest.advanceTimersByTime(1010);
+    expect(rendered.text()).toBe(intl.formatRelativeTime(0, 'second'));
+    jest.advanceTimersByTime(1010);
+    expect(rendered.text()).toBe(intl.formatRelativeTime(-1, 'second'));
   });
 
   it('updates when the `value` prop changes', () => {

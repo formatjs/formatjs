@@ -27,12 +27,24 @@ describe('react-intl', () => {
         expect(ReactIntl.FormattedTime).toBeA('function');
       });
 
-      it('exports `FormattedRelativeTime`', () => {
-        expect(ReactIntl.FormattedRelativeTime).toBeA('function');
-      });
-
       it('exports `FormattedNumber`', () => {
         expect(ReactIntl.FormattedNumber).toBeA('function');
+      });
+
+      it('exports `FormattedDateParts`', () => {
+        expect(ReactIntl.FormattedDateParts).toBeA('function');
+      });
+
+      it('exports `FormattedTimeParts`', () => {
+        expect(ReactIntl.FormattedTimeParts).toBeA('function');
+      });
+
+      it('exports `FormattedNumberParts`', () => {
+        expect(ReactIntl.FormattedNumberParts).toBeA('function');
+      });
+
+      it('exports `FormattedRelativeTime`', () => {
+        expect(ReactIntl.FormattedRelativeTime).toBeA('function');
       });
 
       it('exports `FormattedPlural`', () => {

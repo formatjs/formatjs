@@ -2,6 +2,74 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.1](https://github.com/formatjs/react-intl/compare/v3.2.0...v3.2.1) (2019-09-09)
+
+
+### Bug Fixes
+
+* upgrade intl-messageformat ([40aa758](https://github.com/formatjs/react-intl/commit/40aa758))
+
+## [3.2.0](https://github.com/formatjs/react-intl/compare/v3.2.0-rc.2...v3.2.0) (2019-09-04)
+
+## [3.2.0-rc.2](https://github.com/formatjs/react-intl/compare/v3.2.0-rc.1...v3.2.0-rc.2) (2019-08-29)
+
+
+### Bug Fixes
+
+* fix tests & add corresponding formatToParts fns ([855e272](https://github.com/formatjs/react-intl/commit/855e272))
+
+
+### Features
+
+* extend numberformat to unified ([#1462](https://github.com/formatjs/react-intl/issues/1462)) ([a7f2104](https://github.com/formatjs/react-intl/commit/a7f2104))
+
+## [3.2.0-rc.1](https://github.com/formatjs/react-intl/compare/v3.2.0-rc.0...v3.2.0-rc.1) (2019-08-29)
+
+## [3.2.0-rc.0](https://github.com/formatjs/react-intl/compare/v3.1.2...v3.2.0-rc.0) (2019-08-29)
+
+### Features
+
+* add support for formatToParts ([e8167f3](https://github.com/formatjs/react-intl/commit/e8167f3))
+* introduce Parts component ([a1b5ff1](https://github.com/formatjs/react-intl/commit/a1b5ff1)), closes [#1048](https://github.com/formatjs/react-intl/issues/1048)
+
+### [3.1.13](https://github.com/formatjs/react-intl/compare/v3.1.12...v3.1.13) (2019-08-28)
+
+
+### Bug Fixes
+
+* handle relative time when it hits 0 ([3b9df15](https://github.com/formatjs/react-intl/commit/3b9df15)), closes [#1455](https://github.com/formatjs/react-intl/issues/1455)
+
+### [3.1.12](https://github.com/formatjs/react-intl/compare/v3.1.11...v3.1.12) (2019-08-26)
+
+
+### Bug Fixes
+
+* type def for forwardRef in injectIntl, fix [#1444](https://github.com/formatjs/react-intl/issues/1444) ([45887bf](https://github.com/formatjs/react-intl/commit/45887bf))
+* update intl-messageformat ([d1271b6](https://github.com/formatjs/react-intl/commit/d1271b6)), closes [#1451](https://github.com/formatjs/react-intl/issues/1451) [#1442](https://github.com/formatjs/react-intl/issues/1442)
+
+### [3.1.11](https://github.com/formatjs/react-intl/compare/v3.1.10...v3.1.11) (2019-08-21)
+
+
+### Bug Fixes
+
+* remove params spread, potentially fix [#1424](https://github.com/formatjs/react-intl/issues/1424) ([aeb177c](https://github.com/formatjs/react-intl/commit/aeb177c))
+
+### [3.1.10](https://github.com/formatjs/react-intl/compare/v3.1.9...v3.1.10) (2019-08-20)
+
+
+### Bug Fixes
+
+* fix UMD build ([fc17473](https://github.com/formatjs/react-intl/commit/fc17473)), closes [#1423](https://github.com/formatjs/react-intl/issues/1423)
+* fix UMD build, defer react-is to external ([4731805](https://github.com/formatjs/react-intl/commit/4731805))
+
+### [3.1.9](https://github.com/formatjs/react-intl/compare/v3.1.8...v3.1.9) (2019-08-16)
+
+
+### Bug Fixes
+
+* fix UMD build ([ad78e3f](https://github.com/formatjs/react-intl/commit/ad78e3f)), closes [#1423](https://github.com/formatjs/react-intl/issues/1423)
+* move react & @types/react to devDep, fixes [#1389](https://github.com/formatjs/react-intl/issues/1389) ([0133241](https://github.com/formatjs/react-intl/commit/0133241)), closes [/github.com/yarnpkg/yarn/issues/3951#issuecomment-316424639](https://github.com/formatjs//github.com/yarnpkg/yarn/issues/3951/issues/issuecomment-316424639)
+
 ### [3.1.8](https://github.com/formatjs/react-intl/compare/v3.1.7...v3.1.8) (2019-08-13)
 
 

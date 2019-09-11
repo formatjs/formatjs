@@ -1,6 +1,17 @@
 import IntlMessageFormat from 'intl-messageformat';
-import * as f from '../../src/format';
 import {parse} from 'intl-messageformat-parser';
+import {
+  formatDate as formatDateFn,
+  formatTime as formatTimeFn,
+} from '../../src/formatters/dateTime';
+import {formatRelativeTime as formatRelativeTimeFn} from '../../src/formatters/relativeTime';
+import {formatNumber as formatNumberFn} from '../../src/formatters/number';
+import {formatPlural as formatPluralFn} from '../../src/formatters/plural';
+import {
+  formatHTMLMessage as baseFormatHTMLMessage,
+  formatMessage as baseFormatMessage,
+} from '../../src/formatters/message';
+
 describe('format API', () => {
   const {NODE_ENV} = process.env;
 
@@ -87,29 +98,13 @@ describe('format API', () => {
     process.env.NODE_ENV = NODE_ENV;
   });
 
-  describe('exports', () => {
-    [
-      'formatDate',
-      'formatTime',
-      'formatRelativeTime',
-      'formatNumber',
-      'formatPlural',
-      'formatMessage',
-      'formatHTMLMessage',
-    ].forEach(name => {
-      it(`exports \`${name}\``, () => {
-        expect(f[name]).toBeA('function');
-      });
-    });
-  });
-
   describe('formatDate()', () => {
     let df;
     let formatDate;
 
     beforeEach(() => {
       df = new Intl.DateTimeFormat(config.locale);
-      formatDate = f.formatDate.bind(null, config, state);
+      formatDate = formatDateFn.bind(null, config, state.getDateTimeFormat);
     });
 
     it('no value should render today', () => {
@@ -144,13 +139,13 @@ describe('format API', () => {
     it('uses the time zone specified by the provider', () => {
       const timestamp = Date.now();
       config.timeZone = 'Pacific/Wake';
-      formatDate = f.formatDate.bind(null, config, state);
+      formatDate = formatDateFn.bind(null, config, state.getDateTimeFormat);
       const wakeDf = new Intl.DateTimeFormat(config.locale, {
         timeZone: 'Pacific/Wake',
       });
       expect(formatDate(timestamp)).toBe(wakeDf.format(timestamp));
       config.timeZone = 'Asia/Shanghai';
-      formatDate = f.formatDate.bind(null, config, state);
+      formatDate = formatDateFn.bind(null, config, state.getDateTimeFormat);
       const shanghaiDf = new Intl.DateTimeFormat(config.locale, {
         timeZone: 'Asia/Shanghai',
       });
@@ -216,7 +211,7 @@ describe('format API', () => {
       it('uses time zone specified in options over the one passed through by the provider', () => {
         const timestamp = Date.now();
         config.timeZone = 'Pacific/Wake';
-        formatDate = f.formatDate.bind(null, config, state);
+        formatDate = formatDateFn.bind(null, config, state.getDateTimeFormat);
         const shanghaiDf = new Intl.DateTimeFormat(config.locale, {
           timeZone: 'Asia/Shanghai',
         });
@@ -237,7 +232,7 @@ describe('format API', () => {
         minute: 'numeric',
       });
 
-      formatTime = f.formatTime.bind(null, config, state);
+      formatTime = formatTimeFn.bind(null, config, state.getDateTimeFormat);
     });
 
     it('render now if no value is provided', () => {
@@ -272,7 +267,7 @@ describe('format API', () => {
     it('uses the time zone specified by the provider', () => {
       const timestamp = Date.now();
       config.timeZone = 'Africa/Johannesburg';
-      formatTime = f.formatTime.bind(null, config, state);
+      formatTime = formatTimeFn.bind(null, config, state.getDateTimeFormat);
       const johannesburgDf = new Intl.DateTimeFormat(config.locale, {
         hour: 'numeric',
         minute: 'numeric',
@@ -280,7 +275,7 @@ describe('format API', () => {
       });
       expect(formatTime(timestamp)).toBe(johannesburgDf.format(timestamp));
       config.timeZone = 'America/Chicago';
-      formatTime = f.formatTime.bind(null, config, state);
+      formatTime = formatTimeFn.bind(null, config, state.getDateTimeFormat);
       const chicagoDf = new Intl.DateTimeFormat(config.locale, {
         hour: 'numeric',
         minute: 'numeric',
@@ -382,7 +377,7 @@ describe('format API', () => {
       it('uses time zone specified in options over the one passed through by the provider', () => {
         const timestamp = Date.now();
         config.timeZone = 'Africa/Johannesburg';
-        formatTime = f.formatTime.bind(null, config, state);
+        formatTime = formatTimeFn.bind(null, config, state.getDateTimeFormat);
         const chicagoDf = new Intl.DateTimeFormat(config.locale, {
           hour: 'numeric',
           minute: 'numeric',
@@ -401,7 +396,11 @@ describe('format API', () => {
 
     beforeEach(() => {
       rf = new Intl.RelativeTimeFormat(config.locale, undefined);
-      formatRelativeTime = f.formatRelativeTime.bind(null, config, state);
+      formatRelativeTime = formatRelativeTimeFn.bind(
+        null,
+        config,
+        state.getRelativeTimeFormat
+      );
     });
 
     it('falls back and warns when no value is provided', () => {
@@ -505,7 +504,7 @@ describe('format API', () => {
 
     beforeEach(() => {
       nf = new Intl.NumberFormat(config.locale);
-      formatNumber = f.formatNumber.bind(null, config, state);
+      formatNumber = formatNumberFn.bind(null, config, state.getNumberFormat);
     });
 
     it('returns "NaN" when no value is provided', () => {
@@ -601,7 +600,7 @@ describe('format API', () => {
 
     beforeEach(() => {
       pf = new Intl.PluralRules(config.locale);
-      formatPlural = f.formatPlural.bind(null, config, state);
+      formatPlural = formatPluralFn.bind(null, config, state.getPluralRules);
     });
 
     it('should warn for invalid opt', function() {
@@ -666,7 +665,7 @@ describe('format API', () => {
     let formatMessage;
 
     beforeEach(() => {
-      formatMessage = f.formatMessage.bind(null, config, state);
+      formatMessage = baseFormatMessage.bind(null, config, state);
     });
 
     [`Hello, World!'{foo}'`, `'\ud83d'\udc04`].forEach(msg =>
@@ -815,17 +814,20 @@ describe('format API', () => {
         expect(
           formatMessage(
             {
-              id: id,
+              id,
               defaultMessage: messages.with_arg,
             },
             values
           )
         ).toBe(mf.format(values));
 
-        expect(config.onError).toHaveBeenCalledTimes(1);
-        expect(config.onError).toHaveBeenCalledWith(
-          `[React Intl] Missing message: "${id}" for locale: "${locale}", using default message as fallback.`
-        );
+        expect(config.onError.mock.calls).toMatchInlineSnapshot(`
+          Array [
+            Array [
+              "[React Intl] Missing message: \\"missing\\" for locale: \\"fr\\", using default message as fallback.",
+            ],
+          ]
+        `);
       });
 
       it('warns when `message` and `defaultMessage` are missing', () => {
@@ -843,13 +845,16 @@ describe('format API', () => {
           )
         ).toBe(id);
 
-        expect(config.onError).toHaveBeenCalledTimes(2);
-        expect(config.onError).toHaveBeenCalledWith(
-          `[React Intl] Missing message: "${id}" for locale: "${locale}"`
-        );
-        expect(config.onError).toHaveBeenCalledWith(
-          `[React Intl] Cannot format message: "${id}", using message id as fallback.`
-        );
+        expect(config.onError.mock.calls).toMatchInlineSnapshot(`
+          Array [
+            Array [
+              "[React Intl] Missing message: \\"missing\\" for locale: \\"en\\"",
+            ],
+            Array [
+              "[React Intl] Cannot format message: \\"missing\\", using message id as fallback.",
+            ],
+          ]
+        `);
       });
 
       it('formats `defaultMessage` when message has a syntax error', () => {
@@ -1032,7 +1037,7 @@ describe('format API', () => {
     let formatHTMLMessage;
 
     beforeEach(() => {
-      formatHTMLMessage = f.formatHTMLMessage.bind(null, config, state);
+      formatHTMLMessage = baseFormatHTMLMessage.bind(null, config, state);
     });
 
     it('formats HTML messages', () => {

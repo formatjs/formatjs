@@ -5,7 +5,7 @@ import IntlProvider, {
   createIntl,
 } from '../../../src/components/provider';
 import {mountFormattedComponentWithProvider} from '../testUtils';
-import {mount, shallow} from 'enzyme';
+import {mount, shallow, render} from 'enzyme';
 import {IntlShape} from '../../../src';
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedMessage);
@@ -210,21 +210,20 @@ describe('<FormattedMessage>', () => {
       expect(nameNode.text()).toBe('Jest');
     });
 
-    it('supports rich-text message formatting w/ self-closing tag', () => {
+    it('supports rich-text message formatting w/ nested tag', () => {
       const rendered = mountWithProvider(
         {
           id: 'hello',
-          defaultMessage: 'Hello, <name/>',
+          defaultMessage: 'Hello, <b>{name}<i>!</i></b>',
           values: {
-            name: <b>Jest</b>,
+            name: 'Jest',
+            b: (...chunks: any[]) => <b>{...chunks}</b>,
+            i: (msg: string) => <i>{msg}</i>,
           },
         },
         providerProps
       );
-
-      const nameNode = rendered.find('b');
-      expect(nameNode.type()).toBe('b');
-      expect(nameNode.text()).toBe('Jest');
+      expect(rendered).toMatchSnapshot();
     });
 
     it('supports rich-text message formatting in function-as-child pattern', () => {

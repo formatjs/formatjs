@@ -1,6 +1,6 @@
 # Components
 
-React Intl has a set of React components that provide a declarative way to setup an i18n context and format dates, numbers, and strings for display in a web UI. The components render React elements by building on React Intl's imperative [API](API).
+React Intl has a set of React components that provide a declarative way to setup an i18n context and format dates, numbers, and strings for display in a web UI. The components render React elements by building on React Intl's imperative [API](./API.md).
 
 <!-- toc -->
 
@@ -11,10 +11,13 @@ React Intl has a set of React components that provide a declarative way to setup
     - [Dynamic Language Selection](#dynamic-language-selection)
 - [Date Formatting Components](#date-formatting-components)
   - [`FormattedDate`](#formatteddate)
+  - [`FormattedDateParts`](#formatteddateparts)
   - [`FormattedTime`](#formattedtime)
+  - [`FormattedTimeParts`](#formattedtimeparts)
   - [`FormattedRelativeTime`](#formattedrelativetime)
 - [Number Formatting Components](#number-formatting-components)
   - [`FormattedNumber`](#formattednumber)
+  - [`FormattedNumberParts`](#formattednumberparts)
   - [`FormattedPlural`](#formattedplural)
 - [String Formatting Components](#string-formatting-components)
   - [Message Syntax](#message-syntax)
@@ -22,6 +25,7 @@ React Intl has a set of React components that provide a declarative way to setup
   - [Message Formatting Fallbacks](#message-formatting-fallbacks)
   - [`FormattedMessage`](#formattedmessage)
     - [Rich Text Formatting](#rich-text-formatting)
+    - [Caveats](#caveats)
   - [`FormattedHTMLMessage`](#formattedhtmlmessage)
   - [Using React-Intl with React Native](#using-react-intl-with-react-native)
 
@@ -164,11 +168,11 @@ props: Intl.DateTimeFormatOptions &
   };
 ```
 
-By default `<FormattedDate>` will render the formatted date into a `<span>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
+By default `<FormattedDate>` will render the formatted date into a `<React.Fragment>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
 
 **Example:**
 
-```js
+```tsx
 <FormattedDate value={new Date(1459832991883)} />
 ```
 
@@ -178,7 +182,7 @@ By default `<FormattedDate>` will render the formatted date into a `<span>`. If 
 
 **Example with Options:**
 
-```js
+```tsx
 <FormattedDate
   value={new Date(1459832991883)}
   year="numeric"
@@ -189,6 +193,42 @@ By default `<FormattedDate>` will render the formatted date into a `<span>`. If 
 
 ```html
 <span>April 05, 2016</span>
+```
+
+### `FormattedDateParts`
+
+This component provides more customization to `FormattedDate` by allowing children function to have access to underlying parts of the formatted date. The available parts are listed [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/formatToParts)
+
+**Props:**
+
+```ts
+props: Intl.DateTimeFormatOptions &
+  {
+    value: any,
+    format: string,
+    children: (parts: Intl.DateTimeFormatPart[]) => ReactElement,
+  };
+```
+
+```tsx
+<FormattedDateParts
+  value={new Date(1459832991883)}
+  year="numeric"
+  month="long"
+  day="2-digit"
+>
+  {parts => (
+    <>
+      <b>{parts[0].value}</b>
+      {parts[1].value}
+      <small>{parts[2].value}</small>
+    </>
+  )}
+</FormattedDateParts>
+```
+
+```html
+<span> <b>April</b> <small>05</small> </span>
 ```
 
 ### `FormattedTime`
@@ -224,6 +264,37 @@ By default `<FormattedTime>` will render the formatted time into a `<span>`. If 
 <span>1:09 AM</span>
 ```
 
+### `FormattedTimeParts`
+
+This component provides more customization to `FormattedTime` by allowing children function to have access to underlying parts of the formatted date. The available parts are listed [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/formatToParts)
+
+**Props:**
+
+```ts
+props: Intl.DateTimeFormatOptions &
+  {
+    value: any,
+    format: string,
+    children: (parts: Intl.DateTimeFormatPart[]) => ReactElement,
+  };
+```
+
+```tsx
+<FormattedTimeParts value={new Date(1459832991883)}>
+  {parts => (
+    <>
+      <b>{parts[0].value}</b>
+      {parts[1].value}
+      <small>{parts[2].value}</small>
+    </>
+  )}
+</FormattedTimeParts>
+```
+
+```html
+<span> <b>01</b>:<small>09</small> </span>
+```
+
 ### `FormattedRelativeTime`
 
 This component uses the [`formatRelativeTime`](API.md#formatrelativetime) API and has `props` that correspond to the following relative formatting options:
@@ -253,7 +324,7 @@ By default `<FormattedRelativeTime>` will render the formatted relative time int
 **Example:**
 
 ```tsx
-<FormattedRelativeTime value={0} />
+<FormattedRelativeTime value={0} numeric="auto" updateIntervalInSeconds={10} />
 ```
 
 ```html
@@ -286,9 +357,10 @@ This will initially renders `59 seconds ago`, after 1 second, will render `1 min
 
 ## Number Formatting Components
 
-React Intl provides two components to format numbers:
+React Intl provides 3 components to format numbers:
 
 - [`<FormattedNumber>`](#formattednumber)
+- [`<FormattedNumberParts>`](#formattednumberparts)
 - [`<FormattedPlural>`](#formattedplural)
 
 ### `FormattedNumber`
@@ -316,6 +388,69 @@ By default `<FormattedNumber>` will render the formatted number into a `<span>`.
 
 ```tsx
 <span>1,000</span>
+```
+
+**Formatting Number using `unit`**
+
+Currently this is part of [Unified NumberFormat](https://github.com/tc39/proposal-unified-intl-numberformat) which is stage 3. We've provided a polyfill [here](https://github.com/formatjs/formatjs/tree/master/packages/intl-unified-numberformat) and `react-intl` types allow users to pass in a [sanctioned unit](https://github.com/formatjs/formatjs/tree/master/packages/intl-unified-numberformat). For example:
+
+```tsx
+<FormattedNumber
+  value={1000}
+  style="unit"
+  unit="kilobyte"
+  unitDisplay="narrow"
+/>
+```
+
+```html
+<span>1,000kB</span>
+```
+
+```tsx
+<FormattedNumber
+  value={1000}
+  unit="fahrenheit"
+  unitDisplay="long"
+  style="unit"
+/>
+```
+
+```html
+<span>1,000 degrees Fahrenheit</span>
+```
+
+### `FormattedNumberParts`
+
+This component provides more customization to `FormattedNumber` by allowing children function to have access to underlying parts of the formatted date. The available parts are listed [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat/formatToParts)
+
+**Props:**
+
+```ts
+props: NumberFormatOptions &
+  {
+    value: number,
+    format: string,
+    children: (parts: Intl.NumberFormatPart[]) => ReactElement,
+  };
+```
+
+**Example:**
+
+```tsx
+<FormattedNumberParts value={1000}>
+  {parts => (
+    <>
+      <b>{parts[0].value}</b>
+      {parts[1].value}
+      <small>{parts[2].value}</small>
+    </>
+  )}
+</FormattedNumberParts>
+```
+
+```html
+<span> <b>1</b>,<small>000</small> </span>
 ```
 
 ### `FormattedPlural`
@@ -427,7 +562,7 @@ props: MessageDescriptor & {
 }
 ```
 
-By default `<FormattedMessage>` will render the formatted string into a `<span>`. If you need to customize rendering, you can either wrap it with another React element (recommended), specify a different `tagName` (e.g., `'div'`), or pass a function as the child.
+By default `<FormattedMessage>` will render the formatted string into a `<React.Fragment>`. If you need to customize rendering, you can either wrap it with another React element (recommended), specify a different `tagName` (e.g., `'div'`), or pass a function as the child.
 
 **Example:**
 
@@ -482,9 +617,9 @@ By allowing embedding XML tag we want to make sure contextual information is not
 
 ```tsx
 <FormattedMessage
-  defaultMessage="To buy a shoe, <link>visit our website</link> and <cta>buy a shoe</cta>"
+  defaultMessage="To buy a shoe, <a>visit our website</a> and <cta>buy a shoe</cta>"
   values={{
-    link: msg => (
+    a: msg => (
       <a class="external_link" target="_blank" href="https://www.shoe.com/">
         {msg}
       </a>
@@ -494,15 +629,38 @@ By allowing embedding XML tag we want to make sure contextual information is not
 />
 ```
 
+**Function as the child**
+Since rich text formatting allows embedding `ReactElement`, in function as the child scenario, function will receive a spread of chunks instead of a single message
+
+```tsx
+<FormattedMessage
+  defaultMessage="To buy a shoe, <a>visit our website</a> and <cta>buy a shoe</cta>"
+  values={{
+    a: msg => (
+      <a class="external_link" target="_blank" href="https://www.shoe.com/">
+        {msg}
+      </a>
+    ),
+    cta: msg => <strong class="important">{msg}</strong>,
+  }}
+>
+  {(...chunks) => <span>{chunks}</span>}
+</FormattedMessage>
+```
+
 All the rich text gets translated together which yields higher quality output. This brings feature-parity with other translation libs as well, such as [fluent](https://projectfluent.org/) by Mozilla (using `overlays` concept).
 
 Extending this also allows users to potentially utilizing other rich text format, like [Markdown](https://daringfireball.net/projects/markdown/).
+
+#### Caveats
+
+This has the same caveats documented in [`intl-messageformat`](https://github.com/formatjs/formatjs/tree/master/packages/intl-messageformat#caveats).
 
 ### `FormattedHTMLMessage`
 
 **Note:** This component is provided for apps that have legacy external strings which contain HTML, but is not recommended, use [`<FormattedMessage>`](#formattedmessage) instead, if you can.
 
-This component uses the [`formatHTMLMessage`](API.md#formathtmlmessage) API and has the same props as `<FormattedMessage>`, but it will accept messages that contain HTML. In order to protect against XSS, all string `values` will be HTML-escaped and the resulting formatted message will be set via `dangerouslySetInnerHTML`. This means that `values` _cannot_ contain React element like `<FormattedMessage>` and this component will be less performant.
+This component uses the [`formatHTMLMessage`](API.md#formathtmlmessage) API and has the same props as `<FormattedMessage>`, but it will accept messages that contain HTML. The resulting formatted message will be set via `dangerouslySetInnerHTML`, thus input must be sanitized accordingly against XSS.
 
 ### Using React-Intl with React Native
 

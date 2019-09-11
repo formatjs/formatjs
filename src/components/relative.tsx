@@ -8,9 +8,14 @@ import * as React from 'react';
 import {Context} from './injectIntl';
 import {FormatRelativeTimeOptions} from '../types';
 import {Unit} from '@formatjs/intl-relativetimeformat';
-import * as invariant_ from 'invariant';
 import {invariantIntlContext} from '../utils';
-const invariant: typeof invariant_ = require('invariant');
+
+// Since rollup cannot deal with namespace being a function,
+// this is to interop with TypeScript since `invariant`
+// does not export a default
+// https://github.com/rollup/rollup/issues/1267
+import * as invariant_ from 'invariant';
+const invariant: typeof invariant_ = (invariant_ as any).default || invariant_;
 const MINUTE = 60;
 const HOUR = 60 * 60;
 const DAY = 60 * 60 * 24;
@@ -184,7 +189,7 @@ export class FormattedRelativeTime extends React.PureComponent<Props, State> {
 
           if (
             canIncrement(unit) &&
-            currentValueInSeconds &&
+            currentValueInSeconds != null &&
             updateIntervalInSeconds
           ) {
             currentUnit = selectUnit(currentValueInSeconds);

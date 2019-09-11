@@ -1,0 +1,67 @@
+import {IntlConfig, Formatters, IntlFormatters} from '../types';
+import {getNamedFormat, filterProps, createError} from '../utils';
+import {UnifiedNumberFormatOptions} from '@formatjs/intl-unified-numberformat';
+
+const NUMBER_FORMAT_OPTIONS: Array<keyof UnifiedNumberFormatOptions> = [
+  'localeMatcher',
+
+  'style',
+  'currency',
+  'currencyDisplay',
+  'unit',
+  'unitDisplay',
+  'useGrouping',
+
+  'minimumIntegerDigits',
+  'minimumFractionDigits',
+  'maximumFractionDigits',
+  'minimumSignificantDigits',
+  'maximumSignificantDigits',
+];
+
+export function getFormatter(
+  {
+    locale,
+    formats,
+    onError,
+  }: Pick<IntlConfig, 'locale' | 'formats' | 'onError'>,
+  getNumberFormat: Formatters['getNumberFormat'],
+  options: Parameters<IntlFormatters['formatNumber']>[1] = {}
+) {
+  const {format} = options;
+  let defaults =
+    (format && getNamedFormat(formats!, 'number', format, onError)) || {};
+  const filteredOptions = filterProps(options, NUMBER_FORMAT_OPTIONS, defaults);
+
+  return getNumberFormat(locale, filteredOptions);
+}
+
+export function formatNumber(
+  config: Pick<IntlConfig, 'locale' | 'formats' | 'onError'>,
+  getNumberFormat: Formatters['getNumberFormat'],
+  value: Parameters<IntlFormatters['formatNumber']>[0],
+  options: Parameters<IntlFormatters['formatNumber']>[1] = {}
+) {
+  try {
+    return getFormatter(config, getNumberFormat, options).format(value);
+  } catch (e) {
+    config.onError(createError('Error formatting number.', e));
+  }
+
+  return String(value);
+}
+
+export function formatNumberToParts(
+  config: Pick<IntlConfig, 'locale' | 'formats' | 'onError'>,
+  getNumberFormat: Formatters['getNumberFormat'],
+  value: Parameters<IntlFormatters['formatNumber']>[0],
+  options: Parameters<IntlFormatters['formatNumber']>[1] = {}
+) {
+  try {
+    return getFormatter(config, getNumberFormat, options).formatToParts(value);
+  } catch (e) {
+    config.onError(createError('Error formatting number.', e));
+  }
+
+  return [];
+}
