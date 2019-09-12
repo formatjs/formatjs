@@ -1,6 +1,7 @@
 import {spawnSync} from 'child_process';
 import {resolve} from 'path';
 import {cpus} from 'os';
+import {sync as globSync} from 'glob';
 
 if (process.version.startsWith('v10') || process.version.startsWith('v12')) {
   console.log('Node 10/12 has native Intl.PluralRules');
@@ -26,7 +27,11 @@ const PATTERN = resolve(
   __dirname,
   '../../../test262/test/intl402/PluralRules/**/*.js'
 );
-// const testsFiles = globSync(PATTERN).filter(fn => fn.includes('newtarget-undefined'))
+const testsFiles = globSync(PATTERN).filter(
+  fn =>
+    // There's no Realm in envs where Intl.PluralRules isn't available (e.g Node 8)
+    !fn.includes('proto-from-ctor-realm.js')
+);
 const args = [
   '--reporter-keys',
   'file,attrs,result',
@@ -36,8 +41,8 @@ const args = [
   './dist/polyfill-with-locales.js',
   '-r',
   'json',
-  PATTERN,
-  // ...testsFiles,
+  // PATTERN,
+  ...testsFiles,
 ];
 console.log(`Running "test262-harness ${args.join(' ')}"`);
 const result = spawnSync('test262-harness', args, {

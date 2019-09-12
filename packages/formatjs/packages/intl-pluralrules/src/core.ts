@@ -59,56 +59,76 @@ function getNumberOption<T extends string>(
   return defaultNumberOption(val, min, max, fallback);
 }
 
+interface IntlObj {
+  '[[MinimumIntegerDigits]]': number | undefined;
+  '[[MinimumFractionDigits]]': number | undefined;
+  '[[MaximumFractionDigits]]': number | undefined;
+  '[[MinimumSignificantDigits]]': number | undefined;
+  '[[MaximumSignificantDigits]]': number | undefined;
+  '[[RoundingType]]':
+    | 'significantDigits'
+    | 'fractionDigits'
+    | 'compactRounding';
+  '[[Notation]]': 'compact';
+}
+
 /**
  * https://tc39.es/ecma402/#sec-setnfdigitoptions
+ * https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-setnfdigitoptions
  * @param pl
  * @param opts
  * @param mnfdDefault
  * @param mxfdDefault
  */
 function setNumberFormatDigitOptions(
-  pl: PluralRules,
+  intlObj: IntlObj,
   opts: Intl.PluralRulesOptions,
   mnfdDefault: number,
   mxfdDefault: number
 ) {
   const mnid = getNumberOption(opts as any, 'minimumIntegerDigits', 1, 21, 1);
-  const mnfd = getNumberOption(
-    opts as any,
-    'minimumFractionDigits',
-    0,
-    20,
-    mnfdDefault
-  );
-  const mxfdActualDefault = Math.max(mnfd, mxfdDefault);
-  const mxfd = getNumberOption(
-    opts as any,
-    'maximumFractionDigits',
-    mnfd,
-    20,
-    mxfdActualDefault
-  );
+  let mnfd = (opts as any).minimumFractionDigits;
+  let mxfd = (opts as any).maximumFractionDigits;
   let mnsd = (opts as any).minimumSignificantDigits;
   let mxsd = (opts as any).maximumSignificantDigits;
-  pl['[[MinimumIntegerDigits]]'] = mnid;
-  pl['[[MinimumFractionDigits]]'] = mnfd;
-  pl['[[MaximumFractionDigits]]'] = mxfd;
+  intlObj['[[MinimumIntegerDigits]]'] = mnid;
+  intlObj['[[MinimumFractionDigits]]'] = mnfd;
+  intlObj['[[MaximumFractionDigits]]'] = mxfd;
   if (mnsd !== undefined || mxsd !== undefined) {
+    intlObj['[[RoundingType]]'] = 'significantDigits';
     mnsd = defaultNumberOption(mnsd, 1, 21, 1);
     mxsd = defaultNumberOption(mxsd, mnsd, 21, 21);
-    pl['[[MinimumSignificantDigits]]'] = mnsd;
-    pl['[[MaximumSignificantDigits]]'] = mxsd;
+    intlObj['[[MinimumSignificantDigits]]'] = mnsd;
+    intlObj['[[MaximumSignificantDigits]]'] = mxsd;
+  } else if (mnfd !== undefined || mxfd !== undefined) {
+    intlObj['[[RoundingType]]'] = 'fractionDigits';
+    mnfd = defaultNumberOption(mnfd, 0, 20, mnfdDefault);
+    const mxfdActualDefault = Math.max(mnfd, mxfdDefault);
+    mxfd = defaultNumberOption(mxfd, mnfd, 20, mxfdActualDefault);
+    intlObj['[[MinimumFractionDigits]]'] = mnfd;
+    intlObj['[[MaximumFractionDigits]]'] = mxfd;
+  } else if (intlObj['[[Notation]]'] === 'compact') {
+    intlObj['[[RoundingType]]'] = 'compactRounding';
+  } else {
+    intlObj['[[RoundingType]]'] = 'fractionDigits';
+    intlObj['[[MinimumFractionDigits]]'] = mnfdDefault;
+    intlObj['[[MaximumFractionDigits]]'] = mxfdDefault;
   }
 }
 
-export class PluralRules implements Intl.PluralRules {
-  private readonly '[[Locale]]': string;
-  private readonly '[[Type]]': Intl.PluralRulesOptions['type'] = 'cardinal';
-  private '[[MinimumIntegerDigits]]': number | undefined;
-  private '[[MinimumFractionDigits]]': number | undefined;
-  private '[[MaximumFractionDigits]]': number | undefined;
-  private '[[MinimumSignificantDigits]]': number | undefined;
-  private '[[MaximumSignificantDigits]]': number | undefined;
+export class PluralRules implements Intl.PluralRules, IntlObj {
+  readonly '[[Locale]]': string;
+  readonly '[[Type]]': Intl.PluralRulesOptions['type'] = 'cardinal';
+  '[[MinimumIntegerDigits]]': number | undefined;
+  '[[MinimumFractionDigits]]': number | undefined;
+  '[[MaximumFractionDigits]]': number | undefined;
+  '[[MinimumSignificantDigits]]': number | undefined;
+  '[[MaximumSignificantDigits]]': number | undefined;
+  '[[RoundingType]]':
+    | 'significantDigits'
+    | 'fractionDigits'
+    | 'compactRounding';
+  '[[Notation]]': 'compact';
   private pluralRuleData: PluralRulesData;
   constructor(locales?: string | string[], options?: Intl.PluralRulesOptions) {
     // test262/test/intl402/RelativeTimeFormat/constructor/constructor/newtarget-undefined.js
