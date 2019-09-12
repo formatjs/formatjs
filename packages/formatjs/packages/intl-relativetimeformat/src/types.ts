@@ -67,7 +67,6 @@ export type RelativeTimeOpt = 'zero' | 'one' | 'two' | 'few' | 'many' | 'other';
 
 export interface LocaleData {
   locale: string;
-  parentLocale?: string;
   fields?: LocaleFieldsData;
 }
 

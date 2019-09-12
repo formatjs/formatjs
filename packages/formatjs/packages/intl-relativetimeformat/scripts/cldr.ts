@@ -13,9 +13,9 @@ function extractLocales(locales?: string[] | string): Record<string, string> {
     if (!Array.isArray(locales) || locales.includes(locale)) {
       var lang = locale.split('-')[0];
       if (!files[lang]) {
-        files[lang] = serialize(data[locale]);
+        files[lang] = serialize({fields: data[locale], locale});
       } else {
-        files[lang] += ',' + serialize(data[locale]);
+        files[lang] += ',' + serialize({fields: data[locale], locale});
       }
     }
     return files;
