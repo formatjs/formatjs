@@ -60,7 +60,7 @@ function getNumberOption<T extends string>(
 }
 
 interface IntlObj {
-  '[[MinimumIntegerDigits]]': number | undefined;
+  '[[MinimumIntegerDigits]]': number;
   '[[MinimumFractionDigits]]': number | undefined;
   '[[MaximumFractionDigits]]': number | undefined;
   '[[MinimumSignificantDigits]]': number | undefined;
@@ -116,10 +116,81 @@ function setNumberFormatDigitOptions(
   }
 }
 
+/**
+ * https://tc39.es/ecma402/#sec-torawprecision
+ * @param x
+ * @param minPrecision
+ * @param maxPrecision
+ */
+function toRawPrecision(x: number, minPrecision: number, maxPrecision: number) {
+  let m = x.toPrecision(maxPrecision);
+  if (~m.indexOf('.') && maxPrecision > minPrecision) {
+    let cut = maxPrecision - minPrecision;
+    while (cut > 0 && m[m.length - 1] === '0') {
+      m = m.slice(0, m.length - 1);
+      cut--;
+    }
+    if (m[m.length - 1] === '.') {
+      return m.slice(0, m.length - 1);
+    }
+  }
+  return m;
+}
+
+/**
+ * https://tc39.es/ecma402/#sec-torawfixed
+ * @param x
+ * @param minInteger
+ * @param minFraction
+ * @param maxFraction
+ */
+function toRawFixed(
+  x: number,
+  minInteger: number,
+  minFraction: number,
+  maxFraction: number
+) {
+  let cut = maxFraction - minFraction;
+  let m = x.toFixed(maxFraction);
+  while (cut > 0 && m[m.length - 1] === '0') {
+    m = m.slice(0, m.length - 1);
+    cut--;
+  }
+  if (m[m.length - 1] === '.') {
+    m = m.slice(0, m.length - 1);
+  }
+  const int = m.split('.')[0].length;
+  if (m.length < minInteger) {
+    let z = '';
+    for (; z.length < minInteger - int; z += '0');
+    m = z + m;
+  }
+  return m;
+}
+
+function formatNumericToString(intlObj: IntlObj, x: number) {
+  if (
+    intlObj['[[MinimumSignificantDigits]]'] !== undefined &&
+    intlObj['[[MaximumSignificantDigits]]'] !== undefined
+  ) {
+    return toRawPrecision(
+      x,
+      intlObj['[[MinimumSignificantDigits]]'],
+      intlObj['[[MaximumSignificantDigits]]']
+    );
+  }
+  return toRawFixed(
+    x,
+    intlObj['[[MinimumIntegerDigits]]'],
+    intlObj['[[MinimumFractionDigits]]']!,
+    intlObj['[[MaximumFractionDigits]]']!
+  );
+}
+
 export class PluralRules implements Intl.PluralRules, IntlObj {
   readonly '[[Locale]]': string;
   readonly '[[Type]]': Intl.PluralRulesOptions['type'] = 'cardinal';
-  '[[MinimumIntegerDigits]]': number | undefined;
+  '[[MinimumIntegerDigits]]': number;
   '[[MinimumFractionDigits]]': number | undefined;
   '[[MaximumFractionDigits]]': number | undefined;
   '[[MinimumSignificantDigits]]': number | undefined;
@@ -130,7 +201,6 @@ export class PluralRules implements Intl.PluralRules, IntlObj {
     | 'compactRounding';
   '[[Notation]]': 'compact';
   private pluralRuleData: PluralRulesData;
-  private _nf: Intl.NumberFormat;
   constructor(locales?: string | string[], options?: Intl.PluralRulesOptions) {
     // test262/test/intl402/RelativeTimeFormat/constructor/constructor/newtarget-undefined.js
     // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
@@ -176,13 +246,6 @@ export class PluralRules implements Intl.PluralRules, IntlObj {
 
     this.pluralRuleData = PluralRules.__localeData__[this['[[Locale]]']];
     setNumberFormatDigitOptions(this, opts, 0, 3);
-    this._nf = new Intl.NumberFormat(locales, {
-      minimumIntegerDigits: this['[[MinimumIntegerDigits]]'],
-      minimumFractionDigits: this['[[MinimumFractionDigits]]'],
-      maximumFractionDigits: this['[[MaximumFractionDigits]]'],
-      minimumSignificantDigits: this['[[MinimumSignificantDigits]]'],
-      maximumSignificantDigits: this['[[MaximumSignificantDigits]]'],
-    });
   }
   public resolvedOptions() {
     validateInstance(this, 'resolvedOptions');
@@ -258,7 +321,7 @@ export class PluralRules implements Intl.PluralRules, IntlObj {
   public select(val: number): PluralRule {
     validateInstance(this, 'select');
     return this.pluralRuleData.fn(
-      this._nf.format(Math.abs(Number(val))),
+      formatNumericToString(this, Math.abs(Number(val))),
       this['[[Type]]'] == 'ordinal'
     );
   }
