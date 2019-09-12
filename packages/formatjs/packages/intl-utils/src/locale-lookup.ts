@@ -22,20 +22,29 @@ function resolveSupportedLocale<T extends {locale: string} = {locale: string}>(
   if (!locale) {
     return;
   }
-  if (locale in localeData) {
-    return locale;
+
+  const lowercasedLocale = locale.toLowerCase();
+  if (lowercasedLocale in localeData) {
+    return localeData[lowercasedLocale].locale || locale;
   }
 
-  const alias = aliases[locale as 'zh-CN'] || locale;
-  if (alias in localeData) {
-    return alias;
+  let alias = aliases[locale as 'zh-CN'];
+  if (alias) {
+    const lowercasedAlias = alias.toLowerCase();
+    if (lowercasedAlias in localeData) {
+      return localeData[lowercasedAlias].locale || alias;
+    }
   }
+
   const parentHierarchy = getParentLocaleHierarchy(locale);
   let parentLocale: string | undefined = locale;
   while (parentLocale) {
     parentLocale = parentHierarchy.shift();
-    if (parentLocale && parentLocale in localeData) {
-      return parentLocale;
+    if (parentLocale) {
+      const lowercasedParentLocale = parentLocale.toLowerCase();
+      if (lowercasedParentLocale in localeData) {
+        return localeData[lowercasedParentLocale].locale || parentLocale;
+      }
     }
   }
   return;
@@ -52,5 +61,10 @@ export function findSupportedLocale<
   T extends {locale: string} = {locale: string}
 >(locales: string | Array<string | undefined>, localeData: Record<string, T>) {
   const localeArray = Array.isArray(locales) ? locales : [locales];
-  return localeArray.find(l => resolveSupportedLocale(l, localeData));
+  for (let i = 0; i < localeArray.length; i++) {
+    const resolvedLocale = resolveSupportedLocale(localeArray[i], localeData);
+    if (resolvedLocale) {
+      return resolvedLocale;
+    }
+  }
 }

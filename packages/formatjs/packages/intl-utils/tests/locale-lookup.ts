@@ -14,6 +14,16 @@ describe('locale-lookup', function() {
       'en'
     );
   });
+  it('should handle zh-TW', function() {
+    expect(
+      findSupportedLocale(['zh-TW'], {'zh-hant': {locale: 'zh-Hant'}})
+    ).to.equal('zh-Hant');
+  });
+  it('should handle zh-CN', function() {
+    expect(
+      findSupportedLocale(['zh-CN'], {'zh-hans': {locale: 'zh-Hans'}})
+    ).to.equal('zh-Hans');
+  });
   it('should keep the default locale passed in', function() {
     expect(
       supportedLocalesOf(['en-US'], {en: {foo: 'en'} as any})
