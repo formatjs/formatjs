@@ -27,12 +27,14 @@ describe('Intl.PluralRules', function() {
       'few'
     );
   });
-  it('should honor minimumFractionDigits', function() {
-    expect(
-      new Intl.PluralRules('en', {minimumFractionDigits: 0} as any).select(1)
-    ).toBe('one');
-    expect(
-      new Intl.PluralRules('en', {minimumFractionDigits: 2} as any).select(1)
-    ).toBe('other');
-  });
+  if ((Intl.PluralRules as any).polyfilled) {
+    it('should honor minimumFractionDigits', function() {
+      expect(
+        new Intl.PluralRules('en', {minimumFractionDigits: 0} as any).select(1)
+      ).toBe('one');
+      expect(
+        new Intl.PluralRules('en', {minimumFractionDigits: 2} as any).select(1)
+      ).toBe('other');
+    });
+  }
 });
