@@ -9,7 +9,6 @@
     "clean": "rimraf dist lib",
     "build": "node build.js && tsc && tsc -p tsconfig.cjs.json && rollup -c rollup.config.js",
     "benchmark": "node ./test/benchmark.js",
-    "prepublish": "npm run build",
     "test": "cross-env TS_NODE_PROJECT=./tsconfig.cjs.json cross-env NODE_ENV=test jest"
   },
   "contributors": [

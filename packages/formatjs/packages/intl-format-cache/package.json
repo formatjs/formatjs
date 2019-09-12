@@ -9,8 +9,7 @@
     "clean": "rimraf dist lib",
     "benchmark": "ts-node --project tsconfig.cjs.json tests/benchmark",
     "build": "tsc && tsc -p tsconfig.cjs.json && rollup -c rollup.config.js",
-    "test": "mocha --opts ../../mocha.opts tests/index.ts",
-    "prepublishOnly": "npm run build"
+    "test": "mocha --opts ../../mocha.opts tests/index.ts"
   },
   "devDependencies": {
     "@formatjs/intl-pluralrules": "^1.1.2",
