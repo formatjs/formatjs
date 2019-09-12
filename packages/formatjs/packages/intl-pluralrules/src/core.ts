@@ -130,6 +130,7 @@ export class PluralRules implements Intl.PluralRules, IntlObj {
     | 'compactRounding';
   '[[Notation]]': 'compact';
   private pluralRuleData: PluralRulesData;
+  private _nf: Intl.NumberFormat;
   constructor(locales?: string | string[], options?: Intl.PluralRulesOptions) {
     // test262/test/intl402/RelativeTimeFormat/constructor/constructor/newtarget-undefined.js
     // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
@@ -175,6 +176,13 @@ export class PluralRules implements Intl.PluralRules, IntlObj {
 
     this.pluralRuleData = PluralRules.__localeData__[this['[[Locale]]']];
     setNumberFormatDigitOptions(this, opts, 0, 3);
+    this._nf = new Intl.NumberFormat(locales, {
+      minimumIntegerDigits: this['[[MinimumIntegerDigits]]'],
+      minimumFractionDigits: this['[[MinimumFractionDigits]]'],
+      maximumFractionDigits: this['[[MaximumFractionDigits]]'],
+      minimumSignificantDigits: this['[[MinimumSignificantDigits]]'],
+      maximumSignificantDigits: this['[[MaximumSignificantDigits]]'],
+    });
   }
   public resolvedOptions() {
     validateInstance(this, 'resolvedOptions');
@@ -250,7 +258,7 @@ export class PluralRules implements Intl.PluralRules, IntlObj {
   public select(val: number): PluralRule {
     validateInstance(this, 'select');
     return this.pluralRuleData.fn(
-      Math.abs(Number(val)),
+      this._nf.format(Math.abs(Number(val))),
       this['[[Type]]'] == 'ordinal'
     );
   }
