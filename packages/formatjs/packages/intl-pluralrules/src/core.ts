@@ -160,7 +160,7 @@ function toRawFixed(
     m = m.slice(0, m.length - 1);
   }
   const int = m.split('.')[0].length;
-  if (m.length < minInteger) {
+  if (int < minInteger) {
     let z = '';
     for (; z.length < minInteger - int; z += '0');
     m = z + m;
