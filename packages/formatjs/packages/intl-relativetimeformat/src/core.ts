@@ -10,6 +10,7 @@ import {
   resolveSupportedLocales,
   toObject,
   getOption,
+  getParentLocaleHierarchy,
 } from '@formatjs/intl-utils';
 
 // -- RelativeTimeFormat -----------------------------------------------------------
@@ -74,18 +75,17 @@ export interface RelativeTimeFormatNumberPart extends Intl.NumberFormatPart {
  */
 function findFields(locale: string) {
   const localeData = RelativeTimeFormat.__localeData__;
-  let data: LocaleData | undefined = localeData[locale.toLowerCase()];
-
+  const parentHierarchy = getParentLocaleHierarchy(locale);
+  let parentLocale: string | undefined = locale;
   // The locale data is de-duplicated, so we have to traverse the locale's
   // hierarchy until we find `fields` to return.
-  while (data) {
-    if (data.fields) {
+  while (parentLocale) {
+    const data = localeData[parentLocale.toLowerCase()];
+    if (data && data.fields) {
       return data.fields;
     }
 
-    data = data.parentLocale
-      ? localeData[data.parentLocale.toLowerCase()]
-      : undefined;
+    parentLocale = parentHierarchy.shift();
   }
 
   throw new Error(

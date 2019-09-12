@@ -12,4 +12,9 @@ describe('Intl.RelativeTimeFormat', function() {
       new Intl.RelativeTimeFormat('zh-TW', undefined).format(-1, 'second')
     ).toBe('1 秒前');
   });
+  it('should resolve parent correctly', function() {
+    expect(
+      new Intl.RelativeTimeFormat('en-AI', undefined).format(-1, 'second')
+    ).toBe('1 second ago');
+  });
 });
