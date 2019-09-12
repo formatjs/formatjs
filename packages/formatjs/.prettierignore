@@ -1,9 +1,10 @@
-packages/intl-relativetimeformat/src/locales.ts
-packages/intl-relativetimeformat/src/en.ts
-packages/intl-unified-numberformat/src/locales.ts
-packages/intl-unified-numberformat/src/en.ts
-packages/intl-utils/src/aliases.ts
+packages/*/CHANGELOG.md
 packages/formatjs-extract-cldr-data/src/dateFields.ts
 packages/intl-messageformat-parser/src/parser.ts
+packages/intl-relativetimeformat/src/en.ts
+packages/intl-relativetimeformat/src/locales.ts
+packages/intl-unified-numberformat/src/en.ts
+packages/intl-unified-numberformat/src/locales.ts
+packages/intl-utils/src/aliases.ts
+packages/intl-utils/src/parentLocales.ts
 test262/
-packages/*/CHANGELOG.md

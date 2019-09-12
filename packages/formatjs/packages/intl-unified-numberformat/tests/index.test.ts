@@ -45,9 +45,9 @@ describe('UnifiedNumberFormat', function() {
     ).toBe('1,000 gal US');
   });
   it('supportedLocalesOf should return correct result based on data loaded', function() {
-    expect(NumberFormat.supportedLocalesOf(['zh', 'en-us', 'af'])).toEqual([
+    expect(NumberFormat.supportedLocalesOf(['zh', 'en-US', 'af'])).toEqual([
       'zh',
-      'en',
+      'en-US',
     ]);
     expect(NumberFormat.supportedLocalesOf(['af'])).toEqual([]);
   });

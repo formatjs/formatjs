@@ -15,44 +15,42 @@ export function getParentLocaleHierarchy(locale: string): string[] {
   return results;
 }
 
-export function resolveSupportedLocales<
+function resolveSupportedLocale<T extends {locale: string} = {locale: string}>(
+  locale: string | undefined,
+  localeData: Record<string, T>
+) {
+  if (!locale) {
+    return;
+  }
+  if (locale in localeData) {
+    return locale;
+  }
+
+  const alias = aliases[locale as 'zh-CN'] || locale;
+  if (alias in localeData) {
+    return alias;
+  }
+  const parentHierarchy = getParentLocaleHierarchy(locale);
+  let parentLocale: string | undefined = locale;
+  while (parentLocale) {
+    parentLocale = parentHierarchy.shift();
+    if (parentLocale && parentLocale in localeData) {
+      return parentLocale;
+    }
+  }
+  return;
+}
+
+export function supportedLocalesOf<
   T extends {locale: string} = {locale: string}
 >(locales: string | Array<string | undefined>, localeData: Record<string, T>) {
-  let resolvedLocales: string[] = (Array.isArray(locales) ? locales : [locales])
-    .filter<string>((s): s is string => typeof s === 'string')
-    .map(l => aliases[l as 'zh-CN'] || l);
+  const localeArray = Array.isArray(locales) ? locales : [locales];
+  return localeArray.filter(l => !!resolveSupportedLocale(l, localeData));
+}
 
-  const supportedLocales: string[] = [];
-
-  // Using the set of locales + the default locale, we look for the first one
-  // which that has been registered. When data does not exist for a locale, we
-  // traverse its ancestors to find something that's been registered within
-  // its hierarchy of locales.
-  resolvedLocales.forEach(locale => {
-    if (locale in localeData) {
-      return supportedLocales.push(locale);
-    }
-    // Check if it has an ancestor
-    const parentLocale = parentLocales[locale as 'en-150'];
-    if (parentLocale in localeData) {
-      return supportedLocales.push(parentLocale);
-    }
-
-    const localeParts = locale.toLowerCase().split('-');
-    while (localeParts.length) {
-      if (localeData) {
-        const data = localeData[localeParts.join('-')];
-        if (data) {
-          // Return the normalized locale string; e.g., we return "en-US",
-          // instead of "en-us".
-          supportedLocales.push(data.locale);
-          break;
-        }
-
-        localeParts.pop();
-      }
-    }
-  });
-
-  return supportedLocales;
+export function findSupportedLocale<
+  T extends {locale: string} = {locale: string}
+>(locales: string | Array<string | undefined>, localeData: Record<string, T>) {
+  const localeArray = Array.isArray(locales) ? locales : [locales];
+  return localeArray.find(l => resolveSupportedLocale(l, localeData));
 }

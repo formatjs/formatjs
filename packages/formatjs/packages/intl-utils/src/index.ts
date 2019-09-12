@@ -1,6 +1,7 @@
 export {selectUnit} from './diff';
 export {
-  resolveSupportedLocales,
+  findSupportedLocale,
   getParentLocaleHierarchy,
+  supportedLocalesOf,
 } from './locale-lookup';
 export {toObject, getOption} from './polyfill-utils';

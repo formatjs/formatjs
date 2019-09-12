@@ -1,5 +1,9 @@
 import {Unit} from './units-constants';
-import {resolveSupportedLocales} from '@formatjs/intl-utils';
+import {
+  findSupportedLocale,
+  getParentLocaleHierarchy,
+  supportedLocalesOf,
+} from '@formatjs/intl-utils';
 
 export function isUnitSupported(unit: Unit) {
   try {
@@ -45,23 +49,21 @@ export interface UnitData {
 const NativeNumberFormat = Intl.NumberFormat;
 
 function findUnitData(locale: string, unit: Unit): UnitData {
-  const {__unitLocaleData__: data} = UnifiedNumberFormat;
-  let parentLocale = '';
-  locale = locale.toLowerCase();
-  if (!data[locale]) {
-    parentLocale = locale.split('-')[0];
-  } else {
-    if (data[locale].units[unit]) {
-      return data[locale].units[unit];
+  const localeData = UnifiedNumberFormat.__unitLocaleData__;
+  const parentHierarchy = getParentLocaleHierarchy(locale);
+  let parentLocale: string | undefined = locale;
+  // The locale data is de-duplicated, so we have to traverse the locale's
+  // hierarchy until we find `fields` to return.
+  while (parentLocale) {
+    const data = localeData[parentLocale.toLowerCase()];
+    if (data && data.units && data.units[unit]) {
+      return data.units[unit];
     }
-    if (data[locale].parentLocale) {
-      parentLocale = data[locale].parentLocale!;
-    } else {
-      throw new RangeError(`Cannot find data for ${locale}`);
-    }
+
+    parentLocale = parentHierarchy.shift();
   }
 
-  return findUnitData(parentLocale, unit);
+  throw new RangeError(`Cannot find data for ${locale}`);
 }
 
 const DEFAULT_LOCALE = new NativeNumberFormat().resolvedOptions().locale;
@@ -83,11 +85,21 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
       }
       this.unit = unit;
       this.unitDisplay = unitDisplay || 'short';
-
-      const resolvedLocale = resolveSupportedLocales(
-        [...(Array.isArray(locales) ? locales : [locales]), DEFAULT_LOCALE],
+      const localesToLookup = [
+        ...(Array.isArray(locales) ? locales : [locales]),
+        DEFAULT_LOCALE,
+      ];
+      const resolvedLocale = findSupportedLocale(
+        localesToLookup,
         UnifiedNumberFormat.__unitLocaleData__
-      )[0];
+      );
+      if (!resolvedLocale) {
+        throw new RangeError(
+          `No locale data has been added to IntlRelativeTimeFormat for: ${localesToLookup.join(
+            ', '
+          )}`
+        );
+      }
       this.patternData = findUnitData(resolvedLocale, this.unit);
     }
     this.nf = new NativeNumberFormat(locales, {
@@ -127,10 +139,7 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
   static supportedLocalesOf(
     ...args: Parameters<typeof NativeNumberFormat.supportedLocalesOf>
   ) {
-    return resolveSupportedLocales(
-      args[0],
-      UnifiedNumberFormat.__unitLocaleData__
-    );
+    return supportedLocalesOf(args[0], UnifiedNumberFormat.__unitLocaleData__);
   }
   static polyfilled = true;
   static __unitLocaleData__: Record<string, LocaleData> = {};

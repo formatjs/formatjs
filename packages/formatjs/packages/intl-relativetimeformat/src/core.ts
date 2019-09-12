@@ -7,10 +7,11 @@ import {
   VALID_UNITS,
 } from './types';
 import {
-  resolveSupportedLocales,
+  findSupportedLocale,
   toObject,
   getOption,
   getParentLocaleHierarchy,
+  supportedLocalesOf,
 } from '@formatjs/intl-utils';
 
 // -- RelativeTimeFormat -----------------------------------------------------------
@@ -201,19 +202,22 @@ export default class RelativeTimeFormat {
     if (locales === undefined) {
       this._locale = DEFAULT_LOCALE;
     } else {
-      const resolvedLocales = resolveSupportedLocales(
-        [...Intl.NumberFormat.supportedLocalesOf(locales), DEFAULT_LOCALE],
+      const localesToLookup = [
+        ...Intl.NumberFormat.supportedLocalesOf(locales),
+        DEFAULT_LOCALE,
+      ];
+      const resolvedLocale = findSupportedLocale(
+        localesToLookup,
         RelativeTimeFormat.__localeData__
       );
-      if (resolvedLocales.length < 1) {
+      if (!resolvedLocale) {
         throw new Error(
-          'No locale data has been added to IntlRelativeTimeFormat for: ' +
-            resolvedLocales.join(', ') +
-            ', or the default locale: ' +
-            DEFAULT_LOCALE
+          `No locale data has been added to IntlRelativeTimeFormat for: ${localesToLookup.join(
+            ', '
+          )}`
         );
       }
-      this._locale = resolvedLocales[0];
+      this._locale = resolvedLocale;
     }
 
     this._localeMatcher = getOption(
@@ -372,7 +376,7 @@ export default class RelativeTimeFormat {
       );
     }
     // test262/test/intl402/RelativeTimeFormat/constructor/supportedLocalesOf/result-type.js
-    return resolveSupportedLocales(
+    return supportedLocalesOf(
       Intl.PluralRules.supportedLocalesOf(locales, {localeMatcher}),
       RelativeTimeFormat.__localeData__
     );

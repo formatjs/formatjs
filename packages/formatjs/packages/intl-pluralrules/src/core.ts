@@ -1,7 +1,8 @@
 import {
-  resolveSupportedLocales,
+  findSupportedLocale,
   toObject,
   getOption,
+  supportedLocalesOf,
 } from '@formatjs/intl-utils';
 
 const DEFAULT_LOCALE = 'en';
@@ -214,19 +215,23 @@ export class PluralRules implements Intl.PluralRules, IntlObj {
     if (locales === undefined) {
       this['[[Locale]]'] = DEFAULT_LOCALE;
     } else {
-      const resolvedLocales = resolveSupportedLocales(
-        [...(Array.isArray(locales) ? locales : [locales]), DEFAULT_LOCALE],
+      const localesToLookup = [
+        ...(Array.isArray(locales) ? locales : [locales]),
+        DEFAULT_LOCALE,
+      ];
+      const resolvedLocale = findSupportedLocale(
+        localesToLookup,
         PluralRules.__localeData__
       );
-      if (resolvedLocales.length < 1) {
+      if (!resolvedLocale) {
         throw new Error(
-          'No locale data has been added to IntlPluralRules for: ' +
-            resolvedLocales.join(', ') +
-            ', or the default locale: ' +
-            DEFAULT_LOCALE
+          `No locale data has been added to IntlRelativeTimeFormat for: ${localesToLookup.join(
+            ', '
+          )}`
         );
       }
-      this['[[Locale]]'] = resolvedLocales[0];
+
+      this['[[Locale]]'] = resolvedLocale;
     }
     this['[[Type]]'] = getOption(
       opts,
@@ -329,7 +334,7 @@ export class PluralRules implements Intl.PluralRules, IntlObj {
     return '[object Intl.PluralRules]';
   }
   public static supportedLocalesOf(locales: string | string[]) {
-    return resolveSupportedLocales(locales, PluralRules.__localeData__);
+    return supportedLocalesOf(locales, PluralRules.__localeData__);
   }
   public static __addLocaleData(data: PluralRulesData) {
     PluralRules.__localeData__[data.locale] = data;

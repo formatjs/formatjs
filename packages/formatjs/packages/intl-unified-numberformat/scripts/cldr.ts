@@ -1,8 +1,8 @@
 import {extractAllUnits, getAllLanguages} from 'formatjs-extract-cldr-data';
-import {resolve, join, relative} from 'path';
+import {resolve, join} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
 
-const {locales, units: unitData} = extractAllUnits();
+const unitData = extractAllUnits();
 
 // https://tc39.es/proposal-unified-intl-numberformat/section6/locales-currencies-tz_diff_out.html#sec-issanctionedsimpleunitidentifier
 const SANCTIONED_UNITS = [
@@ -82,7 +82,7 @@ allUnits.forEach(unit => {
 
     if (!sanctionedUnitData[lang][locale]) {
       sanctionedUnitData[lang][locale] = {
-        ...(locales[locale] || {}),
+        locale,
         units: {},
       };
     }

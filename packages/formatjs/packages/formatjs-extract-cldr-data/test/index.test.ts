@@ -33,28 +33,13 @@ describe('Data shape', function() {
   });
 
   describe('locale data object', function() {
-    it('should have a `locale` property equal to the locale', function() {
-      var locale = Object.keys(data)[0];
-      var localeData = data[locale];
-
-      expect(localeData).toHaveProperty('locale');
-      expect(typeof localeData.locale).toBe('string');
-      expect(localeData.locale).toBe(locale);
+    it('should have a `data` object property', function() {
+      expect(data.en).toHaveProperty('year');
+      expect(typeof data.en.year).toBe('object');
     });
 
-    it('should have `parentLocale` property when it is not a root locale', function() {
-      expect(data.en).not.toHaveProperty('parentLocale');
-      expect(data['en-US']).toHaveProperty('parentLocale');
-      expect(data['en-US'].parentLocale).toBe('en');
-    });
-
-    it('should have a `fields` object property', function() {
-      expect(data.en).toHaveProperty('fields');
-      expect(typeof data.en.fields).toBe('object');
-    });
-
-    describe('`fields` objects', function() {
-      var field = data.en.fields![Object.keys(data.en.fields!)[0]];
+    describe('data', function() {
+      var field = data.en[Object.keys(data.en)[0]];
 
       it('should have a `displayName` string property', function() {
         expect(field).toHaveProperty('displayName');
@@ -98,7 +83,7 @@ describe('Data shape', function() {
           'second-short',
           'second-narrow',
         ];
-        expect(Object.keys(data.en.fields!)).toEqual(fields);
+        expect(Object.keys(data.en)).toEqual(fields);
       });
 
       describe('`relative` object', function() {
@@ -183,39 +168,6 @@ describe('extractAllRelativeFields()', function() {
       it.skip('should throw when no data exists for a locale', function() {
         expect(extractAllRelativeFields).toThrow();
       });
-
-      it('should always contribute an entry for all specified `locales`', function() {
-        var data = extractAllRelativeFields({
-          locales: ['en-US', 'zh-Hans-SG'],
-          relativeFields: true,
-        });
-        const locales = Object.keys(data);
-
-        expect(locales).toContain('en-US');
-        expect(locales).toContain('zh-Hans-SG');
-      });
-
-      it('should recursively expand `locales` to their roots', function() {
-        const data = extractAllRelativeFields({
-          locales: ['en-US', 'zh-Hans-SG'],
-          relativeFields: true,
-        });
-        const locales = Object.keys(data);
-
-        expect(locales).toContain('en');
-        expect(locales).toContain('zh');
-        expect(locales).toContain('zh-Hans');
-      });
-
-      it('should accept `locales` of any case and normalize them', function() {
-        const locales = Object.keys(
-          extractAllRelativeFields({
-            locales: ['en-us', 'ZH-HANT-HK'],
-          })
-        );
-        expect(locales).toContain('en-US');
-        expect(locales).toContain('zh-Hant-HK');
-      });
     });
 
     describe('relativeFields', function() {
@@ -225,28 +177,13 @@ describe('extractAllRelativeFields()', function() {
           relativeFields: true,
         });
 
-        expect(data.en).toHaveProperty('fields');
-        expect(typeof data.en.fields).toBe('object');
+        expect(data.en).toHaveProperty('year');
+        expect(typeof data.en).toBe('object');
       });
     });
   });
 
   describe('Locale hierarchy', function() {
-    it('should determine the correct parent locale', function() {
-      var data = extractAllRelativeFields({
-        locales: ['en', 'pt-MZ', 'zh-Hant-HK'],
-      });
-
-      expect(data['en']).not.toHaveProperty('parentLocale');
-
-      expect(data['pt-MZ']).toHaveProperty('parentLocale');
-      expect(data['pt-MZ'].parentLocale).toBe('pt-PT');
-
-      expect(data['zh-Hant-HK']).toHaveProperty('parentLocale');
-      expect(data['zh-Hant-HK'].parentLocale).toBe('zh-Hant');
-      expect(data['zh-Hant']).not.toHaveProperty('parentLocale');
-    });
-
     it('should de-duplicate data with suitable ancestors', function() {
       var locales = ['es-MX', 'es-VE'];
 
@@ -255,25 +192,8 @@ describe('extractAllRelativeFields()', function() {
         relativeFields: true,
       });
 
-      expect(Object.keys(data['es-MX'])).toContain('parentLocale');
-      expect(Object.keys(data['es-MX'])).toContain('fields');
-      expect(Object.keys(data['es-VE'])).toContain('parentLocale');
-      expect(Object.keys(data['es-VE'])).not.toContain('fields');
-
-      locales.forEach(locale => {
-        let fields;
-        let resolvedLocale: string | undefined = locale;
-        // Traverse locale hierarchy for `locale` looking for the first
-        // occurrence of `fields`;
-        while (resolvedLocale) {
-          if (!fields) {
-            fields = data[resolvedLocale].fields;
-          }
-
-          resolvedLocale = data[resolvedLocale].parentLocale;
-        }
-        expect(typeof fields).toBe('object');
-      });
+      expect(Object.keys(data['es-MX'])).toContain('year');
+      expect(Object.keys(data)).not.toContain('es-VE');
     });
   });
 });
