@@ -1,25 +1,9 @@
 sudo: false
 language: node_js
 node_js:
-  - 8
-  - 10
   - 12
-before_install:
-  - git submodule update --init
 before_script:
   - npm run build
-script: npm t
-after_success:
-  - npm run cover
-  - npm run cover:collect
-  - cat artifacts/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+script: npm run karma:ci
 addons:
   sauce_connect: true
-stages:
-  - test
-  - integration
-jobs:
-  include:
-    - stage: integration
-      node_js: 12
-      script: npm run karma:ci
