@@ -153,7 +153,7 @@ If you previously were using `addLocaleData` to support older browsers, we recom
 
 ```js
 if (!Intl.PluralRules) {
-  require('intl-pluralrules/polyfill');
+  require('@formatjs/intl-pluralrules/polyfill');
   require('@formatjs/intl-pluralrules/dist/locale-data/de'); // Add locale data for de
 }
 
