@@ -2,6 +2,7 @@ import {extractAllRelativeFields} from 'formatjs-extract-cldr-data';
 import {resolve, join} from 'path';
 import {outputFileSync} from 'fs-extra';
 import * as serialize from 'serialize-javascript';
+import {isEmpty} from 'lodash';
 
 const data = extractAllRelativeFields();
 
@@ -12,10 +13,12 @@ function extractLocales(locales?: string[] | string): Record<string, string> {
   ) {
     if (!Array.isArray(locales) || locales.includes(locale)) {
       var lang = locale.split('-')[0];
-      if (!files[lang]) {
-        files[lang] = serialize({fields: data[locale], locale});
-      } else {
-        files[lang] += ',' + serialize({fields: data[locale], locale});
+      if (!isEmpty(data[locale])) {
+        if (!files[lang]) {
+          files[lang] = serialize({fields: data[locale], locale});
+        } else {
+          files[lang] += ',' + serialize({fields: data[locale], locale});
+        }
       }
     }
     return files;

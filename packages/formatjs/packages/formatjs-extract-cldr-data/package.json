@@ -12,6 +12,7 @@
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "license": "BSD-3-Clause",
   "dependencies": {
+    "@formatjs/intl-utils": "^1.0.0",
     "@types/glob": "^7.1.1",
     "@types/lodash": "^4.14.138",
     "cldr-core": "^35.0.0",

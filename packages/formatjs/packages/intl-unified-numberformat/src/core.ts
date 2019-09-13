@@ -28,14 +28,13 @@ export interface ResolvedUnifiedNumberFormatOptions
   unitDisplay?: 'long' | 'short' | 'narrow';
 }
 
-interface LocaleData {
+export interface LocaleData {
   locale: string;
   units: Record<string, UnitData>;
 }
 interface UnitPattern {
   one?: string;
   other?: string;
-  perUnit?: string;
 }
 
 export interface UnitData {
@@ -146,9 +145,8 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
   }
   static polyfilled = true;
   static __unitLocaleData__: Record<string, LocaleData> = {};
-  static __addUnitLocaleData(data: Record<string, LocaleData>) {
-    Object.keys(data).forEach(locale => {
-      const datum = data[locale];
+  static __addUnitLocaleData(data: LocaleData[]) {
+    data.forEach(datum => {
       if (!(datum && datum.locale)) {
         throw new Error(
           'Locale data provided to UnifiedNumberFormat is missing a ' +

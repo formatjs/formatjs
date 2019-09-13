@@ -17,9 +17,7 @@ describe('exports', function() {
 });
 
 describe('Data shape', function() {
-  var data = extractAllRelativeFields({
-    relativeFields: true,
-  });
+  var data = extractAllRelativeFields({});
 
   it('should be keyed by locale', function() {
     const locales = Object.keys(data);
@@ -170,16 +168,13 @@ describe('extractAllRelativeFields()', function() {
       });
     });
 
-    describe('relativeFields', function() {
-      it('should contribute a `fields` object property', function() {
-        var data = extractAllRelativeFields({
-          locales: ['en'],
-          relativeFields: true,
-        });
-
-        expect(data.en).toHaveProperty('year');
-        expect(typeof data.en).toBe('object');
+    it('should contribute a `fields` object property', function() {
+      var data = extractAllRelativeFields({
+        locales: ['en'],
       });
+
+      expect(data.en).toHaveProperty('year');
+      expect(typeof data.en).toBe('object');
     });
   });
 
@@ -188,8 +183,7 @@ describe('extractAllRelativeFields()', function() {
       var locales = ['es-MX', 'es-VE'];
 
       var data = extractAllRelativeFields({
-        locales: locales,
-        relativeFields: true,
+        locales,
       });
 
       expect(Object.keys(data['es-MX'])).toContain('year');

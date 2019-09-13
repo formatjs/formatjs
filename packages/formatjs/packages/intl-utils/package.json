@@ -27,9 +27,6 @@
     "build": "npm run cldr && tsc && tsc -p tsconfig.cjs.json",
     "test": "cross-env TS_NODE_PROJECT=tsconfig.cjs.json mocha --opts ../../mocha.opts tests/*"
   },
-  "devDependencies": {
-    "formatjs-extract-cldr-data": "^9.6.2"
-  },
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",
   "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c"

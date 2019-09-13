@@ -1,59 +1,9 @@
 import {extractAllUnits, getAllLanguages} from 'formatjs-extract-cldr-data';
+import {SANCTIONED_UNITS} from '@formatjs/intl-utils';
 import {resolve, join} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
 
 const unitData = extractAllUnits();
-
-// https://tc39.es/proposal-unified-intl-numberformat/section6/locales-currencies-tz_diff_out.html#sec-issanctionedsimpleunitidentifier
-const SANCTIONED_UNITS = [
-  'acre',
-  'bit',
-  'byte',
-  'celsius',
-  'centimeter',
-  'day',
-  'degree',
-  'fahrenheit',
-  'fluid-ounce',
-  'foot',
-  'gallon',
-  'gigabit',
-  'gigabyte',
-  'gram',
-  'hectare',
-  'hour',
-  'inch',
-  'kilobit',
-  'kilobyte',
-  'kilogram',
-  'kilometer',
-  'liter',
-  'megabit',
-  'megabyte',
-  'meter',
-  'mile',
-  'mile-scandinavian',
-  'millimeter',
-  'milliliter',
-  'millisecond',
-  'minute',
-  'month',
-  'ounce',
-  'percent',
-  'petabyte',
-  'pound',
-  'second',
-  'stone',
-  'terabit',
-  'terabyte',
-  'week',
-  'yard',
-  'year',
-];
-
-const languages = getAllLanguages();
-
-const allUnits = Object.keys(unitData);
 
 function shortenUnit(unit: string) {
   return unit.replace(/^(.*?)-/, '');
@@ -61,34 +11,25 @@ function shortenUnit(unit: string) {
 
 const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
 
-const sanctionedUnitData: Record<string, any> = languages.reduce(
-  (all: Record<string, any>, lang) => {
-    all[lang] = {};
-    return all;
-  },
-  {}
-);
-allUnits.forEach(unit => {
-  const shortenedUnit = shortenUnit(unit);
-  if (!SANCTIONED_UNITS.includes(shortenedUnit)) {
-    return;
-  }
+const sanctionedUnitData: Record<string, any> = {};
 
-  // Dist all locale files to dist/locale-data
-  const allLocaleFiles = unitData[unit];
+Object.keys(unitData).map(locale => {
+  const lang = locale.split('-')[0];
 
-  Object.keys(allLocaleFiles).map(locale => {
-    const lang = locale.split('-')[0];
-
-    if (!sanctionedUnitData[lang][locale]) {
-      sanctionedUnitData[lang][locale] = {
-        locale,
-        units: {},
-      };
+  const datum = unitData[locale];
+  const availableUnits = Object.keys(datum);
+  if (availableUnits.length) {
+    if (!sanctionedUnitData[lang]) {
+      sanctionedUnitData[lang] = [];
     }
-    sanctionedUnitData[lang][locale].units[shortenedUnit] =
-      allLocaleFiles[locale];
-  });
+    sanctionedUnitData[lang].push({
+      locale,
+      units: availableUnits.reduce((all: Record<string, any>, unit) => {
+        all[shortenUnit(unit)] = datum[unit];
+        return all;
+      }, {}),
+    });
+  }
 });
 
 const absoluteLocaleFiles = Object.keys(sanctionedUnitData).map(lang =>
@@ -104,7 +45,7 @@ outputFileSync(
   `/* @generated */
 // prettier-ignore
 export type Unit = 
-  ${SANCTIONED_UNITS.map(unit => `'${unit}'`).join(' | ')}
+  ${SANCTIONED_UNITS.map(unit => `'${shortenUnit(unit)}'`).join(' | ')}
 `
 );
 
@@ -113,7 +54,9 @@ outputFileSync(
   resolve(__dirname, '../src/en.ts'),
   `/* @generated */
 // prettier-ignore
-export default ${JSON.stringify(sanctionedUnitData.en)};
+import {LocaleData} from './core';
+const data: LocaleData[] = ${JSON.stringify(sanctionedUnitData.en)};
+export default data;
 `
 );
 

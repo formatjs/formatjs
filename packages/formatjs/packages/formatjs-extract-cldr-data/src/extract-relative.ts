@@ -4,10 +4,21 @@
  * See the accompanying LICENSE file for terms.
  */
 'use strict';
-import {dateFieldsLocales} from './locales';
+
 import * as DateFields from 'cldr-dates-full/main/en/dateFields.json';
 import {Locale} from './types';
 import generateFieldExtractorFn from './utils';
+import {sync as globSync} from 'glob';
+import {resolve, dirname} from 'path';
+
+const dateFieldsLocales = globSync('*/dateFields.json', {
+  cwd: resolve(
+    dirname(require.resolve('cldr-dates-full/package.json')),
+    './main'
+  ),
+}).map(dirname);
+
+import {readdirSync} from 'fs';
 
 // The set of CLDR date field names that are used in FormatJS.
 const FIELD_NAMES = [
@@ -56,6 +67,15 @@ export interface FieldData {
     future: RelativeTimeData;
     past: RelativeTimeData;
   };
+}
+
+export function getAllLocales() {
+  return globSync('*/dateFields.json', {
+    cwd: resolve(
+      dirname(require.resolve('cldr-dates-full/package.json')),
+      './main'
+    ),
+  }).map(dirname);
 }
 
 function loadRelativeFields(locale: Locale): Record<string, FieldData> {
@@ -117,6 +137,6 @@ function hasDateFields(locale: Locale): boolean {
 
 const extractRelativeFields = generateFieldExtractorFn<
   Record<string, FieldData>
->(loadRelativeFields, hasDateFields);
+>(loadRelativeFields, hasDateFields, getAllLocales());
 
 export default extractRelativeFields;
