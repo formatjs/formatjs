@@ -1,6 +1,6 @@
 import {Locale} from './types';
 import {getParentLocaleHierarchy} from '@formatjs/intl-utils';
-import {omitBy, isEmpty, assign} from 'lodash';
+import {pickBy, isEmpty, isEqual} from 'lodash';
 
 function dedupeUsingParentHierarchy<DataType extends Record<string, any>>(
   ...data: DataType[]
@@ -8,13 +8,13 @@ function dedupeUsingParentHierarchy<DataType extends Record<string, any>>(
   const results: DataType[] = [data.pop()!];
   while (data.length) {
     const datum = data.pop();
-    const accumulatedParentData = assign({}, ...results);
-    results.unshift(omitBy<DataType>(
+    const accumulatedParentData: DataType = Object.assign({}, ...results);
+    results.push(pickBy<DataType>(
       datum,
-      (d, field) =>
-        JSON.stringify(accumulatedParentData[field]) === JSON.stringify(d)
+      (d, field) => !isEqual(accumulatedParentData[field], d)
     ) as any);
   }
+  results.reverse();
   return results;
 }
 
@@ -22,7 +22,7 @@ export default function generateFieldExtractorFn<
   DataType extends Record<string, any>
 >(
   loadFieldsFn: (locale: Locale) => DataType,
-  checkCachedFieldsFn: (locale: string) => boolean,
+  hasDataForLocale: (locale: string) => boolean,
   availableLocales: string[]
 ) {
   return (locales: Locale[]) => {
@@ -30,28 +30,24 @@ export default function generateFieldExtractorFn<
 
     // Loads and caches the relative fields for a given `locale` because loading
     // and transforming the data is expensive.
-    function getFields(locale: Locale) {
-      let cachedFields = fieldCache[locale];
-      if (cachedFields) {
-        return cachedFields;
+    function populateFields(locale: Locale) {
+      if (locale in fieldCache || !hasDataForLocale(locale)) {
+        return;
       }
 
-      if (checkCachedFieldsFn(locale)) {
-        const localesIncludingParents = [
-          locale,
-          ...getParentLocaleHierarchy(locale),
-        ].filter(l => availableLocales.includes(l));
-        dedupeUsingParentHierarchy(
-          ...localesIncludingParents.map(loadFieldsFn)
-        ).forEach((datum, i) => {
-          cachedFields = fieldCache[localesIncludingParents[i]] = datum;
-        });
-        return cachedFields;
-      }
+      const localesIncludingParents = [
+        locale,
+        ...getParentLocaleHierarchy(locale),
+      ].filter(l => availableLocales.includes(l));
+
+      dedupeUsingParentHierarchy(
+        ...localesIncludingParents.map(loadFieldsFn)
+      ).forEach((datum, i) => {
+        fieldCache[localesIncludingParents[i]] = datum;
+      });
     }
 
-    locales.forEach(getFields);
-
-    return omitBy(fieldCache, isEmpty);
+    locales.forEach(populateFields);
+    return pickBy(fieldCache, o => !isEmpty(o));
   };
 }

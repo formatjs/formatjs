@@ -17,7 +17,10 @@ describe('exports', function() {
 });
 
 describe('Data shape', function() {
-  var data = extractAllRelativeFields({});
+  var data: any;
+  beforeAll(function() {
+    data = extractAllRelativeFields();
+  });
 
   it('should be keyed by locale', function() {
     const locales = Object.keys(data);
@@ -37,7 +40,11 @@ describe('Data shape', function() {
     });
 
     describe('data', function() {
-      var field = data.en[Object.keys(data.en)[0]];
+      var field: any;
+
+      beforeAll(function() {
+        field = data.en[Object.keys(data.en)[0]];
+      });
 
       it('should have a `displayName` string property', function() {
         expect(field).toHaveProperty('displayName');
@@ -85,7 +92,10 @@ describe('Data shape', function() {
       });
 
       describe('`relative` object', function() {
-        var keys = Object.keys(field.relative);
+        var keys: string[];
+        beforeAll(function() {
+          keys = Object.keys(field.relative);
+        });
 
         it('should have numeric keys', function() {
           keys.forEach(function(key) {
@@ -112,9 +122,12 @@ describe('Data shape', function() {
         });
 
         describe('`future` object', function() {
-          var future = field.relativeTime.future;
-          var keys = Object.keys(future);
-
+          var future: any;
+          var keys: string[];
+          beforeAll(function() {
+            future = field.relativeTime.future;
+            keys = Object.keys(future);
+          });
           it('should have an `other` key', function() {
             expect(future).toHaveProperty('other');
           });
@@ -127,9 +140,12 @@ describe('Data shape', function() {
         });
 
         describe('`past` object', function() {
-          var past = field.relativeTime.past;
-          var keys = Object.keys(past);
-
+          var past: any;
+          var keys: string[];
+          beforeAll(function() {
+            past = field.relativeTime.past;
+            keys = Object.keys(past);
+          });
           it('should have an `other` key', function() {
             expect(past).toHaveProperty('other');
           });
@@ -188,6 +204,16 @@ describe('extractAllRelativeFields()', function() {
 
       expect(Object.keys(data['es-MX'])).toContain('year');
       expect(Object.keys(data)).not.toContain('es-VE');
+    });
+
+    it('should de-duplicate data with suitable ancestors', function() {
+      var locales = ['en-ZW'];
+
+      var data = extractAllRelativeFields({
+        locales,
+      });
+
+      expect(Object.keys(data)).toEqual(['en-001', 'en']);
     });
   });
 });
