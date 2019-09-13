@@ -4,17 +4,7 @@ Copyrights licensed under the New BSD License.
 See the accompanying LICENSE file for terms.
 */
 
-import {
-  parse,
-  isArgumentElement,
-  MessageFormatElement,
-  isLiteralElement,
-  isDateElement,
-  isTimeElement,
-  isNumberElement,
-  isSelectElement,
-  isPluralElement,
-} from 'intl-messageformat-parser';
+import {parse, MessageFormatElement} from 'intl-messageformat-parser';
 import memoizeIntlConstructor from 'intl-format-cache';
 import {
   FormatterCache,
@@ -30,60 +20,27 @@ import {
 // -- MessageFormat --------------------------------------------------------
 
 function resolveLocale(locales: string | string[]): string {
-  if (typeof locales === 'string') {
-    locales = [locales];
-  }
   try {
-    return Intl.NumberFormat.supportedLocalesOf(locales, {
-      // IE11 localeMatcher `lookup` seems to convert `en` -> `en-US`
-      // but not other browsers,
-      localeMatcher: 'best fit',
-    })[0];
+    return [
+      ...Intl.NumberFormat.supportedLocalesOf(locales, {
+        // IE11 localeMatcher `lookup` seems to convert `en` -> `en-US`
+        // but not other browsers,
+        localeMatcher: 'best fit',
+      }),
+      ...Intl.DateTimeFormat.supportedLocalesOf(locales, {
+        // IE11 localeMatcher `lookup` seems to convert `en` -> `en-US`
+        // but not other browsers,
+        localeMatcher: 'best fit',
+      }),
+      ...Intl.PluralRules.supportedLocalesOf(locales, {
+        // IE11 localeMatcher `lookup` seems to convert `en` -> `en-US`
+        // but not other browsers,
+        localeMatcher: 'best fit',
+      }),
+    ][0];
   } catch (e) {
     return IntlMessageFormat.defaultLocale;
   }
-}
-
-// TODO(skeleton): add skeleton support
-function prewarmFormatters(
-  els: MessageFormatElement[],
-  locales: string | string[],
-  formatters: Formatters,
-  formats: Formats
-) {
-  els
-    .filter(el => !isArgumentElement(el) && !isLiteralElement(el))
-    .forEach(el => {
-      // Recursively format plural and select parts' option — which can be a
-      // nested pattern structure. The choosing of the option to use is
-      // abstracted-by and delegated-to the part helper object.
-      if (isDateElement(el)) {
-        const style =
-          typeof el.style === 'string' ? formats.date[el.style] : undefined;
-        formatters.getDateTimeFormat(locales, style);
-      }
-      if (isTimeElement(el)) {
-        const style =
-          typeof el.style === 'string' ? formats.time[el.style] : undefined;
-        formatters.getDateTimeFormat(locales, style);
-      }
-      if (isNumberElement(el)) {
-        const style =
-          typeof el.style === 'string' ? formats.number[el.style] : undefined;
-        formatters.getNumberFormat(locales, style);
-      }
-      if (isSelectElement(el)) {
-        Object.keys(el.options).forEach(id =>
-          prewarmFormatters(el.options[id].value, locales, formatters, formats)
-        );
-      }
-      if (isPluralElement(el)) {
-        formatters.getPluralRules(locales, {type: el.pluralType});
-        Object.keys(el.options).forEach(id =>
-          prewarmFormatters(el.options[id].value, locales, formatters, formats)
-        );
-      }
-    });
 }
 
 function mergeConfig(c1: Record<string, object>, c2?: Record<string, object>) {
@@ -143,7 +100,7 @@ export function createDefaultFormatters(
 
 export class IntlMessageFormat {
   private readonly ast: MessageFormatElement[];
-  private readonly locale: string;
+  private readonly locale: string | string[];
   private readonly formatters: Formatters;
   private readonly formats: Formats;
   private readonly message: string | undefined;
@@ -184,7 +141,6 @@ export class IntlMessageFormat {
 
     this.formatters =
       (opts && opts.formatters) || createDefaultFormatters(this.formatterCache);
-    prewarmFormatters(this.ast, this.locale, this.formatters, this.formats);
   }
 
   format = (values?: Record<string, PrimitiveType>) =>
