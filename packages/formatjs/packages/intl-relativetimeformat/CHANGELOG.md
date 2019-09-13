@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@3.0.2...@formatjs/intl-relativetimeformat@3.1.0) (2019-09-13)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-utils:** consolidate parent lookup ([bac2eae](https://github.com/formatjs/formatjs/commit/bac2eae))
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** use common parentLocale from @formatjs/intl-utils ([38bf476](https://github.com/formatjs/formatjs/commit/38bf476))
+* **formatjs-extract-cldr-data:** dedupe relative data, reduce relative time data by 40% ([db12bf3](https://github.com/formatjs/formatjs/commit/db12bf3))
+* **formatjs-extract-cldr-data:** dont embed parentLocale everywhere ([10bca2f](https://github.com/formatjs/formatjs/commit/10bca2f))
+* **formatjs-extract-cldr-data:** even smaller locale data ([66a0313](https://github.com/formatjs/formatjs/commit/66a0313))
+
+
+
+
+
 ## [3.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@3.0.1...@formatjs/intl-relativetimeformat@3.0.2) (2019-09-03)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat

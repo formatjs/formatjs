@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@0.4.9...@formatjs/intl-unified-numberformat@0.5.0) (2019-09-13)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-utils:** consolidate parent lookup ([bac2eae](https://github.com/formatjs/formatjs/commit/bac2eae))
+
+
+### Features
+
+* **formatjs-extract-cldr-data:** dedupe relative data, reduce relative time data by 40% ([db12bf3](https://github.com/formatjs/formatjs/commit/db12bf3))
+* **formatjs-extract-cldr-data:** even smaller locale data ([66a0313](https://github.com/formatjs/formatjs/commit/66a0313))
+
+
+
+
+
 ## [0.4.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@0.4.8...@formatjs/intl-unified-numberformat@0.4.9) (2019-09-03)
 
 **Note:** Version bump only for package @formatjs/intl-unified-numberformat

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.2.2](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.2.1...intl-messageformat@7.2.2) (2019-09-13)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** fix chrome v77 issue where NumberFormat.supportedLocalesOf(cy) broke ([4b1605c](https://github.com/formatjs/formatjs/commit/4b1605c))
+
+
+
+
+
 ## [7.2.1](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.2.0...intl-messageformat@7.2.1) (2019-09-09)
 
 

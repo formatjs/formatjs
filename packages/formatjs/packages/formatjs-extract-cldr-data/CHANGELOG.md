@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.7.0](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.6.2...formatjs-extract-cldr-data@9.7.0) (2019-09-13)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-utils:** consolidate parent lookup ([bac2eae](https://github.com/formatjs/formatjs/commit/bac2eae))
+* **formatjs-extract-cldr-data:** fix parent deduping logic ([138860b](https://github.com/formatjs/formatjs/commit/138860b))
+
+
+### Features
+
+* **formatjs-extract-cldr-data:** dedupe relative data, reduce relative time data by 40% ([db12bf3](https://github.com/formatjs/formatjs/commit/db12bf3))
+* **formatjs-extract-cldr-data:** dont embed parentLocale everywhere ([10bca2f](https://github.com/formatjs/formatjs/commit/10bca2f))
+* **formatjs-extract-cldr-data:** even smaller locale data ([66a0313](https://github.com/formatjs/formatjs/commit/66a0313))
+* **formatjs-extract-cldr-data:** expose getting parent locale hierarchy ([778998b](https://github.com/formatjs/formatjs/commit/778998b))
+
+
+
+
+
 ## [9.6.2](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.6.1...formatjs-extract-cldr-data@9.6.2) (2019-09-03)
 
 **Note:** Version bump only for package formatjs-extract-cldr-data

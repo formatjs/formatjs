@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.8](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.4.7...intl-locales-supported@1.4.8) (2019-09-13)
+
+
+### Bug Fixes
+
+* **intl-locales-supported:** Confirm all requested ctors are present ([#174](https://github.com/formatjs/formatjs/issues/174)) ([f720ba6](https://github.com/formatjs/formatjs/commit/f720ba6))
+
+
+
+
+
 ## [1.4.7](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.4.6...intl-locales-supported@1.4.7) (2019-09-03)
 
 **Note:** Version bump only for package intl-locales-supported

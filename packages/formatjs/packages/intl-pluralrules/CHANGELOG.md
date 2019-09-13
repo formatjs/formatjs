@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@1.1.2...@formatjs/intl-pluralrules@1.1.3) (2019-09-13)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** fix precision-related value in select ([b3f3804](https://github.com/formatjs/formatjs/commit/b3f3804))
+* **@formatjs/intl-pluralrules:** fix typo in toRawFixed ([8b2a7bf](https://github.com/formatjs/formatjs/commit/8b2a7bf))
+* **@formatjs/intl-pluralrules:** honor numberformat options ([c9ef463](https://github.com/formatjs/formatjs/commit/c9ef463)), closes [#185](https://github.com/formatjs/formatjs/issues/185)
+* **@formatjs/intl-utils:** consolidate parent lookup ([bac2eae](https://github.com/formatjs/formatjs/commit/bac2eae))
+* **@formatjs/intl-utils:** fix lookup case sensitivity ([52fb192](https://github.com/formatjs/formatjs/commit/52fb192))
+
+
+
+
+
 ## [1.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@1.1.1...@formatjs/intl-pluralrules@1.1.2) (2019-09-03)
 
 

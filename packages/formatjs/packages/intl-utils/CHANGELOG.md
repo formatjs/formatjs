@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@1.0.1...@formatjs/intl-utils@1.1.0) (2019-09-13)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-utils:** consolidate parent lookup ([bac2eae](https://github.com/formatjs/formatjs/commit/bac2eae))
+* **@formatjs/intl-utils:** fix lookup case sensitivity ([52fb192](https://github.com/formatjs/formatjs/commit/52fb192))
+
+
+### Features
+
+* **@formatjs/intl-utils:** add parent locale lookup ([db94095](https://github.com/formatjs/formatjs/commit/db94095))
+* **formatjs-extract-cldr-data:** even smaller locale data ([66a0313](https://github.com/formatjs/formatjs/commit/66a0313))
+
+
+
+
+
 ## [1.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@1.0.0...@formatjs/intl-utils@1.0.1) (2019-09-03)
 
 **Note:** Version bump only for package @formatjs/intl-utils
