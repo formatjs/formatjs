@@ -70,7 +70,7 @@ export interface LocaleData {
   fields?: LocaleFieldsData;
 }
 
-export type LocaleFieldsData = {[f in Field]: FieldData};
+export type LocaleFieldsData = {[f in Field]?: FieldData};
 
 export type RelativeTimeData = {[u in RelativeTimeOpt]?: string};
 export interface FieldData {
@@ -84,7 +84,6 @@ export interface FieldData {
     '3'?: string;
     '-3'?: string;
   };
-  relativePeriod?: string;
   relativeTime: {
     future: RelativeTimeData;
     past: RelativeTimeData;

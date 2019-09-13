@@ -72,25 +72,28 @@ export interface RelativeTimeFormatNumberPart extends Intl.NumberFormatPart {
 
 /**
  * Find the correct field data in our CLDR data
+ * Also merge with parent data since our CLDR is very packed
  * @param locale locale
  */
 function findFields(locale: string) {
   const localeData = RelativeTimeFormat.__localeData__;
   const parentHierarchy = getParentLocaleHierarchy(locale);
-  let parentLocale: string | undefined = locale;
-  // The locale data is de-duplicated, so we have to traverse the locale's
-  // hierarchy until we find `fields` to return.
-  while (parentLocale) {
-    const data = localeData[parentLocale.toLowerCase()];
-    if (data && data.fields) {
-      return data.fields;
-    }
 
-    parentLocale = parentHierarchy.shift();
+  const dataToMerge = [locale, ...parentHierarchy]
+    .map(l => localeData[l.toLowerCase()])
+    .filter(Boolean);
+  if (!dataToMerge.length) {
+    throw new Error(
+      `Locale data added to RelativeTimeFormat is missing 'fields' for "${locale}"`
+    );
   }
-
-  throw new Error(
-    `Locale data added to RelativeTimeFormat is missing 'fields' for "${locale}"`
+  dataToMerge.reverse();
+  return dataToMerge.reduce(
+    (all: LocaleFieldsData, d) => ({
+      ...all,
+      ...d.fields,
+    }),
+    {}
   );
 }
 

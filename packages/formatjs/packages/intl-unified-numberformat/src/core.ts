@@ -30,7 +30,6 @@ export interface ResolvedUnifiedNumberFormatOptions
 
 interface LocaleData {
   locale: string;
-  parentLocale?: string;
   units: Record<string, UnitData>;
 }
 interface UnitPattern {
@@ -51,19 +50,23 @@ const NativeNumberFormat = Intl.NumberFormat;
 function findUnitData(locale: string, unit: Unit): UnitData {
   const localeData = UnifiedNumberFormat.__unitLocaleData__;
   const parentHierarchy = getParentLocaleHierarchy(locale);
-  let parentLocale: string | undefined = locale;
-  // The locale data is de-duplicated, so we have to traverse the locale's
-  // hierarchy until we find `fields` to return.
-  while (parentLocale) {
-    const data = localeData[parentLocale.toLowerCase()];
-    if (data && data.units && data.units[unit]) {
-      return data.units[unit];
-    }
-
-    parentLocale = parentHierarchy.shift();
+  const dataToMerge = [locale, ...parentHierarchy]
+    .map(l => localeData[l.toLowerCase()])
+    .filter(Boolean);
+  if (!dataToMerge.length) {
+    throw new RangeError(`Cannot find "${unit}" data for ${locale}`);
   }
-
-  throw new RangeError(`Cannot find data for ${locale}`);
+  dataToMerge.reverse();
+  return dataToMerge.reduce(
+    (all: UnitData, d) => ({
+      ...all,
+      ...((d && d.units && d.units[unit]) || {}),
+    }),
+    {
+      displayName: unit,
+      long: {},
+    }
+  );
 }
 
 const DEFAULT_LOCALE = new NativeNumberFormat().resolvedOptions().locale;

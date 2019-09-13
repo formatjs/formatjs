@@ -14,6 +14,7 @@ const PARENT_LOCALES_HASH =
   PARENT_LOCALES.supplemental.parentLocales.parentLocale;
 import {Locale} from './types';
 import {sync as globSync} from 'glob';
+import {process as processAliases} from './process-aliases';
 
 export const dateFieldsLocales = globSync('*/dateFields.json', {
   cwd: resolve(
@@ -96,6 +97,24 @@ export function normalizeLocale(locale: Locale): Locale {
   }
 
   return locale;
+}
+
+export function getParentLocaleAndAliasHierarchy(
+  locale: string,
+  parentLocales: Record<string, string>,
+  aliases: Record<string, string>
+): string[] {
+  const results = [];
+  locale = aliases[locale as 'zh-CN'] || locale;
+  const parentLocale = parentLocales[locale as 'en-150'];
+  if (parentLocale) {
+    results.push(parentLocale);
+  }
+  const localeParts = locale.split('-');
+  for (let i = localeParts.length; i > 1; i--) {
+    results.push(localeParts.slice(0, i - 1).join('-'));
+  }
+  return results;
 }
 
 export function getParentLocaleHierarchy(): Record<string, string> {

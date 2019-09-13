@@ -52,7 +52,6 @@ export interface FieldData {
     '3'?: string;
     '-3'?: string;
   };
-  relativePeriod?: string;
   relativeTime: {
     future: RelativeTimeData;
     past: RelativeTimeData;
@@ -84,7 +83,6 @@ function transformFieldData(data: Fields['week']): FieldData {
       future: {},
       past: {},
     },
-    relativePeriod: data.relativePeriod,
   };
   Object.keys(data).forEach(function(key) {
     var type = key.match(/^(relative|relativeTime)-type-(.+)$/) || [];
