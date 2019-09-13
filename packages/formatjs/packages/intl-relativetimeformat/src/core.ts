@@ -179,7 +179,6 @@ export default class RelativeTimeFormat {
   private readonly _nf: Intl.NumberFormat;
   private readonly _pl: Intl.PluralRules;
   private readonly _fields: LocaleFieldsData;
-  private readonly _locale: string;
   private readonly _style: IntlRelativeTimeFormatOptions['style'];
   private readonly _numeric: IntlRelativeTimeFormatOptions['numeric'];
   private readonly _localeMatcher: IntlRelativeTimeFormatOptions['localeMatcher'];
@@ -199,26 +198,22 @@ export default class RelativeTimeFormat {
     }
     const opts =
       options === undefined ? Object.create(null) : toObject(options);
-    if (locales === undefined) {
-      this._locale = DEFAULT_LOCALE;
-    } else {
-      const localesToLookup = [
-        ...Intl.NumberFormat.supportedLocalesOf(locales),
-        DEFAULT_LOCALE,
-      ];
-      const resolvedLocale = findSupportedLocale(
-        localesToLookup,
-        RelativeTimeFormat.__localeData__
+    const localesToLookup =
+      locales === undefined
+        ? [DEFAULT_LOCALE]
+        : [...Intl.NumberFormat.supportedLocalesOf(locales), DEFAULT_LOCALE];
+    const resolvedLocale = findSupportedLocale(
+      localesToLookup,
+      RelativeTimeFormat.__localeData__
+    );
+    if (!resolvedLocale) {
+      throw new Error(
+        `No locale data has been added to IntlRelativeTimeFormat for: ${localesToLookup.join(
+          ', '
+        )}`
       );
-      if (!resolvedLocale) {
-        throw new Error(
-          `No locale data has been added to IntlRelativeTimeFormat for: ${localesToLookup.join(
-            ', '
-          )}`
-        );
-      }
-      this._locale = resolvedLocale;
     }
+    this._fields = findFields(resolvedLocale);
 
     this._localeMatcher = getOption(
       opts,
@@ -241,10 +236,9 @@ export default class RelativeTimeFormat {
       ['always', 'auto'],
       'always'
     );
-    this._fields = findFields(this._locale);
 
-    this._nf = new Intl.NumberFormat(this._locale);
-    this._pl = new Intl.PluralRules(this._locale);
+    this._nf = new Intl.NumberFormat(locales);
+    this._pl = new Intl.PluralRules(locales);
     this._numberingSystem = this._nf.resolvedOptions().numberingSystem;
   }
   format(value: number | string, unit: FormattableUnit): string {
@@ -322,7 +316,7 @@ export default class RelativeTimeFormat {
     const opts = Object.create(Object.prototype);
     Object.defineProperties(opts, {
       locale: {
-        value: this._locale,
+        value: this._nf.resolvedOptions().locale,
         writable: true,
         enumerable: true,
         configurable: true,
@@ -377,7 +371,7 @@ export default class RelativeTimeFormat {
     }
     // test262/test/intl402/RelativeTimeFormat/constructor/supportedLocalesOf/result-type.js
     return supportedLocalesOf(
-      Intl.PluralRules.supportedLocalesOf(locales, {localeMatcher}),
+      Intl.NumberFormat.supportedLocalesOf(locales, {localeMatcher}),
       RelativeTimeFormat.__localeData__
     );
   };

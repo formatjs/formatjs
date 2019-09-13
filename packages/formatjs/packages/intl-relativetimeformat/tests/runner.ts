@@ -3,15 +3,14 @@ import {resolve} from 'path';
 import {cpus} from 'os';
 import {sync as globSync} from 'glob';
 
-if (process.version.startsWith('v8')) {
+if (!process.version.startsWith('v10')) {
+  process.exit(0);
   console.log(
-    'Node 8 does not have Intl.PluralRules and intl-pluralrules is not test262-compliant'
+    `Only run on Node 10 since: 
+- Node 8 does not have Intl.PluralRules and polyfills are not test262-compliant.
+- Node 12+ has native Intl.RelativeTimeFormat.
+`
   );
-  process.exit(0);
-}
-if (process.version.startsWith('v12')) {
-  console.log('Node 12 has native Intl.RelativeTimeFormat');
-  process.exit(0);
 }
 
 interface TestResult {
@@ -66,11 +65,11 @@ json.forEach(t => {
   if (t.result.pass) {
     console.log(`✓ ${t.attrs.description}`);
   } else {
-    console.log('\n\n');
-    console.log(`🗴 ${t.attrs.description}`);
-    console.log('\t', t.result.message);
-    console.log('\t', resolve(__dirname, '..', t.file));
-    console.log('\n\n');
+    console.log(`
+🗴 ${t.attrs.description}
+    ${t.result.message}
+    ${resolve(__dirname, '..', t.file)}
+`);
   }
 });
 if (failedTests.length) {
