@@ -6,9 +6,8 @@ Internationalize [React][] apps. This library provides React components and an A
 [![npm Version](https://badgen.net/npm/v/react-intl/next)][npm]
 [![Build Status][travis-badge]][travis]
 
-| Package      | Minified Size                                                                                                  | Minzipped Size                                                                                                |
-| ------------ | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `react-intl` | ![minified size](https://badgen.net/bundlephobia/min/react-intl) | ![minzipped size](https://badgen.net/bundlephobia/minzip/react-intl) |
+![minified size](https://badgen.net/bundlephobia/min/react-intl)
+![minzipped size](https://badgen.net/bundlephobia/minzip/react-intl)
 
 ## Overview
 
