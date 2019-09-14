@@ -73,7 +73,7 @@ These configuration props are combined with the `<IntlProvider>`'s component-spe
 
 **Props:**
 
-```js
+```tsx
 props: IntlConfig &
   {
     children: ReactNode,
@@ -84,7 +84,7 @@ Finally, child elements _must_ be supplied to `<IntlProvider>`.
 
 **Example:**
 
-```js
+```tsx
 const App = ({importantDate}) => (
   <div>
     <FormattedDate
@@ -108,7 +108,7 @@ ReactDOM.render(
 Assuming `navigator.language` is `"fr"`:
 
 ```html
-<div><span>mardi 5 avril 2016</span></div>
+<div>mardi 5 avril 2016</div>
 ```
 
 ### `RawIntlProvider`
@@ -135,7 +135,7 @@ const intl = createIntl({
 
 By default, changes to the `locale` at runtime may not trigger a re-render of child elements. To solve this, and enable dynamic locale modification, add a `key` property to the `<IntlProvider>` and set it to the locale, which persuades React that the component has been modified:
 
-```js
+```tsx
 <IntlProvider locale={localeProp} key={localeProp} messages={messagesProp}>
   <App />
 </IntlProvider>
@@ -177,7 +177,7 @@ By default `<FormattedDate>` will render the formatted date into a `<React.Fragm
 ```
 
 ```html
-<span>4/5/2016</span>
+4/5/2016
 ```
 
 **Example with Options:**
@@ -192,7 +192,7 @@ By default `<FormattedDate>` will render the formatted date into a `<React.Fragm
 ```
 
 ```html
-<span>April 05, 2016</span>
+April 05, 2016
 ```
 
 ### `FormattedDateParts`
@@ -228,14 +228,14 @@ props: Intl.DateTimeFormatOptions &
 ```
 
 ```html
-<span> <b>April</b> <small>05</small> </span>
+<b>April</b> <small>05</small>
 ```
 
 ### `FormattedTime`
 
 This component uses the [`formatTime`](API.md#formattime) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above, with the following defaults:
 
-```js
+```tsx
 {
     hour: 'numeric',
     minute: 'numeric',
@@ -244,24 +244,25 @@ This component uses the [`formatTime`](API.md#formattime) and [`Intl.DateTimeFor
 
 **Props:**
 
-```js
-props: DateTimeFormatOptions & {
+```tsx
+props: DateTimeFormatOptions &
+  {
     value: any,
-    format?: string,
-    children?: (formattedDate: string) => ReactElement,
-}
+    format: string,
+    children: (formattedDate: string) => ReactElement,
+  };
 ```
 
-By default `<FormattedTime>` will render the formatted time into a `<span>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
+By default `<FormattedTime>` will render the formatted time into a `React.Fragment`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
 
 **Example:**
 
-```js
+```tsx
 <FormattedTime value={new Date(1459832991883)} />
 ```
 
 ```html
-<span>1:09 AM</span>
+1:09 AM
 ```
 
 ### `FormattedTimeParts`
@@ -292,7 +293,7 @@ props: Intl.DateTimeFormatOptions &
 ```
 
 ```html
-<span> <b>01</b>:<small>09</small> </span>
+<b>01</b>:<small>09</small>
 ```
 
 ### `FormattedRelativeTime`
@@ -319,7 +320,7 @@ props: RelativeTimeFormatOptions &
   };
 ```
 
-By default `<FormattedRelativeTime>` will render the formatted relative time into a `<>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
+By default `<FormattedRelativeTime>` will render the formatted relative time into a `React.Fragment`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
 
 **Example:**
 
@@ -378,7 +379,7 @@ props: NumberFormatOptions &
   };
 ```
 
-By default `<FormattedNumber>` will render the formatted number into a `<span>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
+By default `<FormattedNumber>` will render the formatted number into a `React.Fragment`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
 
 **Example:**
 
@@ -387,7 +388,7 @@ By default `<FormattedNumber>` will render the formatted number into a `<span>`.
 ```
 
 ```tsx
-<span>1,000</span>
+1, 000;
 ```
 
 **Formatting Number using `unit`**
@@ -404,7 +405,7 @@ Currently this is part of [Unified NumberFormat](https://github.com/tc39/proposa
 ```
 
 ```html
-<span>1,000kB</span>
+1,000kB
 ```
 
 ```tsx
@@ -417,7 +418,7 @@ Currently this is part of [Unified NumberFormat](https://github.com/tc39/proposa
 ```
 
 ```html
-<span>1,000 degrees Fahrenheit</span>
+1,000 degrees Fahrenheit
 ```
 
 ### `FormattedNumberParts`
@@ -450,7 +451,7 @@ props: NumberFormatOptions &
 ```
 
 ```html
-<span> <b>1</b>,<small>000</small> </span>
+<b>1</b>,<small>000</small>
 ```
 
 ### `FormattedPlural`
@@ -475,16 +476,16 @@ props: PluralFormatOptions &
   };
 ```
 
-By default `<FormattedPlural>` will select a [plural category](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) (`zero`, `one`, `two`, `few`, `many`, or `other`) and render the corresponding React element into a `<span>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
+By default `<FormattedPlural>` will select a [plural category](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) (`zero`, `one`, `two`, `few`, `many`, or `other`) and render the corresponding React element into a `React.Fragment`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
 
 **Example:**
 
-```js
+```tsx
 <FormattedPlural value={10} one="message" other="messages" />
 ```
 
 ```html
-<span>messages</span>
+messages
 ```
 
 ## String Formatting Components
@@ -526,11 +527,11 @@ React Intl has a Message Descriptor concept which is used to define your app's d
 - **`description`:** Context for the translator about how it's used in the UI
 - **`defaultMessage`:** The default message (probably in English)
 
-```js
+```tsx
 type MessageDescriptor = {
-  id: string,
-  defaultMessage?: string,
-  description?: string | object,
+  id: string;
+  defaultMessage?: string;
+  description?: string | object;
 };
 ```
 
@@ -554,19 +555,20 @@ This component uses the [`formatMessage`](API.md#formatmessage) API and has `pro
 
 **Props:**
 
-```js
-props: MessageDescriptor & {
-    values?: object,
-    tagName?: string,
-    children?: (...formattedMessage: Array<ReactElement>) => ReactElement,
-}
+```tsx
+props: MessageDescriptor &
+  {
+    values: object,
+    tagName: string,
+    children: (...formattedMessage: Array<ReactElement>) => ReactElement,
+  };
 ```
 
 By default `<FormattedMessage>` will render the formatted string into a `<React.Fragment>`. If you need to customize rendering, you can either wrap it with another React element (recommended), specify a different `tagName` (e.g., `'div'`), or pass a function as the child.
 
 **Example:**
 
-```js
+```tsx
 <FormattedMessage
   id="app.greeting"
   description="Greeting to welcome the user to the app"
@@ -578,12 +580,12 @@ By default `<FormattedMessage>` will render the formatted string into a `<React.
 ```
 
 ```html
-<span>Hello, Eric!</span>
+Hello, Eric!
 ```
 
 **Example:** function as the child
 
-```js
+```tsx
 <FormattedMessage id="title">{txt => <H1>{txt}</H1>}</FormattedMessage>
 ```
 
@@ -610,7 +612,7 @@ By default `<FormattedMessage>` will render the formatted string into a `<React.
 ```
 
 ```html
-<span>Hello, <b>Eric</b>!</span>
+Hello, <b>Eric</b>!
 ```
 
 By allowing embedding XML tag we want to make sure contextual information is not lost when you need to style part of the string. In a more complicated example like:

@@ -9,7 +9,7 @@ There are a few API layers that React Intl provides and is built on. When using 
 - [React Intl API](#react-intl-api)
   - [`defineMessages`](#definemessages)
   - [Injection API](#injection-api)
-    - [`useIntl` hook (currently available in 3.0.0 beta)](#useintl-hook-currently-available-in-300-beta)
+    - [`useIntl` hook](#useintl-hook)
     - [`injectIntl` HOC](#injectintl-hoc)
     - [`IntlShape`](#intlshape)
     - [`createIntl`](#createintl)
@@ -91,7 +91,7 @@ React Intl provides:
 
 These should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
 
-#### `useIntl` hook (currently available in 3.0.0 beta)
+#### `useIntl` hook
 
 If a component can be expressed in a form of function component, using `useIntl` hook can be handy. This `useIntl` hook do not expect any option as its argument when being called. Typically, here is how you would like to use:
 
@@ -239,16 +239,16 @@ Each of these APIs support custom named formats via their `format` option which 
 
 #### `formatDate`
 
-```js
+```tsx
 function formatDate(
-    value: number | Date,
-    options?: Intl.DateTimeFormatOptions & {format?: string}
+  value: number | Date,
+  options?: Intl.DateTimeFormatOptions & {format?: string}
 ): string;
 ```
 
 This function will return a formatted date string. It expects a `value` which can be parsed as a date (i.e., `isFinite(new Date(value))`), and accepts `options` that conform to `DateTimeFormatOptions`.
 
-```js
+```tsx
 formatDate(Date.now(), {
   year: 'numeric',
   month: 'numeric',
@@ -258,16 +258,16 @@ formatDate(Date.now(), {
 
 #### `formatTime`
 
-```js
+```tsx
 function formatTime(
-    value: number | Date,
-    options?: Intl.DateTimeFormatOptions & {format?: string}
+  value: number | Date,
+  options?: Intl.DateTimeFormatOptions & {format?: string}
 ): string;
 ```
 
 This function will return a formatted date string, but it differs from [`formatDate`](#formatdate) by having the following default options:
 
-```js
+```tsx
 {
     hour: 'numeric',
     minute: 'numeric',
@@ -276,13 +276,13 @@ This function will return a formatted date string, but it differs from [`formatD
 
 It expects a `value` which can be parsed as a date (i.e., `isFinite(new Date(value))`), and accepts `options` that conform to `DateTimeFormatOptions`.
 
-```js
+```tsx
 formatTime(Date.now()); // "4:03 PM"
 ```
 
 #### `formatRelativeTime`
 
-```js
+```tsx
 type Unit =
   | 'second'
   | 'minute'
@@ -294,22 +294,22 @@ type Unit =
   | 'year';
 
 type RelativeTimeFormatOptions = {
-    numeric?: 'always' | 'auto'
-    style?: 'long' | 'short' | 'narrow'
+  numeric?: 'always' | 'auto';
+  style?: 'long' | 'short' | 'narrow';
 };
 
 function formatRelativeTime(
-    value: number,
-    unit: Unit,
-    options?: Intl.RelativeTimeFormatOptions & {
-        format?: string
-    }
+  value: number,
+  unit: Unit,
+  options?: Intl.RelativeTimeFormatOptions & {
+    format?: string;
+  }
 ): string;
 ```
 
 This function will return a formatted relative time string (e.g., "1 hour ago"). It expects a `value` which is a number, a `unit` and `options` that conform to `Intl.RelativeTimeFormatOptions`.
 
-```js
+```tsx
 formatRelativeTime(0); // "now"
 formatRelativeTime(-1); // "1 second ago"
 formatRelativeTime(1, 'hour'); // "in 1 hour"
@@ -341,7 +341,7 @@ function formatNumber(
 
 This function will return a formatted number string. It expects a `value` which can be parsed as a number, and accepts `options` that conform to `NumberFormatOptions`.
 
-```js
+```tsx
 formatNumber(1000); // "1,000"
 formatNumber(0.5, {style: 'percent'}); // "50%"
 formatNumber(1000, {style: 'currency', currency: 'USD'}); // $1,000
@@ -351,7 +351,7 @@ formatNumber(1000, {style: 'currency', currency: 'USD'}); // $1,000
 
 Currently this is part of [Unified NumberFormat](https://github.com/tc39/proposal-unified-intl-numberformat) which is stage 3. We've provided a polyfill [here](https://github.com/formatjs/formatjs/tree/master/packages/intl-unified-numberformat) and `react-intl` types allow users to pass in a [sanctioned unit](https://github.com/formatjs/formatjs/tree/master/packages/intl-unified-numberformat):
 
-```js
+```tsx
 formatNumber(1000, {
   style: 'unit',
   unit: 'kilobyte',
@@ -382,7 +382,7 @@ This function will return a plural category string: `"zero"`, `"one"`, `"two"`, 
 
 This is a low-level utility whose output could be provided to a `switch` statement to select a particular string to display.
 
-```js
+```tsx
 formatPlural(0); // "other"
 formatPlural(1); // "one"
 formatPlural(2); // "other"
@@ -432,11 +432,11 @@ React Intl has a Message Descriptor concept which is used to define your app's d
 - **`description`:** Context for the translator about how it's used in the UI
 - **`defaultMessage`:** The default message (probably in English)
 
-```js
+```tsx
 type MessageDescriptor = {
-  id: string,
-  defaultMessage?: string,
-  description?: string | object,
+  id: string;
+  defaultMessage?: string;
+  description?: string | object;
 };
 ```
 
@@ -475,7 +475,7 @@ This function will return a formatted message string. It expects a `MessageDescr
 
 If a translated message with the `id` has been passed to the `<IntlProvider>` via its `messages` prop it will be formatted, otherwise it will fallback to formatting `defaultMessage`. See: [Message Formatting Fallbacks](#message-formatting-fallbacks) for more details.
 
-```js
+```tsx
 const messages = defineMessages({
   greeting: {
     id: 'app.greeting',
@@ -524,10 +524,10 @@ The message we defined using [`defineMessages`](#definemessages) to support extr
 
 #### `formatHTMLMessage`
 
-```js
+```tsx
 function formatHTMLMessage(
-    messageDescriptor: MessageDescriptor,
-    values?: object
+  messageDescriptor: MessageDescriptor,
+  values?: object
 ): string;
 ```
 
