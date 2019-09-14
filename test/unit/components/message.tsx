@@ -230,7 +230,7 @@ describe('<FormattedMessage>', () => {
       const rendered = mountWithProvider(
         {
           id: 'hello',
-          defaultMessage: 'Hello, <name/>',
+          defaultMessage: 'Hello, {name}',
           values: {
             name: <b>Jest</b>,
           },
