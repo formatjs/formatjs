@@ -8,7 +8,7 @@ Internationalize [React][] apps. This library provides React components and an A
 
 | Package      | Minified Size                                                                                                  | Minzipped Size                                                                                                |
 | ------------ | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `react-intl` | ![minified size](https://badgen.net/badgesize/normal/https://unpkg.com/react-intl@next/dist/react-intl.min.js) | ![minzipped size](https://badgen.net/badgesize/gzip/https://unpkg.com/react-intl@next/dist/react-intl.min.js) |
+| `react-intl` | ![minified size](https://badgen.net/bundlephobia/min/react-intl) | ![minzipped size](https://badgen.net/bundlephobia/minzip/react-intl) |
 
 ## Overview
 
