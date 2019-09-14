@@ -3,6 +3,8 @@ import {
   findSupportedLocale,
   getParentLocaleHierarchy,
   supportedLocalesOf,
+  UnitData,
+  UnifiedNumberFormatLocaleData,
 } from '@formatjs/intl-utils';
 
 export function isUnitSupported(unit: Unit) {
@@ -26,22 +28,6 @@ export interface ResolvedUnifiedNumberFormatOptions
   extends Intl.ResolvedNumberFormatOptions {
   unit?: Unit;
   unitDisplay?: 'long' | 'short' | 'narrow';
-}
-
-export interface LocaleData {
-  locale: string;
-  units: Record<string, UnitData>;
-}
-interface UnitPattern {
-  one?: string;
-  other?: string;
-}
-
-export interface UnitData {
-  displayName: string;
-  long: UnitPattern;
-  short?: UnitPattern;
-  narrow?: UnitPattern;
 }
 
 const NativeNumberFormat = Intl.NumberFormat;
@@ -144,8 +130,8 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
     return supportedLocalesOf(args[0], UnifiedNumberFormat.__unitLocaleData__);
   }
   static polyfilled = true;
-  static __unitLocaleData__: Record<string, LocaleData> = {};
-  static __addUnitLocaleData(data: LocaleData[]) {
+  static __unitLocaleData__: Record<string, UnifiedNumberFormatLocaleData> = {};
+  static __addUnitLocaleData(data: UnifiedNumberFormatLocaleData[]) {
     data.forEach(datum => {
       if (!(datum && datum.locale)) {
         throw new Error(

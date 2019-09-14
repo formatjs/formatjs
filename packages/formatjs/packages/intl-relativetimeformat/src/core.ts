@@ -1,20 +1,15 @@
-import {
-  LocaleData,
-  Unit,
-  LocaleFieldsData,
-  RelativeTimeOpt,
-  FormattableUnit,
-  VALID_UNITS,
-} from './types';
+import {Unit, FormattableUnit, VALID_UNITS} from './types';
 import {
   findSupportedLocale,
   toObject,
   getOption,
   getParentLocaleHierarchy,
   supportedLocalesOf,
+  RelativeTimeLocaleData,
+  LDMLPluralRule,
 } from '@formatjs/intl-utils';
 
-// -- RelativeTimeFormat -----------------------------------------------------------
+type LocaleFieldsData = RelativeTimeLocaleData['fields'];
 
 export interface IntlRelativeTimeFormatOptions {
   /**
@@ -263,7 +258,7 @@ export default class RelativeTimeFormat {
       return result;
     }
 
-    const selector = this._pl.select(parsedValue) as RelativeTimeOpt;
+    const selector = this._pl.select(parsedValue) as LDMLPluralRule;
     const futureOrPastData = relativeTime[resolvePastOrFuture(parsedValue)];
     const msg = futureOrPastData[selector] || futureOrPastData.other;
     return msg!.replace(/\{0\}/, this._nf.format(Math.abs(parsedValue)));
@@ -292,7 +287,7 @@ export default class RelativeTimeFormat {
       ];
     }
 
-    const selector = this._pl.select(parsedValue) as RelativeTimeOpt;
+    const selector = this._pl.select(parsedValue) as LDMLPluralRule;
     const futureOrPastData = relativeTime[resolvePastOrFuture(parsedValue)];
     const msg = futureOrPastData[selector] || futureOrPastData.other;
     const valueParts = this._nf
@@ -379,8 +374,8 @@ export default class RelativeTimeFormat {
     );
   };
 
-  static __localeData__: Record<string, LocaleData> = {};
-  public static __addLocaleData(...data: LocaleData[]) {
+  static __localeData__: Record<string, RelativeTimeLocaleData> = {};
+  public static __addLocaleData(...data: RelativeTimeLocaleData[]) {
     for (const datum of data) {
       if (!(datum && datum.locale)) {
         throw new Error(

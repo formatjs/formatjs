@@ -54,8 +54,10 @@ outputFileSync(
   resolve(__dirname, '../src/en.ts'),
   `/* @generated */
 // prettier-ignore
-import {LocaleData} from './core';
-const data: LocaleData[] = ${JSON.stringify(sanctionedUnitData.en)};
+import {UnifiedNumberFormatLocaleData} from '@formatjs/intl-utils';
+const data: UnifiedNumberFormatLocaleData[] = ${JSON.stringify(
+    sanctionedUnitData.en
+  )};
 export default data;
 `
 );

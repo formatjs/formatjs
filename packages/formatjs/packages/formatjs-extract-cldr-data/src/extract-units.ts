@@ -9,7 +9,7 @@ import {Locale} from './types';
 import generateFieldExtractorFn from './utils';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
-import {SANCTIONED_UNITS} from '@formatjs/intl-utils';
+import {SANCTIONED_UNITS, UnitData} from '@formatjs/intl-utils';
 
 const unitsLocales = globSync('*/units.json', {
   cwd: resolve(
@@ -19,19 +19,6 @@ const unitsLocales = globSync('*/units.json', {
 }).map(dirname);
 
 export type Units = typeof Units['main']['en']['units'];
-
-interface UnitPattern {
-  one?: string;
-  other?: string;
-  perUnit?: string;
-}
-
-export interface UnitData {
-  displayName: string;
-  long: UnitPattern;
-  short?: UnitPattern;
-  narrow?: UnitPattern;
-}
 
 function extractUnitPattern(d: Units['long']['volume-gallon']) {
   return {

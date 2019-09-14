@@ -10,6 +10,7 @@ import {Locale} from './types';
 import generateFieldExtractorFn from './utils';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
+import {FieldData} from '@formatjs/intl-utils';
 
 const dateFieldsLocales = globSync('*/dateFields.json', {
   cwd: resolve(
@@ -17,8 +18,6 @@ const dateFieldsLocales = globSync('*/dateFields.json', {
     './main'
   ),
 }).map(dirname);
-
-import {readdirSync} from 'fs';
 
 // The set of CLDR date field names that are used in FormatJS.
 const FIELD_NAMES = [
@@ -49,25 +48,6 @@ const FIELD_NAMES = [
 ];
 
 type Fields = typeof DateFields['main']['en']['dates']['fields'];
-
-export type RelativeTimeOpt = 'zero' | 'one' | 'two' | 'few' | 'many' | 'other';
-export type RelativeTimeData = {[u in RelativeTimeOpt]?: string};
-export interface FieldData {
-  displayName: string;
-  relative: {
-    '0'?: string;
-    '1'?: string;
-    '-1'?: string;
-    '2'?: string;
-    '-2'?: string;
-    '3'?: string;
-    '-3'?: string;
-  };
-  relativeTime: {
-    future: RelativeTimeData;
-    past: RelativeTimeData;
-  };
-}
 
 export function getAllLocales() {
   return globSync('*/dateFields.json', {
