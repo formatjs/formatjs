@@ -2,6 +2,7 @@ import '@formatjs/intl-pluralrules/polyfill-locales';
 import '../src/polyfill';
 import '../polyfill';
 import '../dist/locale-data/zh';
+import '../dist/locale-data/en';
 
 describe('Intl.RelativeTimeFormat', function() {
   it('should support aliases', function() {
