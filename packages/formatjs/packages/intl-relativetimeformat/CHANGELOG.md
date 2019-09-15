@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@3.1.0...@formatjs/intl-relativetimeformat@4.0.0) (2019-09-15)
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** dont bundle en by default ([d9a0a66](https://github.com/formatjs/formatjs/commit/d9a0a66))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-relativetimeformat:** `en` locale data is no longer bundled by default with
+the polyfill
+
+
+
+
+
 # [3.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@3.0.2...@formatjs/intl-relativetimeformat@3.1.0) (2019-09-13)
 
 
