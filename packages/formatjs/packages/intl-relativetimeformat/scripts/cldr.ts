@@ -54,13 +54,3 @@ IntlRelativeTimeFormat.__addLocaleData(${Object.keys(allLocaleFiles)
 export default IntlRelativeTimeFormat;	
   `
 );
-
-// Extract src/en.js
-const en = extractLocales(['en']);
-outputFileSync(
-  resolve(__dirname, '../src/en.ts'),
-  `/* @generated */	
-// prettier-ignore  
-export default ${en['en']};	
-`
-);
