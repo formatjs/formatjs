@@ -1,14 +1,9 @@
 import IntlRelativeTimeFormat from './';
 
-declare global {
-  namespace Intl {
-    var RelativeTimeFormat: typeof IntlRelativeTimeFormat;
-  }
-}
 export default function fixMeta(
   RelativeTimeFormat: typeof IntlRelativeTimeFormat
 ) {
-  if (typeof Intl.RelativeTimeFormat !== 'undefined') {
+  if (typeof (Intl as any).RelativeTimeFormat !== 'undefined') {
     return;
   }
   Object.defineProperty(Intl, 'RelativeTimeFormat', {
@@ -52,7 +47,7 @@ export default function fixMeta(
     configurable: true,
   });
 
-  Object.defineProperty(Intl.RelativeTimeFormat, 'prototype', {
+  Object.defineProperty(RelativeTimeFormat, 'prototype', {
     writable: false,
     enumerable: false,
     configurable: false,
