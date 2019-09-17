@@ -17,6 +17,9 @@
   - [The React Intl Module](#the-react-intl-module)
   - [Creating an I18n Context](#creating-an-i18n-context)
   - [Formatting Data](#formatting-data)
+- [ESM Build](#esm-build)
+  - [Jest](#jest)
+  - [webpack](#webpack)
 - [Core Concepts](#core-concepts)
 - [Example Apps](#example-apps)
 - [API Reference](#api-reference)
@@ -230,6 +233,34 @@ Assuming `navigator.language` is `"en-us"`:
 ```
 
 **See:** The [**API docs**][api] and [**Component docs**][components] for more details.
+
+# ESM Build
+
+`react-intl` and its underlying libraries (`intl-messageformat-parser`, `intl-messageformat`, `@formatjs/intl-relativetimeformat`, `intl-format-cache`, `intl-locales-supported`, `intl-utils`) export ESM artifacts. This means you should configure your build toolchain to transpile those libraries.
+
+### Jest
+
+Add `transformIgnorePatterns` to always include those libraries, e.g:
+
+```tsx
+{
+  transformIgnorePatterns: [
+    '/node_modules/(?!intl-messageformat|intl-messageformat-parser).+\\.js$',
+  ],
+}
+```
+
+### webpack
+
+If you're using `babel-loader`, add those libraries in `include`, e.g:
+
+```tsx
+include: [
+  path.join(__dirname, "node_modules/react-intl"),
+  path.join(__dirname, "node_modules/intl-messageformat"),
+  path.join(__dirname, "node_modules/intl-messageformat-parser"),
+],
+```
 
 # Core Concepts
 
