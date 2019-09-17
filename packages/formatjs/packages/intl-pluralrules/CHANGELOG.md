@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@1.1.4...@formatjs/intl-pluralrules@1.1.5) (2019-09-17)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** merge fix meta into core ([0b10309](https://github.com/formatjs/formatjs/commit/0b10309))
+* **@formatjs/intl-pluralrules:** remove unnecessary meta fixes ([27942a2](https://github.com/formatjs/formatjs/commit/27942a2))
+
+
+
+
+
 ## [1.1.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@1.1.3...@formatjs/intl-pluralrules@1.1.4) (2019-09-15)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules

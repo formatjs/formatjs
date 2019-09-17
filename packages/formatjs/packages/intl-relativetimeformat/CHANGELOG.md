@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.0.0...@formatjs/intl-relativetimeformat@4.0.1) (2019-09-17)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** merge fix meta into core ([0b10309](https://github.com/formatjs/formatjs/commit/0b10309))
+* **@formatjs/intl-relativetimeformat:** fix type definition for Intl.RelativeTimeFormat ([a16a352](https://github.com/formatjs/formatjs/commit/a16a352))
+* **@formatjs/intl-relativetimeformat:** remove global type mod for RelativeTimeFormat ([4c0b918](https://github.com/formatjs/formatjs/commit/4c0b918))
+* **@formatjs/intl-relativetimeformat:** remove unnecessary meta fix ([5b087bf](https://github.com/formatjs/formatjs/commit/5b087bf))
+
+
+
+
+
 # [4.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@3.1.0...@formatjs/intl-relativetimeformat@4.0.0) (2019-09-15)
 
 
