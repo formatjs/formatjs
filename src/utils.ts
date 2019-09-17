@@ -13,19 +13,12 @@ import {IntlConfig, IntlCache, CustomFormats} from './types';
 import * as React from 'react';
 import IntlMessageFormat from 'intl-messageformat';
 import memoizeIntlConstructor from 'intl-format-cache';
-import IntlRelativeTimeFormat from '@formatjs/intl-relativetimeformat';
 // Since rollup cannot deal with namespace being a function,
 // this is to interop with TypeScript since `invariant`
 // does not export a default
 // https://github.com/rollup/rollup/issues/1267
 import * as invariant_ from 'invariant';
 const invariant: typeof invariant_ = (invariant_ as any).default || invariant_;
-
-declare global {
-  namespace Intl {
-    const RelativeTimeFormat: typeof IntlRelativeTimeFormat;
-  }
-}
 
 const ESCAPED_CHARS: Record<number, string> = {
   38: '&amp;',
@@ -118,6 +111,17 @@ export function createIntlCache(): IntlCache {
  * @param cache explicit cache to prevent leaking memory
  */
 export function createFormatters(cache: IntlCache = createIntlCache()) {
+  const RelativeTimeFormat = (Intl as any).RelativeTimeFormat 
+  if (!RelativeTimeFormat) {
+    throw new Error(`Intl.RelativeTimeFormat is not available in this environment.
+Try polyfilling it using "@formatjs/intl-relativetimeformat"
+`)
+  }
+  if (!Intl.PluralRules) {
+    throw new Error(`Intl.PluralRules is not available in this environment.
+Try polyfilling it using "@formatjs/intl-pluralrules"
+`)
+  }
   return {
     getDateTimeFormat: memoizeIntlConstructor(
       Intl.DateTimeFormat,
@@ -126,7 +130,7 @@ export function createFormatters(cache: IntlCache = createIntlCache()) {
     getNumberFormat: memoizeIntlConstructor(Intl.NumberFormat, cache.number),
     getMessageFormat: memoizeIntlConstructor(IntlMessageFormat, cache.message),
     getRelativeTimeFormat: memoizeIntlConstructor(
-      Intl.RelativeTimeFormat,
+      RelativeTimeFormat,
       cache.relativeTime
     ),
     getPluralRules: memoizeIntlConstructor(Intl.PluralRules, cache.pluralRules),
