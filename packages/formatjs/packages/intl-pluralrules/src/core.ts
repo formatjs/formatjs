@@ -1,4 +1,5 @@
 import {
+  LDMLPluralRule,
   findSupportedLocale,
   toObject,
   getOption,
@@ -323,7 +324,7 @@ export class PluralRules implements Intl.PluralRules, IntlObj {
     });
     return opts;
   }
-  public select(val: number): PluralRule {
+  public select(val: number): LDMLPluralRule {
     validateInstance(this, 'select');
     return this.pluralRuleData.fn(
       formatNumericToString(this, Math.abs(Number(val))),
@@ -343,13 +344,23 @@ export class PluralRules implements Intl.PluralRules, IntlObj {
   public static polyfilled = true;
 }
 
-export type PluralRule = 'zero' | 'one' | 'two' | 'few' | 'many' | 'other';
-
 export interface PluralRulesData {
   categories: {
     cardinal: string[];
     ordinal: string[];
   };
   locale: string;
-  fn: (val: number | string, ord?: boolean) => PluralRule;
+  fn: (val: number | string, ord?: boolean) => LDMLPluralRule;
+}
+
+try {
+  // https://github.com/tc39/test262/blob/master/test/intl402/PluralRules/length.js
+  Object.defineProperty(PluralRules, 'length', {
+    value: 0,
+    writable: false,
+    enumerable: false,
+    configurable: true,
+  });
+} catch (ex) {
+  // Meta fixes for test262
 }

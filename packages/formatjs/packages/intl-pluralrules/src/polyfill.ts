@@ -1,3 +1,10 @@
-import fixMeta from './fix-meta';
 import {PluralRules} from './core';
-fixMeta(PluralRules);
+
+if (typeof Intl.PluralRules === 'undefined') {
+  Object.defineProperty(Intl, 'PluralRules', {
+    value: PluralRules,
+    writable: true,
+    enumerable: false,
+    configurable: true,
+  });
+}
