@@ -68,4 +68,16 @@ export default [
     },
     plugins: [resolveConfig]
   },
+  {
+    input: './dist-es6/polyfill-locales.js',
+    output: {
+      sourcemap: true,
+      file: 'dist/polyfill-with-locales-for-test262.js',
+      format: 'umd',
+      exports: 'named',
+      name: 'IntlPluralRules'
+    },
+    plugins: [resolveConfig]
+  },
+  
 ];

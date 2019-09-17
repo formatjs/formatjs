@@ -341,16 +341,12 @@ export default class RelativeTimeFormat {
     return opts;
   }
 
-  toString() {
-    return '[object Intl.RelativeTimeFormat]';
-  }
-
-  public static supportedLocalesOf = (
+  public static supportedLocalesOf (
     locales: string | string[],
     ...[opts]: [
       Pick<IntlRelativeTimeFormatOptions, 'localeMatcher'> | undefined
     ]
-  ) => {
+  ) {
     // test262/test/intl402/RelativeTimeFormat/constructor/supportedLocalesOf/options-toobject.js
     let localeMatcher: IntlRelativeTimeFormatOptions['localeMatcher'] =
       'best fit';
@@ -388,4 +384,14 @@ export default class RelativeTimeFormat {
     }
   }
   public static polyfilled = true;
+}
+
+// IE11 does not have Symbol
+if (typeof Symbol !== 'undefined') {
+  Object.defineProperty(RelativeTimeFormat.prototype, Symbol.toStringTag, {
+    value: 'Intl.RelativeTimeFormat',
+    writable: false,
+    enumerable: false,
+    configurable: true,
+  });
 }

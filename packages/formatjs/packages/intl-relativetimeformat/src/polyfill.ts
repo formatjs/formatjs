@@ -1,3 +1,9 @@
-import fixMeta from './fix-meta';
-import IntlRelativeTimeFormat from './';
-fixMeta(IntlRelativeTimeFormat);
+import RelativeTimeFormat from './core';
+if (!('RelativeTimeFormat' in Intl)) {
+  Object.defineProperty(Intl, 'RelativeTimeFormat', {
+    value: RelativeTimeFormat,
+    writable: true,
+    enumerable: false,
+    configurable: true,
+  });
+}
