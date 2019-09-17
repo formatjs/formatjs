@@ -1,2 +1,2 @@
-import './polyfill'
-import './locales'
+import './polyfill';
+import './locales';

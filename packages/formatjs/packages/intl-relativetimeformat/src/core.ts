@@ -182,10 +182,8 @@ export default class RelativeTimeFormat {
   private readonly _localeMatcher: IntlRelativeTimeFormatOptions['localeMatcher'];
   private readonly _numberingSystem: string;
   constructor(
-    ...[locales, options]: [
-      string | string[] | undefined,
-      IntlRelativeTimeFormatOptions | undefined
-    ]
+    locales?: string | string[],
+    options?: IntlRelativeTimeFormatOptions
   ) {
     // test262/test/intl402/RelativeTimeFormat/constructor/constructor/newtarget-undefined.js
     // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
@@ -341,11 +339,9 @@ export default class RelativeTimeFormat {
     return opts;
   }
 
-  public static supportedLocalesOf (
+  public static supportedLocalesOf(
     locales: string | string[],
-    ...[opts]: [
-      Pick<IntlRelativeTimeFormatOptions, 'localeMatcher'> | undefined
-    ]
+    opts?: Pick<IntlRelativeTimeFormatOptions, 'localeMatcher'>
   ) {
     // test262/test/intl402/RelativeTimeFormat/constructor/supportedLocalesOf/options-toobject.js
     let localeMatcher: IntlRelativeTimeFormatOptions['localeMatcher'] =
@@ -368,7 +364,7 @@ export default class RelativeTimeFormat {
       Intl.NumberFormat.supportedLocalesOf(locales, {localeMatcher}),
       RelativeTimeFormat.__localeData__
     );
-  };
+  }
 
   static __localeData__: Record<string, RelativeTimeLocaleData> = {};
   public static __addLocaleData(...data: RelativeTimeLocaleData[]) {
@@ -386,12 +382,31 @@ export default class RelativeTimeFormat {
   public static polyfilled = true;
 }
 
-// IE11 does not have Symbol
-if (typeof Symbol !== 'undefined') {
-  Object.defineProperty(RelativeTimeFormat.prototype, Symbol.toStringTag, {
-    value: 'Intl.RelativeTimeFormat',
+try {
+  // IE11 does not have Symbol
+  if (typeof Symbol !== 'undefined') {
+    Object.defineProperty(RelativeTimeFormat.prototype, Symbol.toStringTag, {
+      value: 'Intl.RelativeTimeFormat',
+      writable: false,
+      enumerable: false,
+      configurable: true,
+    });
+  }
+
+  // https://github.com/tc39/test262/blob/master/test/intl402/RelativeTimeFormat/constructor/length.js
+  Object.defineProperty(RelativeTimeFormat.prototype.constructor, 'length', {
+    value: 0,
     writable: false,
     enumerable: false,
     configurable: true,
   });
+  // https://github.com/tc39/test262/blob/master/test/intl402/RelativeTimeFormat/constructor/supportedLocalesOf/length.js
+  Object.defineProperty(RelativeTimeFormat.supportedLocalesOf, 'length', {
+    value: 1,
+    writable: false,
+    enumerable: false,
+    configurable: true,
+  });
+} catch (e) {
+  // Meta fix so we're test262-compliant, not important
 }

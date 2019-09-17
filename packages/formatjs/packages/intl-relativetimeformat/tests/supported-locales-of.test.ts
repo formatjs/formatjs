@@ -7,9 +7,9 @@ describe('supportedLocalesOf', function() {
   const RelativeTimeFormat = (Intl as any).RelativeTimeFormat;
   function test() {
     expect(
-      RelativeTimeFormat.supportedLocalesOf(['zh', 'en-jj'], undefined)
+      RelativeTimeFormat.supportedLocalesOf(['zh', 'en-jj'])
     ).toContain('zh');
-    expect(RelativeTimeFormat.supportedLocalesOf(['fr'], undefined)).toEqual(
+    expect(RelativeTimeFormat.supportedLocalesOf('fr')).toEqual(
       []
     );
   }

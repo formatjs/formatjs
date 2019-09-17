@@ -8,15 +8,15 @@ describe('Intl.RelativeTimeFormat', function() {
   const RelativeTimeFormat = (Intl as any).RelativeTimeFormat;
   it('should support aliases', function() {
     expect(
-      new RelativeTimeFormat('zh-CN', undefined).format(-1, 'second')
+      new RelativeTimeFormat('zh-CN').format(-1, 'second')
     ).toBe('1秒钟前');
     expect(
-      new RelativeTimeFormat('zh-TW', undefined).format(-1, 'second')
+      new RelativeTimeFormat('zh-TW').format(-1, 'second')
     ).toBe('1 秒前');
   });
   it('should resolve parent correctly', function() {
     expect(
-      new RelativeTimeFormat('en-AI', undefined).format(-1, 'second')
+      new RelativeTimeFormat('en-AI').format(-1, 'second')
     ).toBe('1 second ago');
   });
 });
