@@ -1,6 +1,5 @@
 import 'core-js/stable';
 import '@formatjs/intl-pluralrules/polyfill';
-import '@formatjs/intl-relativetimeformat/polyfill';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Timezone from './TimeZone';

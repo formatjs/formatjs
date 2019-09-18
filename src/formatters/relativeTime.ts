@@ -39,6 +39,14 @@ export function formatRelativeTime(
   if (!unit) {
     unit = 'second';
   }
+  const RelativeTimeFormat = (Intl as any).RelativeTimeFormat;
+  if (!RelativeTimeFormat) {
+    config.onError(
+      createError(`Intl.RelativeTimeFormat is not available in this environment.
+Try polyfilling it using "@formatjs/intl-relativetimeformat"
+`)
+    );
+  }
   try {
     return getFormatter(config, getRelativeTimeFormat, options).format(
       value,

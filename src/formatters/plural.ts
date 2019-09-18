@@ -12,6 +12,13 @@ export function formatPlural(
   value: Parameters<IntlFormatters['formatPlural']>[0],
   options: Parameters<IntlFormatters['formatPlural']>[1] = {}
 ) {
+  if (!Intl.PluralRules) {
+    onError(
+      createError(`Intl.PluralRules is not available in this environment.
+Try polyfilling it using "@formatjs/intl-pluralrules"
+`)
+    );
+  }
   let filteredOptions = filterProps(options, PLURAL_FORMAT_OPTIONS);
 
   try {

@@ -112,16 +112,6 @@ export function createIntlCache(): IntlCache {
  */
 export function createFormatters(cache: IntlCache = createIntlCache()) {
   const RelativeTimeFormat = (Intl as any).RelativeTimeFormat;
-  if (!RelativeTimeFormat) {
-    throw new Error(`Intl.RelativeTimeFormat is not available in this environment.
-Try polyfilling it using "@formatjs/intl-relativetimeformat"
-`);
-  }
-  if (!Intl.PluralRules) {
-    throw new Error(`Intl.PluralRules is not available in this environment.
-Try polyfilling it using "@formatjs/intl-pluralrules"
-`);
-  }
   return {
     getDateTimeFormat: memoizeIntlConstructor(
       Intl.DateTimeFormat,
