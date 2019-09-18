@@ -190,6 +190,11 @@ export function formatToParts(
     if (isPluralElement(el)) {
       let opt = el.options[`=${value}`];
       if (!opt) {
+        if (!Intl.PluralRules) {
+          throw new FormatError(`Intl.PluralRules is not available in this environment.
+Try polyfilling it using "@formatjs/intl-pluralrules"
+`);
+        }
         const rule = formatters
           .getPluralRules(locales, {type: el.pluralType})
           .select((value as number) - (el.offset || 0));
