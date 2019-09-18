@@ -45,7 +45,7 @@
     "chai": "^4.2.0",
     "cldr-core": "^35.1.0",
     "coveralls": "^3.0.6",
-    "cross-env": "^5.2.1",
+    "cross-env": "^6.0.0",
     "eslint": "^6.3.0",
     "eslint-plugin-react": "^7.14.3",
     "fast-memoize": "^2.5.1",
