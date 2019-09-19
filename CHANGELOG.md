@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.4](https://github.com/formatjs/react-intl/compare/v3.2.3...v3.2.4) (2019-09-19)
+
+
+### Bug Fixes
+
+* fix copy-paste issue in polyfill, fixes [#1488](https://github.com/formatjs/react-intl/issues/1488) ([0f9ec81](https://github.com/formatjs/react-intl/commit/0f9ec81))
+
 ### [3.2.3](https://github.com/formatjs/react-intl/compare/v3.2.1...v3.2.3) (2019-09-18)
 
 
