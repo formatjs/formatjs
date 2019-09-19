@@ -22,6 +22,7 @@
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
   },
+  "sideEffects": false,
   "homepage": "https://github.com/formatjs/formatjs",
   "scripts": {
     "clean": "rimraf dist lib",
