@@ -37,6 +37,7 @@
   "devDependencies": {
     "@formatjs/intl-pluralrules": "^1.1.5"
   },
+  "sideEffects": false,
   "scripts": {
     "benchmark": "ts-node --project ./tsconfig.cjs.json tests/benchmark",
     "build": "npm run tsc && npm run rollup",
