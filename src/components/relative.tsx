@@ -3,7 +3,6 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import '@formatjs/intl-relativetimeformat/polyfill';
 import * as React from 'react';
 import {Context} from './injectIntl';
 import {FormatRelativeTimeOptions} from '../types';

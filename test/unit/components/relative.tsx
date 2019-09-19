@@ -1,3 +1,4 @@
+import '@formatjs/intl-relativetimeformat/polyfill';
 import * as React from 'react';
 import {mount} from 'enzyme';
 import FormattedRelativeTime from '../../../src/components/relative';
