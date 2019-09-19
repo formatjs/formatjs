@@ -33,6 +33,7 @@
   "main": "./dist/index.js",
   "module": "./lib/index.js",
   "types": "./dist/index.d.ts",
+  "sideEffects": false,
   "dependencies": {
     "@formatjs/intl-relativetimeformat": "^3.1.0",
     "@formatjs/intl-unified-numberformat": "^0.5.0",
