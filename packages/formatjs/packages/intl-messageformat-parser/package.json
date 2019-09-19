@@ -34,6 +34,7 @@
     "plural",
     "icu"
   ],
+  "sideEffects": false,
   "author": "Eric Ferraiuolo <eferraiuolo@gmail.com>",
   "license": "BSD-3-Clause",
   "bugs": {
