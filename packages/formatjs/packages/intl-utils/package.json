@@ -18,6 +18,7 @@
     "type": "git",
     "url": "git@github.com:formatjs/formatjs.git"
   },
+  "sideEffects": false,
   "main": "dist/index.js",
   "module": "lib/index.js",
   "types": "dist/index.d.ts",
