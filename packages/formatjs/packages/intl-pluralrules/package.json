@@ -15,6 +15,14 @@
   "main": "dist/index.js",
   "module": "lib/index.js",
   "types": "dist/index.d.ts",
+  "sideEffects": [
+    "./polyfill.js",
+    "./dist/polyfill.js",
+    "./lib/polyfill.js",
+    "./polyfill-locales.js",
+    "./dist/polyfill-locales.js",
+    "./lib/polyfill-locales.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/formatjs/formatjs.git"
