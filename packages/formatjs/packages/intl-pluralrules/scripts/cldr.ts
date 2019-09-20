@@ -51,7 +51,7 @@ ${Object.keys(allData)
 
 // For test262
 outputFileSync(
-  resolve(__dirname, '../dist-es6/polyfill-with-locales.js'),
+  resolve(__dirname, '../dist-es6/polyfill-locales.js'),
   `
 import './polyfill';
 if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {

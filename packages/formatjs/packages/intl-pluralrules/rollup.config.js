@@ -7,10 +7,10 @@ const resolveConfig = resolve({
 const uglifyConfig = uglify();
 export default [
   {
-    input: './dist-es6/polyfill-with-locales.js',
+    input: './dist-es6/polyfill-locales.js',
     output: {
       sourcemap: true,
-      file: 'dist/polyfill-with-locales.js',
+      file: 'dist/polyfill-with-locales-for-test262.js',
       format: 'umd',
       exports: 'named',
       name: 'IntlPluralRules'
