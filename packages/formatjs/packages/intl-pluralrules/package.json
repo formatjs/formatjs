@@ -15,20 +15,6 @@
   "main": "dist/index.js",
   "module": "lib/index.js",
   "types": "dist/index.d.ts",
-  "sideEffects": [
-    "./dist-es6/locales.js",
-    "./dist-es6/polyfill-locales.js",
-    "./dist-es6/polyfill.js",
-    "./dist/locales.js",
-    "./dist/polyfill-locales.js",
-    "./dist/polyfill-with-locales-for-test262.js",
-    "./dist/polyfill.js",
-    "./lib/locales.js",
-    "./lib/polyfill-locales.js",
-    "./lib/polyfill.js",
-    "./polyfill-locales.js",
-    "./polyfill.js"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/formatjs/formatjs.git"

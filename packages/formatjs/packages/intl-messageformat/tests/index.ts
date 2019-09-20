@@ -4,9 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 import '@formatjs/intl-pluralrules/polyfill-locales';
-import IntlMessageFormat from '../src';
 import {
-  IntlMessageFormat as IntlMessageFormatCore,
+  IntlMessageFormat,
   createDefaultFormatters,
 } from '../src/core';
 import {PART_TYPE} from '../src/formatters';
@@ -94,11 +93,11 @@ describe('IntlMessageFormat', function() {
       expect(mf.format({name: 'foo'})).to.equal('hello world, foo');
     });
     it('should format ast w/o parser', function() {
-      var mf = new IntlMessageFormatCore(parse('hello world'));
+      var mf = new IntlMessageFormat(parse('hello world'));
       expect(mf.format()).to.equal('hello world');
     });
     it('should format ast w/ placeholders w/o parser', function() {
-      var mf = new IntlMessageFormatCore(parse('hello world, {name}'));
+      var mf = new IntlMessageFormat(parse('hello world, {name}'));
       expect(mf.format({name: 'foo'})).to.equal('hello world, foo');
     });
   });
