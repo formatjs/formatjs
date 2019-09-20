@@ -26,20 +26,6 @@
   "dependencies": {
     "@formatjs/intl-utils": "^1.1.1"
   },
-  "sideEffects": [
-    "./dist-es6/locales.js",
-    "./dist-es6/polyfill-locales.js",
-    "./dist-es6/polyfill.js",
-    "./dist/locale-data/*.js",
-    "./dist/locales.js",
-    "./dist/polyfill-locales.js",
-    "./dist/polyfill.js",
-    "./lib/locales.js",
-    "./lib/polyfill-locales.js",
-    "./lib/polyfill.js",
-    "./polyfill-locales.js",
-    "./polyfill.js"
-  ],
   "main": "dist/index.js",
   "module": "lib/index.js",
   "types": "dist/index.d.ts",
