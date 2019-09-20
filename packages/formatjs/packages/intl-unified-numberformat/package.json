@@ -22,13 +22,6 @@
     "@formatjs/intl-pluralrules": "^1.1.5",
     "formatjs-extract-cldr-data": "^9.7.1"
   },
-  "sideEffects": [
-    "./polyfill.js",
-    "./dist/polyfill.js",
-    "./lib/polyfill.js",
-    "./dist/locales.js",
-    "./lib/locales.js"
-  ],
   "dependencies": {
     "@formatjs/intl-utils": "^1.1.1"
   },
