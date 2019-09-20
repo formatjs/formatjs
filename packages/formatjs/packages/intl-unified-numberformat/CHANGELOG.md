@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@0.5.2...@formatjs/intl-unified-numberformat@1.0.0) (2019-09-20)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** add more side-effectful files ([03d2a10](https://github.com/formatjs/formatjs/commit/03d2a10))
+* **@formatjs/intl-unified-numberformat:** rm side effects array due to build complication ([499df4f](https://github.com/formatjs/formatjs/commit/499df4f))
+
+
+### Features
+
+* **@formatjs/intl-unified-numberformat:** mark the package as side-effects free ([d05c293](https://github.com/formatjs/formatjs/commit/d05c293))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-unified-numberformat:** This package no longer comes with `en` by default
+
+
+
+
+
 ## [0.5.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@0.5.1...@formatjs/intl-unified-numberformat@0.5.2) (2019-09-17)
 
 **Note:** Version bump only for package @formatjs/intl-unified-numberformat

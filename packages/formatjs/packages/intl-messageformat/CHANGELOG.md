@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.3.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.2.4...intl-messageformat@7.3.0) (2019-09-20)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** rm side effects array due to build complication ([f22e552](https://github.com/formatjs/formatjs/commit/f22e552))
+
+
+### Features
+
+* **intl-messageformat:** mark the package as side-effects free ([a1a08ae](https://github.com/formatjs/formatjs/commit/a1a08ae))
+* **intl-messageformat:** throw FormatError when trying to format plural but Intl.PluralRules is not available ([6294570](https://github.com/formatjs/formatjs/commit/6294570))
+
+
+
+
+
 ## [7.2.4](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.2.3...intl-messageformat@7.2.4) (2019-09-17)
 
 **Note:** Version bump only for package intl-messageformat

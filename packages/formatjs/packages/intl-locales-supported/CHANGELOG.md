@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.4.8...intl-locales-supported@1.5.0) (2019-09-20)
+
+
+### Features
+
+* **intl-locales-supported:** mark the package as side-effects free ([03d2ad8](https://github.com/formatjs/formatjs/commit/03d2ad8))
+
+
+
+
+
 ## [1.4.8](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.4.7...intl-locales-supported@1.4.8) (2019-09-13)
 
 

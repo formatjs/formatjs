@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@1.1.1...@formatjs/intl-utils@1.2.0) (2019-09-20)
+
+
+### Features
+
+* **@formatjs/intl-utils:** mark the package as side-effects free ([d442765](https://github.com/formatjs/formatjs/commit/d442765))
+
+
+
+
+
 ## [1.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@1.1.0...@formatjs/intl-utils@1.1.1) (2019-09-15)
 
 **Note:** Version bump only for package @formatjs/intl-utils

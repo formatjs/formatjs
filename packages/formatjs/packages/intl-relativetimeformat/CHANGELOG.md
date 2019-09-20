@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.0.1...@formatjs/intl-relativetimeformat@4.1.0) (2019-09-20)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** add locale-data as side-effectful ([7e3dc27](https://github.com/formatjs/formatjs/commit/7e3dc27))
+* **@formatjs/intl-relativetimeformat:** add more side-effectful files ([03d2a10](https://github.com/formatjs/formatjs/commit/03d2a10))
+* **@formatjs/intl-relativetimeformat:** rm side effects array due to build complication ([7497c87](https://github.com/formatjs/formatjs/commit/7497c87))
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** mark the package as side-effects free ([f942fe6](https://github.com/formatjs/formatjs/commit/f942fe6))
+
+
+
+
+
 ## [4.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.0.0...@formatjs/intl-relativetimeformat@4.0.1) (2019-09-17)
 
 

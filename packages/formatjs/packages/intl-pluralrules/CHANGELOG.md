@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@1.1.5...@formatjs/intl-pluralrules@1.2.0) (2019-09-20)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** add more side-effectful files ([6bc0bd7](https://github.com/formatjs/formatjs/commit/6bc0bd7))
+* **@formatjs/intl-pluralrules:** rm side effects array due to build complication ([f22e552](https://github.com/formatjs/formatjs/commit/f22e552))
+
+
+### Features
+
+* **@formatjs/intl-pluralrules:** mark the package as side-effects free ([95174b9](https://github.com/formatjs/formatjs/commit/95174b9))
+
+
+
+
+
 ## [1.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@1.1.4...@formatjs/intl-pluralrules@1.1.5) (2019-09-17)
 
 
