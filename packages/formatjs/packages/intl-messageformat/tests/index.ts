@@ -135,8 +135,6 @@ describe('IntlMessageFormat', function() {
     });
   });
 
-  // This is failing in IE11 bc of https://github.com/eemeli/intl-pluralrules/issues/4
-  // Once that's fixed, reinstate this test
   describe('and plurals under the Arabic locale', function() {
     var msg =
       '' +
