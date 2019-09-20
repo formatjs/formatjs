@@ -49,19 +49,6 @@ export type Unit =
 `
 );
 
-// Extract src/en.ts
-outputFileSync(
-  resolve(__dirname, '../src/en.ts'),
-  `/* @generated */
-// prettier-ignore
-import {UnifiedNumberFormatLocaleData} from '@formatjs/intl-utils';
-const data: UnifiedNumberFormatLocaleData[] = ${JSON.stringify(
-    sanctionedUnitData.en
-  )};
-export default data;
-`
-);
-
 // Aggregate all into src/locales.ts
 outputFileSync(
   resolve(__dirname, '../src/locales.ts'),
