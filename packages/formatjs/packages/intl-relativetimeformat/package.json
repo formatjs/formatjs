@@ -30,6 +30,7 @@
     "./dist-es6/locales.js",
     "./dist-es6/polyfill-locales.js",
     "./dist-es6/polyfill.js",
+    "./dist/locale-data/*.js",
     "./dist/locales.js",
     "./dist/polyfill-locales.js",
     "./dist/polyfill.js",
