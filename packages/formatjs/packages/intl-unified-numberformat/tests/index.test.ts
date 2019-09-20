@@ -5,6 +5,9 @@ if (typeof (Intl.NumberFormat as any).__addUnitLocaleData === 'function') {
   (Intl.NumberFormat as any).__addUnitLocaleData(
     require('../dist/locale-data/zh')
   );
+  (Intl.NumberFormat as any).__addUnitLocaleData(
+    require('../dist/locale-data/en')
+  );
 }
 
 const NumberFormat = (Intl.NumberFormat as any) as typeof UnifiedNumberFormat;

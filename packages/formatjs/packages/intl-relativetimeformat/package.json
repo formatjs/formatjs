@@ -27,12 +27,17 @@
     "@formatjs/intl-utils": "^1.1.1"
   },
   "sideEffects": [
-    "./polyfill.js",
+    "./dist-es6/locales.js",
+    "./dist-es6/polyfill-locales.js",
+    "./dist-es6/polyfill.js",
+    "./dist/locales.js",
+    "./dist/polyfill-locales.js",
     "./dist/polyfill.js",
+    "./lib/locales.js",
+    "./lib/polyfill-locales.js",
     "./lib/polyfill.js",
     "./polyfill-locales.js",
-    "./dist/polyfill-locales.js",
-    "./lib/polyfill-locales.js"
+    "./polyfill.js"
   ],
   "main": "dist/index.js",
   "module": "lib/index.js",
