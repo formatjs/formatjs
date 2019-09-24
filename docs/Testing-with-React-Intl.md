@@ -251,18 +251,20 @@ Testing with Enzyme works in a similar fashion as written above. Your `mount()`e
  */
 
 import React from 'react';
-import {IntlProvider, createIntl} from 'react-intl';
+import {IntlProvider} from 'react-intl';
 import {mount, shallow} from 'enzyme';
 
 // You can pass your messages to the IntlProvider. Optional: remove if unneeded.
 const messages = require('../locales/en'); // en.json
+const defaultLocale = 'en';
+const locale = defaultLocale;
 
 export function mountWithIntl(node: React.ReactElement) {
   return mount(node, {
     wrappingComponent: IntlProvider,
     wrappingComponentProps: {
-      locale: 'en',
-      defaultLocale: 'en',
+      locale,
+      defaultLocale,
       messages,
     },
   });
@@ -272,8 +274,8 @@ export function shallowWithIntl(node: React.ReactElement) {
   return shallow(node, {
     wrappingComponent: IntlProvider,
     wrappingComponentProps: {
-      locale: 'en',
-      defaultLocale: 'en',
+      locale,
+      defaultLocale,
       messages,
     },
   });
