@@ -7,4 +7,5 @@ packages/intl-unified-numberformat/src/en.ts
 packages/intl-unified-numberformat/src/locales.ts
 packages/intl-utils/src/aliases.ts
 packages/intl-utils/src/parentLocales.ts
+packages/intl-listformat/src/locales.ts
 test262/

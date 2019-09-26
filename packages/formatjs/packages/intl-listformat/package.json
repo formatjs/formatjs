@@ -1,0 +1,40 @@
+{
+  "name": "@formatjs/intl-listformat",
+  "version": "1.0.0",
+  "description": "Formats JS list in a i18n-safe way",
+  "keywords": [
+    "intl",
+    "i18n",
+    "list",
+    "format",
+    "formatjs"
+  ],
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:formatjs/formatjs.git"
+  },
+  "devDependencies": {
+    "formatjs-extract-cldr-data": "^9.7.2"
+  },
+  "dependencies": {
+    "@formatjs/intl-utils": "^1.2.0"
+  },
+  "main": "dist/index.js",
+  "module": "lib/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "npm run cldr && npm run compile",
+    "cldr": "ts-node --project tsconfig.cjs.json scripts/cldr",
+    "clean": "rimraf dist lib dist-es6",
+    "compile": "tsc && tsc -p tsconfig.cjs.json && tsc -p tsconfig.es6.json && rollup -c rollup.config.js",
+    "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json cross-env NODE_ENV=test jest",
+    "test": "npm run jest && cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json ts-node tests/runner"
+  },
+  "homepage": "https://github.com/formatjs/formatjs",
+  "license": "MIT",
+  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c"
+}

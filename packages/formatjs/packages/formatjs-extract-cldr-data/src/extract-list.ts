@@ -29,7 +29,7 @@ export function getAllLocales() {
   }).map(dirname);
 }
 
-function loadListPatterns(locale: Locale): ListPatternLocaleData['patterns'] {
+function loadListPatterns(locale: Locale): ListPatternLocaleData['fields'] {
   const patterns = (require(`cldr-misc-full/main/${locale}/listPatterns.json`) as typeof ListPatterns)
     .main[locale as 'en'].listPatterns;
   return {
@@ -55,8 +55,6 @@ function hasListPatterns(locale: Locale): boolean {
   return listPattternLocales.includes(locale);
 }
 
-export default generateFieldExtractorFn<Record<string, ListPatternData>>(
-  loadListPatterns,
-  hasListPatterns,
-  getAllLocales()
-);
+export default generateFieldExtractorFn<
+  Record<string, ListPatternData | undefined>
+>(loadListPatterns, hasListPatterns, getAllLocales());

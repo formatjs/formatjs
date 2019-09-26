@@ -1,0 +1,2 @@
+import './polyfill';
+import './locales';

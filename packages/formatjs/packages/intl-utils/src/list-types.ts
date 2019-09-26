@@ -1,16 +1,16 @@
 export interface ListPatternLocaleData {
   locale: string;
-  patterns: {
-    standard: ListPatternData;
-    or: ListPatternData;
-    unit: ListPatternData;
+  fields: {
+    standard?: ListPatternData;
+    or?: ListPatternData;
+    unit?: ListPatternData;
   };
 }
-interface ListPattern {
-  start?: string;
-  middle?: string;
-  end?: string;
-  '2'?: string;
+export interface ListPattern {
+  start: string;
+  middle: string;
+  end: string;
+  '2': string;
 }
 
 export interface ListPatternData {
