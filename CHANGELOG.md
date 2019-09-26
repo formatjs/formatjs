@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.3.1](https://github.com/formatjs/react-intl/compare/v3.3.0...v3.3.1) (2019-09-26)
+
+
+### Bug Fixes
+
+* properly override timeZone in formats/defaultFormats ([f2b93e6](https://github.com/formatjs/react-intl/commit/f2b93e6)), closes [#1219](https://github.com/formatjs/react-intl/issues/1219)
+
 ## [3.3.0](https://github.com/formatjs/react-intl/compare/v3.2.3...v3.3.0) (2019-09-19)
 
 
