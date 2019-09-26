@@ -252,7 +252,9 @@ Add `transformIgnorePatterns` to always include those libraries, e.g:
 
 ### webpack
 
-If you're using `babel-loader`, add those libraries in `include`, e.g:
+If you're using `babel-loader`, or `ts-loader`, you can do 1 of the following:
+
+1. Add those libraries in `include`:
 
 ```tsx
 include: [
@@ -260,6 +262,14 @@ include: [
   path.join(__dirname, "node_modules/intl-messageformat"),
   path.join(__dirname, "node_modules/intl-messageformat-parser"),
 ],
+```
+
+OR
+
+2. Add those libraries in `exclude`:
+
+```tsx
+exclude: /node_modules\/(?!react-intl|intl-messageformat|intl-messageformat-parser)/,
 ```
 
 # Core Concepts
