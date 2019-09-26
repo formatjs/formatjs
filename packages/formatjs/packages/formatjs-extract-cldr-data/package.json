@@ -15,9 +15,10 @@
     "@formatjs/intl-utils": "^1.2.0",
     "@types/glob": "^7.1.1",
     "@types/lodash": "^4.14.138",
-    "cldr-core": "^35.0.0",
-    "cldr-dates-full": "^35.0.0",
-    "cldr-units-full": "35.1.0",
+    "cldr-core": "^35.1.0",
+    "cldr-dates-full": "^35.1.0",
+    "cldr-units-full": "^35.1.0",
+    "cldr-misc-full": "^35.1.0",
     "glob": "^7.0.0",
     "lodash": "^4.17.15"
   },

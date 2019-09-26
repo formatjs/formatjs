@@ -9,6 +9,10 @@ import extractRelativeFields, {
 import extractUnits, {
   getAllLocales as getAllUnitsLocales,
 } from './extract-units';
+import extracListPatterns, {
+  getAllLocales as getAllListLocales,
+} from './extract-list';
+
 export interface Opts {
   locales?: string[];
 }
@@ -23,6 +27,12 @@ export function extractAllUnits(options: Opts = {}) {
   // Default to all CLDR locales if none have been provided.
   const locales = options.locales || getAllUnitsLocales();
   return extractUnits(locales);
+}
+
+export function extractAllListPatterns(options: Opts = {}) {
+  // Default to all CLDR locales if none have been provided.
+  const locales = options.locales || getAllListLocales();
+  return extracListPatterns(locales);
 }
 
 export {getAllLanguages} from './locales';
