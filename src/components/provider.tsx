@@ -52,17 +52,66 @@ export type OptionalIntlConfig = Omit<
 > &
   Partial<typeof DEFAULT_INTL_CONFIG>;
 
-function filterIntlConfig<P extends OptionalIntlConfig = OptionalIntlConfig>(
+function setTimeZoneInOptions(
+  opts: Record<string, Intl.DateTimeFormatOptions>,
+  timeZone: string
+) {
+  return Object.keys(opts).reduce(
+    (all: Record<string, Intl.DateTimeFormatOptions>, k) => {
+      all[k] = {
+        timeZone,
+        ...opts[k],
+      };
+      return all;
+    },
+    {}
+  );
+}
+
+function processIntlConfig<P extends OptionalIntlConfig = OptionalIntlConfig>(
   config: P
 ): OptionalIntlConfig {
+  let {formats, defaultFormats, timeZone} = config;
+  if (timeZone) {
+    if (formats) {
+      const {date: dateFormats, time: timeFormats} = formats;
+      if (dateFormats) {
+        formats = {
+          ...formats,
+          date: setTimeZoneInOptions(dateFormats, timeZone),
+        };
+      }
+      if (timeFormats) {
+        formats = {
+          ...formats,
+          time: setTimeZoneInOptions(timeFormats, timeZone),
+        };
+      }
+    }
+    if (defaultFormats) {
+      const {date: dateFormats, time: timeFormats} = defaultFormats;
+      if (dateFormats) {
+        defaultFormats = {
+          ...defaultFormats,
+          date: setTimeZoneInOptions(dateFormats, timeZone),
+        };
+      }
+      if (timeFormats) {
+        defaultFormats = {
+          ...defaultFormats,
+          time: setTimeZoneInOptions(timeFormats, timeZone),
+        };
+      }
+    }
+  }
   return {
     locale: config.locale,
-    timeZone: config.timeZone,
-    formats: config.formats,
+    timeZone,
+    formats,
     textComponent: config.textComponent,
     messages: config.messages,
     defaultLocale: config.defaultLocale,
-    defaultFormats: config.defaultFormats,
+    defaultFormats,
     onError: config.onError,
   };
 }
@@ -76,15 +125,15 @@ export default class IntlProvider extends React.PureComponent<
   private cache: IntlCache = createIntlCache();
   state: State = {
     cache: this.cache,
-    intl: createIntl(filterIntlConfig(this.props), this.cache),
-    prevConfig: filterIntlConfig(this.props),
+    intl: createIntl(processIntlConfig(this.props), this.cache),
+    prevConfig: processIntlConfig(this.props),
   };
 
   static getDerivedStateFromProps(
     props: OptionalIntlConfig,
     {prevConfig, cache}: State
   ): Partial<State> | null {
-    const config = filterIntlConfig(props);
+    const config = processIntlConfig(props);
     if (!shallowEquals(prevConfig, config)) {
       return {
         intl: createIntl(config, cache),

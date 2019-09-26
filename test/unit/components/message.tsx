@@ -5,8 +5,8 @@ import IntlProvider, {
   createIntl,
 } from '../../../src/components/provider';
 import {mountFormattedComponentWithProvider} from '../testUtils';
-import {mount, shallow, render} from 'enzyme';
-import {IntlShape} from '../../../src';
+import {mount, shallow} from 'enzyme';
+import {IntlShape, CustomFormats} from '../../../src';
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedMessage);
 
@@ -243,6 +243,55 @@ describe('<FormattedMessage>', () => {
       expect(nameNode.type()).toBe('b');
       expect(nameNode.text()).toBe('Jest');
     });
+  });
+  it('should merge timeZone into formats', function() {
+    const rendered = mountWithProvider(
+      {
+        id: 'hello',
+        values: {
+          ts: new Date(0),
+        },
+      },
+      {
+        ...providerProps,
+        messages: {
+          hello: 'Hello, {ts, date, short} - {ts, time, short}',
+        },
+        formats: {
+          time: {
+            short: {hour: 'numeric', minute: 'numeric', second: 'numeric'},
+          },
+          date: {short: {year: '2-digit', month: 'numeric', day: 'numeric'}},
+        } as CustomFormats,
+        timeZone: 'Europe/London',
+      }
+    );
+
+    expect(rendered.text()).toBe('Hello, 1/1/70 - 1:00:00 AM');
+  });
+
+  it('should merge timeZone into formats', function() {
+    const rendered = mountWithProvider(
+      {
+        id: 'hello',
+        defaultMessage: 'Hello, {ts, date, short} - {ts, time, short}',
+        values: {
+          ts: new Date(0),
+        },
+      },
+      {
+        ...providerProps,
+        defaultFormats: {
+          time: {
+            short: {hour: 'numeric', minute: 'numeric', second: 'numeric'},
+          },
+          date: {short: {year: '2-digit', month: 'numeric', day: 'numeric'}},
+        } as CustomFormats,
+        timeZone: 'Asia/Tokyo',
+      }
+    );
+
+    expect(rendered.text()).toBe('Hello, 1/1/70 - 9:00:00 AM');
   });
 
   it('should re-render when `values` are different', () => {
