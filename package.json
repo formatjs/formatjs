@@ -35,6 +35,7 @@
   "types": "./dist/index.d.ts",
   "sideEffects": false,
   "dependencies": {
+    "@formatjs/intl-listformat": "^1.2.1",
     "@formatjs/intl-relativetimeformat": "^4.2.1",
     "@formatjs/intl-unified-numberformat": "^2.1.0",
     "@types/hoist-non-react-statics": "^3.3.1",
@@ -87,7 +88,7 @@
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "rimraf": "^3.0.0",
-    "rollup": "^1.25.1",
+    "rollup": "^1.25.2",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",

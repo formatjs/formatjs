@@ -1,24 +1,32 @@
 import * as React from 'react';
 import {invariantIntlContext} from '../utils';
-import {IntlShape, FormatDateOptions, FormatNumberOptions} from '../types';
+import {
+  IntlShape,
+  FormatDateOptions,
+  FormatNumberOptions,
+  FormatListOptions,
+} from '../types';
 import {Context} from './injectIntl';
 
 enum DisplayName {
   formatDate = 'FormattedDate',
   formatTime = 'FormattedTime',
   formatNumber = 'FormattedNumber',
+  formatList = 'FormattedList',
 }
 
 enum DisplayNameParts {
   formatDate = 'FormattedDateParts',
   formatTime = 'FormattedTimeParts',
   formatNumber = 'FormattedNumberParts',
+  formatList = 'FormattedListParts',
 }
 
 type Formatter = {
   formatDate: FormatDateOptions;
   formatTime: FormatDateOptions;
   formatNumber: FormatNumberOptions;
+  formatList: FormatListOptions;
 };
 
 export const FormattedNumberParts: React.FC<
@@ -39,7 +47,7 @@ export const FormattedNumberParts: React.FC<
 FormattedNumberParts.displayName = 'FormattedNumberParts';
 
 export function createFormattedDateTimePartsComponent<
-  Name extends keyof Formatter
+  Name extends 'formatDate' | 'formatTime'
 >(name: Name) {
   type FormatFn = IntlShape[Name];
   type Props = Formatter[Name] & {
@@ -80,7 +88,8 @@ export function createFormattedComponent<Name extends keyof Formatter>(
       {intl => {
         invariantIntlContext(intl);
         const {value, children, ...formatProps} = props;
-        const formattedValue = intl[name](value as any, formatProps);
+        // TODO: fix TS type definition for localeMatcher upstream
+        const formattedValue = intl[name](value as any, formatProps as any);
 
         if (typeof children === 'function') {
           return children(formattedValue as any);

@@ -26,6 +26,7 @@ import {
 import {formatPlural} from '../formatters/plural';
 import {formatMessage, formatHTMLMessage} from '../formatters/message';
 import * as shallowEquals_ from 'shallow-equal/objects';
+import {formatList} from '../formatters/list';
 const shallowEquals: typeof shallowEquals_ =
   (shallowEquals_ as any).default || shallowEquals_;
 
@@ -177,5 +178,6 @@ export function createIntl(
     ),
     formatMessage: formatMessage.bind(null, resolvedConfig, formatters),
     formatHTMLMessage: formatHTMLMessage.bind(null, resolvedConfig, formatters),
+    formatList: formatList.bind(null, resolvedConfig, formatters.getListFormat),
   };
 }

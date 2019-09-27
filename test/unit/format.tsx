@@ -1,3 +1,4 @@
+import * as React from 'react';
 import IntlMessageFormat from 'intl-messageformat';
 import {parse} from 'intl-messageformat-parser';
 import {
@@ -7,6 +8,7 @@ import {
 import {formatRelativeTime as formatRelativeTimeFn} from '../../src/formatters/relativeTime';
 import {formatNumber as formatNumberFn} from '../../src/formatters/number';
 import {formatPlural as formatPluralFn} from '../../src/formatters/plural';
+import {formatList as formatListFn} from '../../src/formatters/list';
 import {
   formatHTMLMessage as baseFormatHTMLMessage,
   formatMessage as baseFormatMessage,
@@ -91,6 +93,9 @@ describe('format API', () => {
       getPluralRules: jest
         .fn()
         .mockImplementation((...args) => new Intl.PluralRules(...args)),
+      getListFormat: jest
+        .fn()
+        .mockImplementation((...args) => new Intl.ListFormat(...args)),
     };
   });
 
@@ -408,7 +413,7 @@ describe('format API', () => {
       expect(config.onError).toHaveBeenCalledTimes(1);
       expect(config.onError).toHaveBeenCalledWith(
         expect.stringContaining(
-          '[React Intl] Error formatting relative time.\nRangeError: Value need to be finite number for Intl.RelativeTimeFormat.prototype.format()'
+          '[React Intl] Error formatting relative time.\nRangeError:'
         )
       );
     });
@@ -451,7 +456,7 @@ describe('format API', () => {
         expect(config.onError).toHaveBeenCalledTimes(1);
         expect(config.onError).toHaveBeenCalledWith(
           expect.stringMatching(
-            /\[React Intl\] Error formatting relative time.\nRangeError: Invalid unit argument for (.*) 'invalid'/
+            /\[React Intl\] Error formatting relative time.\nRangeError: Invalid unit(.*)invalid/
           )
         );
       });
@@ -1009,6 +1014,25 @@ describe('format API', () => {
           )
         );
       });
+    });
+  });
+
+  describe('formatList()', function() {
+    let formatList;
+
+    beforeEach(() => {
+      formatList = formatListFn.bind(null, config, state.getListFormat);
+    });
+
+    it('should handle regular element', function() {
+      expect(formatList(['me', 'myself', 'I'])).toBe('me, myself, and I');
+    });
+    it('should handle regular element', function() {
+      expect(formatList(['me', <b>myself</b>, 'I'])).toEqual([
+        'me, ',
+        <b>myself</b>,
+        ', and I',
+      ]);
     });
   });
 

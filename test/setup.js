@@ -1,6 +1,7 @@
 import {configure} from 'enzyme';
 import '@formatjs/intl-pluralrules/polyfill-locales';
 import '@formatjs/intl-relativetimeformat/polyfill-locales';
+import '@formatjs/intl-listformat/polyfill-locales';
 import * as Adapter from 'enzyme-adapter-react-16';
 
 configure({adapter: new Adapter()});

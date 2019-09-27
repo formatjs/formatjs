@@ -20,6 +20,8 @@ There are a few API layers that React Intl provides and is built on. When using 
   - [Number Formatting APIs](#number-formatting-apis)
     - [`formatNumber`](#formatnumber)
     - [`formatPlural`](#formatplural)
+  - [List Formatting APIs](#list-formatting-apis)
+    - [`formatList`](#formatlist)
   - [String Formatting APIs](#string-formatting-apis)
     - [Message Syntax](#message-syntax)
     - [Message Descriptor](#message-descriptor)
@@ -392,6 +394,31 @@ formatPlural(4, {style: 'ordinal'}); // "other"
 ```
 
 **Note:** This function should only be used in apps that only need to support one language. If your app supports multiple languages use [`formatMessage`](#formatmessage) instead.
+
+### List Formatting APIs
+
+**This is currently stage 3 so [polyfill](https://www.npmjs.com/package/@formatjs/intl-listformat) would be required.**
+
+#### `formatList`
+
+```ts
+type ListFormatOptions = {
+  type?: 'disjunction' | 'conjunction' | 'unit';
+  style?: 'long' | 'short' | 'narrow';
+};
+
+function formatPlural(
+  elements: (string | React.ReactNode)[],
+  options?: Intl.ListFormatOptions
+): string | React.ReactNode[];
+```
+
+This function allows you to join list of things together in an i18n-safe way. For example:
+
+```tsx
+formatList(['Me', 'myself', 'I'], {type: 'conjunction'}); // Me, myself and I
+formatList(['5 hours', '3 minues'], {type: 'unit'}); // 5 hours, 3 minutes
+```
 
 ### String Formatting APIs
 

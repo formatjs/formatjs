@@ -22,6 +22,7 @@ export {default as IntlProvider, createIntl} from './components/provider';
 export const FormattedDate = createFormattedComponent('formatDate');
 export const FormattedTime = createFormattedComponent('formatTime');
 export const FormattedNumber = createFormattedComponent('formatNumber');
+export const FormattedList = createFormattedComponent('formatList');
 export const FormattedDateParts = createFormattedDateTimePartsComponent(
   'formatDate'
 );
