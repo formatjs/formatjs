@@ -722,11 +722,6 @@ describe('format API', () => {
       expect(formatMessage({id: 'ast_simple'})).toBe(mf.format());
     });
 
-    it('should throw if format AST message w/o values', () => {
-      process.env.NODE_ENV = 'production';
-      expect(() => formatMessage({id: 'ast_var'})).toThrow();
-    });
-
     it('formats messages with placeholders', () => {
       const {locale, messages} = config;
       const mf = new IntlMessageFormat(messages.with_arg, locale);
@@ -755,22 +750,6 @@ describe('format API', () => {
       expect(formatMessage({id: 'with_named_format'}, values)).toBe(
         mf.format(values)
       );
-    });
-
-    it('avoids formatting when no values and in production', () => {
-      const {messages} = config;
-
-      process.env.NODE_ENV = 'production';
-      expect(formatMessage({id: 'no_args'})).toBe(messages.no_args);
-      expect(state.getMessageFormat).toHaveBeenCalledTimes(0);
-
-      const values = {foo: 'foo'};
-      expect(formatMessage({id: 'no_args'}, values)).toBe(messages.no_args);
-      expect(state.getMessageFormat).toHaveBeenCalledTimes(1);
-
-      process.env.NODE_ENV = 'development';
-      expect(formatMessage({id: 'no_args'})).toBe(messages.no_args);
-      expect(state.getMessageFormat).toHaveBeenCalledTimes(2);
     });
 
     describe('fallbacks', () => {

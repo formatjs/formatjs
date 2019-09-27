@@ -15,16 +15,7 @@ const invariant: typeof invariant_ = (invariant_ as any).default || invariant_;
 import {Formatters, IntlConfig, MessageDescriptor} from '../types';
 
 import {createError, escape} from '../utils';
-import {LiteralElement, TYPE} from 'intl-messageformat-parser';
 import {FormatXMLElementFn, PrimitiveType} from 'intl-messageformat';
-
-/**
- * Escape a raw msg when we run in prod mode
- * https://github.com/formatjs/formatjs/blob/master/packages/intl-messageformat-parser/src/parser.pegjs#L155
- */
-function escapeUnformattedMessage(msg: string): string {
-  return msg.replace(/'\{(.*?)\}'/g, `{$1}`);
-}
 
 export function formatMessage(
   {
@@ -77,21 +68,6 @@ export function formatMessage(
   invariant(id, '[React Intl] An `id` must be provided to format a message.');
 
   const message = messages && messages[id];
-  const hasValues = Object.keys(values).length > 0;
-
-  // Avoid expensive message formatting for simple messages without values. In
-  // development messages will always be formatted in case of missing values.
-  if (!hasValues && process.env.NODE_ENV === 'production') {
-    const val = message || defaultMessage || id;
-    if (typeof val === 'string') {
-      return escapeUnformattedMessage(val);
-    }
-    invariant(
-      val.length === 1 && val[0].type === TYPE.literal,
-      'Message has placeholders but no values was provided'
-    );
-    return (val[0] as LiteralElement).value;
-  }
 
   let formattedMessageParts: Array<string | object> = [];
 
