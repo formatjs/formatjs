@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.8.0](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.7.2...formatjs-extract-cldr-data@9.8.0) (2019-09-27)
+
+
+### Features
+
+* **@formatjs/intl-listformat:** add Intl.ListFormat polyfill ([6e5d476](https://github.com/formatjs/formatjs/commit/6e5d476))
+* **@formatjs/intl-utils:** add list-format types ([066d95b](https://github.com/formatjs/formatjs/commit/066d95b))
+
+
+
+
+
 ## [9.7.2](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.7.1...formatjs-extract-cldr-data@9.7.2) (2019-09-20)
 
 **Note:** Version bump only for package formatjs-extract-cldr-data

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@1.2.0...@formatjs/intl-utils@1.3.0) (2019-09-27)
+
+
+### Features
+
+* **@formatjs/intl-listformat:** add Intl.ListFormat polyfill ([6e5d476](https://github.com/formatjs/formatjs/commit/6e5d476))
+* **@formatjs/intl-utils:** add list-format types ([066d95b](https://github.com/formatjs/formatjs/commit/066d95b))
+
+
+
+
+
 # [1.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@1.1.1...@formatjs/intl-utils@1.2.0) (2019-09-20)
 
 
