@@ -11,15 +11,6 @@ A spec-compliant polyfill/ponyfill for Intl.ListFormat fully tested by the [offi
 npm install @formatjs/intl-listformat
 ```
 
-## Requirements
-
-This package requires the following capabilities:
-
-1. [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules)
-2. [Object.is](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is)
-
-**NOTE: `formatToParts` only works on Node 10+ due to lack of `Intl.NumberFormat.prototype.formatToParts` natively**
-
 ## Usage
 
 To use the polyfill, just import it to make sure that a fully functional Intl.ListFormat is available in your environment:
@@ -55,7 +46,7 @@ This library is fully [test262](https://github.com/tc39/test262/tree/master/test
 
 ## License
 
-This software is free to use under the Yahoo! Inc. BSD license.
+This software is free to use under the MIT license.
 See the [LICENSE file][license] for license text and copyright information.
 
 [npm]: https://www.npmjs.org/package/@formatjs/intl-listformat
