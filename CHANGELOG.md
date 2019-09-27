@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.3.2](https://github.com/formatjs/react-intl/compare/v3.3.1...v3.3.2) (2019-09-27)
+
+
+### Bug Fixes
+
+* merge timeZone into formats when formatting message ([aea3f56](https://github.com/formatjs/react-intl/commit/aea3f56)), closes [#1219](https://github.com/formatjs/react-intl/issues/1219)
+* remove custom unescaping of static message ([aefb68b](https://github.com/formatjs/react-intl/commit/aefb68b))
+
 ### [3.3.1](https://github.com/formatjs/react-intl/compare/v3.3.0...v3.3.1) (2019-09-26)
 
 
