@@ -179,7 +179,6 @@ export default class RelativeTimeFormat {
   private readonly _fields: LocaleFieldsData;
   private readonly _style: IntlRelativeTimeFormatOptions['style'];
   private readonly _numeric: IntlRelativeTimeFormatOptions['numeric'];
-  private readonly _localeMatcher: IntlRelativeTimeFormatOptions['localeMatcher'];
   private readonly _numberingSystem: string;
   constructor(
     locales?: string | string[],
@@ -211,7 +210,8 @@ export default class RelativeTimeFormat {
     }
     this._fields = findFields(resolvedLocale);
 
-    this._localeMatcher = getOption(
+    // So test262 passes
+    getOption(
       opts,
       'localeMatcher',
       'string',

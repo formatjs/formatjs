@@ -5,6 +5,8 @@
         "rootDir": "src",
         "baseUrl": ".",
         "noImplicitAny": false,
+        "noUnusedLocals": false, // Bc of parser.ts
+        "noUnusedParameters": false, // Bc of parser.ts
         "types": [
             "benchmark",
             "chai",

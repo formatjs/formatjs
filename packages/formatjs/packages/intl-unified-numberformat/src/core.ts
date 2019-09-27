@@ -61,7 +61,6 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
   private unitDisplay: 'long' | 'short' | 'narrow' | undefined = undefined;
   private nf: Intl.NumberFormat;
   private pl: Intl.PluralRules;
-  private locale: string;
   private patternData?: UnitData;
   constructor(
     locales: string | string[],
@@ -95,7 +94,6 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
       style: style === 'unit' ? 'decimal' : style,
     });
     this.pl = new Intl.PluralRules(locales);
-    this.locale = this.nf.resolvedOptions().locale;
   }
 
   format(num: number) {

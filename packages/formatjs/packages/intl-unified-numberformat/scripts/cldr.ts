@@ -1,4 +1,4 @@
-import {extractAllUnits, getAllLanguages} from 'formatjs-extract-cldr-data';
+import {extractAllUnits} from 'formatjs-extract-cldr-data';
 import {SANCTIONED_UNITS} from '@formatjs/intl-utils';
 import {resolve, join} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
@@ -57,7 +57,7 @@ outputFileSync(
 import {UnifiedNumberFormat, isUnitSupported} from './core';
 ${Object.keys(sanctionedUnitData)
   .map(
-    (lang, i) =>
+    lang =>
       `UnifiedNumberFormat.__addUnitLocaleData(${JSON.stringify(
         sanctionedUnitData[lang]
       )});`

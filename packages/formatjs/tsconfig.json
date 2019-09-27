@@ -7,6 +7,8 @@
         "declaration": true,
         "strict": true,
         "resolveJsonModule": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
         "types": [
             "babel__core",
             "babel__generator",

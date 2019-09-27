@@ -5,7 +5,6 @@ import {
   getParentLocaleHierarchy,
   supportedLocalesOf,
   ListPatternLocaleData,
-  ListPattern,
 } from '@formatjs/intl-utils';
 
 export interface IntlListFormatOptions {
@@ -232,7 +231,6 @@ function deconstructPattern(
 export default class ListFormat {
   private readonly '[[Style]]': IntlListFormatOptions['style'];
   private readonly '[[Type]]': IntlListFormatOptions['type'];
-  private readonly _localeMatcher: IntlListFormatOptions['localeMatcher'];
   private readonly '[[Locale]]': string;
   public readonly '[[TemplatePair]]': string;
   public readonly '[[TemplateStart]]': string;
@@ -266,7 +264,8 @@ export default class ListFormat {
     }
     this['[[Locale]]'] = resolvedLocale;
 
-    this._localeMatcher = getOption(
+    // Just to pass test262
+    getOption(
       opts,
       'localeMatcher',
       'string',
