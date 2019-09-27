@@ -135,9 +135,15 @@ export class FormattedRelativeTime extends React.PureComponent<Props, State> {
       prevInterestingValueInSeconds >= currentValueInSeconds
         ? prevInterestingValueInSeconds - unitDuration
         : prevInterestingValueInSeconds;
-    const delayInSeconds = Math.abs(
+    
+    // Now calculate when we do another update
+    // The maximum timeout we schedule is 30 seconds to prevent unnecessary 
+    // correctness issues and performance degradations on React Native on Android 
+    // - see https://github.com/formatjs/react-intl/issues/1153 and 
+    //       https://github.com/facebook/react-native/issues/12981
+    const delayInSeconds = Math.min(Math.abs(
       nextInterestingValueInSeconds - currentValueInSeconds
-    );
+    ), 30);
 
     this._updateTimer = setTimeout(
       () =>
