@@ -11,7 +11,7 @@
   "types": "dist/index.d.ts",
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "dependencies": {
-    "@babel/core": "^7.4.5",
+    "@babel/core": "^7.6.2",
     "@babel/helper-plugin-utils": "^7.0.0",
     "@types/babel__core": "^7.1.2",
     "fs-extra": "^8.0.1",
