@@ -182,6 +182,26 @@ describe('<FormattedDateParts>', () => {
     );
   });
 
+  it('renders a string date', () => {
+    const date = new Date();
+
+    mountPartsWithProvider({value: date + '', children}, intl);
+
+    expect(children.mock.calls[0][0]).toEqual(
+      intl.formatDateToParts(date)
+    );
+  });
+
+  it('renders date 0 if value is ""', () => {
+    const date = new Date(0);
+
+    mountPartsWithProvider({value: '', children}, intl);
+
+    expect(children.mock.calls[0][0]).toEqual(
+      intl.formatDateToParts(date)
+    );
+  });
+
   it('accepts `format` prop', () => {
     intl = createIntl({
       locale: 'en',

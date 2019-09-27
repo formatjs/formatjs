@@ -26,16 +26,21 @@ class FormattedHTMLMessage extends FormattedMessage<
             invariantIntlContext(intl);
           }
 
-          const {formatHTMLMessage, textComponent: Text} = intl;
+          const {formatHTMLMessage, textComponent} = intl;
           const {
             id,
             description,
             defaultMessage,
             values: rawValues,
-            // This is bc of TS3.3 doesn't recognize `defaultProps`
-            tagName: Component = Text || 'span',
             children,
           } = this.props;
+
+          let {tagName: Component} = this.props;
+
+          // This is bc of TS3.3 doesn't recognize `defaultProps`
+          if (!Component) {
+            Component = textComponent || 'span';
+          }
 
           let descriptor = {id, description, defaultMessage};
           let formattedHTMLMessage = formatHTMLMessage(descriptor, rawValues);

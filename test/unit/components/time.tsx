@@ -173,6 +173,26 @@ describe('<FormattedTimeParts>', () => {
     );
   });
 
+  it('renders a string date', () => {
+    const date = new Date();
+
+    mountPartsWithProvider({value: date.toISOString(), children}, intl);
+
+    expect(children.mock.calls[0][0]).toEqual(
+      intl.formatTimeToParts(date)
+    );
+  });
+
+  it('renders date 0 if value is ""', () => {
+    const date = new Date(0);
+
+    mountPartsWithProvider({value: '', children}, intl);
+
+    expect(children.mock.calls[0][0]).toEqual(
+      intl.formatTimeToParts(date)
+    );
+  });
+
   it('falls back and warns on invalid Intl.DateTimeFormat options', () => {
     const date = new Date(1567130870626);
 

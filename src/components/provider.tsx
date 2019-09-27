@@ -52,66 +52,17 @@ export type OptionalIntlConfig = Omit<
 > &
   Partial<typeof DEFAULT_INTL_CONFIG>;
 
-function setTimeZoneInOptions(
-  opts: Record<string, Intl.DateTimeFormatOptions>,
-  timeZone: string
-) {
-  return Object.keys(opts).reduce(
-    (all: Record<string, Intl.DateTimeFormatOptions>, k) => {
-      all[k] = {
-        timeZone,
-        ...opts[k],
-      };
-      return all;
-    },
-    {}
-  );
-}
-
 function processIntlConfig<P extends OptionalIntlConfig = OptionalIntlConfig>(
   config: P
 ): OptionalIntlConfig {
-  let {formats, defaultFormats, timeZone} = config;
-  if (timeZone) {
-    if (formats) {
-      const {date: dateFormats, time: timeFormats} = formats;
-      if (dateFormats) {
-        formats = {
-          ...formats,
-          date: setTimeZoneInOptions(dateFormats, timeZone),
-        };
-      }
-      if (timeFormats) {
-        formats = {
-          ...formats,
-          time: setTimeZoneInOptions(timeFormats, timeZone),
-        };
-      }
-    }
-    if (defaultFormats) {
-      const {date: dateFormats, time: timeFormats} = defaultFormats;
-      if (dateFormats) {
-        defaultFormats = {
-          ...defaultFormats,
-          date: setTimeZoneInOptions(dateFormats, timeZone),
-        };
-      }
-      if (timeFormats) {
-        defaultFormats = {
-          ...defaultFormats,
-          time: setTimeZoneInOptions(timeFormats, timeZone),
-        };
-      }
-    }
-  }
   return {
     locale: config.locale,
-    timeZone,
-    formats,
+    timeZone: config.timeZone,
+    formats: config.formats,
     textComponent: config.textComponent,
     messages: config.messages,
     defaultLocale: config.defaultLocale,
-    defaultFormats,
+    defaultFormats: config.defaultFormats,
     onError: config.onError,
   };
 }

@@ -156,6 +156,21 @@ describe('<FormattedMessage>', () => {
     expect(rendered.text()).toBe(intl.formatMessage(descriptor));
   });
 
+  it('should render out raw array if tagName is not specified', () => {
+    const descriptor = {
+      id: 'hello',
+      defaultMessage: 'Hello, World!',
+      tagName: ''
+    };
+
+    const rendered = mountWithProvider(
+      descriptor,
+      {...providerProps, textComponent: undefined}
+    );
+
+    expect(rendered.text()).toBe(intl.formatMessage(descriptor));
+  });
+
   it('supports function-as-child pattern', () => {
     const descriptor = {
       id: 'hello',
@@ -244,6 +259,44 @@ describe('<FormattedMessage>', () => {
       expect(nameNode.text()).toBe('Jest');
     });
   });
+  it('should use timeZone from Provider', function() {
+    const rendered = mountWithProvider(
+      {
+        id: 'hello',
+        values: {
+          ts: new Date(0),
+        },
+      },
+      {
+        ...providerProps,
+        messages: {
+          hello: 'Hello, {ts, date, short} - {ts, time, short}',
+        },
+        timeZone: 'Asia/Tokyo',
+      }
+    );
+
+    expect(rendered.text()).toBe('Hello, 1/1/70 - 9:00 AM');
+  });
+
+  it('should use timeZone from Provider for defaultMessage', function() {
+    const rendered = mountWithProvider(
+      {
+        id: 'hello',
+        defaultMessage: 'Hello, {ts, date, short} - {ts, time, short}',
+        values: {
+          ts: new Date(0),
+        },
+      },
+      {
+        ...providerProps,
+        timeZone: 'Asia/Tokyo',
+      }
+    );
+
+    expect(rendered.text()).toBe('Hello, 1/1/70 - 9:00 AM');
+  });
+
   it('should merge timeZone into formats', function() {
     const rendered = mountWithProvider(
       {
@@ -259,18 +312,20 @@ describe('<FormattedMessage>', () => {
         },
         formats: {
           time: {
-            short: {hour: 'numeric', minute: 'numeric', second: 'numeric'},
-          },
-          date: {short: {year: '2-digit', month: 'numeric', day: 'numeric'}},
-        } as CustomFormats,
-        timeZone: 'Europe/London',
+            short: {
+              second: 'numeric',
+              timeZoneName: 'long'
+            }
+          }
+        },
+        timeZone: 'Asia/Tokyo',
       }
     );
 
-    expect(rendered.text()).toBe('Hello, 1/1/70 - 1:00:00 AM');
+    expect(rendered.text()).toBe('Hello, 1/1/70 - 9:00:00 AM Japan Standard Time');
   });
 
-  it('should merge timeZone into formats', function() {
+  it('should merge timeZone into defaultFormats', function() {
     const rendered = mountWithProvider(
       {
         id: 'hello',
@@ -283,15 +338,17 @@ describe('<FormattedMessage>', () => {
         ...providerProps,
         defaultFormats: {
           time: {
-            short: {hour: 'numeric', minute: 'numeric', second: 'numeric'},
-          },
-          date: {short: {year: '2-digit', month: 'numeric', day: 'numeric'}},
-        } as CustomFormats,
+            short: {
+              second: 'numeric',
+              timeZoneName: 'long'
+            }
+          }
+        },
         timeZone: 'Asia/Tokyo',
       }
     );
 
-    expect(rendered.text()).toBe('Hello, 1/1/70 - 9:00:00 AM');
+    expect(rendered.text()).toBe('Hello, 1/1/70 - 9:00:00 AM Japan Standard Time');
   });
 
   it('should re-render when `values` are different', () => {

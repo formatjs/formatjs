@@ -12,10 +12,70 @@ import * as React from 'react';
 import * as invariant_ from 'invariant';
 const invariant: typeof invariant_ = (invariant_ as any).default || invariant_;
 
-import {Formatters, IntlConfig, MessageDescriptor} from '../types';
+import {
+  Formatters,
+  IntlConfig,
+  MessageDescriptor,
+  CustomFormats,
+} from '../types';
 
 import {createError, escape} from '../utils';
-import {FormatXMLElementFn, PrimitiveType} from 'intl-messageformat';
+import IntlMessageFormat, {
+  FormatXMLElementFn,
+  PrimitiveType,
+} from 'intl-messageformat';
+
+function setTimeZoneInOptions(
+  opts: Record<string, Intl.DateTimeFormatOptions>,
+  timeZone: string
+) {
+  return Object.keys(opts).reduce(
+    (all: Record<string, Intl.DateTimeFormatOptions>, k) => {
+      all[k] = {
+        timeZone,
+        ...opts[k],
+      };
+      return all;
+    },
+    {}
+  );
+}
+
+function deepMergeOptions(
+  opts1: Record<string, Intl.DateTimeFormatOptions>,
+  opts2: Record<string, Intl.DateTimeFormatOptions>
+) {
+  const keys = Object.keys({...opts1, ...opts2});
+  return keys.reduce((all: Record<string, Intl.DateTimeFormatOptions>, k) => {
+    all[k] = {
+      ...(opts1[k] || {}),
+      ...(opts2[k] || {}),
+    };
+    return all;
+  }, {});
+}
+
+function deepMergeFormatsAndSetTimeZone(
+  f1: CustomFormats,
+  timeZone?: string
+): CustomFormats {
+  if (!timeZone) {
+    return {};
+  }
+  const mfFormats = IntlMessageFormat.formats;
+  return {
+    ...mfFormats,
+    ...f1,
+    date: deepMergeOptions(
+      setTimeZoneInOptions(mfFormats.date, timeZone),
+      setTimeZoneInOptions(f1.date || {}, timeZone)
+    ),
+    time: deepMergeOptions(
+      setTimeZoneInOptions(mfFormats.time, timeZone),
+      setTimeZoneInOptions(f1.time || {}, timeZone)
+    ),
+  };
+}
 
 export function formatMessage(
   {
@@ -46,6 +106,7 @@ export function formatMessage(
     defaultLocale,
     defaultFormats,
     onError,
+    timeZone,
   }: Pick<
     IntlConfig,
     | 'locale'
@@ -54,6 +115,7 @@ export function formatMessage(
     | 'defaultLocale'
     | 'defaultFormats'
     | 'onError'
+    | 'timeZone'
   >,
   state: Formatters,
   messageDescriptor: MessageDescriptor = {id: ''},
@@ -68,6 +130,8 @@ export function formatMessage(
   invariant(id, '[React Intl] An `id` must be provided to format a message.');
 
   const message = messages && messages[id];
+  formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
+  defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);
 
   let formattedMessageParts: Array<string | object> = [];
 
