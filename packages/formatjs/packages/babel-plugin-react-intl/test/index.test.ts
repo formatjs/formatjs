@@ -1,4 +1,4 @@
-import {join, sep} from 'path';
+import {join} from 'path';
 import * as fs from 'fs';
 import {transformFileSync} from '@babel/core';
 import plugin from '../src';

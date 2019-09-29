@@ -143,19 +143,20 @@ describe('selectUnit', function() {
     });
   });
   it('should work for year', function() {
-    expect(selectUnit(past(360 * DAY), Date.now())).to.deep.equal({
+    const date = new Date(1569720003837);
+    expect(selectUnit(past(360 * DAY), date)).to.deep.equal({
       value: -1,
       unit: 'year',
     });
-    expect(selectUnit(future(360 * DAY), Date.now())).to.deep.equal({
+    expect(selectUnit(future(360 * DAY), date)).to.deep.equal({
       value: 1,
       unit: 'year',
     });
-    expect(selectUnit(past(1000 * DAY), Date.now())).to.deep.equal({
-      value: -3,
+    expect(selectUnit(past(1000 * DAY), date)).to.deep.equal({
+      value: -2,
       unit: 'year',
     });
-    expect(selectUnit(future(1000 * DAY), Date.now())).to.deep.equal({
+    expect(selectUnit(future(1000 * DAY), date)).to.deep.equal({
       value: 3,
       unit: 'year',
     });
