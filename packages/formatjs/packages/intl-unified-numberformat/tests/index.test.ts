@@ -12,7 +12,7 @@ if (typeof (Intl.NumberFormat as any).__addUnitLocaleData === 'function') {
 
 const NumberFormat = (Intl.NumberFormat as any) as typeof UnifiedNumberFormat;
 
-describe('UnifiedNumberFormat', function() {
+function test() {
   it('should work', function() {
     expect(
       new NumberFormat('zh', {
@@ -73,4 +73,10 @@ describe('UnifiedNumberFormat', function() {
       }).formatToParts(1000)
     ).toEqual('1,000 bit');
   });
-});
+}
+
+if (process.version.startsWith('v12')) {
+  describe.skip('UnifiedNumberFormat', test);
+} else {
+  describe('UnifiedNumberFormat', test);
+}

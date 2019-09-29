@@ -4,7 +4,6 @@
  * See the accompanying LICENSE file for terms.
  */
 
-/* global describe, it */
 'use strict';
 
 import {extractAllRelativeFields} from '../src';
