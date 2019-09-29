@@ -17,6 +17,7 @@ export default [
     },
     plugins: [resolveConfig]
   },
+  
   {
     input: './lib/index.js',
     output: {
@@ -43,8 +44,17 @@ export default [
     input: './lib/polyfill.js',
     output: {
       sourcemap: true,
-      file: 'dist/umd/polyfill-intl-pluralrules.js',
+      file: 'dist/umd/polyfill.js',
       format: 'umd'
+    },
+    plugins: [resolveConfig]
+  },
+  {
+    input: './dist-es6/polyfill-locales.js',
+    output: {
+      sourcemap: true,
+      file: 'dist/umd/polyfill-with-locales.js',
+      format: 'umd',
     },
     plugins: [resolveConfig]
   },
