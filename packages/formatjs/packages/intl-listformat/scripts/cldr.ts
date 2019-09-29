@@ -1,43 +1,54 @@
-import {extractAllListPatterns} from 'formatjs-extract-cldr-data';
+import {
+  extractAllListPatterns,
+  getAllListLocales,
+} from 'formatjs-extract-cldr-data';
 import {resolve, join} from 'path';
 import {outputFileSync} from 'fs-extra';
-import * as serialize from 'serialize-javascript';
-import {isEmpty} from 'lodash';
+import {
+  ListPatternLocaleData,
+  getAliasesByLang,
+  getParentLocalesByLang,
+} from '@formatjs/intl-utils';
 
 const data = extractAllListPatterns();
-
-function extractLocales(locales?: string[] | string): Record<string, string> {
-  return Object.keys(data).reduce(function(
-    files: Record<string, string>,
-    locale
-  ) {
-    if (!Array.isArray(locales) || locales.includes(locale)) {
-      var lang = locale.split('-')[0];
-      if (!isEmpty(data[locale])) {
-        if (!files[lang]) {
-          files[lang] = serialize({fields: data[locale], locale});
-        } else {
-          files[lang] += ',' + serialize({fields: data[locale], locale});
-        }
-      }
+const langData = getAllListLocales().reduce(
+  (all: Record<string, ListPatternLocaleData>, locale) => {
+    if (locale === 'en-US-POSIX') {
+      locale = 'en-US';
     }
-    return files;
+    const lang = locale.split('-')[0];
+    if (!all[lang]) {
+      const aliases = getAliasesByLang(lang);
+      const parentLocales = getParentLocalesByLang(lang);
+      all[lang] = {
+        data: {
+          [locale]: data[locale],
+        },
+        availableLocales: [locale],
+        aliases,
+        parentLocales,
+      };
+    } else {
+      all[lang].data[locale] = data[locale];
+      all[lang].availableLocales.push(locale);
+    }
+
+    return all;
   },
-  {});
-}
+  {}
+);
 
 const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
 
 // Dist all locale files to dist/locale-data
-const allLocaleFiles = extractLocales();
-Object.keys(allLocaleFiles).forEach(function(lang) {
+Object.keys(langData).forEach(function(lang) {
   const destFile = join(allLocaleDistDir, lang + '.js');
   outputFileSync(
     destFile,
     `/* @generated */	
 // prettier-ignore
 if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
-  Intl.ListFormat.__addLocaleData(${allLocaleFiles[lang]})
+  Intl.ListFormat.__addLocaleData(${JSON.stringify(langData[lang])})
 }`
   );
 });
@@ -48,8 +59,8 @@ outputFileSync(
   `/* @generated */	
 // prettier-ignore  
 import IntlListFormat from "./core";\n
-IntlListFormat.__addLocaleData(${Object.keys(allLocaleFiles)
-    .map(lang => allLocaleFiles[lang])
+IntlListFormat.__addLocaleData(${Object.keys(langData)
+    .map(lang => JSON.stringify(langData[lang]))
     .join(',\n')});	
 export default IntlListFormat;	
   `

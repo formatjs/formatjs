@@ -9,7 +9,7 @@ import {Locale} from './types';
 import generateFieldExtractorFn from './utils';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
-import {ListPatternData, ListPatternLocaleData} from '@formatjs/intl-utils';
+import {ListPatternFieldsData, ListPattern} from '@formatjs/intl-utils';
 
 const listPattternLocales = globSync('*/listPatterns.json', {
   cwd: resolve(
@@ -29,24 +29,39 @@ export function getAllLocales() {
   }).map(dirname);
 }
 
-function loadListPatterns(locale: Locale): ListPatternLocaleData['fields'] {
+function serializeToPatternData(
+  d: ListTypes['listPattern-type-standard']
+): ListPattern {
+  return {
+    start: d.start,
+    middle: d.middle,
+    end: d.end,
+    pair: d['2'],
+  };
+}
+
+function loadListPatterns(locale: Locale): ListPatternFieldsData {
   const patterns = (require(`cldr-misc-full/main/${locale}/listPatterns.json`) as typeof ListPatterns)
     .main[locale as 'en'].listPatterns;
   return {
-    standard: {
-      long: patterns['listPattern-type-standard'],
-      short: patterns['listPattern-type-standard-short'],
-      narrow: patterns['listPattern-type-standard-narrow'],
+    conjunction: {
+      long: serializeToPatternData(patterns['listPattern-type-standard']),
+      short: serializeToPatternData(
+        patterns['listPattern-type-standard-short']
+      ),
+      narrow: serializeToPatternData(
+        patterns['listPattern-type-standard-narrow']
+      ),
     },
-    or: {
-      long: patterns['listPattern-type-or'],
-      short: patterns['listPattern-type-or-short'],
-      narrow: patterns['listPattern-type-or-narrow'],
+    disjunction: {
+      long: serializeToPatternData(patterns['listPattern-type-or']),
+      short: serializeToPatternData(patterns['listPattern-type-or-short']),
+      narrow: serializeToPatternData(patterns['listPattern-type-or-narrow']),
     },
     unit: {
-      long: patterns['listPattern-type-unit'],
-      short: patterns['listPattern-type-unit-short'],
-      narrow: patterns['listPattern-type-unit-narrow'],
+      long: serializeToPatternData(patterns['listPattern-type-unit']),
+      short: serializeToPatternData(patterns['listPattern-type-unit-short']),
+      narrow: serializeToPatternData(patterns['listPattern-type-unit-narrow']),
     },
   };
 }
@@ -55,6 +70,8 @@ function hasListPatterns(locale: Locale): boolean {
   return listPattternLocales.includes(locale);
 }
 
-export default generateFieldExtractorFn<
-  Record<string, ListPatternData | undefined>
->(loadListPatterns, hasListPatterns, getAllLocales());
+export default generateFieldExtractorFn<ListPatternFieldsData>(
+  loadListPatterns,
+  hasListPatterns,
+  getAllLocales()
+);

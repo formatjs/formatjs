@@ -5,7 +5,6 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "jest",
     "build": "tsc",
     "cover": "npm t -- --coverage"
   },
@@ -19,6 +18,7 @@
     "cldr-dates-full": "^35.1.0",
     "cldr-misc-full": "^35.1.0",
     "cldr-units-full": "^35.1.0",
+    "cldr-numbers-full": "^35.1.0",
     "glob": "^7.0.0",
     "lodash": "^4.17.15"
   },

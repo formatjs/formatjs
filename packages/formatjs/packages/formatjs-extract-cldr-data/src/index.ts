@@ -38,3 +38,6 @@ export function extractAllListPatterns(options: Opts = {}) {
 export {getAllLanguages} from './locales';
 
 export const processAliases = process;
+export {getAllLocales as getAllDateFieldsLocales} from './extract-relative';
+export {getAllLocales as getAllListLocales} from './extract-list';
+export {getAllLocales as getAllUnitsLocales} from './extract-units';

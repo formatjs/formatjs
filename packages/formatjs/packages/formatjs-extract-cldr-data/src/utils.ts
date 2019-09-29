@@ -1,5 +1,9 @@
 import {Locale} from './types';
-import {getParentLocaleHierarchy} from '@formatjs/intl-utils';
+import {
+  getLocaleHierarchy,
+  getAliasesByLang,
+  getParentLocalesByLang,
+} from '@formatjs/intl-utils';
 import {pickBy, isEmpty, isEqual} from 'lodash';
 
 function dedupeUsingParentHierarchy<DataType extends Record<string, any>>(
@@ -35,10 +39,16 @@ export default function generateFieldExtractorFn<
         return;
       }
 
-      const localesIncludingParents = [
+      const lang = locale.split('-')[0];
+
+      const aliases = getAliasesByLang(lang);
+      const parentLocales = getParentLocalesByLang(lang);
+
+      const localesIncludingParents = getLocaleHierarchy(
         locale,
-        ...getParentLocaleHierarchy(locale),
-      ].filter(l => availableLocales.includes(l));
+        aliases,
+        parentLocales
+      ).filter(l => availableLocales.includes(l));
 
       dedupeUsingParentHierarchy(
         ...localesIncludingParents.map(loadFieldsFn)

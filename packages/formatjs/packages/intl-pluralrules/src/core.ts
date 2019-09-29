@@ -1,12 +1,17 @@
 import {
   LDMLPluralRule,
-  findSupportedLocale,
   toObject,
   getOption,
-  supportedLocalesOf,
+  PluralRulesLocaleData,
+  PluralRulesData,
+  unpackData,
+  getCanonicalLocales,
+  createResolveLocale,
+  supportedLocales,
+  isMissingLocaleDataError,
+  setInternalSlot,
+  getInternalSlot,
 } from '@formatjs/intl-utils';
-
-const DEFAULT_LOCALE = 'en';
 
 function validateInstance(instance: any, method: string) {
   if (!(instance instanceof PluralRules)) {
@@ -61,19 +66,6 @@ function getNumberOption<T extends string>(
   return defaultNumberOption(val, min, max, fallback);
 }
 
-interface IntlObj {
-  '[[MinimumIntegerDigits]]': number;
-  '[[MinimumFractionDigits]]': number | undefined;
-  '[[MaximumFractionDigits]]': number | undefined;
-  '[[MinimumSignificantDigits]]': number | undefined;
-  '[[MaximumSignificantDigits]]': number | undefined;
-  '[[RoundingType]]':
-    | 'significantDigits'
-    | 'fractionDigits'
-    | 'compactRounding';
-  '[[Notation]]': 'compact';
-}
-
 /**
  * https://tc39.es/ecma402/#sec-setnfdigitoptions
  * https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-setnfdigitoptions
@@ -83,7 +75,8 @@ interface IntlObj {
  * @param mxfdDefault
  */
 function setNumberFormatDigitOptions(
-  intlObj: IntlObj,
+  internalSlotMap: WeakMap<PluralRules, PluralRulesInternal>,
+  pl: PluralRules,
   opts: Intl.PluralRulesOptions,
   mnfdDefault: number,
   mxfdDefault: number
@@ -93,28 +86,28 @@ function setNumberFormatDigitOptions(
   let mxfd = (opts as any).maximumFractionDigits;
   let mnsd = (opts as any).minimumSignificantDigits;
   let mxsd = (opts as any).maximumSignificantDigits;
-  intlObj['[[MinimumIntegerDigits]]'] = mnid;
-  intlObj['[[MinimumFractionDigits]]'] = mnfd;
-  intlObj['[[MaximumFractionDigits]]'] = mxfd;
+  setInternalSlot(internalSlotMap, pl, 'minimumIntegerDigits', mnid);
+  setInternalSlot(internalSlotMap, pl, 'minimumFractionDigits', mnfd);
+  setInternalSlot(internalSlotMap, pl, 'maximumFractionDigits', mxfd);
   if (mnsd !== undefined || mxsd !== undefined) {
-    intlObj['[[RoundingType]]'] = 'significantDigits';
+    setInternalSlot(internalSlotMap, pl, 'roundingType', 'significantDigits');
     mnsd = defaultNumberOption(mnsd, 1, 21, 1);
     mxsd = defaultNumberOption(mxsd, mnsd, 21, 21);
-    intlObj['[[MinimumSignificantDigits]]'] = mnsd;
-    intlObj['[[MaximumSignificantDigits]]'] = mxsd;
+    setInternalSlot(internalSlotMap, pl, 'minimumSignificantDigits', mnsd);
+    setInternalSlot(internalSlotMap, pl, 'maximumSignificantDigits', mxsd);
   } else if (mnfd !== undefined || mxfd !== undefined) {
-    intlObj['[[RoundingType]]'] = 'fractionDigits';
+    setInternalSlot(internalSlotMap, pl, 'roundingType', 'fractionDigits');
     mnfd = defaultNumberOption(mnfd, 0, 20, mnfdDefault);
     const mxfdActualDefault = Math.max(mnfd, mxfdDefault);
     mxfd = defaultNumberOption(mxfd, mnfd, 20, mxfdActualDefault);
-    intlObj['[[MinimumFractionDigits]]'] = mnfd;
-    intlObj['[[MaximumFractionDigits]]'] = mxfd;
-  } else if (intlObj['[[Notation]]'] === 'compact') {
-    intlObj['[[RoundingType]]'] = 'compactRounding';
+    setInternalSlot(internalSlotMap, pl, 'minimumFractionDigits', mnfd);
+    setInternalSlot(internalSlotMap, pl, 'maximumFractionDigits', mxfd);
+  } else if (getInternalSlot(internalSlotMap, pl, 'notation') === 'compact') {
+    setInternalSlot(internalSlotMap, pl, 'roundingType', 'compactRounding');
   } else {
-    intlObj['[[RoundingType]]'] = 'fractionDigits';
-    intlObj['[[MinimumFractionDigits]]'] = mnfdDefault;
-    intlObj['[[MaximumFractionDigits]]'] = mxfdDefault;
+    setInternalSlot(internalSlotMap, pl, 'roundingType', 'fractionDigits');
+    setInternalSlot(internalSlotMap, pl, 'minimumFractionDigits', mnfdDefault);
+    setInternalSlot(internalSlotMap, pl, 'maximumFractionDigits', mxfdDefault);
   }
 }
 
@@ -170,39 +163,53 @@ function toRawFixed(
   return m;
 }
 
-function formatNumericToString(intlObj: IntlObj, x: number) {
+function formatNumericToString(
+  internalSlotMap: WeakMap<PluralRules, PluralRulesInternal>,
+  pl: PluralRules,
+  x: number
+) {
+  const minimumSignificantDigits = getInternalSlot(
+    internalSlotMap,
+    pl,
+    'minimumSignificantDigits'
+  );
+  const maximumSignificantDigits = getInternalSlot(
+    internalSlotMap,
+    pl,
+    'maximumSignificantDigits'
+  );
   if (
-    intlObj['[[MinimumSignificantDigits]]'] !== undefined &&
-    intlObj['[[MaximumSignificantDigits]]'] !== undefined
+    minimumSignificantDigits !== undefined &&
+    maximumSignificantDigits !== undefined
   ) {
     return toRawPrecision(
       x,
-      intlObj['[[MinimumSignificantDigits]]'],
-      intlObj['[[MaximumSignificantDigits]]']
+      minimumSignificantDigits,
+      maximumSignificantDigits
     );
   }
   return toRawFixed(
     x,
-    intlObj['[[MinimumIntegerDigits]]'],
-    intlObj['[[MinimumFractionDigits]]']!,
-    intlObj['[[MaximumFractionDigits]]']!
+    getInternalSlot(internalSlotMap, pl, 'minimumIntegerDigits'),
+    getInternalSlot(internalSlotMap, pl, 'minimumFractionDigits')!,
+    getInternalSlot(internalSlotMap, pl, 'maximumFractionDigits')!
   );
 }
 
-export class PluralRules implements Intl.PluralRules, IntlObj {
-  readonly '[[Locale]]': string;
-  readonly '[[Type]]': Intl.PluralRulesOptions['type'] = 'cardinal';
-  '[[MinimumIntegerDigits]]': number;
-  '[[MinimumFractionDigits]]': number | undefined;
-  '[[MaximumFractionDigits]]': number | undefined;
-  '[[MinimumSignificantDigits]]': number | undefined;
-  '[[MaximumSignificantDigits]]': number | undefined;
-  '[[RoundingType]]':
-    | 'significantDigits'
-    | 'fractionDigits'
-    | 'compactRounding';
-  '[[Notation]]': 'compact';
-  private pluralRuleData: PluralRulesData;
+interface PluralRulesInternal {
+  initializedPluralRules: boolean;
+  locale: string;
+  type: 'cardinal' | 'ordinal';
+  minimumIntegerDigits: number;
+  minimumFractionDigits: number | undefined;
+  maximumFractionDigits: number | undefined;
+  minimumSignificantDigits: number | undefined;
+  maximumSignificantDigits: number | undefined;
+  roundingType: 'significantDigits' | 'fractionDigits' | 'compactRounding';
+  notation: 'compact';
+}
+
+export class PluralRules implements Intl.PluralRules {
   constructor(locales?: string | string[], options?: Intl.PluralRulesOptions) {
     // test262/test/intl402/RelativeTimeFormat/constructor/constructor/newtarget-undefined.js
     // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
@@ -211,152 +218,186 @@ export class PluralRules implements Intl.PluralRules, IntlObj {
     if (!newTarget) {
       throw new TypeError("Intl.PluralRules must be called with 'new'");
     }
+    const requestedLocales = getCanonicalLocales(locales);
+    const opt: any = Object.create(null);
     const opts =
       options === undefined ? Object.create(null) : toObject(options);
-    if (locales === undefined) {
-      this['[[Locale]]'] = DEFAULT_LOCALE;
-    } else {
-      const localesToLookup = [
-        ...(Array.isArray(locales) ? locales : [locales]),
-        DEFAULT_LOCALE,
-      ];
-      const resolvedLocale = findSupportedLocale(
-        localesToLookup,
-        PluralRules.__localeData__
-      );
-      if (!resolvedLocale) {
-        throw new Error(
-          `No locale data has been added to IntlRelativeTimeFormat for: ${localesToLookup.join(
-            ', '
-          )}`
-        );
-      }
-
-      this['[[Locale]]'] = resolvedLocale;
-    }
-    this['[[Type]]'] = getOption(
-      opts,
-      'type',
-      'string',
-      ['cardinal', 'ordinal'],
-      'cardinal'
+    setInternalSlot(
+      PluralRules.__INTERNAL_SLOT_MAP__,
+      this,
+      'initializedPluralRules',
+      true
     );
-    // test262/test/intl402/PluralRules/constructor-options-throwing-getters.js
-    getOption(
+    const matcher = getOption(
       opts,
       'localeMatcher',
       'string',
       ['best fit', 'lookup'],
       'best fit'
     );
-
-    this.pluralRuleData = PluralRules.__localeData__[this['[[Locale]]']];
-    setNumberFormatDigitOptions(this, opts, 0, 3);
+    opt.localeMatcher = matcher;
+    // test262/test/intl402/PluralRules/prototype/select/tainting.js
+    // TODO: This is kinda cheating, but unless we rely on WeakMap to
+    // hide the internal slots it's hard to be completely safe from tainting
+    setInternalSlot(
+      PluralRules.__INTERNAL_SLOT_MAP__,
+      this,
+      'type',
+      getOption(opts, 'type', 'string', ['cardinal', 'ordinal'], 'cardinal')
+    );
+    setNumberFormatDigitOptions(
+      PluralRules.__INTERNAL_SLOT_MAP__,
+      this,
+      opts,
+      0,
+      3
+    );
+    const r = createResolveLocale(PluralRules.getDefaultLocale)(
+      PluralRules.availableLocales,
+      requestedLocales,
+      opt,
+      PluralRules.relevantExtensionKeys,
+      PluralRules.localeData
+    );
+    setInternalSlot(
+      PluralRules.__INTERNAL_SLOT_MAP__,
+      this,
+      'locale',
+      r.locale
+    );
   }
   public resolvedOptions() {
     validateInstance(this, 'resolvedOptions');
     const opts = Object.create(Object.prototype);
-
-    Object.defineProperties(opts, {
-      locale: {
-        value: this['[[Locale]]'],
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      },
-      type: {
-        value: (this['[[Type]]'] as String).valueOf(),
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      },
+    opts.locale = getInternalSlot(
+      PluralRules.__INTERNAL_SLOT_MAP__,
+      this,
+      'locale'
+    );
+    opts.type = getInternalSlot(
+      PluralRules.__INTERNAL_SLOT_MAP__,
+      this,
+      'type'
+    );
+    ([
+      'minimumIntegerDigits',
+      'minimumFractionDigits',
+      'maximumFractionDigits',
+      'minimumSignificantDigits',
+      'maximumSignificantDigits',
+    ] as Array<keyof PluralRulesInternal>).forEach(field => {
+      const val = getInternalSlot(
+        PluralRules.__INTERNAL_SLOT_MAP__,
+        this,
+        field
+      );
+      if (val !== undefined) {
+        opts[field] = val;
+      }
     });
-    if (this['[[MinimumIntegerDigits]]'] !== undefined) {
-      Object.defineProperty(opts, 'minimumIntegerDigits', {
-        value: this['[[MinimumIntegerDigits]]'],
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      });
-    }
-    if (this['[[MinimumFractionDigits]]'] !== undefined) {
-      Object.defineProperty(opts, 'minimumFractionDigits', {
-        value: this['[[MinimumFractionDigits]]'],
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      });
-    }
-    if (this['[[MaximumFractionDigits]]'] !== undefined) {
-      Object.defineProperty(opts, 'maximumFractionDigits', {
-        value: this['[[MaximumFractionDigits]]'],
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      });
-    }
-    if (this['[[MinimumSignificantDigits]]'] !== undefined) {
-      Object.defineProperty(opts, 'minimumSignificantDigits', {
-        value: this['[[MinimumSignificantDigits]]'],
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      });
-    }
-    if (this['[[MaximumSignificantDigits]]'] !== undefined) {
-      Object.defineProperty(opts, 'maximumSignificantDigits', {
-        value: this['[[MaximumSignificantDigits]]'],
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      });
-    }
 
-    Object.defineProperty(opts, 'pluralCategories', {
-      value: [
-        ...this.pluralRuleData.categories[
-          (this['[[Type]]'] as String).valueOf() as 'cardinal'
-        ],
+    opts.pluralCategories = [
+      ...PluralRules.localeData[opts.locale].categories[
+        opts.type as 'cardinal'
       ],
-      writable: true,
-      enumerable: true,
-      configurable: true,
-    });
+    ];
     return opts;
   }
   public select(val: number): LDMLPluralRule {
     validateInstance(this, 'select');
-    return this.pluralRuleData.fn(
-      formatNumericToString(this, Math.abs(Number(val))),
-      this['[[Type]]'] == 'ordinal'
+    const locale = getInternalSlot(
+      PluralRules.__INTERNAL_SLOT_MAP__,
+      this,
+      'locale'
+    );
+    const type = getInternalSlot(
+      PluralRules.__INTERNAL_SLOT_MAP__,
+      this,
+      'type'
+    );
+    return PluralRules.localeData[locale].fn(
+      formatNumericToString(
+        PluralRules.__INTERNAL_SLOT_MAP__,
+        this,
+        Math.abs(Number(val))
+      ),
+      type == 'ordinal'
     );
   }
   toString() {
     return '[object Intl.PluralRules]';
   }
-  public static supportedLocalesOf(locales: string | string[]) {
-    return supportedLocalesOf(locales, PluralRules.__localeData__);
+  public static supportedLocalesOf(
+    locales?: string | string[],
+    options?: Pick<Intl.PluralRulesOptions, 'localeMatcher'>
+  ) {
+    return supportedLocales(
+      PluralRules.availableLocales,
+      getCanonicalLocales(locales),
+      options
+    );
   }
-  public static __addLocaleData(data: PluralRulesData) {
-    PluralRules.__localeData__[data.locale] = data;
+  public static __addLocaleData(...data: PluralRulesLocaleData[]) {
+    for (const datum of data) {
+      const availableLocales: string[] = Object.keys(
+        [
+          ...datum.availableLocales,
+          ...Object.keys(datum.aliases),
+          ...Object.keys(datum.parentLocales),
+        ].reduce((all: Record<string, true>, k) => {
+          all[k] = true;
+          return all;
+        }, {})
+      );
+      availableLocales.forEach(locale => {
+        try {
+          PluralRules.localeData[locale] = unpackData(locale, datum);
+        } catch (e) {
+          if (isMissingLocaleDataError(e)) {
+            // If we just don't have data for certain locale, that's ok
+            return;
+          }
+          throw e;
+        }
+      });
+    }
+    PluralRules.availableLocales = Object.keys(PluralRules.localeData);
+    if (!PluralRules.__defaultLocale) {
+      PluralRules.__defaultLocale = PluralRules.availableLocales[0];
+    }
   }
-  private static __localeData__: Record<string, PluralRulesData> = {};
+  static localeData: Record<string, PluralRulesData> = {};
+  private static availableLocales: string[] = [];
+  private static __defaultLocale = 'en';
+  private static getDefaultLocale() {
+    return PluralRules.__defaultLocale;
+  }
+  private static relevantExtensionKeys = [];
   public static polyfilled = true;
-}
-
-export interface PluralRulesData {
-  categories: {
-    cardinal: string[];
-    ordinal: string[];
-  };
-  locale: string;
-  fn: (val: number | string, ord?: boolean) => LDMLPluralRule;
+  private static readonly __INTERNAL_SLOT_MAP__ = new WeakMap<
+    PluralRules,
+    PluralRulesInternal
+  >();
 }
 
 try {
   // https://github.com/tc39/test262/blob/master/test/intl402/PluralRules/length.js
   Object.defineProperty(PluralRules, 'length', {
     value: 0,
+    writable: false,
+    enumerable: false,
+    configurable: true,
+  });
+  // https://github.com/tc39/test262/blob/master/test/intl402/RelativeTimeFormat/constructor/length.js
+  Object.defineProperty(PluralRules.prototype.constructor, 'length', {
+    value: 0,
+    writable: false,
+    enumerable: false,
+    configurable: true,
+  });
+  // https://github.com/tc39/test262/blob/master/test/intl402/RelativeTimeFormat/constructor/supportedLocalesOf/length.js
+  Object.defineProperty(PluralRules.supportedLocalesOf, 'length', {
+    value: 1,
     writable: false,
     enumerable: false,
     configurable: true,

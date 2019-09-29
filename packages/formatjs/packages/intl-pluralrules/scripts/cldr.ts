@@ -2,6 +2,11 @@ import {getAllLanguages} from 'formatjs-extract-cldr-data';
 import {resolve} from 'path';
 import {outputFileSync} from 'fs-extra';
 import * as serialize from 'serialize-javascript';
+import {
+  PluralRulesLocaleData,
+  getAliasesByLang,
+  getParentLocalesByLang,
+} from '@formatjs/intl-utils';
 const Compiler = require('make-plural-compiler');
 Compiler.load(
   require('cldr-core/supplemental/plurals.json'),
@@ -9,7 +14,7 @@ Compiler.load(
 );
 
 const languages = getAllLanguages();
-const allData: Record<string, any> = {};
+const allData: Record<string, PluralRulesLocaleData> = {};
 languages.forEach(lang => {
   let compiler, fn;
   try {
@@ -20,9 +25,15 @@ languages.forEach(lang => {
     return;
   }
   allData[lang] = {
-    locale: lang,
-    categories: compiler.categories,
-    fn,
+    data: {
+      [lang]: {
+        categories: compiler.categories,
+        fn,
+      },
+    },
+    aliases: getAliasesByLang(lang),
+    parentLocales: getParentLocalesByLang(lang),
+    availableLocales: [lang],
   };
   outputFileSync(
     resolve(__dirname, `../dist/locale-data/${lang}.js`),
@@ -42,9 +53,11 @@ outputFileSync(
 // prettier-ignore
 require('./polyfill')
 if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
+  Intl.PluralRules.__addLocaleData(
 ${Object.keys(allData)
-  .map(lang => `Intl.PluralRules.__addLocaleData(${serialize(allData[lang])})`)
-  .join('\n')}
+  .map(lang => serialize(allData[lang]))
+  .join(',\n')}
+  )
 }
 `
 );
@@ -55,9 +68,11 @@ outputFileSync(
   `
 import './polyfill';
 if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
+  Intl.PluralRules.__addLocaleData(
 ${Object.keys(allData)
-  .map(lang => `Intl.PluralRules.__addLocaleData(${serialize(allData[lang])})`)
-  .join('\n')}
+  .map(lang => serialize(allData[lang]))
+  .join(',\n')}
+  )
 }
 `
 );

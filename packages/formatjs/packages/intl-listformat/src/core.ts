@@ -1,10 +1,15 @@
 import {
-  findSupportedLocale,
   toObject,
   getOption,
-  getParentLocaleHierarchy,
-  supportedLocalesOf,
   ListPatternLocaleData,
+  unpackData,
+  setInternalSlot,
+  getCanonicalLocales,
+  supportedLocales,
+  createResolveLocale,
+  getInternalSlot,
+  ListPatternFieldsData,
+  ListPatternData,
 } from '@formatjs/intl-utils';
 
 export interface IntlListFormatOptions {
@@ -77,31 +82,15 @@ interface Placeable {
   value: string;
 }
 
-/**
- * Find the correct field data in our CLDR data
- * Also merge with parent data since our CLDR is very packed
- * @param locale locale
- */
-function findFields(locale: string) {
-  const localeData = ListFormat.__localeData__;
-  const parentHierarchy = getParentLocaleHierarchy(locale);
-
-  const dataToMerge = [locale, ...parentHierarchy]
-    .map(l => localeData[l.toLowerCase()])
-    .filter(Boolean);
-  if (!dataToMerge.length) {
-    throw new Error(
-      `Locale data added to ListFormat is missing 'fields' for "${locale}"`
-    );
-  }
-  dataToMerge.reverse();
-  return dataToMerge.reduce(
-    (all: ListPatternLocaleData['fields'], d) => ({
-      ...all,
-      ...d.fields,
-    }),
-    {} as ListPatternLocaleData['fields']
-  );
+interface ListFormatInternal {
+  style: IntlListFormatOptions['style'];
+  type: IntlListFormatOptions['type'];
+  locale: string;
+  templatePair: string;
+  templateStart: string;
+  templateEnd: string;
+  templateMiddle: string;
+  initializedListFormat: boolean;
 }
 
 function validateInstance(instance: any, method: string) {
@@ -112,26 +101,6 @@ function validateInstance(instance: any, method: string) {
       )}`
     );
   }
-}
-
-const DEFAULT_LOCALE = new Intl.NumberFormat().resolvedOptions().locale;
-
-function findListData(
-  locale: string,
-  type: ResolvedIntlListFormatOptions['type'] = 'conjunction',
-  style: ResolvedIntlListFormatOptions['style'] = 'long'
-) {
-  const data = findFields(locale);
-  const dataType =
-    type == 'conjunction' ? 'standard' : type == 'disjunction' ? 'or' : 'unit';
-  const patternData = data[dataType];
-  if (!patternData) {
-    return;
-  }
-  if (style == 'narrow' && !patternData.narrow) {
-    return patternData.short;
-  }
-  return patternData[style];
 }
 
 /**
@@ -152,13 +121,17 @@ function stringListFromIterable(list: any[]): string[] {
   return result;
 }
 
-function createPartsFromList(listFormat: ListFormat, list: string[]) {
+function createPartsFromList(
+  internalSlotMap: WeakMap<ListFormat, ListFormatInternal>,
+  lf: ListFormat,
+  list: string[]
+) {
   const size = list.length;
   if (size === 0) {
     return [];
   }
   if (size === 2) {
-    const pattern = listFormat['[[TemplatePair]]'];
+    const pattern = getInternalSlot(internalSlotMap, lf, 'templatePair');
     const first = {type: 'element', value: list[0]};
     const second = {type: 'element', value: list[1]};
     return deconstructPattern(pattern, {'0': first, '1': second});
@@ -172,11 +145,11 @@ function createPartsFromList(listFormat: ListFormat, list: string[]) {
   while (i >= 0) {
     let pattern;
     if (i === 0) {
-      pattern = listFormat['[[TemplateStart]]'];
+      pattern = getInternalSlot(internalSlotMap, lf, 'templateStart');
     } else if (i < size - 2) {
-      pattern = listFormat['[[TemplateMiddle]]'];
+      pattern = getInternalSlot(internalSlotMap, lf, 'templateMiddle');
     } else {
-      pattern = listFormat['[[TemplateEnd]]'];
+      pattern = getInternalSlot(internalSlotMap, lf, 'templateEnd');
     }
     const head = {type: 'element', value: list[i]};
     const tail = parts;
@@ -229,14 +202,6 @@ function deconstructPattern(
 }
 
 export default class ListFormat {
-  private readonly '[[Style]]': IntlListFormatOptions['style'];
-  private readonly '[[Type]]': IntlListFormatOptions['type'];
-  private readonly '[[Locale]]': string;
-  public readonly '[[TemplatePair]]': string;
-  public readonly '[[TemplateStart]]': string;
-  public readonly '[[TemplateEnd]]': string;
-  public readonly '[[TemplateMiddle]]': string;
-  private readonly _nf: Intl.NumberFormat;
   constructor(locales?: string | string[], options?: IntlListFormatOptions) {
     // test262/test/intl402/ListFormat/constructor/constructor/newtarget-undefined.js
     // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
@@ -245,91 +210,98 @@ export default class ListFormat {
     if (!newTarget) {
       throw new TypeError("Intl.ListFormat must be called with 'new'");
     }
-    const opts: IntlListFormatOptions =
-      options === undefined ? Object.create(null) : toObject(options);
-    const localesToLookup =
-      locales === undefined
-        ? [DEFAULT_LOCALE]
-        : [...Intl.NumberFormat.supportedLocalesOf(locales), DEFAULT_LOCALE];
-    const resolvedLocale = findSupportedLocale(
-      localesToLookup,
-      ListFormat.__localeData__
+    setInternalSlot(
+      ListFormat.__INTERNAL_SLOT_MAP__,
+      this,
+      'initializedListFormat',
+      true
     );
-    if (!resolvedLocale) {
-      throw new Error(
-        `No locale data has been added to IntlListFormat for: ${localesToLookup.join(
-          ', '
-        )}`
-      );
-    }
-    this['[[Locale]]'] = resolvedLocale;
-
-    // Just to pass test262
-    getOption(
+    const requestedLocales = getCanonicalLocales(locales);
+    const opt: any = Object.create(null);
+    const opts =
+      options === undefined ? Object.create(null) : toObject(options);
+    const matcher = getOption(
       opts,
       'localeMatcher',
       'string',
       ['best fit', 'lookup'],
       'best fit'
     );
-    this['[[Type]]'] = getOption(
+    opt.localeMatcher = matcher;
+    const {localeData} = ListFormat;
+    const r = createResolveLocale(ListFormat.getDefaultLocale)(
+      ListFormat.availableLocales,
+      requestedLocales,
+      opt,
+      ListFormat.relevantExtensionKeys,
+      localeData
+    );
+    setInternalSlot(ListFormat.__INTERNAL_SLOT_MAP__, this, 'locale', r.locale);
+    const type: keyof ListPatternFieldsData = getOption(
       opts,
       'type',
       'string',
       ['conjunction', 'disjunction', 'unit'],
       'conjunction'
     );
-    this['[[Style]]'] = getOption(
+    setInternalSlot(ListFormat.__INTERNAL_SLOT_MAP__, this, 'type', type);
+    const style: keyof ListPatternData = getOption(
       opts,
       'style',
       'string',
-      ['long', 'narrow', 'short'],
+      ['long', 'short', 'narrow'],
       'long'
     );
-    const data = findListData(
-      this['[[Locale]]'],
-      this['[[Type]]'],
-      this['[[Style]]']
+    setInternalSlot(ListFormat.__INTERNAL_SLOT_MAP__, this, 'style', style);
+    const {dataLocale} = r;
+    const dataLocaleData = localeData[dataLocale];
+    const dataLocaleTypes = dataLocaleData![type];
+    const templates = dataLocaleTypes![style]!;
+    setInternalSlot(
+      ListFormat.__INTERNAL_SLOT_MAP__,
+      this,
+      'templatePair',
+      templates.pair
     );
-    if (!data) {
-      throw new Error(`Missing locale data for ${this['[[Locale]]']}`);
-    }
-    this['[[TemplateStart]]'] = data.start;
-    this['[[TemplateEnd]]'] = data.end;
-    this['[[TemplateMiddle]]'] = data.middle;
-    this['[[TemplatePair]]'] = data[2];
-    this._nf = new Intl.NumberFormat(locales);
+    setInternalSlot(
+      ListFormat.__INTERNAL_SLOT_MAP__,
+      this,
+      'templateStart',
+      templates.start
+    );
+    setInternalSlot(
+      ListFormat.__INTERNAL_SLOT_MAP__,
+      this,
+      'templateMiddle',
+      templates.middle
+    );
+    setInternalSlot(
+      ListFormat.__INTERNAL_SLOT_MAP__,
+      this,
+      'templateEnd',
+      templates.end
+    );
   }
   format(elements: string[]): string {
     validateInstance(this, 'format');
     const parts = stringListFromIterable(elements);
-    return createPartsFromList(this, parts).reduce(
-      (all, el) => all + el.value,
-      ''
-    );
+    return createPartsFromList(
+      ListFormat.__INTERNAL_SLOT_MAP__,
+      this,
+      parts
+    ).reduce((all, el) => all + el.value, '');
   }
   formatToParts(elements: string[]): Part[] {
     validateInstance(this, 'format');
-    const parts = createPartsFromList(this, stringListFromIterable(elements));
-    const result = [];
+    const parts = createPartsFromList(
+      ListFormat.__INTERNAL_SLOT_MAP__,
+      this,
+      stringListFromIterable(elements)
+    );
+    const result: Part[] = [];
     let n = 0;
     for (const part of parts) {
-      const o = Object.create(Object.prototype);
-      Object.defineProperties(o, {
-        type: {
-          value: part.type,
-          writable: true,
-          enumerable: true,
-          configurable: true,
-        },
-        value: {
-          value: part.value,
-          writable: true,
-          enumerable: true,
-          configurable: true,
-        },
-      });
-      result[n] = o;
+      result[n] = {...part} as Part;
       n++;
     }
     return result;
@@ -337,72 +309,62 @@ export default class ListFormat {
 
   resolvedOptions(): ResolvedIntlListFormatOptions {
     validateInstance(this, 'resolvedOptions');
-
-    // test262/test/intl402/ListFormat/prototype/resolvedOptions/type.js
-    const opts = Object.create(Object.prototype);
-    Object.defineProperties(opts, {
-      locale: {
-        value: this._nf.resolvedOptions().locale,
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      },
-      type: {
-        value: (this['[[Type]]'] as String).valueOf(),
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      },
-      style: {
-        value: (this['[[Style]]'] as String).valueOf(),
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      },
-    });
-    return opts;
+    return {
+      locale: getInternalSlot(ListFormat.__INTERNAL_SLOT_MAP__, this, 'locale'),
+      type: getInternalSlot(ListFormat.__INTERNAL_SLOT_MAP__, this, 'type')!,
+      style: getInternalSlot(ListFormat.__INTERNAL_SLOT_MAP__, this, 'style')!,
+    };
   }
 
   public static supportedLocalesOf(
     locales: string | string[],
-    opts?: Pick<IntlListFormatOptions, 'localeMatcher'>
+    options?: Pick<IntlListFormatOptions, 'localeMatcher'>
   ) {
-    // test262/test/intl402/ListFormat/constructor/supportedLocalesOf/options-toobject.js
-    let localeMatcher: IntlListFormatOptions['localeMatcher'] = 'best fit';
-    // test262/test/intl402/ListFormat/constructor/supportedLocalesOf/options-null.js
-    if (opts === null) {
-      throw new TypeError('opts cannot be null');
-    }
-    if (opts) {
-      localeMatcher = getOption(
-        opts,
-        'localeMatcher',
-        'string',
-        ['best fit', 'lookup'],
-        'best fit'
-      );
-    }
     // test262/test/intl402/ListFormat/constructor/supportedLocalesOf/result-type.js
-    return supportedLocalesOf(
-      Intl.NumberFormat.supportedLocalesOf(locales, {localeMatcher}),
-      ListFormat.__localeData__
+    return supportedLocales(
+      ListFormat.availableLocales,
+      getCanonicalLocales(locales),
+      options
     );
   }
 
-  static __localeData__: Record<string, ListPatternLocaleData> = {};
   public static __addLocaleData(...data: ListPatternLocaleData[]) {
     for (const datum of data) {
-      if (!(datum && datum.locale)) {
-        throw new Error(
-          'Locale data provided to ListFormat is missing a ' +
-            '`locale` property value'
-        );
-      }
-
-      ListFormat.__localeData__[datum.locale.toLowerCase()] = datum;
+      const availableLocales: string[] = Object.keys(
+        [
+          ...datum.availableLocales,
+          ...Object.keys(datum.aliases),
+          ...Object.keys(datum.parentLocales),
+        ].reduce((all: Record<string, true>, k) => {
+          all[k] = true;
+          return all;
+        }, {})
+      );
+      availableLocales.forEach(locale => {
+        try {
+          ListFormat.localeData[locale] = unpackData(locale, datum);
+        } catch (e) {
+          // If we can't unpack this data, ignore the locale
+        }
+      });
+    }
+    ListFormat.availableLocales = Object.keys(ListFormat.localeData);
+    if (!ListFormat.__defaultLocale) {
+      ListFormat.__defaultLocale = ListFormat.availableLocales[0];
     }
   }
+  static localeData: Record<string, ListPatternFieldsData> = {};
+  private static availableLocales: string[] = [];
+  private static __defaultLocale = 'en';
+  private static getDefaultLocale() {
+    return ListFormat.__defaultLocale;
+  }
+  private static relevantExtensionKeys = [];
   public static polyfilled = true;
+  private static readonly __INTERNAL_SLOT_MAP__ = new WeakMap<
+    ListFormat,
+    ListFormatInternal
+  >();
 }
 
 try {

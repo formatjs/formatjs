@@ -1,7 +1,9 @@
-export interface UnifiedNumberFormatLocaleData {
-  locale: string;
-  units: Record<string, UnitData>;
-}
+import {LocaleData} from './types';
+
+export type UnifiedNumberFormatLocaleData = LocaleData<
+  Record<string, UnitData>
+>;
+
 interface UnitPattern {
   one?: string;
   other?: string;

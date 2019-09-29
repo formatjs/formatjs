@@ -1,26 +1,29 @@
-export type LDMLPluralRule = 'zero' | 'one' | 'two' | 'few' | 'many' | 'other';
+import {LocaleData} from './types';
+import {LDMLPluralRule} from './plural-rules-types';
+
 export interface FieldData {
-  displayName: string;
-  relative: {
-    '0'?: string;
-    '1'?: string;
-    '-1'?: string;
-    '2'?: string;
-    '-2'?: string;
-    '3'?: string;
-    '-3'?: string;
-  };
-  relativeTime: {
-    future: RelativeTimeData;
-    past: RelativeTimeData;
-  };
+  '0'?: string;
+  '1'?: string;
+  '-1'?: string;
+  '2'?: string;
+  '-2'?: string;
+  '3'?: string;
+  '-3'?: string;
+  future: RelativeTimeData;
+  past: RelativeTimeData;
 }
 
 type RelativeTimeData = {[u in LDMLPluralRule]?: string};
 
-type LocaleFieldsData = {[f in Field]?: FieldData};
+export type UnpackedLocaleFieldsData = {
+  [f in RelativeTimeField]?: FieldData;
+} & {nu: Array<string | null>};
 
-type Field =
+export type LocaleFieldsData = {
+  [f in RelativeTimeField]?: FieldData;
+} & {nu?: Array<string | null>};
+
+export type RelativeTimeField =
   | 'second'
   | 'second-short'
   | 'second-narrow'
@@ -46,7 +49,4 @@ type Field =
   | 'year-short'
   | 'year-narrow';
 
-export interface RelativeTimeLocaleData {
-  locale: string;
-  fields: LocaleFieldsData;
-}
+export type RelativeTimeLocaleData = LocaleData<LocaleFieldsData>;
