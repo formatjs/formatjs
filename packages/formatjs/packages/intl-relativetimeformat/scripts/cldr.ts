@@ -3,7 +3,7 @@ import {
   getAllDateFieldsLocales,
 } from 'formatjs-extract-cldr-data';
 import {resolve, join} from 'path';
-import {outputFileSync} from 'fs-extra';
+import {outputFileSync, outputJSONSync} from 'fs-extra';
 import {
   RelativeTimeLocaleData,
   getAliasesByLang,
@@ -51,6 +51,12 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
   Intl.RelativeTimeFormat.__addLocaleData(${JSON.stringify(langData[lang])})
 }`
   );
+});
+
+// Dist all json locale files to dist/locale-data
+Object.keys(langData).forEach(function(lang) {
+  const destFile = join(allLocaleDistDir, lang + '.json');
+  outputJSONSync(destFile, langData[lang]);
 });
 
 // Aggregate all into src/locales.ts

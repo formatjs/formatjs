@@ -16,36 +16,38 @@ npm install @formatjs/intl-relativetimeformat
 This package requires the following capabilities:
 
 1. [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules)
-2. [Object.is](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is)
 
 **NOTE: `formatToParts` only works on Node 10+ due to lack of `Intl.NumberFormat.prototype.formatToParts` natively**
 
 ## Usage
 
+### Ponyfill
+
+To use the ponyfill, import it along with its data:
+
+```tsx
+import IntlRelativeTimeFormat from '@formatjs/intl-relativetimeformat';
+// locale-data for zh
+IntlRelativeTimeFormat.__addLocaleData(require('@formatjs/intl-relativetimeformat/dist/locale-data/zh.json'));
+
+// locale-data for zh
+IntlRelativeTimeFormat.__addLocaleData(require('@formatjs/intl-relativetimeformat/dist/locale-data/en.json'));
+
+new IntlRelativeTimeFormat('zh-CN').format(-1, 'second'); // '1秒钟前'
+```
+
+### Polyfill
+
 To use the polyfill, just import it to make sure that a fully functional Intl.RelativeTimeFormat is available in your environment:
 
-```
-import '@formatjs/intl-relativetimeformat/polyfill'
-```
-
-If Intl.RelativeTimeFormat already exists, the polyfill will not be loaded.
-
-To use this as a ponyfill:
-
-```
-import IntlRelativeTimeFormat from '@formatjs/intl-relativetimeformat'
-```
-
-By default, this library comes with `en` data. To load additional locale, you can include them on demand:
-
-```js
+```tsx
 import '@formatjs/intl-relativetimeformat/polyfill';
 import '@formatjs/intl-relativetimeformat/dist/locale-data/de'; // Add locale data for de
 ```
 
 If you want to polyfill all locales (e.g for Node):
 
-```
+```tsx
 import '@formatjs/intl-relativetimeformat/polyfill-locales'
 ```
 
