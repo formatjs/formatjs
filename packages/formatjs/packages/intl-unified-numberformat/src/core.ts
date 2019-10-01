@@ -56,6 +56,7 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
     locales: string | string[],
     options: UnifiedNumberFormatOptions = {}
   ) {
+    options = options === undefined ? Object.create(null) : toObject(options);
     const {style, unit, unitDisplay, ...coreOpts} = options;
     if (style === 'unit') {
       if (!unit) {
@@ -81,10 +82,8 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
       );
       const requestedLocales = getCanonicalLocales(locales);
       const opt: any = Object.create(null);
-      const opts =
-        options === undefined ? Object.create(null) : toObject(options);
       const matcher = getOption(
-        opts,
+        options,
         'localeMatcher',
         'string',
         ['best fit', 'lookup'],
