@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@1.2.1...@formatjs/intl-pluralrules@1.3.0) (2019-10-01)
+
+
+### Features
+
+* **@formatjs/intl-pluralrules:** add UMD polyfill-with-locales, fix [#195](https://github.com/formatjs/formatjs/issues/195) ([8d3e03a](https://github.com/formatjs/formatjs/commit/8d3e03a))
+* **@formatjs/intl-utils:** add IE11-safe getCanonicalLocales, ([b5f37c4](https://github.com/formatjs/formatjs/commit/b5f37c4)), closes [#200](https://github.com/formatjs/formatjs/issues/200)
+
+
+
+
+
 ## [1.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@1.2.0...@formatjs/intl-pluralrules@1.2.1) (2019-09-27)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules

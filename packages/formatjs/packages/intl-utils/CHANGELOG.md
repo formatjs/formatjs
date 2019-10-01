@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@1.3.0...@formatjs/intl-utils@1.4.0) (2019-10-01)
+
+
+### Features
+
+* **@formatjs/intl-utils:** add IE11-safe getCanonicalLocales, ([b5f37c4](https://github.com/formatjs/formatjs/commit/b5f37c4)), closes [#200](https://github.com/formatjs/formatjs/issues/200)
+
+
+
+
+
 # [1.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@1.2.0...@formatjs/intl-utils@1.3.0) (2019-09-27)
 
 

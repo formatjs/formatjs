@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@1.0.1...@formatjs/intl-unified-numberformat@2.0.0) (2019-10-01)
+
+
+### Features
+
+* **@formatjs/intl-unified-numberformat:** rename __addUnitLocaleData to __addLocaleData ([d251733](https://github.com/formatjs/formatjs/commit/d251733))
+* **@formatjs/intl-utils:** add IE11-safe getCanonicalLocales, ([b5f37c4](https://github.com/formatjs/formatjs/commit/b5f37c4)), closes [#200](https://github.com/formatjs/formatjs/issues/200)
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-unified-numberformat:** rename __addUnitLocaleData to __addLocaleData for
+consistency with other polyfills
+
+
+
+
+
 ## [1.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@1.0.0...@formatjs/intl-unified-numberformat@1.0.1) (2019-09-27)
 
 **Note:** Version bump only for package @formatjs/intl-unified-numberformat

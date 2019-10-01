@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.1.1...@formatjs/intl-relativetimeformat@4.2.0) (2019-10-01)
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** dist out raw json data for ponyfill, fix [#201](https://github.com/formatjs/formatjs/issues/201) ([cda3cf2](https://github.com/formatjs/formatjs/commit/cda3cf2))
+* **@formatjs/intl-utils:** add IE11-safe getCanonicalLocales, ([b5f37c4](https://github.com/formatjs/formatjs/commit/b5f37c4)), closes [#200](https://github.com/formatjs/formatjs/issues/200)
+
+
+
+
+
 ## [4.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.1.0...@formatjs/intl-relativetimeformat@4.1.1) (2019-09-27)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat
