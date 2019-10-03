@@ -27,13 +27,3 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ------------------------------------------------------------------------------  
-Pluralization rules built from                                                  
-https://github.com/papandreou/node-cldr                                         
-which is licensed under the BSD license and has the following license:          
-                                                                                
-Copyright (c) 2012, Andreas Lind Petersen                                       
-All rights reserved.                                                            
-                                                                                
-See the following for more details:                                             
-https://github.com/papandreou/node-cldr/blob/master/LICENSE                     
- 

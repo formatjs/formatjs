@@ -21,7 +21,7 @@
     "postversion": "npm run prettier",
     "prepublishOnly": "npm run build",
     "prettier": "prettier --write packages/*/{test,tests,src,scripts}/**/*.ts packages/babel-plugin-react-intl/test/**/*.js {src,scripts,test,tests}/**/*.js **/*.md",
-    "prettier:check": "npm run prettier -- --check",
+    "prettier:check": "prettier --check packages/*/{test,tests,src,scripts}/**/*.ts packages/babel-plugin-react-intl/test/**/*.js {src,scripts,test,tests}/**/*.js **/*.md",
     "test": "lerna run lint && npm run prettier:check && cross-env TS_NODE_PROJECT=tsconfig.cjs.json lerna run test"
   },
   "dependencies": {},
@@ -93,6 +93,5 @@
     "prettier",
     "test"
   ],
-  "author": "Seth Bertalotto <sbertal@verizonmedia.com>",
-  "license": "BSD-3-Clause"
+  "author": "Seth Bertalotto <sbertal@verizonmedia.com>"
 }
