@@ -21,22 +21,22 @@ _Note: This `IntlMessageFormat` API may change to stay in sync with ECMA-402, bu
 
 Messages are provided into the constructor as a `String` message, or a [pre-parsed AST][parser] object.
 
-```js
-var msg = new IntlMessageFormat(message, locales, [formats], [opts]);
+```tsx
+const msg = new IntlMessageFormat(message, locales, [formats], [opts]);
 ```
 
 The string `message` is parsed, then stored internally in a compiled form that is optimized for the `format()` method to produce the formatted string for displaying to the user.
 
-```js
-var output = msg.format(values);
+```tsx
+const output = msg.format(values);
 ```
 
 ### Common Usage Example
 
 A very common example is formatting messages that have numbers with plural labels. With this package you can make sure that the string is properly formatted for a person's locale, e.g.:
 
-```js
-var MESSAGES = {
+```tsx
+const MESSAGES = {
   'en-US': {
     NUM_PHOTOS:
       'You have {numPhotos, plural, ' +
@@ -54,13 +54,13 @@ var MESSAGES = {
   },
 };
 
-var output;
+const output;
 
-var enNumPhotos = new IntlMessageFormat(MESSAGES['en-US'].NUM_PHOTOS, 'en-US');
+const enNumPhotos = new IntlMessageFormat(MESSAGES['en-US'].NUM_PHOTOS, 'en-US');
 output = enNumPhotos.format({numPhotos: 1000});
 console.log(output); // => "You have 1,000 photos."
 
-var esNumPhotos = new IntlMessageFormat(MESSAGES['es-MX'].NUM_PHOTOS, 'es-MX');
+const esNumPhotos = new IntlMessageFormat(MESSAGES['es-MX'].NUM_PHOTOS, 'es-MX');
 output = esNumPhotos.format({numPhotos: 1000});
 console.log(output); // => "Usted tiene 1,000 fotos."
 ```
@@ -101,10 +101,14 @@ This package assumes that the [`Intl`][intl] global object exists in the runtime
 
 ### Loading Intl MessageFormat in Node.js
 
-Simply `require()` this package:
+Either do:
 
-```js
-var IntlMessageFormat = require('intl-messageformat');
+```tsx
+import IntlMessageFormat from 'intl-messageformat';
+```
+
+```tsx
+const IntlMessageFormat = require('intl-messageformat').default;
 ```
 
 **NOTE: Your Node has to include [full ICU](https://nodejs.org/api/intl.html)**
@@ -124,8 +128,8 @@ To create a message to format, use the `IntlMessageFormat` constructor. The cons
 - **[opts]** - `{ formatters?: Formatters }`: Optional options.
   - `formatters`: Map containing memoized formatters for performance.
 
-```js
-var msg = new IntlMessageFormat('My name is {name}.', 'en-US');
+```tsx
+const msg = new IntlMessageFormat('My name is {name}.', 'en-US');
 ```
 
 ### Locale Resolution
@@ -136,8 +140,8 @@ var msg = new IntlMessageFormat('My name is {name}.', 'en-US');
 
 This method returns an object with the options values that were resolved during instance creation. It currently only contains a `locale` property; here's an example:
 
-```js
-var msg = new IntlMessageFormat('', 'en-us');
+```tsx
+const msg = new IntlMessageFormat('', 'en-us');
 console.log(msg.resolvedOptions().locale); // => "en-US"
 ```
 
@@ -147,8 +151,8 @@ Notice how the specified locale was the all lower-case value: `"en-us"`, but it 
 
 Once the message is created, formatting the message is done by calling the `format()` method on the instance and passing a collection of `values`:
 
-```js
-var output = msg.format({name: 'Eric'});
+```tsx
+const output = msg.format({name: 'Eric'});
 console.log(output); // => "My name is Eric."
 ```
 
@@ -163,7 +167,7 @@ Return the underlying AST for the compiled message
 Formats message containing HTML tags & can be used to embed rich text formatters such as React. For example:
 
 ```tsx
-var mf = new IntlMessageFormat('hello <b>world</b>', 'en');
+const mf = new IntlMessageFormat('hello <b>world</b>', 'en');
 mf.formatHTMLMessage({b: str => <span>{str}</span>});
 // returns ['hello ', React element rendered as <span>world</span>]
 ```
@@ -183,8 +187,8 @@ This is not meant to be a full-fledged method to embed HTML, but rather to tag s
 
 Define custom format styles is useful you need supply a set of options to the underlying formatter; e.g., outputting a number in USD:
 
-```js
-var msg = new IntlMessageFormat('The price is: {price, number, USD}', 'en-US', {
+```tsx
+const msg = new IntlMessageFormat('The price is: {price, number, USD}', 'en-US', {
   number: {
     USD: {
       style: 'currency',
@@ -193,7 +197,7 @@ var msg = new IntlMessageFormat('The price is: {price, number, USD}', 'en-US', {
   },
 });
 
-var output = msg.format({price: 100});
+const output = msg.format({price: 100});
 console.log(output); // => "The price is: $100.00"
 ```
 
@@ -253,13 +257,13 @@ You have {numPhotos, plural,
 }
 ```
 
-```js
-var MESSAGES = {
+```tsx
+const MESSAGES = {
     photos: '...', // String from code block above.
     ...
 };
 
-var msg = new IntlMessageFormat(MESSAGES.photos, 'en-US');
+const msg = new IntlMessageFormat(MESSAGES.photos, 'en-US');
 
 console.log(msg.format({numPhotos: 0}));    // => "You have no photos."
 console.log(msg.format({numPhotos: 1}));    // => "You have one photo."
