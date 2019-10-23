@@ -529,6 +529,28 @@ describe('IntlMessageFormat', function() {
     });
   });
 
+  it('should handle offset in plural #', function() {
+    const msg = `{num_guests, plural, offset:1
+      =0 {{host} does not give a party.}
+      =1 {{host} invites {guest} to their party.}
+      =2 {{host} invites {guest} and one other person to their party.}
+      other {{host} invites {guest} and # other people to their party.}
+    }`;
+    const mf = new IntlMessageFormat(msg, 'en');
+    expect(
+      mf.format({host: 'The host', guest: 'Alice', num_guests: 0})
+    ).to.equal('The host does not give a party.');
+    expect(
+      mf.format({host: 'The host', guest: 'Alice', num_guests: 1})
+    ).to.equal('The host invites Alice to their party.');
+    expect(
+      mf.format({host: 'The host', guest: 'Alice', num_guests: 2})
+    ).to.equal('The host invites Alice and one other person to their party.');
+    expect(
+      mf.format({host: 'The host', guest: 'Alice', num_guests: 3})
+    ).to.equal('The host invites Alice and 2 other people to their party.');
+  });
+
   describe('xml', function() {
     it('simple message', function() {
       var mf = new IntlMessageFormat('hello <b>world</b>', 'en');

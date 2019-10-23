@@ -123,7 +123,9 @@ export class IntlMessageFormat {
         );
       }
       // Parse string messages into an AST.
-      this.ast = IntlMessageFormat.__parse(message);
+      this.ast = IntlMessageFormat.__parse(message, {
+        normalizeHashtagInPlural: false,
+      });
     } else {
       this.ast = message;
     }
@@ -160,6 +162,7 @@ export class IntlMessageFormat {
       this.formatters,
       this.formats,
       values,
+      undefined,
       this.message
     );
   formatHTMLMessage = (

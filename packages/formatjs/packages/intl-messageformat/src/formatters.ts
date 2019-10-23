@@ -53,7 +53,7 @@ export type MessageFormatPart = LiteralPart | ArgumentPart;
 export type PrimitiveType = string | number | boolean | null | undefined | Date;
 
 const ESCAPE_HASH_REGEX = /\\#/g;
-
+const PLURAL_HASH = /(^|[^\\])#/g;
 class FormatError extends Error {
   public readonly variableId?: string;
   constructor(msg?: string, variableId?: string) {
@@ -91,15 +91,23 @@ export function formatToParts(
   formatters: Formatters,
   formats: Formats,
   values?: Record<string, any>,
+  currentPluralValue?: number,
   // For debugging
   originalMessage?: string
 ): MessageFormatPart[] {
   // Hot path for straight simple msg translations
   if (els.length === 1 && isLiteralElement(els[0])) {
+    let value = els[0].value;
+    if (typeof currentPluralValue === 'number') {
+      value = value.replace(
+        PLURAL_HASH,
+        '$1' + formatters.getNumberFormat(locales).format(currentPluralValue)
+      );
+    }
     return [
       {
         type: PART_TYPE.literal,
-        value: els[0].value.replace(ESCAPE_HASH_REGEX, '#'),
+        value: value.replace(ESCAPE_HASH_REGEX, '#'),
       },
     ];
   }
@@ -107,9 +115,16 @@ export function formatToParts(
   for (const el of els) {
     // Exit early for string parts.
     if (isLiteralElement(el)) {
+      let value = el.value;
+      if (typeof currentPluralValue === 'number') {
+        value = value.replace(
+          PLURAL_HASH,
+          '$1' + formatters.getNumberFormat(locales).format(currentPluralValue)
+        );
+      }
       result.push({
         type: PART_TYPE.literal,
-        value: el.value.replace(ESCAPE_HASH_REGEX, '#'),
+        value: value.replace(ESCAPE_HASH_REGEX, '#'),
       });
       continue;
     }
@@ -208,7 +223,14 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
         );
       }
       result.push(
-        ...formatToParts(opt.value, locales, formatters, formats, values)
+        ...formatToParts(
+          opt.value,
+          locales,
+          formatters,
+          formats,
+          values,
+          value - (el.offset || 0)
+        )
       );
       continue;
     }
@@ -231,6 +253,7 @@ export function formatToString(
     formatters,
     formats,
     values,
+    undefined,
     originalMessage
   );
   // Hot path for straight simple msg translations
@@ -357,6 +380,7 @@ export function formatHTMLMessage(
     formatters,
     formats,
     values,
+    undefined,
     originalMessage
   );
   const objectParts: Record<string, ArgumentPart['value']> = {};
