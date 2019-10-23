@@ -552,6 +552,15 @@ describe('IntlMessageFormat', function() {
   });
 
   describe('xml', function() {
+    it('should handle @ correctly', function() {
+      const mf = new IntlMessageFormat('hi @{there}', 'en');
+      expect(
+        mf.formatHTMLMessage({
+          there: '2008',
+        })
+      ).to.deep.equal(['hi @2008']);
+    });
+
     it('simple message', function() {
       var mf = new IntlMessageFormat('hello <b>world</b>', 'en');
       expect(mf.formatHTMLMessage({b: str => ({str})})).to.deep.equal([
