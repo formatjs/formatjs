@@ -178,9 +178,7 @@ describe('<FormattedTimeParts>', () => {
 
     mountPartsWithProvider({value: date.toISOString(), children}, intl);
 
-    expect(children.mock.calls[0][0]).toEqual(
-      intl.formatTimeToParts(date)
-    );
+    expect(children.mock.calls[0][0]).toEqual(intl.formatTimeToParts(date));
   });
 
   it('renders date 0 if value is ""', () => {
@@ -188,9 +186,7 @@ describe('<FormattedTimeParts>', () => {
 
     mountPartsWithProvider({value: '', children}, intl);
 
-    expect(children.mock.calls[0][0]).toEqual(
-      intl.formatTimeToParts(date)
-    );
+    expect(children.mock.calls[0][0]).toEqual(intl.formatTimeToParts(date));
   });
 
   it('falls back and warns on invalid Intl.DateTimeFormat options', () => {

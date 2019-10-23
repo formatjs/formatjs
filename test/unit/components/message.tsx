@@ -160,13 +160,13 @@ describe('<FormattedMessage>', () => {
     const descriptor = {
       id: 'hello',
       defaultMessage: 'Hello, World!',
-      tagName: ''
+      tagName: '',
     };
 
-    const rendered = mountWithProvider(
-      descriptor,
-      {...providerProps, textComponent: undefined}
-    );
+    const rendered = mountWithProvider(descriptor, {
+      ...providerProps,
+      textComponent: undefined,
+    });
 
     expect(rendered.text()).toBe(intl.formatMessage(descriptor));
   });
@@ -314,15 +314,17 @@ describe('<FormattedMessage>', () => {
           time: {
             short: {
               second: 'numeric',
-              timeZoneName: 'long'
-            }
-          }
+              timeZoneName: 'long',
+            },
+          },
         },
         timeZone: 'Asia/Tokyo',
       }
     );
 
-    expect(rendered.text()).toBe('Hello, 1/1/70 - 9:00:00 AM Japan Standard Time');
+    expect(rendered.text()).toBe(
+      'Hello, 1/1/70 - 9:00:00 AM Japan Standard Time'
+    );
   });
 
   it('should merge timeZone into defaultFormats', function() {
@@ -340,15 +342,87 @@ describe('<FormattedMessage>', () => {
           time: {
             short: {
               second: 'numeric',
-              timeZoneName: 'long'
-            }
-          }
+              timeZoneName: 'long',
+            },
+          },
         },
         timeZone: 'Asia/Tokyo',
       }
     );
 
-    expect(rendered.text()).toBe('Hello, 1/1/70 - 9:00:00 AM Japan Standard Time');
+    expect(rendered.text()).toBe(
+      'Hello, 1/1/70 - 9:00:00 AM Japan Standard Time'
+    );
+  });
+
+  it('should handle defaultFormat merge correctly', function() {
+    const rendered = mountWithProvider(
+      {
+        id: 'hello',
+        defaultMessage: 'The day is {now, date, weekday-long}.',
+        values: {
+          now: new Date(0),
+        },
+      },
+      {
+        ...providerProps,
+        defaultLocale: undefined,
+        formats: {
+          date: {
+            'weekday-long': {weekday: 'long'},
+          },
+          time: {
+            hour: {hour: 'numeric'},
+          },
+        },
+        defaultFormats: {
+          date: {
+            'weekday-long': {weekday: 'long'},
+          },
+          time: {
+            hour: {hour: 'numeric'},
+          },
+        },
+        timeZone: undefined,
+      }
+    );
+
+    expect(rendered.text()).toBe('The day is Wednesday.');
+  });
+
+  it('should handle defaultFormat merge correctly w/ timeZone', function() {
+    const rendered = mountWithProvider(
+      {
+        id: 'hello',
+        defaultMessage: 'The day is {now, date, weekday-long}.',
+        values: {
+          now: new Date(0),
+        },
+      },
+      {
+        ...providerProps,
+        defaultLocale: undefined,
+        formats: {
+          date: {
+            'weekday-long': {weekday: 'long'},
+          },
+          time: {
+            hour: {hour: 'numeric'},
+          },
+        },
+        defaultFormats: {
+          date: {
+            'weekday-long': {weekday: 'long'},
+          },
+          time: {
+            hour: {hour: 'numeric'},
+          },
+        },
+        timeZone: 'Asia/Tokyo',
+      }
+    );
+
+    expect(rendered.text()).toBe('The day is Thursday.');
   });
 
   it('should re-render when `values` are different', () => {

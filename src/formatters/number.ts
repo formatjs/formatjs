@@ -38,8 +38,9 @@ export function getFormatter(
   options: Parameters<IntlFormatters['formatNumber']>[1] = {}
 ) {
   const {format} = options;
-  let defaults =
-    ((format && getNamedFormat(formats!, 'number', format, onError)) || {}) as UnifiedNumberFormatOptions;
+  let defaults = ((format &&
+    getNamedFormat(formats!, 'number', format, onError)) ||
+    {}) as UnifiedNumberFormatOptions;
   const filteredOptions = filterProps(options, NUMBER_FORMAT_OPTIONS, defaults);
 
   return getNumberFormat(locale, filteredOptions);

@@ -60,7 +60,7 @@ function deepMergeFormatsAndSetTimeZone(
   timeZone?: string
 ): CustomFormats {
   if (!timeZone) {
-    return {};
+    return f1;
   }
   const mfFormats = IntlMessageFormat.formats;
   return {
@@ -128,7 +128,6 @@ export function formatMessage(
 
   // `id` is a required field of a Message Descriptor.
   invariant(id, '[React Intl] An `id` must be provided to format a message.');
-
   const message = messages && messages[id];
   formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
   defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);

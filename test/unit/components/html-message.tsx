@@ -2,7 +2,7 @@ import * as React from 'react';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 import FormattedHTMLMessage from '../../../src/components/html-message';
 import {createIntl} from '../../../src/components/provider';
-import {mount} from 'enzyme'
+import {mount} from 'enzyme';
 
 const mountWithProvider = mountFormattedComponentWithProvider(
   FormattedHTMLMessage
@@ -24,11 +24,13 @@ describe('<FormattedHTMLMessage>', () => {
     expect(FormattedHTMLMessage.displayName).toBeA('string');
   });
 
-  it('should throw if intl is not provided', function () {
-    expect(() => mount(<FormattedHTMLMessage id="foo"/>)).toThrow(/Could not find required `intl` object./)
-  })
+  it('should throw if intl is not provided', function() {
+    expect(() => mount(<FormattedHTMLMessage id="foo" />)).toThrow(
+      /Could not find required `intl` object./
+    );
+  });
 
-  it('should use textComponent if tagName is ""', function () {
+  it('should use textComponent if tagName is ""', function() {
     intl = createIntl({
       locale: 'en',
       defaultLocale: 'en-US',
@@ -37,17 +39,17 @@ describe('<FormattedHTMLMessage>', () => {
     const descriptor = {
       id: 'hello',
       defaultMessage: 'Hello, <b>World</b>!',
-      tagName: ''
-    }
+      tagName: '',
+    };
 
     const rendered = mountWithProvider(descriptor, intl).find('p');
 
     expect(rendered.prop('dangerouslySetInnerHTML')).toEqual({
       __html: intl.formatHTMLMessage(descriptor),
     });
-  })
+  });
 
-  it('should use span if textComponent & tagName is undefined', function () {
+  it('should use span if textComponent & tagName is undefined', function() {
     intl = createIntl({
       locale: 'en',
       defaultLocale: 'en-US',
@@ -56,15 +58,15 @@ describe('<FormattedHTMLMessage>', () => {
     const descriptor = {
       id: 'hello',
       defaultMessage: 'Hello, <b>World</b>!',
-      tagName: undefined
-    }
+      tagName: undefined,
+    };
 
     const rendered = mountWithProvider(descriptor, intl).find('span');
 
     expect(rendered.prop('dangerouslySetInnerHTML')).toEqual({
       __html: intl.formatHTMLMessage(descriptor),
     });
-  })
+  });
 
   it('renders a formatted HTML message in a <span>', () => {
     const descriptor = {

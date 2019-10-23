@@ -187,9 +187,7 @@ describe('<FormattedDateParts>', () => {
 
     mountPartsWithProvider({value: date + '', children}, intl);
 
-    expect(children.mock.calls[0][0]).toEqual(
-      intl.formatDateToParts(date)
-    );
+    expect(children.mock.calls[0][0]).toEqual(intl.formatDateToParts(date));
   });
 
   it('renders date 0 if value is ""', () => {
@@ -197,9 +195,7 @@ describe('<FormattedDateParts>', () => {
 
     mountPartsWithProvider({value: '', children}, intl);
 
-    expect(children.mock.calls[0][0]).toEqual(
-      intl.formatDateToParts(date)
-    );
+    expect(children.mock.calls[0][0]).toEqual(intl.formatDateToParts(date));
   });
 
   it('accepts `format` prop', () => {
