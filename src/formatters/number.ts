@@ -17,6 +17,15 @@ const NUMBER_FORMAT_OPTIONS: Array<keyof UnifiedNumberFormatOptions> = [
   'maximumFractionDigits',
   'minimumSignificantDigits',
   'maximumSignificantDigits',
+
+  // Unified NumberFormat (Stage 3 as of 10/22/19)
+  'compactDisplay',
+  'currencyDisplay',
+  'currencySign',
+  'notation',
+  'signDisplay',
+  'unit',
+  'unitDisplay',
 ];
 
 export function getFormatter(
@@ -30,7 +39,7 @@ export function getFormatter(
 ) {
   const {format} = options;
   let defaults =
-    (format && getNamedFormat(formats!, 'number', format, onError)) || {};
+    ((format && getNamedFormat(formats!, 'number', format, onError)) || {}) as UnifiedNumberFormatOptions;
   const filteredOptions = filterProps(options, NUMBER_FORMAT_OPTIONS, defaults);
 
   return getNumberFormat(locale, filteredOptions);
