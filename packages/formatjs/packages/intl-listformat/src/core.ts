@@ -140,7 +140,7 @@ function createPartsFromList(
     type: 'element',
     value: list[size - 1],
   };
-  let parts: Placeable[] = [last];
+  let parts: Placeable[] | Placeable = last;
   let i = size - 2;
   while (i >= 0) {
     let pattern;
@@ -152,8 +152,7 @@ function createPartsFromList(
       pattern = getInternalSlot(internalSlotMap, lf, 'templateEnd');
     }
     const head = {type: 'element', value: list[i]};
-    const tail = parts;
-    parts = deconstructPattern(pattern, {'0': head, '1': tail});
+    parts = deconstructPattern(pattern, {'0': head, '1': parts});
     i--;
   }
   return parts;
@@ -284,12 +283,19 @@ export default class ListFormat {
   }
   format(elements: string[]): string {
     validateInstance(this, 'format');
-    const parts = stringListFromIterable(elements);
-    return createPartsFromList(
+    let result = '';
+    const parts = createPartsFromList(
       ListFormat.__INTERNAL_SLOT_MAP__,
       this,
-      parts
-    ).reduce((all, el) => all + el.value, '');
+      stringListFromIterable(elements)
+    );
+    if (!Array.isArray(parts)) {
+      return parts.value;
+    }
+    for (const p of parts) {
+      result += p.value;
+    }
+    return result;
   }
   formatToParts(elements: string[]): Part[] {
     validateInstance(this, 'format');
@@ -298,11 +304,12 @@ export default class ListFormat {
       this,
       stringListFromIterable(elements)
     );
+    if (!Array.isArray(parts)) {
+      return [parts as Part];
+    }
     const result: Part[] = [];
-    let n = 0;
     for (const part of parts) {
-      result[n] = {...part} as Part;
-      n++;
+      result.push({...part} as Part);
     }
     return result;
   }

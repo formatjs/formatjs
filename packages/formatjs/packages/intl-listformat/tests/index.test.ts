@@ -21,6 +21,6 @@ describe('Intl.ListFormat', function() {
   });
   it('should resolve parent correctly', function() {
     expect(new ListFormat('en-AI').format(['1', '2'])).toBe('1 and 2');
-    expect(new ListFormat('en-AI').format(['1', '2', '3'])).toBe('1, 2, and 3');
+    expect(new ListFormat('en-AI').format(['1', '2', '3'])).toBe('1, 2 and 3');
   });
 });
