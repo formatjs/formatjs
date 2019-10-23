@@ -25,12 +25,22 @@ export function isUnitSupported(unit: Unit) {
 }
 
 export interface UnifiedNumberFormatOptions extends Intl.NumberFormatOptions {
+  compactDisplay?: 'short' | 'long';
+  currencyDisplay?: 'symbol' | 'code' | 'name' | 'narrowSymbol';
+  currencySign?: 'standard' | 'accounting';
+  notation?: 'standard' | 'scientific' | 'engineering' | 'compact';
+  signDisplay?: 'auto' | 'always' | 'never' | 'exceptZero';
   unit?: Unit;
   unitDisplay?: 'long' | 'short' | 'narrow';
 }
 
 export interface ResolvedUnifiedNumberFormatOptions
   extends Intl.ResolvedNumberFormatOptions {
+  compactDisplay?: 'short' | 'long';
+  currencyDisplay?: 'symbol' | 'code' | 'name' | 'narrowSymbol';
+  currencySign?: 'standard' | 'accounting';
+  notation?: 'standard' | 'scientific' | 'engineering' | 'compact';
+  signDisplay?: 'auto' | 'always' | 'never' | 'exceptZero';
   unit?: Unit;
   unitDisplay?: 'long' | 'short' | 'narrow';
 }
@@ -135,7 +145,7 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
   }
 
   resolvedOptions() {
-    const ro: ResolvedUnifiedNumberFormatOptions = this.nf.resolvedOptions();
+    const ro = this.nf.resolvedOptions() as ResolvedUnifiedNumberFormatOptions;
     const unit = getInternalSlot(
       UnifiedNumberFormat.__INTERNAL_SLOT_MAP__,
       this,
