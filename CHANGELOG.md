@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.4.0](https://github.com/formatjs/react-intl/compare/v3.3.2...v3.4.0) (2019-10-23)
+
+
+### Bug Fixes
+
+* fix format merging for message ([0a564dc](https://github.com/formatjs/react-intl/commit/0a564dc)), closes [#1500](https://github.com/formatjs/react-intl/issues/1500)
+
+
+### Features
+
+* add support for unified numberformat new options, fix [#1501](https://github.com/formatjs/react-intl/issues/1501) ([ff2629b](https://github.com/formatjs/react-intl/commit/ff2629b))
+
 ### [3.3.2](https://github.com/formatjs/react-intl/compare/v3.3.1...v3.3.2) (2019-09-27)
 
 
