@@ -68,6 +68,15 @@ describe('IntlMessageFormat', function() {
     });
   });
 
+  it('should handle @ correctly', function() {
+    const mf = new IntlMessageFormat('hi @{there}', 'en');
+    expect(
+      mf.format({
+        there: '2008',
+      })
+    ).to.equal('hi @2008');
+  });
+
   describe('#format( [object] )', function() {
     it('should be a function', function() {
       var mf = new IntlMessageFormat('');
