@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-react-intl",
-  "version": "4.1.20",
+  "version": "4.1.21",
   "description": "Extracts string messages for translation from modules that use React Intl.",
   "repository": {
     "type": "git",
@@ -15,7 +15,7 @@
     "@babel/helper-plugin-utils": "^7.0.0",
     "@types/babel__core": "^7.1.2",
     "fs-extra": "^8.0.1",
-    "intl-messageformat-parser": "^3.2.1"
+    "intl-messageformat-parser": "^3.2.2"
   },
   "scripts": {
     "clean": "rimraf lib test/fixtures/**/actual.json",

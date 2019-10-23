@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.3.3](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.3.2...intl-messageformat@7.3.3) (2019-10-23)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** fix formatHTMLMessage @ regex ([d1b7c8c](https://github.com/formatjs/formatjs/commit/d1b7c8c14a0b90f8d059a8dc3e12ce7976192975)), closes [#217](https://github.com/formatjs/formatjs/issues/217)
+* **intl-messageformat:** handle nested # in plural correctly, fix [#202](https://github.com/formatjs/formatjs/issues/202) ([22121b2](https://github.com/formatjs/formatjs/commit/22121b210b566ad3dd509e4cbf47d3c245742928))
+
+
+
+
+
 ## [7.3.2](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.3.1...intl-messageformat@7.3.2) (2019-10-01)
 
 **Note:** Version bump only for package intl-messageformat
