@@ -43,7 +43,7 @@
     "babel-jest": "^24.9.0",
     "benchmark": "^2.1.4",
     "chai": "^4.2.0",
-    "cldr-core": "^35.1.0",
+    "cldr-core": "^36.0.0",
     "coveralls": "^3.0.7",
     "cross-env": "^6.0.0",
     "eslint": "^6.5.1",
