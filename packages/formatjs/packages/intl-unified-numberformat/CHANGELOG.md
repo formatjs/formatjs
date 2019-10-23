@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@2.0.1...@formatjs/intl-unified-numberformat@2.1.0) (2019-10-23)
+
+
+### Features
+
+* **@formatjs/intl-unified-numberformat:** add correct typings to UnifiedNumberFormatOptions ([70b8baa](https://github.com/formatjs/formatjs/commit/70b8baafb2bd57ec30ab8d273391bd2c1561cc74))
+
+
+
+
+
 ## [2.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@2.0.0...@formatjs/intl-unified-numberformat@2.0.1) (2019-10-23)
 
 **Note:** Version bump only for package @formatjs/intl-unified-numberformat
