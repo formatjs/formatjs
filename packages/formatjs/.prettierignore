@@ -8,4 +8,5 @@ packages/intl-unified-numberformat/src/locales.ts
 packages/intl-utils/src/aliases.ts
 packages/intl-utils/src/parentLocales.ts
 packages/intl-listformat/src/locales.ts
+packages/babel-plugin-react-intl/src/options.ts
 test262/

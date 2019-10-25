@@ -1,13 +1,15 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "outDir": "dist",
-        "rootDir": "src",
+        // Targeting node >= 8
+        "target": "es2017",
+        "outDir": "lib",
+        "rootDir": ".",
         "module": "commonjs",
-        "baseUrl": ".",
-        "paths": {
-            "intl-messageformat-parser": ["../intl-messageformat-parser"]
-        },
+        "esModuleInterop": true,
+        "noUnusedLocals": true,
+        "sourceMap": true,
+        "allowSyntheticDefaultImports": true,
         "types": [
             "babel__core",
             "babel__generator",
@@ -22,14 +24,13 @@
             "istanbul-reports",
             // Don't include mocha here
             "jest",
-            "jest-diff",
             "node",
             "resolve",
             "stack-utils",
             "yargs"
-        ],
-        "sourceMap": true,
-        "esModuleInterop": true
+        ]
     },
-    "include": ["src/*.ts"]
+    // Also include tests in the default tsconfig.json for better editor integration.
+    "include": ["src/**/*.ts", "tests/**/*.ts"],
+    "exclude": ["tests/extract/integration_tests/typescript/**/*.tsx"],
 }

@@ -56,11 +56,17 @@ const MESSAGES = {
 
 const output;
 
-const enNumPhotos = new IntlMessageFormat(MESSAGES['en-US'].NUM_PHOTOS, 'en-US');
+const enNumPhotos = new IntlMessageFormat(
+  MESSAGES['en-US'].NUM_PHOTOS,
+  'en-US'
+);
 output = enNumPhotos.format({numPhotos: 1000});
 console.log(output); // => "You have 1,000 photos."
 
-const esNumPhotos = new IntlMessageFormat(MESSAGES['es-MX'].NUM_PHOTOS, 'es-MX');
+const esNumPhotos = new IntlMessageFormat(
+  MESSAGES['es-MX'].NUM_PHOTOS,
+  'es-MX'
+);
 output = esNumPhotos.format({numPhotos: 1000});
 console.log(output); // => "Usted tiene 1,000 fotos."
 ```
@@ -188,14 +194,18 @@ This is not meant to be a full-fledged method to embed HTML, but rather to tag s
 Define custom format styles is useful you need supply a set of options to the underlying formatter; e.g., outputting a number in USD:
 
 ```tsx
-const msg = new IntlMessageFormat('The price is: {price, number, USD}', 'en-US', {
-  number: {
-    USD: {
-      style: 'currency',
-      currency: 'USD',
+const msg = new IntlMessageFormat(
+  'The price is: {price, number, USD}',
+  'en-US',
+  {
+    number: {
+      USD: {
+        style: 'currency',
+        currency: 'USD',
+      },
     },
-  },
-});
+  }
+);
 
 const output = msg.format({price: 100});
 console.log(output); // => "The price is: $100.00"

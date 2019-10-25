@@ -3,6 +3,7 @@
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
         "**/node_modules/*/**": true,
-        "test262/**": true
+        "test262/**": true,
+        "**/test_artifacts/**": true,
     }
 }

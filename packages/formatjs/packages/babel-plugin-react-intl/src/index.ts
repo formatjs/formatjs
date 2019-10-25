@@ -21,8 +21,14 @@ import {
   SourceLocation,
   Expression,
   V8IntrinsicIdentifier,
+  isTSAsExpression,
+  isTypeCastExpression,
+  isTSTypeAssertion,
 } from '@babel/types';
 import {NodePath} from '@babel/traverse';
+import validate from 'schema-utils';
+import OPTIONS_SCHEMA from './options.schema.json';
+import {OptionsSchema} from './options.js';
 
 const DEFAULT_COMPONENT_NAMES = ['FormattedMessage', 'FormattedHTMLMessage'];
 
@@ -36,25 +42,13 @@ interface MessageDescriptor {
   description?: string;
 }
 
-type ExtractedMessageDescriptor = MessageDescriptor &
+export type ExtractedMessageDescriptor = MessageDescriptor &
   Partial<SourceLocation> & {file?: string};
 
 type MessageDescriptorPath = Record<
   keyof MessageDescriptor,
   NodePath<StringLiteral> | undefined
 >;
-
-export interface Opts {
-  moduleSourceName?: string;
-  enforceDefaultMessage?: boolean;
-  enforceDescriptions?: boolean;
-  extractSourceLocation?: boolean;
-  messagesDir: string;
-  overrideIdFn?(id: string, defaultMessage: string, descriptor: string): string;
-  removeDefaultMessage?: boolean;
-  extractFromFormatMessageCall?: boolean;
-  additionalComponentNames?: string[];
-}
 
 // From https://github.com/babel/babel/blob/master/packages/babel-core/src/transformation/plugin-pass.js
 interface PluginPass<O> {
@@ -189,7 +183,7 @@ function createMessageDescriptor(
 function evaluateMessageDescriptor(
   descriptorPath: MessageDescriptorPath,
   isJSXSource = false,
-  overrideIdFn?: Opts['overrideIdFn']
+  overrideIdFn?: OptionsSchema['overrideIdFn']
 ) {
   let id = getMessageDescriptorValue(descriptorPath.id);
   const defaultMessage = getICUMessageValue(descriptorPath.defaultMessage, {
@@ -221,7 +215,7 @@ function storeMessage(
     enforceDescriptions,
     enforceDefaultMessage = true,
     extractSourceLocation,
-  }: Opts,
+  }: OptionsSchema,
   filename: string,
   messages: Map<string, ExtractedMessageDescriptor>
 ) {
@@ -317,8 +311,15 @@ function assertObjectExpression(
   return true;
 }
 
-export default declare((api: any) => {
+export default declare((api: any, options: OptionsSchema) => {
   api.assertVersion(7);
+
+  validate(OPTIONS_SCHEMA as any, options, {
+    name: 'babel-plugin-react-intl',
+    baseDataPath: 'options',
+  });
+  const {messagesDir} = options;
+
   /**
    * Store this in the node itself so that multiple passes work. Specifically
    * if we remove `description` in the 1st pass, 2nd pass will fail since
@@ -345,14 +346,18 @@ export default declare((api: any) => {
         file: {
           opts: {filename},
         },
-        opts: {messagesDir},
       } = this;
-      const basename = p.basename(filename, p.extname(filename));
+      // If no filename is specified, that means this babel plugin is called programmatically
+      // via NodeJS API by other programs (e.g. by feeding us with file content directly). In
+      // this case we will only make extracted messages accessible via Babel result objects.
+      const basename = filename
+        ? p.basename(filename, p.extname(filename))
+        : null;
       const {ReactIntlMessages: messages} = this;
       const descriptors = Array.from(messages.values());
       state.metadata['react-intl'] = {messages: descriptors};
 
-      if (messagesDir && descriptors.length > 0) {
+      if (basename && messagesDir && descriptors.length > 0) {
         // Make sure the relative path is "absolute" before
         // joining it with the `messagesDir`.
         let relativePath = p.join(p.sep, p.relative(process.cwd(), filename));
@@ -561,7 +566,8 @@ export default declare((api: any) => {
 
         // Check that this is `defineMessages` call
         if (referencesImport(callee, moduleSourceName, FUNCTION_NAMES)) {
-          const messagesObj = path.get('arguments')[0];
+          const firstArgument = path.get('arguments')[0];
+          const messagesObj = getMessagesObjectFromExpression(firstArgument);
 
           if (assertObjectExpression(messagesObj, callee)) {
             messagesObj
@@ -580,5 +586,19 @@ export default declare((api: any) => {
         }
       },
     },
-  } as PluginObj<PluginPass<Opts> & State>;
+  } as PluginObj<PluginPass<OptionsSchema> & State>;
 });
+
+function getMessagesObjectFromExpression(
+  nodePath: NodePath<any>
+): NodePath<any> {
+  let currentPath = nodePath;
+  while (
+    isTSAsExpression(currentPath.node) ||
+    isTSTypeAssertion(currentPath.node) ||
+    isTypeCastExpression(currentPath.node)
+  ) {
+    currentPath = currentPath.get('expression') as NodePath<any>;
+  }
+  return currentPath;
+}

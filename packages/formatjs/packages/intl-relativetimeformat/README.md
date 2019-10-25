@@ -28,10 +28,14 @@ To use the ponyfill, import it along with its data:
 ```tsx
 import IntlRelativeTimeFormat from '@formatjs/intl-relativetimeformat';
 // locale-data for zh
-IntlRelativeTimeFormat.__addLocaleData(require('@formatjs/intl-relativetimeformat/dist/locale-data/zh.json'));
+IntlRelativeTimeFormat.__addLocaleData(
+  require('@formatjs/intl-relativetimeformat/dist/locale-data/zh.json')
+);
 
 // locale-data for zh
-IntlRelativeTimeFormat.__addLocaleData(require('@formatjs/intl-relativetimeformat/dist/locale-data/en.json'));
+IntlRelativeTimeFormat.__addLocaleData(
+  require('@formatjs/intl-relativetimeformat/dist/locale-data/en.json')
+);
 
 new IntlRelativeTimeFormat('zh-CN').format(-1, 'second'); // '1秒钟前'
 ```
@@ -48,7 +52,7 @@ import '@formatjs/intl-relativetimeformat/dist/locale-data/de'; // Add locale da
 If you want to polyfill all locales (e.g for Node):
 
 ```tsx
-import '@formatjs/intl-relativetimeformat/polyfill-locales'
+import '@formatjs/intl-relativetimeformat/polyfill-locales';
 ```
 
 ## Tests

@@ -14,14 +14,16 @@
     "@babel/core": "^7.6.2",
     "@babel/helper-plugin-utils": "^7.0.0",
     "@types/babel__core": "^7.1.2",
+    "@types/schema-utils": "^1.0.0",
     "fs-extra": "^8.0.1",
-    "intl-messageformat-parser": "^3.2.2"
+    "intl-messageformat-parser": "^3.2.2",
+    "schema-utils": "^2.2.0"
   },
   "scripts": {
     "clean": "rimraf lib test/fixtures/**/actual.json",
     "test": "cross-env TS_NODE_PROJECT=./tsconfig.json cross-env NODE_ENV=test jest",
     "cover": "npm t -- --coverage",
-    "build": "tsc"
+    "build": "json2ts -i src/options.schema.json -o src/options.ts && tsc"
   },
   "keywords": [
     "babel-plugin",
@@ -31,5 +33,8 @@
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "homepage": "https://github.com/formatjs/formatjs#readme",
-  "gitHead": "8b0baec8eda5002715cf893274fe59782fc2d371"
+  "gitHead": "8b0baec8eda5002715cf893274fe59782fc2d371",
+  "devDependencies": {
+    "json-schema-to-typescript": "^7.1.0"
+  }
 }

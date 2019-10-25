@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "moduleSourceName": {"type": "string"},
+    "enforceDefaultMessage": {"type": "boolean"},
+    "enforceDescriptions": {"type": "boolean"},
+    "extractSourceLocation": {"type": "boolean"},
+    "messagesDir": {"type": "string"},
+    "overrideIdFn": {
+      "instanceof": "Function",
+      "tsType": "(id: string, defaultMessage: string, descriptor: string) => string"
+    },
+    "removeDefaultMessage": {"type": "boolean"},
+    "extractFromFormatMessageCall": {"type": "boolean"},
+    "additionalComponentNames": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

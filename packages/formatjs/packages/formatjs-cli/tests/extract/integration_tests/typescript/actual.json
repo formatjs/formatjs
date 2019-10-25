@@ -1,0 +1,27 @@
+[
+  {
+    "id": "foo.bar.baz",
+    "description": "The default message",
+    "defaultMessage": "Hello World!"
+  },
+  {
+    "id": "foo.bar.biff",
+    "description": "Another message",
+    "defaultMessage": "Hello Nurse!"
+  },
+  {
+    "id": "app.home.kittens",
+    "description": "Counts kittens",
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}"
+  },
+  {
+    "id": "trailing.ws",
+    "description": "Whitespace",
+    "defaultMessage": "   Some whitespace   "
+  },
+  {
+    "id": "escaped.apostrophe",
+    "description": "Escaped apostrophe",
+    "defaultMessage": "A quoted value ''{value}'"
+  }
+]
