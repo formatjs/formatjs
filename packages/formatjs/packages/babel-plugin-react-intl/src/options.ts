@@ -11,11 +11,7 @@ export interface OptionsSchema {
   enforceDescriptions?: boolean;
   extractSourceLocation?: boolean;
   messagesDir?: string;
-  overrideIdFn?: (
-    id: string,
-    defaultMessage: string,
-    descriptor: string
-  ) => string;
+  overrideIdFn?: (id: string, defaultMessage: string, descriptor: string) => string;
   removeDefaultMessage?: boolean;
   extractFromFormatMessageCall?: boolean;
   additionalComponentNames?: string[];

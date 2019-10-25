@@ -1,5 +1,5 @@
 {
-  "name": "formatjs-cli",
+  "name": "@formatjs/cli",
   "version": "0.1.0",
   "description": "A CLI for formatjs.",
   "keywords": [
@@ -16,11 +16,12 @@
     "formatjs",
     "formatting",
     "translate",
-    "translation"
+    "translation",
+    "cli"
   ],
   "author": "Linjie Ding <linjie@airtable.com>",
   "homepage": "https://github.com/formatjs/formatjs",
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "bin": {
     "formatjs": "bin/formatjs"
   },
@@ -47,9 +48,5 @@
   },
   "engines": {
     "node": "8.x || 10.x || 12.x"
-  },
-  "devDependencies": {
-    "@types/rimraf": "^2.0.2",
-    "rimraf": "^3.0.0"
   }
 }

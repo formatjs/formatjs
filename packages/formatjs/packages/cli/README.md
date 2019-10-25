@@ -6,7 +6,7 @@ including React components that uses `react-intl`.
 ## Usage
 
 ```shell
-$ npm -g i formatjs
+$ npm -g i @formatjs/cli
 $ formatjs extract --help
 Usage: formatjs extract [options] [files...]
 Extract string messages from React components that use react-intl.
