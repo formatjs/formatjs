@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.1.0...eslint-plugin-formatjs@1.1.1) (2019-10-30)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** Fix selectordinal check in blacklist-elements ([2149789](https://github.com/formatjs/formatjs/commit/2149789d18f2dc65ae362d9fc9f52e17f44fd682))
+
+
+
+
+
 # [1.1.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.0.2...eslint-plugin-formatjs@1.1.0) (2019-10-30)
 
 
