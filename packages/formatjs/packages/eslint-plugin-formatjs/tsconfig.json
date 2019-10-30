@@ -1,14 +1,12 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "target": "esnext",
-        "outDir": "lib",
+        "target": "es5",
+        "outDir": "dist",
         "rootDir": ".",
         "module": "commonjs",
-        "esModuleInterop": true,
         "noUnusedLocals": true,
         "sourceMap": true,
-        "allowSyntheticDefaultImports": true,
         "types": [
             "eslint",
             "babel__core",

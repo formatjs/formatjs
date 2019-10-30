@@ -2,7 +2,7 @@
   "name": "eslint-plugin-formatjs",
   "version": "1.0.0",
   "description": "ESLint plugin for formatjs",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "cross-env TS_NODE_PROJECT=./tsconfig.json cross-env NODE_ENV=test jest"
