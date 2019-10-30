@@ -26,6 +26,7 @@
   "dependencies": {
     "@types/emoji-regex": "^8.0.0",
     "@types/estree": "0.0.39",
+    "@types/estree-jsx": "0.0.0",
     "@typescript-eslint/parser": "^2.6.0",
     "emoji-regex": "^8.0.0",
     "eslint": "^6.6.0",

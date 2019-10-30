@@ -46,6 +46,40 @@ _({
         },
       ],
     },
+    {
+      code: `
+            import {defineMessages} from 'react-intl'
+            defineMessages({
+              foo: {
+                defaultMessage: '{count2, plural, one {#} other {# more}}'
+              }
+            })`,
+      errors: [
+        {
+          messageId: 'description',
+        },
+      ],
+    },
+    {
+      code: `
+            import {FormattedMessage} from 'react-intl'
+            const a = <FormattedMessage defaultMessage="{count2, plural, one {#} other {# more}}"/>`,
+      errors: [
+        {
+          messageId: 'description',
+        },
+      ],
+    },
+    {
+      code: `
+            import {FormattedMessage} from 'react-intl'
+            const a = <FormattedMessage defaultMessage="{count2, plural, one {#} other {# more}}"></FormattedMessage>`,
+      errors: [
+        {
+          messageId: 'description',
+        },
+      ],
+    },
   ],
 });
 

@@ -1,5 +1,5 @@
 import {Rule, Scope} from 'eslint';
-import {ImportDeclaration} from 'estree';
+import {ImportDeclaration, Node} from 'estree';
 import {extractMessages} from '../util';
 import {
   parse,
@@ -69,6 +69,38 @@ function verifyAst(blacklist: Element[], ast: MessageFormatElement[]) {
   }
 }
 
+function checkNode(
+  context: Rule.RuleContext,
+  node: Node,
+  importedMacroVars: Scope.Variable[]
+) {
+  const msgs = extractMessages(node, importedMacroVars);
+  if (!msgs.length) {
+    return;
+  }
+
+  const blacklist = context.options[0];
+  if (!Array.isArray(blacklist) || !blacklist.length) {
+    return;
+  }
+  for (const msg of msgs) {
+    if (!msg.defaultMessage) {
+      continue;
+    }
+    const ast = parse(msg.defaultMessage);
+    try {
+      verifyAst(context.options[0], ast);
+    } catch (e) {
+      if (e instanceof BlacklistElement) {
+        context.report({
+          node,
+          message: `${e.type} element is blacklisted`,
+        });
+      }
+    }
+  }
+}
+
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
@@ -94,37 +126,14 @@ const rule: Rule.RuleModule = {
     let importedMacroVars: Scope.Variable[] = [];
     return {
       ImportDeclaration: node => {
-        if ((node as ImportDeclaration).source.value === '@formatjs/macro') {
+        const moduleName = (node as ImportDeclaration).source.value;
+        if (moduleName === '@formatjs/macro' || moduleName === 'react-intl') {
           importedMacroVars = context.getDeclaredVariables(node);
         }
       },
-      CallExpression: node => {
-        const msgs = extractMessages(node, importedMacroVars);
-        if (!msgs.length) {
-          return;
-        }
-
-        const blacklist = context.options[0];
-        if (!Array.isArray(blacklist) || !blacklist.length) {
-          return;
-        }
-        for (const msg of msgs) {
-          if (!msg.defaultMessage) {
-            continue;
-          }
-          const ast = parse(msg.defaultMessage);
-          try {
-            verifyAst(context.options[0], ast);
-          } catch (e) {
-            if (e instanceof BlacklistElement) {
-              context.report({
-                node,
-                message: `${e.type} element is blacklisted`,
-              });
-            }
-          }
-        }
-      },
+      JSXOpeningElement: (node: Node) =>
+        checkNode(context, node, importedMacroVars),
+      CallExpression: node => checkNode(context, node, importedMacroVars),
     };
   },
 };

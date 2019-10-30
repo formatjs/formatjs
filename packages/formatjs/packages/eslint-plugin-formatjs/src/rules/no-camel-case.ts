@@ -1,5 +1,5 @@
 import {Rule, Scope} from 'eslint';
-import {ImportDeclaration} from 'estree';
+import {ImportDeclaration, Node} from 'estree';
 import {
   parse,
   isPluralElement,
@@ -32,6 +32,33 @@ function verifyAst(ast: MessageFormatElement[]) {
   }
 }
 
+function checkNode(
+  context: Rule.RuleContext,
+  node: Node,
+  importedMacroVars: Scope.Variable[]
+) {
+  const msgs = extractMessages(node, importedMacroVars);
+  if (!msgs.length) {
+    return;
+  }
+  for (const msg of msgs) {
+    if (!msg.defaultMessage) {
+      continue;
+    }
+    const ast = parse(msg.defaultMessage);
+    try {
+      verifyAst(ast);
+    } catch (e) {
+      if (e instanceof CamelCase) {
+        context.report({
+          node,
+          message: 'Camel case arguments are not allowed',
+        });
+      }
+    }
+  }
+}
+
 const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
@@ -46,32 +73,14 @@ const rule: Rule.RuleModule = {
     let importedMacroVars: Scope.Variable[] = [];
     return {
       ImportDeclaration: node => {
-        if ((node as ImportDeclaration).source.value === '@formatjs/macro') {
+        const moduleName = (node as ImportDeclaration).source.value;
+        if (moduleName === '@formatjs/macro' || moduleName === 'react-intl') {
           importedMacroVars = context.getDeclaredVariables(node);
         }
       },
-      CallExpression: node => {
-        const msgs = extractMessages(node, importedMacroVars);
-        if (!msgs.length) {
-          return;
-        }
-        for (const msg of msgs) {
-          if (!msg.defaultMessage) {
-            continue;
-          }
-          const ast = parse(msg.defaultMessage);
-          try {
-            verifyAst(ast);
-          } catch (e) {
-            if (e instanceof CamelCase) {
-              context.report({
-                node,
-                message: 'Camel case arguments are not allowed',
-              });
-            }
-          }
-        }
-      },
+      JSXOpeningElement: (node: Node) =>
+        checkNode(context, node, importedMacroVars),
+      CallExpression: node => checkNode(context, node, importedMacroVars),
     };
   },
 };

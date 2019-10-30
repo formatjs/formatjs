@@ -9,6 +9,8 @@
         "sourceMap": true,
         "types": [
             "eslint",
+            "estree",
+            "estree-jsx",
             "babel__core",
             "babel__generator",
             "babel__template",
