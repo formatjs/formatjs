@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.4.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.3.3...intl-messageformat@7.4.0) (2019-10-30)
+
+
+### Features
+
+* **@formatjs/cli:** A CLI for formatjs ([#234](https://github.com/formatjs/formatjs/issues/234)) ([1f57a0b](https://github.com/formatjs/formatjs/commit/1f57a0b0921e0228cf3fd4eff756b0cd17e28fb5))
+
+
+
+
+
 ## [7.3.3](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.3.2...intl-messageformat@7.3.3) (2019-10-23)
 
 

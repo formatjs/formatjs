@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.2.1...@formatjs/intl-relativetimeformat@4.3.0) (2019-10-30)
+
+
+### Features
+
+* **@formatjs/cli:** A CLI for formatjs ([#234](https://github.com/formatjs/formatjs/issues/234)) ([1f57a0b](https://github.com/formatjs/formatjs/commit/1f57a0b0921e0228cf3fd4eff756b0cd17e28fb5))
+
+
+
+
+
 ## [4.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.2.0...@formatjs/intl-relativetimeformat@4.2.1) (2019-10-23)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat

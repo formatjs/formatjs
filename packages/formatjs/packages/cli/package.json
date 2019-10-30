@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A CLI for formatjs.",
   "keywords": [
     "intl",
@@ -38,7 +38,7 @@
     "@babel/plugin-transform-typescript": "^7.6.3",
     "@types/lodash": "^4.14.138",
     "babel-plugin-const-enum": "^0.0.2",
-    "babel-plugin-react-intl": "^4.1.18",
+    "babel-plugin-react-intl": "^4.2.0",
     "commander": "4.0.0-1",
     "lodash": "^4.17.15",
     "loud-rejection": "^2.1.0"
