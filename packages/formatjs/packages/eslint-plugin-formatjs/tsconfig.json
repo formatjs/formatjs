@@ -1,0 +1,36 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "target": "esnext",
+        "outDir": "lib",
+        "rootDir": ".",
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "noUnusedLocals": true,
+        "sourceMap": true,
+        "allowSyntheticDefaultImports": true,
+        "types": [
+            "eslint",
+            "babel__core",
+            "babel__generator",
+            "babel__template",
+            "babel__traverse",
+            "benchmark",
+            "chai",
+            "estree",
+            "fs-extra",
+            "istanbul-lib-coverage",
+            "istanbul-lib-report",
+            "istanbul-reports",
+            // Don't include mocha here
+            "jest",
+            "node",
+            "resolve",
+            "stack-utils",
+            "yargs"
+        ]
+    },
+    // Also include tests in the default tsconfig.json for better editor integration.
+    "include": ["src/**/*.ts"],
+    "exclude": ["tests/extract/integration_tests/typescript/**/*.tsx"],
+}

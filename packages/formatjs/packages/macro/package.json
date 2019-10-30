@@ -29,8 +29,7 @@
   },
   "scripts": {
     "clean": "rimraf lib",
-    "build": "tsc -p tsconfig.json",
-    "test": "cross-env TS_NODE_PROJECT=./tsconfig.json cross-env NODE_ENV=test jest"
+    "build": "tsc -p tsconfig.json"
   },
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
