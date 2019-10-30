@@ -1,8 +1,8 @@
 import {Rule, Scope} from 'eslint';
 import {ImportDeclaration} from 'estree';
 import {extractMessages} from '../util';
-import emojiRegex from 'emoji-regex';
-const EMOJI_REGEX = emojiRegex();
+import * as emojiRegex from 'emoji-regex';
+const EMOJI_REGEX: RegExp = (emojiRegex as any)();
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -27,9 +27,9 @@ const rule: Rule.RuleModule = {
         if (!msgs.length) {
           return;
         }
-        msgs.forEach(msg => {
+        for (const msg of msgs) {
           if (!msg.defaultMessage) {
-            return;
+            continue;
           }
           if (EMOJI_REGEX.test(msg.defaultMessage)) {
             context.report({
@@ -37,7 +37,7 @@ const rule: Rule.RuleModule = {
               message: 'Emojis are not allowed',
             });
           }
-        });
+        }
       },
     };
   },

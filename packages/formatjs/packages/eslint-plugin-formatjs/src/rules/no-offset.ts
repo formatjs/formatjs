@@ -46,9 +46,9 @@ const rule: Rule.RuleModule = {
         if (!msgs.length) {
           return;
         }
-        msgs.forEach(msg => {
+        for (const msg of msgs) {
           if (!msg.defaultMessage) {
-            return;
+            continue;
           }
           const ast = parse(msg.defaultMessage);
           try {
@@ -61,7 +61,7 @@ const rule: Rule.RuleModule = {
               });
             }
           }
-        });
+        }
       },
     };
   },

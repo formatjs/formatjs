@@ -1,4 +1,4 @@
-export const noMatch = `_()`
+export const noMatch = `_()`;
 export const emptyFnCall = `
 import {_} from '@formatjs/macro'
-_()` 
+_()`;

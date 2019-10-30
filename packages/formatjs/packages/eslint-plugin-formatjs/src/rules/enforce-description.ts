@@ -28,14 +28,14 @@ const rule: Rule.RuleModule = {
         if (!msgs.length) {
           return;
         }
-        msgs.forEach(msg => {
+        for (const msg of msgs) {
           if (!msg.description) {
             context.report({
               node,
               messageId: 'description',
             });
           }
-        });
+        }
       },
     };
   },

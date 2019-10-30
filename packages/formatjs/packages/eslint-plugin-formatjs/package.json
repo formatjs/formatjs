@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "dependencies": {
+    "@types/emoji-regex": "^8.0.0",
     "@types/estree": "0.0.39",
     "@typescript-eslint/parser": "^2.6.0",
     "emoji-regex": "^8.0.0",

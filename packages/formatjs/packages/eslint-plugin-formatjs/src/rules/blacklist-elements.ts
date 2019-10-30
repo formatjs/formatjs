@@ -108,9 +108,9 @@ const rule: Rule.RuleModule = {
         if (!Array.isArray(blacklist) || !blacklist.length) {
           return;
         }
-        msgs.forEach(msg => {
+        for (const msg of msgs) {
           if (!msg.defaultMessage) {
-            return;
+            continue;
           }
           const ast = parse(msg.defaultMessage);
           try {
@@ -123,7 +123,7 @@ const rule: Rule.RuleModule = {
               });
             }
           }
-        });
+        }
       },
     };
   },
