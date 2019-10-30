@@ -56,7 +56,10 @@ function verifyAst(blacklist: Element[], ast: MessageFormatElement[]) {
       if (blacklist.includes(Element.plural)) {
         throw new BlacklistElement(Element.argument);
       }
-      if (blacklist.includes(Element.selectordinal)) {
+      if (
+        el.pluralType === 'ordinal' &&
+        blacklist.includes(Element.selectordinal)
+      ) {
         throw new BlacklistElement(Element.selectordinal);
       }
     }

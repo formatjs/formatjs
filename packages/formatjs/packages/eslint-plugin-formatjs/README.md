@@ -161,11 +161,15 @@ import {defineMessages} from 'react-intl'
 const messages = defineMessages({
     // WORKS
     foo: {
-        defaultMessage: 'Smileys & People',
+        defaultMessage: '{p1, plural, one{one}}',
     },
     // FAILS
     bar: {
-        defaultMessage: '😃 Smileys & People',
+        defaultMessage: '{p1, plural, one{one}} {p2, plural, one{two}}',
+    }
+    // ALSO FAILS
+    bar2: {
+        defaultMessage: '{p1, plural, one{{p2, plural, one{two}}}}',
     }
 })
 ```

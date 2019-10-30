@@ -148,11 +148,13 @@ _({
 });
 
 ruleTester.run('blacklist-elements', rules['blacklist-elements'], {
-  valid: [
-    `import {_} from '@formatjs/macro'
+  valid: [{
+    code: `import {_} from '@formatjs/macro'
 _({
     defaultMessage: '{count, plural, one {#} other {# more}}'
 })`,
+options: [['selectordinal']],
+},
     noMatch,
     emptyFnCall,
   ],
