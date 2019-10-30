@@ -1,0 +1,41 @@
+{
+  "name": "@formatjs/macro",
+  "version": "0.1.0",
+  "description": "formatjs-related compiler macros",
+  "keywords": [
+    "intl",
+    "i18n",
+    "internationalization",
+    "locale",
+    "localization",
+    "globalization",
+    "react",
+    "react-intl",
+    "reactjs",
+    "format",
+    "formatjs",
+    "formatting",
+    "translate",
+    "translation",
+    "macro"
+  ],
+  "main": "dist/index.js",
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "homepage": "https://github.com/formatjs/formatjs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/formatjs/formatjs.git"
+  },
+  "scripts": {
+    "clean": "rimraf lib",
+    "build": "tsc -p tsconfig.json",
+    "test": "cross-env TS_NODE_PROJECT=./tsconfig.json cross-env NODE_ENV=test jest"
+  },
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  },
+  "engines": {
+    "node": "8.x || 10.x || 12.x"
+  }
+}
