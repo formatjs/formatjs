@@ -29,7 +29,7 @@
   },
   "scripts": {
     "clean": "rimraf lib",
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.build.json"
   },
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"

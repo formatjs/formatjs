@@ -26,8 +26,5 @@
             "stack-utils",
             "yargs"
         ]
-    },
-    // Also include tests in the default tsconfig.json for better editor integration.
-    "include": ["src/**/*.ts"],
-    "exclude": ["tests/extract/integration_tests/typescript/**/*.tsx"],
+    }
 }
