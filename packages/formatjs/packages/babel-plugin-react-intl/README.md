@@ -49,10 +49,6 @@ If a message descriptor has a `description`, it'll be removed from the source af
 
 - **`messagesDir`**: The target location where the plugin will output a `.json` file corresponding to each component from which React Intl messages were extracted. If not provided, the extracted message descriptors will only be accessible via Babel's API.
 
-- **`enforceDescriptions`**: Whether message declarations _must_ contain a `description` to provide context to translators. Defaults to: `false`.
-
-- **`enforceDefaultMessage`**: Whether message declarations _must_ contain a `defaultMessage` to fallback when translations are not present. Defaults to: `true`.
-
 - **`extractSourceLocation`**: Whether the metadata about the location of the message in the source file should be extracted. If `true`, then `file`, `start`, and `end` fields will exist for each extracted message descriptors. Defaults to `false`.
 
 - **`moduleSourceName`**: The ES6 module source name of the React Intl package. Defaults to: `"react-intl"`, but can be changed to another name/path to React Intl.

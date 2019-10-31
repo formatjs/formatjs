@@ -10,8 +10,6 @@ function trim(str?: string | null) {
 const skipOutputTests = [
   '.babelrc',
   '.DS_Store',
-  'enforceDescriptions',
-  'enforceDefaultMessage',
   'extractSourceLocation',
   'extractFromFormatMessageCall',
   'moduleSourceName',
@@ -63,15 +61,6 @@ describe('options', () => {
     // Check message output
     expect(require(join(fixtureDir, 'actual.json'))).toMatchSnapshot();
   });
-  it('enforces descriptions when enforceDescriptions=true', () => {
-    const fixtureDir = join(fixturesDir, 'enforceDescriptions');
-    expect(() =>
-      transform(join(fixtureDir, 'actual.js'), {
-        enforceDescriptions: true,
-      })
-    ).toThrow(/Message must have a `description`/);
-  });
-
   it('correctly overrides the id when overrideIdFn is provided', () => {
     const fixtureDir = join(fixturesDir, 'overrideIdFn');
 
@@ -92,35 +81,12 @@ describe('options', () => {
     expect(require(join(fixtureDir, 'actual.json'))).toMatchSnapshot();
   });
 
-  it('allows no description when enforceDescription=false', () => {
-    const fixtureDir = join(fixturesDir, 'enforceDescriptions');
-    expect(() =>
-      transform(join(fixtureDir, 'actual.js'), {
-        enforceDescriptions: false,
-      })
-    ).not.toThrow();
-  });
-
-  it('allows no description when enforceDefaultMessage=false', () => {
-    const fixtureDir = join(fixturesDir, 'enforceDefaultMessage');
-    expect(() =>
-      transform(join(fixtureDir, 'actual.js'), {
-        enforceDefaultMessage: false,
-      })
-    ).not.toThrow();
-
-    // Check message output
-    expect(require(join(fixtureDir, 'actual.json'))).toMatchSnapshot();
-  });
-
   it('removes descriptions when plugin is applied more than once', () => {
     const fixtureDir = join(fixturesDir, 'removeDescriptions');
     expect(() =>
       transform(
         join(fixtureDir, 'actual.js'),
-        {
-          enforceDescriptions: true,
-        },
+        {},
         {
           multiplePasses: true,
         }

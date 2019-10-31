@@ -212,16 +212,14 @@ function storeMessage(
   {id, description, defaultMessage}: MessageDescriptor,
   path: NodePath,
   {
-    enforceDescriptions,
-    enforceDefaultMessage = true,
     extractSourceLocation,
   }: OptionsSchema,
   filename: string,
   messages: Map<string, ExtractedMessageDescriptor>
 ) {
-  if (!id || (enforceDefaultMessage && !defaultMessage)) {
+  if (!id && !defaultMessage) {
     throw path.buildCodeFrameError(
-      '[React Intl] Message Descriptors require an `id` and `defaultMessage`.'
+      '[React Intl] Message Descriptors require an `id` or `defaultMessage`.'
     );
   }
 
@@ -235,17 +233,6 @@ function storeMessage(
       throw path.buildCodeFrameError(
         `[React Intl] Duplicate message id: "${id}", ` +
           'but the `description` and/or `defaultMessage` are different.'
-      );
-    }
-  }
-
-  if (enforceDescriptions) {
-    if (
-      !description ||
-      (typeof description === 'object' && Object.keys(description).length < 1)
-    ) {
-      throw path.buildCodeFrameError(
-        '[React Intl] Message must have a `description`.'
       );
     }
   }
@@ -399,7 +386,6 @@ export default declare((api: any, options: OptionsSchema) => {
         const {
           moduleSourceName = 'react-intl',
           additionalComponentNames = [],
-          enforceDefaultMessage,
           removeDefaultMessage,
           overrideIdFn,
         } = opts;
@@ -443,11 +429,10 @@ export default declare((api: any, options: OptionsSchema) => {
           // `key=value` attributes. But it's completely valid to
           // write `<FormattedMessage {...descriptor} />`, because it will be
           // skipped here and extracted elsewhere. The descriptor will
-          // be extracted only (storeMessage) if a `defaultMessage` prop
-          // exists and `enforceDefaultMessage` is `true`.
+          // be extracted only (storeMessage) if a `defaultMessage` prop.
           if (
             descriptorPath.id &&
-            (enforceDefaultMessage === false || descriptorPath.defaultMessage)
+            descriptorPath.defaultMessage
           ) {
             // Evaluate the Message Descriptor values in a JSX
             // context, then store it.

@@ -270,6 +270,113 @@ Array [
 ]
 `;
 
+exports[`emit asserts for:  output match: enforceDefaultMessage 1`] = `
+Object {
+  "messages": Array [
+    Object {
+      "defaultMessage": undefined,
+      "description": undefined,
+      "id": "TRANSLATION_KEY",
+    },
+  ],
+}
+`;
+
+exports[`emit asserts for:  output match: enforceDefaultMessage 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require(\\"react\\"));
+
+var _reactIntl = require(\\"react-intl\\");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== \\"function\\") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+(0, _reactIntl.defineMessages)({
+  test: {
+    \\"id\\": \\"TRANSLATION_KEY\\"
+  }
+});
+const testMessage = {
+  id: 'TRANSLATION_KEY2'
+};
+
+class Foo extends _react.Component {
+  render() {
+    return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_reactIntl.FormattedMessage, {
+      id: \\"foo.bar.baz\\"
+    }), _react.default.createElement(_reactIntl.FormattedMessage, testMessage));
+  }
+
+}
+
+exports.default = Foo;"
+`;
+
+exports[`emit asserts for:  output match: enforceDefaultMessage 3`] = `
+Array [
+  Object {
+    "id": "TRANSLATION_KEY",
+  },
+]
+`;
+
+exports[`emit asserts for:  output match: enforceDescriptions 1`] = `
+Object {
+  "messages": Array [
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": undefined,
+      "id": "foo.bar.baz",
+    },
+  ],
+}
+`;
+
+exports[`emit asserts for:  output match: enforceDescriptions 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require(\\"react\\"));
+
+var _reactIntl = require(\\"react-intl\\");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== \\"function\\") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+class Foo extends _react.Component {
+  render() {
+    return _react.default.createElement(_reactIntl.FormattedMessage, {
+      id: \\"foo.bar.baz\\",
+      defaultMessage: \\"Hello World!\\"
+    });
+  }
+
+}
+
+exports.default = Foo;"
+`;
+
+exports[`emit asserts for:  output match: enforceDescriptions 3`] = `
+Array [
+  Object {
+    "defaultMessage": "Hello World!",
+    "id": "foo.bar.baz",
+  },
+]
+`;
+
 exports[`emit asserts for:  output match: formatMessageCall 1`] = `
 Object {
   "messages": Array [
@@ -348,17 +455,6 @@ Array [
     "defaultMessage": "Hello World!",
     "description": "Greeting to the world",
     "id": "greeting-world",
-  },
-]
-`;
-
-exports[`options allows no description when enforceDefaultMessage=false 1`] = `
-Array [
-  Object {
-    "id": "TRANSLATION_KEY",
-  },
-  Object {
-    "id": "foo.bar.baz",
   },
 ]
 `;

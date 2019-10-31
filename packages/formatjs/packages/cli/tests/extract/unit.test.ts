@@ -41,8 +41,6 @@ test('it passes camelCase-converted arguments to babel API', () => {
   ]);
   const pluginOptions: OptionsSchema = {
     moduleSourceName: 'my-react-intl',
-    enforceDefaultMessage: false,
-    enforceDescriptions: true,
     extractSourceLocation: true,
     messagesDir: 'path/to/messages/dir',
     removeDefaultMessage: true,

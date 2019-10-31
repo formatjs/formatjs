@@ -2,8 +2,6 @@
   "type": "object",
   "properties": {
     "moduleSourceName": {"type": "string"},
-    "enforceDefaultMessage": {"type": "boolean"},
-    "enforceDescriptions": {"type": "boolean"},
     "extractSourceLocation": {"type": "boolean"},
     "messagesDir": {"type": "string"},
     "overrideIdFn": {

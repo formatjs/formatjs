@@ -101,8 +101,6 @@ async function main(argv: string[]) {
     .action(async (files: readonly string[], cmdObj: ExtractCLIOptions) => {
       await extract(files, {
         messagesDir: cmdObj.messagesDir,
-        enforceDescriptions: cmdObj.enforceDescriptions,
-        enforceDefaultMessage: cmdObj.enforceDefaultMessage,
         extractSourceLocation: cmdObj.extractSourceLocation,
         moduleSourceName: cmdObj.moduleSourceName,
         removeDefaultMessage: cmdObj.removeDefaultMessage,

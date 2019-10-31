@@ -7,8 +7,6 @@
 
 export interface OptionsSchema {
   moduleSourceName?: string;
-  enforceDefaultMessage?: boolean;
-  enforceDescriptions?: boolean;
   extractSourceLocation?: boolean;
   messagesDir?: string;
   overrideIdFn?: (id: string, defaultMessage: string, descriptor: string) => string;
