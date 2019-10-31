@@ -23,6 +23,10 @@ _({
     defaultMessage: '{count, plural, one {#} other {# more}}',
     description: 'asd'
 })`,
+    `intl.formatMessage({
+    defaultMessage: '{count, plural, one {#} other {# more}}',
+    description: 'asd'
+})`,
     noMatch,
   ],
   invalid: [
@@ -38,6 +42,17 @@ _({
       code: `
             import {_} from '@formatjs/macro'
             _({
+                defaultMessage: '{count, plural, one {#} other {# more}}'
+            })`,
+      errors: [
+        {
+          messageId: 'description',
+        },
+      ],
+    },
+    {
+      code: `
+            intl.formatMessage({
                 defaultMessage: '{count, plural, one {#} other {# more}}'
             })`,
       errors: [

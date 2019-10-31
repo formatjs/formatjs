@@ -13,6 +13,20 @@ function findReferenceImport(id: Identifier, importedVars: Scope.Variable[]) {
     v => !!v.references.find(ref => ref.identifier === id)
   );
 }
+
+function isIntlFormatMessageCall(node: Node) {
+  return (
+    node.type === 'CallExpression' &&
+    node.callee.type === 'MemberExpression' &&
+    node.callee.object.type === 'Identifier' &&
+    node.callee.object.name === 'intl' &&
+    node.callee.property.type === 'Identifier' &&
+    node.callee.property.name === 'formatMessage' &&
+    node.arguments.length === 1 &&
+    node.arguments[0].type === 'ObjectExpression'
+  );
+}
+
 function isSingleMessageDescriptorDeclaration(
   id: Identifier,
   importedVars: Scope.Variable[]
@@ -99,7 +113,10 @@ export function extractMessages(
   if (node.type === 'CallExpression') {
     const expr = node as CallExpression;
     const fnId = expr.callee as Identifier;
-    if (isSingleMessageDescriptorDeclaration(fnId, importedMacroVars)) {
+    if (
+      isSingleMessageDescriptorDeclaration(fnId, importedMacroVars) ||
+      isIntlFormatMessageCall(node)
+    ) {
       return [extractMessageDescriptor(expr.arguments[0] as ObjectExpression)];
     } else if (
       isMultipleMessageDescriptorDeclaration(fnId, importedMacroVars)
