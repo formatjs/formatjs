@@ -21,9 +21,11 @@ function getBabelConfig(
       plugins: ['jsx'],
     },
     presets: [
+      ["@babel/preset-typescript", 
+        {isTSX, allExtensions: true},
+      ],
       ["@babel/preset-env", {
         targets: {
-          node: "current",
           esmodules: true
         }
       }]
@@ -31,15 +33,11 @@ function getBabelConfig(
     // We need to use require.resolve here, or otherwise the lookup is based on the current working
     // directory of the CLI.
     plugins: [
+      "@babel/plugin-proposal-class-properties",
       // We want to make sure that `const enum` does not throw an error.
       ...(isTS || isTSX
         ? [
             require.resolve('babel-plugin-const-enum'),
-            [
-              // This plugin is needed to correctly parse TypeScript JSX
-              require.resolve('@babel/plugin-syntax-typescript'),
-              {isTSX, allExtensions: true},
-            ],
           ]
         : []),
       [require.resolve('babel-plugin-react-intl'), reactIntlOptions],
