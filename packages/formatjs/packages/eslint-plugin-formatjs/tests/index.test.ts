@@ -147,6 +147,88 @@ _({
   ],
 });
 
+ruleTester.run('enforce-plural-rules', rules['enforce-plural-rules'], {
+  valid: [
+    {
+      code: `import {_} from '@formatjs/macro'
+_({
+    defaultMessage: '{count, plural, one {#} other {# more}}',
+    description: 'asd'
+})`,
+      options: [
+        {
+          one: true,
+        },
+      ],
+    },
+    {
+      code: `import {_} from '@formatjs/macro'
+_({
+    defaultMessage: '{count, plural, one {#} other {# more}}',
+    description: 'asd'
+})`,
+      options: [
+        {
+          other: true,
+        },
+      ],
+    },
+    {
+      code: `import {_} from '@formatjs/macro'
+_({
+    defaultMessage: '{count, plural, one {#} other {# more}}',
+    description: 'asd'
+})`,
+      options: [
+        {
+          one: true,
+          other: true,
+          zero: false,
+        },
+      ],
+    },
+    noMatch,
+    emptyFnCall,
+  ],
+  invalid: [
+    {
+      code: `
+            import {_} from '@formatjs/macro'
+            _({
+                defaultMessage: '{count, plural, one {#} other {# more}}'
+            })`,
+      options: [
+        {
+          one: false,
+        },
+      ],
+      errors: [
+        {
+          message: 'Plural rule "one" is forbidden',
+        },
+      ],
+    },
+    {
+      code: `
+            import {_} from '@formatjs/macro'
+            _({
+                defaultMessage: '{count, plural, one {#}}'
+            })`,
+      options: [
+        {
+          one: true,
+          other: true,
+        },
+      ],
+      errors: [
+        {
+          message: 'Missing plural rule "other"',
+        },
+      ],
+    },
+  ],
+});
+
 ruleTester.run('blacklist-elements', rules['blacklist-elements'], {
   valid: [
     {

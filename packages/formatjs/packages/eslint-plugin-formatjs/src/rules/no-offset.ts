@@ -57,6 +57,8 @@ const rule: Rule.RuleModule = {
       description: 'Disallow offset in plural rules',
       category: 'Errors',
       recommended: false,
+      url:
+        'https://github.com/formatjs/formatjs/tree/master/packages/eslint-plugin-formatjs#no-offset',
     },
     fixable: 'code',
     messages: {

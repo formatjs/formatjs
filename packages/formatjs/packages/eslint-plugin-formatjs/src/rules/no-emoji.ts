@@ -30,9 +30,11 @@ const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow camel case placeholders in message',
+      description: 'Disallow emojis in message',
       category: 'Errors',
       recommended: false,
+      url:
+        'https://github.com/formatjs/formatjs/tree/master/packages/eslint-plugin-formatjs#no-emoji',
     },
     fixable: 'code',
   },

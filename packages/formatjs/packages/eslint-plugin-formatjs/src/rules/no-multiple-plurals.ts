@@ -58,6 +58,8 @@ const rule: Rule.RuleModule = {
       description: 'Disallow multiple plural rules in the same message',
       category: 'Errors',
       recommended: false,
+      url:
+        'https://github.com/formatjs/formatjs/tree/master/packages/eslint-plugin-formatjs#no-multiple-plurals',
     },
     fixable: 'code',
   },

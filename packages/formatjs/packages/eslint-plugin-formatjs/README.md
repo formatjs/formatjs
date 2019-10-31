@@ -57,7 +57,7 @@ This blacklists usage of specific elements in ICU message.
 
 - Certain translation vendors cannot handle things like `selectordinal`
 
-Available elements:
+#### Available elements
 
 ```tsx
 enum Element {
@@ -77,6 +77,17 @@ enum Element {
   selectordinal = 'selectordinal',
   // plural, like `defaultMessage: '{var, plural, one{one} other{two}} var'`
   plural = 'plural',
+}
+```
+
+#### Example
+
+```json
+{
+  "plugins": ["formatjs"],
+  "rules": {
+    "formatjs/blacklist-elements": [2, ["selectordinal"]]
+  }
 }
 ```
 
@@ -102,6 +113,69 @@ const messages = defineMessages({
     defaultMessage: 'bar',
   },
 });
+```
+
+### `no-camel-case`
+
+This make sure placeholders are not camel-case.
+
+#### Why
+
+- This is to prevent case-sensitivity issue in certain translation vendors.
+
+```tsx
+import {defineMessages} from 'react-intl';
+
+const messages = defineMessages({
+  // WORKS
+  foo: {
+    defaultMessage: 'foo {snake_case} {nothing}',
+  },
+  // FAILS
+  bar: {
+    defaultMessage: 'foo {camelCase}',
+  },
+});
+```
+
+### `enforce-plural-rules`
+
+Enforce certain plural rules to always be specified/forbidden in a message.
+
+#### Why
+
+- It is recommended to always specify `other` as fallback in the message.
+- Some translation vendors only accept certain rules.
+
+#### Available rules
+
+```tsx
+enum LDML {
+  zero = 'zero',
+  one = 'one',
+  two = 'two',
+  few = 'few',
+  many = 'many',
+  other = 'other',
+}
+```
+
+#### Example
+
+```json
+{
+  "plugins": ["formatjs"],
+  "rules": {
+    "formatjs/enforce-plural-rules": [
+      2,
+      {
+        "one": true,
+        "other": true,
+        "zero": false
+      }
+    ]
+  }
+}
 ```
 
 ### `no-camel-case`

@@ -66,6 +66,8 @@ const rule: Rule.RuleModule = {
       description: 'Disallow camel case placeholders in message',
       category: 'Errors',
       recommended: false,
+      url:
+        'https://github.com/formatjs/formatjs/tree/master/packages/eslint-plugin-formatjs#no-camel-case',
     },
     fixable: 'code',
   },

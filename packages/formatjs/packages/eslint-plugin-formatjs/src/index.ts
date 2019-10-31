@@ -4,6 +4,7 @@ import noEmoji from './rules/no-emoji';
 import noMultiplePlurals from './rules/no-multiple-plurals';
 import noOffset from './rules/no-offset';
 import blacklistElements from './rules/blacklist-elements';
+import enforcePluralRules from './rules/enforce-plural-rules';
 const plugin = {
   rules: {
     'enforce-description': enforceDescription,
@@ -12,6 +13,7 @@ const plugin = {
     'no-multiple-plurals': noMultiplePlurals,
     'no-offset': noOffset,
     'blacklist-elements': blacklistElements,
+    'enforce-plural-rules': enforcePluralRules,
   },
 };
 

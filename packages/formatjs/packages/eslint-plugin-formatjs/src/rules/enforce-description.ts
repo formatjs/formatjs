@@ -28,6 +28,8 @@ const rule: Rule.RuleModule = {
       description: 'Enforce description in message descriptor',
       category: 'Errors',
       recommended: false,
+      url:
+        'https://github.com/formatjs/formatjs/tree/master/packages/eslint-plugin-formatjs#enforce-description',
     },
     fixable: 'code',
     messages: {

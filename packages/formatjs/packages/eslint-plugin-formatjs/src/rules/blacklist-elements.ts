@@ -108,9 +108,11 @@ const rule: Rule.RuleModule = {
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow specific element in ICU message format',
+      description: 'Disallow specific elements in ICU message format',
       category: 'Errors',
       recommended: false,
+      url:
+        'https://github.com/formatjs/formatjs/tree/master/packages/eslint-plugin-formatjs#blacklist-elements',
     },
     fixable: 'code',
     schema: [
