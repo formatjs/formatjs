@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.0.0...@formatjs/cli@1.0.1) (2019-10-31)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** add preset-env so we can parse latest syntax ([6495011](https://github.com/formatjs/formatjs/commit/64950113027da769a83d2e43e71ceccac1af2184))
+
+
+
+
+
 # [1.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@0.1.2...@formatjs/cli@1.0.0) (2019-10-31)
 
 
