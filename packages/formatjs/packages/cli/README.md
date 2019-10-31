@@ -17,11 +17,6 @@ Options:
                                                         corresponding to each component from which React Intl messages
                                                         were extracted. If not provided, the extracted message
                                                         descriptors will be printed to standard output.
-  --enforce-descriptions                                Whether message declarations _must_ contain a `description` to
-                                                        provide context to translators. (default: false)
-  --enforce-default-message                             Whether message declarations _must_ contain a `defaultMessage`
-                                                        to fallback when translations are not present. (default: true)
-  --no-enforce-default-message
   --extract-source-location                             Whether the metadata about the location of the message in the
                                                         source file should be extracted. If `true`, then `file`,
                                                         `start`, and `end` fields will exist for each extracted message

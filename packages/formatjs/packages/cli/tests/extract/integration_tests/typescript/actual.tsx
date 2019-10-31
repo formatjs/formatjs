@@ -34,7 +34,14 @@ const msgs = defineMessages({
   },
 } as const);
 
+async function foo () {
+  await import('../../package.json')
+}
+
 export default class Foo extends Component<{}, {}> {
+  async componentDidMount () {
+    await foo()
+  }
   render() {
     return (
       <div>

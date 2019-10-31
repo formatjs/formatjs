@@ -42,23 +42,6 @@ async function main(argv: string[]) {
       ].join('')
     )
     .option(
-      '--enforce-descriptions',
-      [
-        'Whether message declarations _must_ contain a `description` to provide context to ',
-        'translators.',
-      ].join(''),
-      false
-    )
-    .option(
-      '--enforce-default-message',
-      [
-        'Whether message declarations _must_ contain a `defaultMessage` to fallback when ',
-        'translations are not present.',
-      ].join(''),
-      true
-    )
-    .option('--no-enforce-default-message')
-    .option(
       '--extract-source-location',
       [
         'Whether the metadata about the location of the message in the source file should be ',

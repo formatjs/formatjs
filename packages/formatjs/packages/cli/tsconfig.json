@@ -5,7 +5,7 @@
         "target": "es2017",
         "outDir": "lib",
         "rootDir": ".",
-        "module": "commonjs",
+        "module": "esnext",
         "esModuleInterop": true,
         "noUnusedLocals": true,
         "sourceMap": true,

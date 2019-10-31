@@ -35,7 +35,7 @@
     "test": "cross-env TS_NODE_PROJECT=./tsconfig.json cross-env NODE_ENV=test jest"
   },
   "dependencies": {
-    "@babel/plugin-transform-typescript": "^7.6.3",
+    "@babel/preset-env": "^7.6.0",
     "@types/lodash": "^4.14.138",
     "babel-plugin-const-enum": "^0.0.2",
     "babel-plugin-react-intl": "^5.0.0",

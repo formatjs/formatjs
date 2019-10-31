@@ -28,8 +28,6 @@ test('it passes camelCase-converted arguments to babel API', () => {
     'path/to/formatjs-cli',
     'extract',
     '--module-source-name=my-react-intl',
-    '--no-enforce-default-message',
-    '--enforce-descriptions',
     '--extract-source-location',
     '--messages-dir=path/to/messages/dir',
     '--remove-default-message',
@@ -60,11 +58,22 @@ test('it passes camelCase-converted arguments to babel API', () => {
     'file2.tsx',
     expect.objectContaining({
       filename: 'file2.tsx',
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            targets: {
+              node: 'current',
+              esmodules: true,
+            },
+          },
+        ],
+      ],
       plugins: [
         require.resolve('babel-plugin-const-enum'),
         [
           // This plugin is needed to correctly parse TypeScript JSX
-          require.resolve('@babel/plugin-transform-typescript'),
+          require.resolve('@babel/plugin-syntax-typescript'),
           {isTSX: true, allExtensions: true},
         ],
         [require.resolve('babel-plugin-react-intl'), pluginOptions],

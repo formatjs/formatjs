@@ -20,6 +20,14 @@ function getBabelConfig(
     parserOpts: {
       plugins: ['jsx'],
     },
+    presets: [
+      ["@babel/preset-env", {
+        targets: {
+          node: "current",
+          esmodules: true
+        }
+      }]
+    ],
     // We need to use require.resolve here, or otherwise the lookup is based on the current working
     // directory of the CLI.
     plugins: [
@@ -29,7 +37,7 @@ function getBabelConfig(
             require.resolve('babel-plugin-const-enum'),
             [
               // This plugin is needed to correctly parse TypeScript JSX
-              require.resolve('@babel/plugin-transform-typescript'),
+              require.resolve('@babel/plugin-syntax-typescript'),
               {isTSX, allExtensions: true},
             ],
           ]
