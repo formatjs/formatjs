@@ -24,7 +24,7 @@ test('basic case: defineMessages -> stdout', async () => {
   const {stdout, stderr} = await exec(
     `${BIN_PATH} extract ${path.join(__dirname, 'defineMessages/actual.js')}`
   );
-  expect(JSON.parse(stdout)).toMatchSnapshot()
+  expect(JSON.parse(stdout)).toMatchSnapshot();
   expect(stderr).toBe('');
 });
 
@@ -36,16 +36,18 @@ test('basic case: defineMessages -> directory', async () => {
   expect(stdout).toBe('');
   expect(stderr).toBe('');
   // Write to test_artifacts/defineMessages/actual.json
-  expect(await readdir(path.join(ARTIFACT_PATH, 'defineMessages'))).toMatchSnapshot()
+  expect(
+    await readdir(path.join(ARTIFACT_PATH, 'defineMessages'))
+  ).toMatchSnapshot();
   expect(
     await readJSON(path.join(ARTIFACT_PATH, 'defineMessages/actual.json'))
-  ).toMatchSnapshot()
+  ).toMatchSnapshot();
 });
 
 test('typescript -> stdout', async () => {
   const {stdout, stderr} = await exec(
     `${BIN_PATH} extract ${path.join(__dirname, 'typescript/actual.tsx')}`
   );
-  expect(JSON.parse(stdout)).toMatchSnapshot()
+  expect(JSON.parse(stdout)).toMatchSnapshot();
   expect(stderr).toBe('');
 });

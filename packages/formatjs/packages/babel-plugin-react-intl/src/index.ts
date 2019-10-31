@@ -211,9 +211,7 @@ function evaluateMessageDescriptor(
 function storeMessage(
   {id, description, defaultMessage}: MessageDescriptor,
   path: NodePath,
-  {
-    extractSourceLocation,
-  }: OptionsSchema,
+  {extractSourceLocation}: OptionsSchema,
   filename: string,
   messages: Map<string, ExtractedMessageDescriptor>
 ) {
@@ -430,10 +428,7 @@ export default declare((api: any, options: OptionsSchema) => {
           // write `<FormattedMessage {...descriptor} />`, because it will be
           // skipped here and extracted elsewhere. The descriptor will
           // be extracted only (storeMessage) if a `defaultMessage` prop.
-          if (
-            descriptorPath.id &&
-            descriptorPath.defaultMessage
-          ) {
+          if (descriptorPath.id && descriptorPath.defaultMessage) {
             // Evaluate the Message Descriptor values in a JSX
             // context, then store it.
             const descriptor = evaluateMessageDescriptor(
