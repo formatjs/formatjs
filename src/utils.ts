@@ -103,6 +103,7 @@ export function createIntlCache(): IntlCache {
     message: {},
     relativeTime: {},
     pluralRules: {},
+    list: {},
   };
 }
 
@@ -112,6 +113,7 @@ export function createIntlCache(): IntlCache {
  */
 export function createFormatters(cache: IntlCache = createIntlCache()) {
   const RelativeTimeFormat = (Intl as any).RelativeTimeFormat;
+  const ListFormat = (Intl as any).ListFormat;
   return {
     getDateTimeFormat: memoizeIntlConstructor(
       Intl.DateTimeFormat,
@@ -124,6 +126,7 @@ export function createFormatters(cache: IntlCache = createIntlCache()) {
       cache.relativeTime
     ),
     getPluralRules: memoizeIntlConstructor(Intl.PluralRules, cache.pluralRules),
+    getListFormat: memoizeIntlConstructor(ListFormat, cache.list),
   };
 }
 

@@ -19,6 +19,8 @@ React Intl has a set of React components that provide a declarative way to setup
   - [`FormattedNumber`](#formattednumber)
   - [`FormattedNumberParts`](#formattednumberparts)
   - [`FormattedPlural`](#formattedplural)
+- [List Formatting Components](#list-formatting-components)
+  - [`FormattedList`](#formattedlist)
 - [String Formatting Components](#string-formatting-components)
   - [Message Syntax](#message-syntax)
   - [Message Descriptor](#message-descriptor)
@@ -486,6 +488,39 @@ By default `<FormattedPlural>` will select a [plural category](http://www.unicod
 
 ```html
 messages
+```
+
+## List Formatting Components
+
+### `FormattedList`
+
+This component uses [`formatList`](API.md#formatlist) API and [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ListFormat). Its props corresponds to `Intl.ListFormatOptions`.
+
+**Props:**
+
+```tsx
+props: ListFormatOptions &
+  {
+    children: (chunksOrString: string | React.ReactElement[]) => ReactElement,
+  };
+```
+
+**Example:**
+
+```tsx
+<FormattedList type="conjunction" value={['Me', 'myself', 'I']} />
+```
+
+```html
+Me, myself and I
+```
+
+```tsx
+<FormattedList type="conjunction" value={['Me', <b>myself</b>, 'I']} />
+```
+
+```html
+Me, <b>myself</b> and I
 ```
 
 ## String Formatting Components

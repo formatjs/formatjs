@@ -14,6 +14,7 @@ import IntlRelativeTimeFormat, {
 } from '@formatjs/intl-relativetimeformat';
 import {MessageFormatElement} from 'intl-messageformat-parser';
 import {UnifiedNumberFormatOptions} from '@formatjs/intl-unified-numberformat';
+import IntlListFormat, {IntlListFormatOptions} from '@formatjs/intl-listformat';
 
 export interface IntlConfig {
   locale: string;
@@ -54,6 +55,8 @@ export type FormatPluralOptions = Exclude<
   'localeMatcher'
 > &
   CustomFormatConfig;
+
+export type FormatListOptions = Exclude<IntlListFormatOptions, 'localeMatcher'>;
 
 export interface IntlFormatters {
   formatDate(
@@ -104,6 +107,10 @@ export interface IntlFormatters {
     descriptor: MessageDescriptor,
     values?: Record<string, PrimitiveType>
   ): string;
+  formatList(
+    values: Array<string | React.ReactNode>,
+    opts?: FormatListOptions
+  ): string | Array<string | React.ReactNode>;
 }
 
 export interface Formatters {
@@ -122,6 +129,9 @@ export interface Formatters {
   getPluralRules(
     ...args: ConstructorParameters<typeof Intl.PluralRules>
   ): Intl.PluralRules;
+  getListFormat(
+    ...args: ConstructorParameters<typeof IntlListFormat>
+  ): IntlListFormat;
 }
 
 export interface IntlShape extends IntlConfig, IntlFormatters {
@@ -134,6 +144,7 @@ export interface IntlCache {
   message: Record<string, IntlMessageFormat>;
   relativeTime: Record<string, IntlRelativeTimeFormat>;
   pluralRules: Record<string, Intl.PluralRules>;
+  list: Record<string, IntlListFormat>;
 }
 
 export interface MessageDescriptor {
