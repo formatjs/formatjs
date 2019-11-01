@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@5.0.0...babel-plugin-react-intl@5.1.0) (2019-11-01)
+
+
+### Features
+
+* **@formatjs/cli:** add --outFile & --idInterpolationPattern ([0c5e675](https://github.com/formatjs/formatjs/commit/0c5e675ed38f18987674a875fa6ed908ce907fc9))
+* **babel-plugin-react-intl:** allow parsing from @formatjs/macro ([196dcc4](https://github.com/formatjs/formatjs/commit/196dcc44faec56637f3b74db4ed2c13d6842bc61))
+
+
+
+
+
 ## [5.0.1](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@5.0.0...babel-plugin-react-intl@5.0.1) (2019-10-31)
 
 **Note:** Version bump only for package babel-plugin-react-intl

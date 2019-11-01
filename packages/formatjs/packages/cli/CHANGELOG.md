@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.0.1...@formatjs/cli@1.1.0) (2019-11-01)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** Add support for parsing class properties ([1714bf9](https://github.com/formatjs/formatjs/commit/1714bf9d9abfc31458222e0922ef57baa1f38787))
+
+
+### Features
+
+* **@formatjs/cli:** add --outFile & --idInterpolationPattern ([0c5e675](https://github.com/formatjs/formatjs/commit/0c5e675ed38f18987674a875fa6ed908ce907fc9))
+
+
+
+
+
 ## [1.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.0.1...@formatjs/cli@1.0.2) (2019-10-31)
 
 
