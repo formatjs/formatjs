@@ -121,7 +121,7 @@
     "test:all": "npm run lint && npm run format && npm run test",
     "test:perf": "cross-env NODE_ENV=production babel-node test/perf",
     "test:watch": "cross-env NODE_ICU_DATA=./node_modules/full-icu jest --watch",
-    "test": "cross-env NODE_ICU_DATA=./node_modules/full-icu jest --coverage --verbose",
+    "test": "cross-env TZ=UTC NODE_ICU_DATA=./node_modules/full-icu jest --coverage --verbose",
     "toc": "node scripts/toc"
   },
   "pre-commit": [

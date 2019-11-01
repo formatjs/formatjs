@@ -387,7 +387,7 @@ describe('<FormattedMessage>', () => {
       }
     );
 
-    expect(rendered.text()).toBe('The day is Wednesday.');
+    expect(rendered.text()).toBe('The day is Thursday.');
   });
 
   it('should handle defaultFormat merge correctly w/ timeZone', function() {
