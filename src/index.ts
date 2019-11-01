@@ -5,7 +5,7 @@
  */
 
 export * from './types';
-export {default as defineMessages} from './define-messages';
+export {defineMessages} from '@formatjs/macro';
 import {
   createFormattedComponent,
   createFormattedDateTimePartsComponent,

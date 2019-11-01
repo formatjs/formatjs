@@ -38,6 +38,7 @@
     "@formatjs/intl-listformat": "^1.2.1",
     "@formatjs/intl-relativetimeformat": "^4.2.1",
     "@formatjs/intl-unified-numberformat": "^2.1.0",
+    "@formatjs/macro": "^0.2.1",
     "@types/hoist-non-react-statics": "^3.3.1",
     "@types/invariant": "^2.2.30",
     "hoist-non-react-statics": "^3.3.0",
