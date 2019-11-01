@@ -13,6 +13,7 @@ const skipOutputTests = [
   'extractSourceLocation',
   'extractFromFormatMessageCall',
   'moduleSourceName',
+  'inline',
   'icuSyntax',
   'removeDescriptions',
   'overrideIdFn',
@@ -101,6 +102,14 @@ describe('options', () => {
         moduleSourceName: 'react-i18n',
       })
     ).not.toThrow();
+
+    // Check message output
+    expect(require(join(fixtureDir, 'actual.json'))).toMatchSnapshot();
+  });
+
+  it('should be able to parse inline _ from @formatjs/macro', () => {
+    const fixtureDir = join(fixturesDir, 'inline');
+    expect(() => transform(join(fixtureDir, 'actual.js'))).not.toThrow();
 
     // Check message output
     expect(require(join(fixtureDir, 'actual.json'))).toMatchSnapshot();

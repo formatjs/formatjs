@@ -32,7 +32,6 @@ import {OptionsSchema} from './options.js';
 
 const DEFAULT_COMPONENT_NAMES = ['FormattedMessage', 'FormattedHTMLMessage'];
 
-const FUNCTION_NAMES = ['defineMessages'];
 const EXTRACTED = Symbol('ReactIntlExtracted');
 const DESCRIPTOR_PROPS = new Set(['id', 'description', 'defaultMessage']);
 
@@ -545,15 +544,22 @@ export default declare((api: any, options: OptionsSchema) => {
         }
 
         // Check that this is `defineMessages` call
-        if (referencesImport(callee, moduleSourceName, FUNCTION_NAMES)) {
+        if (
+          isMultipleMessagesDeclMacro(callee, moduleSourceName) ||
+          isSingularMessagesDeclMacro(callee)
+        ) {
           const firstArgument = path.get('arguments')[0];
           const messagesObj = getMessagesObjectFromExpression(firstArgument);
 
           if (assertObjectExpression(messagesObj, callee)) {
-            messagesObj
-              .get('properties')
-              .map(prop => prop.get('value') as NodePath<ObjectExpression>)
-              .forEach(processMessageObject);
+            if (isSingularMessagesDeclMacro(callee)) {
+              processMessageObject(messagesObj as NodePath<ObjectExpression>);
+            } else {
+              messagesObj
+                .get('properties')
+                .map(prop => prop.get('value') as NodePath<ObjectExpression>)
+                .forEach(processMessageObject);
+            }
           }
         }
 
@@ -568,6 +574,20 @@ export default declare((api: any, options: OptionsSchema) => {
     },
   } as PluginObj<PluginPass<OptionsSchema> & State>;
 });
+
+function isMultipleMessagesDeclMacro(
+  callee: NodePath,
+  moduleSourceName: string
+) {
+  return (
+    referencesImport(callee, moduleSourceName, ['defineMessages']) ||
+    referencesImport(callee, '@formatjs/macro', ['defineMessages'])
+  );
+}
+
+function isSingularMessagesDeclMacro(callee: NodePath) {
+  return referencesImport(callee, '@formatjs/macro', ['_']);
+}
 
 function getMessagesObjectFromExpression(
   nodePath: NodePath<any>

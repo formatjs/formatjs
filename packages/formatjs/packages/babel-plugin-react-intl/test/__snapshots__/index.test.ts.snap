@@ -629,3 +629,23 @@ Array [
   },
 ]
 `;
+
+exports[`options should be able to parse inline _ from @formatjs/macro 1`] = `
+Array [
+  Object {
+    "defaultMessage": "Hello World!",
+    "description": "The default message.",
+    "id": "foo.bar.baz",
+  },
+  Object {
+    "defaultMessage": "Hello World!",
+    "description": "The default message",
+    "id": "header",
+  },
+  Object {
+    "defaultMessage": "Hello World!",
+    "description": "The default message",
+    "id": "header2",
+  },
+]
+`;
