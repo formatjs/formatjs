@@ -47,36 +47,56 @@ test('it passes camelCase-converted arguments to babel API', () => {
   };
 
   expect(babel.transformFileSync).toHaveBeenCalledTimes(2);
-  expect(babel.transformFileSync).toHaveBeenCalledWith(
+  expect(babel.transformFileSync).toHaveBeenNthCalledWith(
+    1,
     'file1.js',
     expect.objectContaining({
       filename: 'file1.js',
-      plugins: [[require.resolve('babel-plugin-react-intl'), pluginOptions]],
-    })
-  );
-  expect(babel.transformFileSync).toHaveBeenCalledWith(
-    'file2.tsx',
-    expect.objectContaining({
-      filename: 'file2.tsx',
       presets: [
         [
           '@babel/preset-env',
           {
             targets: {
-              node: 'current',
               esmodules: true,
             },
           },
         ],
       ],
       plugins: [
+        '@babel/plugin-proposal-class-properties',
+        [
+          require.resolve('babel-plugin-react-intl'),
+          {
+            ...pluginOptions,
+            overrideIdFn: expect.any(Function),
+          },
+        ],
+      ],
+    })
+  );
+  expect(babel.transformFileSync).toHaveBeenNthCalledWith(
+    2,
+    'file2.tsx',
+    expect.objectContaining({
+      filename: 'file2.tsx',
+      presets: [
+        ['@babel/preset-typescript', {isTSX: true, allExtensions: true}],
+        [
+          '@babel/preset-env',
+          {
+            targets: {
+              esmodules: true,
+            },
+          },
+        ],
+      ],
+      plugins: [
+        '@babel/plugin-proposal-class-properties',
         require.resolve('babel-plugin-const-enum'),
         [
-          // This plugin is needed to correctly parse TypeScript JSX
-          require.resolve('@babel/plugin-syntax-typescript'),
-          {isTSX: true, allExtensions: true},
+          require.resolve('babel-plugin-react-intl'),
+          {...pluginOptions, overrideIdFn: expect.any(Function)},
         ],
-        [require.resolve('babel-plugin-react-intl'), pluginOptions],
       ],
     })
   );

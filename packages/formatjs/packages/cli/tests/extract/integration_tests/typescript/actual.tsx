@@ -32,6 +32,14 @@ const msgs = defineMessages({
     description: 'Escaped apostrophe',
     defaultMessage: "A quoted value ''{value}'",
   },
+  noId: {
+    description: 'no ID',
+    defaultMessage: "No ID",
+  },
+  duplicateAsNoId: {
+    description: 'no ID',
+    defaultMessage: "No ID",
+  }
 } as const);
 
 async function foo () {

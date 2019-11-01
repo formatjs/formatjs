@@ -42,6 +42,22 @@ async function main(argv: string[]) {
       ].join('')
     )
     .option(
+      '--out-file <path>',
+      [
+        'The target file path where the plugin will output an aggregated `.json` file of all',
+        'the translations from the `files` supplied.\n',
+        'This flag will ignore --messages-dir',
+      ].join('')
+    )
+    .option(
+      '--id-interpolation-pattern <pattern>',
+      [
+        "If certain message descriptors don't have id, this `pattern` will be used to automatically",
+        'generate IDs for them. Default to `[contenthash:5]`.\n',
+        'See https://github.com/webpack/loader-utils#interpolatename for sample patterns',
+      ].join('')
+    )
+    .option(
       '--extract-source-location',
       [
         'Whether the metadata about the location of the message in the source file should be ',
@@ -83,6 +99,9 @@ async function main(argv: string[]) {
     )
     .action(async (files: readonly string[], cmdObj: ExtractCLIOptions) => {
       await extract(files, {
+        outFile: cmdObj.outFile,
+        idInterpolationPattern:
+          cmdObj.idInterpolationPattern || '[contenthash:5]',
         messagesDir: cmdObj.messagesDir,
         extractSourceLocation: cmdObj.extractSourceLocation,
         moduleSourceName: cmdObj.moduleSourceName,

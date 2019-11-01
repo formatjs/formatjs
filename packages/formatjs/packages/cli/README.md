@@ -17,6 +17,12 @@ Options:
                                                         corresponding to each component from which React Intl messages
                                                         were extracted. If not provided, the extracted message
                                                         descriptors will be printed to standard output.
+  --out-file <path>                                     The target file path where the plugin will output an aggregated \`.json\` file of allthe translations from the \`files\`
+                                                        supplied.
+                                                        This flag will ignore --messages-dir
+  --id-interpolation-pattern <pattern>                  If certain message descriptors don\'t have id, this \`pattern\` will be used to automaticallygenerate IDs for them. Default to
+                                                        \`[contenthash:5]\`.
+                                                        See https://github.com/webpack/loader-utils#interpolatename for sample patterns
   --extract-source-location                             Whether the metadata about the location of the message in the
                                                         source file should be extracted. If `true`, then `file`,
                                                         `start`, and `end` fields will exist for each extracted message

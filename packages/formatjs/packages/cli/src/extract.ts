@@ -4,8 +4,13 @@ import * as babel from '@babel/core';
 import {warn, getStdinAsString} from './console_utils';
 import keyBy from 'lodash/keyBy';
 import {extname} from 'path';
+import {outputJSONSync} from 'fs-extra';
+import {interpolateName} from 'loader-utils';
 
-export type ExtractCLIOptions = Omit<OptionsSchema, 'overrideIdFn'>;
+export type ExtractCLIOptions = Omit<OptionsSchema, 'overrideIdFn'> & {
+  outFile?: string;
+  idInterpolationPattern?: string;
+};
 
 function getBabelConfig(
   filename: string,
@@ -21,7 +26,9 @@ function getBabelConfig(
       plugins: ['jsx'],
     },
     presets: [
-      ['@babel/preset-typescript', {isTSX, allExtensions: true}],
+      ...(isTS || isTSX
+        ? [['@babel/preset-typescript', {isTSX, allExtensions: true}]]
+        : []),
       [
         '@babel/preset-env',
         {
@@ -71,17 +78,35 @@ function getReactIntlMessages(
 
 export default async function extract(
   files: readonly string[],
-  extractOptions: ExtractCLIOptions
+  {outFile, idInterpolationPattern, ...extractOpts}: ExtractCLIOptions
 ) {
-  const printMessagesToStdout = extractOptions.messagesDir == null;
+  let babelOpts: OptionsSchema = extractOpts;
+  if (outFile) {
+    babelOpts.messagesDir = undefined;
+  }
+  const printMessagesToStdout = babelOpts.messagesDir == null && !outFile;
   let extractedMessages: Record<string, ExtractedMessageDescriptor> = {};
 
   if (files.length > 0) {
     for (const file of files) {
-      const babelResult = extractSingleFile(file, extractOptions);
+      if (idInterpolationPattern) {
+        babelOpts = {
+          ...babelOpts,
+          overrideIdFn: (id, defaultMessage, description) =>
+            id ||
+            interpolateName(
+              {
+                resourcePath: file,
+              } as any,
+              idInterpolationPattern,
+              {content: `${defaultMessage}#${description}`}
+            ),
+        };
+      }
+      const babelResult = extractSingleFile(file, babelOpts);
       const singleFileExtractedMessages = getReactIntlMessages(babelResult);
-      // We only need to aggregate result when we need to print to STDOUT.
-      if (printMessagesToStdout) {
+      // Aggregate result when we have to output to a single file
+      if (outFile || printMessagesToStdout) {
         Object.assign(extractedMessages, singleFileExtractedMessages);
       }
     }
@@ -89,14 +114,33 @@ export default async function extract(
     if (files.length === 0 && process.stdin.isTTY) {
       warn('Reading source file from TTY.');
     }
+    if (idInterpolationPattern) {
+      babelOpts = {
+        ...babelOpts,
+        overrideIdFn: (id, defaultMessage, description) =>
+          id ||
+          interpolateName(
+            {
+              resourcePath: 'dummy',
+            } as any,
+            idInterpolationPattern,
+            {content: `${defaultMessage}#${description}`}
+          ),
+      };
+    }
     const stdinSource = await getStdinAsString();
     const babelResult = babel.transformSync(
       stdinSource,
-      getBabelConfig('<stdin>', extractOptions)
+      getBabelConfig('<stdin>', babelOpts)
     );
     if (printMessagesToStdout) {
       extractedMessages = getReactIntlMessages(babelResult);
     }
+  }
+  if (outFile) {
+    outputJSONSync(outFile, Object.values(extractedMessages), {
+      spaces: 2,
+    });
   }
   if (printMessagesToStdout) {
     process.stdout.write(
