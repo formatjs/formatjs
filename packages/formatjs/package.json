@@ -86,6 +86,7 @@
     "source-map-support": "^0.5.16",
     "test262-harness": "^6.4.0",
     "ts-jest": "^24.0.2",
+    "ts-morph": "^4.3.2",
     "ts-node": "^8.3.0",
     "ts-pegjs": "^0.2.6",
     "tslib": "^1.10.0",

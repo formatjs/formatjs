@@ -1,0 +1,33 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "target": "es6",
+        "outDir": "dist",
+        "rootDir": ".",
+        "module": "commonjs",
+        "noUnusedLocals": true,
+        "sourceMap": true,
+        "types": [
+            "eslint",
+            "estree",
+            "estree-jsx",
+            "babel__core",
+            "babel__generator",
+            "babel__template",
+            "babel__traverse",
+            "benchmark",
+            "chai",
+            "estree",
+            "fs-extra",
+            "istanbul-lib-coverage",
+            "istanbul-lib-report",
+            "istanbul-reports",
+            // Don't include mocha here
+            "jest",
+            "node",
+            "resolve",
+            "stack-utils",
+            "yargs"
+        ]
+    }
+}
