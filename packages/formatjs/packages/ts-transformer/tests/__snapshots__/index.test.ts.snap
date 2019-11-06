@@ -352,6 +352,7 @@ exports.foo = foo;
     Object {
       "defaultMessage": "foo",
       "description": "bar",
+      "id": "1jErj",
     },
   ],
 }

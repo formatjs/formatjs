@@ -192,7 +192,7 @@ function extractMessageDescriptor(
   if (!Object.keys(msg).length) {
     return;
   }
-  if (!msg.id && typeof overrideIdFn === 'function') {
+  if (!msg.id && overrideIdFn) {
     switch (typeof overrideIdFn) {
       case 'string':
         msg.id = interpolateName(

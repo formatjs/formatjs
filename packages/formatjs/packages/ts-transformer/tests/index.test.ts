@@ -32,6 +32,7 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
     removeDefaultMessage: true,
   },
   noImport: {
+    overrideIdFn: '[hash:base64:5]',
     extractFromFormatMessageCall: true,
   },
   removeDescription: {},
