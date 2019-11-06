@@ -155,7 +155,7 @@ function extractMessageDescriptor(
     | ts.JsxOpeningElement
     | ts.JsxSelfClosingElement,
   sf: ts.SourceFile,
-  opts: Opts
+  {overrideIdFn, extractSourceLocation}: Opts
 ): MessageDescriptor | undefined {
   let properties: ts.NodeArray<ts.ObjectLiteralElement> | undefined = undefined;
   if (ts.isObjectLiteralExpression(node)) {
@@ -189,11 +189,10 @@ function extractMessageDescriptor(
     }
   });
   // We extracted nothing
-  if (!msg.id && !msg.defaultMessage && !msg.description) {
+  if (!Object.keys(msg).length) {
     return;
   }
-  if (!msg.id && opts.overrideIdFn) {
-    const {overrideIdFn} = opts;
+  if (!msg.id && typeof overrideIdFn === 'function') {
     switch (typeof overrideIdFn) {
       case 'string':
         msg.id = interpolateName(
@@ -207,7 +206,7 @@ function extractMessageDescriptor(
         break;
     }
   }
-  if (opts.extractSourceLocation) {
+  if (extractSourceLocation) {
     return {
       ...msg,
       file: sf.fileName,

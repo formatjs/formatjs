@@ -23,6 +23,10 @@ const msgs = defineMessages({
 
 export default class Foo extends Component {
   render() {
+    this.props.intl.formatMessage({
+      defaultMessage: 'no-id',
+      description: 'no-id'
+    })
     return (
       <div>
         <h1>
