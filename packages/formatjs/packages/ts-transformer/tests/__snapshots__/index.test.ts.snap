@@ -336,6 +336,27 @@ exports.default = Foo;
 }
 `;
 
+exports[`emit asserts for noImport 1`] = `
+Object {
+  "code": "\\"use strict\\";
+Object.defineProperty(exports, \\"__esModule\\", { value: true });
+function foo() {
+    return intl.formatMessage({
+        defaultMessage: 'foo',
+        description: 'bar'
+    });
+}
+exports.foo = foo;
+",
+  "msgs": Array [
+    Object {
+      "defaultMessage": "foo",
+      "description": "bar",
+    },
+  ],
+}
+`;
+
 exports[`emit asserts for overrideIdFn 1`] = `
 Object {
   "code": "\\"use strict\\";

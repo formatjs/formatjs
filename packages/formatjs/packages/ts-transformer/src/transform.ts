@@ -368,46 +368,18 @@ function extractMessagesFromCallExpression(
   }
 }
 
-function getImportSpecifierHooks(
-  node: ts.ImportDeclaration,
-  sf: ts.SourceFile,
-  opts: Opts
-) {
-  const moduleSpecifier = trimSingleQuote(node.moduleSpecifier.getText(sf));
-  if (
-    moduleSpecifier !== (opts.moduleSourceName || 'react-intl') ||
-    !node.importClause
-  ) {
-    return;
-  }
-  return node.importClause.namedBindings as ts.NamedImports;
-}
-
 export function transform(opts: Opts) {
   opts = {...DEFAULT_OPTS, ...opts};
   const {program} = opts;
   return (ctx: ts.TransformationContext): ts.Transformer<ts.SourceFile> => {
-    let importedSpecifierHooks: ts.NamedImports | undefined;
     function getVisitor(sf: ts.SourceFile) {
       const visitor: ts.Visitor = (node: ts.Node): ts.Node => {
-        if (ts.isImportDeclaration(node)) {
-          importedSpecifierHooks =
-            getImportSpecifierHooks(node, sf, opts) || importedSpecifierHooks;
-        }
-        if (
-          !importedSpecifierHooks ||
-          !ts.isNamedImports(importedSpecifierHooks)
-        ) {
-          return ts.visitEachChild(node, visitor, ctx);
-        }
+        const newNode = ts.isCallExpression(node)
+          ? extractMessagesFromCallExpression(node, program, sf, opts)
+          : ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)
+          ? extractMessageFromJsxComponent(node, program, sf, opts)
+          : undefined;
 
-        let newNode: ts.Node | undefined = undefined;
-        if (ts.isCallExpression(node)) {
-          newNode = extractMessagesFromCallExpression(node, program, sf, opts);
-        }
-        if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
-          newNode = extractMessageFromJsxComponent(node, program, sf, opts);
-        }
         return newNode || ts.visitEachChild(node, visitor, ctx);
       };
       return visitor;
