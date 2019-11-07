@@ -79,7 +79,9 @@ We officially support IE11 along with 2 most recent versions of Edge, Chrome & F
 
 #### full-icu
 
-When using React Intl in Node.js, your `node` binary has to either:
+Starting with Node.js 13.0.0 full-icu is supported by default.
+
+If using React Intl in an earlier version of Node.js, your `node` binary has to either:
 
 - Get compiled with `full-icu` using these [instructions](https://nodejs.org/api/intl.html)
 
