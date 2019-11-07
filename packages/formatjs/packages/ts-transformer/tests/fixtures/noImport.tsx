@@ -1,6 +1,6 @@
 export function foo () {
     return intl.formatMessage({
-        defaultMessage: 'foo',
+        defaultMessage: 'foo {bar}',
         description: 'bar'
-    })
+    }, {bar: 'bar'})
 }

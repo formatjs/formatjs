@@ -296,7 +296,7 @@ function extractMessagesFromCallExpression(
 ): typeof node | undefined {
   const {moduleSourceName = 'react-intl', onMsgExtracted} = opts;
   if (isMultipleMessageDecl(node, program, sf, moduleSourceName)) {
-    const descriptorsObj = node.arguments[0];
+    const [descriptorsObj, ...restArgs] = node.arguments;
     if (ts.isObjectLiteralExpression(descriptorsObj)) {
       const properties = descriptorsObj.properties as ts.NodeArray<
         ts.PropertyAssignment
@@ -333,7 +333,10 @@ function extractMessagesFromCallExpression(
         })
       );
       clonedDescriptorsObj.properties = clonedProperties;
-      newNode.arguments = ts.createNodeArray([clonedDescriptorsObj]);
+      newNode.arguments = ts.createNodeArray([
+        clonedDescriptorsObj,
+        ...restArgs,
+      ]);
       return newNode;
     }
   } else if (
@@ -346,7 +349,7 @@ function extractMessagesFromCallExpression(
     ) ||
     (opts.extractFromFormatMessageCall && isIntlFormatMessageCall(node, sf))
   ) {
-    const descriptorsObj = node.arguments[0];
+    const [descriptorsObj, ...restArgs] = node.arguments;
     if (ts.isObjectLiteralExpression(descriptorsObj)) {
       let msg = extractMessageDescriptor(descriptorsObj, sf, opts);
       if (!msg) {
@@ -362,6 +365,7 @@ function extractMessagesFromCallExpression(
           defaultMessage: opts.removeDefaultMessage !== true,
           id: msg ? msg.id : undefined,
         }),
+        ...restArgs,
       ]);
       return newNode;
     }

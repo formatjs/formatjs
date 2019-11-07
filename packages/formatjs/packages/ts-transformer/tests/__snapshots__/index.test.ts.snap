@@ -342,17 +342,17 @@ Object {
 Object.defineProperty(exports, \\"__esModule\\", { value: true });
 function foo() {
     return intl.formatMessage({
-        defaultMessage: 'foo',
+        defaultMessage: 'foo {bar}',
         description: 'bar'
-    });
+    }, { bar: 'bar' });
 }
 exports.foo = foo;
 ",
   "msgs": Array [
     Object {
-      "defaultMessage": "foo",
+      "defaultMessage": "foo {bar}",
       "description": "bar",
-      "id": "1jErj",
+      "id": "2kzY8",
     },
   ],
 }
