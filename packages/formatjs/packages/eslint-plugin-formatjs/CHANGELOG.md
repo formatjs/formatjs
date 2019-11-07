@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.2.0...eslint-plugin-formatjs@1.3.0) (2019-11-07)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** Add enforce-placeholders rule ([12b9ac1](https://github.com/formatjs/formatjs/commit/12b9ac11a5fb1da4308cf4b6abeb6e8b6adce59f))
+
+
+
+
+
 # [1.2.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.1.1...eslint-plugin-formatjs@1.2.0) (2019-10-31)
 
 
