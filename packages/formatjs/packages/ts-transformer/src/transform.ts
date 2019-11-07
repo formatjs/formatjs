@@ -254,35 +254,28 @@ function extractMessageFromJsxComponent(
 
   const clonedEl = ts.getMutableClone(node);
   clonedEl.attributes = setAttributesInObject(clonedEl.attributes, {
-    defaultMessage: opts.removeDefaultMessage !== true,
-    id: msg ? msg.id : undefined,
+    defaultMessage: opts.removeDefaultMessage ? undefined : msg.defaultMessage,
+    id: msg.id,
   }) as ts.JsxAttributes;
   return clonedEl;
 }
 
 function setAttributesInObject(
   node: ts.ObjectLiteralExpression | ts.JsxAttributes,
-  attrs: Record<string, boolean | string | undefined>
+  msg: MessageDescriptor
 ) {
   const newNode = ts.getMutableClone(node);
   newNode.properties = ts.createNodeArray(
-    (node.properties as ts.NodeArray<ts.ObjectLiteralElement>)
-      .filter(
-        prop =>
-          prop.name && attrs[trimSingleQuote(prop.name.getText())] !== false
-      )
-      .map(prop => {
-        if (!prop.name) {
-          return prop;
+    (['id', 'description', 'defaultMessage'] as Array<keyof MessageDescriptor>)
+      .filter(k => !!msg[k])
+      .map(k => {
+        const val = msg[k];
+        const keyNode = ts.createIdentifier(k);
+        const valNode = ts.createStringLiteral(val + '');
+        if (ts.isJsxAttributes(node)) {
+          return ts.createJsxAttribute(keyNode, valNode);
         }
-        const name = trimSingleQuote(prop.name.getText());
-        const value = attrs[name];
-        if (typeof value === 'string') {
-          const clonedProp = ts.getMutableClone(prop) as ts.PropertyAssignment;
-          clonedProp.initializer = ts.createStringLiteral(value);
-          return clonedProp;
-        }
-        return prop;
+        return ts.createPropertyAssignment(keyNode, valNode);
       })
   ) as ts.NodeArray<ts.ObjectLiteralElementLike>;
   return newNode;
@@ -326,7 +319,9 @@ function extractMessagesFromCallExpression(
           }
           const clonedNode = ts.getMutableClone(prop);
           clonedNode.initializer = setAttributesInObject(prop.initializer, {
-            defaultMessage: opts.removeDefaultMessage !== true,
+            defaultMessage: opts.removeDefaultMessage
+              ? undefined
+              : msgs[i].defaultMessage,
             id: msgs[i] ? msgs[i].id : undefined,
           });
           return clonedNode;
@@ -362,8 +357,10 @@ function extractMessagesFromCallExpression(
       const newNode = ts.getMutableClone(node);
       newNode.arguments = ts.createNodeArray([
         setAttributesInObject(descriptorsObj, {
-          defaultMessage: opts.removeDefaultMessage !== true,
-          id: msg ? msg.id : undefined,
+          defaultMessage: opts.removeDefaultMessage
+            ? undefined
+            : msg.defaultMessage,
+          id: msg.id,
         }),
         ...restArgs,
       ]);
