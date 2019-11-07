@@ -86,7 +86,7 @@ function checkNode(
   if (!Array.isArray(blacklist) || !blacklist.length) {
     return;
   }
-  for (const msg of msgs) {
+  for (const [msg] of msgs) {
     if (!msg.defaultMessage) {
       continue;
     }

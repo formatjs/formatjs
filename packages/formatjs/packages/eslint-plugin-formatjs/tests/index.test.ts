@@ -244,6 +244,82 @@ _({
   ],
 });
 
+ruleTester.run('enforce-placeholders', rules['enforce-placeholders'], {
+  valid: [
+    `intl.formatMessage({
+    defaultMessage: '{count, plural, one {#} other {# more}}',
+    description: 'asd'
+}, {count: 1})`,
+    `intl.formatMessage({
+  defaultMessage: '{count, plural, one {#} other {# more}}',
+  description: 'asd'
+}, {'count': 1})`,
+    `import {FormattedMessage} from 'react-intl'
+const a = <FormattedMessage 
+defaultMessage="{count, plural, one {#} other {# more}}"
+values={{ count: 1}} />
+      `,
+    `import {FormattedMessage} from 'react-intl'
+const a = <FormattedMessage 
+defaultMessage="{count, plural, one {#} other {# more}} {bar}"
+values={{ 'count': 1, bar: 2}} />
+      `,
+    noMatch,
+    emptyFnCall,
+  ],
+  invalid: [
+    {
+      code: `
+      intl.formatMessage({
+        defaultMessage: '{count, plural, one {#} other {# more}}',
+        description: 'asd'
+    })`,
+      errors: [
+        {
+          message: 'Missing value for placeholder "count"',
+        },
+      ],
+    },
+    {
+      code: `
+      intl.formatMessage({
+        defaultMessage: '{aDifferentKey, plural, one {#} other {# more}}',
+        description: 'asd'
+    }, {foo: 1})`,
+      errors: [
+        {
+          message: 'Missing value for placeholder "aDifferentKey"',
+        },
+      ],
+    },
+    {
+      code: `
+      import {FormattedMessage} from 'react-intl'
+      const a = <FormattedMessage 
+      defaultMessage="{count, plural, one {#} other {# more}}"
+      />`,
+      errors: [
+        {
+          message: 'Missing value for placeholder "count"',
+        },
+      ],
+    },
+    {
+      code: `
+      import {FormattedMessage} from 'react-intl'
+      const a = <FormattedMessage 
+      defaultMessage="{count, plural, one {#} other {# more}}"
+      values={{foo: 1}}
+      />`,
+      errors: [
+        {
+          message: 'Missing value for placeholder "count"',
+        },
+      ],
+    },
+  ],
+});
+
 ruleTester.run('blacklist-elements', rules['blacklist-elements'], {
   valid: [
     {

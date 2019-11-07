@@ -64,7 +64,7 @@ function checkNode(
   if (!plConfig) {
     return;
   }
-  for (const msg of msgs) {
+  for (const [msg] of msgs) {
     if (!msg.defaultMessage) {
       continue;
     }

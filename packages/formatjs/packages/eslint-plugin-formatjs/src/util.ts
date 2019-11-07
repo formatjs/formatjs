@@ -1,6 +1,12 @@
-import {Identifier, ObjectExpression, Literal, CallExpression} from 'estree';
+import {
+  Identifier,
+  ObjectExpression,
+  Literal,
+  CallExpression,
+  Expression,
+} from 'estree';
 import {Scope} from 'eslint';
-import {Node, JSXOpeningElement} from 'estree-jsx';
+import {Node, JSXOpeningElement, JSXExpressionContainer} from 'estree-jsx';
 
 export interface MessageDescriptor {
   id?: string;
@@ -22,7 +28,7 @@ function isIntlFormatMessageCall(node: Node) {
     node.callee.object.name === 'intl' &&
     node.callee.property.type === 'Identifier' &&
     node.callee.property.name === 'formatMessage' &&
-    node.arguments.length === 1 &&
+    node.arguments.length >= 1 &&
     node.arguments[0].type === 'ObjectExpression'
   );
 }
@@ -71,28 +77,34 @@ function extractMessageDescriptor(node?: ObjectExpression): MessageDescriptor {
 
 function extractMessageDescriptorFromJSXElement(
   node?: JSXOpeningElement
-): MessageDescriptor {
+): [MessageDescriptor, ObjectExpression | undefined] {
   if (!node || !node.attributes) {
-    return {};
+    return [{}, undefined];
   }
-  return node.attributes.reduce((msg: MessageDescriptor, prop) => {
+  let values: ObjectExpression | undefined = undefined;
+  const descriptor = node.attributes.reduce((msg: MessageDescriptor, prop) => {
     if (prop.type !== 'JSXAttribute' || prop.name.type !== 'JSXIdentifier') {
       return msg;
     }
     const key = prop.name;
-    const value = (prop.value as Literal).value as string;
     switch (key.name) {
       case 'defaultMessage':
-        msg.defaultMessage = value;
+        msg.defaultMessage = (prop.value as Literal).value as string;
         break;
       case 'description':
-        msg.description = value;
+        msg.description = (prop.value as Literal).value as string;
         break;
       case 'id':
-        msg.id = value;
+        msg.id = (prop.value as Literal).value as string;
+        break;
+      case 'values':
+        values = (prop.value as JSXExpressionContainer)
+          .expression as ObjectExpression;
+        break;
     }
     return msg;
   }, {});
+  return [descriptor, values];
 }
 
 function extractMessageDescriptors(node?: ObjectExpression) {
@@ -109,7 +121,7 @@ function extractMessageDescriptors(node?: ObjectExpression) {
 export function extractMessages(
   node: Node,
   importedMacroVars: Scope.Variable[]
-) {
+): Array<[MessageDescriptor, Expression | undefined]> {
   if (node.type === 'CallExpression') {
     const expr = node as CallExpression;
     const fnId = expr.callee as Identifier;
@@ -117,11 +129,17 @@ export function extractMessages(
       isSingleMessageDescriptorDeclaration(fnId, importedMacroVars) ||
       isIntlFormatMessageCall(node)
     ) {
-      return [extractMessageDescriptor(expr.arguments[0] as ObjectExpression)];
+      return [
+        [
+          extractMessageDescriptor(expr.arguments[0] as ObjectExpression),
+          expr.arguments[1] as Expression,
+        ],
+      ];
     } else if (
       isMultipleMessageDescriptorDeclaration(fnId, importedMacroVars)
     ) {
-      return extractMessageDescriptors(expr.arguments[0] as ObjectExpression);
+      return extractMessageDescriptors(expr
+        .arguments[0] as ObjectExpression).map(msg => [msg, undefined]);
     }
   } else if (
     node.type === 'JSXOpeningElement' &&
