@@ -218,11 +218,17 @@ function extractMessageDescriptor(
 }
 
 function isIntlFormatMessageCall(node: ts.CallExpression, sf: ts.SourceFile) {
-  const expr = node.expression;
+  const method = node.expression;
+  if (!ts.isPropertyAccessExpression(method)) {
+    return false;
+  }
+
   return (
-    ts.isPropertyAccessExpression(expr) &&
-    expr.expression.getText(sf) === 'intl' &&
-    expr.name.getText(sf) === 'formatMessage'
+    (method.name.getText(sf) === 'formatMessage' &&
+      (ts.isIdentifier(method.expression) &&
+        method.expression.getText(sf) === 'intl')) ||
+    (ts.isPropertyAccessExpression(method.expression) &&
+      method.expression.name.getText(sf) === 'intl')
   );
 }
 

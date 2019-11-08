@@ -150,9 +150,8 @@ class Foo extends react_1.Component {
         const { intl } = this.props;
         const msgs = {
             baz: this.props.intl.formatMessage({
-                id: 'foo.bar.baz',
-                defaultMessage: 'Hello World!',
-                description: 'The default message',
+                id: \\"foo.bar.baz\\",
+                defaultMessage: \\"Hello World!\\"
             }),
             biff: intl.formatMessage({
                 id: \\"foo.bar.biff\\",
@@ -170,6 +169,11 @@ class Foo extends react_1.Component {
 exports.default = react_intl_1.injectIntl(Foo);
 ",
   "msgs": Array [
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": "The default message",
+      "id": "foo.bar.baz",
+    },
     Object {
       "defaultMessage": "Hello Nurse!",
       "description": "Another message",
@@ -335,6 +339,14 @@ Object {
   "code": "\\"use strict\\";
 Object.defineProperty(exports, \\"__esModule\\", { value: true });
 function foo() {
+    props.intl.formatMessage({
+        id: \\"SRX4p\\",
+        defaultMessage: \\"props {intl}\\"
+    }, { bar: 'bar' });
+    this.props.intl.formatMessage({
+        id: \\"12zCC\\",
+        defaultMessage: \\"this props {intl}\\"
+    }, { bar: 'bar' });
     return intl.formatMessage({
         id: \\"2kzY8\\",
         defaultMessage: \\"foo {bar}\\"
@@ -343,6 +355,16 @@ function foo() {
 exports.foo = foo;
 ",
   "msgs": Array [
+    Object {
+      "defaultMessage": "props {intl}",
+      "description": "bar",
+      "id": "SRX4p",
+    },
+    Object {
+      "defaultMessage": "this props {intl}",
+      "description": "bar",
+      "id": "12zCC",
+    },
     Object {
       "defaultMessage": "foo {bar}",
       "description": "bar",
@@ -371,8 +393,8 @@ const msgs = react_intl_1.defineMessages({
 class Foo extends react_1.Component {
     render() {
         this.props.intl.formatMessage({
-            defaultMessage: 'no-id',
-            description: 'no-id'
+            id: \\"HELLO.undefined.5.string\\",
+            defaultMessage: \\"no-id\\"
         });
         return (react_1.default.createElement(\\"div\\", null,
             react_1.default.createElement(\\"h1\\", null,
@@ -394,6 +416,11 @@ exports.default = Foo;
     Object {
       "defaultMessage": "Hello Nurse!",
       "id": "foo.bar.biff",
+    },
+    Object {
+      "defaultMessage": "no-id",
+      "description": "no-id",
+      "id": "HELLO.undefined.5.string",
     },
     Object {
       "defaultMessage": "Hello World!",
