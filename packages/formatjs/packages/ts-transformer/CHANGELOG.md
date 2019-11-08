@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.6](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@1.0.5...@formatjs/ts-transformer@1.0.6) (2019-11-08)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** handle props.intl.formatMessage case ([afaa03d](https://github.com/formatjs/formatjs/commit/afaa03d3104145523c11ebe3ba85f92e560ee8a7))
+
+
+
+
+
 ## [1.0.5](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@1.0.4...@formatjs/ts-transformer@1.0.5) (2019-11-07)
 
 
