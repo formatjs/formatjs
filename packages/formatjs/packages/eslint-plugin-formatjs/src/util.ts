@@ -138,8 +138,9 @@ export function extractMessages(
     } else if (
       isMultipleMessageDescriptorDeclaration(fnId, importedMacroVars)
     ) {
-      return extractMessageDescriptors(expr
-        .arguments[0] as ObjectExpression).map(msg => [msg, undefined]);
+      return extractMessageDescriptors(
+        expr.arguments[0] as ObjectExpression
+      ).map(msg => [msg, undefined]);
     }
   } else if (
     node.type === 'JSXOpeningElement' &&

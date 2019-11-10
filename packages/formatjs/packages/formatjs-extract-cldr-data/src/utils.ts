@@ -13,10 +13,12 @@ function dedupeUsingParentHierarchy<DataType extends Record<string, any>>(
   while (data.length) {
     const datum = data.pop();
     const accumulatedParentData: DataType = Object.assign({}, ...results);
-    results.push(pickBy<DataType>(
-      datum,
-      (d, field) => !isEqual(accumulatedParentData[field], d)
-    ) as any);
+    results.push(
+      pickBy<DataType>(
+        datum,
+        (d, field) => !isEqual(accumulatedParentData[field], d)
+      ) as any
+    );
   }
   results.reverse();
   return results;

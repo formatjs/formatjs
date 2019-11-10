@@ -66,22 +66,19 @@ function mergeLiteral(parts: MessageFormatPart[]): MessageFormatPart[] {
   if (parts.length < 2) {
     return parts;
   }
-  return parts.reduce(
-    (all, part) => {
-      const lastPart = all[all.length - 1];
-      if (
-        !lastPart ||
-        lastPart.type !== PART_TYPE.literal ||
-        part.type !== PART_TYPE.literal
-      ) {
-        all.push(part);
-      } else {
-        lastPart.value += part.value;
-      }
-      return all;
-    },
-    [] as MessageFormatPart[]
-  );
+  return parts.reduce((all, part) => {
+    const lastPart = all[all.length - 1];
+    if (
+      !lastPart ||
+      lastPart.type !== PART_TYPE.literal ||
+      part.type !== PART_TYPE.literal
+    ) {
+      all.push(part);
+    } else {
+      lastPart.value += part.value;
+    }
+    return all;
+  }, [] as MessageFormatPart[]);
 }
 
 // TODO(skeleton): add skeleton support

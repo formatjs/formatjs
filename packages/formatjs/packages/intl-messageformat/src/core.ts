@@ -19,30 +19,6 @@ import {
 
 // -- MessageFormat --------------------------------------------------------
 
-function resolveLocale(locales: string | string[]): string {
-  try {
-    return [
-      ...Intl.NumberFormat.supportedLocalesOf(locales, {
-        // IE11 localeMatcher `lookup` seems to convert `en` -> `en-US`
-        // but not other browsers,
-        localeMatcher: 'best fit',
-      }),
-      ...Intl.DateTimeFormat.supportedLocalesOf(locales, {
-        // IE11 localeMatcher `lookup` seems to convert `en` -> `en-US`
-        // but not other browsers,
-        localeMatcher: 'best fit',
-      }),
-      ...Intl.PluralRules.supportedLocalesOf(locales, {
-        // IE11 localeMatcher `lookup` seems to convert `en` -> `en-US`
-        // but not other browsers,
-        localeMatcher: 'best fit',
-      }),
-    ][0];
-  } catch (e) {
-    return IntlMessageFormat.defaultLocale;
-  }
-}
-
 function mergeConfig(c1: Record<string, object>, c2?: Record<string, object>) {
   if (!c2) {
     return c1;
@@ -100,7 +76,7 @@ export function createDefaultFormatters(
 
 export class IntlMessageFormat {
   private readonly ast: MessageFormatElement[];
-  private readonly locale: string | string[];
+  private readonly locales: string | string[];
   private readonly formatters: Formatters;
   private readonly formats: Formats;
   private readonly message: string | undefined;
@@ -139,7 +115,7 @@ export class IntlMessageFormat {
     this.formats = mergeConfigs(IntlMessageFormat.formats, overrideFormats);
 
     // Defined first because it's used to build the format pattern.
-    this.locale = resolveLocale(locales || []);
+    this.locales = locales;
 
     this.formatters =
       (opts && opts.formatters) || createDefaultFormatters(this.formatterCache);
@@ -148,7 +124,7 @@ export class IntlMessageFormat {
   format = (values?: Record<string, PrimitiveType>) =>
     formatToString(
       this.ast,
-      this.locale,
+      this.locales,
       this.formatters,
       this.formats,
       values,
@@ -158,7 +134,7 @@ export class IntlMessageFormat {
   formatToParts = (values?: Record<string, any>) =>
     formatToParts(
       this.ast,
-      this.locale,
+      this.locales,
       this.formatters,
       this.formats,
       values,
@@ -170,16 +146,18 @@ export class IntlMessageFormat {
   ) =>
     formatHTMLMessage(
       this.ast,
-      this.locale,
+      this.locales,
       this.formatters,
       this.formats,
       values,
       this.message
     );
 
-  resolvedOptions = () => ({locale: this.locale});
+  resolvedOptions = () => ({
+    locale: Intl.NumberFormat.supportedLocalesOf(this.locales)[0],
+  });
   getAst = () => this.ast;
-  static defaultLocale = 'en';
+  static defaultLocale = new Intl.NumberFormat().resolvedOptions().locale;
   static __parse: typeof parse | undefined = parse;
   // Default format options used as the prototype of the `formats` provided to the
   // constructor. These are used when constructing the internal Intl.NumberFormat

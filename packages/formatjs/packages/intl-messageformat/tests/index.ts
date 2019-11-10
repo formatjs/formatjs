@@ -53,9 +53,11 @@ describe('IntlMessageFormat', function() {
     });
 
     describe('`locale`', function() {
-      it('should default to "en"', function() {
+      it('should default to host locale', function() {
         var mf = new IntlMessageFormat('');
-        expect(mf.resolvedOptions().locale).to.equal('en');
+        expect(mf.resolvedOptions().locale).to.equal(
+          new Intl.NumberFormat().resolvedOptions().locale
+        );
       });
 
       it('should normalize the casing', function() {
@@ -804,7 +806,9 @@ describe('IntlMessageFormat', function() {
         var msg = new IntlMessageFormat(
           'I have {NUM_BOOKS, plural, =1 {1 book} other {# books}}.'
         );
-        expect(msg.resolvedOptions().locale).to.equal('en');
+        expect(msg.resolvedOptions().locale).to.equal(
+          new Intl.NumberFormat().resolvedOptions().locale
+        );
         expect(msg.format({NUM_BOOKS: 2})).to.equal('I have 2 books.');
       });
     });
