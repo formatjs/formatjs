@@ -226,7 +226,7 @@ function isIntlFormatMessageCall(node: ts.CallExpression, sf: ts.SourceFile) {
   return (
     (method.name.getText(sf) === 'formatMessage' &&
       ts.isIdentifier(method.expression) &&
-        method.expression.getText(sf) === 'intl') ||
+      method.expression.getText(sf) === 'intl') ||
     (ts.isPropertyAccessExpression(method.expression) &&
       method.expression.name.getText(sf) === 'intl')
   );
