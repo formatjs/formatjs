@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.5.0](https://github.com/formatjs/react-intl/compare/v3.4.0...v3.5.0) (2019-11-10)
+
+
+### Features
+
+* add `formatList` & `FormattedList` ([#1494](https://github.com/formatjs/react-intl/issues/1494)) ([f5eacbf](https://github.com/formatjs/react-intl/commit/f5eacbf))
+* alias `defineMessages` to `@formatjs/macro` and deprecate our own ([f6ab2f1](https://github.com/formatjs/react-intl/commit/f6ab2f1))
+
 ## [3.4.0](https://github.com/formatjs/react-intl/compare/v3.3.2...v3.4.0) (2019-10-23)
 
 
