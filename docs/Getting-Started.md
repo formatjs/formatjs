@@ -25,6 +25,9 @@
 - [API Reference](#api-reference)
 - [TypeScript Usage](#typescript-usage)
 - [Advanced Usage](#advanced-usage)
+- [Supported Tooling](#supported-tooling)
+  - [Message extraction](#message-extraction)
+  - [ESLint Plugin](#eslint-plugin)
 
 <!-- tocstop -->
 
@@ -312,3 +315,43 @@ In order to use `react-intl` in TypeScript, make sure your `compilerOptions`'s `
 # Advanced Usage
 
 Our [Advanced Usage](./Advanced-Usage.md) has further guides for production setup in environments where performance is important.
+
+# Supported Tooling
+
+## Message extraction
+
+We've built https://www.npmjs.com/package/@formatjs/cli that helps you extract messages from a list of files. It uses [`babel-plugin-react-intl`](https://www.npmjs.com/package/babel-plugin-react-intl) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
+
+```tsx
+import {defineMessages} from 'react-intl';
+
+defineMessages({
+  foo: {
+    id: 'foo',
+    defaultMessage: 'foo',
+    description: 'bar',
+  },
+});
+```
+
+```tsx
+import {FormattedMessage} from 'react-intl';
+
+<FormattedMessage id="foo" defaultMessage="foo" description="bar" />;
+```
+
+```tsx
+function Comp(props) {
+  const {intl} = props;
+  return intl.formatMessage({
+    // The whole `intl.formatMessage` is required so we can extract
+    id: 'foo',
+    defaultMessage: 'foo',
+    description: 'bar',
+  });
+}
+```
+
+## ESLint Plugin
+
+We've also built https://www.npmjs.com/package/eslint-plugin-formatjs that helps enforcing specific rules on your messages if your translation vendor has restrictions.
