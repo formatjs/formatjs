@@ -28,10 +28,10 @@ To use the ponyfill, import it along with its data:
 
 ```tsx
 import {UnifiedNumberFormat} from '@formatjs/intl-unified-numberformat';
-UnifiedNumberFormat.__addUnitLocaleData(
+UnifiedNumberFormat.__addLocaleData(
   require('@formatjs/intl-unified-numberformat/dist/locale-data/zh.json') // locale-data for zh
 );
-UnifiedNumberFormat.__addUnitLocaleData(
+UnifiedNumberFormat.__addLocaleData(
   require('@formatjs/intl-unified-numberformat/dist/locale-data/en.json') // locale-data for en
 );
 
