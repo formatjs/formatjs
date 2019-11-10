@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.3.0...eslint-plugin-formatjs@1.3.1) (2019-11-10)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** pass raw locales down to individual formatters ([3a74c2e](https://github.com/formatjs/formatjs/commit/3a74c2e7c6592de3a4f5ca182c5846fe095abe55)), closes [#255](https://github.com/formatjs/formatjs/issues/255)
+
+
+
+
+
 # [1.3.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.2.0...eslint-plugin-formatjs@1.3.0) (2019-11-07)
 
 
