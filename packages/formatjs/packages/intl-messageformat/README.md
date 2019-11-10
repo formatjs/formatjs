@@ -189,6 +189,8 @@ This is not meant to be a full-fledged method to embed HTML, but rather to tag s
 
 - List of self-closing tags is defined [here](https://html.spec.whatwg.org/multipage/syntax.html#void-elements).
 
+If you don't have `DOMParser` available in your environment (e.g. Node.js), you need to add a polyfill. One of the packages that provides such a polyfill is [xmldom](https://www.npmjs.com/package/xmldom).
+
 ### User Defined Formats
 
 Define custom format styles is useful you need supply a set of options to the underlying formatter; e.g., outputting a number in USD:
