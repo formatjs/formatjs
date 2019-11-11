@@ -323,7 +323,8 @@ function formatHTMLElement(
   objectParts: Record<string, any>,
   values: Record<string, PrimitiveType | object | FormatXMLElementFn>
 ): Array<PrimitiveType | object> {
-  let {tagName, outerHTML, textContent, childNodes} = el;
+  let {tagName} = el;
+  const {outerHTML, textContent, childNodes} = el;
   // Regular text
   if (!tagName) {
     return restoreRichPlaceholderMessage(textContent || '', objectParts);

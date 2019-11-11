@@ -167,7 +167,7 @@ function makePartsList(
         value: pattern.substring(nextIndex, beginIndex),
       });
     }
-    let p = pattern.substring(beginIndex + 1, endIndex);
+    const p = pattern.substring(beginIndex + 1, endIndex);
     invariant(p === '0', `Malformed pattern ${pattern}`);
     for (const part of parts) {
       result.push({

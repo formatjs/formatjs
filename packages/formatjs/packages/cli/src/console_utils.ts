@@ -33,7 +33,7 @@ export function error(message: string): void {
 }
 
 export async function getStdinAsString(): Promise<string> {
-  let result: string = '';
+  let result = '';
   return new Promise(resolve => {
     process.stdin.setEncoding('utf-8');
     process.stdin.on('readable', () => {

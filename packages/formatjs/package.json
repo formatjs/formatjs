@@ -13,11 +13,10 @@
     "build": "npm run build:bootstrap && npm run prettier && npm run build:packages",
     "cover:collect": "mkdir -p ./.nyc_output/ && for d in $(find packages -type d -name '.nyc_output' -maxdepth 2 -exec find '{}' -type f ';'); do (cp $d ./.nyc_output/); done; nyc report --reporter=lcov --report-dir=${COVERAGE_DIR:-artifacts/coverage}",
     "cover": "lerna run cover --since",
-    "dev:lint": "lerna run lint --since master",
     "dev:test": "lerna run test --since master",
     "karma:ci": "karma start karma.conf-ci.js",
     "karma:local": "karma start karma.conf.js",
-    "lint": "eslint .",
+    "lint": "eslint 'packages/*/src/**/*.ts?(x)' --fix",
     "postversion": "npm run prettier",
     "prepublishOnly": "npm run build",
     "prettier": "prettier --write 'packages/*/{test,tests,src,scripts}/**/*.ts' 'packages/babel-plugin-react-intl/test/**/*.js' '{src,scripts,test,tests}/**/*.js' '**/*.md'",
@@ -46,6 +45,7 @@
     "@types/mocha": "^5.2.7",
     "@types/rimraf": "^2.0.3",
     "@types/serialize-javascript": "^1.5.0",
+    "@typescript-eslint/eslint-plugin": "^2.6.1",
     "@typescript-eslint/parser": "^2.6.1",
     "babel-jest": "^24.9.0",
     "benchmark": "^2.1.4",
@@ -54,6 +54,10 @@
     "coveralls": "^3.0.7",
     "cross-env": "^6.0.0",
     "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^23.0.3",
+    "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.16.0",
     "fast-memoize": "^2.5.1",
     "fs-extra": "^8.1.0",
@@ -75,26 +79,66 @@
     "pre-commit": "^1.2.2",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.0",
-    "rollup": "^1.26.4",
+    "rollup": "^1.26.5",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-terser": "^5.1.2",
-    "rollup-plugin-typescript2": "^0.24.3",
+    "rollup-plugin-typescript2": "^0.25.0",
     "rollup-plugin-uglify": "^6.0.3",
     "serialize-javascript": "^2.1.0",
     "source-map-support": "^0.5.16",
     "test262-harness": "^6.4.0",
     "ts-jest": "^24.0.2",
-    "ts-morph": "^4.3.3",
-    "ts-node": "^8.3.0",
+    "ts-morph": "^5.0.0",
+    "ts-node": "^8.5.0",
     "ts-pegjs": "^0.2.6",
     "tslib": "^1.10.0",
-    "typescript": "^3.7.2",
-    "xmldom": "^0.1.27"
+    "typescript": "^3.7.2"
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "prettier",
+      "import",
+      "jest"
+    ],
+    "extends": [
+      "plugin:@typescript-eslint/recommended",
+      "prettier",
+      "prettier/@typescript-eslint",
+      "plugin:import/typescript"
+    ],
+    "rules": {
+      "@typescript-eslint/camelcase": 0,
+      "@typescript-eslint/explicit-function-return-type": 0,
+      "@typescript-eslint/explicit-member-accessibility": 0,
+      "@typescript-eslint/no-explicit-any": 0,
+      "@typescript-eslint/no-non-null-assertion": 0,
+      "@typescript-eslint/no-object-literal-type-assertion": 0,
+      "@typescript-eslint/no-unused-vars": 0,
+      "@typescript-eslint/no-use-before-define": 0,
+      "import/dynamic-import-chunkname": "error",
+      "import/no-cycle": "error",
+      "import/no-duplicates": "error",
+      "import/no-self-import": "error",
+      "import/no-useless-path-segments": "error"
+    },
+    "overrides": [
+      {
+        "files": [
+          "*.test.ts",
+          "*.test.tsx"
+        ],
+        "rules": {
+          "jest/no-focused-tests": "error"
+        }
+      }
+    ]
   },
   "devEngines": {
-    "node": "8.x || 10.x || 12.x",
+    "node": ">= 8.x",
     "npm": "6.x"
   },
   "pre-commit": [

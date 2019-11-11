@@ -5,3 +5,4 @@
 **/artifacts
 **/build
 **/node_modules
+packages/intl-messageformat-parser/src/parser.ts

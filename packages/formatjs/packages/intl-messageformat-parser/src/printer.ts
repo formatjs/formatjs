@@ -28,7 +28,7 @@ import {
 } from './types';
 
 export function printAST(ast: MessageFormatElement[]): string {
-  let printedNodes = ast.map(el => {
+  const printedNodes = ast.map(el => {
     if (isLiteralElement(el)) {
       return printLiteralElement(el);
     }

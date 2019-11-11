@@ -163,13 +163,13 @@ function extractMessageDescriptor(
   } else if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
     properties = node.attributes.properties;
   }
-  let msg: MessageDescriptor = {};
+  const msg: MessageDescriptor = {};
   if (!properties) {
     return;
   }
   properties.forEach(prop => {
     const {name} = prop;
-    let initializer =
+    const initializer =
       ts.isPropertyAssignment(prop) || ts.isJsxAttribute(prop)
         ? prop.initializer
         : undefined;
@@ -352,7 +352,7 @@ function extractMessagesFromCallExpression(
   ) {
     const [descriptorsObj, ...restArgs] = node.arguments;
     if (ts.isObjectLiteralExpression(descriptorsObj)) {
-      let msg = extractMessageDescriptor(descriptorsObj, sf, opts);
+      const msg = extractMessageDescriptor(descriptorsObj, sf, opts);
       if (!msg) {
         return;
       }

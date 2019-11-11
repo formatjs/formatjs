@@ -94,7 +94,7 @@ function transformFieldData(data: Fields['week']): FieldData {
     past: {},
   };
   Object.keys(data).forEach(function(key) {
-    var type = key.match(/^(relative|relativeTime)-type-(.+)$/) || [];
+    const type = key.match(/^(relative|relativeTime)-type-(.+)$/) || [];
 
     switch (type[1]) {
       case 'relative':

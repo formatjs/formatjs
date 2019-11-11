@@ -414,7 +414,7 @@ export default declare((api: any, options: OptionsSchema) => {
               attr.isJSXAttribute()
             );
 
-          let descriptorPath = createMessageDescriptor(
+          const descriptorPath = createMessageDescriptor(
             attributes.map(attr => [
               attr.get('name') as NodePath<JSXIdentifier>,
               attr.get('value') as NodePath<StringLiteral>,

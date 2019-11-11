@@ -1,6 +1,7 @@
 import {getCanonicalLocales} from './get-canonical-locales';
 import {invariant} from './invariant';
 import {toObject, getOption} from './polyfill-utils';
+import {LocaleData} from './types';
 
 interface ResolveLocaleResult {
   locale: string;
@@ -35,12 +36,12 @@ export function createResolveLocale<
     const result: ResolveLocaleResult = {locale: '', dataLocale: foundLocale};
     let supportedExtension = '-u';
     for (const key of relevantExtensionKeys) {
-      let foundLocaleData = localeData[foundLocale];
+      const foundLocaleData = localeData[foundLocale];
       invariant(
         typeof foundLocaleData === 'object' && foundLocaleData !== null,
         `locale data ${key} must be an object`
       );
-      let keyLocaleData = foundLocaleData[key];
+      const keyLocaleData = foundLocaleData[key];
       invariant(Array.isArray(keyLocaleData), 'keyLocaleData must be an array');
       let value = keyLocaleData[0];
       invariant(
@@ -49,7 +50,7 @@ export function createResolveLocale<
       );
       let supportedExtensionAddition = '';
       if (r.extension) {
-        let requestedValue = unicodeExtensionValue(r.extension, key);
+        const requestedValue = unicodeExtensionValue(r.extension, key);
         if (requestedValue !== undefined) {
           if (requestedValue !== '') {
             if (~keyLocaleData.indexOf(requestedValue)) {
@@ -63,7 +64,7 @@ export function createResolveLocale<
         }
       }
       if (key in options) {
-        let optionsValue = options[key];
+        const optionsValue = options[key];
         invariant(
           typeof optionsValue === 'string' ||
             typeof optionsValue === 'undefined' ||
@@ -85,8 +86,11 @@ export function createResolveLocale<
       if (privateIndex === -1) {
         foundLocale = foundLocale + supportedExtension;
       } else {
-        let preExtension = foundLocale.slice(0, privateIndex);
-        let postExtension = foundLocale.slice(privateIndex, foundLocale.length);
+        const preExtension = foundLocale.slice(0, privateIndex);
+        const postExtension = foundLocale.slice(
+          privateIndex,
+          foundLocale.length
+        );
         foundLocale = preExtension + supportedExtension + postExtension;
       }
       foundLocale = getCanonicalLocales(foundLocale)[0];
@@ -103,16 +107,16 @@ export function createResolveLocale<
  */
 function unicodeExtensionValue(extension: string, key: string) {
   invariant(key.length === 2, 'key must have 2 elements');
-  let size = extension.length;
+  const size = extension.length;
   let searchValue = `-${key}-`;
   let pos = extension.indexOf(searchValue);
   if (pos !== -1) {
-    let start = pos + 4;
+    const start = pos + 4;
     let end = start;
     let k = start;
     let done = false;
     while (!done) {
-      let e = extension.indexOf('-', k);
+      const e = extension.indexOf('-', k);
       let len;
       if (e === -1) {
         len = size - k;
@@ -296,4 +300,43 @@ export function supportedLocales(
     return lookupSupportedLocales(availableLocales, requestedLocales);
   }
   return lookupSupportedLocales(availableLocales, requestedLocales);
+}
+
+class MissingLocaleDataError extends Error {
+  public type = 'MISSING_LOCALE_DATA';
+}
+
+export function isMissingLocaleDataError(
+  e: Error
+): e is MissingLocaleDataError {
+  return (e as MissingLocaleDataError).type === 'MISSING_LOCALE_DATA';
+}
+
+export function unpackData<T extends Record<string, any>>(
+  locale: string,
+  localeData: LocaleData<T>
+): T {
+  const localeHierarchy = getLocaleHierarchy(
+    locale,
+    localeData.aliases,
+    localeData.parentLocales
+  );
+  const dataToMerge = localeHierarchy
+    .map(l => localeData.data[l])
+    .filter(Boolean);
+  if (!dataToMerge.length) {
+    throw new MissingLocaleDataError(
+      `Missing locale data for "${locale}", lookup hierarchy: ${localeHierarchy.join(
+        ', '
+      )}`
+    );
+  }
+  dataToMerge.reverse();
+  return dataToMerge.reduce(
+    (all, d) => ({
+      ...all,
+      ...d,
+    }),
+    {} as T
+  );
 }

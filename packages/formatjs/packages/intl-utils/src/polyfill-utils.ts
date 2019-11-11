@@ -1,7 +1,5 @@
 import aliases from './aliases';
 import parentLocales from './parentLocales';
-import {LocaleData} from './types';
-import {getLocaleHierarchy} from './resolve-locale';
 
 /**
  * https://tc39.es/ecma262/#sec-toobject
@@ -69,45 +67,6 @@ export function getParentLocalesByLang(lang: string): Record<string, string> {
       return all;
     },
     {}
-  );
-}
-
-class MissingLocaleDataError extends Error {
-  public type = 'MISSING_LOCALE_DATA';
-}
-
-export function isMissingLocaleDataError(
-  e: Error
-): e is MissingLocaleDataError {
-  return (e as MissingLocaleDataError).type === 'MISSING_LOCALE_DATA';
-}
-
-export function unpackData<T extends Record<string, any>>(
-  locale: string,
-  localeData: LocaleData<T>
-): T {
-  const localeHierarchy = getLocaleHierarchy(
-    locale,
-    localeData.aliases,
-    localeData.parentLocales
-  );
-  const dataToMerge = localeHierarchy
-    .map(l => localeData.data[l])
-    .filter(Boolean);
-  if (!dataToMerge.length) {
-    throw new MissingLocaleDataError(
-      `Missing locale data for "${locale}", lookup hierarchy: ${localeHierarchy.join(
-        ', '
-      )}`
-    );
-  }
-  dataToMerge.reverse();
-  return dataToMerge.reduce(
-    (all, d) => ({
-      ...all,
-      ...d,
-    }),
-    {} as T
   );
 }
 

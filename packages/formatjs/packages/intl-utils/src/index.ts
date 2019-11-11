@@ -4,8 +4,6 @@ export {
   getOption,
   getAliasesByLang,
   getParentLocalesByLang,
-  unpackData,
-  isMissingLocaleDataError,
   setInternalSlot,
   getInternalSlot,
 } from './polyfill-utils';
@@ -13,6 +11,8 @@ export {
   createResolveLocale,
   getLocaleHierarchy,
   supportedLocales,
+  unpackData,
+  isMissingLocaleDataError,
 } from './resolve-locale';
 export {SANCTIONED_UNITS} from './constants';
 export * from './relative-time-types';
