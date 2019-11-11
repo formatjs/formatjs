@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.1.2...@formatjs/cli@1.1.3) (2019-11-11)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** remove Node engines restrictions ([e55efe9](https://github.com/formatjs/formatjs/commit/e55efe90edc8859b89978b2b8bd99c41c17c291f))
+
+
+
+
+
 ## [1.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.1.1...@formatjs/cli@1.1.2) (2019-11-10)
 
 **Note:** Version bump only for package @formatjs/cli
