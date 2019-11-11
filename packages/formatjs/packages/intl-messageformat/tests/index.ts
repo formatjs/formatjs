@@ -817,7 +817,7 @@ describe('IntlMessageFormat', function() {
       it('should fallback to default locale', function() {
         var msg = new IntlMessageFormat(
           '{COMPANY_COUNT, plural, =1 {One company} other {# companies}} published new books.',
-          'fu-baz'
+          'fu-BA'
         );
         var m = msg.format({COMPANY_COUNT: 1});
 

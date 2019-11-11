@@ -52,15 +52,13 @@ describe('emit asserts for', function() {
         // Check code output
         expect(output.code).toMatchSnapshot();
         expect(output.msgs).toHaveLength(1);
-        expect(output.msgs[0]).toMatchSnapshot(
-          {
-            defaultMessage: 'Hello World!',
-            id: 'foo.bar.baz',
-            start: 155,
-            end: 222,
-            file: expect.stringContaining('extractSourceLocation.tsx'),
-          },
-        );
+        expect(output.msgs[0]).toMatchSnapshot({
+          defaultMessage: 'Hello World!',
+          id: 'foo.bar.baz',
+          start: 155,
+          end: 222,
+          file: expect.stringContaining('extractSourceLocation.tsx'),
+        });
       });
     } else {
       it(fn, function() {
