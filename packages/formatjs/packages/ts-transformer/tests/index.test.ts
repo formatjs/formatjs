@@ -44,22 +44,23 @@ describe('emit asserts for', function() {
   const filenames = Object.keys(FILES_TO_TESTS);
   filenames.forEach(function(fn) {
     if (fn === 'extractSourceLocation') {
-      it(fn, function() {
+      it(`[special] ${fn}`, function() {
         const output = compile(
           join(FIXTURES_DIR, `${fn}.tsx`),
           FILES_TO_TESTS[fn]
         );
         // Check code output
         expect(output.code).toMatchSnapshot();
-        expect(output.msgs).toMatchSnapshot([
+        expect(output.msgs).toHaveLength(1);
+        expect(output.msgs[0]).toMatchSnapshot(
           {
             defaultMessage: 'Hello World!',
             id: 'foo.bar.baz',
-            start: expect.any(Number),
-            end: expect.any(Number),
+            start: 155,
+            end: 222,
             file: expect.stringContaining('extractSourceLocation.tsx'),
           },
-        ]);
+        );
       });
     } else {
       it(fn, function() {

@@ -1,5 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`emit asserts for [special] extractSourceLocation 1`] = `
+"\\"use strict\\";
+Object.defineProperty(exports, \\"__esModule\\", { value: true });
+const react_1 = require(\\"react\\");
+const react_intl_1 = require(\\"react-intl\\");
+class Foo extends react_1.Component {
+    render() {
+        return react_1.default.createElement(react_intl_1.FormattedMessage, { id: 'foo.bar.baz', defaultMessage: 'Hello World!' });
+    }
+}
+exports.default = Foo;
+"
+`;
+
+exports[`emit asserts for [special] extractSourceLocation 2`] = `
+Object {
+  "defaultMessage": "Hello World!",
+  "end": 222,
+  "file": StringContaining "extractSourceLocation.tsx",
+  "id": "foo.bar.baz",
+  "start": 155,
+}
+`;
+
 exports[`emit asserts for FormattedHTMLMessage 1`] = `
 Object {
   "code": "\\"use strict\\";
@@ -185,32 +209,6 @@ exports.default = react_intl_1.injectIntl(Foo);
       "id": "foo",
     },
   ],
-}
-`;
-
-exports[`emit asserts for extractSourceLocation 1`] = `
-"\\"use strict\\";
-Object.defineProperty(exports, \\"__esModule\\", { value: true });
-const react_1 = require(\\"react\\");
-const react_intl_1 = require(\\"react-intl\\");
-class Foo extends react_1.Component {
-    render() {
-        return react_1.default.createElement(react_intl_1.FormattedMessage, { id: 'foo.bar.baz', defaultMessage: 'Hello World!' });
-    }
-}
-exports.default = Foo;
-"
-`;
-
-exports[`emit asserts for extractSourceLocation 2`] = `
-Object {
-  "0": Object {
-    "defaultMessage": "Hello World!",
-    "end": 222,
-    "file": "/Users/longho/src/formatjs/packages/ts-transformer/tests/fixtures/extractSourceLocation.tsx",
-    "id": "foo.bar.baz",
-    "start": 155,
-  },
 }
 `;
 
