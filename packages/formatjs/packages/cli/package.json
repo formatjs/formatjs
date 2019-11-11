@@ -49,8 +49,5 @@
   },
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
-  },
-  "engines": {
-    "node": "8.x || 10.x || 12.x"
   }
 }
