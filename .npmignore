@@ -1,8 +1,0 @@
-coverage/
-docs/
-examples/
-scripts/
-test/
-rollup.config.*
-babel.config.js
-.*

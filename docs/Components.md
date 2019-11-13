@@ -693,6 +693,8 @@ Extending this also allows users to potentially utilizing other rich text format
 
 This has the same caveats documented in [`intl-messageformat`](https://github.com/formatjs/formatjs/tree/master/packages/intl-messageformat#caveats).
 
+**Each child in a list should have a unique "key"**: The chunks we return can be text and/or React chunks so the other way is that we have to clone them & add key, which has performance implication. See https://github.com/formatjs/react-intl/issues/1467 for workarounds.
+
 ### `FormattedHTMLMessage`
 
 **Note:** This component is provided for apps that have legacy external strings which contain HTML, but is not recommended, use [`<FormattedMessage>`](#formattedmessage) instead, if you can.
