@@ -417,7 +417,7 @@ This function allows you to join list of things together in an i18n-safe way. Fo
 
 ```tsx
 formatList(['Me', 'myself', 'I'], {type: 'conjunction'}); // Me, myself and I
-formatList(['5 hours', '3 minues'], {type: 'unit'}); // 5 hours, 3 minutes
+formatList(['5 hours', '3 minutes'], {type: 'unit'}); // 5 hours, 3 minutes
 ```
 
 ### String Formatting APIs
