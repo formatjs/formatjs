@@ -512,7 +512,7 @@ props: ListFormatOptions &
 ```
 
 ```html
-Me, myself and I
+Me, myself, and I
 ```
 
 ```tsx
@@ -520,7 +520,7 @@ Me, myself and I
 ```
 
 ```html
-Me, <b>myself</b> and I
+Me, <b>myself</b>, and I
 ```
 
 ## String Formatting Components

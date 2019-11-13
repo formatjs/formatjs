@@ -416,7 +416,7 @@ function formatPlural(
 This function allows you to join list of things together in an i18n-safe way. For example:
 
 ```tsx
-formatList(['Me', 'myself', 'I'], {type: 'conjunction'}); // Me, myself and I
+formatList(['Me', 'myself', 'I'], {type: 'conjunction'}); // Me, myself, and I
 formatList(['5 hours', '3 minues'], {type: 'unit'}); // 5 hours, 3 minutes
 ```
 
