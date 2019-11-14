@@ -413,10 +413,10 @@ function formatPlural(
 ): string | React.ReactNode[];
 ```
 
-This function allows you to join list of things together in an i18n-safe way. For example:
+This function allows you to join list of things together in an i18n-safe way. For example, when the locale is `en`:
 
 ```tsx
-formatList(['Me', 'myself', 'I'], {type: 'conjunction'}); // Me, myself and I
+formatList(['Me', 'myself', 'I'], {type: 'conjunction'}); // Me, myself, and I
 formatList(['5 hours', '3 minutes'], {type: 'unit'}); // 5 hours, 3 minutes
 ```
 

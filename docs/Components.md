@@ -507,12 +507,14 @@ props: ListFormatOptions &
 
 **Example:**
 
+When the locale is `en`:
+
 ```tsx
 <FormattedList type="conjunction" value={['Me', 'myself', 'I']} />
 ```
 
 ```html
-Me, myself and I
+Me, myself, and I
 ```
 
 ```tsx
@@ -520,7 +522,7 @@ Me, myself and I
 ```
 
 ```html
-Me, <b>myself</b> and I
+Me, <b>myself</b>, and I
 ```
 
 ## String Formatting Components
