@@ -184,6 +184,8 @@ import {IntlShape} from 'react-intl/lib/types'; // Incorrect
 
 If we're missing any interface top level support, please let us know and/or submitting a PR is greatly appreciated :)
 
+Note that you might need to make a few changes to your code if you were relying on the now deprecated **@types/react-intl** package. The most common example is `InjectedIntlProps` which must be replaced with `WrappedComponentProps`.
+
 ## FormattedRelativeTime
 
 When we introduced `FormattedRelative`, the spec for [`Intl.RelativeTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) was still unstable. It has now reached stage 3 and multiple browsers have implemented it. However, its API is different from `FormattedRelative` so we've adjusted its API to match the spec which means it's not backwards compatible.
