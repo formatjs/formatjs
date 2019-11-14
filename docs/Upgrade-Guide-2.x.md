@@ -16,7 +16,6 @@
 - [Update How Relative Times are Formatted](#update-how-relative-times-are-formatted)
   - [Rename `FormattedRelative`'s `now` Prop to `initialNow`](#rename-formattedrelatives-now-prop-to-initialnow)
   - [Merge `formatRelative()`'s Second and Third Arguments](#merge-formatrelatives-second-and-third-arguments)
-- [Update Types](#update-types)
 
 <!-- tocstop -->
 
@@ -266,7 +265,3 @@ let relative = this.props.intl.formatRelative(date, {
 ```
 
 **Note:** In React Intl v2, the [`formatRelative()`](API.md#formatrelative) function is injected via [`injectIntl()`](API.md#injectintl).
-
-## Update Types
-
-react-intl now comes with Typescript types out of the box. Note that you may need to change your code if you were relying on the now deprecated **@types/react-intl**. For example, **@types/react-intl** used to export a `InjectedIntlProps` that is we decided to name `WrappedComponentProps`.
