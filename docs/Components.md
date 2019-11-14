@@ -507,6 +507,8 @@ props: ListFormatOptions &
 
 **Example:**
 
+When the locale is `en`:
+
 ```tsx
 <FormattedList type="conjunction" value={['Me', 'myself', 'I']} />
 ```
