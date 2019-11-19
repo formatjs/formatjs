@@ -99,7 +99,7 @@ If your `node` version is missing any of the `Intl` APIs above, you'd have to po
 We also rely on `DOMParser` to format rich text, thus for Node will need to polyfill using [jsdom](https://www.npmjs.com/package/jsdom):
 
 ```tsx
-global.DOMParser = new (require('jsdom')).JSDOM().window.DOMParser;
+global.DOMParser = new (require('jsdom').JSDOM)().window.DOMParser;
 ```
 
 ### React Native

@@ -3,9 +3,10 @@ import {IntlConfig, IntlFormatters, Formatters} from '../types';
 import {getNamedFormat, filterProps, createError} from '../utils';
 import {IntlRelativeTimeFormatOptions} from '@formatjs/intl-relativetimeformat';
 
-const RELATIVE_TIME_FORMAT_OPTIONS: Array<
-  keyof IntlRelativeTimeFormatOptions
-> = ['numeric', 'style'];
+const RELATIVE_TIME_FORMAT_OPTIONS: Array<keyof IntlRelativeTimeFormatOptions> = [
+  'numeric',
+  'style',
+];
 
 function getFormatter(
   {

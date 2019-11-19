@@ -19,6 +19,7 @@
 - [Message Format Syntax Changes](#message-format-syntax-changes)
   - [Escape character has been changed to apostrophe (`'`).](#escape-character-has-been-changed-to-apostrophe-)
   - [Placeholder argument syntax change](#placeholder-argument-syntax-change)
+- [Testing](#testing)
 
 <!-- tocstop -->
 
@@ -395,3 +396,7 @@ We highly recommend reading the spec to learn more about how quote/escaping work
 ### Placeholder argument syntax change
 
 Placeholder argument can no longer have `-` (e.g: `this is a {placeholder-var}` is invalid but `this is a {placeholder_var}` is).
+
+## Testing
+
+We've removed `IntlProvider.getChildContext` for testing and now you can use `createIntl` to create a standalone `intl` object outside of React and use that for testing purposes. See [Testing with React Intl](#testing-with-react-intl.md) for more details.

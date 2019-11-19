@@ -29,13 +29,11 @@ type Formatter = {
   formatList: FormatListOptions;
 };
 
-export const FormattedNumberParts: React.FC<
-  Formatter['formatNumber'] & {
-    value: Parameters<IntlShape['formatNumber']>[0];
+export const FormattedNumberParts: React.FC<Formatter['formatNumber'] & {
+  value: Parameters<IntlShape['formatNumber']>[0];
 
-    children(val: Intl.NumberFormatPart[]): React.ReactElement | null;
-  }
-> = props => (
+  children(val: Intl.NumberFormatPart[]): React.ReactElement | null;
+}> = props => (
   <Context.Consumer>
     {intl => {
       invariantIntlContext(intl);
