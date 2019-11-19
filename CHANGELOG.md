@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.6.1](https://github.com/formatjs/react-intl/compare/v3.6.0...v3.6.1) (2019-11-19)
+
+
+### Bug Fixes
+
+* make `id` optional in MessageDescriptor ([15ca429](https://github.com/formatjs/react-intl/commit/15ca4292faf0fd82a392c024f027196393e52124))
+* use `files` instead of .npmignore, update contributors ([b0c0fdb](https://github.com/formatjs/react-intl/commit/b0c0fdb1efa4dd9dfcf1d8c5709c5454bf242fce))
+
 ## [3.6.0](https://github.com/formatjs/react-intl/compare/v3.4.0...v3.6.0) (2019-11-12)
 
 
