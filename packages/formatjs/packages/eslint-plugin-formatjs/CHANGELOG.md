@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.3.1...eslint-plugin-formatjs@1.4.0) (2019-11-20)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** report when message is invalid ICU ([916d063](https://github.com/formatjs/formatjs/commit/916d06361d6bb30f728fd6e948cf0ae724ba635f))
+
+
+
+
+
 ## [1.3.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.3.0...eslint-plugin-formatjs@1.3.1) (2019-11-10)
 
 

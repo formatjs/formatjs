@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.3](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@5.1.2...babel-plugin-react-intl@5.1.3) (2019-11-20)
+
+
+### Bug Fixes
+
+* **lint:** fix lint config and rerun ([041eb99](https://github.com/formatjs/formatjs/commit/041eb99706164048b5b8ce7079955897ce27ed70))
+
+
+
+
+
 ## [5.1.2](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@5.1.1...babel-plugin-react-intl@5.1.2) (2019-11-10)
 
 **Note:** Version bump only for package babel-plugin-react-intl

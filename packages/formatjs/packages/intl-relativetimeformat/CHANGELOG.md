@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.4.1...@formatjs/intl-relativetimeformat@4.4.2) (2019-11-20)
+
+
+### Bug Fixes
+
+* **lint:** fix lint config and rerun ([041eb99](https://github.com/formatjs/formatjs/commit/041eb99706164048b5b8ce7079955897ce27ed70))
+
+
+
+
+
 ## [4.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.4.0...@formatjs/intl-relativetimeformat@4.4.1) (2019-11-10)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat

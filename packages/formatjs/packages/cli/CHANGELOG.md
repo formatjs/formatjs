@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.1.3...@formatjs/cli@1.1.4) (2019-11-20)
+
+
+### Bug Fixes
+
+* **lint:** fix lint config and rerun ([041eb99](https://github.com/formatjs/formatjs/commit/041eb99706164048b5b8ce7079955897ce27ed70))
+
+
+
+
+
 ## [1.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.1.2...@formatjs/cli@1.1.3) (2019-11-11)
 
 

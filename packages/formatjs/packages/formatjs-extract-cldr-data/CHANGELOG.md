@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.9.3](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.9.2...formatjs-extract-cldr-data@9.9.3) (2019-11-20)
+
+
+### Bug Fixes
+
+* **lint:** fix lint config and rerun ([041eb99](https://github.com/formatjs/formatjs/commit/041eb99706164048b5b8ce7079955897ce27ed70))
+
+
+
+
+
 ## [9.9.2](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.9.1...formatjs-extract-cldr-data@9.9.2) (2019-11-10)
 
 

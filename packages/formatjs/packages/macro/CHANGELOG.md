@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/macro@0.2.2...@formatjs/macro@0.2.3) (2019-11-20)
+
+
+### Bug Fixes
+
+* **@formatjs/macro:** add types decl in package.json ([1dadc31](https://github.com/formatjs/formatjs/commit/1dadc31e9fed8c551971cd6565410b3f900da567))
+
+
+
+
+
 ## [0.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/macro@0.2.1...@formatjs/macro@0.2.2) (2019-11-11)
 
 
