@@ -7,7 +7,9 @@ import {
 } from 'intl-messageformat-parser';
 import {ImportDeclaration, Node} from 'estree';
 
-class NoOffsetError extends Error {}
+class NoOffsetError extends Error {
+  public message = 'offset are not allowed in plural rules';
+}
 
 function verifyAst(ast: MessageFormatElement[]) {
   for (const el of ast) {
@@ -29,23 +31,23 @@ function checkNode(
   importedMacroVars: Scope.Variable[]
 ) {
   const msgs = extractMessages(node, importedMacroVars);
-  if (!msgs.length) {
-    return;
-  }
-  for (const [msg] of msgs) {
-    if (!msg.defaultMessage) {
+
+  for (const [
+    {
+      message: {defaultMessage},
+      messageNode,
+    },
+  ] of msgs) {
+    if (!defaultMessage || !messageNode) {
       continue;
     }
-    const ast = parse(msg.defaultMessage);
     try {
-      verifyAst(ast);
+      verifyAst(parse(defaultMessage));
     } catch (e) {
-      if (e instanceof NoOffsetError) {
-        context.report({
-          node,
-          messageId: 'noOffset',
-        });
-      }
+      context.report({
+        node: messageNode,
+        message: e.message,
+      });
     }
   }
 }
@@ -61,9 +63,6 @@ const rule: Rule.RuleModule = {
         'https://github.com/formatjs/formatjs/tree/master/packages/eslint-plugin-formatjs#no-offset',
     },
     fixable: 'code',
-    messages: {
-      noOffset: 'offset are not allowed in plural rules',
-    },
   },
   create(context) {
     let importedMacroVars: Scope.Variable[] = [];

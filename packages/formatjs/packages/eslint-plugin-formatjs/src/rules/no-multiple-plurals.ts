@@ -7,7 +7,9 @@ import {
   MessageFormatElement,
 } from 'intl-messageformat-parser';
 
-class MultiplePlurals extends Error {}
+class MultiplePlurals extends Error {
+  public message = 'Cannot specify more than 1 plural rules';
+}
 
 function verifyAst(ast: MessageFormatElement[], pluralCount = {count: 0}) {
   for (const el of ast) {
@@ -30,23 +32,23 @@ function checkNode(
   importedMacroVars: Scope.Variable[]
 ) {
   const msgs = extractMessages(node, importedMacroVars);
-  if (!msgs.length) {
-    return;
-  }
-  for (const [msg] of msgs) {
-    if (!msg.defaultMessage) {
+
+  for (const [
+    {
+      message: {defaultMessage},
+      messageNode,
+    },
+  ] of msgs) {
+    if (!defaultMessage || !messageNode) {
       continue;
     }
-    const ast = parse(msg.defaultMessage);
     try {
-      verifyAst(ast);
+      verifyAst(parse(defaultMessage));
     } catch (e) {
-      if (e instanceof MultiplePlurals) {
-        context.report({
-          node,
-          message: 'Cannot specify more than 1 plural rules',
-        });
-      }
+      context.report({
+        node: messageNode,
+        message: e.message,
+      });
     }
   }
 }

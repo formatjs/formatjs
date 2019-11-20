@@ -28,16 +28,9 @@ _({
     description: 'asd'
 })`,
     noMatch,
+    emptyFnCall,
   ],
   invalid: [
-    {
-      code: emptyFnCall,
-      errors: [
-        {
-          messageId: 'description',
-        },
-      ],
-    },
     {
       code: `
             import {_} from '@formatjs/macro'
@@ -46,7 +39,7 @@ _({
             })`,
       errors: [
         {
-          messageId: 'description',
+          message: '`description` has to be specified in message descriptor',
         },
       ],
     },
@@ -57,7 +50,7 @@ _({
             })`,
       errors: [
         {
-          messageId: 'description',
+          message: '`description` has to be specified in message descriptor',
         },
       ],
     },
@@ -71,7 +64,7 @@ _({
             })`,
       errors: [
         {
-          messageId: 'description',
+          message: '`description` has to be specified in message descriptor',
         },
       ],
     },
@@ -81,7 +74,7 @@ _({
             const a = <FormattedMessage defaultMessage="{count2, plural, one {#} other {# more}}"/>`,
       errors: [
         {
-          messageId: 'description',
+          message: '`description` has to be specified in message descriptor',
         },
       ],
     },
@@ -91,7 +84,7 @@ _({
             const a = <FormattedMessage defaultMessage="{count2, plural, one {#} other {# more}}"></FormattedMessage>`,
       errors: [
         {
-          messageId: 'description',
+          message: '`description` has to be specified in message descriptor',
         },
       ],
     },
@@ -367,7 +360,19 @@ _({
             })`,
       errors: [
         {
-          messageId: 'noOffset',
+          message: 'offset are not allowed in plural rules',
+        },
+      ],
+    },
+    {
+      code: `
+            import {_} from '@formatjs/macro'
+            _({
+                defaultMessage: '{count, plural, offset:1 one {#} other {# more}'
+            })`,
+      errors: [
+        {
+          message: 'Expected "=", "}", or argName but end of input found.',
         },
       ],
     },

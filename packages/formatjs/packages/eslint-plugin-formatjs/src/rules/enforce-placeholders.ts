@@ -63,24 +63,24 @@ function checkNode(
   importedMacroVars: Scope.Variable[]
 ) {
   const msgs = extractMessages(node, importedMacroVars);
-  if (!msgs.length) {
-    return;
-  }
 
-  for (const [msg, values] of msgs) {
-    if (!msg.defaultMessage) {
+  for (const [
+    {
+      message: {defaultMessage},
+      messageNode,
+    },
+    values,
+  ] of msgs) {
+    if (!defaultMessage || !messageNode) {
       continue;
     }
-    const ast = parse(msg.defaultMessage);
     try {
-      verifyAst(ast, values);
+      verifyAst(parse(defaultMessage), values);
     } catch (e) {
-      if (e instanceof PlaceholderEnforcement) {
-        context.report({
-          node,
-          message: e.message,
-        });
-      }
+      context.report({
+        node: messageNode,
+        message: e.message,
+      });
     }
   }
 }

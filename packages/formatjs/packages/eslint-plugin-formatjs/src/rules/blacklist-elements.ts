@@ -14,10 +14,10 @@ import {
 } from 'intl-messageformat-parser';
 
 class BlacklistElement extends Error {
-  public type: Element;
+  public message: string;
   constructor(type: Element) {
     super();
-    this.type = type;
+    this.message = `${type} element is blacklisted`;
   }
 }
 
@@ -86,20 +86,22 @@ function checkNode(
   if (!Array.isArray(blacklist) || !blacklist.length) {
     return;
   }
-  for (const [msg] of msgs) {
-    if (!msg.defaultMessage) {
+  for (const [
+    {
+      message: {defaultMessage},
+      messageNode,
+    },
+  ] of msgs) {
+    if (!defaultMessage || !messageNode) {
       continue;
     }
-    const ast = parse(msg.defaultMessage);
     try {
-      verifyAst(context.options[0], ast);
+      verifyAst(context.options[0], parse(defaultMessage));
     } catch (e) {
-      if (e instanceof BlacklistElement) {
-        context.report({
-          node,
-          message: `${e.type} element is blacklisted`,
-        });
-      }
+      context.report({
+        node: messageNode,
+        message: e.message,
+      });
     }
   }
 }

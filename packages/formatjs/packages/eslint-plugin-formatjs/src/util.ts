@@ -14,6 +14,12 @@ export interface MessageDescriptor {
   description?: string;
 }
 
+export interface MessageDescriptorNodeInfo {
+  message: MessageDescriptor;
+  messageNode?: Literal;
+  descriptionNode?: Literal;
+}
+
 function findReferenceImport(id: Identifier, importedVars: Scope.Variable[]) {
   return importedVars.find(
     v => !!v.references.find(ref => ref.identifier === id)
@@ -54,18 +60,24 @@ function isMultipleMessageDescriptorDeclaration(
   return importedVar.name === 'defineMessages';
 }
 
-function extractMessageDescriptor(node?: ObjectExpression): MessageDescriptor {
+function extractMessageDescriptor(
+  node?: ObjectExpression
+): MessageDescriptorNodeInfo | undefined {
   if (!node || !node.properties) {
-    return {};
+    return;
   }
-  return node.properties.reduce((msg: MessageDescriptor, prop) => {
+  let messageNode: Literal | undefined;
+  let descriptionNode: Literal | undefined;
+  const message = node.properties.reduce((msg: MessageDescriptor, prop) => {
     const key = prop.key as Identifier;
     const value = (prop.value as Literal).value as string;
     switch (key.name) {
       case 'defaultMessage':
+        messageNode = prop.value as Literal;
         msg.defaultMessage = value;
         break;
       case 'description':
+        descriptionNode = prop.value as Literal;
         msg.description = value;
         break;
       case 'id':
@@ -73,25 +85,34 @@ function extractMessageDescriptor(node?: ObjectExpression): MessageDescriptor {
     }
     return msg;
   }, {});
+  return {
+    message,
+    messageNode,
+    descriptionNode,
+  };
 }
 
 function extractMessageDescriptorFromJSXElement(
   node?: JSXOpeningElement
-): [MessageDescriptor, ObjectExpression | undefined] {
+): [MessageDescriptorNodeInfo, ObjectExpression | undefined] | undefined {
   if (!node || !node.attributes) {
-    return [{}, undefined];
+    return;
   }
   let values: ObjectExpression | undefined = undefined;
-  const descriptor = node.attributes.reduce((msg: MessageDescriptor, prop) => {
+  let messageNode: Literal | undefined;
+  let descriptionNode: Literal | undefined;
+  const message = node.attributes.reduce((msg: MessageDescriptor, prop) => {
     if (prop.type !== 'JSXAttribute' || prop.name.type !== 'JSXIdentifier') {
       return msg;
     }
     const key = prop.name;
     switch (key.name) {
       case 'defaultMessage':
+        messageNode = prop.value as Literal;
         msg.defaultMessage = (prop.value as Literal).value as string;
         break;
       case 'description':
+        descriptionNode = prop.value as Literal;
         msg.description = (prop.value as Literal).value as string;
         break;
       case 'id':
@@ -104,16 +125,19 @@ function extractMessageDescriptorFromJSXElement(
     }
     return msg;
   }, {});
-  return [descriptor, values];
+  return [{messageNode, descriptionNode, message}, values];
 }
 
 function extractMessageDescriptors(node?: ObjectExpression) {
   if (!node || !node.properties) {
     return [];
   }
-  return node.properties.reduce((msgs: MessageDescriptor[], prop) => {
+  return node.properties.reduce((msgs: MessageDescriptorNodeInfo[], prop) => {
     const msg = prop.value as ObjectExpression;
-    msgs.push(extractMessageDescriptor(msg));
+    const nodeInfo = extractMessageDescriptor(msg);
+    if (nodeInfo) {
+      return [...msgs, nodeInfo];
+    }
     return msgs;
   }, []);
 }
@@ -121,7 +145,7 @@ function extractMessageDescriptors(node?: ObjectExpression) {
 export function extractMessages(
   node: Node,
   importedMacroVars: Scope.Variable[]
-): Array<[MessageDescriptor, Expression | undefined]> {
+): Array<[MessageDescriptorNodeInfo, Expression | undefined]> {
   if (node.type === 'CallExpression') {
     const expr = node as CallExpression;
     const fnId = expr.callee as Identifier;
@@ -129,12 +153,12 @@ export function extractMessages(
       isSingleMessageDescriptorDeclaration(fnId, importedMacroVars) ||
       isIntlFormatMessageCall(node)
     ) {
-      return [
-        [
-          extractMessageDescriptor(expr.arguments[0] as ObjectExpression),
-          expr.arguments[1] as Expression,
-        ],
-      ];
+      const msgDescriptorNodeInfo = extractMessageDescriptor(
+        expr.arguments[0] as ObjectExpression
+      );
+      if (msgDescriptorNodeInfo) {
+        return [[msgDescriptorNodeInfo, expr.arguments[1] as Expression]];
+      }
     } else if (
       isMultipleMessageDescriptorDeclaration(fnId, importedMacroVars)
     ) {
@@ -148,7 +172,10 @@ export function extractMessages(
     node.name.type === 'JSXIdentifier' &&
     node.name.name === 'FormattedMessage'
   ) {
-    return [extractMessageDescriptorFromJSXElement(node)];
+    const msgDescriptorNodeInfo = extractMessageDescriptorFromJSXElement(node);
+    if (msgDescriptorNodeInfo) {
+      return [msgDescriptorNodeInfo];
+    }
   }
   return [];
 }

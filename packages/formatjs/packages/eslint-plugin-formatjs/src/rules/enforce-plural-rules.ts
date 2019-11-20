@@ -64,20 +64,22 @@ function checkNode(
   if (!plConfig) {
     return;
   }
-  for (const [msg] of msgs) {
-    if (!msg.defaultMessage) {
+  for (const [
+    {
+      message: {defaultMessage},
+      messageNode,
+    },
+  ] of msgs) {
+    if (!defaultMessage || !messageNode) {
       continue;
     }
-    const ast = parse(msg.defaultMessage);
     try {
-      verifyAst(context.options[0], ast);
+      verifyAst(context.options[0], parse(defaultMessage));
     } catch (e) {
-      if (e instanceof PluralRulesEnforcement) {
-        context.report({
-          node,
-          message: e.message,
-        });
-      }
+      context.report({
+        node: messageNode,
+        message: e.message,
+      });
     }
   }
 }

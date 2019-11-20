@@ -10,16 +10,19 @@ function checkNode(
   importedMacroVars: Scope.Variable[]
 ) {
   const msgs = extractMessages(node, importedMacroVars);
-  if (!msgs.length) {
-    return;
-  }
-  for (const [msg] of msgs) {
-    if (!msg.defaultMessage) {
+
+  for (const [
+    {
+      message: {defaultMessage},
+      messageNode,
+    },
+  ] of msgs) {
+    if (!defaultMessage || !messageNode) {
       continue;
     }
-    if (EMOJI_REGEX.test(msg.defaultMessage)) {
+    if (EMOJI_REGEX.test(defaultMessage)) {
       context.report({
-        node,
+        node: messageNode,
         message: 'Emojis are not allowed',
       });
     }

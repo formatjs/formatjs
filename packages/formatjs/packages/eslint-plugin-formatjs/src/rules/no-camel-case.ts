@@ -10,7 +10,9 @@ import {extractMessages} from '../util';
 
 const CAMEL_CASE_REGEX = /[A-Z]/;
 
-class CamelCase extends Error {}
+class CamelCase extends Error {
+  public message = 'Camel case arguments are not allowed';
+}
 
 function verifyAst(ast: MessageFormatElement[]) {
   for (const el of ast) {
@@ -38,23 +40,23 @@ function checkNode(
   importedMacroVars: Scope.Variable[]
 ) {
   const msgs = extractMessages(node, importedMacroVars);
-  if (!msgs.length) {
-    return;
-  }
-  for (const [msg] of msgs) {
-    if (!msg.defaultMessage) {
+
+  for (const [
+    {
+      message: {defaultMessage},
+      messageNode,
+    },
+  ] of msgs) {
+    if (!defaultMessage || !messageNode) {
       continue;
     }
-    const ast = parse(msg.defaultMessage);
     try {
-      verifyAst(ast);
+      verifyAst(parse(defaultMessage));
     } catch (e) {
-      if (e instanceof CamelCase) {
-        context.report({
-          node,
-          message: 'Camel case arguments are not allowed',
-        });
-      }
+      context.report({
+        node: messageNode,
+        message: e.message,
+      });
     }
   }
 }

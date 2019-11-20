@@ -8,14 +8,15 @@ function checkNode(
   importedMacroVars: Scope.Variable[]
 ) {
   const msgs = extractMessages(node, importedMacroVars);
-  if (!msgs.length) {
-    return;
-  }
-  for (const [msg] of msgs) {
-    if (!msg.description) {
+  for (const [
+    {
+      message: {description},
+    },
+  ] of msgs) {
+    if (!description) {
       context.report({
         node,
-        messageId: 'description',
+        message: '`description` has to be specified in message descriptor',
       });
     }
   }
@@ -32,9 +33,6 @@ const rule: Rule.RuleModule = {
         'https://github.com/formatjs/formatjs/tree/master/packages/eslint-plugin-formatjs#enforce-description',
     },
     fixable: 'code',
-    messages: {
-      description: '`description` has to be specified in message descriptor',
-    },
   },
   create(context) {
     let importedMacroVars: Scope.Variable[] = [];
