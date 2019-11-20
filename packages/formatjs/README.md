@@ -19,8 +19,7 @@ Releases can be done with the following steps:
 
 ## License
 
-This software is free to use under the Yahoo Inc. BSD license.
-See the [LICENSE file][] for license text and copyright information.
+See individual LICENSE file in each package for license text and copyright information.
 
 ## Big Thanks
 
