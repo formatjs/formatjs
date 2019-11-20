@@ -20,6 +20,7 @@
     "macro"
   ],
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "author": "Long Ho <holevietlong@gmail.com>",
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",
