@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.5.4](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.5.3...intl-messageformat@7.5.4) (2019-11-21)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** use api-extractor to combine type definitions ([6c6af9d](https://github.com/formatjs/formatjs/commit/6c6af9d837d13938fa647cbbbaf2f417935908fd))
+
+
+
+
+
 ## [7.5.3](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.5.2...intl-messageformat@7.5.3) (2019-11-20)
 
 

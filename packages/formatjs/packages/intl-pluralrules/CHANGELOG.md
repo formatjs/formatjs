@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@1.3.3...@formatjs/intl-pluralrules@1.3.4) (2019-11-21)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** use api-extractor to combine d.ts ([65adff2](https://github.com/formatjs/formatjs/commit/65adff246962109496ee1f8de142496e8a9c0156))
+
+
+
+
+
 ## [1.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@1.3.2...@formatjs/intl-pluralrules@1.3.3) (2019-11-20)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules

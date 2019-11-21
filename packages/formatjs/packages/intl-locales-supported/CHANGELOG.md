@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.2](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.8.1...intl-locales-supported@1.8.2) (2019-11-21)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-listformat:** use api-extractor to combine d.ts ([e8af68d](https://github.com/formatjs/formatjs/commit/e8af68dfb1e0783615446123c147057a025b3f27))
+
+
+
+
+
 ## [1.8.1](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.8.0...intl-locales-supported@1.8.1) (2019-11-20)
 
 **Note:** Version bump only for package intl-locales-supported

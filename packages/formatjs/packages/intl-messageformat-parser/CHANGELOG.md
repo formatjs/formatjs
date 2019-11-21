@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.4](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.2.3...intl-messageformat-parser@3.2.4) (2019-11-21)
+
+
+### Bug Fixes
+
+* **intl-messageformat-parser:** use api-extractor to combine d.ts ([9d55531](https://github.com/formatjs/formatjs/commit/9d5553169c0c2d6f051b2c2e2c7708129ee81809))
+
+
+
+
+
 ## [3.2.3](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.2.2...intl-messageformat-parser@3.2.3) (2019-11-20)
 
 

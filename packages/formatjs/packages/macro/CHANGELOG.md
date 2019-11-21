@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/macro@0.2.3...@formatjs/macro@0.2.4) (2019-11-21)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-utils:** use api-extractor to combine d.ts ([a4b16b5](https://github.com/formatjs/formatjs/commit/a4b16b54f7cee23673701d285fffc6401536e926))
+
+
+
+
+
 ## [0.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/macro@0.2.2...@formatjs/macro@0.2.3) (2019-11-20)
 
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@2.1.3...@formatjs/intl-unified-numberformat@2.1.4) (2019-11-21)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** use api-extractor to combine d.ts ([bd803dd](https://github.com/formatjs/formatjs/commit/bd803dd5fcd6f13994e686b8d08bd1b8be6a2e4b))
+* **intl-messageformat:** use api-extractor to combine type definitions ([6c6af9d](https://github.com/formatjs/formatjs/commit/6c6af9d837d13938fa647cbbbaf2f417935908fd))
+
+
+
+
+
 ## [2.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@2.1.2...@formatjs/intl-unified-numberformat@2.1.3) (2019-11-20)
 
 **Note:** Version bump only for package @formatjs/intl-unified-numberformat

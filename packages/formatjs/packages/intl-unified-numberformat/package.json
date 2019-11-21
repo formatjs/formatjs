@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-unified-numberformat",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "description": "Ponyfill for intl unified numberformat proposal",
   "keywords": [
     "polyfill",
@@ -24,11 +24,11 @@
     "polyfill.js"
   ],
   "devDependencies": {
-    "@formatjs/intl-pluralrules": "^1.3.3",
-    "formatjs-extract-cldr-data": "^9.9.3"
+    "@formatjs/intl-pluralrules": "^1.3.4",
+    "formatjs-extract-cldr-data": "^9.9.4"
   },
   "dependencies": {
-    "@formatjs/intl-utils": "^1.4.1"
+    "@formatjs/intl-utils": "^1.4.2"
   },
   "scripts": {
     "build": "npm run cldr && npm run compile",

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.4.2...@formatjs/intl-relativetimeformat@4.4.3) (2019-11-21)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** use api-extractor to combine d.ts ([65adff2](https://github.com/formatjs/formatjs/commit/65adff246962109496ee1f8de142496e8a9c0156))
+* **@formatjs/intl-relativetimeformat:** use api-extractor to combine d.ts ([bd803dd](https://github.com/formatjs/formatjs/commit/bd803dd5fcd6f13994e686b8d08bd1b8be6a2e4b))
+
+
+
+
+
 ## [4.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.4.1...@formatjs/intl-relativetimeformat@4.4.2) (2019-11-20)
 
 

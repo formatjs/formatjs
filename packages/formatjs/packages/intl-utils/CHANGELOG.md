@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@1.4.1...@formatjs/intl-utils@1.4.2) (2019-11-21)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** use api-extractor to combine d.ts ([bd803dd](https://github.com/formatjs/formatjs/commit/bd803dd5fcd6f13994e686b8d08bd1b8be6a2e4b))
+* **@formatjs/intl-utils:** use api-extractor to combine d.ts ([a4b16b5](https://github.com/formatjs/formatjs/commit/a4b16b54f7cee23673701d285fffc6401536e926))
+
+
+
+
+
 ## [1.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@1.4.0...@formatjs/intl-utils@1.4.1) (2019-11-20)
 
 

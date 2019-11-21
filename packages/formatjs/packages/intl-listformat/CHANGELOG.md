@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@1.2.3...@formatjs/intl-listformat@1.2.4) (2019-11-21)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-listformat:** use api-extractor to combine d.ts ([e8af68d](https://github.com/formatjs/formatjs/commit/e8af68dfb1e0783615446123c147057a025b3f27))
+
+
+
+
+
 ## [1.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@1.2.2...@formatjs/intl-listformat@1.2.3) (2019-11-20)
 
 **Note:** Version bump only for package @formatjs/intl-listformat
