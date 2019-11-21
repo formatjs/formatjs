@@ -204,7 +204,7 @@
     "build:dist:dev": "cross-env NODE_ENV=development rollup -c rollup.config.dist.js",
     "build:dist:prod": "cross-env NODE_ENV=production rollup -c rollup.config.dist.js",
     "build:dist": "npm run build:dist:dev && npm run build:dist:prod",
-    "build:lib": "tsc -p src/tsconfig.json && api-extractor run --local && tsc -p src/tsconfig.cjs.json",
+    "build:lib": "tsc -p src/tsconfig.json && tsc -p src/tsconfig.cjs.json && api-extractor run --local",
     "build": "npm run build:lib && npm run build:dist",
     "clean": "rimraf coverage/ dist/ lib/ core.js core.d.ts",
     "example": "parcel examples/index.html",
