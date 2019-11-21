@@ -22,10 +22,14 @@
   "main": "dist/index.js",
   "module": "lib/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
     "clean": "rimraf dist lib",
     "cldr": "ts-node --project tsconfig.cjs.json scripts/cldr",
-    "build": "npm run cldr && tsc && tsc -p tsconfig.cjs.json",
+    "build": "npm run cldr && tsc && api-extractor run --local && tsc -p tsconfig.cjs.json",
     "test": "cross-env TS_NODE_PROJECT=tsconfig.cjs.json mocha --opts ../../mocha.opts tests/*"
   },
   "homepage": "https://github.com/formatjs/formatjs",

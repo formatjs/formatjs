@@ -32,6 +32,9 @@
     "clean": "rimraf lib",
     "build": "tsc -p tsconfig.build.json"
   },
+  "files": [
+    "dist"
+  ],
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
   }
