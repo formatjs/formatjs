@@ -25,6 +25,10 @@
   "bin": {
     "formatjs": "bin/formatjs"
   },
+  "files": [
+    "bin",
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/formatjs/formatjs.git"

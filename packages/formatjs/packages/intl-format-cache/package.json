@@ -5,6 +5,10 @@
   "main": "dist/index.js",
   "module": "lib/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
     "clean": "rimraf dist lib",
     "benchmark": "ts-node --project tsconfig.cjs.json tests/benchmark",

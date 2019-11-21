@@ -4,7 +4,7 @@
   "description": "Parses ICU Message strings into an AST via JavaScript.",
   "main": "dist/index.js",
   "module": "lib/index.js",
-  "types": "dist/intl-messageformat-parser.d.ts",
+  "types": "lib/intl-messageformat-parser.d.ts",
   "files": [
     "dist",
     "lib"

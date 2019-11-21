@@ -9,6 +9,9 @@
   "license": "BSD-3-Clause",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "dependencies": {
     "@babel/core": "^7.7.2",
