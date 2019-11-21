@@ -25,12 +25,17 @@
   },
   "main": "dist/index.js",
   "module": "lib/index.js",
-  "types": "dist/index.d.ts",
+  "types": "lib/intl-listformat.d.ts",
+  "files": [
+    "dist",
+    "dist-es6",
+    "lib"
+  ],
   "scripts": {
     "build": "npm run cldr && npm run compile",
     "cldr": "ts-node --project tsconfig.cjs.json scripts/cldr",
     "clean": "rimraf dist lib dist-es6",
-    "compile": "tsc && tsc -p tsconfig.cjs.json && tsc -p tsconfig.es6.json && rollup -c rollup.config.js",
+    "compile": "tsc && api-extractor run --local && tsc -p tsconfig.cjs.json && tsc -p tsconfig.es6.json && rollup -c rollup.config.js",
     "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json cross-env NODE_ENV=test jest",
     "test": "npm run jest && cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json ts-node tests/runner"
   },
