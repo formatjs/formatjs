@@ -29,11 +29,15 @@
   },
   "main": "dist/index.js",
   "module": "lib/index.js",
-  "types": "dist/index.d.ts",
+  "types": "lib/intl-messageformat.d.ts",
   "dependencies": {
     "intl-format-cache": "^4.2.7",
     "intl-messageformat-parser": "^3.2.3"
   },
+  "files": [
+    "dist",
+    "lib"
+  ],
   "devDependencies": {
     "@formatjs/intl-pluralrules": "^1.3.3"
   },
@@ -46,7 +50,7 @@
     "karma:local": "karma start karma.conf.js",
     "rollup": "rollup -c rollup.config.js",
     "test": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json mocha --opts ../../mocha.opts -r tests/setup.js tests/index.ts",
-    "tsc": "tsc -p src/tsconfig.json && tsc -p src/tsconfig.cjs.json"
+    "tsc": "tsc -p src/tsconfig.json && tsc -p src/tsconfig.cjs.json && api-extractor run --local"
   },
   "homepage": "https://github.com/formatjs/formatjs",
   "directories": {

@@ -10,3 +10,4 @@ functional-tests/
 *.tsbuildinfo
 .rpt2_cache
 test262
+temp

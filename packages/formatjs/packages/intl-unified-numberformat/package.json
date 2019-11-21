@@ -13,11 +13,16 @@
   "license": "MIT",
   "main": "dist/index.js",
   "module": "lib/index.js",
-  "types": "dist/index.d.ts",
+  "types": "lib/intl-unified-numberformat.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/formatjs/formatjs.git"
   },
+  "files": [
+    "dist",
+    "lib",
+    "polyfill.js"
+  ],
   "devDependencies": {
     "@formatjs/intl-pluralrules": "^1.3.3",
     "formatjs-extract-cldr-data": "^9.9.3"
@@ -29,7 +34,7 @@
     "build": "npm run cldr && npm run compile",
     "cldr": "ts-node --project tsconfig.cjs.json scripts/cldr",
     "clean": "rimraf dist lib",
-    "compile": "tsc && tsc -p tsconfig.cjs.json && rollup -c rollup.config.js",
+    "compile": "tsc && tsc -p tsconfig.cjs.json && api-extractor run --local && rollup -c rollup.config.js",
     "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json cross-env NODE_ENV=test jest",
     "test": "npm run jest"
   },

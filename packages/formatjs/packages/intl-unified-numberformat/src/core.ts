@@ -12,6 +12,11 @@ import {
   getInternalSlot,
 } from '@formatjs/intl-utils';
 
+/**
+ * Check if a formatting number with unit is supported
+ * @public
+ * @param unit unit to check
+ */
 export function isUnitSupported(unit: Unit) {
   try {
     new Intl.NumberFormat(undefined, {

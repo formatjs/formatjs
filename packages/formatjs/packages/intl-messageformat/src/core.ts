@@ -15,6 +15,7 @@ import {
   FormatXMLElementFn,
   formatHTMLMessage,
   PrimitiveType,
+  MessageFormatPart,
 } from './formatters';
 
 // -- MessageFormat --------------------------------------------------------
@@ -131,7 +132,7 @@ export class IntlMessageFormat {
       this.message
     );
 
-  formatToParts = (values?: Record<string, any>) =>
+  formatToParts = (values?: Record<string, any>): MessageFormatPart[] =>
     formatToParts(
       this.ast,
       this.locales,
