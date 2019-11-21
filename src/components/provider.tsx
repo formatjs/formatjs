@@ -68,38 +68,6 @@ function processIntlConfig<P extends OptionalIntlConfig = OptionalIntlConfig>(
   };
 }
 
-export default class IntlProvider extends React.PureComponent<
-  OptionalIntlConfig,
-  State
-> {
-  static displayName: string = 'IntlProvider';
-  static defaultProps = DEFAULT_INTL_CONFIG;
-  private cache: IntlCache = createIntlCache();
-  state: State = {
-    cache: this.cache,
-    intl: createIntl(processIntlConfig(this.props), this.cache),
-    prevConfig: processIntlConfig(this.props),
-  };
-
-  static getDerivedStateFromProps(
-    props: OptionalIntlConfig,
-    {prevConfig, cache}: State
-  ): Partial<State> | null {
-    const config = processIntlConfig(props);
-    if (!shallowEquals(prevConfig, config)) {
-      return {
-        intl: createIntl(config, cache),
-        prevConfig: config,
-      };
-    }
-    return null;
-  }
-
-  render() {
-    invariantIntlContext(this.state.intl);
-    return <Provider value={this.state.intl!}>{this.props.children}</Provider>;
-  }
-}
 
 /**
  * Create intl object
@@ -180,4 +148,37 @@ export function createIntl(
     formatHTMLMessage: formatHTMLMessage.bind(null, resolvedConfig, formatters),
     formatList: formatList.bind(null, resolvedConfig, formatters.getListFormat),
   };
+}
+
+export default class IntlProvider extends React.PureComponent<
+  OptionalIntlConfig,
+  State
+> {
+  static displayName = 'IntlProvider';
+  static defaultProps = DEFAULT_INTL_CONFIG;
+  private cache: IntlCache = createIntlCache();
+  state: State = {
+    cache: this.cache,
+    intl: createIntl(processIntlConfig(this.props), this.cache),
+    prevConfig: processIntlConfig(this.props),
+  };
+
+  static getDerivedStateFromProps(
+    props: OptionalIntlConfig,
+    {prevConfig, cache}: State
+  ): Partial<State> | null {
+    const config = processIntlConfig(props);
+    if (!shallowEquals(prevConfig, config)) {
+      return {
+        intl: createIntl(config, cache),
+        prevConfig: config,
+      };
+    }
+    return null;
+  }
+
+  render(): JSX.Element {
+    invariantIntlContext(this.state.intl);
+    return <Provider value={this.state.intl!}>{this.props.children}</Provider>;
+  }
 }

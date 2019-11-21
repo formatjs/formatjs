@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const {sync: globSync} = require('glob');
 const {resolve} = require('path');
 const toc = require('markdown-toc');

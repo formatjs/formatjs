@@ -9,7 +9,7 @@ const hoistNonReactStatics: typeof hoistNonReactStatics_ =
 import {invariantIntlContext} from '../utils';
 import {IntlShape, Omit} from '../types';
 
-function getDisplayName(Component: React.ComponentType<any>) {
+function getDisplayName(Component: React.ComponentType<any>): string {
   return Component.displayName || Component.name || 'Component';
 }
 
@@ -78,7 +78,7 @@ export default function injectIntl<
     WrappedComponent: React.ComponentType<P>;
   } = props => (
     <IntlConsumer>
-      {intl => {
+      {(intl): React.ReactNode => {
         if (enforceContext) {
           invariantIntlContext(intl);
         }

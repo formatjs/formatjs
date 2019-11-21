@@ -28,7 +28,7 @@ import IntlMessageFormat, {
 function setTimeZoneInOptions(
   opts: Record<string, Intl.DateTimeFormatOptions>,
   timeZone: string
-) {
+): Record<string, Intl.DateTimeFormatOptions> {
   return Object.keys(opts).reduce(
     (all: Record<string, Intl.DateTimeFormatOptions>, k) => {
       all[k] = {
@@ -44,7 +44,7 @@ function setTimeZoneInOptions(
 function deepMergeOptions(
   opts1: Record<string, Intl.DateTimeFormatOptions>,
   opts2: Record<string, Intl.DateTimeFormatOptions>
-) {
+): Record<string, Intl.DateTimeFormatOptions> {
   const keys = Object.keys({...opts1, ...opts2});
   return keys.reduce((all: Record<string, Intl.DateTimeFormatOptions>, k) => {
     all[k] = {
@@ -141,7 +141,7 @@ export function formatMessage(
 
   if (message) {
     try {
-      let formatter = state.getMessageFormat(message, locale, formats, {
+      const formatter = state.getMessageFormat(message, locale, formats, {
         formatters: state,
       });
 
@@ -174,7 +174,7 @@ export function formatMessage(
 
   if (!formattedMessageParts.length && defaultMessage) {
     try {
-      let formatter = state.getMessageFormat(
+      const formatter = state.getMessageFormat(
         defaultMessage,
         defaultLocale,
         defaultFormats
@@ -224,13 +224,13 @@ export function formatHTMLMessage(
   state: Formatters,
   messageDescriptor: MessageDescriptor = {id: ''},
   rawValues: Record<string, PrimitiveType> = {}
-) {
+): React.ReactNode {
   // Process all the values before they are used when formatting the ICU
   // Message string. Since the formatted message might be injected via
   // `innerHTML`, all String-based values need to be HTML-escaped.
-  let escapedValues = Object.keys(rawValues).reduce(
+  const escapedValues = Object.keys(rawValues).reduce(
     (escaped: Record<string, any>, name) => {
-      let value = rawValues[name];
+      const value = rawValues[name];
       escaped[name] = typeof value === 'string' ? escape(value) : value;
       return escaped;
     },

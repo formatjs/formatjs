@@ -18,10 +18,10 @@ class FormattedHTMLMessage extends FormattedMessage<
     ...FormattedMessage.defaultProps,
     tagName: 'span' as 'span',
   };
-  render() {
+  render(): JSX.Element {
     return (
       <Context.Consumer>
-        {intl => {
+        {(intl): React.ReactNode => {
           if (!this.props.defaultMessage) {
             invariantIntlContext(intl);
           }
@@ -42,8 +42,8 @@ class FormattedHTMLMessage extends FormattedMessage<
             Component = textComponent || 'span';
           }
 
-          let descriptor = {id, description, defaultMessage};
-          let formattedHTMLMessage = formatHTMLMessage(descriptor, rawValues);
+          const descriptor = {id, description, defaultMessage};
+          const formattedHTMLMessage = formatHTMLMessage(descriptor, rawValues);
 
           if (typeof children === 'function') {
             return children(formattedHTMLMessage);

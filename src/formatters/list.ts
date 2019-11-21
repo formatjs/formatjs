@@ -11,7 +11,7 @@ const LIST_FORMAT_OPTIONS: Array<keyof IntlListFormatOptions> = [
 
 const now = Date.now();
 
-function generateToken(i: number) {
+function generateToken(i: number): string {
   return `${now}_${i}_${now}`;
 }
 
@@ -20,7 +20,7 @@ export function formatList(
   getListFormat: Formatters['getListFormat'],
   values: Parameters<IntlFormatters['formatList']>[0],
   options: Parameters<IntlFormatters['formatList']>[1] = {}
-) {
+): string | React.ReactNode {
   const ListFormat: typeof IntlListFormat = (Intl as any).ListFormat;
   if (!ListFormat) {
     onError(
@@ -29,7 +29,7 @@ Try polyfilling it using "@formatjs/intl-listformat"
 `)
     );
   }
-  let filteredOptions = filterProps(options, LIST_FORMAT_OPTIONS);
+  const filteredOptions = filterProps(options, LIST_FORMAT_OPTIONS);
 
   try {
     const richValues: Record<string, React.ReactNode> = {};

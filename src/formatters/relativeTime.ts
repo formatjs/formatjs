@@ -1,7 +1,7 @@
 import {IntlConfig, IntlFormatters, Formatters} from '../types';
 
 import {getNamedFormat, filterProps, createError} from '../utils';
-import {IntlRelativeTimeFormatOptions} from '@formatjs/intl-relativetimeformat';
+import RelativeTimeFormat, {IntlRelativeTimeFormatOptions} from '@formatjs/intl-relativetimeformat';
 
 const RELATIVE_TIME_FORMAT_OPTIONS: Array<keyof IntlRelativeTimeFormatOptions> = [
   'numeric',
@@ -16,7 +16,7 @@ function getFormatter(
   }: Pick<IntlConfig, 'locale' | 'formats' | 'onError'>,
   getRelativeTimeFormat: Formatters['getRelativeTimeFormat'],
   options: Parameters<IntlFormatters['formatRelativeTime']>[2] = {}
-) {
+): RelativeTimeFormat {
   const {format} = options;
 
   const defaults =
@@ -36,7 +36,7 @@ export function formatRelativeTime(
   value: Parameters<IntlFormatters['formatRelativeTime']>[0],
   unit?: Parameters<IntlFormatters['formatRelativeTime']>[1],
   options: Parameters<IntlFormatters['formatRelativeTime']>[2] = {}
-) {
+): string {
   if (!unit) {
     unit = 'second';
   }

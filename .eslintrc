@@ -4,7 +4,7 @@
     "sourceType": "module",
     "allowImportExportEverywhere": false
   },
-  "extends": "eslint:recommended",
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   "env": {
     "es6": true,
     "node": true,
@@ -29,6 +29,8 @@
     "no-var": 2,
 
     "react/jsx-uses-react": 2,
-    "react/jsx-uses-vars": 2
+    "react/jsx-uses-vars": 2,
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/explicit-function-return-type": 2
   }
 }

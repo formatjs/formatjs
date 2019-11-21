@@ -28,8 +28,8 @@ const FormattedPlural: React.FC<Props> = props => {
     intl: {formatPlural, textComponent: Text},
   } = props;
 
-  let pluralCategory = formatPlural(value, props);
-  let formattedPlural = props[pluralCategory as 'one'] || other;
+  const pluralCategory = formatPlural(value, props);
+  const formattedPlural = props[pluralCategory as 'one'] || other;
 
   if (typeof children === 'function') {
     return children(formattedPlural);

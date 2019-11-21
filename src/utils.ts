@@ -18,6 +18,7 @@ import memoizeIntlConstructor from 'intl-format-cache';
 // does not export a default
 // https://github.com/rollup/rollup/issues/1267
 import * as invariant_ from 'invariant';
+import { IntlRelativeTimeFormatOptions } from '@formatjs/intl-relativetimeformat';
 const invariant: typeof invariant_ = (invariant_ as any).default || invariant_;
 
 const ESCAPED_CHARS: Record<number, string> = {
@@ -41,7 +42,7 @@ export function filterProps<T extends Record<string, any>, K extends string>(
   props: T,
   whitelist: Array<K>,
   defaults: Partial<T> = {}
-) {
+): Pick<T, K> {
   return whitelist.reduce(
     (filtered, name) => {
       if (name in props) {
@@ -56,7 +57,7 @@ export function filterProps<T extends Record<string, any>, K extends string>(
   );
 }
 
-export function invariantIntlContext(intl?: any) {
+export function invariantIntlContext(intl?: any): void {
   invariant(
     intl,
     '[React Intl] Could not find required `intl` object. ' +
@@ -64,12 +65,12 @@ export function invariantIntlContext(intl?: any) {
   );
 }
 
-export function createError(message: string, exception?: Error) {
+export function createError(message: string, exception?: Error): string {
   const eMsg = exception ? `\n${exception.stack}` : '';
   return `[React Intl] ${message}${eMsg}`;
 }
 
-export function defaultErrorHandler(error: string) {
+export function defaultErrorHandler(error: string): void {
   if (process.env.NODE_ENV !== 'production') {
     console.error(error);
   }
@@ -135,7 +136,7 @@ export function getNamedFormat<T extends keyof CustomFormats>(
   type: T,
   name: string,
   onError: (err: string) => void
-) {
+): Intl.NumberFormatOptions | Intl.DateTimeFormatOptions | IntlRelativeTimeFormatOptions | undefined {
   const formatType = formats && formats[type];
   let format;
   if (formatType) {
