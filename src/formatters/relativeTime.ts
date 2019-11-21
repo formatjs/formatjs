@@ -1,7 +1,9 @@
 import {IntlConfig, IntlFormatters, Formatters} from '../types';
 
 import {getNamedFormat, filterProps, createError} from '../utils';
-import RelativeTimeFormat, {IntlRelativeTimeFormatOptions} from '@formatjs/intl-relativetimeformat';
+import RelativeTimeFormat, {
+  IntlRelativeTimeFormatOptions,
+} from '@formatjs/intl-relativetimeformat';
 
 const RELATIVE_TIME_FORMAT_OPTIONS: Array<keyof IntlRelativeTimeFormatOptions> = [
   'numeric',

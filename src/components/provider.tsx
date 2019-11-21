@@ -68,7 +68,6 @@ function processIntlConfig<P extends OptionalIntlConfig = OptionalIntlConfig>(
   };
 }
 
-
 /**
  * Create intl object
  * @param config intl config

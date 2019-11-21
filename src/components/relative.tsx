@@ -148,7 +148,7 @@ export class FormattedRelativeTime extends React.PureComponent<Props, State> {
     );
   }
 
-  componentDidMount(): void{
+  componentDidMount(): void {
     this.scheduleNextUpdate(this.props, this.state);
   }
 
@@ -161,7 +161,10 @@ export class FormattedRelativeTime extends React.PureComponent<Props, State> {
     this._updateTimer = null;
   }
 
-  static getDerivedStateFromProps(props: Props, state: State): Partial<State> | null {
+  static getDerivedStateFromProps(
+    props: Props,
+    state: State
+  ): Partial<State> | null {
     if (props.unit !== state.prevUnit || props.value !== state.prevValue) {
       return {
         prevValue: props.value,

@@ -46,10 +46,14 @@ FormattedNumberParts.displayName = 'FormattedNumberParts';
 
 export function createFormattedDateTimePartsComponent<
   Name extends 'formatDate' | 'formatTime'
->(name: Name): React.FC<Formatter[Name] & {
-  value: Parameters<IntlShape[Name]>[0];
-  children(val: Intl.DateTimeFormatPart[]): React.ReactElement | null;
-}> {
+>(
+  name: Name
+): React.FC<
+  Formatter[Name] & {
+    value: Parameters<IntlShape[Name]>[0];
+    children(val: Intl.DateTimeFormatPart[]): React.ReactElement | null;
+  }
+> {
   type FormatFn = IntlShape[Name];
   type Props = Formatter[Name] & {
     value: Parameters<FormatFn>[0];
@@ -77,10 +81,12 @@ export function createFormattedDateTimePartsComponent<
 
 export function createFormattedComponent<Name extends keyof Formatter>(
   name: Name
-): React.FC<Formatter[Name] & {
-  value: Parameters<IntlShape[Name]>[0];
-  children?(val: string): React.ReactElement | null;
-}> {
+): React.FC<
+  Formatter[Name] & {
+    value: Parameters<IntlShape[Name]>[0];
+    children?(val: string): React.ReactElement | null;
+  }
+> {
   type FormatFn = IntlShape[Name];
   type Props = Formatter[Name] & {
     value: Parameters<FormatFn>[0];
