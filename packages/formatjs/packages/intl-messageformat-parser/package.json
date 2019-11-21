@@ -4,10 +4,14 @@
   "description": "Parses ICU Message strings into an AST via JavaScript.",
   "main": "dist/index.js",
   "module": "lib/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/intl-messageformat-parser.d.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
     "clean": "rimraf dist lib",
-    "build": "node build.js && tsc && tsc -p tsconfig.cjs.json && rollup -c rollup.config.js",
+    "build": "node build.js && tsc && api-extractor run --local && tsc -p tsconfig.cjs.json && rollup -c rollup.config.js",
     "benchmark": "node ./test/benchmark.js",
     "test": "cross-env TS_NODE_PROJECT=./tsconfig.cjs.json cross-env NODE_ENV=test jest"
   },
