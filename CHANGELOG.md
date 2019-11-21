@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.6.2](https://github.com/formatjs/react-intl/compare/v3.6.1...v3.6.2) (2019-11-21)
+
+
+### Bug Fixes
+
+* fix main types file path in package.json ([14048bb](https://github.com/formatjs/react-intl/commit/14048bba41a7e02a8a0669ef14aa510acb089dc9))
+
 ### [3.6.1](https://github.com/formatjs/react-intl/compare/v3.6.0...v3.6.1) (2019-11-19)
 
 
