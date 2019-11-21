@@ -38,11 +38,11 @@
     "test": "npm run jest && cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json ts-node tests/runner"
   },
   "files": [
+    "dist-es6",
     "dist",
     "lib",
-    "dist-es6",
-    "polyfill.js",
-    "polyfill-locales.js"
+    "polyfill-locales.js",
+    "polyfill.js"
   ],
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",

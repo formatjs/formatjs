@@ -27,9 +27,11 @@
   "module": "lib/index.js",
   "types": "lib/intl-listformat.d.ts",
   "files": [
-    "dist",
     "dist-es6",
-    "lib"
+    "dist",
+    "lib",
+    "polyfill-locales.js",
+    "polyfill.js"
   ],
   "scripts": {
     "build": "npm run cldr && npm run compile",

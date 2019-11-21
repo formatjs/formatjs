@@ -16,11 +16,11 @@
   "module": "lib/index.js",
   "types": "dist/intl-pluralrules.d.ts",
   "files": [
-    "dist",
     "dist-es6",
+    "dist",
     "lib",
-    "polyfill",
-    "polyfill-locales"
+    "polyfill-locales.js",
+    "polyfill.js"
   ],
   "repository": {
     "type": "git",
