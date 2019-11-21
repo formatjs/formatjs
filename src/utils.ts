@@ -9,7 +9,7 @@ This source code is licensed under the BSD-style license found in the LICENSE
 file in the root directory of React's source tree.
 */
 
-import {IntlConfig, IntlCache, CustomFormats} from './types';
+import {IntlConfig, IntlCache, CustomFormats, Formatters} from './types';
 import * as React from 'react';
 import IntlMessageFormat from 'intl-messageformat';
 import memoizeIntlConstructor from 'intl-format-cache';
@@ -44,9 +44,9 @@ export function filterProps<T extends Record<string, any>, K extends string>(
 ) {
   return whitelist.reduce(
     (filtered, name) => {
-      if (props.hasOwnProperty(name)) {
+      if (name in props) {
         filtered[name] = props[name];
-      } else if (defaults.hasOwnProperty(name)) {
+      } else if (name in defaults) {
         filtered[name] = defaults[name]!;
       }
 
@@ -111,7 +111,7 @@ export function createIntlCache(): IntlCache {
  * Create intl formatters and populate cache
  * @param cache explicit cache to prevent leaking memory
  */
-export function createFormatters(cache: IntlCache = createIntlCache()) {
+export function createFormatters(cache: IntlCache = createIntlCache()): Formatters {
   const RelativeTimeFormat = (Intl as any).RelativeTimeFormat;
   const ListFormat = (Intl as any).ListFormat;
   return {

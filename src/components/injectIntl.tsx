@@ -44,7 +44,7 @@ export default function injectIntl<
   WrappedComponent: React.ComponentType<P>,
   options?: Opts<IntlPropName, false>
 ): React.FC<WithIntlProps<P>> & {
-  WrappedComponent: typeof WrappedComponent;
+  WrappedComponent: React.ComponentType<P>;
 };
 export default function injectIntl<
   IntlPropName extends string = 'intl',
@@ -56,7 +56,7 @@ export default function injectIntl<
 ): React.ForwardRefExoticComponent<
   React.PropsWithoutRef<WithIntlProps<P>> & React.RefAttributes<T>
 > & {
-  WrappedComponent: typeof WrappedComponent;
+  WrappedComponent: React.ComponentType<P>;
 };
 export default function injectIntl<
   IntlPropName extends string = 'intl',
@@ -69,13 +69,13 @@ export default function injectIntl<
 ): React.ForwardRefExoticComponent<
   React.PropsWithoutRef<WithIntlProps<P>> & React.RefAttributes<T>
 > & {
-  WrappedComponent: typeof WrappedComponent;
+  WrappedComponent: React.ComponentType<P>;
 } {
   const {intlPropName = 'intl', forwardRef = false, enforceContext = true} =
     options || {};
 
   const WithIntl: React.FC<P & {forwardedRef?: React.Ref<any>}> & {
-    WrappedComponent: typeof WrappedComponent;
+    WrappedComponent: React.ComponentType<P>;
   } = props => (
     <IntlConsumer>
       {intl => {
