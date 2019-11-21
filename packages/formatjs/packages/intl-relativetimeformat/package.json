@@ -28,7 +28,7 @@
   },
   "main": "dist/index.js",
   "module": "lib/index.js",
-  "types": "dist/index.d.ts",
+  "types": "lib/intl-relativetimeformat.d.ts",
   "scripts": {
     "build": "npm run cldr && npm run compile",
     "cldr": "ts-node --project tsconfig.cjs.json scripts/cldr",
