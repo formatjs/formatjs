@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.5](https://github.com/formatjs/formatjs/compare/@formatjs/macro@0.2.4...@formatjs/macro@0.2.5) (2019-11-22)
+
+
+### Bug Fixes
+
+* **@formatjs/macro:** Improve type inference of defineMessages ([#289](https://github.com/formatjs/formatjs/issues/289)) ([973218c](https://github.com/formatjs/formatjs/commit/973218c24b4c697d00fabab197a4177f4b356e71))
+
+
+
+
+
 ## [0.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/macro@0.2.3...@formatjs/macro@0.2.4) (2019-11-21)
 
 

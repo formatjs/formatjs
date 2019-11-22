@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/macro",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "formatjs-related compiler macros",
   "keywords": [
     "intl",
