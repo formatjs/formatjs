@@ -2,8 +2,9 @@
 name: Bug report
 about: Create a report to help us improve
 title: ''
-labels: ''
+labels: bug
 assignees: ''
+
 ---
 
 <!-- Thank you so much for filing this issue! Please provide the detail about your problem! -->
@@ -21,14 +22,10 @@ assignees: ''
 
 <!-- Please describe what happens instead of your expected behavior. -->
 
-### Step to reproduce for BUG REPORT
+### codesandbox.io link to reproduce for BUG REPORT
 
-<!-- Please describe steps to reproduce this bug as minimally and precisely as possible.
+<!-- Please describe steps to reproduce this bug as minimally and precisely as possible & include a codesandbox.io link to repro this issue
 
-For example:
-- minimum live example (e.g. repl.it, jsbin.com )
-- minimum example code
-- set of steps to reproduce
 -->
 
 ### Your Environment
