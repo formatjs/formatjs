@@ -3,16 +3,16 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import * as React from 'react'
+import * as React from 'react';
 export * from './types';
 export {defineMessages} from '@formatjs/macro';
 import {
   createFormattedComponent,
   createFormattedDateTimePartsComponent,
 } from './components/createFormattedComponent';
-import { CustomFormatConfig } from './types';
-import { UnifiedNumberFormatOptions } from '@formatjs/intl-unified-numberformat';
-import { IntlListFormatOptions } from '@formatjs/intl-listformat';
+import {CustomFormatConfig} from './types';
+import {UnifiedNumberFormatOptions} from '@formatjs/intl-unified-numberformat';
+import {IntlListFormatOptions} from '@formatjs/intl-listformat';
 export {
   default as injectIntl,
   Provider as RawIntlProvider,
@@ -23,15 +23,18 @@ export {
 export {default as useIntl} from './components/useIntl';
 export {default as IntlProvider, createIntl} from './components/provider';
 // IMPORTANT: Explicit here to prevent api-extractor from outputing `import('./types').CustomFormatConfig`
-export const FormattedDate: React.FC<Intl.DateTimeFormatOptions & CustomFormatConfig & {
-  value: string | number | Date | undefined;
-}> = createFormattedComponent('formatDate');
-export const FormattedTime: React.FC<Intl.DateTimeFormatOptions & CustomFormatConfig & {
-  value: string | number | Date | undefined;
-}> = createFormattedComponent('formatTime');
-export const FormattedNumber: React.FC<UnifiedNumberFormatOptions & CustomFormatConfig & {
-  value: number;
-}> = createFormattedComponent('formatNumber');
+export const FormattedDate: React.FC<Intl.DateTimeFormatOptions &
+  CustomFormatConfig & {
+    value: string | number | Date | undefined;
+  }> = createFormattedComponent('formatDate');
+export const FormattedTime: React.FC<Intl.DateTimeFormatOptions &
+  CustomFormatConfig & {
+    value: string | number | Date | undefined;
+  }> = createFormattedComponent('formatTime');
+export const FormattedNumber: React.FC<UnifiedNumberFormatOptions &
+  CustomFormatConfig & {
+    value: number;
+  }> = createFormattedComponent('formatNumber');
 export const FormattedList: React.FC<IntlListFormatOptions & {
   value: React.ReactNode[];
 }> = createFormattedComponent('formatList');

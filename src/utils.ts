@@ -18,7 +18,7 @@ import memoizeIntlConstructor from 'intl-format-cache';
 // does not export a default
 // https://github.com/rollup/rollup/issues/1267
 import * as invariant_ from 'invariant';
-import { IntlRelativeTimeFormatOptions } from '@formatjs/intl-relativetimeformat';
+import {IntlRelativeTimeFormatOptions} from '@formatjs/intl-relativetimeformat';
 const invariant: typeof invariant_ = (invariant_ as any).default || invariant_;
 
 const ESCAPED_CHARS: Record<number, string> = {
@@ -43,18 +43,15 @@ export function filterProps<T extends Record<string, any>, K extends string>(
   whitelist: Array<K>,
   defaults: Partial<T> = {}
 ): Pick<T, K> {
-  return whitelist.reduce(
-    (filtered, name) => {
-      if (name in props) {
-        filtered[name] = props[name];
-      } else if (name in defaults) {
-        filtered[name] = defaults[name]!;
-      }
+  return whitelist.reduce((filtered, name) => {
+    if (name in props) {
+      filtered[name] = props[name];
+    } else if (name in defaults) {
+      filtered[name] = defaults[name]!;
+    }
 
-      return filtered;
-    },
-    {} as Pick<T, K>
-  );
+    return filtered;
+  }, {} as Pick<T, K>);
 }
 
 export function invariantIntlContext(intl?: any): void {
@@ -112,7 +109,9 @@ export function createIntlCache(): IntlCache {
  * Create intl formatters and populate cache
  * @param cache explicit cache to prevent leaking memory
  */
-export function createFormatters(cache: IntlCache = createIntlCache()): Formatters {
+export function createFormatters(
+  cache: IntlCache = createIntlCache()
+): Formatters {
   const RelativeTimeFormat = (Intl as any).RelativeTimeFormat;
   const ListFormat = (Intl as any).ListFormat;
   return {
@@ -136,7 +135,11 @@ export function getNamedFormat<T extends keyof CustomFormats>(
   type: T,
   name: string,
   onError: (err: string) => void
-): Intl.NumberFormatOptions | Intl.DateTimeFormatOptions | IntlRelativeTimeFormatOptions | undefined {
+):
+  | Intl.NumberFormatOptions
+  | Intl.DateTimeFormatOptions
+  | IntlRelativeTimeFormatOptions
+  | undefined {
   const formatType = formats && formats[type];
   let format;
   if (formatType) {
