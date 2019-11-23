@@ -35,7 +35,9 @@ const PATTERN = resolve(
 const testsFiles = globSync(PATTERN).filter(
   // f7e8dba39b1143b45c37ee137e406889b56bc335 added grandfathered locale which we
   // don't deal with
-  fn => !fn.includes('constructor/constructor/locales-valid')
+  fn =>
+    !fn.includes('constructor/constructor/locales-valid') &&
+    !fn.includes('proto-from-ctor-realm.js')
 );
 const args = [
   '--reporter-keys',
