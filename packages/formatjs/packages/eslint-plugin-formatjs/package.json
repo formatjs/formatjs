@@ -28,6 +28,7 @@
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "dependencies": {
     "emoji-regex": "^8.0.0",
+    "@types/emoji-regex": "^8.0.0",
     "intl-messageformat-parser": "^3.2.4"
   },
   "peerDependencies": {
