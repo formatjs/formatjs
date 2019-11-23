@@ -90,14 +90,9 @@ The CLDR version and data used by this package can be easily updated by changing
 
 ## License
 
-This software is free to use under the Yahoo Inc. BSD license. See the [LICENSE file][] for license text and copyright information.
-
-The CLDR data contained in this packaged is licensed under the Apache, ICU, and Unicode licenses. See the [CLDR license files][] for their license text and copyright information.
+The CLDR data contained in this packaged is licensed under the Apache, ICU, and Unicode licenses. See the [Unicode® Copyright and Terms of Use][https://unicode.org/copyright.html] for their license text and copyright information.
 
 [cldr]: http://cldr.unicode.org/
 [formatjs]: http://formatjs.io/
 [npm]: https://www.npmjs.org/package/formatjs-extract-cldr-data
 [npm-badge]: https://img.shields.io/npm/v/formatjs-extract-cldr-data.svg?style=flat-square
-[make-plural]: https://github.com/eemeli/make-plural
-[license file]: https://github.com/formatjs/formatjs/blob/master/LICENSE.md
-[cldr license files]: https://github.com/formatjs/formatjs/tree/master/data

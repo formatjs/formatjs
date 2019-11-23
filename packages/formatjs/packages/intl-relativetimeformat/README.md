@@ -59,10 +59,5 @@ import '@formatjs/intl-relativetimeformat/polyfill-locales';
 
 This library is fully [test262](https://github.com/tc39/test262/tree/master/test/intl402/RelativeTimeFormat)-compliant.
 
-## License
-
-This software is free to use under the Yahoo! Inc. BSD license.
-See the [LICENSE file][license] for license text and copyright information.
-
 [npm]: https://www.npmjs.org/package/@formatjs/intl-relativetimeformat
 [npm-badge]: https://img.shields.io/npm/v/@formatjs/intl-relativetimeformat.svg?style=flat-square

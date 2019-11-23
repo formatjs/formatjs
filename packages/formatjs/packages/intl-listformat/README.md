@@ -44,10 +44,5 @@ import '@formatjs/intl-listformat/polyfill-locales'
 
 This library is fully [test262](https://github.com/tc39/test262/tree/master/test/intl402/ListFormat)-compliant.
 
-## License
-
-This software is free to use under the MIT license.
-See the [LICENSE file][license] for license text and copyright information.
-
 [npm]: https://www.npmjs.org/package/@formatjs/intl-listformat
 [npm-badge]: https://img.shields.io/npm/v/@formatjs/intl-listformat.svg?style=flat-square

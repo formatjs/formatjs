@@ -25,8 +25,3 @@ if (!areIntlLocalesSupported(localesMyAppSupports)) {
   require('@formatjs/intl-relativetimeformat/dist/locale-data/de'); // Load de
 }
 ```
-
-## License
-
-This software is free to use under the Yahoo! Inc. BSD license.
-See the [LICENSE file](https://github.com/formatjs/formatjs/blob/master/packages/intl-locales-supported/LICENSE) for license text and copyright information.

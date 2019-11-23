@@ -297,11 +297,6 @@ complex msg w/ formatters format x 1,878 ops/sec ±16.63% (64 runs sampled)
 complex preparsed msg w/ formatters format x 26,482 ops/sec ±2.55% (84 runs sampled)
 ```
 
-## License
-
-This software is free to use under the Yahoo! Inc. BSD license.
-See the [LICENSE file][license] for license text and copyright information.
-
 [npm]: https://www.npmjs.org/package/intl-messageformat
 [npm-badge]: https://img.shields.io/npm/v/intl-messageformat.svg?style=flat-square
 [strawman]: http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting
@@ -315,5 +310,4 @@ See the [LICENSE file][license] for license text and copyright information.
 [intl.js]: https://github.com/andyearnshaw/Intl.js
 [rawgit]: https://rawgit.com/
 [semver]: http://semver.org/
-[license]: https://github.com/formatjs/formatjs/blob/master/LICENSE
 [@formatjs/intl-pluralrules]: https://github.com/formatjs/formatjs

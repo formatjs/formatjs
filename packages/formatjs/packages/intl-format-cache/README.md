@@ -7,7 +7,7 @@ A memoizer factory for Intl format constructors.
 
 ## Overview
 
-This is a helper package used within [Yahoo's FormatJS suite][formatjs]. It provides a factory for creating memoizers of [`Intl`][intl] format constructors: [`Intl.NumberFormat`][intl-nf], [`Intl.DateTimeFormat`][intl-dtf], [`IntlMessageFormat`][intl-mf], and [`IntlRelativeFormat`][intl-rf].
+This is a helper package used within [FormatJS suite][formatjs]. It provides a factory for creating memoizers of [`Intl`][intl] format constructors: [`Intl.NumberFormat`][intl-nf], [`Intl.DateTimeFormat`][intl-dtf], [`IntlMessageFormat`][intl-mf], and [`IntlRelativeFormat`][intl-rf].
 
 Creating instances of these `Intl` formats is an expensive operation, and the APIs are designed such that developers should re-use format instances instead of always creating new ones. This package is simply to make it easier to create a cache of format instances of a particular type to aid in their reuse.
 
@@ -89,11 +89,6 @@ messageformat x 709,020 ops/sec ±3.19% (81 runs sampled)
 --- all formats random input: Fastest is messageformat ---
 ```
 
-## License
-
-This software is free to use under the Yahoo! Inc. BSD license.
-See the [LICENSE file][license] for license text and copyright information.
-
 [npm]: https://www.npmjs.org/package/intl-format-cache
 [npm-badge]: https://img.shields.io/npm/v/intl-format-cache.svg?style=flat-square
 [intl]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl
@@ -102,4 +97,3 @@ See the [LICENSE file][license] for license text and copyright information.
 [intl-mf]: https://github.com/formatjs/formatjs
 [intl-rf]: https://github.com/formatjs/formatjs
 [formatjs]: http://formatjs.io/
-[license]: https://github.com/formatjs/formatjs/blob/master/LICENSE

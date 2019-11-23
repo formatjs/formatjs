@@ -111,12 +111,6 @@ simple_msg x 100,764 ops/sec ±5.35% (79 runs sampled)
 string_msg x 120,362 ops/sec ±7.11% (74 runs sampled)
 ```
 
-## License
-
-This software is free to use under the Yahoo! Inc. BSD license.
-See the [LICENSE file][] for license text and copyright information.
-
 [icu]: http://userguide.icu-project.org/formatparse/messages
 [intl-mf]: https://github.com/formatjs/formatjs
 [peg.js]: https://pegjs.org/
-[license file]: https://github.com/formatjs/formatjs/blob/master/LICENSE.md
