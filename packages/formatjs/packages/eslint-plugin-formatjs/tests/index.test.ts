@@ -1,6 +1,6 @@
 import * as plugin from '../src';
 import {RuleTester} from 'eslint';
-import {noMatch, emptyFnCall} from './fixtures';
+import {noMatch, spreadJsx, emptyFnCall} from './fixtures';
 
 const ruleTester = new RuleTester({
   parser: require.resolve('@typescript-eslint/parser'),
@@ -28,6 +28,7 @@ _({
     description: 'asd'
 })`,
     noMatch,
+    spreadJsx,
     emptyFnCall,
   ],
   invalid: [
@@ -99,6 +100,7 @@ _({
     description: 'asd'
 })`,
     noMatch,
+    spreadJsx,
     emptyFnCall,
   ],
   invalid: [
@@ -125,6 +127,7 @@ _({
     description: 'asd'
 })`,
     noMatch,
+    spreadJsx,
     emptyFnCall,
   ],
   invalid: [
@@ -196,6 +199,7 @@ _({
       ],
     },
     noMatch,
+    spreadJsx,
     emptyFnCall,
   ],
   invalid: [
@@ -258,6 +262,7 @@ defaultMessage="{count, plural, one {#} other {# more}} {bar}"
 values={{ 'count': 1, bar: 2}} />
       `,
     noMatch,
+    spreadJsx,
     emptyFnCall,
   ],
   invalid: [
@@ -323,6 +328,7 @@ _({
       options: [['selectordinal']],
     },
     noMatch,
+    spreadJsx,
     emptyFnCall,
   ],
   invalid: [
@@ -349,6 +355,7 @@ _({
     defaultMessage: '{count, plural, one {#} other {# more}}'
 })`,
     noMatch,
+    spreadJsx,
     emptyFnCall,
   ],
   invalid: [

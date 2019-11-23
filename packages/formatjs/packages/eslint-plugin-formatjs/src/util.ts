@@ -125,6 +125,9 @@ function extractMessageDescriptorFromJSXElement(
     }
     return msg;
   }, {});
+  if (!Object.keys(message).length) {
+    return;
+  }
   return [{messageNode, descriptionNode, message}, values];
 }
 
