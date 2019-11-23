@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`parse() can parse '   some random test   ' 1`] = `
+exports[`pegParse() can pegParse '   some random test   ' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -9,7 +9,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse ''#'' 1`] = `
+exports[`pegParse() can pegParse ''#'' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -18,7 +18,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse ''{'' 1`] = `
+exports[`pegParse() can pegParse ''{'' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -27,7 +27,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse ''{name}'' 1`] = `
+exports[`pegParse() can pegParse ''{name}'' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -36,7 +36,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse ''}'' 1`] = `
+exports[`pegParse() can pegParse ''}'' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -45,7 +45,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse '{  num , number,percent  }' 1`] = `
+exports[`pegParse() can pegParse '{  num , number,percent  }' 1`] = `
 Array [
   Object {
     "style": "percent",
@@ -55,7 +55,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse '{c, plural, =1 { {text} project} other { {text} projects}}' 1`] = `
+exports[`pegParse() can pegParse '{c, plural, =1 { {text} project} other { {text} projects}}' 1`] = `
 Array [
   Object {
     "offset": 0,
@@ -102,7 +102,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse '{c, plural, =99 { {text} project} other { {text} projects}}' 1`] = `
+exports[`pegParse() can pegParse '{c, plural, =99 { {text} project} other { {text} projects}}' 1`] = `
 Array [
   Object {
     "offset": 0,
@@ -149,7 +149,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse '{c, plural, offset:-2 =-1 { {text} project} other { {text} projects}}' 1`] = `
+exports[`pegParse() can pegParse '{c, plural, offset:-2 =-1 { {text} project} other { {text} projects}}' 1`] = `
 Array [
   Object {
     "offset": -2,
@@ -196,7 +196,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse '{count, time}' 1`] = `
+exports[`pegParse() can pegParse '{count, time}' 1`] = `
 Array [
   Object {
     "style": null,
@@ -206,7 +206,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse '{floor, selectordinal, =0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor' 1`] = `
+exports[`pegParse() can pegParse '{floor, selectordinal, =0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor' 1`] = `
 Array [
   Object {
     "offset": 0,
@@ -224,13 +224,8 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
-            "style": null,
-            "type": 2,
-            "value": "floor",
-          },
-          Object {
             "type": 0,
-            "value": "rd",
+            "value": "#rd",
           },
         ],
       },
@@ -238,13 +233,8 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
-            "style": null,
-            "type": 2,
-            "value": "floor",
-          },
-          Object {
             "type": 0,
-            "value": "st",
+            "value": "#st",
           },
         ],
       },
@@ -252,13 +242,8 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
-            "style": null,
-            "type": 2,
-            "value": "floor",
-          },
-          Object {
             "type": 0,
-            "value": "th",
+            "value": "#th",
           },
         ],
       },
@@ -266,13 +251,8 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
-            "style": null,
-            "type": 2,
-            "value": "floor",
-          },
-          Object {
             "type": 0,
-            "value": "nd",
+            "value": "#nd",
           },
         ],
       },
@@ -288,7 +268,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse '{gender, select, female {woman} male {man} other {person}}' 1`] = `
+exports[`pegParse() can pegParse '{gender, select, female {woman} male {man} other {person}}' 1`] = `
 Array [
   Object {
     "options": Object {
@@ -326,7 +306,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse '{howMany, select,      one {{actor1}}      other {          {nExtraActors, plural,          one {{actor1} and {actor2}}          other {{actor1} and {nExtraActors} others}          }}      } shared this file.' 1`] = `
+exports[`pegParse() can pegParse '{howMany, select,      one {{actor1}}      other {          {nExtraActors, plural,          one {{actor1} and {actor2}}          other {{actor1} and {nExtraActors} others}          }}      } shared this file.' 1`] = `
 Array [
   Object {
     "options": Object {
@@ -405,7 +385,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse '{num, number, percent}' 1`] = `
+exports[`pegParse() can pegParse '{num, number, percent}' 1`] = `
 Array [
   Object {
     "style": "percent",
@@ -415,7 +395,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse '{numPhotos, plural, =0{no photos} =1{one photo} other{# photos}}' 1`] = `
+exports[`pegParse() can pegParse '{numPhotos, plural, =0{no photos} =1{one photo} other{# photos}}' 1`] = `
 Array [
   Object {
     "offset": 0,
@@ -442,13 +422,8 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
-            "style": null,
-            "type": 2,
-            "value": "numPhotos",
-          },
-          Object {
             "type": 0,
-            "value": " photos",
+            "value": "# photos",
           },
         ],
       },
@@ -460,7 +435,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse '{type, select,
+exports[`pegParse() can pegParse '{type, select,
       drop {
         {units, plural,
           one {# drop}
@@ -498,13 +473,8 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
-                    "style": null,
-                    "type": 2,
-                    "value": "units",
-                  },
-                  Object {
                     "type": 0,
-                    "value": " drop",
+                    "value": "# drop",
                   },
                 ],
               },
@@ -512,13 +482,8 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
-                    "style": null,
-                    "type": 2,
-                    "value": "units",
-                  },
-                  Object {
                     "type": 0,
-                    "value": " drops",
+                    "value": "# drops",
                   },
                 ],
               },
@@ -549,13 +514,8 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
-                    "style": null,
-                    "type": 2,
-                    "value": "units",
-                  },
-                  Object {
                     "type": 0,
-                    "value": " tablespoon",
+                    "value": "# tablespoon",
                   },
                 ],
               },
@@ -563,13 +523,8 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
-                    "style": null,
-                    "type": 2,
-                    "value": "units",
-                  },
-                  Object {
                     "type": 0,
-                    "value": " tablespoons",
+                    "value": "# tablespoons",
                   },
                 ],
               },
@@ -600,13 +555,8 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
-                    "style": null,
-                    "type": 2,
-                    "value": "units",
-                  },
-                  Object {
                     "type": 0,
-                    "value": " teaspoon",
+                    "value": "# teaspoon",
                   },
                 ],
               },
@@ -614,13 +564,8 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
-                    "style": null,
-                    "type": 2,
-                    "value": "units",
-                  },
-                  Object {
                     "type": 0,
-                    "value": " teaspoons",
+                    "value": "# teaspoons",
                   },
                 ],
               },
@@ -643,7 +588,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse 'Foo {var1, plural, =0{# var1} other{{var2, plural, =0{# var2} other{# var2-other}} # other}}' 1`] = `
+exports[`pegParse() can pegParse 'Foo {var1, plural, =0{# var1} other{{var2, plural, =0{# var2} other{# var2-other}} # other}}' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -656,13 +601,8 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
-            "style": null,
-            "type": 2,
-            "value": "var1",
-          },
-          Object {
             "type": 0,
-            "value": " var1",
+            "value": "# var1",
           },
         ],
       },
@@ -676,13 +616,8 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
-                    "style": null,
-                    "type": 2,
-                    "value": "var2",
-                  },
-                  Object {
                     "type": 0,
-                    "value": " var2",
+                    "value": "# var2",
                   },
                 ],
               },
@@ -690,13 +625,8 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
-                    "style": null,
-                    "type": 2,
-                    "value": "var2",
-                  },
-                  Object {
                     "type": 0,
-                    "value": " var2-other",
+                    "value": "# var2-other",
                   },
                 ],
               },
@@ -707,16 +637,7 @@ Array [
           },
           Object {
             "type": 0,
-            "value": " ",
-          },
-          Object {
-            "style": null,
-            "type": 2,
-            "value": "var1",
-          },
-          Object {
-            "type": 0,
-            "value": " other",
+            "value": " # other",
           },
         ],
       },
@@ -728,7 +649,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse 'Hello, {name}!' 1`] = `
+exports[`pegParse() can pegParse 'Hello, {name}!' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -745,7 +666,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse 'Hello, World!' 1`] = `
+exports[`pegParse() can pegParse 'Hello, World!' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -754,7 +675,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse 'My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}.' 1`] = `
+exports[`pegParse() can pegParse 'My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}.' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -806,7 +727,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse 'This '{isn''t}' obvious' 1`] = `
+exports[`pegParse() can pegParse 'This '{isn''t}' obvious' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -815,7 +736,7 @@ Array [
 ]
 `;
 
-exports[`parse() can parse 'this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}' 1`] = `
+exports[`pegParse() can pegParse 'this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -860,37 +781,37 @@ Array [
 ]
 `;
 
-exports[`parse() can print AST from '   some random test   ' 1`] = `"   some random test   "`;
+exports[`pegParse() can print AST from '   some random test   ' 1`] = `"   some random test   "`;
 
-exports[`parse() can print AST from ''#'' 1`] = `"'#'"`;
+exports[`pegParse() can print AST from ''#'' 1`] = `"'#'"`;
 
-exports[`parse() can print AST from ''{'' 1`] = `"'{'"`;
+exports[`pegParse() can print AST from ''{'' 1`] = `"'{'"`;
 
-exports[`parse() can print AST from ''{name}'' 1`] = `"'{name}'"`;
+exports[`pegParse() can print AST from ''{name}'' 1`] = `"'{name}'"`;
 
-exports[`parse() can print AST from ''}'' 1`] = `"'}'"`;
+exports[`pegParse() can print AST from ''}'' 1`] = `"'}'"`;
 
-exports[`parse() can print AST from '{  num , number,percent  }' 1`] = `"{num, number, percent}"`;
+exports[`pegParse() can print AST from '{  num , number,percent  }' 1`] = `"{num, number, percent}"`;
 
-exports[`parse() can print AST from '{c, plural, =1 { {text} project} other { {text} projects}}' 1`] = `"{c,plural,=1{ {text} project} other{ {text} projects}}"`;
+exports[`pegParse() can print AST from '{c, plural, =1 { {text} project} other { {text} projects}}' 1`] = `"{c,plural,=1{ {text} project} other{ {text} projects}}"`;
 
-exports[`parse() can print AST from '{c, plural, =99 { {text} project} other { {text} projects}}' 1`] = `"{c,plural,=99{ {text} project} other{ {text} projects}}"`;
+exports[`pegParse() can print AST from '{c, plural, =99 { {text} project} other { {text} projects}}' 1`] = `"{c,plural,=99{ {text} project} other{ {text} projects}}"`;
 
-exports[`parse() can print AST from '{c, plural, offset:-2 =-1 { {text} project} other { {text} projects}}' 1`] = `"{c,plural,offset:-2 =-1{ {text} project} other{ {text} projects}}"`;
+exports[`pegParse() can print AST from '{c, plural, offset:-2 =-1 { {text} project} other { {text} projects}}' 1`] = `"{c,plural,offset:-2 =-1{ {text} project} other{ {text} projects}}"`;
 
-exports[`parse() can print AST from '{count, time}' 1`] = `"{count, time}"`;
+exports[`pegParse() can print AST from '{count, time}' 1`] = `"{count, time}"`;
 
-exports[`parse() can print AST from '{floor, selectordinal, =0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor' 1`] = `"{floor,selectordinal,=0{ground} one{{floor, number}st} two{{floor, number}nd} few{{floor, number}rd} other{{floor, number}th}} floor"`;
+exports[`pegParse() can print AST from '{floor, selectordinal, =0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor' 1`] = `"{floor,selectordinal,=0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor"`;
 
-exports[`parse() can print AST from '{gender, select, female {woman} male {man} other {person}}' 1`] = `"{gender,select,female{woman} male{man} other{person}}"`;
+exports[`pegParse() can print AST from '{gender, select, female {woman} male {man} other {person}}' 1`] = `"{gender,select,female{woman} male{man} other{person}}"`;
 
-exports[`parse() can print AST from '{howMany, select,      one {{actor1}}      other {          {nExtraActors, plural,          one {{actor1} and {actor2}}          other {{actor1} and {nExtraActors} others}          }}      } shared this file.' 1`] = `"{howMany,select,one{{actor1}} other{          {nExtraActors,plural,one{{actor1} and {actor2}} other{{actor1} and {nExtraActors} others}}}} shared this file."`;
+exports[`pegParse() can print AST from '{howMany, select,      one {{actor1}}      other {          {nExtraActors, plural,          one {{actor1} and {actor2}}          other {{actor1} and {nExtraActors} others}          }}      } shared this file.' 1`] = `"{howMany,select,one{{actor1}} other{          {nExtraActors,plural,one{{actor1} and {actor2}} other{{actor1} and {nExtraActors} others}}}} shared this file."`;
 
-exports[`parse() can print AST from '{num, number, percent}' 1`] = `"{num, number, percent}"`;
+exports[`pegParse() can print AST from '{num, number, percent}' 1`] = `"{num, number, percent}"`;
 
-exports[`parse() can print AST from '{numPhotos, plural, =0{no photos} =1{one photo} other{# photos}}' 1`] = `"{numPhotos,plural,=0{no photos} =1{one photo} other{{numPhotos, number} photos}}"`;
+exports[`pegParse() can print AST from '{numPhotos, plural, =0{no photos} =1{one photo} other{# photos}}' 1`] = `"{numPhotos,plural,=0{no photos} =1{one photo} other{# photos}}"`;
 
-exports[`parse() can print AST from '{type, select,
+exports[`pegParse() can print AST from '{type, select,
       drop {
         {units, plural,
           one {# drop}
@@ -911,27 +832,27 @@ exports[`parse() can print AST from '{type, select,
       }
     }' 1`] = `
 "{type,select,drop{
-        {units,plural,one{{units, number} drop} other{{units, number} drops}}
+        {units,plural,one{# drop} other{# drops}}
       } teaspoon{
-        {units,plural,one{{units, number} teaspoon} other{{units, number} teaspoons}}
+        {units,plural,one{# teaspoon} other{# teaspoons}}
       } tablespoon{
-        {units,plural,one{{units, number} tablespoon} other{{units, number} tablespoons}}
+        {units,plural,one{# tablespoon} other{# tablespoons}}
       }}"
 `;
 
-exports[`parse() can print AST from 'Foo {var1, plural, =0{# var1} other{{var2, plural, =0{# var2} other{# var2-other}} # other}}' 1`] = `"Foo {var1,plural,=0{{var1, number} var1} other{{var2,plural,=0{{var2, number} var2} other{{var2, number} var2-other}} {var1, number} other}}"`;
+exports[`pegParse() can print AST from 'Foo {var1, plural, =0{# var1} other{{var2, plural, =0{# var2} other{# var2-other}} # other}}' 1`] = `"Foo {var1,plural,=0{# var1} other{{var2,plural,=0{# var2} other{# var2-other}} # other}}"`;
 
-exports[`parse() can print AST from 'Hello, {name}!' 1`] = `"Hello, {name}!"`;
+exports[`pegParse() can print AST from 'Hello, {name}!' 1`] = `"Hello, {name}!"`;
 
-exports[`parse() can print AST from 'Hello, World!' 1`] = `"Hello, World!"`;
+exports[`pegParse() can print AST from 'Hello, World!' 1`] = `"Hello, World!"`;
 
-exports[`parse() can print AST from 'My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}.' 1`] = `"My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}."`;
+exports[`pegParse() can print AST from 'My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}.' 1`] = `"My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}."`;
 
-exports[`parse() can print AST from 'This '{isn''t}' obvious' 1`] = `"This '{isn't}' obvious"`;
+exports[`pegParse() can print AST from 'This '{isn''t}' obvious' 1`] = `"This '{isn't}' obvious"`;
 
-exports[`parse() can print AST from 'this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}' 1`] = `"this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}"`;
+exports[`pegParse() can print AST from 'this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}' 1`] = `"this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}"`;
 
-exports[`parse({ captureLocation: true }) can parse '   some random test   ' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse '   some random test   ' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -940,7 +861,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse ''#'' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse ''#'' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -949,7 +870,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse ''{'' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse ''{'' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -958,7 +879,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse ''{name}'' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse ''{name}'' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -967,7 +888,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse ''}'' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse ''}'' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -976,7 +897,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse '{  num , number,percent  }' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse '{  num , number,percent  }' 1`] = `
 Array [
   Object {
     "style": "percent",
@@ -986,7 +907,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse '{c, plural, =1 { {text} project} other { {text} projects}}' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse '{c, plural, =1 { {text} project} other { {text} projects}}' 1`] = `
 Array [
   Object {
     "offset": 0,
@@ -1033,7 +954,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse '{c, plural, =99 { {text} project} other { {text} projects}}' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse '{c, plural, =99 { {text} project} other { {text} projects}}' 1`] = `
 Array [
   Object {
     "offset": 0,
@@ -1080,7 +1001,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse '{c, plural, offset:-2 =-1 { {text} project} other { {text} projects}}' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse '{c, plural, offset:-2 =-1 { {text} project} other { {text} projects}}' 1`] = `
 Array [
   Object {
     "offset": -2,
@@ -1127,7 +1048,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse '{count, time}' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse '{count, time}' 1`] = `
 Array [
   Object {
     "style": null,
@@ -1137,7 +1058,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse '{floor, selectordinal, =0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse '{floor, selectordinal, =0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor' 1`] = `
 Array [
   Object {
     "offset": 0,
@@ -1155,13 +1076,8 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
-            "style": null,
-            "type": 2,
-            "value": "floor",
-          },
-          Object {
             "type": 0,
-            "value": "rd",
+            "value": "#rd",
           },
         ],
       },
@@ -1169,13 +1085,8 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
-            "style": null,
-            "type": 2,
-            "value": "floor",
-          },
-          Object {
             "type": 0,
-            "value": "st",
+            "value": "#st",
           },
         ],
       },
@@ -1183,13 +1094,8 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
-            "style": null,
-            "type": 2,
-            "value": "floor",
-          },
-          Object {
             "type": 0,
-            "value": "th",
+            "value": "#th",
           },
         ],
       },
@@ -1197,13 +1103,8 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
-            "style": null,
-            "type": 2,
-            "value": "floor",
-          },
-          Object {
             "type": 0,
-            "value": "nd",
+            "value": "#nd",
           },
         ],
       },
@@ -1219,7 +1120,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse '{gender, select, female {woman} male {man} other {person}}' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse '{gender, select, female {woman} male {man} other {person}}' 1`] = `
 Array [
   Object {
     "options": Object {
@@ -1257,7 +1158,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse '{howMany, select,      one {{actor1}}      other {          {nExtraActors, plural,          one {{actor1} and {actor2}}          other {{actor1} and {nExtraActors} others}          }}      } shared this file.' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse '{howMany, select,      one {{actor1}}      other {          {nExtraActors, plural,          one {{actor1} and {actor2}}          other {{actor1} and {nExtraActors} others}          }}      } shared this file.' 1`] = `
 Array [
   Object {
     "options": Object {
@@ -1336,7 +1237,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse '{num, number, percent}' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse '{num, number, percent}' 1`] = `
 Array [
   Object {
     "style": "percent",
@@ -1346,7 +1247,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse '{numPhotos, plural, =0{no photos} =1{one photo} other{# photos}}' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse '{numPhotos, plural, =0{no photos} =1{one photo} other{# photos}}' 1`] = `
 Array [
   Object {
     "offset": 0,
@@ -1373,13 +1274,8 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
-            "style": null,
-            "type": 2,
-            "value": "numPhotos",
-          },
-          Object {
             "type": 0,
-            "value": " photos",
+            "value": "# photos",
           },
         ],
       },
@@ -1391,7 +1287,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse '{type, select,
+exports[`pegParse({ captureLocation: true }) can pegParse '{type, select,
       drop {
         {units, plural,
           one {# drop}
@@ -1429,13 +1325,8 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
-                    "style": null,
-                    "type": 2,
-                    "value": "units",
-                  },
-                  Object {
                     "type": 0,
-                    "value": " drop",
+                    "value": "# drop",
                   },
                 ],
               },
@@ -1443,13 +1334,8 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
-                    "style": null,
-                    "type": 2,
-                    "value": "units",
-                  },
-                  Object {
                     "type": 0,
-                    "value": " drops",
+                    "value": "# drops",
                   },
                 ],
               },
@@ -1480,13 +1366,8 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
-                    "style": null,
-                    "type": 2,
-                    "value": "units",
-                  },
-                  Object {
                     "type": 0,
-                    "value": " tablespoon",
+                    "value": "# tablespoon",
                   },
                 ],
               },
@@ -1494,13 +1375,8 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
-                    "style": null,
-                    "type": 2,
-                    "value": "units",
-                  },
-                  Object {
                     "type": 0,
-                    "value": " tablespoons",
+                    "value": "# tablespoons",
                   },
                 ],
               },
@@ -1531,13 +1407,8 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
-                    "style": null,
-                    "type": 2,
-                    "value": "units",
-                  },
-                  Object {
                     "type": 0,
-                    "value": " teaspoon",
+                    "value": "# teaspoon",
                   },
                 ],
               },
@@ -1545,13 +1416,8 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
-                    "style": null,
-                    "type": 2,
-                    "value": "units",
-                  },
-                  Object {
                     "type": 0,
-                    "value": " teaspoons",
+                    "value": "# teaspoons",
                   },
                 ],
               },
@@ -1574,7 +1440,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse 'Foo {var1, plural, =0{# var1} other{{var2, plural, =0{# var2} other{# var2-other}} # other}}' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse 'Foo {var1, plural, =0{# var1} other{{var2, plural, =0{# var2} other{# var2-other}} # other}}' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -1587,13 +1453,8 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
-            "style": null,
-            "type": 2,
-            "value": "var1",
-          },
-          Object {
             "type": 0,
-            "value": " var1",
+            "value": "# var1",
           },
         ],
       },
@@ -1607,13 +1468,8 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
-                    "style": null,
-                    "type": 2,
-                    "value": "var2",
-                  },
-                  Object {
                     "type": 0,
-                    "value": " var2",
+                    "value": "# var2",
                   },
                 ],
               },
@@ -1621,13 +1477,8 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
-                    "style": null,
-                    "type": 2,
-                    "value": "var2",
-                  },
-                  Object {
                     "type": 0,
-                    "value": " var2-other",
+                    "value": "# var2-other",
                   },
                 ],
               },
@@ -1638,16 +1489,7 @@ Array [
           },
           Object {
             "type": 0,
-            "value": " ",
-          },
-          Object {
-            "style": null,
-            "type": 2,
-            "value": "var1",
-          },
-          Object {
-            "type": 0,
-            "value": " other",
+            "value": " # other",
           },
         ],
       },
@@ -1659,7 +1501,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse 'Hello, {name}!' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse 'Hello, {name}!' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -1676,7 +1518,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse 'Hello, World!' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse 'Hello, World!' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -1685,7 +1527,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse 'My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}.' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse 'My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}.' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -1737,7 +1579,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse 'This '{isn''t}' obvious' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse 'This '{isn''t}' obvious' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -1746,7 +1588,7 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can parse 'this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}' 1`] = `
+exports[`pegParse({ captureLocation: true }) can pegParse 'this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}' 1`] = `
 Array [
   Object {
     "type": 0,
@@ -1791,37 +1633,37 @@ Array [
 ]
 `;
 
-exports[`parse({ captureLocation: true }) can print AST from '   some random test   ' 1`] = `"   some random test   "`;
+exports[`pegParse({ captureLocation: true }) can print AST from '   some random test   ' 1`] = `"   some random test   "`;
 
-exports[`parse({ captureLocation: true }) can print AST from ''#'' 1`] = `"'#'"`;
+exports[`pegParse({ captureLocation: true }) can print AST from ''#'' 1`] = `"'#'"`;
 
-exports[`parse({ captureLocation: true }) can print AST from ''{'' 1`] = `"'{'"`;
+exports[`pegParse({ captureLocation: true }) can print AST from ''{'' 1`] = `"'{'"`;
 
-exports[`parse({ captureLocation: true }) can print AST from ''{name}'' 1`] = `"'{name}'"`;
+exports[`pegParse({ captureLocation: true }) can print AST from ''{name}'' 1`] = `"'{name}'"`;
 
-exports[`parse({ captureLocation: true }) can print AST from ''}'' 1`] = `"'}'"`;
+exports[`pegParse({ captureLocation: true }) can print AST from ''}'' 1`] = `"'}'"`;
 
-exports[`parse({ captureLocation: true }) can print AST from '{  num , number,percent  }' 1`] = `"{num, number, percent}"`;
+exports[`pegParse({ captureLocation: true }) can print AST from '{  num , number,percent  }' 1`] = `"{num, number, percent}"`;
 
-exports[`parse({ captureLocation: true }) can print AST from '{c, plural, =1 { {text} project} other { {text} projects}}' 1`] = `"{c,plural,=1{ {text} project} other{ {text} projects}}"`;
+exports[`pegParse({ captureLocation: true }) can print AST from '{c, plural, =1 { {text} project} other { {text} projects}}' 1`] = `"{c,plural,=1{ {text} project} other{ {text} projects}}"`;
 
-exports[`parse({ captureLocation: true }) can print AST from '{c, plural, =99 { {text} project} other { {text} projects}}' 1`] = `"{c,plural,=99{ {text} project} other{ {text} projects}}"`;
+exports[`pegParse({ captureLocation: true }) can print AST from '{c, plural, =99 { {text} project} other { {text} projects}}' 1`] = `"{c,plural,=99{ {text} project} other{ {text} projects}}"`;
 
-exports[`parse({ captureLocation: true }) can print AST from '{c, plural, offset:-2 =-1 { {text} project} other { {text} projects}}' 1`] = `"{c,plural,offset:-2 =-1{ {text} project} other{ {text} projects}}"`;
+exports[`pegParse({ captureLocation: true }) can print AST from '{c, plural, offset:-2 =-1 { {text} project} other { {text} projects}}' 1`] = `"{c,plural,offset:-2 =-1{ {text} project} other{ {text} projects}}"`;
 
-exports[`parse({ captureLocation: true }) can print AST from '{count, time}' 1`] = `"{count, time}"`;
+exports[`pegParse({ captureLocation: true }) can print AST from '{count, time}' 1`] = `"{count, time}"`;
 
-exports[`parse({ captureLocation: true }) can print AST from '{floor, selectordinal, =0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor' 1`] = `"{floor,selectordinal,=0{ground} one{{floor, number}st} two{{floor, number}nd} few{{floor, number}rd} other{{floor, number}th}} floor"`;
+exports[`pegParse({ captureLocation: true }) can print AST from '{floor, selectordinal, =0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor' 1`] = `"{floor,selectordinal,=0{ground} one{#st} two{#nd} few{#rd} other{#th}} floor"`;
 
-exports[`parse({ captureLocation: true }) can print AST from '{gender, select, female {woman} male {man} other {person}}' 1`] = `"{gender,select,female{woman} male{man} other{person}}"`;
+exports[`pegParse({ captureLocation: true }) can print AST from '{gender, select, female {woman} male {man} other {person}}' 1`] = `"{gender,select,female{woman} male{man} other{person}}"`;
 
-exports[`parse({ captureLocation: true }) can print AST from '{howMany, select,      one {{actor1}}      other {          {nExtraActors, plural,          one {{actor1} and {actor2}}          other {{actor1} and {nExtraActors} others}          }}      } shared this file.' 1`] = `"{howMany,select,one{{actor1}} other{          {nExtraActors,plural,one{{actor1} and {actor2}} other{{actor1} and {nExtraActors} others}}}} shared this file."`;
+exports[`pegParse({ captureLocation: true }) can print AST from '{howMany, select,      one {{actor1}}      other {          {nExtraActors, plural,          one {{actor1} and {actor2}}          other {{actor1} and {nExtraActors} others}          }}      } shared this file.' 1`] = `"{howMany,select,one{{actor1}} other{          {nExtraActors,plural,one{{actor1} and {actor2}} other{{actor1} and {nExtraActors} others}}}} shared this file."`;
 
-exports[`parse({ captureLocation: true }) can print AST from '{num, number, percent}' 1`] = `"{num, number, percent}"`;
+exports[`pegParse({ captureLocation: true }) can print AST from '{num, number, percent}' 1`] = `"{num, number, percent}"`;
 
-exports[`parse({ captureLocation: true }) can print AST from '{numPhotos, plural, =0{no photos} =1{one photo} other{# photos}}' 1`] = `"{numPhotos,plural,=0{no photos} =1{one photo} other{{numPhotos, number} photos}}"`;
+exports[`pegParse({ captureLocation: true }) can print AST from '{numPhotos, plural, =0{no photos} =1{one photo} other{# photos}}' 1`] = `"{numPhotos,plural,=0{no photos} =1{one photo} other{# photos}}"`;
 
-exports[`parse({ captureLocation: true }) can print AST from '{type, select,
+exports[`pegParse({ captureLocation: true }) can print AST from '{type, select,
       drop {
         {units, plural,
           one {# drop}
@@ -1842,22 +1684,22 @@ exports[`parse({ captureLocation: true }) can print AST from '{type, select,
       }
     }' 1`] = `
 "{type,select,drop{
-        {units,plural,one{{units, number} drop} other{{units, number} drops}}
+        {units,plural,one{# drop} other{# drops}}
       } teaspoon{
-        {units,plural,one{{units, number} teaspoon} other{{units, number} teaspoons}}
+        {units,plural,one{# teaspoon} other{# teaspoons}}
       } tablespoon{
-        {units,plural,one{{units, number} tablespoon} other{{units, number} tablespoons}}
+        {units,plural,one{# tablespoon} other{# tablespoons}}
       }}"
 `;
 
-exports[`parse({ captureLocation: true }) can print AST from 'Foo {var1, plural, =0{# var1} other{{var2, plural, =0{# var2} other{# var2-other}} # other}}' 1`] = `"Foo {var1,plural,=0{{var1, number} var1} other{{var2,plural,=0{{var2, number} var2} other{{var2, number} var2-other}} {var1, number} other}}"`;
+exports[`pegParse({ captureLocation: true }) can print AST from 'Foo {var1, plural, =0{# var1} other{{var2, plural, =0{# var2} other{# var2-other}} # other}}' 1`] = `"Foo {var1,plural,=0{# var1} other{{var2,plural,=0{# var2} other{# var2-other}} # other}}"`;
 
-exports[`parse({ captureLocation: true }) can print AST from 'Hello, {name}!' 1`] = `"Hello, {name}!"`;
+exports[`pegParse({ captureLocation: true }) can print AST from 'Hello, {name}!' 1`] = `"Hello, {name}!"`;
 
-exports[`parse({ captureLocation: true }) can print AST from 'Hello, World!' 1`] = `"Hello, World!"`;
+exports[`pegParse({ captureLocation: true }) can print AST from 'Hello, World!' 1`] = `"Hello, World!"`;
 
-exports[`parse({ captureLocation: true }) can print AST from 'My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}.' 1`] = `"My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}."`;
+exports[`pegParse({ captureLocation: true }) can print AST from 'My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}.' 1`] = `"My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}."`;
 
-exports[`parse({ captureLocation: true }) can print AST from 'This '{isn''t}' obvious' 1`] = `"This '{isn't}' obvious"`;
+exports[`pegParse({ captureLocation: true }) can print AST from 'This '{isn''t}' obvious' 1`] = `"This '{isn't}' obvious"`;
 
-exports[`parse({ captureLocation: true }) can print AST from 'this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}' 1`] = `"this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}"`;
+exports[`pegParse({ captureLocation: true }) can print AST from 'this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}' 1`] = `"this is {count,plural,offset:1 one{{count, number} dog} other{{count, number} dogs}}"`;

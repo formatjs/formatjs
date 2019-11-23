@@ -1,7 +1,7 @@
-import {parse} from '../src/parser';
+import {pegParse} from '../src/parser';
 
 test('trivial', () => {
-  expect(parse('{0}')).toMatchSnapshot();
-  expect(parse('{arg}')).toMatchSnapshot();
-  expect(parse('hello {name}')).toMatchSnapshot();
+  expect(pegParse('{0}')).toMatchSnapshot();
+  expect(pegParse('{arg}')).toMatchSnapshot();
+  expect(pegParse('hello {name}')).toMatchSnapshot();
 });

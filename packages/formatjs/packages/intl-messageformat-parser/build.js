@@ -60,8 +60,10 @@ import {
 });
 
 const REGEX = /ParseFunction = \((.*?)\) => (any);/g;
-
+const PARSE_EXPORT = /export const parse:/g;
 outputFileSync(
   'src/parser.ts',
-  srcString.replace(REGEX, 'ParseFunction = ($1) => MessageFormatElement[];')
+  srcString
+    .replace(REGEX, 'ParseFunction = ($1) => MessageFormatElement[];')
+    .replace(PARSE_EXPORT, 'export const pegParse:')
 );

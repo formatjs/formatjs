@@ -1,4 +1,4 @@
-import {parse, ParseOptions} from '../src';
+import {pegParse, ParseOptions} from '../src';
 import {printAST} from '../src/printer';
 
 function allTests(opts?: ParseOptions) {
@@ -23,7 +23,7 @@ function allTests(opts?: ParseOptions) {
     // the runtime doesn't replace it when in a `pluralFormat` option.
     `'#'`,
     /**
-     * @see http://userguide.icu-project.org/formatparse/messages#TOC-Quoting-Escaping
+     * @see http://userguide.icu-project.org/formatpegParse/messages#TOC-Quoting-Escaping
      * @see https://github.com/formatjs/formatjs/issues/97
      */
     "This '{isn''t}' obvious",
@@ -58,8 +58,8 @@ function allTests(opts?: ParseOptions) {
           }}\
       } shared this file.',
   ].forEach(mess => {
-    const ast = parse(mess, opts);
-    it(`can parse '${mess}'`, function() {
+    const ast = pegParse(mess, opts);
+    it(`can pegParse '${mess}'`, function() {
       expect(ast).toMatchSnapshot();
     });
     it(`can print AST from '${mess}'`, function() {
@@ -68,10 +68,10 @@ function allTests(opts?: ParseOptions) {
   });
 }
 
-describe('parse()', function() {
+describe('pegParse()', function() {
   allTests();
 });
 
-describe('parse({ captureLocation: true })', function() {
+describe('pegParse({ captureLocation: true })', function() {
   allTests();
 });

@@ -1,4 +1,4 @@
-import {parse as pegParse, IParseOptions} from './parser';
+import {pegParse, IParseOptions} from './parser';
 import {Options, MessageFormatElement} from './types';
 import {normalizeHashtagInPlural} from './normalize';
 export * from './types';

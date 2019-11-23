@@ -1,15 +1,15 @@
-import {parse} from '../src/parser';
+import {pegParse} from '../src/parser';
 
 test('trivial', () => {
   expect(
-    parse(`\
+    pegParse(`\
       Cart: {itemCount} {itemCount, plural,
         one {item}
         other {items}
       }`)
   ).toMatchSnapshot();
   expect(
-    parse(`\
+    pegParse(`\
       You have {itemCount, plural,
         =0 {no items}
         one {1 item}
@@ -20,7 +20,7 @@ test('trivial', () => {
 
 test('escaped nested message', () => {
   expect(
-    parse(`\
+    pegParse(`\
       {itemCount, plural,
         one {item'}'}
         other {items'}'}

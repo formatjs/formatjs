@@ -5,7 +5,7 @@ import {
   LiteralElement,
   isSelectElement,
 } from './types';
-import {parse} from './parser';
+import {pegParse} from './parser';
 
 const PLURAL_HASHTAG_REGEX = /(^|[^\\])#/g;
 
@@ -42,7 +42,7 @@ export function normalizeHashtagInPlural(els: MessageFormatElement[]) {
           PLURAL_HASHTAG_REGEX,
           `$1{${el.value}, number}`
         );
-        const newEls = parse(newValue);
+        const newEls = pegParse(newValue);
         opt.value.splice(matchingLiteralElIndex, 1, ...newEls);
       }
       normalizeHashtagInPlural(opt.value);

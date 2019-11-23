@@ -1,8 +1,8 @@
-import {parse} from '../src/parser';
+import {pegParse} from '../src/parser';
 
 test('trivial', () => {
   expect(
-    parse(`\
+    pegParse(`\
       {gender, select,
           male {He}
           female {She}
@@ -14,7 +14,7 @@ test('trivial', () => {
 
 test('nested arguments', () => {
   expect(
-    parse(`\
+    pegParse(`\
       {taxableArea, select,
           yes {An additional {taxRate, number, percent} tax will be collected.}
           other {No taxes apply.}

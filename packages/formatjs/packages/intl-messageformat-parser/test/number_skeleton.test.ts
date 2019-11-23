@@ -1,4 +1,4 @@
-import {parse} from '../src/parser';
+import {pegParse} from '../src/parser';
 import {printAST} from '../src/printer';
 
 test.each([
@@ -6,7 +6,7 @@ test.each([
   `@@#`,
   `currency/CAD unit-width-narrow`,
 ])('case: %p', skeleton => {
-  const ast = parse(`{0, number, ::${skeleton}}`);
+  const ast = pegParse(`{0, number, ::${skeleton}}`);
   expect(ast).toMatchSnapshot();
   expect(printAST(ast)).toMatchSnapshot();
 });

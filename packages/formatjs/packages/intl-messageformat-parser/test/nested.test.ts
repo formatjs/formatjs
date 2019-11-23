@@ -1,8 +1,8 @@
-import {parse} from '../src/parser';
+import {pegParse} from '../src/parser';
 
 test('plural arg nested inside select arg', () => {
   expect(
-    parse(`\
+    pegParse(`\
       {gender_of_host, select,
         female {
           {num_guests, plural, offset:1
