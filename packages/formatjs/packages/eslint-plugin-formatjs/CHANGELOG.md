@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.4.1...eslint-plugin-formatjs@1.4.2) (2019-11-23)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** handle spread attributes in JSX, fix [#292](https://github.com/formatjs/formatjs/issues/292) ([c7e0f6c](https://github.com/formatjs/formatjs/commit/c7e0f6c09fe78688c919c1654a6474f227aa29e9))
+
+
+
+
+
 ## [1.4.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.4.0...eslint-plugin-formatjs@1.4.1) (2019-11-21)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

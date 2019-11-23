@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.5](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.2.4...intl-messageformat-parser@3.2.5) (2019-11-23)
+
+
+### Bug Fixes
+
+* **intl-messageformat-parser:** fix duplicate parse exports, fix [#290](https://github.com/formatjs/formatjs/issues/290) ([4e20dbd](https://github.com/formatjs/formatjs/commit/4e20dbd16f44df8c034066ba328d22be2fbc082e))
+
+
+
+
+
 ## [3.2.4](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.2.3...intl-messageformat-parser@3.2.4) (2019-11-21)
 
 
