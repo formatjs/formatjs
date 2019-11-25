@@ -140,8 +140,7 @@
     "npm": "6.x"
   },
   "pre-commit": [
-    "prettier",
-    "test"
+    "prettier"
   ],
   "author": "Seth Bertalotto <sbertal@verizonmedia.com>"
 }

@@ -8,8 +8,8 @@ import {
   isSelectElement,
   isPluralElement,
   isDateTimeSkeleton,
+  parseDateTimeSkeleton
 } from 'intl-messageformat-parser';
-import {parseDateTimeSkeleton} from './skeleton';
 
 export interface Formats {
   number: Record<string, Intl.NumberFormatOptions>;

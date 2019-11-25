@@ -3,6 +3,7 @@ import {Options, MessageFormatElement} from './types';
 import {normalizeHashtagInPlural} from './normalize';
 export * from './types';
 export * from './parser';
+export * from './skeleton';
 
 export type ParseOptions = Options & IParseOptions;
 

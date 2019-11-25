@@ -6,6 +6,7 @@ import noOffset from './rules/no-offset';
 import blacklistElements from './rules/blacklist-elements';
 import enforcePluralRules from './rules/enforce-plural-rules';
 import enforcePlaceholders from './rules/enforce-placeholders';
+import enforceSupportedDateTimeSkeleton from './rules/supported-datetime-skeleton';
 const plugin = {
   rules: {
     'enforce-description': enforceDescription,
@@ -16,6 +17,7 @@ const plugin = {
     'blacklist-elements': blacklistElements,
     'enforce-plural-rules': enforcePluralRules,
     'enforce-placeholders': enforcePlaceholders,
+    'supported-datetime-skeleton': enforceSupportedDateTimeSkeleton
   },
 };
 
