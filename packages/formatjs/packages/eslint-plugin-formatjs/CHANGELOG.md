@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.4.3...eslint-plugin-formatjs@1.5.0) (2019-11-25)
+
+
+### Bug Fixes
+
+* **intl-messageformat-parser:** exclude some more unsupported pattern ([07ec1d1](https://github.com/formatjs/formatjs/commit/07ec1d119169879617f17c542d6992c31ec85856))
+
+
+### Features
+
+* **eslint-plugin-formatjs:** add supported-datetime-skeleton rules ([c121a9a](https://github.com/formatjs/formatjs/commit/c121a9a9a52f21fbe1fdfc70e31c0275efbd0f8d))
+
+
+
+
+
 ## [1.4.3](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.4.2...eslint-plugin-formatjs@1.4.3) (2019-11-25)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

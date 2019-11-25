@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.6.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.5.6...intl-messageformat@7.6.0) (2019-11-25)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** remove re-export for parseDateTimeSkeleton ([8611aa4](https://github.com/formatjs/formatjs/commit/8611aa4f950ee1d42ea5e631a6fc8b50bae0383a))
+
+
+### Features
+
+* **eslint-plugin-formatjs:** add supported-datetime-skeleton rules ([c121a9a](https://github.com/formatjs/formatjs/commit/c121a9a9a52f21fbe1fdfc70e31c0275efbd0f8d))
+* **intl-messageformat:** add limited support for date time skeleton ([07795b9](https://github.com/formatjs/formatjs/commit/07795b9e5e0116ffaf5f410c4e1c1a375f86ba8a))
+
+
+
+
+
 ## [7.5.6](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.5.5...intl-messageformat@7.5.6) (2019-11-25)
 
 **Note:** Version bump only for package intl-messageformat
