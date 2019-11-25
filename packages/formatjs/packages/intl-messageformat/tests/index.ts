@@ -829,7 +829,14 @@ describe('IntlMessageFormat', function() {
   describe('skeleton', function() {
     it('should format correctly', function() {
       const msg = new IntlMessageFormat('{ts, time, ::yyyyMMddzzccccHHmmsszz}');
-      expect(msg.format({ts: 0})).to.equal('Thu, 01/01/1970, 12:00:00 AM UTC');
+      // Node 12+ supports hourCycle but not older Node
+      if (process.version && process.version.startsWith('v12')) {
+        expect(msg.format({ts: 0})).to.equal('Thu, 01/01/1970, 00:00:00 UTC');
+      } else {
+        expect(msg.format({ts: 0})).to.equal(
+          'Thu, 01/01/1970, 12:00:00 AM UTC'
+        );
+      }
     });
   });
 });
