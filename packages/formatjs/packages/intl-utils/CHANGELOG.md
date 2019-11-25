@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@1.4.2...@formatjs/intl-utils@1.4.3) (2019-11-25)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-unified-numberformat:** fix crash in numberformat ([e3115e2](https://github.com/formatjs/formatjs/commit/e3115e2462cb282edc98d4dbe71ffbf7eb3da5c8)), closes [#293](https://github.com/formatjs/formatjs/issues/293)
+
+
+
+
+
 ## [1.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@1.4.1...@formatjs/intl-utils@1.4.2) (2019-11-21)
 
 

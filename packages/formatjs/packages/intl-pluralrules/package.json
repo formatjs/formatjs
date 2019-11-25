@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-pluralrules",
-  "version": "1.3.5",
+  "version": "1.3.6",
   "description": "Polyfill for intl plural rules",
   "keywords": [
     "polyfill",
@@ -27,10 +27,10 @@
     "url": "git+https://github.com/formatjs/formatjs.git"
   },
   "devDependencies": {
-    "formatjs-extract-cldr-data": "^9.9.5"
+    "formatjs-extract-cldr-data": "^9.9.6"
   },
   "dependencies": {
-    "@formatjs/intl-utils": "^1.4.2"
+    "@formatjs/intl-utils": "^1.4.3"
   },
   "scripts": {
     "build": "npm run cldr && npm run compile",
