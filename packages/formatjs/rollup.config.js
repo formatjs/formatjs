@@ -20,7 +20,8 @@ export default [
     },
     plugins: [
       replace({
-        'process.env.NODE_ENV': JSON.stringify('test')
+        'process.env.NODE_ENV': JSON.stringify('test'),
+        'process.version': JSON.stringify('')
       }),
       resolveConfig, 
       typescript({
