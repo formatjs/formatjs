@@ -148,11 +148,15 @@ export function isSelectElement(el: MessageFormatElement): el is SelectElement {
 export function isPluralElement(el: MessageFormatElement): el is PluralElement {
   return el.type === TYPE.plural;
 }
-export function isNumberSkeleton(el: Skeleton): el is NumberSkeleton {
-  return el.type === SKELETON_TYPE.number;
+export function isNumberSkeleton(
+  el: NumberElement['style']
+): el is NumberSkeleton {
+  return !!(el && typeof el === 'object' && el.type === SKELETON_TYPE.number);
 }
-export function isDateTimeSkeleton(el: Skeleton): el is DateTimeSkeleton {
-  return el.type === SKELETON_TYPE.dateTime;
+export function isDateTimeSkeleton(
+  el?: DateElement['style'] | TimeElement['style']
+): el is DateTimeSkeleton {
+  return !!(el && typeof el === 'object' && el.type === SKELETON_TYPE.dateTime);
 }
 
 export function createLiteralElement(value: string): LiteralElement {

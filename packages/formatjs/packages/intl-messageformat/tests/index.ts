@@ -825,6 +825,13 @@ describe('IntlMessageFormat', function() {
       });
     });
   });
+
+  describe('skeleton', function() {
+    it('should format correctly', function() {
+      const msg = new IntlMessageFormat('{ts, time, ::yyyyMMddzzccccHHmmsszz}');
+      expect(msg.format({ts: 0})).to.equal('Thu, 01/01/1970, 12:00:00 AM UTC');
+    });
+  });
 });
 
 describe('intl-format-cache', function() {

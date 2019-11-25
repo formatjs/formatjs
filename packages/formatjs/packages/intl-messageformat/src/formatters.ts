@@ -7,7 +7,9 @@ import {
   isNumberElement,
   isSelectElement,
   isPluralElement,
+  isDateTimeSkeleton,
 } from 'intl-messageformat-parser';
+import {parseDateTimeSkeleton} from './skeleton';
 
 export interface Formats {
   number: Record<string, Intl.NumberFormatOptions>;
@@ -165,7 +167,11 @@ export function formatToParts(
     }
     if (isTimeElement(el)) {
       const style =
-        typeof el.style === 'string' ? formats.time[el.style] : undefined;
+        typeof el.style === 'string'
+          ? formats.time[el.style]
+          : isDateTimeSkeleton(el.style)
+          ? parseDateTimeSkeleton(el.style.pattern)
+          : undefined;
       result.push({
         type: PART_TYPE.literal,
         value: formatters
