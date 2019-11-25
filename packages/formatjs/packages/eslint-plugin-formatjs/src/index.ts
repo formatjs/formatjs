@@ -17,7 +17,7 @@ const plugin = {
     'blacklist-elements': blacklistElements,
     'enforce-plural-rules': enforcePluralRules,
     'enforce-placeholders': enforcePlaceholders,
-    'supported-datetime-skeleton': enforceSupportedDateTimeSkeleton
+    'supported-datetime-skeleton': enforceSupportedDateTimeSkeleton,
   },
 };
 

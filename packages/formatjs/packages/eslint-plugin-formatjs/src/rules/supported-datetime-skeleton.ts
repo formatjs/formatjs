@@ -14,14 +14,17 @@ import {ImportDeclaration, Node} from 'estree';
 
 function verifySkeleton(ast: MessageFormatElement[]) {
   for (const el of ast) {
-      if (isPluralElement(el) || isSelectElement(el)) {
-        const {options} = el;
+    if (isPluralElement(el) || isSelectElement(el)) {
+      const {options} = el;
       for (const selector of Object.keys(options)) {
         verifySkeleton(options[selector].value);
       }
-      }
-    if ((isDateElement(el) || isTimeElement(el)) && isDateTimeSkeleton(el.style)) {
-      parseDateTimeSkeleton(el.style.pattern)
+    }
+    if (
+      (isDateElement(el) || isTimeElement(el)) &&
+      isDateTimeSkeleton(el.style)
+    ) {
+      parseDateTimeSkeleton(el.style.pattern);
     }
   }
 }

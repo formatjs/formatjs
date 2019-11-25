@@ -386,40 +386,44 @@ _({
   ],
 });
 
-ruleTester.run('supported-datetime-skeleton', rules['supported-datetime-skeleton'], {
-  valid: [
-    `import {_} from '@formatjs/macro'
+ruleTester.run(
+  'supported-datetime-skeleton',
+  rules['supported-datetime-skeleton'],
+  {
+    valid: [
+      `import {_} from '@formatjs/macro'
 _({
     defaultMessage: '{ts, date, ::yyyyMMdd}'
 })`,
-    noMatch,
-    spreadJsx,
-    emptyFnCall,
-  ],
-  invalid: [
-    {
-      code: `
+      noMatch,
+      spreadJsx,
+      emptyFnCall,
+    ],
+    invalid: [
+      {
+        code: `
             import {_} from '@formatjs/macro'
             _({
                 defaultMessage: '{ts, date, ::yQQQHm}'
             })`,
-      errors: [
-        {
-          message: 'Quarter (q/Q) is not supported',
-        },
-      ],
-    },
-    {
-      code: `
+        errors: [
+          {
+            message: 'Quarter (q/Q) is not supported',
+          },
+        ],
+      },
+      {
+        code: `
             import {_} from '@formatjs/macro'
             _({
                 defaultMessage: '{ts, date, ::DFg}'
             })`,
-      errors: [
-        {
-          message: 'Day (D/F/g) is not supported',
-        },
-      ],
-    },
-  ],
-});
+        errors: [
+          {
+            message: 'Day (D/F/g) is not supported',
+          },
+        ],
+      },
+    ],
+  }
+);

@@ -8,7 +8,7 @@ import {
   isSelectElement,
   isPluralElement,
   isDateTimeSkeleton,
-  parseDateTimeSkeleton
+  parseDateTimeSkeleton,
 } from 'intl-messageformat-parser';
 
 export interface Formats {
