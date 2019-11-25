@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.7.0](https://github.com/formatjs/react-intl/compare/v3.6.2...v3.7.0) (2019-11-25)
+
+
+### Features
+
+* Introduce support for DateTime skeleton ([568d013](https://github.com/formatjs/react-intl/commit/568d01342299135e9b049f9d4014193315fac41e))
+
 ### [3.6.2](https://github.com/formatjs/react-intl/compare/v3.6.1...v3.6.2) (2019-11-21)
 
 
