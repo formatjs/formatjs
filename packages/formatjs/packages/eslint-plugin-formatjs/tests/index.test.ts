@@ -408,7 +408,7 @@ _({
             })`,
         errors: [
           {
-            message: 'Quarter (q/Q) is not supported',
+            message: '`q/Q` (quarter) patterns are not supported',
           },
         ],
       },
@@ -420,7 +420,8 @@ _({
             })`,
         errors: [
           {
-            message: 'Day (D/F/g) is not supported',
+            message:
+              '`D/F/g` (day) patterns are not supported, use `d` instead',
           },
         ],
       },
