@@ -29,16 +29,19 @@ export function parseDateTimeSkeleton(
         break;
       // Year
       case 'y':
+        result.year = len === 2 ? '2-digit' : 'numeric';
+        break;
       case 'Y':
       case 'u':
       case 'U':
       case 'r':
-        result.year = len === 2 ? '2-digit' : 'numeric';
-        break;
+        throw new RangeError(
+          '`Y/u/U/r` (year) patterns are not supported, use `y` instead'
+        );
       // Quarter
       case 'q':
       case 'Q':
-        throw new RangeError('Quarter (q/Q) is not supported');
+        throw new RangeError('`q/Q` (quarter) patterns are not supported');
       // Month
       case 'M':
       case 'L':
@@ -49,38 +52,42 @@ export function parseDateTimeSkeleton(
       // Week
       case 'w':
       case 'W':
-        throw new RangeError('Week (w/W) is not supported');
+        throw new RangeError('`w/W` (week) patterns are not supported');
       case 'd':
         result.day = ['numeric', '2-digit'][len - 1];
         break;
       case 'D':
       case 'F':
       case 'g':
-        throw new RangeError('Day (D/F/g) is not supported');
+        throw new RangeError(
+          '`D/F/g` (day) patterns are not supported, use `d` instead'
+        );
       // Weekday
       case 'E':
         result.weekday = len === 4 ? 'short' : len === 5 ? 'narrow' : 'short';
         break;
       case 'e':
         if (len < 4) {
-          throw new RangeError('Weekday e..eee is not supported');
+          throw new RangeError('`e..eee` (weekday) patterns are not supported');
         }
         result.weekday = ['short', 'long', 'narrow', 'short'][len - 4];
         break;
       case 'c':
         if (len < 4) {
-          throw new RangeError('Weekday c..ccc is not supported');
+          throw new RangeError('`c..ccc` (weekday) patterns are not supported');
         }
         result.weekday = ['short', 'long', 'narrow', 'short'][len - 4];
         break;
 
       // Period
       case 'a': // AM, PM
-      case 'b': // am, pm, noon, midnight
-      case 'B': // flexible day periods
         result.hour12 = true;
         break;
-
+      case 'b': // am, pm, noon, midnight
+      case 'B': // flexible day periods
+        throw new RangeError(
+          '`b/B` (period) patterns are not supported, use `a` instead'
+        );
       // Hour
       case 'h':
         result.hourCycle = 'h12';
@@ -101,28 +108,35 @@ export function parseDateTimeSkeleton(
       case 'j':
       case 'J':
       case 'C':
-        throw new RangeError('Pattern (j/J/C) is not supported');
+        throw new RangeError(
+          '`j/J/C` (hour) patterns are not supported, use `h/H/K/k` instead'
+        );
       // Minute
       case 'm':
         result.minute = ['numeric', '2-digit'][len - 1];
         break;
+      // Second
       case 's':
         result.second = ['numeric', '2-digit'][len - 1];
         break;
       case 'S':
       case 'A':
-        throw new RangeError('Pattern (S/A) is not supported');
+        throw new RangeError(
+          '`S/A` (second) pattenrs are not supported, use `s` instead'
+        );
       // Zone
       case 'z': // 1..3, 4: specific non-location format
+        result.timeZoneName = len < 4 ? 'short' : 'long';
+        break;
       case 'Z': // 1..3, 4, 5: The ISO8601 varios formats
       case 'O': // 1, 4: miliseconds in day short, long
       case 'v': // 1, 4: generic non-location format
       case 'V': // 1, 2, 3, 4: time zone ID or city
       case 'X': // 1, 2, 3, 4: The ISO8601 varios formats
       case 'x': // 1, 2, 3, 4: The ISO8601 varios formats
-        // this polyfill only supports much, for now, we are just doing something dummy
-        result.timeZoneName = len < 4 ? 'short' : 'long';
-        break;
+        throw new RangeError(
+          '`Z/O/v/V/X/x` (timeZone) pattenrs are not supported, use `z` instead'
+        );
     }
     return '';
   });

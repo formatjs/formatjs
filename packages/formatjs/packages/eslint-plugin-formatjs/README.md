@@ -331,3 +331,7 @@ const messages = defineMessages({
   },
 });
 ```
+
+### `supported-datetime-skeleton`
+
+Since formatjs only supports a subset of [DateTime Skeleton](../intl-messageformat-parser/README.md#Supported-DateTime-Skeleton). This rule exists to make sure you don't use a unsupported pattern.

@@ -98,6 +98,29 @@ This parser will produce this AST:
 ]
 ```
 
+## Supported DateTime Skeleton
+
+ICU provides a [wide array of pattern](https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table) to customize date time format. However, not all of them are available via ECMA402's Intl API. Therefore, our parser only support the following patterns
+
+| Symbol | Meaning                       | Notes                     |
+| ------ | ----------------------------- | ------------------------- |
+| G      | Era designator                |
+| y      | year                          |
+| M      | month in year                 |
+| L      | stand-alone month in year     |
+| d      | day in month                  |
+| E      | day of week                   |
+| e      | local day of week             | `e..eee` is not supported |
+| c      | stand-alone local day of week | `c..ccc` is not supported |
+| a      | AM/PM marker                  |
+| h      | Hour [1-12]                   |
+| H      | Hour [0-23]                   |
+| K      | Hour [0-11]                   |
+| k      | Hour [1-24]                   |
+| m      | Minute                        |
+| s      | Second                        |
+| z      | Time Zone                     |
+
 ## Benchmarks
 
 ```
