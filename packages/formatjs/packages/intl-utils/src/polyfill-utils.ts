@@ -98,7 +98,7 @@ export function getInternalSlot<
 ): Internal[Field] {
   const slots = map.get(pl);
   if (!slots) {
-    throw new TypeError('PluralRules has not been initialized');
+    throw new TypeError(`${pl} InternalSlot has not been initialized`);
   }
   return slots[field];
 }

@@ -44,6 +44,9 @@ function test() {
     ).toEqual(['zh', 'en-US']);
     expect(UnifiedNumberFormat.supportedLocalesOf(['af'])).toEqual([]);
   });
+  it('should not crash if unit is not specified', function() {
+    expect(new UnifiedNumberFormat().resolvedOptions().unit).toBeUndefined();
+  });
   it.skip('formatToParts should work', function() {
     expect(
       new UnifiedNumberFormat('zh', {

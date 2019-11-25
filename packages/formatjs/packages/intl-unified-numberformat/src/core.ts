@@ -54,13 +54,13 @@ const NativeNumberFormat = Intl.NumberFormat;
 
 interface UnifiedNumberFormatInternal {
   locale: string;
-  unit: string;
-  unitDisplay: string;
+  unit?: string;
+  unitDisplay?: string;
   dataLocale: string;
-  roundingType: 'significantDigits' | 'fractionDigits' | 'compactRounding';
-  notation: 'compact';
-  compactDisplay: 'short' | 'long';
-  signDisplay: 'auto' | 'always' | 'never' | 'exceptZero';
+  roundingType?: 'significantDigits' | 'fractionDigits' | 'compactRounding';
+  notation?: 'compact';
+  compactDisplay?: 'short' | 'long';
+  signDisplay?: 'auto' | 'always' | 'never' | 'exceptZero';
 }
 
 export class UnifiedNumberFormat implements Intl.NumberFormat {
@@ -68,7 +68,7 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
   private pl: Intl.PluralRules;
   private patternData?: UnitData;
   constructor(
-    locales: string | string[],
+    locales?: string | string[],
     options: UnifiedNumberFormatOptions = {}
   ) {
     options = options === undefined ? Object.create(null) : toObject(options);
@@ -125,6 +125,12 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
       ...coreOpts,
       style: style === 'unit' ? 'decimal' : style,
     });
+    setInternalSlot(
+      UnifiedNumberFormat.__INTERNAL_SLOT_MAP__,
+      this,
+      'unit',
+      undefined
+    );
     this.pl = new Intl.PluralRules(locales);
   }
 
