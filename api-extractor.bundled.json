@@ -1,0 +1,15 @@
+{
+  "extends": "./api-extractor.json",
+  "bundledPackages": [
+    "@formatjs/macro",
+    "@formatjs/intl-listformat",
+    "@formatjs/intl-relativetimeformat",
+    "intl-messageformat-parser",
+    "@formatjs/intl-unified-numberformat",
+    "@formatjs/intl-utils",
+    "intl-messageformat"
+   ],
+   "dtsRollup": {
+    "untrimmedFilePath": "<projectFolder>/dist/<unscopedPackageName>.d.ts"
+   }
+}

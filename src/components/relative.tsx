@@ -78,11 +78,11 @@ interface State {
 }
 
 const INCREMENTABLE_UNITS: Unit[] = ['second', 'minute', 'hour'];
-function canIncrement(unit: Unit = 'second') {
+function canIncrement(unit: Unit = 'second'): boolean {
   return INCREMENTABLE_UNITS.includes(unit);
 }
 
-function verifyProps(updateIntervalInSeconds?: number, unit?: Unit) {
+function verifyProps(updateIntervalInSeconds?: number, unit?: Unit): void {
   invariant(
     !updateIntervalInSeconds || (updateIntervalInSeconds && canIncrement(unit)),
     'Cannot schedule update with unit longer than hour'
@@ -113,7 +113,7 @@ export class FormattedRelativeTime extends React.PureComponent<Props, State> {
   scheduleNextUpdate(
     {updateIntervalInSeconds, unit}: Props,
     {currentValueInSeconds}: State
-  ) {
+  ): void {
     clearTimeout(this._updateTimer);
     this._updateTimer = null;
     // If there's no interval and we cannot increment this unit, do nothing
@@ -148,20 +148,23 @@ export class FormattedRelativeTime extends React.PureComponent<Props, State> {
     );
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     this.scheduleNextUpdate(this.props, this.state);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(): void {
     this.scheduleNextUpdate(this.props, this.state);
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     clearTimeout(this._updateTimer);
     this._updateTimer = null;
   }
 
-  static getDerivedStateFromProps(props: Props, state: State) {
+  static getDerivedStateFromProps(
+    props: Props,
+    state: State
+  ): Partial<State> | null {
     if (props.unit !== state.prevUnit || props.value !== state.prevValue) {
       return {
         prevValue: props.value,
@@ -174,10 +177,10 @@ export class FormattedRelativeTime extends React.PureComponent<Props, State> {
     return null;
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <Context.Consumer>
-        {intl => {
+        {(intl): React.ReactNode => {
           invariantIntlContext(intl);
 
           const {formatRelativeTime, textComponent: Text} = intl;
@@ -188,7 +191,7 @@ export class FormattedRelativeTime extends React.PureComponent<Props, State> {
 
           if (
             canIncrement(unit) &&
-            currentValueInSeconds != null &&
+            typeof currentValueInSeconds === 'number' &&
             updateIntervalInSeconds
           ) {
             currentUnit = selectUnit(currentValueInSeconds);

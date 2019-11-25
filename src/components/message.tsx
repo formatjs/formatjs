@@ -24,7 +24,7 @@ const defaultFormatMessage = (
     string,
     PrimitiveType | React.ReactElement | FormatXMLElementFn
   >
-) => {
+): string => {
   if (process.env.NODE_ENV !== 'production') {
     console.error(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry. Using default message as fallback.'
@@ -61,7 +61,7 @@ class FormattedMessage<
     values: {},
   };
 
-  shouldComponentUpdate(nextProps: Props<V>) {
+  shouldComponentUpdate(nextProps: Props<V>): boolean {
     const {values, ...otherProps} = this.props;
     const {values: nextValues, ...nextOtherProps} = nextProps;
     return (
@@ -70,10 +70,10 @@ class FormattedMessage<
     );
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <Context.Consumer>
-        {intl => {
+        {(intl): React.ReactNode => {
           if (!this.props.defaultMessage) {
             invariantIntlContext(intl);
           }

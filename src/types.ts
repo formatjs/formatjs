@@ -106,11 +106,11 @@ export interface IntlFormatters {
   formatHTMLMessage(
     descriptor: MessageDescriptor,
     values?: Record<string, PrimitiveType>
-  ): string;
+  ): React.ReactNode;
   formatList(
     values: Array<string | React.ReactNode>,
     opts?: FormatListOptions
-  ): string | Array<string | React.ReactNode>;
+  ): React.ReactNode;
 }
 
 export interface Formatters {

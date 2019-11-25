@@ -36,9 +36,9 @@ export function getFormatter(
   }: Pick<IntlConfig, 'locale' | 'formats' | 'onError'>,
   getNumberFormat: Formatters['getNumberFormat'],
   options: Parameters<IntlFormatters['formatNumber']>[1] = {}
-) {
+): Intl.NumberFormat {
   const {format} = options;
-  let defaults = ((format &&
+  const defaults = ((format &&
     getNamedFormat(formats!, 'number', format, onError)) ||
     {}) as UnifiedNumberFormatOptions;
   const filteredOptions = filterProps(options, NUMBER_FORMAT_OPTIONS, defaults);
@@ -51,7 +51,7 @@ export function formatNumber(
   getNumberFormat: Formatters['getNumberFormat'],
   value: Parameters<IntlFormatters['formatNumber']>[0],
   options: Parameters<IntlFormatters['formatNumber']>[1] = {}
-) {
+): string {
   try {
     return getFormatter(config, getNumberFormat, options).format(value);
   } catch (e) {
@@ -66,7 +66,7 @@ export function formatNumberToParts(
   getNumberFormat: Formatters['getNumberFormat'],
   value: Parameters<IntlFormatters['formatNumber']>[0],
   options: Parameters<IntlFormatters['formatNumber']>[1] = {}
-) {
+): Intl.NumberFormatPart[] {
   try {
     return getFormatter(config, getNumberFormat, options).formatToParts(value);
   } catch (e) {

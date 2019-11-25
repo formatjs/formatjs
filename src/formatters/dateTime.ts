@@ -36,9 +36,9 @@ export function getFormatter(
   type: 'date' | 'time',
   getDateTimeFormat: Formatters['getDateTimeFormat'],
   options: Parameters<IntlFormatters['formatDate']>[1] = {}
-) {
+): Intl.DateTimeFormat {
   const {format} = options;
-  let defaults = {
+  const defaults = {
     ...(timeZone && {timeZone}),
     ...(format && getNamedFormat(formats!, type, format, onError)),
   };
@@ -67,7 +67,7 @@ export function formatDate(
   getDateTimeFormat: Formatters['getDateTimeFormat'],
   value?: Parameters<IntlFormatters['formatDate']>[0],
   options: Parameters<IntlFormatters['formatDate']>[1] = {}
-) {
+): string {
   const date = typeof value === 'string' ? new Date(value || 0) : value;
   try {
     return getFormatter(config, 'date', getDateTimeFormat, options).format(
@@ -85,7 +85,7 @@ export function formatTime(
   getDateTimeFormat: Formatters['getDateTimeFormat'],
   value?: Parameters<IntlFormatters['formatTime']>[0],
   options: Parameters<IntlFormatters['formatTime']>[1] = {}
-) {
+): string {
   const date = typeof value === 'string' ? new Date(value || 0) : value;
 
   try {
@@ -104,7 +104,7 @@ export function formatDateToParts(
   getDateTimeFormat: Formatters['getDateTimeFormat'],
   value?: Parameters<IntlFormatters['formatDate']>[0],
   options: Parameters<IntlFormatters['formatDate']>[1] = {}
-) {
+): Intl.DateTimeFormatPart[] {
   const date = typeof value === 'string' ? new Date(value || 0) : value;
   try {
     return getFormatter(
@@ -125,7 +125,7 @@ export function formatTimeToParts(
   getDateTimeFormat: Formatters['getDateTimeFormat'],
   value?: Parameters<IntlFormatters['formatTime']>[0],
   options: Parameters<IntlFormatters['formatTime']>[1] = {}
-) {
+): Intl.DateTimeFormatPart[] {
   const date = typeof value === 'string' ? new Date(value || 0) : value;
 
   try {

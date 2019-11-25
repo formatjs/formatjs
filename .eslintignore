@@ -1,5 +1,5 @@
 coverage/**/*.js
-dist/**/*.js
+dist/
 lib/
 examples/**/node_modules/**/*.js
 examples/**/build/**/*.js

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import * as React from 'react';
 import IntlMessageFormat from 'intl-messageformat';
 import {parse} from 'intl-messageformat-parser';
@@ -788,10 +789,10 @@ describe('format API', () => {
       it('warns when `message` is missing and locales are different', () => {
         config.locale = 'fr';
 
-        let {locale, messages, defaultLocale} = config;
-        let mf = new IntlMessageFormat(messages.with_arg, locale);
-        let id = 'missing';
-        let values = {name: 'Eric'};
+        const {locale, messages, defaultLocale} = config;
+        const mf = new IntlMessageFormat(messages.with_arg, locale);
+        const id = 'missing';
+        const values = {name: 'Eric'};
 
         expect(locale).not.toEqual(defaultLocale);
 
@@ -815,9 +816,9 @@ describe('format API', () => {
       });
 
       it('warns when `message` and `defaultMessage` are missing', () => {
-        let {locale, messages} = config;
-        let id = 'missing';
-        let values = {name: 'Eric'};
+        const {locale, messages} = config;
+        const id = 'missing';
+        const values = {name: 'Eric'};
 
         expect(
           formatMessage(

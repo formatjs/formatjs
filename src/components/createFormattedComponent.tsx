@@ -35,7 +35,7 @@ export const FormattedNumberParts: React.FC<Formatter['formatNumber'] & {
   children(val: Intl.NumberFormatPart[]): React.ReactElement | null;
 }> = props => (
   <Context.Consumer>
-    {intl => {
+    {(intl): React.ReactElement | null => {
       invariantIntlContext(intl);
       const {value, children, ...formatProps} = props;
       return children(intl.formatNumberToParts(value, formatProps));
@@ -46,7 +46,14 @@ FormattedNumberParts.displayName = 'FormattedNumberParts';
 
 export function createFormattedDateTimePartsComponent<
   Name extends 'formatDate' | 'formatTime'
->(name: Name) {
+>(
+  name: Name
+): React.FC<
+  Formatter[Name] & {
+    value: Parameters<IntlShape[Name]>[0];
+    children(val: Intl.DateTimeFormatPart[]): React.ReactElement | null;
+  }
+> {
   type FormatFn = IntlShape[Name];
   type Props = Formatter[Name] & {
     value: Parameters<FormatFn>[0];
@@ -55,7 +62,7 @@ export function createFormattedDateTimePartsComponent<
 
   const ComponentParts: React.FC<Props> = props => (
     <Context.Consumer>
-      {intl => {
+      {(intl): React.ReactElement | null => {
         invariantIntlContext(intl);
         const {value, children, ...formatProps} = props;
         const date = typeof value === 'string' ? new Date(value || 0) : value;
@@ -74,7 +81,12 @@ export function createFormattedDateTimePartsComponent<
 
 export function createFormattedComponent<Name extends keyof Formatter>(
   name: Name
-) {
+): React.FC<
+  Formatter[Name] & {
+    value: Parameters<IntlShape[Name]>[0];
+    children?(val: string): React.ReactElement | null;
+  }
+> {
   type FormatFn = IntlShape[Name];
   type Props = Formatter[Name] & {
     value: Parameters<FormatFn>[0];
@@ -83,7 +95,7 @@ export function createFormattedComponent<Name extends keyof Formatter>(
 
   const Component: React.FC<Props> = props => (
     <Context.Consumer>
-      {intl => {
+      {(intl): JSX.Element | null => {
         invariantIntlContext(intl);
         const {value, children, ...formatProps} = props;
         // TODO: fix TS type definition for localeMatcher upstream
