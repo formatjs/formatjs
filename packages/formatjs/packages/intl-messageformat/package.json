@@ -36,7 +36,8 @@
   },
   "files": [
     "dist",
-    "lib"
+    "lib",
+    "src"
   ],
   "devDependencies": {
     "@formatjs/intl-pluralrules": "^1.3.6"

@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "lib"
+    "lib",
+    "src"
   ],
   "scripts": {
     "build": "tsc",

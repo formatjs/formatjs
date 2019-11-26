@@ -10,7 +10,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "dependencies": {

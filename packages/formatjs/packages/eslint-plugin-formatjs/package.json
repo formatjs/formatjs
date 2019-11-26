@@ -4,7 +4,8 @@
   "description": "ESLint plugin for formatjs",
   "main": "dist/index.js",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",

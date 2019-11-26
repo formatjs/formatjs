@@ -21,7 +21,8 @@
   "files": [
     "dist",
     "lib",
-    "polyfill.js"
+    "polyfill.js",
+    "src"
   ],
   "devDependencies": {
     "@formatjs/intl-pluralrules": "^1.3.6",

@@ -7,7 +7,8 @@
   "types": "lib/intl-messageformat-parser.d.ts",
   "files": [
     "dist",
-    "lib"
+    "lib",
+    "src"
   ],
   "scripts": {
     "clean": "rimraf dist lib",

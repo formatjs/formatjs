@@ -33,7 +33,8 @@
     "build": "tsc -p tsconfig.build.json"
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"

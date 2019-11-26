@@ -27,7 +27,8 @@
   },
   "files": [
     "bin",
-    "lib"
+    "lib",
+    "src"
   ],
   "repository": {
     "type": "git",

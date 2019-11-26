@@ -20,7 +20,8 @@
     "dist",
     "lib",
     "polyfill-locales.js",
-    "polyfill.js"
+    "polyfill.js",
+    "src"
   ],
   "repository": {
     "type": "git",
