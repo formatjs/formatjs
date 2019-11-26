@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.11](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@1.0.10...@formatjs/ts-transformer@1.0.11) (2019-11-26)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** use .text instead of .getText ([961a680](https://github.com/formatjs/formatjs/commit/961a680e687506db1fb81b682ef773fd6c538258))
+
+
+
+
+
 ## [1.0.10](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@1.0.9...@formatjs/ts-transformer@1.0.10) (2019-11-26)
 
 
