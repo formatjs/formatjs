@@ -10,3 +10,10 @@ function foo (props) {
     )
 }
 `;
+export const dynamicMessage = `
+import {_} from '@formatjs/macro'
+_({
+    id,
+    defaultMessage,
+    description
+})`;

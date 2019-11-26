@@ -11,9 +11,10 @@ function checkNode(
   for (const [
     {
       message: {description},
+      descriptionNode,
     },
   ] of msgs) {
-    if (!description) {
+    if (!description && !descriptionNode) {
       context.report({
         node,
         message: '`description` has to be specified in message descriptor',

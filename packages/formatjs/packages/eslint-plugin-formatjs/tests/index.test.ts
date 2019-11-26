@@ -1,6 +1,6 @@
 import * as plugin from '../src';
 import {RuleTester} from 'eslint';
-import {noMatch, spreadJsx, emptyFnCall} from './fixtures';
+import {noMatch, spreadJsx, emptyFnCall, dynamicMessage} from './fixtures';
 
 const ruleTester = new RuleTester({
   parser: require.resolve('@typescript-eslint/parser'),
@@ -27,6 +27,7 @@ _({
     defaultMessage: '{count, plural, one {#} other {# more}}',
     description: 'asd'
 })`,
+    dynamicMessage,
     noMatch,
     spreadJsx,
     emptyFnCall,
@@ -99,6 +100,7 @@ _({
     defaultMessage: 'a {placeholder}',
     description: 'asd'
 })`,
+    dynamicMessage,
     noMatch,
     spreadJsx,
     emptyFnCall,
@@ -126,6 +128,7 @@ _({
     defaultMessage: 'a {placeholder}',
     description: 'asd'
 })`,
+    dynamicMessage,
     noMatch,
     spreadJsx,
     emptyFnCall,
@@ -198,6 +201,7 @@ _({
         },
       ],
     },
+    dynamicMessage,
     noMatch,
     spreadJsx,
     emptyFnCall,
@@ -261,6 +265,7 @@ const a = <FormattedMessage
 defaultMessage="{count, plural, one {#} other {# more}} {bar}"
 values={{ 'count': 1, bar: 2}} />
       `,
+    dynamicMessage,
     noMatch,
     spreadJsx,
     emptyFnCall,
@@ -327,6 +332,7 @@ _({
 })`,
       options: [['selectordinal']],
     },
+    dynamicMessage,
     noMatch,
     spreadJsx,
     emptyFnCall,
@@ -354,6 +360,7 @@ ruleTester.run('no-offset', rules['no-offset'], {
 _({
     defaultMessage: '{count, plural, one {#} other {# more}}'
 })`,
+    dynamicMessage,
     noMatch,
     spreadJsx,
     emptyFnCall,
@@ -395,6 +402,7 @@ ruleTester.run(
 _({
     defaultMessage: '{ts, date, ::yyyyMMdd}'
 })`,
+      dynamicMessage,
       noMatch,
       spreadJsx,
       emptyFnCall,

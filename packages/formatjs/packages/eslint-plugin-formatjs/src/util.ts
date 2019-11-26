@@ -4,6 +4,7 @@ import {
   Literal,
   CallExpression,
   Expression,
+  Property,
 } from 'estree';
 import {Scope} from 'eslint';
 import {Node, JSXOpeningElement, JSXExpressionContainer} from 'estree-jsx';
@@ -16,8 +17,8 @@ export interface MessageDescriptor {
 
 export interface MessageDescriptorNodeInfo {
   message: MessageDescriptor;
-  messageNode?: Literal;
-  descriptionNode?: Literal;
+  messageNode?: Property['value'];
+  descriptionNode?: Property['value'];
 }
 
 function findReferenceImport(id: Identifier, importedVars: Scope.Variable[]) {
@@ -66,18 +67,26 @@ function extractMessageDescriptor(
   if (!node || !node.properties) {
     return;
   }
-  let messageNode: Literal | undefined;
-  let descriptionNode: Literal | undefined;
-  const message = node.properties.reduce((msg: MessageDescriptor, prop) => {
-    const key = prop.key as Identifier;
-    const value = (prop.value as Literal).value as string;
-    switch (key.name) {
+  const result: MessageDescriptorNodeInfo = {
+    message: {},
+    messageNode: undefined,
+    descriptionNode: undefined,
+  };
+  result.message = node.properties.reduce((msg: MessageDescriptor, prop) => {
+    if (prop.key.type !== 'Identifier') {
+      return msg;
+    }
+    const value =
+      prop.value.type === 'Literal' && typeof prop.value.value === 'string'
+        ? prop.value.value
+        : undefined;
+    switch (prop.key.name) {
       case 'defaultMessage':
-        messageNode = prop.value as Literal;
+        result.messageNode = prop.value;
         msg.defaultMessage = value;
         break;
       case 'description':
-        descriptionNode = prop.value as Literal;
+        result.descriptionNode = prop.value;
         msg.description = value;
         break;
       case 'id':
@@ -85,11 +94,7 @@ function extractMessageDescriptor(
     }
     return msg;
   }, {});
-  return {
-    message,
-    messageNode,
-    descriptionNode,
-  };
+  return result;
 }
 
 function extractMessageDescriptorFromJSXElement(
