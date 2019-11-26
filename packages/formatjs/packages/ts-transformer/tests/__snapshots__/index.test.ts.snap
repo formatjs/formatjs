@@ -112,7 +112,11 @@ const msgs = react_intl_1.defineMessages({
     },
     escaped: {
         id: \\"escaped.apostrophe\\",
-        defaultMessage: \\"A quoted value {value}\\"
+        defaultMessage: \\"A quoted value ''{value}'\\"
+    },
+    quoted: {
+        id: \\"escaped.apostrophe\\",
+        defaultMessage: \\"What's going on\\"
     }
 });
 class Foo extends react_1.Component {
@@ -150,7 +154,12 @@ exports.default = Foo;
       "id": "trailing.ws",
     },
     Object {
-      "defaultMessage": "A quoted value {value}",
+      "defaultMessage": "A quoted value ''{value}'",
+      "description": "Escaped apostrophe",
+      "id": "escaped.apostrophe",
+    },
+    Object {
+      "defaultMessage": "What's going on",
       "description": "Escaped apostrophe",
       "id": "escaped.apostrophe",
     },

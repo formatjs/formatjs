@@ -27,6 +27,11 @@ const msgs = defineMessages({
     description: 'Escaped apostrophe',
     defaultMessage: "A quoted value ''{value}'",
   },
+  quoted: {
+    id: 'escaped.apostrophe',
+    description: 'Escaped apostrophe',
+    defaultMessage: "What's going on",
+  },
 });
 
 export default class Foo extends Component {

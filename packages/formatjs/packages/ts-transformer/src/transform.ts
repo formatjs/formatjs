@@ -76,7 +76,7 @@ const DEFAULT_OPTS: Omit<Opts, 'program'> = {
  * @returns trimmed string
  */
 function trimSingleQuote(txt: string): string {
-  return txt.replace(/["']/g, '');
+  return txt.replace(/^['"](.*?)["']$/g, '$1');
 }
 
 function getImportSpecifier(program: ts.Program, node: ts.Node) {
