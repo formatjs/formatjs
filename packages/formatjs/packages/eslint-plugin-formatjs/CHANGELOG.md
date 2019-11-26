@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.5.0...eslint-plugin-formatjs@1.5.1) (2019-11-26)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** handle non-literal value in descriptor ([b74e0f6](https://github.com/formatjs/formatjs/commit/b74e0f63a022e1bff505df3dd2d8165c9c7ba8fc)), closes [#304](https://github.com/formatjs/formatjs/issues/304)
+
+
+
+
+
 # [1.5.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.4.3...eslint-plugin-formatjs@1.5.0) (2019-11-25)
 
 

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.6](https://github.com/formatjs/formatjs/compare/@formatjs/macro@0.2.5...@formatjs/macro@0.2.6) (2019-11-26)
+
+**Note:** Version bump only for package @formatjs/macro
+
+
+
+
+
 ## [0.2.5](https://github.com/formatjs/formatjs/compare/@formatjs/macro@0.2.4...@formatjs/macro@0.2.5) (2019-11-22)
 
 
