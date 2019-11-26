@@ -54,7 +54,7 @@ const MESSAGES = {
   },
 };
 
-const output;
+let output;
 
 const enNumPhotos = new IntlMessageFormat(
   MESSAGES['en-US'].NUM_PHOTOS,
