@@ -32,6 +32,14 @@ const msgs = defineMessages({
     description: 'Escaped apostrophe',
     defaultMessage: "What's going on",
   },
+  newline: {
+    id: 'newline',
+    description: 'this is \
+    a \
+    description',
+    defaultMessage: 'this is \
+    a message',
+  },
 });
 
 export default class Foo extends Component {

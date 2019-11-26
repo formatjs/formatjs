@@ -69,16 +69,6 @@ const DEFAULT_OPTS: Omit<Opts, 'program'> = {
   onMsgExtracted: () => undefined,
 };
 
-/**
- * Trim the trailing & beginning ': 'asd' -> asd
- *
- * @param {string} txt text
- * @returns trimmed string
- */
-function trimSingleQuote(txt: string): string {
-  return txt.replace(/^['"](.*?)["']$/g, '$1');
-}
-
 function getImportSpecifier(program: ts.Program, node: ts.Node) {
   const symbol = program.getTypeChecker().getSymbolAtLocation(node);
   if (!symbol) {
@@ -92,7 +82,6 @@ function getImportSpecifier(program: ts.Program, node: ts.Node) {
 }
 
 function referenceImport(
-  sf: ts.SourceFile,
   moduleSourceName: string,
   importSpecifier?: ts.ImportSpecifier
 ): boolean {
@@ -101,16 +90,14 @@ function referenceImport(
     ts.isNamedImports(importSpecifier.parent) &&
     ts.isImportClause(importSpecifier.parent.parent) &&
     ts.isImportDeclaration(importSpecifier.parent.parent.parent) &&
-    trimSingleQuote(
-      importSpecifier.parent.parent.parent.moduleSpecifier.getText(sf)
-    ) === moduleSourceName
+    (importSpecifier.parent.parent.parent.moduleSpecifier as ts.StringLiteral)
+      .text === moduleSourceName
   );
 }
 
 function isMultipleMessageDecl(
   node: ts.CallExpression,
   program: ts.Program,
-  sf: ts.SourceFile,
   moduleSourceName: string
 ) {
   const importSpecifier = getImportSpecifier(program, node.expression);
@@ -118,15 +105,14 @@ function isMultipleMessageDecl(
     return false;
   }
   return (
-    referenceImport(sf, moduleSourceName, importSpecifier) &&
-    importSpecifier.name.getText(sf) === 'defineMessages'
+    referenceImport(moduleSourceName, importSpecifier) &&
+    importSpecifier.name.text === 'defineMessages'
   );
 }
 
 function isSingularMessageDecl(
   node: ts.CallExpression | ts.JsxOpeningElement | ts.JsxSelfClosingElement,
   program: ts.Program,
-  sf: ts.SourceFile,
   moduleSourceName: string,
   additionalComponentNames: string[]
 ) {
@@ -144,8 +130,8 @@ function isSingularMessageDecl(
     ...additionalComponentNames,
   ]);
   return (
-    referenceImport(sf, moduleSourceName, importSpecifier) &&
-    compNames.has(importSpecifier.name.getText(sf))
+    referenceImport(moduleSourceName, importSpecifier) &&
+    compNames.has(importSpecifier.name.text)
   );
 }
 
@@ -178,13 +164,13 @@ function extractMessageDescriptor(
     }
     switch (name.getText(sf)) {
       case 'id':
-        msg.id = trimSingleQuote(initializer.getText(sf));
+        msg.id = initializer.text;
         break;
       case 'defaultMessage':
-        msg.defaultMessage = trimSingleQuote(initializer.getText(sf));
+        msg.defaultMessage = initializer.text;
         break;
       case 'description':
-        msg.description = trimSingleQuote(initializer.getText(sf));
+        msg.description = initializer.text;
         break;
     }
   });
@@ -243,7 +229,6 @@ function extractMessageFromJsxComponent(
     !isSingularMessageDecl(
       node,
       program,
-      sf,
       moduleSourceName,
       opts.additionalComponentNames || []
     )
@@ -294,7 +279,7 @@ function extractMessagesFromCallExpression(
   opts: Opts
 ): typeof node | undefined {
   const {moduleSourceName = 'react-intl', onMsgExtracted} = opts;
-  if (isMultipleMessageDecl(node, program, sf, moduleSourceName)) {
+  if (isMultipleMessageDecl(node, program, moduleSourceName)) {
     const [descriptorsObj, ...restArgs] = node.arguments;
     if (ts.isObjectLiteralExpression(descriptorsObj)) {
       const properties = descriptorsObj.properties as ts.NodeArray<
@@ -344,7 +329,6 @@ function extractMessagesFromCallExpression(
     isSingularMessageDecl(
       node,
       program,
-      sf,
       moduleSourceName,
       opts.additionalComponentNames || []
     ) ||

@@ -117,6 +117,10 @@ const msgs = react_intl_1.defineMessages({
     quoted: {
         id: \\"escaped.apostrophe\\",
         defaultMessage: \\"What's going on\\"
+    },
+    newline: {
+        id: \\"newline\\",
+        defaultMessage: \\"this is     a message\\"
     }
 });
 class Foo extends react_1.Component {
@@ -162,6 +166,11 @@ exports.default = Foo;
       "defaultMessage": "What's going on",
       "description": "Escaped apostrophe",
       "id": "escaped.apostrophe",
+    },
+    Object {
+      "defaultMessage": "this is     a message",
+      "description": "this is     a     description",
+      "id": "newline",
     },
   ],
 }
