@@ -6,6 +6,9 @@ export {
   getParentLocalesByLang,
   setInternalSlot,
   getInternalSlot,
+  partitionPattern,
+  isLiteralPart,
+  LiteralPart,
 } from './polyfill-utils';
 export {
   createResolveLocale,

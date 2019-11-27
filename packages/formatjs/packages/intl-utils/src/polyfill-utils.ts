@@ -1,5 +1,6 @@
 import aliases from './aliases';
 import parentLocales from './parentLocales';
+import {invariant} from './invariant';
 
 /**
  * https://tc39.es/ecma262/#sec-toobject
@@ -101,4 +102,46 @@ export function getInternalSlot<
     throw new TypeError(`${pl} InternalSlot has not been initialized`);
   }
   return slots[field];
+}
+
+export interface LiteralPart {
+  type: 'literal';
+  value: string;
+}
+
+export function isLiteralPart(
+  patternPart: LiteralPart | {type: string; value?: string}
+): patternPart is LiteralPart {
+  return patternPart.type === 'literal';
+}
+
+export function partitionPattern(pattern: string) {
+  const result = [];
+  let beginIndex = pattern.indexOf('{');
+  let endIndex = 0;
+  let nextIndex = 0;
+  const length = pattern.length;
+  while (beginIndex < pattern.length && beginIndex > -1) {
+    endIndex = pattern.indexOf('}', beginIndex);
+    invariant(endIndex > beginIndex, `Invalid pattern ${pattern}`);
+    if (beginIndex > nextIndex) {
+      result.push({
+        type: 'literal',
+        value: pattern.substring(nextIndex, beginIndex),
+      });
+    }
+    result.push({
+      type: pattern.substring(beginIndex + 1, endIndex),
+      value: undefined,
+    });
+    nextIndex = endIndex + 1;
+    beginIndex = pattern.indexOf('{', nextIndex);
+  }
+  if (nextIndex < length) {
+    result.push({
+      type: 'literal',
+      value: pattern.substring(nextIndex, length),
+    });
+  }
+  return result;
 }

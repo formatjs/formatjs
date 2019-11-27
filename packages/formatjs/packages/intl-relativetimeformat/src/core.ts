@@ -14,6 +14,9 @@ import {
   RelativeTimeField,
   FieldData,
   LDMLPluralRule,
+  partitionPattern,
+  isLiteralPart,
+  LiteralPart,
 } from '@formatjs/intl-utils';
 
 export interface IntlRelativeTimeFormatOptions {
@@ -60,11 +63,6 @@ export interface ResolvedIntlRelativeTimeFormatOptions
 }
 
 export type Part = LiteralPart | RelativeTimeFormatNumberPart;
-
-export interface LiteralPart {
-  type: 'literal';
-  value: string;
-}
 
 export interface RelativeTimeFormatNumberPart extends Intl.NumberFormatPart {
   unit: Unit;
@@ -153,37 +151,24 @@ function makePartsList(
   unit: Unit,
   parts: Intl.NumberFormatPart[]
 ): Part[] {
+  const patternParts = partitionPattern(pattern);
   const result: Part[] = [];
-  let beginIndex = pattern.indexOf('{');
-  const length = pattern.length;
-  let endIndex = 0;
-  let nextIndex = 0;
-  while (beginIndex > -1 && beginIndex < length) {
-    endIndex = pattern.indexOf('}', beginIndex);
-    invariant(endIndex !== -1, `} not found in ${pattern}`);
-    if (beginIndex > nextIndex) {
+  for (const patternPart of patternParts) {
+    if (isLiteralPart(patternPart)) {
       result.push({
         type: 'literal',
-        value: pattern.substring(nextIndex, beginIndex),
+        value: patternPart.value,
       });
+    } else {
+      invariant(patternPart.type === '0', `Malformed pattern ${pattern}`);
+      for (const part of parts) {
+        result.push({
+          type: part.type,
+          value: part.value,
+          unit,
+        });
+      }
     }
-    const p = pattern.substring(beginIndex + 1, endIndex);
-    invariant(p === '0', `Malformed pattern ${pattern}`);
-    for (const part of parts) {
-      result.push({
-        type: part.type,
-        value: part.value,
-        unit,
-      });
-    }
-    nextIndex = endIndex;
-    beginIndex = pattern.indexOf('{', nextIndex);
-  }
-  if (nextIndex < length) {
-    result.push({
-      type: 'literal',
-      value: pattern.substring(nextIndex + 1),
-    });
   }
   return result;
 }

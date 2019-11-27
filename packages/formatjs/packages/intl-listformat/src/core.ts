@@ -10,6 +10,10 @@ import {
   getInternalSlot,
   ListPatternFieldsData,
   ListPatternData,
+  partitionPattern,
+  invariant,
+  isLiteralPart,
+  LiteralPart,
 } from '@formatjs/intl-utils';
 
 export interface IntlListFormatOptions {
@@ -66,11 +70,6 @@ export interface ResolvedIntlListFormatOptions {
 }
 
 export type Part = LiteralPart | ElementPart;
-
-export interface LiteralPart {
-  type: 'literal';
-  value: string;
-}
 
 export interface ElementPart {
   type: 'element';
@@ -162,40 +161,24 @@ function deconstructPattern(
   pattern: string,
   placeables: Record<string, Placeable | Placeable[]>
 ) {
+  const patternParts = partitionPattern(pattern);
   const result: Placeable[] = [];
-  let beginIndex = pattern.indexOf('{', 0);
-  let nextIndex = 0;
-  while (beginIndex > -1 && beginIndex < pattern.length) {
-    const endIndex = pattern.indexOf('}', beginIndex);
-    if (endIndex <= beginIndex) {
-      throw new Error(
-        `endIndex ${endIndex} should be bigger than beginIndex ${beginIndex}`
-      );
-    }
-    if (beginIndex > nextIndex) {
+  for (const patternPart of patternParts) {
+    const {type: part} = patternPart;
+    if (isLiteralPart(patternPart)) {
       result.push({
         type: 'literal',
-        value: pattern.slice(nextIndex, beginIndex),
+        value: patternPart.value,
       });
-    }
-    const part = pattern.slice(beginIndex + 1, endIndex);
-    if (!(part in placeables)) {
-      throw new Error(`Missing key ${part} from placeables`);
-    }
-    const subst = placeables[part];
-    if (Array.isArray(subst)) {
-      for (const s of subst) {
-        result.push(s);
-      }
     } else {
-      result.push(subst);
+      invariant(part in placeables, `${part} is missing from placables`);
+      const subst = placeables[part];
+      if (Array.isArray(subst)) {
+        result.push(...subst);
+      } else {
+        result.push(subst);
+      }
     }
-    nextIndex = endIndex + 1;
-    beginIndex = pattern.indexOf('{', nextIndex);
-  }
-  if (nextIndex < pattern.length) {
-    const literal = pattern.slice(nextIndex, pattern.length);
-    result.push({type: 'literal', value: literal});
   }
   return result;
 }
