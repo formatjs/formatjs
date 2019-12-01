@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.8.0](https://github.com/formatjs/react-intl/compare/v3.7.0...v3.8.0) (2019-12-01)
+
+
+### Features
+
+* Upgrade intl-messageformat-parser ([c12c99d](https://github.com/formatjs/react-intl/commit/c12c99dfdd8dfabf3d0103ce3c02e35b22d03be6))
+
 ## [3.7.0](https://github.com/formatjs/react-intl/compare/v3.6.2...v3.7.0) (2019-11-25)
 
 
