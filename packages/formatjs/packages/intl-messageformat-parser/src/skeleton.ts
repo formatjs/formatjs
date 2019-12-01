@@ -1,3 +1,5 @@
+import {NumberSkeletonToken} from './types';
+
 /**
  * https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
  * Credit: https://github.com/caridy/intl-datetimeformat-pattern/blob/master/index.js
@@ -140,5 +142,105 @@ export function parseDateTimeSkeleton(
     }
     return '';
   });
+  return result;
+}
+
+const FRACTION_PRECISION_REGEX = /^\.(?:(0+)(\+|#+)?)?$/g;
+const SIGNIFICANT_PRECISION_REGEX = /^(@+)?(\+|#+)?$/g;
+
+function parseSignificantPrecision(str: string): Intl.NumberFormatOptions {
+  const result: Intl.NumberFormatOptions = {};
+  str.replace(SIGNIFICANT_PRECISION_REGEX, function(
+    _: string,
+    g1: string,
+    g2: string | number
+  ) {
+    // @@@ case
+    if (typeof g2 !== 'string') {
+      result.minimumSignificantDigits = g1.length;
+      result.maximumSignificantDigits = g1.length;
+    }
+    // @@@+ case
+    else if (g2 === '+') {
+      result.minimumSignificantDigits = g1.length;
+    }
+    // .### case
+    else if (g1[0] === '#') {
+      result.maximumSignificantDigits = g1.length;
+    }
+    // .@@## or .@@@ case
+    else {
+      result.minimumSignificantDigits = g1.length;
+      result.maximumSignificantDigits =
+        g1.length + (typeof g2 === 'string' ? g2.length : 0);
+    }
+    return '';
+  });
+  return result;
+}
+/**
+ * https://github.com/unicode-org/icu/blob/master/docs/userguide/format_parse/numbers/skeletons.md#skeleton-stems-and-options
+ */
+export function convertNumberSkeletonToNumberFormatOptions(
+  tokens: NumberSkeletonToken[]
+): Intl.NumberFormatOptions {
+  let result: Intl.NumberFormatOptions = {};
+  for (const token of tokens) {
+    switch (token.stem) {
+      case 'percent':
+        result.style = 'percent';
+        continue;
+      case 'currency':
+        result.style = 'currency';
+        result.currency = token.options[0];
+        continue;
+      case 'group-off':
+        result.useGrouping = false;
+        continue;
+      // `precision-integer`
+      case 'precision-integer':
+        result.maximumFractionDigits = 0;
+        continue;
+    }
+    // Precision
+    // https://github.com/unicode-org/icu/blob/master/docs/userguide/format_parse/numbers/skeletons.md#fraction-precision
+    if (FRACTION_PRECISION_REGEX.test(token.stem)) {
+      if (token.options.length > 1) {
+        throw new RangeError(
+          'Fraction-precision stems only accept a single optional option'
+        );
+      }
+      token.stem.replace(FRACTION_PRECISION_REGEX, function(
+        match: string,
+        g1: string,
+        g2: string | number
+      ) {
+        // precision-integer case
+        if (match === '.') {
+          result.maximumFractionDigits = 0;
+        }
+        // .000+ case
+        else if (g2 === '+') {
+          result.minimumFractionDigits = g2.length;
+        }
+        // .### case
+        else if (g1[0] === '#') {
+          result.maximumFractionDigits = g1.length;
+        }
+        // .00## or .000 case
+        else {
+          result.minimumFractionDigits = g1.length;
+          result.maximumFractionDigits =
+            g1.length + (typeof g2 === 'string' ? g2.length : 0);
+        }
+        return '';
+      });
+      if (token.options.length) {
+        result = {...result, ...parseSignificantPrecision(token.options[0])};
+      }
+    } else if (SIGNIFICANT_PRECISION_REGEX.test(token.stem)) {
+      result = {...result, ...parseSignificantPrecision(token.stem)};
+    }
+  }
   return result;
 }

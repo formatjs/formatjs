@@ -1,5 +1,63 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "currency/CAD ." 1`] = `
+Object {
+  "currency": "CAD",
+  "maximumFractionDigits": 0,
+  "style": "currency",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "currency/GBP .0+/@@@" 1`] = `
+Object {
+  "currency": "GBP",
+  "maximumSignificantDigits": 3,
+  "minimumFractionDigits": 1,
+  "minimumSignificantDigits": 3,
+  "style": "currency",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "currency/GBP .00##/@@@" 1`] = `
+Object {
+  "currency": "GBP",
+  "maximumFractionDigits": 4,
+  "maximumSignificantDigits": 3,
+  "minimumFractionDigits": 2,
+  "minimumSignificantDigits": 3,
+  "style": "currency",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "percent .00/@##" 1`] = `
+Object {
+  "maximumFractionDigits": 2,
+  "maximumSignificantDigits": 3,
+  "minimumFractionDigits": 2,
+  "minimumSignificantDigits": 1,
+  "style": "percent",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "percent .00/@@@" 1`] = `
+Object {
+  "maximumFractionDigits": 2,
+  "maximumSignificantDigits": 3,
+  "minimumFractionDigits": 2,
+  "minimumSignificantDigits": 3,
+  "style": "percent",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "percent .00/@@@@+" 1`] = `
+Object {
+  "maximumFractionDigits": 2,
+  "minimumFractionDigits": 2,
+  "minimumSignificantDigits": 4,
+  "style": "percent",
+}
+`;
+
 exports[`case: "@@#" 1`] = `
 Array [
   Object {
