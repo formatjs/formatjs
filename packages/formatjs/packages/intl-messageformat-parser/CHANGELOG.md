@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.3.1...intl-messageformat-parser@3.4.0) (2019-12-01)
+
+
+### Features
+
+* **intl-messageformat-parser:** add parsing support for notation, signDisplay, currencyDisplay ([eaa0039](https://github.com/formatjs/formatjs/commit/eaa0039c90533b09b0c03aa9dc9cd8c605405dba))
+* **intl-messageformat-parser:** add preliminary support for number skeleton ([e993e43](https://github.com/formatjs/formatjs/commit/e993e4387c522fd271996da79e99d2f85fd85b5f))
+
+
+
+
+
 ## [3.3.1](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.3.0...intl-messageformat-parser@3.3.1) (2019-11-26)
 
 **Note:** Version bump only for package intl-messageformat-parser

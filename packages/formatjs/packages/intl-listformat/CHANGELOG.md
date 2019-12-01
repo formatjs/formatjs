@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@1.2.7...@formatjs/intl-listformat@1.3.0) (2019-12-01)
+
+
+### Features
+
+* **@formatjs/intl-utils:** add PartitionPattern abstract operation ([#317](https://github.com/formatjs/formatjs/issues/317)) ([5731fcf](https://github.com/formatjs/formatjs/commit/5731fcfeaaba65322f904e863faead8d1f177a98))
+
+
+
+
+
 ## [1.2.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@1.2.6...@formatjs/intl-listformat@1.2.7) (2019-11-26)
 
 **Note:** Version bump only for package @formatjs/intl-listformat

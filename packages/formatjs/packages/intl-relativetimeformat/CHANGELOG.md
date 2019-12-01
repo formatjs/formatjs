@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.4.6...@formatjs/intl-relativetimeformat@4.5.0) (2019-12-01)
+
+
+### Features
+
+* **@formatjs/intl-utils:** add PartitionPattern abstract operation ([#317](https://github.com/formatjs/formatjs/issues/317)) ([5731fcf](https://github.com/formatjs/formatjs/commit/5731fcfeaaba65322f904e863faead8d1f177a98))
+
+
+
+
+
 ## [4.4.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.4.5...@formatjs/intl-relativetimeformat@4.4.6) (2019-11-26)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat
