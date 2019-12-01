@@ -642,7 +642,7 @@ Hello, Eric!
   description="Greeting to welcome the user to the app"
   defaultMessage="Hello, <b>Eric</b> {icon}"
   values={{
-    b: msg => <b>{msg}</b>,
+    b: (...chunks) => <b>{chunks}</b>,
     icon: <svg />,
   }}
 />
@@ -658,15 +658,17 @@ By allowing embedding XML tag we want to make sure contextual information is not
 <FormattedMessage
   defaultMessage="To buy a shoe, <a>visit our website</a> and <cta>buy a shoe</cta>"
   values={{
-    a: msg => (
+    a: (...chunks) => (
       <a class="external_link" target="_blank" href="https://www.shoe.com/">
-        {msg}
+        {chunks}
       </a>
     ),
-    cta: msg => <strong class="important">{msg}</strong>,
+    cta: (...chunks) => <strong class="important">{chunks}</strong>,
   }}
 />
 ```
+
+**IMPORTANT**: The render function for each rich tag takes in a spread of `chunks` instead of a single argument. The reason behind this is that `chunks` can contain both `string` & `ReactElement` so we cannot merge them into a single argument like string concatination.
 
 **Function as the child**
 Since rich text formatting allows embedding `ReactElement`, in function as the child scenario, function will receive a spread of chunks instead of a single message
@@ -675,12 +677,12 @@ Since rich text formatting allows embedding `ReactElement`, in function as the c
 <FormattedMessage
   defaultMessage="To buy a shoe, <a>visit our website</a> and <cta>buy a shoe</cta>"
   values={{
-    a: msg => (
+    a: (...chunks) => (
       <a class="external_link" target="_blank" href="https://www.shoe.com/">
-        {msg}
+        {chunks}
       </a>
     ),
-    cta: msg => <strong class="important">{msg}</strong>,
+    cta: (...chunks) => <strong class="important">{chunks}</strong>,
   }}
 >
   {(...chunks) => <span>{chunks}</span>}
