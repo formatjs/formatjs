@@ -1,13 +1,15 @@
 import {
+  convertNumberSkeletonToNumberFormatOptions,
   isArgumentElement,
-  MessageFormatElement,
-  isLiteralElement,
   isDateElement,
-  isTimeElement,
-  isNumberElement,
-  isSelectElement,
-  isPluralElement,
   isDateTimeSkeleton,
+  isLiteralElement,
+  isNumberElement,
+  isNumberSkeleton,
+  isPluralElement,
+  isSelectElement,
+  isTimeElement,
+  MessageFormatElement,
   parseDateTimeSkeleton,
 } from 'intl-messageformat-parser';
 
@@ -182,7 +184,11 @@ export function formatToParts(
     }
     if (isNumberElement(el)) {
       const style =
-        typeof el.style === 'string' ? formats.number[el.style] : undefined;
+        typeof el.style === 'string'
+          ? formats.number[el.style]
+          : isNumberSkeleton(el.style)
+          ? convertNumberSkeletonToNumberFormatOptions(el.style.tokens)
+          : undefined;
       result.push({
         type: PART_TYPE.literal,
         value: formatters

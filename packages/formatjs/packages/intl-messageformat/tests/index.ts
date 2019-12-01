@@ -790,6 +790,21 @@ describe('IntlMessageFormat', function() {
     );
   });
 
+  describe('number skeleton', function() {
+    expect(
+      new IntlMessageFormat(
+        '{amount, number, ::currency/CAD .0 group-off}',
+        'en-US'
+      ).format({amount: 123456.78})
+    ).to.equal('CA$123456.8');
+    expect(
+      new IntlMessageFormat(
+        '{amount, number, ::currency/GBP .0#}',
+        'en-US'
+      ).format({amount: 123456.789})
+    ).to.equal('£123,456.79');
+  });
+
   describe('formatToParts', function() {
     it('should be able to take React Element', function() {
       const element = {};
