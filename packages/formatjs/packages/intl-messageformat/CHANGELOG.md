@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.7.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.6.2...intl-messageformat@7.7.0) (2019-12-01)
+
+
+### Features
+
+* **intl-messageformat:** Integrate parser's number skeleton ([c4ec029](https://github.com/formatjs/formatjs/commit/c4ec029322de34477997531ae8e9bb937cb0d52d))
+
+
+
+
+
 ## [7.6.2](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.6.1...intl-messageformat@7.6.2) (2019-12-01)
 
 **Note:** Version bump only for package intl-messageformat
