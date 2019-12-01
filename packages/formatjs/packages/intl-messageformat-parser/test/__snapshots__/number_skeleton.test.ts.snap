@@ -1,5 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "compact-long" 1`] = `
+Object {
+  "compactDisplay": "long",
+  "notation": "compact",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "compact-short" 1`] = `
+Object {
+  "compactDisplay": "short",
+  "notation": "compact",
+}
+`;
+
 exports[`[convertNumberSkeletonToNumberFormatOptions] case: "currency/CAD ." 1`] = `
 Object {
   "currency": "CAD",
@@ -29,6 +43,36 @@ Object {
 }
 `;
 
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "engineering" 1`] = `
+Object {
+  "notation": "engineering",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "engineering/sign-except-zero" 1`] = `
+Object {
+  "notation": "engineering",
+  "signDisplay": "exceptZero",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "measure-unit/length-meter .00##/@@@" 1`] = `
+Object {
+  "maximumFractionDigits": 4,
+  "maximumSignificantDigits": 3,
+  "minimumFractionDigits": 2,
+  "minimumSignificantDigits": 3,
+  "style": "unit",
+  "unit": "meter",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "notation-simple" 1`] = `
+Object {
+  "notation": "standard",
+}
+`;
+
 exports[`[convertNumberSkeletonToNumberFormatOptions] case: "percent .00/@##" 1`] = `
 Object {
   "maximumFractionDigits": 2,
@@ -55,6 +99,70 @@ Object {
   "minimumFractionDigits": 2,
   "minimumSignificantDigits": 4,
   "style": "percent",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "scientific" 1`] = `
+Object {
+  "notation": "scientific",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "scientific/+ee/sign-always" 1`] = `
+Object {
+  "notation": "scientific",
+  "signDisplay": "always",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "scientific/sign-always" 1`] = `
+Object {
+  "notation": "scientific",
+  "signDisplay": "always",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "sign-accounting" 1`] = `
+Object {
+  "currencySign": "accounting",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "sign-accounting-always" 1`] = `
+Object {
+  "currencySign": "accounting",
+  "signDisplay": "always",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "sign-accounting-except-zero" 1`] = `
+Object {
+  "currencySign": "accounting",
+  "signDisplay": "exceptZero",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "sign-always" 1`] = `
+Object {
+  "signDisplay": "always",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "sign-auto" 1`] = `
+Object {
+  "signDisplay": "auto",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "sign-except-zero" 1`] = `
+Object {
+  "signDisplay": "exceptZero",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "sign-never" 1`] = `
+Object {
+  "signDisplay": "never",
 }
 `;
 

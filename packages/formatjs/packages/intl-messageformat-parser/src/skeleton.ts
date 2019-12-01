@@ -1,4 +1,5 @@
 import {NumberSkeletonToken} from './types';
+import {UnifiedNumberFormatOptions} from '@formatjs/intl-unified-numberformat';
 
 /**
  * https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
@@ -145,11 +146,15 @@ export function parseDateTimeSkeleton(
   return result;
 }
 
+function icuUnitToEcma(unit: string): UnifiedNumberFormatOptions['unit'] {
+  return unit.replace(/^(.*?)-/, '') as UnifiedNumberFormatOptions['unit'];
+}
+
 const FRACTION_PRECISION_REGEX = /^\.(?:(0+)(\+|#+)?)?$/g;
 const SIGNIFICANT_PRECISION_REGEX = /^(@+)?(\+|#+)?$/g;
 
-function parseSignificantPrecision(str: string): Intl.NumberFormatOptions {
-  const result: Intl.NumberFormatOptions = {};
+function parseSignificantPrecision(str: string): UnifiedNumberFormatOptions {
+  const result: UnifiedNumberFormatOptions = {};
   str.replace(SIGNIFICANT_PRECISION_REGEX, function(
     _: string,
     g1: string,
@@ -178,13 +183,58 @@ function parseSignificantPrecision(str: string): Intl.NumberFormatOptions {
   });
   return result;
 }
+
+function parseSign(str: string): UnifiedNumberFormatOptions | undefined {
+  switch (str) {
+    case 'sign-auto':
+      return {
+        signDisplay: 'auto',
+      };
+    case 'sign-accounting':
+      return {
+        currencySign: 'accounting',
+      };
+    case 'sign-always':
+      return {
+        signDisplay: 'always',
+      };
+    case 'sign-accounting-always':
+      return {
+        signDisplay: 'always',
+        currencySign: 'accounting',
+      };
+    case 'sign-except-zero':
+      return {
+        signDisplay: 'exceptZero',
+      };
+    case 'sign-accounting-except-zero':
+      return {
+        signDisplay: 'exceptZero',
+        currencySign: 'accounting',
+      };
+    case 'sign-never':
+      return {
+        signDisplay: 'never',
+      };
+  }
+}
+
+function parseNotationOptions(opt: string): UnifiedNumberFormatOptions {
+  const result: UnifiedNumberFormatOptions = {};
+  const signOpts = parseSign(opt);
+  if (signOpts) {
+    return signOpts;
+  }
+  return result;
+}
+
 /**
  * https://github.com/unicode-org/icu/blob/master/docs/userguide/format_parse/numbers/skeletons.md#skeleton-stems-and-options
  */
 export function convertNumberSkeletonToNumberFormatOptions(
   tokens: NumberSkeletonToken[]
-): Intl.NumberFormatOptions {
-  let result: Intl.NumberFormatOptions = {};
+): UnifiedNumberFormatOptions {
+  let result: UnifiedNumberFormatOptions = {};
   for (const token of tokens) {
     switch (token.stem) {
       case 'percent':
@@ -197,9 +247,43 @@ export function convertNumberSkeletonToNumberFormatOptions(
       case 'group-off':
         result.useGrouping = false;
         continue;
-      // `precision-integer`
       case 'precision-integer':
         result.maximumFractionDigits = 0;
+        continue;
+      case 'measure-unit':
+        result.style = 'unit';
+        result.unit = icuUnitToEcma(token.options[0]);
+        continue;
+      case 'compact-short':
+        result.notation = 'compact';
+        result.compactDisplay = 'short';
+        continue;
+      case 'compact-long':
+        result.notation = 'compact';
+        result.compactDisplay = 'long';
+        continue;
+      case 'scientific':
+        result = {
+          ...result,
+          notation: 'scientific',
+          ...token.options.reduce(
+            (all, opt) => ({...all, ...parseNotationOptions(opt)}),
+            {}
+          ),
+        };
+        continue;
+      case 'engineering':
+        result = {
+          ...result,
+          notation: 'engineering',
+          ...token.options.reduce(
+            (all, opt) => ({...all, ...parseNotationOptions(opt)}),
+            {}
+          ),
+        };
+        continue;
+      case 'notation-simple':
+        result.notation = 'standard';
         continue;
     }
     // Precision
@@ -238,8 +322,15 @@ export function convertNumberSkeletonToNumberFormatOptions(
       if (token.options.length) {
         result = {...result, ...parseSignificantPrecision(token.options[0])};
       }
-    } else if (SIGNIFICANT_PRECISION_REGEX.test(token.stem)) {
+      continue;
+    }
+    if (SIGNIFICANT_PRECISION_REGEX.test(token.stem)) {
       result = {...result, ...parseSignificantPrecision(token.stem)};
+      continue;
+    }
+    const signOpts = parseSign(token.stem);
+    if (signOpts) {
+      result = {...result, ...signOpts};
     }
   }
   return result;

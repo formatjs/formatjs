@@ -20,6 +20,22 @@ test.each([
   'currency/CAD .',
   'currency/GBP .0+/@@@',
   'currency/GBP .00##/@@@',
+  'measure-unit/length-meter .00##/@@@',
+  'compact-short',
+  'compact-long',
+  'scientific',
+  'scientific/sign-always',
+  'scientific/+ee/sign-always',
+  'engineering',
+  'engineering/sign-except-zero',
+  'notation-simple',
+  'sign-auto',
+  'sign-always',
+  'sign-never',
+  'sign-accounting',
+  'sign-accounting-always',
+  'sign-except-zero',
+  'sign-accounting-except-zero',
 ])('[convertNumberSkeletonToNumberFormatOptions] case: %p', skeleton => {
   const ast = pegParse(`{0, number, ::${skeleton}}`);
   const el = ast[0];
