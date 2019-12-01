@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. See [standa
 ### Features
 
 * Upgrade intl-messageformat-parser ([c12c99d](https://github.com/formatjs/react-intl/commit/c12c99dfdd8dfabf3d0103ce3c02e35b22d03be6))
+
 Following our previous release with preliminary DateTimeFormat's
 skeleton parser, this release comes with a subset of ICU NumberFormat's
 skeleton parser. The full feature set can be found [here](unicode-org/icu:docs/userguide/format_parse/numbers/skeletons.md@master).
@@ -21,6 +22,7 @@ NumberFormat in your messages like `{amount, number, ::currency/CAD .00}`
 ### Features
 
 * Introduce support for DateTime skeleton ([568d013](https://github.com/formatjs/react-intl/commit/568d01342299135e9b049f9d4014193315fac41e))
+
 This bumps the version of `intl-messageformat`, thus introducing a
 subset of
 [DateTime Skeleton](https://github.com/formatjs/formatjs/tree/master/packages/intl-messageformat-parser#supported-datetime-skeleton)
