@@ -285,6 +285,22 @@ export function convertNumberSkeletonToNumberFormatOptions(
       case 'notation-simple':
         result.notation = 'standard';
         continue;
+      // https://github.com/unicode-org/icu/blob/master/icu4c/source/i18n/unicode/unumberformatter.h
+      case 'unit-width-narrow':
+        result.currencyDisplay = 'narrowSymbol';
+        result.unitDisplay = 'narrow';
+        continue;
+      case 'unit-width-short':
+        result.currencyDisplay = 'code';
+        result.unitDisplay = 'short';
+        continue;
+      case 'unit-width-full-name':
+        result.currencyDisplay = 'name';
+        result.unitDisplay = 'long';
+        continue;
+      case 'unit-width-iso-code':
+        result.currencyDisplay = 'symbol';
+        continue;
     }
     // Precision
     // https://github.com/unicode-org/icu/blob/master/docs/userguide/format_parse/numbers/skeletons.md#fraction-precision

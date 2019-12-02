@@ -32,6 +32,19 @@ Object {
 }
 `;
 
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "currency/GBP .00##/@@@ unit-width-full-name" 1`] = `
+Object {
+  "currency": "GBP",
+  "currencyDisplay": "name",
+  "maximumFractionDigits": 4,
+  "maximumSignificantDigits": 3,
+  "minimumFractionDigits": 2,
+  "minimumSignificantDigits": 3,
+  "style": "currency",
+  "unitDisplay": "long",
+}
+`;
+
 exports[`[convertNumberSkeletonToNumberFormatOptions] case: "currency/GBP .00##/@@@" 1`] = `
 Object {
   "currency": "GBP",
@@ -53,6 +66,19 @@ exports[`[convertNumberSkeletonToNumberFormatOptions] case: "engineering/sign-ex
 Object {
   "notation": "engineering",
   "signDisplay": "exceptZero",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "measure-unit/length-meter .00##/@@@ unit-width-full-name" 1`] = `
+Object {
+  "currencyDisplay": "name",
+  "maximumFractionDigits": 4,
+  "maximumSignificantDigits": 3,
+  "minimumFractionDigits": 2,
+  "minimumSignificantDigits": 3,
+  "style": "unit",
+  "unit": "meter",
+  "unitDisplay": "long",
 }
 `;
 
