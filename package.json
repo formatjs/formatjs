@@ -19,7 +19,8 @@
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "files": [
     "dist",
-    "lib"
+    "lib",
+    "src"
   ],
   "contributors": [
     "Aarni Koskela <akx@iki.fi>",
