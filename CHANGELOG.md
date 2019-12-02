@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.9.1](https://github.com/formatjs/react-intl/compare/v3.9.0...v3.9.1) (2019-12-02)
+
+
+### Bug Fixes
+
+* Add src to packaged tar for sourcemap ([bce9bc7](https://github.com/formatjs/react-intl/commit/bce9bc7f6e014ec5ac1d67aa5daedc9214b75297))
+
 ## [3.9.0](https://github.com/formatjs/react-intl/compare/v3.8.0...v3.9.0) (2019-12-02)
 
 
