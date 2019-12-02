@@ -61,40 +61,24 @@ interface UnifiedNumberFormatInternal {
   notation?: 'compact';
   compactDisplay?: 'short' | 'long';
   signDisplay?: 'auto' | 'always' | 'never' | 'exceptZero';
+  currencyDisplay?: 'code' | 'symbol' | 'narrowSymbol' | 'name';
 }
 
 export class UnifiedNumberFormat implements Intl.NumberFormat {
   private nf: Intl.NumberFormat;
   private pl: Intl.PluralRules;
-  private patternData?: UnitData;
+  private unitPattern?: UnitData;
+  private currencyNarrowSymbol?: string;
   constructor(
     locales?: string | string[],
     options: UnifiedNumberFormatOptions = {}
   ) {
     options = options === undefined ? Object.create(null) : toObject(options);
-    const {style, unit, unitDisplay, ...coreOpts} = options;
-    if (style === 'unit') {
-      if (!unit) {
-        throw new TypeError('Unit is required for `style: unit`');
-      }
-      setInternalSlot(
-        UnifiedNumberFormat.__INTERNAL_SLOT_MAP__,
-        this,
-        'unit',
-        unit
-      );
-      setInternalSlot(
-        UnifiedNumberFormat.__INTERNAL_SLOT_MAP__,
-        this,
-        'unitDisplay',
-        getOption(
-          options,
-          'unitDisplay',
-          'string',
-          ['long', 'short', 'narrow'],
-          'short'
-        )!
-      );
+    const {style, unit, unitDisplay, currencyDisplay, ...coreOpts} = options;
+    const isUnit = style === 'unit';
+    const isNarrow = style === 'currency' && currencyDisplay === 'narrowSymbol';
+
+    if (isUnit || isNarrow) {
       const requestedLocales = getCanonicalLocales(locales);
       const opt: any = Object.create(null);
       const matcher = getOption(
@@ -119,10 +103,53 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
         'locale',
         r.locale
       );
-      this.patternData = localeData[r.locale][unit];
+      const formatterData = localeData[r.locale];
+
+      if (isUnit) {
+        if (!unit) {
+          throw new TypeError('Unit is required for `style: unit`');
+        }
+        setInternalSlot(
+          UnifiedNumberFormat.__INTERNAL_SLOT_MAP__,
+          this,
+          'unit',
+          unit
+        );
+        setInternalSlot(
+          UnifiedNumberFormat.__INTERNAL_SLOT_MAP__,
+          this,
+          'unitDisplay',
+          getOption(
+            options,
+            'unitDisplay',
+            'string',
+            ['long', 'short', 'narrow'],
+            'short'
+          )!
+        );
+        this.unitPattern = formatterData.units![unit];
+      } else if (isNarrow) {
+        if (!options.currency) {
+          throw new TypeError('Currency code is required with currency style.');
+        }
+        setInternalSlot(
+          UnifiedNumberFormat.__INTERNAL_SLOT_MAP__,
+          this,
+          'currencyDisplay',
+          currencyDisplay
+        );
+        this.currencyNarrowSymbol = formatterData.currencies![
+          options.currency
+        ]?.narrowSymbol;
+      }
     }
+
     this.nf = new NativeNumberFormat(locales, {
       ...coreOpts,
+      // If the implementation does not have such a representation of currency,
+      // use the currency code as fallback.
+      currencyDisplay:
+        currencyDisplay === 'narrowSymbol' ? 'symbol' : currencyDisplay,
       style: style === 'unit' ? 'decimal' : style,
     });
     setInternalSlot(
@@ -135,15 +162,18 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
   }
 
   format(num: number) {
-    const formattedNum = this.nf.format(num);
-    if (this.patternData) {
+    const formattedNum = this.formatToParts(num)
+      .map(x => x.value)
+      .join('');
+    // TODO: support unit in formatToParts.
+    if (this.unitPattern) {
       const unitDisplay = getInternalSlot(
         UnifiedNumberFormat.__INTERNAL_SLOT_MAP__,
         this,
         'unitDisplay'
       );
       const pl = this.pl.select(num);
-      const pattern = this.patternData[unitDisplay as 'long'][
+      const pattern = this.unitPattern[unitDisplay as 'long'][
         pl === 'one' ? 'one' : 'other'
       ]!;
       return pattern.replace('{0}', formattedNum);
@@ -152,7 +182,26 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
   }
 
   formatToParts(num: number) {
-    return this.nf.formatToParts(num);
+    const parts = this.nf.formatToParts(num);
+    const currencyDisplay = getInternalSlot(
+      UnifiedNumberFormat.__INTERNAL_SLOT_MAP__,
+      this,
+      'currencyDisplay'
+    );
+    // Replace 'currency' token with the narrowSymbol counterparts.
+    if (
+      this.currencyNarrowSymbol &&
+      currencyDisplay === 'narrowSymbol' &&
+      this.nf.resolvedOptions().style === 'currency'
+    ) {
+      for (let i = 0; i < parts.length; i++) {
+        if (parts[i].type === 'currency') {
+          parts[i].value = this.currencyNarrowSymbol;
+          break;
+        }
+      }
+    }
+    return parts;
   }
 
   resolvedOptions() {
@@ -162,6 +211,14 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
       this,
       'unit'
     );
+    const currencyDisplay = getInternalSlot(
+      UnifiedNumberFormat.__INTERNAL_SLOT_MAP__,
+      this,
+      'currencyDisplay'
+    );
+    if (ro.style === 'currency' && currencyDisplay === 'narrowSymbol') {
+      ro.currencyDisplay = 'narrowSymbol';
+    }
     if (unit) {
       ro.style = 'unit';
       ro.unit = unit as 'megabit';
@@ -199,7 +256,14 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
       );
       availableLocales.forEach(locale => {
         try {
-          UnifiedNumberFormat.localeData[locale] = unpackData(locale, datum);
+          UnifiedNumberFormat.localeData[locale] = unpackData(
+            locale,
+            datum,
+            (all, d) => ({
+              currencies: {...all.currencies, ...d.currencies},
+              units: {...all.units, ...d.units},
+            })
+          );
         } catch (e) {
           // If we can't unpack this data, ignore the locale
         }
@@ -213,7 +277,7 @@ export class UnifiedNumberFormat implements Intl.NumberFormat {
         UnifiedNumberFormat.availableLocales[0];
     }
   }
-  static localeData: Record<string, Record<string, UnitData>> = {};
+  static localeData: UnifiedNumberFormatLocaleData['data'] = {};
   private static availableLocales: string[] = [];
   private static __defaultLocale = 'en';
   private static getDefaultLocale() {

@@ -9,9 +9,12 @@ import extractRelativeFields, {
 import extractUnits, {
   getAllLocales as getAllUnitsLocales,
 } from './extract-units';
-import extracListPatterns, {
+import extractListPatterns, {
   getAllLocales as getAllListLocales,
 } from './extract-list';
+import extractCurrencies, {
+  getAllLocales as getAllCurrenciesLocales,
+} from './extract-currencies';
 
 export interface Opts {
   locales?: string[];
@@ -32,7 +35,13 @@ export function extractAllUnits(options: Opts = {}) {
 export function extractAllListPatterns(options: Opts = {}) {
   // Default to all CLDR locales if none have been provided.
   const locales = options.locales || getAllListLocales();
-  return extracListPatterns(locales);
+  return extractListPatterns(locales);
+}
+
+export function extractAllCurrencies(options: Opts = {}) {
+  // Default to all CLDR locales if none have been provided.
+  const locales = options.locales || getAllCurrenciesLocales();
+  return extractCurrencies(locales);
 }
 
 export {getAllLanguages} from './locales';
@@ -41,3 +50,4 @@ export const processAliases = process;
 export {getAllLocales as getAllDateFieldsLocales} from './extract-relative';
 export {getAllLocales as getAllListLocales} from './extract-list';
 export {getAllLocales as getAllUnitsLocales} from './extract-units';
+export {getAllLocales as getAllCurrenciesLocales} from './extract-currencies';

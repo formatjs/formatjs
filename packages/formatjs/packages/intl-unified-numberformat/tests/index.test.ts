@@ -66,10 +66,43 @@ function test() {
       }).formatToParts(1000)
     ).toEqual('1,000 bit');
   });
+  it("supports currencyDisplay: 'narrowSymbol'", () => {
+    expect(
+      new UnifiedNumberFormat('zh-CN', {
+        style: 'currency',
+        currency: 'AUD',
+        currencyDisplay: 'narrowSymbol',
+      }).format(-1000)
+    ).toEqual('-$1,000.00');
+    expect(
+      new UnifiedNumberFormat('zh-CN', {
+        style: 'currency',
+        currency: 'AUD',
+        currencyDisplay: 'narrowSymbol',
+      }).formatToParts(-1000)
+    ).toEqual([
+      {type: 'minusSign', value: '-'},
+      {type: 'currency', value: '$'},
+      {type: 'integer', value: '1'},
+      {type: 'group', value: ','},
+      {type: 'integer', value: '000'},
+      {type: 'decimal', value: '.'},
+      {type: 'fraction', value: '00'},
+    ]);
+    // Fallback to ISO currency code if narrowSymbol is not available.
+    expect(
+      new UnifiedNumberFormat('zh-CN', {
+        style: 'currency',
+        currency: 'ZWD',
+        currencyDisplay: 'narrowSymbol',
+      }).format(-1000)
+    ).toEqual('-ZWD 1,000');
+  });
 }
 
-if (process.version.startsWith('v12')) {
-  describe.skip('UnifiedNumberFormat', test);
-} else {
+// Node v8 does not have formatToParts and v12 has native NumberFormat.
+if (process.version.startsWith('v10')) {
   describe('UnifiedNumberFormat', test);
+} else {
+  describe.skip('UnifiedNumberFormat', test);
 }

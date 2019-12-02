@@ -314,7 +314,9 @@ export function isMissingLocaleDataError(
 
 export function unpackData<T extends Record<string, any>>(
   locale: string,
-  localeData: LocaleData<T>
+  localeData: LocaleData<T>,
+  /** By default shallow merge the dictionaries. */
+  reducer: (all: T, d: T) => T = (all, d) => ({...all, ...d})
 ): T {
   const localeHierarchy = getLocaleHierarchy(
     locale,
@@ -332,11 +334,5 @@ export function unpackData<T extends Record<string, any>>(
     );
   }
   dataToMerge.reverse();
-  return dataToMerge.reduce(
-    (all, d) => ({
-      ...all,
-      ...d,
-    }),
-    {} as T
-  );
+  return dataToMerge.reduce(reducer, {} as T);
 }
