@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.9.0](https://github.com/formatjs/react-intl/compare/v3.8.0...v3.9.0) (2019-12-02)
+
+
+### Features
+
+* Upgrade intl-messageformat-parser with support for unit-width in skeleton ([4b8f09f](https://github.com/formatjs/react-intl/commit/4b8f09f567ea09c5f5b576113ed963523832f942))
+
 ## [3.8.0](https://github.com/formatjs/react-intl/compare/v3.7.0...v3.8.0) (2019-12-01)
 
 
