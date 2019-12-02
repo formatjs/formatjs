@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.5.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.4.0...intl-messageformat-parser@3.5.0) (2019-12-02)
+
+
+### Features
+
+* **intl-messageformat-parser:** add support for unit-width ([dc4a054](https://github.com/formatjs/formatjs/commit/dc4a0547115e59198439579aadc3180b6953664d))
+
+
+
+
+
 # [3.4.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.3.1...intl-messageformat-parser@3.4.0) (2019-12-01)
 
 

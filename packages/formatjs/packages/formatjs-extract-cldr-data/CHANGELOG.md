@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.10.0](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.9.8...formatjs-extract-cldr-data@9.10.0) (2019-12-02)
+
+
+### Features
+
+* **@formatjs/intl-unified-numberformat:** add currencyDisplay… ([#332](https://github.com/formatjs/formatjs/issues/332)) ([0cf8629](https://github.com/formatjs/formatjs/commit/0cf862992cae62a162d6935797ffd7c0848cf3ea))
+
+
+
+
+
 ## [9.9.8](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.9.7...formatjs-extract-cldr-data@9.9.8) (2019-12-01)
 
 **Note:** Version bump only for package formatjs-extract-cldr-data

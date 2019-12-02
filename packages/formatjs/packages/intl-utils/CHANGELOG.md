@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@1.5.0...@formatjs/intl-utils@1.6.0) (2019-12-02)
+
+
+### Features
+
+* **@formatjs/intl-unified-numberformat:** add currencyDisplay… ([#332](https://github.com/formatjs/formatjs/issues/332)) ([0cf8629](https://github.com/formatjs/formatjs/commit/0cf862992cae62a162d6935797ffd7c0848cf3ea))
+
+
+
+
+
 # [1.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@1.4.4...@formatjs/intl-utils@1.5.0) (2019-12-01)
 
 

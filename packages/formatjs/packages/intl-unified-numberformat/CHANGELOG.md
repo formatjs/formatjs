@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@2.1.8...@formatjs/intl-unified-numberformat@2.2.0) (2019-12-02)
+
+
+### Features
+
+* **@formatjs/intl-unified-numberformat:** add currencyDisplay… ([#332](https://github.com/formatjs/formatjs/issues/332)) ([0cf8629](https://github.com/formatjs/formatjs/commit/0cf862992cae62a162d6935797ffd7c0848cf3ea))
+
+
+
+
+
 ## [2.1.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@2.1.7...@formatjs/intl-unified-numberformat@2.1.8) (2019-12-01)
 
 **Note:** Version bump only for package @formatjs/intl-unified-numberformat
