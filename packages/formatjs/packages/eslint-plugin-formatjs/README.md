@@ -172,29 +172,6 @@ const messages = defineMessages({
 });
 ```
 
-### `no-camel-case`
-
-This make sure placeholders are not camel-case.
-
-#### Why
-
-- This is to prevent case-sensitivity issue in certain translation vendors.
-
-```tsx
-import {defineMessages} from 'react-intl';
-
-const messages = defineMessages({
-  // WORKS
-  foo: {
-    defaultMessage: 'foo {snake_case} {nothing}',
-  },
-  // FAILS
-  bar: {
-    defaultMessage: 'foo {camelCase}',
-  },
-});
-```
-
 ### `enforce-plural-rules`
 
 Enforce certain plural rules to always be specified/forbidden in a message.
