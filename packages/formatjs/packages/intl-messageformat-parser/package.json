@@ -45,7 +45,7 @@
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
   },
-  "devDependencies": {
+  "dependencies": {
     "@formatjs/intl-unified-numberformat": "^2.2.0"
   },
   "homepage": "https://github.com/formatjs/formatjs",
