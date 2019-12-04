@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.1](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.5.0...intl-messageformat-parser@3.5.1) (2019-12-04)
+
+
+### Bug Fixes
+
+* **intl-messageformat-parser:** specify intl-unified-numberformat as dependency ([#351](https://github.com/formatjs/formatjs/issues/351)) ([e886b61](https://github.com/formatjs/formatjs/commit/e886b61f8c0eccb06eb4c168f2a01b4e6b41a23a))
+
+
+
+
+
 # [3.5.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.4.0...intl-messageformat-parser@3.5.0) (2019-12-02)
 
 
