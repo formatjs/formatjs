@@ -22,5 +22,6 @@ export * from './relative-time-types';
 export * from './unified-numberformat-types';
 export * from './list-types';
 export * from './plural-rules-types';
+export * from './number-types';
 export {getCanonicalLocales} from './get-canonical-locales';
 export {invariant} from './invariant';
