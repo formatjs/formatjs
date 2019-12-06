@@ -69,13 +69,21 @@ export interface NumberILD {
       currencyName: Record<LDMLPluralRule, string>;
     }
   >;
+  unitSymbols: Record<
+    string,
+    {
+      unitSymbol: Record<LDMLPluralRule, string>;
+      unitNarrowSymbol: Record<LDMLPluralRule, string>;
+      unitName: Record<LDMLPluralRule, string>;
+    }
+  >;
 }
 
 export interface NumberLocalePatternData {
   decimal: SignDisplayPattern;
   percent: SignDisplayPattern;
-  currency: Record<string, CurrencyPattern>;
-  unit: Record<string, UnitPattern>;
+  currency: CurrencySignPattern;
+  unit: UnitPattern;
 }
 export interface NumberLocaleData {
   nu: string[];

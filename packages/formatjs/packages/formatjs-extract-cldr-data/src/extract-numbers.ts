@@ -6,6 +6,7 @@
 'use strict';
 import * as Numbers from 'cldr-numbers-full/main/en/numbers.json';
 import * as Currencies from 'cldr-numbers-full/main/en/currencies.json';
+import * as Units from 'cldr-units-full/main/en/units.json';
 import {Locale} from './types';
 import generateFieldExtractorFn from './utils';
 import {sync as globSync} from 'glob';
@@ -18,7 +19,8 @@ import {
   SignDisplayPattern,
   LDMLPluralRule,
   NumberILD,
-  CurrencyPattern,
+  CurrencySignPattern,
+  UnitPattern,
 } from '@formatjs/intl-utils';
 
 const numbersLocales = globSync('*/numbers.json', {
@@ -30,6 +32,7 @@ const numbersLocales = globSync('*/numbers.json', {
 
 export type NumbersData = typeof Numbers['main']['en']['numbers'];
 export type CurrenciesData = typeof Currencies['main']['en']['numbers']['currencies'];
+export type UnitsData = typeof Units['main']['en']['units'];
 
 function generateCurrencyILD(d: CurrenciesData): NumberILD['currencySymbols'] {
   return Object.keys(d).reduce((all: NumberILD['currencySymbols'], k) => {
@@ -43,6 +46,52 @@ function generateCurrencyILD(d: CurrenciesData): NumberILD['currencySymbols'] {
         const key = `displayName-count-${ldml}`;
         if (key in data) {
           names[ldml] = data[key as 'displayName'];
+        }
+        return names;
+      }, {} as Record<LDMLPluralRule, string>),
+    };
+    return all;
+  }, {});
+}
+
+function generateUnitILD(u: UnitsData): NumberILD['unitSymbols'] {
+  return SANCTIONED_UNITS.reduce((all: NumberILD['unitSymbols'], k) => {
+    const longData = u.long[k as 'digital-bit'];
+    const narrowData = u.narrow[k as 'digital-bit'];
+    const symbolData = u.short[k as 'digital-bit'];
+    all[k] = {
+      unitSymbol: (['zero', 'one', 'two', 'few', 'many', 'other'] as Array<
+        LDMLPluralRule
+      >).reduce((names: Record<LDMLPluralRule, string>, ldml) => {
+        const key = `unitPattern-count-${ldml}`;
+        if (key in symbolData) {
+          names[ldml] = symbolData[key as 'unitPattern-count-one'];
+        }
+        return names;
+      }, {} as Record<LDMLPluralRule, string>),
+      unitNarrowSymbol: ([
+        'zero',
+        'one',
+        'two',
+        'few',
+        'many',
+        'other',
+      ] as Array<LDMLPluralRule>).reduce(
+        (names: Record<LDMLPluralRule, string>, ldml) => {
+          const key = `unitPattern-count-${ldml}`;
+          if (key in narrowData) {
+            names[ldml] = narrowData[key as 'unitPattern-count-one'];
+          }
+          return names;
+        },
+        {} as Record<LDMLPluralRule, string>
+      ),
+      unitName: (['zero', 'one', 'two', 'few', 'many', 'other'] as Array<
+        LDMLPluralRule
+      >).reduce((names: Record<LDMLPluralRule, string>, ldml) => {
+        const key = `unitPattern-count-${ldml}`;
+        if (key in longData) {
+          names[ldml] = longData[key as 'unitPattern-count-one'];
         }
         return names;
       }, {} as Record<LDMLPluralRule, string>),
@@ -100,7 +149,11 @@ const ILND = (function() {
 })();
 
 // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-intl.numberformat-internal-slots
-function extractNumberPattern(d: NumbersData, c: CurrenciesData): NumberLocaleData {
+function extractNumberPattern(
+  d: NumbersData,
+  c: CurrenciesData,
+  u: UnitsData
+): NumberLocaleData {
   return {
     nu:
       d.defaultNumberingSystem === 'latn'
@@ -109,13 +162,14 @@ function extractNumberPattern(d: NumbersData, c: CurrenciesData): NumberLocaleDa
     patterns: {
       decimal: extractDecimalPattern(d),
       percent: extractPercentPattern(d),
-      currency: extractDecimalPattern(d),
-      unit: extractDecimalPattern(d),
+      currency: extractCurrencyPattern(d),
+      unit: extractUnitPattern(d),
     },
     ild: {
       ...extractCompactILD(d),
       symbols: d['symbols-numberSystem-latn'],
-      currencySymbols: generateCurrencyILD(c)
+      currencySymbols: generateCurrencyILD(c),
+      unitSymbols: generateUnitILD(u),
     },
     ilnd: ILND[d['defaultNumberingSystem'] as 'latn'] || ILND['latn'],
   };
@@ -270,30 +324,120 @@ function extractPercentPattern(d: NumbersData): SignDisplayPattern {
   }, {} as SignDisplayPattern);
 }
 
-function extractCurrencyPattern(d: NumbersData): CurrencyPattern {
-  return (['auto', 'always', 'never', 'exceptZero'] as Array<
-    keyof SignDisplayPattern
-  >).reduce((all: SignDisplayPattern, k) => {
-    all[k] = {
-      standard: extractSignPattern(
-        d['currencyFormats-numberSystem-latn']['standard'],
-        k
-      ),
-      scientific: extractSignPattern(
-        d['percentFormats-numberSystem-latn']['standard'],
-        k
-      ),
-      compactShort: extractSignPattern(
-        d['percentFormats-numberSystem-latn']['standard'],
-        k
-      ),
-      compactLong: extractSignPattern(
-        d['percentFormats-numberSystem-latn']['standard'],
-        k
-      ),
-    };
-    return all;
-  }, {} as SignDisplayPattern);
+function extractCurrencyPattern(d: NumbersData): CurrencySignPattern {
+  return {
+    standard: (['auto', 'always', 'never', 'exceptZero'] as Array<
+      keyof SignDisplayPattern
+    >).reduce((all: SignDisplayPattern, k) => {
+      all[k] = {
+        standard: extractSignPattern(
+          d['currencyFormats-numberSystem-latn']['standard'],
+          k
+        ),
+        scientific: extractSignPattern(
+          d['currencyFormats-numberSystem-latn']['standard'].replace(
+            NUMBER_PATTERN,
+            d['scientificFormats-numberSystem-latn']['standard']
+          ),
+          k
+        ),
+        compactShort: extractSignPattern(
+          d['currencyFormats-numberSystem-latn']['short']['standard'][
+            '1000-count-one'
+          ].replace(/([^0#\s]+)/, '{compactSymbol}'),
+          k
+        ),
+        compactLong: extractSignPattern(
+          d['currencyFormats-numberSystem-latn']['short']['standard'][
+            '1000-count-one'
+          ].replace(/([^0#\s]+)/, '{compactSymbol}'),
+          k
+        ),
+      };
+      return all;
+    }, {} as SignDisplayPattern),
+    accounting: (['auto', 'always', 'never', 'exceptZero'] as Array<
+      keyof SignDisplayPattern
+    >).reduce((all: SignDisplayPattern, k) => {
+      all[k] = {
+        standard: extractSignPattern(
+          d['currencyFormats-numberSystem-latn']['accounting'],
+          k
+        ),
+        scientific: extractSignPattern(
+          d['decimalFormats-numberSystem-latn']['standard'],
+          k
+        ),
+        compactShort: extractSignPattern(
+          d['currencyFormats-numberSystem-latn']['short']['standard'][
+            '1000-count-one'
+          ].replace(/([^0#\s]+)/, '{compactSymbol}'),
+          k
+        ),
+        compactLong: extractSignPattern(
+          d['currencyFormats-numberSystem-latn']['short']['standard'][
+            '1000-count-one'
+          ].replace(/([^0#\s]+)/, '{compactSymbol}'),
+          k
+        ),
+      };
+      return all;
+    }, {} as SignDisplayPattern),
+  };
+}
+
+function extractUnitPattern(d: NumbersData, u: UnitsData): UnitPattern {
+  return (['narrow', 'long', 'short'] as Array<keyof UnitPattern>).reduce(
+    (patterns, display) => {
+      const unit = `{${
+        display === 'long'
+          ? 'unitName'
+          : display === 'short'
+          ? 'unitSymbol'
+          : 'unitNarrowSymbol'
+      }}`;
+      patterns[display] = (['auto', 'always', 'never', 'exceptZero'] as Array<
+        keyof SignDisplayPattern
+      >).reduce((all: SignDisplayPattern, k) => {
+        all[k] = {
+          standard: extractSignPattern(
+            u[display as 'long']['acceleration-g-force'][
+              'unitPattern-count-one'
+            ]
+              .replace('{0}', d['decimalFormats-numberSystem-latn']['standard'])
+              .replace(/([^0#\s]+)/, unit),
+            k
+          ),
+          scientific: extractSignPattern(
+            u[display as 'long']['acceleration-g-force'][
+              'unitPattern-count-one'
+            ]
+              .replace(
+                '{0}',
+                d['scientificFormats-numberSystem-latn']['standard']
+              )
+              .replace(/([^0#\s]+)/, '{unitSymbol}'),
+            k
+          ),
+          compactShort: extractSignPattern(
+            d['currencyFormats-numberSystem-latn']['short']['standard'][
+              '1000-count-one'
+            ].replace(/([^0#\s]+)/, '{compactSymbol}'),
+            k
+          ),
+          compactLong: extractSignPattern(
+            d['currencyFormats-numberSystem-latn']['short']['standard'][
+              '1000-count-one'
+            ].replace(/([^0#\s]+)/, '{compactSymbol}'),
+            k
+          ),
+        };
+        return all;
+      }, {} as SignDisplayPattern);
+      return patterns;
+    },
+    {} as UnitPattern
+  );
 }
 
 export function getAllLocales() {
