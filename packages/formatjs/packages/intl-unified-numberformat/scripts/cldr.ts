@@ -1,29 +1,24 @@
 import {
-  extractAllUnits,
   getAllUnitsLocales,
   getAllCurrenciesLocales,
-  extractAllCurrencies,
+  extractAllNumbers,
+  getAllNumbersLocales
 } from 'formatjs-extract-cldr-data';
 import {
   SANCTIONED_UNITS,
   getAliasesByLang,
   getParentLocalesByLang,
-  UnifiedNumberFormatLocaleData,
-  UnitData,
   invariant,
-  CurrencyData,
+  NumberLocaleData,
 } from '@formatjs/intl-utils';
 import {resolve, join} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
-import {isEqual, mapValues, pickBy} from 'lodash';
+import {isEqual} from 'lodash';
 
 invariant(
   isEqual(getAllUnitsLocales().sort(), getAllCurrenciesLocales().sort()),
   'All unit locales differ from all currencies locales'
 );
-
-const unitData = extractAllUnits();
-const currencyData = extractAllCurrencies();
 
 function shortenUnit(unit: string) {
   return unit.replace(/^(.*?)-/, '');
@@ -31,45 +26,15 @@ function shortenUnit(unit: string) {
 
 const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
 
-function getSanctionedUnitData(
-  data?: Record<string, UnitData>
-): Record<string, UnitData> | undefined {
-  if (!data) {
-    return undefined;
-  }
-  return SANCTIONED_UNITS.filter(unit => unit in data).reduce(
-    (all: Record<string, UnitData>, unit) => {
-      all[shortenUnit(unit)] = data[unit];
-      return all;
-    },
-    {}
-  );
-}
+const numbersData = extractAllNumbers()
 
-function getCurrencyNarrowSymbolData(
-  data?: Record<string, CurrencyData>
-): Record<string, Pick<CurrencyData, 'narrowSymbol'>> | undefined {
-  if (!data) {
-    return undefined;
-  }
-  return mapValues(
-    pickBy(data, x => x.narrowSymbol),
-    x => ({narrowSymbol: x.narrowSymbol})
-  );
-}
-
-const langData = getAllUnitsLocales().reduce(
-  (all: Record<string, UnifiedNumberFormatLocaleData>, locale) => {
+const langData = getAllNumbersLocales().reduce(
+  (all: Record<string, NumberLocaleData>, locale) => {
     if (locale === 'en-US-POSIX') {
       locale = 'en-US';
     }
     const lang = locale.split('-')[0];
-    const sanctionedUnitData = getSanctionedUnitData(unitData[locale]);
-    const narrowSymbolData = getCurrencyNarrowSymbolData(currencyData[locale]);
-    const localeData = {
-      units: sanctionedUnitData,
-      currencies: narrowSymbolData,
-    };
+    const localeData = numbersData[locale]
 
     if (!all[lang]) {
       const aliases = getAliasesByLang(lang);
@@ -81,7 +46,7 @@ const langData = getAllUnitsLocales().reduce(
         parentLocales,
       };
     } else {
-      if (sanctionedUnitData) {
+      if (localeData) {
         all[lang].data[locale] = localeData;
       }
       all[lang].availableLocales.push(locale);

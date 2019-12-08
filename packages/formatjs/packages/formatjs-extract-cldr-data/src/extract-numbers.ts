@@ -13,8 +13,7 @@ import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
 import {
   SANCTIONED_UNITS,
-  UnitData,
-  NumberLocaleData,
+  NumberInternalSlots,
   SignPattern,
   SignDisplayPattern,
   LDMLPluralRule,
@@ -30,6 +29,9 @@ const numbersLocales = globSync('*/numbers.json', {
   ),
 }).map(dirname);
 
+// Process other 1st and skip other if it's the same as `other`
+const PLURAL_RULES: Array<LDMLPluralRule> = ['other', 'zero', 'one', 'two', 'few', 'many']
+
 export type NumbersData = typeof Numbers['main']['en']['numbers'];
 export type CurrenciesData = typeof Currencies['main']['en']['numbers']['currencies'];
 export type UnitsData = typeof Units['main']['en']['units'];
@@ -40,12 +42,10 @@ function generateCurrencyILD(d: CurrenciesData): NumberILD['currencySymbols'] {
     all[k] = {
       currencySymbol: data.symbol,
       currencyNarrowSymbol: data['symbol-alt-narrow'] || data.symbol,
-      currencyName: (['zero', 'one', 'two', 'few', 'many', 'other'] as Array<
-        LDMLPluralRule
-      >).reduce((names: Record<LDMLPluralRule, string>, ldml) => {
+      currencyName: PLURAL_RULES.reduce((names: Record<LDMLPluralRule, string>, ldml) => {
         const key = `displayName-count-${ldml}`;
-        if (key in data) {
-          names[ldml] = data[key as 'displayName'];
+        if (key in data && data[key as 'displayName-count-other'] !== names.other) {
+          names[ldml] = data[key as 'displayName-count-other'];
         }
         return names;
       }, {} as Record<LDMLPluralRule, string>),
@@ -60,38 +60,27 @@ function generateUnitILD(u: UnitsData): NumberILD['unitSymbols'] {
     const narrowData = u.narrow[k as 'digital-bit'];
     const symbolData = u.short[k as 'digital-bit'];
     all[k] = {
-      unitSymbol: (['zero', 'one', 'two', 'few', 'many', 'other'] as Array<
-        LDMLPluralRule
-      >).reduce((names: Record<LDMLPluralRule, string>, ldml) => {
+      unitSymbol: PLURAL_RULES.reduce((names: Record<LDMLPluralRule, string>, ldml) => {
         const key = `unitPattern-count-${ldml}`;
-        if (key in symbolData) {
-          names[ldml] = symbolData[key as 'unitPattern-count-one'];
+        if (key in symbolData && symbolData[key as 'unitPattern-count-other'] !== names.other) {
+          names[ldml] = symbolData[key as 'unitPattern-count-other'];
         }
         return names;
       }, {} as Record<LDMLPluralRule, string>),
-      unitNarrowSymbol: ([
-        'zero',
-        'one',
-        'two',
-        'few',
-        'many',
-        'other',
-      ] as Array<LDMLPluralRule>).reduce(
+      unitNarrowSymbol: PLURAL_RULES.reduce(
         (names: Record<LDMLPluralRule, string>, ldml) => {
           const key = `unitPattern-count-${ldml}`;
-          if (key in narrowData) {
-            names[ldml] = narrowData[key as 'unitPattern-count-one'];
+          if (key in narrowData && narrowData[key as 'unitPattern-count-other'] !== names.other) {
+            names[ldml] = narrowData[key as 'unitPattern-count-other'];
           }
           return names;
         },
         {} as Record<LDMLPluralRule, string>
       ),
-      unitName: (['zero', 'one', 'two', 'few', 'many', 'other'] as Array<
-        LDMLPluralRule
-      >).reduce((names: Record<LDMLPluralRule, string>, ldml) => {
+      unitName: PLURAL_RULES.reduce((names: Record<LDMLPluralRule, string>, ldml) => {
         const key = `unitPattern-count-${ldml}`;
-        if (key in longData) {
-          names[ldml] = longData[key as 'unitPattern-count-one'];
+        if (key in longData && longData[key as 'unitPattern-count-other'] !== names.other) {
+          names[ldml] = longData[key as 'unitPattern-count-other'];
         }
         return names;
       }, {} as Record<LDMLPluralRule, string>),
@@ -100,60 +89,60 @@ function generateUnitILD(u: UnitsData): NumberILD['unitSymbols'] {
   }, {});
 }
 
-function generateContinuousILND(startChar: string): NumberLocaleData['ilnd'] {
-  const startCharCode = startChar.charCodeAt(0);
-  const arr = new Array<string>(10) as NumberLocaleData['ilnd'];
-  for (let i = 0; i < 10; i++) {
-    arr[i] = String.fromCharCode(startCharCode + i);
-  }
-  return arr;
-}
+// function generateContinuousILND(startChar: string): NumberInternalSlots['ilnd'] {
+//   const startCharCode = startChar.charCodeAt(0);
+//   const arr = new Array<string>(10) as NumberInternalSlots['ilnd'];
+//   for (let i = 0; i < 10; i++) {
+//     arr[i] = String.fromCharCode(startCharCode + i);
+//   }
+//   return arr;
+// }
 
-// https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#table-numbering-system-digits
-const ILND = (function() {
-  return {
-    arab: generateContinuousILND('\u0660'),
-    arabext: generateContinuousILND('\u06f0'),
-    bali: generateContinuousILND('\u1b50'),
-    beng: generateContinuousILND('\u09e6'),
-    deva: generateContinuousILND('\u0966'),
-    fullwide: generateContinuousILND('\uff10'),
-    gujr: generateContinuousILND('\u0ae6'),
-    guru: generateContinuousILND('\u0a66'),
-    khmr: generateContinuousILND('\17e0'),
-    knda: generateContinuousILND('\u0ce6'),
-    laoo: generateContinuousILND('\u0ed0'),
-    latn: generateContinuousILND('\u0030'),
-    limb: generateContinuousILND('\u1946'),
-    mlym: generateContinuousILND('\u0d66'),
-    mong: generateContinuousILND('\u1810'),
-    mymr: generateContinuousILND('\u1040'),
-    orya: generateContinuousILND('\u0b66'),
-    tamldec: generateContinuousILND('\u0be6'),
-    telu: generateContinuousILND('\u0c66'),
-    thai: generateContinuousILND('\u0e50'),
-    tibt: generateContinuousILND('\u0f20'),
-    hanidec: [
-      '\u3007',
-      '\u4e00',
-      '\u4e8c',
-      '\u4e09',
-      '\u56db',
-      '\u4e94',
-      '\u516d',
-      '\u4e03',
-      '\u516b',
-      '\u4e5d',
-    ],
-  };
-})();
+// // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#table-numbering-system-digits
+// const ILND = (function() {
+//   return {
+//     arab: generateContinuousILND('\u0660'),
+//     arabext: generateContinuousILND('\u06f0'),
+//     bali: generateContinuousILND('\u1b50'),
+//     beng: generateContinuousILND('\u09e6'),
+//     deva: generateContinuousILND('\u0966'),
+//     fullwide: generateContinuousILND('\uff10'),
+//     gujr: generateContinuousILND('\u0ae6'),
+//     guru: generateContinuousILND('\u0a66'),
+//     khmr: generateContinuousILND('\u17e0'),
+//     knda: generateContinuousILND('\u0ce6'),
+//     laoo: generateContinuousILND('\u0ed0'),
+//     latn: generateContinuousILND('\u0030'),
+//     limb: generateContinuousILND('\u1946'),
+//     mlym: generateContinuousILND('\u0d66'),
+//     mong: generateContinuousILND('\u1810'),
+//     mymr: generateContinuousILND('\u1040'),
+//     orya: generateContinuousILND('\u0b66'),
+//     tamldec: generateContinuousILND('\u0be6'),
+//     telu: generateContinuousILND('\u0c66'),
+//     thai: generateContinuousILND('\u0e50'),
+//     tibt: generateContinuousILND('\u0f20'),
+//     hanidec: [
+//       '\u3007',
+//       '\u4e00',
+//       '\u4e8c',
+//       '\u4e09',
+//       '\u56db',
+//       '\u4e94',
+//       '\u516d',
+//       '\u4e03',
+//       '\u516b',
+//       '\u4e5d',
+//     ],
+//   };
+// })();
 
 // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-intl.numberformat-internal-slots
 function extractNumberPattern(
   d: NumbersData,
   c: CurrenciesData,
   u: UnitsData
-): NumberLocaleData {
+): NumberInternalSlots {
   return {
     nu:
       d.defaultNumberingSystem === 'latn'
@@ -163,7 +152,7 @@ function extractNumberPattern(
       decimal: extractDecimalPattern(d),
       percent: extractPercentPattern(d),
       currency: extractCurrencyPattern(d),
-      unit: extractUnitPattern(d),
+      unit: extractUnitPattern(d, u),
     },
     ild: {
       ...extractCompactILD(d),
@@ -171,7 +160,7 @@ function extractNumberPattern(
       currencySymbols: generateCurrencyILD(c),
       unitSymbols: generateUnitILD(u),
     },
-    ilnd: ILND[d['defaultNumberingSystem'] as 'latn'] || ILND['latn'],
+    // ilnd: ILND[d['defaultNumberingSystem'] as 'latn'] || ILND['latn'],
   };
 }
 
@@ -198,6 +187,9 @@ function extractSignPattern(
       .replace('¤', `{${currencyToken}}`)
       .replace('E', '{scientificSeparator}')
   );
+  if (!negativePattern) {
+    negativePattern = `{minusSign}${positivePattern}`
+  }
   let zeroPattern = positivePattern;
   switch (signDisplay) {
     case 'always':
@@ -236,7 +228,7 @@ function extractDecimalFormatILD(
 ): Record<string, Record<LDMLPluralRule, string>> {
   return (Object.keys(data) as Array<keyof typeof data>).reduce(
     (all: Record<string, Record<LDMLPluralRule, string>>, k) => {
-      const [type, _, ldml] = k.split('-');
+      const [type,, ldml] = k.split('-');
       const decimalPattern = all[type] || {};
       decimalPattern[ldml as LDMLPluralRule] = data[k]
         .replace('¤', '')
@@ -283,13 +275,13 @@ function extractDecimalPattern(d: NumbersData): SignDisplayPattern {
       ),
       compactShort: extractSignPattern(
         d['decimalFormats-numberSystem-latn']['short']['decimalFormat'][
-          '1000-count-one'
+          '1000-count-other'
         ].replace(/([^0#\s]+)/, '{compactSymbol}'),
         k
       ),
       compactLong: extractSignPattern(
         d['decimalFormats-numberSystem-latn']['long']['decimalFormat'][
-          '1000-count-one'
+          '1000-count-other'
         ].replace(/([^0#\s]+)/, '{compactName}'),
         k
       ),
@@ -343,13 +335,13 @@ function extractCurrencyPattern(d: NumbersData): CurrencySignPattern {
         ),
         compactShort: extractSignPattern(
           d['currencyFormats-numberSystem-latn']['short']['standard'][
-            '1000-count-one'
+            '1000-count-other'
           ].replace(/([^0#\s]+)/, '{compactSymbol}'),
           k
         ),
         compactLong: extractSignPattern(
           d['currencyFormats-numberSystem-latn']['short']['standard'][
-            '1000-count-one'
+            '1000-count-other'
           ].replace(/([^0#\s]+)/, '{compactSymbol}'),
           k
         ),
@@ -370,13 +362,13 @@ function extractCurrencyPattern(d: NumbersData): CurrencySignPattern {
         ),
         compactShort: extractSignPattern(
           d['currencyFormats-numberSystem-latn']['short']['standard'][
-            '1000-count-one'
+            '1000-count-other'
           ].replace(/([^0#\s]+)/, '{compactSymbol}'),
           k
         ),
         compactLong: extractSignPattern(
           d['currencyFormats-numberSystem-latn']['short']['standard'][
-            '1000-count-one'
+            '1000-count-other'
           ].replace(/([^0#\s]+)/, '{compactSymbol}'),
           k
         ),
@@ -402,7 +394,7 @@ function extractUnitPattern(d: NumbersData, u: UnitsData): UnitPattern {
         all[k] = {
           standard: extractSignPattern(
             u[display as 'long']['acceleration-g-force'][
-              'unitPattern-count-one'
+              'unitPattern-count-other'
             ]
               .replace('{0}', d['decimalFormats-numberSystem-latn']['standard'])
               .replace(/([^0#\s]+)/, unit),
@@ -410,7 +402,7 @@ function extractUnitPattern(d: NumbersData, u: UnitsData): UnitPattern {
           ),
           scientific: extractSignPattern(
             u[display as 'long']['acceleration-g-force'][
-              'unitPattern-count-one'
+              'unitPattern-count-other'
             ]
               .replace(
                 '{0}',
@@ -421,13 +413,13 @@ function extractUnitPattern(d: NumbersData, u: UnitsData): UnitPattern {
           ),
           compactShort: extractSignPattern(
             d['currencyFormats-numberSystem-latn']['short']['standard'][
-              '1000-count-one'
+              '1000-count-other'
             ].replace(/([^0#\s]+)/, '{compactSymbol}'),
             k
           ),
           compactLong: extractSignPattern(
             d['currencyFormats-numberSystem-latn']['short']['standard'][
-              '1000-count-one'
+              '1000-count-other'
             ].replace(/([^0#\s]+)/, '{compactSymbol}'),
             k
           ),
@@ -444,28 +436,26 @@ export function getAllLocales() {
   return numbersLocales;
 }
 
-function loadNumbers(locale: Locale): Record<string, UnitData> {
+function loadNumbers(locale: Locale): NumberInternalSlots {
   const numbers = (require(`cldr-numbers-full/main/${locale}/numbers.json`) as typeof Numbers)
     .main[locale as 'en'].numbers;
-  return SANCTIONED_UNITS.reduce((all: Record<string, UnitData>, unit) => {
-    if (!units.long[unit as 'digital-bit']) {
-      throw new Error(`${unit} does not have any data`);
+  const currencies = (require(`cldr-numbers-full/main/${locale}/currencies.json`) as typeof Currencies)
+    .main[locale as 'en'].numbers.currencies;
+  const units = (require(`cldr-units-full/main/${locale}/units.json`) as typeof Units)
+    .main[locale as 'en'].units;
+    try {
+  return extractNumberPattern(numbers, currencies, units);
+    } catch (e) {
+      console.error(`Issue processing locale ${locale}`)
+      throw e
     }
-    all[unit] = {
-      displayName: units.long[unit as 'digital-bit'].displayName,
-      long: extractUnitPattern(units.long[unit as 'volume-gallon']),
-      short: extractUnitPattern(units.short[unit as 'volume-gallon']),
-      narrow: extractUnitPattern(units.narrow[unit as 'volume-gallon']),
-    };
-    return all;
-  }, {});
 }
 
 function hasNumbers(locale: Locale): boolean {
   return numbersLocales.includes(locale);
 }
 
-export default generateFieldExtractorFn<Record<string, UnitData>>(
+export default generateFieldExtractorFn<NumberInternalSlots>(
   loadNumbers,
   hasNumbers,
   getAllLocales()

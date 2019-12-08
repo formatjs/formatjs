@@ -1,4 +1,5 @@
 import {LDMLPluralRule} from './plural-rules-types';
+import { LocaleData } from './types';
 
 export interface SignPattern {
   positivePattern: string;
@@ -85,20 +86,10 @@ export interface NumberLocalePatternData {
   currency: CurrencySignPattern;
   unit: UnitPattern;
 }
-export interface NumberLocaleData {
+export interface NumberInternalSlots {
   nu: string[];
   patterns: NumberLocalePatternData;
   ild: NumberILD;
-  ilnd: [
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string
-  ];
 }
+
+export type NumberLocaleData = LocaleData<NumberInternalSlots>

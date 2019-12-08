@@ -15,7 +15,9 @@ import extractListPatterns, {
 import extractCurrencies, {
   getAllLocales as getAllCurrenciesLocales,
 } from './extract-currencies';
-
+import extractNumbers, {
+  getAllLocales as getAllNumbersLocales
+} from './extract-numbers'
 export interface Opts {
   locales?: string[];
 }
@@ -44,6 +46,12 @@ export function extractAllCurrencies(options: Opts = {}) {
   return extractCurrencies(locales);
 }
 
+export function extractAllNumbers(options: Opts = {}) {
+  // Default to all CLDR locales if none have been provided.
+  const locales = options.locales || getAllNumbersLocales();
+  return extractNumbers(locales);
+}
+
 export {getAllLanguages} from './locales';
 
 export const processAliases = process;
@@ -51,3 +59,4 @@ export {getAllLocales as getAllDateFieldsLocales} from './extract-relative';
 export {getAllLocales as getAllListLocales} from './extract-list';
 export {getAllLocales as getAllUnitsLocales} from './extract-units';
 export {getAllLocales as getAllCurrenciesLocales} from './extract-currencies';
+export {getAllLocales as getAllNumbersLocales} from './extract-numbers'
