@@ -1,6 +1,7 @@
 import aliases from './aliases';
 import parentLocales from './parentLocales';
 import {invariant} from './invariant';
+import pick from 'lodash/pick';
 
 /**
  * https://tc39.es/ecma262/#sec-toobject
@@ -23,13 +24,13 @@ export function toObject<T>(
  * @param values
  * @param fallback
  */
-export function getOption<T extends object, K extends keyof T>(
+export function getOption<T extends object, K extends keyof T, F>(
   opts: T,
   prop: K,
   type: 'string' | 'boolean',
-  values?: T[K][],
-  fallback?: T[K]
-): T[K] | undefined {
+  values: T[K][] | undefined,
+  fallback: F
+): Exclude<T[K], undefined> | F {
   // const descriptor = Object.getOwnPropertyDescriptor(opts, prop);
   let value: any = opts[prop];
   if (value !== undefined) {
@@ -48,6 +49,49 @@ export function getOption<T extends object, K extends keyof T>(
     return value;
   }
   return fallback;
+}
+
+/**
+ * https://tc39.es/ecma402/#sec-defaultnumberoption
+ * @param val
+ * @param min
+ * @param max
+ * @param fallback
+ */
+export function defaultNumberOption(
+  val: any,
+  min: number,
+  max: number,
+  fallback: number
+) {
+  if (val !== undefined) {
+    val = Number(val);
+    if (isNaN(val) || val < min || val > max) {
+      throw new RangeError(`${val} is outside of range [${min}, ${max}]`);
+    }
+    return Math.floor(val);
+  }
+  return fallback;
+}
+
+/**
+ * https://tc39.es/ecma402/#sec-getnumberoption
+ * @param options
+ * @param property
+ * @param min
+ * @param max
+ * @param fallback
+ */
+
+export function getNumberOption<T extends object, K extends keyof T>(
+  options: T,
+  property: K,
+  minimum: number,
+  maximum: number,
+  fallback: number
+): number {
+  const val = options[property];
+  return defaultNumberOption(val, minimum, maximum, fallback);
 }
 
 export function getAliasesByLang(lang: string): Record<string, string> {
@@ -73,7 +117,7 @@ export function getParentLocalesByLang(lang: string): Record<string, string> {
 
 export function setInternalSlot<
   Instance extends object,
-  Internal,
+  Internal extends object,
   Field extends keyof Internal
 >(
   map: WeakMap<Instance, Internal>,
@@ -81,27 +125,52 @@ export function setInternalSlot<
   field: Field,
   value: Internal[Field]
 ) {
+  setMultiInternalSlots(
+    map,
+    pl,
+    // @ts-ignore
+    {[field]: value}
+  );
+}
+
+export function setMultiInternalSlots<
+  Instance extends object,
+  Internal extends object,
+  K extends keyof Internal
+>(map: WeakMap<Instance, Internal>, pl: Instance, props: Pick<Internal, K>) {
   if (!map.get(pl)) {
     map.set(pl, Object.create(null));
   }
-  const slots = map.get(pl)! as Internal;
-  slots[field] = value;
+  const slots = map.get(pl)!;
+  Object.assign(slots, props);
 }
 
 export function getInternalSlot<
   Instance extends object,
-  Internal,
+  Internal extends object,
   Field extends keyof Internal
 >(
   map: WeakMap<Instance, Internal>,
   pl: Instance,
   field: Field
 ): Internal[Field] {
+  return getMultiInternalSlots(map, pl, field)[field];
+}
+
+export function getMultiInternalSlots<
+  Instance extends object,
+  Internal extends object,
+  Field extends keyof Internal
+>(
+  map: WeakMap<Instance, Internal>,
+  pl: Instance,
+  ...fields: Field[]
+): Pick<Internal, Field> {
   const slots = map.get(pl);
   if (!slots) {
     throw new TypeError(`${pl} InternalSlot has not been initialized`);
   }
-  return slots[field];
+  return pick(slots, fields);
 }
 
 export interface LiteralPart {

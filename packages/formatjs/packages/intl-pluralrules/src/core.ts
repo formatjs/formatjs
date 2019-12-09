@@ -11,6 +11,8 @@ import {
   isMissingLocaleDataError,
   setInternalSlot,
   getInternalSlot,
+  getNumberOption,
+  defaultNumberOption,
 } from '@formatjs/intl-utils';
 
 function validateInstance(instance: any, method: string) {
@@ -21,49 +23,6 @@ function validateInstance(instance: any, method: string) {
       )}`
     );
   }
-}
-
-/**
- * https://tc39.es/ecma402/#sec-defaultnumberoption
- * @param val
- * @param min
- * @param max
- * @param fallback
- */
-function defaultNumberOption(
-  val: number | undefined,
-  min: number,
-  max: number,
-  fallback: number
-) {
-  if (val !== undefined) {
-    val = Number(val);
-    if (isNaN(val) || val < min || val > max) {
-      throw new RangeError(`${val} is outside of range [${min}, ${max}]`);
-    }
-    return Math.floor(val);
-  }
-  return fallback;
-}
-
-/**
- * https://tc39.es/ecma402/#sec-getnumberoption
- * @param options
- * @param property
- * @param min
- * @param max
- * @param fallback
- */
-
-function getNumberOption<T extends string>(
-  options: Record<T, number | undefined>,
-  property: T,
-  min: number,
-  max: number,
-  fallback: number
-) {
-  const val = options[property];
-  return defaultNumberOption(val, min, max, fallback);
 }
 
 /**

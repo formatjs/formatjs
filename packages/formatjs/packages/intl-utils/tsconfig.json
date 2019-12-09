@@ -6,7 +6,8 @@
         "baseUrl": ".",
         "paths": {
             "@formatjs/intl-relativetimeformat": ["../intl-relativetimeformat"]
-        }
+        },
+        "allowSyntheticDefaultImports": true
     },
     "include": ["src/*.ts"]
 }
