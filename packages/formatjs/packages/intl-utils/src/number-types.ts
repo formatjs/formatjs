@@ -1,5 +1,5 @@
 import {LDMLPluralRule} from './plural-rules-types';
-import { LocaleData } from './types';
+import {LocaleData} from './types';
 
 export interface SignPattern {
   positivePattern: string;
@@ -92,4 +92,4 @@ export interface NumberInternalSlots {
   ild: NumberILD;
 }
 
-export type NumberLocaleData = LocaleData<NumberInternalSlots>
+export type NumberLocaleData = LocaleData<NumberInternalSlots>;

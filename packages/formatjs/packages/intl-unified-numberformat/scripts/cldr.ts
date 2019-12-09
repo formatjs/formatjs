@@ -2,7 +2,7 @@ import {
   getAllUnitsLocales,
   getAllCurrenciesLocales,
   extractAllNumbers,
-  getAllNumbersLocales
+  getAllNumbersLocales,
 } from 'formatjs-extract-cldr-data';
 import {
   SANCTIONED_UNITS,
@@ -26,7 +26,7 @@ function shortenUnit(unit: string) {
 
 const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
 
-const numbersData = extractAllNumbers()
+const numbersData = extractAllNumbers();
 
 const langData = getAllNumbersLocales().reduce(
   (all: Record<string, NumberLocaleData>, locale) => {
@@ -34,7 +34,7 @@ const langData = getAllNumbersLocales().reduce(
       locale = 'en-US';
     }
     const lang = locale.split('-')[0];
-    const localeData = numbersData[locale]
+    const localeData = numbersData[locale];
 
     if (!all[lang]) {
       const aliases = getAliasesByLang(lang);

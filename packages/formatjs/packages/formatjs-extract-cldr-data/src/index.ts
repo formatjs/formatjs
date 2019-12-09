@@ -16,8 +16,8 @@ import extractCurrencies, {
   getAllLocales as getAllCurrenciesLocales,
 } from './extract-currencies';
 import extractNumbers, {
-  getAllLocales as getAllNumbersLocales
-} from './extract-numbers'
+  getAllLocales as getAllNumbersLocales,
+} from './extract-numbers';
 export interface Opts {
   locales?: string[];
 }
@@ -59,4 +59,4 @@ export {getAllLocales as getAllDateFieldsLocales} from './extract-relative';
 export {getAllLocales as getAllListLocales} from './extract-list';
 export {getAllLocales as getAllUnitsLocales} from './extract-units';
 export {getAllLocales as getAllCurrenciesLocales} from './extract-currencies';
-export {getAllLocales as getAllNumbersLocales} from './extract-numbers'
+export {getAllLocales as getAllNumbersLocales} from './extract-numbers';

@@ -30,7 +30,14 @@ const numbersLocales = globSync('*/numbers.json', {
 }).map(dirname);
 
 // Process other 1st and skip other if it's the same as `other`
-const PLURAL_RULES: Array<LDMLPluralRule> = ['other', 'zero', 'one', 'two', 'few', 'many']
+const PLURAL_RULES: Array<LDMLPluralRule> = [
+  'other',
+  'zero',
+  'one',
+  'two',
+  'few',
+  'many',
+];
 
 export type NumbersData = typeof Numbers['main']['en']['numbers'];
 export type CurrenciesData = typeof Currencies['main']['en']['numbers']['currencies'];
@@ -42,13 +49,19 @@ function generateCurrencyILD(d: CurrenciesData): NumberILD['currencySymbols'] {
     all[k] = {
       currencySymbol: data.symbol,
       currencyNarrowSymbol: data['symbol-alt-narrow'] || data.symbol,
-      currencyName: PLURAL_RULES.reduce((names: Record<LDMLPluralRule, string>, ldml) => {
-        const key = `displayName-count-${ldml}`;
-        if (key in data && data[key as 'displayName-count-other'] !== names.other) {
-          names[ldml] = data[key as 'displayName-count-other'];
-        }
-        return names;
-      }, {} as Record<LDMLPluralRule, string>),
+      currencyName: PLURAL_RULES.reduce(
+        (names: Record<LDMLPluralRule, string>, ldml) => {
+          const key = `displayName-count-${ldml}`;
+          if (
+            key in data &&
+            data[key as 'displayName-count-other'] !== names.other
+          ) {
+            names[ldml] = data[key as 'displayName-count-other'];
+          }
+          return names;
+        },
+        {} as Record<LDMLPluralRule, string>
+      ),
     };
     return all;
   }, {});
@@ -60,82 +73,58 @@ function generateUnitILD(u: UnitsData): NumberILD['unitSymbols'] {
     const narrowData = u.narrow[k as 'digital-bit'];
     const symbolData = u.short[k as 'digital-bit'];
     all[k] = {
-      unitSymbol: PLURAL_RULES.reduce((names: Record<LDMLPluralRule, string>, ldml) => {
-        const key = `unitPattern-count-${ldml}`;
-        if (key in symbolData && symbolData[key as 'unitPattern-count-other'] !== names.other) {
-          names[ldml] = symbolData[key as 'unitPattern-count-other'];
-        }
-        return names;
-      }, {} as Record<LDMLPluralRule, string>),
-      unitNarrowSymbol: PLURAL_RULES.reduce(
+      unitSymbol: PLURAL_RULES.reduce(
         (names: Record<LDMLPluralRule, string>, ldml) => {
           const key = `unitPattern-count-${ldml}`;
-          if (key in narrowData && narrowData[key as 'unitPattern-count-other'] !== names.other) {
-            names[ldml] = narrowData[key as 'unitPattern-count-other'];
+          if (
+            key in symbolData &&
+            symbolData[key as 'unitPattern-count-other'] !== names.other
+          ) {
+            names[ldml] = symbolData[key as 'unitPattern-count-other'].replace(
+              PATTERN_0_REGEX,
+              ''
+            );
           }
           return names;
         },
         {} as Record<LDMLPluralRule, string>
       ),
-      unitName: PLURAL_RULES.reduce((names: Record<LDMLPluralRule, string>, ldml) => {
-        const key = `unitPattern-count-${ldml}`;
-        if (key in longData && longData[key as 'unitPattern-count-other'] !== names.other) {
-          names[ldml] = longData[key as 'unitPattern-count-other'];
-        }
-        return names;
-      }, {} as Record<LDMLPluralRule, string>),
+      unitNarrowSymbol: PLURAL_RULES.reduce(
+        (names: Record<LDMLPluralRule, string>, ldml) => {
+          const key = `unitPattern-count-${ldml}`;
+          if (
+            key in narrowData &&
+            narrowData[key as 'unitPattern-count-other'] !== names.other
+          ) {
+            names[ldml] = narrowData[key as 'unitPattern-count-other'].replace(
+              PATTERN_0_REGEX,
+              ''
+            );
+          }
+          return names;
+        },
+        {} as Record<LDMLPluralRule, string>
+      ),
+      unitName: PLURAL_RULES.reduce(
+        (names: Record<LDMLPluralRule, string>, ldml) => {
+          const key = `unitPattern-count-${ldml}`;
+          if (
+            key in longData &&
+            longData[key as 'unitPattern-count-other'] !== names.other
+          ) {
+            names[ldml] = longData[key as 'unitPattern-count-other'].replace(
+              PATTERN_0_REGEX,
+              ''
+            );
+          }
+          return names;
+        },
+        {} as Record<LDMLPluralRule, string>
+      ),
     };
     return all;
   }, {});
 }
-
-// function generateContinuousILND(startChar: string): NumberInternalSlots['ilnd'] {
-//   const startCharCode = startChar.charCodeAt(0);
-//   const arr = new Array<string>(10) as NumberInternalSlots['ilnd'];
-//   for (let i = 0; i < 10; i++) {
-//     arr[i] = String.fromCharCode(startCharCode + i);
-//   }
-//   return arr;
-// }
-
-// // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#table-numbering-system-digits
-// const ILND = (function() {
-//   return {
-//     arab: generateContinuousILND('\u0660'),
-//     arabext: generateContinuousILND('\u06f0'),
-//     bali: generateContinuousILND('\u1b50'),
-//     beng: generateContinuousILND('\u09e6'),
-//     deva: generateContinuousILND('\u0966'),
-//     fullwide: generateContinuousILND('\uff10'),
-//     gujr: generateContinuousILND('\u0ae6'),
-//     guru: generateContinuousILND('\u0a66'),
-//     khmr: generateContinuousILND('\u17e0'),
-//     knda: generateContinuousILND('\u0ce6'),
-//     laoo: generateContinuousILND('\u0ed0'),
-//     latn: generateContinuousILND('\u0030'),
-//     limb: generateContinuousILND('\u1946'),
-//     mlym: generateContinuousILND('\u0d66'),
-//     mong: generateContinuousILND('\u1810'),
-//     mymr: generateContinuousILND('\u1040'),
-//     orya: generateContinuousILND('\u0b66'),
-//     tamldec: generateContinuousILND('\u0be6'),
-//     telu: generateContinuousILND('\u0c66'),
-//     thai: generateContinuousILND('\u0e50'),
-//     tibt: generateContinuousILND('\u0f20'),
-//     hanidec: [
-//       '\u3007',
-//       '\u4e00',
-//       '\u4e8c',
-//       '\u4e09',
-//       '\u56db',
-//       '\u4e94',
-//       '\u516d',
-//       '\u4e03',
-//       '\u516b',
-//       '\u4e5d',
-//     ],
-//   };
-// })();
 
 // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-intl.numberformat-internal-slots
 function extractNumberPattern(
@@ -160,35 +149,23 @@ function extractNumberPattern(
       currencySymbols: generateCurrencyILD(c),
       unitSymbols: generateUnitILD(u),
     },
-    // ilnd: ILND[d['defaultNumberingSystem'] as 'latn'] || ILND['latn'],
   };
 }
 
 // Credit: https://github.com/andyearnshaw/Intl.js/blob/master/scripts/utils/reduce.js
 // Matches CLDR number patterns, e.g. #,##0.00, #,##,##0.00, #,##0.##, #E0, etc.
 const NUMBER_PATTERN = /[#0](?:[\.,][#0]+)*/g;
+const PATTERN_0_REGEX = /\s?\{0\}\s?/g;
+const SCIENTIFIC_SLOT = '{number}{scientificSeparator}{scientificExponent}';
+const SCIENTIFIC_SIGN_PATTERN = produceSignPattern(SCIENTIFIC_SLOT);
 
-function extractSignPattern(
-  pattern: string,
-  signDisplay: keyof SignDisplayPattern = 'auto',
-  currencyToken:
-    | 'currencyCode'
-    | 'currencySymbol'
-    | 'currencyNarrowSymbol'
-    | 'currencyName' = 'currencyCode'
-): SignPattern {
-  const patterns = pattern.split(';');
-  let [positivePattern, negativePattern] = patterns.map(p =>
-    p
-      .replace(NUMBER_PATTERN, '{number}')
-      .replace('+', '{plusSign}')
-      .replace('-', '{minusSign}')
-      .replace('%', '{percentSign}')
-      .replace('¤', `{${currencyToken}}`)
-      .replace('E', '{scientificSeparator}')
-  );
+function produceSignPattern(
+  positivePattern: string,
+  negativePattern = '',
+  signDisplay: keyof SignDisplayPattern = 'auto'
+) {
   if (!negativePattern) {
-    negativePattern = `{minusSign}${positivePattern}`
+    negativePattern = `{minusSign}${positivePattern}`;
   }
   let zeroPattern = positivePattern;
   switch (signDisplay) {
@@ -220,6 +197,39 @@ function extractSignPattern(
   };
 }
 
+function partitionUnitPattern(pattern: string, tokenType: string) {
+  return (
+    pattern
+      // Handle `{0}foo` & `{0} foo`
+      .replace(/^(\{0\}\s?)([^\s]+)$/, `$1{${tokenType}}`)
+      // Handle `foo{0}` & `foo {0}`
+      .replace(/^([^\s]*?)(\s?\{0\})$/, `{${tokenType}}$2`)
+  );
+}
+
+function extractSignPattern(
+  pattern: string,
+  signDisplay: keyof SignDisplayPattern = 'auto',
+  currencyToken:
+    | 'currencyCode'
+    | 'currencySymbol'
+    | 'currencyNarrowSymbol'
+    | 'currencyName' = 'currencyCode'
+): SignPattern {
+  const patterns = pattern.split(';');
+
+  let [positivePattern, negativePattern] = patterns.map(p =>
+    p
+      .replace(NUMBER_PATTERN, '{number}')
+      .replace('+', '{plusSign}')
+      .replace('-', '{minusSign}')
+      .replace('%', '{percentSign}')
+      .replace('¤', `{${currencyToken}}`)
+  );
+
+  return produceSignPattern(positivePattern, negativePattern, signDisplay);
+}
+
 function extractDecimalFormatILD(
   data:
     | NumbersData['decimalFormats-numberSystem-latn']['short']['decimalFormat']
@@ -228,7 +238,7 @@ function extractDecimalFormatILD(
 ): Record<string, Record<LDMLPluralRule, string>> {
   return (Object.keys(data) as Array<keyof typeof data>).reduce(
     (all: Record<string, Record<LDMLPluralRule, string>>, k) => {
-      const [type,, ldml] = k.split('-');
+      const [type, , ldml] = k.split('-');
       const decimalPattern = all[type] || {};
       decimalPattern[ldml as LDMLPluralRule] = data[k]
         .replace('¤', '')
@@ -269,10 +279,7 @@ function extractDecimalPattern(d: NumbersData): SignDisplayPattern {
         d['decimalFormats-numberSystem-latn']['standard'],
         k
       ),
-      scientific: extractSignPattern(
-        d['scientificFormats-numberSystem-latn']['standard'],
-        k
-      ),
+      scientific: SCIENTIFIC_SIGN_PATTERN,
       compactShort: extractSignPattern(
         d['decimalFormats-numberSystem-latn']['short']['decimalFormat'][
           '1000-count-other'
@@ -300,7 +307,10 @@ function extractPercentPattern(d: NumbersData): SignDisplayPattern {
         k
       ),
       scientific: extractSignPattern(
-        d['percentFormats-numberSystem-latn']['standard'],
+        d['percentFormats-numberSystem-latn']['standard'].replace(
+          NUMBER_PATTERN,
+          SCIENTIFIC_SLOT
+        ),
         k
       ),
       compactShort: extractSignPattern(
@@ -329,7 +339,7 @@ function extractCurrencyPattern(d: NumbersData): CurrencySignPattern {
         scientific: extractSignPattern(
           d['currencyFormats-numberSystem-latn']['standard'].replace(
             NUMBER_PATTERN,
-            d['scientificFormats-numberSystem-latn']['standard']
+            SCIENTIFIC_SLOT
           ),
           k
         ),
@@ -381,46 +391,60 @@ function extractCurrencyPattern(d: NumbersData): CurrencySignPattern {
 function extractUnitPattern(d: NumbersData, u: UnitsData): UnitPattern {
   return (['narrow', 'long', 'short'] as Array<keyof UnitPattern>).reduce(
     (patterns, display) => {
-      const unit = `{${
+      const unit =
         display === 'long'
           ? 'unitName'
           : display === 'short'
           ? 'unitSymbol'
-          : 'unitNarrowSymbol'
-      }}`;
+          : 'unitNarrowSymbol';
       patterns[display] = (['auto', 'always', 'never', 'exceptZero'] as Array<
         keyof SignDisplayPattern
       >).reduce((all: SignDisplayPattern, k) => {
         all[k] = {
           standard: extractSignPattern(
-            u[display as 'long']['acceleration-g-force'][
-              'unitPattern-count-other'
-            ]
-              .replace('{0}', d['decimalFormats-numberSystem-latn']['standard'])
-              .replace(/([^0#\s]+)/, unit),
+            partitionUnitPattern(
+              u[display as 'long']['acceleration-g-force'][
+                'unitPattern-count-other'
+              ],
+              unit
+            ).replace('{0}', d['decimalFormats-numberSystem-latn']['standard']),
             k
           ),
           scientific: extractSignPattern(
-            u[display as 'long']['acceleration-g-force'][
-              'unitPattern-count-other'
-            ]
-              .replace(
-                '{0}',
-                d['scientificFormats-numberSystem-latn']['standard']
-              )
-              .replace(/([^0#\s]+)/, '{unitSymbol}'),
+            partitionUnitPattern(
+              u[display as 'long']['acceleration-g-force'][
+                'unitPattern-count-other'
+              ],
+              'unitSymbol'
+            ).replace('{0}', SCIENTIFIC_SLOT),
             k
           ),
           compactShort: extractSignPattern(
-            d['currencyFormats-numberSystem-latn']['short']['standard'][
-              '1000-count-other'
-            ].replace(/([^0#\s]+)/, '{compactSymbol}'),
+            partitionUnitPattern(
+              u[display as 'long']['acceleration-g-force'][
+                'unitPattern-count-other'
+              ],
+              'unitSymbol'
+            ).replace(
+              '{0}',
+              d['decimalFormats-numberSystem-latn']['short']['decimalFormat'][
+                '1000-count-other'
+              ].replace(/([^0#\s]+)/, '{compactSymbol}')
+            ),
             k
           ),
           compactLong: extractSignPattern(
-            d['currencyFormats-numberSystem-latn']['short']['standard'][
-              '1000-count-other'
-            ].replace(/([^0#\s]+)/, '{compactSymbol}'),
+            partitionUnitPattern(
+              u[display as 'long']['acceleration-g-force'][
+                'unitPattern-count-other'
+              ],
+              'unitSymbol'
+            ).replace(
+              '{0}',
+              d['decimalFormats-numberSystem-latn']['short']['decimalFormat'][
+                '1000-count-other'
+              ].replace(/([^0#\s]+)/, '{compactSymbol}')
+            ),
             k
           ),
         };
@@ -443,12 +467,12 @@ function loadNumbers(locale: Locale): NumberInternalSlots {
     .main[locale as 'en'].numbers.currencies;
   const units = (require(`cldr-units-full/main/${locale}/units.json`) as typeof Units)
     .main[locale as 'en'].units;
-    try {
-  return extractNumberPattern(numbers, currencies, units);
-    } catch (e) {
-      console.error(`Issue processing locale ${locale}`)
-      throw e
-    }
+  try {
+    return extractNumberPattern(numbers, currencies, units);
+  } catch (e) {
+    console.error(`Issue processing locale ${locale}`);
+    throw e;
+  }
 }
 
 function hasNumbers(locale: Locale): boolean {
