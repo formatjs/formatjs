@@ -20,7 +20,7 @@ export function formatList(
   getListFormat: Formatters['getListFormat'],
   values: Array<string>,
   options: Parameters<IntlFormatters['formatList']>[1]
-): string
+): string;
 export function formatList(
   {locale, onError}: Pick<IntlConfig, 'locale' | 'onError'>,
   getListFormat: Formatters['getListFormat'],
