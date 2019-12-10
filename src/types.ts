@@ -108,6 +108,10 @@ export interface IntlFormatters {
     values?: Record<string, PrimitiveType>
   ): React.ReactNode;
   formatList(
+    values: Array<string>,
+    opts?: FormatListOptions
+  ): string;
+  formatList(
     values: Array<string | React.ReactNode>,
     opts?: FormatListOptions
   ): React.ReactNode;
