@@ -35,7 +35,8 @@
     "build": "npm run cldr && npm run compile",
     "cldr": "ts-node --project tsconfig.cjs.json scripts/cldr",
     "clean": "rimraf dist lib",
-    "compile": "tsc && tsc -p tsconfig.cjs.json && api-extractor run --local && rollup -c rollup.config.js",
+    "compile": "tsc && tsc -p tsconfig.cjs.json && api-extractor run --local",
+    "rollup": "rollup -c rollup.config.js",
     "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json cross-env NODE_ENV=test jest",
     "test": "npm run jest"
   },

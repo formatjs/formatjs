@@ -27,5 +27,6 @@
             "yargs"
         ]
     },
-    "include": ["src/*.ts"]
+    "include": ["src/*.ts"],
+    "exclude": ["src/locales.ts"]
 }

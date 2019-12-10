@@ -1,7 +1,6 @@
 import aliases from './aliases';
 import parentLocales from './parentLocales';
 import {invariant} from './invariant';
-import pick from 'lodash/pick';
 
 /**
  * https://tc39.es/ecma262/#sec-toobject
@@ -125,12 +124,7 @@ export function setInternalSlot<
   field: Field,
   value: Internal[Field]
 ) {
-  setMultiInternalSlots(
-    map,
-    pl,
-    // @ts-ignore
-    {[field]: value}
-  );
+  setMultiInternalSlots(map, pl, {[field]: value} as Pick<Internal, Field>);
 }
 
 export function setMultiInternalSlots<
@@ -170,7 +164,10 @@ export function getMultiInternalSlots<
   if (!slots) {
     throw new TypeError(`${pl} InternalSlot has not been initialized`);
   }
-  return pick(slots, fields);
+  return fields.reduce((all, f) => {
+    all[f] = slots[f];
+    return all;
+  }, {} as Pick<Internal, Field>);
 }
 
 export interface LiteralPart {

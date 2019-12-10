@@ -1,6 +1,4 @@
 import {
-  getAllUnitsLocales,
-  getAllCurrenciesLocales,
   extractAllNumbers,
   getAllNumbersLocales,
 } from 'formatjs-extract-cldr-data';
@@ -8,17 +6,10 @@ import {
   SANCTIONED_UNITS,
   getAliasesByLang,
   getParentLocalesByLang,
-  invariant,
   NumberLocaleData,
 } from '@formatjs/intl-utils';
 import {resolve, join} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
-import {isEqual} from 'lodash';
-
-invariant(
-  isEqual(getAllUnitsLocales().sort(), getAllCurrenciesLocales().sort()),
-  'All unit locales differ from all currencies locales'
-);
 
 function shortenUnit(unit: string) {
   return unit.replace(/^(.*?)-/, '');
