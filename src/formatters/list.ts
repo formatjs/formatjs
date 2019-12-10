@@ -18,9 +18,15 @@ function generateToken(i: number): string {
 export function formatList(
   {locale, onError}: Pick<IntlConfig, 'locale' | 'onError'>,
   getListFormat: Formatters['getListFormat'],
+  values: Array<string>,
+  options: Parameters<IntlFormatters['formatList']>[1]
+): string
+export function formatList(
+  {locale, onError}: Pick<IntlConfig, 'locale' | 'onError'>,
+  getListFormat: Formatters['getListFormat'],
   values: Parameters<IntlFormatters['formatList']>[0],
   options: Parameters<IntlFormatters['formatList']>[1] = {}
-): string | React.ReactNode {
+): React.ReactNode {
   const ListFormat: typeof IntlListFormat = (Intl as any).ListFormat;
   if (!ListFormat) {
     onError(
