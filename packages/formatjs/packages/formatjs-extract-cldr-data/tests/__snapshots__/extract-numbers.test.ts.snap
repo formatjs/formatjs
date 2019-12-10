@@ -2553,14 +2553,14 @@ Object {
         "accounting": Object {
           "always": Object {
             "compactLong": Object {
-              "negativePattern": "{g}{b}{h}K",
-              "positivePattern": "{j}{b}{h}K",
-              "zeroPattern": "{j}{b}{h}K",
+              "negativePattern": "{g}{c}{h}{b}",
+              "positivePattern": "{j}{c}{h}{b}",
+              "zeroPattern": "{j}{c}{h}{b}",
             },
             "compactShort": Object {
-              "negativePattern": "{g}{b}{h}K",
-              "positivePattern": "{j}{b}{h}K",
-              "zeroPattern": "{j}{b}{h}K",
+              "negativePattern": "{g}{c}{h}{b}",
+              "positivePattern": "{j}{c}{h}{b}",
+              "zeroPattern": "{j}{c}{h}{b}",
             },
             "scientific": Object {
               "negativePattern": "{g}{h}",
@@ -2575,14 +2575,14 @@ Object {
           },
           "auto": Object {
             "compactLong": Object {
-              "negativePattern": "{g}{b}{h}K",
-              "positivePattern": "{b}{h}K",
-              "zeroPattern": "{b}{h}K",
+              "negativePattern": "{g}{c}{h}{b}",
+              "positivePattern": "{c}{h}{b}",
+              "zeroPattern": "{c}{h}{b}",
             },
             "compactShort": Object {
-              "negativePattern": "{g}{b}{h}K",
-              "positivePattern": "{b}{h}K",
-              "zeroPattern": "{b}{h}K",
+              "negativePattern": "{g}{c}{h}{b}",
+              "positivePattern": "{c}{h}{b}",
+              "zeroPattern": "{c}{h}{b}",
             },
             "scientific": Object {
               "negativePattern": "{g}{h}",
@@ -2597,14 +2597,14 @@ Object {
           },
           "exceptZero": Object {
             "compactLong": Object {
-              "negativePattern": "{g}{b}{h}K",
-              "positivePattern": "{j}{b}{h}K",
-              "zeroPattern": "{b}{h}K",
+              "negativePattern": "{g}{c}{h}{b}",
+              "positivePattern": "{j}{c}{h}{b}",
+              "zeroPattern": "{c}{h}{b}",
             },
             "compactShort": Object {
-              "negativePattern": "{g}{b}{h}K",
-              "positivePattern": "{j}{b}{h}K",
-              "zeroPattern": "{b}{h}K",
+              "negativePattern": "{g}{c}{h}{b}",
+              "positivePattern": "{j}{c}{h}{b}",
+              "zeroPattern": "{c}{h}{b}",
             },
             "scientific": Object {
               "negativePattern": "{g}{h}",
@@ -2619,14 +2619,14 @@ Object {
           },
           "never": Object {
             "compactLong": Object {
-              "negativePattern": "{b}{h}K",
-              "positivePattern": "{b}{h}K",
-              "zeroPattern": "{b}{h}K",
+              "negativePattern": "{c}{h}{b}",
+              "positivePattern": "{c}{h}{b}",
+              "zeroPattern": "{c}{h}{b}",
             },
             "compactShort": Object {
-              "negativePattern": "{b}{h}K",
-              "positivePattern": "{b}{h}K",
-              "zeroPattern": "{b}{h}K",
+              "negativePattern": "{c}{h}{b}",
+              "positivePattern": "{c}{h}{b}",
+              "zeroPattern": "{c}{h}{b}",
             },
             "scientific": Object {
               "negativePattern": "{h}",
@@ -2643,14 +2643,14 @@ Object {
         "standard": Object {
           "always": Object {
             "compactLong": Object {
-              "negativePattern": "{g}{b}{h}K",
-              "positivePattern": "{j}{b}{h}K",
-              "zeroPattern": "{j}{b}{h}K",
+              "negativePattern": "{g}{c}{h}{b}",
+              "positivePattern": "{j}{c}{h}{b}",
+              "zeroPattern": "{j}{c}{h}{b}",
             },
             "compactShort": Object {
-              "negativePattern": "{g}{b}{h}K",
-              "positivePattern": "{j}{b}{h}K",
-              "zeroPattern": "{j}{b}{h}K",
+              "negativePattern": "{g}{c}{h}{b}",
+              "positivePattern": "{j}{c}{h}{b}",
+              "zeroPattern": "{j}{c}{h}{b}",
             },
             "scientific": Object {
               "negativePattern": "{g}{c}{h}{l}{k}",
@@ -2665,14 +2665,14 @@ Object {
           },
           "auto": Object {
             "compactLong": Object {
-              "negativePattern": "{g}{b}{h}K",
-              "positivePattern": "{b}{h}K",
-              "zeroPattern": "{b}{h}K",
+              "negativePattern": "{g}{c}{h}{b}",
+              "positivePattern": "{c}{h}{b}",
+              "zeroPattern": "{c}{h}{b}",
             },
             "compactShort": Object {
-              "negativePattern": "{g}{b}{h}K",
-              "positivePattern": "{b}{h}K",
-              "zeroPattern": "{b}{h}K",
+              "negativePattern": "{g}{c}{h}{b}",
+              "positivePattern": "{c}{h}{b}",
+              "zeroPattern": "{c}{h}{b}",
             },
             "scientific": Object {
               "negativePattern": "{g}{c}{h}{l}{k}",
@@ -2687,14 +2687,14 @@ Object {
           },
           "exceptZero": Object {
             "compactLong": Object {
-              "negativePattern": "{g}{b}{h}K",
-              "positivePattern": "{j}{b}{h}K",
-              "zeroPattern": "{b}{h}K",
+              "negativePattern": "{g}{c}{h}{b}",
+              "positivePattern": "{j}{c}{h}{b}",
+              "zeroPattern": "{c}{h}{b}",
             },
             "compactShort": Object {
-              "negativePattern": "{g}{b}{h}K",
-              "positivePattern": "{j}{b}{h}K",
-              "zeroPattern": "{b}{h}K",
+              "negativePattern": "{g}{c}{h}{b}",
+              "positivePattern": "{j}{c}{h}{b}",
+              "zeroPattern": "{c}{h}{b}",
             },
             "scientific": Object {
               "negativePattern": "{g}{c}{h}{l}{k}",
@@ -2709,14 +2709,14 @@ Object {
           },
           "never": Object {
             "compactLong": Object {
-              "negativePattern": "{b}{h}K",
-              "positivePattern": "{b}{h}K",
-              "zeroPattern": "{b}{h}K",
+              "negativePattern": "{c}{h}{b}",
+              "positivePattern": "{c}{h}{b}",
+              "zeroPattern": "{c}{h}{b}",
             },
             "compactShort": Object {
-              "negativePattern": "{b}{h}K",
-              "positivePattern": "{b}{h}K",
-              "zeroPattern": "{b}{h}K",
+              "negativePattern": "{c}{h}{b}",
+              "positivePattern": "{c}{h}{b}",
+              "zeroPattern": "{c}{h}{b}",
             },
             "scientific": Object {
               "negativePattern": "{c}{h}{l}{k}",
@@ -3169,6 +3169,2204 @@ Object {
               "negativePattern": "{h}{b} {o}",
               "positivePattern": "{h}{b} {o}",
               "zeroPattern": "{h}{b} {o}",
+            },
+            "scientific": Object {
+              "negativePattern": "{h}{l}{k} {o}",
+              "positivePattern": "{h}{l}{k} {o}",
+              "zeroPattern": "{h}{l}{k} {o}",
+            },
+            "standard": Object {
+              "negativePattern": "{h} {o}",
+              "positivePattern": "{h} {o}",
+              "zeroPattern": "{h} {o}",
+            },
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`extract-numbers should be able to extract vi 1`] = `
+Object {
+  "vi": Object {
+    "ild": Object {
+      "currency": Object {
+        "compactShort": Object {
+          "1000": "N",
+          "10000": "N",
+          "100000": "N",
+          "1000000": "Tr",
+          "10000000": "Tr",
+          "100000000": "Tr",
+          "1000000000": "T",
+          "10000000000": "T",
+          "100000000000": "T",
+          "1000000000000": "NT",
+          "10000000000000": "NT",
+          "100000000000000": "NT",
+        },
+      },
+      "currencySymbols": Object {
+        "ADP": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ADP",
+        },
+        "AED": Object {
+          "currencyName": "Dirham UAE",
+          "currencySymbol": "AED",
+        },
+        "AFA": Object {
+          "currencyName": Object {},
+          "currencySymbol": "AFA",
+        },
+        "AFN": Object {
+          "currencyName": "Afghani Afghanistan",
+          "currencySymbol": "AFN",
+        },
+        "ALK": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ALK",
+        },
+        "ALL": Object {
+          "currencyName": "Lek Albania",
+          "currencySymbol": "ALL",
+        },
+        "AMD": Object {
+          "currencyName": "Dram Armenia",
+          "currencySymbol": "AMD",
+        },
+        "ANG": Object {
+          "currencyName": "Guilder Antille Hà Lan",
+          "currencySymbol": "ANG",
+        },
+        "AOA": Object {
+          "currencyName": "Kwanza Angola",
+          "currencyNarrowSymbol": "Kz",
+          "currencySymbol": "AOA",
+        },
+        "AOK": Object {
+          "currencyName": Object {},
+          "currencySymbol": "AOK",
+        },
+        "AON": Object {
+          "currencyName": Object {},
+          "currencySymbol": "AON",
+        },
+        "AOR": Object {
+          "currencyName": Object {},
+          "currencySymbol": "AOR",
+        },
+        "ARA": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ARA",
+        },
+        "ARL": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ARL",
+        },
+        "ARM": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ARM",
+        },
+        "ARP": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ARP",
+        },
+        "ARS": Object {
+          "currencyName": "Peso Argentina",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "ARS",
+        },
+        "ATS": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ATS",
+        },
+        "AUD": Object {
+          "currencyName": "Đô la Australia",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "AU$",
+        },
+        "AWG": Object {
+          "currencyName": "Florin Aruba",
+          "currencySymbol": "AWG",
+        },
+        "AZM": Object {
+          "currencyName": Object {},
+          "currencySymbol": "AZM",
+        },
+        "AZN": Object {
+          "currencyName": "Manat Azerbaijan",
+          "currencySymbol": "AZN",
+        },
+        "BAD": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BAD",
+        },
+        "BAM": Object {
+          "currencyName": "Mark Bosnia-Herzegovina có thể chuyển đổi",
+          "currencyNarrowSymbol": "KM",
+          "currencySymbol": "BAM",
+        },
+        "BAN": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BAN",
+        },
+        "BBD": Object {
+          "currencyName": "Đô la Barbados",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "BBD",
+        },
+        "BDT": Object {
+          "currencyName": "Taka Bangladesh",
+          "currencyNarrowSymbol": "৳",
+          "currencySymbol": "BDT",
+        },
+        "BEC": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BEC",
+        },
+        "BEF": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BEF",
+        },
+        "BEL": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BEL",
+        },
+        "BGL": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BGL",
+        },
+        "BGM": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BGM",
+        },
+        "BGN": Object {
+          "currencyName": "Lev Bulgaria",
+          "currencySymbol": "BGN",
+        },
+        "BGO": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BGO",
+        },
+        "BHD": Object {
+          "currencyName": "Dinar Bahrain",
+          "currencySymbol": "BHD",
+        },
+        "BIF": Object {
+          "currencyName": "Franc Burundi",
+          "currencySymbol": "BIF",
+        },
+        "BMD": Object {
+          "currencyName": "Đô la Bermuda",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "BMD",
+        },
+        "BND": Object {
+          "currencyName": "Đô la Brunei",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "BND",
+        },
+        "BOB": Object {
+          "currencyName": "Boliviano Bolivia",
+          "currencyNarrowSymbol": "Bs",
+          "currencySymbol": "BOB",
+        },
+        "BOL": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BOL",
+        },
+        "BOP": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BOP",
+        },
+        "BOV": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BOV",
+        },
+        "BRB": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BRB",
+        },
+        "BRC": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BRC",
+        },
+        "BRE": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BRE",
+        },
+        "BRL": Object {
+          "currencyName": "Real Braxin",
+          "currencyNarrowSymbol": "R$",
+          "currencySymbol": "R$",
+        },
+        "BRN": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BRN",
+        },
+        "BRR": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BRR",
+        },
+        "BRZ": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BRZ",
+        },
+        "BSD": Object {
+          "currencyName": "Đô la Bahamas",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "BSD",
+        },
+        "BTN": Object {
+          "currencyName": "Ngultrum Bhutan",
+          "currencySymbol": "BTN",
+        },
+        "BUK": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BUK",
+        },
+        "BWP": Object {
+          "currencyName": "Pula Botswana",
+          "currencyNarrowSymbol": "P",
+          "currencySymbol": "BWP",
+        },
+        "BYB": Object {
+          "currencyName": Object {},
+          "currencySymbol": "BYB",
+        },
+        "BYN": Object {
+          "currencyName": "Rúp Belarus",
+          "currencyNarrowSymbol": "р.",
+          "currencySymbol": "BYN",
+        },
+        "BYR": Object {
+          "currencyName": "Rúp Belarus (2000–2016)",
+          "currencySymbol": "BYR",
+        },
+        "BZD": Object {
+          "currencyName": "Đô la Belize",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "BZD",
+        },
+        "CAD": Object {
+          "currencyName": "Đô la Canada",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "CA$",
+        },
+        "CDF": Object {
+          "currencyName": "Franc Congo",
+          "currencySymbol": "CDF",
+        },
+        "CHE": Object {
+          "currencyName": Object {},
+          "currencySymbol": "CHE",
+        },
+        "CHF": Object {
+          "currencyName": "Franc Thụy sĩ",
+          "currencySymbol": "CHF",
+        },
+        "CHW": Object {
+          "currencyName": Object {},
+          "currencySymbol": "CHW",
+        },
+        "CLE": Object {
+          "currencyName": Object {},
+          "currencySymbol": "CLE",
+        },
+        "CLF": Object {
+          "currencyName": Object {},
+          "currencySymbol": "CLF",
+        },
+        "CLP": Object {
+          "currencyName": "Peso Chile",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "CLP",
+        },
+        "CNH": Object {
+          "currencyName": "Nhân dân tệ (hải ngoại)",
+          "currencySymbol": "CNH",
+        },
+        "CNX": Object {
+          "currencyName": Object {},
+          "currencySymbol": "CNX",
+        },
+        "CNY": Object {
+          "currencyName": "Nhân dân tệ",
+          "currencyNarrowSymbol": "¥",
+          "currencySymbol": "CN¥",
+        },
+        "COP": Object {
+          "currencyName": "Peso Colombia",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "COP",
+        },
+        "COU": Object {
+          "currencyName": Object {},
+          "currencySymbol": "COU",
+        },
+        "CRC": Object {
+          "currencyName": "Colón Costa Rica",
+          "currencyNarrowSymbol": "₡",
+          "currencySymbol": "CRC",
+        },
+        "CSD": Object {
+          "currencyName": Object {},
+          "currencySymbol": "CSD",
+        },
+        "CSK": Object {
+          "currencyName": Object {},
+          "currencySymbol": "CSK",
+        },
+        "CUC": Object {
+          "currencyName": "Peso Cuba có thể chuyển đổi",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "CUC",
+        },
+        "CUP": Object {
+          "currencyName": "Peso Cuba",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "CUP",
+        },
+        "CVE": Object {
+          "currencyName": "Escudo Cape Verde",
+          "currencySymbol": "CVE",
+        },
+        "CYP": Object {
+          "currencyName": Object {},
+          "currencySymbol": "CYP",
+        },
+        "CZK": Object {
+          "currencyName": "Koruna Cộng hòa Séc",
+          "currencyNarrowSymbol": "Kč",
+          "currencySymbol": "CZK",
+        },
+        "DDM": Object {
+          "currencyName": Object {},
+          "currencySymbol": "DDM",
+        },
+        "DEM": Object {
+          "currencyName": Object {},
+          "currencySymbol": "DEM",
+        },
+        "DJF": Object {
+          "currencyName": "Franc Djibouti",
+          "currencySymbol": "DJF",
+        },
+        "DKK": Object {
+          "currencyName": "Krone Đan Mạch",
+          "currencyNarrowSymbol": "kr",
+          "currencySymbol": "DKK",
+        },
+        "DOP": Object {
+          "currencyName": "Peso Dominica",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "DOP",
+        },
+        "DZD": Object {
+          "currencyName": "Dinar Algeria",
+          "currencySymbol": "DZD",
+        },
+        "ECS": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ECS",
+        },
+        "ECV": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ECV",
+        },
+        "EEK": Object {
+          "currencyName": Object {},
+          "currencySymbol": "EEK",
+        },
+        "EGP": Object {
+          "currencyName": "Bảng Ai Cập",
+          "currencyNarrowSymbol": "E£",
+          "currencySymbol": "EGP",
+        },
+        "ERN": Object {
+          "currencyName": "Nakfa Eritrea",
+          "currencySymbol": "ERN",
+        },
+        "ESA": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ESA",
+        },
+        "ESB": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ESB",
+        },
+        "ESP": Object {
+          "currencyName": Object {},
+          "currencyNarrowSymbol": "₧",
+          "currencySymbol": "ESP",
+        },
+        "ETB": Object {
+          "currencyName": "Birr Ethiopia",
+          "currencySymbol": "ETB",
+        },
+        "EUR": Object {
+          "currencyName": "euro",
+          "currencyNarrowSymbol": "€",
+          "currencySymbol": "€",
+        },
+        "FIM": Object {
+          "currencyName": Object {},
+          "currencySymbol": "FIM",
+        },
+        "FJD": Object {
+          "currencyName": "Đô la Fiji",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "FJD",
+        },
+        "FKP": Object {
+          "currencyName": "Bảng Quần đảo Falkland",
+          "currencyNarrowSymbol": "£",
+          "currencySymbol": "FKP",
+        },
+        "FRF": Object {
+          "currencyName": Object {},
+          "currencySymbol": "FRF",
+        },
+        "GBP": Object {
+          "currencyName": "Bảng Anh",
+          "currencyNarrowSymbol": "£",
+          "currencySymbol": "£",
+        },
+        "GEK": Object {
+          "currencyName": Object {},
+          "currencySymbol": "GEK",
+        },
+        "GEL": Object {
+          "currencyName": "Lari Georgia",
+          "currencyNarrowSymbol": "₾",
+          "currencySymbol": "GEL",
+        },
+        "GHC": Object {
+          "currencyName": Object {},
+          "currencySymbol": "GHC",
+        },
+        "GHS": Object {
+          "currencyName": "Cedi Ghana",
+          "currencySymbol": "GHS",
+        },
+        "GIP": Object {
+          "currencyName": "Bảng Gibraltar",
+          "currencyNarrowSymbol": "£",
+          "currencySymbol": "GIP",
+        },
+        "GMD": Object {
+          "currencyName": "Dalasi Gambia",
+          "currencySymbol": "GMD",
+        },
+        "GNF": Object {
+          "currencyName": "Franc Guinea",
+          "currencyNarrowSymbol": "FG",
+          "currencySymbol": "GNF",
+        },
+        "GNS": Object {
+          "currencyName": Object {},
+          "currencySymbol": "GNS",
+        },
+        "GQE": Object {
+          "currencyName": Object {},
+          "currencySymbol": "GQE",
+        },
+        "GRD": Object {
+          "currencyName": Object {},
+          "currencySymbol": "GRD",
+        },
+        "GTQ": Object {
+          "currencyName": "Quetzal Guatemala",
+          "currencyNarrowSymbol": "Q",
+          "currencySymbol": "GTQ",
+        },
+        "GWE": Object {
+          "currencyName": Object {},
+          "currencySymbol": "GWE",
+        },
+        "GWP": Object {
+          "currencyName": Object {},
+          "currencySymbol": "GWP",
+        },
+        "GYD": Object {
+          "currencyName": "Đô la Guyana",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "GYD",
+        },
+        "HKD": Object {
+          "currencyName": "Đô la Hồng Kông",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "HK$",
+        },
+        "HNL": Object {
+          "currencyName": "Lempira Honduras",
+          "currencyNarrowSymbol": "L",
+          "currencySymbol": "HNL",
+        },
+        "HRD": Object {
+          "currencyName": Object {},
+          "currencySymbol": "HRD",
+        },
+        "HRK": Object {
+          "currencyName": "Kuna Croatia",
+          "currencyNarrowSymbol": "kn",
+          "currencySymbol": "HRK",
+        },
+        "HTG": Object {
+          "currencyName": "Gourde Haiti",
+          "currencySymbol": "HTG",
+        },
+        "HUF": Object {
+          "currencyName": "forint Hungary",
+          "currencyNarrowSymbol": "Ft",
+          "currencySymbol": "HUF",
+        },
+        "IDR": Object {
+          "currencyName": "Rupiah Indonesia",
+          "currencyNarrowSymbol": "Rp",
+          "currencySymbol": "IDR",
+        },
+        "IEP": Object {
+          "currencyName": Object {},
+          "currencySymbol": "IEP",
+        },
+        "ILP": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ILP",
+        },
+        "ILR": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ILR",
+        },
+        "ILS": Object {
+          "currencyName": "Sheqel Israel mới",
+          "currencyNarrowSymbol": "₪",
+          "currencySymbol": "₪",
+        },
+        "INR": Object {
+          "currencyName": "Rupee Ấn Độ",
+          "currencyNarrowSymbol": "₹",
+          "currencySymbol": "₹",
+        },
+        "IQD": Object {
+          "currencyName": "Dinar Iraq",
+          "currencySymbol": "IQD",
+        },
+        "IRR": Object {
+          "currencyName": "Rial Iran",
+          "currencySymbol": "IRR",
+        },
+        "ISJ": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ISJ",
+        },
+        "ISK": Object {
+          "currencyName": "króna Iceland",
+          "currencyNarrowSymbol": "kr",
+          "currencySymbol": "ISK",
+        },
+        "ITL": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ITL",
+        },
+        "JMD": Object {
+          "currencyName": "Đô la Jamaica",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "JMD",
+        },
+        "JOD": Object {
+          "currencyName": "Dinar Jordan",
+          "currencySymbol": "JOD",
+        },
+        "JPY": Object {
+          "currencyName": "Yên Nhật",
+          "currencyNarrowSymbol": "¥",
+          "currencySymbol": "JP¥",
+        },
+        "KES": Object {
+          "currencyName": "Shilling Kenya",
+          "currencySymbol": "KES",
+        },
+        "KGS": Object {
+          "currencyName": "Som Kyrgyzstan",
+          "currencySymbol": "KGS",
+        },
+        "KHR": Object {
+          "currencyName": "Riel Campuchia",
+          "currencyNarrowSymbol": "៛",
+          "currencySymbol": "KHR",
+        },
+        "KMF": Object {
+          "currencyName": "Franc Comoros",
+          "currencyNarrowSymbol": "CF",
+          "currencySymbol": "KMF",
+        },
+        "KPW": Object {
+          "currencyName": "Won Triều Tiên",
+          "currencyNarrowSymbol": "₩",
+          "currencySymbol": "KPW",
+        },
+        "KRH": Object {
+          "currencyName": Object {},
+          "currencySymbol": "KRH",
+        },
+        "KRO": Object {
+          "currencyName": Object {},
+          "currencySymbol": "KRO",
+        },
+        "KRW": Object {
+          "currencyName": "Won Hàn Quốc",
+          "currencyNarrowSymbol": "₩",
+          "currencySymbol": "₩",
+        },
+        "KWD": Object {
+          "currencyName": "Dinar Kuwait",
+          "currencySymbol": "KWD",
+        },
+        "KYD": Object {
+          "currencyName": "Đô la Quần đảo Cayman",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "KYD",
+        },
+        "KZT": Object {
+          "currencyName": "Tenge Kazakhstan",
+          "currencyNarrowSymbol": "₸",
+          "currencySymbol": "KZT",
+        },
+        "LAK": Object {
+          "currencyName": "Kip Lào",
+          "currencyNarrowSymbol": "₭",
+          "currencySymbol": "LAK",
+        },
+        "LBP": Object {
+          "currencyName": "Bảng Li-băng",
+          "currencyNarrowSymbol": "L£",
+          "currencySymbol": "LBP",
+        },
+        "LKR": Object {
+          "currencyName": "Rupee Sri Lanka",
+          "currencyNarrowSymbol": "Rs",
+          "currencySymbol": "LKR",
+        },
+        "LRD": Object {
+          "currencyName": "Đô la Liberia",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "LRD",
+        },
+        "LSL": Object {
+          "currencyName": Object {},
+          "currencySymbol": "LSL",
+        },
+        "LTL": Object {
+          "currencyName": "litas Lít-va",
+          "currencyNarrowSymbol": "Lt",
+          "currencySymbol": "LTL",
+        },
+        "LTT": Object {
+          "currencyName": Object {},
+          "currencySymbol": "LTT",
+        },
+        "LUC": Object {
+          "currencyName": Object {},
+          "currencySymbol": "LUC",
+        },
+        "LUF": Object {
+          "currencyName": Object {},
+          "currencySymbol": "LUF",
+        },
+        "LUL": Object {
+          "currencyName": Object {},
+          "currencySymbol": "LUL",
+        },
+        "LVL": Object {
+          "currencyName": "lats Lativia",
+          "currencyNarrowSymbol": "Ls",
+          "currencySymbol": "LVL",
+        },
+        "LVR": Object {
+          "currencyName": Object {},
+          "currencySymbol": "LVR",
+        },
+        "LYD": Object {
+          "currencyName": "Dinar Libi",
+          "currencySymbol": "LYD",
+        },
+        "MAD": Object {
+          "currencyName": "Dirham Ma-rốc",
+          "currencySymbol": "MAD",
+        },
+        "MAF": Object {
+          "currencyName": Object {},
+          "currencySymbol": "MAF",
+        },
+        "MCF": Object {
+          "currencyName": Object {},
+          "currencySymbol": "MCF",
+        },
+        "MDC": Object {
+          "currencyName": Object {},
+          "currencySymbol": "MDC",
+        },
+        "MDL": Object {
+          "currencyName": "Leu Moldova",
+          "currencySymbol": "MDL",
+        },
+        "MGA": Object {
+          "currencyName": "Ariary Malagasy",
+          "currencyNarrowSymbol": "Ar",
+          "currencySymbol": "MGA",
+        },
+        "MGF": Object {
+          "currencyName": Object {},
+          "currencySymbol": "MGF",
+        },
+        "MKD": Object {
+          "currencyName": "Denar Macedonia",
+          "currencySymbol": "MKD",
+        },
+        "MKN": Object {
+          "currencyName": Object {},
+          "currencySymbol": "MKN",
+        },
+        "MLF": Object {
+          "currencyName": Object {},
+          "currencySymbol": "MLF",
+        },
+        "MMK": Object {
+          "currencyName": "Kyat Myanma",
+          "currencyNarrowSymbol": "K",
+          "currencySymbol": "MMK",
+        },
+        "MNT": Object {
+          "currencyName": "Tugrik Mông Cổ",
+          "currencyNarrowSymbol": "₮",
+          "currencySymbol": "MNT",
+        },
+        "MOP": Object {
+          "currencyName": "Pataca Ma Cao",
+          "currencySymbol": "MOP",
+        },
+        "MRO": Object {
+          "currencyName": "Ouguiya Mauritania (1973–2017)",
+          "currencySymbol": "MRO",
+        },
+        "MRU": Object {
+          "currencyName": "Ouguiya Mauritania",
+          "currencySymbol": "MRU",
+        },
+        "MTL": Object {
+          "currencyName": Object {},
+          "currencySymbol": "MTL",
+        },
+        "MTP": Object {
+          "currencyName": Object {},
+          "currencySymbol": "MTP",
+        },
+        "MUR": Object {
+          "currencyName": "Rupee Mauritius",
+          "currencyNarrowSymbol": "Rs",
+          "currencySymbol": "MUR",
+        },
+        "MVP": Object {
+          "currencyName": Object {},
+          "currencySymbol": "MVP",
+        },
+        "MVR": Object {
+          "currencyName": "Rufiyaa Maldives",
+          "currencySymbol": "MVR",
+        },
+        "MWK": Object {
+          "currencyName": "Kwacha Malawi",
+          "currencySymbol": "MWK",
+        },
+        "MXN": Object {
+          "currencyName": "Peso Mexico",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "MX$",
+        },
+        "MXP": Object {
+          "currencyName": Object {},
+          "currencySymbol": "MXP",
+        },
+        "MXV": Object {
+          "currencyName": Object {},
+          "currencySymbol": "MXV",
+        },
+        "MYR": Object {
+          "currencyName": "Ringgit Malaysia",
+          "currencyNarrowSymbol": "RM",
+          "currencySymbol": "MYR",
+        },
+        "MZE": Object {
+          "currencyName": Object {},
+          "currencySymbol": "MZE",
+        },
+        "MZM": Object {
+          "currencyName": Object {},
+          "currencySymbol": "MZM",
+        },
+        "MZN": Object {
+          "currencyName": "Metical Mozambique",
+          "currencySymbol": "MZN",
+        },
+        "NAD": Object {
+          "currencyName": "Đô la Namibia",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "NAD",
+        },
+        "NGN": Object {
+          "currencyName": "Naira Nigeria",
+          "currencyNarrowSymbol": "₦",
+          "currencySymbol": "NGN",
+        },
+        "NIC": Object {
+          "currencyName": Object {},
+          "currencySymbol": "NIC",
+        },
+        "NIO": Object {
+          "currencyName": "Córdoba Nicaragua",
+          "currencyNarrowSymbol": "C$",
+          "currencySymbol": "NIO",
+        },
+        "NLG": Object {
+          "currencyName": Object {},
+          "currencySymbol": "NLG",
+        },
+        "NOK": Object {
+          "currencyName": "Krone Na Uy",
+          "currencyNarrowSymbol": "kr",
+          "currencySymbol": "NOK",
+        },
+        "NPR": Object {
+          "currencyName": "Rupee Nepal",
+          "currencyNarrowSymbol": "Rs",
+          "currencySymbol": "NPR",
+        },
+        "NZD": Object {
+          "currencyName": "Đô la New Zealand",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "NZ$",
+        },
+        "OMR": Object {
+          "currencyName": "Rial Oman",
+          "currencySymbol": "OMR",
+        },
+        "PAB": Object {
+          "currencyName": "Balboa Panama",
+          "currencySymbol": "PAB",
+        },
+        "PEI": Object {
+          "currencyName": Object {},
+          "currencySymbol": "PEI",
+        },
+        "PEN": Object {
+          "currencyName": "Sol Peru",
+          "currencySymbol": "PEN",
+        },
+        "PES": Object {
+          "currencyName": Object {},
+          "currencySymbol": "PES",
+        },
+        "PGK": Object {
+          "currencyName": "Kina Papua New Guinea",
+          "currencySymbol": "PGK",
+        },
+        "PHP": Object {
+          "currencyName": "Peso Philipin",
+          "currencyNarrowSymbol": "₱",
+          "currencySymbol": "PHP",
+        },
+        "PKR": Object {
+          "currencyName": "Rupee Pakistan",
+          "currencyNarrowSymbol": "Rs",
+          "currencySymbol": "PKR",
+        },
+        "PLN": Object {
+          "currencyName": "Zloty Ba Lan",
+          "currencyNarrowSymbol": "zł",
+          "currencySymbol": "PLN",
+        },
+        "PLZ": Object {
+          "currencyName": Object {},
+          "currencySymbol": "PLZ",
+        },
+        "PTE": Object {
+          "currencyName": Object {},
+          "currencySymbol": "PTE",
+        },
+        "PYG": Object {
+          "currencyName": "Guarani Paraguay",
+          "currencyNarrowSymbol": "₲",
+          "currencySymbol": "PYG",
+        },
+        "QAR": Object {
+          "currencyName": "Rial Qatar",
+          "currencySymbol": "QAR",
+        },
+        "RHD": Object {
+          "currencyName": Object {},
+          "currencySymbol": "RHD",
+        },
+        "ROL": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ROL",
+        },
+        "RON": Object {
+          "currencyName": "Leu Romania",
+          "currencyNarrowSymbol": "lei",
+          "currencySymbol": "RON",
+        },
+        "RSD": Object {
+          "currencyName": "Dinar Serbia",
+          "currencySymbol": "RSD",
+        },
+        "RUB": Object {
+          "currencyName": "Rúp Nga",
+          "currencyNarrowSymbol": "₽",
+          "currencySymbol": "RUB",
+        },
+        "RUR": Object {
+          "currencyName": Object {},
+          "currencyNarrowSymbol": "р.",
+          "currencySymbol": "RUR",
+        },
+        "RWF": Object {
+          "currencyName": "Franc Rwanda",
+          "currencyNarrowSymbol": "RF",
+          "currencySymbol": "RWF",
+        },
+        "SAR": Object {
+          "currencyName": "Riyal Ả Rập Xê-út",
+          "currencySymbol": "SAR",
+        },
+        "SBD": Object {
+          "currencyName": "Đô la quần đảo Solomon",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "SBD",
+        },
+        "SCR": Object {
+          "currencyName": "Rupee Seychelles",
+          "currencySymbol": "SCR",
+        },
+        "SDD": Object {
+          "currencyName": Object {},
+          "currencySymbol": "SDD",
+        },
+        "SDG": Object {
+          "currencyName": "Bảng Sudan",
+          "currencySymbol": "SDG",
+        },
+        "SDP": Object {
+          "currencyName": Object {},
+          "currencySymbol": "SDP",
+        },
+        "SEK": Object {
+          "currencyName": "Krona Thụy Điển",
+          "currencyNarrowSymbol": "kr",
+          "currencySymbol": "SEK",
+        },
+        "SGD": Object {
+          "currencyName": "Đô la Singapore",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "SGD",
+        },
+        "SHP": Object {
+          "currencyName": "bảng St. Helena",
+          "currencyNarrowSymbol": "£",
+          "currencySymbol": "SHP",
+        },
+        "SIT": Object {
+          "currencyName": Object {},
+          "currencySymbol": "SIT",
+        },
+        "SKK": Object {
+          "currencyName": Object {},
+          "currencySymbol": "SKK",
+        },
+        "SLL": Object {
+          "currencyName": "Leone Sierra Leone",
+          "currencySymbol": "SLL",
+        },
+        "SOS": Object {
+          "currencyName": "Schilling Somali",
+          "currencySymbol": "SOS",
+        },
+        "SRD": Object {
+          "currencyName": "Đô la Suriname",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "SRD",
+        },
+        "SRG": Object {
+          "currencyName": Object {},
+          "currencySymbol": "SRG",
+        },
+        "SSP": Object {
+          "currencyName": "Bảng Nam Sudan",
+          "currencyNarrowSymbol": "£",
+          "currencySymbol": "SSP",
+        },
+        "STD": Object {
+          "currencyName": "Dobra São Tomé và Príncipe (1977–2017)",
+          "currencySymbol": "STD",
+        },
+        "STN": Object {
+          "currencyName": "Dobra São Tomé và Príncipe",
+          "currencyNarrowSymbol": "Db",
+          "currencySymbol": "STN",
+        },
+        "SUR": Object {
+          "currencyName": Object {},
+          "currencySymbol": "SUR",
+        },
+        "SVC": Object {
+          "currencyName": Object {},
+          "currencySymbol": "SVC",
+        },
+        "SYP": Object {
+          "currencyName": "Bảng Syria",
+          "currencyNarrowSymbol": "£",
+          "currencySymbol": "SYP",
+        },
+        "SZL": Object {
+          "currencyName": "Lilangeni Swaziland",
+          "currencySymbol": "SZL",
+        },
+        "THB": Object {
+          "currencyName": "Bạt Thái Lan",
+          "currencyNarrowSymbol": "฿",
+          "currencySymbol": "฿",
+        },
+        "TJR": Object {
+          "currencyName": Object {},
+          "currencySymbol": "TJR",
+        },
+        "TJS": Object {
+          "currencyName": "Somoni Tajikistan",
+          "currencySymbol": "TJS",
+        },
+        "TMM": Object {
+          "currencyName": Object {},
+          "currencySymbol": "TMM",
+        },
+        "TMT": Object {
+          "currencyName": "Manat Turkmenistan",
+          "currencySymbol": "TMT",
+        },
+        "TND": Object {
+          "currencyName": "Dinar Tunisia",
+          "currencySymbol": "TND",
+        },
+        "TOP": Object {
+          "currencyName": "Paʻanga Tonga",
+          "currencyNarrowSymbol": "T$",
+          "currencySymbol": "TOP",
+        },
+        "TPE": Object {
+          "currencyName": Object {},
+          "currencySymbol": "TPE",
+        },
+        "TRL": Object {
+          "currencyName": "lia Thổ Nhĩ Kỳ (1922–2005)",
+          "currencySymbol": "TRL",
+        },
+        "TRY": Object {
+          "currencyName": "Lia Thổ Nhĩ Kỳ",
+          "currencyNarrowSymbol": "₺",
+          "currencySymbol": "TRY",
+        },
+        "TTD": Object {
+          "currencyName": "Đô la Trinidad và Tobago",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "TTD",
+        },
+        "TWD": Object {
+          "currencyName": "Đô la Đài Loan mới",
+          "currencyNarrowSymbol": "NT$",
+          "currencySymbol": "NT$",
+        },
+        "TZS": Object {
+          "currencyName": "Shilling Tanzania",
+          "currencySymbol": "TZS",
+        },
+        "UAH": Object {
+          "currencyName": "Hryvnia Ucraina",
+          "currencyNarrowSymbol": "₴",
+          "currencySymbol": "UAH",
+        },
+        "UAK": Object {
+          "currencyName": Object {},
+          "currencySymbol": "UAK",
+        },
+        "UGS": Object {
+          "currencyName": Object {},
+          "currencySymbol": "UGS",
+        },
+        "UGX": Object {
+          "currencyName": "Shilling Uganda",
+          "currencySymbol": "UGX",
+        },
+        "USD": Object {
+          "currencyName": "Đô la Mỹ",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "US$",
+        },
+        "USN": Object {
+          "currencyName": Object {},
+          "currencySymbol": "USN",
+        },
+        "USS": Object {
+          "currencyName": Object {},
+          "currencySymbol": "USS",
+        },
+        "UYI": Object {
+          "currencyName": Object {},
+          "currencySymbol": "UYI",
+        },
+        "UYP": Object {
+          "currencyName": Object {},
+          "currencySymbol": "UYP",
+        },
+        "UYU": Object {
+          "currencyName": "Peso Uruguay",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "UYU",
+        },
+        "UYW": Object {
+          "currencyName": Object {},
+          "currencySymbol": "UYW",
+        },
+        "UZS": Object {
+          "currencyName": "Som Uzbekistan",
+          "currencySymbol": "UZS",
+        },
+        "VEB": Object {
+          "currencyName": Object {},
+          "currencySymbol": "VEB",
+        },
+        "VEF": Object {
+          "currencyName": "Bolívar Venezuela (2008–2018)",
+          "currencyNarrowSymbol": "Bs",
+          "currencySymbol": "VEF",
+        },
+        "VES": Object {
+          "currencyName": "Bolívar Venezuela",
+          "currencySymbol": "VES",
+        },
+        "VND": Object {
+          "currencyName": "Đồng Việt Nam",
+          "currencyNarrowSymbol": "₫",
+          "currencySymbol": "₫",
+        },
+        "VNN": Object {
+          "currencyName": Object {},
+          "currencySymbol": "VNN",
+        },
+        "VUV": Object {
+          "currencyName": "Vatu Vanuatu",
+          "currencySymbol": "VUV",
+        },
+        "WST": Object {
+          "currencyName": "Tala Samoa",
+          "currencySymbol": "WST",
+        },
+        "XAF": Object {
+          "currencyName": "franc CFA Trung Phi",
+          "currencySymbol": "FCFA",
+        },
+        "XAG": Object {
+          "currencyName": Object {},
+          "currencySymbol": "XAG",
+        },
+        "XAU": Object {
+          "currencyName": Object {},
+          "currencySymbol": "XAU",
+        },
+        "XBA": Object {
+          "currencyName": Object {},
+          "currencySymbol": "XBA",
+        },
+        "XBB": Object {
+          "currencyName": Object {},
+          "currencySymbol": "XBB",
+        },
+        "XBC": Object {
+          "currencyName": Object {},
+          "currencySymbol": "XBC",
+        },
+        "XBD": Object {
+          "currencyName": Object {},
+          "currencySymbol": "XBD",
+        },
+        "XCD": Object {
+          "currencyName": "Đô la Đông Caribê",
+          "currencyNarrowSymbol": "$",
+          "currencySymbol": "EC$",
+        },
+        "XDR": Object {
+          "currencyName": Object {},
+          "currencySymbol": "XDR",
+        },
+        "XEU": Object {
+          "currencyName": Object {},
+          "currencySymbol": "XEU",
+        },
+        "XFO": Object {
+          "currencyName": Object {},
+          "currencySymbol": "XFO",
+        },
+        "XFU": Object {
+          "currencyName": Object {},
+          "currencySymbol": "XFU",
+        },
+        "XOF": Object {
+          "currencyName": "franc CFA Tây Phi",
+          "currencySymbol": "CFA",
+        },
+        "XPD": Object {
+          "currencyName": Object {},
+          "currencySymbol": "XPD",
+        },
+        "XPF": Object {
+          "currencyName": "Franc CFP",
+          "currencySymbol": "CFPF",
+        },
+        "XPT": Object {
+          "currencyName": Object {},
+          "currencySymbol": "XPT",
+        },
+        "XRE": Object {
+          "currencyName": Object {},
+          "currencySymbol": "XRE",
+        },
+        "XSU": Object {
+          "currencyName": Object {},
+          "currencySymbol": "XSU",
+        },
+        "XTS": Object {
+          "currencyName": Object {},
+          "currencySymbol": "XTS",
+        },
+        "XUA": Object {
+          "currencyName": Object {},
+          "currencySymbol": "XUA",
+        },
+        "XXX": Object {
+          "currencyName": "(tiền tệ chưa biết)",
+          "currencySymbol": "XXX",
+        },
+        "YDD": Object {
+          "currencyName": Object {},
+          "currencySymbol": "YDD",
+        },
+        "YER": Object {
+          "currencyName": "Rial Yemen",
+          "currencySymbol": "YER",
+        },
+        "YUD": Object {
+          "currencyName": Object {},
+          "currencySymbol": "YUD",
+        },
+        "YUM": Object {
+          "currencyName": Object {},
+          "currencySymbol": "YUM",
+        },
+        "YUN": Object {
+          "currencyName": Object {},
+          "currencySymbol": "YUN",
+        },
+        "YUR": Object {
+          "currencyName": Object {},
+          "currencySymbol": "YUR",
+        },
+        "ZAL": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ZAL",
+        },
+        "ZAR": Object {
+          "currencyName": "Rand Nam Phi",
+          "currencyNarrowSymbol": "R",
+          "currencySymbol": "ZAR",
+        },
+        "ZMK": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ZMK",
+        },
+        "ZMW": Object {
+          "currencyName": "Kwacha Zambia",
+          "currencyNarrowSymbol": "ZK",
+          "currencySymbol": "ZMW",
+        },
+        "ZRN": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ZRN",
+        },
+        "ZRZ": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ZRZ",
+        },
+        "ZWD": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ZWD",
+        },
+        "ZWL": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ZWL",
+        },
+        "ZWR": Object {
+          "currencyName": Object {},
+          "currencySymbol": "ZWR",
+        },
+      },
+      "decimal": Object {
+        "compactLong": Object {
+          "1000": "nghìn",
+          "10000": "nghìn",
+          "100000": "nghìn",
+          "1000000": "triệu",
+          "10000000": "triệu",
+          "100000000": "triệu",
+          "1000000000": "tỷ",
+          "10000000000": "tỷ",
+          "100000000000": "tỷ",
+          "1000000000000": "nghìn tỷ",
+          "10000000000000": "nghìn tỷ",
+          "100000000000000": "nghìn tỷ",
+        },
+        "compactShort": Object {
+          "1000": "N",
+          "10000": "N",
+          "100000": "N",
+          "1000000": "Tr",
+          "10000000": "Tr",
+          "100000000": "Tr",
+          "1000000000": "T",
+          "10000000000": "T",
+          "100000000000": "T",
+          "1000000000000": "NT",
+          "10000000000000": "NT",
+          "100000000000000": "NT",
+        },
+      },
+      "symbols": Object {
+        "decimal": ",",
+        "exponential": "E",
+        "group": ".",
+        "infinity": "∞",
+        "list": ";",
+        "minusSign": "-",
+        "nan": "NaN",
+        "perMille": "‰",
+        "percentSign": "%",
+        "plusSign": "+",
+        "superscriptingExponent": "×",
+        "timeSeparator": ":",
+      },
+      "unitSymbols": Object {
+        "angle-degree": Object {
+          "unitName": "độ",
+          "unitSymbol": "°",
+        },
+        "area-acre": Object {
+          "unitName": "mẫu",
+          "unitSymbol": "mẫu",
+        },
+        "area-hectare": Object {
+          "unitName": "héc-ta",
+          "unitSymbol": "ha",
+        },
+        "concentr-percent": Object {
+          "unitName": "%",
+          "unitSymbol": "%",
+        },
+        "digital-bit": Object {
+          "unitName": "bit",
+          "unitSymbol": "bit",
+        },
+        "digital-byte": Object {
+          "unitName": "byte",
+          "unitSymbol": "byte",
+        },
+        "digital-gigabit": Object {
+          "unitName": "gigabit",
+          "unitSymbol": "Gb",
+        },
+        "digital-gigabyte": Object {
+          "unitName": "gigabyte",
+          "unitSymbol": "GB",
+        },
+        "digital-kilobit": Object {
+          "unitName": "kilobit",
+          "unitSymbol": "kb",
+        },
+        "digital-kilobyte": Object {
+          "unitName": "kilobyte",
+          "unitSymbol": "kB",
+        },
+        "digital-megabit": Object {
+          "unitName": "megabit",
+          "unitSymbol": "Mb",
+        },
+        "digital-megabyte": Object {
+          "unitName": "megabyte",
+          "unitSymbol": "MB",
+        },
+        "digital-petabyte": Object {
+          "unitName": "PB",
+          "unitSymbol": "PB",
+        },
+        "digital-terabit": Object {
+          "unitName": "terabit",
+          "unitSymbol": "Tb",
+        },
+        "digital-terabyte": Object {
+          "unitName": "terabyte",
+          "unitSymbol": "TB",
+        },
+        "duration-day": Object {
+          "unitName": "ngày",
+          "unitSymbol": "ngày",
+        },
+        "duration-hour": Object {
+          "unitName": "giờ",
+          "unitSymbol": "giờ",
+        },
+        "duration-millisecond": Object {
+          "unitName": "mili giây",
+          "unitNarrowSymbol": "miligiây",
+          "unitSymbol": "mili giây",
+        },
+        "duration-minute": Object {
+          "unitName": "phút",
+          "unitSymbol": "phút",
+        },
+        "duration-month": Object {
+          "unitName": "tháng",
+          "unitSymbol": "tháng",
+        },
+        "duration-second": Object {
+          "unitName": "giây",
+          "unitSymbol": "giây",
+        },
+        "duration-week": Object {
+          "unitName": "tuần",
+          "unitSymbol": "tuần",
+        },
+        "duration-year": Object {
+          "unitName": "năm",
+          "unitSymbol": "năm",
+        },
+        "length-centimeter": Object {
+          "unitName": "xentimét",
+          "unitSymbol": "cm",
+        },
+        "length-foot": Object {
+          "unitName": "feet",
+          "unitNarrowSymbol": "'",
+          "unitSymbol": "ft",
+        },
+        "length-inch": Object {
+          "unitName": "inch",
+          "unitNarrowSymbol": "\\\\\\"",
+          "unitSymbol": "inch",
+        },
+        "length-kilometer": Object {
+          "unitName": "kilômét",
+          "unitSymbol": "km",
+        },
+        "length-meter": Object {
+          "unitName": "mét",
+          "unitSymbol": "m",
+        },
+        "length-mile": Object {
+          "unitName": "dặm",
+          "unitNarrowSymbol": "mi",
+          "unitSymbol": "dặm",
+        },
+        "length-mile-scandinavian": Object {
+          "unitName": "dặm scandinavia",
+          "unitSymbol": "smi",
+        },
+        "length-millimeter": Object {
+          "unitName": "milimét",
+          "unitSymbol": "mm",
+        },
+        "length-yard": Object {
+          "unitName": "yard",
+          "unitSymbol": "yd",
+        },
+        "mass-gram": Object {
+          "unitName": "gam",
+          "unitSymbol": "g",
+        },
+        "mass-kilogram": Object {
+          "unitName": "kilôgam",
+          "unitSymbol": "kg",
+        },
+        "mass-ounce": Object {
+          "unitName": "aoxơ",
+          "unitSymbol": "oz",
+        },
+        "mass-pound": Object {
+          "unitName": "pao",
+          "unitSymbol": "lb",
+        },
+        "mass-stone": Object {
+          "unitName": "st",
+          "unitSymbol": "st",
+        },
+        "temperature-celsius": Object {
+          "unitName": "độ C",
+          "unitSymbol": "°C",
+        },
+        "temperature-fahrenheit": Object {
+          "unitName": "độ F",
+          "unitSymbol": "°F",
+        },
+        "volume-fluid-ounce": Object {
+          "unitName": "aoxơ chất lỏng",
+          "unitSymbol": "fl oz",
+        },
+        "volume-gallon": Object {
+          "unitName": "gallon",
+          "unitSymbol": "gal",
+        },
+        "volume-liter": Object {
+          "unitName": "lít",
+          "unitSymbol": "L",
+        },
+        "volume-milliliter": Object {
+          "unitName": "mililít",
+          "unitSymbol": "mL",
+        },
+      },
+    },
+    "nu": Array [
+      "latn",
+    ],
+    "patterns": Object {
+      "currency": Object {
+        "accounting": Object {
+          "always": Object {
+            "compactLong": Object {
+              "negativePattern": "{g}{h} {b} {c}",
+              "positivePattern": "{j}{h} {b} {c}",
+              "zeroPattern": "{j}{h} {b} {c}",
+            },
+            "compactShort": Object {
+              "negativePattern": "{g}{h} {b} {c}",
+              "positivePattern": "{j}{h} {b} {c}",
+              "zeroPattern": "{j}{h} {b} {c}",
+            },
+            "scientific": Object {
+              "negativePattern": "{g}{h}",
+              "positivePattern": "{j}{h}",
+              "zeroPattern": "{j}{h}",
+            },
+            "standard": Object {
+              "negativePattern": "{g}{h} {c}",
+              "positivePattern": "{j}{h} {c}",
+              "zeroPattern": "{j}{h} {c}",
+            },
+          },
+          "auto": Object {
+            "compactLong": Object {
+              "negativePattern": "{g}{h} {b} {c}",
+              "positivePattern": "{h} {b} {c}",
+              "zeroPattern": "{h} {b} {c}",
+            },
+            "compactShort": Object {
+              "negativePattern": "{g}{h} {b} {c}",
+              "positivePattern": "{h} {b} {c}",
+              "zeroPattern": "{h} {b} {c}",
+            },
+            "scientific": Object {
+              "negativePattern": "{g}{h}",
+              "positivePattern": "{h}",
+              "zeroPattern": "{h}",
+            },
+            "standard": Object {
+              "negativePattern": "{g}{h} {c}",
+              "positivePattern": "{h} {c}",
+              "zeroPattern": "{h} {c}",
+            },
+          },
+          "exceptZero": Object {
+            "compactLong": Object {
+              "negativePattern": "{g}{h} {b} {c}",
+              "positivePattern": "{j}{h} {b} {c}",
+              "zeroPattern": "{h} {b} {c}",
+            },
+            "compactShort": Object {
+              "negativePattern": "{g}{h} {b} {c}",
+              "positivePattern": "{j}{h} {b} {c}",
+              "zeroPattern": "{h} {b} {c}",
+            },
+            "scientific": Object {
+              "negativePattern": "{g}{h}",
+              "positivePattern": "{j}{h}",
+              "zeroPattern": "{h}",
+            },
+            "standard": Object {
+              "negativePattern": "{g}{h} {c}",
+              "positivePattern": "{j}{h} {c}",
+              "zeroPattern": "{h} {c}",
+            },
+          },
+          "never": Object {
+            "compactLong": Object {
+              "negativePattern": "{h} {b} {c}",
+              "positivePattern": "{h} {b} {c}",
+              "zeroPattern": "{h} {b} {c}",
+            },
+            "compactShort": Object {
+              "negativePattern": "{h} {b} {c}",
+              "positivePattern": "{h} {b} {c}",
+              "zeroPattern": "{h} {b} {c}",
+            },
+            "scientific": Object {
+              "negativePattern": "{h}",
+              "positivePattern": "{h}",
+              "zeroPattern": "{h}",
+            },
+            "standard": Object {
+              "negativePattern": "{h} {c}",
+              "positivePattern": "{h} {c}",
+              "zeroPattern": "{h} {c}",
+            },
+          },
+        },
+        "standard": Object {
+          "always": Object {
+            "compactLong": Object {
+              "negativePattern": "{g}{h} {b} {c}",
+              "positivePattern": "{j}{h} {b} {c}",
+              "zeroPattern": "{j}{h} {b} {c}",
+            },
+            "compactShort": Object {
+              "negativePattern": "{g}{h} {b} {c}",
+              "positivePattern": "{j}{h} {b} {c}",
+              "zeroPattern": "{j}{h} {b} {c}",
+            },
+            "scientific": Object {
+              "negativePattern": "{g}{h}{l}{k} {c}",
+              "positivePattern": "{j}{h}{l}{k} {c}",
+              "zeroPattern": "{j}{h}{l}{k} {c}",
+            },
+            "standard": Object {
+              "negativePattern": "{g}{h} {c}",
+              "positivePattern": "{j}{h} {c}",
+              "zeroPattern": "{j}{h} {c}",
+            },
+          },
+          "auto": Object {
+            "compactLong": Object {
+              "negativePattern": "{g}{h} {b} {c}",
+              "positivePattern": "{h} {b} {c}",
+              "zeroPattern": "{h} {b} {c}",
+            },
+            "compactShort": Object {
+              "negativePattern": "{g}{h} {b} {c}",
+              "positivePattern": "{h} {b} {c}",
+              "zeroPattern": "{h} {b} {c}",
+            },
+            "scientific": Object {
+              "negativePattern": "{g}{h}{l}{k} {c}",
+              "positivePattern": "{h}{l}{k} {c}",
+              "zeroPattern": "{h}{l}{k} {c}",
+            },
+            "standard": Object {
+              "negativePattern": "{g}{h} {c}",
+              "positivePattern": "{h} {c}",
+              "zeroPattern": "{h} {c}",
+            },
+          },
+          "exceptZero": Object {
+            "compactLong": Object {
+              "negativePattern": "{g}{h} {b} {c}",
+              "positivePattern": "{j}{h} {b} {c}",
+              "zeroPattern": "{h} {b} {c}",
+            },
+            "compactShort": Object {
+              "negativePattern": "{g}{h} {b} {c}",
+              "positivePattern": "{j}{h} {b} {c}",
+              "zeroPattern": "{h} {b} {c}",
+            },
+            "scientific": Object {
+              "negativePattern": "{g}{h}{l}{k} {c}",
+              "positivePattern": "{j}{h}{l}{k} {c}",
+              "zeroPattern": "{h}{l}{k} {c}",
+            },
+            "standard": Object {
+              "negativePattern": "{g}{h} {c}",
+              "positivePattern": "{j}{h} {c}",
+              "zeroPattern": "{h} {c}",
+            },
+          },
+          "never": Object {
+            "compactLong": Object {
+              "negativePattern": "{h} {b} {c}",
+              "positivePattern": "{h} {b} {c}",
+              "zeroPattern": "{h} {b} {c}",
+            },
+            "compactShort": Object {
+              "negativePattern": "{h} {b} {c}",
+              "positivePattern": "{h} {b} {c}",
+              "zeroPattern": "{h} {b} {c}",
+            },
+            "scientific": Object {
+              "negativePattern": "{h}{l}{k} {c}",
+              "positivePattern": "{h}{l}{k} {c}",
+              "zeroPattern": "{h}{l}{k} {c}",
+            },
+            "standard": Object {
+              "negativePattern": "{h} {c}",
+              "positivePattern": "{h} {c}",
+              "zeroPattern": "{h} {c}",
+            },
+          },
+        },
+      },
+      "decimal": Object {
+        "always": Object {
+          "compactLong": Object {
+            "negativePattern": "{g}{h} {a}",
+            "positivePattern": "{j}{h} {a}",
+            "zeroPattern": "{j}{h} {a}",
+          },
+          "compactShort": Object {
+            "negativePattern": "{g}{h} {b}",
+            "positivePattern": "{j}{h} {b}",
+            "zeroPattern": "{j}{h} {b}",
+          },
+          "scientific": Object {
+            "negativePattern": "{g}{h}{l}{k}",
+            "positivePattern": "{h}{l}{k}",
+            "zeroPattern": "{h}{l}{k}",
+          },
+          "standard": Object {
+            "negativePattern": "{g}{h}",
+            "positivePattern": "{j}{h}",
+            "zeroPattern": "{j}{h}",
+          },
+        },
+        "auto": Object {
+          "compactLong": Object {
+            "negativePattern": "{g}{h} {a}",
+            "positivePattern": "{h} {a}",
+            "zeroPattern": "{h} {a}",
+          },
+          "compactShort": Object {
+            "negativePattern": "{g}{h} {b}",
+            "positivePattern": "{h} {b}",
+            "zeroPattern": "{h} {b}",
+          },
+          "scientific": Object {
+            "negativePattern": "{g}{h}{l}{k}",
+            "positivePattern": "{h}{l}{k}",
+            "zeroPattern": "{h}{l}{k}",
+          },
+          "standard": Object {
+            "negativePattern": "{g}{h}",
+            "positivePattern": "{h}",
+            "zeroPattern": "{h}",
+          },
+        },
+        "exceptZero": Object {
+          "compactLong": Object {
+            "negativePattern": "{g}{h} {a}",
+            "positivePattern": "{j}{h} {a}",
+            "zeroPattern": "{h} {a}",
+          },
+          "compactShort": Object {
+            "negativePattern": "{g}{h} {b}",
+            "positivePattern": "{j}{h} {b}",
+            "zeroPattern": "{h} {b}",
+          },
+          "scientific": Object {
+            "negativePattern": "{g}{h}{l}{k}",
+            "positivePattern": "{h}{l}{k}",
+            "zeroPattern": "{h}{l}{k}",
+          },
+          "standard": Object {
+            "negativePattern": "{g}{h}",
+            "positivePattern": "{j}{h}",
+            "zeroPattern": "{h}",
+          },
+        },
+        "never": Object {
+          "compactLong": Object {
+            "negativePattern": "{h} {a}",
+            "positivePattern": "{h} {a}",
+            "zeroPattern": "{h} {a}",
+          },
+          "compactShort": Object {
+            "negativePattern": "{h} {b}",
+            "positivePattern": "{h} {b}",
+            "zeroPattern": "{h} {b}",
+          },
+          "scientific": Object {
+            "negativePattern": "{g}{h}{l}{k}",
+            "positivePattern": "{h}{l}{k}",
+            "zeroPattern": "{h}{l}{k}",
+          },
+          "standard": Object {
+            "negativePattern": "{h}",
+            "positivePattern": "{h}",
+            "zeroPattern": "{h}",
+          },
+        },
+      },
+      "percent": Object {
+        "always": Object {
+          "compactLong": Object {
+            "negativePattern": "{g}{h}{i}",
+            "positivePattern": "{j}{h}{i}",
+            "zeroPattern": "{j}{h}{i}",
+          },
+          "compactShort": Object {
+            "negativePattern": "{g}{h}{i}",
+            "positivePattern": "{j}{h}{i}",
+            "zeroPattern": "{j}{h}{i}",
+          },
+          "scientific": Object {
+            "negativePattern": "{g}{h}{l}{k}{i}",
+            "positivePattern": "{j}{h}{l}{k}{i}",
+            "zeroPattern": "{j}{h}{l}{k}{i}",
+          },
+          "standard": Object {
+            "negativePattern": "{g}{h}{i}",
+            "positivePattern": "{j}{h}{i}",
+            "zeroPattern": "{j}{h}{i}",
+          },
+        },
+        "auto": Object {
+          "compactLong": Object {
+            "negativePattern": "{g}{h}{i}",
+            "positivePattern": "{h}{i}",
+            "zeroPattern": "{h}{i}",
+          },
+          "compactShort": Object {
+            "negativePattern": "{g}{h}{i}",
+            "positivePattern": "{h}{i}",
+            "zeroPattern": "{h}{i}",
+          },
+          "scientific": Object {
+            "negativePattern": "{g}{h}{l}{k}{i}",
+            "positivePattern": "{h}{l}{k}{i}",
+            "zeroPattern": "{h}{l}{k}{i}",
+          },
+          "standard": Object {
+            "negativePattern": "{g}{h}{i}",
+            "positivePattern": "{h}{i}",
+            "zeroPattern": "{h}{i}",
+          },
+        },
+        "exceptZero": Object {
+          "compactLong": Object {
+            "negativePattern": "{g}{h}{i}",
+            "positivePattern": "{j}{h}{i}",
+            "zeroPattern": "{h}{i}",
+          },
+          "compactShort": Object {
+            "negativePattern": "{g}{h}{i}",
+            "positivePattern": "{j}{h}{i}",
+            "zeroPattern": "{h}{i}",
+          },
+          "scientific": Object {
+            "negativePattern": "{g}{h}{l}{k}{i}",
+            "positivePattern": "{j}{h}{l}{k}{i}",
+            "zeroPattern": "{h}{l}{k}{i}",
+          },
+          "standard": Object {
+            "negativePattern": "{g}{h}{i}",
+            "positivePattern": "{j}{h}{i}",
+            "zeroPattern": "{h}{i}",
+          },
+        },
+        "never": Object {
+          "compactLong": Object {
+            "negativePattern": "{h}{i}",
+            "positivePattern": "{h}{i}",
+            "zeroPattern": "{h}{i}",
+          },
+          "compactShort": Object {
+            "negativePattern": "{h}{i}",
+            "positivePattern": "{h}{i}",
+            "zeroPattern": "{h}{i}",
+          },
+          "scientific": Object {
+            "negativePattern": "{h}{l}{k}{i}",
+            "positivePattern": "{h}{l}{k}{i}",
+            "zeroPattern": "{h}{l}{k}{i}",
+          },
+          "standard": Object {
+            "negativePattern": "{h}{i}",
+            "positivePattern": "{h}{i}",
+            "zeroPattern": "{h}{i}",
+          },
+        },
+      },
+      "unit": Object {
+        "long": Object {
+          "always": Object {
+            "compactLong": Object {
+              "negativePattern": "{g}{h} {b} lực g",
+              "positivePattern": "{j}{h} {b} lực g",
+              "zeroPattern": "{j}{h} {b} lực g",
+            },
+            "compactShort": Object {
+              "negativePattern": "{g}{h} {b} lực g",
+              "positivePattern": "{j}{h} {b} lực g",
+              "zeroPattern": "{j}{h} {b} lực g",
+            },
+            "scientific": Object {
+              "negativePattern": "{g}{h}{l}{k} lực g",
+              "positivePattern": "{j}{h}{l}{k} lực g",
+              "zeroPattern": "{j}{h}{l}{k} lực g",
+            },
+            "standard": Object {
+              "negativePattern": "{g}{h} lực g",
+              "positivePattern": "{j}{h} lực g",
+              "zeroPattern": "{j}{h} lực g",
+            },
+          },
+          "auto": Object {
+            "compactLong": Object {
+              "negativePattern": "{g}{h} {b} lực g",
+              "positivePattern": "{h} {b} lực g",
+              "zeroPattern": "{h} {b} lực g",
+            },
+            "compactShort": Object {
+              "negativePattern": "{g}{h} {b} lực g",
+              "positivePattern": "{h} {b} lực g",
+              "zeroPattern": "{h} {b} lực g",
+            },
+            "scientific": Object {
+              "negativePattern": "{g}{h}{l}{k} lực g",
+              "positivePattern": "{h}{l}{k} lực g",
+              "zeroPattern": "{h}{l}{k} lực g",
+            },
+            "standard": Object {
+              "negativePattern": "{g}{h} lực g",
+              "positivePattern": "{h} lực g",
+              "zeroPattern": "{h} lực g",
+            },
+          },
+          "exceptZero": Object {
+            "compactLong": Object {
+              "negativePattern": "{g}{h} {b} lực g",
+              "positivePattern": "{j}{h} {b} lực g",
+              "zeroPattern": "{h} {b} lực g",
+            },
+            "compactShort": Object {
+              "negativePattern": "{g}{h} {b} lực g",
+              "positivePattern": "{j}{h} {b} lực g",
+              "zeroPattern": "{h} {b} lực g",
+            },
+            "scientific": Object {
+              "negativePattern": "{g}{h}{l}{k} lực g",
+              "positivePattern": "{j}{h}{l}{k} lực g",
+              "zeroPattern": "{h}{l}{k} lực g",
+            },
+            "standard": Object {
+              "negativePattern": "{g}{h} lực g",
+              "positivePattern": "{j}{h} lực g",
+              "zeroPattern": "{h} lực g",
+            },
+          },
+          "never": Object {
+            "compactLong": Object {
+              "negativePattern": "{h} {b} lực g",
+              "positivePattern": "{h} {b} lực g",
+              "zeroPattern": "{h} {b} lực g",
+            },
+            "compactShort": Object {
+              "negativePattern": "{h} {b} lực g",
+              "positivePattern": "{h} {b} lực g",
+              "zeroPattern": "{h} {b} lực g",
+            },
+            "scientific": Object {
+              "negativePattern": "{h}{l}{k} lực g",
+              "positivePattern": "{h}{l}{k} lực g",
+              "zeroPattern": "{h}{l}{k} lực g",
+            },
+            "standard": Object {
+              "negativePattern": "{h} lực g",
+              "positivePattern": "{h} lực g",
+              "zeroPattern": "{h} lực g",
+            },
+          },
+        },
+        "narrow": Object {
+          "always": Object {
+            "compactLong": Object {
+              "negativePattern": "{g}{h} {b}{o}",
+              "positivePattern": "{j}{h} {b}{o}",
+              "zeroPattern": "{j}{h} {b}{o}",
+            },
+            "compactShort": Object {
+              "negativePattern": "{g}{h} {b}{o}",
+              "positivePattern": "{j}{h} {b}{o}",
+              "zeroPattern": "{j}{h} {b}{o}",
+            },
+            "scientific": Object {
+              "negativePattern": "{g}{h}{l}{k}{o}",
+              "positivePattern": "{j}{h}{l}{k}{o}",
+              "zeroPattern": "{j}{h}{l}{k}{o}",
+            },
+            "standard": Object {
+              "negativePattern": "{g}{h}{n}",
+              "positivePattern": "{j}{h}{n}",
+              "zeroPattern": "{j}{h}{n}",
+            },
+          },
+          "auto": Object {
+            "compactLong": Object {
+              "negativePattern": "{g}{h} {b}{o}",
+              "positivePattern": "{h} {b}{o}",
+              "zeroPattern": "{h} {b}{o}",
+            },
+            "compactShort": Object {
+              "negativePattern": "{g}{h} {b}{o}",
+              "positivePattern": "{h} {b}{o}",
+              "zeroPattern": "{h} {b}{o}",
+            },
+            "scientific": Object {
+              "negativePattern": "{g}{h}{l}{k}{o}",
+              "positivePattern": "{h}{l}{k}{o}",
+              "zeroPattern": "{h}{l}{k}{o}",
+            },
+            "standard": Object {
+              "negativePattern": "{g}{h}{n}",
+              "positivePattern": "{h}{n}",
+              "zeroPattern": "{h}{n}",
+            },
+          },
+          "exceptZero": Object {
+            "compactLong": Object {
+              "negativePattern": "{g}{h} {b}{o}",
+              "positivePattern": "{j}{h} {b}{o}",
+              "zeroPattern": "{h} {b}{o}",
+            },
+            "compactShort": Object {
+              "negativePattern": "{g}{h} {b}{o}",
+              "positivePattern": "{j}{h} {b}{o}",
+              "zeroPattern": "{h} {b}{o}",
+            },
+            "scientific": Object {
+              "negativePattern": "{g}{h}{l}{k}{o}",
+              "positivePattern": "{j}{h}{l}{k}{o}",
+              "zeroPattern": "{h}{l}{k}{o}",
+            },
+            "standard": Object {
+              "negativePattern": "{g}{h}{n}",
+              "positivePattern": "{j}{h}{n}",
+              "zeroPattern": "{h}{n}",
+            },
+          },
+          "never": Object {
+            "compactLong": Object {
+              "negativePattern": "{h} {b}{o}",
+              "positivePattern": "{h} {b}{o}",
+              "zeroPattern": "{h} {b}{o}",
+            },
+            "compactShort": Object {
+              "negativePattern": "{h} {b}{o}",
+              "positivePattern": "{h} {b}{o}",
+              "zeroPattern": "{h} {b}{o}",
+            },
+            "scientific": Object {
+              "negativePattern": "{h}{l}{k}{o}",
+              "positivePattern": "{h}{l}{k}{o}",
+              "zeroPattern": "{h}{l}{k}{o}",
+            },
+            "standard": Object {
+              "negativePattern": "{h}{n}",
+              "positivePattern": "{h}{n}",
+              "zeroPattern": "{h}{n}",
+            },
+          },
+        },
+        "short": Object {
+          "always": Object {
+            "compactLong": Object {
+              "negativePattern": "{g}{h} {b} {o}",
+              "positivePattern": "{j}{h} {b} {o}",
+              "zeroPattern": "{j}{h} {b} {o}",
+            },
+            "compactShort": Object {
+              "negativePattern": "{g}{h} {b} {o}",
+              "positivePattern": "{j}{h} {b} {o}",
+              "zeroPattern": "{j}{h} {b} {o}",
+            },
+            "scientific": Object {
+              "negativePattern": "{g}{h}{l}{k} {o}",
+              "positivePattern": "{j}{h}{l}{k} {o}",
+              "zeroPattern": "{j}{h}{l}{k} {o}",
+            },
+            "standard": Object {
+              "negativePattern": "{g}{h} {o}",
+              "positivePattern": "{j}{h} {o}",
+              "zeroPattern": "{j}{h} {o}",
+            },
+          },
+          "auto": Object {
+            "compactLong": Object {
+              "negativePattern": "{g}{h} {b} {o}",
+              "positivePattern": "{h} {b} {o}",
+              "zeroPattern": "{h} {b} {o}",
+            },
+            "compactShort": Object {
+              "negativePattern": "{g}{h} {b} {o}",
+              "positivePattern": "{h} {b} {o}",
+              "zeroPattern": "{h} {b} {o}",
+            },
+            "scientific": Object {
+              "negativePattern": "{g}{h}{l}{k} {o}",
+              "positivePattern": "{h}{l}{k} {o}",
+              "zeroPattern": "{h}{l}{k} {o}",
+            },
+            "standard": Object {
+              "negativePattern": "{g}{h} {o}",
+              "positivePattern": "{h} {o}",
+              "zeroPattern": "{h} {o}",
+            },
+          },
+          "exceptZero": Object {
+            "compactLong": Object {
+              "negativePattern": "{g}{h} {b} {o}",
+              "positivePattern": "{j}{h} {b} {o}",
+              "zeroPattern": "{h} {b} {o}",
+            },
+            "compactShort": Object {
+              "negativePattern": "{g}{h} {b} {o}",
+              "positivePattern": "{j}{h} {b} {o}",
+              "zeroPattern": "{h} {b} {o}",
+            },
+            "scientific": Object {
+              "negativePattern": "{g}{h}{l}{k} {o}",
+              "positivePattern": "{j}{h}{l}{k} {o}",
+              "zeroPattern": "{h}{l}{k} {o}",
+            },
+            "standard": Object {
+              "negativePattern": "{g}{h} {o}",
+              "positivePattern": "{j}{h} {o}",
+              "zeroPattern": "{h} {o}",
+            },
+          },
+          "never": Object {
+            "compactLong": Object {
+              "negativePattern": "{h} {b} {o}",
+              "positivePattern": "{h} {b} {o}",
+              "zeroPattern": "{h} {b} {o}",
+            },
+            "compactShort": Object {
+              "negativePattern": "{h} {b} {o}",
+              "positivePattern": "{h} {b} {o}",
+              "zeroPattern": "{h} {b} {o}",
             },
             "scientific": Object {
               "negativePattern": "{h}{l}{k} {o}",

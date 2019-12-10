@@ -166,6 +166,7 @@ function extractNumberPattern(
 // Credit: https://github.com/andyearnshaw/Intl.js/blob/master/scripts/utils/reduce.js
 // Matches CLDR number patterns, e.g. #,##0.00, #,##,##0.00, #,##0.##, #E0, etc.
 const NUMBER_PATTERN = /[#0](?:[\.,][#0]+)*/g;
+// Matches things like `foo {0}`, `foo{0}`, `{0}foo`
 const PATTERN_0_REGEX = /\s?\{0\}\s?/g;
 const SCIENTIFIC_SLOT = [
   InternalSlotToken.number,
@@ -247,6 +248,18 @@ function extractSignPattern(
   return produceSignPattern(positivePattern, negativePattern, signDisplay);
 }
 
+/**
+ * Turn compact pattern like `0 trillion` or `¤0 trillion`
+ * @param pattern
+ */
+function extractCompactSymbol(
+  pattern: string,
+  slotToken: InternalSlotToken
+): string {
+  const compactUnit = pattern.replace(/[¤0]/g, '').trim();
+  return pattern.replace(compactUnit, `{${slotToken}}`);
+}
+
 function extractDecimalFormatILD(
   data:
     | NumbersData['decimalFormats-numberSystem-latn']['short']['decimalFormat']
@@ -257,7 +270,7 @@ function extractDecimalFormatILD(
     (all: Record<string, Record<LDMLPluralRule, string>>, k) => {
       const [type, , ldml] = k.split('-');
       const decimalPattern = all[type] || {};
-      const pattern = data[k].replace('¤', '').replace(/0+\s?/g, '');
+      const pattern = data[k].replace(/[¤0]/g, '').trim();
       if (pattern !== decimalPattern.other) {
         decimalPattern[ldml as LDMLPluralRule] = pattern;
       }
@@ -282,15 +295,15 @@ function extractCompactILD(
   return {
     decimal: {
       compactShort: extractDecimalFormatILD(
-        d['decimalFormats-numberSystem-latn']['short']['decimalFormat']
+        d['decimalFormats-numberSystem-latn'].short.decimalFormat
       ),
       compactLong: extractDecimalFormatILD(
-        d['decimalFormats-numberSystem-latn']['long']['decimalFormat']
+        d['decimalFormats-numberSystem-latn'].long.decimalFormat
       ),
     },
     currency: {
       compactShort: extractDecimalFormatILD(
-        d['currencyFormats-numberSystem-latn']['short']['standard']
+        d['currencyFormats-numberSystem-latn'].short.standard
       ),
     },
   };
@@ -302,20 +315,26 @@ function extractDecimalPattern(d: NumbersData): SignDisplayPattern {
   >).reduce((all: SignDisplayPattern, k) => {
     all[k] = {
       standard: extractSignPattern(
-        d['decimalFormats-numberSystem-latn']['standard'],
+        d['decimalFormats-numberSystem-latn'].standard,
         k
       ),
       scientific: SCIENTIFIC_SIGN_PATTERN,
       compactShort: extractSignPattern(
-        d['decimalFormats-numberSystem-latn']['short']['decimalFormat'][
-          '1000-count-other'
-        ].replace(/([^0#\s]+)/, `{${InternalSlotToken.compactSymbol}}`),
+        extractCompactSymbol(
+          d['decimalFormats-numberSystem-latn'].short.decimalFormat[
+            '1000-count-other'
+          ],
+          InternalSlotToken.compactSymbol
+        ),
         k
       ),
       compactLong: extractSignPattern(
-        d['decimalFormats-numberSystem-latn']['long']['decimalFormat'][
-          '1000-count-other'
-        ].replace(/([^0#\s]+)/, `{${InternalSlotToken.compactName}}`),
+        extractCompactSymbol(
+          d['decimalFormats-numberSystem-latn'].long.decimalFormat[
+            '1000-count-other'
+          ],
+          InternalSlotToken.compactName
+        ),
         k
       ),
     };
@@ -329,22 +348,22 @@ function extractPercentPattern(d: NumbersData): SignDisplayPattern {
   >).reduce((all: SignDisplayPattern, k) => {
     all[k] = {
       standard: extractSignPattern(
-        d['percentFormats-numberSystem-latn']['standard'],
+        d['percentFormats-numberSystem-latn'].standard,
         k
       ),
       scientific: extractSignPattern(
-        d['percentFormats-numberSystem-latn']['standard'].replace(
+        d['percentFormats-numberSystem-latn'].standard.replace(
           NUMBER_PATTERN,
           SCIENTIFIC_SLOT
         ),
         k
       ),
       compactShort: extractSignPattern(
-        d['percentFormats-numberSystem-latn']['standard'],
+        d['percentFormats-numberSystem-latn'].standard,
         k
       ),
       compactLong: extractSignPattern(
-        d['percentFormats-numberSystem-latn']['standard'],
+        d['percentFormats-numberSystem-latn'].standard,
         k
       ),
     };
@@ -359,26 +378,32 @@ function extractCurrencyPattern(d: NumbersData): CurrencySignPattern {
     >).reduce((all: SignDisplayPattern, k) => {
       all[k] = {
         standard: extractSignPattern(
-          d['currencyFormats-numberSystem-latn']['standard'],
+          d['currencyFormats-numberSystem-latn'].standard,
           k
         ),
         scientific: extractSignPattern(
-          d['currencyFormats-numberSystem-latn']['standard'].replace(
+          d['currencyFormats-numberSystem-latn'].standard.replace(
             NUMBER_PATTERN,
             SCIENTIFIC_SLOT
           ),
           k
         ),
         compactShort: extractSignPattern(
-          d['currencyFormats-numberSystem-latn']['short']['standard'][
-            '1000-count-other'
-          ].replace(/([^0#\s]+)/, `{${InternalSlotToken.compactSymbol}}`),
+          extractCompactSymbol(
+            d['currencyFormats-numberSystem-latn'].short.standard[
+              '1000-count-other'
+            ],
+            InternalSlotToken.compactSymbol
+          ),
           k
         ),
         compactLong: extractSignPattern(
-          d['currencyFormats-numberSystem-latn']['short']['standard'][
-            '1000-count-other'
-          ].replace(/([^0#\s]+)/, `{${InternalSlotToken.compactSymbol}}`),
+          extractCompactSymbol(
+            d['currencyFormats-numberSystem-latn'].short.standard[
+              '1000-count-other'
+            ],
+            InternalSlotToken.compactSymbol
+          ),
           k
         ),
       };
@@ -393,19 +418,25 @@ function extractCurrencyPattern(d: NumbersData): CurrencySignPattern {
           k
         ),
         scientific: extractSignPattern(
-          d['decimalFormats-numberSystem-latn']['standard'],
+          d['decimalFormats-numberSystem-latn'].standard,
           k
         ),
         compactShort: extractSignPattern(
-          d['currencyFormats-numberSystem-latn']['short']['standard'][
-            '1000-count-other'
-          ].replace(/([^0#\s]+)/, `{${InternalSlotToken.compactSymbol}}`),
+          extractCompactSymbol(
+            d['currencyFormats-numberSystem-latn'].short.standard[
+              '1000-count-other'
+            ],
+            InternalSlotToken.compactSymbol
+          ),
           k
         ),
         compactLong: extractSignPattern(
-          d['currencyFormats-numberSystem-latn']['short']['standard'][
-            '1000-count-other'
-          ].replace(/([^0#\s]+)/, `{${InternalSlotToken.compactSymbol}}`),
+          extractCompactSymbol(
+            d['currencyFormats-numberSystem-latn'].short.standard[
+              '1000-count-other'
+            ],
+            InternalSlotToken.compactSymbol
+          ),
           k
         ),
       };
@@ -433,7 +464,7 @@ function extractUnitPattern(d: NumbersData, u: UnitsData): UnitPattern {
                 'unitPattern-count-other'
               ],
               unit
-            ).replace('{0}', d['decimalFormats-numberSystem-latn']['standard']),
+            ).replace('{0}', d['decimalFormats-numberSystem-latn'].standard),
             k
           ),
           scientific: extractSignPattern(
@@ -453,9 +484,12 @@ function extractUnitPattern(d: NumbersData, u: UnitsData): UnitPattern {
               InternalSlotToken.unitSymbol
             ).replace(
               '{0}',
-              d['decimalFormats-numberSystem-latn']['short']['decimalFormat'][
-                '1000-count-other'
-              ].replace(/([^0#\s]+)/, `{${InternalSlotToken.compactSymbol}}`)
+              extractCompactSymbol(
+                d['decimalFormats-numberSystem-latn'].short.decimalFormat[
+                  '1000-count-other'
+                ],
+                InternalSlotToken.compactSymbol
+              )
             ),
             k
           ),
@@ -467,9 +501,12 @@ function extractUnitPattern(d: NumbersData, u: UnitsData): UnitPattern {
               InternalSlotToken.unitSymbol
             ).replace(
               '{0}',
-              d['decimalFormats-numberSystem-latn']['short']['decimalFormat'][
-                '1000-count-other'
-              ].replace(/([^0#\s]+)/, `{${InternalSlotToken.compactSymbol}}`)
+              extractCompactSymbol(
+                d['decimalFormats-numberSystem-latn'].short.decimalFormat[
+                  '1000-count-other'
+                ],
+                InternalSlotToken.compactSymbol
+              )
             ),
             k
           ),
