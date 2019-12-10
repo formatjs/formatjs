@@ -10,7 +10,8 @@
     "src"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
+    "test": "cross-env TS_NODE_PROJECT=./tsconfig.json cross-env NODE_ENV=test jest --maxWorkers=100%",
     "verify": "ts-node scripts/verify-numbers",
     "cover": "npm t -- --coverage"
   },

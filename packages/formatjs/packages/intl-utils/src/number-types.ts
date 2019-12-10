@@ -41,12 +41,16 @@ export interface UnitPattern {
 
 export interface NumberILD {
   decimal: {
-    compactShort?: Record<string, Record<LDMLPluralRule, string>>;
-    compactLong?: Record<string, Record<LDMLPluralRule, string>>;
+    // string when there's only 1 plural from
+    compactShort?: Record<string, string | Record<LDMLPluralRule, string>>;
+    // string when there's only 1 plural from
+    compactLong?: Record<string, string | Record<LDMLPluralRule, string>>;
   };
   currency: {
-    compactShort?: Record<string, Record<LDMLPluralRule, string>>;
-    compactLong?: Record<string, Record<LDMLPluralRule, string>>;
+    // string when there's only 1 plural from
+    compactShort?: Record<string, string | Record<LDMLPluralRule, string>>;
+    // string when there's only 1 plural from
+    compactLong?: Record<string, string | Record<LDMLPluralRule, string>>;
   };
   symbols: {
     decimal: string;
@@ -66,16 +70,20 @@ export interface NumberILD {
     string,
     {
       currencySymbol: string;
-      currencyNarrowSymbol: string;
-      currencyName: Record<LDMLPluralRule, string>;
+      currencyNarrowSymbol?: string;
+      // string when there's only 1 plural from
+      currencyName: string | Record<LDMLPluralRule, string>;
     }
   >;
   unitSymbols: Record<
     string,
     {
-      unitSymbol: Record<LDMLPluralRule, string>;
-      unitNarrowSymbol: Record<LDMLPluralRule, string>;
-      unitName: Record<LDMLPluralRule, string>;
+      // string when there's only 1 plural form
+      unitSymbol: string | Record<LDMLPluralRule, string>;
+      // string when there's only 1 plural from
+      unitNarrowSymbol?: string | Record<LDMLPluralRule, string>;
+      // string when there's only 1 plural from
+      unitName: string | Record<LDMLPluralRule, string>;
     }
   >;
 }

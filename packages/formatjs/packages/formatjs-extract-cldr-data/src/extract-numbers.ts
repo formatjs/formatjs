@@ -21,6 +21,7 @@ import {
   CurrencySignPattern,
   UnitPattern,
 } from '@formatjs/intl-utils';
+import {isEqual} from 'lodash';
 
 const numbersLocales = globSync('*/numbers.json', {
   cwd: resolve(
@@ -43,26 +44,43 @@ export type NumbersData = typeof Numbers['main']['en']['numbers'];
 export type CurrenciesData = typeof Currencies['main']['en']['numbers']['currencies'];
 export type UnitsData = typeof Units['main']['en']['units'];
 
+function collapseSingleValuePluralRule(
+  rules: Record<LDMLPluralRule, string>
+): string | Record<LDMLPluralRule, string> {
+  const keys = Object.keys(rules) as Array<LDMLPluralRule>;
+  // dedupe value that looks like `other`
+  const uniqueKeys = keys.filter(
+    k => k === 'other' || (rules[k] && rules[k] !== rules.other)
+  );
+  if (uniqueKeys.length === 1) {
+    return rules[uniqueKeys[0]];
+  }
+  return uniqueKeys.reduce((all, k) => {
+    all[k] = rules[k];
+    return all;
+  }, {} as Record<LDMLPluralRule, string>);
+}
+
 function generateCurrencyILD(d: CurrenciesData): NumberILD['currencySymbols'] {
   return Object.keys(d).reduce((all: NumberILD['currencySymbols'], k) => {
     const data = d[k as 'USD'];
     all[k] = {
       currencySymbol: data.symbol,
-      currencyNarrowSymbol: data['symbol-alt-narrow'] || data.symbol,
-      currencyName: PLURAL_RULES.reduce(
-        (names: Record<LDMLPluralRule, string>, ldml) => {
+      currencyName: collapseSingleValuePluralRule(
+        PLURAL_RULES.reduce((names: Record<LDMLPluralRule, string>, ldml) => {
           const key = `displayName-count-${ldml}`;
-          if (
-            key in data &&
-            data[key as 'displayName-count-other'] !== names.other
-          ) {
+          if (key in data) {
             names[ldml] = data[key as 'displayName-count-other'];
           }
           return names;
-        },
-        {} as Record<LDMLPluralRule, string>
+        }, {} as Record<LDMLPluralRule, string>)
       ),
     };
+
+    if (data['symbol-alt-narrow']) {
+      all[k].currencyNarrowSymbol = data['symbol-alt-narrow'];
+    }
+
     return all;
   }, {});
 }
@@ -73,55 +91,47 @@ function generateUnitILD(u: UnitsData): NumberILD['unitSymbols'] {
     const narrowData = u.narrow[k as 'digital-bit'];
     const symbolData = u.short[k as 'digital-bit'];
     all[k] = {
-      unitSymbol: PLURAL_RULES.reduce(
-        (names: Record<LDMLPluralRule, string>, ldml) => {
+      unitSymbol: collapseSingleValuePluralRule(
+        PLURAL_RULES.reduce((names: Record<LDMLPluralRule, string>, ldml) => {
           const key = `unitPattern-count-${ldml}`;
-          if (
-            key in symbolData &&
-            symbolData[key as 'unitPattern-count-other'] !== names.other
-          ) {
+          if (key in symbolData) {
             names[ldml] = symbolData[key as 'unitPattern-count-other'].replace(
               PATTERN_0_REGEX,
               ''
             );
           }
           return names;
-        },
-        {} as Record<LDMLPluralRule, string>
+        }, {} as Record<LDMLPluralRule, string>)
       ),
-      unitNarrowSymbol: PLURAL_RULES.reduce(
-        (names: Record<LDMLPluralRule, string>, ldml) => {
+
+      unitName: collapseSingleValuePluralRule(
+        PLURAL_RULES.reduce((names: Record<LDMLPluralRule, string>, ldml) => {
           const key = `unitPattern-count-${ldml}`;
-          if (
-            key in narrowData &&
-            narrowData[key as 'unitPattern-count-other'] !== names.other
-          ) {
-            names[ldml] = narrowData[key as 'unitPattern-count-other'].replace(
-              PATTERN_0_REGEX,
-              ''
-            );
-          }
-          return names;
-        },
-        {} as Record<LDMLPluralRule, string>
-      ),
-      unitName: PLURAL_RULES.reduce(
-        (names: Record<LDMLPluralRule, string>, ldml) => {
-          const key = `unitPattern-count-${ldml}`;
-          if (
-            key in longData &&
-            longData[key as 'unitPattern-count-other'] !== names.other
-          ) {
+          if (key in longData) {
             names[ldml] = longData[key as 'unitPattern-count-other'].replace(
               PATTERN_0_REGEX,
               ''
             );
           }
           return names;
-        },
-        {} as Record<LDMLPluralRule, string>
+        }, {} as Record<LDMLPluralRule, string>)
       ),
     };
+    const unitNarrowSymbol = collapseSingleValuePluralRule(
+      PLURAL_RULES.reduce((names: Record<LDMLPluralRule, string>, ldml) => {
+        const key = `unitPattern-count-${ldml}`;
+        if (key in narrowData) {
+          names[ldml] = narrowData[key as 'unitPattern-count-other'].replace(
+            PATTERN_0_REGEX,
+            ''
+          );
+        }
+        return names;
+      }, {} as Record<LDMLPluralRule, string>)
+    );
+    if (!isEqual(unitNarrowSymbol, all[k].unitSymbol)) {
+      all[k].unitNarrowSymbol = unitNarrowSymbol;
+    }
     return all;
   }, {});
 }
@@ -218,7 +228,7 @@ function extractSignPattern(
 ): SignPattern {
   const patterns = pattern.split(';');
 
-  let [positivePattern, negativePattern] = patterns.map(p =>
+  const [positivePattern, negativePattern] = patterns.map(p =>
     p
       .replace(NUMBER_PATTERN, '{number}')
       .replace('+', '{plusSign}')
@@ -235,15 +245,24 @@ function extractDecimalFormatILD(
     | NumbersData['decimalFormats-numberSystem-latn']['short']['decimalFormat']
     | NumbersData['decimalFormats-numberSystem-latn']['long']['decimalFormat']
     | NumbersData['currencyFormats-numberSystem-latn']['short']['standard']
-): Record<string, Record<LDMLPluralRule, string>> {
-  return (Object.keys(data) as Array<keyof typeof data>).reduce(
+): Record<string, string | Record<LDMLPluralRule, string>> {
+  const decimalForms = (Object.keys(data) as Array<keyof typeof data>).reduce(
     (all: Record<string, Record<LDMLPluralRule, string>>, k) => {
       const [type, , ldml] = k.split('-');
       const decimalPattern = all[type] || {};
-      decimalPattern[ldml as LDMLPluralRule] = data[k]
-        .replace('¤', '')
-        .replace(/0+\s?/g, '');
+      const pattern = data[k].replace('¤', '').replace(/0+\s?/g, '');
+      if (pattern !== decimalPattern.other) {
+        decimalPattern[ldml as LDMLPluralRule] = pattern;
+      }
       all[type] = decimalPattern;
+      return all;
+    },
+    {}
+  );
+
+  return Object.keys(decimalForms).reduce(
+    (all: Record<string, string | Record<LDMLPluralRule, string>>, form) => {
+      all[form] = collapseSingleValuePluralRule(decimalForms[form]);
       return all;
     },
     {}

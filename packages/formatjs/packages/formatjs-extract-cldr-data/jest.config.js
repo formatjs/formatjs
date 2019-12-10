@@ -5,9 +5,5 @@ module.exports = {
     'ts-jest': {
       tsConfig: 'tsconfig.json'
     }
-  },
-  moduleDirectories: [
-    "node_modules",
-    "<rootDir>/../../node_modules"
-]
+  }
 };

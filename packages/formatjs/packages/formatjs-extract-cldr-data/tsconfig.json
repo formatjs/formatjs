@@ -28,6 +28,5 @@
             "stack-utils",
             "yargs"
         ]
-    },
-    "include": ["src/*.ts"]
+    }
 }
