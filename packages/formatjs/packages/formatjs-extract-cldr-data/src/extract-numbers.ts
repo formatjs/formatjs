@@ -22,7 +22,7 @@ import {
   UnitPattern,
   InternalSlotToken,
 } from '@formatjs/intl-utils';
-import {isEqual} from 'lodash';
+import {isEqual, isEmpty} from 'lodash';
 
 const numbersLocales = globSync('*/numbers.json', {
   cwd: resolve(
@@ -65,17 +65,18 @@ function collapseSingleValuePluralRule(
 function generateCurrencyILD(d: CurrenciesData): NumberILD['currencySymbols'] {
   return Object.keys(d).reduce((all: NumberILD['currencySymbols'], k) => {
     const data = d[k as 'USD'];
+    const currencyName = collapseSingleValuePluralRule(
+      PLURAL_RULES.reduce((names: Record<LDMLPluralRule, string>, ldml) => {
+        const key = `displayName-count-${ldml}`;
+        if (key in data) {
+          names[ldml] = data[key as 'displayName-count-other'];
+        }
+        return names;
+      }, {} as Record<LDMLPluralRule, string>)
+    )
     all[k] = {
       currencySymbol: data.symbol,
-      currencyName: collapseSingleValuePluralRule(
-        PLURAL_RULES.reduce((names: Record<LDMLPluralRule, string>, ldml) => {
-          const key = `displayName-count-${ldml}`;
-          if (key in data) {
-            names[ldml] = data[key as 'displayName-count-other'];
-          }
-          return names;
-        }, {} as Record<LDMLPluralRule, string>)
-      ),
+      currencyName: isEmpty(currencyName) ? data.displayName : currencyName
     };
 
     if (data['symbol-alt-narrow']) {

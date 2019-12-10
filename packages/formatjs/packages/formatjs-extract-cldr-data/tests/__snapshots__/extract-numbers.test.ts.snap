@@ -3210,7 +3210,7 @@ Object {
       },
       "currencySymbols": Object {
         "ADP": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Peseta của Andora",
           "currencySymbol": "ADP",
         },
         "AED": Object {
@@ -3218,7 +3218,7 @@ Object {
           "currencySymbol": "AED",
         },
         "AFA": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Afghani của Afghanistan (1927–2002)",
           "currencySymbol": "AFA",
         },
         "AFN": Object {
@@ -3226,7 +3226,7 @@ Object {
           "currencySymbol": "AFN",
         },
         "ALK": Object {
-          "currencyName": Object {},
+          "currencyName": "ALK",
           "currencySymbol": "ALK",
         },
         "ALL": Object {
@@ -3247,31 +3247,31 @@ Object {
           "currencySymbol": "AOA",
         },
         "AOK": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Kwanza của Angola (1977–1991)",
           "currencySymbol": "AOK",
         },
         "AON": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Kwanza Mới của Angola (1990–2000)",
           "currencySymbol": "AON",
         },
         "AOR": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Kwanza Điều chỉnh lại của Angola (1995–1999)",
           "currencySymbol": "AOR",
         },
         "ARA": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Austral của Argentina",
           "currencySymbol": "ARA",
         },
         "ARL": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Peso Ley của Argentina (1970–1983)",
           "currencySymbol": "ARL",
         },
         "ARM": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Peso Argentina (1881–1970)",
           "currencySymbol": "ARM",
         },
         "ARP": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Peso Argentina (1983–1985)",
           "currencySymbol": "ARP",
         },
         "ARS": Object {
@@ -3280,7 +3280,7 @@ Object {
           "currencySymbol": "ARS",
         },
         "ATS": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Schiling Áo",
           "currencySymbol": "ATS",
         },
         "AUD": Object {
@@ -3293,7 +3293,7 @@ Object {
           "currencySymbol": "AWG",
         },
         "AZM": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Manat của Azerbaijan (1993–2006)",
           "currencySymbol": "AZM",
         },
         "AZN": Object {
@@ -3301,7 +3301,7 @@ Object {
           "currencySymbol": "AZN",
         },
         "BAD": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Dinar của Bosnia-Herzegovina (1992–1994)",
           "currencySymbol": "BAD",
         },
         "BAM": Object {
@@ -3310,7 +3310,7 @@ Object {
           "currencySymbol": "BAM",
         },
         "BAN": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Dinar Mới của Bosnia-Herzegovina (1994–1997)",
           "currencySymbol": "BAN",
         },
         "BBD": Object {
@@ -3324,23 +3324,23 @@ Object {
           "currencySymbol": "BDT",
         },
         "BEC": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Franc Bỉ (có thể chuyển đổi)",
           "currencySymbol": "BEC",
         },
         "BEF": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Franc Bỉ",
           "currencySymbol": "BEF",
         },
         "BEL": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Franc Bỉ (tài chính)",
           "currencySymbol": "BEL",
         },
         "BGL": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Lev Xu của Bun-ga-ri",
           "currencySymbol": "BGL",
         },
         "BGM": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Lev Xã hội chủ nghĩa của Bun-ga-ri",
           "currencySymbol": "BGM",
         },
         "BGN": Object {
@@ -3348,7 +3348,7 @@ Object {
           "currencySymbol": "BGN",
         },
         "BGO": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Lev của Bun-ga-ri (1879–1952)",
           "currencySymbol": "BGO",
         },
         "BHD": Object {
@@ -3375,27 +3375,27 @@ Object {
           "currencySymbol": "BOB",
         },
         "BOL": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Boliviano của Bolivia (1863–1963)",
           "currencySymbol": "BOL",
         },
         "BOP": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Peso Bolivia",
           "currencySymbol": "BOP",
         },
         "BOV": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Mvdol Bolivia",
           "currencySymbol": "BOV",
         },
         "BRB": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Cruzerio Mới của Braxin (1967–1986)",
           "currencySymbol": "BRB",
         },
         "BRC": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Cruzado của Braxin (1986–1989)",
           "currencySymbol": "BRC",
         },
         "BRE": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Cruzerio của Braxin (1990–1993)",
           "currencySymbol": "BRE",
         },
         "BRL": Object {
@@ -3404,15 +3404,15 @@ Object {
           "currencySymbol": "R$",
         },
         "BRN": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Cruzado Mới của Braxin (1989–1990)",
           "currencySymbol": "BRN",
         },
         "BRR": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Cruzeiro của Braxin (1993–1994)",
           "currencySymbol": "BRR",
         },
         "BRZ": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Cruzeiro của Braxin (1942–1967)",
           "currencySymbol": "BRZ",
         },
         "BSD": Object {
@@ -3425,7 +3425,7 @@ Object {
           "currencySymbol": "BTN",
         },
         "BUK": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Kyat Miến Điện",
           "currencySymbol": "BUK",
         },
         "BWP": Object {
@@ -3434,7 +3434,7 @@ Object {
           "currencySymbol": "BWP",
         },
         "BYB": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Rúp Mới của Belarus (1994–1999)",
           "currencySymbol": "BYB",
         },
         "BYN": Object {
@@ -3461,7 +3461,7 @@ Object {
           "currencySymbol": "CDF",
         },
         "CHE": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Euro WIR",
           "currencySymbol": "CHE",
         },
         "CHF": Object {
@@ -3469,15 +3469,15 @@ Object {
           "currencySymbol": "CHF",
         },
         "CHW": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng France WIR",
           "currencySymbol": "CHW",
         },
         "CLE": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Escudo của Chile",
           "currencySymbol": "CLE",
         },
         "CLF": Object {
-          "currencyName": Object {},
+          "currencyName": "Đơn vị Kế toán của Chile (UF)",
           "currencySymbol": "CLF",
         },
         "CLP": Object {
@@ -3490,7 +3490,7 @@ Object {
           "currencySymbol": "CNH",
         },
         "CNX": Object {
-          "currencyName": Object {},
+          "currencyName": "CNX",
           "currencySymbol": "CNX",
         },
         "CNY": Object {
@@ -3504,7 +3504,7 @@ Object {
           "currencySymbol": "COP",
         },
         "COU": Object {
-          "currencyName": Object {},
+          "currencyName": "Đơn vị Giá trị Thực của Colombia",
           "currencySymbol": "COU",
         },
         "CRC": Object {
@@ -3513,11 +3513,11 @@ Object {
           "currencySymbol": "CRC",
         },
         "CSD": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Dinar của Serbia (2002–2006)",
           "currencySymbol": "CSD",
         },
         "CSK": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Koruna Xu của Czechoslovakia",
           "currencySymbol": "CSK",
         },
         "CUC": Object {
@@ -3535,7 +3535,7 @@ Object {
           "currencySymbol": "CVE",
         },
         "CYP": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Bảng Síp",
           "currencySymbol": "CYP",
         },
         "CZK": Object {
@@ -3544,11 +3544,11 @@ Object {
           "currencySymbol": "CZK",
         },
         "DDM": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Mark Đông Đức",
           "currencySymbol": "DDM",
         },
         "DEM": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Mark Đức",
           "currencySymbol": "DEM",
         },
         "DJF": Object {
@@ -3570,15 +3570,15 @@ Object {
           "currencySymbol": "DZD",
         },
         "ECS": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Scure Ecuador",
           "currencySymbol": "ECS",
         },
         "ECV": Object {
-          "currencyName": Object {},
+          "currencyName": "Đơn vị Giá trị Không đổi của Ecuador",
           "currencySymbol": "ECV",
         },
         "EEK": Object {
-          "currencyName": Object {},
+          "currencyName": "Crun Extônia",
           "currencySymbol": "EEK",
         },
         "EGP": Object {
@@ -3591,15 +3591,15 @@ Object {
           "currencySymbol": "ERN",
         },
         "ESA": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Peseta Tây Ban Nha (Tài khoản)",
           "currencySymbol": "ESA",
         },
         "ESB": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Peseta Tây Ban Nha (tài khoản có thể chuyển đổi)",
           "currencySymbol": "ESB",
         },
         "ESP": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Peseta Tây Ban Nha",
           "currencyNarrowSymbol": "₧",
           "currencySymbol": "ESP",
         },
@@ -3613,7 +3613,7 @@ Object {
           "currencySymbol": "€",
         },
         "FIM": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Markka Phần Lan",
           "currencySymbol": "FIM",
         },
         "FJD": Object {
@@ -3627,7 +3627,7 @@ Object {
           "currencySymbol": "FKP",
         },
         "FRF": Object {
-          "currencyName": Object {},
+          "currencyName": "Franc Pháp",
           "currencySymbol": "FRF",
         },
         "GBP": Object {
@@ -3636,7 +3636,7 @@ Object {
           "currencySymbol": "£",
         },
         "GEK": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Kupon Larit của Georgia",
           "currencySymbol": "GEK",
         },
         "GEL": Object {
@@ -3645,7 +3645,7 @@ Object {
           "currencySymbol": "GEL",
         },
         "GHC": Object {
-          "currencyName": Object {},
+          "currencyName": "Cedi Ghana (1979–2007)",
           "currencySymbol": "GHC",
         },
         "GHS": Object {
@@ -3667,15 +3667,15 @@ Object {
           "currencySymbol": "GNF",
         },
         "GNS": Object {
-          "currencyName": Object {},
+          "currencyName": "Syli Guinea",
           "currencySymbol": "GNS",
         },
         "GQE": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Ekwele của Guinea Xích Đạo",
           "currencySymbol": "GQE",
         },
         "GRD": Object {
-          "currencyName": Object {},
+          "currencyName": "Drachma Hy Lạp",
           "currencySymbol": "GRD",
         },
         "GTQ": Object {
@@ -3684,11 +3684,11 @@ Object {
           "currencySymbol": "GTQ",
         },
         "GWE": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Guinea Escudo Bồ Đào Nha",
           "currencySymbol": "GWE",
         },
         "GWP": Object {
-          "currencyName": Object {},
+          "currencyName": "Peso Guinea-Bissau",
           "currencySymbol": "GWP",
         },
         "GYD": Object {
@@ -3707,7 +3707,7 @@ Object {
           "currencySymbol": "HNL",
         },
         "HRD": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Dinar Croatia",
           "currencySymbol": "HRD",
         },
         "HRK": Object {
@@ -3730,15 +3730,15 @@ Object {
           "currencySymbol": "IDR",
         },
         "IEP": Object {
-          "currencyName": Object {},
+          "currencyName": "Pao Ai-len",
           "currencySymbol": "IEP",
         },
         "ILP": Object {
-          "currencyName": Object {},
+          "currencyName": "Pao Ixraen",
           "currencySymbol": "ILP",
         },
         "ILR": Object {
-          "currencyName": Object {},
+          "currencyName": "ILR",
           "currencySymbol": "ILR",
         },
         "ILS": Object {
@@ -3760,7 +3760,7 @@ Object {
           "currencySymbol": "IRR",
         },
         "ISJ": Object {
-          "currencyName": Object {},
+          "currencyName": "ISJ",
           "currencySymbol": "ISJ",
         },
         "ISK": Object {
@@ -3769,7 +3769,7 @@ Object {
           "currencySymbol": "ISK",
         },
         "ITL": Object {
-          "currencyName": Object {},
+          "currencyName": "Lia Ý",
           "currencySymbol": "ITL",
         },
         "JMD": Object {
@@ -3810,11 +3810,11 @@ Object {
           "currencySymbol": "KPW",
         },
         "KRH": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Hwan Hàn Quốc (1953–1962)",
           "currencySymbol": "KRH",
         },
         "KRO": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Won Hàn Quốc (1945–1953)",
           "currencySymbol": "KRO",
         },
         "KRW": Object {
@@ -3857,7 +3857,7 @@ Object {
           "currencySymbol": "LRD",
         },
         "LSL": Object {
-          "currencyName": Object {},
+          "currencyName": "Ioti Lesotho",
           "currencySymbol": "LSL",
         },
         "LTL": Object {
@@ -3866,19 +3866,19 @@ Object {
           "currencySymbol": "LTL",
         },
         "LTT": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Talonas Litva",
           "currencySymbol": "LTT",
         },
         "LUC": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Franc Luxembourg có thể chuyển đổi",
           "currencySymbol": "LUC",
         },
         "LUF": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Franc Luxembourg",
           "currencySymbol": "LUF",
         },
         "LUL": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Franc Luxembourg tài chính",
           "currencySymbol": "LUL",
         },
         "LVL": Object {
@@ -3887,7 +3887,7 @@ Object {
           "currencySymbol": "LVL",
         },
         "LVR": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Rúp Latvia",
           "currencySymbol": "LVR",
         },
         "LYD": Object {
@@ -3899,15 +3899,15 @@ Object {
           "currencySymbol": "MAD",
         },
         "MAF": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Franc Ma-rốc",
           "currencySymbol": "MAF",
         },
         "MCF": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Franc Monegasque",
           "currencySymbol": "MCF",
         },
         "MDC": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Cupon Moldova",
           "currencySymbol": "MDC",
         },
         "MDL": Object {
@@ -3920,7 +3920,7 @@ Object {
           "currencySymbol": "MGA",
         },
         "MGF": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Franc Magalasy",
           "currencySymbol": "MGF",
         },
         "MKD": Object {
@@ -3928,11 +3928,11 @@ Object {
           "currencySymbol": "MKD",
         },
         "MKN": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Denar Macedonia (1992–1993)",
           "currencySymbol": "MKN",
         },
         "MLF": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Franc Mali",
           "currencySymbol": "MLF",
         },
         "MMK": Object {
@@ -3958,11 +3958,11 @@ Object {
           "currencySymbol": "MRU",
         },
         "MTL": Object {
-          "currencyName": Object {},
+          "currencyName": "Lia xứ Man-tơ",
           "currencySymbol": "MTL",
         },
         "MTP": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Bảng Malta",
           "currencySymbol": "MTP",
         },
         "MUR": Object {
@@ -3971,7 +3971,7 @@ Object {
           "currencySymbol": "MUR",
         },
         "MVP": Object {
-          "currencyName": Object {},
+          "currencyName": "MVP",
           "currencySymbol": "MVP",
         },
         "MVR": Object {
@@ -3988,11 +3988,11 @@ Object {
           "currencySymbol": "MX$",
         },
         "MXP": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Peso Bạc Mê-hi-cô (1861–1992)",
           "currencySymbol": "MXP",
         },
         "MXV": Object {
-          "currencyName": Object {},
+          "currencyName": "Đơn vị Đầu tư Mê-hi-cô",
           "currencySymbol": "MXV",
         },
         "MYR": Object {
@@ -4001,11 +4001,11 @@ Object {
           "currencySymbol": "MYR",
         },
         "MZE": Object {
-          "currencyName": Object {},
+          "currencyName": "Escudo Mozambique",
           "currencySymbol": "MZE",
         },
         "MZM": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Metical Mozambique (1980–2006)",
           "currencySymbol": "MZM",
         },
         "MZN": Object {
@@ -4023,7 +4023,7 @@ Object {
           "currencySymbol": "NGN",
         },
         "NIC": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Córdoba Nicaragua (1988–1991)",
           "currencySymbol": "NIC",
         },
         "NIO": Object {
@@ -4032,7 +4032,7 @@ Object {
           "currencySymbol": "NIO",
         },
         "NLG": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Guilder Hà Lan",
           "currencySymbol": "NLG",
         },
         "NOK": Object {
@@ -4059,7 +4059,7 @@ Object {
           "currencySymbol": "PAB",
         },
         "PEI": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Inti Peru",
           "currencySymbol": "PEI",
         },
         "PEN": Object {
@@ -4067,7 +4067,7 @@ Object {
           "currencySymbol": "PEN",
         },
         "PES": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Sol Peru (1863–1965)",
           "currencySymbol": "PES",
         },
         "PGK": Object {
@@ -4090,11 +4090,11 @@ Object {
           "currencySymbol": "PLN",
         },
         "PLZ": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Zloty Ba Lan (1950–1995)",
           "currencySymbol": "PLZ",
         },
         "PTE": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Escudo Bồ Đào Nha",
           "currencySymbol": "PTE",
         },
         "PYG": Object {
@@ -4107,11 +4107,11 @@ Object {
           "currencySymbol": "QAR",
         },
         "RHD": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Đô la Rhode",
           "currencySymbol": "RHD",
         },
         "ROL": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Leu Rumani (1952–2006)",
           "currencySymbol": "ROL",
         },
         "RON": Object {
@@ -4129,7 +4129,7 @@ Object {
           "currencySymbol": "RUB",
         },
         "RUR": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Rúp Nga (1991–1998)",
           "currencyNarrowSymbol": "р.",
           "currencySymbol": "RUR",
         },
@@ -4152,7 +4152,7 @@ Object {
           "currencySymbol": "SCR",
         },
         "SDD": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Dinar Sudan (1992–2007)",
           "currencySymbol": "SDD",
         },
         "SDG": Object {
@@ -4160,7 +4160,7 @@ Object {
           "currencySymbol": "SDG",
         },
         "SDP": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Bảng Sudan (1957–1998)",
           "currencySymbol": "SDP",
         },
         "SEK": Object {
@@ -4179,11 +4179,11 @@ Object {
           "currencySymbol": "SHP",
         },
         "SIT": Object {
-          "currencyName": Object {},
+          "currencyName": "Tôla Xlôvênia",
           "currencySymbol": "SIT",
         },
         "SKK": Object {
-          "currencyName": Object {},
+          "currencyName": "Cuaron Xlôvác",
           "currencySymbol": "SKK",
         },
         "SLL": Object {
@@ -4200,7 +4200,7 @@ Object {
           "currencySymbol": "SRD",
         },
         "SRG": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Guilder Surinam",
           "currencySymbol": "SRG",
         },
         "SSP": Object {
@@ -4218,11 +4218,11 @@ Object {
           "currencySymbol": "STN",
         },
         "SUR": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Rúp Sô viết",
           "currencySymbol": "SUR",
         },
         "SVC": Object {
-          "currencyName": Object {},
+          "currencyName": "Colón El Salvador",
           "currencySymbol": "SVC",
         },
         "SYP": Object {
@@ -4240,7 +4240,7 @@ Object {
           "currencySymbol": "฿",
         },
         "TJR": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Rúp Tajikistan",
           "currencySymbol": "TJR",
         },
         "TJS": Object {
@@ -4248,7 +4248,7 @@ Object {
           "currencySymbol": "TJS",
         },
         "TMM": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Manat Turkmenistan (1993–2009)",
           "currencySymbol": "TMM",
         },
         "TMT": Object {
@@ -4265,7 +4265,7 @@ Object {
           "currencySymbol": "TOP",
         },
         "TPE": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Escudo Timor",
           "currencySymbol": "TPE",
         },
         "TRL": Object {
@@ -4297,11 +4297,11 @@ Object {
           "currencySymbol": "UAH",
         },
         "UAK": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Karbovanets Ucraina",
           "currencySymbol": "UAK",
         },
         "UGS": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Shilling Uganda (1966–1987)",
           "currencySymbol": "UGS",
         },
         "UGX": Object {
@@ -4314,19 +4314,19 @@ Object {
           "currencySymbol": "US$",
         },
         "USN": Object {
-          "currencyName": Object {},
+          "currencyName": "Đô la Mỹ (Ngày tiếp theo)",
           "currencySymbol": "USN",
         },
         "USS": Object {
-          "currencyName": Object {},
+          "currencyName": "Đô la Mỹ (Cùng ngày)",
           "currencySymbol": "USS",
         },
         "UYI": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Peso Uruguay (Đơn vị Theo chỉ số)",
           "currencySymbol": "UYI",
         },
         "UYP": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Peso Uruguay (1975–1993)",
           "currencySymbol": "UYP",
         },
         "UYU": Object {
@@ -4335,7 +4335,7 @@ Object {
           "currencySymbol": "UYU",
         },
         "UYW": Object {
-          "currencyName": Object {},
+          "currencyName": "UYW",
           "currencySymbol": "UYW",
         },
         "UZS": Object {
@@ -4343,7 +4343,7 @@ Object {
           "currencySymbol": "UZS",
         },
         "VEB": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng bolívar của Venezuela (1871–2008)",
           "currencySymbol": "VEB",
         },
         "VEF": Object {
@@ -4361,7 +4361,7 @@ Object {
           "currencySymbol": "₫",
         },
         "VNN": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Việt Nam (1978–1985)",
           "currencySymbol": "VNN",
         },
         "VUV": Object {
@@ -4377,27 +4377,27 @@ Object {
           "currencySymbol": "FCFA",
         },
         "XAG": Object {
-          "currencyName": Object {},
+          "currencyName": "Bạc",
           "currencySymbol": "XAG",
         },
         "XAU": Object {
-          "currencyName": Object {},
+          "currencyName": "Vàng",
           "currencySymbol": "XAU",
         },
         "XBA": Object {
-          "currencyName": Object {},
+          "currencyName": "Đơn vị Tổng hợp Châu Âu",
           "currencySymbol": "XBA",
         },
         "XBB": Object {
-          "currencyName": Object {},
+          "currencyName": "Đơn vị Tiền tệ Châu Âu",
           "currencySymbol": "XBB",
         },
         "XBC": Object {
-          "currencyName": Object {},
+          "currencyName": "Đơn vị Kế toán Châu Âu (XBC)",
           "currencySymbol": "XBC",
         },
         "XBD": Object {
-          "currencyName": Object {},
+          "currencyName": "Đơn vị Kế toán Châu Âu (XBD)",
           "currencySymbol": "XBD",
         },
         "XCD": Object {
@@ -4406,19 +4406,19 @@ Object {
           "currencySymbol": "EC$",
         },
         "XDR": Object {
-          "currencyName": Object {},
+          "currencyName": "Quyền Rút vốn Đặc biệt",
           "currencySymbol": "XDR",
         },
         "XEU": Object {
-          "currencyName": Object {},
+          "currencyName": "Đơn vị Tiền Châu Âu",
           "currencySymbol": "XEU",
         },
         "XFO": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng France Pháp Vàng",
           "currencySymbol": "XFO",
         },
         "XFU": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng UIC-Franc Pháp",
           "currencySymbol": "XFU",
         },
         "XOF": Object {
@@ -4426,7 +4426,7 @@ Object {
           "currencySymbol": "CFA",
         },
         "XPD": Object {
-          "currencyName": Object {},
+          "currencyName": "Paladi",
           "currencySymbol": "XPD",
         },
         "XPF": Object {
@@ -4434,23 +4434,23 @@ Object {
           "currencySymbol": "CFPF",
         },
         "XPT": Object {
-          "currencyName": Object {},
+          "currencyName": "Bạch kim",
           "currencySymbol": "XPT",
         },
         "XRE": Object {
-          "currencyName": Object {},
+          "currencyName": "Quỹ RINET",
           "currencySymbol": "XRE",
         },
         "XSU": Object {
-          "currencyName": Object {},
+          "currencyName": "XSU",
           "currencySymbol": "XSU",
         },
         "XTS": Object {
-          "currencyName": Object {},
+          "currencyName": "Mã Tiền tệ Kiểm tra",
           "currencySymbol": "XTS",
         },
         "XUA": Object {
-          "currencyName": Object {},
+          "currencyName": "XUA",
           "currencySymbol": "XUA",
         },
         "XXX": Object {
@@ -4458,7 +4458,7 @@ Object {
           "currencySymbol": "XXX",
         },
         "YDD": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Dinar Yemen",
           "currencySymbol": "YDD",
         },
         "YER": Object {
@@ -4466,23 +4466,23 @@ Object {
           "currencySymbol": "YER",
         },
         "YUD": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Dinar Nam Tư Xu (1966–1990)",
           "currencySymbol": "YUD",
         },
         "YUM": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Dinar Nam Tư Mới (1994–2002)",
           "currencySymbol": "YUM",
         },
         "YUN": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Dinar Nam Tư Có thể chuyển đổi (1990–1992)",
           "currencySymbol": "YUN",
         },
         "YUR": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Dinar Nam Tư Tái cơ cấu (1992–1993)",
           "currencySymbol": "YUR",
         },
         "ZAL": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Rand Nam Phi (tài chính)",
           "currencySymbol": "ZAL",
         },
         "ZAR": Object {
@@ -4491,7 +4491,7 @@ Object {
           "currencySymbol": "ZAR",
         },
         "ZMK": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng kwacha của Zambia (1968–2012)",
           "currencySymbol": "ZMK",
         },
         "ZMW": Object {
@@ -4500,23 +4500,23 @@ Object {
           "currencySymbol": "ZMW",
         },
         "ZRN": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Zaire Mới (1993–1998)",
           "currencySymbol": "ZRN",
         },
         "ZRZ": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Zaire (1971–1993)",
           "currencySymbol": "ZRZ",
         },
         "ZWD": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Đô la Zimbabwe (1980–2008)",
           "currencySymbol": "ZWD",
         },
         "ZWL": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Đô la Zimbabwe (2009)",
           "currencySymbol": "ZWL",
         },
         "ZWR": Object {
-          "currencyName": Object {},
+          "currencyName": "Đồng Đô la Zimbabwe (2008)",
           "currencySymbol": "ZWR",
         },
       },
