@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.9.2](https://github.com/formatjs/react-intl/compare/v3.9.1...v3.9.2) (2019-12-10)
+
+
+### Bug Fixes
+
+* add type overload for formatList, fix [#1537](https://github.com/formatjs/react-intl/issues/1537) ([6629899](https://github.com/formatjs/react-intl/commit/662989973c8d08f7972a3ba75f70b19abc507bb9))
+* fix list formatter generation types ([0e5f205](https://github.com/formatjs/react-intl/commit/0e5f2058d7cba2d886693e219f58366582f0a6ac))
+
 ### [3.9.1](https://github.com/formatjs/react-intl/compare/v3.9.0...v3.9.1) (2019-12-02)
 
 
