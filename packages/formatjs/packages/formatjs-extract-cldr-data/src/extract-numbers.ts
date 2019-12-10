@@ -20,6 +20,7 @@ import {
   NumberILD,
   CurrencySignPattern,
   UnitPattern,
+  InternalSlotToken,
 } from '@formatjs/intl-utils';
 import {isEqual} from 'lodash';
 
@@ -166,7 +167,13 @@ function extractNumberPattern(
 // Matches CLDR number patterns, e.g. #,##0.00, #,##,##0.00, #,##0.##, #E0, etc.
 const NUMBER_PATTERN = /[#0](?:[\.,][#0]+)*/g;
 const PATTERN_0_REGEX = /\s?\{0\}\s?/g;
-const SCIENTIFIC_SLOT = '{number}{scientificSeparator}{scientificExponent}';
+const SCIENTIFIC_SLOT = [
+  InternalSlotToken.number,
+  InternalSlotToken.scientificSeparator,
+  InternalSlotToken.scientificExponent,
+]
+  .map(t => `{${t}}`)
+  .join('');
 const SCIENTIFIC_SIGN_PATTERN = produceSignPattern(SCIENTIFIC_SLOT);
 
 function produceSignPattern(
@@ -175,29 +182,33 @@ function produceSignPattern(
   signDisplay: keyof SignDisplayPattern = 'auto'
 ) {
   if (!negativePattern) {
-    negativePattern = `{minusSign}${positivePattern}`;
+    negativePattern = `{${InternalSlotToken.minusSign}}${positivePattern}`;
   }
   let zeroPattern = positivePattern;
   switch (signDisplay) {
     case 'always':
-      positivePattern = zeroPattern = positivePattern.includes('{plusSign}')
+      positivePattern = zeroPattern = positivePattern.includes(
+        `{${InternalSlotToken.plusSign}}`
+      )
         ? positivePattern
-        : `{plusSign}${positivePattern}`;
-      negativePattern = negativePattern.includes('{minusSign}')
-        ? negativePattern
-        : `{minusSign}${negativePattern}`;
+        : `{${InternalSlotToken.plusSign}}${positivePattern}`;
       break;
     case 'exceptZero':
-      positivePattern = positivePattern.includes('{plusSign}')
+      positivePattern = positivePattern.includes(
+        `{${InternalSlotToken.minusSign}}`
+      )
         ? positivePattern
-        : `{plusSign}${positivePattern}`;
-      negativePattern = negativePattern.includes('{minusSign}')
-        ? negativePattern
-        : `{minusSign}${negativePattern}`;
+        : `{${InternalSlotToken.plusSign}}${positivePattern}`;
       break;
     case 'never':
-      positivePattern = zeroPattern = positivePattern.replace('{plusSign}', '');
-      negativePattern = negativePattern.replace('{minusSign}', '');
+      positivePattern = zeroPattern = positivePattern.replace(
+        `{${InternalSlotToken.plusSign}}`,
+        ''
+      );
+      negativePattern = negativePattern.replace(
+        `{${InternalSlotToken.minusSign}}`,
+        ''
+      );
       break;
   }
   return {
@@ -207,7 +218,7 @@ function produceSignPattern(
   };
 }
 
-function partitionUnitPattern(pattern: string, tokenType: string) {
+function partitionUnitPattern(pattern: string, tokenType: InternalSlotToken) {
   return (
     pattern
       // Handle `{0}foo` & `{0} foo`
@@ -220,20 +231,16 @@ function partitionUnitPattern(pattern: string, tokenType: string) {
 function extractSignPattern(
   pattern: string,
   signDisplay: keyof SignDisplayPattern = 'auto',
-  currencyToken:
-    | 'currencyCode'
-    | 'currencySymbol'
-    | 'currencyNarrowSymbol'
-    | 'currencyName' = 'currencyCode'
+  currencyToken: InternalSlotToken = InternalSlotToken.currencyCode
 ): SignPattern {
   const patterns = pattern.split(';');
 
   const [positivePattern, negativePattern] = patterns.map(p =>
     p
-      .replace(NUMBER_PATTERN, '{number}')
-      .replace('+', '{plusSign}')
-      .replace('-', '{minusSign}')
-      .replace('%', '{percentSign}')
+      .replace(NUMBER_PATTERN, `{${InternalSlotToken.number}}`)
+      .replace('+', `{${InternalSlotToken.plusSign}}`)
+      .replace('-', `{${InternalSlotToken.minusSign}}`)
+      .replace('%', `{${InternalSlotToken.percentSign}}`)
       .replace('¤', `{${currencyToken}}`)
   );
 
@@ -302,13 +309,13 @@ function extractDecimalPattern(d: NumbersData): SignDisplayPattern {
       compactShort: extractSignPattern(
         d['decimalFormats-numberSystem-latn']['short']['decimalFormat'][
           '1000-count-other'
-        ].replace(/([^0#\s]+)/, '{compactSymbol}'),
+        ].replace(/([^0#\s]+)/, `{${InternalSlotToken.compactSymbol}}`),
         k
       ),
       compactLong: extractSignPattern(
         d['decimalFormats-numberSystem-latn']['long']['decimalFormat'][
           '1000-count-other'
-        ].replace(/([^0#\s]+)/, '{compactName}'),
+        ].replace(/([^0#\s]+)/, `{${InternalSlotToken.compactName}}`),
         k
       ),
     };
@@ -365,13 +372,13 @@ function extractCurrencyPattern(d: NumbersData): CurrencySignPattern {
         compactShort: extractSignPattern(
           d['currencyFormats-numberSystem-latn']['short']['standard'][
             '1000-count-other'
-          ].replace(/([^0#\s]+)/, '{compactSymbol}'),
+          ].replace(/([^0#\s]+)/, `{${InternalSlotToken.compactSymbol}}`),
           k
         ),
         compactLong: extractSignPattern(
           d['currencyFormats-numberSystem-latn']['short']['standard'][
             '1000-count-other'
-          ].replace(/([^0#\s]+)/, '{compactSymbol}'),
+          ].replace(/([^0#\s]+)/, `{${InternalSlotToken.compactSymbol}}`),
           k
         ),
       };
@@ -392,13 +399,13 @@ function extractCurrencyPattern(d: NumbersData): CurrencySignPattern {
         compactShort: extractSignPattern(
           d['currencyFormats-numberSystem-latn']['short']['standard'][
             '1000-count-other'
-          ].replace(/([^0#\s]+)/, '{compactSymbol}'),
+          ].replace(/([^0#\s]+)/, `{${InternalSlotToken.compactSymbol}}`),
           k
         ),
         compactLong: extractSignPattern(
           d['currencyFormats-numberSystem-latn']['short']['standard'][
             '1000-count-other'
-          ].replace(/([^0#\s]+)/, '{compactSymbol}'),
+          ].replace(/([^0#\s]+)/, `{${InternalSlotToken.compactSymbol}}`),
           k
         ),
       };
@@ -412,10 +419,10 @@ function extractUnitPattern(d: NumbersData, u: UnitsData): UnitPattern {
     (patterns, display) => {
       const unit =
         display === 'long'
-          ? 'unitName'
+          ? InternalSlotToken.unitName
           : display === 'short'
-          ? 'unitSymbol'
-          : 'unitNarrowSymbol';
+          ? InternalSlotToken.unitSymbol
+          : InternalSlotToken.unitNarrowSymbol;
       patterns[display] = (['auto', 'always', 'never', 'exceptZero'] as Array<
         keyof SignDisplayPattern
       >).reduce((all: SignDisplayPattern, k) => {
@@ -434,7 +441,7 @@ function extractUnitPattern(d: NumbersData, u: UnitsData): UnitPattern {
               u[display as 'long']['acceleration-g-force'][
                 'unitPattern-count-other'
               ],
-              'unitSymbol'
+              InternalSlotToken.unitSymbol
             ).replace('{0}', SCIENTIFIC_SLOT),
             k
           ),
@@ -443,12 +450,12 @@ function extractUnitPattern(d: NumbersData, u: UnitsData): UnitPattern {
               u[display as 'long']['acceleration-g-force'][
                 'unitPattern-count-other'
               ],
-              'unitSymbol'
+              InternalSlotToken.unitSymbol
             ).replace(
               '{0}',
               d['decimalFormats-numberSystem-latn']['short']['decimalFormat'][
                 '1000-count-other'
-              ].replace(/([^0#\s]+)/, '{compactSymbol}')
+              ].replace(/([^0#\s]+)/, `{${InternalSlotToken.compactSymbol}}`)
             ),
             k
           ),
@@ -457,12 +464,12 @@ function extractUnitPattern(d: NumbersData, u: UnitsData): UnitPattern {
               u[display as 'long']['acceleration-g-force'][
                 'unitPattern-count-other'
               ],
-              'unitSymbol'
+              InternalSlotToken.unitSymbol
             ).replace(
               '{0}',
               d['decimalFormats-numberSystem-latn']['short']['decimalFormat'][
                 '1000-count-other'
-              ].replace(/([^0#\s]+)/, '{compactSymbol}')
+              ].replace(/([^0#\s]+)/, `{${InternalSlotToken.compactSymbol}}`)
             ),
             k
           ),

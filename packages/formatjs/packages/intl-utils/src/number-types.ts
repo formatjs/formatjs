@@ -1,6 +1,25 @@
 import {LDMLPluralRule} from './plural-rules-types';
 import {LocaleData} from './types';
 
+export const enum InternalSlotToken {
+  // To prevent collision with {0} in CLDR
+  compactName = 'a',
+  compactSymbol = 'b',
+  currencyCode = 'c',
+  currencyName = 'd',
+  currencyNarrowSymbol = 'e',
+  currencySymbol = 'f',
+  minusSign = 'g',
+  number = 'h',
+  percentSign = 'i',
+  plusSign = 'j',
+  scientificExponent = 'k',
+  scientificSeparator = 'l',
+  unitName = 'm',
+  unitNarrowSymbol = 'n',
+  unitSymbol = 'o',
+}
+
 export interface SignPattern {
   positivePattern: string;
   zeroPattern: string;
