@@ -17,58 +17,59 @@ import {
   NotationPattern,
   defaultNumberOption,
   SignPattern,
+  InternalSlotToken,
+  LDMLPluralRule,
 } from '@formatjs/intl-utils';
-import merge from 'lodash/merge';
-import repeat from 'lodash/repeat';
+import {merge, repeat} from 'lodash';
 import {toRawFixed, toRawPrecision, RawNumberFormatResult} from './utils';
 
-// function generateContinuousILND(startChar: string): NumberInternalSlots['ilnd'] {
-//   const startCharCode = startChar.charCodeAt(0);
-//   const arr = new Array<string>(10) as NumberInternalSlots['ilnd'];
-//   for (let i = 0; i < 10; i++) {
-//     arr[i] = String.fromCharCode(startCharCode + i);
-//   }
-//   return arr;
-// }
+function generateContinuousILND(startChar: string): string[] {
+  const startCharCode = startChar.charCodeAt(0);
+  const arr = new Array<string>(10);
+  for (let i = 0; i < 10; i++) {
+    arr[i] = String.fromCharCode(startCharCode + i);
+  }
+  return arr;
+}
 
-// // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#table-numbering-system-digits
-// const ILND = (function() {
-//   return {
-//     arab: generateContinuousILND('\u0660'),
-//     arabext: generateContinuousILND('\u06f0'),
-//     bali: generateContinuousILND('\u1b50'),
-//     beng: generateContinuousILND('\u09e6'),
-//     deva: generateContinuousILND('\u0966'),
-//     fullwide: generateContinuousILND('\uff10'),
-//     gujr: generateContinuousILND('\u0ae6'),
-//     guru: generateContinuousILND('\u0a66'),
-//     khmr: generateContinuousILND('\u17e0'),
-//     knda: generateContinuousILND('\u0ce6'),
-//     laoo: generateContinuousILND('\u0ed0'),
-//     latn: generateContinuousILND('\u0030'),
-//     limb: generateContinuousILND('\u1946'),
-//     mlym: generateContinuousILND('\u0d66'),
-//     mong: generateContinuousILND('\u1810'),
-//     mymr: generateContinuousILND('\u1040'),
-//     orya: generateContinuousILND('\u0b66'),
-//     tamldec: generateContinuousILND('\u0be6'),
-//     telu: generateContinuousILND('\u0c66'),
-//     thai: generateContinuousILND('\u0e50'),
-//     tibt: generateContinuousILND('\u0f20'),
-//     hanidec: [
-//       '\u3007',
-//       '\u4e00',
-//       '\u4e8c',
-//       '\u4e09',
-//       '\u56db',
-//       '\u4e94',
-//       '\u516d',
-//       '\u4e03',
-//       '\u516b',
-//       '\u4e5d',
-//     ],
-//   };
-// })();
+// https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#table-numbering-system-digits
+const ILND: Record<string, string[]> = (function() {
+  return {
+    arab: generateContinuousILND('\u0660'),
+    arabext: generateContinuousILND('\u06f0'),
+    bali: generateContinuousILND('\u1b50'),
+    beng: generateContinuousILND('\u09e6'),
+    deva: generateContinuousILND('\u0966'),
+    fullwide: generateContinuousILND('\uff10'),
+    gujr: generateContinuousILND('\u0ae6'),
+    guru: generateContinuousILND('\u0a66'),
+    khmr: generateContinuousILND('\u17e0'),
+    knda: generateContinuousILND('\u0ce6'),
+    laoo: generateContinuousILND('\u0ed0'),
+    latn: generateContinuousILND('\u0030'),
+    limb: generateContinuousILND('\u1946'),
+    mlym: generateContinuousILND('\u0d66'),
+    mong: generateContinuousILND('\u1810'),
+    mymr: generateContinuousILND('\u1040'),
+    orya: generateContinuousILND('\u0b66'),
+    tamldec: generateContinuousILND('\u0be6'),
+    telu: generateContinuousILND('\u0c66'),
+    thai: generateContinuousILND('\u0e50'),
+    tibt: generateContinuousILND('\u0f20'),
+    hanidec: [
+      '\u3007',
+      '\u4e00',
+      '\u4e8c',
+      '\u4e09',
+      '\u56db',
+      '\u4e94',
+      '\u516d',
+      '\u4e03',
+      '\u516b',
+      '\u4e5d',
+    ],
+  };
+})();
 
 /**
  * Check if a formatting number with unit is supported
@@ -151,6 +152,7 @@ interface UnifiedNumberFormatInternal {
   maximumSignificantDigits?: number;
   // Locale-dependent formatter data
   ildData: NumberInternalSlots;
+  numberingSystem?: string;
 }
 
 const __INTERNAL_SLOT_MAP__ = new WeakMap<
@@ -194,6 +196,7 @@ export class UnifiedNumberFormat
     setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
       locale: r.locale,
       dataLocale: r.dataLocale,
+      numberingSystem: r.nu,
       ildData: localeData[r.locale],
     });
 
@@ -401,40 +404,81 @@ export class UnifiedNumberFormat
       } else {
         let p = part.substr(1, part.length - 2);
         switch (p) {
-          case 'number': {
+          case InternalSlotToken.number: {
             if (isNaN(num)) {
               results.push({type: 'nan', value: n});
             } else if (num === Infinity || num === -Infinity) {
               results.push({type: 'infinity', value: n});
             } else {
-              // TODO
-              throw Error('TODO');
+              const {numberingSystem: nu, useGrouping} = getMultiInternalSlots(
+                __INTERNAL_SLOT_MAP__,
+                this,
+                'numberingSystem',
+                'useGrouping'
+              );
+              if (nu && ILND.hasOwnProperty(nu)) {
+                // Replace digits
+                const replacementTable = ILND[nu];
+                let replacedDigits = '';
+                for (let digit of n) {
+                  replacedDigits += replacementTable[+digit];
+                }
+                n = replacedDigits;
+              } else {
+                // From spec:
+                // Else use an implementation dependent algorithm to map n to the appropriate
+                // representation of n in the given numbering system.
+              }
+              let decimalSepIndex = n.indexOf('.');
+              let integer: string;
+              let fraction: string | undefined;
+              if (decimalSepIndex > 0) {
+                integer = n.substr(0, decimalSepIndex);
+                fraction = n.substr(decimalSepIndex + 1);
+              } else {
+                integer = n;
+              }
+              if (useGrouping) {
+                // TODO
+                // let groupSepSymbol = ildData.ild.symbols.group;
+                // // Let groups be a List whose elements are, in left to right order, the substrings
+                // // defined by ILND set of locations within the integer.
+                // let groups: string[] = [];
+              } else {
+                results.push({type: 'integer', value: integer});
+              }
+              if (fraction !== undefined) {
+                results.push(
+                  {type: 'decimal', value: ildData.ild.symbols.decimal},
+                  {type: 'fraction', value: fraction}
+                );
+              }
             }
             break;
           }
-          case 'plusSign':
+          case InternalSlotToken.plusSign:
             results.push({
               type: 'plusSign',
               value: ildData.ild.symbols.plusSign,
             });
             break;
-          case 'minusSign':
+          case InternalSlotToken.minusSign:
             results.push({
               type: 'minusSign',
               value: ildData.ild.symbols.minusSign,
             });
             break;
-          case 'compactSymbol':
-          case 'compactName':
+          case InternalSlotToken.compactSymbol:
+          case InternalSlotToken.compactName:
             // TODO
             throw Error('not implemented');
-          case 'scientificSeparator':
+          case InternalSlotToken.scientificSeparator:
             results.push({
               type: 'exponentSeparator',
               value: ildData.ild.symbols.exponential,
             });
             break;
-          case 'scientificExponent': {
+          case InternalSlotToken.scientificExponent: {
             if (exponent < 0) {
               results.push({
                 type: 'exponentMinusSign',
@@ -449,30 +493,32 @@ export class UnifiedNumberFormat
             });
             break;
           }
-          case 'percentSign':
+          case InternalSlotToken.percentSign:
             results.push({
               type: 'percentSign',
               value: ildData.ild.symbols.percentSign,
             });
             break;
-          case 'unitSymbol':
-          case 'unitNarrowSymbol':
-          case 'unitName': {
+          case InternalSlotToken.unitSymbol:
+          case InternalSlotToken.unitNarrowSymbol:
+          case InternalSlotToken.unitName: {
             const style = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'style');
             if (style === 'unit') {
               const unit = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'unit');
-              let mu =
-                ildData.ild.unitSymbols[unit!][p][
-                  this.pl.select(num) === 'one' ? 'one' : 'other'
-                ];
+              const unitSymbols = ildData.ild.unitSymbols[unit!];
+              let mu = selectPlural(
+                this.pl,
+                num,
+                unitSymbols[p] || unitSymbols[InternalSlotToken.unitSymbol]
+              );
               results.push({type: 'unit', value: mu});
             }
             break;
           }
-          case 'currencyCode':
-          case 'currencySymbol':
-          case 'currencyNarrowSymbol':
-          case 'currencyName': {
+          case InternalSlotToken.currencyCode:
+          case InternalSlotToken.currencySymbol:
+          case InternalSlotToken.currencyNarrowSymbol:
+          case InternalSlotToken.currencyName: {
             const style = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'style');
             if (style === 'currency') {
               const currency = getInternalSlot(
@@ -481,12 +527,14 @@ export class UnifiedNumberFormat
                 'currency'
               )!;
               let cd: string | undefined;
-              if (p === 'currencyCode') {
+              if (p === InternalSlotToken.currencyCode) {
                 cd = currency;
-              } else if (p === 'currencyName') {
-                ildData.ild.currencySymbols[currency].currencyName[
-                  this.pl.select(num) === 'one' ? 'one' : 'other'
-                ];
+              } else if (p === InternalSlotToken.currencyName) {
+                cd = selectPlural(
+                  this.pl,
+                  num,
+                  ildData.ild.currencySymbols[currency].currencyName
+                );
               } else {
                 cd = ildData.ild.currencySymbols[currency][p];
               }
@@ -575,6 +623,7 @@ export class UnifiedNumberFormat
   private static getDefaultLocale() {
     return UnifiedNumberFormat.__defaultLocale;
   }
+  // private static relevantExtensionKeys = ['nu'];
   private static relevantExtensionKeys = [];
   public static polyfilled = true;
 }
@@ -766,4 +815,14 @@ function getNumberFormatPattern(
     sign = 'positivePattern';
   }
   return patterns[signDisplay][displayNotation][sign];
+}
+
+function selectPlural(
+  pl: Intl.PluralRules,
+  x: number,
+  rules: string | Record<LDMLPluralRule, string>
+): string {
+  return typeof rules === 'string'
+    ? rules
+    : rules[pl.select(x) === 'one' ? 'one' : 'other'];
 }

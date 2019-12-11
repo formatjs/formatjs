@@ -1,5 +1,4 @@
-import repeat from 'lodash/repeat';
-import endsWith from 'lodash/endsWith';
+import {repeat, endsWith} from 'lodash';
 
 export interface RawNumberFormatResult {
   formattedString: string;

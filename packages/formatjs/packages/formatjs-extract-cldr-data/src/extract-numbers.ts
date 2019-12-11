@@ -73,10 +73,10 @@ function generateCurrencyILD(d: CurrenciesData): NumberILD['currencySymbols'] {
         }
         return names;
       }, {} as Record<LDMLPluralRule, string>)
-    )
+    );
     all[k] = {
       currencySymbol: data.symbol,
-      currencyName: isEmpty(currencyName) ? data.displayName : currencyName
+      currencyName: isEmpty(currencyName) ? data.displayName : currencyName,
     };
 
     if (data['symbol-alt-narrow']) {
