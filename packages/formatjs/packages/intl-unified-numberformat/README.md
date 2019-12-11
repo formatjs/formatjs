@@ -46,11 +46,11 @@ To use this as a polyfill, override `Intl.NumberFormat` as below:
 
 ```tsx
 import '@formatjs/intl-unified-numberformat/polyfill';
-if (typeof Intl.NumberFormat.__addUnitLocaleData === 'function') {
-  Intl.NumberFormat.__addUnitLocaleData(
+if (typeof Intl.NumberFormat.__addLocaleData === 'function') {
+  Intl.NumberFormat.__addLocaleData(
     require('@formatjs/intl-unified-numberformat/dist/locale-data/zh.json') // locale-data for zh
   );
-  Intl.NumberFormat.__addUnitLocaleData(
+  Intl.NumberFormat.__addLocaleData(
     require('@formatjs/intl-unified-numberformat/dist/locale-data/en.json') // locale-data for en
   );
 }
