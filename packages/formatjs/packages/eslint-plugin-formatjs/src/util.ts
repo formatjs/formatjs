@@ -152,13 +152,15 @@ function extractMessageDescriptors(node?: ObjectExpression) {
 
 export function extractMessages(
   node: Node,
-  importedMacroVars: Scope.Variable[]
+  importedMacroVars: Scope.Variable[],
+  excludeMessageDeclCalls = false
 ): Array<[MessageDescriptorNodeInfo, Expression | undefined]> {
   if (node.type === 'CallExpression') {
     const expr = node as CallExpression;
     const fnId = expr.callee as Identifier;
     if (
-      isSingleMessageDescriptorDeclaration(fnId, importedMacroVars) ||
+      (!excludeMessageDeclCalls &&
+        isSingleMessageDescriptorDeclaration(fnId, importedMacroVars)) ||
       isIntlFormatMessageCall(node)
     ) {
       const msgDescriptorNodeInfo = extractMessageDescriptor(
@@ -168,6 +170,7 @@ export function extractMessages(
         return [[msgDescriptorNodeInfo, expr.arguments[1] as Expression]];
       }
     } else if (
+      !excludeMessageDeclCalls &&
       isMultipleMessageDescriptorDeclaration(fnId, importedMacroVars)
     ) {
       return extractMessageDescriptors(

@@ -265,6 +265,18 @@ const a = <FormattedMessage
 defaultMessage="{count, plural, one {#} other {# more}} {bar}"
 values={{ 'count': 1, bar: 2}} />
       `,
+    `import {defineMessages, _} from 'react-intl'
+defineMessages({
+  foo: {
+    defaultMessage: '{count, plural, one {#} other {# more}}',
+    description: 'asd'
+  }
+})
+_({
+  defaultMessage: '{count, plural, one {#} other {# more}}',
+  description: 'asd'
+})
+`,
     dynamicMessage,
     noMatch,
     spreadJsx,

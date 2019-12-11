@@ -62,7 +62,7 @@ function checkNode(
   node: Node,
   importedMacroVars: Scope.Variable[]
 ) {
-  const msgs = extractMessages(node, importedMacroVars);
+  const msgs = extractMessages(node, importedMacroVars, true);
 
   for (const [
     {
