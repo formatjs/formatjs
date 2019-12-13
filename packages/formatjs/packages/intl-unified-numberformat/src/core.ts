@@ -71,6 +71,26 @@ const ILND: Record<string, string[]> = (function() {
   };
 })();
 
+const RESOLVED_OPTIONS_KEYS = [
+  'locale',
+  'numberingSystem',
+  'style',
+  'currency',
+  'currencyDisplay',
+  'currencySign',
+  'unit',
+  'unitDisplay',
+  'minimumIntegerDigits',
+  'minimumFractionDigits',
+  'maximumFractionDigits',
+  'minimumSignificantDigits',
+  'maximumSignificantDigits',
+  'useGrouping',
+  'notation',
+  'compactDisplay',
+  'signDisplay',
+] as const;
+
 /**
  * Check if a formatting number with unit is supported
  * @public
@@ -104,18 +124,16 @@ export interface UnifiedNumberFormatOptions extends Intl.NumberFormatOptions {
   maximumSignificantDigits?: number;
 }
 
-export interface ResolvedUnifiedNumberFormatOptions
-  extends Intl.ResolvedNumberFormatOptions {
-  compactDisplay?: 'short' | 'long';
-  currencyDisplay?: 'symbol' | 'code' | 'name' | 'narrowSymbol';
-  currencySign?: 'standard' | 'accounting';
-  notation?: 'standard' | 'scientific' | 'engineering' | 'compact';
-  signDisplay?: 'auto' | 'always' | 'never' | 'exceptZero';
-  unit?: Unit;
-  unitDisplay?: 'long' | 'short' | 'narrow';
-  minimumSignificantDigits?: number;
-  maximumSignificantDigits?: number;
-}
+export type ResolvedUnifiedNumberFormatOptions = Intl.ResolvedNumberFormatOptions &
+  Pick<
+    UnifiedNumberFormatInternal,
+    | 'currencySign'
+    | 'unit'
+    | 'unitDisplay'
+    | 'notation'
+    | 'compactDisplay'
+    | 'signDisplay'
+  >;
 
 export type UnifiedNumberFormatPartTypes =
   | Intl.NumberFormatPartTypes
@@ -128,8 +146,6 @@ export interface UnifiedNumberFormatPart {
   type: UnifiedNumberFormatPartTypes;
   value: string;
 }
-
-const NativeNumberFormat = Intl.NumberFormat;
 
 interface UnifiedNumberFormatInternal {
   locale: string;
@@ -162,7 +178,7 @@ const __INTERNAL_SLOT_MAP__ = new WeakMap<
 
 export class UnifiedNumberFormat
   implements Omit<Intl.NumberFormat, 'formatToParts'> {
-  private nf: Intl.NumberFormat;
+  // private nf: Intl.NumberFormat;
   private pl: Intl.PluralRules;
   // private unitPattern?: UnitData;
   // private currencyNarrowSymbol?: string;
@@ -358,15 +374,6 @@ export class UnifiedNumberFormat
       signDisplay,
     });
 
-    this.nf = new NativeNumberFormat(locales, {
-      ...coreOpts,
-      // // If the implementation does not have such a representation of currency,
-      // // use the currency code as fallback.
-      // currencyDisplay:
-      //   currencyDisplay === 'narrowSymbol' ? 'symbol' : currencyDisplay,
-      // style: style === 'unit' ? 'decimal' : style,
-    });
-    // setInternalSlot(__INTERNAL_SLOT_MAP__, this, 'unit', undefined);
     this.pl = new Intl.PluralRules(locales);
   }
 
@@ -550,28 +557,20 @@ export class UnifiedNumberFormat
     return results;
   }
 
-  resolvedOptions() {
-    const ro = this.nf.resolvedOptions() as ResolvedUnifiedNumberFormatOptions;
-    const unit = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'unit');
-    const currencyDisplay = getInternalSlot(
+  resolvedOptions(): ResolvedUnifiedNumberFormatOptions {
+    const slots = getMultiInternalSlots(
       __INTERNAL_SLOT_MAP__,
       this,
-      'currencyDisplay'
+      ...RESOLVED_OPTIONS_KEYS
     );
-
-    if (ro.style === 'currency' && currencyDisplay === 'narrowSymbol') {
-      ro.currencyDisplay = 'narrowSymbol';
+    const ro: Record<string, unknown> = {};
+    for (const key of RESOLVED_OPTIONS_KEYS) {
+      const value = slots[key];
+      if (value !== undefined) {
+        ro[key] = value;
+      }
     }
-    if (unit) {
-      ro.style = 'unit';
-      ro.unit = unit as 'megabit';
-      ro.unitDisplay = getInternalSlot(
-        __INTERNAL_SLOT_MAP__,
-        this,
-        'unitDisplay'
-      ) as 'long';
-    }
-    return ro;
+    return ro as any;
   }
 
   public static supportedLocalesOf(
