@@ -21,6 +21,7 @@ import {
   CurrencySignPattern,
   UnitPattern,
   InternalSlotToken,
+  removeUnitNamespace,
 } from '@formatjs/intl-utils';
 import {isEqual, isEmpty} from 'lodash';
 
@@ -88,54 +89,57 @@ function generateCurrencyILD(d: CurrenciesData): NumberILD['currencySymbols'] {
 }
 
 function generateUnitILD(u: UnitsData): NumberILD['unitSymbols'] {
-  return SANCTIONED_UNITS.reduce((all: NumberILD['unitSymbols'], k) => {
-    const longData = u.long[k as 'digital-bit'];
-    const narrowData = u.narrow[k as 'digital-bit'];
-    const symbolData = u.short[k as 'digital-bit'];
-    all[k] = {
-      unitSymbol: collapseSingleValuePluralRule(
-        PLURAL_RULES.reduce((names: Record<LDMLPluralRule, string>, ldml) => {
-          const key = `unitPattern-count-${ldml}`;
-          if (key in symbolData) {
-            names[ldml] = symbolData[key as 'unitPattern-count-other'].replace(
-              PATTERN_0_REGEX,
-              ''
-            );
-          }
-          return names;
-        }, {} as Record<LDMLPluralRule, string>)
-      ),
+  return SANCTIONED_UNITS.reduce(
+    (all: NumberILD['unitSymbols'], cldrUnitName) => {
+      const longData = u.long[cldrUnitName as 'digital-bit'];
+      const narrowData = u.narrow[cldrUnitName as 'digital-bit'];
+      const symbolData = u.short[cldrUnitName as 'digital-bit'];
+      const intlUnitName = removeUnitNamespace(cldrUnitName);
+      all[intlUnitName] = {
+        unitSymbol: collapseSingleValuePluralRule(
+          PLURAL_RULES.reduce((names: Record<LDMLPluralRule, string>, ldml) => {
+            const key = `unitPattern-count-${ldml}`;
+            if (key in symbolData) {
+              names[ldml] = symbolData[
+                key as 'unitPattern-count-other'
+              ].replace(PATTERN_0_REGEX, '');
+            }
+            return names;
+          }, {} as Record<LDMLPluralRule, string>)
+        ),
 
-      unitName: collapseSingleValuePluralRule(
+        unitName: collapseSingleValuePluralRule(
+          PLURAL_RULES.reduce((names: Record<LDMLPluralRule, string>, ldml) => {
+            const key = `unitPattern-count-${ldml}`;
+            if (key in longData) {
+              names[ldml] = longData[key as 'unitPattern-count-other'].replace(
+                PATTERN_0_REGEX,
+                ''
+              );
+            }
+            return names;
+          }, {} as Record<LDMLPluralRule, string>)
+        ),
+      };
+      const unitNarrowSymbol = collapseSingleValuePluralRule(
         PLURAL_RULES.reduce((names: Record<LDMLPluralRule, string>, ldml) => {
           const key = `unitPattern-count-${ldml}`;
-          if (key in longData) {
-            names[ldml] = longData[key as 'unitPattern-count-other'].replace(
+          if (key in narrowData) {
+            names[ldml] = narrowData[key as 'unitPattern-count-other'].replace(
               PATTERN_0_REGEX,
               ''
             );
           }
           return names;
         }, {} as Record<LDMLPluralRule, string>)
-      ),
-    };
-    const unitNarrowSymbol = collapseSingleValuePluralRule(
-      PLURAL_RULES.reduce((names: Record<LDMLPluralRule, string>, ldml) => {
-        const key = `unitPattern-count-${ldml}`;
-        if (key in narrowData) {
-          names[ldml] = narrowData[key as 'unitPattern-count-other'].replace(
-            PATTERN_0_REGEX,
-            ''
-          );
-        }
-        return names;
-      }, {} as Record<LDMLPluralRule, string>)
-    );
-    if (!isEqual(unitNarrowSymbol, all[k].unitSymbol)) {
-      all[k].unitNarrowSymbol = unitNarrowSymbol;
-    }
-    return all;
-  }, {});
+      );
+      if (!isEqual(unitNarrowSymbol, all[intlUnitName].unitSymbol)) {
+        all[intlUnitName].unitNarrowSymbol = unitNarrowSymbol;
+      }
+      return all;
+    },
+    {}
+  );
 }
 
 // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-intl.numberformat-internal-slots

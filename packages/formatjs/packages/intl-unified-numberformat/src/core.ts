@@ -168,7 +168,7 @@ interface UnifiedNumberFormatInternal {
   maximumSignificantDigits?: number;
   // Locale-dependent formatter data
   ildData: NumberInternalSlots;
-  numberingSystem?: string;
+  numberingSystem: string;
 }
 
 const __INTERNAL_SLOT_MAP__ = new WeakMap<
@@ -187,8 +187,6 @@ export class UnifiedNumberFormat
     options: UnifiedNumberFormatOptions = {}
   ) {
     options = options === undefined ? Object.create(null) : toObject(options);
-    // TODO
-    const {...coreOpts} = options;
 
     // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-initializenumberformat
     const opt: any = Object.create(null);
@@ -209,10 +207,11 @@ export class UnifiedNumberFormat
       UnifiedNumberFormat.relevantExtensionKeys,
       localeData
     );
+    const ildData = localeData[r.locale];
     setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
       locale: r.locale,
       dataLocale: r.dataLocale,
-      numberingSystem: r.nu,
+      numberingSystem: r.nu || ildData.nu[0],
       ildData: localeData[r.locale],
     });
 
@@ -409,7 +408,7 @@ export class UnifiedNumberFormat
       if (part[0] !== '{') {
         results.push({type: 'literal', value: part});
       } else {
-        let p = part.substr(1, part.length - 2);
+        let p = part.slice(1, -1);
         switch (p) {
           case InternalSlotToken.number: {
             if (isNaN(num)) {
@@ -440,17 +439,28 @@ export class UnifiedNumberFormat
               let integer: string;
               let fraction: string | undefined;
               if (decimalSepIndex > 0) {
-                integer = n.substr(0, decimalSepIndex);
-                fraction = n.substr(decimalSepIndex + 1);
+                integer = n.slice(0, decimalSepIndex);
+                fraction = n.slice(decimalSepIndex + 1);
               } else {
                 integer = n;
               }
               if (useGrouping) {
                 // TODO
-                // let groupSepSymbol = ildData.ild.symbols.group;
-                // // Let groups be a List whose elements are, in left to right order, the substrings
-                // // defined by ILND set of locations within the integer.
-                // let groups: string[] = [];
+                let groupSepSymbol = ildData.ild.symbols.group;
+                const groups: string[] = [];
+                // Assuming that the group separator is always inserted between every 3 digits.
+                let i = n.length - 3;
+                for (; i > 0; i -= 3) {
+                  groups.push(n.slice(i, i + 3));
+                }
+                groups.push(n.slice(0, i + 3));
+                while (groups.length > 0) {
+                  const integerGroup = groups.pop()!;
+                  results.push({type: 'integer', value: integerGroup});
+                  if (groups.length > 0) {
+                    results.push({type: 'group', value: groupSepSymbol});
+                  }
+                }
               } else {
                 results.push({type: 'integer', value: integer});
               }

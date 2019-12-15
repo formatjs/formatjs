@@ -44,3 +44,9 @@ export const SANCTIONED_UNITS = [
   'volume-liter',
   'volume-milliliter',
 ];
+
+// In CLDR, the unit name always follows the form `namespace-unit` pattern.
+// For example: `digital-bit` instead of `bit`. This function removes the namespace prefix.
+export function removeUnitNamespace(unit: string) {
+  return unit.replace(/^(.*?)-/, '');
+}

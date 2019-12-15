@@ -6,14 +6,11 @@ import {
   SANCTIONED_UNITS,
   getAliasesByLang,
   getParentLocalesByLang,
+  removeUnitNamespace,
   NumberLocaleData,
 } from '@formatjs/intl-utils';
 import {resolve, join} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
-
-function shortenUnit(unit: string) {
-  return unit.replace(/^(.*?)-/, '');
-}
 
 const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
 
@@ -53,7 +50,7 @@ outputFileSync(
   `/* @generated */
 // prettier-ignore
 export type Unit =
-  ${SANCTIONED_UNITS.map(unit => `'${shortenUnit(unit)}'`).join(' | ')}
+  ${SANCTIONED_UNITS.map(unit => `'${removeUnitNamespace(unit)}'`).join(' | ')}
 `
 );
 

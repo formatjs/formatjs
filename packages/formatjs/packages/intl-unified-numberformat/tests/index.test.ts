@@ -47,7 +47,7 @@ function test() {
   it('should not crash if unit is not specified', function() {
     expect(new UnifiedNumberFormat().resolvedOptions().unit).toBeUndefined();
   });
-  it.skip('formatToParts should work', function() {
+  it('formatToParts should work', function() {
     expect(
       new UnifiedNumberFormat('zh', {
         style: 'unit',
@@ -64,7 +64,13 @@ function test() {
         style: 'unit',
         unit: 'bit',
       }).formatToParts(1000)
-    ).toEqual('1,000 bit');
+    ).toEqual([
+      {type: 'integer', value: '1'},
+      {type: 'group', value: ','},
+      {type: 'integer', value: '000'},
+      {type: 'literal', value: ' '},
+      {type: 'unit', value: 'bit'},
+    ]);
   });
   it("supports currencyDisplay: 'narrowSymbol'", () => {
     expect(

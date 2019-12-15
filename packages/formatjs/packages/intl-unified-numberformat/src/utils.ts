@@ -40,11 +40,11 @@ export function toRawFixed(
   }
   let cut = maxFraction - minFraction;
   while (cut > 0 && endsWith(m, '0')) {
-    m = m.substr(0, m.length - 1);
+    m = m.slice(0, -1);
     cut--;
   }
   if (endsWith(m, '.')) {
-    m = m.substr(0, m.length - 1);
+    m = m.slice(0, -1);
   }
   return {formattedString: m, roundedNumber: xFinal, integerDigitsCount: int};
 }
@@ -80,7 +80,7 @@ export function toRawPrecision(
     m = m + repeat('0', e - p + 1);
     int = e + 1;
   } else if (e >= 0) {
-    m = `${m.substr(0, e + 1)}.${m.substr(e + 1)}`;
+    m = `${m.slice(0, e + 1)}.${m.slice(e + 1)}`;
     int = e + 1;
   } else {
     m = `0.${repeat('0', -e - 1)}${m}`;
@@ -89,11 +89,11 @@ export function toRawPrecision(
   if (m.indexOf('.') >= 0 && maxPrecision > minPrecision) {
     let cut = maxPrecision - minPrecision;
     while (cut > 0 && endsWith(m, '0')) {
-      m = m.substr(0, m.length - 1);
+      m = m.slice(0, -1);
       cut--;
     }
     if (endsWith(m, '.')) {
-      m = m.substr(0, m.length - 1);
+      m = m.slice(0, -1);
     }
   }
   return {formattedString: m, roundedNumber: xFinal, integerDigitsCount: int};
