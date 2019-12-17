@@ -8,7 +8,7 @@ import * as Numbers from 'cldr-numbers-full/main/en/numbers.json';
 import * as Currencies from 'cldr-numbers-full/main/en/currencies.json';
 import * as Units from 'cldr-units-full/main/en/units.json';
 import {Locale} from './types';
-import generateFieldExtractorFn from './utils';
+import generateFieldExtractorFn, { collapseSingleValuePluralRule } from './utils';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
 import {
@@ -45,23 +45,6 @@ const PLURAL_RULES: Array<LDMLPluralRule> = [
 export type NumbersData = typeof Numbers['main']['en']['numbers'];
 export type CurrenciesData = typeof Currencies['main']['en']['numbers']['currencies'];
 export type UnitsData = typeof Units['main']['en']['units'];
-
-function collapseSingleValuePluralRule(
-  rules: Record<LDMLPluralRule, string>
-): string | Record<LDMLPluralRule, string> {
-  const keys = Object.keys(rules) as Array<LDMLPluralRule>;
-  // dedupe value that looks like `other`
-  const uniqueKeys = keys.filter(
-    k => k === 'other' || (rules[k] && rules[k] !== rules.other)
-  );
-  if (uniqueKeys.length === 1) {
-    return rules[uniqueKeys[0]];
-  }
-  return uniqueKeys.reduce((all, k) => {
-    all[k] = rules[k];
-    return all;
-  }, {} as Record<LDMLPluralRule, string>);
-}
 
 function generateCurrencyILD(d: CurrenciesData): NumberILD['currencySymbols'] {
   return Object.keys(d).reduce((all: NumberILD['currencySymbols'], k) => {
