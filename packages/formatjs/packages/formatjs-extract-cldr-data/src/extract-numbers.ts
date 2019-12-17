@@ -8,7 +8,7 @@ import * as Numbers from 'cldr-numbers-full/main/en/numbers.json';
 import * as Currencies from 'cldr-numbers-full/main/en/currencies.json';
 import * as Units from 'cldr-units-full/main/en/units.json';
 import {Locale} from './types';
-import generateFieldExtractorFn, { collapseSingleValuePluralRule } from './utils';
+import generateFieldExtractorFn, {collapseSingleValuePluralRule} from './utils';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
 import {

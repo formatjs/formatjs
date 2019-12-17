@@ -13,26 +13,26 @@ export function toRawFixed(
   minFraction: number,
   maxFraction: number
 ): RawNumberFormatResult {
-  let f = maxFraction;
+  const f = maxFraction;
   let n: number;
   {
-    let exactSolve = x * Math.pow(10, f);
+    const exactSolve = x * Math.pow(10, f);
     const roundDown = Math.floor(exactSolve);
     const roundUp = Math.ceil(exactSolve);
     n = exactSolve - roundDown < roundUp - exactSolve ? roundDown : roundUp;
   }
-  let xFinal = x / Math.pow(f, 10);
+  const xFinal = x / Math.pow(f, 10);
   let int: number;
   let m = n.toString();
   if (f !== 0) {
     let k = m.length;
     if (k <= f) {
-      let z = repeat('0', f + 1 - k);
+      const z = repeat('0', f + 1 - k);
       m = z + m;
       k = f + 1;
     }
-    let a = m.slice(0, k - f);
-    let b = m.slice(k - f);
+    const a = m.slice(0, k - f);
+    const b = m.slice(k - f);
     m = `${a}.${b}`;
     int = a.length;
   } else {
@@ -55,7 +55,7 @@ export function toRawPrecision(
   minPrecision: number,
   maxPrecision: number
 ): RawNumberFormatResult {
-  let p = maxPrecision;
+  const p = maxPrecision;
   let m: string;
   let e: number;
   let xFinal: number;
@@ -67,7 +67,7 @@ export function toRawPrecision(
     e = Math.floor(Math.log(x) / Math.log(10));
     let n: number;
     {
-      let exactSolve = x / Math.pow(10, e - p + 1);
+      const exactSolve = x / Math.pow(10, e - p + 1);
       const roundDown = Math.floor(exactSolve);
       const roundUp = Math.ceil(exactSolve);
       n = exactSolve - roundDown < roundUp - exactSolve ? roundDown : roundUp;

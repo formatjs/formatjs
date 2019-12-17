@@ -24,4 +24,12 @@ numbersData.forEach(d => {
       `${locale} has uncommon (#,##0%) percent format: ${data['percentFormats-numberSystem-latn'].standard}`
     );
   }
+  if (
+    data['currencyFormats-numberSystem-latn'].currencySpacing.afterCurrency
+      .currencyMatch !== '[:^S:]'
+  ) {
+    console.log(
+      `${locale} has uncommon ([:^S:]) currencySpacing: ${data['currencyFormats-numberSystem-latn'].currencySpacing.afterCurrency.currencyMatch}`
+    );
+  }
 });

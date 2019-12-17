@@ -1,13 +1,15 @@
 import {
   extractAllNumbers,
-  getAllNumbersLocales,
+  extractAllCurrencies,
+  extractAllUnits,
+  locales,
 } from 'formatjs-extract-cldr-data';
 import {
   SANCTIONED_UNITS,
   getAliasesByLang,
   getParentLocalesByLang,
   removeUnitNamespace,
-  NumberLocaleData,
+  RawNumberLocaleData,
 } from '@formatjs/intl-utils';
 import {resolve, join} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
@@ -15,27 +17,43 @@ import {outputFileSync, outputJSONSync} from 'fs-extra';
 const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
 
 const numbersData = extractAllNumbers();
+const currenciesData = extractAllCurrencies();
+const unitsData = extractAllUnits();
 
-const langData = getAllNumbersLocales().reduce(
-  (all: Record<string, NumberLocaleData>, locale) => {
+const langData = locales.reduce(
+  (all: Record<string, RawNumberLocaleData>, locale) => {
     if (locale === 'en-US-POSIX') {
       locale = 'en-US';
     }
     const lang = locale.split('-')[0];
-    const localeData = numbersData[locale];
 
     if (!all[lang]) {
       const aliases = getAliasesByLang(lang);
       const parentLocales = getParentLocalesByLang(lang);
       all[lang] = {
-        data: {[locale]: localeData},
+        data: {
+          [locale]: {
+            units: unitsData[locale],
+            currencies: currenciesData[locale],
+            numbers: numbersData[locale],
+          },
+        },
         availableLocales: [locale],
         aliases,
         parentLocales,
       };
     } else {
-      if (localeData) {
-        all[lang].data[locale] = localeData;
+      const localeData = (all[lang].data[locale] = {} as any);
+      if (unitsData[locale]) {
+        localeData.units = unitsData[locale];
+      }
+
+      if (currenciesData[locale]) {
+        localeData.currencies = currenciesData[locale];
+      }
+
+      if (numbersData[locale]) {
+        localeData.numbers = numbersData[locale];
       }
       all[lang].availableLocales.push(locale);
     }

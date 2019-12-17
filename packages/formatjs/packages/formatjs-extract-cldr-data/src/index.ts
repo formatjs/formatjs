@@ -3,35 +3,35 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import extractRelativeFields, {
-  getAllLocales as getAllDateFieldsLocales,
-} from './extract-relative';
-import extractListPatterns, {
-  getAllLocales as getAllListLocales,
-} from './extract-list';
-import extractNumbers, {
-  getAllLocales as getAllNumbersLocales,
-} from './extract-numbers';
+import extractRelativeFields from './extract-relative';
+import extractListPatterns from './extract-list';
+import extractNumbers from './extract-raw-numbers';
+import extractUnits from './extract-units';
+import extractCurrencies from './extract-currencies';
+import {getAllLocales} from './locales';
+export const locales = getAllLocales();
 export interface Opts {
   locales?: string[];
 }
 
 export function extractAllRelativeFields(options: Opts = {}) {
-  // Default to all CLDR locales if none have been provided.
-  const locales = options.locales || getAllDateFieldsLocales();
-  return extractRelativeFields(locales);
+  return extractRelativeFields(options.locales || locales);
 }
 
 export function extractAllListPatterns(options: Opts = {}) {
-  // Default to all CLDR locales if none have been provided.
-  const locales = options.locales || getAllListLocales();
-  return extractListPatterns(locales);
+  return extractListPatterns(options.locales || locales);
 }
 
 export function extractAllNumbers(options: Opts = {}) {
-  // Default to all CLDR locales if none have been provided.
-  const locales = options.locales || getAllNumbersLocales();
-  return extractNumbers(locales);
+  return extractNumbers(options.locales || locales);
+}
+
+export function extractAllUnits(options: Opts = {}) {
+  return extractUnits(options.locales || locales);
+}
+
+export function extractAllCurrencies(options: Opts = {}) {
+  return extractCurrencies(options.locales || locales);
 }
 
 export {getAllLanguages} from './locales';

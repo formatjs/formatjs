@@ -1,0 +1,669 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`extract-units should be able to extract en 1`] = `
+Object {
+  "en": Object {
+    "angle-degree": Object {
+      "displayName": "degrees",
+      "long": Object {
+        "one": "{0} degree",
+        "other": "{0} degrees",
+      },
+      "narrow": "{0}°",
+      "short": "{0} deg",
+    },
+    "area-acre": Object {
+      "displayName": "acres",
+      "long": Object {
+        "one": "{0} acre",
+        "other": "{0} acres",
+      },
+      "narrow": "{0}ac",
+      "short": "{0} ac",
+    },
+    "area-hectare": Object {
+      "displayName": "hectares",
+      "long": Object {
+        "one": "{0} hectare",
+        "other": "{0} hectares",
+      },
+      "narrow": "{0}ha",
+      "short": "{0} ha",
+    },
+    "concentr-percent": Object {
+      "displayName": "percent",
+      "long": "{0} percent",
+      "narrow": "{0}%",
+      "short": "{0}%",
+    },
+    "digital-bit": Object {
+      "displayName": "bits",
+      "long": Object {
+        "one": "{0} bit",
+        "other": "{0} bits",
+      },
+      "narrow": "{0}bit",
+      "short": "{0} bit",
+    },
+    "digital-byte": Object {
+      "displayName": "bytes",
+      "long": Object {
+        "one": "{0} byte",
+        "other": "{0} bytes",
+      },
+      "narrow": "{0}B",
+      "short": "{0} byte",
+    },
+    "digital-gigabit": Object {
+      "displayName": "gigabits",
+      "long": Object {
+        "one": "{0} gigabit",
+        "other": "{0} gigabits",
+      },
+      "narrow": "{0}Gb",
+      "short": "{0} Gb",
+    },
+    "digital-gigabyte": Object {
+      "displayName": "gigabytes",
+      "long": Object {
+        "one": "{0} gigabyte",
+        "other": "{0} gigabytes",
+      },
+      "narrow": "{0}GB",
+      "short": "{0} GB",
+    },
+    "digital-kilobit": Object {
+      "displayName": "kilobits",
+      "long": Object {
+        "one": "{0} kilobit",
+        "other": "{0} kilobits",
+      },
+      "narrow": "{0}kb",
+      "short": "{0} kb",
+    },
+    "digital-kilobyte": Object {
+      "displayName": "kilobytes",
+      "long": Object {
+        "one": "{0} kilobyte",
+        "other": "{0} kilobytes",
+      },
+      "narrow": "{0}kB",
+      "short": "{0} kB",
+    },
+    "digital-megabit": Object {
+      "displayName": "megabits",
+      "long": Object {
+        "one": "{0} megabit",
+        "other": "{0} megabits",
+      },
+      "narrow": "{0}Mb",
+      "short": "{0} Mb",
+    },
+    "digital-megabyte": Object {
+      "displayName": "megabytes",
+      "long": Object {
+        "one": "{0} megabyte",
+        "other": "{0} megabytes",
+      },
+      "narrow": "{0}MB",
+      "short": "{0} MB",
+    },
+    "digital-petabyte": Object {
+      "displayName": "petabytes",
+      "long": Object {
+        "one": "{0} petabyte",
+        "other": "{0} petabytes",
+      },
+      "narrow": "{0}PB",
+      "short": "{0} PB",
+    },
+    "digital-terabit": Object {
+      "displayName": "terabits",
+      "long": Object {
+        "one": "{0} terabit",
+        "other": "{0} terabits",
+      },
+      "narrow": "{0}Tb",
+      "short": "{0} Tb",
+    },
+    "digital-terabyte": Object {
+      "displayName": "terabytes",
+      "long": Object {
+        "one": "{0} terabyte",
+        "other": "{0} terabytes",
+      },
+      "narrow": "{0}TB",
+      "short": "{0} TB",
+    },
+    "duration-day": Object {
+      "displayName": "days",
+      "long": Object {
+        "one": "{0} day",
+        "other": "{0} days",
+      },
+      "narrow": "{0}d",
+      "short": Object {
+        "one": "{0} day",
+        "other": "{0} days",
+      },
+    },
+    "duration-hour": Object {
+      "displayName": "hours",
+      "long": Object {
+        "one": "{0} hour",
+        "other": "{0} hours",
+      },
+      "narrow": "{0}h",
+      "short": "{0} hr",
+    },
+    "duration-millisecond": Object {
+      "displayName": "milliseconds",
+      "long": Object {
+        "one": "{0} millisecond",
+        "other": "{0} milliseconds",
+      },
+      "narrow": "{0}ms",
+      "short": "{0} ms",
+    },
+    "duration-minute": Object {
+      "displayName": "minutes",
+      "long": Object {
+        "one": "{0} minute",
+        "other": "{0} minutes",
+      },
+      "narrow": "{0}m",
+      "short": "{0} min",
+    },
+    "duration-month": Object {
+      "displayName": "months",
+      "long": Object {
+        "one": "{0} month",
+        "other": "{0} months",
+      },
+      "narrow": "{0}m",
+      "short": Object {
+        "one": "{0} mth",
+        "other": "{0} mths",
+      },
+    },
+    "duration-second": Object {
+      "displayName": "seconds",
+      "long": Object {
+        "one": "{0} second",
+        "other": "{0} seconds",
+      },
+      "narrow": "{0}s",
+      "short": "{0} sec",
+    },
+    "duration-week": Object {
+      "displayName": "weeks",
+      "long": Object {
+        "one": "{0} week",
+        "other": "{0} weeks",
+      },
+      "narrow": "{0}w",
+      "short": Object {
+        "one": "{0} wk",
+        "other": "{0} wks",
+      },
+    },
+    "duration-year": Object {
+      "displayName": "years",
+      "long": Object {
+        "one": "{0} year",
+        "other": "{0} years",
+      },
+      "narrow": "{0}y",
+      "short": Object {
+        "one": "{0} yr",
+        "other": "{0} yrs",
+      },
+    },
+    "length-centimeter": Object {
+      "displayName": "centimeters",
+      "long": Object {
+        "one": "{0} centimeter",
+        "other": "{0} centimeters",
+      },
+      "narrow": "{0}cm",
+      "short": "{0} cm",
+    },
+    "length-foot": Object {
+      "displayName": "feet",
+      "long": Object {
+        "one": "{0} foot",
+        "other": "{0} feet",
+      },
+      "narrow": "{0}′",
+      "short": "{0} ft",
+    },
+    "length-inch": Object {
+      "displayName": "inches",
+      "long": Object {
+        "one": "{0} inch",
+        "other": "{0} inches",
+      },
+      "narrow": "{0}″",
+      "short": "{0} in",
+    },
+    "length-kilometer": Object {
+      "displayName": "kilometers",
+      "long": Object {
+        "one": "{0} kilometer",
+        "other": "{0} kilometers",
+      },
+      "narrow": "{0}km",
+      "short": "{0} km",
+    },
+    "length-meter": Object {
+      "displayName": "meters",
+      "long": Object {
+        "one": "{0} meter",
+        "other": "{0} meters",
+      },
+      "narrow": "{0}m",
+      "short": "{0} m",
+    },
+    "length-mile": Object {
+      "displayName": "miles",
+      "long": Object {
+        "one": "{0} mile",
+        "other": "{0} miles",
+      },
+      "narrow": "{0}mi",
+      "short": "{0} mi",
+    },
+    "length-mile-scandinavian": Object {
+      "displayName": "mile-scandinavian",
+      "long": Object {
+        "one": "{0} mile-scandinavian",
+        "other": "{0} miles-scandinavian",
+      },
+      "narrow": "{0}smi",
+      "short": "{0} smi",
+    },
+    "length-millimeter": Object {
+      "displayName": "millimeters",
+      "long": Object {
+        "one": "{0} millimeter",
+        "other": "{0} millimeters",
+      },
+      "narrow": "{0}mm",
+      "short": "{0} mm",
+    },
+    "length-yard": Object {
+      "displayName": "yards",
+      "long": Object {
+        "one": "{0} yard",
+        "other": "{0} yards",
+      },
+      "narrow": "{0}yd",
+      "short": "{0} yd",
+    },
+    "mass-gram": Object {
+      "displayName": "grams",
+      "long": Object {
+        "one": "{0} gram",
+        "other": "{0} grams",
+      },
+      "narrow": "{0}g",
+      "short": "{0} g",
+    },
+    "mass-kilogram": Object {
+      "displayName": "kilograms",
+      "long": Object {
+        "one": "{0} kilogram",
+        "other": "{0} kilograms",
+      },
+      "narrow": "{0}kg",
+      "short": "{0} kg",
+    },
+    "mass-ounce": Object {
+      "displayName": "ounces",
+      "long": Object {
+        "one": "{0} ounce",
+        "other": "{0} ounces",
+      },
+      "narrow": "{0}oz",
+      "short": "{0} oz",
+    },
+    "mass-pound": Object {
+      "displayName": "pounds",
+      "long": Object {
+        "one": "{0} pound",
+        "other": "{0} pounds",
+      },
+      "narrow": "{0}#",
+      "short": "{0} lb",
+    },
+    "mass-stone": Object {
+      "displayName": "stones",
+      "long": Object {
+        "one": "{0} stone",
+        "other": "{0} stones",
+      },
+      "narrow": "{0}st",
+      "short": "{0} st",
+    },
+    "temperature-celsius": Object {
+      "displayName": "degrees Celsius",
+      "long": Object {
+        "one": "{0} degree Celsius",
+        "other": "{0} degrees Celsius",
+      },
+      "narrow": "{0}°C",
+      "short": "{0}°C",
+    },
+    "temperature-fahrenheit": Object {
+      "displayName": "degrees Fahrenheit",
+      "long": Object {
+        "one": "{0} degree Fahrenheit",
+        "other": "{0} degrees Fahrenheit",
+      },
+      "narrow": "{0}°",
+      "short": "{0}°F",
+    },
+    "volume-fluid-ounce": Object {
+      "displayName": "fluid ounces",
+      "long": Object {
+        "one": "{0} fluid ounce",
+        "other": "{0} fluid ounces",
+      },
+      "narrow": "{0}fl oz",
+      "short": "{0} fl oz",
+    },
+    "volume-gallon": Object {
+      "displayName": "gallons",
+      "long": Object {
+        "one": "{0} gallon",
+        "other": "{0} gallons",
+      },
+      "narrow": "{0}gal",
+      "short": "{0} gal",
+    },
+    "volume-liter": Object {
+      "displayName": "liters",
+      "long": Object {
+        "one": "{0} liter",
+        "other": "{0} liters",
+      },
+      "narrow": "{0}L",
+      "short": "{0} L",
+    },
+    "volume-milliliter": Object {
+      "displayName": "milliliters",
+      "long": Object {
+        "one": "{0} milliliter",
+        "other": "{0} milliliters",
+      },
+      "narrow": "{0}mL",
+      "short": "{0} mL",
+    },
+  },
+}
+`;
+
+exports[`extract-units should be able to extract vi 1`] = `
+Object {
+  "vi": Object {
+    "angle-degree": Object {
+      "displayName": "độ",
+      "long": "{0} độ",
+      "narrow": "{0}°",
+      "short": "{0}°",
+    },
+    "area-acre": Object {
+      "displayName": "mẫu",
+      "long": "{0} mẫu",
+      "narrow": "{0} mẫu",
+      "short": "{0} mẫu",
+    },
+    "area-hectare": Object {
+      "displayName": "héc-ta",
+      "long": "{0} héc-ta",
+      "narrow": "{0}ha",
+      "short": "{0} ha",
+    },
+    "concentr-percent": Object {
+      "displayName": "%",
+      "long": "{0}%",
+      "narrow": "{0}%",
+      "short": "{0}%",
+    },
+    "digital-bit": Object {
+      "displayName": "bit",
+      "long": "{0} bit",
+      "narrow": "{0} bit",
+      "short": "{0} bit",
+    },
+    "digital-byte": Object {
+      "displayName": "byte",
+      "long": "{0} byte",
+      "narrow": "{0} byte",
+      "short": "{0} byte",
+    },
+    "digital-gigabit": Object {
+      "displayName": "gigabit",
+      "long": "{0} gigabit",
+      "narrow": "{0} Gb",
+      "short": "{0} Gb",
+    },
+    "digital-gigabyte": Object {
+      "displayName": "gigabyte",
+      "long": "{0} gigabyte",
+      "narrow": "{0} GB",
+      "short": "{0} GB",
+    },
+    "digital-kilobit": Object {
+      "displayName": "kilobit",
+      "long": "{0} kilobit",
+      "narrow": "{0} kb",
+      "short": "{0} kb",
+    },
+    "digital-kilobyte": Object {
+      "displayName": "kilobyte",
+      "long": "{0} kilobyte",
+      "narrow": "{0} kB",
+      "short": "{0} kB",
+    },
+    "digital-megabit": Object {
+      "displayName": "megabit",
+      "long": "{0} megabit",
+      "narrow": "{0} Mb",
+      "short": "{0} Mb",
+    },
+    "digital-megabyte": Object {
+      "displayName": "megabyte",
+      "long": "{0} megabyte",
+      "narrow": "{0} MB",
+      "short": "{0} MB",
+    },
+    "digital-petabyte": Object {
+      "displayName": "petabyte",
+      "long": "{0} PB",
+      "narrow": "{0} PB",
+      "short": "{0} PB",
+    },
+    "digital-terabit": Object {
+      "displayName": "terabit",
+      "long": "{0} terabit",
+      "narrow": "{0} Tb",
+      "short": "{0} Tb",
+    },
+    "digital-terabyte": Object {
+      "displayName": "terabyte",
+      "long": "{0} terabyte",
+      "narrow": "{0} TB",
+      "short": "{0} TB",
+    },
+    "duration-day": Object {
+      "displayName": "ngày",
+      "long": "{0} ngày",
+      "narrow": "{0} ngày",
+      "short": "{0} ngày",
+    },
+    "duration-hour": Object {
+      "displayName": "giờ",
+      "long": "{0} giờ",
+      "narrow": "{0} giờ",
+      "short": "{0} giờ",
+    },
+    "duration-millisecond": Object {
+      "displayName": "mili giây",
+      "long": "{0} mili giây",
+      "narrow": "{0}miligiây",
+      "short": "{0} mili giây",
+    },
+    "duration-minute": Object {
+      "displayName": "phút",
+      "long": "{0} phút",
+      "narrow": "{0} phút",
+      "short": "{0} phút",
+    },
+    "duration-month": Object {
+      "displayName": "tháng",
+      "long": "{0} tháng",
+      "narrow": "{0} tháng",
+      "short": "{0} tháng",
+    },
+    "duration-second": Object {
+      "displayName": "giây",
+      "long": "{0} giây",
+      "narrow": "{0} giây",
+      "short": "{0} giây",
+    },
+    "duration-week": Object {
+      "displayName": "tuần",
+      "long": "{0} tuần",
+      "narrow": "{0} tuần",
+      "short": "{0} tuần",
+    },
+    "duration-year": Object {
+      "displayName": "năm",
+      "long": "{0} năm",
+      "narrow": "{0} năm",
+      "short": "{0} năm",
+    },
+    "length-centimeter": Object {
+      "displayName": "xentimét",
+      "long": "{0} xentimét",
+      "narrow": "{0}cm",
+      "short": "{0} cm",
+    },
+    "length-foot": Object {
+      "displayName": "feet",
+      "long": "{0} feet",
+      "narrow": "{0}'",
+      "short": "{0} ft",
+    },
+    "length-inch": Object {
+      "displayName": "inch",
+      "long": "{0} inch",
+      "narrow": "{0}\\\\\\"",
+      "short": "{0} inch",
+    },
+    "length-kilometer": Object {
+      "displayName": "kilômét",
+      "long": "{0} kilômét",
+      "narrow": "{0}km",
+      "short": "{0} km",
+    },
+    "length-meter": Object {
+      "displayName": "mét",
+      "long": "{0} mét",
+      "narrow": "{0}m",
+      "short": "{0} m",
+    },
+    "length-mile": Object {
+      "displayName": "dặm",
+      "long": "{0} dặm",
+      "narrow": "{0}mi",
+      "short": "{0} dặm",
+    },
+    "length-mile-scandinavian": Object {
+      "displayName": "dặm scandinavia",
+      "long": "{0} dặm scandinavia",
+      "narrow": "{0} smi",
+      "short": "{0} smi",
+    },
+    "length-millimeter": Object {
+      "displayName": "milimét",
+      "long": "{0} milimét",
+      "narrow": "{0}mm",
+      "short": "{0} mm",
+    },
+    "length-yard": Object {
+      "displayName": "yard",
+      "long": "{0} yard",
+      "narrow": "{0}yd",
+      "short": "{0} yd",
+    },
+    "mass-gram": Object {
+      "displayName": "gam",
+      "long": "{0} gam",
+      "narrow": "{0}g",
+      "short": "{0} g",
+    },
+    "mass-kilogram": Object {
+      "displayName": "kilôgam",
+      "long": "{0} kilôgam",
+      "narrow": "{0}kg",
+      "short": "{0} kg",
+    },
+    "mass-ounce": Object {
+      "displayName": "aoxơ",
+      "long": "{0} aoxơ",
+      "narrow": "{0}oz",
+      "short": "{0} oz",
+    },
+    "mass-pound": Object {
+      "displayName": "pao",
+      "long": "{0} pao",
+      "narrow": "{0}lb",
+      "short": "{0} lb",
+    },
+    "mass-stone": Object {
+      "displayName": "st",
+      "long": "{0} st",
+      "narrow": "{0} st",
+      "short": "{0} st",
+    },
+    "temperature-celsius": Object {
+      "displayName": "độ C",
+      "long": "{0} độ C",
+      "narrow": "{0}°C",
+      "short": "{0}°C",
+    },
+    "temperature-fahrenheit": Object {
+      "displayName": "độ F",
+      "long": "{0} độ F",
+      "narrow": "{0}°F",
+      "short": "{0}°F",
+    },
+    "volume-fluid-ounce": Object {
+      "displayName": "aoxơ chất lỏng",
+      "long": "{0} aoxơ chất lỏng",
+      "narrow": "{0} fl oz",
+      "short": "{0} fl oz",
+    },
+    "volume-gallon": Object {
+      "displayName": "gallon",
+      "long": "{0} gallon",
+      "narrow": "{0} gal",
+      "short": "{0} gal",
+    },
+    "volume-liter": Object {
+      "displayName": "lít",
+      "long": "{0} lít",
+      "narrow": "{0}L",
+      "short": "{0} L",
+    },
+    "volume-milliliter": Object {
+      "displayName": "mililít",
+      "long": "{0} mililít",
+      "narrow": "{0} mL",
+      "short": "{0} mL",
+    },
+  },
+}
+`;

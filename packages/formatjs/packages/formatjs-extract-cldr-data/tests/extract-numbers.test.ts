@@ -1,4 +1,4 @@
-import extractNumbers from '../src/extract-numbers';
+import extractNumbers from '../src/extract-raw-numbers';
 
 describe('extract-numbers', function() {
   it('should be able to extract en', function() {

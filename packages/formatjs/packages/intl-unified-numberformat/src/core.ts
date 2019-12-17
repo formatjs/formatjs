@@ -19,57 +19,11 @@ import {
   SignPattern,
   InternalSlotToken,
   LDMLPluralRule,
+  RawNumberLocaleData,
 } from '@formatjs/intl-utils';
 import {merge, repeat} from 'lodash';
 import {toRawFixed, toRawPrecision, RawNumberFormatResult} from './utils';
-
-function generateContinuousILND(startChar: string): string[] {
-  const startCharCode = startChar.charCodeAt(0);
-  const arr = new Array<string>(10);
-  for (let i = 0; i < 10; i++) {
-    arr[i] = String.fromCharCode(startCharCode + i);
-  }
-  return arr;
-}
-
-// https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#table-numbering-system-digits
-const ILND: Record<string, string[]> = (function() {
-  return {
-    arab: generateContinuousILND('\u0660'),
-    arabext: generateContinuousILND('\u06f0'),
-    bali: generateContinuousILND('\u1b50'),
-    beng: generateContinuousILND('\u09e6'),
-    deva: generateContinuousILND('\u0966'),
-    fullwide: generateContinuousILND('\uff10'),
-    gujr: generateContinuousILND('\u0ae6'),
-    guru: generateContinuousILND('\u0a66'),
-    khmr: generateContinuousILND('\u17e0'),
-    knda: generateContinuousILND('\u0ce6'),
-    laoo: generateContinuousILND('\u0ed0'),
-    latn: generateContinuousILND('\u0030'),
-    limb: generateContinuousILND('\u1946'),
-    mlym: generateContinuousILND('\u0d66'),
-    mong: generateContinuousILND('\u1810'),
-    mymr: generateContinuousILND('\u1040'),
-    orya: generateContinuousILND('\u0b66'),
-    tamldec: generateContinuousILND('\u0be6'),
-    telu: generateContinuousILND('\u0c66'),
-    thai: generateContinuousILND('\u0e50'),
-    tibt: generateContinuousILND('\u0f20'),
-    hanidec: [
-      '\u3007',
-      '\u4e00',
-      '\u4e8c',
-      '\u4e09',
-      '\u56db',
-      '\u4e94',
-      '\u516d',
-      '\u4e03',
-      '\u516b',
-      '\u4e5d',
-    ],
-  };
-})();
+import {ILND, rawDataToInternalSlots} from './data';
 
 const RESOLVED_OPTIONS_KEYS = [
   'locale',
@@ -278,7 +232,7 @@ export class UnifiedNumberFormat
     if (style === 'currency') {
       // TODO: return minor currency units value
       const currencyDigits = (_currency: string) => 2;
-      let cDigits = currency ? currencyDigits(currency) : 2;
+      const cDigits = currency ? currencyDigits(currency) : 2;
       mnfdDefault = cDigits;
       mxfdDefault = cDigits;
     } else {
@@ -296,11 +250,11 @@ export class UnifiedNumberFormat
     setInternalSlot(__INTERNAL_SLOT_MAP__, this, 'notation', notation);
 
     // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-setnfdigitoptions
-    let mnid = getNumberOption(options, 'minimumIntegerDigits', 1, 21, 1);
+    const mnid = getNumberOption(options, 'minimumIntegerDigits', 1, 21, 1);
     let mnfd = options.minimumFractionDigits;
-    let mxfd = options.maximumFractionDigits;
+    const mxfd = options.maximumFractionDigits;
     let mnsd = options.minimumSignificantDigits;
-    let mxsd = options.maximumSignificantDigits;
+    const mxsd = options.maximumSignificantDigits;
     setInternalSlot(__INTERNAL_SLOT_MAP__, this, 'minimumIntegerDigits', mnid);
     if (mnsd !== undefined || mxsd !== undefined) {
       mnsd = defaultNumberOption(mnsd, 1, 21, 1);
@@ -311,7 +265,7 @@ export class UnifiedNumberFormat
       });
     } else if (mnfd !== undefined || mxfd !== undefined) {
       mnfd = defaultNumberOption(mnfd, 0, 20, mnfdDefault);
-      let mxfdActualDefault = Math.max(mnfd, mxfdDefault);
+      const mxfdActualDefault = Math.max(mnfd, mxfdDefault);
       setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
         roundingType: 'fractionDigits',
         minimumFractionDigits: mnfd,
@@ -395,20 +349,20 @@ export class UnifiedNumberFormat
       if (getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'style') === 'percent') {
         num *= 100;
       }
-      let exponent = computeExponent(this, num);
+      const exponent = computeExponent(this, num);
       num = num * Math.pow(10, -exponent);
-      let formatNumberResult = formatNumberToString(this, num);
+      const formatNumberResult = formatNumberToString(this, num);
       n = formatNumberResult.formattedString;
       num = formatNumberResult.roundedNumber;
     }
-    let pattern = getNumberFormatPattern(this, num, exponent);
-    let patternParts = pattern.split(/({\w+})/).filter(x => x);
-    let results: UnifiedNumberFormatPart[] = [];
+    const pattern = getNumberFormatPattern(this, num, exponent);
+    const patternParts = pattern.split(/({\w+})/).filter(x => x);
+    const results: UnifiedNumberFormatPart[] = [];
     for (const part of patternParts) {
       if (part[0] !== '{') {
         results.push({type: 'literal', value: part});
       } else {
-        let p = part.slice(1, -1);
+        const p = part.slice(1, -1);
         switch (p) {
           case InternalSlotToken.number: {
             if (isNaN(num)) {
@@ -426,7 +380,7 @@ export class UnifiedNumberFormat
                 // Replace digits
                 const replacementTable = ILND[nu];
                 let replacedDigits = '';
-                for (let digit of n) {
+                for (const digit of n) {
                   replacedDigits += replacementTable[+digit];
                 }
                 n = replacedDigits;
@@ -435,7 +389,7 @@ export class UnifiedNumberFormat
                 // Else use an implementation dependent algorithm to map n to the appropriate
                 // representation of n in the given numbering system.
               }
-              let decimalSepIndex = n.indexOf('.');
+              const decimalSepIndex = n.indexOf('.');
               let integer: string;
               let fraction: string | undefined;
               if (decimalSepIndex > 0) {
@@ -446,7 +400,7 @@ export class UnifiedNumberFormat
               }
               if (useGrouping) {
                 // TODO
-                let groupSepSymbol = ildData.ild.symbols.group;
+                const groupSepSymbol = ildData.ild.symbols.group;
                 const groups: string[] = [];
                 // Assuming that the group separator is always inserted between every 3 digits.
                 let i = n.length - 3;
@@ -503,7 +457,7 @@ export class UnifiedNumberFormat
               });
               exponent = -exponent;
             }
-            let exponentResult = toRawFixed(exponent, 0, 0);
+            const exponentResult = toRawFixed(exponent, 0, 0);
             results.push({
               type: 'exponentInteger',
               value: exponentResult.formattedString,
@@ -523,7 +477,7 @@ export class UnifiedNumberFormat
             if (style === 'unit') {
               const unit = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'unit');
               const unitSymbols = ildData.ild.unitSymbols[unit!];
-              let mu = selectPlural(
+              const mu = selectPlural(
                 this.pl,
                 num,
                 unitSymbols[p] || unitSymbols[InternalSlotToken.unitSymbol]
@@ -594,7 +548,7 @@ export class UnifiedNumberFormat
     );
   }
 
-  public static __addLocaleData(...data: UnifiedNumberFormatLocaleData[]) {
+  public static __addLocaleData(...data: RawNumberLocaleData[]) {
     for (const datum of data) {
       const availableLocales: string[] = Object.keys(
         [
@@ -606,17 +560,18 @@ export class UnifiedNumberFormat
           return all;
         }, {})
       );
-      availableLocales.forEach(locale => {
+      for (const locale of availableLocales) {
         try {
-          UnifiedNumberFormat.localeData[locale] = unpackData(
+          const {units, currencies, numbers} = unpackData(
             locale,
             datum,
             (all, d) => merge({}, all, d)
           );
+          UnifiedNumberFormat.localeData[locale] = rawDataToInternalSlots(units, currencies, numbers, 'latn')
         } catch (e) {
-          // If we can't unpack this data, ignore the locale
+          // Ignore if we don't have data
         }
-      });
+      }
     }
     UnifiedNumberFormat.availableLocales = Object.keys(
       UnifiedNumberFormat.localeData
@@ -647,7 +602,7 @@ function formatNumberToString(
   numberFormat: UnifiedNumberFormat,
   x: number
 ): FormatNumberResult {
-  let isNegative = x < 0 || 1 / x === -Infinity;
+  const isNegative = x < 0 || 1 / x === -Infinity;
   if (isNegative) {
     x = -x;
   }
@@ -682,10 +637,10 @@ function formatNumberToString(
   }
   x = result.roundedNumber;
   let string = result.formattedString;
-  let int = result.integerDigitsCount;
-  let minInteger = intlObject.minimumIntegerDigits;
+  const int = result.integerDigitsCount;
+  const minInteger = intlObject.minimumIntegerDigits;
   if (int < minInteger) {
-    let forwardZeros = repeat('0', minInteger - int);
+    const forwardZeros = repeat('0', minInteger - int);
     string = forwardZeros + string;
   }
   if (isNegative) {
@@ -706,14 +661,14 @@ function computeExponent(numberFormat: UnifiedNumberFormat, x: number) {
   if (x < 0) {
     x = -x;
   }
-  let magnitude = Math.floor(Math.log(x) / Math.log(10));
-  let exponent = computeExponentForMagnitude(numberFormat, magnitude);
+  const magnitude = Math.floor(Math.log(x) / Math.log(10));
+  const exponent = computeExponentForMagnitude(numberFormat, magnitude);
   x = x * Math.pow(10, -exponent);
   const formatNumberResult = formatNumberToString(numberFormat, x);
   if (formatNumberResult.roundedNumber === 0) {
     return exponent;
   }
-  let newMagnitude = Math.floor(Math.log(x) / Math.log(10));
+  const newMagnitude = Math.floor(Math.log(x) / Math.log(10));
   if (newMagnitude === magnitude - exponent) {
     return exponent;
   }
@@ -806,7 +761,7 @@ function getNumberFormatPattern(
     displayNotation = 'scientific';
   } else if (exponent !== 0) {
     // Assert: notation is "compact".
-    let compactDisplay = getInternalSlot(
+    const compactDisplay = getInternalSlot(
       __INTERNAL_SLOT_MAP__,
       numberFormat,
       'compactDisplay'
