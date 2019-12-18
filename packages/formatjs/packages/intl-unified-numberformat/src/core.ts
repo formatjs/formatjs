@@ -567,7 +567,12 @@ export class UnifiedNumberFormat
             datum,
             (all, d) => merge({}, all, d)
           );
-          UnifiedNumberFormat.localeData[locale] = rawDataToInternalSlots(units, currencies, numbers, 'latn')
+          UnifiedNumberFormat.localeData[locale] = rawDataToInternalSlots(
+            units,
+            currencies,
+            numbers,
+            'latn'
+          );
         } catch (e) {
           // Ignore if we don't have data
         }

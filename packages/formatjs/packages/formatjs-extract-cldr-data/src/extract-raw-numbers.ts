@@ -106,15 +106,7 @@ function extractNumbers(d: Numbers): RawNumberData {
         currencySpacing: currencyData.currencySpacing,
         standard: currencyData.standard,
         accounting: currencyData.accounting,
-        unitPattern: collapseSingleValuePluralRule(
-          PLURAL_RULES.reduce((all, pl) => {
-            all[pl] =
-              currencyData[
-                `unitPattern-count-${pl}` as 'unitPattern-count-one'
-              ];
-            return all;
-          }, {} as Record<LDMLPluralRule, string>)
-        ),
+        unitPattern: currencyData['unitPattern-count-other'],
       } as RawCurrencyData;
       if (currencyData.short) {
         all[ns].short = reduceNumCount(currencyData.short.standard);

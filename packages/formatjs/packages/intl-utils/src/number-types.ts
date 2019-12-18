@@ -122,9 +122,10 @@ export interface NumberILD {
 export interface NumberLocalePatternData {
   decimal: SignDisplayPattern;
   percent: SignDisplayPattern;
-  currency: CurrencyPattern;
-  unit: UnitPattern;
+  currency: Record<string, CurrencyPattern>;
+  unit: Record<string, UnitPattern>;
 }
+// https://github.com/tc39/proposal-unified-intl-numberformat/issues/26#issuecomment-467711707
 export interface NumberInternalSlots {
   nu: string[];
   patterns: NumberLocalePatternData;
@@ -179,7 +180,9 @@ export interface RawCurrencyData {
   standard: string;
   accounting: string;
   short?: Record<DecimalFormatNum, string | Record<LDMLPluralRule, string>>;
-  unitPattern: string | Record<LDMLPluralRule, string>;
+  // IMPORTANT: We're making the assumption here that currency unitPattern
+  // are the same for all LDMLPluralRule
+  unitPattern: string;
 }
 
 export interface SymbolsData {
