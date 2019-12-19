@@ -388,13 +388,10 @@ export class UnifiedNumberFormat
                 const replacementTable = ILND[nu];
                 let replacedDigits = '';
                 for (const digit of n) {
-                  replacedDigits += replacementTable[+digit];
+                  // digit can be `.` if it's fractional
+                  replacedDigits += replacementTable[+digit] || digit;
                 }
                 n = replacedDigits;
-              } else {
-                // From spec:
-                // Else use an implementation dependent algorithm to map n to the appropriate
-                // representation of n in the given numbering system.
               }
               const decimalSepIndex = n.indexOf('.');
               let integer: string;
@@ -406,15 +403,14 @@ export class UnifiedNumberFormat
                 integer = n;
               }
               if (useGrouping) {
-                // TODO
                 const groupSepSymbol = ildData.ild.symbols.group;
                 const groups: string[] = [];
                 // Assuming that the group separator is always inserted between every 3 digits.
-                let i = n.length - 3;
+                let i = integer.length - 3;
                 for (; i > 0; i -= 3) {
-                  groups.push(n.slice(i, i + 3));
+                  groups.push(integer.slice(i, i + 3));
                 }
-                groups.push(n.slice(0, i + 3));
+                groups.push(integer.slice(0, i + 3));
                 while (groups.length > 0) {
                   const integerGroup = groups.pop()!;
                   results.push({type: 'integer', value: integerGroup});

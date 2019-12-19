@@ -166,7 +166,21 @@ export type DecimalFormatNum =
   | '1000000000000';
 export type NumberingSystem = string;
 
+export interface CurrencySpacingData {
+  beforeCurrency: {
+    currencyMatch: string;
+    surroundingMatch: string;
+    insertBetween: string;
+  };
+  afterCurrency: {
+    currencyMatch: string;
+    surroundingMatch: string;
+    insertBetween: string;
+  };
+}
+
 export interface RawCurrencyData {
+  currencySpacing: CurrencySpacingData;
   standard: string;
   accounting: string;
   short?: Record<DecimalFormatNum, string | Record<LDMLPluralRule, string>>;

@@ -103,7 +103,7 @@ function extractNumbers(d: Numbers): RawNumberData {
           `currencyFormats-numberSystem-${ns}` as 'currencyFormats-numberSystem-latn'
         ];
       all[ns] = {
-        // We don't capture currencySpacing bc they're all the same (run `verify` to verify)
+        currencySpacing: currencyData.currencySpacing,
         standard: currencyData.standard,
         accounting: currencyData.accounting,
         unitPattern: currencyData['unitPattern-count-other'],

@@ -16494,6 +16494,14 @@ Array [
     "type": "integer",
     "value": "000",
   },
+  Object {
+    "type": "decimal",
+    "value": ".",
+  },
+  Object {
+    "type": "fraction",
+    "value": "00",
+  },
 ]
 `;
 
@@ -16588,6 +16596,14 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
+  },
+  Object {
+    "type": "decimal",
+    "value": ".",
+  },
+  Object {
+    "type": "fraction",
+    "value": "00",
   },
 ]
 `;
