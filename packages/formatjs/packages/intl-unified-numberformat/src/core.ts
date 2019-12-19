@@ -214,10 +214,9 @@ export class UnifiedNumberFormat
       }
       // TODO: coerce and validate currency code
     } else if (style === 'unit') {
-      if (unit === undefined) {
+      if (!unit || ildData.ild.unitSymbols[unit.toLowerCase()]) {
         throw TypeError('Invalid unit argument for Intl.NumberFormat()');
       }
-      // TODO: validate unit
     }
     setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
       style,
