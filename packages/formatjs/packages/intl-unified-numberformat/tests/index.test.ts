@@ -1,7 +1,41 @@
 import '@formatjs/intl-pluralrules/polyfill-locales';
-import {UnifiedNumberFormat} from '../src/core';
+import {UnifiedNumberFormat, UnifiedNumberFormatOptions} from '../src/core';
 UnifiedNumberFormat.__addLocaleData(require('../dist/locale-data/zh.json'));
 UnifiedNumberFormat.__addLocaleData(require('../dist/locale-data/en.json'));
+
+const SIGN_DISPLAYS: Array<UnifiedNumberFormatOptions['signDisplay']> = [
+  'auto',
+  'always',
+  'never',
+  'exceptZero',
+];
+const NOTATIONS: Array<UnifiedNumberFormatOptions['notation']> = [
+  'engineering',
+  'scientific',
+  'compact',
+  'standard',
+];
+const UNIT_DISPLAYS: Array<UnifiedNumberFormatOptions['unitDisplay']> = [
+  'long',
+  'short',
+  'narrow',
+];
+const COMPACT_DISPLAYS: Array<UnifiedNumberFormatOptions['compactDisplay']> = [
+  'long',
+  'short',
+];
+
+const CURRENCY_DISPLAYS: Array<UnifiedNumberFormatOptions['currencyDisplay']> = [
+  'code',
+  'symbol',
+  'name',
+  'narrowSymbol',
+];
+
+const CURRENCY_SIGNS: Array<UnifiedNumberFormatOptions['currencySign']> = [
+  'accounting',
+  'standard',
+];
 
 function test() {
   it('should work', function() {
@@ -47,30 +81,145 @@ function test() {
   it('should not crash if unit is not specified', function() {
     expect(new UnifiedNumberFormat().resolvedOptions().unit).toBeUndefined();
   });
+  describe('decimal', function() {
+    SIGN_DISPLAYS.forEach(signDisplay =>
+      describe(`signDisplay/${signDisplay}`, function() {
+        NOTATIONS.forEach(notation =>
+          describe(`notation/${notation}`, function() {
+            COMPACT_DISPLAYS.forEach(compactDisplay =>
+              it(`compactDisplay/${compactDisplay}`, function() {
+                expect(
+                  new UnifiedNumberFormat('en', {
+                    style: 'decimal',
+                    signDisplay,
+                    notation,
+                    compactDisplay,
+                  }).formatToParts(10000)
+                ).toMatchSnapshot();
+              })
+            );
+          })
+        );
+      })
+    );
+  });
+  describe('unit', function() {
+    UNIT_DISPLAYS.forEach(unitDisplay =>
+      describe(`unitDisplay/${unitDisplay}`, function() {
+        SIGN_DISPLAYS.forEach(signDisplay =>
+          describe(`signDisplay/${signDisplay}`, function() {
+            NOTATIONS.forEach(notation =>
+              describe(`notation/${notation}`, function() {
+                COMPACT_DISPLAYS.forEach(compactDisplay =>
+                  it(`compactDisplay/${compactDisplay}`, function() {
+                    expect(
+                      new UnifiedNumberFormat('en', {
+                        style: 'unit',
+                        unit: 'bit',
+                        unitDisplay,
+                        signDisplay,
+                        notation,
+                        compactDisplay,
+                      }).formatToParts(10000)
+                    ).toMatchSnapshot();
+                    expect(
+                      new UnifiedNumberFormat('en', {
+                        style: 'unit',
+                        unit: 'celsius',
+                        unitDisplay,
+                        signDisplay,
+                        notation,
+                        compactDisplay,
+                      }).formatToParts(10000)
+                    ).toMatchSnapshot();
+                    expect(
+                      new UnifiedNumberFormat('en', {
+                        style: 'unit',
+                        unit: 'gallon',
+                        unitDisplay,
+                        signDisplay,
+                        notation,
+                        compactDisplay,
+                      }).formatToParts(10000)
+                    ).toMatchSnapshot();
+                  })
+                );
+              })
+            );
+          })
+        );
+      })
+    );
+  });
+  describe('currency', function() {
+    CURRENCY_DISPLAYS.forEach(currencyDisplay =>
+      describe(`currencyDisplay/${currencyDisplay}`, function() {
+        CURRENCY_SIGNS.forEach(currencySign =>
+          describe(`currencySign/${currencySign}`, function() {
+            SIGN_DISPLAYS.forEach(signDisplay =>
+              describe(`signDisplay/${signDisplay}`, function() {
+                NOTATIONS.forEach(notation =>
+                  describe(`notation/${notation}`, function() {
+                    COMPACT_DISPLAYS.forEach(compactDisplay =>
+                      it(`compactDisplay/${compactDisplay}`, function() {
+                        expect(
+                          new UnifiedNumberFormat('en', {
+                            style: 'currency',
+                            currency: 'USD',
+                            currencySign,
+                            currencyDisplay,
+                            signDisplay,
+                            notation,
+                            compactDisplay,
+                          }).formatToParts(10000)
+                        ).toMatchSnapshot();
+                        expect(
+                          new UnifiedNumberFormat('en', {
+                            style: 'currency',
+                            currency: 'GBP',
+                            currencySign,
+                            currencyDisplay,
+                            signDisplay,
+                            notation,
+                            compactDisplay,
+                          }).formatToParts(-10000)
+                        ).toMatchSnapshot();
+                        expect(
+                          new UnifiedNumberFormat('en', {
+                            style: 'currency',
+                            currency: 'CAD',
+                            currencySign,
+                            currencyDisplay,
+                            signDisplay,
+                            notation,
+                            compactDisplay,
+                          }).formatToParts(10000)
+                        ).toMatchSnapshot();
+                      })
+                    );
+                  })
+                );
+              })
+            );
+          })
+        );
+      })
+    );
+  });
+
   it('formatToParts should work', function() {
     expect(
       new UnifiedNumberFormat('zh', {
         style: 'unit',
         unit: 'bit',
       }).formatToParts(1000)
-    ).toEqual([
-      {type: 'integer', value: '1'},
-      {type: 'group', value: ','},
-      {type: 'integer', value: '000'},
-      {type: 'unit', value: '比特'},
-    ]);
+    ).toMatchSnapshot();
     expect(
       new UnifiedNumberFormat('en', {
         style: 'unit',
         unit: 'bit',
       }).formatToParts(1000)
-    ).toEqual([
-      {type: 'integer', value: '1'},
-      {type: 'group', value: ','},
-      {type: 'integer', value: '000'},
-      {type: 'literal', value: ' '},
-      {type: 'unit', value: 'bit'},
-    ]);
+    ).toMatchSnapshot();
   });
   it("supports currencyDisplay: 'narrowSymbol'", () => {
     expect(
