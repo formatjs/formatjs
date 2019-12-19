@@ -129,7 +129,6 @@ const SCIENTIFIC_SLOT = [
 // Matches things like `foo {0}`, `foo{0}`, `{0}foo`
 const PATTERN_0_REGEX = /\s?\{0\}\s?/g;
 const DUMMY_PATTERN = '#';
-const SCIENTIFIC_SIGN_PATTERN = produceSignPattern(SCIENTIFIC_SLOT);
 
 function produceSignPattern(
   positivePattern: string,
@@ -224,7 +223,7 @@ function extractDecimalPattern(d: RawNumberData): SignDisplayPattern {
         DUMMY_PATTERN,
         k
       ),
-      scientific: SCIENTIFIC_SIGN_PATTERN,
+      scientific: extractSignPattern(SCIENTIFIC_SLOT, k),
       compactShort: extractSignPattern(
         extractCompactSymbol(
           d.decimal.latn.short['1000'] as string,

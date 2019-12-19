@@ -358,6 +358,7 @@ export class UnifiedNumberFormat
     const pattern = getNumberFormatPattern(this, num, exponent);
     const patternParts = pattern.split(/({\w+})/).filter(x => x);
     const results: UnifiedNumberFormatPart[] = [];
+    console.log('patternParts', patternParts);
     for (const part of patternParts) {
       if (part[0] !== '{') {
         results.push({type: 'literal', value: part});
