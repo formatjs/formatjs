@@ -16,14 +16,14 @@ export function toRawFixed(
   const f = maxFraction;
   let n: number;
   {
-    const exactSolve = x * Math.pow(10, f);
+    const exactSolve = x * (10**f);
     const roundDown = Math.floor(exactSolve);
     const roundUp = Math.ceil(exactSolve);
-    n = exactSolve - roundDown < roundUp - exactSolve ? roundDown : roundUp;
+    n = (exactSolve - roundDown < roundUp - exactSolve) ? roundDown : roundUp;
   }
-  const xFinal = x / Math.pow(f, 10);
-  let int: number;
-  let m = n.toString();
+  const xFinal = x / (10**f)
+  let m = n === 0 ? '0' : n.toString()
+  let int: number
   if (f !== 0) {
     let k = m.length;
     if (k <= f) {

@@ -341,15 +341,15 @@ export class UnifiedNumberFormat
     let exponent = 0;
     const ildData = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ildData');
     let n: string;
-    if (isNaN(exponent)) {
+    if (isNaN(num)) {
       n = ildData.ild.symbols.nan;
-    } else if (num === +Infinity || num === -Infinity) {
+    } else if (!isFinite(num)) {
       n = ildData.ild.symbols.infinity;
     } else {
       if (getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'style') === 'percent') {
         num *= 100;
       }
-      const exponent = computeExponent(this, num);
+      exponent = computeExponent(this, num);
       num = num * Math.pow(10, -exponent);
       const formatNumberResult = formatNumberToString(this, num);
       n = formatNumberResult.formattedString;
