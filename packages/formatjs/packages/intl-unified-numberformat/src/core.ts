@@ -20,6 +20,7 @@ import {
   InternalSlotToken,
   LDMLPluralRule,
   RawNumberLocaleData,
+  DecimalFormatNum,
 } from '@formatjs/intl-utils';
 import {merge, repeat} from 'lodash';
 import {toRawFixed, toRawPrecision, RawNumberFormatResult} from './utils';
@@ -94,6 +95,7 @@ export type UnifiedNumberFormatPartTypes =
   | 'exponentSeparator'
   | 'exponentMinusSign'
   | 'exponentInteger'
+  | 'compact'
   | 'unit';
 
 export interface UnifiedNumberFormatPart {
@@ -358,7 +360,6 @@ export class UnifiedNumberFormat
     const pattern = getNumberFormatPattern(this, num, exponent);
     const patternParts = pattern.split(/({\w+})/).filter(x => x);
     const results: UnifiedNumberFormatPart[] = [];
-    console.log('patternParts', patternParts);
     for (const part of patternParts) {
       if (part[0] !== '{') {
         results.push({type: 'literal', value: part});
@@ -442,8 +443,22 @@ export class UnifiedNumberFormat
             break;
           case InternalSlotToken.compactSymbol:
           case InternalSlotToken.compactName:
-            // TODO
-            throw Error('not implemented');
+            const compactData =
+              ildData.ild.decimal[
+                p === 'compactName' ? 'compactLong' : 'compactShort'
+              ];
+            if (compactData) {
+              console.log('exponent', exponent);
+              results.push({
+                type: 'compact',
+                value: selectPlural(
+                  this.pl,
+                  num,
+                  compactData[String(10 ** exponent) as DecimalFormatNum]
+                ),
+              });
+            }
+            break;
           case InternalSlotToken.scientificSeparator:
             results.push({
               type: 'exponentSeparator',
@@ -656,6 +671,14 @@ function formatNumberToString(
 }
 
 /**
+ * Cannot do Math.log(x) / Math.log(10) bc if IEEE floating point issue
+ * @param x number
+ */
+function logBase10(x: number): number {
+  return String(Math.floor(x)).length - 1;
+}
+
+/**
  * The abstract operation ComputeExponent computes an exponent (power of ten) by which to scale x
  * according to the number formatting settings. It handles cases such as 999 rounding up to 1000,
  * requiring a different exponent.
@@ -667,14 +690,14 @@ function computeExponent(numberFormat: UnifiedNumberFormat, x: number) {
   if (x < 0) {
     x = -x;
   }
-  const magnitude = Math.floor(Math.log(x) / Math.log(10));
+  const magnitude = logBase10(x);
   const exponent = computeExponentForMagnitude(numberFormat, magnitude);
-  x = x * Math.pow(10, -exponent);
+  x = x * 10 ** -exponent;
   const formatNumberResult = formatNumberToString(numberFormat, x);
   if (formatNumberResult.roundedNumber === 0) {
     return exponent;
   }
-  const newMagnitude = Math.floor(Math.log(x) / Math.log(10));
+  const newMagnitude = logBase10(x);
   if (newMagnitude === magnitude - exponent) {
     return exponent;
   }
@@ -695,6 +718,12 @@ function computeExponentForMagnitude(
     numberFormat,
     'notation'
   );
+  const style = getInternalSlot(__INTERNAL_SLOT_MAP__, numberFormat, 'style');
+  const ildData = getInternalSlot(
+    __INTERNAL_SLOT_MAP__,
+    numberFormat,
+    'ildData'
+  );
   switch (notation) {
     case 'standard':
       return 0;
@@ -703,9 +732,20 @@ function computeExponentForMagnitude(
     case 'engineering':
       return Math.floor(magnitude / 3) * 3;
     case 'compact': {
-      // TODO: implement this
-      // TODO: verify if we can dedup ild.{decimal,currency}.compactShort.
-      throw Error('`compact` is not implemented yet.');
+      const symbols =
+        style === 'decimal' ? ildData.ild.decimal : ildData.ild.currency;
+      const thresholdMap = symbols.compactLong || symbols.compactShort;
+      if (!thresholdMap) {
+        return 0;
+      }
+      // Going back from 100 trillion to 1 thousand, find the first magnitude threshold that's right below
+      // out magnitude
+      return (
+        Object.keys(thresholdMap)
+          .map(t => logBase10(+t))
+          .reverse()
+          .find(m => magnitude > m) || 0
+      );
     }
   }
 }
