@@ -741,7 +741,8 @@ function getNumberFormatPattern(
         numberFormat,
         'unitDisplay'
       );
-      patterns = ildData.patterns.unit[unitDisplay!];
+      const unit = getInternalSlot(__INTERNAL_SLOT_MAP__, numberFormat, 'unit');
+      patterns = ildData.patterns.unit[unit!][unitDisplay!];
       break;
     }
     case 'currency': {

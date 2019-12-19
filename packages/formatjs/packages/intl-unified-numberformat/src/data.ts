@@ -72,10 +72,6 @@ function processLDMLMap(
   }, {} as Record<LDMLPluralRule, string>);
 }
 
-function shortenUnit(unit: string) {
-  return unit.replace(/^(.*?)-/, '');
-}
-
 function prune0Token(str: string): string {
   return str.replace(PATTERN_0_REGEX, '');
 }
@@ -110,7 +106,7 @@ function extractILD(
       return all;
     }, {} as NumberILD['currencySymbols']),
     unitSymbols: Object.keys(units).reduce((all, unit) => {
-      all[shortenUnit(unit)] = {
+      all[unit] = {
         unitSymbol: processLDMLMap(units[unit].short, prune0Token),
         unitNarrowSymbol: processLDMLMap(units[unit].narrow!, prune0Token),
         unitName: processLDMLMap(units[unit].long, prune0Token),

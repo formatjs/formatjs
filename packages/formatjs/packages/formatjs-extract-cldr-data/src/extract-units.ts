@@ -23,6 +23,10 @@ const unitsLocales = globSync('*/units.json', {
 
 export type Units = typeof Units['main']['en']['units'];
 
+function shortenUnit(unit: string) {
+  return unit.replace(/^(.*?)-/, '');
+}
+
 function extractUnitPattern(d: Units['long']['volume-gallon']) {
   return collapseSingleValuePluralRule(
     PLURAL_RULES.reduce((all: Record<LDMLPluralRule, string>, ldml) => {
@@ -50,7 +54,7 @@ function loadUnits(locale: Locale): Record<string, UnitData> {
     if (!units.long[unit as 'digital-bit']) {
       throw new Error(`${unit} does not have any data`);
     }
-    all[unit] = {
+    all[shortenUnit(unit)] = {
       displayName: units.long[unit as 'digital-bit'].displayName,
       long: extractUnitPattern(units.long[unit as 'volume-gallon']),
       short: extractUnitPattern(units.short[unit as 'volume-gallon']),

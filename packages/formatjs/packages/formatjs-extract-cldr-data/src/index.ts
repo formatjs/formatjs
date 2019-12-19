@@ -5,7 +5,7 @@
  */
 import extractRelativeFields from './extract-relative';
 import extractListPatterns from './extract-list';
-import extractNumbers from './extract-raw-numbers';
+import extractNumbers from './extract-numbers';
 import extractUnits from './extract-units';
 import extractCurrencies from './extract-currencies';
 import {getAllLocales} from './locales';
@@ -39,4 +39,3 @@ export {getAllLanguages} from './locales';
 export const processAliases = process;
 export {getAllLocales as getAllDateFieldsLocales} from './extract-relative';
 export {getAllLocales as getAllListLocales} from './extract-list';
-export {getAllLocales as getAllNumbersLocales} from './extract-numbers';
