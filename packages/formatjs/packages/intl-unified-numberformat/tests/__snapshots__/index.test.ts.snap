@@ -58,7 +58,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -133,7 +133,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -236,7 +236,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -245,14 +245,6 @@ Array [
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -351,7 +343,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -360,14 +352,6 @@ Array [
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -466,7 +450,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -475,14 +459,6 @@ Array [
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -581,7 +557,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -590,14 +566,6 @@ Array [
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -696,7 +664,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -713,14 +681,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -811,7 +771,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -828,14 +788,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -890,7 +842,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/accounti
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -957,7 +909,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/accounti
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -1052,7 +1004,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/accounti
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -1061,14 +1013,6 @@ Array [
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -1159,7 +1103,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/accounti
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -1168,14 +1112,6 @@ Array [
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -1266,7 +1202,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/accounti
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -1275,14 +1211,6 @@ Array [
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -1373,7 +1301,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/accounti
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -1382,14 +1310,6 @@ Array [
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -1480,7 +1400,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/accounti
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -1497,14 +1417,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -1587,7 +1499,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/accounti
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -1604,14 +1516,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -1674,7 +1578,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -1749,7 +1653,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -1852,7 +1756,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -1861,14 +1765,6 @@ Array [
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -1967,7 +1863,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -1976,14 +1872,6 @@ Array [
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -2082,7 +1970,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -2091,14 +1979,6 @@ Array [
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -2197,7 +2077,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -2206,14 +2086,6 @@ Array [
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -2312,7 +2184,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -2329,14 +2201,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -2427,7 +2291,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -2444,14 +2308,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -2502,7 +2358,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/accounti
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -2565,7 +2421,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/accounti
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -2652,7 +2508,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/accounti
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -2661,14 +2517,6 @@ Array [
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -2751,7 +2599,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/accounti
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -2760,14 +2608,6 @@ Array [
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -2850,7 +2690,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/accounti
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -2859,14 +2699,6 @@ Array [
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -2949,7 +2781,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/accounti
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -2958,14 +2790,6 @@ Array [
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -3048,7 +2872,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/accounti
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -3065,14 +2889,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -3147,7 +2963,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/accounti
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -3164,14 +2980,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -3234,7 +3042,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -3309,7 +3117,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -3408,7 +3216,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -3417,14 +3225,6 @@ Array [
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -3519,7 +3319,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -3528,14 +3328,6 @@ Array [
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -3630,7 +3422,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -3639,14 +3431,6 @@ Array [
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -3741,7 +3525,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -3750,14 +3534,6 @@ Array [
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -3852,7 +3628,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -3869,14 +3645,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -3963,7 +3731,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -3980,14 +3748,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -4042,7 +3802,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/standard
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -4109,7 +3869,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/standard
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -4200,7 +3960,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/standard
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -4209,14 +3969,6 @@ Array [
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -4303,7 +4055,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/standard
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -4312,14 +4064,6 @@ Array [
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -4406,7 +4150,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/standard
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -4415,14 +4159,6 @@ Array [
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -4509,7 +4245,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/standard
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -4518,14 +4254,6 @@ Array [
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -4612,7 +4340,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/standard
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -4629,14 +4357,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -4715,7 +4435,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/standard
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -4732,14 +4452,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -4802,7 +4514,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -4877,7 +4589,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -4976,7 +4688,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -4985,14 +4697,6 @@ Array [
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -5087,7 +4791,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -5096,14 +4800,6 @@ Array [
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -5198,7 +4894,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -5207,14 +4903,6 @@ Array [
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -5309,7 +4997,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -5318,14 +5006,6 @@ Array [
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -5420,7 +5100,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -5437,14 +5117,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -5531,7 +5203,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -5548,14 +5220,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -5606,7 +5270,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/standard
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -5669,7 +5333,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/standard
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -5756,7 +5420,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/standard
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -5765,14 +5429,6 @@ Array [
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -5855,7 +5511,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/standard
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -5864,14 +5520,6 @@ Array [
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -5954,7 +5602,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/standard
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -5963,14 +5611,6 @@ Array [
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -6053,7 +5693,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/standard
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -6062,14 +5702,6 @@ Array [
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -6152,7 +5784,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/standard
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -6169,14 +5801,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -6251,7 +5875,7 @@ exports[`UnifiedNumberFormat currency currencyDisplay/code currencySign/standard
 Array [
   Object {
     "type": "currency",
-    "value": "CAD",
+    "value": "ZWD",
   },
   Object {
     "type": "literal",
@@ -6268,14 +5892,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -6362,7 +5978,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -6437,7 +6053,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -6527,14 +6143,6 @@ Array [
     "value": "10",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -6548,7 +6156,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -6638,14 +6246,6 @@ Array [
     "value": "10",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -6659,7 +6259,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -6749,14 +6349,6 @@ Array [
     "value": "1",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -6770,7 +6362,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollar (1980–2008)",
   },
 ]
 `;
@@ -6860,14 +6452,6 @@ Array [
     "value": "1",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -6881,7 +6465,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollar (1980–2008)",
   },
 ]
 `;
@@ -6979,20 +6563,12 @@ Array [
     "value": "000",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "literal",
     "value": " ",
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -7090,20 +6666,12 @@ Array [
     "value": "000",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "literal",
     "value": " ",
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -7182,7 +6750,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -7249,7 +6817,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -7331,14 +6899,6 @@ Array [
     "value": "10",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -7352,7 +6912,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -7434,14 +6994,6 @@ Array [
     "value": "10",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -7455,7 +7007,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -7537,14 +7089,6 @@ Array [
     "value": "1",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -7558,7 +7102,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollar (1980–2008)",
   },
 ]
 `;
@@ -7640,14 +7184,6 @@ Array [
     "value": "1",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -7661,7 +7197,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollar (1980–2008)",
   },
 ]
 `;
@@ -7751,20 +7287,12 @@ Array [
     "value": "000",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "literal",
     "value": " ",
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -7854,20 +7382,12 @@ Array [
     "value": "000",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "literal",
     "value": " ",
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -7954,7 +7474,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -8029,7 +7549,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -8119,14 +7639,6 @@ Array [
     "value": "10",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -8140,7 +7652,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -8230,14 +7742,6 @@ Array [
     "value": "10",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -8251,7 +7755,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -8341,14 +7845,6 @@ Array [
     "value": "1",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -8362,7 +7858,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollar (1980–2008)",
   },
 ]
 `;
@@ -8452,14 +7948,6 @@ Array [
     "value": "1",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -8473,7 +7961,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollar (1980–2008)",
   },
 ]
 `;
@@ -8571,20 +8059,12 @@ Array [
     "value": "000",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "literal",
     "value": " ",
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -8682,20 +8162,12 @@ Array [
     "value": "000",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "literal",
     "value": " ",
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -8770,7 +8242,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -8833,7 +8305,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -8911,14 +8383,6 @@ Array [
     "value": "10",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -8932,7 +8396,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -9010,14 +8474,6 @@ Array [
     "value": "10",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -9031,7 +8487,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -9109,14 +8565,6 @@ Array [
     "value": "1",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -9130,7 +8578,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollar (1980–2008)",
   },
 ]
 `;
@@ -9208,14 +8656,6 @@ Array [
     "value": "1",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -9229,7 +8669,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollar (1980–2008)",
   },
 ]
 `;
@@ -9315,20 +8755,12 @@ Array [
     "value": "000",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "literal",
     "value": " ",
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -9414,20 +8846,12 @@ Array [
     "value": "000",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "literal",
     "value": " ",
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -9514,7 +8938,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -9589,7 +9013,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -9679,14 +9103,6 @@ Array [
     "value": "10",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -9700,7 +9116,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -9790,14 +9206,6 @@ Array [
     "value": "10",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -9811,7 +9219,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -9901,14 +9309,6 @@ Array [
     "value": "1",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -9922,7 +9322,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollar (1980–2008)",
   },
 ]
 `;
@@ -10012,14 +9412,6 @@ Array [
     "value": "1",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -10033,7 +9425,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollar (1980–2008)",
   },
 ]
 `;
@@ -10131,20 +9523,12 @@ Array [
     "value": "000",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "literal",
     "value": " ",
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -10242,20 +9626,12 @@ Array [
     "value": "000",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "literal",
     "value": " ",
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -10334,7 +9710,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -10401,7 +9777,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -10483,14 +9859,6 @@ Array [
     "value": "10",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -10504,7 +9872,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -10586,14 +9954,6 @@ Array [
     "value": "10",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -10607,7 +9967,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -10689,14 +10049,6 @@ Array [
     "value": "1",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -10710,7 +10062,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollar (1980–2008)",
   },
 ]
 `;
@@ -10792,14 +10144,6 @@ Array [
     "value": "1",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -10813,7 +10157,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollar (1980–2008)",
   },
 ]
 `;
@@ -10903,20 +10247,12 @@ Array [
     "value": "000",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "literal",
     "value": " ",
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -11006,20 +10342,12 @@ Array [
     "value": "000",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "literal",
     "value": " ",
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -11106,7 +10434,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -11181,7 +10509,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -11271,14 +10599,6 @@ Array [
     "value": "10",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -11292,7 +10612,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -11382,14 +10702,6 @@ Array [
     "value": "10",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -11403,7 +10715,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -11493,14 +10805,6 @@ Array [
     "value": "1",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -11514,7 +10818,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollar (1980–2008)",
   },
 ]
 `;
@@ -11604,14 +10908,6 @@ Array [
     "value": "1",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -11625,7 +10921,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollar (1980–2008)",
   },
 ]
 `;
@@ -11723,20 +11019,12 @@ Array [
     "value": "000",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "literal",
     "value": " ",
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -11834,20 +11122,12 @@ Array [
     "value": "000",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "literal",
     "value": " ",
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -11922,7 +11202,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -11985,7 +11265,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -12063,14 +11343,6 @@ Array [
     "value": "10",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -12084,7 +11356,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -12162,14 +11434,6 @@ Array [
     "value": "10",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -12183,7 +11447,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -12261,14 +11525,6 @@ Array [
     "value": "1",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -12282,7 +11538,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollar (1980–2008)",
   },
 ]
 `;
@@ -12360,14 +11616,6 @@ Array [
     "value": "1",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "exponentSeparator",
     "value": "E",
   },
@@ -12381,7 +11629,7 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollar (1980–2008)",
   },
 ]
 `;
@@ -12467,20 +11715,12 @@ Array [
     "value": "000",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "literal",
     "value": " ",
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -12566,20 +11806,12 @@ Array [
     "value": "000",
   },
   Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
-  },
-  Object {
     "type": "literal",
     "value": " ",
   },
   Object {
     "type": "currency",
-    "value": "Canadian dollars",
+    "value": "Zimbabwean dollars (1980–2008)",
   },
 ]
 `;
@@ -12634,7 +11866,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -12697,7 +11933,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -12788,19 +12028,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -12891,19 +12127,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -12994,19 +12226,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -13097,19 +12325,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -13200,7 +12424,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -13213,14 +12441,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -13303,7 +12523,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -13316,14 +12540,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -13370,7 +12586,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -13425,7 +12645,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -13508,19 +12732,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -13603,19 +12823,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -13698,19 +12914,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -13793,19 +13005,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -13888,7 +13096,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -13901,14 +13113,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -13983,7 +13187,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -13996,14 +13204,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -14058,7 +13258,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -14121,7 +13325,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -14212,19 +13420,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -14315,19 +13519,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -14418,19 +13618,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -14521,19 +13717,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -14624,7 +13816,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -14637,14 +13833,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -14727,7 +13915,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -14740,14 +13932,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -14790,7 +13974,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -14841,7 +14029,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -14916,19 +14108,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -15003,19 +14191,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -15090,19 +14274,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -15177,19 +14357,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -15264,7 +14440,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -15277,14 +14457,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -15351,7 +14523,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -15364,14 +14540,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -15426,7 +14594,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -15489,7 +14661,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -15576,19 +14752,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -15675,19 +14847,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -15774,19 +14942,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -15873,19 +15037,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -15972,7 +15132,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -15985,14 +15149,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -16071,7 +15227,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -16084,14 +15244,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -16138,7 +15290,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -16193,7 +15349,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -16272,19 +15432,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -16363,19 +15519,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -16454,19 +15606,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -16545,19 +15693,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -16636,7 +15780,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -16649,14 +15797,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -16727,7 +15867,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -16740,14 +15884,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -16802,7 +15938,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -16865,7 +16005,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -16952,19 +16096,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -17051,19 +16191,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -17150,19 +16286,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -17249,19 +16381,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -17348,7 +16476,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -17361,14 +16493,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -17447,7 +16571,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -17460,14 +16588,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -17510,7 +16630,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -17561,7 +16685,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -17636,19 +16764,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -17723,19 +16847,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -17810,19 +16930,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -17897,19 +17013,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -17984,7 +17096,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -17997,14 +17113,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -18071,7 +17179,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/narrowSymbol currencySign/
 Array [
   Object {
     "type": "currency",
-    "value": "$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -18084,14 +17196,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -18146,7 +17250,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -18209,7 +17317,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -18300,19 +17412,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -18403,19 +17511,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -18506,19 +17610,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -18609,19 +17709,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -18712,7 +17808,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -18725,14 +17825,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -18815,7 +17907,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -18828,14 +17924,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -18882,7 +17970,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/accoun
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -18937,7 +18029,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/accoun
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -19020,19 +18116,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/accoun
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -19115,19 +18207,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/accoun
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -19210,19 +18298,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/accoun
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -19305,19 +18389,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/accoun
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -19400,7 +18480,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/accoun
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -19413,14 +18497,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -19495,7 +18571,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/accoun
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -19508,14 +18588,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -19570,7 +18642,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -19633,7 +18709,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -19724,19 +18804,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -19827,19 +18903,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -19930,19 +19002,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -20033,19 +19101,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -20136,7 +19200,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -20149,14 +19217,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -20239,7 +19299,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -20252,14 +19316,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -20302,7 +19358,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/accoun
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -20353,7 +19413,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/accoun
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -20428,19 +19492,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/accoun
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -20515,19 +19575,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/accoun
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -20602,19 +19658,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/accoun
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -20689,19 +19741,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/accoun
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -20776,7 +19824,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/accoun
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -20789,14 +19841,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -20863,7 +19907,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/accoun
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -20876,14 +19924,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -20938,7 +19978,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -21001,7 +20045,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -21088,19 +20136,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -21187,19 +20231,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -21286,19 +20326,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -21385,19 +20421,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -21484,7 +20516,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -21497,14 +20533,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -21583,7 +20611,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -21596,14 +20628,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -21650,7 +20674,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/standa
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -21705,7 +20733,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/standa
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -21784,19 +20816,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/standa
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -21875,19 +20903,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/standa
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -21966,19 +20990,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/standa
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -22057,19 +21077,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/standa
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -22148,7 +21164,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/standa
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -22161,14 +21181,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -22239,7 +21251,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/standa
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -22252,14 +21268,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -22314,7 +21322,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -22377,7 +21389,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -22464,19 +21480,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -22563,19 +21575,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -22662,19 +21670,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -22761,19 +21765,15 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -22860,7 +21860,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -22873,14 +21877,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -22959,7 +21955,11 @@ Array [
   },
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -22972,14 +21972,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -23022,7 +22014,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/standa
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -23073,7 +22069,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/standa
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -23148,19 +22148,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/standa
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -23235,19 +22231,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/standa
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "10",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -23322,19 +22314,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/standa
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -23409,19 +22397,15 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/standa
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
     "value": "1",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
   Object {
     "type": "exponentSeparator",
@@ -23496,7 +22480,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/standa
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -23509,14 +22497,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -23583,7 +22563,11 @@ exports[`UnifiedNumberFormat currency currencyDisplay/symbol currencySign/standa
 Array [
   Object {
     "type": "currency",
-    "value": "CA$",
+    "value": "ZWD",
+  },
+  Object {
+    "type": "literal",
+    "value": " ",
   },
   Object {
     "type": "integer",
@@ -23596,14 +22580,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-  Object {
-    "type": "decimal",
-    "value": ".",
-  },
-  Object {
-    "type": "fraction",
-    "value": "00",
   },
 ]
 `;
@@ -24196,52 +23172,6 @@ Array [
   Object {
     "type": "integer",
     "value": "000",
-  },
-]
-`;
-
-exports[`UnifiedNumberFormat formatToParts should work 1`] = `
-Array [
-  Object {
-    "type": "integer",
-    "value": "1",
-  },
-  Object {
-    "type": "group",
-    "value": ",",
-  },
-  Object {
-    "type": "integer",
-    "value": "000",
-  },
-  Object {
-    "type": "unit",
-    "value": "比特",
-  },
-]
-`;
-
-exports[`UnifiedNumberFormat formatToParts should work 2`] = `
-Array [
-  Object {
-    "type": "integer",
-    "value": "1",
-  },
-  Object {
-    "type": "group",
-    "value": ",",
-  },
-  Object {
-    "type": "integer",
-    "value": "000",
-  },
-  Object {
-    "type": "literal",
-    "value": " ",
-  },
-  Object {
-    "type": "unit",
-    "value": "bit",
   },
 ]
 `;

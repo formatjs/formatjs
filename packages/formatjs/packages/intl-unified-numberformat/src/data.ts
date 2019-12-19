@@ -277,7 +277,7 @@ function generateSymbolCurrencyPattern(
         .replace(/^¤([^\s])/, `{${currencyToken}} $1`)
         .replace(/([^\s])¤$/, `$1 {${currencyToken}}`)
     : style === 'symbol' || style === 'narrowSymbol'
-    ? d.standard.replace('¤', currencyToken)
+    ? d.standard.replace('¤', `{${currencyToken}}`)
     : d.unitPattern.replace('{1}', `{${currencyToken}}`);
 }
 

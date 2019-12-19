@@ -101,7 +101,7 @@ export interface NumberILD {
     string,
     {
       currencySymbol: string;
-      currencyNarrowSymbol?: string;
+      currencyNarrowSymbol: string;
       // string when there's only 1 plural from
       currencyName: string | Record<LDMLPluralRule, string>;
     }
@@ -112,7 +112,7 @@ export interface NumberILD {
       // string when there's only 1 plural form
       unitSymbol: string | Record<LDMLPluralRule, string>;
       // string when there's only 1 plural from
-      unitNarrowSymbol?: string | Record<LDMLPluralRule, string>;
+      unitNarrowSymbol: string | Record<LDMLPluralRule, string>;
       // string when there's only 1 plural from
       unitName: string | Record<LDMLPluralRule, string>;
     }

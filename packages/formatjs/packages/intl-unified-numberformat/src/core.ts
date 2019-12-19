@@ -362,6 +362,7 @@ export class UnifiedNumberFormat
       x = formatNumberResult.roundedNumber;
     }
     const pattern = getNumberFormatPattern(this, x, exponent);
+    console.log('pattern', pattern);
     const patternParts = pattern.split(/({\w+})/).filter(Boolean);
     const results: UnifiedNumberFormatPart[] = [];
     for (const part of patternParts) {
@@ -509,27 +510,24 @@ export class UnifiedNumberFormat
           case InternalSlotToken.currencySymbol:
           case InternalSlotToken.currencyNarrowSymbol:
           case InternalSlotToken.currencyName: {
-            const style = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'style');
-            if (style === 'currency') {
-              const currency = getInternalSlot(
-                __INTERNAL_SLOT_MAP__,
-                this,
-                'currency'
-              )!;
-              let cd: string | undefined;
-              if (p === InternalSlotToken.currencyCode) {
-                cd = currency;
-              } else if (p === InternalSlotToken.currencyName) {
-                cd = selectPlural(
-                  this.pl,
-                  x,
-                  ildData.ild.currencySymbols[currency].currencyName
-                );
-              } else {
-                cd = ildData.ild.currencySymbols[currency][p];
-              }
-              results.push({type: 'unit', value: cd || currency});
+            const currency = getInternalSlot(
+              __INTERNAL_SLOT_MAP__,
+              this,
+              'currency'
+            )!;
+            let cd: string | undefined;
+            if (p === InternalSlotToken.currencyCode) {
+              cd = currency;
+            } else if (p === InternalSlotToken.currencyName) {
+              cd = selectPlural(
+                this.pl,
+                x,
+                ildData.ild.currencySymbols[currency].currencyName
+              );
+            } else {
+              cd = ildData.ild.currencySymbols[currency][p];
             }
+            results.push({type: 'currency', value: cd || currency});
             break;
           }
           default:
@@ -782,16 +780,16 @@ function getNumberFormatPattern(
       break;
     }
     case 'currency': {
-      // ??? something is wrong
-      throw Error('not implemented');
-      // const {currency, currencySign, currencyDisplay} = getMultiInternalSlots(
-      //   __INTERNAL_SLOT_MAP__,
-      //   numberFormat,
-      //   'currency',
-      //   'currencySign',
-      //   'currencyDisplay'
-      // );
-      // patterns = ildData.patterns.currency[currencySign!];
+      const {currency, currencyDisplay, currencySign} = getMultiInternalSlots(
+        __INTERNAL_SLOT_MAP__,
+        numberFormat,
+        'currency',
+        'currencyDisplay',
+        'currencySign'
+      );
+      patterns =
+        ildData.patterns.currency[currency!][currencyDisplay][currencySign];
+      break;
     }
     case 'decimal':
       patterns = ildData.patterns.decimal;

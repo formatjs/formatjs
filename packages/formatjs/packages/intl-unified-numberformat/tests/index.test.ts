@@ -38,20 +38,6 @@ const CURRENCY_SIGNS: Array<UnifiedNumberFormatOptions['currencySign']> = [
 ];
 
 function test() {
-  it('should work', function() {
-    expect(
-      new UnifiedNumberFormat('zh', {
-        style: 'unit',
-        unit: 'bit',
-      }).format(1000)
-    ).toBe('1,000比特');
-    expect(
-      new UnifiedNumberFormat('en', {
-        style: 'unit',
-        unit: 'bit',
-      }).format(1000)
-    ).toBe('1,000 bit');
-  });
   it('should lookup locale correctly', function() {
     expect(
       new UnifiedNumberFormat('en-BS', {
@@ -151,7 +137,7 @@ function test() {
       })
     );
   });
-  xdescribe('currency', function() {
+  describe.only('currency', function() {
     CURRENCY_DISPLAYS.forEach(currencyDisplay =>
       describe(`currencyDisplay/${currencyDisplay}`, function() {
         CURRENCY_SIGNS.forEach(currencySign =>
@@ -184,10 +170,11 @@ function test() {
                             compactDisplay,
                           }).formatToParts(-10000)
                         ).toMatchSnapshot();
+                        // Fallback to ISO currency code if narrowSymbol is not available.
                         expect(
                           new UnifiedNumberFormat('en', {
                             style: 'currency',
-                            currency: 'CAD',
+                            currency: 'ZWD',
                             currencySign,
                             currencyDisplay,
                             signDisplay,
@@ -205,53 +192,6 @@ function test() {
         );
       })
     );
-  });
-
-  it('formatToParts should work', function() {
-    expect(
-      new UnifiedNumberFormat('zh', {
-        style: 'unit',
-        unit: 'bit',
-      }).formatToParts(1000)
-    ).toMatchSnapshot();
-    expect(
-      new UnifiedNumberFormat('en', {
-        style: 'unit',
-        unit: 'bit',
-      }).formatToParts(1000)
-    ).toMatchSnapshot();
-  });
-  it("supports currencyDisplay: 'narrowSymbol'", () => {
-    expect(
-      new UnifiedNumberFormat('zh-CN', {
-        style: 'currency',
-        currency: 'AUD',
-        currencyDisplay: 'narrowSymbol',
-      }).format(-1000)
-    ).toEqual('-$1,000.00');
-    expect(
-      new UnifiedNumberFormat('zh-CN', {
-        style: 'currency',
-        currency: 'AUD',
-        currencyDisplay: 'narrowSymbol',
-      }).formatToParts(-1000)
-    ).toEqual([
-      {type: 'minusSign', value: '-'},
-      {type: 'currency', value: '$'},
-      {type: 'integer', value: '1'},
-      {type: 'group', value: ','},
-      {type: 'integer', value: '000'},
-      {type: 'decimal', value: '.'},
-      {type: 'fraction', value: '00'},
-    ]);
-    // Fallback to ISO currency code if narrowSymbol is not available.
-    expect(
-      new UnifiedNumberFormat('zh-CN', {
-        style: 'currency',
-        currency: 'ZWD',
-        currencyDisplay: 'narrowSymbol',
-      }).format(-1000)
-    ).toEqual('-ZWD 1,000');
   });
 }
 
