@@ -209,12 +209,12 @@ export class UnifiedNumberFormat
       'short'
     );
     if (style === 'currency') {
-      if (currency === undefined) {
+      if (!currency || !ildData.ild.currencySymbols[currency.toUpperCase()]) {
         throw TypeError('Currency code is required with currency style.');
       }
       // TODO: coerce and validate currency code
     } else if (style === 'unit') {
-      if (!unit || ildData.ild.unitSymbols[unit.toLowerCase()]) {
+      if (!unit || !ildData.ild.unitSymbols[unit.toLowerCase()]) {
         throw TypeError('Invalid unit argument for Intl.NumberFormat()');
       }
     }
