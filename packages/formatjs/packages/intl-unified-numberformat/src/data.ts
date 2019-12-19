@@ -176,9 +176,9 @@ function partitionUnitPattern(pattern: string, tokenType: InternalSlotToken) {
   return (
     pattern
       // Handle `{0}foo` & `{0} foo`
-      .replace(/^(\{0\}\s?)([^\s]+)$/, `$1{${tokenType}}`)
+      .replace(/^(\{0\}\s?)(.+)$/, `$1{${tokenType}}`)
       // Handle `foo{0}` & `foo {0}`
-      .replace(/^([^\s]*?)(\s?\{0\})$/, `{${tokenType}}$2`)
+      .replace(/^(.*?)(\s?\{0\})$/, `{${tokenType}}$2`)
   );
 }
 
@@ -415,17 +415,14 @@ function extractUnitPattern(
               k
             ),
             scientific: extractSignPattern(
-              partitionUnitPattern(
-                unitPatternStr,
-                InternalSlotToken.unitSymbol
-              ).replace('{0}', SCIENTIFIC_SLOT),
+              partitionUnitPattern(unitPatternStr, unit).replace(
+                '{0}',
+                SCIENTIFIC_SLOT
+              ),
               k
             ),
             compactShort: extractSignPattern(
-              partitionUnitPattern(
-                unitPatternStr,
-                InternalSlotToken.unitSymbol
-              ).replace(
+              partitionUnitPattern(unitPatternStr, unit).replace(
                 '{0}',
                 extractCompactSymbol(
                   d.decimal.latn.short['1000'] as string,
@@ -435,14 +432,11 @@ function extractUnitPattern(
               k
             ),
             compactLong: extractSignPattern(
-              partitionUnitPattern(
-                unitPatternStr,
-                InternalSlotToken.unitSymbol
-              ).replace(
+              partitionUnitPattern(unitPatternStr, unit).replace(
                 '{0}',
                 extractCompactSymbol(
-                  d.decimal.latn.short['1000'] as string,
-                  InternalSlotToken.compactSymbol
+                  d.decimal.latn.long['1000'] as string,
+                  InternalSlotToken.compactName
                 )
               ),
               k

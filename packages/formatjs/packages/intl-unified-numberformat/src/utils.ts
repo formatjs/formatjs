@@ -6,6 +6,14 @@ export interface RawNumberFormatResult {
   integerDigitsCount: number;
 }
 
+/**
+ * Cannot do Math.log(x) / Math.log(10) bc if IEEE floating point issue
+ * @param x number
+ */
+export function logBase10(x: number): number {
+  return String(Math.floor(x)).length - 1;
+}
+
 // TODO: dedup with intl-pluralrules
 // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-torawfixed
 export function toRawFixed(
@@ -21,7 +29,7 @@ export function toRawFixed(
     const roundUp = Math.ceil(exactSolve);
     n = exactSolve - roundDown < roundUp - exactSolve ? roundDown : roundUp;
   }
-  const xFinal = x / 10 ** f;
+  const xFinal = n / 10 ** f;
   let m = n === 0 ? '0' : n.toString();
   let int: number;
   if (f !== 0) {

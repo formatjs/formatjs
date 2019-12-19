@@ -23,7 +23,12 @@ import {
   DecimalFormatNum,
 } from '@formatjs/intl-utils';
 import {merge, repeat} from 'lodash';
-import {toRawFixed, toRawPrecision, RawNumberFormatResult} from './utils';
+import {
+  toRawFixed,
+  toRawPrecision,
+  RawNumberFormatResult,
+  logBase10,
+} from './utils';
 import {ILND, rawDataToInternalSlots} from './data';
 
 const RESOLVED_OPTIONS_KEYS = [
@@ -337,27 +342,27 @@ export class UnifiedNumberFormat
       .join('');
   }
 
-  formatToParts(num: number): UnifiedNumberFormatPart[] {
+  formatToParts(x: number): UnifiedNumberFormatPart[] {
     // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-partitionnumberpattern
     let exponent = 0;
     const ildData = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ildData');
     let n: string;
-    if (isNaN(num)) {
+    if (isNaN(x)) {
       n = ildData.ild.symbols.nan;
-    } else if (!isFinite(num)) {
+    } else if (!isFinite(x)) {
       n = ildData.ild.symbols.infinity;
     } else {
       if (getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'style') === 'percent') {
-        num *= 100;
+        x *= 100;
       }
-      exponent = computeExponent(this, num);
-      num = num * Math.pow(10, -exponent);
-      const formatNumberResult = formatNumberToString(this, num);
+      exponent = computeExponent(this, x);
+      x /= 10 ** exponent;
+      const formatNumberResult = formatNumberToString(this, x);
       n = formatNumberResult.formattedString;
-      num = formatNumberResult.roundedNumber;
+      x = formatNumberResult.roundedNumber;
     }
-    const pattern = getNumberFormatPattern(this, num, exponent);
-    const patternParts = pattern.split(/({\w+})/).filter(x => x);
+    const pattern = getNumberFormatPattern(this, x, exponent);
+    const patternParts = pattern.split(/({\w+})/).filter(Boolean);
     const results: UnifiedNumberFormatPart[] = [];
     for (const part of patternParts) {
       if (part[0] !== '{') {
@@ -366,9 +371,9 @@ export class UnifiedNumberFormat
         const p = part.slice(1, -1);
         switch (p) {
           case InternalSlotToken.number: {
-            if (isNaN(num)) {
+            if (isNaN(x)) {
               results.push({type: 'nan', value: n});
-            } else if (num === Infinity || num === -Infinity) {
+            } else if (x === Infinity || x === -Infinity) {
               results.push({type: 'infinity', value: n});
             } else {
               const {numberingSystem: nu, useGrouping} = getMultiInternalSlots(
@@ -447,12 +452,11 @@ export class UnifiedNumberFormat
                 p === 'compactName' ? 'compactLong' : 'compactShort'
               ];
             if (compactData) {
-              console.log('exponent', exponent);
               results.push({
                 type: 'compact',
                 value: selectPlural(
                   this.pl,
-                  num,
+                  x,
                   compactData[String(10 ** exponent) as DecimalFormatNum]
                 ),
               });
@@ -494,7 +498,7 @@ export class UnifiedNumberFormat
               const unitSymbols = ildData.ild.unitSymbols[unit!];
               const mu = selectPlural(
                 this.pl,
-                num,
+                x,
                 unitSymbols[p] || unitSymbols[InternalSlotToken.unitSymbol]
               );
               results.push({type: 'unit', value: mu});
@@ -518,7 +522,7 @@ export class UnifiedNumberFormat
               } else if (p === InternalSlotToken.currencyName) {
                 cd = selectPlural(
                   this.pl,
-                  num,
+                  x,
                   ildData.ild.currencySymbols[currency].currencyName
                 );
               } else {
@@ -622,7 +626,7 @@ function formatNumberToString(
   numberFormat: UnifiedNumberFormat,
   x: number
 ): FormatNumberResult {
-  const isNegative = x < 0 || 1 / x === -Infinity;
+  const isNegative = x < 0 || x === -0;
   if (isNegative) {
     x = -x;
   }
@@ -670,14 +674,6 @@ function formatNumberToString(
 }
 
 /**
- * Cannot do Math.log(x) / Math.log(10) bc if IEEE floating point issue
- * @param x number
- */
-function logBase10(x: number): number {
-  return String(Math.floor(x)).length - 1;
-}
-
-/**
  * The abstract operation ComputeExponent computes an exponent (power of ten) by which to scale x
  * according to the number formatting settings. It handles cases such as 999 rounding up to 1000,
  * requiring a different exponent.
@@ -691,7 +687,7 @@ function computeExponent(numberFormat: UnifiedNumberFormat, x: number) {
   }
   const magnitude = logBase10(x);
   const exponent = computeExponentForMagnitude(numberFormat, magnitude);
-  x = x * 10 ** -exponent;
+  x = x / 10 ** exponent; // potential IEEE floating point error
   const formatNumberResult = formatNumberToString(numberFormat, x);
   if (formatNumberResult.roundedNumber === 0) {
     return exponent;
