@@ -14,11 +14,18 @@ import {
   CurrencySpacingData,
 } from '@formatjs/intl-utils';
 
-const currencyDisplays: Array<keyof CurrencyPattern> = [
+const CURRENCY_DISPLAYS: Array<keyof CurrencyPattern> = [
   'code',
   'symbol',
   'narrowSymbol',
   'name',
+];
+
+const SIGN_DISPLAYS: Array<keyof SignDisplayPattern> = [
+  'auto',
+  'always',
+  'never',
+  'exceptZero',
 ];
 
 function extractDecimalFormatILD(
@@ -203,21 +210,19 @@ function extractSignPattern(
 }
 
 /**
- * Turn compact pattern like `0 trillion` or `¤0 trillion`
+ * Turn compact pattern like `0 trillion` or `¤0 trillion` to `0 {compactSymbol}`
  * @param pattern
  */
 function extractCompactSymbol(
   pattern: string,
-  slotToken: InternalSlotToken
+  slotToken: InternalSlotToken = InternalSlotToken.compactSymbol
 ): string {
   const compactUnit = pattern.replace(/[¤0]/g, '').trim();
   return pattern.replace(compactUnit, `{${slotToken}}`);
 }
 
 function extractDecimalPattern(d: RawNumberData): SignDisplayPattern {
-  return (['auto', 'always', 'never', 'exceptZero'] as Array<
-    keyof SignDisplayPattern
-  >).reduce((all: SignDisplayPattern, k) => {
+  return SIGN_DISPLAYS.reduce((all: SignDisplayPattern, k) => {
     all[k] = {
       standard: extractSignPattern(
         // Dummy
@@ -226,10 +231,7 @@ function extractDecimalPattern(d: RawNumberData): SignDisplayPattern {
       ),
       scientific: extractSignPattern(SCIENTIFIC_SLOT, k),
       compactShort: extractSignPattern(
-        extractCompactSymbol(
-          d.decimal.latn.short['1000'] as string,
-          InternalSlotToken.compactSymbol
-        ),
+        extractCompactSymbol(d.decimal.latn.short['1000'] as string),
         k
       ),
       compactLong: extractSignPattern(
@@ -245,9 +247,7 @@ function extractDecimalPattern(d: RawNumberData): SignDisplayPattern {
 }
 
 function extractPercentPattern(d: RawNumberData): SignDisplayPattern {
-  return (['auto', 'always', 'never', 'exceptZero'] as Array<
-    keyof SignDisplayPattern
-  >).reduce((all: SignDisplayPattern, k) => {
+  return SIGN_DISPLAYS.reduce((all: SignDisplayPattern, k) => {
     all[k] = {
       standard: extractSignPattern(d.percent.latn, k),
       scientific: extractSignPattern(
@@ -271,25 +271,25 @@ function generateSymbolCurrencyPattern(
     unitPattern: string;
     currencySpacing: CurrencySpacingData;
   },
-  style: keyof CurrencyPattern,
+  currencyDisplay: keyof CurrencyPattern,
   currency: string
 ): string {
-  if (style === 'name') {
+  if (currencyDisplay === 'name') {
     return unitPattern.replace('{1}', `{${InternalSlotToken.currencyName}}`);
   }
   const currencyToken =
-    style === 'symbol'
+    currencyDisplay === 'symbol'
       ? InternalSlotToken.currencySymbol
-      : style === 'code'
+      : currencyDisplay === 'code'
       ? InternalSlotToken.currencyCode
       : InternalSlotToken.currencyNarrowSymbol;
-  // [:^S:]
-  const currencyMatch = !/\p{S}/u.test(currency);
+  
   // Check afterCurrency
   if (
-    // surroundingMatch
+    // surroundingMatch [:digit:] check
     /¤[#0]/.test(standard) &&
-    currencyMatch
+    // [:^S:]
+    !/\p{S}$/u.test(currency)
   ) {
     return standard.replace(
       '¤',
@@ -299,9 +299,10 @@ function generateSymbolCurrencyPattern(
 
   // Check beforeCurrency
   if (
-    // surroundingMatch
+    // surroundingMatch [:digit:] check
     /[#0]¤/.test(standard) &&
-    currencyMatch
+    // [:^S:]
+    !/^\p{S}/u.test(currency)
   ) {
     return standard.replace(
       '¤',
@@ -319,115 +320,180 @@ function extractCurrencyPattern(
   return availableCurrencies.reduce(
     (allCurrencyData: Record<string, CurrencyPattern>, currency) => {
       const currencyData = c[currency];
-      const currencyPattern = currencyDisplays.reduce(
-        (allCurrencyPatterns: CurrencyPattern, style) => {
-          let resolvedStyle = style;
-          if (resolvedStyle === 'narrowSymbol' && !currencyData.narrow) {
-            resolvedStyle = 'symbol';
+      const currencyPattern = CURRENCY_DISPLAYS.reduce(
+        (allCurrencyPatterns: CurrencyPattern, currencyDisplay) => {
+          let resolvedCurrencyDisplay = currencyDisplay;
+          if (
+            resolvedCurrencyDisplay === 'narrowSymbol' &&
+            !currencyData.narrow
+          ) {
+            resolvedCurrencyDisplay = 'symbol';
           }
-          if (resolvedStyle === 'symbol' && !currencyData.symbol) {
-            resolvedStyle = 'code';
+          if (resolvedCurrencyDisplay === 'symbol' && !currencyData.symbol) {
+            resolvedCurrencyDisplay = 'code';
           }
           const resolvedCurrency: string =
-            resolvedStyle === 'code'
+            resolvedCurrencyDisplay === 'code'
               ? currency
-              : resolvedStyle === 'symbol'
+              : resolvedCurrencyDisplay === 'symbol'
               ? currencyData.symbol
-              : resolvedStyle === 'name'
+              : resolvedCurrencyDisplay === 'name'
               ? (currencyData.displayName as string)
               : currencyData.narrow!;
           const currencyToken =
-            resolvedStyle === 'code'
+            resolvedCurrencyDisplay === 'code'
               ? InternalSlotToken.currencyCode
-              : resolvedStyle === 'symbol'
+              : resolvedCurrencyDisplay === 'symbol'
               ? InternalSlotToken.currencySymbol
-              : resolvedStyle === 'name'
+              : resolvedCurrencyDisplay === 'name'
               ? InternalSlotToken.currencyName
               : InternalSlotToken.currencyNarrowSymbol;
-          allCurrencyPatterns[style] = {
-            standard: (['auto', 'always', 'never', 'exceptZero'] as Array<
-              keyof SignDisplayPattern
-            >).reduce((all: SignDisplayPattern, k) => {
-              const compactShort = extractSignPattern(
-                generateSymbolCurrencyPattern(
-                  {
-                    standard: extractCompactSymbol(
-                      d.currency.latn.short
-                        ? (d.currency.latn.short['1000'] as string)
-                        : '',
-                      InternalSlotToken.compactSymbol
+          allCurrencyPatterns[currencyDisplay] = {
+            standard: SIGN_DISPLAYS.reduce(
+              (all: SignDisplayPattern, signDisplay) => {
+                all[signDisplay] = {
+                  standard: extractSignPattern(
+                    generateSymbolCurrencyPattern(
+                      {
+                        unitPattern: d.currency.latn.unitPattern.replace('{0}', DUMMY_PATTERN),
+                        standard: d.currency.latn.standard,
+                        currencySpacing: d.currency.latn.currencySpacing,
+                      },
+                      resolvedCurrencyDisplay,
+                      resolvedCurrency
                     ),
-                    unitPattern: extractCompactSymbol(
-                      d.currency.latn.unitPattern.replace(
-                        '{0}',
-                        d.decimal.latn.short['1000'] as string
-                      ),
-                      InternalSlotToken.compactSymbol
+                    signDisplay,
+                    currencyToken
+                  ),
+                  scientific: extractSignPattern(
+                    generateSymbolCurrencyPattern(
+                      {
+                        unitPattern: d.currency.latn.unitPattern.replace('{0}', SCIENTIFIC_SLOT),
+                        standard: d.currency.latn.standard,
+                        currencySpacing: d.currency.latn.currencySpacing,
+                      },
+                      resolvedCurrencyDisplay,
+                      resolvedCurrency
+                    ).replace(NUMBER_PATTERN, SCIENTIFIC_SLOT),
+                    signDisplay,
+                    currencyToken
+                  ),
+                  compactShort: extractSignPattern(
+                    generateSymbolCurrencyPattern(
+                      {
+                        standard: extractCompactSymbol(
+                          d.currency.latn.short
+                            ? (d.currency.latn.short['1000'] as string)
+                            : ''
+                        ),
+                        unitPattern: d.currency.latn.unitPattern.replace(
+                          '{0}',
+                          extractCompactSymbol(
+                            d.decimal.latn.short['1000'] as string
+                          )
+                        ),
+                        currencySpacing: d.currency.latn.currencySpacing,
+                      },
+                      resolvedCurrencyDisplay,
+                      resolvedCurrency
                     ),
-                    currencySpacing: d.currency.latn.currencySpacing,
-                  },
-                  resolvedStyle,
-                  resolvedCurrency
-                ),
-                k
-              );
+                    signDisplay
+                  ),
+                  compactLong: extractSignPattern(
+                    generateSymbolCurrencyPattern(
+                      {
+                        standard: extractCompactSymbol(
+                          d.currency.latn.short
+                            ? (d.currency.latn.short['1000'] as string)
+                            : ''
+                        ),
+                        unitPattern: d.currency.latn.unitPattern.replace(
+                          '{0}',
+                          extractCompactSymbol(
+                            d.decimal.latn.long['1000'] as string,
+                            InternalSlotToken.compactName
+                          )
+                        ),
+                        currencySpacing: d.currency.latn.currencySpacing,
+                      },
+                      resolvedCurrencyDisplay,
+                      resolvedCurrency
+                    ),
+                    signDisplay
+                  ),
+                };
+                return all;
+              },
+              {} as SignDisplayPattern
+            ),
+            accounting: SIGN_DISPLAYS.reduce((all: SignDisplayPattern, k) => {
               all[k] = {
                 standard: extractSignPattern(
                   generateSymbolCurrencyPattern(
                     {
-                      ...d.currency.latn,
+                      unitPattern: d.currency.latn.unitPattern.replace('{0}', DUMMY_PATTERN),
+                      standard: d.currency.latn.accounting,
                       currencySpacing: d.currency.latn.currencySpacing,
                     },
-                    resolvedStyle,
+                    resolvedCurrencyDisplay,
                     resolvedCurrency
-                  ).replace('{0}', DUMMY_PATTERN),
+                  ),
                   k,
                   currencyToken
                 ),
                 scientific: extractSignPattern(
                   generateSymbolCurrencyPattern(
                     {
-                      ...d.currency.latn,
+                      unitPattern: d.currency.latn.unitPattern.replace('{0}', SCIENTIFIC_SLOT),
+                      standard: d.currency.latn.accounting,
                       currencySpacing: d.currency.latn.currencySpacing,
                     },
-                    resolvedStyle,
+                    resolvedCurrencyDisplay,
                     resolvedCurrency
-                  )
-                    .replace(NUMBER_PATTERN, SCIENTIFIC_SLOT)
-                    .replace('{0}', SCIENTIFIC_SLOT),
+                  ).replace(NUMBER_PATTERN, SCIENTIFIC_SLOT),
                   k,
                   currencyToken
                 ),
-                compactShort,
-                compactLong: compactShort,
-              };
-              return all;
-            }, {} as SignDisplayPattern),
-            accounting: (['auto', 'always', 'never', 'exceptZero'] as Array<
-              keyof SignDisplayPattern
-            >).reduce((all: SignDisplayPattern, k) => {
-              all[k] = {
-                standard: extractSignPattern(
-                  d.currency.latn.accounting,
-                  k,
-                  currencyToken
-                ),
-                scientific: extractSignPattern(DUMMY_PATTERN, k, currencyToken),
                 compactShort: extractSignPattern(
-                  extractCompactSymbol(
-                    d.currency.latn.short
-                      ? (d.currency.latn.short['1000'] as string)
-                      : '',
-                    InternalSlotToken.compactSymbol
+                  generateSymbolCurrencyPattern(
+                    {
+                      standard: extractCompactSymbol(
+                        d.currency.latn.short
+                          ? (d.currency.latn.short['1000'] as string)
+                          : ''
+                      ),
+                      unitPattern: d.currency.latn.unitPattern.replace(
+                        '{0}',
+                        extractCompactSymbol(
+                          d.decimal.latn.short['1000'] as string
+                        )
+                      ),
+                      currencySpacing: d.currency.latn.currencySpacing,
+                    },
+                    resolvedCurrencyDisplay,
+                    resolvedCurrency
                   ),
                   k
                 ),
                 compactLong: extractSignPattern(
-                  extractCompactSymbol(
-                    d.currency.latn.short
-                      ? (d.currency.latn.short['1000'] as string)
-                      : '',
-                    InternalSlotToken.compactSymbol
+                  generateSymbolCurrencyPattern(
+                    {
+                      standard: extractCompactSymbol(
+                        d.currency.latn.short
+                          ? (d.currency.latn.short['1000'] as string)
+                          : ''
+                      ),
+                      unitPattern: d.currency.latn.unitPattern.replace(
+                        '{0}',
+                        extractCompactSymbol(
+                          d.decimal.latn.long['1000'] as string,
+                          InternalSlotToken.compactName
+                        )
+                      ),
+                      currencySpacing: d.currency.latn.currencySpacing,
+                    },
+                    resolvedCurrencyDisplay,
+                    resolvedCurrency
                   ),
                   k
                 ),
@@ -466,47 +532,45 @@ function extractUnitPattern(
         const unitPattern = unitData[display as 'long'];
         const unitPatternStr =
           typeof unitPattern === 'string' ? unitPattern : unitPattern.other;
-        patterns[display] = (['auto', 'always', 'never', 'exceptZero'] as Array<
-          keyof SignDisplayPattern
-        >).reduce((all: SignDisplayPattern, k) => {
-          all[k] = {
-            standard: extractSignPattern(
-              partitionUnitPattern(unitPatternStr, unit).replace(
-                '{0}',
-                DUMMY_PATTERN
+        patterns[display] = SIGN_DISPLAYS.reduce(
+          (all: SignDisplayPattern, k) => {
+            all[k] = {
+              standard: extractSignPattern(
+                partitionUnitPattern(unitPatternStr, unit).replace(
+                  '{0}',
+                  DUMMY_PATTERN
+                ),
+                k
               ),
-              k
-            ),
-            scientific: extractSignPattern(
-              partitionUnitPattern(unitPatternStr, unit).replace(
-                '{0}',
-                SCIENTIFIC_SLOT
+              scientific: extractSignPattern(
+                partitionUnitPattern(unitPatternStr, unit).replace(
+                  '{0}',
+                  SCIENTIFIC_SLOT
+                ),
+                k
               ),
-              k
-            ),
-            compactShort: extractSignPattern(
-              partitionUnitPattern(unitPatternStr, unit).replace(
-                '{0}',
-                extractCompactSymbol(
-                  d.decimal.latn.short['1000'] as string,
-                  InternalSlotToken.compactSymbol
-                )
+              compactShort: extractSignPattern(
+                partitionUnitPattern(unitPatternStr, unit).replace(
+                  '{0}',
+                  extractCompactSymbol(d.decimal.latn.short['1000'] as string)
+                ),
+                k
               ),
-              k
-            ),
-            compactLong: extractSignPattern(
-              partitionUnitPattern(unitPatternStr, unit).replace(
-                '{0}',
-                extractCompactSymbol(
-                  d.decimal.latn.long['1000'] as string,
-                  InternalSlotToken.compactName
-                )
+              compactLong: extractSignPattern(
+                partitionUnitPattern(unitPatternStr, unit).replace(
+                  '{0}',
+                  extractCompactSymbol(
+                    d.decimal.latn.long['1000'] as string,
+                    InternalSlotToken.compactName
+                  )
+                ),
+                k
               ),
-              k
-            ),
-          };
-          return all;
-        }, {} as SignDisplayPattern);
+            };
+            return all;
+          },
+          {} as SignDisplayPattern
+        );
         return patterns;
       }, {} as UnitPattern);
       return allUnitPatterns;

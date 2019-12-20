@@ -533,7 +533,7 @@ export class UnifiedNumberFormat
             break;
           }
           default:
-            throw Error('impossible');
+            throw Error(`unrecognized pattern part "${p}" in "${pattern}"`);
         }
       }
     }
