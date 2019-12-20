@@ -22,13 +22,14 @@ import {
   setNumberFormatDigitOptions,
   NumberFormatDigitOptions,
   NumberFormatDigitInternalSlots,
+  LDMLPluralRuleMap,
 } from '@formatjs/intl-utils';
-import {merge, repeat} from 'lodash';
 import {
   toRawFixed,
   toRawPrecision,
   RawNumberFormatResult,
   logBase10,
+  repeat,
 } from './utils';
 import {ILND, rawDataToInternalSlots} from './data';
 import * as currencyDigitsData from './currency-digits.json';
@@ -535,15 +536,11 @@ export class UnifiedNumberFormat
       );
       for (const locale of availableLocales) {
         try {
-          const {units, currencies, numbers} = unpackData(
-            locale,
-            datum,
-            (all, d) => merge({}, all, d)
-          );
+          const {units, currencies, numbers} = unpackData(locale, datum);
           UnifiedNumberFormat.localeData[locale] = rawDataToInternalSlots(
-            units,
-            currencies,
-            numbers,
+            units!,
+            currencies!,
+            numbers!,
             'latn'
           );
         } catch (e) {
@@ -781,9 +778,9 @@ function getNumberFormatPattern(
 function selectPlural(
   pl: Intl.PluralRules,
   x: number,
-  rules: string | Record<LDMLPluralRule, string>
+  rules: string | LDMLPluralRuleMap<string>
 ): string {
   return typeof rules === 'string'
     ? rules
-    : rules[pl.select(x) as LDMLPluralRule] || rules.other;
+    : rules[pl.select(x) as LDMLPluralRule] || rules.other || '';
 }

@@ -1,7 +1,7 @@
 import {spawnSync} from 'child_process';
 import {resolve} from 'path';
 import {cpus} from 'os';
-// import {sync as globSync } from 'glob'
+import {sync as globSync} from 'glob';
 
 if (process.version.startsWith('v8')) {
   console.log(
@@ -33,18 +33,24 @@ const PATTERN = resolve(
   __dirname,
   '../../../test262/test/intl402/NumberFormat/**/*.js'
 );
-// const testsFiles = globSync(PATTERN).filter(fn => fn.includes('newtarget-undefined'))
+const testsFiles = globSync(PATTERN)
+  .filter(
+    fn =>
+      // There's no Realm in envs where Intl.PluralRules isn't available (e.g Node 8)
+      !fn.includes('proto-from-ctor-realm.js')
+  )
+  .slice(20);
 const args = [
   '--reporter-keys',
   'file,attrs,result',
   '-t',
   String(cpus().length - 1),
   '--prelude',
-  './dist/umd/polyfill-locales.js',
+  './dist/polyfill-with-locales-for-test262.min.js',
   '-r',
   'json',
-  PATTERN,
-  // ...testsFiles,
+  // PATTERN,
+  ...testsFiles,
 ];
 console.log(`Running "test262-harness ${args.join(' ')}"`);
 const result = spawnSync('test262-harness', args, {
@@ -53,9 +59,15 @@ const result = spawnSync('test262-harness', args, {
   encoding: 'utf-8',
 });
 
-const json: TestResult[] = JSON.parse(result.stdout);
+let json: TestResult[] | undefined;
+try {
+  json = JSON.parse(result.stdout);
+} catch (e) {
+  console.error('STDOUT', result.stdout);
+}
 if (!json) {
   console.error(result.stderr, result.error);
+  process.exit(1);
 }
 const failedTests = json.filter(r => !r.result.pass);
 json.forEach(t => {

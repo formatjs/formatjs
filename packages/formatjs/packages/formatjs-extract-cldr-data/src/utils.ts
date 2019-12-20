@@ -4,6 +4,7 @@ import {
   getAliasesByLang,
   getParentLocalesByLang,
   LDMLPluralRule,
+  LDMLPluralRuleMap,
 } from '@formatjs/intl-utils';
 import {pickBy, isEmpty, isEqual} from 'lodash';
 
@@ -66,20 +67,20 @@ export default function generateFieldExtractorFn<
 }
 
 export function collapseSingleValuePluralRule(
-  rules: Record<LDMLPluralRule, string>
-): string | Record<LDMLPluralRule, string> {
+  rules: LDMLPluralRuleMap<string>
+): string | LDMLPluralRuleMap<string> {
   const keys = Object.keys(rules) as Array<LDMLPluralRule>;
   // dedupe value that looks like `other`
   const uniqueKeys = keys.filter(
     k => k === 'other' || (rules[k] && rules[k] !== rules.other)
   );
   if (uniqueKeys.length === 1) {
-    return rules[uniqueKeys[0]];
+    return rules.other || '';
   }
-  return uniqueKeys.reduce((all, k) => {
+  return uniqueKeys.reduce((all: LDMLPluralRuleMap<string>, k) => {
     all[k] = rules[k];
     return all;
-  }, {} as Record<LDMLPluralRule, string>);
+  }, {});
 }
 
 export const PLURAL_RULES: Array<LDMLPluralRule> = [

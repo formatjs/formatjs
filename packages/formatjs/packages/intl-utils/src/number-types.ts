@@ -90,27 +90,15 @@ export interface UnitPattern {
 export interface NumberILD {
   decimal: {
     // string when there's only 1 plural from
-    compactShort?: Record<
-      DecimalFormatNum,
-      string | Record<LDMLPluralRule, string>
-    >;
+    compactShort?: Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>;
     // string when there's only 1 plural from
-    compactLong?: Record<
-      DecimalFormatNum,
-      string | Record<LDMLPluralRule, string>
-    >;
+    compactLong?: Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>;
   };
   currency: {
     // string when there's only 1 plural from
-    compactShort?: Record<
-      DecimalFormatNum,
-      string | Record<LDMLPluralRule, string>
-    >;
+    compactShort?: Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>;
     // string when there's only 1 plural from
-    compactLong?: Record<
-      DecimalFormatNum,
-      string | Record<LDMLPluralRule, string>
-    >;
+    compactLong?: Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>;
   };
   symbols: {
     decimal: string;
@@ -132,18 +120,18 @@ export interface NumberILD {
       currencySymbol: string;
       currencyNarrowSymbol: string;
       // string when there's only 1 plural from
-      currencyName: string | Record<LDMLPluralRule, string>;
+      currencyName: string | LDMLPluralRuleMap<string>;
     }
   >;
   unitSymbols: Record<
     string,
     {
       // string when there's only 1 plural form
-      unitSymbol: string | Record<LDMLPluralRule, string>;
+      unitSymbol: string | LDMLPluralRuleMap<string>;
       // string when there's only 1 plural from
-      unitNarrowSymbol: string | Record<LDMLPluralRule, string>;
+      unitNarrowSymbol: string | LDMLPluralRuleMap<string>;
       // string when there's only 1 plural from
-      unitName: string | Record<LDMLPluralRule, string>;
+      unitName: string | LDMLPluralRuleMap<string>;
     }
   >;
 }
@@ -163,21 +151,22 @@ export interface NumberInternalSlots {
 
 export type NumberLocaleData = LocaleData<NumberInternalSlots>;
 
+// All fields are optional due to de-duping
 export type RawNumberLocaleData = LocaleData<{
-  units: Record<string, UnitData>;
-  currencies: Record<string, CurrencyData>;
-  numbers: RawNumberData;
+  units?: Record<string, UnitData>;
+  currencies?: Record<string, CurrencyData>;
+  numbers?: RawNumberData;
 }>;
 
 export interface UnitData {
   displayName: string;
-  long: string | Record<LDMLPluralRule, string>;
-  short: string | Record<LDMLPluralRule, string>;
-  narrow?: string | Record<LDMLPluralRule, string>;
+  long: string | LDMLPluralRuleMap<string>;
+  short: string | LDMLPluralRuleMap<string>;
+  narrow?: string | LDMLPluralRuleMap<string>;
 }
 
 export interface CurrencyData {
-  displayName: string | Record<LDMLPluralRule, string>;
+  displayName: string | LDMLPluralRuleMap<string>;
   symbol: string;
   narrow?: string;
 }
@@ -192,7 +181,9 @@ export type DecimalFormatNum =
   | '1000000000'
   | '10000000000'
   | '100000000000'
-  | '1000000000000';
+  | '1000000000000'
+  | '10000000000000'
+  | '100000000000000';
 export type NumberingSystem = string;
 
 export interface CurrencySpacingData {
@@ -212,7 +203,7 @@ export interface RawCurrencyData {
   currencySpacing: CurrencySpacingData;
   standard: string;
   accounting: string;
-  short?: Record<DecimalFormatNum, string | Record<LDMLPluralRule, string>>;
+  short?: Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>;
   // IMPORTANT: We're making the assumption here that currency unitPattern
   // are the same for all LDMLPluralRule
   unitPattern: string;
@@ -241,8 +232,8 @@ export interface RawNumberData {
   decimal: Record<
     NumberingSystem,
     {
-      long: Record<DecimalFormatNum, string | Record<LDMLPluralRule, string>>;
-      short: Record<DecimalFormatNum, string | Record<LDMLPluralRule, string>>;
+      long: Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>;
+      short: Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>;
     }
   >;
   // numberingSystem -> pattern
@@ -250,3 +241,5 @@ export interface RawNumberData {
   percent: Record<NumberingSystem, string>;
   currency: Record<NumberingSystem, RawCurrencyData>;
 }
+
+export type LDMLPluralRuleMap<T> = Partial<Record<LDMLPluralRule, T>>;

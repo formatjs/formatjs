@@ -12,6 +12,7 @@ import {
   UnitPattern,
   CurrencyPattern,
   CurrencySpacingData,
+  LDMLPluralRuleMap,
 } from '@formatjs/intl-utils';
 
 const CURRENCY_DISPLAYS: Array<keyof CurrencyPattern> = [
@@ -29,43 +30,39 @@ const SIGN_DISPLAYS: Array<keyof SignDisplayPattern> = [
 ];
 
 function extractDecimalFormatILD(
-  data:
-    | Record<DecimalFormatNum, string | Record<LDMLPluralRule, string>>
-    | undefined
-):
-  | Record<DecimalFormatNum, string | Record<LDMLPluralRule, string>>
-  | undefined {
+  data: Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>> | undefined
+): Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>> | undefined {
   if (!data) {
     return;
   }
   return (Object.keys(data) as Array<DecimalFormatNum>).reduce((all, num) => {
-    let pattern = data[num];
+    let pattern: string | LDMLPluralRuleMap<string> = data[num];
     if (typeof pattern === 'string') {
       pattern = pattern.replace(/[¤0]/g, '').trim();
     } else {
       pattern = (Object.keys(pattern) as Array<LDMLPluralRule>).reduce(
-        (all, p) => {
-          all[p] = (pattern as Record<LDMLPluralRule, string>)[p]
+        (all: LDMLPluralRuleMap<string>, p) => {
+          all[p] = ((pattern as LDMLPluralRuleMap<string>)[p] || '')
             .replace(/[¤0]/g, '')
             .trim();
           return all;
         },
-        {} as Record<LDMLPluralRule, string>
+        {}
       );
     }
     all[num] = pattern;
     return all;
-  }, {} as Record<DecimalFormatNum, string | Record<LDMLPluralRule, string>>);
+  }, {} as Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>);
 }
 
 function processLDMLMap(
-  rule: string | Record<LDMLPluralRule, string>,
+  rule: string | LDMLPluralRuleMap<string>,
   fn: (s: string) => string
-): string | Record<LDMLPluralRule, string>;
+): string | LDMLPluralRuleMap<string>;
 function processLDMLMap(
-  rule: string | Record<LDMLPluralRule, string> | undefined,
+  rule: string | LDMLPluralRuleMap<string> | undefined,
   fn: (s: string) => string
-): string | Record<LDMLPluralRule, string> | undefined {
+): string | LDMLPluralRuleMap<string> | undefined {
   if (!rule) {
     return rule;
   }
@@ -73,10 +70,13 @@ function processLDMLMap(
     return fn(rule);
   }
 
-  return (Object.keys(rule) as Array<LDMLPluralRule>).reduce((all, k) => {
-    all[k] = fn(rule[k]);
-    return all;
-  }, {} as Record<LDMLPluralRule, string>);
+  return (Object.keys(rule) as Array<LDMLPluralRule>).reduce(
+    (all: LDMLPluralRuleMap<string>, k) => {
+      all[k] = fn(rule[k] || '');
+      return all;
+    },
+    {}
+  );
 }
 
 function prune0Token(str: string): string {
@@ -540,7 +540,9 @@ function extractUnitPattern(
             : InternalSlotToken.unitNarrowSymbol;
         const unitPattern = unitData[display as 'long'];
         const unitPatternStr =
-          typeof unitPattern === 'string' ? unitPattern : unitPattern.other;
+          typeof unitPattern === 'string'
+            ? unitPattern
+            : unitPattern.other || '';
         patterns[display] = SIGN_DISPLAYS.reduce(
           (all: SignDisplayPattern, k) => {
             all[k] = {

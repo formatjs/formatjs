@@ -16,7 +16,7 @@ import {getAllLocales} from './locales';
 import {
   RawNumberData,
   SymbolsData,
-  LDMLPluralRule,
+  LDMLPluralRuleMap,
   DecimalFormatNum,
   RawCurrencyData,
 } from '@formatjs/intl-utils';
@@ -47,16 +47,22 @@ const COUNTS = [
 
 function reduceNumCount<
   T extends Numbers['decimalFormats-numberSystem-latn']['long']['decimalFormat']
->(d: T): Record<DecimalFormatNum, string | Record<LDMLPluralRule, string>> {
-  return COUNTS.reduce((all, num) => {
-    all[num] = collapseSingleValuePluralRule(
-      PLURAL_RULES.reduce((all, pl) => {
-        all[pl] = d[`${num}-count-${pl}` as '1000-count-one'];
-        return all;
-      }, {} as Record<LDMLPluralRule, string>)
-    );
-    return all;
-  }, {} as Record<DecimalFormatNum, string | Record<LDMLPluralRule, string>>);
+>(d: T): Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>> {
+  return COUNTS.reduce(
+    (
+      all: Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>,
+      num
+    ) => {
+      all[num] = collapseSingleValuePluralRule(
+        PLURAL_RULES.reduce((all: LDMLPluralRuleMap<string>, pl) => {
+          all[pl] = d[`${num}-count-${pl}` as '1000-count-one'];
+          return all;
+        }, {})
+      );
+      return all;
+    },
+    {} as Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>
+  );
 }
 
 function extractNumbers(d: Numbers): RawNumberData {

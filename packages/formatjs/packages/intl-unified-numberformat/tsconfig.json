@@ -28,5 +28,4 @@
         ]
     },
     "include": ["src/*.ts"],
-    "exclude": ["src/locales.ts"]
 }

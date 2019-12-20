@@ -1,5 +1,3 @@
-import {repeat, endsWith} from 'lodash';
-
 export interface RawNumberFormatResult {
   formattedString: string;
   roundedNumber: number;
@@ -47,11 +45,11 @@ export function toRawFixed(
     int = m.length;
   }
   let cut = maxFraction - minFraction;
-  while (cut > 0 && endsWith(m, '0')) {
+  while (cut > 0 && m[m.length - 1] === '0') {
     m = m.slice(0, -1);
     cut--;
   }
-  if (endsWith(m, '.')) {
+  if (m[m.length - 1] === '.') {
     m = m.slice(0, -1);
   }
   return {formattedString: m, roundedNumber: xFinal, integerDigitsCount: int};
@@ -96,13 +94,24 @@ export function toRawPrecision(
   }
   if (m.indexOf('.') >= 0 && maxPrecision > minPrecision) {
     let cut = maxPrecision - minPrecision;
-    while (cut > 0 && endsWith(m, '0')) {
+    while (cut > 0 && m[m.length - 1] === '0') {
       m = m.slice(0, -1);
       cut--;
     }
-    if (endsWith(m, '.')) {
+    if (m[m.length - 1] === '.') {
       m = m.slice(0, -1);
     }
   }
   return {formattedString: m, roundedNumber: xFinal, integerDigitsCount: int};
+}
+
+export function repeat(s: string, times: number): string {
+  if (typeof s.repeat === 'function') {
+    return s.repeat(times);
+  }
+  const arr = new Array(times);
+  for (let i = 0; i < arr.length; i++) {
+    arr[i] = s;
+  }
+  return arr.join('');
 }

@@ -12,7 +12,11 @@ import generateFieldExtractorFn, {
 } from './utils';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
-import {SANCTIONED_UNITS, UnitData, LDMLPluralRule} from '@formatjs/intl-utils';
+import {
+  SANCTIONED_UNITS,
+  UnitData,
+  LDMLPluralRuleMap,
+} from '@formatjs/intl-utils';
 
 const unitsLocales = globSync('*/units.json', {
   cwd: resolve(
@@ -29,12 +33,12 @@ function shortenUnit(unit: string) {
 
 function extractUnitPattern(d: Units['long']['volume-gallon']) {
   return collapseSingleValuePluralRule(
-    PLURAL_RULES.reduce((all: Record<LDMLPluralRule, string>, ldml) => {
+    PLURAL_RULES.reduce((all: LDMLPluralRuleMap<string>, ldml) => {
       if (d[`unitPattern-count-${ldml}` as 'unitPattern-count-one']) {
         all[ldml] = d[`unitPattern-count-${ldml}` as 'unitPattern-count-one'];
       }
       return all;
-    }, {} as Record<LDMLPluralRule, string>)
+    }, {})
   );
 }
 

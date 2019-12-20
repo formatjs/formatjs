@@ -44,18 +44,11 @@ const langData = locales.reduce(
         parentLocales,
       };
     } else {
-      const localeData = (all[lang].data[locale] = {} as any);
-      if (unitsData[locale]) {
-        localeData.units = unitsData[locale];
-      }
-
-      if (currenciesData[locale]) {
-        localeData.currencies = currenciesData[locale];
-      }
-
-      if (numbersData[locale]) {
-        localeData.numbers = numbersData[locale];
-      }
+      all[lang].data[locale] = {
+        units: unitsData[locale],
+        currencies: currenciesData[locale],
+        numbers: numbersData[locale],
+      };
       all[lang].availableLocales.push(locale);
     }
 
@@ -92,21 +85,37 @@ Object.keys(langData).forEach(function(lang) {
   outputJSONSync(destFile, langData[lang]);
 });
 
-// Aggregate all into src/locales.ts
+// Aggregate all into ../polyfill-locales.js
 outputFileSync(
-  resolve(__dirname, '../src/locales.ts'),
+  resolve(__dirname, '../polyfill-locales.js'),
   `/* @generated */
 // prettier-ignore
-import {UnifiedNumberFormat} from "./core";\n
-UnifiedNumberFormat.__addLocaleData(${Object.keys(langData)
-    .map(lang => JSON.stringify(langData[lang]))
-    .join(',\n')});
-export default UnifiedNumberFormat;
-  `
+require('./polyfill')
+if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function') {
+  Intl.NumberFormat.__addLocaleData(
+    ${Object.keys(langData)
+      .map(lang => JSON.stringify(langData[lang]))
+      .join(',\n')});
+}
+`
 );
 
 // Output currency digits file
 outputJSONSync(
   resolve(__dirname, '../src/currency-digits.json'),
   extractCurrencyDigits()
+);
+
+// For test262
+outputFileSync(
+  resolve(__dirname, '../dist-es6/polyfill-locales.js'),
+  `
+import './polyfill';
+if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function') {
+  Intl.NumberFormat.__addLocaleData(
+    ${Object.keys(langData)
+      .map(lang => JSON.stringify(langData[lang]))
+      .join(',\n')});
+}
+`
 );

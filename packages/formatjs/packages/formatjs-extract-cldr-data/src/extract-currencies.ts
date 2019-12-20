@@ -13,7 +13,8 @@ import generateFieldExtractorFn, {
 } from './utils';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
-import {CurrencyData, LDMLPluralRule} from '@formatjs/intl-utils';
+import {CurrencyData, LDMLPluralRuleMap} from '@formatjs/intl-utils';
+import {isEmpty} from 'lodash';
 
 const unitsLocales = globSync('*/currencies.json', {
   cwd: resolve(
@@ -26,12 +27,12 @@ export type Currencies = typeof Currencies['main']['en']['numbers']['currencies'
 
 function extractCurrencyPattern(d: Currencies['USD']) {
   return collapseSingleValuePluralRule(
-    PLURAL_RULES.reduce((all: Record<LDMLPluralRule, string>, ldml) => {
+    PLURAL_RULES.reduce((all: LDMLPluralRuleMap<string>, ldml) => {
       if (d[`displayName-count-${ldml}` as 'displayName-count-one']) {
         all[ldml] = d[`displayName-count-${ldml}` as 'displayName-count-one'];
       }
       return all;
-    }, {} as Record<LDMLPluralRule, string>)
+    }, {})
   );
 }
 
@@ -50,9 +51,13 @@ function loadCurrencies(locale: Locale): Record<string, CurrencyData> {
   return (Object.keys(currencies) as Array<keyof typeof currencies>).reduce(
     (all: Record<string, CurrencyData>, isoCode) => {
       const d = currencies[isoCode] as Currencies['USD'];
+      let displayName = extractCurrencyPattern(d);
+      if (isEmpty(displayName)) {
+        displayName = d.symbol || isoCode;
+      }
       all[isoCode] = {
-        displayName: extractCurrencyPattern(d),
-        symbol: d['symbol'] || isoCode,
+        displayName,
+        symbol: d.symbol || isoCode,
       };
       if (d['symbol-alt-narrow']) {
         all[isoCode].narrow = d['symbol-alt-narrow'];
