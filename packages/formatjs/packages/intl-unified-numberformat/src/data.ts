@@ -167,10 +167,7 @@ function produceSignPattern(
         `{${InternalSlotToken.plusSign}}`,
         ''
       );
-      negativePattern = negativePattern.replace(
-        `{${InternalSlotToken.minusSign}}`,
-        ''
-      );
+      negativePattern = positivePattern;
       break;
   }
   return {
@@ -283,7 +280,7 @@ function generateSymbolCurrencyPattern(
       : currencyDisplay === 'code'
       ? InternalSlotToken.currencyCode
       : InternalSlotToken.currencyNarrowSymbol;
-  
+
   // Check afterCurrency
   if (
     // surroundingMatch [:digit:] check
@@ -355,7 +352,10 @@ function extractCurrencyPattern(
                   standard: extractSignPattern(
                     generateSymbolCurrencyPattern(
                       {
-                        unitPattern: d.currency.latn.unitPattern.replace('{0}', DUMMY_PATTERN),
+                        unitPattern: d.currency.latn.unitPattern.replace(
+                          '{0}',
+                          DUMMY_PATTERN
+                        ),
                         standard: d.currency.latn.standard,
                         currencySpacing: d.currency.latn.currencySpacing,
                       },
@@ -368,7 +368,10 @@ function extractCurrencyPattern(
                   scientific: extractSignPattern(
                     generateSymbolCurrencyPattern(
                       {
-                        unitPattern: d.currency.latn.unitPattern.replace('{0}', SCIENTIFIC_SLOT),
+                        unitPattern: d.currency.latn.unitPattern.replace(
+                          '{0}',
+                          SCIENTIFIC_SLOT
+                        ),
                         standard: d.currency.latn.standard,
                         currencySpacing: d.currency.latn.currencySpacing,
                       },
@@ -431,7 +434,10 @@ function extractCurrencyPattern(
                 standard: extractSignPattern(
                   generateSymbolCurrencyPattern(
                     {
-                      unitPattern: d.currency.latn.unitPattern.replace('{0}', DUMMY_PATTERN),
+                      unitPattern: d.currency.latn.unitPattern.replace(
+                        '{0}',
+                        DUMMY_PATTERN
+                      ),
                       standard: d.currency.latn.accounting,
                       currencySpacing: d.currency.latn.currencySpacing,
                     },
@@ -444,7 +450,10 @@ function extractCurrencyPattern(
                 scientific: extractSignPattern(
                   generateSymbolCurrencyPattern(
                     {
-                      unitPattern: d.currency.latn.unitPattern.replace('{0}', SCIENTIFIC_SLOT),
+                      unitPattern: d.currency.latn.unitPattern.replace(
+                        '{0}',
+                        SCIENTIFIC_SLOT
+                      ),
                       standard: d.currency.latn.accounting,
                       currencySpacing: d.currency.latn.currencySpacing,
                     },

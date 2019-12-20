@@ -517,7 +517,7 @@ export class UnifiedNumberFormat
               this,
               'currency'
             )!;
-            let cd: string | undefined;
+            let cd: string;
             if (p === InternalSlotToken.currencyCode) {
               cd = currency;
             } else if (p === InternalSlotToken.currencyName) {
@@ -529,7 +529,7 @@ export class UnifiedNumberFormat
             } else {
               cd = ildData.ild.currencySymbols[currency][p];
             }
-            results.push({type: 'currency', value: cd || currency});
+            results.push({type: 'currency', value: cd});
             break;
           }
           default:
@@ -830,5 +830,5 @@ function selectPlural(
 ): string {
   return typeof rules === 'string'
     ? rules
-    : rules[pl.select(x) === 'one' ? 'one' : 'other'];
+    : rules[pl.select(x) as LDMLPluralRule] || rules.other;
 }
