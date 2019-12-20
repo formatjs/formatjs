@@ -1,6 +1,11 @@
 import aliases from './aliases';
 import parentLocales from './parentLocales';
 import {invariant} from './invariant';
+import {
+  NumberFormatDigitInternalSlots,
+  NumberFormatDigitOptions,
+  NumberFormatNotation,
+} from './number-types';
 
 /**
  * https://tc39.es/ecma262/#sec-toobject
@@ -210,4 +215,51 @@ export function partitionPattern(pattern: string) {
     });
   }
   return result;
+}
+
+/**
+ * https://tc39.es/ecma402/#sec-setnfdigitoptions
+ * https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-setnfdigitoptions
+ * @param pl
+ * @param opts
+ * @param mnfdDefault
+ * @param mxfdDefault
+ */
+export function setNumberFormatDigitOptions<
+  TObject extends object,
+  TInternalSlots extends NumberFormatDigitInternalSlots
+>(
+  internalSlotMap: WeakMap<TObject, TInternalSlots>,
+  pl: TObject,
+  opts: NumberFormatDigitOptions,
+  mnfdDefault: number,
+  mxfdDefault: number,
+  notation: NumberFormatNotation
+) {
+  const mnid = getNumberOption(opts, 'minimumIntegerDigits', 1, 21, 1);
+  let mnfd = opts.minimumFractionDigits;
+  let mxfd = opts.maximumFractionDigits;
+  let mnsd = opts.minimumSignificantDigits;
+  let mxsd = opts.maximumSignificantDigits;
+  setInternalSlot(internalSlotMap, pl, 'minimumIntegerDigits', mnid);
+  if (mnsd !== undefined || mxsd !== undefined) {
+    setInternalSlot(internalSlotMap, pl, 'roundingType', 'significantDigits');
+    mnsd = defaultNumberOption(mnsd, 1, 21, 1);
+    mxsd = defaultNumberOption(mxsd, mnsd, 21, 21);
+    setInternalSlot(internalSlotMap, pl, 'minimumSignificantDigits', mnsd);
+    setInternalSlot(internalSlotMap, pl, 'maximumSignificantDigits', mxsd);
+  } else if (mnfd !== undefined || mxfd !== undefined) {
+    setInternalSlot(internalSlotMap, pl, 'roundingType', 'fractionDigits');
+    mnfd = defaultNumberOption(mnfd, 0, 20, mnfdDefault);
+    const mxfdActualDefault = Math.max(mnfd, mxfdDefault);
+    mxfd = defaultNumberOption(mxfd, mnfd, 20, mxfdActualDefault);
+    setInternalSlot(internalSlotMap, pl, 'minimumFractionDigits', mnfd);
+    setInternalSlot(internalSlotMap, pl, 'maximumFractionDigits', mxfd);
+  } else if (notation === 'compact') {
+    setInternalSlot(internalSlotMap, pl, 'roundingType', 'compactRounding');
+  } else {
+    setInternalSlot(internalSlotMap, pl, 'roundingType', 'fractionDigits');
+    setInternalSlot(internalSlotMap, pl, 'minimumFractionDigits', mnfdDefault);
+    setInternalSlot(internalSlotMap, pl, 'maximumFractionDigits', mxfdDefault);
+  }
 }

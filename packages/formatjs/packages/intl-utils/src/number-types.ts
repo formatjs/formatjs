@@ -1,6 +1,35 @@
 import {LDMLPluralRule} from './plural-rules-types';
 import {LocaleData} from './types';
 
+export type NumberFormatNotation =
+  | 'standard'
+  | 'scientific'
+  | 'engineering'
+  | 'compact';
+
+export type NumberFormatRoundingType =
+  | 'significantDigits'
+  | 'fractionDigits'
+  | 'compactRounding';
+
+export interface NumberFormatDigitOptions {
+  minimumIntegerDigits?: number;
+  minimumFractionDigits?: number;
+  maximumFractionDigits?: number;
+  minimumSignificantDigits?: number;
+  maximumSignificantDigits?: number;
+}
+
+export interface NumberFormatDigitInternalSlots {
+  minimumIntegerDigits: number;
+  minimumSignificantDigits?: number;
+  maximumSignificantDigits?: number;
+  roundingType: NumberFormatRoundingType;
+  // These two properties are only used when `roundingType` is "fractionDigits".
+  minimumFractionDigits?: number;
+  maximumFractionDigits?: number;
+}
+
 export enum InternalSlotToken {
   // To prevent collision with {0} in CLDR
   compactName = 'compactName',

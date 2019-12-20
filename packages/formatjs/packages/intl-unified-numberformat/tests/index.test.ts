@@ -28,7 +28,7 @@ const COMPACT_DISPLAYS: Array<UnifiedNumberFormatOptions['compactDisplay']> = [
 const CURRENCY_DISPLAYS: Array<UnifiedNumberFormatOptions['currencyDisplay']> = [
   'code',
   'symbol',
-  'name',
+  // 'name',
   'narrowSymbol',
 ];
 
@@ -58,15 +58,18 @@ function test() {
       }).format(1000)
     ).toBe('1,000 gal US');
   });
+
   it('supportedLocalesOf should return correct result based on data loaded', function() {
     expect(
       UnifiedNumberFormat.supportedLocalesOf(['zh', 'en-US', 'af'])
     ).toEqual(['zh', 'en-US']);
     expect(UnifiedNumberFormat.supportedLocalesOf(['af'])).toEqual([]);
   });
+
   it('should not crash if unit is not specified', function() {
     expect(new UnifiedNumberFormat().resolvedOptions().unit).toBeUndefined();
   });
+
   describe('decimal', function() {
     SIGN_DISPLAYS.forEach(signDisplay =>
       describe(`signDisplay/${signDisplay}`, function() {
@@ -89,6 +92,7 @@ function test() {
       })
     );
   });
+
   describe('unit', function() {
     UNIT_DISPLAYS.forEach(unitDisplay =>
       describe(`unitDisplay/${unitDisplay}`, function() {
@@ -137,7 +141,8 @@ function test() {
       })
     );
   });
-  describe.only('currency', function() {
+
+  describe('currency', function() {
     CURRENCY_DISPLAYS.forEach(currencyDisplay =>
       describe(`currencyDisplay/${currencyDisplay}`, function() {
         CURRENCY_SIGNS.forEach(currencySign =>

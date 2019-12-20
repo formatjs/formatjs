@@ -11,8 +11,7 @@ import {
   isMissingLocaleDataError,
   setInternalSlot,
   getInternalSlot,
-  getNumberOption,
-  defaultNumberOption,
+  setNumberFormatDigitOptions,
 } from '@formatjs/intl-utils';
 
 function validateInstance(instance: any, method: string) {
@@ -22,51 +21,6 @@ function validateInstance(instance: any, method: string) {
         instance
       )}`
     );
-  }
-}
-
-/**
- * https://tc39.es/ecma402/#sec-setnfdigitoptions
- * https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-setnfdigitoptions
- * @param pl
- * @param opts
- * @param mnfdDefault
- * @param mxfdDefault
- */
-function setNumberFormatDigitOptions(
-  internalSlotMap: WeakMap<PluralRules, PluralRulesInternal>,
-  pl: PluralRules,
-  opts: Intl.PluralRulesOptions,
-  mnfdDefault: number,
-  mxfdDefault: number
-) {
-  const mnid = getNumberOption(opts as any, 'minimumIntegerDigits', 1, 21, 1);
-  let mnfd = (opts as any).minimumFractionDigits;
-  let mxfd = (opts as any).maximumFractionDigits;
-  let mnsd = (opts as any).minimumSignificantDigits;
-  let mxsd = (opts as any).maximumSignificantDigits;
-  setInternalSlot(internalSlotMap, pl, 'minimumIntegerDigits', mnid);
-  setInternalSlot(internalSlotMap, pl, 'minimumFractionDigits', mnfd);
-  setInternalSlot(internalSlotMap, pl, 'maximumFractionDigits', mxfd);
-  if (mnsd !== undefined || mxsd !== undefined) {
-    setInternalSlot(internalSlotMap, pl, 'roundingType', 'significantDigits');
-    mnsd = defaultNumberOption(mnsd, 1, 21, 1);
-    mxsd = defaultNumberOption(mxsd, mnsd, 21, 21);
-    setInternalSlot(internalSlotMap, pl, 'minimumSignificantDigits', mnsd);
-    setInternalSlot(internalSlotMap, pl, 'maximumSignificantDigits', mxsd);
-  } else if (mnfd !== undefined || mxfd !== undefined) {
-    setInternalSlot(internalSlotMap, pl, 'roundingType', 'fractionDigits');
-    mnfd = defaultNumberOption(mnfd, 0, 20, mnfdDefault);
-    const mxfdActualDefault = Math.max(mnfd, mxfdDefault);
-    mxfd = defaultNumberOption(mxfd, mnfd, 20, mxfdActualDefault);
-    setInternalSlot(internalSlotMap, pl, 'minimumFractionDigits', mnfd);
-    setInternalSlot(internalSlotMap, pl, 'maximumFractionDigits', mxfd);
-  } else if (getInternalSlot(internalSlotMap, pl, 'notation') === 'compact') {
-    setInternalSlot(internalSlotMap, pl, 'roundingType', 'compactRounding');
-  } else {
-    setInternalSlot(internalSlotMap, pl, 'roundingType', 'fractionDigits');
-    setInternalSlot(internalSlotMap, pl, 'minimumFractionDigits', mnfdDefault);
-    setInternalSlot(internalSlotMap, pl, 'maximumFractionDigits', mxfdDefault);
   }
 }
 
@@ -209,7 +163,8 @@ export class PluralRules implements Intl.PluralRules {
       this,
       opts,
       0,
-      3
+      3,
+      'standard'
     );
     const r = createResolveLocale(PluralRules.getDefaultLocale)(
       PluralRules.availableLocales,

@@ -1,18 +1,19 @@
 export {selectUnit} from './diff';
 export {
-  toObject,
-  getOption,
-  getNumberOption,
   defaultNumberOption,
   getAliasesByLang,
-  getParentLocalesByLang,
-  setInternalSlot,
-  setMultiInternalSlots,
   getInternalSlot,
   getMultiInternalSlots,
-  partitionPattern,
+  getNumberOption,
+  getOption,
+  getParentLocalesByLang,
   isLiteralPart,
   LiteralPart,
+  partitionPattern,
+  setInternalSlot,
+  setMultiInternalSlots,
+  setNumberFormatDigitOptions,
+  toObject,
 } from './polyfill-utils';
 export {
   createResolveLocale,

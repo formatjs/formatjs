@@ -5,7 +5,6 @@ import {
   UnifiedNumberFormatLocaleData,
   supportedLocales,
   getCanonicalLocales,
-  getNumberOption,
   unpackData,
   setInternalSlot,
   setMultiInternalSlots,
@@ -15,12 +14,14 @@ import {
   NumberInternalSlots,
   SignDisplayPattern,
   NotationPattern,
-  defaultNumberOption,
   SignPattern,
   InternalSlotToken,
   LDMLPluralRule,
   RawNumberLocaleData,
   DecimalFormatNum,
+  setNumberFormatDigitOptions,
+  NumberFormatDigitOptions,
+  NumberFormatDigitInternalSlots,
 } from '@formatjs/intl-utils';
 import {merge, repeat} from 'lodash';
 import {
@@ -69,21 +70,17 @@ export function isUnitSupported(unit: Unit) {
   return true;
 }
 
-export interface UnifiedNumberFormatOptions extends Intl.NumberFormatOptions {
-  style?: 'decimal' | 'percent' | 'currency' | 'unit';
-  compactDisplay?: 'short' | 'long';
-  currencyDisplay?: 'symbol' | 'code' | 'name' | 'narrowSymbol';
-  currencySign?: 'standard' | 'accounting';
-  notation?: 'standard' | 'scientific' | 'engineering' | 'compact';
-  signDisplay?: 'auto' | 'always' | 'never' | 'exceptZero';
-  unit?: Unit;
-  unitDisplay?: 'long' | 'short' | 'narrow';
-  minimumIntegerDigits?: number;
-  minimumFractionDigits?: number;
-  maximumFractionDigits?: number;
-  minimumSignificantDigits?: number;
-  maximumSignificantDigits?: number;
-}
+export type UnifiedNumberFormatOptions = Intl.NumberFormatOptions &
+  NumberFormatDigitOptions & {
+    style?: 'decimal' | 'percent' | 'currency' | 'unit';
+    compactDisplay?: 'short' | 'long';
+    currencyDisplay?: 'symbol' | 'code' | 'name' | 'narrowSymbol';
+    currencySign?: 'standard' | 'accounting';
+    notation?: 'standard' | 'scientific' | 'engineering' | 'compact';
+    signDisplay?: 'auto' | 'always' | 'never' | 'exceptZero';
+    unit?: Unit;
+    unitDisplay?: 'long' | 'short' | 'narrow';
+  };
 
 export type ResolvedUnifiedNumberFormatOptions = Intl.ResolvedNumberFormatOptions &
   Pick<
@@ -109,7 +106,7 @@ export interface UnifiedNumberFormatPart {
   value: string;
 }
 
-interface UnifiedNumberFormatInternal {
+interface UnifiedNumberFormatInternal extends NumberFormatDigitInternalSlots {
   locale: string;
   dataLocale: string;
   style: NonNullable<UnifiedNumberFormatOptions['style']>;
@@ -118,16 +115,10 @@ interface UnifiedNumberFormatInternal {
   unit?: string;
   unitDisplay: NonNullable<UnifiedNumberFormatOptions['unitDisplay']>;
   currencySign: NonNullable<UnifiedNumberFormatOptions['currencySign']>;
-  roundingType: 'significantDigits' | 'fractionDigits' | 'compactRounding';
   notation: NonNullable<UnifiedNumberFormatOptions['notation']>;
   compactDisplay: NonNullable<UnifiedNumberFormatOptions['compactDisplay']>;
   signDisplay: NonNullable<UnifiedNumberFormatOptions['signDisplay']>;
   useGrouping: boolean;
-  minimumIntegerDigits: number;
-  minimumFractionDigits: number;
-  maximumFractionDigits: number;
-  minimumSignificantDigits?: number;
-  maximumSignificantDigits?: number;
   // Locale-dependent formatter data
   ildData: NumberInternalSlots;
   numberingSystem: string;
@@ -222,7 +213,6 @@ export class UnifiedNumberFormat
       if (!currency || !ildData.ild.currencySymbols[currency.toUpperCase()]) {
         throw TypeError('Currency code is required with currency style.');
       }
-      // TODO: coerce and validate currency code
     } else if (style === 'unit') {
       if (!unit || !ildData.ild.unitSymbols[unit.toLowerCase()]) {
         throw TypeError('Invalid unit argument for Intl.NumberFormat()');
@@ -241,10 +231,8 @@ export class UnifiedNumberFormat
     let mnfdDefault: number;
     let mxfdDefault: number;
     if (style === 'currency') {
-      if (!currency) {
-        throw new TypeError(`Currency ${currency} not supported`);
-      }
-      const cDigits = currencyDigits(currency);
+      // `currency` is checked above.
+      const cDigits = currencyDigits(currency!);
       mnfdDefault = cDigits;
       mxfdDefault = cDigits;
     } else {
@@ -261,48 +249,14 @@ export class UnifiedNumberFormat
     );
     setInternalSlot(__INTERNAL_SLOT_MAP__, this, 'notation', notation);
 
-    // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-setnfdigitoptions
-    const mnid = getNumberOption(options, 'minimumIntegerDigits', 1, 21, 1);
-    let mnfd = options.minimumFractionDigits;
-    const mxfd = options.maximumFractionDigits;
-    let mnsd = options.minimumSignificantDigits;
-    const mxsd = options.maximumSignificantDigits;
-    setInternalSlot(__INTERNAL_SLOT_MAP__, this, 'minimumIntegerDigits', mnid);
-    if (mnsd !== undefined || mxsd !== undefined) {
-      mnsd = defaultNumberOption(mnsd, 1, 21, 1);
-      setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
-        roundingType: 'significantDigits',
-        minimumSignificantDigits: mnsd,
-        maximumSignificantDigits: defaultNumberOption(mxsd, mnsd, 21, 21),
-      });
-    } else if (mnfd !== undefined || mxfd !== undefined) {
-      mnfd = defaultNumberOption(mnfd, 0, 20, mnfdDefault);
-      const mxfdActualDefault = Math.max(mnfd, mxfdDefault);
-      setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
-        roundingType: 'fractionDigits',
-        minimumFractionDigits: mnfd,
-        maximumFractionDigits: defaultNumberOption(
-          mxfd,
-          mnfd,
-          20,
-          mxfdActualDefault
-        ),
-      });
-    } else if (notation === 'compact') {
-      setInternalSlot(
-        __INTERNAL_SLOT_MAP__,
-        this,
-        'roundingType',
-        'compactRounding'
-      );
-    } else {
-      setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
-        roundingType: 'fractionDigits',
-        minimumFractionDigits: mnfdDefault,
-        maximumFractionDigits: mxfdDefault,
-      });
-    }
-    // ---
+    setNumberFormatDigitOptions(
+      __INTERNAL_SLOT_MAP__,
+      this,
+      options,
+      mnfdDefault,
+      mxfdDefault,
+      notation
+    );
 
     const compactDisplay = getOption(
       options,
@@ -368,7 +322,6 @@ export class UnifiedNumberFormat
       x = formatNumberResult.roundedNumber;
     }
     const pattern = getNumberFormatPattern(this, x, exponent);
-    console.log('pattern', pattern);
     const patternParts = pattern.split(/({\w+})/).filter(Boolean);
     const results: UnifiedNumberFormatPart[] = [];
     for (const part of patternParts) {
@@ -521,6 +474,12 @@ export class UnifiedNumberFormat
             if (p === InternalSlotToken.currencyCode) {
               cd = currency;
             } else if (p === InternalSlotToken.currencyName) {
+              // From spec:
+              // > Let cd be an ILD String value representing currency in long form, which may depend on x in languages
+              // > having different plural forms. If the implementation does not have such a representation of currency,
+              // > use currency itself.
+              //
+              // But it also doesn't make sense for 1.00E+5 to be singular.
               cd = selectPlural(
                 this.pl,
                 x,
@@ -650,8 +609,8 @@ function formatNumberToString(
   } else if (intlObject.roundingType === 'fractionDigits') {
     result = toRawFixed(
       x,
-      intlObject.minimumFractionDigits,
-      intlObject.maximumFractionDigits
+      intlObject.minimumFractionDigits!,
+      intlObject.maximumFractionDigits!
     );
   } else {
     result = toRawFixed(x, 0, 0);
@@ -737,6 +696,7 @@ function computeExponentForMagnitude(
       // out magnitude
       return (
         Object.keys(thresholdMap)
+          // TODO: this can be pre-processed
           .map(t => logBase10(+t))
           .reverse()
           .find(m => magnitude > m) || 0
