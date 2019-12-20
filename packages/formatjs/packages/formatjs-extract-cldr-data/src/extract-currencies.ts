@@ -5,6 +5,7 @@
  */
 'use strict';
 import * as Currencies from 'cldr-numbers-full/main/en/currencies.json';
+import * as supplementalCurrencyData from 'cldr-core/supplemental/currencyData.json';
 import {Locale} from './types';
 import generateFieldExtractorFn, {
   collapseSingleValuePluralRule,
@@ -71,3 +72,14 @@ export default generateFieldExtractorFn<Record<string, CurrencyData>>(
   hasCurrencies,
   getAllLocales()
 );
+
+export function extractCurrencyDigits(): Record<string, number> {
+  const data = supplementalCurrencyData.supplemental.currencyData.fractions;
+  return (Object.keys(data) as Array<keyof typeof data>).reduce(
+    (all: Record<string, number>, code) => {
+      all[code] = +data[code]._digits;
+      return all;
+    },
+    {}
+  );
+}

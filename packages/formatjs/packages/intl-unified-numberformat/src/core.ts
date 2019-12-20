@@ -236,9 +236,14 @@ export class UnifiedNumberFormat
     let mnfdDefault: number;
     let mxfdDefault: number;
     if (style === 'currency') {
-      // TODO: return minor currency units value
-      const currencyDigits = (_currency: string) => 2;
-      const cDigits = currency ? currencyDigits(currency) : 2;
+      if (!currency) {
+        throw new TypeError(`Currency ${currency} not supported`);
+      }
+      const currencyDigits = (currency: string) =>
+        currency in ildData.ild.currencyDigits
+          ? ildData.ild.currencyDigits[currency]
+          : 2;
+      const cDigits = currencyDigits(currency);
       mnfdDefault = cDigits;
       mxfdDefault = cDigits;
     } else {

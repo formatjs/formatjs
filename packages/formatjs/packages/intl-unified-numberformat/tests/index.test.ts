@@ -196,8 +196,4 @@ function test() {
 }
 
 // Node v8 does not have formatToParts and v12 has native NumberFormat.
-if (process.version.startsWith('v12') || process.version.startsWith('v13')) {
-  describe.skip('UnifiedNumberFormat', test);
-} else {
-  describe('UnifiedNumberFormat', test);
-}
+describe('UnifiedNumberFormat', test);

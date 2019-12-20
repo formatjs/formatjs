@@ -3,6 +3,7 @@ import {
   extractAllCurrencies,
   extractAllUnits,
   locales,
+  extractCurrencyDigits,
 } from 'formatjs-extract-cldr-data';
 import {
   SANCTIONED_UNITS,
@@ -102,4 +103,10 @@ UnifiedNumberFormat.__addLocaleData(${Object.keys(langData)
     .join(',\n')});
 export default UnifiedNumberFormat;
   `
+);
+
+// Output currency digits file
+outputJSONSync(
+  resolve(__dirname, '../src/currency-digits.json'),
+  extractCurrencyDigits()
 );
