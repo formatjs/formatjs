@@ -474,12 +474,7 @@ export class UnifiedNumberFormat
             if (p === InternalSlotToken.currencyCode) {
               cd = currency;
             } else if (p === InternalSlotToken.currencyName) {
-              // From spec:
-              // > Let cd be an ILD String value representing currency in long form, which may depend on x in languages
-              // > having different plural forms. If the implementation does not have such a representation of currency,
-              // > use currency itself.
-              //
-              // But it also doesn't make sense for 1.00E+5 to be singular.
+              // TODO: make plural work with scientific notation
               cd = selectPlural(
                 this.pl,
                 x,

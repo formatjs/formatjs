@@ -28,7 +28,7 @@ const COMPACT_DISPLAYS: Array<UnifiedNumberFormatOptions['compactDisplay']> = [
 const CURRENCY_DISPLAYS: Array<UnifiedNumberFormatOptions['currencyDisplay']> = [
   'code',
   'symbol',
-  // 'name',
+  'name',
   'narrowSymbol',
 ];
 

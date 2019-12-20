@@ -6,6 +6,18 @@ Object {
     "currency": Object {
       "latn": Object {
         "accounting": "¤#,##0.00;(¤#,##0.00)",
+        "currencySpacing": Object {
+          "afterCurrency": Object {
+            "currencyMatch": "[:^S:]",
+            "insertBetween": " ",
+            "surroundingMatch": "[:digit:]",
+          },
+          "beforeCurrency": Object {
+            "currencyMatch": "[:^S:]",
+            "insertBetween": " ",
+            "surroundingMatch": "[:digit:]",
+          },
+        },
         "short": Object {
           "1000": "¤0K",
           "10000": "¤00K",
@@ -91,6 +103,18 @@ Object {
     "currency": Object {
       "latn": Object {
         "accounting": "#,##0.00 ¤",
+        "currencySpacing": Object {
+          "afterCurrency": Object {
+            "currencyMatch": "[:^S:]",
+            "insertBetween": " ",
+            "surroundingMatch": "[:digit:]",
+          },
+          "beforeCurrency": Object {
+            "currencyMatch": "[:^S:]",
+            "insertBetween": " ",
+            "surroundingMatch": "[:digit:]",
+          },
+        },
         "short": Object {
           "1000": "0 N ¤",
           "10000": "00 N ¤",

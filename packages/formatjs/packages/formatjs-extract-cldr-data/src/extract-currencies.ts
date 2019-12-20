@@ -48,14 +48,14 @@ function loadCurrencies(locale: Locale): Record<string, CurrencyData> {
   const currencies = (require(`cldr-numbers-full/main/${locale}/currencies.json`) as typeof Currencies)
     .main[locale as 'en'].numbers.currencies;
   return (Object.keys(currencies) as Array<keyof typeof currencies>).reduce(
-    (all: Record<string, CurrencyData>, symbol) => {
-      const d = currencies[symbol] as Currencies['USD'];
-      all[symbol] = {
+    (all: Record<string, CurrencyData>, isoCode) => {
+      const d = currencies[isoCode] as Currencies['USD'];
+      all[isoCode] = {
         displayName: extractCurrencyPattern(d),
-        symbol,
+        symbol: d['symbol'] || isoCode,
       };
       if (d['symbol-alt-narrow']) {
-        all[symbol].narrow = d['symbol-alt-narrow'];
+        all[isoCode].narrow = d['symbol-alt-narrow'];
       }
       return all;
     },

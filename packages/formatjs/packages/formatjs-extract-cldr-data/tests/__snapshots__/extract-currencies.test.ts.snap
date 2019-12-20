@@ -137,7 +137,7 @@ Object {
         "other": "Australian dollars",
       },
       "narrow": "$",
-      "symbol": "AUD",
+      "symbol": "A$",
     },
     "AWG": Object {
       "displayName": "Aruban florin",
@@ -330,7 +330,7 @@ Object {
         "other": "Brazilian reals",
       },
       "narrow": "R$",
-      "symbol": "BRL",
+      "symbol": "R$",
     },
     "BRN": Object {
       "displayName": Object {
@@ -419,7 +419,7 @@ Object {
         "other": "Canadian dollars",
       },
       "narrow": "$",
-      "symbol": "CAD",
+      "symbol": "CA$",
     },
     "CDF": Object {
       "displayName": Object {
@@ -485,7 +485,7 @@ Object {
     "CNY": Object {
       "displayName": "Chinese yuan",
       "narrow": "¥",
-      "symbol": "CNY",
+      "symbol": "CN¥",
     },
     "COP": Object {
       "displayName": Object {
@@ -677,7 +677,7 @@ Object {
         "other": "euros",
       },
       "narrow": "€",
-      "symbol": "EUR",
+      "symbol": "€",
     },
     "FIM": Object {
       "displayName": Object {
@@ -715,7 +715,7 @@ Object {
         "other": "British pounds",
       },
       "narrow": "£",
-      "symbol": "GBP",
+      "symbol": "£",
     },
     "GEK": Object {
       "displayName": Object {
@@ -823,7 +823,7 @@ Object {
         "other": "Hong Kong dollars",
       },
       "narrow": "$",
-      "symbol": "HKD",
+      "symbol": "HK$",
     },
     "HNL": Object {
       "displayName": Object {
@@ -898,7 +898,7 @@ Object {
         "other": "Israeli new shekels",
       },
       "narrow": "₪",
-      "symbol": "ILS",
+      "symbol": "₪",
     },
     "INR": Object {
       "displayName": Object {
@@ -906,7 +906,7 @@ Object {
         "other": "Indian rupees",
       },
       "narrow": "₹",
-      "symbol": "INR",
+      "symbol": "₹",
     },
     "IQD": Object {
       "displayName": Object {
@@ -962,7 +962,7 @@ Object {
     "JPY": Object {
       "displayName": "Japanese yen",
       "narrow": "¥",
-      "symbol": "JPY",
+      "symbol": "¥",
     },
     "KES": Object {
       "displayName": Object {
@@ -1010,7 +1010,7 @@ Object {
     "KRW": Object {
       "displayName": "South Korean won",
       "narrow": "₩",
-      "symbol": "KRW",
+      "symbol": "₩",
     },
     "KWD": Object {
       "displayName": Object {
@@ -1283,7 +1283,7 @@ Object {
         "other": "Mexican pesos",
       },
       "narrow": "$",
-      "symbol": "MXN",
+      "symbol": "MX$",
     },
     "MXP": Object {
       "displayName": Object {
@@ -1388,7 +1388,7 @@ Object {
         "other": "New Zealand dollars",
       },
       "narrow": "$",
-      "symbol": "NZD",
+      "symbol": "NZ$",
     },
     "OMR": Object {
       "displayName": Object {
@@ -1772,7 +1772,7 @@ Object {
         "other": "New Taiwan dollars",
       },
       "narrow": "$",
-      "symbol": "TWD",
+      "symbol": "NT$",
     },
     "TZS": Object {
       "displayName": Object {
@@ -1816,7 +1816,7 @@ Object {
         "other": "US dollars",
       },
       "narrow": "$",
-      "symbol": "USD",
+      "symbol": "$",
     },
     "USN": Object {
       "displayName": Object {
@@ -1890,7 +1890,7 @@ Object {
     "VND": Object {
       "displayName": "Vietnamese dong",
       "narrow": "₫",
-      "symbol": "VND",
+      "symbol": "₫",
     },
     "VNN": Object {
       "displayName": "Vietnamese dong (1978–1985)",
@@ -1912,7 +1912,7 @@ Object {
         "one": "Central African CFA franc",
         "other": "Central African CFA francs",
       },
-      "symbol": "XAF",
+      "symbol": "FCFA",
     },
     "XAG": Object {
       "displayName": Object {
@@ -1962,7 +1962,7 @@ Object {
         "other": "East Caribbean dollars",
       },
       "narrow": "$",
-      "symbol": "XCD",
+      "symbol": "EC$",
     },
     "XDR": Object {
       "displayName": "special drawing rights",
@@ -1994,7 +1994,7 @@ Object {
         "one": "West African CFA franc",
         "other": "West African CFA francs",
       },
-      "symbol": "XOF",
+      "symbol": "CFA",
     },
     "XPD": Object {
       "displayName": Object {
@@ -2008,7 +2008,7 @@ Object {
         "one": "CFP franc",
         "other": "CFP francs",
       },
-      "symbol": "XPF",
+      "symbol": "CFPF",
     },
     "XPT": Object {
       "displayName": Object {
@@ -2050,7 +2050,7 @@ Object {
         "one": "(unknown unit of currency)",
         "other": "(unknown currency)",
       },
-      "symbol": "XXX",
+      "symbol": "¤",
     },
     "YDD": Object {
       "displayName": Object {
@@ -2240,7 +2240,7 @@ Object {
     "AUD": Object {
       "displayName": "Đô la Australia",
       "narrow": "$",
-      "symbol": "AUD",
+      "symbol": "AU$",
     },
     "AWG": Object {
       "displayName": "Florin Aruba",
@@ -2355,7 +2355,7 @@ Object {
     "BRL": Object {
       "displayName": "Real Braxin",
       "narrow": "R$",
-      "symbol": "BRL",
+      "symbol": "R$",
     },
     "BRN": Object {
       "displayName": Object {},
@@ -2408,7 +2408,7 @@ Object {
     "CAD": Object {
       "displayName": "Đô la Canada",
       "narrow": "$",
-      "symbol": "CAD",
+      "symbol": "CA$",
     },
     "CDF": Object {
       "displayName": "Franc Congo",
@@ -2450,7 +2450,7 @@ Object {
     "CNY": Object {
       "displayName": "Nhân dân tệ",
       "narrow": "¥",
-      "symbol": "CNY",
+      "symbol": "CN¥",
     },
     "COP": Object {
       "displayName": "Peso Colombia",
@@ -2564,7 +2564,7 @@ Object {
     "EUR": Object {
       "displayName": "euro",
       "narrow": "€",
-      "symbol": "EUR",
+      "symbol": "€",
     },
     "FIM": Object {
       "displayName": Object {},
@@ -2587,7 +2587,7 @@ Object {
     "GBP": Object {
       "displayName": "Bảng Anh",
       "narrow": "£",
-      "symbol": "GBP",
+      "symbol": "£",
     },
     "GEK": Object {
       "displayName": Object {},
@@ -2653,7 +2653,7 @@ Object {
     "HKD": Object {
       "displayName": "Đô la Hồng Kông",
       "narrow": "$",
-      "symbol": "HKD",
+      "symbol": "HK$",
     },
     "HNL": Object {
       "displayName": "Lempira Honduras",
@@ -2698,12 +2698,12 @@ Object {
     "ILS": Object {
       "displayName": "Sheqel Israel mới",
       "narrow": "₪",
-      "symbol": "ILS",
+      "symbol": "₪",
     },
     "INR": Object {
       "displayName": "Rupee Ấn Độ",
       "narrow": "₹",
-      "symbol": "INR",
+      "symbol": "₹",
     },
     "IQD": Object {
       "displayName": "Dinar Iraq",
@@ -2738,7 +2738,7 @@ Object {
     "JPY": Object {
       "displayName": "Yên Nhật",
       "narrow": "¥",
-      "symbol": "JPY",
+      "symbol": "JP¥",
     },
     "KES": Object {
       "displayName": "Shilling Kenya",
@@ -2774,7 +2774,7 @@ Object {
     "KRW": Object {
       "displayName": "Won Hàn Quốc",
       "narrow": "₩",
-      "symbol": "KRW",
+      "symbol": "₩",
     },
     "KWD": Object {
       "displayName": "Dinar Kuwait",
@@ -2939,7 +2939,7 @@ Object {
     "MXN": Object {
       "displayName": "Peso Mexico",
       "narrow": "$",
-      "symbol": "MXN",
+      "symbol": "MX$",
     },
     "MXP": Object {
       "displayName": Object {},
@@ -3002,7 +3002,7 @@ Object {
     "NZD": Object {
       "displayName": "Đô la New Zealand",
       "narrow": "$",
-      "symbol": "NZD",
+      "symbol": "NZ$",
     },
     "OMR": Object {
       "displayName": "Rial Oman",
@@ -3191,7 +3191,7 @@ Object {
     "THB": Object {
       "displayName": "Bạt Thái Lan",
       "narrow": "฿",
-      "symbol": "THB",
+      "symbol": "฿",
     },
     "TJR": Object {
       "displayName": Object {},
@@ -3239,7 +3239,7 @@ Object {
     "TWD": Object {
       "displayName": "Đô la Đài Loan mới",
       "narrow": "NT$",
-      "symbol": "TWD",
+      "symbol": "NT$",
     },
     "TZS": Object {
       "displayName": "Shilling Tanzania",
@@ -3265,7 +3265,7 @@ Object {
     "USD": Object {
       "displayName": "Đô la Mỹ",
       "narrow": "$",
-      "symbol": "USD",
+      "symbol": "US$",
     },
     "USN": Object {
       "displayName": Object {},
@@ -3312,7 +3312,7 @@ Object {
     "VND": Object {
       "displayName": "Đồng Việt Nam",
       "narrow": "₫",
-      "symbol": "VND",
+      "symbol": "₫",
     },
     "VNN": Object {
       "displayName": Object {},
@@ -3328,7 +3328,7 @@ Object {
     },
     "XAF": Object {
       "displayName": "franc CFA Trung Phi",
-      "symbol": "XAF",
+      "symbol": "FCFA",
     },
     "XAG": Object {
       "displayName": Object {},
@@ -3357,7 +3357,7 @@ Object {
     "XCD": Object {
       "displayName": "Đô la Đông Caribê",
       "narrow": "$",
-      "symbol": "XCD",
+      "symbol": "EC$",
     },
     "XDR": Object {
       "displayName": Object {},
@@ -3377,7 +3377,7 @@ Object {
     },
     "XOF": Object {
       "displayName": "franc CFA Tây Phi",
-      "symbol": "XOF",
+      "symbol": "CFA",
     },
     "XPD": Object {
       "displayName": Object {},
@@ -3385,7 +3385,7 @@ Object {
     },
     "XPF": Object {
       "displayName": "Franc CFP",
-      "symbol": "XPF",
+      "symbol": "CFPF",
     },
     "XPT": Object {
       "displayName": Object {},
