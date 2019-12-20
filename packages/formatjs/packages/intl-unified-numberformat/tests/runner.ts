@@ -39,7 +39,7 @@ const testsFiles = globSync(PATTERN)
       // There's no Realm in envs where Intl.PluralRules isn't available (e.g Node 8)
       !fn.includes('proto-from-ctor-realm.js')
   )
-  .slice(20);
+  .slice(0, 10);
 const args = [
   '--reporter-keys',
   'file,attrs,result',
@@ -55,7 +55,10 @@ const args = [
 console.log(`Running "test262-harness ${args.join(' ')}"`);
 const result = spawnSync('test262-harness', args, {
   cwd: resolve(__dirname, '..'),
-  env: process.env,
+  env: {
+    ...process.env,
+    NODE_OPTIONS: '--max-old-space-size=8192'
+  },
   encoding: 'utf-8',
 });
 
