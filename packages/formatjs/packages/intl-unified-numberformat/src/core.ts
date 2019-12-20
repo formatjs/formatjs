@@ -30,6 +30,7 @@ import {
   logBase10,
 } from './utils';
 import {ILND, rawDataToInternalSlots} from './data';
+import * as currencyDigitsData from './currency-digits.json';
 
 const RESOLVED_OPTIONS_KEYS = [
   'locale',
@@ -137,6 +138,10 @@ const __INTERNAL_SLOT_MAP__ = new WeakMap<
   UnifiedNumberFormatInternal
 >();
 
+function currencyDigits(c: string): number {
+  return c in currencyDigitsData ? currencyDigitsData[c as 'ADP'] : 2;
+}
+
 export class UnifiedNumberFormat
   implements Omit<Intl.NumberFormat, 'formatToParts'> {
   // private nf: Intl.NumberFormat;
@@ -239,10 +244,6 @@ export class UnifiedNumberFormat
       if (!currency) {
         throw new TypeError(`Currency ${currency} not supported`);
       }
-      const currencyDigits = (currency: string) =>
-        currency in ildData.ild.currencyDigits
-          ? ildData.ild.currencyDigits[currency]
-          : 2;
       const cDigits = currencyDigits(currency);
       mnfdDefault = cDigits;
       mxfdDefault = cDigits;
