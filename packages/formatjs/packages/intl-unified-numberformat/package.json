@@ -32,6 +32,7 @@
     "@formatjs/intl-utils": "^1.6.0"
   },
   "scripts": {
+    "benchmark": "ts-node --project ./tsconfig.cjs.json tests/benchmark",
     "build": "npm run cldr && npm run compile && npm run rollup ",
     "cldr": "ts-node --project tsconfig.cjs.json scripts/cldr",
     "clean": "rimraf dist lib",

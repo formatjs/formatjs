@@ -83,7 +83,7 @@ function prune0Token(str: string): string {
   return str.replace(PATTERN_0_REGEX, '');
 }
 
-function extractILD(
+export function extractILD(
   units: Record<string, UnitData>,
   currencies: Record<string, CurrencyData>,
   numbers: RawNumberData,
@@ -218,7 +218,7 @@ function extractCompactSymbol(
   return pattern.replace(compactUnit, `{${slotToken}}`);
 }
 
-function extractDecimalPattern(d: RawNumberData): SignDisplayPattern {
+export function extractDecimalPattern(d: RawNumberData): SignDisplayPattern {
   return SIGN_DISPLAYS.reduce((all: SignDisplayPattern, k) => {
     all[k] = {
       standard: extractSignPattern(
@@ -243,7 +243,7 @@ function extractDecimalPattern(d: RawNumberData): SignDisplayPattern {
   }, {} as SignDisplayPattern);
 }
 
-function extractPercentPattern(d: RawNumberData): SignDisplayPattern {
+export function extractPercentPattern(d: RawNumberData): SignDisplayPattern {
   return SIGN_DISPLAYS.reduce((all: SignDisplayPattern, k) => {
     all[k] = {
       standard: extractSignPattern(d.percent.latn, k),
@@ -309,7 +309,7 @@ function generateSymbolCurrencyPattern(
   return standard.replace('¤', `{${currencyToken}}`);
 }
 
-function extractCurrencyPattern(
+export function extractCurrencyPattern(
   d: RawNumberData,
   c: Record<string, CurrencyData>
 ): Record<string, CurrencyPattern> {
@@ -521,7 +521,7 @@ function extractCurrencyPattern(
   );
 }
 
-function extractUnitPattern(
+export function extractUnitPattern(
   d: RawNumberData,
   u: Record<string, UnitData>
 ): Record<string, UnitPattern> {

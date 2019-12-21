@@ -2164,7 +2164,7 @@ exports[`extract-currencies should be able to extract vi 1`] = `
 Object {
   "vi": Object {
     "ADP": Object {
-      "displayName": Object {},
+      "displayName": "ADP",
       "symbol": "ADP",
     },
     "AED": Object {
@@ -2172,7 +2172,7 @@ Object {
       "symbol": "AED",
     },
     "AFA": Object {
-      "displayName": Object {},
+      "displayName": "AFA",
       "symbol": "AFA",
     },
     "AFN": Object {
@@ -2180,7 +2180,7 @@ Object {
       "symbol": "AFN",
     },
     "ALK": Object {
-      "displayName": Object {},
+      "displayName": "ALK",
       "symbol": "ALK",
     },
     "ALL": Object {
@@ -2201,31 +2201,31 @@ Object {
       "symbol": "AOA",
     },
     "AOK": Object {
-      "displayName": Object {},
+      "displayName": "AOK",
       "symbol": "AOK",
     },
     "AON": Object {
-      "displayName": Object {},
+      "displayName": "AON",
       "symbol": "AON",
     },
     "AOR": Object {
-      "displayName": Object {},
+      "displayName": "AOR",
       "symbol": "AOR",
     },
     "ARA": Object {
-      "displayName": Object {},
+      "displayName": "ARA",
       "symbol": "ARA",
     },
     "ARL": Object {
-      "displayName": Object {},
+      "displayName": "ARL",
       "symbol": "ARL",
     },
     "ARM": Object {
-      "displayName": Object {},
+      "displayName": "ARM",
       "symbol": "ARM",
     },
     "ARP": Object {
-      "displayName": Object {},
+      "displayName": "ARP",
       "symbol": "ARP",
     },
     "ARS": Object {
@@ -2234,7 +2234,7 @@ Object {
       "symbol": "ARS",
     },
     "ATS": Object {
-      "displayName": Object {},
+      "displayName": "ATS",
       "symbol": "ATS",
     },
     "AUD": Object {
@@ -2247,7 +2247,7 @@ Object {
       "symbol": "AWG",
     },
     "AZM": Object {
-      "displayName": Object {},
+      "displayName": "AZM",
       "symbol": "AZM",
     },
     "AZN": Object {
@@ -2255,7 +2255,7 @@ Object {
       "symbol": "AZN",
     },
     "BAD": Object {
-      "displayName": Object {},
+      "displayName": "BAD",
       "symbol": "BAD",
     },
     "BAM": Object {
@@ -2264,7 +2264,7 @@ Object {
       "symbol": "BAM",
     },
     "BAN": Object {
-      "displayName": Object {},
+      "displayName": "BAN",
       "symbol": "BAN",
     },
     "BBD": Object {
@@ -2278,23 +2278,23 @@ Object {
       "symbol": "BDT",
     },
     "BEC": Object {
-      "displayName": Object {},
+      "displayName": "BEC",
       "symbol": "BEC",
     },
     "BEF": Object {
-      "displayName": Object {},
+      "displayName": "BEF",
       "symbol": "BEF",
     },
     "BEL": Object {
-      "displayName": Object {},
+      "displayName": "BEL",
       "symbol": "BEL",
     },
     "BGL": Object {
-      "displayName": Object {},
+      "displayName": "BGL",
       "symbol": "BGL",
     },
     "BGM": Object {
-      "displayName": Object {},
+      "displayName": "BGM",
       "symbol": "BGM",
     },
     "BGN": Object {
@@ -2302,7 +2302,7 @@ Object {
       "symbol": "BGN",
     },
     "BGO": Object {
-      "displayName": Object {},
+      "displayName": "BGO",
       "symbol": "BGO",
     },
     "BHD": Object {
@@ -2329,27 +2329,27 @@ Object {
       "symbol": "BOB",
     },
     "BOL": Object {
-      "displayName": Object {},
+      "displayName": "BOL",
       "symbol": "BOL",
     },
     "BOP": Object {
-      "displayName": Object {},
+      "displayName": "BOP",
       "symbol": "BOP",
     },
     "BOV": Object {
-      "displayName": Object {},
+      "displayName": "BOV",
       "symbol": "BOV",
     },
     "BRB": Object {
-      "displayName": Object {},
+      "displayName": "BRB",
       "symbol": "BRB",
     },
     "BRC": Object {
-      "displayName": Object {},
+      "displayName": "BRC",
       "symbol": "BRC",
     },
     "BRE": Object {
-      "displayName": Object {},
+      "displayName": "BRE",
       "symbol": "BRE",
     },
     "BRL": Object {
@@ -2358,15 +2358,15 @@ Object {
       "symbol": "R$",
     },
     "BRN": Object {
-      "displayName": Object {},
+      "displayName": "BRN",
       "symbol": "BRN",
     },
     "BRR": Object {
-      "displayName": Object {},
+      "displayName": "BRR",
       "symbol": "BRR",
     },
     "BRZ": Object {
-      "displayName": Object {},
+      "displayName": "BRZ",
       "symbol": "BRZ",
     },
     "BSD": Object {
@@ -2379,7 +2379,7 @@ Object {
       "symbol": "BTN",
     },
     "BUK": Object {
-      "displayName": Object {},
+      "displayName": "BUK",
       "symbol": "BUK",
     },
     "BWP": Object {
@@ -2388,7 +2388,7 @@ Object {
       "symbol": "BWP",
     },
     "BYB": Object {
-      "displayName": Object {},
+      "displayName": "BYB",
       "symbol": "BYB",
     },
     "BYN": Object {
@@ -2415,7 +2415,7 @@ Object {
       "symbol": "CDF",
     },
     "CHE": Object {
-      "displayName": Object {},
+      "displayName": "CHE",
       "symbol": "CHE",
     },
     "CHF": Object {
@@ -2423,15 +2423,15 @@ Object {
       "symbol": "CHF",
     },
     "CHW": Object {
-      "displayName": Object {},
+      "displayName": "CHW",
       "symbol": "CHW",
     },
     "CLE": Object {
-      "displayName": Object {},
+      "displayName": "CLE",
       "symbol": "CLE",
     },
     "CLF": Object {
-      "displayName": Object {},
+      "displayName": "CLF",
       "symbol": "CLF",
     },
     "CLP": Object {
@@ -2444,7 +2444,7 @@ Object {
       "symbol": "CNH",
     },
     "CNX": Object {
-      "displayName": Object {},
+      "displayName": "CNX",
       "symbol": "CNX",
     },
     "CNY": Object {
@@ -2458,7 +2458,7 @@ Object {
       "symbol": "COP",
     },
     "COU": Object {
-      "displayName": Object {},
+      "displayName": "COU",
       "symbol": "COU",
     },
     "CRC": Object {
@@ -2467,11 +2467,11 @@ Object {
       "symbol": "CRC",
     },
     "CSD": Object {
-      "displayName": Object {},
+      "displayName": "CSD",
       "symbol": "CSD",
     },
     "CSK": Object {
-      "displayName": Object {},
+      "displayName": "CSK",
       "symbol": "CSK",
     },
     "CUC": Object {
@@ -2489,7 +2489,7 @@ Object {
       "symbol": "CVE",
     },
     "CYP": Object {
-      "displayName": Object {},
+      "displayName": "CYP",
       "symbol": "CYP",
     },
     "CZK": Object {
@@ -2498,11 +2498,11 @@ Object {
       "symbol": "CZK",
     },
     "DDM": Object {
-      "displayName": Object {},
+      "displayName": "DDM",
       "symbol": "DDM",
     },
     "DEM": Object {
-      "displayName": Object {},
+      "displayName": "DEM",
       "symbol": "DEM",
     },
     "DJF": Object {
@@ -2524,15 +2524,15 @@ Object {
       "symbol": "DZD",
     },
     "ECS": Object {
-      "displayName": Object {},
+      "displayName": "ECS",
       "symbol": "ECS",
     },
     "ECV": Object {
-      "displayName": Object {},
+      "displayName": "ECV",
       "symbol": "ECV",
     },
     "EEK": Object {
-      "displayName": Object {},
+      "displayName": "EEK",
       "symbol": "EEK",
     },
     "EGP": Object {
@@ -2545,15 +2545,15 @@ Object {
       "symbol": "ERN",
     },
     "ESA": Object {
-      "displayName": Object {},
+      "displayName": "ESA",
       "symbol": "ESA",
     },
     "ESB": Object {
-      "displayName": Object {},
+      "displayName": "ESB",
       "symbol": "ESB",
     },
     "ESP": Object {
-      "displayName": Object {},
+      "displayName": "ESP",
       "narrow": "₧",
       "symbol": "ESP",
     },
@@ -2567,7 +2567,7 @@ Object {
       "symbol": "€",
     },
     "FIM": Object {
-      "displayName": Object {},
+      "displayName": "FIM",
       "symbol": "FIM",
     },
     "FJD": Object {
@@ -2581,7 +2581,7 @@ Object {
       "symbol": "FKP",
     },
     "FRF": Object {
-      "displayName": Object {},
+      "displayName": "FRF",
       "symbol": "FRF",
     },
     "GBP": Object {
@@ -2590,7 +2590,7 @@ Object {
       "symbol": "£",
     },
     "GEK": Object {
-      "displayName": Object {},
+      "displayName": "GEK",
       "symbol": "GEK",
     },
     "GEL": Object {
@@ -2599,7 +2599,7 @@ Object {
       "symbol": "GEL",
     },
     "GHC": Object {
-      "displayName": Object {},
+      "displayName": "GHC",
       "symbol": "GHC",
     },
     "GHS": Object {
@@ -2621,15 +2621,15 @@ Object {
       "symbol": "GNF",
     },
     "GNS": Object {
-      "displayName": Object {},
+      "displayName": "GNS",
       "symbol": "GNS",
     },
     "GQE": Object {
-      "displayName": Object {},
+      "displayName": "GQE",
       "symbol": "GQE",
     },
     "GRD": Object {
-      "displayName": Object {},
+      "displayName": "GRD",
       "symbol": "GRD",
     },
     "GTQ": Object {
@@ -2638,11 +2638,11 @@ Object {
       "symbol": "GTQ",
     },
     "GWE": Object {
-      "displayName": Object {},
+      "displayName": "GWE",
       "symbol": "GWE",
     },
     "GWP": Object {
-      "displayName": Object {},
+      "displayName": "GWP",
       "symbol": "GWP",
     },
     "GYD": Object {
@@ -2661,7 +2661,7 @@ Object {
       "symbol": "HNL",
     },
     "HRD": Object {
-      "displayName": Object {},
+      "displayName": "HRD",
       "symbol": "HRD",
     },
     "HRK": Object {
@@ -2684,15 +2684,15 @@ Object {
       "symbol": "IDR",
     },
     "IEP": Object {
-      "displayName": Object {},
+      "displayName": "IEP",
       "symbol": "IEP",
     },
     "ILP": Object {
-      "displayName": Object {},
+      "displayName": "ILP",
       "symbol": "ILP",
     },
     "ILR": Object {
-      "displayName": Object {},
+      "displayName": "ILR",
       "symbol": "ILR",
     },
     "ILS": Object {
@@ -2714,7 +2714,7 @@ Object {
       "symbol": "IRR",
     },
     "ISJ": Object {
-      "displayName": Object {},
+      "displayName": "ISJ",
       "symbol": "ISJ",
     },
     "ISK": Object {
@@ -2723,7 +2723,7 @@ Object {
       "symbol": "ISK",
     },
     "ITL": Object {
-      "displayName": Object {},
+      "displayName": "ITL",
       "symbol": "ITL",
     },
     "JMD": Object {
@@ -2764,11 +2764,11 @@ Object {
       "symbol": "KPW",
     },
     "KRH": Object {
-      "displayName": Object {},
+      "displayName": "KRH",
       "symbol": "KRH",
     },
     "KRO": Object {
-      "displayName": Object {},
+      "displayName": "KRO",
       "symbol": "KRO",
     },
     "KRW": Object {
@@ -2811,7 +2811,7 @@ Object {
       "symbol": "LRD",
     },
     "LSL": Object {
-      "displayName": Object {},
+      "displayName": "LSL",
       "symbol": "LSL",
     },
     "LTL": Object {
@@ -2820,19 +2820,19 @@ Object {
       "symbol": "LTL",
     },
     "LTT": Object {
-      "displayName": Object {},
+      "displayName": "LTT",
       "symbol": "LTT",
     },
     "LUC": Object {
-      "displayName": Object {},
+      "displayName": "LUC",
       "symbol": "LUC",
     },
     "LUF": Object {
-      "displayName": Object {},
+      "displayName": "LUF",
       "symbol": "LUF",
     },
     "LUL": Object {
-      "displayName": Object {},
+      "displayName": "LUL",
       "symbol": "LUL",
     },
     "LVL": Object {
@@ -2841,7 +2841,7 @@ Object {
       "symbol": "LVL",
     },
     "LVR": Object {
-      "displayName": Object {},
+      "displayName": "LVR",
       "symbol": "LVR",
     },
     "LYD": Object {
@@ -2853,15 +2853,15 @@ Object {
       "symbol": "MAD",
     },
     "MAF": Object {
-      "displayName": Object {},
+      "displayName": "MAF",
       "symbol": "MAF",
     },
     "MCF": Object {
-      "displayName": Object {},
+      "displayName": "MCF",
       "symbol": "MCF",
     },
     "MDC": Object {
-      "displayName": Object {},
+      "displayName": "MDC",
       "symbol": "MDC",
     },
     "MDL": Object {
@@ -2874,7 +2874,7 @@ Object {
       "symbol": "MGA",
     },
     "MGF": Object {
-      "displayName": Object {},
+      "displayName": "MGF",
       "symbol": "MGF",
     },
     "MKD": Object {
@@ -2882,11 +2882,11 @@ Object {
       "symbol": "MKD",
     },
     "MKN": Object {
-      "displayName": Object {},
+      "displayName": "MKN",
       "symbol": "MKN",
     },
     "MLF": Object {
-      "displayName": Object {},
+      "displayName": "MLF",
       "symbol": "MLF",
     },
     "MMK": Object {
@@ -2912,11 +2912,11 @@ Object {
       "symbol": "MRU",
     },
     "MTL": Object {
-      "displayName": Object {},
+      "displayName": "MTL",
       "symbol": "MTL",
     },
     "MTP": Object {
-      "displayName": Object {},
+      "displayName": "MTP",
       "symbol": "MTP",
     },
     "MUR": Object {
@@ -2925,7 +2925,7 @@ Object {
       "symbol": "MUR",
     },
     "MVP": Object {
-      "displayName": Object {},
+      "displayName": "MVP",
       "symbol": "MVP",
     },
     "MVR": Object {
@@ -2942,11 +2942,11 @@ Object {
       "symbol": "MX$",
     },
     "MXP": Object {
-      "displayName": Object {},
+      "displayName": "MXP",
       "symbol": "MXP",
     },
     "MXV": Object {
-      "displayName": Object {},
+      "displayName": "MXV",
       "symbol": "MXV",
     },
     "MYR": Object {
@@ -2955,11 +2955,11 @@ Object {
       "symbol": "MYR",
     },
     "MZE": Object {
-      "displayName": Object {},
+      "displayName": "MZE",
       "symbol": "MZE",
     },
     "MZM": Object {
-      "displayName": Object {},
+      "displayName": "MZM",
       "symbol": "MZM",
     },
     "MZN": Object {
@@ -2977,7 +2977,7 @@ Object {
       "symbol": "NGN",
     },
     "NIC": Object {
-      "displayName": Object {},
+      "displayName": "NIC",
       "symbol": "NIC",
     },
     "NIO": Object {
@@ -2986,7 +2986,7 @@ Object {
       "symbol": "NIO",
     },
     "NLG": Object {
-      "displayName": Object {},
+      "displayName": "NLG",
       "symbol": "NLG",
     },
     "NOK": Object {
@@ -3013,7 +3013,7 @@ Object {
       "symbol": "PAB",
     },
     "PEI": Object {
-      "displayName": Object {},
+      "displayName": "PEI",
       "symbol": "PEI",
     },
     "PEN": Object {
@@ -3021,7 +3021,7 @@ Object {
       "symbol": "PEN",
     },
     "PES": Object {
-      "displayName": Object {},
+      "displayName": "PES",
       "symbol": "PES",
     },
     "PGK": Object {
@@ -3044,11 +3044,11 @@ Object {
       "symbol": "PLN",
     },
     "PLZ": Object {
-      "displayName": Object {},
+      "displayName": "PLZ",
       "symbol": "PLZ",
     },
     "PTE": Object {
-      "displayName": Object {},
+      "displayName": "PTE",
       "symbol": "PTE",
     },
     "PYG": Object {
@@ -3061,11 +3061,11 @@ Object {
       "symbol": "QAR",
     },
     "RHD": Object {
-      "displayName": Object {},
+      "displayName": "RHD",
       "symbol": "RHD",
     },
     "ROL": Object {
-      "displayName": Object {},
+      "displayName": "ROL",
       "symbol": "ROL",
     },
     "RON": Object {
@@ -3083,7 +3083,7 @@ Object {
       "symbol": "RUB",
     },
     "RUR": Object {
-      "displayName": Object {},
+      "displayName": "RUR",
       "narrow": "р.",
       "symbol": "RUR",
     },
@@ -3106,7 +3106,7 @@ Object {
       "symbol": "SCR",
     },
     "SDD": Object {
-      "displayName": Object {},
+      "displayName": "SDD",
       "symbol": "SDD",
     },
     "SDG": Object {
@@ -3114,7 +3114,7 @@ Object {
       "symbol": "SDG",
     },
     "SDP": Object {
-      "displayName": Object {},
+      "displayName": "SDP",
       "symbol": "SDP",
     },
     "SEK": Object {
@@ -3133,11 +3133,11 @@ Object {
       "symbol": "SHP",
     },
     "SIT": Object {
-      "displayName": Object {},
+      "displayName": "SIT",
       "symbol": "SIT",
     },
     "SKK": Object {
-      "displayName": Object {},
+      "displayName": "SKK",
       "symbol": "SKK",
     },
     "SLL": Object {
@@ -3154,7 +3154,7 @@ Object {
       "symbol": "SRD",
     },
     "SRG": Object {
-      "displayName": Object {},
+      "displayName": "SRG",
       "symbol": "SRG",
     },
     "SSP": Object {
@@ -3172,11 +3172,11 @@ Object {
       "symbol": "STN",
     },
     "SUR": Object {
-      "displayName": Object {},
+      "displayName": "SUR",
       "symbol": "SUR",
     },
     "SVC": Object {
-      "displayName": Object {},
+      "displayName": "SVC",
       "symbol": "SVC",
     },
     "SYP": Object {
@@ -3194,7 +3194,7 @@ Object {
       "symbol": "฿",
     },
     "TJR": Object {
-      "displayName": Object {},
+      "displayName": "TJR",
       "symbol": "TJR",
     },
     "TJS": Object {
@@ -3202,7 +3202,7 @@ Object {
       "symbol": "TJS",
     },
     "TMM": Object {
-      "displayName": Object {},
+      "displayName": "TMM",
       "symbol": "TMM",
     },
     "TMT": Object {
@@ -3219,7 +3219,7 @@ Object {
       "symbol": "TOP",
     },
     "TPE": Object {
-      "displayName": Object {},
+      "displayName": "TPE",
       "symbol": "TPE",
     },
     "TRL": Object {
@@ -3251,11 +3251,11 @@ Object {
       "symbol": "UAH",
     },
     "UAK": Object {
-      "displayName": Object {},
+      "displayName": "UAK",
       "symbol": "UAK",
     },
     "UGS": Object {
-      "displayName": Object {},
+      "displayName": "UGS",
       "symbol": "UGS",
     },
     "UGX": Object {
@@ -3268,19 +3268,19 @@ Object {
       "symbol": "US$",
     },
     "USN": Object {
-      "displayName": Object {},
+      "displayName": "USN",
       "symbol": "USN",
     },
     "USS": Object {
-      "displayName": Object {},
+      "displayName": "USS",
       "symbol": "USS",
     },
     "UYI": Object {
-      "displayName": Object {},
+      "displayName": "UYI",
       "symbol": "UYI",
     },
     "UYP": Object {
-      "displayName": Object {},
+      "displayName": "UYP",
       "symbol": "UYP",
     },
     "UYU": Object {
@@ -3289,7 +3289,7 @@ Object {
       "symbol": "UYU",
     },
     "UYW": Object {
-      "displayName": Object {},
+      "displayName": "UYW",
       "symbol": "UYW",
     },
     "UZS": Object {
@@ -3297,7 +3297,7 @@ Object {
       "symbol": "UZS",
     },
     "VEB": Object {
-      "displayName": Object {},
+      "displayName": "VEB",
       "symbol": "VEB",
     },
     "VEF": Object {
@@ -3315,7 +3315,7 @@ Object {
       "symbol": "₫",
     },
     "VNN": Object {
-      "displayName": Object {},
+      "displayName": "VNN",
       "symbol": "VNN",
     },
     "VUV": Object {
@@ -3331,27 +3331,27 @@ Object {
       "symbol": "FCFA",
     },
     "XAG": Object {
-      "displayName": Object {},
+      "displayName": "XAG",
       "symbol": "XAG",
     },
     "XAU": Object {
-      "displayName": Object {},
+      "displayName": "XAU",
       "symbol": "XAU",
     },
     "XBA": Object {
-      "displayName": Object {},
+      "displayName": "XBA",
       "symbol": "XBA",
     },
     "XBB": Object {
-      "displayName": Object {},
+      "displayName": "XBB",
       "symbol": "XBB",
     },
     "XBC": Object {
-      "displayName": Object {},
+      "displayName": "XBC",
       "symbol": "XBC",
     },
     "XBD": Object {
-      "displayName": Object {},
+      "displayName": "XBD",
       "symbol": "XBD",
     },
     "XCD": Object {
@@ -3360,19 +3360,19 @@ Object {
       "symbol": "EC$",
     },
     "XDR": Object {
-      "displayName": Object {},
+      "displayName": "XDR",
       "symbol": "XDR",
     },
     "XEU": Object {
-      "displayName": Object {},
+      "displayName": "XEU",
       "symbol": "XEU",
     },
     "XFO": Object {
-      "displayName": Object {},
+      "displayName": "XFO",
       "symbol": "XFO",
     },
     "XFU": Object {
-      "displayName": Object {},
+      "displayName": "XFU",
       "symbol": "XFU",
     },
     "XOF": Object {
@@ -3380,7 +3380,7 @@ Object {
       "symbol": "CFA",
     },
     "XPD": Object {
-      "displayName": Object {},
+      "displayName": "XPD",
       "symbol": "XPD",
     },
     "XPF": Object {
@@ -3388,23 +3388,23 @@ Object {
       "symbol": "CFPF",
     },
     "XPT": Object {
-      "displayName": Object {},
+      "displayName": "XPT",
       "symbol": "XPT",
     },
     "XRE": Object {
-      "displayName": Object {},
+      "displayName": "XRE",
       "symbol": "XRE",
     },
     "XSU": Object {
-      "displayName": Object {},
+      "displayName": "XSU",
       "symbol": "XSU",
     },
     "XTS": Object {
-      "displayName": Object {},
+      "displayName": "XTS",
       "symbol": "XTS",
     },
     "XUA": Object {
-      "displayName": Object {},
+      "displayName": "XUA",
       "symbol": "XUA",
     },
     "XXX": Object {
@@ -3412,7 +3412,7 @@ Object {
       "symbol": "XXX",
     },
     "YDD": Object {
-      "displayName": Object {},
+      "displayName": "YDD",
       "symbol": "YDD",
     },
     "YER": Object {
@@ -3420,23 +3420,23 @@ Object {
       "symbol": "YER",
     },
     "YUD": Object {
-      "displayName": Object {},
+      "displayName": "YUD",
       "symbol": "YUD",
     },
     "YUM": Object {
-      "displayName": Object {},
+      "displayName": "YUM",
       "symbol": "YUM",
     },
     "YUN": Object {
-      "displayName": Object {},
+      "displayName": "YUN",
       "symbol": "YUN",
     },
     "YUR": Object {
-      "displayName": Object {},
+      "displayName": "YUR",
       "symbol": "YUR",
     },
     "ZAL": Object {
-      "displayName": Object {},
+      "displayName": "ZAL",
       "symbol": "ZAL",
     },
     "ZAR": Object {
@@ -3445,7 +3445,7 @@ Object {
       "symbol": "ZAR",
     },
     "ZMK": Object {
-      "displayName": Object {},
+      "displayName": "ZMK",
       "symbol": "ZMK",
     },
     "ZMW": Object {
@@ -3454,23 +3454,23 @@ Object {
       "symbol": "ZMW",
     },
     "ZRN": Object {
-      "displayName": Object {},
+      "displayName": "ZRN",
       "symbol": "ZRN",
     },
     "ZRZ": Object {
-      "displayName": Object {},
+      "displayName": "ZRZ",
       "symbol": "ZRZ",
     },
     "ZWD": Object {
-      "displayName": Object {},
+      "displayName": "ZWD",
       "symbol": "ZWD",
     },
     "ZWL": Object {
-      "displayName": Object {},
+      "displayName": "ZWL",
       "symbol": "ZWL",
     },
     "ZWR": Object {
-      "displayName": Object {},
+      "displayName": "ZWR",
       "symbol": "ZWR",
     },
   },

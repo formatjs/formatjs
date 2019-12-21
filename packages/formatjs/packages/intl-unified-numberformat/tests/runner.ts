@@ -57,7 +57,7 @@ const result = spawnSync('test262-harness', args, {
   cwd: resolve(__dirname, '..'),
   env: {
     ...process.env,
-    NODE_OPTIONS: '--max-old-space-size=8192'
+    NODE_OPTIONS: '--max-old-space-size=8192',
   },
   encoding: 'utf-8',
 });
