@@ -90,15 +90,15 @@ export interface UnitPattern {
 export interface NumberILD {
   decimal: {
     // string when there's only 1 plural from
-    compactShort?: Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>;
+    compactShort?: Record<DecimalFormatNum, LDMLPluralRuleMap<string>>;
     // string when there's only 1 plural from
-    compactLong?: Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>;
+    compactLong?: Record<DecimalFormatNum, LDMLPluralRuleMap<string>>;
   };
   currency: {
     // string when there's only 1 plural from
-    compactShort?: Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>;
+    compactShort?: Record<DecimalFormatNum, LDMLPluralRuleMap<string>>;
     // string when there's only 1 plural from
-    compactLong?: Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>;
+    compactLong?: Record<DecimalFormatNum, LDMLPluralRuleMap<string>>;
   };
   symbols: {
     decimal: string;
@@ -119,19 +119,15 @@ export interface NumberILD {
     {
       currencySymbol: string;
       currencyNarrowSymbol: string;
-      // string when there's only 1 plural from
-      currencyName: string | LDMLPluralRuleMap<string>;
+      currencyName: LDMLPluralRuleMap<string>;
     }
   >;
   unitSymbols: Record<
     string,
     {
-      // string when there's only 1 plural form
-      unitSymbol: string | LDMLPluralRuleMap<string>;
-      // string when there's only 1 plural from
-      unitNarrowSymbol: string | LDMLPluralRuleMap<string>;
-      // string when there's only 1 plural from
-      unitName: string | LDMLPluralRuleMap<string>;
+      unitSymbol: LDMLPluralRuleMap<string>;
+      unitNarrowSymbol: LDMLPluralRuleMap<string>;
+      unitName: LDMLPluralRuleMap<string>;
     }
   >;
 }
@@ -160,15 +156,20 @@ export type RawNumberLocaleData = LocaleData<{
 
 export interface UnitData {
   displayName: string;
-  long: string | LDMLPluralRuleMap<string>;
-  short: string | LDMLPluralRuleMap<string>;
-  narrow?: string | LDMLPluralRuleMap<string>;
+  long: LDMLPluralRuleMap<RawUnitPattern>;
+  short: LDMLPluralRuleMap<RawUnitPattern>;
+  narrow: LDMLPluralRuleMap<RawUnitPattern>;
+}
+
+export interface RawUnitPattern {
+  pattern: string;
+  symbol: string;
 }
 
 export interface CurrencyData {
-  displayName: string | LDMLPluralRuleMap<string>;
+  displayName: LDMLPluralRuleMap<string>;
   symbol: string;
-  narrow?: string;
+  narrow: string;
 }
 
 export type DecimalFormatNum =
@@ -186,24 +187,23 @@ export type DecimalFormatNum =
   | '100000000000000';
 export type NumberingSystem = string;
 
+/**
+ * We only care about insertBetween bc we assume
+ * `currencyMatch` & `surroundingMatch` are all the same
+ *
+ * @export
+ * @interface CurrencySpacingData
+ */
 export interface CurrencySpacingData {
-  beforeCurrency: {
-    currencyMatch: string;
-    surroundingMatch: string;
-    insertBetween: string;
-  };
-  afterCurrency: {
-    currencyMatch: string;
-    surroundingMatch: string;
-    insertBetween: string;
-  };
+  beforeInsertBetween: string;
+  afterInsertBetween: string;
 }
 
 export interface RawCurrencyData {
   currencySpacing: CurrencySpacingData;
   standard: string;
   accounting: string;
-  short?: Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>;
+  short?: Record<DecimalFormatNum, LDMLPluralRuleMap<string>>;
   // IMPORTANT: We're making the assumption here that currency unitPattern
   // are the same for all LDMLPluralRule
   unitPattern: string;
@@ -232,14 +232,17 @@ export interface RawNumberData {
   decimal: Record<
     NumberingSystem,
     {
-      long: Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>;
-      short: Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>;
+      long: Record<DecimalFormatNum, LDMLPluralRuleMap<string>>;
+      short: Record<DecimalFormatNum, LDMLPluralRuleMap<string>>;
     }
   >;
-  // numberingSystem -> pattern
-  scientific: Record<NumberingSystem, string>;
   percent: Record<NumberingSystem, string>;
   currency: Record<NumberingSystem, RawCurrencyData>;
 }
 
-export type LDMLPluralRuleMap<T> = Partial<Record<LDMLPluralRule, T>>;
+export type LDMLPluralRuleMap<T> = Omit<
+  Partial<Record<LDMLPluralRule, T>>,
+  'other'
+> & {
+  other: T;
+};

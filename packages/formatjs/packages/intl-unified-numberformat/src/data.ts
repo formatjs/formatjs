@@ -8,7 +8,6 @@ import {
   NumberILD,
   InternalSlotToken,
   SignDisplayPattern,
-  SignPattern,
   UnitPattern,
   CurrencyPattern,
   CurrencySpacingData,
@@ -29,58 +28,39 @@ const SIGN_DISPLAYS: Array<keyof SignDisplayPattern> = [
   'exceptZero',
 ];
 
+import {memoize} from 'lodash';
+
 function extractDecimalFormatILD(
-  data: Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>> | undefined
-): Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>> | undefined {
+  data?: Record<DecimalFormatNum, LDMLPluralRuleMap<string>> | undefined
+): Record<DecimalFormatNum, LDMLPluralRuleMap<string>> | undefined {
   if (!data) {
     return;
   }
   return (Object.keys(data) as Array<DecimalFormatNum>).reduce((all, num) => {
-    let pattern: string | LDMLPluralRuleMap<string> = data[num];
-    if (typeof pattern === 'string') {
-      pattern = pattern.replace(/[¤0]/g, '').trim();
-    } else {
-      pattern = (Object.keys(pattern) as Array<LDMLPluralRule>).reduce(
-        (all: LDMLPluralRuleMap<string>, p) => {
-          all[p] = ((pattern as LDMLPluralRuleMap<string>)[p] || '')
-            .replace(/[¤0]/g, '')
-            .trim();
-          return all;
-        },
-        {}
-      );
-    }
-    all[num] = pattern;
+    const pattern = data[num];
+
+    all[num] = (Object.keys(pattern) as Array<LDMLPluralRule>).reduce(
+      (all: LDMLPluralRuleMap<string>, p) => {
+        all[p] = (pattern[p] || '').replace(/[¤0]/g, '').trim();
+        return all;
+      },
+      {other: pattern.other.replace(/[¤0]/g, '').trim()}
+    );
     return all;
-  }, {} as Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>);
+  }, {} as Record<DecimalFormatNum, LDMLPluralRuleMap<string>>);
 }
 
-function processLDMLMap(
-  rule: string | LDMLPluralRuleMap<string>,
-  fn: (s: string) => string
-): string | LDMLPluralRuleMap<string>;
-function processLDMLMap(
-  rule: string | LDMLPluralRuleMap<string> | undefined,
-  fn: (s: string) => string
-): string | LDMLPluralRuleMap<string> | undefined {
-  if (!rule) {
-    return rule;
-  }
-  if (typeof rule === 'string') {
-    return fn(rule);
-  }
-
-  return (Object.keys(rule) as Array<LDMLPluralRule>).reduce(
-    (all: LDMLPluralRuleMap<string>, k) => {
-      all[k] = fn(rule[k] || '');
+function extractLDMLPluralRuleMap<T extends object, K extends keyof T>(
+  m: LDMLPluralRuleMap<T>,
+  k: K
+): LDMLPluralRuleMap<T[K]> {
+  return (Object.keys(m) as Array<LDMLPluralRule>).reduce(
+    (all: LDMLPluralRuleMap<T[K]>, rule) => {
+      all[rule] = m[rule]![k];
       return all;
     },
-    {}
+    {other: m.other[k]}
   );
-}
-
-function prune0Token(str: string): string {
-  return str.replace(PATTERN_0_REGEX, '');
 }
 
 export function extractILD(
@@ -115,9 +95,12 @@ export function extractILD(
     }, {} as NumberILD['currencySymbols']),
     unitSymbols: Object.keys(units).reduce((all, unit) => {
       all[unit] = {
-        unitSymbol: processLDMLMap(units[unit].short, prune0Token),
-        unitNarrowSymbol: processLDMLMap(units[unit].narrow!, prune0Token),
-        unitName: processLDMLMap(units[unit].long, prune0Token),
+        unitSymbol: extractLDMLPluralRuleMap(units[unit].short, 'symbol'),
+        unitNarrowSymbol: extractLDMLPluralRuleMap(
+          units[unit].narrow,
+          'symbol'
+        ),
+        unitName: extractLDMLPluralRuleMap(units[unit].long, 'symbol'),
       };
       return all;
     }, {} as NumberILD['unitSymbols']),
@@ -134,64 +117,48 @@ const SCIENTIFIC_SLOT = [
 ]
   .map(t => `{${t}}`)
   .join('');
-// Matches things like `foo {0}`, `foo{0}`, `{0}foo`
-const PATTERN_0_REGEX = /\s?\{0\}\s?/g;
+
 const DUMMY_PATTERN = '#';
 
-function produceSignPattern(
-  positivePattern: string,
-  negativePattern = '',
-  signDisplay: keyof SignDisplayPattern = 'auto'
-) {
+function produceSignPattern(positivePattern: string, negativePattern = '') {
   if (!negativePattern) {
     negativePattern = `{${InternalSlotToken.minusSign}}${positivePattern}`;
   }
-  let zeroPattern = positivePattern;
-  switch (signDisplay) {
-    case 'always':
-      positivePattern = zeroPattern = positivePattern.includes(
-        `{${InternalSlotToken.plusSign}}`
-      )
-        ? positivePattern
-        : `{${InternalSlotToken.plusSign}}${positivePattern}`;
-      break;
-    case 'exceptZero':
-      positivePattern = positivePattern.includes(
-        `{${InternalSlotToken.minusSign}}`
-      )
-        ? positivePattern
-        : `{${InternalSlotToken.plusSign}}${positivePattern}`;
-      break;
-    case 'never':
-      positivePattern = zeroPattern = positivePattern.replace(
-        `{${InternalSlotToken.plusSign}}`,
-        ''
-      );
-      negativePattern = positivePattern;
-      break;
-  }
-  return {
-    positivePattern,
-    negativePattern,
-    zeroPattern,
-  };
-}
+  const zeroPattern = positivePattern;
+  const alwaysPositivePattern = positivePattern.includes(
+    `{${InternalSlotToken.plusSign}}`
+  )
+    ? positivePattern
+    : `{${InternalSlotToken.plusSign}}${positivePattern}`;
 
-function partitionUnitPattern(pattern: string, tokenType: InternalSlotToken) {
-  return (
-    pattern
-      // Handle `{0}foo` & `{0} foo`
-      .replace(/^(\{0\}\s?)(.+)$/, `$1{${tokenType}}`)
-      // Handle `foo{0}` & `foo {0}`
-      .replace(/^(.*?)(\s?\{0\})$/, `{${tokenType}}$2`)
-  );
+  return {
+    always: {
+      positivePattern: alwaysPositivePattern,
+      zeroPattern: alwaysPositivePattern,
+      negativePattern,
+    },
+    exceptZero: {
+      positivePattern: alwaysPositivePattern,
+      zeroPattern,
+      negativePattern,
+    },
+    never: {
+      positivePattern,
+      zeroPattern,
+      negativePattern: positivePattern,
+    },
+    auto: {
+      positivePattern,
+      zeroPattern,
+      negativePattern,
+    },
+  };
 }
 
 function extractSignPattern(
   pattern: string,
-  signDisplay: keyof SignDisplayPattern = 'auto',
   currencyToken: InternalSlotToken = InternalSlotToken.currencyCode
-): SignPattern {
+) {
   const patterns = pattern.split(';');
 
   const [positivePattern, negativePattern] = patterns.map(p =>
@@ -203,8 +170,15 @@ function extractSignPattern(
       .replace('¤', `{${currencyToken}}`)
   );
 
-  return produceSignPattern(positivePattern, negativePattern, signDisplay);
+  return produceSignPattern(positivePattern, negativePattern);
 }
+
+const dummySignPattern = extractSignPattern(
+  // Dummy
+  DUMMY_PATTERN
+);
+
+const scientificSignPattern = extractSignPattern(SCIENTIFIC_SLOT);
 
 /**
  * Turn compact pattern like `0 trillion` or `¤0 trillion` to `0 {compactSymbol}`
@@ -219,40 +193,37 @@ function extractCompactSymbol(
 }
 
 export function extractDecimalPattern(d: RawNumberData): SignDisplayPattern {
+  const compactShortSignPattern = extractSignPattern(
+    extractCompactSymbol(d.decimal.latn.short['1000'].other)
+  );
+  const compactLongSignPattern = extractSignPattern(
+    extractCompactSymbol(
+      d.decimal.latn.long['1000'].other,
+      InternalSlotToken.compactName
+    )
+  );
   return SIGN_DISPLAYS.reduce((all: SignDisplayPattern, k) => {
     all[k] = {
-      standard: extractSignPattern(
-        // Dummy
-        DUMMY_PATTERN,
-        k
-      ),
-      scientific: extractSignPattern(SCIENTIFIC_SLOT, k),
-      compactShort: extractSignPattern(
-        extractCompactSymbol(d.decimal.latn.short['1000'] as string),
-        k
-      ),
-      compactLong: extractSignPattern(
-        extractCompactSymbol(
-          d.decimal.latn.long['1000'] as string,
-          InternalSlotToken.compactName
-        ),
-        k
-      ),
+      standard: dummySignPattern[k],
+      scientific: scientificSignPattern[k],
+      compactShort: compactShortSignPattern[k],
+      compactLong: compactLongSignPattern[k],
     };
     return all;
   }, {} as SignDisplayPattern);
 }
 
 export function extractPercentPattern(d: RawNumberData): SignDisplayPattern {
+  const percentSignPattern = extractSignPattern(d.percent.latn);
+  const scientificPercentSignPattern = extractSignPattern(
+    d.percent.latn.replace(NUMBER_PATTERN, SCIENTIFIC_SLOT)
+  );
   return SIGN_DISPLAYS.reduce((all: SignDisplayPattern, k) => {
     all[k] = {
-      standard: extractSignPattern(d.percent.latn, k),
-      scientific: extractSignPattern(
-        d.percent.latn.replace(NUMBER_PATTERN, SCIENTIFIC_SLOT),
-        k
-      ),
-      compactShort: extractSignPattern(d.percent.latn, k),
-      compactLong: extractSignPattern(d.percent.latn, k),
+      standard: percentSignPattern[k],
+      scientific: scientificPercentSignPattern[k],
+      compactShort: percentSignPattern[k],
+      compactLong: percentSignPattern[k],
     };
     return all;
   }, {} as SignDisplayPattern);
@@ -290,7 +261,7 @@ function generateSymbolCurrencyPattern(
   ) {
     return standard.replace(
       '¤',
-      `{${currencyToken}}${currencySpacing.afterCurrency.insertBetween}`
+      `{${currencyToken}}${currencySpacing.afterInsertBetween}`
     );
   }
 
@@ -303,7 +274,7 @@ function generateSymbolCurrencyPattern(
   ) {
     return standard.replace(
       '¤',
-      `${currencySpacing.beforeCurrency.insertBetween}{${currencyToken}}`
+      `${currencySpacing.beforeInsertBetween}{${currencyToken}}`
     );
   }
   return standard.replace('¤', `{${currencyToken}}`);
@@ -319,30 +290,20 @@ export function extractCurrencyPattern(
       const currencyData = c[currency];
       const currencyPattern = CURRENCY_DISPLAYS.reduce(
         (allCurrencyPatterns: CurrencyPattern, currencyDisplay) => {
-          let resolvedCurrencyDisplay = currencyDisplay;
-          if (
-            resolvedCurrencyDisplay === 'narrowSymbol' &&
-            !currencyData.narrow
-          ) {
-            resolvedCurrencyDisplay = 'symbol';
-          }
-          if (resolvedCurrencyDisplay === 'symbol' && !currencyData.symbol) {
-            resolvedCurrencyDisplay = 'code';
-          }
           const resolvedCurrency: string =
-            resolvedCurrencyDisplay === 'code'
+            currencyDisplay === 'code'
               ? currency
-              : resolvedCurrencyDisplay === 'symbol'
+              : currencyDisplay === 'symbol'
               ? currencyData.symbol
-              : resolvedCurrencyDisplay === 'name'
-              ? (currencyData.displayName as string)
-              : currencyData.narrow!;
+              : currencyDisplay === 'name'
+              ? currencyData.displayName.other
+              : currencyData.narrow;
           const currencyToken =
-            resolvedCurrencyDisplay === 'code'
+            currencyDisplay === 'code'
               ? InternalSlotToken.currencyCode
-              : resolvedCurrencyDisplay === 'symbol'
+              : currencyDisplay === 'symbol'
               ? InternalSlotToken.currencySymbol
-              : resolvedCurrencyDisplay === 'name'
+              : currencyDisplay === 'name'
               ? InternalSlotToken.currencyName
               : InternalSlotToken.currencyNarrowSymbol;
           allCurrencyPatterns[currencyDisplay] = {
@@ -359,12 +320,11 @@ export function extractCurrencyPattern(
                         standard: d.currency.latn.standard,
                         currencySpacing: d.currency.latn.currencySpacing,
                       },
-                      resolvedCurrencyDisplay,
+                      currencyDisplay,
                       resolvedCurrency
                     ),
-                    signDisplay,
                     currencyToken
-                  ),
+                  )[signDisplay],
                   scientific: extractSignPattern(
                     generateSymbolCurrencyPattern(
                       {
@@ -375,55 +335,52 @@ export function extractCurrencyPattern(
                         standard: d.currency.latn.standard,
                         currencySpacing: d.currency.latn.currencySpacing,
                       },
-                      resolvedCurrencyDisplay,
+                      currencyDisplay,
                       resolvedCurrency
                     ).replace(NUMBER_PATTERN, SCIENTIFIC_SLOT),
-                    signDisplay,
                     currencyToken
-                  ),
+                  )[signDisplay],
                   compactShort: extractSignPattern(
                     generateSymbolCurrencyPattern(
                       {
                         standard: extractCompactSymbol(
                           d.currency.latn.short
-                            ? (d.currency.latn.short['1000'] as string)
+                            ? d.currency.latn.short['1000'].other
                             : ''
                         ),
                         unitPattern: d.currency.latn.unitPattern.replace(
                           '{0}',
                           extractCompactSymbol(
-                            d.decimal.latn.short['1000'] as string
+                            d.decimal.latn.short['1000'].other
                           )
                         ),
                         currencySpacing: d.currency.latn.currencySpacing,
                       },
-                      resolvedCurrencyDisplay,
+                      currencyDisplay,
                       resolvedCurrency
-                    ),
-                    signDisplay
-                  ),
+                    )
+                  )[signDisplay],
                   compactLong: extractSignPattern(
                     generateSymbolCurrencyPattern(
                       {
                         standard: extractCompactSymbol(
                           d.currency.latn.short
-                            ? (d.currency.latn.short['1000'] as string)
+                            ? d.currency.latn.short['1000'].other
                             : ''
                         ),
                         unitPattern: d.currency.latn.unitPattern.replace(
                           '{0}',
                           extractCompactSymbol(
-                            d.decimal.latn.long['1000'] as string,
+                            d.decimal.latn.long['1000'].other,
                             InternalSlotToken.compactName
                           )
                         ),
                         currencySpacing: d.currency.latn.currencySpacing,
                       },
-                      resolvedCurrencyDisplay,
+                      currencyDisplay,
                       resolvedCurrency
-                    ),
-                    signDisplay
-                  ),
+                    )
+                  )[signDisplay],
                 };
                 return all;
               },
@@ -441,12 +398,11 @@ export function extractCurrencyPattern(
                       standard: d.currency.latn.accounting,
                       currencySpacing: d.currency.latn.currencySpacing,
                     },
-                    resolvedCurrencyDisplay,
+                    currencyDisplay,
                     resolvedCurrency
                   ),
-                  k,
                   currencyToken
-                ),
+                )[k],
                 scientific: extractSignPattern(
                   generateSymbolCurrencyPattern(
                     {
@@ -457,55 +413,50 @@ export function extractCurrencyPattern(
                       standard: d.currency.latn.accounting,
                       currencySpacing: d.currency.latn.currencySpacing,
                     },
-                    resolvedCurrencyDisplay,
+                    currencyDisplay,
                     resolvedCurrency
                   ).replace(NUMBER_PATTERN, SCIENTIFIC_SLOT),
-                  k,
                   currencyToken
-                ),
+                )[k],
                 compactShort: extractSignPattern(
                   generateSymbolCurrencyPattern(
                     {
                       standard: extractCompactSymbol(
                         d.currency.latn.short
-                          ? (d.currency.latn.short['1000'] as string)
+                          ? d.currency.latn.short['1000'].other
                           : ''
                       ),
                       unitPattern: d.currency.latn.unitPattern.replace(
                         '{0}',
-                        extractCompactSymbol(
-                          d.decimal.latn.short['1000'] as string
-                        )
+                        extractCompactSymbol(d.decimal.latn.short['1000'].other)
                       ),
                       currencySpacing: d.currency.latn.currencySpacing,
                     },
-                    resolvedCurrencyDisplay,
+                    currencyDisplay,
                     resolvedCurrency
-                  ),
-                  k
-                ),
+                  )
+                )[k],
                 compactLong: extractSignPattern(
                   generateSymbolCurrencyPattern(
                     {
                       standard: extractCompactSymbol(
                         d.currency.latn.short
-                          ? (d.currency.latn.short['1000'] as string)
+                          ? d.currency.latn.short['1000'].other
                           : ''
                       ),
                       unitPattern: d.currency.latn.unitPattern.replace(
                         '{0}',
                         extractCompactSymbol(
-                          d.decimal.latn.long['1000'] as string,
+                          d.decimal.latn.long['1000'].other,
                           InternalSlotToken.compactName
                         )
                       ),
                       currencySpacing: d.currency.latn.currencySpacing,
                     },
-                    resolvedCurrencyDisplay,
+                    currencyDisplay,
                     resolvedCurrency
-                  ),
-                  k
-                ),
+                  )
+                )[k],
               };
               return all;
             }, {} as SignDisplayPattern),
@@ -521,6 +472,66 @@ export function extractCurrencyPattern(
   );
 }
 
+const STANDARD_PATTERN_REGEX = /{(\d)}/g;
+
+function generateUnitPatternPayload(
+  unitPatternStr: string,
+  display: keyof UnitPattern,
+  compactShortDecimalPattern: string,
+  compactLongDecimalPattern: string
+) {
+  const unitToken =
+    display === 'long'
+      ? InternalSlotToken.unitName
+      : display === 'short'
+      ? InternalSlotToken.unitSymbol
+      : InternalSlotToken.unitNarrowSymbol;
+  const standardUnitPatternStr = unitPatternStr.replace(
+    STANDARD_PATTERN_REGEX,
+    (_, p) => (p === '0' ? DUMMY_PATTERN : `{${unitToken}}`)
+  );
+
+  const scientificUnitPatternStr = unitPatternStr.replace(
+    STANDARD_PATTERN_REGEX,
+    (_, p) => (p === '0' ? SCIENTIFIC_SLOT : `{${unitToken}}`)
+  );
+
+  const compactShortUnitPatternStr = unitPatternStr.replace(
+    STANDARD_PATTERN_REGEX,
+    (_, p) =>
+      p === '0'
+        ? extractCompactSymbol(compactShortDecimalPattern)
+        : `{${unitToken}}`
+  );
+
+  const compactLongUnitPatternStr = unitPatternStr.replace(
+    STANDARD_PATTERN_REGEX,
+    (_, p) =>
+      p === '0'
+        ? extractCompactSymbol(
+            compactLongDecimalPattern,
+            InternalSlotToken.compactName
+          )
+        : `{${unitToken}}`
+  );
+
+  const standard = extractSignPattern(standardUnitPatternStr);
+  const scientific = extractSignPattern(scientificUnitPatternStr);
+  const compactShort = extractSignPattern(compactShortUnitPatternStr);
+  const compactLong = extractSignPattern(compactLongUnitPatternStr);
+  return SIGN_DISPLAYS.reduce((all: SignDisplayPattern, k) => {
+    all[k] = {
+      standard: standard[k],
+      scientific: scientific[k],
+      compactShort: compactShort[k],
+      compactLong: compactLong[k],
+    };
+    return all;
+  }, {} as SignDisplayPattern);
+}
+
+const memoizedGenerateUnitPatternPayload = memoize(generateUnitPatternPayload, (...args) => args.join('_$_'));
+
 export function extractUnitPattern(
   d: RawNumberData,
   u: Record<string, UnitData>
@@ -532,55 +543,11 @@ export function extractUnitPattern(
       allUnitPatterns[unit] = (['narrow', 'long', 'short'] as Array<
         keyof UnitPattern
       >).reduce((patterns, display) => {
-        const unit =
-          display === 'long'
-            ? InternalSlotToken.unitName
-            : display === 'short'
-            ? InternalSlotToken.unitSymbol
-            : InternalSlotToken.unitNarrowSymbol;
-        const unitPattern = unitData[display as 'long'];
-        const unitPatternStr =
-          typeof unitPattern === 'string'
-            ? unitPattern
-            : unitPattern.other || '';
-        patterns[display] = SIGN_DISPLAYS.reduce(
-          (all: SignDisplayPattern, k) => {
-            all[k] = {
-              standard: extractSignPattern(
-                partitionUnitPattern(unitPatternStr, unit).replace(
-                  '{0}',
-                  DUMMY_PATTERN
-                ),
-                k
-              ),
-              scientific: extractSignPattern(
-                partitionUnitPattern(unitPatternStr, unit).replace(
-                  '{0}',
-                  SCIENTIFIC_SLOT
-                ),
-                k
-              ),
-              compactShort: extractSignPattern(
-                partitionUnitPattern(unitPatternStr, unit).replace(
-                  '{0}',
-                  extractCompactSymbol(d.decimal.latn.short['1000'] as string)
-                ),
-                k
-              ),
-              compactLong: extractSignPattern(
-                partitionUnitPattern(unitPatternStr, unit).replace(
-                  '{0}',
-                  extractCompactSymbol(
-                    d.decimal.latn.long['1000'] as string,
-                    InternalSlotToken.compactName
-                  )
-                ),
-                k
-              ),
-            };
-            return all;
-          },
-          {} as SignDisplayPattern
+        patterns[display] = memoizedGenerateUnitPatternPayload(
+          unitData[display].other.pattern,
+          display,
+          d.decimal.latn.short['1000'].other,
+          d.decimal.latn.long['1000'].other
         );
         return patterns;
       }, {} as UnitPattern);

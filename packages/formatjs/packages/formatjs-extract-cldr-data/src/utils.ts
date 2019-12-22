@@ -66,21 +66,19 @@ export default function generateFieldExtractorFn<
   };
 }
 
-export function collapseSingleValuePluralRule(
-  rules: LDMLPluralRuleMap<string>
-): string | LDMLPluralRuleMap<string> {
+export function collapseSingleValuePluralRule<T>(
+  rules: LDMLPluralRuleMap<T>
+): LDMLPluralRuleMap<T> {
   const keys = Object.keys(rules) as Array<LDMLPluralRule>;
-  // dedupe value that looks like `other`
-  const uniqueKeys = keys.filter(
-    k => k === 'other' || (rules[k] && rules[k] !== rules.other)
+  return keys.reduce(
+    (all: LDMLPluralRuleMap<T>, k) => {
+      if (k !== 'other' && rules[k] && !isEqual(rules[k], rules.other)) {
+        all[k] = rules[k];
+      }
+      return all;
+    },
+    {other: rules.other}
   );
-  if (uniqueKeys.length === 1) {
-    return rules.other || '';
-  }
-  return uniqueKeys.reduce((all: LDMLPluralRuleMap<string>, k) => {
-    all[k] = rules[k];
-    return all;
-  }, {});
 }
 
 export const PLURAL_RULES: Array<LDMLPluralRule> = [

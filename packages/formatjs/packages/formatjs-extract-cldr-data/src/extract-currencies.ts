@@ -14,7 +14,6 @@ import generateFieldExtractorFn, {
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
 import {CurrencyData, LDMLPluralRuleMap} from '@formatjs/intl-utils';
-import {isEmpty} from 'lodash';
 
 const unitsLocales = globSync('*/currencies.json', {
   cwd: resolve(
@@ -26,13 +25,19 @@ const unitsLocales = globSync('*/currencies.json', {
 export type Currencies = typeof Currencies['main']['en']['numbers']['currencies'];
 
 function extractCurrencyPattern(d: Currencies['USD']) {
+  if (!d['displayName-count-other']) {
+    return {other: ''};
+  }
   return collapseSingleValuePluralRule(
-    PLURAL_RULES.reduce((all: LDMLPluralRuleMap<string>, ldml) => {
-      if (d[`displayName-count-${ldml}` as 'displayName-count-one']) {
-        all[ldml] = d[`displayName-count-${ldml}` as 'displayName-count-one'];
-      }
-      return all;
-    }, {})
+    PLURAL_RULES.reduce(
+      (all: LDMLPluralRuleMap<string>, ldml) => {
+        if (d[`displayName-count-${ldml}` as 'displayName-count-one']) {
+          all[ldml] = d[`displayName-count-${ldml}` as 'displayName-count-one'];
+        }
+        return all;
+      },
+      {other: d['displayName-count-other']}
+    )
   );
 }
 
@@ -51,17 +56,15 @@ function loadCurrencies(locale: Locale): Record<string, CurrencyData> {
   return (Object.keys(currencies) as Array<keyof typeof currencies>).reduce(
     (all: Record<string, CurrencyData>, isoCode) => {
       const d = currencies[isoCode] as Currencies['USD'];
-      let displayName = extractCurrencyPattern(d);
-      if (isEmpty(displayName)) {
+      let displayName = extractCurrencyPattern(d).other;
+      if (!displayName) {
         displayName = d.symbol || isoCode;
       }
       all[isoCode] = {
-        displayName,
+        displayName: {other: displayName},
         symbol: d.symbol || isoCode,
+        narrow: d['symbol-alt-narrow'] || d.symbol || isoCode,
       };
-      if (d['symbol-alt-narrow']) {
-        all[isoCode].narrow = d['symbol-alt-narrow'];
-      }
       return all;
     },
     {}

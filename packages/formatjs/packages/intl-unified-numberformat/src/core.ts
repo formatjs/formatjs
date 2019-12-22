@@ -778,9 +778,7 @@ function getNumberFormatPattern(
 function selectPlural(
   pl: Intl.PluralRules,
   x: number,
-  rules: string | LDMLPluralRuleMap<string>
+  rules: LDMLPluralRuleMap<string>
 ): string {
-  return typeof rules === 'string'
-    ? rules
-    : rules[pl.select(x) as LDMLPluralRule] || rules.other || '';
+  return rules[pl.select(x) as LDMLPluralRule] || rules.other;
 }

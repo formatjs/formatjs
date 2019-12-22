@@ -16,6 +16,7 @@ import {
   SANCTIONED_UNITS,
   UnitData,
   LDMLPluralRuleMap,
+  RawUnitPattern,
 } from '@formatjs/intl-utils';
 
 const unitsLocales = globSync('*/units.json', {
@@ -31,14 +32,46 @@ function shortenUnit(unit: string) {
   return unit.replace(/^(.*?)-/, '');
 }
 
+function partitionUnitPattern(pattern: string) {
+  return (
+    pattern
+      // Handle `{0}foo` & `{0} foo`
+      .replace(/^(\{0\}\s?)(.+)$/, `$1{1}`)
+      // Handle `foo{0}` & `foo {0}`
+      .replace(/^(.*?)(\s?\{0\})$/, `{1}$2`)
+  );
+}
+
+// Matches things like `foo {0}`, `foo{0}`, `{0}foo`
+const PATTERN_0_REGEX = /\s?\{0\}\s?/g;
+
+function prune0Token(str: string): string {
+  return str.replace(PATTERN_0_REGEX, '');
+}
+
 function extractUnitPattern(d: Units['long']['volume-gallon']) {
   return collapseSingleValuePluralRule(
-    PLURAL_RULES.reduce((all: LDMLPluralRuleMap<string>, ldml) => {
-      if (d[`unitPattern-count-${ldml}` as 'unitPattern-count-one']) {
-        all[ldml] = d[`unitPattern-count-${ldml}` as 'unitPattern-count-one'];
+    PLURAL_RULES.reduce(
+      (all: LDMLPluralRuleMap<RawUnitPattern>, ldml) => {
+        if (d[`unitPattern-count-${ldml}` as 'unitPattern-count-one']) {
+          all[ldml] = {
+            symbol: prune0Token(
+              d[`unitPattern-count-${ldml}` as 'unitPattern-count-one']
+            ),
+            pattern: partitionUnitPattern(
+              d[`unitPattern-count-${ldml}` as 'unitPattern-count-one']
+            ),
+          };
+        }
+        return all;
+      },
+      {
+        other: {
+          symbol: prune0Token(d['unitPattern-count-other']),
+          pattern: partitionUnitPattern(d['unitPattern-count-other']),
+        },
       }
-      return all;
-    }, {})
+    )
   );
 }
 

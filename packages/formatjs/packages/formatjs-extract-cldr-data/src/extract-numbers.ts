@@ -47,21 +47,21 @@ const COUNTS = [
 
 function reduceNumCount<
   T extends Numbers['decimalFormats-numberSystem-latn']['long']['decimalFormat']
->(d: T): Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>> {
+>(d: T): Record<DecimalFormatNum, LDMLPluralRuleMap<string>> {
   return COUNTS.reduce(
-    (
-      all: Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>,
-      num
-    ) => {
+    (all: Record<DecimalFormatNum, LDMLPluralRuleMap<string>>, num) => {
       all[num] = collapseSingleValuePluralRule(
-        PLURAL_RULES.reduce((all: LDMLPluralRuleMap<string>, pl) => {
-          all[pl] = d[`${num}-count-${pl}` as '1000-count-one'];
-          return all;
-        }, {})
+        PLURAL_RULES.reduce(
+          (all: LDMLPluralRuleMap<string>, pl) => {
+            all[pl] = d[`${num}-count-${pl}` as '1000-count-one'];
+            return all;
+          },
+          {other: d[`${num}-count-other` as '1000-count-other']}
+        )
       );
       return all;
     },
-    {} as Record<DecimalFormatNum, string | LDMLPluralRuleMap<string>>
+    {} as Record<DecimalFormatNum, LDMLPluralRuleMap<string>>
   );
 }
 
@@ -74,13 +74,6 @@ function extractNumbers(d: Numbers): RawNumberData {
     nu,
     symbols: nu.reduce((all: Record<string, SymbolsData>, ns) => {
       all[ns] = d[`symbols-numberSystem-${ns}` as 'symbols-numberSystem-latn'];
-      return all;
-    }, {}),
-    scientific: nu.reduce((all: RawNumberData['scientific'], ns) => {
-      all[ns] =
-        d[
-          `scientificFormats-numberSystem-${ns}` as 'scientificFormats-numberSystem-latn'
-        ].standard;
       return all;
     }, {}),
     percent: nu.reduce((all: RawNumberData['percent'], ns) => {
@@ -104,18 +97,26 @@ function extractNumbers(d: Numbers): RawNumberData {
       return all;
     }, {}),
     currency: nu.reduce((all: RawNumberData['currency'], ns) => {
-      const currencyData =
-        d[
-          `currencyFormats-numberSystem-${ns}` as 'currencyFormats-numberSystem-latn'
-        ];
+      const {
+        currencySpacing,
+        standard,
+        accounting,
+        'unitPattern-count-other': unitPattern,
+        short,
+      } = d[
+        `currencyFormats-numberSystem-${ns}` as 'currencyFormats-numberSystem-latn'
+      ];
       all[ns] = {
-        currencySpacing: currencyData.currencySpacing,
-        standard: currencyData.standard,
-        accounting: currencyData.accounting,
-        unitPattern: currencyData['unitPattern-count-other'],
+        currencySpacing: {
+          beforeInsertBetween: currencySpacing.beforeCurrency.insertBetween,
+          afterInsertBetween: currencySpacing.afterCurrency.insertBetween,
+        },
+        standard,
+        accounting,
+        unitPattern,
       } as RawCurrencyData;
-      if (currencyData.short) {
-        all[ns].short = reduceNumCount(currencyData.short.standard);
+      if (short) {
+        all[ns].short = reduceNumCount(short.standard);
       }
       return all;
     }, {}),
