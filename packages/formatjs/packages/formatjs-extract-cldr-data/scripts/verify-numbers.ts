@@ -19,17 +19,27 @@ numbersData.forEach(d => {
       `${locale} has uncommon (#E0) scientific format: ${data['scientificFormats-numberSystem-latn'].standard}`
     );
   }
-  if (data['percentFormats-numberSystem-latn'].standard !== '#,##0%') {
-    console.log(
-      `${locale} has uncommon (#,##0%) percent format: ${data['percentFormats-numberSystem-latn'].standard}`
-    );
-  }
+  // if (data['percentFormats-numberSystem-latn'].standard !== '#,##0%') {
+  //   console.log(
+  //     `${locale} has uncommon (#,##0%) percent format: ${data['percentFormats-numberSystem-latn'].standard}`
+  //   );
+  // }
   if (
     data['currencyFormats-numberSystem-latn'].currencySpacing.afterCurrency
       .currencyMatch !== '[:^S:]'
   ) {
     console.log(
       `${locale} has uncommon ([:^S:]) currencySpacing: ${data['currencyFormats-numberSystem-latn'].currencySpacing.afterCurrency.currencyMatch}`
+    );
+  }
+  if (
+    data['currencyFormats-numberSystem-latn'].currencySpacing.afterCurrency
+      .insertBetween !==
+    data['currencyFormats-numberSystem-latn'].currencySpacing.beforeCurrency
+      .insertBetween
+  ) {
+    console.log(
+      `${locale} has different insertBetween between before and after`
     );
   }
 });
