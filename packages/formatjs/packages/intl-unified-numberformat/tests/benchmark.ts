@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 'use strict';
 import {Suite} from 'benchmark';
-import {unpackData, CurrencyPattern} from '@formatjs/intl-utils';
 import {
-  rawDataToInternalSlots,
-  extractILD,
-  extractUnitPattern,
-  extractDecimalPattern,
-  extractPercentPattern,
-  extractCurrencyPattern,
-} from '../src/data';
+  unpackData,
+  CurrencyPattern,
+  SignDisplayPattern,
+  CurrencySignPattern,
+  NotationPattern,
+} from '@formatjs/intl-utils';
+import {extractILD} from '../src/data';
+import * as en from '../dist/locale-data/en.json';
 
 function onCycle(ev: any) {
   console.log(String(ev.target));
@@ -21,49 +21,60 @@ function onComplete(this: any) {
   );
 }
 
-import * as en from '../dist/locale-data/en.json'
+const CURRENCY_DISPLAYS: Array<keyof CurrencyPattern> = [
+  'code',
+  'symbol',
+  'narrowSymbol',
+  'name',
+];
+
+const SIGN_DISPLAYS: Array<keyof SignDisplayPattern> = [
+  'auto',
+  'always',
+  'never',
+  'exceptZero',
+];
+
+const CURRENCY_SIGNS: Array<keyof CurrencySignPattern> = [
+  'standard',
+  'accounting',
+];
+
+const NOTATIONS: Array<keyof NotationPattern> = [
+  'standard',
+  'scientific',
+  'compactShort',
+  'compactLong',
+];
 
 function dummyCreateCurrencyPattern() {
   const {
-    data: {en: {currencies}},
+    data: {currencies},
   } = en;
-  return Object.keys(currencies).reduce(
-    (all: Record<string, CurrencyPattern>, c) => {
-      all[c] = ['code', 'symbol', 'narrowSymbol', 'name'].reduce(
-        (all: any, c) => {
-          all[c] = ['standard', 'accounting'].reduce((all: any, c) => {
-            all[c] = ['always', 'auto', 'never', 'exceptZero'].reduce(
-              (all: any, c) => {
-                all[c] = [
-                  'standard',
-                  'scientific',
-                  'compactShort',
-                  'compactLong',
-                ].reduce((all: any, c) => {
-                  all[c] = [
-                    'positivePattern',
-                    'zeroPattern',
-                    'negativePattern',
-                  ].reduce((all: any, c) => {
-                    all[c] = '';
-                    return all;
-                  }, {});
-                  return all;
-                }, {});
-                return all;
-              },
-              {}
-            );
-            return all;
-          }, {});
-          return all;
-        },
-        {} as CurrencyPattern
-      );
-      return all;
-    },
-    {}
-  );
+  const availableCurrencies = Object.keys(currencies);
+  const all: any = {};
+  for (const currency of availableCurrencies) {
+    all[currency] = {};
+    for (const currencyDisplay of CURRENCY_DISPLAYS) {
+      all[currency][currencyDisplay] = {};
+      for (const currencySign of CURRENCY_SIGNS) {
+        all[currency][currencyDisplay][currencySign] = {};
+        for (const signDisplay of SIGN_DISPLAYS) {
+          all[currency][currencyDisplay][currencySign][signDisplay] = {};
+          for (const notation of NOTATIONS) {
+            all[currency][currencyDisplay][currencySign][signDisplay][
+              notation
+            ] = {
+              positivePattern: '',
+              zeroPattern: '',
+              negativePattern: '',
+            };
+          }
+        }
+      }
+    }
+  }
+  return all;
 }
 
 function addData() {
@@ -99,26 +110,6 @@ new Suite('UnifiedNumberFormat data processing', {
   .add('unpackData', addData)
   .add('extractILD', () =>
     extractILD(
-      unpackedData.en.units,
-      unpackedData.en.currencies,
-      unpackedData.en.numbers,
-      'latn'
-    )
-  )
-  .add('extractUnitPattern', () =>
-    extractUnitPattern(unpackedData.en.numbers, unpackedData.en.units)
-  )
-  .add('extractDecimalPattern', () =>
-    extractDecimalPattern(unpackedData.en.numbers)
-  )
-  .add('extractPercentPattern', () =>
-    extractPercentPattern(unpackedData.en.numbers)
-  )
-  .add('extractCurrencyPattern', () =>
-    extractCurrencyPattern(unpackedData.en.numbers, unpackedData.en.currencies)
-  )
-  .add('preprocessing', () =>
-    rawDataToInternalSlots(
       unpackedData.en.units,
       unpackedData.en.currencies,
       unpackedData.en.numbers,

@@ -105,6 +105,18 @@ function hasUnits(locale: Locale): boolean {
   return unitsLocales.includes(locale);
 }
 
+export function generateDataForLocales(
+  locales: string[] = getAllLocales()
+): Record<string, Record<string, UnitData>> {
+  return locales.reduce(
+    (all: Record<string, Record<string, UnitData>>, locale) => {
+      all[locale] = loadUnits(locale);
+      return all;
+    },
+    {}
+  );
+}
+
 export default generateFieldExtractorFn<Record<string, UnitData>>(
   loadUnits,
   hasUnits,

@@ -2,6 +2,7 @@ import {
   getLocaleHierarchy,
   getAliasesByLang,
   getParentLocalesByLang,
+  unpackData,
 } from '../src';
 describe('resolve-locale', function() {
   it('should handle zh-TW', function() {
@@ -30,5 +31,51 @@ describe('resolve-locale', function() {
         getParentLocalesByLang('zh')
       )
     ).to.deep.equal(['zh-MO', 'zh-Hant-MO', 'zh-Hant-HK', 'zh-Hant', 'zh']);
+  });
+  it('unpackData', function() {
+    expect(
+      unpackData('en-US', {
+        data: {
+          en: {
+            units: {
+              degree: 1,
+            },
+            currencies: {
+              USD: 'dollar',
+            },
+            numbers: {
+              nu: ['foo'],
+              patterns: {
+                foo: 1,
+              },
+            },
+          },
+          'en-US': {
+            numbers: {
+              patterns: {
+                foo: 1,
+              },
+            },
+          },
+        },
+        aliases: {},
+        availableLocales: ['en-US', 'en-AI', 'en'],
+        parentLocales: {
+          'en-US': 'en',
+        },
+      })
+    ).to.deep.equal({
+      currencies: {
+        USD: 'dollar',
+      },
+      numbers: {
+        patterns: {
+          foo: 1,
+        },
+      },
+      units: {
+        degree: 1,
+      },
+    });
   });
 });

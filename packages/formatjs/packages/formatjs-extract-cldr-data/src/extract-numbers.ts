@@ -139,6 +139,15 @@ function hasNumbers(locale: Locale): boolean {
   return unitsLocales.includes(locale);
 }
 
+export function generateDataForLocales(
+  locales: string[] = getAllLocales()
+): Record<string, RawNumberData> {
+  return locales.reduce((all: Record<string, RawNumberData>, locale) => {
+    all[locale] = loadNumbers(locale);
+    return all;
+  }, {});
+}
+
 export default generateFieldExtractorFn<RawNumberData>(
   loadNumbers,
   hasNumbers,

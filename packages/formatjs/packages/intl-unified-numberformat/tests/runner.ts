@@ -1,7 +1,6 @@
 import {spawnSync} from 'child_process';
 import {resolve} from 'path';
 import {cpus} from 'os';
-import {sync as globSync} from 'glob';
 
 if (process.version.startsWith('v8')) {
   console.log(
@@ -31,15 +30,8 @@ interface TestResult {
 }
 const PATTERN = resolve(
   __dirname,
-  '../../../test262/test/intl402/NumberFormat/**/*.js'
+  '../../../test262/test/intl402/NumberFormat/**/!(proto-from-ctor-realm).js'
 );
-const testsFiles = globSync(PATTERN)
-  .filter(
-    fn =>
-      // There's no Realm in envs where Intl.PluralRules isn't available (e.g Node 8)
-      !fn.includes('proto-from-ctor-realm.js')
-  )
-  .slice(0, 10);
 const args = [
   '--reporter-keys',
   'file,attrs,result',
@@ -49,8 +41,7 @@ const args = [
   './dist/polyfill-with-locales-for-test262.min.js',
   '-r',
   'json',
-  // PATTERN,
-  ...testsFiles,
+  PATTERN,
 ];
 console.log(`Running "test262-harness ${args.join(' ')}"`);
 const result = spawnSync('test262-harness', args, {
@@ -73,7 +64,7 @@ if (!json) {
   process.exit(1);
 }
 const failedTests = json.filter(r => !r.result.pass);
-json.forEach(t => {
+for (const t of json) {
   if (t.result.pass) {
     console.log(`✓ ${t.attrs.description}`);
   } else {
@@ -83,12 +74,13 @@ json.forEach(t => {
     console.log('\t', resolve(__dirname, '..', t.file));
     console.log('\n\n');
   }
-});
+}
 if (failedTests.length) {
   console.log(
     `Tests: ${failedTests.length} failed, ${json.length -
       failedTests.length} passed, ${json.length} total`
   );
-  process.exit(1);
+  process.exitCode = 1;
+} else {
+  console.log(`Tests: ${json.length} passed, ${json.length} total`);
 }
-console.log(`Tests: ${json.length} passed, ${json.length} total`);

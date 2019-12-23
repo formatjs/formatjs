@@ -2,16 +2,13 @@ import {Unit} from './units-constants';
 import {
   createResolveLocale,
   toObject,
-  UnifiedNumberFormatLocaleData,
   supportedLocales,
   getCanonicalLocales,
-  unpackData,
   setInternalSlot,
   setMultiInternalSlots,
   getMultiInternalSlots,
   getOption,
   getInternalSlot,
-  NumberInternalSlots,
   SignDisplayPattern,
   NotationPattern,
   SignPattern,
@@ -23,6 +20,8 @@ import {
   NumberFormatDigitOptions,
   NumberFormatDigitInternalSlots,
   LDMLPluralRuleMap,
+  NumberILD,
+  NumberLocalePatternData,
 } from '@formatjs/intl-utils';
 import {
   toRawFixed,
@@ -31,7 +30,7 @@ import {
   logBase10,
   repeat,
 } from './utils';
-import {ILND, rawDataToInternalSlots} from './data';
+import {ILND, extractILD, extractPatterns} from './data';
 import * as currencyDigitsData from './currency-digits.json';
 
 const RESOLVED_OPTIONS_KEYS = [
@@ -120,8 +119,10 @@ interface UnifiedNumberFormatInternal extends NumberFormatDigitInternalSlots {
   compactDisplay: NonNullable<UnifiedNumberFormatOptions['compactDisplay']>;
   signDisplay: NonNullable<UnifiedNumberFormatOptions['signDisplay']>;
   useGrouping: boolean;
+  patterns: NumberLocalePatternData;
+  nu: string[];
   // Locale-dependent formatter data
-  ildData: NumberInternalSlots;
+  ild: NumberILD;
   numberingSystem: string;
 }
 
@@ -166,11 +167,18 @@ export class UnifiedNumberFormat
       localeData
     );
     const ildData = localeData[r.locale];
+    const numberingSystem = r.nu || ildData.numbers.nu[0];
     setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
       locale: r.locale,
       dataLocale: r.dataLocale,
-      numberingSystem: r.nu || ildData.nu[0],
-      ildData: localeData[r.locale],
+      numberingSystem,
+      ild: extractILD(
+        ildData.units,
+        ildData.currencies,
+        ildData.numbers,
+        numberingSystem
+      ),
+      nu: ildData.numbers.nu,
     });
 
     // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-setnumberformatunitoptions
@@ -210,12 +218,13 @@ export class UnifiedNumberFormat
       ['short', 'narrow', 'long'],
       'short'
     );
+    const ild = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ild');
     if (style === 'currency') {
-      if (!currency || !ildData.ild.currencySymbols[currency.toUpperCase()]) {
+      if (!currency || !ild.currencySymbols[currency.toUpperCase()]) {
         throw TypeError('Currency code is required with currency style.');
       }
     } else if (style === 'unit') {
-      if (!unit || !ildData.ild.unitSymbols[unit.toLowerCase()]) {
+      if (!unit || !ild.unitSymbols[unit.toLowerCase()]) {
         throw TypeError('Invalid unit argument for Intl.NumberFormat()');
       }
     }
@@ -226,6 +235,14 @@ export class UnifiedNumberFormat
       currencySign,
       unit,
       unitDisplay,
+      patterns: extractPatterns(
+        ildData.units,
+        ildData.currencies,
+        ildData.numbers,
+        numberingSystem,
+        unit,
+        currency
+      ),
     });
     // ---
 
@@ -306,12 +323,12 @@ export class UnifiedNumberFormat
   formatToParts(x: number): UnifiedNumberFormatPart[] {
     // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-partitionnumberpattern
     let exponent = 0;
-    const ildData = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ildData');
+    const ild = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ild');
     let n: string;
     if (isNaN(x)) {
-      n = ildData.ild.symbols.nan;
+      n = ild.symbols.nan;
     } else if (!isFinite(x)) {
-      n = ildData.ild.symbols.infinity;
+      n = ild.symbols.infinity;
     } else {
       if (getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'style') === 'percent') {
         x *= 100;
@@ -323,7 +340,6 @@ export class UnifiedNumberFormat
       x = formatNumberResult.roundedNumber;
     }
     const pattern = getNumberFormatPattern(this, x, exponent);
-    console.log('pattern----', pattern);
     const patternParts = pattern.split(/({\w+})/).filter(Boolean);
     const results: UnifiedNumberFormatPart[] = [];
     for (const part of patternParts) {
@@ -364,7 +380,7 @@ export class UnifiedNumberFormat
                 integer = n;
               }
               if (useGrouping) {
-                const groupSepSymbol = ildData.ild.symbols.group;
+                const groupSepSymbol = ild.symbols.group;
                 const groups: string[] = [];
                 // Assuming that the group separator is always inserted between every 3 digits.
                 let i = integer.length - 3;
@@ -384,7 +400,7 @@ export class UnifiedNumberFormat
               }
               if (fraction !== undefined) {
                 results.push(
-                  {type: 'decimal', value: ildData.ild.symbols.decimal},
+                  {type: 'decimal', value: ild.symbols.decimal},
                   {type: 'fraction', value: fraction}
                 );
               }
@@ -394,21 +410,19 @@ export class UnifiedNumberFormat
           case InternalSlotToken.plusSign:
             results.push({
               type: 'plusSign',
-              value: ildData.ild.symbols.plusSign,
+              value: ild.symbols.plusSign,
             });
             break;
           case InternalSlotToken.minusSign:
             results.push({
               type: 'minusSign',
-              value: ildData.ild.symbols.minusSign,
+              value: ild.symbols.minusSign,
             });
             break;
           case InternalSlotToken.compactSymbol:
           case InternalSlotToken.compactName:
             const compactData =
-              ildData.ild.decimal[
-                p === 'compactName' ? 'compactLong' : 'compactShort'
-              ];
+              ild.decimal[p === 'compactName' ? 'compactLong' : 'compactShort'];
             if (compactData) {
               results.push({
                 type: 'compact',
@@ -423,14 +437,14 @@ export class UnifiedNumberFormat
           case InternalSlotToken.scientificSeparator:
             results.push({
               type: 'exponentSeparator',
-              value: ildData.ild.symbols.exponential,
+              value: ild.symbols.exponential,
             });
             break;
           case InternalSlotToken.scientificExponent: {
             if (exponent < 0) {
               results.push({
                 type: 'exponentMinusSign',
-                value: ildData.ild.symbols.minusSign,
+                value: ild.symbols.minusSign,
               });
               exponent = -exponent;
             }
@@ -444,7 +458,7 @@ export class UnifiedNumberFormat
           case InternalSlotToken.percentSign:
             results.push({
               type: 'percentSign',
-              value: ildData.ild.symbols.percentSign,
+              value: ild.symbols.percentSign,
             });
             break;
           case InternalSlotToken.unitSymbol:
@@ -453,7 +467,7 @@ export class UnifiedNumberFormat
             const style = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'style');
             if (style === 'unit') {
               const unit = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'unit');
-              const unitSymbols = ildData.ild.unitSymbols[unit!];
+              const unitSymbols = ild.unitSymbols[unit!];
               const mu = selectPlural(
                 this.pl,
                 x,
@@ -480,10 +494,10 @@ export class UnifiedNumberFormat
               cd = selectPlural(
                 this.pl,
                 x,
-                ildData.ild.currencySymbols[currency].currencyName
+                ild.currencySymbols[currency].currencyName
               );
             } else {
-              cd = ildData.ild.currencySymbols[currency][p];
+              cd = ild.currencySymbols[currency][p];
             }
             results.push({type: 'currency', value: cd});
             break;
@@ -537,13 +551,7 @@ export class UnifiedNumberFormat
       );
       for (const locale of availableLocales) {
         try {
-          const {units, currencies, numbers} = unpackData(locale, datum);
-          UnifiedNumberFormat.localeData[locale] = rawDataToInternalSlots(
-            units!,
-            currencies!,
-            numbers!,
-            'latn'
-          );
+          UnifiedNumberFormat.localeData[locale] = datum.data;
         } catch (e) {
           // Ignore if we don't have data
         }
@@ -557,7 +565,7 @@ export class UnifiedNumberFormat
         UnifiedNumberFormat.availableLocales[0];
     }
   }
-  static localeData: UnifiedNumberFormatLocaleData['data'] = {};
+  static localeData: Record<string, RawNumberLocaleData['data']> = {};
   private static availableLocales: string[] = [];
   private static __defaultLocale = 'en';
   private static getDefaultLocale() {
@@ -666,11 +674,7 @@ function computeExponentForMagnitude(
     'notation'
   );
   const style = getInternalSlot(__INTERNAL_SLOT_MAP__, numberFormat, 'style');
-  const ildData = getInternalSlot(
-    __INTERNAL_SLOT_MAP__,
-    numberFormat,
-    'ildData'
-  );
+  const ild = getInternalSlot(__INTERNAL_SLOT_MAP__, numberFormat, 'ild');
   switch (notation) {
     case 'standard':
       return 0;
@@ -679,8 +683,7 @@ function computeExponentForMagnitude(
     case 'engineering':
       return Math.floor(magnitude / 3) * 3;
     case 'compact': {
-      const symbols =
-        style === 'decimal' ? ildData.ild.decimal : ildData.ild.currency;
+      const symbols = style === 'decimal' ? ild.decimal : ild.currency;
       const thresholdMap = symbols.compactLong || symbols.compactShort;
       if (!thresholdMap) {
         return 0;
@@ -710,11 +713,11 @@ function getNumberFormatPattern(
   x: number,
   exponent: number
 ): string {
-  const {style, ildData, signDisplay, notation} = getMultiInternalSlots(
+  const {style, patterns: slots, signDisplay, notation} = getMultiInternalSlots(
     __INTERNAL_SLOT_MAP__,
     numberFormat,
     'style',
-    'ildData',
+    'patterns',
     'signDisplay',
     'notation'
   );
@@ -722,7 +725,7 @@ function getNumberFormatPattern(
 
   switch (style) {
     case 'percent':
-      patterns = ildData.patterns.percent;
+      patterns = slots.percent;
       break;
     case 'unit': {
       const unitDisplay = getInternalSlot(
@@ -731,7 +734,7 @@ function getNumberFormatPattern(
         'unitDisplay'
       );
       const unit = getInternalSlot(__INTERNAL_SLOT_MAP__, numberFormat, 'unit');
-      patterns = ildData.patterns.unit[unit!][unitDisplay!];
+      patterns = slots.unit[unit!][unitDisplay!];
       break;
     }
     case 'currency': {
@@ -742,12 +745,11 @@ function getNumberFormatPattern(
         'currencyDisplay',
         'currencySign'
       );
-      patterns =
-        ildData.patterns.currency[currency!][currencyDisplay][currencySign];
+      patterns = slots.currency[currency!][currencyDisplay][currencySign];
       break;
     }
     case 'decimal':
-      patterns = ildData.patterns.decimal;
+      patterns = slots.decimal;
       break;
   }
 

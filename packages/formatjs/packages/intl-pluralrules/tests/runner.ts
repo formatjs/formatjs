@@ -72,6 +72,7 @@ if (failedTests.length) {
     `Tests: ${failedTests.length} failed, ${json.length -
       failedTests.length} passed, ${json.length} total`
   );
-  process.exit(1);
+  process.exitCode = 1;
+} else {
+  console.log(`Tests: ${json.length} passed, ${json.length} total`);
 }
-console.log(`Tests: ${json.length} passed, ${json.length} total`);

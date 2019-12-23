@@ -75,6 +75,18 @@ function hasCurrencies(locale: Locale): boolean {
   return unitsLocales.includes(locale);
 }
 
+export function generateDataForLocales(
+  locales: string[] = getAllLocales()
+): Record<string, Record<string, CurrencyData>> {
+  return locales.reduce(
+    (all: Record<string, Record<string, CurrencyData>>, locale) => {
+      all[locale] = loadCurrencies(locale);
+      return all;
+    },
+    {}
+  );
+}
+
 export default generateFieldExtractorFn<Record<string, CurrencyData>>(
   loadCurrencies,
   hasCurrencies,

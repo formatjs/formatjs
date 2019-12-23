@@ -4,13 +4,13 @@ import {cpus} from 'os';
 import {sync as globSync} from 'glob';
 
 if (!process.version.startsWith('v10')) {
-  process.exit(0);
   console.log(
     `Only run on Node 10 since: 
 - Node 8 does not have Intl.PluralRules and polyfills are not test262-compliant.
 - Node 12+ has native Intl.ListFormat.
 `
   );
+  process.exit(0);
 }
 
 interface TestResult {
@@ -61,6 +61,7 @@ const result = spawnSync('test262-harness', args, {
 const json: TestResult[] = JSON.parse(result.stdout);
 if (!json) {
   console.error(result.stderr, result.error);
+  process.exit(1);
 }
 const failedTests = json.filter(r => !r.result.pass);
 json.forEach(t => {
@@ -79,6 +80,7 @@ if (failedTests.length) {
     `Tests: ${failedTests.length} failed, ${json.length -
       failedTests.length} passed, ${json.length} total`
   );
-  process.exit(1);
+  process.exitCode = 1;
+} else {
+  console.log(`Tests: ${json.length} passed, ${json.length} total`);
 }
-console.log(`Tests: ${json.length} passed, ${json.length} total`);

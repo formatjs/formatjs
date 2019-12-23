@@ -2,6 +2,8 @@ import '@formatjs/intl-pluralrules/polyfill-locales';
 import {UnifiedNumberFormat, UnifiedNumberFormatOptions} from '../src/core';
 UnifiedNumberFormat.__addLocaleData(require('../dist/locale-data/zh.json'));
 UnifiedNumberFormat.__addLocaleData(require('../dist/locale-data/en.json'));
+UnifiedNumberFormat.__addLocaleData(require('../dist/locale-data/en-US.json'));
+UnifiedNumberFormat.__addLocaleData(require('../dist/locale-data/en-BS.json'));
 
 const SIGN_DISPLAYS: Array<UnifiedNumberFormatOptions['signDisplay']> = [
   'auto',
@@ -142,7 +144,7 @@ function test() {
     );
   });
 
-  describe.only('currency', function() {
+  describe('currency', function() {
     CURRENCY_DISPLAYS.forEach(currencyDisplay =>
       describe(`currencyDisplay/${currencyDisplay}`, function() {
         CURRENCY_SIGNS.forEach(currencySign =>

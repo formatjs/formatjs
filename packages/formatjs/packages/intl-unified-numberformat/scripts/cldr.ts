@@ -1,7 +1,7 @@
 import {
-  extractAllNumbers,
-  extractAllCurrencies,
-  extractAllUnits,
+  generateCurrencyDataForLocales,
+  generateUnitDataForLocales,
+  generateNumberDataForLocales,
   locales,
   extractCurrencyDigits,
 } from 'formatjs-extract-cldr-data';
@@ -17,39 +17,34 @@ import {outputFileSync, outputJSONSync} from 'fs-extra';
 
 const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
 
-const numbersData = extractAllNumbers();
-const currenciesData = extractAllCurrencies();
-const unitsData = extractAllUnits();
+const numbersData = generateNumberDataForLocales();
+const currenciesData = generateCurrencyDataForLocales();
+const unitsData = generateUnitDataForLocales();
 
-const langData = locales.reduce(
+const allData = locales.reduce(
   (all: Record<string, RawNumberLocaleData>, locale) => {
-    if (locale === 'en-US-POSIX') {
-      locale = 'en-US';
-    }
-    const lang = locale.split('-')[0];
-
-    if (!all[lang]) {
-      const aliases = getAliasesByLang(lang);
-      const parentLocales = getParentLocalesByLang(lang);
-      all[lang] = {
+    const resolvedLocale = locale === 'en-US-POSIX' ? 'en-US' : locale;
+    const lang = resolvedLocale.split('-')[0];
+    const aliases = getAliasesByLang(lang);
+    const parentLocales = getParentLocalesByLang(lang);
+    if (!all[resolvedLocale]) {
+      all[resolvedLocale] = {
         data: {
-          [locale]: {
-            units: unitsData[locale],
-            currencies: currenciesData[locale],
-            numbers: numbersData[locale],
-          },
+          units: unitsData[locale],
+          currencies: currenciesData[locale],
+          numbers: numbersData[locale],
         },
-        availableLocales: [locale],
+        availableLocales: [resolvedLocale],
         aliases,
         parentLocales,
       };
     } else {
-      all[lang].data[locale] = {
+      all[resolvedLocale].data = {
         units: unitsData[locale],
         currencies: currenciesData[locale],
         numbers: numbersData[locale],
       };
-      all[lang].availableLocales.push(locale);
+      all[resolvedLocale].availableLocales.push(resolvedLocale);
     }
 
     return all;
@@ -67,22 +62,22 @@ export type Unit =
 );
 
 // Dist all locale files to dist/locale-data
-Object.keys(langData).forEach(function(lang) {
-  const destFile = join(allLocaleDistDir, lang + '.js');
+Object.keys(allData).forEach(function(locale) {
+  const destFile = join(allLocaleDistDir, locale + '.js');
   outputFileSync(
     destFile,
     `/* @generated */
 // prettier-ignore
 if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function') {
-  Intl.NumberFormat.__addLocaleData(${JSON.stringify(langData[lang])})
+  Intl.NumberFormat.__addLocaleData(${JSON.stringify(allData[locale])})
 }`
   );
 });
 
 // Dist all locale files to dist/locale-data
-Object.keys(langData).forEach(function(lang) {
-  const destFile = join(allLocaleDistDir, lang + '.json');
-  outputJSONSync(destFile, langData[lang]);
+Object.keys(allData).forEach(function(locale) {
+  const destFile = join(allLocaleDistDir, locale + '.json');
+  outputJSONSync(destFile, allData[locale]);
 });
 
 // Aggregate all into ../polyfill-locales.js
@@ -93,8 +88,8 @@ outputFileSync(
 require('./polyfill')
 if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function') {
   Intl.NumberFormat.__addLocaleData(
-    ${Object.keys(langData)
-      .map(lang => JSON.stringify(langData[lang]))
+    ${Object.keys(allData)
+      .map(locale => JSON.stringify(allData[locale]))
       .join(',\n')});
 }
 `
@@ -107,14 +102,15 @@ outputJSONSync(
 );
 
 // For test262
+// Only a subset of locales
 outputFileSync(
   resolve(__dirname, '../dist-es6/polyfill-locales.js'),
   `
 import './polyfill';
 if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function') {
   Intl.NumberFormat.__addLocaleData(
-    ${Object.keys(langData)
-      .map(lang => JSON.stringify(langData[lang]))
+    ${['en', 'de', 'ja', 'ko', 'zh']
+      .map(locale => JSON.stringify(allData[locale]))
       .join(',\n')});
 }
 `

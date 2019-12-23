@@ -39,4 +39,9 @@ export {getAllLanguages} from './locales';
 export const processAliases = process;
 export {getAllLocales as getAllDateFieldsLocales} from './extract-relative';
 export {getAllLocales as getAllListLocales} from './extract-list';
-export {extractCurrencyDigits} from './extract-currencies';
+export {
+  extractCurrencyDigits,
+  generateDataForLocales as generateCurrencyDataForLocales,
+} from './extract-currencies';
+export {generateDataForLocales as generateUnitDataForLocales} from './extract-units';
+export {generateDataForLocales as generateNumberDataForLocales} from './extract-numbers';
