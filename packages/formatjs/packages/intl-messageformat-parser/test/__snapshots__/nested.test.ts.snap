@@ -91,7 +91,14 @@ Array [
                   },
                   Object {
                     "type": 0,
-                    "value": " and # other people to her party.",
+                    "value": " and ",
+                  },
+                  Object {
+                    "type": 7,
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " other people to her party.",
                   },
                 ],
               },
@@ -185,7 +192,14 @@ Array [
                   },
                   Object {
                     "type": 0,
-                    "value": " and # other people to his party.",
+                    "value": " and ",
+                  },
+                  Object {
+                    "type": 7,
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " other people to his party.",
                   },
                 ],
               },
@@ -279,7 +293,14 @@ Array [
                   },
                   Object {
                     "type": 0,
-                    "value": " and # other people to their party.",
+                    "value": " and ",
+                  },
+                  Object {
+                    "type": 7,
+                  },
+                  Object {
+                    "type": 0,
+                    "value": " other people to their party.",
                   },
                 ],
               },

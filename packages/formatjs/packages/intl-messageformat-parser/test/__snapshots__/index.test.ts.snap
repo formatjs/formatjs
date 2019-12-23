@@ -224,8 +224,11 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
+            "type": 7,
+          },
+          Object {
             "type": 0,
-            "value": "#rd",
+            "value": "rd",
           },
         ],
       },
@@ -233,8 +236,11 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
+            "type": 7,
+          },
+          Object {
             "type": 0,
-            "value": "#st",
+            "value": "st",
           },
         ],
       },
@@ -242,8 +248,11 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
+            "type": 7,
+          },
+          Object {
             "type": 0,
-            "value": "#th",
+            "value": "th",
           },
         ],
       },
@@ -251,8 +260,11 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
+            "type": 7,
+          },
+          Object {
             "type": 0,
-            "value": "#nd",
+            "value": "nd",
           },
         ],
       },
@@ -422,8 +434,11 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
+            "type": 7,
+          },
+          Object {
             "type": 0,
-            "value": "# photos",
+            "value": " photos",
           },
         ],
       },
@@ -473,8 +488,11 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
+                    "type": 7,
+                  },
+                  Object {
                     "type": 0,
-                    "value": "# drop",
+                    "value": " drop",
                   },
                 ],
               },
@@ -482,8 +500,11 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
+                    "type": 7,
+                  },
+                  Object {
                     "type": 0,
-                    "value": "# drops",
+                    "value": " drops",
                   },
                 ],
               },
@@ -514,8 +535,11 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
+                    "type": 7,
+                  },
+                  Object {
                     "type": 0,
-                    "value": "# tablespoon",
+                    "value": " tablespoon",
                   },
                 ],
               },
@@ -523,8 +547,11 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
+                    "type": 7,
+                  },
+                  Object {
                     "type": 0,
-                    "value": "# tablespoons",
+                    "value": " tablespoons",
                   },
                 ],
               },
@@ -555,8 +582,11 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
+                    "type": 7,
+                  },
+                  Object {
                     "type": 0,
-                    "value": "# teaspoon",
+                    "value": " teaspoon",
                   },
                 ],
               },
@@ -564,8 +594,11 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
+                    "type": 7,
+                  },
+                  Object {
                     "type": 0,
-                    "value": "# teaspoons",
+                    "value": " teaspoons",
                   },
                 ],
               },
@@ -601,8 +634,11 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
+            "type": 7,
+          },
+          Object {
             "type": 0,
-            "value": "# var1",
+            "value": " var1",
           },
         ],
       },
@@ -616,8 +652,11 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
+                    "type": 7,
+                  },
+                  Object {
                     "type": 0,
-                    "value": "# var2",
+                    "value": " var2",
                   },
                 ],
               },
@@ -625,8 +664,11 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
+                    "type": 7,
+                  },
+                  Object {
                     "type": 0,
-                    "value": "# var2-other",
+                    "value": " var2-other",
                   },
                 ],
               },
@@ -637,7 +679,14 @@ Array [
           },
           Object {
             "type": 0,
-            "value": " # other",
+            "value": " ",
+          },
+          Object {
+            "type": 7,
+          },
+          Object {
+            "type": 0,
+            "value": " other",
           },
         ],
       },
@@ -1076,8 +1125,11 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
+            "type": 7,
+          },
+          Object {
             "type": 0,
-            "value": "#rd",
+            "value": "rd",
           },
         ],
       },
@@ -1085,8 +1137,11 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
+            "type": 7,
+          },
+          Object {
             "type": 0,
-            "value": "#st",
+            "value": "st",
           },
         ],
       },
@@ -1094,8 +1149,11 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
+            "type": 7,
+          },
+          Object {
             "type": 0,
-            "value": "#th",
+            "value": "th",
           },
         ],
       },
@@ -1103,8 +1161,11 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
+            "type": 7,
+          },
+          Object {
             "type": 0,
-            "value": "#nd",
+            "value": "nd",
           },
         ],
       },
@@ -1274,8 +1335,11 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
+            "type": 7,
+          },
+          Object {
             "type": 0,
-            "value": "# photos",
+            "value": " photos",
           },
         ],
       },
@@ -1325,8 +1389,11 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
+                    "type": 7,
+                  },
+                  Object {
                     "type": 0,
-                    "value": "# drop",
+                    "value": " drop",
                   },
                 ],
               },
@@ -1334,8 +1401,11 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
+                    "type": 7,
+                  },
+                  Object {
                     "type": 0,
-                    "value": "# drops",
+                    "value": " drops",
                   },
                 ],
               },
@@ -1366,8 +1436,11 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
+                    "type": 7,
+                  },
+                  Object {
                     "type": 0,
-                    "value": "# tablespoon",
+                    "value": " tablespoon",
                   },
                 ],
               },
@@ -1375,8 +1448,11 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
+                    "type": 7,
+                  },
+                  Object {
                     "type": 0,
-                    "value": "# tablespoons",
+                    "value": " tablespoons",
                   },
                 ],
               },
@@ -1407,8 +1483,11 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
+                    "type": 7,
+                  },
+                  Object {
                     "type": 0,
-                    "value": "# teaspoon",
+                    "value": " teaspoon",
                   },
                 ],
               },
@@ -1416,8 +1495,11 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
+                    "type": 7,
+                  },
+                  Object {
                     "type": 0,
-                    "value": "# teaspoons",
+                    "value": " teaspoons",
                   },
                 ],
               },
@@ -1453,8 +1535,11 @@ Array [
         "location": undefined,
         "value": Array [
           Object {
+            "type": 7,
+          },
+          Object {
             "type": 0,
-            "value": "# var1",
+            "value": " var1",
           },
         ],
       },
@@ -1468,8 +1553,11 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
+                    "type": 7,
+                  },
+                  Object {
                     "type": 0,
-                    "value": "# var2",
+                    "value": " var2",
                   },
                 ],
               },
@@ -1477,8 +1565,11 @@ Array [
                 "location": undefined,
                 "value": Array [
                   Object {
+                    "type": 7,
+                  },
+                  Object {
                     "type": 0,
-                    "value": "# var2-other",
+                    "value": " var2-other",
                   },
                 ],
               },
@@ -1489,7 +1580,14 @@ Array [
           },
           Object {
             "type": 0,
-            "value": " # other",
+            "value": " ",
+          },
+          Object {
+            "type": 7,
+          },
+          Object {
+            "type": 0,
+            "value": " other",
           },
         ],
       },

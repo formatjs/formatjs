@@ -27,6 +27,11 @@ export enum TYPE {
    * Variable w/ plural format
    */
   plural,
+  /**
+   * Only possible within plural argument.
+   * This is the `#` symbol that will be substituted with the count.
+   */
+  pound,
 }
 
 export const enum SKELETON_TYPE {
@@ -92,6 +97,11 @@ export interface PluralElement extends BaseElement<TYPE.plural> {
   pluralType: Intl.PluralRulesOptions['type'];
 }
 
+export interface PoundElement {
+  type: TYPE.pound;
+  location?: Location;
+}
+
 export type MessageFormatElement =
   | LiteralElement
   | ArgumentElement
@@ -99,7 +109,8 @@ export type MessageFormatElement =
   | DateElement
   | TimeElement
   | SelectElement
-  | PluralElement;
+  | PluralElement
+  | PoundElement;
 
 export interface NumberSkeletonToken {
   stem: string;
@@ -147,6 +158,9 @@ export function isSelectElement(el: MessageFormatElement): el is SelectElement {
 }
 export function isPluralElement(el: MessageFormatElement): el is PluralElement {
   return el.type === TYPE.plural;
+}
+export function isPoundElement(el: MessageFormatElement): el is PoundElement {
+  return el.type === TYPE.pound;
 }
 export function isNumberSkeleton(
   el: NumberElement['style']

@@ -1,5 +1,117 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`apostrophe quote can be unclosed 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "a {a{ {}{}{} 'bb",
+  },
+]
+`;
+
+exports[`apostrophe quote can be unclosed 2`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "You have {count",
+  },
+]
+`;
+
+exports[`apostrophe quote can be unclosed 3`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "You have {count",
+  },
+]
+`;
+
+exports[`apostrophe quote can be unclosed 4`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "You have {count}",
+  },
+]
+`;
+
+exports[`apostrophe quote can be unclosed 5`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "You ",
+  },
+  Object {
+    "offset": 0,
+    "options": Object {
+      "one": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "worked for # hour",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "worked for # hours",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "count",
+  },
+  Object {
+    "type": 0,
+    "value": " today.",
+  },
+]
+`;
+
+exports[`apostrophe quote can be unclosed 6`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "You ",
+  },
+  Object {
+    "offset": 0,
+    "options": Object {
+      "one": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "worked for # hour} other {worked for ",
+          },
+          Object {
+            "type": 7,
+          },
+          Object {
+            "type": 0,
+            "value": " hours",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "count",
+  },
+  Object {
+    "type": 0,
+    "value": " today.",
+  },
+]
+`;
+
 exports[`does not start quoted text if apostrophe does not immediately precede a character 1`] = `
 Array [
   Object {
@@ -64,6 +176,15 @@ Array [
 `;
 
 exports[`unescaped string literals 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "}",
+  },
+]
+`;
+
+exports[`unescaped string literals 2`] = `
 Array [
   Object {
     "type": 0,

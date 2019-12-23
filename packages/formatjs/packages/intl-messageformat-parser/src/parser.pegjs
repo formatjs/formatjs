@@ -9,7 +9,17 @@ See the accompanying LICENSE file for terms.
  */
 
 {
-    function insertLocation () {
+    const messageCtx = ['root'];
+
+    function isNestedMessageText() {
+        return messageCtx.length > 1;
+    }
+
+    function isInPluralOption() {
+        return messageCtx[messageCtx.length - 1] === 'plural';
+    }
+
+    function insertLocation() {
         return options && options.captureLocation ? {
             location: location()
         }: {}
@@ -27,6 +37,8 @@ messageElement
     / simpleFormatElement
     / pluralElement
     / selectElement
+    // Note: this is only possible when immediately in plural argument's option.
+    / poundElement
 
 messageText
     = parts:(doubleApostrophes / quotedString / unquotedString)+ {
@@ -41,6 +53,13 @@ literalElement
             ...insertLocation()
         };
     }
+
+poundElement = '#' {
+    return {
+        type: TYPE.pound,
+        ...insertLocation()
+    };
+}
 
 argumentElement 'argumentElement'
     = '{' _ value:argNameOrNumber _ '}' {
@@ -75,7 +94,10 @@ numberSkeleton
 
 numberArgStyle
     = '::' skeleton:numberSkeleton { return skeleton; }
-    / style:messageText { return style.replace(/\s*$/, ''); }
+    / &{ messageCtx.push('numberArgStyle'); return true; } style:messageText {
+          messageCtx.pop();
+          return style.replace(/\s*$/, '');
+      }
 
 numberFormatElement
     = '{' _ value:argNameOrNumber _ ',' _ type:'number' _ style:(',' _ numberArgStyle)? _ '}' {
@@ -105,7 +127,10 @@ dateTimeSkeleton
 
 dateOrTimeArgStyle
     = '::' skeleton:dateTimeSkeleton { return skeleton; }
-    / style:messageText { return style.replace(/\s*$/, ''); }
+    / &{ messageCtx.push('dateOrTimeArgStyle'); return true; } style:messageText {
+          messageCtx.pop();
+          return style.replace(/\s*$/, '');
+      }
 
 dateOrTimeFormatElement
     = '{' _ value:argNameOrNumber _ ',' _ type:('date' / 'time') _ style:(',' _ dateOrTimeArgStyle)? _ '}' {
@@ -165,7 +190,8 @@ pluralRuleSelectValue
     / argName
 
 selectOption
-    = _ id:argName _ '{' value:message '}' {
+    = _ id:argName _ '{' &{ messageCtx.push('select'); return true; } value:message '}' {
+        messageCtx.pop();
         return {
             id,
             value,
@@ -174,7 +200,8 @@ selectOption
     }
 
 pluralOption
-    = _ id:pluralRuleSelectValue _ '{' value:message '}' {
+    = _ id:pluralRuleSelectValue _ '{' &{ messageCtx.push('plural'); return true; } value:message '}' {
+        messageCtx.pop();
         return {
             id,
             value,
@@ -203,13 +230,25 @@ number 'number' = negative:'-'? num:argNumber {
 
 apostrophe 'apostrophe' = "'"
 doubleApostrophes 'double apostrophes' = "''" { return `'`; }
+
 // Starting with ICU 4.8, an ASCII apostrophe only starts quoted text if it immediately precedes
 // a character that requires quoting (that is, "only where needed"), and works the same in
 // nested messages as on the top level of the pattern. The new behavior is otherwise compatible.
-quotedString = "'" escapedChar:([{}]) quotedChars:$("''" / [^'])* "'"? {
+quotedString = "'" escapedChar:escapedChar quotedChars:$("''" / [^'])* "'"? {
     return escapedChar + quotedChars.replace(`''`, `'`);
 }
-unquotedString = $([^{}]);
+
+unquotedString = $(x:. &{
+    return (
+        x !== '{' &&
+        !(isInPluralOption() && x === '#') &&
+        !(isNestedMessageText() && x === '}')
+    );
+} / '\n')
+
+escapedChar = $(x:. &{
+    return x === '{' || x === '}' || (isInPluralOption() && x === '#');
+})
 
 argNameOrNumber 'argNameOrNumber' = $(argNumber / argName)
 argNumber 'argNumber' = '0' { return 0 }

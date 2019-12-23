@@ -1,6 +1,7 @@
 import {pegParse} from '../src/parser';
 
 test('unescaped string literals', () => {
+  expect(pegParse('}')).toMatchSnapshot();
   expect(pegParse('line1\n  line2')).toMatchSnapshot();
 });
 
@@ -31,4 +32,15 @@ test('apostrophe quote can be unclosed', () => {
   expect(pegParse("You have '{count'")).toMatchSnapshot();
   expect(pegParse("You have '{count")).toMatchSnapshot();
   expect(pegParse("You have '{count}")).toMatchSnapshot();
+  expect(
+    pegParse(
+      "You {count, plural, one {worked for '#' hour} other {worked for '#' hours}} today."
+    )
+  ).toMatchSnapshot();
+  expect(
+    // '# hour} other {worked for ' is quoted.
+    pegParse(
+      "You {count, plural, one {worked for '# hour} other {worked for '# hours}} today."
+    )
+  ).toMatchSnapshot();
 });
