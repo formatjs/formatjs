@@ -161,7 +161,7 @@ selectElement
     }
 
 pluralRuleSelectValue
-    = $('=' number) 
+    = $('=' number)
     / argName
 
 selectOption
@@ -194,10 +194,10 @@ patternSyntax 'syntax pattern' = [!-\/:-@\[-\^`\{-~\xA1-\xA7\xA9\xAB\xAC\xAE\xB0
 _ 'optional whitespace' = $(patternWhiteSpace*)
 
 number 'number' = negative:'-'? num:argNumber {
-    return num 
-        ? negative 
-            ? -num 
-            : num 
+    return num
+        ? negative
+            ? -num
+            : num
         : 0
 }
 
@@ -206,7 +206,7 @@ doubleApostrophes 'double apostrophes' = "''" { return `'`; }
 // Starting with ICU 4.8, an ASCII apostrophe only starts quoted text if it immediately precedes
 // a character that requires quoting (that is, "only where needed"), and works the same in
 // nested messages as on the top level of the pattern. The new behavior is otherwise compatible.
-quotedString = "'" escapedChar:([{}]) quotedChars:$("''" / [^'])* "'" {
+quotedString = "'" escapedChar:([{}]) quotedChars:$("''" / [^'])* "'"? {
     return escapedChar + quotedChars.replace(`''`, `'`);
 }
 unquotedString = $([^{}]);
@@ -215,5 +215,5 @@ argNameOrNumber 'argNameOrNumber' = $(argNumber / argName)
 argNumber 'argNumber' = '0' { return 0 }
     / digits:([1-9][0-9]*) {
         return parseInt(digits.join(''), 10);
-    } 
+    }
 argName 'argName' = $((!(patternWhiteSpace / patternSyntax) .)+)

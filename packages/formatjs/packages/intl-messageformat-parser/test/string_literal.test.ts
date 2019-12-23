@@ -19,3 +19,16 @@ test('does not start quoted text if apostrophe does not immediately precede a ch
   expect(pegParse(`'aa''b'`)).toMatchSnapshot();
   expect(pegParse(`I don't know`)).toMatchSnapshot();
 });
+
+test('apostrophe quote can be unclosed', () => {
+  // Substring starting at th apostrophe are all escaped because the quote did not close
+  expect(pegParse(`a '{a{ {}{}{} ''bb`)).toMatchSnapshot();
+  // The apostrophe here does not start a quote because it is not followed by `{` or `}`,
+  // so the `{}` is invalid syntax.
+  expect(() => pegParse(`a 'a {}{}`)).toThrow();
+  // The last apostrophe ends the escaping, therefore the last `{}` is invalid syntax.
+  expect(() => pegParse(`a '{a{ {}{}{}}}''' \n {}`)).toThrow();
+  expect(pegParse("You have '{count'")).toMatchSnapshot();
+  expect(pegParse("You have '{count")).toMatchSnapshot();
+  expect(pegParse("You have '{count}")).toMatchSnapshot();
+});
