@@ -323,6 +323,7 @@ export class UnifiedNumberFormat
       x = formatNumberResult.roundedNumber;
     }
     const pattern = getNumberFormatPattern(this, x, exponent);
+    console.log('pattern----', pattern);
     const patternParts = pattern.split(/({\w+})/).filter(Boolean);
     const results: UnifiedNumberFormatPart[] = [];
     for (const part of patternParts) {

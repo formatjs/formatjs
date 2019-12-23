@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 import {Suite} from 'benchmark';
-import {unpackData} from '@formatjs/intl-utils';
+import {unpackData, CurrencyPattern} from '@formatjs/intl-utils';
 import {
   rawDataToInternalSlots,
   extractILD,
@@ -21,7 +21,50 @@ function onComplete(this: any) {
   );
 }
 
-const en = require('../dist/locale-data/en.json');
+import * as en from '../dist/locale-data/en.json'
+
+function dummyCreateCurrencyPattern() {
+  const {
+    data: {en: {currencies}},
+  } = en;
+  return Object.keys(currencies).reduce(
+    (all: Record<string, CurrencyPattern>, c) => {
+      all[c] = ['code', 'symbol', 'narrowSymbol', 'name'].reduce(
+        (all: any, c) => {
+          all[c] = ['standard', 'accounting'].reduce((all: any, c) => {
+            all[c] = ['always', 'auto', 'never', 'exceptZero'].reduce(
+              (all: any, c) => {
+                all[c] = [
+                  'standard',
+                  'scientific',
+                  'compactShort',
+                  'compactLong',
+                ].reduce((all: any, c) => {
+                  all[c] = [
+                    'positivePattern',
+                    'zeroPattern',
+                    'negativePattern',
+                  ].reduce((all: any, c) => {
+                    all[c] = '';
+                    return all;
+                  }, {});
+                  return all;
+                }, {});
+                return all;
+              },
+              {}
+            );
+            return all;
+          }, {});
+          return all;
+        },
+        {} as CurrencyPattern
+      );
+      return all;
+    },
+    {}
+  );
+}
 
 function addData() {
   const availableLocales: string[] = Object.keys(
@@ -82,4 +125,5 @@ new Suite('UnifiedNumberFormat data processing', {
       'latn'
     )
   )
+  .add('dummyCreateCurrencyPattern', dummyCreateCurrencyPattern)
   .run();

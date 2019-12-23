@@ -142,7 +142,7 @@ function test() {
     );
   });
 
-  describe('currency', function() {
+  describe.only('currency', function() {
     CURRENCY_DISPLAYS.forEach(currencyDisplay =>
       describe(`currencyDisplay/${currencyDisplay}`, function() {
         CURRENCY_SIGNS.forEach(currencySign =>

@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`data extractStandardCurrencyPattern 1`] = `
+Object {
+  "always": Object {
+    "compactLong": Object {
+      "negativePattern": "{minusSign}¤{number}{compactSymbol}",
+      "positivePattern": "{plusSign}¤{number}{compactSymbol}",
+      "zeroPattern": "{plusSign}¤{number}{compactSymbol}",
+    },
+    "compactShort": Object {
+      "negativePattern": "{minusSign}¤{number}{compactSymbol}",
+      "positivePattern": "{plusSign}¤{number}{compactSymbol}",
+      "zeroPattern": "{plusSign}¤{number}{compactSymbol}",
+    },
+    "scientific": Object {
+      "negativePattern": "{minusSign}¤{number}{scientificSeparator}{scientificExponent}",
+      "positivePattern": "{plusSign}¤{number}{scientificSeparator}{scientificExponent}",
+      "zeroPattern": "{plusSign}¤{number}{scientificSeparator}{scientificExponent}",
+    },
+    "standard": Object {
+      "negativePattern": "{minusSign}¤{number}",
+      "positivePattern": "{plusSign}¤{number}",
+      "zeroPattern": "{plusSign}¤{number}",
+    },
+  },
+  "auto": Object {
+    "compactLong": Object {
+      "negativePattern": "{minusSign}¤{number}{compactSymbol}",
+      "positivePattern": "¤{number}{compactSymbol}",
+      "zeroPattern": "¤{number}{compactSymbol}",
+    },
+    "compactShort": Object {
+      "negativePattern": "{minusSign}¤{number}{compactSymbol}",
+      "positivePattern": "¤{number}{compactSymbol}",
+      "zeroPattern": "¤{number}{compactSymbol}",
+    },
+    "scientific": Object {
+      "negativePattern": "{minusSign}¤{number}{scientificSeparator}{scientificExponent}",
+      "positivePattern": "¤{number}{scientificSeparator}{scientificExponent}",
+      "zeroPattern": "¤{number}{scientificSeparator}{scientificExponent}",
+    },
+    "standard": Object {
+      "negativePattern": "{minusSign}¤{number}",
+      "positivePattern": "¤{number}",
+      "zeroPattern": "¤{number}",
+    },
+  },
+  "exceptZero": Object {
+    "compactLong": Object {
+      "negativePattern": "{minusSign}¤{number}{compactSymbol}",
+      "positivePattern": "{plusSign}¤{number}{compactSymbol}",
+      "zeroPattern": "¤{number}{compactSymbol}",
+    },
+    "compactShort": Object {
+      "negativePattern": "{minusSign}¤{number}{compactSymbol}",
+      "positivePattern": "{plusSign}¤{number}{compactSymbol}",
+      "zeroPattern": "¤{number}{compactSymbol}",
+    },
+    "scientific": Object {
+      "negativePattern": "{minusSign}¤{number}{scientificSeparator}{scientificExponent}",
+      "positivePattern": "{plusSign}¤{number}{scientificSeparator}{scientificExponent}",
+      "zeroPattern": "¤{number}{scientificSeparator}{scientificExponent}",
+    },
+    "standard": Object {
+      "negativePattern": "{minusSign}¤{number}",
+      "positivePattern": "{plusSign}¤{number}",
+      "zeroPattern": "¤{number}",
+    },
+  },
+  "never": Object {
+    "compactLong": Object {
+      "negativePattern": "¤{number}{compactSymbol}",
+      "positivePattern": "¤{number}{compactSymbol}",
+      "zeroPattern": "¤{number}{compactSymbol}",
+    },
+    "compactShort": Object {
+      "negativePattern": "¤{number}{compactSymbol}",
+      "positivePattern": "¤{number}{compactSymbol}",
+      "zeroPattern": "¤{number}{compactSymbol}",
+    },
+    "scientific": Object {
+      "negativePattern": "¤{number}{scientificSeparator}{scientificExponent}",
+      "positivePattern": "¤{number}{scientificSeparator}{scientificExponent}",
+      "zeroPattern": "¤{number}{scientificSeparator}{scientificExponent}",
+    },
+    "standard": Object {
+      "negativePattern": "¤{number}",
+      "positivePattern": "¤{number}",
+      "zeroPattern": "¤{number}",
+    },
+  },
+}
+`;
+
+exports[`data replaceCurrencySymbolWithToken 1`] = `"{plusSign}{currencyNarrowSymbol} {number}{compactSymbol}"`;
