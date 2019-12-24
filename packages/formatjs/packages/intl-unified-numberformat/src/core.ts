@@ -303,6 +303,9 @@ export class UnifiedNumberFormat
         getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'currency')
       ),
     });
+    // test262/test/intl402/NumberFormat/prototype/format/bound-to-numberformat-instance.js
+    this.format = this.format.bind(this);
+    this.formatToParts = this.formatToParts.bind(this);
   }
 
   format(num: number) {
