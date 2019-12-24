@@ -22,6 +22,7 @@ import {
   LDMLPluralRuleMap,
   NumberILD,
   NumberLocalePatternData,
+  SANCTIONED_UNITS,
 } from '@formatjs/intl-utils';
 import {
   toRawFixed,
@@ -52,6 +53,48 @@ const RESOLVED_OPTIONS_KEYS = [
   'compactDisplay',
   'signDisplay',
 ] as const;
+
+const SHORTENED_SACTION_UNITS = SANCTIONED_UNITS.map(unit =>
+  unit.replace(/^(.*?)-/, '')
+);
+
+/**
+ * https://tc39.es/proposal-unified-intl-numberformat/section6/locales-currencies-tz_proposed_out.html#sec-iswellformedunitidentifier
+ * @param unit
+ */
+function isWellFormedUnitIdentifier(unit: string) {
+  if (SHORTENED_SACTION_UNITS.indexOf(unit) > -1) {
+    return true;
+  }
+  const units = unit.split('-per-');
+  if (units.length !== 2) {
+    return false;
+  }
+  if (
+    SHORTENED_SACTION_UNITS.indexOf(units[0]) < 0 ||
+    SHORTENED_SACTION_UNITS.indexOf(units[1]) < 0
+  ) {
+    return false;
+  }
+  return true;
+}
+
+const NOT_A_Z_REGEX = /[^A-Z]/;
+
+/**
+ * https://tc39.es/proposal-unified-intl-numberformat/section6/locales-currencies-tz_proposed_out.html#sec-iswellformedcurrencycode
+ * @param currency
+ */
+function isWellFormedCurrencyCode(currency: string): boolean {
+  currency = currency.toUpperCase();
+  if (currency.length !== 3) {
+    return false;
+  }
+  if (NOT_A_Z_REGEX.test(currency)) {
+    return false;
+  }
+  return true;
+}
 
 /**
  * Check if a formatting number with unit is supported
@@ -182,74 +225,14 @@ export class UnifiedNumberFormat
     });
 
     // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-setnumberformatunitoptions
-    const style = getOption(
-      options,
-      'style',
-      'string',
-      ['decimal', 'percent', 'currency', 'unit'],
-      'decimal'
-    );
-    const currency = getOption(
-      options,
-      'currency',
-      'string',
-      undefined,
-      undefined
-    );
-    const currencyDisplay = getOption(
-      options,
-      'currencyDisplay',
-      'string',
-      ['code', 'symbol', 'narrowSymbol', 'name'],
-      'symbol'
-    );
-    const currencySign = getOption(
-      options,
-      'currencySign',
-      'string',
-      ['standard', 'accounting'],
-      'standard'
-    );
-    const unit = getOption(options, 'unit', 'string', undefined, undefined);
-    const unitDisplay = getOption(
-      options,
-      'unitDisplay',
-      'string',
-      ['short', 'narrow', 'long'],
-      'short'
-    );
-    const ild = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ild');
-    if (style === 'currency') {
-      if (!currency || !ild.currencySymbols[currency.toUpperCase()]) {
-        throw TypeError('Currency code is required with currency style.');
-      }
-    } else if (style === 'unit') {
-      if (!unit || !ild.unitSymbols[unit.toLowerCase()]) {
-        throw TypeError('Invalid unit argument for Intl.NumberFormat()');
-      }
-    }
-    setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
-      style,
-      currency,
-      currencyDisplay,
-      currencySign,
-      unit,
-      unitDisplay,
-      patterns: extractPatterns(
-        ildData.units,
-        ildData.currencies,
-        ildData.numbers,
-        numberingSystem,
-        unit,
-        currency
-      ),
-    });
+    setNumberFormatUnitOptions(this, options);
+    const style = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'style');
     // ---
 
     let mnfdDefault: number;
     let mxfdDefault: number;
     if (style === 'currency') {
-      // `currency` is checked above.
+      const currency = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'currency');
       const cDigits = currencyDigits(currency!);
       mnfdDefault = cDigits;
       mxfdDefault = cDigits;
@@ -299,6 +282,7 @@ export class UnifiedNumberFormat
       undefined,
       true
     );
+    setInternalSlot(__INTERNAL_SLOT_MAP__, this, 'useGrouping', useGrouping);
     const signDisplay = getOption(
       options,
       'signDisplay',
@@ -306,12 +290,19 @@ export class UnifiedNumberFormat
       ['auto', 'never', 'always', 'exceptZero'],
       'auto'
     );
-    setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
-      useGrouping,
-      signDisplay,
-    });
+    setInternalSlot(__INTERNAL_SLOT_MAP__, this, 'signDisplay', signDisplay);
 
     this.pl = new Intl.PluralRules(locales);
+    setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
+      patterns: extractPatterns(
+        ildData.units,
+        ildData.currencies,
+        ildData.numbers,
+        numberingSystem,
+        getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'unit'),
+        getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'currency')
+      ),
+    });
   }
 
   format(num: number) {
@@ -325,6 +316,7 @@ export class UnifiedNumberFormat
     let exponent = 0;
     const ild = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ild');
     let n: string;
+    x = toNumeric(x) as number;
     if (isNaN(x)) {
       n = ild.symbols.nan;
     } else if (!isFinite(x)) {
@@ -581,6 +573,75 @@ interface FormatNumberResult {
   formattedString: string;
 }
 
+function setNumberFormatUnitOptions(
+  nf: UnifiedNumberFormat,
+  options: UnifiedNumberFormatOptions = {}
+) {
+  // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-setnumberformatunitoptions
+  const style = getOption(
+    options,
+    'style',
+    'string',
+    ['decimal', 'percent', 'currency', 'unit'],
+    'decimal'
+  );
+  setInternalSlot(__INTERNAL_SLOT_MAP__, nf, 'style', style);
+  const currency = getOption(
+    options,
+    'currency',
+    'string',
+    undefined,
+    undefined
+  );
+  if (currency !== undefined && !isWellFormedCurrencyCode(currency)) {
+    throw RangeError('Malformed currency code');
+  }
+  const currencyDisplay = getOption(
+    options,
+    'currencyDisplay',
+    'string',
+    ['code', 'symbol', 'narrowSymbol', 'name'],
+    'symbol'
+  );
+  const currencySign = getOption(
+    options,
+    'currencySign',
+    'string',
+    ['standard', 'accounting'],
+    'standard'
+  );
+  const unit = getOption(options, 'unit', 'string', undefined, undefined);
+  if (unit !== undefined && !isWellFormedUnitIdentifier(unit)) {
+    throw RangeError('Invalid unit argument for Intl.NumberFormat()');
+  }
+  const unitDisplay = getOption(
+    options,
+    'unitDisplay',
+    'string',
+    ['short', 'narrow', 'long'],
+    'short'
+  );
+
+  if (style === 'currency') {
+    if (currency === undefined) {
+      throw new TypeError('currency cannot be undefined');
+    }
+    setMultiInternalSlots(__INTERNAL_SLOT_MAP__, nf, {
+      currency: currency.toUpperCase(),
+      currencyDisplay,
+      currencySign,
+    });
+  } else if (style === 'unit') {
+    if (unit === undefined) {
+      throw new TypeError('unit cannot be undefined');
+    }
+    setMultiInternalSlots(__INTERNAL_SLOT_MAP__, nf, {
+      unit,
+      unitDisplay,
+    });
+  }
+}
+
 // Taking the shortcut here and used the native NumberFormat for formatting numbers.
 function formatNumberToString(
   numberFormat: UnifiedNumberFormat,
@@ -784,4 +845,40 @@ function selectPlural(
   rules: LDMLPluralRuleMap<string>
 ): string {
   return rules[pl.select(x) as LDMLPluralRule] || rules.other;
+}
+
+function toNumeric(val: any) {
+  if (typeof val === 'bigint') {
+    return val;
+  }
+  return Number(val);
+}
+
+try {
+  // IE11 does not have Symbol
+  if (typeof Symbol !== 'undefined') {
+    Object.defineProperty(UnifiedNumberFormat.prototype, Symbol.toStringTag, {
+      value: 'Object',
+      writable: false,
+      enumerable: false,
+      configurable: true,
+    });
+  }
+
+  // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/constructor/length.js
+  Object.defineProperty(UnifiedNumberFormat.prototype.constructor, 'length', {
+    value: 0,
+    writable: false,
+    enumerable: false,
+    configurable: true,
+  });
+  // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/constructor/supportedLocalesOf/length.js
+  Object.defineProperty(UnifiedNumberFormat.supportedLocalesOf, 'length', {
+    value: 1,
+    writable: false,
+    enumerable: false,
+    configurable: true,
+  });
+} catch (e) {
+  // Meta fix so we're test262-compliant, not important
 }
