@@ -9,6 +9,12 @@ export interface RawNumberFormatResult {
  * @param x number
  */
 export function logBase10(x: number): number {
+  if (x < 1) {
+    const fraction = String(x).split('.')[1];
+    let exponent = 0;
+    for (; fraction[exponent] === '0'; exponent++);
+    return -exponent - 1;
+  }
   return String(Math.floor(x)).length - 1;
 }
 

@@ -52,15 +52,6 @@ export default [
     input: './dist-es6/polyfill-locales.js',
     output: {
       sourcemap: true,
-      file: 'dist/umd/polyfill-with-locales.js',
-      format: 'umd',
-    },
-    plugins: [resolveConfig, jsonConfig]
-  },
-  {
-    input: './dist-es6/polyfill-locales.js',
-    output: {
-      sourcemap: true,
       file: 'dist/polyfill-with-locales-for-test262.min.js',
       format: 'umd',
       exports: 'named',

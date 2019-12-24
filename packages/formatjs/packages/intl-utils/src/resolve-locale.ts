@@ -42,7 +42,10 @@ export function createResolveLocale<
         `locale data ${key} must be an object`
       );
       const keyLocaleData = foundLocaleData[key];
-      invariant(Array.isArray(keyLocaleData), 'keyLocaleData must be an array');
+      invariant(
+        Array.isArray(keyLocaleData),
+        `keyLocaleData for ${key} must be an array`
+      );
       let value = keyLocaleData[0];
       invariant(
         typeof value === 'string' || value === null,

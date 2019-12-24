@@ -58,11 +58,37 @@ const SHORTENED_SACTION_UNITS = SANCTIONED_UNITS.map(unit =>
   unit.replace(/^(.*?)-/, '')
 );
 
+const NOT_A_Z_REGEX = /[^A-Z]/;
+
+function toUpperCase(str: string): string {
+  return str.replace(/([a-z])/g, (_, c) => c.toUpperCase());
+}
+
+function toLowerCase(str: string): string {
+  return str.replace(/([A-Z])/g, (_, c) => c.toLowerCase());
+}
+
+/**
+ * https://tc39.es/proposal-unified-intl-numberformat/section6/locales-currencies-tz_proposed_out.html#sec-iswellformedcurrencycode
+ * @param currency
+ */
+function isWellFormedCurrencyCode(currency: string): boolean {
+  currency = toUpperCase(currency);
+  if (currency.length !== 3) {
+    return false;
+  }
+  if (NOT_A_Z_REGEX.test(currency)) {
+    return false;
+  }
+  return true;
+}
+
 /**
  * https://tc39.es/proposal-unified-intl-numberformat/section6/locales-currencies-tz_proposed_out.html#sec-iswellformedunitidentifier
  * @param unit
  */
 function isWellFormedUnitIdentifier(unit: string) {
+  unit = toLowerCase(unit);
   if (SHORTENED_SACTION_UNITS.indexOf(unit) > -1) {
     return true;
   }
@@ -74,23 +100,6 @@ function isWellFormedUnitIdentifier(unit: string) {
     SHORTENED_SACTION_UNITS.indexOf(units[0]) < 0 ||
     SHORTENED_SACTION_UNITS.indexOf(units[1]) < 0
   ) {
-    return false;
-  }
-  return true;
-}
-
-const NOT_A_Z_REGEX = /[^A-Z]/;
-
-/**
- * https://tc39.es/proposal-unified-intl-numberformat/section6/locales-currencies-tz_proposed_out.html#sec-iswellformedcurrencycode
- * @param currency
- */
-function isWellFormedCurrencyCode(currency: string): boolean {
-  currency = currency.toUpperCase();
-  if (currency.length !== 3) {
-    return false;
-  }
-  if (NOT_A_Z_REGEX.test(currency)) {
     return false;
   }
   return true;
@@ -163,10 +172,11 @@ interface UnifiedNumberFormatInternal extends NumberFormatDigitInternalSlots {
   signDisplay: NonNullable<UnifiedNumberFormatOptions['signDisplay']>;
   useGrouping: boolean;
   patterns: NumberLocalePatternData;
-  nu: string[];
   // Locale-dependent formatter data
   ild: NumberILD;
   numberingSystem: string;
+  relevantExtensionKeys: string[];
+  availableLocales: string[];
 }
 
 const __INTERNAL_SLOT_MAP__ = new WeakMap<
@@ -178,6 +188,113 @@ function currencyDigits(c: string): number {
   return c in currencyDigitsData ? currencyDigitsData[c as 'ADP'] : 2;
 }
 
+function initializeNumberFormat(
+  nf: UnifiedNumberFormat,
+  locales?: string | string[],
+  opts?: UnifiedNumberFormatOptions
+) {
+  const requestedLocales = getCanonicalLocales(locales);
+  const options = opts === undefined ? Object.create(null) : toObject(opts);
+  const opt: any = Object.create(null);
+  const matcher = getOption(
+    options,
+    'localeMatcher',
+    'string',
+    ['best fit', 'lookup'],
+    'best fit'
+  );
+  opt.localeMatcher = matcher;
+  const {localeData} = UnifiedNumberFormat;
+  const r = createResolveLocale(UnifiedNumberFormat.getDefaultLocale)(
+    getInternalSlot(__INTERNAL_SLOT_MAP__, nf, 'availableLocales'),
+    requestedLocales,
+    opt,
+    getInternalSlot(__INTERNAL_SLOT_MAP__, nf, 'relevantExtensionKeys'),
+    localeData
+  );
+  const ildData = localeData[r.locale];
+  const numberingSystem = r.nu;
+  setMultiInternalSlots(__INTERNAL_SLOT_MAP__, nf, {
+    locale: r.locale,
+    dataLocale: r.dataLocale,
+    numberingSystem,
+    ild: extractILD(
+      ildData.units,
+      ildData.currencies,
+      ildData.numbers,
+      numberingSystem
+    ),
+  });
+
+  // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-setnumberformatunitoptions
+  setNumberFormatUnitOptions(nf, options);
+  const style = getInternalSlot(__INTERNAL_SLOT_MAP__, nf, 'style');
+  // ---
+
+  let mnfdDefault: number;
+  let mxfdDefault: number;
+  if (style === 'currency') {
+    const currency = getInternalSlot(__INTERNAL_SLOT_MAP__, nf, 'currency');
+    const cDigits = currencyDigits(currency!);
+    mnfdDefault = cDigits;
+    mxfdDefault = cDigits;
+  } else {
+    mnfdDefault = 0;
+    mxfdDefault = style === 'percent' ? 0 : 3;
+  }
+
+  const notation = getOption(
+    options,
+    'notation',
+    'string',
+    ['standard', 'scientific', 'engineering', 'compact'],
+    'standard'
+  );
+  setInternalSlot(__INTERNAL_SLOT_MAP__, nf, 'notation', notation);
+
+  setNumberFormatDigitOptions(
+    __INTERNAL_SLOT_MAP__,
+    nf,
+    options,
+    mnfdDefault,
+    mxfdDefault,
+    notation
+  );
+
+  const compactDisplay = getOption(
+    options,
+    'compactDisplay',
+    'string',
+    ['short', 'long'],
+    'short'
+  );
+  if (notation === 'compact') {
+    setInternalSlot(
+      __INTERNAL_SLOT_MAP__,
+      nf,
+      'compactDisplay',
+      compactDisplay
+    );
+  }
+
+  const useGrouping = getOption(
+    options,
+    'useGrouping',
+    'boolean',
+    undefined,
+    true
+  );
+  setInternalSlot(__INTERNAL_SLOT_MAP__, nf, 'useGrouping', useGrouping);
+  const signDisplay = getOption(
+    options,
+    'signDisplay',
+    'string',
+    ['auto', 'never', 'always', 'exceptZero'],
+    'auto'
+  );
+  setInternalSlot(__INTERNAL_SLOT_MAP__, nf, 'signDisplay', signDisplay);
+}
+
 export class UnifiedNumberFormat
   implements Omit<Intl.NumberFormat, 'formatToParts'> {
   // private nf: Intl.NumberFormat;
@@ -186,111 +303,27 @@ export class UnifiedNumberFormat
   // private currencyNarrowSymbol?: string;
   constructor(
     locales?: string | string[],
-    options: UnifiedNumberFormatOptions = {}
+    options?: UnifiedNumberFormatOptions
   ) {
-    options = options === undefined ? Object.create(null) : toObject(options);
+    // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
+    const newTarget =
+      this && this instanceof UnifiedNumberFormat ? this.constructor : void 0;
+    if (!newTarget) {
+      throw new TypeError("Intl.PluralRules must be called with 'new'");
+    }
 
-    // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-initializenumberformat
-    const opt: any = Object.create(null);
-    const matcher = getOption(
-      options,
-      'localeMatcher',
-      'string',
-      ['best fit', 'lookup'],
-      'best fit'
-    );
-    opt.localeMatcher = matcher;
-    const {localeData} = UnifiedNumberFormat;
-    const requestedLocales = getCanonicalLocales(locales);
-    const r = createResolveLocale(UnifiedNumberFormat.getDefaultLocale)(
-      UnifiedNumberFormat.availableLocales,
-      requestedLocales,
-      opt,
-      UnifiedNumberFormat.relevantExtensionKeys,
-      localeData
-    );
-    const ildData = localeData[r.locale];
-    const numberingSystem = r.nu || ildData.numbers.nu[0];
     setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
-      locale: r.locale,
-      dataLocale: r.dataLocale,
-      numberingSystem,
-      ild: extractILD(
-        ildData.units,
-        ildData.currencies,
-        ildData.numbers,
-        numberingSystem
-      ),
-      nu: ildData.numbers.nu,
+      relevantExtensionKeys: ['nu'],
+      availableLocales: UnifiedNumberFormat.availableLocales,
     });
 
-    // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-setnumberformatunitoptions
-    setNumberFormatUnitOptions(this, options);
-    const style = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'style');
-    // ---
+    initializeNumberFormat(this, locales, options);
 
-    let mnfdDefault: number;
-    let mxfdDefault: number;
-    if (style === 'currency') {
-      const currency = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'currency');
-      const cDigits = currencyDigits(currency!);
-      mnfdDefault = cDigits;
-      mxfdDefault = cDigits;
-    } else {
-      mnfdDefault = 0;
-      mxfdDefault = style === 'percent' ? 0 : 3;
-    }
-
-    const notation = getOption(
-      options,
-      'notation',
-      'string',
-      ['standard', 'scientific', 'engineering', 'compact'],
-      'standard'
-    );
-    setInternalSlot(__INTERNAL_SLOT_MAP__, this, 'notation', notation);
-
-    setNumberFormatDigitOptions(
-      __INTERNAL_SLOT_MAP__,
-      this,
-      options,
-      mnfdDefault,
-      mxfdDefault,
-      notation
-    );
-
-    const compactDisplay = getOption(
-      options,
-      'compactDisplay',
-      'string',
-      ['short', 'long'],
-      'short'
-    );
-    if (notation === 'compact') {
-      setInternalSlot(
-        __INTERNAL_SLOT_MAP__,
-        this,
-        'compactDisplay',
-        compactDisplay
-      );
-    }
-
-    const useGrouping = getOption(
-      options,
-      'useGrouping',
-      'boolean',
-      undefined,
-      true
-    );
-    setInternalSlot(__INTERNAL_SLOT_MAP__, this, 'useGrouping', useGrouping);
-    const signDisplay = getOption(
-      options,
-      'signDisplay',
-      'string',
-      ['auto', 'never', 'always', 'exceptZero'],
-      'auto'
-    );
-    setInternalSlot(__INTERNAL_SLOT_MAP__, this, 'signDisplay', signDisplay);
+    const {
+      localeData: {
+        [getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'locale')]: ildData,
+      },
+    } = UnifiedNumberFormat;
 
     this.pl = new Intl.PluralRules(locales);
     setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
@@ -298,7 +331,7 @@ export class UnifiedNumberFormat
         ildData.units,
         ildData.currencies,
         ildData.numbers,
-        numberingSystem,
+        getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'numberingSystem'),
         getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'unit'),
         getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'currency')
       ),
@@ -308,13 +341,13 @@ export class UnifiedNumberFormat
     this.formatToParts = this.formatToParts.bind(this);
   }
 
-  format(num: number) {
+  format(num: number | string) {
     return this.formatToParts(num)
       .map(x => x.value)
       .join('');
   }
 
-  formatToParts(x: number): UnifiedNumberFormatPart[] {
+  formatToParts(x: number | string): UnifiedNumberFormatPart[] {
     // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-partitionnumberpattern
     let exponent = 0;
     const ild = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ild');
@@ -546,7 +579,11 @@ export class UnifiedNumberFormat
       );
       for (const locale of availableLocales) {
         try {
-          UnifiedNumberFormat.localeData[locale] = datum.data;
+          UnifiedNumberFormat.localeData[locale] = {
+            ...datum.data,
+            // So that relevant key extensions work
+            nu: datum.data.numbers.nu,
+          };
         } catch (e) {
           // Ignore if we don't have data
         }
@@ -560,14 +597,15 @@ export class UnifiedNumberFormat
         UnifiedNumberFormat.availableLocales[0];
     }
   }
-  static localeData: Record<string, RawNumberLocaleData['data']> = {};
+  static localeData: Record<
+    string,
+    RawNumberLocaleData['data'] & {nu: string[]}
+  > = {};
   private static availableLocales: string[] = [];
   private static __defaultLocale = 'en';
-  private static getDefaultLocale() {
+  public static getDefaultLocale() {
     return UnifiedNumberFormat.__defaultLocale;
   }
-  // private static relevantExtensionKeys = ['nu'];
-  private static relevantExtensionKeys = [];
   public static polyfilled = true;
 }
 
@@ -867,6 +905,14 @@ try {
       configurable: true,
     });
   }
+
+  // test262/test/intl402/NumberFormat/name.js
+  Object.defineProperty(UnifiedNumberFormat, 'name', {
+    value: 'NumberFormat',
+    writable: false,
+    enumerable: false,
+    configurable: true,
+  });
 
   // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/constructor/length.js
   Object.defineProperty(UnifiedNumberFormat.prototype.constructor, 'length', {

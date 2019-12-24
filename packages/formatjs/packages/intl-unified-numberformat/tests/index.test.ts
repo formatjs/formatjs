@@ -4,6 +4,7 @@ UnifiedNumberFormat.__addLocaleData(require('../dist/locale-data/zh.json'));
 UnifiedNumberFormat.__addLocaleData(require('../dist/locale-data/en.json'));
 UnifiedNumberFormat.__addLocaleData(require('../dist/locale-data/en-US.json'));
 UnifiedNumberFormat.__addLocaleData(require('../dist/locale-data/en-BS.json'));
+UnifiedNumberFormat.__addLocaleData(require('../dist/locale-data/de.json'));
 
 const SIGN_DISPLAYS: Array<UnifiedNumberFormatOptions['signDisplay']> = [
   'auto',
@@ -67,9 +68,35 @@ function test() {
     ).toEqual(['zh', 'en-US']);
     expect(UnifiedNumberFormat.supportedLocalesOf(['af'])).toEqual([]);
   });
-
   it('should not crash if unit is not specified', function() {
     expect(new UnifiedNumberFormat().resolvedOptions().unit).toBeUndefined();
+  });
+
+  // Some test262
+  describe('test262 examples', function() {
+    const tests = [
+      ['0.000345', '345E-6', '3,45E-4'],
+      ['0.345', '345E-3', '3,45E-1'],
+      ['3.45', '3,45E0', '3,45E0'],
+      ['34.5', '34,5E0', '3,45E1'],
+      ['543', '543E0', '5,43E2'],
+      ['5430', '5,43E3', '5,43E3'],
+      ['543000', '543E3', '5,43E5'],
+      ['543211.1', '543,211E3', '5,432E5'],
+    ];
+
+    for (const [number, engineering, scientific] of tests) {
+      it(`number ${number}`, function() {
+        const nfEngineering = new UnifiedNumberFormat('de-DE', {
+          notation: 'engineering',
+        });
+        expect(nfEngineering.format(number)).toBe(engineering);
+        const nfScientific = new UnifiedNumberFormat('de-DE', {
+          notation: 'scientific',
+        });
+        expect(nfScientific.format(number)).toBe(scientific);
+      });
+    }
   });
 
   describe('decimal', function() {
