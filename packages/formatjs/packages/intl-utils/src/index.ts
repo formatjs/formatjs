@@ -14,6 +14,7 @@ export {
   setMultiInternalSlots,
   setNumberFormatDigitOptions,
   toObject,
+  objectIs,
 } from './polyfill-utils';
 export {
   createResolveLocale,

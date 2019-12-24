@@ -109,7 +109,7 @@ outputFileSync(
 import './polyfill';
 if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function') {
   Intl.NumberFormat.__addLocaleData(
-    ${['en', 'de', 'ja', 'ko', 'zh']
+    ${['en', 'de', 'ja', 'ko', 'zh', 'zh-Hant', 'zh-Hans']
       .map(locale => JSON.stringify(allData[locale]))
       .join(',\n')});
 }

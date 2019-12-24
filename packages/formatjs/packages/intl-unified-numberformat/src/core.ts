@@ -11,7 +11,6 @@ import {
   getInternalSlot,
   SignDisplayPattern,
   NotationPattern,
-  SignPattern,
   InternalSlotToken,
   LDMLPluralRule,
   RawNumberLocaleData,
@@ -23,6 +22,8 @@ import {
   NumberILD,
   NumberLocalePatternData,
   SANCTIONED_UNITS,
+  invariant,
+  objectIs,
 } from '@formatjs/intl-utils';
 import {
   toRawFixed,
@@ -341,18 +342,18 @@ export class UnifiedNumberFormat
     this.formatToParts = this.formatToParts.bind(this);
   }
 
-  format(num: number | string) {
+  format(num: number) {
     return this.formatToParts(num)
       .map(x => x.value)
       .join('');
   }
 
-  formatToParts(x: number | string): UnifiedNumberFormatPart[] {
+  formatToParts(originalX: number): UnifiedNumberFormatPart[] {
     // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-partitionnumberpattern
     let exponent = 0;
     const ild = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ild');
     let n: string;
-    x = toNumeric(x) as number;
+    let x = toNumeric(originalX) as number;
     if (isNaN(x)) {
       n = ild.symbols.nan;
     } else if (!isFinite(x)) {
@@ -367,7 +368,7 @@ export class UnifiedNumberFormat
       n = formatNumberResult.formattedString;
       x = formatNumberResult.roundedNumber;
     }
-    const pattern = getNumberFormatPattern(this, x, exponent);
+    const pattern = getNumberFormatPattern(this, originalX, exponent);
     const patternParts = pattern.split(/({\w+})/).filter(Boolean);
     const results: UnifiedNumberFormatPart[] = [];
     for (const part of patternParts) {
@@ -688,7 +689,7 @@ function formatNumberToString(
   numberFormat: UnifiedNumberFormat,
   x: number
 ): FormatNumberResult {
-  const isNegative = x < 0 || x === -0;
+  const isNegative = x < 0 || objectIs(x, -0);
   if (isNegative) {
     x = -x;
   }
@@ -815,7 +816,7 @@ function getNumberFormatPattern(
   x: number,
   exponent: number
 ): string {
-  const {style, patterns: slots, signDisplay, notation} = getMultiInternalSlots(
+  const {style, patterns: slots} = getMultiInternalSlots(
     __INTERNAL_SLOT_MAP__,
     numberFormat,
     'style',
@@ -854,30 +855,65 @@ function getNumberFormatPattern(
       patterns = slots.decimal;
       break;
   }
-
+  const notation = getInternalSlot(
+    __INTERNAL_SLOT_MAP__,
+    numberFormat,
+    'notation'
+  );
   let displayNotation: keyof NotationPattern = 'standard';
-  if (notation === 'scientific' || notation === 'engineering') {
-    displayNotation = 'scientific';
-  } else if (exponent !== 0) {
-    // Assert: notation is "compact".
-    const compactDisplay = getInternalSlot(
-      __INTERNAL_SLOT_MAP__,
-      numberFormat,
-      'compactDisplay'
-    )!;
-    displayNotation =
-      compactDisplay === 'short' ? 'compactShort' : 'compactLong';
+
+  if (!isNaN(x) && isFinite(x)) {
+    if (notation === 'scientific' || notation === 'engineering') {
+      displayNotation = 'scientific';
+    } else if (exponent !== 0) {
+      invariant(notation === 'compact', 'notation must be compact');
+      const compactDisplay = getInternalSlot(
+        __INTERNAL_SLOT_MAP__,
+        numberFormat,
+        'compactDisplay'
+      );
+      if (compactDisplay === 'short') {
+        displayNotation = 'compactShort';
+      } else {
+        invariant(compactDisplay === 'long', 'compactDisplay must be long');
+        displayNotation = 'compactLong';
+      }
+    }
   }
 
-  let sign: keyof SignPattern;
-  if (!isNaN(x) && (x < 0 || 1 / x === -Infinity)) {
-    sign = 'negativePattern';
-  } else if (x === 0) {
-    sign = 'zeroPattern';
+  const signDisplay = getInternalSlot(
+    __INTERNAL_SLOT_MAP__,
+    numberFormat,
+    'signDisplay'
+  );
+  const signPattern = patterns[signDisplay][displayNotation];
+  let pattern: string;
+  if (signDisplay === 'never') {
+    pattern = signPattern.zeroPattern;
+  } else if (signDisplay === 'auto') {
+    if (objectIs(x, 0) || x > 0 || isNaN(x)) {
+      pattern = signPattern.zeroPattern;
+    } else {
+      pattern = signPattern.negativePattern;
+    }
+  } else if (signDisplay === 'always') {
+    if (objectIs(x, 0) || x > 0 || isNaN(x)) {
+      pattern = signPattern.positivePattern;
+    } else {
+      pattern = signPattern.negativePattern;
+    }
   } else {
-    sign = 'positivePattern';
+    invariant(signDisplay === 'exceptZero', 'signDisplay must be exceptZero');
+    if (objectIs(x, 0) || isNaN(x)) {
+      pattern = signPattern.zeroPattern;
+    } else if (x > 0 || objectIs(x, +0)) {
+      pattern = signPattern.positivePattern;
+    } else {
+      pattern = signPattern.negativePattern;
+    }
   }
-  return patterns[signDisplay][displayNotation][sign];
+
+  return pattern;
 }
 
 function selectPlural(
