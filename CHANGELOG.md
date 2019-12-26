@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.10.0](https://github.com/formatjs/react-intl/compare/v3.9.2...v3.10.0) (2019-12-26)
+
+
+### Features
+
+* Upgrade intl-unified-numberformat & TypeScript ([ddf411a](https://github.com/formatjs/react-intl/commit/ddf411a6089005671f3d1ab8d11e04564da0f2e7))
+
 ### [3.9.2](https://github.com/formatjs/react-intl/compare/v3.9.1...v3.9.2) (2019-12-10)
 
 
