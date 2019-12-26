@@ -33,7 +33,7 @@ const SIGN_DISPLAYS: Array<keyof SignDisplayPattern> = [
 // per exponent (e.g for zh-TW, 1000 is just {number}, not {number}K).
 // This number is chosen so we generate the most general pattern for compact, e.g
 // {number}{compactSymbol} or sth like that
-const SPECIAL_NUMBER_HACK = '1000'
+const SPECIAL_NUMBER_HACK = '1000';
 
 const UNIT_DISPLAYS: Array<keyof UnitPattern> = ['narrow', 'long', 'short'];
 
@@ -208,7 +208,9 @@ function extractDecimalPattern(
   numberingSystem: string
 ): SignDisplayPattern {
   const compactShortSignPattern = extractSignPattern(
-    extractCompactSymbol(d.decimal[numberingSystem].short[SPECIAL_NUMBER_HACK].other)
+    extractCompactSymbol(
+      d.decimal[numberingSystem].short[SPECIAL_NUMBER_HACK].other
+    )
   );
   const compactLongSignPattern = extractSignPattern(
     extractCompactSymbol(
@@ -451,8 +453,10 @@ function extractCurrencyPatternForCurrency(
   const currencyAccountingPattern = d.currency[numberingSystem].accounting;
   const currencyShortPattern =
     d.currency[numberingSystem].short?.[1000].other || '';
-  const decimalShortPattern = d.decimal[numberingSystem].short[SPECIAL_NUMBER_HACK].other;
-  const decimalLongPattern = d.decimal[numberingSystem].long[SPECIAL_NUMBER_HACK].other;
+  const decimalShortPattern =
+    d.decimal[numberingSystem].short[SPECIAL_NUMBER_HACK].other;
+  const decimalLongPattern =
+    d.decimal[numberingSystem].long[SPECIAL_NUMBER_HACK].other;
   const currencySymbol = c[currency].symbol;
   const currencyNarrowSymbol = c[currency].narrow;
   const standardCurrencyPattern = {

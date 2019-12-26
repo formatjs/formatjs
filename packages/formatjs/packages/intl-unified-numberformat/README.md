@@ -16,11 +16,11 @@ This package requires the following capabilities:
 
 # Features
 
-1. `unit`, `unitDisplay`, `style: unit` and sanctioned units are supported
+Everything in the https://github.com/tc39/proposal-unified-intl-numberformat proposal with the caveats below.
 
 ## Caveats
 
-1. `formatToParts` does not include the `unit` part yet.
+1. `compact` notation is currently buggy in certain locales with special compact rules (such as `zh-Hant` or `Somali`) See https://github.com/tc39/proposal-unified-intl-numberformat/issues/26 for more details.
 
 # Usage
 
@@ -60,6 +60,16 @@ new Intl.NumberFormat('zh', {
   unit: 'bit',
   unitDisplay: 'long',
 }).format(1000); // 1,000比特
+
+new Intl.NumberFormat('en-US', {
+  notation: 'engineering',
+}).format(987654321); // 987.7E6
+
+new Intl.NumberFormat('zh', {
+  style: 'currency',
+  currency: 'EUR',
+  currencySign: 'accounting',
+}).format(-100); // (€100.00)
 ```
 
 ## Supported Units
