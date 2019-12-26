@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.5](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.5.4...eslint-plugin-formatjs@1.5.5) (2019-12-26)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** ignore msg decl for enforce-placeholders, fix [#356](https://github.com/formatjs/formatjs/issues/356) ([91915b8](https://github.com/formatjs/formatjs/commit/91915b84eb9c37e069c6b457f4a7249908d58a56))
+
+
+
+
+
 ## [1.5.4](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.5.3...eslint-plugin-formatjs@1.5.4) (2019-12-04)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

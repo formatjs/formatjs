@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.0.0](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.10.0...formatjs-extract-cldr-data@10.0.0) (2019-12-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-unified-numberformat:** add more tests ([5122cdc](https://github.com/formatjs/formatjs/commit/5122cdc340f2fcbf05c093075dd97c459cc5709c))
+* **@formatjs/intl-unified-numberformat:** fix more processing stuff ([b4f0e4a](https://github.com/formatjs/formatjs/commit/b4f0e4a6140586967d996b3b99c5f6d1acb107d0))
+* **@formatjs/intl-unified-numberformat:** fix unit issue ([8feb8e7](https://github.com/formatjs/formatjs/commit/8feb8e702736bf6c33974d9ae69dd2ac09d4bc37))
+* **@formatjs/intl-unified-numberformat:** more fixes on data extraction ([8c68d8a](https://github.com/formatjs/formatjs/commit/8c68d8adc085c81e97dc5ae170c578ad66de3a5e))
+* **@formatjs/intl-unified-numberformat:** more work on currency formatting ([5a5b8e6](https://github.com/formatjs/formatjs/commit/5a5b8e63783d48c86a87a9836e45415e27e38b26))
+* **@formatjs/intl-unified-numberformat:** more work on fixing currency pattern ([6cb0d67](https://github.com/formatjs/formatjs/commit/6cb0d6760404be8079361230537f1de1a4dd8c6e))
+* **@formatjs/intl-unified-numberformat:** move currency processing to lazy ([6e1d621](https://github.com/formatjs/formatjs/commit/6e1d62189373dc4fdf71614c78a353f96e28c8ed))
+* **@formatjs/intl-unified-numberformat:** use CLDR symbol instead of ISO code for currencySymbol ([4db663d](https://github.com/formatjs/formatjs/commit/4db663dbcf6066923781413b90ee0ce56dfff69f))
+
+
+### Features
+
+* **@formatjs/intl-unified-numberformat:** add currency support and currency matching algo ([786858d](https://github.com/formatjs/formatjs/commit/786858dc07cf82c4c6d0be968b3192e50f189567))
+* **@formatjs/intl-unified-numberformat:** add currency-digits extractions ([8261383](https://github.com/formatjs/formatjs/commit/82613832782e7dc7acf511fc911d910152d047e6))
+* **@formatjs/intl-unified-numberformat:** initial work on adding more stage 3 functionalities ([fc09006](https://github.com/formatjs/formatjs/commit/fc0900653586cd933a4b95c3c129ecad4010beed))
+* **@formatjs/intl-unified-numberformat:** more work on stage-3 APIs ([3f510ca](https://github.com/formatjs/formatjs/commit/3f510cac1906682db5a0fb721d62431e7ec0cb7d))
+* **@formatjs/intl-unified-numberformat:** more work on stage-3 APIs ([2ebf471](https://github.com/formatjs/formatjs/commit/2ebf4716131122ce9f5370c7cf8064a481460c5a))
+* **@formatjs/intl-unified-numberformat:** more work on stage-3 APIs ([a727599](https://github.com/formatjs/formatjs/commit/a727599ee0de1b01d15f488d70d5b3f7b3d602a6))
+* **@formatjs/intl-utils:** add InternalSlotToken enum ([dab275a](https://github.com/formatjs/formatjs/commit/dab275afe512dfd71d844e94f43f15f012316fba))
+* **formatjs-extract-cldr-data:** extract raw numbers ([6fa5f3f](https://github.com/formatjs/formatjs/commit/6fa5f3f68f61ad65f1a3c3b9c54f60da140fd802))
+* **formatjs-extract-cldr-data:** pull collapsing ldml to utils ([68d9d96](https://github.com/formatjs/formatjs/commit/68d9d96a02e0820f05a3b10badcda1a100aaa045))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-unified-numberformat:** Although API remains the same, the CLDR distributed data has changed
+
+
+
+
+
 # [9.10.0](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@9.9.8...formatjs-extract-cldr-data@9.10.0) (2019-12-02)
 
 

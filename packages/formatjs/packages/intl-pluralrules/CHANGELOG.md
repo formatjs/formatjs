@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@1.3.9...@formatjs/intl-pluralrules@1.4.0) (2019-12-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-unified-numberformat:** move currency processing to lazy ([6e1d621](https://github.com/formatjs/formatjs/commit/6e1d62189373dc4fdf71614c78a353f96e28c8ed))
+
+
+### Features
+
+* **@formatjs/intl-unified-numberformat:** initial work on currency narrowSymbol ([e379236](https://github.com/formatjs/formatjs/commit/e379236d8f06c2f520a981fce78e11a3f207384e))
+
+
+
+
+
 ## [1.3.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@1.3.8...@formatjs/intl-pluralrules@1.3.9) (2019-12-02)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules
