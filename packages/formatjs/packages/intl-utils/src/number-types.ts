@@ -148,15 +148,14 @@ export interface NumberInternalSlots {
 export type NumberLocaleData = LocaleData<NumberInternalSlots>;
 
 // All fields are optional due to de-duping
-export interface RawNumberLocaleData {
-  data: {
-    units: Record<string, UnitData>;
-    currencies: Record<string, CurrencyData>;
-    numbers: RawNumberData;
-  };
-  aliases: Record<string, string>;
-  availableLocales: string[];
-  parentLocales: Record<string, string>;
+export type RawNumberLocaleData = LocaleData<NumberLocaleInternalData>;
+
+export interface NumberLocaleInternalData {
+  units: Record<string, UnitData>;
+  currencies: Record<string, CurrencyData>;
+  numbers: RawNumberData;
+  // Bc of relevantExtensionKeys in the spec
+  nu: string[];
 }
 
 export interface UnitData {

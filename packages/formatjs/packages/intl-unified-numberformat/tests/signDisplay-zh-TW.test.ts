@@ -8,10 +8,6 @@ UnifiedNumberFormat.__addLocaleData(
   require('../dist/locale-data/zh-Hans.json')
 );
 
-function verifyFormatParts(actual: any[], expected: any[]) {
-  expect(actual).toEqual(expected);
-}
-
 const tests: any[] = [
   [
     'auto',
@@ -106,22 +102,22 @@ describe('signDisplay-zh-TW', function() {
     const nf = new UnifiedNumberFormat('zh-TW', {signDisplay});
     describe(signDisplay, function() {
       it('negative', function() {
-        verifyFormatParts(nf.formatToParts(-987), negative);
+        expect(nf.formatToParts(-987)).toEqual(negative);
       });
       it('negativeNearZero', function() {
-        verifyFormatParts(nf.formatToParts(-0.0001), negativeNearZero);
+        expect(nf.formatToParts(-0.0001)).toEqual(negativeNearZero);
       });
       it('negativeZero', function() {
-        verifyFormatParts(nf.formatToParts(-0), negativeZero);
+        expect(nf.formatToParts(-0)).toEqual(negativeZero);
       });
       it('zero', function() {
-        verifyFormatParts(nf.formatToParts(0), zero);
+        expect(nf.formatToParts(0)).toEqual(zero);
       });
       it.only('positiveNearZero', function() {
-        verifyFormatParts(nf.formatToParts(0.0001), positiveNearZero);
+        expect(nf.formatToParts(0.0001)).toEqual(positiveNearZero);
       });
       it('positive', function() {
-        verifyFormatParts(nf.formatToParts(987), positive);
+        expect(nf.formatToParts(987)).toEqual(positive);
       });
     });
   }

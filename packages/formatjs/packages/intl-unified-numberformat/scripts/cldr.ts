@@ -30,21 +30,17 @@ const allData = locales.reduce(
     if (!all[resolvedLocale]) {
       all[resolvedLocale] = {
         data: {
-          units: unitsData[locale],
-          currencies: currenciesData[locale],
-          numbers: numbersData[locale],
+          [resolvedLocale]: {
+            units: unitsData[locale],
+            currencies: currenciesData[locale],
+            numbers: numbersData[locale],
+            nu: numbersData[locale].nu,
+          },
         },
         availableLocales: [resolvedLocale],
         aliases,
         parentLocales,
       };
-    } else {
-      all[resolvedLocale].data = {
-        units: unitsData[locale],
-        currencies: currenciesData[locale],
-        numbers: numbersData[locale],
-      };
-      all[resolvedLocale].availableLocales.push(resolvedLocale);
     }
 
     return all;

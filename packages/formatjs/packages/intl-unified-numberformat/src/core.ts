@@ -24,6 +24,8 @@ import {
   SANCTIONED_UNITS,
   invariant,
   objectIs,
+  unpackData,
+  NumberLocaleInternalData,
 } from '@formatjs/intl-utils';
 import {
   toRawFixed,
@@ -580,13 +582,9 @@ export class UnifiedNumberFormat
       );
       for (const locale of availableLocales) {
         try {
-          UnifiedNumberFormat.localeData[locale] = {
-            ...datum.data,
-            // So that relevant key extensions work
-            nu: datum.data.numbers.nu,
-          };
+          UnifiedNumberFormat.localeData[locale] = unpackData(locale, datum);
         } catch (e) {
-          // Ignore if we don't have data
+          // Ignore if we got no data
         }
       }
     }
@@ -598,10 +596,7 @@ export class UnifiedNumberFormat
         UnifiedNumberFormat.availableLocales[0];
     }
   }
-  static localeData: Record<
-    string,
-    RawNumberLocaleData['data'] & {nu: string[]}
-  > = {};
+  static localeData: Record<string, NumberLocaleInternalData> = {};
   private static availableLocales: string[] = [];
   private static __defaultLocale = 'en';
   public static getDefaultLocale() {

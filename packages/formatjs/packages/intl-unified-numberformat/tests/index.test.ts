@@ -90,11 +90,11 @@ function test() {
         const nfEngineering = new UnifiedNumberFormat('de-DE', {
           notation: 'engineering',
         });
-        expect(nfEngineering.format(number)).toBe(engineering);
+        expect(nfEngineering.format(+number)).toBe(engineering);
         const nfScientific = new UnifiedNumberFormat('de-DE', {
           notation: 'scientific',
         });
-        expect(nfScientific.format(number)).toBe(scientific);
+        expect(nfScientific.format(+number)).toBe(scientific);
       });
     }
   });
