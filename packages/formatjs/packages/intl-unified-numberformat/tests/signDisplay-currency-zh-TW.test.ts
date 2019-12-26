@@ -8,15 +8,15 @@ UnifiedNumberFormat.__addLocaleData(
   require('../dist/locale-data/zh-Hans.json')
 );
 const tests: any[] = [
-  // [
-  //   "auto",
-  //   [{"type":"literal","value":"("},{"type":"currency","value":"US$"},{"type":"integer","value":"987"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"},{"type":"literal","value":")"}],
-  //   [{"type":"literal","value":"("},{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"},{"type":"literal","value":")"}],
-  //   [{"type":"literal","value":"("},{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"},{"type":"literal","value":")"}],
-  //   [{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
-  //   [{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
-  //   [{"type":"currency","value":"US$"},{"type":"integer","value":"987"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
-  // ],
+  [
+    "auto",
+    [{"type":"literal","value":"("},{"type":"currency","value":"US$"},{"type":"integer","value":"987"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"},{"type":"literal","value":")"}],
+    [{"type":"literal","value":"("},{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"},{"type":"literal","value":")"}],
+    [{"type":"literal","value":"("},{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"},{"type":"literal","value":")"}],
+    [{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
+    [{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
+    [{"type":"currency","value":"US$"},{"type":"integer","value":"987"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
+  ],
   [
     'always',
     [
@@ -65,26 +65,26 @@ const tests: any[] = [
       {type: 'fraction', value: '00'},
     ],
   ],
-  // [
-  //   "never",
-  //   [{"type":"currency","value":"US$"},{"type":"integer","value":"987"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
-  //   [{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
-  //   [{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
-  //   [{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
-  //   [{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
-  //   [{"type":"currency","value":"US$"},{"type":"integer","value":"987"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
-  // ],
-  // [
-  //   "exceptZero",
-  //   [{"type":"literal","value":"("},{"type":"currency","value":"US$"},{"type":"integer","value":"987"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"},{"type":"literal","value":")"}],
-  //   [{"type":"literal","value":"("},{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"},{"type":"literal","value":")"}],
-  //   [{"type":"literal","value":"("},{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"},{"type":"literal","value":")"}],
-  //   [{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
-  //   [{"type":"plusSign","value":"+"},{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
-  //   [{"type":"plusSign","value":"+"},{"type":"currency","value":"US$"},{"type":"integer","value":"987"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
-  // ],
+  [
+    "never",
+    [{"type":"currency","value":"US$"},{"type":"integer","value":"987"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
+    [{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
+    [{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
+    [{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
+    [{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
+    [{"type":"currency","value":"US$"},{"type":"integer","value":"987"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
+  ],
+  [
+    "exceptZero",
+    [{"type":"literal","value":"("},{"type":"currency","value":"US$"},{"type":"integer","value":"987"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"},{"type":"literal","value":")"}],
+    [{"type":"literal","value":"("},{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"},{"type":"literal","value":")"}],
+    [{"type":"literal","value":"("},{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"},{"type":"literal","value":")"}],
+    [{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
+    [{"type":"plusSign","value":"+"},{"type":"currency","value":"US$"},{"type":"integer","value":"0"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
+    [{"type":"plusSign","value":"+"},{"type":"currency","value":"US$"},{"type":"integer","value":"987"},{"type":"decimal","value":"."},{"type":"fraction","value":"00"}],
+  ],
 ];
-describe.only('signDisplay-currency-zh-TW', function() {
+describe('signDisplay-currency-zh-TW', function() {
   for (const [
     signDisplay,
     negative,

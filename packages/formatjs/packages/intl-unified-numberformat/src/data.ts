@@ -27,6 +27,14 @@ const SIGN_DISPLAYS: Array<keyof SignDisplayPattern> = [
   'exceptZero',
 ];
 
+// What is this number?
+// Context: https://github.com/tc39/proposal-unified-intl-numberformat/issues/26
+// Right now pattern tree does not have room for different compact notation pattern
+// per exponent (e.g for zh-TW, 1000 is just {number}, not {number}K).
+// This number is chosen so we generate the most general pattern for compact, e.g
+// {number}{compactSymbol} or sth like that
+const SPECIAL_NUMBER_HACK = '1000'
+
 const UNIT_DISPLAYS: Array<keyof UnitPattern> = ['narrow', 'long', 'short'];
 
 // g flag bc this appears twice in accounting pattern
@@ -110,7 +118,7 @@ export function extractILD(
 }
 
 // Credit: https://github.com/andyearnshaw/Intl.js/blob/master/scripts/utils/reduce.js
-// Matches CLDR number patterns, e.g. #,##0.00, #,##,##0.00, #,##0.##, #E0, etc.
+// Matches CLDR number patterns, e.g. #,##0.00, #,##,##0.00, #,##0.##, 0, etc.
 const NUMBER_PATTERN = /[#0](?:[\.,][#0]+)*/g;
 const SCIENTIFIC_SLOT = [
   InternalSlotToken.number,
@@ -200,11 +208,11 @@ function extractDecimalPattern(
   numberingSystem: string
 ): SignDisplayPattern {
   const compactShortSignPattern = extractSignPattern(
-    extractCompactSymbol(d.decimal[numberingSystem].short['1000'].other)
+    extractCompactSymbol(d.decimal[numberingSystem].short[SPECIAL_NUMBER_HACK].other)
   );
   const compactLongSignPattern = extractSignPattern(
     extractCompactSymbol(
-      d.decimal[numberingSystem].long['1000'].other,
+      d.decimal[numberingSystem].long[SPECIAL_NUMBER_HACK].other,
       InternalSlotToken.compactName
     )
   );
@@ -443,8 +451,8 @@ function extractCurrencyPatternForCurrency(
   const currencyAccountingPattern = d.currency[numberingSystem].accounting;
   const currencyShortPattern =
     d.currency[numberingSystem].short?.[1000].other || '';
-  const decimalShortPattern = d.decimal[numberingSystem].short['1000'].other;
-  const decimalLongPattern = d.decimal[numberingSystem].long['1000'].other;
+  const decimalShortPattern = d.decimal[numberingSystem].short[SPECIAL_NUMBER_HACK].other;
+  const decimalLongPattern = d.decimal[numberingSystem].long[SPECIAL_NUMBER_HACK].other;
   const currencySymbol = c[currency].symbol;
   const currencyNarrowSymbol = c[currency].narrow;
   const standardCurrencyPattern = {
@@ -595,8 +603,8 @@ function extractUnitPatternForUnit(
     patterns[unitDisplay] = generateUnitPatternPayload(
       unitData[unitDisplay].other.pattern,
       unitDisplay,
-      d.decimal[numberingSystem].short['1000'].other,
-      d.decimal[numberingSystem].long['1000'].other
+      d.decimal[numberingSystem].short[SPECIAL_NUMBER_HACK].other,
+      d.decimal[numberingSystem].long[SPECIAL_NUMBER_HACK].other
     );
   }
   return patterns;

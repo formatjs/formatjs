@@ -73,7 +73,7 @@ const tests: any[] = [
   ],
 ];
 
-describe.only('notation-compact-ko-KR', function() {
+xdescribe('notation-compact-ko-KR', function() {
   for (const [number, short, long = short] of tests) {
     it(`${number} short`, function() {
       const nfShort = new UnifiedNumberFormat('ko-KR', {
