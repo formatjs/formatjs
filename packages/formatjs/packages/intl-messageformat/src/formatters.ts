@@ -7,6 +7,7 @@ import {
   isNumberElement,
   isNumberSkeleton,
   isPluralElement,
+  isPoundElement,
   isSelectElement,
   isTimeElement,
   MessageFormatElement,
@@ -56,8 +57,6 @@ export type MessageFormatPart = LiteralPart | ArgumentPart;
 
 export type PrimitiveType = string | number | boolean | null | undefined | Date;
 
-const ESCAPE_HASH_REGEX = /\\#/g;
-const PLURAL_HASH = /(^|[^\\])#/g;
 class FormatError extends Error {
   public readonly variableId?: string;
   constructor(msg?: string, variableId?: string) {
@@ -98,17 +97,10 @@ export function formatToParts(
 ): MessageFormatPart[] {
   // Hot path for straight simple msg translations
   if (els.length === 1 && isLiteralElement(els[0])) {
-    let value = els[0].value;
-    if (typeof currentPluralValue === 'number') {
-      value = value.replace(
-        PLURAL_HASH,
-        '$1' + formatters.getNumberFormat(locales).format(currentPluralValue)
-      );
-    }
     return [
       {
         type: PART_TYPE.literal,
-        value: value.replace(ESCAPE_HASH_REGEX, '#'),
+        value: els[0].value,
       },
     ];
   }
@@ -116,19 +108,24 @@ export function formatToParts(
   for (const el of els) {
     // Exit early for string parts.
     if (isLiteralElement(el)) {
-      let value = el.value;
-      if (typeof currentPluralValue === 'number') {
-        value = value.replace(
-          PLURAL_HASH,
-          '$1' + formatters.getNumberFormat(locales).format(currentPluralValue)
-        );
-      }
       result.push({
         type: PART_TYPE.literal,
-        value: value.replace(ESCAPE_HASH_REGEX, '#'),
+        value: el.value,
       });
       continue;
     }
+    // TODO: should this part be literal type?
+    // Replace `#` in plural rules with the actual numeric value.
+    if (isPoundElement(el)) {
+      if (typeof currentPluralValue === 'number') {
+        result.push({
+          type: PART_TYPE.literal,
+          value: formatters.getNumberFormat(locales).format(currentPluralValue),
+        });
+      }
+      continue;
+    }
+
     const {value: varName} = el;
 
     // Enforce that all required values are provided by the caller.

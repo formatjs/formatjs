@@ -790,6 +790,58 @@ describe('IntlMessageFormat', function() {
     );
   });
 
+  describe('# symbol in plural rule argument', () => {
+    it('replaces unquoted # symbol in the plural rule option with actual number', () => {
+      const mf = new IntlMessageFormat(
+        'You {count, plural, one {worked for # hour} other {worked for # hours}} today.',
+        'en'
+      );
+      expect(mf.format({count: 1})).to.equal('You worked for 1 hour today.');
+      expect(mf.format({count: 3})).to.equal('You worked for 3 hours today.');
+    });
+
+    it('preserves quoted # symbol in the plural option', () => {
+      const mf = new IntlMessageFormat(
+        "You {count, plural, one {worked for '#' hour} other {worked for '#' hours}} today.",
+        'en'
+      );
+      expect(mf.format({count: 1})).to.equal('You worked for # hour today.');
+      expect(mf.format({count: 3})).to.equal('You worked for # hours today.');
+    });
+
+    it('does not format # symbol in the plural option as a standalone part', () => {
+      const mf = new IntlMessageFormat(
+        'You {count, plural, one {worked for # hour} other {worked for # hours}} today.',
+        'en'
+      );
+      expect(mf.formatToParts({count: 1})).to.deep.equal([
+        {type: PART_TYPE.literal, value: 'You worked for 1 hour today.'},
+      ]);
+    });
+
+    it('does not replace # symbol that in deeply nested sub messages', () => {
+      const mf = new IntlMessageFormat(
+        `You {count, plural,
+          one {worked for {unit, select,
+            hour {# hour}
+            other {# unit}
+          }}
+          other {worked for {unit, select,
+            hour {# hours}
+            other {# units}
+          }}
+        } today.`,
+        'en'
+      );
+      expect(mf.format({count: 1, unit: 'hour'})).to.equal(
+        'You worked for # hour today.'
+      );
+      expect(mf.format({count: 3, unit: 'hour'})).to.equal(
+        'You worked for # hours today.'
+      );
+    });
+  });
+
   describe('number skeleton', function() {
     expect(
       new IntlMessageFormat(
