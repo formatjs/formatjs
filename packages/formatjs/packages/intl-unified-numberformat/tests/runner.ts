@@ -29,6 +29,8 @@ interface TestResult {
   };
 }
 const excludedTests = [
+  'bound-to-numberformat-instance', // Need to fix `new`
+  'builtin', // Need to fix `new`
   'constructor-locales-arraylike', // This checks that we can handle {length: 1, 0: 'foo'} array-like
   'constructor-locales-hasproperty', // This checks that we only iterate once...
   'constructor-locales-string', // To pass this we gotta ditch class bc it's called w/o `new`
@@ -37,10 +39,12 @@ const excludedTests = [
   'constructor-unit', // This test might be wrong, this throws if `unit` is being accessed when style is not `unit`, but spec doesn't prohibit that
   'currency-digits', // Need to fix `new`
   'default-minimum-singificant-digits', // Need to fix `new`
+  'format-fraction-digits-precision', // oh boi...
   'legacy-regexp-statics-not-modified', // TODO
   'numbering-system-options', // TODO
   'proto-from-ctor-realm', // Bc of Realm support
   'this-value-ignored', // Need to fix `new`
+  'units', // We haven't monkey-patched `toLocaleString` (prototype/format/units.js)
 ];
 const PATTERN = resolve(
   __dirname,

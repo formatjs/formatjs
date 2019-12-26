@@ -10,8 +10,6 @@ import {
   UnitPattern,
   CurrencyPattern,
   LDMLPluralRuleMap,
-  NotationPattern,
-  CurrencySignPattern,
   NumberLocalePatternData,
 } from '@formatjs/intl-utils';
 
@@ -29,19 +27,10 @@ const SIGN_DISPLAYS: Array<keyof SignDisplayPattern> = [
   'exceptZero',
 ];
 
-const CURRENCY_SIGNS: Array<keyof CurrencySignPattern> = [
-  'standard',
-  'accounting',
-];
-
-const NOTATIONS: Array<keyof NotationPattern> = [
-  'standard',
-  'scientific',
-  'compactShort',
-  'compactLong',
-];
-
 const UNIT_DISPLAYS: Array<keyof UnitPattern> = ['narrow', 'long', 'short'];
+
+// g flag bc this appears twice in accounting pattern
+const CURRENCY_SYMBOL_REGEX = /¤/g;
 
 function extractDecimalFormatILD(
   data?: Record<DecimalFormatNum, LDMLPluralRuleMap<string>> | undefined
@@ -198,7 +187,11 @@ function extractCompactSymbol(
   pattern: string,
   slotToken: InternalSlotToken = InternalSlotToken.compactSymbol
 ): string {
-  const compactUnit = pattern.replace(/[¤0]/g, '').trim();
+  const compactUnit = pattern
+    .replace(/[¤0]/g, '')
+    // In case we're processing half-processed things
+    .replace(/({\w+})/g, '')
+    .trim();
   return pattern.replace(compactUnit, `{${slotToken}}`);
 }
 
@@ -245,20 +238,24 @@ function extractPercentPattern(
   }, {} as SignDisplayPattern);
 }
 
+const INSERT_BEFORE_PATTERN_REGEX = /[^\s(]¤/;
+const INSERT_AFTER_PATTERN_REGEX = /¤[^\s;]/;
+const S_UNICODE_REGEX = /\p{S}/u;
+
 function shouldInsertBefore(currency: string, pattern: string) {
   // surroundingMatch [:digit:] check
   return (
-    /[^\s]¤/.test(pattern) &&
+    INSERT_BEFORE_PATTERN_REGEX.test(pattern) &&
     // [:^S:]
-    !/^\p{S}/u.test(currency)
+    !S_UNICODE_REGEX.test(currency[0])
   );
 }
 
 function shouldInsertAfter(currency: string, pattern: string) {
   return (
-    /¤[^\s]/.test(pattern) &&
+    INSERT_AFTER_PATTERN_REGEX.test(pattern) &&
     // [:^S:]
-    !/\p{S}$/u.test(currency)
+    !S_UNICODE_REGEX.test(currency[currency.length - 1])
   );
 }
 
@@ -417,74 +414,61 @@ function replaceCurrencySymbolWithToken(
 ): string {
   // Check afterCurrency
   if (shouldInsertAfter(currency, pattern)) {
-    return pattern.replace('¤', `{${currencyToken}}${insertBetween}`);
+    return pattern.replace(
+      CURRENCY_SYMBOL_REGEX,
+      `{${currencyToken}}${insertBetween}`
+    );
   }
 
   // Check beforeCurrency
   if (shouldInsertBefore(currency, pattern)) {
-    return pattern.replace('¤', `${insertBetween}{${currencyToken}}`);
-  }
-  return pattern.replace('¤', `{${currencyToken}}`);
-}
-
-function replaceCurrencySymbolInCurrencySignPattern(
-  currencyPattern: CurrencyPattern,
-  currencyDisplay: keyof CurrencyPattern,
-  resolvedCurrency: string,
-  insertBetween: string,
-  currencyToken: InternalSlotToken
-): CurrencySignPattern {
-  const currencySignPattern = currencyPattern[currencyDisplay];
-  return CURRENCY_SIGNS.reduce((all: CurrencySignPattern, currencySign) => {
-    all[currencySign] = SIGN_DISPLAYS.reduce(
-      (all: SignDisplayPattern, signDisplay) => {
-        all[signDisplay] = NOTATIONS.reduce(
-          (all: NotationPattern, notation) => {
-            all[notation] = {
-              positivePattern: replaceCurrencySymbolWithToken(
-                resolvedCurrency,
-                currencySignPattern[currencySign][signDisplay][notation]
-                  .positivePattern,
-                insertBetween,
-                currencyToken
-              ),
-              zeroPattern: replaceCurrencySymbolWithToken(
-                resolvedCurrency,
-                currencySignPattern[currencySign][signDisplay][notation]
-                  .zeroPattern,
-                insertBetween,
-                currencyToken
-              ),
-              negativePattern: replaceCurrencySymbolWithToken(
-                resolvedCurrency,
-                currencySignPattern[currencySign][signDisplay][notation]
-                  .negativePattern,
-                insertBetween,
-                currencyToken
-              ),
-            };
-            return all;
-          },
-          {} as NotationPattern
-        );
-        return all;
-      },
-      {} as SignDisplayPattern
+    return pattern.replace(
+      CURRENCY_SYMBOL_REGEX,
+      `${insertBetween}{${currencyToken}}`
     );
-    return all;
-  }, {} as CurrencySignPattern);
+  }
+  return pattern.replace(CURRENCY_SYMBOL_REGEX, `{${currencyToken}}`);
 }
 
-function replaceCurrencySymbolInCurrencyPattern(
-  currencyPattern: CurrencyPattern,
+function extractCurrencyPatternForCurrency(
+  d: RawNumberData,
+  c: Record<string, CurrencyData>,
   currency: string,
-  currencySymbol: string,
-  currencyNarrowSymbol: string,
-  insertBetween: string
+  numberingSystem: string
 ): CurrencyPattern {
+  const insertBetween =
+    d.currency[numberingSystem].currencySpacing.beforeInsertBetween;
+  const currencyStandardPattern = d.currency[numberingSystem].standard;
+  const currencyUnitPattern = d.currency[numberingSystem].unitPattern;
+  const currencyAccountingPattern = d.currency[numberingSystem].accounting;
+  const currencyShortPattern =
+    d.currency[numberingSystem].short?.[1000].other || '';
+  const decimalShortPattern = d.decimal[numberingSystem].short['1000'].other;
+  const decimalLongPattern = d.decimal[numberingSystem].long['1000'].other;
+  const currencySymbol = c[currency].symbol;
+  const currencyNarrowSymbol = c[currency].narrow;
+  const standardCurrencyPattern = {
+    standard: extractStandardCurrencyPattern(
+      currencyStandardPattern,
+      currencyUnitPattern,
+      currencyShortPattern,
+      decimalShortPattern,
+      decimalLongPattern,
+      'name'
+    ),
+    accounting: extractAccountingCurrencyPattern(
+      currencyAccountingPattern,
+      currencyUnitPattern,
+      currencyShortPattern,
+      decimalShortPattern,
+      decimalLongPattern,
+      'name'
+    ),
+  };
+
   return CURRENCY_DISPLAYS.reduce((all: CurrencyPattern, currencyDisplay) => {
     if (currencyDisplay === 'name') {
-      all[currencyDisplay] = currencyPattern[currencyDisplay];
+      all[currencyDisplay] = standardCurrencyPattern;
     } else {
       const currencyToken =
         currencyDisplay === 'code'
@@ -498,55 +482,47 @@ function replaceCurrencySymbolInCurrencyPattern(
           : currencyDisplay === 'symbol'
           ? currencySymbol
           : currencyNarrowSymbol;
-      all[currencyDisplay] = replaceCurrencySymbolInCurrencySignPattern(
-        currencyPattern,
-        currencyDisplay,
-        resolvedCurrency,
-        insertBetween,
-        currencyToken
-      );
-    }
-    return all;
-  }, {} as CurrencyPattern);
-}
-
-function extractCurrencyPatternForCurrency(
-  d: RawNumberData,
-  c: Record<string, CurrencyData>,
-  currency: string,
-  numberingSystem: string
-): CurrencyPattern {
-  const patternWithCurrencyCodeIntact = CURRENCY_DISPLAYS.reduce(
-    (all: CurrencyPattern, currencyDisplay) => {
       all[currencyDisplay] = {
         standard: extractStandardCurrencyPattern(
-          d.currency[numberingSystem].standard,
-          d.currency[numberingSystem].unitPattern,
-          d.currency[numberingSystem].short?.[1000].other || '',
-          d.decimal[numberingSystem].short['1000'].other,
-          d.decimal[numberingSystem].long['1000'].other,
+          replaceCurrencySymbolWithToken(
+            resolvedCurrency,
+            currencyStandardPattern,
+            insertBetween,
+            currencyToken
+          ),
+          currencyUnitPattern,
+          replaceCurrencySymbolWithToken(
+            resolvedCurrency,
+            currencyShortPattern,
+            insertBetween,
+            currencyToken
+          ),
+          decimalShortPattern,
+          decimalLongPattern,
           currencyDisplay
         ),
         accounting: extractAccountingCurrencyPattern(
-          d.currency[numberingSystem].accounting,
-          d.currency[numberingSystem].unitPattern,
-          d.currency[numberingSystem].short?.[1000].other || '',
-          d.decimal[numberingSystem].short['1000'].other,
-          d.decimal[numberingSystem].long['1000'].other,
+          replaceCurrencySymbolWithToken(
+            resolvedCurrency,
+            currencyAccountingPattern,
+            insertBetween,
+            currencyToken
+          ),
+          currencyUnitPattern,
+          replaceCurrencySymbolWithToken(
+            resolvedCurrency,
+            currencyShortPattern,
+            insertBetween,
+            currencyToken
+          ),
+          decimalShortPattern,
+          decimalLongPattern,
           currencyDisplay
         ),
       };
-      return all;
-    },
-    {} as CurrencyPattern
-  );
-  return replaceCurrencySymbolInCurrencyPattern(
-    patternWithCurrencyCodeIntact,
-    currency,
-    c[currency].symbol,
-    c[currency].narrow,
-    d.currency[numberingSystem].currencySpacing.beforeInsertBetween
-  );
+    }
+    return all;
+  }, {} as CurrencyPattern);
 }
 
 const STANDARD_PATTERN_REGEX = /{(\d)}/g;

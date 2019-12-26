@@ -76,16 +76,16 @@ export function toRawPrecision(
     e = 0;
     xFinal = 0;
   } else {
-    e = Math.floor(Math.log(x) / Math.log(10));
+    e = Math.floor(logBase10(x));
     let n: number;
     {
-      const exactSolve = x / Math.pow(10, e - p + 1);
+      const exactSolve = x / 10 ** (e - p + 1);
       const roundDown = Math.floor(exactSolve);
       const roundUp = Math.ceil(exactSolve);
       n = exactSolve - roundDown < roundUp - exactSolve ? roundDown : roundUp;
     }
     m = n.toString();
-    xFinal = n * Math.pow(10, e - p + 1);
+    xFinal = n * 10 ** (e - p + 1);
   }
   let int: number;
   if (e >= p - 1) {

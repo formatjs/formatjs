@@ -350,27 +350,28 @@ export class UnifiedNumberFormat
       .join('');
   }
 
-  formatToParts(originalX: number): UnifiedNumberFormatPart[] {
+  formatToParts(x: number): UnifiedNumberFormatPart[] {
     // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-partitionnumberpattern
     let exponent = 0;
     const ild = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ild');
     let n: string;
-    let x = toNumeric(originalX) as number;
+    x = toNumeric(x) as number;
+    let formattedX = x;
     if (isNaN(x)) {
       n = ild.symbols.nan;
     } else if (!isFinite(x)) {
       n = ild.symbols.infinity;
     } else {
       if (getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'style') === 'percent') {
-        x *= 100;
+        formattedX *= 100;
       }
-      exponent = computeExponent(this, x);
-      x /= 10 ** exponent;
-      const formatNumberResult = formatNumberToString(this, x);
+      exponent = computeExponent(this, formattedX);
+      formattedX /= 10 ** exponent;
+      const formatNumberResult = formatNumberToString(this, formattedX);
       n = formatNumberResult.formattedString;
-      x = formatNumberResult.roundedNumber;
+      formattedX = formatNumberResult.roundedNumber;
     }
-    const pattern = getNumberFormatPattern(this, originalX, exponent);
+    const pattern = getNumberFormatPattern(this, x, exponent);
     const patternParts = pattern.split(/({\w+})/).filter(Boolean);
     const results: UnifiedNumberFormatPart[] = [];
     for (const part of patternParts) {
@@ -380,9 +381,9 @@ export class UnifiedNumberFormat
         const p = part.slice(1, -1);
         switch (p) {
           case InternalSlotToken.number: {
-            if (isNaN(x)) {
+            if (isNaN(formattedX)) {
               results.push({type: 'nan', value: n});
-            } else if (x === Infinity || x === -Infinity) {
+            } else if (formattedX === Infinity || x === -Infinity) {
               results.push({type: 'infinity', value: n});
             } else {
               const {numberingSystem: nu, useGrouping} = getMultiInternalSlots(
@@ -459,7 +460,7 @@ export class UnifiedNumberFormat
                 type: 'compact',
                 value: selectPlural(
                   this.pl,
-                  x,
+                  formattedX,
                   compactData[String(10 ** exponent) as DecimalFormatNum]
                 ),
               });
@@ -501,7 +502,7 @@ export class UnifiedNumberFormat
               const unitSymbols = ild.unitSymbols[unit!];
               const mu = selectPlural(
                 this.pl,
-                x,
+                formattedX,
                 unitSymbols[p] || unitSymbols[InternalSlotToken.unitSymbol]
               );
               results.push({type: 'unit', value: mu});
@@ -524,7 +525,7 @@ export class UnifiedNumberFormat
               // TODO: make plural work with scientific notation
               cd = selectPlural(
                 this.pl,
-                x,
+                formattedX,
                 ild.currencySymbols[currency].currencyName
               );
             } else {
@@ -688,7 +689,14 @@ function formatNumberToString(
   if (isNegative) {
     x = -x;
   }
-  const intlObject = getMultiInternalSlots(
+  const {
+    roundingType,
+    minimumSignificantDigits,
+    maximumSignificantDigits,
+    minimumFractionDigits,
+    maximumFractionDigits,
+    minimumIntegerDigits,
+  } = getMultiInternalSlots(
     __INTERNAL_SLOT_MAP__,
     numberFormat,
     'roundingType',
@@ -699,19 +707,19 @@ function formatNumberToString(
     'maximumSignificantDigits'
   );
   let result: RawNumberFormatResult;
-  if (intlObject.roundingType === 'significantDigits') {
+  if (roundingType === 'significantDigits') {
     result = toRawPrecision(
       x,
-      intlObject.minimumSignificantDigits!,
-      intlObject.maximumSignificantDigits!
+      minimumSignificantDigits!,
+      maximumSignificantDigits!
     );
-  } else if (intlObject.roundingType === 'fractionDigits') {
-    result = toRawFixed(
-      x,
-      intlObject.minimumFractionDigits!,
-      intlObject.maximumFractionDigits!
-    );
+  } else if (roundingType === 'fractionDigits') {
+    result = toRawFixed(x, minimumFractionDigits!, maximumFractionDigits!);
   } else {
+    invariant(
+      roundingType === 'compactRounding',
+      'roundingType must be compactRounding'
+    );
     result = toRawFixed(x, 0, 0);
     if (result.integerDigitsCount === 1) {
       result = toRawPrecision(x, 1, 2);
@@ -720,7 +728,7 @@ function formatNumberToString(
   x = result.roundedNumber;
   let string = result.formattedString;
   const int = result.integerDigitsCount;
-  const minInteger = intlObject.minimumIntegerDigits;
+  const minInteger = minimumIntegerDigits;
   if (int < minInteger) {
     const forwardZeros = repeat('0', minInteger - int);
     string = forwardZeros + string;
@@ -786,15 +794,22 @@ function computeExponentForMagnitude(
       if (!thresholdMap) {
         return 0;
       }
-      // Going back from 100 trillion to 1 thousand, find the first magnitude threshold that's right below
-      // out magnitude
-      return (
-        Object.keys(thresholdMap)
-          // TODO: this can be pre-processed
-          .map(t => logBase10(+t))
-          .reverse()
-          .find(m => magnitude > m) || 0
+      const num = String(10 ** magnitude) as DecimalFormatNum;
+      const thresholds = Object.keys(thresholdMap) as DecimalFormatNum[]; // TODO: this can be pre-processed
+      if (num < thresholds[0]) {
+        return 0;
+      }
+      if (num > thresholds[thresholds.length - 1]) {
+        return logBase10(+thresholds[thresholds.length - 1]);
+      }
+      let i = thresholds.indexOf(num);
+      for (
+        ;
+        i > 0 &&
+        thresholdMap[thresholds[i - 1]].other === thresholdMap[num].other;
+        i--
       );
+      return logBase10(+thresholds[i]);
     }
   }
 }
@@ -922,6 +937,25 @@ function selectPlural(
 function toNumeric(val: any) {
   if (typeof val === 'bigint') {
     return val;
+  }
+  return toNumber(val);
+}
+
+function toNumber(val: any): number {
+  if (val === undefined) {
+    return NaN;
+  }
+  if (val === null) {
+    return +0;
+  }
+  if (typeof val === 'boolean') {
+    return val ? 1 : +0;
+  }
+  if (typeof val === 'number') {
+    return val;
+  }
+  if (typeof val === 'symbol' || typeof val === 'bigint') {
+    throw new TypeError('Cannot convert symbol/bigint to number');
   }
   return Number(val);
 }
