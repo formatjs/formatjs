@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.9.3](https://github.com/formatjs/react-intl/compare/v3.9.2...v3.9.3) (2019-12-27)
+
 ### [3.9.2](https://github.com/formatjs/react-intl/compare/v3.9.1...v3.9.2) (2019-12-10)
 
 
