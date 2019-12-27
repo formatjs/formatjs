@@ -15,7 +15,6 @@ function future(v?: number) {
 const SEC = 1e3;
 const MIN = SEC * 60;
 const HOUR = MIN * 60;
-const DAY = HOUR * 24;
 
 describe('selectUnit', function() {
   it('should work for sec', function() {
@@ -140,25 +139,6 @@ describe('selectUnit', function() {
     ).to.deep.equal({
       value: 2,
       unit: 'month',
-    });
-  });
-  it('should work for year', function() {
-    const date = new Date(1569720003837);
-    expect(selectUnit(past(360 * DAY), date)).to.deep.equal({
-      value: -1,
-      unit: 'year',
-    });
-    expect(selectUnit(future(360 * DAY), date)).to.deep.equal({
-      value: 1,
-      unit: 'year',
-    });
-    expect(selectUnit(past(1000 * DAY), date)).to.deep.equal({
-      value: -2,
-      unit: 'year',
-    });
-    expect(selectUnit(future(1000 * DAY), date)).to.deep.equal({
-      value: 3,
-      unit: 'year',
     });
   });
 });

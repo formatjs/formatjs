@@ -39,10 +39,11 @@ const msgs = defineMessages({
 
 export default class Foo extends Component {
   render() {
+    const msg = msgs?.header
     return (
       <div>
         <h1>
-          <FormattedMessage {...msgs.header} />
+          <FormattedMessage {...msg} />
         </h1>
         <p>
           <FormattedMessage {...msgs.content} />

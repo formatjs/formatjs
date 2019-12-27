@@ -3,7 +3,6 @@ import {OptionsSchema} from 'babel-plugin-react-intl/dist/options';
 import * as babel from '@babel/core';
 import {warn, getStdinAsString} from './console_utils';
 import keyBy from 'lodash/keyBy';
-import {extname} from 'path';
 import {outputJSONSync} from 'fs-extra';
 import {interpolateName} from 'loader-utils';
 
@@ -13,39 +12,42 @@ export type ExtractCLIOptions = Omit<OptionsSchema, 'overrideIdFn'> & {
 };
 
 function getBabelConfig(
-  filename: string,
   reactIntlOptions: ExtractCLIOptions,
   extraBabelOptions: Partial<babel.TransformOptions> = {}
 ): babel.TransformOptions {
-  const fileExt = extname(filename);
-  const isTS = fileExt === '.ts';
-  const isTSX = fileExt === '.tsx';
   return {
     babelrc: false,
     parserOpts: {
-      plugins: ['jsx'],
-    },
-    presets: [
-      ...(isTS || isTSX
-        ? [['@babel/preset-typescript', {isTSX, allExtensions: true}]]
-        : []),
-      [
-        '@babel/preset-env',
-        {
-          targets: {
-            esmodules: true,
-          },
-        },
+      plugins: [
+        'asyncGenerators',
+        'bigInt',
+        'classPrivateMethods',
+        'classPrivateProperties',
+        'classProperties',
+        'decorators-legacy',
+        'doExpressions',
+        'dynamicImport',
+        'exportDefaultFrom',
+        'functionBind',
+        'functionSent',
+        'importMeta',
+        'jsx',
+        'logicalAssignment',
+        'nullishCoalescingOperator',
+        'numericSeparator',
+        'objectRestSpread',
+        'optionalCatchBinding',
+        'optionalChaining',
+        'partialApplication',
+        'placeholders',
+        'throwExpressions',
+        'topLevelAwait',
+        'typescript',
       ],
-    ],
+    },
     // We need to use require.resolve here, or otherwise the lookup is based on the current working
     // directory of the CLI.
-    plugins: [
-      '@babel/plugin-proposal-class-properties',
-      // We want to make sure that `const enum` does not throw an error.
-      ...(isTS || isTSX ? [require.resolve('babel-plugin-const-enum')] : []),
-      [require.resolve('babel-plugin-react-intl'), reactIntlOptions],
-    ],
+    plugins: [[require.resolve('babel-plugin-react-intl'), reactIntlOptions]],
     highlightCode: true,
     // Extraction of string messages does not output the transformed JavaScript.
     sourceMaps: false,
@@ -59,7 +61,7 @@ function extractSingleFile(
 ): babel.BabelFileResult | null {
   return babel.transformFileSync(
     filename,
-    getBabelConfig(filename, extractOptions, {filename})
+    getBabelConfig(extractOptions, {filename})
   );
 }
 
@@ -131,7 +133,7 @@ export default async function extract(
     const stdinSource = await getStdinAsString();
     const babelResult = babel.transformSync(
       stdinSource,
-      getBabelConfig('<stdin>', babelOpts)
+      getBabelConfig(babelOpts)
     );
     if (printMessagesToStdout) {
       extractedMessages = getReactIntlMessages(babelResult);

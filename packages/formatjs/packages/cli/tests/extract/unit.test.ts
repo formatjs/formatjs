@@ -56,18 +56,7 @@ test('it passes camelCase-converted arguments to babel API', () => {
     'file1.js',
     expect.objectContaining({
       filename: 'file1.js',
-      presets: [
-        [
-          '@babel/preset-env',
-          {
-            targets: {
-              esmodules: true,
-            },
-          },
-        ],
-      ],
       plugins: [
-        '@babel/plugin-proposal-class-properties',
         [
           require.resolve('babel-plugin-react-intl'),
           {
@@ -83,20 +72,7 @@ test('it passes camelCase-converted arguments to babel API', () => {
     'file2.tsx',
     expect.objectContaining({
       filename: 'file2.tsx',
-      presets: [
-        ['@babel/preset-typescript', {isTSX: true, allExtensions: true}],
-        [
-          '@babel/preset-env',
-          {
-            targets: {
-              esmodules: true,
-            },
-          },
-        ],
-      ],
       plugins: [
-        '@babel/plugin-proposal-class-properties',
-        require.resolve('babel-plugin-const-enum'),
         [
           require.resolve('babel-plugin-react-intl'),
           {...pluginOptions, overrideIdFn: expect.any(Function)},
