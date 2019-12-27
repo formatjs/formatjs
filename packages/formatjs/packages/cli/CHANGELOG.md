@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.14](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.1.13...@formatjs/cli@1.1.14) (2019-12-27)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** glob files instead of relying on shell, fix [#383](https://github.com/formatjs/formatjs/issues/383) ([c7e1a6a](https://github.com/formatjs/formatjs/commit/c7e1a6af5f6334c6fdf18fd3cd29b81c411cbfd2))
+
+
+
+
+
 ## [1.1.13](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.1.12...@formatjs/cli@1.1.13) (2019-12-26)
 
 **Note:** Version bump only for package @formatjs/cli
