@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@2.0.0...@formatjs/intl-utils@2.0.1) (2019-12-27)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** allow optionalChaining parser, fix [#404](https://github.com/formatjs/formatjs/issues/404) ([1af4607](https://github.com/formatjs/formatjs/commit/1af460783db71bfc7bf0e3f935a020473fcb093d))
+
+
+
+
+
 # [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@1.6.0...@formatjs/intl-utils@2.0.0) (2019-12-26)
 
 

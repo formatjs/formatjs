@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.15](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.1.14...@formatjs/cli@1.1.15) (2019-12-27)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** allow optionalChaining parser, fix [#404](https://github.com/formatjs/formatjs/issues/404) ([1af4607](https://github.com/formatjs/formatjs/commit/1af460783db71bfc7bf0e3f935a020473fcb093d))
+
+
+
+
+
 ## [1.1.14](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.1.13...@formatjs/cli@1.1.14) (2019-12-27)
 
 
