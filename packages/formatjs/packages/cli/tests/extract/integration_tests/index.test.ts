@@ -28,6 +28,14 @@ test('basic case: defineMessages -> stdout', async () => {
   expect(stderr).toBe('');
 }, 10000);
 
+test('[glob] basic case: defineMessages -> stdout', async () => {
+  const {stdout, stderr} = await exec(
+    `${BIN_PATH} extract ${path.join(__dirname, 'defineMessages/*.js')}`
+  );
+  expect(JSON.parse(stdout)).toMatchSnapshot();
+  expect(stderr).toBe('');
+}, 10000);
+
 test('basic case: defineMessages -> directory', async () => {
   process.chdir(__dirname);
   const {stdout, stderr} = await exec(

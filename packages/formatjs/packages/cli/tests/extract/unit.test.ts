@@ -18,6 +18,10 @@ const babel = require('@babel/core');
 // Commander.js will call this.
 jest.spyOn(process, 'exit').mockImplementation((() => null) as any);
 
+jest.mock('glob', () => ({
+  sync: (p: string) => [p],
+}));
+
 beforeEach(() => {
   jest.clearAllMocks();
 });

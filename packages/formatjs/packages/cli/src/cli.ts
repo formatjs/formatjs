@@ -1,6 +1,7 @@
 import commander from 'commander';
 import loudRejection from 'loud-rejection';
 import extract, {ExtractCLIOptions} from './extract';
+import {sync as globSync} from 'glob';
 
 const KNOWN_COMMANDS = ['extract'];
 
@@ -98,6 +99,15 @@ async function main(argv: string[]) {
       false
     )
     .action(async (files: readonly string[], cmdObj: ExtractCLIOptions) => {
+      files = files.reduce(
+        (all: string[], f) =>
+          all.concat(
+            globSync(f, {
+              cwd: process.cwd(),
+            })
+          ),
+        []
+      );
       await extract(files, {
         outFile: cmdObj.outFile,
         idInterpolationPattern:
