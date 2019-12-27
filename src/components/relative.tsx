@@ -8,13 +8,7 @@ import {Context} from './injectIntl';
 import {FormatRelativeTimeOptions} from '../types';
 import {Unit} from '@formatjs/intl-relativetimeformat';
 import {invariantIntlContext} from '../utils';
-
-// Since rollup cannot deal with namespace being a function,
-// this is to interop with TypeScript since `invariant`
-// does not export a default
-// https://github.com/rollup/rollup/issues/1267
-import * as invariant_ from 'invariant';
-const invariant: typeof invariant_ = (invariant_ as any).default || invariant_;
+import {invariant} from '@formatjs/intl-utils'
 const MINUTE = 60;
 const HOUR = 60 * 60;
 const DAY = 60 * 60 * 24;
@@ -82,13 +76,6 @@ function canIncrement(unit: Unit = 'second'): boolean {
   return INCREMENTABLE_UNITS.includes(unit);
 }
 
-function verifyProps(updateIntervalInSeconds?: number, unit?: Unit): void {
-  invariant(
-    !updateIntervalInSeconds || (updateIntervalInSeconds && canIncrement(unit)),
-    'Cannot schedule update with unit longer than hour'
-  );
-}
-
 export class FormattedRelativeTime extends React.PureComponent<Props, State> {
   // Public for testing
   _updateTimer: any = null;
@@ -107,7 +94,10 @@ export class FormattedRelativeTime extends React.PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    verifyProps(props.updateIntervalInSeconds, props.unit);
+    invariant(
+      !props.updateIntervalInSeconds || !!(props.updateIntervalInSeconds && canIncrement(props.unit)),
+      'Cannot schedule update with unit longer than hour'
+    );
   }
 
   scheduleNextUpdate(

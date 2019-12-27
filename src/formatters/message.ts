@@ -5,12 +5,7 @@
  */
 
 import * as React from 'react';
-// Since rollup cannot deal with namespace being a function,
-// this is to interop with TypeScript since `invariant`
-// does not export a default
-// https://github.com/rollup/rollup/issues/1267
-import * as invariant_ from 'invariant';
-const invariant: typeof invariant_ = (invariant_ as any).default || invariant_;
+import {invariant} from '@formatjs/intl-utils'
 
 import {
   Formatters,
@@ -127,12 +122,7 @@ export function formatMessage(
   const {id, defaultMessage} = messageDescriptor;
 
   // `id` is a required field of a Message Descriptor.
-  invariant(id, '[React Intl] An `id` must be provided to format a message.');
-  if (!id) {
-    throw new Error(
-      '[React Intl] An `id` must be provided to format a message.'
-    );
-  }
+  invariant(!!id, '[React Intl] An `id` must be provided to format a message.');
   const message = messages && messages[id];
   formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
   defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);

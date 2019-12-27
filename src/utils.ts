@@ -13,13 +13,8 @@ import {IntlConfig, IntlCache, CustomFormats, Formatters} from './types';
 import * as React from 'react';
 import IntlMessageFormat from 'intl-messageformat';
 import memoizeIntlConstructor from 'intl-format-cache';
-// Since rollup cannot deal with namespace being a function,
-// this is to interop with TypeScript since `invariant`
-// does not export a default
-// https://github.com/rollup/rollup/issues/1267
-import * as invariant_ from 'invariant';
+import {invariant} from '@formatjs/intl-utils'
 import {IntlRelativeTimeFormatOptions} from '@formatjs/intl-relativetimeformat';
-const invariant: typeof invariant_ = (invariant_ as any).default || invariant_;
 
 const ESCAPED_CHARS: Record<number, string> = {
   38: '&amp;',
@@ -54,7 +49,7 @@ export function filterProps<T extends Record<string, any>, K extends string>(
   }, {} as Pick<T, K>);
 }
 
-export function invariantIntlContext(intl?: any): void {
+export function invariantIntlContext(intl?: any): asserts intl {
   invariant(
     intl,
     '[React Intl] Could not find required `intl` object. ' +
