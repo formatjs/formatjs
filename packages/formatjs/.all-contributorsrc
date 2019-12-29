@@ -1,0 +1,26 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "pyrocat101",
+      "name": "Linjie Ding",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/541540?v=4",
+      "profile": "https://github.com/pyrocat101",
+      "contributions": [
+        "infra",
+        "test",
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "formatjs",
+  "projectOwner": "formatjs",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
