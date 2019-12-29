@@ -15,6 +15,17 @@
         "test",
         "code"
       ]
+    },
+    {
+      "login": "longlho",
+      "name": "Long Ho",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/198255?v=4",
+      "profile": "https://medium.com/@longho",
+      "contributions": [
+        "infra",
+        "test",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
