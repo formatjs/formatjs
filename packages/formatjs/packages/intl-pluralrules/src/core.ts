@@ -149,9 +149,6 @@ export class PluralRules implements Intl.PluralRules {
       'best fit'
     );
     opt.localeMatcher = matcher;
-    // test262/test/intl402/PluralRules/prototype/select/tainting.js
-    // TODO: This is kinda cheating, but unless we rely on WeakMap to
-    // hide the internal slots it's hard to be completely safe from tainting
     setInternalSlot(
       PluralRules.__INTERNAL_SLOT_MAP__,
       this,
@@ -182,7 +179,7 @@ export class PluralRules implements Intl.PluralRules {
   }
   public resolvedOptions() {
     validateInstance(this, 'resolvedOptions');
-    const opts = Object.create(Object.prototype);
+    const opts = Object.create(null);
     opts.locale = getInternalSlot(
       PluralRules.__INTERNAL_SLOT_MAP__,
       this,

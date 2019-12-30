@@ -12,6 +12,9 @@ import {
   LDMLPluralRuleMap,
   NumberLocalePatternData,
 } from '@formatjs/intl-utils';
+import * as unicodeSymbol_ from 'unicode-12.1.0/General_Category/Symbol/regex';
+const S_UNICODE_REGEX: RegExp =
+  (unicodeSymbol_ as any).default || unicodeSymbol_;
 
 const CURRENCY_DISPLAYS: Array<keyof CurrencyPattern> = [
   'code',
@@ -250,7 +253,6 @@ function extractPercentPattern(
 
 const INSERT_BEFORE_PATTERN_REGEX = /[^\s(]¤/;
 const INSERT_AFTER_PATTERN_REGEX = /¤[^\s;]/;
-const S_UNICODE_REGEX = /\p{S}/u;
 
 function shouldInsertBefore(currency: string, pattern: string) {
   // surroundingMatch [:digit:] check

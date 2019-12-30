@@ -127,21 +127,27 @@ export function setInternalSlot<
   map: WeakMap<Instance, Internal>,
   pl: Instance,
   field: Field,
-  value: Internal[Field]
+  value: NonNullable<Internal>[Field]
 ) {
-  setMultiInternalSlots(map, pl, {[field]: value} as Pick<Internal, Field>);
+  if (!map.get(pl)) {
+    map.set(pl, Object.create(null));
+  }
+  const slots = map.get(pl)!;
+  slots[field] = value;
 }
 
 export function setMultiInternalSlots<
   Instance extends object,
   Internal extends object,
   K extends keyof Internal
->(map: WeakMap<Instance, Internal>, pl: Instance, props: Pick<Internal, K>) {
-  if (!map.get(pl)) {
-    map.set(pl, Object.create(null));
+>(
+  map: WeakMap<Instance, Internal>,
+  pl: Instance,
+  props: Pick<NonNullable<Internal>, K>
+) {
+  for (const k in props) {
+    setInternalSlot(map, pl, k, props[k]);
   }
-  const slots = map.get(pl)!;
-  Object.assign(slots, props);
 }
 
 export function getInternalSlot<
@@ -172,7 +178,7 @@ export function getMultiInternalSlots<
   return fields.reduce((all, f) => {
     all[f] = slots[f];
     return all;
-  }, {} as Pick<Internal, Field>);
+  }, Object.create(null) as Pick<Internal, Field>);
 }
 
 export interface LiteralPart {

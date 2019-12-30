@@ -2,7 +2,7 @@ import {spawnSync} from 'child_process';
 import {resolve} from 'path';
 import {cpus} from 'os';
 
-if (process.version.startsWith('v8')) {
+if (process.version.startsWith('v13')) {
   console.log(
     'Node 8 does not have Intl.PluralRules and intl-pluralrules is not test262-compliant'
   );
