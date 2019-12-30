@@ -7,6 +7,7 @@ import {
   MessageFormatElement,
   isLiteralElement,
   isSelectElement,
+  isPoundElement,
 } from 'intl-messageformat-parser';
 
 class PlaceholderEnforcement extends Error {
@@ -40,7 +41,7 @@ function verifyAst(
   values: Expression | undefined
 ) {
   for (const el of ast) {
-    if (isLiteralElement(el)) {
+    if (isLiteralElement(el) || isPoundElement(el)) {
       continue;
     }
     if (!keyExistsInExpression(el.value, values)) {

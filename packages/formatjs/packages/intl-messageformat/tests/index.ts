@@ -819,7 +819,7 @@ describe('IntlMessageFormat', function() {
       ]);
     });
 
-    it('does not replace # symbol that in deeply nested sub messages', () => {
+    it('does not replace # symbol in deeply nested sub messages', () => {
       const mf = new IntlMessageFormat(
         `You {count, plural,
           one {worked for {unit, select,
