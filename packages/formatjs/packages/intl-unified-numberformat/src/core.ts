@@ -34,8 +34,9 @@ import {
   logBase10,
   repeat,
 } from './utils';
-import {ILND, extractILD, extractPatterns} from './data';
+import {extractILD, extractPatterns} from './data';
 import * as currencyDigitsData from './currency-digits.json';
+import { ILND } from './ilnd-numbers';
 
 const RESOLVED_OPTIONS_KEYS = [
   'locale',
@@ -392,7 +393,7 @@ export class UnifiedNumberFormat
                 'numberingSystem',
                 'useGrouping'
               );
-              if (nu && ILND.hasOwnProperty(nu)) {
+              if (nu && nu in ILND) {
                 // Replace digits
                 const replacementTable = ILND[nu];
                 let replacedDigits = '';
