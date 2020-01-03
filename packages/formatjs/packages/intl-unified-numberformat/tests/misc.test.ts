@@ -78,6 +78,16 @@ function test() {
       ['543211.1', '543,211E3', '5,432E5'],
     ];
 
+    it('10000', function() {
+      expect(
+        new UnifiedNumberFormat('th', {
+          notation: 'compact',
+          signDisplay: 'exceptZero',
+          compactDisplay: 'short',
+        }).format(10000)
+      ).toBe('+10K');
+    });
+
     for (const [number, engineering, scientific] of tests) {
       it(`number ${number}`, function() {
         const nfEngineering = new UnifiedNumberFormat('de-DE', {

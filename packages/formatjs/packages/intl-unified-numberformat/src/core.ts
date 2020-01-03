@@ -10,7 +10,6 @@ import {
   getOption,
   getInternalSlot,
   SignDisplayPattern,
-  NotationPattern,
   InternalSlotToken,
   LDMLPluralRule,
   RawNumberLocaleData,
@@ -26,6 +25,7 @@ import {
   objectIs,
   unpackData,
   NumberLocaleInternalData,
+  SignPattern,
 } from '@formatjs/intl-utils';
 import {
   toRawFixed,
@@ -791,8 +791,14 @@ function computeExponentForMagnitude(
     case 'engineering':
       return Math.floor(magnitude / 3) * 3;
     case 'compact': {
+      const compactDisplay = getInternalSlot(
+        __INTERNAL_SLOT_MAP__,
+        numberFormat,
+        'compactDisplay'
+      );
       const symbols = style === 'decimal' ? ild.decimal : ild.currency;
-      const thresholdMap = symbols.compactLong || symbols.compactShort;
+      const thresholdMap =
+        compactDisplay === 'long' ? symbols.compactLong : symbols.compactShort;
       if (!thresholdMap) {
         return 0;
       }
@@ -872,11 +878,16 @@ function getNumberFormatPattern(
     numberFormat,
     'notation'
   );
-  let displayNotation: keyof NotationPattern = 'standard';
+  const signDisplay = getInternalSlot(
+    __INTERNAL_SLOT_MAP__,
+    numberFormat,
+    'signDisplay'
+  );
 
+  let signPattern: SignPattern | undefined;
   if (!isNaN(x) && isFinite(x)) {
     if (notation === 'scientific' || notation === 'engineering') {
-      displayNotation = 'scientific';
+      signPattern = patterns[signDisplay].scientific;
     } else if (exponent !== 0) {
       invariant(notation === 'compact', 'notation must be compact');
       const compactDisplay = getInternalSlot(
@@ -885,20 +896,20 @@ function getNumberFormatPattern(
         'compactDisplay'
       );
       if (compactDisplay === 'short') {
-        displayNotation = 'compactShort';
+        signPattern =
+          patterns[signDisplay].compactShort[String(10 ** exponent) as '1000'];
       } else {
         invariant(compactDisplay === 'long', 'compactDisplay must be long');
-        displayNotation = 'compactLong';
+        signPattern =
+          patterns[signDisplay].compactLong[String(10 ** exponent) as '1000'];
       }
     }
   }
 
-  const signDisplay = getInternalSlot(
-    __INTERNAL_SLOT_MAP__,
-    numberFormat,
-    'signDisplay'
-  );
-  const signPattern = patterns[signDisplay][displayNotation];
+  if (!signPattern) {
+    signPattern = patterns[signDisplay].standard;
+  }
+
   let pattern: string;
   if (signDisplay === 'never') {
     pattern = signPattern.zeroPattern;

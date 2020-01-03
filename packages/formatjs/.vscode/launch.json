@@ -17,6 +17,7 @@
                 "--runInBand",
                 "--coverage",
                 "false"
+                "misc"
             ]
         },
     ]

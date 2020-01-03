@@ -113,7 +113,7 @@ describe('signDisplay-zh-TW', function() {
       it('zero', function() {
         expect(nf.formatToParts(0)).toEqual(zero);
       });
-      it.only('positiveNearZero', function() {
+      it('positiveNearZero', function() {
         expect(nf.formatToParts(0.0001)).toEqual(positiveNearZero);
       });
       it('positive', function() {

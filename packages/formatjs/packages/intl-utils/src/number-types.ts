@@ -55,11 +55,13 @@ export interface SignPattern {
   negativePattern: string;
 }
 
+export type CompactSignPattern = Record<DecimalFormatNum, SignPattern>;
+
 export interface NotationPattern {
   standard: SignPattern;
   scientific: SignPattern;
-  compactShort: SignPattern;
-  compactLong: SignPattern;
+  compactShort: CompactSignPattern;
+  compactLong: CompactSignPattern;
 }
 
 export interface SignDisplayPattern {
