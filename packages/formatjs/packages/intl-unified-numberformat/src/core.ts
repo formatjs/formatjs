@@ -796,7 +796,7 @@ function computeExponentForMagnitude(
         numberFormat,
         'compactDisplay'
       );
-      const symbols = style === 'decimal' ? ild.decimal : ild.currency;
+      const symbols = style === 'currency' ? ild.currency : ild.decimal;
       const thresholdMap =
         compactDisplay === 'long' ? symbols.compactLong : symbols.compactShort;
       if (!thresholdMap) {
