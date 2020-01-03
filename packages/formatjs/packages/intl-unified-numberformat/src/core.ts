@@ -804,6 +804,9 @@ function computeExponentForMagnitude(
       }
       const num = String(10 ** magnitude) as DecimalFormatNum;
       const thresholds = Object.keys(thresholdMap) as DecimalFormatNum[]; // TODO: this can be pre-processed
+      if (!thresholdMap[num].other) {
+        return 0;
+      }
       if (num < thresholds[0]) {
         return 0;
       }
