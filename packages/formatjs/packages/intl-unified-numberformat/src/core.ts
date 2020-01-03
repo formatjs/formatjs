@@ -34,9 +34,9 @@ import {
   logBase10,
   repeat,
 } from './utils';
-import {extractILD, extractPatterns} from './data';
+import {extractILD, Patterns} from './data';
 import * as currencyDigitsData from './currency-digits.json';
-import { ILND } from './ilnd-numbers';
+import {ILND} from './ilnd-numbers';
 
 const RESOLVED_OPTIONS_KEYS = [
   'locale',
@@ -331,13 +331,16 @@ export class UnifiedNumberFormat
 
     this.pl = new Intl.PluralRules(locales);
     setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
-      patterns: extractPatterns(
+      patterns: new Patterns(
         ildData.units,
         ildData.currencies,
         ildData.numbers,
         getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'numberingSystem'),
+        getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'notation'),
+        getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'compactDisplay'),
         getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'unit'),
-        getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'currency')
+        getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'currency'),
+        getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'currencySign')
       ),
     });
     // test262/test/intl402/NumberFormat/prototype/format/bound-to-numberformat-instance.js
@@ -395,7 +398,7 @@ export class UnifiedNumberFormat
               );
               if (nu && nu in ILND) {
                 // Replace digits
-                const replacementTable = ILND[nu];
+                const replacementTable = ILND[nu as 'latn'];
                 let replacedDigits = '';
                 for (const digit of n) {
                   // digit can be `.` if it's fractional
