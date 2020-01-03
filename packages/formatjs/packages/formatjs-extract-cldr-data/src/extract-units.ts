@@ -32,46 +32,37 @@ function shortenUnit(unit: string) {
   return unit.replace(/^(.*?)-/, '');
 }
 
-function partitionUnitPattern(pattern: string) {
-  return (
-    pattern
-      // Handle `{0}foo` & `{0} foo`
-      .replace(/^(\{0\}\s?)(.+)$/, `$1{1}`)
-      // Handle `foo{0}` & `foo {0}`
-      .replace(/^(.*?)(\s?\{0\})$/, `{1}$2`)
-  );
+function partitionUnitPattern(pattern: string, symbols: string[]) {
+  for (const symbol of symbols) {
+    pattern = pattern.replace(symbol, '{1}');
+  }
+  return pattern;
 }
 
-// Matches things like `foo {0}`, `foo{0}`, `{0}foo`
-const PATTERN_0_REGEX = /\s?\{0\}\s?/g;
-
-function prune0Token(str: string): string {
-  return str.replace(PATTERN_0_REGEX, '');
+function extractSymbols(pattern: string): string[] {
+  return pattern
+    .split('{0}')
+    .map(c => c.trim())
+    .filter(Boolean);
 }
 
 function extractUnitPattern(d: Units['long']['volume-gallon']) {
   return collapseSingleValuePluralRule(
-    PLURAL_RULES.reduce(
-      (all: LDMLPluralRuleMap<RawUnitPattern>, ldml) => {
-        if (d[`unitPattern-count-${ldml}` as 'unitPattern-count-one']) {
-          all[ldml] = {
-            symbol: prune0Token(
-              d[`unitPattern-count-${ldml}` as 'unitPattern-count-one']
-            ),
-            pattern: partitionUnitPattern(
-              d[`unitPattern-count-${ldml}` as 'unitPattern-count-one']
-            ),
-          };
-        }
-        return all;
-      },
-      {
-        other: {
-          symbol: prune0Token(d['unitPattern-count-other']),
-          pattern: partitionUnitPattern(d['unitPattern-count-other']),
-        },
+    PLURAL_RULES.reduce((all: LDMLPluralRuleMap<RawUnitPattern>, ldml) => {
+      if (d[`unitPattern-count-${ldml}` as 'unitPattern-count-one']) {
+        const symbol = extractSymbols(
+          d[`unitPattern-count-${ldml}` as 'unitPattern-count-one']
+        );
+        all[ldml] = {
+          symbol,
+          pattern: partitionUnitPattern(
+            d[`unitPattern-count-${ldml}` as 'unitPattern-count-one'],
+            symbol
+          ),
+        };
       }
-    )
+      return all;
+    }, {} as any)
   );
 }
 

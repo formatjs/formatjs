@@ -8,23 +8,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "acre",
+          "symbol": Array [
+            "acre",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "acres",
+          "symbol": Array [
+            "acres",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "ac",
+          "symbol": Array [
+            "ac",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "ac",
+          "symbol": Array [
+            "ac",
+          ],
         },
       },
     },
@@ -33,23 +41,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "bit",
+          "symbol": Array [
+            "bit",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "bits",
+          "symbol": Array [
+            "bits",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "bit",
+          "symbol": Array [
+            "bit",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "bit",
+          "symbol": Array [
+            "bit",
+          ],
         },
       },
     },
@@ -58,23 +74,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "byte",
+          "symbol": Array [
+            "byte",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "bytes",
+          "symbol": Array [
+            "bytes",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "B",
+          "symbol": Array [
+            "B",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "byte",
+          "symbol": Array [
+            "byte",
+          ],
         },
       },
     },
@@ -83,23 +107,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "degree Celsius",
+          "symbol": Array [
+            "degree Celsius",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "degrees Celsius",
+          "symbol": Array [
+            "degrees Celsius",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "°C",
+          "symbol": Array [
+            "°C",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "°C",
+          "symbol": Array [
+            "°C",
+          ],
         },
       },
     },
@@ -108,23 +140,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "centimeter",
+          "symbol": Array [
+            "centimeter",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "centimeters",
+          "symbol": Array [
+            "centimeters",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "cm",
+          "symbol": Array [
+            "cm",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "cm",
+          "symbol": Array [
+            "cm",
+          ],
         },
       },
     },
@@ -133,27 +173,37 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "day",
+          "symbol": Array [
+            "day",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "days",
+          "symbol": Array [
+            "days",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "d",
+          "symbol": Array [
+            "d",
+          ],
         },
       },
       "short": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "day",
+          "symbol": Array [
+            "day",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "days",
+          "symbol": Array [
+            "days",
+          ],
         },
       },
     },
@@ -162,23 +212,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "degree",
+          "symbol": Array [
+            "degree",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "degrees",
+          "symbol": Array [
+            "degrees",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "°",
+          "symbol": Array [
+            "°",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "deg",
+          "symbol": Array [
+            "deg",
+          ],
         },
       },
     },
@@ -187,23 +245,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "degree Fahrenheit",
+          "symbol": Array [
+            "degree Fahrenheit",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "degrees Fahrenheit",
+          "symbol": Array [
+            "degrees Fahrenheit",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "°",
+          "symbol": Array [
+            "°",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "°F",
+          "symbol": Array [
+            "°F",
+          ],
         },
       },
     },
@@ -212,23 +278,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "fluid ounce",
+          "symbol": Array [
+            "fluid ounce",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "fluid ounces",
+          "symbol": Array [
+            "fluid ounces",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "fl oz",
+          "symbol": Array [
+            "fl oz",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "fl oz",
+          "symbol": Array [
+            "fl oz",
+          ],
         },
       },
     },
@@ -237,23 +311,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "foot",
+          "symbol": Array [
+            "foot",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "feet",
+          "symbol": Array [
+            "feet",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "′",
+          "symbol": Array [
+            "′",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "ft",
+          "symbol": Array [
+            "ft",
+          ],
         },
       },
     },
@@ -262,23 +344,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "gallon",
+          "symbol": Array [
+            "gallon",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "gallons",
+          "symbol": Array [
+            "gallons",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "gal",
+          "symbol": Array [
+            "gal",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "gal",
+          "symbol": Array [
+            "gal",
+          ],
         },
       },
     },
@@ -287,23 +377,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "gigabit",
+          "symbol": Array [
+            "gigabit",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "gigabits",
+          "symbol": Array [
+            "gigabits",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "Gb",
+          "symbol": Array [
+            "Gb",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "Gb",
+          "symbol": Array [
+            "Gb",
+          ],
         },
       },
     },
@@ -312,23 +410,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "gigabyte",
+          "symbol": Array [
+            "gigabyte",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "gigabytes",
+          "symbol": Array [
+            "gigabytes",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "GB",
+          "symbol": Array [
+            "GB",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "GB",
+          "symbol": Array [
+            "GB",
+          ],
         },
       },
     },
@@ -337,23 +443,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "gram",
+          "symbol": Array [
+            "gram",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "grams",
+          "symbol": Array [
+            "grams",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "g",
+          "symbol": Array [
+            "g",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "g",
+          "symbol": Array [
+            "g",
+          ],
         },
       },
     },
@@ -362,23 +476,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "hectare",
+          "symbol": Array [
+            "hectare",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "hectares",
+          "symbol": Array [
+            "hectares",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "ha",
+          "symbol": Array [
+            "ha",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "ha",
+          "symbol": Array [
+            "ha",
+          ],
         },
       },
     },
@@ -387,23 +509,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "hour",
+          "symbol": Array [
+            "hour",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "hours",
+          "symbol": Array [
+            "hours",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "h",
+          "symbol": Array [
+            "h",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "hr",
+          "symbol": Array [
+            "hr",
+          ],
         },
       },
     },
@@ -412,23 +542,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "inch",
+          "symbol": Array [
+            "inch",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "inches",
+          "symbol": Array [
+            "inches",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "″",
+          "symbol": Array [
+            "″",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "in",
+          "symbol": Array [
+            "in",
+          ],
         },
       },
     },
@@ -437,23 +575,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "kilobit",
+          "symbol": Array [
+            "kilobit",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "kilobits",
+          "symbol": Array [
+            "kilobits",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "kb",
+          "symbol": Array [
+            "kb",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "kb",
+          "symbol": Array [
+            "kb",
+          ],
         },
       },
     },
@@ -462,23 +608,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "kilobyte",
+          "symbol": Array [
+            "kilobyte",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "kilobytes",
+          "symbol": Array [
+            "kilobytes",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "kB",
+          "symbol": Array [
+            "kB",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "kB",
+          "symbol": Array [
+            "kB",
+          ],
         },
       },
     },
@@ -487,23 +641,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "kilogram",
+          "symbol": Array [
+            "kilogram",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "kilograms",
+          "symbol": Array [
+            "kilograms",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "kg",
+          "symbol": Array [
+            "kg",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "kg",
+          "symbol": Array [
+            "kg",
+          ],
         },
       },
     },
@@ -512,23 +674,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "kilometer",
+          "symbol": Array [
+            "kilometer",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "kilometers",
+          "symbol": Array [
+            "kilometers",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "km",
+          "symbol": Array [
+            "km",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "km",
+          "symbol": Array [
+            "km",
+          ],
         },
       },
     },
@@ -537,23 +707,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "liter",
+          "symbol": Array [
+            "liter",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "liters",
+          "symbol": Array [
+            "liters",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "L",
+          "symbol": Array [
+            "L",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "L",
+          "symbol": Array [
+            "L",
+          ],
         },
       },
     },
@@ -562,23 +740,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "megabit",
+          "symbol": Array [
+            "megabit",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "megabits",
+          "symbol": Array [
+            "megabits",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "Mb",
+          "symbol": Array [
+            "Mb",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "Mb",
+          "symbol": Array [
+            "Mb",
+          ],
         },
       },
     },
@@ -587,23 +773,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "megabyte",
+          "symbol": Array [
+            "megabyte",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "megabytes",
+          "symbol": Array [
+            "megabytes",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "MB",
+          "symbol": Array [
+            "MB",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "MB",
+          "symbol": Array [
+            "MB",
+          ],
         },
       },
     },
@@ -612,23 +806,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "meter",
+          "symbol": Array [
+            "meter",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "meters",
+          "symbol": Array [
+            "meters",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "m",
+          "symbol": Array [
+            "m",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "m",
+          "symbol": Array [
+            "m",
+          ],
         },
       },
     },
@@ -637,23 +839,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "mile",
+          "symbol": Array [
+            "mile",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "miles",
+          "symbol": Array [
+            "miles",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "mi",
+          "symbol": Array [
+            "mi",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "mi",
+          "symbol": Array [
+            "mi",
+          ],
         },
       },
     },
@@ -662,23 +872,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "mile-scandinavian",
+          "symbol": Array [
+            "mile-scandinavian",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "miles-scandinavian",
+          "symbol": Array [
+            "miles-scandinavian",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "smi",
+          "symbol": Array [
+            "smi",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "smi",
+          "symbol": Array [
+            "smi",
+          ],
         },
       },
     },
@@ -687,23 +905,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "milliliter",
+          "symbol": Array [
+            "milliliter",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "milliliters",
+          "symbol": Array [
+            "milliliters",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "mL",
+          "symbol": Array [
+            "mL",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "mL",
+          "symbol": Array [
+            "mL",
+          ],
         },
       },
     },
@@ -712,23 +938,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "millimeter",
+          "symbol": Array [
+            "millimeter",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "millimeters",
+          "symbol": Array [
+            "millimeters",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "mm",
+          "symbol": Array [
+            "mm",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "mm",
+          "symbol": Array [
+            "mm",
+          ],
         },
       },
     },
@@ -737,23 +971,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "millisecond",
+          "symbol": Array [
+            "millisecond",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "milliseconds",
+          "symbol": Array [
+            "milliseconds",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "ms",
+          "symbol": Array [
+            "ms",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "ms",
+          "symbol": Array [
+            "ms",
+          ],
         },
       },
     },
@@ -762,23 +1004,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "minute",
+          "symbol": Array [
+            "minute",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "minutes",
+          "symbol": Array [
+            "minutes",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "m",
+          "symbol": Array [
+            "m",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "min",
+          "symbol": Array [
+            "min",
+          ],
         },
       },
     },
@@ -787,27 +1037,37 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "month",
+          "symbol": Array [
+            "month",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "months",
+          "symbol": Array [
+            "months",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "m",
+          "symbol": Array [
+            "m",
+          ],
         },
       },
       "short": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "mth",
+          "symbol": Array [
+            "mth",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "mths",
+          "symbol": Array [
+            "mths",
+          ],
         },
       },
     },
@@ -816,23 +1076,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "ounce",
+          "symbol": Array [
+            "ounce",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "ounces",
+          "symbol": Array [
+            "ounces",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "oz",
+          "symbol": Array [
+            "oz",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "oz",
+          "symbol": Array [
+            "oz",
+          ],
         },
       },
     },
@@ -841,19 +1109,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "percent",
+          "symbol": Array [
+            "percent",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "%",
+          "symbol": Array [
+            "%",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "%",
+          "symbol": Array [
+            "%",
+          ],
         },
       },
     },
@@ -862,23 +1136,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "petabyte",
+          "symbol": Array [
+            "petabyte",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "petabytes",
+          "symbol": Array [
+            "petabytes",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "PB",
+          "symbol": Array [
+            "PB",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "PB",
+          "symbol": Array [
+            "PB",
+          ],
         },
       },
     },
@@ -887,23 +1169,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "pound",
+          "symbol": Array [
+            "pound",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "pounds",
+          "symbol": Array [
+            "pounds",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "#",
+          "symbol": Array [
+            "#",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "lb",
+          "symbol": Array [
+            "lb",
+          ],
         },
       },
     },
@@ -912,23 +1202,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "second",
+          "symbol": Array [
+            "second",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "seconds",
+          "symbol": Array [
+            "seconds",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "s",
+          "symbol": Array [
+            "s",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "sec",
+          "symbol": Array [
+            "sec",
+          ],
         },
       },
     },
@@ -937,23 +1235,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "stone",
+          "symbol": Array [
+            "stone",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "stones",
+          "symbol": Array [
+            "stones",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "st",
+          "symbol": Array [
+            "st",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "st",
+          "symbol": Array [
+            "st",
+          ],
         },
       },
     },
@@ -962,23 +1268,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "terabit",
+          "symbol": Array [
+            "terabit",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "terabits",
+          "symbol": Array [
+            "terabits",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "Tb",
+          "symbol": Array [
+            "Tb",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "Tb",
+          "symbol": Array [
+            "Tb",
+          ],
         },
       },
     },
@@ -987,23 +1301,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "terabyte",
+          "symbol": Array [
+            "terabyte",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "terabytes",
+          "symbol": Array [
+            "terabytes",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "TB",
+          "symbol": Array [
+            "TB",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "TB",
+          "symbol": Array [
+            "TB",
+          ],
         },
       },
     },
@@ -1012,27 +1334,37 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "week",
+          "symbol": Array [
+            "week",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "weeks",
+          "symbol": Array [
+            "weeks",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "w",
+          "symbol": Array [
+            "w",
+          ],
         },
       },
       "short": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "wk",
+          "symbol": Array [
+            "wk",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "wks",
+          "symbol": Array [
+            "wks",
+          ],
         },
       },
     },
@@ -1041,23 +1373,31 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "yard",
+          "symbol": Array [
+            "yard",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "yards",
+          "symbol": Array [
+            "yards",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "yd",
+          "symbol": Array [
+            "yd",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "yd",
+          "symbol": Array [
+            "yd",
+          ],
         },
       },
     },
@@ -1066,27 +1406,1207 @@ Object {
       "long": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "year",
+          "symbol": Array [
+            "year",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "years",
+          "symbol": Array [
+            "years",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "y",
+          "symbol": Array [
+            "y",
+          ],
         },
       },
       "short": Object {
         "one": Object {
           "pattern": "{0} {1}",
-          "symbol": "yr",
+          "symbol": Array [
+            "yr",
+          ],
         },
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "yrs",
+          "symbol": Array [
+            "yrs",
+          ],
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`extract-units should be able to extract ja 1`] = `
+Object {
+  "ja": Object {
+    "acre": Object {
+      "displayName": "エーカー",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "エーカー",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "ac",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "ac",
+          ],
+        },
+      },
+    },
+    "bit": Object {
+      "displayName": "ビット",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "ビット",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "b",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "bit",
+          ],
+        },
+      },
+    },
+    "byte": Object {
+      "displayName": "バイト",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "バイト",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "B",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "byte",
+          ],
+        },
+      },
+    },
+    "celsius": Object {
+      "displayName": "摂氏",
+      "long": Object {
+        "other": Object {
+          "pattern": "{1} {0} {1}",
+          "symbol": Array [
+            "摂氏",
+            "度",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "°C",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "°C",
+          ],
+        },
+      },
+    },
+    "centimeter": Object {
+      "displayName": "センチメートル",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "センチメートル",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "cm",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "cm",
+          ],
+        },
+      },
+    },
+    "day": Object {
+      "displayName": "日",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "日",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "d",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "日",
+          ],
+        },
+      },
+    },
+    "degree": Object {
+      "displayName": "度",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "度",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "度",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "度",
+          ],
+        },
+      },
+    },
+    "fahrenheit": Object {
+      "displayName": "華氏",
+      "long": Object {
+        "other": Object {
+          "pattern": "{1} {0} {1}",
+          "symbol": Array [
+            "華氏",
+            "度",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "°F",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "°F",
+          ],
+        },
+      },
+    },
+    "fluid-ounce": Object {
+      "displayName": "液量オンス",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "液量オンス",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "fl oz",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "fl oz",
+          ],
+        },
+      },
+    },
+    "foot": Object {
+      "displayName": "フィート",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "フィート",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "′",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "ft",
+          ],
+        },
+      },
+    },
+    "gallon": Object {
+      "displayName": "ガロン",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "ガロン",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "gal",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "gal",
+          ],
+        },
+      },
+    },
+    "gigabit": Object {
+      "displayName": "ギガビット",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "ギガビット",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "Gb",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "Gb",
+          ],
+        },
+      },
+    },
+    "gigabyte": Object {
+      "displayName": "ギガバイト",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "ギガバイト",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "GB",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "GB",
+          ],
+        },
+      },
+    },
+    "gram": Object {
+      "displayName": "グラム",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "グラム",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "g",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "g",
+          ],
+        },
+      },
+    },
+    "hectare": Object {
+      "displayName": "ヘクタール",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "ヘクタール",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "ha",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "ha",
+          ],
+        },
+      },
+    },
+    "hour": Object {
+      "displayName": "時間",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "時間",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "h",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "時間",
+          ],
+        },
+      },
+    },
+    "inch": Object {
+      "displayName": "インチ",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "インチ",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "″",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "in",
+          ],
+        },
+      },
+    },
+    "kilobit": Object {
+      "displayName": "キロビット",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "キロビット",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "kb",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "kb",
+          ],
+        },
+      },
+    },
+    "kilobyte": Object {
+      "displayName": "キロバイト",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "キロバイト",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "kB",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "KB",
+          ],
+        },
+      },
+    },
+    "kilogram": Object {
+      "displayName": "キログラム",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "キログラム",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "kg",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "kg",
+          ],
+        },
+      },
+    },
+    "kilometer": Object {
+      "displayName": "キロメートル",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "キロメートル",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "km",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "km",
+          ],
+        },
+      },
+    },
+    "liter": Object {
+      "displayName": "リットル",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "リットル",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "L",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "L",
+          ],
+        },
+      },
+    },
+    "megabit": Object {
+      "displayName": "メガビット",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "メガビット",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "Mb",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "Mb",
+          ],
+        },
+      },
+    },
+    "megabyte": Object {
+      "displayName": "メガバイト",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "メガバイト",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "MB",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "MB",
+          ],
+        },
+      },
+    },
+    "meter": Object {
+      "displayName": "メートル",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "メートル",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "m",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "m",
+          ],
+        },
+      },
+    },
+    "mile": Object {
+      "displayName": "マイル",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "マイル",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "マイル",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "mi",
+          ],
+        },
+      },
+    },
+    "mile-scandinavian": Object {
+      "displayName": "スカンジナビアマイル",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "スカンジナビアマイル",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "smi",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "smi",
+          ],
+        },
+      },
+    },
+    "milliliter": Object {
+      "displayName": "ミリリットル",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "ミリリットル",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "ml",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "ml",
+          ],
+        },
+      },
+    },
+    "millimeter": Object {
+      "displayName": "ミリメートル",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "ミリメートル",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "mm",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "mm",
+          ],
+        },
+      },
+    },
+    "millisecond": Object {
+      "displayName": "ミリ秒",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "ミリ秒",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "ms",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "ms",
+          ],
+        },
+      },
+    },
+    "minute": Object {
+      "displayName": "分",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "分",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "m",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "分",
+          ],
+        },
+      },
+    },
+    "month": Object {
+      "displayName": "か月",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "か月",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "m",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "か月",
+          ],
+        },
+      },
+    },
+    "ounce": Object {
+      "displayName": "オンス",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "オンス",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "oz",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "oz",
+          ],
+        },
+      },
+    },
+    "percent": Object {
+      "displayName": "パーセント",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "パーセント",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "%",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "%",
+          ],
+        },
+      },
+    },
+    "petabyte": Object {
+      "displayName": "ペタバイト",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "ペタバイト",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "PB",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "PB",
+          ],
+        },
+      },
+    },
+    "pound": Object {
+      "displayName": "ポンド",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "ポンド",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "lb",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "lb",
+          ],
+        },
+      },
+    },
+    "second": Object {
+      "displayName": "秒",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "秒",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "s",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "秒",
+          ],
+        },
+      },
+    },
+    "stone": Object {
+      "displayName": "ストーン",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "ストーン",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "st",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "st",
+          ],
+        },
+      },
+    },
+    "terabit": Object {
+      "displayName": "テラビット",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "テラビット",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "Tb",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "Tb",
+          ],
+        },
+      },
+    },
+    "terabyte": Object {
+      "displayName": "テラバイト",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "テラバイト",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "TB",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "TB",
+          ],
+        },
+      },
+    },
+    "week": Object {
+      "displayName": "週間",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "週間",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "w",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "週間",
+          ],
+        },
+      },
+    },
+    "yard": Object {
+      "displayName": "ヤード",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "ヤード",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "ヤード",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "yd",
+          ],
+        },
+      },
+    },
+    "year": Object {
+      "displayName": "年",
+      "long": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "年",
+          ],
+        },
+      },
+      "narrow": Object {
+        "other": Object {
+          "pattern": "{0}{1}",
+          "symbol": Array [
+            "y",
+          ],
+        },
+      },
+      "short": Object {
+        "other": Object {
+          "pattern": "{0} {1}",
+          "symbol": Array [
+            "年",
+          ],
         },
       },
     },
@@ -1102,19 +2622,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "mẫu",
+          "symbol": Array [
+            "mẫu",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "mẫu",
+          "symbol": Array [
+            "mẫu",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "mẫu",
+          "symbol": Array [
+            "mẫu",
+          ],
         },
       },
     },
@@ -1123,19 +2649,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "bit",
+          "symbol": Array [
+            "bit",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "bit",
+          "symbol": Array [
+            "bit",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "bit",
+          "symbol": Array [
+            "bit",
+          ],
         },
       },
     },
@@ -1144,19 +2676,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "byte",
+          "symbol": Array [
+            "byte",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "byte",
+          "symbol": Array [
+            "byte",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "byte",
+          "symbol": Array [
+            "byte",
+          ],
         },
       },
     },
@@ -1165,19 +2703,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "độ C",
+          "symbol": Array [
+            "độ C",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "°C",
+          "symbol": Array [
+            "°C",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "°C",
+          "symbol": Array [
+            "°C",
+          ],
         },
       },
     },
@@ -1186,19 +2730,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "xentimét",
+          "symbol": Array [
+            "xentimét",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "cm",
+          "symbol": Array [
+            "cm",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "cm",
+          "symbol": Array [
+            "cm",
+          ],
         },
       },
     },
@@ -1207,19 +2757,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "ngày",
+          "symbol": Array [
+            "ngày",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "ngày",
+          "symbol": Array [
+            "ngày",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "ngày",
+          "symbol": Array [
+            "ngày",
+          ],
         },
       },
     },
@@ -1228,19 +2784,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "độ",
+          "symbol": Array [
+            "độ",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "°",
+          "symbol": Array [
+            "°",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "°",
+          "symbol": Array [
+            "°",
+          ],
         },
       },
     },
@@ -1249,19 +2811,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "độ F",
+          "symbol": Array [
+            "độ F",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "°F",
+          "symbol": Array [
+            "°F",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "°F",
+          "symbol": Array [
+            "°F",
+          ],
         },
       },
     },
@@ -1270,19 +2838,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "aoxơ chất lỏng",
+          "symbol": Array [
+            "aoxơ chất lỏng",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "fl oz",
+          "symbol": Array [
+            "fl oz",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "fl oz",
+          "symbol": Array [
+            "fl oz",
+          ],
         },
       },
     },
@@ -1291,19 +2865,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "feet",
+          "symbol": Array [
+            "feet",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "'",
+          "symbol": Array [
+            "'",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "ft",
+          "symbol": Array [
+            "ft",
+          ],
         },
       },
     },
@@ -1312,19 +2892,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "gallon",
+          "symbol": Array [
+            "gallon",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "gal",
+          "symbol": Array [
+            "gal",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "gal",
+          "symbol": Array [
+            "gal",
+          ],
         },
       },
     },
@@ -1333,19 +2919,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "gigabit",
+          "symbol": Array [
+            "gigabit",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "Gb",
+          "symbol": Array [
+            "Gb",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "Gb",
+          "symbol": Array [
+            "Gb",
+          ],
         },
       },
     },
@@ -1354,19 +2946,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "gigabyte",
+          "symbol": Array [
+            "gigabyte",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "GB",
+          "symbol": Array [
+            "GB",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "GB",
+          "symbol": Array [
+            "GB",
+          ],
         },
       },
     },
@@ -1375,19 +2973,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "gam",
+          "symbol": Array [
+            "gam",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "g",
+          "symbol": Array [
+            "g",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "g",
+          "symbol": Array [
+            "g",
+          ],
         },
       },
     },
@@ -1396,19 +3000,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "héc-ta",
+          "symbol": Array [
+            "héc-ta",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "ha",
+          "symbol": Array [
+            "ha",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "ha",
+          "symbol": Array [
+            "ha",
+          ],
         },
       },
     },
@@ -1417,19 +3027,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "giờ",
+          "symbol": Array [
+            "giờ",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "giờ",
+          "symbol": Array [
+            "giờ",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "giờ",
+          "symbol": Array [
+            "giờ",
+          ],
         },
       },
     },
@@ -1438,19 +3054,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "inch",
+          "symbol": Array [
+            "inch",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "\\\\\\"",
+          "symbol": Array [
+            "\\\\\\"",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "inch",
+          "symbol": Array [
+            "inch",
+          ],
         },
       },
     },
@@ -1459,19 +3081,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "kilobit",
+          "symbol": Array [
+            "kilobit",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "kb",
+          "symbol": Array [
+            "kb",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "kb",
+          "symbol": Array [
+            "kb",
+          ],
         },
       },
     },
@@ -1480,19 +3108,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "kilobyte",
+          "symbol": Array [
+            "kilobyte",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "kB",
+          "symbol": Array [
+            "kB",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "kB",
+          "symbol": Array [
+            "kB",
+          ],
         },
       },
     },
@@ -1501,19 +3135,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "kilôgam",
+          "symbol": Array [
+            "kilôgam",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "kg",
+          "symbol": Array [
+            "kg",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "kg",
+          "symbol": Array [
+            "kg",
+          ],
         },
       },
     },
@@ -1522,19 +3162,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "kilômét",
+          "symbol": Array [
+            "kilômét",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "km",
+          "symbol": Array [
+            "km",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "km",
+          "symbol": Array [
+            "km",
+          ],
         },
       },
     },
@@ -1543,19 +3189,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "lít",
+          "symbol": Array [
+            "lít",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "L",
+          "symbol": Array [
+            "L",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "L",
+          "symbol": Array [
+            "L",
+          ],
         },
       },
     },
@@ -1564,19 +3216,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "megabit",
+          "symbol": Array [
+            "megabit",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "Mb",
+          "symbol": Array [
+            "Mb",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "Mb",
+          "symbol": Array [
+            "Mb",
+          ],
         },
       },
     },
@@ -1585,19 +3243,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "megabyte",
+          "symbol": Array [
+            "megabyte",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "MB",
+          "symbol": Array [
+            "MB",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "MB",
+          "symbol": Array [
+            "MB",
+          ],
         },
       },
     },
@@ -1606,19 +3270,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "mét",
+          "symbol": Array [
+            "mét",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "m",
+          "symbol": Array [
+            "m",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "m",
+          "symbol": Array [
+            "m",
+          ],
         },
       },
     },
@@ -1627,19 +3297,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "dặm",
+          "symbol": Array [
+            "dặm",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "mi",
+          "symbol": Array [
+            "mi",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "dặm",
+          "symbol": Array [
+            "dặm",
+          ],
         },
       },
     },
@@ -1648,19 +3324,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "dặm scandinavia",
+          "symbol": Array [
+            "dặm scandinavia",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "smi",
+          "symbol": Array [
+            "smi",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "smi",
+          "symbol": Array [
+            "smi",
+          ],
         },
       },
     },
@@ -1669,19 +3351,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "mililít",
+          "symbol": Array [
+            "mililít",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "mL",
+          "symbol": Array [
+            "mL",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "mL",
+          "symbol": Array [
+            "mL",
+          ],
         },
       },
     },
@@ -1690,19 +3378,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "milimét",
+          "symbol": Array [
+            "milimét",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "mm",
+          "symbol": Array [
+            "mm",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "mm",
+          "symbol": Array [
+            "mm",
+          ],
         },
       },
     },
@@ -1711,19 +3405,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "mili giây",
+          "symbol": Array [
+            "mili giây",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "miligiây",
+          "symbol": Array [
+            "miligiây",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "mili giây",
+          "symbol": Array [
+            "mili giây",
+          ],
         },
       },
     },
@@ -1732,19 +3432,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "phút",
+          "symbol": Array [
+            "phút",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "phút",
+          "symbol": Array [
+            "phút",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "phút",
+          "symbol": Array [
+            "phút",
+          ],
         },
       },
     },
@@ -1753,19 +3459,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "tháng",
+          "symbol": Array [
+            "tháng",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "tháng",
+          "symbol": Array [
+            "tháng",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "tháng",
+          "symbol": Array [
+            "tháng",
+          ],
         },
       },
     },
@@ -1774,19 +3486,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "aoxơ",
+          "symbol": Array [
+            "aoxơ",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "oz",
+          "symbol": Array [
+            "oz",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "oz",
+          "symbol": Array [
+            "oz",
+          ],
         },
       },
     },
@@ -1795,19 +3513,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "%",
+          "symbol": Array [
+            "%",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "%",
+          "symbol": Array [
+            "%",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "%",
+          "symbol": Array [
+            "%",
+          ],
         },
       },
     },
@@ -1816,19 +3540,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "PB",
+          "symbol": Array [
+            "PB",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "PB",
+          "symbol": Array [
+            "PB",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "PB",
+          "symbol": Array [
+            "PB",
+          ],
         },
       },
     },
@@ -1837,19 +3567,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "pao",
+          "symbol": Array [
+            "pao",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "lb",
+          "symbol": Array [
+            "lb",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "lb",
+          "symbol": Array [
+            "lb",
+          ],
         },
       },
     },
@@ -1858,19 +3594,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "giây",
+          "symbol": Array [
+            "giây",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "giây",
+          "symbol": Array [
+            "giây",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "giây",
+          "symbol": Array [
+            "giây",
+          ],
         },
       },
     },
@@ -1879,19 +3621,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "st",
+          "symbol": Array [
+            "st",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "st",
+          "symbol": Array [
+            "st",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "st",
+          "symbol": Array [
+            "st",
+          ],
         },
       },
     },
@@ -1900,19 +3648,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "terabit",
+          "symbol": Array [
+            "terabit",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "Tb",
+          "symbol": Array [
+            "Tb",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "Tb",
+          "symbol": Array [
+            "Tb",
+          ],
         },
       },
     },
@@ -1921,19 +3675,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "terabyte",
+          "symbol": Array [
+            "terabyte",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "TB",
+          "symbol": Array [
+            "TB",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "TB",
+          "symbol": Array [
+            "TB",
+          ],
         },
       },
     },
@@ -1942,19 +3702,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "tuần",
+          "symbol": Array [
+            "tuần",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "tuần",
+          "symbol": Array [
+            "tuần",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "tuần",
+          "symbol": Array [
+            "tuần",
+          ],
         },
       },
     },
@@ -1963,19 +3729,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "yard",
+          "symbol": Array [
+            "yard",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0}{1}",
-          "symbol": "yd",
+          "symbol": Array [
+            "yd",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "yd",
+          "symbol": Array [
+            "yd",
+          ],
         },
       },
     },
@@ -1984,19 +3756,25 @@ Object {
       "long": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "năm",
+          "symbol": Array [
+            "năm",
+          ],
         },
       },
       "narrow": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "năm",
+          "symbol": Array [
+            "năm",
+          ],
         },
       },
       "short": Object {
         "other": Object {
           "pattern": "{0} {1}",
-          "symbol": "năm",
+          "symbol": Array [
+            "năm",
+          ],
         },
       },
     },

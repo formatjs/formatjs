@@ -127,9 +127,9 @@ export interface NumberILD {
   unitSymbols: Record<
     string,
     {
-      unitSymbol: LDMLPluralRuleMap<string>;
-      unitNarrowSymbol: LDMLPluralRuleMap<string>;
-      unitName: LDMLPluralRuleMap<string>;
+      unitSymbol: LDMLPluralRuleMap<string[]>;
+      unitNarrowSymbol: LDMLPluralRuleMap<string[]>;
+      unitName: LDMLPluralRuleMap<string[]>;
     }
   >;
 }
@@ -169,7 +169,9 @@ export interface UnitData {
 
 export interface RawUnitPattern {
   pattern: string;
-  symbol: string;
+  // An array bc {0} can be in the middle,
+  // e.g: celsius in https://github.com/unicode-cldr/cldr-units-full/blob/master/main/ja/units.json
+  symbol: string[];
 }
 
 export interface CurrencyData {

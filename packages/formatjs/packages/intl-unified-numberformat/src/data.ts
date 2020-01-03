@@ -23,6 +23,9 @@ const S_UNICODE_REGEX: RegExp =
 
 // g flag bc this appears twice in accounting pattern
 const CURRENCY_SYMBOL_REGEX = /¤/g;
+// Instead of doing just replace '{1}' we use global regex
+// since this can appear more than once (e.g {1} {number} {1})
+const UNIT_1_REGEX = /\{1\}/g;
 
 function extractDecimalFormatILD(
   data?: Record<DecimalFormatNum, LDMLPluralRuleMap<string>> | undefined
@@ -280,7 +283,16 @@ function produceSignPattern(
   invariant(!!patterns, 'Pattern should have existed');
   let [positivePattern, negativePattern] = patterns.split(';');
   if (!negativePattern) {
-    negativePattern = `{${InternalSlotToken.minusSign}}${positivePattern}`;
+    // In case {0} is in the middle of the pattern
+    negativePattern = positivePattern.replace('+', '-');
+    if (negativePattern === positivePattern) {
+      negativePattern = positivePattern
+        .replace('{0}', `{${InternalSlotToken.minusSign}}{0}`)
+        .replace('{number}', `{${InternalSlotToken.minusSign}}{number}`);
+    }
+    if (negativePattern === positivePattern) {
+      negativePattern = `{${InternalSlotToken.minusSign}}${positivePattern}`;
+    }
   } else {
     negativePattern = negativePattern.replace(
       '-',
@@ -296,7 +308,14 @@ function produceSignPattern(
       `{${InternalSlotToken.plusSign}}`
     );
   } else {
-    alwaysPositivePattern = `{${InternalSlotToken.plusSign}}${positivePattern}`;
+    // In case {0} is in the middle of the pattern
+    alwaysPositivePattern = positivePattern
+      .replace('{0}', `{${InternalSlotToken.plusSign}}{0}`)
+      .replace('{number}', `{${InternalSlotToken.plusSign}}{number}`);
+
+    if (alwaysPositivePattern === positivePattern) {
+      alwaysPositivePattern = `{${InternalSlotToken.plusSign}}${positivePattern}`;
+    }
   }
 
   switch (signDisplay) {
@@ -446,7 +465,7 @@ class UnitPatterns extends NotationPatterns
   get narrow() {
     if (!this.pattern) {
       this.pattern = this.units[this.unit].narrow.other.pattern.replace(
-        '{1}',
+        UNIT_1_REGEX,
         `{${InternalSlotToken.unitNarrowSymbol}}`
       );
     }
@@ -456,7 +475,7 @@ class UnitPatterns extends NotationPatterns
   get short() {
     if (!this.pattern) {
       this.pattern = this.units[this.unit].short.other.pattern.replace(
-        '{1}',
+        UNIT_1_REGEX,
         `{${InternalSlotToken.unitSymbol}}`
       );
     }
@@ -466,7 +485,7 @@ class UnitPatterns extends NotationPatterns
   get long() {
     if (!this.pattern) {
       this.pattern = this.units[this.unit].long.other.pattern.replace(
-        '{1}',
+        UNIT_1_REGEX,
         `{${InternalSlotToken.unitName}}`
       );
     }
@@ -776,7 +795,7 @@ function resolvePatternForCurrencyName(
   decimalNum: DecimalFormatNum
 ) {
   const pattern = numbers.currency[numberingSystem].unitPattern.replace(
-    '{1}',
+    UNIT_1_REGEX,
     `{${InternalSlotToken.currencyName}}`
   );
   // currencySign doesn't matter here but notation does

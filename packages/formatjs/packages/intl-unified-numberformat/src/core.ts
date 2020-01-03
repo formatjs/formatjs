@@ -328,6 +328,11 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
   const pattern = getNumberFormatPattern(numberFormat, x, exponent);
   const patternParts = partitionPattern(pattern);
   const results: UnifiedNumberFormatPart[] = [];
+
+  // Unspec'ed stuff
+  // This is to deal w/ cases where {number} is in the middle of a unit pattern
+  let unitSymbolChunkIndex = 0;
+
   for (const part of patternParts) {
     switch (part.type) {
       case 'literal':
@@ -463,8 +468,11 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
             'unit'
           );
           const unitSymbols = ild.unitSymbols[unit!];
-          const mu = selectPlural(pl, formattedX, unitSymbols[part.type]);
+          const mu = selectPlural(pl, formattedX, unitSymbols[part.type])[
+            unitSymbolChunkIndex
+          ];
           results.push({type: 'unit', value: mu});
+          unitSymbolChunkIndex++;
         }
         break;
       }
@@ -955,11 +963,11 @@ function getNumberFormatPattern(
   return pattern;
 }
 
-function selectPlural(
+function selectPlural<T>(
   pl: Intl.PluralRules,
   x: number,
-  rules: LDMLPluralRuleMap<string>
-): string {
+  rules: LDMLPluralRuleMap<T>
+): T {
   return rules[pl.select(x) as LDMLPluralRule] || rules.other;
 }
 

@@ -7,4 +7,7 @@ describe('extract-units', function() {
   it('should be able to extract vi', function() {
     expect(extractUnits(['vi'])).toMatchSnapshot();
   });
+  it('should be able to extract ja', function() {
+    expect(extractUnits(['ja'])).toMatchSnapshot();
+  });
 });
