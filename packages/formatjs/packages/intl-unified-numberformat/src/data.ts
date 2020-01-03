@@ -42,10 +42,18 @@ function extractDecimalFormatILD(
 
     all[num] = (Object.keys(pattern) as Array<LDMLPluralRule>).reduce(
       (all: LDMLPluralRuleMap<string>, p) => {
-        all[p] = (pattern[p] || '').replace(/[¤0]/g, '').trim();
+        all[p] = (pattern[p] || '')
+          .replace(/[¤0]/g, '') // apostrophe-escaped
+          .replace(/'(.*?)'/g, '$1')
+          .trim();
         return all;
       },
-      {other: pattern.other.replace(/[¤0]/g, '').trim()}
+      {
+        other: pattern.other
+          .replace(/[¤0]/g, '') // apostrophe-escaped
+          .replace(/'(.*?)'/g, '$1')
+          .trim(),
+      }
     );
     return all;
   }, {} as Record<DecimalFormatNum, LDMLPluralRuleMap<string>>);
@@ -132,12 +140,11 @@ function extractCompactSymbol(
     .replace(/[¤0]/g, '')
     // In case we're processing half-processed things
     .replace(/({\w+})/g, '')
-    .trim()
-    // apostrophe-escaped
-    .replace(/'(.*?)'/g, '$1');
-  return pattern
-    .replace(compactUnit, `{${slotToken}}`)
-    .replace(/0+/, `{${InternalSlotToken.number}}`);
+    .trim();
+  if (compactUnit) {
+    pattern = pattern.replace(compactUnit, `{${slotToken}}`);
+  }
+  return pattern.replace(/0+/, `{${InternalSlotToken.number}}`);
 }
 
 const INSERT_BEFORE_PATTERN_REGEX = /[^\s(]¤/;
