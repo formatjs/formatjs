@@ -178,6 +178,7 @@ interface UnifiedNumberFormatInternal extends NumberFormatDigitInternalSlots {
   signDisplay: NonNullable<UnifiedNumberFormatOptions['signDisplay']>;
   useGrouping: boolean;
   patterns: NumberLocalePatternData;
+  pl: Intl.PluralRules;
   // Locale-dependent formatter data
   ild: NumberILD;
   numberingSystem: string;
@@ -301,12 +302,210 @@ function initializeNumberFormat(
   setInternalSlot(__INTERNAL_SLOT_MAP__, nf, 'signDisplay', signDisplay);
 }
 
+function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
+  const pl = getInternalSlot(__INTERNAL_SLOT_MAP__, numberFormat, 'pl');
+  let exponent = 0;
+  const ild = getInternalSlot(__INTERNAL_SLOT_MAP__, numberFormat, 'ild');
+  let n: string;
+  let formattedX = x;
+  if (isNaN(x)) {
+    n = ild.symbols.nan;
+  } else if (!isFinite(x)) {
+    n = ild.symbols.infinity;
+  } else {
+    if (
+      getInternalSlot(__INTERNAL_SLOT_MAP__, numberFormat, 'style') ===
+      'percent'
+    ) {
+      formattedX *= 100;
+    }
+    exponent = computeExponent(numberFormat, formattedX);
+    formattedX /= 10 ** exponent;
+    const formatNumberResult = formatNumberToString(numberFormat, formattedX);
+    n = formatNumberResult.formattedString;
+    formattedX = formatNumberResult.roundedNumber;
+  }
+  const pattern = getNumberFormatPattern(numberFormat, x, exponent);
+  const patternParts = partitionPattern(pattern);
+  const results: UnifiedNumberFormatPart[] = [];
+  for (const part of patternParts) {
+    switch (part.type) {
+      case 'literal':
+        results.push(part as UnifiedNumberFormatPart);
+        break;
+      case InternalSlotToken.number: {
+        if (isNaN(formattedX)) {
+          results.push({type: 'nan', value: n});
+        } else if (formattedX === Infinity || x === -Infinity) {
+          results.push({type: 'infinity', value: n});
+        } else {
+          const {numberingSystem: nu, useGrouping} = getMultiInternalSlots(
+            __INTERNAL_SLOT_MAP__,
+            numberFormat,
+            'numberingSystem',
+            'useGrouping'
+          );
+          if (nu && nu in ILND) {
+            // Replace digits
+            const replacementTable = ILND[nu as 'latn'];
+            let replacedDigits = '';
+            for (const digit of n) {
+              // digit can be `.` if it's fractional
+              replacedDigits += replacementTable[+digit] || digit;
+            }
+            n = replacedDigits;
+          }
+          const decimalSepIndex = n.indexOf('.');
+          let integer: string;
+          let fraction: string | undefined;
+          if (decimalSepIndex > 0) {
+            integer = n.slice(0, decimalSepIndex);
+            fraction = n.slice(decimalSepIndex + 1);
+          } else {
+            integer = n;
+          }
+          if (useGrouping) {
+            const groupSepSymbol = ild.symbols.group;
+            const groups: string[] = [];
+            // Assuming that the group separator is always inserted between every 3 digits.
+            let i = integer.length - 3;
+            for (; i > 0; i -= 3) {
+              groups.push(integer.slice(i, i + 3));
+            }
+            groups.push(integer.slice(0, i + 3));
+            while (groups.length > 0) {
+              const integerGroup = groups.pop()!;
+              results.push({type: 'integer', value: integerGroup});
+              if (groups.length > 0) {
+                results.push({type: 'group', value: groupSepSymbol});
+              }
+            }
+          } else {
+            results.push({type: 'integer', value: integer});
+          }
+          if (fraction !== undefined) {
+            results.push(
+              {type: 'decimal', value: ild.symbols.decimal},
+              {type: 'fraction', value: fraction}
+            );
+          }
+        }
+        break;
+      }
+      case InternalSlotToken.plusSign:
+        results.push({
+          type: 'plusSign',
+          value: ild.symbols.plusSign,
+        });
+        break;
+      case InternalSlotToken.minusSign:
+        results.push({
+          type: 'minusSign',
+          value: ild.symbols.minusSign,
+        });
+        break;
+      case InternalSlotToken.compactSymbol:
+      case InternalSlotToken.compactName:
+        const compactData =
+          ild.decimal[
+            part.type === 'compactName' ? 'compactLong' : 'compactShort'
+          ];
+        if (compactData) {
+          results.push({
+            type: 'compact',
+            value: selectPlural(
+              pl,
+              formattedX,
+              compactData[String(10 ** exponent) as DecimalFormatNum]
+            ),
+          });
+        }
+        break;
+      case InternalSlotToken.scientificSeparator:
+        results.push({
+          type: 'exponentSeparator',
+          value: ild.symbols.exponential,
+        });
+        break;
+      case InternalSlotToken.scientificExponent: {
+        if (exponent < 0) {
+          results.push({
+            type: 'exponentMinusSign',
+            value: ild.symbols.minusSign,
+          });
+          exponent = -exponent;
+        }
+        const exponentResult = toRawFixed(exponent, 0, 0);
+        results.push({
+          type: 'exponentInteger',
+          value: exponentResult.formattedString,
+        });
+        break;
+      }
+      case InternalSlotToken.percentSign:
+        results.push({
+          type: 'percentSign',
+          value: ild.symbols.percentSign,
+        });
+        break;
+      case InternalSlotToken.unitSymbol:
+      case InternalSlotToken.unitNarrowSymbol:
+      case InternalSlotToken.unitName: {
+        const style = getInternalSlot(
+          __INTERNAL_SLOT_MAP__,
+          numberFormat,
+          'style'
+        );
+        if (style === 'unit') {
+          const unit = getInternalSlot(
+            __INTERNAL_SLOT_MAP__,
+            numberFormat,
+            'unit'
+          );
+          const unitSymbols = ild.unitSymbols[unit!];
+          const mu = selectPlural(pl, formattedX, unitSymbols[part.type]);
+          results.push({type: 'unit', value: mu});
+        }
+        break;
+      }
+      case InternalSlotToken.currencyCode:
+      case InternalSlotToken.currencySymbol:
+      case InternalSlotToken.currencyNarrowSymbol:
+      case InternalSlotToken.currencyName: {
+        const currency = getInternalSlot(
+          __INTERNAL_SLOT_MAP__,
+          numberFormat,
+          'currency'
+        )!;
+        let cd: string;
+        if (part.type === InternalSlotToken.currencyCode) {
+          cd = currency;
+        } else if (part.type === InternalSlotToken.currencyName) {
+          // TODO: make plural work with scientific notation
+          cd = selectPlural(
+            pl,
+            formattedX,
+            ild.currencySymbols[currency].currencyName
+          );
+        } else {
+          cd = ild.currencySymbols[currency][part.type];
+        }
+        results.push({type: 'currency', value: cd});
+        break;
+      }
+      default:
+        throw Error(`unrecognized pattern part "${part.type}" in "${pattern}"`);
+    }
+  }
+  return results;
+}
+
+function formatNumericToParts(numberFormat: UnifiedNumberFormat, x: number) {
+  return partitionNumberPattern(numberFormat, x);
+}
+
 export class UnifiedNumberFormat
   implements Omit<Intl.NumberFormat, 'formatToParts'> {
-  // private nf: Intl.NumberFormat;
-  private pl: Intl.PluralRules;
-  // private unitPattern?: UnitData;
-  // private currencyNarrowSymbol?: string;
   constructor(
     locales?: string | string[],
     options?: UnifiedNumberFormatOptions
@@ -331,8 +530,8 @@ export class UnifiedNumberFormat
       },
     } = UnifiedNumberFormat;
 
-    this.pl = new Intl.PluralRules(locales);
     setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
+      pl: new Intl.PluralRules(locales),
       patterns: new Patterns(
         ildData.units,
         ildData.currencies,
@@ -355,198 +554,7 @@ export class UnifiedNumberFormat
   }
 
   formatToParts(x: number): UnifiedNumberFormatPart[] {
-    // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-partitionnumberpattern
-    let exponent = 0;
-    const ild = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ild');
-    let n: string;
-    x = toNumeric(x) as number;
-    let formattedX = x;
-    if (isNaN(x)) {
-      n = ild.symbols.nan;
-    } else if (!isFinite(x)) {
-      n = ild.symbols.infinity;
-    } else {
-      if (getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'style') === 'percent') {
-        formattedX *= 100;
-      }
-      exponent = computeExponent(this, formattedX);
-      formattedX /= 10 ** exponent;
-      const formatNumberResult = formatNumberToString(this, formattedX);
-      n = formatNumberResult.formattedString;
-      formattedX = formatNumberResult.roundedNumber;
-    }
-    const pattern = getNumberFormatPattern(this, x, exponent);
-    const patternParts = partitionPattern(pattern);
-    const results: UnifiedNumberFormatPart[] = [];
-    for (const part of patternParts) {
-      switch (part.type) {
-        case 'literal':
-          results.push(part as UnifiedNumberFormatPart);
-          break;
-        case InternalSlotToken.number: {
-          if (isNaN(formattedX)) {
-            results.push({type: 'nan', value: n});
-          } else if (formattedX === Infinity || x === -Infinity) {
-            results.push({type: 'infinity', value: n});
-          } else {
-            const {numberingSystem: nu, useGrouping} = getMultiInternalSlots(
-              __INTERNAL_SLOT_MAP__,
-              this,
-              'numberingSystem',
-              'useGrouping'
-            );
-            if (nu && nu in ILND) {
-              // Replace digits
-              const replacementTable = ILND[nu as 'latn'];
-              let replacedDigits = '';
-              for (const digit of n) {
-                // digit can be `.` if it's fractional
-                replacedDigits += replacementTable[+digit] || digit;
-              }
-              n = replacedDigits;
-            }
-            const decimalSepIndex = n.indexOf('.');
-            let integer: string;
-            let fraction: string | undefined;
-            if (decimalSepIndex > 0) {
-              integer = n.slice(0, decimalSepIndex);
-              fraction = n.slice(decimalSepIndex + 1);
-            } else {
-              integer = n;
-            }
-            if (useGrouping) {
-              const groupSepSymbol = ild.symbols.group;
-              const groups: string[] = [];
-              // Assuming that the group separator is always inserted between every 3 digits.
-              let i = integer.length - 3;
-              for (; i > 0; i -= 3) {
-                groups.push(integer.slice(i, i + 3));
-              }
-              groups.push(integer.slice(0, i + 3));
-              while (groups.length > 0) {
-                const integerGroup = groups.pop()!;
-                results.push({type: 'integer', value: integerGroup});
-                if (groups.length > 0) {
-                  results.push({type: 'group', value: groupSepSymbol});
-                }
-              }
-            } else {
-              results.push({type: 'integer', value: integer});
-            }
-            if (fraction !== undefined) {
-              results.push(
-                {type: 'decimal', value: ild.symbols.decimal},
-                {type: 'fraction', value: fraction}
-              );
-            }
-          }
-          break;
-        }
-        case InternalSlotToken.plusSign:
-          results.push({
-            type: 'plusSign',
-            value: ild.symbols.plusSign,
-          });
-          break;
-        case InternalSlotToken.minusSign:
-          results.push({
-            type: 'minusSign',
-            value: ild.symbols.minusSign,
-          });
-          break;
-        case InternalSlotToken.compactSymbol:
-        case InternalSlotToken.compactName:
-          const compactData =
-            ild.decimal[
-              part.type === 'compactName' ? 'compactLong' : 'compactShort'
-            ];
-          if (compactData) {
-            results.push({
-              type: 'compact',
-              value: selectPlural(
-                this.pl,
-                formattedX,
-                compactData[String(10 ** exponent) as DecimalFormatNum]
-              ),
-            });
-          }
-          break;
-        case InternalSlotToken.scientificSeparator:
-          results.push({
-            type: 'exponentSeparator',
-            value: ild.symbols.exponential,
-          });
-          break;
-        case InternalSlotToken.scientificExponent: {
-          if (exponent < 0) {
-            results.push({
-              type: 'exponentMinusSign',
-              value: ild.symbols.minusSign,
-            });
-            exponent = -exponent;
-          }
-          const exponentResult = toRawFixed(exponent, 0, 0);
-          results.push({
-            type: 'exponentInteger',
-            value: exponentResult.formattedString,
-          });
-          break;
-        }
-        case InternalSlotToken.percentSign:
-          results.push({
-            type: 'percentSign',
-            value: ild.symbols.percentSign,
-          });
-          break;
-        case InternalSlotToken.unitSymbol:
-        case InternalSlotToken.unitNarrowSymbol:
-        case InternalSlotToken.unitName: {
-          const style = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'style');
-          if (style === 'unit') {
-            const unit = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'unit');
-            const unitSymbols = ild.unitSymbols[unit!];
-            const mu = selectPlural(
-              this.pl,
-              formattedX,
-              unitSymbols[part.type] ||
-                unitSymbols[InternalSlotToken.unitSymbol]
-            );
-            results.push({type: 'unit', value: mu});
-          }
-          break;
-        }
-        case InternalSlotToken.currencyCode:
-        case InternalSlotToken.currencySymbol:
-        case InternalSlotToken.currencyNarrowSymbol:
-        case InternalSlotToken.currencyName: {
-          const currency = getInternalSlot(
-            __INTERNAL_SLOT_MAP__,
-            this,
-            'currency'
-          )!;
-          let cd: string;
-          if (part.type === InternalSlotToken.currencyCode) {
-            cd = currency;
-          } else if (part.type === InternalSlotToken.currencyName) {
-            // TODO: make plural work with scientific notation
-            cd = selectPlural(
-              this.pl,
-              formattedX,
-              ild.currencySymbols[currency].currencyName
-            );
-          } else {
-            cd = ild.currencySymbols[currency][part.type];
-          }
-          results.push({type: 'currency', value: cd});
-          break;
-        }
-        default:
-          throw Error(
-            `unrecognized pattern part "${part.type}" in "${pattern}"`
-          );
-      }
-    }
-    return results;
+    return formatNumericToParts(this, toNumeric(x) as number);
   }
 
   resolvedOptions(): ResolvedUnifiedNumberFormatOptions {
