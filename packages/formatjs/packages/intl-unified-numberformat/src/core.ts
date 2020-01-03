@@ -336,8 +336,6 @@ export class UnifiedNumberFormat
         ildData.currencies,
         ildData.numbers,
         getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'numberingSystem'),
-        getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'notation'),
-        getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'compactDisplay'),
         getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'unit'),
         getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'currency'),
         getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'currencySign')
