@@ -62,54 +62,37 @@ const CURRENCY_SIGNS: Array<UnifiedNumberFormatOptions['currencySign']> = [
   'standard',
 ];
 
+const CURRENCIES = ['USD', 'GBP', 'ZWD'];
+
 function test() {
   LOCALES.forEach(locale => {
-    describe(locale, function() {
-      describe('currency', function() {
+    describe(`'${locale}',`, function() {
+      describe("style: 'currency',", function() {
         CURRENCY_DISPLAYS.forEach(currencyDisplay =>
-          describe(`currencyDisplay/${currencyDisplay}`, function() {
+          describe(`currencyDisplay: '${currencyDisplay}',`, function() {
             CURRENCY_SIGNS.forEach(currencySign =>
-              describe(`currencySign/${currencySign}`, function() {
+              describe(`currencySign: '${currencySign}',`, function() {
                 SIGN_DISPLAYS.forEach(signDisplay =>
-                  describe(`signDisplay/${signDisplay}`, function() {
+                  describe(`signDisplay: '${signDisplay}',`, function() {
                     NOTATIONS.forEach(notation =>
-                      describe(`notation/${notation}`, function() {
+                      describe(`notation: '${notation}',`, function() {
                         COMPACT_DISPLAYS.forEach(compactDisplay =>
-                          it(`compactDisplay/${compactDisplay}`, function() {
-                            expect(
-                              new UnifiedNumberFormat(locale, {
-                                style: 'currency',
-                                currency: 'USD',
-                                currencySign,
-                                currencyDisplay,
-                                signDisplay,
-                                notation,
-                                compactDisplay,
-                              }).formatToParts(10000)
-                            ).toMatchSnapshot();
-                            expect(
-                              new UnifiedNumberFormat(locale, {
-                                style: 'currency',
-                                currency: 'GBP',
-                                currencySign,
-                                currencyDisplay,
-                                signDisplay,
-                                notation,
-                                compactDisplay,
-                              }).formatToParts(-10000)
-                            ).toMatchSnapshot();
-                            // Fallback to ISO currency code if narrowSymbol is not available.
-                            expect(
-                              new UnifiedNumberFormat(locale, {
-                                style: 'currency',
-                                currency: 'ZWD',
-                                currencySign,
-                                currencyDisplay,
-                                signDisplay,
-                                notation,
-                                compactDisplay,
-                              }).formatToParts(10000)
-                            ).toMatchSnapshot();
+                          describe(`compactDisplay: '${compactDisplay}',`, function() {
+                            CURRENCIES.forEach(currency =>
+                              it(`currency: '${currency}',`, function() {
+                                expect(
+                                  new UnifiedNumberFormat(locale, {
+                                    style: 'currency',
+                                    currency,
+                                    currencySign,
+                                    currencyDisplay,
+                                    signDisplay,
+                                    notation,
+                                    compactDisplay,
+                                  }).format(10000)
+                                ).toMatchSnapshot();
+                              })
+                            );
                           })
                         );
                       })
@@ -125,5 +108,5 @@ function test() {
   });
 }
 
-// Node v8 does not have formatToParts and v12 has native NumberFormat.
-describe('UnifiedNumberFormat', test);
+// Node v8 does not have format and v12 has native NumberFormat.
+describe('Intl.NumberFormat', test);

@@ -26,7 +26,7 @@ export type Currencies = typeof Currencies['main']['en']['numbers']['currencies'
 
 function extractCurrencyPattern(d: Currencies['USD']) {
   if (!d['displayName-count-other']) {
-    return {other: ''};
+    return;
   }
   return collapseSingleValuePluralRule(
     PLURAL_RULES.reduce(
@@ -56,12 +56,9 @@ function loadCurrencies(locale: Locale): Record<string, CurrencyData> {
   return (Object.keys(currencies) as Array<keyof typeof currencies>).reduce(
     (all: Record<string, CurrencyData>, isoCode) => {
       const d = currencies[isoCode] as Currencies['USD'];
-      let displayName = extractCurrencyPattern(d).other;
-      if (!displayName) {
-        displayName = d.symbol || isoCode;
-      }
+      const displayName = extractCurrencyPattern(d) || {other: d.displayName};
       all[isoCode] = {
-        displayName: {other: displayName},
+        displayName,
         symbol: d.symbol || isoCode,
         narrow: d['symbol-alt-narrow'] || d.symbol || isoCode,
       };

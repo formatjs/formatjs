@@ -178,7 +178,8 @@ interface UnifiedNumberFormatInternal extends NumberFormatDigitInternalSlots {
   signDisplay: NonNullable<UnifiedNumberFormatOptions['signDisplay']>;
   useGrouping: boolean;
   patterns: NumberLocalePatternData;
-  pl: Intl.PluralRules;
+  cardinalPluralRules: Intl.PluralRules;
+  ordinalPluralRules: Intl.PluralRules;
   // Locale-dependent formatter data
   ild: NumberILD;
   numberingSystem: string;
@@ -303,7 +304,11 @@ function initializeNumberFormat(
 }
 
 function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
-  const pl = getInternalSlot(__INTERNAL_SLOT_MAP__, numberFormat, 'pl');
+  const cardinalPluralRules = getInternalSlot(
+    __INTERNAL_SLOT_MAP__,
+    numberFormat,
+    'cardinalPluralRules'
+  );
   let exponent = 0;
   const ild = getInternalSlot(__INTERNAL_SLOT_MAP__, numberFormat, 'ild');
   let n: string;
@@ -409,23 +414,59 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
           value: ild.symbols.minusSign,
         });
         break;
-      case InternalSlotToken.compactSymbol:
-      case InternalSlotToken.compactName:
-        const compactData =
-          ild.decimal[
-            part.type === 'compactName' ? 'compactLong' : 'compactShort'
-          ];
+      case InternalSlotToken.compactSymbol: {
+        const style = getInternalSlot(
+          __INTERNAL_SLOT_MAP__,
+          numberFormat,
+          'style'
+        );
+        let compactData;
+        if (style === 'currency') {
+          compactData = ild.currency.compactShort;
+        } else {
+          compactData = ild.decimal.compactShort;
+        }
         if (compactData) {
           results.push({
             type: 'compact',
             value: selectPlural(
-              pl,
+              cardinalPluralRules,
               formattedX,
               compactData[String(10 ** exponent) as DecimalFormatNum]
             ),
           });
         }
         break;
+      }
+      case InternalSlotToken.compactName: {
+        const style = getInternalSlot(
+          __INTERNAL_SLOT_MAP__,
+          numberFormat,
+          'style'
+        );
+        const currencyDisplay = getInternalSlot(
+          __INTERNAL_SLOT_MAP__,
+          numberFormat,
+          'currencyDisplay'
+        );
+        let compactData;
+        if (style === 'currency' && currencyDisplay !== 'name') {
+          compactData = ild.currency.compactLong || ild.currency.compactShort;
+        } else {
+          compactData = ild.decimal.compactLong || ild.decimal.compactShort;
+        }
+        if (compactData) {
+          results.push({
+            type: 'compact',
+            value: selectPlural(
+              cardinalPluralRules,
+              formattedX,
+              compactData[String(10 ** exponent) as DecimalFormatNum]
+            ),
+          });
+        }
+        break;
+      }
       case InternalSlotToken.scientificSeparator:
         results.push({
           type: 'exponentSeparator',
@@ -468,36 +509,66 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
             'unit'
           );
           const unitSymbols = ild.unitSymbols[unit!];
-          const mu = selectPlural(pl, formattedX, unitSymbols[part.type])[
-            unitSymbolChunkIndex
-          ];
+          const mu = selectPlural(
+            cardinalPluralRules,
+            formattedX,
+            unitSymbols[part.type]
+          )[unitSymbolChunkIndex];
           results.push({type: 'unit', value: mu});
           unitSymbolChunkIndex++;
         }
         break;
       }
-      case InternalSlotToken.currencyCode:
-      case InternalSlotToken.currencySymbol:
-      case InternalSlotToken.currencyNarrowSymbol:
+      case InternalSlotToken.currencyCode: {
+        const currency = getInternalSlot(
+          __INTERNAL_SLOT_MAP__,
+          numberFormat,
+          'currency'
+        )!;
+        results.push({type: 'currency', value: currency});
+        break;
+      }
+      case InternalSlotToken.currencySymbol: {
+        const currency = getInternalSlot(
+          __INTERNAL_SLOT_MAP__,
+          numberFormat,
+          'currency'
+        )!;
+        results.push({
+          type: 'currency',
+          value: ild.currencySymbols[currency].currencySymbol || currency,
+        });
+        break;
+      }
+      case InternalSlotToken.currencyNarrowSymbol: {
+        const currency = getInternalSlot(
+          __INTERNAL_SLOT_MAP__,
+          numberFormat,
+          'currency'
+        )!;
+        results.push({
+          type: 'currency',
+          value: ild.currencySymbols[currency].currencyNarrowSymbol || currency,
+        });
+        break;
+      }
       case InternalSlotToken.currencyName: {
         const currency = getInternalSlot(
           __INTERNAL_SLOT_MAP__,
           numberFormat,
           'currency'
         )!;
-        let cd: string;
-        if (part.type === InternalSlotToken.currencyCode) {
-          cd = currency;
-        } else if (part.type === InternalSlotToken.currencyName) {
-          // TODO: make plural work with scientific notation
-          cd = selectPlural(
-            pl,
-            formattedX,
-            ild.currencySymbols[currency].currencyName
-          );
-        } else {
-          cd = ild.currencySymbols[currency][part.type];
-        }
+        const notation = getInternalSlot(
+          __INTERNAL_SLOT_MAP__,
+          numberFormat,
+          'notation'
+        );
+        // TODO: make plural work with scientific notation
+        const cd = selectPlural(
+          cardinalPluralRules,
+          notation === 'scientific' ? formattedX : x,
+          ild.currencySymbols[currency].currencyName
+        );
         results.push({type: 'currency', value: cd});
         break;
       }
@@ -539,7 +610,8 @@ export class UnifiedNumberFormat
     } = UnifiedNumberFormat;
 
     setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
-      pl: new Intl.PluralRules(locales),
+      cardinalPluralRules: new Intl.PluralRules(locales),
+      ordinalPluralRules: new Intl.PluralRules(locales, {type: 'ordinal'}),
       patterns: new Patterns(
         ildData.units,
         ildData.currencies,
@@ -817,9 +889,18 @@ function computeExponentForMagnitude(
         numberFormat,
         'compactDisplay'
       );
-      const symbols = style === 'currency' ? ild.currency : ild.decimal;
-      const thresholdMap =
-        compactDisplay === 'long' ? symbols.compactLong : symbols.compactShort;
+      let thresholdMap;
+      if (style === 'currency') {
+        thresholdMap =
+          (compactDisplay === 'long'
+            ? ild.currency.compactLong
+            : ild.currency.compactShort) || ild.currency.compactShort;
+      } else {
+        thresholdMap =
+          compactDisplay === 'long'
+            ? ild.decimal.compactLong
+            : ild.decimal.compactShort;
+      }
       if (!thresholdMap) {
         return 0;
       }

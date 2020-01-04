@@ -128,23 +128,43 @@ const SCIENTIFIC_SLOT = [
  * `0 {compactSymbol}` or `¤0 {compactSymbol}`
  * @param pattern
  */
-function extractCompactSymbol(
+function extractDecimalCompactSymbol(
+  pattern: string,
+  slotToken: InternalSlotToken = InternalSlotToken.compactSymbol
+): string {
+  const compactUnit = pattern
+    .replace(/0+/, '')
+    // In case we're processing half-processed things
+    .replace(/\{\w+\}/g, '')
+    .trim();
+  if (compactUnit) {
+    pattern = pattern.replace(compactUnit, `{${slotToken}}`);
+  }
+  return pattern.replace(/0+/, '{0}');
+}
+
+/**
+ * Turn compact pattern like `0 trillion` or `¤0 trillion` to
+ * `0 {compactSymbol}` or `¤0 {compactSymbol}`
+ * @param pattern
+ */
+function extractCurrencyCompactSymbol(
   pattern: string,
   slotToken: InternalSlotToken = InternalSlotToken.compactSymbol
 ): string {
   const compactUnit = pattern
     .replace(/[¤0]/g, '')
     // In case we're processing half-processed things
-    .replace(/({\w+})/g, '')
+    .replace(/\{\w+\}/g, '')
     .trim();
   if (compactUnit) {
     pattern = pattern.replace(compactUnit, `{${slotToken}}`);
   }
-  return pattern.replace(/0+/, `{${InternalSlotToken.number}}`);
+  return pattern;
 }
 
-const INSERT_BEFORE_PATTERN_REGEX = /[^\s(]¤/;
-const INSERT_AFTER_PATTERN_REGEX = /¤[^\s;]/;
+const INSERT_BEFORE_PATTERN_REGEX = /[^\s;(]¤/;
+const INSERT_AFTER_PATTERN_REGEX = /¤[^\s);]/;
 
 function shouldInsertBefore(currency: string, pattern: string) {
   // surroundingMatch [:digit:] check
@@ -166,16 +186,16 @@ function shouldInsertAfter(currency: string, pattern: string) {
 function insertBetween(
   currency: string,
   pattern: string,
-  insertBetween: string
+  insertBetweenChar: string
 ): string {
   // Check afterCurrency
   if (shouldInsertAfter(currency, pattern)) {
-    return pattern.replace(CURRENCY_SYMBOL_REGEX, `¤${insertBetween}`);
+    return pattern.replace(CURRENCY_SYMBOL_REGEX, `¤${insertBetweenChar}`);
   }
 
   // Check beforeCurrency
   if (shouldInsertBefore(currency, pattern)) {
-    return pattern.replace(CURRENCY_SYMBOL_REGEX, `${insertBetween}¤`);
+    return pattern.replace(CURRENCY_SYMBOL_REGEX, `${insertBetweenChar}¤`);
   }
   return pattern;
 }
@@ -267,8 +287,11 @@ export class Patterns implements NumberLocalePatternData {
 
 function processSignPattern(
   signPattern: SignPattern,
-  fn: (s: string) => string
+  fn?: (s: string) => string
 ): SignPattern {
+  if (!fn) {
+    return signPattern;
+  }
   return {
     positivePattern: fn(signPattern.positivePattern),
     zeroPattern: fn(signPattern.zeroPattern),
@@ -276,6 +299,12 @@ function processSignPattern(
   };
 }
 
+/**
+ * Produce positive/negative/zero pattern
+ * This also converts {0} into {number}
+ * @param patterns
+ * @param signDisplay
+ */
 function produceSignPattern(
   patterns: string,
   signDisplay: keyof SignDisplayPattern
@@ -286,9 +315,10 @@ function produceSignPattern(
     // In case {0} is in the middle of the pattern
     negativePattern = positivePattern.replace('+', '-');
     if (negativePattern === positivePattern) {
-      negativePattern = positivePattern
-        .replace('{0}', `{${InternalSlotToken.minusSign}}{0}`)
-        .replace('{number}', `{${InternalSlotToken.minusSign}}{number}`);
+      negativePattern = positivePattern.replace(
+        '{0}',
+        `{${InternalSlotToken.minusSign}}{0}`
+      );
     }
     if (negativePattern === positivePattern) {
       negativePattern = `{${InternalSlotToken.minusSign}}${positivePattern}`;
@@ -301,7 +331,7 @@ function produceSignPattern(
   }
 
   let alwaysPositivePattern = positivePattern;
-  const noSignPattern = positivePattern.replace('+', '');
+  let noSignPattern = positivePattern.replace('+', '');
   if (positivePattern.indexOf('+') > -1) {
     alwaysPositivePattern = positivePattern = positivePattern.replace(
       '+',
@@ -309,14 +339,29 @@ function produceSignPattern(
     );
   } else {
     // In case {0} is in the middle of the pattern
-    alwaysPositivePattern = positivePattern
-      .replace('{0}', `{${InternalSlotToken.plusSign}}{0}`)
-      .replace('{number}', `{${InternalSlotToken.plusSign}}{number}`);
+    alwaysPositivePattern = positivePattern.replace(
+      '{0}',
+      `{${InternalSlotToken.plusSign}}{0}`
+    );
 
     if (alwaysPositivePattern === positivePattern) {
       alwaysPositivePattern = `{${InternalSlotToken.plusSign}}${positivePattern}`;
     }
   }
+
+  positivePattern = positivePattern.replace(
+    '{0}',
+    `{${InternalSlotToken.number}}`
+  );
+  alwaysPositivePattern = alwaysPositivePattern.replace(
+    '{0}',
+    `{${InternalSlotToken.number}}`
+  );
+  negativePattern = negativePattern.replace(
+    '{0}',
+    `{${InternalSlotToken.number}}`
+  );
+  noSignPattern = noSignPattern.replace('{0}', `{${InternalSlotToken.number}}`);
 
   switch (signDisplay) {
     case 'always':
@@ -412,12 +457,12 @@ abstract class NotationPatterns implements CompactSignPattern {
 class UnitPatterns extends NotationPatterns
   implements SignDisplayPattern, NotationPattern {
   private pattern?: string;
-  private signPattern?: SignPattern;
   private notationPattern?: SignPattern | CompactSignPattern;
   private unit: string;
   private units: Record<string, UnitData>;
   private numbers: RawNumberData;
   private numberingSystem: string;
+  private signDisplay?: keyof SignDisplayPattern;
 
   constructor(
     units: Record<string, UnitData>,
@@ -439,23 +484,24 @@ class UnitPatterns extends NotationPatterns
     }
     const notationPattern = this.notationPattern as CompactSignPattern;
     if (!notationPattern[decimalNum]) {
-      invariant(!!this.signPattern, 'Sign Pattern should exist');
+      invariant(!!this.pattern, 'Sign Pattern should exist');
+      invariant(!!this.signDisplay, 'Sign Display should exist');
 
       let compactPattern = '';
       if (this.notation === 'compactShort') {
-        compactPattern = extractCompactSymbol(
+        compactPattern = extractDecimalCompactSymbol(
           this.numbers.decimal[this.numberingSystem].short[decimalNum].other,
           InternalSlotToken.compactSymbol
         );
       } else {
-        compactPattern = extractCompactSymbol(
+        compactPattern = extractDecimalCompactSymbol(
           this.numbers.decimal[this.numberingSystem].long[decimalNum].other,
           InternalSlotToken.compactName
         );
       }
-      notationPattern[decimalNum] = processSignPattern(
-        this.signPattern,
-        pattern => pattern.replace('{0}', compactPattern)
+      notationPattern[decimalNum] = produceSignPattern(
+        this.pattern.replace('{0}', compactPattern),
+        this.signDisplay
       );
     }
     return notationPattern[decimalNum];
@@ -494,52 +540,41 @@ class UnitPatterns extends NotationPatterns
 
   // Sign Display
   get always() {
-    if (!this.signPattern) {
-      invariant(!!this.pattern, 'Pattern should have existed');
-      this.signPattern = produceSignPattern(this.pattern, 'always');
-    }
+    this.signDisplay = 'always';
     return this as NotationPattern;
   }
 
   get auto() {
-    if (!this.signPattern) {
-      invariant(!!this.pattern, 'Pattern should have existed');
-      this.signPattern = produceSignPattern(this.pattern, 'auto');
-    }
+    this.signDisplay = 'auto';
     return this as NotationPattern;
   }
 
   get never() {
-    if (!this.signPattern) {
-      invariant(!!this.pattern, 'Pattern should have existed');
-      this.signPattern = produceSignPattern(this.pattern, 'never');
-    }
+    this.signDisplay = 'never';
     return this as NotationPattern;
   }
 
   get exceptZero() {
-    if (!this.signPattern) {
-      invariant(!!this.pattern, 'Pattern should have existed');
-      this.signPattern = produceSignPattern(this.pattern, 'exceptZero');
-    }
+    this.signDisplay = 'exceptZero';
     return this as NotationPattern;
   }
 
   // Notation
   get standard() {
     if (!this.notationPattern) {
-      invariant(!!this.signPattern, 'Sign Pattern should exist');
-      this.notationPattern = processSignPattern(this.signPattern, pattern =>
-        pattern.replace('{0}', `{${InternalSlotToken.number}}`)
-      );
+      invariant(!!this.pattern, 'Sign Pattern should exist');
+      invariant(!!this.signDisplay, 'Sign Display should exist');
+      this.notationPattern = produceSignPattern(this.pattern, this.signDisplay);
     }
     return this.notationPattern as SignPattern;
   }
   get scientific() {
     if (!this.notationPattern) {
-      invariant(!!this.signPattern, 'Sign Pattern should exist');
-      this.notationPattern = processSignPattern(this.signPattern, pattern =>
-        pattern.replace('{0}', SCIENTIFIC_SLOT)
+      invariant(!!this.pattern, 'Sign Pattern should exist');
+      invariant(!!this.signDisplay, 'Sign Display should exist');
+      this.notationPattern = processSignPattern(
+        produceSignPattern(this.pattern, this.signDisplay),
+        pattern => pattern.replace('{number}', SCIENTIFIC_SLOT)
       );
     }
     return this.notationPattern as SignPattern;
@@ -559,7 +594,7 @@ class DecimalPatterns extends NotationPatterns
 
       if (this.notation === 'compactLong') {
         signPattern[decimalNum] = produceSignPattern(
-          extractCompactSymbol(
+          extractDecimalCompactSymbol(
             this.numbers.decimal[this.numberingSystem].long[decimalNum].other,
             InternalSlotToken.compactName
           ),
@@ -567,7 +602,7 @@ class DecimalPatterns extends NotationPatterns
         );
       } else {
         signPattern[decimalNum] = produceSignPattern(
-          extractCompactSymbol(
+          extractDecimalCompactSymbol(
             this.numbers.decimal[this.numberingSystem].short[decimalNum].other,
             InternalSlotToken.compactSymbol
           ),
@@ -612,10 +647,7 @@ class DecimalPatterns extends NotationPatterns
   get standard() {
     if (!this.signPattern) {
       invariant(!!this.signDisplay, 'Sign Display should have existed');
-      this.signPattern = produceSignPattern(
-        `{${InternalSlotToken.number}}`,
-        this.signDisplay
-      );
+      this.signPattern = produceSignPattern('{0}', this.signDisplay);
     }
     return this.signPattern as SignPattern;
   }
@@ -645,7 +677,7 @@ class PercentPatterns extends NotationPatterns
           pattern =>
             pattern.replace(
               NUMBER_PATTERN,
-              extractCompactSymbol(
+              extractDecimalCompactSymbol(
                 this.numbers.decimal[this.numberingSystem].short[decimalNum]
                   .other,
                 InternalSlotToken.compactSymbol
@@ -658,7 +690,7 @@ class PercentPatterns extends NotationPatterns
           pattern =>
             pattern.replace(
               NUMBER_PATTERN,
-              extractCompactSymbol(
+              extractDecimalCompactSymbol(
                 this.numbers.decimal[this.numberingSystem].long[decimalNum]
                   .other,
                 InternalSlotToken.compactName
@@ -679,10 +711,9 @@ class PercentPatterns extends NotationPatterns
     super();
     this.numbers = numbers;
     this.numberingSystem = numberingSystem;
-    this.pattern = numbers.percent[numberingSystem].replace(
-      '%',
-      `{${InternalSlotToken.percentSign}}`
-    );
+    this.pattern = numbers.percent[numberingSystem]
+      .replace('%', `{${InternalSlotToken.percentSign}}`)
+      .replace(NUMBER_PATTERN, '{number}');
   }
 
   // Sign Display
@@ -722,9 +753,7 @@ class PercentPatterns extends NotationPatterns
   get standard() {
     if (!this.notationPattern) {
       invariant(!!this.signPattern, 'Sign Pattern should have existed');
-      this.notationPattern = processSignPattern(this.signPattern, pattern =>
-        pattern.replace(NUMBER_PATTERN, `{${InternalSlotToken.number}}`)
-      );
+      this.notationPattern = processSignPattern(this.signPattern);
     }
     return this.notationPattern as SignPattern;
   }
@@ -732,7 +761,7 @@ class PercentPatterns extends NotationPatterns
     if (!this.notationPattern) {
       invariant(!!this.signPattern, 'Sign Pattern should have existed');
       this.notationPattern = processSignPattern(this.signPattern, pattern =>
-        pattern.replace(NUMBER_PATTERN, SCIENTIFIC_SLOT)
+        pattern.replace('{number}', SCIENTIFIC_SLOT)
       );
     }
     return this.notationPattern as SignPattern;
@@ -743,16 +772,19 @@ function resolvePatternForCurrencyCode(
   resolvedCurrency: string,
   data: RawCurrencyData,
   notation: keyof NotationPattern,
-  currencySign: keyof CurrencySignPattern
+  currencySign: keyof CurrencySignPattern,
+  decimalNum: DecimalFormatNum
 ): string {
   const shortPattern = data.short;
   const longPattern = ((data as any).long as typeof shortPattern) || data.short;
   let pattern = '';
-  // currencySign doesn't matter here but notation does
   switch (notation) {
     case 'compactLong': {
-      pattern = longPattern?.[1000].other || data.standard;
-      return extractCompactSymbol(
+      pattern =
+        longPattern?.[decimalNum].other ||
+        shortPattern?.[decimalNum].other ||
+        data.standard;
+      return extractCurrencyCompactSymbol(
         insertBetween(
           resolvedCurrency,
           pattern,
@@ -762,8 +794,8 @@ function resolvePatternForCurrencyCode(
       );
     }
     case 'compactShort':
-      pattern = shortPattern?.[1000].other || data.standard;
-      return extractCompactSymbol(
+      pattern = shortPattern?.[decimalNum].other || data.standard;
+      return extractCurrencyCompactSymbol(
         insertBetween(
           resolvedCurrency,
           pattern,
@@ -772,14 +804,20 @@ function resolvePatternForCurrencyCode(
         InternalSlotToken.compactSymbol
       );
     case 'scientific':
-      pattern = currencySign === 'accounting' ? data.accounting : data.standard;
+      pattern =
+        currencySign === 'accounting'
+          ? data.accounting
+          : data.accounting.split(';')[0];
       return insertBetween(
         resolvedCurrency,
         pattern,
         data.currencySpacing.beforeInsertBetween
       ).replace(NUMBER_PATTERN, SCIENTIFIC_SLOT);
     case 'standard':
-      pattern = currencySign === 'accounting' ? data.accounting : data.standard;
+      pattern =
+        currencySign === 'accounting'
+          ? data.accounting
+          : data.accounting.split(';')[0];
       return insertBetween(
         resolvedCurrency,
         pattern,
@@ -803,7 +841,7 @@ function resolvePatternForCurrencyName(
     case 'compactLong':
       return pattern.replace(
         '{0}',
-        extractCompactSymbol(
+        extractDecimalCompactSymbol(
           numbers.decimal[numberingSystem].long[decimalNum].other,
           InternalSlotToken.compactName
         )
@@ -811,7 +849,7 @@ function resolvePatternForCurrencyName(
     case 'compactShort':
       return pattern.replace(
         '{0}',
-        extractCompactSymbol(
+        extractDecimalCompactSymbol(
           numbers.decimal[numberingSystem].short[decimalNum].other,
           InternalSlotToken.compactSymbol
         )
@@ -830,7 +868,7 @@ class CurrencyPatterns implements CurrencyPattern, CurrencySignPattern {
   private currencies: Record<string, CurrencyData>;
   private currencySign: keyof CurrencySignPattern;
   private signDisplayPatterns?: CurrencySignDisplayPatterns;
-  private currencyDisplay?: keyof CurrencyPattern;
+  private currencySlotToken?: InternalSlotToken;
   private resolvedCurrency?: string;
   constructor(
     currencies: Record<string, CurrencyData>,
@@ -847,25 +885,25 @@ class CurrencyPatterns implements CurrencyPattern, CurrencySignPattern {
   }
   // CurrencyDisplay
   get code() {
-    this.currencyDisplay = 'code';
+    this.currencySlotToken = InternalSlotToken.currencyCode;
     this.resolvedCurrency = this.currency;
     return this;
   }
 
   get symbol() {
-    this.currencyDisplay = 'symbol';
+    this.currencySlotToken = InternalSlotToken.currencySymbol;
     this.resolvedCurrency = this.currencies[this.currency].symbol;
     return this;
   }
 
   get narrowSymbol() {
-    this.currencyDisplay = 'narrowSymbol';
+    this.currencySlotToken = InternalSlotToken.currencyNarrowSymbol;
     this.resolvedCurrency = this.currencies[this.currency].narrow;
     return this;
   }
 
   get name() {
-    this.currencyDisplay = 'name';
+    this.currencySlotToken = InternalSlotToken.currencyName;
     this.resolvedCurrency = this.currencies[this.currency].displayName.other;
     return this;
   }
@@ -875,14 +913,17 @@ class CurrencyPatterns implements CurrencyPattern, CurrencySignPattern {
     this.currencySign = 'accounting';
     if (!this.signDisplayPatterns) {
       invariant(!!this.currencySign, 'Currency Sign should have existed');
-      invariant(!!this.currencyDisplay, 'Currency Display should have existed');
+      invariant(
+        !!this.currencySlotToken,
+        'Currency Slot Token should have existed'
+      );
       invariant(!!this.resolvedCurrency, 'Currency should have been resolved');
       this.signDisplayPatterns = new CurrencySignDisplayPatterns(
         this.resolvedCurrency,
         this.numbers,
         this.numberingSystem,
         this.currencySign,
-        this.currencyDisplay
+        this.currencySlotToken
       );
     }
     return this.signDisplayPatterns;
@@ -892,14 +933,17 @@ class CurrencyPatterns implements CurrencyPattern, CurrencySignPattern {
     this.currencySign = 'standard';
     if (!this.signDisplayPatterns) {
       invariant(!!this.currencySign, 'Currency Sign should have existed');
-      invariant(!!this.currencyDisplay, 'Currency Display should have existed');
+      invariant(
+        !!this.currencySlotToken,
+        'Currency Display should have existed'
+      );
       invariant(!!this.resolvedCurrency, 'Currency should have been resolved');
       this.signDisplayPatterns = new CurrencySignDisplayPatterns(
         this.resolvedCurrency,
         this.numbers,
         this.numberingSystem,
         this.currencySign,
-        this.currencyDisplay
+        this.currencySlotToken
       );
     }
     return this.signDisplayPatterns;
@@ -910,7 +954,7 @@ class CurrencySignDisplayPatterns extends NotationPatterns
   implements SignDisplayPattern, NotationPattern {
   private signDisplay?: keyof SignDisplayPattern;
   private currencySign?: keyof CurrencySignPattern;
-  private currencyDisplay?: keyof CurrencyPattern;
+  private currencySlotToken?: InternalSlotToken;
   private currency: string;
   private numbers: RawNumberData;
   private numberingSystem: string;
@@ -920,14 +964,14 @@ class CurrencySignDisplayPatterns extends NotationPatterns
     numbers: RawNumberData,
     numberingSystem: string,
     currencySign: keyof CurrencySignPattern,
-    currencyDisplay: keyof CurrencyPattern
+    currencySlotToken: InternalSlotToken
   ) {
     super();
     this.currency = resolvedCurrency;
     this.numbers = numbers;
     this.numberingSystem = numberingSystem;
     this.currencySign = currencySign;
-    this.currencyDisplay = currencyDisplay;
+    this.currencySlotToken = currencySlotToken;
   }
   // Sign Display
   get always() {
@@ -956,7 +1000,7 @@ class CurrencySignDisplayPatterns extends NotationPatterns
       invariant(!!this.currencySign, 'Currency sign should exist');
       invariant(!!this.signDisplay, 'Sign display must exist');
       let pattern = '';
-      if (this.currencyDisplay === 'name') {
+      if (this.currencySlotToken === InternalSlotToken.currencyName) {
         pattern = resolvePatternForCurrencyName(
           this.numbers,
           this.numberingSystem,
@@ -968,8 +1012,9 @@ class CurrencySignDisplayPatterns extends NotationPatterns
           this.currency,
           this.numbers.currency[this.numberingSystem],
           'standard',
-          this.currencySign
-        ).replace(CURRENCY_SYMBOL_REGEX, `{${InternalSlotToken.currencyCode}}`);
+          this.currencySign,
+          '1000' // dummy
+        ).replace(CURRENCY_SYMBOL_REGEX, `{${this.currencySlotToken}}`);
       }
       this.notationPatterns = produceSignPattern(pattern, this.signDisplay);
     }
@@ -980,7 +1025,7 @@ class CurrencySignDisplayPatterns extends NotationPatterns
       invariant(!!this.currencySign, 'Currency sign should exist');
       invariant(!!this.signDisplay, 'Sign display must exist');
       let pattern = '';
-      if (this.currencyDisplay === 'name') {
+      if (this.currencySlotToken === InternalSlotToken.currencyName) {
         pattern = resolvePatternForCurrencyName(
           this.numbers,
           this.numberingSystem,
@@ -992,8 +1037,9 @@ class CurrencySignDisplayPatterns extends NotationPatterns
           this.currency,
           this.numbers.currency[this.numberingSystem],
           'scientific',
-          this.currencySign
-        ).replace(CURRENCY_SYMBOL_REGEX, `{${InternalSlotToken.currencyCode}}`);
+          this.currencySign,
+          '1000' // dummy
+        ).replace(CURRENCY_SYMBOL_REGEX, `{${this.currencySlotToken}}`);
       }
       this.notationPatterns = produceSignPattern(pattern, this.signDisplay);
     }
@@ -1009,7 +1055,7 @@ class CurrencySignDisplayPatterns extends NotationPatterns
       invariant(!!this.currencySign, 'Currency sign should exist');
       invariant(!!this.signDisplay, 'Sign display must exist');
       let pattern = '';
-      if (this.currencyDisplay === 'name') {
+      if (this.currencySlotToken === InternalSlotToken.currencyName) {
         pattern = resolvePatternForCurrencyName(
           this.numbers,
           this.numberingSystem,
@@ -1021,12 +1067,13 @@ class CurrencySignDisplayPatterns extends NotationPatterns
           this.currency,
           this.numbers.currency[this.numberingSystem],
           this.notation as 'compactShort',
-          this.currencySign
-        ).replace(CURRENCY_SYMBOL_REGEX, `{${InternalSlotToken.currencyCode}}`);
+          this.currencySign,
+          decimalNum
+        ).replace(CURRENCY_SYMBOL_REGEX, `{${this.currencySlotToken}}`);
       }
-      notationPatterns[decimalNum] = produceSignPattern(
-        pattern,
-        this.signDisplay
+      notationPatterns[decimalNum] = processSignPattern(
+        produceSignPattern(pattern, this.signDisplay),
+        pattern => pattern.replace(/0+/, '{number}')
       );
     }
     return notationPatterns[decimalNum];

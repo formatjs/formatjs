@@ -88,6 +88,75 @@ function test() {
       ).toBe('+10K');
     });
 
+    it('10000 currency', function() {
+      expect(
+        new UnifiedNumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+          currencySign: 'standard',
+          signDisplay: 'exceptZero',
+          currencyDisplay: 'narrowSymbol',
+          notation: 'standard',
+          compactDisplay: 'short',
+        }).format(10000)
+      ).toBe('+$10,000.00');
+      expect(
+        new UnifiedNumberFormat('en-US', {
+          style: 'currency',
+          currency: 'ZWD',
+          currencySign: 'standard',
+          signDisplay: 'exceptZero',
+          currencyDisplay: 'narrowSymbol',
+          notation: 'compact',
+          compactDisplay: 'short',
+        }).format(10000)
+      ).toBe('+ZWD 10K');
+      expect(
+        new UnifiedNumberFormat('en-US', {
+          style: 'currency',
+          currency: 'ZWD',
+          currencySign: 'standard',
+          signDisplay: 'exceptZero',
+          currencyDisplay: 'narrowSymbol',
+          notation: 'compact',
+          compactDisplay: 'long',
+        }).format(10000)
+      ).toBe('+ZWD 10K');
+      expect(
+        new UnifiedNumberFormat('en-US', {
+          style: 'currency',
+          currency: 'ZWD',
+          currencySign: 'standard',
+          signDisplay: 'exceptZero',
+          currencyDisplay: 'name',
+          notation: 'compact',
+          compactDisplay: 'long',
+        }).format(10000)
+      ).toBe('+10 thousand Zimbabwean dollars (1980–2008)');
+      expect(
+        new UnifiedNumberFormat('uk', {
+          style: 'currency',
+          currency: 'GBP',
+          currencySign: 'standard',
+          signDisplay: 'exceptZero',
+          currencyDisplay: 'name',
+          notation: 'compact',
+          compactDisplay: 'short',
+        }).format(10000)
+      ).toBe('+10 тис. англійських фунтів');
+      expect(
+        new UnifiedNumberFormat('uk', {
+          style: 'currency',
+          currency: 'GBP',
+          currencySign: 'accounting',
+          signDisplay: 'exceptZero',
+          currencyDisplay: 'name',
+          notation: 'scientific',
+          compactDisplay: 'short',
+        }).format(10000)
+      ).toBe('+1,00Е4 англійського фунта');
+    });
+
     for (const [number, engineering, scientific] of tests) {
       it(`number ${number}`, function() {
         const nfEngineering = new UnifiedNumberFormat('de-DE', {
