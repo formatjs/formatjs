@@ -13,9 +13,6 @@ import {
 const data = extractAllListPatterns();
 const langData = getAllListLocales().reduce(
   (all: Record<string, ListPatternLocaleData>, locale) => {
-    if (locale === 'en-US-POSIX') {
-      locale = 'en-US';
-    }
     const lang = locale.split('-')[0];
     if (!all[lang]) {
       const aliases = getAliasesByLang(lang);

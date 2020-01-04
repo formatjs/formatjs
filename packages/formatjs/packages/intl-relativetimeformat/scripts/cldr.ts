@@ -13,9 +13,6 @@ import {
 const data = extractAllRelativeFields();
 const langData = getAllDateFieldsLocales().reduce(
   (all: Record<string, RelativeTimeLocaleData>, locale) => {
-    if (locale === 'en-US-POSIX') {
-      locale = 'en-US';
-    }
     const lang = locale.split('-')[0];
     if (!all[lang]) {
       const aliases = getAliasesByLang(lang);

@@ -23,21 +23,20 @@ const unitsData = generateUnitDataForLocales();
 
 const allData = locales.reduce(
   (all: Record<string, RawNumberLocaleData>, locale) => {
-    const resolvedLocale = locale === 'en-US-POSIX' ? 'en-US' : locale;
-    const lang = resolvedLocale.split('-')[0];
+    const lang = locale.split('-')[0];
     const aliases = getAliasesByLang(lang);
     const parentLocales = getParentLocalesByLang(lang);
-    if (!all[resolvedLocale]) {
-      all[resolvedLocale] = {
+    if (!all[locale]) {
+      all[locale] = {
         data: {
-          [resolvedLocale]: {
+          [locale]: {
             units: unitsData[locale],
             currencies: currenciesData[locale],
             numbers: numbersData[locale],
             nu: numbersData[locale].nu,
           },
         },
-        availableLocales: [resolvedLocale],
+        availableLocales: [locale],
         aliases,
         parentLocales,
       };
