@@ -178,8 +178,7 @@ interface UnifiedNumberFormatInternal extends NumberFormatDigitInternalSlots {
   signDisplay: NonNullable<UnifiedNumberFormatOptions['signDisplay']>;
   useGrouping: boolean;
   patterns: NumberLocalePatternData;
-  cardinalPluralRules: Intl.PluralRules;
-  ordinalPluralRules: Intl.PluralRules;
+  pl: Intl.PluralRules;
   // Locale-dependent formatter data
   ild: NumberILD;
   numberingSystem: string;
@@ -304,11 +303,7 @@ function initializeNumberFormat(
 }
 
 function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
-  const cardinalPluralRules = getInternalSlot(
-    __INTERNAL_SLOT_MAP__,
-    numberFormat,
-    'cardinalPluralRules'
-  );
+  const pl = getInternalSlot(__INTERNAL_SLOT_MAP__, numberFormat, 'pl');
   let exponent = 0;
   const ild = getInternalSlot(__INTERNAL_SLOT_MAP__, numberFormat, 'ild');
   let n: string;
@@ -430,7 +425,7 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
           results.push({
             type: 'compact',
             value: selectPlural(
-              cardinalPluralRules,
+              pl,
               formattedX,
               compactData[String(10 ** exponent) as DecimalFormatNum]
             ),
@@ -459,7 +454,7 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
           results.push({
             type: 'compact',
             value: selectPlural(
-              cardinalPluralRules,
+              pl,
               formattedX,
               compactData[String(10 ** exponent) as DecimalFormatNum]
             ),
@@ -509,11 +504,9 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
             'unit'
           );
           const unitSymbols = ild.unitSymbols[unit!];
-          const mu = selectPlural(
-            cardinalPluralRules,
-            formattedX,
-            unitSymbols[part.type]
-          )[unitSymbolChunkIndex];
+          const mu = selectPlural(pl, formattedX, unitSymbols[part.type])[
+            unitSymbolChunkIndex
+          ];
           results.push({type: 'unit', value: mu});
           unitSymbolChunkIndex++;
         }
@@ -559,7 +552,7 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
           'currency'
         )!;
         const cd = selectPlural(
-          cardinalPluralRules,
+          pl,
           formattedX,
           ild.currencySymbols[currency].currencyName
         );
@@ -604,7 +597,7 @@ export class UnifiedNumberFormat
     } = UnifiedNumberFormat;
 
     setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
-      cardinalPluralRules: new Intl.PluralRules(
+      pl: new Intl.PluralRules(
         locales,
         getMultiInternalSlots(
           __INTERNAL_SLOT_MAP__,
@@ -616,7 +609,6 @@ export class UnifiedNumberFormat
           'maximumSignificantDigits'
         ) as any
       ),
-      ordinalPluralRules: new Intl.PluralRules(locales, {type: 'ordinal'}),
       patterns: new Patterns(
         ildData.units,
         ildData.currencies,
