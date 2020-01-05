@@ -558,15 +558,9 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
           numberFormat,
           'currency'
         )!;
-        const notation = getInternalSlot(
-          __INTERNAL_SLOT_MAP__,
-          numberFormat,
-          'notation'
-        );
-        // TODO: make plural work with scientific notation
         const cd = selectPlural(
           cardinalPluralRules,
-          notation === 'scientific' || notation === 'engineering' ? formattedX : x,
+          formattedX,
           ild.currencySymbols[currency].currencyName
         );
         results.push({type: 'currency', value: cd});
@@ -610,7 +604,18 @@ export class UnifiedNumberFormat
     } = UnifiedNumberFormat;
 
     setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
-      cardinalPluralRules: new Intl.PluralRules(locales),
+      cardinalPluralRules: new Intl.PluralRules(
+        locales,
+        getMultiInternalSlots(
+          __INTERNAL_SLOT_MAP__,
+          this,
+          'minimumFractionDigits',
+          'maximumFractionDigits',
+          'minimumIntegerDigits',
+          'minimumSignificantDigits',
+          'maximumSignificantDigits'
+        ) as any
+      ),
       ordinalPluralRules: new Intl.PluralRules(locales, {type: 'ordinal'}),
       patterns: new Patterns(
         ildData.units,

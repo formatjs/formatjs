@@ -182,8 +182,7 @@ function processCurrencyCompactSymbol(
   if (compactUnit) {
     pattern = pattern.replace(compactUnit, serializeSlotTokens(slotToken));
   }
-  const negativePattern =
-    pattern.indexOf('-') > -1 ? pattern : `-${pattern}`
+  const negativePattern = pattern.indexOf('-') > -1 ? pattern : `-${pattern}`;
   return (
     pattern.replace(/0+/, '{number}') +
     ';' +
@@ -362,7 +361,9 @@ function produceSignPattern(
     );
   } else {
     // In case {0} is in the middle of the pattern
-    alwaysPositivePattern = `${serializeSlotTokens(InternalSlotToken.plusSign)}${noSignPattern}`
+    alwaysPositivePattern = `${serializeSlotTokens(
+      InternalSlotToken.plusSign
+    )}${noSignPattern}`;
   }
 
   positivePattern = positivePattern.replace(
@@ -777,9 +778,9 @@ function resolvePatternForCurrencyCode(
         resolvedCurrency,
         pattern,
         data.currencySpacing.beforeInsertBetween
-      )
+      );
       if (pattern.indexOf(';') < 0) {
-        pattern += ';' + `-${pattern}`
+        pattern += ';' + `-${pattern}`;
       }
       return pattern.replace(NUMBER_PATTERN, SCIENTIFIC_POSITIVE_PATTERN);
     case 'standard':
@@ -788,11 +789,14 @@ function resolvePatternForCurrencyCode(
         resolvedCurrency,
         pattern,
         data.currencySpacing.beforeInsertBetween
-      )
+      );
       if (pattern.indexOf(';') < 0) {
-        pattern += ';' + `-${pattern}`
+        pattern += ';' + `-${pattern}`;
       }
-      return pattern.replace(NUMBER_PATTERN, serializeSlotTokens(InternalSlotToken.number));
+      return pattern.replace(
+        NUMBER_PATTERN,
+        serializeSlotTokens(InternalSlotToken.number)
+      );
   }
 }
 
