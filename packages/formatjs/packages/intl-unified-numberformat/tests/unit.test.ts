@@ -24,7 +24,6 @@ const LOCALES = [
   'uk',
   'zh',
   'en-BS',
-  'en-US',
 ];
 
 LOCALES.forEach(locale => {

@@ -53,7 +53,7 @@ const COMPACT_DISPLAYS: Array<UnifiedNumberFormatOptions['compactDisplay']> = [
 function test() {
   LOCALES.forEach(locale => {
     describe(locale, function() {
-      describe('decimal', function() {
+      describe('percent', function() {
         SIGN_DISPLAYS.forEach(signDisplay =>
           describe(`signDisplay/${signDisplay}`, function() {
             NOTATIONS.forEach(notation =>
@@ -62,7 +62,7 @@ function test() {
                   it(`compactDisplay/${compactDisplay}`, function() {
                     expect(
                       new UnifiedNumberFormat(locale, {
-                        style: 'decimal',
+                        style: 'percent',
                         signDisplay,
                         notation,
                         compactDisplay,

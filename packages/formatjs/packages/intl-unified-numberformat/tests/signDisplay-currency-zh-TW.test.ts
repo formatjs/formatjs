@@ -214,7 +214,7 @@ describe('signDisplay-currency-zh-TW', function() {
       it('negativeZero', function() {
         expect(nf.formatToParts(-0)).toEqual(negativeZero);
       });
-      it('zero', function() {
+      it.only('zero', function() {
         expect(nf.formatToParts(0)).toEqual(zero);
       });
       it('positiveNearZero', function() {

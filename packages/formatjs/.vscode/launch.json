@@ -16,8 +16,8 @@
             "args": [
                 "--runInBand",
                 "--coverage",
-                "false"
-                "misc"
+                "false",
+                "signDisplay"
             ]
         },
     ]

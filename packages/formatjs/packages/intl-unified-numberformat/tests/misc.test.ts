@@ -24,7 +24,6 @@ const LOCALES = [
   'uk',
   'zh',
   'en-BS',
-  'en-US',
 ];
 
 LOCALES.forEach(locale => {
@@ -58,7 +57,7 @@ function test() {
   it('supportedLocalesOf should return correct result based on data loaded', function() {
     expect(
       UnifiedNumberFormat.supportedLocalesOf(['zh', 'en-US', 'af'])
-    ).toEqual(['zh', 'en-US']);
+    ).toEqual(['zh', 'en']);
     expect(UnifiedNumberFormat.supportedLocalesOf(['af'])).toEqual([]);
   });
   it('should not crash if unit is not specified', function() {
