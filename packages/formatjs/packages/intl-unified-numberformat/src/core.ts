@@ -566,7 +566,7 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
         // TODO: make plural work with scientific notation
         const cd = selectPlural(
           cardinalPluralRules,
-          notation === 'scientific' ? formattedX : x,
+          notation === 'scientific' || notation === 'engineering' ? formattedX : x,
           ild.currencySymbols[currency].currencyName
         );
         results.push({type: 'currency', value: cd});
