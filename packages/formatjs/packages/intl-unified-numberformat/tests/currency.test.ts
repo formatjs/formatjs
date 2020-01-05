@@ -41,7 +41,6 @@ const SIGN_DISPLAYS: Array<UnifiedNumberFormatOptions['signDisplay']> = [
 const NOTATIONS: Array<UnifiedNumberFormatOptions['notation']> = [
   'engineering',
   'scientific',
-  'compact',
   'standard',
 ];
 const COMPACT_DISPLAYS: Array<UnifiedNumberFormatOptions['compactDisplay']> = [

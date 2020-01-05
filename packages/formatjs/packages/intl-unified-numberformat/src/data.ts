@@ -791,6 +791,16 @@ function resolvePatternForCurrencyCode(
   }
 }
 
+/**
+ * Resolve pattern for currency name
+ * TODO: CurrencySign doesn't matter here (accounting or standard).
+ * When it comes to using `name`, it's `-1 Australian Dollars`
+ * instead of `(1 Australian Dollar)`
+ * @param numbers
+ * @param numberingSystem
+ * @param notation
+ * @param decimalNum
+ */
 function resolvePatternForCurrencyName(
   numbers: RawNumberData,
   numberingSystem: string,
@@ -967,12 +977,15 @@ class CurrencySignDisplayPatterns extends NotationPatterns
   }
 
   // Notation
+  // Standard currency sign
   get standard() {
     if (!this.notationPatterns) {
       invariant(!!this.currencySign, 'Currency sign should exist');
       invariant(!!this.signDisplay, 'Sign display must exist');
 
       let pattern = '';
+      // name -> standard -> standard
+      // name -> accounting -> standard
       if (this.currencySlotToken === InternalSlotToken.currencyName) {
         pattern = resolvePatternForCurrencyName(
           this.numbers,
@@ -980,7 +993,14 @@ class CurrencySignDisplayPatterns extends NotationPatterns
           'standard',
           '1000' // dummy
         );
-      } else {
+      }
+      // code -> standard -> standard
+      // code -> accounting -> standard
+      // symbol -> standard -> standard
+      // symbol -> accounting -> standard
+      // narrowSymbol -> standard -> standard
+      // narrowSymbol -> accounting -> standard
+      else {
         pattern = resolvePatternForCurrencyCode(
           this.currency,
           this.numbers.currency[this.numberingSystem],
@@ -1002,6 +1022,8 @@ class CurrencySignDisplayPatterns extends NotationPatterns
       invariant(!!this.signDisplay, 'Sign display must exist');
 
       let pattern = '';
+      // name -> standard -> scientific
+      // name -> accounting -> scientific
       if (this.currencySlotToken === InternalSlotToken.currencyName) {
         pattern = resolvePatternForCurrencyName(
           this.numbers,
@@ -1009,7 +1031,14 @@ class CurrencySignDisplayPatterns extends NotationPatterns
           'scientific',
           '1000' // dummy
         );
-      } else {
+      }
+      // code -> standard -> scientific
+      // code -> accounting -> scientific
+      // symbol -> standard -> scientific
+      // symbol -> accounting -> scientific
+      // narrowSymbol -> standard -> scientific
+      // narrowSymbol -> accounting -> scientific
+      else {
         pattern = resolvePatternForCurrencyCode(
           this.currency,
           this.numbers.currency[this.numberingSystem],
@@ -1036,6 +1065,8 @@ class CurrencySignDisplayPatterns extends NotationPatterns
       invariant(!!this.signDisplay, 'Sign display must exist');
 
       let pattern = '';
+      // name -> standard -> compact -> compactLong
+      // name -> accounting -> compact -> compactShort
       if (this.currencySlotToken === InternalSlotToken.currencyName) {
         pattern = resolvePatternForCurrencyName(
           this.numbers,
