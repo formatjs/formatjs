@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import {invariant} from '@formatjs/intl-utils'
+import {invariant} from '@formatjs/intl-utils';
 
 import {
   Formatters,
@@ -72,6 +72,13 @@ function deepMergeFormatsAndSetTimeZone(
   };
 }
 
+const prepareFormatHTMLMessageOutput = (
+  chunks: (string | object)[]
+): React.ReactNode[] =>
+  chunks.map((chunk, index) =>
+    React.createElement(React.Fragment, {key: index, children: chunk})
+  );
+
 export function formatMessage(
   {
     locale,
@@ -127,7 +134,7 @@ export function formatMessage(
   formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
   defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);
 
-  let formattedMessageParts: Array<string | object> = [];
+  let formattedMessageParts: Array<React.ReactNode> = [];
 
   if (message) {
     try {
@@ -135,7 +142,9 @@ export function formatMessage(
         formatters: state,
       });
 
-      formattedMessageParts = formatter.formatHTMLMessage(values);
+      formattedMessageParts = prepareFormatHTMLMessageOutput(
+        formatter.formatHTMLMessage(values)
+      );
     } catch (e) {
       onError(
         createError(
@@ -170,7 +179,9 @@ export function formatMessage(
         defaultFormats
       );
 
-      formattedMessageParts = formatter.formatHTMLMessage(values);
+      formattedMessageParts = prepareFormatHTMLMessageOutput(
+        formatter.formatHTMLMessage(values)
+      );
     } catch (e) {
       onError(
         createError(`Error formatting the default message for: "${id}"`, e)
