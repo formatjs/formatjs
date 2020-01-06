@@ -414,7 +414,7 @@ function produceSignPattern(
 abstract class NotationPatterns implements CompactSignPattern {
   protected decimalNum?: DecimalFormatNum;
   protected notation?: 'compactShort' | 'compactLong';
-  abstract produceCompactSignPattern(): SignPattern;
+  abstract produceCompactSignPattern(decimalNum: DecimalFormatNum): SignPattern;
   get compactShort() {
     this.notation = 'compactShort';
     return this as CompactSignPattern;
@@ -425,58 +425,47 @@ abstract class NotationPatterns implements CompactSignPattern {
   }
   // DecimalFormatNum
   get '1000'() {
-    this.decimalNum = '1000';
-    return this.produceCompactSignPattern();
+    return this.produceCompactSignPattern('1000');
   }
   get '10000'() {
-    this.decimalNum = '10000';
-    return this.produceCompactSignPattern();
+    return this.produceCompactSignPattern('10000');
   }
   get '100000'() {
-    this.decimalNum = '100000';
-    return this.produceCompactSignPattern();
+    return this.produceCompactSignPattern('100000');
   }
   get '1000000'() {
-    this.decimalNum = '1000000';
-    return this.produceCompactSignPattern();
+    return this.produceCompactSignPattern('1000000');
   }
   get '10000000'() {
-    this.decimalNum = '10000000';
-    return this.produceCompactSignPattern();
+    return this.produceCompactSignPattern('10000000');
   }
   get '100000000'() {
-    this.decimalNum = '100000000';
-    return this.produceCompactSignPattern();
+    return this.produceCompactSignPattern('100000000');
   }
   get '1000000000'() {
-    this.decimalNum = '1000000000';
-    return this.produceCompactSignPattern();
+    return this.produceCompactSignPattern('1000000000');
   }
   get '10000000000'() {
-    this.decimalNum = '10000000000';
-    return this.produceCompactSignPattern();
+    return this.produceCompactSignPattern('10000000000');
   }
   get '100000000000'() {
-    this.decimalNum = '100000000000';
-    return this.produceCompactSignPattern();
+    return this.produceCompactSignPattern('100000000000');
   }
   get '1000000000000'() {
-    this.decimalNum = '1000000000000';
-    return this.produceCompactSignPattern();
+    return this.produceCompactSignPattern('1000000000000');
   }
   get '10000000000000'() {
-    this.decimalNum = '10000000000000';
-    return this.produceCompactSignPattern();
+    return this.produceCompactSignPattern('10000000000000');
   }
   get '100000000000000'() {
-    this.decimalNum = '100000000000000';
-    return this.produceCompactSignPattern();
+    return this.produceCompactSignPattern('100000000000000');
   }
 }
 
 class DecimalPatterns extends NotationPatterns
   implements SignDisplayPattern, NotationPattern {
-  protected signPattern?: SignPattern | CompactSignPattern;
+  protected signPattern?: SignPattern;
+  protected compactSignPattern?: CompactSignPattern;
   protected signDisplay?: keyof SignDisplayPattern;
   protected numbers: RawNumberData;
   protected numberingSystem: string;
@@ -486,12 +475,11 @@ class DecimalPatterns extends NotationPatterns
     this.numberingSystem = numberingSystem;
   }
 
-  produceCompactSignPattern() {
-    if (!this.signPattern) {
-      this.signPattern = Object.create(null) as CompactSignPattern;
+  produceCompactSignPattern(decimalNum: DecimalFormatNum) {
+    if (!this.compactSignPattern) {
+      this.compactSignPattern = Object.create(null) as CompactSignPattern;
     }
-    const decimalNum = this.decimalNum || '1000';
-    const signPattern = this.signPattern as CompactSignPattern;
+    const signPattern = this.compactSignPattern as CompactSignPattern;
     if (!signPattern[decimalNum]) {
       invariant(!!this.signDisplay, 'Sign Display should have existed');
       if (this.notation === 'compactLong') {
@@ -597,7 +585,8 @@ class PercentPatterns extends DecimalPatterns
 class UnitPatterns extends NotationPatterns
   implements SignDisplayPattern, NotationPattern {
   private pattern?: string;
-  private notationPattern?: SignPattern | CompactSignPattern;
+  private signPattern?: SignPattern;
+  private compactSignPattern?: CompactSignPattern;
   private unit: string;
   private units: Record<string, UnitData>;
   private numbers: RawNumberData;
@@ -636,13 +625,12 @@ class UnitPatterns extends NotationPatterns
     return produceSignPattern(pattern, this.signDisplay);
   }
 
-  produceCompactSignPattern() {
-    const decimalNum = this.decimalNum || '1000';
-    if (!this.notationPattern) {
-      this.notationPattern = Object.create(null) as CompactSignPattern;
+  produceCompactSignPattern(decimalNum: DecimalFormatNum) {
+    if (!this.compactSignPattern) {
+      this.compactSignPattern = Object.create(null) as CompactSignPattern;
     }
-    const notationPattern = this.notationPattern as CompactSignPattern;
-    if (!notationPattern[decimalNum]) {
+    const compactSignPatterns = this.compactSignPattern as CompactSignPattern;
+    if (!compactSignPatterns[decimalNum]) {
       invariant(!!this.pattern, 'Pattern should exist');
       invariant(!!this.signDisplay, 'Sign Display should exist');
       let {pattern} = this;
@@ -662,12 +650,12 @@ class UnitPatterns extends NotationPatterns
         pattern.replace('{0}', compactPattern[0]) +
         ';' +
         pattern.replace('{0}', compactPattern[1]);
-      notationPattern[decimalNum] = produceSignPattern(
+      compactSignPatterns[decimalNum] = produceSignPattern(
         pattern,
         this.signDisplay
       );
     }
-    return notationPattern[decimalNum];
+    return compactSignPatterns[decimalNum];
   }
 
   // UnitDisplay
@@ -724,16 +712,16 @@ class UnitPatterns extends NotationPatterns
 
   // Notation
   get standard() {
-    if (!this.notationPattern) {
-      this.notationPattern = this.generateStandardOrScientificPattern();
+    if (!this.signPattern) {
+      this.signPattern = this.generateStandardOrScientificPattern();
     }
-    return this.notationPattern as SignPattern;
+    return this.signPattern as SignPattern;
   }
   get scientific() {
-    if (!this.notationPattern) {
-      this.notationPattern = this.generateStandardOrScientificPattern(true);
+    if (!this.signPattern) {
+      this.signPattern = this.generateStandardOrScientificPattern(true);
     }
-    return this.notationPattern as SignPattern;
+    return this.signPattern as SignPattern;
   }
 }
 
@@ -949,7 +937,8 @@ class CurrencySignDisplayPatterns extends NotationPatterns
   private currency: string;
   private numbers: RawNumberData;
   private numberingSystem: string;
-  private notationPatterns?: SignPattern | CompactSignPattern;
+  private signPattern?: SignPattern;
+  private compactSignPattern?: CompactSignPattern;
   constructor(
     resolvedCurrency: string,
     numbers: RawNumberData,
@@ -988,7 +977,7 @@ class CurrencySignDisplayPatterns extends NotationPatterns
   // Notation
   // Standard currency sign
   get standard() {
-    if (!this.notationPatterns) {
+    if (!this.signPattern) {
       invariant(!!this.currencySign, 'Currency sign should exist');
       invariant(!!this.signDisplay, 'Sign display must exist');
 
@@ -1021,12 +1010,12 @@ class CurrencySignDisplayPatterns extends NotationPatterns
           serializeSlotTokens(this.currencySlotToken)
         );
       }
-      this.notationPatterns = produceSignPattern(pattern, this.signDisplay);
+      this.signPattern = produceSignPattern(pattern, this.signDisplay);
     }
-    return this.notationPatterns as SignPattern;
+    return this.signPattern as SignPattern;
   }
   get scientific() {
-    if (!this.notationPatterns) {
+    if (!this.signPattern) {
       invariant(!!this.currencySign, 'Currency sign should exist');
       invariant(!!this.signDisplay, 'Sign display must exist');
 
@@ -1059,17 +1048,16 @@ class CurrencySignDisplayPatterns extends NotationPatterns
           serializeSlotTokens(this.currencySlotToken)
         );
       }
-      this.notationPatterns = produceSignPattern(pattern, this.signDisplay);
+      this.signPattern = produceSignPattern(pattern, this.signDisplay);
     }
-    return this.notationPatterns as SignPattern;
+    return this.signPattern as SignPattern;
   }
-  produceCompactSignPattern() {
-    if (!this.notationPatterns) {
-      this.notationPatterns = Object.create(null) as CompactSignPattern;
+  produceCompactSignPattern(decimalNum: DecimalFormatNum) {
+    if (!this.compactSignPattern) {
+      this.compactSignPattern = Object.create(null) as CompactSignPattern;
     }
-    const notationPatterns = this.notationPatterns as CompactSignPattern;
-    const decimalNum = this.decimalNum || '1000';
-    if (!notationPatterns[decimalNum]) {
+    const compactSignPatterns = this.compactSignPattern as CompactSignPattern;
+    if (!compactSignPatterns[decimalNum]) {
       invariant(!!this.currencySign, 'Currency sign should exist');
       invariant(!!this.signDisplay, 'Sign display must exist');
 
@@ -1095,11 +1083,11 @@ class CurrencySignDisplayPatterns extends NotationPatterns
           serializeSlotTokens(this.currencySlotToken)
         );
       }
-      notationPatterns[decimalNum] = processSignPattern(
+      compactSignPatterns[decimalNum] = processSignPattern(
         produceSignPattern(pattern, this.signDisplay),
         pattern => pattern.replace(/0+/, '{number}')
       );
     }
-    return notationPatterns[decimalNum];
+    return compactSignPatterns[decimalNum];
   }
 }

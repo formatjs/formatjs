@@ -17,7 +17,7 @@
                 "--runInBand",
                 "--coverage",
                 "false",
-                "signDisplay"
+                "notation-compact-zh"
             ]
         },
     ]

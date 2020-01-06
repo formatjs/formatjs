@@ -812,9 +812,9 @@ function formatNumberToString(
       roundingType === 'compactRounding',
       'roundingType must be compactRounding'
     );
-    result = toRawFixed(x, 0, 0);
-    if (result.integerDigitsCount === 1) {
-      result = toRawPrecision(x, 1, 2);
+    result = toRawPrecision(x, 1, 2);
+    if (result.integerDigitsCount > 1) {
+      result = toRawFixed(x, 0, 0);
     }
   }
   x = result.roundedNumber;
@@ -903,7 +903,7 @@ function computeExponentForMagnitude(
       }
       const num = String(10 ** magnitude) as DecimalFormatNum;
       const thresholds = Object.keys(thresholdMap) as DecimalFormatNum[]; // TODO: this can be pre-processed
-      if (!thresholdMap[num].other) {
+      if (!thresholdMap[num]?.other) {
         return 0;
       }
       if (num < thresholds[0]) {
@@ -986,10 +986,11 @@ function getNumberFormatPattern(
     'signDisplay'
   );
 
+  const signDisplayPattern = patterns[signDisplay];
   let signPattern: SignPattern | undefined;
   if (!isNaN(x) && isFinite(x)) {
     if (notation === 'scientific' || notation === 'engineering') {
-      signPattern = patterns[signDisplay].scientific;
+      signPattern = signDisplayPattern.scientific;
     } else if (exponent !== 0) {
       invariant(notation === 'compact', 'notation must be compact');
       const compactDisplay = getInternalSlot(
@@ -997,19 +998,18 @@ function getNumberFormatPattern(
         numberFormat,
         'compactDisplay'
       );
-      if (compactDisplay === 'short') {
-        signPattern =
-          patterns[signDisplay].compactShort[String(10 ** exponent) as '1000'];
-      } else {
+      const decimalNum = String(10 ** exponent) as '1000';
+      if (compactDisplay === 'short' && exponent > 2 && exponent < 15) {
+        signPattern = signDisplayPattern.compactShort[decimalNum];
+      } else if (exponent > 2 && exponent < 15) {
         invariant(compactDisplay === 'long', 'compactDisplay must be long');
-        signPattern =
-          patterns[signDisplay].compactLong[String(10 ** exponent) as '1000'];
+        signPattern = signDisplayPattern.compactLong[decimalNum];
       }
     }
   }
 
   if (!signPattern) {
-    signPattern = patterns[signDisplay].standard;
+    signPattern = signDisplayPattern.standard;
   }
 
   let pattern: string;

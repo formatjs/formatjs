@@ -7,7 +7,7 @@ UnifiedNumberFormat.__addLocaleData(
 UnifiedNumberFormat.__addLocaleData(
   require('../dist/locale-data/zh-Hans.json')
 );
-xdescribe('notation-compact-zh-TW', function() {
+describe('notation-compact-zh-TW', function() {
   it('short', function() {
     const nfShort = new UnifiedNumberFormat('zh-TW', {
       notation: 'compact',
