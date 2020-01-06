@@ -1,6 +1,6 @@
 {
   "name": "formatjs-extract-cldr-data",
-  "version": "10.0.1",
+  "version": "10.0.2",
   "description": "Utility library that extracts the CLDR data that's needed by the FormatJS libraries.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,7 +18,7 @@
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "@formatjs/intl-utils": "^2.0.1",
+    "@formatjs/intl-utils": "^2.0.2",
     "@types/glob": "^7.1.1",
     "@types/lodash": "^4.14.138",
     "cldr-core": "^36.0.0",

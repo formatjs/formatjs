@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@2.0.1...@formatjs/intl-utils@2.0.2) (2020-01-06)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-unified-numberformat:** account for DecimalFormatNum in internal slots ([dc26b43](https://github.com/formatjs/formatjs/commit/dc26b434eabb4f629a821f7c12d5ae7570bd8cab))
+* **@formatjs/intl-unified-numberformat:** fix cases where {number} or {0} is in the middle of the pattern ([3ca49d8](https://github.com/formatjs/formatjs/commit/3ca49d8f93a9acc1ea3908ffd9e367b21aa97248))
+* **@formatjs/intl-utils:** fix getInternalSlot to prevent Object.prototype taint ([334441b](https://github.com/formatjs/formatjs/commit/334441b000c0206c77683f70a1f987d2793643cb))
+
+
+
+
+
 ## [2.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@2.0.0...@formatjs/intl-utils@2.0.1) (2019-12-27)
 
 

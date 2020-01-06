@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@3.0.1...@formatjs/intl-unified-numberformat@3.0.2) (2020-01-06)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-listformat:** don’t treat en-US-POSIX as en-US because they are different ([a37b091](https://github.com/formatjs/formatjs/commit/a37b091830ddc0ac9fd5771eb402f2b5c23c45f7))
+* **@formatjs/intl-unified-numberformat:** account for DecimalFormatNum in internal slots ([dc26b43](https://github.com/formatjs/formatjs/commit/dc26b434eabb4f629a821f7c12d5ae7570bd8cab))
+* **@formatjs/intl-unified-numberformat:** default to decimal symbol instead of currency ([9a99e91](https://github.com/formatjs/formatjs/commit/9a99e91f1a82a625aa499796d1817ce160233d8c))
+* **@formatjs/intl-unified-numberformat:** fix apostrophe escape in ILD extraction ([de1eb0a](https://github.com/formatjs/formatjs/commit/de1eb0a8e191d0a8669d2503c13d8d2f50de028f))
+* **@formatjs/intl-unified-numberformat:** fix cases where {number} or {0} is in the middle of the pattern ([3ca49d8](https://github.com/formatjs/formatjs/commit/3ca49d8f93a9acc1ea3908ffd9e367b21aa97248))
+* **@formatjs/intl-unified-numberformat:** fix cases with compact for ko & zh ([eb3c3ac](https://github.com/formatjs/formatjs/commit/eb3c3ac3688957b5150acc081c2005542ea03e59))
+* **@formatjs/intl-unified-numberformat:** fix currency compact form having special plural rules ([b0a6d4f](https://github.com/formatjs/formatjs/commit/b0a6d4f3120386a81ceb05fac09c56307b561e91))
+* **@formatjs/intl-unified-numberformat:** fix decimal tests ([7cc56d0](https://github.com/formatjs/formatjs/commit/7cc56d05d1b70238d26016f943e7aa455883006e))
+* **@formatjs/intl-unified-numberformat:** fix ILD lookup for currency name in compact mode ([76e8e5f](https://github.com/formatjs/formatjs/commit/76e8e5f8b71bccacfc430edf28d10f3ff9942c86))
+* **@formatjs/intl-unified-numberformat:** initialize PluralRules with the same opts as NumberFormat ([cd8a67c](https://github.com/formatjs/formatjs/commit/cd8a67c4d9d4a8cd31f5d96bf8bde440619bacd4))
+* **@formatjs/intl-unified-numberformat:** refactor + fix apostrophe-escaped issue in pattern ([e45bc89](https://github.com/formatjs/formatjs/commit/e45bc89e6db34a8e3d3dd63e41ee2893f0743035))
+* **@formatjs/intl-utils:** fix getInternalSlot to prevent Object.prototype taint ([334441b](https://github.com/formatjs/formatjs/commit/334441b000c0206c77683f70a1f987d2793643cb))
+
+
+
+
+
 ## [3.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@3.0.0...@formatjs/intl-unified-numberformat@3.0.1) (2019-12-27)
 
 **Note:** Version bump only for package @formatjs/intl-unified-numberformat

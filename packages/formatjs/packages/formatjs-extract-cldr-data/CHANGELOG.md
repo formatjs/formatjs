@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.0.2](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@10.0.1...formatjs-extract-cldr-data@10.0.2) (2020-01-06)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-unified-numberformat:** fix cases where {number} or {0} is in the middle of the pattern ([3ca49d8](https://github.com/formatjs/formatjs/commit/3ca49d8f93a9acc1ea3908ffd9e367b21aa97248))
+* **@formatjs/intl-unified-numberformat:** fix currency compact form having special plural rules ([b0a6d4f](https://github.com/formatjs/formatjs/commit/b0a6d4f3120386a81ceb05fac09c56307b561e91))
+
+
+
+
+
 ## [10.0.1](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@10.0.0...formatjs-extract-cldr-data@10.0.1) (2019-12-27)
 
 **Note:** Version bump only for package formatjs-extract-cldr-data

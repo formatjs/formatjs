@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.6.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.5.3...intl-messageformat-parser@3.6.0) (2020-01-06)
+
+
+### Features
+
+* **intl-messageformat-parser:** allow unclosed apostrophe escape sequence ([54b442f](https://github.com/formatjs/formatjs/commit/54b442f8851bd6c7cbc57e2666df294f1c799bd4))
+* **intl-messageformat-parser:** pound symbol escaping ([19fd028](https://github.com/formatjs/formatjs/commit/19fd028030356deba7b409af3c88ab24017556fc))
+
+
+
+
+
 ## [3.5.3](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.5.2...intl-messageformat-parser@3.5.3) (2019-12-27)
 
 **Note:** Version bump only for package intl-messageformat-parser

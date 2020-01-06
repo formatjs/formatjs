@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.5.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.5.4...@formatjs/intl-relativetimeformat@4.5.5) (2020-01-06)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-listformat:** don’t treat en-US-POSIX as en-US because they are different ([a37b091](https://github.com/formatjs/formatjs/commit/a37b091830ddc0ac9fd5771eb402f2b5c23c45f7))
+
+
+
+
+
 ## [4.5.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.5.3...@formatjs/intl-relativetimeformat@4.5.4) (2019-12-27)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat

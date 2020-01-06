@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.7](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.5.6...eslint-plugin-formatjs@1.5.7) (2020-01-06)
+
+
+### Bug Fixes
+
+* **eslint-plugin-format:** fix eslint-plugin-formatjs type error ([b647552](https://github.com/formatjs/formatjs/commit/b6475523bf816e2ac3be6c03d0b565fccb2b5c29))
+
+
+
+
+
 ## [1.5.6](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.5.5...eslint-plugin-formatjs@1.5.6) (2019-12-27)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

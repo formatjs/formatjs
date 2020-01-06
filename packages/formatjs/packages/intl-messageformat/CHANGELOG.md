@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.8.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.7.5...intl-messageformat@7.8.0) (2020-01-06)
+
+
+### Bug Fixes
+
+* **eslint-plugin-format:** fix eslint-plugin-formatjs type error ([b647552](https://github.com/formatjs/formatjs/commit/b6475523bf816e2ac3be6c03d0b565fccb2b5c29))
+
+
+### Features
+
+* **intl-messageformat:** use the new pound element AST node in plural argument ([9519103](https://github.com/formatjs/formatjs/commit/95191035397901ccc72564be57de3fa77ef9af96))
+
+
+
+
+
 ## [7.7.5](https://github.com/formatjs/formatjs/compare/intl-messageformat@7.7.4...intl-messageformat@7.7.5) (2019-12-27)
 
 **Note:** Version bump only for package intl-messageformat
