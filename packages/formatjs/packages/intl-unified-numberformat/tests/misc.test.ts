@@ -156,6 +156,20 @@ function test() {
       ).toBe('+1,00Е4 англійського фунта');
     });
 
+    it('10000 currency de compactLong', function() {
+      expect(
+        new UnifiedNumberFormat('de', {
+          style: 'currency',
+          currency: 'USD',
+          currencySign: 'accounting',
+          signDisplay: 'auto',
+          currencyDisplay: 'name',
+          notation: 'compact',
+          compactDisplay: 'long',
+        }).format(10000)
+      ).toBe('10 Tausend US-Dollar');
+    });
+
     for (const [number, engineering, scientific] of tests) {
       it(`number ${number}`, function() {
         const nfEngineering = new UnifiedNumberFormat('de-DE', {

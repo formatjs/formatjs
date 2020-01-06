@@ -17,7 +17,7 @@
                 "--runInBand",
                 "--coverage",
                 "false",
-                "notation-compact-zh"
+                "misc"
             ]
         },
     ]

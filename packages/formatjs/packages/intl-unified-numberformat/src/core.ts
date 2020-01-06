@@ -886,8 +886,13 @@ function computeExponentForMagnitude(
         numberFormat,
         'compactDisplay'
       );
+      const currencyDisplay = getInternalSlot(
+        __INTERNAL_SLOT_MAP__,
+        numberFormat,
+        'currencyDisplay'
+      );
       let thresholdMap;
-      if (style === 'currency') {
+      if (style === 'currency' && currencyDisplay !== 'name') {
         thresholdMap =
           (compactDisplay === 'long'
             ? ild.currency.compactLong
