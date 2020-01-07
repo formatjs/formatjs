@@ -101,7 +101,9 @@ describe('<FormattedMessage>', () => {
       }
     );
 
-    expect(rendered.text()).toBe(intl.formatMessage(descriptor));
+    expect(rendered.text()).toBe(
+      intl.formatMessage(descriptor)[0].props.children
+    );
   });
 
   it('renders a formatted message in a <>', () => {
@@ -111,7 +113,9 @@ describe('<FormattedMessage>', () => {
     };
     const rendered = mountWithProvider(descriptor, providerProps);
 
-    expect(rendered.text()).toBe(intl.formatMessage(descriptor));
+    expect(rendered.text()).toBe(
+      intl.formatMessage(descriptor)[0].props.children
+    );
   });
 
   it('accepts `values` prop', () => {
@@ -122,7 +126,9 @@ describe('<FormattedMessage>', () => {
     const values = {name: 'Jest'};
     const rendered = mountWithProvider({...descriptor, values}, providerProps);
 
-    expect(rendered.text()).toBe(intl.formatMessage(descriptor, values));
+    expect(rendered.text()).toBe(
+      intl.formatMessage(descriptor, values)[0].props.children
+    );
   });
 
   it('accepts string as `tagName` prop', () => {
@@ -153,7 +159,9 @@ describe('<FormattedMessage>', () => {
     ).find(H1);
 
     expect(rendered.type()).toBe(H1);
-    expect(rendered.text()).toBe(intl.formatMessage(descriptor));
+    expect(rendered.text()).toBe(
+      intl.formatMessage(descriptor)[0].props.children
+    );
   });
 
   it('should render out raw array if tagName is not specified', () => {
@@ -168,7 +176,9 @@ describe('<FormattedMessage>', () => {
       textComponent: undefined,
     });
 
-    expect(rendered.text()).toBe(intl.formatMessage(descriptor));
+    expect(rendered.text()).toBe(
+      intl.formatMessage(descriptor)[0].props.children
+    );
   });
 
   it('supports function-as-child pattern', () => {
@@ -185,7 +195,10 @@ describe('<FormattedMessage>', () => {
     );
 
     expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy.mock.calls[0]).toEqual([intl.formatMessage(descriptor)]);
+
+    expect(spy.mock.calls[0][0].props.children).toEqual(
+      (intl.formatHTMLMessage(descriptor) as any)[0].props.children
+    );
 
     expect(rendered.text()).toBe('Jest');
   });

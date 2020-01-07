@@ -13,6 +13,7 @@ import {formatList as formatListFn} from '../../src/formatters/list';
 import {
   formatHTMLMessage as baseFormatHTMLMessage,
   formatMessage as baseFormatMessage,
+  prepareIntlMessageFormatHtmlOutput,
 } from '../../src/formatters/message';
 
 describe('format API', () => {
@@ -685,7 +686,9 @@ describe('format API', () => {
 
         const mf = new IntlMessageFormat(msg, 'en');
 
-        expect(formatMessage(descriptor)).toBe(mf.format());
+        expect(formatMessage(descriptor)).toMatchObject(
+          prepareIntlMessageFormatHtmlOutput(mf.formatHTMLMessage())
+        );
       })
     );
 
@@ -711,21 +714,27 @@ describe('format API', () => {
       const {locale, messages} = config;
       const mf = new IntlMessageFormat(messages.no_args, locale);
 
-      expect(formatMessage({id: 'no_args'})).toBe(mf.format());
+      expect(formatMessage({id: 'no_args'})).toMatchObject(
+        prepareIntlMessageFormatHtmlOutput(mf.formatHTMLMessage())
+      );
     });
 
     it('formats basic AST messages', () => {
       const {locale, messages} = config;
       const mf = new IntlMessageFormat(messages.ast_simple, locale);
 
-      expect(formatMessage({id: 'ast_simple'})).toBe(mf.format());
+      expect(formatMessage({id: 'ast_simple'})).toMatchObject(
+        prepareIntlMessageFormatHtmlOutput(mf.formatHTMLMessage())
+      );
     });
 
     it('formats basic AST messages in prod', () => {
       const {locale, messages} = config;
       const mf = new IntlMessageFormat(messages.ast_simple, locale);
       process.env.NODE_ENV = 'production';
-      expect(formatMessage({id: 'ast_simple'})).toBe(mf.format());
+      expect(formatMessage({id: 'ast_simple'})).toMatchObject(
+        prepareIntlMessageFormatHtmlOutput(mf.formatHTMLMessage())
+      );
     });
 
     it('formats messages with placeholders', () => {
@@ -733,7 +742,9 @@ describe('format API', () => {
       const mf = new IntlMessageFormat(messages.with_arg, locale);
       const values = {name: 'Eric'};
 
-      expect(formatMessage({id: 'with_arg'}, values)).toBe(mf.format(values));
+      expect(formatMessage({id: 'with_arg'}, values)).toMatchObject(
+        prepareIntlMessageFormatHtmlOutput(mf.formatHTMLMessage(values))
+      );
     });
 
     it('formats AST message with placeholders', () => {
@@ -741,7 +752,9 @@ describe('format API', () => {
       const mf = new IntlMessageFormat(messages.ast_var, locale);
       const values = {name: 'Eric'};
 
-      expect(formatMessage({id: 'ast_var'}, values)).toBe(mf.format(values));
+      expect(formatMessage({id: 'ast_var'}, values)).toMatchObject(
+        prepareIntlMessageFormatHtmlOutput(mf.formatHTMLMessage(values))
+      );
     });
 
     it('formats messages with named formats', () => {
@@ -753,8 +766,8 @@ describe('format API', () => {
       );
       const values = {now: Date.now()};
 
-      expect(formatMessage({id: 'with_named_format'}, values)).toBe(
-        mf.format(values)
+      expect(formatMessage({id: 'with_named_format'}, values)).toMatchObject(
+        prepareIntlMessageFormatHtmlOutput(mf.formatHTMLMessage(values))
       );
     });
 
@@ -764,8 +777,10 @@ describe('format API', () => {
         const mf = new IntlMessageFormat(messages.missing_named_format, locale);
         const values = {now: Date.now()};
 
-        expect(formatMessage({id: 'missing_named_format'}, values)).toBe(
-          mf.format(values)
+        expect(
+          formatMessage({id: 'missing_named_format'}, values)
+        ).toMatchObject(
+          prepareIntlMessageFormatHtmlOutput(mf.formatHTMLMessage(values))
         );
       });
 
@@ -783,7 +798,9 @@ describe('format API', () => {
             },
             values
           )
-        ).toBe(mf.format(values));
+        ).toMatchObject(
+          prepareIntlMessageFormatHtmlOutput(mf.formatHTMLMessage(values))
+        );
       });
 
       it('warns when `message` is missing and locales are different', () => {
@@ -804,7 +821,9 @@ describe('format API', () => {
             },
             values
           )
-        ).toBe(mf.format(values));
+        ).toMatchObject(
+          prepareIntlMessageFormatHtmlOutput(mf.formatHTMLMessage(values))
+        );
 
         expect(config.onError.mock.calls).toMatchInlineSnapshot(`
           Array [
@@ -856,7 +875,9 @@ describe('format API', () => {
             },
             values
           )
-        ).toBe(mf.format(values));
+        ).toMatchObject(
+          prepareIntlMessageFormatHtmlOutput(mf.formatHTMLMessage(values))
+        );
 
         expect(config.onError).toHaveBeenCalledTimes(1);
         expect(config.onError).toHaveBeenCalledWith(
@@ -880,7 +901,9 @@ describe('format API', () => {
             },
             values
           )
-        ).toBe(mf.format(values));
+        ).toMatchObject(
+          prepareIntlMessageFormatHtmlOutput(mf.formatHTMLMessage(values))
+        );
 
         expect(config.onError).toHaveBeenCalledTimes(1);
         expect(config.onError).toHaveBeenCalledWith(
@@ -1049,8 +1072,8 @@ describe('format API', () => {
       const mf = new IntlMessageFormat(messages.with_html, locale);
       const values = {name: 'Eric'};
 
-      expect(formatHTMLMessage({id: 'with_html'}, values)).toBe(
-        mf.format(values)
+      expect(formatHTMLMessage({id: 'with_html'}, values)).toMatchObject(
+        prepareIntlMessageFormatHtmlOutput(mf.formatHTMLMessage(values))
       );
     });
 
@@ -1060,8 +1083,8 @@ describe('format API', () => {
       const values = {name: '<i>Eric</i>'};
       const escapedValues = {name: '&lt;i&gt;Eric&lt;/i&gt;'};
 
-      expect(formatHTMLMessage({id: 'with_html'}, values)).toBe(
-        mf.format(escapedValues)
+      expect(formatHTMLMessage({id: 'with_html'}, values)).toMatchObject(
+        prepareIntlMessageFormatHtmlOutput(mf.formatHTMLMessage(escapedValues))
       );
     });
   });

@@ -72,7 +72,7 @@ function deepMergeFormatsAndSetTimeZone(
   };
 }
 
-const prepareFormatHTMLMessageOutput = (
+export const prepareIntlMessageFormatHtmlOutput = (
   chunks: (string | object)[]
 ): React.ReactNode[] =>
   chunks.map((chunk, index) =>
@@ -142,7 +142,7 @@ export function formatMessage(
         formatters: state,
       });
 
-      formattedMessageParts = prepareFormatHTMLMessageOutput(
+      formattedMessageParts = prepareIntlMessageFormatHtmlOutput(
         formatter.formatHTMLMessage(values)
       );
     } catch (e) {
@@ -179,7 +179,7 @@ export function formatMessage(
         defaultFormats
       );
 
-      formattedMessageParts = prepareFormatHTMLMessageOutput(
+      formattedMessageParts = prepareIntlMessageFormatHtmlOutput(
         formatter.formatHTMLMessage(values)
       );
     } catch (e) {
