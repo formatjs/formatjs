@@ -3,7 +3,7 @@
         "module": "es6",
         "target": "es6",
         "jsx": "react",
-        "types": ["node"],
+        "types": ["jest", "node"],
         "declaration": true,
         "strict": true,
         "noUnusedLocals": true,

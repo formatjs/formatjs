@@ -72,6 +72,10 @@ function deepMergeFormatsAndSetTimeZone(
   };
 }
 
+export const prepareIntlMessageFormatHtmlOutput = (
+  chunks: (string | object)[]
+): React.ReactElement => React.createElement(React.Fragment, null, ...chunks);
+
 export function formatMessage(
   {
     locale,
@@ -118,7 +122,7 @@ export function formatMessage(
     string,
     PrimitiveType | React.ReactElement | FormatXMLElementFn
   > = {}
-): string | React.ReactNodeArray {
+): string | React.ReactNodeArray | React.ReactElement {
   const {id, defaultMessage} = messageDescriptor;
 
   // `id` is a required field of a Message Descriptor.
@@ -198,7 +202,8 @@ export function formatMessage(
   ) {
     return (formattedMessageParts[0] as string) || defaultMessage || String(id);
   }
-  return formattedMessageParts;
+
+  return prepareIntlMessageFormatHtmlOutput(formattedMessageParts);
 }
 
 export function formatHTMLMessage(
