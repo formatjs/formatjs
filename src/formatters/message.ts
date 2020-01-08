@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import {invariant} from '@formatjs/intl-utils'
+import {invariant} from '@formatjs/intl-utils';
 
 import {
   Formatters,
@@ -188,15 +188,15 @@ export function formatMessage(
       )
     );
     if (typeof message === 'string') {
-      return message || defaultMessage || id;
+      return message || defaultMessage || String(id);
     }
-    return defaultMessage || id;
+    return defaultMessage || String(id);
   }
   if (
     formattedMessageParts.length === 1 &&
     typeof formattedMessageParts[0] === 'string'
   ) {
-    return (formattedMessageParts[0] as string) || defaultMessage || id;
+    return (formattedMessageParts[0] as string) || defaultMessage || String(id);
   }
   return formattedMessageParts;
 }
