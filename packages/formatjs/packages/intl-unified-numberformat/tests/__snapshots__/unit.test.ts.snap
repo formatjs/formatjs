@@ -401,7 +401,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad celsius",
+    "value": "grader celsius",
   },
 ]
 `;
@@ -430,7 +430,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -488,7 +488,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad celsius",
+    "value": "grader celsius",
   },
 ]
 `;
@@ -517,7 +517,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -1041,7 +1041,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad celsius",
+    "value": "grader celsius",
   },
 ]
 `;
@@ -1066,7 +1066,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -1116,7 +1116,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad celsius",
+    "value": "grader celsius",
   },
 ]
 `;
@@ -1141,7 +1141,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -1697,7 +1697,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad celsius",
+    "value": "grader celsius",
   },
 ]
 `;
@@ -1726,7 +1726,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -1784,7 +1784,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad celsius",
+    "value": "grader celsius",
   },
 ]
 `;
@@ -1813,7 +1813,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -2337,7 +2337,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad celsius",
+    "value": "grader celsius",
   },
 ]
 `;
@@ -2362,7 +2362,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -2412,7 +2412,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad celsius",
+    "value": "grader celsius",
   },
 ]
 `;
@@ -2437,7 +2437,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -7892,7 +7892,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -7950,7 +7950,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Gallone",
+    "value": "Gallonen",
   },
 ]
 `;
@@ -7979,7 +7979,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -8037,7 +8037,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Gallone",
+    "value": "Gallonen",
   },
 ]
 `;
@@ -8536,7 +8536,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -8586,7 +8586,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Gallone",
+    "value": "Gallonen",
   },
 ]
 `;
@@ -8611,7 +8611,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -8661,7 +8661,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Gallone",
+    "value": "Gallonen",
   },
 ]
 `;
@@ -9188,7 +9188,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -9246,7 +9246,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Gallone",
+    "value": "Gallonen",
   },
 ]
 `;
@@ -9275,7 +9275,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -9333,7 +9333,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Gallone",
+    "value": "Gallonen",
   },
 ]
 `;
@@ -9832,7 +9832,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -9882,7 +9882,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Gallone",
+    "value": "Gallonen",
   },
 ]
 `;
@@ -9907,7 +9907,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -9957,7 +9957,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Gallone",
+    "value": "Gallonen",
   },
 ]
 `;
@@ -10468,7 +10468,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -10551,7 +10551,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -11080,7 +11080,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -11151,7 +11151,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -11700,7 +11700,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -11783,7 +11783,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -12312,7 +12312,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -12383,7 +12383,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -12948,7 +12948,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -13035,7 +13035,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -13592,7 +13592,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -13667,7 +13667,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -14244,7 +14244,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -14331,7 +14331,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -14888,7 +14888,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -14963,7 +14963,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "Bit",
+    "value": "Bits",
   },
 ]
 `;
@@ -15528,7 +15528,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -15557,7 +15557,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -15586,7 +15586,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -15615,7 +15615,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -15644,7 +15644,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -15673,7 +15673,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -16160,7 +16160,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -16185,7 +16185,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -16210,7 +16210,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -16235,7 +16235,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -16260,7 +16260,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -16285,7 +16285,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -16800,7 +16800,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -16829,7 +16829,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -16858,7 +16858,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -16887,7 +16887,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -16916,7 +16916,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -16945,7 +16945,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -17432,7 +17432,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -17457,7 +17457,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -17482,7 +17482,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -17507,7 +17507,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -17532,7 +17532,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -17557,7 +17557,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -22648,7 +22648,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -22677,7 +22677,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -22706,7 +22706,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "US gallon",
+    "value": "US gallons",
   },
 ]
 `;
@@ -22735,7 +22735,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -22764,7 +22764,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -22793,7 +22793,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "US gallon",
+    "value": "US gallons",
   },
 ]
 `;
@@ -23280,7 +23280,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -23305,7 +23305,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -23330,7 +23330,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "US gallon",
+    "value": "US gallons",
   },
 ]
 `;
@@ -23355,7 +23355,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -23380,7 +23380,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -23405,7 +23405,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "US gallon",
+    "value": "US gallons",
   },
 ]
 `;
@@ -23920,7 +23920,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -23949,7 +23949,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -23978,7 +23978,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "US gallon",
+    "value": "US gallons",
   },
 ]
 `;
@@ -24007,7 +24007,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -24036,7 +24036,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -24065,7 +24065,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "US gallon",
+    "value": "US gallons",
   },
 ]
 `;
@@ -24552,7 +24552,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -24577,7 +24577,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -24602,7 +24602,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "US gallon",
+    "value": "US gallons",
   },
 ]
 `;
@@ -24627,7 +24627,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -24652,7 +24652,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -24677,7 +24677,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "US gallon",
+    "value": "US gallons",
   },
 ]
 `;
@@ -29768,7 +29768,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -29797,7 +29797,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -29826,7 +29826,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "US gallon",
+    "value": "US gallons",
   },
 ]
 `;
@@ -29855,7 +29855,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -29884,7 +29884,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -29913,7 +29913,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "US gallon",
+    "value": "US gallons",
   },
 ]
 `;
@@ -30400,7 +30400,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -30425,7 +30425,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -30450,7 +30450,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "US gallon",
+    "value": "US gallons",
   },
 ]
 `;
@@ -30475,7 +30475,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -30500,7 +30500,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -30525,7 +30525,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "US gallon",
+    "value": "US gallons",
   },
 ]
 `;
@@ -31040,7 +31040,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -31069,7 +31069,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -31098,7 +31098,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "US gallon",
+    "value": "US gallons",
   },
 ]
 `;
@@ -31127,7 +31127,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -31156,7 +31156,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -31185,7 +31185,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "US gallon",
+    "value": "US gallons",
   },
 ]
 `;
@@ -31672,7 +31672,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -31697,7 +31697,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -31722,7 +31722,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "US gallon",
+    "value": "US gallons",
   },
 ]
 `;
@@ -31747,7 +31747,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -31772,7 +31772,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degree Celsius",
+    "value": "degrees Celsius",
   },
 ]
 `;
@@ -31797,7 +31797,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "US gallon",
+    "value": "US gallons",
   },
 ]
 `;
@@ -36900,7 +36900,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -36929,7 +36929,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grado Celsius",
+    "value": "grados Celsius",
   },
 ]
 `;
@@ -36958,7 +36958,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galón",
+    "value": "galones",
   },
 ]
 `;
@@ -36987,7 +36987,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -37016,7 +37016,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grado Celsius",
+    "value": "grados Celsius",
   },
 ]
 `;
@@ -37045,7 +37045,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galón",
+    "value": "galones",
   },
 ]
 `;
@@ -37544,7 +37544,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -37569,7 +37569,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grado Celsius",
+    "value": "grados Celsius",
   },
 ]
 `;
@@ -37594,7 +37594,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galón",
+    "value": "galones",
   },
 ]
 `;
@@ -37619,7 +37619,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -37644,7 +37644,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grado Celsius",
+    "value": "grados Celsius",
   },
 ]
 `;
@@ -37669,7 +37669,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galón",
+    "value": "galones",
   },
 ]
 `;
@@ -38196,7 +38196,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -38225,7 +38225,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grado Celsius",
+    "value": "grados Celsius",
   },
 ]
 `;
@@ -38254,7 +38254,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galón",
+    "value": "galones",
   },
 ]
 `;
@@ -38283,7 +38283,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -38312,7 +38312,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grado Celsius",
+    "value": "grados Celsius",
   },
 ]
 `;
@@ -38341,7 +38341,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galón",
+    "value": "galones",
   },
 ]
 `;
@@ -38840,7 +38840,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -38865,7 +38865,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grado Celsius",
+    "value": "grados Celsius",
   },
 ]
 `;
@@ -38890,7 +38890,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galón",
+    "value": "galones",
   },
 ]
 `;
@@ -38915,7 +38915,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -38940,7 +38940,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grado Celsius",
+    "value": "grados Celsius",
   },
 ]
 `;
@@ -38965,7 +38965,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galón",
+    "value": "galones",
   },
 ]
 `;
@@ -44548,7 +44548,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -44577,7 +44577,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degré Celsius",
+    "value": "degrés Celsius",
   },
 ]
 `;
@@ -44606,7 +44606,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -44635,7 +44635,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -44664,7 +44664,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degré Celsius",
+    "value": "degrés Celsius",
   },
 ]
 `;
@@ -44693,7 +44693,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -45192,7 +45192,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -45217,7 +45217,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degré Celsius",
+    "value": "degrés Celsius",
   },
 ]
 `;
@@ -45242,7 +45242,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -45267,7 +45267,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -45292,7 +45292,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degré Celsius",
+    "value": "degrés Celsius",
   },
 ]
 `;
@@ -45317,7 +45317,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -45844,7 +45844,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -45873,7 +45873,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degré Celsius",
+    "value": "degrés Celsius",
   },
 ]
 `;
@@ -45902,7 +45902,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -45931,7 +45931,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -45960,7 +45960,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degré Celsius",
+    "value": "degrés Celsius",
   },
 ]
 `;
@@ -45989,7 +45989,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -46488,7 +46488,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -46513,7 +46513,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degré Celsius",
+    "value": "degrés Celsius",
   },
 ]
 `;
@@ -46538,7 +46538,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -46563,7 +46563,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -46588,7 +46588,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "degré Celsius",
+    "value": "degrés Celsius",
   },
 ]
 `;
@@ -46613,7 +46613,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallon",
+    "value": "gallons",
   },
 ]
 `;
@@ -59617,7 +59617,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grado Celsius",
+    "value": "gradi Celsius",
   },
 ]
 `;
@@ -59646,7 +59646,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallone",
+    "value": "galloni",
   },
 ]
 `;
@@ -59704,7 +59704,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grado Celsius",
+    "value": "gradi Celsius",
   },
 ]
 `;
@@ -59733,7 +59733,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallone",
+    "value": "galloni",
   },
 ]
 `;
@@ -60257,7 +60257,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grado Celsius",
+    "value": "gradi Celsius",
   },
 ]
 `;
@@ -60282,7 +60282,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallone",
+    "value": "galloni",
   },
 ]
 `;
@@ -60332,7 +60332,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grado Celsius",
+    "value": "gradi Celsius",
   },
 ]
 `;
@@ -60357,7 +60357,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallone",
+    "value": "galloni",
   },
 ]
 `;
@@ -60913,7 +60913,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grado Celsius",
+    "value": "gradi Celsius",
   },
 ]
 `;
@@ -60942,7 +60942,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallone",
+    "value": "galloni",
   },
 ]
 `;
@@ -61000,7 +61000,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grado Celsius",
+    "value": "gradi Celsius",
   },
 ]
 `;
@@ -61029,7 +61029,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallone",
+    "value": "galloni",
   },
 ]
 `;
@@ -61553,7 +61553,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grado Celsius",
+    "value": "gradi Celsius",
   },
 ]
 `;
@@ -61578,7 +61578,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallone",
+    "value": "galloni",
   },
 ]
 `;
@@ -61628,7 +61628,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grado Celsius",
+    "value": "gradi Celsius",
   },
 ]
 `;
@@ -61653,7 +61653,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "gallone",
+    "value": "galloni",
   },
 ]
 `;
@@ -88581,7 +88581,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad celsius",
+    "value": "grader celsius",
   },
 ]
 `;
@@ -88668,7 +88668,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad celsius",
+    "value": "grader celsius",
   },
 ]
 `;
@@ -89209,7 +89209,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad celsius",
+    "value": "grader celsius",
   },
 ]
 `;
@@ -89284,7 +89284,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad celsius",
+    "value": "grader celsius",
   },
 ]
 `;
@@ -89853,7 +89853,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad celsius",
+    "value": "grader celsius",
   },
 ]
 `;
@@ -89940,7 +89940,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad celsius",
+    "value": "grader celsius",
   },
 ]
 `;
@@ -90481,7 +90481,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad celsius",
+    "value": "grader celsius",
   },
 ]
 `;
@@ -90556,7 +90556,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad celsius",
+    "value": "grader celsius",
   },
 ]
 `;
@@ -96184,7 +96184,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -96213,7 +96213,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "graad Celsius",
+    "value": "graden Celsius",
   },
 ]
 `;
@@ -96271,7 +96271,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -96300,7 +96300,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "graad Celsius",
+    "value": "graden Celsius",
   },
 ]
 `;
@@ -96816,7 +96816,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -96841,7 +96841,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "graad Celsius",
+    "value": "graden Celsius",
   },
 ]
 `;
@@ -96891,7 +96891,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -96916,7 +96916,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "graad Celsius",
+    "value": "graden Celsius",
   },
 ]
 `;
@@ -97456,7 +97456,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -97485,7 +97485,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "graad Celsius",
+    "value": "graden Celsius",
   },
 ]
 `;
@@ -97543,7 +97543,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -97572,7 +97572,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "graad Celsius",
+    "value": "graden Celsius",
   },
 ]
 `;
@@ -98088,7 +98088,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -98113,7 +98113,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "graad Celsius",
+    "value": "graden Celsius",
   },
 ]
 `;
@@ -98163,7 +98163,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -98188,7 +98188,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "graad Celsius",
+    "value": "graden Celsius",
   },
 ]
 `;
@@ -98712,7 +98712,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -98795,7 +98795,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -99312,7 +99312,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -99383,7 +99383,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -99920,7 +99920,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -100003,7 +100003,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -100520,7 +100520,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -100591,7 +100591,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -101128,7 +101128,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -101211,7 +101211,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -101728,7 +101728,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -101799,7 +101799,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -102336,7 +102336,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -102419,7 +102419,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -102936,7 +102936,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -103007,7 +103007,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bits",
   },
 ]
 `;
@@ -103572,7 +103572,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bitów",
   },
 ]
 `;
@@ -103601,7 +103601,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "stopień Celsjusza",
+    "value": "stopni Celsjusza",
   },
 ]
 `;
@@ -103630,7 +103630,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galon",
+    "value": "galonów",
   },
 ]
 `;
@@ -103659,7 +103659,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bitów",
   },
 ]
 `;
@@ -103688,7 +103688,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "stopień Celsjusza",
+    "value": "stopni Celsjusza",
   },
 ]
 `;
@@ -103717,7 +103717,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galon",
+    "value": "galonów",
   },
 ]
 `;
@@ -104216,7 +104216,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bitów",
   },
 ]
 `;
@@ -104241,7 +104241,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "stopień Celsjusza",
+    "value": "stopni Celsjusza",
   },
 ]
 `;
@@ -104266,7 +104266,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galon",
+    "value": "galonów",
   },
 ]
 `;
@@ -104291,7 +104291,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bitów",
   },
 ]
 `;
@@ -104316,7 +104316,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "stopień Celsjusza",
+    "value": "stopni Celsjusza",
   },
 ]
 `;
@@ -104341,7 +104341,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galon",
+    "value": "galonów",
   },
 ]
 `;
@@ -104868,7 +104868,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bitów",
   },
 ]
 `;
@@ -104897,7 +104897,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "stopień Celsjusza",
+    "value": "stopni Celsjusza",
   },
 ]
 `;
@@ -104926,7 +104926,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galon",
+    "value": "galonów",
   },
 ]
 `;
@@ -104955,7 +104955,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bitów",
   },
 ]
 `;
@@ -104984,7 +104984,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "stopień Celsjusza",
+    "value": "stopni Celsjusza",
   },
 ]
 `;
@@ -105013,7 +105013,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galon",
+    "value": "galonów",
   },
 ]
 `;
@@ -105512,7 +105512,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bitów",
   },
 ]
 `;
@@ -105537,7 +105537,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "stopień Celsjusza",
+    "value": "stopni Celsjusza",
   },
 ]
 `;
@@ -105562,7 +105562,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galon",
+    "value": "galonów",
   },
 ]
 `;
@@ -105587,7 +105587,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "bit",
+    "value": "bitów",
   },
 ]
 `;
@@ -105612,7 +105612,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "stopień Celsjusza",
+    "value": "stopni Celsjusza",
   },
 ]
 `;
@@ -105637,7 +105637,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galon",
+    "value": "galonów",
   },
 ]
 `;
@@ -111249,7 +111249,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grau Celsius",
+    "value": "graus Celsius",
   },
 ]
 `;
@@ -111278,7 +111278,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galão",
+    "value": "galões",
   },
 ]
 `;
@@ -111336,7 +111336,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grau Celsius",
+    "value": "graus Celsius",
   },
 ]
 `;
@@ -111365,7 +111365,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galão",
+    "value": "galões",
   },
 ]
 `;
@@ -111889,7 +111889,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grau Celsius",
+    "value": "graus Celsius",
   },
 ]
 `;
@@ -111914,7 +111914,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galão",
+    "value": "galões",
   },
 ]
 `;
@@ -111964,7 +111964,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grau Celsius",
+    "value": "graus Celsius",
   },
 ]
 `;
@@ -111989,7 +111989,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galão",
+    "value": "galões",
   },
 ]
 `;
@@ -112545,7 +112545,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grau Celsius",
+    "value": "graus Celsius",
   },
 ]
 `;
@@ -112574,7 +112574,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galão",
+    "value": "galões",
   },
 ]
 `;
@@ -112632,7 +112632,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grau Celsius",
+    "value": "graus Celsius",
   },
 ]
 `;
@@ -112661,7 +112661,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galão",
+    "value": "galões",
   },
 ]
 `;
@@ -113185,7 +113185,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grau Celsius",
+    "value": "graus Celsius",
   },
 ]
 `;
@@ -113210,7 +113210,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galão",
+    "value": "galões",
   },
 ]
 `;
@@ -113260,7 +113260,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grau Celsius",
+    "value": "graus Celsius",
   },
 ]
 `;
@@ -113285,7 +113285,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "galão",
+    "value": "galões",
   },
 ]
 `;
@@ -119025,7 +119025,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "градус Цельсия",
+    "value": "градусов Цельсия",
   },
 ]
 `;
@@ -119054,7 +119054,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "галлон",
+    "value": "галлонов",
   },
 ]
 `;
@@ -119112,7 +119112,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "градус Цельсия",
+    "value": "градусов Цельсия",
   },
 ]
 `;
@@ -119141,7 +119141,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "галлон",
+    "value": "галлонов",
   },
 ]
 `;
@@ -119665,7 +119665,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "градус Цельсия",
+    "value": "градусов Цельсия",
   },
 ]
 `;
@@ -119690,7 +119690,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "галлон",
+    "value": "галлонов",
   },
 ]
 `;
@@ -119740,7 +119740,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "градус Цельсия",
+    "value": "градусов Цельсия",
   },
 ]
 `;
@@ -119765,7 +119765,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "галлон",
+    "value": "галлонов",
   },
 ]
 `;
@@ -120321,7 +120321,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "градус Цельсия",
+    "value": "градусов Цельсия",
   },
 ]
 `;
@@ -120350,7 +120350,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "галлон",
+    "value": "галлонов",
   },
 ]
 `;
@@ -120408,7 +120408,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "градус Цельсия",
+    "value": "градусов Цельсия",
   },
 ]
 `;
@@ -120437,7 +120437,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "галлон",
+    "value": "галлонов",
   },
 ]
 `;
@@ -120961,7 +120961,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "градус Цельсия",
+    "value": "градусов Цельсия",
   },
 ]
 `;
@@ -120986,7 +120986,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "галлон",
+    "value": "галлонов",
   },
 ]
 `;
@@ -121036,7 +121036,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "градус Цельсия",
+    "value": "градусов Цельсия",
   },
 ]
 `;
@@ -121061,7 +121061,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "галлон",
+    "value": "галлонов",
   },
 ]
 `;
@@ -126801,7 +126801,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad Celsius",
+    "value": "grader Celsius",
   },
 ]
 `;
@@ -126888,7 +126888,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad Celsius",
+    "value": "grader Celsius",
   },
 ]
 `;
@@ -127441,7 +127441,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad Celsius",
+    "value": "grader Celsius",
   },
 ]
 `;
@@ -127516,7 +127516,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad Celsius",
+    "value": "grader Celsius",
   },
 ]
 `;
@@ -128097,7 +128097,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad Celsius",
+    "value": "grader Celsius",
   },
 ]
 `;
@@ -128184,7 +128184,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad Celsius",
+    "value": "grader Celsius",
   },
 ]
 `;
@@ -128737,7 +128737,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad Celsius",
+    "value": "grader Celsius",
   },
 ]
 `;
@@ -128812,7 +128812,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "grad Celsius",
+    "value": "grader Celsius",
   },
 ]
 `;
@@ -149316,7 +149316,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "біт",
+    "value": "бітів",
   },
 ]
 `;
@@ -149345,7 +149345,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "градус Цельсія",
+    "value": "градусів Цельсія",
   },
 ]
 `;
@@ -149374,7 +149374,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "галон",
+    "value": "галонів",
   },
 ]
 `;
@@ -149403,7 +149403,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "біт",
+    "value": "бітів",
   },
 ]
 `;
@@ -149432,7 +149432,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "градус Цельсія",
+    "value": "градусів Цельсія",
   },
 ]
 `;
@@ -149461,7 +149461,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "галон",
+    "value": "галонів",
   },
 ]
 `;
@@ -149960,7 +149960,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "біт",
+    "value": "бітів",
   },
 ]
 `;
@@ -149985,7 +149985,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "градус Цельсія",
+    "value": "градусів Цельсія",
   },
 ]
 `;
@@ -150010,7 +150010,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "галон",
+    "value": "галонів",
   },
 ]
 `;
@@ -150035,7 +150035,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "біт",
+    "value": "бітів",
   },
 ]
 `;
@@ -150060,7 +150060,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "градус Цельсія",
+    "value": "градусів Цельсія",
   },
 ]
 `;
@@ -150085,7 +150085,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "галон",
+    "value": "галонів",
   },
 ]
 `;
@@ -150612,7 +150612,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "біт",
+    "value": "бітів",
   },
 ]
 `;
@@ -150641,7 +150641,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "градус Цельсія",
+    "value": "градусів Цельсія",
   },
 ]
 `;
@@ -150670,7 +150670,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "галон",
+    "value": "галонів",
   },
 ]
 `;
@@ -150699,7 +150699,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "біт",
+    "value": "бітів",
   },
 ]
 `;
@@ -150728,7 +150728,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "градус Цельсія",
+    "value": "градусів Цельсія",
   },
 ]
 `;
@@ -150757,7 +150757,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "галон",
+    "value": "галонів",
   },
 ]
 `;
@@ -151256,7 +151256,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "біт",
+    "value": "бітів",
   },
 ]
 `;
@@ -151281,7 +151281,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "градус Цельсія",
+    "value": "градусів Цельсія",
   },
 ]
 `;
@@ -151306,7 +151306,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "галон",
+    "value": "галонів",
   },
 ]
 `;
@@ -151331,7 +151331,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "біт",
+    "value": "бітів",
   },
 ]
 `;
@@ -151356,7 +151356,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "градус Цельсія",
+    "value": "градусів Цельсія",
   },
 ]
 `;
@@ -151381,7 +151381,7 @@ Array [
   },
   Object {
     "type": "unit",
-    "value": "галон",
+    "value": "галонів",
   },
 ]
 `;

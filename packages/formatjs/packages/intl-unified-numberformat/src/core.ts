@@ -345,17 +345,6 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
     numberFormat,
     'notation'
   );
-  const style = getInternalSlot(__INTERNAL_SLOT_MAP__, numberFormat, 'style');
-  let compactData;
-  if (style === 'currency') {
-    compactData = ild.currency.compactShort;
-  } else {
-    compactData = ild.decimal.compactShort;
-  }
-
-  const hasCompactSymbol =
-    notation === 'compact' &&
-    !!compactData?.[String(10 ** exponent) as DecimalFormatNum];
 
   for (const part of patternParts) {
     switch (part.type) {
@@ -395,7 +384,10 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
             integer = n;
           }
           // For compact, default grouping strategy is min2
-          if (useGrouping && (hasCompactSymbol ? integer.length > 4 : true)) {
+          if (
+            useGrouping &&
+            (notation === 'compact' ? integer.length > 4 : true)
+          ) {
             const groupSepSymbol = ild.symbols.group;
             const groups: string[] = [];
             // Assuming that the group separator is always inserted between every 3 digits.
@@ -623,7 +615,20 @@ export class UnifiedNumberFormat
     } = UnifiedNumberFormat;
 
     setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
-      pl: new Intl.PluralRules(locales, options),
+      pl: new Intl.PluralRules(
+        locales,
+        getMultiInternalSlots(
+          __INTERNAL_SLOT_MAP__,
+          this,
+          'minimumFractionDigits',
+          'maximumFractionDigits',
+          'minimumIntegerDigits',
+          'minimumSignificantDigits',
+          'maximumSignificantDigits',
+          'roundingType',
+          'notation'
+        ) as any
+      ),
       patterns: new Patterns(
         ildData.units,
         ildData.currencies,
