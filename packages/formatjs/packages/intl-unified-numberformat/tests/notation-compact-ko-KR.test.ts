@@ -12,15 +12,13 @@ const tests: any[] = [
       {type: 'compact', value: '억'},
     ],
   ],
-  // TODO: Fix this test, for some reason `useGrouping` doesn't seem to
-  // take into effect for 9877
-  // [
-  //   98765432,
-  //   [
-  //     {type: 'integer', value: '9877'},
-  //     {type: 'compact', value: '만'},
-  //   ],
-  // ],
+  [
+    98765432,
+    [
+      {type: 'integer', value: '9877'},
+      {type: 'compact', value: '만'},
+    ],
+  ],
   [
     98765,
     [

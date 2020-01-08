@@ -65,10 +65,18 @@ const SHORTENED_SACTION_UNITS = SANCTIONED_UNITS.map(unit =>
 
 const NOT_A_Z_REGEX = /[^A-Z]/;
 
+/**
+ * This follows https://tc39.es/ecma402/#sec-case-sensitivity-and-case-mapping
+ * @param str string to convert
+ */
 function toUpperCase(str: string): string {
   return str.replace(/([a-z])/g, (_, c) => c.toUpperCase());
 }
 
+/**
+ * This follows https://tc39.es/ecma402/#sec-case-sensitivity-and-case-mapping
+ * @param str string to convert
+ */
 function toLowerCase(str: string): string {
   return str.replace(/([A-Z])/g, (_, c) => c.toLowerCase());
 }
@@ -344,11 +352,16 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
         } else if (formattedX === Infinity || x === -Infinity) {
           results.push({type: 'infinity', value: n});
         } else {
-          const {numberingSystem: nu, useGrouping} = getMultiInternalSlots(
+          const {
+            numberingSystem: nu,
+            useGrouping,
+            notation,
+          } = getMultiInternalSlots(
             __INTERNAL_SLOT_MAP__,
             numberFormat,
             'numberingSystem',
-            'useGrouping'
+            'useGrouping',
+            'notation'
           );
           if (nu && nu in ILND) {
             // Replace digits
@@ -369,7 +382,8 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
           } else {
             integer = n;
           }
-          if (useGrouping) {
+          // For compact, default grouping strategy is min2
+          if (useGrouping && notation === 'compact' && integer.length > 4) {
             const groupSepSymbol = ild.symbols.group;
             const groups: string[] = [];
             // Assuming that the group separator is always inserted between every 3 digits.
