@@ -45,10 +45,8 @@ describe('<FormattedHTMLMessage>', () => {
     const rendered = mountWithProvider(descriptor, intl).find('p');
     const renderedHtml = (rendered.prop('dangerouslySetInnerHTML') as any)
       .__html;
-    // https://github.com/facebook/jest/issues/8475#issuecomment-537830532
-    expect(renderedHtml[0].props.children).toEqual(
-      (intl.formatHTMLMessage(descriptor) as any)[0].props.children
-    );
+
+    expect(renderedHtml).toEqual(intl.formatHTMLMessage(descriptor));
   });
 
   it('should use span if textComponent & tagName is undefined', function() {
@@ -67,9 +65,7 @@ describe('<FormattedHTMLMessage>', () => {
     const renderedHtml = (rendered.prop('dangerouslySetInnerHTML') as any)
       .__html;
 
-    expect(renderedHtml[0].props.children).toEqual(
-      (intl.formatHTMLMessage(descriptor) as any)[0].props.children
-    );
+    expect(renderedHtml).toEqual(intl.formatHTMLMessage(descriptor));
   });
 
   it('renders a formatted HTML message in a <span>', () => {
@@ -82,9 +78,7 @@ describe('<FormattedHTMLMessage>', () => {
     const renderedHtml = (rendered.prop('dangerouslySetInnerHTML') as any)
       .__html;
 
-    expect(renderedHtml[0].props.children).toEqual(
-      (intl.formatHTMLMessage(descriptor) as any)[0].props.children
-    );
+    expect(renderedHtml).toEqual(intl.formatHTMLMessage(descriptor));
   });
 
   it('accepts `values` prop', () => {
@@ -100,9 +94,7 @@ describe('<FormattedHTMLMessage>', () => {
 
     const renderedHtml = (rendered.prop('dangerouslySetInnerHTML') as any)
       .__html;
-    expect(renderedHtml[0].props.children).toBe(
-      intl.formatHTMLMessage(descriptor, values)[0].props.children
-    );
+    expect(renderedHtml).toBe(intl.formatHTMLMessage(descriptor, values));
   });
 
   it('should HTML-escape `values`', () => {
@@ -124,9 +116,7 @@ describe('<FormattedHTMLMessage>', () => {
 
     const renderedHtml = (rendered.prop('dangerouslySetInnerHTML') as any)
       .__html;
-    expect(renderedHtml[0].props.children).toBe(
-      intl.formatHTMLMessage(descriptor, values)[0].props.children
-    );
+    expect(renderedHtml).toBe(intl.formatHTMLMessage(descriptor, values));
   });
 
   it('accepts `tagName` prop', () => {
@@ -154,9 +144,7 @@ describe('<FormattedHTMLMessage>', () => {
 
     expect(spy).toHaveBeenCalledTimes(1);
 
-    expect(spy.mock.calls[0][0][0].props.children).toBe(
-      (intl.formatHTMLMessage(descriptor) as any)[0].props.children
-    );
+    expect(spy.mock.calls[0][0]).toBe(intl.formatHTMLMessage(descriptor));
 
     expect(rendered.text()).toBe('Jest');
   });

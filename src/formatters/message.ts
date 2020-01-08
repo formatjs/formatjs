@@ -74,10 +74,7 @@ function deepMergeFormatsAndSetTimeZone(
 
 export const prepareIntlMessageFormatHtmlOutput = (
   chunks: (string | object)[]
-): React.ReactNode[] =>
-  chunks.map((chunk, index) =>
-    React.createElement(React.Fragment, {key: index, children: chunk})
-  );
+): React.ReactElement => React.createElement(React.Fragment, null, ...chunks);
 
 export function formatMessage(
   {
@@ -125,7 +122,7 @@ export function formatMessage(
     string,
     PrimitiveType | React.ReactElement | FormatXMLElementFn
   > = {}
-): string | React.ReactNodeArray {
+): string | React.ReactNodeArray | React.ReactElement {
   const {id, defaultMessage} = messageDescriptor;
 
   // `id` is a required field of a Message Descriptor.
@@ -134,7 +131,7 @@ export function formatMessage(
   formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
   defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);
 
-  let formattedMessageParts: Array<React.ReactNode> = [];
+  let formattedMessageParts: Array<string | object> = [];
 
   if (message) {
     try {
@@ -142,9 +139,7 @@ export function formatMessage(
         formatters: state,
       });
 
-      formattedMessageParts = prepareIntlMessageFormatHtmlOutput(
-        formatter.formatHTMLMessage(values)
-      );
+      formattedMessageParts = formatter.formatHTMLMessage(values);
     } catch (e) {
       onError(
         createError(
@@ -179,9 +174,7 @@ export function formatMessage(
         defaultFormats
       );
 
-      formattedMessageParts = prepareIntlMessageFormatHtmlOutput(
-        formatter.formatHTMLMessage(values)
-      );
+      formattedMessageParts = formatter.formatHTMLMessage(values);
     } catch (e) {
       onError(
         createError(`Error formatting the default message for: "${id}"`, e)
@@ -209,7 +202,8 @@ export function formatMessage(
   ) {
     return (formattedMessageParts[0] as string) || defaultMessage || id;
   }
-  return formattedMessageParts;
+
+  return prepareIntlMessageFormatHtmlOutput(formattedMessageParts);
 }
 
 export function formatHTMLMessage(
