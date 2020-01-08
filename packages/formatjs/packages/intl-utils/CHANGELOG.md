@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@2.0.2...@formatjs/intl-utils@2.0.3) (2020-01-08)
+
+**Note:** Version bump only for package @formatjs/intl-utils
+
+
+
+
+
 ## [2.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@2.0.1...@formatjs/intl-utils@2.0.2) (2020-01-06)
 
 
