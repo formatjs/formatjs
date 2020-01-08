@@ -11,13 +11,23 @@ import {
   LDMLPluralRuleMap,
   NumberLocalePatternData,
   SignPattern,
-  invariant,
   NotationPattern,
   CurrencySignPattern,
   RawCurrencyData,
   CompactSignPattern,
 } from '@formatjs/intl-utils';
 import * as unicodeSymbol_ from 'unicode-12.1.0/General_Category/Symbol/regex';
+
+function invariant(
+  condition: boolean,
+  message: string,
+  Err: any = Error
+): asserts condition {
+  if (!condition) {
+    throw new Err(message);
+  }
+}
+
 const S_UNICODE_REGEX: RegExp =
   (unicodeSymbol_ as any).default || unicodeSymbol_;
 
