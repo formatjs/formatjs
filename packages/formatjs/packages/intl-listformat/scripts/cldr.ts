@@ -30,6 +30,10 @@ const langData = getAllListLocales().reduce(
       all[lang].availableLocales.push(locale);
     }
 
+    if (locale === 'en-US-POSIX') {
+      all[lang].availableLocales.push('en-US');
+    }
+
     return all;
   },
   {}

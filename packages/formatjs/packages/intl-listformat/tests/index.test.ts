@@ -2,9 +2,10 @@ import '../src/polyfill';
 import '../polyfill';
 import '../dist/locale-data/zh';
 import '../dist/locale-data/en';
+import PolyfilledListFormat from '../src/core';
 
 describe('Intl.ListFormat', function() {
-  const ListFormat = (Intl as any).ListFormat;
+  const ListFormat: typeof PolyfilledListFormat = (Intl as any).ListFormat;
   it('should support aliases', function() {
     expect(
       new ListFormat('zh-CN', {type: 'unit'}).format(['1', '2', '3'])
@@ -27,5 +28,13 @@ describe('Intl.ListFormat', function() {
         '1, 2 and 3'
       );
     }
+  });
+  it('should normalize case correctly', function() {
+    const lf = new ListFormat('en-us', {style: 'short', type: 'unit'});
+    expect(lf.resolvedOptions()).toEqual({
+      locale: 'en-US',
+      type: 'unit',
+      style: 'short',
+    });
   });
 });
