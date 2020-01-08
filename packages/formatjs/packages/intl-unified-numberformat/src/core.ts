@@ -37,7 +37,7 @@ import {
 } from './utils';
 import {extractILD, Patterns} from './data';
 import * as currencyDigitsData from './currency-digits.json';
-import {ILND} from './ilnd-numbers';
+import * as ILND from './ilnd-numbers.json';
 
 const RESOLVED_OPTIONS_KEYS = [
   'locale',
@@ -137,6 +137,7 @@ export function isUnitSupported(unit: Unit) {
 
 export type UnifiedNumberFormatOptions = Intl.NumberFormatOptions &
   NumberFormatDigitOptions & {
+    localeMatcher?: 'lookup' | 'best fit';
     style?: 'decimal' | 'percent' | 'currency' | 'unit';
     compactDisplay?: 'short' | 'long';
     currencyDisplay?: 'symbol' | 'code' | 'name' | 'narrowSymbol';
@@ -272,8 +273,7 @@ function initializeNumberFormat(
     nf,
     options,
     mnfdDefault,
-    mxfdDefault,
-    notation
+    mxfdDefault
   );
 
   const compactDisplay = getOption(
@@ -340,6 +340,22 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
   // Unspec'ed stuff
   // This is to deal w/ cases where {number} is in the middle of a unit pattern
   let unitSymbolChunkIndex = 0;
+  const notation = getInternalSlot(
+    __INTERNAL_SLOT_MAP__,
+    numberFormat,
+    'notation'
+  );
+  const style = getInternalSlot(__INTERNAL_SLOT_MAP__, numberFormat, 'style');
+  let compactData;
+  if (style === 'currency') {
+    compactData = ild.currency.compactShort;
+  } else {
+    compactData = ild.decimal.compactShort;
+  }
+
+  const hasCompactSymbol =
+    notation === 'compact' &&
+    !!compactData?.[String(10 ** exponent) as DecimalFormatNum];
 
   for (const part of patternParts) {
     switch (part.type) {
@@ -352,11 +368,7 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
         } else if (formattedX === Infinity || x === -Infinity) {
           results.push({type: 'infinity', value: n});
         } else {
-          const {
-            numberingSystem: nu,
-            useGrouping,
-            notation,
-          } = getMultiInternalSlots(
+          const {numberingSystem: nu, useGrouping} = getMultiInternalSlots(
             __INTERNAL_SLOT_MAP__,
             numberFormat,
             'numberingSystem',
@@ -383,7 +395,7 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
             integer = n;
           }
           // For compact, default grouping strategy is min2
-          if (useGrouping && notation === 'compact' && integer.length > 4) {
+          if (useGrouping && (hasCompactSymbol ? integer.length > 4 : true)) {
             const groupSepSymbol = ild.symbols.group;
             const groups: string[] = [];
             // Assuming that the group separator is always inserted between every 3 digits.
@@ -440,7 +452,7 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
             type: 'compact',
             value: selectPlural(
               pl,
-              formattedX,
+              x,
               compactData[String(10 ** exponent) as DecimalFormatNum]
             ),
           });
@@ -469,7 +481,7 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
             type: 'compact',
             value: selectPlural(
               pl,
-              formattedX,
+              x,
               compactData[String(10 ** exponent) as DecimalFormatNum]
             ),
           });
@@ -518,7 +530,7 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
             'unit'
           );
           const unitSymbols = ild.unitSymbols[unit!];
-          const mu = selectPlural(pl, formattedX, unitSymbols[part.type])[
+          const mu = selectPlural(pl, x, unitSymbols[part.type])[
             unitSymbolChunkIndex
           ];
           results.push({type: 'unit', value: mu});
@@ -567,7 +579,7 @@ function partitionNumberPattern(numberFormat: UnifiedNumberFormat, x: number) {
         )!;
         const cd = selectPlural(
           pl,
-          formattedX,
+          x,
           ild.currencySymbols[currency].currencyName
         );
         results.push({type: 'currency', value: cd});
@@ -611,18 +623,7 @@ export class UnifiedNumberFormat
     } = UnifiedNumberFormat;
 
     setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
-      pl: new Intl.PluralRules(
-        locales,
-        getMultiInternalSlots(
-          __INTERNAL_SLOT_MAP__,
-          this,
-          'minimumFractionDigits',
-          'maximumFractionDigits',
-          'minimumIntegerDigits',
-          'minimumSignificantDigits',
-          'maximumSignificantDigits'
-        ) as any
-      ),
+      pl: new Intl.PluralRules(locales, options),
       patterns: new Patterns(
         ildData.units,
         ildData.currencies,

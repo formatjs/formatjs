@@ -4,7 +4,6 @@ import {invariant} from './invariant';
 import {
   NumberFormatDigitInternalSlots,
   NumberFormatDigitOptions,
-  NumberFormatNotation,
 } from './number-types';
 
 /**
@@ -226,7 +225,7 @@ export function partitionPattern(pattern: string) {
 /**
  * https://tc39.es/ecma402/#sec-setnfdigitoptions
  * https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-setnfdigitoptions
- * @param pl
+ * @param intlObj
  * @param opts
  * @param mnfdDefault
  * @param mxfdDefault
@@ -236,37 +235,58 @@ export function setNumberFormatDigitOptions<
   TInternalSlots extends NumberFormatDigitInternalSlots
 >(
   internalSlotMap: WeakMap<TObject, TInternalSlots>,
-  pl: TObject,
+  intlObj: TObject,
   opts: NumberFormatDigitOptions,
   mnfdDefault: number,
-  mxfdDefault: number,
-  notation: NumberFormatNotation
+  mxfdDefault: number
 ) {
   const mnid = getNumberOption(opts, 'minimumIntegerDigits', 1, 21, 1);
   let mnfd = opts.minimumFractionDigits;
   let mxfd = opts.maximumFractionDigits;
   let mnsd = opts.minimumSignificantDigits;
   let mxsd = opts.maximumSignificantDigits;
-  setInternalSlot(internalSlotMap, pl, 'minimumIntegerDigits', mnid);
+  setInternalSlot(internalSlotMap, intlObj, 'minimumIntegerDigits', mnid);
   if (mnsd !== undefined || mxsd !== undefined) {
-    setInternalSlot(internalSlotMap, pl, 'roundingType', 'significantDigits');
+    setInternalSlot(
+      internalSlotMap,
+      intlObj,
+      'roundingType',
+      'significantDigits'
+    );
     mnsd = defaultNumberOption(mnsd, 1, 21, 1);
     mxsd = defaultNumberOption(mxsd, mnsd, 21, 21);
-    setInternalSlot(internalSlotMap, pl, 'minimumSignificantDigits', mnsd);
-    setInternalSlot(internalSlotMap, pl, 'maximumSignificantDigits', mxsd);
+    setInternalSlot(internalSlotMap, intlObj, 'minimumSignificantDigits', mnsd);
+    setInternalSlot(internalSlotMap, intlObj, 'maximumSignificantDigits', mxsd);
   } else if (mnfd !== undefined || mxfd !== undefined) {
-    setInternalSlot(internalSlotMap, pl, 'roundingType', 'fractionDigits');
+    setInternalSlot(internalSlotMap, intlObj, 'roundingType', 'fractionDigits');
     mnfd = defaultNumberOption(mnfd, 0, 20, mnfdDefault);
     const mxfdActualDefault = Math.max(mnfd, mxfdDefault);
     mxfd = defaultNumberOption(mxfd, mnfd, 20, mxfdActualDefault);
-    setInternalSlot(internalSlotMap, pl, 'minimumFractionDigits', mnfd);
-    setInternalSlot(internalSlotMap, pl, 'maximumFractionDigits', mxfd);
-  } else if (notation === 'compact') {
-    setInternalSlot(internalSlotMap, pl, 'roundingType', 'compactRounding');
+    setInternalSlot(internalSlotMap, intlObj, 'minimumFractionDigits', mnfd);
+    setInternalSlot(internalSlotMap, intlObj, 'maximumFractionDigits', mxfd);
+  } else if (
+    getInternalSlot(internalSlotMap, intlObj, 'notation') === 'compact'
+  ) {
+    setInternalSlot(
+      internalSlotMap,
+      intlObj,
+      'roundingType',
+      'compactRounding'
+    );
   } else {
-    setInternalSlot(internalSlotMap, pl, 'roundingType', 'fractionDigits');
-    setInternalSlot(internalSlotMap, pl, 'minimumFractionDigits', mnfdDefault);
-    setInternalSlot(internalSlotMap, pl, 'maximumFractionDigits', mxfdDefault);
+    setInternalSlot(internalSlotMap, intlObj, 'roundingType', 'fractionDigits');
+    setInternalSlot(
+      internalSlotMap,
+      intlObj,
+      'minimumFractionDigits',
+      mnfdDefault
+    );
+    setInternalSlot(
+      internalSlotMap,
+      intlObj,
+      'maximumFractionDigits',
+      mxfdDefault
+    );
   }
 }
 

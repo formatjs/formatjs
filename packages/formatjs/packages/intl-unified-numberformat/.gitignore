@@ -2,4 +2,4 @@ src/en.ts
 src/locales.ts
 src/units-constants.ts
 src/currency-digits.json
-src/ilnd-numbers.ts
+src/ilnd-numbers.json

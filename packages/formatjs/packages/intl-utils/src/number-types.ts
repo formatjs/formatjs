@@ -28,6 +28,7 @@ export interface NumberFormatDigitInternalSlots {
   // These two properties are only used when `roundingType` is "fractionDigits".
   minimumFractionDigits?: number;
   maximumFractionDigits?: number;
+  notation?: NumberFormatNotation;
 }
 
 export enum InternalSlotToken {

@@ -12,6 +12,7 @@ import {
   setInternalSlot,
   getInternalSlot,
   setNumberFormatDigitOptions,
+  NumberFormatDigitInternalSlots,
 } from '@formatjs/intl-utils';
 
 function validateInstance(instance: any, method: string) {
@@ -109,17 +110,10 @@ function formatNumericToString(
   );
 }
 
-interface PluralRulesInternal {
+interface PluralRulesInternal extends NumberFormatDigitInternalSlots {
   initializedPluralRules: boolean;
   locale: string;
   type: 'cardinal' | 'ordinal';
-  minimumIntegerDigits: number;
-  minimumFractionDigits: number | undefined;
-  maximumFractionDigits: number | undefined;
-  minimumSignificantDigits: number | undefined;
-  maximumSignificantDigits: number | undefined;
-  roundingType: 'significantDigits' | 'fractionDigits' | 'compactRounding';
-  notation: 'compact';
 }
 
 export class PluralRules implements Intl.PluralRules {
@@ -160,8 +154,7 @@ export class PluralRules implements Intl.PluralRules {
       this,
       opts,
       0,
-      3,
-      'standard'
+      3
     );
     const r = createResolveLocale(PluralRules.getDefaultLocale)(
       PluralRules.availableLocales,

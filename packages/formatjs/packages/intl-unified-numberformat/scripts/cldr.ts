@@ -95,12 +95,7 @@ const ILND: Record<string, string[]> = (function() {
   };
 })();
 
-outputFileSync(
-  resolve(__dirname, '../src/ilnd-numbers.ts'),
-  `/* @generated */
-// prettier-ignore
-export const ILND = ${JSON.stringify(ILND)};`
-);
+outputJSONSync(resolve(__dirname, '../src/ilnd-numbers.json'), ILND);
 
 outputFileSync(
   resolve(__dirname, '../src/units-constants.ts'),
