@@ -2433,7 +2433,7 @@ Object {
     },
     "AFA": Object {
       "displayName": Object {
-        "other": "AFA",
+        "other": "афгані (1927–2002)",
       },
       "narrow": "AFA",
       "symbol": "AFA",
@@ -2551,7 +2551,7 @@ Object {
     },
     "ARP": Object {
       "displayName": Object {
-        "other": "ARP",
+        "other": "аргентинський песо (1983–1985)",
       },
       "narrow": "ARP",
       "symbol": "ARP",
@@ -2568,7 +2568,7 @@ Object {
     },
     "ATS": Object {
       "displayName": Object {
-        "other": "ATS",
+        "other": "австрійський шилінг",
       },
       "narrow": "ATS",
       "symbol": "ATS",
@@ -2615,7 +2615,7 @@ Object {
     },
     "BAD": Object {
       "displayName": Object {
-        "other": "BAD",
+        "other": "динар (Боснія і Герцеговина)",
       },
       "narrow": "BAD",
       "symbol": "BAD",
@@ -2659,28 +2659,28 @@ Object {
     },
     "BEC": Object {
       "displayName": Object {
-        "other": "BEC",
+        "other": "бельгійський франк (конвертований)",
       },
       "narrow": "BEC",
       "symbol": "BEC",
     },
     "BEF": Object {
       "displayName": Object {
-        "other": "BEF",
+        "other": "бельгійський франк",
       },
       "narrow": "BEF",
       "symbol": "BEF",
     },
     "BEL": Object {
       "displayName": Object {
-        "other": "BEL",
+        "other": "бельгійський франк (фінансовий)",
       },
       "narrow": "BEL",
       "symbol": "BEL",
     },
     "BGL": Object {
       "displayName": Object {
-        "other": "BGL",
+        "other": "болгарський твердий лев",
       },
       "narrow": "BGL",
       "symbol": "BGL",
@@ -2768,35 +2768,35 @@ Object {
     },
     "BOP": Object {
       "displayName": Object {
-        "other": "BOP",
+        "other": "болівійське песо",
       },
       "narrow": "BOP",
       "symbol": "BOP",
     },
     "BOV": Object {
       "displayName": Object {
-        "other": "BOV",
+        "other": "болівійський мвдол",
       },
       "narrow": "BOV",
       "symbol": "BOV",
     },
     "BRB": Object {
       "displayName": Object {
-        "other": "BRB",
+        "other": "бразильське нове крузейро (1967–1986)",
       },
       "narrow": "BRB",
       "symbol": "BRB",
     },
     "BRC": Object {
       "displayName": Object {
-        "other": "BRC",
+        "other": "бразильське крузадо",
       },
       "narrow": "BRC",
       "symbol": "BRC",
     },
     "BRE": Object {
       "displayName": Object {
-        "other": "BRE",
+        "other": "бразильське крузейро (1990–1993)",
       },
       "narrow": "BRE",
       "symbol": "BRE",
@@ -2813,14 +2813,14 @@ Object {
     },
     "BRN": Object {
       "displayName": Object {
-        "other": "BRN",
+        "other": "бразильське нове крузадо",
       },
       "narrow": "BRN",
       "symbol": "BRN",
     },
     "BRR": Object {
       "displayName": Object {
-        "other": "BRR",
+        "other": "бразильське крузейро",
       },
       "narrow": "BRR",
       "symbol": "BRR",
@@ -2854,7 +2854,7 @@ Object {
     },
     "BUK": Object {
       "displayName": Object {
-        "other": "BUK",
+        "other": "бірманський кіат",
       },
       "narrow": "BUK",
       "symbol": "BUK",
@@ -2931,7 +2931,7 @@ Object {
     },
     "CHE": Object {
       "displayName": Object {
-        "other": "CHE",
+        "other": "євро WIR",
       },
       "narrow": "CHE",
       "symbol": "CHE",
@@ -2948,7 +2948,7 @@ Object {
     },
     "CHW": Object {
       "displayName": Object {
-        "other": "CHW",
+        "other": "франк WIR",
       },
       "narrow": "CHW",
       "symbol": "CHW",
@@ -2962,7 +2962,7 @@ Object {
     },
     "CLF": Object {
       "displayName": Object {
-        "other": "CLF",
+        "other": "чилійський юнідадес де фоменто",
       },
       "narrow": "CLF",
       "symbol": "CLF",
@@ -3016,7 +3016,7 @@ Object {
     },
     "COU": Object {
       "displayName": Object {
-        "other": "COU",
+        "other": "одиниця реальної вартості",
       },
       "narrow": "COU",
       "symbol": "COU",
@@ -3033,14 +3033,14 @@ Object {
     },
     "CSD": Object {
       "displayName": Object {
-        "other": "CSD",
+        "other": "старий сербський динар",
       },
       "narrow": "CSD",
       "symbol": "CSD",
     },
     "CSK": Object {
       "displayName": Object {
-        "other": "CSK",
+        "other": "чехословацька тверда крона",
       },
       "narrow": "CSK",
       "symbol": "CSK",
@@ -3074,7 +3074,7 @@ Object {
     },
     "CYP": Object {
       "displayName": Object {
-        "other": "CYP",
+        "other": "кіпрський фунт",
       },
       "narrow": "CYP",
       "symbol": "CYP",
@@ -3091,14 +3091,14 @@ Object {
     },
     "DDM": Object {
       "displayName": Object {
-        "other": "DDM",
+        "other": "марка НДР",
       },
       "narrow": "DDM",
       "symbol": "DDM",
     },
     "DEM": Object {
       "displayName": Object {
-        "other": "DEM",
+        "other": "німецька марка",
       },
       "narrow": "DEM",
       "symbol": "DEM",
@@ -3145,14 +3145,14 @@ Object {
     },
     "ECS": Object {
       "displayName": Object {
-        "other": "ECS",
+        "other": "еквадорський сукре",
       },
       "narrow": "ECS",
       "symbol": "ECS",
     },
     "ECV": Object {
       "displayName": Object {
-        "other": "ECV",
+        "other": "еквадорський юнідад де валор константе",
       },
       "narrow": "ECV",
       "symbol": "ECV",
@@ -3189,21 +3189,21 @@ Object {
     },
     "ESA": Object {
       "displayName": Object {
-        "other": "ESA",
+        "other": "іспанська песета (\\\\\\"А\\\\\\" рахунок)",
       },
       "narrow": "ESA",
       "symbol": "ESA",
     },
     "ESB": Object {
       "displayName": Object {
-        "other": "ESB",
+        "other": "іспанська песета (конвертовані рахунки)",
       },
       "narrow": "ESB",
       "symbol": "ESB",
     },
     "ESP": Object {
       "displayName": Object {
-        "other": "ESP",
+        "other": "іспанська песета",
       },
       "narrow": "₧",
       "symbol": "ESP",
@@ -3227,7 +3227,7 @@ Object {
     },
     "FIM": Object {
       "displayName": Object {
-        "other": "FIM",
+        "other": "фінляндська марка",
       },
       "narrow": "FIM",
       "symbol": "FIM",
@@ -3254,7 +3254,7 @@ Object {
     },
     "FRF": Object {
       "displayName": Object {
-        "other": "FRF",
+        "other": "французький франк",
       },
       "narrow": "FRF",
       "symbol": "FRF",
@@ -3291,7 +3291,7 @@ Object {
     },
     "GHC": Object {
       "displayName": Object {
-        "other": "GHC",
+        "other": "ганський седі (1979–2007)",
       },
       "narrow": "GHC",
       "symbol": "GHC",
@@ -3338,21 +3338,21 @@ Object {
     },
     "GNS": Object {
       "displayName": Object {
-        "other": "GNS",
+        "other": "гвінейське сілі",
       },
       "narrow": "GNS",
       "symbol": "GNS",
     },
     "GQE": Object {
       "displayName": Object {
-        "other": "GQE",
+        "other": "еквеле (Екваторіальна Ґвінея)",
       },
       "narrow": "GQE",
       "symbol": "GQE",
     },
     "GRD": Object {
       "displayName": Object {
-        "other": "GRD",
+        "other": "грецька драхма",
       },
       "narrow": "GRD",
       "symbol": "GRD",
@@ -3369,14 +3369,14 @@ Object {
     },
     "GWE": Object {
       "displayName": Object {
-        "other": "GWE",
+        "other": "ескудо португальської гвінеї",
       },
       "narrow": "GWE",
       "symbol": "GWE",
     },
     "GWP": Object {
       "displayName": Object {
-        "other": "GWP",
+        "other": "песо Гвінеї-Бісау",
       },
       "narrow": "GWP",
       "symbol": "GWP",
@@ -3413,7 +3413,7 @@ Object {
     },
     "HRD": Object {
       "displayName": Object {
-        "other": "HRD",
+        "other": "хорватський динар",
       },
       "narrow": "HRD",
       "symbol": "HRD",
@@ -3459,14 +3459,14 @@ Object {
     },
     "IEP": Object {
       "displayName": Object {
-        "other": "IEP",
+        "other": "ірландський фунт",
       },
       "narrow": "IEP",
       "symbol": "IEP",
     },
     "ILP": Object {
       "displayName": Object {
-        "other": "ILP",
+        "other": "ізраїльський фунт",
       },
       "narrow": "ILP",
       "symbol": "ILP",
@@ -3537,7 +3537,7 @@ Object {
     },
     "ITL": Object {
       "displayName": Object {
-        "other": "ITL",
+        "other": "італійська ліра",
       },
       "narrow": "ITL",
       "symbol": "ITL",
@@ -3718,7 +3718,7 @@ Object {
     },
     "LSL": Object {
       "displayName": Object {
-        "other": "LSL",
+        "other": "лесотський лоті",
       },
       "narrow": "LSL",
       "symbol": "LSL",
@@ -3735,28 +3735,28 @@ Object {
     },
     "LTT": Object {
       "displayName": Object {
-        "other": "LTT",
+        "other": "литовський талон",
       },
       "narrow": "LTT",
       "symbol": "LTT",
     },
     "LUC": Object {
       "displayName": Object {
-        "other": "LUC",
+        "other": "люксембурґський франк (конвертований)",
       },
       "narrow": "LUC",
       "symbol": "LUC",
     },
     "LUF": Object {
       "displayName": Object {
-        "other": "LUF",
+        "other": "люксембурзький франк",
       },
       "narrow": "LUF",
       "symbol": "LUF",
     },
     "LUL": Object {
       "displayName": Object {
-        "other": "LUL",
+        "other": "люксембурґський франк (фінансовий)",
       },
       "narrow": "LUL",
       "symbol": "LUL",
@@ -3773,7 +3773,7 @@ Object {
     },
     "LVR": Object {
       "displayName": Object {
-        "other": "LVR",
+        "other": "латвійський рубль",
       },
       "narrow": "LVR",
       "symbol": "LVR",
@@ -3800,7 +3800,7 @@ Object {
     },
     "MAF": Object {
       "displayName": Object {
-        "other": "MAF",
+        "other": "марокканський франк",
       },
       "narrow": "MAF",
       "symbol": "MAF",
@@ -3841,7 +3841,7 @@ Object {
     },
     "MGF": Object {
       "displayName": Object {
-        "other": "MGF",
+        "other": "мадагаскарський франк",
       },
       "narrow": "MGF",
       "symbol": "MGF",
@@ -3865,7 +3865,7 @@ Object {
     },
     "MLF": Object {
       "displayName": Object {
-        "other": "MLF",
+        "other": "малійський франк",
       },
       "narrow": "MLF",
       "symbol": "MLF",
@@ -3921,14 +3921,14 @@ Object {
     },
     "MTL": Object {
       "displayName": Object {
-        "other": "MTL",
+        "other": "мальтійська ліра",
       },
       "narrow": "MTL",
       "symbol": "MTL",
     },
     "MTP": Object {
       "displayName": Object {
-        "other": "MTP",
+        "other": "мальтійський фунт",
       },
       "narrow": "MTP",
       "symbol": "MTP",
@@ -3982,14 +3982,14 @@ Object {
     },
     "MXP": Object {
       "displayName": Object {
-        "other": "MXP",
+        "other": "мексиканське срібне песо (1861–1992)",
       },
       "narrow": "MXP",
       "symbol": "MXP",
     },
     "MXV": Object {
       "displayName": Object {
-        "other": "MXV",
+        "other": "мексиканський юнідад де інверсіон",
       },
       "narrow": "MXV",
       "symbol": "MXV",
@@ -4006,14 +4006,14 @@ Object {
     },
     "MZE": Object {
       "displayName": Object {
-        "other": "MZE",
+        "other": "мозамбіцький ескудо",
       },
       "narrow": "MZE",
       "symbol": "MZE",
     },
     "MZM": Object {
       "displayName": Object {
-        "other": "MZM",
+        "other": "старий мозамбіцький метикал",
       },
       "narrow": "MZM",
       "symbol": "MZM",
@@ -4070,7 +4070,7 @@ Object {
     },
     "NLG": Object {
       "displayName": Object {
-        "other": "NLG",
+        "other": "нідерландський гульден",
       },
       "narrow": "NLG",
       "symbol": "NLG",
@@ -4127,7 +4127,7 @@ Object {
     },
     "PEI": Object {
       "displayName": Object {
-        "other": "PEI",
+        "other": "перуанський інті",
       },
       "narrow": "PEI",
       "symbol": "PEI",
@@ -4193,14 +4193,14 @@ Object {
     },
     "PLZ": Object {
       "displayName": Object {
-        "other": "PLZ",
+        "other": "польський злотий (1950–1995)",
       },
       "narrow": "PLZ",
       "symbol": "PLZ",
     },
     "PTE": Object {
       "displayName": Object {
-        "other": "PTE",
+        "other": "португальський ескудо",
       },
       "narrow": "PTE",
       "symbol": "PTE",
@@ -4227,14 +4227,14 @@ Object {
     },
     "RHD": Object {
       "displayName": Object {
-        "other": "RHD",
+        "other": "родезійський долар",
       },
       "narrow": "RHD",
       "symbol": "RHD",
     },
     "ROL": Object {
       "displayName": Object {
-        "other": "ROL",
+        "other": "старий румунський лей",
       },
       "narrow": "ROL",
       "symbol": "ROL",
@@ -4321,7 +4321,7 @@ Object {
     },
     "SDD": Object {
       "displayName": Object {
-        "other": "SDD",
+        "other": "суданський динар",
       },
       "narrow": "SDD",
       "symbol": "SDD",
@@ -4338,7 +4338,7 @@ Object {
     },
     "SDP": Object {
       "displayName": Object {
-        "other": "SDP",
+        "other": "старий суданський фунт",
       },
       "narrow": "SDP",
       "symbol": "SDP",
@@ -4375,14 +4375,14 @@ Object {
     },
     "SIT": Object {
       "displayName": Object {
-        "other": "SIT",
+        "other": "словенський толар",
       },
       "narrow": "SIT",
       "symbol": "SIT",
     },
     "SKK": Object {
       "displayName": Object {
-        "other": "SKK",
+        "other": "словацька крона",
       },
       "narrow": "SKK",
       "symbol": "SKK",
@@ -4416,7 +4416,7 @@ Object {
     },
     "SRG": Object {
       "displayName": Object {
-        "other": "SRG",
+        "other": "суринамський гульден",
       },
       "narrow": "SRG",
       "symbol": "SRG",
@@ -4463,7 +4463,7 @@ Object {
     },
     "SVC": Object {
       "displayName": Object {
-        "other": "SVC",
+        "other": "сальвадорський колон",
       },
       "narrow": "SVC",
       "symbol": "SVC",
@@ -4500,7 +4500,7 @@ Object {
     },
     "TJR": Object {
       "displayName": Object {
-        "other": "TJR",
+        "other": "таджицький рубль",
       },
       "narrow": "TJR",
       "symbol": "TJR",
@@ -4557,7 +4557,7 @@ Object {
     },
     "TPE": Object {
       "displayName": Object {
-        "other": "TPE",
+        "other": "тіморський ескудо",
       },
       "narrow": "TPE",
       "symbol": "TPE",
@@ -4633,7 +4633,7 @@ Object {
     },
     "UGS": Object {
       "displayName": Object {
-        "other": "UGS",
+        "other": "угандійський шилінг (1966–1987)",
       },
       "narrow": "UGS",
       "symbol": "UGS",
@@ -4660,28 +4660,28 @@ Object {
     },
     "USN": Object {
       "displayName": Object {
-        "other": "USN",
+        "other": "долар США (наступного дня)",
       },
       "narrow": "USN",
       "symbol": "USN",
     },
     "USS": Object {
       "displayName": Object {
-        "other": "USS",
+        "other": "долар США (цього дня)",
       },
       "narrow": "USS",
       "symbol": "USS",
     },
     "UYI": Object {
       "displayName": Object {
-        "other": "UYI",
+        "other": "уругвайський песо в індексованих одиницях",
       },
       "narrow": "UYI",
       "symbol": "UYI",
     },
     "UYP": Object {
       "displayName": Object {
-        "other": "UYP",
+        "other": "уругвайське песо (1975–1993)",
       },
       "narrow": "UYP",
       "symbol": "UYP",
@@ -4715,7 +4715,7 @@ Object {
     },
     "VEB": Object {
       "displayName": Object {
-        "other": "VEB",
+        "other": "венесуельський болівар (1871–2008)",
       },
       "narrow": "VEB",
       "symbol": "VEB",
@@ -4789,42 +4789,42 @@ Object {
     },
     "XAG": Object {
       "displayName": Object {
-        "other": "XAG",
+        "other": "срібло",
       },
       "narrow": "XAG",
       "symbol": "XAG",
     },
     "XAU": Object {
       "displayName": Object {
-        "other": "XAU",
+        "other": "золото",
       },
       "narrow": "XAU",
       "symbol": "XAU",
     },
     "XBA": Object {
       "displayName": Object {
-        "other": "XBA",
+        "other": "європейська складена валютна одиниця",
       },
       "narrow": "XBA",
       "symbol": "XBA",
     },
     "XBB": Object {
       "displayName": Object {
-        "other": "XBB",
+        "other": "одиниця європейського валютного фонду",
       },
       "narrow": "XBB",
       "symbol": "XBB",
     },
     "XBC": Object {
       "displayName": Object {
-        "other": "XBC",
+        "other": "європейська розрахункова одиниця XBC",
       },
       "narrow": "XBC",
       "symbol": "XBC",
     },
     "XBD": Object {
       "displayName": Object {
-        "other": "XBD",
+        "other": "європейська розрахункова одиниця XBD",
       },
       "narrow": "XBD",
       "symbol": "XBD",
@@ -4841,28 +4841,28 @@ Object {
     },
     "XDR": Object {
       "displayName": Object {
-        "other": "XDR",
+        "other": "спеціальні права запозичення",
       },
       "narrow": "XDR",
       "symbol": "XDR",
     },
     "XEU": Object {
       "displayName": Object {
-        "other": "XEU",
+        "other": "європейська валютна одиниця",
       },
       "narrow": "XEU",
       "symbol": "XEU",
     },
     "XFO": Object {
       "displayName": Object {
-        "other": "XFO",
+        "other": "французький золотий франк",
       },
       "narrow": "XFO",
       "symbol": "XFO",
     },
     "XFU": Object {
       "displayName": Object {
-        "other": "XFU",
+        "other": "французький франк UIC",
       },
       "narrow": "XFU",
       "symbol": "XFU",
@@ -4879,7 +4879,7 @@ Object {
     },
     "XPD": Object {
       "displayName": Object {
-        "other": "XPD",
+        "other": "паладій",
       },
       "narrow": "XPD",
       "symbol": "XPD",
@@ -4896,14 +4896,14 @@ Object {
     },
     "XPT": Object {
       "displayName": Object {
-        "other": "XPT",
+        "other": "платина",
       },
       "narrow": "XPT",
       "symbol": "XPT",
     },
     "XRE": Object {
       "displayName": Object {
-        "other": "XRE",
+        "other": "фонди RINET",
       },
       "narrow": "XRE",
       "symbol": "XRE",
@@ -4917,7 +4917,7 @@ Object {
     },
     "XTS": Object {
       "displayName": Object {
-        "other": "XTS",
+        "other": "код тестування валюти",
       },
       "narrow": "XTS",
       "symbol": "XTS",
@@ -4941,7 +4941,7 @@ Object {
     },
     "YDD": Object {
       "displayName": Object {
-        "other": "YDD",
+        "other": "єменський динар",
       },
       "narrow": "YDD",
       "symbol": "YDD",
@@ -4958,21 +4958,21 @@ Object {
     },
     "YUD": Object {
       "displayName": Object {
-        "other": "YUD",
+        "other": "югославський твердий динар",
       },
       "narrow": "YUD",
       "symbol": "YUD",
     },
     "YUM": Object {
       "displayName": Object {
-        "other": "YUM",
+        "other": "югославський новий динар",
       },
       "narrow": "YUM",
       "symbol": "YUM",
     },
     "YUN": Object {
       "displayName": Object {
-        "other": "YUN",
+        "other": "югославський конвертований динар",
       },
       "narrow": "YUN",
       "symbol": "YUN",
@@ -4986,7 +4986,7 @@ Object {
     },
     "ZAL": Object {
       "displayName": Object {
-        "other": "ZAL",
+        "other": "південноафриканський фінансовий ранд",
       },
       "narrow": "ZAL",
       "symbol": "ZAL",
@@ -5022,14 +5022,14 @@ Object {
     },
     "ZRN": Object {
       "displayName": Object {
-        "other": "ZRN",
+        "other": "заїрський новий заїр",
       },
       "narrow": "ZRN",
       "symbol": "ZRN",
     },
     "ZRZ": Object {
       "displayName": Object {
-        "other": "ZRZ",
+        "other": "заїрський заїр",
       },
       "narrow": "ZRZ",
       "symbol": "ZRZ",
