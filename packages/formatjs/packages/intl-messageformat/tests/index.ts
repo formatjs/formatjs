@@ -553,6 +553,15 @@ describe('IntlMessageFormat', function() {
     ).to.equal('The host invites Alice and 2 other people to their party.');
   });
 
+  it('regression issue #437', function() {
+    const mf = new IntlMessageFormat(
+      '{score, plural, one {# shopper} other {# shoppers}}',
+      'en'
+    );
+    expect(mf.format({score: 1})).to.equal('1 shopper');
+    expect(mf.format({score: 2})).to.equal('2 shoppers');
+  });
+
   describe('xml', function() {
     it('should handle @ correctly', function() {
       const mf = new IntlMessageFormat('hi @{there}', 'en');
