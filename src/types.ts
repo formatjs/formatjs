@@ -152,7 +152,7 @@ export interface IntlCache {
 }
 
 export interface MessageDescriptor {
-  id?: string;
+  id?: string | number;
   description?: string | object;
   defaultMessage?: string;
 }

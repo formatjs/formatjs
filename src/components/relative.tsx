@@ -8,7 +8,7 @@ import {Context} from './injectIntl';
 import {FormatRelativeTimeOptions} from '../types';
 import {Unit} from '@formatjs/intl-relativetimeformat';
 import {invariantIntlContext} from '../utils';
-import {invariant} from '@formatjs/intl-utils'
+import {invariant} from '@formatjs/intl-utils';
 const MINUTE = 60;
 const HOUR = 60 * 60;
 const DAY = 60 * 60 * 24;
@@ -95,7 +95,8 @@ export class FormattedRelativeTime extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     invariant(
-      !props.updateIntervalInSeconds || !!(props.updateIntervalInSeconds && canIncrement(props.unit)),
+      !props.updateIntervalInSeconds ||
+        !!(props.updateIntervalInSeconds && canIncrement(props.unit)),
       'Cannot schedule update with unit longer than hour'
     );
   }
