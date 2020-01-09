@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.11.0](https://github.com/formatjs/react-intl/compare/v3.10.0...v3.11.0) (2020-01-09)
+
+
+### Features
+
+* Allow MessageDescriptor ID to be `number` ([#1553](https://github.com/formatjs/react-intl/issues/1553)) ([95298b2](https://github.com/formatjs/react-intl/commit/95298b2b5f09173258fe9648d49fc9fa1ad673fc))
+
+
+### Bug Fixes
+
+* add a parser for chunks emitted from formatHTMLMessage ([#1550](https://github.com/formatjs/react-intl/issues/1550)) ([8c3c5c7](https://github.com/formatjs/react-intl/commit/8c3c5c78afa16d605933c82571f3b92b15363c27))
+* update formatjs deps ([1745c21](https://github.com/formatjs/react-intl/commit/1745c21b9ae5e6443f1ad5209f77cc9cb6ad66eb))
+
 ## [3.10.0](https://github.com/formatjs/react-intl/compare/v3.9.2...v3.10.0) (2019-12-26)
 
 
