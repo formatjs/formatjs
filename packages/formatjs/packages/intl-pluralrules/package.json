@@ -14,7 +14,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "module": "lib/index.js",
-  "types": "dist/intl-pluralrules.d.ts",
+  "types": "lib/intl-pluralrules.d.ts",
   "files": [
     "dist-es6",
     "dist",
