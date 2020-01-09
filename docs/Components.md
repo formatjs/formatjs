@@ -425,7 +425,7 @@ Currently this is part of [Unified NumberFormat](https://github.com/tc39/proposa
 
 ### `FormattedNumberParts`
 
-This component provides more customization to `FormattedNumber` by allowing children function to have access to underlying parts of the formatted date. The available parts are listed [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat/formatToParts)
+This component provides more customization to `FormattedNumber` by allowing children function to have access to underlying parts of the formatted number. The available parts are listed [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat/formatToParts).
 
 **Props:**
 
