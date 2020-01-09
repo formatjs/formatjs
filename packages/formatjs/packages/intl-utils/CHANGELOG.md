@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@2.0.3...@formatjs/intl-utils@2.0.4) (2020-01-09)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-utils:** fix setNumberFormatDigitOptions ([cb21c1f](https://github.com/formatjs/formatjs/commit/cb21c1f7abcb32040ffc5108c37734e2fd43c117))
+
+
+
+
+
 ## [2.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@2.0.2...@formatjs/intl-utils@2.0.3) (2020-01-08)
 
 **Note:** Version bump only for package @formatjs/intl-utils

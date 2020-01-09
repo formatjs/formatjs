@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@3.0.3...@formatjs/intl-unified-numberformat@3.0.4) (2020-01-09)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-unified-numberformat:** address min2 grouping strategy for compact ([fd1b22d](https://github.com/formatjs/formatjs/commit/fd1b22d072213b2eee21c19166da38f5cf68dc8f))
+* **@formatjs/intl-unified-numberformat:** fix compact grouping regression ([9a02dcb](https://github.com/formatjs/formatjs/commit/9a02dcb1027f594a033301b043d1233bd6c381e1))
+* **@formatjs/intl-utils:** fix setNumberFormatDigitOptions ([cb21c1f](https://github.com/formatjs/formatjs/commit/cb21c1f7abcb32040ffc5108c37734e2fd43c117))
+
+
+
+
+
 ## [3.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@3.0.2...@formatjs/intl-unified-numberformat@3.0.3) (2020-01-08)
 
 **Note:** Version bump only for package @formatjs/intl-unified-numberformat

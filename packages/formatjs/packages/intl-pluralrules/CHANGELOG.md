@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@1.4.3...@formatjs/intl-pluralrules@1.5.0) (2020-01-09)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** tweak polyfill checks ([8daea9b](https://github.com/formatjs/formatjs/commit/8daea9b615be1b215085174a188e908f60b8a05e))
+* **@formatjs/intl-utils:** fix setNumberFormatDigitOptions ([cb21c1f](https://github.com/formatjs/formatjs/commit/cb21c1f7abcb32040ffc5108c37734e2fd43c117))
+
+
+### Features
+
+* **@formatjs/intl-pluralrules:** also polyfill env where it doesn’t take in minimumFractionDigits ([7ab043a](https://github.com/formatjs/formatjs/commit/7ab043a58c33b52992ac179d70e195c2026940b0))
+
+
+
+
+
 ## [1.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@1.4.2...@formatjs/intl-pluralrules@1.4.3) (2020-01-08)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules

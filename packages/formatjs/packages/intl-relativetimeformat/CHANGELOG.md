@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.5.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.5.6...@formatjs/intl-relativetimeformat@4.5.7) (2020-01-09)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-listformat:** fix locale lookup regression for en-US ([21e8219](https://github.com/formatjs/formatjs/commit/21e8219c443ccfd36f1acd17303b0e6480edba23))
+
+
+
+
+
 ## [4.5.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.5.5...@formatjs/intl-relativetimeformat@4.5.6) (2020-01-08)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat
