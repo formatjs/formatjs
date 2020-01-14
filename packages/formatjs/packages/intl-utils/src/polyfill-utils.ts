@@ -144,7 +144,7 @@ export function setMultiInternalSlots<
   pl: Instance,
   props: Pick<NonNullable<Internal>, K>
 ) {
-  for (const k in props) {
+  for (const k of Object.keys(props) as K[]) {
     setInternalSlot(map, pl, k, props[k]);
   }
 }

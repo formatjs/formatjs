@@ -1,6 +1,7 @@
 import {spawnSync} from 'child_process';
 import {resolve} from 'path';
 import {cpus} from 'os';
+import chalk from 'chalk';
 
 if (process.version.startsWith('v13')) {
   console.log(
@@ -27,23 +28,22 @@ interface TestResult {
     pass: boolean;
     message?: string;
   };
+  rawResult: {
+    stderr: string;
+    stdout: string;
+    error?: Error;
+  };
 }
 const excludedTests = [
-  'bound-to-numberformat-instance', // Need to fix `new`
-  'builtin', // Need to fix `new`
-  'constructor-locales-arraylike', // This checks that we can handle {length: 1, 0: 'foo'} array-like
+  'builtin', // Built-in functions cannot have `prototype` property.
   'constructor-locales-hasproperty', // This checks that we only iterate once...
-  'constructor-locales-string', // To pass this we gotta ditch class bc it's called w/o `new`
   'constructor-numberingSystem-order', // This test might be wrong
   'constructor-options-throwing-getters', // This test might be wrong
   'constructor-unit', // This test might be wrong, this throws if `unit` is being accessed when style is not `unit`, but spec doesn't prohibit that
-  'currency-digits', // Need to fix `new`
-  'default-minimum-singificant-digits', // Need to fix `new`
   'format-fraction-digits-precision', // oh boi...
   'legacy-regexp-statics-not-modified', // TODO
   'numbering-system-options', // TODO
   'proto-from-ctor-realm', // Bc of Realm support
-  'this-value-ignored', // Need to fix `new`
   'units', // We haven't monkey-patched `toLocaleString` (prototype/format/units.js)
 ];
 const PATTERN = resolve(
@@ -54,7 +54,7 @@ const PATTERN = resolve(
 );
 const args = [
   '--reporter-keys',
-  'file,attrs,result',
+  'file,attrs,result,rawResult',
   '-t',
   String(cpus().length - 1),
   '--prelude',
@@ -86,11 +86,12 @@ if (!json) {
 const failedTests = json.filter(r => !r.result.pass);
 for (const t of json) {
   if (t.result.pass) {
-    console.log(`✓ ${t.attrs.description}`);
+    console.log(`${chalk.green('✓')} ${t.attrs.description}`);
   } else {
     console.log('\n\n');
-    console.log(`🗴 ${t.attrs.description}`);
-    console.log('\t', t.result.message);
+    console.log(`${chalk.red('✗')} ${t.attrs.description}`);
+    console.log(t.rawResult.stdout);
+    console.log(chalk.red(t.rawResult.stderr));
     console.log('\t', resolve(__dirname, '..', t.file));
     console.log('\n\n');
   }

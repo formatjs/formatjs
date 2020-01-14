@@ -8,14 +8,10 @@ export interface RawNumberFormatResult {
  * Cannot do Math.log(x) / Math.log(10) bc if IEEE floating point issue
  * @param x number
  */
-export function logBase10(x: number): number {
-  if (x < 1) {
-    const fraction = String(x).split('.')[1];
-    let exponent = 0;
-    for (; fraction[exponent] === '0'; exponent++);
-    return -exponent - 1;
-  }
-  return String(Math.floor(x)).length - 1;
+export function getMagnitude(x: number): number {
+  // Cannot count string length via Number.toString because it may use scientific notation
+  // for very small or very large numbers.
+  return Math.floor(Math.log(x) * Math.LOG10E);
 }
 
 // TODO: dedup with intl-pluralrules
@@ -76,10 +72,13 @@ export function toRawPrecision(
     e = 0;
     xFinal = 0;
   } else {
-    e = Math.floor(logBase10(x));
+    e = getMagnitude(x);
     let n: number;
     {
-      const exactSolve = x / 10 ** (e - p + 1);
+      const magnitude = e - p + 1;
+      const exactSolve =
+        // Preserve floating point precision as much as possible with multiplication.
+        magnitude < 0 ? x * 10 ** -magnitude : x / 10 ** magnitude;
       const roundDown = Math.floor(exactSolve);
       const roundUp = Math.ceil(exactSolve);
       n = exactSolve - roundDown < roundUp - exactSolve ? roundDown : roundUp;

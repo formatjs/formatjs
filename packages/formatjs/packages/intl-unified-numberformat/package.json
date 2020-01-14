@@ -26,7 +26,8 @@
   ],
   "devDependencies": {
     "@formatjs/intl-pluralrules": "^1.5.0",
-    "formatjs-extract-cldr-data": "^10.0.4"
+    "formatjs-extract-cldr-data": "^10.0.4",
+    "chalk": "^2.0.0"
   },
   "dependencies": {
     "@formatjs/intl-utils": "^2.0.4",
