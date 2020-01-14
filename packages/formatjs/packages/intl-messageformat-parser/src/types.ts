@@ -163,12 +163,12 @@ export function isPoundElement(el: MessageFormatElement): el is PoundElement {
   return el.type === TYPE.pound;
 }
 export function isNumberSkeleton(
-  el: NumberElement['style']
+  el: NumberElement['style'] | Skeleton
 ): el is NumberSkeleton {
   return !!(el && typeof el === 'object' && el.type === SKELETON_TYPE.number);
 }
 export function isDateTimeSkeleton(
-  el?: DateElement['style'] | TimeElement['style']
+  el?: DateElement['style'] | TimeElement['style'] | Skeleton
 ): el is DateTimeSkeleton {
   return !!(el && typeof el === 'object' && el.type === SKELETON_TYPE.dateTime);
 }
