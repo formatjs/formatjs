@@ -30,7 +30,23 @@ export function toRawFixed(
     n = exactSolve - roundDown < roundUp - exactSolve ? roundDown : roundUp;
   }
   const xFinal = n / 10 ** f;
-  let m = n === 0 ? '0' : n.toString();
+
+  // n is a positive integer, but it is possible to be greater than 1e21.
+  // In such case we will go the slow path.
+  // See also: https://tc39.es/ecma262/#sec-numeric-types-number-tostring
+  let m: string;
+  if (n < 1e21) {
+    m = n.toString();
+  } else {
+    m = n.toString();
+    const idx1 = m.indexOf('.');
+    const idx2 = m.indexOf('e+');
+    const exponent = parseInt(m.substring(idx2 + 2), 10);
+    m =
+      m.substring(0, idx1) +
+      m.substring(idx1 + 1, idx2) +
+      repeat('0', exponent - (idx2 - idx1 - 1));
+  }
   let int: number;
   if (f !== 0) {
     let k = m.length;
@@ -83,6 +99,10 @@ export function toRawPrecision(
       const roundUp = Math.ceil(exactSolve);
       n = exactSolve - roundDown < roundUp - exactSolve ? roundDown : roundUp;
     }
+    // See: https://tc39.es/ecma262/#sec-numeric-types-number-tostring
+    // No need to worry about scientific notation because it only happens for values >= 1e21,
+    // which has 22 significant digits. So it will at least be divided by 10 here to bring the
+    // value back into non-scientific-notation range.
     m = n.toString();
     xFinal = n * 10 ** (e - p + 1);
   }

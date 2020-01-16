@@ -38,11 +38,9 @@ const excludedTests = [
   'builtin', // Built-in functions cannot have `prototype` property.
   'constructor-locales-hasproperty', // This checks that we only iterate once...
   'constructor-numberingSystem-order', // This test might be wrong
-  'constructor-options-throwing-getters', // This test might be wrong
   'constructor-unit', // This test might be wrong, this throws if `unit` is being accessed when style is not `unit`, but spec doesn't prohibit that
-  'format-fraction-digits-precision', // oh boi...
+  'currency-digits', // AFN's currency digits differ from CLDR data.
   'legacy-regexp-statics-not-modified', // TODO
-  'numbering-system-options', // TODO
   'proto-from-ctor-realm', // Bc of Realm support
   'units', // We haven't monkey-patched `toLocaleString` (prototype/format/units.js)
 ];

@@ -61,6 +61,10 @@ export default [
       exports: 'named',
       name: 'IntlUnifiedNumberFormat'
     },
-    plugins: [resolveConfig, commonjsConfig, jsonConfig]
+    plugins: [resolve({
+      // For test262, we want to use ES6 distribution to avoid a myriad of errors
+      // that could be introduced by transpiled code.
+      mainFields: ['jsnext']
+    }), commonjsConfig, jsonConfig]
   },
 ];
