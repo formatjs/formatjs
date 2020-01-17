@@ -71,7 +71,7 @@ argumentElement 'argumentElement'
     }
 
 numberSkeletonId 'numberSkeletonId'
-    = $(!(patternWhiteSpace / [\'\/{}]) .)+
+    = $(!(whiteSpace / [\'\/{}]) .)+
 
 numberSkeletonTokenOption 'numberSkeletonTokenOption'
     = '/' option:numberSkeletonId { return option; }
@@ -211,14 +211,14 @@ pluralOption
 
 // -- Helpers ------------------------------------------------------------------
 
-// Equivalence of \p{Pattern_White_Space}
-// See: https://github.com/mathiasbynens/unicode-11.0.0/blob/master/Binary_Property/Pattern_White_Space/regex.js
-patternWhiteSpace 'whitespace pattern' = [\t-\r \x85\u200E\u200F\u2028\u2029]
+// Equivalence of \p{White_Space}
+// See: https://github.com/mathiasbynens/unicode-12.1.0/blob/master/Binary_Property/White_Space/regex.js
+whiteSpace 'whitespace' = [\t-\r \x85\xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]
 // Equivalence of \p{Pattern_Syntax}
 // See: https://github.com/mathiasbynens/unicode-11.0.0/blob/master/Binary_Property/Pattern_Syntax/regex.js
 patternSyntax 'syntax pattern' = [!-\/:-@\[-\^`\{-~\xA1-\xA7\xA9\xAB\xAC\xAE\xB0\xB1\xB6\xBB\xBF\xD7\xF7\u2010-\u2027\u2030-\u203E\u2041-\u2053\u2055-\u205E\u2190-\u245F\u2500-\u2775\u2794-\u2BFF\u2E00-\u2E7F\u3001-\u3003\u3008-\u3020\u3030\uFD3E\uFD3F\uFE45\uFE46]
 
-_ 'optional whitespace' = $(patternWhiteSpace*)
+_ 'optional whitespace' = $(whiteSpace*)
 
 number 'number' = negative:'-'? num:argNumber {
     return num
@@ -255,4 +255,4 @@ argNumber 'argNumber' = '0' { return 0 }
     / digits:([1-9][0-9]*) {
         return parseInt(digits.join(''), 10);
     }
-argName 'argName' = $((!(patternWhiteSpace / patternSyntax) .)+)
+argName 'argName' = $((!(whiteSpace / patternSyntax) .)+)
