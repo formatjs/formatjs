@@ -27,6 +27,7 @@ import {
   NumberLocaleInternalData,
   SignPattern,
   partitionPattern,
+  isWellFormedCurrencyCode,
 } from '@formatjs/intl-utils';
 import {
   toRawFixed,
@@ -63,37 +64,12 @@ const SHORTENED_SACTION_UNITS = SANCTIONED_UNITS.map(unit =>
   unit.replace(/^(.*?)-/, '')
 );
 
-const NOT_A_Z_REGEX = /[^A-Z]/;
-
-/**
- * This follows https://tc39.es/ecma402/#sec-case-sensitivity-and-case-mapping
- * @param str string to convert
- */
-function toUpperCase(str: string): string {
-  return str.replace(/([a-z])/g, (_, c) => c.toUpperCase());
-}
-
 /**
  * This follows https://tc39.es/ecma402/#sec-case-sensitivity-and-case-mapping
  * @param str string to convert
  */
 function toLowerCase(str: string): string {
   return str.replace(/([A-Z])/g, (_, c) => c.toLowerCase());
-}
-
-/**
- * https://tc39.es/proposal-unified-intl-numberformat/section6/locales-currencies-tz_proposed_out.html#sec-iswellformedcurrencycode
- * @param currency
- */
-function isWellFormedCurrencyCode(currency: string): boolean {
-  currency = toUpperCase(currency);
-  if (currency.length !== 3) {
-    return false;
-  }
-  if (NOT_A_Z_REGEX.test(currency)) {
-    return false;
-  }
-  return true;
 }
 
 /**

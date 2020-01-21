@@ -20,6 +20,17 @@ export function toObject<T>(
 }
 
 /**
+ * https://tc39.es/ecma262/#sec-tostring
+ */
+export function toString(o: unknown): string {
+  // Only symbol is irregular...
+  if (typeof o === 'symbol') {
+    throw TypeError('Cannot convert a Symbol value to a string');
+  }
+  return String(o);
+}
+
+/**
  * https://tc39.es/ecma402/#sec-getoption
  * @param opts
  * @param prop
@@ -44,10 +55,10 @@ export function getOption<T extends object, K extends keyof T, F>(
       value = Boolean(value);
     }
     if (type === 'string') {
-      value = String(value);
+      value = toString(value);
     }
     if (values !== undefined && !values.filter(val => val == value).length) {
-      throw new RangeError(`${value} in not within ${values}`);
+      throw new RangeError(`${value} is not within ${values.join(', ')}`);
     }
     return value;
   }
@@ -302,4 +313,29 @@ export function objectIs(x: any, y: any) {
   }
   // Step 6.a: NaN == NaN
   return x !== x && y !== y;
+}
+
+const NOT_A_Z_REGEX = /[^A-Z]/;
+
+/**
+ * This follows https://tc39.es/ecma402/#sec-case-sensitivity-and-case-mapping
+ * @param str string to convert
+ */
+function toUpperCase(str: string): string {
+  return str.replace(/([a-z])/g, (_, c) => c.toUpperCase());
+}
+
+/**
+ * https://tc39.es/proposal-unified-intl-numberformat/section6/locales-currencies-tz_proposed_out.html#sec-iswellformedcurrencycode
+ * @param currency
+ */
+export function isWellFormedCurrencyCode(currency: string): boolean {
+  currency = toUpperCase(currency);
+  if (currency.length !== 3) {
+    return false;
+  }
+  if (NOT_A_Z_REGEX.test(currency)) {
+    return false;
+  }
+  return true;
 }

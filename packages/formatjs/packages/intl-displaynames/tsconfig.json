@@ -1,0 +1,31 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+      "lib": ["dom", "es5", "esnext.intl", "es2017.intl", "es2018.intl"],
+      "outDir": "lib",
+      "rootDir": "src",
+      "allowSyntheticDefaultImports": true,
+      "noFallthroughCasesInSwitch": true,
+      "types": [
+          "babel__core",
+          "babel__generator",
+          "babel__template",
+          "babel__traverse",
+          "benchmark",
+          "chai",
+          "estree",
+          "fs-extra",
+          "istanbul-lib-coverage",
+          "istanbul-lib-report",
+          "istanbul-reports",
+          // Don't include mocha here
+          "jest",
+          "jest-diff",
+          "node",
+          "resolve",
+          "stack-utils",
+          "yargs"
+      ]
+  },
+  "include": ["src/**/*.ts"],
+}

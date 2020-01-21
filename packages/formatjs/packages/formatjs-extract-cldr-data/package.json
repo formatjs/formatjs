@@ -26,6 +26,7 @@
     "cldr-misc-full": "^36.0.0",
     "cldr-numbers-full": "^36.0.0",
     "cldr-units-full": "^36.0.0",
+    "cldr-localenames-full": "^36.0.0",
     "glob": "^7.1.6",
     "lodash": "^4.17.15"
   },

@@ -13,7 +13,7 @@ export default [
       file: 'dist/umd/intl-listformat.js',
       format: 'umd',
       exports: 'named',
-      name: 'IntlRelativeTimeFormat'
+      name: 'IntlListFormat'
     },
     plugins: [resolveConfig]
   },
@@ -24,7 +24,7 @@ export default [
       file: 'dist/umd/intl-listformat.min.js',
       format: 'umd',
       exports: 'named',
-      name: 'IntlRelativeTimeFormat'
+      name: 'IntlListFormat'
     },
     plugins: [resolveConfig, uglifyConfig]
   },
@@ -35,7 +35,7 @@ export default [
       file: 'dist/umd/intl-listformat-with-locales.js',
       format: 'umd',
       exports: 'named',
-      name: 'IntlRelativeTimeFormat'
+      name: 'IntlListFormat'
     },
     plugins: [resolveConfig]
   },
@@ -46,7 +46,7 @@ export default [
       file: 'dist/umd/intl-listformat-with-locales.min.js',
       format: 'umd',
       exports: 'named',
-      name: 'IntlRelativeTimeFormat'
+      name: 'IntlListFormat'
     },
     plugins: [resolveConfig, uglifyConfig]
   },
@@ -75,9 +75,9 @@ export default [
       file: 'dist/polyfill-with-locales-for-test262.js',
       format: 'umd',
       exports: 'named',
-      name: 'IntlPluralRules'
+      name: 'IntlListFormat'
     },
     plugins: [resolveConfig]
   },
-  
+
 ];

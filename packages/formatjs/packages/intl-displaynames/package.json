@@ -1,0 +1,50 @@
+{
+  "name": "intl-displaynames",
+  "version": "0.1.0",
+  "description": "Polyfill for: https://tc39.es/proposal-intl-displaynames",
+  "keywords": [
+    "i18n",
+    "polyfill",
+    "intl-polyfill",
+    "localization",
+    "formatjs",
+    "Intl.DisplayNames",
+    "Intl"
+  ],
+  "author": "Linjie Ding <pyrocat101@users.noreply.github.com>",
+  "homepage": "https://github.com/formatjs/formatjs",
+  "license": "MIT",
+  "jsnext": "dist-es6/index.js",
+  "main": "dist/index.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.js",
+  "files": [
+    "dist",
+    "lib",
+    "polyfill.js",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/formatjs/formatjs.git"
+  },
+  "dependencies": {
+    "@formatjs/intl-utils": "^2.0.4"
+  },
+  "devDependencies": {
+    "formatjs-extract-cldr-data": "^10.0.4"
+  },
+  "scripts": {
+    "cldr": "ts-node --project tsconfig.cjs.json scripts/cldr",
+    "build": "npm run cldr && npm run compile && npm run rollup",
+    "clean": "rimraf dist dist-es6 lib",
+    "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json cross-env NODE_ENV=test jest",
+    "test262": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json ts-node tests/runner",
+    "test": "npm run jest && npm run test262",
+    "rollup": "rollup -c rollup.config.js",
+    "compile": "tsc && tsc -p tsconfig.cjs.json && tsc -p tsconfig.es6.json && api-extractor run --local"
+  },
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  }
+}

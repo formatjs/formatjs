@@ -11,7 +11,7 @@ import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
 import {ListPatternFieldsData, ListPattern} from '@formatjs/intl-utils';
 
-const listPattternLocales = globSync('*/listPatterns.json', {
+const listPatternLocales = globSync('*/listPatterns.json', {
   cwd: resolve(
     dirname(require.resolve('cldr-misc-full/package.json')),
     './main'
@@ -67,7 +67,7 @@ function loadListPatterns(locale: Locale): ListPatternFieldsData {
 }
 
 function hasListPatterns(locale: Locale): boolean {
-  return listPattternLocales.includes(locale);
+  return listPatternLocales.includes(locale);
 }
 
 export default generateFieldExtractorFn<ListPatternFieldsData>(

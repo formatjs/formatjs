@@ -8,6 +8,7 @@ import extractListPatterns from './extract-list';
 import extractNumbers from './extract-numbers';
 import extractUnits from './extract-units';
 import extractCurrencies from './extract-currencies';
+import extractDisplayNames from './extract-displaynames';
 import {getAllLocales} from './locales';
 export const locales = getAllLocales();
 export interface Opts {
@@ -34,6 +35,10 @@ export function extractAllCurrencies(options: Opts = {}) {
   return extractCurrencies(options.locales || locales);
 }
 
+export function extractAllDisplayNames(options: Opts = {}) {
+  return extractDisplayNames(options.locales || locales);
+}
+
 export {getAllLanguages} from './locales';
 
 export const processAliases = process;
@@ -45,3 +50,4 @@ export {
 } from './extract-currencies';
 export {generateDataForLocales as generateUnitDataForLocales} from './extract-units';
 export {generateDataForLocales as generateNumberDataForLocales} from './extract-numbers';
+export {getAllLocales as getAllDisplayNamesLocales} from './extract-displaynames';
