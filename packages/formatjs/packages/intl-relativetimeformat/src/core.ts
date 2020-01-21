@@ -127,7 +127,7 @@ function singularRelativeTimeUnit(unit: FormattableUnit): Unit {
   return unit;
 }
 
-const NUMBERING_SYSTEM_REGEX = /[a-z0-9]{3,8}(-[a-z0-9]{3,8})*/gi;
+const NUMBERING_SYSTEM_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i;
 
 interface RelativeTimeFormatInternal {
   numberFormat: Intl.NumberFormat;
