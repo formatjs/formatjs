@@ -1,4 +1,3 @@
-
 # `intl-displaynames`
 
 A ponyfill/polyfill for [`intl-displaynames`](https://tc39.es/proposal-intl-displaynames).
