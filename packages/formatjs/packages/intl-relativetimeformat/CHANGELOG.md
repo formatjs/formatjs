@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.5.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.5.7...@formatjs/intl-relativetimeformat@4.5.8) (2020-01-22)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** Fix numberingSystem option regex of intl-relativetimeformat ([d619614](https://github.com/formatjs/formatjs/commit/d6196145c249b34a1a7ae8463b8858ab94ea01ea)), closes [#471](https://github.com/formatjs/formatjs/issues/471)
+
+
+
+
+
 ## [4.5.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.5.6...@formatjs/intl-relativetimeformat@4.5.7) (2020-01-09)
 
 

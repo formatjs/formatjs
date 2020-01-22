@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.3](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.6.2...intl-messageformat-parser@3.6.3) (2020-01-22)
+
+
+### Bug Fixes
+
+* **intl-messageformat-parser:** fix type definition for skeleton… ([#456](https://github.com/formatjs/formatjs/issues/456)) ([c208d01](https://github.com/formatjs/formatjs/commit/c208d013558789d0030782cb817562b712ed438e))
+* **intl-messageformat-parser:** skip whitespaces that match unicode White_Space ([#468](https://github.com/formatjs/formatjs/issues/468)) ([d0dda6e](https://github.com/formatjs/formatjs/commit/d0dda6ebb40c58bf1fcaeea054d0a07db167d7b8)), closes [#467](https://github.com/formatjs/formatjs/issues/467)
+
+
+
+
+
 ## [3.6.2](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.6.1...intl-messageformat-parser@3.6.2) (2020-01-09)
 
 **Note:** Version bump only for package intl-messageformat-parser

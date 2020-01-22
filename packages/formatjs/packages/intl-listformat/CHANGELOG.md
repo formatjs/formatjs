@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@1.3.7...@formatjs/intl-listformat@1.4.0) (2020-01-22)
+
+
+### Features
+
+* **@formatjs/intl-displaynames:** initial commit ([#469](https://github.com/formatjs/formatjs/issues/469)) ([137b994](https://github.com/formatjs/formatjs/commit/137b994846526b02de80b024c860b2771868f236))
+
+
+
+
+
 ## [1.3.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@1.3.6...@formatjs/intl-listformat@1.3.7) (2020-01-09)
 
 

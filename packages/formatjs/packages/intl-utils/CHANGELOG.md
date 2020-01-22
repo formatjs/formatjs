@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@2.0.4...@formatjs/intl-utils@2.1.0) (2020-01-22)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-unified-numberformat:** fix moar test262 cases ([#464](https://github.com/formatjs/formatjs/issues/464)) ([c3bec6e](https://github.com/formatjs/formatjs/commit/c3bec6e9dda928a48c8ecda7a9e515da7790fde1))
+* **@formatjs/intl-unified-numberformat:** fix some 262 test cases ([3e8e931](https://github.com/formatjs/formatjs/commit/3e8e931a9a7bc6901ac7c89f10f8bf19e9fa0fca))
+
+
+### Features
+
+* **@formatjs/intl-displaynames:** initial commit ([#469](https://github.com/formatjs/formatjs/issues/469)) ([137b994](https://github.com/formatjs/formatjs/commit/137b994846526b02de80b024c860b2771868f236))
+
+
+
+
+
 ## [2.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@2.0.3...@formatjs/intl-utils@2.0.4) (2020-01-09)
 
 
