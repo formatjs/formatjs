@@ -1,6 +1,11 @@
-# `intl-locale`
+
+# `intl-displaynames`
 
 A ponyfill/polyfill for [`intl-displaynames`](https://tc39.es/proposal-intl-displaynames).
+
+## Status
+
+`intl-displaynames` is beta quality software that hasn't been tested thoroughly.
 
 ## Installation
 
