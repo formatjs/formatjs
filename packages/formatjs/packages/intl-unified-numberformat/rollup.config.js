@@ -8,9 +8,7 @@ const resolveConfig = resolve({
 });
 const uglifyConfig = uglify();
 const jsonConfig = json()
-const commonjsConfig = commonjs({
-  'unicode-12.1.0/General_Category/Symbol/regex': ['test']
-});
+const commonjsConfig = commonjs();
 export default [
   {
     input: './lib/index.js',

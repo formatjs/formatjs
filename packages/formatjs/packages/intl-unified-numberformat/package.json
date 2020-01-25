@@ -30,8 +30,7 @@
     "formatjs-extract-cldr-data": "^10.1.0"
   },
   "dependencies": {
-    "@formatjs/intl-utils": "^2.1.0",
-    "unicode-12.1.0": "0.8"
+    "@formatjs/intl-utils": "^2.1.0"
   },
   "scripts": {
     "benchmark": "ts-node --project ./tsconfig.cjs.json tests/benchmark",
