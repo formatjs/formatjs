@@ -27,6 +27,14 @@ import {
   NumberLocaleInternalData,
   SignPattern,
   partitionPattern,
+  UnifiedNumberFormatOptionsLocaleMatcher,
+  UnifiedNumberFormatOptionsStyle,
+  UnifiedNumberFormatOptionsCompactDisplay,
+  UnifiedNumberFormatOptionsCurrencyDisplay,
+  UnifiedNumberFormatOptionsCurrencySign,
+  UnifiedNumberFormatOptionsNotation,
+  UnifiedNumberFormatOptionsSignDisplay,
+  UnifiedNumberFormatOptionsUnitDisplay,
   isWellFormedCurrencyCode,
 } from '@formatjs/intl-utils';
 import {
@@ -123,15 +131,15 @@ function removeUnicodeExtensionFromLocale(canonicalLocale: string): string {
 
 export type UnifiedNumberFormatOptions = Intl.NumberFormatOptions &
   NumberFormatDigitOptions & {
-    localeMatcher?: 'lookup' | 'best fit';
-    style?: 'decimal' | 'percent' | 'currency' | 'unit';
-    compactDisplay?: 'short' | 'long';
-    currencyDisplay?: 'symbol' | 'code' | 'name' | 'narrowSymbol';
-    currencySign?: 'standard' | 'accounting';
-    notation?: 'standard' | 'scientific' | 'engineering' | 'compact';
-    signDisplay?: 'auto' | 'always' | 'never' | 'exceptZero';
+    localeMatcher?: UnifiedNumberFormatOptionsLocaleMatcher;
+    style?: UnifiedNumberFormatOptionsStyle;
+    compactDisplay?: UnifiedNumberFormatOptionsCompactDisplay;
+    currencyDisplay?: UnifiedNumberFormatOptionsCurrencyDisplay;
+    currencySign?: UnifiedNumberFormatOptionsCurrencySign;
+    notation?: UnifiedNumberFormatOptionsNotation;
+    signDisplay?: UnifiedNumberFormatOptionsSignDisplay;
     unit?: Unit;
-    unitDisplay?: 'long' | 'short' | 'narrow';
+    unitDisplay?: UnifiedNumberFormatOptionsUnitDisplay;
   };
 
 export type ResolvedUnifiedNumberFormatOptions = Intl.ResolvedNumberFormatOptions &
