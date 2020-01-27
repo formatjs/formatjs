@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.11](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.5.10...eslint-plugin-formatjs@1.5.11) (2020-01-27)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
 ## [1.5.10](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.5.9...eslint-plugin-formatjs@1.5.10) (2020-01-22)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

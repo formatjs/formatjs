@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@2.1.0...@formatjs/intl-utils@2.2.0) (2020-01-27)
+
+
+### Features
+
+* **@formatjs/intl-utils:** Add intl-unified-numberformat option types ([e6a32d6](https://github.com/formatjs/formatjs/commit/e6a32d6e6da5e10e4baad0ca02dffb8f56bb2c32))
+
+
+
+
+
 # [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@2.0.4...@formatjs/intl-utils@2.1.0) (2020-01-22)
 
 

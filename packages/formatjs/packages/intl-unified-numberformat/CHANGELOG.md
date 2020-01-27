@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@3.1.0...@formatjs/intl-unified-numberformat@3.2.0) (2020-01-27)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-unified-numberformat:** reduce install size by dropping unicode-12.1.0 dependency ([#497](https://github.com/formatjs/formatjs/issues/497)) ([b84ddc2](https://github.com/formatjs/formatjs/commit/b84ddc2b4c464229540a2067df6a4bd92a0b9939))
+
+
+### Features
+
+* **@formatjs/intl-utils:** Add intl-unified-numberformat option types ([e6a32d6](https://github.com/formatjs/formatjs/commit/e6a32d6e6da5e10e4baad0ca02dffb8f56bb2c32))
+
+
+
+
+
 # [3.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@3.0.4...@formatjs/intl-unified-numberformat@3.1.0) (2020-01-22)
 
 
