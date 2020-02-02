@@ -51,6 +51,11 @@ React Intl relies on these `Intl` APIs:
 - [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat): Available on IE11+
 - [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules): This can be polyfilled using [this package](https://www.npmjs.com/package/@formatjs/intl-pluralrules).
 - [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat): This can be polyfilled using [this package](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat).
+- (Optional) [Intl.DisplayNames][displaynames-spec]: Required if you use [`formatDisplayName`](API.md#formatdisplayname)
+  or [`FormattedDisplayName`](Components.md#formatteddisplayname). This can be polyfilled using [this package][displaynames-polyfill].
+
+  [displaynames-spec]: https://tc39.es/proposal-intl-displaynames/
+  [displaynames-polyfill]: https://www.npmjs.com/package/@formatjs/intl-displaynames
 
 If you need to support older browsers, we recommend you do the following:
 
@@ -71,6 +76,16 @@ if (!Intl.PluralRules) {
 if (!Intl.RelativeTimeFormat) {
   require('@formatjs/intl-relativetimeformat/polyfill');
   require('@formatjs/intl-relativetimeformat/dist/locale-data/de'); // Add locale data for de
+}
+```
+
+5. If you need `Intl.DisplayNames`, include this [polyfill][displaynames-polyfill] in your build along
+   with individual CLDR data for each locale you support.
+
+```js
+if (!Intl.DisplayNames) {
+  require('@formatjs/intl-displaynames/polyfill');
+  require('@formatjs/intl-displaynames/dist/locale-data/de'); // Add locale data for de
 }
 ```
 
@@ -118,6 +133,7 @@ If you cannot use the Intl variant of JSC (e.g on iOS), follow the instructions 
 FormatJS also provides types & polyfill for the following Stage 3 Intl APIs:
 
 - Unified NumberFormat: [polyfill](https://www.npmjs.com/package/@formatjs/intl-unified-numberformat) & [spec](https://github.com/tc39/proposal-unified-intl-numberformat)
+- DisplayNames: [polyfill][displaynames-polyfill] & [spec][displaynames-spec]
 
 ## The `react-intl` Package
 

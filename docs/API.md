@@ -28,6 +28,8 @@ There are a few API layers that React Intl provides and is built on. When using 
     - [Message Formatting Fallbacks](#message-formatting-fallbacks)
     - [`formatMessage`](#formatmessage)
     - [`formatHTMLMessage`](#formathtmlmessage)
+  - [Localized Display Name APIs](#localized-display-name-apis)
+    - [`formatDisplayName`](#formatdisplayname)
 - [React Intl Components](#react-intl-components)
 
 <!-- tocstop -->
@@ -559,6 +561,47 @@ function formatHTMLMessage(
 ```
 
 **Note:** This API is provided to format legacy string message that contain HTML, but is not recommended, use [`<FormattedMessage>`](./Components.md#formattedmessage) instead.
+
+### Localized Display Name APIs
+
+**This uses stage 3 [`Intl.DisplayNames`][displaynames-repo] API so [polyfill][displaynames-polyfill] is required.**
+
+[displaynames-repo]: https://github.com/tc39/proposal-intl-displaynames
+[displaynames-polyfill]: https://www.npmjs.com/package/@formatjs/intl-displaynames
+
+This API provides _localized_ display names for languages, scripts, regions, and currencies.
+
+#### `formatDisplayName`
+
+```ts
+type FormatDisplayNameOptions = {
+  style?: 'narrow' | 'short' | 'long';
+  type?: 'language' | 'region' | 'script' | 'currency';
+  fallback?: 'code' | 'none';
+};
+
+function formatDisplayName(
+  value: string | number | object,
+  options?: FormatDisplayNameOptions
+): string | undefined;
+```
+
+Usage examples:
+
+```ts
+// When locale is `en`
+formatDisplayName('zh-Hans-SG'); //=> Simplified Chinese (Singapore)
+// When locale is `zh`
+formatDisplayName('zh-Hans-SG'); //=> 简体中文（新加坡）
+
+// When locale is `en`...
+// ISO-15924 four letters script code to localized display name
+formatDisplayName('Deva', {type: 'script'}); //=> Devanagari
+// ISO-4217 currency code to localized display name
+formatDisplayName('CNY', {type: 'currency'}); //=> Chinese Yuan
+// ISO-3166 two letters region code to localized display name
+formatDisplayName('UN', {type: 'region'}); //=> United Nations
+```
 
 ## React Intl Components
 
