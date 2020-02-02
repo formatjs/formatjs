@@ -10,17 +10,18 @@ import {formatRelativeTime as formatRelativeTimeFn} from '../../src/formatters/r
 import {formatNumber as formatNumberFn} from '../../src/formatters/number';
 import {formatPlural as formatPluralFn} from '../../src/formatters/plural';
 import {formatList as formatListFn} from '../../src/formatters/list';
+import {formatDisplayName as formatDisplayNameFn} from '../../src/formatters/displayName';
 import {
   formatHTMLMessage as baseFormatHTMLMessage,
   formatMessage as baseFormatMessage,
-  prepareIntlMessageFormatHtmlOutput,
 } from '../../src/formatters/message';
+import {IntlFormatters} from '../../src';
 
 describe('format API', () => {
   const {NODE_ENV} = process.env;
 
   let config;
-  let state;
+  let state: IntlFormatters;
 
   beforeEach(() => {
     config = {
@@ -98,6 +99,11 @@ describe('format API', () => {
       getListFormat: jest
         .fn()
         .mockImplementation((...args) => new Intl.ListFormat(...args)),
+      getDisplayNames: jest
+        .fn()
+        .mockImplementation(
+          (...args) => new (Intl as any).DisplayNames(...args)
+        ),
     };
   });
 
@@ -1039,6 +1045,32 @@ describe('format API', () => {
         <b>myself</b>,
         ', and I',
       ]);
+    });
+  });
+
+  describe('formatDisplayName()', function() {
+    let formatDisplayName!: IntlFormatters['formatDisplayName'];
+
+    beforeEach(() => {
+      formatDisplayName = formatDisplayNameFn.bind(
+        null,
+        config,
+        state.getDisplayNames
+      );
+    });
+
+    it('should return locale display name as string', function() {
+      expect(formatDisplayName('zh-Hans-SG')).toBe(
+        'Simplified Chinese (Singapore)'
+      );
+    });
+
+    it('will return undefined if Intl.DisplayName would return undefined', function() {
+      const displayName = new (Intl as any).DisplayNames('en', {
+        fallback: 'none',
+      });
+      expect(displayName.of('xx-XX')).toBeUndefined();
+      expect(formatDisplayName('xx-XX', {fallback: 'none'})).toBeUndefined();
     });
   });
 

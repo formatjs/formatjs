@@ -131,6 +131,7 @@
   "types": "./lib/react-intl.d.ts",
   "sideEffects": false,
   "dependencies": {
+    "@formatjs/intl-displaynames": "^1.2.0",
     "@formatjs/intl-listformat": "^1.3.7",
     "@formatjs/intl-relativetimeformat": "^4.5.7",
     "@formatjs/intl-unified-numberformat": "^3.0.4",

@@ -13,7 +13,7 @@ import {IntlConfig, IntlCache, CustomFormats, Formatters} from './types';
 import * as React from 'react';
 import IntlMessageFormat from 'intl-messageformat';
 import memoizeIntlConstructor from 'intl-format-cache';
-import {invariant} from '@formatjs/intl-utils'
+import {invariant} from '@formatjs/intl-utils';
 import {IntlRelativeTimeFormatOptions} from '@formatjs/intl-relativetimeformat';
 
 const ESCAPED_CHARS: Record<number, string> = {
@@ -97,6 +97,7 @@ export function createIntlCache(): IntlCache {
     relativeTime: {},
     pluralRules: {},
     list: {},
+    displayNames: {},
   };
 }
 
@@ -109,6 +110,7 @@ export function createFormatters(
 ): Formatters {
   const RelativeTimeFormat = (Intl as any).RelativeTimeFormat;
   const ListFormat = (Intl as any).ListFormat;
+  const DisplayNames = (Intl as any).DisplayNames;
   return {
     getDateTimeFormat: memoizeIntlConstructor(
       Intl.DateTimeFormat,
@@ -122,6 +124,7 @@ export function createFormatters(
     ),
     getPluralRules: memoizeIntlConstructor(Intl.PluralRules, cache.pluralRules),
     getListFormat: memoizeIntlConstructor(ListFormat, cache.list),
+    getDisplayNames: memoizeIntlConstructor(DisplayNames, cache.displayNames),
   };
 }
 

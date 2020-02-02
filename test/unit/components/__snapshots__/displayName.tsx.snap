@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FormattedDisplayName /> accepts Intl.DisplayNames options 1`] = `
+<FormattedDisplayName
+  type="currency"
+  value="CNY"
+>
+  Chinese Yuan
+</FormattedDisplayName>
+`;
+
+exports[`<FormattedDisplayName /> renders an empty <> when the underlying DisplayNames would return undefined 1`] = `
+<FormattedDisplayName
+  fallback="none"
+  value="xx-XX"
+/>
+`;

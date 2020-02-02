@@ -15,6 +15,7 @@ import IntlRelativeTimeFormat, {
 import {MessageFormatElement} from 'intl-messageformat-parser';
 import {UnifiedNumberFormatOptions} from '@formatjs/intl-unified-numberformat';
 import IntlListFormat, {IntlListFormatOptions} from '@formatjs/intl-listformat';
+import {DisplayNames, DisplayNamesOptions} from '@formatjs/intl-displaynames';
 
 export interface IntlConfig {
   locale: string;
@@ -57,6 +58,11 @@ export type FormatPluralOptions = Exclude<
   CustomFormatConfig;
 
 export type FormatListOptions = Exclude<IntlListFormatOptions, 'localeMatcher'>;
+
+export type FormatDisplayNameOptions = Exclude<
+  DisplayNamesOptions,
+  'localeMatcher'
+>;
 
 export interface IntlFormatters {
   formatDate(
@@ -107,14 +113,15 @@ export interface IntlFormatters {
     descriptor: MessageDescriptor,
     values?: Record<string, PrimitiveType>
   ): React.ReactNode;
-  formatList(
-    values: Array<string>,
-    opts?: FormatListOptions
-  ): string;
+  formatList(values: Array<string>, opts?: FormatListOptions): string;
   formatList(
     values: Array<string | React.ReactNode>,
     opts?: FormatListOptions
   ): React.ReactNode;
+  formatDisplayName(
+    value: Parameters<DisplayNames['of']>[0],
+    opts?: FormatDisplayNameOptions
+  ): string | undefined;
 }
 
 export interface Formatters {
@@ -136,6 +143,9 @@ export interface Formatters {
   getListFormat(
     ...args: ConstructorParameters<typeof IntlListFormat>
   ): IntlListFormat;
+  getDisplayNames(
+    ...args: ConstructorParameters<typeof DisplayNames>
+  ): DisplayNames;
 }
 
 export interface IntlShape extends IntlConfig, IntlFormatters {
@@ -149,6 +159,7 @@ export interface IntlCache {
   relativeTime: Record<string, IntlRelativeTimeFormat>;
   pluralRules: Record<string, Intl.PluralRules>;
   list: Record<string, IntlListFormat>;
+  displayNames: Record<string, DisplayNames>;
 }
 
 export interface MessageDescriptor {

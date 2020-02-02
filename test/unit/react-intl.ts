@@ -58,6 +58,10 @@ describe('react-intl', () => {
       it('exports `FormattedHTMLMessage`', () => {
         expect(ReactIntl.FormattedHTMLMessage).toBeA('function');
       });
+
+      it('exports `FormattedDisplayNames`', () => {
+        expect(ReactIntl.FormattedDisplayName).toBeA('function');
+      });
     });
   });
 });
