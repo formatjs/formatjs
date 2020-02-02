@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@1.1.1...@formatjs/intl-displaynames@1.2.0) (2020-02-02)
+
+
+### Features
+
+* **@formatjs/intl-displaynames:** include a polyfill-locales.js build that has all locale data ([#525](https://github.com/formatjs/formatjs/issues/525)) ([c260e93](https://github.com/formatjs/formatjs/commit/c260e93fd7f19c56dd1ee318731d6c1cb251539f))
+
+
+
+
+
 ## [1.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@1.1.0...@formatjs/intl-displaynames@1.1.1) (2020-01-27)
 
 **Note:** Version bump only for package @formatjs/intl-displaynames
