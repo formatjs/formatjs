@@ -123,6 +123,30 @@ const messages = defineMessages({
 });
 ```
 
+### `enforce-default-message`
+
+This enforces `defaultMessage` in the message descriptor.
+
+#### Why
+
+- Can be usefull in case we want to extract messages for translations from source code. This way can make sure people won't forget about defaultMessage
+
+```tsx
+import {defineMessages} from 'react-intl';
+
+const messages = defineMessages({
+  // WORKS
+  foo: {
+    defaultMessage: 'This is default message',
+    description: 'bar',
+  },
+  // FAILS
+  bar: {
+    description: 'bar',
+  },
+});
+```
+
 ### `enforce-placeholders`
 
 Makes sure all values are passed in if message has placeholders (number/date/time/plural/select/selectordinal). This requires values to be passed in as literal object (not a variable).

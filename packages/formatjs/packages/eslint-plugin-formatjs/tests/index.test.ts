@@ -93,6 +93,83 @@ _({
   ],
 });
 
+ruleTester.run('enforce-default-message', rules['enforce-default-message'], {
+  valid: [
+    `import {_} from '@formatjs/macro'
+_({
+    defaultMessage: 'this is default message',
+    description: 'asd'
+})`,
+    `intl.formatMessage({
+    defaultMessage: 'this is default message',
+    description: 'asd'
+})`,
+    dynamicMessage,
+    noMatch,
+    spreadJsx,
+    emptyFnCall,
+  ],
+  invalid: [
+    {
+      code: `
+            import {_} from '@formatjs/macro'
+            _({
+                description: 'this is default message'
+            })`,
+      errors: [
+        {
+          message: '`defaultMessage` has to be specified in message descriptor',
+        },
+      ],
+    },
+    {
+      code: `
+            intl.formatMessage({
+                description: 'this is description'
+            })`,
+      errors: [
+        {
+          message: '`defaultMessage` has to be specified in message descriptor',
+        },
+      ],
+    },
+    {
+      code: `
+            import {defineMessages} from 'react-intl'
+            defineMessages({
+              foo: {
+                description: 'this is description'
+              }
+            })`,
+      errors: [
+        {
+          message: '`defaultMessage` has to be specified in message descriptor',
+        },
+      ],
+    },
+    {
+      code: `
+            import {FormattedMessage} from 'react-intl'
+            const a = <FormattedMessage description="this is description"/>`,
+      errors: [
+        {
+          message: '`defaultMessage` has to be specified in message descriptor',
+        },
+      ],
+    },
+    {
+      code: `
+            import {FormattedMessage} from 'react-intl'
+            const a = <FormattedMessage description="this is description"></FormattedMessage>`,
+      errors: [
+        {
+          message: '`defaultMessage` has to be specified in message descriptor',
+        },
+      ],
+    },
+  ],
+});
+
 ruleTester.run('no-camel-case', rules['no-camel-case'], {
   valid: [
     `import {_} from '@formatjs/macro'

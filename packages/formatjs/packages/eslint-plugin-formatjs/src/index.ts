@@ -1,4 +1,5 @@
 import enforceDescription from './rules/enforce-description';
+import enforceDefaultMessage from './rules/enforce-default-message';
 import noCamelCase from './rules/no-camel-case';
 import noEmoji from './rules/no-emoji';
 import noMultiplePlurals from './rules/no-multiple-plurals';
@@ -10,6 +11,7 @@ import enforceSupportedDateTimeSkeleton from './rules/supported-datetime-skeleto
 const plugin = {
   rules: {
     'enforce-description': enforceDescription,
+    'enforce-default-message': enforceDefaultMessage,
     'no-camel-case': noCamelCase,
     'no-emoji': noEmoji,
     'no-multiple-plurals': noMultiplePlurals,
