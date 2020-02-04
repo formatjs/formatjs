@@ -30,6 +30,8 @@ React Intl has a set of React components that provide a declarative way to setup
     - [Caveats](#caveats)
   - [`FormattedHTMLMessage`](#formattedhtmlmessage)
   - [Using React-Intl with React Native](#using-react-intl-with-react-native)
+- [Localized Display Name Components](#localized-display-name-components)
+  - [`FormattedDisplayName`](#formatteddisplayname)
 
 <!-- tocstop -->
 
@@ -710,3 +712,43 @@ This component uses the [`formatHTMLMessage`](API.md#formathtmlmessage) API and 
 Historically, it was required to provide a `textComponent` for React-Intl to work on React Native, because Fragments didn't exist at the time and React Native would break trying to render a `span` (the default `textComponent` in React-Intl V2).
 
 Starting with [React Native v0.52](https://github.com/react-native-community/releases/blob/master/CHANGELOG.md#0520---2018-01-07), which uses [React v16.2+](https://reactjs.org/blog/2017/11/28/react-v16.2.0-fragment-support.html), Fragments are supported. And since React-Intl V3's default `textComponent` is `<React.Fragment>`, such requirement no longer exists.
+
+## Localized Display Name Components
+
+### `FormattedDisplayName`
+
+This component uses [`formatDisplayName`][formatdisplayname] and [`Intl.DisplayName`][intl-displayname]
+has `props` that correspond to `DisplayNameOptions`. You might need a [polyfill][displaynames-polyfill].
+
+[formatdisplayname]: API.md#formatdisplayname
+[intl-displayname]: https://github.com/tc39/proposal-intl-displaynames
+[displaynames-polyfill]: https://www.npmjs.com/package/@formatjs/intl-displaynames
+
+**Props:**
+
+```ts
+props: FormatDisplayNameOptions &
+  {
+    value: string | number | object,
+  };
+```
+
+**Example:**
+
+When the locale is `en`:
+
+```tsx
+<FormattedDisplayName type="language" value="zh-Hans-SG" />
+```
+
+```html
+Simplified Chinese (Singapore)
+```
+
+```tsx
+<FormattedDisplayName type="currency" value="JPY" />
+```
+
+```html
+Japanese Yen
+```

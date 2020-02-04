@@ -5,6 +5,7 @@ import {
   FormatDateOptions,
   FormatNumberOptions,
   FormatListOptions,
+  FormatDisplayNameOptions,
 } from '../types';
 import {Context} from './injectIntl';
 
@@ -13,6 +14,9 @@ enum DisplayName {
   formatTime = 'FormattedTime',
   formatNumber = 'FormattedNumber',
   formatList = 'FormattedList',
+  // Note that this DisplayName is the locale display name, not to be confused with
+  // the name of the enum, which is for React component display name in dev tools.
+  formatDisplayName = 'FormattedDisplayName',
 }
 
 enum DisplayNameParts {
@@ -27,6 +31,7 @@ type Formatter = {
   formatTime: FormatDateOptions;
   formatNumber: FormatNumberOptions;
   formatList: FormatListOptions;
+  formatDisplayName: FormatDisplayNameOptions;
 };
 
 export const FormattedNumberParts: React.FC<Formatter['formatNumber'] & {

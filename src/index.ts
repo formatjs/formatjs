@@ -13,6 +13,7 @@ import {
 import {CustomFormatConfig} from './types';
 import {UnifiedNumberFormatOptions} from '@formatjs/intl-unified-numberformat';
 import {IntlListFormatOptions} from '@formatjs/intl-listformat';
+import {DisplayNamesOptions} from '@formatjs/intl-displaynames/lib';
 export {
   default as injectIntl,
   Provider as RawIntlProvider,
@@ -38,6 +39,9 @@ export const FormattedNumber: React.FC<UnifiedNumberFormatOptions &
 export const FormattedList: React.FC<IntlListFormatOptions & {
   value: React.ReactNode[];
 }> = createFormattedComponent('formatList');
+export const FormattedDisplayName: React.FC<DisplayNamesOptions & {
+  value: string | number | object;
+}> = createFormattedComponent('formatDisplayName');
 export const FormattedDateParts = createFormattedDateTimePartsComponent(
   'formatDate'
 );
