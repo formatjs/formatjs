@@ -14,7 +14,6 @@ import {
   createIntlCache,
 } from '../utils';
 import {IntlConfig, IntlShape, Omit, IntlCache} from '../types';
-import areIntlLocalesSupported from 'intl-locales-supported';
 import {formatNumber, formatNumberToParts} from '../formatters/number';
 import {formatRelativeTime} from '../formatters/relativeTime';
 import {
@@ -80,26 +79,36 @@ export function createIntl(
 ): IntlShape {
   const formatters = createFormatters(cache);
   const resolvedConfig = {...DEFAULT_INTL_CONFIG, ...config};
-  if (
-    !resolvedConfig.locale ||
-    !areIntlLocalesSupported(resolvedConfig.locale)
-  ) {
-    const {locale, defaultLocale, onError} = resolvedConfig;
-    if (typeof onError === 'function') {
+  const {locale, defaultLocale, onError} = resolvedConfig;
+  if (!locale) {
+    if (onError) {
       onError(
         createError(
-          `Missing locale data for locale: "${locale}". ` +
-            `Using default locale: "${defaultLocale}" as fallback.`
+          `"locale" was not configured, using "${defaultLocale}" as fallback. See https://github.com/formatjs/react-intl/blob/master/docs/API.md#intlshape for more details`
         )
       );
     }
-
     // Since there's no registered locale data for `locale`, this will
     // fallback to the `defaultLocale` to make sure things can render.
     // The `messages` are overridden to the `defaultProps` empty object
     // to maintain referential equality across re-renders. It's assumed
     // each <FormattedMessage> contains a `defaultMessage` prop.
     resolvedConfig.locale = resolvedConfig.defaultLocale || 'en';
+  } else if (!Intl.NumberFormat.supportedLocalesOf(locale).length && onError) {
+    onError(
+      createError(
+        `Missing locale data for locale: "${locale}" in Intl.NumberFormat. Using default locale: "${defaultLocale}" as fallback. See https://github.com/formatjs/react-intl/blob/master/docs/Getting-Started.md#runtime-requirements for more details`
+      )
+    );
+  } else if (
+    !Intl.DateTimeFormat.supportedLocalesOf(locale).length &&
+    onError
+  ) {
+    onError(
+      createError(
+        `Missing locale data for locale: "${locale}" in Intl.DateTimeFormat. Using default locale: "${defaultLocale}" as fallback. See https://github.com/formatjs/react-intl/blob/master/docs/Getting-Started.md#runtime-requirements for more details`
+      )
+    );
   }
   return {
     ...resolvedConfig,

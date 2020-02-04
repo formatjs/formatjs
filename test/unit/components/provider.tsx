@@ -59,12 +59,12 @@ describe('<IntlProvider>', () => {
     );
 
     expect(console.error).toHaveBeenCalledWith(
-      '[React Intl] Missing locale data for locale: "undefined". Using default locale: "en" as fallback.'
+      '[React Intl] "locale" was not configured, using "en" as fallback. See https://github.com/formatjs/react-intl/blob/master/docs/API.md#intlshape for more details'
     );
     expect(console.error).toHaveBeenCalledTimes(1);
   });
 
-  it('warns when `locale` prop provided has no locale data', () => {
+  it('warns when `locale` prop provided has no locale data in Intl.NumberFormat', () => {
     const locale = 'missing';
     mount(
       <IntlProvider locale={locale}>
@@ -73,9 +73,26 @@ describe('<IntlProvider>', () => {
     );
 
     expect(console.error).toHaveBeenCalledWith(
-      `[React Intl] Missing locale data for locale: "${locale}". Using default locale: "en" as fallback.`
+      `[React Intl] Missing locale data for locale: "missing" in Intl.NumberFormat. Using default locale: "en" as fallback. See https://github.com/formatjs/react-intl/blob/master/docs/Getting-Started.md#runtime-requirements for more details`
     );
     expect(console.error).toHaveBeenCalledTimes(1);
+  });
+
+  it('warns when `locale` prop provided has no locale data in Intl.DateTimeFormat', () => {
+    const locale = 'xx-HA';
+    const supportedLocalesOf = Intl.NumberFormat.supportedLocalesOf 
+    Intl.NumberFormat.supportedLocalesOf = (): string[] => (['xx-HA'])
+    mount(
+      <IntlProvider locale={locale}>
+        <IntlChild />
+      </IntlProvider>
+    );
+
+    expect(console.error).toHaveBeenCalledWith(
+      `[React Intl] Missing locale data for locale: "xx-HA" in Intl.DateTimeFormat. Using default locale: "en" as fallback. See https://github.com/formatjs/react-intl/blob/master/docs/Getting-Started.md#runtime-requirements for more details`
+    );
+    expect(console.error).toHaveBeenCalledTimes(1);
+    Intl.NumberFormat.supportedLocalesOf = supportedLocalesOf
   });
 
   it('renders its `children`', () => {

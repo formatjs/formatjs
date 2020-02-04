@@ -141,7 +141,6 @@
     "@types/invariant": "^2.2.31",
     "hoist-non-react-statics": "^3.3.2",
     "intl-format-cache": "^4.2.21",
-    "intl-locales-supported": "^1.8.4",
     "intl-messageformat": "^7.8.4",
     "intl-messageformat-parser": "^3.6.4",
     "shallow-equal": "^1.2.1"

@@ -324,7 +324,7 @@ If previously in cases where you pass in a `ReactElement` to a placeholder we hi
 
 ## ESM Build
 
-`react-intl` and its underlying libraries (`intl-messageformat-parser`, `intl-messageformat`, `@formatjs/intl-relativetimeformat`, `intl-format-cache`, `intl-locales-supported`, `intl-utils`) export ESM artifacts. This means you should configure your build toolchain to transpile those libraries.
+`react-intl` and its underlying libraries (`intl-messageformat-parser`, `intl-messageformat`, `@formatjs/intl-relativetimeformat`, `intl-format-cache`, `intl-utils`) export ESM artifacts. This means you should configure your build toolchain to transpile those libraries.
 
 ### Jest
 
