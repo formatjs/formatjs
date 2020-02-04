@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.12.0](https://github.com/formatjs/react-intl/compare/v3.11.0...v3.12.0) (2020-02-04)
+
+
+### Features
+
+* add formatDisplayName and FormattedDisplayName ([#1567](https://github.com/formatjs/react-intl/issues/1567)) ([10bcbe2](https://github.com/formatjs/react-intl/commit/10bcbe2e7e92902d60810a7c00568d3043b09db3)), closes [#1547](https://github.com/formatjs/react-intl/issues/1547)
+
 ## [3.11.0](https://github.com/formatjs/react-intl/compare/v3.10.0...v3.11.0) (2020-01-09)
 
 
