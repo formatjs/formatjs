@@ -16,17 +16,17 @@ import memoizeIntlConstructor from 'intl-format-cache';
 import {invariant} from '@formatjs/intl-utils';
 import {IntlRelativeTimeFormatOptions} from '@formatjs/intl-relativetimeformat';
 
-const ESCAPED_CHARS: Record<number, string> = {
-  38: '&amp;',
-  62: '&gt;',
-  60: '&lt;',
-  34: '&quot;',
-  39: '&#x27;',
-};
-
-const UNSAFE_CHARS_REGEX = /[&><"']/g;
-
 export function escape(str: string): string {
+  const ESCAPED_CHARS: Record<number, string> = {
+    38: '&amp;',
+    62: '&gt;',
+    60: '&lt;',
+    34: '&quot;',
+    39: '&#x27;',
+  };
+  
+  const UNSAFE_CHARS_REGEX = /[&><"']/g;
+  
   return ('' + str).replace(
     UNSAFE_CHARS_REGEX,
     match => ESCAPED_CHARS[match.charCodeAt(0)]
