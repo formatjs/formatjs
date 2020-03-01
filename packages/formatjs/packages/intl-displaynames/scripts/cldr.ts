@@ -42,7 +42,7 @@ Object.keys(allData).forEach(function(lang) {
     `/* @generated */
 // prettier-ignore
 if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function') {
-  Intl.DisplayNames.__addLocaleData(${JSON.stringify(allData[lang], null, 2)})
+  Intl.DisplayNames.__addLocaleData(${JSON.stringify(allData[lang])})
 }`
   );
 });
