@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.5.11...eslint-plugin-formatjs@1.6.0) (2020-03-01)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** add support for defaultMessage ([#524](https://github.com/formatjs/formatjs/issues/524)) ([63742d6](https://github.com/formatjs/formatjs/commit/63742d697732f2e88176c8f310f89bf65c2f9576))
+
+
+
+
+
 ## [1.5.11](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.5.10...eslint-plugin-formatjs@1.5.11) (2020-01-27)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

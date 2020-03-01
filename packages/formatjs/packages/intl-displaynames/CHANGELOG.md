@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@1.2.0...@formatjs/intl-displaynames@1.2.1) (2020-03-01)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** minify locale data JS in dist folder ([89a96a3](https://github.com/formatjs/formatjs/commit/89a96a359f095d462bc00a380e3b2e9984bb00dc))
+
+
+
+
+
 # [1.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@1.1.1...@formatjs/intl-displaynames@1.2.0) (2020-02-02)
 
 
