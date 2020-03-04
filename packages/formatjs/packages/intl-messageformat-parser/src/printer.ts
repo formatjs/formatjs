@@ -14,6 +14,8 @@ import {
   NumberElement,
   SelectElement,
   PluralElement,
+  TagElement,
+  isTagElement,
   isSelectElement,
   isArgumentElement,
   isDateElement,
@@ -59,9 +61,16 @@ export function doPrintAST(
     if (isPoundElement(el)) {
       return '#';
     }
+    if (isTagElement(el)) {
+      return printTagElement(el);
+    }
   });
 
   return printedNodes.join('');
+}
+
+function printTagElement(el: TagElement): string {
+  return `<${el.value}>${printAST(el.children)}</${el.value}>`;
 }
 
 function printEscapedMessage(message: string): string {

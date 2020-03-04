@@ -37,6 +37,7 @@ messageElement
     / simpleFormatElement
     / pluralElement
     / selectElement
+    / tagElement
     // Note: this is only possible when immediately in plural argument's option.
     / poundElement
 
@@ -60,6 +61,19 @@ poundElement = '#' {
         ...insertLocation()
     };
 }
+
+tagElement 'tagElement'
+    = '<' openingTag:argNameOrNumber '>' children:message '</' closingTag:argNameOrNumber '>' {
+        if (openingTag !== closingTag) {
+           error(`Mismatch tag "${openingTag}" !== "${closingTag}"`, location()) 
+        }
+        return {
+            type: TYPE.tag,
+            value: openingTag,
+            children,
+            ...insertLocation()
+        }
+    }
 
 argumentElement 'argumentElement'
     = '{' _ value:argNameOrNumber _ '}' {
@@ -240,6 +254,7 @@ quotedString = "'" escapedChar:escapedChar quotedChars:$("''" / [^'])* "'"? {
 
 unquotedString = $(x:. &{
     return (
+        x !== '<' &&
         x !== '{' &&
         !(isInPluralOption() && x === '#') &&
         !(isNestedMessageText() && x === '}')
@@ -247,7 +262,7 @@ unquotedString = $(x:. &{
 } / '\n')
 
 escapedChar = $(x:. &{
-    return x === '{' || x === '}' || (isInPluralOption() && x === '#');
+    return x === '<' || x === '{' || x === '}' || (isInPluralOption() && x === '#');
 })
 
 argNameOrNumber 'argNameOrNumber' = $(argNumber / argName)

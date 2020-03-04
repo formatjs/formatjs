@@ -11,6 +11,7 @@ import {
   isDateElement,
   isTimeElement,
   isSelectElement,
+  isTagElement,
 } from 'intl-messageformat-parser';
 
 class BlacklistElement extends Error {
@@ -30,6 +31,7 @@ enum Element {
   select = 'select',
   selectordinal = 'selectordinal',
   plural = 'plural',
+  tag = 'tag',
 }
 
 function verifyAst(blacklist: Element[], ast: MessageFormatElement[]) {
@@ -51,6 +53,9 @@ function verifyAst(blacklist: Element[], ast: MessageFormatElement[]) {
     }
     if (isSelectElement(el) && blacklist.includes(Element.select)) {
       throw new BlacklistElement(Element.select);
+    }
+    if (isTagElement(el) && blacklist.includes(Element.tag)) {
+      throw new BlacklistElement(Element.tag);
     }
     if (isPluralElement(el)) {
       if (blacklist.includes(Element.plural)) {

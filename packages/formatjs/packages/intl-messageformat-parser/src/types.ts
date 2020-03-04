@@ -32,6 +32,10 @@ export enum TYPE {
    * This is the `#` symbol that will be substituted with the count.
    */
   pound,
+  /**
+   * XML-like tag
+   */
+  tag,
 }
 
 export const enum SKELETON_TYPE {
@@ -57,6 +61,12 @@ export interface BaseElement<T extends TYPE> {
 
 export type LiteralElement = BaseElement<TYPE.literal>;
 export type ArgumentElement = BaseElement<TYPE.argument>;
+export interface TagElement {
+  type: TYPE.tag;
+  value: string;
+  children: MessageFormatElement[];
+  location?: Location;
+}
 
 export interface SimpleFormatElement<T extends TYPE, S extends Skeleton>
   extends BaseElement<T> {
@@ -110,6 +120,7 @@ export type MessageFormatElement =
   | TimeElement
   | SelectElement
   | PluralElement
+  | TagElement
   | PoundElement;
 
 export interface NumberSkeletonToken {
@@ -161,6 +172,9 @@ export function isPluralElement(el: MessageFormatElement): el is PluralElement {
 }
 export function isPoundElement(el: MessageFormatElement): el is PoundElement {
   return el.type === TYPE.pound;
+}
+export function isTagElement(el: MessageFormatElement): el is TagElement {
+  return el.type === TYPE.tag;
 }
 export function isNumberSkeleton(
   el: NumberElement['style'] | Skeleton

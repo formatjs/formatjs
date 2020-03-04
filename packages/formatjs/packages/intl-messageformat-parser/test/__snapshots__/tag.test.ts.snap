@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`escaped tag with rich arg 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "I <3 cats.",
+  },
+]
+`;
+
+exports[`nested tag 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "this is ",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "type": 0,
+        "value": "nested ",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "type": 1,
+            "value": "placeholder",
+          },
+        ],
+        "type": 8,
+        "value": "b",
+      },
+    ],
+    "type": 8,
+    "value": "a",
+  },
+]
+`;
+
+exports[`tag with number arg 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "I have ",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "style": null,
+        "type": 2,
+        "value": "numCats",
+      },
+    ],
+    "type": 8,
+    "value": "foo",
+  },
+  Object {
+    "type": 0,
+    "value": " cats.",
+  },
+]
+`;
+
+exports[`tag with rich arg 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "I ",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "type": 0,
+        "value": "have",
+      },
+    ],
+    "type": 8,
+    "value": "b",
+  },
+  Object {
+    "type": 0,
+    "value": " ",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "style": null,
+        "type": 2,
+        "value": "numCats",
+      },
+      Object {
+        "type": 0,
+        "value": " some string ",
+      },
+      Object {
+        "type": 1,
+        "value": "placeholder",
+      },
+    ],
+    "type": 8,
+    "value": "foo",
+  },
+  Object {
+    "type": 0,
+    "value": " cats.",
+  },
+]
+`;
