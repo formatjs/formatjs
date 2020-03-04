@@ -5,7 +5,9 @@
  */
 import * as React from 'react';
 export * from './types';
-export {defineMessages} from '@formatjs/macro';
+export function defineMessages<T, U extends Record<string, T>>(msgs: U): U {
+  return msgs;
+}
 import {
   createFormattedComponent,
   createFormattedDateTimePartsComponent,

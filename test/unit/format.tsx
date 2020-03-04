@@ -15,7 +15,7 @@ import {
   formatHTMLMessage as baseFormatHTMLMessage,
   formatMessage as baseFormatMessage,
 } from '../../src/formatters/message';
-import {IntlFormatters} from '../../src';
+import {IntlFormatters, defineMessages} from '../../src';
 
 describe('format API', () => {
   const {NODE_ENV} = process.env;
@@ -109,6 +109,11 @@ describe('format API', () => {
 
   afterEach(() => {
     process.env.NODE_ENV = NODE_ENV;
+  });
+
+  it('defineMessages', function() {
+    expect(defineMessages({})).toEqual({});
+    expect(defineMessages({foo: {}})).toEqual({foo: {}});
   });
 
   describe('formatDate()', () => {
