@@ -66,7 +66,9 @@ class FormatError extends Error {
   }
 }
 
-function mergeLiteral<T>(parts: MessageFormatPart<T>[]): MessageFormatPart<T>[] {
+function mergeLiteral<T>(
+  parts: MessageFormatPart<T>[]
+): MessageFormatPart<T>[] {
   if (parts.length < 2) {
     return parts;
   }
@@ -85,8 +87,10 @@ function mergeLiteral<T>(parts: MessageFormatPart<T>[]): MessageFormatPart<T>[] 
   }, [] as MessageFormatPart<T>[]);
 }
 
-function isFormatXMLElementFn<T> (el: PrimitiveType | T | FormatXMLElementFn<T>): el is FormatXMLElementFn<T> {
-  return typeof el === 'function'
+function isFormatXMLElementFn<T>(
+  el: PrimitiveType | T | FormatXMLElementFn<T>
+): el is FormatXMLElementFn<T> {
+  return typeof el === 'function';
 }
 
 // TODO(skeleton): add skeleton support
@@ -149,7 +153,7 @@ export function formatToParts<T>(
             : '';
       }
       result.push({
-        type: typeof value === 'string' ?  PART_TYPE.literal : PART_TYPE.object,
+        type: typeof value === 'string' ? PART_TYPE.literal : PART_TYPE.object,
         value,
       } as ObjectPart<T>);
       continue;
@@ -200,22 +204,33 @@ export function formatToParts<T>(
       continue;
     }
     if (isTagElement(el)) {
-      const {children, value} = el
-      const formatFn = values[value]
+      const {children, value} = el;
+      const formatFn = values[value];
       if (!isFormatXMLElementFn<T>(formatFn)) {
-        throw new TypeError(`Value for "${value}" must be a function`)
+        throw new TypeError(`Value for "${value}" must be a function`);
       }
-      const parts = formatToParts<T>(children, locales, formatters, formats, values)
-      let chunks = formatFn(...parts.map(p => p.value))
+      const parts = formatToParts<T>(
+        children,
+        locales,
+        formatters,
+        formats,
+        values
+      );
+      let chunks = formatFn(...parts.map(p => p.value));
       if (!Array.isArray(chunks)) {
-        chunks = [chunks]
+        chunks = [chunks];
       }
-      result.push(...chunks.map((c): MessageFormatPart<T> => {
-        return {
-          type: typeof c === 'string' ? PART_TYPE.literal : PART_TYPE.object,
-          value: c
-        } as MessageFormatPart<T>
-      }))
+      result.push(
+        ...chunks.map(
+          (c): MessageFormatPart<T> => {
+            return {
+              type:
+                typeof c === 'string' ? PART_TYPE.literal : PART_TYPE.object,
+              value: c,
+            } as MessageFormatPart<T>;
+          }
+        )
+      );
     }
     if (isSelectElement(el)) {
       const opt = el.options[value as string] || el.options.other;
@@ -267,4 +282,6 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
   return mergeLiteral(result);
 }
 
-export type FormatXMLElementFn<T> = (...args: Array<string | T>) => string | Array<string | T>;
+export type FormatXMLElementFn<T> = (
+  ...args: Array<string | T>
+) => string | Array<string | T>;

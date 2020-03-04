@@ -23,17 +23,23 @@ test('escaped multiple tags', () => {
 });
 
 test('escaped multiple tags with placeholder', () => {
-  expect(pegParse("I '<'3 cats. '<a>foo</a>' '<b>'{bar}'</b>'")).toMatchSnapshot();
+  expect(
+    pegParse("I '<'3 cats. '<a>foo</a>' '<b>'{bar}'</b>'")
+  ).toMatchSnapshot();
 });
 
 test('mismatched tag', function() {
   expect(() => pegParse('this is <a>mismatch</b>')).toThrowError(/Mismatch/);
 });
 
-test('nested tag', function () {
-    expect(pegParse('this is <a>nested <b>{placeholder}</b></a>')).toMatchSnapshot()
-})
+test('nested tag', function() {
+  expect(
+    pegParse('this is <a>nested <b>{placeholder}</b></a>')
+  ).toMatchSnapshot();
+});
 
-test('self-closing tag', function () {
-  expect(pegParse('this is <br/> <a>nested <b>{placeholder}</b></a>')).toMatchSnapshot()
-})
+test('self-closing tag', function() {
+  expect(
+    pegParse('this is <br/> <a>nested <b>{placeholder}</b></a>')
+  ).toMatchSnapshot();
+});

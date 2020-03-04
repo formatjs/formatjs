@@ -601,11 +601,7 @@ describe('IntlMessageFormat', function() {
           b: (...chunks) => ['<b>', ...chunks, '</b>'],
           i: c => ({val: `$$${c}$$`}),
         })
-      ).to.deep.equal([
-        'hello <b>world',
-        {val: '$$!$$'},
-        ' <br/> </b>',
-      ]);
+      ).to.deep.equal(['hello <b>world', {val: '$$!$$'}, ' <br/> </b>']);
     });
     it('simple message w/ placeholder and no tag', function() {
       const mf = new IntlMessageFormat('hello {placeholder} {var2}', 'en');
@@ -650,7 +646,12 @@ describe('IntlMessageFormat', function() {
           placeholder: '>',
           a: str => ({str}),
         })
-      ).to.deep.equal(['&lt; hello ', {str: 'world'}, ' <asd> &lt;&gt; ', {str: '>'}]);
+      ).to.deep.equal([
+        '&lt; hello ',
+        {str: 'world'},
+        ' <asd> &lt;&gt; ',
+        {str: '>'},
+      ]);
     });
     it('select message w/ placeholder & >', function() {
       const mf = new IntlMessageFormat(
@@ -665,7 +666,12 @@ describe('IntlMessageFormat', function() {
           placeholder: '>',
           a: str => ({str}),
         })
-      ).to.deep.equal(['&lt; hello ', {str: 'world'}, ' <asd> &lt;&gt; ', {str: '>'}]);
+      ).to.deep.equal([
+        '&lt; hello ',
+        {str: 'world'},
+        ' <asd> &lt;&gt; ',
+        {str: '>'},
+      ]);
       expect(
         mf.format({
           gender: 'female',
@@ -675,7 +681,7 @@ describe('IntlMessageFormat', function() {
     });
     it('should allow escaping tag as legacy HTML', function() {
       const mf = new IntlMessageFormat(
-        'hello \'<b>world</b>\' \'<a>\'{placeholder}\'</a>\'',
+        "hello '<b>world</b>' '<a>'{placeholder}'</a>'",
         'en'
       );
       expect(

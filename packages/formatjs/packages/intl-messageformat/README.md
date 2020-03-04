@@ -177,22 +177,22 @@ We support embedded XML tag in the message, e.g `this is a <b>strong</b> tag`. T
 1. Any attributes on the HTML tag are also ignored.
 2. Self-closing tags are treated as string literal and not supported, please use regular ICU placeholder like `{placeholder}`.
 3. All tags specified must have corresponding values and will throw
-error if it's missing, e.g: `new IntlMessageFormat("a<b>strong</b>").format({ b: (...chunks) => <strong>chunks</strong> })`.
+   error if it's missing, e.g: `new IntlMessageFormat("a<b>strong</b>").format({ b: (...chunks) => <strong>chunks</strong> })`.
 4. XML/HTML tags are escaped using apostrophe just like other ICU constructs. In order to escape you can do things like:
-```tsx
-new IntlMessageFormat("I '<'3 cats").format() // "I <3 cats"
-new IntlMessageFormat("raw '<b>HTML</b>'").format() // "raw <b>HTML</b>"
-new IntlMessageFormat("raw '<b>HTML</b>' with '<a>'{placeholder}'</a>'").format({placeholder: 'some word'}) // "raw <b>HTML</b> with <a>some word</a>"
-```
 
+```tsx
+new IntlMessageFormat("I '<'3 cats").format(); // "I <3 cats"
+new IntlMessageFormat("raw '<b>HTML</b>'").format(); // "raw <b>HTML</b>"
+new IntlMessageFormat(
+  "raw '<b>HTML</b>' with '<a>'{placeholder}'</a>'"
+).format({placeholder: 'some word'}); // "raw <b>HTML</b> with <a>some word</a>"
+```
 
 ### `getAst` Method
 
 Return the underlying AST for the compiled message
 
 #### Caveats
-
-
 
 - List of self-closing tags is defined [here](https://html.spec.whatwg.org/multipage/syntax.html#void-elements).
 
