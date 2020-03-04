@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.6.0...eslint-plugin-formatjs@2.0.0) (2020-03-04)
+
+
+### Features
+
+* **intl-messageformat-parser:** Add native support for parsing XML tag ([51c49fa](https://github.com/formatjs/formatjs/commit/51c49faa46880ae6e005125c59fa23b59f0e7083))
+
+
+### BREAKING CHANGES
+
+* **intl-messageformat-parser:** This changes the AST and causes potential conflicts
+with previous parser version
+fix(eslint-plugin-formatjs): Adapt to new parser
+chore(babel-plugin-react-intl): update package lock
+
+
+
+
+
 # [1.6.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@1.5.11...eslint-plugin-formatjs@1.6.0) (2020-03-01)
 
 

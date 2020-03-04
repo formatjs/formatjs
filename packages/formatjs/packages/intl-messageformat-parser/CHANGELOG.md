@@ -3,6 +3,43 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.6.3...intl-messageformat-parser@4.0.0) (2020-03-04)
+
+
+### Features
+
+* **intl-messageformat:** combine formatHTMLMessage into format ([d59fbf1](https://github.com/formatjs/formatjs/commit/d59fbf1a4a017a3a023254cb9947575eef9cf803))
+* **intl-messageformat-parser:** Add native support for parsing XML tag ([51c49fa](https://github.com/formatjs/formatjs/commit/51c49faa46880ae6e005125c59fa23b59f0e7083))
+
+
+### BREAKING CHANGES
+
+* **intl-messageformat:** We've modified the way we parse and format embedded
+XML/HTML as follow:
+
+1. `formatHTMLMessage` has been combined with `format`
+2. All tags specified must have corresponding values and will throw
+error if it's missing, e.g: `new IntlMessageFormat("a
+<b>strong</b>").format({ b: (...chunks) => <strong>chunks</strong> })`
+3. Self-closing tags are treated as string literal by default. We don't
+allow formatting self-closing tags because we already use ICU
+`{placeholder}` syntax for that.
+4. XML/HTML tags are escaped using apostrophe just like other ICU
+constructs.
+5. Remove dependency on DOMParser and restrictions on void element like
+`<link>`. This effectively means you don't need to polyfill DOMParser in
+Node anymore
+
+fix(intl-messageformat-parser): fix escaping for XML tag
+* **intl-messageformat-parser:** This changes the AST and causes potential conflicts
+with previous parser version
+fix(eslint-plugin-formatjs): Adapt to new parser
+chore(babel-plugin-react-intl): update package lock
+
+
+
+
+
 ## [3.6.4](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.6.3...intl-messageformat-parser@3.6.4) (2020-01-27)
 
 **Note:** Version bump only for package intl-messageformat-parser

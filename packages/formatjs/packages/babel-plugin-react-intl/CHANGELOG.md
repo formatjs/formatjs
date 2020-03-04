@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@5.1.17...babel-plugin-react-intl@6.0.0) (2020-03-04)
+
+
+### Features
+
+* **intl-messageformat-parser:** Add native support for parsing XML tag ([51c49fa](https://github.com/formatjs/formatjs/commit/51c49faa46880ae6e005125c59fa23b59f0e7083))
+
+
+### BREAKING CHANGES
+
+* **intl-messageformat-parser:** This changes the AST and causes potential conflicts
+with previous parser version
+fix(eslint-plugin-formatjs): Adapt to new parser
+chore(babel-plugin-react-intl): update package lock
+
+
+
+
+
 ## [5.1.18](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@5.1.17...babel-plugin-react-intl@5.1.18) (2020-01-27)
 
 **Note:** Version bump only for package babel-plugin-react-intl
