@@ -522,11 +522,8 @@ describe('IntlMessageFormat', function() {
       const mf = new IntlMessageFormat(msg, 'en');
 
       expect(mf.formatToParts({value: ''})).to.deep.equal([
-        {type: PART_TYPE.literal, value: '"'},
-        {type: PART_TYPE.argument, value: ''},
-        {type: PART_TYPE.literal, value: '"'},
+        {type: PART_TYPE.literal, value: '""'},
       ]);
-      expect(mf.formatHTMLMessage({value: ''})).to.deep.equal(['""']);
       expect(mf.format({value: ''})).to.equal('""');
     });
   });
@@ -566,15 +563,15 @@ describe('IntlMessageFormat', function() {
     it('should handle @ correctly', function() {
       const mf = new IntlMessageFormat('hi @{there}', 'en');
       expect(
-        mf.formatHTMLMessage({
+        mf.format({
           there: '2008',
         })
-      ).to.deep.equal(['hi @2008']);
+      ).to.deep.equal('hi @2008');
     });
 
     it('simple message', function() {
       const mf = new IntlMessageFormat('hello <b>world</b>', 'en');
-      expect(mf.formatHTMLMessage({b: str => ({str})})).to.deep.equal([
+      expect(mf.format({b: str => ({str})})).to.deep.equal([
         'hello ',
         {str: 'world'},
       ]);
@@ -585,13 +582,13 @@ describe('IntlMessageFormat', function() {
         'en'
       );
       expect(
-        mf.formatHTMLMessage({
+        mf.format({
           b: (...chunks) => ({chunks}),
           i: c => ({val: `$$${c}$$`}),
         })
       ).to.deep.equal([
         'hello ',
-        {chunks: ['world', {val: '$$!$$'}, ' ', '<br>', ' ']},
+        {chunks: ['world', {val: '$$!$$'}, ' <br/> ']},
       ]);
     });
     it('deep format nested tag message', function() {
@@ -600,45 +597,20 @@ describe('IntlMessageFormat', function() {
         'en'
       );
       expect(
-        mf.formatHTMLMessage({
+        mf.format({
+          b: (...chunks) => ['<b>', ...chunks, '</b>'],
           i: c => ({val: `$$${c}$$`}),
         })
       ).to.deep.equal([
-        'hello ',
-        '<b>',
-        'world',
+        'hello <b>world',
         {val: '$$!$$'},
-        ' ',
-        '<br>',
-        ' ',
-        '</b>',
+        ' <br/> </b>',
       ]);
-    });
-    it('handle no child tags', function() {
-      const mf = new IntlMessageFormat('hello <br> <foo></foo> <i>!</i>', 'en');
-      expect(
-        mf.formatHTMLMessage({
-          i: c => ({val: `$$${c}$$`}),
-        })
-      ).to.deep.equal([
-        'hello ',
-        '<br>',
-        ' ',
-        '<foo></foo>',
-        ' ',
-        {val: '$$!$$'},
-      ]);
-    });
-    it('should throw if void elements are used', function() {
-      const mf = new IntlMessageFormat('hello <img/>', 'en');
-      expect(() => mf.formatHTMLMessage({img: str => ({str})})).to.throw(
-        /img is a self-closing tag and can not be used/
-      );
     });
     it('simple message w/ placeholder and no tag', function() {
       const mf = new IntlMessageFormat('hello {placeholder} {var2}', 'en');
       expect(
-        mf.formatHTMLMessage({
+        mf.format({
           placeholder: {name: 'gaga'},
           var2: {foo: 1},
         })
@@ -650,7 +622,7 @@ describe('IntlMessageFormat', function() {
         'en'
       );
       expect(
-        mf.formatHTMLMessage({
+        mf.format({
           b: str => ({str}),
           placeholder: 'gaga',
           a: str => ({str}),
@@ -660,11 +632,11 @@ describe('IntlMessageFormat', function() {
     it('message w/ placeholder & HTML entities', function() {
       const mf = new IntlMessageFormat('Hello&lt;<tag>{text}</tag>', 'en');
       expect(
-        mf.formatHTMLMessage({
+        mf.format({
           tag: str => ({str}),
           text: '<asd>',
         })
-      ).to.deep.equal(['Hello<', {str: '<asd>'}]);
+      ).to.deep.equal(['Hello&lt;', {str: '<asd>'}]);
     });
     it('message w/ placeholder & >', function() {
       const mf = new IntlMessageFormat(
@@ -672,13 +644,13 @@ describe('IntlMessageFormat', function() {
         'en'
       );
       expect(
-        mf.formatHTMLMessage({
+        mf.format({
           b: str => ({str}),
           token: '<asd>',
           placeholder: '>',
           a: str => ({str}),
         })
-      ).to.deep.equal(['< hello ', {str: 'world'}, ' <asd> <> ', {str: '>'}]);
+      ).to.deep.equal(['&lt; hello ', {str: 'world'}, ' <asd> &lt;&gt; ', {str: '>'}]);
     });
     it('select message w/ placeholder & >', function() {
       const mf = new IntlMessageFormat(
@@ -686,36 +658,36 @@ describe('IntlMessageFormat', function() {
         'en'
       );
       expect(
-        mf.formatHTMLMessage({
+        mf.format({
           gender: 'male',
           b: str => ({str}),
           token: '<asd>',
           placeholder: '>',
           a: str => ({str}),
         })
-      ).to.deep.equal(['< hello ', {str: 'world'}, ' <asd> <> ', {str: '>'}]);
+      ).to.deep.equal(['&lt; hello ', {str: 'world'}, ' <asd> &lt;&gt; ', {str: '>'}]);
       expect(
-        mf.formatHTMLMessage({
+        mf.format({
           gender: 'female',
           b: str => ({str}),
         })
-      ).to.deep.equal([{str: 'foo <> bar'}]);
+      ).to.deep.equal({str: 'foo &lt;&gt; bar'});
     });
-    it('should treat tag as legacy HTML if no value is provided', function() {
+    it('should allow escaping tag as legacy HTML', function() {
       const mf = new IntlMessageFormat(
-        'hello <b>world</b> <a>{placeholder}</a>',
+        'hello \'<b>world</b>\' \'<a>\'{placeholder}\'</a>\'',
         'en'
       );
       expect(
-        mf.formatHTMLMessage({
+        mf.format({
           placeholder: '<foo>gaga</foo>',
         })
-      ).to.deep.equal(['hello <b>world</b> <a><foo>gaga</foo></a>']);
+      ).to.deep.equal('hello <b>world</b> <a><foo>gaga</foo></a>');
     });
     it('should handle tag w/ rich text', function() {
       const mf = new IntlMessageFormat('hello <foo>{bar}</foo> test', 'en');
       expect(
-        mf.formatHTMLMessage({
+        mf.format({
           foo: obj => ({
             obj,
           }),
@@ -877,7 +849,7 @@ describe('IntlMessageFormat', function() {
       });
       expect(parts).to.deep.equal([
         {type: PART_TYPE.literal, value: 'a react '},
-        {type: PART_TYPE.argument, value: element},
+        {type: PART_TYPE.object, value: element},
       ]);
     });
   });

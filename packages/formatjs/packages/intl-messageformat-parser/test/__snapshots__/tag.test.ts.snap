@@ -1,5 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`escaped multiple tags 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "I <3 cats. <a>foo</a> <b>bar</b>",
+  },
+]
+`;
+
+exports[`escaped multiple tags with placeholder 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "I <3 cats. <a>foo</a> <b>",
+  },
+  Object {
+    "type": 1,
+    "value": "bar",
+  },
+  Object {
+    "type": 0,
+    "value": "</b>",
+  },
+]
+`;
+
 exports[`escaped tag with rich arg 1`] = `
 Array [
   Object {
@@ -14,6 +40,43 @@ Array [
   Object {
     "type": 0,
     "value": "this is ",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "type": 0,
+        "value": "nested ",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "type": 1,
+            "value": "placeholder",
+          },
+        ],
+        "type": 8,
+        "value": "b",
+      },
+    ],
+    "type": 8,
+    "value": "a",
+  },
+]
+`;
+
+exports[`self-closing tag 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "this is ",
+  },
+  Object {
+    "type": 0,
+    "value": "<br/>",
+  },
+  Object {
+    "type": 0,
+    "value": " ",
   },
   Object {
     "children": Array [

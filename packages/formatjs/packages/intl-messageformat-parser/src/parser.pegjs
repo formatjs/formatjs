@@ -63,17 +63,34 @@ poundElement = '#' {
 }
 
 tagElement 'tagElement'
-    = '<' openingTag:argNameOrNumber '>' children:message '</' closingTag:argNameOrNumber '>' {
-        if (openingTag !== closingTag) {
-           error(`Mismatch tag "${openingTag}" !== "${closingTag}"`, location()) 
+    = 
+    // Special case for self-closing. We treat it as regular text
+    value:('<' _ argNameOrNumber _ '/>') { 
+        return {
+            type: TYPE.literal,
+            value: value.join(''),
+            ...insertLocation()
+        }
+    }
+    / open:openingTag children:message close:closingTag {
+        if (open !== close) {
+           error(`Mismatch tag "${open}" !== "${close}"`, location()) 
         }
         return {
             type: TYPE.tag,
-            value: openingTag,
+            value: open,
             children,
             ...insertLocation()
         }
     }
+
+openingTag = '<' &{ messageCtx.push('openingTag'); return true; } tag:argNameOrNumber '>' &{ messageCtx.pop(); return true; } {
+    return tag
+}
+
+closingTag = '</' &{ messageCtx.push('closingTag'); return true; } tag:argNameOrNumber '>' &{ messageCtx.pop(); return true; } {
+    return tag
+}
 
 argumentElement 'argumentElement'
     = '{' _ value:argNameOrNumber _ '}' {
@@ -257,12 +274,13 @@ unquotedString = $(x:. &{
         x !== '<' &&
         x !== '{' &&
         !(isInPluralOption() && x === '#') &&
-        !(isNestedMessageText() && x === '}')
+        !(isNestedMessageText() && x === '}') &&
+        !(isNestedMessageText() && x === '>')
     );
 } / '\n')
 
 escapedChar = $(x:. &{
-    return x === '<' || x === '{' || x === '}' || (isInPluralOption() && x === '#');
+    return x === '<' || x === '>' || x === '{' || x === '}' || (isInPluralOption() && x === '#');
 })
 
 argNameOrNumber 'argNameOrNumber' = $(argNumber / argName)

@@ -10,12 +10,11 @@ import {
   FormatterCache,
   Formatters,
   Formats,
-  formatToString,
   formatToParts,
   FormatXMLElementFn,
-  formatHTMLMessage,
   PrimitiveType,
   MessageFormatPart,
+  PART_TYPE,
 } from './formatters';
 
 // -- MessageFormat --------------------------------------------------------
@@ -122,17 +121,27 @@ export class IntlMessageFormat {
       (opts && opts.formatters) || createDefaultFormatters(this.formatterCache);
   }
 
-  format = (values?: Record<string, PrimitiveType>) =>
-    formatToString(
-      this.ast,
-      this.locales,
-      this.formatters,
-      this.formats,
-      values,
-      this.message
-    );
-
-  formatToParts = (values?: Record<string, any>): MessageFormatPart[] =>
+  format = <T = void>(values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>) => {
+    const parts = this.formatToParts(values)
+    // Hot path for straight simple msg translations
+    if (parts.length === 1) {
+      return parts[0].value;
+    }
+    const result = parts.reduce((all, part) => {
+      if (!all.length || part.type !== PART_TYPE.literal || typeof all[all.length - 1] !== 'string') {
+        all.push(part.value)
+      } else {
+        all[all.length - 1] += part.value
+      }
+      return all
+    }, [] as Array<string | T>);
+  
+    if (result.length <= 1) {
+      return result[0] || ''
+    }
+    return result
+  }
+  formatToParts = <T>(values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>): MessageFormatPart<T>[] =>
     formatToParts(
       this.ast,
       this.locales,
@@ -142,18 +151,6 @@ export class IntlMessageFormat {
       undefined,
       this.message
     );
-  formatHTMLMessage = (
-    values?: Record<string, PrimitiveType | object | FormatXMLElementFn>
-  ) =>
-    formatHTMLMessage(
-      this.ast,
-      this.locales,
-      this.formatters,
-      this.formats,
-      values,
-      this.message
-    );
-
   resolvedOptions = () => ({
     locale: Intl.NumberFormat.supportedLocalesOf(this.locales)[0],
   });

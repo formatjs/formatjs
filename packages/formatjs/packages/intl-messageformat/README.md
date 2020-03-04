@@ -164,28 +164,35 @@ console.log(output); // => "My name is Eric."
 
 _Note: A value **must** be supplied for every argument in the message pattern the instance was constructed with._
 
+#### Rich Text support
+
+```tsx
+const mf = new IntlMessageFormat('hello <b>world</b>', 'en');
+mf.format({b: str => <span>{str}</span>});
+// returns ['hello ', React element rendered as <span>world</span>]
+```
+
+We support embedded XML tag in the message, e.g `this is a <b>strong</b> tag`. This is not meant to be a full-fledged method to embed HTML, but rather to tag specific text chunk so translation can be more contextual. Therefore, the following restrictions apply:
+
+1. Any attributes on the HTML tag are also ignored.
+2. Self-closing tags are treated as string literal and not supported, please use regular ICU placeholder like `{placeholder}`.
+3. All tags specified must have corresponding values and will throw
+error if it's missing, e.g: `new IntlMessageFormat("a<b>strong</b>").format({ b: (...chunks) => <strong>chunks</strong> })`.
+4. XML/HTML tags are escaped using apostrophe just like other ICU constructs. In order to escape you can do things like:
+```tsx
+new IntlMessageFormat("I '<'3 cats").format() // "I <3 cats"
+new IntlMessageFormat("raw '<b>HTML</b>'").format() // "raw <b>HTML</b>"
+new IntlMessageFormat("raw '<b>HTML</b>' with '<a>'{placeholder}'</a>'").format({placeholder: 'some word'}) // "raw <b>HTML</b> with <a>some word</a>"
+```
+
+
 ### `getAst` Method
 
 Return the underlying AST for the compiled message
 
-### `formatHTMLMessage` method
-
-Formats message containing HTML tags & can be used to embed rich text formatters such as React. For example:
-
-```tsx
-const mf = new IntlMessageFormat('hello <b>world</b>', 'en');
-mf.formatHTMLMessage({b: str => <span>{str}</span>});
-// returns ['hello ', React element rendered as <span>world</span>]
-```
-
 #### Caveats
 
-This is not meant to be a full-fledged method to embed HTML, but rather to tag specific text chunk so translation can be more contextual. Therefore, the following restrictions apply:
 
-1. Any attributes on the HTML tag are also ignored.
-2. Self-closing tags are not supported, please use regular ICU placeholder like `{placeholder}`.
-3. HTML tags must be all lowercased since it's case-insensitive.
-4. Self-closing tags can not be used as HTML tag placeholder. For e.g. `"Please click this <link>link</link>"` will not work because `<link/>` is a self-closing tag, and it can not be parsed correctly by browser `DOMParser`.
 
 - List of self-closing tags is defined [here](https://html.spec.whatwg.org/multipage/syntax.html#void-elements).
 

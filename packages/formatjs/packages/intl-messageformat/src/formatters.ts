@@ -12,6 +12,7 @@ import {
   isTimeElement,
   MessageFormatElement,
   parseDateTimeSkeleton,
+  isTagElement,
 } from 'intl-messageformat-parser';
 
 export interface Formats {
@@ -40,7 +41,7 @@ export interface Formatters {
 
 export const enum PART_TYPE {
   literal,
-  argument,
+  object,
 }
 
 export interface LiteralPart {
@@ -48,12 +49,12 @@ export interface LiteralPart {
   value: string;
 }
 
-export interface ArgumentPart {
-  type: PART_TYPE.argument;
-  value: any;
+export interface ObjectPart<T = any> {
+  type: PART_TYPE.object;
+  value: T;
 }
 
-export type MessageFormatPart = LiteralPart | ArgumentPart;
+export type MessageFormatPart<T> = LiteralPart | ObjectPart<T>;
 
 export type PrimitiveType = string | number | boolean | null | undefined | Date;
 
@@ -65,7 +66,7 @@ class FormatError extends Error {
   }
 }
 
-function mergeLiteral(parts: MessageFormatPart[]): MessageFormatPart[] {
+function mergeLiteral<T>(parts: MessageFormatPart<T>[]): MessageFormatPart<T>[] {
   if (parts.length < 2) {
     return parts;
   }
@@ -81,20 +82,24 @@ function mergeLiteral(parts: MessageFormatPart[]): MessageFormatPart[] {
       lastPart.value += part.value;
     }
     return all;
-  }, [] as MessageFormatPart[]);
+  }, [] as MessageFormatPart<T>[]);
+}
+
+function isFormatXMLElementFn<T> (el: PrimitiveType | T | FormatXMLElementFn<T>): el is FormatXMLElementFn<T> {
+  return typeof el === 'function'
 }
 
 // TODO(skeleton): add skeleton support
-export function formatToParts(
+export function formatToParts<T>(
   els: MessageFormatElement[],
   locales: string | string[],
   formatters: Formatters,
   formats: Formats,
-  values?: Record<string, any>,
+  values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>,
   currentPluralValue?: number,
   // For debugging
   originalMessage?: string
-): MessageFormatPart[] {
+): MessageFormatPart<T>[] {
   // Hot path for straight simple msg translations
   if (els.length === 1 && isLiteralElement(els[0])) {
     return [
@@ -104,7 +109,7 @@ export function formatToParts(
       },
     ];
   }
-  const result: MessageFormatPart[] = [];
+  const result: MessageFormatPart<T>[] = [];
   for (const el of els) {
     // Exit early for string parts.
     if (isLiteralElement(el)) {
@@ -144,9 +149,9 @@ export function formatToParts(
             : '';
       }
       result.push({
-        type: PART_TYPE.argument,
+        type: typeof value === 'string' ?  PART_TYPE.literal : PART_TYPE.object,
         value,
-      });
+      } as ObjectPart<T>);
       continue;
     }
 
@@ -194,6 +199,24 @@ export function formatToParts(
       });
       continue;
     }
+    if (isTagElement(el)) {
+      const {children, value} = el
+      const formatFn = values[value]
+      if (!isFormatXMLElementFn<T>(formatFn)) {
+        throw new TypeError(`Value for "${value}" must be a function`)
+      }
+      const parts = formatToParts<T>(children, locales, formatters, formats, values)
+      let chunks = formatFn(...parts.map(p => p.value))
+      if (!Array.isArray(chunks)) {
+        chunks = [chunks]
+      }
+      result.push(...chunks.map((c): MessageFormatPart<T> => {
+        return {
+          type: typeof c === 'string' ? PART_TYPE.literal : PART_TYPE.object,
+          value: c
+        } as MessageFormatPart<T>
+      }))
+    }
     if (isSelectElement(el)) {
       const opt = el.options[value as string] || el.options.other;
       if (!opt) {
@@ -235,7 +258,7 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
           formatters,
           formats,
           values,
-          value - (el.offset || 0)
+          (value as number) - (el.offset || 0)
         )
       );
       continue;
@@ -244,211 +267,4 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
   return mergeLiteral(result);
 }
 
-export function formatToString(
-  els: MessageFormatElement[],
-  locales: string | string[],
-  formatters: Formatters,
-  formats: Formats,
-  values?: Record<string, PrimitiveType>,
-  // For debugging
-  originalMessage?: string
-): string {
-  const parts = formatToParts(
-    els,
-    locales,
-    formatters,
-    formats,
-    values,
-    undefined,
-    originalMessage
-  );
-  // Hot path for straight simple msg translations
-  if (parts.length === 1) {
-    return parts[0].value;
-  }
-  return parts.reduce((all, part) => (all += part.value), '');
-}
-
-export type FormatXMLElementFn = (...args: any[]) => string | object;
-
-// Singleton
-let domParser: DOMParser;
-const TOKEN_DELIMITER = '@@';
-const TOKEN_REGEX = /@@(\d+_\d+)@@/g;
-let counter = 0;
-function generateId() {
-  return `${Date.now()}_${++counter}`;
-}
-
-function restoreRichPlaceholderMessage(
-  text: string,
-  objectParts: Record<string, any>
-): Array<string | object> {
-  return text
-    .split(TOKEN_REGEX)
-    .filter(Boolean)
-    .map(c => (objectParts[c] != null ? objectParts[c] : c))
-    .reduce((all, c) => {
-      if (!all.length) {
-        all.push(c);
-      } else if (
-        typeof c === 'string' &&
-        typeof all[all.length - 1] === 'string'
-      ) {
-        all[all.length - 1] += c;
-      } else {
-        all.push(c);
-      }
-      return all;
-    }, []);
-}
-
-/**
- * Not exhaustive, just for sanity check
- */
-const SIMPLE_XML_REGEX = /(<([0-9a-zA-Z-_]*?)>(.*?)<\/([0-9a-zA-Z-_]*?)>)|(<[0-9a-zA-Z-_]*?\/>)/;
-
-const TEMPLATE_ID = Date.now() + '@@';
-
-const VOID_ELEMENTS = [
-  'area',
-  'base',
-  'br',
-  'col',
-  'embed',
-  'hr',
-  'img',
-  'input',
-  'link',
-  'meta',
-  'param',
-  'source',
-  'track',
-  'wbr',
-];
-
-function formatHTMLElement(
-  el: Element,
-  objectParts: Record<string, any>,
-  values: Record<string, PrimitiveType | object | FormatXMLElementFn>
-): Array<PrimitiveType | object> {
-  let {tagName} = el;
-  const {outerHTML, textContent, childNodes} = el;
-  // Regular text
-  if (!tagName) {
-    return restoreRichPlaceholderMessage(textContent || '', objectParts);
-  }
-
-  tagName = tagName.toLowerCase();
-  const isVoidElement = ~VOID_ELEMENTS.indexOf(tagName);
-  const formatFnOrValue = values[tagName];
-
-  if (formatFnOrValue && isVoidElement) {
-    throw new FormatError(
-      `${tagName} is a self-closing tag and can not be used, please use another tag name.`
-    );
-  }
-
-  if (!childNodes.length) {
-    return [outerHTML];
-  }
-
-  const chunks: any[] = (Array.prototype.slice.call(
-    childNodes
-  ) as ChildNode[]).reduce(
-    (all: any[], child) =>
-      all.concat(formatHTMLElement(child as HTMLElement, objectParts, values)),
-    []
-  );
-
-  // Legacy HTML
-  if (!formatFnOrValue) {
-    return [`<${tagName}>`, ...chunks, `</${tagName}>`];
-  }
-  // HTML Tag replacement
-  if (typeof formatFnOrValue === 'function') {
-    return [formatFnOrValue(...chunks)];
-  }
-  return [formatFnOrValue];
-}
-
-export function formatHTMLMessage(
-  els: MessageFormatElement[],
-  locales: string | string[],
-  formatters: Formatters,
-  formats: Formats,
-  values?: Record<string, PrimitiveType | object | FormatXMLElementFn>,
-  // For debugging
-  originalMessage?: string
-): Array<string | object> {
-  const parts = formatToParts(
-    els,
-    locales,
-    formatters,
-    formats,
-    values,
-    undefined,
-    originalMessage
-  );
-  const objectParts: Record<string, ArgumentPart['value']> = {};
-  const formattedMessage = parts.reduce((all, part) => {
-    if (part.type === PART_TYPE.literal) {
-      return (all += part.value);
-    }
-    const id = generateId();
-    objectParts[id] = part.value;
-    return (all += `${TOKEN_DELIMITER}${id}${TOKEN_DELIMITER}`);
-  }, '');
-
-  // Not designed to filter out aggressively
-  if (!SIMPLE_XML_REGEX.test(formattedMessage)) {
-    return restoreRichPlaceholderMessage(formattedMessage, objectParts);
-  }
-  if (!values) {
-    throw new FormatError('Message has placeholders but no values was given');
-  }
-  if (typeof DOMParser === 'undefined') {
-    throw new FormatError('Cannot format XML message without DOMParser');
-  }
-  if (!domParser) {
-    domParser = new DOMParser();
-  }
-
-  const content = domParser
-    .parseFromString(
-      `<formatted-message id="${TEMPLATE_ID}">${formattedMessage}</formatted-message>`,
-      'text/html'
-    )
-    .getElementById(TEMPLATE_ID);
-
-  if (!content) {
-    throw new FormatError(`Malformed HTML message ${formattedMessage}`);
-  }
-  const tagsToFormat = Object.keys(values).filter(
-    varName => !!content.getElementsByTagName(varName).length
-  );
-
-  // No tags to format
-  if (!tagsToFormat.length) {
-    return restoreRichPlaceholderMessage(formattedMessage, objectParts);
-  }
-
-  const caseSensitiveTags = tagsToFormat.filter(
-    tagName => tagName !== tagName.toLowerCase()
-  );
-  if (caseSensitiveTags.length) {
-    throw new FormatError(
-      `HTML tag must be lowercased but the following tags are not: ${caseSensitiveTags.join(
-        ', '
-      )}`
-    );
-  }
-
-  // We're doing this since top node is `<formatted-message/>` which does not have a formatter
-  return Array.prototype.slice
-    .call(content.childNodes)
-    .reduce(
-      (all, child) => all.concat(formatHTMLElement(child, objectParts, values)),
-      []
-    );
-}
+export type FormatXMLElementFn<T> = (...args: Array<string | T>) => string | Array<string | T>;
