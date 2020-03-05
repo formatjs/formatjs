@@ -1,7 +1,6 @@
 {
   "extends": "./api-extractor.json",
   "bundledPackages": [
-    "@formatjs/macro",
     "@formatjs/intl-listformat",
     "@formatjs/intl-relativetimeformat",
     "intl-messageformat-parser",

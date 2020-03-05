@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.12.1](https://github.com/formatjs/react-intl/compare/v3.12.0...v3.12.1) (2020-03-04)
+
+
+### Bug Fixes
+
+* clarify err messages ([b207d80](https://github.com/formatjs/react-intl/commit/b207d805a9e5609983ac1b2ca8f9708030e12337))
+* inline defineMessages macro, fix [#1592](https://github.com/formatjs/react-intl/issues/1592) ([5ae8349](https://github.com/formatjs/react-intl/commit/5ae8349dc2ee08b54a54a2a521b8a9c052960d04))
+
 ## [3.12.0](https://github.com/formatjs/react-intl/compare/v3.11.0...v3.12.0) (2020-02-04)
 
 
