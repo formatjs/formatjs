@@ -140,7 +140,7 @@
     "@types/invariant": "^2.2.31",
     "hoist-non-react-statics": "^3.3.2",
     "intl-format-cache": "^4.2.21",
-    "intl-messageformat": "^8.1.0",
+    "intl-messageformat": "^8.2.1",
     "intl-messageformat-parser": "^4.1.0",
     "shallow-equal": "^1.2.1"
   },
@@ -168,7 +168,7 @@
     "babel-jest": "^25.1.0",
     "benchmark": "^2.1.4",
     "core-js": "^3.6.4",
-    "cross-env": "^7.0.1",
+    "cross-env": "^7.0.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "enzyme-to-json": "^3.4.4",

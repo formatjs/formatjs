@@ -12,7 +12,7 @@ import {formatPlural as formatPluralFn} from '../../src/formatters/plural';
 import {formatList as formatListFn} from '../../src/formatters/list';
 import {formatDisplayName as formatDisplayNameFn} from '../../src/formatters/displayName';
 import {formatMessage as baseFormatMessage} from '../../src/formatters/message';
-import {IntlFormatters, defineMessages} from '../../src';
+import {IntlFormatters, defineMessages, IntlConfig} from '../../src';
 
 describe('format API', () => {
   const {NODE_ENV} = process.env;
@@ -30,14 +30,14 @@ describe('format API', () => {
         with_named_format: 'It is {now, date, year_only}',
         with_html: 'Hello, <b>{name}</b>!',
 
-        missing: undefined,
+        missing: undefined as any,
         empty: '',
         invalid: 'invalid {}',
         missing_value: 'missing {arg_missing}',
         missing_named_format: 'missing {now, date, format_missing}',
         ast_simple: parse('hello world'),
         ast_var: parse('hello there, {name}'),
-      },
+      } as Record<string, any>,
 
       formats: {
         date: {
@@ -69,7 +69,7 @@ describe('format API', () => {
           },
           missing: undefined,
         },
-      },
+      } as any,
 
       defaultLocale: 'en',
       defaultFormats: {},
@@ -178,12 +178,7 @@ describe('format API', () => {
 
       it('falls back and warns on invalid Intl.DateTimeFormat options', () => {
         expect(formatDate(0, {year: 'invalid'})).toBe('0');
-        expect(config.onError).toHaveBeenCalledTimes(1);
-        expect(config.onError).toHaveBeenCalledWith(
-          expect.stringMatching(
-            /\[React Intl\] Error formatting date.\nRangeError: Value invalid out of range for (.*) options property year/
-          )
-        );
+        expect(config.onError.mock.calls.map(c => c[0].code)).toMatchSnapshot();
       });
 
       it('uses configured named formats', () => {
@@ -217,10 +212,7 @@ describe('format API', () => {
         df = new Intl.DateTimeFormat(config.locale);
 
         expect(formatDate(date, {format})).toBe(df.format(date));
-        expect(config.onError).toHaveBeenCalledTimes(1);
-        expect(config.onError).toHaveBeenCalledWith(
-          `[React Intl] No date format named: ${format}`
-        );
+        expect(config.onError.mock.calls.map(c => c[0].code)).toMatchSnapshot();
       });
 
       it('uses time zone specified in options over the one passed through by the provider', () => {
@@ -310,12 +302,7 @@ describe('format API', () => {
 
       it('falls back and warns on invalid Intl.DateTimeFormat options', () => {
         expect(formatTime(0, {hour: 'invalid'})).toBe('0');
-        expect(config.onError).toHaveBeenCalledTimes(1);
-        expect(config.onError).toHaveBeenCalledWith(
-          expect.stringMatching(
-            /\[React Intl\] Error formatting time.\nRangeError: Value invalid out of range for (.*) options property hour/
-          )
-        );
+        expect(config.onError.mock.calls.map(c => c[0].code)).toMatchSnapshot();
       });
 
       it('uses configured named formats', () => {
@@ -347,10 +334,7 @@ describe('format API', () => {
         const format = 'missing';
 
         expect(formatTime(date, {format})).toBe(df.format(date));
-        expect(config.onError).toHaveBeenCalledTimes(1);
-        expect(config.onError).toHaveBeenCalledWith(
-          `[React Intl] No time format named: ${format}`
-        );
+        expect(config.onError.mock.calls.map(c => c[0].code)).toMatchSnapshot();
       });
 
       it('should set default values', () => {
@@ -420,12 +404,7 @@ describe('format API', () => {
 
     it('falls back and warns when no value is provided', () => {
       expect(formatRelativeTime()).toBe('undefined');
-      expect(config.onError).toHaveBeenCalledTimes(1);
-      expect(config.onError).toHaveBeenCalledWith(
-        expect.stringContaining(
-          '[React Intl] Error formatting relative time.\nRangeError:'
-        )
-      );
+      expect(config.onError.mock.calls.map(c => c[0].code)).toMatchSnapshot();
     });
 
     it('falls back and warns when a non-finite value is provided', () => {
@@ -463,12 +442,7 @@ describe('format API', () => {
 
       it('falls back and warns on invalid IntlRelativeFormat options', () => {
         expect(formatRelativeTime(0, 'invalid')).toBe('0');
-        expect(config.onError).toHaveBeenCalledTimes(1);
-        expect(config.onError).toHaveBeenCalledWith(
-          expect.stringMatching(
-            /\[React Intl\] Error formatting relative time.\nRangeError: Invalid unit(.*)invalid/
-          )
-        );
+        expect(config.onError.mock.calls.map(c => c[0].code)).toMatchSnapshot();
       });
 
       it('uses configured named formats', () => {
@@ -505,10 +479,7 @@ describe('format API', () => {
         expect(formatRelativeTime(-1, 'second', {format})).toBe(
           rf.format(-1, 'second')
         );
-        expect(config.onError).toHaveBeenCalledTimes(1);
-        expect(config.onError).toHaveBeenCalledWith(
-          `[React Intl] No relative format named: ${format}`
-        );
+        expect(config.onError.mock.calls.map(c => c[0].code)).toMatchSnapshot();
       });
     });
   });
@@ -562,12 +533,7 @@ describe('format API', () => {
 
       it('falls back and warns on invalid Intl.NumberFormat options', () => {
         expect(formatNumber(0, {style: 'invalid'})).toBe(String(0));
-        expect(config.onError).toHaveBeenCalledTimes(1);
-        expect(config.onError).toHaveBeenCalledWith(
-          expect.stringMatching(
-            /\[React Intl\] Error formatting number.\nRangeError: Value invalid out of range for (.*) options property style/
-          )
-        );
+        expect(config.onError.mock.calls.map(c => c[0].code)).toMatchSnapshot();
       });
 
       it('uses configured named formats', () => {
@@ -601,10 +567,7 @@ describe('format API', () => {
         nf = new Intl.NumberFormat(config.locale);
 
         expect(formatNumber(num, {format})).toBe(nf.format(num));
-        expect(config.onError).toHaveBeenCalledTimes(1);
-        expect(config.onError).toHaveBeenCalledWith(
-          `[React Intl] No number format named: ${format}`
-        );
+        expect(config.onError.mock.calls.map(c => c[0].code)).toMatchSnapshot();
       });
     });
   });
@@ -815,11 +778,10 @@ describe('format API', () => {
           )
         ).toBe(mf.format(values));
 
-        expect(config.onError.mock.calls).toMatchInlineSnapshot(`
+        expect(config.onError.mock.calls.map(c => c[0].code))
+          .toMatchInlineSnapshot(`
           Array [
-            Array [
-              "[React Intl] Missing message: \\"missing\\" for locale: \\"fr\\", using default message as fallback.",
-            ],
+            "MISSING_TRANSLATION",
           ]
         `);
       });
@@ -839,14 +801,11 @@ describe('format API', () => {
           )
         ).toBe(id);
 
-        expect(config.onError.mock.calls).toMatchInlineSnapshot(`
+        expect(config.onError.mock.calls.map(c => c[0].code))
+          .toMatchInlineSnapshot(`
           Array [
-            Array [
-              "[React Intl] Missing message: \\"missing\\" for locale: \\"en\\"",
-            ],
-            Array [
-              "[React Intl] Cannot format message: \\"missing\\", using message id as fallback.",
-            ],
+            "MISSING_TRANSLATION",
+            "DATE_FORMAT_ERROR",
           ]
         `);
       });
@@ -867,12 +826,7 @@ describe('format API', () => {
           )
         ).toBe(mf.format(values));
 
-        expect(config.onError).toHaveBeenCalledTimes(1);
-        expect(config.onError).toHaveBeenCalledWith(
-          expect.stringContaining(
-            `[React Intl] Error formatting message: "${id}" for locale: "${locale}", using default message as fallback.`
-          )
-        );
+        expect(config.onError.mock.calls.map(c => c[0].code)).toMatchSnapshot();
       });
 
       it('formats `defaultMessage` when message has missing values', () => {
@@ -891,12 +845,7 @@ describe('format API', () => {
           )
         ).toBe(mf.format(values));
 
-        expect(config.onError).toHaveBeenCalledTimes(1);
-        expect(config.onError).toHaveBeenCalledWith(
-          expect.stringContaining(
-            `[React Intl] Error formatting message: "${id}" for locale: "${locale}", using default message as fallback.`
-          )
-        );
+        expect(config.onError.mock.calls.map(c => c[0].code)).toMatchSnapshot();
       });
 
       it('returns message source when message and `defaultMessage` have formatting errors', () => {
@@ -909,23 +858,7 @@ describe('format API', () => {
             defaultMessage: messages.invalid,
           })
         ).toBe(messages[id]);
-
-        expect(config.onError).toHaveBeenCalledTimes(3);
-        expect(config.onError).toHaveBeenCalledWith(
-          expect.stringContaining(
-            `[React Intl] Error formatting message: "${id}" for locale: "${locale}"`
-          )
-        );
-        expect(config.onError).toHaveBeenCalledWith(
-          expect.stringContaining(
-            `[React Intl] Error formatting the default message for: "${id}"`
-          )
-        );
-        expect(config.onError).toHaveBeenCalledWith(
-          expect.stringContaining(
-            `[React Intl] Cannot format message: "${id}", using message source as fallback.`
-          )
-        );
+        expect(config.onError.mock.calls.map(c => c[0].code)).toMatchSnapshot();
       });
 
       it('returns message source when formatting error and missing `defaultMessage`', () => {
@@ -938,18 +871,7 @@ describe('format API', () => {
             defaultMessage: messages.missing,
           })
         ).toBe(messages[id]);
-
-        expect(config.onError).toHaveBeenCalledTimes(2);
-        expect(config.onError).toHaveBeenCalledWith(
-          expect.stringContaining(
-            `[React Intl] Error formatting message: "${id}" for locale: "${locale}"`
-          )
-        );
-        expect(config.onError).toHaveBeenCalledWith(
-          expect.stringContaining(
-            `[React Intl] Cannot format message: "${id}", using message source as fallback.`
-          )
-        );
+        expect(config.onError.mock.calls.map(c => c[0].code)).toMatchSnapshot();
       });
 
       it('returns `defaultMessage` source when formatting errors and missing message', () => {
@@ -965,22 +887,7 @@ describe('format API', () => {
           })
         ).toBe(messages.invalid);
 
-        expect(config.onError).toHaveBeenCalledTimes(3);
-        expect(config.onError).toHaveBeenCalledWith(
-          expect.stringContaining(
-            `[React Intl] Missing message: "${id}" for locale: "${locale}", using default message as fallback.`
-          )
-        );
-        expect(config.onError).toHaveBeenCalledWith(
-          expect.stringContaining(
-            `[React Intl] Error formatting the default message for: "${id}"`
-          )
-        );
-        expect(config.onError).toHaveBeenCalledWith(
-          expect.stringContaining(
-            `[React Intl] Cannot format message: "${id}", using message source as fallback.`
-          )
-        );
+        expect(config.onError.mock.calls.map(c => c[0].code)).toMatchSnapshot();
       });
 
       it('returns message `id` when message and `defaultMessage` are missing', () => {
@@ -988,21 +895,11 @@ describe('format API', () => {
 
         expect(formatMessage({id: id})).toBe(id);
 
-        expect(config.onError).toHaveBeenCalledTimes(2);
-        expect(config.onError).toHaveBeenCalledWith(
-          expect.stringContaining(
-            `[React Intl] Missing message: "${id}" for locale: "${config.locale}"`
-          )
-        );
-        expect(config.onError).toHaveBeenCalledWith(
-          expect.stringContaining(
-            `[React Intl] Cannot format message: "${id}", using message id as fallback.`
-          )
-        );
+        expect(config.onError.mock.calls.map(c => c[0].code)).toMatchSnapshot();
       });
 
       it('returns message `id` when message and `defaultMessage` are empty', () => {
-        const {locale, messages} = config;
+        const {messages} = config;
         const id = 'empty';
 
         expect(
@@ -1012,17 +909,7 @@ describe('format API', () => {
           })
         ).toBe(id);
 
-        expect(config.onError).toHaveBeenCalledTimes(2);
-        expect(config.onError).toHaveBeenCalledWith(
-          expect.stringContaining(
-            `[React Intl] Missing message: "${id}" for locale: "${locale}"`
-          )
-        );
-        expect(config.onError).toHaveBeenCalledWith(
-          expect.stringContaining(
-            `[React Intl] Cannot format message: "${id}", using message id as fallback.`
-          )
-        );
+        expect(config.onError.mock.calls.map(c => c[0].code)).toMatchSnapshot();
       });
     });
   });

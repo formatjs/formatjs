@@ -66,11 +66,7 @@ describe('<FormattedNumber>', () => {
     const rendered = mountWithProvider({value: 0, style: 'invalid'}, intl);
 
     expect(rendered.text()).toBe('0');
-    expect(console.error).toHaveBeenCalledWith(
-      expect.stringMatching(
-        /\[React Intl\] Error formatting number.\nRangeError: Value invalid out of range for (.*) options property style/
-      )
-    );
+    expect(console.error.mock.calls[0][0].code).toMatchSnapshot()
     expect(console.error).toHaveBeenCalledTimes(1);
   });
 

@@ -1,6 +1,7 @@
 import {IntlConfig, Formatters, IntlFormatters} from '../types';
-import {getNamedFormat, filterProps, createError} from '../utils';
+import {getNamedFormat, filterProps} from '../utils';
 import {UnifiedNumberFormatOptions} from '@formatjs/intl-unified-numberformat';
+import {ReactIntlError, ReactIntlErrorCode} from '../error';
 
 const NUMBER_FORMAT_OPTIONS: Array<keyof UnifiedNumberFormatOptions> = [
   'localeMatcher',
@@ -55,7 +56,13 @@ export function formatNumber(
   try {
     return getFormatter(config, getNumberFormat, options).format(value);
   } catch (e) {
-    config.onError(createError('Error formatting number.', e));
+    config.onError(
+      new ReactIntlError(
+        ReactIntlErrorCode.FORMAT_ERROR,
+        'Error formatting number.',
+        e
+      )
+    );
   }
 
   return String(value);
@@ -70,7 +77,13 @@ export function formatNumberToParts(
   try {
     return getFormatter(config, getNumberFormat, options).formatToParts(value);
   } catch (e) {
-    config.onError(createError('Error formatting number.', e));
+    config.onError(
+      new ReactIntlError(
+        ReactIntlErrorCode.FORMAT_ERROR,
+        'Error formatting number.',
+        e
+      )
+    );
   }
 
   return [];

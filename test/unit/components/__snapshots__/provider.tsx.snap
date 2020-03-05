@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IntlProvider> warns when \`locale\` prop provided has no locale data in Intl.DateTimeFormat 1`] = `"MISSING_DATA"`;
+
+exports[`<IntlProvider> warns when \`locale\` prop provided has no locale data in Intl.NumberFormat 1`] = `"MISSING_DATA"`;
+
+exports[`<IntlProvider> warns when no \`locale\` prop is provided 1`] = `"INVALID_CONFIG"`;

@@ -7,7 +7,6 @@
 import * as React from 'react';
 import {Provider} from './injectIntl';
 import {
-  createError,
   DEFAULT_INTL_CONFIG,
   createFormatters,
   invariantIntlContext,
@@ -27,6 +26,7 @@ import {formatMessage} from '../formatters/message';
 import * as shallowEquals_ from 'shallow-equal/objects';
 import {formatList} from '../formatters/list';
 import {formatDisplayName} from '../formatters/displayName';
+import {ReactIntlError, ReactIntlErrorCode} from '../error';
 const shallowEquals: typeof shallowEquals_ =
   (shallowEquals_ as any).default || shallowEquals_;
 
@@ -83,7 +83,8 @@ export function createIntl(
   if (!locale) {
     if (onError) {
       onError(
-        createError(
+        new ReactIntlError(
+          ReactIntlErrorCode.INVALID_CONFIG,
           `"locale" was not configured, using "${defaultLocale}" as fallback. See https://github.com/formatjs/react-intl/blob/master/docs/API.md#intlshape for more details`
         )
       );
@@ -96,7 +97,8 @@ export function createIntl(
     resolvedConfig.locale = resolvedConfig.defaultLocale || 'en';
   } else if (!Intl.NumberFormat.supportedLocalesOf(locale).length && onError) {
     onError(
-      createError(
+      new ReactIntlError(
+        ReactIntlErrorCode.MISSING_DATA,
         `Missing locale data for locale: "${locale}" in Intl.NumberFormat. Using default locale: "${defaultLocale}" as fallback. See https://github.com/formatjs/react-intl/blob/master/docs/Getting-Started.md#runtime-requirements for more details`
       )
     );
@@ -105,7 +107,8 @@ export function createIntl(
     onError
   ) {
     onError(
-      createError(
+      new ReactIntlError(
+        ReactIntlErrorCode.MISSING_DATA,
         `Missing locale data for locale: "${locale}" in Intl.DateTimeFormat. Using default locale: "${defaultLocale}" as fallback. See https://github.com/formatjs/react-intl/blob/master/docs/Getting-Started.md#runtime-requirements for more details`
       )
     );

@@ -4,6 +4,7 @@ import {FormattedDate, FormattedDateParts} from '../../../src';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 import {createIntl} from '../../../src/components/provider';
 import {IntlShape} from '../../../src';
+import { FormatError } from 'intl-messageformat';
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedDate);
 const mountPartsWithProvider = mountFormattedComponentWithProvider(
@@ -25,9 +26,7 @@ describe('<FormattedDate>', () => {
   });
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
-    expect(() => mount(<FormattedDate value={Date.now()} />)).toThrow(
-      '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
-    );
+    expect(() => mount(<FormattedDate value={Date.now()} />)).toThrow(Error)
   });
 
   it('requires a finite `value` prop', () => {
@@ -39,9 +38,7 @@ describe('<FormattedDate>', () => {
 
     mountWithProvider({value: NaN}, intl);
     expect(console.error).toHaveBeenCalledTimes(1);
-    expect(console.error).toHaveBeenCalledWith(
-      expect.stringContaining('[React Intl] Error formatting date.\nRangeError')
-    );
+    expect(console.error.mock.calls[0][0].code).toMatchSnapshot()
   });
 
   it('renders a formatted date in a <>', () => {
@@ -77,11 +74,7 @@ describe('<FormattedDate>', () => {
 
     expect(rendered.text()).toBe(String(date));
     expect(console.error).toHaveBeenCalledTimes(1);
-    expect(console.error).toHaveBeenCalledWith(
-      expect.stringMatching(
-        /Error formatting date.\nRangeError: Value invalid out of range for (.*) options property year/
-      )
-    );
+    expect(console.error.mock.calls[0][0].code).toMatchSnapshot()
   });
 
   it('accepts `format` prop', () => {
@@ -151,9 +144,7 @@ describe('<FormattedDateParts>', () => {
 
     mountPartsWithProvider({value: NaN, children}, intl);
     expect(console.error).toHaveBeenCalledTimes(1);
-    expect(console.error).toHaveBeenCalledWith(
-      expect.stringContaining('[React Intl] Error formatting date.\nRangeError')
-    );
+    expect(console.error.mock.calls[0][0].code).toMatchSnapshot()
   });
 
   it('accepts valid Intl.DateTimeFormat options as props', () => {
@@ -175,11 +166,7 @@ describe('<FormattedDateParts>', () => {
       intl.formatDateToParts(date, {year: 'invalid'})
     );
     expect(console.error).toHaveBeenCalledTimes(2);
-    expect(console.error).toHaveBeenCalledWith(
-      expect.stringMatching(
-        /Error formatting date.\nRangeError: Value invalid out of range for (.*) options property year/
-      )
-    );
+    expect(console.error.mock.calls[0][0].code).toMatchSnapshot()
   });
 
   it('renders a string date', () => {

@@ -15,6 +15,7 @@ import IntlMessageFormat from 'intl-messageformat';
 import memoizeIntlConstructor from 'intl-format-cache';
 import {invariant} from '@formatjs/intl-utils';
 import {IntlRelativeTimeFormatOptions} from '@formatjs/intl-relativetimeformat';
+import { ReactIntlError, ReactIntlErrorCode } from './error';
 
 export function filterProps<T extends Record<string, any>, K extends string>(
   props: T,
@@ -40,12 +41,7 @@ export function invariantIntlContext(intl?: any): asserts intl {
   );
 }
 
-export function createError(message: string, exception?: Error): string {
-  const eMsg = exception ? `\n${exception.stack}` : '';
-  return `[React Intl] ${message}${eMsg}`;
-}
-
-export function defaultErrorHandler(error: string): void {
+export function defaultErrorHandler(error: ReactIntlError): void {
   if (process.env.NODE_ENV !== 'production') {
     console.error(error);
   }
@@ -115,7 +111,7 @@ export function getNamedFormat<T extends keyof CustomFormats>(
   formats: CustomFormats,
   type: T,
   name: string,
-  onError: (err: string) => void
+  onError: (err: ReactIntlError) => void
 ):
   | Intl.NumberFormatOptions
   | Intl.DateTimeFormatOptions
@@ -130,5 +126,5 @@ export function getNamedFormat<T extends keyof CustomFormats>(
     return format;
   }
 
-  onError(createError(`No ${type} format named: ${name}`));
+  onError(new ReactIntlError(ReactIntlErrorCode.UNSUPPORTED_FORMATTER, `No ${type} format named: ${name}`));
 }

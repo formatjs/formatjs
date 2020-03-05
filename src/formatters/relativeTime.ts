@@ -1,9 +1,11 @@
 import {IntlConfig, IntlFormatters, Formatters} from '../types';
 
-import {getNamedFormat, filterProps, createError} from '../utils';
+import {getNamedFormat, filterProps} from '../utils';
 import RelativeTimeFormat, {
   IntlRelativeTimeFormatOptions,
 } from '@formatjs/intl-relativetimeformat';
+import {FormatError, ErrorCode} from 'intl-messageformat';
+import {ReactIntlError, ReactIntlErrorCode} from '../error';
 
 const RELATIVE_TIME_FORMAT_OPTIONS: Array<keyof IntlRelativeTimeFormatOptions> = [
   'numeric',
@@ -45,9 +47,12 @@ export function formatRelativeTime(
   const RelativeTimeFormat = (Intl as any).RelativeTimeFormat;
   if (!RelativeTimeFormat) {
     config.onError(
-      createError(`Intl.RelativeTimeFormat is not available in this environment.
+      new FormatError(
+        `Intl.RelativeTimeFormat is not available in this environment.
 Try polyfilling it using "@formatjs/intl-relativetimeformat"
-`)
+`,
+        ErrorCode.MISSING_INTL_API
+      )
     );
   }
   try {
@@ -56,7 +61,13 @@ Try polyfilling it using "@formatjs/intl-relativetimeformat"
       unit
     );
   } catch (e) {
-    config.onError(createError('Error formatting relative time.', e));
+    config.onError(
+      new ReactIntlError(
+        ReactIntlErrorCode.FORMAT_ERROR,
+        'Error formatting relative time.',
+        e
+      )
+    );
   }
 
   return String(value);

@@ -73,7 +73,7 @@ describe('<FormattedMessage>', () => {
     );
 
     expect(rendered.text()).toBe('Hello');
-    expect(console.error).toHaveBeenCalledTimes(1);
+    expect(console.error).toHaveBeenCalledTimes(2);
   });
 
   it('should work w/ multiple context', function() {

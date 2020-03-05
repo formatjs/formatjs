@@ -1,7 +1,9 @@
 import * as React from 'react';
 import {IntlConfig, Formatters, IntlFormatters} from '../types';
-import {filterProps, createError} from '../utils';
+import {filterProps} from '../utils';
 import IntlListFormat, {IntlListFormatOptions} from '@formatjs/intl-listformat';
+import {FormatError, ErrorCode} from 'intl-messageformat';
+import {ReactIntlError, ReactIntlErrorCode} from '../error';
 
 const LIST_FORMAT_OPTIONS: Array<keyof IntlListFormatOptions> = [
   'localeMatcher',
@@ -30,9 +32,12 @@ export function formatList(
   const ListFormat: typeof IntlListFormat = (Intl as any).ListFormat;
   if (!ListFormat) {
     onError(
-      createError(`Intl.ListFormat is not available in this environment.
+      new FormatError(
+        `Intl.ListFormat is not available in this environment.
 Try polyfilling it using "@formatjs/intl-listformat"
-`)
+`,
+        ErrorCode.MISSING_INTL_API
+      )
     );
   }
   const filteredOptions = filterProps(options, LIST_FORMAT_OPTIONS);
@@ -65,7 +70,13 @@ Try polyfilling it using "@formatjs/intl-listformat"
       return all;
     }, []);
   } catch (e) {
-    onError(createError('Error formatting list.', e));
+    onError(
+      new ReactIntlError(
+        ReactIntlErrorCode.FORMAT_ERROR,
+        'Error formatting list.',
+        e
+      )
+    );
   }
 
   return values;

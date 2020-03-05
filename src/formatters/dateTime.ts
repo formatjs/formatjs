@@ -6,7 +6,8 @@
 
 import {Formatters, IntlConfig, IntlFormatters} from '../types';
 
-import {createError, filterProps, getNamedFormat} from '../utils';
+import {filterProps, getNamedFormat} from '../utils';
+import {ReactIntlError, ReactIntlErrorCode} from '../error';
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'localeMatcher',
@@ -74,7 +75,13 @@ export function formatDate(
       date
     );
   } catch (e) {
-    config.onError(createError('Error formatting date.', e));
+    config.onError(
+      new ReactIntlError(
+        ReactIntlErrorCode.FORMAT_ERROR,
+        'Error formatting date.',
+        e
+      )
+    );
   }
 
   return String(date);
@@ -93,7 +100,13 @@ export function formatTime(
       date
     );
   } catch (e) {
-    config.onError(createError('Error formatting time.', e));
+    config.onError(
+      new ReactIntlError(
+        ReactIntlErrorCode.FORMAT_ERROR,
+        'Error formatting time.',
+        e
+      )
+    );
   }
 
   return String(date);
@@ -114,7 +127,13 @@ export function formatDateToParts(
       options
     ).formatToParts(date);
   } catch (e) {
-    config.onError(createError('Error formatting date.', e));
+    config.onError(
+      new ReactIntlError(
+        ReactIntlErrorCode.FORMAT_ERROR,
+        'Error formatting date.',
+        e
+      )
+    );
   }
 
   return [];
@@ -136,7 +155,13 @@ export function formatTimeToParts(
       options
     ).formatToParts(date);
   } catch (e) {
-    config.onError(createError('Error formatting time.', e));
+    config.onError(
+      new ReactIntlError(
+        ReactIntlErrorCode.FORMAT_ERROR,
+        'Error formatting time.',
+        e
+      )
+    );
   }
 
   return [];

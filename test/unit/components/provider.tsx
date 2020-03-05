@@ -57,9 +57,7 @@ describe('<IntlProvider>', () => {
       </IntlProvider>
     );
 
-    expect(console.error).toHaveBeenCalledWith(
-      '[React Intl] "locale" was not configured, using "en" as fallback. See https://github.com/formatjs/react-intl/blob/master/docs/API.md#intlshape for more details'
-    );
+    expect(console.error.mock.calls[0][0].code).toMatchSnapshot()
     expect(console.error).toHaveBeenCalledTimes(1);
   });
 
@@ -71,9 +69,7 @@ describe('<IntlProvider>', () => {
       </IntlProvider>
     );
 
-    expect(console.error).toHaveBeenCalledWith(
-      `[React Intl] Missing locale data for locale: "missing" in Intl.NumberFormat. Using default locale: "en" as fallback. See https://github.com/formatjs/react-intl/blob/master/docs/Getting-Started.md#runtime-requirements for more details`
-    );
+    expect(console.error.mock.calls[0][0].code).toMatchSnapshot()
     expect(console.error).toHaveBeenCalledTimes(1);
   });
 
@@ -87,9 +83,7 @@ describe('<IntlProvider>', () => {
       </IntlProvider>
     );
 
-    expect(console.error).toHaveBeenCalledWith(
-      `[React Intl] Missing locale data for locale: "xx-HA" in Intl.DateTimeFormat. Using default locale: "en" as fallback. See https://github.com/formatjs/react-intl/blob/master/docs/Getting-Started.md#runtime-requirements for more details`
-    );
+    expect(console.error.mock.calls[0][0].code).toMatchSnapshot()
     expect(console.error).toHaveBeenCalledTimes(1);
     Intl.NumberFormat.supportedLocalesOf = supportedLocalesOf
   });

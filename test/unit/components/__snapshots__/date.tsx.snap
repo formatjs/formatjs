@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FormattedDate> falls back and warns on invalid Intl.DateTimeFormat options 1`] = `"DATE_FORMAT_ERROR"`;
+
+exports[`<FormattedDate> requires a finite \`value\` prop 1`] = `"DATE_FORMAT_ERROR"`;
+
+exports[`<FormattedDateParts> falls back and warns on invalid Intl.DateTimeFormat options 1`] = `"DATE_FORMAT_ERROR"`;
+
+exports[`<FormattedDateParts> requires a finite \`value\` prop 1`] = `"DATE_FORMAT_ERROR"`;

@@ -14,11 +14,11 @@ import {
   CustomFormats,
 } from '../types';
 
-import {createError} from '../utils';
 import IntlMessageFormat, {
   FormatXMLElementFn,
   PrimitiveType,
 } from 'intl-messageformat';
+import {ReactIntlError, ReactIntlErrorCode} from '../error';
 
 function setTimeZoneInOptions(
   opts: Record<string, Intl.DateTimeFormatOptions>,
@@ -151,7 +151,8 @@ export function formatMessage<T>(
       formattedMessageParts = formatter.format(values);
     } catch (e) {
       onError(
-        createError(
+        new ReactIntlError(
+          ReactIntlErrorCode.FORMAT_ERROR,
           `Error formatting message: "${id}" for locale: "${locale}"` +
             (defaultMessage ? ', using default message as fallback.' : ''),
           e
@@ -162,17 +163,13 @@ export function formatMessage<T>(
     // This prevents warnings from littering the console in development
     // when no `messages` are passed into the <IntlProvider> for the
     // default locale, and a default message is in the source.
-    if (
-      !defaultMessage ||
-      (locale && locale.toLowerCase() !== defaultLocale.toLowerCase())
-    ) {
-      onError(
-        createError(
-          `Missing message: "${id}" for locale: "${locale}"` +
-            (defaultMessage ? ', using default message as fallback.' : '')
-        )
-      );
-    }
+    onError(
+      new ReactIntlError(
+        ReactIntlErrorCode.MISSING_TRANSLATION,
+        `Missing message: "${id}" for locale: "${locale}"` +
+          (defaultMessage ? ', using default message as fallback.' : '')
+      )
+    );
   }
 
   if (!formattedMessageParts && defaultMessage) {
@@ -186,14 +183,19 @@ export function formatMessage<T>(
       formattedMessageParts = formatter.format(values);
     } catch (e) {
       onError(
-        createError(`Error formatting the default message for: "${id}"`, e)
+        new ReactIntlError(
+          ReactIntlErrorCode.FORMAT_ERROR,
+          `Error formatting the default message for: "${id}"`,
+          e
+        )
       );
     }
   }
 
   if (!formattedMessageParts) {
     onError(
-      createError(
+      new ReactIntlError(
+        ReactIntlErrorCode.FORMAT_ERROR,
         `Cannot format message: "${id}", ` +
           `using message ${
             message || defaultMessage ? 'source' : 'id'

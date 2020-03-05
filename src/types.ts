@@ -8,6 +8,7 @@ import IntlMessageFormat, {
   Formats,
   PrimitiveType,
   FormatXMLElementFn,
+  FormatError,
 } from 'intl-messageformat';
 import IntlRelativeTimeFormat, {
   IntlRelativeTimeFormatOptions,
@@ -16,6 +17,7 @@ import {MessageFormatElement} from 'intl-messageformat-parser';
 import {UnifiedNumberFormatOptions} from '@formatjs/intl-unified-numberformat';
 import IntlListFormat, {IntlListFormatOptions} from '@formatjs/intl-listformat';
 import {DisplayNames, DisplayNamesOptions} from '@formatjs/intl-displaynames';
+import { ReactIntlError } from './error';
 
 export interface IntlConfig {
   locale: string;
@@ -25,7 +27,7 @@ export interface IntlConfig {
   messages: Record<string, string> | Record<string, MessageFormatElement[]>;
   defaultLocale: string;
   defaultFormats: CustomFormats;
-  onError(err: string): void;
+  onError(err: ReactIntlError | FormatError): void;
 }
 
 export interface CustomFormats extends Partial<Formats> {

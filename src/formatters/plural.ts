@@ -1,5 +1,7 @@
 import {IntlConfig, Formatters, IntlFormatters} from '../types';
-import {filterProps, createError} from '../utils';
+import {filterProps} from '../utils';
+import {ReactIntlErrorCode, ReactIntlError} from '../error';
+import {FormatError, ErrorCode} from 'intl-messageformat';
 
 const PLURAL_FORMAT_OPTIONS: Array<keyof Intl.PluralRulesOptions> = [
   'localeMatcher',
@@ -14,9 +16,12 @@ export function formatPlural(
 ): string {
   if (!Intl.PluralRules) {
     onError(
-      createError(`Intl.PluralRules is not available in this environment.
+      new FormatError(
+        `Intl.PluralRules is not available in this environment.
 Try polyfilling it using "@formatjs/intl-pluralrules"
-`)
+`,
+        ErrorCode.MISSING_INTL_API
+      )
     );
   }
   const filteredOptions = filterProps(options, PLURAL_FORMAT_OPTIONS);
@@ -24,7 +29,13 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
   try {
     return getPluralRules(locale, filteredOptions).select(value);
   } catch (e) {
-    onError(createError('Error formatting plural.', e));
+    onError(
+      new ReactIntlError(
+        ReactIntlErrorCode.FORMAT_ERROR,
+        'Error formatting plural.',
+        e
+      )
+    );
   }
 
   return 'other';

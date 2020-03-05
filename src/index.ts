@@ -55,3 +55,4 @@ export {default as FormattedRelativeTime} from './components/relative';
 export {default as FormattedPlural} from './components/plural';
 export {default as FormattedMessage} from './components/message';
 export {createIntlCache} from './utils';
+export {ReactIntlError, ReactIntlErrorCode} from './error'

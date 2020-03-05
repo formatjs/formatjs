@@ -31,16 +31,14 @@ describe('<FormattedTime>', () => {
 
   it('requires a finite `value` prop', () => {
     const injectIntlContext = mountWithProvider({value: 0}, intl);
-    expect(console.error).toHaveBeenCalledTimes(0);
+    expect(console.error).not.toHaveBeenCalled()
 
     injectIntlContext.setProps({
       ...injectIntlContext.props(),
       value: NaN,
     });
-    expect(console.error).toHaveBeenCalledWith(
-      expect.stringContaining('[React Intl] Error formatting time.\nRangeError')
-    );
     expect(console.error).toHaveBeenCalledTimes(1);
+    expect(console.error.mock.calls[0][0].code).toMatchSnapshot()
   });
 
   it('renders a formatted time in a <>', () => {
@@ -77,11 +75,7 @@ describe('<FormattedTime>', () => {
     const rendered = mountWithProvider({value: date, hour: 'invalid'}, intl);
 
     expect(rendered.text()).toBe(String(date));
-    expect(console.error).toHaveBeenCalledWith(
-      expect.stringMatching(
-        /\[React Intl\] Error formatting time.\nRangeError: Value invalid out of range for (.*) options property hour/
-      )
-    );
+    expect(console.error.mock.calls[0][0].code).toMatchSnapshot()
     expect(console.error).toHaveBeenCalledTimes(1);
   });
 
@@ -150,15 +144,13 @@ describe('<FormattedTimeParts>', () => {
       {value: 0, children},
       intl
     );
-    expect(console.error).toHaveBeenCalledTimes(0);
+    expect(console.error).not.toHaveBeenCalled()
 
     injectIntlContext.setProps({
       ...injectIntlContext.props(),
       value: NaN,
     });
-    expect(console.error).toHaveBeenCalledWith(
-      expect.stringContaining('[React Intl] Error formatting time.\nRangeError')
-    );
+    expect(console.error.mock.calls[0][0].code).toMatchSnapshot()
     expect(console.error).toHaveBeenCalledTimes(1);
   });
 
@@ -197,11 +189,7 @@ describe('<FormattedTimeParts>', () => {
     expect(children.mock.calls[0][0]).toEqual(
       intl.formatTimeToParts(date, {hour: 'invalid'})
     );
-    expect(console.error).toHaveBeenCalledWith(
-      expect.stringMatching(
-        /\[React Intl\] Error formatting time.\nRangeError: Value invalid out of range for (.*) options property hour/
-      )
-    );
+    expect(console.error.mock.calls[0][0].code).toMatchSnapshot()
     expect(console.error).toHaveBeenCalledTimes(2);
   });
 
