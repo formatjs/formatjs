@@ -11,9 +11,7 @@ import {formatNumber as formatNumberFn} from '../../src/formatters/number';
 import {formatPlural as formatPluralFn} from '../../src/formatters/plural';
 import {formatList as formatListFn} from '../../src/formatters/list';
 import {formatDisplayName as formatDisplayNameFn} from '../../src/formatters/displayName';
-import {
-  formatMessage as baseFormatMessage,
-} from '../../src/formatters/message';
+import {formatMessage as baseFormatMessage} from '../../src/formatters/message';
 import {IntlFormatters, defineMessages} from '../../src';
 
 describe('format API', () => {
@@ -744,9 +742,7 @@ describe('format API', () => {
       const mf = new IntlMessageFormat(messages.with_arg, locale);
       const values = {name: 'Eric'};
 
-      expect(formatMessage({id: 'with_arg'}, values)).toBe(
-        mf.format(values)
-      );
+      expect(formatMessage({id: 'with_arg'}, values)).toBe(mf.format(values));
     });
 
     it('formats AST message with placeholders', () => {
@@ -754,9 +750,7 @@ describe('format API', () => {
       const mf = new IntlMessageFormat(messages.ast_var, locale);
       const values = {name: 'Eric'};
 
-      expect(formatMessage({id: 'ast_var'}, values)).toBe(
-        mf.format(values)
-      );
+      expect(formatMessage({id: 'ast_var'}, values)).toBe(mf.format(values));
     });
 
     it('formats messages with named formats', () => {

@@ -118,7 +118,19 @@ export function formatMessage<T>(
   >,
   state: Formatters,
   messageDescriptor: MessageDescriptor = {id: ''},
-  values: Record<string, string | number | boolean | Date | T | FormatXMLElementFn<T> | null | undefined> | undefined = {}
+  values:
+    | Record<
+        string,
+        | string
+        | number
+        | boolean
+        | Date
+        | T
+        | FormatXMLElementFn<T>
+        | null
+        | undefined
+      >
+    | undefined = {}
 ): React.ReactNode {
   const {id, defaultMessage} = messageDescriptor;
 
@@ -193,10 +205,10 @@ export function formatMessage<T>(
     }
     return defaultMessage || String(id);
   }
-  if (
-    Array.isArray(formattedMessageParts)
-  ) {
-    return prepareIntlMessageFormatHtmlOutput<T>(formattedMessageParts as Array<string | T>);
+  if (Array.isArray(formattedMessageParts)) {
+    return prepareIntlMessageFormatHtmlOutput<T>(
+      formattedMessageParts as Array<string | T>
+    );
   }
-  return formattedMessageParts as string | T
+  return formattedMessageParts as string | T;
 }

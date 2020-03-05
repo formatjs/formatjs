@@ -7,7 +7,7 @@ There are a few API layers that React Intl provides and is built on. When using 
 - [ECMAScript Internationalization API](#ecmascript-internationalization-api)
 - [FormatJS Internationalization Formatters](#formatjs-internationalization-formatters)
 - [React Intl API](#react-intl-api)
-    - [`defineMessages`](#definemessages)
+  - [`defineMessages`](#definemessages)
   - [Injection API](#injection-api)
     - [`useIntl` hook](#useintl-hook)
     - [`injectIntl` HOC](#injectintl-hoc)
