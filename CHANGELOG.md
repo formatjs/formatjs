@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.0](https://github.com/formatjs/react-intl/compare/v4.0.0...v4.1.0) (2020-03-05)
+
+
+### Features
+
+* Introduce ReactIntlErrorCode so we can distinguish and log things differently ([5b2b034](https://github.com/formatjs/react-intl/commit/5b2b034b0afd03479943cf4d1162be532deb95b8))
+
 ## [4.0.0](https://github.com/formatjs/react-intl/compare/v3.12.1...v4.0.0) (2020-03-05)
 
 
