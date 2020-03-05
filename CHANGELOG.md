@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/formatjs/react-intl/compare/v3.12.1...v4.0.0) (2020-03-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release contains subtle changes to the way we handle embedded HTML Message:
+
+1. All tags specified must have corresponding values and will throw
+error if it's missing, e.g:
+```
+new IntlMessageFormat("a<b>strong</b>").format({ b: (...chunks) => <strong>chunks</strong> })
+```
+2. We don't allow formatting self-closing tags because we already use ICU `{placeholder}` syntax for that.
+3. XML/HTML tags are escaped using apostrophe just like other ICU constructs.
+4. Remove dependency on DOMParser and restrictions on void element like `<link>`. This effectively means you don't need to polyfill DOMParser in Node anymore.
+5. `FormattedHTMLMessage` & `intl.formatHTMLMessage` have been removed since `FormattedMessage` now fully supports embedded HTML tag.
+
+Why are we doing those changes?
+- `FormattedHTMLMessage` & `intl.formatHTMLMessage` were originally created when React was fairly new. These components helped ease migration over from raw HTML to JSX. Given that current popularity of React right now and the fact that `FormattedMessage` allow rendering embedded HTML tag, this is no longer needed.
+- Initially during the 1st iteration of embedded HTML support, we allow any tag that doesn’t have a corresponding formatter to be rendered as raw HTML. We’ve received feedbacks internally that allowing embedded HTML tag to be rendered as-is without sanitization is a XSS security risk. Therefore, in order to allow raw HTML tag you have to opt-in by escaping them using apostrophe. We will update our linter to check for this as well.
+
+### Features
+
+* Upgrade intl-messageformat & intl-messageformat-parser, remove FormattedHTMLMessage ([fae69e9](https://github.com/formatjs/react-intl/commit/fae69e9da2cfd395eeb5d7333a637f6627d94ade))
+
 ### [3.12.1](https://github.com/formatjs/react-intl/compare/v3.12.0...v3.12.1) (2020-03-04)
 
 
