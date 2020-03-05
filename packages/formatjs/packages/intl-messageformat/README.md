@@ -187,6 +187,7 @@ new IntlMessageFormat(
   "raw '<b>HTML</b>' with '<a>'{placeholder}'</a>'"
 ).format({placeholder: 'some word'}); // "raw <b>HTML</b> with <a>some word</a>"
 ```
+
 5. Embedded valid HTML tag is a bit of a grey area right now since we're not supporting the full HTML/XHTML/XML spec.
 
 ### `getAst` Method

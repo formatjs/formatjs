@@ -14,6 +14,12 @@ import {
   parseDateTimeSkeleton,
   isTagElement,
 } from 'intl-messageformat-parser';
+import {
+  MissingValueError,
+  InvalidValueError,
+  ErrorCode,
+  FormatError,
+} from './error';
 
 export interface Formats {
   number: Record<string, Intl.NumberFormatOptions>;
@@ -57,14 +63,6 @@ export interface ObjectPart<T = any> {
 export type MessageFormatPart<T> = LiteralPart | ObjectPart<T>;
 
 export type PrimitiveType = string | number | boolean | null | undefined | Date;
-
-class FormatError extends Error {
-  public readonly variableId?: string;
-  constructor(msg?: string, variableId?: string) {
-    super(msg);
-    this.variableId = variableId;
-  }
-}
 
 function mergeLiteral<T>(
   parts: MessageFormatPart<T>[]
@@ -139,9 +137,7 @@ export function formatToParts<T>(
 
     // Enforce that all required values are provided by the caller.
     if (!(values && varName in values)) {
-      throw new FormatError(
-        `The intl string context variable "${varName}" was not provided to the string "${originalMessage}"`
-      );
+      throw new MissingValueError(varName, originalMessage);
     }
 
     let value = values[varName];
@@ -235,11 +231,7 @@ export function formatToParts<T>(
     if (isSelectElement(el)) {
       const opt = el.options[value as string] || el.options.other;
       if (!opt) {
-        throw new RangeError(
-          `Invalid values for "${
-            el.value
-          }": "${value}". Options are "${Object.keys(el.options).join('", "')}"`
-        );
+        throw new InvalidValueError(el.value, value, Object.keys(el.options));
       }
       result.push(
         ...formatToParts(opt.value, locales, formatters, formats, values)
@@ -250,9 +242,12 @@ export function formatToParts<T>(
       let opt = el.options[`=${value}`];
       if (!opt) {
         if (!Intl.PluralRules) {
-          throw new FormatError(`Intl.PluralRules is not available in this environment.
+          throw new FormatError(
+            `Intl.PluralRules is not available in this environment.
 Try polyfilling it using "@formatjs/intl-pluralrules"
-`);
+`,
+            ErrorCode.MISSING_INTL_API
+          );
         }
         const rule = formatters
           .getPluralRules(locales, {type: el.pluralType})
@@ -260,11 +255,7 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
         opt = el.options[rule] || el.options.other;
       }
       if (!opt) {
-        throw new RangeError(
-          `Invalid values for "${
-            el.value
-          }": "${value}". Options are "${Object.keys(el.options).join('", "')}"`
-        );
+        throw new InvalidValueError(el.value, value, Object.keys(el.options));
       }
       result.push(
         ...formatToParts(
