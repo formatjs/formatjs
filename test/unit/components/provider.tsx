@@ -25,7 +25,6 @@ describe('<IntlProvider>', () => {
     'formatNumber',
     'formatPlural',
     'formatMessage',
-    'formatHTMLMessage',
   ];
 
   class Child extends React.Component<any> {

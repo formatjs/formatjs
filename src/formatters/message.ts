@@ -14,7 +14,7 @@ import {
   CustomFormats,
 } from '../types';
 
-import {createError, escape} from '../utils';
+import {createError} from '../utils';
 import IntlMessageFormat, {
   FormatXMLElementFn,
   PrimitiveType,
@@ -72,8 +72,8 @@ function deepMergeFormatsAndSetTimeZone(
   };
 }
 
-export const prepareIntlMessageFormatHtmlOutput = (
-  chunks: (string | object)[]
+export const prepareIntlMessageFormatHtmlOutput = <T>(
+  chunks: (string | T)[]
 ): React.ReactElement => React.createElement(React.Fragment, null, ...chunks);
 
 export function formatMessage(
@@ -97,7 +97,7 @@ export function formatMessage(
   messageDescriptor?: MessageDescriptor,
   values?: Record<string, PrimitiveType>
 ): string;
-export function formatMessage(
+export function formatMessage<T>(
   {
     locale,
     formats,
@@ -118,11 +118,8 @@ export function formatMessage(
   >,
   state: Formatters,
   messageDescriptor: MessageDescriptor = {id: ''},
-  values: Record<
-    string,
-    PrimitiveType | React.ReactElement | FormatXMLElementFn
-  > = {}
-): string | React.ReactNodeArray | React.ReactElement {
+  values: Record<string, string | number | boolean | Date | T | FormatXMLElementFn<T> | null | undefined> | undefined = {}
+): React.ReactNode {
   const {id, defaultMessage} = messageDescriptor;
 
   // `id` is a required field of a Message Descriptor.
@@ -131,7 +128,7 @@ export function formatMessage(
   formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
   defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);
 
-  let formattedMessageParts: Array<string | object> = [];
+  let formattedMessageParts: string | T | (string | T)[] = '';
 
   if (message) {
     try {
@@ -139,7 +136,7 @@ export function formatMessage(
         formatters: state,
       });
 
-      formattedMessageParts = formatter.formatHTMLMessage(values);
+      formattedMessageParts = formatter.format(values);
     } catch (e) {
       onError(
         createError(
@@ -166,7 +163,7 @@ export function formatMessage(
     }
   }
 
-  if (!formattedMessageParts.length && defaultMessage) {
+  if (!formattedMessageParts && defaultMessage) {
     try {
       const formatter = state.getMessageFormat(
         defaultMessage,
@@ -174,7 +171,7 @@ export function formatMessage(
         defaultFormats
       );
 
-      formattedMessageParts = formatter.formatHTMLMessage(values);
+      formattedMessageParts = formatter.format(values);
     } catch (e) {
       onError(
         createError(`Error formatting the default message for: "${id}"`, e)
@@ -182,7 +179,7 @@ export function formatMessage(
     }
   }
 
-  if (!formattedMessageParts.length) {
+  if (!formattedMessageParts) {
     onError(
       createError(
         `Cannot format message: "${id}", ` +
@@ -197,40 +194,9 @@ export function formatMessage(
     return defaultMessage || String(id);
   }
   if (
-    formattedMessageParts.length === 1 &&
-    typeof formattedMessageParts[0] === 'string'
+    Array.isArray(formattedMessageParts)
   ) {
-    return (formattedMessageParts[0] as string) || defaultMessage || String(id);
+    return prepareIntlMessageFormatHtmlOutput<T>(formattedMessageParts as Array<string | T>);
   }
-
-  return prepareIntlMessageFormatHtmlOutput(formattedMessageParts);
-}
-
-export function formatHTMLMessage(
-  config: Pick<
-    IntlConfig,
-    | 'locale'
-    | 'formats'
-    | 'messages'
-    | 'defaultLocale'
-    | 'defaultFormats'
-    | 'onError'
-  >,
-  state: Formatters,
-  messageDescriptor: MessageDescriptor = {id: ''},
-  rawValues: Record<string, PrimitiveType> = {}
-): React.ReactNode {
-  // Process all the values before they are used when formatting the ICU
-  // Message string. Since the formatted message might be injected via
-  // `innerHTML`, all String-based values need to be HTML-escaped.
-  const escapedValues = Object.keys(rawValues).reduce(
-    (escaped: Record<string, any>, name) => {
-      const value = rawValues[name];
-      escaped[name] = typeof value === 'string' ? escape(value) : value;
-      return escaped;
-    },
-    {}
-  );
-
-  return formatMessage(config, state, messageDescriptor, escapedValues);
+  return formattedMessageParts as string | T
 }

@@ -64,7 +64,7 @@ export type FormatDisplayNameOptions = Exclude<
   'localeMatcher'
 >;
 
-export interface IntlFormatters {
+export interface IntlFormatters<T = React.ReactNode> {
   formatDate(
     value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
     opts?: FormatDateOptions
@@ -106,13 +106,9 @@ export interface IntlFormatters {
     descriptor: MessageDescriptor,
     values?: Record<
       string,
-      PrimitiveType | React.ReactElement | FormatXMLElementFn
+      PrimitiveType | React.ReactElement | FormatXMLElementFn<T>
     >
   ): string | React.ReactNodeArray;
-  formatHTMLMessage(
-    descriptor: MessageDescriptor,
-    values?: Record<string, PrimitiveType>
-  ): React.ReactNode;
   formatList(values: Array<string>, opts?: FormatListOptions): string;
   formatList(
     values: Array<string | React.ReactNode>,

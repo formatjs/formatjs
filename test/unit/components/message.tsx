@@ -186,7 +186,7 @@ describe('<FormattedMessage>', () => {
 
     expect(spy).toHaveBeenCalledTimes(1);
 
-    expect(spy.mock.calls[0][0]).toBe(intl.formatHTMLMessage(descriptor));
+    expect(spy.mock.calls[0][0]).toBe(intl.formatMessage(descriptor));
 
     expect(rendered.text()).toBe('Jest');
   });

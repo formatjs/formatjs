@@ -12,7 +12,6 @@ import {formatPlural as formatPluralFn} from '../../src/formatters/plural';
 import {formatList as formatListFn} from '../../src/formatters/list';
 import {formatDisplayName as formatDisplayNameFn} from '../../src/formatters/displayName';
 import {
-  formatHTMLMessage as baseFormatHTMLMessage,
   formatMessage as baseFormatMessage,
 } from '../../src/formatters/message';
 import {IntlFormatters, defineMessages} from '../../src';
@@ -697,7 +696,7 @@ describe('format API', () => {
 
         const mf = new IntlMessageFormat(msg, 'en');
 
-        expect(formatMessage(descriptor)).toBe(mf.formatHTMLMessage()[0]);
+        expect(formatMessage(descriptor)).toBe(mf.format());
       })
     );
 
@@ -723,21 +722,21 @@ describe('format API', () => {
       const {locale, messages} = config;
       const mf = new IntlMessageFormat(messages.no_args, locale);
 
-      expect(formatMessage({id: 'no_args'})).toBe(mf.formatHTMLMessage()[0]);
+      expect(formatMessage({id: 'no_args'})).toBe(mf.format());
     });
 
     it('formats basic AST messages', () => {
       const {locale, messages} = config;
       const mf = new IntlMessageFormat(messages.ast_simple, locale);
 
-      expect(formatMessage({id: 'ast_simple'})).toBe(mf.formatHTMLMessage()[0]);
+      expect(formatMessage({id: 'ast_simple'})).toBe(mf.format());
     });
 
     it('formats basic AST messages in prod', () => {
       const {locale, messages} = config;
       const mf = new IntlMessageFormat(messages.ast_simple, locale);
       process.env.NODE_ENV = 'production';
-      expect(formatMessage({id: 'ast_simple'})).toBe(mf.formatHTMLMessage()[0]);
+      expect(formatMessage({id: 'ast_simple'})).toBe(mf.format());
     });
 
     it('formats messages with placeholders', () => {
@@ -746,7 +745,7 @@ describe('format API', () => {
       const values = {name: 'Eric'};
 
       expect(formatMessage({id: 'with_arg'}, values)).toBe(
-        mf.formatHTMLMessage(values)[0]
+        mf.format(values)
       );
     });
 
@@ -756,7 +755,7 @@ describe('format API', () => {
       const values = {name: 'Eric'};
 
       expect(formatMessage({id: 'ast_var'}, values)).toBe(
-        mf.formatHTMLMessage(values)[0]
+        mf.format(values)
       );
     });
 
@@ -770,7 +769,7 @@ describe('format API', () => {
       const values = {now: Date.now()};
 
       expect(formatMessage({id: 'with_named_format'}, values)).toBe(
-        mf.formatHTMLMessage(values)[0]
+        mf.format(values)
       );
     });
 
@@ -781,7 +780,7 @@ describe('format API', () => {
         const values = {now: Date.now()};
 
         expect(formatMessage({id: 'missing_named_format'}, values)).toBe(
-          mf.formatHTMLMessage(values)[0]
+          mf.format(values)
         );
       });
 
@@ -799,7 +798,7 @@ describe('format API', () => {
             },
             values
           )
-        ).toBe(mf.formatHTMLMessage(values)[0]);
+        ).toBe(mf.format(values));
       });
 
       it('warns when `message` is missing and locales are different', () => {
@@ -820,7 +819,7 @@ describe('format API', () => {
             },
             values
           )
-        ).toBe(mf.formatHTMLMessage(values)[0]);
+        ).toBe(mf.format(values));
 
         expect(config.onError.mock.calls).toMatchInlineSnapshot(`
           Array [
@@ -832,7 +831,7 @@ describe('format API', () => {
       });
 
       it('warns when `message` and `defaultMessage` are missing', () => {
-        const {locale, messages} = config;
+        const {messages} = config;
         const id = 'missing';
         const values = {name: 'Eric'};
 
@@ -872,7 +871,7 @@ describe('format API', () => {
             },
             values
           )
-        ).toBe(mf.formatHTMLMessage(values)[0]);
+        ).toBe(mf.format(values));
 
         expect(config.onError).toHaveBeenCalledTimes(1);
         expect(config.onError).toHaveBeenCalledWith(
@@ -896,7 +895,7 @@ describe('format API', () => {
             },
             values
           )
-        ).toBe(mf.formatHTMLMessage(values)[0]);
+        ).toBe(mf.format(values));
 
         expect(config.onError).toHaveBeenCalledTimes(1);
         expect(config.onError).toHaveBeenCalledWith(
@@ -1076,35 +1075,6 @@ describe('format API', () => {
       });
       expect(displayName.of('xx-XX')).toBeUndefined();
       expect(formatDisplayName('xx-XX', {fallback: 'none'})).toBeUndefined();
-    });
-  });
-
-  describe('formatHTMLMessage()', () => {
-    let formatHTMLMessage;
-
-    beforeEach(() => {
-      formatHTMLMessage = baseFormatHTMLMessage.bind(null, config, state);
-    });
-
-    it('formats HTML messages', () => {
-      const {locale, messages} = config;
-      const mf = new IntlMessageFormat(messages.with_html, locale);
-      const values = {name: 'Eric'};
-
-      expect(formatHTMLMessage({id: 'with_html'}, values)).toBe(
-        mf.formatHTMLMessage(values)[0]
-      );
-    });
-
-    it('html-escapes string values', () => {
-      const {locale, messages} = config;
-      const mf = new IntlMessageFormat(messages.with_html, locale);
-      const values = {name: '<i>Eric</i>'};
-      const escapedValues = {name: '&lt;i&gt;Eric&lt;/i&gt;'};
-
-      expect(formatHTMLMessage({id: 'with_html'}, values)).toBe(
-        mf.formatHTMLMessage(escapedValues)[0]
-      );
     });
   });
 });

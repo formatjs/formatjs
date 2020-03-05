@@ -7,7 +7,7 @@ There are a few API layers that React Intl provides and is built on. When using 
 - [ECMAScript Internationalization API](#ecmascript-internationalization-api)
 - [FormatJS Internationalization Formatters](#formatjs-internationalization-formatters)
 - [React Intl API](#react-intl-api)
-  - [`defineMessages`](#definemessages)
+    - [`defineMessages`](#definemessages)
   - [Injection API](#injection-api)
     - [`useIntl` hook](#useintl-hook)
     - [`injectIntl` HOC](#injectintl-hoc)
@@ -22,13 +22,10 @@ There are a few API layers that React Intl provides and is built on. When using 
     - [`formatPlural`](#formatplural)
   - [List Formatting APIs](#list-formatting-apis)
     - [`formatList`](#formatlist)
-  - [String Formatting APIs](#string-formatting-apis)
     - [Message Syntax](#message-syntax)
     - [Message Descriptor](#message-descriptor)
     - [Message Formatting Fallbacks](#message-formatting-fallbacks)
     - [`formatMessage`](#formatmessage)
-    - [`formatHTMLMessage`](#formathtmlmessage)
-  - [Localized Display Name APIs](#localized-display-name-apis)
     - [`formatDisplayName`](#formatdisplayname)
 - [React Intl Components](#react-intl-components)
 
@@ -191,7 +188,6 @@ interface IntlFormatters {
   formatNumber(value: number, opts: FormatNumberOptions): string;
   formatPlural(value: number, opts: FormatPluralOptions): string;
   formatMessage(descriptor: MessageDescriptor, values: any): string;
-  formatHTMLMessage: Function;
 }
 
 type IntlShape = IntlConfig & IntlFormatters;
@@ -422,15 +418,6 @@ formatList(['Me', 'myself', 'I'], {type: 'conjunction'}); // Me, myself, and I
 formatList(['5 hours', '3 minutes'], {type: 'unit'}); // 5 hours, 3 minutes
 ```
 
-### String Formatting APIs
-
-React Intl provides two functions to format strings/messages:
-
-- [`formatMessage`](#formatmessage)
-- [`formatHTMLMessage`](#formathtmlmessage)
-
-These APIs are used by their corresponding `<FormattedMessage>`, and `<FormattedHTMLMessage>` components and can be [injected](#injectintl) into your component via its `props`.
-
 #### Message Syntax
 
 String/Message formatting is a paramount feature of React Intl and it builds on [ICU Message Formatting](http://userguide.icu-project.org/formatparse/messages) by using the [ICU Message Syntax](http://formatjs.io/guides/message-syntax/). This message syntax allows for simple to complex messages to be defined, translated, and then formatted at runtime.
@@ -455,7 +442,7 @@ Hello, {name}, you have {itemCount, plural,
 
 #### Message Descriptor
 
-React Intl has a Message Descriptor concept which is used to define your app's default messages/strings and is passed into `formatMessage` and `formatHTMLMessage`. The Message Descriptors work very well for providing the data necessary for having the strings/messages translated, and they contain the following properties:
+React Intl has a Message Descriptor concept which is used to define your app's default messages/strings and is passed into `formatMessage`. The Message Descriptors work very well for providing the data necessary for having the strings/messages translated, and they contain the following properties:
 
 - **`id`:** A unique, stable identifier for the message
 - **`description`:** Context for the translator about how it's used in the UI
@@ -550,26 +537,6 @@ formatMessage(messages.greeting, {
 The message we defined using [`defineMessages`](#definemessages) to support extraction via `babel-plugin-react-intl`, but it doesn't have to be if you're not using the Babel plugin.
 
 **Note:** Messages can be simple strings _without_ placeholders, and that's the most common type of message.
-
-#### `formatHTMLMessage`
-
-```tsx
-function formatHTMLMessage(
-  messageDescriptor: MessageDescriptor,
-  values?: object
-): string;
-```
-
-**Note:** This API is provided to format legacy string message that contain HTML, but is not recommended, use [`<FormattedMessage>`](./Components.md#formattedmessage) instead.
-
-### Localized Display Name APIs
-
-**This uses stage 3 [`Intl.DisplayNames`][displaynames-repo] API so [polyfill][displaynames-polyfill] is required.**
-
-[displaynames-repo]: https://github.com/tc39/proposal-intl-displaynames
-[displaynames-polyfill]: https://www.npmjs.com/package/@formatjs/intl-displaynames
-
-This API provides _localized_ display names for languages, scripts, regions, and currencies.
 
 #### `formatDisplayName`
 

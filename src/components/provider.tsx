@@ -23,7 +23,7 @@ import {
   formatTimeToParts,
 } from '../formatters/dateTime';
 import {formatPlural} from '../formatters/plural';
-import {formatMessage, formatHTMLMessage} from '../formatters/message';
+import {formatMessage} from '../formatters/message';
 import * as shallowEquals_ from 'shallow-equal/objects';
 import {formatList} from '../formatters/list';
 import {formatDisplayName} from '../formatters/displayName';
@@ -154,7 +154,6 @@ export function createIntl(
       formatters.getPluralRules
     ),
     formatMessage: formatMessage.bind(null, resolvedConfig, formatters),
-    formatHTMLMessage: formatHTMLMessage.bind(null, resolvedConfig, formatters),
     formatList: formatList.bind(null, resolvedConfig, formatters.getListFormat),
     formatDisplayName: formatDisplayName.bind(
       null,

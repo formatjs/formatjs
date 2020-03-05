@@ -18,13 +18,13 @@ import * as shallowEquals_ from 'shallow-equal/objects';
 const shallowEquals: typeof shallowEquals_ =
   (shallowEquals_ as any).default || shallowEquals_;
 
-const defaultFormatMessage = (
+function defaultFormatMessage<T = React.ReactNode>(
   descriptor: MessageDescriptor,
   values?: Record<
     string,
-    PrimitiveType | React.ReactElement | FormatXMLElementFn
+    PrimitiveType | React.ReactElement | FormatXMLElementFn<T>
   >
-): string => {
+): string {
   if (process.env.NODE_ENV !== 'production') {
     console.error(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry. Using default message as fallback.'
@@ -40,7 +40,7 @@ const defaultFormatMessage = (
     descriptor,
     values as any
   );
-};
+}
 
 export interface Props<
   V extends Record<string, any> = Record<string, React.ReactNode>
@@ -51,9 +51,10 @@ export interface Props<
 }
 
 class FormattedMessage<
+  T = React.ReactNode,
   V extends Record<string, any> = Record<
     string,
-    PrimitiveType | React.ReactElement | FormatXMLElementFn
+    PrimitiveType | React.ReactElement | FormatXMLElementFn<T>
   >
 > extends React.Component<Props<V>> {
   static displayName = 'FormattedMessage';

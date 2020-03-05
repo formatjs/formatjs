@@ -21,14 +21,12 @@ React Intl has a set of React components that provide a declarative way to setup
   - [`FormattedPlural`](#formattedplural)
 - [List Formatting Components](#list-formatting-components)
   - [`FormattedList`](#formattedlist)
-- [String Formatting Components](#string-formatting-components)
   - [Message Syntax](#message-syntax)
   - [Message Descriptor](#message-descriptor)
   - [Message Formatting Fallbacks](#message-formatting-fallbacks)
   - [`FormattedMessage`](#formattedmessage)
     - [Rich Text Formatting](#rich-text-formatting)
     - [Caveats](#caveats)
-  - [`FormattedHTMLMessage`](#formattedhtmlmessage)
   - [Using React-Intl with React Native](#using-react-intl-with-react-native)
 - [Localized Display Name Components](#localized-display-name-components)
   - [`FormattedDisplayName`](#formatteddisplayname)
@@ -527,15 +525,6 @@ Me, myself, and I
 Me, <b>myself</b>, and I
 ```
 
-## String Formatting Components
-
-React Intl provides two components to format strings:
-
-- [`<FormattedMessage>`](#formattedmessage)
-- [`<FormattedHTMLMessage>`](#formattedhtmlmessage)
-
-It is recommended that you use `<FormattedMessage>` because it provides greater rich-text formatting features while also being more performant. `<FormattedHTMLMessage>` is provided for apps that have legacy external strings which contain HTML.
-
 ### Message Syntax
 
 String/Message formatting is a paramount feature of React Intl and it builds on [ICU Message Formatting](http://userguide.icu-project.org/formatparse/messages) by using the [ICU Message Syntax](http://formatjs.io/guides/message-syntax/). This message syntax allows for simple to complex messages to be defined, translated, and then formatted at runtime.
@@ -560,7 +549,7 @@ Hello, {name}, you have {itemCount, plural,
 
 ### Message Descriptor
 
-React Intl has a Message Descriptor concept which is used to define your app's default messages/strings. `<FormattedMessage>` and `<FormattedHTMLMessage>` have props which correspond to a Message Descriptor. The Message Descriptors work very well for providing the data necessary for having the strings/messages translated, and they contain the following properties:
+React Intl has a Message Descriptor concept which is used to define your app's default messages/strings. `<FormattedMessage>` have props which correspond to a Message Descriptor. The Message Descriptors work very well for providing the data necessary for having the strings/messages translated, and they contain the following properties:
 
 - **`id`:** A unique, stable identifier for the message
 - **`description`:** Context for the translator about how it's used in the UI
@@ -700,12 +689,6 @@ Extending this also allows users to potentially utilizing other rich text format
 This has the same caveats documented in [`intl-messageformat`](https://github.com/formatjs/formatjs/tree/master/packages/intl-messageformat#caveats).
 
 **Each child in a list should have a unique "key"**: The chunks we return can be text and/or React chunks so the other way is that we have to clone them & add key, which has performance implication. See https://github.com/formatjs/react-intl/issues/1467 for workarounds.
-
-### `FormattedHTMLMessage`
-
-**Note:** This component is provided for apps that have legacy external strings which contain HTML, but is not recommended, use [`<FormattedMessage>`](#formattedmessage) instead, if you can.
-
-This component uses the [`formatHTMLMessage`](API.md#formathtmlmessage) API and has the same props as `<FormattedMessage>`, but it will accept messages that contain HTML. The resulting formatted message will be set via `dangerouslySetInnerHTML`, thus input must be sanitized accordingly against XSS.
 
 ### Using React-Intl with React Native
 

@@ -8,7 +8,6 @@
     - [Browser](#browser)
     - [Node.js](#nodejs)
       - [full-icu](#full-icu)
-      - [DOMParser](#domparser)
     - [React Native](#react-native)
       - [React Native on iOS](#react-native-on-ios)
   - [Stage-3 Intl Features](#stage-3-intl-features)
@@ -18,8 +17,8 @@
   - [Creating an I18n Context](#creating-an-i18n-context)
   - [Formatting Data](#formatting-data)
 - [ESM Build](#esm-build)
-  - [Jest](#jest)
-  - [webpack](#webpack)
+    - [Jest](#jest)
+    - [webpack](#webpack)
 - [Core Concepts](#core-concepts)
 - [Example Apps](#example-apps)
 - [API Reference](#api-reference)
@@ -109,14 +108,6 @@ If using React Intl in an earlier version of Node.js, your `node` binary has to 
 
 If your `node` version is missing any of the `Intl` APIs above, you'd have to polyfill them accordingly.
 
-#### DOMParser
-
-We also rely on `DOMParser` to format rich text, thus for Node will need to polyfill using [jsdom](https://www.npmjs.com/package/jsdom):
-
-```tsx
-global.DOMParser = new (require('jsdom').JSDOM)().window.DOMParser;
-```
-
 ### React Native
 
 If you're using `react-intl` in React Native, make sure your runtime has built-in `Intl` support (similar to [JSC International variant](https://github.com/react-native-community/jsc-android-buildscripts#international-variant)). See these issues for more details:
@@ -177,7 +168,6 @@ Whether you use the ES6, CommonJS, or UMD version of React Intl, they all provid
 - [`FormattedNumber`](Components.md#formattednumber)
 - [`FormattedPlural`](Components.md#formattedplural)
 - [`FormattedMessage`](Components.md#formattedmessage)
-- [`FormattedHTMLMessage`](Components.md#formattedhtmlmessage)
 
 **Note:** When using the UMD version of React Intl _without_ a module system, it will expect `react` to exist on the global variable: **`React`**, and put the above named exports on the global variable: **`ReactIntl`**.
 
