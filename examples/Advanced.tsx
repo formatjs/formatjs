@@ -29,7 +29,7 @@ const messageAst = Object.keys(messages).reduce(
   {}
 );
 
-const intl = createIntl({locale: 'de', messages: messageAst});
+const intl = createIntl({locale: 'en', messages: messageAst});
 
 const App: React.FC<Props> = () => {
   return (
