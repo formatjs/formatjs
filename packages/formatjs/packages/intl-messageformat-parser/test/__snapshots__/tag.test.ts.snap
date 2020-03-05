@@ -101,6 +101,43 @@ Array [
 ]
 `;
 
+exports[`tag with dash 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "this is ",
+  },
+  Object {
+    "type": 0,
+    "value": "<br/>",
+  },
+  Object {
+    "type": 0,
+    "value": " ",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "type": 0,
+        "value": "nested ",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "type": 1,
+            "value": "placeholder",
+          },
+        ],
+        "type": 8,
+        "value": "b",
+      },
+    ],
+    "type": 8,
+    "value": "dash-tag",
+  },
+]
+`;
+
 exports[`tag with number arg 1`] = `
 Array [
   Object {

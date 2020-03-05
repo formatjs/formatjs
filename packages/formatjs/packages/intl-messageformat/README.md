@@ -187,16 +187,11 @@ new IntlMessageFormat(
   "raw '<b>HTML</b>' with '<a>'{placeholder}'</a>'"
 ).format({placeholder: 'some word'}); // "raw <b>HTML</b> with <a>some word</a>"
 ```
+5. Embedded valid HTML tag is a bit of a grey area right now since we're not supporting the full HTML/XHTML/XML spec.
 
 ### `getAst` Method
 
-Return the underlying AST for the compiled message
-
-#### Caveats
-
-- List of self-closing tags is defined [here](https://html.spec.whatwg.org/multipage/syntax.html#void-elements).
-
-If you don't have `DOMParser` available in your environment (e.g. Node.js), you need to add a polyfill. One of the packages that provides such a polyfill is [jsdom](https://www.npmjs.com/package/jsdom).
+Return the underlying AST for the compiled message.
 
 ### User Defined Formats
 

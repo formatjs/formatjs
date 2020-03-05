@@ -43,3 +43,9 @@ test('self-closing tag', function() {
     pegParse('this is <br/> <a>nested <b>{placeholder}</b></a>')
   ).toMatchSnapshot();
 });
+
+test('tag with dash', function() {
+  expect(
+    pegParse('this is <br/> <dash-tag>nested <b>{placeholder}</b></dash-tag>')
+  ).toMatchSnapshot();
+});

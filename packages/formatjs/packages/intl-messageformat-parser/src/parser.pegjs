@@ -65,7 +65,7 @@ poundElement = '#' {
 tagElement 'tagElement'
     = 
     // Special case for self-closing. We treat it as regular text
-    value:('<' _ argNameOrNumber _ '/>') { 
+    value:('<' validTag _ '/>') { 
         return {
             type: TYPE.literal,
             value: value.join(''),
@@ -84,11 +84,11 @@ tagElement 'tagElement'
         }
     }
 
-openingTag = '<' &{ messageCtx.push('openingTag'); return true; } tag:argNameOrNumber '>' &{ messageCtx.pop(); return true; } {
+openingTag = '<' &{ messageCtx.push('openingTag'); return true; } tag:validTag '>' &{ messageCtx.pop(); return true; } {
     return tag
 }
 
-closingTag = '</' &{ messageCtx.push('closingTag'); return true; } tag:argNameOrNumber '>' &{ messageCtx.pop(); return true; } {
+closingTag = '</' &{ messageCtx.push('closingTag'); return true; } tag:validTag '>' &{ messageCtx.pop(); return true; } {
     return tag
 }
 
@@ -284,8 +284,10 @@ escapedChar = $(x:. &{
 })
 
 argNameOrNumber 'argNameOrNumber' = $(argNumber / argName)
+validTag 'validTag' = $(argNumber / tagName)
 argNumber 'argNumber' = '0' { return 0 }
     / digits:([1-9][0-9]*) {
         return parseInt(digits.join(''), 10);
     }
-argName 'argName' = $((!(whiteSpace / patternSyntax) .)+)
+argName 'argName' = $((!(whiteSpace / patternSyntax).)+)
+tagName 'tagName' = $(('-' / (!(whiteSpace / patternSyntax).))+) 
