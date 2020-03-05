@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@4.0.0...intl-messageformat-parser@4.1.0) (2020-03-05)
+
+
+### Features
+
+* **intl-messageformat-parser:** Allow - in embedded HTML tag ([43aa6a7](https://github.com/formatjs/formatjs/commit/43aa6a727ab6fd5eb3fb4d8c4035039a2c27b6c5)), closes [#545](https://github.com/formatjs/formatjs/issues/545)
+
+
+
+
+
 # [4.0.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@3.6.3...intl-messageformat-parser@4.0.0) (2020-03-04)
 
 
