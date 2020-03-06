@@ -803,11 +803,11 @@ describe('format API', () => {
 
         expect(config.onError.mock.calls.map(c => c[0].code))
           .toMatchInlineSnapshot(`
-          Array [
-            "MISSING_TRANSLATION",
-            "DATE_FORMAT_ERROR",
-          ]
-        `);
+Array [
+  "MISSING_TRANSLATION",
+  "FORMAT_ERROR",
+]
+`);
       });
 
       it('formats `defaultMessage` when message has a syntax error', () => {
