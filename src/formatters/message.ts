@@ -159,10 +159,13 @@ export function formatMessage<T>(
         )
       );
     }
-  } else {
+  } else if (
+    !defaultMessage ||
+    (locale && locale.toLowerCase() !== defaultLocale.toLowerCase())
+  ) {
     // This prevents warnings from littering the console in development
     // when no `messages` are passed into the <IntlProvider> for the
-    // default locale, and a default message is in the source.
+    // default locale.
     onError(
       new ReactIntlError(
         ReactIntlErrorCode.MISSING_TRANSLATION,
