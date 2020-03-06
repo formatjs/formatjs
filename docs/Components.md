@@ -67,7 +67,7 @@ interface IntlConfig {
 
 `locale`, `formats`, and `messages` are for the user's current locale and what the app should be rendered in. While `defaultLocale` and `defaultFormats` are for fallbacks or during development and represent the app's default. Notice how there is no `defaultMessages`, that's because each [Message Descriptor](#message-descriptor) provides a `defaultMessage`.
 
-`textComponent` provides a way to configure the default wrapper for React Intl's `<Formatted*>` components. If not specified, [<React.Fragment>](https://reactjs.org/docs/fragments.html) is used. Before V3, `span` was used instead; check the [migration guide](https://github.com/formatjs/react-intl/blob/core/docs/Upgrade-Guide.md) for more info.
+`textComponent` provides a way to configure the default wrapper for React Intl's `<Formatted*>` components. If not specified, [<React.Fragment>](https://reactjs.org/docs/fragments.html) is used. Before V3, `span` was used instead; check the [migration guide](https://github.com/formatjs/react-intl/blob/master/docs/Upgrade-Guide.md) for more info.
 
 `onError` allows the user to provide a custom error handler. By default, error messages are logged using `console.error` if `NODE_ENV` is not set to `production`.
 
