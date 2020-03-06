@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.1.1](https://github.com/formatjs/react-intl/compare/v4.1.0...v4.1.1) (2020-03-06)
+
+
+### Bug Fixes
+
+* dont warn if locale is the same as defaultLocale ([c8b178b](https://github.com/formatjs/react-intl/commit/c8b178b1e825b3e1abc2417c3ec60d92ab1911f6)), closes [#1594](https://github.com/formatjs/react-intl/issues/1594)
+
 ## [4.1.0](https://github.com/formatjs/react-intl/compare/v4.0.0...v4.1.0) (2020-03-05)
 
 
