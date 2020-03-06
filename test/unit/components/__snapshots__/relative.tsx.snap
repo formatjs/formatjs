@@ -11,4 +11,4 @@ exports[`<FormattedRelativeTime> supports function-as-child pattern 1`] = `
 </FormattedRelativeTime>
 `;
 
-exports[`<FormattedRelativeTime> throws an error for invalid unit 1`] = `"DATE_FORMAT_ERROR"`;
+exports[`<FormattedRelativeTime> throws an error for invalid unit 1`] = `"FORMAT_ERROR"`;

@@ -2,7 +2,7 @@
 
 exports[`format API formatDate() options falls back and warns on invalid Intl.DateTimeFormat options 1`] = `
 Array [
-  "DATE_FORMAT_ERROR",
+  "FORMAT_ERROR",
 ]
 `;
 
@@ -63,7 +63,7 @@ Array [
 
 exports[`format API formatNumber() options falls back and warns on invalid Intl.NumberFormat options 1`] = `
 Array [
-  "DATE_FORMAT_ERROR",
+  "FORMAT_ERROR",
 ]
 `;
 
@@ -75,13 +75,13 @@ Array [
 
 exports[`format API formatRelativeTime() falls back and warns when no value is provided 1`] = `
 Array [
-  "DATE_FORMAT_ERROR",
+  "FORMAT_ERROR",
 ]
 `;
 
 exports[`format API formatRelativeTime() options falls back and warns on invalid IntlRelativeFormat options 1`] = `
 Array [
-  "DATE_FORMAT_ERROR",
+  "FORMAT_ERROR",
 ]
 `;
 
@@ -93,7 +93,7 @@ Array [
 
 exports[`format API formatTime() options falls back and warns on invalid Intl.DateTimeFormat options 1`] = `
 Array [
-  "DATE_FORMAT_ERROR",
+  "FORMAT_ERROR",
 ]
 `;
 
