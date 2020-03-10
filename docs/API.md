@@ -405,7 +405,7 @@ type ListFormatOptions = {
   style?: 'long' | 'short' | 'narrow';
 };
 
-function formatPlural(
+function formatList(
   elements: (string | React.ReactNode)[],
   options?: Intl.ListFormatOptions
 ): string | React.ReactNode[];
