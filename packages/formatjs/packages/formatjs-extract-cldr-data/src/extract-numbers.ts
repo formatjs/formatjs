@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 'use strict';
-import * as Numbers from 'cldr-numbers-full/main/ar/numbers.json';
+import * as NumbersData from 'cldr-numbers-full/main/ar/numbers.json';
 import {Locale} from './types';
 import generateFieldExtractorFn, {
   collapseSingleValuePluralRule,
@@ -28,7 +28,7 @@ const unitsLocales = globSync('*/numbers.json', {
   ),
 }).map(dirname);
 
-export type Numbers = typeof Numbers['main']['ar']['numbers'];
+export type Numbers = typeof NumbersData['main']['ar']['numbers'];
 
 const COUNTS = [
   '1000',
@@ -126,7 +126,7 @@ function extractNumbers(d: Numbers): RawNumberData {
 function loadNumbers(locale: Locale): RawNumberData {
   try {
     return extractNumbers(
-      (require(`cldr-numbers-full/main/${locale}/numbers.json`) as typeof Numbers)
+      (require(`cldr-numbers-full/main/${locale}/numbers.json`) as typeof NumbersData)
         .main[locale as 'ar'].numbers
     );
   } catch (e) {

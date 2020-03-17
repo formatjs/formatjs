@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 'use strict';
-import * as Units from 'cldr-units-full/main/en/units.json';
+import * as UnitsData from 'cldr-units-full/main/en/units.json';
 import {Locale} from './types';
 import generateFieldExtractorFn, {
   collapseSingleValuePluralRule,
@@ -26,7 +26,7 @@ const unitsLocales = globSync('*/units.json', {
   ),
 }).map(dirname);
 
-export type Units = typeof Units['main']['en']['units'];
+export type Units = typeof UnitsData['main']['en']['units'];
 
 function shortenUnit(unit: string) {
   return unit.replace(/^(.*?)-/, '');
@@ -76,7 +76,7 @@ export function getAllLocales() {
 }
 
 function loadUnits(locale: Locale): Record<string, UnitData> {
-  const units = (require(`cldr-units-full/main/${locale}/units.json`) as typeof Units)
+  const units = (require(`cldr-units-full/main/${locale}/units.json`) as typeof UnitsData)
     .main[locale as 'en'].units;
   return SANCTIONED_UNITS.reduce((all: Record<string, UnitData>, unit) => {
     if (!units.long[unit as 'digital-bit']) {

@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 'use strict';
-import * as Currencies from 'cldr-numbers-full/main/en/currencies.json';
+import * as CurrenciesData from 'cldr-numbers-full/main/en/currencies.json';
 import * as supplementalCurrencyData from 'cldr-core/supplemental/currencyData.json';
 import {Locale} from './types';
 import generateFieldExtractorFn, {
@@ -22,7 +22,7 @@ const unitsLocales = globSync('*/currencies.json', {
   ),
 }).map(dirname);
 
-export type Currencies = typeof Currencies['main']['en']['numbers']['currencies'];
+export type Currencies = typeof CurrenciesData['main']['en']['numbers']['currencies'];
 
 function extractCurrencyPattern(d: Currencies['USD']) {
   if (!d['displayName-count-other']) {
@@ -51,7 +51,7 @@ export function getAllLocales() {
 }
 
 function loadCurrencies(locale: Locale): Record<string, CurrencyData> {
-  const currencies = (require(`cldr-numbers-full/main/${locale}/currencies.json`) as typeof Currencies)
+  const currencies = (require(`cldr-numbers-full/main/${locale}/currencies.json`) as typeof CurrenciesData)
     .main[locale as 'en'].numbers.currencies;
   return (Object.keys(currencies) as Array<keyof typeof currencies>).reduce(
     (all: Record<string, CurrencyData>, isoCode) => {
