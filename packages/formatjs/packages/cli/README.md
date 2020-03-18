@@ -42,5 +42,6 @@ Options:
                                                         `intl.formatMessage({ id: 'foo', defaultMessage: 'bar',
                                                         description: 'baz'})` (default: false)
   --ignore                                              List of glob paths to **not** extract translations from.
+  --output-empty-json                                   Output file with empty [] if src has no messages. For build systems like bazel that relies on specific output mapping, not writing out a file can cause issues.
   -h, --help                                            output usage information
 ```

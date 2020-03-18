@@ -99,6 +99,11 @@ async function main(argv: string[]) {
       false
     )
     .option(
+      '--output-empty-json',
+      'Output file with empty [] if src has no messages. For build systems like bazel that relies on specific output mapping, not writing out a file can cause issues.',
+      false
+    )
+    .option(
       '--ignore <files>',
       'List of glob paths to **not** extract translations from.'
     )
@@ -122,6 +127,7 @@ async function main(argv: string[]) {
         removeDefaultMessage: cmdObj.removeDefaultMessage,
         additionalComponentNames: cmdObj.additionalComponentNames,
         extractFromFormatMessageCall: cmdObj.extractFromFormatMessageCall,
+        outputEmptyJson: cmdObj.outputEmptyJson,
       });
       process.exit(0);
     });
