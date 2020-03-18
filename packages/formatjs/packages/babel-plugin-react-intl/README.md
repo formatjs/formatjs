@@ -61,6 +61,8 @@ If a message descriptor has a `description`, it'll be removed from the source af
 
 - **`extractFromFormatMessageCall`**: Opt-in to extract from `intl.formatMessage` call with the same restrictions, e.g: has to be called with object literal such as `intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'})`
 
+- **`outputEmptyJson`**: output file with empty `[]` if src has no messages. For build systems like bazel that relies on specific output mapping, not writing out a file can cause issues.
+
 ### Via Node API
 
 The extract message descriptors are available via the `metadata` property on the object returned from Babel's `transform()` API:

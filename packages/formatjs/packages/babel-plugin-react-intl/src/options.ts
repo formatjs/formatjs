@@ -13,4 +13,5 @@ export interface OptionsSchema {
   removeDefaultMessage?: boolean;
   extractFromFormatMessageCall?: boolean;
   additionalComponentNames?: string[];
+  outputEmptyJson?: boolean;
 }

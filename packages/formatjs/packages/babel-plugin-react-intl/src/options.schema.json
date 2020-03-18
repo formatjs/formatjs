@@ -10,7 +10,8 @@
     },
     "removeDefaultMessage": {"type": "boolean"},
     "extractFromFormatMessageCall": {"type": "boolean"},
-    "additionalComponentNames": {"type": "array", "items": {"type": "string"}}
+    "additionalComponentNames": {"type": "array", "items": {"type": "string"}},
+    "outputEmptyJson": {"type": "boolean"}
   },
   "additionalProperties": false
 }

@@ -270,40 +270,6 @@ Array [
 ]
 `;
 
-exports[`emit asserts for:  output match: empty 1`] = `
-Object {
-  "messages": Array [],
-}
-`;
-
-exports[`emit asserts for:  output match: empty 2`] = `
-"\\"use strict\\";
-
-Object.defineProperty(exports, \\"__esModule\\", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require(\\"react\\"));
-
-var _macro = require(\\"@formatjs/macro\\");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== \\"function\\") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-class Foo extends _react.Component {
-  render() {
-    return _react.default.createElement(\\"div\\", null);
-  }
-
-}
-
-exports.default = Foo;"
-`;
-
-exports[`emit asserts for:  output match: empty 3`] = `Array []`;
-
 exports[`emit asserts for:  output match: enforceDefaultMessage 1`] = `
 Object {
   "messages": Array [
@@ -586,6 +552,34 @@ Array [
 ]
 `;
 
+exports[`options outputEmptyJson should output empty files 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require(\\"react\\"));
+
+var _macro = require(\\"@formatjs/macro\\");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== \\"function\\") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+class Foo extends _react.Component {
+  render() {
+    return _react.default.createElement(\\"div\\", null);
+  }
+
+}
+
+exports.default = Foo;"
+`;
+
+exports[`options outputEmptyJson should output empty files 2`] = `Array []`;
+
 exports[`options removeDefaultMessage should remove default message 1`] = `
 "\\"use strict\\";
 
@@ -701,4 +695,30 @@ Array [
     "id": "header2",
   },
 ]
+`;
+
+exports[`options without outputEmptyJson should output empty files 1`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require(\\"react\\"));
+
+var _macro = require(\\"@formatjs/macro\\");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== \\"function\\") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+class Foo extends _react.Component {
+  render() {
+    return _react.default.createElement(\\"div\\", null);
+  }
+
+}
+
+exports.default = Foo;"
 `;

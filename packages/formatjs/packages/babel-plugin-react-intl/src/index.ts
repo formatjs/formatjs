@@ -302,7 +302,7 @@ export default declare((api: any, options: OptionsSchema) => {
     name: 'babel-plugin-react-intl',
     baseDataPath: 'options',
   });
-  const {messagesDir} = options;
+  const {messagesDir, outputEmptyJson} = options;
 
   /**
    * Store this in the node itself so that multiple passes work. Specifically
@@ -341,7 +341,7 @@ export default declare((api: any, options: OptionsSchema) => {
       const descriptors = Array.from(messages.values());
       state.metadata['react-intl'] = {messages: descriptors};
 
-      if (basename && messagesDir) {
+      if (basename && messagesDir && (outputEmptyJson || descriptors.length)) {
         // Make sure the relative path is "absolute" before
         // joining it with the `messagesDir`.
         let relativePath = p.join(p.sep, p.relative(process.cwd(), filename));
