@@ -41,5 +41,6 @@ Options:
                                                         restrictions, e.g: has to be called with object literal such as
                                                         `intl.formatMessage({ id: 'foo', defaultMessage: 'bar',
                                                         description: 'baz'})` (default: false)
+  --ignore                                              List of glob paths to **not** extract translations from.
   -h, --help                                            output usage information
 ```

@@ -1,5 +1,7 @@
 import cliMain from '../../src/cli';
 import {OptionsSchema} from 'babel-plugin-react-intl/dist/options';
+const glob = require('glob');
+const babel = require('@babel/core');
 
 jest.mock('@babel/core', () => {
   const mockBabelResult = {
@@ -13,13 +15,12 @@ jest.mock('@babel/core', () => {
     transformFileSync: jest.fn().mockReturnValue(mockBabelResult),
   };
 });
-const babel = require('@babel/core');
 
 // Commander.js will call this.
 jest.spyOn(process, 'exit').mockImplementation((() => null) as any);
 
 jest.mock('glob', () => ({
-  sync: (p: string) => [p],
+  sync: jest.fn((p: string) => [p]),
 }));
 
 beforeEach(() => {
@@ -38,6 +39,7 @@ test('it passes camelCase-converted arguments to babel API', () => {
     '--extract-from-format-message-call',
     '--additional-component-names',
     'Foo,Bar',
+    '--ignore=file3.ts',
     'file1.js',
     'file2.tsx',
   ]);
@@ -79,5 +81,22 @@ test('it passes camelCase-converted arguments to babel API', () => {
         ],
       ],
     })
+  );
+});
+
+test('it passes ignore argument to glob sync', () => {
+  cliMain([
+    'node',
+    'path/to/formatjs-cli',
+    'extract',
+    '--ignore=ignore-1.ts',
+    'include-1.js',
+  ]);
+
+  expect(glob.sync).toHaveBeenCalled();
+  expect(glob.sync).toHaveBeenNthCalledWith(
+    1,
+    'include-1.js',
+    expect.objectContaining({ignore: 'ignore-1.ts'})
   );
 });

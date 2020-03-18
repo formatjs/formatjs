@@ -59,3 +59,25 @@ test('typescript -> stdout', async () => {
   expect(JSON.parse(stdout)).toMatchSnapshot();
   expect(stderr).toBe('');
 }, 10000);
+
+test('ignore -> stdout', async () => {
+  const ignore = "--ignore '*.ignore.*'";
+
+  const tsResult = await exec(
+    `${BIN_PATH} extract ${path.join(
+      __dirname,
+      'typescript/actual.tsx'
+    )} ${ignore}`
+  );
+  expect(JSON.parse(tsResult.stdout)).toMatchSnapshot();
+  expect(tsResult.stderr).toBe('');
+
+  const jsResult = await exec(
+    `${BIN_PATH} extract ${path.join(
+      __dirname,
+      'defineMessages/*.js'
+    )} ${ignore}`
+  );
+  expect(JSON.parse(jsResult.stdout)).toMatchSnapshot();
+  expect(jsResult.stderr).toBe('');
+}, 10000);

@@ -26,6 +26,16 @@
         "test",
         "code"
       ]
+    },
+    {
+      "login": "donovanhiland",
+      "name": "Donovan Hiland",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/17991396?v=4",
+      "profile": "https://github.com/donovanhiland",
+      "contributions": [
+        "code",
+        "test",
+      ]
     }
   ],
   "contributorsPerLine": 7,

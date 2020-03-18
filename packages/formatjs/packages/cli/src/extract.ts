@@ -5,10 +5,12 @@ import {warn, getStdinAsString} from './console_utils';
 import keyBy from 'lodash/keyBy';
 import {outputJSONSync} from 'fs-extra';
 import {interpolateName} from 'loader-utils';
+import {IOptions as GlobOptions} from 'glob';
 
 export type ExtractCLIOptions = Omit<OptionsSchema, 'overrideIdFn'> & {
   outFile?: string;
   idInterpolationPattern?: string;
+  ignore?: GlobOptions['ignore'];
 };
 
 function getBabelConfig(

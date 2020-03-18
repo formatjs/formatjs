@@ -3,6 +3,10 @@
 exports[`[glob] basic case: defineMessages -> stdout 1`] = `
 Array [
   Object {
+    "defaultMessage": "ignore",
+    "id": "ignore",
+  },
+  Object {
     "defaultMessage": "Hello World!",
     "description": "The default message",
     "id": "foo.bar.baz",
@@ -128,8 +132,88 @@ Options:
   --remove-default-message                              Remove \`defaultMessage\` field in generated js after extraction (default: false)
   --additional-component-names <comma-separated-names>  Additional component names to extract messages from, e.g: \`['FormattedFooBarMessage']\`. **NOTE**: By default we check for the fact that \`FormattedMessage\` & \`FormattedHTMLMessage\` are imported from \`moduleSourceName\` to make sure variable alias works. This option does not do that so it's less safe.
   --extract-from-format-message-call                    Opt-in to extract from \`intl.formatMessage\` call with the same restrictions, e.g: has to be called with object literal such as \`intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'})\` (default: false)
+  --ignore <files>                                      List of glob paths to **not** extract translations from.
   -h, --help                                            output usage information
 "
+`;
+
+exports[`ignore -> stdout 1`] = `
+Array [
+  Object {
+    "defaultMessage": "Hello World!",
+    "description": "The default message",
+    "id": "foo.bar.baz",
+  },
+  Object {
+    "defaultMessage": "Hello Nurse!",
+    "description": "Another message",
+    "id": "foo.bar.biff",
+  },
+  Object {
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+    "description": "Counts kittens",
+    "id": "app.home.kittens",
+  },
+  Object {
+    "defaultMessage": "   Some whitespace   ",
+    "description": "Whitespace",
+    "id": "trailing.ws",
+  },
+  Object {
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe",
+    "id": "escaped.apostrophe",
+  },
+  Object {
+    "defaultMessage": "No ID",
+    "description": "no ID",
+    "id": "ae494",
+  },
+  Object {
+    "defaultMessage": "formatted message",
+    "description": "foo",
+    "id": "inline",
+  },
+]
+`;
+
+exports[`ignore -> stdout 2`] = `
+Array [
+  Object {
+    "defaultMessage": "ignore",
+    "id": "ignore",
+  },
+  Object {
+    "defaultMessage": "Hello World!",
+    "description": "The default message",
+    "id": "foo.bar.baz",
+  },
+  Object {
+    "defaultMessage": "Hello Nurse!",
+    "description": "Another message",
+    "id": "foo.bar.biff",
+  },
+  Object {
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+    "description": "Counts kittens",
+    "id": "app.home.kittens",
+  },
+  Object {
+    "defaultMessage": "   Some whitespace   ",
+    "description": "Whitespace",
+    "id": "trailing.ws",
+  },
+  Object {
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe",
+    "id": "escaped.apostrophe",
+  },
+  Object {
+    "defaultMessage": "No ID",
+    "description": "no ID",
+    "id": "ae494",
+  },
+]
 `;
 
 exports[`typescript -> stdout 1`] = `

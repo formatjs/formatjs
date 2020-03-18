@@ -98,17 +98,21 @@ async function main(argv: string[]) {
       ].join(''),
       false
     )
+    .option(
+      '--ignore <files>',
+      'List of glob paths to **not** extract translations from.'
+    )
     .action(async (files: readonly string[], cmdObj: ExtractCLIOptions) => {
-      files = files.reduce(
-        (all: string[], f) =>
-          all.concat(
-            globSync(f, {
-              cwd: process.cwd(),
-            })
-          ),
-        []
-      );
-      await extract(files, {
+      const processedFiles = [];
+      for (const f of files) {
+        processedFiles.push(
+          ...globSync(f, {
+            cwd: process.cwd(),
+            ignore: cmdObj.ignore,
+          })
+        );
+      }
+      await extract(processedFiles, {
         outFile: cmdObj.outFile,
         idInterpolationPattern:
           cmdObj.idInterpolationPattern || '[contenthash:5]',
