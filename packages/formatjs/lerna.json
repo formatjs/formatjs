@@ -11,7 +11,7 @@
     },
     "bootstrap": {
       "hoist": true,
-      "includeFilteredDependencies": true,
+      "includeDependencies": true,
       "ci": false
     }
   }
