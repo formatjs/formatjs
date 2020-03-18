@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.2.2](https://github.com/formatjs/formatjs/compare/intl-messageformat@8.2.1...intl-messageformat@8.2.2) (2020-03-18)
+
+**Note:** Version bump only for package intl-messageformat
+
+
+
+
+
 ## [8.2.1](https://github.com/formatjs/formatjs/compare/intl-messageformat@8.2.0...intl-messageformat@8.2.1) (2020-03-05)
 
 

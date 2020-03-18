@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.1.22...@formatjs/cli@1.2.0) (2020-03-18)
+
+
+### Features
+
+* **@formatjs/cli:** Add option to ignore a glob of files ([#564](https://github.com/formatjs/formatjs/issues/564)) ([843d82b](https://github.com/formatjs/formatjs/commit/843d82b2190458deab2f4393cb854cc4d36f6dfc))
+
+
+
+
+
 ## [1.1.22](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.1.21...@formatjs/cli@1.1.22) (2020-03-05)
 
 **Note:** Version bump only for package @formatjs/cli

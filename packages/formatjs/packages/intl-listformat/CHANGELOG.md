@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@1.4.0...@formatjs/intl-listformat@1.4.2) (2020-03-18)
+
+**Note:** Version bump only for package @formatjs/intl-listformat
+
+
+
+
+
 ## [1.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@1.4.0...@formatjs/intl-listformat@1.4.1) (2020-01-27)
 
 **Note:** Version bump only for package @formatjs/intl-listformat
