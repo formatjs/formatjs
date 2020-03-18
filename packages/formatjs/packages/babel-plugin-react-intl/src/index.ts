@@ -5,8 +5,7 @@
  */
 
 import * as p from 'path';
-import {writeFileSync} from 'fs';
-import {mkdirpSync} from 'fs-extra';
+import {outputJSONSync} from 'fs-extra';
 import {parse} from 'intl-messageformat-parser/dist';
 const {declare} = require('@babel/helper-plugin-utils') as any;
 import {types as t, PluginObj} from '@babel/core';
@@ -342,7 +341,7 @@ export default declare((api: any, options: OptionsSchema) => {
       const descriptors = Array.from(messages.values());
       state.metadata['react-intl'] = {messages: descriptors};
 
-      if (basename && messagesDir && descriptors.length > 0) {
+      if (basename && messagesDir) {
         // Make sure the relative path is "absolute" before
         // joining it with the `messagesDir`.
         let relativePath = p.join(p.sep, p.relative(process.cwd(), filename));
@@ -364,10 +363,7 @@ export default declare((api: any, options: OptionsSchema) => {
           basename + '.json'
         );
 
-        const messagesFile = JSON.stringify(descriptors, null, 2);
-
-        mkdirpSync(p.dirname(messagesFilename));
-        writeFileSync(messagesFilename, messagesFile);
+        outputJSONSync(messagesFilename, descriptors);
       }
     },
 
