@@ -1,4 +1,4 @@
-import {join} from 'path';
+import {join, basename} from 'path';
 import * as fs from 'fs';
 import {transformFileSync} from '@babel/core';
 import plugin from '../src';
@@ -69,9 +69,13 @@ describe('options', () => {
       overrideIdFn: (
         id: string,
         defaultMessage: string,
-        description: string
+        description: string,
+        filePath: string
       ) => {
-        return `HELLO.${id}.${defaultMessage.length}.${typeof description}`;
+        const filename = basename(filePath);
+        return `${filename}.${id}.${
+          defaultMessage.length
+        }.${typeof description}`;
       },
     })!.code;
 
