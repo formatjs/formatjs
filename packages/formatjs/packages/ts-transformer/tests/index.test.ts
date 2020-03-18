@@ -1,8 +1,7 @@
 import {join} from 'path';
 import {Project} from 'ts-morph';
-import {transform, Opts} from '../src';
+import {transform, Opts, MessageDescriptor} from '../src';
 import * as ts from 'typescript';
-import {MessageDescriptor} from '../../eslint-plugin-formatjs/src/util';
 
 const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
   additionalComponentNames: {
@@ -90,7 +89,7 @@ function compile(filePath: string, options?: Partial<Opts>) {
       outDir: join(__dirname, 'output'),
     },
   });
-  project.addExistingSourceFile(filePath);
+  project.addSourceFileAtPathIfExists(filePath);
 
   let msgs: MessageDescriptor[] = [];
 
