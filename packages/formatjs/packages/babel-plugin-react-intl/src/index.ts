@@ -427,7 +427,7 @@ export default declare((api: any, options: OptionsSchema) => {
           // write `<FormattedMessage {...descriptor} />`, because it will be
           // skipped here and extracted elsewhere. The descriptor will
           // be extracted only (storeMessage) if a `defaultMessage` prop.
-          if (descriptorPath.id && descriptorPath.defaultMessage) {
+          if (descriptorPath.id || descriptorPath.defaultMessage) {
             // Evaluate the Message Descriptor values in a JSX
             // context, then store it.
             const descriptor = evaluateMessageDescriptor(
@@ -444,23 +444,43 @@ export default declare((api: any, options: OptionsSchema) => {
               this.ReactIntlMessages
             );
 
-            attributes.forEach(attr => {
-              const ketPath = attr.get('name');
-              const msgDescriptorKey = getMessageDescriptorKey(ketPath);
-              if (
-                // Remove description since it's not used at runtime.
-                msgDescriptorKey === 'description' ||
-                // Remove defaultMessage if opts says so.
-                (removeDefaultMessage && msgDescriptorKey === 'defaultMessage')
-              ) {
-                attr.remove();
-              } else if (
-                overrideIdFn &&
-                getMessageDescriptorKey(ketPath) === 'id'
-              ) {
-                attr.get('value').replaceWith(t.stringLiteral(descriptor.id));
+            let idAttr: NodePath<t.JSXAttribute> | undefined;
+            let descriptionAttr: NodePath<t.JSXAttribute> | undefined;
+            let defaultMessageAttr: NodePath<t.JSXAttribute> | undefined;
+            for (const attr of attributes) {
+              switch (getMessageDescriptorKey(attr.get('name'))) {
+                case 'description':
+                  descriptionAttr = attr;
+                  break;
+                case 'defaultMessage':
+                  defaultMessageAttr = attr;
+                  break;
+                case 'id':
+                  idAttr = attr;
+                  break;
               }
-            });
+            }
+
+            if (descriptionAttr) {
+              descriptionAttr.remove();
+            }
+
+            if (removeDefaultMessage && defaultMessageAttr) {
+              defaultMessageAttr.remove();
+            }
+
+            if (overrideIdFn) {
+              if (idAttr) {
+                idAttr.get('value').replaceWith(t.stringLiteral(descriptor.id));
+              } else if (defaultMessageAttr) {
+                defaultMessageAttr.insertBefore(
+                  t.jsxAttribute(
+                    t.jsxIdentifier('id'),
+                    t.stringLiteral(descriptor.id)
+                  )
+                );
+              }
+            }
 
             // Tag the AST node so we don't try to extract it twice.
             tagAsExtracted(path);

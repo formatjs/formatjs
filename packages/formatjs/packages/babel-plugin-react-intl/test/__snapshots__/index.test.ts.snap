@@ -278,6 +278,11 @@ Object {
       "description": undefined,
       "id": "TRANSLATION_KEY",
     },
+    Object {
+      "defaultMessage": undefined,
+      "description": undefined,
+      "id": "foo.bar.baz",
+    },
   ],
 }
 `;
@@ -323,6 +328,9 @@ exports[`emit asserts for:  output match: enforceDefaultMessage 3`] = `
 Array [
   Object {
     "id": "TRANSLATION_KEY",
+  },
+  Object {
+    "id": "foo.bar.baz",
   },
 ]
 `;
@@ -491,6 +499,9 @@ class Foo extends _react.Component {
     return _react.default.createElement(\\"div\\", null, _react.default.createElement(\\"h1\\", null, _react.default.createElement(_reactIntl.FormattedMessage, msgs.header)), _react.default.createElement(\\"p\\", null, _react.default.createElement(_reactIntl.FormattedMessage, msgs.content)), _react.default.createElement(_reactIntl.FormattedMessage, {
       id: \\"HELLO.foo.bar.zoo.12.object\\",
       defaultMessage: \\"Hello World!\\"
+    }), _react.default.createElement(_reactIntl.FormattedMessage, {
+      id: \\"HELLO..5.object\\",
+      defaultMessage: \\"NO ID\\"
     }), _react.default.createElement(_reactIntl.FormattedHTMLMessage, {
       id: \\"HELLO.foo.bar.delta.21.string\\",
       defaultMessage: \\"<h1>Hello World!</h1>\\"
@@ -524,6 +535,14 @@ Array [
       "text": "Something for the translator. Another description",
     },
     "id": "HELLO.foo.bar.zoo.12.object",
+  },
+  Object {
+    "defaultMessage": "NO ID",
+    "description": Object {
+      "metadata": "Additional metadata content.",
+      "text": "Something for the translator. Another description",
+    },
+    "id": "HELLO..5.object",
   },
   Object {
     "defaultMessage": "<h1>Hello World!</h1>",
