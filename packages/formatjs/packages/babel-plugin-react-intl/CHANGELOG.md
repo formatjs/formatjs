@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.2.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@6.1.0...babel-plugin-react-intl@6.2.0) (2020-03-18)
+
+
+### Features
+
+* **babel-plugin-react-intl:** add outputEmptyJson option ([a4f85ab](https://github.com/formatjs/formatjs/commit/a4f85ab47af4c2f2500363c3d5cc053ec126644c))
+
+
+
+
+
 # [6.1.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@6.0.1...babel-plugin-react-intl@6.1.0) (2020-03-18)
 
 
