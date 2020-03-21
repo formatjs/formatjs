@@ -1,10 +1,10 @@
 export const enum ErrorCode {
   // When we have a placeholder but no value to format
-  MISSING_VALUE,
+  MISSING_VALUE = 'MISSING_VALUE',
   // When value supplied is invalid
-  INVALID_VALUE,
+  INVALID_VALUE = 'INVALID_VALUE',
   // When we need specific Intl API but it's not available
-  MISSING_INTL_API,
+  MISSING_INTL_API = 'MISSING_INTL_API',
 }
 
 export class FormatError extends Error {
