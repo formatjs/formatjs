@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.2.2](https://github.com/formatjs/react-intl/compare/v4.2.1...v4.2.2) (2020-03-21)
+
+
+### Bug Fixes
+
+* turn on preserveConstEnums so we export ReactIntlErrorCode ([8e00610](https://github.com/formatjs/react-intl/commit/8e006105a7286aba0efdb985eb588d03597b186b))
+
 ### [4.2.1](https://github.com/formatjs/react-intl/compare/v4.2.0...v4.2.1) (2020-03-21)
 
 
