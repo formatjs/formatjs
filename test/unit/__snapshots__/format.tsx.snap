@@ -61,6 +61,24 @@ Array [
 ]
 `;
 
+exports[`format API formatMessage() formats rich text messages w/ wrapRichTextChunksInFragment 1`] = `
+<React.Fragment>
+  rich 
+  <b>
+    text
+  </b>
+</React.Fragment>
+`;
+
+exports[`format API formatMessage() formats rich text messages w/o wrapRichTextChunksInFragment 1`] = `
+Array [
+  "rich ",
+  <b>
+    text
+  </b>,
+]
+`;
+
 exports[`format API formatNumber() options falls back and warns on invalid Intl.NumberFormat options 1`] = `
 Array [
   "FORMAT_ERROR",

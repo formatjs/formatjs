@@ -35,6 +35,7 @@ describe('format API', () => {
         invalid: 'invalid {}',
         missing_value: 'missing {arg_missing}',
         missing_named_format: 'missing {now, date, format_missing}',
+        richText: 'rich <b>text</b>',
         ast_simple: parse('hello world'),
         ast_var: parse('hello there, {name}'),
       } as Record<string, any>,
@@ -673,7 +674,7 @@ describe('format API', () => {
       );
 
       [undefined, null, false, 0, ''].forEach(id => {
-        expect(() => formatMessage({id: id})).toThrow(
+        expect(() => formatMessage({id})).toThrow(
           '[React Intl] An `id` must be provided to format a message.'
         );
       });
@@ -684,6 +685,24 @@ describe('format API', () => {
       const mf = new IntlMessageFormat(messages.no_args, locale);
 
       expect(formatMessage({id: 'no_args'})).toBe(mf.format());
+    });
+
+    it('formats rich text messages w/ wrapRichTextChunksInFragment', () => {
+      formatMessage = baseFormatMessage.bind(
+        null,
+        {...config, wrapRichTextChunksInFragment: true},
+        state
+      );
+      const {locale, messages} = config;
+      const values = {b: (...chunks) => <b>{chunks}</b>};
+      expect(formatMessage({id: 'richText'}, values)).toMatchSnapshot();
+    });
+
+    it('formats rich text messages w/o wrapRichTextChunksInFragment', () => {
+      const {locale, messages} = config;
+      const mf = new IntlMessageFormat(messages.richText, locale);
+      const values = {b: (...chunks) => <b>{chunks}</b>};
+      expect(formatMessage({id: 'richText'}, values)).toMatchSnapshot();
     });
 
     it('formats basic AST messages', () => {

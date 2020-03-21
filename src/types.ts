@@ -27,6 +27,7 @@ export interface IntlConfig {
   messages: Record<string, string> | Record<string, MessageFormatElement[]>;
   defaultLocale: string;
   defaultFormats: CustomFormats;
+  wrapRichTextChunksInFragment?: boolean;
   onError(err: ReactIntlError | FormatError): void;
 }
 

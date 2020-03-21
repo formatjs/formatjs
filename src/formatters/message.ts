@@ -72,9 +72,11 @@ function deepMergeFormatsAndSetTimeZone(
   };
 }
 
-export const prepareIntlMessageFormatHtmlOutput = <T>(
+function prepareIntlMessageFormatHtmlOutput<T>(
   chunks: (string | T)[]
-): React.ReactElement => React.createElement(React.Fragment, null, ...chunks);
+): React.ReactElement {
+  return React.createElement(React.Fragment, null, ...chunks);
+}
 
 export function formatMessage(
   {
@@ -106,6 +108,7 @@ export function formatMessage<T>(
     defaultFormats,
     onError,
     timeZone,
+    wrapRichTextChunksInFragment,
   }: Pick<
     IntlConfig,
     | 'locale'
@@ -115,6 +118,7 @@ export function formatMessage<T>(
     | 'defaultFormats'
     | 'onError'
     | 'timeZone'
+    | 'wrapRichTextChunksInFragment'
   >,
   state: Formatters,
   messageDescriptor: MessageDescriptor = {id: ''},
@@ -211,9 +215,12 @@ export function formatMessage<T>(
     return defaultMessage || String(id);
   }
   if (Array.isArray(formattedMessageParts)) {
-    return prepareIntlMessageFormatHtmlOutput<T>(
-      formattedMessageParts as Array<string | T>
-    );
+    if (wrapRichTextChunksInFragment) {
+      return prepareIntlMessageFormatHtmlOutput<T>(
+        formattedMessageParts as Array<string | T>
+      );
+    }
+    return formattedMessageParts;
   }
   return formattedMessageParts as string | T;
 }
