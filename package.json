@@ -140,7 +140,7 @@
     "@types/invariant": "^2.2.31",
     "hoist-non-react-statics": "^3.3.2",
     "intl-format-cache": "^4.2.22",
-    "intl-messageformat": "^8.2.2",
+    "intl-messageformat": "^8.2.3",
     "intl-messageformat-parser": "^4.1.1",
     "shallow-equal": "^1.2.1"
   },
