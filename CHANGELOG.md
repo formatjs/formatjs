@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.2.0](https://github.com/formatjs/react-intl/compare/v4.1.1...v4.2.0) (2020-03-21)
+
+
+### Features
+
+* add wrapRichTextChunksInFragment option ([7864e1c](https://github.com/formatjs/react-intl/commit/7864e1c8704b5aba3d82d8318f94ef789e045d04))
+
 ### [4.1.1](https://github.com/formatjs/react-intl/compare/v4.1.0...v4.1.1) (2020-03-06)
 
 
