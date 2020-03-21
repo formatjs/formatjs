@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.2.1](https://github.com/formatjs/react-intl/compare/v4.2.0...v4.2.1) (2020-03-21)
+
+
+### Bug Fixes
+
+* include intl-displaynames types in bundled react-intl.d.ts ([77ef36c](https://github.com/formatjs/react-intl/commit/77ef36cb2f522587c454469241d9a4974963ccb8))
+
 ## [4.2.0](https://github.com/formatjs/react-intl/compare/v4.1.1...v4.2.0) (2020-03-21)
 
 
