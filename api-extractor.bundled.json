@@ -3,6 +3,7 @@
   "bundledPackages": [
     "@formatjs/intl-listformat",
     "@formatjs/intl-relativetimeformat",
+    "@formatjs/intl-displaynames",
     "intl-messageformat-parser",
     "@formatjs/intl-unified-numberformat",
     "@formatjs/intl-utils",
