@@ -9,6 +9,7 @@
         "resolveJsonModule": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
+        "preserveConstEnums": true,
         "types": [
             "babel__core",
             "babel__generator",
