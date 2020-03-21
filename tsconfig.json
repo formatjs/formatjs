@@ -8,6 +8,7 @@
         "strict": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "moduleResolution": "node"
+        "moduleResolution": "node",
+        "preserveConstEnums": true
     }
 }
