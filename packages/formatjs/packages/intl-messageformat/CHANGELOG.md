@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.2.3](https://github.com/formatjs/formatjs/compare/intl-messageformat@8.2.2...intl-messageformat@8.2.3) (2020-03-21)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** change ErrorCode to string enum ([db8662a](https://github.com/formatjs/formatjs/commit/db8662aaf7571ce035f716611901882a89e193da))
+
+
+
+
+
 ## [8.2.2](https://github.com/formatjs/formatjs/compare/intl-messageformat@8.2.1...intl-messageformat@8.2.2) (2020-03-18)
 
 **Note:** Version bump only for package intl-messageformat
