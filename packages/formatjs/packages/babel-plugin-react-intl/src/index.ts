@@ -29,7 +29,7 @@ import validate from 'schema-utils';
 import OPTIONS_SCHEMA from './options.schema.json';
 import {OptionsSchema} from './options.js';
 
-const DEFAULT_COMPONENT_NAMES = ['FormattedMessage', 'FormattedHTMLMessage'];
+const DEFAULT_COMPONENT_NAMES = ['FormattedMessage'];
 
 const EXTRACTED = Symbol('ReactIntlExtracted');
 const DESCRIPTOR_PROPS = new Set(['id', 'description', 'defaultMessage']);

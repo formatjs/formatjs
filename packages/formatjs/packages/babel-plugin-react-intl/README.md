@@ -24,7 +24,7 @@ $ npm install babel-plugin-react-intl
 
 **This Babel plugin only visits ES6 modules which `import` React Intl.**
 
-The default message descriptors for the app's default language will be extracted from: `defineMessages()`, `<FormattedMessage>`, and `<FormattedHTMLMessage>`; all of which are named exports of the React Intl package.
+The default message descriptors for the app's default language will be extracted from: `defineMessages()`, `<FormattedMessage>`; all of which are named exports of the React Intl package.
 
 If a message descriptor has a `description`, it'll be removed from the source after it's extracted to save bytes since it isn't used at runtime.
 
@@ -57,7 +57,7 @@ If a message descriptor has a `description`, it'll be removed from the source af
 
 - **`removeDefaultMessage`**: Remove `defaultMessage` field in generated js after extraction.
 
-- **`additionalComponentNames`**: Additional component names to extract messages from, e.g: `['FormattedFooBarMessage']`. **NOTE**: By default we check for the fact that `FormattedMessage` & `FormattedHTMLMessage` are imported from `moduleSourceName` to make sure variable alias works. This option does not do that so it's less safe.
+- **`additionalComponentNames`**: Additional component names to extract messages from, e.g: `['FormattedFooBarMessage']`. **NOTE**: By default we check for the fact that `FormattedMessage` are imported from `moduleSourceName` to make sure variable alias works. This option does not do that so it's less safe.
 
 - **`extractFromFormatMessageCall`**: Opt-in to extract from `intl.formatMessage` call with the same restrictions, e.g: has to be called with object literal such as `intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'})`
 
