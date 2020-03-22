@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {
   defineMessages,
   FormattedMessage,
-  FormattedHTMLMessage,
 } from 'react-intl';
 
 const msgs = defineMessages({
@@ -42,11 +41,6 @@ export default class Foo extends Component {
             text: 'Something for the translator. Another description',
             metadata: 'Additional metadata content.',
           }}
-        />
-        <FormattedHTMLMessage
-          id="foo.bar.delta"
-          defaultMessage="<h1>Hello World!</h1>"
-          description="The default message."
         />
       </div>
     );

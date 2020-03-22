@@ -33,7 +33,7 @@ export interface Opts {
   /**
    * Additional component names to extract messages from,
    * e.g: `['FormattedFooBarMessage']`. **NOTE**: By default we check
-   * for the fact that `FormattedMessage` & `FormattedHTMLMessage` are
+   * for the fact that `FormattedMessage` is
    * imported from `moduleSourceName` to make sure variable alias works.
    * This option does not do that so it's less safe.
    */
@@ -126,7 +126,6 @@ function isSingularMessageDecl(
   const compNames = new Set([
     '_',
     'FormattedMessage',
-    'FormattedHTMLMessage',
     ...additionalComponentNames,
   ]);
   return (

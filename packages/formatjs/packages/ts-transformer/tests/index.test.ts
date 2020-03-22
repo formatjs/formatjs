@@ -15,7 +15,6 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
     extractSourceLocation: true,
   },
   formatMessageCall: {},
-  FormattedHTMLMessage: {},
   FormattedMessage: {},
   inline: {},
   moduleSourceName: {
