@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@6.2.0...babel-plugin-react-intl@7.0.0) (2020-03-22)
+
+
+### Features
+
+* **babel-plugin-react-intl:** remove FormattedHTMLMessage extraction ([f962fdf](https://github.com/formatjs/formatjs/commit/f962fdf06118bda5bfb7f239962defced5597920))
+
+
+### BREAKING CHANGES
+
+* **babel-plugin-react-intl:** As of react-intl@4.x, `FormattedHTMLMessage` is no longer supported so
+we're removing this from our babel plugin as well
+
+
+
+
+
 # [6.2.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@6.1.0...babel-plugin-react-intl@6.2.0) (2020-03-18)
 
 

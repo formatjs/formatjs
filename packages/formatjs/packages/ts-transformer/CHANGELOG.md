@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@1.0.12...@formatjs/ts-transformer@1.1.0) (2020-03-22)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** rm support for FormattedHTMLMessage ([ac592fa](https://github.com/formatjs/formatjs/commit/ac592fa90e5eb9e486462c7c75167879bb3ce86d))
+
+
+
+
+
 ## [1.0.12](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@1.0.11...@formatjs/ts-transformer@1.0.12) (2020-03-18)
 
 **Note:** Version bump only for package @formatjs/ts-transformer
