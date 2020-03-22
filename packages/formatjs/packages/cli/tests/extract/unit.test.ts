@@ -63,6 +63,7 @@ test('it passes camelCase-converted arguments to babel API', () => {
           require.resolve('babel-plugin-react-intl'),
           {
             ...pluginOptions,
+            outputEmptyJson: false,
             overrideIdFn: expect.any(Function),
           },
         ],
@@ -77,7 +78,11 @@ test('it passes camelCase-converted arguments to babel API', () => {
       plugins: [
         [
           require.resolve('babel-plugin-react-intl'),
-          {...pluginOptions, overrideIdFn: expect.any(Function)},
+          {
+            ...pluginOptions,
+            outputEmptyJson: false,
+            overrideIdFn: expect.any(Function),
+          },
         ],
       ],
     })

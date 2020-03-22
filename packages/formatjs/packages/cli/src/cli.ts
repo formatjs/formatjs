@@ -83,8 +83,8 @@ async function main(argv: string[]) {
       '--additional-component-names <comma-separated-names>',
       [
         "Additional component names to extract messages from, e.g: `['FormattedFooBarMessage']`. ",
-        '**NOTE**: By default we check for the fact that `FormattedMessage` & ',
-        '`FormattedHTMLMessage` are imported from `moduleSourceName` to make sure variable alias ',
+        '**NOTE**: By default we check for the fact that `FormattedMessage` ',
+        'is imported from `moduleSourceName` to make sure variable alias ',
         "works. This option does not do that so it's less safe.",
       ].join(''),
       (val: string) => val.split(',')
