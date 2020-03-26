@@ -19,6 +19,7 @@ import {
   InvalidValueError,
   ErrorCode,
   FormatError,
+  InvalidValueTypeError,
 } from './error';
 
 export interface Formats {
