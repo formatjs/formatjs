@@ -72,8 +72,8 @@ function deepMergeFormatsAndSetTimeZone(
   };
 }
 
-function prepareIntlMessageFormatHtmlOutput<T>(
-  chunks: (string | T)[]
+function prepareIntlMessageFormatHtmlOutput(
+  chunks: React.ReactNodeArray
 ): React.ReactElement {
   return React.createElement(React.Fragment, null, ...chunks);
 }
@@ -99,7 +99,7 @@ export function formatMessage(
   messageDescriptor?: MessageDescriptor,
   values?: Record<string, PrimitiveType>
 ): string;
-export function formatMessage<T>(
+export function formatMessage(
   {
     locale,
     formats,
@@ -125,14 +125,9 @@ export function formatMessage<T>(
   values:
     | Record<
         string,
-        | string
-        | number
-        | boolean
+        | React.ReactNode
         | Date
-        | T
-        | FormatXMLElementFn<T>
-        | null
-        | undefined
+        | FormatXMLElementFn<React.ReactNode>
       >
     | undefined = {}
 ): React.ReactNode {
@@ -144,7 +139,7 @@ export function formatMessage<T>(
   formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
   defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);
 
-  let formattedMessageParts: string | T | (string | T)[] = '';
+  let formattedMessageParts: React.ReactNode  = '';
 
   if (message) {
     try {
@@ -152,13 +147,14 @@ export function formatMessage<T>(
         formatters: state,
       });
 
-      formattedMessageParts = formatter.format(values);
+      formattedMessageParts = formatter.format<React.ReactNode>(values);
     } catch (e) {
       onError(
         new ReactIntlError(
           ReactIntlErrorCode.FORMAT_ERROR,
           `Error formatting message: "${id}" for locale: "${locale}"` +
             (defaultMessage ? ', using default message as fallback.' : ''),
+            messageDescriptor,
           e
         )
       );
@@ -174,7 +170,8 @@ export function formatMessage<T>(
       new ReactIntlError(
         ReactIntlErrorCode.MISSING_TRANSLATION,
         `Missing message: "${id}" for locale: "${locale}"` +
-          (defaultMessage ? ', using default message as fallback.' : '')
+          (defaultMessage ? ', using default message as fallback.' : ''),
+          messageDescriptor
       )
     );
   }
@@ -193,6 +190,7 @@ export function formatMessage<T>(
         new ReactIntlError(
           ReactIntlErrorCode.FORMAT_ERROR,
           `Error formatting the default message for: "${id}"`,
+          messageDescriptor,
           e
         )
       );
@@ -206,7 +204,8 @@ export function formatMessage<T>(
         `Cannot format message: "${id}", ` +
           `using message ${
             message || defaultMessage ? 'source' : 'id'
-          } as fallback.`
+          } as fallback.`,
+          messageDescriptor
       )
     );
     if (typeof message === 'string') {
@@ -216,11 +215,11 @@ export function formatMessage<T>(
   }
   if (Array.isArray(formattedMessageParts)) {
     if (wrapRichTextChunksInFragment) {
-      return prepareIntlMessageFormatHtmlOutput<T>(
-        formattedMessageParts as Array<string | T>
+      return prepareIntlMessageFormatHtmlOutput(
+        formattedMessageParts
       );
     }
     return formattedMessageParts;
   }
-  return formattedMessageParts as string | T;
+  return formattedMessageParts as React.ReactNode;
 }
