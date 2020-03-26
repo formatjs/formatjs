@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.3.0](https://github.com/formatjs/react-intl/compare/v4.2.2...v4.3.0) (2020-03-26)
+
+
+### Features
+
+* **react-intl:** store original message descriptor in the error ([22531bd](https://github.com/formatjs/react-intl/commit/22531bde78e0f3846b583b5bf0e4115e872f9a54))
+
 ### [4.2.2](https://github.com/formatjs/react-intl/compare/v4.2.1...v4.2.2) (2020-03-21)
 
 
