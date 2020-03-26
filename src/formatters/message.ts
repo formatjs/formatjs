@@ -125,9 +125,7 @@ export function formatMessage(
   values:
     | Record<
         string,
-        | React.ReactNode
-        | Date
-        | FormatXMLElementFn<React.ReactNode>
+        React.ReactNode | Date | FormatXMLElementFn<React.ReactNode>
       >
     | undefined = {}
 ): React.ReactNode {
@@ -139,7 +137,7 @@ export function formatMessage(
   formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
   defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);
 
-  let formattedMessageParts: React.ReactNode  = '';
+  let formattedMessageParts: React.ReactNode = '';
 
   if (message) {
     try {
@@ -154,7 +152,7 @@ export function formatMessage(
           ReactIntlErrorCode.FORMAT_ERROR,
           `Error formatting message: "${id}" for locale: "${locale}"` +
             (defaultMessage ? ', using default message as fallback.' : ''),
-            messageDescriptor,
+          messageDescriptor,
           e
         )
       );
@@ -171,7 +169,7 @@ export function formatMessage(
         ReactIntlErrorCode.MISSING_TRANSLATION,
         `Missing message: "${id}" for locale: "${locale}"` +
           (defaultMessage ? ', using default message as fallback.' : ''),
-          messageDescriptor
+        messageDescriptor
       )
     );
   }
@@ -205,7 +203,7 @@ export function formatMessage(
           `using message ${
             message || defaultMessage ? 'source' : 'id'
           } as fallback.`,
-          messageDescriptor
+        messageDescriptor
       )
     );
     if (typeof message === 'string') {
@@ -215,9 +213,7 @@ export function formatMessage(
   }
   if (Array.isArray(formattedMessageParts)) {
     if (wrapRichTextChunksInFragment) {
-      return prepareIntlMessageFormatHtmlOutput(
-        formattedMessageParts
-      );
+      return prepareIntlMessageFormatHtmlOutput(formattedMessageParts);
     }
     return formattedMessageParts;
   }
