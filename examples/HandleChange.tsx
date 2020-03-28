@@ -39,7 +39,9 @@ const App: React.FC = () => {
         onChange={(event): void => changeLanguage(event.target.value)}
       >
         {Object.keys(messages).map(locale => (
-          <option key={locale} value={locale}>{locale}</option>
+          <option key={locale} value={locale}>
+            {locale}
+          </option>
         ))}
       </select>
     </RawIntlProvider>
