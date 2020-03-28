@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {createIntl, createIntlCache, RawIntlProvider} from '../';
 
-const messages: Record<string, object> = {
+const messages: Record<string, Record<string, string>> = {
   'en-US': {selectalanguage: 'Select a language'},
   'pt-BR': {selectalanguage: 'Selecione uma linguagem'},
 };
@@ -19,7 +19,7 @@ const App: React.FC = () => {
   // You could use redux to get the locale or get it from the url.
   const [locale, setLocale] = React.useState(initialLocale);
 
-  const changeLanguage = (newLocale: string) => {
+  const changeLanguage = (newLocale: string): void => {
     intl = createIntl(
       {locale: newLocale, messages: messages[newLocale]},
       cache
@@ -36,10 +36,10 @@ const App: React.FC = () => {
         name="locale"
         defaultValue={locale}
         id="locale"
-        onChange={event => changeLanguage(event.target.value)}
+        onChange={(event): void => changeLanguage(event.target.value)}
       >
         {Object.keys(messages).map(locale => (
-          <option value={locale}>{locale}</option>
+          <option key={locale} value={locale}>{locale}</option>
         ))}
       </select>
     </RawIntlProvider>
