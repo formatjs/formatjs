@@ -22,7 +22,7 @@ function defaultFormatMessage<T = React.ReactNode>(
   descriptor: MessageDescriptor,
   values?: Record<
     string,
-    PrimitiveType | React.ReactElement | FormatXMLElementFn<T>
+    PrimitiveType | React.ReactElement | FormatXMLElementFn<T, T>
   >
 ): string {
   if (process.env.NODE_ENV !== 'production') {
@@ -51,10 +51,11 @@ export interface Props<
 }
 
 class FormattedMessage<
-  T = React.ReactNode,
   V extends Record<string, any> = Record<
     string,
-    PrimitiveType | React.ReactElement | FormatXMLElementFn<T>
+    | PrimitiveType
+    | React.ReactElement
+    | FormatXMLElementFn<React.ReactNode, React.ReactNode>
   >
 > extends React.Component<Props<V>> {
   static displayName = 'FormattedMessage';

@@ -125,7 +125,9 @@ export function formatMessage(
   values:
     | Record<
         string,
-        React.ReactNode | Date | FormatXMLElementFn<React.ReactNode>
+        | React.ReactNode
+        | Date
+        | FormatXMLElementFn<React.ReactNode, React.ReactNode>
       >
     | undefined = {}
 ): React.ReactNode {
