@@ -82,13 +82,12 @@ export default function injectIntl<
         if (enforceContext) {
           invariantIntlContext(intl);
         }
+        const intlProp = {[intlPropName]: intl};
 
         return (
           <WrappedComponent
             {...props}
-            {...{
-              [intlPropName]: intl,
-            }}
+            {...intlProp}
             ref={forwardRef ? props.forwardedRef : null}
           />
         );
