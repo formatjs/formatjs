@@ -285,6 +285,6 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
   return mergeLiteral(result);
 }
 
-export type FormatXMLElementFn<T> = (
+export type FormatXMLElementFn<T, R = string | Array<string | T>> = (
   ...args: Array<string | T>
-) => string | Array<string | T>;
+) => R;
