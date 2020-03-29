@@ -283,6 +283,35 @@ const messages = defineMessages({
 });
 ```
 
+## `no-multiple-whitespaces`
+
+This prevents usage of multiple consecutive whitespaces in message.
+
+#### Why
+
+- Consecutive whitespaces are handled differently in different locales.
+- Prevents `\` linebreaks in JS string which results in awkward whitespaces.
+
+```tsx
+import {defineMessages} from 'react-intl';
+
+const messages = defineMessages({
+  // WORKS
+  foo: {
+    defaultMessage: 'Smileys & People',
+  },
+  // FAILS
+  bar: {
+    defaultMessage: 'Smileys &   People',
+  },
+  // FAILS
+  baz: {
+    defaultMessage: 'this message is too long \
+    so I wanna line break it.',
+  },
+});
+```
+
 ### `no-multiple-plurals`
 
 This prevents specifying multiple plurals in your message.

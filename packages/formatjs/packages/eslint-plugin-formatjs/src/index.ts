@@ -8,6 +8,7 @@ import blacklistElements from './rules/blacklist-elements';
 import enforcePluralRules from './rules/enforce-plural-rules';
 import enforcePlaceholders from './rules/enforce-placeholders';
 import enforceSupportedDateTimeSkeleton from './rules/supported-datetime-skeleton';
+import noMultipleWhitespaces from './rules/no-multiple-whitespaces';
 const plugin = {
   rules: {
     'enforce-description': enforceDescription,
@@ -20,6 +21,7 @@ const plugin = {
     'enforce-plural-rules': enforcePluralRules,
     'enforce-placeholders': enforcePlaceholders,
     'supported-datetime-skeleton': enforceSupportedDateTimeSkeleton,
+    'no-multiple-whitespaces': noMultipleWhitespaces,
   },
 };
 

@@ -198,6 +198,52 @@ _({
   ],
 });
 
+ruleTester.run('no-multiple-whitespaces', rules['no-multiple-whitespaces'], {
+  valid: [
+    `import {_} from '@formatjs/macro'
+_({
+    defaultMessage: 'a {placeholder}',
+    description: 'asd'
+})`,
+    dynamicMessage,
+    noMatch,
+    spreadJsx,
+    emptyFnCall,
+  ],
+  invalid: [
+    {
+      code:
+        "import {_} from '@formatjs/macro';_({defaultMessage: 'a \
+                {placeHolder}'})",
+      errors: [
+        {
+          message: 'Multiple consecutive whitespaces are not allowed',
+        },
+      ],
+    },
+    {
+      code: "<FormattedMessage defaultMessage='a   thing'/>",
+      errors: [
+        {
+          message: 'Multiple consecutive whitespaces are not allowed',
+        },
+      ],
+    },
+    {
+      code: `
+            import {_} from '@formatjs/macro'
+            _({
+                defaultMessage: 'a   {placeHolder}'
+            })`,
+      errors: [
+        {
+          message: 'Multiple consecutive whitespaces are not allowed',
+        },
+      ],
+    },
+  ],
+});
+
 ruleTester.run('no-multiple-plurals', rules['no-multiple-plurals'], {
   valid: [
     `import {_} from '@formatjs/macro'
