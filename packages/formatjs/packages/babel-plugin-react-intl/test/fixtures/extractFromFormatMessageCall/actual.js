@@ -1,5 +1,5 @@
+import {FormattedMessage, injectIntl} from 'react-intl';
 import React, {Component} from 'react';
-import {injectIntl, FormattedMessage} from 'react-intl';
 
 const objectPointer = {
   id: 'foo.bar.invalid',
@@ -10,6 +10,9 @@ const objectPointer = {
 class Foo extends Component {
   render() {
     const {intl} = this.props;
+    const {
+      intl: {formatMessage},
+    } = this.props;
     const msgs = {
       baz: this.props.intl.formatMessage({
         id: 'foo.bar.baz',
@@ -20,6 +23,11 @@ class Foo extends Component {
         id: 'foo.bar.biff',
         defaultMessage: 'Hello Nurse!',
         description: 'Another message',
+      }),
+      qux: formatMessage({
+        id: 'foo.bar.qux',
+        defaultMessage: 'Hello Stranger!',
+        description: 'A different message',
       }),
       invalid: this.props.intl.formatMessage(objectPointer),
     };

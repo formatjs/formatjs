@@ -334,6 +334,65 @@ Array [
 ]
 `;
 
+exports[`emit asserts for:  output match: extractFromFormatMessageCallStateless 1`] = `
+Object {
+  "messages": Array [
+    Object {
+      "defaultMessage": "bar",
+      "description": "baz",
+      "id": "foo",
+    },
+  ],
+}
+`;
+
+exports[`emit asserts for:  output match: extractFromFormatMessageCallStateless 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _reactIntl = require(\\"react-intl\\");
+
+var _react = _interopRequireDefault(require(\\"react\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const Foo = ({
+  intl: {
+    formatMessage
+  }
+}) => {
+  const msgs = {
+    qux: formatMessage({
+      id: 'foo.bar.quux',
+      defaultMessage: 'Hello Stateless!',
+      description: 'A stateless message'
+    })
+  };
+  return _react.default.createElement(\\"div\\", null, _react.default.createElement(\\"h1\\", null, msgs.header), _react.default.createElement(\\"p\\", null, msgs.content), _react.default.createElement(\\"span\\", null, _react.default.createElement(_reactIntl.FormattedMessage, {
+    id: \\"foo\\",
+    defaultMessage: \\"bar\\"
+  })));
+};
+
+var _default = (0, _reactIntl.injectIntl)(Foo);
+
+exports.default = _default;"
+`;
+
+exports[`emit asserts for:  output match: extractFromFormatMessageCallStateless 3`] = `
+Array [
+  Object {
+    "defaultMessage": "bar",
+    "description": "baz",
+    "id": "foo",
+  },
+]
+`;
+
 exports[`emit asserts for:  output match: formatMessageCall 1`] = `
 Object {
   "messages": Array [
@@ -582,6 +641,21 @@ Array [
     "description": "Another message",
     "id": "foo.bar.biff",
   },
+  Object {
+    "defaultMessage": "Hello Stranger!",
+    "description": "A different message",
+    "id": "foo.bar.qux",
+  },
+  Object {
+    "defaultMessage": "bar",
+    "description": "baz",
+    "id": "foo",
+  },
+]
+`;
+
+exports[`options respects extractFromFormatMessageCall from stateless components 1`] = `
+Array [
   Object {
     "defaultMessage": "bar",
     "description": "baz",

@@ -173,6 +173,21 @@ describe('options', () => {
     expect(require(join(fixtureDir, 'actual.json'))).toMatchSnapshot();
   });
 
+  it('respects extractFromFormatMessageCall from stateless components', () => {
+    const fixtureDir = join(
+      fixturesDir,
+      'extractFromFormatMessageCallStateless'
+    );
+    expect(() =>
+      transform(join(fixtureDir, 'actual.js'), {
+        extractFromFormatMessageCall: true,
+      })
+    ).not.toThrow();
+
+    // Check message output
+    expect(require(join(fixtureDir, 'actual.json'))).toMatchSnapshot();
+  });
+
   it('additionalComponentNames', () => {
     const fixtureDir = join(fixturesDir, 'additionalComponentNames');
     expect(() =>

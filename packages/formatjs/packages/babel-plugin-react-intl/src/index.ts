@@ -8,7 +8,8 @@ import * as p from 'path';
 import {outputJSONSync} from 'fs-extra';
 import {parse} from 'intl-messageformat-parser/dist';
 const {declare} = require('@babel/helper-plugin-utils') as any;
-import {types as t, PluginObj} from '@babel/core';
+import {PluginObj, types as t} from '@babel/core';
+
 import {
   ObjectExpression,
   JSXAttribute,
@@ -16,6 +17,7 @@ import {
   JSXIdentifier,
   JSXExpressionContainer,
   Identifier,
+  ObjectPattern,
   ObjectProperty,
   SourceLocation,
   Expression,
@@ -24,7 +26,7 @@ import {
   isTypeCastExpression,
   isTSTypeAssertion,
 } from '@babel/types';
-import {NodePath} from '@babel/traverse';
+import {NodePath, Scope} from '@babel/traverse';
 import validate from 'schema-utils';
 import OPTIONS_SCHEMA from './options.schema.json';
 import {OptionsSchema} from './options.js';
@@ -257,9 +259,40 @@ function referencesImport(
   return importedNames.some(name => path.referencesImport(mod, name));
 }
 
+function isFormatMessageDestructuring(scope: Scope) {
+  const binding = scope.getBinding('formatMessage');
+  const block = scope.block as t.FunctionDeclaration;
+
+  // things like `const {formatMessage} = intl; formatMessage(...)`
+  if (binding && t.isVariableDeclarator(binding.path.node)) {
+    const nodeObject = binding.path.node.id as ObjectPattern;
+    return nodeObject.properties.find(
+      (value: any) => value.key.name === 'intl'
+    );
+  }
+
+  // things like const fn = ({ intl: { formatMessage }}) => { formatMessage(...) }
+  if (t.isObjectPattern(block.params[0])) {
+    return block.params[0].properties.find(
+      (value: any) => value.key.name === 'intl'
+    );
+  }
+
+  return false;
+}
+
 function isFormatMessageCall(
-  callee: NodePath<Expression | V8IntrinsicIdentifier>
+  callee: NodePath<Expression | V8IntrinsicIdentifier>,
+  path: any
 ) {
+  if (
+    callee.isIdentifier() &&
+    callee.node.name === 'formatMessage' &&
+    isFormatMessageDestructuring(path.scope)
+  ) {
+    return true;
+  }
+
   if (!callee.isMemberExpression()) {
     return false;
   }
@@ -583,7 +616,7 @@ export default declare((api: any, options: OptionsSchema) => {
         }
 
         // Check that this is `intl.formatMessage` call
-        if (extractFromFormatMessageCall && isFormatMessageCall(callee)) {
+        if (extractFromFormatMessageCall && isFormatMessageCall(callee, path)) {
           const messageDescriptor = path.get('arguments')[0];
           if (messageDescriptor.isObjectExpression()) {
             processMessageObject(messageDescriptor);
