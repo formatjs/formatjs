@@ -220,6 +220,8 @@ _({
           message: 'Multiple consecutive whitespaces are not allowed',
         },
       ],
+      output:
+        "import {_} from '@formatjs/macro';_({defaultMessage: 'a {placeHolder}'})",
     },
     {
       code: "<FormattedMessage defaultMessage='a   thing'/>",
@@ -228,6 +230,7 @@ _({
           message: 'Multiple consecutive whitespaces are not allowed',
         },
       ],
+      output: "<FormattedMessage defaultMessage='a thing'/>",
     },
     {
       code: `
@@ -240,6 +243,11 @@ _({
           message: 'Multiple consecutive whitespaces are not allowed',
         },
       ],
+      output: `
+            import {_} from '@formatjs/macro'
+            _({
+                defaultMessage: 'a {placeHolder}'
+            })`,
     },
   ],
 });
