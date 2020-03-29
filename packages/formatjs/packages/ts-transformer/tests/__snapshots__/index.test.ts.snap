@@ -394,7 +394,7 @@ class Foo extends react_1.Component {
                 react_1.default.createElement(react_intl_1.FormattedMessage, Object.assign({}, msgs.header))),
             react_1.default.createElement(\\"p\\", null,
                 react_1.default.createElement(react_intl_1.FormattedMessage, Object.assign({}, msgs.content))),
-            react_1.default.createElement(react_intl_1.FormattedMessage, { id: 'foo.bar.zoo', defaultMessage: 'Hello World!' }),
+            react_1.default.createElement(react_intl_1.FormattedMessage, { id: 'foo.bar.zoo', defaultMessage: 'Hello World!' })));
     }
 }
 exports.default = Foo;
@@ -417,11 +417,6 @@ exports.default = Foo;
     Object {
       "defaultMessage": "Hello World!",
       "id": "foo.bar.zoo",
-    },
-    Object {
-      "defaultMessage": "<h1>Hello World!</h1>",
-      "description": "The default message.",
-      "id": "foo.bar.delta",
     },
   ],
 }

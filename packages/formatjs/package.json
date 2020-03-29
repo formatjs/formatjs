@@ -88,11 +88,11 @@
     "source-map-support": "^0.5.16",
     "test262-harness": "^7.3.0",
     "ts-jest": "^25.2.1",
-    "ts-morph": "^7.0.0",
+    "ts-morph": "^6.0.0",
     "ts-node": "^8.6.2",
     "ts-pegjs": "^0.2.6",
     "tslib": "^1.11.1",
-    "typescript": "^3.7.0"
+    "typescript": "3.7"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
