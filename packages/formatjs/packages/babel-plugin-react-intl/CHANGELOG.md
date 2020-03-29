@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.1.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.0.0...babel-plugin-react-intl@7.1.0) (2020-03-29)
+
+
+### Features
+
+* **babel-plugin-react-intl:** add destructured formatMessage su… ([#582](https://github.com/formatjs/formatjs/issues/582)) ([8549258](https://github.com/formatjs/formatjs/commit/854925800a8fc206292055c184015c5e603b9807))
+
+
+
+
+
 # [7.0.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@6.2.0...babel-plugin-react-intl@7.0.0) (2020-03-22)
 
 
