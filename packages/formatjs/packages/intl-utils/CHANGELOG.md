@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@2.2.0...@formatjs/intl-utils@2.2.1) (2020-03-30)
+
+
+### Bug Fixes
+
+* **intl-utils:** prevent infinite recursion loop of getCanonicalRules ([#591](https://github.com/formatjs/formatjs/issues/591)) ([86e087d](https://github.com/formatjs/formatjs/commit/86e087de2dbd89643e276aab2eb622c4443c29e7))
+
+
+
+
+
 # [2.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@2.1.0...@formatjs/intl-utils@2.2.0) (2020-01-27)
 
 
