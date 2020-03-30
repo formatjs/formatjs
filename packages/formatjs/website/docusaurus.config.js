@@ -2,7 +2,7 @@ module.exports = {
   title: 'Format.JS',
   tagline: 'Internationalize your web apps on the client & server.',
   url: 'https://formatjs.github.io/',
-  baseUrl: '/formatjs/',
+  baseUrl: '/',
   favicon: 'img/favicon.ico',
   organizationName: 'formatjs', // Usually your GitHub org/user name.
   projectName: 'formatjs', // Usually your repo name.
