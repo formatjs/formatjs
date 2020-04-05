@@ -408,6 +408,15 @@ _({
   description: 'asd'
 })
 `,
+    `
+intl.formatMessage({
+  defaultMessage: '{count, plural, one {<a>#</a>} other {# more}}',
+  description: 'asd'
+}, {
+  count: 1,
+  a: (...chunks) => <a>{chunks}</a>
+})
+`,
     dynamicMessage,
     noMatch,
     spreadJsx,
@@ -460,6 +469,21 @@ _({
       errors: [
         {
           message: 'Missing value for placeholder "count"',
+        },
+      ],
+    },
+    {
+      code: `
+      intl.formatMessage({
+        defaultMessage: '{count, plural, one {<a>#</a>} other {# more}}',
+        description: 'asd'
+      }, {
+        count: 1,
+      })
+      `,
+      errors: [
+        {
+          message: 'Missing value for placeholder "a"',
         },
       ],
     },
