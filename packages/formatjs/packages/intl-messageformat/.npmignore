@@ -8,3 +8,4 @@ coverage
 *.config.js
 tsconfig.*
 .nyc_output
+*.d.ts.map

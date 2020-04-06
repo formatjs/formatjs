@@ -5,5 +5,7 @@
         "**/node_modules/*/**": true,
         "test262/**": true,
         "**/test_artifacts/**": true,
+        "**/*.map": true,
+        "**/*.d.ts.map": true,
     }
 }
