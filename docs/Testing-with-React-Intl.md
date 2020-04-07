@@ -2,29 +2,30 @@
 
 <!-- toc -->
 
-- [`Intl` APIs requirements](#intl-apis-requirements)
-  - [Mocha](#mocha)
-    - [Command Line](#command-line)
-    - [Browser](#browser)
-  - [Karma](#karma)
-- [Shallow Rendering](#shallow-rendering)
-  - [Testing Example Components That Use React Intl](#testing-example-components-that-use-react-intl)
-    - [(Basic)](#-basic)
-    - [(Advanced, Uses `injectIntl()`)](#-advanced-uses-injectintl)
-- [DOM Rendering](#dom-rendering)
-  - [Helper function](#helper-function)
-- [Enzyme](#enzyme)
-  - [Helper function](#helper-function-1)
-  - [Usage](#usage)
-- [Jest](#jest)
-  - [Snapshot Testing](#snapshot-testing)
-    - [Helper function](#helper-function-2)
-    - [Usage](#usage-1)
-    - [Usage with Jest & enzyme](#usage-with-jest--enzyme)
-  - [DOM Testing](#dom-testing)
-- [Storybook](#storybook)
-  - [Intl](#intl)
-- [react-testing-library](#react-testing-library)
+- [Testing with React-Intl](#testing-with-react-intl)
+  - [`Intl` APIs requirements](#intl-apis-requirements)
+    - [Mocha](#mocha)
+      - [Command Line](#command-line)
+      - [Browser](#browser)
+    - [Karma](#karma)
+  - [Shallow Rendering](#shallow-rendering)
+    - [Testing Example Components That Use React Intl](#testing-example-components-that-use-react-intl)
+      - [<ShortDate> (Basic)](#shortdate-basic)
+      - [<RelativeDate> (Advanced, Uses `injectIntl()`)](#relativedate-advanced-uses-injectintl)
+  - [DOM Rendering](#dom-rendering)
+    - [Helper function](#helper-function)
+  - [Enzyme](#enzyme)
+    - [Helper function](#helper-function-1)
+    - [Usage](#usage)
+  - [Jest](#jest)
+    - [Snapshot Testing](#snapshot-testing)
+      - [Helper function](#helper-function-2)
+      - [Usage](#usage-1)
+      - [Usage with Jest & enzyme](#usage-with-jest--enzyme)
+    - [DOM Testing](#dom-testing)
+  - [Storybook](#storybook)
+    - [Intl](#intl)
+  - [react-testing-library](#react-testing-library)
 
 <!-- tocstop -->
 
@@ -372,19 +373,41 @@ If you want to use `react-intl` inside of [Storybook](https://storybooks.js.org)
 
 ## react-testing-library
 
-To use `react-intl` and [`react-testing-library`](https://testing-library.com/docs/react-testing-library/intro) together it is not much different than other test libraries, you should provide some helper function to the testing flow.
+In order to use `react-intl` and [`react-testing-library`](https://testing-library.com/docs/react-testing-library/intro) together, you should provide some helper function to the testing flow.
 
 You can check the [docs](https://testing-library.com/docs/example-react-intl).
 
-And can find a functional example [here](https://github.com/testing-library/react-testing-library/blob/master/examples/__tests__/react-intl.js)
+To create a generic solution, We can create a custom `render` function using
+the `wrapper` option as explained in the
+[setup](https://testing-library.com/docs/react-testing-library/setup) page.  
+Our custom `render` function can look like this:
 
 ```jsx
-import React from 'react';
-import 'jest-dom/extend-expect';
-import {render, cleanup, getByTestId} from 'react-testing-library';
-import {IntlProvider, FormattedDate} from 'react-intl';
-import IntlPolyfill from 'intl';
-import 'intl/locale-data/jsonp/pt';
+// test-utils.js
+import React from 'react'
+import { render as rtlRender } from '@testing-library/react'
+import { IntlProvider } from 'react-intl'
+
+function render(ui, { locale = 'pt', ...renderOptions } = {}) {
+  function Wrapper({ children }) {
+    return <IntlProvider locale={locale}>{children}</IntlProvider>
+  }
+  return rtlRender(ui, { wrapper: Wrapper, ...renderOptions })
+}
+
+// re-export everything
+export * from '@testing-library/react'
+
+// override render method
+export { render }
+```
+
+```jsx
+import React from 'react'
+import '@testing-library/jest-dom/extend-expect'
+// We're importing from our own created test-utils and not RTL's
+import { render, screen } from '../test-utils.js'
+import { FormattedDate } from 'react-intl'
 
 const FormatDateView = () => {
   return (
@@ -397,19 +420,11 @@ const FormatDateView = () => {
         year="numeric"
       />
     </div>
-  );
-};
-
-const renderWithReactIntl = component => {
-  return render(<IntlProvider locale="pt">{component}</IntlProvider>);
-};
-
-afterEach(cleanup);
+  )
+}
 
 test('it should render FormattedDate and have a formated pt date', () => {
-  const {container} = renderWithReactIntl(<FormatDateView />);
-  expect(getByTestId(container, 'date-display')).toHaveTextContent(
-    '11/03/2019'
-  );
-});
+  render(<FormatDateView />)
+  expect(screen.getByTestId('date-display')).toHaveTextContent('11/03/2019')
+})
 ```
