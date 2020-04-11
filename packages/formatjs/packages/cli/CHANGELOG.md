@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.4.0...@formatjs/cli@1.4.1) (2020-04-11)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** fix main entry point in package.json ([884bf89](https://github.com/formatjs/formatjs/commit/884bf8901b4673542cfa5bcb42c60457cb42715f))
+
+
+
+
+
 # [1.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.3.3...@formatjs/cli@1.4.0) (2020-04-11)
 
 
