@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.5.0...@formatjs/cli@1.6.0) (2020-04-11)
+
+
+### Features
+
+* **@formatjs/cli:** add support for pragma ([b6c8352](https://github.com/formatjs/formatjs/commit/b6c8352f5181bcb1adbb520cca01191527bc20bb))
+
+
+
+
+
 # [1.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.4.2...@formatjs/cli@1.5.0) (2020-04-11)
 
 

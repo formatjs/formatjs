@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.4.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.3.0...babel-plugin-react-intl@7.4.0) (2020-04-11)
+
+
+### Features
+
+* **@formatjs/cli:** add support for pragma ([b6c8352](https://github.com/formatjs/formatjs/commit/b6c8352f5181bcb1adbb520cca01191527bc20bb))
+* **babel-plugin-react-intl:** add option to parse pragma ([af58ad2](https://github.com/formatjs/formatjs/commit/af58ad2f2fcb06bf20804e2f5cb357c739f34003))
+
+
+
+
+
 # [7.3.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.2.1...babel-plugin-react-intl@7.3.0) (2020-04-11)
 
 
