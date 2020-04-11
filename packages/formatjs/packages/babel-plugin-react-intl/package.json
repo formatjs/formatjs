@@ -15,6 +15,7 @@
   ],
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "dependencies": {
+    "@babel/types": "^7.9.0",
     "@babel/core": "^7.7.2",
     "@babel/helper-plugin-utils": "^7.0.0",
     "@types/babel__core": "^7.1.3",
