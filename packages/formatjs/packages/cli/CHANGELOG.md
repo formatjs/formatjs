@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.3.3...@formatjs/cli@1.4.0) (2020-04-11)
+
+
+### Features
+
+* **@formatjs/cli:** export extracting API ([08db726](https://github.com/formatjs/formatjs/commit/08db7261721137a1a275fd2c29a0633c19034fd3))
+
+
+
+
+
 ## [1.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.3.2...@formatjs/cli@1.3.3) (2020-03-30)
 
 **Note:** Version bump only for package @formatjs/cli

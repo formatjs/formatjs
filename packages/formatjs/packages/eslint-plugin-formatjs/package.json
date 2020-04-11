@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-formatjs",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "ESLint plugin for formatjs",
   "main": "dist/index.js",
   "files": [
