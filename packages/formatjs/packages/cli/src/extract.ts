@@ -13,6 +13,11 @@ export type ExtractCLIOptions = Omit<OptionsSchema, 'overrideIdFn'> & {
   ignore?: GlobOptions['ignore'];
 };
 
+export type ExtractOptions = OptionsSchema & {
+  idInterpolationPattern?: string;
+  ignore?: GlobOptions['ignore'];
+};
+
 function getBabelConfig(
   reactIntlOptions: ExtractCLIOptions,
   extraBabelOptions: Partial<babel.TransformOptions> = {}
@@ -80,20 +85,15 @@ function getReactIntlMessages(
   }
 }
 
-export default async function extract(
+export async function extract(
   files: readonly string[],
-  {outFile, idInterpolationPattern, ...extractOpts}: ExtractCLIOptions
+  {idInterpolationPattern, ...babelOpts}: ExtractOptions
 ) {
-  let babelOpts: OptionsSchema = extractOpts;
-  if (outFile) {
-    babelOpts.messagesDir = undefined;
-  }
-  const printMessagesToStdout = babelOpts.messagesDir == null && !outFile;
   let extractedMessages: Record<string, ExtractedMessageDescriptor> = {};
 
   if (files.length > 0) {
     for (const file of files) {
-      if (idInterpolationPattern) {
+      if (!babelOpts.overrideIdFn && idInterpolationPattern) {
         babelOpts = {
           ...babelOpts,
           overrideIdFn: (id, defaultMessage, description) =>
@@ -109,16 +109,14 @@ export default async function extract(
       }
       const babelResult = extractSingleFile(file, babelOpts);
       const singleFileExtractedMessages = getReactIntlMessages(babelResult);
-      // Aggregate result when we have to output to a single file
-      if (outFile || printMessagesToStdout) {
-        Object.assign(extractedMessages, singleFileExtractedMessages);
-      }
+
+      Object.assign(extractedMessages, singleFileExtractedMessages);
     }
   } else {
     if (files.length === 0 && process.stdin.isTTY) {
       warn('Reading source file from TTY.');
     }
-    if (idInterpolationPattern) {
+    if (!babelOpts.overrideIdFn && idInterpolationPattern) {
       babelOpts = {
         ...babelOpts,
         overrideIdFn: (id, defaultMessage, description) =>
@@ -137,10 +135,22 @@ export default async function extract(
       stdinSource,
       getBabelConfig(babelOpts)
     );
-    if (printMessagesToStdout) {
-      extractedMessages = getReactIntlMessages(babelResult);
-    }
+
+    extractedMessages = getReactIntlMessages(babelResult);
   }
+  return Object.values(extractedMessages);
+}
+
+export default async function extractAndWrite(
+  files: readonly string[],
+  opts: ExtractCLIOptions
+) {
+  const {outFile, ...extractOpts} = opts;
+  if (outFile) {
+    extractOpts.messagesDir = undefined;
+  }
+  const extractedMessages = extract(files, extractOpts);
+  const printMessagesToStdout = extractOpts.messagesDir == null && !outFile;
   if (outFile) {
     outputJSONSync(outFile, Object.values(extractedMessages), {
       spaces: 2,

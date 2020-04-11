@@ -1,1 +1,5 @@
-export {default as extract, ExtractCLIOptions} from './extract';
+export {
+  default as extractAndWrite,
+  extract,
+  ExtractCLIOptions,
+} from './extract';
