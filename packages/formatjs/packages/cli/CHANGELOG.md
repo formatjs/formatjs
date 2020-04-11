@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.4.1...@formatjs/cli@1.4.2) (2020-04-11)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** export raw extraction method that returns all messages ([45fc546](https://github.com/formatjs/formatjs/commit/45fc5464e05a30071d4f058a66de35f5f0a08e43))
+
+
+
+
+
 ## [1.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.4.0...@formatjs/cli@1.4.1) (2020-04-11)
 
 

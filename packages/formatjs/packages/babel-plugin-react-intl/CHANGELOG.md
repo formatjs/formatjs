@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.2.1](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.2.0...babel-plugin-react-intl@7.2.1) (2020-04-11)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** export raw extraction method that returns all messages ([45fc546](https://github.com/formatjs/formatjs/commit/45fc5464e05a30071d4f058a66de35f5f0a08e43))
+* **babel-plugin-react-intl:** add missing dep, fix [#586](https://github.com/formatjs/formatjs/issues/586) ([1419526](https://github.com/formatjs/formatjs/commit/14195267916f15ba2f4f0635c519797efeef9fb5))
+
+
+
+
+
 # [7.2.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.1.1...babel-plugin-react-intl@7.2.0) (2020-04-11)
 
 
