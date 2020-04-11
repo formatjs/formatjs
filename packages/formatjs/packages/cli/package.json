@@ -22,7 +22,7 @@
   "author": "Linjie Ding <linjie@airtable.com>",
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "bin": {
     "formatjs": "bin/formatjs"
   },
