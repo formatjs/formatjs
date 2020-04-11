@@ -52,6 +52,22 @@ test('basic case: defineMessages -> directory', async () => {
   ).toMatchSnapshot();
 }, 10000);
 
+test('basic case: defineMessages -> directory with location', async () => {
+  process.chdir(__dirname);
+  const {stdout, stderr} = await exec(
+    `${BIN_PATH} extract defineMessages/actual.js --extract-source-location --messages-dir ${ARTIFACT_PATH}`
+  );
+  expect(stdout).toBe('');
+  expect(stderr).toBe('');
+  // Write to test_artifacts/defineMessages/actual.json
+  expect(
+    await readdir(path.join(ARTIFACT_PATH, 'defineMessages'))
+  ).toMatchSnapshot();
+  expect(
+    await readJSON(path.join(ARTIFACT_PATH, 'defineMessages/actual.json'))
+  ).toMatchSnapshot();
+}, 10000);
+
 test('typescript -> stdout', async () => {
   const {stdout, stderr} = await exec(
     `${BIN_PATH} extract ${path.join(__dirname, 'typescript/actual.tsx')}`
