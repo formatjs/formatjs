@@ -1,8 +1,6 @@
-import {ExtractedMessageDescriptor} from 'babel-plugin-react-intl/dist';
-import {OptionsSchema} from 'babel-plugin-react-intl/dist/options';
+import {ExtractionResult, OptionsSchema} from 'babel-plugin-react-intl';
 import * as babel from '@babel/core';
 import {warn, getStdinAsString} from './console_utils';
-import keyBy from 'lodash/keyBy';
 import {outputJSONSync} from 'fs-extra';
 import {interpolateName} from 'loader-utils';
 import {IOptions as GlobOptions} from 'glob';
@@ -61,19 +59,6 @@ function getBabelConfig(
   };
 }
 
-function getReactIntlMessages(
-  babelResult: babel.BabelFileResult | null
-): Record<string, ExtractedMessageDescriptor> {
-  if (babelResult === null) {
-    return {};
-  } else {
-    const messages: ExtractedMessageDescriptor[] = (babelResult.metadata as any)[
-      'react-intl'
-    ].messages;
-    return keyBy(messages, 'id');
-  }
-}
-
 export async function extract(
   files: readonly string[],
   {idInterpolationPattern, throws, ...babelOpts}: ExtractOptions
@@ -102,13 +87,14 @@ export async function extract(
         return throws ? promise : promise.catch(e => warn(e));
       })
     );
-    return Object.values(
-      results.reduce(
-        (all, babelResult) =>
-          babelResult ? {...all, ...getReactIntlMessages(babelResult)} : all,
-        {} as Record<string, ExtractedMessageDescriptor>
-      )
-    );
+    return results
+      .filter(r => r && r.metadata)
+      .map(
+        r =>
+          ((r as babel.BabelFileResult).metadata as any)[
+            'react-intl'
+          ] as ExtractionResult
+      );
   }
   if (files.length === 0 && process.stdin.isTTY) {
     warn('Reading source file from TTY.');
@@ -133,7 +119,11 @@ export async function extract(
     getBabelConfig(babelOpts)
   );
 
-  return Object.values(getReactIntlMessages(babelResult));
+  return [
+    ((babelResult as babel.BabelFileResult).metadata as any)[
+      'react-intl'
+    ] as ExtractionResult,
+  ];
 }
 
 export default async function extractAndWrite(
@@ -144,8 +134,12 @@ export default async function extractAndWrite(
   if (outFile) {
     extractOpts.messagesDir = undefined;
   }
-  const extractedMessages = await extract(files, extractOpts);
+  const extractionResults = await extract(files, extractOpts);
   const printMessagesToStdout = extractOpts.messagesDir == null && !outFile;
+  const extractedMessages = extractionResults
+    .map(m => m.messages)
+    .filter(Boolean)
+    .reduce((all, messages) => [...all, ...messages], []);
   if (outFile) {
     outputJSONSync(outFile, extractedMessages, {
       spaces: 2,

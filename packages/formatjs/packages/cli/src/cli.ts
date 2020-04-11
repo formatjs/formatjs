@@ -111,6 +111,19 @@ async function main(argv: string[]) {
       '--throws',
       'Whether to throw an exception when we fail to process any file in the batch.'
     )
+    .option(
+      '--pragma <pragma>',
+      `parse specific additional custom pragma. This allows you to tag certain file with metadata such as \`project\`. For example with this file:
+
+      \`\`\`
+      // @intl-meta project:my-custom-project
+      import {FormattedMessage} from 'react-intl';
+      
+      <FormattedMessage defaultMessage="foo" id="bar" />;
+      \`\`\`
+      
+      and with option \`{pragma: "@intl-meta"}\`, we'll parse out \`// @intl-meta project:my-custom-project\` into \`{project: 'my-custom-project'}\` in the result file.`
+    )
     .action(async (files: readonly string[], cmdObj: ExtractCLIOptions) => {
       const processedFiles = [];
       for (const f of files) {
@@ -132,6 +145,7 @@ async function main(argv: string[]) {
         additionalComponentNames: cmdObj.additionalComponentNames,
         extractFromFormatMessageCall: cmdObj.extractFromFormatMessageCall,
         outputEmptyJson: cmdObj.outputEmptyJson,
+        pragma: cmdObj.pragma,
       });
       process.exit(0);
     });

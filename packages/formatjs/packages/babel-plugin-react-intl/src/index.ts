@@ -420,7 +420,6 @@ export default declare((api: any, options: OptionsSchema) => {
         const pragmaLine = comments
           .map(c => c.value)
           .find(c => c.includes(pragma));
-        console.log(comments);
         if (!pragmaLine) {
           return;
         }
@@ -686,3 +685,4 @@ function getMessagesObjectFromExpression(
   }
   return currentPath;
 }
+export {OptionsSchema} from './options';
