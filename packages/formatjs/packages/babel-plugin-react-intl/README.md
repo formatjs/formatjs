@@ -45,7 +45,7 @@ If a message descriptor has a `description`, it'll be removed from the source af
 }
 ```
 
-#### Options
+### Options
 
 - **`messagesDir`**: The target location where the plugin will output a `.json` file corresponding to each component from which React Intl messages were extracted. If not provided, the extracted message descriptors will only be accessible via Babel's API.
 
@@ -63,6 +63,17 @@ If a message descriptor has a `description`, it'll be removed from the source af
 
 - **`outputEmptyJson`**: output file with empty `[]` if src has no messages. For build systems like bazel that relies on specific output mapping, not writing out a file can cause issues.
 
+- **`pragma`**: parse specific additional custom pragma. This allows you to tag certain file with metadata such as `project`. For example with this file:
+
+```tsx
+// @intl-meta project:my-custom-project
+import {FormattedMessage} from 'react-intl';
+
+<FormattedMessage defaultMessage="foo" id="bar" />;
+```
+
+and with option `{pragma: "@intl-meta"}`, we'll parse out `// @intl-meta project:my-custom-project` into `{project: 'my-custom-project'}` in the result file.
+
 ### Via Node API
 
 The extract message descriptors are available via the `metadata` property on the object returned from Babel's `transform()` API:
@@ -70,7 +81,7 @@ The extract message descriptors are available via the `metadata` property on the
 ```javascript
 require('@babel/core').transform('code', {
   plugins: ['react-intl'],
-}); // => { code, map, ast, metadata['react-intl'].messages };
+}); // => { code, map, ast, metadata['react-intl'].messages, metadata['react-intl'].meta };
 ```
 
 [react intl]: http://formatjs.io/react/

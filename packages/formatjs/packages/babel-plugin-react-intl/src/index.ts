@@ -45,6 +45,11 @@ interface MessageDescriptor {
 export type ExtractedMessageDescriptor = MessageDescriptor &
   Partial<SourceLocation> & {file?: string};
 
+export type ExtractionResult = {
+  messages: ExtractedMessageDescriptor[];
+  meta: Map<string, string>;
+};
+
 type MessageDescriptorPath = Record<
   keyof MessageDescriptor,
   NodePath<StringLiteral> | undefined
@@ -84,6 +89,7 @@ interface BabelTransformationFile {
 
 interface State {
   ReactIntlMessages: Map<string, ExtractedMessageDescriptor>;
+  ReactIntlMeta: Map<string, string>;
 }
 
 function getICUMessageValue(
@@ -335,7 +341,7 @@ export default declare((api: any, options: OptionsSchema) => {
     name: 'babel-plugin-react-intl',
     baseDataPath: 'options',
   });
-  const {messagesDir, outputEmptyJson} = options;
+  const {messagesDir, outputEmptyJson, pragma} = options;
 
   /**
    * Store this in the node itself so that multiple passes work. Specifically
@@ -355,6 +361,7 @@ export default declare((api: any, options: OptionsSchema) => {
     pre() {
       if (!this.ReactIntlMessages) {
         this.ReactIntlMessages = new Map();
+        this.ReactIntlMeta = new Map();
       }
     },
 
@@ -370,9 +377,12 @@ export default declare((api: any, options: OptionsSchema) => {
       const basename = filename
         ? p.basename(filename, p.extname(filename))
         : null;
-      const {ReactIntlMessages: messages} = this;
+      const {ReactIntlMessages: messages, ReactIntlMeta} = this;
       const descriptors = Array.from(messages.values());
-      state.metadata['react-intl'] = {messages: descriptors};
+      state.metadata['react-intl'] = {
+        messages: descriptors,
+        meta: ReactIntlMeta,
+      } as ExtractionResult;
 
       if (basename && messagesDir && (outputEmptyJson || descriptors.length)) {
         // Make sure the relative path is "absolute" before
@@ -401,6 +411,28 @@ export default declare((api: any, options: OptionsSchema) => {
     },
 
     visitor: {
+      ImportDeclaration(path) {
+        const comments = path.node.leadingComments;
+        const {ReactIntlMeta} = this;
+        if (!pragma || !comments) {
+          return;
+        }
+        const pragmaLine = comments
+          .map(c => c.value)
+          .find(c => c.includes(pragma));
+        console.log(comments);
+        if (!pragmaLine) {
+          return;
+        }
+        pragmaLine
+          .split(pragma)[1]
+          .trim()
+          .split(/\s+/g)
+          .forEach(kv => {
+            const [k, v] = kv.split(':');
+            ReactIntlMeta.set(k, v);
+          });
+      },
       JSXOpeningElement(
         path,
         {

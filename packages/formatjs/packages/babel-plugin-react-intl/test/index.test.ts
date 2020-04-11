@@ -38,7 +38,8 @@ describe('emit asserts for: ', () => {
       if (fs.existsSync(actualMessagesPath)) fs.unlinkSync(actualMessagesPath);
 
       const {code: actual, metadata} = transform(
-        join(fixtureDir, 'actual.js')
+        join(fixtureDir, 'actual.js'),
+        {pragma: '@react-intl'}
       )!;
       expect((metadata as any)['react-intl']).toMatchSnapshot();
       // Check code output

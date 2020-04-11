@@ -11,7 +11,8 @@
     "removeDefaultMessage": {"type": "boolean"},
     "extractFromFormatMessageCall": {"type": "boolean"},
     "additionalComponentNames": {"type": "array", "items": {"type": "string"}},
-    "outputEmptyJson": {"type": "boolean"}
+    "outputEmptyJson": {"type": "boolean"},
+    "pragma": {"type": "string"}
   },
   "additionalProperties": false
 }

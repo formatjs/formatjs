@@ -14,4 +14,5 @@ export interface OptionsSchema {
   extractFromFormatMessageCall?: boolean;
   additionalComponentNames?: string[];
   outputEmptyJson?: boolean;
+  pragma?: string;
 }
