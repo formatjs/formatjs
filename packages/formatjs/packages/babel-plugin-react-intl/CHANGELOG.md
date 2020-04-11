@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.3.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.2.1...babel-plugin-react-intl@7.3.0) (2020-04-11)
+
+
+### Features
+
+* **@formatjs/cli:** add --throws option to prevent throwing on a single file ([7539936](https://github.com/formatjs/formatjs/commit/75399368f6ddd591b3fbe9c3ed6d9a30bea3586f))
+
+
+
+
+
 ## [7.2.1](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.2.0...babel-plugin-react-intl@7.2.1) (2020-04-11)
 
 
