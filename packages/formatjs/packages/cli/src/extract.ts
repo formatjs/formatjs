@@ -7,15 +7,14 @@ import {outputJSONSync} from 'fs-extra';
 import {interpolateName} from 'loader-utils';
 import {IOptions as GlobOptions} from 'glob';
 
-export type ExtractCLIOptions = Omit<OptionsSchema, 'overrideIdFn'> & {
+export type ExtractCLIOptions = Omit<ExtractOptions, 'overrideIdFn'> & {
   outFile?: string;
-  idInterpolationPattern?: string;
   ignore?: GlobOptions['ignore'];
 };
 
 export type ExtractOptions = OptionsSchema & {
+  throws?: boolean;
   idInterpolationPattern?: string;
-  ignore?: GlobOptions['ignore'];
 };
 
 function getBabelConfig(
@@ -62,16 +61,6 @@ function getBabelConfig(
   };
 }
 
-function extractSingleFile(
-  filename: string,
-  extractOptions: ExtractCLIOptions
-): babel.BabelFileResult | null {
-  return babel.transformFileSync(
-    filename,
-    getBabelConfig(extractOptions, {filename})
-  );
-}
-
 function getReactIntlMessages(
   babelResult: babel.BabelFileResult | null
 ): Record<string, ExtractedMessageDescriptor> {
@@ -87,58 +76,64 @@ function getReactIntlMessages(
 
 export async function extract(
   files: readonly string[],
-  {idInterpolationPattern, ...babelOpts}: ExtractOptions
+  {idInterpolationPattern, throws, ...babelOpts}: ExtractOptions
 ) {
-  let extractedMessages: Record<string, ExtractedMessageDescriptor> = {};
-
   if (files.length > 0) {
-    for (const file of files) {
-      if (!babelOpts.overrideIdFn && idInterpolationPattern) {
-        babelOpts = {
-          ...babelOpts,
-          overrideIdFn: (id, defaultMessage, description) =>
-            id ||
-            interpolateName(
-              {
-                resourcePath: file,
-              } as any,
-              idInterpolationPattern,
-              {content: `${defaultMessage}#${description}`}
-            ),
-        };
-      }
-      const babelResult = extractSingleFile(file, babelOpts);
-      const singleFileExtractedMessages = getReactIntlMessages(babelResult);
-
-      Object.assign(extractedMessages, singleFileExtractedMessages);
-    }
-  } else {
-    if (files.length === 0 && process.stdin.isTTY) {
-      warn('Reading source file from TTY.');
-    }
-    if (!babelOpts.overrideIdFn && idInterpolationPattern) {
-      babelOpts = {
-        ...babelOpts,
-        overrideIdFn: (id, defaultMessage, description) =>
-          id ||
-          interpolateName(
-            {
-              resourcePath: 'dummy',
-            } as any,
-            idInterpolationPattern,
-            {content: `${defaultMessage}#${description}`}
-          ),
-      };
-    }
-    const stdinSource = await getStdinAsString();
-    const babelResult = babel.transformSync(
-      stdinSource,
-      getBabelConfig(babelOpts)
+    const results = await Promise.all(
+      files.map(filename => {
+        if (!babelOpts.overrideIdFn && idInterpolationPattern) {
+          babelOpts = {
+            ...babelOpts,
+            overrideIdFn: (id, defaultMessage, description) =>
+              id ||
+              interpolateName(
+                {
+                  resourcePath: filename,
+                } as any,
+                idInterpolationPattern,
+                {content: `${defaultMessage}#${description}`}
+              ),
+          };
+        }
+        const promise = babel.transformFileAsync(
+          filename,
+          getBabelConfig(babelOpts, {filename: filename})
+        );
+        return throws ? promise : promise.catch(e => warn(e));
+      })
     );
-
-    extractedMessages = getReactIntlMessages(babelResult);
+    return Object.values(
+      results.reduce(
+        (all, babelResult) =>
+          babelResult ? {...all, ...getReactIntlMessages(babelResult)} : all,
+        {} as Record<string, ExtractedMessageDescriptor>
+      )
+    );
   }
-  return Object.values(extractedMessages);
+  if (files.length === 0 && process.stdin.isTTY) {
+    warn('Reading source file from TTY.');
+  }
+  if (!babelOpts.overrideIdFn && idInterpolationPattern) {
+    babelOpts = {
+      ...babelOpts,
+      overrideIdFn: (id, defaultMessage, description) =>
+        id ||
+        interpolateName(
+          {
+            resourcePath: 'dummy',
+          } as any,
+          idInterpolationPattern,
+          {content: `${defaultMessage}#${description}`}
+        ),
+    };
+  }
+  const stdinSource = await getStdinAsString();
+  const babelResult = babel.transformSync(
+    stdinSource,
+    getBabelConfig(babelOpts)
+  );
+
+  return Object.values(getReactIntlMessages(babelResult));
 }
 
 export default async function extractAndWrite(
@@ -149,17 +144,15 @@ export default async function extractAndWrite(
   if (outFile) {
     extractOpts.messagesDir = undefined;
   }
-  const extractedMessages = extract(files, extractOpts);
+  const extractedMessages = await extract(files, extractOpts);
   const printMessagesToStdout = extractOpts.messagesDir == null && !outFile;
   if (outFile) {
-    outputJSONSync(outFile, Object.values(extractedMessages), {
+    outputJSONSync(outFile, extractedMessages, {
       spaces: 2,
     });
   }
   if (printMessagesToStdout) {
-    process.stdout.write(
-      JSON.stringify(Object.values(extractedMessages), null, 2)
-    );
+    process.stdout.write(JSON.stringify(extractedMessages, null, 2));
     process.stdout.write('\n');
   }
 }

@@ -107,6 +107,10 @@ async function main(argv: string[]) {
       '--ignore <files>',
       'List of glob paths to **not** extract translations from.'
     )
+    .option(
+      '--throws',
+      'Whether to throw an exception when we fail to process any file in the batch.'
+    )
     .action(async (files: readonly string[], cmdObj: ExtractCLIOptions) => {
       const processedFiles = [];
       for (const f of files) {

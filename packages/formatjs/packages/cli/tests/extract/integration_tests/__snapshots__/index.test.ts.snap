@@ -229,6 +229,7 @@ Options:
   --extract-from-format-message-call                    Opt-in to extract from \`intl.formatMessage\` call with the same restrictions, e.g: has to be called with object literal such as \`intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'})\` (default: false)
   --output-empty-json                                   Output file with empty [] if src has no messages. For build systems like bazel that relies on specific output mapping, not writing out a file can cause issues. (default: false)
   --ignore <files>                                      List of glob paths to **not** extract translations from.
+  --throws                                              Whether to throw an exception when we fail to process any file in the batch.
   -h, --help                                            display help for command
 "
 `;

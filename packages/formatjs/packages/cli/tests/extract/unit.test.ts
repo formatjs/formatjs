@@ -12,7 +12,9 @@ jest.mock('@babel/core', () => {
   return {
     __esModule: true,
     transformSync: jest.fn().mockReturnValue(mockBabelResult),
-    transformFileSync: jest.fn().mockReturnValue(mockBabelResult),
+    transformFileAsync: jest
+      .fn()
+      .mockReturnValue(Promise.resolve(mockBabelResult)),
   };
 });
 
@@ -52,8 +54,8 @@ test('it passes camelCase-converted arguments to babel API', () => {
     additionalComponentNames: ['Foo', 'Bar'],
   };
 
-  expect(babel.transformFileSync).toHaveBeenCalledTimes(2);
-  expect(babel.transformFileSync).toHaveBeenNthCalledWith(
+  expect(babel.transformFileAsync).toHaveBeenCalledTimes(2);
+  expect(babel.transformFileAsync).toHaveBeenNthCalledWith(
     1,
     'file1.js',
     expect.objectContaining({
@@ -70,7 +72,7 @@ test('it passes camelCase-converted arguments to babel API', () => {
       ],
     })
   );
-  expect(babel.transformFileSync).toHaveBeenNthCalledWith(
+  expect(babel.transformFileAsync).toHaveBeenNthCalledWith(
     2,
     'file2.tsx',
     expect.objectContaining({

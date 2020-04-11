@@ -43,5 +43,6 @@ Options:
                                                         description: 'baz'})` (default: false)
   --ignore                                              List of glob paths to **not** extract translations from.
   --output-empty-json                                   Output file with empty [] if src has no messages. For build systems like bazel that relies on specific output mapping, not writing out a file can cause issues.
+  --throws                                              Whether to throw an exception when we fail to process any file in the batch.
   -h, --help                                            output usage information
 ```
