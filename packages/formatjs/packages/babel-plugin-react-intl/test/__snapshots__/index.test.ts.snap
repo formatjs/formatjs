@@ -9,7 +9,7 @@ Object {
       "id": "foo.bar.baz",
     },
   ],
-  "meta": Map {},
+  "meta": Object {},
 }
 `;
 
@@ -84,8 +84,8 @@ Object {
       "id": "escaped.apostrophe",
     },
   ],
-  "meta": Map {
-    "project" => "amazing",
+  "meta": Object {
+    "project": "amazing",
   },
 }
 `;
@@ -197,7 +197,9 @@ Object {
       "id": "foo.bar.baz",
     },
   ],
-  "meta": Map {},
+  "meta": Object {
+    "project": "amazing2",
+  },
 }
 `;
 
@@ -217,6 +219,7 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== \\"function\\") ret
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+// @react-intl project:amazing2
 class Foo extends _react.Component {
   render() {
     return (
@@ -260,7 +263,7 @@ Object {
       "id": "foo.bar.baz",
     },
   ],
-  "meta": Map {},
+  "meta": Object {},
 }
 `;
 
@@ -328,7 +331,7 @@ Object {
       "id": "foo.bar.baz",
     },
   ],
-  "meta": Map {},
+  "meta": Object {},
 }
 `;
 
@@ -382,7 +385,7 @@ Object {
       "id": "foo",
     },
   ],
-  "meta": Map {},
+  "meta": Object {},
 }
 `;
 
@@ -453,7 +456,7 @@ Object {
       "id": "foo",
     },
   ],
-  "meta": Map {},
+  "meta": Object {},
 }
 `;
 

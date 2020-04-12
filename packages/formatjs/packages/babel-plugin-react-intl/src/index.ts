@@ -45,9 +45,9 @@ interface MessageDescriptor {
 export type ExtractedMessageDescriptor = MessageDescriptor &
   Partial<SourceLocation> & {file?: string};
 
-export type ExtractionResult = {
+export type ExtractionResult<M = Record<string, string>> = {
   messages: ExtractedMessageDescriptor[];
-  meta: Map<string, string>;
+  meta: M;
 };
 
 type MessageDescriptorPath = Record<
@@ -89,7 +89,7 @@ interface BabelTransformationFile {
 
 interface State {
   ReactIntlMessages: Map<string, ExtractedMessageDescriptor>;
-  ReactIntlMeta: Map<string, string>;
+  ReactIntlMeta: Record<string, string>;
 }
 
 function getICUMessageValue(
@@ -361,7 +361,7 @@ export default declare((api: any, options: OptionsSchema) => {
     pre() {
       if (!this.ReactIntlMessages) {
         this.ReactIntlMessages = new Map();
-        this.ReactIntlMeta = new Map();
+        this.ReactIntlMeta = {};
       }
     },
 
@@ -411,26 +411,32 @@ export default declare((api: any, options: OptionsSchema) => {
     },
 
     visitor: {
-      ImportDeclaration(path) {
-        const comments = path.node.leadingComments;
+      Program(path) {
+        const {body} = path.node;
         const {ReactIntlMeta} = this;
-        if (!pragma || !comments) {
+        if (!pragma) {
           return;
         }
-        const pragmaLine = comments
-          .map(c => c.value)
-          .find(c => c.includes(pragma));
-        if (!pragmaLine) {
-          return;
+        for (const {leadingComments} of body) {
+          if (!leadingComments) {
+            continue;
+          }
+          const pragmaLineNode = leadingComments.find(c =>
+            c.value.includes(pragma)
+          );
+          if (!pragmaLineNode) {
+            continue;
+          }
+
+          pragmaLineNode.value
+            .split(pragma)[1]
+            .trim()
+            .split(/\s+/g)
+            .forEach(kv => {
+              const [k, v] = kv.split(':');
+              ReactIntlMeta[k] = v;
+            });
         }
-        pragmaLine
-          .split(pragma)[1]
-          .trim()
-          .split(/\s+/g)
-          .forEach(kv => {
-            const [k, v] = kv.split(':');
-            ReactIntlMeta.set(k, v);
-          });
       },
       JSXOpeningElement(
         path,

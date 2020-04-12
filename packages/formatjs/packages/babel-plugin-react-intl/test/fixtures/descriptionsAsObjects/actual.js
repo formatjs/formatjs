@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {FormattedMessage} from 'react-intl';
 
+// @react-intl project:amazing2
 export default class Foo extends Component {
   render() {
     return (
