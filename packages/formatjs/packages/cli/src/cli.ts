@@ -118,10 +118,10 @@ async function main(argv: string[]) {
       \`\`\`
       // @intl-meta project:my-custom-project
       import {FormattedMessage} from 'react-intl';
-      
+
       <FormattedMessage defaultMessage="foo" id="bar" />;
       \`\`\`
-      
+
       and with option \`{pragma: "@intl-meta"}\`, we'll parse out \`// @intl-meta project:my-custom-project\` into \`{project: 'my-custom-project'}\` in the result file.`
     )
     .action(async (files: readonly string[], cmdObj: ExtractCLIOptions) => {
@@ -146,6 +146,9 @@ async function main(argv: string[]) {
         extractFromFormatMessageCall: cmdObj.extractFromFormatMessageCall,
         outputEmptyJson: cmdObj.outputEmptyJson,
         pragma: cmdObj.pragma,
+        // It is possible that the glob pattern does NOT match anything.
+        // But so long as the glob pattern is provided, don't read from stdin.
+        readFromStdin: files.length === 0,
       });
       process.exit(0);
     });

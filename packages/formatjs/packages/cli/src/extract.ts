@@ -13,6 +13,7 @@ export type ExtractCLIOptions = Omit<ExtractOptions, 'overrideIdFn'> & {
 export type ExtractOptions = OptionsSchema & {
   throws?: boolean;
   idInterpolationPattern?: string;
+  readFromStdin?: boolean;
 };
 
 function getBabelConfig(
@@ -62,69 +63,71 @@ function getBabelConfig(
 
 export async function extract(
   files: readonly string[],
-  {idInterpolationPattern, throws, ...babelOpts}: ExtractOptions
-) {
-  if (files.length > 0) {
-    const results = await Promise.all(
-      files.map(filename => {
-        if (!babelOpts.overrideIdFn && idInterpolationPattern) {
-          babelOpts = {
-            ...babelOpts,
-            overrideIdFn: (id, defaultMessage, description) =>
-              id ||
-              interpolateName(
-                {
-                  resourcePath: filename,
-                } as any,
-                idInterpolationPattern,
-                {content: `${defaultMessage}#${description}`}
-              ),
-          };
-        }
-        const promise = babel.transformFileAsync(
-          filename,
-          getBabelConfig(babelOpts, {filename: filename})
-        );
-        return throws ? promise : promise.catch(e => warn(e));
-      })
+  {idInterpolationPattern, throws, readFromStdin, ...babelOpts}: ExtractOptions
+): Promise<ExtractionResult[]> {
+  if (readFromStdin) {
+    // Read from stdin
+    if (process.stdin.isTTY) {
+      warn('Reading source file from TTY.');
+    }
+    if (!babelOpts.overrideIdFn && idInterpolationPattern) {
+      babelOpts = {
+        ...babelOpts,
+        overrideIdFn: (id, defaultMessage, description) =>
+          id ||
+          interpolateName(
+            {
+              resourcePath: 'dummy',
+            } as any,
+            idInterpolationPattern,
+            {content: `${defaultMessage}#${description}`}
+          ),
+      };
+    }
+    const stdinSource = await getStdinAsString();
+    const babelResult = babel.transformSync(
+      stdinSource,
+      getBabelConfig(babelOpts)
     );
-    return results
-      .filter(r => r && r.metadata)
-      .map(
-        r =>
-          ((r as babel.BabelFileResult).metadata as any)[
-            'react-intl'
-          ] as ExtractionResult
-      );
-  }
-  if (files.length === 0 && process.stdin.isTTY) {
-    warn('Reading source file from TTY.');
-  }
-  if (!babelOpts.overrideIdFn && idInterpolationPattern) {
-    babelOpts = {
-      ...babelOpts,
-      overrideIdFn: (id, defaultMessage, description) =>
-        id ||
-        interpolateName(
-          {
-            resourcePath: 'dummy',
-          } as any,
-          idInterpolationPattern,
-          {content: `${defaultMessage}#${description}`}
-        ),
-    };
-  }
-  const stdinSource = await getStdinAsString();
-  const babelResult = babel.transformSync(
-    stdinSource,
-    getBabelConfig(babelOpts)
-  );
 
-  return [
-    ((babelResult as babel.BabelFileResult).metadata as any)[
-      'react-intl'
-    ] as ExtractionResult,
-  ];
+    return [
+      ((babelResult as babel.BabelFileResult).metadata as any)[
+        'react-intl'
+      ] as ExtractionResult,
+    ];
+  }
+
+  const results = await Promise.all(
+    files.map(filename => {
+      if (!babelOpts.overrideIdFn && idInterpolationPattern) {
+        babelOpts = {
+          ...babelOpts,
+          overrideIdFn: (id, defaultMessage, description) =>
+            id ||
+            interpolateName(
+              {
+                resourcePath: filename,
+              } as any,
+              idInterpolationPattern,
+              {content: `${defaultMessage}#${description}`}
+            ),
+        };
+      }
+      const promise = babel.transformFileAsync(
+        filename,
+        getBabelConfig(babelOpts, {filename: filename})
+      );
+      return throws ? promise : promise.catch(e => warn(e));
+    })
+  );
+  return results
+    .filter(r => r && r.metadata)
+    .map(
+      r =>
+        ((r as babel.BabelFileResult).metadata as any)[
+          'react-intl'
+        ] as ExtractionResult
+    );
 }
 
 export default async function extractAndWrite(

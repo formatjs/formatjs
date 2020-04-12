@@ -107,3 +107,11 @@ test('it passes ignore argument to glob sync', () => {
     expect.objectContaining({ignore: 'ignore-1.ts'})
   );
 });
+
+test('does not read from stdin when the glob pattern does NOT match anything', async () => {
+  // Does not match anything
+  jest.spyOn(glob, 'sync').mockImplementation(() => []);
+  // This should not hang
+  await cliMain(['node', 'path/to/formatjs-cli', 'extract', '*.doesnotexist']);
+  expect(babel.transformFileAsync).not.toHaveBeenCalled();
+}, 500); // 500ms timeout
