@@ -21,6 +21,7 @@ function getBabelConfig(
 ): babel.TransformOptions {
   return {
     babelrc: false,
+    configFile: false,
     parserOpts: {
       plugins: [
         'asyncGenerators',
