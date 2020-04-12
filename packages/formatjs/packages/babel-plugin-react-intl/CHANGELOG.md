@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.4.1](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.4.0...babel-plugin-react-intl@7.4.1) (2020-04-12)
+
+
+### Bug Fixes
+
+* **babel-plugin-react-intl:** fix pragma parsing so it can search for non-import nodes ([7df5060](https://github.com/formatjs/formatjs/commit/7df50602899b5e4a6ce945ce093c9c1781d7565a))
+
+
+
+
+
 # [7.4.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.3.0...babel-plugin-react-intl@7.4.0) (2020-04-11)
 
 
