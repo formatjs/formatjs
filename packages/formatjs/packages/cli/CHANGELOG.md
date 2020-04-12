@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.6.1...@formatjs/cli@1.6.2) (2020-04-12)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** do not read from stdin if glob pattern is pr… ([#632](https://github.com/formatjs/formatjs/issues/632)) ([54a7aea](https://github.com/formatjs/formatjs/commit/54a7aea5f6afd5e2e656b040b4b8b7eff0566bb7))
+* **@formatjs/cli:** ignore configFile, fix [#631](https://github.com/formatjs/formatjs/issues/631) ([ff09a5f](https://github.com/formatjs/formatjs/commit/ff09a5f9290c054badd4fbdd03c7ee8af5681bd0))
+
+
+
+
+
 ## [1.6.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.6.0...@formatjs/cli@1.6.1) (2020-04-12)
 
 **Note:** Version bump only for package @formatjs/cli

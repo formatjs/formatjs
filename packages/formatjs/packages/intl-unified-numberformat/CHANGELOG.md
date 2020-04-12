@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@3.3.1...@formatjs/intl-unified-numberformat@3.3.2) (2020-04-12)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** do not read from stdin if glob pattern is pr… ([#632](https://github.com/formatjs/formatjs/issues/632)) ([54a7aea](https://github.com/formatjs/formatjs/commit/54a7aea5f6afd5e2e656b040b4b8b7eff0566bb7))
+
+
+
+
+
 ## [3.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-unified-numberformat@3.3.0...@formatjs/intl-unified-numberformat@3.3.1) (2020-03-30)
 
 **Note:** Version bump only for package @formatjs/intl-unified-numberformat
