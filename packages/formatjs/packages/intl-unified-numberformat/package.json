@@ -36,7 +36,7 @@
     "benchmark": "ts-node --project ./tsconfig.cjs.json tests/benchmark",
     "build": "npm run cldr && npm run compile && npm run rollup ",
     "cldr": "NODE_OPTIONS=--max-old-space-size=8192 ts-node --project tsconfig.cjs.json scripts/cldr",
-    "clean": "rimraf dist dist-es6 lib src/locales.ts",
+    "clean": "rimraf dist dist-es6 lib src/locales.ts *.tsbuildinfo",
     "compile": "NODE_OPTIONS=--max-old-space-size=8192 tsc && tsc -p tsconfig.cjs.json && tsc -p tsconfig.es6.json && api-extractor run --local",
     "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json cross-env NODE_ENV=test jest",
     "rollup": "NODE_OPTIONS=--max-old-space-size=8192 rollup -c rollup.config.js",

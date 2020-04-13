@@ -38,7 +38,7 @@
   "scripts": {
     "cldr": "ts-node --project tsconfig.cjs.json scripts/cldr",
     "build": "npm run cldr && npm run compile && npm run rollup",
-    "clean": "rimraf dist dist-es6 lib",
+    "clean": "rimraf dist dist-es6 lib *.tsbuildinfo",
     "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json cross-env NODE_ENV=test jest",
     "test262": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json ts-node tests/runner",
     "test": "npm run jest && npm run test262",

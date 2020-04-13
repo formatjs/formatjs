@@ -29,7 +29,7 @@
   "sideEffects": false,
   "homepage": "https://github.com/formatjs/formatjs",
   "scripts": {
-    "clean": "rimraf dist lib",
+    "clean": "rimraf dist lib *.tsbuildinfo",
     "build": "tsc && tsc -p tsconfig.cjs.json",
     "test": "cross-env NODE_ICU_DATA=../../node_modules/full-icu mocha --opts ../../mocha.opts tests/index.ts"
   },

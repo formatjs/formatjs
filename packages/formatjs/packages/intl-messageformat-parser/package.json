@@ -11,7 +11,7 @@
     "src"
   ],
   "scripts": {
-    "clean": "rimraf dist lib",
+    "clean": "rimraf dist lib *.tsbuildinfo",
     "build": "node build.js && tsc && api-extractor run --local && tsc -p tsconfig.cjs.json && rollup -c rollup.config.js",
     "benchmark": "node ./test/benchmark.js",
     "test": "cross-env TS_NODE_PROJECT=./tsconfig.cjs.json cross-env NODE_ENV=test jest"

@@ -11,7 +11,7 @@
     "src"
   ],
   "scripts": {
-    "clean": "rimraf dist lib",
+    "clean": "rimraf dist lib *.tsbuildinfo",
     "benchmark": "ts-node --project tsconfig.cjs.json tests/benchmark",
     "build": "tsc && tsc -p tsconfig.cjs.json && rollup -c rollup.config.js",
     "test": "mocha --opts ../../mocha.opts tests/index.ts"

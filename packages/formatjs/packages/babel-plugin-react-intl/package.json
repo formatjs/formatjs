@@ -25,7 +25,7 @@
     "schema-utils": "^2.2.0"
   },
   "scripts": {
-    "clean": "rimraf lib test/fixtures/**/actual.json",
+    "clean": "rimraf lib test/fixtures/**/actual.json *.tsbuildinfo",
     "test": "cross-env TS_NODE_PROJECT=./tsconfig.json cross-env NODE_ENV=test jest",
     "cover": "npm t -- --coverage",
     "build": "json2ts -i src/options.schema.json -o src/options.ts && tsc"
