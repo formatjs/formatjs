@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.4.0](https://github.com/formatjs/react-intl/compare/v4.3.1...v4.4.0) (2020-04-14)
+
+
+### Features
+
+* add `defineMessage` macro to tag single message ([8bd9ad8](https://github.com/formatjs/react-intl/commit/8bd9ad8ddf632f500f4b3e0e7786a48c227c9961))
+
 ### [4.3.1](https://github.com/formatjs/react-intl/compare/v4.3.0...v4.3.1) (2020-03-28)
 
 
