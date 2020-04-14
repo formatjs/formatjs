@@ -12,7 +12,7 @@ import {formatPlural as formatPluralFn} from '../../src/formatters/plural';
 import {formatList as formatListFn} from '../../src/formatters/list';
 import {formatDisplayName as formatDisplayNameFn} from '../../src/formatters/displayName';
 import {formatMessage as baseFormatMessage} from '../../src/formatters/message';
-import {IntlFormatters, defineMessages, IntlConfig} from '../../src';
+import {IntlFormatters, defineMessages, defineMessage} from '../../src';
 
 describe('format API', () => {
   const {NODE_ENV} = process.env;
@@ -112,6 +112,11 @@ describe('format API', () => {
   it('defineMessages', function() {
     expect(defineMessages({})).toEqual({});
     expect(defineMessages({foo: {}})).toEqual({foo: {}});
+  });
+
+  it('defineMessage', function() {
+    expect(defineMessage({})).toEqual({});
+    expect(defineMessage({foo: {}})).toEqual({foo: {}});
   });
 
   describe('formatDate()', () => {
