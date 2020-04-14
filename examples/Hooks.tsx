@@ -37,7 +37,7 @@ const messages = {
  * BEFORE using the `useIntl()` hook,
  * as shown in the `App` component below
  *
- * ```js
+ * ```tsx
  * interface Props {}
  *
  * const Wrapper: React.FC<Props> = (props) => {

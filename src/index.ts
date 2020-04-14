@@ -8,6 +8,9 @@ export * from './types';
 export function defineMessages<T, U extends Record<string, T>>(msgs: U): U {
   return msgs;
 }
+export function defineMessage<T>(msg: T): T {
+  return msg;
+}
 import {
   createFormattedComponent,
   createFormattedDateTimePartsComponent,

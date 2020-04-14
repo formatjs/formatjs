@@ -36,7 +36,7 @@ _(If you're looking for React Intl v1, you can find it [here][v1-docs].)_
 
 There are several [runnable examples][examples] in this Git repo, but here's a Hello World one:
 
-```js
+```tsx
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {IntlProvider, FormattedMessage} from 'react-intl';

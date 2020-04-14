@@ -62,7 +62,7 @@ If you need to support older browsers, we recommend you do the following:
 2. Polyfill `Intl.DateTimeFormat` with https://github.com/formatjs/date-time-format-timezone
 3. If you're supporting browsers that do not have [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](https://www.npmjs.com/package/@formatjs/intl-pluralrules) in your build.
 
-```js
+```tsx
 if (!Intl.PluralRules) {
   require('@formatjs/intl-pluralrules/polyfill');
   require('@formatjs/intl-pluralrules/dist/locale-data/de'); // Add locale data for de
@@ -71,7 +71,7 @@ if (!Intl.PluralRules) {
 
 4. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat) in your build along with individual CLDR data for each locale you support.
 
-```js
+```tsx
 if (!Intl.RelativeTimeFormat) {
   require('@formatjs/intl-relativetimeformat/polyfill');
   require('@formatjs/intl-relativetimeformat/dist/locale-data/de'); // Add locale data for de
@@ -81,7 +81,7 @@ if (!Intl.RelativeTimeFormat) {
 5. If you need `Intl.DisplayNames`, include this [polyfill][displaynames-polyfill] in your build along
    with individual CLDR data for each locale you support.
 
-```js
+```tsx
 if (!Intl.DisplayNames) {
   require('@formatjs/intl-displaynames/polyfill');
   require('@formatjs/intl-displaynames/dist/locale-data/de'); // Add locale data for de

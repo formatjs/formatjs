@@ -67,7 +67,7 @@ The following examples will assume `mocha`, `expect`, and `expect-jsx` test fram
 
 #### <ShortDate> (Basic)
 
-```js
+```tsx
 import React from 'react';
 import {FormattedDate} from 'react-intl';
 
@@ -85,7 +85,7 @@ export default ShortDate;
 
 Testing the `<ShortDate>` example component is no different than testing any other basic component in your app using React's shallow rendering:
 
-```js
+```tsx
 import expect from 'expect';
 import expectJSX from 'expect-jsx';
 import React from 'react';
@@ -110,7 +110,7 @@ describe('<ShortDate>', function() {
 
 #### <RelativeDate> (Advanced, Uses `injectIntl()`)
 
-```js
+```tsx
 import React, {Component} from 'react';
 import {injectIntl, FormattedRelative} from 'react-intl';
 
@@ -131,7 +131,7 @@ Shallow rendering only tests one level deep and we want to test the rendering of
 
 Under the hood, `injectIntl()` passes `context.intl` which was created from the `<IntlProvider>` in the component's ancestry to `props.intl`. What we need to do is simulate this for our shallow rendering test:
 
-```js
+```tsx
 import expect from 'expect';
 import expectJSX from 'expect-jsx';
 import React from 'react';
@@ -173,7 +173,7 @@ describe('<RelativeDate>', function() {
 
 If you use the DOM in your tests, you need to supply the `IntlProvider` context to your components using composition:
 
-```js
+```tsx
 let element = ReactTestUtils.renderIntoDocument(
   <IntlProvider>
     <MyComponent />
@@ -185,7 +185,7 @@ However this means that the `element` reference is now pointing to the `IntlProv
 
 In your component, remember to add `{withRef: true}` when calling `injectIntl()`:
 
-```js
+```tsx
 class MyComponent extends React.Component {
   ...
   myClassFn() { ... }
@@ -195,7 +195,7 @@ export default injectIntl(MyComponent, {withRef: true});
 
 In your test, add a "ref" to extract the reference to your tested component:
 
-```js
+```tsx
 let element;
 let root = ReactTestUtils.renderIntoDocument(
   <IntlProvider>
@@ -206,7 +206,7 @@ let root = ReactTestUtils.renderIntoDocument(
 
 You can now access the wrapped component instance from `element` like this:
 
-```js
+```tsx
 element.myClassFn();
 ```
 
@@ -214,7 +214,7 @@ element.myClassFn();
 
 Since you will have to do this in all your unit tests, you should probably wrap that setup in a `render` function like this:
 
-```js
+```tsx
 function renderWithIntl(element) {
   let instance;
 
@@ -232,7 +232,7 @@ function renderWithIntl(element) {
 
 You can now use this in your tests like this:
 
-```js
+```tsx
 let element = renderWithIntl(<MyElement>);
 element.myClassFn();
 ```
@@ -287,7 +287,7 @@ export function shallowWithIntl(node: React.ReactElement) {
 
 Create a file with the above helper in e.g. `helpers/intl-enzyme-test-helper.js` and `import` the methods you need in your tests.
 
-```js
+```tsx
 // intl-enzyme-test-helper.js
 
 import {mountWithIntl} from 'helpers/intl-enzyme-test-helper.js';
@@ -310,7 +310,7 @@ Snapshot testing is a new feature of Jest that automatically generates text snap
 
 #### Helper function
 
-```js
+```tsx
 import React from 'react';
 import renderer from 'react-test-renderer';
 import {IntlProvider} from 'react-intl';
@@ -324,7 +324,7 @@ export default createComponentWithIntl;
 
 #### Usage
 
-```js
+```tsx
 import React from 'react';
 import createComponentWithIntl from '../../utils/createComponentWithIntl';
 import AppMain from '../AppMain';
@@ -350,7 +350,7 @@ You can find runnable example [here](https://github.com/formatjs/react-intl/tree
 
 Jest will automatically mock react-intl, so no any extra implementation is needed, tests should work as is:
 
-```js
+```tsx
 import React from 'react';
 import {shallow} from 'enzyme';
 import AppMain from '../AppMain';
@@ -384,30 +384,30 @@ Our custom `render` function can look like this:
 
 ```jsx
 // test-utils.js
-import React from 'react'
-import { render as rtlRender } from '@testing-library/react'
-import { IntlProvider } from 'react-intl'
+import React from 'react';
+import {render as rtlRender} from '@testing-library/react';
+import {IntlProvider} from 'react-intl';
 
-function render(ui, { locale = 'pt', ...renderOptions } = {}) {
-  function Wrapper({ children }) {
-    return <IntlProvider locale={locale}>{children}</IntlProvider>
+function render(ui, {locale = 'pt', ...renderOptions} = {}) {
+  function Wrapper({children}) {
+    return <IntlProvider locale={locale}>{children}</IntlProvider>;
   }
-  return rtlRender(ui, { wrapper: Wrapper, ...renderOptions })
+  return rtlRender(ui, {wrapper: Wrapper, ...renderOptions});
 }
 
 // re-export everything
-export * from '@testing-library/react'
+export * from '@testing-library/react';
 
 // override render method
-export { render }
+export {render};
 ```
 
 ```jsx
-import React from 'react'
-import '@testing-library/jest-dom/extend-expect'
+import React from 'react';
+import '@testing-library/jest-dom/extend-expect';
 // We're importing from our own created test-utils and not RTL's
-import { render, screen } from '../test-utils.js'
-import { FormattedDate } from 'react-intl'
+import {render, screen} from '../test-utils.js';
+import {FormattedDate} from 'react-intl';
 
 const FormatDateView = () => {
   return (
@@ -420,11 +420,11 @@ const FormatDateView = () => {
         year="numeric"
       />
     </div>
-  )
-}
+  );
+};
 
 test('it should render FormattedDate and have a formated pt date', () => {
-  render(<FormatDateView />)
-  expect(screen.getByTestId('date-display')).toHaveTextContent('11/03/2019')
-})
+  render(<FormatDateView />);
+  expect(screen.getByTestId('date-display')).toHaveTextContent('11/03/2019');
+});
 ```

@@ -39,7 +39,7 @@ This assumes a locale data `<script>` is added based on the request; e.g., for F
 
 **Using `<script src="react-intl/dist/react-intl.js>`:**
 
-```js
+```tsx
 if ('ReactIntl' in window && 'ReactIntlLocaleData' in window) {
   Object.keys(ReactIntlLocaleData).forEach(lang => {
     ReactIntl.addLocaleData(ReactIntlLocaleData[lang]);
@@ -49,7 +49,7 @@ if ('ReactIntl' in window && 'ReactIntlLocaleData' in window) {
 
 **Using Browserify/Webpack to Load React Intl:**
 
-```js
+```tsx
 import {addLocaleData} from 'react-intl';
 
 if ('ReactIntlLocaleData' in window) {
@@ -69,7 +69,7 @@ if ('ReactIntlLocaleData' in window) {
 
 In React Intl v1, you would add the `IntlMixin` to your root component; e.g., `<App>`. Remove the `IntlMixin` and instead wrap your root component with [`<IntlProvider>`](Components#intlprovider):
 
-```js
+```tsx
 import ReactDOM from 'react-dom';
 import {IntlProvider} from 'react-intl';
 
@@ -89,7 +89,7 @@ The `IntlMixin` also provided the imperative API for custom components to use th
 
 Here's an example of a custom `<RelativeTime>` stateless component which uses `injectIntl()` and the imperative [`formatDate()`](API.md#formatdate) API:
 
-```js
+```tsx
 import React from 'react';
 import {injectIntl, FormattedRelative} from 'react-intl';
 
@@ -141,7 +141,7 @@ React Intl v2 no longer supports nested `messages` objects, instead the collecti
 
 Apps using a nested `messages` object structure could use the following function to flatten their object according to React Intl v1's semantics:
 
-```js
+```tsx
 function flattenMessages(nestedMessages, prefix = '') {
   return Object.keys(nestedMessages).reduce((messages, key) => {
     let value = nestedMessages[key];
@@ -170,13 +170,13 @@ All calls to `getIntlMessage()` need to be replaced with a Message Descriptor.
 
 **Replace:**
 
-```js
+```tsx
 this.getIntlMessage('some.message.id');
 ```
 
 **With:**
 
-```js
+```tsx
 {
   id: 'some.message.id';
 }
@@ -188,7 +188,7 @@ A typical pattern when calling `formatMessage()` is to nest a call to `getIntlMe
 
 **1.0:**
 
-```js
+```tsx
 let message = this.formatMessage(
   this.getIntlMessage('some.message.id'),
   values
@@ -197,7 +197,7 @@ let message = this.formatMessage(
 
 **2.0:**
 
-```js
+```tsx
 let message = this.props.intl.formatMessage({id: 'some.message.id'}, values);
 ```
 
@@ -213,13 +213,13 @@ The following example shows up to update a `<FormattedMessage>` instance to use 
 
 **1.0:**
 
-```js
+```tsx
 <FormattedMessage message={this.getIntlMessage('greeting')} name="Eric" />
 ```
 
 **2.0:**
 
-```js
+```tsx
 <FormattedMessage id="greeting" values={{name: 'Eric'}} />
 ```
 
@@ -233,13 +233,13 @@ A new feature has been added to [`<FormattedRelative>`](Components#formattedrela
 
 **1.0:**
 
-```js
+```tsx
 <FormattedRelative value={date} now={otherDate} />
 ```
 
 **2.0:**
 
-```js
+```tsx
 <FormattedRelative value={date} initialNow={otherDate} />
 ```
 
@@ -251,13 +251,13 @@ The signature of the `formatRelative()` function has been aligned with the other
 
 **1.0:**
 
-```js
+```tsx
 let relative = this.formatRelative(date, {units: 'hour'}, {now: otherDate});
 ```
 
 **2.0:**
 
-```js
+```tsx
 let relative = this.props.intl.formatRelative(date, {
   units: 'hour',
   now: otherDate,
