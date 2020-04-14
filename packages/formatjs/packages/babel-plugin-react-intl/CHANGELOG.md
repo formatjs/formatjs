@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.5.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.4.3...babel-plugin-react-intl@7.5.0) (2020-04-14)
+
+
+### Bug Fixes
+
+* clean up tsbuildinfo before full build ([c301ca0](https://github.com/formatjs/formatjs/commit/c301ca02e0c319a0eb03921533053f0334ae5df1))
+
+
+### Features
+
+* **babel-plugin-react-intl:** support extracting single message from `defineMessage` macro ([f7ce912](https://github.com/formatjs/formatjs/commit/f7ce912a13e8d1050fe9c2b363390c3c7f3b290b))
+
+
+
+
+
 ## [7.4.3](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.4.2...babel-plugin-react-intl@7.4.3) (2020-04-13)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.7](https://github.com/formatjs/formatjs/compare/@formatjs/macro@0.2.6...@formatjs/macro@0.2.7) (2020-04-14)
+
+
+### Bug Fixes
+
+* clean up tsbuildinfo before full build ([c301ca0](https://github.com/formatjs/formatjs/commit/c301ca02e0c319a0eb03921533053f0334ae5df1))
+
+
+
+
+
 ## [0.2.6](https://github.com/formatjs/formatjs/compare/@formatjs/macro@0.2.5...@formatjs/macro@0.2.6) (2019-11-26)
 
 **Note:** Version bump only for package @formatjs/macro

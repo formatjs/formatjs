@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@2.2.1...@formatjs/intl-utils@2.2.2) (2020-04-14)
+
+
+### Bug Fixes
+
+* clean up tsbuildinfo before full build ([c301ca0](https://github.com/formatjs/formatjs/commit/c301ca02e0c319a0eb03921533053f0334ae5df1))
+
+
+
+
+
 ## [2.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@2.2.0...@formatjs/intl-utils@2.2.1) (2020-03-30)
 
 

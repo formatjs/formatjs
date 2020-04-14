@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.5](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.8.4...intl-locales-supported@1.8.5) (2020-04-14)
+
+
+### Bug Fixes
+
+* clean up tsbuildinfo before full build ([c301ca0](https://github.com/formatjs/formatjs/commit/c301ca02e0c319a0eb03921533053f0334ae5df1))
+
+
+
+
+
 ## [1.8.4](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.8.3...intl-locales-supported@1.8.4) (2019-11-26)
 
 **Note:** Version bump only for package intl-locales-supported
