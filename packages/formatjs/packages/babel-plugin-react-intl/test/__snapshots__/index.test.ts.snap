@@ -55,6 +55,136 @@ Array [
 ]
 `;
 
+exports[`emit asserts for:  output match: defineMessage 1`] = `
+Object {
+  "messages": Array [
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": "The default message",
+      "id": "foo.bar.baz",
+    },
+    Object {
+      "defaultMessage": "Hello Nurse!",
+      "description": "Another message",
+      "id": "foo.bar.biff",
+    },
+    Object {
+      "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+      "description": "Counts kittens",
+      "id": "app.home.kittens",
+    },
+    Object {
+      "defaultMessage": "   Some whitespace   ",
+      "description": "Whitespace",
+      "id": "trailing.ws",
+    },
+    Object {
+      "defaultMessage": "A quoted value ''{value}'",
+      "description": "Escaped apostrophe",
+      "id": "escaped.apostrophe",
+    },
+  ],
+  "meta": Object {
+    "project": "amazing",
+  },
+}
+`;
+
+exports[`emit asserts for:  output match: defineMessage 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require(\\"react\\"));
+
+var _reactIntl = require(\\"react-intl\\");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== \\"function\\") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+// @react-intl project:amazing
+const msgs = {
+  header: (0, _reactIntl.defineMessage)({
+    \\"id\\": \\"foo.bar.baz\\",
+    \\"defaultMessage\\": \\"Hello World!\\"
+  }),
+  content: (0, _reactIntl.defineMessage)({
+    \\"id\\": \\"foo.bar.biff\\",
+    \\"defaultMessage\\": \\"Hello Nurse!\\"
+  }),
+  kittens: (0, _reactIntl.defineMessage)({
+    \\"id\\": \\"app.home.kittens\\",
+    \\"defaultMessage\\": \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\"
+  }),
+  trailingWhitespace: (0, _reactIntl.defineMessage)({
+    \\"id\\": \\"trailing.ws\\",
+    \\"defaultMessage\\": \\"   Some whitespace   \\"
+  }),
+  escaped: (0, _reactIntl.defineMessage)({
+    \\"id\\": \\"escaped.apostrophe\\",
+    \\"defaultMessage\\": \\"A quoted value ''{value}'\\"
+  })
+};
+
+class Foo extends _react.Component {
+  render() {
+    return (
+      /*#__PURE__*/
+      _react.default.createElement(\\"div\\", null,
+      /*#__PURE__*/
+      _react.default.createElement(\\"h1\\", null,
+      /*#__PURE__*/
+      _react.default.createElement(_reactIntl.FormattedMessage, msgs.header)),
+      /*#__PURE__*/
+      _react.default.createElement(\\"p\\", null,
+      /*#__PURE__*/
+      _react.default.createElement(_reactIntl.FormattedMessage, msgs.content)),
+      /*#__PURE__*/
+      _react.default.createElement(\\"p\\", null,
+      /*#__PURE__*/
+      _react.default.createElement(_reactIntl.FormattedMessage, msgs.kittens)))
+    );
+  }
+
+}
+
+exports.default = Foo;"
+`;
+
+exports[`emit asserts for:  output match: defineMessage 3`] = `
+Array [
+  Object {
+    "defaultMessage": "Hello World!",
+    "description": "The default message",
+    "id": "foo.bar.baz",
+  },
+  Object {
+    "defaultMessage": "Hello Nurse!",
+    "description": "Another message",
+    "id": "foo.bar.biff",
+  },
+  Object {
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+    "description": "Counts kittens",
+    "id": "app.home.kittens",
+  },
+  Object {
+    "defaultMessage": "   Some whitespace   ",
+    "description": "Whitespace",
+    "id": "trailing.ws",
+  },
+  Object {
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe",
+    "id": "escaped.apostrophe",
+  },
+]
+`;
+
 exports[`emit asserts for:  output match: defineMessages 1`] = `
 Object {
   "messages": Array [

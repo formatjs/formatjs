@@ -635,13 +635,13 @@ export default declare((api: any, options: OptionsSchema) => {
         // Check that this is `defineMessages` call
         if (
           isMultipleMessagesDeclMacro(callee, moduleSourceName) ||
-          isSingularMessagesDeclMacro(callee)
+          isSingularMessagesDeclMacro(callee, moduleSourceName)
         ) {
           const firstArgument = path.get('arguments')[0];
           const messagesObj = getMessagesObjectFromExpression(firstArgument);
 
           if (assertObjectExpression(messagesObj, callee)) {
-            if (isSingularMessagesDeclMacro(callee)) {
+            if (isSingularMessagesDeclMacro(callee, moduleSourceName)) {
               processMessageObject(messagesObj as NodePath<ObjectExpression>);
             } else {
               messagesObj
@@ -674,8 +674,14 @@ function isMultipleMessagesDeclMacro(
   );
 }
 
-function isSingularMessagesDeclMacro(callee: NodePath) {
-  return referencesImport(callee, '@formatjs/macro', ['_']);
+function isSingularMessagesDeclMacro(
+  callee: NodePath,
+  moduleSourceName: string
+) {
+  return (
+    referencesImport(callee, moduleSourceName, ['defineMessage']) ||
+    referencesImport(callee, '@formatjs/macro', ['_'])
+  );
 }
 
 function getMessagesObjectFromExpression(
