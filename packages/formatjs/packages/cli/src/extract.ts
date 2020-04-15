@@ -80,7 +80,7 @@ export async function extract(
               resourcePath: 'dummy',
             } as any,
             idInterpolationPattern,
-            {content: `${defaultMessage}#${description}`}
+            {content: defaultMessage + (description ? '#' + description : '')}
           ),
       };
     }
