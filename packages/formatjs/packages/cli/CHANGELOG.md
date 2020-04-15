@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.5](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.6.4...@formatjs/cli@1.6.5) (2020-04-15)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** fix ID generation when description is undefined ([a31c2f2](https://github.com/formatjs/formatjs/commit/a31c2f2c20fd76d72ec77e987d666706be52fe6c))
+
+
+
+
+
 ## [1.6.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.6.3...@formatjs/cli@1.6.4) (2020-04-14)
 
 
