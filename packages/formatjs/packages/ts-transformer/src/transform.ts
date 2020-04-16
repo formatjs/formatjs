@@ -183,7 +183,11 @@ function extractMessageDescriptor(
         msg.id = interpolateName(
           {sourcePath: sf.fileName} as any,
           overrideIdFn,
-          {content: msg.description ? `${msg.defaultMessage}#${msg.description}` : msg.defaultMessage}
+          {
+            content: msg.description
+              ? `${msg.defaultMessage}#${msg.description}`
+              : msg.defaultMessage,
+          }
         );
         break;
       case 'function':
