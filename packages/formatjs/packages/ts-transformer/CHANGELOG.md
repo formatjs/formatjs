@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@1.1.1...@formatjs/ts-transformer@1.1.2) (2020-04-16)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** fix id generation when description is falsy ([c6a862a](https://github.com/formatjs/formatjs/commit/c6a862adc3f378d1d21130a557e291292bca9d78))
+
+
+
+
+
 ## [1.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@1.1.0...@formatjs/ts-transformer@1.1.1) (2020-03-29)
 
 **Note:** Version bump only for package @formatjs/ts-transformer
