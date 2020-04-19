@@ -163,7 +163,15 @@ export class IntlMessageFormat {
     locale: Intl.NumberFormat.supportedLocalesOf(this.locales)[0],
   });
   getAst = () => this.ast;
-  static defaultLocale = new Intl.NumberFormat().resolvedOptions().locale;
+  private static memoizedDefaultLocale: string | null = null;
+
+  static get defaultLocale() {
+    if (!IntlMessageFormat.memoizedDefaultLocale) {
+      IntlMessageFormat.memoizedDefaultLocale = new Intl.NumberFormat().resolvedOptions().locale;
+    }
+
+    return IntlMessageFormat.memoizedDefaultLocale;
+  }
   static __parse: typeof parse | undefined = parse;
   // Default format options used as the prototype of the `formats` provided to the
   // constructor. These are used when constructing the internal Intl.NumberFormat
