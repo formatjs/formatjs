@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.3.7](https://github.com/formatjs/formatjs/compare/intl-messageformat@8.3.6...intl-messageformat@8.3.7) (2020-04-20)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** IntlMessageFormat.defaultLocale is upda… ([#653](https://github.com/formatjs/formatjs/issues/653)) ([31d1422](https://github.com/formatjs/formatjs/commit/31d14226543765e4fb6dba535d6159a8bfa2719a)), closes [#587](https://github.com/formatjs/formatjs/issues/587)
+
+
+
+
+
 ## [8.3.6](https://github.com/formatjs/formatjs/compare/intl-messageformat@8.3.5...intl-messageformat@8.3.6) (2020-04-14)
 
 

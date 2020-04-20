@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@4.1.4...intl-messageformat-parser@5.0.0) (2020-04-20)
+
+
+### Features
+
+* **intl-messageformat-parser:** Fix number skeleton parser ([c052050](https://github.com/formatjs/formatjs/commit/c052050403ce3697790f9983b4756b354349f982))
+
+
+### BREAKING CHANGES
+
+* **intl-messageformat-parser:** Change precision wildcard token from `+` to `*` to conform with ICU67+
+
+
+
+
+
 ## [4.1.4](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@4.1.3...intl-messageformat-parser@4.1.4) (2020-04-14)
 
 
