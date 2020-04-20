@@ -1,36 +1,33 @@
-import * as React from 'react';
-import FormattedMessage from '../../../src/components/message';
-import IntlProvider, {
-  Props,
-  createIntl,
-} from '../../../src/components/provider';
-import {mountFormattedComponentWithProvider} from '../testUtils';
-import {mount, shallow} from 'enzyme';
-import {IntlShape, CustomFormats} from '../../../src';
+import * as React from 'react'
+import FormattedMessage from '../../../src/components/message'
+import IntlProvider, {Props, createIntl} from '../../../src/components/provider'
+import {mountFormattedComponentWithProvider} from '../testUtils'
+import {mount, shallow} from 'enzyme'
+import {IntlShape, CustomFormats} from '../../../src'
 
-const mountWithProvider = mountFormattedComponentWithProvider(FormattedMessage);
+const mountWithProvider = mountFormattedComponentWithProvider(FormattedMessage)
 
-const dummyContext = React.createContext('');
-const {Provider: DummyProvider, Consumer: DummyConsumer} = dummyContext;
+const dummyContext = React.createContext('')
+const {Provider: DummyProvider, Consumer: DummyConsumer} = dummyContext
 
 describe('<FormattedMessage>', () => {
-  let providerProps: Props;
-  let intl: IntlShape;
+  let providerProps: Props
+  let intl: IntlShape
 
   beforeEach(() => {
     providerProps = {
       locale: 'en',
       defaultLocale: 'en',
-    };
-    intl = createIntl(providerProps);
-    console.error = jest.fn();
-  });
+    }
+    intl = createIntl(providerProps)
+    console.error = jest.fn()
+  })
 
   it('has a `displayName`', () => {
-    expect(FormattedMessage.displayName).toBeA('string');
-  });
+    expect(FormattedMessage.displayName).toBeA('string')
+  })
 
-  it('should work with shallow enzyme', function() {
+  it('should work with shallow enzyme', function () {
     const wrapper = shallow(
       <span>
         <FormattedMessage id="foo" />
@@ -39,16 +36,11 @@ describe('<FormattedMessage>', () => {
         wrappingComponent: IntlProvider,
         wrappingComponentProps: {locale: 'en', messages: {foo: 'hello foo'}},
       }
-    );
-    expect(wrapper.find(FormattedMessage).dive()).toMatchSnapshot();
-    expect(
-      wrapper
-        .find(FormattedMessage)
-        .dive()
-        .dive()
-    ).toMatchSnapshot();
-  });
-  it('should work with mount enzyme', function() {
+    )
+    expect(wrapper.find(FormattedMessage).dive()).toMatchSnapshot()
+    expect(wrapper.find(FormattedMessage).dive().dive()).toMatchSnapshot()
+  })
+  it('should work with mount enzyme', function () {
     const wrapper = mount(
       <span>
         <FormattedMessage id="foo" />
@@ -57,34 +49,32 @@ describe('<FormattedMessage>', () => {
         wrappingComponent: IntlProvider,
         wrappingComponentProps: {locale: 'en', messages: {foo: 'hello foo'}},
       }
-    );
-    expect(wrapper).toMatchSnapshot();
-  });
+    )
+    expect(wrapper).toMatchSnapshot()
+  })
 
   it('throws when <IntlProvider> is missing from ancestry and there is no defaultMessage', () => {
     expect(() => mount(<FormattedMessage id="foo" />)).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
-    );
-  });
+    )
+  })
 
   it('should work if <IntlProvider> is missing from ancestry but there is defaultMessage', () => {
     const rendered = mount(
       <FormattedMessage id="hello" defaultMessage="Hello" />
-    );
+    )
 
-    expect(rendered.text()).toBe('Hello');
-    expect(console.error).toHaveBeenCalledTimes(1);
-  });
+    expect(rendered.text()).toBe('Hello')
+    expect(console.error).toHaveBeenCalledTimes(1)
+  })
 
-  it('should work w/ multiple context', function() {
+  it('should work w/ multiple context', function () {
     const descriptor = {
       id: 'hello',
       defaultMessage: 'hello world',
-    };
+    }
     function Foo() {
-      return (
-        <DummyConsumer>{id => <FormattedMessage id={id} />}</DummyConsumer>
-      );
+      return <DummyConsumer>{id => <FormattedMessage id={id} />}</DummyConsumer>
     }
     const rendered = mount(
       <DummyProvider value={descriptor.id}>
@@ -99,99 +89,99 @@ describe('<FormattedMessage>', () => {
           },
         },
       }
-    );
+    )
 
-    expect(rendered.text()).toBe(intl.formatMessage(descriptor));
-  });
+    expect(rendered.text()).toBe(intl.formatMessage(descriptor))
+  })
 
   it('renders a formatted message in a <>', () => {
     const descriptor = {
       id: 'hello',
       defaultMessage: 'Hello, World!',
-    };
-    const rendered = mountWithProvider(descriptor, providerProps);
+    }
+    const rendered = mountWithProvider(descriptor, providerProps)
 
-    expect(rendered.text()).toBe(intl.formatMessage(descriptor));
-  });
+    expect(rendered.text()).toBe(intl.formatMessage(descriptor))
+  })
 
   it('accepts `values` prop', () => {
     const descriptor = {
       id: 'hello',
       defaultMessage: 'Hello, {name}!',
-    };
-    const values = {name: 'Jest'};
-    const rendered = mountWithProvider({...descriptor, values}, providerProps);
+    }
+    const values = {name: 'Jest'}
+    const rendered = mountWithProvider({...descriptor, values}, providerProps)
 
-    expect(rendered.text()).toBe(intl.formatMessage(descriptor, values));
-  });
+    expect(rendered.text()).toBe(intl.formatMessage(descriptor, values))
+  })
 
   it('accepts string as `tagName` prop', () => {
     const descriptor = {
       id: 'hello',
       defaultMessage: 'Hello, World!',
-    };
-    const tagName = 'p';
+    }
+    const tagName = 'p'
 
     const rendered = mountWithProvider(
       {...descriptor, tagName},
       providerProps
-    ).find('p');
+    ).find('p')
 
-    expect(rendered.type()).toBe(tagName);
-  });
+    expect(rendered.type()).toBe(tagName)
+  })
 
   it('accepts an react element as `tagName` prop', () => {
     const descriptor = {
       id: 'hello',
       defaultMessage: 'Hello, World!',
-    };
+    }
 
-    const H1 = ({children}) => <h1>{children}</h1>;
+    const H1 = ({children}) => <h1>{children}</h1>
     const rendered = mountWithProvider(
       {...descriptor, tagName: H1},
       providerProps
-    ).find(H1);
+    ).find(H1)
 
-    expect(rendered.type()).toBe(H1);
-    expect(rendered.text()).toBe(intl.formatMessage(descriptor));
-  });
+    expect(rendered.type()).toBe(H1)
+    expect(rendered.text()).toBe(intl.formatMessage(descriptor))
+  })
 
   it('should render out raw array if tagName is not specified', () => {
     const descriptor = {
       id: 'hello',
       defaultMessage: 'Hello, World!',
       tagName: '',
-    };
+    }
 
     const rendered = mountWithProvider(descriptor, {
       ...providerProps,
       textComponent: undefined,
-    });
+    })
 
-    expect(rendered.text()).toBe(intl.formatMessage(descriptor));
-  });
+    expect(rendered.text()).toBe(intl.formatMessage(descriptor))
+  })
 
   it('supports function-as-child pattern', () => {
     const descriptor = {
       id: 'hello',
       defaultMessage: 'Hello, World!',
-    };
+    }
 
-    const spy = jest.fn().mockImplementation(() => <p>Jest</p>);
+    const spy = jest.fn().mockImplementation(() => <p>Jest</p>)
 
     const rendered = mountWithProvider(
       {...descriptor, children: spy},
       providerProps
-    );
+    )
 
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledTimes(1)
 
-    expect(spy.mock.calls[0][0]).toBe(intl.formatMessage(descriptor));
+    expect(spy.mock.calls[0][0]).toBe(intl.formatMessage(descriptor))
 
-    expect(rendered.text()).toBe('Jest');
-  });
+    expect(rendered.text()).toBe('Jest')
+  })
 
-  describe('rich text', function() {
+  describe('rich text', function () {
     it('supports legacy behavior', () => {
       const rendered = mountWithProvider(
         {
@@ -202,12 +192,12 @@ describe('<FormattedMessage>', () => {
           },
         },
         providerProps
-      );
+      )
 
-      const nameNode = rendered.find('b');
-      expect(nameNode.type()).toBe('b');
-      expect(nameNode.text()).toBe('Jest');
-    });
+      const nameNode = rendered.find('b')
+      expect(nameNode.type()).toBe('b')
+      expect(nameNode.text()).toBe('Jest')
+    })
     it('supports rich-text message formatting', () => {
       const rendered = mountWithProvider(
         {
@@ -219,12 +209,12 @@ describe('<FormattedMessage>', () => {
           },
         },
         providerProps
-      );
+      )
 
-      const nameNode = rendered.find('b');
-      expect(nameNode.type()).toBe('b');
-      expect(nameNode.text()).toBe('Jest');
-    });
+      const nameNode = rendered.find('b')
+      expect(nameNode.type()).toBe('b')
+      expect(nameNode.text()).toBe('Jest')
+    })
 
     it('supports rich-text message formatting w/ nested tag', () => {
       const rendered = mountWithProvider(
@@ -238,9 +228,9 @@ describe('<FormattedMessage>', () => {
           },
         },
         providerProps
-      );
-      expect(rendered).toMatchSnapshot();
-    });
+      )
+      expect(rendered).toMatchSnapshot()
+    })
 
     it('supports rich-text message formatting in function-as-child pattern', () => {
       const rendered = mountWithProvider(
@@ -253,14 +243,14 @@ describe('<FormattedMessage>', () => {
           children: (...chunks) => <strong>{chunks}</strong>,
         },
         providerProps
-      );
+      )
 
-      const nameNode = rendered.find('b');
-      expect(nameNode.type()).toBe('b');
-      expect(nameNode.text()).toBe('Jest');
-    });
-  });
-  it('should use timeZone from Provider', function() {
+      const nameNode = rendered.find('b')
+      expect(nameNode.type()).toBe('b')
+      expect(nameNode.text()).toBe('Jest')
+    })
+  })
+  it('should use timeZone from Provider', function () {
     const rendered = mountWithProvider(
       {
         id: 'hello',
@@ -275,12 +265,12 @@ describe('<FormattedMessage>', () => {
         },
         timeZone: 'Asia/Tokyo',
       }
-    );
+    )
 
-    expect(rendered.text()).toBe('Hello, 1/1/70 - 9:00 AM');
-  });
+    expect(rendered.text()).toBe('Hello, 1/1/70 - 9:00 AM')
+  })
 
-  it('should use timeZone from Provider for defaultMessage', function() {
+  it('should use timeZone from Provider for defaultMessage', function () {
     const rendered = mountWithProvider(
       {
         id: 'hello',
@@ -293,12 +283,12 @@ describe('<FormattedMessage>', () => {
         ...providerProps,
         timeZone: 'Asia/Tokyo',
       }
-    );
+    )
 
-    expect(rendered.text()).toBe('Hello, 1/1/70 - 9:00 AM');
-  });
+    expect(rendered.text()).toBe('Hello, 1/1/70 - 9:00 AM')
+  })
 
-  it('should merge timeZone into formats', function() {
+  it('should merge timeZone into formats', function () {
     const rendered = mountWithProvider(
       {
         id: 'hello',
@@ -321,14 +311,14 @@ describe('<FormattedMessage>', () => {
         },
         timeZone: 'Asia/Tokyo',
       }
-    );
+    )
 
     expect(rendered.text()).toBe(
       'Hello, 1/1/70 - 9:00:00 AM Japan Standard Time'
-    );
-  });
+    )
+  })
 
-  it('should merge timeZone into defaultFormats', function() {
+  it('should merge timeZone into defaultFormats', function () {
     const rendered = mountWithProvider(
       {
         id: 'hello',
@@ -349,14 +339,14 @@ describe('<FormattedMessage>', () => {
         },
         timeZone: 'Asia/Tokyo',
       }
-    );
+    )
 
     expect(rendered.text()).toBe(
       'Hello, 1/1/70 - 9:00:00 AM Japan Standard Time'
-    );
-  });
+    )
+  })
 
-  it('should handle defaultFormat merge correctly', function() {
+  it('should handle defaultFormat merge correctly', function () {
     const rendered = mountWithProvider(
       {
         id: 'hello',
@@ -386,12 +376,12 @@ describe('<FormattedMessage>', () => {
         },
         timeZone: undefined,
       }
-    );
+    )
 
-    expect(rendered.text()).toBe('The day is Thursday.');
-  });
+    expect(rendered.text()).toBe('The day is Thursday.')
+  })
 
-  it('should handle defaultFormat merge correctly w/ timeZone', function() {
+  it('should handle defaultFormat merge correctly w/ timeZone', function () {
     const rendered = mountWithProvider(
       {
         id: 'hello',
@@ -421,21 +411,21 @@ describe('<FormattedMessage>', () => {
         },
         timeZone: 'Asia/Tokyo',
       }
-    );
+    )
 
-    expect(rendered.text()).toBe('The day is Thursday.');
-  });
+    expect(rendered.text()).toBe('The day is Thursday.')
+  })
 
   it('should re-render when `values` are different', () => {
     const descriptor = {
       id: 'hello',
       defaultMessage: 'Hello, {name}!',
-    };
+    }
     const values = {
       name: 'Jest',
-    };
+    }
 
-    const spy = jest.fn().mockImplementation(() => null);
+    const spy = jest.fn().mockImplementation(() => null)
     const injectIntlContext = mountWithProvider(
       {
         ...descriptor,
@@ -443,24 +433,24 @@ describe('<FormattedMessage>', () => {
         children: spy,
       },
       providerProps
-    );
+    )
 
-    expect(spy).toHaveBeenCalled();
-    spy.mockClear();
+    expect(spy).toHaveBeenCalled()
+    spy.mockClear()
     injectIntlContext.setProps({
       ...descriptor,
       values: {
         ...values, // create new object instance with same values to test shallow equality check
       },
-    });
-    expect(spy).not.toHaveBeenCalled();
+    })
+    expect(spy).not.toHaveBeenCalled()
 
     injectIntlContext.setProps({
       ...descriptor,
       values: {
         name: 'Enzyme',
       },
-    });
-    expect(spy).toHaveBeenCalled();
-  });
-});
+    })
+    expect(spy).toHaveBeenCalled()
+  })
+})

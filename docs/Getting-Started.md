@@ -64,8 +64,8 @@ If you need to support older browsers, we recommend you do the following:
 
 ```tsx
 if (!Intl.PluralRules) {
-  require('@formatjs/intl-pluralrules/polyfill');
-  require('@formatjs/intl-pluralrules/dist/locale-data/de'); // Add locale data for de
+  require('@formatjs/intl-pluralrules/polyfill')
+  require('@formatjs/intl-pluralrules/dist/locale-data/de') // Add locale data for de
 }
 ```
 
@@ -73,8 +73,8 @@ if (!Intl.PluralRules) {
 
 ```tsx
 if (!Intl.RelativeTimeFormat) {
-  require('@formatjs/intl-relativetimeformat/polyfill');
-  require('@formatjs/intl-relativetimeformat/dist/locale-data/de'); // Add locale data for de
+  require('@formatjs/intl-relativetimeformat/polyfill')
+  require('@formatjs/intl-relativetimeformat/dist/locale-data/de') // Add locale data for de
 }
 ```
 
@@ -83,8 +83,8 @@ if (!Intl.RelativeTimeFormat) {
 
 ```tsx
 if (!Intl.DisplayNames) {
-  require('@formatjs/intl-displaynames/polyfill');
-  require('@formatjs/intl-displaynames/dist/locale-data/de'); // Add locale data for de
+  require('@formatjs/intl-displaynames/polyfill')
+  require('@formatjs/intl-displaynames/dist/locale-data/de') // Add locale data for de
 }
 ```
 
@@ -187,7 +187,7 @@ ReactDOM.render(
     <App />
   </IntlProvider>,
   document.getElementById('container')
-);
+)
 ```
 
 **See:** The [**`<IntlProvider>` docs**](./Components.md#intlprovider) for more details.
@@ -201,15 +201,15 @@ React Intl's imperative API is accessed via [**`injectIntl`**](API.md#injectintl
 Here's an example using `<IntlProvider>`, `<Formatted*>` components, and the imperative API to setup an i18n context and format data:
 
 ```tsx
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {injectIntl, IntlProvider, FormattedRelative} from 'react-intl';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import {injectIntl, IntlProvider, FormattedRelative} from 'react-intl'
 
 const PostDate = injectIntl(({date, intl}) => (
   <span title={intl.formatDate(date)}>
     <FormattedRelative value={date} />
   </span>
-));
+))
 
 const App = ({post}) => (
   <div>
@@ -219,7 +219,7 @@ const App = ({post}) => (
     </p>
     <div>{post.body}</div>
   </div>
-);
+)
 
 ReactDOM.render(
   <IntlProvider locale={navigator.language}>
@@ -232,7 +232,7 @@ ReactDOM.render(
     />
   </IntlProvider>,
   document.getElementById('container')
-);
+)
 ```
 
 Assuming `navigator.language` is `"en-us"`:
@@ -329,7 +329,7 @@ Our [Advanced Usage](./Advanced-Usage.md) has further guides for production setu
 We've built https://www.npmjs.com/package/@formatjs/cli that helps you extract messages from a list of files. It uses [`babel-plugin-react-intl`](https://www.npmjs.com/package/babel-plugin-react-intl) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
 
 ```tsx
-import {defineMessages} from 'react-intl';
+import {defineMessages} from 'react-intl'
 
 defineMessages({
   foo: {
@@ -337,24 +337,24 @@ defineMessages({
     defaultMessage: 'foo',
     description: 'bar',
   },
-});
+})
 ```
 
 ```tsx
-import {FormattedMessage} from 'react-intl';
+import {FormattedMessage} from 'react-intl'
 
-<FormattedMessage id="foo" defaultMessage="foo" description="bar" />;
+;<FormattedMessage id="foo" defaultMessage="foo" description="bar" />
 ```
 
 ```tsx
 function Comp(props) {
-  const {intl} = props;
+  const {intl} = props
   return intl.formatMessage({
     // The whole `intl.formatMessage` is required so we can extract
     id: 'foo',
     defaultMessage: 'foo',
     description: 'bar',
-  });
+  })
 }
 ```
 

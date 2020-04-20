@@ -1,5 +1,5 @@
-import * as React from 'react';
-import {IntlProvider, FormattedMessage} from '../';
+import * as React from 'react'
+import {IntlProvider, FormattedMessage} from '../'
 
 interface Props {}
 
@@ -21,7 +21,7 @@ const messages = {
   richertext:
     'I have & < &nbsp; <bold>{num, plural, one {# & dog} other {# dogs}}</bold>',
   unicode: 'Hello\u0020{placeholder}',
-};
+}
 
 const App: React.FC<Props> = () => {
   return (
@@ -72,11 +72,11 @@ const App: React.FC<Props> = () => {
         />
       </p>
     </IntlProvider>
-  );
-};
+  )
+}
 
 App.defaultProps = {
   currentTime: new Date(),
-};
+}
 
-export default App;
+export default App

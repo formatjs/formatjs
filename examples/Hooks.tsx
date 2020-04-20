@@ -3,10 +3,10 @@
  * instead of `formatMessage({...})` is available @ `./Messages.tsx`
  */
 
-import * as React from 'react';
-import {IntlProvider} from '../';
+import * as React from 'react'
+import {IntlProvider} from '../'
 
-import {useIntl} from '../';
+import {useIntl} from '../'
 
 interface Props {}
 
@@ -28,7 +28,7 @@ const messages = {
   richertext:
     'I have & < &nbsp; <bold>{num, plural, one {# & dog} other {# dogs}}</bold>',
   unicode: 'Hello\u0020{placeholder}',
-};
+}
 
 /**
  * @NOTE
@@ -51,7 +51,7 @@ const messages = {
  *
  */
 const Hooks: React.FC<Props> = () => {
-  const {formatMessage: f} = useIntl();
+  const {formatMessage: f} = useIntl()
 
   return (
     /* <IntlProvider locale="en" messages={messages}> */
@@ -110,19 +110,19 @@ const Hooks: React.FC<Props> = () => {
       </p>
     </>
     /* </IntlProvider> */
-  );
-};
+  )
+}
 
 Hooks.defaultProps = {
   currentTime: new Date(),
-};
+}
 
 const App: React.FC<Props> = props => {
   return (
     <IntlProvider locale="en" messages={messages}>
       <Hooks {...props} />
     </IntlProvider>
-  );
-};
+  )
+}
 
-export default App;
+export default App

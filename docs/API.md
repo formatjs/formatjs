@@ -58,20 +58,20 @@ React Intl wraps these APIs in the same way it wraps the built-in Intl APIs.
 
 ```ts
 interface MessageDescriptor {
-  id: string;
-  description?: string | object;
-  defaultMessage?: string;
+  id: string
+  description?: string | object
+  defaultMessage?: string
 }
 
 function defineMessages(
   messageDescriptors: Record<string, MessageDescriptor>
-): Record<string, MessageDescriptor>;
+): Record<string, MessageDescriptor>
 ```
 
 This function is exported by the `react-intl` package and is simply a _hook_ for the [babel-plugin-react-intl](https://github.com/formatjs/formatjs/tree/master/packages/babel-plugin-react-intl) package to use when extracting default messages defined in JavaScript source files. This function simply returns the Message Descriptor map object that's passed-in.
 
 ```ts
-import {defineMessages} from 'react-intl';
+import {defineMessages} from 'react-intl'
 
 const messages = defineMessages({
   greeting: {
@@ -79,7 +79,7 @@ const messages = defineMessages({
     description: 'Message to greet the user.',
     defaultMessage: 'Hello, {name}!',
   },
-});
+})
 ```
 
 ### Injection API
@@ -97,19 +97,19 @@ These should be used when your React component needs to format data to a string 
 If a component can be expressed in a form of function component, using `useIntl` hook can be handy. This `useIntl` hook do not expect any option as its argument when being called. Typically, here is how you would like to use:
 
 ```tsx
-import React from 'react';
-import {useIntl, FormattedDate} from 'react-intl';
+import React from 'react'
+import {useIntl, FormattedDate} from 'react-intl'
 
 const FunctionComponent: React.FC<{date: number | Date}> = ({date}) => {
-  const intl = useIntl();
+  const intl = useIntl()
   return (
     <span title={intl.formatDate(date)}>
       <FormattedDate value={date} />
     </span>
-  );
-};
+  )
+}
 
-export default FunctionComponent;
+export default FunctionComponent
 ```
 
 To keep the API surface clean and simple, we only provide `useIntl` hook in the package. If preferable, user can wrap this built-in hook to make customized hook like `useFormatMessage` easily. Please visit React's official website for more general [introduction on React hooks](https://reactjs.org/docs/hooks-intro.html).
@@ -118,12 +118,12 @@ To keep the API surface clean and simple, we only provide `useIntl` hook in the 
 
 ```ts
 type WrappedComponentProps<IntlPropName extends string = 'intl'> = {
-  [k in IntlPropName]: IntlShape;
-};
+  [k in IntlPropName]: IntlShape
+}
 
 type WithIntlProps<P> = Omit<P, keyof WrappedComponentProps> & {
-  forwardedRef?: React.Ref<any>;
-};
+  forwardedRef?: React.Ref<any>
+}
 
 function injectIntl<
   IntlPropName extends string = 'intl',
@@ -132,8 +132,8 @@ function injectIntl<
   WrappedComponent: React.ComponentType<P>,
   options?: Opts<IntlPropName>
 ): React.ComponentType<WithIntlProps<P>> & {
-  WrappedComponent: typeof WrappedComponent;
-};
+  WrappedComponent: typeof WrappedComponent
+}
 ```
 
 This function is exported by the `react-intl` package and is a High-Order Component (HOC) factory. It will wrap the passed-in React component with another React component which provides the imperative formatting API into the wrapped component via its `props`. (This is similar to the connect-to-stores pattern found in many Flux implementations.)
@@ -141,56 +141,56 @@ This function is exported by the `react-intl` package and is a High-Order Compon
 By default, the formatting API will be provided to the wrapped component via `props.intl`, but this can be overridden when specifying `options.intlPropName`. The value of the prop will be of type [`IntlShape`](#Intlshape), defined in the next section.
 
 ```tsx
-import React, {PropTypes} from 'react';
-import {injectIntl, FormattedDate} from 'react-intl';
+import React, {PropTypes} from 'react'
+import {injectIntl, FormattedDate} from 'react-intl'
 
 interface Props {
-  date: Date | number;
+  date: Date | number
 }
 
 const ClassComponent: React.FC<Props> = props => {
   const {
     date,
     intl, // Injected by `injectIntl`
-  } = props;
+  } = props
   return (
     <span title={intl.formatDate(date)}>
       <FormattedDate value={date} />
     </span>
-  );
-};
+  )
+}
 
-export default injectIntl(ClassComponent);
+export default injectIntl(ClassComponent)
 ```
 
 #### `IntlShape`
 
 ```ts
 interface IntlConfig {
-  locale: string;
-  timeZone?: string;
-  formats: CustomFormats;
-  textComponent?: React.ComponentType | keyof React.ReactHTML;
-  messages: Record<string, string> | Record<string, MessageFormatElement[]>;
-  defaultLocale: string;
-  defaultFormats: CustomFormats;
-  onError(err: string): void;
+  locale: string
+  timeZone?: string
+  formats: CustomFormats
+  textComponent?: React.ComponentType | keyof React.ReactHTML
+  messages: Record<string, string> | Record<string, MessageFormatElement[]>
+  defaultLocale: string
+  defaultFormats: CustomFormats
+  onError(err: string): void
 }
 
 interface IntlFormatters {
-  formatDate(value: number | Date, opts: FormatDateOptions): string;
-  formatTime(value: number | Date, opts: FormatDateOptions): string;
+  formatDate(value: number | Date, opts: FormatDateOptions): string
+  formatTime(value: number | Date, opts: FormatDateOptions): string
   formatRelativeTime(
     value: number,
     unit: Unit,
     opts: FormatRelativeOptions
-  ): string;
-  formatNumber(value: number, opts: FormatNumberOptions): string;
-  formatPlural(value: number, opts: FormatPluralOptions): string;
-  formatMessage(descriptor: MessageDescriptor, values: any): string;
+  ): string
+  formatNumber(value: number, opts: FormatNumberOptions): string
+  formatPlural(value: number, opts: FormatPluralOptions): string
+  formatMessage(descriptor: MessageDescriptor, values: any): string
 }
 
-type IntlShape = IntlConfig & IntlFormatters;
+type IntlShape = IntlConfig & IntlFormatters
 ```
 
 This interface is exported by the `react-intl` package that can be used in conjunction with the [`injectIntl`](#injectintl) HOC factory function.
@@ -243,7 +243,7 @@ Each of these APIs support custom named formats via their `format` option which 
 function formatDate(
   value: number | Date,
   options?: Intl.DateTimeFormatOptions & {format?: string}
-): string;
+): string
 ```
 
 This function will return a formatted date string. It expects a `value` which can be parsed as a date (i.e., `isFinite(new Date(value))`), and accepts `options` that conform to `DateTimeFormatOptions`.
@@ -253,7 +253,7 @@ formatDate(Date.now(), {
   year: 'numeric',
   month: 'numeric',
   day: 'numeric',
-}); // "3/4/2016"
+}) // "3/4/2016"
 ```
 
 #### `formatTime`
@@ -262,7 +262,7 @@ formatDate(Date.now(), {
 function formatTime(
   value: number | Date,
   options?: Intl.DateTimeFormatOptions & {format?: string}
-): string;
+): string
 ```
 
 This function will return a formatted date string, but it differs from [`formatDate`](#formatdate) by having the following default options:
@@ -277,7 +277,7 @@ This function will return a formatted date string, but it differs from [`formatD
 It expects a `value` which can be parsed as a date (i.e., `isFinite(new Date(value))`), and accepts `options` that conform to `DateTimeFormatOptions`.
 
 ```tsx
-formatTime(Date.now()); // "4:03 PM"
+formatTime(Date.now()) // "4:03 PM"
 ```
 
 #### `formatRelativeTime`
@@ -291,32 +291,32 @@ type Unit =
   | 'week'
   | 'month'
   | 'quarter'
-  | 'year';
+  | 'year'
 
 type RelativeTimeFormatOptions = {
-  numeric?: 'always' | 'auto';
-  style?: 'long' | 'short' | 'narrow';
-};
+  numeric?: 'always' | 'auto'
+  style?: 'long' | 'short' | 'narrow'
+}
 
 function formatRelativeTime(
   value: number,
   unit: Unit,
   options?: Intl.RelativeTimeFormatOptions & {
-    format?: string;
+    format?: string
   }
-): string;
+): string
 ```
 
 This function will return a formatted relative time string (e.g., "1 hour ago"). It expects a `value` which is a number, a `unit` and `options` that conform to `Intl.RelativeTimeFormatOptions`.
 
 ```tsx
-formatRelativeTime(0); // "now"
-formatRelativeTime(-1); // "1 second ago"
-formatRelativeTime(1, 'hour'); // "in 1 hour"
-formatRelativeTime(-1, 'day', {numeric: 'auto'}); // "yesterday"
-formatRelativeTime(-1, 'day'); // "1 day ago"
-formatRelativeTime(-24, 'hour'); // "24 hours ago"
-formatRelativeTime(-24, 'hour', {style: 'narrow'}); // "24 hr. ago"
+formatRelativeTime(0) // "now"
+formatRelativeTime(-1) // "1 second ago"
+formatRelativeTime(1, 'hour') // "in 1 hour"
+formatRelativeTime(-1, 'day', {numeric: 'auto'}) // "yesterday"
+formatRelativeTime(-1, 'day') // "1 day ago"
+formatRelativeTime(-24, 'hour') // "24 hours ago"
+formatRelativeTime(-24, 'hour', {style: 'narrow'}) // "24 hr. ago"
 ```
 
 ### Number Formatting APIs
@@ -336,15 +336,15 @@ This function uses [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/doc
 function formatNumber(
   value: number,
   options?: Intl.NumberFormatOptions & {format?: string}
-): string;
+): string
 ```
 
 This function will return a formatted number string. It expects a `value` which can be parsed as a number, and accepts `options` that conform to `NumberFormatOptions`.
 
 ```tsx
-formatNumber(1000); // "1,000"
-formatNumber(0.5, {style: 'percent'}); // "50%"
-formatNumber(1000, {style: 'currency', currency: 'USD'}); // $1,000
+formatNumber(1000) // "1,000"
+formatNumber(0.5, {style: 'percent'}) // "50%"
+formatNumber(1000, {style: 'currency', currency: 'USD'}) // $1,000
 ```
 
 **Formatting Number using `unit`**
@@ -356,26 +356,26 @@ formatNumber(1000, {
   style: 'unit',
   unit: 'kilobyte',
   unitDisplay: 'narrow',
-}); // "1,000kB"
+}) // "1,000kB"
 
 formatNumber(1000, {
   unit: 'fahrenheit',
   unitDisplay: 'long',
   style: 'unit',
-}); // "1,000 degrees Fahrenheit"
+}) // "1,000 degrees Fahrenheit"
 ```
 
 #### `formatPlural`
 
 ```ts
 type PluralFormatOptions = {
-  type?: 'cardinal' | 'ordinal' = 'cardinal';
-};
+  type?: 'cardinal' | 'ordinal' = 'cardinal'
+}
 
 function formatPlural(
   value: number,
   options?: Intl.PluralFormatOptions
-): 'zero' | 'one' | 'two' | 'few' | 'many' | 'other';
+): 'zero' | 'one' | 'two' | 'few' | 'many' | 'other'
 ```
 
 This function will return a plural category string: `"zero"`, `"one"`, `"two"`, `"few"`, `"many"`, or `"other"`. It expects a `value` which can be parsed as a number, and accepts `options` that conform to `PluralFormatOptions`.
@@ -383,12 +383,12 @@ This function will return a plural category string: `"zero"`, `"one"`, `"two"`, 
 This is a low-level utility whose output could be provided to a `switch` statement to select a particular string to display.
 
 ```tsx
-formatPlural(0); // "other"
-formatPlural(1); // "one"
-formatPlural(2); // "other"
-formatPlural(2, {style: 'ordinal'}); // "two"
-formatPlural(3, {style: 'ordinal'}); // "few"
-formatPlural(4, {style: 'ordinal'}); // "other"
+formatPlural(0) // "other"
+formatPlural(1) // "one"
+formatPlural(2) // "other"
+formatPlural(2, {style: 'ordinal'}) // "two"
+formatPlural(3, {style: 'ordinal'}) // "few"
+formatPlural(4, {style: 'ordinal'}) // "other"
 ```
 
 **Note:** This function should only be used in apps that only need to support one language. If your app supports multiple languages use [`formatMessage`](#formatmessage) instead.
@@ -401,21 +401,21 @@ formatPlural(4, {style: 'ordinal'}); // "other"
 
 ```ts
 type ListFormatOptions = {
-  type?: 'disjunction' | 'conjunction' | 'unit';
-  style?: 'long' | 'short' | 'narrow';
-};
+  type?: 'disjunction' | 'conjunction' | 'unit'
+  style?: 'long' | 'short' | 'narrow'
+}
 
 function formatList(
   elements: (string | React.ReactNode)[],
   options?: Intl.ListFormatOptions
-): string | React.ReactNode[];
+): string | React.ReactNode[]
 ```
 
 This function allows you to join list of things together in an i18n-safe way. For example, when the locale is `en`:
 
 ```tsx
-formatList(['Me', 'myself', 'I'], {type: 'conjunction'}); // Me, myself, and I
-formatList(['5 hours', '3 minutes'], {type: 'unit'}); // 5 hours, 3 minutes
+formatList(['Me', 'myself', 'I'], {type: 'conjunction'}) // Me, myself, and I
+formatList(['5 hours', '3 minutes'], {type: 'unit'}) // 5 hours, 3 minutes
 ```
 
 #### Message Syntax
@@ -450,10 +450,10 @@ React Intl has a Message Descriptor concept which is used to define your app's d
 
 ```tsx
 type MessageDescriptor = {
-  id: string;
-  defaultMessage?: string;
-  description?: string | object;
-};
+  id: string
+  defaultMessage?: string
+  description?: string | object
+}
 ```
 
 **Note:** The [babel-plugin-react-intl](https://github.com/formatjs/formatjs/tree/master/packages/babel-plugin-react-intl) package can be used to extract Message Descriptors defined in JavaScript source files.
@@ -473,18 +473,18 @@ Above, "source" refers to using the template as is, without any substitutions ma
 #### `formatMessage`
 
 ```ts
-type MessageFormatPrimitiveValue = string | number | boolean | null | undefined;
+type MessageFormatPrimitiveValue = string | number | boolean | null | undefined
 function formatMessage(
   descriptor: MessageDescriptor,
   values?: Record<string, MessageFormatPrimitiveValue>
-): string;
+): string
 function formatMessage(
   descriptor: MessageDescriptor,
   values?: Record<
     string,
     MessageFormatPrimitiveValue | React.ReactElement | FormatXMLElementFn
   >
-): string | React.ReactNodeArray;
+): string | React.ReactNodeArray
 ```
 
 This function will return a formatted message string. It expects a `MessageDescriptor` with at least an `id` property, and accepts a shallow `values` object which are used to fill placeholders in the message.
@@ -498,9 +498,9 @@ const messages = defineMessages({
     defaultMessage: 'Hello, {name}!',
     description: 'Greeting to welcome the user to the app',
   },
-});
+})
 
-formatMessage(messages.greeting, {name: 'Eric'}); // "Hello, Eric!"
+formatMessage(messages.greeting, {name: 'Eric'}) // "Hello, Eric!"
 ```
 
 with `ReactElement`
@@ -512,9 +512,9 @@ const messages = defineMessages({
     defaultMessage: 'Hello, {name}!',
     description: 'Greeting to welcome the user to the app',
   },
-});
+})
 
-formatMessage(messages.greeting, {name: <b>Eric</b>}); // ['Hello, ', <b>Eric</b>, '!']
+formatMessage(messages.greeting, {name: <b>Eric</b>}) // ['Hello, ', <b>Eric</b>, '!']
 ```
 
 with rich text formatting
@@ -526,12 +526,12 @@ const messages = defineMessages({
     defaultMessage: 'Hello, <bold>{name}</bold>!',
     description: 'Greeting to welcome the user to the app',
   },
-});
+})
 
 formatMessage(messages.greeting, {
   name: 'Eric',
   bold: str => <b>{str}</b>,
-}); // ['Hello, ', <b>Eric</b>, '!']
+}) // ['Hello, ', <b>Eric</b>, '!']
 ```
 
 The message we defined using [`defineMessages`](#definemessages) to support extraction via `babel-plugin-react-intl`, but it doesn't have to be if you're not using the Babel plugin.
@@ -542,32 +542,32 @@ The message we defined using [`defineMessages`](#definemessages) to support extr
 
 ```ts
 type FormatDisplayNameOptions = {
-  style?: 'narrow' | 'short' | 'long';
-  type?: 'language' | 'region' | 'script' | 'currency';
-  fallback?: 'code' | 'none';
-};
+  style?: 'narrow' | 'short' | 'long'
+  type?: 'language' | 'region' | 'script' | 'currency'
+  fallback?: 'code' | 'none'
+}
 
 function formatDisplayName(
   value: string | number | object,
   options?: FormatDisplayNameOptions
-): string | undefined;
+): string | undefined
 ```
 
 Usage examples:
 
 ```ts
 // When locale is `en`
-formatDisplayName('zh-Hans-SG'); //=> Simplified Chinese (Singapore)
+formatDisplayName('zh-Hans-SG') //=> Simplified Chinese (Singapore)
 // When locale is `zh`
-formatDisplayName('zh-Hans-SG'); //=> 简体中文（新加坡）
+formatDisplayName('zh-Hans-SG') //=> 简体中文（新加坡）
 
 // When locale is `en`...
 // ISO-15924 four letters script code to localized display name
-formatDisplayName('Deva', {type: 'script'}); //=> Devanagari
+formatDisplayName('Deva', {type: 'script'}) //=> Devanagari
 // ISO-4217 currency code to localized display name
-formatDisplayName('CNY', {type: 'currency'}); //=> Chinese Yuan
+formatDisplayName('CNY', {type: 'currency'}) //=> Chinese Yuan
 // ISO-3166 two letters region code to localized display name
-formatDisplayName('UN', {type: 'region'}); //=> United Nations
+formatDisplayName('UN', {type: 'region'}) //=> United Nations
 ```
 
 ## React Intl Components

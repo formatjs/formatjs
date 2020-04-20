@@ -1,7 +1,7 @@
-import * as React from 'react';
-import {mount} from 'enzyme';
+import * as React from 'react'
+import {mount} from 'enzyme'
 
-export default function(ReactIntl) {
+export default function (ReactIntl) {
   describe('format', () => {
     const {
       IntlProvider,
@@ -10,60 +10,60 @@ export default function(ReactIntl) {
       FormattedRelativeTime,
       FormattedNumber,
       FormattedMessage,
-    } = ReactIntl;
+    } = ReactIntl
 
     const renderWithIntlProvider = (Element, providerProps) =>
       mount(
         <IntlProvider locale="en" {...providerProps}>
           {Element}
         </IntlProvider>
-      );
+      )
 
     it('formats dates', () => {
-      const date = new Date();
-      const el = <FormattedDate id="test" value={date} month="numeric" />;
+      const date = new Date()
+      const el = <FormattedDate id="test" value={date} month="numeric" />
 
-      const rendered = renderWithIntlProvider(el);
-      expect(rendered.text()).toBe(String(date.getMonth() + 1));
-    });
+      const rendered = renderWithIntlProvider(el)
+      expect(rendered.text()).toBe(String(date.getMonth() + 1))
+    })
 
     it('formats times', () => {
-      const date = new Date();
-      const el = <FormattedTime id="test" value={date} />;
+      const date = new Date()
+      const el = <FormattedTime id="test" value={date} />
 
-      const hours = date.getHours();
-      const minutes = date.getMinutes();
+      const hours = date.getHours()
+      const minutes = date.getMinutes()
 
-      const rendered = renderWithIntlProvider(el);
+      const rendered = renderWithIntlProvider(el)
       expect(rendered.text()).toBe(
         `${hours > 12 ? hours % 12 : hours || '12'}:` +
           `${minutes < 10 ? `0${minutes}` : minutes} ` +
           `${hours < 12 ? 'AM' : 'PM'}`
-      );
-    });
+      )
+    })
 
     it('formats relative time', () => {
-      const el = <FormattedRelativeTime id="test" value={-1} />;
+      const el = <FormattedRelativeTime id="test" value={-1} />
 
-      const rendered = renderWithIntlProvider(el);
-      expect(rendered.text()).toBe('1 second ago');
-    });
+      const rendered = renderWithIntlProvider(el)
+      expect(rendered.text()).toBe('1 second ago')
+    })
 
     it('formats numbers with thousands separators', () => {
-      const el = <FormattedNumber id="test" value={1000} />;
+      const el = <FormattedNumber id="test" value={1000} />
 
-      const rendered = renderWithIntlProvider(el);
-      expect(rendered.text()).toBe('1,000');
-    });
+      const rendered = renderWithIntlProvider(el)
+      expect(rendered.text()).toBe('1,000')
+    })
 
     it('formats numbers with decimal separators', () => {
       const el = (
         <FormattedNumber id="test" value={0.1} minimumFractionDigits={2} />
-      );
+      )
 
-      const rendered = renderWithIntlProvider(el);
-      expect(rendered.text()).toBe('0.10');
-    });
+      const rendered = renderWithIntlProvider(el)
+      expect(rendered.text()).toBe('0.10')
+    })
 
     it('pluralizes labels in strings', () => {
       const el = (
@@ -74,10 +74,10 @@ export default function(ReactIntl) {
             emails: 1000,
           }}
         />
-      );
+      )
 
-      const rendered = renderWithIntlProvider(el);
-      expect(rendered.text()).toBe('You have 1,000 emails.');
-    });
-  });
+      const rendered = renderWithIntlProvider(el)
+      expect(rendered.text()).toBe('You have 1,000 emails.')
+    })
+  })
 }

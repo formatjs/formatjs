@@ -9,13 +9,13 @@ This source code is licensed under the BSD-style license found in the LICENSE
 file in the root directory of React's source tree.
 */
 
-import {IntlConfig, IntlCache, CustomFormats, Formatters} from './types';
-import * as React from 'react';
-import IntlMessageFormat from 'intl-messageformat';
-import memoizeIntlConstructor from 'intl-format-cache';
-import {invariant} from '@formatjs/intl-utils';
-import {IntlRelativeTimeFormatOptions} from '@formatjs/intl-relativetimeformat';
-import { ReactIntlError, ReactIntlErrorCode } from './error';
+import {IntlConfig, IntlCache, CustomFormats, Formatters} from './types'
+import * as React from 'react'
+import IntlMessageFormat from 'intl-messageformat'
+import memoizeIntlConstructor from 'intl-format-cache'
+import {invariant} from '@formatjs/intl-utils'
+import {IntlRelativeTimeFormatOptions} from '@formatjs/intl-relativetimeformat'
+import {ReactIntlError, ReactIntlErrorCode} from './error'
 
 export function filterProps<T extends Record<string, any>, K extends string>(
   props: T,
@@ -24,13 +24,13 @@ export function filterProps<T extends Record<string, any>, K extends string>(
 ): Pick<T, K> {
   return whitelist.reduce((filtered, name) => {
     if (name in props) {
-      filtered[name] = props[name];
+      filtered[name] = props[name]
     } else if (name in defaults) {
-      filtered[name] = defaults[name]!;
+      filtered[name] = defaults[name]!
     }
 
-    return filtered;
-  }, {} as Pick<T, K>);
+    return filtered
+  }, {} as Pick<T, K>)
 }
 
 export function invariantIntlContext(intl?: any): asserts intl {
@@ -38,12 +38,12 @@ export function invariantIntlContext(intl?: any): asserts intl {
     intl,
     '[React Intl] Could not find required `intl` object. ' +
       '<IntlProvider> needs to exist in the component ancestry.'
-  );
+  )
 }
 
 export function defaultErrorHandler(error: ReactIntlError): void {
   if (process.env.NODE_ENV !== 'production') {
-    console.error(error);
+    console.error(error)
   }
 }
 
@@ -66,7 +66,7 @@ export const DEFAULT_INTL_CONFIG: Pick<
   defaultFormats: {},
 
   onError: defaultErrorHandler,
-};
+}
 
 export function createIntlCache(): IntlCache {
   return {
@@ -77,7 +77,7 @@ export function createIntlCache(): IntlCache {
     pluralRules: {},
     list: {},
     displayNames: {},
-  };
+  }
 }
 
 /**
@@ -87,9 +87,9 @@ export function createIntlCache(): IntlCache {
 export function createFormatters(
   cache: IntlCache = createIntlCache()
 ): Formatters {
-  const RelativeTimeFormat = (Intl as any).RelativeTimeFormat;
-  const ListFormat = (Intl as any).ListFormat;
-  const DisplayNames = (Intl as any).DisplayNames;
+  const RelativeTimeFormat = (Intl as any).RelativeTimeFormat
+  const ListFormat = (Intl as any).ListFormat
+  const DisplayNames = (Intl as any).DisplayNames
   return {
     getDateTimeFormat: memoizeIntlConstructor(
       Intl.DateTimeFormat,
@@ -104,7 +104,7 @@ export function createFormatters(
     getPluralRules: memoizeIntlConstructor(Intl.PluralRules, cache.pluralRules),
     getListFormat: memoizeIntlConstructor(ListFormat, cache.list),
     getDisplayNames: memoizeIntlConstructor(DisplayNames, cache.displayNames),
-  };
+  }
 }
 
 export function getNamedFormat<T extends keyof CustomFormats>(
@@ -117,14 +117,19 @@ export function getNamedFormat<T extends keyof CustomFormats>(
   | Intl.DateTimeFormatOptions
   | IntlRelativeTimeFormatOptions
   | undefined {
-  const formatType = formats && formats[type];
-  let format;
+  const formatType = formats && formats[type]
+  let format
   if (formatType) {
-    format = formatType[name];
+    format = formatType[name]
   }
   if (format) {
-    return format;
+    return format
   }
 
-  onError(new ReactIntlError(ReactIntlErrorCode.UNSUPPORTED_FORMATTER, `No ${type} format named: ${name}`));
+  onError(
+    new ReactIntlError(
+      ReactIntlErrorCode.UNSUPPORTED_FORMATTER,
+      `No ${type} format named: ${name}`
+    )
+  )
 }

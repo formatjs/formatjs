@@ -1,13 +1,13 @@
-import * as React from 'react';
-import {mount} from 'enzyme';
-import Provider, {OptionalIntlConfig} from '../../src/components/provider';
+import * as React from 'react'
+import {mount} from 'enzyme'
+import Provider, {OptionalIntlConfig} from '../../src/components/provider'
 
 function StrictProvider(props: OptionalIntlConfig) {
   return (
     <React.StrictMode>
       <Provider {...props} />
     </React.StrictMode>
-  );
+  )
 }
 
 export function mountFormattedComponentWithProvider<P>(
@@ -17,6 +17,6 @@ export function mountFormattedComponentWithProvider<P>(
     return mount(<Comp {...props} />, {
       wrappingComponent: StrictProvider,
       wrappingComponentProps: providerProps,
-    });
-  };
+    })
+  }
 }

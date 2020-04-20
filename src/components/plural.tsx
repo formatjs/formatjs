@@ -4,20 +4,20 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import * as React from 'react';
-import withIntl from './injectIntl';
-import {IntlShape, FormatPluralOptions} from '../types';
+import * as React from 'react'
+import withIntl from './injectIntl'
+import {IntlShape, FormatPluralOptions} from '../types'
 
 interface Props extends FormatPluralOptions {
-  value: number;
-  intl: IntlShape;
-  other: React.ReactNode;
-  zero?: React.ReactNode;
-  one?: React.ReactNode;
-  two?: React.ReactNode;
-  few?: React.ReactNode;
-  many?: React.ReactNode;
-  children?(value: React.ReactNode): React.ReactElement | null;
+  value: number
+  intl: IntlShape
+  other: React.ReactNode
+  zero?: React.ReactNode
+  one?: React.ReactNode
+  two?: React.ReactNode
+  few?: React.ReactNode
+  many?: React.ReactNode
+  children?(value: React.ReactNode): React.ReactElement | null
 }
 
 const FormattedPlural: React.FC<Props> = props => {
@@ -26,25 +26,25 @@ const FormattedPlural: React.FC<Props> = props => {
     other,
     children,
     intl: {formatPlural, textComponent: Text},
-  } = props;
+  } = props
 
-  const pluralCategory = formatPlural(value, props);
-  const formattedPlural = props[pluralCategory as 'one'] || other;
+  const pluralCategory = formatPlural(value, props)
+  const formattedPlural = props[pluralCategory as 'one'] || other
 
   if (typeof children === 'function') {
-    return children(formattedPlural);
+    return children(formattedPlural)
   }
   if (Text) {
-    return <Text>{formattedPlural}</Text>;
+    return <Text>{formattedPlural}</Text>
   }
   // Work around @types/react where React.FC cannot return string
-  return formattedPlural as any;
-};
+  return formattedPlural as any
+}
 
 FormattedPlural.defaultProps = {
   type: 'cardinal',
-};
+}
 
-FormattedPlural.displayName = 'FormattedPlural';
+FormattedPlural.displayName = 'FormattedPlural'
 
-export default withIntl(FormattedPlural);
+export default withIntl(FormattedPlural)

@@ -54,15 +54,15 @@ This component is used to setup the i18n context for a tree. Usually, this compo
 
 ```ts
 interface IntlConfig {
-  locale: string;
-  timeZone?: string;
-  formats: CustomFormats;
-  textComponent?: React.ComponentType | keyof React.ReactHTML;
-  messages: Record<string, string> | Record<string, MessageFormatElement[]>;
-  defaultLocale: string;
-  defaultFormats: CustomFormats;
-  wrapRichTextChunksInFragment?: boolean;
-  onError(err: string): void;
+  locale: string
+  timeZone?: string
+  formats: CustomFormats
+  textComponent?: React.ComponentType | keyof React.ReactHTML
+  messages: Record<string, string> | Record<string, MessageFormatElement[]>
+  defaultLocale: string
+  defaultFormats: CustomFormats
+  wrapRichTextChunksInFragment?: boolean
+  onError(err: string): void
 }
 ```
 
@@ -82,7 +82,7 @@ These configuration props are combined with the `<IntlProvider>`'s component-spe
 props: IntlConfig &
   {
     children: ReactNode,
-  };
+  }
 ```
 
 Finally, child elements _must_ be supplied to `<IntlProvider>`.
@@ -100,14 +100,14 @@ const App = ({importantDate}) => (
       weekday="long"
     />
   </div>
-);
+)
 
 ReactDOM.render(
   <IntlProvider locale={navigator.language}>
     <App importantDate={new Date(1459913574887)} />
   </IntlProvider>,
   document.getElementById('container')
-);
+)
 ```
 
 Assuming `navigator.language` is `"fr"`:
@@ -170,7 +170,7 @@ props: Intl.DateTimeFormatOptions &
     value: any,
     format: string,
     children: (formattedDate: string) => ReactElement,
-  };
+  }
 ```
 
 By default `<FormattedDate>` will render the formatted date into a `<React.Fragment>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
@@ -212,7 +212,7 @@ props: Intl.DateTimeFormatOptions &
     value: any,
     format: string,
     children: (parts: Intl.DateTimeFormatPart[]) => ReactElement,
-  };
+  }
 ```
 
 ```tsx
@@ -255,7 +255,7 @@ props: DateTimeFormatOptions &
     value: any,
     format: string,
     children: (formattedDate: string) => ReactElement,
-  };
+  }
 ```
 
 By default `<FormattedTime>` will render the formatted time into a `React.Fragment`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
@@ -282,7 +282,7 @@ props: Intl.DateTimeFormatOptions &
     value: any,
     format: string,
     children: (parts: Intl.DateTimeFormatPart[]) => ReactElement,
-  };
+  }
 ```
 
 ```tsx
@@ -307,9 +307,9 @@ This component uses the [`formatRelativeTime`](API.md#formatrelativetime) API an
 
 ```ts
 type RelativeTimeFormatOptions = {
-  numeric?: 'always' | 'auto';
-  style?: 'long' | 'short' | 'narrow';
-};
+  numeric?: 'always' | 'auto'
+  style?: 'long' | 'short' | 'narrow'
+}
 ```
 
 **Prop Types:**
@@ -322,7 +322,7 @@ props: RelativeTimeFormatOptions &
     format: string,
     updateIntervalInSeconds: number,
     children: (formattedDate: string) => ReactElement,
-  };
+  }
 ```
 
 By default `<FormattedRelativeTime>` will render the formatted relative time into a `React.Fragment`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
@@ -381,7 +381,7 @@ props: NumberFormatOptions &
     value: number,
     format: string,
     children: (formattedNumber: string) => ReactElement,
-  };
+  }
 ```
 
 By default `<FormattedNumber>` will render the formatted number into a `React.Fragment`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
@@ -393,7 +393,7 @@ By default `<FormattedNumber>` will render the formatted number into a `React.Fr
 ```
 
 ```tsx
-1, 000;
+1, 000
 ```
 
 **Formatting Number using `unit`**
@@ -438,7 +438,7 @@ props: NumberFormatOptions &
     value: number,
     format: string,
     children: (parts: Intl.NumberFormatPart[]) => ReactElement,
-  };
+  }
 ```
 
 **Example:**
@@ -478,7 +478,7 @@ props: PluralFormatOptions &
     many: ReactElement,
 
     children: (formattedPlural: ReactElement) => ReactElement,
-  };
+  }
 ```
 
 By default `<FormattedPlural>` will select a [plural category](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) (`zero`, `one`, `two`, `few`, `many`, or `other`) and render the corresponding React element into a `React.Fragment`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
@@ -505,7 +505,7 @@ This component uses [`formatList`](API.md#formatlist) API and [Intl.ListFormat](
 props: ListFormatOptions &
   {
     children: (chunksOrString: string | React.ReactElement[]) => ReactElement,
-  };
+  }
 ```
 
 **Example:**
@@ -560,10 +560,10 @@ React Intl has a Message Descriptor concept which is used to define your app's d
 
 ```tsx
 type MessageDescriptor = {
-  id: string;
-  defaultMessage?: string;
-  description?: string | object;
-};
+  id: string
+  defaultMessage?: string
+  description?: string | object
+}
 ```
 
 A common practice is to use the [`defineMessages`](API.md#definemessages) API to define all of a component's strings, then _spread_ the Message Descriptor as props to the component.
@@ -592,7 +592,7 @@ props: MessageDescriptor &
     values: object,
     tagName: string,
     children: (...formattedMessage: Array<ReactElement>) => ReactElement,
-  };
+  }
 ```
 
 By default `<FormattedMessage>` will render the formatted string into a `<React.Fragment>`. If you need to customize rendering, you can either wrap it with another React element (recommended), specify a different `tagName` (e.g., `'div'`), or pass a function as the child.
@@ -716,7 +716,7 @@ has `props` that correspond to `DisplayNameOptions`. You might need a [polyfill]
 props: FormatDisplayNameOptions &
   {
     value: string | number | object,
-  };
+  }
 ```
 
 **Example:**

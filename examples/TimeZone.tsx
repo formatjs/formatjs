@@ -1,13 +1,13 @@
-import * as React from 'react';
+import * as React from 'react'
 import {
   FormattedDate,
   FormattedTime,
   IntlProvider,
   FormattedDateParts,
-} from '../';
+} from '../'
 
 interface Props {
-  currentTime?: Date | number;
+  currentTime?: Date | number
 }
 
 const App: React.FC<Props> = ({currentTime = Date.now()}) => {
@@ -34,11 +34,11 @@ const App: React.FC<Props> = ({currentTime = Date.now()}) => {
         </FormattedDateParts>
       </p>
     </IntlProvider>
-  );
-};
+  )
+}
 
 App.defaultProps = {
   currentTime: new Date(),
-};
+}
 
-export default App;
+export default App

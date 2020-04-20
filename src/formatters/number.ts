@@ -1,7 +1,7 @@
-import {IntlConfig, Formatters, IntlFormatters} from '../types';
-import {getNamedFormat, filterProps} from '../utils';
-import {UnifiedNumberFormatOptions} from '@formatjs/intl-unified-numberformat';
-import {ReactIntlError, ReactIntlErrorCode} from '../error';
+import {IntlConfig, Formatters, IntlFormatters} from '../types'
+import {getNamedFormat, filterProps} from '../utils'
+import {UnifiedNumberFormatOptions} from '@formatjs/intl-unified-numberformat'
+import {ReactIntlError, ReactIntlErrorCode} from '../error'
 
 const NUMBER_FORMAT_OPTIONS: Array<keyof UnifiedNumberFormatOptions> = [
   'localeMatcher',
@@ -27,7 +27,7 @@ const NUMBER_FORMAT_OPTIONS: Array<keyof UnifiedNumberFormatOptions> = [
   'signDisplay',
   'unit',
   'unitDisplay',
-];
+]
 
 export function getFormatter(
   {
@@ -38,13 +38,13 @@ export function getFormatter(
   getNumberFormat: Formatters['getNumberFormat'],
   options: Parameters<IntlFormatters['formatNumber']>[1] = {}
 ): Intl.NumberFormat {
-  const {format} = options;
+  const {format} = options
   const defaults = ((format &&
     getNamedFormat(formats!, 'number', format, onError)) ||
-    {}) as UnifiedNumberFormatOptions;
-  const filteredOptions = filterProps(options, NUMBER_FORMAT_OPTIONS, defaults);
+    {}) as UnifiedNumberFormatOptions
+  const filteredOptions = filterProps(options, NUMBER_FORMAT_OPTIONS, defaults)
 
-  return getNumberFormat(locale, filteredOptions);
+  return getNumberFormat(locale, filteredOptions)
 }
 
 export function formatNumber(
@@ -54,7 +54,7 @@ export function formatNumber(
   options: Parameters<IntlFormatters['formatNumber']>[1] = {}
 ): string {
   try {
-    return getFormatter(config, getNumberFormat, options).format(value);
+    return getFormatter(config, getNumberFormat, options).format(value)
   } catch (e) {
     config.onError(
       new ReactIntlError(
@@ -62,10 +62,10 @@ export function formatNumber(
         'Error formatting number.',
         e
       )
-    );
+    )
   }
 
-  return String(value);
+  return String(value)
 }
 
 export function formatNumberToParts(
@@ -75,7 +75,7 @@ export function formatNumberToParts(
   options: Parameters<IntlFormatters['formatNumber']>[1] = {}
 ): Intl.NumberFormatPart[] {
   try {
-    return getFormatter(config, getNumberFormat, options).formatToParts(value);
+    return getFormatter(config, getNumberFormat, options).formatToParts(value)
   } catch (e) {
     config.onError(
       new ReactIntlError(
@@ -83,8 +83,8 @@ export function formatNumberToParts(
         'Error formatting number.',
         e
       )
-    );
+    )
   }
 
-  return [];
+  return []
 }

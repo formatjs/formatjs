@@ -1,16 +1,15 @@
-import {IntlConfig, IntlFormatters, Formatters} from '../types';
+import {IntlConfig, IntlFormatters, Formatters} from '../types'
 
-import {getNamedFormat, filterProps} from '../utils';
+import {getNamedFormat, filterProps} from '../utils'
 import RelativeTimeFormat, {
   IntlRelativeTimeFormatOptions,
-} from '@formatjs/intl-relativetimeformat';
-import {FormatError, ErrorCode} from 'intl-messageformat';
-import {ReactIntlError, ReactIntlErrorCode} from '../error';
+} from '@formatjs/intl-relativetimeformat'
+import {FormatError, ErrorCode} from 'intl-messageformat'
+import {ReactIntlError, ReactIntlErrorCode} from '../error'
 
-const RELATIVE_TIME_FORMAT_OPTIONS: Array<keyof IntlRelativeTimeFormatOptions> = [
-  'numeric',
-  'style',
-];
+const RELATIVE_TIME_FORMAT_OPTIONS: Array<
+  keyof IntlRelativeTimeFormatOptions
+> = ['numeric', 'style']
 
 function getFormatter(
   {
@@ -21,17 +20,17 @@ function getFormatter(
   getRelativeTimeFormat: Formatters['getRelativeTimeFormat'],
   options: Parameters<IntlFormatters['formatRelativeTime']>[2] = {}
 ): RelativeTimeFormat {
-  const {format} = options;
+  const {format} = options
 
   const defaults =
-    (!!format && getNamedFormat(formats, 'relative', format, onError)) || {};
+    (!!format && getNamedFormat(formats, 'relative', format, onError)) || {}
   const filteredOptions = filterProps(
     options,
     RELATIVE_TIME_FORMAT_OPTIONS,
     defaults as IntlRelativeTimeFormatOptions
-  );
+  )
 
-  return getRelativeTimeFormat(locale, filteredOptions);
+  return getRelativeTimeFormat(locale, filteredOptions)
 }
 
 export function formatRelativeTime(
@@ -42,9 +41,9 @@ export function formatRelativeTime(
   options: Parameters<IntlFormatters['formatRelativeTime']>[2] = {}
 ): string {
   if (!unit) {
-    unit = 'second';
+    unit = 'second'
   }
-  const RelativeTimeFormat = (Intl as any).RelativeTimeFormat;
+  const RelativeTimeFormat = (Intl as any).RelativeTimeFormat
   if (!RelativeTimeFormat) {
     config.onError(
       new FormatError(
@@ -53,13 +52,13 @@ Try polyfilling it using "@formatjs/intl-relativetimeformat"
 `,
         ErrorCode.MISSING_INTL_API
       )
-    );
+    )
   }
   try {
     return getFormatter(config, getRelativeTimeFormat, options).format(
       value,
       unit
-    );
+    )
   } catch (e) {
     config.onError(
       new ReactIntlError(
@@ -67,8 +66,8 @@ Try polyfilling it using "@formatjs/intl-relativetimeformat"
         'Error formatting relative time.',
         e
       )
-    );
+    )
   }
 
-  return String(value);
+  return String(value)
 }

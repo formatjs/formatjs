@@ -53,33 +53,33 @@ When `forwardRef` is set to true, you can now simply pretend the HOC wasn't ther
 Intl v2:
 
 ```tsx
-import React from 'react';
-import {injectIntl} from 'react-intl';
+import React from 'react'
+import {injectIntl} from 'react-intl'
 
 class MyComponent extends React.Component {
-  doSomething = () => console.log(this.state || null);
+  doSomething = () => console.log(this.state || null)
 
   render() {
-    return <div>Hello World</div>;
+    return <div>Hello World</div>
   }
 }
 
-export default injectIntl(MyComponent, {withRef: true});
+export default injectIntl(MyComponent, {withRef: true})
 
 // somewhere else
 class Parent extends React.Component {
   componentDidMount() {
-    this.myComponentRef.getWrappedInstance().doSomething();
+    this.myComponentRef.getWrappedInstance().doSomething()
   }
 
   render() {
     return (
       <MyComponent
         ref={ref => {
-          this.myComponentRef = ref;
+          this.myComponentRef = ref
         }}
       />
-    );
+    )
   }
 }
 ```
@@ -87,29 +87,29 @@ class Parent extends React.Component {
 Intl v3:
 
 ```tsx
-import React from 'react';
-import {injectIntl} from 'react-intl';
+import React from 'react'
+import {injectIntl} from 'react-intl'
 
 class MyComponent extends React.Component {
-  doSomething = () => console.log(this.state || null);
+  doSomething = () => console.log(this.state || null)
 
   render() {
-    return <div>Hello World</div>;
+    return <div>Hello World</div>
   }
 }
 
-export default injectIntl(MyComponent, {forwardRef: true});
+export default injectIntl(MyComponent, {forwardRef: true})
 
 // somewhere else
 class Parent extends React.Component {
-  myComponentRef = React.createRef();
+  myComponentRef = React.createRef()
 
   componentDidMount() {
-    this.myComponentRef.doSomething(); // no need to call getWrappedInstance()
+    this.myComponentRef.doSomething() // no need to call getWrappedInstance()
   }
 
   render() {
-    return <MyComponent ref={this.myComponentRef} />;
+    return <MyComponent ref={this.myComponentRef} />
   }
 }
 ```
@@ -120,20 +120,20 @@ This v3 release also supports the latest React hook API for user with React `>= 
 
 ```tsx
 // injectIntl
-import {injectIntl} from 'react-intl';
+import {injectIntl} from 'react-intl'
 
 const MyComponentWithHOC = injectIntl(({intl, ...props}) => {
   // do something
-});
+})
 
 // useIntl
-import {useIntl} from 'react-intl';
+import {useIntl} from 'react-intl'
 
 const MyComponentWithHook = props => {
-  const intl = useIntl();
+  const intl = useIntl()
 
   // do something
-};
+}
 ```
 
 To keep the API surface clean and simple, we only provide `useIntl` hook in the package. If preferable, user can wrap this built-in hook to make customized hook like `useFormatMessage` easily. Please visit React's official website for more general [introduction on React hooks](https://reactjs.org/docs/hooks-intro.html).
@@ -154,13 +154,13 @@ If you previously were using `addLocaleData` to support older browsers, we recom
 
 ```tsx
 if (!Intl.PluralRules) {
-  require('@formatjs/intl-pluralrules/polyfill');
-  require('@formatjs/intl-pluralrules/dist/locale-data/de'); // Add locale data for de
+  require('@formatjs/intl-pluralrules/polyfill')
+  require('@formatjs/intl-pluralrules/dist/locale-data/de') // Add locale data for de
 }
 
 if (!Intl.RelativeTimeFormat) {
-  require('@formatjs/intl-relativetimeformat/polyfill');
-  require('@formatjs/intl-relativetimeformat/dist/locale-data/de'); // Add locale data for de
+  require('@formatjs/intl-relativetimeformat/polyfill')
+  require('@formatjs/intl-relativetimeformat/dist/locale-data/de') // Add locale data for de
 }
 ```
 
@@ -179,8 +179,8 @@ When using React Intl in Node.js, your `node` binary has to either:
 All types should be available from top level `index` file without importing from specific subfiles. For example:
 
 ```ts
-import {IntlShape} from 'react-intl'; // Correct
-import {IntlShape} from 'react-intl/lib/types'; // Incorrect
+import {IntlShape} from 'react-intl' // Correct
+import {IntlShape} from 'react-intl/lib/types' // Incorrect
 ```
 
 If we're missing any interface top level support, please let us know and/or submitting a PR is greatly appreciated :)
@@ -249,10 +249,10 @@ Similarly, the functional counterpart of this component which is `formatRelative
 You can use `@formatjs/intl-utils` to get close to the previous behavior like this:
 
 ```tsx
-import {selectUnit} from '@formatjs/intl-utils';
-const {value, unit} = selectUnit(Date.now() - 48 * 3600 * 1000);
+import {selectUnit} from '@formatjs/intl-utils'
+const {value, unit} = selectUnit(Date.now() - 48 * 3600 * 1000)
 // render
-<FormattedRelativeTime value={value} unit={unit} />;
+;<FormattedRelativeTime value={value} unit={unit} />
 ```
 
 ## Enhanced `FormattedMessage` & `formatMessage` rich text formatting

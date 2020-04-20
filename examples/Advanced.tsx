@@ -1,6 +1,6 @@
-import * as React from 'react';
-import {RawIntlProvider, FormattedMessage, createIntl} from '../';
-import {parse, MessageFormatElement} from 'intl-messageformat-parser';
+import * as React from 'react'
+import {RawIntlProvider, FormattedMessage, createIntl} from '../'
+import {parse, MessageFormatElement} from 'intl-messageformat-parser'
 
 interface Props {}
 
@@ -19,17 +19,17 @@ const messages: Record<string, string> = {
         other {#th person}
     }`,
   richtext: 'I have <bold>{num, plural, one {# dog} other {# dogs}}</bold>',
-};
+}
 
 const messageAst = Object.keys(messages).reduce(
   (all: Record<string, MessageFormatElement[]>, k) => {
-    all[k] = parse(messages[k]);
-    return all;
+    all[k] = parse(messages[k])
+    return all
   },
   {}
-);
+)
 
-const intl = createIntl({locale: 'en', messages: messageAst});
+const intl = createIntl({locale: 'en', messages: messageAst})
 
 const App: React.FC<Props> = () => {
   return (
@@ -67,11 +67,11 @@ const App: React.FC<Props> = () => {
         />
       </p>
     </RawIntlProvider>
-  );
-};
+  )
+}
 
 App.defaultProps = {
   currentTime: new Date(),
-};
+}
 
-export default App;
+export default App

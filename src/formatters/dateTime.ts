@@ -4,10 +4,10 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {Formatters, IntlConfig, IntlFormatters} from '../types';
+import {Formatters, IntlConfig, IntlFormatters} from '../types'
 
-import {filterProps, getNamedFormat} from '../utils';
-import {ReactIntlError, ReactIntlErrorCode} from '../error';
+import {filterProps, getNamedFormat} from '../utils'
+import {ReactIntlError, ReactIntlErrorCode} from '../error'
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'localeMatcher',
@@ -25,7 +25,7 @@ const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'minute',
   'second',
   'timeZoneName',
-];
+]
 
 export function getFormatter(
   {
@@ -38,17 +38,13 @@ export function getFormatter(
   getDateTimeFormat: Formatters['getDateTimeFormat'],
   options: Parameters<IntlFormatters['formatDate']>[1] = {}
 ): Intl.DateTimeFormat {
-  const {format} = options;
+  const {format} = options
   const defaults = {
     ...(timeZone && {timeZone}),
     ...(format && getNamedFormat(formats!, type, format, onError)),
-  };
+  }
 
-  let filteredOptions = filterProps(
-    options,
-    DATE_TIME_FORMAT_OPTIONS,
-    defaults
-  );
+  let filteredOptions = filterProps(options, DATE_TIME_FORMAT_OPTIONS, defaults)
 
   if (
     type === 'time' &&
@@ -57,10 +53,10 @@ export function getFormatter(
     !filteredOptions.second
   ) {
     // Add default formatting options if hour, minute, or second isn't defined.
-    filteredOptions = {...filteredOptions, hour: 'numeric', minute: 'numeric'};
+    filteredOptions = {...filteredOptions, hour: 'numeric', minute: 'numeric'}
   }
 
-  return getDateTimeFormat(locale, filteredOptions);
+  return getDateTimeFormat(locale, filteredOptions)
 }
 
 export function formatDate(
@@ -69,11 +65,9 @@ export function formatDate(
   value?: Parameters<IntlFormatters['formatDate']>[0],
   options: Parameters<IntlFormatters['formatDate']>[1] = {}
 ): string {
-  const date = typeof value === 'string' ? new Date(value || 0) : value;
+  const date = typeof value === 'string' ? new Date(value || 0) : value
   try {
-    return getFormatter(config, 'date', getDateTimeFormat, options).format(
-      date
-    );
+    return getFormatter(config, 'date', getDateTimeFormat, options).format(date)
   } catch (e) {
     config.onError(
       new ReactIntlError(
@@ -81,10 +75,10 @@ export function formatDate(
         'Error formatting date.',
         e
       )
-    );
+    )
   }
 
-  return String(date);
+  return String(date)
 }
 
 export function formatTime(
@@ -93,12 +87,10 @@ export function formatTime(
   value?: Parameters<IntlFormatters['formatTime']>[0],
   options: Parameters<IntlFormatters['formatTime']>[1] = {}
 ): string {
-  const date = typeof value === 'string' ? new Date(value || 0) : value;
+  const date = typeof value === 'string' ? new Date(value || 0) : value
 
   try {
-    return getFormatter(config, 'time', getDateTimeFormat, options).format(
-      date
-    );
+    return getFormatter(config, 'time', getDateTimeFormat, options).format(date)
   } catch (e) {
     config.onError(
       new ReactIntlError(
@@ -106,10 +98,10 @@ export function formatTime(
         'Error formatting time.',
         e
       )
-    );
+    )
   }
 
-  return String(date);
+  return String(date)
 }
 
 export function formatDateToParts(
@@ -118,14 +110,14 @@ export function formatDateToParts(
   value?: Parameters<IntlFormatters['formatDate']>[0],
   options: Parameters<IntlFormatters['formatDate']>[1] = {}
 ): Intl.DateTimeFormatPart[] {
-  const date = typeof value === 'string' ? new Date(value || 0) : value;
+  const date = typeof value === 'string' ? new Date(value || 0) : value
   try {
     return getFormatter(
       config,
       'date',
       getDateTimeFormat,
       options
-    ).formatToParts(date);
+    ).formatToParts(date)
   } catch (e) {
     config.onError(
       new ReactIntlError(
@@ -133,10 +125,10 @@ export function formatDateToParts(
         'Error formatting date.',
         e
       )
-    );
+    )
   }
 
-  return [];
+  return []
 }
 
 export function formatTimeToParts(
@@ -145,7 +137,7 @@ export function formatTimeToParts(
   value?: Parameters<IntlFormatters['formatTime']>[0],
   options: Parameters<IntlFormatters['formatTime']>[1] = {}
 ): Intl.DateTimeFormatPart[] {
-  const date = typeof value === 'string' ? new Date(value || 0) : value;
+  const date = typeof value === 'string' ? new Date(value || 0) : value
 
   try {
     return getFormatter(
@@ -153,7 +145,7 @@ export function formatTimeToParts(
       'time',
       getDateTimeFormat,
       options
-    ).formatToParts(date);
+    ).formatToParts(date)
   } catch (e) {
     config.onError(
       new ReactIntlError(
@@ -161,8 +153,8 @@ export function formatTimeToParts(
         'Error formatting time.',
         e
       )
-    );
+    )
   }
 
-  return [];
+  return []
 }

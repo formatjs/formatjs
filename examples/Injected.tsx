@@ -1,10 +1,10 @@
-import * as React from 'react';
-import {IntlProvider, useIntl, injectIntl, IntlShape} from '../';
+import * as React from 'react'
+import {IntlProvider, useIntl, injectIntl, IntlShape} from '../'
 
 const Comp: React.FC<{}> = _ => {
-  const {formatDate} = useIntl();
-  return <h1>{formatDate(Date.now())}</h1>;
-};
+  const {formatDate} = useIntl()
+  return <h1>{formatDate(Date.now())}</h1>
+}
 
 const Comp2: React.FC<{intl: IntlShape}> = ({
   intl: {formatDate, formatTime},
@@ -14,13 +14,13 @@ const Comp2: React.FC<{intl: IntlShape}> = ({
       <h1>{formatDate(new Date(), {month: 'long'})}</h1>
       <h2>{formatTime(undefined)}</h2>
     </>
-  );
-};
+  )
+}
 
-const Comp2WithIntl = injectIntl(Comp2);
+const Comp2WithIntl = injectIntl(Comp2)
 
 interface Props {
-  currentTime?: Date | number;
+  currentTime?: Date | number
 }
 
 const App: React.FC<Props> = _ => {
@@ -31,11 +31,11 @@ const App: React.FC<Props> = _ => {
         <Comp2WithIntl />
       </div>
     </IntlProvider>
-  );
-};
+  )
+}
 
 App.defaultProps = {
   currentTime: new Date(),
-};
+}
 
-export default App;
+export default App

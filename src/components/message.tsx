@@ -4,19 +4,19 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import * as React from 'react';
-import {PrimitiveType, FormatXMLElementFn} from 'intl-messageformat';
-import {Context} from './injectIntl';
-import {MessageDescriptor} from '../types';
-import {formatMessage} from '../formatters/message';
+import * as React from 'react'
+import {PrimitiveType, FormatXMLElementFn} from 'intl-messageformat'
+import {Context} from './injectIntl'
+import {MessageDescriptor} from '../types'
+import {formatMessage} from '../formatters/message'
 import {
   invariantIntlContext,
   DEFAULT_INTL_CONFIG,
   createFormatters,
-} from '../utils';
-import * as shallowEquals_ from 'shallow-equal/objects';
+} from '../utils'
+import * as shallowEquals_ from 'shallow-equal/objects'
 const shallowEquals: typeof shallowEquals_ =
-  (shallowEquals_ as any).default || shallowEquals_;
+  (shallowEquals_ as any).default || shallowEquals_
 
 function defaultFormatMessage<T = React.ReactNode>(
   descriptor: MessageDescriptor,
@@ -28,7 +28,7 @@ function defaultFormatMessage<T = React.ReactNode>(
   if (process.env.NODE_ENV !== 'production') {
     console.error(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry. Using default message as fallback.'
-    );
+    )
   }
 
   return formatMessage(
@@ -39,15 +39,15 @@ function defaultFormatMessage<T = React.ReactNode>(
     createFormatters(),
     descriptor,
     values as any
-  );
+  )
 }
 
 export interface Props<
   V extends Record<string, any> = Record<string, React.ReactNode>
 > extends MessageDescriptor {
-  values?: V;
-  tagName?: React.ElementType<any>;
-  children?(...nodes: React.ReactNodeArray): React.ReactNode;
+  values?: V
+  tagName?: React.ElementType<any>
+  children?(...nodes: React.ReactNodeArray): React.ReactNode
 }
 
 class FormattedMessage<
@@ -58,18 +58,18 @@ class FormattedMessage<
     | FormatXMLElementFn<React.ReactNode, React.ReactNode>
   >
 > extends React.Component<Props<V>> {
-  static displayName = 'FormattedMessage';
+  static displayName = 'FormattedMessage'
   static defaultProps = {
     values: {},
-  };
+  }
 
   shouldComponentUpdate(nextProps: Props<V>): boolean {
-    const {values, ...otherProps} = this.props;
-    const {values: nextValues, ...nextOtherProps} = nextProps;
+    const {values, ...otherProps} = this.props
+    const {values: nextValues, ...nextOtherProps} = nextProps
     return (
       !shallowEquals(nextValues, values) ||
       !shallowEquals(otherProps, nextOtherProps)
-    );
+    )
   }
 
   render(): JSX.Element {
@@ -77,13 +77,13 @@ class FormattedMessage<
       <Context.Consumer>
         {(intl): React.ReactNode => {
           if (!this.props.defaultMessage) {
-            invariantIntlContext(intl);
+            invariantIntlContext(intl)
           }
 
           const {
             formatMessage = defaultFormatMessage,
             textComponent: Text = React.Fragment,
-          } = intl || {};
+          } = intl || {}
           const {
             id,
             description,
@@ -91,32 +91,32 @@ class FormattedMessage<
             values,
             children,
             tagName: Component = Text,
-          } = this.props;
+          } = this.props
 
-          const descriptor = {id, description, defaultMessage};
+          const descriptor = {id, description, defaultMessage}
           let nodes: string | React.ReactNodeArray = formatMessage(
             descriptor,
             values
-          );
+          )
 
           if (!Array.isArray(nodes)) {
-            nodes = [nodes];
+            nodes = [nodes]
           }
 
           if (typeof children === 'function') {
-            return children(...nodes);
+            return children(...nodes)
           }
 
           if (Component) {
             // Needs to use `createElement()` instead of JSX, otherwise React will
             // warn about a missing `key` prop with rich-text message formatting.
-            return React.createElement(Component, null, ...nodes);
+            return React.createElement(Component, null, ...nodes)
           }
-          return nodes;
+          return nodes
         }}
       </Context.Consumer>
-    );
+    )
   }
 }
 
-export default FormattedMessage;
+export default FormattedMessage
