@@ -205,12 +205,12 @@
     "build": "npm run build:lib && npm run build:dts && npm run build:dist",
     "clean": "rimraf coverage/ dist/ lib/ core.js core.d.ts",
     "example": "parcel examples/index.html",
-    "format:fix": "prettier --write \"{src,scripts,test,docs,examples}/**/*\"",
-    "format": "prettier \"{src,scripts,test,docs,examples}/**/*\" --check",
-    "postchangelog": "npm run toc && npm run format:fix",
+    "prettier": "prettier --write \"{src,scripts,test,docs,examples}/**/*\"",
+    "prettier:check": "prettier \"{src,scripts,test,docs,examples}/**/*\" --check",
+    "postchangelog": "npm run toc && npm run prettier",
     "prerelease": "npm run clean && npm run build && npm run test:all",
     "release": "standard-version",
-    "test:all": "npm run format && npm run test",
+    "test:all": "npm run prettier:check && npm run test",
     "test:perf": "cross-env NODE_ENV=production babel-node test/perf",
     "test:watch": "cross-env NODE_ICU_DATA=./node_modules/full-icu jest --watch",
     "test": "cross-env TZ=UTC NODE_ICU_DATA=./node_modules/full-icu jest --coverage --verbose",
@@ -218,7 +218,7 @@
   },
   "pre-commit": [
     "toc",
-    "format:fix"
+    "prettier"
   ],
   "browserslist": [
     "ie 11"

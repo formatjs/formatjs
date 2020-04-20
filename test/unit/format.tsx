@@ -649,7 +649,6 @@ describe('format API', () => {
     beforeEach(() => {
       formatMessage = baseFormatMessage.bind(null, config, state)
     })
-
     ;[`Hello, World!'{foo}'`, `'\ud83d'\udc04`].forEach(msg =>
       it(`should render escaped msg ${msg} properly in production`, () => {
         process.env.NODE_ENV = 'production'
@@ -675,7 +674,6 @@ describe('format API', () => {
       expect(() => formatMessage({})).toThrow(
         '[React Intl] An `id` must be provided to format a message.'
       )
-
       ;[undefined, null, false, 0, ''].forEach(id => {
         expect(() => formatMessage({id})).toThrow(
           '[React Intl] An `id` must be provided to format a message.'
