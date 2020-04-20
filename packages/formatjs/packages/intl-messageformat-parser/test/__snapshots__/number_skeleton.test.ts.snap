@@ -22,7 +22,7 @@ Object {
 }
 `;
 
-exports[`[convertNumberSkeletonToNumberFormatOptions] case: "currency/GBP .0+/@@@" 1`] = `
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "currency/GBP .0*/@@@" 1`] = `
 Object {
   "currency": "GBP",
   "maximumSignificantDigits": 3,
@@ -99,6 +99,21 @@ Object {
 }
 `;
 
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "percent .##" 1`] = `
+Object {
+  "maximumFractionDigits": 2,
+  "style": "percent",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "percent .0###" 1`] = `
+Object {
+  "maximumFractionDigits": 4,
+  "minimumFractionDigits": 1,
+  "style": "percent",
+}
+`;
+
 exports[`[convertNumberSkeletonToNumberFormatOptions] case: "percent .00/@##" 1`] = `
 Object {
   "maximumFractionDigits": 2,
@@ -119,11 +134,17 @@ Object {
 }
 `;
 
-exports[`[convertNumberSkeletonToNumberFormatOptions] case: "percent .00/@@@@+" 1`] = `
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "percent .00/@@@@*" 1`] = `
 Object {
   "maximumFractionDigits": 2,
   "minimumFractionDigits": 2,
-  "minimumSignificantDigits": 4,
+  "style": "percent",
+}
+`;
+
+exports[`[convertNumberSkeletonToNumberFormatOptions] case: "percent .000*" 1`] = `
+Object {
+  "minimumFractionDigits": 3,
   "style": "percent",
 }
 `;

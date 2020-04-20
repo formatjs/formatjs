@@ -14,11 +14,14 @@ test.each([
 });
 
 test.each([
+  'percent .##',
+  'percent .000*',
+  'percent .0###',
   'percent .00/@##',
   'percent .00/@@@',
-  'percent .00/@@@@+',
+  'percent .00/@@@@*',
   'currency/CAD .',
-  'currency/GBP .0+/@@@',
+  'currency/GBP .0*/@@@',
   'currency/GBP .00##/@@@',
   'currency/GBP .00##/@@@ unit-width-full-name',
   'measure-unit/length-meter .00##/@@@',

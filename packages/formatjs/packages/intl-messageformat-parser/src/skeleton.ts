@@ -150,7 +150,7 @@ function icuUnitToEcma(unit: string): UnifiedNumberFormatOptions['unit'] {
   return unit.replace(/^(.*?)-/, '') as UnifiedNumberFormatOptions['unit'];
 }
 
-const FRACTION_PRECISION_REGEX = /^\.(?:(0+)(\+|#+)?)?$/g;
+const FRACTION_PRECISION_REGEX = /^\.(?:(0+)(\*)?|(#+)|(0+)(#+))$/g;
 const SIGNIFICANT_PRECISION_REGEX = /^(@+)?(\+|#+)?$/g;
 
 function parseSignificantPrecision(str: string): UnifiedNumberFormatOptions {
@@ -248,6 +248,7 @@ export function convertNumberSkeletonToNumberFormatOptions(
         result.useGrouping = false;
         continue;
       case 'precision-integer':
+      case '.':
         result.maximumFractionDigits = 0;
         continue;
       case 'measure-unit':
@@ -304,6 +305,7 @@ export function convertNumberSkeletonToNumberFormatOptions(
     }
     // Precision
     // https://github.com/unicode-org/icu/blob/master/docs/userguide/format_parse/numbers/skeletons.md#fraction-precision
+    // precision-integer case
     if (FRACTION_PRECISION_REGEX.test(token.stem)) {
       if (token.options.length > 1) {
         throw new RangeError(
@@ -313,28 +315,30 @@ export function convertNumberSkeletonToNumberFormatOptions(
       token.stem.replace(FRACTION_PRECISION_REGEX, function(
         match: string,
         g1: string,
-        g2: string | number
+        g2: string | number,
+        g3: string,
+        g4: string,
+        g5: string
       ) {
-        // precision-integer case
-        if (match === '.') {
-          result.maximumFractionDigits = 0;
-        }
-        // .000+ case
-        else if (g2 === '+') {
-          result.minimumFractionDigits = g2.length;
+        // .000* case (before ICU67 it was .000+)
+        if (g2 === '*') {
+          result.minimumFractionDigits = g1.length;
         }
         // .### case
-        else if (g1[0] === '#') {
-          result.maximumFractionDigits = g1.length;
+        else if (g3 && g3[0] === '#') {
+          result.maximumFractionDigits = g3.length;
         }
-        // .00## or .000 case
-        else {
+        // .00## case
+        else if (g4 && g5) {
+          result.minimumFractionDigits = g4.length;
+          result.maximumFractionDigits = g4.length + g5.length;
+        } else {
           result.minimumFractionDigits = g1.length;
-          result.maximumFractionDigits =
-            g1.length + (typeof g2 === 'string' ? g2.length : 0);
+          result.maximumFractionDigits = g1.length;
         }
         return '';
       });
+
       if (token.options.length) {
         result = {...result, ...parseSignificantPrecision(token.options[0])};
       }
