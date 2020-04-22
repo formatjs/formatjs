@@ -1,5 +1,6 @@
 import {Rule, Scope} from 'eslint';
 import {ImportDeclaration, Node} from 'estree';
+import {TSESTree} from '@typescript-eslint/typescript-estree';
 import {extractMessages} from '../util';
 import {
   parse,
@@ -28,7 +29,7 @@ function verifyAst(ast: MessageFormatElement[], pluralCount = {count: 0}) {
 
 function checkNode(
   context: Rule.RuleContext,
-  node: Node,
+  node: TSESTree.Node,
   importedMacroVars: Scope.Variable[]
 ) {
   const msgs = extractMessages(node, importedMacroVars);
@@ -46,7 +47,7 @@ function checkNode(
       verifyAst(parse(defaultMessage));
     } catch (e) {
       context.report({
-        node: messageNode,
+        node: messageNode as Node,
         message: e.message,
       });
     }
@@ -75,8 +76,9 @@ const rule: Rule.RuleModule = {
         }
       },
       JSXOpeningElement: (node: Node) =>
-        checkNode(context, node, importedMacroVars),
-      CallExpression: node => checkNode(context, node, importedMacroVars),
+        checkNode(context, node as TSESTree.Node, importedMacroVars),
+      CallExpression: node =>
+        checkNode(context, node as TSESTree.Node, importedMacroVars),
     };
   },
 };

@@ -13,6 +13,7 @@ import {
   isSelectElement,
   isTagElement,
 } from 'intl-messageformat-parser';
+import {TSESTree} from '@typescript-eslint/typescript-estree';
 
 class BlacklistElement extends Error {
   public message: string;
@@ -82,7 +83,7 @@ function checkNode(
   node: Node,
   importedMacroVars: Scope.Variable[]
 ) {
-  const msgs = extractMessages(node, importedMacroVars);
+  const msgs = extractMessages(node as TSESTree.Node, importedMacroVars);
   if (!msgs.length) {
     return;
   }
@@ -104,7 +105,7 @@ function checkNode(
       verifyAst(context.options[0], parse(defaultMessage));
     } catch (e) {
       context.report({
-        node: messageNode,
+        node: messageNode as Node,
         message: e.message,
       });
     }

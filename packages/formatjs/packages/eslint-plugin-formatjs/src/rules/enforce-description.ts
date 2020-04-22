@@ -1,13 +1,14 @@
 import {Rule, Scope} from 'eslint';
 import {ImportDeclaration, Node} from 'estree';
 import {extractMessages} from '../util';
+import {TSESTree} from '@typescript-eslint/typescript-estree';
 
 function checkNode(
   context: Rule.RuleContext,
   node: Node,
   importedMacroVars: Scope.Variable[]
 ) {
-  const msgs = extractMessages(node, importedMacroVars);
+  const msgs = extractMessages(node as TSESTree.Node, importedMacroVars);
   for (const [
     {
       message: {description},
@@ -23,7 +24,7 @@ function checkNode(
   }
 }
 
-const rule: Rule.RuleModule = {
+export default {
   meta: {
     type: 'problem',
     docs: {
@@ -49,6 +50,4 @@ const rule: Rule.RuleModule = {
       CallExpression: node => checkNode(context, node, importedMacroVars),
     };
   },
-};
-
-export default rule;
+} as Rule.RuleModule;

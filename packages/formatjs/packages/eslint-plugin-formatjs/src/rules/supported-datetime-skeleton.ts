@@ -10,6 +10,7 @@ import {
   isPluralElement,
   isSelectElement,
 } from 'intl-messageformat-parser';
+import {TSESTree} from '@typescript-eslint/typescript-estree';
 import {ImportDeclaration, Node} from 'estree';
 
 function verifySkeleton(ast: MessageFormatElement[]) {
@@ -31,7 +32,7 @@ function verifySkeleton(ast: MessageFormatElement[]) {
 
 function checkNode(
   context: Rule.RuleContext,
-  node: Node,
+  node: TSESTree.Node,
   importedMacroVars: Scope.Variable[]
 ) {
   const msgs = extractMessages(node, importedMacroVars);
@@ -49,7 +50,7 @@ function checkNode(
       verifySkeleton(parse(defaultMessage));
     } catch (e) {
       context.report({
-        node: messageNode,
+        node: messageNode as Node,
         message: e.message,
       });
     }
@@ -78,8 +79,9 @@ const rule: Rule.RuleModule = {
         }
       },
       JSXOpeningElement: (node: Node) =>
-        checkNode(context, node, importedMacroVars),
-      CallExpression: node => checkNode(context, node, importedMacroVars),
+        checkNode(context, node as TSESTree.Node, importedMacroVars),
+      CallExpression: node =>
+        checkNode(context, node as TSESTree.CallExpression, importedMacroVars),
     };
   },
 };
