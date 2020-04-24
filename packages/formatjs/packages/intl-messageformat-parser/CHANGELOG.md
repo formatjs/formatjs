@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.1](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@5.0.0...intl-messageformat-parser@5.0.1) (2020-04-24)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** add missing dep ([776390e](https://github.com/formatjs/formatjs/commit/776390e9d6cb3bc1eef07b2e92057136cfe95b76))
+
+
+
+
+
 # [5.0.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@4.1.4...intl-messageformat-parser@5.0.0) (2020-04-20)
 
 

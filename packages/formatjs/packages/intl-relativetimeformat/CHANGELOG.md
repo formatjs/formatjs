@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.5.13](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.5.12...@formatjs/intl-relativetimeformat@4.5.13) (2020-04-24)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** add missing dep ([776390e](https://github.com/formatjs/formatjs/commit/776390e9d6cb3bc1eef07b2e92057136cfe95b76))
+
+
+
+
+
 ## [4.5.12](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.5.11...@formatjs/intl-relativetimeformat@4.5.12) (2020-04-14)
 
 

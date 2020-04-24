@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@1.1.3...@formatjs/ts-transformer@1.1.4) (2020-04-24)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** add missing dep ([776390e](https://github.com/formatjs/formatjs/commit/776390e9d6cb3bc1eef07b2e92057136cfe95b76))
+
+
+
+
+
 ## [1.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@1.1.2...@formatjs/ts-transformer@1.1.3) (2020-04-20)
 
 **Note:** Version bump only for package @formatjs/ts-transformer
