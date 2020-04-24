@@ -145,6 +145,7 @@ async function main(argv: string[]) {
         additionalComponentNames: cmdObj.additionalComponentNames,
         extractFromFormatMessageCall: cmdObj.extractFromFormatMessageCall,
         outputEmptyJson: cmdObj.outputEmptyJson,
+        throws: cmdObj.throws,
         pragma: cmdObj.pragma,
         // It is possible that the glob pattern does NOT match anything.
         // But so long as the glob pattern is provided, don't read from stdin.
