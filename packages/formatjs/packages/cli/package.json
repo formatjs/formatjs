@@ -41,21 +41,21 @@
     "test": "cross-env TS_NODE_PROJECT=./tsconfig.json cross-env NODE_ENV=test jest"
   },
   "dependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-optional-chaining": "7",
-    "@babel/preset-env": "^7.6.0",
-    "@babel/preset-typescript": "^7.6.0",
-    "@types/babel__core": "^7.1.3",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-typescript": "^7.9.0",
+    "@types/babel__core": "^7.1.7",
     "@types/loader-utils": "^1.1.3",
-    "@types/lodash": "^4.14.138",
-    "babel-plugin-const-enum": "^0.0.5",
+    "@types/lodash": "^4.14.150",
+    "babel-plugin-const-enum": "^1.0.1",
     "babel-plugin-react-intl": "^7.5.1",
     "commander": "5.0.0",
     "fs-extra": "^9.0.0",
     "glob": "^7.1.6",
     "loader-utils": "^2.0.0",
     "lodash": "^4.17.15",
-    "loud-rejection": "^2.1.0"
+    "loud-rejection": "^2.2.0"
   },
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"

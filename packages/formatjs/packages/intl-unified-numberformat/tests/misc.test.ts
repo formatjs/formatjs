@@ -33,7 +33,7 @@ LOCALES.forEach(locale => {
 });
 
 function test() {
-  it('should lookup locale correctly', function() {
+  it('should lookup locale correctly', function () {
     expect(
       new UnifiedNumberFormat('en-BS', {
         style: 'unit',
@@ -54,18 +54,18 @@ function test() {
     ).toBe('1,000 gal US');
   });
 
-  it('supportedLocalesOf should return correct result based on data loaded', function() {
+  it('supportedLocalesOf should return correct result based on data loaded', function () {
     expect(
       UnifiedNumberFormat.supportedLocalesOf(['zh', 'en-US', 'af'])
     ).toEqual(['zh', 'en']);
     expect(UnifiedNumberFormat.supportedLocalesOf(['af'])).toEqual([]);
   });
-  it('should not crash if unit is not specified', function() {
+  it('should not crash if unit is not specified', function () {
     expect(new UnifiedNumberFormat().resolvedOptions().unit).toBeUndefined();
   });
 
   // Some test262
-  describe('test262 examples', function() {
+  describe('test262 examples', function () {
     const tests = [
       ['0.000345', '345E-6', '3,45E-4'],
       ['0.345', '345E-3', '3,45E-1'],
@@ -77,7 +77,7 @@ function test() {
       ['543211.1', '543,211E3', '5,432E5'],
     ];
 
-    it('10000', function() {
+    it('10000', function () {
       expect(
         new UnifiedNumberFormat('th', {
           notation: 'compact',
@@ -87,7 +87,7 @@ function test() {
       ).toBe('+10K');
     });
 
-    it('10000 currency', function() {
+    it('10000 currency', function () {
       expect(
         new UnifiedNumberFormat('en-US', {
           style: 'currency',
@@ -156,7 +156,7 @@ function test() {
       ).toBe('+1,00Е4 англійського фунта');
     });
 
-    it('10000 currency de compactLong', function() {
+    it('10000 currency de compactLong', function () {
       expect(
         new UnifiedNumberFormat('de', {
           style: 'currency',
@@ -171,7 +171,7 @@ function test() {
     });
 
     for (const [number, engineering, scientific] of tests) {
-      it(`number ${number}`, function() {
+      it(`number ${number}`, function () {
         const nfEngineering = new UnifiedNumberFormat('de-DE', {
           notation: 'engineering',
         });

@@ -155,7 +155,7 @@ const SIGNIFICANT_PRECISION_REGEX = /^(@+)?(\+|#+)?$/g;
 
 function parseSignificantPrecision(str: string): UnifiedNumberFormatOptions {
   const result: UnifiedNumberFormatOptions = {};
-  str.replace(SIGNIFICANT_PRECISION_REGEX, function(
+  str.replace(SIGNIFICANT_PRECISION_REGEX, function (
     _: string,
     g1: string,
     g2: string | number
@@ -312,7 +312,7 @@ export function convertNumberSkeletonToNumberFormatOptions(
           'Fraction-precision stems only accept a single optional option'
         );
       }
-      token.stem.replace(FRACTION_PRECISION_REGEX, function(
+      token.stem.replace(FRACTION_PRECISION_REGEX, function (
         match: string,
         g1: string,
         g2: string | number,

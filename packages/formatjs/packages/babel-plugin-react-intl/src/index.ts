@@ -127,7 +127,7 @@ function getICUMessageValue(
   return message;
 }
 
-function evaluatePath(path: NodePath): string {
+function evaluatePath(path: NodePath<any>): string {
   const evaluated = path.evaluate();
   if (evaluated.confident) {
     return evaluated.value;
@@ -138,7 +138,7 @@ function evaluatePath(path: NodePath): string {
   );
 }
 
-function getMessageDescriptorKey(path: NodePath) {
+function getMessageDescriptorKey(path: NodePath<any>) {
   if (path.isIdentifier() || path.isJSXIdentifier()) {
     return path.node.name;
   }
@@ -217,7 +217,7 @@ function evaluateMessageDescriptor(
 
 function storeMessage(
   {id, description, defaultMessage}: MessageDescriptor,
-  path: NodePath,
+  path: NodePath<any>,
   {extractSourceLocation}: OptionsSchema,
   filename: string,
   messages: Map<string, ExtractedMessageDescriptor>
@@ -254,7 +254,7 @@ function storeMessage(
 }
 
 function referencesImport(
-  path: NodePath,
+  path: NodePath<any>,
   mod: string,
   importedNames: string[]
 ) {
@@ -289,7 +289,7 @@ function isFormatMessageDestructuring(scope: Scope) {
 
 function isFormatMessageCall(
   callee: NodePath<Expression | V8IntrinsicIdentifier>,
-  path: any
+  path: NodePath<any>
 ) {
   if (
     callee.isIdentifier() &&
@@ -309,6 +309,7 @@ function isFormatMessageCall(
   return (
     property.isIdentifier() &&
     property.node.name === 'formatMessage' &&
+    !Array.isArray(object) &&
     // things like `intl.formatMessage`
     ((object.isIdentifier() && object.node.name === 'intl') ||
       // things like `this.props.intl.formatMessage`
@@ -318,7 +319,7 @@ function isFormatMessageCall(
 }
 
 function assertObjectExpression(
-  path: NodePath,
+  path: NodePath<any>,
   callee: NodePath<Expression | V8IntrinsicIdentifier>
 ): path is NodePath<ObjectExpression> {
   if (!path || !path.isObjectExpression()) {
@@ -350,12 +351,12 @@ export default declare((api: any, options: OptionsSchema) => {
    * HACK: We store this in the node instance since this persists across
    * multiple plugin runs
    */
-  function tagAsExtracted(path: NodePath) {
-    (path.node as any)[EXTRACTED] = true;
+  function tagAsExtracted(path: NodePath<any>) {
+    path.node[EXTRACTED] = true;
   }
 
-  function wasExtracted(path: NodePath) {
-    return !!(path.node as any)[EXTRACTED];
+  function wasExtracted(path: NodePath<any>) {
+    return !!path.node[EXTRACTED];
   }
   return {
     pre() {
@@ -477,9 +478,7 @@ export default declare((api: any, options: OptionsSchema) => {
         ) {
           const attributes = path
             .get('attributes')
-            .filter((attr): attr is NodePath<JSXAttribute> =>
-              attr.isJSXAttribute()
-            );
+            .filter(attr => attr.isJSXAttribute());
 
           const descriptorPath = createMessageDescriptor(
             attributes.map(attr => [
@@ -516,7 +515,14 @@ export default declare((api: any, options: OptionsSchema) => {
             let descriptionAttr: NodePath<t.JSXAttribute> | undefined;
             let defaultMessageAttr: NodePath<t.JSXAttribute> | undefined;
             for (const attr of attributes) {
-              switch (getMessageDescriptorKey(attr.get('name'))) {
+              if (!attr.isJSXAttribute()) {
+                continue;
+              }
+              switch (
+                getMessageDescriptorKey(
+                  (attr as NodePath<JSXAttribute>).get('name')
+                )
+              ) {
                 case 'description':
                   descriptionAttr = attr;
                   break;
@@ -644,10 +650,12 @@ export default declare((api: any, options: OptionsSchema) => {
             if (isSingularMessagesDeclMacro(callee, moduleSourceName)) {
               processMessageObject(messagesObj as NodePath<ObjectExpression>);
             } else {
-              messagesObj
-                .get('properties')
-                .map(prop => prop.get('value') as NodePath<ObjectExpression>)
-                .forEach(processMessageObject);
+              const properties = messagesObj.get('properties');
+              if (Array.isArray(properties)) {
+                properties
+                  .map(prop => prop.get('value') as NodePath<ObjectExpression>)
+                  .forEach(processMessageObject);
+              }
             }
           }
         }
@@ -665,7 +673,7 @@ export default declare((api: any, options: OptionsSchema) => {
 });
 
 function isMultipleMessagesDeclMacro(
-  callee: NodePath,
+  callee: NodePath<any>,
   moduleSourceName: string
 ) {
   return (
@@ -675,7 +683,7 @@ function isMultipleMessagesDeclMacro(
 }
 
 function isSingularMessagesDeclMacro(
-  callee: NodePath,
+  callee: NodePath<any>,
   moduleSourceName: string
 ) {
   return (

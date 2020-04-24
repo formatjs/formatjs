@@ -15,14 +15,14 @@
   ],
   "author": "Eric Ferraiuolo <edf@ericf.me>",
   "dependencies": {
-    "@babel/core": "^7.7.2",
-    "@babel/helper-plugin-utils": "^7.0.0",
-    "@babel/types": "^7.9.0",
-    "@types/babel__core": "^7.1.3",
-    "@types/schema-utils": "^1.0.0",
+    "@babel/core": "^7.9.0",
+    "@babel/helper-plugin-utils": "^7.8.3",
+    "@babel/types": "^7.9.5",
+    "@types/babel__core": "^7.1.7",
+    "@types/schema-utils": "^2.4.0",
     "fs-extra": "^9.0.0",
     "intl-messageformat-parser": "^5.0.0",
-    "schema-utils": "^2.2.0"
+    "schema-utils": "^2.6.6"
   },
   "scripts": {
     "clean": "rimraf lib test/fixtures/**/actual.json *.tsbuildinfo",
@@ -40,6 +40,6 @@
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "gitHead": "8b0baec8eda5002715cf893274fe59782fc2d371",
   "devDependencies": {
-    "json-schema-to-typescript": "^7.1.0"
+    "json-schema-to-typescript": "^8.2.0"
   }
 }

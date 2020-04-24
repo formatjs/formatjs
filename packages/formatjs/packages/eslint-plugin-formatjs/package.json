@@ -29,10 +29,11 @@
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "dependencies": {
     "@types/emoji-regex": "^8.0.0",
-    "emoji-regex": "^8.0.0",
+    "emoji-regex": "^9.0.0",
+    "@typescript-eslint/typescript-estree": "^2.29.0",
     "intl-messageformat-parser": "^5.0.0"
   },
   "peerDependencies": {
-    "eslint": "^6.0.0"
+    "eslint": "^6.8.0"
   }
 }

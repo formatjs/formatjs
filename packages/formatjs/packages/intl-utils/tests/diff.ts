@@ -16,8 +16,8 @@ const SEC = 1e3;
 const MIN = SEC * 60;
 const HOUR = MIN * 60;
 
-describe('selectUnit', function() {
-  it('should work for sec', function() {
+describe('selectUnit', function () {
+  it('should work for sec', function () {
     expect(selectUnit(past(44 * SEC), Date.now())).to.deep.equal({
       value: -44,
       unit: 'second',
@@ -27,7 +27,7 @@ describe('selectUnit', function() {
       unit: 'second',
     });
   });
-  it('should work for min', function() {
+  it('should work for min', function () {
     expect(selectUnit(past(45 * SEC), Date.now())).to.deep.equal({
       value: -1,
       unit: 'minute',
@@ -45,7 +45,7 @@ describe('selectUnit', function() {
       unit: 'minute',
     });
   });
-  it('should work for hour', function() {
+  it('should work for hour', function () {
     expect(selectUnit(past(45 * MIN), Date.now())).to.deep.equal({
       value: -1,
       unit: 'hour',
@@ -63,7 +63,7 @@ describe('selectUnit', function() {
       unit: 'hour',
     });
   });
-  it('should work for day', function() {
+  it('should work for day', function () {
     expect(
       selectUnit(new Date(2019, 1, 5), new Date(2019, 1, 6))
     ).to.deep.equal({
@@ -89,7 +89,7 @@ describe('selectUnit', function() {
       unit: 'day',
     });
   });
-  it('should work for week', function() {
+  it('should work for week', function () {
     expect(
       selectUnit(new Date(2019, 1, 5), new Date(2019, 1, 10))
     ).to.deep.equal({
@@ -115,7 +115,7 @@ describe('selectUnit', function() {
       unit: 'week',
     });
   });
-  it('should work for month', function() {
+  it('should work for month', function () {
     expect(
       selectUnit(new Date(2019, 1, 10), new Date(2019, 2, 10))
     ).to.deep.equal({

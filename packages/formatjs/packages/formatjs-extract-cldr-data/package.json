@@ -20,7 +20,7 @@
   "dependencies": {
     "@formatjs/intl-utils": "^2.2.2",
     "@types/glob": "^7.1.1",
-    "@types/lodash": "^4.14.138",
+    "@types/lodash": "^4.14.150",
     "cldr-core": "^36.0.0",
     "cldr-dates-full": "^36.0.0",
     "cldr-localenames-full": "^36.0.0",

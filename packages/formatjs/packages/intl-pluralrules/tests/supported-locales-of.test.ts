@@ -2,7 +2,7 @@ import '../src/polyfill';
 import '../polyfill';
 import '../dist/locale-data/zh';
 
-describe('supportedLocalesOf', function() {
+describe('supportedLocalesOf', function () {
   function test() {
     expect(Intl.PluralRules.supportedLocalesOf(['zh', 'en-jj'])).toContain(
       'zh'

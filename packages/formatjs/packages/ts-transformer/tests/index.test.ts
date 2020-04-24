@@ -38,11 +38,11 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
 
 const FIXTURES_DIR = join(__dirname, 'fixtures');
 
-describe('emit asserts for', function() {
+describe('emit asserts for', function () {
   const filenames = Object.keys(FILES_TO_TESTS);
-  filenames.forEach(function(fn) {
+  filenames.forEach(function (fn) {
     if (fn === 'extractSourceLocation') {
-      it(`[special] ${fn}`, function() {
+      it(`[special] ${fn}`, function () {
         const output = compile(
           join(FIXTURES_DIR, `${fn}.tsx`),
           FILES_TO_TESTS[fn]
@@ -59,7 +59,7 @@ describe('emit asserts for', function() {
         });
       });
     } else {
-      it(fn, function() {
+      it(fn, function () {
         const output = compile(
           join(FIXTURES_DIR, `${fn}.tsx`),
           FILES_TO_TESTS[fn]

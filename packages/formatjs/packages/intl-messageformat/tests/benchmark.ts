@@ -93,10 +93,10 @@ new Suite()
       guest: 'bar',
     })
   )
-  .on('error', function(event: Event) {
+  .on('error', function (event: Event) {
     console.log(String(event.target));
   })
-  .on('cycle', function(event: Event) {
+  .on('cycle', function (event: Event) {
     console.log(String(event.target));
   })
   .run();

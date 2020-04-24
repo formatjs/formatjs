@@ -21,7 +21,7 @@
   ],
   "dependencies": {
     "@types/loader-utils": "^1.1.3",
-    "loader-utils": "^1.2.3",
+    "loader-utils": "^2.0.0",
     "typescript": "3"
   },
   "author": "Long Ho <holevietlong@gmail.com>",

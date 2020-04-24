@@ -3,32 +3,32 @@ import {expect as chaiExpect} from 'chai';
 
 declare var expect: typeof chaiExpect;
 
-describe('exports', function() {
-  it('should have a default export function', function() {
+describe('exports', function () {
+  it('should have a default export function', function () {
     expect(areIntlLocalesSupported).to.be.a('function');
   });
 });
 
-describe('areIntlLocalesSupported()', function() {
+describe('areIntlLocalesSupported()', function () {
   const Intl = global.Intl;
 
-  describe('missing Intl', function() {
-    beforeEach(function() {
+  describe('missing Intl', function () {
+    beforeEach(function () {
       global.Intl = undefined as any;
     });
 
-    afterEach(function() {
+    afterEach(function () {
       global.Intl = Intl;
     });
 
-    it('should return `false` for "en"', function() {
+    it('should return `false` for "en"', function () {
       expect(areIntlLocalesSupported('en')).to.be.false;
     });
   });
 
-  describe('polyfill', function() {
+  describe('polyfill', function () {
     const NumberFormat = global.Intl.NumberFormat;
-    beforeEach(function() {
+    beforeEach(function () {
       global.Intl.NumberFormat = {
         supportedLocalesOf() {
           return [];
@@ -36,22 +36,22 @@ describe('areIntlLocalesSupported()', function() {
       } as any;
     });
 
-    afterEach(function() {
+    afterEach(function () {
       global.Intl.NumberFormat = NumberFormat;
     });
 
-    it('should return `true` for "en" after polyfill', function() {
+    it('should return `true` for "en" after polyfill', function () {
       expect(areIntlLocalesSupported('en')).to.be.false;
       global.Intl.NumberFormat = NumberFormat;
       expect(areIntlLocalesSupported('en')).to.be.true;
     });
   });
 
-  it('should return `true` for "en"', function() {
+  it('should return `true` for "en"', function () {
     expect(areIntlLocalesSupported('en')).to.be.true;
   });
 
-  it('should return `true` for "fr"', function() {
+  it('should return `true` for "fr"', function () {
     expect(areIntlLocalesSupported('fr')).to.be.true;
   });
 });

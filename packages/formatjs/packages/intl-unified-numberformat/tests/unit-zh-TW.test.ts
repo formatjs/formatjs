@@ -146,10 +146,10 @@ const tests: any = [
   ],
 ];
 
-describe('unit-zh-TW', function() {
+describe('unit-zh-TW', function () {
   for (const [number, expectedData] of tests) {
     for (const [unitDisplay, expected] of Object.entries(expectedData)) {
-      it(unitDisplay, function() {
+      it(unitDisplay, function () {
         const nf = new UnifiedNumberFormat('zh-TW', {
           style: 'unit',
           unit: 'meter',
