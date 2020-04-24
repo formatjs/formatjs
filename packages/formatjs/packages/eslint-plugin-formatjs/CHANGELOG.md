@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.1.5...eslint-plugin-formatjs@2.2.0) (2020-04-24)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** fix issues with spread element in ([68acfaf](https://github.com/formatjs/formatjs/commit/68acfafdf86907db26a59b447f31bed7d4724466))
+
+
+### Features
+
+* **eslint-plugin-formatjs:** Add `literal` option to `enforce-description` & `enforce-default-message` ([f20a2d4](https://github.com/formatjs/formatjs/commit/f20a2d4546d2c8cbffec5fa05792649488bbfda1))
+
+
+
+
+
 ## [2.1.5](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.1.4...eslint-plugin-formatjs@2.1.5) (2020-04-20)
 
 **Note:** Version bump only for package eslint-plugin-formatjs
