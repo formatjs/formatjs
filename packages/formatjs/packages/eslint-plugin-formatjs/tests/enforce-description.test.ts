@@ -33,6 +33,21 @@ _({
     },
     {
       code: `
+            import {_} from '@formatjs/macro'
+            _({
+                defaultMessage: '{count, plural, one {#} other {# more}}',
+                description: foo
+            })`,
+      errors: [
+        {
+          message:
+            '`description` has to be a string literal (not function call or variable)',
+        },
+      ],
+      options: ['literal'],
+    },
+    {
+      code: `
             intl.formatMessage({
                 defaultMessage: '{count, plural, one {#} other {# more}}'
             })`,

@@ -33,6 +33,20 @@ _({
     },
     {
       code: `
+            import {_} from '@formatjs/macro'
+            _({
+                defaultMessage: foo
+            })`,
+      errors: [
+        {
+          message:
+            '`defaultMessage` must be a string literal (not function call or variable)',
+        },
+      ],
+      options: ['literal'],
+    },
+    {
+      code: `
             intl.formatMessage({
                 description: 'this is description'
             })`,

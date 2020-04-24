@@ -9,17 +9,28 @@ function checkNode(
   importedMacroVars: Scope.Variable[]
 ) {
   const msgs = extractMessages(node as TSESTree.Node, importedMacroVars);
+  const {
+    options: [type],
+  } = context;
   for (const [
     {
       message: {description},
       descriptionNode,
     },
   ] of msgs) {
-    if (!description && !descriptionNode) {
-      context.report({
-        node,
-        message: '`description` has to be specified in message descriptor',
-      });
+    if (!description) {
+      if (type === 'literal' && descriptionNode) {
+        context.report({
+          node,
+          message:
+            '`description` has to be a string literal (not function call or variable)',
+        });
+      } else if (!descriptionNode) {
+        context.report({
+          node,
+          message: '`description` has to be specified in message descriptor',
+        });
+      }
     }
   }
 }
@@ -35,6 +46,11 @@ export default {
         'https://github.com/formatjs/formatjs/tree/master/packages/eslint-plugin-formatjs#enforce-description',
     },
     fixable: 'code',
+    schema: [
+      {
+        enum: ['literal', 'anything'],
+      },
+    ],
   },
   create(context) {
     let importedMacroVars: Scope.Variable[] = [];

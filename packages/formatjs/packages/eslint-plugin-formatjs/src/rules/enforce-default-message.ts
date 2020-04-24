@@ -9,17 +9,28 @@ function checkNode(
   importedMacroVars: Scope.Variable[]
 ) {
   const msgs = extractMessages(node as TSESTree.Node, importedMacroVars);
+  const {
+    options: [type],
+  } = context;
   for (const [
     {
       message: {defaultMessage},
       messageNode,
     },
   ] of msgs) {
-    if (!defaultMessage && !messageNode) {
-      context.report({
-        node,
-        message: '`defaultMessage` has to be specified in message descriptor',
-      });
+    if (!defaultMessage) {
+      if (type === 'literal' && messageNode) {
+        context.report({
+          node,
+          message:
+            '`defaultMessage` must be a string literal (not function call or variable)',
+        });
+      } else if (!messageNode) {
+        context.report({
+          node,
+          message: '`defaultMessage` has to be specified in message descriptor',
+        });
+      }
     }
   }
 }
@@ -35,6 +46,11 @@ const rule: Rule.RuleModule = {
         'https://github.com/formatjs/formatjs/tree/master/packages/eslint-plugin-formatjs#enforce-default-message',
     },
     fixable: 'code',
+    schema: [
+      {
+        enum: ['literal', 'anything'],
+      },
+    ],
   },
   create(context) {
     let importedMacroVars: Scope.Variable[] = [];
