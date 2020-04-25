@@ -65,6 +65,7 @@ function processIntlConfig<P extends OptionalIntlConfig = OptionalIntlConfig>(
     defaultLocale: config.defaultLocale,
     defaultFormats: config.defaultFormats,
     onError: config.onError,
+    wrapRichTextChunksInFragment: config.wrapRichTextChunksInFragment,
   }
 }
 
