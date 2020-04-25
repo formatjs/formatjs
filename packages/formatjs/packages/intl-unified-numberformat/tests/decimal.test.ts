@@ -52,14 +52,14 @@ const COMPACT_DISPLAYS: Array<UnifiedNumberFormatOptions['compactDisplay']> = [
 
 function test() {
   LOCALES.forEach(locale => {
-    describe(locale, function () {
-      describe('decimal', function () {
+    describe(locale, function() {
+      describe('decimal', function() {
         SIGN_DISPLAYS.forEach(signDisplay =>
-          describe(`signDisplay/${signDisplay}`, function () {
+          describe(`signDisplay/${signDisplay}`, function() {
             NOTATIONS.forEach(notation =>
-              describe(`notation/${notation}`, function () {
+              describe(`notation/${notation}`, function() {
                 COMPACT_DISPLAYS.forEach(compactDisplay =>
-                  it(`compactDisplay/${compactDisplay}`, function () {
+                  it(`compactDisplay/${compactDisplay}`, function() {
                     expect(
                       new UnifiedNumberFormat(locale, {
                         style: 'decimal',

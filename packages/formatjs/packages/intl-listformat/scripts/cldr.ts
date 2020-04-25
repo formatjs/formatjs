@@ -42,7 +42,7 @@ const langData = getAllListLocales().reduce(
 const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
 
 // Dist all locale files to dist/locale-data
-Object.keys(langData).forEach(function (lang) {
+Object.keys(langData).forEach(function(lang) {
   const destFile = join(allLocaleDistDir, lang + '.js');
   outputFileSync(
     destFile,

@@ -65,7 +65,7 @@ describe('options', () => {
     // Check message output
     expect(require(join(fixtureDir, 'actual.json'))).toMatchSnapshot();
   });
-  it('outputEmptyJson should output empty files', function () {
+  it('outputEmptyJson should output empty files', function() {
     const fixtureDir = join(fixturesDir, 'outputEmptyJson');
 
     const actual = transform(join(fixtureDir, 'actual.js'), {
@@ -78,7 +78,7 @@ describe('options', () => {
     // Check message output
     expect(require(join(fixtureDir, 'actual.json'))).toMatchSnapshot();
   });
-  it('without outputEmptyJson should output empty files', function () {
+  it('without outputEmptyJson should output empty files', function() {
     const fixtureDir = join(fixturesDir, 'empty');
 
     const actual = transform(join(fixtureDir, 'actual.js'), {})!.code;

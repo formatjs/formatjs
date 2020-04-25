@@ -16,22 +16,22 @@ Example:
 
 ```tsx
 // Pre-processed
-import parser from 'intl-messageformat-parser'
+import parser from 'intl-messageformat-parser';
 const messages = {
   ast_simple: parser.parse('hello world'),
   ast_var: parser.parse('hello world, {name}'),
-}
+};
 
 // During runtime
 // ES6 import
-import {IntlProvider, FormattedMessage} from 'react-intl'
-import * as ReactDOM from 'react-dom'
+import {IntlProvider, FormattedMessage} from 'react-intl';
+import * as ReactDOM from 'react-dom';
 
 ReactDOM.render(
   <IntlProvider messages={messages}>
     <FormattedMessage id="ast_simple" />
   </IntlProvider>
-) // will render `hello world`
+); // will render `hello world`
 ```
 
 ### Caveats

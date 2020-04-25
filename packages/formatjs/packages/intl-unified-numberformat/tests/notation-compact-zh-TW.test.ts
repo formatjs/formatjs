@@ -7,8 +7,8 @@ UnifiedNumberFormat.__addLocaleData(
 UnifiedNumberFormat.__addLocaleData(
   require('../dist/locale-data/zh-Hans.json')
 );
-describe('notation-compact-zh-TW', function () {
-  it('short', function () {
+describe('notation-compact-zh-TW', function() {
+  it('short', function() {
     const nfShort = new UnifiedNumberFormat('zh-TW', {
       notation: 'compact',
       compactDisplay: 'short',
@@ -25,7 +25,7 @@ describe('notation-compact-zh-TW', function () {
     expect(nfShort.format(0.00159)).toBe('0.0016');
   });
 
-  it('long', function () {
+  it('long', function() {
     const nfLong = new UnifiedNumberFormat('zh-TW', {
       notation: 'compact',
       compactDisplay: 'long',

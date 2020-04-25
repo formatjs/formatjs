@@ -57,7 +57,7 @@ function generateContinuousILND(startChar: string): string[] {
 }
 
 // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#table-numbering-system-digits
-const ILND: Record<string, string[]> = (function () {
+const ILND: Record<string, string[]> = (function() {
   return {
     arab: generateContinuousILND('\u0660'),
     arabext: generateContinuousILND('\u06f0'),
@@ -107,7 +107,7 @@ export type Unit =
 );
 
 // Dist all locale files to dist/locale-data
-Object.keys(allData).forEach(function (locale) {
+Object.keys(allData).forEach(function(locale) {
   const destFile = join(allLocaleDistDir, locale + '.js');
   outputFileSync(
     destFile,
@@ -120,7 +120,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
 });
 
 // Dist all locale files to dist/locale-data
-Object.keys(allData).forEach(function (locale) {
+Object.keys(allData).forEach(function(locale) {
   const destFile = join(allLocaleDistDir, locale + '.json');
   outputJSONSync(destFile, allData[locale]);
 });

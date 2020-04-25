@@ -73,9 +73,9 @@ const tests: any[] = [
   ],
 ];
 
-describe('notation-compact-ko-KR', function () {
+describe('notation-compact-ko-KR', function() {
   for (const [number, short, long = short] of tests) {
-    it(`${number} short`, function () {
+    it(`${number} short`, function() {
       const nfShort = new UnifiedNumberFormat('ko-KR', {
         notation: 'compact',
         compactDisplay: 'short',
@@ -83,7 +83,7 @@ describe('notation-compact-ko-KR', function () {
       expect(nfShort.formatToParts(number)).toEqual(short);
     });
 
-    it(`${number} long`, function () {
+    it(`${number} long`, function() {
       const nfLong = new UnifiedNumberFormat('ko-KR', {
         notation: 'compact',
         compactDisplay: 'long',

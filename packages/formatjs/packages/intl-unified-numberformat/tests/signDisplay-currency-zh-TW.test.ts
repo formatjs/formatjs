@@ -188,7 +188,7 @@ const tests: any[] = [
     ],
   ],
 ];
-describe('signDisplay-currency-zh-TW', function () {
+describe('signDisplay-currency-zh-TW', function() {
   for (const [
     signDisplay,
     negative,
@@ -204,23 +204,23 @@ describe('signDisplay-currency-zh-TW', function () {
       currencySign: 'accounting',
       signDisplay,
     });
-    describe(signDisplay, function () {
-      it('negative', function () {
+    describe(signDisplay, function() {
+      it('negative', function() {
         expect(nf.formatToParts(-987)).toEqual(negative);
       });
-      it('negativeNearZero', function () {
+      it('negativeNearZero', function() {
         expect(nf.formatToParts(-0.0001)).toEqual(negativeNearZero);
       });
-      it('negativeZero', function () {
+      it('negativeZero', function() {
         expect(nf.formatToParts(-0)).toEqual(negativeZero);
       });
-      it('zero', function () {
+      it('zero', function() {
         expect(nf.formatToParts(0)).toEqual(zero);
       });
-      it('positiveNearZero', function () {
+      it('positiveNearZero', function() {
         expect(nf.formatToParts(0.0001)).toEqual(positiveNearZero);
       });
-      it('positive', function () {
+      it('positive', function() {
         expect(nf.formatToParts(987)).toEqual(positive);
       });
     });

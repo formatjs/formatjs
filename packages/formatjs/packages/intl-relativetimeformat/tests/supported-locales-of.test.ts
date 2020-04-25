@@ -3,7 +3,7 @@ import '../src/polyfill';
 import '../polyfill';
 import '../dist/locale-data/zh';
 
-describe('supportedLocalesOf', function () {
+describe('supportedLocalesOf', function() {
   const RelativeTimeFormat = (Intl as any).RelativeTimeFormat;
   function test() {
     expect(RelativeTimeFormat.supportedLocalesOf(['zh', 'en-jj'])).toContain(

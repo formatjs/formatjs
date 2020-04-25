@@ -2,7 +2,7 @@ import '../src/polyfill';
 import '../polyfill';
 import '../dist/locale-data/zh';
 
-describe('supportedLocalesOf', function () {
+describe('supportedLocalesOf', function() {
   const ListFormat = (Intl as any).ListFormat;
   function test() {
     expect(ListFormat.supportedLocalesOf(['zh', 'en-jj'])).toContain('zh');
