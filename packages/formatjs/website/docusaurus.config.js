@@ -7,6 +7,10 @@ module.exports = {
   organizationName: 'formatjs', // Usually your GitHub org/user name.
   projectName: 'formatjs.github.io', // Usually your repo name.
   themeConfig: {
+    algolia: {
+      apiKey: '64ffba7fb3e3ee96182a32b6bf44591f',
+      indexName: 'formatjs',
+    },
     navbar: {
       title: 'Format.JS',
       logo: {
