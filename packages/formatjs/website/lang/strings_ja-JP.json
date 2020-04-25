@@ -1,0 +1,3 @@
+{
+    "demo": "{name}は{takenDate, date, long}に{numPhotos, plural, =0 {1枚も写真を撮りませんでした。} =1 {1枚写真を撮りました。} other {#枚写真を撮りました。}}"
+}

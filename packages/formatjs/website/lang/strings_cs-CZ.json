@@ -1,0 +1,3 @@
+{
+    "demo": "{takenDate, date, long} {name} {numPhotos, plural,=0 {nevyfotila} other {vyfotila} } {numPhotos, plural, =0 {žádnou fotku} one {jednu fotku} few {# fotky} other {# fotek}}."
+}

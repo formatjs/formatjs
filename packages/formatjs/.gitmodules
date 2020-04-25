@@ -2,7 +2,3 @@
 	path = test262
 	url = https://github.com/tc39/test262.git
 	shallow = true
-[submodule "formatjs.github.io"]
-	path = formatjs.github.io
-	url = git@github.com:formatjs/formatjs.github.io.git
-	shallow = true
