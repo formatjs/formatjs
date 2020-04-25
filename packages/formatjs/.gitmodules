@@ -4,5 +4,5 @@
 	shallow = true
 [submodule "formatjs.github.io"]
 	path = formatjs.github.io
-	url = git@github.com:formatjs/formatjs.git
+	url = git@github.com:formatjs/formatjs.github.io.git
 	shallow = true
