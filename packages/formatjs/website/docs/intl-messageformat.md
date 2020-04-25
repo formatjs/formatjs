@@ -1,6 +1,6 @@
 ---
 id: intl-messageformat
-title: Introduction
+title: Intl MessageFormat
 ---
 
 Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.

@@ -16,7 +16,10 @@ module.exports = {
     ],
   },
   libraries: {
-    'Intl.MessageFormat': ['intl-messageformat'],
+    'Intl.MessageFormat': [
+      'intl-messageformat',
+      'intl-messageformat-parser'
+    ],
     'react-intl': [
       'react-intl',
       'react-intl/components',

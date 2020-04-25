@@ -2,8 +2,9 @@
 id: react-intl
 title: react-intl
 ---
+[![npm Version](https://img.shields.io/npm/v/react-intl.svg?style=flat-square)](https://www.npmjs.org/package/react-intl)
 
-**Welcome to React Intl's docs! This is the place to find React Intl's docs for v3**. Feel free to open a pull request and contribute to the docs to make them better.
+**Welcome to React Intl's docs! This is the place to find React Intl's docs**. Feel free to open a pull request and contribute to the docs to make them better.
 
 ## Runtime Requirements
 
