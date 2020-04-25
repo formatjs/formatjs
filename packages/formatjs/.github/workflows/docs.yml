@@ -1,0 +1,20 @@
+name: Pushing docs
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - run: |
+          cd website
+          npm ci
+          eval $(ssh-agent)
+          ssh-add "$SSH_PATH/id_rsa"
+
+          ssh-keyscan -t rsa "github.com" >> "$SSH_PATH/known_hosts"
+          echo "StrictHostKeyChecking no" >> "$SSH_PATH/config"
+          USE_SSH=true GIT_USER="$GITHUB_ACTOR" npm run deploy
