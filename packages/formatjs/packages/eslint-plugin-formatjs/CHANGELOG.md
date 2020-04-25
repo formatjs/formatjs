@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.2.1...eslint-plugin-formatjs@2.2.2) (2020-04-25)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** rm hard dep on @typescript-eslint/typescript-estree, fix [#666](https://github.com/formatjs/formatjs/issues/666) ([ed40a8b](https://github.com/formatjs/formatjs/commit/ed40a8b366d370783fcf75e6c98dc6356a9aa03f))
+
+
+
+
+
 ## [2.2.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.2.0...eslint-plugin-formatjs@2.2.1) (2020-04-24)
 
 

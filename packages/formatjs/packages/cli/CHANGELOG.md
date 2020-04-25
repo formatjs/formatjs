@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.8](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.6.7...@formatjs/cli@1.6.8) (2020-04-25)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** fix `throws` option not being passed to main method ([#665](https://github.com/formatjs/formatjs/issues/665)) ([04023b2](https://github.com/formatjs/formatjs/commit/04023b223ece9414e5f635e0f12e62ba3b8aa968))
+
+
+
+
+
 ## [1.6.7](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.6.6...@formatjs/cli@1.6.7) (2020-04-24)
 
 
