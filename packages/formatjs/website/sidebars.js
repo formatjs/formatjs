@@ -28,6 +28,11 @@ module.exports = {
     ],
   },
   tooling: {
-    Tooling: ['tooling/cli', 'tooling/linter'],
+    Tooling: [
+      'tooling/cli',
+      'tooling/linter',
+      'tooling/babel-plugin',
+      'tooling/ts-transformer',
+    ],
   },
 };
