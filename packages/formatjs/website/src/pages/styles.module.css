@@ -9,7 +9,7 @@
   text-align: center;
   position: relative;
   overflow: hidden;
-  background: url(/img/splash-head.jpg) no-repeat;
+  background-repeat: no-repeat;
   background-size: cover;
   background-position: 100%;
 }

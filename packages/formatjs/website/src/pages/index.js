@@ -244,7 +244,12 @@ function Home() {
 
   return (
     <>
-      <header className={cx('hero hero--primary', styles.heroBanner)}>
+      <header
+        className={cx('hero hero--primary', styles.heroBanner)}
+        style={{
+          backgroundImage: `url(${useBaseUrl('/img/splash-head.jpg')})`,
+        }}
+      >
         <div className="container">
           <h1 className="hero__title">
             <img src={useBaseUrl('/img/logo-header.svg')} />
