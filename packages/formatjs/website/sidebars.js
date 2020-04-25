@@ -11,6 +11,7 @@ module.exports = {
       'polyfills',
       'polyfills/intl-pluralrules',
       'polyfills/intl-relativetimeformat',
+      'polyfills/intl-listformat',
       'polyfills/intl-displaynames',
       'polyfills/intl-numberformat',
     ],

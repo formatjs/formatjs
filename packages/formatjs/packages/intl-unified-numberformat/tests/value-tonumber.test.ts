@@ -10,10 +10,10 @@ const toNumberResults = [
   ['foo', NaN],
 ];
 
-describe('value-tonumber', function() {
+describe('value-tonumber', function () {
   const nf = new UnifiedNumberFormat();
   for (const [val1, val2] of toNumberResults) {
-    it(`${val1} === ${val2}`, function() {
+    it(`${val1} === ${val2}`, function () {
       expect(nf.formatToParts(val1 as number)).toEqual(
         nf.formatToParts(val2 as number)
       );

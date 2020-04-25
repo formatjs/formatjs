@@ -9,5 +9,6 @@ Our current list of polyfills includes:
 
 - [Intl.PluralRules](polyfills/intl-pluralrules.md)
 - [Intl.RelativeTimeFormat](polyfills/intl-relativetimeformat.md)
+- [Intl.ListFormat](polyfills/intl-listformat.md)
 - [Intl.DisplayNames](polyfills/intl-displaynames.md)
 - [Intl.NumberFormat](polyfills/intl-numberformat.md) (ES2020)

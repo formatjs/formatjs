@@ -69,8 +69,8 @@ import ShortDate from '../short-date';
 
 expect.extend(expectJSX);
 
-describe('<ShortDate>', function() {
-  it('renders', function() {
+describe('<ShortDate>', function () {
+  it('renders', function () {
     const renderer = createRenderer();
     const date = new Date();
 
@@ -115,8 +115,8 @@ import RelativeDate from '../relative-date';
 
 expect.extend(expectJSX);
 
-describe('<RelativeDate>', function() {
-  it('renders', function() {
+describe('<RelativeDate>', function () {
+  it('renders', function () {
     const renderer = createRenderer();
     const date = new Date();
 

@@ -35,7 +35,7 @@ const allData = getAllDisplayNamesLocales().reduce(
 const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
 
 // Dist all locale files to dist/locale-data (JS)
-Object.keys(allData).forEach(function(lang) {
+Object.keys(allData).forEach(function (lang) {
   const destFile = join(allLocaleDistDir, lang + '.js');
   outputFileSync(
     destFile,
@@ -48,7 +48,7 @@ if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function'
 });
 
 // Dist all locale files to dist/locale-data (JSON)
-Object.keys(allData).forEach(function(locale) {
+Object.keys(allData).forEach(function (locale) {
   const destFile = join(allLocaleDistDir, locale + '.json');
   outputJSONSync(destFile, allData[locale]);
 });

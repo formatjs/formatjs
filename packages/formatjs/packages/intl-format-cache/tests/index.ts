@@ -5,16 +5,16 @@ import {expect as chaiExpect} from 'chai';
 
 declare var expect: typeof chaiExpect;
 
-describe('intl-format-cache', function() {
-  it('has a function as the default export', function() {
+describe('intl-format-cache', function () {
+  it('has a function as the default export', function () {
     expect(memoizeFormatConstructor).to.be.a('function');
   });
 
-  describe('Intl built-ins', function() {
-    describe('Intl.DateTimeFormat', function() {
+  describe('Intl built-ins', function () {
+    describe('Intl.DateTimeFormat', function () {
       var getDateTimeFormat = memoizeFormatConstructor(Intl.DateTimeFormat);
 
-      it('memoizes Intl.DateTimeFormat', function() {
+      it('memoizes Intl.DateTimeFormat', function () {
         var df = getDateTimeFormat('en');
 
         expect(df.resolvedOptions().locale).to.equal('en');
@@ -26,10 +26,10 @@ describe('intl-format-cache', function() {
       });
     });
 
-    describe('Intl.NumberFormat', function() {
+    describe('Intl.NumberFormat', function () {
       var getNumberFormat = memoizeFormatConstructor(Intl.NumberFormat);
 
-      it('memoizes Intl.NumberFormat', function() {
+      it('memoizes Intl.NumberFormat', function () {
         var nf = getNumberFormat('en');
 
         expect(nf.resolvedOptions().locale).to.equal('en');

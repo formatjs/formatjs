@@ -27,7 +27,7 @@ function checkNode(
         message: 'Multiple consecutive whitespaces are not allowed',
       };
       if (messageNode.type === 'Literal' && messageNode.raw) {
-        reportObject.fix = function(fixer) {
+        reportObject.fix = function (fixer) {
           return fixer.replaceText(
             messageNode as Node,
             messageNode.raw!.replace(MULTIPLE_SPACES, ' ')

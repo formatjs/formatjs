@@ -59,19 +59,19 @@ function allTests(opts?: ParseOptions) {
       } shared this file.',
   ].forEach(mess => {
     const ast = pegParse(mess, opts);
-    it(`can pegParse '${mess}'`, function() {
+    it(`can pegParse '${mess}'`, function () {
       expect(ast).toMatchSnapshot();
     });
-    it(`can print AST from '${mess}'`, function() {
+    it(`can print AST from '${mess}'`, function () {
       expect(printAST(ast)).toMatchSnapshot();
     });
   });
 }
 
-describe('pegParse()', function() {
+describe('pegParse()', function () {
   allTests();
 });
 
-describe('pegParse({ captureLocation: true })', function() {
+describe('pegParse({ captureLocation: true })', function () {
   allTests();
 });

@@ -12,12 +12,12 @@ import memoizeFormatConstructor from 'intl-format-cache';
 
 declare let expect: typeof chaiExpect;
 
-describe('IntlMessageFormat', function() {
-  it('should be a function', function() {
+describe('IntlMessageFormat', function () {
+  it('should be a function', function () {
     expect(IntlMessageFormat).to.be.a('function');
   });
 
-  it('should accept formatters', function() {
+  it('should accept formatters', function () {
     const mf = new IntlMessageFormat(
       'My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}.',
       'en',
@@ -41,26 +41,26 @@ describe('IntlMessageFormat', function() {
 
   // INSTANCE METHODS
 
-  describe('#resolvedOptions( )', function() {
-    it('should be a function', function() {
+  describe('#resolvedOptions( )', function () {
+    it('should be a function', function () {
       const mf = new IntlMessageFormat('');
       expect(mf.resolvedOptions).to.be.a('function');
     });
 
-    it('should have a `locale` property', function() {
+    it('should have a `locale` property', function () {
       const mf = new IntlMessageFormat('');
       expect(mf.resolvedOptions()).to.have.key('locale');
     });
 
-    describe('`locale`', function() {
-      it('should default to host locale', function() {
+    describe('`locale`', function () {
+      it('should default to host locale', function () {
         const mf = new IntlMessageFormat('');
         expect(mf.resolvedOptions().locale).to.equal(
           new Intl.NumberFormat().resolvedOptions().locale
         );
       });
 
-      it('should normalize the casing', function() {
+      it('should normalize the casing', function () {
         let mf = new IntlMessageFormat('', 'en-us');
         expect(mf.resolvedOptions().locale).to.equal('en-US');
 
@@ -70,7 +70,7 @@ describe('IntlMessageFormat', function() {
     });
   });
 
-  it('should handle @ correctly', function() {
+  it('should handle @ correctly', function () {
     const mf = new IntlMessageFormat('hi @{there}', 'en');
     expect(
       mf.format({
@@ -79,39 +79,39 @@ describe('IntlMessageFormat', function() {
     ).to.equal('hi @2008');
   });
 
-  describe('#format( [object] )', function() {
-    it('should be a function', function() {
+  describe('#format( [object] )', function () {
+    it('should be a function', function () {
       const mf = new IntlMessageFormat('');
       expect(mf.format).to.be.a('function');
     });
 
-    it('should return a string', function() {
+    it('should return a string', function () {
       const mf = new IntlMessageFormat('');
       expect(mf.format()).to.be.a('string');
     });
   });
 
-  describe('#format([ast])', function() {
-    it('should format ast', function() {
+  describe('#format([ast])', function () {
+    it('should format ast', function () {
       const mf = new IntlMessageFormat(parse('hello world'));
       expect(mf.format()).to.equal('hello world');
     });
-    it('should format ast w/ placeholders', function() {
+    it('should format ast w/ placeholders', function () {
       const mf = new IntlMessageFormat(parse('hello world, {name}'));
       expect(mf.format({name: 'foo'})).to.equal('hello world, foo');
     });
-    it('should format ast w/o parser', function() {
+    it('should format ast w/o parser', function () {
       const mf = new IntlMessageFormat(parse('hello world'));
       expect(mf.format()).to.equal('hello world');
     });
-    it('should format ast w/ placeholders w/o parser', function() {
+    it('should format ast w/ placeholders w/o parser', function () {
       const mf = new IntlMessageFormat(parse('hello world, {name}'));
       expect(mf.format({name: 'foo'})).to.equal('hello world, foo');
     });
   });
 
-  describe('using a string pattern', function() {
-    it('should properly replace direct arguments in the string', function() {
+  describe('using a string pattern', function () {
+    it('should properly replace direct arguments in the string', function () {
       const mf = new IntlMessageFormat('My name is {FIRST} {LAST}.');
       const output = mf.format({
         FIRST: 'Anthony',
@@ -121,7 +121,7 @@ describe('IntlMessageFormat', function() {
       expect(output).to.equal('My name is Anthony Pipkin.');
     });
 
-    it('should not ignore zero values', function() {
+    it('should not ignore zero values', function () {
       const mf = new IntlMessageFormat('I am {age} years old.');
       const output = mf.format({
         age: 0,
@@ -130,7 +130,7 @@ describe('IntlMessageFormat', function() {
       expect(output).to.equal('I am 0 years old.');
     });
 
-    it('should ignore false, null, and undefined', function() {
+    it('should ignore false, null, and undefined', function () {
       const mf = new IntlMessageFormat('{a}{b}{c}');
       const output = mf.format({
         a: false,
@@ -142,7 +142,7 @@ describe('IntlMessageFormat', function() {
     });
   });
 
-  describe('and plurals under the Arabic locale', function() {
+  describe('and plurals under the Arabic locale', function () {
     const msg =
       '' +
       'I have {numPeople, plural,' +
@@ -156,7 +156,7 @@ describe('IntlMessageFormat', function() {
 
     const msgFmt = new IntlMessageFormat(msg, 'ar');
 
-    it('should match zero', function() {
+    it('should match zero', function () {
       const m = msgFmt.format({
         numPeople: 0,
       });
@@ -164,7 +164,7 @@ describe('IntlMessageFormat', function() {
       expect(m).to.equal('I have zero points.');
     });
 
-    it('should match one', function() {
+    it('should match one', function () {
       const m = msgFmt.format({
         numPeople: 1,
       });
@@ -172,7 +172,7 @@ describe('IntlMessageFormat', function() {
       expect(m).to.equal('I have a point.');
     });
 
-    it('should match two', function() {
+    it('should match two', function () {
       const m = msgFmt.format({
         numPeople: 2,
       });
@@ -180,7 +180,7 @@ describe('IntlMessageFormat', function() {
       expect(m).to.equal('I have two points.');
     });
 
-    it('should match few', function() {
+    it('should match few', function () {
       const m = msgFmt.format({
         numPeople: 5,
       });
@@ -188,7 +188,7 @@ describe('IntlMessageFormat', function() {
       expect(m).to.equal('I have a few points.');
     });
 
-    it('should match many', function() {
+    it('should match many', function () {
       const m = msgFmt.format({
         numPeople: 20,
       });
@@ -196,7 +196,7 @@ describe('IntlMessageFormat', function() {
       expect(m).to.equal('I have lots of points.');
     });
 
-    it('should match other', function() {
+    it('should match other', function () {
       const m = msgFmt.format({
         numPeople: 100,
       });
@@ -205,7 +205,7 @@ describe('IntlMessageFormat', function() {
     });
   });
 
-  describe('and plurals under the Welsh locale', function() {
+  describe('and plurals under the Welsh locale', function () {
     const msg =
       '' +
       'I have {numPeople, plural,' +
@@ -219,7 +219,7 @@ describe('IntlMessageFormat', function() {
 
     const msgFmt = new IntlMessageFormat(msg, 'cy');
 
-    it('should match zero', function() {
+    it('should match zero', function () {
       const m = msgFmt.format({
         numPeople: 0,
       });
@@ -227,7 +227,7 @@ describe('IntlMessageFormat', function() {
       expect(m).to.equal('I have zero points.');
     });
 
-    it('should match one', function() {
+    it('should match one', function () {
       const m = msgFmt.format({
         numPeople: 1,
       });
@@ -235,7 +235,7 @@ describe('IntlMessageFormat', function() {
       expect(m).to.equal('I have a point.');
     });
 
-    it('should match two', function() {
+    it('should match two', function () {
       const m = msgFmt.format({
         numPeople: 2,
       });
@@ -243,7 +243,7 @@ describe('IntlMessageFormat', function() {
       expect(m).to.equal('I have two points.');
     });
 
-    it('should match few', function() {
+    it('should match few', function () {
       const m = msgFmt.format({
         numPeople: 3,
       });
@@ -251,7 +251,7 @@ describe('IntlMessageFormat', function() {
       expect(m).to.equal('I have a few points.');
     });
 
-    it('should match many', function() {
+    it('should match many', function () {
       const m = msgFmt.format({
         numPeople: 6,
       });
@@ -259,7 +259,7 @@ describe('IntlMessageFormat', function() {
       expect(m).to.equal('I have lots of points.');
     });
 
-    it('should match other', function() {
+    it('should match other', function () {
       const m = msgFmt.format({
         numPeople: 100,
       });
@@ -268,7 +268,7 @@ describe('IntlMessageFormat', function() {
     });
   });
 
-  describe('and changing the locale', function() {
+  describe('and changing the locale', function () {
     const simple = {
       en: '{NAME} went to {CITY}.',
 
@@ -319,19 +319,19 @@ describe('IntlMessageFormat', function() {
       CITY: 'Paris',
     };
 
-    it('should format message en-US simple with different objects', function() {
+    it('should format message en-US simple with different objects', function () {
       const msgFmt = new IntlMessageFormat(simple.en, 'en-US');
       expect(msgFmt.format(maleObj)).to.equal('Tony went to Paris.');
       expect(msgFmt.format(femaleObj)).to.equal('Jenny went to Paris.');
     });
 
-    it('should format message fr-FR simple with different objects', function() {
+    it('should format message fr-FR simple with different objects', function () {
       const msgFmt = new IntlMessageFormat(simple.fr, 'fr-FR');
       expect(msgFmt.format(maleObj)).to.equal('Tony est allé à Paris.');
       expect(msgFmt.format(femaleObj)).to.equal('Jenny est allée à Paris.');
     });
 
-    it('should format message en-US complex with different objects', function() {
+    it('should format message en-US complex with different objects', function () {
       const msgFmt = new IntlMessageFormat(complex.en, 'en-US');
       expect(msgFmt.format(maleTravelers)).to.equal(
         'Lucas, Tony and Drew went to Paris.'
@@ -339,7 +339,7 @@ describe('IntlMessageFormat', function() {
       expect(msgFmt.format(femaleTravelers)).to.equal('Monica went to Paris.');
     });
 
-    it('should format message fr-FR complex with different objects', function() {
+    it('should format message fr-FR complex with different objects', function () {
       const msgFmt = new IntlMessageFormat(complex.fr, 'fr-FR');
       expect(msgFmt.format(maleTravelers)).to.equal(
         'Lucas, Tony and Drew sont allés à Paris.'
@@ -350,7 +350,7 @@ describe('IntlMessageFormat', function() {
     });
   });
 
-  describe('and change the locale with different counts', function() {
+  describe('and change the locale with different counts', function () {
     const messages = {
       en:
         '{COMPANY_COUNT, plural, ' +
@@ -368,7 +368,7 @@ describe('IntlMessageFormat', function() {
         ' новые книги.',
     };
 
-    it('should format a message with en-US locale', function() {
+    it('should format a message with en-US locale', function () {
       const msgFmt = new IntlMessageFormat(messages.en, 'en-US');
 
       expect(msgFmt.format({COMPANY_COUNT: 0})).to.equal(
@@ -388,7 +388,7 @@ describe('IntlMessageFormat', function() {
       );
     });
 
-    it('should format a message with ru-RU locale', function() {
+    it('should format a message with ru-RU locale', function () {
       const msgFmt = new IntlMessageFormat(messages.ru, 'ru-RU');
 
       expect(msgFmt.format({COMPANY_COUNT: 0})).to.equal(
@@ -412,19 +412,19 @@ describe('IntlMessageFormat', function() {
     });
   });
 
-  describe('arguments with', function() {
-    describe('no spaces', function() {
+  describe('arguments with', function () {
+    describe('no spaces', function () {
       const msg = new IntlMessageFormat('{STATE}'),
         state = 'Missouri';
 
-      it('should fail when the argument in the pattern is not provided', function() {
+      it('should fail when the argument in the pattern is not provided', function () {
         expect(msg.format).to.throw(
           Error,
           /The intl string context variable "STATE" was not provided to the string "{STATE}"/
         );
       });
 
-      it('should fail when the argument in the pattern has a typo', function() {
+      it('should fail when the argument in the pattern has a typo', function () {
         function formatWithValueNameTypo() {
           return msg.format({'ST ATE': state});
         }
@@ -435,16 +435,16 @@ describe('IntlMessageFormat', function() {
         );
       });
 
-      it('should succeed when the argument is correct', function() {
+      it('should succeed when the argument is correct', function () {
         expect(msg.format({STATE: state})).to.equal(state);
       });
     });
 
-    describe('a numeral', function() {
+    describe('a numeral', function () {
       const msg = new IntlMessageFormat('{ST1ATE}');
       const state = 'Missouri';
 
-      it('should fail when the argument in the pattern is not provided', function() {
+      it('should fail when the argument in the pattern is not provided', function () {
         function formatWithMissingValue() {
           return msg.format({FOO: state});
         }
@@ -455,7 +455,7 @@ describe('IntlMessageFormat', function() {
         );
       });
 
-      it('should fail when the argument in the pattern has a typo', function() {
+      it('should fail when the argument in the pattern has a typo', function () {
         function formatWithMissingValue() {
           msg.format({'ST ATE': state});
         }
@@ -466,21 +466,21 @@ describe('IntlMessageFormat', function() {
         );
       });
 
-      it('should succeed when the argument is correct', function() {
+      it('should succeed when the argument is correct', function () {
         expect(msg.format({ST1ATE: state})).to.equal(state);
       });
     });
   });
 
-  describe('selectordinal arguments', function() {
+  describe('selectordinal arguments', function () {
     const msg =
       'This is my {year, selectordinal, one{#st} two{#nd} few{#rd} other{#th}} birthday.';
 
-    it('should parse without errors', function() {
+    it('should parse without errors', function () {
       expect(() => IntlMessageFormat.__parse!(msg)).to.not.throw();
     });
 
-    it('should use ordinal pluralization rules', function() {
+    it('should use ordinal pluralization rules', function () {
       const mf = new IntlMessageFormat(msg, 'en');
 
       expect(mf.format({year: 1})).to.equal('This is my 1st birthday.');
@@ -496,8 +496,8 @@ describe('IntlMessageFormat', function() {
     });
   });
 
-  describe('exceptions', function() {
-    it('should use the correct PT plural rules', function() {
+  describe('exceptions', function () {
+    it('should use the correct PT plural rules', function () {
       const msg = '{num, plural, one{one} other{other}}';
       const pt = new IntlMessageFormat(msg, 'pt');
       const ptMZ = new IntlMessageFormat(msg, 'pt-MZ');
@@ -508,7 +508,7 @@ describe('IntlMessageFormat', function() {
       expect(ptMZ.format({num: 100})).to.equal('other');
     });
 
-    it('should take negative number as plural', function() {
+    it('should take negative number as plural', function () {
       const msg =
         '{num, plural, offset:-1 =-1{negative one} one{one} other{other}}';
       const mf = new IntlMessageFormat(msg, 'en');
@@ -517,7 +517,7 @@ describe('IntlMessageFormat', function() {
       expect(mf.format({num: 0})).to.equal('one');
       expect(mf.format({num: 1})).to.equal('other');
     });
-    it('should take empty string value', function() {
+    it('should take empty string value', function () {
       const msg = '"{value}"';
       const mf = new IntlMessageFormat(msg, 'en');
 
@@ -528,7 +528,7 @@ describe('IntlMessageFormat', function() {
     });
   });
 
-  it('should handle offset in plural #', function() {
+  it('should handle offset in plural #', function () {
     const msg = `{num_guests, plural, offset:1
       =0 {{host} does not give a party.}
       =1 {{host} invites {guest} to their party.}
@@ -550,7 +550,7 @@ describe('IntlMessageFormat', function() {
     ).to.equal('The host invites Alice and 2 other people to their party.');
   });
 
-  it('regression issue #437', function() {
+  it('regression issue #437', function () {
     const mf = new IntlMessageFormat(
       '{score, plural, one {# shopper} other {# shoppers}}',
       'en'
@@ -559,8 +559,8 @@ describe('IntlMessageFormat', function() {
     expect(mf.format({score: 2})).to.equal('2 shoppers');
   });
 
-  describe('xml', function() {
-    it('should handle @ correctly', function() {
+  describe('xml', function () {
+    it('should handle @ correctly', function () {
       const mf = new IntlMessageFormat('hi @{there}', 'en');
       expect(
         mf.format({
@@ -569,14 +569,14 @@ describe('IntlMessageFormat', function() {
       ).to.deep.equal('hi @2008');
     });
 
-    it('simple message', function() {
+    it('simple message', function () {
       const mf = new IntlMessageFormat('hello <b>world</b>', 'en');
       expect(mf.format({b: str => ({str})})).to.deep.equal([
         'hello ',
         {str: 'world'},
       ]);
     });
-    it('nested tag message', function() {
+    it('nested tag message', function () {
       const mf = new IntlMessageFormat(
         'hello <b>world<i>!</i> <br/> </b>',
         'en'
@@ -591,7 +591,7 @@ describe('IntlMessageFormat', function() {
         {chunks: ['world', {val: '$$!$$'}, ' <br/> ']},
       ]);
     });
-    it('deep format nested tag message', function() {
+    it('deep format nested tag message', function () {
       const mf = new IntlMessageFormat(
         'hello <b>world<i>!</i> <br/> </b>',
         'en'
@@ -603,7 +603,7 @@ describe('IntlMessageFormat', function() {
         })
       ).to.deep.equal(['hello <b>world', {val: '$$!$$'}, ' <br/> </b>']);
     });
-    it('simple message w/ placeholder and no tag', function() {
+    it('simple message w/ placeholder and no tag', function () {
       const mf = new IntlMessageFormat('hello {placeholder} {var2}', 'en');
       expect(
         mf.format({
@@ -612,7 +612,7 @@ describe('IntlMessageFormat', function() {
         })
       ).to.deep.equal(['hello ', {name: 'gaga'}, ' ', {foo: 1}]);
     });
-    it('simple message w/ placeholder', function() {
+    it('simple message w/ placeholder', function () {
       const mf = new IntlMessageFormat(
         'hello <b>world</b> <a>{placeholder}</a>',
         'en'
@@ -625,7 +625,7 @@ describe('IntlMessageFormat', function() {
         })
       ).to.deep.equal(['hello ', {str: 'world'}, ' ', {str: 'gaga'}]);
     });
-    it('message w/ placeholder & HTML entities', function() {
+    it('message w/ placeholder & HTML entities', function () {
       const mf = new IntlMessageFormat('Hello&lt;<tag>{text}</tag>', 'en');
       expect(
         mf.format({
@@ -634,7 +634,7 @@ describe('IntlMessageFormat', function() {
         })
       ).to.deep.equal(['Hello&lt;', {str: '<asd>'}]);
     });
-    it('message w/ placeholder & >', function() {
+    it('message w/ placeholder & >', function () {
       const mf = new IntlMessageFormat(
         '&lt; hello <b>world</b> {token} &lt;&gt; <a>{placeholder}</a>',
         'en'
@@ -653,7 +653,7 @@ describe('IntlMessageFormat', function() {
         {str: '>'},
       ]);
     });
-    it('select message w/ placeholder & >', function() {
+    it('select message w/ placeholder & >', function () {
       const mf = new IntlMessageFormat(
         '{gender, select, male {&lt; hello <b>world</b> {token} &lt;&gt; <a>{placeholder}</a>} female {<b>foo &lt;&gt; bar</b>}}',
         'en'
@@ -679,7 +679,7 @@ describe('IntlMessageFormat', function() {
         })
       ).to.deep.equal({str: 'foo &lt;&gt; bar'});
     });
-    it('should allow escaping tag as legacy HTML', function() {
+    it('should allow escaping tag as legacy HTML', function () {
       const mf = new IntlMessageFormat(
         "hello '<b>world</b>' '<a>'{placeholder}'</a>'",
         'en'
@@ -690,7 +690,7 @@ describe('IntlMessageFormat', function() {
         })
       ).to.deep.equal('hello <b>world</b> <a><foo>gaga</foo></a>');
     });
-    it('should handle tag w/ rich text', function() {
+    it('should handle tag w/ rich text', function () {
       const mf = new IntlMessageFormat('hello <foo>{bar}</foo> test', 'en');
       expect(
         mf.format({
@@ -703,7 +703,7 @@ describe('IntlMessageFormat', function() {
     });
   });
 
-  it('custom formats should work for time', function() {
+  it('custom formats should work for time', function () {
     const msg = 'Today is {time, time, verbose}';
     const mf = new IntlMessageFormat(msg, 'en', {
       time: {
@@ -731,7 +731,7 @@ describe('IntlMessageFormat', function() {
     );
   });
 
-  it('custom formats should work for date', function() {
+  it('custom formats should work for date', function () {
     const msg = 'Today is {time, date, verbose}';
     const mf = new IntlMessageFormat(msg, 'en', {
       date: {
@@ -759,7 +759,7 @@ describe('IntlMessageFormat', function() {
     );
   });
 
-  it('custom formats should work for number', function() {
+  it('custom formats should work for number', function () {
     const msg = 'Today is {time, number, verbose}';
     const mf = new IntlMessageFormat(msg, 'en', {
       number: {
@@ -829,7 +829,7 @@ describe('IntlMessageFormat', function() {
     });
   });
 
-  describe('number skeleton', function() {
+  describe('number skeleton', function () {
     expect(
       new IntlMessageFormat(
         '{amount, number, ::currency/CAD .0 group-off}',
@@ -844,8 +844,8 @@ describe('IntlMessageFormat', function() {
     ).to.equal('£123,456.79');
   });
 
-  describe('formatToParts', function() {
-    it('should be able to take React Element', function() {
+  describe('formatToParts', function () {
+    it('should be able to take React Element', function () {
       const element = {};
       const parts = new IntlMessageFormat(
         'a react {element}',
@@ -860,9 +860,9 @@ describe('IntlMessageFormat', function() {
     });
   });
 
-  describe('no locale', function() {
-    describe('no locale provided', function() {
-      it('should default to English', function() {
+  describe('no locale', function () {
+    describe('no locale provided', function () {
+      it('should default to English', function () {
         const msg = new IntlMessageFormat(
           'I have {NUM_BOOKS, plural, =1 {1 book} other {# books}}.'
         );
@@ -873,8 +873,8 @@ describe('IntlMessageFormat', function() {
       });
     });
 
-    describe('invalid locale default', function() {
-      it('should fallback to default locale', function() {
+    describe('invalid locale default', function () {
+      it('should fallback to default locale', function () {
         const msg = new IntlMessageFormat(
           '{COMPANY_COUNT, plural, =1 {One company} other {# companies}} published new books.',
           'fu-BA'
@@ -887,10 +887,10 @@ describe('IntlMessageFormat', function() {
   });
 });
 
-describe('intl-format-cache', function() {
+describe('intl-format-cache', function () {
   const getMessageFormat = memoizeFormatConstructor(IntlMessageFormat);
 
-  it('memoizes IntlMessageFormat', function() {
+  it('memoizes IntlMessageFormat', function () {
     const mf = getMessageFormat('foo', 'en');
 
     expect(mf.resolvedOptions().locale).to.equal('en');
