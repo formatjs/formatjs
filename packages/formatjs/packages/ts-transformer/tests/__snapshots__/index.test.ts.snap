@@ -333,15 +333,15 @@ Object {
 Object.defineProperty(exports, \\"__esModule\\", { value: true });
 function foo() {
     props.intl.formatMessage({
-        id: \\"SRX4p\\",
+        id: \\"2AgGp\\",
         defaultMessage: \\"props {intl}\\"
     }, { bar: 'bar' });
     this.props.intl.formatMessage({
-        id: \\"12zCC\\",
+        id: \\"STVHS\\",
         defaultMessage: \\"this props {intl}\\"
     }, { bar: 'bar' });
     return intl.formatMessage({
-        id: \\"2kzY8\\",
+        id: \\"1aog4\\",
         defaultMessage: \\"foo {bar}\\"
     }, { bar: 'bar' });
 }
@@ -351,17 +351,17 @@ exports.foo = foo;
     Object {
       "defaultMessage": "props {intl}",
       "description": "bar",
-      "id": "SRX4p",
+      "id": "2AgGp",
     },
     Object {
       "defaultMessage": "this props {intl}",
       "description": "bar",
-      "id": "12zCC",
+      "id": "STVHS",
     },
     Object {
       "defaultMessage": "foo {bar}",
       "description": "bar",
-      "id": "2kzY8",
+      "id": "1aog4",
     },
   ],
 }

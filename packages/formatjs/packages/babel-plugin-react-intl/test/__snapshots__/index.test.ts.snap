@@ -31,13 +31,10 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 class Foo extends _react.Component {
   render() {
-    return (
-      /*#__PURE__*/
-      _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: \\"foo.bar.baz\\",
-        defaultMessage: \\"Hello World!\\"
-      })
-    );
+    return /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, {
+      id: \\"foo.bar.baz\\",
+      defaultMessage: \\"Hello World!\\"
+    });
   }
 
 }
@@ -132,22 +129,7 @@ const msgs = {
 
 class Foo extends _react.Component {
   render() {
-    return (
-      /*#__PURE__*/
-      _react.default.createElement(\\"div\\", null,
-      /*#__PURE__*/
-      _react.default.createElement(\\"h1\\", null,
-      /*#__PURE__*/
-      _react.default.createElement(_reactIntl.FormattedMessage, msgs.header)),
-      /*#__PURE__*/
-      _react.default.createElement(\\"p\\", null,
-      /*#__PURE__*/
-      _react.default.createElement(_reactIntl.FormattedMessage, msgs.content)),
-      /*#__PURE__*/
-      _react.default.createElement(\\"p\\", null,
-      /*#__PURE__*/
-      _react.default.createElement(_reactIntl.FormattedMessage, msgs.kittens)))
-    );
+    return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(\\"h1\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, msgs.header)), /*#__PURE__*/_react.default.createElement(\\"p\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, msgs.content)), /*#__PURE__*/_react.default.createElement(\\"p\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, msgs.kittens)));
   }
 
 }
@@ -262,22 +244,7 @@ const msgs = (0, _reactIntl.defineMessages)({
 
 class Foo extends _react.Component {
   render() {
-    return (
-      /*#__PURE__*/
-      _react.default.createElement(\\"div\\", null,
-      /*#__PURE__*/
-      _react.default.createElement(\\"h1\\", null,
-      /*#__PURE__*/
-      _react.default.createElement(_reactIntl.FormattedMessage, msgs.header)),
-      /*#__PURE__*/
-      _react.default.createElement(\\"p\\", null,
-      /*#__PURE__*/
-      _react.default.createElement(_reactIntl.FormattedMessage, msgs.content)),
-      /*#__PURE__*/
-      _react.default.createElement(\\"p\\", null,
-      /*#__PURE__*/
-      _react.default.createElement(_reactIntl.FormattedMessage, msgs.kittens)))
-    );
+    return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(\\"h1\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, msgs.header)), /*#__PURE__*/_react.default.createElement(\\"p\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, msgs.content)), /*#__PURE__*/_react.default.createElement(\\"p\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, msgs.kittens)));
   }
 
 }
@@ -352,13 +319,10 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 // @react-intl project:amazing2
 class Foo extends _react.Component {
   render() {
-    return (
-      /*#__PURE__*/
-      _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: \\"foo.bar.baz\\",
-        defaultMessage: \\"Hello World!\\"
-      })
-    );
+    return /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, {
+      id: \\"foo.bar.baz\\",
+      defaultMessage: \\"Hello World!\\"
+    });
   }
 
 }
@@ -424,16 +388,9 @@ const testMessage = {
 
 class Foo extends _react.Component {
   render() {
-    return (
-      /*#__PURE__*/
-      _react.default.createElement(_react.default.Fragment, null,
-      /*#__PURE__*/
-      _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: \\"foo.bar.baz\\"
-      }),
-      /*#__PURE__*/
-      _react.default.createElement(_reactIntl.FormattedMessage, testMessage))
-    );
+    return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, {
+      id: \\"foo.bar.baz\\"
+    }), /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, testMessage));
   }
 
 }
@@ -483,13 +440,10 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 class Foo extends _react.Component {
   render() {
-    return (
-      /*#__PURE__*/
-      _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: \\"foo.bar.baz\\",
-        defaultMessage: \\"Hello World!\\"
-      })
-    );
+    return /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, {
+      id: \\"foo.bar.baz\\",
+      defaultMessage: \\"Hello World!\\"
+    });
   }
 
 }
@@ -545,21 +499,10 @@ const Foo = ({
       description: 'A stateless message'
     })
   };
-  return (
-    /*#__PURE__*/
-    _react.default.createElement(\\"div\\", null,
-    /*#__PURE__*/
-    _react.default.createElement(\\"h1\\", null, msgs.header),
-    /*#__PURE__*/
-    _react.default.createElement(\\"p\\", null, msgs.content),
-    /*#__PURE__*/
-    _react.default.createElement(\\"span\\", null,
-    /*#__PURE__*/
-    _react.default.createElement(_reactIntl.FormattedMessage, {
-      id: \\"foo\\",
-      defaultMessage: \\"bar\\"
-    })))
-  );
+  return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(\\"h1\\", null, msgs.header), /*#__PURE__*/_react.default.createElement(\\"p\\", null, msgs.content), /*#__PURE__*/_react.default.createElement(\\"span\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, {
+    id: \\"foo\\",
+    defaultMessage: \\"bar\\"
+  })));
 };
 
 var _default = (0, _reactIntl.injectIntl)(Foo);
@@ -627,21 +570,10 @@ class Foo extends _react.Component {
       }),
       invalid: this.props.intl.formatMessage(objectPointer)
     };
-    return (
-      /*#__PURE__*/
-      _react.default.createElement(\\"div\\", null,
-      /*#__PURE__*/
-      _react.default.createElement(\\"h1\\", null, msgs.header),
-      /*#__PURE__*/
-      _react.default.createElement(\\"p\\", null, msgs.content),
-      /*#__PURE__*/
-      _react.default.createElement(\\"span\\", null,
-      /*#__PURE__*/
-      _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: \\"foo\\",
-        defaultMessage: \\"bar\\"
-      })))
-    );
+    return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(\\"h1\\", null, msgs.header), /*#__PURE__*/_react.default.createElement(\\"p\\", null, msgs.content), /*#__PURE__*/_react.default.createElement(\\"span\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, {
+      id: \\"foo\\",
+      defaultMessage: \\"bar\\"
+    })));
   }
 
 }
@@ -700,28 +632,13 @@ const msgs = (0, _reactIntl.defineMessages)({
 
 class Foo extends _react.Component {
   render() {
-    return (
-      /*#__PURE__*/
-      _react.default.createElement(\\"div\\", null,
-      /*#__PURE__*/
-      _react.default.createElement(\\"h1\\", null,
-      /*#__PURE__*/
-      _react.default.createElement(_reactIntl.FormattedMessage, msgs.header)),
-      /*#__PURE__*/
-      _react.default.createElement(\\"p\\", null,
-      /*#__PURE__*/
-      _react.default.createElement(_reactIntl.FormattedMessage, msgs.content)),
-      /*#__PURE__*/
-      _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: \\"actual.js.foo.bar.zoo.12.object\\",
-        defaultMessage: \\"Hello World!\\"
-      }),
-      /*#__PURE__*/
-      _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: \\"actual.js..5.object\\",
-        defaultMessage: \\"NO ID\\"
-      }))
-    );
+    return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(\\"h1\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, msgs.header)), /*#__PURE__*/_react.default.createElement(\\"p\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, msgs.content)), /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, {
+      id: \\"actual.js.foo.bar.zoo.12.object\\",
+      defaultMessage: \\"Hello World!\\"
+    }), /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, {
+      id: \\"actual.js..5.object\\",
+      defaultMessage: \\"NO ID\\"
+    }));
   }
 
 }
@@ -781,10 +698,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 class Foo extends _react.Component {
   render() {
-    return (
-      /*#__PURE__*/
-      _react.default.createElement(\\"div\\", null)
-    );
+    return /*#__PURE__*/_react.default.createElement(\\"div\\", null);
   }
 
 }
@@ -818,12 +732,9 @@ const messages = (0, _reactIntl.defineMessages)({
 
 class Foo extends _react.Component {
   render() {
-    return (
-      /*#__PURE__*/
-      _react.default.createElement(_reactIntl.FormattedMessage, {
-        id: \\"greeting-world\\"
-      })
-    );
+    return /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, {
+      id: \\"greeting-world\\"
+    });
   }
 
 }
@@ -947,10 +858,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 class Foo extends _react.Component {
   render() {
-    return (
-      /*#__PURE__*/
-      _react.default.createElement(\\"div\\", null)
-    );
+    return /*#__PURE__*/_react.default.createElement(\\"div\\", null);
   }
 
 }
