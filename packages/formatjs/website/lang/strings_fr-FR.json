@@ -1,3 +1,0 @@
-{
-    "demo": "Le {takenDate, date, long}, {name} {numPhotos, plural, =0 {n'a pas pris de photographie.} =1 {a pris une photographie.} other {a pris # photographies.}}"
-}

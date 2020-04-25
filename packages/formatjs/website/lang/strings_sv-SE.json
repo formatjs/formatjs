@@ -1,3 +1,0 @@
-{
-    "demo": "{name} tog {numPhotos, plural, =0 {inte några foton} =1 {ett foto} other {# foton} } den {takenDate, date, long}."
-}
