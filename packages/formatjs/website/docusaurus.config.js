@@ -12,6 +12,7 @@ module.exports = {
       logo: {
         alt: 'FormatJS',
         src: 'img/logo.svg',
+        srcDark: 'img/logo-dark.svg',
       },
       links: [
         {
@@ -38,7 +39,19 @@ module.exports = {
           items: [
             {
               label: 'Getting Started',
-              to: 'docs/getting-started',
+              to: 'docs/basic-internationalization-principles',
+            },
+            {
+              to: 'docs/polyfills',
+              label: 'Polyfills',
+            },
+            {
+              to: 'docs/intl-messageformat',
+              label: 'Libraries',
+            },
+            {
+              to: 'docs/tooling/cli',
+              label: 'Tooling',
             },
           ],
         },
@@ -59,10 +72,6 @@ module.exports = {
           title: 'Social',
           items: [
             {
-              label: 'Blog',
-              to: 'blog',
-            },
-            {
               label: 'GitHub',
               href: 'https://github.com/formatjs/formatjs',
             },
@@ -78,8 +87,7 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl:
-            'https://github.com/formatjs/formatjs/edit/master/website/',
+          editUrl: 'https://github.com/formatjs/formatjs/edit/master/website/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

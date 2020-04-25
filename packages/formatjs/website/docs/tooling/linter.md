@@ -13,7 +13,7 @@ npm install eslint-plugin-formatjs
 
 Then in your eslint config:
 
-```tsxon
+```json
 {
   "plugins": ["formatjs"],
   "rules": {
@@ -93,7 +93,7 @@ enum Element {
 
 #### Example
 
-```tsxon
+```json
 {
   "plugins": ["formatjs"],
   "rules": {
@@ -126,13 +126,26 @@ const messages = defineMessages({
 });
 ```
 
+#### Options
+
+```json
+{
+  "plugins": ["formatjs"],
+  "rules": {
+    "formatjs/enforce-description": ["error", "literal"]
+  }
+}
+```
+
+Setting `literal` forces `description` to always be a string literal instead of function calls or variables. This is helpful for extraction tools that expects `description` to always be a literal
+
 ### `enforce-default-message`
 
 This enforces `defaultMessage` in the message descriptor.
 
 #### Why
 
-- Can be usefull in case we want to extract messages for translations from source code. This way can make sure people won't forget about defaultMessage
+- Can be useful in case we want to extract messages for translations from source code. This way can make sure people won't forget about defaultMessage
 
 ```tsx
 import {defineMessages} from 'react-intl';
@@ -149,6 +162,19 @@ const messages = defineMessages({
   },
 });
 ```
+
+#### Options
+
+```json
+{
+  "plugins": ["formatjs"],
+  "rules": {
+    "formatjs/enforce-default-message": ["error", "literal"]
+  }
+}
+```
+
+Setting `literal` forces `defaultMessage` to always be a string literal instead of function calls or variables. This is helpful for extraction tools that expects `defaultMessage` to always be a literal
 
 ### `enforce-placeholders`
 
@@ -223,7 +249,7 @@ enum LDML {
 
 #### Example
 
-```tsxon
+```json
 {
   "plugins": ["formatjs"],
   "rules": {

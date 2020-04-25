@@ -1,0 +1,3 @@
+{
+    "demo": "El {takenDate, date, long}, {name} {numPhotos, plural, =0 {no} other {} } sacó {numPhotos, plural, =0 {ninguna foto.} =1 {una foto.} other {# fotos.}}"
+}

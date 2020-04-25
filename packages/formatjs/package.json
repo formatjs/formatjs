@@ -19,8 +19,8 @@
     "lint": "eslint 'packages/*/src/**/*.ts?(x)' --fix",
     "postversion": "npm run prettier",
     "prepublishOnly": "npm run build",
-    "prettier": "prettier --write 'packages/*/{test,tests,src,scripts}/**/*.ts' 'packages/babel-plugin-react-intl/test/**/*.js' '**/*.md'",
-    "prettier:check": "prettier --check 'packages/*/{test,tests,src,scripts}/**/*.ts' 'packages/babel-plugin-react-intl/test/**/*.js' '**/*.md'",
+    "prettier": "prettier --write 'packages/*/{test,tests,src,scripts}/**/*.ts' 'website/**/*.js' 'packages/babel-plugin-react-intl/test/**/*.js' '**/*.md'",
+    "prettier:check": "prettier --check 'packages/*/{test,tests,src,scripts}/**/*.ts' 'website/**/*.js' 'packages/babel-plugin-react-intl/test/**/*.js' '**/*.md'",
     "test": "lerna run lint && npm run prettier:check && cross-env TS_NODE_PROJECT=tsconfig.cjs.json lerna run test"
   },
   "dependencies": {},

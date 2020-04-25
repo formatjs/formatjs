@@ -10,3 +10,6 @@ packages/intl-utils/src/parentLocales.ts
 packages/intl-listformat/src/locales.ts
 packages/babel-plugin-react-intl/src/options.ts
 test262/
+website/.docusaurus
+website/build
+website/.now

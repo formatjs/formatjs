@@ -13,7 +13,7 @@ The [ECMA-402 JavaScript internationalization specification](https://github.com/
 
 ## Locales: Language and Region
 
-A "locale" refers to the lingual and cultural expectations for a region. It is represented using a "locale code" defined in (UTS LDML](https://www.unicode.org/reports/tr35/tr35.html#Identifiers).
+A "locale" refers to the lingual and cultural expectations for a region. It is represented using a "locale code" defined in [UTS LDML](https://www.unicode.org/reports/tr35/tr35.html#Identifiers).
 
 This code is comprised of several parts separated by hyphens (-). The first part is a short string representing the language. The second, optional, part is a short string representing the region. Additionally, various extensions and variants can be specified.
 

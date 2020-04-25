@@ -1,0 +1,3 @@
+{
+    "demo": "Em {takenDate, date, long}, {name} {numPhotos, plural, =0 {não} other {} } tirou {numPhotos, plural, =0 {nenhuma foto.} =1 {uma foto.} other {# fotos.}}"
+}
