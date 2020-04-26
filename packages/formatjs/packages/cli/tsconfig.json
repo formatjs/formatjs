@@ -30,4 +30,5 @@
         ]
     },
     "include": ["src/**/*.ts"],
+    "references": [{"path": "../babel-plugin-react-intl"}]
 }

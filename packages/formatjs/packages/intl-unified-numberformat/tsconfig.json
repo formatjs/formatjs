@@ -27,5 +27,10 @@
             "yargs"
         ]
     },
-    "include": ["src"]
+    "include": ["src", "src/**/*.json"],
+    "references": [
+        {"path": "../intl-pluralrules"},
+        {"path": "../formatjs-extract-cldr-data"},
+        {"path": "../intl-utils"},
+    ]
 }

@@ -27,5 +27,6 @@
         "sourceMap": true,
         "esModuleInterop": true
     },
-    "include": ["src/*.ts"]
+    "include": ["src", "src/**/*.json"],
+    "references": [{"path": "../intl-messageformat-parser"}]
 }

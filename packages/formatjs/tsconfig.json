@@ -12,6 +12,7 @@
         "preserveConstEnums": true,
         "declarationMap": true,
         "sourceMap": true,
+        "composite": true,
         "types": [
             "babel__core",
             "babel__generator",

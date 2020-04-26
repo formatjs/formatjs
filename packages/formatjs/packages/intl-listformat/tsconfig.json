@@ -25,5 +25,6 @@
             "yargs"
         ],
     },
-    "include": ["src"]
+    "include": ["src"],
+    "references": [{"path": "../formatjs-extract-cldr-data"}, {"path": "../intl-utils"}]
 }

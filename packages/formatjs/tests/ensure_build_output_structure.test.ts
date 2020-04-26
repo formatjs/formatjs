@@ -2,9 +2,9 @@
  * Tests to ensure that `dist` or `lib` mirrors the source file tree.
  */
 
-import path from 'path';
+import {existsSync, readdirSync, readJsonSync} from 'fs-extra';
 import glob from 'glob';
-import {readJsonSync, readdir, existsSync, readdirSync} from 'fs-extra';
+import path from 'path';
 
 const PACKAGES_DIR = path.resolve(__dirname, '../packages');
 

@@ -24,5 +24,6 @@
             "yargs"
         ]
     },
-    "include": ["src"]
+    "include": ["src"],
+    "references": [{"path": "../intl-utils"}]
 }
