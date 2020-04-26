@@ -47,6 +47,14 @@ import {
 import {extractILD, Patterns} from './data';
 import * as currencyDigitsData from './currency-digits.json';
 import * as ILND from './ilnd-numbers.json';
+import {names as numberingSystemNames} from './numbering-systems.json';
+
+const VALID_NUMBERING_SYSTEM_NAMES: Record<string, boolean> = Object.create(
+  null
+);
+for (const nu of numberingSystemNames) {
+  VALID_NUMBERING_SYSTEM_NAMES[nu] = true;
+}
 
 const RESOLVED_OPTIONS_KEYS = [
   'locale',
@@ -140,6 +148,7 @@ export type UnifiedNumberFormatOptions = Intl.NumberFormatOptions &
     signDisplay?: UnifiedNumberFormatOptionsSignDisplay;
     unit?: Unit;
     unitDisplay?: UnifiedNumberFormatOptionsUnitDisplay;
+    numberingSystem?: string;
   };
 
 export type ResolvedUnifiedNumberFormatOptions = Intl.ResolvedNumberFormatOptions &
@@ -203,7 +212,8 @@ function initializeNumberFormat(
   opts?: UnifiedNumberFormatOptions
 ) {
   const requestedLocales = getCanonicalLocales(locales);
-  const options = opts === undefined ? Object.create(null) : toObject(opts);
+  const options: UnifiedNumberFormatOptions =
+    opts === undefined ? Object.create(null) : toObject(opts);
   const opt: any = Object.create(null);
   const matcher = getOption(
     options,
@@ -213,6 +223,24 @@ function initializeNumberFormat(
     'best fit'
   );
   opt.localeMatcher = matcher;
+
+  const numberingSystem = getOption(
+    options,
+    'numberingSystem',
+    'string',
+    undefined,
+    undefined
+  );
+  if (
+    numberingSystem !== undefined &&
+    !VALID_NUMBERING_SYSTEM_NAMES[numberingSystem]
+  ) {
+    // 8.a. If numberingSystem does not match the Unicode Locale Identifier type nonterminal,
+    // throw a RangeError exception.
+    throw RangeError(`Invalid numberingSystems: ${numberingSystem}`);
+  }
+  opt.nu = numberingSystem;
+
   const {localeData} = UnifiedNumberFormat;
   const r = createResolveLocale(UnifiedNumberFormat.getDefaultLocale)(
     UnifiedNumberFormat.availableLocales,
@@ -223,17 +251,11 @@ function initializeNumberFormat(
     localeData
   );
   const ildData = localeData[removeUnicodeExtensionFromLocale(r.locale)];
-  const numberingSystem = r.nu;
   setMultiInternalSlots(__INTERNAL_SLOT_MAP__, nf, {
     locale: r.locale,
     dataLocale: r.dataLocale,
-    numberingSystem,
-    ild: extractILD(
-      ildData.units,
-      ildData.currencies,
-      ildData.numbers,
-      numberingSystem
-    ),
+    numberingSystem: r.nu,
+    ild: extractILD(ildData.units, ildData.currencies, ildData.numbers, r.nu),
   });
 
   // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#sec-setnumberformatunitoptions

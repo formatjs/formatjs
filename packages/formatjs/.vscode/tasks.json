@@ -1,0 +1,16 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "dev:cjs",
+			"problemMatcher": ["$tsc-watch"],
+			"label": "yarn: dev:cjs",
+			"detail": "tsc -b packages/* --watch",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}

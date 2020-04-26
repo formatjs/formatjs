@@ -10,6 +10,8 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "preserveConstEnums": true,
+        "allowSyntheticDefaultImports": true,
+        "noFallthroughCasesInSwitch": true,
         "declarationMap": true,
         "sourceMap": true,
         "composite": true,

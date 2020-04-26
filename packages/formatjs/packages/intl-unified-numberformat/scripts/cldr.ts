@@ -4,6 +4,7 @@ import {
   generateNumberDataForLocales,
   locales,
   extractCurrencyDigits,
+  extractNumberingSystemNames,
 } from 'formatjs-extract-cldr-data';
 import {
   SANCTIONED_UNITS,
@@ -144,6 +145,12 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
 outputJSONSync(
   resolve(__dirname, '../src/currency-digits.json'),
   extractCurrencyDigits()
+);
+
+// Output numbering systems file
+outputJSONSync(
+  resolve(__dirname, '../src/numbering-systems.json'),
+  extractNumberingSystemNames()
 );
 
 // For test262

@@ -1,7 +1,7 @@
 import {spawnSync} from 'child_process';
 import {resolve} from 'path';
 import {cpus} from 'os';
-import chalk from 'chalk';
+import * as chalk from 'chalk';
 
 if (process.version.startsWith('v13')) {
   console.log(

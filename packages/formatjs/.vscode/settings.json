@@ -22,5 +22,8 @@
       "url": "http://json.schemastore.org/lerna"
     }
   ],
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "npm.packageManager": "yarn",
+  "prettier.packageManager": "yarn",
+  "eslint.packageManager": "yarn"
 }

@@ -49,5 +49,8 @@ export {
   generateDataForLocales as generateCurrencyDataForLocales,
 } from './extract-currencies';
 export {generateDataForLocales as generateUnitDataForLocales} from './extract-units';
-export {generateDataForLocales as generateNumberDataForLocales} from './extract-numbers';
+export {
+  extractNumberingSystemNames,
+  generateDataForLocales as generateNumberDataForLocales,
+} from './extract-numbers';
 export {getAllLocales as getAllDisplayNamesLocales} from './extract-displaynames';

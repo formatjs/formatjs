@@ -4,8 +4,6 @@
         "lib": ["dom", "es5", "esnext.intl", "es2017.intl", "es2018.intl"],
         "outDir": "dist",
         "rootDir": "src",
-        "allowSyntheticDefaultImports": true,
-        "noFallthroughCasesInSwitch": true,
         "types": [
             "babel__core",
             "babel__generator",

@@ -3,8 +3,8 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-'use strict';
 import * as NumbersData from 'cldr-numbers-full/main/ar/numbers.json';
+import * as numberingSystems from 'cldr-core/supplemental/numberingSystems.json';
 import {Locale} from './types';
 import generateFieldExtractorFn, {
   collapseSingleValuePluralRule,
@@ -146,6 +146,13 @@ export function generateDataForLocales(
     all[locale] = loadNumbers(locale);
     return all;
   }, {});
+}
+
+export function extractNumberingSystemNames() {
+  // Export an object instead of array to be more compatible with rollup.
+  return {
+    names: Object.keys(numberingSystems.supplemental.numberingSystems),
+  };
 }
 
 export default generateFieldExtractorFn<RawNumberData>(
