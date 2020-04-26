@@ -24,7 +24,7 @@ const ast = parse('this is {count, plural, one{# dog} other{# dogs}}');
 ### Example
 
 import {parse} from 'intl-messageformat-parser';
-window.parse = parse;
+global.parse = parse;
 
 ```tsx live
 function () {

@@ -4,7 +4,7 @@ title: Intl MessageFormat
 ---
 
 import IntlMessageFormat from 'intl-messageformat';
-window.IntlMessageFormat = IntlMessageFormat;
+global.IntlMessageFormat = IntlMessageFormat;
 
 Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.
 
@@ -141,7 +141,9 @@ const msg = new IntlMessageFormat('My name is {name}.', 'en-US');
 This method returns an object with the options values that were resolved during instance creation. It currently only contains a `locale` property; here's an example:
 
 ```tsx live
-new IntlMessageFormat('', 'en-us').resolvedOptions().locale;
+function () {
+  return new IntlMessageFormat('', 'en-us').resolvedOptions().locale;
+}
 ```
 
 Notice how the specified locale was the all lower-case value: `"en-us"`, but it was resolved and normalized to: `"en-US"`.
@@ -151,7 +153,9 @@ Notice how the specified locale was the all lower-case value: `"en-us"`, but it 
 Once the message is created, formatting the message is done by calling the `format()` method on the instance and passing a collection of `values`:
 
 ```tsx live
-new IntlMessageFormat('My name is {name}.', 'en-US').format({name: 'Eric'});
+function () {
+  return new IntlMessageFormat('My name is {name}.', 'en-US').format({name: 'Eric'});
+}
 ```
 
 _Note: A value **must** be supplied for every argument in the message pattern the instance was constructed with._
@@ -159,9 +163,11 @@ _Note: A value **must** be supplied for every argument in the message pattern th
 #### Rich Text support
 
 ```tsx live
-new IntlMessageFormat('hello <b>world</b>', 'en').format({
-  b: (...chunks) => <strong>{chunks}</strong>,
-});
+function () {
+  return new IntlMessageFormat('hello <b>world</b>', 'en').format({
+    b: (...chunks) => <strong>{chunks}</strong>,
+  });
+}
 ```
 
 We support embedded XML tag in the message, e.g `this is a <b>strong</b> tag`. This is not meant to be a full-fledged method to embed HTML, but rather to tag specific text chunk so translation can be more contextual. Therefore, the following restrictions apply:
@@ -172,23 +178,31 @@ We support embedded XML tag in the message, e.g `this is a <b>strong</b> tag`. T
    error if it's missing, e.g:
 
 ```tsx live
-new IntlMessageFormat('a<foo>strong</foo>').format();
+function () {
+  return new IntlMessageFormat('a<foo>strong</foo>').format();
+}
 ```
 
 4. XML/HTML tags are escaped using apostrophe just like other ICU constructs. In order to escape you can do things like:
 
 ```tsx live
-new IntlMessageFormat("I '<'3 cats").format();
+function () {
+  return new IntlMessageFormat("I '<'3 cats").format();
+}
 ```
 
 ```tsx live
-new IntlMessageFormat("raw '<b>HTML</b>'").format();
+function () {
+  return new IntlMessageFormat("raw '<b>HTML</b>'").format();
+}
 ```
 
 ```tsx live
-new IntlMessageFormat(
-  "raw '<b>HTML</b>' with '<a>'{placeholder}'</a>'"
-).format({placeholder: 'some word'});
+function () {
+  return new IntlMessageFormat(
+    "raw '<b>HTML</b>' with '<a>'{placeholder}'</a>'"
+  ).format({placeholder: 'some word'});
+}
 ```
 
 5. Embedded valid HTML tag is a bit of a grey area right now since we're not supporting the full HTML/XHTML/XML spec.
@@ -206,10 +220,12 @@ We support ICU Number skeleton and a subset of Date/Time Skeleton for further cu
 Example:
 
 ```tsx live
-new IntlMessageFormat(
-  'The price is: {price, number, ::currency/EUR}',
-  'en-GB'
-).format({price: 100});
+function () {
+  return new IntlMessageFormat(
+    'The price is: {price, number, ::currency/EUR}',
+    'en-GB'
+  ).format({price: 100});
+}
 ```
 
 A full set of options and syntax can be found [here](https://github.com/unicode-org/icu/blob/master/docs/userguide/format_parse/numbers/skeletons.md)
@@ -240,9 +256,11 @@ ICU provides a [wide array of pattern](https://www.unicode.org/reports/tr35/tr35
 Example:
 
 ```tsx live
-new IntlMessageFormat('Today is: {now, date, ::yyyyMMdd}', 'en-GB').format({
-  now: new Date(),
-});
+function () {
+  return new IntlMessageFormat('Today is: {now, date, ::yyyyMMdd}', 'en-GB').format({
+    now: new Date(),
+  });
+}
 ```
 
 ## Advanced Usage
