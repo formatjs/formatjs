@@ -22,7 +22,7 @@
   "dependencies": {
     "@types/loader-utils": "^1.1.3",
     "loader-utils": "^2.0.0",
-    "typescript": "3"
+    "typescript": "3.7.2"
   },
   "author": "Long Ho <holevietlong@gmail.com>",
   "license": "MIT",

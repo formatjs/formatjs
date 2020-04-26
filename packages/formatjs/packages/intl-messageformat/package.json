@@ -45,7 +45,7 @@
   "sideEffects": false,
   "scripts": {
     "benchmark": "ts-node --project ./tsconfig.cjs.json tests/benchmark",
-    "build": "npm run tsc && npm run rollup",
+    "build": "yarn run tsc && yarn run rollup",
     "clean": "rimraf dist lib *.tsbuildinfo",
     "karma:ci": "karma start karma.conf-ci.js",
     "karma:local": "karma start karma.conf.js",

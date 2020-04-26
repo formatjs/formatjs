@@ -8,11 +8,8 @@
     },
     "run": {
       "stream": true
-    },
-    "bootstrap": {
-      "hoist": true,
-      "includeDependencies": true,
-      "ci": false
     }
-  }
+  },
+  "npmClient": "yarn",
+  "useWorkspaces": true
 }

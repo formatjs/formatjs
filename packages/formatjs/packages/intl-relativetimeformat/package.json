@@ -30,13 +30,13 @@
   "module": "lib/index.js",
   "types": "lib/intl-relativetimeformat.d.ts",
   "scripts": {
-    "build": "npm run cldr && npm run compile",
+    "build": "yarn run cldr && yarn run compile",
     "cldr": "ts-node --project tsconfig.cjs.json scripts/cldr",
     "clean": "rimraf dist lib dist-es6 *.tsbuildinfo",
     "compile": "tsc && api-extractor run --local && tsc -p tsconfig.cjs.json && tsc -p tsconfig.es6.json && rollup -c rollup.config.js",
     "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json cross-env NODE_ENV=test jest",
     "test262": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json ts-node tests/runner",
-    "test": "npm run jest && npm run test262"
+    "test": "yarn run jest && yarn run test262"
   },
   "files": [
     "dist-es6",

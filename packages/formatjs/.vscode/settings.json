@@ -1,11 +1,26 @@
 {
-    "files.watcherExclude": {
-        "**/.git/objects/**": true,
-        "**/.git/subtree-cache/**": true,
-        "**/node_modules/*/**": true,
-        "test262/**": true,
-        "**/test_artifacts/**": true,
-        "**/*.map": true,
-        "**/*.d.ts.map": true,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    ".yarn": true
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "test262/**": true,
+    "**/test_artifacts/**": true,
+    "**/*.map": true,
+    "**/*.d.ts.map": true
+  },
+  "json.schemas": [
+    {
+      "fileMatch": ["/lerna.json"],
+      "url": "http://json.schemastore.org/lerna"
     }
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

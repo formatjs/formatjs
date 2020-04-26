@@ -1,7 +1,7 @@
 name: Node CI
 
 on: [push, pull_request]
-    
+
 jobs:
   build:
 
@@ -20,18 +20,18 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm ci
+    - name: yarn install
       run: |
-        npm ci
+        yarn install --frozen-lockfile
       env:
         CI: true
-    - name: npm build
+    - name: yarn build
       run: |
-        npm run build
+        yarn build
       env:
         CI: true
-    - name: npm test
+    - name: yarn test
       run: |
-        npm t
+        yarn test
       env:
         CI: true
