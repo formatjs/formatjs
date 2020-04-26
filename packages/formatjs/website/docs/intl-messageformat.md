@@ -179,7 +179,11 @@ We support embedded XML tag in the message, e.g `this is a <b>strong</b> tag`. T
 
 ```tsx live
 function () {
-  return new IntlMessageFormat('a<foo>strong</foo>').format();
+  try {
+    new IntlMessageFormat('a <foo>strong</foo>').format();
+  } catch (e) {
+    return e.message
+  }
 }
 ```
 
