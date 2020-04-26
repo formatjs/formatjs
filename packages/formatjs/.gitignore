@@ -13,3 +13,5 @@ test262
 temp
 polyfill-locales.js
 dist-es6
+
+.now

@@ -22,12 +22,9 @@ module.exports = {
         {
           to: 'docs/basic-internationalization-principles',
           activeBasePath: 'docs',
-          label: 'Getting Started',
+          label: 'Docs',
           position: 'left',
         },
-        {to: 'docs/polyfills', label: 'Polyfills', position: 'left'},
-        {to: 'docs/intl-messageformat', label: 'Libraries', position: 'left'},
-        {to: 'docs/tooling/cli', label: 'Tooling', position: 'left'},
         {
           href: 'https://github.com/formatjs/formatjs',
           label: 'GitHub',
@@ -99,4 +96,5 @@ module.exports = {
       },
     ],
   ],
+  themes: ['@docusaurus/theme-live-codeblock'],
 };

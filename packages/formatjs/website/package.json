@@ -11,6 +11,7 @@
   "dependencies": {
     "@docusaurus/core": "^2.0.0-alpha.48",
     "@docusaurus/preset-classic": "^2.0.0-alpha.48",
+    "@docusaurus/theme-live-codeblock": "^2.0.0-alpha.39",
     "classnames": "^2.2.6",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
@@ -27,5 +28,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "intl-messageformat-parser": "^5.0.1"
   }
 }

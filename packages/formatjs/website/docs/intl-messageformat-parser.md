@@ -23,82 +23,23 @@ const ast = parse('this is {count, plural, one{# dog} other{# dogs}}');
 
 ### Example
 
-Given an ICU Message string like this:
+import {parse} from 'intl-messageformat-parser';
+window.parse = parse;
 
-```
-On {takenDate, date, short} {name} took {numPhotos, plural,
-    =0 {no photos.}
-    =1 {one photo.}
-    other {# photos.}
+```tsx live
+function () {
+  const ast = parse(
+        `On {takenDate, date, short} <bold>{name}</bold> took {numPhotos, plural,
+      =0 {no photos.}
+      =1 {one photo.}
+      other {# photos.}
+  }`)
+  return (
+    <pre>
+      {JSON.stringify(ast, null, 2)}
+    </pre>
+  )
 }
-```
-
-```js
-// Assume `msg` is the string above.
-parse(msg);
-```
-
-This parser will produce this AST:
-
-```json
-[
-  {
-    "type": 0,
-    "value": "On "
-  },
-  {
-    "type": 3,
-    "style": "short",
-    "value": "takenDate"
-  },
-  {
-    "type": 0,
-    "value": " "
-  },
-  {
-    "type": 1,
-    "value": "name"
-  },
-  {
-    "type": 0,
-    "value": " took "
-  },
-  {
-    "type": 6,
-    "pluralType": "cardinal",
-    "value": "numPhotos",
-    "offset": 0,
-    "options": [
-      {
-        "id": "=0",
-        "value": [
-          {
-            "type": 0,
-            "value": "no photos."
-          }
-        ]
-      },
-      {
-        "id": "=1",
-        "value": [
-          {
-            "type": 0,
-            "value": "one photo."
-          }
-        ]
-      },
-      {
-        "id": "other",
-        "value": [
-          {
-            "type": 0,
-            "value": "# photos."
-          }
-        ]
-      }
-    ]
-  }
-]
 ```
 
 ## Supported DateTime Skeleton

@@ -3,6 +3,9 @@ id: intl-messageformat
 title: Intl MessageFormat
 ---
 
+import IntlMessageFormat from 'intl-messageformat';
+window.IntlMessageFormat = IntlMessageFormat;
+
 Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.
 
 [![npm Version][npm-badge]][npm]
@@ -38,40 +41,28 @@ const output = msg.format(values);
 
 A very common example is formatting messages that have numbers with plural labels. With this package you can make sure that the string is properly formatted for a person's locale, e.g.:
 
-```tsx
-const MESSAGES = {
-  'en-US': {
-    NUM_PHOTOS:
-      'You have {numPhotos, plural, ' +
-      '=0 {no photos.}' +
-      '=1 {one photo.}' +
-      'other {# photos.}}',
-  },
+```tsx live
+function () {
+  const enNumPhotos = new IntlMessageFormat(
+    `
+    You have {numPhotos, plural, =0 {no photos.} =1 {one photo.} other {# photos.}}
+    `,
+    'en-US'
+  );
+  return enNumPhotos.format({numPhotos: 1000});
+}
+```
 
-  'es-MX': {
-    NUM_PHOTOS:
-      'Usted {numPhotos, plural, ' +
-      '=0 {no tiene fotos.}' +
-      '=1 {tiene una foto.}' +
-      'other {tiene # fotos.}}',
-  },
-};
-
-let output;
-
-const enNumPhotos = new IntlMessageFormat(
-  MESSAGES['en-US'].NUM_PHOTOS,
-  'en-US'
-);
-output = enNumPhotos.format({numPhotos: 1000});
-console.log(output); // => "You have 1,000 photos."
-
-const esNumPhotos = new IntlMessageFormat(
-  MESSAGES['es-MX'].NUM_PHOTOS,
-  'es-MX'
-);
-output = esNumPhotos.format({numPhotos: 1000});
-console.log(output); // => "Usted tiene 1,000 fotos."
+```tsx live
+function () {
+  const enNumPhotos = new IntlMessageFormat(
+    `
+    Usted {numPhotos, plural, =0 {no tiene fotos.} =1 {tiene una foto.} other {tiene # fotos.}}
+    `,
+    'en-US'
+  );
+  return enNumPhotos.format({numPhotos: 1000});
+}
 ```
 
 ### Message Syntax
@@ -149,9 +140,8 @@ const msg = new IntlMessageFormat('My name is {name}.', 'en-US');
 
 This method returns an object with the options values that were resolved during instance creation. It currently only contains a `locale` property; here's an example:
 
-```tsx
-const msg = new IntlMessageFormat('', 'en-us');
-console.log(msg.resolvedOptions().locale); // => "en-US"
+```tsx live
+new IntlMessageFormat('', 'en-us').resolvedOptions().locale;
 ```
 
 Notice how the specified locale was the all lower-case value: `"en-us"`, but it was resolved and normalized to: `"en-US"`.
@@ -160,19 +150,18 @@ Notice how the specified locale was the all lower-case value: `"en-us"`, but it 
 
 Once the message is created, formatting the message is done by calling the `format()` method on the instance and passing a collection of `values`:
 
-```tsx
-const output = msg.format({name: 'Eric'});
-console.log(output); // => "My name is Eric."
+```tsx live
+new IntlMessageFormat('My name is {name}.', 'en-US').format({name: 'Eric'});
 ```
 
 _Note: A value **must** be supplied for every argument in the message pattern the instance was constructed with._
 
 #### Rich Text support
 
-```tsx
-const mf = new IntlMessageFormat('hello <b>world</b>', 'en');
-mf.format({b: str => <span>{str}</span>});
-// returns ['hello ', React element rendered as <span>world</span>]
+```tsx live
+new IntlMessageFormat('hello <b>world</b>', 'en').format({
+  b: (...chunks) => <strong>{chunks}</strong>,
+});
 ```
 
 We support embedded XML tag in the message, e.g `this is a <b>strong</b> tag`. This is not meant to be a full-fledged method to embed HTML, but rather to tag specific text chunk so translation can be more contextual. Therefore, the following restrictions apply:
@@ -180,15 +169,26 @@ We support embedded XML tag in the message, e.g `this is a <b>strong</b> tag`. T
 1. Any attributes on the HTML tag are also ignored.
 2. Self-closing tags are treated as string literal and not supported, please use regular ICU placeholder like `{placeholder}`.
 3. All tags specified must have corresponding values and will throw
-   error if it's missing, e.g: `new IntlMessageFormat("a<b>strong</b>").format({ b: (...chunks) => <strong>chunks</strong> })`.
+   error if it's missing, e.g:
+
+```tsx live
+new IntlMessageFormat('a<foo>strong</foo>').format();
+```
+
 4. XML/HTML tags are escaped using apostrophe just like other ICU constructs. In order to escape you can do things like:
 
-```tsx
-new IntlMessageFormat("I '<'3 cats").format(); // "I <3 cats"
-new IntlMessageFormat("raw '<b>HTML</b>'").format(); // "raw <b>HTML</b>"
+```tsx live
+new IntlMessageFormat("I '<'3 cats").format();
+```
+
+```tsx live
+new IntlMessageFormat("raw '<b>HTML</b>'").format();
+```
+
+```tsx live
 new IntlMessageFormat(
   "raw '<b>HTML</b>' with '<a>'{placeholder}'</a>'"
-).format({placeholder: 'some word'}); // "raw <b>HTML</b> with <a>some word</a>"
+).format({placeholder: 'some word'});
 ```
 
 5. Embedded valid HTML tag is a bit of a grey area right now since we're not supporting the full HTML/XHTML/XML spec.
@@ -197,29 +197,53 @@ new IntlMessageFormat(
 
 Return the underlying AST for the compiled message.
 
-### User Defined Formats
+### Date/Time/Number Skeleton
 
-Define custom format styles is useful you need supply a set of options to the underlying formatter; e.g., outputting a number in USD:
+We support ICU Number skeleton and a subset of Date/Time Skeleton for further customization of formats.
 
-```tsx
-const msg = new IntlMessageFormat(
-  'The price is: {price, number, USD}',
-  'en-US',
-  {
-    number: {
-      USD: {
-        style: 'currency',
-        currency: 'USD',
-      },
-    },
-  }
-);
+#### Number Skeleton
 
-const output = msg.format({price: 100});
-console.log(output); // => "The price is: $100.00"
+Example:
+
+```tsx live
+new IntlMessageFormat(
+  'The price is: {price, number, ::currency/EUR}',
+  'en-GB'
+).format({price: 100});
 ```
 
-In this example, we're defining a `USD` number format style which is passed to the underlying `Intl.NumberFormat` instance as its options.
+A full set of options and syntax can be found [here](https://github.com/unicode-org/icu/blob/master/docs/userguide/format_parse/numbers/skeletons.md)
+
+#### Date/Time Skeleton
+
+ICU provides a [wide array of pattern](https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table) to customize date time format. However, not all of them are available via ECMA402's Intl API. Therefore, our parser only support the following patterns
+
+| Symbol | Meaning                       | Notes                     |
+| ------ | ----------------------------- | ------------------------- |
+| G      | Era designator                |
+| y      | year                          |
+| M      | month in year                 |
+| L      | stand-alone month in year     |
+| d      | day in month                  |
+| E      | day of week                   |
+| e      | local day of week             | `e..eee` is not supported |
+| c      | stand-alone local day of week | `c..ccc` is not supported |
+| a      | AM/PM marker                  |
+| h      | Hour [1-12]                   |
+| H      | Hour [0-23]                   |
+| K      | Hour [0-11]                   |
+| k      | Hour [1-24]                   |
+| m      | Minute                        |
+| s      | Second                        |
+| z      | Time Zone                     |
+
+Example:
+
+```tsx live
+new IntlMessageFormat('Today is: {now, date, ::yyyyMMdd}', 'en-GB').format({
+  now: new Date(),
+});
+```
 
 ## Advanced Usage
 
@@ -260,35 +284,6 @@ new IntlMessageFormat('hello {number, number}', 'en', undefined, {
   formatters,
 }).format({number: 3}); // prints out `hello, 3`
 ```
-
-## Examples
-
-### Plural Label
-
-This example shows how to use the [ICU Message syntax][icu] to define a message that has a plural label; e.g., `"You have 10 photos"`:
-
-```
-You have {numPhotos, plural,
-    =0 {no photos.}
-    =1 {one photo.}
-    other {# photos.}
-}
-```
-
-```tsx
-const MESSAGES = {
-    photos: '...', // String from code block above.
-    ...
-};
-
-const msg = new IntlMessageFormat(MESSAGES.photos, 'en-US');
-
-console.log(msg.format({numPhotos: 0}));    // => "You have no photos."
-console.log(msg.format({numPhotos: 1}));    // => "You have one photo."
-console.log(msg.format({numPhotos: 1000})); // => "You have 1,000 photos."
-```
-
-_Note: how when `numPhotos` was `1000`, the number is formatted with the correct thousands separator._
 
 ## Benchmark
 
