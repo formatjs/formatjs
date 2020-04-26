@@ -12,6 +12,8 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 100%;
+  background-color: #673a83;
+  background-image:url(/img/splash-head.jpg);
 }
 
 :global(.hero__title) img {
