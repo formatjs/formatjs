@@ -82,67 +82,6 @@ describe('<ShortDate>', function () {
 });
 ```
 
-#### RelativeDate (Advanced, Uses `injectIntl()`)
-
-```tsx
-import React, {Component} from 'react';
-import {injectIntl, FormattedRelative} from 'react-intl';
-
-const RelativeDate = props => (
-  <span title={props.intl.formatDate(props.value)}>
-    <FormattedRelative value={props.value} />
-  </span>
-);
-
-// Using `injectIntl()` to make React Intl's imperative API available to format
-// the date to a string value for the `title` attribute.
-export default injectIntl(RelativeDate);
-```
-
-Testing the `<RelativeDate>` example component is more complicated because it uses `injectIntl()` which creates a wrapper component around the component you defined in your app.
-
-Shallow rendering only tests one level deep and we want to test the rendering of the component defined for our app, so we need to access it via the wrapper's `WrappedComponent` property. Its value will be the component we passed into `injectIntl()`.
-
-Under the hood, `injectIntl()` passes `context.intl` which was created from the `<IntlProvider>` in the component's ancestry to `props.intl`. What we need to do is simulate this for our shallow rendering test:
-
-```tsx
-import expect from 'expect';
-import expectJSX from 'expect-jsx';
-import React from 'react';
-import {createRenderer} from 'react-addons-test-utils';
-import {IntlProvider, FormattedRelative, createIntl} from 'react-intl';
-import RelativeDate from '../relative-date';
-
-expect.extend(expectJSX);
-
-describe('<RelativeDate>', function () {
-  it('renders', function () {
-    const renderer = createRenderer();
-    const date = new Date();
-
-    const intl = createIntl({
-      locale: 'en',
-      defaultLocale: 'en',
-    });
-
-    // Access the underlying `<RelativeDate>` component from the wrapper
-    // component returned from calling `injectIntl()`, and create an
-    // element making sure to pass the `intl` API as a prop to the to
-    // simulate what `injectIntl()` does.
-    renderer.render(<RelativeDate.WrappedComponent date={date} intl={intl} />);
-
-    // Use the `intl` API directly to format the date for the expected
-    // output. This is important when testing absolute dates since their
-    // values will differ based on the timezone where the test is running.
-    expect(renderer.getRenderOutput()).toEqualJSX(
-      <span title={intl.formatDate(date)}>
-        <FormattedRelative value={date} />
-      </span>
-    );
-  });
-});
-```
-
 ## DOM Rendering
 
 If you use the DOM in your tests, you need to supply the `IntlProvider` context to your components using composition:

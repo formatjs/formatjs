@@ -22,7 +22,7 @@ Then in your eslint config:
 }
 ```
 
-Currently this uses `intl.formatMessage`, `defineMessages`, `<FormattedMessage>` from `react-intl`, or `_` from `@formatjs/macro` as hooks to verify the message. Therefore, in your code use 1 of the following mechanisms:
+Currently this uses `intl.formatMessage`, `defineMessage`, `defineMessages`, `<FormattedMessage>` from `react-intl`, or `_` from `@formatjs/macro` as hooks to verify the message. Therefore, in your code use 1 of the following mechanisms:
 
 ```tsx
 import {_} from '@formatjs/macro';
@@ -34,13 +34,17 @@ const message = _({
 ```
 
 ```tsx
-import {defineMessages} from 'react-intl';
+import {defineMessages, defineMessage} from 'react-intl';
 
 const messages = defineMessages({
   foo: {
     defaultMessage: 'foo',
     description: 'bar',
   },
+});
+
+defineMessage({
+  defaultMessage: 'single message',
 });
 ```
 

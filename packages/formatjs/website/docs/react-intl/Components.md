@@ -500,9 +500,11 @@ Me, myself, and I
 Me, <b>myself</b>, and I
 ```
 
+## Message Formatting Components
+
 ### Message Syntax
 
-String/Message formatting is a paramount feature of React Intl and it builds on [ICU Message Formatting](http://userguide.icu-project.org/formatparse/messages) by using the [ICU Message Syntax](http://formatjs.io/guides/message-syntax/). This message syntax allows for simple to complex messages to be defined, translated, and then formatted at runtime.
+String/Message formatting is a paramount feature of React Intl and it builds on [ICU Message Formatting](http://userguide.icu-project.org/formatparse/messages) by using the [ICU Message Syntax](../icu-syntax.md). This message syntax allows for simple to complex messages to be defined, translated, and then formatted at runtime.
 
 **Simple Message:**
 
@@ -520,7 +522,7 @@ Hello, {name}, you have {itemCount, plural,
 }.
 ```
 
-**See:** The [Message Syntax Guide](http://formatjs.io/guides/message-syntax/) on the [FormatJS website](http://formatjs.io/).
+**See:** The [Message Syntax Guide](../icu-syntax.md).
 
 ### Message Descriptor
 
@@ -661,7 +663,7 @@ Extending this also allows users to potentially utilizing other rich text format
 
 #### Caveats
 
-This has the same caveats documented in [`intl-messageformat`](https://github.com/formatjs/formatjs/tree/master/packages/intl-messageformat#caveats).
+This has the same caveats documented in [`intl-messageformat`](../intl-messageformat.md#caveats).
 
 **Each child in a list should have a unique "key"**: The chunks we return can be text and/or React chunks so the other way is that we have to clone them & add key, which has performance implication. See https://github.com/formatjs/react-intl/issues/1467 for workarounds.
 

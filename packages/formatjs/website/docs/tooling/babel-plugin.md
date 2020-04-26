@@ -3,19 +3,7 @@ id: babel-plugin
 title: babel-plugin-react-intl
 ---
 
-Extracts string messages for translation from modules that use [React Intl][].
-
-## Dependencies
-
-### React Intl
-
-This Babel plugin works with React Intl v2.x
-
-### Babel
-
-- **3.x** of this plugin works with Babel 7
-- **2.x** works with Babel 6
-- **1.x** works with Babel 5
+Extracts string messages for translation from modules that use [React Intl](../react-intl.md).
 
 ## Installation
 
@@ -48,25 +36,43 @@ If a message descriptor has a `description`, it'll be removed from the source af
 }
 ```
 
-### Options
+## Options
 
-- **`messagesDir`**: The target location where the plugin will output a `.json` file corresponding to each component from which React Intl messages were extracted. If not provided, the extracted message descriptors will only be accessible via Babel's API.
+### **`messagesDir`**
 
-- **`extractSourceLocation`**: Whether the metadata about the location of the message in the source file should be extracted. If `true`, then `file`, `start`, and `end` fields will exist for each extracted message descriptors. Defaults to `false`.
+The target location where the plugin will output a `.json` file corresponding to each component from which React Intl messages were extracted. If not provided, the extracted message descriptors will only be accessible via Babel's API.
 
-- **`moduleSourceName`**: The ES6 module source name of the React Intl package. Defaults to: `"react-intl"`, but can be changed to another name/path to React Intl.
+### **`extractSourceLocation`**
 
-- **`overrideIdFn`**: A function with the signature `(id: string, defaultMessage: string, description: string|object) => string` which allows you to override the ID both in the extracted javascript and messages.
+Whether the metadata about the location of the message in the source file should be extracted. If `true`, then `file`, `start`, and `end` fields will exist for each extracted message descriptors. Defaults to `false`.
 
-- **`removeDefaultMessage`**: Remove `defaultMessage` field in generated js after extraction.
+### **`moduleSourceName`**
 
-- **`additionalComponentNames`**: Additional component names to extract messages from, e.g: `['FormattedFooBarMessage']`. **NOTE**: By default we check for the fact that `FormattedMessage` are imported from `moduleSourceName` to make sure variable alias works. This option does not do that so it's less safe.
+The ES6 module source name of the React Intl package. Defaults to: `"react-intl"`, but can be changed to another name/path to React Intl.
 
-- **`extractFromFormatMessageCall`**: Opt-in to extract from `intl.formatMessage` call with the same restrictions, e.g: has to be called with object literal such as `intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'})`
+### **`overrideIdFn`**
 
-- **`outputEmptyJson`**: output file with empty `[]` if src has no messages. For build systems like bazel that relies on specific output mapping, not writing out a file can cause issues.
+A function with the signature `(id: string, defaultMessage: string, description: string|object) => string` which allows you to override the ID both in the extracted javascript and messages.
 
-- **`pragma`**: parse specific additional custom pragma. This allows you to tag certain file with metadata such as `project`. For example with this file:
+### **`removeDefaultMessage`**
+
+Remove `defaultMessage` field in generated js after extraction.
+
+### **`additionalComponentNames`**
+
+Additional component names to extract messages from, e.g: `['FormattedFooBarMessage']`. **NOTE**: By default we check for the fact that `FormattedMessage` are imported from `moduleSourceName` to make sure variable alias works. This option does not do that so it's less safe.
+
+### **`extractFromFormatMessageCall`**
+
+Opt-in to extract from `intl.formatMessage` call with the same restrictions, e.g: has to be called with object literal such as `intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'})`
+
+### **`outputEmptyJson`**
+
+output file with empty `[]` if src has no messages. For build systems like bazel that relies on specific output mapping, not writing out a file can cause issues.
+
+### **`pragma`**
+
+parse specific additional custom pragma. This allows you to tag certain file with metadata such as `project`. For example with this file:
 
 ```tsx
 // @intl-meta project:my-custom-project

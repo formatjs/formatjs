@@ -8,8 +8,8 @@ sidebar_label: Getting Started
 
 Internationalizing web apps is an involved and complex task. If you're new to i18n in JavaScript, it's recommended that you start by reading the following guides:
 
-- [Basic Internationalization Principles](http://formatjs.io/guides/basic-i18n/)
-- [Runtime Environments](http://formatjs.io/guides/runtime-environments/)
+- [Basic Internationalization Principles](basic-internationalization-principles.md)
+- [Runtime Environments](runtime-environments.md)
 - [Internationalization Tutorial From Smashing Magazine](https://www.smashingmagazine.com/2017/01/internationalizing-react-apps/)
 
 ## Runtime Requirements
@@ -177,9 +177,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {injectIntl, IntlProvider, FormattedRelative} from 'react-intl';
 
-const PostDate = injectIntl(({date, intl}) => (
+const PostDate = injectIntl(({value, date, intl}) => (
   <span title={intl.formatDate(date)}>
-    <FormattedRelative value={date} />
+    <FormattedRelativeTime value={value} unit="day" />
   </span>
 ));
 
@@ -187,7 +187,7 @@ const App = ({post}) => (
   <div>
     <h1>{post.title}</h1>
     <p>
-      <PostDate date={post.date} />
+      <PostDate value={post.timeAgo} />
     </p>
     <div>{post.body}</div>
   </div>
@@ -199,6 +199,7 @@ ReactDOM.render(
       post={{
         title: 'Hello, World!',
         date: new Date(1459913574887),
+        timeAgo: -1,
         body: 'Amazing content.',
       }}
     />

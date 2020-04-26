@@ -1,6 +1,6 @@
 ---
 id: react-intl
-title: react-intl
+title: Overview
 ---
 
 [![npm Version](https://img.shields.io/npm/v/react-intl.svg?style=flat-square)](https://www.npmjs.org/package/react-intl)
@@ -172,11 +172,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {injectIntl, IntlProvider, FormattedRelative} from 'react-intl';
 
-const PostDate = injectIntl(({date, intl}) => (
-  <span title={intl.formatDate(date)}>
-    <FormattedRelative value={date} />
-  </span>
-));
+const MS_IN_DAY = 1e3 * 3600 * 24
+
+const PostDate = ({date, intl}) => {
+  const intl = useIntl()
+  return (
+    <span title={intl.formatDate(date)}>
+      <FormattedRelativeTime value={(Date.now() - date)/MS_IN_DAY} unit="day"/>
+    </span>
+  )
+});
 
 const App = ({post}) => (
   <div>
@@ -293,7 +298,7 @@ Our [Advanced Usage](./Advanced-Usage.md) has further guides for production setu
 
 ## Message extraction
 
-We've built https://www.npmjs.com/package/@formatjs/cli that helps you extract messages from a list of files. It uses [`babel-plugin-react-intl`](https://www.npmjs.com/package/babel-plugin-react-intl) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
+We've built [@formatjs/cli](tooling/cli.md) that helps you extract messages from a list of files. It uses [babel-plugin-react-intl](tooling/babel-plugin-react-intl.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
 
 ```tsx
 import {defineMessages} from 'react-intl';
@@ -327,4 +332,4 @@ function Comp(props) {
 
 ## ESLint Plugin
 
-We've also built https://www.npmjs.com/package/eslint-plugin-formatjs that helps enforcing specific rules on your messages if your translation vendor has restrictions.
+We've also built [eslint-plugin-formatjs](tooling/linter.md) that helps enforcing specific rules on your messages if your translation vendor has restrictions.
