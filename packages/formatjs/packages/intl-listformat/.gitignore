@@ -5,4 +5,3 @@ tests/browser.*
 src/locales.ts
 src/en.ts
 tests/polyfill-all.js
-dist-es6/

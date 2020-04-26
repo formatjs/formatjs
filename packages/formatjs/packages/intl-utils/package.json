@@ -21,7 +21,7 @@
   "sideEffects": false,
   "main": "dist/index.js",
   "module": "lib/index.js",
-  "jsnext": "dist-es6/index.js",
+  "module:es6": "dist-es6/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
@@ -29,10 +29,10 @@
     "src"
   ],
   "scripts": {
-    "clean": "rimraf dist lib *.tsbuildinfo",
-    "cldr": "ts-node --project tsconfig.cjs.json scripts/cldr",
-    "build": "yarn run cldr && tsc && api-extractor run --local && tsc -p tsconfig.es6.json && tsc -p tsconfig.cjs.json",
-    "test": "cross-env TS_NODE_PROJECT=tsconfig.cjs.json mocha --opts ../../mocha.opts tests/*"
+    "clean": "rimraf dist dist-es6 lib *.tsbuildinfo",
+    "cldr": "ts-node scripts/cldr",
+    "build": "yarn run cldr && tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local",
+    "test": "mocha --opts ../../mocha.opts tests/*"
   },
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",

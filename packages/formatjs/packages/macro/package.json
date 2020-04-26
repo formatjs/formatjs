@@ -30,7 +30,7 @@
   },
   "scripts": {
     "clean": "rimraf lib *.tsbuildinfo",
-    "build": "tsc -p tsconfig.build.json"
+    "build": "tsc"
   },
   "files": [
     "dist",

@@ -36,9 +36,9 @@
     "url": "git+ssh://git@github.com/formatjs/formatjs.git"
   },
   "scripts": {
-    "clean": "rimraf lib *.tsbuildinfo",
-    "build": "tsc -p tsconfig.build.json",
-    "test": "cross-env TS_NODE_PROJECT=./tsconfig.json cross-env NODE_ENV=test jest"
+    "clean": "rimraf lib dist *.tsbuildinfo",
+    "build": "tsc",
+    "test": "cross-env TS_NODE_PROJECT=./tsconfig.jest.json cross-env NODE_ENV=test jest"
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.8.3",

@@ -1,13 +1,8 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "module": "commonjs",
         "outDir": "dist",
         "rootDir": "src",
-        "baseUrl": ".",
-        "paths": {
-            "intl-messageformat-parser": ["../intl-messageformat-parser"]
-        },
         "types": [
             "babel__core",
             "babel__generator",
@@ -28,5 +23,6 @@
             "stack-utils",
             "yargs"
         ]
-    }
+    },
+    "include": ["src"]
 }

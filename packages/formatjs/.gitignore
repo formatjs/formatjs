@@ -11,5 +11,5 @@ functional-tests/
 .rpt2_cache
 test262
 temp
-dist-es6
 polyfill-locales.js
+dist-es6

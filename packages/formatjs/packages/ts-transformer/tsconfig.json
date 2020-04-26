@@ -3,8 +3,7 @@
     "compilerOptions": {
         "target": "es6",
         "outDir": "dist",
-        "rootDir": ".",
-        "module": "commonjs",
+        "rootDir": "src",
         "noUnusedLocals": true,
         "sourceMap": true,
         "types": [
@@ -28,6 +27,7 @@
             "resolve",
             "stack-utils",
             "yargs"
-        ]
-    }
+        ],
+    },
+    "include": ["src"]
 }

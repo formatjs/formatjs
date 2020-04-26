@@ -8,8 +8,8 @@
     "url": "https://github.com/formatjs/formatjs"
   },
   "scripts": {
-    "build:packages": "lerna run --parallel clean && lerna run build",
-    "build": "yarn run prettier && yarn run build:packages",
+    "build": "yarn run clean && lerna run build",
+    "clean": "lerna run --parallel clean",
     "cover:collect": "mkdir -p ./.nyc_output/ && for d in $(find packages -type d -name '.nyc_output' -maxdepth 2 -exec find '{}' -type f ';'); do (cp $d ./.nyc_output/); done; nyc report --reporter=lcov --report-dir=${COVERAGE_DIR:-artifacts/coverage}",
     "cover": "lerna run cover --since",
     "dev:test": "lerna run test --since master",
@@ -17,10 +17,10 @@
     "karma:local": "karma start karma.conf.js",
     "lint": "eslint 'packages/*/src/**/*.ts?(x)' --fix",
     "postversion": "yarn run prettier",
-    "prepublishOnly": "yarn run build",
+    "prepublishOnly": "yarn run prettier && yarn run build",
     "prettier": "prettier --write 'packages/*/{test,tests,src,scripts}/**/*.ts' 'website/**/*.js' 'packages/babel-plugin-react-intl/test/**/*.js' '**/*.md'",
     "prettier:check": "prettier --check 'packages/*/{test,tests,src,scripts}/**/*.ts' 'website/**/*.js' 'packages/babel-plugin-react-intl/test/**/*.js' '**/*.md'",
-    "test": "lerna run lint && yarn run prettier:check && lerna run --parallel test"
+    "test": "lerna run lint && yarn run prettier:check && lerna run --parallel test && jest -c tests/jest.config.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",

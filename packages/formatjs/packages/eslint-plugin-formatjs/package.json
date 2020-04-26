@@ -8,7 +8,7 @@
     "src"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc",
     "test": "cross-env TS_NODE_PROJECT=./tsconfig.json cross-env NODE_ENV=test jest"
   },
   "repository": {

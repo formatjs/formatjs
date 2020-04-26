@@ -44,14 +44,14 @@
   },
   "sideEffects": false,
   "scripts": {
-    "benchmark": "ts-node --project ./tsconfig.cjs.json tests/benchmark",
+    "benchmark": "ts-node tests/benchmark",
     "build": "yarn run tsc && yarn run rollup",
     "clean": "rimraf dist lib *.tsbuildinfo",
     "karma:ci": "karma start karma.conf-ci.js",
     "karma:local": "karma start karma.conf.js",
     "rollup": "rollup -c rollup.config.js",
-    "test": "cross-env TZ=UTC NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json mocha --opts ../../mocha.opts -r tests/setup.js tests/index.ts",
-    "tsc": "tsc -p src/tsconfig.json && tsc -p src/tsconfig.cjs.json && api-extractor run --local"
+    "test": "cross-env TZ=UTC NODE_ICU_DATA=../../node_modules/full-icu mocha --opts ../../mocha.opts -r tests/setup.js tests/index.ts",
+    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig.esm.json && api-extractor run --local"
   },
   "homepage": "https://github.com/formatjs/formatjs",
   "directories": {

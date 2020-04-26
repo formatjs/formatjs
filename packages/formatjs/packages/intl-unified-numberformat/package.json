@@ -33,15 +33,15 @@
     "@formatjs/intl-utils": "^2.2.3"
   },
   "scripts": {
-    "benchmark": "ts-node --project ./tsconfig.cjs.json tests/benchmark",
+    "benchmark": "ts-node tests/benchmark",
     "build": "yarn run cldr && yarn run compile && yarn run rollup ",
-    "cldr": "NODE_OPTIONS=--max-old-space-size=8192 ts-node --project tsconfig.cjs.json scripts/cldr",
+    "cldr": "NODE_OPTIONS=--max-old-space-size=8192 ts-node scripts/cldr",
     "clean": "rimraf dist dist-es6 lib src/locales.ts *.tsbuildinfo",
-    "compile": "NODE_OPTIONS=--max-old-space-size=8192 tsc && tsc -p tsconfig.cjs.json && tsc -p tsconfig.es6.json && api-extractor run --local",
-    "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json cross-env NODE_ENV=test jest",
+    "compile": "NODE_OPTIONS=--max-old-space-size=8192 tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local",
+    "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu cross-env NODE_ENV=test jest",
     "rollup": "NODE_OPTIONS=--max-old-space-size=8192 rollup -c rollup.config.js",
     "test": "yarn run jest",
-    "test262": "cross-env NODE_ICU_DATA=../../node_modules/full-icu TS_NODE_PROJECT=tsconfig.cjs.json ts-node tests/runner"
+    "test262": "cross-env NODE_ICU_DATA=../../node_modules/full-icu ts-node tests/runner"
   },
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"

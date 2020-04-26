@@ -1,10 +1,9 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "target": "esnext",
+        "target": "es2019",
         "outDir": "dist",
-        "rootDir": ".",
-        "module": "commonjs",
+        "rootDir": "src",
         "noUnusedLocals": true,
         "sourceMap": true,
         "types": [

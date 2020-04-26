@@ -4,8 +4,7 @@
         // Targeting node >= 8
         "target": "es2017",
         "outDir": "lib",
-        "rootDir": ".",
-        "module": "esnext",
+        "rootDir": "src",
         "esModuleInterop": true,
         "noUnusedLocals": true,
         "sourceMap": true,
@@ -30,7 +29,5 @@
             "yargs"
         ]
     },
-    // Also include tests in the default tsconfig.json for better editor integration.
-    "include": ["src/**/*.ts", "tests/**/*.ts"],
-    "exclude": ["tests/extract/integration_tests/typescript/**/*.tsx"],
+    "include": ["src/**/*.ts"],
 }

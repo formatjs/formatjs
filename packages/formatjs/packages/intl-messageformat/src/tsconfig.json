@@ -1,9 +1,0 @@
-{
-    "extends": "../tsconfig.json",
-    "compilerOptions": {
-        "outDir": "../lib",
-        "paths": {
-            "intl-format-cache": ["../intl-format-cache"]
-        }
-    }
-}

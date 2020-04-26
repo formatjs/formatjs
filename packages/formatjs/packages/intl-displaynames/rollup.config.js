@@ -63,7 +63,7 @@ export default [
       name: 'IntlDisplayNames'
     },
     plugins: [resolve({
-      mainFields: ['jsnext', 'module', 'main']
+      mainFields: ['module:es6', 'module', 'main']
     }), commonjsConfig, jsonConfig]
   },
 ];
