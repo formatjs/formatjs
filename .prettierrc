@@ -3,6 +3,5 @@
   "trailingComma": "es5",
   "bracketSpacing": false,
   "endOfLine": "lf",
-  "arrowParens": "avoid",
-  "semi": false
+  "arrowParens": "avoid"
 }

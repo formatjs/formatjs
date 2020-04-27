@@ -1,0 +1,60 @@
+{
+  "name": "intl-messageformat-parser",
+  "version": "5.0.1",
+  "description": "Parses ICU Message strings into an AST via JavaScript.",
+  "main": "dist/index.js",
+  "module": "lib/index.js",
+  "types": "lib/intl-messageformat-parser.d.ts",
+  "files": [
+    "dist",
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "clean": "rimraf dist lib *.tsbuildinfo",
+    "build": "node build.js && tsc && tsc -p tsconfig.esm.json && api-extractor run --local && rollup -c rollup.config.js",
+    "benchmark": "node ./test/benchmark.js",
+    "test": "cross-env NODE_ENV=test jest"
+  },
+  "contributors": [
+    "Eric Ferraiuolo <eferraiuolo@gmail.com>",
+    "Long Ho <holevietlong@gmail.com>",
+    "Ryuichi Okumura <okuryu@okuryu.com>",
+    "Seth Bertalotto <seth@bertalotto.net>",
+    "Song Seunggeun <giff.song@gmail.com>",
+    "Tobias Bieniek <tobias.bieniek@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/formatjs/formatjs.git"
+  },
+  "keywords": [
+    "i18n",
+    "intl",
+    "internationalization",
+    "localization",
+    "globalization",
+    "messageformat",
+    "parser",
+    "plural",
+    "icu"
+  ],
+  "sideEffects": false,
+  "author": "Eric Ferraiuolo <eferraiuolo@gmail.com>",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  },
+  "dependencies": {
+    "@formatjs/intl-unified-numberformat": "^3.3.4"
+  },
+  "homepage": "https://github.com/formatjs/formatjs",
+  "gitHead": "8b0baec8eda5002715cf893274fe59782fc2d371",
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "jest": "^25.4.0",
+    "pegjs": "^0.10.0",
+    "ts-jest": "^25.4.0",
+    "ts-pegjs": "^0.2.6"
+  }
+}

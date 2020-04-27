@@ -1,9 +1,0 @@
-sudo: false
-language: node_js
-node_js:
-  - 12
-before_script:
-  - npm run build
-script: npm run karma:ci
-addons:
-  sauce_connect: true

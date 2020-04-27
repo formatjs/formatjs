@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "baseUrl": ".",
+    "noImplicitAny": false,
+    "noUnusedLocals": false, // Bc of parser.ts
+    "noUnusedParameters": false // Bc of parser.ts
+  },
+  "include": ["src"],
+  "references": [{"path": "../intl-unified-numberformat"}]
+}

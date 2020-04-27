@@ -26,8 +26,8 @@ Pull requests are very welcome, but should be within the scope of the project, a
 
 1. Last step, [submit the pull request][pr]!
 
-[pr]: https://github.com/formatjs/react-intl/compare/
-[fork]: https://github.com/formatjs/react-intl/fork/
+[pr]: https://github.com/formatjs/formatjs/compare/
+[fork]: https://github.com/formatjs/formatjs/fork/
 
 ## Releasing a new version
 
@@ -47,4 +47,4 @@ The following the process to release a new version of the `react-intl` package o
 
 7. Merge the `release` branch PR into `master` **and make sure to create a merge commit** so the Git tag matches.
 
-8. Create a [release](https://github.com/formatjs/react-intl/releases) post for the new release Git tag.
+8. Create a [release](https://github.com/formatjs/formatjs/releases) post for the new release Git tag.

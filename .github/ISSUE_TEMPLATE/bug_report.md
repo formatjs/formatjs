@@ -4,58 +4,40 @@ about: Create a report to help us improve
 title: ''
 labels: bug
 assignees: ''
-
 ---
 
-<!-- Thank you so much for filing this issue! Please provide the detail about your problem! -->
+**Which package?**
+Since this is a monorepo. Please specify which package this bug report is for.
 
-<!--
-  - Before file an issue, please verify it is a bug for react-intl not **intl.js polyfill** and **Unicode CLDR**.
-  - Fill in as much of the template below as you can. If you leave out information, we can't help you as well.
--->
+**Describe the bug**
+A clear and concise description of what the bug is.
 
-### Expected behavior
+**To Reproduce**
+Steps to reproduce the behavior:
 
-<!-- Please describe the behavior you expected. -->
+1. Go to '...'
+2. Click on '....'
+3. Scroll down to '....'
+4. See error
 
-### Current behavior
+**Expected behavior**
+A clear and concise description of what you expected to happen.
 
-<!-- Please describe what happens instead of your expected behavior. -->
+**Screenshots**
+If applicable, add screenshots to help explain your problem.
 
-### codesandbox.io link to reproduce for BUG REPORT
+**Desktop (please complete the following information):**
 
-<!-- Please describe steps to reproduce this bug as minimally and precisely as possible & include a codesandbox.io link to repro this issue
+- OS: [e.g. iOS]
+- Browser [e.g. chrome, safari]
+- Version [e.g. 22]
 
--->
+**Smartphone (please complete the following information):**
 
-### Your Environment
+- Device: [e.g. iPhone6]
+- OS: [e.g. iOS8.1]
+- Browser [e.g. stock browser, safari]
+- Version [e.g. 22]
 
-<!-- Please describe your environment information. -->
-<!-- Please describe your OS and browser information if your problem occurs on a specific OS or browser. -->
-
-|          Executable | Version |
-| ------------------: | :------ |
-| `npm ls react-intl` | VERSION |
-|      `npm ls react` | VERSION |
-|     `npm --version` | VERSION |
-|    `node --version` | VERSION |
-
-| OS   | Version |
-| ---- | ------- |
-| NAME | VERSION |
-
-<!-- For example:
-| macOS Sierra | 10.12.3 |
-| Windows 10 | 1607 |
-| Ubuntu | 16.10 |
--->
-
-| Browser | Version |
-| ------- | ------- |
-| NAME    | VERSION |
-
-<!-- For example:
-| Chrome | 61.0.3163.71 |
-| Safari | 10.1.2 |
-| Firefox | 52.0 |
--->
+**Additional context**
+Add any other context about the problem here.

@@ -1,0 +1,66 @@
+{
+  "name": "intl-messageformat",
+  "version": "8.3.8",
+  "description": "Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.",
+  "keywords": [
+    "i18n",
+    "intl",
+    "internationalization",
+    "localization",
+    "globalization",
+    "messageformat",
+    "parser",
+    "plural",
+    "icu"
+  ],
+  "author": "Eric Ferraiuolo <eferraiuolo@gmail.com>",
+  "contributors": [
+    "Anthony Pipkin <a.pipkin@yahoo.com>",
+    "Caridy Patino <caridy@gmail.com>",
+    "Drew Folta <drew@folta.net>",
+    "Long Ho <holevietlong@gmail.com"
+  ],
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:formatjs/formatjs.git"
+  },
+  "main": "dist/index.js",
+  "module": "lib/index.js",
+  "types": "lib/intl-messageformat.d.ts",
+  "dependencies": {
+    "intl-format-cache": "^4.2.25",
+    "intl-messageformat-parser": "^5.0.1"
+  },
+  "files": [
+    "dist",
+    "lib",
+    "src"
+  ],
+  "devDependencies": {
+    "@formatjs/intl-pluralrules": "^1.5.6",
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "chai": "^4.2.0",
+    "mocha": "^7.1.2"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "benchmark": "ts-node tests/benchmark",
+    "build": "yarn run tsc && yarn run rollup",
+    "clean": "rimraf dist lib *.tsbuildinfo",
+    "karma:ci": "karma start karma.conf-ci.js",
+    "karma:local": "karma start karma.conf.js",
+    "rollup": "rollup -c rollup.config.js",
+    "test": "cross-env TZ=UTC NODE_ICU_DATA=../../node_modules/full-icu mocha --opts ../../mocha.opts -r tests/setup.js tests/index.ts",
+    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig.esm.json && api-extractor run --local"
+  },
+  "homepage": "https://github.com/formatjs/formatjs",
+  "directories": {
+    "test": "tests"
+  },
+  "license": "BSD-3-Clause",
+  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c"
+}

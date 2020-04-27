@@ -1,6 +1,15 @@
 {
-  "packages": [
-    "packages/*"
-  ],
-  "version": "0.0.0"
+  "registry": "https://registry.npmjs.org/",
+  "version": "independent",
+  "command": {
+    "version": {
+      "conventionalCommits": true,
+      "createRelease": "github"
+    },
+    "run": {
+      "stream": true
+    }
+  },
+  "npmClient": "yarn",
+  "useWorkspaces": true
 }

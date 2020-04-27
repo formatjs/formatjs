@@ -1,0 +1,48 @@
+{
+  "name": "@formatjs/intl-utils",
+  "version": "2.2.3",
+  "description": "Smartly determine best unit for relative time format",
+  "keywords": [
+    "intl",
+    "i18n",
+    "relative",
+    "moment",
+    "format",
+    "date"
+  ],
+  "author": "Long Ho <holevietlong@gmail.com",
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:formatjs/formatjs.git"
+  },
+  "sideEffects": false,
+  "main": "dist/index.js",
+  "module": "lib/index.js",
+  "module:es6": "dist-es6/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "clean": "rimraf dist dist-es6 lib *.tsbuildinfo",
+    "cldr": "ts-node scripts/cldr",
+    "build": "yarn run cldr && tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local",
+    "test": "mocha --opts ../../mocha.opts tests/*"
+  },
+  "homepage": "https://github.com/formatjs/formatjs",
+  "license": "MIT",
+  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c",
+  "devDependencies": {
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "@types/serialize-javascript": "^1.5.0",
+    "chai": "^4.2.0",
+    "mocha": "^7.1.2",
+    "serialize-javascript": "^3.0.0"
+  }
+}

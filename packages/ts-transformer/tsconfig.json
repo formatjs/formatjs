@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "es6",
+    "outDir": "dist",
+    "rootDir": "src",
+    "noUnusedLocals": true,
+    "sourceMap": true
+  },
+  "include": ["src"]
+}

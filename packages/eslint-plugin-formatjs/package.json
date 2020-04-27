@@ -1,0 +1,46 @@
+{
+  "name": "eslint-plugin-formatjs",
+  "version": "2.2.2",
+  "description": "ESLint plugin for formatjs",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "cross-env TS_NODE_PROJECT=./tsconfig.json cross-env NODE_ENV=test jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/formatjs/formatjs.git"
+  },
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "i18n",
+    "formatjs"
+  ],
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  },
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "dependencies": {
+    "@types/emoji-regex": "^8.0.0",
+    "@types/eslint": "^6.8.0",
+    "@types/estree": "^0.0.44",
+    "@typescript-eslint/typescript-estree": "^2.29.0",
+    "emoji-regex": "^9.0.0",
+    "intl-messageformat-parser": "^5.0.1"
+  },
+  "peerDependencies": {
+    "eslint": "^6.8.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "jest": "^25.4.0",
+    "ts-jest": "^25.4.0"
+  }
+}

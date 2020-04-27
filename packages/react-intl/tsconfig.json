@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "references": [
+    {"path": "../intl-displaynames"},
+    {"path": "../intl-format-cache"},
+    {"path": "../intl-listformat"},
+    {"path": "../intl-messageformat-parser"},
+    {"path": "../intl-messageformat"},
+    {"path": "../intl-pluralrules"},
+    {"path": "../intl-relativetimeformat"},
+    {"path": "../intl-unified-numberformat"},
+    {"path": "../intl-utils"}
+  ]
+}

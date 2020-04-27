@@ -1,19 +1,17 @@
-coverage/
-dist/
-lib/
-locale-data/
-node_modules/
-src/en.js
-examples/*/build
-
-# IntelliJ
-.idea/
-
-# VS Code
-.vscode
-
-core.js
-core.d.ts
-.cache
+artifacts
+.nyc_output
+coverage
+dist
+lib
+node_modules
+*.log
+*.tgz
+functional-tests/
+*.tsbuildinfo
 .rpt2_cache
 temp
+polyfill-locales.js
+dist-es6
+
+.now
+.cache

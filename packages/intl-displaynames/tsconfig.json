@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "lib": ["dom", "es5", "esnext.intl", "es2017.intl", "es2018.intl"],
+    "outDir": "dist",
+    "rootDir": "src",
+    "allowSyntheticDefaultImports": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src/**/*.ts"],
+  "references": [
+    {"path": "../formatjs-extract-cldr-data"},
+    {"path": "../intl-utils"}
+  ]
+}

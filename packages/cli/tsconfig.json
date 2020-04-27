@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    // Targeting node >= 8
+    "target": "es2017",
+    "outDir": "lib",
+    "rootDir": "src",
+    "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src/**/*.ts"],
+  "references": [{"path": "../babel-plugin-react-intl"}]
+}

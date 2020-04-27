@@ -1,0 +1,53 @@
+{
+  "name": "formatjs-extract-cldr-data",
+  "version": "10.1.5",
+  "description": "Utility library that extracts the CLDR data that's needed by the FormatJS libraries.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist *.tsbuildinfo",
+    "test": "cross-env TS_NODE_PROJECT=./tsconfig.json cross-env NODE_ENV=test jest --maxWorkers=100%",
+    "verify": "ts-node scripts/verify-numbers",
+    "cover": "npm t -- --coverage"
+  },
+  "author": "Eric Ferraiuolo <edf@ericf.me>",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "@formatjs/intl-utils": "^2.2.3",
+    "@types/glob": "^7.1.1",
+    "@types/lodash": "^4.14.150",
+    "cldr-core": "^36.0.0",
+    "cldr-dates-full": "^36.0.0",
+    "cldr-localenames-full": "^36.0.0",
+    "cldr-misc-full": "^36.0.0",
+    "cldr-numbers-full": "^36.0.0",
+    "cldr-units-full": "^36.0.0",
+    "glob": "^7.1.6",
+    "lodash": "^4.17.15"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/formatjs/formatjs.git"
+  },
+  "keywords": [
+    "i18n",
+    "cldr",
+    "formatjs"
+  ],
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  },
+  "homepage": "https://github.com/formatjs/formatjs",
+  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c",
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "jest": "^25.4.0",
+    "ts-jest": "^25.4.0"
+  }
+}

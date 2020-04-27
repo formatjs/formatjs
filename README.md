@@ -1,109 +1,76 @@
-# React Intl
+# FormatJS
 
-Internationalize [React][] apps. This library provides React components and an API to format dates, numbers, and strings, including pluralization and handling translations.
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 
-[![npm Version](https://badgen.net/npm/v/react-intl)][npm]
-[![npm Version](https://badgen.net/npm/v/react-intl/next)][npm]
-[![Build Status][travis-badge]][travis]
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 
-![minified size](https://badgen.net/bundlephobia/min/react-intl)
-![minzipped size](https://badgen.net/bundlephobia/minzip/react-intl)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-## Overview
+[![Build Status](https://travis-ci.org/formatjs/formatjs.svg?branch=master)](https://travis-ci.org/formatjs/formatjs)
+[![Slack FormatJS](https://img.shields.io/badge/slack-@formatjs-green.svg?logo=slack)](https://join.slack.com/t/formatjs/shared_invite/enQtNjM2MjM4NjE4ODIxLTMyMWE0YTNhMTlmMzZlNzJlNjEzMWY0YjM2ODUxYjlmNDE2YzQyMDIxZDg3Y2Q5YWNlMzhhYzRiNDk0OGQwNGI)
 
-**React Intl is part of [FormatJS][].** It provides bindings to React via its components and API.
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/formatjsproject.svg)](https://saucelabs.com/u/formatjsproject)
+
+This repository is the home of [FormatJS](http://formatjs.io/) and related libraries.
 
 **Slack:** Join us on Slack at [formatjs.slack.com](https://formatjs.slack.com/) for help, general conversation and more 💬🎊🎉
 You can sign-up using this [invitation link](https://join.slack.com/t/formatjs/shared_invite/enQtNjYwMzE4NjM1MDQzLTA5NDE1Y2Y1ZWNiZWI1YTU5MGUxY2M0YjA4NWNhMmU3YTRjZmQ3MTE3NzJmOTAxMWRmYWE1ZTdkMmYzNzA5Y2M).
 
-### [Documentation][]
+## Development
 
-React Intl's docs are in this GitHub [`/docs`][documentation] folder, [**Get Started**][getting started]. There are also several [runnable example apps][examples] which you can reference to learn how all the pieces fit together.
+Development is currently being done against the latest Node LTS. This repository leverages [Lerna][] for package management.
 
-_(If you're looking for React Intl v1, you can find it [here][v1-docs].)_
+Releases can be done with the following steps:
 
-### Features
-
-- Display numbers with separators.
-- Display dates and times correctly.
-- Display dates relative to "now".
-- Pluralize labels in strings.
-- Support for 150+ languages.
-- Runs in the browser and Node.js.
-- Built on standards.
-
-### Example
-
-There are several [runnable examples][examples] in this Git repo, but here's a Hello World one:
-
-```tsx
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import {IntlProvider, FormattedMessage} from 'react-intl';
-
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: 'Eric',
-      unreadCount: 1000,
-    };
-  }
-
-  render() {
-    const {name, unreadCount} = this.state;
-
-    return (
-      <p>
-        <FormattedMessage
-          id="welcome"
-          defaultMessage={`Hello {name}, you have {unreadCount, number} {unreadCount, plural,
-                      one {message}
-                      other {messages}
-                    }`}
-          values={{name: <b>{name}</b>, unreadCount}}
-        />
-      </p>
-    );
-  }
-}
-
-ReactDOM.render(
-  <IntlProvider locale="en">
-    <App />
-  </IntlProvider>,
-  document.getElementById('container')
-);
+```js
+> lerna publish
 ```
 
-This example would render: "Hello **Eric**, you have 1,000 messages." into the container element on the page.
+## Published Packages
 
-**Pluralization rules:** In some languages you have more than `one` and `other`. For example in `ru` there are the following plural rules: `one`, `few`, `many` and `other`.
-Check out the official [Unicode CLDR documentation](http://www.unicode.org/cldr/charts/28/supplemental/language_plural_rules.html).
+| Package                                                                                                  | Version                                                                  | Changelog                                                     | License                                               |
+| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------- | ----------------------------------------------------- |
+| [babel-plugin-react-intl](https://www.npmjs.com/package/babel-plugin-react-intl)                         | ![version](https://badgen.net/npm/v/babel-plugin-react-intl)             | [CHANGELOG](packages/babel-plugin-react-intl/CHANGELOG.md)    | [BSD](packages/babel-plugin-react-intl/LICENSE.md)    |
+| [@formatjs/cli](https://www.npmjs.com/package/@formatjs/cli)                                             | ![version](https://badgen.net/npm/v/@formatjs/cli)                       | [CHANGELOG](packages/cli/CHANGELOG.md)                        | [MIT](packages/cli/LICENSE.md)                        |
+| [eslint-plugin-formatjs](https://www.npmjs.com/package/eslint-plugin-formatjs)                           | ![version](https://badgen.net/npm/v/eslint-plugin-formatjs)              | [CHANGELOG](packages/eslint-plugin-formatjs/CHANGELOG.md)     | [MIT](packages/eslint-plugin-formatjs/LICENSE.md)     |
+| [formatjs-extract-cldr-data](https://www.npmjs.com/package/formatjs-extract-cldr-data)                   | ![version](https://badgen.net/npm/v/formatjs-extract-cldr-data)          | [CHANGELOG](packages/formatjs-extract-cldr-data/CHANGELOG.md) | [BSD](packages/formatjs-extract-cldr-data/LICENSE.md) |
+| [intl-format-cache](https://www.npmjs.com/package/intl-format-cache)                                     | ![version](https://badgen.net/npm/v/intl-format-cache)                   | [CHANGELOG](packages/intl-format-cache/CHANGELOG.md)          | [BSD](packages/intl-format-cache/LICENSE.md)          |
+| [intl-locales-supported](https://www.npmjs.com/package/intl-locales-supported)                           | ![version](https://badgen.net/npm/v/intl-locales-supported)              | [CHANGELOG](packages/intl-locales-supported/CHANGELOG.md)     | [BSD](packages/intl-locales-supported/LICENSE.md)     |
+| [@formatjs/intl-listformat](https://www.npmjs.com/package/@formatjs/intl-listformat)                     | ![version](https://badgen.net/npm/v/@formatjs/intl-listformat)           | [CHANGELOG](packages/intl-listformat/CHANGELOG.md)            | [MIT](packages/intl-listformat/LICENSE.md)            |
+| [intl-messageformat](https://www.npmjs.com/package/intl-messageformat)                                   | ![version](https://badgen.net/npm/v/intl-messageformat)                  | [CHANGELOG](packages/intl-messageformat/CHANGELOG.md)         | [BSD](packages/intl-messageformat/LICENSE.md)         |
+| [intl-messageformat-parser](https://www.npmjs.com/package/intl-messageformat-parser)                     | ![version](https://badgen.net/npm/v/intl-messageformat-parser)           | [CHANGELOG](packages/intl-messageformat-parser/CHANGELOG.md)  | [BSD](packages/intl-messageformat-parser/LICENSE.md)  |
+| [@formatjs/intl-pluralrules](https://www.npmjs.com/package/@formatjs/intl-pluralrules)                   | ![version](https://badgen.net/npm/v/@formatjs/intl-pluralrules)          | [CHANGELOG](packages/intl-pluralrules/CHANGELOG.md)           | [MIT](packages/intl-pluralrules/LICENSE.md)           |
+| [@formatjs/intl-relativetimeformat](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat)     | ![version](https://badgen.net/npm/v/@formatjs/intl-relativetimeformat)   | [CHANGELOG](packages/intl-relativetimeformat/CHANGELOG.md)    | [MIT](packages/intl-relativetimeformat/LICENSE.md)    |
+| [@formatjs/intl-unified-numberformat](https://www.npmjs.com/package/@formatjs/intl-unified-numberformat) | ![version](https://badgen.net/npm/v/@formatjs/intl-unified-numberformat) | [CHANGELOG](packages/intl-unified-numberformat/CHANGELOG.md)  | [MIT](packages/intl-unified-numberformat/LICENSE.md)  |
+| [@formatjs/intl-utils](https://www.npmjs.com/package/@formatjs/intl-utils)                               | ![version](https://badgen.net/npm/v/@formatjs/intl-utils)                | [CHANGELOG](packages/intl-utils/CHANGELOG.md)                 | [MIT](packages/intl-utils/LICENSE.md)                 |
+| [@formatjs/macro](https://www.npmjs.com/package/@formatjs/macro)                                         | ![version](https://badgen.net/npm/v/@formatjs/macro)                     | [CHANGELOG](packages/macro/CHANGELOG.md)                      | [MIT](packages/macro/LICENSE.md)                      |
+| [@formatjs/ts-transformer](https://www.npmjs.com/package/@formatjs/cli)                                  | ![version](https://badgen.net/npm/v/@formatjs/cli)                       | [CHANGELOG](packages/cli/CHANGELOG.md)                        | [MIT](packages/cli/LICENSE.md)                        |
+| [@formatjs/intl-displaynames](https://www.npmjs.com/package/@formatjs/intl-displaynames)                 | ![version](https://badgen.net/npm/v/@formatjs/intl-displaynames)         | [CHANGELOG](packages/intl-displaynames/CHANGELOG.md)          | [MIT](packages/intl-displaynames/LICENSE.md)          |
 
-## Contribute
+## Big Thanks
 
-Let's make React Intl and FormatJS better! If you're interested in helping, all contributions are welcome and appreciated. React Intl is just one of many packages that make up the [FormatJS suite of packages][formatjs github], and you can contribute to any/all of them, including the [Format JS website][formatjs] itself.
+Cross-browser Testing Platform and Open Source <3 Provided by [Sauce Labs][saucelabs]
 
-Check out the [Contributing document][contributing] for the details. Thanks!
+[lerna]: https://lerna.js.org/
+[saucelabs]: https://saucelabs.com
 
-## License
+## Contributors ✨
 
-This software is free to use under the Yahoo Inc. BSD license.
-See the [LICENSE file][] for license text and copyright information.
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
-[npm]: https://www.npmjs.org/package/react-intl
-[npm-badge]: https://img.shields.io/npm/v/react-intl.svg?style=flat-square
-[david]: https://david-dm.org/formatjs/react-intl
-[david-badge]: https://img.shields.io/david/formatjs/react-intl.svg?style=flat-square
-[travis]: https://travis-ci.org/formatjs/react-intl
-[travis-badge]: https://img.shields.io/travis/formatjs/react-intl/master.svg?style=flat-square
-[react]: http://facebook.github.io/react/
-[formatjs]: http://formatjs.io/
-[formatjs github]: http://formatjs.io/github/
-[documentation]: https://github.com/formatjs/react-intl/blob/master/docs/README.md
-[getting started]: https://github.com/formatjs/react-intl/blob/master/docs/Getting-Started.md
-[examples]: https://github.com/formatjs/react-intl/tree/master/examples
-[v1-docs]: http://formatjs.io/react/v1/
-[contributing]: https://github.com/formatjs/react-intl/blob/master/CONTRIBUTING.md
-[license file]: https://github.com/formatjs/react-intl/blob/master/LICENSE.md
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/pyrocat101"><img src="https://avatars0.githubusercontent.com/u/541540?v=4" width="100px;" alt=""/><br /><sub><b>Linjie Ding</b></sub></a><br /><a href="#infra-pyrocat101" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/formatjs/formatjs/commits?author=pyrocat101" title="Tests">⚠️</a> <a href="https://github.com/formatjs/formatjs/commits?author=pyrocat101" title="Code">💻</a></td>
+    <td align="center"><a href="https://medium.com/@longho"><img src="https://avatars1.githubusercontent.com/u/198255?v=4" width="100px;" alt=""/><br /><sub><b>Long Ho</b></sub></a><br /><a href="#infra-longlho" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/formatjs/formatjs/commits?author=longlho" title="Tests">⚠️</a> <a href="https://github.com/formatjs/formatjs/commits?author=longlho" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

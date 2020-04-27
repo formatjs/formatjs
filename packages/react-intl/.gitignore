@@ -1,0 +1,19 @@
+coverage/
+dist/
+lib/
+locale-data/
+node_modules/
+src/en.js
+examples/*/build
+
+# IntelliJ
+.idea/
+
+# VS Code
+.vscode
+
+core.js
+core.d.ts
+.cache
+.rpt2_cache
+temp
