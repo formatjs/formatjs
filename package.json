@@ -17,12 +17,12 @@
     "dev:test": "lerna run test --since master",
     "karma:ci": "karma start karma.conf-ci.js",
     "karma:local": "karma start karma.conf.js",
-    "lint": "eslint 'packages/*/src/**/*.ts?(x)' --fix",
+    "lint": "eslint 'packages/*/src/**/*.ts?(x)'",
     "postversion": "yarn run prettier",
     "prepublishOnly": "yarn run prettier && yarn run build",
     "prettier": "prettier --write '**/*.{md,ts,tsx}'",
     "prettier:check": "prettier --check '**/*.{md,ts,tsx}'",
-    "test": "lerna run lint && yarn run prettier:check && lerna run --parallel test && jest -c tests/jest.config.js"
+    "test": "yarn run prettier:check && lerna run --parallel test && jest -c tests/jest.config.js"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.7.13",

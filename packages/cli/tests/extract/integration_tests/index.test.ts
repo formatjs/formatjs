@@ -18,7 +18,7 @@ test('basic case: help', async () => {
   const {stdout, stderr} = await exec(`${BIN_PATH} extract --help`);
   expect(stdout).toMatchSnapshot();
   expect(stderr).toBe('');
-}, 10000);
+}, 20000);
 
 test('basic case: defineMessages -> stdout', async () => {
   const {stdout, stderr} = await exec(
@@ -26,7 +26,7 @@ test('basic case: defineMessages -> stdout', async () => {
   );
   expect(JSON.parse(stdout)).toMatchSnapshot();
   expect(stderr).toBe('');
-}, 10000);
+}, 20000);
 
 test('[glob] basic case: defineMessages -> stdout', async () => {
   const {stdout, stderr} = await exec(
@@ -34,7 +34,7 @@ test('[glob] basic case: defineMessages -> stdout', async () => {
   );
   expect(JSON.parse(stdout)).toMatchSnapshot();
   expect(stderr).toBe('');
-}, 10000);
+}, 20000);
 
 test('basic case: defineMessages -> directory', async () => {
   process.chdir(__dirname);
@@ -50,7 +50,7 @@ test('basic case: defineMessages -> directory', async () => {
   expect(
     await readJSON(path.join(ARTIFACT_PATH, 'defineMessages/actual.json'))
   ).toMatchSnapshot();
-}, 10000);
+}, 20000);
 
 test('basic case: defineMessages -> directory with location', async () => {
   process.chdir(__dirname);
@@ -66,7 +66,7 @@ test('basic case: defineMessages -> directory with location', async () => {
   expect(
     await readJSON(path.join(ARTIFACT_PATH, 'defineMessages/actual.json'))
   ).toMatchSnapshot();
-}, 10000);
+}, 20000);
 
 test('typescript -> stdout', async () => {
   const {stdout, stderr} = await exec(
@@ -74,7 +74,7 @@ test('typescript -> stdout', async () => {
   );
   expect(JSON.parse(stdout)).toMatchSnapshot();
   expect(stderr).toBe('');
-}, 10000);
+}, 20000);
 
 test('ignore -> stdout', async () => {
   const ignore = "--ignore '*.ignore.*'";
@@ -96,4 +96,4 @@ test('ignore -> stdout', async () => {
   );
   expect(JSON.parse(jsResult.stdout)).toMatchSnapshot();
   expect(jsResult.stderr).toBe('');
-}, 10000);
+}, 20000);

@@ -21,7 +21,9 @@
   },
   "devDependencies": {
     "@formatjs/intl-pluralrules": "^1.5.6",
-    "formatjs-extract-cldr-data": "^10.1.5"
+    "@types/jest": "^25.2.1",
+    "formatjs-extract-cldr-data": "^10.1.5",
+    "ts-jest": "^25.4.0"
   },
   "dependencies": {
     "@formatjs/intl-utils": "^2.2.3"
