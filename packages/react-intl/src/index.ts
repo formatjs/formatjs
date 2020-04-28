@@ -29,24 +29,34 @@ export {
 export {default as useIntl} from './components/useIntl';
 export {default as IntlProvider, createIntl} from './components/provider';
 // IMPORTANT: Explicit here to prevent api-extractor from outputing `import('./types').CustomFormatConfig`
-export const FormattedDate: React.FC<Intl.DateTimeFormatOptions &
-  CustomFormatConfig & {
-    value: string | number | Date | undefined;
-  }> = createFormattedComponent('formatDate');
-export const FormattedTime: React.FC<Intl.DateTimeFormatOptions &
-  CustomFormatConfig & {
-    value: string | number | Date | undefined;
-  }> = createFormattedComponent('formatTime');
-export const FormattedNumber: React.FC<UnifiedNumberFormatOptions &
-  CustomFormatConfig & {
-    value: number;
-  }> = createFormattedComponent('formatNumber');
-export const FormattedList: React.FC<IntlListFormatOptions & {
-  value: React.ReactNode[];
-}> = createFormattedComponent('formatList');
-export const FormattedDisplayName: React.FC<DisplayNamesOptions & {
-  value: string | number | object;
-}> = createFormattedComponent('formatDisplayName');
+export const FormattedDate: React.FC<
+  Intl.DateTimeFormatOptions &
+    CustomFormatConfig & {
+      value: string | number | Date | undefined;
+    }
+> = createFormattedComponent('formatDate');
+export const FormattedTime: React.FC<
+  Intl.DateTimeFormatOptions &
+    CustomFormatConfig & {
+      value: string | number | Date | undefined;
+    }
+> = createFormattedComponent('formatTime');
+export const FormattedNumber: React.FC<
+  UnifiedNumberFormatOptions &
+    CustomFormatConfig & {
+      value: number;
+    }
+> = createFormattedComponent('formatNumber');
+export const FormattedList: React.FC<
+  IntlListFormatOptions & {
+    value: React.ReactNode[];
+  }
+> = createFormattedComponent('formatList');
+export const FormattedDisplayName: React.FC<
+  DisplayNamesOptions & {
+    value: string | number | object;
+  }
+> = createFormattedComponent('formatDisplayName');
 export const FormattedDateParts = createFormattedDateTimePartsComponent(
   'formatDate'
 );

@@ -3,7 +3,7 @@ id: cli
 title: CLI
 ---
 
-We've built https://www.npmjs.com/package/@formatjs/cli that helps you extract messages from a list of files. It uses [`babel-plugin-react-intl`](https://www.npmjs.com/package/babel-plugin-react-intl) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
+We've built https://www.npmjs.com/package/@formatjs/cli that helps you extract messages from a list of files. It uses [`babel-plugin-react-intl`](babel-plugin.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
 
 ```tsx
 import {defineMessages, defineMessage} from 'react-intl';

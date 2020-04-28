@@ -5,7 +5,7 @@ title: Message Syntax
 
 If you are translating text you'll need a way for your translators to express the subtleties of spelling, grammar, and conjugation inherent in each language. We use the [ICU Message syntax](http://userguide.icu-project.org/formatparse/messages) which is also used in Java and PHP.
 
-The [`intl-messageformat`](https://www.npmjs.org/package/intl-messageformat) library takes the message and input data and creates an appropriately formatted string. This feature is included with all of the integrations we provide.
+The [`intl-messageformat`](intl-messageformat.md) library takes the message and input data and creates an appropriately formatted string. This feature is included with all of the integrations we provide.
 
 The following sections describe the ICU Message syntax and show how to use this features provided the FormatJS libraries:
 

@@ -18,16 +18,16 @@ npm install @formatjs/intl-listformat
 
 To use the polyfill, just import it to make sure that a fully functional Intl.ListFormat is available in your environment:
 
-```
-import '@formatjs/intl-listformat/polyfill'
+```tsx
+import '@formatjs/intl-listformat/polyfill';
 ```
 
 If Intl.ListFormat already exists, the polyfill will not be loaded.
 
 To use this as a ponyfill:
 
-```
-import IntlListFormat from '@formatjs/intl-listformat'
+```tsx
+import IntlListFormat from '@formatjs/intl-listformat';
 ```
 
 By default, this library comes with `en` data. To load additional locale, you can include them on demand:

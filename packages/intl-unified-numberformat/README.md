@@ -1,3 +1,3 @@
 # `intl-unified-numberformat`
 
-We've migrated the README to [here](../../website/docs/polyfills/intl-numberformat.md).
+We've migrated the docs to https://formatjs.io.

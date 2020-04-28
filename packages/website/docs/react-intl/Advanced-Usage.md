@@ -7,7 +7,7 @@ title: Advanced Usage
 
 ## Pre-parsing messages
 
-You can also pre-parse all messages into `AST` using [`intl-messageformat-parser`](https://www.npmjs.com/package/intl-messageformat-parser) and pass that into `IntlProvider`. This is especially faster since it saves us time parsing `string` into `AST`. The use cases for this support are:
+You can also pre-parse all messages into `AST` using [`intl-messageformat-parser`](../intl-messageformat-parser.md) and pass that into `IntlProvider`. This is especially faster since it saves us time parsing `string` into `AST`. The use cases for this support are:
 
 1. Server-side rendering or pre-parsing where you can cache the AST and don't have to pay compilation costs multiple time.
 2. Desktop apps using Electron or CEF where you can preload/precompile things in advanced before runtime.

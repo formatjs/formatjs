@@ -1,3 +1,3 @@
 # Intl MessageFormat
 
-We've migrated the README to [here](../../website/docs/intl-messageformat.md).
+We've migrated the docs to https://formatjs.io.

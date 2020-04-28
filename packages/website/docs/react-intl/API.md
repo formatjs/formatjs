@@ -22,7 +22,7 @@ React Intl wraps these APIs in a consistent way making them easier to use, more 
 
 Beyond number, date & relative time formatting, React Intl provides string/message formatting. This formatter is part of the [FormatJS](http://formatjs.io/) project, which React Intl is also a part of. This formatter was developed in the same style as the built-in formatters.
 
-- [`IntlMessageFormat`](https://github.com/formatjs/formatjs/tree/master/packages/intl-messageformat)
+- [`IntlMessageFormat`](../intl-messageformat.md)
 
 React Intl wraps these APIs in the same way it wraps the built-in Intl APIs.
 
@@ -42,7 +42,7 @@ function defineMessages(
 function defineMessage(messageDescriptor: MessageDescriptor): MessageDescriptor;
 ```
 
-These functions is exported by the `react-intl` package and is simply a _hook_ for the [babel-plugin-react-intl](https://github.com/formatjs/formatjs/tree/master/packages/babel-plugin-react-intl) package to use when extracting default messages defined in JavaScript source files. This function simply returns the Message Descriptor map object that's passed-in.
+These functions is exported by the `react-intl` package and is simply a _hook_ for the [babel-plugin-react-intl](../tooling/babel-plugin.md) package to use when extracting default messages defined in JavaScript source files. This function simply returns the Message Descriptor map object that's passed-in.
 
 ```ts
 import {defineMessages, defineMessage} from 'react-intl';
@@ -329,7 +329,7 @@ formatNumber(1000, {style: 'currency', currency: 'USD'}); // $1,000
 
 **Formatting Number using `unit`**
 
-Currently this is part of [Unified NumberFormat](https://github.com/tc39/proposal-unified-intl-numberformat) which is stage 3. We've provided a polyfill [here](https://github.com/formatjs/formatjs/tree/master/packages/intl-unified-numberformat) and `react-intl` types allow users to pass in a [sanctioned unit](https://github.com/formatjs/formatjs/tree/master/packages/intl-unified-numberformat):
+Currently this is part of [Unified NumberFormat](https://github.com/tc39/proposal-unified-intl-numberformat) which is stage 3. We've provided a polyfill [here](../polyfills/intl-numberformat.md) and `react-intl` types allow users to pass in a [sanctioned unit](../polyfills/intl-numberformat.md#SupportedUnits):
 
 ```tsx
 formatNumber(1000, {
@@ -375,7 +375,7 @@ formatPlural(4, {style: 'ordinal'}); // "other"
 
 ## List Formatting APIs
 
-**This is currently stage 3 so [polyfill](https://www.npmjs.com/package/@formatjs/intl-listformat) would be required.**
+**This is currently stage 3 so [polyfill](../polyfills/intl-listformat.md) would be required.**
 
 ### `formatList`
 
@@ -438,7 +438,7 @@ type MessageDescriptor = {
 };
 ```
 
-**Note:** The [babel-plugin-react-intl](https://github.com/formatjs/formatjs/tree/master/packages/babel-plugin-react-intl) package can be used to extract Message Descriptors defined in JavaScript source files.
+**Note:** The [babel-plugin-react-intl](../tooling/babel-plugin.md) package can be used to extract Message Descriptors defined in JavaScript source files.
 
 ### Message Formatting Fallbacks
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
 
-export default function(ReactIntl) {
+export default function (ReactIntl) {
   describe('format', () => {
     const {
       IntlProvider,

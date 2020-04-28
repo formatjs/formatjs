@@ -140,7 +140,7 @@ describe('<FormattedRelativeTime>', () => {
     expect(rendered.text()).toBe('in 9 seconds');
   });
 
-  it('should adjust unit to min correctly', function() {
+  it('should adjust unit to min correctly', function () {
     // span bc enzyme support for </> seems buggy
     const rendered = mountWithProvider(
       {value: -59, updateIntervalInSeconds: 1},
@@ -149,7 +149,7 @@ describe('<FormattedRelativeTime>', () => {
     jest.advanceTimersByTime(1010);
     expect(rendered.text()).toBe(intl.formatRelativeTime(-1, 'minute'));
   });
-  it('should adjust unit to min correctly even if updateIntervalInSeconds goes past that ts', function() {
+  it('should adjust unit to min correctly even if updateIntervalInSeconds goes past that ts', function () {
     // span bc enzyme support for </> seems buggy
     const rendered = mountWithProvider(
       {value: -59, updateIntervalInSeconds: 2},
@@ -158,7 +158,7 @@ describe('<FormattedRelativeTime>', () => {
     jest.advanceTimersByTime(1010);
     expect(rendered.text()).toBe(intl.formatRelativeTime(-1, 'minute'));
   });
-  it('should adjust unit to hour correctly', function() {
+  it('should adjust unit to hour correctly', function () {
     // span bc enzyme support for </> seems buggy
     const rendered = mountWithProvider(
       {value: -59, unit: 'minute', updateIntervalInSeconds: 1},
@@ -168,7 +168,7 @@ describe('<FormattedRelativeTime>', () => {
     jest.advanceTimersByTime(1000 * 60);
     expect(rendered.text()).toBe(intl.formatRelativeTime(-1, 'hour'));
   });
-  it('should adjust unit to day correctly and stop', function() {
+  it('should adjust unit to day correctly and stop', function () {
     // span bc enzyme support for </> seems buggy
     const rendered = mountWithProvider(
       {value: -23, unit: 'hour', updateIntervalInSeconds: 1},
@@ -184,7 +184,7 @@ describe('<FormattedRelativeTime>', () => {
       (rendered.instance() as FormattedRelativeTime)._updateTimer
     ).toBeNull();
   });
-  it('should show high seconds values as days with no timer', function() {
+  it('should show high seconds values as days with no timer', function () {
     // span bc enzyme support for </> seems buggy
     const rendered = mountWithProvider(
       {value: -(60 * 60 * 24 * 3), unit: 'second', updateIntervalInSeconds: 1},
@@ -195,7 +195,7 @@ describe('<FormattedRelativeTime>', () => {
       (rendered.instance() as FormattedRelativeTime)._updateTimer
     ).toBeNull();
   });
-  it('should throw if try to increment in day', function() {
+  it('should throw if try to increment in day', function () {
     // span bc enzyme support for </> seems buggy
     expect(() =>
       mountWithProvider(
@@ -204,7 +204,7 @@ describe('<FormattedRelativeTime>', () => {
       ).find(FormattedRelativeTime)
     ).toThrow('Cannot schedule update with unit longer than hour');
   });
-  it('should clear timer on unmount', function() {
+  it('should clear timer on unmount', function () {
     // span bc enzyme support for </> seems buggy
     const rendered = mountWithProvider(
       {value: 0, updateIntervalInSeconds: 1},

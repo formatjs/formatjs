@@ -3,7 +3,7 @@ id: components
 title: Components
 ---
 
-React Intl has a set of React components that provide a declarative way to setup an i18n context and format dates, numbers, and strings for display in a web UI. The components render React elements by building on React Intl's imperative [API](./API.md).
+React Intl has a set of React components that provide a declarative way to setup an i18n context and format dates, numbers, and strings for display in a web UI. The components render React elements by building on React Intl's imperative [API](API.md).
 
 ## Why Components?
 
@@ -40,7 +40,7 @@ interface IntlConfig {
 
 - `locale`, `formats`, and `messages` are for the user's current locale and what the app should be rendered in. While `defaultLocale` and `defaultFormats` are for fallbacks or during development and represent the app's default. Notice how there is no `defaultMessages`, that's because each [Message Descriptor](#message-descriptor) provides a `defaultMessage`.
 
-- `textComponent` provides a way to configure the default wrapper for React Intl's `<Formatted*>` components. If not specified, [`<React.Fragment>`](https://reactjs.org/docs/fragments.html) is used. Before V3, `span` was used instead; check the [migration guide](https://github.com/formatjs/react-intl/blob/master/docs/Upgrade-Guide.md) for more info.
+- `textComponent` provides a way to configure the default wrapper for React Intl's `<Formatted*>` components. If not specified, [`<React.Fragment>`](https://reactjs.org/docs/fragments.html) is used. Before V3, `span` was used instead; check the [migration guide](Upgrade-Guide-3x.md) for more info.
 
 - `onError` allows the user to provide a custom error handler. By default, error messages are logged using `console.error` if `NODE_ENV` is not set to `production`.
 
@@ -118,7 +118,7 @@ By default, changes to the `locale` at runtime may not trigger a re-render of ch
 </IntlProvider>
 ```
 
-(See [Issue #243](https://github.com/formatjs/react-intl/issues/243).)
+(See [Issue #243](https://github.com/formatjs/formatjs/issues/243).)
 
 ## Date Formatting Components
 
@@ -370,7 +370,7 @@ By default `<FormattedNumber>` will render the formatted number into a `React.Fr
 
 **Formatting Number using `unit`**
 
-Currently this is part of [Unified NumberFormat](https://github.com/tc39/proposal-unified-intl-numberformat) which is stage 3. We've provided a polyfill [here](https://github.com/formatjs/formatjs/tree/master/packages/intl-unified-numberformat) and `react-intl` types allow users to pass in a [sanctioned unit](https://github.com/formatjs/formatjs/tree/master/packages/intl-unified-numberformat). For example:
+Currently this is part of [Unified NumberFormat](https://github.com/tc39/proposal-unified-intl-numberformat) which is stage 3. We've provided a polyfill [here](../polyfills/intl-numberformat.md) and `react-intl` types allow users to pass in a [sanctioned unit](../polyfills/intl-numberformat.md#SupportedUnits). For example:
 
 ```tsx
 <FormattedNumber
@@ -542,7 +542,7 @@ type MessageDescriptor = {
 
 A common practice is to use the [`defineMessages`](API.md#definemessages) API to define all of a component's strings, then _spread_ the Message Descriptor as props to the component.
 
-**Note:** The [babel-plugin-react-intl](https://github.com/formatjs/formatjs/tree/master/packages/babel-plugin-react-intl) package can be used to extract Message Descriptors defined in JavaScript source files.
+**Note:** The [babel-plugin-react-intl](../tooling/babel-plugin.md) package can be used to extract Message Descriptors defined in JavaScript source files.
 
 ### Message Formatting Fallbacks
 
@@ -665,7 +665,7 @@ Extending this also allows users to potentially utilizing other rich text format
 
 This has the same caveats documented in [`intl-messageformat`](../intl-messageformat.md#caveats).
 
-**Each child in a list should have a unique "key"**: The chunks we return can be text and/or React chunks so the other way is that we have to clone them & add key, which has performance implication. See https://github.com/formatjs/react-intl/issues/1467 for workarounds.
+**Each child in a list should have a unique "key"**: The chunks we return can be text and/or React chunks so the other way is that we have to clone them & add key, which has performance implication. See https://github.com/formatjs/formatjs/issues/1467 for workarounds.
 
 ### Using React-Intl with React Native
 
@@ -682,7 +682,7 @@ has `props` that correspond to `DisplayNameOptions`. You might need a [polyfill]
 
 [formatdisplayname]: API.md#formatdisplayname
 [intl-displayname]: https://github.com/tc39/proposal-intl-displaynames
-[displaynames-polyfill]: https://www.npmjs.com/package/@formatjs/intl-displaynames
+[displaynames-polyfill]: ../polyfills/intl-displaynames
 
 **Props:**
 

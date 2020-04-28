@@ -69,8 +69,8 @@ import ShortDate from '../short-date';
 
 expect.extend(expectJSX);
 
-describe('<ShortDate>', function() {
-  it('renders', function() {
+describe('<ShortDate>', function () {
+  it('renders', function () {
     const renderer = createRenderer();
     const date = new Date();
 
@@ -257,7 +257,7 @@ test('app main should be rendered', () => {
 });
 ```
 
-You can find runnable example [here](https://github.com/formatjs/react-intl/tree/master/examples/jest-snapshot-testing) and more info about Jest [here](http://facebook.github.io/jest/).
+You can find runnable example [here](https://github.com/formatjs/formatjs/tree/master/packages/react-intl/examples/jest-snapshot-testing) and more info about Jest [here](http://facebook.github.io/jest/).
 
 #### Usage with Jest & enzyme
 

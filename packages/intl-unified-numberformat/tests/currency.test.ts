@@ -48,12 +48,9 @@ const COMPACT_DISPLAYS: Array<UnifiedNumberFormatOptions['compactDisplay']> = [
   'short',
 ];
 
-const CURRENCY_DISPLAYS: Array<UnifiedNumberFormatOptions['currencyDisplay']> = [
-  'code',
-  'symbol',
-  'name',
-  'narrowSymbol',
-];
+const CURRENCY_DISPLAYS: Array<
+  UnifiedNumberFormatOptions['currencyDisplay']
+> = ['code', 'symbol', 'name', 'narrowSymbol'];
 
 const CURRENCY_SIGNS: Array<UnifiedNumberFormatOptions['currencySign']> = [
   'accounting',
@@ -64,20 +61,20 @@ const CURRENCIES = ['USD', 'GBP', 'ZWD'];
 
 function test() {
   LOCALES.forEach(locale => {
-    describe(`'${locale}',`, function() {
-      describe("style: 'currency',", function() {
+    describe(`'${locale}',`, function () {
+      describe("style: 'currency',", function () {
         CURRENCY_DISPLAYS.forEach(currencyDisplay =>
-          describe(`currencyDisplay: '${currencyDisplay}',`, function() {
+          describe(`currencyDisplay: '${currencyDisplay}',`, function () {
             CURRENCY_SIGNS.forEach(currencySign =>
-              describe(`currencySign: '${currencySign}',`, function() {
+              describe(`currencySign: '${currencySign}',`, function () {
                 SIGN_DISPLAYS.forEach(signDisplay =>
-                  describe(`signDisplay: '${signDisplay}',`, function() {
+                  describe(`signDisplay: '${signDisplay}',`, function () {
                     NOTATIONS.forEach(notation =>
-                      describe(`notation: '${notation}',`, function() {
+                      describe(`notation: '${notation}',`, function () {
                         COMPACT_DISPLAYS.forEach(compactDisplay =>
-                          describe(`compactDisplay: '${compactDisplay}',`, function() {
+                          describe(`compactDisplay: '${compactDisplay}',`, function () {
                             CURRENCIES.forEach(currency =>
-                              it(`currency: '${currency}',`, function() {
+                              it(`currency: '${currency}',`, function () {
                                 expect(
                                   new UnifiedNumberFormat(locale, {
                                     style: 'currency',

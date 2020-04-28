@@ -7,10 +7,9 @@ import RelativeTimeFormat, {
 import {FormatError, ErrorCode} from 'intl-messageformat';
 import {ReactIntlError, ReactIntlErrorCode} from '../error';
 
-const RELATIVE_TIME_FORMAT_OPTIONS: Array<keyof IntlRelativeTimeFormatOptions> = [
-  'numeric',
-  'style',
-];
+const RELATIVE_TIME_FORMAT_OPTIONS: Array<
+  keyof IntlRelativeTimeFormatOptions
+> = ['numeric', 'style'];
 
 function getFormatter(
   {

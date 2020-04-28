@@ -15,19 +15,19 @@ React Intl relies on these `Intl` APIs:
 
 - [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat): Available on IE11+
 - [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat): Available on IE11+
-- [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules): This can be polyfilled using [this package](https://www.npmjs.com/package/@formatjs/intl-pluralrules).
-- [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat): This can be polyfilled using [this package](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat).
-- (Optional) [Intl.DisplayNames][displaynames-spec]: Required if you use [`formatDisplayName`](API.md#formatdisplayname)
-  or [`FormattedDisplayName`](Components.md#formatteddisplayname). This can be polyfilled using [this package][displaynames-polyfill].
+- [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules): This can be polyfilled using [this package](polyfills/intl-pluralrules.md).
+- [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat): This can be polyfilled using [this package](polyfills/intl-relativetimeformat.md).
+- (Optional) [Intl.DisplayNames][displaynames-spec]: Required if you use [`formatDisplayName`](react-intl/API.md#formatdisplayname)
+  or [`FormattedDisplayName`](react-intl/Components.md#formatteddisplayname). This can be polyfilled using [this package][displaynames-polyfill].
 
   [displaynames-spec]: https://tc39.es/proposal-intl-displaynames/
-  [displaynames-polyfill]: https://www.npmjs.com/package/@formatjs/intl-displaynames
+  [displaynames-polyfill]: polyfills/intl-displaynames.md
 
 If you need to support older browsers, we recommend you do the following:
 
 1. Polyfill `Intl.NumberFormat` with https://github.com/andyearnshaw/Intl.js
 2. Polyfill `Intl.DateTimeFormat` with https://github.com/formatjs/date-time-format-timezone
-3. If you're supporting browsers that do not have [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](https://www.npmjs.com/package/@formatjs/intl-pluralrules) in your build.
+3. If you're supporting browsers that do not have [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](polyfills/intl-pluralrules.md) in your build.
 
 ```tsx
 if (!Intl.PluralRules) {
@@ -36,7 +36,7 @@ if (!Intl.PluralRules) {
 }
 ```
 
-4. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat) in your build along with individual CLDR data for each locale you support.
+4. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](tooling/intl-relativetimeformat.md) in your build along with individual CLDR data for each locale you support.
 
 ```tsx
 if (!Intl.RelativeTimeFormat) {
@@ -79,8 +79,8 @@ If your `node` version is missing any of the `Intl` APIs above, you'd have to po
 
 If you're using `react-intl` in React Native, make sure your runtime has built-in `Intl` support (similar to [JSC International variant](https://github.com/react-native-community/jsc-android-buildscripts#international-variant)). See these issues for more details:
 
-- https://github.com/formatjs/react-intl/issues/1356
-- https://github.com/formatjs/react-intl/issues/992
+- https://github.com/formatjs/formatjs/issues/1356
+- https://github.com/formatjs/formatjs/issues/992
 
 #### React Native on iOS
 
@@ -90,7 +90,7 @@ If you cannot use the Intl variant of JSC (e.g on iOS), follow the instructions 
 
 FormatJS also provides types & polyfill for the following Stage 3 Intl APIs:
 
-- Unified NumberFormat: [polyfill](https://www.npmjs.com/package/@formatjs/intl-unified-numberformat) & [spec](https://github.com/tc39/proposal-unified-intl-numberformat)
+- Unified NumberFormat: [polyfill](polyfills/intl-unified-numberformat.md) & [spec](https://github.com/tc39/proposal-unified-intl-numberformat)
 - DisplayNames: [polyfill][displaynames-polyfill] & [spec][displaynames-spec]
 
 ## The `react-intl` Package
@@ -126,15 +126,15 @@ We've made React Intl work well with module bundlers like: Browserify, Webpack, 
 
 Whether you use the ES6, CommonJS, or UMD version of React Intl, they all provide the same named exports:
 
-- [`injectIntl`](API.md#injectintl)
-- [`defineMessages`](API.md#definemessages)
-- [`IntlProvider`](Components.md#intlprovider)
-- [`FormattedDate`](Components.md#formatteddate)
-- [`FormattedTime`](Components.md#formattedtime)
-- [`FormattedRelativeTime`](Components.md#formattedrelativetime)
-- [`FormattedNumber`](Components.md#formattednumber)
-- [`FormattedPlural`](Components.md#formattedplural)
-- [`FormattedMessage`](Components.md#formattedmessage)
+- [`injectIntl`](react-intl/API.md#injectintl)
+- [`defineMessages`](react-intl/API.md#definemessages)
+- [`IntlProvider`](react-intl/Components.md#intlprovider)
+- [`FormattedDate`](react-intl/Components.md#formatteddate)
+- [`FormattedTime`](react-intl/Components.md#formattedtime)
+- [`FormattedRelativeTime`](react-intl/Components.md#formattedrelativetime)
+- [`FormattedNumber`](react-intl/Components.md#formattednumber)
+- [`FormattedPlural`](react-intl/Components.md#formattedplural)
+- [`FormattedMessage`](react-intl/Components.md#formattedmessage)
 
 **Note:** When using the UMD version of React Intl _without_ a module system, it will expect `react` to exist on the global variable: **`React`**, and put the above named exports on the global variable: **`ReactIntl`**.
 
@@ -144,7 +144,7 @@ Now with React Intl and its locale data loaded an i18n context can be created fo
 
 React Intl uses the provider pattern to scope an i18n context to a tree of components. This allows configuration like the current locale and set of translated strings/messages to be provided at the root of a component tree and made available to the `<Formatted*>` components. This is the same concept as what Flux frameworks like [Redux](http://redux.js.org/) use to provide access to a store within a component tree.
 
-**All apps using React Intl must use the [`<IntlProvider>` component](./Components.md#intlprovider).**
+**All apps using React Intl must use the [`<IntlProvider>` component](react-intl/Components.md#intlprovider).**
 
 The most common usage is to wrap your root React component with `<IntlProvider>` and configure it with the user's current locale and the corresponding translated strings/messages:
 
@@ -157,13 +157,13 @@ ReactDOM.render(
 );
 ```
 
-**See:** The [**`<IntlProvider>` docs**](./Components.md#intlprovider) for more details.
+**See:** The [**`<IntlProvider>` docs**](react-intl/Components.md#intlprovider) for more details.
 
 ## Formatting Data
 
-React Intl has two ways to format data, through [React components][components] and its [API][api]. The components provide an idiomatic-React way of integrating internationalization into a React app, and the `<Formatted*>` components have [benefits](./Components.md#why-components) over always using the imperative API directly. The API should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
+React Intl has two ways to format data, through [React components](react-intl/components.md) and its [API](react-intl/api.md). The components provide an idiomatic-React way of integrating internationalization into a React app, and the `<Formatted*>` components have [benefits](react-intl/Components.md#why-components) over always using the imperative API directly. The API should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
 
-React Intl's imperative API is accessed via [**`injectIntl`**](API.md#injectintl), a High-Order Component (HOC) factory. It will wrap the passed-in React component with another React component which provides the imperative formatting API into the wrapped component via its `props`. (This is similar to the connect-to-stores pattern found in many Flux implementations.)
+React Intl's imperative API is accessed via [**`injectIntl`**](react-intl/API.md#injectintl), a High-Order Component (HOC) factory. It will wrap the passed-in React component with another React component which provides the imperative formatting API into the wrapped component via its `props`. (This is similar to the connect-to-stores pattern found in many Flux implementations.)
 
 Here's an example using `<IntlProvider>`, `<Formatted*>` components, and the imperative API to setup an i18n context and format data:
 
@@ -278,11 +278,8 @@ There are several [**runnable example apps**](https://github.com/formatjs/react-
 There are a few API layers that React Intl provides and is built on. When using React Intl you'll be interacting with `Intl` built-ins, React Intl's API, and its React components:
 
 - [ECMAScript Internationalization API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl)
-- [React Intl API][api]
-- [React Intl Components][components]
-
-[api]: ./API.md
-[components]: ./Components.md
+- [React Intl API](react-intl/api.md)
+- [React Intl Components](react-intl/components.md)
 
 # TypeScript Usage
 
@@ -292,7 +289,7 @@ In order to use `react-intl` in TypeScript, make sure your `compilerOptions`'s `
 
 # Advanced Usage
 
-Our [Advanced Usage](./Advanced-Usage.md) has further guides for production setup in environments where performance is important.
+Our [Advanced Usage](react-intl/Advanced-Usage.md) has further guides for production setup in environments where performance is important.
 
 # Supported Tooling
 

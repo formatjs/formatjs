@@ -1,3 +1,3 @@
 # eslint-plugin-formatjs
 
-We've migrated the README to [here](../../website/docs/tooling/linter.md).
+We've migrated the docs to https://formatjs.io.

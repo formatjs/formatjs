@@ -125,12 +125,12 @@ describe('format API', () => {
     process.env.NODE_ENV = NODE_ENV;
   });
 
-  it('defineMessages', function() {
+  it('defineMessages', function () {
     expect(defineMessages({})).toEqual({});
     expect(defineMessages({foo: {}})).toEqual({foo: {}});
   });
 
-  it('defineMessage', function() {
+  it('defineMessage', function () {
     expect(defineMessage({})).toEqual({});
     expect(defineMessage({foo: {}})).toEqual({foo: {}});
   });
@@ -619,7 +619,7 @@ describe('format API', () => {
       formatPlural = formatPluralFn.bind(null, config, state.getPluralRules);
     });
 
-    it('should warn for invalid opt', function() {
+    it('should warn for invalid opt', function () {
       expect(formatPlural(0, {type: 'invalid'})).toBe('other');
       expect(config.onError as jest.Mock).toHaveBeenCalledTimes(1);
     });
@@ -982,17 +982,17 @@ Array [
     });
   });
 
-  describe('formatList()', function() {
+  describe('formatList()', function () {
     let formatList;
 
     beforeEach(() => {
       formatList = formatListFn.bind(null, config, state.getListFormat);
     });
 
-    it('should handle regular element', function() {
+    it('should handle regular element', function () {
       expect(formatList(['me', 'myself', 'I'])).toBe('me, myself, and I');
     });
-    it('should handle regular element', function() {
+    it('should handle regular element', function () {
       expect(formatList(['me', <b>myself</b>, 'I'])).toEqual([
         'me, ',
         <b>myself</b>,
@@ -1001,7 +1001,7 @@ Array [
     });
   });
 
-  describe('formatDisplayName()', function() {
+  describe('formatDisplayName()', function () {
     let formatDisplayName!: IntlFormatters['formatDisplayName'];
 
     beforeEach(() => {
@@ -1012,13 +1012,13 @@ Array [
       );
     });
 
-    it('should return locale display name as string', function() {
+    it('should return locale display name as string', function () {
       expect(formatDisplayName('zh-Hans-SG')).toBe(
         'Simplified Chinese (Singapore)'
       );
     });
 
-    it('will return undefined if Intl.DisplayName would return undefined', function() {
+    it('will return undefined if Intl.DisplayName would return undefined', function () {
       const displayName = new (Intl as any).DisplayNames('en', {
         fallback: 'none',
       });

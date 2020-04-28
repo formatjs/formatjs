@@ -116,7 +116,7 @@ function NOOP(_: Intl.NumberFormatPart[]) {
   return null;
 }
 
-describe('<FormattedNumberParts>', function() {
+describe('<FormattedNumberParts>', function () {
   let intl;
   const children = jest.fn();
 

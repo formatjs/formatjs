@@ -30,7 +30,7 @@ describe('<FormattedMessage>', () => {
     expect(typeof FormattedMessage.displayName).toBe('string');
   });
 
-  it('should work with shallow enzyme', function() {
+  it('should work with shallow enzyme', function () {
     const wrapper = shallow(
       <span>
         <FormattedMessage id="foo" />
@@ -41,14 +41,9 @@ describe('<FormattedMessage>', () => {
       }
     );
     expect(wrapper.find(FormattedMessage).dive()).toMatchSnapshot();
-    expect(
-      wrapper
-        .find(FormattedMessage)
-        .dive()
-        .dive()
-    ).toMatchSnapshot();
+    expect(wrapper.find(FormattedMessage).dive().dive()).toMatchSnapshot();
   });
-  it('should work with mount enzyme', function() {
+  it('should work with mount enzyme', function () {
     const wrapper = mount(
       <span>
         <FormattedMessage id="foo" />
@@ -76,7 +71,7 @@ describe('<FormattedMessage>', () => {
     expect(console.error).toHaveBeenCalledTimes(1);
   });
 
-  it('should work w/ multiple context', function() {
+  it('should work w/ multiple context', function () {
     const descriptor = {
       id: 'hello',
       defaultMessage: 'hello world',
@@ -191,7 +186,7 @@ describe('<FormattedMessage>', () => {
     expect(rendered.text()).toBe('Jest');
   });
 
-  describe('rich text', function() {
+  describe('rich text', function () {
     it('supports legacy behavior', () => {
       const rendered = mountWithProvider(
         {
@@ -260,7 +255,7 @@ describe('<FormattedMessage>', () => {
       expect(nameNode.text()).toBe('Jest');
     });
   });
-  it('should use timeZone from Provider', function() {
+  it('should use timeZone from Provider', function () {
     const rendered = mountWithProvider(
       {
         id: 'hello',
@@ -280,7 +275,7 @@ describe('<FormattedMessage>', () => {
     expect(rendered.text()).toBe('Hello, 1/1/70 - 9:00 AM');
   });
 
-  it('should use timeZone from Provider for defaultMessage', function() {
+  it('should use timeZone from Provider for defaultMessage', function () {
     const rendered = mountWithProvider(
       {
         id: 'hello',
@@ -298,7 +293,7 @@ describe('<FormattedMessage>', () => {
     expect(rendered.text()).toBe('Hello, 1/1/70 - 9:00 AM');
   });
 
-  it('should merge timeZone into formats', function() {
+  it('should merge timeZone into formats', function () {
     const rendered = mountWithProvider(
       {
         id: 'hello',
@@ -328,7 +323,7 @@ describe('<FormattedMessage>', () => {
     );
   });
 
-  it('should merge timeZone into defaultFormats', function() {
+  it('should merge timeZone into defaultFormats', function () {
     const rendered = mountWithProvider(
       {
         id: 'hello',
@@ -356,7 +351,7 @@ describe('<FormattedMessage>', () => {
     );
   });
 
-  it('should handle defaultFormat merge correctly', function() {
+  it('should handle defaultFormat merge correctly', function () {
     const rendered = mountWithProvider(
       {
         id: 'hello',
@@ -391,7 +386,7 @@ describe('<FormattedMessage>', () => {
     expect(rendered.text()).toBe('The day is Thursday.');
   });
 
-  it('should handle defaultFormat merge correctly w/ timeZone', function() {
+  it('should handle defaultFormat merge correctly w/ timeZone', function () {
     const rendered = mountWithProvider(
       {
         id: 'hello',

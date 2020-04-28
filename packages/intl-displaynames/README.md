@@ -1,3 +1,3 @@
 # `intl-displaynames`
 
-We've migrated the README to [here](../../website/docs/polyfills/intl-displaynames.md).
+We've migrated the docs to https://formatjs.io.

@@ -42,7 +42,7 @@ const langData = getAllDateFieldsLocales().reduce(
 const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
 
 // Dist all locale files to dist/locale-data
-Object.keys(langData).forEach(function(lang) {
+Object.keys(langData).forEach(function (lang) {
   const destFile = join(allLocaleDistDir, lang + '.js');
   outputFileSync(
     destFile,
@@ -55,7 +55,7 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
 });
 
 // Dist all json locale files to dist/locale-data
-Object.keys(langData).forEach(function(lang) {
+Object.keys(langData).forEach(function (lang) {
   const destFile = join(allLocaleDistDir, lang + '.json');
   outputJSONSync(destFile, langData[lang]);
 });

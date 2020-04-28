@@ -32,9 +32,8 @@ export function importMessages(
   }
 }
 
-export const IntlProvider: React.FC<Omit<
-  React.ComponentProps<typeof IntlProvider_>,
-  'messages'
-> & {
-  messages: LocaleMessages;
-}> = props => <IntlProvider_ {...props} />;
+export const IntlProvider: React.FC<
+  Omit<React.ComponentProps<typeof IntlProvider_>, 'messages'> & {
+    messages: LocaleMessages;
+  }
+> = props => <IntlProvider_ {...props} />;

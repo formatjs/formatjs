@@ -11,21 +11,21 @@ const {
 import {parse, MessageFormatElement} from 'intl-messageformat-parser';
 
 const suite = new Suite('renderToString', {
-  onCycle: function(e: any) {
+  onCycle: function (e: any) {
     console.log(String(e.target));
   },
 });
 
-suite.on('error', function(e: any) {
+suite.on('error', function (e: any) {
   console.log(e);
   throw e.target.error;
 });
 
-suite.add('<div>', function() {
+suite.add('<div>', function () {
   ReactDOMServer.renderToString(<div />);
 });
 
-suite.add('100 x <div/>', function() {
+suite.add('100 x <div/>', function () {
   const divs = [];
   for (let i = 0, len = 100; i < len; i += 1) {
     divs.push(<div key={i} />);
@@ -35,7 +35,7 @@ suite.add('100 x <div/>', function() {
   );
 });
 
-suite.add('100 x <FormattedNumber>', function() {
+suite.add('100 x <FormattedNumber>', function () {
   let formattedNumbers = [];
   for (let i = 0, len = 100; i < len; i += 1) {
     formattedNumbers.push(<FormattedNumber value={i} key={i} />);
@@ -46,7 +46,7 @@ suite.add('100 x <FormattedNumber>', function() {
   );
 });
 
-suite.add('100 x <FormattedDate>', function() {
+suite.add('100 x <FormattedDate>', function () {
   let now = Date.now();
   let formattedDates = [];
   for (let i = 0, len = 100; i < len; i += 1) {
@@ -58,7 +58,7 @@ suite.add('100 x <FormattedDate>', function() {
   );
 });
 
-suite.add('100 x <FormattedMessage>', function() {
+suite.add('100 x <FormattedMessage>', function () {
   let messages: Record<number, string> = {};
   let formattedMessages = [];
   for (let i = 0, len = 100; i < len; i += 1) {
@@ -73,7 +73,7 @@ suite.add('100 x <FormattedMessage>', function() {
   );
 });
 
-suite.add('100 x <FormattedMessage> with placeholder', function() {
+suite.add('100 x <FormattedMessage> with placeholder', function () {
   let messages: Record<number, string> = {};
   let formattedMessages = [];
   for (let i = 0, len = 100; i < len; i += 1) {
@@ -111,7 +111,7 @@ for (let i = 0, len = 100; i < len; i += 1) {
   );
 }
 
-suite.add('100 x <FormattedMessage> with placeholder in AST form', function() {
+suite.add('100 x <FormattedMessage> with placeholder in AST form', function () {
   let formattedMessages = [];
 
   for (let i = 0, len = 100; i < len; i += 1) {
@@ -128,7 +128,7 @@ suite.add('100 x <FormattedMessage> with placeholder in AST form', function() {
   );
 });
 
-suite.add('100 x <FormattedMessage> with placeholder, cached', function() {
+suite.add('100 x <FormattedMessage> with placeholder, cached', function () {
   let messages: Record<number, string> = {};
   let formattedMessages = [];
   for (let i = 0, len = 100; i < len; i += 1) {
@@ -162,7 +162,7 @@ const cachedAst = parse(
 );
 suite.add(
   '100 x <FormattedMessage> with placeholder, cached in AST form',
-  function() {
+  function () {
     let messages: Record<number, MessageFormatElement[]> = {};
     let formattedMessages = [];
     for (let i = 0, len = 100; i < len; i += 1) {

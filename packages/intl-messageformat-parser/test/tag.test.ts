@@ -28,23 +28,23 @@ test('escaped multiple tags with placeholder', () => {
   ).toMatchSnapshot();
 });
 
-test('mismatched tag', function() {
+test('mismatched tag', function () {
   expect(() => pegParse('this is <a>mismatch</b>')).toThrowError(/Mismatch/);
 });
 
-test('nested tag', function() {
+test('nested tag', function () {
   expect(
     pegParse('this is <a>nested <b>{placeholder}</b></a>')
   ).toMatchSnapshot();
 });
 
-test('self-closing tag', function() {
+test('self-closing tag', function () {
   expect(
     pegParse('this is <br/> <a>nested <b>{placeholder}</b></a>')
   ).toMatchSnapshot();
 });
 
-test('tag with dash', function() {
+test('tag with dash', function () {
   expect(
     pegParse('this is <br/> <dash-tag>nested <b>{placeholder}</b></dash-tag>')
   ).toMatchSnapshot();

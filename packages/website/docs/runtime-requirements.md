@@ -9,19 +9,19 @@ React Intl relies on these `Intl` APIs:
 
 - [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat): Available on IE11+
 - [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat): Available on IE11+
-- [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules): This can be polyfilled using [this package](https://www.npmjs.com/package/@formatjs/intl-pluralrules).
-- [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat): This can be polyfilled using [this package](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat).
-- (Optional) [Intl.DisplayNames][displaynames-spec]: Required if you use [`formatDisplayName`](API.md#formatdisplayname)
-  or [`FormattedDisplayName`](Components.md#formatteddisplayname). This can be polyfilled using [this package][displaynames-polyfill].
+- [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules): This can be polyfilled using [this package](polyfills/intl-pluralrules.md).
+- [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat): This can be polyfilled using [this package](polyfills/intl-relativetimeformat.md).
+- (Optional) [Intl.DisplayNames][displaynames-spec]: Required if you use [`formatDisplayName`](react-intl/API.md#formatdisplayname)
+  or [`FormattedDisplayName`](react-intl/Components.md#formatteddisplayname). This can be polyfilled using [this package][displaynames-polyfill].
 
   [displaynames-spec]: https://tc39.es/proposal-intl-displaynames/
-  [displaynames-polyfill]: https://www.npmjs.com/package/@formatjs/intl-displaynames
+  [displaynames-polyfill]: polyfills/intl-displaynames.md
 
 If you need to support older browsers, we recommend you do the following:
 
 1. Polyfill `Intl.NumberFormat` with https://github.com/andyearnshaw/Intl.js
 2. Polyfill `Intl.DateTimeFormat` with https://github.com/formatjs/date-time-format-timezone
-3. If you're supporting browsers that do not have [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](https://www.npmjs.com/package/@formatjs/intl-pluralrules) in your build.
+3. If you're supporting browsers that do not have [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](polyfills/intl-pluralrules.md) in your build.
 
 ```tsx
 if (!Intl.PluralRules) {
@@ -30,7 +30,7 @@ if (!Intl.PluralRules) {
 }
 ```
 
-4. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat) in your build along with individual CLDR data for each locale you support.
+4. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](polyfills/intl-relativetimeformat.md) in your build along with individual CLDR data for each locale you support.
 
 ```tsx
 if (!Intl.RelativeTimeFormat) {
@@ -73,8 +73,8 @@ If your `node` version is missing any of the `Intl` APIs above, you'd have to po
 
 If you're using `react-intl` in React Native, make sure your runtime has built-in `Intl` support (similar to [JSC International variant](https://github.com/react-native-community/jsc-android-buildscripts#international-variant)). See these issues for more details:
 
-- https://github.com/formatjs/react-intl/issues/1356
-- https://github.com/formatjs/react-intl/issues/992
+- https://github.com/formatjs/formatjs/issues/1356
+- https://github.com/formatjs/formatjs/issues/992
 
 #### React Native on iOS
 
