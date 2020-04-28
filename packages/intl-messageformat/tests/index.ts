@@ -7,10 +7,8 @@ import '@formatjs/intl-pluralrules/polyfill-locales';
 import {IntlMessageFormat, createDefaultFormatters} from '../src/core';
 import {PART_TYPE} from '../src/formatters';
 import {parse} from 'intl-messageformat-parser';
-import {expect as chaiExpect} from 'chai';
+declare const expect: Chai.ExpectStatic;
 import memoizeFormatConstructor from 'intl-format-cache';
-
-declare let expect: typeof chaiExpect;
 
 describe('IntlMessageFormat', function () {
   it('should be a function', function () {

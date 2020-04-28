@@ -4,6 +4,6 @@
     "target": "es2019",
     "strict": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
   }
 }

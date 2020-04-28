@@ -16,6 +16,9 @@ function checkBuildFolderStructure(
   expect(readdirSync(buildOutputFolder)).not.toContain('tests');
 
   for (const file of sourceFilesRelativeToSrcFolder) {
+    if (file.endsWith('.d.ts')) {
+      continue;
+    }
     const builtFile = file.replace(/\.tsx?$/, '.js');
     expect(existsSync(path.resolve(buildOutputFolder, builtFile))).toBe(true);
   }
@@ -24,6 +27,10 @@ function checkBuildFolderStructure(
 for (const packageJsonPath of glob.sync(`${PACKAGES_DIR}/*/package.json`)) {
   const packageJson = readJsonSync(packageJsonPath);
   const packagePath = path.dirname(packageJsonPath);
+
+  if (['formatjs-website'].includes(packageJson.name)) {
+    continue;
+  }
 
   test(`${packageJson.name}: the build output matches the source file tree`, () => {
     const mainEntry: string = packageJson.main;

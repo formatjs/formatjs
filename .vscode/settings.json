@@ -5,7 +5,8 @@
     "**/.hg": true,
     "**/CVS": true,
     "**/.DS_Store": true,
-    ".yarn": true
+    ".yarn": true,
+    "test262": true
   },
   "files.watcherExclude": {
     "**/.git/objects/**": true,
@@ -25,5 +26,5 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "npm.packageManager": "yarn",
   "prettier.packageManager": "yarn",
-  "eslint.packageManager": "yarn"
+  "eslint.packageManager": "yarn",
 }

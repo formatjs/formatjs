@@ -1,9 +1,7 @@
 import '@formatjs/intl-pluralrules/polyfill-locales';
 import '@formatjs/intl-relativetimeformat/polyfill-locales';
 import memoizeFormatConstructor from '../src';
-import {expect as chaiExpect} from 'chai';
-
-declare let expect: typeof chaiExpect;
+declare const expect: Chai.ExpectStatic;
 
 describe('intl-format-cache', function () {
   it('has a function as the default export', function () {
