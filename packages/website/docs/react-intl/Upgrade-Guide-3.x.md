@@ -276,8 +276,7 @@ The change solves several issues:
 
 If previously in cases where you pass in a `ReactElement` to a placeholder we highly recommend that you rethink the structure so that as much text is declared as possible:
 
-### Before
-
+Before
 ```tsx
 <FormattedMessage
   defaultMessage="Hello, {name} is {awesome} and {fun}"
@@ -289,8 +288,7 @@ If previously in cases where you pass in a `ReactElement` to a placeholder we hi
 />
 ```
 
-### After
-
+After
 ```tsx
 <FormattedMessage
   defaultMessage="Hello, <b>John</b> is <custom>awesome</custom> and <more>fun and {ts, time}</more>"
