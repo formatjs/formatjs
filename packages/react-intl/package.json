@@ -70,6 +70,7 @@
     "Kipras Melnikovas <sarpixo@gmail.com>",
     "Leo Y. Li <leo@leoyli.com>",
     "Li Zhuoran John <zhuoran666@gmail.com>",
+    "Linjie Ding <pyrocat101@users.noreply.github.com>",
     "Long Ho <holevietlong@gmail.com>",
     "Maarten Rijke <maartenrijke@gmail.com>",
     "Marc d'Entremont <cramhead@gmail.com>",
@@ -119,7 +120,7 @@
     "zouxuoz <zouxuoz@gmail.com>"
   ],
   "license": "BSD-3-Clause",
-  "homepage": "https://formatjs.io",
+  "homepage": "https://formatjs.io/docs/react-intl",
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
   },
