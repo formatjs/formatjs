@@ -161,7 +161,11 @@ export function formatToParts<T>(
     // abstracted-by and delegated-to the part helper object.
     if (isDateElement(el)) {
       const style =
-        typeof el.style === 'string' ? formats.date[el.style] : undefined;
+        typeof el.style === 'string'
+          ? formats.date[el.style]
+          : isDateTimeSkeleton(el.style)
+          ? parseDateTimeSkeleton(el.style.pattern)
+          : undefined;
       result.push({
         type: PART_TYPE.literal,
         value: formatters

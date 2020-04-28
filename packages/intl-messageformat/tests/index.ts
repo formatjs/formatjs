@@ -844,6 +844,31 @@ describe('IntlMessageFormat', function () {
     ).to.equal('£123,456.79');
   });
 
+  describe('date skeleton', function () {
+    expect(
+      new IntlMessageFormat('{d, date, ::yyyyMMMdd}', 'en-US').format({
+        d: new Date(0),
+      })
+    ).to.equal('Jan 01, 1970');
+    expect(
+      new IntlMessageFormat('{d, date, ::yyyyMMdd}', 'en-US').format({
+        d: new Date(0),
+      })
+    ).to.equal('01/01/1970');
+  });
+  describe('time skeleton', function () {
+    expect(
+      new IntlMessageFormat('{d, time, ::hhmmss}', 'en-US').format({
+        d: new Date(0),
+      })
+    ).to.equal('12:00:00 AM');
+    expect(
+      new IntlMessageFormat('{d, time, ::hhmmssz}', 'en-US').format({
+        d: new Date(0),
+      })
+    ).to.equal('12:00:00 AM UTC');
+  });
+
   describe('formatToParts', function () {
     it('should be able to take React Element', function () {
       const element = {};
