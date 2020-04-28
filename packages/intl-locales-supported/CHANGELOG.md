@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.8.7 (2020-04-28)
+
+**Note:** Version bump only for package intl-locales-supported
+
+
+
+
+
 ## [1.8.6](https://github.com/formatjs/formatjs/compare/intl-locales-supported@1.8.5...intl-locales-supported@1.8.6) (2020-04-24)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 8.3.9 (2020-04-28)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** fix issue where skeleton not getting parsed in date format ([9cc6049](https://github.com/formatjs/formatjs/commit/9cc6049b7139f8c9c843542a10a48c7faa64a880))
+
+
+
+
+
 ## [8.3.8](https://github.com/formatjs/formatjs/compare/intl-messageformat@8.3.7...intl-messageformat@8.3.8) (2020-04-24)
 
 
