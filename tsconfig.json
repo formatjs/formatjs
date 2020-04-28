@@ -3,7 +3,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "es5",
-    "lib": ["es6", "dom", "es2018.intl"],
+    "lib": ["es6", "dom", "esnext.intl", "es2017.intl", "es2018.intl"],
     "declaration": true,
     "strict": true,
     "resolveJsonModule": true,
@@ -15,6 +15,8 @@
     "declarationMap": true,
     "sourceMap": true,
     "composite": true,
-    "jsx": "react"
-  }
+    "jsx": "react",
+    // If a package choose to use Mocha, they will have to explicit declare in their tsconfig.json.
+    "types": ["node", "jest"],
+  },
 }

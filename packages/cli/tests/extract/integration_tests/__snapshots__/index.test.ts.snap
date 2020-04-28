@@ -80,41 +80,6 @@ Array [
 ]
 `;
 
-exports[`basic case: defineMessages -> directory 3`] = `
-Array [
-  Object {
-    "defaultMessage": "Hello World!",
-    "description": "The default message",
-    "id": "foo.bar.baz",
-  },
-  Object {
-    "defaultMessage": "Hello Nurse!",
-    "description": "Another message",
-    "id": "foo.bar.biff",
-  },
-  Object {
-    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
-    "description": "Counts kittens",
-    "id": "app.home.kittens",
-  },
-  Object {
-    "defaultMessage": "   Some whitespace   ",
-    "description": "Whitespace",
-    "id": "trailing.ws",
-  },
-  Object {
-    "defaultMessage": "A quoted value ''{value}'",
-    "description": "Escaped apostrophe",
-    "id": "escaped.apostrophe",
-  },
-  Object {
-    "defaultMessage": "No ID",
-    "description": "no ID",
-    "id": "e695b",
-  },
-]
-`;
-
 exports[`basic case: defineMessages -> directory with location 1`] = `
 Array [
   "actual.json",
@@ -394,95 +359,6 @@ Array [
     "defaultMessage": "formatted message",
     "description": "foo",
     "id": "inline",
-  },
-]
-`;
-
-exports[`typescript -> stdout 2`] = `
-Array [
-  Object {
-    "defaultMessage": "Hello World!",
-    "description": "The default message",
-    "end": Object {
-      "column": 3,
-      "line": 9,
-    },
-    "file": "defineMessages/actual.js",
-    "id": "foo.bar.baz",
-    "start": Object {
-      "column": 10,
-      "line": 5,
-    },
-  },
-  Object {
-    "defaultMessage": "Hello Nurse!",
-    "description": "Another message",
-    "end": Object {
-      "column": 3,
-      "line": 14,
-    },
-    "file": "defineMessages/actual.js",
-    "id": "foo.bar.biff",
-    "start": Object {
-      "column": 11,
-      "line": 10,
-    },
-  },
-  Object {
-    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
-    "description": "Counts kittens",
-    "end": Object {
-      "column": 3,
-      "line": 19,
-    },
-    "file": "defineMessages/actual.js",
-    "id": "app.home.kittens",
-    "start": Object {
-      "column": 11,
-      "line": 15,
-    },
-  },
-  Object {
-    "defaultMessage": "   Some whitespace   ",
-    "description": "Whitespace",
-    "end": Object {
-      "column": 3,
-      "line": 24,
-    },
-    "file": "defineMessages/actual.js",
-    "id": "trailing.ws",
-    "start": Object {
-      "column": 22,
-      "line": 20,
-    },
-  },
-  Object {
-    "defaultMessage": "A quoted value ''{value}'",
-    "description": "Escaped apostrophe",
-    "end": Object {
-      "column": 3,
-      "line": 29,
-    },
-    "file": "defineMessages/actual.js",
-    "id": "escaped.apostrophe",
-    "start": Object {
-      "column": 11,
-      "line": 25,
-    },
-  },
-  Object {
-    "defaultMessage": "No ID",
-    "description": "no ID",
-    "end": Object {
-      "column": 3,
-      "line": 37,
-    },
-    "file": "defineMessages/actual.js",
-    "id": "e695b",
-    "start": Object {
-      "column": 19,
-      "line": 34,
-    },
   },
 ]
 `;

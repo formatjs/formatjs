@@ -1,7 +1,5 @@
 import areIntlLocalesSupported from '../src';
-import {expect as chaiExpect} from 'chai';
-
-declare var expect: typeof chaiExpect;
+declare const expect: Chai.ExpectStatic;
 
 describe('exports', function () {
   it('should have a default export function', function () {

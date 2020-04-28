@@ -22,11 +22,12 @@
     "prepublishOnly": "yarn run prettier && yarn run build",
     "prettier": "prettier --write '**/*.{md,ts,tsx}'",
     "prettier:check": "prettier --check '**/*.{md,ts,tsx}'",
-    "test": "yarn run prettier:check && lerna run --parallel test && jest -c tests/jest.config.js"
+    "test": "yarn run prettier:check && lerna run test && jest -c tests/jest.config.js"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.7.13",
     "@rollup/plugin-json": "^4.0.3",
+    "@types/jest": "^25.2.1",
     "@typescript-eslint/eslint-plugin": "^2.29.0",
     "@typescript-eslint/parser": "^2.29.0",
     "@yarnpkg/pnpify": "^2.0.0-rc.21",
@@ -61,11 +62,6 @@
   "workspaces": {
     "packages": [
       "packages/*"
-    ],
-    "nohoist": [
-      "**/jest",
-      "**/mocha",
-      "**/chai"
     ]
   },
   "eslintConfig": {

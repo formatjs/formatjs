@@ -17,9 +17,11 @@
     "test": "mocha --opts ../../mocha.opts tests/index.ts"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.11",
     "@formatjs/intl-pluralrules": "^1.5.7",
     "@formatjs/intl-relativetimeformat": "^4.5.14",
     "@types/mocha": "^7.0.2",
+    "chai": "^4.2.0",
     "mocha": "^7.1.2"
   },
   "repository": {
@@ -37,9 +39,5 @@
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "homepage": "https://github.com/formatjs/formatjs",
-  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c",
-  "dependencies": {
-    "@types/chai": "^4.2.11",
-    "chai": "^4.2.0"
-  }
+  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c"
 }

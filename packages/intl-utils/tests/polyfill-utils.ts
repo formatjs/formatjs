@@ -1,4 +1,6 @@
 import {partitionPattern} from '../src/polyfill-utils';
+declare const expect: Chai.ExpectStatic;
+
 describe('polyfill-utils', function () {
   it('should partition pattern correctly', function () {
     expect(partitionPattern('AA{0}BB')).to.deep.equal([

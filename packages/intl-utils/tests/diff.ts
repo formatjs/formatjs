@@ -1,8 +1,5 @@
 import {selectUnit} from '../src';
-import {expect as chaiExpect} from 'chai';
-declare global {
-  var expect: typeof chaiExpect;
-}
+declare const expect: Chai.ExpectStatic;
 
 function past(v?: number) {
   return Date.now() - (v || 0);

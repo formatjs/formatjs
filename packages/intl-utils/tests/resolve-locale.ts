@@ -4,6 +4,8 @@ import {
   getParentLocalesByLang,
   unpackData,
 } from '../src';
+declare const expect: Chai.ExpectStatic;
+
 describe('resolve-locale', function () {
   it('should handle zh-TW', function () {
     expect(
