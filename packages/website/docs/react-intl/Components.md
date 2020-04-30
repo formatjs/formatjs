@@ -3,7 +3,7 @@ id: components
 title: Components
 ---
 
-React Intl has a set of React components that provide a declarative way to setup an i18n context and format dates, numbers, and strings for display in a web UI. The components render React elements by building on React Intl's imperative [API](API.md).
+React Intl has a set of React components that provide a declarative way to setup an i18n context and format dates, numbers, and strings for display in a web UI. The components render React elements by building on React Intl's imperative [API](api.md).
 
 ## Why Components?
 
@@ -132,7 +132,7 @@ Both `<FormattedDate>` and `<FormattedTime>` use [`Intl.DateTimeFormat`](https:/
 
 ### `FormattedDate`
 
-This component uses the [`formatDate`](API.md#formatdate) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above.
+This component uses the [`formatDate`](api.md#formatdate) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above.
 
 **Props:**
 
@@ -210,7 +210,7 @@ props: Intl.DateTimeFormatOptions &
 
 ### `FormattedTime`
 
-This component uses the [`formatTime`](API.md#formattime) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above, with the following defaults:
+This component uses the [`formatTime`](api.md#formattime) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above, with the following defaults:
 
 ```tsx
 {
@@ -275,7 +275,7 @@ props: Intl.DateTimeFormatOptions &
 
 ### `FormattedRelativeTime`
 
-This component uses the [`formatRelativeTime`](API.md#formatrelativetime) API and has `props` that correspond to the following relative formatting options:
+This component uses the [`formatRelativeTime`](api.md#formatrelativetime) API and has `props` that correspond to the following relative formatting options:
 
 ```ts
 type RelativeTimeFormatOptions = {
@@ -343,7 +343,7 @@ React Intl provides 3 components to format numbers:
 
 ### `FormattedNumber`
 
-This component uses the [`formatNumber`](API.md#formatnumber) and [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) APIs and has `props` that correspond to `Intl.NumberFormatOptions`.
+This component uses the [`formatNumber`](api.md#formatnumber) and [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) APIs and has `props` that correspond to `Intl.NumberFormatOptions`.
 
 **Props:**
 
@@ -433,7 +433,7 @@ props: NumberFormatOptions &
 
 ### `FormattedPlural`
 
-This component uses the [`formatPlural`](API.md#formatplural) API and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) has `props` that correspond to `Intl.PluralRulesOptions`.
+This component uses the [`formatPlural`](api.md#formatplural) API and [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) has `props` that correspond to `Intl.PluralRulesOptions`.
 
 **Props:**
 
@@ -469,7 +469,7 @@ messages
 
 ### `FormattedList`
 
-This component uses [`formatList`](API.md#formatlist) API and [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ListFormat). Its props corresponds to `Intl.ListFormatOptions`.
+This component uses [`formatList`](api.md#formatlist) API and [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ListFormat). Its props corresponds to `Intl.ListFormatOptions`.
 
 **Props:**
 
@@ -540,7 +540,7 @@ type MessageDescriptor = {
 };
 ```
 
-A common practice is to use the [`defineMessages`](API.md#definemessages) API to define all of a component's strings, then _spread_ the Message Descriptor as props to the component.
+A common practice is to use the [`defineMessages`](api.md#definemessages) API to define all of a component's strings, then _spread_ the Message Descriptor as props to the component.
 
 **Note:** The [babel-plugin-react-intl](../tooling/babel-plugin.md) package can be used to extract Message Descriptors defined in JavaScript source files.
 
@@ -556,7 +556,7 @@ The message formatting APIs go the extra mile to provide fallbacks for the commo
 
 ### `FormattedMessage`
 
-This component uses the [`formatMessage`](API.md#formatmessage) API and has `props` that correspond to a [Message Descriptor](#message-descriptor).
+This component uses the [`formatMessage`](api.md#formatmessage) API and has `props` that correspond to a [Message Descriptor](#message-descriptor).
 
 **Props:**
 
@@ -680,7 +680,7 @@ Starting with [React Native v0.52](https://github.com/react-native-community/rel
 This component uses [`formatDisplayName`][formatdisplayname] and [`Intl.DisplayName`][intl-displayname]
 has `props` that correspond to `DisplayNameOptions`. You might need a [polyfill][displaynames-polyfill].
 
-[formatdisplayname]: API.md#formatdisplayname
+[formatdisplayname]: api.md#formatdisplayname
 [intl-displayname]: https://github.com/tc39/proposal-intl-displaynames
 [displaynames-polyfill]: ../polyfills/intl-displaynames
 

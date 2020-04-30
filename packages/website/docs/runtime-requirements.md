@@ -11,8 +11,8 @@ React Intl relies on these `Intl` APIs:
 - [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat): Available on IE11+
 - [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules): This can be polyfilled using [this package](polyfills/intl-pluralrules.md).
 - [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat): This can be polyfilled using [this package](polyfills/intl-relativetimeformat.md).
-- (Optional) [Intl.DisplayNames][displaynames-spec]: Required if you use [`formatDisplayName`](react-intl/API.md#formatdisplayname)
-  or [`FormattedDisplayName`](react-intl/Components.md#formatteddisplayname). This can be polyfilled using [this package][displaynames-polyfill].
+- (Optional) [Intl.DisplayNames][displaynames-spec]: Required if you use [`formatDisplayName`](react-intl/api.md#formatdisplayname)
+  or [`FormattedDisplayName`](react-intl/components.md#formatteddisplayname). This can be polyfilled using [this package][displaynames-polyfill].
 
   [displaynames-spec]: https://tc39.es/proposal-intl-displaynames/
   [displaynames-polyfill]: polyfills/intl-displaynames.md

@@ -379,4 +379,4 @@ Placeholder argument can no longer have `-` (e.g: `this is a {placeholder-var}` 
 
 ## Testing
 
-We've removed `IntlProvider.getChildContext` for testing and now you can use `createIntl` to create a standalone `intl` object outside of React and use that for testing purposes. See [Testing with React Intl](./Testing-with-React-Intl.md#testing-with-react-intl) for more details.
+We've removed `IntlProvider.getChildContext` for testing and now you can use `createIntl` to create a standalone `intl` object outside of React and use that for testing purposes. See [Testing with React Intl](./testing-with-react-intl.md#testing-with-react-intl) for more details.
