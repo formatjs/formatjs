@@ -28,7 +28,8 @@ for (const packageJsonPath of glob.sync(`${PACKAGES_DIR}/*/package.json`)) {
   const packageJson = readJsonSync(packageJsonPath);
   const packagePath = path.dirname(packageJsonPath);
 
-  if (['formatjs-website'].includes(packageJson.name)) {
+  // Not a TS project
+  if (packageJson.name === 'formatjs-website') {
     continue;
   }
 
