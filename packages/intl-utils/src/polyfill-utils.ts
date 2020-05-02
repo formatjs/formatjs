@@ -4,7 +4,14 @@ import {invariant} from './invariant';
 import {
   NumberFormatDigitInternalSlots,
   NumberFormatDigitOptions,
+  NumberFormatNotation,
+  RawNumberFormatResult,
 } from './number-types';
+import {SANCTIONED_UNITS} from './units';
+
+export function hasOwnProperty(o: unknown, key: string): boolean {
+  return Object.prototype.hasOwnProperty.call(o, key);
+}
 
 /**
  * https://tc39.es/ecma262/#sec-toobject
@@ -235,69 +242,39 @@ export function partitionPattern(pattern: string) {
 
 /**
  * https://tc39.es/ecma402/#sec-setnfdigitoptions
- * https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-setnfdigitoptions
- * @param intlObj
- * @param opts
- * @param mnfdDefault
- * @param mxfdDefault
  */
-export function setNumberFormatDigitOptions<
-  TObject extends object,
-  TInternalSlots extends NumberFormatDigitInternalSlots
->(
-  internalSlotMap: WeakMap<TObject, TInternalSlots>,
-  intlObj: TObject,
+export function setNumberFormatDigitOptions(
+  internalSlots: NumberFormatDigitInternalSlots,
   opts: NumberFormatDigitOptions,
   mnfdDefault: number,
-  mxfdDefault: number
+  mxfdDefault: number,
+  notation: NumberFormatNotation
 ) {
   const mnid = getNumberOption(opts, 'minimumIntegerDigits', 1, 21, 1);
   let mnfd = opts.minimumFractionDigits;
   let mxfd = opts.maximumFractionDigits;
   let mnsd = opts.minimumSignificantDigits;
   let mxsd = opts.maximumSignificantDigits;
-  setInternalSlot(internalSlotMap, intlObj, 'minimumIntegerDigits', mnid);
+  internalSlots.minimumIntegerDigits = mnid;
   if (mnsd !== undefined || mxsd !== undefined) {
-    setInternalSlot(
-      internalSlotMap,
-      intlObj,
-      'roundingType',
-      'significantDigits'
-    );
+    internalSlots.roundingType = 'significantDigits';
     mnsd = defaultNumberOption(mnsd, 1, 21, 1);
     mxsd = defaultNumberOption(mxsd, mnsd, 21, 21);
-    setInternalSlot(internalSlotMap, intlObj, 'minimumSignificantDigits', mnsd);
-    setInternalSlot(internalSlotMap, intlObj, 'maximumSignificantDigits', mxsd);
+    internalSlots.minimumSignificantDigits = mnsd;
+    internalSlots.maximumSignificantDigits = mxsd;
   } else if (mnfd !== undefined || mxfd !== undefined) {
-    setInternalSlot(internalSlotMap, intlObj, 'roundingType', 'fractionDigits');
+    internalSlots.roundingType = 'fractionDigits';
     mnfd = defaultNumberOption(mnfd, 0, 20, mnfdDefault);
     const mxfdActualDefault = Math.max(mnfd, mxfdDefault);
     mxfd = defaultNumberOption(mxfd, mnfd, 20, mxfdActualDefault);
-    setInternalSlot(internalSlotMap, intlObj, 'minimumFractionDigits', mnfd);
-    setInternalSlot(internalSlotMap, intlObj, 'maximumFractionDigits', mxfd);
-  } else if (
-    getInternalSlot(internalSlotMap, intlObj, 'notation') === 'compact'
-  ) {
-    setInternalSlot(
-      internalSlotMap,
-      intlObj,
-      'roundingType',
-      'compactRounding'
-    );
+    internalSlots.minimumFractionDigits = mnfd;
+    internalSlots.maximumFractionDigits = mxfd;
+  } else if (notation === 'compact') {
+    internalSlots.roundingType = 'compactRounding';
   } else {
-    setInternalSlot(internalSlotMap, intlObj, 'roundingType', 'fractionDigits');
-    setInternalSlot(
-      internalSlotMap,
-      intlObj,
-      'minimumFractionDigits',
-      mnfdDefault
-    );
-    setInternalSlot(
-      internalSlotMap,
-      intlObj,
-      'maximumFractionDigits',
-      mxfdDefault
-    );
+    internalSlots.roundingType = 'fractionDigits';
+    internalSlots.minimumFractionDigits = mnfdDefault;
+    internalSlots.maximumFractionDigits = mxfdDefault;
   }
 }
 
@@ -326,8 +303,7 @@ function toUpperCase(str: string): string {
 }
 
 /**
- * https://tc39.es/proposal-unified-intl-numberformat/section6/locales-currencies-tz_proposed_out.html#sec-iswellformedcurrencycode
- * @param currency
+ * https://tc39.es/ecma402/#sec-iswellformedcurrencycode
  */
 export function isWellFormedCurrencyCode(currency: string): boolean {
   currency = toUpperCase(currency);
@@ -338,4 +314,267 @@ export function isWellFormedCurrencyCode(currency: string): boolean {
     return false;
   }
   return true;
+}
+
+/**
+ * https://tc39.es/ecma402/#sec-formatnumberstring
+ * TODO: dedup with intl-pluralrules
+ */
+export function formatNumericToString(
+  internalSlots: Pick<
+    NumberFormatDigitInternalSlots,
+    | 'roundingType'
+    | 'minimumSignificantDigits'
+    | 'maximumSignificantDigits'
+    | 'minimumIntegerDigits'
+    | 'minimumFractionDigits'
+    | 'maximumFractionDigits'
+  >,
+  x: number
+) {
+  const isNegative = x < 0 || objectIs(x, -0);
+  if (isNegative) {
+    x = -x;
+  }
+
+  let result: RawNumberFormatResult;
+
+  const rourndingType = internalSlots.roundingType;
+
+  switch (rourndingType) {
+    case 'significantDigits':
+      result = toRawPrecision(
+        x,
+        internalSlots.minimumSignificantDigits!,
+        internalSlots.maximumSignificantDigits!
+      );
+      break;
+    case 'fractionDigits':
+      result = toRawFixed(
+        x,
+        internalSlots.minimumFractionDigits!,
+        internalSlots.maximumFractionDigits!
+      );
+      break;
+    default:
+      result = toRawPrecision(x, 1, 2);
+      if (result.integerDigitsCount > 1) {
+        result = toRawFixed(x, 0, 0);
+      }
+      break;
+  }
+
+  x = result.roundedNumber;
+  let string = result.formattedString;
+  const int = result.integerDigitsCount;
+  const minInteger = internalSlots.minimumIntegerDigits;
+
+  if (int < minInteger) {
+    const forwardZeros = repeat('0', minInteger - int);
+    string = forwardZeros + string;
+  }
+
+  if (isNegative) {
+    x = -x;
+  }
+  return {roundedNumber: x, formattedString: string};
+}
+
+/**
+ * TODO: dedup with intl-pluralrules and support BigInt
+ * https://tc39.es/ecma402/#sec-torawfixed
+ * @param x a finite non-negative Number or BigInt
+ * @param minFraction and integer between 0 and 20
+ * @param maxFraction and integer between 0 and 20
+ */
+export function toRawFixed(
+  x: number,
+  minFraction: number,
+  maxFraction: number
+): RawNumberFormatResult {
+  const f = maxFraction;
+  let n: number;
+  {
+    const exactSolve = x * 10 ** f;
+    const roundDown = Math.floor(exactSolve);
+    const roundUp = Math.ceil(exactSolve);
+    n = exactSolve - roundDown < roundUp - exactSolve ? roundDown : roundUp;
+  }
+  const xFinal = n / 10 ** f;
+
+  // n is a positive integer, but it is possible to be greater than 1e21.
+  // In such case we will go the slow path.
+  // See also: https://tc39.es/ecma262/#sec-numeric-types-number-tostring
+  let m: string;
+  if (n < 1e21) {
+    m = n.toString();
+  } else {
+    m = n.toString();
+    const idx1 = m.indexOf('.');
+    const idx2 = m.indexOf('e+');
+    const exponent = parseInt(m.substring(idx2 + 2), 10);
+    m =
+      m.substring(0, idx1) +
+      m.substring(idx1 + 1, idx2) +
+      repeat('0', exponent - (idx2 - idx1 - 1));
+  }
+  let int: number;
+  if (f !== 0) {
+    let k = m.length;
+    if (k <= f) {
+      const z = repeat('0', f + 1 - k);
+      m = z + m;
+      k = f + 1;
+    }
+    const a = m.slice(0, k - f);
+    const b = m.slice(k - f);
+    m = `${a}.${b}`;
+    int = a.length;
+  } else {
+    int = m.length;
+  }
+  let cut = maxFraction - minFraction;
+  while (cut > 0 && m[m.length - 1] === '0') {
+    m = m.slice(0, -1);
+    cut--;
+  }
+  if (m[m.length - 1] === '.') {
+    m = m.slice(0, -1);
+  }
+  return {formattedString: m, roundedNumber: xFinal, integerDigitsCount: int};
+}
+
+// https://tc39.es/ecma402/#sec-torawprecision
+export function toRawPrecision(
+  x: number,
+  minPrecision: number,
+  maxPrecision: number
+): RawNumberFormatResult {
+  const p = maxPrecision;
+  let m: string;
+  let e: number;
+  let xFinal: number;
+  if (x === 0) {
+    m = repeat('0', p);
+    e = 0;
+    xFinal = 0;
+  } else {
+    e = getMagnitude(x);
+    let n: number;
+    {
+      const magnitude = e - p + 1;
+      const exactSolve =
+        // Preserve floating point precision as much as possible with multiplication.
+        magnitude < 0 ? x * 10 ** -magnitude : x / 10 ** magnitude;
+      const roundDown = Math.floor(exactSolve);
+      const roundUp = Math.ceil(exactSolve);
+      n = exactSolve - roundDown < roundUp - exactSolve ? roundDown : roundUp;
+    }
+    // See: https://tc39.es/ecma262/#sec-numeric-types-number-tostring
+    // No need to worry about scientific notation because it only happens for values >= 1e21,
+    // which has 22 significant digits. So it will at least be divided by 10 here to bring the
+    // value back into non-scientific-notation range.
+    m = n.toString();
+    xFinal = n * 10 ** (e - p + 1);
+  }
+  let int: number;
+  if (e >= p - 1) {
+    m = m + repeat('0', e - p + 1);
+    int = e + 1;
+  } else if (e >= 0) {
+    m = `${m.slice(0, e + 1)}.${m.slice(e + 1)}`;
+    int = e + 1;
+  } else {
+    m = `0.${repeat('0', -e - 1)}${m}`;
+    int = 1;
+  }
+  if (m.indexOf('.') >= 0 && maxPrecision > minPrecision) {
+    let cut = maxPrecision - minPrecision;
+    while (cut > 0 && m[m.length - 1] === '0') {
+      m = m.slice(0, -1);
+      cut--;
+    }
+    if (m[m.length - 1] === '.') {
+      m = m.slice(0, -1);
+    }
+  }
+  return {formattedString: m, roundedNumber: xFinal, integerDigitsCount: int};
+}
+
+export function repeat(s: string, times: number): string {
+  if (typeof s.repeat === 'function') {
+    return s.repeat(times);
+  }
+  const arr = new Array(times);
+  for (let i = 0; i < arr.length; i++) {
+    arr[i] = s;
+  }
+  return arr.join('');
+}
+
+/**
+ * Cannot do Math.log(x) / Math.log(10) bc if IEEE floating point issue
+ * @param x number
+ */
+export function getMagnitude(x: number): number {
+  // Cannot count string length via Number.toString because it may use scientific notation
+  // for very small or very large numbers.
+  return Math.floor(Math.log(x) * Math.LOG10E);
+}
+
+/**
+ * This follows https://tc39.es/ecma402/#sec-case-sensitivity-and-case-mapping
+ * @param str string to convert
+ */
+function toLowerCase(str: string): string {
+  return str.replace(/([A-Z])/g, (_, c) => c.toLowerCase());
+}
+
+const SHORTENED_SACTION_UNITS = SANCTIONED_UNITS.map(unit =>
+  unit.replace(/^(.*?)-/, '')
+);
+
+/**
+ * https://tc39.es/ecma402/#sec-iswellformedunitidentifier
+ * @param unit
+ */
+export function isWellFormedUnitIdentifier(unit: string) {
+  unit = toLowerCase(unit);
+  if (SHORTENED_SACTION_UNITS.indexOf(unit) > -1) {
+    return true;
+  }
+  const units = unit.split('-per-');
+  if (units.length !== 2) {
+    return false;
+  }
+  if (
+    SHORTENED_SACTION_UNITS.indexOf(units[0]) < 0 ||
+    SHORTENED_SACTION_UNITS.indexOf(units[1]) < 0
+  ) {
+    return false;
+  }
+  return true;
+}
+
+/*
+  17 ECMAScript Standard Built-in Objects:
+    Every built-in Function object, including constructors, that is not
+    identified as an anonymous function has a name property whose value
+    is a String.
+
+    Unless otherwise specified, the name property of a built-in Function
+    object, if it exists, has the attributes { [[Writable]]: false,
+    [[Enumerable]]: false, [[Configurable]]: true }.
+*/
+export function defineProperty<T extends object>(
+  target: T,
+  name: string | symbol,
+  {value}: {value: any} & ThisType<any>
+) {
+  Object.defineProperty(target, name, {
+    configurable: true,
+    enumerable: false,
+    writable: true,
+    value,
+  });
 }

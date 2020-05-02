@@ -1,12 +1,8 @@
 import '@formatjs/intl-pluralrules/polyfill-locales';
-import {UnifiedNumberFormat} from '../src/core';
-UnifiedNumberFormat.__addLocaleData(require('../dist/locale-data/zh.json'));
-UnifiedNumberFormat.__addLocaleData(
-  require('../dist/locale-data/zh-Hant.json')
-);
-UnifiedNumberFormat.__addLocaleData(
-  require('../dist/locale-data/zh-Hans.json')
-);
+import {NumberFormat} from '../src';
+NumberFormat.__addLocaleData(require('../dist/locale-data/zh.json'));
+NumberFormat.__addLocaleData(require('../dist/locale-data/zh-Hant.json'));
+NumberFormat.__addLocaleData(require('../dist/locale-data/zh-Hans.json'));
 
 const tests: any = [
   [
@@ -150,7 +146,7 @@ describe('unit-zh-TW', function () {
   for (const [number, expectedData] of tests) {
     for (const [unitDisplay, expected] of Object.entries(expectedData)) {
       it(unitDisplay, function () {
-        const nf = new UnifiedNumberFormat('zh-TW', {
+        const nf = new NumberFormat('zh-TW', {
           style: 'unit',
           unit: 'meter',
           unitDisplay: unitDisplay as 'narrow',

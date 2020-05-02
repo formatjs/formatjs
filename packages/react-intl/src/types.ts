@@ -14,7 +14,7 @@ import IntlRelativeTimeFormat, {
   IntlRelativeTimeFormatOptions,
 } from '@formatjs/intl-relativetimeformat';
 import {MessageFormatElement} from 'intl-messageformat-parser';
-import {UnifiedNumberFormatOptions} from '@formatjs/intl-numberformat';
+import {NumberFormatOptions} from '@formatjs/intl-numberformat';
 import IntlListFormat, {IntlListFormatOptions} from '@formatjs/intl-listformat';
 import {DisplayNames, DisplayNamesOptions} from '@formatjs/intl-displaynames';
 import {ReactIntlError} from './error';
@@ -45,7 +45,7 @@ export type FormatDateOptions = Exclude<
 > &
   CustomFormatConfig;
 export type FormatNumberOptions = Exclude<
-  UnifiedNumberFormatOptions,
+  NumberFormatOptions,
   'localeMatcher'
 > &
   CustomFormatConfig;

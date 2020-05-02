@@ -1,5 +1,5 @@
 import {NumberSkeletonToken} from './types';
-import {UnifiedNumberFormatOptions} from '@formatjs/intl-numberformat';
+import {NumberFormatOptions} from '@formatjs/intl-numberformat';
 
 /**
  * https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
@@ -146,15 +146,15 @@ export function parseDateTimeSkeleton(
   return result;
 }
 
-function icuUnitToEcma(unit: string): UnifiedNumberFormatOptions['unit'] {
-  return unit.replace(/^(.*?)-/, '') as UnifiedNumberFormatOptions['unit'];
+function icuUnitToEcma(unit: string): NumberFormatOptions['unit'] {
+  return unit.replace(/^(.*?)-/, '') as NumberFormatOptions['unit'];
 }
 
 const FRACTION_PRECISION_REGEX = /^\.(?:(0+)(\*)?|(#+)|(0+)(#+))$/g;
 const SIGNIFICANT_PRECISION_REGEX = /^(@+)?(\+|#+)?$/g;
 
-function parseSignificantPrecision(str: string): UnifiedNumberFormatOptions {
-  const result: UnifiedNumberFormatOptions = {};
+function parseSignificantPrecision(str: string): NumberFormatOptions {
+  const result: NumberFormatOptions = {};
   str.replace(SIGNIFICANT_PRECISION_REGEX, function (
     _: string,
     g1: string,
@@ -184,7 +184,7 @@ function parseSignificantPrecision(str: string): UnifiedNumberFormatOptions {
   return result;
 }
 
-function parseSign(str: string): UnifiedNumberFormatOptions | undefined {
+function parseSign(str: string): NumberFormatOptions | undefined {
   switch (str) {
     case 'sign-auto':
       return {
@@ -219,8 +219,8 @@ function parseSign(str: string): UnifiedNumberFormatOptions | undefined {
   }
 }
 
-function parseNotationOptions(opt: string): UnifiedNumberFormatOptions {
-  const result: UnifiedNumberFormatOptions = {};
+function parseNotationOptions(opt: string): NumberFormatOptions {
+  const result: NumberFormatOptions = {};
   const signOpts = parseSign(opt);
   if (signOpts) {
     return signOpts;
@@ -233,8 +233,8 @@ function parseNotationOptions(opt: string): UnifiedNumberFormatOptions {
  */
 export function convertNumberSkeletonToNumberFormatOptions(
   tokens: NumberSkeletonToken[]
-): UnifiedNumberFormatOptions {
-  let result: UnifiedNumberFormatOptions = {};
+): NumberFormatOptions {
+  let result: NumberFormatOptions = {};
   for (const token of tokens) {
     switch (token.stem) {
       case 'percent':

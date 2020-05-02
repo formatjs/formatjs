@@ -1,9 +1,9 @@
 import {IntlConfig, Formatters, IntlFormatters} from '../types';
 import {getNamedFormat, filterProps} from '../utils';
-import {UnifiedNumberFormatOptions} from '@formatjs/intl-numberformat';
+import {NumberFormatOptions} from '@formatjs/intl-numberformat';
 import {ReactIntlError, ReactIntlErrorCode} from '../error';
 
-const NUMBER_FORMAT_OPTIONS: Array<keyof UnifiedNumberFormatOptions> = [
+const NUMBER_FORMAT_OPTIONS: Array<keyof NumberFormatOptions> = [
   'localeMatcher',
 
   'style',
@@ -41,7 +41,7 @@ export function getFormatter(
   const {format} = options;
   const defaults = ((format &&
     getNamedFormat(formats!, 'number', format, onError)) ||
-    {}) as UnifiedNumberFormatOptions;
+    {}) as NumberFormatOptions;
   const filteredOptions = filterProps(options, NUMBER_FORMAT_OPTIONS, defaults);
 
   return getNumberFormat(locale, filteredOptions);

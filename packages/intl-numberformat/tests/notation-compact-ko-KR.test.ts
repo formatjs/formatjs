@@ -1,6 +1,6 @@
 import '@formatjs/intl-pluralrules/polyfill-locales';
-import {UnifiedNumberFormat} from '../src/core';
-UnifiedNumberFormat.__addLocaleData(require('../dist/locale-data/ko.json'));
+import {NumberFormat} from '../src';
+NumberFormat.__addLocaleData(require('../dist/locale-data/ko.json'));
 
 const tests: any[] = [
   [
@@ -76,7 +76,7 @@ const tests: any[] = [
 describe('notation-compact-ko-KR', function () {
   for (const [number, short, long = short] of tests) {
     it(`${number} short`, function () {
-      const nfShort = new UnifiedNumberFormat('ko-KR', {
+      const nfShort = new NumberFormat('ko-KR', {
         notation: 'compact',
         compactDisplay: 'short',
       });
@@ -84,7 +84,7 @@ describe('notation-compact-ko-KR', function () {
     });
 
     it(`${number} long`, function () {
-      const nfLong = new UnifiedNumberFormat('ko-KR', {
+      const nfLong = new NumberFormat('ko-KR', {
         notation: 'compact',
         compactDisplay: 'long',
       });

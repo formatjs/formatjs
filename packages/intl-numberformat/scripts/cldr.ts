@@ -48,8 +48,8 @@ const allData = locales.reduce(
   {}
 );
 
-function generateContinuousILND(startChar: string): string[] {
-  const startCharCode = startChar.charCodeAt(0);
+// Generate an array of 10 characters with consecutive codepoint, starting from `starCharCode`.
+function generateDigitChars(startCharCode: number): string[] {
   const arr = new Array<string>(10);
   for (let i = 0; i < 10; i++) {
     arr[i] = String.fromCharCode(startCharCode + i);
@@ -57,49 +57,51 @@ function generateContinuousILND(startChar: string): string[] {
   return arr;
 }
 
-// https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_proposed_out.html#table-numbering-system-digits
-const ILND: Record<string, string[]> = (function () {
-  return {
-    arab: generateContinuousILND('\u0660'),
-    arabext: generateContinuousILND('\u06f0'),
-    bali: generateContinuousILND('\u1b50'),
-    beng: generateContinuousILND('\u09e6'),
-    deva: generateContinuousILND('\u0966'),
-    fullwide: generateContinuousILND('\uff10'),
-    gujr: generateContinuousILND('\u0ae6'),
-    guru: generateContinuousILND('\u0a66'),
-    khmr: generateContinuousILND('\u17e0'),
-    knda: generateContinuousILND('\u0ce6'),
-    laoo: generateContinuousILND('\u0ed0'),
-    latn: generateContinuousILND('\u0030'),
-    limb: generateContinuousILND('\u1946'),
-    mlym: generateContinuousILND('\u0d66'),
-    mong: generateContinuousILND('\u1810'),
-    mymr: generateContinuousILND('\u1040'),
-    orya: generateContinuousILND('\u0b66'),
-    tamldec: generateContinuousILND('\u0be6'),
-    telu: generateContinuousILND('\u0c66'),
-    thai: generateContinuousILND('\u0e50'),
-    tibt: generateContinuousILND('\u0f20'),
-    hanidec: [
-      '\u3007',
-      '\u4e00',
-      '\u4e8c',
-      '\u4e09',
-      '\u56db',
-      '\u4e94',
-      '\u516d',
-      '\u4e03',
-      '\u516b',
-      '\u4e5d',
-    ],
-  };
-})();
+// https://tc39.es/ecma402/#table-numbering-system-digits
+const digitMapping: Record<string, string[]> = {
+  arab: generateDigitChars(0x660),
+  arabext: generateDigitChars(0x6f0),
+  bali: generateDigitChars(0xb50),
+  beng: generateDigitChars(0x9e6),
+  deva: generateDigitChars(0x966),
+  fullwide: generateDigitChars(0xf10),
+  gujr: generateDigitChars(0xae6),
+  guru: generateDigitChars(0xa66),
+  khmr: generateDigitChars(0x7e0),
+  knda: generateDigitChars(0xce6),
+  laoo: generateDigitChars(0xed0),
+  // There is NO need to generate latn since it is already the default!
+  // latn: generateDigitChars(0x030),
+  limb: generateDigitChars(0x946),
+  mlym: generateDigitChars(0xd66),
+  mong: generateDigitChars(0x810),
+  mymr: generateDigitChars(0x040),
+  orya: generateDigitChars(0xb66),
+  tamldec: generateDigitChars(0xbe6),
+  telu: generateDigitChars(0xc66),
+  thai: generateDigitChars(0xe50),
+  tibt: generateDigitChars(0xf20),
+  hanidec: [
+    '\u3007',
+    '\u4e00',
+    '\u4e8c',
+    '\u4e09',
+    '\u56db',
+    '\u4e94',
+    '\u516d',
+    '\u4e03',
+    '\u516b',
+    '\u4e5d',
+  ],
+};
 
-outputJSONSync(resolve(__dirname, '../src/ilnd-numbers.json'), ILND);
+outputJSONSync(
+  resolve(__dirname, '../src/data/digit-mapping.json'),
+  digitMapping
+);
 
 outputFileSync(
-  resolve(__dirname, '../src/units-constants.ts'),
+  resolve(__dirname, '../src/data/units-constants.ts'),
   `/* @generated */
 // prettier-ignore
 export type Unit =
@@ -143,13 +145,13 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
 
 // Output currency digits file
 outputJSONSync(
-  resolve(__dirname, '../src/currency-digits.json'),
+  resolve(__dirname, '../src/data/currency-digits.json'),
   extractCurrencyDigits()
 );
 
 // Output numbering systems file
 outputJSONSync(
-  resolve(__dirname, '../src/numbering-systems.json'),
+  resolve(__dirname, '../src/data/numbering-systems.json'),
   extractNumberingSystemNames()
 );
 

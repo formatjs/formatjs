@@ -21,6 +21,14 @@
     "**/*.map": true,
     "**/*.d.ts.map": true
   },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "**/lib": true,
+    "**/dist": true,
+    "**/dist-es6": true,
+  },
   "json.schemas": [
     {
       "fileMatch": ["/lerna.json"],

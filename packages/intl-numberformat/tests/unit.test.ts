@@ -1,5 +1,5 @@
 import '@formatjs/intl-pluralrules/polyfill-locales';
-import {UnifiedNumberFormat, UnifiedNumberFormatOptions} from '../src/core';
+import {NumberFormat, NumberFormatOptions} from '../src';
 
 const LOCALES = [
   'en',
@@ -27,29 +27,27 @@ const LOCALES = [
 ];
 
 LOCALES.forEach(locale => {
-  UnifiedNumberFormat.__addLocaleData(
-    require(`../dist/locale-data/${locale}.json`)
-  );
+  NumberFormat.__addLocaleData(require(`../dist/locale-data/${locale}.json`));
 });
 
-const SIGN_DISPLAYS: Array<UnifiedNumberFormatOptions['signDisplay']> = [
+const SIGN_DISPLAYS: Array<NumberFormatOptions['signDisplay']> = [
   'auto',
   'always',
   'never',
   'exceptZero',
 ];
-const NOTATIONS: Array<UnifiedNumberFormatOptions['notation']> = [
+const NOTATIONS: Array<NumberFormatOptions['notation']> = [
   'engineering',
   'scientific',
   'compact',
   'standard',
 ];
-const UNIT_DISPLAYS: Array<UnifiedNumberFormatOptions['unitDisplay']> = [
+const UNIT_DISPLAYS: Array<NumberFormatOptions['unitDisplay']> = [
   'long',
   'short',
   'narrow',
 ];
-const COMPACT_DISPLAYS: Array<UnifiedNumberFormatOptions['compactDisplay']> = [
+const COMPACT_DISPLAYS: Array<NumberFormatOptions['compactDisplay']> = [
   'long',
   'short',
 ];
@@ -67,7 +65,7 @@ function test() {
                     COMPACT_DISPLAYS.forEach(compactDisplay =>
                       it(`compactDisplay/${compactDisplay}`, function () {
                         expect(
-                          new UnifiedNumberFormat(locale, {
+                          new NumberFormat(locale, {
                             style: 'unit',
                             unit: 'bit',
                             unitDisplay,
@@ -77,7 +75,7 @@ function test() {
                           }).formatToParts(10000)
                         ).toMatchSnapshot();
                         expect(
-                          new UnifiedNumberFormat(locale, {
+                          new NumberFormat(locale, {
                             style: 'unit',
                             unit: 'celsius',
                             unitDisplay,
@@ -87,7 +85,7 @@ function test() {
                           }).formatToParts(10000)
                         ).toMatchSnapshot();
                         expect(
-                          new UnifiedNumberFormat(locale, {
+                          new NumberFormat(locale, {
                             style: 'unit',
                             unit: 'gallon',
                             unitDisplay,
@@ -110,4 +108,4 @@ function test() {
 }
 
 // Node v8 does not have formatToParts and v12 has native NumberFormat.
-describe('UnifiedNumberFormat', test);
+describe('NumberFormat', test);

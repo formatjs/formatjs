@@ -7,6 +7,7 @@
   },
   "include": ["src"],
   "references": [
+    {"path": "../intl-getcanonicallocales"},
     {"path": "../formatjs-extract-cldr-data"},
     {"path": "../intl-utils"}
   ]

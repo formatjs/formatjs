@@ -1,6 +1,6 @@
 import '@formatjs/intl-pluralrules/polyfill-locales';
-import {UnifiedNumberFormat} from '../src/core';
-UnifiedNumberFormat.__addLocaleData(require('../dist/locale-data/en.json'));
+import {NumberFormat} from '../src';
+NumberFormat.__addLocaleData(require('../dist/locale-data/en.json'));
 const toNumberResults = [
   [undefined, NaN],
   [null, +0],
@@ -11,7 +11,7 @@ const toNumberResults = [
 ];
 
 describe('value-tonumber', function () {
-  const nf = new UnifiedNumberFormat();
+  const nf = new NumberFormat();
   for (const [val1, val2] of toNumberResults) {
     it(`${val1} === ${val2}`, function () {
       expect(nf.formatToParts(val1 as number)).toEqual(
