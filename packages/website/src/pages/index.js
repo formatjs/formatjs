@@ -231,7 +231,7 @@ function Demo({className}) {
           <option value="cs-CZ">cs-CZ</option>
           <option value="pt-BR">pt-BR</option>
           <option value="sv-SE">sv-SE</option>
-          <option value="es-AE">es-AR</option>
+          <option value="es-AR">es-AR</option>
         </select>
       </label>
     </div>

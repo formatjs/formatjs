@@ -211,7 +211,7 @@ React Intl provides three functions to format dates:
 - [`formatTime`](#formattime)
 - [`formatRelativeTime`](#formatrelativetime)
 
-These APIs are used by their corresponding [`<FormattedDate>`](./Components.md#formatteddate), [`<FormattedTime>`](./Components.md#formattedtime), and [`<FormattedRelativeTime>`](./Components.md#formattedrelative) components and can be [injected](#injectintl) into your component via its `props`.
+These APIs are used by their corresponding [`<FormattedDate>`](./components.md#formatteddate), [`<FormattedTime>`](./components.md#formattedtime), and [`<FormattedRelativeTime>`](./components.md#formattedrelative) components and can be [injected](#injectintl) into your component via its `props`.
 
 Each of these APIs support custom named formats via their `format` option which can be specified on `<IntlProvider>`. Both `formatDate` and `formatTime` use [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) options
 
@@ -306,7 +306,7 @@ React Intl provides two functions to format numbers:
 - [`formatNumber`](#formatnumber)
 - [`formatPlural`](#formatplural)
 
-These APIs are used by their corresponding [`<FormattedNumber>`](./Components.md#formattednumber), and [`<FormattedPlural>`](./Components.md#formattedplural) components and can be [injected](#injectintl) into your component via its `props`.
+These APIs are used by their corresponding [`<FormattedNumber>`](./components.md#formattednumber), and [`<FormattedPlural>`](./components.md#formattedplural) components and can be [injected](#injectintl) into your component via its `props`.
 
 ### `formatNumber`
 
