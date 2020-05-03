@@ -1,6 +1,6 @@
 ---
 id: intl-listformat
-title: Intl.ListtFormat
+title: Intl.ListFormat
 ---
 
 A spec-compliant polyfill/ponyfill for Intl.ListFormat fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
