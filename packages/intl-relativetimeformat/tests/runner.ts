@@ -5,7 +5,7 @@ import {cpus} from 'os';
 if (!process.version.startsWith('v10')) {
   process.exit(0);
   console.log(
-    `Only run on Node 10 since: 
+    `Only run on Node 10 since:
 - Node 8 does not have Intl.PluralRules and polyfills are not test262-compliant.
 - Node 12+ has native Intl.RelativeTimeFormat.
 `
@@ -33,6 +33,10 @@ const excludedTests = [
   'options-toobject-prototype', // TODO
   'locales-valid', // f7e8dba39b1143b45c37ee137e406889b56bc335 added grandfathered locale which we
   'proto-from-ctor-realm', // Bc of Realm support
+  // TODO
+  'pl-pl-style-long',
+  'pl-pl-style-narrow',
+  'pl-pl-style-short',
 ];
 const PATTERN = resolve(
   __dirname,
