@@ -9,8 +9,8 @@
   },
   "scripts": {
     "build": "yarn run clean && lerna run build",
-    "build:cjs": "tsc -b packages/*",
-    "dev:cjs": "tsc -b packages/* --watch",
+    "build:cjs": "find packages -maxdepth 1 ! -path packages ! -name website | xargs yarn tsc -b",
+    "dev:cjs": "find packages -maxdepth 1 ! -path packages ! -name website | xargs yarn tsc -b --watch",
     "clean": "rimraf packages/*/*.tsbuildinfo && lerna run --parallel clean",
     "cover:collect": "mkdir -p ./.nyc_output/ && for d in $(find packages -type d -name '.nyc_output' -maxdepth 2 -exec find '{}' -type f ';'); do (cp $d ./.nyc_output/); done; nyc report --reporter=lcov --report-dir=${COVERAGE_DIR:-artifacts/coverage}",
     "cover": "lerna run cover --since",
