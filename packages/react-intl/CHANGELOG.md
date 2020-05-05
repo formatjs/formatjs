@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.5.2](https://github.com/formatjs/formatjs/compare/react-intl@4.5.1...react-intl@4.5.2) (2020-05-05)
+
+
+### Bug Fixes
+
+* **react-intl:** envify dist/react-intl.js so we do not leak process.env ([43a54d6](https://github.com/formatjs/formatjs/commit/43a54d61544b42d2d28776359b39f2c7a2c057ab))
+
+
+
+
+
 ## 4.5.1 (2020-04-28)
 
 **Note:** Version bump only for package react-intl

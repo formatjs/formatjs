@@ -1,6 +1,6 @@
 {
   "name": "intl-format-cache",
-  "version": "4.2.26",
+  "version": "4.2.27",
   "description": "A memoizer factory for Intl format constructors.",
   "main": "dist/index.js",
   "module": "lib/index.js",
@@ -17,9 +17,9 @@
     "test": "mocha --opts ../../mocha.opts tests/index.ts"
   },
   "devDependencies": {
+    "@formatjs/intl-pluralrules": "^1.5.8",
+    "@formatjs/intl-relativetimeformat": "^4.5.15",
     "@types/chai": "^4.2.11",
-    "@formatjs/intl-pluralrules": "^1.5.7",
-    "@formatjs/intl-relativetimeformat": "^4.5.14",
     "@types/mocha": "^7.0.2",
     "chai": "^4.2.0",
     "mocha": "^7.1.2"
