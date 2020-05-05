@@ -13,6 +13,9 @@ const copyright = `/*
 `;
 
 const plugins = [
+  replace({
+    'process.env.NODE_ENV': '"production"',
+  }),
   resolve({
     mainFields: ['module', 'main'],
   }),
@@ -52,9 +55,6 @@ export default [
     },
     external: ['react'],
     plugins: [
-      replace({
-        'process.env.NODE_ENV': '"production"',
-      }),
       ...plugins,
       uglifyConfig,
     ],
