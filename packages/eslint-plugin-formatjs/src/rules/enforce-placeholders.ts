@@ -104,8 +104,7 @@ const rule: Rule.RuleModule = {
         'Enforce that all messages with placeholders have enough passed-in values',
       category: 'Errors',
       recommended: true,
-      url:
-        'https://formatjs.io/docs/tooling/linter#enforce-placeholders',
+      url: 'https://formatjs.io/docs/tooling/linter#enforce-placeholders',
     },
     fixable: 'code',
   },

@@ -119,8 +119,7 @@ const rule: Rule.RuleModule = {
       description: 'Disallow specific elements in ICU message format',
       category: 'Errors',
       recommended: false,
-      url:
-        'https://formatjs.io/docs/tooling/linter#blacklist-elements',
+      url: 'https://formatjs.io/docs/tooling/linter#blacklist-elements',
     },
     fixable: 'code',
     schema: [

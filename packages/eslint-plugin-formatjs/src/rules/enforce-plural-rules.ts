@@ -93,8 +93,7 @@ const rule: Rule.RuleModule = {
         'Enforce plural rules to always specify certain categories like `one`/`other`',
       category: 'Errors',
       recommended: false,
-      url:
-        'https://formatjs.io/docs/tooling/linter#enforce-plural-rules',
+      url: 'https://formatjs.io/docs/tooling/linter#enforce-plural-rules',
     },
     fixable: 'code',
     schema: [

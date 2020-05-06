@@ -60,8 +60,7 @@ const rule: Rule.RuleModule = {
       description: 'Disallow offset in plural rules',
       category: 'Errors',
       recommended: false,
-      url:
-        'https://formatjs.io/docs/tooling/linter#no-offset',
+      url: 'https://formatjs.io/docs/tooling/linter#no-offset',
     },
     fixable: 'code',
   },

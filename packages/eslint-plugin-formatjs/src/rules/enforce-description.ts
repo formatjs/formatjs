@@ -42,8 +42,7 @@ export default {
       description: 'Enforce description in message descriptor',
       category: 'Errors',
       recommended: false,
-      url:
-        'https://formatjs.io/docs/tooling/linter#enforce-description',
+      url: 'https://formatjs.io/docs/tooling/linter#enforce-description',
     },
     fixable: 'code',
     schema: [

@@ -42,8 +42,7 @@ const rule: Rule.RuleModule = {
       description: 'Enforce defaultMessage in message descriptor',
       category: 'Errors',
       recommended: false,
-      url:
-        'https://formatjs.io/docs/tooling/linter#enforce-default-message',
+      url: 'https://formatjs.io/docs/tooling/linter#enforce-default-message',
     },
     fixable: 'code',
     schema: [
