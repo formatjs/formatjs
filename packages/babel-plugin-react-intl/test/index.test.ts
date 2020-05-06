@@ -12,6 +12,7 @@ const skipOutputTests = [
   '.DS_Store',
   'extractSourceLocation',
   'extractFromFormatMessageCall',
+  'extractFromFormatMessageCallStateless',
   'moduleSourceName',
   'inline',
   'icuSyntax',

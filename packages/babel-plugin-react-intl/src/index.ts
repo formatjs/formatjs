@@ -17,7 +17,6 @@ import {
   JSXIdentifier,
   JSXExpressionContainer,
   Identifier,
-  ObjectPattern,
   ObjectProperty,
   SourceLocation,
   Expression,
@@ -267,18 +266,28 @@ function referencesImport(
 
 function isFormatMessageDestructuring(scope: Scope) {
   const binding = scope.getBinding('formatMessage');
-  const block = scope.block as t.FunctionDeclaration;
-
+  const {block} = scope;
+  const declNode = binding?.path.node;
   // things like `const {formatMessage} = intl; formatMessage(...)`
-  if (binding && t.isVariableDeclarator(binding.path.node)) {
-    const nodeObject = binding.path.node.id as ObjectPattern;
-    return nodeObject.properties.find(
-      (value: any) => value.key.name === 'intl'
+  if (t.isVariableDeclarator(declNode)) {
+    // things like `const {formatMessage} = useIntl(); formatMessage(...)`
+    if (t.isCallExpression(declNode.init)) {
+      if (t.isIdentifier(declNode.init.callee)) {
+        return declNode.init.callee.name === 'useIntl';
+      }
+    }
+    return (
+      t.isObjectPattern(declNode.id) &&
+      declNode.id.properties.find((value: any) => value.key.name === 'intl')
     );
   }
 
   // things like const fn = ({ intl: { formatMessage }}) => { formatMessage(...) }
-  if (t.isObjectPattern(block.params[0])) {
+  if (
+    t.isFunctionDeclaration(block) &&
+    block.params.length &&
+    t.isObjectPattern(block.params[0])
+  ) {
     return block.params[0].properties.find(
       (value: any) => value.key.name === 'intl'
     );

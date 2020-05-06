@@ -1,4 +1,4 @@
-import {FormattedMessage, injectIntl} from 'react-intl';
+import {FormattedMessage, injectIntl, useIntl} from 'react-intl';
 
 import React from 'react';
 
@@ -11,6 +11,15 @@ function myFunction(param1, { formatMessage, formatDate }) {
 }
 
 const child = myFunction(filterable, intl);
+
+function SFC () {
+  const {formatMessage} = useIntl()
+  return formatMessage({
+    id: 'hook',
+    defaultMessage: 'hook',
+    description: 'hook'
+  })
+}
 
 const Foo = ({intl: {formatMessage}}) => {
   const msgs = {
