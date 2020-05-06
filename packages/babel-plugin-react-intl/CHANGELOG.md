@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.5.6](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.5.5...babel-plugin-react-intl@7.5.6) (2020-05-06)
+
+
+### Bug Fixes
+
+* **babel-plugin-react-intl:** extract from `useIntl`, fix [#1633](https://github.com/formatjs/formatjs/issues/1633) ([3f14e5d](https://github.com/formatjs/formatjs/commit/3f14e5da118f51ab350037c5ff1a05701e9779e9))
+
+
+
+
+
 ## [7.5.5](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.5.4...babel-plugin-react-intl@7.5.5) (2020-05-05)
 
 **Note:** Version bump only for package babel-plugin-react-intl
