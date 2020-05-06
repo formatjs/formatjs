@@ -271,7 +271,7 @@ exclude: /node_modules\/(?!react-intl|intl-messageformat|intl-messageformat-pars
 
 # Example Apps
 
-There are several [**runnable example apps**](https://github.com/formatjs/react-intl/tree/master/examples) in this Git repo. These are a great way to see React Intl's [core concepts](#core-concepts) in action in simplified applications.
+There are several [**runnable example apps**](https://github.com/formatjs/formatjs/tree/master/packages/react-intl/examples) in this Git repo. These are a great way to see React Intl's [core concepts](#core-concepts) in action in simplified applications.
 
 # API Reference
 
