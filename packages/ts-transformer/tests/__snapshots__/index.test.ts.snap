@@ -207,6 +207,66 @@ exports.default = react_intl_1.injectIntl(Foo);
 }
 `;
 
+exports[`emit asserts for extractFromFormatMessageStateless 1`] = `
+Object {
+  "code": "\\"use strict\\";
+Object.defineProperty(exports, \\"__esModule\\", { value: true });
+const react_intl_1 = require(\\"react-intl\\");
+const react_1 = require(\\"react\\");
+function myFunction(param1, { formatMessage, formatDate }) {
+    return formatMessage({
+        id: \\"inline1\\",
+        defaultMessage: \\"Hello params!\\"
+    }) + formatDate(new Date());
+}
+const child = myFunction(filterable, intl);
+function SFC() {
+    const { formatMessage } = react_intl_1.useIntl();
+    return formatMessage({
+        id: \\"hook\\",
+        defaultMessage: \\"hook\\"
+    });
+}
+const Foo = ({ intl: { formatMessage } }) => {
+    const msgs = {
+        qux: formatMessage({
+            id: \\"foo.bar.quux\\",
+            defaultMessage: \\"Hello Stateless!\\"
+        }),
+    };
+    return (react_1.default.createElement(\\"div\\", null,
+        react_1.default.createElement(\\"h1\\", null, msgs.header),
+        react_1.default.createElement(\\"p\\", null, msgs.content),
+        react_1.default.createElement(\\"span\\", null,
+            react_1.default.createElement(react_intl_1.FormattedMessage, { id: 'foo', defaultMessage: 'bar' }))));
+};
+exports.default = react_intl_1.injectIntl(Foo);
+",
+  "msgs": Array [
+    Object {
+      "defaultMessage": "Hello params!",
+      "description": "A stateless message",
+      "id": "inline1",
+    },
+    Object {
+      "defaultMessage": "hook",
+      "description": "hook",
+      "id": "hook",
+    },
+    Object {
+      "defaultMessage": "Hello Stateless!",
+      "description": "A stateless message",
+      "id": "foo.bar.quux",
+    },
+    Object {
+      "defaultMessage": "bar",
+      "description": "baz",
+      "id": "foo",
+    },
+  ],
+}
+`;
+
 exports[`emit asserts for formatMessageCall 1`] = `
 Object {
   "code": "\\"use strict\\";

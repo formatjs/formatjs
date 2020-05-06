@@ -11,6 +11,9 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
   extractFromFormatMessage: {
     extractFromFormatMessageCall: true,
   },
+  extractFromFormatMessageStateless: {
+    extractFromFormatMessageCall: true,
+  },
   extractSourceLocation: {
     extractSourceLocation: true,
   },

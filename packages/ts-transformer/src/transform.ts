@@ -174,7 +174,7 @@ function extractMessageDescriptor(
     }
   });
   // We extracted nothing
-  if (!Object.keys(msg).length) {
+  if (!Object.entries(msg).find(([_, v]) => v)) {
     return;
   }
   if (!msg.id && overrideIdFn) {
@@ -206,19 +206,27 @@ function extractMessageDescriptor(
   return msg;
 }
 
+/**
+ * Check if node is `intl.formatMessage` node
+ * @param node
+ * @param sf
+ */
 function isIntlFormatMessageCall(node: ts.CallExpression, sf: ts.SourceFile) {
   const method = node.expression;
-  if (!ts.isPropertyAccessExpression(method)) {
-    return false;
+
+  // Handle intl.formatMessage()
+  if (ts.isPropertyAccessExpression(method)) {
+    return (
+      (method.name.getText(sf) === 'formatMessage' &&
+        ts.isIdentifier(method.expression) &&
+        method.expression.getText(sf) === 'intl') ||
+      (ts.isPropertyAccessExpression(method.expression) &&
+        method.expression.name.getText(sf) === 'intl')
+    );
   }
 
-  return (
-    (method.name.getText(sf) === 'formatMessage' &&
-      ts.isIdentifier(method.expression) &&
-      method.expression.getText(sf) === 'intl') ||
-    (ts.isPropertyAccessExpression(method.expression) &&
-      method.expression.name.getText(sf) === 'intl')
-  );
+  // Handle formatMessage()
+  return ts.isIdentifier(method) && method.getText(sf) === 'formatMessage';
 }
 
 function extractMessageFromJsxComponent(
