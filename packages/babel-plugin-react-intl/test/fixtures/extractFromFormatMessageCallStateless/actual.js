@@ -2,6 +2,16 @@ import {FormattedMessage, injectIntl} from 'react-intl';
 
 import React from 'react';
 
+function myFunction(param1, { formatMessage, formatDate }) {
+  return formatMessage({
+    id: 'inline1',
+    defaultMessage: 'Hello params!',
+    description: 'A stateless message',
+  }) + formatDate(new Date())
+}
+
+const child = myFunction(filterable, intl);
+
 const Foo = ({intl: {formatMessage}}) => {
   const msgs = {
     qux: formatMessage({
