@@ -70,7 +70,7 @@ const rule: Rule.RuleModule = {
       category: 'Errors',
       recommended: false,
       url:
-        'https://github.com/formatjs/formatjs/tree/master/packages/eslint-plugin-formatjs#no-camel-case',
+        'https://formatjs.io/docs/tooling/linter#no-camel-case',
     },
     fixable: 'code',
   },

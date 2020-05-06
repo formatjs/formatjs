@@ -86,7 +86,7 @@ export function createIntl(
       onError(
         new ReactIntlError(
           ReactIntlErrorCode.INVALID_CONFIG,
-          `"locale" was not configured, using "${defaultLocale}" as fallback. See https://github.com/formatjs/react-intl/blob/master/docs/API.md#intlshape for more details`
+          `"locale" was not configured, using "${defaultLocale}" as fallback. See https://formatjs.io/docs/react-intl/api#intlshape for more details`
         )
       );
     }
@@ -100,7 +100,7 @@ export function createIntl(
     onError(
       new ReactIntlError(
         ReactIntlErrorCode.MISSING_DATA,
-        `Missing locale data for locale: "${locale}" in Intl.NumberFormat. Using default locale: "${defaultLocale}" as fallback. See https://github.com/formatjs/react-intl/blob/master/docs/Getting-Started.md#runtime-requirements for more details`
+        `Missing locale data for locale: "${locale}" in Intl.NumberFormat. Using default locale: "${defaultLocale}" as fallback. See https://formatjs.io/docs/react-intl#runtime-requirements for more details`
       )
     );
   } else if (
@@ -110,7 +110,7 @@ export function createIntl(
     onError(
       new ReactIntlError(
         ReactIntlErrorCode.MISSING_DATA,
-        `Missing locale data for locale: "${locale}" in Intl.DateTimeFormat. Using default locale: "${defaultLocale}" as fallback. See https://github.com/formatjs/react-intl/blob/master/docs/Getting-Started.md#runtime-requirements for more details`
+        `Missing locale data for locale: "${locale}" in Intl.DateTimeFormat. Using default locale: "${defaultLocale}" as fallback. See https://formatjs.io/docs/react-intl#runtime-requirements for more details`
       )
     );
   }

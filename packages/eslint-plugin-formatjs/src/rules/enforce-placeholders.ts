@@ -105,7 +105,7 @@ const rule: Rule.RuleModule = {
       category: 'Errors',
       recommended: true,
       url:
-        'https://github.com/formatjs/formatjs/tree/master/packages/eslint-plugin-formatjs#enforce-placeholders',
+        'https://formatjs.io/docs/tooling/linter#enforce-placeholders',
     },
     fixable: 'code',
   },

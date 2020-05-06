@@ -94,7 +94,7 @@ const rule: Rule.RuleModule = {
       category: 'Errors',
       recommended: false,
       url:
-        'https://github.com/formatjs/formatjs/tree/master/packages/eslint-plugin-formatjs#enforce-plural-rules',
+        'https://formatjs.io/docs/tooling/linter#enforce-plural-rules',
     },
     fixable: 'code',
     schema: [
