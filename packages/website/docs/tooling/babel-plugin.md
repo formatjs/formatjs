@@ -92,5 +92,3 @@ require('@babel/core').transform('code', {
   plugins: ['react-intl'],
 }); // => { code, map, ast, metadata['react-intl'].messages, metadata['react-intl'].meta };
 ```
-
-[react intl]: https://github.com/formatjs/react-intl

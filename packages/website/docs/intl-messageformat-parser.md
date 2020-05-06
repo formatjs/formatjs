@@ -3,16 +3,16 @@ id: intl-messageformat-parser
 title: Intl MessageFormat Parser
 ---
 
-Parses [ICU Message strings][icu] into an AST via JavaScript.
+Parses [ICU Message strings](http://userguide.icu-project.org/formatparse/messages) into an AST via JavaScript.
 
 [![npm Version](https://badgen.net/npm/v/intl-messageformat-parser)](https://www.npmjs.com/package/intl-messageformat-parser)
 [![size](https://badgen.net/bundlephobia/minzip/intl-messageformat-parser)](https://bundlephobia.com/result?p=intl-messageformat-parser)
 
 ## Overview
 
-This package implements a parser in JavaScript that parses the industry standard [ICU Message strings][icu] — used for internationalization — into an AST. The produced AST can then be used by a compiler, like [`intl-messageformat`][intl-mf], to produce localized formatted strings for display to users.
+This package implements a parser in JavaScript that parses the industry standard [ICU Message strings](http://userguide.icu-project.org/formatparse/messages) — used for internationalization — into an AST. The produced AST can then be used by a compiler, like [`intl-messageformat`](./intl-messageformat.md), to produce localized formatted strings for display to users.
 
-This parser is written in [PEG.js][], a parser generator for JavaScript.
+This parser is written in [PEG.js](https://pegjs.org/), a parser generator for JavaScript.
 
 ## Usage
 
@@ -77,7 +77,3 @@ normal_msg x 27,641 ops/sec ±3.93% (86 runs sampled)
 simple_msg x 100,764 ops/sec ±5.35% (79 runs sampled)
 string_msg x 120,362 ops/sec ±7.11% (74 runs sampled)
 ```
-
-[icu]: http://userguide.icu-project.org/formatparse/messages
-[intl-mf]: https://github.com/formatjs/formatjs
-[peg.js]: https://pegjs.org/

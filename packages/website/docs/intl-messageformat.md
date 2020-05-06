@@ -8,8 +8,7 @@ global.IntlMessageFormat = IntlMessageFormat;
 
 Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.
 
-[![npm Version][npm-badge]][npm]
-
+[![npm Version](https://img.shields.io/npm/v/intl-messageformat.svg?style=flat-square)](https://www.npmjs.org/package/intl-messageformat)
 ![`intl-messageformat` minzipped size](https://badgen.net/badgesize/normal/https://unpkg.com/intl-messageformat/dist/umd/intl-messageformat.min.js?label=intl-messageformat+minzipped+size)
 
 ## Overview
@@ -18,13 +17,13 @@ Formats ICU Message strings with number, date, plural, and select placeholders t
 
 This package aims to provide a way for you to manage and format your JavaScript app's string messages into localized strings for people using your app. You can use this package in the browser and on the server via Node.js.
 
-This implementation is based on the [Strawman proposal][strawman], but there are a few places this implementation diverges.
+This implementation is based on the [Strawman proposal](http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting), but there are a few places this implementation diverges.
 
-_Note: This `IntlMessageFormat` API may change to stay in sync with ECMA-402, but this package will follow [semver][]._
+_Note: This `IntlMessageFormat` API may change to stay in sync with ECMA-402, but this package will follow [semver](http://semver.org/)._
 
 ### How It Works
 
-Messages are provided into the constructor as a `String` message, or a [pre-parsed AST][parser] object.
+Messages are provided into the constructor as a `String` message, or a [pre-parsed AST](./intl-messageformat-parser.md) object.
 
 ```tsx
 const msg = new IntlMessageFormat(message, locales, [formats], [opts]);
@@ -66,15 +65,15 @@ function () {
 
 ### Message Syntax
 
-The message syntax that this package uses is not proprietary, in fact it's a common standard message syntax that works across programming languages and one that professional translators are familiar with. This package uses the **[ICU Message syntax][icu]** and works for all [CLDR languages][cldr] which have pluralization rules defined.
+The message syntax that this package uses is not proprietary, in fact it's a common standard message syntax that works across programming languages and one that professional translators are familiar with. This package uses the **[ICU Message syntax](http://userguide.icu-project.org/formatparse/messages)** and works for all [CLDR languages](http://cldr.unicode.org/) which have pluralization rules defined.
 
 ### Features
 
-- Uses industry standards: [ICU Message syntax][icu] and [CLDR locale data][cldr].
+- Uses industry standards: [ICU Message syntax](http://userguide.icu-project.org/formatparse/messages) and [CLDR locale data](http://cldr.unicode.org/).
 
 - Supports **plural**, **select**, and **selectordinal** message arguments.
 
-- Formats numbers and dates/times in messages using [`Intl.NumberFormat`][intl-nf] and [`Intl.DateTimeFormat`][intl-dtf], respectively.
+- Formats numbers and dates/times in messages using [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat), respectively.
 
 - Optimized for repeated calls to an `IntlMessageFormat` instance's `format()` method.
 
@@ -86,11 +85,11 @@ The message syntax that this package uses is not proprietary, in fact it's a com
 
 ### Modern `Intl` Dependency
 
-This package assumes that the [`Intl`][intl] global object exists in the runtime. `Intl` is present in all modern browsers (IE11+) and Node (with full ICU). The `Intl` methods we rely on are:
+This package assumes that the [`Intl`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) global object exists in the runtime. `Intl` is present in all modern browsers (IE11+) and Node (with full ICU). The `Intl` methods we rely on are:
 
-1. `Intl.NumberFormat` for number formatting (can be polyfilled using [Intl.js][])
-2. `Intl.DateTimeFormat` for date time formatting (can be polyfilled using [Intl.js][])
-3. `Intl.PluralRules` for plural/ordinal formatting (can be polyfilled using [@formatjs/intl-pluralrules][])
+1. `Intl.NumberFormat` for number formatting (can be polyfilled using [@formatjs/intl-unified-numberformat](./polyfills/intl-numberformat.md))
+2. `Intl.DateTimeFormat` for date time formatting (can be polyfilled using [Intl.js](https://github.com/andyearnshaw/Intl.js/))
+3. `Intl.PluralRules` for plural/ordinal formatting (can be polyfilled using [@formatjs/intl-pluralrules](./polyfills/intl-pluralrules.md))
 
 ### Loading Intl MessageFormat in a browser
 
@@ -318,18 +317,3 @@ complex msg format x 799 ops/sec ±9.38% (55 runs sampled)
 complex msg w/ formatters format x 1,878 ops/sec ±16.63% (64 runs sampled)
 complex preparsed msg w/ formatters format x 26,482 ops/sec ±2.55% (84 runs sampled)
 ```
-
-[npm]: https://www.npmjs.org/package/intl-messageformat
-[npm-badge]: https://img.shields.io/npm/v/intl-messageformat.svg?style=flat-square
-[strawman]: http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting
-[parser]: https://github.com/formatjs/formatjs/blob/master/packages/intl-messageformat-parser
-[icu]: http://userguide.icu-project.org/formatparse/messages
-[cldr]: http://cldr.unicode.org/
-[intl]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl
-[intl-nf]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
-[intl-dtf]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-[intl-node]: https://github.com/joyent/node/issues/6371
-[intl.js]: https://github.com/andyearnshaw/Intl.js
-[rawgit]: https://rawgit.com/
-[semver]: http://semver.org/
-[@formatjs/intl-pluralrules]: https://github.com/formatjs/formatjs

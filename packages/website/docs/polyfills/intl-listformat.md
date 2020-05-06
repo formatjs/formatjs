@@ -5,7 +5,7 @@ title: Intl.ListFormat
 
 A spec-compliant polyfill/ponyfill for Intl.ListFormat fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
 
-[![npm Version][npm-badge]][npm]
+[![npm Version](https://img.shields.io/npm/v/@formatjs/intl-listformat.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-listformat)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-listformat)
 
 ## Installation
@@ -46,6 +46,3 @@ import '@formatjs/intl-listformat/polyfill-locales'
 ## Tests
 
 This library is fully [test262](https://github.com/tc39/test262/tree/master/test/intl402/ListFormat)-compliant.
-
-[npm]: https://www.npmjs.org/package/@formatjs/intl-listformat
-[npm-badge]: https://img.shields.io/npm/v/@formatjs/intl-listformat.svg?style=flat-square
