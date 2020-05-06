@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.7](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@1.1.6...@formatjs/ts-transformer@1.1.7) (2020-05-06)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** expand extraction to `formatMessage()` as well ([146f1d3](https://github.com/formatjs/formatjs/commit/146f1d39fe0f42cba04dc25c391d03a5fbb39d28))
+
+
+
+
+
 ## 1.1.6 (2020-04-28)
 
 **Note:** Version bump only for package @formatjs/ts-transformer
