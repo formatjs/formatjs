@@ -19,23 +19,12 @@ export interface Opts {
    */
   extractSourceLocation?: boolean;
   /**
-   * The ES6 module source name of the React Intl package. Defaults to: `"react-intl"`,
-   * but can be changed to another name/path to React Intl.
-   *
-   * @type {string}
-   * @memberof Opts
-   */
-  moduleSourceName?: string;
-  /**
    * Remove `defaultMessage` field in generated js after extraction.
    */
   removeDefaultMessage?: boolean;
   /**
    * Additional component names to extract messages from,
-   * e.g: `['FormattedFooBarMessage']`. **NOTE**: By default we check
-   * for the fact that `FormattedMessage` is
-   * imported from `moduleSourceName` to make sure variable alias works.
-   * This option does not do that so it's less safe.
+   * e.g: `['FormattedFooBarMessage']`.
    */
   additionalComponentNames?: string[];
   /**
@@ -59,79 +48,40 @@ export interface Opts {
    * @memberof Opts
    */
   overrideIdFn?: InterpolateNameFn | string;
-  /**
-   * TS Compiler program
-   */
-  program: ts.Program;
 }
 
 const DEFAULT_OPTS: Omit<Opts, 'program'> = {
   onMsgExtracted: () => undefined,
 };
 
-function getImportSpecifier(program: ts.Program, node: ts.Node) {
-  const symbol = program.getTypeChecker().getSymbolAtLocation(node);
-  if (!symbol) {
-    return;
-  }
-  const decls = symbol.getDeclarations();
-  if (!Array.isArray(decls) || decls.length !== 1) {
-    return;
-  }
-  return decls[0] as ts.ImportSpecifier;
-}
-
-function referenceImport(
-  moduleSourceName: string,
-  importSpecifier?: ts.ImportSpecifier
-): boolean {
+function isMultipleMessageDecl(node: ts.CallExpression) {
   return (
-    !!importSpecifier &&
-    ts.isNamedImports(importSpecifier.parent) &&
-    ts.isImportClause(importSpecifier.parent.parent) &&
-    ts.isImportDeclaration(importSpecifier.parent.parent.parent) &&
-    (importSpecifier.parent.parent.parent.moduleSpecifier as ts.StringLiteral)
-      .text === moduleSourceName
-  );
-}
-
-function isMultipleMessageDecl(
-  node: ts.CallExpression,
-  program: ts.Program,
-  moduleSourceName: string
-) {
-  const importSpecifier = getImportSpecifier(program, node.expression);
-  if (!importSpecifier) {
-    return false;
-  }
-  return (
-    referenceImport(moduleSourceName, importSpecifier) &&
-    importSpecifier.name.text === 'defineMessages'
+    ts.isIdentifier(node.expression) &&
+    node.expression.text === 'defineMessages'
   );
 }
 
 function isSingularMessageDecl(
   node: ts.CallExpression | ts.JsxOpeningElement | ts.JsxSelfClosingElement,
-  program: ts.Program,
-  moduleSourceName: string,
   additionalComponentNames: string[]
 ) {
-  const importSpecifier = getImportSpecifier(
-    program,
-    ts.isCallExpression(node) ? node.expression : node.tagName
-  );
-  if (!importSpecifier) {
-    return false;
-  }
   const compNames = new Set([
     '_',
     'FormattedMessage',
     ...additionalComponentNames,
   ]);
-  return (
-    referenceImport(moduleSourceName, importSpecifier) &&
-    compNames.has(importSpecifier.name.text)
-  );
+  let fnName = '';
+  if (ts.isCallExpression(node) && ts.isIdentifier(node.expression)) {
+    fnName = node.expression.text;
+  } else if (ts.isJsxOpeningElement(node) && ts.isIdentifier(node.tagName)) {
+    fnName = node.tagName.text;
+  } else if (
+    ts.isJsxSelfClosingElement(node) &&
+    ts.isIdentifier(node.tagName)
+  ) {
+    fnName = node.tagName.text;
+  }
+  return compNames.has(fnName);
 }
 
 function extractMessageDescriptor(
@@ -139,8 +89,8 @@ function extractMessageDescriptor(
     | ts.ObjectLiteralExpression
     | ts.JsxOpeningElement
     | ts.JsxSelfClosingElement,
-  sf: ts.SourceFile,
-  {overrideIdFn, extractSourceLocation}: Opts
+  {overrideIdFn, extractSourceLocation}: Opts,
+  sf: ts.SourceFile
 ): MessageDescriptor | undefined {
   let properties: ts.NodeArray<ts.ObjectLiteralElement> | undefined = undefined;
   if (ts.isObjectLiteralExpression(node)) {
@@ -152,16 +102,22 @@ function extractMessageDescriptor(
   if (!properties) {
     return;
   }
+
   properties.forEach(prop => {
     const {name} = prop;
     const initializer =
       ts.isPropertyAssignment(prop) || ts.isJsxAttribute(prop)
         ? prop.initializer
         : undefined;
-    if (!initializer || !ts.isStringLiteral(initializer) || !name) {
+    if (
+      !initializer ||
+      !ts.isStringLiteral(initializer) ||
+      !name ||
+      !ts.isIdentifier(name)
+    ) {
       return;
     }
-    switch (name.getText(sf)) {
+    switch (name.text) {
       case 'id':
         msg.id = initializer.text;
         break;
@@ -199,8 +155,8 @@ function extractMessageDescriptor(
     return {
       ...msg,
       file: sf.fileName,
-      start: node.getStart(sf),
-      end: node.getEnd(),
+      start: node.pos,
+      end: node.end,
     };
   }
   return msg;
@@ -211,42 +167,34 @@ function extractMessageDescriptor(
  * @param node
  * @param sf
  */
-function isIntlFormatMessageCall(node: ts.CallExpression, sf: ts.SourceFile) {
+function isIntlFormatMessageCall(node: ts.CallExpression) {
   const method = node.expression;
 
   // Handle intl.formatMessage()
   if (ts.isPropertyAccessExpression(method)) {
     return (
-      (method.name.getText(sf) === 'formatMessage' &&
+      (method.name.text === 'formatMessage' &&
         ts.isIdentifier(method.expression) &&
-        method.expression.getText(sf) === 'intl') ||
+        method.expression.text === 'intl') ||
       (ts.isPropertyAccessExpression(method.expression) &&
-        method.expression.name.getText(sf) === 'intl')
+        method.expression.name.text === 'intl')
     );
   }
 
   // Handle formatMessage()
-  return ts.isIdentifier(method) && method.getText(sf) === 'formatMessage';
+  return ts.isIdentifier(method) && method.text === 'formatMessage';
 }
 
 function extractMessageFromJsxComponent(
   node: ts.JsxOpeningElement | ts.JsxSelfClosingElement,
-  program: ts.Program,
-  sf: ts.SourceFile,
-  opts: Opts
+  opts: Opts,
+  sf: ts.SourceFile
 ): typeof node | undefined {
-  const {moduleSourceName = 'react-intl', onMsgExtracted} = opts;
-  if (
-    !isSingularMessageDecl(
-      node,
-      program,
-      moduleSourceName,
-      opts.additionalComponentNames || []
-    )
-  ) {
+  const {onMsgExtracted} = opts;
+  if (!isSingularMessageDecl(node, opts.additionalComponentNames || [])) {
     return;
   }
-  const msg = extractMessageDescriptor(node, sf, opts);
+  const msg = extractMessageDescriptor(node, opts, sf);
   if (!msg) {
     return;
   }
@@ -285,12 +233,11 @@ function setAttributesInObject(
 
 function extractMessagesFromCallExpression(
   node: ts.CallExpression,
-  program: ts.Program,
-  sf: ts.SourceFile,
-  opts: Opts
+  opts: Opts,
+  sf: ts.SourceFile
 ): typeof node | undefined {
-  const {moduleSourceName = 'react-intl', onMsgExtracted} = opts;
-  if (isMultipleMessageDecl(node, program, moduleSourceName)) {
+  const {onMsgExtracted} = opts;
+  if (isMultipleMessageDecl(node)) {
     const [descriptorsObj, ...restArgs] = node.arguments;
     if (ts.isObjectLiteralExpression(descriptorsObj)) {
       const properties = descriptorsObj.properties as ts.NodeArray<
@@ -300,8 +247,8 @@ function extractMessagesFromCallExpression(
         .map(prop =>
           extractMessageDescriptor(
             prop.initializer as ts.ObjectLiteralExpression,
-            sf,
-            opts
+            opts,
+            sf
           )
         )
         .filter((msg): msg is MessageDescriptor => !!msg);
@@ -337,17 +284,12 @@ function extractMessagesFromCallExpression(
       return newNode;
     }
   } else if (
-    isSingularMessageDecl(
-      node,
-      program,
-      moduleSourceName,
-      opts.additionalComponentNames || []
-    ) ||
-    (opts.extractFromFormatMessageCall && isIntlFormatMessageCall(node, sf))
+    isSingularMessageDecl(node, opts.additionalComponentNames || []) ||
+    (opts.extractFromFormatMessageCall && isIntlFormatMessageCall(node))
   ) {
     const [descriptorsObj, ...restArgs] = node.arguments;
     if (ts.isObjectLiteralExpression(descriptorsObj)) {
-      const msg = extractMessageDescriptor(descriptorsObj, sf, opts);
+      const msg = extractMessageDescriptor(descriptorsObj, opts, sf);
       if (!msg) {
         return;
       }
@@ -372,14 +314,13 @@ function extractMessagesFromCallExpression(
 
 export function transform(opts: Opts) {
   opts = {...DEFAULT_OPTS, ...opts};
-  const {program} = opts;
-  return (ctx: ts.TransformationContext): ts.Transformer<ts.SourceFile> => {
+  const transformFn: ts.TransformerFactory<ts.SourceFile> = ctx => {
     function getVisitor(sf: ts.SourceFile) {
       const visitor: ts.Visitor = (node: ts.Node): ts.Node => {
         const newNode = ts.isCallExpression(node)
-          ? extractMessagesFromCallExpression(node, program, sf, opts)
+          ? extractMessagesFromCallExpression(node, opts, sf)
           : ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)
-          ? extractMessageFromJsxComponent(node, program, sf, opts)
+          ? extractMessageFromJsxComponent(node, opts, sf)
           : undefined;
 
         return newNode || ts.visitEachChild(node, visitor, ctx);
@@ -389,4 +330,6 @@ export function transform(opts: Opts) {
 
     return (sf: ts.SourceFile) => ts.visitNode(sf, getVisitor(sf));
   };
+
+  return transformFn;
 }

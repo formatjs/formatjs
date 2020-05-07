@@ -1,5 +1,4 @@
 import * as ts from 'typescript';
-import {Project} from 'ts-morph';
 import {transform as intlTransformer} from './src';
 
 declare module 'fs-extra' {
@@ -23,25 +22,29 @@ export default function compile(
   input: string,
   compilerOptions: ts.CompilerOptions = CJS_CONFIG
 ) {
-  const project = new Project({
-    compilerOptions,
-  });
-  project.addExistingSourceFiles(input);
+  const compilerHost = ts.createCompilerHost(compilerOptions);
+  const program = ts.createProgram([input], compilerOptions, compilerHost);
 
   const msgs = {};
 
-  project.emit({
-    customTransformers: {
-      before: [
-        intlTransformer({
-          overrideIdFn: '[hash:base64:10]',
-          program: project.getProgram().compilerObject,
-        }),
-      ],
-    },
+  let emitResult = program.emit(undefined, undefined, undefined, undefined, {
+    before: [
+      intlTransformer({
+        overrideIdFn: '[hash:base64:10]',
+      }),
+    ],
   });
-  const diagnostics = project.getPreEmitDiagnostics();
 
-  console.log(project.formatDiagnosticsWithColorAndContext(diagnostics));
+  let allDiagnostics = ts
+    .getPreEmitDiagnostics(program)
+    .concat(emitResult.diagnostics);
+  console.log(
+    ts.formatDiagnosticsWithColorAndContext(allDiagnostics, {
+      getCanonicalFileName: fileName => fileName,
+      getCurrentDirectory: () => process.cwd(),
+      getNewLine: () => ts.sys.newLine,
+    })
+  );
+
   return msgs;
 }

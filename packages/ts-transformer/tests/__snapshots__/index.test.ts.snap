@@ -20,7 +20,7 @@ Object {
   "end": 222,
   "file": StringContaining "extractSourceLocation.tsx",
   "id": "foo.bar.baz",
-  "start": 155,
+  "start": 154,
 }
 `;
 
@@ -55,12 +55,18 @@ const react_1 = require(\\"react\\");
 function CustomMessage() { }
 class Foo extends react_1.Component {
     render() {
-        return (react_1.default.createElement(CustomMessage, { id: \\"greeting-world\\", description: \\"Greeting to the world\\", defaultMessage: \\"Hello World!\\" }));
+        return (react_1.default.createElement(CustomMessage, { id: 'greeting-world', defaultMessage: 'Hello World!' }));
     }
 }
 exports.default = Foo;
 ",
-  "msgs": Array [],
+  "msgs": Array [
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": "Greeting to the world",
+      "id": "greeting-world",
+    },
+  ],
 }
 `;
 
@@ -214,10 +220,10 @@ Object.defineProperty(exports, \\"__esModule\\", { value: true });
 const react_intl_1 = require(\\"react-intl\\");
 const react_1 = require(\\"react\\");
 function myFunction(param1, { formatMessage, formatDate }) {
-    return formatMessage({
+    return (formatMessage({
         id: \\"inline1\\",
         defaultMessage: \\"Hello params!\\"
-    }) + formatDate(new Date());
+    }) + formatDate(new Date()));
 }
 const child = myFunction(filterable, intl);
 function SFC() {
@@ -324,14 +330,12 @@ class Foo extends react_1.Component {
         return (react_1.default.createElement(\\"div\\", null,
             react_1.default.createElement(react_intl_1.FormattedMessage, { id: 'foo.bar.baz', defaultMessage: 'Hello World!' }),
             macro_1._({
-                id: 'header',
-                defaultMessage: 'Hello World!',
-                description: 'The default message',
+                id: \\"header\\",
+                defaultMessage: \\"Hello World!\\"
             }),
             macro_1._({
-                id: 'header2',
-                defaultMessage: 'Hello World!',
-                description: 'The default message',
+                id: \\"header2\\",
+                defaultMessage: \\"Hello World!\\"
             })));
     }
 }
@@ -343,45 +347,15 @@ exports.default = Foo;
       "description": "The default message.",
       "id": "foo.bar.baz",
     },
-  ],
-}
-`;
-
-exports[`emit asserts for moduleSourceName 1`] = `
-Object {
-  "code": "\\"use strict\\";
-Object.defineProperty(exports, \\"__esModule\\", { value: true });
-const react_1 = require(\\"react\\");
-const react_i18n_1 = require(\\"react-i18n\\");
-const react_intl_1 = require(\\"react-intl\\");
-// These should be ignored because the \`moduleSourceName\` is configured to be:
-// \`react-i18n\`.
-const msgs = react_intl_1.defineMessages({
-    header: {
-        id: 'header',
-        defaultMessage: 'Hello World!',
-        description: 'The default message',
-    },
-    content: {
-        id: 'content',
-        defaultMessage: 'Hello Nurse!',
-        description: 'Another message',
-    },
-});
-class Foo extends react_1.Component {
-    render() {
-        return (react_1.default.createElement(\\"div\\", null,
-            react_1.default.createElement(react_i18n_1.FormattedMessage, { id: 'foo.bar.baz', defaultMessage: 'Hello World!' }),
-            msgs));
-    }
-}
-exports.default = Foo;
-",
-  "msgs": Array [
     Object {
       "defaultMessage": "Hello World!",
-      "description": "The default message.",
-      "id": "foo.bar.baz",
+      "description": "The default message",
+      "id": "header",
+    },
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": "The default message",
+      "id": "header2",
     },
   ],
 }

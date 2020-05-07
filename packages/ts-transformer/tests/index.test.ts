@@ -1,7 +1,10 @@
 import {join} from 'path';
-import {Project} from 'ts-morph';
 import {transform, Opts, MessageDescriptor} from '../src';
 import * as ts from 'typescript';
+import {readFile as readFileAsync} from 'fs';
+import {promisify} from 'util';
+
+const readFile = promisify(readFileAsync);
 
 const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
   additionalComponentNames: {
@@ -20,9 +23,6 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
   formatMessageCall: {},
   FormattedMessage: {},
   inline: {},
-  moduleSourceName: {
-    moduleSourceName: 'react-i18n',
-  },
   overrideIdFn: {
     overrideIdFn: (id, defaultMessage, description) => {
       return `HELLO.${id}.${defaultMessage!.length}.${typeof description}`;
@@ -45,8 +45,8 @@ describe('emit asserts for', function () {
   const filenames = Object.keys(FILES_TO_TESTS);
   filenames.forEach(function (fn) {
     if (fn === 'extractSourceLocation') {
-      it(`[special] ${fn}`, function () {
-        const output = compile(
+      it(`[special] ${fn}`, async function () {
+        const output = await compile(
           join(FIXTURES_DIR, `${fn}.tsx`),
           FILES_TO_TESTS[fn]
         );
@@ -56,14 +56,14 @@ describe('emit asserts for', function () {
         expect(output.msgs[0]).toMatchSnapshot({
           defaultMessage: 'Hello World!',
           id: 'foo.bar.baz',
-          start: 155,
+          start: 154,
           end: 222,
           file: expect.stringContaining('extractSourceLocation.tsx'),
         });
       });
     } else {
-      it(fn, function () {
-        const output = compile(
+      it(fn, async function () {
+        const output = await compile(
           join(FIXTURES_DIR, `${fn}.tsx`),
           FILES_TO_TESTS[fn]
         );
@@ -73,8 +73,11 @@ describe('emit asserts for', function () {
   });
 });
 
-function compile(filePath: string, options?: Partial<Opts>) {
-  const project = new Project({
+async function compile(filePath: string, options?: Partial<Opts>) {
+  let msgs: MessageDescriptor[] = [];
+
+  const input = await readFile(filePath, 'utf8');
+  const output = ts.transpileModule(input, {
     compilerOptions: {
       experimentalDecorators: true,
       jsx: ts.JsxEmit.React,
@@ -90,20 +93,15 @@ function compile(filePath: string, options?: Partial<Opts>) {
       rootDir: __dirname,
       outDir: join(__dirname, 'output'),
     },
-  });
-  project.addSourceFileAtPathIfExists(filePath);
-
-  let msgs: MessageDescriptor[] = [];
-
-  const result = project.emitToMemory({
-    customTransformers: {
+    fileName: filePath,
+    reportDiagnostics: true,
+    transformers: {
       before: [
         transform({
           overrideIdFn: '[hash:base64:10]',
           onMsgExtracted: (_, extractedMsgs) => {
             msgs = msgs.concat(extractedMsgs);
           },
-          program: project.getProgram().compilerObject,
           ...(options || {}),
         }),
       ],
@@ -111,6 +109,6 @@ function compile(filePath: string, options?: Partial<Opts>) {
   });
   return {
     msgs,
-    code: result.getFiles()[0].text,
+    code: output.outputText,
   };
 }

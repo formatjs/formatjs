@@ -22,7 +22,7 @@
   "dependencies": {
     "@types/loader-utils": "^1.1.3",
     "loader-utils": "^2.0.0",
-    "typescript": "3.7.2"
+    "typescript": "3.8"
   },
   "author": "Long Ho <holevietlong@gmail.com>",
   "license": "MIT",
@@ -33,7 +33,6 @@
   "devDependencies": {
     "@types/jest": "^25.2.1",
     "jest": "^25.4.0",
-    "ts-jest": "^25.4.0",
-    "ts-morph": "6"
+    "ts-jest": "^25.4.0"
   }
 }
