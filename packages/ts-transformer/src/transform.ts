@@ -68,6 +68,7 @@ function isSingularMessageDecl(
   const compNames = new Set([
     '_',
     'FormattedMessage',
+    'defineMessage',
     ...additionalComponentNames,
   ]);
   let fnName = '';

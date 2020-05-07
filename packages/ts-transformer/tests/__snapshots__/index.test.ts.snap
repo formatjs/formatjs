@@ -417,11 +417,25 @@ const msgs = react_intl_1.defineMessages({
         defaultMessage: \\"Hello Nurse!\\"
     }
 });
+react_intl_1.defineMessage({
+    id: \\"HELLO.undefined.13.string\\",
+    defaultMessage: \\"defineMessage\\"
+});
 class Foo extends react_1.Component {
     render() {
+        const { intl } = this.props;
+        const { formatMessage } = intl;
         this.props.intl.formatMessage({
             id: \\"HELLO.undefined.5.string\\",
             defaultMessage: \\"no-id\\"
+        });
+        intl.formatMessage({
+            id: \\"HELLO.undefined.18.string\\",
+            defaultMessage: \\"intl.formatMessage\\"
+        });
+        formatMessage({
+            id: \\"HELLO.undefined.13.string\\",
+            defaultMessage: \\"formatMessage\\"
         });
         return (react_1.default.createElement(\\"div\\", null,
             react_1.default.createElement(\\"h1\\", null,
@@ -444,9 +458,24 @@ exports.default = Foo;
       "id": "foo.bar.biff",
     },
     Object {
+      "defaultMessage": "defineMessage",
+      "description": "foo",
+      "id": "HELLO.undefined.13.string",
+    },
+    Object {
       "defaultMessage": "no-id",
       "description": "no-id",
       "id": "HELLO.undefined.5.string",
+    },
+    Object {
+      "defaultMessage": "intl.formatMessage",
+      "description": "no-id",
+      "id": "HELLO.undefined.18.string",
+    },
+    Object {
+      "defaultMessage": "formatMessage",
+      "description": "no-id",
+      "id": "HELLO.undefined.13.string",
     },
     Object {
       "defaultMessage": "Hello World!",
