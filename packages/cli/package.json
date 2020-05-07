@@ -61,10 +61,14 @@
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "devDependencies": {
+    "@babel/core": "^7.9.6",
     "@types/jest": "^25.2.1",
     "@types/rimraf": "^3.0.0",
     "jest": "^25.4.0",
     "rimraf": "^3.0.2",
     "ts-jest": "^25.4.0"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.0.0"
   }
 }
