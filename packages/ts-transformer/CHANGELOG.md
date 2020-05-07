@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@1.1.7...@formatjs/ts-transformer@2.0.0) (2020-05-07)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** rm dependency on typechecker ([46a675f](https://github.com/formatjs/formatjs/commit/46a675f572017f2bffe7a42dcc0bf68a824aaf69))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/ts-transformer:** Also remove `moduleSourceName` option
+Dependency on typechecker means we cannot run w/ just `transpileModule`
+Typechecking is also a lot slower
+
+
+
+
+
 ## [1.1.7](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@1.1.6...@formatjs/ts-transformer@1.1.7) (2020-05-06)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/ts-transformer",
-  "version": "1.1.7",
+  "version": "2.0.0",
   "description": "TS Compiler transformer for formatjs",
   "main": "dist/index.js",
   "scripts": {

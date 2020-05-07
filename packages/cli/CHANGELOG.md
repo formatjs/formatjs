@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.12](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.6.11...@formatjs/cli@1.6.12) (2020-05-07)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** add @babel/core as a peer dep ([#1659](https://github.com/formatjs/formatjs/issues/1659)) ([758996d](https://github.com/formatjs/formatjs/commit/758996dc130e731a5b5d2a8aed6c40d36cb2ac1b))
+
+
+
+
+
 ## [1.6.11](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.6.10...@formatjs/cli@1.6.11) (2020-05-06)
 
 **Note:** Version bump only for package @formatjs/cli
