@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.0.1...@formatjs/ts-transformer@2.0.2) (2020-05-08)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** fix nested formatMessage case ([9d6592f](https://github.com/formatjs/formatjs/commit/9d6592f8269b1e17cc326e02a1675cbe0f47c41c))
+* **@formatjs/ts-transformer:** rm _ from macro list ([92d5eaa](https://github.com/formatjs/formatjs/commit/92d5eaa4abaf614a186bc4add4c8551c5c729dcb))
+
+
+
+
+
 ## [2.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.0.0...@formatjs/ts-transformer@2.0.1) (2020-05-07)
 
 
