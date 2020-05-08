@@ -183,6 +183,7 @@ class Foo extends react_1.Component {
                 defaultMessage: \\"Hello Nurse!\\"
             }),
             invalid: this.props.intl.formatMessage(objectPointer),
+            invalid2: this.props.intl.formatMessage({ id, defaultMessage, description: 'asd' })
         };
         return (react_1.default.createElement(\\"div\\", null,
             react_1.default.createElement(\\"h1\\", null, msgs.header),
@@ -375,7 +376,7 @@ Object {
     name: intl.formatMessage({
         id: \\"HELLO.undefined.6.undefined\\",
         defaultMessage: \\"layer2\\"
-    })
+    }),
 });
 ",
   "msgs": Array [

@@ -22,6 +22,11 @@ class Foo extends Component {
         description: 'Another message',
       }),
       invalid: this.props.intl.formatMessage(objectPointer),
+      invalid2: this.props.intl.formatMessage({
+        id,
+        defaultMessage,
+        description: 'asd',
+      }),
     };
 
     return (

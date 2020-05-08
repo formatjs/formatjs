@@ -130,10 +130,10 @@ function extractMessageDescriptor(
     }
   });
   // We extracted nothing
-  if (!Object.entries(msg).find(([_, v]) => v)) {
+  if (!msg.defaultMessage && !msg.id) {
     return;
   }
-  if (!msg.id && overrideIdFn) {
+  if (!msg.id && msg.defaultMessage && overrideIdFn) {
     switch (typeof overrideIdFn) {
       case 'string':
         msg.id = interpolateName(
