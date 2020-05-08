@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.0.0...@formatjs/ts-transformer@2.0.1) (2020-05-07)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** add extraction for defineMessage also ([c2a8a37](https://github.com/formatjs/formatjs/commit/c2a8a3765499b09c253895f02a452e3eaf9eddc0))
+
+
+
+
+
 # [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@1.1.7...@formatjs/ts-transformer@2.0.0) (2020-05-07)
 
 

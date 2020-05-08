@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {FormattedMessage} from 'react-intl';
-import {_} from '@formatjs/macro';
+import {FormattedMessage, defineMessage} from 'react-intl';
 
 export default class Foo extends Component {
   render() {
@@ -11,12 +10,12 @@ export default class Foo extends Component {
           defaultMessage="Hello World!"
           description="The default message."
         />
-        {_({
+        {defineMessage({
           id: 'header',
           defaultMessage: 'Hello World!',
           description: 'The default message',
         })}
-        {_({
+        {defineMessage({
           id: 'header2',
           defaultMessage: 'Hello World!',
           description: 'The default message',

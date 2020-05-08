@@ -6,7 +6,11 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     ".yarn": true,
-    "test262": true
+    "test262": true,
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
   },
   "files.watcherExclude": {
     "**/.git/objects/**": true,

@@ -27,6 +27,7 @@ class Foo extends Component {
       <div>
         <h1>{msgs.header}</h1>
         <p>{msgs.content}</p>
+        <input placeholder={intl.formatMessage({defaultMessage: 'inline'})} />
         <span>
           <FormattedMessage id="foo" defaultMessage="bar" description="baz" />
         </span>
