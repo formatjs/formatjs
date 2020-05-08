@@ -10,7 +10,11 @@ export type InterpolateNameFn = (
   description?: string
 ) => string;
 
-const MESSAGE_DESC_KEYS = new Set(['id', 'defaultMessage', 'description']);
+const MESSAGE_DESC_KEYS: Array<keyof MessageDescriptor> = [
+  'id',
+  'defaultMessage',
+  'description',
+];
 
 export interface Opts {
   /**
@@ -205,42 +209,69 @@ function extractMessageFromJsxComponent(
   }
 
   const clonedEl = ts.getMutableClone(node);
-  clonedEl.attributes = setAttributesInObject(clonedEl.attributes, {
+  clonedEl.attributes = setAttributesInJsxAttributes(clonedEl.attributes, {
     defaultMessage: opts.removeDefaultMessage ? undefined : msg.defaultMessage,
     id: msg.id,
-  }) as ts.JsxAttributes;
+  });
   return clonedEl;
 }
 
 function setAttributesInObject(
-  node: ts.ObjectLiteralExpression | ts.JsxAttributes,
+  node: ts.ObjectLiteralExpression,
   msg: MessageDescriptor
 ) {
   const newNode = ts.getMutableClone(node);
   const newProps = [];
+  for (const k of MESSAGE_DESC_KEYS) {
+    const val = msg[k];
+    if (val) {
+      newProps.push(
+        ts.createPropertyAssignment(k, ts.createStringLiteral(String(val)))
+      );
+    }
+  }
   for (const prop of node.properties) {
     if (
-      (ts.isJsxAttribute(prop) || ts.isPropertyAssignment(prop)) &&
-      ts.isIdentifier(prop.name)
+      ts.isPropertyAssignment(prop) &&
+      ts.isIdentifier(prop.name) &&
+      MESSAGE_DESC_KEYS.includes(prop.name.text as keyof MessageDescriptor)
     ) {
-      const k = prop.name.text as keyof MessageDescriptor;
-      if (MESSAGE_DESC_KEYS.has(k)) {
-        const val = msg[k];
-        if (val) {
-          const keyNode = ts.createIdentifier(k);
-          const valNode = ts.createStringLiteral(val + '');
-          if (ts.isJsxAttributes(node)) {
-            newProps.push(ts.createJsxAttribute(keyNode, valNode));
-          } else if (ts.isObjectLiteralExpression(node)) {
-            newProps.push(ts.createPropertyAssignment(k, valNode));
-          }
-        }
-        continue;
-      }
+      continue;
     }
     newProps.push(prop);
   }
-  newNode.properties = ts.createNodeArray(newProps) as any;
+  newNode.properties = ts.createNodeArray(newProps);
+  return newNode;
+}
+
+function setAttributesInJsxAttributes(
+  node: ts.JsxAttributes,
+  msg: MessageDescriptor
+) {
+  const newNode = ts.getMutableClone(node);
+  const newProps = [];
+  for (const k of MESSAGE_DESC_KEYS) {
+    const val = msg[k];
+    if (val) {
+      newProps.push(
+        ts.createJsxAttribute(
+          ts.createIdentifier(k),
+          ts.createStringLiteral(String(val))
+        )
+      );
+    }
+  }
+  for (const prop of node.properties) {
+    if (
+      ts.isJsxAttribute(prop) &&
+      ts.isIdentifier(prop.name) &&
+      MESSAGE_DESC_KEYS.includes(prop.name.text as keyof MessageDescriptor)
+    ) {
+      continue;
+    }
+    newProps.push(prop);
+  }
+  newNode.properties = ts.createNodeArray(newProps);
   return newNode;
 }
 
@@ -253,16 +284,15 @@ function extractMessagesFromCallExpression(
   if (isMultipleMessageDecl(node)) {
     const [descriptorsObj, ...restArgs] = node.arguments;
     if (ts.isObjectLiteralExpression(descriptorsObj)) {
-      const properties = descriptorsObj.properties as ts.NodeArray<
-        ts.PropertyAssignment
-      >;
+      const properties = descriptorsObj.properties;
       const msgs = properties
-        .map(prop =>
-          extractMessageDescriptor(
-            prop.initializer as ts.ObjectLiteralExpression,
-            opts,
-            sf
-          )
+        .filter<ts.PropertyAssignment>((prop): prop is ts.PropertyAssignment =>
+          ts.isPropertyAssignment(prop)
+        )
+        .map(
+          prop =>
+            ts.isObjectLiteralExpression(prop.initializer) &&
+            extractMessageDescriptor(prop.initializer, opts, sf)
         )
         .filter((msg): msg is MessageDescriptor => !!msg);
       if (!msgs.length) {
@@ -276,7 +306,10 @@ function extractMessagesFromCallExpression(
       const clonedDescriptorsObj = ts.getMutableClone(descriptorsObj);
       const clonedProperties = ts.createNodeArray(
         properties.map((prop, i) => {
-          if (!ts.isObjectLiteralExpression(prop.initializer)) {
+          if (
+            !ts.isPropertyAssignment(prop) ||
+            !ts.isObjectLiteralExpression(prop.initializer)
+          ) {
             return prop;
           }
           const clonedNode = ts.getMutableClone(prop);

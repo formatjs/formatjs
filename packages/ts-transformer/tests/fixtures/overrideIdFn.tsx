@@ -56,6 +56,14 @@ export default class Foo extends Component {
           }}
           values={{abc: 2}}
         />
+        <FormattedMessage
+          defaultMessage="Hello World! {abc}"
+          description={{
+            text: 'Something for the translator. Another description',
+            metadata: 'Additional metadata content.',
+          }}
+          values={{abc: 2}}
+        />
       </div>
     );
   }

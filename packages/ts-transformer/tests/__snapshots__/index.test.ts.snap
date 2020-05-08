@@ -33,7 +33,7 @@ const react_intl_1 = require(\\"react-intl\\");
 class Foo extends react_1.Component {
     render() {
         return (react_1.default.createElement(react_intl_1.FormattedMessage, { id: 'foo.bar.baz', defaultMessage: 'Hello World! {foo, number}', values: {
-                foo: 1
+                foo: 1,
             } }));
     }
 }
@@ -194,7 +194,7 @@ class Foo extends react_1.Component {
         return (react_1.default.createElement(\\"div\\", null,
             react_1.default.createElement(\\"h1\\", null, msgs.header),
             react_1.default.createElement(\\"p\\", null, msgs.content),
-            react_1.default.createElement(\\"input\\", { placeholder: intl.formatMessage({ defaultMessage: \\"inline\\" }) }),
+            react_1.default.createElement(\\"input\\", { placeholder: intl.formatMessage({ id: \\"1_ZyCapCsn\\", defaultMessage: \\"inline\\" }) }),
             react_1.default.createElement(\\"span\\", null,
                 react_1.default.createElement(react_intl_1.FormattedMessage, { id: 'foo', defaultMessage: 'bar' }))));
     }
@@ -376,9 +376,11 @@ exports.default = Foo;
 exports[`emit asserts for nested 1`] = `
 Object {
   "code": "intl.formatMessage({
+    id: \\"HELLO.undefined.13.undefined\\",
     defaultMessage: \\"layer1 {name}\\"
 }, {
     name: intl.formatMessage({
+        id: \\"HELLO.undefined.6.undefined\\",
         defaultMessage: \\"layer2\\"
     }),
 });
@@ -402,12 +404,15 @@ Object {
 Object.defineProperty(exports, \\"__esModule\\", { value: true });
 function foo() {
     props.intl.formatMessage({
+        id: \\"2AgGp\\",
         defaultMessage: \\"props {intl}\\"
     }, { bar: 'bar' });
     this.props.intl.formatMessage({
+        id: \\"STVHS\\",
         defaultMessage: \\"this props {intl}\\"
     }, { bar: 'bar' });
     return intl.formatMessage({
+        id: \\"1aog4\\",
         defaultMessage: \\"foo {bar}\\"
     }, { bar: 'bar' });
 }
@@ -450,6 +455,7 @@ const msgs = react_intl_1.defineMessages({
     }
 });
 react_intl_1.defineMessage({
+    id: \\"HELLO.undefined.13.string\\",
     defaultMessage: \\"defineMessage\\"
 });
 class Foo extends react_1.Component {
@@ -457,12 +463,15 @@ class Foo extends react_1.Component {
         const { intl } = this.props;
         const { formatMessage } = intl;
         this.props.intl.formatMessage({
+            id: \\"HELLO.undefined.5.string\\",
             defaultMessage: \\"no-id\\"
         });
         intl.formatMessage({
+            id: \\"HELLO.undefined.18.string\\",
             defaultMessage: \\"intl.formatMessage\\"
         });
         formatMessage({
+            id: \\"HELLO.undefined.13.string\\",
             defaultMessage: \\"formatMessage\\"
         });
         return (react_1.default.createElement(\\"div\\", null,
@@ -470,7 +479,8 @@ class Foo extends react_1.Component {
                 react_1.default.createElement(react_intl_1.FormattedMessage, Object.assign({}, msgs.header))),
             react_1.default.createElement(\\"p\\", null,
                 react_1.default.createElement(react_intl_1.FormattedMessage, Object.assign({}, msgs.content))),
-            react_1.default.createElement(react_intl_1.FormattedMessage, { id: 'foo.bar.zoo', defaultMessage: 'Hello World! {abc}', values: { abc: 2 } })));
+            react_1.default.createElement(react_intl_1.FormattedMessage, { id: 'foo.bar.zoo', defaultMessage: 'Hello World! {abc}', values: { abc: 2 } }),
+            react_1.default.createElement(react_intl_1.FormattedMessage, { id: 'HELLO.undefined.18.undefined', defaultMessage: 'Hello World! {abc}', values: { abc: 2 } })));
     }
 }
 exports.default = Foo;
@@ -508,6 +518,10 @@ exports.default = Foo;
     Object {
       "defaultMessage": "Hello World! {abc}",
       "id": "foo.bar.zoo",
+    },
+    Object {
+      "defaultMessage": "Hello World! {abc}",
+      "id": "HELLO.undefined.18.undefined",
     },
   ],
 }
