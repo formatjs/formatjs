@@ -725,7 +725,7 @@ Array [
 exports[`options respects extractFromFormatMessageCall from stateless components 1`] = `
 Array [
   Object {
-    "defaultMessage": "hook",
+    "defaultMessage": "hook <b>foo</b>",
     "description": "hook",
     "id": "hook",
   },

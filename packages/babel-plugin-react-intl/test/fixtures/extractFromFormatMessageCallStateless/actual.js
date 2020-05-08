@@ -16,7 +16,7 @@ function SFC () {
   const {formatMessage} = useIntl()
   return formatMessage({
     id: 'hook',
-    defaultMessage: 'hook',
+    defaultMessage: 'hook <b>foo</b>',
     description: 'hook'
   })
 }
@@ -25,7 +25,7 @@ const Foo = ({intl: {formatMessage}}) => {
   const msgs = {
     qux: formatMessage({
       id: 'foo.bar.quux',
-      defaultMessage: 'Hello Stateless!',
+      defaultMessage: 'Hello <b>Stateless!</b>',
       description: 'A stateless message',
     }),
   };
