@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.0.2...@formatjs/ts-transformer@2.0.3) (2020-05-08)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** ignore msgs without id & defaultMessage ([903beed](https://github.com/formatjs/formatjs/commit/903beedfa393d087e51831b9a5b2ede7b9e03e15))
+
+
+
+
+
 ## [2.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.0.1...@formatjs/ts-transformer@2.0.2) (2020-05-08)
 
 
