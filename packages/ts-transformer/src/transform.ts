@@ -66,7 +66,6 @@ function isSingularMessageDecl(
   additionalComponentNames: string[]
 ) {
   const compNames = new Set([
-    '_',
     'FormattedMessage',
     'defineMessage',
     ...additionalComponentNames,
