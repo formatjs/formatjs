@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.0.3...@formatjs/ts-transformer@2.0.4) (2020-05-08)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** preserve other attr in the component ([b51f573](https://github.com/formatjs/formatjs/commit/b51f57300d5a371c979dca7d321acdcfd184fefc))
+
+
+
+
+
 ## [2.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.0.2...@formatjs/ts-transformer@2.0.3) (2020-05-08)
 
 
