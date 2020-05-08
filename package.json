@@ -61,7 +61,8 @@
   },
   "workspaces": {
     "packages": [
-      "packages/*"
+      "packages/*",
+      "website"
     ]
   },
   "eslintConfig": {
