@@ -6,8 +6,11 @@ export default class Foo extends Component {
     return (
       <FormattedMessage
         id="foo.bar.baz"
-        defaultMessage="Hello World!"
+        defaultMessage="Hello World! {foo, number}"
         description="The default message."
+        values={{
+          foo: 1,
+        }}
       />
     );
   }

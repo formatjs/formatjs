@@ -10,6 +10,8 @@ export type InterpolateNameFn = (
   description?: string
 ) => string;
 
+const MESSAGE_DESC_KEYS = new Set(['id', 'defaultMessage', 'description']);
+
 export interface Opts {
   /**
    * Whether the metadata about the location of the message in the source file
@@ -215,19 +217,30 @@ function setAttributesInObject(
   msg: MessageDescriptor
 ) {
   const newNode = ts.getMutableClone(node);
-  newNode.properties = ts.createNodeArray(
-    (['id', 'description', 'defaultMessage'] as Array<keyof MessageDescriptor>)
-      .filter(k => !!msg[k])
-      .map(k => {
+  const newProps = [];
+  for (const prop of node.properties) {
+    if (
+      (ts.isJsxAttribute(prop) || ts.isPropertyAssignment(prop)) &&
+      ts.isIdentifier(prop.name)
+    ) {
+      const k = prop.name.text as keyof MessageDescriptor;
+      if (MESSAGE_DESC_KEYS.has(k)) {
         const val = msg[k];
-        const keyNode = ts.createIdentifier(k);
-        const valNode = ts.createStringLiteral(val + '');
-        if (ts.isJsxAttributes(node)) {
-          return ts.createJsxAttribute(keyNode, valNode);
+        if (val) {
+          const keyNode = ts.createIdentifier(k);
+          const valNode = ts.createStringLiteral(val + '');
+          if (ts.isJsxAttributes(node)) {
+            newProps.push(ts.createJsxAttribute(keyNode, valNode));
+          } else if (ts.isObjectLiteralExpression(node)) {
+            newProps.push(ts.createPropertyAssignment(k, valNode));
+          }
         }
-        return ts.createPropertyAssignment(keyNode, valNode);
-      })
-  ) as ts.NodeArray<ts.ObjectLiteralElementLike>;
+        continue;
+      }
+    }
+    newProps.push(prop);
+  }
+  newNode.properties = ts.createNodeArray(newProps) as any;
   return newNode;
 }
 
