@@ -28,10 +28,6 @@ for (const packageJsonPath of glob.sync(`${PACKAGES_DIR}/*/package.json`)) {
   const packageJson = readJsonSync(packageJsonPath);
   const packagePath = path.dirname(packageJsonPath);
 
-  if (['formatjs-website'].includes(packageJson.name)) {
-    continue;
-  }
-
   test(`${packageJson.name}: the build output matches the source file tree`, () => {
     const mainEntry: string = packageJson.main;
     const moduleEntry: string | undefined = packageJson.module;
