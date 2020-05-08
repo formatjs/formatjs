@@ -366,6 +366,31 @@ exports.default = Foo;
 }
 `;
 
+exports[`emit asserts for nested 1`] = `
+Object {
+  "code": "intl.formatMessage({
+    id: \\"HELLO.undefined.13.undefined\\",
+    defaultMessage: \\"layer1 {name}\\"
+}, {
+    name: intl.formatMessage({
+        id: \\"HELLO.undefined.6.undefined\\",
+        defaultMessage: \\"layer2\\"
+    })
+});
+",
+  "msgs": Array [
+    Object {
+      "defaultMessage": "layer1 {name}",
+      "id": "HELLO.undefined.13.undefined",
+    },
+    Object {
+      "defaultMessage": "layer2",
+      "id": "HELLO.undefined.6.undefined",
+    },
+  ],
+}
+`;
+
 exports[`emit asserts for noImport 1`] = `
 Object {
   "code": "\\"use strict\\";

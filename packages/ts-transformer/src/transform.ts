@@ -189,14 +189,14 @@ function extractMessageFromJsxComponent(
   node: ts.JsxOpeningElement | ts.JsxSelfClosingElement,
   opts: Opts,
   sf: ts.SourceFile
-): typeof node | undefined {
+): typeof node {
   const {onMsgExtracted} = opts;
   if (!isSingularMessageDecl(node, opts.additionalComponentNames || [])) {
-    return;
+    return node;
   }
   const msg = extractMessageDescriptor(node, opts, sf);
   if (!msg) {
-    return;
+    return node;
   }
   if (typeof onMsgExtracted === 'function') {
     onMsgExtracted(sf.fileName, [msg]);
@@ -235,7 +235,7 @@ function extractMessagesFromCallExpression(
   node: ts.CallExpression,
   opts: Opts,
   sf: ts.SourceFile
-): typeof node | undefined {
+): typeof node {
   const {onMsgExtracted} = opts;
   if (isMultipleMessageDecl(node)) {
     const [descriptorsObj, ...restArgs] = node.arguments;
@@ -253,7 +253,7 @@ function extractMessagesFromCallExpression(
         )
         .filter((msg): msg is MessageDescriptor => !!msg);
       if (!msgs.length) {
-        return;
+        return node;
       }
       if (typeof onMsgExtracted === 'function') {
         onMsgExtracted(sf.fileName, msgs);
@@ -291,7 +291,7 @@ function extractMessagesFromCallExpression(
     if (ts.isObjectLiteralExpression(descriptorsObj)) {
       const msg = extractMessageDescriptor(descriptorsObj, opts, sf);
       if (!msg) {
-        return;
+        return node;
       }
       if (typeof onMsgExtracted === 'function') {
         onMsgExtracted(sf.fileName, [msg]);
@@ -310,25 +310,30 @@ function extractMessagesFromCallExpression(
       return newNode;
     }
   }
+  return node;
+}
+
+function getVisitor(
+  ctx: ts.TransformationContext,
+  sf: ts.SourceFile,
+  opts: Opts
+) {
+  const visitor: ts.Visitor = (node: ts.Node): ts.Node => {
+    const newNode = ts.isCallExpression(node)
+      ? extractMessagesFromCallExpression(node, opts, sf)
+      : ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)
+      ? extractMessageFromJsxComponent(node, opts, sf)
+      : node;
+
+    return ts.visitEachChild(newNode, visitor, ctx);
+  };
+  return visitor;
 }
 
 export function transform(opts: Opts) {
   opts = {...DEFAULT_OPTS, ...opts};
   const transformFn: ts.TransformerFactory<ts.SourceFile> = ctx => {
-    function getVisitor(sf: ts.SourceFile) {
-      const visitor: ts.Visitor = (node: ts.Node): ts.Node => {
-        const newNode = ts.isCallExpression(node)
-          ? extractMessagesFromCallExpression(node, opts, sf)
-          : ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)
-          ? extractMessageFromJsxComponent(node, opts, sf)
-          : undefined;
-
-        return newNode || ts.visitEachChild(node, visitor, ctx);
-      };
-      return visitor;
-    }
-
-    return (sf: ts.SourceFile) => ts.visitNode(sf, getVisitor(sf));
+    return (sf: ts.SourceFile) => ts.visitNode(sf, getVisitor(ctx, sf, opts));
   };
 
   return transformFn;

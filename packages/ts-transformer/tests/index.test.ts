@@ -17,6 +17,12 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
   extractFromFormatMessageStateless: {
     extractFromFormatMessageCall: true,
   },
+  nested: {
+    extractFromFormatMessageCall: true,
+    overrideIdFn: (id, defaultMessage, description) => {
+      return `HELLO.${id}.${defaultMessage!.length}.${typeof description}`;
+    },
+  },
   extractSourceLocation: {
     extractSourceLocation: true,
   },
