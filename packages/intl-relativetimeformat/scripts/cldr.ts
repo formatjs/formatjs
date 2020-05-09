@@ -2,13 +2,15 @@ import {
   extractAllRelativeFields,
   getAllDateFieldsLocales,
 } from 'formatjs-extract-cldr-data';
-import {resolve, join} from 'path';
-import {outputFileSync, outputJSONSync} from 'fs-extra';
+import {join} from 'path';
+import {outputFile} from 'fs-extra';
 import {
   RelativeTimeLocaleData,
   getAliasesByLang,
   getParentLocalesByLang,
 } from '../../intl-utils';
+import * as minimist from 'minimist';
+import * as assert from 'assert';
 
 const data = extractAllRelativeFields();
 const langData = getAllDateFieldsLocales().reduce(
@@ -39,51 +41,42 @@ const langData = getAllDateFieldsLocales().reduce(
   {}
 );
 
-const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
-
-// Dist all locale files to dist/locale-data
-Object.keys(langData).forEach(function (lang) {
-  const destFile = join(allLocaleDistDir, lang + '.js');
-  outputFileSync(
-    destFile,
-    `/* @generated */	
-// prettier-ignore
+function main(args: minimist.ParsedArgs) {
+  const {outDir, polyfillLocalesOut} = args;
+  const langs: string[] = args.langs.split(',');
+  assert(langs.length === Object.keys(langData).length, 'Mismatch langs');
+  for (const lang of langs) {
+    assert(lang in langData, `We don't have data for ${lang}`);
+  }
+  // Dist all locale files to dist/locale-data
+  return Promise.all(
+    langs
+      .map(lang =>
+        outputFile(
+          join(outDir, lang + '.js'),
+          `/* @generated */	
 if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData === 'function') {
   Intl.RelativeTimeFormat.__addLocaleData(${JSON.stringify(langData[lang])})
 }`
-  );
-});
-
-// Dist all json locale files to dist/locale-data
-Object.keys(langData).forEach(function (lang) {
-  const destFile = join(allLocaleDistDir, lang + '.json');
-  outputJSONSync(destFile, langData[lang]);
-});
-
-// Aggregate all into src/locales.ts
-outputFileSync(
-  resolve(__dirname, '../src/locales.ts'),
-  `/* @generated */	
-// prettier-ignore  
-import IntlRelativeTimeFormat from "./core";\n
-IntlRelativeTimeFormat.__addLocaleData(${Object.keys(langData)
-    .map(lang => JSON.stringify(langData[lang]))
-    .join(',\n')});	
-export default IntlRelativeTimeFormat;	
-  `
-);
-
-outputFileSync(
-  resolve(__dirname, '../polyfill-locales.js'),
-  `/* @generated */
+        )
+      )
+      .concat([
+        outputFile(
+          polyfillLocalesOut,
+          `/* @generated */
 // prettier-ignore
 require('./polyfill')
 if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData === 'function') {
   Intl.RelativeTimeFormat.__addLocaleData(
-${Object.keys(langData)
-  .map(lang => JSON.stringify(langData[lang]))
-  .join(',\n')}
+${langs.map(lang => JSON.stringify(langData[lang])).join(',\n')}
   )
 }
 `
-);
+        ),
+      ])
+  );
+}
+
+if (require.main === module) {
+  main(minimist(process.argv));
+}

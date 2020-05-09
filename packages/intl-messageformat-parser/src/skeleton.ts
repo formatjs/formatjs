@@ -313,7 +313,7 @@ export function convertNumberSkeletonToNumberFormatOptions(
         );
       }
       token.stem.replace(FRACTION_PRECISION_REGEX, function (
-        match: string,
+        _: string,
         g1: string,
         g2: string | number,
         g3: string,

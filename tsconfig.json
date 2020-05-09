@@ -12,11 +12,15 @@
     "preserveConstEnums": true,
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
-    "declarationMap": true,
-    "sourceMap": true,
     "composite": true,
+    "sourceMap": true,
     "jsx": "react",
-    // If a package choose to use Mocha, they will have to explicit declare in their tsconfig.json.
-    "types": ["node", "jest"],
+    "baseUrl": ".",
+    "paths": {
+      "@formatjs/*": ["packages/*"],
+      "formatjs-extract-cldr-data": ["packages/formatjs-extract-cldr-data"],
+      "intl-messageformat-parser": ["packages/intl-messageformat-parser"],
+      "intl-messageformat": ["packages/intl-messageformat"]
+    }
   },
 }

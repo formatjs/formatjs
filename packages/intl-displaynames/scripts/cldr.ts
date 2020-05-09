@@ -2,13 +2,15 @@ import {
   extractAllDisplayNames,
   getAllDisplayNamesLocales,
 } from 'formatjs-extract-cldr-data';
-import {resolve, join} from 'path';
-import {outputFileSync, outputJSONSync} from 'fs-extra';
+import {join} from 'path';
+import {outputFile} from 'fs-extra';
 import {
   DisplayNamesLocaleData,
   getAliasesByLang,
   getParentLocalesByLang,
 } from '@formatjs/intl-utils';
+import * as minimist from 'minimist';
+import * as assert from 'assert';
 
 const data = extractAllDisplayNames();
 const allData = getAllDisplayNamesLocales().reduce(
@@ -32,64 +34,42 @@ const allData = getAllDisplayNamesLocales().reduce(
   {}
 );
 
-const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
-
-// Dist all locale files to dist/locale-data (JS)
-Object.keys(allData).forEach(function (lang) {
-  const destFile = join(allLocaleDistDir, lang + '.js');
-  outputFileSync(
-    destFile,
-    `/* @generated */
+function main(args: minimist.ParsedArgs) {
+  const {outDir, polyfillLocalesOut} = args;
+  const langs: string[] = args.langs.split(',');
+  assert(langs.length === Object.keys(allData).length, 'Mismatch langs');
+  for (const lang of langs) {
+    assert(lang in allData, `We don't have data for ${lang}`);
+  }
+  // Dist all locale files to dist/locale-data (JS)
+  return Promise.all(
+    langs
+      .map(lang =>
+        outputFile(
+          join(outDir, lang + '.js'),
+          `/* @generated */
 // prettier-ignore
 if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function') {
   Intl.DisplayNames.__addLocaleData(${JSON.stringify(allData[lang])})
 }`
-  );
-});
-
-// Dist all locale files to dist/locale-data (JSON)
-Object.keys(allData).forEach(function (locale) {
-  const destFile = join(allLocaleDistDir, locale + '.json');
-  outputJSONSync(destFile, allData[locale]);
-});
-
-// Aggregate all into ../polyfill-locales.js
-outputFileSync(
-  resolve(__dirname, '../polyfill-locales.js'),
-  `/* @generated */
-// prettier-ignore
-require('./polyfill')
-if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function') {
-  Intl.DisplayNames.__addLocaleData(
-    ${Object.keys(allData)
-      .map(locale => JSON.stringify(allData[locale]))
-      .join(',\n')});
-}
-`
-);
-
-// For test262
-// Only a subset of locales
-outputFileSync(
-  resolve(__dirname, '../dist-es6/polyfill-locales-for-test262.js'),
+        )
+      )
+      .concat([
+        outputFile(
+          polyfillLocalesOut,
+          `/* @generated */
+  // prettier-ignore
+  require('./polyfill')
+  if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function') {
+    Intl.DisplayNames.__addLocaleData(
+      ${langs.map(locale => JSON.stringify(allData[locale])).join(',\n')});
+  }
   `
-import './polyfill';
-if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function') {
-  Intl.DisplayNames.__addLocaleData(
-    ${[
-      'ar',
-      'de',
-      'en',
-      'en-US-POSIX',
-      'ja',
-      'ko',
-      'th',
-      'zh',
-      'zh-Hant',
-      'zh-Hans',
-    ]
-      .map(locale => JSON.stringify(allData[locale]))
-      .join(',\n')});
+        ),
+      ])
+  );
 }
-`
-);
+
+if (require.main === module) {
+  main(minimist(process.argv));
+}

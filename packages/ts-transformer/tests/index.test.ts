@@ -1,5 +1,5 @@
 import {join} from 'path';
-import {transform, Opts, MessageDescriptor} from '../src';
+import {transform, Opts, MessageDescriptor} from '../';
 import * as ts from 'typescript';
 import {readFile as readFileAsync} from 'fs';
 import {promisify} from 'util';
@@ -39,7 +39,7 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
     removeDefaultMessage: true,
   },
   noImport: {
-    overrideIdFn: '[hash:base64:5]',
+    overrideIdFn: '[sha1:contenthash:base64:6]',
     extractFromFormatMessageCall: true,
   },
   removeDescription: {},

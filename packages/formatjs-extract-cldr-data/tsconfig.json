@@ -1,9 +1,6 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src"
-  },
-  "include": ["src"],
-  "references": [{"path": "../intl-utils"}]
+    "extends": "../../tsconfig.json",
+    "paths": {
+        "@formatjs/intl-utils": ["../packages/intl-utils"]
+      }
 }

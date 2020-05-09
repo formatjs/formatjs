@@ -3,8 +3,6 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import * as NumbersData from 'cldr-numbers-full/main/ar/numbers.json';
-import * as numberingSystems from 'cldr-core/supplemental/numberingSystems.json';
 import {Locale} from './types';
 import generateFieldExtractorFn, {
   collapseSingleValuePluralRule,
@@ -20,6 +18,8 @@ import {
   DecimalFormatNum,
   RawCurrencyData,
 } from '@formatjs/intl-utils';
+type NumbersData = typeof import('cldr-numbers-full/main/ar/numbers.json');
+const numberingSystems = require('cldr-core/supplemental/numberingSystems.json');
 
 const unitsLocales = globSync('*/numbers.json', {
   cwd: resolve(
@@ -28,7 +28,7 @@ const unitsLocales = globSync('*/numbers.json', {
   ),
 }).map(dirname);
 
-export type Numbers = typeof NumbersData['main']['ar']['numbers'];
+export type Numbers = NumbersData['main']['ar']['numbers'];
 
 const COUNTS = [
   '1000',
@@ -126,7 +126,7 @@ function extractNumbers(d: Numbers): RawNumberData {
 function loadNumbers(locale: Locale): RawNumberData {
   try {
     return extractNumbers(
-      (require(`cldr-numbers-full/main/${locale}/numbers.json`) as typeof NumbersData)
+      (require(`cldr-numbers-full/main/${locale}/numbers.json`) as NumbersData)
         .main[locale as 'ar'].numbers
     );
   } catch (e) {

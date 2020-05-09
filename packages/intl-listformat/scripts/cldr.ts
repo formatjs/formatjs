@@ -2,13 +2,15 @@ import {
   extractAllListPatterns,
   getAllListLocales,
 } from 'formatjs-extract-cldr-data';
-import {resolve, join} from 'path';
-import {outputFileSync} from 'fs-extra';
+import {join} from 'path';
+import {outputFile} from 'fs-extra';
 import {
   ListPatternLocaleData,
   getAliasesByLang,
   getParentLocalesByLang,
 } from '@formatjs/intl-utils';
+import * as minimist from 'minimist';
+import * as assert from 'assert';
 
 const data = extractAllListPatterns();
 const langData = getAllListLocales().reduce(
@@ -39,46 +41,44 @@ const langData = getAllListLocales().reduce(
   {}
 );
 
-const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
-
-// Dist all locale files to dist/locale-data
-Object.keys(langData).forEach(function (lang) {
-  const destFile = join(allLocaleDistDir, lang + '.js');
-  outputFileSync(
-    destFile,
-    `/* @generated */	
+function main(args: minimist.ParsedArgs) {
+  const {outDir, polyfillLocalesOut} = args;
+  const langs: string[] = args.langs.split(',');
+  assert(langs.length === Object.keys(langData).length, 'Mismatch langs');
+  for (const lang of langs) {
+    assert(lang in langData, `We don't have data for ${lang}`);
+  }
+  // Dist all locale files to dist/locale-data
+  return Promise.all(
+    langs
+      .map(lang =>
+        outputFile(
+          join(outDir, lang + '.js'),
+          `/* @generated */	
 // prettier-ignore
 if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
   Intl.ListFormat.__addLocaleData(${JSON.stringify(langData[lang])})
 }`
-  );
-});
-
-// Aggregate all into src/locales.ts
-outputFileSync(
-  resolve(__dirname, '../src/locales.ts'),
-  `/* @generated */	
-// prettier-ignore  
-import IntlListFormat from "./core";\n
-IntlListFormat.__addLocaleData(${Object.keys(langData)
-    .map(lang => JSON.stringify(langData[lang]))
-    .join(',\n')});	
-export default IntlListFormat;	
-  `
-);
-
-// Aggregate all into ../polyfill-locales.js
-outputFileSync(
-  resolve(__dirname, '../polyfill-locales.js'),
-  `/* @generated */
+        )
+      )
+      .concat([
+        // Aggregate all into ../polyfill-locales.js
+        outputFile(
+          polyfillLocalesOut,
+          `/* @generated */
 // prettier-ignore
 require('./polyfill')
 if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
   Intl.ListFormat.__addLocaleData(
-${Object.keys(langData)
-  .map(lang => JSON.stringify(langData[lang]))
-  .join(',\n')}
+${langs.map(lang => JSON.stringify(langData[lang])).join(',\n')}
   )
 }
 `
-);
+        ),
+      ])
+  );
+}
+
+if (require.main === module) {
+  main(minimist(process.argv));
+}

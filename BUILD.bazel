@@ -1,0 +1,12 @@
+# Add rules here to build your software
+# See https://docs.bazel.build/versions/master/build-ref.html#BUILD_files
+
+exports_files(
+    [
+        "tsconfig.json",
+        "tsconfig.esm.json",
+        "jest.config.js",
+        "api-extractor.json",
+    ],
+    visibility = ["//visibility:public"],
+)

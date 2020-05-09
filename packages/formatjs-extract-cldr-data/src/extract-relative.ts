@@ -5,13 +5,13 @@
  */
 'use strict';
 
-import * as DateFields from 'cldr-dates-full/main/en/dateFields.json';
-import * as NumberFields from 'cldr-numbers-full/main/en/numbers.json';
 import {Locale} from './types';
 import generateFieldExtractorFn from './utils';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
 import {FieldData, LocaleFieldsData} from '@formatjs/intl-utils';
+type DateFields = typeof import('cldr-dates-full/main/en/dateFields.json');
+type NumberFields = typeof import('cldr-numbers-full/main/en/numbers.json');
 
 const dateFieldsLocales = globSync('*/dateFields.json', {
   cwd: resolve(
@@ -48,7 +48,7 @@ const FIELD_NAMES = [
   'second-narrow',
 ];
 
-type Fields = typeof DateFields['main']['en']['dates']['fields'];
+type Fields = DateFields['main']['en']['dates']['fields'];
 
 export function getAllLocales() {
   return globSync('*/dateFields.json', {
@@ -60,11 +60,11 @@ export function getAllLocales() {
 }
 
 function loadRelativeFields(locale: Locale): LocaleFieldsData {
-  const fields = (require(`cldr-dates-full/main/${locale}/dateFields.json`) as typeof DateFields)
+  const fields = (require(`cldr-dates-full/main/${locale}/dateFields.json`) as DateFields)
     .main[locale as 'en'].dates.fields;
   let nu: string | null = null;
   try {
-    nu = (require(`cldr-numbers-full/main/${locale}/numbers.json`) as typeof NumberFields)
+    nu = (require(`cldr-numbers-full/main/${locale}/numbers.json`) as NumberFields)
       .main[locale as 'en'].numbers.defaultNumberingSystem;
   } catch (e) {
     // Ignore

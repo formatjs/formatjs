@@ -13,7 +13,7 @@ export interface FieldData {
   past: RelativeTimeData;
 }
 
-type RelativeTimeData = {[u in LDMLPluralRule]?: string};
+export type RelativeTimeData = {[u in LDMLPluralRule]?: string};
 
 export type UnpackedLocaleFieldsData = {
   [f in RelativeTimeField]?: FieldData;

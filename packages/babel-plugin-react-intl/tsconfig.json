@@ -1,12 +1,14 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src",
-    "baseUrl": ".",
-    "sourceMap": true,
-    "esModuleInterop": true
+    "rootDirs": [
+      ".",
+      "../../bazel-out/darwin-fastbuild/bin/packages/babel-plugin-react-intl",
+      "../../bazel-out/k8-fastbuild/bin/packages/babel-plugin-react-intl",
+      "../../bazel-out/x64_windows-fastbuild/bin/packages/babel-plugin-react-intl",
+      "../../bazel-out/darwin-dbg/bin/packages/babel-plugin-react-intl",
+      "../../bazel-out/k8-dbg/bin/packages/babel-plugin-react-intl",
+      "../../bazel-out/x64_windows-dbg/bin/packages/babel-plugin-react-intl"
+  ]
   },
-  "include": ["src", "src/**/*.json"],
-  "references": [{"path": "../intl-messageformat-parser"}]
 }

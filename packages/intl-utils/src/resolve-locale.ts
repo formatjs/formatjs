@@ -3,7 +3,7 @@ import {invariant} from './invariant';
 import {toObject, getOption} from './polyfill-utils';
 import {LocaleData} from './types';
 
-interface ResolveLocaleResult {
+export interface ResolveLocaleResult {
   locale: string;
   dataLocale: string;
   [k: string]: any;
@@ -305,7 +305,7 @@ export function supportedLocales(
   return lookupSupportedLocales(availableLocales, requestedLocales);
 }
 
-class MissingLocaleDataError extends Error {
+export class MissingLocaleDataError extends Error {
   public type = 'MISSING_LOCALE_DATA';
 }
 

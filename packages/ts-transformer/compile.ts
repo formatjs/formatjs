@@ -1,9 +1,6 @@
 import * as ts from 'typescript';
-import {transform as intlTransformer} from './src';
+import {transform as intlTransformer} from '.';
 
-declare module 'fs-extra' {
-  export function outputJsonSync(file: string, data: any, opts?: {}): void;
-}
 const CJS_CONFIG: ts.CompilerOptions = {
   experimentalDecorators: true,
   jsx: ts.JsxEmit.React,

@@ -1,0 +1,32 @@
+{
+    "name": "NAME",
+    "version": "0.0.0-PLACEHOLDER",
+    "description": "DESCRIPTION",
+    "keywords": [
+      "intl",
+      "i18n",
+      "internationalization",
+      "locale",
+      "localization",
+      "globalization",
+      "react",
+      "react-intl",
+      "reactjs",
+      "format",
+      "formatjs",
+      "formatting",
+      "translate",
+      "translation",
+      "macro"
+    ],
+    "homepage": "https://github.com/formatjs/formatjs",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+ssh://git@github.com/formatjs/formatjs.git"
+    },
+    "bugs": {
+      "url": "https://github.com/formatjs/formatjs/issues"
+    }
+  }
+  

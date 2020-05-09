@@ -194,7 +194,7 @@ class Foo extends react_1.Component {
         return (react_1.default.createElement(\\"div\\", null,
             react_1.default.createElement(\\"h1\\", null, msgs.header),
             react_1.default.createElement(\\"p\\", null, msgs.content),
-            react_1.default.createElement(\\"input\\", { placeholder: intl.formatMessage({ id: \\"1_ZyCapCsn\\", defaultMessage: \\"inline\\" }) }),
+            react_1.default.createElement(\\"input\\", { placeholder: intl.formatMessage({ id: \\"3in0OrMYu4\\", defaultMessage: \\"inline\\" }) }),
             react_1.default.createElement(\\"span\\", null,
                 react_1.default.createElement(react_intl_1.FormattedMessage, { id: 'foo', defaultMessage: 'bar' }))));
     }
@@ -214,7 +214,7 @@ exports.default = react_intl_1.injectIntl(Foo);
     },
     Object {
       "defaultMessage": "inline",
-      "id": "1_ZyCapCsn",
+      "id": "3in0OrMYu4",
     },
     Object {
       "defaultMessage": "bar",
@@ -404,15 +404,15 @@ Object {
 Object.defineProperty(exports, \\"__esModule\\", { value: true });
 function foo() {
     props.intl.formatMessage({
-        id: \\"2AgGp\\",
+        id: \\"cRtnZ_\\",
         defaultMessage: \\"props {intl}\\"
     }, { bar: 'bar' });
     this.props.intl.formatMessage({
-        id: \\"STVHS\\",
+        id: \\"47JwLE\\",
         defaultMessage: \\"this props {intl}\\"
     }, { bar: 'bar' });
     return intl.formatMessage({
-        id: \\"1aog4\\",
+        id: \\"9XDP7L\\",
         defaultMessage: \\"foo {bar}\\"
     }, { bar: 'bar' });
 }
@@ -422,17 +422,17 @@ exports.foo = foo;
     Object {
       "defaultMessage": "props {intl}",
       "description": "bar",
-      "id": "2AgGp",
+      "id": "cRtnZ_",
     },
     Object {
       "defaultMessage": "this props {intl}",
       "description": "bar",
-      "id": "STVHS",
+      "id": "47JwLE",
     },
     Object {
       "defaultMessage": "foo {bar}",
       "description": "bar",
-      "id": "1aog4",
+      "id": "9XDP7L",
     },
   ],
 }

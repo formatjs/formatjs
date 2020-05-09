@@ -62,7 +62,7 @@ export default function generateFieldExtractorFn<
     }
 
     locales.forEach(populateFields);
-    return pickBy(fieldCache, o => !isEmpty(o));
+    return pickBy(fieldCache, o => !isEmpty(o)) as Record<string, DataType>;
   };
 }
 

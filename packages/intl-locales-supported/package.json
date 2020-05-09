@@ -31,7 +31,7 @@
   "scripts": {
     "clean": "rimraf dist lib *.tsbuildinfo",
     "build": "tsc && tsc -p tsconfig.esm.json",
-    "test": "cross-env NODE_ICU_DATA=../../node_modules/full-icu mocha --opts ../../mocha.opts tests/index.ts"
+    "test": "cross-env mocha --opts ../../mocha.opts tests/index.ts"
   },
   "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c",
   "devDependencies": {

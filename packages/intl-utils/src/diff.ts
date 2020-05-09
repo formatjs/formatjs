@@ -78,7 +78,7 @@ export function selectUnit(
   };
 }
 
-type Thresholds = Record<'second' | 'minute' | 'hour' | 'day', number>;
+export type Thresholds = Record<'second' | 'minute' | 'hour' | 'day', number>;
 
 export const DEFAULT_THRESHOLDS: Thresholds = {
   second: 45, // seconds to minute

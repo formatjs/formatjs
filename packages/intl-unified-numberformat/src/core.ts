@@ -45,9 +45,9 @@ import {
   repeat,
 } from './utils';
 import {extractILD, Patterns} from './data';
-import * as currencyDigitsData from './currency-digits.json';
-import * as ILND from './ilnd-numbers.json';
-import {names as numberingSystemNames} from './numbering-systems.json';
+import currencyDigitsData from '../generated/currency-digits';
+import ILND from '../generated/ilnd';
+import numberingSystemNames from '../generated/numbering-systems';
 
 const VALID_NUMBERING_SYSTEM_NAMES: Record<string, boolean> = Object.create(
   null
@@ -176,7 +176,8 @@ export interface UnifiedNumberFormatPart {
   value: string;
 }
 
-interface UnifiedNumberFormatInternal extends NumberFormatDigitInternalSlots {
+export interface UnifiedNumberFormatInternal
+  extends NumberFormatDigitInternalSlots {
   locale: string;
   dataLocale: string;
   style: NonNullable<UnifiedNumberFormatOptions['style']>;

@@ -4,12 +4,13 @@
  * See the accompanying LICENSE file for terms.
  */
 'use strict';
-import * as ListPatterns from 'cldr-misc-full/main/en/listPatterns.json';
+
 import {Locale} from './types';
 import generateFieldExtractorFn from './utils';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
 import {ListPatternFieldsData, ListPattern} from '@formatjs/intl-utils';
+type ListPatterns = typeof import('cldr-misc-full/main/en/listPatterns.json');
 
 const listPatternLocales = globSync('*/listPatterns.json', {
   cwd: resolve(
@@ -18,7 +19,7 @@ const listPatternLocales = globSync('*/listPatterns.json', {
   ),
 }).map(dirname);
 
-export type ListTypes = typeof ListPatterns['main']['en']['listPatterns'];
+export type ListTypes = ListPatterns['main']['en']['listPatterns'];
 
 export function getAllLocales() {
   return globSync('*/listPatterns.json', {
@@ -41,7 +42,7 @@ function serializeToPatternData(
 }
 
 function loadListPatterns(locale: Locale): ListPatternFieldsData {
-  const patterns = (require(`cldr-misc-full/main/${locale}/listPatterns.json`) as typeof ListPatterns)
+  const patterns = (require(`cldr-misc-full/main/${locale}/listPatterns.json`) as ListPatterns)
     .main[locale as 'en'].listPatterns;
   return {
     conjunction: {

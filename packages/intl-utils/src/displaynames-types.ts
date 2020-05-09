@@ -1,9 +1,9 @@
 import {LocaleData} from './types';
 
-type LanguageTag = string;
-type RegionCode = string;
-type ScriptCode = string;
-type CurrencyCode = string;
+export type LanguageTag = string;
+export type RegionCode = string;
+export type ScriptCode = string;
+export type CurrencyCode = string;
 
 export interface DisplayNamesData {
   /**
