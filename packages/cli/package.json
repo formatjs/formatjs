@@ -50,6 +50,7 @@
     "@types/lodash": "^4.14.150",
     "babel-plugin-const-enum": "^1.0.1",
     "babel-plugin-react-intl": "^7.5.7",
+    "chalk": "^4.0.0",
     "commander": "5.0.0",
     "fs-extra": "^9.0.0",
     "glob": "^7.1.6",
