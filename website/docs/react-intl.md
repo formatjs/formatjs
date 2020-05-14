@@ -170,11 +170,11 @@ Here's an example using `<IntlProvider>`, `<Formatted*>` components, and the imp
 ```tsx
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {injectIntl, IntlProvider, FormattedRelative} from 'react-intl';
+import {injectIntl, IntlProvider, FormattedRelative, useIntl} from 'react-intl';
 
 const MS_IN_DAY = 1e3 * 3600 * 24
 
-const PostDate = ({date, intl}) => {
+const PostDate = ({date}) => {
   const intl = useIntl()
   return (
     <span title={intl.formatDate(date)}>
