@@ -20,9 +20,8 @@ function checkNode(
     if (!defaultMessage || !messageNode) {
       continue;
     }
-    let reportObject: Parameters<typeof context['report']>[0] | undefined;
     if (MULTIPLE_SPACES.test(defaultMessage)) {
-      reportObject = {
+      const reportObject: Parameters<typeof context['report']>[0] = {
         node: messageNode as Node,
         message: 'Multiple consecutive whitespaces are not allowed',
       };
@@ -34,9 +33,7 @@ function checkNode(
           );
         };
       }
-      if (reportObject) {
-        context.report(reportObject);
-      }
+      context.report(reportObject);
     }
   }
 }
