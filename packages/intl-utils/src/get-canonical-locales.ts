@@ -11,5 +11,5 @@ export function getCanonicalLocales(locales?: string | string[]): string[] {
   // NOTE: we must NOT call `supportedLocalesOf` of a formatjs polyfill, or their implementation
   // will even eventually call this method recursively. Here we use `Intl.DateTimeFormat` since it
   // is not polyfilled by `@formatjs`.
-  return Intl.DateTimeFormat.supportedLocalesOf(locales || '');
+  return Intl.DateTimeFormat.supportedLocalesOf(locales);
 }
