@@ -33,6 +33,47 @@ _({
     },
     {
       code: `
+            import {defineMessage} from 'react-intl'
+            defineMessage({
+                description: 'this is default message'
+            })`,
+      errors: [
+        {
+          message: '`defaultMessage` has to be specified in message descriptor',
+        },
+      ],
+    },
+    {
+      code: `
+            import {defineMessage} from 'react-intl'
+            defineMessage({
+                defaultMessage,
+                description: 'this is default message'
+            })`,
+      errors: [
+        {
+          message:
+            '`defaultMessage` must be a string literal (not function call or variable)',
+        },
+      ],
+      options: ['literal'],
+    },
+    {
+      code: `
+            intl.formatMessage({
+                defaultMessage,
+                description: 'this is default message'
+            })`,
+      errors: [
+        {
+          message:
+            '`defaultMessage` must be a string literal (not function call or variable)',
+        },
+      ],
+      options: ['literal'],
+    },
+    {
+      code: `
             import {_} from '@formatjs/macro'
             _({
                 defaultMessage: foo
@@ -89,6 +130,30 @@ _({
           message: '`defaultMessage` has to be specified in message descriptor',
         },
       ],
+    },
+    {
+      code: `
+            import {FormattedMessage} from 'react-intl'
+            const a = <FormattedMessage defaultMessage={defaultMessage} description="this is description"></FormattedMessage>`,
+      errors: [
+        {
+          message:
+            '`defaultMessage` must be a string literal (not function call or variable)',
+        },
+      ],
+      options: ['literal'],
+    },
+    {
+      code: `
+            import {FormattedMessage} from 'react-intl'
+            const a = <FormattedMessage defaultMessage={\`asf\`} description="this is description"></FormattedMessage>`,
+      errors: [
+        {
+          message:
+            '`defaultMessage` must be a string literal (not function call or variable)',
+        },
+      ],
+      options: ['literal'],
     },
   ],
 });
