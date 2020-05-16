@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.2.5...eslint-plugin-formatjs@2.3.0) (2020-05-16)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** add rule for no-id ([d7d8159](https://github.com/formatjs/formatjs/commit/d7d81595e9154bf929cc0ea772acfe66719f6104))
+
+
+
+
+
 ## [2.2.5](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.2.4...eslint-plugin-formatjs@2.2.5) (2020-05-06)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

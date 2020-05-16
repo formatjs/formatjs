@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/formatjs/formatjs/compare/website@0.0.5...website@0.1.0) (2020-05-16)
+
+
+### Bug Fixes
+
+* **website:** Fix IntlProvider Example useIntl usage. ([#1678](https://github.com/formatjs/formatjs/issues/1678)) ([f93b381](https://github.com/formatjs/formatjs/commit/f93b3810445f45c35c540211de6343006f105b8c))
+
+
+### Features
+
+* **eslint-plugin-formatjs:** add rule for no-id ([d7d8159](https://github.com/formatjs/formatjs/commit/d7d81595e9154bf929cc0ea772acfe66719f6104))
+
+
+
+
+
 ## [0.0.5](https://github.com/formatjs/formatjs/compare/website@0.0.4...website@0.0.5) (2020-05-08)
 
 **Note:** Version bump only for package website

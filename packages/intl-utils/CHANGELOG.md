@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@2.2.5...@formatjs/intl-utils@2.3.0) (2020-05-16)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-utils:** dont default locales to empty string ([7f50edc](https://github.com/formatjs/formatjs/commit/7f50edcd172e5547cc3154785f8e9d30790086f5))
+
+
+### Features
+
+* **eslint-plugin-formatjs:** add rule for no-id ([d7d8159](https://github.com/formatjs/formatjs/commit/d7d81595e9154bf929cc0ea772acfe66719f6104))
+
+
+
+
+
 ## [2.2.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@2.2.4...@formatjs/intl-utils@2.2.5) (2020-05-05)
 
 **Note:** Version bump only for package @formatjs/intl-utils
