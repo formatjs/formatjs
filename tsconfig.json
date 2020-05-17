@@ -12,13 +12,28 @@
     "preserveConstEnums": true,
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
-    "composite": true,
     "sourceMap": true,
     "jsx": "react",
     "baseUrl": ".",
     "paths": {
-      "@formatjs/*": ["packages/*"],
-      "formatjs-extract-cldr-data": ["packages/formatjs-extract-cldr-data"],
+      "@formatjs/*": [
+        "packages/*",
+        "bazel-out/k8-fastbuild/bin/packages/*",
+        "bazel-out/darwin-fastbuild/bin/packages/*",
+        "bazel-out/x64_windows-fastbuild/bin/packages/*",
+        "bazel-out/k8-dbg/bin/packages/*",
+        "bazel-out/darwin-dbg/bin/packages/*",
+        "bazel-out/x64_windows-dbg/bin/packages/*"
+      ],
+      "formatjs-extract-cldr-data": [
+        "packages/formatjs-extract-cldr-data",
+        "bazel-out/k8-fastbuild/bin/packages/formatjs-extract-cldr-data",
+        "bazel-out/darwin-fastbuild/bin/packages/formatjs-extract-cldr-data",
+        "bazel-out/x64_windows-fastbuild/bin/packages/formatjs-extract-cldr-data",
+        "bazel-out/k8-dbg/bin/packages/formatjs-extract-cldr-data",
+        "bazel-out/darwin-dbg/bin/packages/formatjs-extract-cldr-data",
+        "bazel-out/x64_windows-dbg/bin/packages/formatjs-extract-cldr-data"
+      ],
       "intl-messageformat-parser": ["packages/intl-messageformat-parser"],
       "intl-messageformat": ["packages/intl-messageformat"]
     }

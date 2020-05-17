@@ -28,7 +28,6 @@ SRCS_DEPS = [
 
 PACKAGE_NAME = "babel-plugin-react-intl"
 
-
 pkg_npm(
     name = PACKAGE_NAME,
     deps = [
@@ -40,10 +39,10 @@ pkg_npm(
 
 ts_project(
     name = "tsconfig",
-    extends=["//:tsconfig.json"],
     srcs = SRCS,
-    source_map=True,
-    declaration=True,
+    declaration = True,
+    extends = ["//:tsconfig.json"],
+    source_map = True,
     deps = SRCS_DEPS,
 )
 

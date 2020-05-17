@@ -27,7 +27,7 @@ const unitsLocales = globSync('*/units.json', {
   ),
 }).map(dirname);
 
-export type Units = UnitsData['main']['en']['units'];
+type Units = UnitsData['main']['en']['units'];
 
 function shortenUnit(unit: string) {
   return unit.replace(/^(.*?)-/, '');

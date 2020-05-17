@@ -19,7 +19,7 @@ const listPatternLocales = globSync('*/listPatterns.json', {
   ),
 }).map(dirname);
 
-export type ListTypes = ListPatterns['main']['en']['listPatterns'];
+type ListTypes = ListPatterns['main']['en']['listPatterns'];
 
 export function getAllLocales() {
   return globSync('*/listPatterns.json', {

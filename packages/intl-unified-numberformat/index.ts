@@ -1,2 +1,2 @@
-export {Unit} from '../generated/units-constants';
+export {Unit} from './src/units-constants';
 export * from './src/core';

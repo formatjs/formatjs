@@ -616,9 +616,9 @@ generate_package_json(
 # API Extractor
 rollup_dts(
     name = "d-ts",
-    srcs = [":lib"],
     out = "%s.d.ts" % PACKAGE_NAME,
     package_json = "package.json",
+    deps = [":lib"],
 )
 
 ts_library(

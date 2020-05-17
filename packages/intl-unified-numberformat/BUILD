@@ -1,8 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary", "pkg_npm")
-load("@npm_bazel_typescript//:index.bzl", "ts_config", "ts_library", "ts_project")
+load("@npm_bazel_typescript//:index.bzl", "ts_library")
 load("//tools:jest.bzl", "jest_test")
-load("//tools:tools.bzl", "generate_package_json", "rollup_dts")
-load("@build_bazel_rules_nodejs//internal/golden_file_test:golden_file_test.bzl", "golden_file_test")
+load("//tools:tools.bzl", "generate_package_json", "rollup_dts", "ts_monorepo_subpackage", "cldr_gen")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -551,21 +550,13 @@ LOCALES = [
     "zu",
 ]
 
-ts_config(
-    name = "tsconfig",
-    src = "tsconfig.json",
-    deps = ["//:tsconfig.json"],
-)
-
 SRCS = [
     "index.ts",
     "polyfill.ts",
 ] + glob(["src/*.ts"])
 
 SRCS_DEPS = [
-    ":generated",
     "//packages/intl-utils:lib",
-    "//packages/intl-utils:generated",
 ]
 
 PACKAGE_NAME = "intl-unified-numberformat"
@@ -581,15 +572,14 @@ pkg_npm(
     ],
 )
 
-ts_project(
+ts_monorepo_subpackage(
     name = "lib",
+    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
-    deps = SRCS_DEPS,
     declaration = True,
-    extends = ["//:tsconfig.json"],
-    tsconfig="tsconfig.json",
-    composite=True,
     source_map = True,
+    tsconfig = "//:tsconfig.json",
+    deps = SRCS_DEPS,
 )
 
 jest_test(
@@ -624,14 +614,11 @@ generate_package_json(
 )
 
 # API Extractor
+
 rollup_dts(
     name = "d-ts",
-    out = "%s.d.ts" % PACKAGE_NAME,
-    package_json = "package.json",
-    deps = [
-        ":lib",
-        "//packages/intl-utils:d-ts",
-    ],
+    outs = ["%s.d.ts" % PACKAGE_NAME],
+    package_json = ":package.json",
 )
 
 # CLDR Data
@@ -672,11 +659,8 @@ genrule(
 )
 
 # Currency Digits
-ts_library(
-    name = "currency-digits-lib",
-    srcs = ["scripts/currency-digits.ts"],
-    devmode_module = "commonjs",
-    prodmode_module = "commonjs",
+cldr_gen(
+    name = "currency-digits",
     deps = [
         "//packages/formatjs-extract-cldr-data:lib",
         "//packages/intl-utils:lib",
@@ -686,29 +670,11 @@ ts_library(
         "@npm//fs-extra",
         "@npm//minimist",
     ],
-)
-
-nodejs_binary(
-    name = "currency-digits-bin",
-    data = [":currency-digits-lib"],
-    entry_point = "scripts/currency-digits.ts",
-)
-
-genrule(
-    name = "currency-digits",
-    outs = [
-        "generated/currency-digits.ts",
-    ],
-    cmd = "$(location currency-digits-bin) --out $@",
-    tools = [":currency-digits-bin"],
 )
 
 # ilnd
-ts_library(
-    name = "ilnd-lib",
-    srcs = ["scripts/ilnd.ts"],
-    devmode_module = "commonjs",
-    prodmode_module = "commonjs",
+cldr_gen(
+    name = "ilnd",
     deps = [
         "//packages/formatjs-extract-cldr-data:lib",
         "//packages/intl-utils:lib",
@@ -718,61 +684,11 @@ ts_library(
         "@npm//fs-extra",
         "@npm//minimist",
     ],
-)
-
-nodejs_binary(
-    name = "ilnd-bin",
-    data = [":ilnd-lib"],
-    entry_point = "scripts/ilnd.ts",
-)
-
-genrule(
-    name = "ilnd",
-    outs = [
-        "generated/ilnd.ts",
-    ],
-    cmd = "$(location ilnd-bin) --out $@",
-    tools = [":ilnd-bin"],
 )
 
 # units-constants
-ts_library(
-    name = "units-constants-lib",
-    srcs = ["scripts/units-constants.ts"],
-    devmode_module = "commonjs",
-    prodmode_module = "commonjs",
-    deps = [
-        "//packages/formatjs-extract-cldr-data:lib",
-        "//packages/intl-utils:lib",
-        "@npm//@types/fs-extra",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//fs-extra",
-        "@npm//minimist",
-    ],
-)
-
-nodejs_binary(
-    name = "units-constants-bin",
-    data = [":units-constants-lib"],
-    entry_point = "scripts/units-constants.ts",
-)
-
-genrule(
+cldr_gen(
     name = "units-constants",
-    outs = [
-        "generated/units-constants.ts",
-    ],
-    cmd = "$(location units-constants-bin) --out $@",
-    tools = [":units-constants-bin"],
-)
-
-# numbering-systems
-ts_library(
-    name = "numbering-systems-lib",
-    srcs = ["scripts/numbering-systems.ts"],
-    devmode_module = "commonjs",
-    prodmode_module = "commonjs",
     deps = [
         "//packages/formatjs-extract-cldr-data:lib",
         "//packages/intl-utils:lib",
@@ -783,24 +699,16 @@ ts_library(
         "@npm//minimist",
     ],
 )
-
-nodejs_binary(
-    name = "numbering-systems-bin",
-    data = [":numbering-systems-lib"],
-    entry_point = "scripts/numbering-systems.ts",
-)
-
-genrule(
+# numbering-systems
+cldr_gen(
     name = "numbering-systems",
-    outs = [
-        "generated/numbering-systems.ts",
+    deps = [
+        "//packages/formatjs-extract-cldr-data:lib",
+        "//packages/intl-utils:lib",
+        "@npm//@types/fs-extra",
+        "@npm//@types/minimist",
+        "@npm//@types/node",
+        "@npm//fs-extra",
+        "@npm//minimist",
     ],
-    cmd = "$(location numbering-systems-bin) --out $@",
-    tools = [":numbering-systems-bin"],
-)
-
-golden_file_test(
-    name="currency-digits-test",
-    actual="generated/currency-digits.ts",
-    golden="src/currency-digits.ts"
 )

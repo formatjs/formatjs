@@ -1,8 +1,7 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary", "pkg_npm", "npm_package_bin")
-load("@npm_bazel_typescript//:index.bzl", "ts_config", "ts_library", "ts_project")
+load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 load("//tools:jest.bzl", "jest_test")
-load("//tools:tools.bzl", "generate_package_json", "rollup_dts")
-load("@build_bazel_rules_nodejs//internal/golden_file_test:golden_file_test.bzl", "golden_file_test")
+load("//tools:tools.bzl", "cldr_gen", "generate_package_json", "rollup_dts", "ts_monorepo_subpackage")
+load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -12,32 +11,31 @@ SRCS = [
 
 PACKAGE_NAME = "intl-utils"
 
-
 pkg_npm(
     name = PACKAGE_NAME,
+    package_name = "@formatjs/%s" % PACKAGE_NAME,
     deps = [
         "//tools:LICENSE.md",
         "%s.d.ts" % PACKAGE_NAME,
-        ":lib",
         "package.json",
+        ":lib",
     ],
 )
 
-ts_project(
+ts_monorepo_subpackage(
     name = "lib",
+    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
     declaration = True,
-    extends = ["//:tsconfig.json"],
-    tsconfig="tsconfig.json",
     source_map = True,
-    composite=True,
+    tsconfig = "//:tsconfig.json",
 )
 
 jest_test(
     name = "test",
     srcs = [
         "//:tsconfig.json",
-        "package.json",
+        ":package.json",
     ] + SRCS + glob([
         "tests/**/*.ts",
         "tests/**/*.tsx",
@@ -59,25 +57,22 @@ jest_test(
     ],
 )
 
-# API Extractor
+generate_package_json(
+    name = "generate-package-json",
+    out = "package.json",
+    description = "Utils for formatjs",
+    module_name = "@formatjs/%s" % PACKAGE_NAME,
+)
+
 rollup_dts(
     name = "d-ts",
-    out = "%s.d.ts" % PACKAGE_NAME,
+    outs = ["%s.d.ts" % PACKAGE_NAME],
     package_json = ":package.json",
-    deps=[
-        ":lib"
-    ]
 )
 
 # CLDR Aliases
-
-ts_library(
-    name = "aliases-lib",
-    srcs = [
-        "scripts/aliases.ts",
-    ],
-    devmode_module = "commonjs",
-    prodmode_module = "commonjs",
+cldr_gen(
+    name = "aliases",
     deps = [
         "@npm//@types/fs-extra",
         "@npm//@types/minimist",
@@ -88,38 +83,11 @@ ts_library(
         "@npm//minimist",
         "@npm//serialize-javascript",
     ],
-)
-
-nodejs_binary(
-    name = "aliases-bin",
-    data = [":aliases-lib"],
-    entry_point = ":scripts/aliases.ts",
-)
-
-genrule(
-    name = "aliases",
-    outs = [
-        "generated/aliases.ts",
-    ],
-    cmd = "$(location aliases-bin) --out $@",
-    tools = [":aliases-bin"],
-)
-
-golden_file_test(
-    name="aliases-test",
-    actual="generated/aliases.ts",
-    golden="src/aliases.ts"
 )
 
 # CLDR Parent Locales
-
-ts_library(
-    name = "parentLocales-lib",
-    srcs = [
-        "scripts/parentLocales.ts",
-    ],
-    devmode_module = "commonjs",
-    prodmode_module = "commonjs",
+cldr_gen(
+    name = "parentLocales",
     deps = [
         "@npm//@types/fs-extra",
         "@npm//@types/minimist",
@@ -130,25 +98,4 @@ ts_library(
         "@npm//minimist",
         "@npm//serialize-javascript",
     ],
-)
-
-nodejs_binary(
-    name = "parentLocales-bin",
-    data = [":parentLocales-lib"],
-    entry_point = ":scripts/parentLocales.ts",
-)
-
-genrule(
-    name = "parentLocales",
-    outs = [
-        "generated/parentLocales.ts",
-    ],
-    cmd = "$(location parentLocales-bin) --out $@",
-    tools = [":parentLocales-bin"],
-)
-
-golden_file_test(
-    name="parentLocales-test",
-    actual="generated/parentLocales.ts",
-    golden="src/parentLocales.ts"
 )

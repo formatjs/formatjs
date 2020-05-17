@@ -1,7 +1,6 @@
-load("@npm_bazel_typescript//:index.bzl", "ts_project")
 load("//tools:jest.bzl", "jest_test")
-load("//tools:tools.bzl", "generate_package_json")
-load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary", "pkg_npm")
+load("//tools:tools.bzl", "generate_package_json", "ts_monorepo_subpackage")
+load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -10,7 +9,6 @@ SRCS = glob(["src/*.ts"]) + [
 ]
 
 SRCS_DEPS = [
-    "//packages/intl-utils:lib",
     "@npm//@types/glob",
     "@npm//@types/lodash",
     "@npm//@types/node",
@@ -22,6 +20,7 @@ SRCS_DEPS = [
     "@npm//cldr-units-full",
     "@npm//glob",
     "@npm//lodash",
+    "//packages/intl-utils:lib",
 ]
 
 PACKAGE_NAME = "formatjs-extract-cldr-data"
@@ -35,17 +34,15 @@ pkg_npm(
     ],
 )
 
-ts_project(
+ts_monorepo_subpackage(
     name = "lib",
+    package_name = PACKAGE_NAME,
     srcs = SRCS,
     declaration = True,
-    extends = ["//:tsconfig.json"],
-    tsconfig="tsconfig.json",
     source_map = True,
-    composite=True,
-    deps=SRCS_DEPS
+    tsconfig = "//:tsconfig.json",
+    deps = SRCS_DEPS,
 )
-
 
 generate_package_json(
     name = "generate-package-json",

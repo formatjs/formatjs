@@ -4,6 +4,7 @@ import {
   ExtractorResult,
 } from '@microsoft/api-extractor';
 import * as minimist from 'minimist';
+
 function main(args: Record<string, string>) {
   // Load and parse the api-extractor.json file
   const extractorConfig: ExtractorConfig = ExtractorConfig.loadFileAndPrepare(

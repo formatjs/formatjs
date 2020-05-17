@@ -1,4 +1,9 @@
-load("@build_bazel_rules_nodejs//:providers.bzl", "DeclarationInfo")
+load("@build_bazel_rules_nodejs//:providers.bzl", "DeclarationInfo", "LinkablePackageInfo")
+load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary", "npm_package_bin")
+load("@npm_bazel_typescript//:index.bzl", "ts_project")
+load("@build_bazel_rules_nodejs//internal/golden_file_test:golden_file_test.bzl", "golden_file_test")
+load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
+
 def _generate_package_json(ctx):
     "A macro to generate package.json file"
     args = ctx.actions.args()
@@ -36,79 +41,130 @@ generate_package_json = rule(
     },
 )
 
-def _rollup_dts(ctx):
-    tsconfig = ctx.actions.declare_file("tsconfig.json")
-    copy_tsconfig_args = ctx.actions.args()
-    copy_tsconfig_args.add_all(ctx.files.tsconfig_json + [tsconfig])
-    ctx.actions.run_shell(
-        outputs = [tsconfig],
-        inputs = ctx.files.tsconfig_json,
-        arguments = [copy_tsconfig_args],
-        command = "cp -rf $1 $2",
-        progress_message = "Copy tsconfig.json file to sandbox",
+def rollup_dts(name, package_json, outs):
+    copy_file(
+        name = "%s-extractor-config-copy" % name,
+        src = "//:api-extractor.json",
+        out = "api-extractor.json",
     )
 
-    api_extractor_config = ctx.actions.declare_file("api-extractor.json")
-    copy_api_extractor_config_args = ctx.actions.args()
-    copy_api_extractor_config_args.add_all(ctx.files._api_extractor_json + [api_extractor_config])
-    ctx.actions.run_shell(
-        outputs = [api_extractor_config],
-        inputs = ctx.files._api_extractor_json,
-        arguments = [copy_api_extractor_config_args],
-        command = "cp -rf $1 $2",
-        progress_message = "Copy api-extractor.json file to sandbox",
+    copy_file(
+        name = "%s-tsconfig-copy" % name,
+        src = "//:tsconfig.json",
+        out = "tsconfig.json",
     )
 
-    deps_files_depsets = []
-
-    for dep in ctx.attr.deps:
-        # Collect whatever is in the "data"
-        deps_files_depsets.append(dep.data_runfiles.files)
-
-        # Only collect DefaultInfo files (not transitive)
-        deps_files_depsets.append(dep.files)
-
-        # Include all transitive declarations
-        if DeclarationInfo in dep:
-            deps_files_depsets.append(dep[DeclarationInfo].transitive_declarations)
-
-    inputs = depset([tsconfig, api_extractor_config] + ctx.files.package_json, transitive = deps_files_depsets)
-    args = ctx.actions.args()
-    args.add("--config", api_extractor_config)
-    ctx.actions.run(
-        outputs = [ctx.outputs.out],
-        inputs = inputs,
-        arguments = [args],
-        executable = ctx.executable._api_extractor_bin,
+    npm_package_bin(
+        name = name,
+        tool = "@npm//@microsoft/api-extractor/bin:api-extractor",
+        package = "@microsoft/api-extractor",
+        package_bin = "api-extractor",
+        data = [
+            ":api-extractor.json",
+            package_json,
+            ":tsconfig.json",
+            ":lib",
+        ],
+        outs = outs,
+        args = ["run --local --config $(execpath :api-extractor.json)"],
     )
 
-rollup_dts = rule(
-    implementation = _rollup_dts,
+def cldr_gen(name, **kwargs):
+    ts_project(
+        name = "%s-lib" % name,
+        srcs = [
+            "scripts/%s.ts" % name,
+        ],
+        declaration=True,
+        source_map=True,
+        **kwargs
+    )
+
+    nodejs_binary(
+        name = "%s-bin" % name,
+        entry_point = ":scripts/%s.js" % name,
+    )
+
+    native.genrule(
+        name = "%s-gen" % name,
+        outs = [
+            "generated/%s.ts" % name,
+        ],
+        cmd = "$(location %s-bin) --out $@" % name,
+        tools = [":%s-bin" % name],
+    )
+
+    golden_file_test(
+        name = name,
+        actual = "generated/%s.ts" % name,
+        golden = "src/%s.ts" % name,
+    )
+
+# From https://github.com/bazelbuild/rules_nodejs/issues/1830
+# From https://github.com/bazelbuild/rules_nodejs/blob/master/internal/js_library/js_library.bzl
+# js_library still doesn't quite do what we want :( so this is a tweak of that
+def _ts_monorepo_subpackage_impl(ctx):
+    ts_project = ctx.attr.ts_project
+    ts_project_files = ts_project[DefaultInfo].files.to_list() + ts_project[DeclarationInfo].declarations.to_list()
+    files = []
+
+    is_all_sources = ts_project_files[0].is_source
+    for src in ts_project_files:
+        if src.is_source:
+            dst = ctx.actions.declare_file(src.basename, sibling = src)
+            copy_file(ctx, src, dst)
+            files.append(dst)
+        else:
+            files.append(src)
+
+    files_depset = depset(files)
+
+    result = [
+        DefaultInfo(
+            files = files_depset,
+            runfiles = ctx.runfiles(files = ts_project_files),
+        ),
+        ts_project[DeclarationInfo],
+    ]
+
+    path = "/".join([p for p in [ctx.bin_dir.path, ctx.label.workspace_root, ctx.label.package] if p])
+    result.append(LinkablePackageInfo(
+        package_name = ctx.attr.package_name,
+        path = path,
+        files = files_depset,
+    ))
+    return result
+
+_ts_monorepo_subpackage = rule(
+    _ts_monorepo_subpackage_impl,
     attrs = {
-        "out": attr.output(
-            doc = "Result rollup'ed d.ts file",
+        "package_name": attr.string(
             mandatory = True,
+            doc = "Package name in package.json",
         ),
-        "deps": attr.label_list(
-            allow_files = True,
-            doc = "List of transitive deps",
-        ),
-        "package_json": attr.label(
-            allow_single_file = True,
+        "ts_project": attr.label(
             mandatory = True,
-        ),
-        "tsconfig_json": attr.label(
-            default = Label("//:tsconfig.json"),
-            allow_single_file = True,
-        ),
-        "_api_extractor_json": attr.label(
-            default = Label("//:api-extractor.json"),
-            allow_single_file = True,
-        ),
-        "_api_extractor_bin": attr.label(
-            default = Label("//tools:api-extractor"),
-            executable = True,
-            cfg = "host",
+            doc = "Label for ts_project",
         ),
     },
 )
+
+def ts_monorepo_subpackage(
+        name,
+        package_name = "",
+        **kwargs):
+    if package_name:
+        ts_project(
+            name = "%s-lib" % name,
+            **kwargs
+        )
+        _ts_monorepo_subpackage(
+            name = name,
+            ts_project = ":%s-lib" % name,
+            package_name = package_name,
+        )
+    else:
+        ts_project(
+            name = name,
+            **kwargs
+        )

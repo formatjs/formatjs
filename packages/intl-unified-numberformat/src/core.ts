@@ -45,9 +45,9 @@ import {
   repeat,
 } from './utils';
 import {extractILD, Patterns} from './data';
-import currencyDigitsData from '../generated/currency-digits';
-import ILND from '../generated/ilnd';
-import numberingSystemNames from '../generated/numbering-systems';
+import currencyDigitsData from './currency-digits';
+import ILND from './ilnd';
+import numberingSystemNames from './numbering-systems';
 
 const VALID_NUMBERING_SYSTEM_NAMES: Record<string, boolean> = Object.create(
   null

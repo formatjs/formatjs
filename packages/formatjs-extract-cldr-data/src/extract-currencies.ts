@@ -21,7 +21,7 @@ const unitsLocales = globSync('*/currencies.json', {
   ),
 }).map(dirname);
 
-export type Currencies = CurrenciesData['main']['en']['numbers']['currencies'];
+type Currencies = CurrenciesData['main']['en']['numbers']['currencies'];
 
 function extractCurrencyPattern(d: Currencies['USD']) {
   if (!d['displayName-count-other']) {

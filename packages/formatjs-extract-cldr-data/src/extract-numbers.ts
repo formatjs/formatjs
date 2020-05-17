@@ -28,7 +28,7 @@ const unitsLocales = globSync('*/numbers.json', {
   ),
 }).map(dirname);
 
-export type Numbers = NumbersData['main']['ar']['numbers'];
+type Numbers = NumbersData['main']['ar']['numbers'];
 
 const COUNTS = [
   '1000',
