@@ -857,11 +857,10 @@ describe('format API', () => {
 
         expect((config.onError as jest.Mock).mock.calls.map(c => c[0].code))
           .toMatchInlineSnapshot(`
-Array [
-  "MISSING_TRANSLATION",
-  "FORMAT_ERROR",
-]
-`);
+          Array [
+            "MISSING_TRANSLATION",
+          ]
+        `);
       });
 
       it('formats `defaultMessage` when message has a syntax error', () => {
@@ -907,12 +906,12 @@ Array [
       });
 
       it('returns message source when message and `defaultMessage` have formatting errors', () => {
-        const {locale, messages} = config;
+        const {messages} = config;
         const id = 'missing_value';
 
         expect(
           formatMessage({
-            id: id,
+            id,
             defaultMessage: messages.invalid,
           })
         ).toBe(messages[id]);
@@ -922,12 +921,12 @@ Array [
       });
 
       it('returns message source when formatting error and missing `defaultMessage`', () => {
-        const {locale, messages} = config;
+        const {messages} = config;
         const id = 'missing_value';
 
         expect(
           formatMessage({
-            id: id,
+            id,
             defaultMessage: messages.missing,
           })
         ).toBe(messages[id]);

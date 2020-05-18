@@ -18,7 +18,7 @@ import IntlMessageFormat, {
   FormatXMLElementFn,
   PrimitiveType,
 } from 'intl-messageformat';
-import {ReactIntlError, ReactIntlErrorCode} from '../error';
+import {MessageFormatError, MissingTranslationError} from '../error';
 
 function setTimeZoneInOptions(
   opts: Record<string, Intl.DateTimeFormatOptions>,
@@ -73,9 +73,12 @@ function deepMergeFormatsAndSetTimeZone(
 }
 
 function prepareIntlMessageFormatHtmlOutput(
-  chunks: React.ReactNodeArray
-): React.ReactElement {
-  return React.createElement(React.Fragment, null, ...chunks);
+  chunks: React.ReactNode,
+  shouldWrap?: boolean
+): React.ReactNode {
+  return Array.isArray(chunks) && shouldWrap
+    ? React.createElement(React.Fragment, null, ...chunks)
+    : chunks;
 }
 
 export function formatMessage(
@@ -139,44 +142,67 @@ export function formatMessage(
   formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
   defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);
 
-  let formattedMessageParts: React.ReactNode = '';
-
-  if (message) {
-    try {
-      const formatter = state.getMessageFormat(message, locale, formats, {
-        formatters: state,
-      });
-
-      formattedMessageParts = formatter.format<React.ReactNode>(values);
-    } catch (e) {
-      onError(
-        new ReactIntlError(
-          ReactIntlErrorCode.FORMAT_ERROR,
-          `Error formatting message: "${id}" for locale: "${locale}"` +
-            (defaultMessage ? ', using default message as fallback.' : ''),
-          messageDescriptor,
-          e
-        )
-      );
+  if (!message) {
+    if (
+      !defaultMessage ||
+      (locale && locale.toLowerCase() !== defaultLocale.toLowerCase())
+    ) {
+      // This prevents warnings from littering the console in development
+      // when no `messages` are passed into the <IntlProvider> for the
+      // default locale.
+      onError(new MissingTranslationError(messageDescriptor, locale));
     }
-  } else if (
-    !defaultMessage ||
-    (locale && locale.toLowerCase() !== defaultLocale.toLowerCase())
-  ) {
-    // This prevents warnings from littering the console in development
-    // when no `messages` are passed into the <IntlProvider> for the
-    // default locale.
+    if (defaultMessage) {
+      try {
+        const formatter = state.getMessageFormat(
+          defaultMessage,
+          defaultLocale,
+          defaultFormats
+        );
+
+        return prepareIntlMessageFormatHtmlOutput(
+          formatter.format(values),
+          wrapRichTextChunksInFragment
+        );
+      } catch (e) {
+        onError(
+          new MessageFormatError(
+            `Error formatting default message for: "${id}", rendering default message verbatim`,
+            locale,
+            messageDescriptor,
+            e
+          )
+        );
+        return defaultMessage;
+      }
+    }
+    return id;
+  }
+
+  // We have the translated message
+  try {
+    const formatter = state.getMessageFormat(message, locale, formats, {
+      formatters: state,
+    });
+
+    return prepareIntlMessageFormatHtmlOutput(
+      formatter.format<React.ReactNode>(values),
+      wrapRichTextChunksInFragment
+    );
+  } catch (e) {
     onError(
-      new ReactIntlError(
-        ReactIntlErrorCode.MISSING_TRANSLATION,
-        `Missing message: "${id}" for locale: "${locale}"` +
-          (defaultMessage ? ', using default message as fallback.' : ''),
-        messageDescriptor
+      new MessageFormatError(
+        `Error formatting message: "${id}", using ${
+          defaultMessage ? 'default message' : 'id'
+        } as fallback.`,
+        locale,
+        messageDescriptor,
+        e
       )
     );
   }
 
-  if (!formattedMessageParts && defaultMessage) {
+  if (defaultMessage) {
     try {
       const formatter = state.getMessageFormat(
         defaultMessage,
@@ -184,40 +210,20 @@ export function formatMessage(
         defaultFormats
       );
 
-      formattedMessageParts = formatter.format(values);
+      return prepareIntlMessageFormatHtmlOutput(
+        formatter.format(values),
+        wrapRichTextChunksInFragment
+      );
     } catch (e) {
       onError(
-        new ReactIntlError(
-          ReactIntlErrorCode.FORMAT_ERROR,
-          `Error formatting the default message for: "${id}"`,
+        new MessageFormatError(
+          `Error formatting the default message for: "${id}", rendering message verbatim`,
+          locale,
           messageDescriptor,
           e
         )
       );
     }
   }
-
-  if (!formattedMessageParts) {
-    onError(
-      new ReactIntlError(
-        ReactIntlErrorCode.FORMAT_ERROR,
-        `Cannot format message: "${id}", ` +
-          `using message ${
-            message || defaultMessage ? 'source' : 'id'
-          } as fallback.`,
-        messageDescriptor
-      )
-    );
-    if (typeof message === 'string') {
-      return message || defaultMessage || String(id);
-    }
-    return defaultMessage || String(id);
-  }
-  if (Array.isArray(formattedMessageParts)) {
-    if (wrapRichTextChunksInFragment) {
-      return prepareIntlMessageFormatHtmlOutput(formattedMessageParts);
-    }
-    return formattedMessageParts;
-  }
-  return formattedMessageParts as React.ReactNode;
+  return message || defaultMessage || id;
 }

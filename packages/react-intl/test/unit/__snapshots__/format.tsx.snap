@@ -28,34 +28,29 @@ exports[`format API formatMessage() fallbacks returns \`defaultMessage\` source 
 Array [
   "MISSING_TRANSLATION",
   "FORMAT_ERROR",
-  "FORMAT_ERROR",
 ]
 `;
 
 exports[`format API formatMessage() fallbacks returns message \`id\` when message and \`defaultMessage\` are empty 1`] = `
 Array [
   "MISSING_TRANSLATION",
-  "FORMAT_ERROR",
 ]
 `;
 
 exports[`format API formatMessage() fallbacks returns message \`id\` when message and \`defaultMessage\` are missing 1`] = `
 Array [
   "MISSING_TRANSLATION",
-  "FORMAT_ERROR",
 ]
 `;
 
 exports[`format API formatMessage() fallbacks returns message source when formatting error and missing \`defaultMessage\` 1`] = `
 Array [
   "FORMAT_ERROR",
-  "FORMAT_ERROR",
 ]
 `;
 
 exports[`format API formatMessage() fallbacks returns message source when message and \`defaultMessage\` have formatting errors 1`] = `
 Array [
-  "FORMAT_ERROR",
   "FORMAT_ERROR",
   "FORMAT_ERROR",
 ]

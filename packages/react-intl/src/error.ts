@@ -10,22 +10,50 @@ export const enum ReactIntlErrorCode {
 
 export class ReactIntlError extends Error {
   public readonly code: ReactIntlErrorCode;
-  public readonly descriptor?: MessageDescriptor;
-  constructor(
-    code: ReactIntlErrorCode,
-    message: string,
-    descriptor?: MessageDescriptor,
-    exception?: Error
-  ) {
+
+  constructor(code: ReactIntlErrorCode, message: string, exception?: Error) {
     super(
-      `[React Intl Error ${code}] ${message} ${
-        exception ? `\n${exception.stack}` : ''
-      }`
+      `[React Intl Error ${code}] ${message} 
+${exception ? `\n${exception.stack}` : ''}`
     );
     this.code = code;
-    this.descriptor = descriptor;
     if (typeof Error.captureStackTrace === 'function') {
       Error.captureStackTrace(this, ReactIntlError);
     }
+  }
+}
+
+export class MessageFormatError extends ReactIntlError {
+  public readonly descriptor?: MessageDescriptor;
+  constructor(
+    message: string,
+    locale: string,
+    descriptor: MessageDescriptor,
+    exception?: Error
+  ) {
+    super(
+      ReactIntlErrorCode.FORMAT_ERROR,
+      `${message} 
+Locale: ${locale}
+MessageID: ${descriptor?.id}
+Default Message: ${descriptor?.defaultMessage}
+Description: ${descriptor?.description} 
+`,
+      exception
+    );
+    this.descriptor = descriptor;
+  }
+}
+
+export class MissingTranslationError extends ReactIntlError {
+  public readonly descriptor?: MessageDescriptor;
+  constructor(descriptor: MessageDescriptor, locale: string) {
+    super(
+      ReactIntlErrorCode.MISSING_TRANSLATION,
+      `Missing message: "${descriptor.id}" for locale "${locale}", using ${
+        descriptor.defaultMessage ? 'default message' : 'id'
+      } as fallback.`
+    );
+    this.descriptor = descriptor;
   }
 }

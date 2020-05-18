@@ -74,8 +74,9 @@ json.forEach(t => {
 });
 if (failedTests.length) {
   console.log(
-    `Tests: ${failedTests.length} failed, ${json.length -
-      failedTests.length} passed, ${json.length} total`
+    `Tests: ${failedTests.length} failed, ${
+      json.length - failedTests.length
+    } passed, ${json.length} total`
   );
   process.exitCode = 1;
 } else {
