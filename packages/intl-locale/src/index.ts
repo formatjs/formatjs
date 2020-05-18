@@ -46,7 +46,10 @@ function printAST({
     printLanguageId(lang),
     unicodeExtension?.type,
     ...(unicodeExtension?.attributes || []),
-    ...(unicodeExtension?.keywords || []),
+    ...(unicodeExtension?.keywords.reduce(
+      (all: string[], kv) => all.concat(kv),
+      []
+    ) || []),
     transformedExtension?.type,
     printLanguageId(transformedExtension?.lang),
     ...(transformedExtension?.fields || []),
@@ -196,7 +199,7 @@ function isLanguageEqual(
 }
 
 export class IntlLocale {
-  constructor(tag: string | IntlLocale, options: IntlLocaleOptions) {
+  constructor(tag: string | IntlLocale, opts?: IntlLocaleOptions) {
     // test262/test/intl402/RelativeTimeFormat/constructor/constructor/newtarget-undefined.js
     // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
     const newTarget =
@@ -237,10 +240,11 @@ export class IntlLocale {
       tag = tag.toString() as string;
     }
 
-    if (options === undefined) {
+    let options: IntlLocaleOptions;
+    if (opts === undefined) {
       options = Object.create(null);
     } else {
-      options = toObject(options);
+      options = toObject(opts);
     }
 
     const ast = applyOptionsToTag(tag, options);
@@ -287,9 +291,12 @@ export class IntlLocale {
       ['upper', 'lower', 'false'],
       undefined
     );
-    if (kf !== undefined) {
-      opt.kn = String(kf);
+    opt.kf = kf;
+    let kn = getOption(options, 'numeric', 'boolean', undefined, undefined);
+    if (kn !== undefined) {
+      kn = !!String(kn);
     }
+    opt.kn = kn;
     const numberingSystem = getOption(
       options,
       'numberingSystem',
@@ -322,6 +329,7 @@ export class IntlLocale {
       );
     }
     setInternalSlot(__INTERNAL_SLOT_MAP__, this, 'numberingSystem', r.nu);
+    setInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ast', ast);
   }
 
   /**
@@ -340,7 +348,7 @@ export class IntlLocale {
     const max = addLikelySubtags(ast);
     const maxWithoutVariants = ast.lang;
     maxWithoutVariants.variants = [];
-    let trials: UnicodeLanguageId[] = [
+    const trials: UnicodeLanguageId[] = [
       max.lang,
       {lang: max.lang.lang, region: max.lang.region},
       {lang: max.lang.lang, region: max.lang.script},

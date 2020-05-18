@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`intl-locale ast 1`] = `
+Object {
+  "lang": Object {
+    "lang": "en",
+    "region": "",
+    "script": null,
+    "variants": Array [],
+  },
+  "otherExtensions": Object {},
+  "puExtension": null,
+  "transformedExtension": undefined,
+  "unicodeExtension": Object {
+    "attributes": Array [
+      "bar",
+      "foo",
+    ],
+    "keywords": Array [
+      Array [
+        "ca",
+        "buddhist",
+      ],
+      Array [
+        "kk",
+        "",
+      ],
+      Array [
+        "nu",
+        "thai",
+      ],
+    ],
+    "type": "u",
+  },
+}
+`;
