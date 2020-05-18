@@ -1,0 +1,53 @@
+{
+  "name": "@formatjs/intl-locale",
+  "version": "0.0.0",
+  "description": "Intl.Locale polyfill",
+  "keywords": [
+    "intl",
+    "locale",
+    "formatjs",
+    "react-intl",
+    "i18n",
+    "ecma402",
+    "tc39"
+  ],
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "lib/index.js",
+  "types": "lib/intl-locale.d.ts",
+  "files": [
+    "dist-es6",
+    "dist",
+    "lib",
+    "polyfill.js",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/formatjs/formatjs.git"
+  },
+  "scripts": {
+    "build": "node scripts/build-peg.js && yarn compile",
+    "clean": "rimraf dist lib dist-es6 dist-es6 *.tsbuildinfo",
+    "compile": "tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local && rollup -c rollup.config.js",
+    "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu NODE_ENV=test jest",
+    "test": "yarn run jest && cross-env NODE_ICU_DATA=../../node_modules/full-icu ts-node tests/runner"
+  },
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  },
+  "dependencies": {
+    "@formatjs/intl-utils": "2.0.4"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "@types/minimist": "^1.2.0",
+    "jest": "^25.4.0",
+    "minimist": "^1.2.5",
+    "pegjs": "^0.10.0",
+    "ts-jest": "^25.4.0",
+    "ts-pegjs": "^0.2.6"
+  }
+}
