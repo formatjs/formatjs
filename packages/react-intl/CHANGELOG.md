@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.5.5](https://github.com/formatjs/formatjs/compare/react-intl@4.5.4...react-intl@4.5.5) (2020-05-18)
+
+
+### Bug Fixes
+
+* **react-intl:** reduce onError chattiness ([42d0ac4](https://github.com/formatjs/formatjs/commit/42d0ac433d4d31629bd2aadb2dafb49775d01aac))
+
+
+
+
+
 ## [4.5.4](https://github.com/formatjs/formatjs/compare/react-intl@4.5.3...react-intl@4.5.4) (2020-05-16)
 
 **Note:** Version bump only for package react-intl
