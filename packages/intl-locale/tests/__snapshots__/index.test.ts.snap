@@ -4,12 +4,12 @@ exports[`intl-locale ast 1`] = `
 Object {
   "lang": Object {
     "lang": "en",
-    "region": "",
-    "script": null,
+    "region": undefined,
+    "script": undefined,
     "variants": Array [],
   },
   "otherExtensions": Object {},
-  "puExtension": null,
+  "puExtension": undefined,
   "transformedExtension": undefined,
   "unicodeExtension": Object {
     "attributes": Array [

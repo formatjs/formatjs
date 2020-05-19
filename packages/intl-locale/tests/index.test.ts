@@ -1,11 +1,9 @@
 import {IntlLocale} from '../src';
-import {pegParse} from '../src/unicode-locale-id';
+import {parse} from '../src/parser';
 
 describe('intl-locale', () => {
   it('ast', function() {
-    expect(
-      pegParse('en-u-foo-bar-nu-thai-ca-buddhist-kk-true')
-    ).toMatchSnapshot();
+    expect(parse('en-u-foo-bar-nu-thai-ca-buddhist-kk-true')).toMatchSnapshot();
   });
   it('toString', function() {
     // expect(() => IntlLocale.prototype.toString.call(IntlLocale.prototype)).toThrowError(TypeError)

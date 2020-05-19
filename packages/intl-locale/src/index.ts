@@ -7,12 +7,8 @@ import {
   objectIs,
   invariant,
 } from '@formatjs/intl-utils';
-import {pegParse as parseUnicodeLocaleId} from './unicode-locale-id';
+import {parse as parseUnicodeLocaleId} from './parser';
 import {UnicodeLocaleId, UnicodeLanguageId} from './unicode-locale-id-types';
-import * as data from 'cldr-core/supplemental/likelySubtags.json';
-const {
-  supplemental: {likelySubtags},
-} = data;
 
 export interface IntlLocaleOptions {
   language?: string;
@@ -154,6 +150,7 @@ function applyUnicodeExtensionToTag(
 
 function addLikelySubtags(unicodeLangId: UnicodeLanguageId): UnicodeLanguageId {
   const {lang, script, region} = unicodeLangId;
+  const likelySubtags = IntlLocale.LIKELY_SUBTAGS;
   const match =
     likelySubtags[printLanguageId({lang, script, region}) as 'aa'] ||
     likelySubtags[printLanguageId({lang, region}) as 'aa'] ||
@@ -428,6 +425,12 @@ export class IntlLocale {
   }
 
   static relevantExtensionKeys = RELEVANT_EXTENSION_KEYS;
+
+  static LIKELY_SUBTAGS: Record<string, string> = {};
+
+  public static _addLikelySubtagData(data: Record<string, string>): void {
+    IntlLocale.LIKELY_SUBTAGS = data;
+  }
 }
 
 try {
