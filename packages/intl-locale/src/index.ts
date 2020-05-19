@@ -165,16 +165,13 @@ function addLikelySubtags(unicodeLangId: UnicodeLanguageId): UnicodeLanguageId {
   if (!match) {
     return UND_LOCALE_ID.lang;
   }
-  if (!script || !region || lang === 'und') {
-    const [lang, script, region] = match.split('-');
-    return {
-      lang,
-      script,
-      region,
-      variants: unicodeLangId.variants,
-    };
-  }
-  return unicodeLangId;
+  const parts = match.split('-');
+  return {
+    ...unicodeLangId,
+    lang: lang === 'und' || !lang ? parts[0] : lang,
+    script: script || parts[1],
+    region: region || parts[2],
+  };
 }
 
 function isLanguageEqualWithoutVariants(
@@ -339,22 +336,20 @@ export class IntlLocale {
    */
   public minimize(): IntlLocale {
     const ast = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ast');
-    const maximizedLang = addLikelySubtags(ast.lang);
+    const {variants, ...max} = addLikelySubtags(ast.lang);
     const trials: UnicodeLanguageId[] = [
-      {lang: maximizedLang.lang},
-      {lang: maximizedLang.lang, region: maximizedLang.region},
-      {lang: maximizedLang.lang, region: maximizedLang.script},
+      {lang: max.lang},
+      {lang: max.lang, region: max.region},
+      {lang: max.lang, script: max.script},
     ];
     for (const trial of trials) {
-      if (
-        isLanguageEqualWithoutVariants(maximizedLang, addLikelySubtags(trial))
-      ) {
+      if (isLanguageEqualWithoutVariants(max, addLikelySubtags(trial))) {
         return new IntlLocale(
           printAST({
             ...ast,
             lang: {
               ...trial,
-              variants: maximizedLang.variants,
+              variants,
             },
           })
         );
@@ -363,7 +358,10 @@ export class IntlLocale {
     return new IntlLocale(
       printAST({
         ...ast,
-        lang: maximizedLang,
+        lang: {
+          ...max,
+          variants,
+        },
       })
     );
   }
