@@ -34,7 +34,8 @@
     "clean": "rimraf dist lib dist-es6 dist-es6 *.tsbuildinfo",
     "compile": "tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local && rollup -c rollup.config.js",
     "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu NODE_ENV=test jest",
-    "test": "yarn run jest && cross-env NODE_ICU_DATA=../../node_modules/full-icu ts-node tests/runner"
+    "test262": "cross-env NODE_ICU_DATA=../../node_modules/full-icu ts-node tests/runner",
+    "test": "yarn jest && yarn test262"
   },
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"

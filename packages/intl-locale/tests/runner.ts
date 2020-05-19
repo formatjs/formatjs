@@ -32,6 +32,7 @@ const excludedTests = [
   'options-toobject-prototype', // TODO
   'locales-valid', // f7e8dba39b1143b45c37ee137e406889b56bc335 added grandfathered locale which we
   'proto-from-ctor-realm', // Bc of Realm support
+  'branding', // TODO: We got a recursive issue w/ our private var polyfill
 ];
 const PATTERN = resolve(
   __dirname,
@@ -43,7 +44,7 @@ const args = [
   '-t',
   String(cpus().length - 1),
   '--prelude',
-  './dist/polyfill.js',
+  './dist-es6/umd/polyfill.js',
   '-r',
   'json',
   PATTERN,
@@ -74,9 +75,8 @@ json.forEach(t => {
 });
 if (failedTests.length) {
   console.log(
-    `Tests: ${failedTests.length} failed, ${
-      json.length - failedTests.length
-    } passed, ${json.length} total`
+    `Tests: ${failedTests.length} failed, ${json.length -
+      failedTests.length} passed, ${json.length} total`
   );
   process.exitCode = 1;
 } else {

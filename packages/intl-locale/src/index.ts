@@ -140,10 +140,12 @@ function applyUnicodeExtensionToTag(
     result[key] = value;
   }
   if (!ast.unicodeExtension) {
-    ast.unicodeExtension = {
-      type: 'u',
-      keywords,
-    };
+    if (keywords.length) {
+      ast.unicodeExtension = {
+        type: 'u',
+        keywords,
+      };
+    }
   } else {
     ast.unicodeExtension.keywords = keywords;
   }
@@ -152,50 +154,36 @@ function applyUnicodeExtensionToTag(
 
 const UND_LOCALE_ID = parseUnicodeLocaleId(likelySubtags.und);
 
-function addLikelySubtags(ast: UnicodeLocaleId): UnicodeLocaleId {
-  const {
-    lang: {lang, script, region},
-  } = ast;
+function addLikelySubtags(unicodeLangId: UnicodeLanguageId): UnicodeLanguageId {
+  const {lang, script, region} = unicodeLangId;
   const match =
-    likelySubtags[[lang, script, region].join('-') as 'aa'] ||
-    likelySubtags[[lang, region].join('-') as 'aa'] ||
-    likelySubtags[[lang, script].join('-') as 'aa'] ||
-    likelySubtags[[lang].join('-') as 'aa'] ||
-    likelySubtags[['und', script].join('-') as 'aa'];
+    likelySubtags[printLanguageId({lang, script, region}) as 'aa'] ||
+    likelySubtags[printLanguageId({lang, region}) as 'aa'] ||
+    likelySubtags[printLanguageId({lang, script}) as 'aa'] ||
+    likelySubtags[lang as 'aa'] ||
+    likelySubtags[printLanguageId({lang: 'und', script}) as 'aa'];
   if (!match) {
-    return UND_LOCALE_ID;
+    return UND_LOCALE_ID.lang;
   }
-  const parts = match.split('-');
-  return {
-    ...ast,
-    lang: {
-      ...ast.lang,
-      lang: lang || parts[0],
-      script: script || parts[1],
-      region: region || parts[2],
-    },
-  };
+  if (!script || !region || lang === 'und') {
+    const [lang, script, region] = match.split('-');
+    return {
+      lang,
+      script,
+      region,
+      variants: unicodeLangId.variants,
+    };
+  }
+  return unicodeLangId;
 }
 
-function isLanguageEqual(
+function isLanguageEqualWithoutVariants(
   l1: UnicodeLanguageId,
   l2: UnicodeLanguageId
 ): boolean {
-  if (
-    l1.lang === l2.lang &&
-    l1.region === l2.region &&
-    l1.script === l2.script
-  ) {
-    return false;
-  }
-  const {variants: variants1 = []} = l1;
-  const {variants: variants2 = []} = l2;
-  for (let i = 0; i < variants1.length; i++) {
-    if (variants1[i] !== variants2[i]) {
-      return false;
-    }
-  }
-  return true;
+  return (
+    l1.lang === l2.lang && l1.region === l2.region && l1.script === l2.script
+  );
 }
 
 export class IntlLocale {
@@ -335,39 +323,49 @@ export class IntlLocale {
   /**
    * https://www.unicode.org/reports/tr35/#Likely_Subtags
    */
-  public maximize() {
+  public maximize(): IntlLocale {
     const ast = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ast');
-    return printAST(addLikelySubtags(ast));
+    const maximizedLang = addLikelySubtags(ast.lang);
+    return new IntlLocale(
+      printAST({
+        ...ast,
+        lang: maximizedLang,
+      })
+    );
   }
 
   /**
    * https://www.unicode.org/reports/tr35/#Likely_Subtags
    */
-  public minimize() {
+  public minimize(): IntlLocale {
     const ast = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ast');
-    const max = addLikelySubtags(ast);
-    const maxWithoutVariants = ast.lang;
-    maxWithoutVariants.variants = [];
+    const maximizedLang = addLikelySubtags(ast.lang);
     const trials: UnicodeLanguageId[] = [
-      max.lang,
-      {lang: max.lang.lang, region: max.lang.region},
-      {lang: max.lang.lang, region: max.lang.script},
+      {lang: maximizedLang.lang},
+      {lang: maximizedLang.lang, region: maximizedLang.region},
+      {lang: maximizedLang.lang, region: maximizedLang.script},
     ];
-    for (let i = 0; i < trials.length; i++) {
-      const trial = trials[i];
+    for (const trial of trials) {
       if (
-        isLanguageEqual(
-          maxWithoutVariants,
-          addLikelySubtags({lang: trial}).lang
-        )
+        isLanguageEqualWithoutVariants(maximizedLang, addLikelySubtags(trial))
       ) {
-        return printLanguageId({
-          ...trial,
-          variants: max.lang.variants,
-        });
+        return new IntlLocale(
+          printAST({
+            ...ast,
+            lang: {
+              ...trial,
+              variants: maximizedLang.variants,
+            },
+          })
+        );
       }
     }
-    return printAST(max);
+    return new IntlLocale(
+      printAST({
+        ...ast,
+        lang: maximizedLang,
+      })
+    );
   }
 
   public toString() {

@@ -1,16 +1,12 @@
 import { uglify } from 'rollup-plugin-uglify';
 import resolve from 'rollup-plugin-node-resolve';
 import json from '@rollup/plugin-json'
-import commonjs from 'rollup-plugin-commonjs'
 
 const resolveConfig = resolve({
   mainFields: ['module', 'main']
 });
 const uglifyConfig = uglify();
 const jsonConfig = json()
-const commonjsConfig = commonjs({
-  'unicode-12.1.0/General_Category/Symbol/regex': ['test']
-});
 export default [
   {
     input: './lib/index.js',
@@ -21,7 +17,7 @@ export default [
       exports: 'named',
       name: 'IntlUnifiedNumberFormat'
     },
-    plugins: [resolveConfig, commonjsConfig, jsonConfig]
+    plugins: [resolveConfig, jsonConfig]
   },
   {
     input: './lib/index.js',
@@ -32,7 +28,7 @@ export default [
       exports: 'named',
       name: 'IntlUnifiedNumberFormat'
     },
-    plugins: [resolveConfig, commonjsConfig, jsonConfig, uglifyConfig]
+    plugins: [resolveConfig, jsonConfig, uglifyConfig]
   },
   {
     input: './lib/polyfill.js',
@@ -41,6 +37,15 @@ export default [
       file: 'dist/umd/polyfill.js',
       format: 'umd'
     },
-    plugins: [resolveConfig, commonjsConfig, jsonConfig]
+    plugins: [resolveConfig, jsonConfig]
+  },
+  {
+    input: './dist-es6/polyfill.js',
+    output: {
+      sourcemap: true,
+      file: 'dist-es6/umd/polyfill.js',
+      format: 'umd'
+    },
+    plugins: [resolveConfig, jsonConfig]
   },
 ];

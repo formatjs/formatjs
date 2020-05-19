@@ -6,9 +6,9 @@
     "configurations": [
         {
             "type": "node",
-            "name": "jest intl-unified-number-format",
+            "name": "jest intl-locale",
             "request": "launch",
-            "cwd": "${workspaceFolder}/packages/intl-unified-numberformat",
+            "cwd": "${workspaceFolder}/packages/intl-locale",
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "disableOptimisticBPs": true,
@@ -17,7 +17,7 @@
                 "--runInBand",
                 "--coverage",
                 "false",
-                "notation-compact-zh"
+                "minimize"
             ]
         },
     ]
