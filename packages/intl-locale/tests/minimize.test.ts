@@ -1,21 +1,22 @@
 import {IntlLocale} from '../src';
+// This is different from test262 bc of https://github.com/tc39/test262/issues/2628
 const testDataMinimal = {
   // Undefined primary language.
-  //   und: 'en',
-  //   'und-Thai': 'th',
-  //   'und-419': 'es-419',
-  //   'und-150': 'ru',
-  //   'und-AT': 'de-AT',
+  und: 'und',
+  'und-Thai': 'und-Thai',
+  'und-419': 'und-419',
+  'und-150': 'und-150',
+  'und-AT': 'und-AT',
 
-  //   // https://unicode-org.atlassian.net/browse/ICU-13786
-  //   'aae-Latn-IT': 'aae-Latn-IT',
-  //   'aae-Thai-CO': 'aae-Thai-CO',
+  // https://unicode-org.atlassian.net/browse/ICU-13786
+  'aae-Latn-IT': 'aae-Latn-IT',
+  'aae-Thai-CO': 'aae-Thai-CO',
 
-  //   // https://unicode-org.atlassian.net/browse/ICU-10220
-  //   // https://unicode-org.atlassian.net/browse/ICU-12345
-  //   'und-CW': 'pap-CW',
-  //   'und-US': 'en',
-  //   'zh-Hant': 'zh-TW',
+  // https://unicode-org.atlassian.net/browse/ICU-10220
+  // https://unicode-org.atlassian.net/browse/ICU-12345
+  'und-CW': 'und-CW',
+  'und-US': 'und',
+  'zh-Hant': 'zh-Hant',
   'zh-Hani': 'zh-Hani',
 };
 
