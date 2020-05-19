@@ -44,7 +44,7 @@ const args = [
   '-t',
   String(cpus().length - 1),
   '--prelude',
-  './dist-es6/umd/polyfill.js',
+  './dist-es6/umd/polyfill-locales.js',
   '-r',
   'json',
   PATTERN,

@@ -40,10 +40,10 @@ export default [
     plugins: [resolveConfig, jsonConfig]
   },
   {
-    input: './dist-es6/polyfill.js',
+    input: './dist-es6/polyfill-locales.js',
     output: {
       sourcemap: true,
-      file: 'dist-es6/umd/polyfill.js',
+      file: 'dist-es6/umd/polyfill-locales.js',
       format: 'umd'
     },
     plugins: [resolveConfig, jsonConfig]

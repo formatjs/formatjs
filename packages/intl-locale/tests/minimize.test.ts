@@ -1,4 +1,6 @@
 import {IntlLocale} from '../src';
+import * as data from 'cldr-core/supplemental/likelySubtags.json';
+IntlLocale._addLikelySubtagData(data.supplemental.likelySubtags);
 // This is different from test262 bc of https://github.com/tc39/test262/issues/2628
 const testDataMinimal = {
   // Undefined primary language.
