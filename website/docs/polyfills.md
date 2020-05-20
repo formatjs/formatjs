@@ -12,3 +12,4 @@ Our current list of polyfills includes:
 - [Intl.ListFormat](polyfills/intl-listformat.md)
 - [Intl.DisplayNames](polyfills/intl-displaynames.md)
 - [Intl.NumberFormat](polyfills/intl-numberformat.md) (ES2020)
+- [Intl.Locale](polyfills/intl-locale.md)

@@ -39,6 +39,10 @@ const excludedTests = [
   'getters-grandfathered',
   'extensions-grandfathered',
   'constructor-options-language-grandfathered',
+
+  // TODO: It doesn't look like extensions data files are in JOSN format for us to consume
+  // https://unicode.org/reports/tr35/#Canonical_Unicode_Locale_Identifiers
+  'constructor-options-canonicalized',
 ];
 const PATTERN = resolve(
   __dirname,

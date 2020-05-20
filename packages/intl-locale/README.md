@@ -1,11 +1,3 @@
-# `intl-locale`
+# Intl Locale
 
-> TODO: description
-
-## Usage
-
-```
-const intlLocale = require('intl-locale');
-
-// TODO: DEMONSTRATE API
-```
+We've migrated the docs to https://formatjs.io.

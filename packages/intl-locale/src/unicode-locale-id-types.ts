@@ -12,7 +12,7 @@ export interface UnicodeLanguageId {
   variants: string[];
 }
 
-export type KV = [string, string];
+export type KV = [string, string] | [string];
 
 export interface Extension {
   type: string;

@@ -63,22 +63,22 @@ function applyOptionsToTag(
   const script = getOption(options, 'script', 'string', undefined, undefined);
   const region = getOption(options, 'region', 'string', undefined, undefined);
   if (language !== undefined) {
-    verifyUnicodeLanguageSubtag(language)
+    verifyUnicodeLanguageSubtag(language);
     ast.lang.lang = language;
   }
   if (script !== undefined) {
     if (!isUnicodeScriptSubtag(script)) {
-      throw new RangeError('Malformed unicode_script_subtag')
+      throw new RangeError('Malformed unicode_script_subtag');
     }
     ast.lang.script = script;
   }
   if (region !== undefined) {
     if (!isUnicodeRegionSubtag(region)) {
-      throw new RangeError('Malformed unicode_region_subtag')
+      throw new RangeError('Malformed unicode_region_subtag');
     }
     ast.lang.region = region;
   }
-  
+
   canonicalizeUnicodeLanguageId(ast.lang);
   return ast;
 }
@@ -222,7 +222,9 @@ export class Locale {
     }
 
     if (tag === undefined) {
-      throw new TypeError("First argument to Intl.Locale constructor can't be empty or missing")
+      throw new TypeError(
+        "First argument to Intl.Locale constructor can't be empty or missing"
+      );
     }
 
     if (typeof tag !== 'string' && typeof tag !== 'object') {
@@ -290,9 +292,10 @@ export class Locale {
       undefined
     );
     opt.kf = kf;
-    let kn = getOption(options, 'numeric', 'boolean', undefined, undefined);
-    if (kn !== undefined) {
-      kn = !!String(kn);
+    let _kn = getOption(options, 'numeric', 'boolean', undefined, undefined);
+    let kn;
+    if (_kn !== undefined) {
+      kn = String(_kn);
     }
     opt.kn = kn;
     const numberingSystem = getOption(
@@ -450,3 +453,5 @@ try {
 } catch (e) {
   // Meta fix so we're test262-compliant, not important
 }
+
+export default Locale;

@@ -83,14 +83,14 @@ describe('parser', () => {
     'en-u-foo-bar-nu-thai-ca-buddhist-kk-true',
     'da-u-ca-gregory-ca-buddhist',
     'en-Latn-fonipa',
-    "de-Latn-DE-u-ca-gregory-co-phonebk-hc-h23-kf-kn-false-nu-latn",
+    'de-Latn-DE-u-ca-gregory-co-phonebk-hc-h23-kf-kn-false-nu-latn',
     'ja-Jpan-JP-u-ca-japanese-co-search-hc-h24-kf-false-kn-nu-jpanfin',
     'fr-Latn-CA-u-ca-gregory-co-standard-hc-h11-kf-kn-false-nu-latn',
     'en-a-bar-x-u-foo',
-  ]
+  ];
   for (const tag of validTags) {
-    it(`${tag} should be valid`, function () {
-      expect(parse(tag)).toMatchSnapshot()
-    })
+    it(`${tag} should be valid`, function() {
+      expect(parse(tag)).toMatchSnapshot();
+    });
   }
 });

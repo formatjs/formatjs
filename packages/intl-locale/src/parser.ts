@@ -38,15 +38,15 @@ function compareExtension(e1: Extension, e2: Extension): number {
 export function verifyUnicodeLanguageSubtag(lang: string): asserts lang {
   if (!ALPHA_2_3.test(lang) && !ALPHA_5_8.test(lang)) {
     throw new RangeError('Malformed unicode_language_subtag');
-  } 
+  }
 }
 
 export function isUnicodeRegionSubtag(region: string): boolean {
-  return UNICODE_REGION_SUBTAG_REGEX.test(region)
+  return UNICODE_REGION_SUBTAG_REGEX.test(region);
 }
 
 export function isUnicodeScriptSubtag(script: string): boolean {
-  return ALPHA_4.test(script)
+  return ALPHA_4.test(script);
 }
 
 function parseLanguageId(chunks: string[]): UnicodeLanguageId {
@@ -58,7 +58,7 @@ function parseLanguageId(chunks: string[]): UnicodeLanguageId {
     return {lang: 'root', variants: []};
   }
   // unicode_language_subtag
-  verifyUnicodeLanguageSubtag(lang)
+  verifyUnicodeLanguageSubtag(lang);
   let script;
   // unicode_script_subtag
   if (isUnicodeScriptSubtag(chunks[0])) {
@@ -131,10 +131,6 @@ function parseKeyword(chunks: string[]): KV | undefined {
   let value: string = '';
   if (type.length) {
     value = type.join(SEPARATOR);
-    // Ignore true
-    if (value === 'true') {
-      value = '';
-    }
   }
   return [key, value];
 }
@@ -200,7 +196,7 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
   let puExtension;
   const otherExtensionMap: Record<string, OtherExtension> = {};
   do {
-    const type = chunks.shift()!
+    const type = chunks.shift()!;
     switch (type) {
       case 'u':
       case 'U':
@@ -239,7 +235,7 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
         };
         otherExtensionMap[extension.type] = extension;
         extensions.push(extension);
-        break
+        break;
     }
   } while (chunks.length);
   return {extensions};
@@ -262,7 +258,11 @@ function canonicalizeKVs(arr: KV[]): KV[] {
       continue;
     }
     all[kv[0]] = 1;
-    result.push([kv[0].toLowerCase(), kv[1].toLowerCase()]);
+    if (!kv[1] || kv[1] === 'true') {
+      result.push([kv[0].toLowerCase()]);
+    } else {
+      result.push([kv[0].toLowerCase(), kv[1].toLowerCase()]);
+    }
   }
   return result.sort(compareKV);
 }
@@ -286,7 +286,7 @@ export function canonicalizeUnicodeLanguageId(lang: UnicodeLanguageId): void {
     lang.region = lang.region.toUpperCase();
   }
   if (lang.variants) {
-    lang.variants = lang.variants.map(v => v.toLowerCase());
+    lang.variants = lang.variants.map(v => v.toLowerCase()).sort();
   }
 }
 
