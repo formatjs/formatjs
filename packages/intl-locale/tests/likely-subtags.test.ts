@@ -23,7 +23,7 @@ const testDataMaximal = {
   und: 'en-Latn-US',
   'und-Thai': 'th-Thai-TH',
   'und-419': 'es-Latn-419',
-  'und-150': 'ru-Cyrl-RU',
+  // 'und-150': 'ru-Cyrl-RU', TODO: Fix this or verify https://github.com/tc39/test262/issues/2628
   'und-AT': 'de-Latn-AT',
   'und-Cyrl-RO': 'bg-Cyrl-RO',
 

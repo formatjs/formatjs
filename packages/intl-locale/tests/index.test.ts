@@ -5,6 +5,7 @@ describe('intl-locale', () => {
   it('ast', function() {
     expect(parse('en-u-foo-bar-nu-thai-ca-buddhist-kk-true')).toMatchSnapshot();
     expect(parse('da-u-ca-gregory-ca-buddhist')).toMatchSnapshot();
+    expect(parse('en-Latn-fonipa')).toMatchSnapshot();
   });
   it('toString', function() {
     // expect(() => IntlLocale.prototype.toString.call(IntlLocale.prototype)).toThrowError(TypeError)

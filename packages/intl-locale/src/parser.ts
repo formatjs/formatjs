@@ -20,7 +20,7 @@ const TYPE_REGEX = /^[a-z0-9]{3,8}$/i;
 const ALPHA_4 = /^[a-z]{4}$/i;
 // alphanum-[tTuUxX]
 const OTHER_EXTENSION_TYPE = /^[0-9a-svwyz]$/i;
-const UNICODE_REGION_SUBTAG_REGEX = /^[a-z]{2}|[0-9]{3}$/i;
+const UNICODE_REGION_SUBTAG_REGEX = /^([a-z]{2}|[0-9]{3})$/i;
 const UNICODE_VARIANT_SUBTAG_REGEX = /^([a-z0-9]{5,8}|[0-9][a-z0-9]{3})$/i;
 
 const TKEY_REGEX = /^[a-z][0-9]$/i;
@@ -35,37 +35,53 @@ function compareExtension(e1: Extension, e2: Extension): number {
   return e1.type < e2.type ? -1 : e1.type > e2.type ? 1 : 0;
 }
 
+export function verifyUnicodeLanguageSubtag(lang: string): asserts lang {
+  if (!ALPHA_2_3.test(lang) && !ALPHA_5_8.test(lang)) {
+    throw new RangeError('Malformed unicode_language_subtag');
+  } 
+}
+
+export function isUnicodeRegionSubtag(region: string): boolean {
+  return UNICODE_REGION_SUBTAG_REGEX.test(region)
+}
+
+export function isUnicodeScriptSubtag(script: string): boolean {
+  return ALPHA_4.test(script)
+}
+
 function parseLanguageId(chunks: string[]): UnicodeLanguageId {
   const lang = chunks.shift();
   if (!lang) {
-    throw new Error('Missing unicode_language_subtag');
+    throw new RangeError('Missing unicode_language_subtag');
   }
   if (lang === 'root') {
     return {lang: 'root', variants: []};
   }
   // unicode_language_subtag
-  if (!ALPHA_2_3.test(lang) && !ALPHA_5_8.test(lang)) {
-    throw new Error('Malformed unicode_language_subtag');
-  }
+  verifyUnicodeLanguageSubtag(lang)
   let script;
   // unicode_script_subtag
-  if (ALPHA_4.test(chunks[0])) {
+  if (isUnicodeScriptSubtag(chunks[0])) {
     script = chunks.shift();
   }
   let region;
   // unicode_region_subtag
-  if (UNICODE_REGION_SUBTAG_REGEX.test(chunks[0])) {
+  if (isUnicodeRegionSubtag(chunks[0])) {
     region = chunks.shift();
   }
-  const variants = [];
+  const variants: Record<string, any> = {};
   while (chunks.length && UNICODE_VARIANT_SUBTAG_REGEX.test(chunks[0])) {
-    variants.push(chunks.shift()!);
+    const variant = chunks.shift()!;
+    if (variant in variants) {
+      throw new RangeError(`Duplicate variant "${variant}"`);
+    }
+    variants[variant] = 1;
   }
   return {
     lang,
     script,
     region,
-    variants,
+    variants: Object.keys(variants),
   };
 }
 
@@ -138,7 +154,7 @@ function parseTransformedExtension(chunks: string[]): TransformedExtension {
       value.push(chunks.shift());
     }
     if (!value.length) {
-      throw new Error(`Missing tvalue for tkey "${key}"`);
+      throw new RangeError(`Missing tvalue for tkey "${key}"`);
     }
     fields.push([key, value.join(SEPARATOR)]);
   }
@@ -175,8 +191,7 @@ function parseOtherExtensionValue(chunks: string[]): string {
   return '';
 }
 function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
-  const type = chunks.shift();
-  if (!type) {
+  if (!chunks.length) {
     return {extensions: []};
   }
   const extensions: UnicodeLocaleId['extensions'] = [];
@@ -184,12 +199,13 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
   let transformedExtension;
   let puExtension;
   const otherExtensionMap: Record<string, OtherExtension> = {};
-  while (chunks.length) {
+  do {
+    const type = chunks.shift()!
     switch (type) {
       case 'u':
       case 'U':
         if (unicodeExtension) {
-          throw new Error('There can only be 1 -u- extension');
+          throw new RangeError('There can only be 1 -u- extension');
         }
         unicodeExtension = parseUnicodeExtension(chunks);
         extensions.push(unicodeExtension);
@@ -197,7 +213,7 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
       case 't':
       case 'T':
         if (transformedExtension) {
-          throw new Error('There can only be 1 -t- extension');
+          throw new RangeError('There can only be 1 -t- extension');
         }
         transformedExtension = parseTransformedExtension(chunks);
         extensions.push(transformedExtension);
@@ -205,17 +221,17 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
       case 'x':
       case 'X':
         if (puExtension) {
-          throw new Error('There can only be 1 -x- extension');
+          throw new RangeError('There can only be 1 -x- extension');
         }
         puExtension = parsePuExtension(chunks);
         extensions.push(puExtension);
         break;
       default:
         if (!OTHER_EXTENSION_TYPE.test(type)) {
-          throw new Error('Malformed extension type');
+          throw new RangeError('Malformed extension type');
         }
         if (type in otherExtensionMap) {
-          throw new Error(`There can only be 1 -${type}- extension`);
+          throw new RangeError(`There can only be 1 -${type}- extension`);
         }
         const extension: OtherExtension = {
           type: type as 'a',
@@ -223,8 +239,9 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
         };
         otherExtensionMap[extension.type] = extension;
         extensions.push(extension);
+        break
     }
-  }
+  } while (chunks.length);
   return {extensions};
 }
 

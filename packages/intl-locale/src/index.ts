@@ -11,6 +11,9 @@ import {
   parse as parseUnicodeLocaleId,
   canonicalizeUnicodeLanguageId,
   canonicalize,
+  verifyUnicodeLanguageSubtag,
+  isUnicodeRegionSubtag,
+  isUnicodeScriptSubtag,
 } from './parser';
 import {
   UnicodeLocaleId,
@@ -25,7 +28,7 @@ export interface IntlLocaleOptions {
   region?: string;
   calendar?: string;
   collation?: string;
-  hourCycle?: 'h11' | 'h12' | 'h23' | 'h34';
+  hourCycle?: 'h11' | 'h12' | 'h23' | 'h24';
   caseFirst?: 'upper' | 'lower' | 'false';
   numberingSystem?: string;
   numeric?: boolean;
@@ -43,7 +46,7 @@ interface IntlLocaleInternal extends IntlLocaleOptions {
 
 const __INTERNAL_SLOT_MAP__ = new WeakMap<Locale, IntlLocaleInternal>();
 
-const NUMBERING_SYSTEM_REGEX = /[a-z0-9]{3,8}(-[a-z0-9]{3,8})*/gi;
+const UNICODE_TYPE_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i;
 
 function applyOptionsToTag(
   tag: string,
@@ -60,14 +63,22 @@ function applyOptionsToTag(
   const script = getOption(options, 'script', 'string', undefined, undefined);
   const region = getOption(options, 'region', 'string', undefined, undefined);
   if (language !== undefined) {
+    verifyUnicodeLanguageSubtag(language)
     ast.lang.lang = language;
   }
-  if (region !== undefined) {
-    ast.lang.region = region;
-  }
   if (script !== undefined) {
+    if (!isUnicodeScriptSubtag(script)) {
+      throw new RangeError('Malformed unicode_script_subtag')
+    }
     ast.lang.script = script;
   }
+  if (region !== undefined) {
+    if (!isUnicodeRegionSubtag(region)) {
+      throw new RangeError('Malformed unicode_region_subtag')
+    }
+    ast.lang.region = region;
+  }
+  
   canonicalizeUnicodeLanguageId(ast.lang);
   return ast;
 }
@@ -210,6 +221,10 @@ export class Locale {
       internalSlotsList.push('numeric');
     }
 
+    if (tag === undefined) {
+      throw new TypeError("First argument to Intl.Locale constructor can't be empty or missing")
+    }
+
     if (typeof tag !== 'string' && typeof tag !== 'object') {
       throw new TypeError('tag must be a string or object');
     }
@@ -240,7 +255,7 @@ export class Locale {
       undefined
     );
     if (calendar !== undefined) {
-      if (!NUMBERING_SYSTEM_REGEX.test(calendar)) {
+      if (!UNICODE_TYPE_REGEX.test(calendar)) {
         throw new RangeError('invalid calendar');
       }
     }
@@ -254,7 +269,7 @@ export class Locale {
       undefined
     );
     if (collation !== undefined) {
-      if (!NUMBERING_SYSTEM_REGEX.test(collation)) {
+      if (!UNICODE_TYPE_REGEX.test(collation)) {
         throw new RangeError('invalid collation');
       }
     }
@@ -263,7 +278,7 @@ export class Locale {
       options,
       'hourCycle',
       'string',
-      ['h11', 'h12', 'h23', 'h34'],
+      ['h11', 'h12', 'h23', 'h24'],
       undefined
     );
     opt.hc = hc;
@@ -288,7 +303,7 @@ export class Locale {
       undefined
     );
     if (numberingSystem !== undefined) {
-      if (!NUMBERING_SYSTEM_REGEX.test(numberingSystem)) {
+      if (!UNICODE_TYPE_REGEX.test(numberingSystem)) {
         throw new RangeError('Invalid numberingSystem');
       }
     }
@@ -427,7 +442,7 @@ try {
   }
 
   Object.defineProperty(Locale.prototype.constructor, 'length', {
-    value: 0,
+    value: 1,
     writable: false,
     enumerable: false,
     configurable: true,

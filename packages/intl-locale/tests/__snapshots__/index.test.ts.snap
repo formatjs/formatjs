@@ -56,3 +56,17 @@ Object {
   },
 }
 `;
+
+exports[`intl-locale ast 3`] = `
+Object {
+  "extensions": Array [],
+  "lang": Object {
+    "lang": "en",
+    "region": undefined,
+    "script": "Latn",
+    "variants": Array [
+      "fonipa",
+    ],
+  },
+}
+`;
