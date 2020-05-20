@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.2](https://github.com/formatjs/formatjs/compare/website@0.1.1...website@0.1.2) (2020-05-20)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-locale:** fix and docs ([5c5ef76](https://github.com/formatjs/formatjs/commit/5c5ef7657dd939bc08a9233f25cbae7a662c439f))
+
+
+
+
+
 ## [0.1.1](https://github.com/formatjs/formatjs/compare/website@0.1.0...website@0.1.1) (2020-05-18)
 
 **Note:** Version bump only for package website
