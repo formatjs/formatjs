@@ -174,9 +174,9 @@ function removeLikelySubtags(
 ): UnicodeLanguageId {
   const {variants, ...max} = addLikelySubtags(unicodeLangId);
   const trials: UnicodeLanguageId[] = [
-    {lang: unicodeLangId.lang},
-    {lang: unicodeLangId.lang, region: unicodeLangId.region},
-    {lang: unicodeLangId.lang, script: unicodeLangId.script},
+    {lang: max.lang},
+    {lang: max.lang, region: max.region},
+    {lang: max.lang, script: max.script},
   ];
   for (const trial of trials) {
     if (isLanguageEqualWithoutVariants(max, addLikelySubtags(trial))) {
