@@ -33,6 +33,12 @@ const excludedTests = [
   'locales-valid', // f7e8dba39b1143b45c37ee137e406889b56bc335 added grandfathered locale which we
   'proto-from-ctor-realm', // Bc of Realm support
   'branding', // TODO: We got a recursive issue w/ our private var polyfill
+
+  // TODO: we don't care about grandfathered
+  'likely-subtags-grandfathered',
+  'getters-grandfathered',
+  'extensions-grandfathered',
+  'constructor-options-language-grandfathered',
 ];
 const PATTERN = resolve(
   __dirname,

@@ -2,35 +2,57 @@
 
 exports[`intl-locale ast 1`] = `
 Object {
+  "extensions": Array [
+    Object {
+      "attributes": Array [
+        "bar",
+        "foo",
+      ],
+      "keywords": Array [
+        Array [
+          "ca",
+          "buddhist",
+        ],
+        Array [
+          "kk",
+          "",
+        ],
+        Array [
+          "nu",
+          "thai",
+        ],
+      ],
+      "type": "u",
+    },
+  ],
   "lang": Object {
     "lang": "en",
     "region": undefined,
     "script": undefined,
     "variants": Array [],
   },
-  "otherExtensions": Object {},
-  "puExtension": undefined,
-  "transformedExtension": undefined,
-  "unicodeExtension": Object {
-    "attributes": Array [
-      "bar",
-      "foo",
-    ],
-    "keywords": Array [
-      Array [
-        "ca",
-        "buddhist",
+}
+`;
+
+exports[`intl-locale ast 2`] = `
+Object {
+  "extensions": Array [
+    Object {
+      "attributes": Array [],
+      "keywords": Array [
+        Array [
+          "ca",
+          "gregory",
+        ],
       ],
-      Array [
-        "kk",
-        "",
-      ],
-      Array [
-        "nu",
-        "thai",
-      ],
-    ],
-    "type": "u",
+      "type": "u",
+    },
+  ],
+  "lang": Object {
+    "lang": "da",
+    "region": undefined,
+    "script": undefined,
+    "variants": Array [],
   },
 }
 `;

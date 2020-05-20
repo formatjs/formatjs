@@ -1,6 +1,6 @@
-import {IntlLocale} from '../src';
+import {Locale} from '../src';
 import * as data from 'cldr-core/supplemental/likelySubtags.json';
-IntlLocale._addLikelySubtagData(data.supplemental.likelySubtags);
+Locale._addLikelySubtagData(data.supplemental.likelySubtags);
 const testDataMinimal = {
   // Undefined primary language.
   und: 'en',
@@ -25,11 +25,11 @@ describe('minimize', function() {
   for (const [tag, minimal] of Object.entries(testDataMinimal)) {
     it(`${minimal} is indeed minimal`, function() {
       // Assert the |minimal| tag is indeed minimal.
-      expect(new IntlLocale(minimal).minimize().toString()).toBe(minimal);
+      expect(new Locale(minimal).minimize().toString()).toBe(minimal);
     });
     it(`${tag} -> ${minimal}`, function() {
       // Assert RemoveLikelySubtags(tag) returns |minimal|.
-      expect(new IntlLocale(tag).minimize().toString()).toBe(minimal);
+      expect(new Locale(tag).minimize().toString()).toBe(minimal);
     });
   }
 });

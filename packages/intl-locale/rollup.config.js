@@ -15,7 +15,7 @@ export default [
       file: 'dist/umd/intl-locale.js',
       format: 'umd',
       exports: 'named',
-      name: 'IntlUnifiedNumberFormat'
+      name: 'IntlLocale'
     },
     plugins: [resolveConfig, jsonConfig]
   },
@@ -26,7 +26,7 @@ export default [
       file: 'dist/umd/intl-locale.min.js',
       format: 'umd',
       exports: 'named',
-      name: 'IntlUnifiedNumberFormat'
+      name: 'IntlLocale'
     },
     plugins: [resolveConfig, jsonConfig, uglifyConfig]
   },

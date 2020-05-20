@@ -7,8 +7,17 @@ import {
   objectIs,
   invariant,
 } from '@formatjs/intl-utils';
-import {parse as parseUnicodeLocaleId} from './parser';
-import {UnicodeLocaleId, UnicodeLanguageId} from './unicode-locale-id-types';
+import {
+  parse as parseUnicodeLocaleId,
+  canonicalizeUnicodeLanguageId,
+  canonicalize,
+} from './parser';
+import {
+  UnicodeLocaleId,
+  UnicodeLanguageId,
+  UnicodeExtension,
+} from './unicode-locale-id-types';
+import {emit, emitLanguageId} from './emitter';
 
 export interface IntlLocaleOptions {
   language?: string;
@@ -22,46 +31,6 @@ export interface IntlLocaleOptions {
   numeric?: boolean;
 }
 
-function printLanguageId(lang?: UnicodeLanguageId): string {
-  if (!lang) {
-    return '';
-  }
-  return [lang.lang, lang.script, lang.region, ...(lang.variants || [])]
-    .filter(Boolean)
-    .join('-');
-}
-
-function printAST({
-  lang,
-  unicodeExtension,
-  transformedExtension,
-  puExtension,
-  otherExtensions,
-}: UnicodeLocaleId): string {
-  return [
-    printLanguageId(lang),
-    unicodeExtension?.type,
-    ...(unicodeExtension?.attributes || []),
-    ...(unicodeExtension?.keywords.reduce(
-      (all: string[], kv) => all.concat(kv),
-      []
-    ) || []),
-    transformedExtension?.type,
-    printLanguageId(transformedExtension?.lang),
-    ...(transformedExtension?.fields || []),
-    ...(otherExtensions
-      ? Object.keys(otherExtensions).reduce(
-          (all: string[], k) => all.concat([k, otherExtensions[k]]),
-          []
-        )
-      : []),
-    puExtension?.type,
-    puExtension?.value,
-  ]
-    .filter(Boolean)
-    .join('-');
-}
-
 const RELEVANT_EXTENSION_KEYS = ['ca', 'co', 'hc', 'kf', 'kn', 'nu'] as const;
 type RELEVANT_EXTENSION_KEY = typeof RELEVANT_EXTENSION_KEYS[number];
 type ExtensionOpts = Record<RELEVANT_EXTENSION_KEY, string>;
@@ -72,7 +41,7 @@ interface IntlLocaleInternal extends IntlLocaleOptions {
   ast: UnicodeLocaleId;
 }
 
-const __INTERNAL_SLOT_MAP__ = new WeakMap<IntlLocale, IntlLocaleInternal>();
+const __INTERNAL_SLOT_MAP__ = new WeakMap<Locale, IntlLocaleInternal>();
 
 const NUMBERING_SYSTEM_REGEX = /[a-z0-9]{3,8}(-[a-z0-9]{3,8})*/gi;
 
@@ -80,7 +49,6 @@ function applyOptionsToTag(
   tag: string,
   options: IntlLocaleOptions
 ): UnicodeLocaleId {
-  // Already canonicalized
   const ast = parseUnicodeLocaleId(tag);
   const language = getOption(
     options,
@@ -92,14 +60,15 @@ function applyOptionsToTag(
   const script = getOption(options, 'script', 'string', undefined, undefined);
   const region = getOption(options, 'region', 'string', undefined, undefined);
   if (language !== undefined) {
-    ast.lang.lang = language.toLowerCase();
+    ast.lang.lang = language;
   }
   if (region !== undefined) {
-    ast.lang.region = region.toUpperCase();
+    ast.lang.region = region;
   }
   if (script !== undefined) {
-    ast.lang.script = script[0].toUpperCase() + script.slice(1).toLowerCase();
+    ast.lang.script = script;
   }
+  canonicalizeUnicodeLanguageId(ast.lang);
   return ast;
 }
 
@@ -108,7 +77,16 @@ function applyUnicodeExtensionToTag(
   options: ExtensionOpts,
   relevantExtensionKeys: typeof RELEVANT_EXTENSION_KEYS
 ) {
-  const keywords = ast.unicodeExtension?.keywords || [];
+  let unicodeExtension: UnicodeExtension | undefined;
+  let keywords: UnicodeExtension['keywords'] = [];
+
+  for (const ext of ast.extensions) {
+    if (ext.type === 'u') {
+      unicodeExtension = ext;
+      if (Array.isArray(ext.keywords)) keywords = ext.keywords;
+    }
+  }
+
   const result = Object.create(null);
 
   for (const key of relevantExtensionKeys) {
@@ -135,28 +113,32 @@ function applyUnicodeExtensionToTag(
     }
     result[key] = value;
   }
-  if (!ast.unicodeExtension) {
+  if (!unicodeExtension) {
     if (keywords.length) {
-      ast.unicodeExtension = {
+      ast.extensions.push({
         type: 'u',
         keywords,
-      };
+        attributes: [],
+      });
     }
   } else {
-    ast.unicodeExtension.keywords = keywords;
+    unicodeExtension.keywords = keywords;
   }
+  canonicalize(ast);
   return result;
 }
 
 function addLikelySubtags(unicodeLangId: UnicodeLanguageId): UnicodeLanguageId {
   const {lang, script, region} = unicodeLangId;
-  const likelySubtags = IntlLocale.LIKELY_SUBTAGS;
+  const likelySubtags = Locale.LIKELY_SUBTAGS;
   const match =
-    likelySubtags[printLanguageId({lang, script, region}) as 'aa'] ||
-    likelySubtags[printLanguageId({lang, region}) as 'aa'] ||
-    likelySubtags[printLanguageId({lang, script}) as 'aa'] ||
+    likelySubtags[
+      emitLanguageId({lang, script, region, variants: []}) as 'aa'
+    ] ||
+    likelySubtags[emitLanguageId({lang, region, variants: []}) as 'aa'] ||
+    likelySubtags[emitLanguageId({lang, script, variants: []}) as 'aa'] ||
     likelySubtags[lang as 'aa'] ||
-    likelySubtags[printLanguageId({lang: 'und', script}) as 'aa'];
+    likelySubtags[emitLanguageId({lang: 'und', script, variants: []}) as 'aa'];
   if (!match) {
     throw new Error(`No match for addLikelySubtags`);
   }
@@ -172,11 +154,12 @@ function addLikelySubtags(unicodeLangId: UnicodeLanguageId): UnicodeLanguageId {
 function removeLikelySubtags(
   unicodeLangId: UnicodeLanguageId
 ): UnicodeLanguageId {
-  const {variants, ...max} = addLikelySubtags(unicodeLangId);
+  const max = addLikelySubtags(unicodeLangId);
+  const {variants} = max;
   const trials: UnicodeLanguageId[] = [
-    {lang: max.lang},
-    {lang: max.lang, region: max.region},
-    {lang: max.lang, script: max.script},
+    {lang: max.lang, variants: []},
+    {lang: max.lang, region: max.region, variants: []},
+    {lang: max.lang, script: max.script, variants: []},
   ];
   for (const trial of trials) {
     if (isLanguageEqualWithoutVariants(max, addLikelySubtags(trial))) {
@@ -186,29 +169,29 @@ function removeLikelySubtags(
       };
     }
   }
-  return {...max, variants};
+  return max;
 }
 
 function isLanguageEqualWithoutVariants(
-  l1: UnicodeLanguageId,
-  l2: UnicodeLanguageId
+  l1: Omit<UnicodeLanguageId, 'variants'>,
+  l2: Omit<UnicodeLanguageId, 'variants'>
 ): boolean {
   return (
     l1.lang === l2.lang && l1.region === l2.region && l1.script === l2.script
   );
 }
 
-export class IntlLocale {
-  constructor(tag: string | IntlLocale, opts?: IntlLocaleOptions) {
+export class Locale {
+  constructor(tag: string | Locale, opts?: IntlLocaleOptions) {
     // test262/test/intl402/RelativeTimeFormat/constructor/constructor/newtarget-undefined.js
     // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
     const newTarget =
-      this && this instanceof IntlLocale ? this.constructor : void 0;
+      this && this instanceof Locale ? this.constructor : void 0;
     if (!newTarget) {
       throw new TypeError("Intl.Locale must be called with 'new'");
     }
 
-    const {relevantExtensionKeys} = IntlLocale;
+    const {relevantExtensionKeys} = Locale;
 
     const internalSlotsList: Array<keyof IntlLocaleInternal> = [
       'initializedLocale',
@@ -335,41 +318,41 @@ export class IntlLocale {
   /**
    * https://www.unicode.org/reports/tr35/#Likely_Subtags
    */
-  public maximize(): IntlLocale {
+  public maximize(): Locale {
     const ast = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ast');
     try {
       const maximizedLang = addLikelySubtags(ast.lang);
-      return new IntlLocale(
-        printAST({
+      return new Locale(
+        emit({
           ...ast,
           lang: maximizedLang,
         })
       );
     } catch (e) {
-      return new IntlLocale(printAST(ast));
+      return new Locale(emit(ast));
     }
   }
 
   /**
    * https://www.unicode.org/reports/tr35/#Likely_Subtags
    */
-  public minimize(): IntlLocale {
+  public minimize(): Locale {
     const ast = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ast');
     try {
       const minimalLang = removeLikelySubtags(ast.lang);
-      return new IntlLocale(
-        printAST({
+      return new Locale(
+        emit({
           ...ast,
           lang: minimalLang,
         })
       );
     } catch (e) {
-      return new IntlLocale(printAST(ast));
+      return new Locale(emit(ast));
     }
   }
 
   public toString() {
-    return printAST(getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ast'));
+    return emit(getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'ast'));
   }
 
   public get baseName() {
@@ -429,13 +412,13 @@ export class IntlLocale {
   static LIKELY_SUBTAGS: Record<string, string> = {};
 
   public static _addLikelySubtagData(data: Record<string, string>): void {
-    IntlLocale.LIKELY_SUBTAGS = data;
+    Locale.LIKELY_SUBTAGS = data;
   }
 }
 
 try {
   if (typeof Symbol !== 'undefined') {
-    Object.defineProperty(IntlLocale.prototype, Symbol.toStringTag, {
+    Object.defineProperty(Locale.prototype, Symbol.toStringTag, {
       value: 'Intl.Locale',
       writable: false,
       enumerable: false,
@@ -443,7 +426,7 @@ try {
     });
   }
 
-  Object.defineProperty(IntlLocale.prototype.constructor, 'length', {
+  Object.defineProperty(Locale.prototype.constructor, 'length', {
     value: 0,
     writable: false,
     enumerable: false,

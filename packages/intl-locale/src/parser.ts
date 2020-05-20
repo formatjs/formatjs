@@ -4,8 +4,9 @@ import {
   UnicodeExtension,
   TransformedExtension,
   PuExtension,
-  OtherExtensions,
+  OtherExtension,
   KV,
+  Extension,
 } from './unicode-locale-id-types';
 
 const ALPHA_2_3 = /^[a-z]{2,3}$/i;
@@ -26,16 +27,12 @@ const TKEY_REGEX = /^[a-z][0-9]$/i;
 
 const SEPARATOR = '-';
 
-function titleCase(str: string): string {
-  return str[0].toUpperCase() + str.slice(1).toLowerCase();
-}
-
-function lowerCase<T extends Array<string>>(strs: T): T {
-  return strs.map(s => s.toLowerCase()) as T;
-}
-
-function compareTuple(t1: KV, t2: KV): number {
+function compareKV(t1: Array<any>, t2: Array<any>): number {
   return t1[0] < t2[0] ? -1 : t1[0] > t2[0] ? 1 : 0;
+}
+
+function compareExtension(e1: Extension, e2: Extension): number {
+  return e1.type < e2.type ? -1 : e1.type > e2.type ? 1 : 0;
 }
 
 function parseLanguageId(chunks: string[]): UnicodeLanguageId {
@@ -44,7 +41,7 @@ function parseLanguageId(chunks: string[]): UnicodeLanguageId {
     throw new Error('Missing unicode_language_subtag');
   }
   if (lang === 'root') {
-    return {lang: 'root'};
+    return {lang: 'root', variants: []};
   }
   // unicode_language_subtag
   if (!ALPHA_2_3.test(lang) && !ALPHA_5_8.test(lang)) {
@@ -72,7 +69,7 @@ function parseLanguageId(chunks: string[]): UnicodeLanguageId {
   };
 }
 
-function parseUnicodeExtension(chunks: string[]): UnicodeExtension | undefined {
+function parseUnicodeExtension(chunks: string[]): UnicodeExtension {
   const keywords = [];
   let keyword;
   while (chunks.length && (keyword = parseKeyword(chunks))) {
@@ -82,6 +79,7 @@ function parseUnicodeExtension(chunks: string[]): UnicodeExtension | undefined {
     return {
       type: 'u',
       keywords,
+      attributes: [],
     };
   }
   // Mix of attributes & keywords
@@ -100,6 +98,7 @@ function parseUnicodeExtension(chunks: string[]): UnicodeExtension | undefined {
       keywords,
     };
   }
+  throw new RangeError('Malformed unicode_extension');
 }
 
 function parseKeyword(chunks: string[]): KV | undefined {
@@ -124,9 +123,7 @@ function parseKeyword(chunks: string[]): KV | undefined {
   return [key, value];
 }
 
-function parseTransformedExtension(
-  chunks: string[]
-): TransformedExtension | undefined {
+function parseTransformedExtension(chunks: string[]): TransformedExtension {
   let lang: UnicodeLanguageId | undefined;
   try {
     lang = parseLanguageId(chunks);
@@ -152,8 +149,9 @@ function parseTransformedExtension(
       lang,
     };
   }
+  throw new RangeError('Malformed transformed_extension');
 }
-function parsePuExtension(chunks: string[]): PuExtension | undefined {
+function parsePuExtension(chunks: string[]): PuExtension {
   const exts = [];
   while (chunks.length && ALPHANUM_1_8.test(chunks[0])) {
     exts.push(chunks.shift());
@@ -164,6 +162,7 @@ function parsePuExtension(chunks: string[]): PuExtension | undefined {
       value: exts.join(SEPARATOR),
     };
   }
+  throw new RangeError('Malformed private_use_extension');
 }
 function parseOtherExtensionValue(chunks: string[]): string {
   const exts = [];
@@ -178,12 +177,13 @@ function parseOtherExtensionValue(chunks: string[]): string {
 function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
   const type = chunks.shift();
   if (!type) {
-    return {};
+    return {extensions: []};
   }
+  const extensions: UnicodeLocaleId['extensions'] = [];
   let unicodeExtension;
   let transformedExtension;
   let puExtension;
-  const otherExtensions: OtherExtensions = {};
+  const otherExtensionMap: Record<string, OtherExtension> = {};
   while (chunks.length) {
     switch (type) {
       case 'u':
@@ -192,6 +192,7 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
           throw new Error('There can only be 1 -u- extension');
         }
         unicodeExtension = parseUnicodeExtension(chunks);
+        extensions.push(unicodeExtension);
         break;
       case 't':
       case 'T':
@@ -199,6 +200,7 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
           throw new Error('There can only be 1 -t- extension');
         }
         transformedExtension = parseTransformedExtension(chunks);
+        extensions.push(transformedExtension);
         break;
       case 'x':
       case 'X':
@@ -206,23 +208,46 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
           throw new Error('There can only be 1 -x- extension');
         }
         puExtension = parsePuExtension(chunks);
+        extensions.push(puExtension);
         break;
       default:
         if (!OTHER_EXTENSION_TYPE.test(type)) {
           throw new Error('Malformed extension type');
         }
-        if (type in otherExtensions) {
+        if (type in otherExtensionMap) {
           throw new Error(`There can only be 1 -${type}- extension`);
         }
-        otherExtensions[type] = parseOtherExtensionValue(chunks);
+        const extension: OtherExtension = {
+          type: type as 'a',
+          value: parseOtherExtensionValue(chunks),
+        };
+        otherExtensionMap[extension.type] = extension;
+        extensions.push(extension);
     }
   }
-  return {
-    unicodeExtension,
-    transformedExtension,
-    puExtension,
-    otherExtensions,
-  };
+  return {extensions};
+}
+
+function canonicalizeAttrs(strs: string[]): string[] {
+  return Object.keys(
+    strs.reduce((all: Record<string, number>, str) => {
+      all[str.toLowerCase()] = 1;
+      return all;
+    }, {})
+  ).sort();
+}
+
+function canonicalizeKVs(arr: KV[]): KV[] {
+  const all: Record<string, any> = {};
+  const result: KV[] = [];
+  for (const kv of arr) {
+    if (kv[0] in all) {
+      continue;
+    }
+    all[kv[0]] = 1;
+    result.push([kv[0].toLowerCase(), kv[1].toLowerCase()]);
+  }
+  return result.sort(compareKV);
 }
 
 export function parse(locale: string): UnicodeLocaleId {
@@ -234,10 +259,11 @@ export function parse(locale: string): UnicodeLocaleId {
   });
 }
 
-function canonicalizeUnicodeLanguageId(lang: UnicodeLanguageId): void {
+export function canonicalizeUnicodeLanguageId(lang: UnicodeLanguageId): void {
   lang.lang = lang.lang.toLowerCase();
   if (lang.script) {
-    lang.script = titleCase(lang.script);
+    lang.script =
+      lang.script[0].toUpperCase() + lang.script.slice(1).toLowerCase();
   }
   if (lang.region) {
     lang.region = lang.region.toUpperCase();
@@ -256,38 +282,28 @@ function canonicalizeUnicodeLanguageId(lang: UnicodeLanguageId): void {
  */
 export function canonicalize(locale: UnicodeLocaleId): UnicodeLocaleId {
   canonicalizeUnicodeLanguageId(locale.lang);
-  if (locale.unicodeExtension) {
-    locale.unicodeExtension.type = 'u';
-    locale.unicodeExtension.keywords = locale.unicodeExtension.keywords
-      .map(lowerCase)
-      .sort(compareTuple);
-    if (locale.unicodeExtension.attributes) {
-      locale.unicodeExtension.attributes = lowerCase(
-        locale.unicodeExtension.attributes
-      ).sort();
+  if (locale.extensions) {
+    for (const extension of locale.extensions) {
+      switch (extension.type) {
+        case 'u':
+          extension.keywords = canonicalizeKVs(extension.keywords);
+          if (extension.attributes) {
+            extension.attributes = canonicalizeAttrs(extension.attributes);
+          }
+          break;
+        case 't':
+          if (extension.lang) {
+            canonicalizeUnicodeLanguageId(extension.lang);
+          }
+          extension.fields = canonicalizeKVs(extension.fields);
+          break;
+        default:
+          extension.value = extension.value.toLowerCase();
+          break;
+      }
     }
+    locale.extensions.sort(compareExtension);
   }
-  if (locale.transformedExtension) {
-    locale.transformedExtension.type = 't';
-    if (locale.transformedExtension.lang) {
-      canonicalizeUnicodeLanguageId(locale.transformedExtension.lang);
-    }
-    locale.transformedExtension.fields = locale.transformedExtension.fields
-      .map(lowerCase)
-      .sort(compareTuple);
-  }
-  if (locale.otherExtensions) {
-    const canonicalizedOtherExtensions: OtherExtensions = {};
-    for (const t in locale.otherExtensions) {
-      canonicalizedOtherExtensions[t.toLowerCase()] = locale.otherExtensions[
-        t
-      ].toLowerCase();
-    }
-    locale.otherExtensions = canonicalizedOtherExtensions;
-  }
-  if (locale.puExtension) {
-    locale.puExtension.type = 'x';
-    locale.puExtension.value = locale.puExtension.value.toLowerCase();
-  }
+
   return locale;
 }

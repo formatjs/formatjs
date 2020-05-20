@@ -1,7 +1,7 @@
-import {IntlLocale} from './';
+import {Locale} from './';
 if (!('Locale' in Intl)) {
   Object.defineProperty(Intl, 'Locale', {
-    value: IntlLocale,
+    value: Locale,
     writable: true,
     enumerable: false,
     configurable: true,
