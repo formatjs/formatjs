@@ -38,6 +38,14 @@ test('nested tag', function () {
   ).toMatchSnapshot();
 });
 
+test('tag in plural', function () {
+  expect(
+    pegParse(
+      'You have {count, plural, =1 {<b>1</b> Message} other {<b>#</b> Messages}}'
+    )
+  ).toMatchSnapshot();
+});
+
 test('self-closing tag', function () {
   expect(
     pegParse('this is <br/> <a>nested <b>{placeholder}</b></a>')

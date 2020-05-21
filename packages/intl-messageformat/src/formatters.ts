@@ -215,7 +215,8 @@ export function formatToParts<T>(
         locales,
         formatters,
         formats,
-        values
+        values,
+        currentPluralValue
       );
       let chunks = formatFn(...parts.map(p => p.value));
       if (!Array.isArray(chunks)) {

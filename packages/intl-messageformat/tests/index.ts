@@ -699,6 +699,18 @@ describe('IntlMessageFormat', function () {
         })
       ).to.deep.equal(['hello ', {obj: {bar: 1}}, ' test']);
     });
+    it('should handle tag in plural', function () {
+      const mf = new IntlMessageFormat(
+        'You have {count, plural, =1 {<b>1</b> Message} other {<b>#</b> Messages}}',
+        'en'
+      );
+      expect(
+        mf.format({
+          b: (...chunks) => `{}${chunks}{}`,
+          count: 1000,
+        })
+      ).to.equal('You have {}1,000{} Messages');
+    });
   });
 
   it('custom formats should work for time', function () {

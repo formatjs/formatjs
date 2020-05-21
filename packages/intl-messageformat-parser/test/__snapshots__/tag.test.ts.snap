@@ -101,6 +101,60 @@ Array [
 ]
 `;
 
+exports[`tag in plural 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "You have ",
+  },
+  Object {
+    "offset": 0,
+    "options": Object {
+      "=1": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "children": Array [
+              Object {
+                "type": 0,
+                "value": "1",
+              },
+            ],
+            "type": 8,
+            "value": "b",
+          },
+          Object {
+            "type": 0,
+            "value": " Message",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "children": Array [
+              Object {
+                "type": 7,
+              },
+            ],
+            "type": 8,
+            "value": "b",
+          },
+          Object {
+            "type": 0,
+            "value": " Messages",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "count",
+  },
+]
+`;
+
 exports[`tag with dash 1`] = `
 Array [
   Object {
