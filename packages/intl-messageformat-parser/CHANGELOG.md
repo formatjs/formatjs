@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.6](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@5.0.5...intl-messageformat-parser@5.0.6) (2020-05-21)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** fix rendering tag inside plural, fix [#1680](https://github.com/formatjs/formatjs/issues/1680) ([dd4f6c6](https://github.com/formatjs/formatjs/commit/dd4f6c626055688b8b596b164f0836e9ea65fb1e))
+
+
+
+
+
 ## [5.0.5](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@5.0.4...intl-messageformat-parser@5.0.5) (2020-05-21)
 
 
