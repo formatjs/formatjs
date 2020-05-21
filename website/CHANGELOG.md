@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.3](https://github.com/formatjs/formatjs/compare/website@0.1.2...website@0.1.3) (2020-05-21)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** rename intl-unified-numberformat to intl-numberformat ([8f183d3](https://github.com/formatjs/formatjs/commit/8f183d314756d43b1f887af03727af349f6de731))
+
+
+
+
+
 ## [0.1.2](https://github.com/formatjs/formatjs/compare/website@0.1.1...website@0.1.2) (2020-05-20)
 
 
