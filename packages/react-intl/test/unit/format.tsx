@@ -683,6 +683,15 @@ describe('format API', () => {
     beforeEach(() => {
       formatMessage = baseFormatMessage.bind(null, config, state);
     });
+    it('should hot path message without values', function () {
+      (state.getMessageFormat as jest.Mock).mockClear();
+      expect(formatMessage({id: 'no_args'})).toBe('Hello, World!');
+      expect(state.getMessageFormat).not.toHaveBeenCalled();
+      expect(formatMessage({id: 'with_arg'}, {name: 'foo'})).toBe(
+        'Hello, foo!'
+      );
+      expect(state.getMessageFormat).toHaveBeenCalled();
+    });
     [`Hello, World!'{foo}'`, `'\ud83d'\udc04`].forEach(msg =>
       it(`should render escaped msg ${msg} properly in production`, () => {
         process.env.NODE_ENV = 'production';
@@ -910,10 +919,15 @@ describe('format API', () => {
         const id = 'missing_value';
 
         expect(
-          formatMessage({
-            id,
-            defaultMessage: messages.invalid,
-          })
+          formatMessage(
+            {
+              id,
+              defaultMessage: messages.invalid,
+            },
+            {
+              foo: 1,
+            }
+          )
         ).toBe(messages[id]);
         expect(
           (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
@@ -925,10 +939,13 @@ describe('format API', () => {
         const id = 'missing_value';
 
         expect(
-          formatMessage({
-            id,
-            defaultMessage: messages.missing,
-          })
+          formatMessage(
+            {
+              id,
+              defaultMessage: messages.missing,
+            },
+            {foo: 1}
+          )
         ).toBe(messages[id]);
         expect(
           (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
@@ -938,12 +955,12 @@ describe('format API', () => {
       it('returns `defaultMessage` source when formatting errors and missing message', () => {
         config.locale = 'en-US';
 
-        const {locale, messages} = config;
+        const {messages} = config;
         const id = 'missing';
 
         expect(
           formatMessage({
-            id: id,
+            id,
             defaultMessage: messages.invalid,
           })
         ).toBe(messages.invalid);
@@ -956,7 +973,7 @@ describe('format API', () => {
       it('returns message `id` when message and `defaultMessage` are missing', () => {
         const id = 'missing';
 
-        expect(formatMessage({id: id})).toBe(id);
+        expect(formatMessage({id})).toBe(id);
 
         expect(
           (config.onError as jest.Mock).mock.calls.map(c => c[0].code)

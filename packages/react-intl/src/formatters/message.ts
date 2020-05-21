@@ -132,13 +132,17 @@ export function formatMessage(
         | Date
         | FormatXMLElementFn<React.ReactNode, React.ReactNode>
       >
-    | undefined = {}
+    | undefined
 ): React.ReactNode {
   const {id, defaultMessage} = messageDescriptor;
 
   // `id` is a required field of a Message Descriptor.
   invariant(!!id, '[React Intl] An `id` must be provided to format a message.');
   const message = messages && messages[String(id)];
+  // IMPORTANT: Hot path straight lookup for performance
+  if (!values && message && typeof message === 'string') {
+    return message.replace(/'\{(.*?)\}'/gi, `{$1}`);
+  }
   formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
   defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);
 
