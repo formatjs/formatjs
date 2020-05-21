@@ -13,7 +13,7 @@
     {"path": "../intl-messageformat"},
     {"path": "../intl-pluralrules"},
     {"path": "../intl-relativetimeformat"},
-    {"path": "../intl-unified-numberformat"},
+    {"path": "../intl-numberformat"},
     {"path": "../intl-utils"}
   ]
 }

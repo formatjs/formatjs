@@ -136,7 +136,7 @@
     "@formatjs/intl-displaynames": "^1.2.10",
     "@formatjs/intl-listformat": "^1.4.8",
     "@formatjs/intl-relativetimeformat": "^4.5.16",
-    "@formatjs/intl-unified-numberformat": "^3.3.7",
+    "@formatjs/intl-numberformat": "^3.3.7",
     "@formatjs/intl-utils": "^2.3.0",
     "@types/hoist-non-react-statics": "^3.3.1",
     "@types/invariant": "^2.2.31",

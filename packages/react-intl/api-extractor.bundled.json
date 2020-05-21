@@ -5,7 +5,7 @@
     "@formatjs/intl-relativetimeformat",
     "@formatjs/intl-displaynames",
     "intl-messageformat-parser",
-    "@formatjs/intl-unified-numberformat",
+    "@formatjs/intl-numberformat",
     "@formatjs/intl-utils",
     "intl-messageformat"
   ],

@@ -90,7 +90,7 @@ If you cannot use the Intl variant of JSC (e.g on iOS), follow the instructions 
 
 FormatJS also provides types & polyfill for the following Stage 3 Intl APIs:
 
-- Unified NumberFormat: [polyfill](polyfills/intl-unified-numberformat.md) & [spec](https://github.com/tc39/proposal-unified-intl-numberformat)
+- Unified NumberFormat: [polyfill](polyfills/intl-numberformat.md) & [spec](https://github.com/tc39/proposal-unified-intl-numberformat)
 - DisplayNames: [polyfill][displaynames-polyfill] & [spec][displaynames-spec]
 
 ## The `react-intl` Package

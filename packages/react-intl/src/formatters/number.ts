@@ -1,6 +1,6 @@
 import {IntlConfig, Formatters, IntlFormatters} from '../types';
 import {getNamedFormat, filterProps} from '../utils';
-import {UnifiedNumberFormatOptions} from '@formatjs/intl-unified-numberformat';
+import {UnifiedNumberFormatOptions} from '@formatjs/intl-numberformat';
 import {ReactIntlError, ReactIntlErrorCode} from '../error';
 
 const NUMBER_FORMAT_OPTIONS: Array<keyof UnifiedNumberFormatOptions> = [

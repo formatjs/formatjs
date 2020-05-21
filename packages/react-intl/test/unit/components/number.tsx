@@ -3,7 +3,7 @@ import {mount} from 'enzyme';
 import {FormattedNumber, FormattedNumberParts} from '../../../src';
 import {createIntl} from '../../../src/components/provider';
 import {mountFormattedComponentWithProvider} from '../testUtils';
-import {UnifiedNumberFormatOptions} from '@formatjs/intl-unified-numberformat';
+import {UnifiedNumberFormatOptions} from '@formatjs/intl-numberformat';
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedNumber);
 const mountPartsWithProvider = mountFormattedComponentWithProvider(
   FormattedNumberParts

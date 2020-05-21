@@ -14,7 +14,7 @@ export default [
     input: './lib/index.js',
     output: {
       sourcemap: true,
-      file: 'dist/umd/intl-unified-numberformat.js',
+      file: 'dist/umd/intl-numberformat.js',
       format: 'umd',
       exports: 'named',
       name: 'IntlUnifiedNumberFormat',
@@ -25,7 +25,7 @@ export default [
     input: './lib/index.js',
     output: {
       sourcemap: true,
-      file: 'dist/umd/intl-unified-numberformat.min.js',
+      file: 'dist/umd/intl-numberformat.min.js',
       format: 'umd',
       exports: 'named',
       name: 'IntlUnifiedNumberFormat',

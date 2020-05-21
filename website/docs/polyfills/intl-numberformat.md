@@ -3,12 +3,12 @@ id: intl-numberformat
 title: Intl.NumberFormat (ES2020)
 ---
 
-A ponyfill/polyfill for [`intl-unified-numberformat`](https://github.com/tc39/proposal-unified-intl-numberformat). This wraps `Intl.NumberFormat` and has the exact same APIs.
+A ponyfill/polyfill for [`intl-numberformat`](https://github.com/tc39/proposal-intl-numberformat). This wraps `Intl.NumberFormat` and has the exact same APIs.
 
 ## Installation
 
 ```
-npm install @formatjs/intl-unified-numberformat
+npm install @formatjs/intl-numberformat
 ```
 
 ## Requirements
@@ -19,23 +19,23 @@ This package requires the following capabilities:
 
 # Features
 
-Everything in the https://github.com/tc39/proposal-unified-intl-numberformat proposal with the caveats below.
+Everything in the https://github.com/tc39/proposal-intl-numberformat proposal with the caveats below.
 
 ## Caveats
 
-1. `compact` notation is currently buggy in certain locales with special compact rules (such as `zh-Hant` or `Somali`) See https://github.com/tc39/proposal-unified-intl-numberformat/issues/26 for more details.
+1. `compact` notation is currently buggy in certain locales with special compact rules (such as `zh-Hant` or `Somali`) See https://github.com/tc39/proposal-intl-numberformat/issues/26 for more details.
 
 # Usage
 
 To use the ponyfill, import it along with its data:
 
 ```tsx
-import {UnifiedNumberFormat} from '@formatjs/intl-unified-numberformat';
+import {UnifiedNumberFormat} from '@formatjs/intl-numberformat';
 UnifiedNumberFormat.__addLocaleData(
-  require('@formatjs/intl-unified-numberformat/dist/locale-data/zh.json') // locale-data for zh
+  require('@formatjs/intl-numberformat/dist/locale-data/zh.json') // locale-data for zh
 );
 UnifiedNumberFormat.__addLocaleData(
-  require('@formatjs/intl-unified-numberformat/dist/locale-data/en.json') // locale-data for en
+  require('@formatjs/intl-numberformat/dist/locale-data/en.json') // locale-data for en
 );
 
 new UnifiedNumberFormat('zh', {
@@ -48,13 +48,13 @@ new UnifiedNumberFormat('zh', {
 To use this as a polyfill, override `Intl.NumberFormat` as below:
 
 ```tsx
-import '@formatjs/intl-unified-numberformat/polyfill';
+import '@formatjs/intl-numberformat/polyfill';
 if (typeof Intl.NumberFormat.__addLocaleData === 'function') {
   Intl.NumberFormat.__addLocaleData(
-    require('@formatjs/intl-unified-numberformat/dist/locale-data/zh.json') // locale-data for zh
+    require('@formatjs/intl-numberformat/dist/locale-data/zh.json') // locale-data for zh
   );
   Intl.NumberFormat.__addLocaleData(
-    require('@formatjs/intl-unified-numberformat/dist/locale-data/en.json') // locale-data for en
+    require('@formatjs/intl-numberformat/dist/locale-data/en.json') // locale-data for en
   );
 }
 
@@ -77,7 +77,7 @@ new Intl.NumberFormat('zh', {
 
 ## Supported Units
 
-Currently [intl-unified-numberformat](https://tc39.es/proposal-unified-intl-numberformat/section6/locales-currencies-tz_diff_out.html#sec-issanctionedsimpleunitidentifier) has a list of sanctioned units as below
+Currently [intl-numberformat](https://tc39.es/proposal-intl-numberformat/section6/locales-currencies-tz_diff_out.html#sec-issanctionedsimpleunitidentifier) has a list of sanctioned units as below
 
 ```tsx
 type Unit =

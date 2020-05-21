@@ -1,5 +1,5 @@
 {
-  "name": "@formatjs/intl-unified-numberformat",
+  "name": "@formatjs/intl-numberformat",
   "version": "3.3.7",
   "description": "Ponyfill for intl unified numberformat proposal",
   "keywords": [
@@ -13,7 +13,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "module": "lib/index.js",
-  "types": "lib/intl-unified-numberformat.d.ts",
+  "types": "lib/intl-numberformat.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/formatjs/formatjs.git"

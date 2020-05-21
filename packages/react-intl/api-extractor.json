@@ -65,7 +65,7 @@
     // "@formatjs/intl-listformat",
     // "@formatjs/intl-relativetimeformat",
     // "intl-messageformat-parser",
-    // "@formatjs/intl-unified-numberformat",
+    // "@formatjs/intl-numberformat",
     // "@formatjs/intl-utils",
     // "intl-messageformat"
   ],

@@ -16,7 +16,7 @@ import {
   createFormattedDateTimePartsComponent,
 } from './components/createFormattedComponent';
 import {CustomFormatConfig} from './types';
-import {UnifiedNumberFormatOptions} from '@formatjs/intl-unified-numberformat';
+import {UnifiedNumberFormatOptions} from '@formatjs/intl-numberformat';
 import {IntlListFormatOptions} from '@formatjs/intl-listformat';
 import {DisplayNamesOptions} from '@formatjs/intl-displaynames/lib';
 export {
