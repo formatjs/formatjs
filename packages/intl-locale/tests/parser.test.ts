@@ -74,7 +74,7 @@ describe('parser', () => {
   ];
 
   for (const langtag of invalidLanguageTags) {
-    it(`new Intl.Locale("${langtag}") throws RangeError`, function() {
+    it(`new Intl.Locale("${langtag}") throws RangeError`, function () {
       expect(() => parse(langtag)).toThrowError(RangeError);
     });
   }
@@ -89,7 +89,7 @@ describe('parser', () => {
     'en-a-bar-x-u-foo',
   ];
   for (const tag of validTags) {
-    it(`${tag} should be valid`, function() {
+    it(`${tag} should be valid`, function () {
       expect(parse(tag)).toMatchSnapshot();
     });
   }

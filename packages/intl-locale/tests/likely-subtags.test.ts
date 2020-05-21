@@ -70,30 +70,30 @@ const extras = [
   '-x-private',
 ];
 
-describe('likely-subtags', function() {
+describe('likely-subtags', function () {
   for (const [tag, maximal] of Object.entries(testDataMaximal)) {
-    it(`"${maximal}" should be maximal`, function() {
+    it(`"${maximal}" should be maximal`, function () {
       expect(new Locale(maximal).maximize().toString()).toBe(maximal);
     });
 
     for (const extra of extras) {
       const input = tag + extra;
       const output = maximal + extra;
-      it(`"${input}".maximize() should be "${output}"`, function() {
+      it(`"${input}".maximize() should be "${output}"`, function () {
         expect(new Locale(input).maximize().toString()).toBe(output);
       });
     }
   }
 
   for (const [tag, minimal] of Object.entries(testDataMinimal)) {
-    it(`"${minimal}" should be minimal`, function() {
+    it(`"${minimal}" should be minimal`, function () {
       expect(new Locale(minimal).minimize().toString()).toBe(minimal);
     });
 
     for (const extra of extras) {
       const input = tag + extra;
       const output = minimal + extra;
-      it(`"${input}".minimize() should be "${output}"`, function() {
+      it(`"${input}".minimize() should be "${output}"`, function () {
         expect(new Locale(input).minimize().toString()).toBe(output);
       });
     }
@@ -102,7 +102,7 @@ describe('likely-subtags', function() {
   // privateuse only.
   // "x" in "x-private" does not match unicode_language_subtag
   // unicode_language_subtag = alpha{2,3} | alpha{5,8};
-  it('x-private', function() {
+  it('x-private', function () {
     expect(() => new Locale('x-private')).toThrowError(RangeError);
   });
 });

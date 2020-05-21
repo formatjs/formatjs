@@ -21,13 +21,13 @@ const testDataMinimal = {
   'zh-Hani': 'zh-Hani',
 };
 
-describe('minimize', function() {
+describe('minimize', function () {
   for (const [tag, minimal] of Object.entries(testDataMinimal)) {
-    it(`${minimal} is indeed minimal`, function() {
+    it(`${minimal} is indeed minimal`, function () {
       // Assert the |minimal| tag is indeed minimal.
       expect(new Locale(minimal).minimize().toString()).toBe(minimal);
     });
-    it(`${tag} -> ${minimal}`, function() {
+    it(`${tag} -> ${minimal}`, function () {
       // Assert RemoveLikelySubtags(tag) returns |minimal|.
       expect(new Locale(tag).minimize().toString()).toBe(minimal);
     });
