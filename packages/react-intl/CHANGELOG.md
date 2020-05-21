@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.5.8](https://github.com/formatjs/formatjs/compare/react-intl@4.5.7...react-intl@4.5.8) (2020-05-21)
+
+
+### Bug Fixes
+
+* **react-intl:** hot path message lookup without values ([1e58679](https://github.com/formatjs/formatjs/commit/1e58679064ba8f883849c6af384bb6650ee1b2e8))
+
+
+
+
+
 ## [4.5.7](https://github.com/formatjs/formatjs/compare/react-intl@4.5.6...react-intl@4.5.7) (2020-05-21)
 
 **Note:** Version bump only for package react-intl
