@@ -12,7 +12,7 @@ function checkNode(
   for (const [{idPropNode}] of msgs) {
     if (idPropNode) {
       context.report({
-        node: idPropNode as any,
+        node: idPropNode as Node,
         message: 'Manual `id` are not allowed in message descriptor',
         fix(fixer) {
           const src = context.getSourceCode();

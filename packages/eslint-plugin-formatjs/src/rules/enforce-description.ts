@@ -21,7 +21,7 @@ function checkNode(
     if (!description) {
       if (type === 'literal' && descriptionNode) {
         context.report({
-          node,
+          node: descriptionNode as Node,
           message:
             '`description` has to be a string literal (not function call or variable)',
         });
