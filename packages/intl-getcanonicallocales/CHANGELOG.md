@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0 (2020-05-22)
+
+
+### Features
+
+* **@formatjs/intl-getcanonicallocales:** initial commit ([daba5a4](https://github.com/formatjs/formatjs/commit/daba5a4944bbab29573d02f626606262a035901d))
+
+
+
+
+
 ## [1.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@1.1.0...@formatjs/intl-locale@1.1.1) (2020-05-21)
 
 **Note:** Version bump only for package @formatjs/intl-locale
