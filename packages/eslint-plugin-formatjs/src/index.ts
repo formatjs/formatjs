@@ -9,6 +9,7 @@ import enforcePluralRules from './rules/enforce-plural-rules';
 import enforcePlaceholders from './rules/enforce-placeholders';
 import enforceSupportedDateTimeSkeleton from './rules/supported-datetime-skeleton';
 import noMultipleWhitespaces from './rules/no-multiple-whitespaces';
+import noId from './rules/no-id';
 const plugin = {
   rules: {
     'enforce-description': enforceDescription,
@@ -22,6 +23,7 @@ const plugin = {
     'enforce-placeholders': enforcePlaceholders,
     'supported-datetime-skeleton': enforceSupportedDateTimeSkeleton,
     'no-multiple-whitespaces': noMultipleWhitespaces,
+    'no-id': noId,
   },
 };
 
