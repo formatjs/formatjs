@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.5.9](https://github.com/formatjs/formatjs/compare/react-intl@4.5.8...react-intl@4.5.9) (2020-05-22)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** add no-id to index ([8e5c0af](https://github.com/formatjs/formatjs/commit/8e5c0afe69944d52653b92c2f08e15363246834a))
+
+
+
+
+
 ## [4.5.8](https://github.com/formatjs/formatjs/compare/react-intl@4.5.7...react-intl@4.5.8) (2020-05-21)
 
 

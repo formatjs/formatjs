@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.1.0...@formatjs/intl-getcanonicallocales@1.1.1) (2020-05-22)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** add no-id to index ([8e5c0af](https://github.com/formatjs/formatjs/commit/8e5c0afe69944d52653b92c2f08e15363246834a))
+
+
+
+
+
 # 1.1.0 (2020-05-22)
 
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.3](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.3.2...eslint-plugin-formatjs@2.3.3) (2020-05-22)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** add no-id to index ([8e5c0af](https://github.com/formatjs/formatjs/commit/8e5c0afe69944d52653b92c2f08e15363246834a))
+* **eslint-plugin-formatjs:** fix issue where highlight was not on message/description node ([0ab41a9](https://github.com/formatjs/formatjs/commit/0ab41a96b1d0d5ffb35e0f7f8e407d621417a3f2))
+
+
+
+
+
 ## [2.3.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.3.1...eslint-plugin-formatjs@2.3.2) (2020-05-21)
 
 **Note:** Version bump only for package eslint-plugin-formatjs
