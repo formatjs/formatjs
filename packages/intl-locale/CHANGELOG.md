@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@1.1.1...@formatjs/intl-locale@2.0.0) (2020-05-23)
+
+
+### Features
+
+* **@formatjs/intl-locale:** Use native Intl.getCanonicalLocales ([ab79d61](https://github.com/formatjs/formatjs/commit/ab79d6150d68872f291053f67da4a373678735c7))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-locale:** This requires @formatjs/intl-getcanonicallocales on
+IE11 and below
+
+
+
+
+
 ## [1.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@1.1.0...@formatjs/intl-locale@1.1.1) (2020-05-21)
 
 **Note:** Version bump only for package @formatjs/intl-locale

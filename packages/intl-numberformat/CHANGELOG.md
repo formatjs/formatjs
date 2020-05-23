@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@3.3.8...@formatjs/intl-numberformat@4.0.0) (2020-05-23)
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** Use native Intl.getCanonicalLocales ([54cea38](https://github.com/formatjs/formatjs/commit/54cea38396bdfbbc24b1fa12996a5347f44a61f7))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-numberformat:** This requires @formatjs/intl-getcanonicallocales for
+IE11 and below
+
+
+
+
+
 ## 3.3.8 (2020-05-21)
 
 

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.5.16...@formatjs/intl-relativetimeformat@5.0.0) (2020-05-23)
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** Use native ([c4b719c](https://github.com/formatjs/formatjs/commit/c4b719cd511e220efcc04bb01a40fe9d44c97c1e))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-relativetimeformat:** This requires @formatjs/intl-getcanonicallocales for
+IE11 and below
+
+
+
+
+
 ## [4.5.16](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@4.5.15...@formatjs/intl-relativetimeformat@4.5.16) (2020-05-16)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat

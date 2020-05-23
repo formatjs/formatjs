@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-numberformat",
-  "version": "3.3.8",
+  "version": "4.0.0",
   "description": "Ponyfill for intl unified numberformat proposal",
   "keywords": [
     "polyfill",
@@ -25,16 +25,16 @@
     "src"
   ],
   "devDependencies": {
-    "@formatjs/intl-pluralrules": "^1.5.9",
+    "@formatjs/intl-getcanonicallocales": "^1.2.0",
+    "@formatjs/intl-pluralrules": "^2.0.0",
     "@types/jest": "^25.2.1",
     "chalk": "^4.0.0",
-    "formatjs-extract-cldr-data": "^10.1.8",
-    "@formatjs/intl-getcanonicallocales": "1.1.1",
+    "formatjs-extract-cldr-data": "^10.1.9",
     "jest": "^25.4.0",
     "ts-jest": "^25.4.0"
   },
   "dependencies": {
-    "@formatjs/intl-utils": "^2.3.0"
+    "@formatjs/intl-utils": "^3.0.0"
   },
   "scripts": {
     "benchmark": "ts-node tests/benchmark",

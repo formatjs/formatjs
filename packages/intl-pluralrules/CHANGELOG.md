@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@1.5.9...@formatjs/intl-pluralrules@2.0.0) (2020-05-23)
+
+
+### Features
+
+* **@formatjs/intl-pluralrules:** Use native Intl.getCanonicalLocales ([c1bde9a](https://github.com/formatjs/formatjs/commit/c1bde9a8d280d1ed69cec33e663167dad0a26631))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-pluralrules:** This requires @formatjs/intl-getcanonicallocales for
+IE11 and below
+
+
+
+
+
 ## [1.5.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@1.5.8...@formatjs/intl-pluralrules@1.5.9) (2020-05-16)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules

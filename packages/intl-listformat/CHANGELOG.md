@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@1.4.8...@formatjs/intl-listformat@2.0.0) (2020-05-23)
+
+
+### Features
+
+* **@formatjs/intl-listformat:** Use native Intl.getCanonicalLocales ([ea78382](https://github.com/formatjs/formatjs/commit/ea783828b86b2744a89f0b2b616ebe535f32f3df))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-listformat:** This requires @formatjs/intl-getcanonicallocales for
+IE11 and below
+
+
+
+
+
 ## [1.4.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@1.4.7...@formatjs/intl-listformat@1.4.8) (2020-05-16)
 
 **Note:** Version bump only for package @formatjs/intl-listformat
