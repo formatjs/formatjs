@@ -4,7 +4,6 @@ import {
   ListPatternLocaleData,
   unpackData,
   setInternalSlot,
-  getCanonicalLocales,
   supportedLocales,
   createResolveLocale,
   getInternalSlot,
@@ -15,6 +14,7 @@ import {
   isLiteralPart,
   LiteralPart,
 } from '@formatjs/intl-utils';
+import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
 
 export interface IntlListFormatOptions {
   /**
@@ -198,7 +198,8 @@ export default class ListFormat {
       'initializedListFormat',
       true
     );
-    const requestedLocales = getCanonicalLocales(locales);
+    const requestedLocales = ((Intl as any)
+      .getCanonicalLocales as typeof getCanonicalLocales)(locales);
     const opt: any = Object.create(null);
     const opts =
       options === undefined ? Object.create(null) : toObject(options);
@@ -313,7 +314,9 @@ export default class ListFormat {
     // test262/test/intl402/ListFormat/constructor/supportedLocalesOf/result-type.js
     return supportedLocales(
       ListFormat.availableLocales,
-      getCanonicalLocales(locales),
+      ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
+        locales
+      ),
       options
     );
   }
