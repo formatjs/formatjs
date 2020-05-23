@@ -1,4 +1,3 @@
-import {getCanonicalLocales} from './get-canonical-locales';
 import {invariant} from './invariant';
 import {toObject, getOption} from './polyfill-utils';
 import {LocaleData} from './types';
@@ -96,7 +95,7 @@ export function createResolveLocale<
         );
         foundLocale = preExtension + supportedExtension + postExtension;
       }
-      foundLocale = getCanonicalLocales(foundLocale)[0];
+      foundLocale = (Intl as any).getCanonicalLocales(foundLocale)[0];
     }
     result.locale = foundLocale;
     return result;

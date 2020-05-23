@@ -32,5 +32,4 @@ export * from './list-types';
 export * from './plural-rules-types';
 export * from './number-types';
 export * from './displaynames-types';
-export {getCanonicalLocales} from './get-canonical-locales';
 export {invariant} from './invariant';
