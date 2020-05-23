@@ -2,7 +2,6 @@ import {
   getInternalSlot,
   setInternalSlot,
   getOption,
-  getCanonicalLocales,
   createResolveLocale,
   invariant,
   supportedLocales,
@@ -13,6 +12,7 @@ import {
   DisplayNamesData,
   toString,
 } from '@formatjs/intl-utils';
+import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
 
 export interface DisplayNamesOptions {
   localeMatcher?: 'lookup' | 'best fit';
@@ -36,7 +36,8 @@ export class DisplayNames {
     if (new.target === undefined) {
       throw TypeError(`Constructor Intl.DisplayNames requires 'new'`);
     }
-    const requestedLocales = getCanonicalLocales(locales);
+    const requestedLocales = ((Intl as any)
+      .getCanonicalLocales as typeof getCanonicalLocales)(locales);
 
     const matcher = getOption(
       options!,
@@ -97,7 +98,9 @@ export class DisplayNames {
   ) {
     return supportedLocales(
       DisplayNames.availableLocales,
-      getCanonicalLocales(locales),
+      ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
+        locales
+      ),
       options
     );
   }
@@ -150,7 +153,8 @@ export class DisplayNames {
     switch (type) {
       // Normalize the locale id and remove the region.
       case 'language': {
-        canonicalCode = getCanonicalLocales(codeAsString)[0];
+        canonicalCode = ((Intl as any)
+          .getCanonicalLocales as typeof getCanonicalLocales)(codeAsString)[0];
         const regionMatch = /-([a-z]{2}|\d{3})\b/i.exec(canonicalCode);
         if (regionMatch) {
           // Remove region subtag

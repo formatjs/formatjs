@@ -38,7 +38,8 @@
     "chalk": "^4.0.0",
     "formatjs-extract-cldr-data": "^10.1.8",
     "jest": "^25.4.0",
-    "ts-jest": "^25.4.0"
+    "ts-jest": "^25.4.0",
+    "@formatjs/intl-getcanonicallocales": "1.1.1"
   },
   "scripts": {
     "cldr": "ts-node scripts/cldr",
