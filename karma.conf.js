@@ -1,5 +1,5 @@
 const {sync: globSync} = require('glob');
-const FILES = globSync('./packages/*/tests/browser.js');
+const FILES = globSync('./packages/*/tests-karma/*.js');
 
 module.exports = function (config) {
   config.set({

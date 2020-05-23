@@ -2,6 +2,9 @@ import resolve from 'rollup-plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
+import json from '@rollup/plugin-json';
+import {sync as globSync} from 'glob';
+import {basename} from 'path';
 
 const resolveConfig = resolve({
   customResolveOptions: {
@@ -12,32 +15,33 @@ const resolveConfig = resolve({
   },
 });
 
-export default [
-  {
-    input: './tests/index.test.ts',
-    output: {
-      sourcemap: true,
-      file: 'tests/browser.js',
-      format: 'umd',
-    },
-    plugins: [
-      replace({
-        'process.env.NODE_ENV': JSON.stringify('test'),
-        'process.version': JSON.stringify(''),
-      }),
-      resolveConfig,
-      typescript({
-        // This is meant to be import and used in sub-packages, where a tsconfig.esm.json
-        // is assumed to exist.
-        tsconfig: './tsconfig.esm.json',
-        tsconfigDefaults: {
-          compilerOptions: {
-            declaration: false,
-            declarationMap: false,
-          },
-        },
-      }),
-      commonjs(),
-    ],
+const testFiles = globSync('./tests/*.test.ts');
+
+export default testFiles.map(fn => ({
+  input: fn,
+  output: {
+    sourcemap: true,
+    file: `tests-karma/${basename(fn)}.js`,
+    format: 'umd',
   },
-];
+  plugins: [
+    replace({
+      'process.env.NODE_ENV': JSON.stringify('test'),
+      'process.version': JSON.stringify(''),
+    }),
+    resolveConfig,
+    typescript({
+      // This is meant to be import and used in sub-packages, where a tsconfig.esm.json
+      // is assumed to exist.
+      tsconfig: './tsconfig.esm.json',
+      tsconfigDefaults: {
+        compilerOptions: {
+          declaration: false,
+          declarationMap: false,
+        },
+      },
+    }),
+    commonjs(),
+    json(),
+  ],
+}));

@@ -7,7 +7,7 @@ module.exports = function (config) {
     process.exit(1);
   }
 
-  const FILES = globSync('./packages/*/tests/browser.js');
+  const FILES = globSync('./packages/*/tests-karma/*.js');
 
   // Browsers to run on Sauce Labs
   // Check out https://saucelabs.com/platforms for all browser/OS combos

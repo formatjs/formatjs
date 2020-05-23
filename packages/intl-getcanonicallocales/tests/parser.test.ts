@@ -79,18 +79,126 @@ describe('parser', () => {
     });
   }
 
-  const validTags = [
-    'en-u-foo-bar-nu-thai-ca-buddhist-kk-true',
-    'da-u-ca-gregory-ca-buddhist',
-    'en-Latn-fonipa',
-    'de-Latn-DE-u-ca-gregory-co-phonebk-hc-h23-kf-kn-false-nu-latn',
-    'ja-Jpan-JP-u-ca-japanese-co-search-hc-h24-kf-false-kn-nu-jpanfin',
-    'fr-Latn-CA-u-ca-gregory-co-standard-hc-h11-kf-kn-false-nu-latn',
-    'en-a-bar-x-u-foo',
-  ];
-  for (const tag of validTags) {
-    it(`${tag} should be valid`, function () {
-      expect(parseUnicodeLocaleId(tag)).toMatchSnapshot();
+  it('en-u-foo-bar-nu-thai-ca-buddhist-kk-true', function () {
+    expect(
+      parseUnicodeLocaleId('en-u-foo-bar-nu-thai-ca-buddhist-kk-true')
+    ).toEqual({
+      extensions: [
+        {
+          attributes: ['foo', 'bar'],
+          keywords: [
+            ['nu', 'thai'],
+            ['ca', 'buddhist'],
+            ['kk', 'true'],
+          ],
+          type: 'u',
+        },
+      ],
+      lang: {lang: 'en', region: undefined, script: undefined, variants: []},
     });
-  }
+  });
+  it('da-u-ca-gregory-ca-buddhist', function () {
+    expect(parseUnicodeLocaleId('da-u-ca-gregory-ca-buddhist')).toEqual({
+      extensions: [
+        {
+          attributes: [],
+          keywords: [
+            ['ca', 'gregory'],
+            ['ca', 'buddhist'],
+          ],
+          type: 'u',
+        },
+      ],
+      lang: {lang: 'da', region: undefined, script: undefined, variants: []},
+    });
+  });
+  it('en-Latn-fonipa', function () {
+    expect(parseUnicodeLocaleId('en-Latn-fonipa')).toEqual({
+      extensions: [],
+      lang: {
+        lang: 'en',
+        region: undefined,
+        script: 'Latn',
+        variants: ['fonipa'],
+      },
+    });
+  });
+  it('de-Latn-DE-u-ca-gregory-co-phonebk-hc-h23-kf-kn-false-nu-latn', function () {
+    expect(
+      parseUnicodeLocaleId(
+        'de-Latn-DE-u-ca-gregory-co-phonebk-hc-h23-kf-kn-false-nu-latn'
+      )
+    ).toEqual({
+      extensions: [
+        {
+          attributes: [],
+          keywords: [
+            ['ca', 'gregory'],
+            ['co', 'phonebk'],
+            ['hc', 'h23'],
+            ['kf', ''],
+            ['kn', 'false'],
+            ['nu', 'latn'],
+          ],
+          type: 'u',
+        },
+      ],
+      lang: {lang: 'de', region: 'DE', script: 'Latn', variants: []},
+    });
+  });
+  it('ja-Jpan-JP-u-ca-japanese-co-search-hc-h24-kf-false-kn-nu-jpanfin', function () {
+    expect(
+      parseUnicodeLocaleId(
+        'ja-Jpan-JP-u-ca-japanese-co-search-hc-h24-kf-false-kn-nu-jpanfin'
+      )
+    ).toEqual({
+      extensions: [
+        {
+          attributes: [],
+          keywords: [
+            ['ca', 'japanese'],
+            ['co', 'search'],
+            ['hc', 'h24'],
+            ['kf', 'false'],
+            ['kn', ''],
+            ['nu', 'jpanfin'],
+          ],
+          type: 'u',
+        },
+      ],
+      lang: {lang: 'ja', region: 'JP', script: 'Jpan', variants: []},
+    });
+  });
+  it('fr-Latn-CA-u-ca-gregory-co-standard-hc-h11-kf-kn-false-nu-latn', function () {
+    expect(
+      parseUnicodeLocaleId(
+        'fr-Latn-CA-u-ca-gregory-co-standard-hc-h11-kf-kn-false-nu-latn'
+      )
+    ).toEqual({
+      extensions: [
+        {
+          attributes: [],
+          keywords: [
+            ['ca', 'gregory'],
+            ['co', 'standard'],
+            ['hc', 'h11'],
+            ['kf', ''],
+            ['kn', 'false'],
+            ['nu', 'latn'],
+          ],
+          type: 'u',
+        },
+      ],
+      lang: {lang: 'fr', region: 'CA', script: 'Latn', variants: []},
+    });
+  });
+  it('en-a-bar-x-u-foo', function () {
+    expect(parseUnicodeLocaleId('en-a-bar-x-u-foo')).toEqual({
+      extensions: [
+        {type: 'a', value: 'bar'},
+        {type: 'x', value: 'u-foo'},
+      ],
+      lang: {lang: 'en', region: undefined, script: undefined, variants: []},
+    });
+  });
 });

@@ -1,12 +1,13 @@
-import { uglify } from 'rollup-plugin-uglify';
+import {uglify} from 'rollup-plugin-uglify';
 import resolve from 'rollup-plugin-node-resolve';
-import json from '@rollup/plugin-json'
+import json from '@rollup/plugin-json';
+import testRollupConfig from '../../rollup.config';
 
 const resolveConfig = resolve({
-  mainFields: ['module', 'main']
+  mainFields: ['module', 'main'],
 });
 const uglifyConfig = uglify();
-const jsonConfig = json()
+const jsonConfig = json();
 export default [
   {
     input: './lib/index.js',
@@ -15,9 +16,9 @@ export default [
       file: 'dist/umd/intl-locale.js',
       format: 'umd',
       exports: 'named',
-      name: 'IntlgetCanonicalLocales'
+      name: 'IntlgetCanonicalLocales',
     },
-    plugins: [resolveConfig, jsonConfig]
+    plugins: [resolveConfig, jsonConfig],
   },
   {
     input: './lib/index.js',
@@ -26,17 +27,18 @@ export default [
       file: 'dist/umd/intl-locale.min.js',
       format: 'umd',
       exports: 'named',
-      name: 'IntlgetCanonicalLocales'
+      name: 'IntlgetCanonicalLocales',
     },
-    plugins: [resolveConfig, jsonConfig, uglifyConfig]
+    plugins: [resolveConfig, jsonConfig, uglifyConfig],
   },
   {
     input: './lib/polyfill.js',
     output: {
       sourcemap: true,
       file: 'dist/umd/polyfill.js',
-      format: 'umd'
+      format: 'umd',
     },
-    plugins: [resolveConfig, jsonConfig]
-  }
+    plugins: [resolveConfig, jsonConfig],
+  },
+  ...testRollupConfig,
 ];
