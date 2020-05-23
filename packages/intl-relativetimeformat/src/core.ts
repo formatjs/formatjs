@@ -5,7 +5,6 @@ import {
   getLocaleHierarchy,
   supportedLocales,
   RelativeTimeLocaleData,
-  getCanonicalLocales,
   createResolveLocale,
   UnpackedLocaleFieldsData,
   setInternalSlot,
@@ -18,6 +17,7 @@ import {
   isLiteralPart,
   LiteralPart,
 } from '@formatjs/intl-utils';
+import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
 
 export interface IntlRelativeTimeFormatOptions {
   /**
@@ -282,7 +282,8 @@ export default class RelativeTimeFormat {
       'initializedRelativeTimeFormat',
       true
     );
-    const requestedLocales = getCanonicalLocales(locales);
+    const requestedLocales = ((Intl as any)
+      .getCanonicalLocales as typeof getCanonicalLocales)(locales);
     const opt: any = Object.create(null);
     const opts =
       options === undefined ? Object.create(null) : toObject(options);
@@ -446,7 +447,9 @@ export default class RelativeTimeFormat {
   ) {
     return supportedLocales(
       RelativeTimeFormat.availableLocales,
-      getCanonicalLocales(locales),
+      ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
+        locales
+      ),
       options
     );
   }
