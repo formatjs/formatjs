@@ -41,10 +41,10 @@
   ],
   "devDependencies": {
     "@formatjs/intl-pluralrules": "^2.0.1",
-    "@types/chai": "^4.2.11",
-    "@types/mocha": "^7.0.2",
-    "chai": "^4.2.0",
-    "mocha": "^7.1.2"
+    "@formatjs/intl-getcanonicallocales": "^1.2.1",
+    "@types/jasmine": "^3.5.10",
+    "jasmine": "3.5.0",
+    "jasmine-expect": "4.0.3"
   },
   "sideEffects": false,
   "scripts": {
@@ -54,7 +54,7 @@
     "karma:ci": "karma start karma.conf-ci.js",
     "karma:local": "karma start karma.conf.js",
     "rollup": "rollup -c rollup.config.js",
-    "test": "cross-env TZ=UTC NODE_ICU_DATA=../../node_modules/full-icu mocha --opts ../../mocha.opts -r tests/setup.js tests/index.ts",
+    "test": "cross-env NODE_ICU_DATA=../../node_modules/full-icu NODE_ENV=test jest",
     "tsc": "tsc -p tsconfig.json && tsc -p tsconfig.esm.json && api-extractor run --local"
   },
   "homepage": "https://github.com/formatjs/formatjs",

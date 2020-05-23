@@ -14,7 +14,7 @@ const resolveConfig = resolve({
 
 export default [
   {
-    input: './tests/index.ts',
+    input: './tests/index.test.ts',
     output: {
       sourcemap: true,
       file: 'tests/browser.js',

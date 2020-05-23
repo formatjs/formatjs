@@ -14,15 +14,13 @@
     "clean": "rimraf dist lib tests/browser.js tests/browser.js.map *.tsbuildinfo",
     "benchmark": "ts-node tests/benchmark",
     "build": "tsc && tsc -p tsconfig.esm.json && rollup -c rollup.config.js",
-    "test": "mocha --opts ../../mocha.opts tests/index.ts"
+    "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu NODE_ENV=test jest"
   },
   "devDependencies": {
     "@formatjs/intl-pluralrules": "^2.0.1",
     "@formatjs/intl-relativetimeformat": "^5.0.1",
-    "@types/chai": "^4.2.11",
-    "@types/mocha": "^7.0.2",
-    "chai": "^4.2.0",
-    "mocha": "^7.1.2"
+    "jasmine": "3.5.0",
+    "jasmine-expect": "4.0.3"
   },
   "repository": {
     "type": "git",

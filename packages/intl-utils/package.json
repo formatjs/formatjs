@@ -38,11 +38,7 @@
   "license": "MIT",
   "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c",
   "devDependencies": {
-    "@types/chai": "^4.2.11",
-    "@types/mocha": "^7.0.2",
     "@types/serialize-javascript": "^1.5.0",
-    "chai": "^4.2.0",
-    "mocha": "^7.1.2",
     "serialize-javascript": "^3.0.0"
   }
 }

@@ -3,16 +3,17 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
+import '@formatjs/intl-getcanonicallocales/dist/umd/polyfill';
 import '@formatjs/intl-pluralrules/polyfill-locales';
 import {IntlMessageFormat, createDefaultFormatters} from '../src/core';
 import {PART_TYPE} from '../src/formatters';
 import {parse} from 'intl-messageformat-parser';
-declare const expect: Chai.ExpectStatic;
+import 'jasmine-expect';
 import memoizeFormatConstructor from 'intl-format-cache';
 
 describe('IntlMessageFormat', function () {
   it('should be a function', function () {
-    expect(IntlMessageFormat).to.be.a('function');
+    expect(typeof IntlMessageFormat).toBe('function');
   });
 
   it('should accept formatters', function () {
@@ -33,8 +34,8 @@ describe('IntlMessageFormat', function () {
       date: ts,
     });
 
-    expect(output).to.include('My name is Anthony Pipkin, age 8');
-    expect(output).to.include(new Intl.DateTimeFormat().format(ts));
+    expect(output).toContain('My name is Anthony Pipkin, age 8');
+    expect(output).toContain(new Intl.DateTimeFormat().format(ts));
   });
 
   // INSTANCE METHODS
@@ -42,28 +43,28 @@ describe('IntlMessageFormat', function () {
   describe('#resolvedOptions( )', function () {
     it('should be a function', function () {
       const mf = new IntlMessageFormat('');
-      expect(mf.resolvedOptions).to.be.a('function');
+      expect(typeof mf.resolvedOptions).toBe('function');
     });
 
     it('should have a `locale` property', function () {
       const mf = new IntlMessageFormat('');
-      expect(mf.resolvedOptions()).to.have.key('locale');
+      expect(Object.keys(mf.resolvedOptions())).toContain('locale');
     });
 
     describe('`locale`', function () {
       it('should default to host locale', function () {
         const mf = new IntlMessageFormat('');
-        expect(mf.resolvedOptions().locale).to.equal(
+        expect(mf.resolvedOptions().locale).toBe(
           new Intl.NumberFormat().resolvedOptions().locale
         );
       });
 
       it('should normalize the casing', function () {
         let mf = new IntlMessageFormat('', 'en-us');
-        expect(mf.resolvedOptions().locale).to.equal('en-US');
+        expect(mf.resolvedOptions().locale).toBe('en-US');
 
         mf = new IntlMessageFormat('', 'EN-US');
-        expect(mf.resolvedOptions().locale).to.equal('en-US');
+        expect(mf.resolvedOptions().locale).toBe('en-US');
       });
     });
   });
@@ -74,37 +75,37 @@ describe('IntlMessageFormat', function () {
       mf.format({
         there: '2008',
       })
-    ).to.equal('hi @2008');
+    ).toBe('hi @2008');
   });
 
   describe('#format( [object] )', function () {
     it('should be a function', function () {
       const mf = new IntlMessageFormat('');
-      expect(mf.format).to.be.a('function');
+      expect(typeof mf.format).toBe('function');
     });
 
     it('should return a string', function () {
       const mf = new IntlMessageFormat('');
-      expect(mf.format()).to.be.a('string');
+      expect(typeof mf.format()).toBe('string');
     });
   });
 
   describe('#format([ast])', function () {
     it('should format ast', function () {
       const mf = new IntlMessageFormat(parse('hello world'));
-      expect(mf.format()).to.equal('hello world');
+      expect(mf.format()).toBe('hello world');
     });
     it('should format ast w/ placeholders', function () {
       const mf = new IntlMessageFormat(parse('hello world, {name}'));
-      expect(mf.format({name: 'foo'})).to.equal('hello world, foo');
+      expect(mf.format({name: 'foo'})).toBe('hello world, foo');
     });
     it('should format ast w/o parser', function () {
       const mf = new IntlMessageFormat(parse('hello world'));
-      expect(mf.format()).to.equal('hello world');
+      expect(mf.format()).toBe('hello world');
     });
     it('should format ast w/ placeholders w/o parser', function () {
       const mf = new IntlMessageFormat(parse('hello world, {name}'));
-      expect(mf.format({name: 'foo'})).to.equal('hello world, foo');
+      expect(mf.format({name: 'foo'})).toBe('hello world, foo');
     });
   });
 
@@ -116,7 +117,7 @@ describe('IntlMessageFormat', function () {
         LAST: 'Pipkin',
       });
 
-      expect(output).to.equal('My name is Anthony Pipkin.');
+      expect(output).toBe('My name is Anthony Pipkin.');
     });
 
     it('should not ignore zero values', function () {
@@ -125,7 +126,7 @@ describe('IntlMessageFormat', function () {
         age: 0,
       });
 
-      expect(output).to.equal('I am 0 years old.');
+      expect(output).toBe('I am 0 years old.');
     });
 
     it('should ignore false, null, and undefined', function () {
@@ -136,7 +137,7 @@ describe('IntlMessageFormat', function () {
         c: undefined,
       });
 
-      expect(output).to.equal('');
+      expect(output).toBe('');
     });
   });
 
@@ -159,7 +160,7 @@ describe('IntlMessageFormat', function () {
         numPeople: 0,
       });
 
-      expect(m).to.equal('I have zero points.');
+      expect(m).toBe('I have zero points.');
     });
 
     it('should match one', function () {
@@ -167,7 +168,7 @@ describe('IntlMessageFormat', function () {
         numPeople: 1,
       });
 
-      expect(m).to.equal('I have a point.');
+      expect(m).toBe('I have a point.');
     });
 
     it('should match two', function () {
@@ -175,7 +176,7 @@ describe('IntlMessageFormat', function () {
         numPeople: 2,
       });
 
-      expect(m).to.equal('I have two points.');
+      expect(m).toBe('I have two points.');
     });
 
     it('should match few', function () {
@@ -183,7 +184,7 @@ describe('IntlMessageFormat', function () {
         numPeople: 5,
       });
 
-      expect(m).to.equal('I have a few points.');
+      expect(m).toBe('I have a few points.');
     });
 
     it('should match many', function () {
@@ -191,7 +192,7 @@ describe('IntlMessageFormat', function () {
         numPeople: 20,
       });
 
-      expect(m).to.equal('I have lots of points.');
+      expect(m).toBe('I have lots of points.');
     });
 
     it('should match other', function () {
@@ -199,7 +200,7 @@ describe('IntlMessageFormat', function () {
         numPeople: 100,
       });
 
-      expect(m).to.equal('I have some other amount of points.');
+      expect(m).toBe('I have some other amount of points.');
     });
   });
 
@@ -222,7 +223,7 @@ describe('IntlMessageFormat', function () {
         numPeople: 0,
       });
 
-      expect(m).to.equal('I have zero points.');
+      expect(m).toBe('I have zero points.');
     });
 
     it('should match one', function () {
@@ -230,7 +231,7 @@ describe('IntlMessageFormat', function () {
         numPeople: 1,
       });
 
-      expect(m).to.equal('I have a point.');
+      expect(m).toBe('I have a point.');
     });
 
     it('should match two', function () {
@@ -238,7 +239,7 @@ describe('IntlMessageFormat', function () {
         numPeople: 2,
       });
 
-      expect(m).to.equal('I have two points.');
+      expect(m).toBe('I have two points.');
     });
 
     it('should match few', function () {
@@ -246,7 +247,7 @@ describe('IntlMessageFormat', function () {
         numPeople: 3,
       });
 
-      expect(m).to.equal('I have a few points.');
+      expect(m).toBe('I have a few points.');
     });
 
     it('should match many', function () {
@@ -254,7 +255,7 @@ describe('IntlMessageFormat', function () {
         numPeople: 6,
       });
 
-      expect(m).to.equal('I have lots of points.');
+      expect(m).toBe('I have lots of points.');
     });
 
     it('should match other', function () {
@@ -262,7 +263,7 @@ describe('IntlMessageFormat', function () {
         numPeople: 100,
       });
 
-      expect(m).to.equal('I have some other amount of points.');
+      expect(m).toBe('I have some other amount of points.');
     });
   });
 
@@ -319,32 +320,30 @@ describe('IntlMessageFormat', function () {
 
     it('should format message en-US simple with different objects', function () {
       const msgFmt = new IntlMessageFormat(simple.en, 'en-US');
-      expect(msgFmt.format(maleObj)).to.equal('Tony went to Paris.');
-      expect(msgFmt.format(femaleObj)).to.equal('Jenny went to Paris.');
+      expect(msgFmt.format(maleObj)).toBe('Tony went to Paris.');
+      expect(msgFmt.format(femaleObj)).toBe('Jenny went to Paris.');
     });
 
     it('should format message fr-FR simple with different objects', function () {
       const msgFmt = new IntlMessageFormat(simple.fr, 'fr-FR');
-      expect(msgFmt.format(maleObj)).to.equal('Tony est allé à Paris.');
-      expect(msgFmt.format(femaleObj)).to.equal('Jenny est allée à Paris.');
+      expect(msgFmt.format(maleObj)).toBe('Tony est allé à Paris.');
+      expect(msgFmt.format(femaleObj)).toBe('Jenny est allée à Paris.');
     });
 
     it('should format message en-US complex with different objects', function () {
       const msgFmt = new IntlMessageFormat(complex.en, 'en-US');
-      expect(msgFmt.format(maleTravelers)).to.equal(
+      expect(msgFmt.format(maleTravelers)).toBe(
         'Lucas, Tony and Drew went to Paris.'
       );
-      expect(msgFmt.format(femaleTravelers)).to.equal('Monica went to Paris.');
+      expect(msgFmt.format(femaleTravelers)).toBe('Monica went to Paris.');
     });
 
     it('should format message fr-FR complex with different objects', function () {
       const msgFmt = new IntlMessageFormat(complex.fr, 'fr-FR');
-      expect(msgFmt.format(maleTravelers)).to.equal(
+      expect(msgFmt.format(maleTravelers)).toBe(
         'Lucas, Tony and Drew sont allés à Paris.'
       );
-      expect(msgFmt.format(femaleTravelers)).to.equal(
-        'Monica est allée à Paris.'
-      );
+      expect(msgFmt.format(femaleTravelers)).toBe('Monica est allée à Paris.');
     });
   });
 
@@ -369,19 +368,19 @@ describe('IntlMessageFormat', function () {
     it('should format a message with en-US locale', function () {
       const msgFmt = new IntlMessageFormat(messages.en, 'en-US');
 
-      expect(msgFmt.format({COMPANY_COUNT: 0})).to.equal(
+      expect(msgFmt.format({COMPANY_COUNT: 0})).toBe(
         '0 companies published new books.'
       );
-      expect(msgFmt.format({COMPANY_COUNT: 1})).to.equal(
+      expect(msgFmt.format({COMPANY_COUNT: 1})).toBe(
         'One company published new books.'
       );
-      expect(msgFmt.format({COMPANY_COUNT: 2})).to.equal(
+      expect(msgFmt.format({COMPANY_COUNT: 2})).toBe(
         '2 companies published new books.'
       );
-      expect(msgFmt.format({COMPANY_COUNT: 5})).to.equal(
+      expect(msgFmt.format({COMPANY_COUNT: 5})).toBe(
         '5 companies published new books.'
       );
-      expect(msgFmt.format({COMPANY_COUNT: 10})).to.equal(
+      expect(msgFmt.format({COMPANY_COUNT: 10})).toBe(
         '10 companies published new books.'
       );
     });
@@ -389,22 +388,22 @@ describe('IntlMessageFormat', function () {
     it('should format a message with ru-RU locale', function () {
       const msgFmt = new IntlMessageFormat(messages.ru, 'ru-RU');
 
-      expect(msgFmt.format({COMPANY_COUNT: 0})).to.equal(
+      expect(msgFmt.format({COMPANY_COUNT: 0})).toBe(
         '0 компаний опубликовали новые книги.'
       );
-      expect(msgFmt.format({COMPANY_COUNT: 1})).to.equal(
+      expect(msgFmt.format({COMPANY_COUNT: 1})).toBe(
         'Одна компания опубликовала новые книги.'
       );
-      expect(msgFmt.format({COMPANY_COUNT: 2})).to.equal(
+      expect(msgFmt.format({COMPANY_COUNT: 2})).toBe(
         '2 компании опубликовали новые книги.'
       );
-      expect(msgFmt.format({COMPANY_COUNT: 5})).to.equal(
+      expect(msgFmt.format({COMPANY_COUNT: 5})).toBe(
         '5 компаний опубликовали новые книги.'
       );
-      expect(msgFmt.format({COMPANY_COUNT: 10})).to.equal(
+      expect(msgFmt.format({COMPANY_COUNT: 10})).toBe(
         '10 компаний опубликовали новые книги.'
       );
-      expect(msgFmt.format({COMPANY_COUNT: 21})).to.equal(
+      expect(msgFmt.format({COMPANY_COUNT: 21})).toBe(
         '21 компания опубликовала новые книги.'
       );
     });
@@ -416,9 +415,10 @@ describe('IntlMessageFormat', function () {
         state = 'Missouri';
 
       it('should fail when the argument in the pattern is not provided', function () {
-        expect(msg.format).to.throw(
-          Error,
-          /The intl string context variable "STATE" was not provided to the string "{STATE}"/
+        expect(msg.format).toThrow(
+          Error(
+            'The intl string context variable "STATE" was not provided to the string "{STATE}"'
+          )
         );
       });
 
@@ -427,14 +427,15 @@ describe('IntlMessageFormat', function () {
           return msg.format({'ST ATE': state});
         }
 
-        expect(formatWithValueNameTypo).to.throw(
-          Error,
-          /The intl string context variable "STATE" was not provided to the string "{STATE}"/
+        expect(formatWithValueNameTypo).toThrow(
+          Error(
+            'The intl string context variable "STATE" was not provided to the string "{STATE}"'
+          )
         );
       });
 
       it('should succeed when the argument is correct', function () {
-        expect(msg.format({STATE: state})).to.equal(state);
+        expect(msg.format({STATE: state})).toBe(state);
       });
     });
 
@@ -447,9 +448,10 @@ describe('IntlMessageFormat', function () {
           return msg.format({FOO: state});
         }
 
-        expect(formatWithMissingValue).to.throw(
-          Error,
-          /The intl string context variable "ST1ATE" was not provided to the string "{ST1ATE}"/
+        expect(formatWithMissingValue).toThrow(
+          Error(
+            'The intl string context variable "ST1ATE" was not provided to the string "{ST1ATE}"'
+          )
         );
       });
 
@@ -458,14 +460,15 @@ describe('IntlMessageFormat', function () {
           msg.format({'ST ATE': state});
         }
 
-        expect(formatWithMissingValue).to.throw(
-          Error,
-          /The intl string context variable "ST1ATE" was not provided to the string "{ST1ATE}"/
+        expect(formatWithMissingValue).toThrow(
+          Error(
+            'The intl string context variable "ST1ATE" was not provided to the string "{ST1ATE}"'
+          )
         );
       });
 
       it('should succeed when the argument is correct', function () {
-        expect(msg.format({ST1ATE: state})).to.equal(state);
+        expect(msg.format({ST1ATE: state})).toBe(state);
       });
     });
   });
@@ -475,22 +478,22 @@ describe('IntlMessageFormat', function () {
       'This is my {year, selectordinal, one{#st} two{#nd} few{#rd} other{#th}} birthday.';
 
     it('should parse without errors', function () {
-      expect(() => IntlMessageFormat.__parse!(msg)).to.not.throw();
+      expect(() => IntlMessageFormat.__parse!(msg)).not.toThrow();
     });
 
     it('should use ordinal pluralization rules', function () {
       const mf = new IntlMessageFormat(msg, 'en');
 
-      expect(mf.format({year: 1})).to.equal('This is my 1st birthday.');
-      expect(mf.format({year: 2})).to.equal('This is my 2nd birthday.');
-      expect(mf.format({year: 3})).to.equal('This is my 3rd birthday.');
-      expect(mf.format({year: 4})).to.equal('This is my 4th birthday.');
-      expect(mf.format({year: 11})).to.equal('This is my 11th birthday.');
-      expect(mf.format({year: 21})).to.equal('This is my 21st birthday.');
-      expect(mf.format({year: 22})).to.equal('This is my 22nd birthday.');
-      expect(mf.format({year: 33})).to.equal('This is my 33rd birthday.');
-      expect(mf.format({year: 44})).to.equal('This is my 44th birthday.');
-      expect(mf.format({year: 1024})).to.equal('This is my 1,024th birthday.');
+      expect(mf.format({year: 1})).toBe('This is my 1st birthday.');
+      expect(mf.format({year: 2})).toBe('This is my 2nd birthday.');
+      expect(mf.format({year: 3})).toBe('This is my 3rd birthday.');
+      expect(mf.format({year: 4})).toBe('This is my 4th birthday.');
+      expect(mf.format({year: 11})).toBe('This is my 11th birthday.');
+      expect(mf.format({year: 21})).toBe('This is my 21st birthday.');
+      expect(mf.format({year: 22})).toBe('This is my 22nd birthday.');
+      expect(mf.format({year: 33})).toBe('This is my 33rd birthday.');
+      expect(mf.format({year: 44})).toBe('This is my 44th birthday.');
+      expect(mf.format({year: 1024})).toBe('This is my 1,024th birthday.');
     });
   });
 
@@ -500,10 +503,10 @@ describe('IntlMessageFormat', function () {
       const pt = new IntlMessageFormat(msg, 'pt');
       const ptMZ = new IntlMessageFormat(msg, 'pt-MZ');
 
-      expect(pt.format({num: 0})).to.equal('one');
+      expect(pt.format({num: 0})).toBe('one');
       // According to https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/plurals.json#L599-L606
-      expect(ptMZ.format({num: 0})).to.equal('one');
-      expect(ptMZ.format({num: 100})).to.equal('other');
+      expect(ptMZ.format({num: 0})).toBe('one');
+      expect(ptMZ.format({num: 100})).toBe('other');
     });
 
     it('should take negative number as plural', function () {
@@ -511,18 +514,18 @@ describe('IntlMessageFormat', function () {
         '{num, plural, offset:-1 =-1{negative one} one{one} other{other}}';
       const mf = new IntlMessageFormat(msg, 'en');
 
-      expect(mf.format({num: -1})).to.equal('negative one');
-      expect(mf.format({num: 0})).to.equal('one');
-      expect(mf.format({num: 1})).to.equal('other');
+      expect(mf.format({num: -1})).toBe('negative one');
+      expect(mf.format({num: 0})).toBe('one');
+      expect(mf.format({num: 1})).toBe('other');
     });
     it('should take empty string value', function () {
       const msg = '"{value}"';
       const mf = new IntlMessageFormat(msg, 'en');
 
-      expect(mf.formatToParts({value: ''})).to.deep.equal([
+      expect(mf.formatToParts({value: ''})).toEqual([
         {type: PART_TYPE.literal, value: '""'},
       ]);
-      expect(mf.format({value: ''})).to.equal('""');
+      expect(mf.format({value: ''})).toBe('""');
     });
   });
 
@@ -534,18 +537,18 @@ describe('IntlMessageFormat', function () {
       other {{host} invites {guest} and # other people to their party.}
     }`;
     const mf = new IntlMessageFormat(msg, 'en');
-    expect(
-      mf.format({host: 'The host', guest: 'Alice', num_guests: 0})
-    ).to.equal('The host does not give a party.');
-    expect(
-      mf.format({host: 'The host', guest: 'Alice', num_guests: 1})
-    ).to.equal('The host invites Alice to their party.');
-    expect(
-      mf.format({host: 'The host', guest: 'Alice', num_guests: 2})
-    ).to.equal('The host invites Alice and one other person to their party.');
-    expect(
-      mf.format({host: 'The host', guest: 'Alice', num_guests: 3})
-    ).to.equal('The host invites Alice and 2 other people to their party.');
+    expect(mf.format({host: 'The host', guest: 'Alice', num_guests: 0})).toBe(
+      'The host does not give a party.'
+    );
+    expect(mf.format({host: 'The host', guest: 'Alice', num_guests: 1})).toBe(
+      'The host invites Alice to their party.'
+    );
+    expect(mf.format({host: 'The host', guest: 'Alice', num_guests: 2})).toBe(
+      'The host invites Alice and one other person to their party.'
+    );
+    expect(mf.format({host: 'The host', guest: 'Alice', num_guests: 3})).toBe(
+      'The host invites Alice and 2 other people to their party.'
+    );
   });
 
   it('regression issue #437', function () {
@@ -553,8 +556,8 @@ describe('IntlMessageFormat', function () {
       '{score, plural, one {# shopper} other {# shoppers}}',
       'en'
     );
-    expect(mf.format({score: 1})).to.equal('1 shopper');
-    expect(mf.format({score: 2})).to.equal('2 shoppers');
+    expect(mf.format({score: 1})).toBe('1 shopper');
+    expect(mf.format({score: 2})).toBe('2 shoppers');
   });
 
   describe('xml', function () {
@@ -564,15 +567,14 @@ describe('IntlMessageFormat', function () {
         mf.format({
           there: '2008',
         })
-      ).to.deep.equal('hi @2008');
+      ).toEqual('hi @2008');
     });
 
     it('simple message', function () {
       const mf = new IntlMessageFormat('hello <b>world</b>', 'en');
-      expect(mf.format({b: str => ({str})})).to.deep.equal([
-        'hello ',
-        {str: 'world'},
-      ]);
+      expect(
+        mf.format<object>({b: str => ({str})})
+      ).toEqual(['hello ', {str: 'world'}]);
     });
     it('nested tag message', function () {
       const mf = new IntlMessageFormat(
@@ -580,14 +582,11 @@ describe('IntlMessageFormat', function () {
         'en'
       );
       expect(
-        mf.format({
+        mf.format<object>({
           b: (...chunks) => ({chunks}),
           i: c => ({val: `$$${c}$$`}),
         })
-      ).to.deep.equal([
-        'hello ',
-        {chunks: ['world', {val: '$$!$$'}, ' <br/> ']},
-      ]);
+      ).toEqual(['hello ', {chunks: ['world', {val: '$$!$$'}, ' <br/> ']}]);
     });
     it('deep format nested tag message', function () {
       const mf = new IntlMessageFormat(
@@ -595,11 +594,11 @@ describe('IntlMessageFormat', function () {
         'en'
       );
       expect(
-        mf.format({
+        mf.format<object>({
           b: (...chunks) => ['<b>', ...chunks, '</b>'],
           i: c => ({val: `$$${c}$$`}),
         })
-      ).to.deep.equal(['hello <b>world', {val: '$$!$$'}, ' <br/> </b>']);
+      ).toEqual(['hello <b>world', {val: '$$!$$'}, ' <br/> </b>']);
     });
     it('simple message w/ placeholder and no tag', function () {
       const mf = new IntlMessageFormat('hello {placeholder} {var2}', 'en');
@@ -608,7 +607,7 @@ describe('IntlMessageFormat', function () {
           placeholder: {name: 'gaga'},
           var2: {foo: 1},
         })
-      ).to.deep.equal(['hello ', {name: 'gaga'}, ' ', {foo: 1}]);
+      ).toEqual(['hello ', {name: 'gaga'}, ' ', {foo: 1}]);
     });
     it('simple message w/ placeholder', function () {
       const mf = new IntlMessageFormat(
@@ -616,21 +615,21 @@ describe('IntlMessageFormat', function () {
         'en'
       );
       expect(
-        mf.format({
+        mf.format<object>({
           b: str => ({str}),
           placeholder: 'gaga',
           a: str => ({str}),
         })
-      ).to.deep.equal(['hello ', {str: 'world'}, ' ', {str: 'gaga'}]);
+      ).toEqual(['hello ', {str: 'world'}, ' ', {str: 'gaga'}]);
     });
     it('message w/ placeholder & HTML entities', function () {
       const mf = new IntlMessageFormat('Hello&lt;<tag>{text}</tag>', 'en');
       expect(
-        mf.format({
+        mf.format<object>({
           tag: str => ({str}),
           text: '<asd>',
         })
-      ).to.deep.equal(['Hello&lt;', {str: '<asd>'}]);
+      ).toEqual(['Hello&lt;', {str: '<asd>'}]);
     });
     it('message w/ placeholder & >', function () {
       const mf = new IntlMessageFormat(
@@ -638,13 +637,13 @@ describe('IntlMessageFormat', function () {
         'en'
       );
       expect(
-        mf.format({
+        mf.format<object>({
           b: str => ({str}),
           token: '<asd>',
           placeholder: '>',
           a: str => ({str}),
         })
-      ).to.deep.equal([
+      ).toEqual([
         '&lt; hello ',
         {str: 'world'},
         ' <asd> &lt;&gt; ',
@@ -657,25 +656,25 @@ describe('IntlMessageFormat', function () {
         'en'
       );
       expect(
-        mf.format({
+        mf.format<object>({
           gender: 'male',
           b: str => ({str}),
           token: '<asd>',
           placeholder: '>',
           a: str => ({str}),
         })
-      ).to.deep.equal([
+      ).toEqual([
         '&lt; hello ',
         {str: 'world'},
         ' <asd> &lt;&gt; ',
         {str: '>'},
       ]);
       expect(
-        mf.format({
+        mf.format<object>({
           gender: 'female',
           b: str => ({str}),
         })
-      ).to.deep.equal({str: 'foo &lt;&gt; bar'});
+      ).toEqual({str: 'foo &lt;&gt; bar'});
     });
     it('should allow escaping tag as legacy HTML', function () {
       const mf = new IntlMessageFormat(
@@ -686,18 +685,18 @@ describe('IntlMessageFormat', function () {
         mf.format({
           placeholder: '<foo>gaga</foo>',
         })
-      ).to.deep.equal('hello <b>world</b> <a><foo>gaga</foo></a>');
+      ).toEqual('hello <b>world</b> <a><foo>gaga</foo></a>');
     });
     it('should handle tag w/ rich text', function () {
       const mf = new IntlMessageFormat('hello <foo>{bar}</foo> test', 'en');
       expect(
-        mf.format({
+        mf.format<object>({
           foo: obj => ({
             obj,
           }),
           bar: {bar: 1},
         })
-      ).to.deep.equal(['hello ', {obj: {bar: 1}}, ' test']);
+      ).toEqual(['hello ', {obj: {bar: 1}}, ' test']);
     });
     it('should handle tag in plural', function () {
       const mf = new IntlMessageFormat(
@@ -705,11 +704,11 @@ describe('IntlMessageFormat', function () {
         'en'
       );
       expect(
-        mf.format({
+        mf.format<string>({
           b: (...chunks) => `{}${chunks}{}`,
           count: 1000,
         })
-      ).to.equal('You have {}1,000{} Messages');
+      ).toBe('You have {}1,000{} Messages');
     });
   });
 
@@ -728,7 +727,7 @@ describe('IntlMessageFormat', function () {
         },
       },
     });
-    expect(mf.format({time: new Date(0)})).to.include(
+    expect(mf.format({time: new Date(0)})).toContain(
       new Intl.DateTimeFormat('en', {
         month: 'long',
         day: 'numeric',
@@ -756,7 +755,7 @@ describe('IntlMessageFormat', function () {
         },
       },
     });
-    expect(mf.format({time: 0})).to.include(
+    expect(mf.format({time: 0})).toContain(
       new Intl.DateTimeFormat('en', {
         month: 'long',
         day: 'numeric',
@@ -779,7 +778,7 @@ describe('IntlMessageFormat', function () {
         },
       },
     });
-    expect(mf.format({time: 0.1234567})).to.include(
+    expect(mf.format({time: 0.1234567})).toContain(
       new Intl.NumberFormat('en', {
         minimumFractionDigits: 5,
         maximumFractionDigits: 5,
@@ -793,8 +792,8 @@ describe('IntlMessageFormat', function () {
         'You {count, plural, one {worked for # hour} other {worked for # hours}} today.',
         'en'
       );
-      expect(mf.format({count: 1})).to.equal('You worked for 1 hour today.');
-      expect(mf.format({count: 3})).to.equal('You worked for 3 hours today.');
+      expect(mf.format({count: 1})).toBe('You worked for 1 hour today.');
+      expect(mf.format({count: 3})).toBe('You worked for 3 hours today.');
     });
 
     it('preserves quoted # symbol in the plural option', () => {
@@ -802,8 +801,8 @@ describe('IntlMessageFormat', function () {
         "You {count, plural, one {worked for '#' hour} other {worked for '#' hours}} today.",
         'en'
       );
-      expect(mf.format({count: 1})).to.equal('You worked for # hour today.');
-      expect(mf.format({count: 3})).to.equal('You worked for # hours today.');
+      expect(mf.format({count: 1})).toBe('You worked for # hour today.');
+      expect(mf.format({count: 3})).toBe('You worked for # hours today.');
     });
 
     it('does not format # symbol in the plural option as a standalone part', () => {
@@ -811,7 +810,7 @@ describe('IntlMessageFormat', function () {
         'You {count, plural, one {worked for # hour} other {worked for # hours}} today.',
         'en'
       );
-      expect(mf.formatToParts({count: 1})).to.deep.equal([
+      expect(mf.formatToParts({count: 1})).toEqual([
         {type: PART_TYPE.literal, value: 'You worked for 1 hour today.'},
       ]);
     });
@@ -830,53 +829,53 @@ describe('IntlMessageFormat', function () {
         } today.`,
         'en'
       );
-      expect(mf.format({count: 1, unit: 'hour'})).to.equal(
+      expect(mf.format({count: 1, unit: 'hour'})).toBe(
         'You worked for # hour today.'
       );
-      expect(mf.format({count: 3, unit: 'hour'})).to.equal(
+      expect(mf.format({count: 3, unit: 'hour'})).toBe(
         'You worked for # hours today.'
       );
     });
   });
 
-  describe('number skeleton', function () {
+  it('number skeleton', function () {
     expect(
       new IntlMessageFormat(
         '{amount, number, ::currency/CAD .0 group-off}',
         'en-US'
       ).format({amount: 123456.78})
-    ).to.equal('CA$123456.8');
+    ).toMatch(/\$123456.8/); // Deal w/ IE11
     expect(
       new IntlMessageFormat(
         '{amount, number, ::currency/GBP .0#}',
         'en-US'
       ).format({amount: 123456.789})
-    ).to.equal('£123,456.79');
+    ).toBe('£123,456.79');
   });
 
-  describe('date skeleton', function () {
+  it('date skeleton', function () {
     expect(
       new IntlMessageFormat('{d, date, ::yyyyMMMdd}', 'en-US').format({
         d: new Date(0),
       })
-    ).to.equal('Jan 01, 1970');
+    ).toMatch(/[A-Z][a-z]{2}(.*?)\d{2}(.*?),(.*?)\d{4}/); // Deal w/ IE11
     expect(
       new IntlMessageFormat('{d, date, ::yyyyMMdd}', 'en-US').format({
         d: new Date(0),
       })
-    ).to.equal('01/01/1970');
+    ).toMatch(/\d{2}(.*?)\/(.*?)\d{2}(.*?)\/(.*?)\d{4}/); // Deal w/ IE11
   });
-  describe('time skeleton', function () {
+  it('time skeleton', function () {
     expect(
       new IntlMessageFormat('{d, time, ::hhmmss}', 'en-US').format({
         d: new Date(0),
       })
-    ).to.equal('12:00:00 AM');
+    ).toMatch(/\d{2}(.*?):(.*?)\d{2}(.*?):(.*?)\d{2}(.*?)[AP]M/); // Deal w/ IE11
     expect(
       new IntlMessageFormat('{d, time, ::hhmmssz}', 'en-US').format({
         d: new Date(0),
       })
-    ).to.equal('12:00:00 AM UTC');
+    ).toMatch(/\d{2}(.*?):(.*?)\d{2}(.*?):(.*?)\d{2}(.*?)[AP]M/); // Deal w/ IE11
   });
 
   describe('formatToParts', function () {
@@ -888,7 +887,7 @@ describe('IntlMessageFormat', function () {
       ).formatToParts({
         element,
       });
-      expect(parts).to.deep.equal([
+      expect(parts).toEqual([
         {type: PART_TYPE.literal, value: 'a react '},
         {type: PART_TYPE.object, value: element},
       ]);
@@ -901,10 +900,10 @@ describe('IntlMessageFormat', function () {
         const msg = new IntlMessageFormat(
           'I have {NUM_BOOKS, plural, =1 {1 book} other {# books}}.'
         );
-        expect(msg.resolvedOptions().locale).to.equal(
+        expect(msg.resolvedOptions().locale).toBe(
           new Intl.NumberFormat().resolvedOptions().locale
         );
-        expect(msg.format({NUM_BOOKS: 2})).to.equal('I have 2 books.');
+        expect(msg.format({NUM_BOOKS: 2})).toBe('I have 2 books.');
       });
     });
 
@@ -916,7 +915,7 @@ describe('IntlMessageFormat', function () {
         );
         const m = msg.format({COMPANY_COUNT: 1});
 
-        expect(m).to.equal('One company published new books.');
+        expect(m).toBe('One company published new books.');
       });
     });
   });
@@ -928,10 +927,10 @@ describe('intl-format-cache', function () {
   it('memoizes IntlMessageFormat', function () {
     const mf = getMessageFormat('foo', 'en');
 
-    expect(mf.resolvedOptions().locale).to.equal('en');
-    expect(mf.format()).to.equal('foo');
+    expect(mf.resolvedOptions().locale).toBe('en');
+    expect(mf.format()).toBe('foo');
 
-    expect(getMessageFormat('foo', 'en')).to.equal(mf);
-    expect(getMessageFormat('bar', 'en')).not.to.equal(mf);
+    expect(getMessageFormat('foo', 'en')).toBe(mf);
+    expect(getMessageFormat('bar', 'en')).not.toBe(mf);
   });
 });

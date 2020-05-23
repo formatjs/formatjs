@@ -1,5 +1,5 @@
 const {sync: globSync} = require('glob');
-module.exports = function(config) {
+module.exports = function (config) {
   if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
     console.log(
       'Make sure the SAUCE_USERNAME and SAUCE_ACCESS_KEY environment variables are set.'
@@ -49,7 +49,7 @@ module.exports = function(config) {
 
   config.set({
     basePath: '',
-    frameworks: ['mocha', 'chai'],
+    frameworks: ['jasmine', 'jasmine-matchers'],
     files: FILES,
     reporters: ['progress', 'saucelabs'],
     port: 9876,
@@ -65,6 +65,11 @@ module.exports = function(config) {
       },
       public: 'public',
     },
+    plugins: [
+      'karma-sauce-launcher',
+      'karma-jasmine',
+      'karma-jasmine-matchers',
+    ],
     // Increase timeout in case connection in CI is slow
     captureTimeout: 120000,
     customLaunchers,
