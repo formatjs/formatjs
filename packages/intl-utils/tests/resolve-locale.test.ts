@@ -4,7 +4,6 @@ import {
   getParentLocalesByLang,
   unpackData,
 } from '../src';
-declare const expect: Chai.ExpectStatic;
 
 describe('resolve-locale', function () {
   it('should handle zh-TW', function () {
@@ -14,7 +13,7 @@ describe('resolve-locale', function () {
         getAliasesByLang('zh'),
         getParentLocalesByLang('zh')
       )
-    ).to.deep.equal(['zh-TW', 'zh-Hant-TW', 'zh-Hant', 'zh']);
+    ).toEqual(['zh-TW', 'zh-Hant-TW', 'zh-Hant', 'zh']);
   });
   it('should handle zh-CN', function () {
     expect(
@@ -23,7 +22,7 @@ describe('resolve-locale', function () {
         getAliasesByLang('zh'),
         getParentLocalesByLang('zh')
       )
-    ).to.deep.equal(['zh-CN', 'zh-Hans-CN', 'zh-Hans', 'zh']);
+    ).toEqual(['zh-CN', 'zh-Hans-CN', 'zh-Hans', 'zh']);
   });
   it('should handle zh-MO', function () {
     expect(
@@ -32,7 +31,7 @@ describe('resolve-locale', function () {
         getAliasesByLang('zh'),
         getParentLocalesByLang('zh')
       )
-    ).to.deep.equal(['zh-MO', 'zh-Hant-MO', 'zh-Hant-HK', 'zh-Hant', 'zh']);
+    ).toEqual(['zh-MO', 'zh-Hant-MO', 'zh-Hant-HK', 'zh-Hant', 'zh']);
   });
   it('unpackData', function () {
     expect(
@@ -66,7 +65,7 @@ describe('resolve-locale', function () {
           'en-US': 'en',
         },
       })
-    ).to.deep.equal({
+    ).toEqual({
       currencies: {
         USD: 'dollar',
       },

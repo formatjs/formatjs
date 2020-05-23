@@ -32,7 +32,7 @@
     "clean": "rimraf dist dist-es6 lib *.tsbuildinfo",
     "cldr": "ts-node scripts/cldr",
     "build": "yarn run cldr && tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local",
-    "test": "mocha --opts ../../mocha.opts tests/*"
+    "test": "jest"
   },
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",
