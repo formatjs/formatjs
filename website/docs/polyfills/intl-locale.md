@@ -14,6 +14,10 @@ A spec-compliant polyfill/ponyfill for Intl.Locale tested by the [official ECMAS
 npm install @formatjs/intl-locale
 ```
 
+## Requirements
+
+If you're supporting IE11-, this requires [`Intl.getCanonicalLocales`](intl-getcanonicallocales.md).
+
 ## Usage
 
 To use the polyfill, just import it to make sure that a fully functional Intl.Locale is available in your environment:
@@ -28,23 +32,6 @@ To use this as a ponyfill:
 
 ```tsx
 import IntlLocale from '@formatjs/intl-locale';
-```
-
-By default, this library does not come with `likelySubtags` data. This means there are several restrictions when it comes to canonicalizing locales. We do provide a way to load this data on demand if you need this feature.
-
-```tsx
-import '@formatjs/intl-locale/polyfill';
-import * as data from 'cldr-core/supplemental/likelySubtags.json';
-const PolyfilledLocale = (Intl as any).Locale as typeof Locale;
-if (typeof PolyfilledLocale._addLikelySubtagData === 'function') {
-  PolyfilledLocale._addLikelySubtagData(data.supplemental.likelySubtags);
-}
-```
-
-If you want to polyfill with all data (e.g for Node):
-
-```
-import '@formatjs/intl-locale/polyfill-locales'
 ```
 
 ## Tests

@@ -7,6 +7,7 @@ module.exports = {
     ],
     Polyfills: [
       'polyfills',
+      'polyfills/intl-getcanonicallocales',
       'polyfills/intl-pluralrules',
       'polyfills/intl-relativetimeformat',
       'polyfills/intl-listformat',

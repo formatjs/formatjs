@@ -3,7 +3,10 @@ id: intl-numberformat
 title: Intl.NumberFormat (ES2020)
 ---
 
-A ponyfill/polyfill for [`intl-numberformat`](https://github.com/tc39/proposal-intl-numberformat). This wraps `Intl.NumberFormat` and has the exact same APIs.
+A ponyfill/polyfill for [`intl-numberformat`](https://github.com/tc39/proposal-intl-numberformat).
+
+[![npm Version](https://img.shields.io/npm/v/@formatjs/intl-numberformat.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-numberformat)
+![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-numberformat)
 
 ## Installation
 
@@ -15,7 +18,9 @@ npm install @formatjs/intl-numberformat
 
 This package requires the following capabilities:
 
-- [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules)
+1. [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules)
+
+2. If you're supporting IE11-, this requires [`Intl.getCanonicalLocales`](intl-getcanonicallocales.md).
 
 # Features
 

@@ -13,3 +13,6 @@ Our current list of polyfills includes:
 - [Intl.DisplayNames](polyfills/intl-displaynames.md)
 - [Intl.NumberFormat](polyfills/intl-numberformat.md) (ES2020)
 - [Intl.Locale](polyfills/intl-locale.md)
+- [Intl.getCanonicalLocales](polyfills/intl-getcanonicallocales.md)
+
+![Polyfill Hierarchy](/img/polyfills.svg)

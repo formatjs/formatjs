@@ -14,6 +14,10 @@ A spec-compliant polyfill/ponyfill for [`Intl.PluralRules`](https://developer.mo
 npm install @formatjs/intl-pluralrules
 ```
 
+## Requirements
+
+If you're supporting IE11-, this requires [`Intl.getCanonicalLocales`](intl-getcanonicallocales.md).
+
 ## Usage
 
 ```tsx

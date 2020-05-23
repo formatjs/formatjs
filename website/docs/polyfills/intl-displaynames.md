@@ -5,17 +5,24 @@ title: Intl.DisplayNames
 
 A ponyfill/polyfill for [`Intl.DisplayNames`](https://tc39.es/proposal-intl-displaynames).
 
+[![npm Version](https://img.shields.io/npm/v/@formatjs/intl-displaynames.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-displaynames)
+![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-displaynames)
+
 ## Installation
 
 ```
 npm install @formatjs/intl-displaynames
 ```
 
-# Features
+## Requirements
+
+If you're supporting IE11-, this requires [`Intl.getCanonicalLocales`](intl-displaynames.md).
+
+## Features
 
 Everything in <https://github.com/tc39/proposal-intl-displaynames>.
 
-# Usage
+## Usage
 
 To use the ponyfill, import it along with its data:
 

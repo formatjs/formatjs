@@ -14,6 +14,10 @@ A spec-compliant polyfill/ponyfill for Intl.ListFormat fully tested by the [offi
 npm install @formatjs/intl-listformat
 ```
 
+## Requirements
+
+If you're supporting IE11-, this requires [`Intl.getCanonicalLocales`](intl-getcanonicallocales.md).
+
 ## Usage
 
 To use the polyfill, just import it to make sure that a fully functional Intl.ListFormat is available in your environment:
