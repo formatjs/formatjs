@@ -5,7 +5,6 @@ import {
   PluralRulesLocaleData,
   PluralRulesData,
   unpackData,
-  getCanonicalLocales,
   createResolveLocale,
   supportedLocales,
   isMissingLocaleDataError,
@@ -14,7 +13,7 @@ import {
   setNumberFormatDigitOptions,
   NumberFormatDigitInternalSlots,
 } from '@formatjs/intl-utils';
-
+import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
 function validateInstance(instance: any, method: string) {
   if (!(instance instanceof PluralRules)) {
     throw new TypeError(
@@ -125,7 +124,8 @@ export class PluralRules implements Intl.PluralRules {
     if (!newTarget) {
       throw new TypeError("Intl.PluralRules must be called with 'new'");
     }
-    const requestedLocales = getCanonicalLocales(locales);
+    const requestedLocales = ((Intl as any)
+      .getCanonicalLocales as typeof getCanonicalLocales)(locales);
     const opt: any = Object.create(null);
     const opts =
       options === undefined ? Object.create(null) : toObject(options);
@@ -237,7 +237,9 @@ export class PluralRules implements Intl.PluralRules {
   ) {
     return supportedLocales(
       PluralRules.availableLocales,
-      getCanonicalLocales(locales),
+      ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
+        locales
+      ),
       options
     );
   }

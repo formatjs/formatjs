@@ -30,6 +30,7 @@
   "devDependencies": {
     "@types/jest": "^25.2.1",
     "@types/serialize-javascript": "^1.5.0",
+    "@formatjs/intl-getcanonicallocales": "1.1.1",
     "formatjs-extract-cldr-data": "^10.1.8",
     "jest": "^25.4.0",
     "make-plural-compiler": "^5.1.0",
