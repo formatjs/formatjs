@@ -16,7 +16,7 @@ npm install @formatjs/intl-displaynames
 
 ## Requirements
 
-If you're supporting IE11-, this requires [`Intl.getCanonicalLocales`](intl-displaynames.md).
+If you're supporting IE11-, this requires [`Intl.getCanonicalLocales`](intl-getcanonicallocales.md).
 
 ## Features
 
