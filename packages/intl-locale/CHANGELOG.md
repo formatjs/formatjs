@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.0.0...@formatjs/intl-locale@2.0.1) (2020-05-23)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-locale:** remove pegjs build ([1ef7f3e](https://github.com/formatjs/formatjs/commit/1ef7f3e262649faabefcfb43bc30528549863ea3))
+* **@formatjs/intl-locale:** rm unnecessary export polyfill-locales ([a12e4f7](https://github.com/formatjs/formatjs/commit/a12e4f76e2515634a7ad31f35a1ede6f76a27031))
+
+
+
+
+
 # [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@1.1.1...@formatjs/intl-locale@2.0.0) (2020-05-23)
 
 
