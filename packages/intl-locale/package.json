@@ -29,9 +29,8 @@
     "url": "git+https://github.com/formatjs/formatjs.git"
   },
   "scripts": {
-    "build": "node scripts/build-peg.js && yarn compile",
     "clean": "rimraf dist lib dist-es6 dist-es6 *.tsbuildinfo",
-    "compile": "tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local && rollup -c rollup.config.js",
+    "build": "tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local && rollup -c rollup.config.js",
     "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu NODE_ENV=test jest",
     "test262": "cross-env NODE_ICU_DATA=../../node_modules/full-icu ts-node tests/runner",
     "test": "yarn jest"
