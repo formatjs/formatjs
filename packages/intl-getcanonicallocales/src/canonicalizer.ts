@@ -6,7 +6,7 @@ import {
   territoryAlias,
 } from './aliases';
 import {
-  parseLanguageId,
+  parseUnicodeLanguageId,
   isUnicodeVariantSubtag,
   isUnicodeLanguageSubtag,
   SEPARATOR,
@@ -66,7 +66,7 @@ export function canonicalizeUnicodeLanguageId(lang: UnicodeLanguageId): void {
   let sourceLang = lang.lang.toLowerCase();
   const langAlias = languageAlias[sourceLang];
   if (langAlias) {
-    const langAliasAst = parseLanguageId(langAlias.split('-'));
+    const langAliasAst = parseUnicodeLanguageId(langAlias.split('-'));
     lang.lang = langAliasAst.lang;
     lang.script = lang.script || langAliasAst.script;
     lang.region = lang.region || langAliasAst.region;
@@ -81,7 +81,7 @@ export function canonicalizeUnicodeLanguageId(lang: UnicodeLanguageId): void {
       const likelySubtag =
         likelySubtags.supplemental.likelySubtags[lang.lang as 'aa'];
       if (likelySubtag) {
-        const {region: likelyRegion} = parseLanguageId(
+        const {region: likelyRegion} = parseUnicodeLanguageId(
           likelySubtag.split(SEPARATOR)
         );
         if (likelyRegion && regions.indexOf(likelyRegion) > -1) {

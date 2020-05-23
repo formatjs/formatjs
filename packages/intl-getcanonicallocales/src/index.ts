@@ -1,5 +1,5 @@
-import {parse} from './parser';
-import {emit} from './emitter';
+import {parseUnicodeLocaleId} from './parser';
+import {emitUnicodeLocaleId} from './emitter';
 import {canonicalizeUnicodeLocaleId} from './canonicalizer';
 
 function canonicalizeLocaleList(locales?: string[] | string): string[] {
@@ -11,7 +11,9 @@ function canonicalizeLocaleList(locales?: string[] | string): string[] {
     locales = [locales];
   }
   for (const locale of locales) {
-    const canonicalizedTag = emit(canonicalizeUnicodeLocaleId(parse(locale)));
+    const canonicalizedTag = emitUnicodeLocaleId(
+      canonicalizeUnicodeLocaleId(parseUnicodeLocaleId(locale))
+    );
     if (seen.indexOf(canonicalizedTag) < 0) {
       seen.push(canonicalizedTag);
     }
@@ -22,3 +24,14 @@ function canonicalizeLocaleList(locales?: string[] | string): string[] {
 export function getCanonicalLocales(locales?: string[] | string): string[] {
   return canonicalizeLocaleList(locales);
 }
+
+export {
+  parseUnicodeLocaleId,
+  parseUnicodeLanguageId,
+  isStructurallyValidLanguageTag,
+  isUnicodeRegionSubtag,
+  isUnicodeScriptSubtag,
+  isUnicodeLanguageSubtag,
+} from './parser';
+export * from './types';
+export * from './emitter';

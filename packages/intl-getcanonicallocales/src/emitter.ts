@@ -1,6 +1,6 @@
 import {UnicodeLanguageId, UnicodeLocaleId} from './types';
 
-export function emitLanguageId(lang?: UnicodeLanguageId): string {
+export function emitUnicodeLanguageId(lang?: UnicodeLanguageId): string {
   if (!lang) {
     return '';
   }
@@ -9,8 +9,11 @@ export function emitLanguageId(lang?: UnicodeLanguageId): string {
     .join('-');
 }
 
-export function emit({lang, extensions}: UnicodeLocaleId): string {
-  const chunks = [emitLanguageId(lang)];
+export function emitUnicodeLocaleId({
+  lang,
+  extensions,
+}: UnicodeLocaleId): string {
+  const chunks = [emitUnicodeLanguageId(lang)];
   for (const ext of extensions) {
     chunks.push(ext.type);
     switch (ext.type) {
@@ -22,7 +25,7 @@ export function emit({lang, extensions}: UnicodeLocaleId): string {
         break;
       case 't':
         chunks.push(
-          emitLanguageId(ext.lang),
+          emitUnicodeLanguageId(ext.lang),
           ...ext.fields.reduce((all: string[], kv) => all.concat(kv), [])
         );
         break;

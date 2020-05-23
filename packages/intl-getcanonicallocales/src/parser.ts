@@ -29,10 +29,13 @@ export function isUnicodeLanguageSubtag(lang: string): boolean {
   return UNICODE_LANGUAGE_SUBTAG_REGEX.test(lang);
 }
 
-export function verifyUnicodeLanguageSubtag(lang: string): asserts lang {
-  if (!isUnicodeLanguageSubtag(lang)) {
-    throw new RangeError('Malformed unicode_language_subtag');
+export function isStructurallyValidLanguageTag(tag: string): boolean {
+  try {
+    parseUnicodeLanguageId(tag.split(SEPARATOR));
+  } catch (e) {
+    return false;
   }
+  return true;
 }
 
 export function isUnicodeRegionSubtag(region: string): boolean {
@@ -47,7 +50,12 @@ export function isUnicodeVariantSubtag(variant: string): boolean {
   return UNICODE_VARIANT_SUBTAG_REGEX.test(variant);
 }
 
-export function parseLanguageId(chunks: string[]): UnicodeLanguageId {
+export function parseUnicodeLanguageId(
+  chunks: string[] | string
+): UnicodeLanguageId {
+  if (typeof chunks === 'string') {
+    chunks = chunks.split(SEPARATOR);
+  }
   const lang = chunks.shift();
   if (!lang) {
     throw new RangeError('Missing unicode_language_subtag');
@@ -56,7 +64,9 @@ export function parseLanguageId(chunks: string[]): UnicodeLanguageId {
     return {lang: 'root', variants: []};
   }
   // unicode_language_subtag
-  verifyUnicodeLanguageSubtag(lang);
+  if (!isUnicodeLanguageSubtag(lang)) {
+    throw new RangeError('Malformed unicode_language_subtag');
+  }
   let script;
   // unicode_script_subtag
   if (isUnicodeScriptSubtag(chunks[0])) {
@@ -136,7 +146,7 @@ function parseKeyword(chunks: string[]): KV | undefined {
 function parseTransformedExtension(chunks: string[]): TransformedExtension {
   let lang: UnicodeLanguageId | undefined;
   try {
-    lang = parseLanguageId(chunks);
+    lang = parseUnicodeLanguageId(chunks);
   } catch (e) {
     // Try just parsing tfield
   }
@@ -239,9 +249,9 @@ function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
   return {extensions};
 }
 
-export function parse(locale: string): UnicodeLocaleId {
+export function parseUnicodeLocaleId(locale: string): UnicodeLocaleId {
   const chunks = locale.split(SEPARATOR);
-  const lang = parseLanguageId(chunks);
+  const lang = parseUnicodeLanguageId(chunks);
   return {
     lang,
     ...parseExtensions(chunks),

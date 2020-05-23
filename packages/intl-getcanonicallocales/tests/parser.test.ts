@@ -1,4 +1,4 @@
-import {parse} from '../src/parser';
+import {parseUnicodeLocaleId} from '../src/parser';
 
 describe('parser', () => {
   const invalidLanguageTags = [
@@ -75,7 +75,7 @@ describe('parser', () => {
 
   for (const langtag of invalidLanguageTags) {
     it(`new Intl.Locale("${langtag}") throws RangeError`, function () {
-      expect(() => parse(langtag)).toThrowError(RangeError);
+      expect(() => parseUnicodeLocaleId(langtag)).toThrowError(RangeError);
     });
   }
 
@@ -90,7 +90,7 @@ describe('parser', () => {
   ];
   for (const tag of validTags) {
     it(`${tag} should be valid`, function () {
-      expect(parse(tag)).toMatchSnapshot();
+      expect(parseUnicodeLocaleId(tag)).toMatchSnapshot();
     });
   }
 });
