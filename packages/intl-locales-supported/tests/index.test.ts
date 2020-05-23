@@ -1,9 +1,8 @@
 import areIntlLocalesSupported from '../src';
-declare const expect: Chai.ExpectStatic;
 
 describe('exports', function () {
   it('should have a default export function', function () {
-    expect(areIntlLocalesSupported).to.be.a('function');
+    expect(typeof areIntlLocalesSupported).toBe('function');
   });
 });
 
@@ -20,7 +19,7 @@ describe('areIntlLocalesSupported()', function () {
     });
 
     it('should return `false` for "en"', function () {
-      expect(areIntlLocalesSupported('en')).to.be.false;
+      expect(areIntlLocalesSupported('en')).toBeFalsy();
     });
   });
 
@@ -39,17 +38,17 @@ describe('areIntlLocalesSupported()', function () {
     });
 
     it('should return `true` for "en" after polyfill', function () {
-      expect(areIntlLocalesSupported('en')).to.be.false;
+      expect(areIntlLocalesSupported('en')).toBeFalsy();
       global.Intl.NumberFormat = NumberFormat;
-      expect(areIntlLocalesSupported('en')).to.be.true;
+      expect(areIntlLocalesSupported('en')).toBeTruthy();
     });
   });
 
   it('should return `true` for "en"', function () {
-    expect(areIntlLocalesSupported('en')).to.be.true;
+    expect(areIntlLocalesSupported('en')).toBeTruthy();
   });
 
   it('should return `true` for "fr"', function () {
-    expect(areIntlLocalesSupported('fr')).to.be.true;
+    expect(areIntlLocalesSupported('fr')).toBeTruthy();
   });
 });
