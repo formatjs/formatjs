@@ -16,7 +16,7 @@ import {
   createFormattedDateTimePartsComponent,
 } from './components/createFormattedComponent';
 import {CustomFormatConfig} from './types';
-import {UnifiedNumberFormatOptions} from '@formatjs/intl-numberformat';
+import {NumberFormatOptions} from '@formatjs/intl-numberformat';
 import {IntlListFormatOptions} from '@formatjs/intl-listformat';
 import {DisplayNamesOptions} from '@formatjs/intl-displaynames/lib';
 export {
@@ -42,7 +42,7 @@ export const FormattedTime: React.FC<
     }
 > = createFormattedComponent('formatTime');
 export const FormattedNumber: React.FC<
-  UnifiedNumberFormatOptions &
+  NumberFormatOptions &
     CustomFormatConfig & {
       value: number;
     }

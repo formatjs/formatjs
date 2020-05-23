@@ -150,11 +150,11 @@ export class PluralRules implements Intl.PluralRules {
       getOption(opts, 'type', 'string', ['cardinal', 'ordinal'], 'cardinal')
     );
     setNumberFormatDigitOptions(
-      PluralRules.__INTERNAL_SLOT_MAP__,
-      this,
+      PluralRules.__INTERNAL_SLOT_MAP__.get(this)!,
       opts,
       0,
-      3
+      3,
+      'standard'
     );
     const r = createResolveLocale(PluralRules.getDefaultLocale)(
       PluralRules.availableLocales,

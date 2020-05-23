@@ -6,7 +6,6 @@ import {
   setMultiInternalSlots,
   objectIs,
   invariant,
-  getCanonicalLocales,
 } from '@formatjs/intl-utils';
 import {
   isStructurallyValidLanguageTag,
@@ -19,6 +18,7 @@ import {
   emitUnicodeLocaleId,
   parseUnicodeLocaleId,
   emitUnicodeLanguageId,
+  getCanonicalLocales,
 } from '@formatjs/intl-getcanonicallocales';
 import {supplemental} from 'cldr-core/supplemental/likelySubtags.json';
 const {likelySubtags} = supplemental;
@@ -321,7 +321,7 @@ export class Locale {
       undefined
     );
     opt.kf = kf;
-    let _kn = getOption(options, 'numeric', 'boolean', undefined, undefined);
+    const _kn = getOption(options, 'numeric', 'boolean', undefined, undefined);
     let kn;
     if (_kn !== undefined) {
       kn = String(_kn);

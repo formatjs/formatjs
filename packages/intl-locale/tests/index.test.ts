@@ -1,6 +1,6 @@
 import {Locale} from '../src';
 
-describe('intl-locale', () => {
+describe.skip('intl-locale', () => {
   it('toString', function () {
     // expect(() => IntlLocale.prototype.toString.call(IntlLocale.prototype)).toThrowError(TypeError)
     expect(

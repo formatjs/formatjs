@@ -3,7 +3,7 @@ import {mount} from 'enzyme';
 import {FormattedNumber, FormattedNumberParts} from '../../../src';
 import {createIntl} from '../../../src/components/provider';
 import {mountFormattedComponentWithProvider} from '../testUtils';
-import {UnifiedNumberFormatOptions} from '@formatjs/intl-numberformat';
+import {NumberFormatOptions} from '@formatjs/intl-numberformat';
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedNumber);
 const mountPartsWithProvider = mountFormattedComponentWithProvider(
   FormattedNumberParts
@@ -57,7 +57,7 @@ describe('<FormattedNumber>', () => {
 
   it('accepts valid Intl.NumberFormat options as props', () => {
     const num = 0.5;
-    const options = {style: 'percent' as UnifiedNumberFormatOptions['style']};
+    const options = {style: 'percent' as NumberFormatOptions['style']};
 
     const rendered = mountWithProvider({value: num, ...options}, intl);
 
@@ -143,7 +143,7 @@ describe('<FormattedNumberParts>', function () {
   it('accepts valid Intl.NumberFormat options as props', () => {
     const num = 0.5;
     const options = {
-      style: 'percent' as UnifiedNumberFormatOptions['style'],
+      style: 'percent' as NumberFormatOptions['style'],
       children,
     };
 

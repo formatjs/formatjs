@@ -9,8 +9,8 @@ if (process.version.startsWith('v13')) {
   );
   process.exit(0);
 }
-if (process.version.startsWith('v12')) {
-  console.log('Node 12 has native Intl.NumberFormat');
+if (process.version.startsWith('v12') || process.version.startsWith('v14')) {
+  console.log('Node >= 12 has native Intl.NumberFormat');
   process.exit(0);
 }
 
@@ -36,14 +36,14 @@ interface TestResult {
 }
 const excludedTests = [
   'builtin', // Built-in functions cannot have `prototype` property.
+  'constructor-order', // buggy test case. The spec states that impl should throw RangeError.
   'constructor-locales-hasproperty', // This checks that we only iterate once...
-  'constructor-numberingSystem-order', // This test might be wrong
-  'constructor-unit', // This test might be wrong, this throws if `unit` is being accessed when style is not `unit`, but spec doesn't prohibit that
+  'constructor-unit', // buggy test case. The spec states that impl should throw RangeError.
   'currency-digits', // AFN's currency digits differ from CLDR data.
   'legacy-regexp-statics-not-modified', // TODO
   'proto-from-ctor-realm', // Bc of Realm support
-  'units', // We haven't monkey-patched `toLocaleString` (prototype/format/units.js)
 ];
+// @ts-ignore
 const PATTERN = resolve(
   __dirname,
   `../../../test262/test/intl402/NumberFormat/**/!(${excludedTests.join(
@@ -84,7 +84,8 @@ if (!json) {
 const failedTests = json.filter(r => !r.result.pass);
 for (const t of json) {
   if (t.result.pass) {
-    console.log(`${chalk.green('✓')} ${t.attrs.description}`);
+    // Uncomment if you want to see passed tests
+    // console.log(`${chalk.green('✓')} ${t.attrs.description}`);
   } else {
     console.log('\n\n');
     console.log(`${chalk.red('✗')} ${t.attrs.description}`);

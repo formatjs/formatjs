@@ -1,5 +1,5 @@
 import '@formatjs/intl-pluralrules/polyfill-locales';
-import {UnifiedNumberFormat, UnifiedNumberFormatOptions} from '../src/core';
+import {NumberFormat, NumberFormatOptions} from '../src';
 
 const LOCALES = [
   'en',
@@ -27,32 +27,33 @@ const LOCALES = [
 ];
 
 LOCALES.forEach(locale => {
-  UnifiedNumberFormat.__addLocaleData(
-    require(`../dist/locale-data/${locale}.json`)
-  );
+  NumberFormat.__addLocaleData(require(`../dist/locale-data/${locale}.json`));
 });
 
-const SIGN_DISPLAYS: Array<UnifiedNumberFormatOptions['signDisplay']> = [
+const SIGN_DISPLAYS: Array<NumberFormatOptions['signDisplay']> = [
   'auto',
   'always',
   'never',
   'exceptZero',
 ];
-const NOTATIONS: Array<UnifiedNumberFormatOptions['notation']> = [
+const NOTATIONS: Array<NumberFormatOptions['notation']> = [
   'engineering',
   'scientific',
   'standard',
 ];
-const COMPACT_DISPLAYS: Array<UnifiedNumberFormatOptions['compactDisplay']> = [
+const COMPACT_DISPLAYS: Array<NumberFormatOptions['compactDisplay']> = [
   'long',
   'short',
 ];
 
-const CURRENCY_DISPLAYS: Array<
-  UnifiedNumberFormatOptions['currencyDisplay']
-> = ['code', 'symbol', 'name', 'narrowSymbol'];
+const CURRENCY_DISPLAYS: Array<NumberFormatOptions['currencyDisplay']> = [
+  'code',
+  'symbol',
+  'name',
+  'narrowSymbol',
+];
 
-const CURRENCY_SIGNS: Array<UnifiedNumberFormatOptions['currencySign']> = [
+const CURRENCY_SIGNS: Array<NumberFormatOptions['currencySign']> = [
   'accounting',
   'standard',
 ];
@@ -76,7 +77,7 @@ function test() {
                             CURRENCIES.forEach(currency =>
                               it(`currency: '${currency}',`, function () {
                                 expect(
-                                  new UnifiedNumberFormat(locale, {
+                                  new NumberFormat(locale, {
                                     style: 'currency',
                                     currency,
                                     currencySign,

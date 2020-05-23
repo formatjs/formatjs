@@ -1,14 +1,18 @@
 {
   "name": "@formatjs/intl-numberformat",
   "version": "4.0.0",
-  "description": "Ponyfill for intl unified numberformat proposal",
+  "description": "Ponyfill for ES2021 Intl.NumberFormat",
   "keywords": [
     "polyfill",
     "i18n",
     "numberformat",
-    "unified"
+    "intl",
+    "Intl.NumberFormat"
   ],
-  "author": "Long Ho <holevietlong@gmail.com>",
+  "contributors": [
+    "Linjie Ding <linjie@airtable.com>",
+    "Long Ho <holevietlong@gmail.com>"
+  ],
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",
   "main": "dist/index.js",
@@ -38,14 +42,24 @@
   },
   "scripts": {
     "benchmark": "ts-node tests/benchmark",
-    "build": "yarn run cldr && yarn run compile && yarn run rollup ",
+    "build": "yarn run cldr && yarn run compile && yarn run rollup",
+    "build:test262": "tsc -p tsconfig.es6.json && yarn run rollup",
     "cldr": "NODE_OPTIONS=--max-old-space-size=8192 ts-node scripts/cldr",
     "clean": "rimraf dist dist-es6 lib src/locales.ts *.tsbuildinfo",
     "compile": "NODE_OPTIONS=--max-old-space-size=8192 tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local",
     "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu cross-env NODE_ENV=test jest",
     "rollup": "NODE_OPTIONS=--max-old-space-size=8192 rollup -c rollup.config.js",
-    "test": "yarn run jest",
+    "test": "yarn jest && yarn test262",
     "test262": "cross-env NODE_ICU_DATA=../../node_modules/full-icu ts-node tests/runner"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "tsconfig.json"
+      }
+    }
   },
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"

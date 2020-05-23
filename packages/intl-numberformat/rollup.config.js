@@ -17,7 +17,7 @@ export default [
       file: 'dist/umd/intl-numberformat.js',
       format: 'umd',
       exports: 'named',
-      name: 'IntlUnifiedNumberFormat',
+      name: 'IntlNumberFormat',
     },
     plugins: [resolveConfig, commonjsConfig, jsonConfig],
   },
@@ -28,7 +28,7 @@ export default [
       file: 'dist/umd/intl-numberformat.min.js',
       format: 'umd',
       exports: 'named',
-      name: 'IntlUnifiedNumberFormat',
+      name: 'IntlNumberFormat',
     },
     plugins: [resolveConfig, commonjsConfig, jsonConfig, uglifyConfig],
   },
@@ -57,7 +57,7 @@ export default [
       file: 'dist/polyfill-with-locales-for-test262.min.js',
       format: 'umd',
       exports: 'named',
-      name: 'IntlUnifiedNumberFormat',
+      name: 'IntlNumberFormat',
     },
     plugins: [
       resolve({

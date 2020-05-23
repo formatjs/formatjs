@@ -22,7 +22,7 @@
     "prepublishOnly": "yarn run prettier && yarn run build",
     "prettier": "prettier --write '**/*.{md,ts,tsx}'",
     "prettier:check": "prettier --check '**/*.{md,ts,tsx}'",
-    "test": "yarn run prettier:check && lerna run test && jest -c tests/jest.config.js"
+    "test": "yarn run prettier:check && lerna run test && jest -c tests/jest.config.js --runInBand"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.7.13",
@@ -80,6 +80,7 @@
       "plugin:import/typescript"
     ],
     "rules": {
+      "@typescript-eslint/ban-ts-ignore": 0,
       "@typescript-eslint/camelcase": 0,
       "@typescript-eslint/explicit-function-return-type": 0,
       "@typescript-eslint/explicit-member-accessibility": 0,
@@ -101,7 +102,8 @@
           "*.test.tsx"
         ],
         "rules": {
-          "jest/no-focused-tests": "error"
+          "jest/no-focused-tests": "error",
+          "@typescript-eslint/no-var-requires": "off"
         }
       }
     ]

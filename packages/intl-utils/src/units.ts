@@ -1,4 +1,4 @@
-// https://tc39.es/proposal-unified-intl-numberformat/section6/locales-currencies-tz_diff_out.html#sec-issanctionedsimpleunitidentifier
+// https://tc39.es/ecma402/#sec-issanctionedsimpleunitidentifier
 export const SANCTIONED_UNITS = [
   'angle-degree',
   'area-acre',

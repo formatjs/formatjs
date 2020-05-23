@@ -3,11 +3,11 @@ packages/formatjs-extract-cldr-data/src/dateFields.ts
 packages/intl-messageformat-parser/src/parser.ts
 packages/intl-relativetimeformat/src/en.ts
 packages/intl-relativetimeformat/src/locales.ts
-packages/intl-numberformat/src/en.ts
-packages/intl-numberformat/src/locales.ts
 packages/intl-utils/src/aliases.ts
 packages/intl-utils/src/parentLocales.ts
 packages/intl-listformat/src/locales.ts
+packages/intl-locale/src/unicode-locale-id.ts
+packages/intl-numberformat/src/data/*
 packages/babel-plugin-react-intl/src/options.ts
 packages/intl-getcanonicallocales/src/aliases.ts
 test262/

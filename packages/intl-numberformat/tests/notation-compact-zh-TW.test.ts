@@ -1,21 +1,19 @@
 import '@formatjs/intl-pluralrules/polyfill-locales';
-import {UnifiedNumberFormat} from '../src/core';
-UnifiedNumberFormat.__addLocaleData(require('../dist/locale-data/zh.json'));
-UnifiedNumberFormat.__addLocaleData(
-  require('../dist/locale-data/zh-Hant.json')
-);
-UnifiedNumberFormat.__addLocaleData(
-  require('../dist/locale-data/zh-Hans.json')
-);
+import {NumberFormat} from '../src';
+NumberFormat.__addLocaleData(require('../dist/locale-data/zh.json'));
+NumberFormat.__addLocaleData(require('../dist/locale-data/zh-Hant.json'));
+NumberFormat.__addLocaleData(require('../dist/locale-data/zh-Hans.json'));
 describe('notation-compact-zh-TW', function () {
   it('short', function () {
-    const nfShort = new UnifiedNumberFormat('zh-TW', {
+    const nfShort = new NumberFormat('zh-TW', {
       notation: 'compact',
       compactDisplay: 'short',
     });
     expect(nfShort.format(987654321)).toBe('9.9億');
-    expect(nfShort.format(98765432)).toBe('9877萬');
+    expect(nfShort.format(9876_5432)).toBe('9877萬');
     expect(nfShort.format(98765)).toBe('9.9萬');
+    // NOTE: in Chrome 81 and Node 14, this is "9876", which kinda disrespect the grouping
+    // separator setting. We think it is a bug.
     expect(nfShort.format(9876)).toBe('9876');
     expect(nfShort.format(159)).toBe('159');
     expect(nfShort.format(15.9)).toBe('16');
@@ -26,13 +24,14 @@ describe('notation-compact-zh-TW', function () {
   });
 
   it('long', function () {
-    const nfLong = new UnifiedNumberFormat('zh-TW', {
+    const nfLong = new NumberFormat('zh-TW', {
       notation: 'compact',
       compactDisplay: 'long',
     });
     expect(nfLong.format(987654321)).toBe('9.9億');
     expect(nfLong.format(98765432)).toBe('9877萬');
     expect(nfLong.format(98765)).toBe('9.9萬');
+    // See the comment in the test case above.
     expect(nfLong.format(9876)).toBe('9876');
     expect(nfLong.format(159)).toBe('159');
     expect(nfLong.format(15.9)).toBe('16');

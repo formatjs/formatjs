@@ -14,10 +14,10 @@ export type NumberFormatRoundingType =
 
 export interface NumberFormatDigitOptions {
   minimumIntegerDigits?: number;
-  minimumFractionDigits?: number;
-  maximumFractionDigits?: number;
   minimumSignificantDigits?: number;
   maximumSignificantDigits?: number;
+  minimumFractionDigits?: number;
+  maximumFractionDigits?: number;
 }
 
 export interface NumberFormatDigitInternalSlots {
@@ -31,148 +31,37 @@ export interface NumberFormatDigitInternalSlots {
   notation?: NumberFormatNotation;
 }
 
-export enum InternalSlotToken {
-  // To prevent collision with {0} in CLDR
-  compactName = 'compactName',
-  compactSymbol = 'compactSymbol',
-  currencyCode = 'currencyCode',
-  currencyName = 'currencyName',
-  currencyNarrowSymbol = 'currencyNarrowSymbol',
-  currencySymbol = 'currencySymbol',
-  minusSign = 'minusSign',
-  number = 'number',
-  percentSign = 'percentSign',
-  plusSign = 'plusSign',
-  scientificExponent = 'scientificExponent',
-  scientificSeparator = 'scientificSeparator',
-  unitName = 'unitName',
-  unitNarrowSymbol = 'unitNarrowSymbol',
-  unitSymbol = 'unitSymbol',
-}
-
-export interface SignPattern {
-  positivePattern: string;
-  zeroPattern: string;
-  negativePattern: string;
-}
-
-export type CompactSignPattern = Record<DecimalFormatNum, SignPattern>;
-
-export interface NotationPattern {
-  standard: SignPattern;
-  scientific: SignPattern;
-  compactShort: CompactSignPattern;
-  compactLong: CompactSignPattern;
-}
-
-export interface SignDisplayPattern {
-  auto: NotationPattern;
-  always: NotationPattern;
-  never: NotationPattern;
-  exceptZero: NotationPattern;
-}
-
-export interface CurrencySignPattern {
-  standard: SignDisplayPattern;
-  accounting: SignDisplayPattern;
-}
-
-export interface CurrencyPattern {
-  code: CurrencySignPattern;
-  symbol: CurrencySignPattern;
-  narrowSymbol: CurrencySignPattern;
-  name: CurrencySignPattern;
-}
-
-export interface UnitPattern {
-  narrow: SignDisplayPattern;
-  short: SignDisplayPattern;
-  long: SignDisplayPattern;
-}
-
-export interface NumberILD {
-  decimal: {
-    // string when there's only 1 plural from
-    compactShort?: Record<DecimalFormatNum, LDMLPluralRuleMap<string>>;
-    // string when there's only 1 plural from
-    compactLong?: Record<DecimalFormatNum, LDMLPluralRuleMap<string>>;
-  };
-  currency: {
-    // string when there's only 1 plural from
-    compactShort?: Record<DecimalFormatNum, LDMLPluralRuleMap<string>>;
-    // string when there's only 1 plural from
-    compactLong?: Record<DecimalFormatNum, LDMLPluralRuleMap<string>>;
-  };
-  symbols: {
-    decimal: string;
-    group: string;
-    list: string;
-    percentSign: string;
-    plusSign: string;
-    minusSign: string;
-    exponential: string;
-    superscriptingExponent: string;
-    perMille: string;
-    infinity: string;
-    nan: string;
-    timeSeparator: string;
-  };
-  currencySymbols: Record<
-    string,
-    {
-      currencySymbol: string;
-      currencyNarrowSymbol: string;
-      currencyName: LDMLPluralRuleMap<string>;
-    }
-  >;
-  unitSymbols: Record<
-    string,
-    {
-      unitSymbol: LDMLPluralRuleMap<string[]>;
-      unitNarrowSymbol: LDMLPluralRuleMap<string[]>;
-      unitName: LDMLPluralRuleMap<string[]>;
-    }
-  >;
-}
-
-export interface NumberLocalePatternData {
-  decimal: SignDisplayPattern;
-  percent: SignDisplayPattern;
-  currency: Record<string, CurrencyPattern>;
-  unit: Record<string, UnitPattern>;
-}
-// https://github.com/tc39/proposal-unified-intl-numberformat/issues/26#issuecomment-467711707
-export interface NumberInternalSlots {
-  nu: string[];
-  patterns: NumberLocalePatternData;
-  ild: NumberILD;
-}
-
-export type NumberLocaleData = LocaleData<NumberInternalSlots>;
-
 // All fields are optional due to de-duping
-export type RawNumberLocaleData = LocaleData<NumberLocaleInternalData>;
+export type RawNumberLocaleData = LocaleData<NumberFormatLocaleInternalData>;
 
-export interface NumberLocaleInternalData {
-  units: Record<string, UnitData>;
+export interface NumberFormatLocaleInternalData {
+  units: UnitDataTable;
   currencies: Record<string, CurrencyData>;
   numbers: RawNumberData;
   // Bc of relevantExtensionKeys in the spec
   nu: string[];
 }
 
-export interface UnitData {
-  displayName: string;
-  long: LDMLPluralRuleMap<RawUnitPattern>;
-  short: LDMLPluralRuleMap<RawUnitPattern>;
-  narrow: LDMLPluralRuleMap<RawUnitPattern>;
+export interface UnitDataTable {
+  simple: Record<string, UnitData>;
+  compound: Record<string, CompoundUnitData>;
 }
 
-export interface RawUnitPattern {
-  pattern: string;
-  // An array bc {0} can be in the middle,
-  // e.g: celsius in https://github.com/unicode-cldr/cldr-units-full/blob/master/main/ja/units.json
-  symbol: string[];
+export interface UnitData {
+  // A pattern where {0} is number placeholder. Example: "摂氏 {0} 度".
+  long: LDMLPluralRuleMap<string>;
+  short: LDMLPluralRuleMap<string>;
+  narrow: LDMLPluralRuleMap<string>;
+  // perUnitPattern. See http://unicode.org/reports/tr35/tr35-general.html#perUnitPatterns
+  perUnit: Record<'narrow' | 'short' | 'long', string | undefined>;
+}
+
+// The values are patterns on how to compose simple units.
+// For example, "{0} per {1}".
+export interface CompoundUnitData {
+  long: string;
+  short: string;
+  narrow: string;
 }
 
 export interface CurrencyData {
@@ -255,3 +144,9 @@ export type LDMLPluralRuleMap<T> = Omit<
 > & {
   other: T;
 };
+
+export interface RawNumberFormatResult {
+  formattedString: string;
+  roundedNumber: number;
+  integerDigitsCount: number;
+}

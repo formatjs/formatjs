@@ -68,7 +68,7 @@ const extras = [
   '-x-private',
 ];
 
-describe('likely-subtags', function () {
+describe.skip('likely-subtags', function () {
   for (const [tag, maximal] of Object.entries(testDataMaximal)) {
     it(`"${maximal}" should be maximal`, function () {
       expect(new Locale(maximal).maximize().toString()).toBe(maximal);

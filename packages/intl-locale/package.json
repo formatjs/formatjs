@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@formatjs/intl-getcanonicallocales": "^1.2.0",
-    "@formatjs/intl-utils": "2.0.4",
+    "@formatjs/intl-utils": "^3.0.0",
     "cldr-core": "^36.0.0"
   },
   "devDependencies": {
