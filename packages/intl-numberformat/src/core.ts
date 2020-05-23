@@ -3,7 +3,6 @@ import {
   createResolveLocale,
   toObject,
   supportedLocales,
-  getCanonicalLocales,
   setInternalSlot,
   setMultiInternalSlots,
   getMultiInternalSlots,
@@ -48,6 +47,7 @@ import {extractILD, Patterns} from './data';
 import * as currencyDigitsData from './currency-digits.json';
 import * as ILND from './ilnd-numbers.json';
 import {names as numberingSystemNames} from './numbering-systems.json';
+import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
 
 const VALID_NUMBERING_SYSTEM_NAMES: Record<string, boolean> = Object.create(
   null
@@ -211,7 +211,8 @@ function initializeNumberFormat(
   locales?: string | string[],
   opts?: UnifiedNumberFormatOptions
 ) {
-  const requestedLocales = getCanonicalLocales(locales);
+  const requestedLocales = ((Intl as any)
+    .getCanonicalLocales as typeof getCanonicalLocales)(locales);
   const options: UnifiedNumberFormatOptions =
     opts === undefined ? Object.create(null) : toObject(opts);
   const opt: any = Object.create(null);
@@ -787,7 +788,9 @@ defineProperty(UnifiedNumberFormat, 'supportedLocalesOf', {
   ) {
     return supportedLocales(
       UnifiedNumberFormat.availableLocales,
-      getCanonicalLocales(locales),
+      ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
+        locales
+      ),
       options
     );
   },
