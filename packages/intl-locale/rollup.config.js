@@ -1,12 +1,12 @@
-import { uglify } from 'rollup-plugin-uglify';
+import {uglify} from 'rollup-plugin-uglify';
 import resolve from 'rollup-plugin-node-resolve';
-import json from '@rollup/plugin-json'
+import json from '@rollup/plugin-json';
 
 const resolveConfig = resolve({
-  mainFields: ['module', 'main']
+  mainFields: ['module', 'main'],
 });
 const uglifyConfig = uglify();
-const jsonConfig = json()
+const jsonConfig = json();
 export default [
   {
     input: './lib/index.js',
@@ -15,9 +15,9 @@ export default [
       file: 'dist/umd/intl-locale.js',
       format: 'umd',
       exports: 'named',
-      name: 'IntlLocale'
+      name: 'IntlLocale',
     },
-    plugins: [resolveConfig, jsonConfig]
+    plugins: [resolveConfig, jsonConfig],
   },
   {
     input: './lib/index.js',
@@ -26,26 +26,26 @@ export default [
       file: 'dist/umd/intl-locale.min.js',
       format: 'umd',
       exports: 'named',
-      name: 'IntlLocale'
+      name: 'IntlLocale',
     },
-    plugins: [resolveConfig, jsonConfig, uglifyConfig]
+    plugins: [resolveConfig, jsonConfig, uglifyConfig],
   },
   {
     input: './lib/polyfill.js',
     output: {
       sourcemap: true,
       file: 'dist/umd/polyfill.js',
-      format: 'umd'
+      format: 'umd',
     },
-    plugins: [resolveConfig, jsonConfig]
+    plugins: [resolveConfig, jsonConfig],
   },
   {
-    input: './dist-es6/polyfill-locales.js',
+    input: './dist-es6/polyfill.js',
     output: {
       sourcemap: true,
-      file: 'dist-es6/umd/polyfill-locales.js',
-      format: 'umd'
+      file: 'dist-es6/umd/polyfill.js',
+      format: 'umd',
     },
-    plugins: [resolveConfig, jsonConfig]
+    plugins: [resolveConfig, jsonConfig],
   },
 ];
