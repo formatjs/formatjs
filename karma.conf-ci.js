@@ -30,14 +30,17 @@ module.exports = function (config) {
       sl_edge: {
         base: 'SauceLabs',
         browserName: 'MicrosoftEdge',
+        version: '16',
       },
       sl_chrome: {
         base: 'SauceLabs',
         browserName: 'chrome',
+        version: '70', // Use an older version instead of latest greatest
       },
       sl_firefox: {
         base: 'SauceLabs',
         browserName: 'firefox',
+        version: '70', // Use an older version instead of latest greatest
       },
       sl_ie_11: {
         base: 'SauceLabs',
