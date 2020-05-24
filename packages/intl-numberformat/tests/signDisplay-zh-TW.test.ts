@@ -1,3 +1,4 @@
+import '@formatjs/intl-getcanonicallocales/polyfill';
 import '@formatjs/intl-pluralrules/polyfill-locales';
 import {NumberFormat} from '../src';
 import * as zh from '../src/locale-data/zh.json';

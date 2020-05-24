@@ -8,8 +8,6 @@ import {
 } from 'formatjs-extract-cldr-data';
 import {
   SANCTIONED_UNITS,
-  getAliasesByLang,
-  getParentLocalesByLang,
   removeUnitNamespace,
   RawNumberLocaleData,
 } from '@formatjs/intl-utils';
@@ -25,9 +23,6 @@ const unitsData = generateUnitDataForLocales();
 
 const allData = locales.reduce(
   (all: Record<string, RawNumberLocaleData>, locale) => {
-    const lang = locale.split('-')[0];
-    const aliases = getAliasesByLang(lang);
-    const parentLocales = getParentLocalesByLang(lang);
     if (!all[locale]) {
       all[locale] = {
         data: {
@@ -39,8 +34,6 @@ const allData = locales.reduce(
           },
         },
         availableLocales: [locale],
-        aliases,
-        parentLocales,
       };
     }
 

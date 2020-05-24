@@ -1,3 +1,4 @@
+import '@formatjs/intl-getcanonicallocales/polyfill';
 import '@formatjs/intl-pluralrules/polyfill-locales';
 import {NumberFormat} from '../src';
 import * as zh from '../src/locale-data/zh.json';
@@ -147,7 +148,7 @@ describe('unit-zh-TW', function () {
   for (const [number, expectedData] of tests) {
     for (const unitDisplay in expectedData) {
       const expected = expectedData[unitDisplay];
-      it(unitDisplay, function () {
+      it(`${number} - ${unitDisplay}`, function () {
         const nf = new NumberFormat('zh-TW', {
           style: 'unit',
           unit: 'meter',
