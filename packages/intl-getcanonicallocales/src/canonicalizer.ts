@@ -92,6 +92,7 @@ export function canonicalizeUnicodeLanguageId(lang: UnicodeLanguageId): void {
     if (replacedRegion) {
       lang.region = replacedRegion;
     }
+    lang.region = lang.region.toUpperCase();
   }
   if (lang.script) {
     lang.script =
