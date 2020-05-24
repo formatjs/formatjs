@@ -107,16 +107,7 @@ export class DisplayNames {
 
   static __addLocaleData(...data: DisplayNamesLocaleData[]) {
     for (const datum of data) {
-      const availableLocales: string[] = Object.keys(
-        [
-          ...datum.availableLocales,
-          ...Object.keys(datum.aliases),
-          ...Object.keys(datum.parentLocales),
-        ].reduce((all: Record<string, true>, k) => {
-          all[k] = true;
-          return all;
-        }, {})
-      );
+      const availableLocales: string[] = datum.availableLocales;
       for (const locale of availableLocales) {
         try {
           DisplayNames.localeData[locale] = unpackData(locale, datum);

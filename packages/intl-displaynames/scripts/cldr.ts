@@ -4,26 +4,17 @@ import {
 } from 'formatjs-extract-cldr-data';
 import {resolve, join} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
-import {
-  DisplayNamesLocaleData,
-  getAliasesByLang,
-  getParentLocalesByLang,
-} from '@formatjs/intl-utils';
+import {DisplayNamesLocaleData} from '@formatjs/intl-utils';
 
 const data = extractAllDisplayNames();
 const allData = getAllDisplayNamesLocales().reduce(
   (all: Record<string, DisplayNamesLocaleData>, locale) => {
-    const lang = locale.split('-')[0];
-    const aliases = getAliasesByLang(lang);
-    const parentLocales = getParentLocalesByLang(lang);
     if (!all[locale]) {
       all[locale] = {
         data: {
           [locale]: data[locale],
         },
         availableLocales: [locale],
-        aliases,
-        parentLocales,
       };
     }
 
