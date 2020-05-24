@@ -1,3 +1,4 @@
+import '@formatjs/intl-getcanonicallocales/polyfill';
 import '@formatjs/intl-pluralrules/polyfill-locales';
 import '../src/polyfill';
 import '../polyfill';
