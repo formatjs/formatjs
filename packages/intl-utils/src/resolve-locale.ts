@@ -240,20 +240,8 @@ function createBestFitMatcher(getDefaultLocale: () => string) {
   };
 }
 
-export function getLocaleHierarchy(
-  locale: string,
-  aliases: Record<string, string>,
-  parentLocales: Record<string, string>
-): string[] {
+export function getLocaleHierarchy(locale: string): string[] {
   const results = [locale];
-  if (aliases[locale as 'zh-CN']) {
-    locale = aliases[locale as 'zh-CN'];
-    results.push(locale);
-  }
-  const parentLocale = parentLocales[locale as 'en-150'];
-  if (parentLocale) {
-    results.push(parentLocale);
-  }
   const localeParts = locale.split('-');
   for (let i = localeParts.length; i > 1; i--) {
     results.push(localeParts.slice(0, i - 1).join('-'));
@@ -320,11 +308,7 @@ export function unpackData<T extends Record<string, any>>(
   /** By default shallow merge the dictionaries. */
   reducer: (all: T, d: T) => T = (all, d) => ({...all, ...d})
 ): T {
-  const localeHierarchy = getLocaleHierarchy(
-    locale,
-    localeData.aliases,
-    localeData.parentLocales
-  );
+  const localeHierarchy = getLocaleHierarchy(locale);
   const dataToMerge = localeHierarchy
     .map(l => localeData.data[l])
     .filter(Boolean);

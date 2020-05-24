@@ -1,5 +1,3 @@
-import aliases from './aliases';
-import parentLocales from './parentLocales';
 import {invariant} from './invariant';
 import {
   NumberFormatDigitInternalSlots,
@@ -113,27 +111,6 @@ export function getNumberOption<T extends object, K extends keyof T>(
 ): number {
   const val = options[property];
   return defaultNumberOption(val, minimum, maximum, fallback);
-}
-
-export function getAliasesByLang(lang: string): Record<string, string> {
-  return Object.keys(aliases).reduce((all: Record<string, string>, locale) => {
-    if (locale.split('-')[0] === lang) {
-      all[locale] = aliases[locale as 'zh-CN'];
-    }
-    return all;
-  }, {});
-}
-
-export function getParentLocalesByLang(lang: string): Record<string, string> {
-  return Object.keys(parentLocales).reduce(
-    (all: Record<string, string>, locale) => {
-      if (locale.split('-')[0] === lang) {
-        all[locale] = parentLocales[locale as 'en-150'];
-      }
-      return all;
-    },
-    {}
-  );
 }
 
 export function setInternalSlot<

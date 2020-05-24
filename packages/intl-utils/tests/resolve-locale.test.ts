@@ -1,37 +1,26 @@
-import {
-  getLocaleHierarchy,
-  getAliasesByLang,
-  getParentLocalesByLang,
-  unpackData,
-} from '../src';
+import {getLocaleHierarchy, unpackData} from '../src';
 
 describe('resolve-locale', function () {
   it('should handle zh-TW', function () {
-    expect(
-      getLocaleHierarchy(
-        'zh-TW',
-        getAliasesByLang('zh'),
-        getParentLocalesByLang('zh')
-      )
-    ).toEqual(['zh-TW', 'zh-Hant-TW', 'zh-Hant', 'zh']);
+    expect(getLocaleHierarchy('zh-Hant-TW')).toEqual([
+      'zh-Hant-TW',
+      'zh-Hant',
+      'zh',
+    ]);
   });
   it('should handle zh-CN', function () {
-    expect(
-      getLocaleHierarchy(
-        'zh-CN',
-        getAliasesByLang('zh'),
-        getParentLocalesByLang('zh')
-      )
-    ).toEqual(['zh-CN', 'zh-Hans-CN', 'zh-Hans', 'zh']);
+    expect(getLocaleHierarchy('zh-Hans-CN')).toEqual([
+      'zh-Hans-CN',
+      'zh-Hans',
+      'zh',
+    ]);
   });
   it('should handle zh-MO', function () {
-    expect(
-      getLocaleHierarchy(
-        'zh-MO',
-        getAliasesByLang('zh'),
-        getParentLocalesByLang('zh')
-      )
-    ).toEqual(['zh-MO', 'zh-Hant-MO', 'zh-Hant-HK', 'zh-Hant', 'zh']);
+    expect(getLocaleHierarchy('zh-Hant-MO')).toEqual([
+      'zh-Hant-MO',
+      'zh-Hant',
+      'zh',
+    ]);
   });
   it('unpackData', function () {
     expect(
@@ -59,11 +48,7 @@ describe('resolve-locale', function () {
             },
           },
         },
-        aliases: {},
         availableLocales: ['en-US', 'en-AI', 'en'],
-        parentLocales: {
-          'en-US': 'en',
-        },
       })
     ).toEqual({
       currencies: {

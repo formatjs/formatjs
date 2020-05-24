@@ -1,12 +1,10 @@
 export {selectUnit} from './diff';
 export {
   defaultNumberOption,
-  getAliasesByLang,
   getInternalSlot,
   getMultiInternalSlots,
   getNumberOption,
   getOption,
-  getParentLocalesByLang,
   isLiteralPart,
   LiteralPart,
   partitionPattern,
