@@ -122,12 +122,6 @@ Object.keys(allData).forEach(function (locale) {
   outputJSONSync(destFile, allData[locale]);
 });
 
-// Dist all locale files to src/locale-data so we can package in tests rollup for karma
-Object.keys(allData).forEach(function (locale) {
-  const destFile = join(srcLocaleDataDir, locale + '.json');
-  outputJSONSync(destFile, allData[locale]);
-});
-
 // Aggregate all into ../polyfill-locales.js
 outputFileSync(
   resolve(__dirname, '../polyfill-locales.js'),

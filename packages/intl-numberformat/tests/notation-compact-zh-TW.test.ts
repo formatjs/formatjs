@@ -1,9 +1,9 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
 import '@formatjs/intl-pluralrules/polyfill-locales';
 import {NumberFormat} from '../src';
-import * as zh from '../src/locale-data/zh.json';
-import * as zhHant from '../src/locale-data/zh-Hant.json';
-import * as zhHans from '../src/locale-data/zh-Hans.json';
+const zh = require('../dist/locale-data/zh.json');
+const zhHant = require('../dist/locale-data/zh-Hant.json');
+const zhHans = require('../dist/locale-data/zh-Hans.json');
 NumberFormat.__addLocaleData(zh as any, zhHant as any, zhHans as any);
 
 describe('notation-compact-zh-TW', function () {
