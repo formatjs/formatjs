@@ -1,8 +1,9 @@
 import '@formatjs/intl-pluralrules/polyfill-locales';
 import {NumberFormat} from '../src';
-NumberFormat.__addLocaleData(require('../dist/locale-data/zh.json'));
-NumberFormat.__addLocaleData(require('../dist/locale-data/zh-Hant.json'));
-NumberFormat.__addLocaleData(require('../dist/locale-data/zh-Hans.json'));
+import * as zh from '../src/locale-data/zh.json';
+import * as zhHant from '../src/locale-data/zh-Hant.json';
+import * as zhHans from '../src/locale-data/zh-Hans.json';
+NumberFormat.__addLocaleData(zh as any, zhHant as any, zhHans as any);
 
 const tests: any = [
   [
@@ -144,7 +145,8 @@ const tests: any = [
 
 describe('unit-zh-TW', function () {
   for (const [number, expectedData] of tests) {
-    for (const [unitDisplay, expected] of Object.entries(expectedData)) {
+    for (const unitDisplay in expectedData) {
+      const expected = expectedData[unitDisplay];
       it(unitDisplay, function () {
         const nf = new NumberFormat('zh-TW', {
           style: 'unit',

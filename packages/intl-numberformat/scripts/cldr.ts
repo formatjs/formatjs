@@ -17,6 +17,7 @@ import {resolve, join} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
 
 const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
+const srcLocaleDataDir = resolve(__dirname, '../src/locale-data');
 
 const numbersData = generateNumberDataForLocales();
 const currenciesData = generateCurrencyDataForLocales();
@@ -125,6 +126,12 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
 // Dist all locale files to dist/locale-data
 Object.keys(allData).forEach(function (locale) {
   const destFile = join(allLocaleDistDir, locale + '.json');
+  outputJSONSync(destFile, allData[locale]);
+});
+
+// Dist all locale files to src/locale-data so we can package in tests rollup for karma
+Object.keys(allData).forEach(function (locale) {
+  const destFile = join(srcLocaleDataDir, locale + '.json');
   outputJSONSync(destFile, allData[locale]);
 });
 

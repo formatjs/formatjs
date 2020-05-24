@@ -1,6 +1,7 @@
 import '@formatjs/intl-pluralrules/polyfill-locales';
 import {NumberFormat} from '../src';
-NumberFormat.__addLocaleData(require('../dist/locale-data/ko.json'));
+import * as ko from '../src/locale-data/ko.json';
+NumberFormat.__addLocaleData(ko as any);
 
 const tests: any[] = [
   [

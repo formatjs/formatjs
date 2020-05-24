@@ -1,9 +1,6 @@
 import {NumberFormat} from '../src';
-
-NumberFormat.__addLocaleData(
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  require(`../dist/locale-data/en.json`)
-);
+import * as en from '../src/locale-data/en.json';
+NumberFormat.__addLocaleData(en as any);
 
 it('normalizes lower-cased currency code', () => {
   const lowerCaseNf = new NumberFormat('en', {

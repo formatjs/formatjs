@@ -2,13 +2,20 @@ import {uglify} from 'rollup-plugin-uglify';
 import resolve from 'rollup-plugin-node-resolve';
 import json from '@rollup/plugin-json';
 import commonjs from 'rollup-plugin-commonjs';
-
+import {generateTestConfig} from '../../rollup.config';
+import * as path from 'path';
 const resolveConfig = resolve({
   mainFields: ['module', 'main'],
 });
 const uglifyConfig = uglify();
 const jsonConfig = json();
 const commonjsConfig = commonjs();
+
+// This is taking a really long time
+const browserFriendlyTests = [
+  path.resolve(__dirname, 'tests/unit-zh-TW.test.ts'),
+];
+
 export default [
   {
     input: './lib/index.js',
@@ -69,4 +76,5 @@ export default [
       jsonConfig,
     ],
   },
+  ...browserFriendlyTests.map(generateTestConfig),
 ];
