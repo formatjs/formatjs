@@ -27,3 +27,6 @@ jobs:
           tunnelIdentifier: github-action-tunnel
       - name: Karma
         run: yarn karma:ci
+        env:
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
