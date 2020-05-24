@@ -18,7 +18,13 @@ describe('Intl.getCanonicalLocales', () => {
   it('should handle zh-CN', function () {
     expect(getCanonicalLocales('zh-CN')).toEqual(['zh-Hans-CN']);
   });
-  // it('canonicalizes twice', function () {
-  //   expect(getCanonicalLocales('und-Armn-SU')).toEqual(['ru-Armn-AM']);
-  // });
+  it('should handle twi', function () {
+    expect(getCanonicalLocales('twi')).toEqual(['ak']);
+  });
+  it('should handle ug-Arab-CN ', function () {
+    expect(getCanonicalLocales('ug-Arab-CN')).toEqual(['ug-CN']);
+  });
+  it('canonicalizes twice', function () {
+    expect(getCanonicalLocales('und-Armn-SU')).toEqual(['und-Armn-AM']);
+  });
 });
