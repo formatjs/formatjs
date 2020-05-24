@@ -2,11 +2,7 @@ import {getAllLanguages} from 'formatjs-extract-cldr-data';
 import {resolve} from 'path';
 import {outputFileSync} from 'fs-extra';
 import * as serialize from 'serialize-javascript';
-import {
-  PluralRulesLocaleData,
-  getAliasesByLang,
-  getParentLocalesByLang,
-} from '@formatjs/intl-utils';
+import {PluralRulesLocaleData} from '@formatjs/intl-utils';
 const Compiler = require('make-plural-compiler');
 Compiler.load(
   require('cldr-core/supplemental/plurals.json'),
@@ -31,8 +27,6 @@ languages.forEach(lang => {
         fn,
       },
     },
-    aliases: getAliasesByLang(lang),
-    parentLocales: getParentLocalesByLang(lang),
     availableLocales: [lang],
   };
   outputFileSync(

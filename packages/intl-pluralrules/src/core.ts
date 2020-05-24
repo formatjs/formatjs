@@ -245,16 +245,7 @@ export class PluralRules implements Intl.PluralRules {
   }
   public static __addLocaleData(...data: PluralRulesLocaleData[]) {
     for (const datum of data) {
-      const availableLocales: string[] = Object.keys(
-        [
-          ...datum.availableLocales,
-          ...Object.keys(datum.aliases),
-          ...Object.keys(datum.parentLocales),
-        ].reduce((all: Record<string, true>, k) => {
-          all[k] = true;
-          return all;
-        }, {})
-      );
+      const availableLocales: string[] = datum.availableLocales;
       availableLocales.forEach(locale => {
         try {
           PluralRules.localeData[locale] = unpackData(locale, datum);
