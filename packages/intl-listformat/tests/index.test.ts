@@ -1,3 +1,4 @@
+import '@formatjs/intl-getcanonicallocales/polyfill';
 import '../src/polyfill';
 import '../polyfill';
 import '../dist/locale-data/zh';
@@ -23,7 +24,7 @@ describe('Intl.ListFormat', function () {
   it('should resolve parent correctly', function () {
     expect(new ListFormat('en-AI').format(['1', '2'])).toBe('1 and 2');
     // Node 12 has an old version of CLDR
-    if (process.version.startsWith('v10')) {
+    if (process.version && process.version.startsWith('v10')) {
       expect(new ListFormat('en-AI').format(['1', '2', '3'])).toBe(
         '1, 2 and 3'
       );

@@ -1,3 +1,4 @@
+import '@formatjs/intl-getcanonicallocales/polyfill';
 import '../src/polyfill';
 import '../polyfill';
 import '../dist/locale-data/zh';
@@ -11,6 +12,6 @@ describe('supportedLocalesOf', function () {
   if (ListFormat.polyfilled) {
     it('should return correct locales that we only have data for', test);
   } else {
-    it.skip('should return correct locales that we only have data for', test);
+    xit('should return correct locales that we only have data for', test);
   }
 });
