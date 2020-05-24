@@ -1,5 +1,5 @@
+import '@formatjs/intl-getcanonicallocales/polyfill';
 import '../src/polyfill';
-import '../polyfill';
 import '../dist/locale-data/en';
 
 describe('Intl.PluralRules', function () {

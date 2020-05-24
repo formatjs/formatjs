@@ -16,3 +16,4 @@ dist-es6
 .now
 .cache
 tests-karma
+locale-data
