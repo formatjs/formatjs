@@ -4,26 +4,18 @@ import {
 } from 'formatjs-extract-cldr-data';
 import {resolve, join} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
-import {
-  RelativeTimeLocaleData,
-  getAliasesByLang,
-  getParentLocalesByLang,
-} from '../../intl-utils';
+import {RelativeTimeLocaleData} from '../../intl-utils';
 
 const data = extractAllRelativeFields();
 const langData = getAllDateFieldsLocales().reduce(
   (all: Record<string, RelativeTimeLocaleData>, locale) => {
     const lang = locale.split('-')[0];
     if (!all[lang]) {
-      const aliases = getAliasesByLang(lang);
-      const parentLocales = getParentLocalesByLang(lang);
       all[lang] = {
         data: {
           [locale]: data[locale],
         },
         availableLocales: [locale],
-        aliases,
-        parentLocales,
       };
     } else {
       all[lang].data[locale] = data[locale];

@@ -69,11 +69,7 @@ export interface RelativeTimeFormatNumberPart extends Intl.NumberFormatPart {
 }
 
 function unpackData(locale: string, localeData: RelativeTimeLocaleData) {
-  const localeHierarchy = getLocaleHierarchy(
-    locale,
-    localeData.aliases,
-    localeData.parentLocales
-  );
+  const localeHierarchy = getLocaleHierarchy(locale);
   const dataToMerge = localeHierarchy
     .map(l => localeData.data[l])
     .filter(Boolean);
@@ -456,16 +452,7 @@ export default class RelativeTimeFormat {
 
   public static __addLocaleData(...data: RelativeTimeLocaleData[]) {
     for (const datum of data) {
-      const availableLocales: string[] = Object.keys(
-        [
-          ...datum.availableLocales,
-          ...Object.keys(datum.aliases),
-          ...Object.keys(datum.parentLocales),
-        ].reduce((all: Record<string, true>, k) => {
-          all[k] = true;
-          return all;
-        }, {})
-      );
+      const availableLocales: string[] = datum.availableLocales;
       availableLocales.forEach(locale => {
         try {
           RelativeTimeFormat.localeData[locale] = unpackData(locale, datum);
