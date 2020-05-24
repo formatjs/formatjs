@@ -1,5 +1,7 @@
 name: Browser CI Tests
 
+on: [push]
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -26,4 +28,5 @@ jobs:
           username: ${{ secrets.SAUCE_USERNAME }}
           accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
           tunnelIdentifier: github-action-tunnel
+      - name: Karma
         run: yarn karma:ci
