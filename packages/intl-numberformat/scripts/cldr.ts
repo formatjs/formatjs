@@ -15,7 +15,6 @@ import {resolve, join} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
 
 const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
-const srcLocaleDataDir = resolve(__dirname, '../src/locale-data');
 
 const numbersData = generateNumberDataForLocales();
 const currenciesData = generateCurrencyDataForLocales();
