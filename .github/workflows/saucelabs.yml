@@ -1,0 +1,29 @@
+name: Browser CI Tests
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: SauceLabs Tests
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: true
+          fetch-depth: 110
+      - name: Use Node.js 14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: yarn install
+        run: yarn install --frozen-lockfile
+        env:
+          CI: true
+      - name: yarn build
+        run: yarn build
+        env:
+          CI: true
+      - uses: saucelabs/sauce-connect-action@v1.0.0
+        with:
+          username: ${{ secrets.SAUCE_USERNAME }}
+          accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
+          tunnelIdentifier: github-action-tunnel
+        run: yarn karma:ci

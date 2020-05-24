@@ -1,6 +1,6 @@
 import {Locale} from '../src';
-
-const testDataMaximal = {
+import '@formatjs/intl-getcanonicallocales/polyfill';
+const testDataMaximal: Record<string, string> = {
   // Language subtag is present.
   en: 'en-Latn-US',
 
@@ -29,7 +29,7 @@ const testDataMaximal = {
   'und-AQ': 'und-Latn-AQ',
 };
 
-const testDataMinimal = {
+const testDataMinimal: Record<string, string> = {
   // Language subtag is present.
   en: 'en',
 
@@ -68,8 +68,9 @@ const extras = [
   '-x-private',
 ];
 
-describe.skip('likely-subtags', function () {
-  for (const [tag, maximal] of Object.entries(testDataMaximal)) {
+describe('likely-subtags', function () {
+  for (const tag in testDataMaximal) {
+    const maximal = testDataMaximal[tag];
     it(`"${maximal}" should be maximal`, function () {
       expect(new Locale(maximal).maximize().toString()).toBe(maximal);
     });
@@ -88,7 +89,8 @@ describe.skip('likely-subtags', function () {
     }
   }
 
-  for (const [tag, minimal] of Object.entries(testDataMinimal)) {
+  for (const tag in testDataMinimal) {
+    const minimal = testDataMinimal[tag];
     it(`"${minimal}" should be minimal`, function () {
       expect(new Locale(minimal).minimize().toString()).toBe(minimal);
     });

@@ -1,5 +1,6 @@
 import {Locale} from '../src';
-const testDataMinimal = {
+import '@formatjs/intl-getcanonicallocales/polyfill';
+const testDataMinimal: Record<string, string> = {
   // Undefined primary language.
   und: 'en',
   'und-Thai': 'th',
@@ -20,7 +21,8 @@ const testDataMinimal = {
 };
 
 describe('minimize', function () {
-  for (const [tag, minimal] of Object.entries(testDataMinimal)) {
+  for (const tag in testDataMinimal) {
+    const minimal = testDataMinimal[tag];
     it(`${minimal} is indeed minimal`, function () {
       // Assert the |minimal| tag is indeed minimal.
       expect(new Locale(minimal).minimize().toString()).toBe(minimal);
