@@ -12,6 +12,7 @@ import {
   SEPARATOR,
 } from './parser';
 import * as likelySubtags from 'cldr-core/supplemental/likelySubtags.json';
+import {emitUnicodeLanguageId} from './emitter';
 
 function canonicalizeAttrs(strs: string[]): string[] {
   return Object.keys(
@@ -64,7 +65,14 @@ export function canonicalizeUnicodeLanguageId(lang: UnicodeLanguageId): void {
    * - Five special deprecated grandfathered codes (such as i-default) are in type attributes, and are also replaced.
    */
   let sourceLang = lang.lang.toLowerCase();
-  const langAlias = languageAlias[sourceLang];
+  /**
+   * If the language subtag matches the type attribute of a languageAlias element in Supplemental Data, replace the language subtag with the replacement value.
+   *  1. If there are additional subtags in the replacement value, add them to the result, but only if there is no corresponding subtag already in the tag.
+   *  2. Five special deprecated grandfathered codes (such as i-default) are in type attributes, and are also replaced.
+   */
+  // TODO: This replacement is a little iffy bc languageAlias includes sometimes region as well
+  const langAlias =
+    languageAlias[emitUnicodeLanguageId(lang)] || languageAlias[sourceLang];
   if (langAlias) {
     const langAliasAst = parseUnicodeLanguageId(langAlias.split('-'));
     lang.lang = langAliasAst.lang;

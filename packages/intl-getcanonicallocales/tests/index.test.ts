@@ -12,6 +12,12 @@ describe('Intl.getCanonicalLocales', () => {
   it('should canonicalize casing for zh-hANs-sG', function () {
     expect(getCanonicalLocales('zh-hANs-sG')).toEqual(['zh-Hans-SG']);
   });
+  it('should handle zh-TW', function () {
+    expect(getCanonicalLocales('zh-TW')).toEqual(['zh-Hant-TW']);
+  });
+  it('should handle zh-CN', function () {
+    expect(getCanonicalLocales('zh-CN')).toEqual(['zh-Hans-CN']);
+  });
   // it('canonicalizes twice', function () {
   //   expect(getCanonicalLocales('und-Armn-SU')).toEqual(['ru-Armn-AM']);
   // });
