@@ -2,7 +2,7 @@ import {uglify} from 'rollup-plugin-uglify';
 import resolve from 'rollup-plugin-node-resolve';
 import json from '@rollup/plugin-json';
 import commonjs from 'rollup-plugin-commonjs';
-
+import testRollupConfig from '../../rollup.config';
 const resolveConfig = resolve({
   mainFields: ['module', 'main'],
 });
@@ -70,4 +70,5 @@ export default [
       jsonConfig,
     ],
   },
+  ...testRollupConfig,
 ];
