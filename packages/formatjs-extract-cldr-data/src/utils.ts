@@ -1,8 +1,6 @@
 import {Locale} from './types';
 import {
   getLocaleHierarchy,
-  getAliasesByLang,
-  getParentLocalesByLang,
   LDMLPluralRule,
   LDMLPluralRuleMap,
 } from '@formatjs/intl-utils';
@@ -43,16 +41,9 @@ export default function generateFieldExtractorFn<
         return;
       }
 
-      const lang = locale.split('-')[0];
-
-      const aliases = getAliasesByLang(lang);
-      const parentLocales = getParentLocalesByLang(lang);
-
-      const localesIncludingParents = getLocaleHierarchy(
-        locale,
-        aliases,
-        parentLocales
-      ).filter(l => availableLocales.includes(l));
+      const localesIncludingParents = getLocaleHierarchy(locale).filter(l =>
+        availableLocales.includes(l)
+      );
 
       dedupeUsingParentHierarchy(
         ...localesIncludingParents.map(loadFieldsFn)
