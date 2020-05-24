@@ -8,9 +8,6 @@ jobs:
     name: SauceLabs Tests
     steps:
       - uses: actions/checkout@v1
-        with:
-          submodules: true
-          fetch-depth: 110
       - name: Use Node.js 14
         uses: actions/setup-node@v1
         with:
