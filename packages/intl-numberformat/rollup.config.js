@@ -13,7 +13,7 @@ const commonjsConfig = commonjs();
 
 // This is taking a really long time
 const browserFriendlyTests = [
-  path.resolve(__dirname, 'tests/unit-zh-TW.test.ts'),
+  path.resolve(__dirname, 'tests/unit-zh-smoke.test.ts'),
 ];
 
 export default [
