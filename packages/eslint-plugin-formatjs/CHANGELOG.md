@@ -5,7 +5,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [2.3.5](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.3.4...eslint-plugin-formatjs@2.3.5) (2020-05-23)
 
-**Note:** Version bump only for package eslint-plugin-formatjs
+- Extracted CLDR unit data has breaking schema change
 
 
 

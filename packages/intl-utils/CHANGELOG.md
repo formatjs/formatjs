@@ -24,7 +24,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * **@formatjs/intl-utils:** This requires @formatjs/intl-getcanonicallocales for
 IE11 and below
 
-
+* Most of NumberFormat public and internal types are moved out of this package.
 
 
 

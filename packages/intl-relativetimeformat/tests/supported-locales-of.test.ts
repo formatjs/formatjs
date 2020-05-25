@@ -10,11 +10,10 @@ describe('supportedLocalesOf', function () {
     expect(RelativeTimeFormat.supportedLocalesOf(['zh', 'en-jj'])).toContain(
       'zh'
     );
-    expect(RelativeTimeFormat.supportedLocalesOf('fr')).toEqual([]);
   }
   if (RelativeTimeFormat.polyfilled) {
     it('should return correct locales that we only have data for', test);
   } else {
-    it.skip('should return correct locales that we only have data for', test);
+    xit('should return correct locales that we only have data for', test);
   }
 });

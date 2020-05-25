@@ -30,17 +30,16 @@ module.exports = function (config) {
       sl_edge: {
         base: 'SauceLabs',
         browserName: 'MicrosoftEdge',
-        version: '16',
       },
       sl_chrome: {
         base: 'SauceLabs',
         browserName: 'chrome',
-        version: '70', // Use an older version instead of latest greatest
+        version: '36', // https://polyfill.io/v3/supported-browsers/
       },
       sl_firefox: {
         base: 'SauceLabs',
         browserName: 'firefox',
-        version: '70', // Use an older version instead of latest greatest
+        version: '40', // https://polyfill.io/v3/supported-browsers/
       },
       sl_ie_11: {
         base: 'SauceLabs',
