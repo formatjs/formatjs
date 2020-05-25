@@ -11,10 +11,15 @@ const uglifyConfig = uglify();
 const jsonConfig = json();
 const commonjsConfig = commonjs();
 
-// This is taking a really long time
 const browserFriendlyTests = [
-  path.resolve(__dirname, 'tests/unit-zh-TW.test.ts'),
-];
+  'tests/unit-zh-TW.test.ts',
+  'tests/value-tonumber.test.ts',
+  'tests/notation-compact-ko-KR.test.ts',
+  'tests/notation-compact-zh-TW.test.ts',
+  'tests/signDisplay-zh-TW.test.ts',
+  'tests/signDisplay-currency-zh-TW.test.ts',
+  // 'tests/currency-code.test.ts',
+].map(fn => path.resolve(__dirname, fn));
 
 export default [
   {

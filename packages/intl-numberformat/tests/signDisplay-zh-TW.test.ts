@@ -1,10 +1,11 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
 import '@formatjs/intl-pluralrules/polyfill-locales';
 import {NumberFormat} from '../src';
-const zh = require('../dist/locale-data/zh.json');
-const zhHant = require('../dist/locale-data/zh-Hant.json');
-const zhHans = require('../dist/locale-data/zh-Hans.json');
+import * as zh from '../dist/locale-data/zh.json';
+import * as zhHant from '../dist/locale-data/zh-Hant.json';
+import * as zhHans from '../dist/locale-data/zh-Hans.json';
 NumberFormat.__addLocaleData(zh as any, zhHant as any, zhHans as any);
+
 const tests = [
   ['auto', '-∞', '-987', '-0', '-0', '0', '0', '987', '∞', '非數值'],
   ['always', '-∞', '-987', '-0', '-0', '+0', '+0', '+987', '+∞', '+非數值'],
@@ -25,7 +26,7 @@ describe('signDisplay-zh-TW', function () {
   ] of tests) {
     const nf = new NumberFormat('zh-TW', {signDisplay});
     describe(signDisplay, function () {
-      test('negativeInfinity', () => {
+      it('negativeInfinity', () => {
         expect(nf.format(-Infinity)).toEqual(negativeInfinity);
       });
       it('negative', function () {
