@@ -5,7 +5,6 @@ import RelativeTimeFormat from '../src';
 RelativeTimeFormat.__addLocaleData(zh);
 
 describe('supportedLocalesOf', function () {
-  const RelativeTimeFormat = (Intl as any).RelativeTimeFormat;
   function test() {
     expect(RelativeTimeFormat.supportedLocalesOf(['zh', 'en-jj'])).toContain(
       'zh'

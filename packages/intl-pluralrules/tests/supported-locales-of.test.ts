@@ -1,7 +1,7 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
 import {PluralRules} from '../src';
 // @ts-ignore
-import zh from '../dist/locale-data/zh.data.js';
+import * as zh from '../dist/locale-data/zh.data.js';
 PluralRules.__addLocaleData(zh as any);
 describe('supportedLocalesOf', function () {
   function test() {
