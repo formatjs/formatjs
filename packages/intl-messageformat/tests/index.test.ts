@@ -865,18 +865,21 @@ describe('IntlMessageFormat', function () {
       })
     ).toMatch(/\d{2}(.*?)\/(.*?)\d{2}(.*?)\/(.*?)\d{4}/); // Deal w/ IE11
   });
-  it('time skeleton', function () {
-    expect(
-      new IntlMessageFormat('{d, time, ::hhmmss}', 'en-US').format({
-        d: new Date(0),
-      })
-    ).toMatch(/\d{2}(.*?):(.*?)\d{2}(.*?):(.*?)\d{2}(.*?)[AP]M/); // Deal w/ IE11
-    expect(
-      new IntlMessageFormat('{d, time, ::hhmmssz}', 'en-US').format({
-        d: new Date(0),
-      })
-    ).toMatch(/\d{2}(.*?):(.*?)\d{2}(.*?):(.*?)\d{2}(.*?)[AP]M/); // Deal w/ IE11
-  });
+  // Node 10 DateTimeFormat hour: 2-digit is buggy
+  if (!process.version || process.version.indexOf('v10') < 0) {
+    it('time skeleton', function () {
+      expect(
+        new IntlMessageFormat('{d, time, ::hhmmss}', 'en-US').format({
+          d: new Date(0),
+        })
+      ).toMatch(/\d{2}(.*?):(.*?)\d{2}(.*?):(.*?)\d{2}(.*?)[AP]M/); // Deal w/ IE11
+      expect(
+        new IntlMessageFormat('{d, time, ::hhmmssz}', 'en-US').format({
+          d: new Date(0),
+        })
+      ).toMatch(/\d{2}(.*?):(.*?)\d{2}(.*?):(.*?)\d{2}(.*?)[AP]M/); // Deal w/ IE11
+    });
+  }
 
   describe('formatToParts', function () {
     it('should be able to take React Element', function () {
