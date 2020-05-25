@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@2.0.1...@formatjs/intl-listformat@2.1.0) (2020-05-25)
+
+
+### Features
+
+* **@formatjs/intl-listformat:** reduce asset size since we use Intl.getCanonicalLocales ([c376d66](https://github.com/formatjs/formatjs/commit/c376d66922994aae2a5917edab15450a0179c3f1))
+
+
+
+
+
 ## [2.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@2.0.0...@formatjs/intl-listformat@2.0.1) (2020-05-23)
 
 **Note:** Version bump only for package @formatjs/intl-listformat

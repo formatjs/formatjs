@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@2.0.1...@formatjs/intl-displaynames@2.1.0) (2020-05-25)
+
+
+### Features
+
+* **@formatjs/intl-displaynames:** reduce asset size since we use Intl.getCanonicalLocales ([8ae362d](https://github.com/formatjs/formatjs/commit/8ae362d6657be71fcb10161bd8065bd8922927e0))
+
+
+
+
+
 ## [2.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@2.0.0...@formatjs/intl-displaynames@2.0.1) (2020-05-23)
 
 **Note:** Version bump only for package @formatjs/intl-displaynames

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@5.0.1...@formatjs/intl-relativetimeformat@5.1.0) (2020-05-25)
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** reduce asset size since we use Intl.getCanonicalLocales ([ac77c42](https://github.com/formatjs/formatjs/commit/ac77c42bac5ac9f454d60f653d109ccc7fadcf01))
+
+
+
+
+
 ## [5.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@5.0.0...@formatjs/intl-relativetimeformat@5.0.1) (2020-05-23)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat

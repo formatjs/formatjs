@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@3.0.1...@formatjs/intl-utils@3.1.0) (2020-05-25)
+
+
+### Features
+
+* **@formatjs/intl-utils:** Remove aliases and parentLocales ([e0e9370](https://github.com/formatjs/formatjs/commit/e0e937062514f0f776401be99b556682dd0623cc))
+
+
+
+
+
 ## [3.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@3.0.0...@formatjs/intl-utils@3.0.1) (2020-05-23)
 
 **Note:** Version bump only for package @formatjs/intl-utils

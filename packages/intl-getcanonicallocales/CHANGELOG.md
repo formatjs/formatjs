@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.2.1...@formatjs/intl-getcanonicallocales@1.2.2) (2020-05-25)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-getcanonicallocales:** fix alias lookup algo ([b39e3c2](https://github.com/formatjs/formatjs/commit/b39e3c2b1baefc011825f8e443769c2095beeb12))
+* **@formatjs/intl-getcanonicallocales:** fix region casing ([396dbe7](https://github.com/formatjs/formatjs/commit/396dbe769bef6eb82ae274ba4935e70e076b2854))
+* **@formatjs/intl-getcanonicallocales:** Handle aliases properly ([9e19e4b](https://github.com/formatjs/formatjs/commit/9e19e4b769560f3717f9589ab6180e932aaf96f8))
+* **@formatjs/intl-getcanonicallocales:** set the polyfill if native impl is buggy ([555a28b](https://github.com/formatjs/formatjs/commit/555a28b2d6d3c48f69d765c5090f7880ef603adc))
+* **@formatjs/intl-locale:** fix add/remove likely subtags ([d72f952](https://github.com/formatjs/formatjs/commit/d72f952a66905a3a7edd75518ccaa72c2020273e))
+
+
+
+
+
 ## [1.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.2.0...@formatjs/intl-getcanonicallocales@1.2.1) (2020-05-23)
 
 **Note:** Version bump only for package @formatjs/intl-getcanonicallocales

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@4.0.1...@formatjs/intl-numberformat@4.1.0) (2020-05-25)
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** reduce asset size since we use Intl.getCanonicalLocales ([3ae64b2](https://github.com/formatjs/formatjs/commit/3ae64b2c8bee246bffcf6dd4165947217255f0d2))
+
+
+
+
+
 ## [4.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@4.0.0...@formatjs/intl-numberformat@4.0.1) (2020-05-23)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

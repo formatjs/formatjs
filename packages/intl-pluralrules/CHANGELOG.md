@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@2.0.1...@formatjs/intl-pluralrules@2.1.0) (2020-05-25)
+
+
+### Features
+
+* **@formatjs/intl-pluralrules:** reduce asset size since we use Intl.getCanonicalLocales ([aaa65c3](https://github.com/formatjs/formatjs/commit/aaa65c30e72de4bbe7abb77b9c7aa5be8f5192b0))
+
+
+
+
+
 ## [2.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@2.0.0...@formatjs/intl-pluralrules@2.0.1) (2020-05-23)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules

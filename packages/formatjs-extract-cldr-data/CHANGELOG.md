@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.2.0](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@10.1.10...formatjs-extract-cldr-data@10.2.0) (2020-05-25)
+
+
+### Features
+
+* **formatjs-extract-cldr-data:** reduce asset size since we use Intl.getCanonicalLocales ([cf096cd](https://github.com/formatjs/formatjs/commit/cf096cd044489a1439e7e7751c3b4ae2ac9aa318))
+
+
+
+
+
 ## [10.1.10](https://github.com/formatjs/formatjs/compare/formatjs-extract-cldr-data@10.1.9...formatjs-extract-cldr-data@10.1.10) (2020-05-23)
 
 **Note:** Version bump only for package formatjs-extract-cldr-data
