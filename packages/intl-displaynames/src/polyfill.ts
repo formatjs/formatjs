@@ -1,9 +1,14 @@
-import {DisplayNames} from '.';
+import {DisplayNames, DisplayNamesOptions} from '.';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Intl {
-    const DisplayNames: DisplayNames;
+    const DisplayNames: {
+      new (
+        locales?: string | string[],
+        options?: DisplayNamesOptions
+      ): DisplayNames;
+    };
   }
 }
 
