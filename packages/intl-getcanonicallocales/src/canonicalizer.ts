@@ -78,7 +78,7 @@ export function canonicalizeUnicodeLanguageId(
 
   // From https://github.com/unicode-org/icu/blob/master/icu4j/main/classes/core/src/com/ibm/icu/util/ULocale.java#L1246
 
-  // Try language_variant
+  // Try language _ variant
   let finalLangAst = unicodeLanguageId;
   if (unicodeLanguageId.variants.length) {
     let replacedLang: string = '';

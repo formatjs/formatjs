@@ -1,5 +1,5 @@
-import {Locale} from '../src';
 import '@formatjs/intl-getcanonicallocales/polyfill';
+import {Locale} from '../src';
 const testDataMaximal: Record<string, string> = {
   // Language subtag is present.
   en: 'en-Latn-US',
@@ -75,11 +75,6 @@ describe('likely-subtags', function () {
       expect(new Locale(maximal).maximize().toString()).toBe(maximal);
     });
 
-    if (tag === 'und') {
-      // TODO: `und-x-private` and friends are buggy rn
-      // https://github.com/tc39/ecma402/issues/445
-      continue;
-    }
     for (const extra of extras) {
       const input = tag + extra;
       const output = maximal + extra;

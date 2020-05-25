@@ -12,13 +12,13 @@ import {
   isUnicodeLanguageSubtag,
   isUnicodeRegionSubtag,
   parseUnicodeLanguageId,
-  UnicodeLanguageId,
   UnicodeExtension,
   isUnicodeScriptSubtag,
   emitUnicodeLocaleId,
   parseUnicodeLocaleId,
   emitUnicodeLanguageId,
   getCanonicalLocales,
+  UnicodeLanguageId,
 } from '@formatjs/intl-getcanonicallocales';
 import {supplemental} from 'cldr-core/supplemental/likelySubtags.json';
 const {likelySubtags} = supplemental;
@@ -162,20 +162,85 @@ function applyUnicodeExtensionToTag(
   return result;
 }
 
+function mergeUnicodeLanguageId(
+  lang?: string,
+  script?: string,
+  region?: string,
+  variants: string[] = [],
+  replacement?: UnicodeLanguageId
+): UnicodeLanguageId {
+  if (!replacement) {
+    return {
+      lang: lang || 'und',
+      script,
+      region,
+      variants,
+    };
+  }
+  return {
+    lang: !lang || lang === 'und' ? replacement.lang : lang,
+    script: script || replacement.script,
+    region: region || replacement.region,
+    variants: [...variants, ...replacement.variants],
+  };
+}
+
 function addLikelySubtags(tag: string): string {
   const ast = parseUnicodeLocaleId(tag);
   const unicodeLangId = ast.lang;
-  const {lang, script, region} = unicodeLangId;
+  const {lang, script, region, variants} = unicodeLangId;
+  if (script && region) {
+    const match =
+      likelySubtags[
+        emitUnicodeLanguageId({lang, script, region, variants: []}) as 'aa'
+      ];
+    if (match) {
+      const parts = parseUnicodeLanguageId(match);
+      ast.lang = mergeUnicodeLanguageId(
+        undefined,
+        undefined,
+        undefined,
+        variants,
+        parts
+      );
+      return emitUnicodeLocaleId(ast);
+    }
+  }
+  if (script) {
+    const match =
+      likelySubtags[
+        emitUnicodeLanguageId({lang, script, variants: []}) as 'aa'
+      ];
+    if (match) {
+      const parts = parseUnicodeLanguageId(match);
+      ast.lang = mergeUnicodeLanguageId(
+        undefined,
+        undefined,
+        region,
+        variants,
+        parts
+      );
+      return emitUnicodeLocaleId(ast);
+    }
+  }
+  if (region) {
+    const match =
+      likelySubtags[
+        emitUnicodeLanguageId({lang, region, variants: []}) as 'aa'
+      ];
+    if (match) {
+      const parts = parseUnicodeLanguageId(match);
+      ast.lang = mergeUnicodeLanguageId(
+        undefined,
+        script,
+        undefined,
+        variants,
+        parts
+      );
+      return emitUnicodeLocaleId(ast);
+    }
+  }
   const match =
-    likelySubtags[
-      emitUnicodeLanguageId({lang, script, region, variants: []}) as 'aa'
-    ] ||
-    likelySubtags[
-      emitUnicodeLanguageId({lang, region, variants: []}) as 'aa'
-    ] ||
-    likelySubtags[
-      emitUnicodeLanguageId({lang, script, variants: []}) as 'aa'
-    ] ||
     likelySubtags[lang as 'aa'] ||
     likelySubtags[
       emitUnicodeLanguageId({lang: 'und', script, variants: []}) as 'aa'
@@ -183,42 +248,58 @@ function addLikelySubtags(tag: string): string {
   if (!match) {
     throw new Error(`No match for addLikelySubtags`);
   }
-  const parts = match.split('-');
-  ast.lang = {
-    ...unicodeLangId,
-    lang: lang === 'und' || !lang ? parts[0] : lang,
-    script: script || parts[1],
-    region: region || parts[2],
-  };
+  const parts = parseUnicodeLanguageId(match);
+  ast.lang = mergeUnicodeLanguageId(undefined, script, region, variants, parts);
   return emitUnicodeLocaleId(ast);
 }
 
+/**
+ * From: https://github.com/unicode-org/icu/blob/4231ca5be053a22a1be24eb891817458c97db709/icu4j/main/classes/core/src/com/ibm/icu/util/ULocale.java#L2395
+ * @param tag
+ */
 function removeLikelySubtags(tag: string): string {
+  let maxLocale = addLikelySubtags(tag);
+  if (!maxLocale) {
+    return tag;
+  }
+  maxLocale = emitUnicodeLanguageId({
+    ...parseUnicodeLanguageId(maxLocale),
+    variants: [],
+  });
   const ast = parseUnicodeLocaleId(tag);
-  const maxLocale = addLikelySubtags(tag);
-  const max = parseUnicodeLanguageId(maxLocale);
-  const {variants} = max;
-  const maxWithoutVariants = {...max, variants: []};
-  const maxLanguageWithoutVariants = emitUnicodeLanguageId(maxWithoutVariants);
-  const trials: UnicodeLanguageId[] = [
-    {lang: max.lang, variants: []},
-    {lang: max.lang, region: max.region, variants: []},
-    {lang: max.lang, script: max.script, variants: []},
-  ];
-  let minimized: UnicodeLanguageId = max;
-  for (const trial of trials) {
-    if (
-      addLikelySubtags(emitUnicodeLanguageId(trial)) ===
-      maxLanguageWithoutVariants
-    ) {
-      minimized = {...trial, variants};
-      break;
+  const {
+    lang: {lang, script, region, variants},
+  } = ast;
+  const trial = addLikelySubtags(emitUnicodeLanguageId({lang, variants: []}));
+  if (trial === maxLocale) {
+    return emitUnicodeLocaleId({
+      ...ast,
+      lang: mergeUnicodeLanguageId(lang, undefined, undefined, variants),
+    });
+  }
+  if (region) {
+    const trial = addLikelySubtags(
+      emitUnicodeLanguageId({lang, region, variants: []})
+    );
+    if (trial === maxLocale) {
+      return emitUnicodeLocaleId({
+        ...ast,
+        lang: mergeUnicodeLanguageId(lang, undefined, region, variants),
+      });
     }
   }
-  return emitUnicodeLocaleId({
-    ...ast,
-    lang: minimized,
-  });
+  if (script) {
+    const trial = addLikelySubtags(
+      emitUnicodeLanguageId({lang, script, variants: []})
+    );
+    if (trial === maxLocale) {
+      return emitUnicodeLocaleId({
+        ...ast,
+        lang: mergeUnicodeLanguageId(lang, script, undefined, variants),
+      });
+    }
+  }
+  return tag;
 }
 
 export class Locale {

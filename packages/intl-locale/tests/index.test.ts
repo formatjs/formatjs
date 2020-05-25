@@ -1,5 +1,6 @@
-import {Locale} from '../src';
 import '@formatjs/intl-getcanonicallocales/polyfill';
+import {Locale} from '../src';
+
 describe('intl-locale', () => {
   it('toString', function () {
     // expect(() => IntlLocale.prototype.toString.call(IntlLocale.prototype)).toThrowError(TypeError)
