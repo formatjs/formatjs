@@ -1,5 +1,6 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
 import {PluralRules} from '../src';
+// @ts-ignore
 import en from '../dist/locale-data/en.data.js';
 PluralRules.__addLocaleData(en);
 

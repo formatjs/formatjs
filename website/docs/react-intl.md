@@ -25,9 +25,9 @@ React Intl relies on these `Intl` APIs:
 
 If you need to support older browsers, we recommend you do the following:
 
-1. Polyfill `Intl.NumberFormat` with https://github.com/andyearnshaw/Intl.js
+1. Polyfill `Intl.NumberFormat` with [`@formatjs/intl-numberformat`](polyfills/intl-numberformat.md).
 2. Polyfill `Intl.DateTimeFormat` with https://github.com/formatjs/date-time-format-timezone
-3. If you're supporting browsers that do not have [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](polyfills/intl-pluralrules.md) in your build.
+3. If you're supporting browsers that do not have [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](polyfills/intl-pluralrules.md) in your build.
 
 ```tsx
 if (!Intl.PluralRules) {
@@ -86,11 +86,11 @@ If you're using `react-intl` in React Native, make sure your runtime has built-i
 
 If you cannot use the Intl variant of JSC (e.g on iOS), follow the instructions in [Runtime Requirements](#runtime-requirements) to polyfill those APIs accordingly.
 
-## Stage-3 Intl Features
+## Experimental Intl Features
 
-FormatJS also provides types & polyfill for the following Stage 3 Intl APIs:
+FormatJS also provides types & polyfill for the following Intl API proposals:
 
-- Unified NumberFormat: [polyfill](polyfills/intl-numberformat.md) & [spec](https://github.com/tc39/proposal-unified-intl-numberformat)
+- NumberFormat: [polyfill](polyfills/intl-numberformat.md) & [spec](https://tc39.es/ecma402/)
 - DisplayNames: [polyfill][displaynames-polyfill] & [spec][displaynames-spec]
 
 ## The `react-intl` Package

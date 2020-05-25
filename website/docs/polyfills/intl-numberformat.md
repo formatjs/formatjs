@@ -3,7 +3,10 @@ id: intl-numberformat
 title: Intl.NumberFormat (ES2020)
 ---
 
-A ponyfill/polyfill for [`intl-numberformat`](https://github.com/tc39/proposal-intl-numberformat).
+A ponyfill/polyfill for ES2020 [`Intl.NumberFormat`][numberformat] and [`Number.prototype.toLocaleString`][tolocalestring].
+
+[numberformat]: https://tc39.es/ecma402/#numberformat-objects
+[tolocalestring]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString
 
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-numberformat.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-numberformat)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-numberformat)
@@ -18,36 +21,39 @@ npm install @formatjs/intl-numberformat
 
 This package requires the following capabilities:
 
-1. [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules)
+1. [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules)
 
 2. If you're supporting IE11-, this requires [`Intl.getCanonicalLocales`](intl-getcanonicallocales.md).
 
 # Features
 
-Everything in the https://github.com/tc39/proposal-intl-numberformat proposal with the caveats below.
-
-## Caveats
-
-1. `compact` notation is currently buggy in certain locales with special compact rules (such as `zh-Hant` or `Somali`) See https://github.com/tc39/proposal-intl-numberformat/issues/26 for more details.
+Everything in the ES2020 Internationalization API spec (https://tc39.es/ecma402).
 
 # Usage
 
 To use the ponyfill, import it along with its data:
 
 ```tsx
-import {UnifiedNumberFormat} from '@formatjs/intl-numberformat';
-UnifiedNumberFormat.__addLocaleData(
+import {NumberFormat, toLocaleString} from '@formatjs/intl-numberformat';
+NumberFormat.__addLocaleData(
   require('@formatjs/intl-numberformat/dist/locale-data/zh.json') // locale-data for zh
 );
-UnifiedNumberFormat.__addLocaleData(
+NumberFormat.__addLocaleData(
   require('@formatjs/intl-numberformat/dist/locale-data/en.json') // locale-data for en
 );
 
-new UnifiedNumberFormat('zh', {
+new NumberFormat('zh', {
   style: 'unit',
   unit: 'bit',
   unitDisplay: 'long',
 }).format(1000); // 1,000比特
+
+// `Number.prototype.toLocaleString` ponyfill.
+toLocaleString(1000, 'zh', {
+  style: 'unit',
+  unit: 'bit',
+  unitDisplay: 'long',
+}); // 1,000比特
 ```
 
 To use this as a polyfill, override `Intl.NumberFormat` as below:
@@ -65,9 +71,9 @@ if (typeof Intl.NumberFormat.__addLocaleData === 'function') {
 
 new Intl.NumberFormat('zh', {
   style: 'unit',
-  unit: 'bit',
+  unit: 'kilometer-per-hour',
   unitDisplay: 'long',
-}).format(1000); // 1,000比特
+}).format(1000); // 每小时1,000公里
 
 new Intl.NumberFormat('en-US', {
   notation: 'engineering',
@@ -78,11 +84,18 @@ new Intl.NumberFormat('zh', {
   currency: 'EUR',
   currencySign: 'accounting',
 }).format(-100); // (€100.00)
+
+// `Number.prototype.toLocaleString` is also polyfilled.
+(987654321).toLocaleString('en-US', {
+  notation: 'engineering',
+}); // 987.7E6
 ```
 
 ## Supported Units
 
-Currently [intl-numberformat](https://tc39.es/proposal-intl-numberformat/section6/locales-currencies-tz_diff_out.html#sec-issanctionedsimpleunitidentifier) has a list of sanctioned units as below
+### Simple Units
+
+Currently [the spec](https://tc39.es/ecma402/#sec-issanctionedsimpleunitidentifier) defines a list of sanctioned units as below.
 
 ```tsx
 type Unit =
@@ -130,3 +143,8 @@ type Unit =
   | 'yard'
   | 'year';
 ```
+
+### Compound Units
+
+You can specify `X-per-Y` unit, where `X` and `Y` are sactioned simple units (e.g. `kilometer-per-hour`).
+The library will choose the best-fit localized pattern to format this compound unit.

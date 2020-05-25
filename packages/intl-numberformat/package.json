@@ -1,7 +1,7 @@
 {
   "name": "@formatjs/intl-numberformat",
   "version": "4.1.0",
-  "description": "Ponyfill for ES2021 Intl.NumberFormat",
+  "description": "Ponyfill for ES2020 Intl.NumberFormat",
   "keywords": [
     "polyfill",
     "i18n",

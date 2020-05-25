@@ -25,7 +25,7 @@ import '@formatjs/intl-pluralrules/polyfill';
 import '@formatjs/intl-pluralrules/dist/locale-data/en'; // locale-data for en
 ```
 
-TO polyfill w/ ALL locales:
+To polyfill w/ ALL locales:
 
 ```tsx
 import '@formatjs/intl-pluralrules/polyfill-locales';

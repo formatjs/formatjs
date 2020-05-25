@@ -30,7 +30,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * **@formatjs/intl-numberformat:** Use native Intl.getCanonicalLocales ([54cea38](https://github.com/formatjs/formatjs/commit/54cea38396bdfbbc24b1fa12996a5347f44a61f7))
 
 This is a rewrite of Intl.NumberFormat polyfill:
-- Feature compatible with ES2021 spec.
+- Feature compatible with ES2020 spec.
 - Pass most of Intl.NumberFormat test262 cases.
 - New version is 3 to 4 times faster in the benchmark of instantiating NumberFormat object + formatting numbers in currency or unit styles. It is almost 2 times faster in the benchmark variant that reuses the NumberFormat object.
 - Slightly reduce locale data JSON size.
