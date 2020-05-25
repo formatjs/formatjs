@@ -1,12 +1,11 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
 import '@formatjs/intl-pluralrules/polyfill-locales';
-import '../src/polyfill';
-import '../polyfill';
-import '../dist/locale-data/zh';
-import '../dist/locale-data/en';
+import * as zh from '../dist/locale-data/zh.json';
+import * as en from '../dist/locale-data/en.json';
+import RelativeTimeFormat from '../src';
+RelativeTimeFormat.__addLocaleData(en, zh);
 
 describe('Intl.RelativeTimeFormat', function () {
-  const RelativeTimeFormat = (Intl as any).RelativeTimeFormat;
   it('should lookup zh-CN', function () {
     expect(new RelativeTimeFormat('zh-CN').format(-1, 'second')).toBe(
       '1秒钟前'

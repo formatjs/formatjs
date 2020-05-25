@@ -3,7 +3,7 @@ import {
   getAllListLocales,
 } from 'formatjs-extract-cldr-data';
 import {resolve, join} from 'path';
-import {outputFileSync} from 'fs-extra';
+import {outputFileSync, outputJsonSync} from 'fs-extra';
 import {ListPatternLocaleData} from '@formatjs/intl-utils';
 
 const data = extractAllListPatterns();
@@ -44,6 +44,11 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
   Intl.ListFormat.__addLocaleData(${JSON.stringify(langData[lang])})
 }`
   );
+});
+
+// Dist all locale files to dist/locale-data
+Object.keys(langData).forEach(function (lang) {
+  outputJsonSync(join(allLocaleDistDir, lang + '.json'), langData[lang]);
 });
 
 // Aggregate all into src/locales.ts

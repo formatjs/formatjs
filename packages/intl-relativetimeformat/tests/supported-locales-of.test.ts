@@ -1,8 +1,8 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
 import '@formatjs/intl-pluralrules/polyfill-locales';
-import '../src/polyfill';
-import '../polyfill';
-import '../dist/locale-data/zh';
+import * as zh from '../dist/locale-data/zh.json';
+import RelativeTimeFormat from '../src';
+RelativeTimeFormat.__addLocaleData(zh);
 
 describe('supportedLocalesOf', function () {
   const RelativeTimeFormat = (Intl as any).RelativeTimeFormat;

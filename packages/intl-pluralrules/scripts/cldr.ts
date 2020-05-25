@@ -38,6 +38,13 @@ if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') 
 }
 `
   );
+  outputFileSync(
+    resolve(__dirname, `../dist/locale-data/${lang}.data.js`),
+    `/* @generated */
+// prettier-ignore
+export default ${serialize(allData[lang])}
+`
+  );
 });
 
 // Aggregate all into ../polyfill-locales.js

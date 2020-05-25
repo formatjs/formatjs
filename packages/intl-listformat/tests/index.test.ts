@@ -1,12 +1,10 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
-import '../src/polyfill';
-import '../polyfill';
-import '../dist/locale-data/zh';
-import '../dist/locale-data/en';
-import PolyfilledListFormat from '../src/core';
+import ListFormat from '../src';
+import * as en from '../dist/locale-data/en.json';
+import * as zh from '../dist/locale-data/zh.json';
+ListFormat.__addLocaleData(en, zh);
 
 describe('Intl.ListFormat', function () {
-  const ListFormat: typeof PolyfilledListFormat = (Intl as any).ListFormat;
   it('should support aliases', function () {
     expect(
       new ListFormat('zh-CN', {type: 'unit'}).format(['1', '2', '3'])

@@ -2,10 +2,9 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
 import {DisplayNames} from '../src';
 
-DisplayNames.__addLocaleData(
-  require('../dist/locale-data/en.json'),
-  require('../dist/locale-data/zh.json')
-);
+import * as en from '../dist/locale-data/en.json';
+import * as zh from '../dist/locale-data/zh.json';
+DisplayNames.__addLocaleData(en, zh);
 
 describe('.of()', () => {
   it('accepts case-insensitive language code with region subtag', () => {

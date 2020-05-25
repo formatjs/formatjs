@@ -1,10 +1,10 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
-import '../src/polyfill';
-import '../polyfill';
-import '../dist/locale-data/zh';
+import ListFormat from '../src';
+import * as en from '../dist/locale-data/en.json';
+import * as zh from '../dist/locale-data/zh.json';
+ListFormat.__addLocaleData(en, zh);
 
 describe('supportedLocalesOf', function () {
-  const ListFormat = (Intl as any).ListFormat;
   function test() {
     expect(ListFormat.supportedLocalesOf(['zh', 'en-jj'])).toContain('zh');
     expect(ListFormat.supportedLocalesOf('fr')).toEqual([]);

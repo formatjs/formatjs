@@ -41,6 +41,7 @@ export function generateTestConfig(fn) {
             declarationMap: false,
           },
         },
+        check: false,
       }),
       commonjs(),
     ],

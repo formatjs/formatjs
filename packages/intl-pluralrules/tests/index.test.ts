@@ -1,43 +1,36 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
-import '../src/polyfill';
-import '../dist/locale-data/en';
+import {PluralRules} from '../src';
+import en from '../dist/locale-data/en.data.js';
+PluralRules.__addLocaleData(en);
 
-describe('Intl.PluralRules', function () {
+describe('PluralRules', function () {
   it('should work for cardinal', function () {
-    expect(new Intl.PluralRules('en').select(0)).toBe('other');
-    expect(new Intl.PluralRules('en').select(1)).toBe('one');
-    expect(new Intl.PluralRules('en').select(2)).toBe('other');
-    expect(new Intl.PluralRules('en').select(-1)).toBe('one');
-    expect(new Intl.PluralRules('en').select(-2)).toBe('other');
+    expect(new PluralRules('en').select(0)).toBe('other');
+    expect(new PluralRules('en').select(1)).toBe('one');
+    expect(new PluralRules('en').select(2)).toBe('other');
+    expect(new PluralRules('en').select(-1)).toBe('one');
+    expect(new PluralRules('en').select(-2)).toBe('other');
   });
   it('should deal with en-XX', function () {
-    expect(new Intl.PluralRules('en-XX').select(0)).toBe('other');
-    expect(new Intl.PluralRules('en-XX').select(1)).toBe('one');
+    expect(new PluralRules('en-XX').select(0)).toBe('other');
+    expect(new PluralRules('en-XX').select(1)).toBe('one');
   });
   it('should work for ordinal', function () {
-    expect(new Intl.PluralRules('en', {type: 'ordinal'}).select(0)).toBe(
-      'other'
-    );
-    expect(new Intl.PluralRules('en', {type: 'ordinal'}).select(1)).toBe('one');
-    expect(new Intl.PluralRules('en', {type: 'ordinal'}).select(2)).toBe('two');
-    expect(new Intl.PluralRules('en', {type: 'ordinal'}).select(3)).toBe('few');
-    expect(new Intl.PluralRules('en', {type: 'ordinal'}).select(-1)).toBe(
-      'one'
-    );
-    expect(new Intl.PluralRules('en', {type: 'ordinal'}).select(-2)).toBe(
-      'two'
-    );
-    expect(new Intl.PluralRules('en', {type: 'ordinal'}).select(-3)).toBe(
-      'few'
-    );
+    expect(new PluralRules('en', {type: 'ordinal'}).select(0)).toBe('other');
+    expect(new PluralRules('en', {type: 'ordinal'}).select(1)).toBe('one');
+    expect(new PluralRules('en', {type: 'ordinal'}).select(2)).toBe('two');
+    expect(new PluralRules('en', {type: 'ordinal'}).select(3)).toBe('few');
+    expect(new PluralRules('en', {type: 'ordinal'}).select(-1)).toBe('one');
+    expect(new PluralRules('en', {type: 'ordinal'}).select(-2)).toBe('two');
+    expect(new PluralRules('en', {type: 'ordinal'}).select(-3)).toBe('few');
   });
-  if ((Intl.PluralRules as any).polyfilled) {
+  if ((PluralRules as any).polyfilled) {
     it('should honor minimumFractionDigits', function () {
       expect(
-        new Intl.PluralRules('en', {minimumFractionDigits: 0} as any).select(1)
+        new PluralRules('en', {minimumFractionDigits: 0} as any).select(1)
       ).toBe('one');
       expect(
-        new Intl.PluralRules('en', {minimumFractionDigits: 2} as any).select(1)
+        new PluralRules('en', {minimumFractionDigits: 2} as any).select(1)
       ).toBe('other');
     });
   }
