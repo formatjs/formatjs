@@ -42,6 +42,8 @@ const excludedTests = [
   'currency-digits', // AFN's currency digits differ from CLDR data.
   'legacy-regexp-statics-not-modified', // TODO
   'proto-from-ctor-realm', // Bc of Realm support
+  'constructor-locales-get-tostring', // Bc our Intl.getCanonicalLocales isn't really spec-compliant
+  'taint-Object-prototype', // Bc our Intl.getCanonicalLocales isn't really spec-compliant
 ];
 // @ts-ignore
 const PATTERN = resolve(

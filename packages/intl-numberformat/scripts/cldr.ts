@@ -154,6 +154,7 @@ outputFileSync(
   resolve(__dirname, '../dist-es6/polyfill-locales.js'),
   `
 import './polyfill';
+import '@formatjs/intl-getcanonicallocales/polyfill';
 if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function') {
   Intl.NumberFormat.__addLocaleData(
     ${['ar', 'de', 'en', 'ja', 'ko', 'th', 'zh', 'zh-Hant', 'zh-Hans']

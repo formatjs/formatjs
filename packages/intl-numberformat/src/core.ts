@@ -22,6 +22,7 @@ import formatToParts from './format_to_parts';
 // eslint-disable-next-line import/no-cycle
 import getInternalSlots from './get_internal_slots';
 import {NumberFormatConstructor, NumberFormatOptions} from './types';
+import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
 
 // Merge declaration with the constructor defined below.
 export type NumberFormat = import('./types').NumberFormat;
@@ -374,8 +375,9 @@ defineProperty(NumberFormat, 'supportedLocalesOf', {
   ) {
     return supportedLocales(
       NumberFormat.availableLocales,
-      // @ts-ignore
-      Intl.getCanonicalLocales(locales),
+      ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
+        locales
+      ),
       options
     );
   },
