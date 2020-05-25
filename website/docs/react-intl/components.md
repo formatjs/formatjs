@@ -370,7 +370,9 @@ By default `<FormattedNumber>` will render the formatted number into a `React.Fr
 
 **Formatting Number using `unit`**
 
-Currently this is part of [Unified NumberFormat](https://github.com/tc39/proposal-unified-intl-numberformat) which is stage 3. We've provided a polyfill [here](../polyfills/intl-numberformat.md) and `react-intl` types allow users to pass in a [sanctioned unit](../polyfills/intl-numberformat.md#SupportedUnits). For example:
+Currently this is part of ES2020 [NumberFormat](https://tc39.es/ecma402/#numberformat-objects).
+We've provided a polyfill [here](../polyfills/intl-numberformat.md) and `react-intl` types allow users to pass
+in a [sanctioned unit](../polyfills/intl-numberformat.md#SupportedUnits). For example:
 
 ```tsx
 <FormattedNumber

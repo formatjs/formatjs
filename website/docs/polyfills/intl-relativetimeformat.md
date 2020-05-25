@@ -20,11 +20,9 @@ This package requires the following capabilities:
 
 1. [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules)
 
-**NOTE: `formatToParts` only works on Node 10+ due to lack of `Intl.NumberFormat.prototype.formatToParts` natively**
-
 2. If you're supporting IE11-, this requires [`Intl.getCanonicalLocales`](intl-getcanonicallocales.md).
 
-3. If you need `formatToParts` and have to support IE11- or Node 10-, you'd need to polyfill using [`@formatjs/intl-numberformat`](intl-numberformat.md)
+3. If you need `formatToParts` and have to support IE11- or Node 10-, you'd need to polyfill using [`@formatjs/intl-numberformat`](intl-numberformat.md).
 
 ## Usage
 

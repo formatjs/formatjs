@@ -19,7 +19,7 @@ const NUMBER_FORMAT_OPTIONS: Array<keyof NumberFormatOptions> = [
   'minimumSignificantDigits',
   'maximumSignificantDigits',
 
-  // Unified NumberFormat (Stage 3 as of 10/22/19)
+  // ES2020 NumberFormat
   'compactDisplay',
   'currencyDisplay',
   'currencySign',
