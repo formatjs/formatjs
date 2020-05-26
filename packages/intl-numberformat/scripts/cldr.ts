@@ -1,11 +1,9 @@
-import {
-  generateCurrencyDataForLocales,
-  generateUnitDataForLocales,
-  generateNumberDataForLocales,
-  locales,
-  extractCurrencyDigits,
+import extractCurrencies, {extractCurrencyDigits} from './extract-currencies';
+import extractUnits from './extract-units';
+import extractNumbers, {
+  getAllLocales,
   extractNumberingSystemNames,
-} from 'formatjs-extract-cldr-data';
+} from './extract-numbers';
 import {
   SANCTIONED_UNITS,
   removeUnitNamespace,
@@ -15,14 +13,14 @@ import {resolve, join} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
 
 const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
-
-const numbersData = generateNumberDataForLocales();
-const currenciesData = generateCurrencyDataForLocales();
-const unitsData = generateUnitDataForLocales();
+const locales = getAllLocales();
+const numbersData = extractNumbers(locales);
+const currenciesData = extractCurrencies(locales);
+const unitsData = extractUnits(locales);
 
 const allData = locales.reduce(
   (all: Record<string, RawNumberLocaleData>, locale) => {
-    if (!all[locale]) {
+    if (!all[locale] && numbersData[locale]) {
       all[locale] = {
         data: {
           [locale]: {

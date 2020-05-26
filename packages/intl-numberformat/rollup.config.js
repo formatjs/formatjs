@@ -1,15 +1,19 @@
 import {uglify} from 'rollup-plugin-uglify';
 import resolve from 'rollup-plugin-node-resolve';
 import json from '@rollup/plugin-json';
-import commonjs from 'rollup-plugin-commonjs';
 import {generateTestConfig} from '../../rollup.config';
 import * as path from 'path';
+import commonjs from 'rollup-plugin-commonjs';
+const commonjsConfig = commonjs({
+  namedExports: {
+    lodash: ['pickBy', 'isEmpty', 'isEqual', 'fromPairs'],
+  },
+});
 const resolveConfig = resolve({
   mainFields: ['module', 'main'],
 });
 const uglifyConfig = uglify();
 const jsonConfig = json();
-const commonjsConfig = commonjs();
 
 const browserFriendlyTests = [
   'tests/unit-zh-TW.test.ts',
