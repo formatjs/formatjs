@@ -1,13 +1,10 @@
-import {
-  extractAllListPatterns,
-  getAllListLocales,
-} from 'formatjs-extract-cldr-data';
+import extractAllPatterns, {getAllLocales} from './extract-list';
 import {resolve, join} from 'path';
 import {outputFileSync, outputJsonSync} from 'fs-extra';
 import {ListPatternLocaleData} from '@formatjs/intl-utils';
-
-const data = extractAllListPatterns();
-const langData = getAllListLocales().reduce(
+const locales = getAllLocales();
+const data = extractAllPatterns(locales);
+const langData = locales.reduce(
   (all: Record<string, ListPatternLocaleData>, locale) => {
     const lang = locale.split('-')[0];
     if (!all[lang]) {
