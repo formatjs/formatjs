@@ -2,11 +2,9 @@ import {Unit, FormattableUnit} from './types';
 import {
   toObject,
   getOption,
-  getLocaleHierarchy,
   supportedLocales,
   RelativeTimeLocaleData,
   createResolveLocale,
-  UnpackedLocaleFieldsData,
   setInternalSlot,
   getInternalSlot,
   invariant,
@@ -16,6 +14,9 @@ import {
   partitionPattern,
   isLiteralPart,
   LiteralPart,
+  isMissingLocaleDataError,
+  unpackData,
+  LocaleFieldsData,
 } from '@formatjs/intl-utils';
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
 
@@ -68,28 +69,6 @@ export interface RelativeTimeFormatNumberPart extends Intl.NumberFormatPart {
   unit: Unit;
 }
 
-function unpackData(locale: string, localeData: RelativeTimeLocaleData) {
-  const localeHierarchy = getLocaleHierarchy(locale);
-  const dataToMerge = localeHierarchy
-    .map(l => localeData.data[l])
-    .filter(Boolean);
-  if (!dataToMerge.length) {
-    throw new Error(
-      `Missing locale data for "${locale}", lookup hierarchy: ${localeHierarchy.join(
-        ', '
-      )}`
-    );
-  }
-  dataToMerge.reverse();
-  return dataToMerge.reduce(
-    (all: UnpackedLocaleFieldsData, d) => ({
-      ...all,
-      ...d,
-    }),
-    {nu: []}
-  );
-}
-
 /**
  * https://tc39.es/proposal-intl-relative-time/#sec-singularrelativetimeunit
  * @param unit
@@ -129,7 +108,7 @@ interface RelativeTimeFormatInternal {
   numberFormat: Intl.NumberFormat;
   pluralRules: Intl.PluralRules;
   locale: string;
-  fields: UnpackedLocaleFieldsData;
+  fields: LocaleFieldsData;
   style: IntlRelativeTimeFormatOptions['style'];
   numeric: IntlRelativeTimeFormatOptions['numeric'];
   numberingSystem: string;
@@ -457,7 +436,11 @@ export default class RelativeTimeFormat {
         try {
           RelativeTimeFormat.localeData[locale] = unpackData(locale, datum);
         } catch (e) {
-          // If we can't unpack this data, ignore the locale
+          if (isMissingLocaleDataError(e)) {
+            // If we just don't have data for certain locale, that's ok
+            return;
+          }
+          throw e;
         }
       });
     }
@@ -469,7 +452,7 @@ export default class RelativeTimeFormat {
         RelativeTimeFormat.availableLocales[0];
     }
   }
-  static localeData: Record<string, UnpackedLocaleFieldsData> = {};
+  static localeData: Record<string, LocaleFieldsData> = {};
   private static availableLocales: string[] = [];
   private static __defaultLocale = 'en';
   private static getDefaultLocale() {
