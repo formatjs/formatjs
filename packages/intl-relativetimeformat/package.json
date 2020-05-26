@@ -23,6 +23,8 @@
     "@formatjs/intl-getcanonicallocales": "^1.2.2",
     "@formatjs/intl-pluralrules": "^2.1.0",
     "@types/jest": "^25.2.1",
+    "cldr-dates-full": "^36.0.0",
+    "cldr-numbers-full": "^36.0.0",
     "formatjs-extract-cldr-data": "^10.2.0",
     "ts-jest": "^25.4.0"
   },

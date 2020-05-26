@@ -1,13 +1,10 @@
-import {
-  extractAllRelativeFields,
-  getAllDateFieldsLocales,
-} from 'formatjs-extract-cldr-data';
+import extract, {getAllLocales} from './extract-relative';
 import {resolve, join} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
 import {RelativeTimeLocaleData} from '../../intl-utils';
-
-const data = extractAllRelativeFields();
-const langData = getAllDateFieldsLocales().reduce(
+const locales = getAllLocales();
+const data = extract(locales);
+const langData = locales.reduce(
   (all: Record<string, RelativeTimeLocaleData>, locale) => {
     const lang = locale.split('-')[0];
     if (!all[lang]) {
