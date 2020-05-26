@@ -2,7 +2,9 @@ import '@formatjs/intl-getcanonicallocales/polyfill';
 import {PluralRules} from '../src';
 // @ts-ignore
 import * as zh from '../dist/locale-data/zh.data.js';
-PluralRules.__addLocaleData(zh as any);
+// @ts-ignore
+PluralRules.__addLocaleData(zh.default || zh);
+
 describe('supportedLocalesOf', function () {
   function test() {
     expect(PluralRules.supportedLocalesOf(['zh', 'en-jj'])).toContain('zh');
