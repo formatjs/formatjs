@@ -5,8 +5,7 @@
  */
 'use strict';
 import * as ListPatterns from 'cldr-misc-full/main/en/listPatterns.json';
-import {Locale} from './types';
-import generateFieldExtractorFn from './utils';
+import {generateFieldExtractorFn} from './utils';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
 import {ListPatternFieldsData, ListPattern} from '@formatjs/intl-utils';
@@ -40,7 +39,7 @@ function serializeToPatternData(
   };
 }
 
-function loadListPatterns(locale: Locale): ListPatternFieldsData {
+function loadListPatterns(locale: string): ListPatternFieldsData {
   const patterns = (require(`cldr-misc-full/main/${locale}/listPatterns.json`) as typeof ListPatterns)
     .main[locale as 'en'].listPatterns;
   return {
@@ -66,7 +65,7 @@ function loadListPatterns(locale: Locale): ListPatternFieldsData {
   };
 }
 
-function hasListPatterns(locale: Locale): boolean {
+function hasListPatterns(locale: string): boolean {
   return listPatternLocales.includes(locale);
 }
 

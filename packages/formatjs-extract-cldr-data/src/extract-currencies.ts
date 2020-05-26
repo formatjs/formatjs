@@ -6,8 +6,8 @@
 'use strict';
 import * as CurrenciesData from 'cldr-numbers-full/main/en/currencies.json';
 import * as supplementalCurrencyData from 'cldr-core/supplemental/currencyData.json';
-import {Locale} from './types';
-import generateFieldExtractorFn, {
+import {
+  generateFieldExtractorFn,
   collapseSingleValuePluralRule,
   PLURAL_RULES,
 } from './utils';
@@ -50,7 +50,7 @@ export function getAllLocales() {
   }).map(dirname);
 }
 
-function loadCurrencies(locale: Locale): Record<string, CurrencyData> {
+function loadCurrencies(locale: string): Record<string, CurrencyData> {
   const currencies = (require(`cldr-numbers-full/main/${locale}/currencies.json`) as typeof CurrenciesData)
     .main[locale as 'en'].numbers.currencies;
   return (Object.keys(currencies) as Array<keyof typeof currencies>).reduce(
@@ -68,7 +68,7 @@ function loadCurrencies(locale: Locale): Record<string, CurrencyData> {
   );
 }
 
-function hasCurrencies(locale: Locale): boolean {
+function hasCurrencies(locale: string): boolean {
   return unitsLocales.includes(locale);
 }
 

@@ -54,3 +54,4 @@ export {
   generateDataForLocales as generateNumberDataForLocales,
 } from './extract-numbers';
 export {getAllLocales as getAllDisplayNamesLocales} from './extract-displaynames';
+export {generateFieldExtractorFn} from './utils';

@@ -1,5 +1,4 @@
-import {Locale} from './types';
-import generateFieldExtractorFn from './utils';
+import {generateFieldExtractorFn} from './utils';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
 import {DisplayNamesData, invariant} from '@formatjs/intl-utils';
@@ -23,7 +22,7 @@ export function getAllLocales() {
   }).map(dirname);
 }
 
-function hasDisplayNames(locale: Locale): boolean {
+function hasDisplayNames(locale: string): boolean {
   return displayNamesLocales.includes(locale);
 }
 
@@ -67,7 +66,7 @@ function extractCurrencyStyleData(
   return {long: longData, short: {}, narrow: {}};
 }
 
-function loadDisplayNames(locale: Locale): DisplayNamesData {
+function loadDisplayNames(locale: string): DisplayNamesData {
   const langData: LanguageRawData = require(`cldr-localenames-full/main/${locale}/languages.json`)
     .main[locale].localeDisplayNames.languages;
   const regionData: RegionRawData = require(`cldr-localenames-full/main/${locale}/territories.json`)

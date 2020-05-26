@@ -1,4 +1,3 @@
-import {Locale} from './types';
 import {
   getLocaleHierarchy,
   LDMLPluralRule,
@@ -24,19 +23,17 @@ function dedupeUsingParentHierarchy<DataType extends Record<string, any>>(
   return results;
 }
 
-export default function generateFieldExtractorFn<
-  DataType extends Record<string, any>
->(
-  loadFieldsFn: (locale: Locale) => DataType,
+export function generateFieldExtractorFn<DataType extends Record<string, any>>(
+  loadFieldsFn: (locale: string) => DataType,
   hasDataForLocale: (locale: string) => boolean,
   availableLocales: string[]
 ) {
-  return (locales: Locale[]) => {
-    const fieldCache: Record<Locale, DataType> = {};
+  return (locales: string[]) => {
+    const fieldCache: Record<string, DataType> = {};
 
     // Loads and caches the relative fields for a given `locale` because loading
     // and transforming the data is expensive.
-    function populateFields(locale: Locale) {
+    function populateFields(locale: string) {
       if (locale in fieldCache || !hasDataForLocale(locale)) {
         return;
       }

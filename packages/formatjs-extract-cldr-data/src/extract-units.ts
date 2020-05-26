@@ -15,8 +15,8 @@ import {
 import * as UnitsData from 'cldr-units-full/main/en/units.json';
 import {sync as globSync} from 'glob';
 import {dirname, resolve} from 'path';
-import {Locale} from './types';
-import generateFieldExtractorFn, {
+import {
+  generateFieldExtractorFn,
   collapseSingleValuePluralRule,
   PLURAL_RULES,
 } from './utils';
@@ -50,7 +50,7 @@ export function getAllLocales() {
   }).map(dirname);
 }
 
-function loadUnits(locale: Locale): UnitDataTable {
+function loadUnits(locale: string): UnitDataTable {
   const units = (require(`cldr-units-full/main/${locale}/units.json`) as typeof UnitsData)
     .main[locale as 'en'].units;
 
@@ -98,7 +98,7 @@ function loadUnits(locale: Locale): UnitDataTable {
   return {simple: _.fromPairs(simpleUnitEntries), compound: compoundUnits};
 }
 
-function hasUnits(locale: Locale): boolean {
+function hasUnits(locale: string): boolean {
   return unitsLocales.includes(locale);
 }
 

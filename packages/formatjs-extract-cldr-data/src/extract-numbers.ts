@@ -5,8 +5,8 @@
  */
 import * as NumbersData from 'cldr-numbers-full/main/ar/numbers.json';
 import * as numberingSystems from 'cldr-core/supplemental/numberingSystems.json';
-import {Locale} from './types';
-import generateFieldExtractorFn, {
+import {
+  generateFieldExtractorFn,
   collapseSingleValuePluralRule,
   PLURAL_RULES,
 } from './utils';
@@ -123,7 +123,7 @@ function extractNumbers(d: Numbers): RawNumberData {
   };
 }
 
-function loadNumbers(locale: Locale): RawNumberData {
+function loadNumbers(locale: string): RawNumberData {
   try {
     return extractNumbers(
       (require(`cldr-numbers-full/main/${locale}/numbers.json`) as typeof NumbersData)
@@ -135,7 +135,7 @@ function loadNumbers(locale: Locale): RawNumberData {
   }
 }
 
-function hasNumbers(locale: Locale): boolean {
+function hasNumbers(locale: string): boolean {
   return unitsLocales.includes(locale);
 }
 

@@ -7,8 +7,7 @@
 
 import * as DateFields from 'cldr-dates-full/main/en/dateFields.json';
 import * as NumberFields from 'cldr-numbers-full/main/en/numbers.json';
-import {Locale} from './types';
-import generateFieldExtractorFn from './utils';
+import {generateFieldExtractorFn} from './utils';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
 import {FieldData, LocaleFieldsData} from '@formatjs/intl-utils';
@@ -59,7 +58,7 @@ export function getAllLocales() {
   }).map(dirname);
 }
 
-function loadRelativeFields(locale: Locale): LocaleFieldsData {
+function loadRelativeFields(locale: string): LocaleFieldsData {
   const fields = (require(`cldr-dates-full/main/${locale}/dateFields.json`) as typeof DateFields)
     .main[locale as 'en'].dates.fields;
   let nu: string | null = null;
@@ -120,7 +119,7 @@ function transformFieldData(data: Fields['week']): FieldData {
   return processed;
 }
 
-function hasDateFields(locale: Locale): boolean {
+function hasDateFields(locale: string): boolean {
   return dateFieldsLocales.includes(locale);
 }
 
