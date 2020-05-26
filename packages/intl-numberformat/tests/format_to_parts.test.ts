@@ -1,3 +1,4 @@
+import 'core-js/features/set';
 import formatToParts from '../src/format_to_parts';
 
 function format(...args: Parameters<typeof formatToParts>): string {

@@ -344,26 +344,35 @@ const formatDescriptor = {
           .map(x => x.value)
           .join('');
       };
-      // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/prototype/format/format-function-name.js
-      Object.defineProperty(boundFormat, 'name', {
-        configurable: true,
-        enumerable: false,
-        writable: false,
-        value: '',
-      });
+      try {
+        // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/prototype/format/format-function-name.js
+        Object.defineProperty(boundFormat, 'name', {
+          configurable: true,
+          enumerable: false,
+          writable: false,
+          value: '',
+        });
+      } catch (e) {
+        // In older browser (e.g Chrome 36 like polyfill.io)
+        // TypeError: Cannot redefine property: name
+      }
       internalSlots.boundFormat = boundFormat;
     }
     return boundFormat;
   },
 } as const;
-
-// https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/prototype/format/name.js
-Object.defineProperty(formatDescriptor.get, 'name', {
-  configurable: true,
-  enumerable: false,
-  writable: false,
-  value: 'get format',
-});
+try {
+  // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/prototype/format/name.js
+  Object.defineProperty(formatDescriptor.get, 'name', {
+    configurable: true,
+    enumerable: false,
+    writable: false,
+    value: 'get format',
+  });
+} catch (e) {
+  // In older browser (e.g Chrome 36 like polyfill.io)
+  // TypeError: Cannot redefine property: name
+}
 
 Object.defineProperty(NumberFormat.prototype, 'format', formatDescriptor);
 

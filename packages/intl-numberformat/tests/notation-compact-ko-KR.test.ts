@@ -1,3 +1,4 @@
+import 'core-js/features/set';
 import '@formatjs/intl-pluralrules/polyfill-locales';
 import {NumberFormat} from '../src';
 import * as ko from '../dist/locale-data/ko.json';
