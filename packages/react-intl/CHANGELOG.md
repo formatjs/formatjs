@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.6.1](https://github.com/formatjs/formatjs/compare/react-intl@4.6.0...react-intl@4.6.1) (2020-05-27)
+
+
+### Bug Fixes
+
+* **react-intl:** Fix formatMessage types when format function returns a string ([3de8077](https://github.com/formatjs/formatjs/commit/3de80771f4e9083cb1163b2534882b906e695df2))
+
+
+
+
+
 # [4.6.0](https://github.com/formatjs/formatjs/compare/react-intl@4.5.12...react-intl@4.6.0) (2020-05-27)
 
 
