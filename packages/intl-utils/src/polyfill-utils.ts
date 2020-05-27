@@ -389,11 +389,11 @@ export function toRawFixed(
     m = n.toString();
     const idx1 = m.indexOf('.');
     const idx2 = m.indexOf('e+');
-    const exponent = parseInt(m.substring(idx2 + 2), 10);
+    const exponent = +m.substring(idx2 + 2);
     m =
       m.substring(0, idx1) +
       m.substring(idx1 + 1, idx2) +
-      repeat('0', exponent - (idx2 - idx1 - 1));
+      repeat('0', exponent - (idx2 - idx1 - 2));
   }
   let int: number;
   if (f !== 0) {
@@ -429,50 +429,67 @@ export function toRawPrecision(
 ): RawNumberFormatResult {
   const p = maxPrecision;
   let m: string;
-  let e: number;
   let xFinal: number;
-  if (x === 0) {
-    m = repeat('0', p);
-    e = 0;
-    xFinal = 0;
-  } else {
-    e = getMagnitude(x);
-    let n: number;
-    {
-      const magnitude = e - p + 1;
-      const exactSolve =
-        // Preserve floating point precision as much as possible with multiplication.
-        magnitude < 0 ? x * 10 ** -magnitude : x / 10 ** magnitude;
-      const roundDown = Math.floor(exactSolve);
-      const roundUp = Math.ceil(exactSolve);
-      n = exactSolve - roundDown < roundUp - exactSolve ? roundDown : roundUp;
-    }
-    // See: https://tc39.es/ecma262/#sec-numeric-types-number-tostring
-    // No need to worry about scientific notation because it only happens for values >= 1e21,
-    // which has 22 significant digits. So it will at least be divided by 10 here to bring the
-    // value back into non-scientific-notation range.
-    m = n.toString();
-    xFinal = n * 10 ** (e - p + 1);
-  }
   let int: number;
-  if (e >= p - 1) {
-    m = m + repeat('0', e - p + 1);
-    int = e + 1;
-  } else if (e >= 0) {
-    m = `${m.slice(0, e + 1)}.${m.slice(e + 1)}`;
-    int = e + 1;
-  } else {
-    m = `0.${repeat('0', -e - 1)}${m}`;
+
+  if (x === 0) {
+    m = (0).toPrecision(minPrecision);
+    xFinal = 0;
     int = 1;
-  }
-  if (m.indexOf('.') >= 0 && maxPrecision > minPrecision) {
-    let cut = maxPrecision - minPrecision;
-    while (cut > 0 && m[m.length - 1] === '0') {
-      m = m.slice(0, -1);
-      cut--;
+  } else {
+    const xToString = x.toString();
+    const xToPrecision = x.toPrecision(p);
+    const xToStringExponentIndex = xToString.indexOf('e');
+    const xToPrecisionExponentIndex = xToPrecision.indexOf('e');
+
+    if (xToStringExponentIndex < 0 && xToPrecisionExponentIndex < 0) {
+      xFinal = +xToPrecision;
+      m = String(xFinal);
+      const decimalIndex = m.indexOf('.');
+      int = decimalIndex >= 0 ? decimalIndex : m.length;
+    } else {
+      let e: number;
+
+      if (xToStringExponentIndex >= 0) {
+        // if x.toString has scientific exponent sign, then we should derive m based on mantissa
+        // to avoid the loss of floating point precision (e.g. `(1e+41).toPrecision(22)` has a few
+        // non-zero trailing digits).
+        m = xToString.slice(0, xToStringExponentIndex).replace('.', '');
+        if (m.length >= p) {
+          m = m.slice(0, p);
+        } else {
+          m = m + repeat('0', p - m.length);
+        }
+        e = +xToPrecision.slice(xToPrecisionExponentIndex + 1);
+        xFinal = x;
+      } else {
+        // If formatted to scientific notation, it is always in the form of "{X}e{Y}" or "{X}.{Y}e{Z}".
+        // In such case, we can recover e and p from `toPrecision` result.
+        m = xToPrecision.slice(0, xToPrecisionExponentIndex).replace('.', '');
+        e = +xToPrecision.slice(xToPrecisionExponentIndex + 1);
+        xFinal = +xToPrecision; // rounded if necessary
+      }
+
+      if (e >= p - 1) {
+        m = m + repeat('0', e - p + 1);
+        int = e + 1;
+      } else if (e >= 0) {
+        m = m.slice(0, e + 1) + '.' + m.slice(e + 1);
+        int = e + 1;
+      } else {
+        m = '0.' + repeat('0', -e - 1) + m;
+        int = 1;
+      }
     }
-    if (m[m.length - 1] === '.') {
-      m = m.slice(0, -1);
+    if (m.indexOf('.') >= 0 && maxPrecision > minPrecision) {
+      let cut = maxPrecision - minPrecision;
+      while (cut > 0 && m[m.length - 1] === '0') {
+        m = m.slice(0, -1);
+        cut--;
+      }
+      if (m[m.length - 1] === '.') {
+        m = m.slice(0, -1);
+      }
     }
   }
   return {formattedString: m, roundedNumber: xFinal, integerDigitsCount: int};
