@@ -1,4 +1,4 @@
-import extractDisplayNames, {getAllLocales} from './extract-displaynames';
+import {extractDisplayNames, getAllLocales} from './extract-displaynames';
 import {resolve, join} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
 import {DisplayNamesLocaleData} from '@formatjs/intl-utils';
