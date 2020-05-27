@@ -9,19 +9,8 @@ import * as DateFields from 'cldr-dates-full/main/en/dateFields.json';
 import * as NumberFields from 'cldr-numbers-full/main/en/numbers.json';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
-import {
-  FieldData,
-  LocaleFieldsData,
-  generateFieldExtractorFn,
-} from '@formatjs/intl-utils';
+import {FieldData, LocaleFieldsData} from '@formatjs/intl-utils';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
-
-const dateFieldsLocales = globSync('*/dateFields.json', {
-  cwd: resolve(
-    dirname(require.resolve('cldr-dates-full/package.json')),
-    './main'
-  ),
-}).map(dirname);
 
 // The set of CLDR date field names that are used in FormatJS.
 const FIELD_NAMES = [
@@ -123,14 +112,11 @@ function transformFieldData(data: Fields['week']): FieldData {
   return processed;
 }
 
-function hasDateFields(locale: string): boolean {
-  return dateFieldsLocales.includes(locale);
+export function extractRelativeFields(
+  locales: string[] = AVAILABLE_LOCALES.availableLocales.full
+): Record<string, LocaleFieldsData> {
+  return locales.reduce((all: Record<string, LocaleFieldsData>, locale) => {
+    all[locale] = loadRelativeFields(locale);
+    return all;
+  }, {});
 }
-
-const extractRelativeFields = generateFieldExtractorFn<LocaleFieldsData>(
-  loadRelativeFields,
-  hasDateFields,
-  AVAILABLE_LOCALES.availableLocales.full
-);
-
-export default extractRelativeFields;
