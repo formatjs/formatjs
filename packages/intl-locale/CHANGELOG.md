@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.0.2...@formatjs/intl-locale@2.1.0) (2020-05-27)
+
+
+### Features
+
+* **formatjs-extract-cldr-data:** rm this package ([62bdd32](https://github.com/formatjs/formatjs/commit/62bdd32aadef899228a5303e01865f69fd729fa3))
+
+
+
+
+
 ## [2.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.0.1...@formatjs/intl-locale@2.0.2) (2020-05-25)
 
 

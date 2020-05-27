@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@2.1.0...@formatjs/intl-displaynames@2.2.0) (2020-05-27)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** fix polyfill typing and use ponyfill in tests ([#1687](https://github.com/formatjs/formatjs/issues/1687)) ([4d4d4ba](https://github.com/formatjs/formatjs/commit/4d4d4ba9aa904440c0fc4b14229602b236864537))
+
+
+### Features
+
+* **formatjs-extract-cldr-data:** rm this package ([62bdd32](https://github.com/formatjs/formatjs/commit/62bdd32aadef899228a5303e01865f69fd729fa3))
+
+
+
+
+
 # [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@2.0.1...@formatjs/intl-displaynames@2.1.0) (2020-05-25)
 
 

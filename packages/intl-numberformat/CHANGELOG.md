@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@4.1.0...@formatjs/intl-numberformat@4.2.0) (2020-05-27)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** fix defineProperty issue in older browsers, fix karma tests ([c3365e2](https://github.com/formatjs/formatjs/commit/c3365e297ab160bd8fba417252bbff9f7ad464cf))
+* **website:** editorial fixes of Intl.NumberFormat links ([#1690](https://github.com/formatjs/formatjs/issues/1690)) ([1b4a248](https://github.com/formatjs/formatjs/commit/1b4a2482ea85c4f9d3754d46c8aadd67a0b17d93))
+
+
+### Features
+
+* **formatjs-extract-cldr-data:** rm this package ([62bdd32](https://github.com/formatjs/formatjs/commit/62bdd32aadef899228a5303e01865f69fd729fa3))
+
+
+
+
+
 # [4.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@4.0.1...@formatjs/intl-numberformat@4.1.0) (2020-05-25)
 
 

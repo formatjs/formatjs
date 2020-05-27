@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-relativetimeformat",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "Formats JavaScript dates to relative time strings.",
   "keywords": [
     "intl",
@@ -20,8 +20,8 @@
     "url": "git@github.com:formatjs/formatjs.git"
   },
   "devDependencies": {
-    "@formatjs/intl-getcanonicallocales": "^1.2.2",
-    "@formatjs/intl-pluralrules": "^2.1.0",
+    "@formatjs/intl-getcanonicallocales": "^1.2.3",
+    "@formatjs/intl-pluralrules": "^2.2.0",
     "@types/jest": "^25.2.1",
     "cldr-dates-full": "^36.0.0",
     "cldr-numbers-full": "^36.0.0",
