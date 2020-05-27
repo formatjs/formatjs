@@ -14,3 +14,12 @@ export function collapseSingleValuePluralRule<T>(
     {other: rules.other}
   );
 }
+
+export const PLURAL_RULES: Array<LDMLPluralRule> = [
+  'other',
+  'zero',
+  'one',
+  'two',
+  'few',
+  'many',
+];

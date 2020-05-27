@@ -11,10 +11,9 @@ import {
   LDMLPluralRuleMap,
   DecimalFormatNum,
   RawCurrencyData,
-  PLURAL_RULES,
 } from '@formatjs/intl-utils';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
-import {collapseSingleValuePluralRule} from './utils';
+import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils';
 
 export type Numbers = typeof NumbersData['main']['ar']['numbers'];
 
