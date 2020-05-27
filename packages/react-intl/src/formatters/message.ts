@@ -100,7 +100,7 @@ export function formatMessage(
   >,
   state: Formatters,
   messageDescriptor?: MessageDescriptor,
-  values?: Record<string, PrimitiveType>
+  values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>
 ): string;
 export function formatMessage(
   {
@@ -125,14 +125,12 @@ export function formatMessage(
   >,
   state: Formatters,
   messageDescriptor: MessageDescriptor = {id: ''},
-  values:
-    | Record<
-        string,
-        | React.ReactNode
-        | Date
-        | FormatXMLElementFn<React.ReactNode, React.ReactNode>
-      >
-    | undefined
+  values?: Record<
+    string,
+    | PrimitiveType
+    | React.ReactNode
+    | FormatXMLElementFn<React.ReactNode, React.ReactNode>
+  >
 ): React.ReactNode {
   const {id, defaultMessage} = messageDescriptor;
 

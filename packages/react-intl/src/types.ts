@@ -103,15 +103,15 @@ export interface IntlFormatters<T = React.ReactNode, R = T> {
   ): ReturnType<Intl.PluralRules['select']>;
   formatMessage(
     descriptor: MessageDescriptor,
-    values?: Record<string, PrimitiveType>
+    values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>
   ): string;
   formatMessage(
     descriptor: MessageDescriptor,
     values?: Record<
       string,
-      PrimitiveType | React.ReactElement | FormatXMLElementFn<T, R>
+      PrimitiveType | React.ReactNode | FormatXMLElementFn<T, R>
     >
-  ): string | React.ReactNodeArray;
+  ): React.ReactNode;
   formatList(values: Array<string>, opts?: FormatListOptions): string;
   formatList(
     values: Array<string | React.ReactNode>,
