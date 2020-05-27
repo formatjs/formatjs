@@ -1,7 +1,10 @@
-import extractCurrencies, {extractCurrencyDigits} from './extract-currencies';
-import extractUnits from './extract-units';
-import extractNumbers, {
-  getAllLocales,
+import {
+  generateDataForLocales as extractCurrencies,
+  extractCurrencyDigits,
+} from './extract-currencies';
+import {generateDataForLocales as extractUnits} from './extract-units';
+import {
+  generateDataForLocales as extractNumbers,
   extractNumberingSystemNames,
 } from './extract-numbers';
 import {
@@ -11,16 +14,15 @@ import {
 } from '@formatjs/intl-utils';
 import {resolve, join} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
-
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
 const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
-const locales = getAllLocales();
-const numbersData = extractNumbers(locales);
-const currenciesData = extractCurrencies(locales);
-const unitsData = extractUnits(locales);
+const numbersData = extractNumbers();
+const currenciesData = extractCurrencies();
+const unitsData = extractUnits();
 
-const allData = locales.reduce(
+const allData = AVAILABLE_LOCALES.availableLocales.full.reduce(
   (all: Record<string, RawNumberLocaleData>, locale) => {
-    if (!all[locale] && numbersData[locale]) {
+    if (!all[locale]) {
       all[locale] = {
         data: {
           [locale]: {

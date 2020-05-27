@@ -39,4 +39,8 @@ export * from './number-types';
 export * from './displaynames-types';
 export {removeUnitNamespace} from './units';
 export {invariant} from './invariant';
-export {generateFieldExtractorFn} from './extractor';
+export {
+  generateFieldExtractorFn,
+  collapseSingleValuePluralRule,
+  PLURAL_RULES,
+} from './extractor';

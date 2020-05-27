@@ -3,7 +3,7 @@ import {resolve, join} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
 import {RelativeTimeLocaleData} from '../../intl-utils';
 const locales = getAllLocales();
-const data = extract(locales);
+const data = extract();
 const langData = locales.reduce(
   (all: Record<string, RelativeTimeLocaleData>, locale) => {
     const lang = locale.split('-')[0];

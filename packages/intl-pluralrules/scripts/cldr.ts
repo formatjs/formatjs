@@ -1,15 +1,15 @@
-import {getAllLanguages} from 'formatjs-extract-cldr-data';
 import {resolve} from 'path';
 import {outputFileSync} from 'fs-extra';
 import * as serialize from 'serialize-javascript';
 import {PluralRulesLocaleData} from '@formatjs/intl-utils';
+import * as plurals from 'cldr-core/supplemental/plurals.json';
 const Compiler = require('make-plural-compiler');
 Compiler.load(
   require('cldr-core/supplemental/plurals.json'),
   require('cldr-core/supplemental/ordinals.json')
 );
 
-const languages = getAllLanguages();
+const languages = Object.keys(plurals.supplemental['plurals-type-cardinal']);
 const allData: Record<string, PluralRulesLocaleData> = {};
 languages.forEach(lang => {
   let compiler, fn;

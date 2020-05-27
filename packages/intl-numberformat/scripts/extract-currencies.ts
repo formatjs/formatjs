@@ -11,17 +11,10 @@ import {resolve, dirname} from 'path';
 import {
   CurrencyData,
   LDMLPluralRuleMap,
-  generateFieldExtractorFn,
   collapseSingleValuePluralRule,
   PLURAL_RULES,
 } from '@formatjs/intl-utils';
-
-const unitsLocales = globSync('*/currencies.json', {
-  cwd: resolve(
-    dirname(require.resolve('cldr-numbers-full/package.json')),
-    './main'
-  ),
-}).map(dirname);
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
 
 export type Currencies = typeof CurrenciesData['main']['en']['numbers']['currencies'];
 
@@ -69,12 +62,8 @@ function loadCurrencies(locale: string): Record<string, CurrencyData> {
   );
 }
 
-function hasCurrencies(locale: string): boolean {
-  return unitsLocales.includes(locale);
-}
-
 export function generateDataForLocales(
-  locales: string[] = getAllLocales()
+  locales: string[] = AVAILABLE_LOCALES.availableLocales.full
 ): Record<string, Record<string, CurrencyData>> {
   return locales.reduce(
     (all: Record<string, Record<string, CurrencyData>>, locale) => {
@@ -84,12 +73,6 @@ export function generateDataForLocales(
     {}
   );
 }
-
-export default generateFieldExtractorFn<Record<string, CurrencyData>>(
-  loadCurrencies,
-  hasCurrencies,
-  getAllLocales()
-);
 
 export function extractCurrencyDigits(): Record<string, number> {
   const data = supplementalCurrencyData.supplemental.currencyData.fractions;

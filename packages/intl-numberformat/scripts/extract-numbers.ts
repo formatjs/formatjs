@@ -5,20 +5,16 @@
  */
 import * as NumbersData from 'cldr-numbers-full/main/ar/numbers.json';
 import * as numberingSystems from 'cldr-core/supplemental/numberingSystems.json';
-import {sync as globSync} from 'glob';
-import {resolve, dirname} from 'path';
 import {
   RawNumberData,
   SymbolsData,
   LDMLPluralRuleMap,
   DecimalFormatNum,
   RawCurrencyData,
-  generateFieldExtractorFn,
   collapseSingleValuePluralRule,
   PLURAL_RULES,
 } from '@formatjs/intl-utils';
-
-const unitsLocales = getAllLocales();
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
 
 export type Numbers = typeof NumbersData['main']['ar']['numbers'];
 
@@ -127,21 +123,8 @@ function loadNumbers(locale: string): RawNumberData {
   }
 }
 
-function hasNumbers(locale: string): boolean {
-  return unitsLocales.includes(locale);
-}
-
-export function getAllLocales() {
-  return globSync('*/numbers.json', {
-    cwd: resolve(
-      dirname(require.resolve('cldr-numbers-full/package.json')),
-      './main'
-    ),
-  }).map(dirname);
-}
-
 export function generateDataForLocales(
-  locales: string[] = getAllLocales()
+  locales: string[] = AVAILABLE_LOCALES.availableLocales.full
 ): Record<string, RawNumberData> {
   return locales.reduce((all: Record<string, RawNumberData>, locale) => {
     all[locale] = loadNumbers(locale);
@@ -155,9 +138,3 @@ export function extractNumberingSystemNames() {
     names: Object.keys(numberingSystems.supplemental.numberingSystems),
   };
 }
-
-export default generateFieldExtractorFn<RawNumberData>(
-  loadNumbers,
-  hasNumbers,
-  getAllLocales()
-);

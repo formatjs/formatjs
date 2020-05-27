@@ -8,7 +8,11 @@ const resolveConfig = resolve({
 });
 const uglifyConfig = uglify();
 const jsonConfig = json();
-const commonjsConfig = commonjs();
+const commonjsConfig = commonjs({
+  namedExports: {
+    lodash: ['pickBy', 'isEmpty', 'isEqual', 'fromPairs'],
+  },
+});
 export default [
   {
     input: './lib/index.js',

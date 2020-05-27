@@ -14,6 +14,7 @@ import {
   LocaleFieldsData,
   generateFieldExtractorFn,
 } from '@formatjs/intl-utils';
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
 
 const dateFieldsLocales = globSync('*/dateFields.json', {
   cwd: resolve(
@@ -129,7 +130,7 @@ function hasDateFields(locale: string): boolean {
 const extractRelativeFields = generateFieldExtractorFn<LocaleFieldsData>(
   loadRelativeFields,
   hasDateFields,
-  getAllLocales()
+  AVAILABLE_LOCALES.availableLocales.full
 );
 
 export default extractRelativeFields;

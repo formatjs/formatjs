@@ -7,7 +7,11 @@ import {sync as globSync} from 'glob';
 import {basename} from 'path';
 
 const testFiles = globSync('./tests/*.test.ts');
-
+const commonjsConfig = commonjs({
+  namedExports: {
+    lodash: ['pickBy', 'isEmpty', 'isEqual', 'fromPairs'],
+  },
+});
 export function generateTestConfig(fn) {
   return {
     input: fn,
@@ -43,7 +47,7 @@ export function generateTestConfig(fn) {
         },
         check: false,
       }),
-      commonjs(),
+      commonjsConfig,
     ],
   };
 }

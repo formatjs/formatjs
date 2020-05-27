@@ -4,8 +4,7 @@ import '@formatjs/intl-pluralrules/polyfill-locales';
 import {NumberFormat} from '../src';
 import * as zh from '../dist/locale-data/zh.json';
 import * as zhHant from '../dist/locale-data/zh-Hant.json';
-import * as zhHans from '../dist/locale-data/zh-Hans.json';
-NumberFormat.__addLocaleData(zh as any, zhHant as any, zhHans as any);
+NumberFormat.__addLocaleData(zh as any, zhHant as any);
 
 describe('notation-compact-zh-TW', function () {
   it('short', function () {

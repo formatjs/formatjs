@@ -74,6 +74,5 @@ function hasListPatterns(locale: string): boolean {
 
 export default generateFieldExtractorFn<ListPatternFieldsData>(
   loadListPatterns,
-  hasListPatterns,
-  getAllLocales()
+  hasListPatterns
 );

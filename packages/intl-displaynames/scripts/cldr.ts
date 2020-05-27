@@ -3,7 +3,7 @@ import {resolve, join} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
 import {DisplayNamesLocaleData} from '@formatjs/intl-utils';
 const locales = getAllLocales();
-const data = extractDisplayNames(locales);
+const data = extractDisplayNames();
 const allData = locales.reduce(
   (all: Record<string, DisplayNamesLocaleData>, locale) => {
     if (!all[locale]) {

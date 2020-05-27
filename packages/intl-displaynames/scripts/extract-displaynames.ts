@@ -97,6 +97,5 @@ function loadDisplayNames(locale: string): DisplayNamesData {
 
 export default generateFieldExtractorFn<DisplayNamesData>(
   loadDisplayNames,
-  hasDisplayNames,
-  getAllLocales()
+  hasDisplayNames
 );

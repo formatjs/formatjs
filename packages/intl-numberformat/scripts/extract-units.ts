@@ -11,20 +11,11 @@ import {
   removeUnitNamespace,
   isWellFormedUnitIdentifier,
   UnitData,
-  generateFieldExtractorFn,
   collapseSingleValuePluralRule,
   PLURAL_RULES,
 } from '@formatjs/intl-utils';
 import * as UnitsData from 'cldr-units-full/main/en/units.json';
-import {sync as globSync} from 'glob';
-import {dirname, resolve} from 'path';
-
-const unitsLocales = globSync('*/units.json', {
-  cwd: resolve(
-    dirname(require.resolve('cldr-units-full/package.json')),
-    './main'
-  ),
-}).map(dirname);
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
 
 export type Units = typeof UnitsData['main']['en']['units'];
 
@@ -37,15 +28,6 @@ function extractUnitPattern(d: Units['long']['volume-gallon']) {
       return all;
     }, {} as any)
   );
-}
-
-export function getAllLocales() {
-  return globSync('*/units.json', {
-    cwd: resolve(
-      dirname(require.resolve('cldr-units-full/package.json')),
-      './main'
-    ),
-  }).map(dirname);
 }
 
 function loadUnits(locale: string): UnitDataTable {
@@ -96,21 +78,11 @@ function loadUnits(locale: string): UnitDataTable {
   return {simple: fromPairs(simpleUnitEntries), compound: compoundUnits};
 }
 
-function hasUnits(locale: string): boolean {
-  return unitsLocales.includes(locale);
-}
-
 export function generateDataForLocales(
-  locales: string[] = getAllLocales()
+  locales: string[] = AVAILABLE_LOCALES.availableLocales.full
 ): Record<string, UnitDataTable> {
   return locales.reduce((all: Record<string, UnitDataTable>, locale) => {
     all[locale] = loadUnits(locale);
     return all;
   }, {});
 }
-
-export default generateFieldExtractorFn<UnitDataTable>(
-  loadUnits,
-  hasUnits,
-  getAllLocales()
-);
