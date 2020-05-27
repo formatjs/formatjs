@@ -7,18 +7,8 @@
 import * as ListPatterns from 'cldr-misc-full/main/en/listPatterns.json';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
-import {
-  ListPatternFieldsData,
-  ListPattern,
-  generateFieldExtractorFn,
-} from '@formatjs/intl-utils';
-
-const listPatternLocales = globSync('*/listPatterns.json', {
-  cwd: resolve(
-    dirname(require.resolve('cldr-misc-full/package.json')),
-    './main'
-  ),
-}).map(dirname);
+import {ListPatternFieldsData, ListPattern} from '@formatjs/intl-utils';
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
 
 export type ListTypes = typeof ListPatterns['main']['en']['listPatterns'];
 
@@ -68,11 +58,14 @@ function loadListPatterns(locale: string): ListPatternFieldsData {
   };
 }
 
-function hasListPatterns(locale: string): boolean {
-  return listPatternLocales.includes(locale);
+export function extractLists(
+  locales: string[] = AVAILABLE_LOCALES.availableLocales.full
+): Record<string, ListPatternFieldsData> {
+  return locales.reduce(
+    (all: Record<string, ListPatternFieldsData>, locale) => {
+      all[locale] = loadListPatterns(locale);
+      return all;
+    },
+    {}
+  );
 }
-
-export default generateFieldExtractorFn<ListPatternFieldsData>(
-  loadListPatterns,
-  hasListPatterns
-);

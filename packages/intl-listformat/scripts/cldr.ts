@@ -1,8 +1,8 @@
-import extractAllPatterns, {getAllLocales} from './extract-list';
+import {extractLists, getAllLocales} from './extract-list';
 import {resolve, join} from 'path';
 import {outputFileSync, outputJsonSync} from 'fs-extra';
 import {ListPatternLocaleData} from '@formatjs/intl-utils';
-const data = extractAllPatterns();
+const data = extractLists();
 const langData = getAllLocales().reduce(
   (all: Record<string, ListPatternLocaleData>, locale) => {
     const lang = locale.split('-')[0];
