@@ -429,50 +429,49 @@ export function toRawPrecision(
 ): RawNumberFormatResult {
   const p = maxPrecision;
   let m: string;
-  let e: number;
   let xFinal: number;
-  if (x === 0) {
-    m = repeat('0', p);
-    e = 0;
-    xFinal = 0;
-  } else {
-    e = getMagnitude(x);
-    let n: number;
-    {
-      const magnitude = e - p + 1;
-      const exactSolve =
-        // Preserve floating point precision as much as possible with multiplication.
-        magnitude < 0 ? x * 10 ** -magnitude : x / 10 ** magnitude;
-      const roundDown = Math.floor(exactSolve);
-      const roundUp = Math.ceil(exactSolve);
-      n = exactSolve - roundDown < roundUp - exactSolve ? roundDown : roundUp;
-    }
-    // See: https://tc39.es/ecma262/#sec-numeric-types-number-tostring
-    // No need to worry about scientific notation because it only happens for values >= 1e21,
-    // which has 22 significant digits. So it will at least be divided by 10 here to bring the
-    // value back into non-scientific-notation range.
-    m = n.toString();
-    xFinal = n * 10 ** (e - p + 1);
-  }
   let int: number;
-  if (e >= p - 1) {
-    m = m + repeat('0', e - p + 1);
-    int = e + 1;
-  } else if (e >= 0) {
-    m = `${m.slice(0, e + 1)}.${m.slice(e + 1)}`;
-    int = e + 1;
-  } else {
-    m = `0.${repeat('0', -e - 1)}${m}`;
+  if (x === 0) {
+    m = (0).toPrecision(minPrecision);
+    xFinal = 0;
     int = 1;
-  }
-  if (m.indexOf('.') >= 0 && maxPrecision > minPrecision) {
-    let cut = maxPrecision - minPrecision;
-    while (cut > 0 && m[m.length - 1] === '0') {
-      m = m.slice(0, -1);
-      cut--;
+  } else {
+    // Derive m, xFinal, and int indirectly. See: https://tc39.es/ecma262/#sec-number.prototype.toprecision
+    const formatted = x.toPrecision(p);
+    xFinal = +formatted;
+
+    const exponentIndex = formatted.indexOf('e');
+    if (exponentIndex < 0) {
+      m = String(xFinal);
+      const decimalIndex = m.indexOf('.');
+      int = decimalIndex >= 0 ? decimalIndex : m.length;
+    } else {
+      // If formatted to scientific notation, it is always in the form of "{X}e{Y}" or "{X}.{Y}e{Z}".
+      // In such case, we can recover e and p from `toPrecision` result.
+      m = formatted.slice(0, exponentIndex).replace('.', '');
+      const p = formatted.slice(0, exponentIndex).replace('.', '').length;
+      const e = +formatted.slice(exponentIndex + 1);
+      if (e >= p - 1) {
+        m = m + repeat('0', e - p + 1);
+        int = e + 1;
+      } else if (e >= 0) {
+        m = m.slice(0, e + 1) + '.' + m.slice(e + 1);
+        int = e + 1;
+      } else {
+        m = '0.' + repeat('0', -e - 1) + m;
+        int = 1;
+      }
     }
-    if (m[m.length - 1] === '.') {
-      m = m.slice(0, -1);
+
+    if (m.indexOf('.') >= 0 && maxPrecision > minPrecision) {
+      let cut = maxPrecision - minPrecision;
+      while (cut > 0 && m[m.length - 1] === '0') {
+        m = m.slice(0, -1);
+        cut--;
+      }
+      if (m[m.length - 1] === '.') {
+        m = m.slice(0, -1);
+      }
     }
   }
   return {formattedString: m, roundedNumber: xFinal, integerDigitsCount: int};

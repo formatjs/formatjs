@@ -196,7 +196,7 @@ describe('test262 examples', function () {
 
 // https://github.com/formatjs/formatjs/issues/1670
 it('chose compact pattern with rounded number', () => {
-  const UnitFormatter = new NumberFormat('en', {
+  const nf = new NumberFormat('en', {
     // maximumIntegerDigits: 3,
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -205,6 +205,15 @@ it('chose compact pattern with rounded number', () => {
     notation: 'compact',
   });
 
-  expect(UnitFormatter.format(999.995)).toEqual('1.00K'); // should be 1.00K but got 1,000.00
-  expect(UnitFormatter.format(999995000)).toEqual('1.00B'); // should be 1.00B but got 1,000.00M
+  expect(nf.format(999.995)).toEqual('1.00K'); // should be 1.00K but got 1,000.00
+  expect(nf.format(999995000)).toEqual('1.00B'); // should be 1.00B but got 1,000.00M
+});
+
+// https://github.com/formatjs/formatjs/issues/1692
+it('correctly rounds UP the number in the compact notation', () => {
+  const nf = new NumberFormat('en', {
+    notation: 'compact',
+    compactDisplay: 'short',
+  });
+  expect(nf.format(9990)).toEqual('10K');
 });
