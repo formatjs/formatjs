@@ -11,10 +11,10 @@ import {resolve, dirname} from 'path';
 import {
   CurrencyData,
   LDMLPluralRuleMap,
-  collapseSingleValuePluralRule,
   PLURAL_RULES,
 } from '@formatjs/intl-utils';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
+import {collapseSingleValuePluralRule} from './utils';
 
 export type Currencies = typeof CurrenciesData['main']['en']['numbers']['currencies'];
 

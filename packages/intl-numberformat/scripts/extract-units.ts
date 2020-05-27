@@ -11,11 +11,11 @@ import {
   removeUnitNamespace,
   isWellFormedUnitIdentifier,
   UnitData,
-  collapseSingleValuePluralRule,
   PLURAL_RULES,
 } from '@formatjs/intl-utils';
 import * as UnitsData from 'cldr-units-full/main/en/units.json';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
+import {collapseSingleValuePluralRule} from './utils';
 
 export type Units = typeof UnitsData['main']['en']['units'];
 
