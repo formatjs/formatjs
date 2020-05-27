@@ -14,7 +14,7 @@
     "clean": "rimraf dist lib tests/browser.js tests/browser.js.map *.tsbuildinfo",
     "benchmark": "ts-node tests/benchmark",
     "build": "tsc && tsc -p tsconfig.esm.json && rollup -c rollup.config.js",
-    "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu NODE_ENV=test jest"
+    "jest": "cross-env NODE_ENV=test jest"
   },
   "devDependencies": {
     "@formatjs/intl-pluralrules": "^2.1.0",

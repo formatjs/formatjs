@@ -43,8 +43,8 @@
     "cldr": "ts-node scripts/cldr",
     "clean": "rimraf dist lib dist-es6 dist-es6 *.tsbuildinfo",
     "compile": "tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local && rollup -c rollup.config.js",
-    "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu NODE_ENV=test jest",
-    "test": "yarn run jest && cross-env NODE_ICU_DATA=../../node_modules/full-icu ts-node tests/runner"
+    "jest": "cross-env NODE_ENV=test jest",
+    "test": "yarn run jest && cross-env ts-node tests/runner"
   },
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",

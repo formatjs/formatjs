@@ -38,8 +38,8 @@
     "cldr": "ts-node scripts/cldr",
     "clean": "rimraf dist lib dist-es6 *.tsbuildinfo",
     "compile": "tsc && tsc -p tsconfig.esm.json && api-extractor run --local && tsc -p tsconfig.es6.json && rollup -c rollup.config.js",
-    "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu cross-env NODE_ENV=test jest",
-    "test262": "cross-env NODE_ICU_DATA=../../node_modules/full-icu ts-node tests/runner",
+    "jest": "cross-env cross-env NODE_ENV=test jest",
+    "test262": "cross-env ts-node tests/runner",
     "test": "yarn run jest && yarn run test262"
   },
   "files": [

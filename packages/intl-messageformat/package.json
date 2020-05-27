@@ -54,7 +54,7 @@
     "karma:ci": "karma start karma.conf-ci.js",
     "karma:local": "karma start karma.conf.js",
     "rollup": "rollup -c rollup.config.js",
-    "test": "cross-env NODE_ICU_DATA=../../node_modules/full-icu NODE_ENV=test jest",
+    "test": "cross-env NODE_ENV=test jest",
     "tsc": "tsc -p tsconfig.json && tsc -p tsconfig.esm.json && api-extractor run --local"
   },
   "homepage": "https://github.com/formatjs/formatjs",
