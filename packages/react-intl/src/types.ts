@@ -17,7 +17,13 @@ import {MessageFormatElement} from 'intl-messageformat-parser';
 import {NumberFormatOptions} from '@formatjs/intl-numberformat';
 import IntlListFormat, {IntlListFormatOptions} from '@formatjs/intl-listformat';
 import {DisplayNames, DisplayNamesOptions} from '@formatjs/intl-displaynames';
-import {ReactIntlError} from './error';
+import {
+  MissingTranslationError,
+  MessageFormatError,
+  MissingDataError,
+  InvalidConfigError,
+  UnsupportedFormatterError,
+} from './error';
 
 export interface IntlConfig {
   locale: string;
@@ -28,7 +34,15 @@ export interface IntlConfig {
   defaultLocale: string;
   defaultFormats: CustomFormats;
   wrapRichTextChunksInFragment?: boolean;
-  onError(err: ReactIntlError | FormatError): void;
+  onError(
+    err:
+      | MissingTranslationError
+      | MessageFormatError
+      | MissingDataError
+      | InvalidConfigError
+      | UnsupportedFormatterError
+      | FormatError
+  ): void;
 }
 
 export interface CustomFormats extends Partial<Formats> {
@@ -166,5 +180,3 @@ export interface MessageDescriptor {
   description?: string | object;
   defaultMessage?: string;
 }
-
-export type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;

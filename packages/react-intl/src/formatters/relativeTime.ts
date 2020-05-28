@@ -5,7 +5,7 @@ import RelativeTimeFormat, {
   IntlRelativeTimeFormatOptions,
 } from '@formatjs/intl-relativetimeformat';
 import {FormatError, ErrorCode} from 'intl-messageformat';
-import {ReactIntlError, ReactIntlErrorCode} from '../error';
+import {MessageFormatError} from '../error';
 
 const RELATIVE_TIME_FORMAT_OPTIONS: Array<
   keyof IntlRelativeTimeFormatOptions
@@ -61,11 +61,7 @@ Try polyfilling it using "@formatjs/intl-relativetimeformat"
     );
   } catch (e) {
     config.onError(
-      new ReactIntlError(
-        ReactIntlErrorCode.FORMAT_ERROR,
-        'Error formatting relative time.',
-        e
-      )
+      new MessageFormatError('Error formatting relative time.', e)
     );
   }
 

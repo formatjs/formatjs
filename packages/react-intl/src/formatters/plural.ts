@@ -1,7 +1,7 @@
 import {IntlConfig, Formatters, IntlFormatters} from '../types';
 import {filterProps} from '../utils';
-import {ReactIntlErrorCode, ReactIntlError} from '../error';
-import {FormatError, ErrorCode} from 'intl-messageformat';
+import {MessageFormatError} from '../error';
+import {ErrorCode, FormatError} from 'intl-messageformat';
 
 const PLURAL_FORMAT_OPTIONS: Array<keyof Intl.PluralRulesOptions> = [
   'localeMatcher',
@@ -29,13 +29,7 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
   try {
     return getPluralRules(locale, filteredOptions).select(value);
   } catch (e) {
-    onError(
-      new ReactIntlError(
-        ReactIntlErrorCode.FORMAT_ERROR,
-        'Error formatting plural.',
-        e
-      )
-    );
+    onError(new MessageFormatError('Error formatting plural.', e));
   }
 
   return 'other';

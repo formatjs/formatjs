@@ -12,7 +12,7 @@ import {
   invariantIntlContext,
   createIntlCache,
 } from '../utils';
-import {IntlConfig, IntlShape, Omit, IntlCache} from '../types';
+import {IntlConfig, IntlShape, IntlCache} from '../types';
 import {formatNumber, formatNumberToParts} from '../formatters/number';
 import {formatRelativeTime} from '../formatters/relativeTime';
 import {
@@ -26,7 +26,7 @@ import {formatMessage} from '../formatters/message';
 import * as shallowEquals_ from 'shallow-equal/objects';
 import {formatList} from '../formatters/list';
 import {formatDisplayName} from '../formatters/displayName';
-import {ReactIntlError, ReactIntlErrorCode} from '../error';
+import {InvalidConfigError, MissingDataError} from '../error';
 const shallowEquals: typeof shallowEquals_ =
   (shallowEquals_ as any).default || shallowEquals_;
 
@@ -84,8 +84,7 @@ export function createIntl(
   if (!locale) {
     if (onError) {
       onError(
-        new ReactIntlError(
-          ReactIntlErrorCode.INVALID_CONFIG,
+        new InvalidConfigError(
           `"locale" was not configured, using "${defaultLocale}" as fallback. See https://formatjs.io/docs/react-intl/api#intlshape for more details`
         )
       );
@@ -98,8 +97,7 @@ export function createIntl(
     resolvedConfig.locale = resolvedConfig.defaultLocale || 'en';
   } else if (!Intl.NumberFormat.supportedLocalesOf(locale).length && onError) {
     onError(
-      new ReactIntlError(
-        ReactIntlErrorCode.MISSING_DATA,
+      new MissingDataError(
         `Missing locale data for locale: "${locale}" in Intl.NumberFormat. Using default locale: "${defaultLocale}" as fallback. See https://formatjs.io/docs/react-intl#runtime-requirements for more details`
       )
     );
@@ -108,8 +106,7 @@ export function createIntl(
     onError
   ) {
     onError(
-      new ReactIntlError(
-        ReactIntlErrorCode.MISSING_DATA,
+      new MissingDataError(
         `Missing locale data for locale: "${locale}" in Intl.DateTimeFormat. Using default locale: "${defaultLocale}" as fallback. See https://formatjs.io/docs/react-intl#runtime-requirements for more details`
       )
     );

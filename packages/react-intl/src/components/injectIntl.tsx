@@ -7,7 +7,7 @@ import * as hoistNonReactStatics_ from 'hoist-non-react-statics';
 const hoistNonReactStatics: typeof hoistNonReactStatics_ =
   (hoistNonReactStatics_ as any).default || hoistNonReactStatics_;
 import {invariantIntlContext} from '../utils';
-import {IntlShape, Omit} from '../types';
+import {IntlShape} from '../types';
 
 function getDisplayName(Component: React.ComponentType<any>): string {
   return Component.displayName || Component.name || 'Component';

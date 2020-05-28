@@ -8,10 +8,12 @@ export const enum ReactIntlErrorCode {
   MISSING_TRANSLATION = 'MISSING_TRANSLATION',
 }
 
-export class ReactIntlError extends Error {
-  public readonly code: ReactIntlErrorCode;
+export class ReactIntlError<
+  T extends ReactIntlErrorCode = ReactIntlErrorCode.FORMAT_ERROR
+> extends Error {
+  public readonly code: T;
 
-  constructor(code: ReactIntlErrorCode, message: string, exception?: Error) {
+  constructor(code: T, message: string, exception?: Error) {
     super(
       `[React Intl Error ${code}] ${message} 
 ${exception ? `\n${exception.stack}` : ''}`
@@ -23,12 +25,38 @@ ${exception ? `\n${exception.stack}` : ''}`
   }
 }
 
-export class MessageFormatError extends ReactIntlError {
+export class UnsupportedFormatterError extends ReactIntlError<
+  ReactIntlErrorCode.UNSUPPORTED_FORMATTER
+> {
+  constructor(message: string, exception?: Error) {
+    super(ReactIntlErrorCode.UNSUPPORTED_FORMATTER, message, exception);
+  }
+}
+
+export class InvalidConfigError extends ReactIntlError<
+  ReactIntlErrorCode.INVALID_CONFIG
+> {
+  constructor(message: string, exception?: Error) {
+    super(ReactIntlErrorCode.INVALID_CONFIG, message, exception);
+  }
+}
+
+export class MissingDataError extends ReactIntlError<
+  ReactIntlErrorCode.MISSING_DATA
+> {
+  constructor(message: string, exception?: Error) {
+    super(ReactIntlErrorCode.MISSING_DATA, message, exception);
+  }
+}
+
+export class MessageFormatError extends ReactIntlError<
+  ReactIntlErrorCode.FORMAT_ERROR
+> {
   public readonly descriptor?: MessageDescriptor;
   constructor(
     message: string,
     locale: string,
-    descriptor: MessageDescriptor,
+    descriptor?: MessageDescriptor,
     exception?: Error
   ) {
     super(
@@ -45,7 +73,9 @@ Description: ${descriptor?.description}
   }
 }
 
-export class MissingTranslationError extends ReactIntlError {
+export class MissingTranslationError extends ReactIntlError<
+  ReactIntlErrorCode.MISSING_TRANSLATION
+> {
   public readonly descriptor?: MessageDescriptor;
   constructor(descriptor: MessageDescriptor, locale: string) {
     super(

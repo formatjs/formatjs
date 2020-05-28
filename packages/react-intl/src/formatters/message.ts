@@ -18,7 +18,7 @@ import IntlMessageFormat, {
   FormatXMLElementFn,
   PrimitiveType,
 } from 'intl-messageformat';
-import {MessageFormatError, MissingTranslationError} from '../error';
+import {MissingTranslationError, MessageFormatError} from '../error';
 
 function setTimeZoneInOptions(
   opts: Record<string, Intl.DateTimeFormatOptions>,
