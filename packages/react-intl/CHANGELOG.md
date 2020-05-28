@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.6.2](https://github.com/formatjs/formatjs/compare/react-intl@4.6.1...react-intl@4.6.2) (2020-05-28)
+
+
+### Bug Fixes
+
+* **react-intl:** export all errors, fix types ([0920323](https://github.com/formatjs/formatjs/commit/0920323b1e602de816fad0ba9c3a4aecdc2344e8))
+
+
+
+
+
 ## [4.6.1](https://github.com/formatjs/formatjs/compare/react-intl@4.6.0...react-intl@4.6.1) (2020-05-27)
 
 
