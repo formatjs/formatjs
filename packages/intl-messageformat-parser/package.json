@@ -1,6 +1,6 @@
 {
   "name": "intl-messageformat-parser",
-  "version": "5.0.10",
+  "version": "5.0.11",
   "description": "Parses ICU Message strings into an AST via JavaScript.",
   "main": "dist/index.js",
   "module": "lib/index.js",
@@ -46,7 +46,7 @@
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "dependencies": {
-    "@formatjs/intl-numberformat": "^4.2.0"
+    "@formatjs/intl-numberformat": "^4.2.1"
   },
   "homepage": "https://github.com/formatjs/formatjs",
   "gitHead": "8b0baec8eda5002715cf893274fe59782fc2d371",

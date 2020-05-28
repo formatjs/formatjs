@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.2.3...@formatjs/intl-getcanonicallocales@1.2.4) (2020-05-28)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-utils:** Add missing cldr-core to package.json dep ([d0b72fe](https://github.com/formatjs/formatjs/commit/d0b72fe398c7017d03e8ee66c98ad88fe3e47657))
+
+
+
+
+
 ## [1.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.2.2...@formatjs/intl-getcanonicallocales@1.2.3) (2020-05-27)
 
 **Note:** Version bump only for package @formatjs/intl-getcanonicallocales
