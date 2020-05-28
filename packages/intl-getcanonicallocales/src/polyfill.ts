@@ -1,4 +1,4 @@
-import {getCanonicalLocales} from './';
+import {getCanonicalLocales} from '.';
 if (
   !('getCanonicalLocales' in Intl) ||
   // Native Intl.getCanonicalLocales is just buggy
