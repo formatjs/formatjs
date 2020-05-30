@@ -205,8 +205,8 @@ it('chose compact pattern with rounded number', () => {
     notation: 'compact',
   });
 
-  expect(nf.format(999.995)).toEqual('1.00K'); // should be 1.00K but got 1,000.00
-  expect(nf.format(999995000)).toEqual('1.00B'); // should be 1.00B but got 1,000.00M
+  expect(nf.format(999.995)).toEqual('1.00K');
+  expect(nf.format(999995000)).toEqual('1.00B');
 });
 
 // https://github.com/formatjs/formatjs/issues/1692
@@ -216,4 +216,18 @@ it('correctly rounds UP the number in the compact notation', () => {
     compactDisplay: 'short',
   });
   expect(nf.format(9990)).toEqual('10K');
+});
+
+it('avoids floating point precision loss at best effort when formatting huge numbers (significantDigits)', () => {
+  const nf = new NumberFormat([], {minimumSignificantDigits: 1});
+  expect(nf.format(1e41)).toEqual(
+    '100,000,000,000,000,000,000,000,000,000,000,000,000,000'
+  );
+});
+
+it('avoids floating point precision loss at best effort when formatting huge numbers (fractionDigits)', () => {
+  const nf = new NumberFormat([], {minimumFractionDigits: 0});
+  expect(nf.format(1e41)).toEqual(
+    '100,000,000,000,000,000,000,000,000,000,000,000,000,000'
+  );
 });
