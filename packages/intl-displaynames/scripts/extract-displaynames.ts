@@ -1,8 +1,7 @@
-import {Locale} from './types';
-import generateFieldExtractorFn from './utils';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
 import {DisplayNamesData, invariant} from '@formatjs/intl-utils';
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
 
 // CLDR JSON types
 type LanguageRawData = typeof import('cldr-localenames-full/main/en/languages.json')['main']['en']['localeDisplayNames']['languages'];
@@ -12,8 +11,6 @@ type LocalePatternRawData = typeof import('cldr-localenames-full/main/en/localeD
 type CurrencyRawData = typeof import('cldr-numbers-full/main/en/currencies.json')['main']['en']['numbers']['currencies'];
 // -------------------------------------------------------------------------------------------------
 
-const displayNamesLocales = getAllLocales();
-
 export function getAllLocales() {
   return globSync('*/localeDisplayNames.json', {
     cwd: resolve(
@@ -21,10 +18,6 @@ export function getAllLocales() {
       './main'
     ),
   }).map(dirname);
-}
-
-function hasDisplayNames(locale: Locale): boolean {
-  return displayNamesLocales.includes(locale);
 }
 
 function extractStyleData(
@@ -67,7 +60,7 @@ function extractCurrencyStyleData(
   return {long: longData, short: {}, narrow: {}};
 }
 
-function loadDisplayNames(locale: Locale): DisplayNamesData {
+function loadDisplayNames(locale: string): DisplayNamesData {
   const langData: LanguageRawData = require(`cldr-localenames-full/main/${locale}/languages.json`)
     .main[locale].localeDisplayNames.languages;
   const regionData: RegionRawData = require(`cldr-localenames-full/main/${locale}/territories.json`)
@@ -93,8 +86,11 @@ function loadDisplayNames(locale: Locale): DisplayNamesData {
   };
 }
 
-export default generateFieldExtractorFn<DisplayNamesData>(
-  loadDisplayNames,
-  hasDisplayNames,
-  getAllLocales()
-);
+export function extractDisplayNames(
+  locales: string[] = AVAILABLE_LOCALES.availableLocales.full
+): Record<string, DisplayNamesData> {
+  return locales.reduce((all: Record<string, DisplayNamesData>, locale) => {
+    all[locale] = loadDisplayNames(locale);
+    return all;
+  }, {});
+}

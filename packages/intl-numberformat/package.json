@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-numberformat",
-  "version": "4.1.0",
+  "version": "4.2.1",
   "description": "Ponyfill for ES2020 Intl.NumberFormat",
   "keywords": [
     "polyfill",
@@ -29,12 +29,14 @@
     "src"
   ],
   "devDependencies": {
-    "@formatjs/intl-getcanonicallocales": "^1.2.2",
-    "@formatjs/intl-pluralrules": "^2.1.0",
+    "@formatjs/intl-getcanonicallocales": "^1.2.4",
+    "@formatjs/intl-pluralrules": "^2.2.1",
     "@types/jest": "^25.2.1",
     "chalk": "^4.0.0",
+    "cldr-core": "^36.0.0",
+    "cldr-numbers-full": "^36.0.0",
+    "cldr-units-full": "^36.0.0",
     "core-js": "^3.6.5",
-    "formatjs-extract-cldr-data": "^10.2.0",
     "jest": "^25.4.0",
     "ts-jest": "^25.4.0"
   },
@@ -48,10 +50,10 @@
     "cldr": "NODE_OPTIONS=--max-old-space-size=8192 ts-node scripts/cldr",
     "clean": "rimraf dist dist-es6 lib src/locales.ts *.tsbuildinfo",
     "compile": "NODE_OPTIONS=--max-old-space-size=8192 tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local",
-    "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu cross-env NODE_ENV=test jest",
+    "jest": "cross-env cross-env NODE_ENV=test jest",
     "rollup": "NODE_OPTIONS=--max-old-space-size=8192 rollup -c rollup.config.js",
     "test": "yarn jest && yarn test262",
-    "test262": "cross-env NODE_ICU_DATA=../../node_modules/full-icu ts-node tests/runner"
+    "test262": "cross-env ts-node tests/runner"
   },
   "jest": {
     "preset": "ts-jest",

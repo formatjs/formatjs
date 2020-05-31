@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-listformat",
-  "version": "2.1.0",
+  "version": "2.2.1",
   "description": "Formats JS list in a i18n-safe way",
   "keywords": [
     "intl",
@@ -18,9 +18,9 @@
     "url": "git@github.com:formatjs/formatjs.git"
   },
   "devDependencies": {
-    "@formatjs/intl-getcanonicallocales": "^1.2.2",
+    "@formatjs/intl-getcanonicallocales": "^1.2.4",
     "@types/jest": "^25.2.1",
-    "formatjs-extract-cldr-data": "^10.2.0",
+    "cldr-misc-full": "^36.0.0",
     "jest": "^25.4.0",
     "ts-jest": "^25.4.0"
   },
@@ -43,8 +43,8 @@
     "cldr": "ts-node scripts/cldr",
     "clean": "rimraf dist lib dist-es6 dist-es6 *.tsbuildinfo",
     "compile": "tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local && rollup -c rollup.config.js",
-    "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu NODE_ENV=test jest",
-    "test": "yarn run jest && cross-env NODE_ICU_DATA=../../node_modules/full-icu ts-node tests/runner"
+    "jest": "cross-env NODE_ENV=test jest",
+    "test": "yarn run jest && cross-env ts-node tests/runner"
   },
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",

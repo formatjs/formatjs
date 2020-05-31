@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-relativetimeformat",
-  "version": "5.1.0",
+  "version": "5.2.1",
   "description": "Formats JavaScript dates to relative time strings.",
   "keywords": [
     "intl",
@@ -20,10 +20,11 @@
     "url": "git@github.com:formatjs/formatjs.git"
   },
   "devDependencies": {
-    "@formatjs/intl-getcanonicallocales": "^1.2.2",
-    "@formatjs/intl-pluralrules": "^2.1.0",
+    "@formatjs/intl-getcanonicallocales": "^1.2.4",
+    "@formatjs/intl-pluralrules": "^2.2.1",
     "@types/jest": "^25.2.1",
-    "formatjs-extract-cldr-data": "^10.2.0",
+    "cldr-dates-full": "^36.0.0",
+    "cldr-numbers-full": "^36.0.0",
     "ts-jest": "^25.4.0"
   },
   "dependencies": {
@@ -37,8 +38,8 @@
     "cldr": "ts-node scripts/cldr",
     "clean": "rimraf dist lib dist-es6 *.tsbuildinfo",
     "compile": "tsc && tsc -p tsconfig.esm.json && api-extractor run --local && tsc -p tsconfig.es6.json && rollup -c rollup.config.js",
-    "jest": "cross-env NODE_ICU_DATA=../../node_modules/full-icu cross-env NODE_ENV=test jest",
-    "test262": "cross-env NODE_ICU_DATA=../../node_modules/full-icu ts-node tests/runner",
+    "jest": "cross-env cross-env NODE_ENV=test jest",
+    "test262": "cross-env ts-node tests/runner",
     "test": "yarn run jest && yarn run test262"
   },
   "files": [

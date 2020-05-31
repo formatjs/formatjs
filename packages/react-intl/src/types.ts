@@ -17,7 +17,13 @@ import {MessageFormatElement} from 'intl-messageformat-parser';
 import {NumberFormatOptions} from '@formatjs/intl-numberformat';
 import IntlListFormat, {IntlListFormatOptions} from '@formatjs/intl-listformat';
 import {DisplayNames, DisplayNamesOptions} from '@formatjs/intl-displaynames';
-import {ReactIntlError} from './error';
+import {
+  MissingTranslationError,
+  MessageFormatError,
+  MissingDataError,
+  InvalidConfigError,
+  UnsupportedFormatterError,
+} from './error';
 
 export interface IntlConfig {
   locale: string;
@@ -28,7 +34,15 @@ export interface IntlConfig {
   defaultLocale: string;
   defaultFormats: CustomFormats;
   wrapRichTextChunksInFragment?: boolean;
-  onError(err: ReactIntlError | FormatError): void;
+  onError(
+    err:
+      | MissingTranslationError
+      | MessageFormatError
+      | MissingDataError
+      | InvalidConfigError
+      | UnsupportedFormatterError
+      | FormatError
+  ): void;
 }
 
 export interface CustomFormats extends Partial<Formats> {
@@ -103,15 +117,15 @@ export interface IntlFormatters<T = React.ReactNode, R = T> {
   ): ReturnType<Intl.PluralRules['select']>;
   formatMessage(
     descriptor: MessageDescriptor,
-    values?: Record<string, PrimitiveType>
+    values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>
   ): string;
   formatMessage(
     descriptor: MessageDescriptor,
     values?: Record<
       string,
-      PrimitiveType | React.ReactElement | FormatXMLElementFn<T, R>
+      PrimitiveType | React.ReactNode | FormatXMLElementFn<T, R>
     >
-  ): string | React.ReactNodeArray;
+  ): React.ReactNode;
   formatList(values: Array<string>, opts?: FormatListOptions): string;
   formatList(
     values: Array<string | React.ReactNode>,
@@ -166,5 +180,3 @@ export interface MessageDescriptor {
   description?: string | object;
   defaultMessage?: string;
 }
-
-export type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>;

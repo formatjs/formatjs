@@ -17,6 +17,7 @@ import {
   defineMessages,
   defineMessage,
   Formatters,
+  IntlShape,
 } from '../../src';
 import IntlRelativeFormat from '@formatjs/intl-relativetimeformat';
 import IntlListFormat from '@formatjs/intl-listformat';
@@ -678,7 +679,7 @@ describe('format API', () => {
   });
 
   describe('formatMessage()', () => {
-    let formatMessage;
+    let formatMessage: IntlShape['formatMessage'];
 
     beforeEach(() => {
       formatMessage = baseFormatMessage.bind(null, config, state);
@@ -729,6 +730,17 @@ describe('format API', () => {
       const mf = new IntlMessageFormat(messages.no_args, locale);
 
       expect(formatMessage({id: 'no_args'})).toBe(mf.format());
+    });
+
+    it('formats legacy HTML messages', () => {
+      const {locale, messages} = config;
+      const mf = new IntlMessageFormat(messages.richText, locale);
+      const values = {
+        b: (s: string) => `<foobar>${s}</foobar>`,
+      };
+      expect(formatMessage({id: 'richText'}, values)).toBe(
+        mf.format<string>(values)
+      );
     });
 
     it('formats rich text messages w/ wrapRichTextChunksInFragment', () => {

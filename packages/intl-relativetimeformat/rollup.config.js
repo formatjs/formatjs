@@ -1,6 +1,14 @@
 import {uglify} from 'rollup-plugin-uglify';
 import resolve from 'rollup-plugin-node-resolve';
 import testRollupConfig from '../../rollup.config';
+import commonjs from 'rollup-plugin-commonjs';
+import json from '@rollup/plugin-json';
+const jsonConfig = json()
+const commonjsConfig = commonjs({
+  namedExports: {
+    lodash: ['pickBy', 'isEmpty', 'isEqual', 'fromPairs'],
+  },
+});
 const resolveConfig = resolve({
   mainFields: ['module', 'main'],
 });
@@ -15,7 +23,7 @@ export default [
       exports: 'named',
       name: 'IntlRelativeTimeFormat',
     },
-    plugins: [resolveConfig],
+    plugins: [resolveConfig, commonjsConfig, jsonConfig],
   },
   {
     input: './lib/index.js',
@@ -26,7 +34,7 @@ export default [
       exports: 'named',
       name: 'IntlRelativeTimeFormat',
     },
-    plugins: [resolveConfig, uglifyConfig],
+    plugins: [resolveConfig, commonjsConfig, jsonConfig, uglifyConfig],
   },
   {
     input: './lib/locales.js',
@@ -37,7 +45,7 @@ export default [
       exports: 'named',
       name: 'IntlRelativeTimeFormat',
     },
-    plugins: [resolveConfig],
+    plugins: [resolveConfig, commonjsConfig, jsonConfig],
   },
   {
     input: './lib/locales.js',
@@ -48,7 +56,7 @@ export default [
       exports: 'named',
       name: 'IntlRelativeTimeFormat',
     },
-    plugins: [resolveConfig, uglifyConfig],
+    plugins: [resolveConfig, commonjsConfig, jsonConfig, uglifyConfig],
   },
   {
     input: './lib/polyfill-locales.js',
@@ -57,7 +65,7 @@ export default [
       file: 'dist/polyfill-with-locales.js',
       format: 'iife',
     },
-    plugins: [resolveConfig],
+    plugins: [resolveConfig, commonjsConfig, jsonConfig],
   },
   {
     input: './lib/polyfill.js',
@@ -66,7 +74,7 @@ export default [
       file: 'dist/umd/polyfill-intl-relativetimeformat.js',
       format: 'umd',
     },
-    plugins: [resolveConfig],
+    plugins: [resolveConfig, commonjsConfig, jsonConfig],
   },
   {
     input: './dist-es6/polyfill-locales.js',
@@ -77,7 +85,7 @@ export default [
       exports: 'named',
       name: 'IntlPluralRules',
     },
-    plugins: [resolveConfig],
+    plugins: [resolveConfig, commonjsConfig, jsonConfig],
   },
   ...testRollupConfig,
 ];

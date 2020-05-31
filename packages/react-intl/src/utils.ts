@@ -9,13 +9,19 @@ This source code is licensed under the BSD-style license found in the LICENSE
 file in the root directory of React's source tree.
 */
 
-import {IntlConfig, IntlCache, CustomFormats, Formatters} from './types';
+import {
+  IntlConfig,
+  IntlCache,
+  CustomFormats,
+  Formatters,
+  IntlShape,
+} from './types';
 import * as React from 'react';
 import IntlMessageFormat from 'intl-messageformat';
 import memoizeIntlConstructor from 'intl-format-cache';
 import {invariant} from '@formatjs/intl-utils';
 import {IntlRelativeTimeFormatOptions} from '@formatjs/intl-relativetimeformat';
-import {ReactIntlError, ReactIntlErrorCode} from './error';
+import {UnsupportedFormatterError} from './error';
 
 export function filterProps<T extends Record<string, any>, K extends string>(
   props: T,
@@ -41,11 +47,11 @@ export function invariantIntlContext(intl?: any): asserts intl {
   );
 }
 
-export function defaultErrorHandler(error: ReactIntlError): void {
+export const defaultErrorHandler: IntlShape['onError'] = error => {
   if (process.env.NODE_ENV !== 'production') {
     console.error(error);
   }
-}
+};
 
 export const DEFAULT_INTL_CONFIG: Pick<
   IntlConfig,
@@ -111,7 +117,7 @@ export function getNamedFormat<T extends keyof CustomFormats>(
   formats: CustomFormats,
   type: T,
   name: string,
-  onError: (err: ReactIntlError) => void
+  onError: IntlShape['onError']
 ):
   | Intl.NumberFormatOptions
   | Intl.DateTimeFormatOptions
@@ -126,10 +132,5 @@ export function getNamedFormat<T extends keyof CustomFormats>(
     return format;
   }
 
-  onError(
-    new ReactIntlError(
-      ReactIntlErrorCode.UNSUPPORTED_FORMATTER,
-      `No ${type} format named: ${name}`
-    )
-  );
+  onError(new UnsupportedFormatterError(`No ${type} format named: ${name}`));
 }

@@ -6,21 +6,11 @@
 'use strict';
 import * as CurrenciesData from 'cldr-numbers-full/main/en/currencies.json';
 import * as supplementalCurrencyData from 'cldr-core/supplemental/currencyData.json';
-import {Locale} from './types';
-import generateFieldExtractorFn, {
-  collapseSingleValuePluralRule,
-  PLURAL_RULES,
-} from './utils';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
 import {CurrencyData, LDMLPluralRuleMap} from '@formatjs/intl-utils';
-
-const unitsLocales = globSync('*/currencies.json', {
-  cwd: resolve(
-    dirname(require.resolve('cldr-numbers-full/package.json')),
-    './main'
-  ),
-}).map(dirname);
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
+import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils';
 
 export type Currencies = typeof CurrenciesData['main']['en']['numbers']['currencies'];
 
@@ -50,7 +40,7 @@ export function getAllLocales() {
   }).map(dirname);
 }
 
-function loadCurrencies(locale: Locale): Record<string, CurrencyData> {
+function loadCurrencies(locale: string): Record<string, CurrencyData> {
   const currencies = (require(`cldr-numbers-full/main/${locale}/currencies.json`) as typeof CurrenciesData)
     .main[locale as 'en'].numbers.currencies;
   return (Object.keys(currencies) as Array<keyof typeof currencies>).reduce(
@@ -68,12 +58,8 @@ function loadCurrencies(locale: Locale): Record<string, CurrencyData> {
   );
 }
 
-function hasCurrencies(locale: Locale): boolean {
-  return unitsLocales.includes(locale);
-}
-
 export function generateDataForLocales(
-  locales: string[] = getAllLocales()
+  locales: string[] = AVAILABLE_LOCALES.availableLocales.full
 ): Record<string, Record<string, CurrencyData>> {
   return locales.reduce(
     (all: Record<string, Record<string, CurrencyData>>, locale) => {
@@ -83,12 +69,6 @@ export function generateDataForLocales(
     {}
   );
 }
-
-export default generateFieldExtractorFn<Record<string, CurrencyData>>(
-  loadCurrencies,
-  hasCurrencies,
-  getAllLocales()
-);
 
 export function extractCurrencyDigits(): Record<string, number> {
   const data = supplementalCurrencyData.supplemental.currencyData.fractions;

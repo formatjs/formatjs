@@ -1,6 +1,6 @@
 {
   "name": "intl-messageformat",
-  "version": "8.3.16",
+  "version": "8.3.18",
   "description": "Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.",
   "keywords": [
     "i18n",
@@ -31,8 +31,8 @@
   "module": "lib/index.js",
   "types": "lib/intl-messageformat.d.ts",
   "dependencies": {
-    "intl-format-cache": "^4.2.31",
-    "intl-messageformat-parser": "^5.0.9"
+    "intl-format-cache": "^4.2.33",
+    "intl-messageformat-parser": "^5.0.11"
   },
   "files": [
     "dist",
@@ -40,8 +40,8 @@
     "src"
   ],
   "devDependencies": {
-    "@formatjs/intl-getcanonicallocales": "^1.2.2",
-    "@formatjs/intl-pluralrules": "^2.1.0",
+    "@formatjs/intl-getcanonicallocales": "^1.2.4",
+    "@formatjs/intl-pluralrules": "^2.2.1",
     "@types/jasmine": "^3.5.10",
     "jasmine": "3.5.0",
     "jasmine-expect": "4.0.3"
@@ -54,7 +54,7 @@
     "karma:ci": "karma start karma.conf-ci.js",
     "karma:local": "karma start karma.conf.js",
     "rollup": "rollup -c rollup.config.js",
-    "test": "cross-env NODE_ICU_DATA=../../node_modules/full-icu NODE_ENV=test jest",
+    "test": "cross-env NODE_ENV=test jest",
     "tsc": "tsc -p tsconfig.json && tsc -p tsconfig.esm.json && api-extractor run --local"
   },
   "homepage": "https://github.com/formatjs/formatjs",

@@ -5,18 +5,10 @@
  */
 'use strict';
 import * as ListPatterns from 'cldr-misc-full/main/en/listPatterns.json';
-import {Locale} from './types';
-import generateFieldExtractorFn from './utils';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
 import {ListPatternFieldsData, ListPattern} from '@formatjs/intl-utils';
-
-const listPatternLocales = globSync('*/listPatterns.json', {
-  cwd: resolve(
-    dirname(require.resolve('cldr-misc-full/package.json')),
-    './main'
-  ),
-}).map(dirname);
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
 
 export type ListTypes = typeof ListPatterns['main']['en']['listPatterns'];
 
@@ -40,7 +32,7 @@ function serializeToPatternData(
   };
 }
 
-function loadListPatterns(locale: Locale): ListPatternFieldsData {
+function loadListPatterns(locale: string): ListPatternFieldsData {
   const patterns = (require(`cldr-misc-full/main/${locale}/listPatterns.json`) as typeof ListPatterns)
     .main[locale as 'en'].listPatterns;
   return {
@@ -66,12 +58,14 @@ function loadListPatterns(locale: Locale): ListPatternFieldsData {
   };
 }
 
-function hasListPatterns(locale: Locale): boolean {
-  return listPatternLocales.includes(locale);
+export function extractLists(
+  locales: string[] = AVAILABLE_LOCALES.availableLocales.full
+): Record<string, ListPatternFieldsData> {
+  return locales.reduce(
+    (all: Record<string, ListPatternFieldsData>, locale) => {
+      all[locale] = loadListPatterns(locale);
+      return all;
+    },
+    {}
+  );
 }
-
-export default generateFieldExtractorFn<ListPatternFieldsData>(
-  loadListPatterns,
-  hasListPatterns,
-  getAllLocales()
-);

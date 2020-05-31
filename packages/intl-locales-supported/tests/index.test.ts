@@ -47,8 +47,4 @@ describe('areIntlLocalesSupported()', function () {
   it('should return `true` for "en"', function () {
     expect(areIntlLocalesSupported('en')).toBeTruthy();
   });
-
-  it('should return `true` for "fr"', function () {
-    expect(areIntlLocalesSupported('fr')).toBeTruthy();
-  });
 });

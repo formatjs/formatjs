@@ -10,7 +10,6 @@
   "references": [
     {"path": "../intl-getcanonicallocales"},
     {"path": "../intl-pluralrules"},
-    {"path": "../formatjs-extract-cldr-data"},
     {"path": "../intl-utils"}
   ]
 }

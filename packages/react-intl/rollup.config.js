@@ -2,7 +2,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
 import {uglify} from 'rollup-plugin-uglify';
 import resolve from 'rollup-plugin-node-resolve';
-
+import json from '@rollup/plugin-json'
 const uglifyConfig = uglify();
 
 const copyright = `/*
@@ -21,7 +21,11 @@ const plugins = [
   }),
   commonjs({
     sourcemap: true,
+    namedExports: {
+      lodash: ['pickBy', 'isEmpty', 'isEqual', 'fromPairs'],
+    },
   }),
+  json()
 ];
 export default [
   {
@@ -54,9 +58,6 @@ export default [
       },
     },
     external: ['react'],
-    plugins: [
-      ...plugins,
-      uglifyConfig,
-    ],
+    plugins: [...plugins, uglifyConfig],
   },
 ];

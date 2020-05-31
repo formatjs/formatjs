@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.4](https://github.com/formatjs/formatjs/compare/website@0.2.3...website@0.2.4) (2020-05-28)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+## [0.2.3](https://github.com/formatjs/formatjs/compare/website@0.2.2...website@0.2.3) (2020-05-28)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+## [0.2.2](https://github.com/formatjs/formatjs/compare/website@0.2.1...website@0.2.2) (2020-05-27)
+
+**Note:** Version bump only for package website
+
+
+
+
+
+## [0.2.1](https://github.com/formatjs/formatjs/compare/website@0.2.0...website@0.2.1) (2020-05-27)
+
+
+### Bug Fixes
+
+* **website:** editorial fixes of Intl.NumberFormat links ([#1690](https://github.com/formatjs/formatjs/issues/1690)) ([1b4a248](https://github.com/formatjs/formatjs/commit/1b4a2482ea85c4f9d3754d46c8aadd67a0b17d93))
+
+
+
+
+
 # [0.2.0](https://github.com/formatjs/formatjs/compare/website@0.1.8...website@0.2.0) (2020-05-25)
 
 

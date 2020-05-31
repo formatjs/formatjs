@@ -3,7 +3,7 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import * as _ from 'lodash';
+import {fromPairs} from 'lodash';
 import {
   invariant,
   LDMLPluralRuleMap,
@@ -13,20 +13,8 @@ import {
   UnitData,
 } from '@formatjs/intl-utils';
 import * as UnitsData from 'cldr-units-full/main/en/units.json';
-import {sync as globSync} from 'glob';
-import {dirname, resolve} from 'path';
-import {Locale} from './types';
-import generateFieldExtractorFn, {
-  collapseSingleValuePluralRule,
-  PLURAL_RULES,
-} from './utils';
-
-const unitsLocales = globSync('*/units.json', {
-  cwd: resolve(
-    dirname(require.resolve('cldr-units-full/package.json')),
-    './main'
-  ),
-}).map(dirname);
+import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
+import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils';
 
 export type Units = typeof UnitsData['main']['en']['units'];
 
@@ -41,16 +29,7 @@ function extractUnitPattern(d: Units['long']['volume-gallon']) {
   );
 }
 
-export function getAllLocales() {
-  return globSync('*/units.json', {
-    cwd: resolve(
-      dirname(require.resolve('cldr-units-full/package.json')),
-      './main'
-    ),
-  }).map(dirname);
-}
-
-function loadUnits(locale: Locale): UnitDataTable {
+function loadUnits(locale: string): UnitDataTable {
   const units = (require(`cldr-units-full/main/${locale}/units.json`) as typeof UnitsData)
     .main[locale as 'en'].units;
 
@@ -95,24 +74,14 @@ function loadUnits(locale: Locale): UnitDataTable {
     },
   };
 
-  return {simple: _.fromPairs(simpleUnitEntries), compound: compoundUnits};
-}
-
-function hasUnits(locale: Locale): boolean {
-  return unitsLocales.includes(locale);
+  return {simple: fromPairs(simpleUnitEntries), compound: compoundUnits};
 }
 
 export function generateDataForLocales(
-  locales: string[] = getAllLocales()
+  locales: string[] = AVAILABLE_LOCALES.availableLocales.full
 ): Record<string, UnitDataTable> {
   return locales.reduce((all: Record<string, UnitDataTable>, locale) => {
     all[locale] = loadUnits(locale);
     return all;
   }, {});
 }
-
-export default generateFieldExtractorFn<UnitDataTable>(
-  loadUnits,
-  hasUnits,
-  getAllLocales()
-);
