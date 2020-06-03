@@ -24,6 +24,10 @@ See the accompanying LICENSE file for terms.
             location: location()
         }: {}
     }
+
+    function noTagSupport() {
+        return options && options.noTagSupport;
+    }
 }
 
 start
@@ -271,11 +275,11 @@ quotedString = "'" escapedChar:escapedChar quotedChars:$("''" / [^'])* "'"? {
 
 unquotedString = $(x:. &{
     return (
-        x !== '<' &&
+        (noTagSupport() || x !== '<') &&
         x !== '{' &&
         !(isInPluralOption() && x === '#') &&
         !(isNestedMessageText() && x === '}') &&
-        !(isNestedMessageText() && x === '>')
+        !(!noTagSupport() && isNestedMessageText() && x === '>')
     );
 } / '\n')
 
