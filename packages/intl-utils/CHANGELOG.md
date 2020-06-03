@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@3.1.0...@formatjs/intl-utils@3.2.0) (2020-06-03)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-utils:** fix toRawPrecision (round up) and toRawFixed (with huge numbers) ([#1696](https://github.com/formatjs/formatjs/issues/1696)) ([df68427](https://github.com/formatjs/formatjs/commit/df68427c06cd815231ff19b9d5cc493e6df444e2)), closes [#1692](https://github.com/formatjs/formatjs/issues/1692)
+
+
+### Features
+
+* **@formatjs/intl-utils:** Move extractor from formatjs-extract-cldr-data here ([11d1a26](https://github.com/formatjs/formatjs/commit/11d1a263d7f8eef1a2623ba76421785f499c61fa))
+* **@formatjs/intl-utils:** rm extractor stuff, rm redudant deps ([bfd5732](https://github.com/formatjs/formatjs/commit/bfd5732fff424f08f3f1c97e64c1edf00cbc01a4))
+* **formatjs-extract-cldr-data:** rm this package ([62bdd32](https://github.com/formatjs/formatjs/commit/62bdd32aadef899228a5303e01865f69fd729fa3))
+
+
+
+
+
 # [3.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@3.0.1...@formatjs/intl-utils@3.1.0) (2020-05-25)
 
 

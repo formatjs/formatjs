@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@4.2.1...@formatjs/intl-numberformat@4.2.2) (2020-06-03)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-utils:** fix toRawPrecision (round up) and toRawFixed (with huge numbers) ([#1696](https://github.com/formatjs/formatjs/issues/1696)) ([df68427](https://github.com/formatjs/formatjs/commit/df68427c06cd815231ff19b9d5cc493e6df444e2)), closes [#1692](https://github.com/formatjs/formatjs/issues/1692)
+
+
+
+
+
 ## [4.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@4.2.0...@formatjs/intl-numberformat@4.2.1) (2020-05-28)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat
