@@ -35,7 +35,7 @@ Array [
 ]
 `;
 
-exports[`mismatched tag with noTagSupport 1`] = `
+exports[`mismatched tag with ignoreTag 1`] = `
 Array [
   Object {
     "type": 0,
@@ -73,7 +73,7 @@ Array [
 ]
 `;
 
-exports[`nested tag with noTagSupport 1`] = `
+exports[`nested tag with ignoreTag 1`] = `
 Array [
   Object {
     "type": 0,
@@ -127,7 +127,7 @@ Array [
 ]
 `;
 
-exports[`self-closing tag with noTagSupport 1`] = `
+exports[`self-closing tag with ignoreTag 1`] = `
 Array [
   Object {
     "type": 0,
@@ -198,7 +198,7 @@ Array [
 ]
 `;
 
-exports[`tag in plural with noTagSupport 1`] = `
+exports[`tag in plural with ignoreTag 1`] = `
 Array [
   Object {
     "type": 0,
@@ -277,7 +277,7 @@ Array [
 ]
 `;
 
-exports[`tag with dash with noTagSupport 1`] = `
+exports[`tag with dash with ignoreTag 1`] = `
 Array [
   Object {
     "type": 0,
@@ -318,7 +318,7 @@ Array [
 ]
 `;
 
-exports[`tag with number arg with noTagSupport 1`] = `
+exports[`tag with number arg with ignoreTag 1`] = `
 Array [
   Object {
     "type": 0,
@@ -382,7 +382,7 @@ Array [
 ]
 `;
 
-exports[`tag with rich arg with noTagSupport 1`] = `
+exports[`tag with rich arg with ignoreTag 1`] = `
 Array [
   Object {
     "type": 0,

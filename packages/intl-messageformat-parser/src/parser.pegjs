@@ -25,8 +25,8 @@ See the accompanying LICENSE file for terms.
         }: {}
     }
 
-    function noTagSupport() {
-        return options && options.noTagSupport;
+    function ignoreTag() {
+        return options && options.ignoreTag;
     }
 }
 
@@ -275,11 +275,11 @@ quotedString = "'" escapedChar:escapedChar quotedChars:$("''" / [^'])* "'"? {
 
 unquotedString = $(x:. &{
     return (
-        (noTagSupport() || x !== '<') &&
+        (ignoreTag() || x !== '<') &&
         x !== '{' &&
         !(isInPluralOption() && x === '#') &&
         !(isNestedMessageText() && x === '}') &&
-        !(!noTagSupport() && isNestedMessageText() && x === '>')
+        !(!ignoreTag() && isNestedMessageText() && x === '>')
     );
 } / '\n')
 

@@ -6,9 +6,9 @@ test('tag with number arg', () => {
   ).toMatchSnapshot();
 });
 
-test('tag with number arg with noTagSupport', () => {
+test('tag with number arg with ignoreTag', () => {
   expect(
-    pegParse('I have <foo>{numCats, number}</foo> cats.', {noTagSupport: true})
+    pegParse('I have <foo>{numCats, number}</foo> cats.', {ignoreTag: true})
   ).toMatchSnapshot();
 });
 
@@ -20,11 +20,11 @@ test('tag with rich arg', () => {
   ).toMatchSnapshot();
 });
 
-test('tag with rich arg with noTagSupport', () => {
+test('tag with rich arg with ignoreTag', () => {
   expect(
     pegParse(
       'I <b>have</b> <foo>{numCats, number} some string {placeholder}</foo> cats.',
-      {noTagSupport: true}
+      {ignoreTag: true}
     )
   ).toMatchSnapshot();
 });
@@ -47,9 +47,9 @@ test('mismatched tag', function () {
   expect(() => pegParse('this is <a>mismatch</b>')).toThrowError(/Mismatch/);
 });
 
-test('mismatched tag with noTagSupport', function () {
+test('mismatched tag with ignoreTag', function () {
   expect(
-    pegParse('this is <a>mismatch</b>', {noTagSupport: true})
+    pegParse('this is <a>mismatch</b>', {ignoreTag: true})
   ).toMatchSnapshot();
 });
 
@@ -59,9 +59,9 @@ test('nested tag', function () {
   ).toMatchSnapshot();
 });
 
-test('nested tag with noTagSupport', function () {
+test('nested tag with ignoreTag', function () {
   expect(
-    pegParse('this is <a>nested <b>{placeholder}</b></a>', {noTagSupport: true})
+    pegParse('this is <a>nested <b>{placeholder}</b></a>', {ignoreTag: true})
   ).toMatchSnapshot();
 });
 
@@ -73,11 +73,11 @@ test('tag in plural', function () {
   ).toMatchSnapshot();
 });
 
-test('tag in plural with noTagSupport', function () {
+test('tag in plural with ignoreTag', function () {
   expect(
     pegParse(
       'You have {count, plural, =1 {<b>1</b> Message} other {<b>#</b> Messages}}',
-      {noTagSupport: true}
+      {ignoreTag: true}
     )
   ).toMatchSnapshot();
 });
@@ -88,10 +88,10 @@ test('self-closing tag', function () {
   ).toMatchSnapshot();
 });
 
-test('self-closing tag with noTagSupport', function () {
+test('self-closing tag with ignoreTag', function () {
   expect(
     pegParse('this is <br/> <a>nested <b>{placeholder}</b></a>', {
-      noTagSupport: true,
+      ignoreTag: true,
     })
   ).toMatchSnapshot();
 });
@@ -102,10 +102,10 @@ test('tag with dash', function () {
   ).toMatchSnapshot();
 });
 
-test('tag with dash with noTagSupport', function () {
+test('tag with dash with ignoreTag', function () {
   expect(
     pegParse('this is <br/> <dash-tag>nested <b>{placeholder}</b></dash-tag>', {
-      noTagSupport: true,
+      ignoreTag: true,
     })
   ).toMatchSnapshot();
 });
