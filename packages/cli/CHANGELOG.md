@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.7.1...@formatjs/cli@1.7.2) (2020-06-04)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** remove loader-utils dep ([927b3bc](https://github.com/formatjs/formatjs/commit/927b3bc79eea2ea6f0adb7e7008587f9d630a7de))
+
+
+
+
+
 ## [1.7.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.7.0...@formatjs/cli@1.7.1) (2020-06-04)
 
 

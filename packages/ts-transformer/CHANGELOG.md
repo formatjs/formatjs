@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.1.0...@formatjs/ts-transformer@2.1.1) (2020-06-04)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** remove loader-utils dep ([927b3bc](https://github.com/formatjs/formatjs/commit/927b3bc79eea2ea6f0adb7e7008587f9d630a7de))
+
+
+
+
+
 # [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.0.5...@formatjs/ts-transformer@2.1.0) (2020-06-04)
 
 
