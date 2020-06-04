@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.5.18](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.5.17...babel-plugin-react-intl@7.5.18) (2020-06-04)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
 ## [7.5.17](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.5.16...babel-plugin-react-intl@7.5.17) (2020-06-04)
 
 **Note:** Version bump only for package babel-plugin-react-intl

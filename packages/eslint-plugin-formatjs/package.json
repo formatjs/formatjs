@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-formatjs",
-  "version": "2.3.10",
+  "version": "2.3.11",
   "description": "ESLint plugin for formatjs",
   "main": "dist/index.js",
   "files": [
@@ -33,7 +33,7 @@
     "@types/estree": "^0.0.44",
     "@typescript-eslint/typescript-estree": "^2.29.0",
     "emoji-regex": "^9.0.0",
-    "intl-messageformat-parser": "^5.1.0"
+    "intl-messageformat-parser": "^5.1.1"
   },
   "peerDependencies": {
     "eslint": "^6.8.0"

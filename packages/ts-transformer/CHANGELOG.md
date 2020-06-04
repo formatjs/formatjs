@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.1.1...@formatjs/ts-transformer@2.1.2) (2020-06-04)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-utils:** don't export interpolateName from index ([72f1566](https://github.com/formatjs/formatjs/commit/72f15662b321046fd3092bb917934790eb6803a6)), closes [#1700](https://github.com/formatjs/formatjs/issues/1700)
+
+
+
+
+
 ## [2.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.1.0...@formatjs/ts-transformer@2.1.1) (2020-06-04)
 
 
