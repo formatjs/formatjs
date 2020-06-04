@@ -2,7 +2,7 @@ import {ExtractionResult, OptionsSchema} from 'babel-plugin-react-intl';
 import * as babel from '@babel/core';
 import {warn, getStdinAsString} from './console_utils';
 import {outputJSONSync} from 'fs-extra';
-import {interpolateName} from 'loader-utils';
+import {interpolateName} from '@formatjs/intl-utils';
 import {IOptions as GlobOptions} from 'glob';
 
 export type ExtractCLIOptions = Omit<ExtractOptions, 'overrideIdFn'> & {
