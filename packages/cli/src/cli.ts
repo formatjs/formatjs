@@ -137,7 +137,7 @@ async function main(argv: string[]) {
       await extract(processedFiles, {
         outFile: cmdObj.outFile,
         idInterpolationPattern:
-          cmdObj.idInterpolationPattern || '[contenthash:5]',
+          cmdObj.idInterpolationPattern || '[sha1:contenthash:base64:6]',
         messagesDir: cmdObj.messagesDir,
         extractSourceLocation: cmdObj.extractSourceLocation,
         moduleSourceName: cmdObj.moduleSourceName,

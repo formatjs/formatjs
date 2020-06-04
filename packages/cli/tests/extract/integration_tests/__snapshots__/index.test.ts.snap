@@ -34,7 +34,7 @@ Array [
   Object {
     "defaultMessage": "No ID",
     "description": "no ID",
-    "id": "e695b",
+    "id": "fAT9Q5",
   },
 ]
 `;
@@ -75,7 +75,7 @@ Array [
   Object {
     "defaultMessage": "No ID",
     "description": "no ID",
-    "id": "e695b",
+    "id": "fAT9Q5",
   },
 ]
 `;
@@ -166,7 +166,7 @@ Array [
       "line": 37,
     },
     "file": "defineMessages/actual.js",
-    "id": "e695b",
+    "id": "fAT9Q5",
     "start": Object {
       "column": 19,
       "line": 34,
@@ -205,7 +205,7 @@ Array [
   Object {
     "defaultMessage": "No ID",
     "description": "no ID",
-    "id": "e695b",
+    "id": "fAT9Q5",
   },
 ]
 `;
@@ -274,7 +274,7 @@ Array [
   Object {
     "defaultMessage": "No ID",
     "description": "no ID",
-    "id": "e695b",
+    "id": "fAT9Q5",
   },
   Object {
     "defaultMessage": "formatted message",
@@ -318,7 +318,7 @@ Array [
   Object {
     "defaultMessage": "No ID",
     "description": "no ID",
-    "id": "e695b",
+    "id": "fAT9Q5",
   },
 ]
 `;
@@ -353,7 +353,7 @@ Array [
   Object {
     "defaultMessage": "No ID",
     "description": "no ID",
-    "id": "e695b",
+    "id": "fAT9Q5",
   },
   Object {
     "defaultMessage": "formatted message",
