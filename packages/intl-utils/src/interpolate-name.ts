@@ -23,9 +23,9 @@ export type NameFn = (resourcePath?: string, resourceQuery?: string) => string;
 
 function getHashDigest(
   content: string,
-  hashType: string,
-  digestType: HexBase64Latin1Encoding,
-  length: number
+  hashType = 'md5',
+  digestType: HexBase64Latin1Encoding = 'hex',
+  length = 9999
 ) {
   const hasher = createHash(hashType);
   hasher.update(content);
