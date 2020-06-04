@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.6.22...@formatjs/cli@1.7.0) (2020-06-04)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** Change default hashing to a longer & stronger hash ([0bb8358](https://github.com/formatjs/formatjs/commit/0bb835804c75c8124c3fdf5921ccdf0dfdb4af8f))
+
+
+### Features
+
+* **@formatjs/intl-utils:** Add interpolateName ([4d09912](https://github.com/formatjs/formatjs/commit/4d09912e55c79a5246f18fe69c3646b7deb04f1b))
+
+
+
+
+
 ## [1.6.22](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.6.21...@formatjs/cli@1.6.22) (2020-06-03)
 
 **Note:** Version bump only for package @formatjs/cli

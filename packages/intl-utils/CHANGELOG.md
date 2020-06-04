@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@3.2.0...@formatjs/intl-utils@3.3.0) (2020-06-04)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-utils:** fix default params for hash ([1d48c95](https://github.com/formatjs/formatjs/commit/1d48c95fe44a961305326646b6d9f4132ae1646e))
+
+
+### Features
+
+* **@formatjs/intl-utils:** Add interpolateName ([4d09912](https://github.com/formatjs/formatjs/commit/4d09912e55c79a5246f18fe69c3646b7deb04f1b))
+
+
+
+
+
 # [3.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@3.1.0...@formatjs/intl-utils@3.2.0) (2020-06-03)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "website",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "private": true,
   "scripts": {
     "start": "docusaurus start",
@@ -15,7 +15,7 @@
     "classnames": "^2.2.6",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-intl": "^4.6.4"
+    "react-intl": "^4.6.5"
   },
   "browserslist": {
     "production": [
@@ -30,6 +30,6 @@
     ]
   },
   "devDependencies": {
-    "intl-messageformat-parser": "^5.0.12"
+    "intl-messageformat-parser": "^5.1.0"
   }
 }

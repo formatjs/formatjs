@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.0.5...@formatjs/ts-transformer@2.1.0) (2020-06-04)
+
+
+### Features
+
+* **@formatjs/intl-utils:** Add interpolateName ([4d09912](https://github.com/formatjs/formatjs/commit/4d09912e55c79a5246f18fe69c3646b7deb04f1b))
+
+
+
+
+
 ## [2.0.5](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.0.4...@formatjs/ts-transformer@2.0.5) (2020-05-08)
 
 
