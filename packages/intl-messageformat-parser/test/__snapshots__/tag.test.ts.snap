@@ -35,6 +35,15 @@ Array [
 ]
 `;
 
+exports[`mismatched tag with ignoreTag 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "this is <a>mismatch</b>",
+  },
+]
+`;
+
 exports[`nested tag 1`] = `
 Array [
   Object {
@@ -60,6 +69,23 @@ Array [
     ],
     "type": 8,
     "value": "a",
+  },
+]
+`;
+
+exports[`nested tag with ignoreTag 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "this is <a>nested <b>",
+  },
+  Object {
+    "type": 1,
+    "value": "placeholder",
+  },
+  Object {
+    "type": 0,
+    "value": "</b></a>",
   },
 ]
 `;
@@ -97,6 +123,23 @@ Array [
     ],
     "type": 8,
     "value": "a",
+  },
+]
+`;
+
+exports[`self-closing tag with ignoreTag 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "this is <br/> <a>nested <b>",
+  },
+  Object {
+    "type": 1,
+    "value": "placeholder",
+  },
+  Object {
+    "type": 0,
+    "value": "</b></a>",
   },
 ]
 `;
@@ -155,6 +198,48 @@ Array [
 ]
 `;
 
+exports[`tag in plural with ignoreTag 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "You have ",
+  },
+  Object {
+    "offset": 0,
+    "options": Object {
+      "=1": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "<b>1</b> Message",
+          },
+        ],
+      },
+      "other": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "<b>",
+          },
+          Object {
+            "type": 7,
+          },
+          Object {
+            "type": 0,
+            "value": "</b> Messages",
+          },
+        ],
+      },
+    },
+    "pluralType": "cardinal",
+    "type": 6,
+    "value": "count",
+  },
+]
+`;
+
 exports[`tag with dash 1`] = `
 Array [
   Object {
@@ -192,6 +277,23 @@ Array [
 ]
 `;
 
+exports[`tag with dash with ignoreTag 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "this is <br/> <dash-tag>nested <b>",
+  },
+  Object {
+    "type": 1,
+    "value": "placeholder",
+  },
+  Object {
+    "type": 0,
+    "value": "</b></dash-tag>",
+  },
+]
+`;
+
 exports[`tag with number arg 1`] = `
 Array [
   Object {
@@ -212,6 +314,24 @@ Array [
   Object {
     "type": 0,
     "value": " cats.",
+  },
+]
+`;
+
+exports[`tag with number arg with ignoreTag 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "I have <foo>",
+  },
+  Object {
+    "style": null,
+    "type": 2,
+    "value": "numCats",
+  },
+  Object {
+    "type": 0,
+    "value": "</foo> cats.",
   },
 ]
 `;
@@ -258,6 +378,32 @@ Array [
   Object {
     "type": 0,
     "value": " cats.",
+  },
+]
+`;
+
+exports[`tag with rich arg with ignoreTag 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "I <b>have</b> <foo>",
+  },
+  Object {
+    "style": null,
+    "type": 2,
+    "value": "numCats",
+  },
+  Object {
+    "type": 0,
+    "value": " some string ",
+  },
+  Object {
+    "type": 1,
+    "value": "placeholder",
+  },
+  Object {
+    "type": 0,
+    "value": "</foo> cats.",
   },
 ]
 `;
