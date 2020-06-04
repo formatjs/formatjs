@@ -40,6 +40,9 @@ const msgs = defineMessages({
     description: 'no ID',
     defaultMessage: 'No ID',
   },
+  noDesc: {
+    defaultMessage: 'No Desc',
+  },
 } as const);
 
 async function foo() {

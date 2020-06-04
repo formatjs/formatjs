@@ -109,7 +109,11 @@ export async function extract(
                 resourcePath: filename,
               } as any,
               idInterpolationPattern,
-              {content: `${defaultMessage}#${description}`}
+              {
+                content: description
+                  ? `${defaultMessage}#${description}`
+                  : defaultMessage,
+              }
             ),
         };
       }

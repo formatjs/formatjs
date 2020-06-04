@@ -277,6 +277,10 @@ Array [
     "id": "fAT9Q5",
   },
   Object {
+    "defaultMessage": "No Desc",
+    "id": "Ot/V+Y",
+  },
+  Object {
     "defaultMessage": "formatted message",
     "description": "foo",
     "id": "inline",
@@ -354,6 +358,10 @@ Array [
     "defaultMessage": "No ID",
     "description": "no ID",
     "id": "fAT9Q5",
+  },
+  Object {
+    "defaultMessage": "No Desc",
+    "id": "Ot/V+Y",
   },
   Object {
     "defaultMessage": "formatted message",
