@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "dependencies": {
-    "@formatjs/intl-utils": "3.3.1"
+    "@formatjs/intl-utils": "3.3.1",
+    "@formatjs/intl-getcanonicallocales": "1.2.6"
   }
 }
