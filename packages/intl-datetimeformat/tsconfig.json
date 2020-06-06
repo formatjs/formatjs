@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "lib": ["dom", "es5", "esnext.intl", "es2017.intl", "es2018.intl"],
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": ["src", "src/**/*.json"],
+  "references": [
+    {"path": "../intl-pluralrules"},
+    {"path": "../intl-utils"},
+    {"path": "../intl-getcanonicallocales"}
+  ]
+}

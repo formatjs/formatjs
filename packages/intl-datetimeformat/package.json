@@ -1,0 +1,33 @@
+{
+  "name": "@formatjs/intl-datetimeformat",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Intl.DateTimeFormat polyfill",
+  "main": "dist/index.js",
+  "scripts": {
+    "compile": "NODE_OPTIONS=--max-old-space-size=8192 tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local",
+    "rollup": "NODE_OPTIONS=--max-old-space-size=8192 rollup -c rollup.config.js",
+    "build": "yarn run compile && yarn run rollup",
+    "test": "cross-env cross-env NODE_ENV=test jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/formatjs/formatjs.git"
+  },
+  "keywords": [
+    "i18n",
+    "intl",
+    "polyfill",
+    "datetimeformat",
+    "formatjs"
+  ],
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/formatjs/formatjs/issues"
+  },
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "dependencies": {
+    "@formatjs/intl-utils": "3.3.1"
+  }
+}
