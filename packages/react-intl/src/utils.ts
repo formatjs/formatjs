@@ -17,7 +17,7 @@ import {
   IntlShape,
 } from './types';
 import * as React from 'react';
-import IntlMessageFormat from 'intl-messageformat';
+import IntlMessageFormat, {FormatXMLElementFn} from 'intl-messageformat';
 import memoizeIntlConstructor from 'intl-format-cache';
 import {invariant} from '@formatjs/intl-utils';
 import {IntlRelativeTimeFormatOptions} from '@formatjs/intl-relativetimeformat';
@@ -133,4 +133,15 @@ export function getNamedFormat<T extends keyof CustomFormats>(
   }
 
   onError(new UnsupportedFormatterError(`No ${type} format named: ${name}`));
+}
+
+export function unapplyFormatXMLElementFn(
+  formatXMLElementFn: FormatXMLElementFn<React.ReactNode, React.ReactNode>
+): (node: React.ReactNode) => React.ReactNode {
+  return function () {
+    return formatXMLElementFn(
+      // eslint-disable-next-line prefer-rest-params
+      arguments.length === 1 ? arguments[0] : React.Children.toArray(arguments)
+    );
+  };
 }

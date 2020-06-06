@@ -237,6 +237,22 @@ describe('<FormattedMessage>', () => {
       expect(rendered).toMatchSnapshot();
     });
 
+    it('supports rich-text message formatting w/ nested tag, chunks merged', () => {
+      const rendered = mountWithProvider(
+        {
+          id: 'hello',
+          defaultMessage: 'Hello, <b>{name}<i>!</i></b>',
+          values: {
+            name: 'Jest',
+            b: (chunks: any) => <b>{chunks}</b>,
+            i: (msg: string) => <i>{msg}</i>,
+          },
+        },
+        providerProps
+      );
+      expect(rendered).toMatchSnapshot();
+    });
+
     it('supports rich-text message formatting in function-as-child pattern', () => {
       const rendered = mountWithProvider(
         {

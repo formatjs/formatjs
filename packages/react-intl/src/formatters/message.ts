@@ -6,6 +6,7 @@
 
 import * as React from 'react';
 import {invariant} from '@formatjs/intl-utils';
+import {unapplyFormatXMLElementFn} from '../utils';
 
 import {
   Formatters,
@@ -19,6 +20,13 @@ import IntlMessageFormat, {
   PrimitiveType,
 } from 'intl-messageformat';
 import {MissingTranslationError, MessageFormatError} from '../error';
+
+type FormatMessageValues = Record<
+  string,
+  | PrimitiveType
+  | React.ReactNode
+  | FormatXMLElementFn<React.ReactNode, React.ReactNode>
+>;
 
 function setTimeZoneInOptions(
   opts: Record<string, Intl.DateTimeFormatOptions>,
@@ -72,6 +80,24 @@ function deepMergeFormatsAndSetTimeZone(
   };
 }
 
+export function patchFormatXMLElementFn(
+  values: FormatMessageValues
+): FormatMessageValues {
+  return Object.keys(values).reduce((acc: FormatMessageValues, k) => {
+    const v = values[k];
+    acc[k] =
+      typeof v === 'function'
+        ? unapplyFormatXMLElementFn(
+            // type assertation needed since TypeScript infers possible generic
+            // Function type for `v`, but we know the only possible function
+            // in `values` is FormatXMLElementFn
+            v as FormatXMLElementFn<React.ReactNode, React.ReactNode>
+          )
+        : v;
+    return acc;
+  }, {});
+}
+
 function prepareIntlMessageFormatHtmlOutput(
   chunks: React.ReactNode,
   shouldWrap?: boolean
@@ -100,7 +126,7 @@ export function formatMessage(
   >,
   state: Formatters,
   messageDescriptor?: MessageDescriptor,
-  values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>
+  values?: FormatMessageValues
 ): string;
 export function formatMessage(
   {
@@ -125,12 +151,7 @@ export function formatMessage(
   >,
   state: Formatters,
   messageDescriptor: MessageDescriptor = {id: ''},
-  values?: Record<
-    string,
-    | PrimitiveType
-    | React.ReactNode
-    | FormatXMLElementFn<React.ReactNode, React.ReactNode>
-  >
+  values?: FormatMessageValues
 ): React.ReactNode {
   const {id, defaultMessage} = messageDescriptor;
 
@@ -141,6 +162,7 @@ export function formatMessage(
   if (!values && message && typeof message === 'string') {
     return message.replace(/'\{(.*?)\}'/gi, `{$1}`);
   }
+  const patchedValues = values && patchFormatXMLElementFn(values);
   formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
   defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);
 
@@ -163,7 +185,7 @@ export function formatMessage(
         );
 
         return prepareIntlMessageFormatHtmlOutput(
-          formatter.format(values),
+          formatter.format(patchedValues),
           wrapRichTextChunksInFragment
         );
       } catch (e) {
@@ -188,7 +210,7 @@ export function formatMessage(
     });
 
     return prepareIntlMessageFormatHtmlOutput(
-      formatter.format<React.ReactNode>(values),
+      formatter.format<React.ReactNode>(patchedValues),
       wrapRichTextChunksInFragment
     );
   } catch (e) {
@@ -213,7 +235,7 @@ export function formatMessage(
       );
 
       return prepareIntlMessageFormatHtmlOutput(
-        formatter.format(values),
+        formatter.format(patchedValues),
         wrapRichTextChunksInFragment
       );
     } catch (e) {
