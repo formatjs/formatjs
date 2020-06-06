@@ -19,7 +19,7 @@
     "karma:local": "karma start karma.conf.js",
     "lint": "eslint 'packages/*/src/**/*.ts?(x)'",
     "postversion": "yarn run prettier",
-    "prepublishOnly": "yarn run prettier && yarn run build --since",
+    "prepublishOnly": "yarn run prettier && yarn run build",
     "prettier": "prettier --write '**/*.{md,ts,tsx}'",
     "prettier:check": "prettier --check '**/*.{md,ts,tsx}'",
     "test": "yarn run prettier:check && lerna run test"
