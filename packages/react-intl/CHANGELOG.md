@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.6.7](https://github.com/formatjs/formatjs/compare/react-intl@4.6.6...react-intl@4.6.7) (2020-06-06)
+
+
+### Bug Fixes
+
+* **react-intl:** Allow ES2020 options for DateTimeFormat, fix [#1695](https://github.com/formatjs/formatjs/issues/1695) ([27d02ee](https://github.com/formatjs/formatjs/commit/27d02ee6a34a67b0dca00b66a4cafbd5b628108c))
+
+
+
+
+
 ## [4.6.6](https://github.com/formatjs/formatjs/compare/react-intl@4.6.5...react-intl@4.6.6) (2020-06-04)
 
 **Note:** Version bump only for package react-intl
