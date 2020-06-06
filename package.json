@@ -8,18 +8,18 @@
     "url": "https://github.com/formatjs/formatjs"
   },
   "scripts": {
-    "build": "yarn run clean && lerna run build",
+    "build": "yarn run clean && lerna run build --since",
     "build:cjs": "tsc -b packages/*",
     "dev:cjs": "tsc -b packages/* --watch",
-    "clean": "rimraf packages/*/*.tsbuildinfo && lerna run --parallel clean",
+    "clean": "rimraf packages/*/*.tsbuildinfo && lerna run --parallel clean --since",
     "cover:collect": "mkdir -p ./.nyc_output/ && for d in $(find packages -type d -name '.nyc_output' -maxdepth 2 -exec find '{}' -type f ';'); do (cp $d ./.nyc_output/); done; nyc report --reporter=lcov --report-dir=${COVERAGE_DIR:-artifacts/coverage}",
     "cover": "lerna run cover --since",
-    "dev:test": "lerna run test --since master",
+    "dev:test": "lerna run test --since",
     "karma:ci": "karma start karma.conf-ci.js",
     "karma:local": "karma start karma.conf.js",
     "lint": "eslint 'packages/*/src/**/*.ts?(x)'",
     "postversion": "yarn run prettier",
-    "prepublishOnly": "yarn run prettier && yarn run build",
+    "prepublishOnly": "yarn run prettier && yarn run build --since",
     "prettier": "prettier --write '**/*.{md,ts,tsx}'",
     "prettier:check": "prettier --check '**/*.{md,ts,tsx}'",
     "test": "yarn run prettier:check && lerna run test"
