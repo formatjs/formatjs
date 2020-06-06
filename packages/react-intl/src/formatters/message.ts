@@ -6,6 +6,7 @@
 
 import * as React from 'react';
 import {invariant} from '@formatjs/intl-utils';
+import {unapplyFormatXMLElementFn} from '../utils';
 
 import {
   Formatters,
@@ -70,6 +71,27 @@ function deepMergeFormatsAndSetTimeZone(
       setTimeZoneInOptions(f1.time || {}, timeZone)
     ),
   };
+}
+
+function isFormatXMLElementFn(
+  input: any
+): input is FormatXMLElementFn<React.ReactNode, React.ReactNode> {
+  return typeof input === 'function';
+}
+
+export function unapplyFormatXMLElementFnInValues(
+  values: Record<
+    string,
+    | PrimitiveType
+    | React.ReactNode
+    | FormatXMLElementFn<React.ReactNode, React.ReactNode>
+  >
+): typeof values {
+  return Object.keys(values).reduce((acc: typeof values, k) => {
+    const v = values[k];
+    acc[k] = isFormatXMLElementFn(v) ? unapplyFormatXMLElementFn(v) : v;
+    return acc;
+  }, {});
 }
 
 function prepareIntlMessageFormatHtmlOutput(
@@ -141,6 +163,7 @@ export function formatMessage(
   if (!values && message && typeof message === 'string') {
     return message.replace(/'\{(.*?)\}'/gi, `{$1}`);
   }
+  const patchedValues = values && unapplyFormatXMLElementFnInValues(values);
   formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
   defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);
 
@@ -163,7 +186,7 @@ export function formatMessage(
         );
 
         return prepareIntlMessageFormatHtmlOutput(
-          formatter.format(values),
+          formatter.format(patchedValues),
           wrapRichTextChunksInFragment
         );
       } catch (e) {
@@ -188,7 +211,7 @@ export function formatMessage(
     });
 
     return prepareIntlMessageFormatHtmlOutput(
-      formatter.format<React.ReactNode>(values),
+      formatter.format<React.ReactNode>(patchedValues),
       wrapRichTextChunksInFragment
     );
   } catch (e) {
@@ -213,7 +236,7 @@ export function formatMessage(
       );
 
       return prepareIntlMessageFormatHtmlOutput(
-        formatter.format(values),
+        formatter.format(patchedValues),
         wrapRichTextChunksInFragment
       );
     } catch (e) {
