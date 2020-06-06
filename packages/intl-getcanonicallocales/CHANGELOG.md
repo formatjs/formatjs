@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.2.4...@formatjs/intl-getcanonicallocales@1.2.5) (2020-06-06)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-getcanonicallocales:** handle non-existent Intl object ([b488ee8](https://github.com/formatjs/formatjs/commit/b488ee88b8ccab854b738ba4ad9c3947058121a1))
+
+
+
+
+
 ## [1.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.2.3...@formatjs/intl-getcanonicallocales@1.2.4) (2020-05-28)
 
 

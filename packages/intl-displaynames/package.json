@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-displaynames",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "description": "Polyfill for: https://tc39.es/proposal-intl-displaynames",
   "keywords": [
     "i18n",
@@ -33,7 +33,7 @@
     "@formatjs/intl-utils": "^3.3.1"
   },
   "devDependencies": {
-    "@formatjs/intl-getcanonicallocales": "^1.2.4",
+    "@formatjs/intl-getcanonicallocales": "^1.2.5",
     "@types/chalk": "^2.2.0",
     "@types/jest": "^25.2.1",
     "chalk": "^4.0.0",
