@@ -54,7 +54,7 @@ export interface CustomFormatConfig {
 }
 
 export type FormatDateOptions = Exclude<
-  Intl.DateTimeFormatOptions,
+  DateTimeFormatOptionsES2020,
   'localeMatcher'
 > &
   CustomFormatConfig;
@@ -179,4 +179,28 @@ export interface MessageDescriptor {
   id?: string | number;
   description?: string | object;
   defaultMessage?: string;
+}
+
+export interface DateTimeFormatOptionsES2020
+  extends Intl.DateTimeFormatOptions {
+  hourCycle?: 'h11' | 'h12' | 'h23' | 'h24';
+  dateStyle?: 'full' | 'long' | 'medium' | 'short';
+  timeStyle?: 'full' | 'long' | 'medium' | 'short';
+  fractionalSecondDigits?: number;
+  calendar?:
+    | 'buddhist'
+    | 'chinese'
+    | 'coptic'
+    | 'ethiopia'
+    | 'ethiopic'
+    | 'gregory'
+    | 'hebrew'
+    | 'indian'
+    | 'islamic'
+    | 'iso8601'
+    | 'japanese'
+    | 'persian'
+    | 'roc';
+  dayPeriod?: 'narrow' | 'short' | 'long';
+  numberingSystem?: string;
 }

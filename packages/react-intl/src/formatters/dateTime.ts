@@ -4,12 +4,17 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import {Formatters, IntlConfig, IntlFormatters} from '../types';
+import {
+  Formatters,
+  IntlConfig,
+  IntlFormatters,
+  DateTimeFormatOptionsES2020,
+} from '../types';
 
 import {filterProps, getNamedFormat} from '../utils';
 import {ReactIntlError, ReactIntlErrorCode} from '../error';
 
-const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
+const DATE_TIME_FORMAT_OPTIONS: Array<keyof DateTimeFormatOptionsES2020> = [
   'localeMatcher',
   'formatMatcher',
 
@@ -25,6 +30,13 @@ const DATE_TIME_FORMAT_OPTIONS: Array<keyof Intl.DateTimeFormatOptions> = [
   'minute',
   'second',
   'timeZoneName',
+  'hourCycle',
+  'dateStyle',
+  'timeStyle',
+  'fractionalSecondDigits',
+  'calendar',
+  'dayPeriod',
+  'numberingSystem',
 ];
 
 export function getFormatter(
