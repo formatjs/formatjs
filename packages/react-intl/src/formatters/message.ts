@@ -21,13 +21,6 @@ import IntlMessageFormat, {
 } from 'intl-messageformat';
 import {MissingTranslationError, MessageFormatError} from '../error';
 
-type FormatMessageValues = Record<
-  string,
-  | PrimitiveType
-  | React.ReactNode
-  | FormatXMLElementFn<React.ReactNode, React.ReactNode>
->;
-
 function setTimeZoneInOptions(
   opts: Record<string, Intl.DateTimeFormatOptions>,
   timeZone: string
@@ -81,9 +74,14 @@ function deepMergeFormatsAndSetTimeZone(
 }
 
 export function patchFormatXMLElementFn(
-  values: FormatMessageValues
-): FormatMessageValues {
-  return Object.keys(values).reduce((acc: FormatMessageValues, k) => {
+  values: Record<
+    string,
+    | PrimitiveType
+    | React.ReactNode
+    | FormatXMLElementFn<React.ReactNode, React.ReactNode>
+  >
+): typeof values {
+  return Object.keys(values).reduce((acc: typeof values, k) => {
     const v = values[k];
     acc[k] =
       typeof v === 'function'
@@ -126,7 +124,7 @@ export function formatMessage(
   >,
   state: Formatters,
   messageDescriptor?: MessageDescriptor,
-  values?: FormatMessageValues
+  values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>
 ): string;
 export function formatMessage(
   {
@@ -151,7 +149,12 @@ export function formatMessage(
   >,
   state: Formatters,
   messageDescriptor: MessageDescriptor = {id: ''},
-  values?: FormatMessageValues
+  values?: Record<
+    string,
+    | PrimitiveType
+    | React.ReactNode
+    | FormatXMLElementFn<React.ReactNode, React.ReactNode>
+  >
 ): React.ReactNode {
   const {id, defaultMessage} = messageDescriptor;
 
