@@ -15,9 +15,17 @@ You can sign-up using this [invitation link](https://join.slack.com/t/formatjs/s
 
 Development is currently being done against the latest Node LTS. This repository leverages [Lerna][] for package management.
 
+To setup locally:
+
+```sh
+> lerna bootstrap
+> yarn build
+> yarn test
+```
+
 Releases can be done with the following steps:
 
-```js
+```sh
 > lerna publish
 ```
 
