@@ -1,4 +1,8 @@
-import {ExtractionResult, OptionsSchema} from 'babel-plugin-react-intl';
+import {
+  ExtractionResult,
+  OptionsSchema,
+  ExtractedMessageDescriptor,
+} from 'babel-plugin-react-intl';
 import * as babel from '@babel/core';
 import {warn, getStdinAsString} from './console_utils';
 import {outputJSONSync} from 'fs-extra';
@@ -138,23 +142,44 @@ export default async function extractAndWrite(
   files: readonly string[],
   opts: ExtractCLIOptions
 ) {
-  const {outFile, ...extractOpts} = opts;
+  const {outFile, throws, ...extractOpts} = opts;
   if (outFile) {
     extractOpts.messagesDir = undefined;
   }
   const extractionResults = await extract(files, extractOpts);
   const printMessagesToStdout = extractOpts.messagesDir == null && !outFile;
-  const extractedMessages = extractionResults
-    .map(m => m.messages)
-    .filter(Boolean)
-    .reduce((all, messages) => [...all, ...messages], []);
+  const extractedMessages = new Map<string, ExtractedMessageDescriptor>();
+  for (const {messages} of extractionResults) {
+    for (const message of messages ?? []) {
+      const {id, description, defaultMessage} = message;
+      if (extractedMessages.has(id)) {
+        const existing = extractedMessages.get(id)!;
+        if (
+          description !== existing.description ||
+          defaultMessage !== existing.defaultMessage
+        ) {
+          const error = new Error(
+            `[React Intl] Duplicate message id: "${id}", ` +
+              'but the `description` and/or `defaultMessage` are different.'
+          );
+          if (throws) {
+            throw error;
+          } else {
+            warn(error.message);
+          }
+        }
+      }
+      extractedMessages.set(message.id, message);
+    }
+  }
+  const results = Array.from(extractedMessages.values());
   if (outFile) {
-    outputJSONSync(outFile, extractedMessages, {
+    outputJSONSync(outFile, results, {
       spaces: 2,
     });
   }
   if (printMessagesToStdout) {
-    process.stdout.write(JSON.stringify(extractedMessages, null, 2));
+    process.stdout.write(JSON.stringify(results, null, 2));
     process.stdout.write('\n');
   }
 }

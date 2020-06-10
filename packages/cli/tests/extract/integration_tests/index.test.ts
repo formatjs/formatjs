@@ -97,3 +97,19 @@ test('ignore -> stdout', async () => {
   expect(JSON.parse(jsResult.stdout)).toMatchSnapshot();
   expect(jsResult.stderr).toBe('');
 }, 20000);
+
+test('duplicated descriptor ids shows warning', async () => {
+  const {stderr, stdout} = await exec(
+    `${BIN_PATH} extract ${path.join(__dirname, 'duplicated/*.tsx')}`
+  );
+  expect(JSON.parse(stdout)).toMatchSnapshot();
+  expect(stderr).toContain('Duplicate message id: "foo"');
+}, 20000);
+
+test('duplicated descriptor ids throws', async () => {
+  expect(async () => {
+    await exec(
+      `${BIN_PATH} extract --throws ${path.join(__dirname, 'duplicated/*.tsx')}`
+    );
+  }).rejects.toThrowError('Duplicate message id: "foo"');
+}, 20000);
