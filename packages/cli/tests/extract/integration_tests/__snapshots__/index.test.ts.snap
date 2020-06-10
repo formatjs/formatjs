@@ -244,6 +244,15 @@ Options:
 "
 `;
 
+exports[`duplicated descriptor ids shows warning 1`] = `
+Array [
+  Object {
+    "defaultMessage": "Bar",
+    "id": "foo",
+  },
+]
+`;
+
 exports[`ignore -> stdout 1`] = `
 Array [
   Object {
