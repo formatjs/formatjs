@@ -59,9 +59,6 @@ class FormattedMessage<
   >
 > extends React.Component<Props<V>> {
   static displayName = 'FormattedMessage';
-  static defaultProps = {
-    values: {},
-  };
 
   shouldComponentUpdate(nextProps: Props<V>): boolean {
     const {values, ...otherProps} = this.props;
