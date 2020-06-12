@@ -7,9 +7,24 @@ import {
   toObject,
   defineProperty,
   supportedLocales,
+  objectIs,
+  partitionPattern,
 } from '@formatjs/intl-utils';
 import getInternalSlots from './get_internal_slots';
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
+import zones from './zones';
+import links from './links';
+const UPPERCASED_ZONES = zones.reduce((all: Record<string, string>, z) => {
+  all[z.toUpperCase()] = z;
+  return all;
+}, {});
+const UPPERCASED_LINKS = Object.keys(links).reduce(
+  (all: Record<string, string>, l) => {
+    all[l.toUpperCase()] = links[l as 'Zulu'];
+    return all;
+  },
+  {}
+);
 
 export interface IntlDateTimeFormatInternal {
   locale: string;
@@ -28,6 +43,25 @@ export interface IntlDateTimeFormatInternal {
   timeZone: string;
   pattern: string;
   boundFormat?: Intl.DateTimeFormat['format'];
+}
+
+export interface DateTimeFormatPart {
+  type:
+    | 'literal'
+    | 'era'
+    | 'year'
+    | 'month'
+    | 'day'
+    | 'hour'
+    | 'minute'
+    | 'second'
+    | 'weekday'
+    | 'timeZoneName'
+    | 'dayPeriod'
+    | 'relatedYear'
+    | 'yearName'
+    | 'unknown';
+  value: 'string';
 }
 
 const DATE_TIME_PROPS: Array<
@@ -105,6 +139,88 @@ const __INTERNAL_SLOT_MAP__ = new WeakMap<
 >();
 
 /**
+ * https://tc39.es/ecma402/#sec-isvalidtimezonename
+ * @param tz
+ */
+function isValidTimeZoneName(tz: string): boolean {
+  const uppercasedTz = tz.toUpperCase();
+  return uppercasedTz in UPPERCASED_ZONES || uppercasedTz in UPPERCASED_LINKS;
+}
+
+/**
+ * https://tc39.es/ecma402/#sec-canonicalizetimezonename
+ * @param tz
+ */
+function canonicalizeTimeZoneName(tz: string) {
+  const uppercasedTz = tz.toUpperCase();
+  const ianaTimeZone =
+    UPPERCASED_LINKS[uppercasedTz] || UPPERCASED_ZONES[uppercasedTz];
+  if (ianaTimeZone === 'Etc/UTC' || ianaTimeZone === 'Etc/GMT') {
+    return 'UTC';
+  }
+  return ianaTimeZone;
+}
+
+/**
+ * https://tc39.es/ecma262/#sec-tonumber
+ * @param val
+ */
+function toNumber(val: any): number {
+  if (val === undefined) {
+    return NaN;
+  }
+  if (val === null) {
+    return +0;
+  }
+  if (typeof val === 'boolean') {
+    return val ? 1 : +0;
+  }
+  if (typeof val === 'number') {
+    return val;
+  }
+  if (typeof val === 'symbol' || typeof val === 'bigint') {
+    throw new TypeError('Cannot convert symbol/bigint to number');
+  }
+  return Number(val);
+}
+
+/**
+ * https://tc39.es/ecma262/#sec-tointeger
+ * @param n
+ */
+function toInteger(n: any) {
+  const number = toNumber(n);
+  if (isNaN(number) || objectIs(number, -0)) {
+    return 0;
+  }
+  if (isFinite(number)) {
+    return number;
+  }
+  let integer = Math.floor(Math.abs(number));
+  if (number < 0) {
+    integer = -integer;
+  }
+  if (objectIs(integer, -0)) {
+    return 0;
+  }
+  return integer;
+}
+
+/**
+ * https://tc39.es/ecma262/#sec-timeclip
+ * @param time
+ */
+function timeClip(time: number) {
+  if (!isFinite(time)) {
+    return NaN;
+  }
+  if (Math.abs(time) > 8.64 * 1e16) {
+    return NaN;
+  }
+  return toInteger(time);
+}
+
+/**
  * https://tc39.es/ecma402/#sec-initializedatetimeformat
  * @param dtf DateTimeFormat
  * @param locales locales
@@ -140,7 +256,7 @@ function initializeDateTimeFormat(
   opt.ca = calendar;
   const numberingSystem = getOption(
     options,
-    'numeringSystem',
+    'numberingSystem',
     'string',
     undefined,
     undefined
@@ -182,7 +298,7 @@ function initializeDateTimeFormat(
     }
     timeZone = canonicalizeTimeZoneName(timeZone);
   } else {
-    timeZone = defaultTimeZone();
+    timeZone = DateTimeFormat.__defaultLocale;
   }
   setInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'timeZone', timeZone);
   opt = Object.create(null);
@@ -655,6 +771,7 @@ export interface DateTimeFormatConstructor {
   getDefaultLocale(): string;
 
   __defaultLocale: string;
+  __defaultTimeZone: string;
   localeData: Record<string, DateTimeFormatLocaleInternalData>;
   availableLocales: string[];
   polyfilled: boolean;
@@ -722,6 +839,14 @@ defineProperty(DateTimeFormat.prototype, 'resolvedOptions', {
     return ro as any;
   },
 });
+
+defineProperty(DateTimeFormat.prototype, 'formatToParts', {
+  value: function formatToParts(x: number) {
+    return formatDateTimeParts(this, x);
+  },
+});
+
+Object.defineProperty(DateTimeFormat.prototype, 'format', formatDescriptor);
 
 DateTimeFormat.__defaultLocale = 'en';
 DateTimeFormat.localeData = {};

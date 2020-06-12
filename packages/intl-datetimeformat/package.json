@@ -5,6 +5,9 @@
   "description": "Intl.DateTimeFormat polyfill",
   "main": "dist/index.js",
   "scripts": {
+    "iana": "rimraf iana-data/* && ts-node ./scripts/iana",
+    "zone": "ts-node scripts/zone --input iana-data/zone.tab --output src/zones.ts",
+    "link-gen": "ts-node scripts/link --input iana-data/backward --output src/links.ts",
     "compile": "NODE_OPTIONS=--max-old-space-size=8192 tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local",
     "rollup": "NODE_OPTIONS=--max-old-space-size=8192 rollup -c rollup.config.js",
     "build": "yarn run compile && yarn run rollup",
@@ -28,7 +31,13 @@
   },
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "dependencies": {
-    "@formatjs/intl-utils": "3.3.1",
-    "@formatjs/intl-getcanonicallocales": "1.2.6"
+    "@formatjs/intl-getcanonicallocales": "1.2.6",
+    "@formatjs/intl-utils": "3.3.1"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.5.7",
+    "@types/tar": "^4.0.3",
+    "node-fetch": "^2.6.0",
+    "tar": "^6.0.2"
   }
 }
