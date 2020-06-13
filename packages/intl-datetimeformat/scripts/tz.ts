@@ -1,35 +1,87 @@
 import * as minimist from 'minimist';
-import {readFileSync} from 'fs';
 import {outputFileSync} from 'fs-extra';
+import {execFile as _execFile} from 'child_process';
+import zones from '../src/zones';
+import {promisify} from 'util';
 
-interface ZoneData {
-  offset: number;
-}
+const execFile = promisify(_execFile);
+type ZoneData = [
+  // From in UTC Time
+  number,
+  // Abbreviation like EST/EDT
+  string,
+  // Offset in seconds
+  number,
+  // Whether it's daylight, 0|1
+  number
+];
+const SPACE_REGEX = /[\s\t]+/;
 
-const MS_PER_SEC = 1e3;
-const MS_PER_MIN = MS_PER_SEC * 60;
-const MS_PER_HOUR = MS_PER_MIN * 60;
+const MONTHS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
 
-function offsetToMs(offset: string) {
-  const [hr, min, sec] = offset.split(':');
-  return +hr * MS_PER_HOUR + +min * MS_PER_MIN + (+sec || 0) * MS_PER_SEC;
-}
-
-function main(args: minimist.ParsedArgs) {
-  const {input, output} = args;
-  const data = readFileSync(input, 'utf8').split('\n');
-  const result: Record<string, ZoneData> = {};
-  for (let line of data) {
-    // Ignore comments
-    if (!line || line.startsWith('#')) {
-      continue;
-    }
-    // Ignore inline comments
-    line = line.split('#')[0];
-    if (line.startsWith('Zone')) {
-      const [, zone, offset, rule, format, until] = line.split(/[\s\t]+/);
-    }
+function monthToNum(m: string) {
+  const month = MONTHS.indexOf(m) + 1;
+  if (month < 10) {
+    return `0${month}`;
   }
+  return month;
+}
+
+function utTimeToMs(utTime: string) {
+  const [, month, date, hourMinSec, year] = utTime.split(SPACE_REGEX);
+  const [hour, min, sec] = hourMinSec.split(':');
+  return new Date(
+    `${year}-${monthToNum(month)}-${date}T${hour}:${min}:${sec}Z`
+  ).getTime();
+}
+
+const LINE_REGEX = /^(.*?)\s+(.*?) UT = (.*?) isdst=(0|1) gmtoff=(.*?)$/i;
+
+async function main(args: minimist.ParsedArgs) {
+  const {output} = args;
+  const data: Record<string, ZoneData[]> = {};
+  await execFile('zdump', ['-v', ...zones], {
+    maxBuffer: 100 * 1024 * 1024,
+  }).then(({stdout, stderr}) => {
+    if (stderr) {
+      throw new Error(stderr);
+    }
+    const lines = stdout.split('\n');
+    for (const line of lines) {
+      if (line.endsWith('NULL')) {
+        continue;
+      }
+      const chunks = LINE_REGEX.exec(line);
+      if (!chunks) {
+        continue;
+      }
+      const [, zone, utTime, localTime, dst, offsetStr] = chunks;
+      const offsetInSeconds = +offsetStr;
+      const abbrv = localTime.split(SPACE_REGEX).pop()!;
+
+      if (!data[zone]) {
+        data[zone] = [[-Infinity, abbrv, offsetInSeconds, +dst]];
+      } else {
+        const lastEntry = data[zone][data[zone].length - 1];
+        if (lastEntry[1] !== abbrv) {
+          data[zone].push([utTimeToMs(utTime), abbrv, offsetInSeconds, +dst]);
+        }
+      }
+    }
+  });
 
   outputFileSync(
     output,

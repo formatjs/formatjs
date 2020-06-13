@@ -7,6 +7,7 @@
   "scripts": {
     "iana": "rimraf iana-data/* && ts-node ./scripts/iana",
     "zone": "ts-node scripts/zone --input iana-data/zone.tab --output src/zones.ts",
+    "tz": "ts-node scripts/tz --output src/data.ts",
     "link-gen": "ts-node scripts/link --input iana-data/backward --output src/links.ts",
     "compile": "NODE_OPTIONS=--max-old-space-size=8192 tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local",
     "rollup": "NODE_OPTIONS=--max-old-space-size=8192 rollup -c rollup.config.js",
