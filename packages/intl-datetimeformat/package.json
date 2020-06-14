@@ -41,6 +41,8 @@
   "devDependencies": {
     "@types/node-fetch": "^2.5.7",
     "@types/tar": "^4.0.3",
+    "cldr-core": "^36.0.0",
+    "cldr-dates-full": "^36.0.0",
     "node-fetch": "^2.6.0",
     "tar": "^6.0.2"
   }

@@ -60,12 +60,14 @@ export interface DateTimeFormatLocaleInternalData {
     short: string[];
   };
   timeZoneName: {
-    narrow: string[];
-    long: string[];
-    short: string[];
+    long: [string, string];
+    short: [string, string];
   };
   hourCycle: string;
   formats: Record<string, Formats[]>;
+  nu: string[];
+  hc: string[];
+  ca: string[];
 }
 
 export type Formats = Pick<

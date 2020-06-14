@@ -709,7 +709,16 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
           fv = fv.slice(fv.length - 2, fv.length);
         }
       } else if (f === 'narrow' || f === 'short' || f === 'long') {
-        fv = dataLocaleData[p as 'era'][f];
+        if (p === 'era') {
+          fv = dataLocaleData[p][f] || 'era';
+        } else if (p === 'timeZoneName') {
+          fv = dataLocaleData.timeZoneName[f][+tm.inDST];
+        } else if (p === 'month') {
+          // TODO
+          fv = dataLocaleData.month[f];
+        } else {
+          fv = dataLocaleData[p as 'era'][f];
+        }
       }
       result.push({
         type: p,
