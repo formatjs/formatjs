@@ -770,7 +770,7 @@ function localTZA(t: number, isUTC: boolean, timeZone: string): number {
     return 0;
   }
   for (const [ts, , offset] of zoneData) {
-    if (ts >= t) {
+    if (ts * 1e3 >= t) {
       return offset * 1e3;
     }
   }
