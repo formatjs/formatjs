@@ -1,3 +1,5 @@
+import {LocaleData} from '@formatjs/intl-utils';
+
 export interface PackedData {
   zones: string[];
   abbrvs: string;
@@ -34,3 +36,51 @@ export type UnpackedZoneData = [
   // Whether it's daylight, 0|1
   boolean
 ];
+
+export type RawDateTimeLocaleData = LocaleData<
+  DateTimeFormatLocaleInternalData
+>;
+
+export interface DateTimeFormatLocaleInternalData {
+  hourCycle: string;
+  formats: Record<string, Formats[]>;
+}
+
+export type Formats = Pick<
+  DateTimeFormatOptions,
+  | 'weekday'
+  | 'era'
+  | 'year'
+  | 'month'
+  | 'day'
+  | 'hour'
+  | 'minute'
+  | 'second'
+  | 'timeZoneName'
+> & {
+  pattern: string;
+  pattern12: string;
+};
+
+export interface DateTimeFormatOptions extends Intl.DateTimeFormatOptions {
+  hourCycle?: 'h11' | 'h12' | 'h23' | 'h24';
+  dateStyle?: 'full' | 'long' | 'medium' | 'short';
+  timeStyle?: 'full' | 'long' | 'medium' | 'short';
+  fractionalSecondDigits?: number;
+  calendar?:
+    | 'buddhist'
+    | 'chinese'
+    | 'coptic'
+    | 'ethiopia'
+    | 'ethiopic'
+    | 'gregory'
+    | 'hebrew'
+    | 'indian'
+    | 'islamic'
+    | 'iso8601'
+    | 'japanese'
+    | 'persian'
+    | 'roc';
+  dayPeriod?: 'narrow' | 'short' | 'long';
+  numberingSystem?: string;
+}

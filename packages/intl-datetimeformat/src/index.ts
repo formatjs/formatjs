@@ -9,11 +9,19 @@ import {
   supportedLocales,
   objectIs,
   partitionPattern,
+  unpackData,
+  LocaleData,
 } from '@formatjs/intl-utils';
 import getInternalSlots from './get_internal_slots';
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
 import links from './links';
-import {PackedData, UnpackedZoneData} from './types';
+import {
+  PackedData,
+  UnpackedZoneData,
+  DateTimeFormatOptions,
+  Formats,
+  DateTimeFormatLocaleInternalData,
+} from './types';
 import {unpack} from './packer';
 const UPPERCASED_LINKS = Object.keys(links).reduce(
   (all: Record<string, string>, l) => {
@@ -25,6 +33,7 @@ const UPPERCASED_LINKS = Object.keys(links).reduce(
 
 export interface IntlDateTimeFormatInternal {
   locale: string;
+  dataLocale: string;
   calendar?: string;
   weekday: 'narrow' | 'short' | 'long';
   era: 'narrow' | 'short' | 'long';
@@ -104,29 +113,6 @@ const RESOLVED_OPTIONS_KEYS: Array<
   'second',
   'timeZoneName',
 ];
-
-export interface DateTimeFormatOptions extends Intl.DateTimeFormatOptions {
-  hourCycle?: 'h11' | 'h12' | 'h23' | 'h24';
-  dateStyle?: 'full' | 'long' | 'medium' | 'short';
-  timeStyle?: 'full' | 'long' | 'medium' | 'short';
-  fractionalSecondDigits?: number;
-  calendar?:
-    | 'buddhist'
-    | 'chinese'
-    | 'coptic'
-    | 'ethiopia'
-    | 'ethiopic'
-    | 'gregory'
-    | 'hebrew'
-    | 'indian'
-    | 'islamic'
-    | 'iso8601'
-    | 'japanese'
-    | 'persian'
-    | 'roc';
-  dayPeriod?: 'narrow' | 'short' | 'long';
-  numberingSystem?: string;
-}
 
 export interface ResolvedDateTimeFormatOptions {
   locale: string;
@@ -244,6 +230,13 @@ function timeClip(time: number) {
   return toInteger(time);
 }
 
+interface Opt extends Omit<Formats, 'pattern' | 'pattern12'> {
+  localeMatcher: string;
+  ca: DateTimeFormatOptions['calendar'];
+  nu: DateTimeFormatOptions['numberingSystem'];
+  hc: DateTimeFormatOptions['hourCycle'];
+}
+
 /**
  * https://tc39.es/ecma402/#sec-initializedatetimeformat
  * @param dtf DateTimeFormat
@@ -258,7 +251,7 @@ function initializeDateTimeFormat(
   // @ts-ignore
   const requestedLocales: string[] = Intl.getCanonicalLocales(locales);
   const options = toDateTimeOptions(opts, 'any', 'date');
-  let opt = Object.create(null);
+  let opt: Opt = Object.create(null);
   let matcher = getOption(
     options,
     'localeMatcher',
@@ -298,13 +291,15 @@ function initializeDateTimeFormat(
     undefined
   );
   if (hour12 !== undefined) {
+    // @ts-ignore
     hourCycle = null;
   }
   opt.hc = hourCycle;
   const r = createResolveLocale(DateTimeFormat.getDefaultLocale)(
     DateTimeFormat.availableLocales,
     requestedLocales,
-    opt,
+    // TODO: Fix the type
+    opt as any,
     // [[RelevantExtensionKeys]] slot, which is a constant
     ['nu', 'ca', 'hc'],
     DateTimeFormat.localeData
@@ -391,7 +386,7 @@ function initializeDateTimeFormat(
   );
 
   const dataLocaleData = DateTimeFormat.localeData[dataLocale];
-  const formats = dataLocaleData.formats[calendar];
+  const formats = dataLocaleData.formats[calendar as string];
   matcher = getOption(
     options,
     'formatMatcher',
@@ -406,9 +401,14 @@ function initializeDateTimeFormat(
     bestFormat = bestFitFormatMatcher(opt, formats);
   }
   for (const prop in opt) {
-    const p = bestFormat[prop];
+    const p = bestFormat[prop as 'era'];
     if (p !== undefined) {
-      setInternalSlot(__INTERNAL_SLOT_MAP__, dtf, prop as 'year', p);
+      setInternalSlot(
+        __INTERNAL_SLOT_MAP__,
+        dtf,
+        prop as 'year',
+        p as 'numeric'
+      );
     }
   }
   let pattern;
@@ -442,6 +442,7 @@ function initializeDateTimeFormat(
       pattern = bestFormat.pattern;
     }
   } else {
+    // @ts-ignore
     setInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'hourCycle', undefined);
     pattern = bestFormat.pattern;
   }
@@ -509,7 +510,10 @@ function toDateTimeOptions(
  * @param options
  * @param formats
  */
-function basicFormatMatcher(options: DateTimeFormatOptions, formats: {}[]) {
+function basicFormatMatcher(
+  options: DateTimeFormatOptions,
+  formats: Formats[]
+) {
   let removalPenalty = 120;
   let additionPenalty = 20;
   let longLessPenalty = 8;
@@ -530,8 +534,8 @@ function basicFormatMatcher(options: DateTimeFormatOptions, formats: {}[]) {
         score -= removalPenalty;
       } else if (optionsProp !== formatProp) {
         let values = ['2-digit', 'numeric', 'narrow', 'short', 'long'];
-        let optionsPropIndex = values.indexOf(optionsProp);
-        let formatPropIndex = values.indexOf(formatProp);
+        let optionsPropIndex = values.indexOf(optionsProp as string);
+        let formatPropIndex = values.indexOf(formatProp as string);
         let delta = Math.max(
           -2,
           Math.min(formatPropIndex - optionsPropIndex, 2)
@@ -552,7 +556,7 @@ function basicFormatMatcher(options: DateTimeFormatOptions, formats: {}[]) {
       bestFormat = format;
     }
   }
-  return bestFormat;
+  return bestFormat!;
 }
 
 /**
@@ -561,7 +565,10 @@ function basicFormatMatcher(options: DateTimeFormatOptions, formats: {}[]) {
  * @param options
  * @param formats
  */
-function bestFitFormatMatcher(options: DateTimeFormatOptions, formats: {}[]) {
+function bestFitFormatMatcher(
+  options: DateTimeFormatOptions,
+  formats: Formats[]
+) {
   return basicFormatMatcher(options, formats);
 }
 
@@ -640,6 +647,7 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
   let nf2 = new Intl.NumberFormat(locale, nf2Options);
   let tm = toLocalTime(
     x,
+    // @ts-ignore
     getInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'calendar'),
     getInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'timeZone')
   );
@@ -654,9 +662,14 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
         type: 'literal',
         value: patternPart.value,
       });
-    } else if (DATE_TIME_PROPS.indexOf(p) > -1) {
-      let f = getInternalSlot(__INTERNAL_SLOT_MAP__, dtf, p);
-      // TODO
+    } else if (DATE_TIME_PROPS.indexOf(p as 'era') > -1) {
+      let f = getInternalSlot(__INTERNAL_SLOT_MAP__, dtf, p as 'year') as
+        | 'numeric'
+        | '2-digit'
+        | 'narrow'
+        | 'long'
+        | 'short';
+      // @ts-ignore
       let v = tm[f];
       if (p === 'year' && v <= 0) {
         v = 1 - v;
@@ -709,6 +722,7 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
       });
     } else if (p === 'relatedYear') {
       let v = tm.relatedYear;
+      // @ts-ignore
       let fv = nf.format(v);
       result.push({
         type: 'relatedYear',
@@ -716,6 +730,7 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
       });
     } else if (p === 'yearName') {
       let v = tm.yearName;
+      // @ts-ignore
       let fv = nf.format(v);
       result.push({
         type: 'yearName',
@@ -1058,6 +1073,27 @@ defineProperty(DateTimeFormat.prototype, 'formatToParts', {
     return formatDateTimeParts(this, x);
   },
 });
+
+type RawDateTimeLocaleData = LocaleData<DateTimeFormatLocaleInternalData>;
+
+DateTimeFormat.__addLocaleData = function __addLocaleData(
+  ...data: RawDateTimeLocaleData[]
+) {
+  for (const datum of data) {
+    const availableLocales: string[] = datum.availableLocales;
+    for (const locale of availableLocales) {
+      try {
+        DateTimeFormat.localeData[locale] = unpackData(locale, datum);
+      } catch (e) {
+        // Ignore if we got no data
+      }
+    }
+  }
+  DateTimeFormat.availableLocales = Object.keys(DateTimeFormat.localeData);
+  if (!DateTimeFormat.__defaultLocale) {
+    DateTimeFormat.__defaultLocale = DateTimeFormat.availableLocales[0];
+  }
+};
 
 Object.defineProperty(DateTimeFormat.prototype, 'format', formatDescriptor);
 
