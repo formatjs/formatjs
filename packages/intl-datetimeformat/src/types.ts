@@ -42,6 +42,28 @@ export type RawDateTimeLocaleData = LocaleData<
 >;
 
 export interface DateTimeFormatLocaleInternalData {
+  am: string;
+  pm: string;
+  weekday: {
+    narrow: string[];
+    long: string[];
+    short: string[];
+  };
+  era: {
+    narrow: string[];
+    long: string[];
+    short: string[];
+  };
+  month: {
+    narrow: string[];
+    long: string[];
+    short: string[];
+  };
+  timeZoneName: {
+    narrow: string[];
+    long: string[];
+    short: string[];
+  };
   hourCycle: string;
   formats: Record<string, Formats[]>;
 }

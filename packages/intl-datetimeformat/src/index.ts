@@ -37,12 +37,12 @@ export interface IntlDateTimeFormatInternal {
   calendar?: string;
   weekday: 'narrow' | 'short' | 'long';
   era: 'narrow' | 'short' | 'long';
-  year: '2-year' | 'numeric';
-  month: '2-year' | 'numeric' | 'narrow' | 'short' | 'long';
-  day: '2-year' | 'numeric';
-  hour: '2-year' | 'numeric';
-  minute: '2-year' | 'numeric';
-  second: '2-year' | 'numeric';
+  year: '2-digit' | 'numeric';
+  month: '2-digit' | 'numeric' | 'narrow' | 'short' | 'long';
+  day: '2-digit' | 'numeric';
+  hour: '2-digit' | 'numeric';
+  minute: '2-digit' | 'numeric';
+  second: '2-digit' | 'numeric';
   timeZoneName: 'short' | 'long';
   hourCycle: string;
   numberingSystem: string;
@@ -636,10 +636,17 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
   if (isNaN(x)) {
     throw new RangeError('invalid time');
   }
+
+  /** IMPL START */
+  const internalSlots = getInternalSlots(dtf);
+  const dataLocale = internalSlots.dataLocale;
+  const dataLocaleData = DateTimeFormat.localeData[dataLocale];
+  /** IMPL END */
+
   let locale = getInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'locale');
   let nfOptions = Object.create(null);
   nfOptions.useGrouping = false;
-  // TODO
+
   let nf = new Intl.NumberFormat(locale, nfOptions);
   let nf2Options = Object.create(null);
   nf2Options.minimumIntegerDigits = 2;
@@ -702,7 +709,7 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
           fv = fv.slice(fv.length - 2, fv.length);
         }
       } else if (f === 'narrow' || f === 'short' || f === 'long') {
-        // TODO
+        fv = dataLocaleData[p as 'era'][f];
       }
       result.push({
         type: p,
@@ -712,9 +719,9 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
       let v = tm.hour;
       let fv;
       if (v >= 11) {
-        //TODO
+        fv = dataLocaleData.pm;
       } else {
-        // TODO
+        fv = dataLocaleData.am;
       }
       result.push({
         type: 'dayPeriod',
@@ -767,29 +774,6 @@ function formatDateTime(dtf: DateTimeFormat, x: number) {
  */
 function formatDateTimeParts(dtf: DateTimeFormat, x: number) {
   return partitionDateTimePattern(dtf, x);
-}
-
-/**
- * https://tc39.es/ecma262/#sec-local-time-zone-adjustment
- * @param t
- * @param isUTC
- * @param timeZone
- * @returns {number} Offset in ms
- */
-function localTZA(t: number, isUTC: boolean, timeZone: string): number {
-  invariant(isUTC, 'We only support UTC time for localTZA');
-  const {tzData} = DateTimeFormat;
-  const zoneData = tzData[timeZone];
-  // We don't have data for this so just say it's UTC
-  if (!zoneData) {
-    return 0;
-  }
-  for (const [ts, , offset] of zoneData) {
-    if (ts * 1e3 >= t) {
-      return offset * 1e3;
-    }
-  }
-  return 0;
 }
 
 const MS_PER_DAY = 86400000;
@@ -955,13 +939,28 @@ function secFromTime(t: number) {
   return Math.floor(t / MS_PER_SECOND) % SECONDS_PER_MINUTE;
 }
 
+function getApplicableZoneData(t: number, timeZone: string): [number, boolean] {
+  const {tzData} = DateTimeFormat;
+  const zoneData = tzData[timeZone];
+  // We don't have data for this so just say it's UTC
+  if (!zoneData) {
+    return [0, false];
+  }
+  for (const [ts, , offset, dst] of zoneData) {
+    if (ts * 1e3 >= t) {
+      return [offset * 1e3, dst];
+    }
+  }
+  return [0, false];
+}
+
 function toLocalTime(t: number, calendar: string, timeZone: string) {
   invariant(typeof t === 'number', 'invalid time');
   invariant(
     calendar === 'gregory',
     'We only support Gregory calendar right now'
   );
-  let timeZoneOffset = localTZA(t, true, timeZone);
+  let [timeZoneOffset, inDST] = getApplicableZoneData(t, timeZone);
   let tz = t + timeZoneOffset;
   const year = yearFromTime(tz);
   return {
@@ -975,7 +974,7 @@ function toLocalTime(t: number, calendar: string, timeZone: string) {
     hour: hourFromTime(t),
     minute: minFromTime(t),
     second: secFromTime(t),
-    inDST: false,
+    inDST,
   };
 }
 
