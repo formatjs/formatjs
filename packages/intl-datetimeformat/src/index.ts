@@ -12,12 +12,9 @@ import {
 } from '@formatjs/intl-utils';
 import getInternalSlots from './get_internal_slots';
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
-import zones from './zones';
 import links from './links';
-const UPPERCASED_ZONES = zones.reduce((all: Record<string, string>, z) => {
-  all[z.toUpperCase()] = z;
-  return all;
-}, {});
+import {PackedData, UnpackedZoneData} from './types';
+import {unpack} from './packer';
 const UPPERCASED_LINKS = Object.keys(links).reduce(
   (all: Record<string, string>, l) => {
     all[l.toUpperCase()] = links[l as 'Zulu'];
@@ -131,6 +128,22 @@ export interface DateTimeFormatOptions extends Intl.DateTimeFormatOptions {
   numberingSystem?: string;
 }
 
+export interface ResolvedDateTimeFormatOptions {
+  locale: string;
+  calendar?: string;
+  weekday: 'narrow' | 'short' | 'long';
+  era: 'narrow' | 'short' | 'long';
+  year: '2-year' | 'numeric';
+  month: '2-year' | 'numeric' | 'narrow' | 'short' | 'long';
+  day: '2-year' | 'numeric';
+  hour: '2-year' | 'numeric';
+  minute: '2-year' | 'numeric';
+  second: '2-year' | 'numeric';
+  timeZoneName: 'short' | 'long';
+  hourCycle: string;
+  numberingSystem: string;
+}
+
 const TYPE_REGEX = /^[a-z0-9]{3,8}$/i;
 
 const __INTERNAL_SLOT_MAP__ = new WeakMap<
@@ -144,7 +157,10 @@ const __INTERNAL_SLOT_MAP__ = new WeakMap<
  */
 function isValidTimeZoneName(tz: string): boolean {
   const uppercasedTz = tz.toUpperCase();
-  return uppercasedTz in UPPERCASED_ZONES || uppercasedTz in UPPERCASED_LINKS;
+  const zoneNames = new Set(
+    Object.keys(DateTimeFormat.tzData).map(z => z.toUpperCase())
+  );
+  return zoneNames.has(uppercasedTz) || uppercasedTz in UPPERCASED_LINKS;
 }
 
 /**
@@ -153,8 +169,16 @@ function isValidTimeZoneName(tz: string): boolean {
  */
 function canonicalizeTimeZoneName(tz: string) {
   const uppercasedTz = tz.toUpperCase();
+  const uppercasedZones = Object.keys(DateTimeFormat.tzData).reduce(
+    (all: Record<string, string>, z) => {
+      all[z.toUpperCase()] = z;
+      return all;
+    },
+    {}
+  );
+
   const ianaTimeZone =
-    UPPERCASED_LINKS[uppercasedTz] || UPPERCASED_ZONES[uppercasedTz];
+    UPPERCASED_LINKS[uppercasedTz] || uppercasedZones[uppercasedTz];
   if (ianaTimeZone === 'Etc/UTC' || ianaTimeZone === 'Etc/GMT') {
     return 'UTC';
   }
@@ -735,9 +759,22 @@ function formatDateTimeParts(dtf: DateTimeFormat, x: number) {
  * @param t
  * @param isUTC
  * @param timeZone
+ * @returns {number} Offset in ms
  */
-function localTZA(t: number, isUTC: boolean, timeZone: string) {
+function localTZA(t: number, isUTC: boolean, timeZone: string): number {
   invariant(isUTC, 'We only support UTC time for localTZA');
+  const {tzData} = DateTimeFormat;
+  const zoneData = tzData[timeZone];
+  // We don't have data for this so just say it's UTC
+  if (!zoneData) {
+    return 0;
+  }
+  for (const [ts, , offset] of zoneData) {
+    if (ts >= t) {
+      return offset * 1e3;
+    }
+  }
+  return 0;
 }
 
 const MS_PER_DAY = 86400000;
@@ -949,6 +986,8 @@ export interface DateTimeFormatConstructor {
   localeData: Record<string, DateTimeFormatLocaleInternalData>;
   availableLocales: string[];
   polyfilled: boolean;
+  tzData: Record<string, UnpackedZoneData[]>;
+  __addTZData(d: PackedData): void;
 }
 
 export interface DateTimeFormat {
@@ -1029,6 +1068,10 @@ DateTimeFormat.getDefaultLocale = () => {
   return DateTimeFormat.__defaultLocale;
 };
 DateTimeFormat.polyfilled = true;
+DateTimeFormat.tzData = {};
+DateTimeFormat.__addTZData = function (d: PackedData) {
+  DateTimeFormat.tzData = unpack(d);
+};
 
 try {
   if (typeof Symbol !== 'undefined') {

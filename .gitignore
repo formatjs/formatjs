@@ -17,3 +17,4 @@ dist-es6
 .cache
 tests-karma
 locale-data
+temp*

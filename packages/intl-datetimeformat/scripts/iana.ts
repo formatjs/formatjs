@@ -1,9 +1,10 @@
 import * as tar from 'tar';
 import fetch from 'node-fetch';
 import {join} from 'path';
-async function main() {
+import * as minimist from 'minimist';
+async function main({version}: minimist.ParsedArgs) {
   const res = await fetch(
-    'https://data.iana.org/time-zones/releases/tzdata2020a.tar.gz'
+    `https://data.iana.org/time-zones/releases/tzdata${version}.tar.gz`
   );
   res.body.pipe(
     tar.x({
@@ -13,5 +14,5 @@ async function main() {
 }
 
 if (require.main === module) {
-  main();
+  main(minimist(process.argv));
 }
