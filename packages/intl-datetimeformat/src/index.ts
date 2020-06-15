@@ -68,19 +68,19 @@ export interface DateTimeFormatPart {
   value: 'string';
 }
 
+type TABLE_6 =
+  | 'weekday'
+  | 'era'
+  | 'year'
+  | 'month'
+  | 'day'
+  | 'hour'
+  | 'minute'
+  | 'second'
+  | 'timeZoneName';
+
 const DATE_TIME_PROPS: Array<
-  keyof Pick<
-    IntlDateTimeFormatInternal,
-    | 'weekday'
-    | 'era'
-    | 'year'
-    | 'month'
-    | 'day'
-    | 'hour'
-    | 'minute'
-    | 'second'
-    | 'timeZoneName'
-  >
+  keyof Pick<IntlDateTimeFormatInternal, TABLE_6>
 > = [
   'weekday',
   'era',
@@ -680,6 +680,7 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
         value: patternPart.value,
       });
     } else if (DATE_TIME_PROPS.indexOf(p as 'era') > -1) {
+      let fv: string = '';
       let f = internalSlots[p as 'year'] as
         | 'numeric'
         | '2-digit'
@@ -706,7 +707,6 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
           v = 24;
         }
       }
-      let fv;
       if (f === 'numeric') {
         fv = nf.format(v);
       } else if (f === '2-digit') {
@@ -716,7 +716,7 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
         }
       } else if (f === 'narrow' || f === 'short' || f === 'long') {
         if (p === 'era') {
-          fv = dataLocaleData[p][f] || 'era';
+          fv = dataLocaleData[p][f][v] || 'era';
         } else if (p === 'timeZoneName') {
           f = f === 'narrow' ? 'short' : 'long';
           const {timeZoneName, gmtFormat, hourFormat} = dataLocaleData;
@@ -730,9 +730,9 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
             fv = offsetToGmtString(gmtFormat, hourFormat, tm.timeZoneOffset);
           }
         } else if (p === 'month') {
-          fv = dataLocaleData.month[f];
+          fv = dataLocaleData.month[f][v];
         } else {
-          fv = dataLocaleData[p as 'era'][f];
+          fv = dataLocaleData[p as 'era'][f][v];
         }
       }
       result.push({
@@ -900,6 +900,7 @@ function monthFromTime(t: number) {
   if (dwy < 365 + leap) {
     return 11;
   }
+  throw new Error('Invalid time');
 }
 
 function dateFromTime(t: number) {
@@ -942,6 +943,7 @@ function dateFromTime(t: number) {
   if (mft === 11) {
     return dwy - 333 - leap;
   }
+  throw new Error('Invalid time');
 }
 
 const HOURS_PER_DAY = 24;
@@ -978,7 +980,24 @@ function getApplicableZoneData(t: number, timeZone: string): [number, boolean] {
   return [0, false];
 }
 
-function toLocalTime(t: number, calendar: string, timeZone: string) {
+function toLocalTime(
+  t: number,
+  calendar: string,
+  timeZone: string
+): {
+  weekday: number;
+  era: string;
+  year: number;
+  relatedYear: undefined;
+  yearName: undefined;
+  month: number;
+  day: number;
+  hour: number;
+  minute: number;
+  second: number;
+  inDST: boolean;
+  timeZoneOffset: number;
+} {
   invariant(typeof t === 'number', 'invalid time');
   invariant(
     calendar === 'gregorian',
