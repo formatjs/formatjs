@@ -37,8 +37,10 @@ export type WithIntlProps<P> = Omit<P, keyof WrappedComponentProps> & {
   forwardedRef?: React.Ref<any>;
 };
 
+// TODO: type hoisted static methods.
+// Non ref forwarding overload
 export default function injectIntl<
-  IntlPropName extends string,
+  IntlPropName extends string = 'intl',
   P extends WrappedComponentProps<IntlPropName> = WrappedComponentProps<any>
 >(
   WrappedComponent: React.ComponentType<P>,
@@ -46,6 +48,7 @@ export default function injectIntl<
 ): React.FC<WithIntlProps<P>> & {
   WrappedComponent: React.ComponentType<P>;
 };
+// Ref forwarding overload.
 export default function injectIntl<
   IntlPropName extends string = 'intl',
   P extends WrappedComponentProps<IntlPropName> = WrappedComponentProps<any>,
@@ -54,7 +57,8 @@ export default function injectIntl<
   WrappedComponent: React.ComponentType<P>,
   options?: Opts<IntlPropName, true>
 ): React.ForwardRefExoticComponent<
-  React.PropsWithoutRef<WithIntlProps<P>> & React.RefAttributes<T>
+  React.PropsWithoutRef<WithIntlProps<React.PropsWithChildren<P>>> &
+    React.RefAttributes<T>
 > & {
   WrappedComponent: React.ComponentType<P>;
 };
