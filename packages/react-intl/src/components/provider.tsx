@@ -165,7 +165,9 @@ export function createIntl(
 }
 
 export default class IntlProvider extends React.PureComponent<
-  OptionalIntlConfig,
+  // Exporting children props so it is composable with other HOCs.
+  // See: https://github.com/formatjs/formatjs/issues/1697
+  React.PropsWithChildren<OptionalIntlConfig>,
   State
 > {
   static displayName = 'IntlProvider';
