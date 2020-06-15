@@ -499,6 +499,47 @@ const BASIC_FORMAT_MATCHER_VALUES = [
   'long',
 ];
 
+const removalPenalty = 120;
+const additionPenalty = 20;
+const longLessPenalty = 8;
+const longMorePenalty = 6;
+const shortLessPenalty = 6;
+const shortMorePenalty = 3;
+
+export function basicFormatMatcherScore(
+  options: DateTimeFormatOptions,
+  format: Formats
+): number {
+  let score = 0;
+  for (const prop of DATE_TIME_PROPS) {
+    let optionsProp = options[prop];
+    let formatProp = format[prop];
+    if (optionsProp === undefined && formatProp !== undefined) {
+      score -= additionPenalty;
+    } else if (optionsProp !== undefined && formatProp === undefined) {
+      score -= removalPenalty;
+    } else if (optionsProp !== formatProp) {
+      let optionsPropIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
+        optionsProp as string
+      );
+      let formatPropIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
+        formatProp as string
+      );
+      let delta = Math.max(-2, Math.min(formatPropIndex - optionsPropIndex, 2));
+      if (delta === 2) {
+        score -= longMorePenalty;
+      } else if (delta === 1) {
+        score -= shortMorePenalty;
+      } else if (delta === -1) {
+        score -= shortLessPenalty;
+      } else if (delta === -2) {
+        score -= longLessPenalty;
+      }
+    }
+  }
+  return score;
+}
+
 /**
  * https://tc39.es/ecma402/#sec-basicformatmatcher
  * @param options
@@ -508,46 +549,11 @@ function basicFormatMatcher(
   options: DateTimeFormatOptions,
   formats: Formats[]
 ) {
-  let removalPenalty = 120;
-  let additionPenalty = 20;
-  let longLessPenalty = 8;
-  let longMorePenalty = 6;
-  let shortLessPenalty = 6;
-  let shortMorePenalty = 3;
   let bestScore = -Infinity;
   let bestFormat = undefined;
   invariant(Array.isArray(formats), 'formats should be a list of things');
   for (const format of formats) {
-    let score = 0;
-    for (const prop of DATE_TIME_PROPS) {
-      let optionsProp = options[prop];
-      let formatProp = format[prop];
-      if (optionsProp === undefined && formatProp !== undefined) {
-        score -= additionPenalty;
-      } else if (optionsProp !== undefined && formatProp === undefined) {
-        score -= removalPenalty;
-      } else if (optionsProp !== formatProp) {
-        let optionsPropIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
-          optionsProp as string
-        );
-        let formatPropIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
-          formatProp as string
-        );
-        let delta = Math.max(
-          -2,
-          Math.min(formatPropIndex - optionsPropIndex, 2)
-        );
-        if (delta === 2) {
-          score -= longMorePenalty;
-        } else if (delta === 1) {
-          score -= shortMorePenalty;
-        } else if (delta === -1) {
-          score -= shortLessPenalty;
-        } else if (delta === -2) {
-          score -= longLessPenalty;
-        }
-      }
-    }
+    let score = basicFormatMatcherScore(options, format);
     if (score > bestScore) {
       bestScore = score;
       bestFormat = format;

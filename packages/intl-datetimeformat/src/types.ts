@@ -95,6 +95,7 @@ export type Formats = Pick<
   | 'second'
   | 'timeZoneName'
 > & {
+  hour12?: boolean;
   pattern: string;
   pattern12: string;
   skeleton: string;

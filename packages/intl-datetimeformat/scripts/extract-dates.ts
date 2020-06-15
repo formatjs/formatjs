@@ -14,6 +14,7 @@ import {
   DateTimeFormatLocaleInternalData,
   TimeZoneNameData,
   Formats,
+  DateTimeFormatOptions,
 } from '../src/types';
 import * as rawTimeData from 'cldr-core/supplemental/timeData.json';
 import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json';
@@ -30,6 +31,29 @@ const processedTimeData = Object.keys(timeData).reduce(
   },
   {}
 );
+
+function isDateFormatOnly(opts: DateTimeFormatOptions) {
+  return !Object.keys(opts).find(
+    k =>
+      k === 'hour' ||
+      k === 'minute' ||
+      k === 'second' ||
+      k === 'timeZoneName' ||
+      k === 'hour12'
+  );
+}
+
+function isTimeFormatOnly(opts: DateTimeFormatOptions) {
+  return !Object.keys(opts).find(
+    k =>
+      k === 'year' ||
+      k === 'era' ||
+      k === 'month' ||
+      k === 'day' ||
+      k === 'weekday' ||
+      k === 'quarter'
+  );
+}
 
 export function getAllLocales() {
   return globSync('*/ca-gregorian.json', {
@@ -144,11 +168,22 @@ function loadDatesFields(locale: string): DateTimeFormatLocaleInternalData {
     medium,
     long,
   } = gregorian.dateTimeFormats;
+  const availableFormatEntries = Object.values(availableFormats).map(
+    parseDateTimeSkeleton
+  );
   const allFormats = [
-    ...Object.values(availableFormats).map(parseDateTimeSkeleton),
+    ...availableFormatEntries,
     ...dateFormatEntries,
     ...timeFormatEntries,
   ];
+
+  for (const availableFormatEntry of availableFormatEntries) {
+    if (isDateFormatOnly(availableFormatEntry)) {
+      dateFormatEntries.push(availableFormatEntry);
+    } else if (isTimeFormatOnly(availableFormatEntry)) {
+      timeFormatEntries.push(availableFormatEntry);
+    }
+  }
 
   // Based on https://unicode.org/reports/tr35/tr35-dates.html#Missing_Skeleton_Fields
   for (const timeFormat of timeFormatEntries) {

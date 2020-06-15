@@ -107,6 +107,7 @@ export function parseDateTimeSkeleton(skeleton: string): Formats {
       case 'a': // AM, PM
       case 'b': // am, pm, noon, midnight
       case 'B': // flexible day periods
+        result.hour12 = true;
         return '{ampm}';
       // Hour
       case 'h':
