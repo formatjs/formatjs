@@ -88,6 +88,7 @@ function loadDatesFields(locale: string): DateTimeFormatLocaleInternalData {
   const hc = (
     processedTimeData[locale] ||
     processedTimeData[region] ||
+    processedTimeData[`${locale}-001`] ||
     processedTimeData['001']
   ).map(resolveDateTimeSymbolTable);
 
@@ -149,6 +150,7 @@ function loadDatesFields(locale: string): DateTimeFormatLocaleInternalData {
     ...timeFormatEntries,
   ];
 
+  // Based on https://unicode.org/reports/tr35/tr35-dates.html#Missing_Skeleton_Fields
   for (const timeFormat of timeFormatEntries) {
     for (const dateFormat of dateFormatEntries) {
       let skeleton;

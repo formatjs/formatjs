@@ -491,6 +491,14 @@ function toDateTimeOptions(
   return options;
 }
 
+const BASIC_FORMAT_MATCHER_VALUES = [
+  '2-digit',
+  'numeric',
+  'narrow',
+  'short',
+  'long',
+];
+
 /**
  * https://tc39.es/ecma402/#sec-basicformatmatcher
  * @param options
@@ -519,9 +527,12 @@ function basicFormatMatcher(
       } else if (optionsProp !== undefined && formatProp === undefined) {
         score -= removalPenalty;
       } else if (optionsProp !== formatProp) {
-        let values = ['2-digit', 'numeric', 'narrow', 'short', 'long'];
-        let optionsPropIndex = values.indexOf(optionsProp as string);
-        let formatPropIndex = values.indexOf(formatProp as string);
+        let optionsPropIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
+          optionsProp as string
+        );
+        let formatPropIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
+          formatProp as string
+        );
         let delta = Math.max(
           -2,
           Math.min(formatPropIndex - optionsPropIndex, 2)
