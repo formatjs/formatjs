@@ -41,6 +41,14 @@ export type RawDateTimeLocaleData = LocaleData<
   DateTimeFormatLocaleInternalData
 >;
 
+export type TimeZoneNameData = Record<
+  string,
+  {
+    long?: [string, string];
+    short?: [string, string];
+  }
+>;
+
 export interface DateTimeFormatLocaleInternalData {
   am: string;
   pm: string;
@@ -59,10 +67,15 @@ export interface DateTimeFormatLocaleInternalData {
     long: string[];
     short: string[];
   };
-  timeZoneName: {
-    long: [string, string];
-    short: [string, string];
-  };
+  timeZoneName: TimeZoneNameData;
+  /**
+   * So we can construct GMT+08:00
+   */
+  gmtFormat: string;
+  /**
+   * So we can construct GMT+08:00
+   */
+  hourFormat: string;
   hourCycle: string;
   formats: Record<string, Formats[]>;
   nu: string[];

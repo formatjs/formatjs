@@ -15,7 +15,8 @@
     "compile": "NODE_OPTIONS=--max-old-space-size=8192 tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local",
     "rollup": "NODE_OPTIONS=--max-old-space-size=8192 rollup -c rollup.config.js",
     "build": "yarn run compile && yarn run rollup",
-    "test": "cross-env cross-env NODE_ENV=test jest"
+    "test": "cross-env cross-env NODE_ENV=test jest",
+    "cldr": "ts-node scripts/cldr"
   },
   "repository": {
     "type": "git",

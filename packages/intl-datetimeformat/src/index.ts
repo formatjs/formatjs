@@ -1,8 +1,6 @@
 import {
   getOption,
   createResolveLocale,
-  setInternalSlot,
-  getInternalSlot,
   invariant,
   toObject,
   defineProperty,
@@ -132,11 +130,6 @@ export interface ResolvedDateTimeFormatOptions {
 
 const TYPE_REGEX = /^[a-z0-9]{3,8}$/i;
 
-const __INTERNAL_SLOT_MAP__ = new WeakMap<
-  DateTimeFormat,
-  IntlDateTimeFormatInternal
->();
-
 /**
  * https://tc39.es/ecma402/#sec-isvalidtimezonename
  * @param tz
@@ -260,16 +253,11 @@ function initializeDateTimeFormat(
     'best fit'
   );
   opt.localeMatcher = matcher;
-  const calendar = getOption(
-    options,
-    'calendar',
-    'string',
-    undefined,
-    undefined
-  );
+  let calendar = getOption(options, 'calendar', 'string', undefined, undefined);
   if (calendar !== undefined && !TYPE_REGEX.test(calendar)) {
     throw new RangeError('Malformed calendar');
   }
+  const internalSlots = getInternalSlots(dtf);
   opt.ca = calendar;
   const numberingSystem = getOption(
     options,
@@ -304,11 +292,13 @@ function initializeDateTimeFormat(
     ['nu', 'ca', 'hc'],
     DateTimeFormat.localeData
   );
-  setInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'locale', r.locale);
-  setInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'calendar', calendar);
-  setInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'hourCycle', r.hc);
-  setInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'numberingSystem', r.nu);
+  internalSlots.locale = r.locale;
+  calendar = r.ca;
+  internalSlots.calendar = calendar;
+  internalSlots.hourCycle = r.hc;
+  internalSlots.numberingSystem = r.nu;
   const {dataLocale} = r;
+  internalSlots.dataLocale = dataLocale;
   let {timeZone} = options;
   if (timeZone !== undefined) {
     timeZone = String(timeZone);
@@ -319,7 +309,8 @@ function initializeDateTimeFormat(
   } else {
     timeZone = DateTimeFormat.__defaultLocale;
   }
-  setInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'timeZone', timeZone);
+  internalSlots.timeZone = timeZone;
+
   opt = Object.create(null);
   opt.weekday = getOption(
     options,
@@ -403,18 +394,13 @@ function initializeDateTimeFormat(
   for (const prop in opt) {
     const p = bestFormat[prop as 'era'];
     if (p !== undefined) {
-      setInternalSlot(
-        __INTERNAL_SLOT_MAP__,
-        dtf,
-        prop as 'year',
-        p as 'numeric'
-      );
+      internalSlots[prop as 'year'] = p as 'numeric';
     }
   }
   let pattern;
-  if (getInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'hour') !== undefined) {
+  if (internalSlots.hour !== undefined) {
     const hcDefault = dataLocaleData.hourCycle;
-    let hc = getInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'hourCycle');
+    let hc = internalSlots.hourCycle;
     if (hc == null) {
       hc = hcDefault;
     }
@@ -434,7 +420,7 @@ function initializeDateTimeFormat(
         }
       }
     }
-    setInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'hourCycle', hc);
+    internalSlots.hourCycle = hc;
 
     if (hc === 'h11' || hc === 'h12') {
       pattern = bestFormat.pattern12;
@@ -443,10 +429,10 @@ function initializeDateTimeFormat(
     }
   } else {
     // @ts-ignore
-    setInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'hourCycle', undefined);
+    internalSlots.hourCycle = undefined;
     pattern = bestFormat.pattern;
   }
-  setInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'pattern', pattern);
+  internalSlots.pattern = pattern;
   return dtf;
 }
 
@@ -522,7 +508,7 @@ function basicFormatMatcher(
   let shortMorePenalty = 3;
   let bestScore = -Infinity;
   let bestFormat = undefined;
-  invariant(Array.isArray(formats), 'formats should be a list of strings');
+  invariant(Array.isArray(formats), 'formats should be a list of things');
   for (const format of formats) {
     let score = 0;
     for (const prop of DATE_TIME_PROPS) {
@@ -626,6 +612,32 @@ try {
   // TypeError: Cannot redefine property: name
 }
 
+function pad(n: number): string {
+  if (n < 10) {
+    return `0${n}`;
+  }
+  return String(n);
+}
+
+function offsetToGmtString(
+  gmtFormat: string,
+  hourFormat: string,
+  offsetInMs: number
+) {
+  const offsetInMinutes = Math.floor(offsetInMs / 60000);
+  const mins = Math.abs(offsetInMinutes) % 60;
+  const hours = Math.floor(Math.abs(offsetInMinutes) / 60);
+  const [negativePattern, positivePattern] = hourFormat.split(';');
+
+  const offsetStr = (offsetInMs < 0 ? negativePattern : positivePattern)
+    .replace('HH', pad(hours))
+    .replace('H', String(hours))
+    .replace('mm', pad(mins))
+    .replace('m', String(mins));
+
+  return gmtFormat.replace('{0}', offsetStr);
+}
+
 /**
  * https://tc39.es/ecma402/#sec-partitiondatetimepattern
  * @param dtf
@@ -643,7 +655,7 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
   const dataLocaleData = DateTimeFormat.localeData[dataLocale];
   /** IMPL END */
 
-  let locale = getInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'locale');
+  let locale = internalSlots.locale;
   let nfOptions = Object.create(null);
   nfOptions.useGrouping = false;
 
@@ -655,13 +667,11 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
   let tm = toLocalTime(
     x,
     // @ts-ignore
-    getInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'calendar'),
-    getInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'timeZone')
+    internalSlots.calendar,
+    internalSlots.timeZone
   );
   let result = [];
-  let patternParts = partitionPattern(
-    getInternalSlot(__INTERNAL_SLOT_MAP__, dtf, 'pattern')
-  );
+  let patternParts = partitionPattern(internalSlots.pattern);
   for (const patternPart of patternParts) {
     let p = patternPart.type;
     if (p === 'literal') {
@@ -670,7 +680,7 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
         value: patternPart.value,
       });
     } else if (DATE_TIME_PROPS.indexOf(p as 'era') > -1) {
-      let f = getInternalSlot(__INTERNAL_SLOT_MAP__, dtf, p as 'year') as
+      let f = internalSlots[p as 'year'] as
         | 'numeric'
         | '2-digit'
         | 'narrow'
@@ -684,11 +694,7 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
       if (p === 'month') {
         v++;
       }
-      const hourCycle = getInternalSlot(
-        __INTERNAL_SLOT_MAP__,
-        dtf,
-        'hourCycle'
-      );
+      const hourCycle = internalSlots.hourCycle;
       if (p === 'hour' && (hourCycle === 'h11' || hourCycle === 'h12')) {
         v = v % 12;
         if (v === 0 && hourCycle === 'h12') {
@@ -712,9 +718,18 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
         if (p === 'era') {
           fv = dataLocaleData[p][f] || 'era';
         } else if (p === 'timeZoneName') {
-          fv = dataLocaleData.timeZoneName[f][+tm.inDST];
+          f = f === 'narrow' ? 'short' : 'long';
+          const {timeZoneName, gmtFormat, hourFormat} = dataLocaleData;
+          const timeZone =
+            internalSlots.timeZone || DateTimeFormat.__defaultTimeZone;
+          const timeZoneData = timeZoneName[timeZone];
+          if (timeZoneData && timeZoneData[f]) {
+            fv = timeZoneData[f]![+tm.inDST];
+          } else {
+            // Fallback to gmtFormat
+            fv = offsetToGmtString(gmtFormat, hourFormat, tm.timeZoneOffset);
+          }
         } else if (p === 'month') {
-          // TODO
           fv = dataLocaleData.month[f];
         } else {
           fv = dataLocaleData[p as 'era'][f];
@@ -984,6 +999,8 @@ function toLocalTime(t: number, calendar: string, timeZone: string) {
     minute: minFromTime(t),
     second: secFromTime(t),
     inDST,
+    // IMPORTANT: Not in spec
+    timeZoneOffset,
   };
 }
 
@@ -1016,7 +1033,7 @@ export interface DateTimeFormatConstructor {
 export interface DateTimeFormat {
   resolvedOptions(): ResolvedDateTimeFormatOptions;
   formatToParts(x: number): DateTimeFormatPart[];
-  format(x: number): string;
+  format(x: number | Date): string;
 }
 
 export const DateTimeFormat = function (
@@ -1031,6 +1048,7 @@ export const DateTimeFormat = function (
 
   initializeDateTimeFormat(this, locales, options);
 
+  /** IMPL START */
   const internalSlots = getInternalSlots(this);
 
   const dataLocale = internalSlots.dataLocale;
@@ -1039,6 +1057,7 @@ export const DateTimeFormat = function (
     dataLocaleData !== undefined,
     `Cannot load locale-dependent data for ${dataLocale}.`
   );
+  /** IMPL END */
 } as DateTimeFormatConstructor;
 
 // Static properties
@@ -1082,6 +1101,8 @@ defineProperty(DateTimeFormat.prototype, 'formatToParts', {
   },
 });
 
+DateTimeFormat.__defaultTimeZone = 'UTC';
+
 type RawDateTimeLocaleData = LocaleData<DateTimeFormatLocaleInternalData>;
 
 DateTimeFormat.__addLocaleData = function __addLocaleData(
@@ -1105,7 +1126,7 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
 
 Object.defineProperty(DateTimeFormat.prototype, 'format', formatDescriptor);
 
-DateTimeFormat.__defaultLocale = 'en';
+DateTimeFormat.__defaultLocale = '';
 DateTimeFormat.localeData = {};
 DateTimeFormat.availableLocales = [];
 DateTimeFormat.getDefaultLocale = () => {

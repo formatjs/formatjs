@@ -48,7 +48,7 @@ export function createResolveLocale<
       let value = keyLocaleData[0];
       invariant(
         typeof value === 'string' || value === null,
-        'value must be string or null'
+        `value must be string or null but got ${typeof value} in key ${key}`
       );
       let supportedExtensionAddition = '';
       if (r.extension) {
