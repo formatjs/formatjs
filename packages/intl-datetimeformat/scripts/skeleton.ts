@@ -22,6 +22,17 @@ export function parseDateTimeSkeleton(skeleton: string): Formats {
     pattern12: '',
     skeleton,
   };
+
+  const literals: string[] = [];
+  skeleton = skeleton
+    // Double apostrophe
+    .replace(/'{2}/g, '{apostrophe}')
+    // Apostrophe-escaped
+    .replace(/'(.*?)'/g, (_, literal) => {
+      literals.push(literal);
+      return `$$${literals.length - 1}$$`;
+    });
+
   result.pattern12 = skeleton.replace(DATE_TIME_REGEX, match => {
     const len = match.length;
     switch (match[0]) {
@@ -147,11 +158,16 @@ export function parseDateTimeSkeleton(skeleton: string): Formats {
     }
     return '';
   });
+  //Restore literals
+  if (literals.length) {
+    result.pattern12 = result.pattern12
+      .replace(/\$\$(\d+)\$\$/g, (_, i) => {
+        return literals[+i];
+      })
+      .replace(/\{apostrophe\}/g, "'");
+  }
   // Handle apostrophe-escaped things
-  result.pattern12 = result.pattern12
-    .replace(/[^']'(.*?)'[^']/g, '$1')
-    // Double apostrophe
-    .replace(/'{2}/g, "'");
+  result.pattern12 = result.pattern12;
   result.pattern = result.pattern12
     .replace('{ampm}', '')
     .replace(expPatternTrimmer, '');
