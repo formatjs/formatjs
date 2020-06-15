@@ -687,7 +687,7 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
         | 'long'
         | 'short';
       // @ts-ignore
-      let v = tm[f];
+      let v = tm[p];
       if (p === 'year' && v <= 0) {
         v = 1 - v;
       }
@@ -981,7 +981,7 @@ function getApplicableZoneData(t: number, timeZone: string): [number, boolean] {
 function toLocalTime(t: number, calendar: string, timeZone: string) {
   invariant(typeof t === 'number', 'invalid time');
   invariant(
-    calendar === 'gregory',
+    calendar === 'gregorian',
     'We only support Gregory calendar right now'
   );
   let [timeZoneOffset, inDST] = getApplicableZoneData(t, timeZone);

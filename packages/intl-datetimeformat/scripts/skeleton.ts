@@ -7,6 +7,9 @@ import {Formats} from '../src/types';
  */
 const DATE_TIME_REGEX = /(?:[Eec]{1,6}|G{1,5}|[Qq]{1,5}|(?:[yYur]+|U{1,5})|[ML]{1,5}|d{1,2}|D{1,3}|F{1}|[abB]{1,5}|[hkHK]{1,2}|w{1,2}|W{1}|m{1,2}|s{1,2}|[zZOvVxX]{1,4})(?=([^']*'[^']*')*[^']*$)/g;
 
+// trim patterns after transformations
+const expPatternTrimmer = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+
 /**
  * Parse Date time skeleton into Intl.DateTimeFormatOptions
  * Ref: https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
@@ -17,6 +20,7 @@ export function parseDateTimeSkeleton(skeleton: string): Formats {
   const result: Formats = {
     pattern: '',
     pattern12: '',
+    skeleton,
   };
   result.pattern12 = skeleton.replace(DATE_TIME_REGEX, match => {
     const len = match.length;
@@ -28,14 +32,13 @@ export function parseDateTimeSkeleton(skeleton: string): Formats {
 
       // Year
       case 'y':
-        result.year = len === 2 ? '2-digit' : 'numeric';
-        return '{year}';
-
       case 'Y':
       case 'u':
       case 'U':
       case 'r':
+        result.year = len === 2 ? '2-digit' : 'numeric';
         return '{year}';
+
       // Quarter
       case 'q':
       case 'Q':
@@ -144,6 +147,13 @@ export function parseDateTimeSkeleton(skeleton: string): Formats {
     }
     return '';
   });
-  result.pattern = result.pattern12.replace('{ampm}', '');
+  // Handle apostrophe-escaped things
+  result.pattern12 = result.pattern12
+    .replace(/[^']'(.*?)'[^']/g, '$1')
+    // Double apostrophe
+    .replace(/'{2}/g, "'");
+  result.pattern = result.pattern12
+    .replace('{ampm}', '')
+    .replace(expPatternTrimmer, '');
   return result;
 }

@@ -10,7 +10,11 @@ import * as NumberFields from 'cldr-numbers-full/main/en/numbers.json';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
-import {DateTimeFormatLocaleInternalData, TimeZoneNameData} from '../src/types';
+import {
+  DateTimeFormatLocaleInternalData,
+  TimeZoneNameData,
+  Formats,
+} from '../src/types';
 import * as rawTimeData from 'cldr-core/supplemental/timeData.json';
 import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json';
 import * as TimeZoneNames from 'cldr-dates-full/main/en/timeZoneNames.json';
@@ -117,6 +121,50 @@ function loadDatesFields(locale: string): DateTimeFormatLocaleInternalData {
 
         return all;
       }, {});
+  const {dateFormats, timeFormats} = gregorian;
+  let dateFormatEntries: Formats[] = [];
+  try {
+    dateFormatEntries = Object.values(dateFormats).map(v =>
+      typeof v === 'object'
+        ? // Locale haw got some weird structure https://github.com/unicode-cldr/cldr-dates-full/blob/master/main/haw/ca-gregorian.json
+          parseDateTimeSkeleton((v as {_value: string})._value)
+        : parseDateTimeSkeleton(v)
+    );
+  } catch (e) {
+    console.error(`Issue processing dateFormats for locale ${locale}`);
+  }
+  const timeFormatEntries = Object.values(timeFormats).map(
+    parseDateTimeSkeleton
+  );
+  const {
+    availableFormats,
+    short,
+    full,
+    medium,
+    long,
+  } = gregorian.dateTimeFormats;
+  const allFormats = [
+    ...Object.values(availableFormats).map(parseDateTimeSkeleton),
+    ...dateFormatEntries,
+    ...timeFormatEntries,
+  ];
+
+  for (const timeFormat of timeFormatEntries) {
+    for (const dateFormat of dateFormatEntries) {
+      let skeleton;
+      if (dateFormat.month === 'long') {
+        skeleton = dateFormat.weekday ? full : long;
+      } else if (dateFormat.month === 'short') {
+        skeleton = medium;
+      } else {
+        skeleton = short;
+      }
+      skeleton = skeleton
+        .replace('{0}', timeFormat.skeleton)
+        .replace('{1}', dateFormat.skeleton);
+      allFormats.push(parseDateTimeSkeleton(skeleton));
+    }
+  }
 
   return {
     am: gregorian.dayPeriods.format.abbreviated.am,
@@ -140,9 +188,7 @@ function loadDatesFields(locale: string): DateTimeFormatLocaleInternalData {
     gmtFormat: timeZoneNames.gmtFormat,
     hourFormat: timeZoneNames.hourFormat,
     formats: {
-      gregorian: Object.values(gregorian.dateTimeFormats.availableFormats).map(
-        parseDateTimeSkeleton
-      ),
+      gregorian: allFormats,
     },
     hourCycle: hc[0],
     nu: nu ? [nu] : [],

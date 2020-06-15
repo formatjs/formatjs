@@ -97,6 +97,7 @@ export type Formats = Pick<
 > & {
   pattern: string;
   pattern12: string;
+  skeleton: string;
 };
 
 export interface DateTimeFormatOptions extends Intl.DateTimeFormatOptions {
