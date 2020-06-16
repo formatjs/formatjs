@@ -734,7 +734,7 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
         }
       } else if (f === 'narrow' || f === 'short' || f === 'long') {
         if (p === 'era') {
-          fv = dataLocaleData[p][f][v] || 'era';
+          fv = dataLocaleData[p][f][v as 'BC'];
         } else if (p === 'timeZoneName') {
           f = f === 'narrow' ? 'short' : 'long';
           const {timeZoneName, gmtFormat, hourFormat} = dataLocaleData;
@@ -750,7 +750,7 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
         } else if (p === 'month') {
           fv = dataLocaleData.month[f][v];
         } else {
-          fv = dataLocaleData[p as 'era'][f][v];
+          fv = dataLocaleData[p as 'weekday'][f][v];
         }
       }
       result.push({
@@ -1148,6 +1148,14 @@ defineProperty(DateTimeFormat.prototype, 'resolvedOptions', {
     const ro: Record<string, unknown> = {};
     for (const key of RESOLVED_OPTIONS_KEYS) {
       const value = internalSlots[key];
+      if (key === 'hourCycle') {
+        ro.hour12 =
+          value === 'h11' || value === 'h12'
+            ? true
+            : value === 'h23' || value === 'h24'
+            ? false
+            : undefined;
+      }
       if (value !== undefined) {
         ro[key] = value;
       }

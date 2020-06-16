@@ -190,9 +190,18 @@ function loadDatesFields(locale: string): RawDateTimeLocaleInternalData {
       long: Object.values(gregorian.days.format.wide),
     },
     era: {
-      narrow: Object.values(gregorian.days.format.narrow),
-      short: Object.values(gregorian.days.format.short),
-      long: Object.values(gregorian.days.format.wide),
+      narrow: {
+        BC: gregorian.eras.eraNarrow[0],
+        AD: gregorian.eras.eraNarrow[1],
+      },
+      short: {
+        BC: gregorian.eras.eraAbbr[0],
+        AD: gregorian.eras.eraAbbr[1],
+      },
+      long: {
+        BC: gregorian.eras.eraNames[0],
+        AD: gregorian.eras.eraNames[1],
+      },
     },
     month: {
       narrow: Object.values(gregorian.months.format.narrow),

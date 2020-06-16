@@ -54,6 +54,11 @@ export type TimeZoneNameData = Record<
   }
 >;
 
+interface EraData {
+  BC: string;
+  AD: string;
+}
+
 export interface DateTimeFormatLocaleInternalData {
   am: string;
   pm: string;
@@ -63,9 +68,9 @@ export interface DateTimeFormatLocaleInternalData {
     short: string[];
   };
   era: {
-    narrow: string[];
-    long: string[];
-    short: string[];
+    narrow: EraData;
+    long: EraData;
+    short: EraData;
   };
   month: {
     narrow: string[];
