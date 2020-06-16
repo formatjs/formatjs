@@ -11,16 +11,15 @@ import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
 import {
-  DateTimeFormatLocaleInternalData,
+  RawDateTimeLocaleInternalData,
   TimeZoneNameData,
-  Formats,
   DateTimeFormatOptions,
 } from '../src/types';
 import * as rawTimeData from 'cldr-core/supplemental/timeData.json';
 import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json';
 import * as TimeZoneNames from 'cldr-dates-full/main/en/timeZoneNames.json';
 import * as metaZones from 'cldr-core/supplemental/metaZones.json';
-import {parseDateTimeSkeleton} from './skeleton';
+import {parseDateTimeSkeleton} from '../src/skeleton';
 let {timeData} = rawTimeData.supplemental;
 const processedTimeData = Object.keys(timeData).reduce(
   (all: Record<string, string[]>, k) => {
@@ -92,7 +91,7 @@ const tzToMetaZoneMap = metaZones.supplemental.metaZones.metazones.reduce(
   {}
 );
 
-function loadDatesFields(locale: string): DateTimeFormatLocaleInternalData {
+function loadDatesFields(locale: string): RawDateTimeLocaleInternalData {
   const gregorian = (require(`cldr-dates-full/main/${locale}/ca-gregorian.json`) as typeof DateFields)
     .main[locale as 'en'].dates.calendars.gregorian;
   const timeZoneNames = (require(`cldr-dates-full/main/${locale}/timeZoneNames.json`) as typeof TimeZoneNames)
@@ -146,63 +145,42 @@ function loadDatesFields(locale: string): DateTimeFormatLocaleInternalData {
 
         return all;
       }, {});
-  const {dateFormats, timeFormats} = gregorian;
-  let dateFormatEntries: Formats[] = [];
-  try {
-    dateFormatEntries = Object.values(dateFormats).map(v =>
-      typeof v === 'object'
-        ? // Locale haw got some weird structure https://github.com/unicode-cldr/cldr-dates-full/blob/master/main/haw/ca-gregorian.json
-          parseDateTimeSkeleton((v as {_value: string})._value)
-        : parseDateTimeSkeleton(v)
-    );
-  } catch (e) {
-    console.error(`Issue processing dateFormats for locale ${locale}`);
-  }
-  const timeFormatEntries = Object.values(timeFormats).map(
-    parseDateTimeSkeleton
-  );
-  const {
-    availableFormats,
-    short,
-    full,
-    medium,
-    long,
-  } = gregorian.dateTimeFormats;
-  const availableFormatEntries = Object.values(availableFormats).map(
-    parseDateTimeSkeleton
-  );
-  const allFormats = [
-    ...availableFormatEntries,
-    ...dateFormatEntries,
-    ...timeFormatEntries,
-  ];
 
-  for (const availableFormatEntry of availableFormatEntries) {
+  const {short, full, medium, long} = gregorian.dateTimeFormats;
+
+  const availableFormats = Object.values(
+    gregorian.dateTimeFormats.availableFormats
+  );
+  const dateFormats = Object.values(gregorian.dateFormats).map(v =>
+    // Locale haw got some weird structure https://github.com/unicode-cldr/cldr-dates-full/blob/master/main/haw/ca-gregorian.json
+    typeof v === 'object' ? (v as {_value: string})._value : v
+  );
+  const timeFormats = Object.values(gregorian.timeFormats);
+  const allFormats = [...availableFormats, ...dateFormats, ...timeFormats];
+  for (const f of availableFormats) {
+    const availableFormatEntry = parseDateTimeSkeleton(f);
     if (isDateFormatOnly(availableFormatEntry)) {
-      dateFormatEntries.push(availableFormatEntry);
+      dateFormats.push(f);
     } else if (isTimeFormatOnly(availableFormatEntry)) {
-      timeFormatEntries.push(availableFormatEntry);
+      timeFormats.push(f);
     }
   }
-
   // Based on https://unicode.org/reports/tr35/tr35-dates.html#Missing_Skeleton_Fields
-  for (const timeFormat of timeFormatEntries) {
-    for (const dateFormat of dateFormatEntries) {
+  for (const timeFormat of timeFormats) {
+    for (const dateFormat of dateFormats) {
       let skeleton;
-      if (dateFormat.month === 'long') {
-        skeleton = dateFormat.weekday ? full : long;
-      } else if (dateFormat.month === 'short') {
+      const entry = parseDateTimeSkeleton(dateFormat);
+      if (entry.month === 'long') {
+        skeleton = entry.weekday ? full : long;
+      } else if (entry.month === 'short') {
         skeleton = medium;
       } else {
         skeleton = short;
       }
-      skeleton = skeleton
-        .replace('{0}', timeFormat.skeleton)
-        .replace('{1}', dateFormat.skeleton);
-      allFormats.push(parseDateTimeSkeleton(skeleton));
+      skeleton = skeleton.replace('{0}', timeFormat).replace('{1}', dateFormat);
+      allFormats.push(skeleton);
     }
   }
-
   return {
     am: gregorian.dayPeriods.format.abbreviated.am,
     pm: gregorian.dayPeriods.format.abbreviated.pm,
@@ -239,9 +217,9 @@ function loadDatesFields(locale: string): DateTimeFormatLocaleInternalData {
 
 export function extractDatesFields(
   locales: string[] = AVAILABLE_LOCALES.availableLocales.full
-): Record<string, DateTimeFormatLocaleInternalData> {
+): Record<string, RawDateTimeLocaleInternalData> {
   return locales.reduce(
-    (all: Record<string, DateTimeFormatLocaleInternalData>, locale) => {
+    (all: Record<string, RawDateTimeLocaleInternalData>, locale) => {
       all[locale] = loadDatesFields(locale);
       return all;
     },

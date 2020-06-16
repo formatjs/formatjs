@@ -19,8 +19,10 @@ import {
   DateTimeFormatOptions,
   Formats,
   DateTimeFormatLocaleInternalData,
+  RawDateTimeLocaleData,
 } from './types';
 import {unpack} from './packer';
+import {parseDateTimeSkeleton} from './skeleton';
 const UPPERCASED_LINKS = Object.keys(links).reduce(
   (all: Record<string, string>, l) => {
     all[l.toUpperCase()] = links[l as 'Zulu'];
@@ -1163,8 +1165,6 @@ defineProperty(DateTimeFormat.prototype, 'formatToParts', {
 
 DateTimeFormat.__defaultTimeZone = 'UTC';
 
-type RawDateTimeLocaleData = LocaleData<DateTimeFormatLocaleInternalData>;
-
 DateTimeFormat.__addLocaleData = function __addLocaleData(
   ...data: RawDateTimeLocaleData[]
 ) {
@@ -1172,7 +1172,17 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
     const availableLocales: string[] = datum.availableLocales;
     for (const locale of availableLocales) {
       try {
-        DateTimeFormat.localeData[locale] = unpackData(locale, datum);
+        const {formats, ...rawData} = unpackData(locale, datum);
+        const processedData: DateTimeFormatLocaleInternalData = {
+          ...rawData,
+          formats: {},
+        };
+        for (const calendar in formats) {
+          processedData.formats[calendar] = formats[calendar].map(
+            parseDateTimeSkeleton
+          );
+        }
+        DateTimeFormat.localeData[locale] = processedData;
       } catch (e) {
         // Ignore if we got no data
       }

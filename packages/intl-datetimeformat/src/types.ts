@@ -37,9 +37,14 @@ export type UnpackedZoneData = [
   boolean
 ];
 
-export type RawDateTimeLocaleData = LocaleData<
-  DateTimeFormatLocaleInternalData
->;
+export type RawDateTimeLocaleData = LocaleData<RawDateTimeLocaleInternalData>;
+
+export type RawDateTimeLocaleInternalData = Omit<
+  DateTimeFormatLocaleInternalData,
+  'formats'
+> & {
+  formats: Record<string, string[]>;
+};
 
 export type TimeZoneNameData = Record<
   string,
@@ -98,7 +103,6 @@ export type Formats = Pick<
   hour12?: boolean;
   pattern: string;
   pattern12: string;
-  skeleton: string;
 };
 
 export interface DateTimeFormatOptions extends Intl.DateTimeFormatOptions {

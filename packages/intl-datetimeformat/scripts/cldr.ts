@@ -6,21 +6,20 @@ import {RawDateTimeLocaleData} from '../src/types';
 const data = extractDatesFields();
 const langData = locales.reduce(
   (all: Record<string, RawDateTimeLocaleData>, locale) => {
-    const lang = locale.split('-')[0];
-    if (!all[lang]) {
-      all[lang] = {
+    if (!all[locale]) {
+      all[locale] = {
         data: {
           [locale]: data[locale],
         },
         availableLocales: [locale],
       };
     } else {
-      all[lang].data[locale] = data[locale];
-      all[lang].availableLocales.push(locale);
+      all[locale].data[locale] = data[locale];
+      all[locale].availableLocales.push(locale);
     }
 
     if (locale === 'en-US-POSIX') {
-      all[lang].availableLocales.push('en-US');
+      all[locale].availableLocales.push('en-US');
     }
 
     return all;
