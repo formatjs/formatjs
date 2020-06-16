@@ -203,14 +203,28 @@ function loadDatesFields(locale: string): RawDateTimeLocaleInternalData {
     gmtFormat: timeZoneNames.gmtFormat,
     hourFormat: timeZoneNames.hourFormat,
     formats: {
-      gregorian: allFormats,
+      gregory: allFormats,
     },
     hourCycle: hc[0],
     nu: nu ? [nu] : [],
     ca: (
       calendarPreferenceData[region as keyof typeof calendarPreferenceData] ||
-      'gregorian'
-    ).split(' '),
+      calendarPreferenceData['001']
+    )
+      .split(' ')
+      .map(c => {
+        //Resolve aliases per https://github.com/unicode-org/cldr/blob/master/common/bcp47/calendar.xml
+        if (c === 'gregorian') {
+          return 'gregory';
+        }
+        if (c === 'islamic-civil') {
+          return 'islamicc';
+        }
+        if (c === 'ethiopic-amete-alem') {
+          return 'ethioaa';
+        }
+        return c;
+      }),
     hc,
   };
 }

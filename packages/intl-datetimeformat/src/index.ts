@@ -1042,7 +1042,7 @@ function toLocalTime(
 } {
   invariant(typeof t === 'number', 'invalid time');
   invariant(
-    calendar === 'gregorian',
+    calendar === 'gregory',
     'We only support Gregory calendar right now'
   );
   let [timeZoneOffset, inDST] = getApplicableZoneData(t, timeZone);

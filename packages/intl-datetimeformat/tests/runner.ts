@@ -44,6 +44,7 @@ const excludedTests = [
   'proto-from-ctor-realm', // Bc of Realm support
   'constructor-locales-get-tostring', // Bc our Intl.getCanonicalLocales isn't really spec-compliant
   'taint-Object-prototype', // Bc our Intl.getCanonicalLocales isn't really spec-compliant
+  'formatRange', // Stage 3
 ];
 // @ts-ignore
 const PATTERN = resolve(
@@ -87,7 +88,7 @@ const failedTests = json.filter(r => !r.result.pass);
 for (const t of json) {
   if (t.result.pass) {
     // Uncomment if you want to see passed tests
-    // console.log(`${chalk.green('✓')} ${t.attrs.description}`);
+    console.log(`${chalk.green('✓')} ${t.attrs.description}`);
   } else {
     console.log('\n\n');
     console.log(`${chalk.red('✗')} ${t.attrs.description}`);
