@@ -192,17 +192,17 @@ let tests = [
 
 const TS = 1592282900463;
 
-console.log(
-  JSON.stringify(
-    tests.map(({options}) => ({
-      options,
-      ko: new Intl.DateTimeFormat('ko', options).format(TS),
-      en: new Intl.DateTimeFormat('en', options).format(TS),
-    }))
-  )
-);
+// console.log(
+//   JSON.stringify(
+//     tests.map(({options}) => ({
+//       options,
+//       ko: new Intl.DateTimeFormat('ko', options).format(TS),
+//       en: new Intl.DateTimeFormat('en', options).format(TS),
+//     }))
+//   )
+// );
 
-describe('format', function () {
+xdescribe('format', function () {
   tests.forEach(({options, en, ko}) => {
     it(`resolvedOptions ${JSON.stringify(options)}`, function () {
       const resolvedOptions = new DateTimeFormat(
