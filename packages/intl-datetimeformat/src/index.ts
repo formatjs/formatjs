@@ -8,7 +8,6 @@ import {
   objectIs,
   partitionPattern,
   unpackData,
-  LocaleData,
 } from '@formatjs/intl-utils';
 import getInternalSlots from './get_internal_slots';
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
