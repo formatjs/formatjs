@@ -49,16 +49,21 @@ Object.keys(langData).forEach(function (lang) {
 });
 
 outputFileSync(
-  resolve(__dirname, '../polyfill-locales.js'),
+  resolve(__dirname, '../dist-es6/polyfill-locales.js'),
   `/* @generated */
   // prettier-ignore
-  require('./polyfill')
+  import {DateTimeFormat} from '.';
+  import {defineProperty} from '@formatjs/intl-utils';
+  import allData from './data';
+  defineProperty(Intl, 'DateTimeFormat', {value: DateTimeFormat});
+
   if (Intl.DateTimeFormat && typeof Intl.DateTimeFormat.__addLocaleData === 'function') {
     Intl.DateTimeFormat.__addLocaleData(
-  ${Object.keys(langData)
+  ${['ar', 'de', 'en', 'ja', 'ko', 'th', 'zh', 'zh-Hant', 'zh-Hans']
     .map(lang => JSON.stringify(langData[lang]))
     .join(',\n')}
     )
+    Intl.DateTimeFormat.__addTZData(allData)
   }
   `
 );

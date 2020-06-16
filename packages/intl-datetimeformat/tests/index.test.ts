@@ -36,7 +36,6 @@ describe('Intl.DateTimeFormat', function () {
           '{month} {day}, {year} at {hour}:{minute}:{second}  {timeZoneName}',
         pattern12:
           '{month} {day}, {year} at {hour}:{minute}:{second} {ampm} {timeZoneName}',
-        skeleton: "MMMM d, y 'at' h:mm:ss a zzzz",
         month: 'long',
         day: 'numeric',
         year: 'numeric',
@@ -52,7 +51,6 @@ describe('Intl.DateTimeFormat', function () {
           '{month}/{day}/{year}, {hour}:{minute}:{second}  {timeZoneName}',
         pattern12:
           '{month}/{day}/{year}, {hour}:{minute}:{second} {ampm} {timeZoneName}',
-        skeleton: 'M/d/yy, h:mm:ss a zzzz',
         month: 'numeric',
         day: 'numeric',
         year: '2-digit',

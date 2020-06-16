@@ -1093,8 +1093,8 @@ export interface DateTimeFormatConstructor {
 
 export interface DateTimeFormat {
   resolvedOptions(): ResolvedDateTimeFormatOptions;
-  formatToParts(x: number): DateTimeFormatPart[];
-  format(x: number | Date): string;
+  formatToParts(x?: number | Date): DateTimeFormatPart[];
+  format(x?: number | Date): string;
 }
 
 export const DateTimeFormat = function (
@@ -1157,8 +1157,13 @@ defineProperty(DateTimeFormat.prototype, 'resolvedOptions', {
 });
 
 defineProperty(DateTimeFormat.prototype, 'formatToParts', {
-  value: function formatToParts(x: number) {
-    return formatDateTimeParts(this, x);
+  value: function formatToParts(date?: number | Date) {
+    if (date === undefined) {
+      date = Date.now();
+    } else {
+      date = toNumber(date);
+    }
+    return formatDateTimeParts(this, date);
   },
 });
 
