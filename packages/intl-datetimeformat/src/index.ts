@@ -971,15 +971,38 @@ const MS_PER_MINUTE = MS_PER_SECOND * SECONDS_PER_MINUTE;
 const MS_PER_HOUR = MS_PER_MINUTE * MINUTES_PER_HOUR;
 
 function hourFromTime(t: number) {
-  return Math.floor(t / MS_PER_HOUR) % HOURS_PER_DAY;
+  const hour = Math.floor(t / MS_PER_HOUR) % HOURS_PER_DAY;
+  // Technically mod should return positive if y is positive
+  // per https://tc39.es/ecma262/#eqn-modulo but it doesn't...
+  if (objectIs(hour, -0)) {
+    return 0;
+  }
+  if (hour < 0) {
+    return 24 + hour;
+  }
+  return hour;
 }
 
 function minFromTime(t: number) {
-  return Math.floor(t / MS_PER_MINUTE) % MINUTES_PER_HOUR;
+  const mins = Math.floor(t / MS_PER_MINUTE) % MINUTES_PER_HOUR;
+  if (objectIs(mins, -0)) {
+    return 0;
+  }
+  if (mins < 0) {
+    return 60 + mins;
+  }
+  return mins;
 }
 
 function secFromTime(t: number) {
-  return Math.floor(t / MS_PER_SECOND) % SECONDS_PER_MINUTE;
+  const secs = Math.floor(t / MS_PER_SECOND) % SECONDS_PER_MINUTE;
+  if (objectIs(secs, -0)) {
+    return 0;
+  }
+  if (secs < 0) {
+    return 60 + secs;
+  }
+  return secs;
 }
 
 function getApplicableZoneData(t: number, timeZone: string): [number, boolean] {
@@ -989,8 +1012,9 @@ function getApplicableZoneData(t: number, timeZone: string): [number, boolean] {
   if (!zoneData) {
     return [0, false];
   }
-  for (const [ts, , offset, dst] of zoneData) {
-    if (ts * 1e3 >= t) {
+  for (let i = 0; i < zoneData.length; i++) {
+    if (zoneData[i][0] * 1e3 >= t) {
+      const [, , offset, dst] = zoneData[i - 1];
       return [offset * 1e3, dst];
     }
   }
@@ -1029,11 +1053,11 @@ function toLocalTime(
     year,
     relatedYear: undefined,
     yearName: undefined,
-    month: monthFromTime(t),
-    day: dateFromTime(t),
-    hour: hourFromTime(t),
-    minute: minFromTime(t),
-    second: secFromTime(t),
+    month: monthFromTime(tz),
+    day: dateFromTime(tz),
+    hour: hourFromTime(tz),
+    minute: minFromTime(tz),
+    second: secFromTime(tz),
     inDST,
     // IMPORTANT: Not in spec
     timeZoneOffset,

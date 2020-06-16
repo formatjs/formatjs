@@ -46,7 +46,7 @@ Object.keys(langData).forEach(function (lang) {
 // Dist all json locale files to dist/locale-data
 Object.keys(langData).forEach(function (lang) {
   const destFile = join(allLocaleDistDir, lang + '.json');
-  outputJSONSync(destFile, langData[lang], {spaces: 2});
+  outputJSONSync(destFile, langData[lang]);
 });
 
 outputFileSync(
