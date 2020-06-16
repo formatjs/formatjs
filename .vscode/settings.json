@@ -27,7 +27,7 @@
     "**/*.code-search": true,
     "**/lib": true,
     "**/dist": true,
-    "**/dist-es6": true,
+    "**/dist-es6": true
   },
   "json.schemas": [
     {
@@ -39,4 +39,9 @@
   "npm.packageManager": "yarn",
   "prettier.packageManager": "yarn",
   "eslint.packageManager": "yarn",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
