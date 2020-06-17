@@ -513,20 +513,23 @@ export function basicFormatMatcherScore(
 ): number {
   let score = 0;
   for (const prop of DATE_TIME_PROPS) {
-    let optionsProp = options[prop];
-    let formatProp = format[prop];
+    const optionsProp = options[prop];
+    const formatProp = format[prop];
     if (optionsProp === undefined && formatProp !== undefined) {
       score -= additionPenalty;
     } else if (optionsProp !== undefined && formatProp === undefined) {
       score -= removalPenalty;
     } else if (optionsProp !== formatProp) {
-      let optionsPropIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
+      const optionsPropIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
         optionsProp as string
       );
-      let formatPropIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
+      const formatPropIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
         formatProp as string
       );
-      let delta = Math.max(-2, Math.min(formatPropIndex - optionsPropIndex, 2));
+      const delta = Math.max(
+        -2,
+        Math.min(formatPropIndex - optionsPropIndex, 2)
+      );
       if (delta === 2) {
         score -= longMorePenalty;
       } else if (delta === 1) {
@@ -554,7 +557,7 @@ function basicFormatMatcher(
   let bestFormat = undefined;
   invariant(Array.isArray(formats), 'formats should be a list of things');
   for (const format of formats) {
-    let score = basicFormatMatcherScore(options, format);
+    const score = basicFormatMatcherScore(options, format);
     if (score > bestScore) {
       bestScore = score;
       bestFormat = format;
@@ -673,32 +676,32 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
   const dataLocaleData = DateTimeFormat.localeData[dataLocale];
   /** IMPL END */
 
-  let locale = internalSlots.locale;
-  let nfOptions = Object.create(null);
+  const locale = internalSlots.locale;
+  const nfOptions = Object.create(null);
   nfOptions.useGrouping = false;
 
-  let nf = new Intl.NumberFormat(locale, nfOptions);
-  let nf2Options = Object.create(null);
+  const nf = new Intl.NumberFormat(locale, nfOptions);
+  const nf2Options = Object.create(null);
   nf2Options.minimumIntegerDigits = 2;
   nf2Options.useGrouping = false;
-  let nf2 = new Intl.NumberFormat(locale, nf2Options);
-  let tm = toLocalTime(
+  const nf2 = new Intl.NumberFormat(locale, nf2Options);
+  const tm = toLocalTime(
     x,
     // @ts-ignore
     internalSlots.calendar,
     internalSlots.timeZone
   );
-  let result = [];
-  let patternParts = partitionPattern(internalSlots.pattern);
+  const result = [];
+  const patternParts = partitionPattern(internalSlots.pattern);
   for (const patternPart of patternParts) {
-    let p = patternPart.type;
+    const p = patternPart.type;
     if (p === 'literal') {
       result.push({
         type: 'literal',
         value: patternPart.value,
       });
     } else if (DATE_TIME_PROPS.indexOf(p as 'era') > -1) {
-      let fv: string = '';
+      let fv = '';
       let f = internalSlots[p as 'year'] as
         | 'numeric'
         | '2-digit'
@@ -748,7 +751,7 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
             fv = offsetToGmtString(gmtFormat, hourFormat, tm.timeZoneOffset);
           }
         } else if (p === 'month') {
-          fv = dataLocaleData.month[f][v];
+          fv = dataLocaleData.month[f][v - 1];
         } else {
           fv = dataLocaleData[p as 'weekday'][f][v];
         }
@@ -758,7 +761,7 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
         value: fv,
       });
     } else if (p === 'ampm') {
-      let v = tm.hour;
+      const v = tm.hour;
       let fv;
       if (v >= 11) {
         fv = dataLocaleData.pm;
@@ -770,17 +773,17 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
         value: fv,
       });
     } else if (p === 'relatedYear') {
-      let v = tm.relatedYear;
+      const v = tm.relatedYear;
       // @ts-ignore
-      let fv = nf.format(v);
+      const fv = nf.format(v);
       result.push({
         type: 'relatedYear',
         value: fv,
       });
     } else if (p === 'yearName') {
-      let v = tm.yearName;
+      const v = tm.yearName;
       // @ts-ignore
-      let fv = nf.format(v);
+      const fv = nf.format(v);
       result.push({
         type: 'yearName',
         value: fv,
@@ -1045,8 +1048,8 @@ function toLocalTime(
     calendar === 'gregory',
     'We only support Gregory calendar right now'
   );
-  let [timeZoneOffset, inDST] = getApplicableZoneData(t, timeZone);
-  let tz = t + timeZoneOffset;
+  const [timeZoneOffset, inDST] = getApplicableZoneData(t, timeZone);
+  const tz = t + timeZoneOffset;
   const year = yearFromTime(tz);
   return {
     weekday: weekDay(tz),

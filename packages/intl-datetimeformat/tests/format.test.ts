@@ -7,7 +7,7 @@ import allData from '../src/data';
 DateTimeFormat.__addLocaleData(en, ko);
 DateTimeFormat.__addTZData(allData);
 
-let tests = [
+const tests = [
   {
     options: {
       weekday: 'long',
