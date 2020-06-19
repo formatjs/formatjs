@@ -566,25 +566,10 @@ function basicFormatMatcher(
   return bestFormat!;
 }
 
-function isDifferentType(
-  t1: 'numeric' | '2-digit' | 'narrow' | 'short' | 'long',
-  t2: 'numeric' | '2-digit' | 'narrow' | 'short' | 'long'
+function isNumericType(
+  t: 'numeric' | '2-digit' | 'narrow' | 'short' | 'long'
 ): boolean {
-  if (
-    (t1 === 'numeric' || t1 === '2-digit') &&
-    t2 !== 'numeric' &&
-    t2 !== '2-digit'
-  ) {
-    return true;
-  }
-  if (
-    t1 !== 'numeric' &&
-    t1 !== '2-digit' &&
-    (t2 === 'numeric' || t2 === '2-digit')
-  ) {
-    return true;
-  }
-  return false;
+  return t === 'numeric' || t === '2-digit';
 }
 
 /**
@@ -611,8 +596,13 @@ function bestFitFormatMatcher(
     if (!inputValue) {
       continue;
     }
-    // If it's different type, use the one from best format
-    if (isDifferentType(bestValue as 'numeric', inputValue as 'numeric')) {
+    // https://unicode.org/reports/tr35/tr35-dates.html#Matching_Skeletons
+    // Looks like we should not convert numeric to alphabetic but the other way
+    // around is ok
+    if (
+      isNumericType(bestValue as 'numeric') &&
+      !isNumericType(inputValue as 'short')
+    ) {
       continue;
     }
     // Otherwise use the input value
@@ -685,18 +675,30 @@ function pad(n: number): string {
 function offsetToGmtString(
   gmtFormat: string,
   hourFormat: string,
-  offsetInMs: number
+  offsetInMs: number,
+  style: 'long' | 'short'
 ) {
   const offsetInMinutes = Math.floor(offsetInMs / 60000);
   const mins = Math.abs(offsetInMinutes) % 60;
   const hours = Math.floor(Math.abs(offsetInMinutes) / 60);
-  const [negativePattern, positivePattern] = hourFormat.split(';');
+  const [positivePattern, negativePattern] = hourFormat.split(';');
 
-  const offsetStr = (offsetInMs < 0 ? negativePattern : positivePattern)
-    .replace('HH', pad(hours))
-    .replace('H', String(hours))
-    .replace('mm', pad(mins))
-    .replace('m', String(mins));
+  let offsetStr = '';
+  let pattern = offsetInMs < 0 ? negativePattern : positivePattern;
+  if (style === 'long') {
+    offsetStr = pattern
+      .replace('HH', pad(hours))
+      .replace('H', String(hours))
+      .replace('mm', pad(mins))
+      .replace('m', String(mins));
+  } else if (mins || hours) {
+    if (!mins) {
+      pattern = pattern.replace(/:?m+/, '');
+    }
+    offsetStr = pattern
+      .replace(/H+/, String(hours))
+      .replace(/m+/, String(mins));
+  }
 
   return gmtFormat.replace('{0}', offsetStr);
 }
@@ -789,7 +791,12 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
             fv = timeZoneData[f as 'short']![+tm.inDST];
           } else {
             // Fallback to gmtFormat
-            fv = offsetToGmtString(gmtFormat, hourFormat, tm.timeZoneOffset);
+            fv = offsetToGmtString(
+              gmtFormat,
+              hourFormat,
+              tm.timeZoneOffset,
+              f as 'long'
+            );
           }
         } else if (p === 'month') {
           fv = dataLocaleData.month[f][v - 1];
