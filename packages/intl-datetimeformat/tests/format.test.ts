@@ -89,7 +89,7 @@ const tests = [
   //     timeZone: 'America/Los_Angeles',
   //     timeZoneName: 'short',
   //   },
-  //   ko: '서기 2020년 6 15일 월요일 오후 09시 48분 20초 GMT-7',
+  //   ko: '서기 2020년 6 15일 월요일 PM 09시 48분 20초 GMT-7',
   //   en: 'Monday, 6 15, 2020 Anno Domini, 09:48:20 PM PDT',
   // },
   // {
@@ -105,7 +105,7 @@ const tests = [
   //     timeZone: 'America/Los_Angeles',
   //     timeZoneName: 'short',
   //   },
-  //   ko: '서기 20년 6월 15일 월요일 오후 09시 48분 20초 GMT-7',
+  //   ko: '서기 20년 6월 15일 월요일 PM 09시 48분 20초 GMT-7',
   //   en: 'Monday, June 15, 20 Anno Domini, 09:48:20 PM PDT',
   // },
   // {
@@ -121,7 +121,7 @@ const tests = [
   //     timeZone: 'America/Los_Angeles',
   //     timeZoneName: 'short',
   //   },
-  //   ko: '서기 20년 6월 15일 월요일 오후 09시 48분 20초 GMT-7',
+  //   ko: '서기 20년 6월 15일 월요일 PM 09시 48분 20초 GMT-7',
   //   en: 'Monday, Jun 15, 20 Anno Domini, 09:48:20 PM PDT',
   // },
   // {
@@ -137,7 +137,7 @@ const tests = [
   //     timeZone: 'America/Los_Angeles',
   //     timeZoneName: 'short',
   //   },
-  //   ko: '서기 20년 6월 15일 월요일 오후 09시 48분 20초 GMT-7',
+  //   ko: '서기 20년 6월 15일 월요일 PM 09시 48분 20초 GMT-7',
   //   en: 'Monday, J 15, 20 Anno Domini, 09:48:20 PM PDT',
   // },
   // {
@@ -153,7 +153,7 @@ const tests = [
   //     timeZone: 'America/Los_Angeles',
   //     timeZoneName: 'short',
   //   },
-  //   ko: 'AD 20년 6월 15일 월요일 오후 09시 48분 20초 GMT-7',
+  //   ko: 'AD 20년 6월 15일 월요일 PM 09시 48분 20초 GMT-7',
   //   en: 'Monday, J 15, 20 AD, 09:48:20 PM PDT',
   // },
   // {
@@ -169,7 +169,7 @@ const tests = [
   //     timeZone: 'America/Los_Angeles',
   //     timeZoneName: 'short',
   //   },
-  //   ko: 'AD 20년 6월 15일 (월) 오후 09시 48분 20초 GMT-7',
+  //   ko: 'AD 20년 6월 15일 (월) PM 09시 48분 20초 GMT-7',
   //   en: 'M, J 15, 20 AD, 09:48:20 PM PDT',
   // },
   {
@@ -185,7 +185,7 @@ const tests = [
       timeZone: 'America/Los_Angeles',
       timeZoneName: 'short',
     },
-    ko: 'AD 20년 6월 15일 (월) 오후 09시 48분 20초 GMT-7',
+    ko: 'AD 20년 6월 15일 (월) PM 09시 48분 20초 GMT-7',
     en: 'Mon, J 15, 20 AD, 09:48:20 PM PDT',
   },
 ];

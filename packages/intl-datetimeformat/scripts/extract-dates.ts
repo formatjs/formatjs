@@ -20,6 +20,7 @@ import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPrefe
 import * as TimeZoneNames from 'cldr-dates-full/main/en/timeZoneNames.json';
 import * as metaZones from 'cldr-core/supplemental/metaZones.json';
 import {parseDateTimeSkeleton} from '../src/skeleton';
+import IntlLocale from '@formatjs/intl-locale';
 const {timeData} = rawTimeData.supplemental;
 const processedTimeData = Object.keys(timeData).reduce(
   (all: Record<string, string[]>, k) => {
@@ -104,13 +105,13 @@ function loadDatesFields(locale: string): RawDateTimeLocaleInternalData {
     // Ignore
   }
 
-  const region = locale.split('-')[1];
+  const region = new IntlLocale(locale).maximize().region;
 
   // Reduce the date fields data down to whitelist of fields needed in the
   // FormatJS libs.
   const hc = (
     processedTimeData[locale] ||
-    processedTimeData[region] ||
+    processedTimeData[region!] ||
     processedTimeData[`${locale}-001`] ||
     processedTimeData['001']
   ).map(resolveDateTimeSymbolTable);

@@ -94,8 +94,6 @@ const DATE_TIME_PROPS: Array<
   'timeZoneName',
 ];
 
-const DATE_TIME_PROPS_WITH_H12 = [...DATE_TIME_PROPS, 'hour12'];
-
 const RESOLVED_OPTIONS_KEYS: Array<
   keyof Omit<IntlDateTimeFormatInternal, 'pattern' | 'boundFormat'>
 > = [
@@ -558,7 +556,12 @@ export function bestFitFormatMatcherScore(
   format: Formats
 ): number {
   let score = 0;
-  for (const prop of DATE_TIME_PROPS_WITH_H12) {
+  if (options.hour12 && !format.hour12) {
+    score -= removalPenalty;
+  } else if (!options.hour12 && format.hour12) {
+    score -= additionPenalty;
+  }
+  for (const prop of DATE_TIME_PROPS) {
     const optionsProp = options[prop as TABLE_6];
     const formatProp = format[prop as TABLE_6];
     if (optionsProp === undefined && formatProp !== undefined) {
