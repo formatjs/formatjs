@@ -20,7 +20,7 @@ import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPrefe
 import * as TimeZoneNames from 'cldr-dates-full/main/en/timeZoneNames.json';
 import * as metaZones from 'cldr-core/supplemental/metaZones.json';
 import {parseDateTimeSkeleton} from '../src/skeleton';
-let {timeData} = rawTimeData.supplemental;
+const {timeData} = rawTimeData.supplemental;
 const processedTimeData = Object.keys(timeData).reduce(
   (all: Record<string, string[]>, k) => {
     all[k.replace('_', '-')] = timeData[
@@ -115,36 +115,50 @@ function loadDatesFields(locale: string): RawDateTimeLocaleInternalData {
     processedTimeData['001']
   ).map(resolveDateTimeSymbolTable);
 
-  const timeZoneName = !timeZoneNames.metazone
-    ? {}
-    : Object.keys(tzToMetaZoneMap).reduce((all: TimeZoneNameData, tz) => {
-        const metazone = tzToMetaZoneMap[tz];
-        const metazoneInfo =
-          timeZoneNames.metazone[
-            metazone as keyof typeof timeZoneNames['metazone']
-          ];
-        if (metazoneInfo) {
-          all[tz] = {};
-          if (metazoneInfo.long) {
-            all[tz].long = [
-              metazoneInfo.long.standard,
-              'daylight' in metazoneInfo.long
-                ? metazoneInfo.long.daylight
-                : metazoneInfo.long.standard,
+  let timeZoneName: RawDateTimeLocaleInternalData['timeZoneName'] = {};
+  try {
+    timeZoneName = !timeZoneNames.metazone
+      ? {}
+      : Object.keys(tzToMetaZoneMap).reduce((all: TimeZoneNameData, tz) => {
+          const metazone = tzToMetaZoneMap[tz];
+          const metazoneInfo =
+            timeZoneNames.metazone[
+              metazone as keyof typeof timeZoneNames['metazone']
             ];
+          if (metazoneInfo) {
+            all[tz] = {};
+            if (metazoneInfo.long) {
+              all[tz].long = [
+                metazoneInfo.long.standard,
+                'daylight' in metazoneInfo.long
+                  ? metazoneInfo.long.daylight
+                  : metazoneInfo.long.standard,
+              ];
+            }
+            if ('short' in metazoneInfo) {
+              all[tz].short = [
+                metazoneInfo.short.standard,
+                'daylight' in metazoneInfo.short
+                  ? metazoneInfo.short.daylight
+                  : metazoneInfo.short.standard,
+              ];
+            }
           }
-          if ('short' in metazoneInfo) {
-            all[tz].short = [
-              metazoneInfo.short.standard,
-              'daylight' in metazoneInfo.short
-                ? metazoneInfo.short.daylight
-                : metazoneInfo.short.standard,
-            ];
-          }
-        }
 
-        return all;
-      }, {});
+          return all;
+        }, {});
+    const {long: utcLong, short: utcShort} = timeZoneNames.zone.Etc.UTC;
+    timeZoneName.UTC = {};
+    if (utcLong) {
+      timeZoneName.UTC.long = [utcLong.standard, utcLong.standard];
+    }
+    if (utcShort) {
+      timeZoneName.UTC.short = [utcShort.standard, utcShort.standard];
+    }
+  } catch (e) {
+    console.error(`Issue extracting timeZoneName for ${locale}`);
+    throw e;
+  }
 
   const {short, full, medium, long} = gregorian.dateTimeFormats;
 
@@ -186,7 +200,7 @@ function loadDatesFields(locale: string): RawDateTimeLocaleInternalData {
     pm: gregorian.dayPeriods.format.abbreviated.pm,
     weekday: {
       narrow: Object.values(gregorian.days.format.narrow),
-      short: Object.values(gregorian.days.format.short),
+      short: Object.values(gregorian.days.format.abbreviated),
       long: Object.values(gregorian.days.format.wide),
     },
     era: {

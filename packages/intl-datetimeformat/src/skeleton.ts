@@ -1,4 +1,4 @@
-import {Formats} from '../src/types';
+import {Formats} from './types';
 
 /**
  * https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table

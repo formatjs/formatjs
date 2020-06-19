@@ -566,6 +566,27 @@ function basicFormatMatcher(
   return bestFormat!;
 }
 
+function isDifferentType(
+  t1: 'numeric' | '2-digit' | 'narrow' | 'short' | 'long',
+  t2: 'numeric' | '2-digit' | 'narrow' | 'short' | 'long'
+): boolean {
+  if (
+    (t1 === 'numeric' || t1 === '2-digit') &&
+    t2 !== 'numeric' &&
+    t2 !== '2-digit'
+  ) {
+    return true;
+  }
+  if (
+    t1 !== 'numeric' &&
+    t1 !== '2-digit' &&
+    (t2 === 'numeric' || t2 === '2-digit')
+  ) {
+    return true;
+  }
+  return false;
+}
+
 /**
  * https://tc39.es/ecma402/#sec-bestfitformatmatcher
  * Just alias to basic for now
@@ -576,7 +597,28 @@ function bestFitFormatMatcher(
   options: DateTimeFormatOptions,
   formats: Formats[]
 ) {
-  return basicFormatMatcher(options, formats);
+  // Kinda following https://github.com/unicode-org/icu/blob/dd50e38f459d84e9bf1b0c618be8483d318458ad/icu4j/main/classes/core/src/com/ibm/icu/text/DateTimePatternGenerator.java
+  const bestFormat = {...basicFormatMatcher(options, formats)};
+  for (const prop in bestFormat) {
+    const bestValue = bestFormat[prop as TABLE_6];
+    const inputValue = options[prop as TABLE_6];
+    // Don't mess with hour/minute/second or we can get in the situation of
+    // 7:0:0 which is weird
+    if (prop === 'hour' || prop === 'minute' || prop === 'second') {
+      continue;
+    }
+    // Nothing to do here
+    if (!inputValue) {
+      continue;
+    }
+    // If it's different type, use the one from best format
+    if (isDifferentType(bestValue as 'numeric', inputValue as 'numeric')) {
+      continue;
+    }
+    // Otherwise use the input value
+    bestFormat[prop as TABLE_6] = inputValue;
+  }
+  return bestFormat;
 }
 
 const formatDescriptor = {
@@ -702,7 +744,7 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
       });
     } else if (DATE_TIME_PROPS.indexOf(p as 'era') > -1) {
       let fv = '';
-      let f = internalSlots[p as 'year'] as
+      const f = internalSlots[p as 'year'] as
         | 'numeric'
         | '2-digit'
         | 'narrow'
@@ -739,13 +781,12 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
         if (p === 'era') {
           fv = dataLocaleData[p][f][v as 'BC'];
         } else if (p === 'timeZoneName') {
-          f = f === 'narrow' ? 'short' : 'long';
           const {timeZoneName, gmtFormat, hourFormat} = dataLocaleData;
           const timeZone =
             internalSlots.timeZone || DateTimeFormat.__defaultTimeZone;
           const timeZoneData = timeZoneName[timeZone];
-          if (timeZoneData && timeZoneData[f]) {
-            fv = timeZoneData[f]![+tm.inDST];
+          if (timeZoneData && timeZoneData[f as 'short']) {
+            fv = timeZoneData[f as 'short']![+tm.inDST];
           } else {
             // Fallback to gmtFormat
             fv = offsetToGmtString(gmtFormat, hourFormat, tm.timeZoneOffset);

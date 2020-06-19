@@ -129,6 +129,6 @@ export interface DateTimeFormatOptions extends Intl.DateTimeFormatOptions {
     | 'japanese'
     | 'persian'
     | 'roc';
-  dayPeriod?: 'narrow' | 'short' | 'long';
+  // dayPeriod?: 'narrow' | 'short' | 'long';
   numberingSystem?: string;
 }
