@@ -20,6 +20,7 @@ export function parseDateTimeSkeleton(skeleton: string): Formats {
   const result: Formats = {
     pattern: '',
     pattern12: '',
+    skeleton,
   };
 
   const literals: string[] = [];
@@ -167,8 +168,8 @@ export function parseDateTimeSkeleton(skeleton: string): Formats {
       .replace(/\{apostrophe\}/g, "'");
   }
   // Handle apostrophe-escaped things
-  result.pattern12 = result.pattern12;
   result.pattern = result.pattern12
+    .replace(/([\s\uFEFF\xA0])\{ampm\}([\s\uFEFF\xA0])/, '$1')
     .replace('{ampm}', '')
     .replace(expPatternTrimmer, '');
   return result;

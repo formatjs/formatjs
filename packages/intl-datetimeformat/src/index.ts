@@ -94,6 +94,8 @@ const DATE_TIME_PROPS: Array<
   'timeZoneName',
 ];
 
+const DATE_TIME_PROPS_WITH_H12 = [...DATE_TIME_PROPS, 'hour12'];
+
 const RESOLVED_OPTIONS_KEYS: Array<
   keyof Omit<IntlDateTimeFormatInternal, 'pattern' | 'boundFormat'>
 > = [
@@ -390,6 +392,8 @@ function initializeDateTimeFormat(
   if (matcher === 'basic') {
     bestFormat = basicFormatMatcher(opt, formats);
   } else {
+    opt.hour12 =
+      internalSlots.hourCycle === 'h11' || internalSlots.hourCycle === 'h12';
     bestFormat = bestFitFormatMatcher(opt, formats);
   }
   for (const prop in opt) {
@@ -545,6 +549,48 @@ export function basicFormatMatcherScore(
 }
 
 /**
+ * Credit: https://github.com/andyearnshaw/Intl.js/blob/0958dc1ad8153f1056653ea22b8208f0df289a4e/src/12.datetimeformat.js#L611
+ * @param options
+ * @param format
+ */
+export function bestFitFormatMatcherScore(
+  options: DateTimeFormatOptions,
+  format: Formats
+): number {
+  let score = 0;
+  for (const prop of DATE_TIME_PROPS_WITH_H12) {
+    const optionsProp = options[prop as TABLE_6];
+    const formatProp = format[prop as TABLE_6];
+    if (optionsProp === undefined && formatProp !== undefined) {
+      score -= additionPenalty;
+    } else if (optionsProp !== undefined && formatProp === undefined) {
+      score -= removalPenalty;
+    } else if (optionsProp !== formatProp) {
+      const optionsPropIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
+        optionsProp as string
+      );
+      const formatPropIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
+        formatProp as string
+      );
+      const delta = Math.max(
+        -2,
+        Math.min(formatPropIndex - optionsPropIndex, 2)
+      );
+      if (delta === 2) {
+        score -= longMorePenalty;
+      } else if (delta === 1) {
+        score -= shortMorePenalty;
+      } else if (delta === -1) {
+        score -= shortLessPenalty;
+      } else if (delta === -2) {
+        score -= longLessPenalty;
+      }
+    }
+  }
+  return score;
+}
+
+/**
  * https://tc39.es/ecma402/#sec-basicformatmatcher
  * @param options
  * @param formats
@@ -554,7 +600,7 @@ function basicFormatMatcher(
   formats: Formats[]
 ) {
   let bestScore = -Infinity;
-  let bestFormat = undefined;
+  let bestFormat = formats[0];
   invariant(Array.isArray(formats), 'formats should be a list of things');
   for (const format of formats) {
     const score = basicFormatMatcherScore(options, format);
@@ -563,7 +609,7 @@ function basicFormatMatcher(
       bestFormat = format;
     }
   }
-  return bestFormat!;
+  return bestFormat;
 }
 
 function isNumericType(
@@ -582,14 +628,24 @@ function bestFitFormatMatcher(
   options: DateTimeFormatOptions,
   formats: Formats[]
 ) {
+  let bestScore = -Infinity;
+  let bestFormat = formats[0];
+  invariant(Array.isArray(formats), 'formats should be a list of things');
+  for (const format of formats) {
+    const score = bestFitFormatMatcherScore(options, format);
+    if (score > bestScore) {
+      bestScore = score;
+      bestFormat = format;
+    }
+  }
+
   // Kinda following https://github.com/unicode-org/icu/blob/dd50e38f459d84e9bf1b0c618be8483d318458ad/icu4j/main/classes/core/src/com/ibm/icu/text/DateTimePatternGenerator.java
-  const bestFormat = {...basicFormatMatcher(options, formats)};
   for (const prop in bestFormat) {
     const bestValue = bestFormat[prop as TABLE_6];
     const inputValue = options[prop as TABLE_6];
-    // Don't mess with hour/minute/second or we can get in the situation of
+    // Don't mess with minute/second or we can get in the situation of
     // 7:0:0 which is weird
-    if (prop === 'hour' || prop === 'minute' || prop === 'second') {
+    if (prop === 'minute' || prop === 'second') {
       continue;
     }
     // Nothing to do here

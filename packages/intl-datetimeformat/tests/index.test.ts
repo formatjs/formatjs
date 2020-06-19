@@ -1,6 +1,11 @@
-import {DateTimeFormat, basicFormatMatcherScore} from '../src';
+import {
+  DateTimeFormat,
+  basicFormatMatcherScore,
+  bestFitFormatMatcherScore,
+} from '../src';
 import * as en from '../dist/locale-data/en.json';
 import allData from '../src/data';
+import {parseDateTimeSkeleton} from '../src/skeleton';
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en);
 DateTimeFormat.__addTZData(allData);
@@ -19,46 +24,46 @@ describe('Intl.DateTimeFormat', function () {
       }).format(new Date(0))
     ).toBe('12/31/1969, 7:00:00 PM Eastern Standard Time');
   });
-  it('basicFormatMatcher', function () {
+  it('basicFormatMatcherScore', function () {
     const opts = {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: 'numeric',
+      weekday: 'short',
+      era: 'short',
+      year: '2-digit',
+      month: 'narrow',
+      day: '2-digit',
+      hour: '2-digit',
       minute: 'numeric',
       second: 'numeric',
-      timeZoneName: 'long',
-      timeZone: 'America/New_York',
+      timeZone: 'America/Los_Angeles',
+      timeZoneName: 'short',
+      hour12: true,
     };
     expect(
-      basicFormatMatcherScore(opts, {
-        pattern:
-          '{month} {day}, {year} at {hour}:{minute}:{second}  {timeZoneName}',
-        pattern12:
-          '{month} {day}, {year} at {hour}:{minute}:{second} {ampm} {timeZoneName}',
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        second: '2-digit',
-        timeZoneName: 'long',
-      })
-    ).toBe(-18);
+      basicFormatMatcherScore(opts, parseDateTimeSkeleton('h:mm:ss a v'))
+    ).toBe(-615);
     expect(
-      basicFormatMatcherScore(opts, {
-        pattern:
-          '{month}/{day}/{year}, {hour}:{minute}:{second}  {timeZoneName}',
-        pattern12:
-          '{month}/{day}/{year}, {hour}:{minute}:{second} {ampm} {timeZoneName}',
-        month: 'numeric',
-        day: 'numeric',
-        year: '2-digit',
-        hour: 'numeric',
-        minute: '2-digit',
-        second: '2-digit',
-        timeZoneName: 'long',
-      })
-    ).toBe(-18);
+      basicFormatMatcherScore(opts, parseDateTimeSkeleton('HH:mm:ss v'))
+    ).toBe(-612);
+  });
+  it('bestFitFormatMatcherScore', function () {
+    const opts = {
+      weekday: 'short',
+      era: 'short',
+      year: '2-digit',
+      month: 'narrow',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: 'numeric',
+      second: 'numeric',
+      timeZone: 'America/Los_Angeles',
+      timeZoneName: 'short',
+      hour12: true,
+    };
+    expect(
+      bestFitFormatMatcherScore(opts, parseDateTimeSkeleton('h:mm:ss a v'))
+    ).toBe(-615);
+    expect(
+      bestFitFormatMatcherScore(opts, parseDateTimeSkeleton('HH:mm:ss v'))
+    ).toBe(-732);
   });
 });

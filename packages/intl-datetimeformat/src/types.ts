@@ -108,6 +108,7 @@ export type Formats = Pick<
   hour12?: boolean;
   pattern: string;
   pattern12: string;
+  skeleton: string;
 };
 
 export interface DateTimeFormatOptions extends Intl.DateTimeFormatOptions {
