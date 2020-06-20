@@ -318,7 +318,7 @@ async function main(args: minimist.ParsedArgs) {
     if (!chunks) {
       continue;
     }
-    console.log('some chunks');
+
     const [, zonePath, utTime, localTime, dst, offsetStr] = chunks;
     const zone = zonePath.split('temp-zic/')[1];
     if (golden && !GOLDEN_TIMEZONES.has(zone)) {
