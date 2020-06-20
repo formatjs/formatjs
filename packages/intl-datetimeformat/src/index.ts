@@ -548,6 +548,7 @@ export function basicFormatMatcherScore(
 
 /**
  * Credit: https://github.com/andyearnshaw/Intl.js/blob/0958dc1ad8153f1056653ea22b8208f0df289a4e/src/12.datetimeformat.js#L611
+ * with some modifications
  * @param options
  * @param format
  */
@@ -612,7 +613,7 @@ function basicFormatMatcher(
       bestFormat = format;
     }
   }
-  return bestFormat;
+  return {...bestFormat};
 }
 
 function isNumericType(
@@ -641,6 +642,8 @@ function bestFitFormatMatcher(
       bestFormat = format;
     }
   }
+
+  bestFormat = {...bestFormat};
 
   // Kinda following https://github.com/unicode-org/icu/blob/dd50e38f459d84e9bf1b0c618be8483d318458ad/icu4j/main/classes/core/src/com/ibm/icu/text/DateTimePatternGenerator.java
   for (const prop in bestFormat) {

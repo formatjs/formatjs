@@ -61,9 +61,58 @@ describe('Intl.DateTimeFormat', function () {
     };
     expect(
       bestFitFormatMatcherScore(opts, parseDateTimeSkeleton('h:mm:ss a v'))
-    ).toBe(-615);
-    expect(
+    ).toBeGreaterThan(
       bestFitFormatMatcherScore(opts, parseDateTimeSkeleton('HH:mm:ss v'))
-    ).toBe(-732);
+    );
+  });
+  it('bestFitFormatMatcherScore long weekday (ko)', function () {
+    const opts = {
+      weekday: 'long',
+      era: 'short',
+      year: '2-digit',
+      month: 'narrow',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: 'numeric',
+      second: 'numeric',
+      timeZoneName: 'short',
+      hour12: true,
+    };
+    expect(
+      bestFitFormatMatcherScore(
+        opts,
+        parseDateTimeSkeleton('G y년 MMM d일 EEEE a h시 m분 s초 z')
+      )
+    ).toBeGreaterThan(
+      bestFitFormatMatcherScore(
+        opts,
+        parseDateTimeSkeleton('G y년 MMM d일 (E) a h시 m분 s초 z')
+      )
+    );
+  });
+  it('bestFitFormatMatcherScore narrow weekday (ko)', function () {
+    const opts = {
+      weekday: 'short',
+      era: 'short',
+      year: '2-digit',
+      month: 'narrow',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: 'numeric',
+      second: 'numeric',
+      timeZoneName: 'short',
+      hour12: true,
+    };
+    expect(
+      bestFitFormatMatcherScore(
+        opts,
+        parseDateTimeSkeleton('G y년 MMM d일 (E) a h시 m분 s초 z')
+      )
+    ).toBeGreaterThan(
+      bestFitFormatMatcherScore(
+        opts,
+        parseDateTimeSkeleton('G y년 MMM d일 EEEE a h시 m분 s초 z')
+      )
+    );
   });
 });
