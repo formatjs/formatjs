@@ -156,22 +156,22 @@ const tests = [
   //   ko: 'AD 20년 6월 15일 월요일 PM 09시 48분 20초 GMT-7',
   //   en: 'Monday, J 15, 20 AD, 09:48:20 PM PDT',
   // },
-  // {
-  //   options: {
-  //     weekday: 'narrow',
-  //     era: 'short',
-  //     year: '2-digit',
-  //     month: 'narrow',
-  //     day: '2-digit',
-  //     hour: '2-digit',
-  //     minute: 'numeric',
-  //     second: 'numeric',
-  //     timeZone: 'America/Los_Angeles',
-  //     timeZoneName: 'short',
-  //   },
-  //   ko: 'AD 20년 6월 15일 (월) PM 09시 48분 20초 GMT-7',
-  //   en: 'M, J 15, 20 AD, 09:48:20 PM PDT',
-  // },
+  {
+    options: {
+      weekday: 'narrow',
+      era: 'short',
+      year: '2-digit',
+      month: 'narrow',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: 'numeric',
+      second: 'numeric',
+      timeZone: 'America/Los_Angeles',
+      timeZoneName: 'short',
+    },
+    ko: 'AD 20년 6월 15일 (월) PM 09시 48분 20초 GMT-7',
+    en: 'M, J 15, 20 AD, 09:48:20 PM PDT',
+  },
   {
     options: {
       weekday: 'short',

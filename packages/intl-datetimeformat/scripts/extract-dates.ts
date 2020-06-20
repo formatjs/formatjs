@@ -105,17 +105,24 @@ function loadDatesFields(locale: string): RawDateTimeLocaleInternalData {
     // Ignore
   }
 
-  const region = new IntlLocale(locale).maximize().region;
-
-  // Reduce the date fields data down to whitelist of fields needed in the
-  // FormatJS libs.
-  const hc = (
-    processedTimeData[locale] ||
-    processedTimeData[region!] ||
-    processedTimeData[`${locale}-001`] ||
-    processedTimeData['001']
-  ).map(resolveDateTimeSymbolTable);
-
+  let hc: string[] = [];
+  let region: string | undefined;
+  try {
+    if (locale !== 'root') {
+      region = new IntlLocale(locale).maximize().region;
+    }
+    // Reduce the date fields data down to whitelist of fields needed in the
+    // FormatJS libs.
+    hc = (
+      processedTimeData[locale] ||
+      processedTimeData[region || ''] ||
+      processedTimeData[`${locale}-001`] ||
+      processedTimeData['001']
+    ).map(resolveDateTimeSymbolTable);
+  } catch (e) {
+    console.error(`Issue extracting hourCycle for ${locale}`);
+    throw e;
+  }
   let timeZoneName: RawDateTimeLocaleInternalData['timeZoneName'] = {};
   try {
     timeZoneName = !timeZoneNames.metazone
