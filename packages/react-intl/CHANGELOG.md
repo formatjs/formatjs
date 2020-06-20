@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.6.10](https://github.com/formatjs/formatjs/compare/react-intl@4.6.9...react-intl@4.6.10) (2020-06-20)
+
+
+### Bug Fixes
+
+* **react-intl:** add children prop type to IntlProvider ([#1717](https://github.com/formatjs/formatjs/issues/1717)) ([94db34b](https://github.com/formatjs/formatjs/commit/94db34b28d7a96b44c8ade79b57e15b161ed2488))
+* **react-intl:** add children typing to injectIntl ([#1716](https://github.com/formatjs/formatjs/issues/1716)) ([90fbd5f](https://github.com/formatjs/formatjs/commit/90fbd5f5deb36b615b5882d5de26d8528f8a3889))
+* **react-intl:** Remove `values: {}` from FormattedMessage defaultProps ([f80648c](https://github.com/formatjs/formatjs/commit/f80648cc112fc2312c31a84b145f6c0556e76cad)), closes [#1706](https://github.com/formatjs/formatjs/issues/1706)
+
+
+
+
+
 ## [4.6.9](https://github.com/formatjs/formatjs/compare/react-intl@4.6.8...react-intl@4.6.9) (2020-06-06)
 
 **Note:** Version bump only for package react-intl

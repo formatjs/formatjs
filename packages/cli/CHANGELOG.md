@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.7.5...@formatjs/cli@1.8.0) (2020-06-20)
+
+
+### Features
+
+* **@formatjs/cli:** add a check for duplicated keys in different files ([#1711](https://github.com/formatjs/formatjs/issues/1711)) ([b6c720e](https://github.com/formatjs/formatjs/commit/b6c720eafaf4799f04768965280c018611e2f258))
+
+
+
+
+
 ## [1.7.5](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.7.4...@formatjs/cli@1.7.5) (2020-06-06)
 
 **Note:** Version bump only for package @formatjs/cli

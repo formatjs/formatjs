@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-pluralrules",
-  "version": "2.2.6",
+  "version": "2.2.7",
   "description": "Polyfill for intl plural rules",
   "keywords": [
     "polyfill",
@@ -37,7 +37,7 @@
     "ts-jest": "^25.4.0"
   },
   "dependencies": {
-    "@formatjs/intl-utils": "^3.3.1"
+    "@formatjs/intl-utils": "^3.4.0"
   },
   "scripts": {
     "build": "yarn run cldr && yarn run compile",

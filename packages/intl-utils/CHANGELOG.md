@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@3.3.1...@formatjs/intl-utils@3.4.0) (2020-06-20)
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** start the polyfill ([#1702](https://github.com/formatjs/formatjs/issues/1702)) ([53f8149](https://github.com/formatjs/formatjs/commit/53f81495edcc9fa2475c1f7863f8dd7d962f2f61))
+
+
+
+
+
 ## [3.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@3.3.0...@formatjs/intl-utils@3.3.1) (2020-06-04)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-numberformat",
-  "version": "4.2.6",
+  "version": "4.2.7",
   "description": "Ponyfill for ES2020 Intl.NumberFormat",
   "keywords": [
     "polyfill",
@@ -30,7 +30,7 @@
   ],
   "devDependencies": {
     "@formatjs/intl-getcanonicallocales": "^1.2.6",
-    "@formatjs/intl-pluralrules": "^2.2.6",
+    "@formatjs/intl-pluralrules": "^2.2.7",
     "@types/jest": "^25.2.1",
     "chalk": "^4.0.0",
     "cldr-core": "^36.0.0",
@@ -41,7 +41,7 @@
     "ts-jest": "^25.4.0"
   },
   "dependencies": {
-    "@formatjs/intl-utils": "^3.3.1"
+    "@formatjs/intl-utils": "^3.4.0"
   },
   "scripts": {
     "benchmark": "ts-node tests/benchmark",
