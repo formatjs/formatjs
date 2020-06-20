@@ -2,8 +2,9 @@ import * as minimist from 'minimist';
 import {execFile as _execFile} from 'child_process';
 import {readFileSync} from 'fs';
 import {outputFileSync} from 'fs-extra';
-import {UnpackedData, PackedData, ZoneData} from '../src/types';
+import {UnpackedData, ZoneData} from '../src/types';
 import {pack} from '../src/packer';
+
 const SPACE_REGEX = /[\s\t]+/;
 
 const MONTHS = [
@@ -297,7 +298,7 @@ function utTimeToSeconds(utTime: string) {
 const LINE_REGEX = /^(.*?)\s+(.*?) UT = (.*?) isdst=(0|1) gmtoff=(.*?)$/i;
 
 async function main(args: minimist.ParsedArgs) {
-  const {input, output, golden} = args;
+  const {input, polyfill, output, golden} = args;
   const content = readFileSync(input, 'utf8');
   const zones: Record<string, ZoneData[]> = {};
   const lines = content.split('\n');
@@ -317,6 +318,7 @@ async function main(args: minimist.ParsedArgs) {
     if (!chunks) {
       continue;
     }
+    console.log('some chunks');
     const [, zonePath, utTime, localTime, dst, offsetStr] = chunks;
     const zone = zonePath.split('temp-zic/')[1];
     if (golden && !GOLDEN_TIMEZONES.has(zone)) {
@@ -348,12 +350,23 @@ async function main(args: minimist.ParsedArgs) {
     }
   }
 
-  outputFileSync(
-    output,
-    `// @generated
+  if (polyfill) {
+    outputFileSync(
+      output,
+      `// @generated
+// prettier-ignore
+if ('DateTimeFormat' in Intl && Intl.DateTimeFormat.__addTZData) {
+  Intl.DateTimeFormat.__addTZData(${JSON.stringify(pack(data))}) 
+}`
+    );
+  } else {
+    outputFileSync(
+      output,
+      `// @generated
 // prettier-ignore
 export default ${JSON.stringify(pack(data))}`
-  );
+    );
+  }
 }
 
 if (require.main === module) {

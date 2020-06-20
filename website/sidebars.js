@@ -13,6 +13,7 @@ module.exports = {
       'polyfills/intl-listformat',
       'polyfills/intl-displaynames',
       'polyfills/intl-numberformat',
+      'polyfills/intl-datetimeformat',
       'polyfills/intl-locale',
     ],
     Libraries: [
