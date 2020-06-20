@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@1.1.0...@formatjs/intl-datetimeformat@1.1.1) (2020-06-20)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** Add README.md ([52796cb](https://github.com/formatjs/formatjs/commit/52796cb5b9e85d1ac55431deabbaf61e4ee5323c))
+
+
+
+
+
 # [1.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@0.2.0...@formatjs/intl-datetimeformat@1.1.0) (2020-06-20)
 
 
