@@ -52,6 +52,7 @@ Releases can be done with the following steps:
 | [@formatjs/intl-displaynames](https://www.npmjs.com/package/@formatjs/intl-displaynames)               | ![version](https://badgen.net/npm/v/@formatjs/intl-displaynames)        | [CHANGELOG](packages/intl-displaynames/CHANGELOG.md)          | [MIT](packages/intl-displaynames/LICENSE.md)          |
 | [@formatjs/intl-locale](https://www.npmjs.com/package/@formatjs/intl-locale)                           | ![version](https://badgen.net/npm/v/@formatjs/intl-locale)              | [CHANGELOG](packages/intl-locale/CHANGELOG.md)                | [MIT](packages/intl-locale/LICENSE.md)                |
 | [@formatjs/intl-getcanonicallocales](https://www.npmjs.com/package/@formatjs/intl-getcanonicallocales) | ![version](https://badgen.net/npm/v/@formatjs/intl-getcanonicallocales) | [CHANGELOG](packages/intl-getcanonicallocales/CHANGELOG.md)   | [MIT](packages/intl-getcanonicallocales/LICENSE.md)   |
+| [@formatjs/intl-datetimeformat](https://www.npmjs.com/package/@formatjs/intl-datetimeformat)           | ![version](https://badgen.net/npm/v/@formatjs/intl-datetimeformat)      | [CHANGELOG](packages/intl-datetimeformat/CHANGELOG.md)        | [MIT](packages/intl-datetimeformat/LICENSE.md)        |
 
 ## Big Thanks
 
