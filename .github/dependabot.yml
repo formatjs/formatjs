@@ -10,24 +10,16 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    commit-message:
-      # Prefix all commit messages with "npm"
-      prefix: "npm"
-
+    
   # Maintain dependencies for npm
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "daily"
-    commit-message:
-      # Prefix all commit messages with "npm"
-      prefix: "npm"
-  
+    
   # Maintain dependencies for npm
   - package-ecosystem: "gitsubmodule"
     directory: "/"
     schedule:
       interval: "daily"
-    commit-message:
-      # Prefix all commit messages with "npm"
-      prefix: "npm"
+    
