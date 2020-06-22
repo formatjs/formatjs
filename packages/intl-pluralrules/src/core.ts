@@ -278,6 +278,16 @@ export class PluralRules implements Intl.PluralRules {
 }
 
 try {
+  // IE11 does not have Symbol
+  if (typeof Symbol !== 'undefined') {
+    Object.defineProperty(PluralRules.prototype, Symbol.toStringTag, {
+      value: 'Intl.PluralRules',
+      writable: false,
+      enumerable: false,
+      configurable: true,
+    });
+  }
+
   // https://github.com/tc39/test262/blob/master/test/intl402/PluralRules/length.js
   Object.defineProperty(PluralRules, 'length', {
     value: 0,
