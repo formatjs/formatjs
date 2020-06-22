@@ -7,7 +7,6 @@ module.exports = function (config) {
     frameworks: ['jasmine', 'jasmine-matchers'],
     files: FILES,
     reporters: ['progress'],
-    port: 9876, // karma web server port
     colors: true,
     logLevel: config.LOG_INFO,
     plugins: [

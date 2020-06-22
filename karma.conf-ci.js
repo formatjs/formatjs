@@ -54,7 +54,6 @@ module.exports = function (config) {
     frameworks: ['jasmine', 'jasmine-matchers'],
     files: FILES,
     reporters: ['progress', 'saucelabs'],
-    port: 9876,
     colors: true,
     concurrency: 5,
     sauceLabs: {
@@ -62,7 +61,6 @@ module.exports = function (config) {
       build: process.env.TRAVIS_BUILD_ID,
       recordScreenshots: false,
       connectOptions: {
-        port: 5757,
         logfile: 'sauce_connect.log',
       },
       public: 'public',
