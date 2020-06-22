@@ -73,7 +73,13 @@ function deepMergeFormatsAndSetTimeZone(
   };
 }
 
-export function patchFormatXMLElementFn(
+function isFormatXMLElementFn(
+  input: any
+): input is FormatXMLElementFn<React.ReactNode, React.ReactNode> {
+  return typeof input === 'function';
+}
+
+export function unapplyFormatXMLElementFnInValues(
   values: Record<
     string,
     | PrimitiveType
@@ -83,15 +89,7 @@ export function patchFormatXMLElementFn(
 ): typeof values {
   return Object.keys(values).reduce((acc: typeof values, k) => {
     const v = values[k];
-    acc[k] =
-      typeof v === 'function'
-        ? unapplyFormatXMLElementFn(
-            // type assertation needed since TypeScript infers possible generic
-            // Function type for `v`, but we know the only possible function
-            // in `values` is FormatXMLElementFn
-            v as FormatXMLElementFn<React.ReactNode, React.ReactNode>
-          )
-        : v;
+    acc[k] = isFormatXMLElementFn(v) ? unapplyFormatXMLElementFn(v) : v;
     return acc;
   }, {});
 }
@@ -165,7 +163,7 @@ export function formatMessage(
   if (!values && message && typeof message === 'string') {
     return message.replace(/'\{(.*?)\}'/gi, `{$1}`);
   }
-  const patchedValues = values && patchFormatXMLElementFn(values);
+  const patchedValues = values && unapplyFormatXMLElementFnInValues(values);
   formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
   defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);
 
