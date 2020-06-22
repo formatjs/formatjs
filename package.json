@@ -28,7 +28,7 @@
     "@microsoft/api-extractor": "^7.7.13",
     "@rollup/plugin-json": "^4.0.3",
     "@types/jest": "^25.2.1",
-    "@typescript-eslint/eslint-plugin": "^2.29.0",
+    "@typescript-eslint/eslint-plugin": "^3.3.0",
     "@typescript-eslint/parser": "^2.29.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.11.0",
