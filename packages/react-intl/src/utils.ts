@@ -135,6 +135,14 @@ export function getNamedFormat<T extends keyof CustomFormats>(
   onError(new UnsupportedFormatterError(`No ${type} format named: ${name}`));
 }
 
+/**
+ * Takes a `formatXMLElementFn`, which takes a single React.Node argument, and
+ * returns a FormatXMLElementFn which takes any number of positional arguments.
+ * I.e. converts non-variadic FormatXMLElementFn to variadic. Variadic
+ * FormatXMLElementFn is needed for 'intl-messageformat' package, non-variadic
+ * simplifies API of 'react-intl' package.
+ * @param formatXMLElementFn
+ */
 export function unapplyFormatXMLElementFn(
   formatXMLElementFn: FormatXMLElementFn<React.ReactNode, React.ReactNode>
 ): (node: React.ReactNode) => React.ReactNode {
