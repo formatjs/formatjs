@@ -38,6 +38,12 @@
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
   },
+  "files": [
+    "dist",
+    "lib",
+    "polyfill.js",
+    "src"
+  ],
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "dependencies": {
     "@formatjs/intl-getcanonicallocales": "1.2.6",
