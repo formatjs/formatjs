@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@2.2.7...@formatjs/intl-pluralrules@2.2.8) (2020-06-23)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** fix [@[@to](https://github.com/to)StringTag] value to be Intl.PluralRules ([750ddf3](https://github.com/formatjs/formatjs/commit/750ddf3b421f6eac871035e5b1c32a5bc3520b69))
+
+
+
+
+
 ## [2.2.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@2.2.6...@formatjs/intl-pluralrules@2.2.7) (2020-06-20)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules

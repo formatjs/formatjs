@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@1.1.1...@formatjs/intl-datetimeformat@1.2.0) (2020-06-23)
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** generate rolluped d.ts ([c6c9b19](https://github.com/formatjs/formatjs/commit/c6c9b19c1f2703203f341c93df46f28175456a6e)), closes [#1739](https://github.com/formatjs/formatjs/issues/1739)
+
+
+
+
+
 ## [1.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@1.1.0...@formatjs/intl-datetimeformat@1.1.1) (2020-06-20)
 
 
