@@ -17,6 +17,7 @@ import {MessageFormatElement} from 'intl-messageformat-parser';
 import {NumberFormatOptions} from '@formatjs/intl-numberformat';
 import IntlListFormat, {IntlListFormatOptions} from '@formatjs/intl-listformat';
 import {DisplayNames, DisplayNamesOptions} from '@formatjs/intl-displaynames';
+import {DateTimeFormatOptions} from '@formatjs/intl-datetimeformat';
 import {
   MissingTranslationError,
   MessageFormatError,
@@ -54,7 +55,7 @@ export interface CustomFormatConfig {
 }
 
 export type FormatDateOptions = Exclude<
-  DateTimeFormatOptionsES2020,
+  DateTimeFormatOptions,
   'localeMatcher'
 > &
   CustomFormatConfig;
@@ -179,28 +180,4 @@ export interface MessageDescriptor {
   id?: string | number;
   description?: string | object;
   defaultMessage?: string;
-}
-
-export interface DateTimeFormatOptionsES2020
-  extends Intl.DateTimeFormatOptions {
-  hourCycle?: 'h11' | 'h12' | 'h23' | 'h24';
-  dateStyle?: 'full' | 'long' | 'medium' | 'short';
-  timeStyle?: 'full' | 'long' | 'medium' | 'short';
-  fractionalSecondDigits?: number;
-  calendar?:
-    | 'buddhist'
-    | 'chinese'
-    | 'coptic'
-    | 'ethiopia'
-    | 'ethiopic'
-    | 'gregory'
-    | 'hebrew'
-    | 'indian'
-    | 'islamic'
-    | 'iso8601'
-    | 'japanese'
-    | 'persian'
-    | 'roc';
-  dayPeriod?: 'narrow' | 'short' | 'long';
-  numberingSystem?: string;
 }

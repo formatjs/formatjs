@@ -3,6 +3,7 @@
   "version": "1.1.1",
   "description": "Intl.DateTimeFormat polyfill",
   "main": "dist/index.js",
+  "types": "lib/intl-datetimeformat.d.ts",
   "scripts": {
     "iana": "rimraf iana-data/* && ts-node ./scripts/iana --version 2020a",
     "zone": "ts-node scripts/zone --input iana-data/zone.tab --output src/zones.ts",
@@ -16,7 +17,7 @@
     "link-gen": "ts-node scripts/link --input iana-data/backward --output src/links.ts",
     "compile": "NODE_OPTIONS=--max-old-space-size=8192 tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local",
     "rollup": "NODE_OPTIONS=--max-old-space-size=8192 rollup -c rollup.config.js",
-    "build": "yarn process-zdump-polyfill && yarn process-zdump-golden-polyfill && yarn cldr && yarn compile && yarn rollup",
+    "build": "yarn process-zdump-polyfill && yarn process-zdump-golden-polyfill && yarn cldr && yarn compile && api-extractor run --local && yarn rollup",
     "test": "cross-env cross-env NODE_ENV=test jest",
     "cldr": "ts-node scripts/cldr",
     "test262": "cross-env ts-node tests/runner"

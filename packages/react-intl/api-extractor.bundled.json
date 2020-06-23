@@ -6,6 +6,7 @@
     "@formatjs/intl-displaynames",
     "intl-messageformat-parser",
     "@formatjs/intl-numberformat",
+    "@formatjs/intl-datetimeformat",
     "@formatjs/intl-utils",
     "intl-messageformat"
   ],

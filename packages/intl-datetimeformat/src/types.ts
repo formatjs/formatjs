@@ -54,7 +54,7 @@ export type TimeZoneNameData = Record<
   }
 >;
 
-interface EraData {
+export interface EraData {
   BC: string;
   AD: string;
 }

@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import withIntl from './injectIntl';
+import withIntl, {WithIntlProps} from './injectIntl';
 import {IntlShape, FormatPluralOptions} from '../types';
 
 interface Props extends FormatPluralOptions {
@@ -47,4 +47,6 @@ FormattedPlural.defaultProps = {
 
 FormattedPlural.displayName = 'FormattedPlural';
 
-export default withIntl(FormattedPlural);
+export default withIntl(FormattedPlural) as React.FC<WithIntlProps<Props>> & {
+  WrappedComponent: React.ComponentType<Props>;
+};

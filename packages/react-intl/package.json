@@ -137,6 +137,7 @@
     "@formatjs/intl-listformat": "^2.2.7",
     "@formatjs/intl-numberformat": "^4.2.7",
     "@formatjs/intl-relativetimeformat": "^5.2.7",
+    "@formatjs/intl-datetimeformat": "^1.1.1",
     "@formatjs/intl-utils": "^3.4.0",
     "@types/hoist-non-react-statics": "^3.3.1",
     "@types/invariant": "^2.2.31",

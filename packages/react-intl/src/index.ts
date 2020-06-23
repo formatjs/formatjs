@@ -19,6 +19,7 @@ import {CustomFormatConfig} from './types';
 import {NumberFormatOptions} from '@formatjs/intl-numberformat';
 import {IntlListFormatOptions} from '@formatjs/intl-listformat';
 import {DisplayNamesOptions} from '@formatjs/intl-displaynames/lib';
+import {DateTimeFormatOptions} from '@formatjs/intl-datetimeformat';
 export {
   default as injectIntl,
   Provider as RawIntlProvider,
@@ -30,13 +31,13 @@ export {default as useIntl} from './components/useIntl';
 export {default as IntlProvider, createIntl} from './components/provider';
 // IMPORTANT: Explicit here to prevent api-extractor from outputing `import('./types').CustomFormatConfig`
 export const FormattedDate: React.FC<
-  Intl.DateTimeFormatOptions &
+  DateTimeFormatOptions &
     CustomFormatConfig & {
       value: string | number | Date | undefined;
     }
 > = createFormattedComponent('formatDate');
 export const FormattedTime: React.FC<
-  Intl.DateTimeFormatOptions &
+  DateTimeFormatOptions &
     CustomFormatConfig & {
       value: string | number | Date | undefined;
     }
