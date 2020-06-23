@@ -21,11 +21,15 @@ import {names as numberingSystemNames} from './data/numbering-systems.json';
 import formatToParts from './format_to_parts';
 // eslint-disable-next-line import/no-cycle
 import getInternalSlots from './get_internal_slots';
-import {NumberFormatConstructor, NumberFormatOptions} from './types';
+import {
+  NumberFormatConstructor,
+  NumberFormatOptions,
+  NumberFormat as NumberFormatType,
+} from './types';
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
 
 // Merge declaration with the constructor defined below.
-export type NumberFormat = import('./types').NumberFormat;
+export type NumberFormat = NumberFormatType;
 
 const VALID_NUMBERING_SYSTEM_NAMES = new Set(numberingSystemNames);
 
@@ -627,7 +631,7 @@ try {
       configurable: true,
       enumerable: false,
       writable: false,
-      value: 'Object',
+      value: 'Intl.NumberFormat',
     });
   }
 
