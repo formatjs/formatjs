@@ -168,8 +168,7 @@
   ],
   "devDependencies": {
     "@formatjs/intl-pluralrules": "^2.2.9",
-    "@microsoft/api-documenter": "^7.7.18",
-    "@microsoft/api-extractor": "^7.7.13",
+    "@microsoft/api-documenter": "^7.8.14",
     "@types/benchmark": "^1.0.31",
     "@types/enzyme": "^3.10.5",
     "@types/jest": "^25.2.1",

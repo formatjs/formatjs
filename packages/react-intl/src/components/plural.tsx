@@ -47,6 +47,10 @@ FormattedPlural.defaultProps = {
 
 FormattedPlural.displayName = 'FormattedPlural';
 
-export default withIntl(FormattedPlural) as React.FC<WithIntlProps<Props>> & {
+// Explicitly annotate type here to workaround API extractor's inability to handle `import('./someModule')`
+// type annotations when rolling up DTS file.
+const FormattedPluralWithIntl: React.FC<WithIntlProps<Props>> & {
   WrappedComponent: React.ComponentType<Props>;
-};
+} = withIntl(FormattedPlural);
+
+export default FormattedPluralWithIntl;
