@@ -631,7 +631,7 @@ try {
       configurable: true,
       enumerable: false,
       writable: false,
-      value: 'Object',
+      value: 'Intl.NumberFormat',
     });
   }
 
