@@ -3,8 +3,9 @@ import {resolve} from 'path';
 import {cpus} from 'os';
 import {sync as globSync} from 'glob';
 
-if (process.version.startsWith('v10') || process.version.startsWith('v12')) {
-  console.log('Node 10/12 has native Intl.PluralRules');
+const version = parseInt(process.version.slice(1), 10);
+if (version > 10) {
+  console.log('Node 10+ has native Intl.PluralRules');
   process.exit(0);
 }
 
