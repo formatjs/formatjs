@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@1.2.1...@formatjs/intl-datetimeformat@1.2.2) (2020-06-23)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** add allowlist of files to package.json so yarn works ([778378c](https://github.com/formatjs/formatjs/commit/778378c0495e5bd0c74d265a294189777e31028e))
+
+
+
+
+
 ## [1.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@1.2.0...@formatjs/intl-datetimeformat@1.2.1) (2020-06-23)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat
