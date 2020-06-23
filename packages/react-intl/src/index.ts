@@ -15,7 +15,7 @@ import {
   createFormattedComponent,
   createFormattedDateTimePartsComponent,
 } from './components/createFormattedComponent';
-import {CustomFormatConfig} from './types';
+import {CustomFormatConfig, FormatDateOptions} from './types';
 import {NumberFormatOptions} from '@formatjs/intl-numberformat';
 import {IntlListFormatOptions} from '@formatjs/intl-listformat';
 import {DisplayNamesOptions} from '@formatjs/intl-displaynames/lib';
@@ -58,12 +58,19 @@ export const FormattedDisplayName: React.FC<
     value: string | number | object;
   }
 > = createFormattedComponent('formatDisplayName');
-export const FormattedDateParts = createFormattedDateTimePartsComponent(
-  'formatDate'
-);
-export const FormattedTimeParts = createFormattedDateTimePartsComponent(
-  'formatTime'
-);
+export const FormattedDateParts: React.FC<
+  FormatDateOptions & {
+    value: Parameters<Intl.DateTimeFormat['format']>[0] | string;
+    children(val: Intl.DateTimeFormatPart[]): React.ReactElement | null;
+  }
+> = createFormattedDateTimePartsComponent('formatDate');
+export const FormattedTimeParts: React.FC<
+  FormatDateOptions & {
+    value: Parameters<Intl.DateTimeFormat['format']>[0] | string;
+    children(val: Intl.DateTimeFormatPart[]): React.ReactElement | null;
+  }
+> = createFormattedDateTimePartsComponent('formatTime');
+
 export {FormattedNumberParts} from './components/createFormattedComponent';
 export {default as FormattedRelativeTime} from './components/relative';
 export {default as FormattedPlural} from './components/plural';
