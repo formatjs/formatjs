@@ -4,7 +4,7 @@ import {cpus} from 'os';
 import {sync as globSync} from 'glob';
 
 const version = parseInt(process.version.slice(1), 10);
-if (version > 10) {
+if (version >= 10) {
   console.log('Node 10+ has native Intl.PluralRules');
   process.exit(0);
 }
