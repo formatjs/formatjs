@@ -48,4 +48,4 @@ selectUnit(Date.now() - 50000); // { value: 1, unit: 'minute' }
 
 - From 2019/01/02 6am to 2019/01/01 11pm can also be `7 hours ago` or `yesterday`. Timezone further complicates the issue.
 
-The examples above have not even tackled the differences in non-Gregorian calendars. There is an issue opened upstream in the spec that potentially introduces a [`best fit` algorithm](https://github.com/tc39/proposal-intl-relative-time/issues/47). Therefore, we recommend that you implement your own version of `selectUnit` that matches your editorial expectation.
+The examples above have not even tackled the differences in non-Gregorian calendars. There is an issue opened upstream in the spec that potentially introduces a [`best fit` algorithm](https://github.com/tc39/proposal-intl-relative-time/issues/47). Therefore, we recommend that you implement your own version of `selectUnit` that matches your editorial expectation. This will be removed in future releases.
