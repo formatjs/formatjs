@@ -26,7 +26,7 @@ React Intl relies on these `Intl` APIs:
 If you need to support older browsers, we recommend you do the following:
 
 1. Polyfill `Intl.NumberFormat` with [`@formatjs/intl-numberformat`](polyfills/intl-numberformat.md).
-2. Polyfill `Intl.DateTimeFormat` with https://github.com/formatjs/date-time-format-timezone
+2. Polyfill `Intl.DateTimeFormat` with [`@formatjs/intl-datetimeformat`](polyfills/intl-datetimeformat.md)
 3. If you're supporting browsers that do not have [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](polyfills/intl-pluralrules.md) in your build.
 
 ```tsx

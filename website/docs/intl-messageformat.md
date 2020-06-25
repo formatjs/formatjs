@@ -88,7 +88,7 @@ The message syntax that this package uses is not proprietary, in fact it's a com
 This package assumes that the [`Intl`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) global object exists in the runtime. `Intl` is present in all modern browsers (IE11+) and Node (with full ICU). The `Intl` methods we rely on are:
 
 1. `Intl.NumberFormat` for number formatting (can be polyfilled using [@formatjs/intl-numberformat](./polyfills/intl-numberformat.md))
-2. `Intl.DateTimeFormat` for date time formatting (can be polyfilled using [Intl.js](https://github.com/andyearnshaw/Intl.js/))
+2. `Intl.DateTimeFormat` for date time formatting (can be polyfilled using [@formatjs/intl-datetimeformat](./polyfills/intl-datetimeformat.md))
 3. `Intl.PluralRules` for plural/ordinal formatting (can be polyfilled using [@formatjs/intl-pluralrules](./polyfills/intl-pluralrules.md))
 
 ### Loading Intl MessageFormat in a browser
