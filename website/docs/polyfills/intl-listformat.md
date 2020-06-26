@@ -34,10 +34,11 @@ To use this as a ponyfill:
 import IntlListFormat from '@formatjs/intl-listformat';
 ```
 
-By default, this library comes with `en` data. To load additional locale, you can include them on demand:
+To load locale data, you can include them on demand:
 
 ```js
 import '@formatjs/intl-listformat/polyfill';
+import '@formatjs/intl-listformat/dist/locale-data/en'; // Add locale data for en
 import '@formatjs/intl-listformat/dist/locale-data/de'; // Add locale data for de
 ```
 
