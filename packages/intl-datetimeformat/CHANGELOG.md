@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@1.3.1...@formatjs/intl-datetimeformat@1.3.2) (2020-06-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** trigger polyfill if chrome has the 71- bug ([a925df8](https://github.com/formatjs/formatjs/commit/a925df80b8de0b20b28d1947d43e8f7e618baec2))
+
+
+
+
+
 ## [1.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@1.3.0...@formatjs/intl-datetimeformat@1.3.1) (2020-06-26)
 
 
