@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@4.2.9...@formatjs/intl-numberformat@4.2.10) (2020-06-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** fix @[@to](https://github.com/to)StringTag to be spec compliant ([#1745](https://github.com/formatjs/formatjs/issues/1745)) ([58a4e28](https://github.com/formatjs/formatjs/commit/58a4e28ed4814e0dbb6fc5cc4bae255487440f08))
+* **react-intl:** fix d.ts rollup ([#1741](https://github.com/formatjs/formatjs/issues/1741)) ([cb95b4a](https://github.com/formatjs/formatjs/commit/cb95b4ac230f3597fc3937e50aa5dea0107727b0))
+
+
+
+
+
 ## [4.2.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@4.2.8...@formatjs/intl-numberformat@4.2.9) (2020-06-23)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

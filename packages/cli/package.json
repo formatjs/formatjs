@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/cli",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "description": "A CLI for formatjs.",
   "keywords": [
     "intl",
@@ -49,7 +49,7 @@
     "@types/babel__core": "^7.1.7",
     "@types/lodash": "^4.14.150",
     "babel-plugin-const-enum": "^1.0.1",
-    "babel-plugin-react-intl": "^7.5.23",
+    "babel-plugin-react-intl": "^7.5.24",
     "chalk": "^4.0.0",
     "commander": "5.1.0",
     "fs-extra": "^9.0.0",

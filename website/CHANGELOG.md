@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/formatjs/formatjs/compare/website@0.2.14...website@0.3.0) (2020-06-26)
+
+
+### Bug Fixes
+
+* **website:** clarify that Intl.ListFormat polyfill does not come w/ en by default ([fc0482f](https://github.com/formatjs/formatjs/commit/fc0482fdbe10e8166e33197c8bc90ad789ccbaef))
+* **website:** Fix Intl.DateTimeFormat link ([03fbcca](https://github.com/formatjs/formatjs/commit/03fbccabec5965cd681222e2187625751b9a5b9e))
+
+
+### Features
+
+* **intl-messageformat:** pass `ignoreTag` to parser ([386459b](https://github.com/formatjs/formatjs/commit/386459ba472734ff21ba19374e2700e52382cd22)), closes [#1755](https://github.com/formatjs/formatjs/issues/1755)
+
+
+
+
+
 ## [0.2.14](https://github.com/formatjs/formatjs/compare/website@0.2.13...website@0.2.14) (2020-06-23)
 
 **Note:** Version bump only for package website

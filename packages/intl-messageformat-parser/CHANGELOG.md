@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@5.1.6...intl-messageformat-parser@5.2.0) (2020-06-26)
+
+
+### Features
+
+* **intl-messageformat:** pass `ignoreTag` to parser ([386459b](https://github.com/formatjs/formatjs/commit/386459ba472734ff21ba19374e2700e52382cd22)), closes [#1755](https://github.com/formatjs/formatjs/issues/1755)
+
+
+
+
+
 ## [5.1.6](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@5.1.5...intl-messageformat-parser@5.1.6) (2020-06-23)
 
 **Note:** Version bump only for package intl-messageformat-parser
