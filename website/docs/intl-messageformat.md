@@ -123,8 +123,9 @@ To create a message to format, use the `IntlMessageFormat` constructor. The cons
 
 - **[formats]** - _{Object}_ - Optional object with user defined options for format styles.
 
-- **[opts]** - `{ formatters?: Formatters }`: Optional options.
+- **[opts]** - `{ formatters?: Formatters, ignoreTag?: boolean }`: Optional options.
   - `formatters`: Map containing memoized formatters for performance.
+  - `ignoreTag`: Whether to treat HTML/XML tags as string literal instead of parsing them as tag token. When this is `false` we only allow simple tags without any attributes
 
 ```tsx
 const msg = new IntlMessageFormat('My name is {name}.', 'en-US');

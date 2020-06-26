@@ -217,4 +217,11 @@ export interface Options {
    * Default is false
    */
   captureLocation?: boolean;
+  /**
+   * Whether to treat HTML/XML tags as string literal
+   * instead of parsing them as tag token.
+   * When this is false we only allow simple tags without
+   * any attributes
+   */
+  ignoreTag?: boolean;
 }

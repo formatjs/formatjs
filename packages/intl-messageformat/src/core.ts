@@ -55,6 +55,13 @@ function mergeConfigs(
 
 export interface Options {
   formatters?: Formatters;
+  /**
+   * Whether to treat HTML/XML tags as string literal
+   * instead of parsing them as tag token.
+   * When this is false we only allow simple tags without
+   * any attributes
+   */
+  ignoreTag?: boolean;
 }
 
 export function createDefaultFormatters(
@@ -101,6 +108,7 @@ export class IntlMessageFormat {
       // Parse string messages into an AST.
       this.ast = IntlMessageFormat.__parse(message, {
         normalizeHashtagInPlural: false,
+        ignoreTag: opts?.ignoreTag,
       });
     } else {
       this.ast = message;

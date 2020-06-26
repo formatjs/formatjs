@@ -37,7 +37,7 @@ IntlRelativeTimeFormat.__addLocaleData(
   require('@formatjs/intl-relativetimeformat/dist/locale-data/zh.json')
 );
 
-// locale-data for zh
+// locale-data for en
 IntlRelativeTimeFormat.__addLocaleData(
   require('@formatjs/intl-relativetimeformat/dist/locale-data/en.json')
 );
