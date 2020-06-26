@@ -445,7 +445,7 @@ function initializeDateTimeFormat(
  * @param required
  * @param defaults
  */
-function toDateTimeOptions(
+export function toDateTimeOptions(
   options?: DateTimeFormatOptions | null,
   required?: string,
   defaults?: string

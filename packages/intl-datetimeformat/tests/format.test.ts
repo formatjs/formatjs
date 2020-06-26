@@ -2,6 +2,11 @@ import {DateTimeFormat} from '../src';
 import * as ko from '../dist/locale-data/ko.json';
 import * as en from '../dist/locale-data/en.json';
 import allData from '../src/data';
+import {
+  toLocaleString,
+  toLocaleDateString,
+  toLocaleTimeString,
+} from '../src/to_locale_string';
 
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, ko);
@@ -221,5 +226,38 @@ describe('format', function () {
     it(`en ${JSON.stringify(options)}`, function () {
       expect(new DateTimeFormat('en', options).format(TS)).toBe(en);
     });
+  });
+});
+
+describe('toLocaleString', function () {
+  tests.forEach(({options, en, ko}) => {
+    it(`ko ${JSON.stringify(options)}`, function () {
+      expect(toLocaleString(new Date(TS), 'ko', options)).toBe(ko);
+    });
+    it(`en ${JSON.stringify(options)}`, function () {
+      expect(toLocaleString(new Date(TS), 'en', options)).toBe(en);
+    });
+  });
+});
+
+xdescribe('toLocaleDateString', function () {
+  it('ko', function () {
+    expect(toLocaleDateString(new Date(TS), 'ko')).toBe('2020. 6. 16.');
+  });
+  it('en', function () {
+    expect(toLocaleDateString(new Date(TS), 'en')).toBe('6/16/2020');
+  });
+});
+
+describe('toLocaleTimeString', function () {
+  it('ko', function () {
+    expect(toLocaleTimeString(new Date(TS), 'ko', {timeZone: 'UTC'})).toBe(
+      'AM 4:48:20'
+    );
+  });
+  it('en', function () {
+    expect(toLocaleTimeString(new Date(TS), 'en', {timeZone: 'UTC'})).toBe(
+      '4:48:20 AM'
+    );
   });
 });

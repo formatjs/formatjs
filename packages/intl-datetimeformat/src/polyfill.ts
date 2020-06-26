@@ -1,7 +1,11 @@
 import {DateTimeFormat} from '.';
 import {defineProperty} from '@formatjs/intl-utils';
 import {DateTimeFormatOptions} from './types';
-import {toLocaleString as _toLocaleString} from './to_locale_string';
+import {
+  toLocaleString as _toLocaleString,
+  toLocaleDateString as _toLocaleDateString,
+  toLocaleTimeString as _toLocaleTimeString,
+} from './to_locale_string';
 
 function supportsDateStyle() {
   return !!(new Intl.DateTimeFormat(undefined, {
@@ -21,6 +25,22 @@ if (
       options?: DateTimeFormatOptions
     ) {
       return _toLocaleString(this, locales, options);
+    },
+  });
+  // defineProperty(Date.prototype, 'toLocaleDateString', {
+  //   value: function toLocaleDateString(
+  //     locales?: string | string[],
+  //     options?: DateTimeFormatOptions
+  //   ) {
+  //     return _toLocaleDateString(this, locales, options);
+  //   },
+  // });
+  defineProperty(Date.prototype, 'toLocaleTimeString', {
+    value: function toLocaleTimeString(
+      locales?: string | string[],
+      options?: DateTimeFormatOptions
+    ) {
+      return _toLocaleTimeString(this, locales, options);
     },
   });
 }
