@@ -2,16 +2,6 @@ import {spawnSync} from 'child_process';
 import {resolve} from 'path';
 import {cpus} from 'os';
 
-if (!process.version.startsWith('v10')) {
-  process.exit(0);
-  console.log(
-    `Only run on Node 10 since:
-- Node 8 does not have Intl.PluralRules and polyfills are not test262-compliant.
-- Node 12+ has native Intl.RelativeTimeFormat.
-`
-  );
-}
-
 interface TestResult {
   file: string;
   attrs: {

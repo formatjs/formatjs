@@ -3,7 +3,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import testRollupConfig from '../../rollup.config';
 import commonjs from 'rollup-plugin-commonjs';
 import json from '@rollup/plugin-json';
-const jsonConfig = json()
+const jsonConfig = json();
 const commonjsConfig = commonjs({
   namedExports: {
     lodash: ['pickBy', 'isEmpty', 'isEqual', 'fromPairs'],
@@ -37,37 +37,6 @@ export default [
     plugins: [resolveConfig, commonjsConfig, jsonConfig, uglifyConfig],
   },
   {
-    input: './lib/locales.js',
-    output: {
-      sourcemap: true,
-      file: 'dist/umd/intl-relativetimeformat-with-locales.js',
-      format: 'umd',
-      exports: 'named',
-      name: 'IntlRelativeTimeFormat',
-    },
-    plugins: [resolveConfig, commonjsConfig, jsonConfig],
-  },
-  {
-    input: './lib/locales.js',
-    output: {
-      sourcemap: true,
-      file: 'dist/umd/intl-relativetimeformat-with-locales.min.js',
-      format: 'umd',
-      exports: 'named',
-      name: 'IntlRelativeTimeFormat',
-    },
-    plugins: [resolveConfig, commonjsConfig, jsonConfig, uglifyConfig],
-  },
-  {
-    input: './lib/polyfill-locales.js',
-    output: {
-      sourcemap: true,
-      file: 'dist/polyfill-with-locales.js',
-      format: 'iife',
-    },
-    plugins: [resolveConfig, commonjsConfig, jsonConfig],
-  },
-  {
     input: './lib/polyfill.js',
     output: {
       sourcemap: true,
@@ -77,7 +46,7 @@ export default [
     plugins: [resolveConfig, commonjsConfig, jsonConfig],
   },
   {
-    input: './dist-es6/polyfill-locales.js',
+    input: './dist-es6/locales.js',
     output: {
       sourcemap: true,
       file: 'dist/polyfill-with-locales-for-test262.js',
