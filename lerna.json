@@ -5,7 +5,7 @@
     "version": {
       "conventionalCommits": true,
       "createRelease": "github",
-      "private": false
+      "noPrivate": true
     },
     "run": {
       "stream": true
