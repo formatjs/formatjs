@@ -59,17 +59,7 @@ export default [
     plugins: [resolveConfig, commonjsConfig, jsonConfig],
   },
   {
-    input: './dist-es6/polyfill-locales.js',
-    output: {
-      sourcemap: true,
-      file: 'dist/umd/polyfill-with-locales.js',
-      format: 'umd',
-      name: 'IntlDateTimeFormat',
-    },
-    plugins: [resolveConfig, commonjsConfig, jsonConfig],
-  },
-  {
-    input: './dist-es6/polyfill-locales.js',
+    input: './dist-es6/test262-main.js',
     output: {
       sourcemap: true,
       file: 'dist/polyfill-with-locales-for-test262.min.js',
