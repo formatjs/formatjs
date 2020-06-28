@@ -20,6 +20,7 @@ SRC_DEPS = [
 
 ts_project(
     name="lib",
+    package_name="@formatjs/%s" % PACKAGE_NAME,
     tsconfig="tsconfig.json",
     srcs=SRCS,
     extends=["//:tsconfig.json"],

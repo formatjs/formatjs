@@ -1,16 +1,17 @@
 diff --git a/node_modules/@bazel/typescript/internal/ts_project.bzl b/node_modules/@bazel/typescript/internal/ts_project.bzl
-index c0ccc81..29a3220 100755
+index c0ccc81..5eee3ac 100755
 --- a/node_modules/@bazel/typescript/internal/ts_project.bzl
 +++ b/node_modules/@bazel/typescript/internal/ts_project.bzl
-@@ -1,15 +1,19 @@
+@@ -1,6 +1,7 @@
  "ts_project rule"
  
- load("@build_bazel_rules_nodejs//:providers.bzl", "DeclarationInfo", "NpmPackageInfo", "declaration_info", "js_module_info", "run_node")
--
+-load("@build_bazel_rules_nodejs//:providers.bzl", "DeclarationInfo", "NpmPackageInfo", "declaration_info", "js_module_info", "run_node")
++load("@build_bazel_rules_nodejs//:providers.bzl", "DeclarationInfo", "LinkablePackageInfo", "NpmPackageInfo", "declaration_info", "js_module_info", "run_node")
 +load("@build_bazel_rules_nodejs//internal/linker:link_node_modules.bzl", "module_mappings_aspect")
+ 
  _DEFAULT_TSC = (
      
-     "//typescript/bin:tsc"
+@@ -8,8 +9,12 @@ _DEFAULT_TSC = (
  )
  
  _ATTRS = {
@@ -24,7 +25,7 @@ index c0ccc81..29a3220 100755
      "extends": attr.label_list(allow_files = [".json"]),
      "outdir": attr.string(),
      # NB: no restriction on extensions here, because tsc sometimes adds type-check support
-@@ -142,6 +146,14 @@ def _ts_project_impl(ctx):
+@@ -142,6 +147,14 @@ def _ts_project_impl(ctx):
      if len(typings_outputs) or len(ctx.attr.deps):
          providers.append(declaration_info(depset(typings_outputs), ctx.attr.deps))
      
@@ -39,3 +40,11 @@ index c0ccc81..29a3220 100755
      return providers
  
  ts_project = rule(
+@@ -354,6 +367,7 @@ def ts_project_macro(
+             Instructs Bazel to expect a `.tsbuildinfo` output.
+         emit_declaration_only: if the `emitDeclarationOnly` bit is set in the tsconfig.
+             Instructs Bazel *not* to expect `.js` or `.js.map` outputs for `.ts` sources.
++        **kwargs: undocumented additional attributes to ts_project rule wrapped by this macro
+     """
+ 
+     if srcs == None:
