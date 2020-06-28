@@ -1,8 +1,0 @@
-lib
-tests/*.js*
-!tests/tsconfig.json
-.tsbuildinfo
-core.js
-core.d.ts
-!tests/setup.js
-.rpt2_cache
