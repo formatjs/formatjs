@@ -1,4 +1,4 @@
-import {toRawPrecision} from '../src';
+import {toRawPrecision} from '../';
 
 it('toRawPrecision(9.99, 1, 2)', () => {
   expect(toRawPrecision(9.99, 1, 2)).toEqual({

@@ -1,0 +1,98 @@
+diff --git a/node_modules/@bazel/typescript/internal/ts_project.bzl b/node_modules/@bazel/typescript/internal/ts_project.bzl
+index c0ccc81..9b9e79e 100755
+--- a/node_modules/@bazel/typescript/internal/ts_project.bzl
++++ b/node_modules/@bazel/typescript/internal/ts_project.bzl
+@@ -1,6 +1,7 @@
+ "ts_project rule"
+ 
+-load("@build_bazel_rules_nodejs//:providers.bzl", "DeclarationInfo", "NpmPackageInfo", "declaration_info", "js_module_info", "run_node")
++load("@build_bazel_rules_nodejs//:providers.bzl", "DeclarationInfo", "LinkablePackageInfo", "NpmPackageInfo", "declaration_info", "js_module_info", "run_node")
++load("@build_bazel_rules_nodejs//internal/linker:link_node_modules.bzl", "module_mappings_aspect")
+ 
+ _DEFAULT_TSC = (
+     
+@@ -8,8 +9,12 @@ _DEFAULT_TSC = (
+ )
+ 
+ _ATTRS = {
++    "package_name": attr.string(),
+     "args": attr.string_list(),
+-    "deps": attr.label_list(providers = [DeclarationInfo]),
++    "deps": attr.label_list(
++        aspects = [module_mappings_aspect],
++        providers = [DeclarationInfo],
++    ),
+     "extends": attr.label_list(allow_files = [".json"]),
+     "outdir": attr.string(),
+     # NB: no restriction on extensions here, because tsc sometimes adds type-check support
+@@ -26,6 +31,7 @@ _ATTRS = {
+ # telling us which settings are enabled in the tsconfig for this project.
+ _OUTPUTS = {
+     "buildinfo_out": attr.output(),
++    "json_outs": attr.output_list(),
+     "js_outs": attr.output_list(),
+     "map_outs": attr.output_list(),
+     "typing_maps_outs": attr.output_list(),
+@@ -94,10 +100,11 @@ def _ts_project_impl(ctx):
+     inputs = ctx.files.srcs + depset(transitive = deps_depsets).to_list() + [ctx.file.tsconfig]
+     if ctx.attr.extends:
+         inputs.extend(ctx.files.extends)
+-    outputs = ctx.outputs.js_outs + ctx.outputs.map_outs + ctx.outputs.typings_outs + ctx.outputs.typing_maps_outs
++    outputs = ctx.outputs.json_outs + ctx.outputs.js_outs + ctx.outputs.map_outs + ctx.outputs.typings_outs + ctx.outputs.typing_maps_outs
+     if ctx.outputs.buildinfo_out:
+         outputs.append(ctx.outputs.buildinfo_out)
+-    runtime_outputs = depset(ctx.outputs.js_outs + ctx.outputs.map_outs)
++    
++    runtime_outputs = depset(ctx.outputs.js_outs + ctx.outputs.map_outs + ctx.outputs.typings_outs + ctx.outputs.json_outs)
+     typings_outputs = ctx.outputs.typings_outs + [s for s in ctx.files.srcs if s.path.endswith(".d.ts")]
+     
+     if len(outputs) > 0:
+@@ -122,6 +129,7 @@ def _ts_project_impl(ctx):
+         DefaultInfo(
+             files = runtime_outputs,
+             runfiles = ctx.runfiles(
++                files = ctx.outputs.js_outs + ctx.outputs.map_outs + ctx.outputs.typings_outs,
+                 transitive_files = runtime_outputs,
+                 collect_default = True,
+             ),
+@@ -141,6 +149,15 @@ def _ts_project_impl(ctx):
+     # Improves error messaging if a ts_project needs declaration = True
+     if len(typings_outputs) or len(ctx.attr.deps):
+         providers.append(declaration_info(depset(typings_outputs), ctx.attr.deps))
++        providers.append(OutputGroupInfo(type_defs = depset(typings_outputs)))
++
++    if ctx.attr.package_name:
++        path = "/".join([p for p in [ctx.bin_dir.path, ctx.label.workspace_root, ctx.label.package] if p])
++        providers.append(LinkablePackageInfo(
++            package_name = ctx.attr.package_name,
++            path = path,
++            files = depset(typings_outputs, transitive = [runtime_outputs]),
++        ))
+ 
+     return providers
+ 
+@@ -194,7 +211,7 @@ validate_options = rule(
+ )
+ 
+ def _out_paths(srcs, outdir, ext):
+-    return [_join(outdir, f[:f.rindex(".")] + ext) for f in srcs if not f.endswith(".d.ts")]
++    return [_join(outdir, f[:f.rindex(".")] + ext) for f in srcs if not f.endswith(".d.ts") and not f.endswith(".json")]
+ 
+ def ts_project_macro(
+         name = "tsconfig",
+@@ -354,6 +371,7 @@ def ts_project_macro(
+             Instructs Bazel to expect a `.tsbuildinfo` output.
+         emit_declaration_only: if the `emitDeclarationOnly` bit is set in the tsconfig.
+             Instructs Bazel *not* to expect `.js` or `.js.map` outputs for `.ts` sources.
++        **kwargs: undocumented additional attributes to ts_project rule wrapped by this macro
+     """
+ 
+     if srcs == None:
+@@ -387,6 +405,7 @@ def ts_project_macro(
+         tsconfig = tsconfig,
+         extends = extends,
+         outdir = outdir,
++        json_outs = [_join(outdir, f) for f in srcs if f.endswith(".json")] if outdir and not emit_declaration_only else [], 
+         js_outs = _out_paths(srcs, outdir, ".js") if not emit_declaration_only else [],
+         map_outs = _out_paths(srcs, outdir, ".js.map") if source_map and not emit_declaration_only else [],
+         typings_outs = _out_paths(srcs, outdir, ".d.ts") if declaration or composite else [],

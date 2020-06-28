@@ -1,4 +1,4 @@
-import {getCanonicalLocales} from '../src';
+import {getCanonicalLocales} from '../';
 
 describe('Intl.getCanonicalLocales', () => {
   it('regular', function () {

@@ -15,7 +15,7 @@
   "author": "Long Ho <holevietlong@gmail.com>",
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "index.js",
   "module": "lib/index.js",
   "types": "lib/intl-getcanonicallocales.d.ts",
   "files": [

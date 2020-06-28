@@ -1,0 +1,14 @@
+diff --git a/node_modules/test262-harness/bin/run.js b/node_modules/test262-harness/bin/run.js
+index f3782d1..425d2e0 100755
+--- a/node_modules/test262-harness/bin/run.js
++++ b/node_modules/test262-harness/bin/run.js
+@@ -178,6 +178,9 @@ const results = zip(pool, tests).pipe(
+ );
+ 
+ const emitter = new ResultsEmitter(results);
++emitter.on('fail', function () {
++  process.exitCode = 1
++})
+ reporter(emitter, reporterOpts);
+ 
+ function printVersion() {

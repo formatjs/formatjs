@@ -1,6 +1,6 @@
-import {parseUnicodeLocaleId} from './parser';
-import {emitUnicodeLocaleId} from './emitter';
-import {canonicalizeUnicodeLocaleId} from './canonicalizer';
+import {parseUnicodeLocaleId} from './src/parser';
+import {emitUnicodeLocaleId} from './src/emitter';
+import {canonicalizeUnicodeLocaleId} from './src/canonicalizer';
 
 function canonicalizeLocaleList(locales?: string[] | string): string[] {
   if (locales === undefined) {
@@ -32,6 +32,6 @@ export {
   isUnicodeRegionSubtag,
   isUnicodeScriptSubtag,
   isUnicodeLanguageSubtag,
-} from './parser';
-export * from './types';
-export * from './emitter';
+} from './src/parser';
+export * from './src/types';
+export * from './src/emitter';

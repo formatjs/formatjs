@@ -3,6 +3,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import testRollupConfig from '../../rollup.config';
 import commonjs from 'rollup-plugin-commonjs';
 import json from '@rollup/plugin-json';
+import typescript from 'rollup-plugin-typescript2';
 const jsonConfig = json();
 const commonjsConfig = commonjs({
   namedExports: {
@@ -14,28 +15,6 @@ const resolveConfig = resolve({
 });
 const uglifyConfig = uglify();
 export default [
-  {
-    input: './lib/index.js',
-    output: {
-      sourcemap: true,
-      file: 'dist/umd/intl-pluralrules.js',
-      format: 'umd',
-      exports: 'named',
-      name: 'IntlPluralRules',
-    },
-    plugins: [resolveConfig, commonjsConfig, jsonConfig],
-  },
-  {
-    input: './lib/index.js',
-    output: {
-      sourcemap: true,
-      file: 'dist/umd/intl-pluralrules.min.js',
-      format: 'umd',
-      exports: 'named',
-      name: 'IntlPluralRules',
-    },
-    plugins: [resolveConfig, commonjsConfig, jsonConfig, uglifyConfig],
-  },
   {
     input: './lib/polyfill.js',
     output: {
@@ -54,7 +33,23 @@ export default [
       exports: 'named',
       name: 'IntlPluralRules',
     },
-    plugins: [resolveConfig, commonjsConfig, jsonConfig],
+    plugins: [
+      resolveConfig,
+      commonjsConfig,
+      jsonConfig,
+      typescript({
+        // This is meant to be import and used in sub-packages, where a tsconfig.esm.json
+        // is assumed to exist.
+        tsconfig: './tsconfig.es6.json',
+        tsconfigDefaults: {
+          compilerOptions: {
+            declaration: false,
+            declarationMap: false,
+          },
+        },
+        check: false,
+      }),
+    ],
   },
   ...testRollupConfig,
 ];

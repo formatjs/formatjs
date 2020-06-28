@@ -1,0 +1,51 @@
+load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin")
+# Add rules here to build your software
+# See https://docs.bazel.build/versions/master/build-ref.html#BUILD_files
+
+# Allow any ts_library rules in this workspace to reference the config
+# Note: if you move the tsconfig.json file to a subdirectory, you can add an alias() here instead
+#   so that ts_library rules still use it by default.
+#   See https://www.npmjs.com/package/@bazel/typescript#installation
+exports_files(
+    [
+        "tsconfig.json",
+        "tsconfig.esm.json",
+        "tsconfig.es6.json",
+        "api-extractor.json",
+        "rollup.config.js",
+        "karma.conf.js",
+        "karma.conf-ci.js",
+    ],
+    visibility = ["//:__subpackages__"],
+)
+
+copy_to_bin(
+    name = "setup-api-extractor",
+    srcs = [
+        "api-extractor.json",
+        "tsconfig.json",
+    ],
+    visibility = ["//:__subpackages__"],
+)
+
+PLURALRULES_TESTS = glob(
+    ["test262/test/intl402/PluralRules/**/*.js"],
+    exclude = ["**/proto-from-ctor-realm.js"],
+)
+
+FILES = glob([
+    "test262/**/*.js",
+    "test262/**/*.json",
+]) + ["test262/README.md"]
+
+filegroup(
+    name = "test262-pluralrules",
+    srcs = PLURALRULES_TESTS,
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "test262-all",
+    srcs = FILES,
+    visibility = ["//visibility:public"],
+)

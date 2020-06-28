@@ -1,4 +1,4 @@
-import {toRawFixed} from '../src';
+import {toRawFixed} from '../';
 
 test('toRawFixed(9.99, 0, 1)', () => {
   expect(toRawFixed(9.99, 0, 1)).toEqual({

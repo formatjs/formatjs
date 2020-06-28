@@ -1,4 +1,4 @@
-import {spawnSync} from 'child_process';
+import * as minimist from 'minimist';
 import {resolve} from 'path';
 interface TestResult {
   file: string;
@@ -16,17 +16,10 @@ interface TestResult {
   };
 }
 
-function main(argv: string[]) {
-  console.log(`Running "test262-harness ${argv.join(' ')}"`);
-  console.log(process.cwd());
-  console.log(__dirname);
-
-  const result = spawnSync('test262-harness', argv, {
-    env: process.env,
-    encoding: 'utf-8',
-  });
-
-  const json: TestResult[] = JSON.parse(result.stdout);
+function main(args: minimist.ParsedArgs) {
+  const {result} = args;
+  console.log(resolve(result));
+  const json: TestResult[] = require(resolve(result));
   if (!json) {
     console.error(result.stderr, result.error);
   }
@@ -55,5 +48,5 @@ function main(argv: string[]) {
 }
 
 if (require.main === module) {
-  main(process.argv.slice(2));
+  main(minimist(process.argv));
 }

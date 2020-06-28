@@ -1,5 +1,5 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
-import {Locale} from '../src';
+import {Locale} from '../';
 const testDataMinimal: Record<string, string> = {
   // Undefined primary language.
   // und: 'en',

@@ -1,4 +1,4 @@
-export {selectUnit} from './diff';
+export {selectUnit} from './src/diff';
 export {
   defaultNumberOption,
   getInternalSlot,
@@ -23,20 +23,20 @@ export {
   hasOwnProperty,
   isWellFormedUnitIdentifier,
   defineProperty,
-} from './polyfill-utils';
+} from './src/polyfill-utils';
 export {
   createResolveLocale,
   getLocaleHierarchy,
   supportedLocales,
   unpackData,
   isMissingLocaleDataError,
-} from './resolve-locale';
-export * from './units';
-export * from './relative-time-types';
-export * from './list-types';
-export * from './plural-rules-types';
-export * from './number-types';
-export * from './displaynames-types';
-export * from './units';
-export {invariant} from './invariant';
-export {LocaleData} from './types';
+} from './src/resolve-locale';
+export * from './src/units';
+export * from './src/relative-time-types';
+export * from './src/list-types';
+export * from './src/plural-rules-types';
+export * from './src/number-types';
+export * from './src/displaynames-types';
+export * from './src/units';
+export {invariant} from './src/invariant';
+export {LocaleData} from './src/types';

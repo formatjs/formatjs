@@ -1,5 +1,5 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
-import {Locale} from '../src';
+import {Locale} from '../';
 
 describe('intl-locale', () => {
   it('toString', function () {

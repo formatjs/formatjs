@@ -37,7 +37,8 @@
     "ts-jest": "^25.4.0"
   },
   "dependencies": {
-    "@formatjs/intl-utils": "^3.6.0"
+    "@formatjs/intl-utils": "^3.6.0",
+    "@formatjs/intl-getcanonicallocales": "^1.2.8"
   },
   "scripts": {
     "build": "yarn run cldr && yarn run compile",

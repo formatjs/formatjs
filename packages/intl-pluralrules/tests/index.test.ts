@@ -1,7 +1,8 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
-import {PluralRules} from '../src';
+console.log('----', __dirname);
+import {PluralRules} from '../';
 // @ts-ignore
-import * as en from './locale-data/en.js';
+import * as en from '../tests-locale-data/en.js';
 PluralRules.__addLocaleData(en.default || en);
 
 describe('PluralRules', function () {

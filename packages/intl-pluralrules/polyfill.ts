@@ -1,4 +1,4 @@
-import {PluralRules} from './core';
+import {PluralRules} from './';
 
 if (
   !('PluralRules' in Intl) ||

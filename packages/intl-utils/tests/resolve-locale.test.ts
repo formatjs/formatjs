@@ -1,4 +1,4 @@
-import {getLocaleHierarchy, unpackData} from '../src';
+import {getLocaleHierarchy, unpackData} from '../';
 
 describe('resolve-locale', function () {
   it('should handle zh-TW', function () {

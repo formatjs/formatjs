@@ -19,14 +19,13 @@
     "url": "git@github.com:formatjs/formatjs.git"
   },
   "sideEffects": false,
-  "main": "dist/index.js",
+  "main": "index.js",
   "module": "lib/index.js",
-  "module:es6": "dist-es6/index.js",
-  "types": "dist/index.d.ts",
+  "types": "index.d.ts",
   "files": [
-    "dist",
     "lib",
-    "src"
+    "src",
+    "*.js"
   ],
   "scripts": {
     "clean": "rimraf dist dist-es6 lib *.tsbuildinfo",
