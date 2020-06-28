@@ -42,8 +42,8 @@
     "ts-jest": "^25.4.0"
   },
   "scripts": {
-    "cldr": "ts-node scripts/cldr",
-    "build": "yarn run cldr && yarn run compile && yarn run rollup",
+    "cldr": "ts-node scripts/cldr --outDir dist/locale-data --test262MainFile dist-es6/test262-main.js --polyfillLocalesOutFile polyfill-locales.js",
+    "build": "yarn cldr && yarn compile && yarn rollup",
     "clean": "rimraf dist dist-es6 lib *.tsbuildinfo",
     "jest": "cross-env cross-env NODE_ENV=test jest",
     "test262": "cross-env ts-node tests/runner",
