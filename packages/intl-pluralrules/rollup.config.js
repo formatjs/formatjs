@@ -3,7 +3,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import testRollupConfig from '../../rollup.config';
 import commonjs from 'rollup-plugin-commonjs';
 import json from '@rollup/plugin-json';
-const jsonConfig = json()
+const jsonConfig = json();
 const commonjsConfig = commonjs({
   namedExports: {
     lodash: ['pickBy', 'isEmpty', 'isEqual', 'fromPairs'],
@@ -46,7 +46,7 @@ export default [
     plugins: [resolveConfig, commonjsConfig, jsonConfig],
   },
   {
-    input: './dist-es6/polyfill-locales.js',
+    input: './dist-es6/locales.js',
     output: {
       sourcemap: true,
       file: 'dist/umd/polyfill-with-locales.js',
@@ -55,7 +55,7 @@ export default [
     plugins: [resolveConfig, commonjsConfig, jsonConfig],
   },
   {
-    input: './dist-es6/polyfill-locales.js',
+    input: './dist-es6/locales.js',
     output: {
       sourcemap: true,
       file: 'dist/polyfill-with-locales-for-test262.min.js',

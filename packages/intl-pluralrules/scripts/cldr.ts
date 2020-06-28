@@ -1,8 +1,10 @@
-import {resolve} from 'path';
+import {join} from 'path';
 import {outputFileSync} from 'fs-extra';
 import * as serialize from 'serialize-javascript';
 import {PluralRulesLocaleData} from '@formatjs/intl-utils';
 import * as plurals from 'cldr-core/supplemental/plurals.json';
+import * as minimist from 'minimist';
+
 const Compiler = require('make-plural-compiler');
 Compiler.load(
   require('cldr-core/supplemental/plurals.json'),
@@ -29,28 +31,34 @@ languages.forEach(lang => {
     },
     availableLocales: [lang],
   };
-  outputFileSync(
-    resolve(__dirname, `../dist/locale-data/${lang}.js`),
-    `/* @generated */
+});
+
+function main(args: minimist.ParsedArgs) {
+  const {outDir, testDataDir, polyfillLocalesOutFile} = args;
+
+  languages.forEach(lang => {
+    outputFileSync(
+      join(outDir, `${lang}.js`),
+      `/* @generated */
 // prettier-ignore
 if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
   Intl.PluralRules.__addLocaleData(${serialize(allData[lang])})
 }
 `
-  );
-  outputFileSync(
-    resolve(__dirname, `../dist/locale-data/${lang}.data.js`),
-    `/* @generated */
+    );
+    outputFileSync(
+      join(testDataDir, `${lang}.js`),
+      `/* @generated */
 // prettier-ignore
 module.exports = ${serialize(allData[lang])}
 `
-  );
-});
+    );
+  });
 
-// Aggregate all into ../polyfill-locales.js
-outputFileSync(
-  resolve(__dirname, '../polyfill-locales.js'),
-  `/* @generated */
+  // Aggregate all into ../polyfill-locales.js
+  outputFileSync(
+    polyfillLocalesOutFile,
+    `/* @generated */
 // prettier-ignore
 require('./polyfill')
 if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
@@ -61,19 +69,8 @@ ${Object.keys(allData)
   )
 }
 `
-);
-
-// For test262
-outputFileSync(
-  resolve(__dirname, '../dist-es6/polyfill-locales.js'),
-  `
-import './polyfill';
-if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
-  Intl.PluralRules.__addLocaleData(
-${Object.keys(allData)
-  .map(lang => serialize(allData[lang]))
-  .join(',\n')}
-  )
+  );
 }
-`
-);
+if (require.main === module) {
+  main(minimist(process.argv));
+}
