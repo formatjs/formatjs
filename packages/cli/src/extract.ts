@@ -6,7 +6,7 @@ import {
 import * as babel from '@babel/core';
 import {warn, getStdinAsString} from './console_utils';
 import {outputJSONSync} from 'fs-extra';
-import {interpolateName} from '@formatjs/intl-utils/dist/interpolate-name';
+import {interpolateName} from '@formatjs/ts-transformer';
 import {IOptions as GlobOptions} from 'glob';
 
 export type ExtractCLIOptions = Omit<ExtractOptions, 'overrideIdFn'> & {

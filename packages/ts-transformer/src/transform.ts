@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 import {MessageDescriptor} from './types';
-import {interpolateName} from '@formatjs/intl-utils/dist/interpolate-name';
+import {interpolateName} from './interpolate-name';
 
 export type Extractor = (filePath: string, msgs: MessageDescriptor[]) => void;
 
