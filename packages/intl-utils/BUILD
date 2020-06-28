@@ -2,7 +2,7 @@ load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("//tools:jest.bzl", "jest_test")
 
-PACKAGE_NAME = "ts-transformer"
+PACKAGE_NAME = "intl-utils"
 
 pkg_npm(
     name = PACKAGE_NAME,
@@ -10,11 +10,9 @@ pkg_npm(
     deps = [":lib"],
 )
 
-SRCS = glob(["src/*.ts"])
+SRCS = glob(["src/*.ts"]) + ['index.ts']
 
 SRC_DEPS = [
-    "@npm//typescript",
-    "@npm//@types/node",
 ]
 
 ts_project(
@@ -24,7 +22,6 @@ ts_project(
     declaration = True,
     declaration_map = True,
     extends = ["//:tsconfig.json"],
-    outdir = "dist",
     source_map = True,
     tsconfig = "tsconfig.json",
     visibility = ["//visibility:public"],

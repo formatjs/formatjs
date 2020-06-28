@@ -1,8 +1,8 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "npm_package_bin", "pkg_npm")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("//tools:jest.bzl", "jest_test")
 
-PACKAGE_NAME = "ts-transformer"
+PACKAGE_NAME = "intl-getcanonicallocales"
 
 pkg_npm(
     name = PACKAGE_NAME,
@@ -10,10 +10,10 @@ pkg_npm(
     deps = [":lib"],
 )
 
-SRCS = glob(["src/*.ts"])
+SRCS = glob(["src/*.ts"]) + ['index.ts']
 
 SRC_DEPS = [
-    "@npm//typescript",
+    "@npm//cldr-core",
     "@npm//@types/node",
 ]
 
@@ -24,7 +24,6 @@ ts_project(
     declaration = True,
     declaration_map = True,
     extends = ["//:tsconfig.json"],
-    outdir = "dist",
     source_map = True,
     tsconfig = "tsconfig.json",
     visibility = ["//visibility:public"],
@@ -54,4 +53,31 @@ jest_test(
         "@npm//ts-jest",
         "@npm//@types/jest",
     ] + SRC_DEPS,
+)
+
+npm_package_bin(
+    name = "gen_aliases",
+    outs = ["tmp/aliases.ts"],
+    args = [
+        "$(execpath scripts/aliases.ts)",
+        "--out",
+        "$@",
+    ],
+    data = [
+        "scripts/aliases.ts",
+        "//:tsconfig.json",
+        "@npm//@types/fs-extra",
+        "@npm//@types/minimist",
+        "@npm//@types/node",
+        "@npm//cldr-core",
+        "@npm//fs-extra",
+        "@npm//minimist",
+    ],
+    package = "ts-node",
+)
+
+generated_file_test(
+    name = "aliases",
+    src = "src/aliases.ts",
+    generated = ":gen_aliases",
 )

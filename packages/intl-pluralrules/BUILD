@@ -1,8 +1,8 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "npm_package_bin", "pkg_npm")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("//tools:jest.bzl", "jest_test")
 
-PACKAGE_NAME = "ts-transformer"
+PACKAGE_NAME = "intl-pluralrules"
 
 pkg_npm(
     name = PACKAGE_NAME,
@@ -13,8 +13,10 @@ pkg_npm(
 SRCS = glob(["src/*.ts"])
 
 SRC_DEPS = [
-    "@npm//typescript",
+    "@npm//cldr-core",
     "@npm//@types/node",
+    "//packages/intl-utils:lib",
+    "//packages/intl-getcanonicallocales:lib"
 ]
 
 ts_project(
