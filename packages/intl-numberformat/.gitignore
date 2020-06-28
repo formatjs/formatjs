@@ -5,3 +5,4 @@ src/currency-digits.json
 # Renamed to src/digit-mapping.json
 src/ilnd-numbers.json
 src/digit-mapping.json
+tests/data

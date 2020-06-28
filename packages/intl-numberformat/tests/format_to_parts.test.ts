@@ -21,7 +21,7 @@ const baseNumberResult = {
 } as const;
 
 it('formats decimal', () => {
-  const data = require('../dist/locale-data/ja.json').data.ja;
+  const data = require('./data/ja.json').data.ja;
   const pl = new Intl.PluralRules('ja');
   const n = {...baseNumberResult, formattedString: '1', roundedNumber: 1};
   expect(format(n, data, pl, defaultOptions)).toEqual('1');
@@ -31,7 +31,7 @@ it('formats decimal', () => {
 
 it('formats percentage', () => {
   const options = {...defaultOptions, style: 'percent'} as const;
-  const data = require('../dist/locale-data/ja.json').data.ja;
+  const data = require('./data/ja.json').data.ja;
   const pl = new Intl.PluralRules('ja');
   const n = {...baseNumberResult, formattedString: '42', roundedNumber: 42};
   expect(format(n, data, pl, options)).toEqual('42%');
@@ -48,7 +48,7 @@ it('formats percentage with compact display', () => {
     notation: 'compact',
     compactDisplay: 'short',
   } as const;
-  const data = require('../dist/locale-data/en.json').data.en;
+  const data = require('./data/en.json').data.en;
   const pl = new Intl.PluralRules('en-US');
   const n = {
     ...baseNumberResult,
@@ -68,7 +68,7 @@ it('formats accounting currency sign pattern', () => {
     currencyDisplay: 'symbol',
     currencySign: 'accounting',
   } as const;
-  const data = require('../dist/locale-data/ja.json').data.ja;
+  const data = require('./data/ja.json').data.ja;
   const pl = new Intl.PluralRules('ja');
   const n = {...baseNumberResult, formattedString: '42', roundedNumber: 42};
   expect(format(n, data, pl, options)).toEqual('$42');
@@ -88,7 +88,7 @@ it('formats currency where the number precedes the symbol', () => {
     currencySign: 'accounting',
     numberingSystem: 'arab',
   } as const;
-  const data = require('../dist/locale-data/ar-SS.json').data['ar-SS'];
+  const data = require('./data/ar-SS.json').data['ar-SS'];
   const pl = new Intl.PluralRules('ar-SS');
   const n = {...baseNumberResult, formattedString: '12', roundedNumber: 12};
   expect(format(n, data, pl, options)).toEqual('١٢\xa0US$');
@@ -107,7 +107,7 @@ it('respects currencyBefore insertion rule', () => {
     currencyDisplay: 'code',
     currencySign: 'standard',
   } as const;
-  const data = require('../dist/locale-data/ja.json').data.ja;
+  const data = require('./data/ja.json').data.ja;
   const pl = new Intl.PluralRules('ja');
   const n = {...baseNumberResult, formattedString: '123', roundedNumber: 123};
   expect(format(n, data, pl, options1)).toEqual('USD\xa0123');
@@ -125,7 +125,7 @@ it('respects currencyBefore insertion rule', () => {
 // - code: -১২৩.০০ USD
 // - narrow symbol: -১২৩.০০$
 it('respects currencyAfter insertion rule', () => {
-  const data = require('../dist/locale-data/bn.json').data.bn;
+  const data = require('./data/bn.json').data.bn;
   const pl = new Intl.PluralRules('bn');
   const n = {
     ...baseNumberResult,
@@ -148,7 +148,7 @@ it('respects currencyAfter insertion rule', () => {
 
 // The same insertion rule also applies to currency compact display.
 it('respects currencyAfter insertion rule for compact display', () => {
-  const data = require('../dist/locale-data/en.json').data.en;
+  const data = require('./data/en.json').data.en;
   const pl = new Intl.PluralRules('bn');
   const n = {
     ...baseNumberResult,
@@ -178,7 +178,7 @@ it('formats unit pattern with both prefix and suffix', () => {
     unit: 'celsius',
     unitDisplay: 'long',
   } as const;
-  const data = require('../dist/locale-data/ja.json').data.ja;
+  const data = require('./data/ja.json').data.ja;
   const pl = new Intl.PluralRules('ja');
   const n = {...baseNumberResult, formattedString: '123', roundedNumber: 123};
   expect(format(n, data, pl, options)).toEqual('摂氏 123 度');
@@ -196,7 +196,7 @@ it('formats currency name pattern with currency before number', () => {
     currencyDisplay: 'name',
     currencySign: 'standard',
   } as const;
-  const data = require('../dist/locale-data/sw.json').data.sw;
+  const data = require('./data/sw.json').data.sw;
   const pl = new Intl.PluralRules('sw');
   const n = {
     ...baseNumberResult,
@@ -222,7 +222,7 @@ it('formats compact notation that is currency and sign dependent', () => {
     notation: 'compact',
     compactDisplay: 'long',
   } as const;
-  const data = require('../dist/locale-data/sw.json').data.sw;
+  const data = require('./data/sw.json').data.sw;
   const pl = new Intl.PluralRules('sw');
   const n = {
     ...baseNumberResult,
@@ -259,7 +259,7 @@ it('properly unquotes characters from CLDR pattern', () => {
     compactDisplay: 'short',
     numberingSystem: 'beng',
   } as const;
-  const data = require('../dist/locale-data/bn.json').data.bn;
+  const data = require('./data/bn.json').data.bn;
   const pl = new Intl.PluralRules('bn');
   const n = {
     ...baseNumberResult,
@@ -284,7 +284,7 @@ it('determines plurality of unit based on mantissa of the scientific notation', 
     unitDisplay: 'long',
     notation: 'scientific',
   } as const;
-  const data = require('../dist/locale-data/en-BS.json').data['en-BS'];
+  const data = require('./data/en-BS.json').data['en-BS'];
   const pl = new Intl.PluralRules('en-BS');
   const n = {
     ...baseNumberResult,
@@ -305,7 +305,7 @@ it('determines plurality of currency based on the number value of scientific not
     currencyDisplay: 'name',
     notation: 'scientific',
   } as const;
-  const data = require('../dist/locale-data/en-BS.json').data['en-BS'];
+  const data = require('./data/en-BS.json').data['en-BS'];
   const pl = new Intl.PluralRules('en-BS');
   const n = {
     ...baseNumberResult,
@@ -330,7 +330,7 @@ it('uses decimal compact pattern to format currency with currencyDisplay === "na
     currencySign: 'accounting',
     currencyDisplay: 'name',
   } as const;
-  const data = require('../dist/locale-data/de.json').data.de;
+  const data = require('./data/de.json').data.de;
   const pl = new Intl.PluralRules('de');
   const n = {
     ...baseNumberResult,
@@ -353,7 +353,7 @@ it('falls back to non-compact formatting when the matching CLDR compact pattern 
     compactDisplay: 'short',
     useGrouping: true,
   } as const;
-  const data = require('../dist/locale-data/de.json').data.de;
+  const data = require('./data/de.json').data.de;
   const pl = new Intl.PluralRules('de');
   const n = {
     ...baseNumberResult,
@@ -366,7 +366,7 @@ it('falls back to non-compact formatting when the matching CLDR compact pattern 
 
 it('correctly handles NaN and Infinity in scientific notation', () => {
   const options = {...defaultOptions, notation: 'scientific'} as const;
-  const data = require('../dist/locale-data/en.json').data.en;
+  const data = require('./data/en.json').data.en;
   const pl = new Intl.PluralRules('en');
   const n1 = {
     ...baseNumberResult,
@@ -394,7 +394,7 @@ it('formats compound unit that has the specialized pattern available', () => {
     unit: 'kilometer-per-hour',
     unitDisplay: 'short',
   } as const;
-  const data = require('../dist/locale-data/ja.json').data.ja;
+  const data = require('./data/ja.json').data.ja;
   const pl = new Intl.PluralRules('ja');
   const n = {...baseNumberResult, formattedString: '42', roundedNumber: 42};
   expect(format(n, data, pl, options)).toEqual('42 km/h');
@@ -409,7 +409,7 @@ it('formats compound unit that has perUnitPattern available', () => {
     unit: 'centimeter-per-second',
     unitDisplay: 'long',
   } as const;
-  const data = require('../dist/locale-data/ja.json').data.ja;
+  const data = require('./data/ja.json').data.ja;
   const pl = new Intl.PluralRules('ja');
   const n = {...baseNumberResult, formattedString: '5', roundedNumber: 5};
   expect(format(n, data, pl, options)).toEqual('5 センチメートル/秒');
@@ -430,7 +430,7 @@ it('formats compound unit with fallback "per" compound pattern', () => {
     unit: 'celsius-per-celsius',
     unitDisplay: 'long',
   } as const;
-  const data = require('../dist/locale-data/ja.json').data.ja;
+  const data = require('./data/ja.json').data.ja;
   const pl = new Intl.PluralRules('ja');
   const n = {...baseNumberResult, formattedString: '42', roundedNumber: 42};
   expect(formatToParts(n, data, pl, options)).toEqual([
@@ -444,7 +444,7 @@ it('formats compound unit with fallback "per" compound pattern', () => {
 });
 
 it('correctly formats NaN to parts', () => {
-  const data = require('../dist/locale-data/en.json').data.en;
+  const data = require('./data/en.json').data.en;
   const pl = new Intl.PluralRules('en');
   const n = {...baseNumberResult, formattedString: 'NaN', roundedNumber: NaN};
   expect(formatToParts(n, data, pl, defaultOptions)).toEqual([
@@ -453,7 +453,7 @@ it('correctly formats NaN to parts', () => {
 });
 
 it('correctly formats Infinity to parts', () => {
-  const data = require('../dist/locale-data/en.json').data.en;
+  const data = require('./data/en.json').data.en;
   const pl = new Intl.PluralRules('en');
   const n = {
     ...baseNumberResult,

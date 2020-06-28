@@ -3,17 +3,6 @@ import {resolve} from 'path';
 import {cpus} from 'os';
 import * as chalk from 'chalk';
 
-if (process.version.startsWith('v13')) {
-  console.log(
-    'Node 8 does not have Intl.PluralRules and intl-pluralrules is not test262-compliant'
-  );
-  process.exit(0);
-}
-if (process.version.startsWith('v12') || process.version.startsWith('v14')) {
-  console.log('Node >= 12 has native Intl.NumberFormat');
-  process.exit(0);
-}
-
 interface TestResult {
   file: string;
   attrs: {
