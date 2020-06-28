@@ -1,5 +1,0 @@
-node_modules
-*.log
-lib
-test/fixtures/*/actual.json
-.nyc_output
