@@ -35,7 +35,7 @@
   "types": "lib/intl-relativetimeformat.d.ts",
   "scripts": {
     "build": "yarn run cldr && yarn run compile",
-    "cldr": "ts-node scripts/cldr",
+    "cldr": "ts-node scripts/cldr --outDir dist/locale-data --polyfillLocalesOutFile polyfill-locales.js",
     "clean": "rimraf dist lib dist-es6 *.tsbuildinfo",
     "compile": "tsc && tsc -p tsconfig.esm.json && api-extractor run --local && tsc -p tsconfig.es6.json && rollup -c rollup.config.js",
     "jest": "cross-env cross-env NODE_ENV=test jest",

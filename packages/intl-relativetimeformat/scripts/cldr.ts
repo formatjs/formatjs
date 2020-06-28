@@ -1,7 +1,9 @@
 import {extractRelativeFields, getAllLocales} from './extract-relative';
-import {resolve, join} from 'path';
+import {join} from 'path';
 import {outputFileSync, outputJSONSync} from 'fs-extra';
-import {RelativeTimeLocaleData} from '../../intl-utils';
+import {RelativeTimeLocaleData} from '@formatjs/intl-utils';
+import * as minimist from 'minimist';
+
 const locales = getAllLocales();
 const data = extractRelativeFields();
 const langData = locales.reduce(
@@ -28,43 +30,31 @@ const langData = locales.reduce(
   {}
 );
 
-const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
+function main(args: minimist.ParsedArgs) {
+  const {outDir, polyfillLocalesOutFile} = args;
 
-// Dist all locale files to dist/locale-data
-Object.keys(langData).forEach(function (lang) {
-  const destFile = join(allLocaleDistDir, lang + '.js');
-  outputFileSync(
-    destFile,
-    `/* @generated */	
+  // Dist all locale files to dist/locale-data
+  Object.keys(langData).forEach(function (lang) {
+    const destFile = join(outDir, lang + '.js');
+    outputFileSync(
+      destFile,
+      `/* @generated */	
 // prettier-ignore
 if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData === 'function') {
   Intl.RelativeTimeFormat.__addLocaleData(${JSON.stringify(langData[lang])})
 }`
-  );
-});
+    );
+  });
 
-// Dist all json locale files to dist/locale-data
-Object.keys(langData).forEach(function (lang) {
-  const destFile = join(allLocaleDistDir, lang + '.json');
-  outputJSONSync(destFile, langData[lang]);
-});
+  // Dist all json locale files to dist/locale-data
+  Object.keys(langData).forEach(function (lang) {
+    const destFile = join(outDir, lang + '.json');
+    outputJSONSync(destFile, langData[lang]);
+  });
 
-// Aggregate all into src/locales.ts
-outputFileSync(
-  resolve(__dirname, '../src/locales.ts'),
-  `/* @generated */	
-// prettier-ignore  
-import IntlRelativeTimeFormat from "./core";\n
-IntlRelativeTimeFormat.__addLocaleData(${Object.keys(langData)
-    .map(lang => JSON.stringify(langData[lang]))
-    .join(',\n')});	
-export default IntlRelativeTimeFormat;	
-  `
-);
-
-outputFileSync(
-  resolve(__dirname, '../polyfill-locales.js'),
-  `/* @generated */
+  outputFileSync(
+    polyfillLocalesOutFile,
+    `/* @generated */
 // prettier-ignore
 require('./polyfill')
 if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData === 'function') {
@@ -75,4 +65,9 @@ ${Object.keys(langData)
   )
 }
 `
-);
+  );
+}
+
+if (require.main === module) {
+  main(minimist(process.argv));
+}
