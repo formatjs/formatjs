@@ -1,7 +1,9 @@
 import {extractLists, getAllLocales} from './extract-list';
-import {resolve, join} from 'path';
+import {join} from 'path';
 import {outputFileSync, outputJsonSync} from 'fs-extra';
 import {ListPatternLocaleData} from '@formatjs/intl-utils';
+import * as minimist from 'minimist';
+
 const data = extractLists();
 const langData = getAllLocales().reduce(
   (all: Record<string, ListPatternLocaleData>, locale) => {
@@ -27,43 +29,31 @@ const langData = getAllLocales().reduce(
   {}
 );
 
-const allLocaleDistDir = resolve(__dirname, '../dist/locale-data');
+function main(args: minimist.ParsedArgs) {
+  const {outDir, polyfillLocalesOutFile} = args;
 
-// Dist all locale files to dist/locale-data
-Object.keys(langData).forEach(function (lang) {
-  const destFile = join(allLocaleDistDir, lang + '.js');
-  outputFileSync(
-    destFile,
-    `/* @generated */	
+  // Dist all locale files to dist/locale-data
+  Object.keys(langData).forEach(function (lang) {
+    const destFile = join(outDir, lang + '.js');
+    outputFileSync(
+      destFile,
+      `/* @generated */	
 // prettier-ignore
 if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
   Intl.ListFormat.__addLocaleData(${JSON.stringify(langData[lang])})
 }`
-  );
-});
+    );
+  });
 
-// Dist all locale files to dist/locale-data
-Object.keys(langData).forEach(function (lang) {
-  outputJsonSync(join(allLocaleDistDir, lang + '.json'), langData[lang]);
-});
+  // Dist all locale files to dist/locale-data
+  Object.keys(langData).forEach(function (lang) {
+    outputJsonSync(join(outDir, lang + '.json'), langData[lang]);
+  });
 
-// Aggregate all into src/locales.ts
-outputFileSync(
-  resolve(__dirname, '../src/locales.ts'),
-  `/* @generated */	
-// prettier-ignore  
-import IntlListFormat from "./core";\n
-IntlListFormat.__addLocaleData(${Object.keys(langData)
-    .map(lang => JSON.stringify(langData[lang]))
-    .join(',\n')});	
-export default IntlListFormat;	
-  `
-);
-
-// Aggregate all into ../polyfill-locales.js
-outputFileSync(
-  resolve(__dirname, '../polyfill-locales.js'),
-  `/* @generated */
+  // Aggregate all into ../polyfill-locales.js
+  outputFileSync(
+    polyfillLocalesOutFile,
+    `/* @generated */
 // prettier-ignore
 require('./polyfill')
 if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
@@ -74,4 +64,9 @@ ${Object.keys(langData)
   )
 }
 `
-);
+  );
+}
+
+if (require.main === module) {
+  main(minimist(process.argv));
+}
