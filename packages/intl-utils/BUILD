@@ -1,6 +1,7 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm", "npm_package_bin", "copy_to_bin")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("//tools:jest.bzl", "jest_test")
+
 
 PACKAGE_NAME = "intl-utils"
 
@@ -21,9 +22,8 @@ ts_project(
     srcs = SRCS,
     declaration = True,
     declaration_map = True,
-    extends = ["//:tsconfig.json"],
     source_map = True,
-    tsconfig = "tsconfig.json",
+    tsconfig = "//:tsconfig.json",
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
 )
@@ -51,4 +51,28 @@ jest_test(
         "@npm//ts-jest",
         "@npm//@types/jest",
     ] + SRC_DEPS,
+)
+
+copy_to_bin(
+    name="setup-api-extractor",
+    srcs = ["api-extractor.json", "tsconfig.json", "package.json"]
+)
+
+npm_package_bin(
+    name = "rollup-dts",
+    outs = ["%s.d.ts" % PACKAGE_NAME],
+    args = [
+        "run",
+        "--local",
+        "--diagnostics",
+        "-c",
+        "$(@D)/api-extractor.json"
+    ],
+    data = [
+        ":setup-api-extractor",
+        "//:setup-api-extractor",
+        ":lib"
+    ],
+    tool="@npm//@microsoft/api-extractor/bin:api-extractor",
+    package = "api-extractor",
 )

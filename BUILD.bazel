@@ -1,3 +1,4 @@
+load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin")
 # Add rules here to build your software
 # See https://docs.bazel.build/versions/master/build-ref.html#BUILD_files
 
@@ -6,6 +7,12 @@
 #   so that ts_library rules still use it by default.
 #   See https://www.npmjs.com/package/@bazel/typescript#installation
 exports_files(
-    ["tsconfig.json"],
+    ["tsconfig.json", "api-extractor.json"],
+    visibility = ["//:__subpackages__"],
+)
+
+copy_to_bin(
+    name="setup-api-extractor",
+    srcs = ["api-extractor.json", "tsconfig.json"],
     visibility = ["//:__subpackages__"],
 )
