@@ -946,7 +946,7 @@ function day(t: number) {
  * @param t
  */
 function weekDay(t: number) {
-  return (day(t) + 4) % 7;
+  return (day(t) + 25568) % 7;
 }
 
 function dayFromYear(y: number) {
