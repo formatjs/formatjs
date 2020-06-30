@@ -2,7 +2,7 @@ load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "npm_package_bin", 
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("//tools:jest.bzl", "jest_test")
 
-PACKAGE_NAME = "intl-pluralrules"
+PACKAGE_NAME = "intl-locale"
 
 pkg_npm(
     name = PACKAGE_NAME,
@@ -10,10 +10,11 @@ pkg_npm(
     deps = [":lib"],
 )
 
-SRCS = glob(["src/*.ts"]) + ["index.ts"]
+SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
     "@npm//@types/node",
+    "@npm//cldr-core",
     "//packages/intl-utils:lib",
     "//packages/intl-getcanonicallocales:lib"
 ]
