@@ -86,7 +86,7 @@ function mergeLiteral<T>(
   }, [] as MessageFormatPart<T>[]);
 }
 
-function isFormatXMLElementFn<T>(
+export function isFormatXMLElementFn<T>(
   el: PrimitiveType | T | FormatXMLElementFn<T>
 ): el is FormatXMLElementFn<T> {
   return typeof el === 'function';
@@ -218,7 +218,7 @@ export function formatToParts<T>(
         values,
         currentPluralValue
       );
-      let chunks = formatFn(...parts.map(p => p.value));
+      let chunks = formatFn(parts.map(p => p.value));
       if (!Array.isArray(chunks)) {
         chunks = [chunks];
       }
@@ -291,5 +291,5 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
 }
 
 export type FormatXMLElementFn<T, R = string | Array<string | T>> = (
-  ...args: Array<string | T>
+  parts: Array<string | T>
 ) => R;

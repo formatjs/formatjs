@@ -573,8 +573,8 @@ describe('IntlMessageFormat', function () {
     it('simple message', function () {
       const mf = new IntlMessageFormat('hello <b>world</b>', 'en');
       expect(
-        mf.format<object>({b: str => ({str})})
-      ).toEqual(['hello ', {str: 'world'}]);
+        mf.format<object>({b: parts => ({parts})})
+      ).toEqual(['hello ', {parts: ['world']}]);
     });
     it('nested tag message', function () {
       const mf = new IntlMessageFormat(
@@ -583,7 +583,7 @@ describe('IntlMessageFormat', function () {
       );
       expect(
         mf.format<object>({
-          b: (...chunks) => ({chunks}),
+          b: chunks => ({chunks}),
           i: c => ({val: `$$${c}$$`}),
         })
       ).toEqual(['hello ', {chunks: ['world', {val: '$$!$$'}, ' <br/> ']}]);
@@ -595,7 +595,7 @@ describe('IntlMessageFormat', function () {
       );
       expect(
         mf.format<object>({
-          b: (...chunks) => ['<b>', ...chunks, '</b>'],
+          b: chunks => ['<b>', ...chunks, '</b>'],
           i: c => ({val: `$$${c}$$`}),
         })
       ).toEqual(['hello <b>world', {val: '$$!$$'}, ' <br/> </b>']);
@@ -616,20 +616,20 @@ describe('IntlMessageFormat', function () {
       );
       expect(
         mf.format<object>({
-          b: str => ({str}),
+          b: parts => ({parts}),
           placeholder: 'gaga',
-          a: str => ({str}),
+          a: parts => ({parts}),
         })
-      ).toEqual(['hello ', {str: 'world'}, ' ', {str: 'gaga'}]);
+      ).toEqual(['hello ', {parts: ['world']}, ' ', {parts: ['gaga']}]);
     });
     it('message w/ placeholder & HTML entities', function () {
       const mf = new IntlMessageFormat('Hello&lt;<tag>{text}</tag>', 'en');
       expect(
         mf.format<object>({
-          tag: str => ({str}),
+          tag: parts => ({parts}),
           text: '<asd>',
         })
-      ).toEqual(['Hello&lt;', {str: '<asd>'}]);
+      ).toEqual(['Hello&lt;', {parts: ['<asd>']}]);
     });
     it('message w/ placeholder & >', function () {
       const mf = new IntlMessageFormat(
@@ -638,16 +638,16 @@ describe('IntlMessageFormat', function () {
       );
       expect(
         mf.format<object>({
-          b: str => ({str}),
+          b: parts => ({parts}),
           token: '<asd>',
           placeholder: '>',
-          a: str => ({str}),
+          a: parts => ({parts}),
         })
       ).toEqual([
         '&lt; hello ',
-        {str: 'world'},
+        {parts: ['world']},
         ' <asd> &lt;&gt; ',
-        {str: '>'},
+        {parts: ['>']},
       ]);
     });
     it('select message w/ placeholder & >', function () {
@@ -665,16 +665,16 @@ describe('IntlMessageFormat', function () {
         })
       ).toEqual([
         '&lt; hello ',
-        {str: 'world'},
+        {str: ['world']},
         ' <asd> &lt;&gt; ',
-        {str: '>'},
+        {str: ['>']},
       ]);
       expect(
         mf.format<object>({
           gender: 'female',
           b: str => ({str}),
         })
-      ).toEqual({str: 'foo &lt;&gt; bar'});
+      ).toEqual({str: ['foo &lt;&gt; bar']});
     });
     it('should allow escaping tag as legacy HTML', function () {
       const mf = new IntlMessageFormat(
@@ -696,7 +696,7 @@ describe('IntlMessageFormat', function () {
           }),
           bar: {bar: 1},
         })
-      ).toEqual(['hello ', {obj: {bar: 1}}, ' test']);
+      ).toEqual(['hello ', {obj: [{bar: 1}]}, ' test']);
     });
     it('should handle tag in plural', function () {
       const mf = new IntlMessageFormat(
@@ -705,7 +705,7 @@ describe('IntlMessageFormat', function () {
       );
       expect(
         mf.format<string>({
-          b: (...chunks) => `{}${chunks}{}`,
+          b: chunks => `{}${chunks}{}`,
           count: 1000,
         })
       ).toBe('You have {}1,000{} Messages');
