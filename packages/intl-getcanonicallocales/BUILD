@@ -10,7 +10,7 @@ pkg_npm(
     deps = [":lib"],
 )
 
-SRCS = glob(["src/*.ts"]) + ['index.ts']
+SRCS = glob(["src/*.ts"]) + ['index.ts', 'polyfill.ts']
 
 SRC_DEPS = [
     "@npm//cldr-core",

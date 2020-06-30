@@ -53,6 +53,7 @@ jest_test(
     ] + SRC_DEPS,
 )
 
+# API Extractor
 copy_to_bin(
     name="setup-api-extractor",
     srcs = ["api-extractor.json", "tsconfig.json", "package.json"]
