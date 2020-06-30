@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 import {invariant} from '@formatjs/intl-utils';
-import {unapplyFormatXMLElementFn} from '../utils';
+import {assignUniqueKeysToParts} from '../utils';
 
 import {
   Formatters,
@@ -18,6 +18,7 @@ import {
 import IntlMessageFormat, {
   FormatXMLElementFn,
   PrimitiveType,
+  isFormatXMLElementFn,
 } from 'intl-messageformat';
 import {MissingTranslationError, MessageFormatError} from '../error';
 
@@ -73,23 +74,17 @@ function deepMergeFormatsAndSetTimeZone(
   };
 }
 
-function isFormatXMLElementFn(
-  input: any
-): input is FormatXMLElementFn<React.ReactNode, React.ReactNode> {
-  return typeof input === 'function';
-}
-
-export function unapplyFormatXMLElementFnInValues(
+export function assignUniqueKeysToFormatXMLElementFnArgument(
   values: Record<
     string,
-    | PrimitiveType
-    | React.ReactNode
-    | FormatXMLElementFn<React.ReactNode, React.ReactNode>
+    PrimitiveType | React.ReactNode | FormatXMLElementFn<React.ReactNode>
   >
 ): typeof values {
   return Object.keys(values).reduce((acc: typeof values, k) => {
     const v = values[k];
-    acc[k] = isFormatXMLElementFn(v) ? unapplyFormatXMLElementFn(v) : v;
+    acc[k] = isFormatXMLElementFn<React.ReactNode>(v)
+      ? assignUniqueKeysToParts(v)
+      : v;
     return acc;
   }, {});
 }
@@ -163,7 +158,8 @@ export function formatMessage(
   if (!values && message && typeof message === 'string') {
     return message.replace(/'\{(.*?)\}'/gi, `{$1}`);
   }
-  const patchedValues = values && unapplyFormatXMLElementFnInValues(values);
+  const patchedValues =
+    values && assignUniqueKeysToFormatXMLElementFnArgument(values);
   formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
   defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);
 

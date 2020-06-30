@@ -136,20 +136,16 @@ export function getNamedFormat<T extends keyof CustomFormats>(
 }
 
 /**
- * Takes a `formatXMLElementFn`, which takes a single React.Node argument, and
- * returns a FormatXMLElementFn which takes any number of positional arguments.
- * I.e. converts non-variadic FormatXMLElementFn to variadic. Variadic
- * FormatXMLElementFn is needed for 'intl-messageformat' package, non-variadic
- * simplifies API of 'react-intl' package.
+ * Takes a `formatXMLElementFn`, and composes it in function, which passes
+ * argument `parts` through, assigning unique key to each part, to prevent
+ * "Each child in a list should have a unique "key"" React error.
  * @param formatXMLElementFn
  */
-export function unapplyFormatXMLElementFn(
-  formatXMLElementFn: FormatXMLElementFn<React.ReactNode, React.ReactNode>
-): (node: React.ReactNode) => React.ReactNode {
-  return function () {
-    return formatXMLElementFn(
-      // eslint-disable-next-line prefer-rest-params
-      arguments.length === 1 ? arguments[0] : React.Children.toArray(arguments)
-    );
+export function assignUniqueKeysToParts(
+  formatXMLElementFn: FormatXMLElementFn<React.ReactNode>
+): typeof formatXMLElementFn {
+  return function (parts) {
+    // eslint-disable-next-line prefer-rest-params
+    return formatXMLElementFn(React.Children.toArray(parts));
   };
 }
