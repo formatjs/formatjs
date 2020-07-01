@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.3](https://github.com/formatjs/formatjs/compare/website@0.3.2...website@0.3.3) (2020-07-01)
+
+
+### Bug Fixes
+
+* **website:** added a missing comma ([#1763](https://github.com/formatjs/formatjs/issues/1763)) ([b988c73](https://github.com/formatjs/formatjs/commit/b988c73f9685a2489b1d5d0428d775317e7c351c))
+
+
+
+
+
 ## [0.3.2](https://github.com/formatjs/formatjs/compare/website@0.3.1...website@0.3.2) (2020-06-26)
 
 **Note:** Version bump only for package website

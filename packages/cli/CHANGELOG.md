@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.8.3...@formatjs/cli@1.9.0) (2020-07-01)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** move interpolate-name here ([232d190](https://github.com/formatjs/formatjs/commit/232d190df037b81a88c6b0147a82b586b5ed7fb3))
+
+
+
+
+
 ## [1.8.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.8.2...@formatjs/cli@1.8.3) (2020-06-26)
 
 **Note:** Version bump only for package @formatjs/cli
