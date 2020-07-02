@@ -35,30 +35,33 @@ const allData = AVAILABLE_LOCALES.availableLocales.full.reduce(
 function main(args: minimist.ParsedArgs) {
   const {outDir, testDataDir, test262MainFile} = args;
   // Dist all locale files to dist/locale-data
-  Object.keys(allData).forEach(function (locale) {
-    const destFile = join(outDir, locale + '.js');
-    outputFileSync(
-      destFile,
-      `/* @generated */
+  outDir &&
+    Object.keys(allData).forEach(function (locale) {
+      const destFile = join(outDir, locale + '.js');
+      outputFileSync(
+        destFile,
+        `/* @generated */
 // prettier-ignore
 if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function') {
   Intl.NumberFormat.__addLocaleData(${JSON.stringify(allData[locale])})
 }`
-    );
-  });
+      );
+    });
 
   // Dist all locale files to dist/locale-data
-  Object.keys(allData).forEach(function (locale) {
-    const destFile = join(testDataDir, locale + '.json');
-    outputJSONSync(destFile, allData[locale]);
-  });
+  testDataDir &&
+    Object.keys(allData).forEach(function (locale) {
+      const destFile = join(testDataDir, locale + '.json');
+      outputJSONSync(destFile, allData[locale]);
+    });
 
   // For test262
   // Only a subset of locales
-  outputFileSync(
-    test262MainFile,
-    `
-import './polyfill-force';
+  test262MainFile &&
+    outputFileSync(
+      test262MainFile,
+      `
+import '../dist-es6/polyfill-force';
 import '@formatjs/intl-getcanonicallocales/polyfill';
 if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function') {
   Intl.NumberFormat.__addLocaleData(
@@ -67,7 +70,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       .join(',\n')});
 }
 `
-  );
+    );
 }
 
 if (require.main === module) {

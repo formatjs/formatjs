@@ -28,7 +28,7 @@ const LOCALES = [
 ];
 
 LOCALES.forEach(locale => {
-  NumberFormat.__addLocaleData(require(`./data/${locale}.json`));
+  NumberFormat.__addLocaleData(require(`./locale-data/${locale}.json`));
 });
 
 // Replicate Google Chrome's behavior: when there is a compact pattern, drop the percentage sign.

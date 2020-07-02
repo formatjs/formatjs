@@ -3,7 +3,7 @@ id: intl-numberformat
 title: Intl.NumberFormat (ES2020)
 ---
 
-A ponyfill/polyfill for ES2020 [`Intl.NumberFormat`][numberformat] and [`Number.prototype.toLocaleString`][tolocalestring].
+A polyfill for ES2020 [`Intl.NumberFormat`][numberformat] and [`Number.prototype.toLocaleString`][tolocalestring].
 
 [numberformat]: https://tc39.es/ecma402/#numberformat-objects
 [tolocalestring]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString
@@ -30,31 +30,6 @@ This package requires the following capabilities:
 Everything in the ES2020 Internationalization API spec (https://tc39.es/ecma402).
 
 # Usage
-
-To use the ponyfill, import it along with its data:
-
-```tsx
-import {NumberFormat, toLocaleString} from '@formatjs/intl-numberformat';
-NumberFormat.__addLocaleData(
-  require('@formatjs/intl-numberformat/dist/locale-data/zh.json') // locale-data for zh
-);
-NumberFormat.__addLocaleData(
-  require('@formatjs/intl-numberformat/dist/locale-data/en.json') // locale-data for en
-);
-
-new NumberFormat('zh', {
-  style: 'unit',
-  unit: 'bit',
-  unitDisplay: 'long',
-}).format(1000); // 1,000比特
-
-// `Number.prototype.toLocaleString` ponyfill.
-toLocaleString(1000, 'zh', {
-  style: 'unit',
-  unit: 'bit',
-  unitDisplay: 'long',
-}); // 1,000比特
-```
 
 To use this as a polyfill, override `Intl.NumberFormat` as below:
 
