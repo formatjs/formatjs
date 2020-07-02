@@ -26,7 +26,7 @@ function main(args: minimist.ParsedArgs) {
   const {outDir, testDataDir, polyfillLocalesOutFile, test262MainFile} = args;
 
   if (outDir) {
-    // Dist all locale files to dist/locale-data (JS)
+    // Dist all locale files to locale-data (JS)
     Object.keys(allData).forEach(function (lang) {
       const destFile = join(outDir, lang + '.js');
       outputFileSync(
