@@ -612,7 +612,7 @@ Hello, Eric!
   description="Greeting to welcome the user to the app"
   defaultMessage="Hello, <b>Eric</b> {icon}"
   values={{
-    b: (...chunks) => <b>{chunks}</b>,
+    b: chunks => <b>{chunks}</b>,
     icon: <svg />,
   }}
 />
@@ -628,12 +628,12 @@ By allowing embedding XML tag we want to make sure contextual information is not
 <FormattedMessage
   defaultMessage="To buy a shoe, <a>visit our website</a> and <cta>buy a shoe</cta>"
   values={{
-    a: (...chunks) => (
+    a: chunks => (
       <a class="external_link" target="_blank" href="https://www.shoe.com/">
         {chunks}
       </a>
     ),
-    cta: (...chunks) => <strong class="important">{chunks}</strong>,
+    cta: chunks => <strong class="important">{chunks}</strong>,
   }}
 />
 ```
@@ -647,15 +647,15 @@ Since rich text formatting allows embedding `ReactElement`, in function as the c
 <FormattedMessage
   defaultMessage="To buy a shoe, <a>visit our website</a> and <cta>buy a shoe</cta>"
   values={{
-    a: (...chunks) => (
+    a: chunks => (
       <a class="external_link" target="_blank" href="https://www.shoe.com/">
         {chunks}
       </a>
     ),
-    cta: (...chunks) => <strong class="important">{chunks}</strong>,
+    cta: chunks => <strong class="important">{chunks}</strong>,
   }}
 >
-  {(...chunks) => <span>{chunks}</span>}
+  {chunks => <span>{chunks}</span>}
 </FormattedMessage>
 ```
 

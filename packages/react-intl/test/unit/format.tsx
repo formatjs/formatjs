@@ -750,14 +750,14 @@ describe('format API', () => {
         state
       );
       const {locale, messages} = config;
-      const values = {b: (...chunks) => <b>{chunks}</b>};
+      const values = {b: chunks => <b>{chunks}</b>};
       expect(formatMessage({id: 'richText'}, values)).toMatchSnapshot();
     });
 
     it('formats rich text messages w/o wrapRichTextChunksInFragment', () => {
       const {locale, messages} = config;
       const mf = new IntlMessageFormat(messages.richText, locale);
-      const values = {b: (...chunks) => <b>{chunks}</b>};
+      const values = {b: chunks => <b>{chunks}</b>};
       expect(formatMessage({id: 'richText'}, values)).toMatchSnapshot();
     });
 

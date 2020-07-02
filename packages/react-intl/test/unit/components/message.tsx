@@ -62,13 +62,10 @@ describe('<FormattedMessage>', () => {
     );
   });
 
-  it('should work if <IntlProvider> is missing from ancestry but there is defaultMessage', () => {
-    const rendered = mount(
-      <FormattedMessage id="hello" defaultMessage="Hello" />
-    );
-
-    expect(rendered.text()).toBe('Hello');
-    expect(console.error).toHaveBeenCalledTimes(1);
+  it('should not work if <IntlProvider> is missing from ancestry', () => {
+    expect(() =>
+      mount(<FormattedMessage id="hello" defaultMessage="Hello" />)
+    ).toThrow();
   });
 
   it('should work w/ multiple context', function () {
@@ -181,7 +178,7 @@ describe('<FormattedMessage>', () => {
 
     expect(spy).toHaveBeenCalledTimes(1);
 
-    expect(spy.mock.calls[0][0]).toBe(intl.formatMessage(descriptor));
+    expect(spy.mock.calls[0][0]).toEqual([intl.formatMessage(descriptor)]);
 
     expect(rendered.text()).toBe('Jest');
   });
@@ -228,7 +225,7 @@ describe('<FormattedMessage>', () => {
           defaultMessage: 'Hello, <b>{name}<i>!</i></b>',
           values: {
             name: 'Jest',
-            b: (...chunks: any[]) => <b>{...chunks}</b>,
+            b: (chunks: any[]) => <b>{chunks}</b>,
             i: (msg: string) => <i>{msg}</i>,
           },
         },
@@ -261,7 +258,7 @@ describe('<FormattedMessage>', () => {
           values: {
             name: <b>Jest</b>,
           },
-          children: (...chunks) => <strong>{chunks}</strong>,
+          children: chunks => <strong>{chunks}</strong>,
         },
         providerProps
       );

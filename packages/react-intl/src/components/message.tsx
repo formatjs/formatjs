@@ -8,39 +8,10 @@ import * as React from 'react';
 import {PrimitiveType, FormatXMLElementFn} from 'intl-messageformat';
 import {Context} from './injectIntl';
 import {MessageDescriptor} from '../types';
-import {formatMessage} from '../formatters/message';
-import {
-  invariantIntlContext,
-  DEFAULT_INTL_CONFIG,
-  createFormatters,
-} from '../utils';
+import {invariantIntlContext} from '../utils';
 import * as shallowEquals_ from 'shallow-equal/objects';
 const shallowEquals: typeof shallowEquals_ =
   (shallowEquals_ as any).default || shallowEquals_;
-
-function defaultFormatMessage<T = React.ReactNode>(
-  descriptor: MessageDescriptor,
-  values?: Record<
-    string,
-    PrimitiveType | React.ReactElement | FormatXMLElementFn<T, T>
-  >
-): string {
-  if (process.env.NODE_ENV !== 'production') {
-    console.error(
-      '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry. Using default message as fallback.'
-    );
-  }
-
-  return formatMessage(
-    {
-      ...DEFAULT_INTL_CONFIG,
-      locale: 'en',
-    },
-    createFormatters(),
-    descriptor,
-    values as any
-  );
-}
 
 export interface Props<
   V extends Record<string, any> = Record<string, React.ReactNode>
@@ -73,14 +44,9 @@ class FormattedMessage<
     return (
       <Context.Consumer>
         {(intl): React.ReactNode => {
-          if (!this.props.defaultMessage) {
-            invariantIntlContext(intl);
-          }
+          invariantIntlContext(intl);
 
-          const {
-            formatMessage = defaultFormatMessage,
-            textComponent: Text = React.Fragment,
-          } = intl || {};
+          const {formatMessage, textComponent: Text = React.Fragment} = intl;
           const {
             id,
             description,
@@ -101,7 +67,7 @@ class FormattedMessage<
           }
 
           if (typeof children === 'function') {
-            return children(...nodes);
+            return children(nodes);
           }
 
           if (Component) {

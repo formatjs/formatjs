@@ -297,7 +297,7 @@ After
   values={{
     b: name => <b>{name}</b>,
     custom: str => <span style="font-weight: bold;">{str}</span>,
-    more: (...chunks) => <span>{chunks}</span>,
+    more: chunks => <span>{chunks}</span>,
   }}
 />
 ```

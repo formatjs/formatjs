@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {RawIntlProvider, FormattedMessage, createIntl} from '../';
+import {RawIntlProvider, FormattedMessage, createIntl} from '..';
 import {parse, MessageFormatElement} from 'intl-messageformat-parser';
 
 interface Props {}
@@ -63,7 +63,7 @@ const App: React.FC<Props> = () => {
         <br />
         <FormattedMessage
           id="richtext"
-          values={{num: 99, bold: (...chunks) => <strong>{chunks}</strong>}}
+          values={{num: 99, bold: chunks => <strong>{chunks}</strong>}}
         />
       </p>
     </RawIntlProvider>

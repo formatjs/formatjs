@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {IntlProvider, FormattedMessage} from '../';
+import {IntlProvider, FormattedMessage} from '..';
 
 interface Props {}
 
@@ -55,12 +55,12 @@ const App: React.FC<Props> = () => {
         <br />
         <FormattedMessage
           id="richtext"
-          values={{num: 99, bold: (...chunks) => <strong>{chunks}</strong>}}
+          values={{num: 99, bold: chunks => <strong>{chunks}</strong>}}
         />
         <br />
         <FormattedMessage
           id="richertext"
-          values={{num: 99, bold: (...chunks) => <strong>{chunks}</strong>}}
+          values={{num: 99, bold: chunks => <strong>{chunks}</strong>}}
         />
         <br />
         <FormattedMessage id="unicode" values={{placeholder: 'world'}} />
