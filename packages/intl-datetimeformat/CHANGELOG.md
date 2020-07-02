@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@1.3.2...@formatjs/intl-datetimeformat@1.3.3) (2020-07-01)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix modulo operation, close [#1757](https://github.com/formatjs/formatjs/issues/1757) ([09e1a88](https://github.com/formatjs/formatjs/commit/09e1a88b4c6568be4f3aeb7dbc5fac1692e5c320))
+
+
+
+
+
 ## [1.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@1.3.1...@formatjs/intl-datetimeformat@1.3.2) (2020-06-26)
 
 

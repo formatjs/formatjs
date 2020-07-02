@@ -1,6 +1,6 @@
 {
   "name": "intl-format-cache",
-  "version": "4.2.42",
+  "version": "4.2.43",
   "description": "A memoizer factory for Intl format constructors.",
   "main": "dist/index.js",
   "module": "lib/index.js",
@@ -17,8 +17,8 @@
     "jest": "cross-env NODE_ENV=test jest"
   },
   "devDependencies": {
-    "@formatjs/intl-pluralrules": "^2.2.10",
-    "@formatjs/intl-relativetimeformat": "^5.2.10",
+    "@formatjs/intl-pluralrules": "^2.2.11",
+    "@formatjs/intl-relativetimeformat": "^5.2.11",
     "jasmine": "3.5.0",
     "jasmine-expect": "4.0.3"
   },

@@ -56,10 +56,10 @@ const messages = defineMessages({
 });
 
 const msg = defineMessage({
-  id: 'single'
+  id: 'single',
   defaultMessage: 'single message',
-  description: 'header'
-})
+  description: 'header',
+});
 ```
 
 ## Injection API

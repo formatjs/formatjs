@@ -934,6 +934,16 @@ function formatDateTimeParts(dtf: DateTimeFormat, x: number) {
 const MS_PER_DAY = 86400000;
 
 /**
+ * https://www.ecma-international.org/ecma-262/11.0/index.html#eqn-modulo
+ * @param x
+ * @param y
+ * @return k of the same sign as y
+ */
+function mod(x: number, y: number): number {
+  return x - Math.floor(x / y) * y;
+}
+
+/**
  * https://tc39.es/ecma262/#eqn-Day
  * @param t
  */
@@ -946,7 +956,7 @@ function day(t: number) {
  * @param t
  */
 function weekDay(t: number) {
-  return (day(t) + 4) % 7;
+  return mod(day(t) + 4, 7);
 }
 
 function dayFromYear(y: number) {
@@ -1085,38 +1095,15 @@ const MS_PER_MINUTE = MS_PER_SECOND * SECONDS_PER_MINUTE;
 const MS_PER_HOUR = MS_PER_MINUTE * MINUTES_PER_HOUR;
 
 function hourFromTime(t: number) {
-  const hour = Math.floor(t / MS_PER_HOUR) % HOURS_PER_DAY;
-  // Technically mod should return positive if y is positive
-  // per https://tc39.es/ecma262/#eqn-modulo but it doesn't...
-  if (objectIs(hour, -0)) {
-    return 0;
-  }
-  if (hour < 0) {
-    return 24 + hour;
-  }
-  return hour;
+  return mod(Math.floor(t / MS_PER_HOUR), HOURS_PER_DAY);
 }
 
 function minFromTime(t: number) {
-  const mins = Math.floor(t / MS_PER_MINUTE) % MINUTES_PER_HOUR;
-  if (objectIs(mins, -0)) {
-    return 0;
-  }
-  if (mins < 0) {
-    return 60 + mins;
-  }
-  return mins;
+  return mod(Math.floor(t / MS_PER_MINUTE), MINUTES_PER_HOUR);
 }
 
 function secFromTime(t: number) {
-  const secs = Math.floor(t / MS_PER_SECOND) % SECONDS_PER_MINUTE;
-  if (objectIs(secs, -0)) {
-    return 0;
-  }
-  if (secs < 0) {
-    return 60 + secs;
-  }
-  return secs;
+  return mod(Math.floor(t / MS_PER_SECOND), SECONDS_PER_MINUTE);
 }
 
 function getApplicableZoneData(t: number, timeZone: string): [number, boolean] {
