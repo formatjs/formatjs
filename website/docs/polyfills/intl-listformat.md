@@ -3,7 +3,7 @@ id: intl-listformat
 title: Intl.ListFormat
 ---
 
-A spec-compliant polyfill/ponyfill for Intl.ListFormat fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
+A spec-compliant polyfill for Intl.ListFormat fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
 
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-listformat.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-listformat)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-listformat)
@@ -28,24 +28,18 @@ import '@formatjs/intl-listformat/polyfill';
 
 If Intl.ListFormat already exists, the polyfill will not be loaded.
 
-To use this as a ponyfill:
-
-```tsx
-import IntlListFormat from '@formatjs/intl-listformat';
-```
-
 To load locale data, you can include them on demand:
 
 ```js
 import '@formatjs/intl-listformat/polyfill';
-import '@formatjs/intl-listformat/dist/locale-data/en'; // Add locale data for en
-import '@formatjs/intl-listformat/dist/locale-data/de'; // Add locale data for de
+import '@formatjs/intl-listformat/locale-data/en'; // Add locale data for en
+import '@formatjs/intl-listformat/locale-data/de'; // Add locale data for de
 ```
 
 If you want to polyfill all locales (e.g for Node):
 
-```
-import '@formatjs/intl-listformat/polyfill-locales'
+```tsx
+import '@formatjs/intl-listformat/polyfill-locales';
 ```
 
 ## Tests

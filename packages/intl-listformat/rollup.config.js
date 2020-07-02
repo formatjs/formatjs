@@ -47,10 +47,10 @@ export default [
     plugins: [resolveConfig, commonjsConfig, jsonConfig],
   },
   {
-    input: './dist-es6/locales.js',
+    input: './tests/test262-main.js',
     output: {
       sourcemap: true,
-      file: 'dist/polyfill-with-locales-for-test262.js',
+      file: 'tests/test262-polyfill.js',
       format: 'umd',
       exports: 'named',
       name: 'IntlListFormat',

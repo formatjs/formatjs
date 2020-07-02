@@ -40,10 +40,9 @@
   ],
   "scripts": {
     "build": "yarn run cldr && yarn run compile",
-    "cldr": "ts-node scripts/cldr --outDir dist/locale-data --polyfillLocalesOutFile polyfill-locales.js",
+    "cldr": "ts-node scripts/cldr --outDir locale-data --polyfillLocalesOutFile polyfill-locales.js --testDataDir tests/locale-data --test262MainFile tests/test262-main.js",
     "clean": "rimraf dist lib dist-es6 dist-es6 *.tsbuildinfo",
-    "test262:gen": "cat lib/polyfill-force.js dist/locale-data/*.js > dist-es6/locales.js",
-    "compile": "tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local && yarn test262:gen && rollup -c rollup.config.js",
+    "compile": "tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local && rollup -c rollup.config.js",
     "jest": "cross-env NODE_ENV=test jest",
     "test": "yarn run jest && cross-env ts-node tests/runner"
   },

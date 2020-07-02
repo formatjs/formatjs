@@ -30,30 +30,33 @@ const langData = getAllLocales().reduce(
 );
 
 function main(args: minimist.ParsedArgs) {
-  const {outDir, polyfillLocalesOutFile} = args;
+  const {outDir, testDataDir, test262MainFile, polyfillLocalesOutFile} = args;
 
   // Dist all locale files to dist/locale-data
-  Object.keys(langData).forEach(function (lang) {
-    const destFile = join(outDir, lang + '.js');
-    outputFileSync(
-      destFile,
-      `/* @generated */	
+  outDir &&
+    Object.keys(langData).forEach(function (lang) {
+      const destFile = join(outDir, lang + '.js');
+      outputFileSync(
+        destFile,
+        `/* @generated */	
 // prettier-ignore
 if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
   Intl.ListFormat.__addLocaleData(${JSON.stringify(langData[lang])})
 }`
-    );
-  });
+      );
+    });
 
   // Dist all locale files to dist/locale-data
-  Object.keys(langData).forEach(function (lang) {
-    outputJsonSync(join(outDir, lang + '.json'), langData[lang]);
-  });
+  testDataDir &&
+    Object.keys(langData).forEach(function (lang) {
+      outputJsonSync(join(testDataDir, lang + '.json'), langData[lang]);
+    });
 
   // Aggregate all into ../polyfill-locales.js
-  outputFileSync(
-    polyfillLocalesOutFile,
-    `/* @generated */
+  polyfillLocalesOutFile &&
+    outputFileSync(
+      polyfillLocalesOutFile,
+      `/* @generated */
 // prettier-ignore
 require('./polyfill')
 if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
@@ -64,7 +67,23 @@ ${Object.keys(langData)
   )
 }
 `
-  );
+    );
+
+  test262MainFile &&
+    outputFileSync(
+      test262MainFile,
+      `/* @generated */
+// prettier-ignore
+require('../dist-es6/polyfill-force')
+if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
+  Intl.ListFormat.__addLocaleData(
+${Object.keys(langData)
+  .map(lang => JSON.stringify(langData[lang]))
+  .join(',\n')}
+  )
+}
+`
+    );
 }
 
 if (require.main === module) {

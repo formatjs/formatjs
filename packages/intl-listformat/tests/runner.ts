@@ -33,7 +33,7 @@ const args = [
   '-t',
   String(cpus().length - 1),
   '--prelude',
-  './dist/polyfill-with-locales-for-test262.js',
+  './tests/test262-polyfill.js',
   '-r',
   'json',
   PATTERN,
