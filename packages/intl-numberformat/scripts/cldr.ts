@@ -34,7 +34,7 @@ const allData = AVAILABLE_LOCALES.availableLocales.full.reduce(
 
 function main(args: minimist.ParsedArgs) {
   const {outDir, testDataDir, test262MainFile} = args;
-  // Dist all locale files to dist/locale-data
+  // Dist all locale files to locale-data
   outDir &&
     Object.keys(allData).forEach(function (locale) {
       const destFile = join(outDir, locale + '.js');
@@ -48,7 +48,7 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
       );
     });
 
-  // Dist all locale files to dist/locale-data
+  // Dist all locale files to tests/locale-data
   testDataDir &&
     Object.keys(allData).forEach(function (locale) {
       const destFile = join(testDataDir, locale + '.json');
