@@ -1122,15 +1122,6 @@
   dependencies:
     "@commitlint/config-angular-type-enum" "^9.0.1"
 
-"@commitlint/config-lerna-scopes@^9.0.1":
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/@commitlint/config-lerna-scopes/-/config-lerna-scopes-9.0.1.tgz#5115219cc814951a08791b980fce6481b8249b75"
-  integrity sha512-tdIfFs5XHpRyUgfIPDkIskCnnfQIDPUqrnKX/z6bWeNN6BVth379DwWEGljCRbePzUo0yZ9sbEl1P3Nas5MG4Q==
-  dependencies:
-    import-from "3.0.0"
-    resolve-pkg "2.0.0"
-    semver "7.1.3"
-
 "@commitlint/ensure@^9.0.1":
   version "9.0.1"
   resolved "https://registry.yarnpkg.com/@commitlint/ensure/-/ensure-9.0.1.tgz#3ad2bb93a90893393e781a0e578532d4d07ef997"
@@ -8613,13 +8604,6 @@ import-fresh@^3.0.0, import-fresh@^3.1.0, import-fresh@^3.2.1:
     parent-module "^1.0.0"
     resolve-from "^4.0.0"
 
-import-from@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/import-from/-/import-from-3.0.0.tgz#055cfec38cd5a27d8057ca51376d7d3bf0891966"
-  integrity sha512-CiuXOFFSzkU5x/CR0+z7T91Iht4CXgfCxVOFRhh2Zyhg5wOpWvvDLQUsWl+gcN+QscYBjez8hDCt85O7RLDttQ==
-  dependencies:
-    resolve-from "^5.0.0"
-
 import-from@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/import-from/-/import-from-2.1.0.tgz#335db7f2a7affd53aaa471d4b8021dee36b7f3b1"
@@ -14154,13 +14138,6 @@ resolve-pathname@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/resolve-pathname/-/resolve-pathname-3.0.0.tgz#99d02224d3cf263689becbb393bc560313025dcd"
   integrity sha512-C7rARubxI8bXFNB/hqcp/4iUeIXJhJZvFPFPiSPRnhU5UPxzMFIl+2E6yY6c4k9giDJAhtV+enfA+G89N6Csng==
-
-resolve-pkg@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/resolve-pkg/-/resolve-pkg-2.0.0.tgz#ac06991418a7623edc119084edc98b0e6bf05a41"
-  integrity sha512-+1lzwXehGCXSeryaISr6WujZzowloigEofRB+dj75y9RRa/obVcYgbHJd53tdYw8pvZj8GojXaaENws8Ktw/hQ==
-  dependencies:
-    resolve-from "^5.0.0"
 
 resolve-url@^0.2.1:
   version "0.2.1"

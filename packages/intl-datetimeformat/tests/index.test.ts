@@ -27,7 +27,9 @@ describe('Intl.DateTimeFormat', function () {
   it('negative ts', function () {
     // TODO: Fix the pattern matching here
     expect(
-      new DateTimeFormat('en', {weekday: 'short'}).format(new Date(1899, 1, 1))
+      new DateTimeFormat('en', {weekday: 'short', timeZone: 'UTC'}).format(
+        new Date(1899, 1, 1)
+      )
     ).toBe('Wed, 5 AM');
   });
   it('basicFormatMatcherScore', function () {
