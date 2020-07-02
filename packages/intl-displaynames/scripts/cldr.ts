@@ -23,31 +23,36 @@ const allData = locales.reduce(
 );
 
 function main(args: minimist.ParsedArgs) {
-  const {outDir, polyfillLocalesOutFile, test262MainFile} = args;
+  const {outDir, testDataDir, polyfillLocalesOutFile, test262MainFile} = args;
 
-  // Dist all locale files to dist/locale-data (JS)
-  Object.keys(allData).forEach(function (lang) {
-    const destFile = join(outDir, lang + '.js');
-    outputFileSync(
-      destFile,
-      `/* @generated */
+  if (outDir) {
+    // Dist all locale files to dist/locale-data (JS)
+    Object.keys(allData).forEach(function (lang) {
+      const destFile = join(outDir, lang + '.js');
+      outputFileSync(
+        destFile,
+        `/* @generated */
 // prettier-ignore
 if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function') {
   Intl.DisplayNames.__addLocaleData(${JSON.stringify(allData[lang])})
 }`
-    );
-  });
+      );
+    });
+  }
 
-  // Dist all locale files to dist/locale-data (JSON)
-  Object.keys(allData).forEach(function (locale) {
-    const destFile = join(outDir, locale + '.json');
-    outputJSONSync(destFile, allData[locale]);
-  });
+  if (testDataDir) {
+    // Dist all locale files to tests/locale-data (JSON)
+    Object.keys(allData).forEach(function (locale) {
+      const destFile = join(testDataDir, locale + '.json');
+      outputJSONSync(destFile, allData[locale]);
+    });
+  }
 
-  // Aggregate all into ../polyfill-locales.js
-  outputFileSync(
-    polyfillLocalesOutFile,
-    `/* @generated */
+  if (polyfillLocalesOutFile) {
+    // Aggregate all into ../polyfill-locales.js
+    outputFileSync(
+      polyfillLocalesOutFile,
+      `/* @generated */
 // prettier-ignore
 require('./polyfill')
 if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function') {
@@ -57,14 +62,16 @@ if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function'
       .join(',\n')});
 }
 `
-  );
+    );
+  }
 
   // For test262
   // Only a subset of locales
-  outputFileSync(
-    test262MainFile,
-    `
-import './polyfill-force';
+  test262MainFile &&
+    outputFileSync(
+      test262MainFile,
+      `
+import '../dist-es6/polyfill-force';
 if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function') {
   Intl.DisplayNames.__addLocaleData(
     ${[
@@ -83,7 +90,7 @@ if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function'
       .join(',\n')});
 }
 `
-  );
+    );
 }
 
 if (require.main === module) {

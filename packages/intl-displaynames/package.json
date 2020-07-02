@@ -42,7 +42,7 @@
     "ts-jest": "^25.4.0"
   },
   "scripts": {
-    "cldr": "ts-node scripts/cldr --outDir dist/locale-data --test262MainFile dist-es6/test262-main.js --polyfillLocalesOutFile polyfill-locales.js",
+    "cldr": "ts-node scripts/cldr --outDir locale-data --testDataDir tests/locale-data --test262MainFile tests/test262-main.js --polyfillLocalesOutFile polyfill-locales.js",
     "build": "yarn cldr && yarn compile && yarn rollup",
     "clean": "rimraf dist dist-es6 lib *.tsbuildinfo",
     "jest": "cross-env cross-env NODE_ENV=test jest",
