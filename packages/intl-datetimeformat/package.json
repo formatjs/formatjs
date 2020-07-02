@@ -20,7 +20,7 @@
     "rollup": "NODE_OPTIONS=--max-old-space-size=8192 rollup -c rollup.config.js",
     "build": "yarn process-zdump-polyfill && yarn process-zdump-golden-polyfill && yarn cldr && yarn compile && api-extractor run --local && yarn rollup",
     "test": "cross-env cross-env NODE_ENV=test TZ=UTC jest",
-    "cldr": "ts-node scripts/cldr --outDir dist/locale-data --test262MainFile dist-es6/test262-main.js",
+    "cldr": "ts-node scripts/cldr --outDir locale-data --testDataDir tests/locale-data --test262MainFile tests/test262-main.js",
     "test262": "cross-env ts-node tests/runner"
   },
   "repository": {
@@ -42,6 +42,7 @@
   "files": [
     "dist",
     "lib",
+    "locale-data",
     "polyfill.js",
     "src"
   ],

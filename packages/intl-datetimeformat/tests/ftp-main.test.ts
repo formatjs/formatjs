@@ -1,8 +1,8 @@
 import {DateTimeFormat, DateTimeFormatPart} from '../src';
-import * as en from '../dist/locale-data/en.json';
-import * as pl from '../dist/locale-data/pl.json';
-import * as de from '../dist/locale-data/de.json';
-import * as ar from '../dist/locale-data/ar.json';
+import * as en from './locale-data/en.json';
+import * as pl from './locale-data/pl.json';
+import * as de from './locale-data/de.json';
+import * as ar from './locale-data/ar.json';
 import allData from '../src/data';
 import {DateTimeFormatOptions} from '../src/types';
 // @ts-ignore

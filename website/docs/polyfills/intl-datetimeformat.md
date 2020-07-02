@@ -3,7 +3,7 @@ id: intl-datetimeformat
 title: Intl.DateTimeFormat
 ---
 
-A spec-compliant polyfill/ponyfill for Intl.DateTimeFormat fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
+A spec-compliant polyfill for Intl.DateTimeFormat fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
 
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-datetimeformat.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-datetimeformat)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-datetimeformat)
@@ -24,30 +24,13 @@ This package requires the following capabilities:
 
 ## Usage
 
-### Ponyfill
-
-To use the ponyfill, import it along with its data:
-
-```tsx
-import IntlDateTimeFormat from '@formatjs/intl-datetimeformat';
-// locale-data for zh
-IntlDateTimeFormat.__addLocaleData(
-  require('@formatjs/intl-datetimeformat/dist/locale-data/zh.json')
-);
-
-// locale-data for en
-IntlDateTimeFormat.__addLocaleData(
-  require('@formatjs/intl-datetimeformat/dist/locale-data/en.json')
-);
-```
-
 ### Polyfill
 
 To use the polyfill, just import it to make sure that a fully functional Intl.DateTimeFormat is available in your environment:
 
 ```tsx
 import '@formatjs/intl-datetimeformat/polyfill';
-import '@formatjs/intl-datetimeformat/dist/locale-data/de'; // Add locale data for de
+import '@formatjs/intl-datetimeformat/locale-data/de'; // Add locale data for de
 ```
 
 ### Adding IANA Timezone Database
