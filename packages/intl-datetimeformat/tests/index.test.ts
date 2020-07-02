@@ -30,7 +30,7 @@ describe('Intl.DateTimeFormat', function () {
       new DateTimeFormat('en', {weekday: 'short', timeZone: 'UTC'}).format(
         new Date(1899, 1, 1)
       )
-    ).toBe('Wed, 5 AM');
+    ).toBe('Wed, 12 AM');
   });
   it('basicFormatMatcherScore', function () {
     const opts = {
