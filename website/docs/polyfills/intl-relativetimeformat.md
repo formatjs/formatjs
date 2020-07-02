@@ -3,7 +3,7 @@ id: intl-relativetimeformat
 title: Intl.RelativeTimeFormat
 ---
 
-A spec-compliant polyfill/ponyfill for Intl.RelativeTimeFormat fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
+A spec-compliant polyfill for Intl.RelativeTimeFormat fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
 
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-relativetimeformat.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-relativetimeformat)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-relativetimeformat)
@@ -26,32 +26,11 @@ This package requires the following capabilities:
 
 ## Usage
 
-### Ponyfill
-
-To use the ponyfill, import it along with its data:
-
-```tsx
-import IntlRelativeTimeFormat from '@formatjs/intl-relativetimeformat';
-// locale-data for zh
-IntlRelativeTimeFormat.__addLocaleData(
-  require('@formatjs/intl-relativetimeformat/dist/locale-data/zh.json')
-);
-
-// locale-data for en
-IntlRelativeTimeFormat.__addLocaleData(
-  require('@formatjs/intl-relativetimeformat/dist/locale-data/en.json')
-);
-
-new IntlRelativeTimeFormat('zh-CN').format(-1, 'second'); // '1秒钟前'
-```
-
-### Polyfill
-
 To use the polyfill, just import it to make sure that a fully functional Intl.RelativeTimeFormat is available in your environment:
 
 ```tsx
 import '@formatjs/intl-relativetimeformat/polyfill';
-import '@formatjs/intl-relativetimeformat/dist/locale-data/de'; // Add locale data for de
+import '@formatjs/intl-relativetimeformat/locale-data/de'; // Add locale data for de
 ```
 
 If you want to polyfill all locales (e.g for Node):

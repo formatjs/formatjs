@@ -31,30 +31,33 @@ const langData = locales.reduce(
 );
 
 function main(args: minimist.ParsedArgs) {
-  const {outDir, polyfillLocalesOutFile} = args;
+  const {outDir, testDataDir, test262MainFile, polyfillLocalesOutFile} = args;
 
-  // Dist all locale files to dist/locale-data
-  Object.keys(langData).forEach(function (lang) {
-    const destFile = join(outDir, lang + '.js');
-    outputFileSync(
-      destFile,
-      `/* @generated */	
+  // Dist all locale files to locale-data
+  outDir &&
+    Object.keys(langData).forEach(function (lang) {
+      const destFile = join(outDir, lang + '.js');
+      outputFileSync(
+        destFile,
+        `/* @generated */	
 // prettier-ignore
 if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData === 'function') {
   Intl.RelativeTimeFormat.__addLocaleData(${JSON.stringify(langData[lang])})
 }`
-    );
-  });
+      );
+    });
 
-  // Dist all json locale files to dist/locale-data
-  Object.keys(langData).forEach(function (lang) {
-    const destFile = join(outDir, lang + '.json');
-    outputJSONSync(destFile, langData[lang]);
-  });
+  // Dist all json locale files to tests/locale-data
+  testDataDir &&
+    Object.keys(langData).forEach(function (lang) {
+      const destFile = join(testDataDir, lang + '.json');
+      outputJSONSync(destFile, langData[lang]);
+    });
 
-  outputFileSync(
-    polyfillLocalesOutFile,
-    `/* @generated */
+  polyfillLocalesOutFile &&
+    outputFileSync(
+      polyfillLocalesOutFile,
+      `/* @generated */
 // prettier-ignore
 require('./polyfill')
 if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData === 'function') {
@@ -65,7 +68,23 @@ ${Object.keys(langData)
   )
 }
 `
-  );
+    );
+
+  test262MainFile &&
+    outputFileSync(
+      test262MainFile,
+      `/* @generated */
+// prettier-ignore
+require('../dist-es6/polyfill')
+if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData === 'function') {
+  Intl.RelativeTimeFormat.__addLocaleData(
+${Object.keys(langData)
+  .map(lang => JSON.stringify(langData[lang]))
+  .join(',\n')}
+  )
+}
+`
+    );
 }
 
 if (require.main === module) {
