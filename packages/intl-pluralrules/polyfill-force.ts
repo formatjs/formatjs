@@ -1,4 +1,4 @@
-import {PluralRules} from './core';
+import {PluralRules} from './';
 
 Object.defineProperty(Intl, 'PluralRules', {
   value: PluralRules,

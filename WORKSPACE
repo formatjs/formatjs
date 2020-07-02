@@ -7,8 +7,16 @@ workspace(
     name = "formatjs",
     # Map the @npm bazel workspace to the node_modules directory.
     # This lets Bazel use the same node_modules as other local tooling.
-    managed_directories = {"@npm": ["node_modules"]},
+    managed_directories = {
+        "@npm": ["node_modules"],
+    },
 )
+
+# new_local_repository(
+#     name="build_bazel_rules_nodejs",
+#     path = "./third_party/github.com/bazelbuild/rules_nodejs",
+#     build_file = "//third_party/github.com/bazelbuild/rules_nodejs:BUILD.bazel"
+# )
 
 # Install the nodejs "bootstrap" package
 # This provides the basic tools for running and packaging nodejs programs in Bazel

@@ -7,10 +7,10 @@ PACKAGE_NAME = "intl-pluralrules"
 pkg_npm(
     name = PACKAGE_NAME,
     srcs = ["package.json"],
-    deps = [":lib"],
+    deps = [":lib", ":locale-data"],
 )
 
-SRCS = glob(["src/*.ts"]) + ["index.ts"]
+SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
     "@npm//@types/node",
@@ -79,4 +79,30 @@ npm_package_bin(
     ],
     tool="@npm//@microsoft/api-extractor/bin:api-extractor",
     package = "api-extractor",
+)
+
+# CLDR
+npm_package_bin(
+    name = "locale-data",
+    output_dir=True,
+    args = [
+        "$(execpath scripts/cldr.ts)",
+        "--outDir",
+        "$(RULEDIR)/dist/locale-data"
+    ],
+    data = [
+        "scripts/cldr.ts",
+        "//:tsconfig.json",
+        "@npm//@types/fs-extra",
+        "@npm//@types/serialize-javascript",
+        "@npm//@types/minimist",
+        "@npm//@types/node",
+        "@npm//cldr-core",
+        "@npm//fs-extra",
+        "@npm//minimist",
+        "//packages/intl-utils:lib",
+        "@npm//serialize-javascript",
+        "@npm//make-plural-compiler"
+    ],
+    package = "ts-node",
 )
