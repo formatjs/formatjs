@@ -25,6 +25,9 @@
     "test": "yarn run prettier:check && lerna run test"
   },
   "devDependencies": {
+    "@commitlint/cli": "^9.0.1",
+    "@commitlint/config-angular": "^9.0.1",
+    "@commitlint/config-lerna-scopes": "^9.0.1",
     "@microsoft/api-extractor": "^7.8.12",
     "@rollup/plugin-json": "^4.0.3",
     "@types/jest": "^25.2.1",
@@ -113,8 +116,15 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged"
+      "pre-commit": "pretty-quick --staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-angular",
+      "@commitlint/config-lerna-scopes"
+    ]
   },
   "author": "Seth Bertalotto <sbertal@verizonmedia.com>"
 }
