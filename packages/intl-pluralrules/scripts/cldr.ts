@@ -34,31 +34,37 @@ languages.forEach(lang => {
 });
 
 function main(args: minimist.ParsedArgs) {
-  const {outDir, testDataDir, polyfillLocalesOutFile} = args;
+  const {outDir, test262MainFile, testDataDir, polyfillLocalesOutFile} = args;
 
-  languages.forEach(lang => {
-    outputFileSync(
-      join(outDir, `${lang}.js`),
-      `/* @generated */
+  outDir &&
+    languages.forEach(lang => {
+      outputFileSync(
+        join(outDir, `${lang}.js`),
+        `/* @generated */
 // prettier-ignore
 if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
   Intl.PluralRules.__addLocaleData(${serialize(allData[lang])})
 }
 `
-    );
-    outputFileSync(
-      join(testDataDir, `${lang}.js`),
-      `/* @generated */
+      );
+    });
+
+  testDataDir &&
+    languages.forEach(lang => {
+      outputFileSync(
+        join(testDataDir, `${lang}.js`),
+        `/* @generated */
 // prettier-ignore
 module.exports = ${serialize(allData[lang])}
 `
-    );
-  });
+      );
+    });
 
   // Aggregate all into ../polyfill-locales.js
-  outputFileSync(
-    polyfillLocalesOutFile,
-    `/* @generated */
+  polyfillLocalesOutFile &&
+    outputFileSync(
+      polyfillLocalesOutFile,
+      `/* @generated */
 // prettier-ignore
 require('./polyfill')
 if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
@@ -69,7 +75,24 @@ ${Object.keys(allData)
   )
 }
 `
-  );
+    );
+
+  // Aggregate all into ../test262-main.js
+  test262MainFile &&
+    outputFileSync(
+      test262MainFile,
+      `/* @generated */
+// prettier-ignore
+require('../dist-es6/polyfill-force')
+if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
+Intl.PluralRules.__addLocaleData(
+${Object.keys(allData)
+  .map(lang => serialize(allData[lang]))
+  .join(',\n')}
+)
+}
+`
+    );
 }
 if (require.main === module) {
   main(minimist(process.argv));

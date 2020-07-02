@@ -41,7 +41,7 @@
   },
   "scripts": {
     "build": "yarn run cldr && yarn run compile",
-    "cldr": "ts-node scripts/cldr --outDir dist/locale-data --testDataDir tests/locale-data --polyfillLocalesOutFile polyfill-locales.js",
+    "cldr": "ts-node scripts/cldr --outDir locale-data --testDataDir tests/locale-data --polyfillLocalesOutFile polyfill-locales.js --test262MainFile tests/test262-main.js",
     "test262:gen": "cat lib/polyfill-force.js dist/locale-data/*.js > dist-es6/locales.js",
     "clean": "rimraf dist lib dist-es6 polyfill-locales.js *.tsbuildinfo",
     "compile": "tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && yarn test262:gen && rollup -c rollup.config.js && api-extractor run --local",
