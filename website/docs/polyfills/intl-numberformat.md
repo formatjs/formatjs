@@ -37,10 +37,10 @@ To use this as a polyfill, override `Intl.NumberFormat` as below:
 import '@formatjs/intl-numberformat/polyfill';
 if (typeof Intl.NumberFormat.__addLocaleData === 'function') {
   Intl.NumberFormat.__addLocaleData(
-    require('@formatjs/intl-numberformat/dist/locale-data/zh.json') // locale-data for zh
+    require('@formatjs/intl-numberformat/locale-data/zh.json') // locale-data for zh
   );
   Intl.NumberFormat.__addLocaleData(
-    require('@formatjs/intl-numberformat/dist/locale-data/en.json') // locale-data for en
+    require('@formatjs/intl-numberformat/locale-data/en.json') // locale-data for en
   );
 }
 

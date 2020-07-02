@@ -32,7 +32,7 @@ If you need to support older browsers, we recommend you do the following:
 ```tsx
 if (!Intl.PluralRules) {
   require('@formatjs/intl-pluralrules/polyfill');
-  require('@formatjs/intl-pluralrules/dist/locale-data/de'); // Add locale data for de
+  require('@formatjs/intl-pluralrules/locale-data/de'); // Add locale data for de
 }
 ```
 
@@ -41,7 +41,7 @@ if (!Intl.PluralRules) {
 ```tsx
 if (!Intl.RelativeTimeFormat) {
   require('@formatjs/intl-relativetimeformat/polyfill');
-  require('@formatjs/intl-relativetimeformat/dist/locale-data/de'); // Add locale data for de
+  require('@formatjs/intl-relativetimeformat/locale-data/de'); // Add locale data for de
 }
 ```
 
@@ -51,7 +51,7 @@ if (!Intl.RelativeTimeFormat) {
 ```tsx
 if (!Intl.DisplayNames) {
   require('@formatjs/intl-displaynames/polyfill');
-  require('@formatjs/intl-displaynames/dist/locale-data/de'); // Add locale data for de
+  require('@formatjs/intl-displaynames/locale-data/de'); // Add locale data for de
 }
 ```
 
