@@ -9,8 +9,8 @@ require('@formatjs/intl-relativetimeformat/polyfill-locales');
 require('@formatjs/intl-listformat/polyfill-locales');
 require('@formatjs/intl-displaynames/polyfill-locales');
 require('@formatjs/intl-numberformat/polyfill');
-require('@formatjs/intl-numberformat/dist/locale-data/en');
-require('@formatjs/intl-numberformat/dist/locale-data/es');
+require('@formatjs/intl-numberformat/locale-data/en');
+require('@formatjs/intl-numberformat/locale-data/es');
 const Adapter = require('enzyme-adapter-react-16');
 
 configure({adapter: new Adapter()});
