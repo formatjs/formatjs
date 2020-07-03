@@ -75,7 +75,7 @@ ${Object.keys(langData)
       test262MainFile,
       `/* @generated */
 // prettier-ignore
-require('../dist-es6/polyfill')
+require('../dist-es6/polyfill-force')
 if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData === 'function') {
   Intl.RelativeTimeFormat.__addLocaleData(
 ${Object.keys(langData)

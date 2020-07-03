@@ -20,3 +20,4 @@ dist-es6
 lib
 polyfill-locales.js
 website/CHANGELOG.md
+bazel-out
