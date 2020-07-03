@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@3.5.0...@formatjs/intl-utils@3.6.0) (2020-07-03)
+
+
+### Features
+
+* **@formatjs/intl-utils:** export SANCTIONED_UNITS ([7719e90](https://github.com/formatjs/formatjs/commit/7719e90007733ce50233c5131c296d03da8ae370))
+
+
+
+
+
 # [3.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@3.4.1...@formatjs/intl-utils@3.5.0) (2020-07-01)
 
 
