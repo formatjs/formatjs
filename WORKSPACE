@@ -18,9 +18,16 @@ workspace(
 #     build_file = "//third_party/github.com/bazelbuild/rules_nodejs:BUILD.bazel"
 # )
 
+new_local_repository(
+    name = "test262",
+    build_file = "BUILD.test262",
+    path = "./test262",
+)
+
 # Install the nodejs "bootstrap" package
 # This provides the basic tools for running and packaging nodejs programs in Bazel
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
 http_archive(
     name = "build_bazel_rules_nodejs",
     sha256 = "790af2f3739871fedfb5721263e145e6ca6559c3c90bcaf6f3482a165d411827",
@@ -30,6 +37,7 @@ http_archive(
 # The yarn_install rule runs yarn anytime the package.json or yarn.lock file changes.
 # It also extracts and installs any Bazel rules distributed in an npm package.
 load("@build_bazel_rules_nodejs//:index.bzl", "yarn_install")
+
 yarn_install(
     # Name this npm so that Bazel Label references look like @npm//package
     name = "npm",
@@ -39,6 +47,7 @@ yarn_install(
 
 # Setup TypeScript toolchain
 load("@npm//@bazel/typescript:index.bzl", "ts_setup_workspace")
+
 ts_setup_workspace()
 
 # Setup skylib

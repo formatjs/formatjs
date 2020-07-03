@@ -1,0 +1,14 @@
+PLURALRULES_TESTS = glob(["test/intl402/PluralRules/**/*.js"], exclude=["**/proto-from-ctor-realm.js"])
+FILES = glob(["**/*.js", "**/*.json"]) + ["README.md"]
+
+filegroup(
+    name="pluralrules",
+    srcs=PLURALRULES_TESTS,
+    visibility=["//visibility:public"]
+)
+
+filegroup(
+    name="all",
+    srcs=FILES,
+    visibility=["//visibility:public"]
+)

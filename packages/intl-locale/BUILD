@@ -16,7 +16,7 @@ SRC_DEPS = [
     "@npm//@types/node",
     "@npm//cldr-core",
     "//packages/intl-utils:lib",
-    "//packages/intl-getcanonicallocales:lib"
+    "//packages/intl-getcanonicallocales:lib",
 ]
 
 ts_project(
@@ -59,8 +59,12 @@ jest_test(
 
 # API Extractor
 copy_to_bin(
-    name="setup-api-extractor",
-    srcs = ["api-extractor.json", "tsconfig.json", "package.json"]
+    name = "setup-api-extractor",
+    srcs = [
+        "api-extractor.json",
+        "package.json",
+        "tsconfig.json",
+    ],
 )
 
 npm_package_bin(
@@ -71,13 +75,13 @@ npm_package_bin(
         "--local",
         "--diagnostics",
         "-c",
-        "$(@D)/api-extractor.json"
+        "$(@D)/api-extractor.json",
     ],
     data = [
+        ":lib",
         ":setup-api-extractor",
         "//:setup-api-extractor",
-        ":lib"
     ],
-    tool="@npm//@microsoft/api-extractor/bin:api-extractor",
     package = "api-extractor",
+    tool = "@npm//@microsoft/api-extractor/bin:api-extractor",
 )

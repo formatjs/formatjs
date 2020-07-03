@@ -1,7 +1,6 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm", "npm_package_bin", "copy_to_bin")
+load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "npm_package_bin", "pkg_npm")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("//tools:jest.bzl", "jest_test")
-
 
 PACKAGE_NAME = "intl-utils"
 
@@ -11,7 +10,7 @@ pkg_npm(
     deps = [":lib"],
 )
 
-SRCS = glob(["src/*.ts"]) + ['index.ts']
+SRCS = glob(["src/*.ts"]) + ["index.ts"]
 
 SRC_DEPS = [
 ]
@@ -55,8 +54,12 @@ jest_test(
 
 # API Extractor
 copy_to_bin(
-    name="setup-api-extractor",
-    srcs = ["api-extractor.json", "tsconfig.json", "package.json"]
+    name = "setup-api-extractor",
+    srcs = [
+        "api-extractor.json",
+        "package.json",
+        "tsconfig.json",
+    ],
 )
 
 npm_package_bin(
@@ -67,13 +70,13 @@ npm_package_bin(
         "--local",
         "--diagnostics",
         "-c",
-        "$(@D)/api-extractor.json"
+        "$(@D)/api-extractor.json",
     ],
     data = [
+        ":lib",
         ":setup-api-extractor",
         "//:setup-api-extractor",
-        ":lib"
     ],
-    tool="@npm//@microsoft/api-extractor/bin:api-extractor",
     package = "api-extractor",
+    tool = "@npm//@microsoft/api-extractor/bin:api-extractor",
 )
