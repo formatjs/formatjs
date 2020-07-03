@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@2.2.11...@formatjs/intl-pluralrules@3.0.0) (2020-07-03)
+
+
+### Bug Fixes
+
+* add locale-data to package.json files ([52a1481](https://github.com/formatjs/formatjs/commit/52a148196585bf8b33b27b9b948d6333f49072e8))
+* **@formatjs/intl-pluralrules:** add criteria to activate polyfill if native impl has minimumFractionDigits bug ([6ee31a8](https://github.com/formatjs/formatjs/commit/6ee31a8aef5aaf22ad4169f25d35dfe586b5103f))
+
+
+### Features
+
+* **@formatjs/intl-pluralrules:** restructure locale-data output ([324e7e2](https://github.com/formatjs/formatjs/commit/324e7e265330ab1decf926724e25792ddbfd77b4))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-pluralrules:** Remove ponyfill mechanism. Our polyfill mechanism also detects buggy native implementation so we can override.
+* **@formatjs/intl-pluralrules:** Move locale-data outside of `dist`. This means new locale-data path would be `@formatjs/intl-pluralrules/locale-data` instead of `@formatjs/intl-pluralrules/dist/locale-data`
+
+
+
+
+
 ## [2.2.11](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@2.2.10...@formatjs/intl-pluralrules@2.2.11) (2020-07-01)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules

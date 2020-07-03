@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@5.2.11...@formatjs/intl-relativetimeformat@6.0.0) (2020-07-03)
+
+
+### Bug Fixes
+
+* add locale-data to package.json files ([52a1481](https://github.com/formatjs/formatjs/commit/52a148196585bf8b33b27b9b948d6333f49072e8))
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** restructure locale-data output ([4b21463](https://github.com/formatjs/formatjs/commit/4b21463fc4d289a0f220435ec5608a30793eab5a))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-relativetimeformat:** Remove ponyfill mechanism. Our polyfill mechanism also detects buggy native implementation so we can override.
+* **@formatjs/intl-relativetimeformat:** Move locale-data outside of `dist`. This means new locale-data path would be `@formatjs/intl-relativetimeformat/locale-data` instead of `@formatjs/intl-relativetimeformat/dist/locale-data`
+
+
+
+
+
 ## [5.2.11](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@5.2.10...@formatjs/intl-relativetimeformat@5.2.11) (2020-07-01)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat

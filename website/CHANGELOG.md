@@ -3,6 +3,45 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/formatjs/formatjs/compare/website@0.3.3...website@1.0.0) (2020-07-03)
+
+
+### Bug Fixes
+
+* **website:** fix polyfills dep diagram ([7818c5a](https://github.com/formatjs/formatjs/commit/7818c5ab92b96f9e61032e8f8a190024ee58721e))
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** restructure locale-data output ([1af51d6](https://github.com/formatjs/formatjs/commit/1af51d62b772a4dab188445b437c01c739b815a1))
+* **@formatjs/intl-displaynames:** restructure locale-data output ([d0d2257](https://github.com/formatjs/formatjs/commit/d0d2257e59e7719c09d63301dd2b5c102c7b508d))
+* **@formatjs/intl-listformat:** restructure locale-data output ([89bdf51](https://github.com/formatjs/formatjs/commit/89bdf516c3197990906bcbe5414dfd8342a7d7fa))
+* **@formatjs/intl-numberformat:** restructure locale-data output ([4086a49](https://github.com/formatjs/formatjs/commit/4086a49127e65f864fd8281220084e4e47509eeb))
+* **@formatjs/intl-pluralrules:** restructure locale-data output ([324e7e2](https://github.com/formatjs/formatjs/commit/324e7e265330ab1decf926724e25792ddbfd77b4))
+* **@formatjs/intl-relativetimeformat:** restructure locale-data output ([4b21463](https://github.com/formatjs/formatjs/commit/4b21463fc4d289a0f220435ec5608a30793eab5a))
+* **react-intl:** fail fast when intl Provider is missing ([42fa3c1](https://github.com/formatjs/formatjs/commit/42fa3c1c084b6da969790ee0b77b2f7fd6353488))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-relativetimeformat:** Remove ponyfill mechanism. Our polyfill mechanism also detects buggy native implementation so we can override.
+* **@formatjs/intl-relativetimeformat:** Move locale-data outside of `dist`. This means new locale-data path would be `@formatjs/intl-relativetimeformat/locale-data` instead of `@formatjs/intl-relativetimeformat/dist/locale-data`
+* **@formatjs/intl-pluralrules:** Remove ponyfill mechanism. Our polyfill mechanism also detects buggy native implementation so we can override.
+* **@formatjs/intl-pluralrules:** Move locale-data outside of `dist`. This means new locale-data path would be `@formatjs/intl-pluralrules/locale-data` instead of `@formatjs/intl-pluralrules/dist/locale-data`
+* **@formatjs/intl-numberformat:** Remove ponyfill mechanism. Our polyfill mechanism also detects buggy native implementation so we can override.
+* **@formatjs/intl-numberformat:** Move locale-data outside of `dist`. This means new locale-data path would be `@formatjs/intl-numberformat/locale-data` instead of `@formatjs/intl-numberformat/dist/locale-data`
+* **@formatjs/intl-listformat:** Remove ponyfill mechanism. Our polyfill mechanism also detects buggy native implementation so we can override.
+* **@formatjs/intl-listformat:** Move locale-data outside of `dist`. This means new locale-data path would be `@formatjs/intl-listformat/locale-data` instead of `@formatjs/intl-listformat/dist/locale-data`
+* **@formatjs/intl-displaynames:** Remove ponyfill mechanism. Our polyfill mechanism also detects buggy native implementation so we can override.
+* **@formatjs/intl-displaynames:** Move locale-data outside of `dist`. This means new locale-data path would be `@formatjs/intl-displaynames/locale-data` instead of `@formatjs/intl-displaynames/dist/locale-data`
+* **@formatjs/intl-datetimeformat:** Remove ponyfill mechanism. Our polyfill mechanism also detects buggy native implementation so we can override.
+* **@formatjs/intl-datetimeformat:** Move locale-data outside of `dist`. This means new locale-data path would be `@formatjs/intl-datetimeformat/locale-data` instead of `@formatjs/intl-datetimeformat/dist/locale-data`.
+* **react-intl:** This also comes from Dropbox internal developer feedback. `FormattedMessage` has a default English renderer that masks `Provider` setup issues which causes them to not be handled during testing phase.
+
+
+
+
+
 ## [0.3.3](https://github.com/formatjs/formatjs/compare/website@0.3.2...website@0.3.3) (2020-07-01)
 
 

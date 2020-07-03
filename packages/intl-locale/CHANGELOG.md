@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.1.9...@formatjs/intl-locale@2.1.10) (2020-07-03)
+
+
+### Bug Fixes
+
+* add locale-data to package.json files ([52a1481](https://github.com/formatjs/formatjs/commit/52a148196585bf8b33b27b9b948d6333f49072e8))
+
+
+
+
+
 ## [2.1.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.1.8...@formatjs/intl-locale@2.1.9) (2020-07-01)
 
 **Note:** Version bump only for package @formatjs/intl-locale

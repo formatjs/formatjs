@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@2.2.9...@formatjs/intl-listformat@3.0.0) (2020-07-03)
+
+
+### Bug Fixes
+
+* add locale-data to package.json files ([52a1481](https://github.com/formatjs/formatjs/commit/52a148196585bf8b33b27b9b948d6333f49072e8))
+
+
+### Features
+
+* **@formatjs/intl-listformat:** restructure locale-data output ([89bdf51](https://github.com/formatjs/formatjs/commit/89bdf516c3197990906bcbe5414dfd8342a7d7fa))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-listformat:** Remove ponyfill mechanism. Our polyfill mechanism also detects buggy native implementation so we can override.
+* **@formatjs/intl-listformat:** Move locale-data outside of `dist`. This means new locale-data path would be `@formatjs/intl-listformat/locale-data` instead of `@formatjs/intl-listformat/dist/locale-data`
+
+
+
+
+
 ## [2.2.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@2.2.8...@formatjs/intl-listformat@2.2.9) (2020-07-01)
 
 **Note:** Version bump only for package @formatjs/intl-listformat

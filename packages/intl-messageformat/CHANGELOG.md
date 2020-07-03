@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.0.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@8.4.1...intl-messageformat@9.0.0) (2020-07-03)
+
+
+### Features
+
+* **intl-messageformat:** make FormatXMLElementFn non-variadic ([f2963bf](https://github.com/formatjs/formatjs/commit/f2963bf17ec9809b13fffdb52d68f70439ba186b))
+
+
+### BREAKING CHANGES
+
+* **intl-messageformat:** This effectively change the signature for formatter
+function from `(...chunks) => any` to `(chunks) => any`. This solves a
+couple of issues:
+1. We received user feedback that variadic function is not as ergonomic
+2. Right now there's not way to distinguish between 2 chunks that have
+the same tag, e.g `<b>on</b> and <b>on</b>`. The function would
+receive 2 chunks that are identical. By consoliding to the 1st param we
+can reserve additional params to provide mode metadata in the future
+
+
+
+
+
 ## [8.4.1](https://github.com/formatjs/formatjs/compare/intl-messageformat@8.4.0...intl-messageformat@8.4.1) (2020-07-01)
 
 **Note:** Version bump only for package intl-messageformat

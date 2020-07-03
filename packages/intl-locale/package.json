@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-locale",
-  "version": "2.1.9",
+  "version": "2.1.10",
   "description": "Intl.Locale polyfill",
   "keywords": [
     "intl",
@@ -39,7 +39,7 @@
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "dependencies": {
-    "@formatjs/intl-getcanonicallocales": "^1.2.7",
+    "@formatjs/intl-getcanonicallocales": "^1.2.8",
     "@formatjs/intl-utils": "^3.5.0",
     "cldr-core": "^36.0.0"
   },

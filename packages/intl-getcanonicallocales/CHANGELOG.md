@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.2.7...@formatjs/intl-getcanonicallocales@1.2.8) (2020-07-03)
+
+
+### Bug Fixes
+
+* add locale-data to package.json files ([52a1481](https://github.com/formatjs/formatjs/commit/52a148196585bf8b33b27b9b948d6333f49072e8))
+
+
+
+
+
 ## [1.2.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.2.6...@formatjs/intl-getcanonicallocales@1.2.7) (2020-07-01)
 
 **Note:** Version bump only for package @formatjs/intl-getcanonicallocales

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@1.3.3...@formatjs/intl-datetimeformat@2.0.0) (2020-07-03)
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** restructure locale-data output ([1af51d6](https://github.com/formatjs/formatjs/commit/1af51d62b772a4dab188445b437c01c739b815a1))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-datetimeformat:** Remove ponyfill mechanism. Our polyfill mechanism also detects buggy native implementation so we can override.
+* **@formatjs/intl-datetimeformat:** Move locale-data outside of `dist`. This means new locale-data path would be `@formatjs/intl-datetimeformat/locale-data` instead of `@formatjs/intl-datetimeformat/dist/locale-data`.
+
+
+
+
+
 ## [1.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@1.3.2...@formatjs/intl-datetimeformat@1.3.3) (2020-07-01)
 
 

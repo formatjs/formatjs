@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@4.2.11...@formatjs/intl-numberformat@5.0.0) (2020-07-03)
+
+
+### Bug Fixes
+
+* add locale-data to package.json files ([52a1481](https://github.com/formatjs/formatjs/commit/52a148196585bf8b33b27b9b948d6333f49072e8))
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** restructure locale-data output ([4086a49](https://github.com/formatjs/formatjs/commit/4086a49127e65f864fd8281220084e4e47509eeb))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-numberformat:** Remove ponyfill mechanism. Our polyfill mechanism also detects buggy native implementation so we can override.
+* **@formatjs/intl-numberformat:** Move locale-data outside of `dist`. This means new locale-data path would be `@formatjs/intl-numberformat/locale-data` instead of `@formatjs/intl-numberformat/dist/locale-data`
+
+
+
+
+
 ## [4.2.11](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@4.2.10...@formatjs/intl-numberformat@4.2.11) (2020-07-01)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

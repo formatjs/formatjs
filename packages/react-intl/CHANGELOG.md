@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/formatjs/formatjs/compare/react-intl@4.7.6...react-intl@5.0.0) (2020-07-03)
+
+
+### Features
+
+* **intl-messageformat:** make FormatXMLElementFn non-variadic ([f2963bf](https://github.com/formatjs/formatjs/commit/f2963bf17ec9809b13fffdb52d68f70439ba186b))
+* **react-intl:** fail fast when intl Provider is missing ([42fa3c1](https://github.com/formatjs/formatjs/commit/42fa3c1c084b6da969790ee0b77b2f7fd6353488))
+* **react-intl:** merge chunks in FormatXMLElementFn ([1b5892f](https://github.com/formatjs/formatjs/commit/1b5892febb8bbd71613761ba253f702dc18fb522)), closes [#1623](https://github.com/formatjs/formatjs/issues/1623)
+
+
+### BREAKING CHANGES
+
+* **react-intl:** This also comes from Dropbox internal developer feedback. `FormattedMessage` has a default English renderer that masks `Provider` setup issues which causes them to not be handled during testing phase.
+* **intl-messageformat:** This effectively change the signature for formatter
+function from `(...chunks) => any` to `(chunks) => any`. This solves a
+couple of issues:
+1. We received user feedback that variadic function is not as ergonomic
+2. Right now there's not way to distinguish between 2 chunks that have
+the same tag, e.g `<b>on</b> and <b>on</b>`. The function would
+receive 2 chunks that are identical. By consoliding to the 1st param we
+can reserve additional params to provide mode metadata in the future
+* **react-intl:** This turns rich text formatting callback function to
+non-variadic. So `(...chunks) => React.ReactNode` becomes `(chunks) =>
+React.ReactNode`. This solves a couple of issues:
+1. We receive feedback that variadic callback fn is not ergonomic
+2. This solves the missing key issue when we render rich text
+3. This allows us to utilize extra param to distinguish when 2 React
+element are exactly the same except for their indices, e.g `<b>one</b>
+and <b>one</b>` and you want to render them differently
+
+
+
+
+
 ## [4.7.6](https://github.com/formatjs/formatjs/compare/react-intl@4.7.5...react-intl@4.7.6) (2020-07-01)
 
 **Note:** Version bump only for package react-intl
