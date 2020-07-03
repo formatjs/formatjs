@@ -31,9 +31,9 @@
   "module": "lib/index.js",
   "types": "lib/intl-listformat.d.ts",
   "files": [
-    "dist-es6",
     "dist",
     "lib",
+    "locale-data",
     "polyfill-locales.js",
     "polyfill.js",
     "src"

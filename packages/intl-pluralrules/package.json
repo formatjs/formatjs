@@ -16,7 +16,7 @@
   "module": "lib/index.js",
   "types": "lib/intl-pluralrules.d.ts",
   "files": [
-    "dist-es6",
+    "locale-data",
     "dist",
     "lib",
     "polyfill-locales.js",

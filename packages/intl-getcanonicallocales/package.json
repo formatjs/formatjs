@@ -19,7 +19,6 @@
   "module": "lib/index.js",
   "types": "lib/intl-getcanonicallocales.d.ts",
   "files": [
-    "dist-es6",
     "dist",
     "lib",
     "polyfill.js",

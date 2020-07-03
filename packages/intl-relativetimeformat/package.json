@@ -43,7 +43,7 @@
     "test": "yarn run jest && yarn run test262"
   },
   "files": [
-    "dist-es6",
+    "locale-data",
     "dist",
     "lib",
     "polyfill-locales.js",

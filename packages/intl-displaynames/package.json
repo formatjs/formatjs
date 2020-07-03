@@ -21,6 +21,7 @@
   "files": [
     "dist",
     "lib",
+    "locale-data",
     "polyfill.js",
     "polyfill-locales.js",
     "src"
