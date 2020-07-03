@@ -37,6 +37,6 @@ export * from './list-types';
 export * from './plural-rules-types';
 export * from './number-types';
 export * from './displaynames-types';
-export {removeUnitNamespace} from './units';
+export * from './units';
 export {invariant} from './invariant';
 export {LocaleData} from './types';
