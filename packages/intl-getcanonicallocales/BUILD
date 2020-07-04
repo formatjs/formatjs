@@ -7,7 +7,7 @@ PACKAGE_NAME = "intl-getcanonicallocales"
 pkg_npm(
     name = PACKAGE_NAME,
     srcs = ["package.json"],
-    deps = [":lib"],
+    deps = [":dist"],
 )
 
 SRCS = glob(["src/*.ts"]) + [
@@ -21,9 +21,23 @@ SRC_DEPS = [
 ]
 
 ts_project(
+    name = "dist",
+    package_name = "@formatjs/%s" % PACKAGE_NAME,
+    srcs = SRCS,
+    declaration = True,
+    declaration_map = True,
+    extends = ["//:tsconfig.json"],
+    source_map = True,
+    tsconfig = "tsconfig.json",
+    visibility = ["//visibility:public"],
+    deps = SRC_DEPS,
+)
+
+ts_project(
     name = "lib",
     package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
+    outdir="lib",
     declaration = True,
     declaration_map = True,
     extends = ["//:tsconfig.json"],

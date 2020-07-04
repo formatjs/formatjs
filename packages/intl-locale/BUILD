@@ -7,7 +7,7 @@ PACKAGE_NAME = "intl-locale"
 pkg_npm(
     name = PACKAGE_NAME,
     srcs = ["package.json"],
-    deps = [":lib"],
+    deps = [":dist", ":lib"],
 )
 
 SRCS = glob(["*.ts"])
@@ -16,13 +16,27 @@ SRC_DEPS = [
     "@npm//@types/node",
     "@npm//cldr-core",
     "//packages/intl-utils:dist",
-    "//packages/intl-getcanonicallocales:lib",
+    "//packages/intl-getcanonicallocales:dist",
 ]
+
+ts_project(
+    name = "dist",
+    package_name = "@formatjs/%s" % PACKAGE_NAME,
+    srcs = SRCS,
+    declaration = True,
+    declaration_map = True,
+    extends = ["//:tsconfig.json"],
+    source_map = True,
+    tsconfig = "tsconfig.json",
+    visibility = ["//visibility:public"],
+    deps = SRC_DEPS,
+)
 
 ts_project(
     name = "lib",
     package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
+    outdir="lib",
     declaration = True,
     declaration_map = True,
     extends = ["//:tsconfig.json"],
@@ -78,7 +92,7 @@ npm_package_bin(
         "$(@D)/api-extractor.json",
     ],
     data = [
-        ":lib",
+        ":dist",
         ":setup-api-extractor",
         "//:setup-api-extractor",
     ],
