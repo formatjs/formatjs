@@ -1,8 +1,8 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "npm_package_bin", "pkg_npm", "generated_file_test")
-load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "generated_file_test", "npm_package_bin", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
-load("//tools:jest.bzl", "jest_test")
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//ts-node:index.bzl", "ts_node_test")
+load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-pluralrules"
 
@@ -16,7 +16,10 @@ pkg_npm(
     ],
 )
 
-SRCS = glob(["*.ts"], exclude=["test*.*"])
+SRCS = glob(
+    ["*.ts"],
+    exclude = ["test*.*"],
+)
 
 SRC_DEPS = [
     "@npm//@types/node",
@@ -40,10 +43,10 @@ ts_project(
     name = "lib",
     package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
-    outdir="lib",
     declaration = True,
     declaration_map = True,
     extends = ["//:tsconfig.json"],
+    outdir = "lib",
     source_map = True,
     tsconfig = "//:tsconfig.esm.json",
     visibility = ["//visibility:public"],
@@ -207,17 +210,20 @@ npm_package_bin(
 )
 
 generated_file_test(
-    name="test262-main",
+    name = "test262-main",
     src = "test262-main.ts",
     generated = ":test262-main-gen",
 )
 
 # Test262
 ts_project(
-    name="test262-main-bundle",
+    name = "test262-main-bundle",
     srcs = SRCS + ["test262-main.ts"],
-    outdir='test262',
-    extends = ["tsconfig.json", "//:tsconfig.json"],
+    extends = [
+        "tsconfig.json",
+        "//:tsconfig.json",
+    ],
+    outdir = "test262",
     tsconfig = "tsconfig.es6.json",
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
@@ -225,21 +231,23 @@ ts_project(
 
 rollup_bundle(
     name = "test262-polyfill",
-    srcs = ["test262/polyfill-force.js", "test262/index.js"],
-    entry_point = "test262/test262-main.js",
+    srcs = [
+        "test262/index.js",
+        "test262/polyfill-force.js",
+    ],
     config_file = "rollup.config.test262.js",
-    format="umd",
-    deps=[
+    entry_point = "test262/test262-main.js",
+    format = "umd",
+    deps = [
         "@npm//rollup-plugin-node-resolve",
         "@npm//rollup-plugin-commonjs",
         "@npm//rollup-plugin-typescript2",
         "@npm//@rollup/plugin-json",
-    ] + SRC_DEPS
+    ] + SRC_DEPS,
 )
 
 npm_package_bin(
     name = "test262-result",
-    stdout = "test262-result.json",
     args = [
         "--reporter-keys",
         "file,attrs,result",
@@ -255,23 +263,24 @@ npm_package_bin(
         "@test262//:pluralrules",
     ],
     package = "test262-harness",
+    stdout = "test262-result.json",
 )
 
 ts_node_test(
     name = "test262",
+    data = [
+        "tests/verify.ts",
+        ":test262-result.json",
+        "//:tsconfig.json",
+        "@npm//@types/minimist",
+        "@npm//@types/node",
+        "@npm//minimist",
+    ],
     templated_args = [
         "$(execpath tests/verify.ts)",
         "--result",
         "$(rootpath :test262-result.json)",
     ],
-    data = [
-        "tests/verify.ts",
-        "//:tsconfig.json",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//minimist",
-        ":test262-result.json"
-    ]
 )
 
 # test262_harness_test(

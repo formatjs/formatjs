@@ -6,8 +6,14 @@ PACKAGE_NAME = "intl-utils"
 
 pkg_npm(
     name = PACKAGE_NAME,
-    srcs = ["package.json", "LICENSE.md"],
-    deps = [":dist", ":lib"],
+    srcs = [
+        "LICENSE.md",
+        "package.json",
+    ],
+    deps = [
+        ":dist",
+        ":lib",
+    ],
 )
 
 SRCS = glob(["src/*.ts"]) + ["index.ts"]
@@ -30,12 +36,12 @@ ts_project(
     name = "lib",
     package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
-    outdir="lib",
     declaration = True,
     declaration_map = True,
+    extends = ["//:tsconfig.json"],
+    outdir = "lib",
     source_map = True,
     tsconfig = "//:tsconfig.esm.json",
-    extends=["//:tsconfig.json"],
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
 )

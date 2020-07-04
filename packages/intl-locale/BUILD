@@ -7,7 +7,10 @@ PACKAGE_NAME = "intl-locale"
 pkg_npm(
     name = PACKAGE_NAME,
     srcs = ["package.json"],
-    deps = [":dist", ":lib"],
+    deps = [
+        ":dist",
+        ":lib",
+    ],
 )
 
 SRCS = glob(["*.ts"])
@@ -36,10 +39,10 @@ ts_project(
     name = "lib",
     package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
-    outdir="lib",
     declaration = True,
     declaration_map = True,
     extends = ["//:tsconfig.json"],
+    outdir = "lib",
     source_map = True,
     tsconfig = "tsconfig.json",
     visibility = ["//visibility:public"],
