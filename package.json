@@ -29,12 +29,13 @@
     "bazel:lint-fix": "yarn bazel:format --lint=fix"
   },
   "devDependencies": {
-    "@commitlint/cli": "^9.0.1",
-    "@commitlint/config-angular": "^9.0.1",
     "@bazel/bazelisk": "^1.5.0",
     "@bazel/buildifier": "^3.3.0",
     "@bazel/ibazel": "^0.13.1",
+    "@bazel/rollup": "^1.7.0",
     "@bazel/typescript": "^2.0.0-rc.0",
+    "@commitlint/cli": "^9.0.1",
+    "@commitlint/config-angular": "^9.0.1",
     "@microsoft/api-extractor": "^7.8.12",
     "@rollup/plugin-json": "^4.0.3",
     "@types/jest": "^25.2.1",

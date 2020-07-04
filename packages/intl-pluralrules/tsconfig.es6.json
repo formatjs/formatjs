@@ -3,6 +3,8 @@
   "compilerOptions": {
     "target": "es6",
     "module": "esnext",
-    "outDir": "dist-es6"
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false
   }
 }

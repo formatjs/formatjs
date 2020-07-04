@@ -1,7 +1,7 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "npm_package_bin", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "npm_package_bin", "pkg_npm", "generated_file_test")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("//tools:jest.bzl", "jest_test")
-# load("@npm//test262-harness:index.bzl", "test262_harness_test")
 load("@npm//ts-node:index.bzl", "ts_node_test")
 
 PACKAGE_NAME = "intl-pluralrules"
@@ -16,11 +16,11 @@ pkg_npm(
     ],
 )
 
-SRCS = glob(["*.ts"])
+SRCS = glob(["*.ts"], exclude=["test*.*"])
 
 SRC_DEPS = [
     "@npm//@types/node",
-    "//packages/intl-utils:lib",
+    "//packages/intl-utils:dist",
     "//packages/intl-getcanonicallocales:lib",
 ]
 
@@ -38,7 +38,7 @@ ts_project(
 )
 
 jest_test(
-    name = "test",
+    name = "unit",
     srcs = [
         "//:tsconfig.json",
     ] + SRCS + glob([
@@ -103,7 +103,7 @@ npm_package_bin(
     data = [
         "scripts/cldr.ts",
         "//:tsconfig.json",
-        "//packages/intl-utils:lib",
+        "//packages/intl-utils:dist",
         "@npm//@types/fs-extra",
         "@npm//@types/minimist",
         "@npm//@types/node",
@@ -128,7 +128,7 @@ npm_package_bin(
     data = [
         "scripts/cldr.ts",
         "//:tsconfig.json",
-        "//packages/intl-utils:lib",
+        "//packages/intl-utils:dist",
         "@npm//@types/fs-extra",
         "@npm//@types/minimist",
         "@npm//@types/node",
@@ -154,7 +154,7 @@ npm_package_bin(
     data = [
         "scripts/cldr.ts",
         "//:tsconfig.json",
-        "//packages/intl-utils:lib",
+        "//packages/intl-utils:dist",
         "@npm//@types/fs-extra",
         "@npm//@types/minimist",
         "@npm//@types/node",
@@ -169,8 +169,8 @@ npm_package_bin(
 )
 
 npm_package_bin(
-    name = "test262-main",
-    outs = ["test262-main.js"],
+    name = "test262-main-gen",
+    outs = ["tmp/test262-main.ts"],
     args = [
         "$(execpath scripts/cldr.ts)",
         "--test262MainFile",
@@ -179,7 +179,7 @@ npm_package_bin(
     data = [
         "scripts/cldr.ts",
         "//:tsconfig.json",
-        "//packages/intl-utils:lib",
+        "//packages/intl-utils:dist",
         "@npm//@types/fs-extra",
         "@npm//@types/minimist",
         "@npm//@types/node",
@@ -193,44 +193,51 @@ npm_package_bin(
     package = "ts-node",
 )
 
-# ts_node_test(
-#     name = "test262",
-#     templated_args = [
-#         "$(execpath tests/runner.ts)",
-#         "--reporter-keys",
-#         "file,attrs,result",
-#         "--prelude",
-#         "$(rootpath test262-main.js)",
-#         "$(rootpaths @test262//:pluralrules)",
-#     ],
-#     data = [
-#         "tests/runner.ts",
-#         ":test262-main.js",
-#         "//:tsconfig.json",
-#         "@npm//test262-harness",
-#         "@npm//@types/glob",
-#         "@npm//@types/minimist",
-#         "@npm//@types/node",
-#         "@npm//minimist",
-#         "@test262//:all",
-#          "@test262//:pluralrules",
-#     ]
-# )
+generated_file_test(
+    name="test262-main",
+    src = "test262-main.ts",
+    generated = ":test262-main-gen",
+)
+
+# Test262
+ts_project(
+    name="test262-main-bundle",
+    srcs = SRCS + ["test262-main.ts"],
+    outdir='test262',
+    extends = ["tsconfig.json", "//:tsconfig.json"],
+    tsconfig = "tsconfig.es6.json",
+    visibility = ["//visibility:public"],
+    deps = SRC_DEPS,
+)
+
+rollup_bundle(
+    name = "test262-polyfill",
+    srcs = ["test262/polyfill-force.js", "test262/index.js"],
+    entry_point = "test262/test262-main.js",
+    config_file = "rollup.config.test262.js",
+    format="umd",
+    deps=[
+        "@npm//rollup-plugin-node-resolve",
+        "@npm//rollup-plugin-commonjs",
+        "@npm//rollup-plugin-typescript2",
+        "@npm//@rollup/plugin-json",
+    ] + SRC_DEPS
+)
 
 npm_package_bin(
-    name = "test262",
+    name = "test262-result",
     stdout = "test262-result.json",
     args = [
         "--reporter-keys",
         "file,attrs,result",
         "--prelude",
-        "$(execpath test262-main.js)",
+        "$(execpath test262-polyfill.js)",
         "-r",
         "json",
         "$(locations @test262//:pluralrules)",
     ],
     data = [
-        ":test262-main.js",
+        ":test262-polyfill.js",
         "@test262//:all",
         "@test262//:pluralrules",
     ],
@@ -238,7 +245,7 @@ npm_package_bin(
 )
 
 ts_node_test(
-    name = "test262-verify",
+    name = "test262",
     templated_args = [
         "$(execpath tests/verify.ts)",
         "--result",
@@ -260,11 +267,11 @@ ts_node_test(
 #         "--reporter-keys",
 #         "file,attrs,result",
 #         "--prelude",
-#         "$(rootpath :test262-main.js)",
-#         "$(rootpaths @test262//:pluralrules)",
+#         "$(rootpath test262-polyfill.js)",
+#         "$$(rlocation $(locations @test262//:pluralrules))",
 #     ],
 #     data = [
-#         ":test262-main.js",
+#         "test262-polyfill.js",
 #         "@test262//:all",
 #         "@test262//:pluralrules",
 #     ],

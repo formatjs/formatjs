@@ -9,6 +9,8 @@ load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin")
 exports_files(
     [
         "tsconfig.json",
+        "tsconfig.esm.json",
+        "tsconfig.es6.json",
         "api-extractor.json",
     ],
     visibility = ["//:__subpackages__"],

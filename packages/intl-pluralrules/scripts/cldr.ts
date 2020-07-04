@@ -83,7 +83,8 @@ ${Object.keys(allData)
       test262MainFile,
       `/* @generated */
 // prettier-ignore
-require('../dist-es6/polyfill-force')
+// @ts-nocheck
+import './polyfill-force'
 if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
 Intl.PluralRules.__addLocaleData(
 ${Object.keys(allData)

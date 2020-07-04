@@ -15,7 +15,7 @@ SRCS = glob(["*.ts"])
 SRC_DEPS = [
     "@npm//@types/node",
     "@npm//cldr-core",
-    "//packages/intl-utils:lib",
+    "//packages/intl-utils:dist",
     "//packages/intl-getcanonicallocales:lib",
 ]
 

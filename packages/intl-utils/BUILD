@@ -6,23 +6,36 @@ PACKAGE_NAME = "intl-utils"
 
 pkg_npm(
     name = PACKAGE_NAME,
-    srcs = ["package.json"],
-    deps = [":lib"],
+    srcs = ["package.json", "LICENSE.md"],
+    deps = [":dist", ":lib"],
 )
 
 SRCS = glob(["src/*.ts"]) + ["index.ts"]
 
-SRC_DEPS = [
-]
+SRC_DEPS = []
 
 ts_project(
-    name = "lib",
+    name = "dist",
     package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
     declaration = True,
     declaration_map = True,
     source_map = True,
     tsconfig = "//:tsconfig.json",
+    visibility = ["//visibility:public"],
+    deps = SRC_DEPS,
+)
+
+ts_project(
+    name = "lib",
+    package_name = "@formatjs/%s" % PACKAGE_NAME,
+    srcs = SRCS,
+    outdir="lib",
+    declaration = True,
+    declaration_map = True,
+    source_map = True,
+    tsconfig = "//:tsconfig.esm.json",
+    extends=["//:tsconfig.json"],
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
 )
@@ -73,7 +86,7 @@ npm_package_bin(
         "$(@D)/api-extractor.json",
     ],
     data = [
-        ":lib",
+        ":dist",
         ":setup-api-extractor",
         "//:setup-api-extractor",
     ],
