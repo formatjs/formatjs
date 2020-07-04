@@ -25,4 +25,4 @@ packages/intl-numberformat/tests/data/
 packages/intl-relativetimeformat/src/locales.ts
 packages/babel-plugin-react-intl/test/fixtures/*/actual.json
 bazel-out
-packages/**/test262*
+packages/*/tests/test262*
