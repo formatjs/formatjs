@@ -1093,10 +1093,10 @@
   resolved "https://registry.yarnpkg.com/@bazel/ibazel/-/ibazel-0.13.1.tgz#23788f67a6fbe83d96f2d055691df4917c10ac8d"
   integrity sha512-FO1hBKpzpeBL0adnFYF2Dwl/7gox6ccKM6bb+x26AXrQpLbinXPuTi4zeXRL/MW4383mF6i4RovLCmwUU/YW0w==
 
-"@bazel/rollup@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@bazel/rollup/-/rollup-1.7.0.tgz#5c0f0d51d2f3f14e78781a4b9e6a9ffba87f1579"
-  integrity sha512-Pp5aCJw3gwu77zn6/fQgZ39ArrWEI5O3dja5wKadBnfOQ66PImIEr+bf7JgROoWvACH1kGxaS423rq51fiuCsA==
+"@bazel/rollup@^2.0.0-rc.0":
+  version "2.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@bazel/rollup/-/rollup-2.0.0-rc.0.tgz#b184b9c9947bdfe57ca5167bce4b0ee15d2a321f"
+  integrity sha512-ZV3UUfOq9/JIPl7nwrR+Domncjd8J/uUPwnQGNwKz4yfS57NnR4A5mFoUjXeCKhPQZukaSt6Pydp2IUqrRGZkw==
 
 "@bazel/typescript@^2.0.0-rc.0":
   version "2.0.0-rc.0"
