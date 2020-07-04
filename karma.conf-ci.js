@@ -1,4 +1,5 @@
-const {sync: globSync} = require('glob');
+const FILES = process.argv.slice(4);
+
 module.exports = function (config) {
   if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
     console.log(
@@ -7,47 +8,34 @@ module.exports = function (config) {
     process.exit(1);
   }
 
-  const FILES = globSync('./packages/*/tests-karma/*.js');
-
   // Browsers to run on Sauce Labs
   // Check out https://saucelabs.com/platforms for all browser/OS combos
-  let customLaunchers;
-  if (process.env.TRAVIS_PULL_REQUEST_SHA) {
-    customLaunchers = {
-      sl_chrome: {
-        base: 'SauceLabs',
-        browserName: 'internet explorer',
-        version: '11',
-      },
-    };
-  } else {
-    customLaunchers = {
-      // Sauce Labs keeps failing to get a safari instance
-      // sl_safari: {
-      //     base: 'SauceLabs',
-      //     browserName: 'safari',
-      // },
-      sl_edge: {
-        base: 'SauceLabs',
-        browserName: 'MicrosoftEdge',
-      },
-      sl_chrome: {
-        base: 'SauceLabs',
-        browserName: 'chrome',
-        version: '36', // https://polyfill.io/v3/supported-browsers/
-      },
-      sl_firefox: {
-        base: 'SauceLabs',
-        browserName: 'firefox',
-        version: '40', // https://polyfill.io/v3/supported-browsers/
-      },
-      sl_ie_11: {
-        base: 'SauceLabs',
-        browserName: 'internet explorer',
-        version: '11',
-      },
-    };
-  }
+  const customLaunchers = {
+    // Sauce Labs keeps failing to get a safari instance
+    // sl_safari: {
+    //     base: 'SauceLabs',
+    //     browserName: 'safari',
+    // },
+    sl_edge: {
+      base: 'SauceLabs',
+      browserName: 'MicrosoftEdge',
+    },
+    sl_chrome: {
+      base: 'SauceLabs',
+      browserName: 'chrome',
+      version: '36', // https://polyfill.io/v3/supported-browsers/
+    },
+    sl_firefox: {
+      base: 'SauceLabs',
+      browserName: 'firefox',
+      version: '40', // https://polyfill.io/v3/supported-browsers/
+    },
+    sl_ie_11: {
+      base: 'SauceLabs',
+      browserName: 'internet explorer',
+      version: '11',
+    },
+  };
 
   config.set({
     basePath: '',

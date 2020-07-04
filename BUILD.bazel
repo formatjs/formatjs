@@ -12,6 +12,9 @@ exports_files(
         "tsconfig.esm.json",
         "tsconfig.es6.json",
         "api-extractor.json",
+        "rollup.config.js",
+        "karma.conf.js",
+        "karma.conf-ci.js",
     ],
     visibility = ["//:__subpackages__"],
 )

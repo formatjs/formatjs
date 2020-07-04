@@ -50,7 +50,7 @@ ts_project(
 )
 
 jest_test(
-    name = "test",
+    name = "unit",
     srcs = [
         "//:tsconfig.json",
     ] + SRCS + glob([

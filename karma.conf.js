@@ -1,6 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const {sync: globSync} = require('glob');
-const FILES = globSync('./packages/*/tests-karma/*.js');
+const FILES = process.argv.slice(4);
 
 module.exports = function (config) {
   config.set({

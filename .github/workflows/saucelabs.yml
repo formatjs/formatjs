@@ -16,17 +16,10 @@ jobs:
         run: yarn install --frozen-lockfile
         env:
           CI: true
-      - name: yarn build
-        run: yarn build
-        env:
-          CI: true
       - uses: saucelabs/sauce-connect-action@v1.0.0
         with:
           username: ${{ secrets.SAUCE_USERNAME }}
           accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
           tunnelIdentifier: github-action-tunnel
       - name: Karma
-        run: yarn karma:ci
-        env:
-          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
-          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+        run: yarn karma:ci --define=SAUCE_USERNAME=${{ secrets.SAUCE_USERNAME }} --define=SAUCE_ACCESS_KEY=${{ secrets.SAUCE_ACCESS_KEY }}
