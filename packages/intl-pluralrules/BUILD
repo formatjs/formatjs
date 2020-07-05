@@ -1,9 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "generated_file_test", "npm_package_bin", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
-
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
-load("@npm//ts-node:index.bzl", "ts_node_test")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-pluralrules"
@@ -248,56 +246,18 @@ rollup_bundle(
     ] + SRC_DEPS,
 )
 
-# npm_package_bin(
-#     name = "test262-result",
-#     args = [
-#         "--reporter-keys",
-#         "file,attrs,result",
-#         "--prelude",
-#         "$(execpath test262-polyfill.js)",
-#         "-r",
-#         "json",
-#         "$(rootpaths //:test262-pluralrules)",
-#     ],
-#     data = [
-#         ":test262-polyfill.js",
-#         "//:test262-all",
-#         "//:test262-pluralrules",
-#     ],
-#     package = "test262-harness",
-#     stdout = "test262-result.json",
-# )
-
-# ts_node_test(
-#     name = "test262",
-#     data = [
-#         "tests/verify.ts",
-#         ":test262-result.json",
-#         "//:tsconfig.json",
-#         "@npm//@types/minimist",
-#         "@npm//@types/node",
-#         "@npm//minimist",
-#     ],
-#     templated_args = [
-#         "$(execpath tests/verify.ts)",
-#         "--result",
-#         "$(rootpath :test262-result.json)",
-#     ],
-# )
-
-
 test262_harness_test(
-    name="test262",
-    templated_args =[
+    name = "test262",
+    data = [
+        "test262-polyfill.js",
+        "//:test262-all",
+        "//:test262-pluralrules",
+    ],
+    templated_args = [
         "--reporter-keys",
         "file,attrs,result",
         "--prelude",
         "$(rootpath test262-polyfill.js)",
         "$(rootpaths //:test262-pluralrules)",
-    ],
-    data = [
-        "test262-polyfill.js",
-        "//:test262-all",
-        "//:test262-pluralrules",
     ],
 )
