@@ -1,6 +1,8 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "generated_file_test", "npm_package_bin", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
+
+# load("@npm//test262-harness:index.bzl", "test262_harness_test")
 load("@npm//ts-node:index.bzl", "ts_node_test")
 load("//tools:jest.bzl", "jest_test")
 
@@ -255,12 +257,12 @@ npm_package_bin(
         "$(execpath test262-polyfill.js)",
         "-r",
         "json",
-        "$(locations @test262//:pluralrules)",
+        "$(rootpaths //:test262-pluralrules)",
     ],
     data = [
         ":test262-polyfill.js",
-        "@test262//:all",
-        "@test262//:pluralrules",
+        "//:test262-all",
+        "//:test262-pluralrules",
     ],
     package = "test262-harness",
     stdout = "test262-result.json",
@@ -283,6 +285,7 @@ ts_node_test(
     ],
 )
 
+# Can't use this bc it doesn't echo the right exitCode
 # test262_harness_test(
 #     name="test262",
 #     templated_args =[
@@ -290,11 +293,11 @@ ts_node_test(
 #         "file,attrs,result",
 #         "--prelude",
 #         "$(rootpath test262-polyfill.js)",
-#         "$$(rlocation $(locations @test262//:pluralrules))",
+#         "$(rootpaths //:test262-pluralrules)",
 #     ],
 #     data = [
 #         "test262-polyfill.js",
-#         "@test262//:all",
-#         "@test262//:pluralrules",
+#         "//:test262-all",
+#         "//:test262-pluralrules",
 #     ],
 # )

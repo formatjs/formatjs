@@ -27,3 +27,25 @@ copy_to_bin(
     ],
     visibility = ["//:__subpackages__"],
 )
+
+PLURALRULES_TESTS = glob(
+    ["test262/test/intl402/PluralRules/**/*.js"],
+    exclude = ["**/proto-from-ctor-realm.js"],
+)
+
+FILES = glob([
+    "test262/**/*.js",
+    "test262/**/*.json",
+]) + ["test262/README.md"]
+
+filegroup(
+    name = "test262-pluralrules",
+    srcs = PLURALRULES_TESTS,
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "test262-all",
+    srcs = FILES,
+    visibility = ["//visibility:public"],
+)

@@ -18,11 +18,11 @@ workspace(
 #     build_file = "//third_party/github.com/bazelbuild/rules_nodejs:BUILD.bazel"
 # )
 
-new_local_repository(
-    name = "test262",
-    build_file = "BUILD.test262",
-    path = "./test262",
-)
+# new_local_repository(
+#     name = "test262",
+#     build_file = "BUILD.test262",
+#     path = "./test262",
+# )
 
 # Install the nodejs "bootstrap" package
 # This provides the basic tools for running and packaging nodejs programs in Bazel
