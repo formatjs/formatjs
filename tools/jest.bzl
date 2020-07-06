@@ -8,6 +8,7 @@ def jest_test(name, srcs, deps, jest_config = "//:jest.config.js", **kwargs):
         "--no-cache",
         "--no-watchman",
         "--ci",
+        "--colors",
     ]
     templated_args.extend(["--config", "$(rootpath %s)" % jest_config])
     for src in srcs:

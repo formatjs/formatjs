@@ -36,6 +36,7 @@ ts_project(
     name = "dist",
     package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
+    composite = True,
     declaration = True,
     declaration_map = True,
     extends = ["//:tsconfig.json"],
