@@ -24,10 +24,11 @@
     "prettier:check": "prettier --check '**/*.{md,ts,tsx}'",
     "prettier": "prettier --write '**/*.{md,ts,tsx}'",
     "test": "yarn run format:check && bazel test $(bazel query 'filter(\"^((?!karma).)*$\", kind(\".*_test rule\", //...))')",
-    "bazel:lint-only": "buildifier --lint=warn -v --warnings=attr-cfg,attr-license,attr-non-empty,attr-output-default,attr-single-file,constant-glob,ctx-actions,ctx-args,depset-iteration,depset-union,dict-concatenation,duplicated-name,filetype,git-repository,http-archive,integer-division,load,load-on-top,native-build,native-package,out-of-order-load,output-group,package-name,package-on-top,positional-args,redefined-variable,repository-name,same-origin-load,string-iteration,unsorted-dict-items,unused-variable",
-    "bazel:lint": "buildifier --lint=warn --mode=fix -v --warnings=attr-cfg,attr-license,attr-non-empty,attr-output-default,attr-single-file,constant-glob,ctx-actions,ctx-args,depset-iteration,depset-union,dict-concatenation,duplicated-name,filetype,git-repository,http-archive,integer-division,load,load-on-top,native-build,native-package,out-of-order-load,output-group,package-name,package-on-top,positional-args,redefined-variable,repository-name,same-origin-load,string-iteration,unsorted-dict-items,unused-variable",
-    "format": "yarn bazel:lint && yarn prettier",
-    "format:check": "yarn bazel:lint-only && yarn prettier:check"
+    "bazel:format": "find . -type f \\( -name \"*.bzl\" -or -name WORKSPACE -or -name BUILD -or -name BUILD.bazel \\) ! -path \"*/node_modules/*\" | xargs buildifier -v --warnings=attr-cfg,attr-license,attr-non-empty,attr-output-default,attr-single-file,constant-glob,ctx-actions,ctx-args,depset-iteration,depset-union,dict-concatenation,duplicated-name,filetype,git-repository,http-archive,integer-division,load,load-on-top,native-build,native-package,out-of-order-load,output-group,package-name,package-on-top,positional-args,redefined-variable,repository-name,same-origin-load,string-iteration,unsorted-dict-items,unused-variable",
+    "bazel:lint": "yarn bazel:format --lint=warn",
+    "bazel:lint-fix": "yarn bazel:format --lint=fix",
+    "format": "yarn bazel:format && yarn bazel:lint-fix && yarn prettier",
+    "format:check": "yarn bazel:lint && yarn prettier:check"
   },
   "devDependencies": {
     "@bazel/bazelisk": "^1.5.0",
@@ -55,10 +56,9 @@
     "karma-jasmine-matchers": "^4.0.2",
     "karma-sauce-launcher": "4.1.4",
     "lerna": "^3.20.2",
-    "lint-staged": "^10.2.11",
     "patch-package": "^6.2.2",
-    "postinstall-postinstall": "^2.1.0",
     "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.7.2",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -127,13 +127,9 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged --allow-empty",
+      "pre-commit": "yarn bazel:format && yarn bazel:lint-fix && pretty-quick --staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
-  },
-  "lint-staged": {
-    "(BUILD|WORKSPACE|BUILD.bazel|*.bzl)": "yarn bazel:lint",
-    "*.{js,json,ts,tsx}": "prettier --write"
   },
   "author": "Seth Bertalotto <sbertal@verizonmedia.com>"
 }
