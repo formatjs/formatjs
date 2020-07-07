@@ -685,20 +685,14 @@ function isMultipleMessagesDeclMacro(
   callee: NodePath<any>,
   moduleSourceName: string
 ) {
-  return (
-    referencesImport(callee, moduleSourceName, ['defineMessages']) ||
-    referencesImport(callee, '@formatjs/macro', ['defineMessages'])
-  );
+  return referencesImport(callee, moduleSourceName, ['defineMessages']);
 }
 
 function isSingularMessagesDeclMacro(
   callee: NodePath<any>,
   moduleSourceName: string
 ) {
-  return (
-    referencesImport(callee, moduleSourceName, ['defineMessage']) ||
-    referencesImport(callee, '@formatjs/macro', ['_'])
-  );
+  return referencesImport(callee, moduleSourceName, ['defineMessage']);
 }
 
 function getMessagesObjectFromExpression(
