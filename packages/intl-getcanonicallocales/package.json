@@ -17,24 +17,10 @@
   "license": "MIT",
   "main": "index.js",
   "module": "lib/index.js",
-  "types": "lib/intl-getcanonicallocales.d.ts",
-  "files": [
-    "dist",
-    "lib",
-    "polyfill.js",
-    "src"
-  ],
+  "types": "intl-getcanonicallocales.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/formatjs/formatjs.git"
-  },
-  "scripts": {
-    "cldr": "ts-node scripts/aliases --out src/aliases.ts",
-    "clean": "rimraf dist lib dist-es6 dist-es6 *.tsbuildinfo",
-    "build": "yarn cldr && tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local && rollup -c rollup.config.js",
-    "jest": "cross-env NODE_ENV=test jest",
-    "test262": "cross-env ts-node tests/runner",
-    "test": "yarn jest"
   },
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"

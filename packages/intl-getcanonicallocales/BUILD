@@ -1,4 +1,4 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "npm_package_bin", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "generated_file_test", "npm_package_bin", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//karma:index.bzl", "karma_test")
@@ -8,8 +8,15 @@ PACKAGE_NAME = "intl-getcanonicallocales"
 
 pkg_npm(
     name = PACKAGE_NAME,
-    srcs = ["package.json"],
-    deps = [":dist"],
+    srcs = [
+        "LICENSE.md",
+        "package.json",
+    ],
+    deps = [
+        "intl-getcanonicallocales.d.ts",
+        ":dist",
+        ":lib",
+    ],
 )
 
 SRCS = glob(["src/*.ts"]) + [
@@ -38,9 +45,8 @@ ts_project(
     srcs = SRCS,
     declaration = True,
     declaration_map = True,
-    extends = ["//:tsconfig.json"],
     source_map = True,
-    tsconfig = "tsconfig.json",
+    tsconfig = "//:tsconfig.json",
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
 )
@@ -51,10 +57,9 @@ ts_project(
     srcs = SRCS,
     declaration = True,
     declaration_map = True,
-    extends = ["//:tsconfig.json"],
     outdir = "lib",
     source_map = True,
-    tsconfig = "tsconfig.json",
+    tsconfig = "//:tsconfig.json",
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
 )
@@ -71,7 +76,7 @@ jest_test(
     srcs = [
         "//:tsconfig.json",
     ] + SRCS + TESTS,
-    jest_config = ":jest.config.js",
+    jest_config = "//:jest.config.js",
     tags = [
         # Need to set the pwd to avoid jest needing a runfiles helper
         # Windows users with permissions can use --enable_runfiles
@@ -109,6 +114,48 @@ generated_file_test(
     name = "aliases",
     src = "src/aliases.ts",
     generated = ":gen_aliases",
+)
+
+# API Extractor
+genrule(
+    name = "copy-tsconfig",
+    srcs = ["//:tsconfig.json"],
+    outs = ["tsconfig.json"],
+    cmd = "cp $< $@",
+)
+
+genrule(
+    name = "copy-api-extractor",
+    srcs = ["//:api-extractor.json"],
+    outs = ["api-extractor.json"],
+    cmd = "cp $< $@",
+)
+
+copy_to_bin(
+    name = "copy-package-json",
+    srcs = [
+        "package.json",
+    ],
+)
+
+npm_package_bin(
+    name = "rollup-dts",
+    outs = ["%s.d.ts" % PACKAGE_NAME],
+    args = [
+        "run",
+        "--local",
+        "--diagnostics",
+        "-c",
+        "$(@D)/api-extractor.json",
+    ],
+    data = [
+        "api-extractor.json",
+        "tsconfig.json",
+        ":copy-package-json",
+        ":types",
+    ],
+    package = "api-extractor",
+    tool = "@npm//@microsoft/api-extractor/bin:api-extractor",
 )
 
 # karma tests
