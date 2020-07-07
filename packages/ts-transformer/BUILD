@@ -10,7 +10,7 @@ pkg_npm(
     deps = [":dist"],
 )
 
-SRCS = glob(["src/*.ts"])
+SRCS = glob(["src/*.ts"]) + ["index.ts"]
 
 SRC_DEPS = [
     "@npm//typescript",
@@ -23,12 +23,16 @@ ts_project(
     srcs = SRCS,
     declaration = True,
     declaration_map = True,
-    extends = ["//:tsconfig.json"],
-    outdir = "dist",
     source_map = True,
-    tsconfig = "tsconfig.json",
+    tsconfig = "//:tsconfig.json",
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
+)
+
+filegroup(
+    name = "types",
+    srcs = [":dist"],
+    output_group = "types",
 )
 
 jest_test(
@@ -40,7 +44,7 @@ jest_test(
         "tests/**/*.tsx",
         "tests/**/*.snap",
     ]),
-    jest_config = ":jest.config.js",
+    jest_config = "//:jest.config.js",
     tags = [
         # Need to set the pwd to avoid jest needing a runfiles helper
         # Windows users with permissions can use --enable_runfiles

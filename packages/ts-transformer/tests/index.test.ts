@@ -1,5 +1,5 @@
 import {join} from 'path';
-import {transform, Opts, MessageDescriptor} from '../src';
+import {transform, Opts, MessageDescriptor} from '../';
 import * as ts from 'typescript';
 import {readFile as readFileAsync} from 'fs';
 import {promisify} from 'util';
