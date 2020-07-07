@@ -2,7 +2,7 @@ load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "generated_file_tes
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
-# load("//tools:jest.bzl", "jest_test")
+load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-numberformat"
 
@@ -29,24 +29,23 @@ SRCS = glob(
     exclude = ["test*.*"],
 )
 
-# TESTS = glob([
-#     "tests/*.test.ts",
-# ])
+TESTS = glob([
+    "tests/*.test.ts",
+    "tests/__snapshots__/*.snap",
+])
 
 SRC_DEPS = [
     "//packages/intl-utils:dist",
     "//packages/intl-getcanonicallocales:dist",
 ]
 
-# TEST_DEPS = SRC_DEPS + [
-#     "@npm//@jest/transform",
-#     "@npm//ts-jest",
-#     "@npm//@types/jest",
-#     "//packages/intl-pluralrules:types",
-#     "//packages/intl-pluralrules:dist",
-#     "//packages/intl-utils:types",
-#     "//packages/intl-getcanonicallocales:types",
-# ]
+TEST_DEPS = SRC_DEPS + [
+    "@npm//@jest/transform",
+    "@npm//ts-jest",
+    "@npm//@types/jest",
+    "//packages/intl-pluralrules",
+    "//packages/intl-utils:types",
+]
 
 ts_project(
     name = "dist",
@@ -82,22 +81,22 @@ filegroup(
 )
 
 # TODO: Make this work
-# jest_test(
-#     name = "unit",
-#     srcs = [
-#         "//:tsconfig.json",
-#     ] + SRCS + TESTS,
-#     jest_config = "//:jest.config.js",
-#     tags = [
-#         # Need to set the pwd to avoid jest needing a runfiles helper
-#         # Windows users with permissions can use --enable_runfiles
-#         # to make this test work
-#         "no-bazelci-windows",
-#         # TODO: why does this fail almost all the time, but pass on local Mac?
-#         "no-bazelci-mac",
-#     ],
-#     deps = TEST_DEPS + [":tests-locale-data"],
-# )
+jest_test(
+    name = "unit",
+    srcs = [
+        "//:tsconfig.json",
+    ] + SRCS + TESTS,
+    jest_config = "//:jest.config.js",
+    tags = [
+        # Need to set the pwd to avoid jest needing a runfiles helper
+        # Windows users with permissions can use --enable_runfiles
+        # to make this test work
+        "no-bazelci-windows",
+        # TODO: why does this fail almost all the time, but pass on local Mac?
+        "no-bazelci-mac",
+    ],
+    deps = TEST_DEPS + [":tests-locale-data"],
+)
 
 # API Extractor
 genrule(

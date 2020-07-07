@@ -9,10 +9,12 @@ PACKAGE_NAME = "intl-pluralrules"
 
 pkg_npm(
     name = PACKAGE_NAME,
+    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
         "package.json",
     ],
+    visibility = ["//visibility:public"],
     deps = [
         "intl-pluralrules.d.ts",
         "polyfill-locales.js",
@@ -46,7 +48,6 @@ TEST_DEPS = SRC_DEPS + [
 
 ts_project(
     name = "dist",
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
     declaration = True,
     declaration_map = True,
@@ -58,7 +59,6 @@ ts_project(
 
 ts_project(
     name = "lib",
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
     declaration = True,
     declaration_map = True,
