@@ -1,6 +1,6 @@
 // Type-only circular import
 // eslint-disable-next-line import/no-cycle
-import {NumberFormat} from '.';
+import {NumberFormat} from '../';
 import {NumberFormatInternal} from './types';
 
 const internalSlotMap = new WeakMap<NumberFormat, NumberFormatInternal>();

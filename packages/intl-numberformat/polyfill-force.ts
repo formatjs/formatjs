@@ -2,7 +2,7 @@ import {
   NumberFormat,
   toLocaleString as _toLocaleString,
   NumberFormatOptions,
-} from '.';
+} from './';
 import {defineProperty} from '@formatjs/intl-utils';
 
 defineProperty(Intl, 'NumberFormat', {value: NumberFormat});

@@ -1,9 +1,8 @@
-import 'core-js/features/set';
 import '@formatjs/intl-getcanonicallocales/polyfill';
 import '@formatjs/intl-pluralrules/polyfill-locales';
-import {NumberFormat} from '../src';
-import * as zh from './locale-data/zh.json';
-import * as zhHant from './locale-data/zh-Hant.json';
+import {NumberFormat} from '../';
+import * as zh from '../tests-locale-data/zh.json';
+import * as zhHant from '../tests-locale-data/zh-Hant.json';
 NumberFormat.__addLocaleData(zh as any, zhHant as any);
 
 const tests: any = [

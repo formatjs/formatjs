@@ -61,7 +61,10 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
     outputFileSync(
       test262MainFile,
       `
-import '../dist-es6/polyfill-force';
+// @generated
+// @ts-nocheck
+// prettier-ignore
+import './polyfill-force';
 import '@formatjs/intl-getcanonicallocales/polyfill';
 if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function') {
   Intl.NumberFormat.__addLocaleData(

@@ -1,6 +1,5 @@
-import 'core-js/features/set';
 import '@formatjs/intl-pluralrules/polyfill-locales';
-import {NumberFormat, NumberFormatOptions} from '../src';
+import {NumberFormat, NumberFormatOptions} from '../';
 
 const LOCALES = [
   'en',
@@ -28,7 +27,7 @@ const LOCALES = [
 ];
 
 LOCALES.forEach(locale => {
-  NumberFormat.__addLocaleData(require(`./locale-data/${locale}.json`));
+  NumberFormat.__addLocaleData(require(`../tests-locale-data/${locale}.json`));
 });
 
 const SIGN_DISPLAYS: Array<NumberFormatOptions['signDisplay']> = [

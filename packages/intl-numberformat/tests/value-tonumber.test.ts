@@ -1,7 +1,6 @@
-import 'core-js/features/set';
 import '@formatjs/intl-pluralrules/polyfill-locales';
-import {NumberFormat} from '../src';
-import * as en from './locale-data/en.json';
+import {NumberFormat} from '../';
+import * as en from '../tests-locale-data/en.json';
 NumberFormat.__addLocaleData(en as any);
 const toNumberResults = [
   [undefined, NaN],

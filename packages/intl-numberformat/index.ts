@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
-export * from './core';
-export * from './to_locale_string';
-export {NumberFormatOptions} from './types';
+export * from './src/core';
+export * from './src/to_locale_string';
+export {NumberFormatOptions} from './src/types';
 
 /**
  * Check if a formatting number with unit is supported

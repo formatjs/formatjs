@@ -34,6 +34,22 @@ PLURALRULES_TESTS = glob(
     exclude = ["**/proto-from-ctor-realm.js"],
 )
 
+NUMBERFORMAT_TESTS = glob(
+    ["test262/test/intl402/NumberFormat/**/*.js"],
+    exclude = [
+        "**/builtin.js",  # Built-in functions cannot have `prototype` property.
+        "**/constructor-order.js",  # buggy test case. The spec states that impl should throw RangeError.
+        "**/constructor-locales-hasproperty.js",  # This checks that we only iterate once...
+        "**/constructor-unit.js",  # buggy test case. The spec states that impl should throw RangeError.
+        "**/currency-digits.js",  # AFN's currency digits differ from CLDR data.
+        "**/legacy-regexp-statics-not-modified.js",  # TODO
+        "**/proto-from-ctor-realm.js",  # Bc of Realm support
+        "**/constructor-locales-get-tostring.js",  # Bc our Intl.getCanonicalLocales isn't really spec-compliant
+        "**/taint-Object-prototype.js",  # Bc our Intl.getCanonicalLocales isn't really spec-compliant
+        "**/numbering-systems.js",  # See https://github.com/tc39/ecma402/pull/438
+    ],
+)
+
 FILES = glob([
     "test262/**/*.js",
     "test262/**/*.json",
@@ -42,7 +58,13 @@ FILES = glob([
 filegroup(
     name = "test262-pluralrules",
     srcs = PLURALRULES_TESTS,
-    visibility = ["//visibility:public"],
+    visibility = ["//packages/intl-pluralrules:__subpackages__"],
+)
+
+filegroup(
+    name = "test262-numberformat",
+    srcs = NUMBERFORMAT_TESTS,
+    visibility = ["//packages/intl-numberformat:__subpackages__"],
 )
 
 filegroup(

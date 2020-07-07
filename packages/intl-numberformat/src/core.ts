@@ -5,7 +5,6 @@ import {
   formatNumericToString,
   getMagnitude,
   getOption,
-  hasOwnProperty,
   invariant,
   isWellFormedCurrencyCode,
   isWellFormedUnitIdentifier,
@@ -67,7 +66,7 @@ function removeUnicodeExtensionFromLocale(canonicalLocale: string): string {
  * https://tc39.es/ecma402/#sec-currencydigits
  */
 function currencyDigits(c: string): number {
-  return hasOwnProperty(currencyDigitsData, c)
+  return Object.prototype.hasOwnProperty.call(currencyDigitsData, c)
     ? (currencyDigitsData as Record<string, number>)[c]
     : 2;
 }

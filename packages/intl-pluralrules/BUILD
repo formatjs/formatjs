@@ -9,10 +9,13 @@ PACKAGE_NAME = "intl-pluralrules"
 
 pkg_npm(
     name = PACKAGE_NAME,
-    srcs = ["package.json", "LICENSE.md"],
+    srcs = [
+        "LICENSE.md",
+        "package.json",
+    ],
     deps = [
-        "polyfill-locales.js",
         "intl-pluralrules.d.ts",
+        "polyfill-locales.js",
         ":dist",
         ":lib",
         ":locale-data",

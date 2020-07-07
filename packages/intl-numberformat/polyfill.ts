@@ -3,7 +3,7 @@ import {
   toLocaleString as _toLocaleString,
   isUnitSupported,
   NumberFormatOptions,
-} from '.';
+} from './';
 import {defineProperty} from '@formatjs/intl-utils';
 
 if (!isUnitSupported('bit')) {
