@@ -3,12 +3,6 @@ import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
 import json from '@rollup/plugin-json';
 
-const commonjsConfig = commonjs({
-  namedExports: {
-    lodash: ['pickBy', 'isEmpty', 'isEqual', 'fromPairs'],
-  },
-});
-
 export default {
   plugins: [
     replace({
@@ -19,6 +13,10 @@ export default {
     resolve({
       mainFields: ['module', 'main'],
     }),
-    commonjsConfig,
+    commonjs({
+      namedExports: {
+        lodash: ['pickBy', 'isEmpty', 'isEqual', 'fromPairs'],
+      },
+    }),
   ],
 };

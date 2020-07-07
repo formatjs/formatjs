@@ -1,4 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "npm_package_bin", "pkg_npm")
+load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("//tools:jest.bzl", "jest_test")
 
@@ -6,8 +7,12 @@ PACKAGE_NAME = "intl-locale"
 
 pkg_npm(
     name = PACKAGE_NAME,
-    srcs = ["package.json"],
+    srcs = [
+        "LICENSE.md",
+        "package.json",
+    ],
     deps = [
+        "polyfill.umd.js",
         ":dist",
         ":lib",
     ],
@@ -16,7 +21,6 @@ pkg_npm(
 SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
-    "@npm//@types/node",
     "@npm//cldr-core",
     "//packages/intl-utils:dist",
     "//packages/intl-getcanonicallocales:dist",
@@ -28,9 +32,8 @@ ts_project(
     srcs = SRCS,
     declaration = True,
     declaration_map = True,
-    extends = ["//:tsconfig.json"],
     source_map = True,
-    tsconfig = "tsconfig.json",
+    tsconfig = "//:tsconfig.json",
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
 )
@@ -41,10 +44,9 @@ ts_project(
     srcs = SRCS,
     declaration = True,
     declaration_map = True,
-    extends = ["//:tsconfig.json"],
     outdir = "lib",
     source_map = True,
-    tsconfig = "tsconfig.json",
+    tsconfig = "//:tsconfig.json",
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
 )
@@ -64,7 +66,7 @@ jest_test(
         "tests/**/*.tsx",
         "tests/**/*.snap",
     ]),
-    jest_config = ":jest.config.js",
+    jest_config = "//:jest.config.js",
     tags = [
         # Need to set the pwd to avoid jest needing a runfiles helper
         # Windows users with permissions can use --enable_runfiles
@@ -82,13 +84,45 @@ jest_test(
     ] + SRC_DEPS,
 )
 
-# API Extractor
-copy_to_bin(
-    name = "setup-api-extractor",
+rollup_bundle(
+    name = "polyfill.umd",
     srcs = [
-        "api-extractor.json",
+        "index.js",
+    ],
+    args = [
+        "--output.name",
+        "IntlLocale",
+    ],
+    config_file = "//:rollup.config.js",
+    entry_point = "polyfill.js",
+    format = "umd",
+    deps = [
+        "@npm//rollup-plugin-node-resolve",
+        "@npm//rollup-plugin-commonjs",
+        "@npm//rollup-plugin-replace",
+        "@npm//@rollup/plugin-json",
+    ] + SRC_DEPS,
+)
+
+# API Extractor
+genrule(
+    name = "copy-tsconfig",
+    srcs = ["//:tsconfig.json"],
+    outs = ["tsconfig.json"],
+    cmd = "cp $< $@",
+)
+
+genrule(
+    name = "copy-api-extractor",
+    srcs = ["//:api-extractor.json"],
+    outs = ["api-extractor.json"],
+    cmd = "cp $< $@",
+)
+
+copy_to_bin(
+    name = "copy-package-json",
+    srcs = [
         "package.json",
-        "tsconfig.json",
     ],
 )
 
@@ -103,9 +137,10 @@ npm_package_bin(
         "$(@D)/api-extractor.json",
     ],
     data = [
-        ":setup-api-extractor",
+        "api-extractor.json",
+        "tsconfig.json",
+        ":copy-package-json",
         ":types",
-        "//:setup-api-extractor",
         "//packages/intl-utils:types",
     ],
     package = "api-extractor",
