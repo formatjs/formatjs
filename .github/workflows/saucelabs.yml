@@ -22,4 +22,4 @@ jobs:
           accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
           tunnelIdentifier: github-action-tunnel
       - name: Karma
-        run: yarn karma:ci
+        run: yarn karma:ci --define=SAUCE_USERNAME=${{ secrets.SAUCE_USERNAME }} --define=SAUCE_ACCESS_KEY=${{ secrets.SAUCE_ACCESS_KEY }}

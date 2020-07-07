@@ -53,6 +53,13 @@ ts_project(
     deps = SRC_DEPS,
 )
 
+filegroup(
+    name = "types",
+    srcs = [":dist"],
+    output_group = "types",
+    visibility = ["//visibility:public"],
+)
+
 jest_test(
     name = "unit",
     srcs = [
@@ -76,6 +83,8 @@ jest_test(
         "@npm//ts-jest",
         "@npm//@types/jest",
         ":tests-locale-data",
+        "//packages/intl-utils:types",
+        "//packages/intl-getcanonicallocales:types",
     ] + SRC_DEPS,
 )
 
@@ -100,8 +109,8 @@ npm_package_bin(
         "$(@D)/api-extractor.json",
     ],
     data = [
-        ":dist",
         ":setup-api-extractor",
+        ":types",
         "//:setup-api-extractor",
     ],
     package = "api-extractor",
@@ -120,6 +129,7 @@ npm_package_bin(
         "scripts/cldr.ts",
         "//:tsconfig.json",
         "//packages/intl-utils:dist",
+        "//packages/intl-utils:types",
         "@npm//@types/fs-extra",
         "@npm//@types/minimist",
         "@npm//@types/node",
@@ -145,6 +155,7 @@ npm_package_bin(
         "scripts/cldr.ts",
         "//:tsconfig.json",
         "//packages/intl-utils:dist",
+        "//packages/intl-utils:types",
         "@npm//@types/fs-extra",
         "@npm//@types/minimist",
         "@npm//@types/node",
@@ -171,6 +182,7 @@ npm_package_bin(
         "scripts/cldr.ts",
         "//:tsconfig.json",
         "//packages/intl-utils:dist",
+        "//packages/intl-utils:types",
         "@npm//@types/fs-extra",
         "@npm//@types/minimist",
         "@npm//@types/node",
@@ -196,6 +208,7 @@ npm_package_bin(
         "scripts/cldr.ts",
         "//:tsconfig.json",
         "//packages/intl-utils:dist",
+        "//packages/intl-utils:types",
         "@npm//@types/fs-extra",
         "@npm//@types/minimist",
         "@npm//@types/node",

@@ -1026,15 +1026,15 @@
   resolved "https://registry.yarnpkg.com/@bazel/ibazel/-/ibazel-0.13.1.tgz#23788f67a6fbe83d96f2d055691df4917c10ac8d"
   integrity sha512-FO1hBKpzpeBL0adnFYF2Dwl/7gox6ccKM6bb+x26AXrQpLbinXPuTi4zeXRL/MW4383mF6i4RovLCmwUU/YW0w==
 
-"@bazel/rollup@^2.0.0-rc.0":
-  version "2.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@bazel/rollup/-/rollup-2.0.0-rc.0.tgz#b184b9c9947bdfe57ca5167bce4b0ee15d2a321f"
-  integrity sha512-ZV3UUfOq9/JIPl7nwrR+Domncjd8J/uUPwnQGNwKz4yfS57NnR4A5mFoUjXeCKhPQZukaSt6Pydp2IUqrRGZkw==
+"@bazel/rollup@^2.0.0-rc.1":
+  version "2.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@bazel/rollup/-/rollup-2.0.0-rc.1.tgz#6a4aec69347c7b7c9866b1def84aaef1c6c520fa"
+  integrity sha512-PvFvLRsctrdrljsYAD+IfDhpYVgedYx9xxH+q6gOZV63qlC45lCC/AAb4dw/TvjbeYK8IJ4pepJHd9NFTJFt6g==
 
-"@bazel/typescript@^2.0.0-rc.0":
-  version "2.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-2.0.0-rc.0.tgz#2581569b8ad1c7ec35dbe0528c0b7a66dc084af3"
-  integrity sha512-Lv8p97dNpXsn5cdeMM0afmayJjFHqJL+dR41KrScYQHLvPeF2LMTPI9prgWHFc3XArcEjSN7IK4TCVu4q3ytPw==
+"@bazel/typescript@^2.0.0-rc.1":
+  version "2.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-2.0.0-rc.1.tgz#1fe868d403bd303a6d9a2340ba6b95ecf8fdec2d"
+  integrity sha512-BbD3540jpOsflSiCmxuN2whs4+UndjAHtB/6BiA0r5adls0Prqw+JZaACZccvi00FTMTQEJz9P4PeD2Codv3Tw==
   dependencies:
     protobufjs "6.8.8"
     semver "5.6.0"

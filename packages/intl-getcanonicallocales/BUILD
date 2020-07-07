@@ -59,6 +59,13 @@ ts_project(
     deps = SRC_DEPS,
 )
 
+filegroup(
+    name = "types",
+    srcs = [":dist"],
+    output_group = "types",
+    visibility = ["//visibility:public"],
+)
+
 jest_test(
     name = "unit",
     srcs = [

@@ -49,6 +49,12 @@ ts_project(
     deps = SRC_DEPS,
 )
 
+filegroup(
+    name = "types",
+    srcs = [":dist"],
+    output_group = "types",
+)
+
 jest_test(
     name = "unit",
     srcs = [
@@ -71,6 +77,8 @@ jest_test(
         "@npm//@jest/transform",
         "@npm//ts-jest",
         "@npm//@types/jest",
+        "//packages/intl-getcanonicallocales:types",
+        "//packages/intl-utils:types",
     ] + SRC_DEPS,
 )
 
@@ -95,9 +103,10 @@ npm_package_bin(
         "$(@D)/api-extractor.json",
     ],
     data = [
-        ":dist",
         ":setup-api-extractor",
+        ":types",
         "//:setup-api-extractor",
+        "//packages/intl-utils:types",
     ],
     package = "api-extractor",
     tool = "@npm//@microsoft/api-extractor/bin:api-extractor",
