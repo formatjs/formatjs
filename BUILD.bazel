@@ -15,6 +15,7 @@ exports_files(
         "rollup.config.js",
         "karma.conf.js",
         "karma.conf-ci.js",
+        "jest.config.js",
     ],
     visibility = ["//:__subpackages__"],
 )

@@ -61,7 +61,7 @@ jest_test(
         "tests/**/*.tsx",
         "tests/**/*.snap",
     ]),
-    jest_config = ":jest.config.js",
+    jest_config = "//:jest.config.js",
     tags = [
         # Need to set the pwd to avoid jest needing a runfiles helper
         # Windows users with permissions can use --enable_runfiles
@@ -78,12 +78,24 @@ jest_test(
 )
 
 # API Extractor
+genrule(
+    name = "copy-tsconfig",
+    srcs = ["//:tsconfig.json"],
+    outs = ["tsconfig.json"],
+    cmd = "cp $< $@",
+)
+
+genrule(
+    name = "copy-api-extractor",
+    srcs = ["//:api-extractor.json"],
+    outs = ["api-extractor.json"],
+    cmd = "cp $< $@",
+)
+
 copy_to_bin(
-    name = "setup-api-extractor",
+    name = "copy-package-json",
     srcs = [
-        "api-extractor.json",
         "package.json",
-        "tsconfig.json",
     ],
 )
 
@@ -98,7 +110,9 @@ npm_package_bin(
         "$(@D)/api-extractor.json",
     ],
     data = [
-        ":setup-api-extractor",
+        "api-extractor.json",
+        "tsconfig.json",
+        ":copy-package-json",
         ":types",
         "//:setup-api-extractor",
     ],
