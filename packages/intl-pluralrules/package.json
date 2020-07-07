@@ -1,53 +1,28 @@
 {
   "name": "@formatjs/intl-pluralrules",
   "version": "3.0.2",
-  "description": "Polyfill for intl plural rules",
+  "description": "Polyfill for Intl.PluralRules",
   "keywords": [
     "polyfill",
     "i18n",
     "intl",
     "plural",
-    "rules"
+    "rules",
+    "PluralRules"
   ],
   "author": "Long Ho <holevietlong@gmail.com>",
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "index.js",
   "module": "lib/index.js",
-  "types": "lib/intl-pluralrules.d.ts",
-  "files": [
-    "locale-data",
-    "dist",
-    "lib",
-    "polyfill-locales.js",
-    "polyfill.js",
-    "src"
-  ],
+  "types": "intl-pluralrules.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/formatjs/formatjs.git"
   },
-  "devDependencies": {
-    "@formatjs/intl-getcanonicallocales": "^1.2.10",
-    "@types/jest": "^25.2.1",
-    "@types/serialize-javascript": "^1.5.0",
-    "jest": "^25.4.0",
-    "make-plural-compiler": "^5.1.0",
-    "serialize-javascript": "^3.0.0",
-    "ts-jest": "^25.4.0"
-  },
   "dependencies": {
     "@formatjs/intl-utils": "^3.6.0",
     "@formatjs/intl-getcanonicallocales": "^1.2.8"
-  },
-  "scripts": {
-    "build": "yarn run cldr && yarn run compile",
-    "cldr": "ts-node scripts/cldr --outDir locale-data --testDataDir tests/locale-data --polyfillLocalesOutFile polyfill-locales.js --test262MainFile tests/test262-main.js",
-    "clean": "rimraf dist lib dist-es6 polyfill-locales.js *.tsbuildinfo",
-    "compile": "tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && rollup -c rollup.config.js && api-extractor run --local",
-    "jest": "cross-env NODE_ENV=test jest",
-    "test262": "cross-env ts-node tests/runner",
-    "test": "yarn run jest && yarn run test262"
   },
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"

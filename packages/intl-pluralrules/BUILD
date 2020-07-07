@@ -9,9 +9,10 @@ PACKAGE_NAME = "intl-pluralrules"
 
 pkg_npm(
     name = PACKAGE_NAME,
-    srcs = ["package.json"],
+    srcs = ["package.json", "LICENSE.md"],
     deps = [
         "polyfill-locales.js",
+        "intl-pluralrules.d.ts",
         ":dist",
         ":lib",
         ":locale-data",
@@ -28,7 +29,6 @@ TESTS = glob([
 ])
 
 SRC_DEPS = [
-    "@npm//@types/node",
     "//packages/intl-utils:dist",
     "//packages/intl-getcanonicallocales:dist",
 ]
