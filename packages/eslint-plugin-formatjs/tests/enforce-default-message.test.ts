@@ -4,7 +4,7 @@ import {ruleTester} from './util';
 
 ruleTester.run('enforce-default-message', enforceDefaultMessage, {
   valid: [
-    `import {_} from '@formatjs/macro'
+    `import {defineMessage} from 'react-intl'
 _({
     defaultMessage: 'this is default message',
     description: 'asd'
@@ -21,7 +21,7 @@ _({
   invalid: [
     {
       code: `
-            import {_} from '@formatjs/macro'
+            import {defineMessage} from 'react-intl'
             _({
                 description: 'this is default message'
             })`,
@@ -74,7 +74,7 @@ _({
     },
     {
       code: `
-            import {_} from '@formatjs/macro'
+            import {defineMessage} from 'react-intl'
             _({
                 defaultMessage: foo
             })`,

@@ -4,7 +4,7 @@ import {ruleTester} from './util';
 
 ruleTester.run('enforce-description', enforceDescription, {
   valid: [
-    `import {_} from '@formatjs/macro'
+    `import {defineMessage} from 'react-intl'
 _({
     defaultMessage: '{count, plural, one {#} other {# more}}',
     description: 'asd'
@@ -21,7 +21,7 @@ _({
   invalid: [
     {
       code: `
-            import {_} from '@formatjs/macro'
+            import {defineMessage} from 'react-intl'
             _({
                 defaultMessage: '{count, plural, one {#} other {# more}}'
             })`,
@@ -33,7 +33,7 @@ _({
     },
     {
       code: `
-            import {_} from '@formatjs/macro'
+            import {defineMessage} from 'react-intl'
             _({
                 defaultMessage: '{count, plural, one {#} other {# more}}',
                 description: foo

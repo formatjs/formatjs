@@ -4,7 +4,7 @@ import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures';
 ruleTester.run('enforce-plural-rules', enforcePluralRules, {
   valid: [
     {
-      code: `import {_} from '@formatjs/macro'
+      code: `import {defineMessage} from 'react-intl'
   _({
       defaultMessage: '{count, plural, one {#} other {# more}}',
       description: 'asd'
@@ -16,7 +16,7 @@ ruleTester.run('enforce-plural-rules', enforcePluralRules, {
       ],
     },
     {
-      code: `import {_} from '@formatjs/macro'
+      code: `import {defineMessage} from 'react-intl'
   _({
       defaultMessage: '{count, plural, one {#} other {# more}}',
       description: 'asd'
@@ -28,7 +28,7 @@ ruleTester.run('enforce-plural-rules', enforcePluralRules, {
       ],
     },
     {
-      code: `import {_} from '@formatjs/macro'
+      code: `import {defineMessage} from 'react-intl'
   _({
       defaultMessage: '{count, plural, one {#} other {# more}}',
       description: 'asd'
@@ -49,7 +49,7 @@ ruleTester.run('enforce-plural-rules', enforcePluralRules, {
   invalid: [
     {
       code: `
-              import {_} from '@formatjs/macro'
+              import {defineMessage} from 'react-intl'
               _({
                   defaultMessage: '{count, plural, one {#} other {# more}}'
               })`,
@@ -66,7 +66,7 @@ ruleTester.run('enforce-plural-rules', enforcePluralRules, {
     },
     {
       code: `
-              import {_} from '@formatjs/macro'
+              import {defineMessage} from 'react-intl'
               _({
                   defaultMessage: '{count, plural, one {#}}'
               })`,

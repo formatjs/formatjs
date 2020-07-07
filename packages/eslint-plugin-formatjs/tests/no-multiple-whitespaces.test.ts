@@ -3,7 +3,7 @@ import {ruleTester} from './util';
 import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures';
 ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
   valid: [
-    `import {_} from '@formatjs/macro'
+    `import {defineMessage} from 'react-intl'
   _({
       defaultMessage: 'a {placeholder}',
       description: 'asd'
@@ -16,7 +16,7 @@ ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
   invalid: [
     {
       code:
-        "import {_} from '@formatjs/macro';_({defaultMessage: 'a \
+        "import {defineMessage} from 'react-intl';_({defaultMessage: 'a \
                   {placeHolder}'})",
       errors: [
         {
@@ -24,7 +24,7 @@ ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
         },
       ],
       output:
-        "import {_} from '@formatjs/macro';_({defaultMessage: 'a {placeHolder}'})",
+        "import {defineMessage} from 'react-intl';_({defaultMessage: 'a {placeHolder}'})",
     },
     {
       code: "<FormattedMessage defaultMessage='a   thing'/>",
@@ -37,7 +37,7 @@ ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
     },
     {
       code: `
-              import {_} from '@formatjs/macro'
+              import {defineMessage} from 'react-intl'
               _({
                   defaultMessage: 'a   {placeHolder}'
               })`,
@@ -47,7 +47,7 @@ ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
         },
       ],
       output: `
-              import {_} from '@formatjs/macro'
+              import {defineMessage} from 'react-intl'
               _({
                   defaultMessage: 'a {placeHolder}'
               })`,

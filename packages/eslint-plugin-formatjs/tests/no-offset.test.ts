@@ -3,7 +3,7 @@ import {ruleTester} from './util';
 import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures';
 ruleTester.run('no-offset', noOffset, {
   valid: [
-    `import {_} from '@formatjs/macro'
+    `import {defineMessage} from 'react-intl'
   _({
       defaultMessage: '{count, plural, one {#} other {# more}}'
   })`,
@@ -15,7 +15,7 @@ ruleTester.run('no-offset', noOffset, {
   invalid: [
     {
       code: `
-              import {_} from '@formatjs/macro'
+              import {defineMessage} from 'react-intl'
               _({
                   defaultMessage: '{count, plural, offset:1 one {#} other {# more}}'
               })`,
@@ -27,7 +27,7 @@ ruleTester.run('no-offset', noOffset, {
     },
     {
       code: `
-              import {_} from '@formatjs/macro'
+              import {defineMessage} from 'react-intl'
               _({
                   defaultMessage: '{count, plural, offset:1 one {#} other {# more}'
               })`,

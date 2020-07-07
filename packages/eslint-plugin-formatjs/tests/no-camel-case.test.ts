@@ -4,7 +4,7 @@ import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures';
 
 ruleTester.run('no-camel-case', noCamelCase, {
   valid: [
-    `import {_} from '@formatjs/macro'
+    `import {defineMessage} from 'react-intl'
   _({
       defaultMessage: 'a {placeholder}',
       description: 'asd'
@@ -17,7 +17,7 @@ ruleTester.run('no-camel-case', noCamelCase, {
   invalid: [
     {
       code: `
-              import {_} from '@formatjs/macro'
+              import {defineMessage} from 'react-intl'
               _({
                   defaultMessage: 'a {placeHolder}'
               })`,

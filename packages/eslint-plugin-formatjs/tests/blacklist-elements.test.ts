@@ -4,7 +4,7 @@ import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures';
 ruleTester.run('blacklist-elements', blacklistElements, {
   valid: [
     {
-      code: `import {_} from '@formatjs/macro'
+      code: `import {defineMessage} from 'react-intl'
   _({
       defaultMessage: '{count, plural, one {#} other {# more}}'
   })`,
@@ -18,7 +18,7 @@ ruleTester.run('blacklist-elements', blacklistElements, {
   invalid: [
     {
       code: `
-              import {_} from '@formatjs/macro'
+              import {defineMessage} from 'react-intl'
               _({
                   defaultMessage: '{count, selectordinal, offset:1 one {#} other {# more}}'
               })`,

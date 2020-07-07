@@ -56,7 +56,7 @@ export default {
     return {
       ImportDeclaration: node => {
         const moduleName = (node as ImportDeclaration).source.value;
-        if (moduleName === '@formatjs/macro' || moduleName === 'react-intl') {
+        if (moduleName === 'react-intl') {
           importedMacroVars = context.getDeclaredVariables(node);
         }
       },

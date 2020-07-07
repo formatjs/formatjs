@@ -3,7 +3,7 @@ import {ruleTester} from './util';
 import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures';
 ruleTester.run('supported-datetime-skeleton', supportedDatetimeSkeleton, {
   valid: [
-    `import {_} from '@formatjs/macro'
+    `import {defineMessage} from 'react-intl'
   _({
       defaultMessage: '{ts, date, ::yyyyMMdd}'
   })`,
@@ -15,7 +15,7 @@ ruleTester.run('supported-datetime-skeleton', supportedDatetimeSkeleton, {
   invalid: [
     {
       code: `
-              import {_} from '@formatjs/macro'
+              import {defineMessage} from 'react-intl'
               _({
                   defaultMessage: '{ts, date, ::yQQQHm}'
               })`,
@@ -27,7 +27,7 @@ ruleTester.run('supported-datetime-skeleton', supportedDatetimeSkeleton, {
     },
     {
       code: `
-              import {_} from '@formatjs/macro'
+              import {defineMessage} from 'react-intl'
               _({
                   defaultMessage: '{ts, date, ::DFg}'
               })`,

@@ -65,7 +65,7 @@ ruleTester.run('no-id', noId, {
         },
       ],
       output: `
-import {_} from '@formatjs/macro'
+import {defineMessage} from 'react-intl'
 _({ defaultMessage, description})`,
     },
     {
