@@ -1,5 +1,5 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
-console.log('----', __dirname);
+
 import {PluralRules} from '../';
 // @ts-ignore
 import * as en from '../tests-locale-data/en.js';

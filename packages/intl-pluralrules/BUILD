@@ -3,6 +3,7 @@ load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
 load("//tools:jest.bzl", "jest_test")
+# load("@npm//karma:index.bzl", "karma_test")
 
 PACKAGE_NAME = "intl-pluralrules"
 
@@ -10,9 +11,10 @@ pkg_npm(
     name = PACKAGE_NAME,
     srcs = ["package.json"],
     deps = [
+        "polyfill-locales.js",
         ":dist",
+        ":lib",
         ":locale-data",
-        ":polyfill-locales.js",
     ],
 )
 
@@ -21,10 +23,22 @@ SRCS = glob(
     exclude = ["test*.*"],
 )
 
+TESTS = glob([
+    "tests/*.test.ts",
+])
+
 SRC_DEPS = [
     "@npm//@types/node",
     "//packages/intl-utils:dist",
     "//packages/intl-getcanonicallocales:dist",
+]
+
+TEST_DEPS = SRC_DEPS + [
+    "@npm//@jest/transform",
+    "@npm//ts-jest",
+    "@npm//@types/jest",
+    "//packages/intl-utils:types",
+    "//packages/intl-getcanonicallocales:types",
 ]
 
 ts_project(
@@ -64,12 +78,8 @@ jest_test(
     name = "unit",
     srcs = [
         "//:tsconfig.json",
-    ] + SRCS + glob([
-        "tests/**/*.ts",
-        "tests/**/*.tsx",
-        "tests/**/*.snap",
-    ]),
-    jest_config = ":jest.config.js",
+    ] + SRCS + TESTS,
+    jest_config = "//:jest.config.js",
     tags = [
         # Need to set the pwd to avoid jest needing a runfiles helper
         # Windows users with permissions can use --enable_runfiles
@@ -78,23 +88,28 @@ jest_test(
         # TODO: why does this fail almost all the time, but pass on local Mac?
         "no-bazelci-mac",
     ],
-    deps = [
-        "@npm//@jest/transform",
-        "@npm//ts-jest",
-        "@npm//@types/jest",
-        ":tests-locale-data",
-        "//packages/intl-utils:types",
-        "//packages/intl-getcanonicallocales:types",
-    ] + SRC_DEPS,
+    deps = TEST_DEPS + [":tests-locale-data"],
 )
 
 # API Extractor
+genrule(
+    name = "copy-tsconfig",
+    srcs = ["//:tsconfig.json"],
+    outs = ["tsconfig.json"],
+    cmd = "cp $< $@",
+)
+
+genrule(
+    name = "copy-api-extractor",
+    srcs = ["//:api-extractor.json"],
+    outs = ["api-extractor.json"],
+    cmd = "cp $< $@",
+)
+
 copy_to_bin(
-    name = "setup-api-extractor",
+    name = "copy-package-json",
     srcs = [
-        "api-extractor.json",
         "package.json",
-        "tsconfig.json",
     ],
 )
 
@@ -109,7 +124,9 @@ npm_package_bin(
         "$(@D)/api-extractor.json",
     ],
     data = [
-        ":setup-api-extractor",
+        "api-extractor.json",
+        "tsconfig.json",
+        ":copy-package-json",
         ":types",
         "//:setup-api-extractor",
     ],
@@ -232,12 +249,14 @@ generated_file_test(
 ts_project(
     name = "test262-main-bundle",
     srcs = SRCS + ["test262-main.ts"],
+    declaration = True,
+    declaration_map = True,
     extends = [
-        "tsconfig.json",
         "//:tsconfig.json",
     ],
     outdir = "test262",
-    tsconfig = "tsconfig.es6.json",
+    source_map = True,
+    tsconfig = "//:tsconfig.es6.json",
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,
 )
@@ -248,13 +267,13 @@ rollup_bundle(
         "test262/index.js",
         "test262/polyfill-force.js",
     ],
-    config_file = "rollup.config.test262.js",
+    config_file = "//:rollup.config.js",
     entry_point = "test262/test262-main.js",
     format = "umd",
     deps = [
         "@npm//rollup-plugin-node-resolve",
         "@npm//rollup-plugin-commonjs",
-        "@npm//rollup-plugin-typescript2",
+        "@npm//rollup-plugin-replace",
         "@npm//@rollup/plugin-json",
     ] + SRC_DEPS,
 )
@@ -274,3 +293,65 @@ test262_harness_test(
         "$(rootpaths //:test262-pluralrules)",
     ],
 )
+
+# # karma tests
+# ts_project(
+#     name = "karma-tests",
+#     srcs = SRCS + TESTS,
+#     declaration = True,
+#     declaration_map = True,
+#     extends = ["//:tsconfig.json"],
+#     outdir = "tests-karma",
+#     source_map = True,
+#     tsconfig = "//:tsconfig.esm.json",
+#     visibility = ["//visibility:public"],
+#     deps = TEST_DEPS,
+# )
+
+# BUNDLE_KARMA_TESTS = ["karma-tests-%s.bundled" % f[f.rindex("/") + 1:f.rindex(".")] for f in TESTS]
+
+# [rollup_bundle(
+#     name = "karma-tests-%s.bundled" % f[f.rindex("/") + 1:f.rindex(".")],
+#     srcs = ["tests-karma/%s.js" % f[:f.rindex(".")] for f in SRCS] + [":tests-locale-data"],
+#     config_file = "//:rollup.config.js",
+#     entry_point = "tests-karma/%s.js" % f[:f.rindex(".")],
+#     format = "umd",
+#     deps = [
+#         "@npm//rollup-plugin-node-resolve",
+#         "@npm//rollup-plugin-commonjs",
+#         "@npm//rollup-plugin-replace",
+#         "@npm//@rollup/plugin-json",
+#     ] + SRC_DEPS,
+# ) for f in TESTS]
+
+# karma_test(
+#     name = "karma",
+#     data = [
+#         "//:karma.conf.js",
+#         "@npm//karma-jasmine",
+#         "@npm//karma-chrome-launcher",
+#         "@npm//karma-jasmine-matchers",
+#     ] + BUNDLE_KARMA_TESTS,
+#     templated_args = [
+#         "start",
+#         "$(rootpath //:karma.conf.js)",
+#     ] + ["$$(rlocation $(location %s))" % f for f in BUNDLE_KARMA_TESTS],
+# )
+
+# karma_test(
+#     name = "karma-ci",
+#     configuration_env_vars = [
+#         "SAUCE_USERNAME",
+#         "SAUCE_ACCESS_KEY",
+#     ],
+#     data = [
+#         "//:karma.conf-ci.js",
+#         "@npm//karma-jasmine",
+#         "@npm//karma-sauce-launcher",
+#         "@npm//karma-jasmine-matchers",
+#     ] + BUNDLE_KARMA_TESTS,
+#     templated_args = [
+#         "start",
+#         "$(rootpath //:karma.conf-ci.js)",
+#     ] + ["$$(rlocation $(location %s))" % f for f in BUNDLE_KARMA_TESTS],
+# )
