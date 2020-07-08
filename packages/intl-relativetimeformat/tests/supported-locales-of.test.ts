@@ -1,6 +1,6 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
 import '@formatjs/intl-pluralrules/polyfill-locales';
-import * as zh from './locale-data/zh.json';
+import * as zh from '../tests-locale-data/zh.json';
 import RelativeTimeFormat from '../src';
 RelativeTimeFormat.__addLocaleData(zh);
 

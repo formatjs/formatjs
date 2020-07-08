@@ -47,7 +47,6 @@ ts_project(
     outdir = "lib",
     source_map = True,
     tsconfig = "//:tsconfig.json",
-    visibility = ["//visibility:public"],
     deps = SRC_DEPS,
 )
 
@@ -55,6 +54,7 @@ filegroup(
     name = "types",
     srcs = [":dist"],
     output_group = "types",
+    visibility = ["//visibility:public"],
 )
 
 jest_test(

@@ -2,8 +2,8 @@ import {
   DateTimeFormat,
   basicFormatMatcherScore,
   bestFitFormatMatcherScore,
-} from '../src';
-import * as en from './locale-data/en.json';
+} from '../';
+import * as en from '../tests-locale-data/en.json';
 import allData from '../src/data';
 import {parseDateTimeSkeleton} from '../src/skeleton';
 // @ts-ignore

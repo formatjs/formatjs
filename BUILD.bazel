@@ -73,6 +73,17 @@ filegroup(
 )
 
 filegroup(
+    name = "test262-datetimeformat",
+    srcs = glob(
+        ["test262/test/intl402/DateTimeFormat/**/*.js"],
+        exclude = [
+            "**/formatRange.js",  # See https://github.com/tc39/ecma402/pull/438
+        ],
+    ),
+    visibility = ["//packages/intl-datetimeformat:__subpackages__"],
+)
+
+filegroup(
     name = "test262-all",
     srcs = glob([
         "test262/**/*.js",

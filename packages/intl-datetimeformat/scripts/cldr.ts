@@ -58,12 +58,10 @@ function main(args: minimist.ParsedArgs) {
     outputFileSync(
       test262MainFile,
       `/* @generated */
-// prettier-ignore
-import {DateTimeFormat} from '../dist-es6';
-import {defineProperty} from '@formatjs/intl-utils';
-import allData from '../dist-es6/data';
+// @ts-nocheck
+import './polyfill-force'
+import allData from './src/data';
 defineProperty(Intl, 'DateTimeFormat', {value: DateTimeFormat});
-
 
 Intl.DateTimeFormat.__addLocaleData(
 ${['ar', 'de', 'en', 'ja', 'ko', 'th', 'zh', 'zh-Hant', 'zh-Hans']

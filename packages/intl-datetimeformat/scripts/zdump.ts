@@ -11,7 +11,7 @@ async function main(args: minimist.ParsedArgs) {
   const {output, zicDir} = args;
   // const data: Record<string, ZoneData[]> = {};
   const {stdout, stderr} = await execFile(
-    'zdump',
+    '/usr/bin/zdump',
     ['-v', ...zones.map(z => resolve(zicDir, z))],
     {
       maxBuffer: 100 * 1024 * 1024,

@@ -2,27 +2,8 @@
   "name": "@formatjs/intl-datetimeformat",
   "version": "2.0.2",
   "description": "Intl.DateTimeFormat polyfill",
-  "main": "dist/index.js",
-  "types": "lib/intl-datetimeformat.d.ts",
-  "scripts": {
-    "iana": "rimraf iana-data/* && ts-node ./scripts/iana --version 2020a",
-    "zone": "ts-node scripts/zone --input iana-data/zone.tab --output src/zones.ts",
-    "zdump": "ts-node scripts/zdump --output data.zdump --zicDir temp-zic",
-    "zdump-gen": "yarn zic && yarn zdump",
-    "clean": "rimraf dist dist-es6 lib src/locales.ts *.tsbuildinfo",
-    "process-zdump": "ts-node scripts/process-zdump --output src/data.ts --input data.zdump",
-    "process-zdump-golden": "ts-node scripts/process-zdump --output src/data-golden.ts --golden --input data.zdump",
-    "process-zdump-polyfill": "ts-node scripts/process-zdump --polyfill --output dist/add-all-tz.js --input data.zdump",
-    "process-zdump-golden-polyfill": "ts-node scripts/process-zdump --polyfill --output dist/add-golden-tz.js --golden --input data.zdump",
-    "zic": "mkdir -p temp-zic && ts-node scripts/zic --outDir temp-zic --dataDir iana-data",
-    "link-gen": "ts-node scripts/link --input iana-data/backward --output src/links.ts",
-    "compile": "NODE_OPTIONS=--max-old-space-size=8192 tsc && tsc -p tsconfig.esm.json && tsc -p tsconfig.es6.json && api-extractor run --local",
-    "rollup": "NODE_OPTIONS=--max-old-space-size=8192 rollup -c rollup.config.js",
-    "build": "yarn process-zdump-polyfill && yarn process-zdump-golden-polyfill && yarn cldr && yarn compile && api-extractor run --local && yarn rollup",
-    "test": "cross-env cross-env NODE_ENV=test TZ=UTC jest",
-    "cldr": "ts-node scripts/cldr --outDir locale-data --testDataDir tests/locale-data --test262MainFile tests/test262-main.js",
-    "test262": "cross-env ts-node tests/runner"
-  },
+  "main": "index.js",
+  "types": "intl-datetimeformat.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/formatjs/formatjs.git"
@@ -39,25 +20,9 @@
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
   },
-  "files": [
-    "dist",
-    "lib",
-    "locale-data",
-    "polyfill.js",
-    "src"
-  ],
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "dependencies": {
     "@formatjs/intl-getcanonicallocales": "^1.2.10",
     "@formatjs/intl-utils": "^3.6.0"
-  },
-  "devDependencies": {
-    "@formatjs/intl-locale": "^2.1.12",
-    "@types/node-fetch": "^2.5.7",
-    "@types/tar": "^4.0.3",
-    "cldr-core": "^36.0.0",
-    "cldr-dates-full": "^36.0.0",
-    "node-fetch": "^2.6.0",
-    "tar": "^6.0.2"
   }
 }

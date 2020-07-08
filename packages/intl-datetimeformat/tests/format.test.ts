@@ -1,6 +1,6 @@
-import {DateTimeFormat} from '../src';
-import * as ko from './locale-data/ko.json';
-import * as en from './locale-data/en.json';
+import {DateTimeFormat} from '../';
+import * as ko from '../tests-locale-data/ko.json';
+import * as en from '../tests-locale-data/en.json';
 import allData from '../src/data';
 import {
   toLocaleString,

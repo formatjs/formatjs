@@ -2,8 +2,8 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
 import {DisplayNames} from '../src';
 
-import * as en from './locale-data/en.json';
-import * as zh from './locale-data/zh.json';
+import * as en from '../tests-locale-data/en.json';
+import * as zh from '../tests-locale-data/zh.json';
 DisplayNames.__addLocaleData(en, zh);
 
 describe('.of()', () => {

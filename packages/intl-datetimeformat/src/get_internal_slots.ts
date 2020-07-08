@@ -1,6 +1,7 @@
 // Type-only circular import
 // eslint-disable-next-line import/no-cycle
-import {DateTimeFormat, IntlDateTimeFormatInternal} from '.';
+
+import {DateTimeFormat, IntlDateTimeFormatInternal} from '..';
 
 const internalSlotMap = new WeakMap<
   DateTimeFormat,

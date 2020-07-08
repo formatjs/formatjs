@@ -1,11 +1,11 @@
 import {DateTimeFormat} from '.';
 import {defineProperty} from '@formatjs/intl-utils';
-import {DateTimeFormatOptions} from './types';
+import {DateTimeFormatOptions} from './src/types';
 import {
   toLocaleString as _toLocaleString,
   toLocaleDateString as _toLocaleDateString,
   toLocaleTimeString as _toLocaleTimeString,
-} from './to_locale_string';
+} from './src/to_locale_string';
 
 // function supportsDateStyle() {
 //   return !!(new Intl.DateTimeFormat(undefined, {
