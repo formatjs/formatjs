@@ -1,5 +1,8 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "npm_package_bin", "pkg_npm")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
+
+# load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
+# load("@npm//karma:index.bzl", "karma_test")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-messageformat"
@@ -22,6 +25,17 @@ SRCS = glob(["src/*.ts"]) + ["index.ts"]
 SRC_DEPS = [
     "//packages/intl-messageformat-parser:dist",
     "//packages/intl-format-cache:dist",
+]
+
+TESTS = glob([
+    "tests/*.test.ts",
+])
+
+TEST_DEPS = SRC_DEPS + [
+    "@npm//@jest/transform",
+    "@npm//ts-jest",
+    "@npm//@types/jest",
+    "@npm//jasmine-expect",
 ]
 
 ts_project(
@@ -59,11 +73,7 @@ jest_test(
     name = "unit",
     srcs = [
         "//:tsconfig.json",
-    ] + SRCS + glob([
-        "tests/**/*.ts",
-        "tests/**/*.tsx",
-        "tests/**/*.snap",
-    ]),
+    ] + SRCS + TESTS,
     jest_config = "//:jest.config.js",
     tags = [
         # Need to set the pwd to avoid jest needing a runfiles helper
@@ -73,14 +83,10 @@ jest_test(
         # TODO: why does this fail almost all the time, but pass on local Mac?
         "no-bazelci-mac",
     ],
-    deps = [
-        "@npm//@jest/transform",
-        "@npm//ts-jest",
-        "@npm//@types/jest",
+    deps = TEST_DEPS + [
         "//packages/intl-messageformat-parser:types",
         "//packages/intl-format-cache:types",
-        "@npm//jasmine-expect",
-    ] + SRC_DEPS,
+    ],
 )
 
 # API Extractor
@@ -125,3 +131,66 @@ npm_package_bin(
     package = "api-extractor",
     tool = "@npm//@microsoft/api-extractor/bin:api-extractor",
 )
+
+# karma tests
+# TODO
+# ts_project(
+#     name = "karma-tests",
+#     srcs = SRCS + TESTS,
+#     declaration = True,
+#     declaration_map = True,
+#     extends = ["//:tsconfig.json"],
+#     outdir = "tests-karma",
+#     source_map = True,
+#     tsconfig = "//:tsconfig.esm.json",
+#     visibility = ["//visibility:public"],
+#     deps = TEST_DEPS,
+# )
+
+# BUNDLE_KARMA_TESTS = ["karma-tests-%s.bundled" % f[f.rindex("/") + 1:f.rindex(".")] for f in TESTS]
+
+# [rollup_bundle(
+#     name = "karma-tests-%s.bundled" % f[f.rindex("/") + 1:f.rindex(".")],
+#     srcs = ["tests-karma/%s.js" % f[:f.rindex(".")] for f in SRCS],
+#     config_file = "//:rollup.config.js",
+#     entry_point = "tests-karma/%s.js" % f[:f.rindex(".")],
+#     format = "umd",
+#     deps = [
+#         "@npm//rollup-plugin-node-resolve",
+#         "@npm//rollup-plugin-commonjs",
+#         "@npm//rollup-plugin-replace",
+#         "@npm//@rollup/plugin-json",
+#     ] + SRC_DEPS,
+# ) for f in TESTS]
+
+# karma_test(
+#     name = "karma",
+#     data = [
+#         "//:karma.conf.js",
+#         "@npm//karma-jasmine",
+#         "@npm//karma-chrome-launcher",
+#         "@npm//karma-jasmine-matchers",
+#     ] + BUNDLE_KARMA_TESTS,
+#     templated_args = [
+#         "start",
+#         "$(rootpath //:karma.conf.js)",
+#     ] + ["$$(rlocation $(location %s))" % f for f in BUNDLE_KARMA_TESTS],
+# )
+
+# karma_test(
+#     name = "karma-ci",
+#     configuration_env_vars = [
+#         "SAUCE_USERNAME",
+#         "SAUCE_ACCESS_KEY",
+#     ],
+#     data = [
+#         "//:karma.conf-ci.js",
+#         "@npm//karma-jasmine",
+#         "@npm//karma-sauce-launcher",
+#         "@npm//karma-jasmine-matchers",
+#     ] + BUNDLE_KARMA_TESTS,
+#     templated_args = [
+#         "start",
+#         "$(rootpath //:karma.conf-ci.js)",
+#     ] + ["$$(rlocation $(location %s))" % f for f in BUNDLE_KARMA_TESTS],
+# )
