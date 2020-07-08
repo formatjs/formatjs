@@ -25,7 +25,7 @@ build --symlink_prefix=dist/
 #   'all' to print logs for all tests
 #   'streamed' to output logs for all tests in real time
 #     (this will force tests to be executed locally one at a time regardless of --test_strategy value).
-test --test_output=errors
+test --test_output=errors --test_output=streamed
 
 # Support for debugging NodeJS tests
 # Add the Bazel option `--config=debug` to enable this
