@@ -1,7 +1,4 @@
-import '@formatjs/intl-pluralrules/polyfill-locales';
-import '@formatjs/intl-relativetimeformat/polyfill-locales';
-import memoizeFormatConstructor from '../src';
-import 'jasmine-expect';
+import memoizeFormatConstructor from '../';
 
 describe('intl-format-cache', function () {
   it('has a function as the default export', function () {

@@ -2,25 +2,14 @@
   "name": "intl-format-cache",
   "version": "4.2.46",
   "description": "A memoizer factory for Intl format constructors.",
-  "main": "dist/index.js",
+  "main": "index.js",
   "module": "lib/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "lib",
-    "src"
-  ],
+  "types": "intl-format-cache.d.ts",
   "scripts": {
     "clean": "rimraf dist lib tests/browser.js tests/browser.js.map *.tsbuildinfo",
     "benchmark": "ts-node tests/benchmark",
     "build": "tsc && tsc -p tsconfig.esm.json && rollup -c rollup.config.js",
     "jest": "cross-env NODE_ENV=test jest"
-  },
-  "devDependencies": {
-    "@formatjs/intl-pluralrules": "^3.0.2",
-    "@formatjs/intl-relativetimeformat": "^6.0.2",
-    "jasmine": "3.5.0",
-    "jasmine-expect": "4.0.3"
   },
   "repository": {
     "type": "git",
