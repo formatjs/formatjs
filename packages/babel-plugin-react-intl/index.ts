@@ -6,7 +6,7 @@
 
 import * as p from 'path';
 import {outputJSONSync} from 'fs-extra';
-import {parse} from 'intl-messageformat-parser/dist';
+import {parse} from 'intl-messageformat-parser';
 const {declare} = require('@babel/helper-plugin-utils') as any;
 import {PluginObj, types as t} from '@babel/core';
 
@@ -389,7 +389,7 @@ export default declare((api: any, options: OptionsSchema) => {
         : null;
       const {ReactIntlMessages: messages, ReactIntlMeta} = this;
       const descriptors = Array.from(messages.values());
-      state.metadata['react-intl'] = {
+      (state as any).metadata['react-intl'] = {
         messages: descriptors,
         meta: ReactIntlMeta,
       } as ExtractionResult;

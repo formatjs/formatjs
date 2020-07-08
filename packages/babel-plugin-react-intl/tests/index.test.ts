@@ -1,7 +1,7 @@
 import {join, basename} from 'path';
 import * as fs from 'fs';
 import {transformFileSync} from '@babel/core';
-import plugin from '../src';
+import plugin from '../';
 
 function trim(str?: string | null) {
   return String(str).replace(/^\s+|\s+$/, '');
@@ -25,7 +25,7 @@ const skipOutputTests = [
 ];
 
 const fixturesDir = join(__dirname, 'fixtures');
-const baseDir = join(__dirname, '..');
+const baseDir = __dirname;
 
 describe('emit asserts for: ', () => {
   fs.readdirSync(fixturesDir).map(caseName => {

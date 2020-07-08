@@ -1,4 +1,4 @@
-import {pegParse} from '../src';
+import {pegParse} from '../';
 describe('error', function () {
   [
     'You have {count, plural, one {# hot dog} one {# hamburger} one {# sandwich} other {# snacks}} in your lunch bag.',

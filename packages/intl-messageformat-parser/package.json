@@ -2,14 +2,9 @@
   "name": "intl-messageformat-parser",
   "version": "5.2.4",
   "description": "Parses ICU Message strings into an AST via JavaScript.",
-  "main": "dist/index.js",
+  "main": "index.js",
   "module": "lib/index.js",
-  "types": "lib/intl-messageformat-parser.d.ts",
-  "files": [
-    "dist",
-    "lib",
-    "src"
-  ],
+  "types": "intl-messageformat-parser.d.ts",
   "scripts": {
     "clean": "rimraf dist lib *.tsbuildinfo",
     "build": "node build.js && tsc && tsc -p tsconfig.esm.json && api-extractor run --local && rollup -c rollup.config.js",

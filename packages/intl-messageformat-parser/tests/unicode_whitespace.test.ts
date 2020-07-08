@@ -1,4 +1,4 @@
-import {parse, TYPE, SelectElement} from '../src';
+import {parse, TYPE, SelectElement} from '../';
 
 test('it skips unicode no-break space (U+00A0)', () => {
   const tree = parse(`{gender, select,

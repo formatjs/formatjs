@@ -59,7 +59,7 @@ new benchmark.Suite()
   .add('normal_msg', () => parser.parse(normalMsg))
   .add('simple_msg', () => parser.parse(simpleMsg))
   .add('string_msg', () => parser.parse(stringMsg))
-  .on('cycle', function(event) {
+  .on('cycle', function (event) {
     console.log(String(event.target));
   })
   .run();

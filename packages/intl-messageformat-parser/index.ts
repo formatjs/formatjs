@@ -1,9 +1,9 @@
-import {pegParse, IParseOptions} from './parser';
-import {Options, MessageFormatElement} from './types';
-import {normalizeHashtagInPlural} from './normalize';
-export * from './types';
-export * from './parser';
-export * from './skeleton';
+import {pegParse, IParseOptions} from './src/parser';
+import {Options, MessageFormatElement} from './src/types';
+import {normalizeHashtagInPlural} from './src/normalize';
+export * from './src/types';
+export * from './src/parser';
+export * from './src/skeleton';
 
 export type ParseOptions = Options & IParseOptions;
 

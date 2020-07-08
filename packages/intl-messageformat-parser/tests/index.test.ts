@@ -1,4 +1,4 @@
-import {pegParse, ParseOptions} from '../src';
+import {pegParse, ParseOptions} from '../';
 import {printAST} from '../src/printer';
 
 function allTests(opts?: ParseOptions) {
