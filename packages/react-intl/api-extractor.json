@@ -61,7 +61,6 @@
    * local files for library1.
    */
   "bundledPackages": [
-    // "@formatjs/macro",
     // "@formatjs/intl-listformat",
     // "@formatjs/intl-relativetimeformat",
     // "intl-messageformat-parser",
