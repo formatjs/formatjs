@@ -181,7 +181,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "enzyme-to-json": "^3.4.4",
-    "jest": "^25.4.0",
+    "jest": "^26.1.0",
     "parcel": "^1.12.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

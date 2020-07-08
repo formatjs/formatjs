@@ -39,7 +39,7 @@
     "@types/jest": "^25.2.1",
     "chalk": "^4.0.0",
     "cldr-localenames-full": "^36.0.0",
-    "jest": "^25.4.0",
+    "jest": "^26.1.0",
     "ts-jest": "^26.1.1"
   },
   "scripts": {
