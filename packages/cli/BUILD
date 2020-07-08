@@ -2,31 +2,47 @@ load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("//tools:jest.bzl", "jest_test")
 
-PACKAGE_NAME = "ts-transformer"
+PACKAGE_NAME = "cli"
 
 pkg_npm(
     name = PACKAGE_NAME,
     package_name = "@formatjs/%s" % PACKAGE_NAME,
-    srcs = ["package.json"],
-    deps = [":dist"],
+    srcs = [
+        "LICENSE.md",
+        "package.json",
+    ],
+    deps = [
+        "bin/formatjs",
+        ":dist",
+    ],
 )
 
-SRCS = glob(["src/*.ts"]) + ["index.ts"]
+SRCS = glob(["src/*.ts"]) + [
+    "index.ts",
+]
 
 SRC_DEPS = [
-    "@npm//typescript",
+    "//packages/babel-plugin-react-intl:dist",
+    "@npm//@babel/core",
     "@npm//@types/node",
+    "@npm//fs-extra",
+    "@npm//@types/fs-extra",
+    "//packages/ts-transformer:dist",
+    "@npm//glob",
+    "@npm//@types/glob",
+    "@npm//commander",
+    "@npm//loud-rejection",
+    "@npm//chalk",
 ]
 
 ts_project(
     name = "dist",
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
     declaration = True,
     declaration_map = True,
+    extends = ["//:tsconfig.json"],
     source_map = True,
-    tsconfig = "//:tsconfig.json",
-    visibility = ["//visibility:public"],
+    tsconfig = "//:tsconfig.node.json",
     deps = SRC_DEPS,
 )
 
@@ -34,18 +50,16 @@ filegroup(
     name = "types",
     srcs = [":dist"],
     output_group = "types",
-    visibility = ["//visibility:public"],
 )
 
+# TODO: Add integration tests
 jest_test(
     name = "unit",
     srcs = [
         "//:tsconfig.json",
-    ] + SRCS + glob([
-        "tests/**/*.ts",
-        "tests/**/*.tsx",
-        "tests/**/*.snap",
-    ]),
+        "package.json",
+        "tests/extract/unit.test.ts",
+    ] + SRCS,
     jest_config = "//:jest.config.js",
     tags = [
         # Need to set the pwd to avoid jest needing a runfiles helper
@@ -59,5 +73,10 @@ jest_test(
         "@npm//@jest/transform",
         "@npm//ts-jest",
         "@npm//@types/jest",
+        "@npm//eslint",
+        "//packages/babel-plugin-react-intl:types",
+        "//packages/ts-transformer:types",
+        "@npm//rimraf",
+        "@npm//@types/rimraf",
     ] + SRC_DEPS,
 )

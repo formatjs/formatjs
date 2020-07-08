@@ -1,5 +1,5 @@
-import commander from 'commander';
-import loudRejection from 'loud-rejection';
+import * as commander from 'commander';
+import * as loudRejection from 'loud-rejection';
 import extract, {ExtractCLIOptions} from './extract';
 import {sync as globSync} from 'glob';
 
