@@ -1,11 +1,11 @@
-import enforceDefaultMessage from '../src/rules/enforce-default-message';
+import enforceDefaultMessage from '../rules/enforce-default-message';
 import {noMatch, spreadJsx, emptyFnCall, dynamicMessage} from './fixtures';
 import {ruleTester} from './util';
 
 ruleTester.run('enforce-default-message', enforceDefaultMessage, {
   valid: [
     `import {defineMessage} from 'react-intl'
-_({
+defineMessage({
     defaultMessage: 'this is default message',
     description: 'asd'
 })`,
@@ -22,7 +22,7 @@ _({
     {
       code: `
             import {defineMessage} from 'react-intl'
-            _({
+            defineMessage({
                 description: 'this is default message'
             })`,
       errors: [
@@ -75,7 +75,7 @@ _({
     {
       code: `
             import {defineMessage} from 'react-intl'
-            _({
+            defineMessage({
                 defaultMessage: foo
             })`,
       errors: [

@@ -1,10 +1,10 @@
-import supportedDatetimeSkeleton from '../src/rules/supported-datetime-skeleton';
+import supportedDatetimeSkeleton from '../rules/supported-datetime-skeleton';
 import {ruleTester} from './util';
 import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures';
 ruleTester.run('supported-datetime-skeleton', supportedDatetimeSkeleton, {
   valid: [
     `import {defineMessage} from 'react-intl'
-  _({
+  defineMessage({
       defaultMessage: '{ts, date, ::yyyyMMdd}'
   })`,
     dynamicMessage,
@@ -16,7 +16,7 @@ ruleTester.run('supported-datetime-skeleton', supportedDatetimeSkeleton, {
     {
       code: `
               import {defineMessage} from 'react-intl'
-              _({
+              defineMessage({
                   defaultMessage: '{ts, date, ::yQQQHm}'
               })`,
       errors: [
@@ -28,7 +28,7 @@ ruleTester.run('supported-datetime-skeleton', supportedDatetimeSkeleton, {
     {
       code: `
               import {defineMessage} from 'react-intl'
-              _({
+              defineMessage({
                   defaultMessage: '{ts, date, ::DFg}'
               })`,
       errors: [

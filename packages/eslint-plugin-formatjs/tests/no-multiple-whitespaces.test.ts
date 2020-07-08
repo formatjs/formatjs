@@ -1,10 +1,10 @@
-import noMultipleWhitespaces from '../src/rules/no-multiple-whitespaces';
+import noMultipleWhitespaces from '../rules/no-multiple-whitespaces';
 import {ruleTester} from './util';
 import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures';
 ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
   valid: [
     `import {defineMessage} from 'react-intl'
-  _({
+  defineMessage({
       defaultMessage: 'a {placeholder}',
       description: 'asd'
   })`,
@@ -16,7 +16,7 @@ ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
   invalid: [
     {
       code:
-        "import {defineMessage} from 'react-intl';_({defaultMessage: 'a \
+        "import {defineMessage} from 'react-intl';defineMessage({defaultMessage: 'a \
                   {placeHolder}'})",
       errors: [
         {
@@ -24,7 +24,7 @@ ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
         },
       ],
       output:
-        "import {defineMessage} from 'react-intl';_({defaultMessage: 'a {placeHolder}'})",
+        "import {defineMessage} from 'react-intl';defineMessage({defaultMessage: 'a {placeHolder}'})",
     },
     {
       code: "<FormattedMessage defaultMessage='a   thing'/>",
@@ -38,7 +38,7 @@ ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
     {
       code: `
               import {defineMessage} from 'react-intl'
-              _({
+              defineMessage({
                   defaultMessage: 'a   {placeHolder}'
               })`,
       errors: [
@@ -48,7 +48,7 @@ ruleTester.run('no-multiple-whitespaces', noMultipleWhitespaces, {
       ],
       output: `
               import {defineMessage} from 'react-intl'
-              _({
+              defineMessage({
                   defaultMessage: 'a {placeHolder}'
               })`,
     },

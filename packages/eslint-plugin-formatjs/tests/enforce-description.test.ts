@@ -1,11 +1,11 @@
-import enforceDescription from '../src/rules/enforce-description';
+import enforceDescription from '../rules/enforce-description';
 import {noMatch, spreadJsx, emptyFnCall, dynamicMessage} from './fixtures';
 import {ruleTester} from './util';
 
 ruleTester.run('enforce-description', enforceDescription, {
   valid: [
     `import {defineMessage} from 'react-intl'
-_({
+defineMessage({
     defaultMessage: '{count, plural, one {#} other {# more}}',
     description: 'asd'
 })`,
@@ -22,7 +22,7 @@ _({
     {
       code: `
             import {defineMessage} from 'react-intl'
-            _({
+            defineMessage({
                 defaultMessage: '{count, plural, one {#} other {# more}}'
             })`,
       errors: [
@@ -34,7 +34,7 @@ _({
     {
       code: `
             import {defineMessage} from 'react-intl'
-            _({
+            defineMessage({
                 defaultMessage: '{count, plural, one {#} other {# more}}',
                 description: foo
             })`,

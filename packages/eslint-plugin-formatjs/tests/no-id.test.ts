@@ -1,4 +1,4 @@
-import noId from '../src/rules/no-id';
+import noId from '../rules/no-id';
 import {ruleTester} from './util';
 import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures';
 ruleTester.run('no-id', noId, {
@@ -28,7 +28,7 @@ ruleTester.run('no-id', noId, {
       description: 'asd'
     }
   })
-  _({
+  defineMessage({
     defaultMessage: '{count, plural, one {#} other {# more}}',
     description: 'asd'
   })
@@ -66,7 +66,7 @@ ruleTester.run('no-id', noId, {
       ],
       output: `
 import {defineMessage} from 'react-intl'
-_({ defaultMessage, description})`,
+defineMessage({ defaultMessage, description})`,
     },
     {
       code: `

@@ -12,4 +12,4 @@ function foo (props) {
 `;
 export const dynamicMessage = `
 import {defineMessage} from 'react-intl'
-_({id, defaultMessage, description})`;
+defineMessage({id, defaultMessage, description})`;

@@ -1,11 +1,11 @@
-import blacklistElements from '../src/rules/blacklist-elements';
+import blacklistElements from '../rules/blacklist-elements';
 import {ruleTester} from './util';
 import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures';
 ruleTester.run('blacklist-elements', blacklistElements, {
   valid: [
     {
       code: `import {defineMessage} from 'react-intl'
-  _({
+  defineMessage({
       defaultMessage: '{count, plural, one {#} other {# more}}'
   })`,
       options: [['selectordinal']],
@@ -19,7 +19,7 @@ ruleTester.run('blacklist-elements', blacklistElements, {
     {
       code: `
               import {defineMessage} from 'react-intl'
-              _({
+              defineMessage({
                   defaultMessage: '{count, selectordinal, offset:1 one {#} other {# more}}'
               })`,
       options: [['selectordinal']],

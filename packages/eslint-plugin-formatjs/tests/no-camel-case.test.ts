@@ -1,11 +1,11 @@
 import {ruleTester} from './util';
-import noCamelCase from '../src/rules/no-camel-case';
+import noCamelCase from '../rules/no-camel-case';
 import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures';
 
 ruleTester.run('no-camel-case', noCamelCase, {
   valid: [
     `import {defineMessage} from 'react-intl'
-  _({
+  defineMessage({
       defaultMessage: 'a {placeholder}',
       description: 'asd'
   })`,
@@ -18,7 +18,7 @@ ruleTester.run('no-camel-case', noCamelCase, {
     {
       code: `
               import {defineMessage} from 'react-intl'
-              _({
+              defineMessage({
                   defaultMessage: 'a {placeHolder}'
               })`,
       errors: [

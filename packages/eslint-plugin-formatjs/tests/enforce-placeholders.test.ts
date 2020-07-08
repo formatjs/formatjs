@@ -1,4 +1,4 @@
-import enforcePlaceholders from '../src/rules/enforce-placeholders';
+import enforcePlaceholders from '../rules/enforce-placeholders';
 import {ruleTester} from './util';
 import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures';
 ruleTester.run('enforce-placeholders', enforcePlaceholders, {
@@ -28,7 +28,7 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
       description: 'asd'
     }
   })
-  _({
+  defineMessage({
     defaultMessage: '{count, plural, one {#} other {# more}}',
     description: 'asd'
   })

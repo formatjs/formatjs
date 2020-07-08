@@ -1,11 +1,11 @@
-import enforcePluralRules from '../src/rules/enforce-plural-rules';
+import enforcePluralRules from '../rules/enforce-plural-rules';
 import {ruleTester} from './util';
 import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures';
 ruleTester.run('enforce-plural-rules', enforcePluralRules, {
   valid: [
     {
       code: `import {defineMessage} from 'react-intl'
-  _({
+  defineMessage({
       defaultMessage: '{count, plural, one {#} other {# more}}',
       description: 'asd'
   })`,
@@ -17,7 +17,7 @@ ruleTester.run('enforce-plural-rules', enforcePluralRules, {
     },
     {
       code: `import {defineMessage} from 'react-intl'
-  _({
+  defineMessage({
       defaultMessage: '{count, plural, one {#} other {# more}}',
       description: 'asd'
   })`,
@@ -29,7 +29,7 @@ ruleTester.run('enforce-plural-rules', enforcePluralRules, {
     },
     {
       code: `import {defineMessage} from 'react-intl'
-  _({
+  defineMessage({
       defaultMessage: '{count, plural, one {#} other {# more}}',
       description: 'asd'
   })`,
@@ -50,7 +50,7 @@ ruleTester.run('enforce-plural-rules', enforcePluralRules, {
     {
       code: `
               import {defineMessage} from 'react-intl'
-              _({
+              defineMessage({
                   defaultMessage: '{count, plural, one {#} other {# more}}'
               })`,
       options: [
@@ -67,7 +67,7 @@ ruleTester.run('enforce-plural-rules', enforcePluralRules, {
     {
       code: `
               import {defineMessage} from 'react-intl'
-              _({
+              defineMessage({
                   defaultMessage: '{count, plural, one {#}}'
               })`,
       options: [
