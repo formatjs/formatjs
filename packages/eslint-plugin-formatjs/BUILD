@@ -1,6 +1,5 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
-load("@npm//json-schema-to-typescript:index.bzl", "json2ts")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "eslint-plugin-formatjs"
