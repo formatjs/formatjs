@@ -1,6 +1,6 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "generated_file_test", "npm_package_bin", "pkg_npm")
-load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//karma:index.bzl", "karma_test")
 load("//tools:jest.bzl", "jest_test")
 
