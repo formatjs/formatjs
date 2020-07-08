@@ -24,13 +24,16 @@ jobs:
           yarn install --frozen-lockfile
         env:
           CI: true
+      - name: create secrets
+        run: |
+          echo ${{ secrets.SECRET_BAZEL_CACHE_JSON }} > secret.json
       - name: yarn build
         run: |
-          yarn build
+          yarn build --google_credentials=secret.json
         env:
           CI: true
       - name: yarn test
         run: |
-          yarn test
+          yarn test --google_credentials=secret.json
         env:
           CI: true
