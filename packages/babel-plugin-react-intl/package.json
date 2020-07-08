@@ -43,7 +43,7 @@
   "devDependencies": {
     "@types/jest": "^25.2.1",
     "jest": "^25.4.0",
-    "json-schema-to-typescript": "^8.2.0",
+    "json-schema-to-typescript": "^9.1.1",
     "ts-jest": "^26.1.1"
   }
 }
