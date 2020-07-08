@@ -4,7 +4,6 @@ on: [push, pull_request]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -12,26 +11,26 @@ jobs:
         node-version: [10.x, 12.x, 14.x]
 
     steps:
-    - uses: actions/checkout@v2.3.1
-      with:
-        submodules: true
-        fetch-depth: 110
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2.1.0
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: yarn install
-      run: |
-        yarn install --frozen-lockfile
-      env:
-        CI: true
-    - name: yarn build
-      run: |
-        yarn build
-      env:
-        CI: true
-    - name: yarn test
-      run: |
-        yarn test
-      env:
-        CI: true
+      - uses: actions/checkout@v2.3.1
+        with:
+          submodules: true
+          fetch-depth: 110
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2.1.0
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: yarn install
+        run: |
+          yarn install --frozen-lockfile
+        env:
+          CI: true
+      - name: yarn build
+        run: |
+          yarn build
+        env:
+          CI: true
+      - name: yarn test
+        run: |
+          yarn test
+        env:
+          CI: true

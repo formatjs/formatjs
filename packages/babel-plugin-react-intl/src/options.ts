@@ -9,7 +9,12 @@ export interface OptionsSchema {
   moduleSourceName?: string;
   extractSourceLocation?: boolean;
   messagesDir?: string;
-  overrideIdFn?: (id: string, defaultMessage: string, description: string, filePath: string) => string;
+  overrideIdFn?: (
+    id: string,
+    defaultMessage: string,
+    description: string,
+    filePath: string
+  ) => string;
   removeDefaultMessage?: boolean;
   extractFromFormatMessageCall?: boolean;
   additionalComponentNames?: string[];

@@ -28,6 +28,7 @@ module.exports = {
           'react-intl/api',
           'react-intl/testing',
           'react-intl/advanced-usage',
+          'react-intl/upgrade-guide-5x',
           'react-intl/upgrade-guide-4x',
           'react-intl/upgrade-guide-3x',
           'react-intl/upgrade-guide-2x',
