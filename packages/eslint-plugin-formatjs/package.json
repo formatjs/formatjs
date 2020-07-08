@@ -31,7 +31,7 @@
     "@types/emoji-regex": "^8.0.0",
     "@types/eslint": "^6.8.0",
     "@types/estree": "^0.0.44",
-    "@typescript-eslint/typescript-estree": "^2.29.0",
+    "@typescript-eslint/typescript-estree": "^3.6.0",
     "emoji-regex": "^9.0.0",
     "intl-messageformat-parser": "^5.2.4"
   },
