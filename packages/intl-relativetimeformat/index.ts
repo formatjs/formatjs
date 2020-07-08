@@ -1,4 +1,3 @@
-import {Unit, FormattableUnit} from './types';
 import {
   toObject,
   getOption,
@@ -19,6 +18,27 @@ import {
   LocaleFieldsData,
 } from '@formatjs/intl-utils';
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
+export type Unit =
+  | 'second'
+  | 'minute'
+  | 'hour'
+  | 'day'
+  | 'week'
+  | 'month'
+  | 'quarter'
+  | 'year';
+
+export type Units =
+  | 'seconds'
+  | 'minutes'
+  | 'hours'
+  | 'days'
+  | 'weeks'
+  | 'months'
+  | 'quarters'
+  | 'years';
+
+export type FormattableUnit = Unit | Units;
 
 export interface IntlRelativeTimeFormatOptions {
   /**

@@ -1,9 +1,10 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "generated_file_test", "npm_package_bin", "pkg_npm")
+load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
-load("@npm//ts-node:index.bzl", "ts_node")
+load("@npm//test262-harness:index.bzl", "test262_harness_test")
 load("//tools:jest.bzl", "jest_test")
 
-PACKAGE_NAME = "intl-datetimeformat"
+PACKAGE_NAME = "intl-relativetimeformat"
 
 pkg_npm(
     name = PACKAGE_NAME,
@@ -13,9 +14,8 @@ pkg_npm(
         "package.json",
     ],
     deps = [
-        "add-all-tz.js",
-        "add-golden-tz.js",
-        "intl-datetimeformat.d.ts",
+        "intl-relativetimeformat.d.ts",
+        "polyfill-locales.js",
         ":dist",
         ":lib",
         ":locale-data",
@@ -152,12 +152,8 @@ npm_package_bin(
     ],
     data = [
         "scripts/cldr.ts",
-        "scripts/extract-dates.ts",
-        "src/skeleton.ts",
-        "src/types.ts",
+        "scripts/extract-relative.ts",
         "//:tsconfig.json",
-        "//packages/intl-locale:dist",
-        "//packages/intl-locale:types",
         "//packages/intl-utils:dist",
         "//packages/intl-utils:types",
         "@npm//@types/fs-extra",
@@ -186,12 +182,8 @@ npm_package_bin(
     ],
     data = [
         "scripts/cldr.ts",
-        "scripts/extract-dates.ts",
-        "src/skeleton.ts",
-        "src/types.ts",
+        "scripts/extract-relative.ts",
         "//:tsconfig.json",
-        "//packages/intl-locale:dist",
-        "//packages/intl-locale:types",
         "//packages/intl-utils:dist",
         "//packages/intl-utils:types",
         "@npm//@types/fs-extra",
@@ -212,6 +204,36 @@ npm_package_bin(
 )
 
 npm_package_bin(
+    name = "polyfill-locales",
+    outs = ["polyfill-locales.js"],
+    args = [
+        "$(execpath scripts/cldr.ts)",
+        "--polyfillLocalesOutFile",
+        "$@",
+    ],
+    data = [
+        "scripts/cldr.ts",
+        "scripts/extract-relative.ts",
+        "//:tsconfig.json",
+        "//packages/intl-utils:dist",
+        "//packages/intl-utils:types",
+        "@npm//@types/fs-extra",
+        "@npm//@types/glob",
+        "@npm//@types/lodash",
+        "@npm//@types/minimist",
+        "@npm//@types/node",
+        "@npm//cldr-core",
+        "@npm//cldr-dates-full",
+        "@npm//cldr-numbers-full",
+        "@npm//fs-extra",
+        "@npm//glob",
+        "@npm//lodash",
+        "@npm//minimist",
+    ],
+    package = "ts-node",
+)
+
+npm_package_bin(
     name = "test262-main-gen",
     outs = ["tmp/test262-main.ts"],
     args = [
@@ -221,12 +243,8 @@ npm_package_bin(
     ],
     data = [
         "scripts/cldr.ts",
-        "scripts/extract-dates.ts",
-        "src/skeleton.ts",
-        "src/types.ts",
+        "scripts/extract-relative.ts",
         "//:tsconfig.json",
-        "//packages/intl-locale:dist",
-        "//packages/intl-locale:types",
         "//packages/intl-utils:dist",
         "//packages/intl-utils:types",
         "@npm//@types/fs-extra",
@@ -251,222 +269,49 @@ generated_file_test(
     generated = ":test262-main-gen",
 )
 
-# IANA
-ts_node(
-    name = "iana-data",
-    args = [
-        "$(execpath scripts/iana.ts)",
-        "--version",
-        "2020a",
-        "--outDir",
-        "$(@D)",
-    ],
-    data = [
-        "scripts/iana.ts",
+# Test262
+ts_project(
+    name = "test262-main-bundle",
+    srcs = SRCS + ["test262-main.ts"],
+    declaration = True,
+    declaration_map = True,
+    extends = [
         "//:tsconfig.json",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//@types/node-fetch",
-        "@npm//@types/tar",
-        "@npm//minimist",
-        "@npm//node-fetch",
-        "@npm//tar",
     ],
-    output_dir = True,
+    outdir = "test262",
+    source_map = True,
+    tsconfig = "//:tsconfig.es6.json",
+    deps = SRC_DEPS,
 )
 
-# zic
-ts_node(
-    name = "zic",
-    args = [
-        "$(execpath scripts/zic.ts)",
-        "--dataDir",
-        "$(locations iana-data)",
-        "--outDir",
-        "$(@D)",
+rollup_bundle(
+    name = "test262-polyfill",
+    srcs = [
+        ":test262-main-bundle",
     ],
+    config_file = "//:rollup.config.js",
+    entry_point = "test262/test262-main.js",
+    format = "umd",
+    deps = [
+        "@npm//rollup-plugin-node-resolve",
+        "@npm//rollup-plugin-commonjs",
+        "@npm//rollup-plugin-replace",
+        "@npm//@rollup/plugin-json",
+    ] + SRC_DEPS,
+)
+
+test262_harness_test(
+    name = "test262",
     data = [
-        "iana-data",
-        "scripts/zic.ts",
-        "//:tsconfig.json",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//minimist",
+        "test262-polyfill.js",
+        "//:test262-all",
+        "//:test262-relativetimeformat",
     ],
-    output_dir = True,
-)
-
-# zones
-ts_node(
-    name = "zones-gen",
-    outs = ["tmp/zones.ts"],
-    args = [
-        "$(execpath scripts/zone.ts)",
-        "--input",
-        "$(location iana-data/zone.tab)",
-        "--output",
-        "$@",
-    ],
-    data = [
-        "iana-data/zone.tab",
-        "scripts/zone.ts",
-        "//:tsconfig.json",
-        "@npm//@types/fs-extra",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//fs-extra",
-        "@npm//minimist",
+    templated_args = [
+        "--reporter-keys",
+        "file,attrs,result",
+        "--prelude",
+        "$(rootpath test262-polyfill.js)",
+        "$(rootpaths //:test262-relativetimeformat)",
     ],
 )
-
-generated_file_test(
-    name = "zones",
-    src = "src/data/zones.ts",
-    generated = ":zones-gen",
-)
-
-# "ts-node scripts/link --input iana-data/backward --output src/links.ts"
-# links
-ts_node(
-    name = "links-gen",
-    outs = ["tmp/links.ts"],
-    args = [
-        "$(execpath scripts/link.ts)",
-        "--input",
-        "$(location iana-data/backward)",
-        "--output",
-        "$@",
-    ],
-    data = [
-        "iana-data/backward",
-        "scripts/link.ts",
-        "//:tsconfig.json",
-        "@npm//@types/fs-extra",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//fs-extra",
-        "@npm//minimist",
-    ],
-)
-
-generated_file_test(
-    name = "links",
-    src = "src/data/links.ts",
-    generated = ":links-gen",
-)
-
-# data.ts
-ts_node(
-    name = "all-tz-gen",
-    outs = ["tmp/all-tz.ts"],
-    args = [
-        "$(execpath scripts/process-zdump.ts)",
-        "--input",
-        "$(location data.zdump)",
-        "--output",
-        "$@",
-    ],
-    data = [
-        "data.zdump",
-        "scripts/process-zdump.ts",
-        "src/packer.ts",
-        "src/types.ts",
-        "//:tsconfig.json",
-        "@npm//@types/fs-extra",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//fs-extra",
-        "@npm//minimist",
-    ],
-)
-
-generated_file_test(
-    name = "all-tz",
-    src = "src/data/all-tz.ts",
-    generated = ":all-tz-gen",
-)
-
-# "ts-node scripts/process-zdump --polyfill --output dist/add-all-tz.js --input data.zdump"
-# add-all-tz
-ts_node(
-    name = "add-all-tz",
-    outs = ["add-all-tz.js"],
-    args = [
-        "$(execpath scripts/process-zdump.ts)",
-        "--polyfill",
-        "--input",
-        "$(location data.zdump)",
-        "--output",
-        "$@",
-    ],
-    data = [
-        "data.zdump",
-        "scripts/process-zdump.ts",
-        "src/packer.ts",
-        "src/types.ts",
-        "//:tsconfig.json",
-        "@npm//@types/fs-extra",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//fs-extra",
-        "@npm//minimist",
-    ],
-)
-
-# add-golden-tz
-ts_node(
-    name = "add-golden-tz",
-    outs = ["add-golden-tz.js"],
-    args = [
-        "$(execpath scripts/process-zdump.ts)",
-        "--golden",
-        "--polyfill",
-        "--input",
-        "$(location data.zdump)",
-        "--output",
-        "$@",
-    ],
-    data = [
-        "data.zdump",
-        "scripts/process-zdump.ts",
-        "src/packer.ts",
-        "src/types.ts",
-        "//:tsconfig.json",
-        "@npm//@types/fs-extra",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//fs-extra",
-        "@npm//minimist",
-    ],
-)
-
-# zdump
-# TODO: zdump takes a very long time
-# ts_node(
-#     name = "zdump-gen",
-#     outs = ["tmp/data.zdump"],
-#     args = [
-#         "$(execpath scripts/zdump.ts)",
-#         "--zicDir",
-#         "$(locations zic)",
-#         "--output",
-#         "$@",
-#     ],
-#     data = [
-#         "scripts/zdump.ts",
-#         "src/zones.ts",
-#         "zic",
-#         "//:tsconfig.json",
-#         "@npm//@types/fs-extra",
-#         "@npm//@types/minimist",
-#         "@npm//@types/node",
-#         "@npm//fs-extra",
-#         "@npm//minimist",
-#     ],
-# )
-
-# generated_file_test(
-#     name = "zdump",
-#     src = "data.zdump",
-#     generated = ":zdump-gen",
-# )

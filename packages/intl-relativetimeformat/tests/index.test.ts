@@ -2,7 +2,7 @@ import '@formatjs/intl-getcanonicallocales/polyfill';
 import '@formatjs/intl-pluralrules/polyfill-locales';
 import * as zh from '../tests-locale-data/zh.json';
 import * as en from '../tests-locale-data/en.json';
-import RelativeTimeFormat from '../src';
+import RelativeTimeFormat from '../';
 RelativeTimeFormat.__addLocaleData(en, zh);
 
 describe('Intl.RelativeTimeFormat', function () {

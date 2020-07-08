@@ -74,8 +74,8 @@ ${Object.keys(langData)
     outputFileSync(
       test262MainFile,
       `/* @generated */
-// prettier-ignore
-require('../dist-es6/polyfill-force')
+// @ts-nocheck
+import './polyfill-force'
 if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData === 'function') {
   Intl.RelativeTimeFormat.__addLocaleData(
 ${Object.keys(langData)

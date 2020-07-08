@@ -1,4 +1,4 @@
-import RelativeTimeFormat from './core';
+import RelativeTimeFormat from './';
 if (!('RelativeTimeFormat' in Intl)) {
   Object.defineProperty(Intl, 'RelativeTimeFormat', {
     value: RelativeTimeFormat,

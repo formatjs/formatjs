@@ -4,6 +4,7 @@ packages/*/CHANGELOG.md
 packages/babel-plugin-react-intl/src/options.ts
 packages/intl-getcanonicallocales/src/aliases.ts
 packages/intl-numberformat/src/data/
+packages/intl-datetimeformat/src/data/
 test262*
 test262/
 website/.docusaurus

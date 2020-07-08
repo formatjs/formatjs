@@ -84,6 +84,25 @@ filegroup(
 )
 
 filegroup(
+    name = "test262-relativetimeformat",
+    srcs = glob(
+        ["test262/test/intl402/RelativeTimeFormat/**/*.js"],
+        exclude = [
+            "**/options-undefined.js",  # TODO
+            "**/options-proto.js",  # TODO
+            "**/options-toobject-prototype.js",  # TODO
+            "**/locales-valid.js",  # f7e8dba39b1143b45c37ee137e406889b56bc335 added grandfathered locale which we
+            "**/proto-from-ctor-realm.js",  # Bc of Realm support
+            # TODO
+            "**/pl-pl-style-long.js",
+            "**/pl-pl-style-narrow.js",
+            "**/pl-pl-style-short.js",
+        ],
+    ),
+    visibility = ["//packages/intl-relativetimeformat:__subpackages__"],
+)
+
+filegroup(
     name = "test262-all",
     srcs = glob([
         "test262/**/*.js",

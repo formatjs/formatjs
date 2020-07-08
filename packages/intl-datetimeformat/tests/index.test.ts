@@ -4,7 +4,7 @@ import {
   bestFitFormatMatcherScore,
 } from '../';
 import * as en from '../tests-locale-data/en.json';
-import allData from '../src/data';
+import allData from '../src/data/all-tz';
 import {parseDateTimeSkeleton} from '../src/skeleton';
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en);

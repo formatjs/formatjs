@@ -1,4 +1,4 @@
-import RelativeTimeFormat from './core';
+import RelativeTimeFormat from './';
 Object.defineProperty(Intl, 'RelativeTimeFormat', {
   value: RelativeTimeFormat,
   writable: true,

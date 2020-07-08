@@ -11,7 +11,7 @@ import {
 } from '@formatjs/intl-utils';
 import getInternalSlots from './get_internal_slots';
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
-import links from './links';
+import links from './data/links';
 import {
   PackedData,
   UnpackedZoneData,

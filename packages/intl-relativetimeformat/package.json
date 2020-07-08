@@ -19,37 +19,12 @@
     "type": "git",
     "url": "git@github.com:formatjs/formatjs.git"
   },
-  "devDependencies": {
-    "@formatjs/intl-getcanonicallocales": "^1.2.10",
-    "@formatjs/intl-pluralrules": "^3.0.2",
-    "@types/jest": "^25.2.1",
-    "cldr-dates-full": "^36.0.0",
-    "cldr-numbers-full": "^36.0.0",
-    "ts-jest": "^26.1.1"
-  },
   "dependencies": {
     "@formatjs/intl-utils": "^3.6.0"
   },
-  "main": "dist/index.js",
+  "main": "index.js",
   "module": "lib/index.js",
-  "types": "lib/intl-relativetimeformat.d.ts",
-  "scripts": {
-    "build": "yarn cldr && yarn compile",
-    "cldr": "ts-node scripts/cldr --outDir locale-data --polyfillLocalesOutFile polyfill-locales.js --testDataDir tests/locale-data --test262MainFile tests/test262-main.js",
-    "clean": "rimraf dist lib dist-es6 *.tsbuildinfo",
-    "compile": "tsc && tsc -p tsconfig.esm.json && api-extractor run --local && tsc -p tsconfig.es6.json && rollup -c rollup.config.js",
-    "jest": "cross-env cross-env NODE_ENV=test jest",
-    "test262": "cross-env ts-node tests/runner",
-    "test": "yarn run jest && yarn run test262"
-  },
-  "files": [
-    "locale-data",
-    "dist",
-    "lib",
-    "polyfill-locales.js",
-    "polyfill.js",
-    "src"
-  ],
+  "types": "intl-relativetimeformat.d.ts",
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",
   "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c"

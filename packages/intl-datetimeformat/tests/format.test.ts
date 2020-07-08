@@ -1,7 +1,7 @@
 import {DateTimeFormat} from '../';
 import * as ko from '../tests-locale-data/ko.json';
 import * as en from '../tests-locale-data/en.json';
-import allData from '../src/data';
+import allData from '../src/data/all-tz';
 import {
   toLocaleString,
   toLocaleDateString,
