@@ -1,7 +1,7 @@
 bazel-out
 dist
 packages/*/CHANGELOG.md
-packages/babel-plugin-react-intl/src/options.ts
+packages/babel-plugin-react-intl/options.ts
 packages/intl-datetimeformat/src/data/
 packages/intl-getcanonicallocales/src/aliases.ts
 packages/intl-messageformat-parser/src/parser.ts

@@ -4,8 +4,8 @@ Copyrights licensed under the New BSD License.
 See the accompanying LICENSE file for terms.
 */
 
-import IntlMessageFormat from './core';
-export * from './formatters';
-export * from './core';
-export * from './error';
+import IntlMessageFormat from './src/core';
+export * from './src/formatters';
+export * from './src/core';
+export * from './src/error';
 export default IntlMessageFormat;

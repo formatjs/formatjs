@@ -27,40 +27,15 @@
     "type": "git",
     "url": "git@github.com:formatjs/formatjs.git"
   },
-  "main": "dist/index.js",
+  "main": "index.js",
   "module": "lib/index.js",
-  "types": "lib/intl-messageformat.d.ts",
+  "types": "intl-messageformat.d.ts",
   "dependencies": {
     "intl-format-cache": "^4.2.46",
     "intl-messageformat-parser": "^5.2.4"
   },
-  "files": [
-    "dist",
-    "lib",
-    "src"
-  ],
-  "devDependencies": {
-    "@formatjs/intl-getcanonicallocales": "^1.2.10",
-    "@formatjs/intl-pluralrules": "^3.0.2",
-    "@types/jasmine": "^3.5.10",
-    "jasmine": "3.5.0",
-    "jasmine-expect": "4.0.3"
-  },
   "sideEffects": false,
-  "scripts": {
-    "benchmark": "ts-node tests/benchmark",
-    "build": "yarn run tsc && yarn run rollup",
-    "clean": "rimraf dist lib *.tsbuildinfo",
-    "karma:ci": "karma start karma.conf-ci.js",
-    "karma:local": "karma start karma.conf.js",
-    "rollup": "rollup -c rollup.config.js",
-    "test": "cross-env NODE_ENV=test jest",
-    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig.esm.json && api-extractor run --local"
-  },
   "homepage": "https://github.com/formatjs/formatjs",
-  "directories": {
-    "test": "tests"
-  },
   "license": "BSD-3-Clause",
   "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c"
 }

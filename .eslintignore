@@ -6,3 +6,4 @@
 **/build
 **/node_modules
 packages/intl-messageformat-parser/src/parser.ts
+packages/babel-plugin-react-intl/options.ts
