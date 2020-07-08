@@ -8,6 +8,7 @@ PACKAGE_NAME = "intl-getcanonicallocales"
 
 pkg_npm(
     name = PACKAGE_NAME,
+    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
         "package.json",
@@ -53,7 +54,6 @@ ts_project(
 
 ts_project(
     name = "lib",
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
     declaration = True,
     declaration_map = True,

@@ -6,6 +6,7 @@ PACKAGE_NAME = "ts-transformer"
 
 pkg_npm(
     name = PACKAGE_NAME,
+    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = ["package.json"],
     deps = [":dist"],
 )
@@ -19,7 +20,6 @@ SRC_DEPS = [
 
 ts_project(
     name = "dist",
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
     declaration = True,
     declaration_map = True,

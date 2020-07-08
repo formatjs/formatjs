@@ -8,6 +8,7 @@ PACKAGE_NAME = "intl-numberformat"
 
 pkg_npm(
     name = PACKAGE_NAME,
+    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
         "package.json",
@@ -45,6 +46,7 @@ TEST_DEPS = SRC_DEPS + [
     "@npm//@types/jest",
     "//packages/intl-pluralrules",
     "//packages/intl-utils:types",
+    "//packages/intl-getcanonicallocales:types",
 ]
 
 ts_project(
@@ -61,7 +63,6 @@ ts_project(
 
 ts_project(
     name = "lib",
-    package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
     declaration = True,
     declaration_map = True,
@@ -80,7 +81,6 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
-# TODO: Make this work
 jest_test(
     name = "unit",
     srcs = [
