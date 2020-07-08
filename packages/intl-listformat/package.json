@@ -7,7 +7,8 @@
     "i18n",
     "list",
     "format",
-    "formatjs"
+    "formatjs",
+    "listformat"
   ],
   "author": "Long Ho <holevietlong@gmail.com>",
   "bugs": {
@@ -17,27 +18,12 @@
     "type": "git",
     "url": "git@github.com:formatjs/formatjs.git"
   },
-  "devDependencies": {
-    "@formatjs/intl-getcanonicallocales": "^1.2.10",
-    "@types/jest": "^25.2.1",
-    "cldr-misc-full": "^36.0.0",
-    "jest": "^25.4.0",
-    "ts-jest": "^26.1.1"
-  },
   "dependencies": {
     "@formatjs/intl-utils": "^3.6.0"
   },
-  "main": "dist/index.js",
+  "main": "index.js",
   "module": "lib/index.js",
-  "types": "lib/intl-listformat.d.ts",
-  "files": [
-    "dist",
-    "lib",
-    "locale-data",
-    "polyfill-locales.js",
-    "polyfill.js",
-    "src"
-  ],
+  "types": "intl-listformat.d.ts",
   "scripts": {
     "build": "yarn run cldr && yarn run compile",
     "cldr": "ts-node scripts/cldr --outDir locale-data --polyfillLocalesOutFile polyfill-locales.js --testDataDir tests/locale-data --test262MainFile tests/test262-main.js",

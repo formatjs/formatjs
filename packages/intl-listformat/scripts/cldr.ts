@@ -73,8 +73,8 @@ ${Object.keys(langData)
     outputFileSync(
       test262MainFile,
       `/* @generated */
-// prettier-ignore
-require('../dist-es6/polyfill-force')
+// @ts-nocheck
+import './polyfill-force'
 if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
   Intl.ListFormat.__addLocaleData(
 ${Object.keys(langData)

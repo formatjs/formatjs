@@ -1,4 +1,4 @@
-import ListFormat from './core';
+import ListFormat from '.';
 
 Object.defineProperty(Intl, 'ListFormat', {
   value: ListFormat,

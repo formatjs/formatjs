@@ -1,7 +1,7 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
-import ListFormat from '../src';
-import * as en from './locale-data/en.json';
-import * as zh from './locale-data/zh.json';
+import ListFormat from '..';
+import * as en from '../tests-locale-data/en.json';
+import * as zh from '../tests-locale-data/zh.json';
 ListFormat.__addLocaleData(en, zh);
 
 describe('Intl.ListFormat', function () {
