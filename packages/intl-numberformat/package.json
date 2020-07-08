@@ -39,7 +39,7 @@
     "cldr-units-full": "^36.0.0",
     "core-js": "^3.6.5",
     "jest": "^25.4.0",
-    "ts-jest": "^25.4.0"
+    "ts-jest": "^26.1.1"
   },
   "dependencies": {
     "@formatjs/intl-utils": "^3.6.0"

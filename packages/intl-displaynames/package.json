@@ -40,7 +40,7 @@
     "chalk": "^4.0.0",
     "cldr-localenames-full": "^36.0.0",
     "jest": "^25.4.0",
-    "ts-jest": "^25.4.0"
+    "ts-jest": "^26.1.1"
   },
   "scripts": {
     "cldr": "ts-node scripts/cldr --outDir locale-data --testDataDir tests/locale-data --test262MainFile tests/test262-main.js --polyfillLocalesOutFile polyfill-locales.js",
