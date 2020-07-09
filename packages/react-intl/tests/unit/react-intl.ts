@@ -1,4 +1,4 @@
-import * as ReactIntl from '../../src';
+import * as ReactIntl from '../../';
 
 describe('react-intl', () => {
   describe('exports', () => {

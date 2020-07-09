@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
-import {FormattedNumber, FormattedNumberParts} from '../../../src';
+import {FormattedNumber, FormattedNumberParts} from '../../../';
 import {createIntl} from '../../../src/components/provider';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 import {NumberFormatOptions} from '@formatjs/intl-numberformat';

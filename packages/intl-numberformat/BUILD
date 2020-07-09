@@ -101,6 +101,7 @@ ts_node(
     ],
     data = CLDR_DEPS,
     output_dir = True,
+    visibility = ["//packages/react-intl:__subpackages__"],
 )
 
 ts_node(

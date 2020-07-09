@@ -1,4 +1,4 @@
-import * as ReactIntl from '../../../src';
+import * as ReactIntl from '../../../';
 
 export default function (buildPath) {
   describe('build', () => {

@@ -6,7 +6,7 @@ import IntlProvider, {
 } from '../../../src/components/provider';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 import {mount, shallow} from 'enzyme';
-import {IntlShape} from '../../../src';
+import {IntlShape} from '../../../';
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedMessage);
 

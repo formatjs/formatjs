@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
-import {FormattedTime, FormattedTimeParts} from '../../../src';
+import {FormattedTime, FormattedTimeParts} from '../../../';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 import {createIntl} from '../../../src/components/provider';
 

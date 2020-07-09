@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
-import {FormattedDisplayName} from '../../../src';
+import {FormattedDisplayName} from '../../../';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 
 const mountWithProvider = mountFormattedComponentWithProvider(

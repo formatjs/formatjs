@@ -128,9 +128,9 @@
     "type": "git",
     "url": "git@github.com:formatjs/formatjs.git"
   },
-  "main": "./dist/index.js",
-  "module": "./lib/index.js",
-  "types": "./lib/react-intl.d.ts",
+  "main": "index.js",
+  "module": "lib/index.js",
+  "types": "react-intl.d.ts",
   "sideEffects": false,
   "dependencies": {
     "@formatjs/intl-datetimeformat": "^2.0.2",
@@ -140,7 +140,6 @@
     "@formatjs/intl-relativetimeformat": "^6.0.2",
     "@formatjs/intl-utils": "^3.6.0",
     "@types/hoist-non-react-statics": "^3.3.1",
-    "@types/invariant": "^2.2.31",
     "hoist-non-react-statics": "^3.3.2",
     "intl-format-cache": "^4.2.46",
     "intl-messageformat": "^9.0.2",
@@ -150,52 +149,8 @@
   "peerDependencies": {
     "react": "^16.3.0"
   },
-  "scripts": {
-    "benchmark": "cross-env NODE_ENV=production TS_NODE_PROJECT=./tsconfig.cjs.json ts-node test/perf/index.tsx",
-    "build": "yarn run tsc && yarn run rollup",
-    "clean": "rimraf coverage/ dist/ lib/ *.tsbuildinfo",
-    "example": "parcel examples/index.html",
-    "test": "cross-env TZ=UTC jest --coverage --verbose",
-    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig.esm.json && api-extractor run --local && api-extractor run --local --config api-extractor.bundled.json",
-    "rollup": "rollup -c rollup.config.js"
-  },
-  "pre-commit": [
-    "toc",
-    "prettier"
-  ],
   "browserslist": [
     "ie 11"
   ],
-  "devDependencies": {
-    "@formatjs/intl-pluralrules": "^3.0.2",
-    "@microsoft/api-documenter": "^7.8.14",
-    "@types/benchmark": "^1.0.31",
-    "@types/enzyme": "^3.10.5",
-    "@types/jest": "^25.2.1",
-    "@types/prop-types": "^15.7.3",
-    "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.6",
-    "benchmark": "^2.1.4",
-    "core-js": "^3.6.5",
-    "cross-env": "^7.0.2",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2",
-    "enzyme-to-json": "^3.4.4",
-    "jest": "^25.4.0",
-    "parcel": "^1.12.4",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "rimraf": "^3.0.2",
-    "rollup": "^2.6.1",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-replace": "^2.2.0",
-    "rollup-plugin-typescript2": "^0.27.0",
-    "rollup-plugin-uglify": "^6.0.4",
-    "ts-jest": "^26.1.1",
-    "ts-node": "^8.8.2",
-    "tslib": "^1.11.1",
-    "typescript": "3.8"
-  },
   "gitHead": "773d6ebf881357f6e4c2dd7e8984b1bd0f69b4ca"
 }

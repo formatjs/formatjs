@@ -6,15 +6,15 @@ module.exports = {
       diagnostics: false,
     },
   },
-  testRegex: ['/test/(functional|unit)/.*\\.(ts|tsx)'],
+  testRegex: ['/tests/(functional|unit)/.*\\.(ts|tsx)'],
   testPathIgnorePatterns: [
-    'test/functional/support',
-    '/test/unit/testUtils',
+    'tests/functional/support',
+    '/tests/unit/testUtils',
     '__snapshots__',
   ],
   collectCoverageFrom: ['src/**/*.{ts,tsx}'],
   coverageReporters: ['lcov', 'text', 'text-summary', 'html'],
-  setupFilesAfterEnv: ['<rootDir>/test/setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
   coverageThreshold: {
     global: {
       branches: 85,

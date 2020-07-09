@@ -18,7 +18,7 @@ import {
   defineMessage,
   Formatters,
   IntlShape,
-} from '../../src';
+} from '../../';
 import IntlRelativeFormat from '@formatjs/intl-relativetimeformat';
 import IntlListFormat from '@formatjs/intl-listformat';
 import {OptionalIntlConfig} from '../../src/components/provider';

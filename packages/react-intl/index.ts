@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 import * as React from 'react';
-export * from './types';
+export * from './src/types';
 export function defineMessages<T, U extends Record<string, T>>(msgs: U): U {
   return msgs;
 }
@@ -14,11 +14,11 @@ export function defineMessage<T>(msg: T): T {
 import {
   createFormattedComponent,
   createFormattedDateTimePartsComponent,
-} from './components/createFormattedComponent';
-import {CustomFormatConfig, FormatDateOptions} from './types';
+} from './src/components/createFormattedComponent';
+import {CustomFormatConfig, FormatDateOptions} from './src/types';
 import {NumberFormatOptions} from '@formatjs/intl-numberformat';
 import {IntlListFormatOptions} from '@formatjs/intl-listformat';
-import {DisplayNamesOptions} from '@formatjs/intl-displaynames/lib';
+import {DisplayNamesOptions} from '@formatjs/intl-displaynames';
 import {DateTimeFormatOptions} from '@formatjs/intl-datetimeformat';
 export {
   default as injectIntl,
@@ -26,10 +26,10 @@ export {
   Context as IntlContext,
   WithIntlProps,
   WrappedComponentProps,
-} from './components/injectIntl';
-export {default as useIntl} from './components/useIntl';
-export {default as IntlProvider, createIntl} from './components/provider';
-// IMPORTANT: Explicit here to prevent api-extractor from outputing `import('./types').CustomFormatConfig`
+} from './src/components/injectIntl';
+export {default as useIntl} from './src/components/useIntl';
+export {default as IntlProvider, createIntl} from './src/components/provider';
+// IMPORTANT: Explicit here to prevent api-extractor from outputing `import('./src/types').CustomFormatConfig`
 export const FormattedDate: React.FC<
   DateTimeFormatOptions &
     CustomFormatConfig & {
@@ -71,9 +71,9 @@ export const FormattedTimeParts: React.FC<
   }
 > = createFormattedDateTimePartsComponent('formatTime');
 
-export {FormattedNumberParts} from './components/createFormattedComponent';
-export {default as FormattedRelativeTime} from './components/relative';
-export {default as FormattedPlural} from './components/plural';
-export {default as FormattedMessage} from './components/message';
-export {createIntlCache} from './utils';
-export * from './error';
+export {FormattedNumberParts} from './src/components/createFormattedComponent';
+export {default as FormattedRelativeTime} from './src/components/relative';
+export {default as FormattedPlural} from './src/components/plural';
+export {default as FormattedMessage} from './src/components/message';
+export {createIntlCache} from './src/utils';
+export * from './src/error';

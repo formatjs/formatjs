@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
-import {FormattedDate, FormattedDateParts} from '../../../src';
+import {FormattedDate, FormattedDateParts} from '../../../';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 import {createIntl} from '../../../src/components/provider';
-import {IntlShape} from '../../../src';
+import {IntlShape} from '../../../';
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedDate);
 const mountPartsWithProvider = mountFormattedComponentWithProvider(
