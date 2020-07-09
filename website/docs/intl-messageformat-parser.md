@@ -23,23 +23,82 @@ const ast = parse('this is {count, plural, one{# dog} other{# dogs}}');
 
 ### Example
 
+```tsx
 import {parse} from 'intl-messageformat-parser';
-global.parse = parse;
+parse(
+  `On {takenDate, date, short} <bold>{name}</bold> took {numPhotos, plural,
+    =0 {no photos.}
+    =1 {one photo.}
+    other {# photos.}
+  }`
+);
+```
 
-```tsx live
-function () {
-  const ast = parse(
-        `On {takenDate, date, short} <bold>{name}</bold> took {numPhotos, plural,
-      =0 {no photos.}
-      =1 {one photo.}
-      other {# photos.}
-  }`)
-  return (
-    <pre>
-      {JSON.stringify(ast, null, 2)}
-    </pre>
-  )
-}
+```json
+[
+  {
+    "type": 0,
+    "value": "On "
+  },
+  {
+    "type": 3,
+    "style": "short",
+    "value": "takenDate"
+  },
+  {
+    "type": 0,
+    "value": " "
+  },
+  {
+    "type": 8,
+    "value": "bold",
+    "children": [
+      {
+        "type": 1,
+        "value": "name"
+      }
+    ]
+  },
+  {
+    "type": 0,
+    "value": " took "
+  },
+  {
+    "type": 6,
+    "pluralType": "cardinal",
+    "value": "numPhotos",
+    "offset": 0,
+    "options": {
+      "=0": {
+        "value": [
+          {
+            "type": 0,
+            "value": "no photos."
+          }
+        ]
+      },
+      "=1": {
+        "value": [
+          {
+            "type": 0,
+            "value": "one photo."
+          }
+        ]
+      },
+      "other": {
+        "value": [
+          {
+            "type": 7
+          },
+          {
+            "type": 0,
+            "value": " photos."
+          }
+        ]
+      }
+    }
+  }
+]
 ```
 
 ## Supported DateTime Skeleton

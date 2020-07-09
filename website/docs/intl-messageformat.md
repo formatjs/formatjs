@@ -3,9 +3,6 @@ id: intl-messageformat
 title: Intl MessageFormat
 ---
 
-import IntlMessageFormat from 'intl-messageformat';
-global.IntlMessageFormat = IntlMessageFormat;
-
 Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.
 
 [![npm Version](https://img.shields.io/npm/v/intl-messageformat.svg?style=flat-square)](https://www.npmjs.org/package/intl-messageformat)
@@ -39,28 +36,24 @@ const output = msg.format(values);
 
 A very common example is formatting messages that have numbers with plural labels. With this package you can make sure that the string is properly formatted for a person's locale, e.g.:
 
-```tsx live
-function () {
-  const enNumPhotos = new IntlMessageFormat(
-    `
-    You have {numPhotos, plural, =0 {no photos.} =1 {one photo.} other {# photos.}}
-    `,
-    'en-US'
-  );
-  return enNumPhotos.format({numPhotos: 1000});
-}
+```tsx
+const enNumPhotos = new IntlMessageFormat(
+  `
+  You have {numPhotos, plural, =0 {no photos.} =1 {one photo.} other {# photos.}}
+  `,
+  'en-US'
+);
+enNumPhotos.format({numPhotos: 1000}); // You have 1,000 photos.
 ```
 
-```tsx live
-function () {
-  const enNumPhotos = new IntlMessageFormat(
-    `
-    Usted {numPhotos, plural, =0 {no tiene fotos.} =1 {tiene una foto.} other {tiene # fotos.}}
-    `,
-    'en-US'
-  );
-  return enNumPhotos.format({numPhotos: 1000});
-}
+```tsx
+const enNumPhotos = new IntlMessageFormat(
+  `
+  Usted {numPhotos, plural, =0 {no tiene fotos.} =1 {tiene una foto.} other {tiene # fotos.}}
+  `,
+  'en-US'
+);
+enNumPhotos.format({numPhotos: 1000}); // Usted tiene 1,000 fotos.
 ```
 
 ### Message Syntax
@@ -139,10 +132,8 @@ const msg = new IntlMessageFormat('My name is {name}.', 'en-US');
 
 This method returns an object with the options values that were resolved during instance creation. It currently only contains a `locale` property; here's an example:
 
-```tsx live
-function () {
-  return new IntlMessageFormat('', 'en-us').resolvedOptions().locale;
-}
+```tsx
+new IntlMessageFormat('', 'en-us').resolvedOptions().locale; // en-US
 ```
 
 Notice how the specified locale was the all lower-case value: `"en-us"`, but it was resolved and normalized to: `"en-US"`.
@@ -151,22 +142,18 @@ Notice how the specified locale was the all lower-case value: `"en-us"`, but it 
 
 Once the message is created, formatting the message is done by calling the `format()` method on the instance and passing a collection of `values`:
 
-```tsx live
-function () {
-  return new IntlMessageFormat('My name is {name}.', 'en-US').format({name: 'Eric'});
-}
+```tsx
+new IntlMessageFormat('My name is {name}.', 'en-US').format({name: 'Eric'}); // My name is Eric.
 ```
 
 _Note: A value **must** be supplied for every argument in the message pattern the instance was constructed with._
 
 #### Rich Text support
 
-```tsx live
-function () {
-  return new IntlMessageFormat('hello <b>world</b>', 'en').format({
-    b: (...chunks) => <strong>{chunks}</strong>,
-  });
-}
+```tsx
+return new IntlMessageFormat('hello <b>world</b>', 'en').format({
+  b: chunks => <strong>{chunks}</strong>,
+}); // hello world
 ```
 
 We support embedded XML tag in the message, e.g `this is a <b>strong</b> tag`. This is not meant to be a full-fledged method to embed HTML, but rather to tag specific text chunk so translation can be more contextual. Therefore, the following restrictions apply:
@@ -176,36 +163,25 @@ We support embedded XML tag in the message, e.g `this is a <b>strong</b> tag`. T
 3. All tags specified must have corresponding values and will throw
    error if it's missing, e.g:
 
-```tsx live
-function () {
-  try {
-    new IntlMessageFormat('a <foo>strong</foo>').format();
-  } catch (e) {
-    return e.message
-  }
-}
+```tsx
+new IntlMessageFormat('a <foo>strong</foo>').format();
+// The intl string context variable "foo" was not provided to the string "a <foo>strong</foo>"
 ```
 
 4. XML/HTML tags are escaped using apostrophe just like other ICU constructs. In order to escape you can do things like:
 
-```tsx live
-function () {
-  return new IntlMessageFormat("I '<'3 cats").format();
-}
+```tsx
+new IntlMessageFormat("I '<'3 cats").format(); // I <3 cats
 ```
 
-```tsx live
-function () {
-  return new IntlMessageFormat("raw '<b>HTML</b>'").format();
-}
+```tsx
+new IntlMessageFormat("raw '<b>HTML</b>'").format(); // raw <b>HTML</b>
 ```
 
-```tsx live
-function () {
-  return new IntlMessageFormat(
-    "raw '<b>HTML</b>' with '<a>'{placeholder}'</a>'"
-  ).format({placeholder: 'some word'});
-}
+```tsx
+new IntlMessageFormat(
+  "raw '<b>HTML</b>' with '<a>'{placeholder}'</a>'"
+).format({placeholder: 'some word'}); // raw <b>HTML</b> with <a>some word</a>
 ```
 
 5. Embedded valid HTML tag is a bit of a grey area right now since we're not supporting the full HTML/XHTML/XML spec.
@@ -222,13 +198,11 @@ We support ICU Number skeleton and a subset of Date/Time Skeleton for further cu
 
 Example:
 
-```tsx live
-function () {
-  return new IntlMessageFormat(
-    'The price is: {price, number, ::currency/EUR}',
-    'en-GB'
-  ).format({price: 100});
-}
+```tsx
+new IntlMessageFormat(
+  'The price is: {price, number, ::currency/EUR}',
+  'en-GB'
+).format({price: 100}); // The price is: €100.00
 ```
 
 A full set of options and syntax can be found [here](https://github.com/unicode-org/icu/blob/master/docs/userguide/format_parse/numbers/skeletons.md)
@@ -258,12 +232,10 @@ ICU provides a [wide array of pattern](https://www.unicode.org/reports/tr35/tr35
 
 Example:
 
-```tsx live
-function () {
-  return new IntlMessageFormat('Today is: {now, date, ::yyyyMMdd}', 'en-GB').format({
-    now: new Date(),
-  });
-}
+```tsx
+new IntlMessageFormat('Today is: {now, date, ::yyyyMMdd}', 'en-GB').format({
+  now: new Date(),
+}); // Today is: 09/07/2020
 ```
 
 ## Advanced Usage
