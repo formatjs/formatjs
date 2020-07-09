@@ -1,7 +1,7 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "npm_package_bin", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "npm_package_bin", "pkg_npm")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "rollup_dts")
+load("//tools:index.bzl", "generate_src_file", "rollup_dts")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-datetimeformat"
@@ -94,6 +94,30 @@ rollup_dts(
 )
 
 # CLDR
+CLDR_DEPS = [
+    "scripts/cldr.ts",
+    "scripts/extract-dates.ts",
+    "src/skeleton.ts",
+    "src/types.ts",
+    "//:tsconfig.json",
+    "//packages/intl-locale:dist",
+    "//packages/intl-locale:types",
+    "//packages/intl-utils:dist",
+    "//packages/intl-utils:types",
+    "@npm//@types/fs-extra",
+    "@npm//@types/glob",
+    "@npm//@types/lodash",
+    "@npm//@types/minimist",
+    "@npm//@types/node",
+    "@npm//cldr-core",
+    "@npm//cldr-dates-full",
+    "@npm//cldr-numbers-full",
+    "@npm//fs-extra",
+    "@npm//glob",
+    "@npm//lodash",
+    "@npm//minimist",
+]
+
 npm_package_bin(
     name = "locale-data",
     args = [
@@ -101,29 +125,7 @@ npm_package_bin(
         "--outDir",
         "$(@D)",
     ],
-    data = [
-        "scripts/cldr.ts",
-        "scripts/extract-dates.ts",
-        "src/skeleton.ts",
-        "src/types.ts",
-        "//:tsconfig.json",
-        "//packages/intl-locale:dist",
-        "//packages/intl-locale:types",
-        "//packages/intl-utils:dist",
-        "//packages/intl-utils:types",
-        "@npm//@types/fs-extra",
-        "@npm//@types/glob",
-        "@npm//@types/lodash",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//cldr-core",
-        "@npm//cldr-dates-full",
-        "@npm//cldr-numbers-full",
-        "@npm//fs-extra",
-        "@npm//glob",
-        "@npm//lodash",
-        "@npm//minimist",
-    ],
+    data = CLDR_DEPS,
     output_dir = True,
     package = "ts-node",
 )
@@ -135,71 +137,20 @@ npm_package_bin(
         "--testDataDir",
         "$(@D)",
     ],
-    data = [
-        "scripts/cldr.ts",
-        "scripts/extract-dates.ts",
-        "src/skeleton.ts",
-        "src/types.ts",
-        "//:tsconfig.json",
-        "//packages/intl-locale:dist",
-        "//packages/intl-locale:types",
-        "//packages/intl-utils:dist",
-        "//packages/intl-utils:types",
-        "@npm//@types/fs-extra",
-        "@npm//@types/glob",
-        "@npm//@types/lodash",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//cldr-core",
-        "@npm//cldr-dates-full",
-        "@npm//cldr-numbers-full",
-        "@npm//fs-extra",
-        "@npm//glob",
-        "@npm//lodash",
-        "@npm//minimist",
-    ],
+    data = CLDR_DEPS,
     output_dir = True,
     package = "ts-node",
 )
 
-npm_package_bin(
-    name = "test262-main-gen",
-    outs = ["tmp/test262-main.ts"],
+generate_src_file(
+    name = "test262-main",
+    src = "test262-main.ts",
     args = [
         "$(execpath scripts/cldr.ts)",
         "--test262MainFile",
         "$@",
     ],
-    data = [
-        "scripts/cldr.ts",
-        "scripts/extract-dates.ts",
-        "src/skeleton.ts",
-        "src/types.ts",
-        "//:tsconfig.json",
-        "//packages/intl-locale:dist",
-        "//packages/intl-locale:types",
-        "//packages/intl-utils:dist",
-        "//packages/intl-utils:types",
-        "@npm//@types/fs-extra",
-        "@npm//@types/glob",
-        "@npm//@types/lodash",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//cldr-core",
-        "@npm//cldr-dates-full",
-        "@npm//cldr-numbers-full",
-        "@npm//fs-extra",
-        "@npm//glob",
-        "@npm//lodash",
-        "@npm//minimist",
-    ],
-    package = "ts-node",
-)
-
-generated_file_test(
-    name = "test262-main",
-    src = "test262-main.ts",
-    generated = ":test262-main-gen",
+    data = CLDR_DEPS,
 )
 
 # IANA
@@ -248,9 +199,9 @@ ts_node(
 )
 
 # zones
-ts_node(
-    name = "zones-gen",
-    outs = ["tmp/zones.ts"],
+generate_src_file(
+    name = "zones",
+    src = "src/data/zones.ts",
     args = [
         "$(execpath scripts/zone.ts)",
         "--input",
@@ -270,17 +221,11 @@ ts_node(
     ],
 )
 
-generated_file_test(
-    name = "zones",
-    src = "src/data/zones.ts",
-    generated = ":zones-gen",
-)
-
 # "ts-node scripts/link --input iana-data/backward --output src/links.ts"
 # links
-ts_node(
-    name = "links-gen",
-    outs = ["tmp/links.ts"],
+generate_src_file(
+    name = "links",
+    src = "src/data/links.ts",
     args = [
         "$(execpath scripts/link.ts)",
         "--input",
@@ -300,16 +245,10 @@ ts_node(
     ],
 )
 
-generated_file_test(
-    name = "links",
-    src = "src/data/links.ts",
-    generated = ":links-gen",
-)
-
 # data.ts
-ts_node(
-    name = "all-tz-gen",
-    outs = ["tmp/all-tz.ts"],
+generate_src_file(
+    name = "all-tz",
+    src = "src/data/all-tz.ts",
     args = [
         "$(execpath scripts/process-zdump.ts)",
         "--input",
@@ -329,12 +268,6 @@ ts_node(
         "@npm//fs-extra",
         "@npm//minimist",
     ],
-)
-
-generated_file_test(
-    name = "all-tz",
-    src = "src/data/all-tz.ts",
-    generated = ":all-tz-gen",
 )
 
 # "ts-node scripts/process-zdump --polyfill --output dist/add-all-tz.js --input data.zdump"

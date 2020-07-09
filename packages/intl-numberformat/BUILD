@@ -1,8 +1,8 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "npm_package_bin", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "npm_package_bin", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
-load("//tools:index.bzl", "rollup_dts")
+load("//tools:index.bzl", "generate_src_file", "rollup_dts")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-numberformat"
@@ -93,6 +93,29 @@ rollup_dts(
 )
 
 # CLDR
+CLDR_DEPS = [
+    "scripts/cldr.ts",
+    "scripts/extract-currencies.ts",
+    "scripts/extract-numbers.ts",
+    "scripts/extract-units.ts",
+    "scripts/utils.ts",
+    "//:tsconfig.json",
+    "//packages/intl-utils:dist",
+    "//packages/intl-utils:types",
+    "@npm//@types/fs-extra",
+    "@npm//@types/glob",
+    "@npm//@types/lodash",
+    "@npm//@types/minimist",
+    "@npm//@types/node",
+    "@npm//cldr-core",
+    "@npm//cldr-numbers-full",
+    "@npm//cldr-units-full",
+    "@npm//fs-extra",
+    "@npm//glob",
+    "@npm//lodash",
+    "@npm//minimist",
+]
+
 npm_package_bin(
     name = "locale-data",
     args = [
@@ -100,28 +123,7 @@ npm_package_bin(
         "--outDir",
         "$(@D)",
     ],
-    data = [
-        "scripts/cldr.ts",
-        "scripts/extract-currencies.ts",
-        "scripts/extract-numbers.ts",
-        "scripts/extract-units.ts",
-        "scripts/utils.ts",
-        "//:tsconfig.json",
-        "//packages/intl-utils:dist",
-        "//packages/intl-utils:types",
-        "@npm//@types/fs-extra",
-        "@npm//@types/glob",
-        "@npm//@types/lodash",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//cldr-core",
-        "@npm//cldr-numbers-full",
-        "@npm//cldr-units-full",
-        "@npm//fs-extra",
-        "@npm//glob",
-        "@npm//lodash",
-        "@npm//minimist",
-    ],
+    data = CLDR_DEPS,
     output_dir = True,
     package = "ts-node",
 )
@@ -133,75 +135,26 @@ npm_package_bin(
         "--testDataDir",
         "$(@D)",
     ],
-    data = [
-        "scripts/cldr.ts",
-        "scripts/extract-currencies.ts",
-        "scripts/extract-numbers.ts",
-        "scripts/extract-units.ts",
-        "scripts/utils.ts",
-        "//:tsconfig.json",
-        "//packages/intl-utils:dist",
-        "//packages/intl-utils:types",
-        "@npm//@types/fs-extra",
-        "@npm//@types/glob",
-        "@npm//@types/lodash",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//cldr-core",
-        "@npm//cldr-numbers-full",
-        "@npm//cldr-units-full",
-        "@npm//fs-extra",
-        "@npm//glob",
-        "@npm//lodash",
-        "@npm//minimist",
-    ],
+    data = CLDR_DEPS,
     output_dir = True,
     package = "ts-node",
 )
 
-npm_package_bin(
-    name = "test262-main-gen",
-    outs = ["tmp/test262-main.ts"],
+generate_src_file(
+    name = "test262-main",
+    src = "test262-main.ts",
     args = [
         "$(execpath scripts/cldr.ts)",
         "--test262MainFile",
         "$@",
     ],
-    data = [
-        "scripts/cldr.ts",
-        "scripts/extract-currencies.ts",
-        "scripts/extract-numbers.ts",
-        "scripts/extract-units.ts",
-        "scripts/utils.ts",
-        "//:tsconfig.json",
-        "//packages/intl-utils:dist",
-        "//packages/intl-utils:types",
-        "@npm//@types/fs-extra",
-        "@npm//@types/glob",
-        "@npm//@types/lodash",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//cldr-core",
-        "@npm//cldr-numbers-full",
-        "@npm//cldr-units-full",
-        "@npm//fs-extra",
-        "@npm//glob",
-        "@npm//lodash",
-        "@npm//minimist",
-    ],
-    package = "ts-node",
-)
-
-generated_file_test(
-    name = "test262-main",
-    src = "test262-main.ts",
-    generated = ":test262-main-gen",
+    data = CLDR_DEPS,
 )
 
 # currency-digits
-npm_package_bin(
-    name = "currency-digits-gen",
-    outs = ["tmp/currency-digits.json"],
+generate_src_file(
+    name = "currency-digits",
+    src = "src/data/currency-digits.json",
     args = [
         "$(execpath scripts/currency-digits.ts)",
         "--out",
@@ -226,19 +179,12 @@ npm_package_bin(
         "@npm//lodash",
         "@npm//minimist",
     ],
-    package = "ts-node",
-)
-
-generated_file_test(
-    name = "currency-digits",
-    src = "src/data/currency-digits.json",
-    generated = ":currency-digits-gen",
 )
 
 # digit-mapping
-npm_package_bin(
-    name = "digit-mapping-gen",
-    outs = ["tmp/digit-mapping.json"],
+generate_src_file(
+    name = "digit-mapping",
+    src = "src/data/digit-mapping.json",
     args = [
         "$(execpath scripts/digit-mapping.ts)",
         "--out",
@@ -253,19 +199,12 @@ npm_package_bin(
         "@npm//fs-extra",
         "@npm//minimist",
     ],
-    package = "ts-node",
-)
-
-generated_file_test(
-    name = "digit-mapping",
-    src = "src/data/digit-mapping.json",
-    generated = ":digit-mapping-gen",
 )
 
 # numbering-systems
-npm_package_bin(
-    name = "numbering-systems-gen",
-    outs = ["tmp/numbering-systems.json"],
+generate_src_file(
+    name = "numbering-systems",
+    src = "src/data/numbering-systems.json",
     args = [
         "$(execpath scripts/numbering-systems.ts)",
         "--out",
@@ -288,19 +227,12 @@ npm_package_bin(
         "@npm//lodash",
         "@npm//minimist",
     ],
-    package = "ts-node",
-)
-
-generated_file_test(
-    name = "numbering-systems",
-    src = "src/data/numbering-systems.json",
-    generated = ":numbering-systems-gen",
 )
 
 # units-constants
-npm_package_bin(
-    name = "units-constants-gen",
-    outs = ["tmp/units-constants.json"],
+generate_src_file(
+    name = "units-constants",
+    src = "src/data/units-constants.ts",
     args = [
         "$(execpath scripts/units-constants.ts)",
         "--out",
@@ -317,13 +249,6 @@ npm_package_bin(
         "@npm//fs-extra",
         "@npm//minimist",
     ],
-    package = "ts-node",
-)
-
-generated_file_test(
-    name = "units-constants",
-    src = "src/data/units-constants.ts",
-    generated = ":units-constants-gen",
 )
 
 # Test262

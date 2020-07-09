@@ -1,8 +1,8 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "npm_package_bin", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "npm_package_bin", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
-load("//tools:index.bzl", "rollup_dts")
+load("//tools:index.bzl", "generate_src_file", "rollup_dts")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-listformat"
@@ -93,6 +93,25 @@ rollup_dts(
 )
 
 # CLDR
+CLDR_DEPS = [
+    "scripts/cldr.ts",
+    "scripts/extract-list.ts",
+    "//:tsconfig.json",
+    "//packages/intl-utils:dist",
+    "//packages/intl-utils:types",
+    "@npm//@types/fs-extra",
+    "@npm//@types/glob",
+    "@npm//@types/lodash",
+    "@npm//@types/minimist",
+    "@npm//@types/node",
+    "@npm//cldr-core",
+    "@npm//cldr-misc-full",
+    "@npm//fs-extra",
+    "@npm//glob",
+    "@npm//lodash",
+    "@npm//minimist",
+]
+
 npm_package_bin(
     name = "locale-data",
     args = [
@@ -100,24 +119,7 @@ npm_package_bin(
         "--outDir",
         "$(@D)",
     ],
-    data = [
-        "scripts/cldr.ts",
-        "scripts/extract-list.ts",
-        "//:tsconfig.json",
-        "//packages/intl-utils:dist",
-        "//packages/intl-utils:types",
-        "@npm//@types/fs-extra",
-        "@npm//@types/glob",
-        "@npm//@types/lodash",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//cldr-core",
-        "@npm//cldr-misc-full",
-        "@npm//fs-extra",
-        "@npm//glob",
-        "@npm//lodash",
-        "@npm//minimist",
-    ],
+    data = CLDR_DEPS,
     output_dir = True,
     package = "ts-node",
 )
@@ -129,24 +131,7 @@ npm_package_bin(
         "--testDataDir",
         "$(@D)",
     ],
-    data = [
-        "scripts/cldr.ts",
-        "scripts/extract-list.ts",
-        "//:tsconfig.json",
-        "//packages/intl-utils:dist",
-        "//packages/intl-utils:types",
-        "@npm//@types/fs-extra",
-        "@npm//@types/glob",
-        "@npm//@types/lodash",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//cldr-core",
-        "@npm//cldr-misc-full",
-        "@npm//fs-extra",
-        "@npm//glob",
-        "@npm//lodash",
-        "@npm//minimist",
-    ],
+    data = CLDR_DEPS,
     output_dir = True,
     package = "ts-node",
 )
@@ -159,60 +144,19 @@ npm_package_bin(
         "--polyfillLocalesOutFile",
         "$@",
     ],
-    data = [
-        "scripts/cldr.ts",
-        "scripts/extract-list.ts",
-        "//:tsconfig.json",
-        "//packages/intl-utils:dist",
-        "//packages/intl-utils:types",
-        "@npm//@types/fs-extra",
-        "@npm//@types/glob",
-        "@npm//@types/lodash",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//cldr-core",
-        "@npm//cldr-misc-full",
-        "@npm//fs-extra",
-        "@npm//glob",
-        "@npm//lodash",
-        "@npm//minimist",
-    ],
+    data = CLDR_DEPS,
     package = "ts-node",
 )
 
-npm_package_bin(
-    name = "test262-main-gen",
-    outs = ["tmp/test262-main.ts"],
+generate_src_file(
+    name = "test262-main",
+    src = "test262-main.ts",
     args = [
         "$(execpath scripts/cldr.ts)",
         "--test262MainFile",
         "$@",
     ],
-    data = [
-        "scripts/cldr.ts",
-        "scripts/extract-list.ts",
-        "//:tsconfig.json",
-        "//packages/intl-utils:dist",
-        "//packages/intl-utils:types",
-        "@npm//@types/fs-extra",
-        "@npm//@types/glob",
-        "@npm//@types/lodash",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//cldr-core",
-        "@npm//cldr-misc-full",
-        "@npm//fs-extra",
-        "@npm//glob",
-        "@npm//lodash",
-        "@npm//minimist",
-    ],
-    package = "ts-node",
-)
-
-generated_file_test(
-    name = "test262-main",
-    src = "test262-main.ts",
-    generated = ":test262-main-gen",
+    data = CLDR_DEPS,
 )
 
 # Test262

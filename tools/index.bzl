@@ -1,7 +1,31 @@
 "Custom macro"
 
-load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin")
+load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "generated_file_test")
 load("@npm//@microsoft/api-extractor:index.bzl", "api_extractor")
+load("@npm//ts-node:index.bzl", "ts_node")
+
+def generate_src_file(name, args, data, src):
+    """Generate a source file.
+
+    Args:
+        name: target name
+        args: args to generate src file binary
+        data: dependent data labels
+        src: src file to generate
+    """
+    tmp_filename = "%s-gen.tmp" % name
+    ts_node(
+        name = tmp_filename[:tmp_filename.rindex(".")],
+        outs = [tmp_filename],
+        args = args,
+        data = data,
+    )
+
+    generated_file_test(
+        name = name,
+        src = src,
+        generated = tmp_filename,
+    )
 
 def rollup_dts(name, package_name, package_json, types):
     """Macro for @microsoft/api-extractor.
