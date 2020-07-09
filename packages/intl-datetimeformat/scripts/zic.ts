@@ -21,7 +21,7 @@ async function main(args: minimist.ParsedArgs) {
   const {dataDir, outDir} = args;
   await Promise.all(
     ZONE_FILENAMES.map(fn =>
-      execFile('zic', ['-d', outDir, resolve(dataDir, fn)])
+      execFile('/usr/bin/zic', ['-d', outDir, resolve(dataDir, fn)])
     )
   );
 }
