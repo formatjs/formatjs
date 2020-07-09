@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import '@formatjs/intl-getcanonicallocales/polyfill';
-import {DisplayNames} from '../src';
+import {DisplayNames} from '../';
 
 import * as en from '../tests-locale-data/en.json';
 import * as zh from '../tests-locale-data/zh.json';

@@ -70,8 +70,9 @@ if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function'
   test262MainFile &&
     outputFileSync(
       test262MainFile,
-      `
-import '../dist-es6/polyfill-force';
+      `// @generated
+// @ts-nocheck
+import './polyfill-force';
 if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function') {
   Intl.DisplayNames.__addLocaleData(
     ${[
