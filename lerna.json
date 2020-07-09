@@ -4,7 +4,6 @@
   "command": {
     "version": {
       "conventionalCommits": true,
-      "createRelease": "github",
       "noPrivate": true
     },
     "run": {
