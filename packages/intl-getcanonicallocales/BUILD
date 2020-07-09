@@ -14,7 +14,7 @@ pkg_npm(
         "package.json",
     ],
     deps = [
-        "intl-getcanonicallocales.d.ts",
+        "%s.d.ts" % PACKAGE_NAME,
         ":dist",
         ":lib",
     ],
@@ -144,7 +144,6 @@ npm_package_bin(
     args = [
         "run",
         "--local",
-        "--diagnostics",
         "-c",
         "$(@D)/api-extractor.json",
     ],

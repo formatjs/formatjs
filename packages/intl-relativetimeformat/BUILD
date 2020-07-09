@@ -1,7 +1,8 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "generated_file_test", "npm_package_bin", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "npm_package_bin", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
+load("//tools:index.bzl", "rollup_dts")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-relativetimeformat"
@@ -14,7 +15,7 @@ pkg_npm(
         "package.json",
     ],
     deps = [
-        "intl-relativetimeformat.d.ts",
+        "%s.d.ts" % PACKAGE_NAME,
         "polyfill-locales.js",
         ":dist",
         ":lib",
@@ -99,47 +100,11 @@ jest_test(
     deps = TEST_DEPS + [":tests-locale-data"],
 )
 
-# API Extractor
-genrule(
-    name = "copy-tsconfig",
-    srcs = ["//:tsconfig.json"],
-    outs = ["tsconfig.json"],
-    cmd = "cp $< $@",
-)
-
-genrule(
-    name = "copy-api-extractor",
-    srcs = ["//:api-extractor.json"],
-    outs = ["api-extractor.json"],
-    cmd = "cp $< $@",
-)
-
-copy_to_bin(
-    name = "copy-package-json",
-    srcs = [
-        "package.json",
-    ],
-)
-
-npm_package_bin(
+rollup_dts(
     name = "rollup-dts",
-    outs = ["%s.d.ts" % PACKAGE_NAME],
-    args = [
-        "run",
-        "--local",
-        "--diagnostics",
-        "-c",
-        "$(@D)/api-extractor.json",
-    ],
-    data = [
-        "api-extractor.json",
-        "tsconfig.json",
-        ":copy-package-json",
-        ":types",
-        "//:setup-api-extractor",
-    ],
-    package = "api-extractor",
-    tool = "@npm//@microsoft/api-extractor/bin:api-extractor",
+    package_name = PACKAGE_NAME,
+    package_json = "package.json",
+    types = [":types"],
 )
 
 # CLDR

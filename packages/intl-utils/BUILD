@@ -1,5 +1,6 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "npm_package_bin", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load("//tools:index.bzl", "rollup_dts")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-utils"
@@ -77,45 +78,9 @@ jest_test(
     ] + SRC_DEPS,
 )
 
-# API Extractor
-genrule(
-    name = "copy-tsconfig",
-    srcs = ["//:tsconfig.json"],
-    outs = ["tsconfig.json"],
-    cmd = "cp $< $@",
-)
-
-genrule(
-    name = "copy-api-extractor",
-    srcs = ["//:api-extractor.json"],
-    outs = ["api-extractor.json"],
-    cmd = "cp $< $@",
-)
-
-copy_to_bin(
-    name = "copy-package-json",
-    srcs = [
-        "package.json",
-    ],
-)
-
-npm_package_bin(
+rollup_dts(
     name = "rollup-dts",
-    outs = ["%s.d.ts" % PACKAGE_NAME],
-    args = [
-        "run",
-        "--local",
-        "--diagnostics",
-        "-c",
-        "$(@D)/api-extractor.json",
-    ],
-    data = [
-        "api-extractor.json",
-        "tsconfig.json",
-        ":copy-package-json",
-        ":types",
-        "//:setup-api-extractor",
-    ],
-    package = "api-extractor",
-    tool = "@npm//@microsoft/api-extractor/bin:api-extractor",
+    package_name = PACKAGE_NAME,
+    package_json = "package.json",
+    types = [":types"],
 )
