@@ -6,7 +6,7 @@ import json from '@rollup/plugin-json';
 export default {
   plugins: [
     replace({
-      'process.env.NODE_ENV': JSON.stringify('test'),
+      'process.env.NODE_ENV': JSON.stringify('production'),
       'process.version': JSON.stringify(''),
     }),
     json(),
@@ -19,4 +19,5 @@ export default {
       },
     }),
   ],
+  external: ['react'],
 };

@@ -1,7 +1,6 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 load("//tools:index.bzl", "rollup_dts", "ts_compile")
 
-# load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 # load("@npm//karma:index.bzl", "karma_test")
 load("//tools:jest.bzl", "jest_test")
 
@@ -83,6 +82,22 @@ rollup_dts(
         "@npm//@types/hoist-non-react-statics",
     ],
 )
+
+# rollup_bundle(
+#     name = "rollup",
+#     srcs = [
+#         ":dist-esm",
+#     ],
+#     config_file = "//:rollup.config.js",
+#     entry_point = "lib/index.js",
+#     format = "umd",
+#     deps = [
+#         "@npm//rollup-plugin-node-resolve",
+#         "@npm//rollup-plugin-commonjs",
+#         "@npm//rollup-plugin-replace",
+#         "@npm//@rollup/plugin-json",
+#     ] + SRC_DEPS,
+# )
 
 # karma tests
 # TODO
