@@ -4,6 +4,7 @@
   "command": {
     "version": {
       "conventionalCommits": true,
+      "message": "feat: publish",
       "noPrivate": true
     },
     "run": {
