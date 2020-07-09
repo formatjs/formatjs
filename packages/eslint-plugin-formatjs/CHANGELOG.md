@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.3.21...eslint-plugin-formatjs@2.4.0) (2020-07-09)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** remove references to @formatjs/macro ([831feed](https://github.com/formatjs/formatjs/commit/831feed1a5db0557038f2d5a246e808511775b84))
+
+
+
+
+
 ## [2.3.21](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.3.20...eslint-plugin-formatjs@2.3.21) (2020-07-03)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

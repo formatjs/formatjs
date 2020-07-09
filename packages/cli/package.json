@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/cli",
-  "version": "1.9.3",
+  "version": "1.9.4",
   "description": "A CLI for formatjs.",
   "keywords": [
     "intl",
@@ -35,19 +35,19 @@
     "@babel/plugin-proposal-optional-chaining": "7",
     "@babel/preset-env": "^7.9.5",
     "@babel/preset-typescript": "^7.9.0",
-    "@formatjs/ts-transformer": "^2.2.1",
+    "@formatjs/ts-transformer": "^2.2.2",
     "@types/babel__core": "^7.1.7",
     "@types/lodash": "^4.14.150",
+    "@types/loud-rejection": "^2.0.0",
+    "@types/node": "14",
     "babel-plugin-const-enum": "^1.0.1",
-    "babel-plugin-react-intl": "^7.5.28",
+    "babel-plugin-react-intl": "^7.6.0",
     "chalk": "^4.0.0",
     "commander": "5.1.0",
     "fs-extra": "^9.0.0",
     "glob": "^7.1.6",
     "lodash": "^4.17.15",
-    "loud-rejection": "^2.2.0",
-    "@types/loud-rejection": "^2.0.0",
-    "@types/node": "14"
+    "loud-rejection": "^2.2.0"
   },
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
