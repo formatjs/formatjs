@@ -153,7 +153,11 @@ ts_project(
     source_map = True,
     tsconfig = "//:tsconfig.esm.json",
     visibility = ["//visibility:public"],
-    deps = TEST_DEPS,
+    deps = TEST_DEPS + [
+        "@npm//@jest/transform",
+        "@npm//ts-jest",
+        "@npm//@types/jest",
+    ],
 )
 
 BUNDLE_KARMA_TESTS = ["karma-tests-%s.bundled" % f[f.rindex("/") + 1:f.rindex(".")] for f in TESTS]
