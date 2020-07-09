@@ -1,8 +1,8 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "npm_package_bin", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//karma:index.bzl", "karma_test")
-load("//tools:index.bzl", "generate_src_file")
+load("//tools:index.bzl", "generate_src_file", "rollup_dts", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-getcanonicallocales"
@@ -17,7 +17,7 @@ pkg_npm(
     deps = [
         "%s.d.ts" % PACKAGE_NAME,
         ":dist",
-        ":lib",
+        ":dist-esm",
     ],
 )
 
@@ -37,35 +37,11 @@ SRC_DEPS = [
 
 TEST_DEPS = SRC_DEPS
 
-ts_project(
+ts_compile(
     name = "dist",
     package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
-    declaration = True,
-    declaration_map = True,
-    source_map = True,
-    tsconfig = "//:tsconfig.json",
-    visibility = ["//visibility:public"],
     deps = SRC_DEPS,
-)
-
-ts_project(
-    name = "lib",
-    srcs = SRCS,
-    declaration = True,
-    declaration_map = True,
-    outdir = "lib",
-    source_map = True,
-    tsconfig = "//:tsconfig.json",
-    visibility = ["//visibility:public"],
-    deps = SRC_DEPS,
-)
-
-filegroup(
-    name = "types",
-    srcs = [":dist"],
-    output_group = "types",
-    visibility = ["//visibility:public"],
 )
 
 jest_test(
@@ -96,44 +72,11 @@ generate_src_file(
 )
 
 # API Extractor
-genrule(
-    name = "copy-tsconfig",
-    srcs = ["//:tsconfig.json"],
-    outs = ["tsconfig.json"],
-    cmd = "cp $< $@",
-)
-
-genrule(
-    name = "copy-api-extractor",
-    srcs = ["//:api-extractor.json"],
-    outs = ["api-extractor.json"],
-    cmd = "cp $< $@",
-)
-
-copy_to_bin(
-    name = "copy-package-json",
-    srcs = [
-        "package.json",
-    ],
-)
-
-npm_package_bin(
+rollup_dts(
     name = "rollup-dts",
-    outs = ["%s.d.ts" % PACKAGE_NAME],
-    args = [
-        "run",
-        "--local",
-        "-c",
-        "$(@D)/api-extractor.json",
-    ],
-    data = [
-        "api-extractor.json",
-        "tsconfig.json",
-        ":copy-package-json",
-        ":types",
-    ],
-    package = "api-extractor",
-    tool = "@npm//@microsoft/api-extractor/bin:api-extractor",
+    package_name = PACKAGE_NAME,
+    package_json = "package.json",
+    types = [":types"],
 )
 
 # karma tests

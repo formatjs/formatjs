@@ -26,7 +26,7 @@ jobs:
           accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
           tunnelIdentifier: github-action-tunnel
       - name: Karma
-        run: yarn karma:ci --remote_upload_local_results=true --action_env=SAUCE_ACCESS_KEY,SAUCE_USERNAME
+        run: yarn karma:ci --remote_upload_local_results=true --action_env=SAUCE_ACCESS_KEY --action_env=SAUCE_USERNAME
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}

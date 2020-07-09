@@ -2,7 +2,7 @@ load("@build_bazel_rules_nodejs//:index.bzl", "npm_package_bin", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
-load("//tools:index.bzl", "generate_src_file", "rollup_dts")
+load("//tools:index.bzl", "generate_src_file", "rollup_dts", "ts_compile")
 # load("@npm//karma:index.bzl", "karma_test")
 
 load("//tools:jest.bzl", "jest_test")
@@ -21,7 +21,7 @@ pkg_npm(
         "%s.d.ts" % PACKAGE_NAME,
         "polyfill-locales.js",
         ":dist",
-        ":lib",
+        ":dist-esm",
         ":locale-data",
     ],
 )
@@ -45,35 +45,10 @@ TEST_DEPS = SRC_DEPS + [
     "//packages/intl-getcanonicallocales:types",
 ]
 
-ts_project(
+ts_compile(
     name = "dist",
     srcs = SRCS,
-    declaration = True,
-    declaration_map = True,
-    source_map = True,
-    tsconfig = "//:tsconfig.json",
-    visibility = ["//visibility:public"],
     deps = SRC_DEPS,
-)
-
-ts_project(
-    name = "lib",
-    srcs = SRCS,
-    declaration = True,
-    declaration_map = True,
-    extends = ["//:tsconfig.json"],
-    outdir = "lib",
-    source_map = True,
-    tsconfig = "//:tsconfig.esm.json",
-    visibility = ["//visibility:public"],
-    deps = SRC_DEPS,
-)
-
-filegroup(
-    name = "types",
-    srcs = [":dist"],
-    output_group = "types",
-    visibility = ["//visibility:public"],
 )
 
 jest_test(

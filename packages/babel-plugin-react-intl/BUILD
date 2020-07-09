@@ -1,6 +1,6 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//json-schema-to-typescript:index.bzl", "json2ts")
+load("//tools:index.bzl", "ts_compile")
 # load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "babel-plugin-react-intl"
@@ -31,23 +31,11 @@ SRC_DEPS = [
     "@npm//schema-utils",
 ]
 
-ts_project(
+ts_compile(
     name = "dist",
     package_name = PACKAGE_NAME,
     srcs = SRCS,
-    declaration = True,
-    declaration_map = True,
-    source_map = True,
-    tsconfig = "//:tsconfig.json",
-    visibility = ["//visibility:public"],
     deps = SRC_DEPS,
-)
-
-filegroup(
-    name = "types",
-    srcs = [":dist"],
-    output_group = "types",
-    visibility = ["//visibility:public"],
 )
 
 # TODO

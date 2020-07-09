@@ -1,7 +1,6 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
-load("@npm//@bazel/typescript:index.bzl", "ts_project")
-load("//tools:index.bzl", "rollup_dts")
+load("//tools:index.bzl", "rollup_dts", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-locale"
@@ -16,7 +15,7 @@ pkg_npm(
     deps = [
         "polyfill.umd.js",
         ":dist",
-        ":lib",
+        ":dist-esm",
     ],
 )
 
@@ -28,34 +27,11 @@ SRC_DEPS = [
     "//packages/intl-getcanonicallocales:dist",
 ]
 
-ts_project(
+ts_compile(
     name = "dist",
     package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
-    declaration = True,
-    declaration_map = True,
-    source_map = True,
-    tsconfig = "//:tsconfig.json",
-    visibility = ["//visibility:public"],
     deps = SRC_DEPS,
-)
-
-ts_project(
-    name = "lib",
-    srcs = SRCS,
-    declaration = True,
-    declaration_map = True,
-    outdir = "lib",
-    source_map = True,
-    tsconfig = "//:tsconfig.json",
-    deps = SRC_DEPS,
-)
-
-filegroup(
-    name = "types",
-    srcs = [":dist"],
-    output_group = "types",
-    visibility = ["//visibility:public"],
 )
 
 jest_test(

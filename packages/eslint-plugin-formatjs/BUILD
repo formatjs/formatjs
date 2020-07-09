@@ -1,5 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
-load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load("//tools:index.bzl", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "eslint-plugin-formatjs"
@@ -30,22 +30,11 @@ SRC_DEPS = [
     "//packages/intl-messageformat-parser:dist",
 ]
 
-ts_project(
+ts_compile(
     name = "dist",
     package_name = PACKAGE_NAME,
     srcs = SRCS,
-    declaration = True,
-    declaration_map = True,
-    extends = ["//:tsconfig.json"],
-    source_map = True,
-    tsconfig = "//:tsconfig.node.json",
     deps = SRC_DEPS,
-)
-
-filegroup(
-    name = "types",
-    srcs = [":dist"],
-    output_group = "types",
 )
 
 # TODO

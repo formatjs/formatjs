@@ -1,8 +1,49 @@
 "Custom macro"
 
 load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "generated_file_test")
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//@microsoft/api-extractor:index.bzl", "api_extractor")
 load("@npm//ts-node:index.bzl", "ts_node")
+
+def ts_compile(name, srcs, deps, package_name = None):
+    """Compile TS with prefilled args.
+
+    Args:
+        name: target name
+        srcs: src files
+        deps: deps
+        package_name: name from package.json
+    """
+    ts_project(
+        name = name,
+        package_name = package_name,
+        srcs = srcs,
+        declaration = True,
+        declaration_map = True,
+        source_map = True,
+        tsconfig = "//:tsconfig.json",
+        visibility = ["//visibility:public"],
+        deps = deps,
+    )
+
+    ts_project(
+        name = "%s-esm" % name,
+        srcs = srcs,
+        declaration = True,
+        declaration_map = True,
+        extends = ["//:tsconfig.json"],
+        outdir = "lib",
+        source_map = True,
+        tsconfig = "//:tsconfig.esm.json",
+        deps = deps,
+    )
+
+    native.filegroup(
+        name = "types",
+        srcs = [":dist"],
+        output_group = "types",
+        visibility = ["//visibility:public"],
+    )
 
 def generate_src_file(name, args, data, src):
     """Generate a source file.
