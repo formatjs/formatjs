@@ -30,11 +30,11 @@ jobs:
           CI: true
       - name: yarn build
         run: |
-          yarn build --google_credentials=$HOME/secrets/secret.json
+          yarn build
         env:
           CI: true
       - name: yarn test
         run: |
-          yarn test --google_credentials=$HOME/secrets/secret.json
+          yarn test
         env:
           CI: true
