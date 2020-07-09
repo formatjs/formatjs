@@ -46,7 +46,7 @@
   "homepage": "https://github.com/formatjs/formatjs",
   "gitHead": "8b0baec8eda5002715cf893274fe59782fc2d371",
   "devDependencies": {
-    "@types/jest": "^25.2.1",
+    "@types/jest": "^26.0.4",
     "jest": "^25.4.0",
     "pegjs": "^0.10.0",
     "ts-jest": "^26.1.1",

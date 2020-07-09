@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "devDependencies": {
-    "@types/jest": "^25.2.1",
+    "@types/jest": "^26.0.4",
     "jest": "^25.4.0",
     "ts-jest": "^26.1.1"
   }

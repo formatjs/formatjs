@@ -29,7 +29,7 @@
     "cldr-core": "36.0.0"
   },
   "devDependencies": {
-    "@types/jest": "^25.2.1",
+    "@types/jest": "^26.0.4",
     "@types/minimist": "^1.2.0",
     "jest": "^25.4.0",
     "minimist": "^1.2.5"
