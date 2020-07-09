@@ -1,7 +1,8 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "npm_package_bin", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
+load("@npm//ts-node:index.bzl", "ts_node")
 load("//tools:index.bzl", "generate_src_file", "rollup_dts", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
@@ -91,7 +92,7 @@ CLDR_DEPS = [
     "@npm//minimist",
 ]
 
-npm_package_bin(
+ts_node(
     name = "locale-data",
     args = [
         "$(execpath scripts/cldr.ts)",
@@ -100,10 +101,9 @@ npm_package_bin(
     ],
     data = CLDR_DEPS,
     output_dir = True,
-    package = "ts-node",
 )
 
-npm_package_bin(
+ts_node(
     name = "tests-locale-data",
     args = [
         "$(execpath scripts/cldr.ts)",
@@ -112,7 +112,6 @@ npm_package_bin(
     ],
     data = CLDR_DEPS,
     output_dir = True,
-    package = "ts-node",
 )
 
 generate_src_file(
