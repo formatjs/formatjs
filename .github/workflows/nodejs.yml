@@ -26,7 +26,7 @@ jobs:
           CI: true
       - name: create secrets
         run: |
-          cat ${{ secrets.SECRET_BAZEL_CACHE_JSON }} > secret.json
+          echo ${{ secrets.SECRET_BAZEL_CACHE_JSON }} > secret.json
       - name: yarn build
         run: |
           yarn build --google_credentials=secret.json
