@@ -53,28 +53,14 @@ filegroup(
 # TODO
 # jest_test(
 #     name = "unit",
-#     srcs = [
-#         "//:tsconfig.json",
-#     ] + SRCS + glob([
+#     srcs = SRCS + glob([
 #         "tests/**/*.ts",
 #         "tests/**/*.tsx",
 #         "tests/**/*.snap",
 #         "tests/**/*.js",
 #         "tests/**/*.json",
 #     ]),
-#     jest_config = "//:jest.config.js",
-#     tags = [
-#         # Need to set the pwd to avoid jest needing a runfiles helper
-#         # Windows users with permissions can use --enable_runfiles
-#         # to make this test work
-#         "no-bazelci-windows",
-#         # TODO: why does this fail almost all the time, but pass on local Mac?
-#         "no-bazelci-mac",
-#     ],
 #     deps = [
-#         "@npm//@jest/transform",
-#         "@npm//ts-jest",
-#         "@npm//@types/jest",
 #         "//packages/intl-messageformat-parser:types",
 #     ] + SRC_DEPS,
 # )
