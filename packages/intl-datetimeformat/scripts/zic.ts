@@ -19,11 +19,16 @@ const ZONE_FILENAMES = [
 
 async function main(args: minimist.ParsedArgs) {
   const {dataDir, outDir} = args;
-  await Promise.all(
-    ZONE_FILENAMES.map(fn =>
-      execFile('zic', ['-d', outDir, resolve(dataDir, fn)])
-    )
-  );
+  try {
+    await Promise.all(
+      ZONE_FILENAMES.map(fn =>
+        execFile('/usr/sbin/zic', ['-d', outDir, resolve(dataDir, fn)])
+      )
+    );
+  } catch (e) {
+    console.error(e);
+    process.exitCode = 1;
+  }
 }
 
 if (require.main === module) {

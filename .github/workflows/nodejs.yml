@@ -15,6 +15,10 @@ jobs:
         with:
           submodules: true
           fetch-depth: 110
+      - name: Decrypt bazel GCS secret
+        run: ./.github/scripts/decrypt_secret.sh
+        env:
+          SECRET_BAZEL_CACHE_JSON_PASSPHRASE: ${{ secrets.SECRET_BAZEL_CACHE_JSON_PASSPHRASE }}
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2.1.0
         with:
