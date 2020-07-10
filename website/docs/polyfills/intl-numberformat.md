@@ -35,14 +35,8 @@ To use this as a polyfill, override `Intl.NumberFormat` as below:
 
 ```tsx
 import '@formatjs/intl-numberformat/polyfill';
-if (typeof Intl.NumberFormat.__addLocaleData === 'function') {
-  Intl.NumberFormat.__addLocaleData(
-    require('@formatjs/intl-numberformat/locale-data/zh.json') // locale-data for zh
-  );
-  Intl.NumberFormat.__addLocaleData(
-    require('@formatjs/intl-numberformat/locale-data/en.json') // locale-data for en
-  );
-}
+import '@formatjs/intl-numberformat/locale-data/zh.js'; // locale-data for zh
+import '@formatjs/intl-numberformat/locale-data/en.js'; // locale-data for en
 
 new Intl.NumberFormat('zh', {
   style: 'unit',
