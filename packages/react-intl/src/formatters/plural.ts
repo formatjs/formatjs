@@ -2,6 +2,7 @@ import {IntlConfig, Formatters, IntlFormatters} from '../types';
 import {filterProps} from '../utils';
 import {MessageFormatError} from '../error';
 import {ErrorCode, FormatError} from 'intl-messageformat';
+import {LDMLPluralRule} from '@formatjs/intl-utils';
 
 const PLURAL_FORMAT_OPTIONS: Array<keyof Intl.PluralRulesOptions> = [
   'localeMatcher',
@@ -13,7 +14,7 @@ export function formatPlural(
   getPluralRules: Formatters['getPluralRules'],
   value: Parameters<IntlFormatters['formatPlural']>[0],
   options: Parameters<IntlFormatters['formatPlural']>[1] = {}
-): string {
+): LDMLPluralRule {
   if (!Intl.PluralRules) {
     onError(
       new FormatError(

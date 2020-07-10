@@ -1,8 +1,0 @@
-{
-  "extends": "../tsconfig.json",
-  "compilerOptions": {
-    "outDir": "../lib",
-    "baseUrl": ".",
-    "lib": ["dom", "es2015", "esnext.intl", "es2018.intl", "es2017.intl"]
-  }
-}
