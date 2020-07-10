@@ -37,6 +37,5 @@ export * from './src/list-types';
 export * from './src/plural-rules-types';
 export * from './src/number-types';
 export * from './src/displaynames-types';
-export * from './src/units';
 export {invariant} from './src/invariant';
 export {LocaleData} from './src/types';
