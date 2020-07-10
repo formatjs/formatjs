@@ -16,7 +16,7 @@ export class ReactIntlError<
   constructor(code: T, message: string, exception?: Error) {
     super(
       `[React Intl Error ${code}] ${message} 
-${exception ? `\n${exception.stack}` : ''}`
+${exception ? `\n${exception.message}\n${exception.stack}` : ''}`
     );
     this.code = code;
     if (typeof Error.captureStackTrace === 'function') {
