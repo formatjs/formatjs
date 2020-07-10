@@ -4,9 +4,17 @@
   "private": true,
   "scripts": {
     "start": "docusaurus start",
-    "build": "docusaurus build",
+    "build": "docusaurus build --out-dir dist",
     "swizzle": "docusaurus swizzle",
-    "deploy": "docusaurus deploy"
+    "deploy": "docusaurus deploy --out-dir dist"
+  },
+  "dependencies": {
+    "@docusaurus/core": "^2.0.0-alpha.58",
+    "@docusaurus/preset-classic": "^2.0.0-alpha.58",
+    "react-dom": "^16.3.0",
+    "react": "^16.3.0",
+    "classnames": "^2.2.6",
+    "react-intl": "5.0.2"
   },
   "browserslist": {
     "production": [

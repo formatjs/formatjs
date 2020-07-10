@@ -9,6 +9,7 @@ workspace(
     # This lets Bazel use the same node_modules as other local tooling.
     managed_directories = {
         "@npm": ["node_modules"],
+        "@website_npm": ["website/node_modules"],
     },
 )
 
@@ -55,6 +56,13 @@ yarn_install(
     name = "npm",
     package_json = "//:package.json",
     yarn_lock = "//:yarn.lock",
+)
+
+yarn_install(
+    # Name this npm so that Bazel Label references look like @npm//package
+    name = "website_npm",
+    package_json = "//website:package.json",
+    yarn_lock = "//website:yarn.lock",
 )
 
 # Setup TypeScript toolchain

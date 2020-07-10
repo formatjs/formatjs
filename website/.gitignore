@@ -1,4 +1,3 @@
 .docusaurus
-build
+dist/
 .now
-!BUILD
