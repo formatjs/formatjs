@@ -216,12 +216,12 @@ function partitionRelativeTimePattern(
   const style = getInternalSlot(internalSlotMap, rtf, 'style');
   let entry: RelativeTimeField = resolvedUnit;
   if (style === 'short') {
-    entry = `${unit}-short` as RelativeTimeField;
+    entry = `${resolvedUnit}-short` as RelativeTimeField;
   } else if (style === 'narrow') {
-    entry = `${unit}-narrow` as RelativeTimeField;
+    entry = `${resolvedUnit}-narrow` as RelativeTimeField;
   }
   if (!(entry in fields)) {
-    entry = unit as RelativeTimeField;
+    entry = resolvedUnit as RelativeTimeField;
   }
   const patterns = fields[entry]!;
   const numeric = getInternalSlot(internalSlotMap, rtf, 'numeric');
@@ -439,7 +439,7 @@ export default class RelativeTimeFormat {
   public static supportedLocalesOf(
     locales: string | string[],
     options?: Pick<IntlRelativeTimeFormatOptions, 'localeMatcher'>
-  ) {
+  ): string[] {
     return supportedLocales(
       RelativeTimeFormat.availableLocales,
       ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
@@ -449,7 +449,7 @@ export default class RelativeTimeFormat {
     );
   }
 
-  public static __addLocaleData(...data: RelativeTimeLocaleData[]) {
+  public static __addLocaleData(...data: RelativeTimeLocaleData[]): void {
     for (const datum of data) {
       const availableLocales: string[] = datum.availableLocales;
       availableLocales.forEach(locale => {
