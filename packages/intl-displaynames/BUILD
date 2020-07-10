@@ -156,9 +156,9 @@ ts_project(
 #     entry_point = "test262/test262-main.js",
 #     format = "umd",
 #     deps = [
-#         "@npm//rollup-plugin-node-resolve",
-#         "@npm//rollup-plugin-commonjs",
-#         "@npm//rollup-plugin-replace",
+#         "@npm//@rollup/plugin-node-resolve",
+#         "@npm//@rollup/plugin-commonjs",
+#         "@npm//@rollup/plugin-replace",
 #         "@npm//@rollup/plugin-json",
 #     ] + SRC_DEPS,
 # )

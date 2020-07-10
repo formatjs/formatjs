@@ -150,25 +150,25 @@ ts_node(
 )
 
 # zic
-ts_node(
-    name = "zic",
-    args = [
-        "$(execpath scripts/zic.ts)",
-        "--dataDir",
-        "$(locations iana-data)",
-        "--outDir",
-        "$(@D)",
-    ],
-    data = [
-        "iana-data",
-        "scripts/zic.ts",
-        "//:tsconfig.json",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//minimist",
-    ],
-    output_dir = True,
-)
+# ts_node(
+#     name = "zic",
+#     args = [
+#         "$(execpath scripts/zic.ts)",
+#         "--dataDir",
+#         "$(locations iana-data)",
+#         "--outDir",
+#         "$(@D)",
+#     ],
+#     data = [
+#         "iana-data",
+#         "scripts/zic.ts",
+#         "//:tsconfig.json",
+#         "@npm//@types/minimist",
+#         "@npm//@types/node",
+#         "@npm//minimist",
+#     ],
+#     output_dir = True,
+# )
 
 # zones
 generate_src_file(

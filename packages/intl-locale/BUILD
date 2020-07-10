@@ -60,9 +60,9 @@ rollup_bundle(
     entry_point = "polyfill.js",
     format = "umd",
     deps = [
-        "@npm//rollup-plugin-node-resolve",
-        "@npm//rollup-plugin-commonjs",
-        "@npm//rollup-plugin-replace",
+        "@npm//@rollup/plugin-node-resolve",
+        "@npm//@rollup/plugin-commonjs",
+        "@npm//@rollup/plugin-replace",
         "@npm//@rollup/plugin-json",
     ] + SRC_DEPS,
 )

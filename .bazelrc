@@ -8,6 +8,9 @@
 # test --remote_http_cache=https://storage.googleapis.com/formatjs-bazel-cache --google_credentials=../secret.json
 # build --remote_upload_local_results=false
 
+# Give me dem stack traces
+build --verbose_failures
+
 # Cache action outputs on disk so they persist across output_base and bazel shutdown (eg. changing branches)
 build --disk_cache=~/.cache/bazel-disk-cache
 

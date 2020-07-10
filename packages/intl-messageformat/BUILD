@@ -82,9 +82,9 @@ rollup_dts(
 #     entry_point = "tests-karma/%s.js" % f[:f.rindex(".")],
 #     format = "umd",
 #     deps = [
-#         "@npm//rollup-plugin-node-resolve",
-#         "@npm//rollup-plugin-commonjs",
-#         "@npm//rollup-plugin-replace",
+#         "@npm//@rollup/plugin-node-resolve",
+#         "@npm//@rollup/plugin-commonjs",
+#         "@npm//@rollup/plugin-replace",
 #         "@npm//@rollup/plugin-json",
 #     ] + SRC_DEPS,
 # ) for f in TESTS]

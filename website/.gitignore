@@ -1,3 +1,4 @@
 .docusaurus
 build
 .now
+!BUILD
