@@ -4,8 +4,8 @@
 #
 # The full list of Bazel options: https://docs.bazel.build/versions/master/command-line-reference.html
 
-build --remote_http_cache=https://storage.googleapis.com/formatjs-bazel-cache --google_credentials=../secret.json
-test --remote_http_cache=https://storage.googleapis.com/formatjs-bazel-cache --google_credentials=../secret.json
+# build --remote_http_cache=https://storage.googleapis.com/formatjs-bazel-cache --google_credentials=../secret.json
+# test --remote_http_cache=https://storage.googleapis.com/formatjs-bazel-cache --google_credentials=../secret.json
 build --remote_upload_local_results=false
 
 # Give me dem stack traces
