@@ -39,7 +39,7 @@
     "@bazel/bazelisk": "^1.5.0",
     "@bazel/buildifier": "^3.3.0",
     "@bazel/ibazel": "^0.13.1",
-    "@bazel/rollup": "2.0.0-rc.1",
+    "@bazel/rollup": "2.0.0-rc.2",
     "@bazel/typescript": "2.0.0-rc.1",
     "@commitlint/cli": "^9.0.1",
     "@commitlint/config-angular": "^9.0.1",
