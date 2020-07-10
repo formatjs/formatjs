@@ -871,10 +871,10 @@
   resolved "https://registry.yarnpkg.com/@bazel/rollup/-/rollup-2.0.0-rc.1.tgz#6a4aec69347c7b7c9866b1def84aaef1c6c520fa"
   integrity sha512-PvFvLRsctrdrljsYAD+IfDhpYVgedYx9xxH+q6gOZV63qlC45lCC/AAb4dw/TvjbeYK8IJ4pepJHd9NFTJFt6g==
 
-"@bazel/typescript@2.0.0-rc.1":
-  version "2.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-2.0.0-rc.1.tgz#1fe868d403bd303a6d9a2340ba6b95ecf8fdec2d"
-  integrity sha512-BbD3540jpOsflSiCmxuN2whs4+UndjAHtB/6BiA0r5adls0Prqw+JZaACZccvi00FTMTQEJz9P4PeD2Codv3Tw==
+"@bazel/typescript@2.0.0-rc.2":
+  version "2.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-2.0.0-rc.2.tgz#36f3153c0cb42e09a174471e93deedc059e91b7c"
+  integrity sha512-NFsPToZcyj+h4YOMqC3KyOjJpGrHVK6Evmx3AaoWjv4u+3kRnZBZewlM5A4pq1WUNdVXQnMrroXCyddvW0plbA==
   dependencies:
     protobufjs "6.8.8"
     semver "5.6.0"
