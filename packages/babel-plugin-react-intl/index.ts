@@ -26,8 +26,8 @@ import {
   isTSTypeAssertion,
 } from '@babel/types';
 import {NodePath, Scope} from '@babel/traverse';
-import validate from 'schema-utils';
-import OPTIONS_SCHEMA from './options.schema.json';
+import * as validate from 'schema-utils';
+import * as OPTIONS_SCHEMA from './options.schema.json';
 import {OptionsSchema} from './options.js';
 
 const DEFAULT_COMPONENT_NAMES = ['FormattedMessage'];
@@ -344,6 +344,30 @@ function assertObjectExpression(
   return true;
 }
 
+export function resolveOutputPath(messagesDir: string, filename: string) {
+  // If no filename is specified, that means this babel plugin is called programmatically
+  // via NodeJS API by other programs (e.g. by feeding us with file content directly). In
+  // this case we will only make extracted messages accessible via Babel result objects.
+  const basename = filename ? p.basename(filename, p.extname(filename)) : null;
+
+  // Make sure the relative path is "absolute" before
+  // joining it with the `messagesDir`.
+  let relativePath = p.join(p.sep, p.relative(process.cwd(), filename));
+  // Solve when the window user has symlink on the directory, because
+  // process.cwd on windows returns the symlink root,
+  // and filename (from babel) returns the original root
+  if (process.platform === 'win32') {
+    const {name} = p.parse(process.cwd());
+    if (relativePath.includes(name)) {
+      relativePath = relativePath.slice(
+        relativePath.indexOf(name) + name.length
+      );
+    }
+  }
+
+  return p.join(messagesDir, p.dirname(relativePath), basename + '.json');
+}
+
 export default declare((api: any, options: OptionsSchema) => {
   api.assertVersion(7);
 
@@ -381,12 +405,7 @@ export default declare((api: any, options: OptionsSchema) => {
           opts: {filename},
         },
       } = this;
-      // If no filename is specified, that means this babel plugin is called programmatically
-      // via NodeJS API by other programs (e.g. by feeding us with file content directly). In
-      // this case we will only make extracted messages accessible via Babel result objects.
-      const basename = filename
-        ? p.basename(filename, p.extname(filename))
-        : null;
+
       const {ReactIntlMessages: messages, ReactIntlMeta} = this;
       const descriptors = Array.from(messages.values());
       (state as any).metadata['react-intl'] = {
@@ -394,28 +413,13 @@ export default declare((api: any, options: OptionsSchema) => {
         meta: ReactIntlMeta,
       } as ExtractionResult;
 
-      if (basename && messagesDir && (outputEmptyJson || descriptors.length)) {
-        // Make sure the relative path is "absolute" before
-        // joining it with the `messagesDir`.
-        let relativePath = p.join(p.sep, p.relative(process.cwd(), filename));
-        // Solve when the window user has symlink on the directory, because
-        // process.cwd on windows returns the symlink root,
-        // and filename (from babel) returns the original root
-        if (process.platform === 'win32') {
-          const {name} = p.parse(process.cwd());
-          if (relativePath.includes(name)) {
-            relativePath = relativePath.slice(
-              relativePath.indexOf(name) + name.length
-            );
-          }
-        }
-
-        const messagesFilename = p.join(
-          messagesDir,
-          p.dirname(relativePath),
-          basename + '.json'
-        );
-
+      let messagesFilename;
+      if (
+        messagesDir &&
+        filename &&
+        (messagesFilename = resolveOutputPath(messagesDir, filename)) &&
+        (outputEmptyJson || descriptors.length)
+      ) {
         outputJSONSync(messagesFilename, descriptors);
       }
     },

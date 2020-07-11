@@ -13,11 +13,7 @@ export default {
     resolve({
       mainFields: ['module', 'main'],
     }),
-    commonjs({
-      namedExports: {
-        lodash: ['pickBy', 'isEmpty', 'isEqual', 'fromPairs'],
-      },
-    }),
+    commonjs(),
   ],
   external: ['react'],
 };

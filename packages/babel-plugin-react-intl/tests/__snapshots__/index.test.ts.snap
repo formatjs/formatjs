@@ -14,32 +14,14 @@ Object {
 `;
 
 exports[`emit asserts for:  output match: FormattedMessage 2`] = `
-"\\"use strict\\";
-
-Object.defineProperty(exports, \\"__esModule\\", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require(\\"react\\"));
-
-var _reactIntl = require(\\"react-intl\\");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== \\"function\\") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-class Foo extends _react.Component {
+"import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
+export default class Foo extends Component {
   render() {
-    return /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, {
-      id: \\"foo.bar.baz\\",
-      defaultMessage: \\"Hello World!\\"
-    });
+    return <FormattedMessage id=\\"foo.bar.baz\\" defaultMessage=\\"Hello World!\\" />;
   }
 
-}
-
-exports.default = Foo;"
+}"
 `;
 
 exports[`emit asserts for:  output match: FormattedMessage 3`] = `
@@ -88,53 +70,47 @@ Object {
 `;
 
 exports[`emit asserts for:  output match: defineMessage 2`] = `
-"\\"use strict\\";
-
-Object.defineProperty(exports, \\"__esModule\\", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require(\\"react\\"));
-
-var _reactIntl = require(\\"react-intl\\");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== \\"function\\") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// @react-intl project:amazing
+"// @react-intl project:amazing
+import React, { Component } from 'react';
+import { defineMessage, FormattedMessage } from 'react-intl';
 const msgs = {
-  header: (0, _reactIntl.defineMessage)({
+  header: defineMessage({
     \\"id\\": \\"foo.bar.baz\\",
     \\"defaultMessage\\": \\"Hello World!\\"
   }),
-  content: (0, _reactIntl.defineMessage)({
+  content: defineMessage({
     \\"id\\": \\"foo.bar.biff\\",
     \\"defaultMessage\\": \\"Hello Nurse!\\"
   }),
-  kittens: (0, _reactIntl.defineMessage)({
+  kittens: defineMessage({
     \\"id\\": \\"app.home.kittens\\",
     \\"defaultMessage\\": \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\"
   }),
-  trailingWhitespace: (0, _reactIntl.defineMessage)({
+  trailingWhitespace: defineMessage({
     \\"id\\": \\"trailing.ws\\",
     \\"defaultMessage\\": \\"   Some whitespace   \\"
   }),
-  escaped: (0, _reactIntl.defineMessage)({
+  escaped: defineMessage({
     \\"id\\": \\"escaped.apostrophe\\",
     \\"defaultMessage\\": \\"A quoted value ''{value}'\\"
   })
 };
-
-class Foo extends _react.Component {
+export default class Foo extends Component {
   render() {
-    return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(\\"h1\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, msgs.header)), /*#__PURE__*/_react.default.createElement(\\"p\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, msgs.content)), /*#__PURE__*/_react.default.createElement(\\"p\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, msgs.kittens)));
+    return <div>
+        <h1>
+          <FormattedMessage {...msgs.header} />
+        </h1>
+        <p>
+          <FormattedMessage {...msgs.content} />
+        </p>
+        <p>
+          <FormattedMessage {...msgs.kittens} />
+        </p>
+      </div>;
   }
 
-}
-
-exports.default = Foo;"
+}"
 `;
 
 exports[`emit asserts for:  output match: defineMessage 3`] = `
@@ -203,23 +179,10 @@ Object {
 `;
 
 exports[`emit asserts for:  output match: defineMessages 2`] = `
-"\\"use strict\\";
-
-Object.defineProperty(exports, \\"__esModule\\", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require(\\"react\\"));
-
-var _reactIntl = require(\\"react-intl\\");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== \\"function\\") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// @react-intl project:amazing
-const msgs = (0, _reactIntl.defineMessages)({
+"// @react-intl project:amazing
+import React, { Component } from 'react';
+import { defineMessages, FormattedMessage } from 'react-intl';
+const msgs = defineMessages({
   header: {
     \\"id\\": \\"foo.bar.baz\\",
     \\"defaultMessage\\": \\"Hello World!\\"
@@ -241,15 +204,22 @@ const msgs = (0, _reactIntl.defineMessages)({
     \\"defaultMessage\\": \\"A quoted value ''{value}'\\"
   }
 });
-
-class Foo extends _react.Component {
+export default class Foo extends Component {
   render() {
-    return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(\\"h1\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, msgs.header)), /*#__PURE__*/_react.default.createElement(\\"p\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, msgs.content)), /*#__PURE__*/_react.default.createElement(\\"p\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, msgs.kittens)));
+    return <div>
+        <h1>
+          <FormattedMessage {...msgs.header} />
+        </h1>
+        <p>
+          <FormattedMessage {...msgs.content} />
+        </p>
+        <p>
+          <FormattedMessage {...msgs.kittens} />
+        </p>
+      </div>;
   }
 
-}
-
-exports.default = Foo;"
+}"
 `;
 
 exports[`emit asserts for:  output match: defineMessages 3`] = `
@@ -301,33 +271,15 @@ Object {
 `;
 
 exports[`emit asserts for:  output match: descriptionsAsObjects 2`] = `
-"\\"use strict\\";
+"import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl'; // @react-intl project:amazing2
 
-Object.defineProperty(exports, \\"__esModule\\", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require(\\"react\\"));
-
-var _reactIntl = require(\\"react-intl\\");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== \\"function\\") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-// @react-intl project:amazing2
-class Foo extends _react.Component {
+export default class Foo extends Component {
   render() {
-    return /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, {
-      id: \\"foo.bar.baz\\",
-      defaultMessage: \\"Hello World!\\"
-    });
+    return <FormattedMessage id=\\"foo.bar.baz\\" defaultMessage=\\"Hello World!\\" />;
   }
 
-}
-
-exports.default = Foo;"
+}"
 `;
 
 exports[`emit asserts for:  output match: descriptionsAsObjects 3`] = `
@@ -362,22 +314,9 @@ Object {
 `;
 
 exports[`emit asserts for:  output match: enforceDefaultMessage 2`] = `
-"\\"use strict\\";
-
-Object.defineProperty(exports, \\"__esModule\\", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require(\\"react\\"));
-
-var _reactIntl = require(\\"react-intl\\");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== \\"function\\") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-(0, _reactIntl.defineMessages)({
+"import React, { Component } from 'react';
+import { FormattedMessage, defineMessages } from 'react-intl';
+defineMessages({
   test: {
     \\"id\\": \\"TRANSLATION_KEY\\"
   }
@@ -385,17 +324,15 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 const testMessage = {
   id: 'TRANSLATION_KEY2'
 };
-
-class Foo extends _react.Component {
+export default class Foo extends Component {
   render() {
-    return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, {
-      id: \\"foo.bar.baz\\"
-    }), /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, testMessage));
+    return <>
+        <FormattedMessage id=\\"foo.bar.baz\\" />
+        <FormattedMessage {...testMessage} />
+      </>;
   }
 
-}
-
-exports.default = Foo;"
+}"
 `;
 
 exports[`emit asserts for:  output match: enforceDefaultMessage 3`] = `
@@ -423,32 +360,14 @@ Object {
 `;
 
 exports[`emit asserts for:  output match: enforceDescriptions 2`] = `
-"\\"use strict\\";
-
-Object.defineProperty(exports, \\"__esModule\\", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require(\\"react\\"));
-
-var _reactIntl = require(\\"react-intl\\");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== \\"function\\") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-class Foo extends _react.Component {
+"import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
+export default class Foo extends Component {
   render() {
-    return /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, {
-      id: \\"foo.bar.baz\\",
-      defaultMessage: \\"Hello World!\\"
-    });
+    return <FormattedMessage id=\\"foo.bar.baz\\" defaultMessage=\\"Hello World!\\" />;
   }
 
-}
-
-exports.default = Foo;"
+}"
 `;
 
 exports[`emit asserts for:  output match: enforceDescriptions 3`] = `
@@ -474,28 +393,15 @@ Object {
 `;
 
 exports[`emit asserts for:  output match: formatMessageCall 2`] = `
-"\\"use strict\\";
-
-Object.defineProperty(exports, \\"__esModule\\", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require(\\"react\\"));
-
-var _reactIntl = require(\\"react-intl\\");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== \\"function\\") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
+"import React, { Component } from 'react';
+import { injectIntl, FormattedMessage } from 'react-intl';
 const objectPointer = {
   id: 'foo.bar.invalid',
   defaultMessage: 'This cannot be extracted',
   description: 'the plugin only supports inline objects'
 };
 
-class Foo extends _react.Component {
+class Foo extends Component {
   render() {
     const msgs = {
       baz: this.props.intl.formatMessage({
@@ -510,17 +416,18 @@ class Foo extends _react.Component {
       }),
       invalid: this.props.intl.formatMessage(objectPointer)
     };
-    return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(\\"h1\\", null, msgs.header), /*#__PURE__*/_react.default.createElement(\\"p\\", null, msgs.content), /*#__PURE__*/_react.default.createElement(\\"span\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, {
-      id: \\"foo\\",
-      defaultMessage: \\"bar\\"
-    })));
+    return <div>
+        <h1>{msgs.header}</h1>
+        <p>{msgs.content}</p>
+        <span>
+          <FormattedMessage id=\\"foo\\" defaultMessage=\\"bar\\" />
+        </span>
+      </div>;
   }
 
 }
 
-var _default = (0, _reactIntl.injectIntl)(Foo);
-
-exports.default = _default;"
+export default injectIntl(Foo);"
 `;
 
 exports[`emit asserts for:  output match: formatMessageCall 3`] = `
@@ -544,22 +451,9 @@ Array [
 `;
 
 exports[`options correctly overrides the id when overrideIdFn is provided 1`] = `
-"\\"use strict\\";
-
-Object.defineProperty(exports, \\"__esModule\\", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require(\\"react\\"));
-
-var _reactIntl = require(\\"react-intl\\");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== \\"function\\") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-const msgs = (0, _reactIntl.defineMessages)({
+"import React, { Component } from 'react';
+import { defineMessages, FormattedMessage } from 'react-intl';
+const msgs = defineMessages({
   header: {
     \\"id\\": \\"actual.js.foo.bar.baz.12.string\\",
     \\"defaultMessage\\": \\"Hello World!\\"
@@ -569,21 +463,21 @@ const msgs = (0, _reactIntl.defineMessages)({
     \\"defaultMessage\\": \\"Hello Nurse!\\"
   }
 });
-
-class Foo extends _react.Component {
+export default class Foo extends Component {
   render() {
-    return /*#__PURE__*/_react.default.createElement(\\"div\\", null, /*#__PURE__*/_react.default.createElement(\\"h1\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, msgs.header)), /*#__PURE__*/_react.default.createElement(\\"p\\", null, /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, msgs.content)), /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, {
-      id: \\"actual.js.foo.bar.zoo.12.object\\",
-      defaultMessage: \\"Hello World!\\"
-    }), /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, {
-      id: \\"actual.js..5.object\\",
-      defaultMessage: \\"NO ID\\"
-    }));
+    return <div>
+        <h1>
+          <FormattedMessage {...msgs.header} />
+        </h1>
+        <p>
+          <FormattedMessage {...msgs.content} />
+        </p>
+        <FormattedMessage id=\\"actual.js.foo.bar.zoo.12.object\\" defaultMessage=\\"Hello World!\\" />
+        <FormattedMessage id=\\"actual.js..5.object\\" defaultMessage=\\"NO ID\\" />
+      </div>;
   }
 
-}
-
-exports.default = Foo;"
+}"
 `;
 
 exports[`options correctly overrides the id when overrideIdFn is provided 2`] = `
@@ -621,65 +515,32 @@ Array [
 `;
 
 exports[`options outputEmptyJson should output empty files 1`] = `
-"\\"use strict\\";
-
-Object.defineProperty(exports, \\"__esModule\\", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require(\\"react\\"));
-
-var _macro = require(\\"@formatjs/macro\\");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== \\"function\\") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-class Foo extends _react.Component {
+"import React, { Component } from 'react';
+import { defineMessage } from 'react-intl';
+export default class Foo extends Component {
   render() {
-    return /*#__PURE__*/_react.default.createElement(\\"div\\", null);
+    return <div></div>;
   }
 
-}
-
-exports.default = Foo;"
+}"
 `;
 
 exports[`options outputEmptyJson should output empty files 2`] = `Array []`;
 
 exports[`options removeDefaultMessage should remove default message 1`] = `
-"\\"use strict\\";
-
-Object.defineProperty(exports, \\"__esModule\\", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require(\\"react\\"));
-
-var _reactIntl = require(\\"react-intl\\");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== \\"function\\") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-const messages = (0, _reactIntl.defineMessages)({
+"import React, { Component } from 'react';
+import { defineMessages, FormattedMessage } from 'react-intl';
+const messages = defineMessages({
   foo: {
     \\"id\\": \\"greeting-user\\"
   }
 });
-
-class Foo extends _react.Component {
+export default class Foo extends Component {
   render() {
-    return /*#__PURE__*/_react.default.createElement(_reactIntl.FormattedMessage, {
-      id: \\"greeting-world\\"
-    });
+    return <FormattedMessage id=\\"greeting-world\\" />;
   }
 
-}
-
-exports.default = Foo;"
+}"
 `;
 
 exports[`options removeDefaultMessage should remove default message 2`] = `
@@ -745,7 +606,7 @@ Array [
       "column": 78,
       "line": 6,
     },
-    "file": "test@@sep@@fixtures@@sep@@extractSourceLocation@@sep@@actual.js",
+    "file": "packages@@sep@@babel-plugin-react-intl@@sep@@tests@@sep@@fixtures@@sep@@extractSourceLocation@@sep@@actual.js",
     "id": "foo.bar.baz",
     "start": Object {
       "column": 11,
@@ -765,7 +626,7 @@ Array [
 ]
 `;
 
-exports[`options should be able to parse inline _ from @formatjs/macro 1`] = `
+exports[`options should be able to parse inline defineMessage from react-intl 1`] = `
 Array [
   Object {
     "defaultMessage": "Hello World!",
@@ -786,27 +647,12 @@ Array [
 `;
 
 exports[`options without outputEmptyJson should output empty files 1`] = `
-"\\"use strict\\";
-
-Object.defineProperty(exports, \\"__esModule\\", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require(\\"react\\"));
-
-var _macro = require(\\"@formatjs/macro\\");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== \\"function\\") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== \\"object\\" && typeof obj !== \\"function\\") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-class Foo extends _react.Component {
+"import React, { Component } from 'react';
+import { defineMessage } from 'react-intl';
+export default class Foo extends Component {
   render() {
-    return /*#__PURE__*/_react.default.createElement(\\"div\\", null);
+    return <div></div>;
   }
 
-}
-
-exports.default = Foo;"
+}"
 `;

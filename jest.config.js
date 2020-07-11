@@ -6,4 +6,5 @@ module.exports = {
       tsConfig: 'tsconfig.json',
     },
   },
+  verbose: true,
 };
