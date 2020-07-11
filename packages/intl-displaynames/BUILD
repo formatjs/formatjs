@@ -1,5 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load("@npm//test262-harness:index.bzl", "test262_harness_test")
 load("@npm//ts-node:index.bzl", "ts_node")
 load("//tools:index.bzl", "generate_src_file", "rollup_dts", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
@@ -132,7 +134,6 @@ generate_src_file(
 )
 
 # Test262
-# TODO
 ts_project(
     name = "test262-main-bundle",
     srcs = SRCS + ["test262-main.ts"],
@@ -147,35 +148,34 @@ ts_project(
     deps = SRC_DEPS,
 )
 
-# rollup_bundle(
-#     name = "test262-polyfill",
-#     srcs = [
-#         ":test262-main-bundle",
-#     ],
-#     config_file = "//:rollup.config.js",
-#     entry_point = "test262/test262-main.js",
-#     format = "umd",
-#     deps = [
-#         "@npm//@rollup/plugin-node-resolve",
-#         "@npm//@rollup/plugin-commonjs",
-#         "@npm//@rollup/plugin-replace",
-#         "@npm//@rollup/plugin-json",
-#     ] + SRC_DEPS,
-# )
+rollup_bundle(
+    name = "test262-polyfill",
+    srcs = [
+        ":test262-main-bundle",
+    ],
+    config_file = "//:rollup.config.js",
+    entry_point = "test262/test262-main.js",
+    format = "umd",
+    deps = [
+        "@npm//@rollup/plugin-node-resolve",
+        "@npm//@rollup/plugin-commonjs",
+        "@npm//@rollup/plugin-replace",
+        "@npm//@rollup/plugin-json",
+    ] + SRC_DEPS,
+)
 
-# TODO
-# test262_harness_test(
-#     name = "test262",
-#     data = [
-#         "test262-polyfill.js",
-#         "//:test262-all",
-#         "//:test262-displaynames",
-#     ],
-#     templated_args = [
-#         "--reporter-keys",
-#         "file,attrs,result",
-#         "--prelude",
-#         "$(rootpath test262-polyfill.js)",
-#         "$(rootpaths //:test262-displaynames)",
-#     ],
-# )
+test262_harness_test(
+    name = "test262",
+    data = [
+        "test262-polyfill.js",
+        "//:test262-all",
+        "//:test262-displaynames",
+    ],
+    templated_args = [
+        "--reporter-keys",
+        "file,attrs,result",
+        "--prelude",
+        "$(rootpath test262-polyfill.js)",
+        "$(rootpaths //:test262-displaynames)",
+    ],
+)

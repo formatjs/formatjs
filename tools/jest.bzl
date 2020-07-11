@@ -23,14 +23,16 @@ def jest_test(name, srcs, deps, jest_config = "//:jest.config.js", snapshots = [
     for src in srcs:
         templated_args.extend(["--runTestsByPath", "$(rootpath %s)" % src])
 
+    data = [jest_config] + srcs + snapshots + deps + [
+        "@npm//@jest/transform",
+        "@npm//ts-jest",
+        "@npm//@types/jest",
+        "//:tsconfig.json",
+    ]
+
     _jest_test(
         name = name,
-        data = [jest_config] + srcs + snapshots + deps + [
-            "@npm//@jest/transform",
-            "@npm//ts-jest",
-            "@npm//@types/jest",
-            "//:tsconfig.json",
-        ],
+        data = data,
         templated_args = templated_args,
         tags = [
             # Need to set the pwd to avoid jest needing a runfiles helper
@@ -47,12 +49,7 @@ def jest_test(name, srcs, deps, jest_config = "//:jest.config.js", snapshots = [
     # e.g bazel run //packages/react-intl:unit.update
     jest(
         name = "%s.update" % name,
-        data = [jest_config] + srcs + snapshots + deps + [
-            "@npm//@jest/transform",
-            "@npm//ts-jest",
-            "@npm//@types/jest",
-            "//:tsconfig.json",
-        ],
+        data = data,
         templated_args = templated_args + ["-u"],
         tags = [
             # Need to set the pwd to avoid jest needing a runfiles helper

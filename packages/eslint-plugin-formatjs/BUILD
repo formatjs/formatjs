@@ -37,7 +37,6 @@ ts_compile(
     deps = SRC_DEPS,
 )
 
-# TODO
 jest_test(
     name = "unit",
     srcs = SRCS + glob([
