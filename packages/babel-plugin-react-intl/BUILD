@@ -1,7 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//json-schema-to-typescript:index.bzl", "json2ts")
 load("//tools:index.bzl", "ts_compile")
-# load("//tools:jest.bzl", "jest_test")
+load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "babel-plugin-react-intl"
 
@@ -38,20 +38,22 @@ ts_compile(
     deps = SRC_DEPS,
 )
 
-# TODO
-# jest_test(
-#     name = "unit",
-#     srcs = SRCS + glob([
-#         "tests/**/*.ts",
-#         "tests/**/*.tsx",
-#         "tests/**/*.snap",
-#         "tests/**/*.js",
-#         "tests/**/*.json",
-#     ]),
-#     deps = [
-#         "//packages/intl-messageformat-parser:types",
-#     ] + SRC_DEPS,
-# )
+jest_test(
+    name = "unit",
+    srcs = SRCS + glob([
+        "tests/**/*.ts",
+        "tests/**/*.tsx",
+        "tests/**/*.js",
+        "tests/**/*.json",
+    ]),
+    snapshots = glob([
+        "tests/**/*.snap",
+    ]),
+    deps = [
+        "//packages/intl-messageformat-parser:types",
+        "@npm//@babel/preset-react",
+    ] + SRC_DEPS,
+)
 
 # json2ts -i src/options.schema.json -o src/options.ts
 json2ts(
