@@ -31,6 +31,10 @@ TEST_LOCALES = [
     "uk",
     "zh",
     "en-BS",
+    "zh-Hant",
+    "ar-SS",
+    "bn",
+    "sw",
 ]
 
 TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
@@ -61,8 +65,9 @@ SRCS = glob(
 
 TESTS = glob([
     "tests/*.test.ts",
-    "tests/__snapshots__/*.snap",
 ])
+
+SNAPSHOTS = glob(["tests/__snapshots__/*.snap"])
 
 SRC_DEPS = [
     "//packages/intl-utils:dist",
@@ -82,11 +87,12 @@ ts_compile(
     deps = SRC_DEPS,
 )
 
-jest_test(
-    name = "unit",
-    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
+# Bc this is too big
+[jest_test(
+    name = "unit-%s" % f[f.rindex("/") + 1:f.rindex(".")],
+    srcs = SRCS + [f] + TEST_LOCALE_DATA + SNAPSHOTS,
     deps = TEST_DEPS,
-)
+) for f in TESTS]
 
 rollup_dts(
     name = "rollup-dts",
