@@ -1,7 +1,7 @@
-locale-data/* linguist-generated
+packages/*/src/data/* linguist-generated
 packages/*/test262-main.ts linguist-generated
-data/* linguist-generated
+packages/*/tests/locale-data/* linguist-generated
+packages/intl-datetimeformat/data.zdump linguist-generated
+packages/intl-datetimeformat/iana-data/* linguist-vendored
 packages/intl-messageformat-parser/src/parser.ts linguist-generated
-iana-data/* linguist-vendored
-data.zdump linguist-generated
 website/* linguist-documentation
