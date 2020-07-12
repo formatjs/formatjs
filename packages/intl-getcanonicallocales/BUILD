@@ -18,7 +18,7 @@ pkg_npm(
     ],
 )
 
-SRCS = glob(["src/*.ts"]) + [
+SRCS = glob(["src/**/*.ts"]) + [
     "index.ts",
     "polyfill.ts",
 ]
@@ -50,7 +50,7 @@ jest_test(
 # aliases
 generate_src_file(
     name = "aliases",
-    src = "src/aliases.ts",
+    src = "src/data/aliases.ts",
     args = [
         "$(execpath scripts/aliases.ts)",
         "--out",

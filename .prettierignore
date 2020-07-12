@@ -4,7 +4,7 @@ locale-data
 packages/*/CHANGELOG.md
 packages/babel-plugin-react-intl/options.ts
 packages/intl-datetimeformat/src/data/
-packages/intl-getcanonicallocales/src/aliases.ts
+packages/intl-getcanonicallocales/src/data/
 packages/intl-messageformat-parser/src/parser.ts
 packages/intl-numberformat/src/data/
 test262*

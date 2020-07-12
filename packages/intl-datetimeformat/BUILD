@@ -1,6 +1,6 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "generate_src_file", "karma_bundle_test", "rollup_dts", "ts_compile")
+load("//tools:index.bzl", "generate_src_file", "rollup_dts", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-datetimeformat"
@@ -308,13 +308,13 @@ ts_node(
     ],
 )
 
-karma_bundle_test(
-    name = "karma",
-    srcs = SRCS,
-    data = TEST_LOCALE_DATA,
-    tests = TESTS,
-    deps = SRC_DEPS,
-)
+# karma_bundle_test(
+#     name = "karma",
+#     srcs = SRCS,
+#     data = TEST_LOCALE_DATA,
+#     tests = TESTS,
+#     deps = SRC_DEPS,
+# )
 
 # zdump
 # TODO: zdump takes a very long time

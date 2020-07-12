@@ -4,7 +4,7 @@ import {
   variantAlias,
   scriptAlias,
   territoryAlias,
-} from './aliases';
+} from './data/aliases';
 import {
   parseUnicodeLanguageId,
   isUnicodeVariantSubtag,
