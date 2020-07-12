@@ -1,4 +1,6 @@
-locale-data/* linguist-generated=true
-packages/*/test262-main.ts linguist-generated=true
-data/* linguist-generated=true
-packages/intl-messageformat-parser/src/parser.ts linguist-generated=true
+locale-data/ linguist-generated
+packages/*/test262-main.ts linguist-generated
+data/ linguist-generated
+packages/intl-messageformat-parser/src/parser.ts linguist-generated
+iana-data/ linguist-vendored
+data.zdump linguist-generated
