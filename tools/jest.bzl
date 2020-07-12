@@ -28,6 +28,7 @@ def jest_test(name, srcs, deps, jest_config = "//:jest.config.js", snapshots = [
         "@npm//ts-jest",
         "@npm//@types/jest",
         "//:tsconfig.json",
+        "//tools:jest-reporter.js",
     ]
 
     _jest_test(
