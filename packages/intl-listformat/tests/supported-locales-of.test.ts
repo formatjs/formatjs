@@ -1,9 +1,9 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
 import ListFormat from '..';
 // @ts-ignore
-import * as en from '../tests-locale-data/en.json';
+import * as en from './locale-data/en.json';
 // @ts-ignore
-import * as zh from '../tests-locale-data/zh.json';
+import * as zh from './locale-data/zh.json';
 ListFormat.__addLocaleData(en, zh);
 
 describe('supportedLocalesOf', function () {

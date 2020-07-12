@@ -27,7 +27,7 @@ const LOCALES = [
 ];
 
 LOCALES.forEach(locale => {
-  NumberFormat.__addLocaleData(require(`../tests-locale-data/${locale}.json`));
+  NumberFormat.__addLocaleData(require(`./locale-data/${locale}.json`));
 });
 
 const SIGN_DISPLAYS: Array<NumberFormatOptions['signDisplay']> = [

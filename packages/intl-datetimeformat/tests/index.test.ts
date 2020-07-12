@@ -3,7 +3,7 @@ import {
   basicFormatMatcherScore,
   bestFitFormatMatcherScore,
 } from '../';
-import * as en from '../tests-locale-data/en.json';
+import * as en from './locale-data/en.json';
 import allData from '../src/data/all-tz';
 import {parseDateTimeSkeleton} from '../src/skeleton';
 // @ts-ignore

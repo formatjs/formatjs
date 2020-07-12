@@ -8,6 +8,33 @@ load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-numberformat"
 
+TEST_LOCALES = [
+    "en",
+    "en-GB",
+    "da",
+    "de",
+    "es",
+    "fr",
+    "id",
+    "it",
+    "ja",
+    "ko",
+    "ms",
+    "nb",
+    "nl",
+    "pl",
+    "pt",
+    "ru",
+    "sv",
+    "th",
+    "tr",
+    "uk",
+    "zh",
+    "en-BS",
+]
+
+TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
+
 pkg_npm(
     name = PACKAGE_NAME,
     package_name = "@formatjs/%s" % PACKAGE_NAME,
@@ -57,8 +84,8 @@ ts_compile(
 
 jest_test(
     name = "unit",
-    srcs = SRCS + TESTS,
-    deps = TEST_DEPS + [":tests-locale-data"],
+    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
+    deps = TEST_DEPS,
 )
 
 rollup_dts(
@@ -104,16 +131,18 @@ ts_node(
     visibility = ["//packages/react-intl:__subpackages__"],
 )
 
-ts_node(
-    name = "tests-locale-data",
+[generate_src_file(
+    name = "tests-locale-data-%s" % locale,
+    src = "tests/locale-data/%s.json" % locale,
     args = [
         "$(execpath scripts/cldr.ts)",
-        "--testDataDir",
-        "$(@D)",
+        "--testLocale",
+        locale,
+        "--testOutFile",
+        "$@",
     ],
     data = CLDR_DEPS,
-    output_dir = True,
-)
+) for locale in TEST_LOCALES]
 
 generate_src_file(
     name = "test262-main",

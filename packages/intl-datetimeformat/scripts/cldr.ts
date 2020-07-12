@@ -30,7 +30,7 @@ const langData = locales.reduce(
 );
 
 function main(args: minimist.ParsedArgs) {
-  const {outDir, testDataDir, test262MainFile} = args;
+  const {outDir, testLocale, testOutFile, test262MainFile} = args;
   if (outDir) {
     // Dist all locale files to locale-data
     Object.keys(langData).forEach(function (lang) {
@@ -47,11 +47,8 @@ function main(args: minimist.ParsedArgs) {
   }
 
   // Dist all json locale files to testDataDir
-  if (testDataDir) {
-    Object.keys(langData).forEach(function (lang) {
-      const destFile = join(testDataDir, lang + '.json');
-      outputJSONSync(destFile, langData[lang]);
-    });
+  if (testOutFile) {
+    outputJSONSync(testOutFile, langData[testLocale]);
   }
 
   if (test262MainFile) {
