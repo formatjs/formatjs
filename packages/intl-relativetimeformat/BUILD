@@ -3,10 +3,17 @@ load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "generate_src_file", "rollup_dts", "ts_compile")
+load("//tools:index.bzl", "generate_src_file", "karma_bundle_test", "rollup_dts", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-relativetimeformat"
+
+TEST_LOCALES = [
+    "en",
+    "zh",
+]
+
+TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
 
 pkg_npm(
     name = PACKAGE_NAME,
@@ -58,8 +65,8 @@ ts_compile(
 
 jest_test(
     name = "unit",
-    srcs = SRCS + TESTS,
-    deps = TEST_DEPS + [":tests-locale-data"],
+    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
+    deps = TEST_DEPS,
 )
 
 rollup_dts(
@@ -101,16 +108,18 @@ ts_node(
     output_dir = True,
 )
 
-ts_node(
-    name = "tests-locale-data",
+[generate_src_file(
+    name = "tests-locale-data-%s" % locale,
+    src = "tests/locale-data/%s.json" % locale,
     args = [
         "$(execpath scripts/cldr.ts)",
-        "--testDataDir",
-        "$(@D)",
+        "--testLocale",
+        locale,
+        "--testOutFile",
+        "$@",
     ],
     data = CLDR_DEPS,
-    output_dir = True,
-)
+) for locale in TEST_LOCALES]
 
 ts_node(
     name = "polyfill-locales",
@@ -179,4 +188,12 @@ test262_harness_test(
         "$(rootpath test262-polyfill.js)",
         "$(rootpaths //:test262-relativetimeformat)",
     ],
+)
+
+karma_bundle_test(
+    name = "karma",
+    srcs = SRCS,
+    data = TEST_LOCALE_DATA,
+    tests = TESTS,
+    deps = SRC_DEPS,
 )

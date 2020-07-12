@@ -2,8 +2,8 @@ import '@formatjs/intl-getcanonicallocales/polyfill';
 
 import {PluralRules} from '../';
 // @ts-ignore
-import * as en from '../tests-locale-data/en.js';
-PluralRules.__addLocaleData(en.default || en);
+import en from './locale-data/en';
+PluralRules.__addLocaleData(en);
 
 describe('PluralRules', function () {
   it('should work for cardinal', function () {

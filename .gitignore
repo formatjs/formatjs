@@ -12,7 +12,6 @@ dist
 dist-es6
 functional-tests/
 lib
-locale-data
 node_modules
 packages/*/tests/test262*
 packages/babel-plugin-react-intl/options.ts

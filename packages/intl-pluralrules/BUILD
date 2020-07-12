@@ -5,10 +5,17 @@ load("@npm//test262-harness:index.bzl", "test262_harness_test")
 
 # load("@npm//karma:index.bzl", "karma_test")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "generate_src_file", "rollup_dts", "ts_compile")
+load("//tools:index.bzl", "generate_src_file", "karma_bundle_test", "rollup_dts", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-pluralrules"
+
+TEST_LOCALES = [
+    "en",
+    "zh",
+]
+
+TEST_LOCALE_DATA = ["tests/locale-data/%s.ts" % locale for locale in TEST_LOCALES]
 
 pkg_npm(
     name = PACKAGE_NAME,
@@ -54,8 +61,8 @@ ts_compile(
 
 jest_test(
     name = "unit",
-    srcs = SRCS + TESTS,
-    deps = TEST_DEPS + [":tests-locale-data"],
+    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
+    deps = TEST_DEPS,
 )
 
 rollup_dts(
@@ -93,16 +100,18 @@ ts_node(
     output_dir = True,
 )
 
-ts_node(
-    name = "tests-locale-data",
+[generate_src_file(
+    name = "tests-locale-data-%s" % locale,
+    src = "tests/locale-data/%s.ts" % locale,
     args = [
         "$(execpath scripts/cldr.ts)",
-        "--testDataDir",
-        "$(@D)",
+        "--testLocale",
+        locale,
+        "--testOutFile",
+        "$@",
     ],
     data = CLDR_DEPS,
-    output_dir = True,
-)
+) for locale in TEST_LOCALES]
 
 ts_node(
     name = "polyfill-locales",
@@ -175,71 +184,10 @@ test262_harness_test(
     ],
 )
 
-# karma_bundle_test(
-#     name = "karma",
-#     srcs = SRCS,
-#     tests = TESTS,
-#     deps = SRC_DEPS,
-# )
-
-# # karma tests
-# ts_project(
-#     name = "karma-tests",
-#     srcs = SRCS + TESTS,
-#     declaration = True,
-#     declaration_map = True,
-#     extends = ["//:tsconfig.json"],
-#     outdir = "tests-karma",
-#     source_map = True,
-#     tsconfig = "//:tsconfig.esm.json",
-#     visibility = ["//visibility:public"],
-#     deps = TEST_DEPS,
-# )
-
-# BUNDLE_KARMA_TESTS = ["karma-tests-%s.bundled" % f[f.rindex("/") + 1:f.rindex(".")] for f in TESTS]
-
-# [rollup_bundle(
-#     name = "karma-tests-%s.bundled" % f[f.rindex("/") + 1:f.rindex(".")],
-#     srcs = ["tests-karma/%s.js" % f[:f.rindex(".")] for f in SRCS] + [":tests-locale-data"],
-#     config_file = "//:rollup.config.js",
-#     entry_point = "tests-karma/%s.js" % f[:f.rindex(".")],
-#     format = "umd",
-#     deps = [
-#         "@npm//@rollup/plugin-node-resolve",
-#         "@npm//@rollup/plugin-commonjs",
-#         "@npm//@rollup/plugin-replace",
-#         "@npm//@rollup/plugin-json",
-#     ] + SRC_DEPS,
-# ) for f in TESTS]
-
-# karma_test(
-#     name = "karma",
-#     data = [
-#         "//:karma.conf.js",
-#         "@npm//karma-jasmine",
-#         "@npm//karma-chrome-launcher",
-#         "@npm//karma-jasmine-matchers",
-#     ] + BUNDLE_KARMA_TESTS,
-#     templated_args = [
-#         "start",
-#         "$(rootpath //:karma.conf.js)",
-#     ] + ["$$(rlocation $(location %s))" % f for f in BUNDLE_KARMA_TESTS],
-# )
-
-# karma_test(
-#     name = "karma-ci",
-#     configuration_env_vars = [
-#         "SAUCE_USERNAME",
-#         "SAUCE_ACCESS_KEY",
-#     ],
-#     data = [
-#         "//:karma.conf-ci.js",
-#         "@npm//karma-jasmine",
-#         "@npm//karma-sauce-launcher",
-#         "@npm//karma-jasmine-matchers",
-#     ] + BUNDLE_KARMA_TESTS,
-#     templated_args = [
-#         "start",
-#         "$(rootpath //:karma.conf-ci.js)",
-#     ] + ["$$(rlocation $(location %s))" % f for f in BUNDLE_KARMA_TESTS],
-# )
+karma_bundle_test(
+    name = "karma",
+    srcs = SRCS,
+    data = TEST_LOCALE_DATA,
+    tests = TESTS,
+    deps = SRC_DEPS,
+)

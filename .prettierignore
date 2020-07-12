@@ -1,5 +1,6 @@
 bazel-out
 dist
+locale-data
 packages/*/CHANGELOG.md
 packages/babel-plugin-react-intl/options.ts
 packages/intl-datetimeformat/src/data/

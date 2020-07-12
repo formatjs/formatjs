@@ -34,7 +34,13 @@ languages.forEach(lang => {
 });
 
 function main(args: minimist.ParsedArgs) {
-  const {outDir, test262MainFile, testDataDir, polyfillLocalesOutFile} = args;
+  const {
+    outDir,
+    test262MainFile,
+    testLocale,
+    testOutFile,
+    polyfillLocalesOutFile,
+  } = args;
 
   outDir &&
     languages.forEach(lang => {
@@ -49,16 +55,15 @@ if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') 
       );
     });
 
-  testDataDir &&
-    languages.forEach(lang => {
-      outputFileSync(
-        join(testDataDir, `${lang}.js`),
-        `/* @generated */
+  testOutFile &&
+    outputFileSync(
+      testOutFile,
+      `/* @generated */
 // prettier-ignore
-module.exports = ${serialize(allData[lang])}
+// @ts-nocheck
+export default ${serialize(allData[testLocale])}
 `
-      );
-    });
+    );
 
   // Aggregate all into ../polyfill-locales.js
   polyfillLocalesOutFile &&

@@ -115,18 +115,19 @@ def rollup_dts(name, package_name, package_json, types):
         ] + types,
     )
 
-def karma_bundle_test(name, srcs, tests, deps = []):
+def karma_bundle_test(name, srcs, tests, data = [], deps = []):
     """Bundle tests and run karma.
 
     Args:
         name: target name
         srcs: src files
         tests: test files
+        data: data
         deps: src + test deps
     """
     ts_project(
         name = "%s-compile" % name,
-        srcs = srcs + tests,
+        srcs = srcs + tests + data,
         declaration = True,
         declaration_map = True,
         extends = ["//:tsconfig.json"],
@@ -146,7 +147,7 @@ def karma_bundle_test(name, srcs, tests, deps = []):
     for f in tests:
         rollup_bundle(
             name = "%s-%s.bundled" % (name, f[f.rindex("/") + 1:f.rindex(".")]),
-            srcs = ["%s/%s.js" % (name, f[:f.rindex(".")]) for f in srcs],
+            srcs = ["%s-compile" % name],
             config_file = "//:rollup.config.js",
             entry_point = "%s/%s.js" % (name, f[:f.rindex(".")]),
             format = "umd",
