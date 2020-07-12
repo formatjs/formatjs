@@ -5,3 +5,4 @@ packages/intl-datetimeformat/data.zdump linguist-generated
 packages/intl-datetimeformat/iana-data/* linguist-vendored
 packages/intl-messageformat-parser/src/parser.ts linguist-generated
 website/* linguist-documentation
+**/CHANGELOG.md linguist-documentation
