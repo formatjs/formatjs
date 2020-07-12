@@ -1,5 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
-load("//tools:index.bzl", "generate_src_file", "karma_bundle_test", "rollup_dts", "ts_compile")
+load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "rollup_dts", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-getcanonicallocales"
@@ -77,8 +77,8 @@ rollup_dts(
 )
 
 # karma tests
-karma_bundle_test(
-    name = "karma",
+bundle_karma_tests(
+    name = "bundled-karma-tests",
     srcs = SRCS,
     tests = TESTS,
     deps = TEST_DEPS,

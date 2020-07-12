@@ -1,4 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin")
+load("@npm//karma:index.bzl", "karma_test")
 # Add rules here to build your software
 # See https://docs.bazel.build/versions/master/build-ref.html#BUILD_files
 
@@ -123,3 +124,55 @@ filegroup(
     ]) + ["test262/README.md"],
     visibility = ["//visibility:public"],
 )
+
+# We run this centrally so it doesn't spawn
+# multiple browser sessions which overwhelms SauceLabs
+KARMA_TESTS = [
+    "//packages/intl-displaynames:bundled-karma-tests",
+    "//packages/intl-getcanonicallocales:bundled-karma-tests",
+    "//packages/intl-listformat:bundled-karma-tests",
+    "//packages/intl-pluralrules:bundled-karma-tests",
+    "//packages/intl-relativetimeformat:bundled-karma-tests",
+]
+
+karma_test(
+    name = "karma",
+    data = [
+        "//:karma.conf.js",
+        "@npm//karma-jasmine",
+        "@npm//karma-chrome-launcher",
+        "@npm//karma-jasmine-matchers",
+    ] + KARMA_TESTS,
+    templated_args = [
+        "start",
+        "$(rootpath //:karma.conf.js)",
+    ] + ["$$(rlocation $(locations %s))" % f for f in KARMA_TESTS],
+)
+
+CI_BROWSERS = [
+    "edge",
+    "chrome",
+    "firefox",
+    "ie_11",
+    "safari",
+]
+
+[karma_test(
+    name = "karma-ci-%s" % browser,
+    configuration_env_vars = [
+        "SAUCE_USERNAME",
+        "SAUCE_ACCESS_KEY",
+    ],
+    data = [
+        "//:karma.conf-ci.js",
+        "@npm//karma-jasmine",
+        "@npm//karma-sauce-launcher",
+        "@npm//karma-jasmine-matchers",
+    ] + KARMA_TESTS,
+    templated_args = [
+        "start",
+        "$(rootpath //:karma.conf-ci.js)",
+        "--browsers",
+        "sl_%s" % browser,
+    ] + ["$$(rlocation $(locations %s))" % f for f in KARMA_TESTS],
+) for browser in CI_BROWSERS]

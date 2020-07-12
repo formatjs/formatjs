@@ -3,7 +3,7 @@ load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "generate_src_file", "karma_bundle_test", "rollup_dts", "ts_compile")
+load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "rollup_dts", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-displaynames"
@@ -189,8 +189,8 @@ test262_harness_test(
     ],
 )
 
-karma_bundle_test(
-    name = "karma",
+bundle_karma_tests(
+    name = "bundled-karma-tests",
     srcs = SRCS,
     data = TEST_LOCALE_DATA,
     tests = TESTS,

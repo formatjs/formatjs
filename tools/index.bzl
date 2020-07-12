@@ -4,7 +4,6 @@ load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "generated_file_tes
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//@microsoft/api-extractor:index.bzl", "api_extractor")
-load("@npm//karma:index.bzl", "karma_test")
 load("@npm//ts-node:index.bzl", "ts_node")
 
 def ts_compile(name, srcs, deps, package_name = None):
@@ -115,7 +114,7 @@ def rollup_dts(name, package_name, package_json, types):
         ] + types,
     )
 
-def karma_bundle_test(name, srcs, tests, data = [], deps = []):
+def bundle_karma_tests(name, srcs, tests, data = [], deps = [], rollup_deps = []):
     """Bundle tests and run karma.
 
     Args:
@@ -134,7 +133,6 @@ def karma_bundle_test(name, srcs, tests, data = [], deps = []):
         outdir = name,
         source_map = True,
         tsconfig = "//:tsconfig.esm.json",
-        visibility = ["//visibility:public"],
         deps = deps + [
             "@npm//@jest/transform",
             "@npm//ts-jest",
@@ -156,37 +154,11 @@ def karma_bundle_test(name, srcs, tests, data = [], deps = []):
                 "@npm//@rollup/plugin-commonjs",
                 "@npm//@rollup/plugin-replace",
                 "@npm//@rollup/plugin-json",
-            ] + deps,
+            ] + deps + rollup_deps,
         )
 
-    karma_test(
+    native.filegroup(
         name = name,
-        data = [
-            "//:karma.conf.js",
-            "@npm//karma-jasmine",
-            "@npm//karma-chrome-launcher",
-            "@npm//karma-jasmine-matchers",
-        ] + BUNDLE_KARMA_TESTS,
-        templated_args = [
-            "start",
-            "$(rootpath //:karma.conf.js)",
-        ] + ["$$(rlocation $(location %s))" % f for f in BUNDLE_KARMA_TESTS],
-    )
-
-    karma_test(
-        name = "%s-ci" % name,
-        configuration_env_vars = [
-            "SAUCE_USERNAME",
-            "SAUCE_ACCESS_KEY",
-        ],
-        data = [
-            "//:karma.conf-ci.js",
-            "@npm//karma-jasmine",
-            "@npm//karma-sauce-launcher",
-            "@npm//karma-jasmine-matchers",
-        ] + BUNDLE_KARMA_TESTS,
-        templated_args = [
-            "start",
-            "$(rootpath //:karma.conf-ci.js)",
-        ] + ["$$(rlocation $(location %s))" % f for f in BUNDLE_KARMA_TESTS],
+        srcs = BUNDLE_KARMA_TESTS,
+        visibility = ["//visibility:public"],
     )
