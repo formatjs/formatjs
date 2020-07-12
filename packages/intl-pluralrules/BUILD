@@ -175,6 +175,13 @@ test262_harness_test(
     ],
 )
 
+# karma_bundle_test(
+#     name = "karma",
+#     srcs = SRCS,
+#     tests = TESTS,
+#     deps = SRC_DEPS,
+# )
+
 # # karma tests
 # ts_project(
 #     name = "karma-tests",

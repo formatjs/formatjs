@@ -1,8 +1,10 @@
 "Custom macro"
 
 load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "generated_file_test")
+load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//@microsoft/api-extractor:index.bzl", "api_extractor")
+load("@npm//karma:index.bzl", "karma_test")
 load("@npm//ts-node:index.bzl", "ts_node")
 
 def ts_compile(name, srcs, deps, package_name = None):
@@ -111,4 +113,79 @@ def rollup_dts(name, package_name, package_json, types):
             ":copy-package-json-%s" % package_name,
             "//:setup-api-extractor",
         ] + types,
+    )
+
+def karma_bundle_test(name, srcs, tests, deps = []):
+    """Bundle tests and run karma.
+
+    Args:
+        name: target name
+        srcs: src files
+        tests: test files
+        deps: src + test deps
+    """
+    ts_project(
+        name = "%s-compile" % name,
+        srcs = srcs + tests,
+        declaration = True,
+        declaration_map = True,
+        extends = ["//:tsconfig.json"],
+        outdir = name,
+        source_map = True,
+        tsconfig = "//:tsconfig.esm.json",
+        visibility = ["//visibility:public"],
+        deps = deps + [
+            "@npm//@jest/transform",
+            "@npm//ts-jest",
+            "@npm//@types/jest",
+        ],
+    )
+
+    BUNDLE_KARMA_TESTS = ["%s-%s.bundled" % (name, f[f.rindex("/") + 1:f.rindex(".")]) for f in tests]
+
+    for f in tests:
+        rollup_bundle(
+            name = "%s-%s.bundled" % (name, f[f.rindex("/") + 1:f.rindex(".")]),
+            srcs = ["%s/%s.js" % (name, f[:f.rindex(".")]) for f in srcs],
+            config_file = "//:rollup.config.js",
+            entry_point = "%s/%s.js" % (name, f[:f.rindex(".")]),
+            format = "umd",
+            deps = [
+                "@npm//@rollup/plugin-node-resolve",
+                "@npm//@rollup/plugin-commonjs",
+                "@npm//@rollup/plugin-replace",
+                "@npm//@rollup/plugin-json",
+            ] + deps,
+        )
+
+    karma_test(
+        name = name,
+        data = [
+            "//:karma.conf.js",
+            "@npm//karma-jasmine",
+            "@npm//karma-chrome-launcher",
+            "@npm//karma-jasmine-matchers",
+        ] + BUNDLE_KARMA_TESTS,
+        templated_args = [
+            "start",
+            "$(rootpath //:karma.conf.js)",
+        ] + ["$$(rlocation $(location %s))" % f for f in BUNDLE_KARMA_TESTS],
+    )
+
+    karma_test(
+        name = "%s-ci" % name,
+        configuration_env_vars = [
+            "SAUCE_USERNAME",
+            "SAUCE_ACCESS_KEY",
+        ],
+        data = [
+            "//:karma.conf-ci.js",
+            "@npm//karma-jasmine",
+            "@npm//karma-sauce-launcher",
+            "@npm//karma-jasmine-matchers",
+        ] + BUNDLE_KARMA_TESTS,
+        templated_args = [
+            "start",
+            "$(rootpath //:karma.conf-ci.js)",
+        ] + ["$$(rlocation $(location %s))" % f for f in BUNDLE_KARMA_TESTS],
     )
