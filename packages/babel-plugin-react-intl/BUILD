@@ -27,7 +27,6 @@ SRC_DEPS = [
     "@npm//@babel/core",
     "@npm//@babel/types",
     "@npm//@types/babel__core",
-    "@npm//@types/schema-utils",
     "@npm//schema-utils",
 ]
 

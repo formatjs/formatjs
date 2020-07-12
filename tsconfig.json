@@ -11,6 +11,7 @@
       "es2017.intl",
       "es2018.intl"
     ],
+    "baseUrl": ".",
     "declaration": true,
     "strict": true,
     "resolveJsonModule": true,
@@ -21,6 +22,19 @@
     "noFallthroughCasesInSwitch": true,
     "declarationMap": true,
     "sourceMap": true,
-    "jsx": "react"
+    "jsx": "react",
+    "paths": {
+      "*": ["*", "bazel-out/k8-fastbuild/bin/packages/*"],
+      "@formatjs/*": ["bazel-out/k8-fastbuild/bin/packages/*"],
+      "intl-messageformat": [
+        "bazel-out/k8-fastbuild/bin/packages/intl-messageformat"
+      ],
+      "intl-messageformat-parser": [
+        "bazel-out/k8-fastbuild/bin/packages/intl-messageformat-parser"
+      ],
+      "intl-format-cache": [
+        "bazel-out/k8-fastbuild/bin/packages/intl-format-cache"
+      ]
+    }
   }
 }
