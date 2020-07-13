@@ -11,6 +11,14 @@ jobs:
         node-version: [10.x, 12.x, 14.x]
 
     steps:
+      - name: Cache
+        uses: actions/cache@v2.0.0
+        with:
+          path: |
+            ~/.cache/bazel
+          key: ${{ runner.os }}-bazel-${{ hashFiles('~/.cache/bazel/**') }}
+          restore-keys: |
+            ${{ runner.os }}-bazel-
       - uses: actions/checkout@v2.3.1
         with:
           submodules: true
