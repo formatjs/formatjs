@@ -20,7 +20,7 @@ jobs:
         with:
           path: |
             node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock') }}-${{ hashFiles('patches/*.patch') }}
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/patches/*.patch') }}
           restore-keys: |
             ${{ runner.os }}-node_modules-
       - uses: actions/checkout@v2.3.1
