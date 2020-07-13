@@ -28,6 +28,6 @@
     "intl-messageformat-parser": "^5.2.5"
   },
   "peerDependencies": {
-    "eslint": "^6.8.0"
+    "eslint": "^7.0.0"
   }
 }
