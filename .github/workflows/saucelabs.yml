@@ -12,6 +12,7 @@ jobs:
         with:
           path: |
             ~/.cache/bazel
+            ~/.cache/bazel-disk-cache
           key: ${{ runner.os }}-bazel-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-bazel-
