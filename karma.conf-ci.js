@@ -1,4 +1,4 @@
-const FILES = process.argv.slice(4);
+const FILES = process.argv.slice(6);
 
 module.exports = function (config) {
   if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {

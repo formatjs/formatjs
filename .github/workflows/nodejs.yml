@@ -16,7 +16,7 @@ jobs:
         with:
           path: |
             ~/.cache/bazel
-          key: ${{ runner.os }}-bazel-${{ hashFiles('~/.cache/bazel/**') }}
+          key: ${{ runner.os }}-bazel-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-bazel-
       - uses: actions/checkout@v2.3.1
