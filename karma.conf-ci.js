@@ -1,4 +1,4 @@
-const FILES = process.argv.slice(6);
+const FILES = process.argv.slice(4);
 
 module.exports = function (config) {
   if (!process.env.SAUCE_USERNAME || !process.env.SAUCE_ACCESS_KEY) {
@@ -12,10 +12,10 @@ module.exports = function (config) {
   // Check out https://saucelabs.com/platforms for all browser/OS combos
   const customLaunchers = {
     // Sauce Labs keeps failing to get a safari instance
-    sl_safari: {
-      base: 'SauceLabs',
-      browserName: 'safari',
-    },
+    // sl_safari: {
+    //   base: 'SauceLabs',
+    //   browserName: 'safari',
+    // },
     sl_edge: {
       base: 'SauceLabs',
       browserName: 'MicrosoftEdge',
@@ -44,7 +44,7 @@ module.exports = function (config) {
     reporters: ['progress', 'saucelabs'],
     port: 9876,
     colors: true,
-    concurrency: 1,
+    concurrency: 5,
     sauceLabs: {
       testName: 'formatjs',
       build: process.env.TRAVIS_BUILD_ID,
@@ -52,13 +52,11 @@ module.exports = function (config) {
       username: process.env.SAUCE_USERNAME,
       accessKey: process.env.SAUCE_ACCESS_KEY,
       // Must match with `.github/workflows/saucelabs.yml`
-      tunnelIdentifier: 'github-action-tunnel',
       connectOptions: {
         port: 5757,
         logfile: 'sauce_connect.log',
       },
       public: 'public',
-      startConnect: false,
     },
     plugins: [
       'karma-sauce-launcher',
@@ -66,6 +64,7 @@ module.exports = function (config) {
       'karma-jasmine-matchers',
     ],
     // Increase timeout in case connection in CI is slow
+    browsers: Object.keys(customLaunchers),
     captureTimeout: 120000,
     customLaunchers,
     singleRun: true,

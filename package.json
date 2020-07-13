@@ -15,7 +15,7 @@
     "cover": "lerna run cover --since",
     "dev:cjs": "tsc -b packages/* --watch",
     "dev:test": "lerna run test --since",
-    "karma:ci": "bazel test :karma-ci-edge :karma-ci-chrome :karma-ci-firefox :karma-ci-ie_11",
+    "karma:ci": "bazel test :karma-ci",
     "karma:local": "bazel test :karma",
     "lint": "eslint 'packages/*/src/**/*.ts?(x)'",
     "postinstall": "patch-package",

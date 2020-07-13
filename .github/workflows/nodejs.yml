@@ -11,7 +11,7 @@ jobs:
         node-version: [10.x, 12.x, 14.x]
 
     steps:
-      - name: Cache
+      - name: Bazel Cache
         uses: actions/cache@v2.0.0
         with:
           path: |
@@ -19,14 +19,18 @@ jobs:
           key: ${{ runner.os }}-bazel-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-bazel-
+      - name: node_modules Cache
+        uses: actions/cache@v2.0.0
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('yarn.lock') }}-${{ hashFiles('patches/*.patch') }}
+          restore-keys: |
+            ${{ runner.os }}-node_modules-
       - uses: actions/checkout@v2.3.1
         with:
           submodules: true
           fetch-depth: 110
-      - name: Decrypt bazel GCS secret
-        run: ./.github/scripts/decrypt_secret.sh
-        env:
-          SECRET_BAZEL_CACHE_JSON_PASSPHRASE: ${{ secrets.SECRET_BAZEL_CACHE_JSON_PASSPHRASE }}
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2.1.0
         with:

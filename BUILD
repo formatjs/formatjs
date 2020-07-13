@@ -149,16 +149,8 @@ karma_test(
     ] + ["$$(rlocation $(locations %s))" % f for f in KARMA_TESTS],
 )
 
-CI_BROWSERS = [
-    "edge",
-    "chrome",
-    "firefox",
-    "ie_11",
-    "safari",
-]
-
-[karma_test(
-    name = "karma-ci-%s" % browser,
+karma_test(
+    name = "karma-ci",
     configuration_env_vars = [
         "SAUCE_USERNAME",
         "SAUCE_ACCESS_KEY",
@@ -172,7 +164,5 @@ CI_BROWSERS = [
     templated_args = [
         "start",
         "$(rootpath //:karma.conf-ci.js)",
-        "--browsers",
-        "sl_%s" % browser,
     ] + ["$$(rlocation $(locations %s))" % f for f in KARMA_TESTS],
-) for browser in CI_BROWSERS]
+)
