@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.1.1...@formatjs/intl-datetimeformat@2.1.2) (2020-07-14)
+
+
+### Bug Fixes
+
+* **react-intl:** fix rollup'ed type def file ([bddb88e](https://github.com/formatjs/formatjs/commit/bddb88e7435854b3152f2fbdc72b50054d9bad76))
+
+
+
+
+
 ## [2.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.1.0...@formatjs/intl-datetimeformat@2.1.1) (2020-07-14)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat

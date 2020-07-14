@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.2](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@5.3.1...intl-messageformat-parser@5.3.2) (2020-07-14)
+
+
+### Bug Fixes
+
+* **react-intl:** fix rollup'ed type def file ([bddb88e](https://github.com/formatjs/formatjs/commit/bddb88e7435854b3152f2fbdc72b50054d9bad76))
+
+
+
+
+
 ## [5.3.1](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@5.3.0...intl-messageformat-parser@5.3.1) (2020-07-14)
 
 **Note:** Version bump only for package intl-messageformat-parser
