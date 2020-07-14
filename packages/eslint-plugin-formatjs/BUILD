@@ -16,6 +16,16 @@ pkg_npm(
     ],
 )
 
+alias(
+    name = "publish",
+    actual = "%s.publish" % PACKAGE_NAME,
+)
+
+alias(
+    name = "pack",
+    actual = "%s.pack" % PACKAGE_NAME,
+)
+
 SRCS = glob(["rules/*.ts"]) + [
     "index.ts",
     "util.ts",
