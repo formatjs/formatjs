@@ -1,6 +1,5 @@
 import {
   DecimalFormatNum,
-  LDMLPluralRule,
   LDMLPluralRuleMap,
   NumberFormatLocaleInternalData,
   RawNumberFormatResult,
@@ -521,5 +520,5 @@ function selectPlural<T>(
   x: number,
   rules: LDMLPluralRuleMap<T>
 ): T {
-  return rules[pl.select(x) as LDMLPluralRule] || rules.other;
+  return rules[pl.select(x) as Intl.LDMLPluralRule] || rules.other;
 }

@@ -1,5 +1,4 @@
 import {LocaleData} from './types';
-import {LDMLPluralRule} from './plural-rules-types';
 
 export interface FieldData {
   '0'?: string;
@@ -13,7 +12,7 @@ export interface FieldData {
   past: RelativeTimeData;
 }
 
-type RelativeTimeData = {[u in LDMLPluralRule]?: string};
+type RelativeTimeData = {[u in Intl.LDMLPluralRule]?: string};
 
 export type UnpackedLocaleFieldsData = {
   [f in RelativeTimeField]?: FieldData;
