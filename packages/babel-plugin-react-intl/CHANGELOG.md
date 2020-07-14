@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.7.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.5.28...babel-plugin-react-intl@7.7.0) (2020-07-14)
+
+
+### Features
+
+* publish ([b6e3465](https://github.com/formatjs/formatjs/commit/b6e3465ac95b3fa481f3c89f077a66ac004f7c27))
+* **babel-plugin-react-intl:** rm references to @formatjs/macro ([508df3b](https://github.com/formatjs/formatjs/commit/508df3bbbfcd3aafdeb368e67062581a7f804154))
+
+
+
+
+
 # [7.6.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.5.28...babel-plugin-react-intl@7.6.0) (2020-07-09)
 
 

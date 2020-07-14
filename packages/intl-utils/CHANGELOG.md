@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@3.6.0...@formatjs/intl-utils@3.7.0) (2020-07-14)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-utils:** fix duplicate exports ([a195730](https://github.com/formatjs/formatjs/commit/a195730dd89833769ecfe4d705e8a5a5dffcbd46))
+
+
+### Features
+
+* publish ([b6e3465](https://github.com/formatjs/formatjs/commit/b6e3465ac95b3fa481f3c89f077a66ac004f7c27))
+
+
+
+
+
 ## [3.6.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@3.6.0...@formatjs/intl-utils@3.6.1) (2020-07-09)
 
 **Note:** Version bump only for package @formatjs/intl-utils

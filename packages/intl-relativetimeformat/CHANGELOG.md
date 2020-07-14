@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@6.0.2...@formatjs/intl-relativetimeformat@6.1.0) (2020-07-14)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** fix plural unit issue, fix [#1721](https://github.com/formatjs/formatjs/issues/1721) ([4c7a174](https://github.com/formatjs/formatjs/commit/4c7a174f13909d4c3083ef56f3f6c029e2ad3b86))
+
+
+### Features
+
+* publish ([b6e3465](https://github.com/formatjs/formatjs/commit/b6e3465ac95b3fa481f3c89f077a66ac004f7c27))
+
+
+
+
+
 ## [6.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@6.0.2...@formatjs/intl-relativetimeformat@6.0.3) (2020-07-09)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/formatjs/formatjs/compare/react-intl@5.0.2...react-intl@5.1.0) (2020-07-14)
+
+
+### Bug Fixes
+
+* **react-intl:** add original exception message to stack ([b4e3f55](https://github.com/formatjs/formatjs/commit/b4e3f558bcbd47f97a8451614f85300708d05d7f))
+* **react-intl:** fix type issue for TS3.9 ([97ef395](https://github.com/formatjs/formatjs/commit/97ef395f04dff86546bda5d5eb605684835af457))
+
+
+### Features
+
+* publish ([b6e3465](https://github.com/formatjs/formatjs/commit/b6e3465ac95b3fa481f3c89f077a66ac004f7c27))
+
+
+
+
+
 ## [5.0.3](https://github.com/formatjs/formatjs/compare/react-intl@5.0.2...react-intl@5.0.3) (2020-07-09)
 
 **Note:** Version bump only for package react-intl

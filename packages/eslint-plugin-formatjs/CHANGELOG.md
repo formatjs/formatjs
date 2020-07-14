@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.3.21...eslint-plugin-formatjs@2.5.0) (2020-07-14)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** bump eslint peerDep to v7, fix [#1827](https://github.com/formatjs/formatjs/issues/1827) ([60056dc](https://github.com/formatjs/formatjs/commit/60056dc27b691f2407a49c2e34631f89cfb5d776))
+
+
+### Features
+
+* publish ([b6e3465](https://github.com/formatjs/formatjs/commit/b6e3465ac95b3fa481f3c89f077a66ac004f7c27))
+* **eslint-plugin-formatjs:** remove references to @formatjs/macro ([831feed](https://github.com/formatjs/formatjs/commit/831feed1a5db0557038f2d5a246e808511775b84))
+
+
+
+
+
 # [2.4.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.3.21...eslint-plugin-formatjs@2.4.0) (2020-07-09)
 
 

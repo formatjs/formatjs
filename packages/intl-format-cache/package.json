@@ -1,6 +1,6 @@
 {
   "name": "intl-format-cache",
-  "version": "4.2.47",
+  "version": "4.3.0",
   "description": "A memoizer factory for Intl format constructors.",
   "main": "index.js",
   "module": "lib/index.js",
