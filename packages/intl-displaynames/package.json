@@ -16,14 +16,6 @@
   "license": "MIT",
   "main": "index.js",
   "types": "intl-displaynames.d.js",
-  "files": [
-    "dist",
-    "lib",
-    "locale-data",
-    "polyfill.js",
-    "polyfill-locales.js",
-    "src"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/formatjs/formatjs.git"

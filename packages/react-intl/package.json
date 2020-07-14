@@ -17,11 +17,6 @@
     "translation"
   ],
   "author": "Eric Ferraiuolo <edf@ericf.me>",
-  "files": [
-    "dist",
-    "lib",
-    "src"
-  ],
   "contributors": [
     "Aarni Koskela <akx@iki.fi>",
     "Alexis Deveria <adeveria@gmail.com>",
