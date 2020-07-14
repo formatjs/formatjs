@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.1.3](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.1.1...intl-messageformat@9.1.3) (2020-07-14)
+
+
+### Bug Fixes
+
+* **react-intl:** fix rollup'ed type def file ([bddb88e](https://github.com/formatjs/formatjs/commit/bddb88e7435854b3152f2fbdc72b50054d9bad76))
+
+
+
+
+
 ## [9.1.2](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.1.1...intl-messageformat@9.1.2) (2020-07-14)
 
 
