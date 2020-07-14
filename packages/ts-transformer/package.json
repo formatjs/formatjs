@@ -2,11 +2,7 @@
   "name": "@formatjs/ts-transformer",
   "version": "2.2.2",
   "description": "TS Compiler transformer for formatjs",
-  "main": "dist/index.js",
-  "scripts": {
-    "test": "rm -rf test/fixture/*.js && cross-env NODE_ENV=test jest --maxWorkers=100%",
-    "build": "tsc"
-  },
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/formatjs/formatjs.git"
@@ -28,10 +24,5 @@
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
   },
-  "homepage": "https://github.com/formatjs/formatjs#readme",
-  "devDependencies": {
-    "@types/jest": "^25.2.1",
-    "jest": "^25.4.0",
-    "ts-jest": "^26.1.1"
-  }
+  "homepage": "https://github.com/formatjs/formatjs#readme"
 }

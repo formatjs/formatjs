@@ -5,12 +5,6 @@
   "main": "index.js",
   "module": "lib/index.js",
   "types": "intl-messageformat-parser.d.ts",
-  "scripts": {
-    "clean": "rimraf dist lib *.tsbuildinfo",
-    "build": "node build.js && tsc && tsc -p tsconfig.esm.json && api-extractor run --local && rollup -c rollup.config.js",
-    "benchmark": "node ./test/benchmark.js",
-    "test": "cross-env NODE_ENV=test jest"
-  },
   "contributors": [
     "Eric Ferraiuolo <eferraiuolo@gmail.com>",
     "Long Ho <holevietlong@gmail.com>",
@@ -44,12 +38,5 @@
     "@formatjs/intl-numberformat": "^5.0.3"
   },
   "homepage": "https://github.com/formatjs/formatjs",
-  "gitHead": "8b0baec8eda5002715cf893274fe59782fc2d371",
-  "devDependencies": {
-    "@types/jest": "^25.2.1",
-    "jest": "^25.4.0",
-    "pegjs": "^0.10.0",
-    "ts-jest": "^26.1.1",
-    "ts-pegjs": "^0.2.6"
-  }
+  "gitHead": "8b0baec8eda5002715cf893274fe59782fc2d371"
 }

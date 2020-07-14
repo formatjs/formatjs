@@ -5,12 +5,6 @@
   "main": "index.js",
   "module": "lib/index.js",
   "types": "intl-format-cache.d.ts",
-  "scripts": {
-    "clean": "rimraf dist lib tests/browser.js tests/browser.js.map *.tsbuildinfo",
-    "benchmark": "ts-node tests/benchmark",
-    "build": "tsc && tsc -p tsconfig.esm.json && rollup -c rollup.config.js",
-    "jest": "cross-env NODE_ENV=test jest"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/formatjs/formatjs.git"

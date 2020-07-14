@@ -15,7 +15,6 @@
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "license": "MIT",
   "main": "index.js",
-  "module": "lib/index.js",
   "types": "intl-locale.d.ts",
   "repository": {
     "type": "git",
@@ -28,14 +27,5 @@
     "@formatjs/intl-getcanonicallocales": "^1.2.11",
     "@formatjs/intl-utils": "^3.6.1",
     "cldr-core": "^36.0.0"
-  },
-  "devDependencies": {
-    "@types/jest": "^25.2.1",
-    "@types/minimist": "^1.2.0",
-    "jest": "^25.4.0",
-    "minimist": "^1.2.5",
-    "pegjs": "^0.10.0",
-    "ts-jest": "^26.1.1",
-    "ts-pegjs": "^0.2.6"
   }
 }

@@ -14,7 +14,6 @@
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",
   "main": "index.js",
-  "module": "lib/index.js",
   "types": "intl-pluralrules.d.ts",
   "repository": {
     "type": "git",

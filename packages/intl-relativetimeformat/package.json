@@ -23,7 +23,6 @@
     "@formatjs/intl-utils": "^3.6.1"
   },
   "main": "index.js",
-  "module": "lib/index.js",
   "types": "intl-relativetimeformat.d.ts",
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",
