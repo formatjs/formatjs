@@ -12,6 +12,7 @@ pkg_npm(
         "package.json",
     ],
     deps = [
+        "%s.d.ts" % PACKAGE_NAME,
         ":dist",
         ":dist-esm",
     ],
