@@ -17,9 +17,9 @@ jobs:
           path: |
             ~/.cache/bazel
             ~/.cache/bazel-disk-cache
-          key: ${{ runner.os }}-bazel-${{ github.sha }}
+          key: ${{ runner.os }}-bazel-karma-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-bazel-
+            ${{ runner.os }}-bazel-karma-
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -45,11 +45,11 @@ jobs:
           CI: true
       - name: yarn build
         run: |
-          yarn build --remote_upload_local_results=true
+          yarn build
         env:
           CI: true
       - name: yarn test
         run: |
-          yarn test --remote_upload_local_results=true
+          yarn test
         env:
           CI: true
