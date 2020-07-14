@@ -20,6 +20,8 @@
     "postinstall": "patch-package",
     "prettier:check": "prettier --check '{packages,website,tools,patches}/**/*.{md,ts,tsx}'",
     "prettier": "prettier --write '{packages,website,tools,patches}/**/*.{md,ts,tsx}'",
+    "release:next": "yarn lerna version prerelease --yes && yarn lerna exec --no-bail -- bazel run :publish --tag next",
+    "release": "yarn lerna version --yes && yarn lerna exec --no-bail -- bazel run :publish",
     "test": "yarn run format:check && bazel test $(bazel query 'filter(\"^((?!karma).)*$\", kind(\".*_test rule\", //...))')"
   },
   "devDependencies": {
