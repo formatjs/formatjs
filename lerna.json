@@ -5,7 +5,9 @@
     "version": {
       "conventionalCommits": true,
       "message": "feat: publish",
-      "noPrivate": true
+      "private": false,
+      "push": false,
+      "ignoreChanges": ["**/tests/**", "**/*.md"]
     },
     "run": {
       "stream": true
