@@ -54,7 +54,7 @@ filegroup(
             "**/proto-from-ctor-realm.js",  # Bc of Realm support
             "**/constructor-locales-get-tostring.js",  # Bc our Intl.getCanonicalLocales isn't really spec-compliant
             "**/taint-Object-prototype.js",  # Bc our Intl.getCanonicalLocales isn't really spec-compliant
-            "**/numbering-systems.js",  # See https://github.com/tc39/ecma402/pull/438
+            "**/numbering-systems.js",  # See https://github.com/tc39/ecma402/issues/479
         ],
     ),
     visibility = ["//packages/intl-numberformat:__subpackages__"],
