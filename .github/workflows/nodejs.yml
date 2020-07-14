@@ -1,4 +1,4 @@
-name: Node CI
+name: Tests
 
 on: [push, pull_request]
 
@@ -53,3 +53,15 @@ jobs:
           yarn test
         env:
           CI: true
+      - uses: saucelabs/sauce-connect-action@v1.0.0
+        if: ${{ matrix.node-version == '12.x' }}
+        with:
+          username: ${{ secrets.SAUCE_USERNAME }}
+          accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
+          tunnelIdentifier: github-action-tunnel
+      - name: Karma
+        if: ${{ matrix.node-version == '12.x' }}
+        run: yarn karma:ci --remote_upload_local_results=true --action_env=SAUCE_ACCESS_KEY --action_env=SAUCE_USERNAME
+        env:
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}

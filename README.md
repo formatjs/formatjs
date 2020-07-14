@@ -1,7 +1,6 @@
 # FormatJS
 
-![Node Tests](https://github.com/formatjs/formatjs/workflows/Node%20CI/badge.svg)
-![Sauce Labs Tests](https://github.com/formatjs/formatjs/workflows/Browser%20CI%20Tests/badge.svg)
+![Node Tests](https://github.com/formatjs/formatjs/workflows/Tests/badge.svg)
 [![Slack FormatJS](https://img.shields.io/badge/slack-@formatjs-green.svg?logo=slack)](https://join.slack.com/t/formatjs/shared_invite/enQtNjM2MjM4NjE4ODIxLTMyMWE0YTNhMTlmMzZlNzJlNjEzMWY0YjM2ODUxYjlmNDE2YzQyMDIxZDg3Y2Q5YWNlMzhhYzRiNDk0OGQwNGI)
 
 [![Sauce Browser Matrix Status](https://app.saucelabs.com/browser-matrix/formatjsproject.svg)](https://app.saucelabs.com/u/formatjsproject)
