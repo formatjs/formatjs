@@ -1,5 +1,4 @@
 import {
-  LDMLPluralRule,
   toObject,
   getOption,
   PluralRulesLocaleData,
@@ -207,7 +206,7 @@ export class PluralRules implements Intl.PluralRules {
     ];
     return opts;
   }
-  public select(val: number): LDMLPluralRule {
+  public select(val: number): Intl.LDMLPluralRule {
     validateInstance(this, 'select');
     const locale = getInternalSlot(
       PluralRules.__INTERNAL_SLOT_MAP__,
