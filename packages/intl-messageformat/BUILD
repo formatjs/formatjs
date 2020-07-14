@@ -39,6 +39,7 @@ ts_compile(
     name = "dist",
     package_name = PACKAGE_NAME,
     srcs = SRCS,
+    skip_esm = False,
     deps = SRC_DEPS,
 )
 

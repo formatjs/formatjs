@@ -6,7 +6,7 @@ load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//@microsoft/api-extractor:index.bzl", "api_extractor")
 load("@npm//ts-node:index.bzl", "ts_node")
 
-def ts_compile(name, srcs, deps, package_name = None):
+def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
     """Compile TS with prefilled args.
 
     Args:
@@ -26,18 +26,18 @@ def ts_compile(name, srcs, deps, package_name = None):
         visibility = ["//visibility:public"],
         deps = deps,
     )
-
-    ts_project(
-        name = "%s-esm" % name,
-        srcs = srcs,
-        declaration = True,
-        declaration_map = True,
-        extends = ["//:tsconfig.json"],
-        outdir = "lib",
-        source_map = True,
-        tsconfig = "//:tsconfig.esm.json",
-        deps = deps,
-    )
+    if not skip_esm:
+        ts_project(
+            name = "%s-esm" % name,
+            srcs = srcs,
+            declaration = True,
+            declaration_map = True,
+            extends = ["//:tsconfig.json"],
+            outdir = "lib",
+            source_map = True,
+            tsconfig = "//:tsconfig.esm.json",
+            deps = deps,
+        )
 
     native.filegroup(
         name = "types",
@@ -123,6 +123,7 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], rollup_deps = []
         tests: test files
         data: data
         deps: src + test deps
+        rollup_deps: deps to package with rollup but not to compile
     """
     ts_project(
         name = "%s-compile" % name,

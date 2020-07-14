@@ -27,7 +27,6 @@ pkg_npm(
         "add-golden-tz.js",
         "%s.d.ts" % PACKAGE_NAME,
         ":dist",
-        ":dist-esm",
         ":locale-data",
     ],
 )

@@ -49,7 +49,6 @@ pkg_npm(
     deps = [
         "%s.d.ts" % PACKAGE_NAME,
         ":dist",
-        ":dist-esm",
         ":locale-data",
     ],
 )

@@ -26,7 +26,6 @@ pkg_npm(
         "%s.d.ts" % PACKAGE_NAME,
         "polyfill-locales.js",
         ":dist",
-        ":dist-esm",
         ":locale-data",
     ],
 )

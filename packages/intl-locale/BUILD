@@ -15,7 +15,6 @@ pkg_npm(
     deps = [
         "polyfill.umd.js",
         ":dist",
-        ":dist-esm",
     ],
 )
 
