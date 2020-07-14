@@ -32,7 +32,20 @@ To run examples:
 Releases can be done with the following steps:
 
 ```sh
-> lerna publish
+> lerna version
+> lerna exec --concurrency 1 --no-bail --sort -- bazel run :publish
+```
+
+or combined together
+
+```sh
+> lerna version --yes && lerna exec --concurrency 1 --no-bail --sort -- bazel run :publish
+```
+
+To publish next tag
+
+```sh
+> lerna version prerelease --yes && lerna exec --concurrency 1 --no-bail --sort -- bazel run :publish -- --tag next
 ```
 
 ## Published Packages
