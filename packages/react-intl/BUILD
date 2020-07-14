@@ -110,7 +110,6 @@ rollup_dts(
 #     declaration_map = True,
 #     extends = ["//:tsconfig.json"],
 #     outdir = "tests-karma",
-#     source_map = True,
 #     tsconfig = "//:tsconfig.esm.json",
 #     visibility = ["//visibility:public"],
 #     deps = TEST_DEPS,

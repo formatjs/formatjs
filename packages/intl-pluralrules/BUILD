@@ -144,7 +144,6 @@ ts_project(
         "//:tsconfig.json",
     ],
     outdir = "test262",
-    source_map = True,
     tsconfig = "//:tsconfig.es6.json",
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,

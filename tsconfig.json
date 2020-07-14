@@ -21,7 +21,6 @@
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
     "declarationMap": true,
-    "sourceMap": true,
     "jsx": "react",
     "paths": {
       "*": ["*", "bazel-out/k8-fastbuild/bin/packages/*"],
