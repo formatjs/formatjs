@@ -1,14 +1,10 @@
-name: Node CI
+name: Unit + Sauce Labs Tests
 
 on: [push, pull_request]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x]
 
     steps:
       - name: Bazel Cache
@@ -17,9 +13,9 @@ jobs:
           path: |
             ~/.cache/bazel
             ~/.cache/bazel-disk-cache
-          key: ${{ runner.os }}-bazel-karma-${{ github.sha }}
+          key: ${{ runner.os }}-bazel-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-bazel-karma-
+            ${{ runner.os }}-bazel-
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -34,10 +30,10 @@ jobs:
         with:
           submodules: true
           fetch-depth: 110
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 12
         uses: actions/setup-node@v2.1.0
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 12
       - name: yarn install
         run: |
           yarn install --frozen-lockfile
@@ -53,3 +49,13 @@ jobs:
           yarn test
         env:
           CI: true
+      - uses: saucelabs/sauce-connect-action@v1.0.0
+        with:
+          username: ${{ secrets.SAUCE_USERNAME }}
+          accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
+          tunnelIdentifier: github-action-tunnel
+      - name: Karma
+        run: yarn karma:ci --remote_upload_local_results=true --action_env=SAUCE_ACCESS_KEY --action_env=SAUCE_USERNAME
+        env:
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
