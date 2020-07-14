@@ -91,6 +91,8 @@ rollup_dts(
         "//packages/intl-datetimeformat:types",
         "//packages/intl-relativetimeformat:types",
         "//packages/intl-messageformat:types",
+        "//packages/intl-messageformat-parser:types",
+        "//packages/intl-utils:types",
         "@npm//@types/hoist-non-react-statics",
     ],
 )

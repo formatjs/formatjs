@@ -60,7 +60,16 @@
    * This would direct API Extractor to embed those types directly in the .d.ts rollup, as if they had been
    * local files for library1.
    */
-  "bundledPackages": [],
+  "bundledPackages": [
+    "@formatjs/intl-listformat",
+    "@formatjs/intl-relativetimeformat",
+    "@formatjs/intl-displaynames",
+    "intl-messageformat-parser",
+    "@formatjs/intl-numberformat",
+    "@formatjs/intl-datetimeformat",
+    "@formatjs/intl-utils",
+    "intl-messageformat"
+  ],
 
   /**
    * Determines how the TypeScript compiler engine will be invoked by API Extractor.

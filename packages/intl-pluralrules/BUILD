@@ -78,7 +78,10 @@ rollup_dts(
     name = "rollup-dts",
     package_name = PACKAGE_NAME,
     package_json = "package.json",
-    types = [":types"],
+    types = [
+        ":types",
+        "//packages/intl-utils:types",
+    ],
 )
 
 # CLDR
