@@ -39,7 +39,7 @@ Releases can be done with the following steps:
 or combined together
 
 ```sh
-> lerna version --yes && lerna exec --concurrency 1 --no-bail --sort -- bazel run :publish
+> npx lerna version --yes && npx lerna exec --concurrency 1 --no-bail --sort -- bazel run :publish
 ```
 
 To publish next tag
