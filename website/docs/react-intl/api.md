@@ -128,7 +128,7 @@ interface Props {
   date: Date | number;
 }
 
-const ClassComponent: React.FC<Props> = props => {
+const FunctionalComponent: React.FC<Props> = props => {
   const {
     date,
     intl, // Injected by `injectIntl`
@@ -140,7 +140,7 @@ const ClassComponent: React.FC<Props> = props => {
   );
 };
 
-export default injectIntl(ClassComponent);
+export default injectIntl(FunctionalComponent);
 ```
 
 ### `IntlShape`
