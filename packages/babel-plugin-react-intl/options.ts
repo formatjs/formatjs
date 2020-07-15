@@ -15,4 +15,5 @@ export interface OptionsSchema {
   additionalComponentNames?: string[];
   outputEmptyJson?: boolean;
   pragma?: string;
+  workspaceRoot?: string;
 }

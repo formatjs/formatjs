@@ -656,3 +656,33 @@ export default class Foo extends Component {
 
 }"
 `;
+
+exports[`options workspaceRoot 1`] = `
+Array [
+  Object {
+    "defaultMessage": "Hello, {name}",
+    "description": "Greeting the user",
+    "id": "greeting-user",
+  },
+  Object {
+    "defaultMessage": "Hello World!",
+    "description": "Greeting to the world",
+    "id": "greeting-world",
+  },
+]
+`;
+
+exports[`options workspaceRoot 2`] = `
+Array [
+  Object {
+    "defaultMessage": "Hello, {name}",
+    "description": "Greeting the user",
+    "id": "greeting-user",
+  },
+  Object {
+    "defaultMessage": "Hello World!",
+    "description": "Greeting to the world",
+    "id": "greeting-world",
+  },
+]
+`;

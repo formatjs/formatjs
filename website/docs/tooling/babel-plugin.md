@@ -42,6 +42,27 @@ If a message descriptor has a `description`, it'll be removed from the source af
 
 The target location where the plugin will output a `.json` file corresponding to each component from which React Intl messages were extracted. If not provided, the extracted message descriptors will only be accessible via Babel's API.
 
+### **`workspaceRoot`**
+
+The folder to resolve relative path of source file to. This is used to control the directory structure of `messagesDir`. For example, when extractin from:
+
+```
+my_project
+|- src
+|-- subdir
+|--- file1.js
+```
+
+and `workspaceRoot` is set to `src`, `messagesDir` output will have the structure:
+
+```
+<messagesDir>
+|- subdir
+|-- file1.js
+```
+
+Specifying an invalid `workspaceRoot` (e.g if we encounter a file during parsing that does not live under `workspaceRoot`) will throw an `Error`.
+
 ### **`extractSourceLocation`**
 
 Whether the metadata about the location of the message in the source file should be extracted. If `true`, then `file`, `start`, and `end` fields will exist for each extracted message descriptors. Defaults to `false`.
