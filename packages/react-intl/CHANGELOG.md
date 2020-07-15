@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.3.0](https://github.com/formatjs/formatjs/compare/react-intl@5.2.2...react-intl@5.3.0) (2020-07-15)
+
+
+### Features
+
+* **react-intl:** add Enum support to defineMessages, fix [#1677](https://github.com/formatjs/formatjs/issues/1677) ([177420b](https://github.com/formatjs/formatjs/commit/177420bb54815ccd883e44973e56ec5b8113cc58))
+
+
+
+
+
 ## [5.2.2](https://github.com/formatjs/formatjs/compare/react-intl@5.2.0...react-intl@5.2.2) (2020-07-14)
 
 
