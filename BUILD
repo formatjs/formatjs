@@ -136,15 +136,22 @@ KARMA_TESTS = [
 
 karma_test(
     name = "karma",
+    configuration_env_vars = [
+        "SAUCE_USERNAME",
+        "SAUCE_ACCESS_KEY",
+    ],
     data = [
         "//:karma.conf.js",
         "@npm//karma-jasmine",
         "@npm//karma-chrome-launcher",
+        "@npm//karma-sauce-launcher",
         "@npm//karma-jasmine-matchers",
     ] + KARMA_TESTS,
     templated_args = [
         "start",
         "$(rootpath //:karma.conf.js)",
+        "--browsers",
+        "ChromeHeadless",
     ] + ["$$(rlocation $(locations %s))" % f for f in KARMA_TESTS],
 )
 
@@ -155,13 +162,16 @@ karma_test(
         "SAUCE_ACCESS_KEY",
     ],
     data = [
-        "//:karma.conf-ci.js",
+        "//:karma.conf.js",
         "@npm//karma-jasmine",
+        "@npm//karma-chrome-launcher",
         "@npm//karma-sauce-launcher",
         "@npm//karma-jasmine-matchers",
     ] + KARMA_TESTS,
     templated_args = [
         "start",
-        "$(rootpath //:karma.conf-ci.js)",
+        "$(rootpath //:karma.conf.js)",
+        "--browsers",
+        "sl_edge,sl_chrome,sl_firefox,sl_ie_11",
     ] + ["$$(rlocation $(locations %s))" % f for f in KARMA_TESTS],
 )
