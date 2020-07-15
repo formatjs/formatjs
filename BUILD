@@ -11,7 +11,6 @@ exports_files(
     [
         "tsconfig.json",
         "tsconfig.esm.json",
-        "tsconfig.node.json",
         "tsconfig.es6.json",
         "api-extractor.json",
         "rollup.config.js",
