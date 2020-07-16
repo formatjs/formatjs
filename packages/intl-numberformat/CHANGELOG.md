@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.3.0...@formatjs/intl-numberformat@5.3.1) (2020-07-16)
+
+
+### Reverts
+
+* Revert "feat(@formatjs/intl-utils): remove custom LDMLPluralRuleType and use TS3.9 type" ([1a6eeac](https://github.com/formatjs/formatjs/commit/1a6eeac8c59184825968ffddc35374c83f3fe782))
+
+
+
+
+
 # [5.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.2.0...@formatjs/intl-numberformat@5.3.0) (2020-07-14)
 
 

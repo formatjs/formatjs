@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@6.2.2...@formatjs/intl-relativetimeformat@6.2.3) (2020-07-16)
+
+
+### Reverts
+
+* Revert "feat(@formatjs/intl-utils): remove custom LDMLPluralRuleType and use TS3.9 type" ([1a6eeac](https://github.com/formatjs/formatjs/commit/1a6eeac8c59184825968ffddc35374c83f3fe782))
+
+
+
+
+
 ## [6.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@6.2.0...@formatjs/intl-relativetimeformat@6.2.2) (2020-07-14)
 
 

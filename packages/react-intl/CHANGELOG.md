@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.1](https://github.com/formatjs/formatjs/compare/react-intl@5.3.0...react-intl@5.3.1) (2020-07-16)
+
+
+### Bug Fixes
+
+* **react-intl:** drop TS req to 3.8 ([140dd37](https://github.com/formatjs/formatjs/commit/140dd375c08149ffe3b602be868b6653b188d85f))
+
+
+### Reverts
+
+* Revert "feat(@formatjs/intl-utils): remove custom LDMLPluralRuleType and use TS3.9 type" ([1a6eeac](https://github.com/formatjs/formatjs/commit/1a6eeac8c59184825968ffddc35374c83f3fe782))
+
+
+
+
+
 # [5.3.0](https://github.com/formatjs/formatjs/compare/react-intl@5.2.2...react-intl@5.3.0) (2020-07-15)
 
 
