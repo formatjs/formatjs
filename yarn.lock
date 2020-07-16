@@ -2680,10 +2680,10 @@
     "@types/glob" "*"
     "@types/node" "*"
 
-"@types/serialize-javascript@^1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@types/serialize-javascript/-/serialize-javascript-1.5.0.tgz#bdd334cfbb4fc0eca1fc608da37ad733c86381eb"
-  integrity sha512-WxnnhYOtVJnDFznZPVdbW3NmUJXVyrdQtiq7/vUNg55fVI1B+BP+xp/4dgwIlQXaejbH8gCRu2txtu6LREzK8g==
+"@types/serialize-javascript@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/serialize-javascript/-/serialize-javascript-4.0.0.tgz#ab9c47edf71f6a4590221118d1dffc37b50d71a2"
+  integrity sha512-y9UO8ozDGF30EVRizmsXuCdZzAxHmYpEEiL+/SQjX+7bnxslkvZQU8rLydixJv7yVae6bWyrNDFHsh6fYHkFMA==
 
 "@types/stack-utils@^1.0.1":
   version "1.0.1"
