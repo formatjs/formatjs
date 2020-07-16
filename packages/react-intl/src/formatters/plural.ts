@@ -28,7 +28,9 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
   const filteredOptions = filterProps(options, PLURAL_FORMAT_OPTIONS);
 
   try {
-    return getPluralRules(locale, filteredOptions).select(value);
+    return getPluralRules(locale, filteredOptions).select(
+      value
+    ) as LDMLPluralRule;
   } catch (e) {
     onError(new MessageFormatError('Error formatting plural.', e));
   }
