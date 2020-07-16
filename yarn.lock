@@ -12432,9 +12432,9 @@ ts-node@^8.9.0:
     yn "3.1.1"
 
 ts-pegjs@^0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/ts-pegjs/-/ts-pegjs-0.2.6.tgz#fc6261cca04736c43e58c630ecfc5dcff23dbb39"
-  integrity sha512-mIX/dMQ6a1EHAEhvCLS6Z41+O700zlLiwB4V5ZSlKFLZKLDE93reik5IFw/HJsKgs488UiLx144yeEWWyu7YIw==
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/ts-pegjs/-/ts-pegjs-0.2.7.tgz#2b97bbf65898d7296ae59ebc53e68436b5752826"
+  integrity sha512-pB+lqVyPWEUDy8w4E53Yu8V6w20No75J6lHUD+sFzogGW/Qn/QtkdR+vYYfMVEsDpz7LEKUOU5Rqf6dgVA3qsQ==
   dependencies:
     pegjs "^0.10.0"
 
