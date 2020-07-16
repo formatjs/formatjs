@@ -9,6 +9,7 @@ import {
   invariant,
   RelativeTimeField,
   FieldData,
+  LDMLPluralRule,
   partitionPattern,
   isLiteralPart,
   LiteralPart,
@@ -253,7 +254,7 @@ function partitionRelativeTimePattern(
             unit,
           } as RelativeTimeFormatNumberPart,
         ];
-  const pr = pluralRules.select(value) as Intl.LDMLPluralRule;
+  const pr = pluralRules.select(value) as LDMLPluralRule;
   const pattern = po[pr];
   return makePartsList(pattern!, resolvedUnit, fv);
 }

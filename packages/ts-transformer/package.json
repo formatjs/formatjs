@@ -17,7 +17,7 @@
   ],
   "dependencies": {
     "@formatjs/intl-utils": "^3.8.0",
-    "typescript": "~3.9"
+    "typescript": "~3.8"
   },
   "author": "Long Ho <holevietlong@gmail.com>",
   "license": "MIT",
