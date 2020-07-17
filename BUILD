@@ -74,6 +74,29 @@ filegroup(
 )
 
 filegroup(
+    name = "test262-locale",
+    srcs = glob(
+        ["test262/test/intl402/Locale/**/*.js"],
+        exclude = [
+            "**/branding.js",  # TODO: lazy
+            "**/*-grandfathered.js",  # TODO: we don't care about grandfathered tbh
+            "**/proto-from-ctor-realm.js",  # TODO: not sure how to deal w/ Realm
+            "**/canonicalize-locale-list-take-locale.js",
+            "**/constructor-apply-options-canonicalizes-twice.js",
+            "**/constructor-getter-order.js",
+            "**/constructor-non-iana-canon.js",
+            "**/constructor-options-canonicalized.js",
+            "**/constructor-options-region-valid.js",
+            "**/constructor-tag-tostring.js",
+            "**/removing-likely-subtags-first-adds-likely-subtags.js",
+            "**/likely-subtags.js",
+            "**/constructor-tag.js",
+        ],
+    ),
+    visibility = ["//packages/intl-locale:__subpackages__"],
+)
+
+filegroup(
     name = "test262-datetimeformat",
     srcs = glob(
         ["test262/test/intl402/DateTimeFormat/**/*.js"],
