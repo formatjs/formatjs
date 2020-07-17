@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.2](https://github.com/formatjs/formatjs/compare/react-intl@5.3.1...react-intl@5.3.2) (2020-07-17)
+
+
+### Bug Fixes
+
+* **react-intl:** add back react-intl.umd.js ([ac4b435](https://github.com/formatjs/formatjs/commit/ac4b435be0c8b168896c4a24dbc61c419c48fd6e))
+
+
+
+
+
 ## [5.3.1](https://github.com/formatjs/formatjs/compare/react-intl@5.3.0...react-intl@5.3.1) (2020-07-16)
 
 

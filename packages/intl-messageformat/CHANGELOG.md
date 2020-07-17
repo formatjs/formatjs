@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.1.5](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.1.4...intl-messageformat@9.1.5) (2020-07-17)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** add back intl-messageformat.umd.js, fix [#1846](https://github.com/formatjs/formatjs/issues/1846) ([81465b0](https://github.com/formatjs/formatjs/commit/81465b09bbaf44957d13d4e0f4ace23a2030047d))
+
+
+
+
+
 ## [9.1.4](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.1.3...intl-messageformat@9.1.4) (2020-07-16)
 
 **Note:** Version bump only for package intl-messageformat
