@@ -967,20 +967,20 @@
   resolved "https://registry.yarnpkg.com/@bazel/ibazel/-/ibazel-0.13.1.tgz#23788f67a6fbe83d96f2d055691df4917c10ac8d"
   integrity sha512-FO1hBKpzpeBL0adnFYF2Dwl/7gox6ccKM6bb+x26AXrQpLbinXPuTi4zeXRL/MW4383mF6i4RovLCmwUU/YW0w==
 
-"@bazel/rollup@2.0.0-rc.2":
-  version "2.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@bazel/rollup/-/rollup-2.0.0-rc.2.tgz#86600a3bc73ab587210be5eb060ff39a3f3922d8"
-  integrity sha512-40QkDxNBHEtYtPVDzhkChPM0v/xU9IacfRx70eHUD1iKY3SrIGdFN79uXHRqU4OY8llKwTPVlOMqtLqzdSRLBw==
+"@bazel/rollup@2.0.0-rc.3":
+  version "2.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@bazel/rollup/-/rollup-2.0.0-rc.3.tgz#6b27da7d9640a7267f65340b217ba4c76201edd1"
+  integrity sha512-Ome9L/UaQZueHansa1ueJdIDa3Wcy5Dp2NvWWSayZDUegCem7NN72iTD0VFJyh9cPUNamk1c7BF0Vhyxhj0rPw==
 
-"@bazel/terser@2.0.0-rc.2":
-  version "2.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@bazel/terser/-/terser-2.0.0-rc.2.tgz#d0794577681f6ccc00036ca417247963d2396117"
-  integrity sha512-LN5H46UPaOAbzfHqFQgkDnGSdiTYBc37+XafjelUS54jtKAsMX2Fb7Qu4JcO6W2HdK3uWcOIdUCrRyT2yCAAUA==
+"@bazel/terser@2.0.0-rc.3":
+  version "2.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@bazel/terser/-/terser-2.0.0-rc.3.tgz#bbe342411bda953a729cb0daba0835bb9c4c826a"
+  integrity sha512-pLyki1SSYrfhFK50gD50jYRUYHkzqHGMgY3pkP5zDI8TAa06rLmpfPJU6ote06oJ25QIW7vmiZ/vAX0KZmkmAA==
 
-"@bazel/typescript@2.0.0-rc.2":
-  version "2.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-2.0.0-rc.2.tgz#36f3153c0cb42e09a174471e93deedc059e91b7c"
-  integrity sha512-NFsPToZcyj+h4YOMqC3KyOjJpGrHVK6Evmx3AaoWjv4u+3kRnZBZewlM5A4pq1WUNdVXQnMrroXCyddvW0plbA==
+"@bazel/typescript@2.0.0-rc.3":
+  version "2.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-2.0.0-rc.3.tgz#d982e56c2cf7eefde1b6ef4a8767603ce9c9d364"
+  integrity sha512-4xNupCgj5PPHfxhZAnQ4RxdVRtPEfKnJWYCZDetGACSMYeyEfUTkzovPA2u+EnaF4KRHUiYCeZmjDABdPgvZgA==
   dependencies:
     protobufjs "6.8.8"
     semver "5.6.0"
@@ -12163,7 +12163,7 @@ terser@^3.7.3:
     source-map "~0.6.1"
     source-map-support "~0.5.10"
 
-terser@^4.3.9:
+terser@^4.3.9, terser@^4.8.0:
   version "4.8.0"
   resolved "https://registry.yarnpkg.com/terser/-/terser-4.8.0.tgz#63056343d7c70bb29f3af665865a46fe03a0df17"
   integrity sha512-EAPipTNeWsb/3wLPeup1tVPaXfIaU68xMnVdPafIL1TV05OhASArYyIfFvnvJCNrR2NIOvDVNNTFRa+Re2MWyw==
