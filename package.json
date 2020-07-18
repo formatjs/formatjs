@@ -34,8 +34,9 @@
     "@bazel/bazelisk": "^1.5.0",
     "@bazel/buildifier": "^3.3.0",
     "@bazel/ibazel": "^0.13.1",
-    "@bazel/rollup": "2.0.0-rc.2",
-    "@bazel/typescript": "2.0.0-rc.2",
+    "@bazel/rollup": "2.0.0-rc.3",
+    "@bazel/terser": "2.0.0-rc.3",
+    "@bazel/typescript": "2.0.0-rc.3",
     "@commitlint/cli": "^9.0.1",
     "@commitlint/config-angular": "^9.0.1",
     "@microsoft/api-extractor": "^7.8.12",
@@ -54,7 +55,7 @@
     "@types/node": "14",
     "@types/node-fetch": "^2.5.7",
     "@types/rimraf": "^3.0.0",
-    "@types/serialize-javascript": "^1.5.0",
+    "@types/serialize-javascript": "^4.0.0",
     "@types/tar": "^4.0.3",
     "@typescript-eslint/eslint-plugin": "^3.5.0",
     "@typescript-eslint/parser": "^3.5.0",
@@ -106,12 +107,13 @@
     "serialize-javascript": "^4.0.0",
     "shallow-equal": "^1.2.1",
     "tar": "^6.0.2",
+    "terser": "^4.8.0",
     "test262-harness": "^7.3.1",
     "ts-jest": "^26.1.1",
     "ts-node": "^8.9.0",
     "ts-pegjs": "^0.2.6",
     "tslib": "^2.0.0",
-    "typescript": "~3.9.0"
+    "typescript": "~3.8.0"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
@@ -169,6 +171,13 @@
   "lint-staged": {
     "(BUILD|WORKSPACE|BUILD.bazel|*.bzl)": "yarn bazel:lint-fix",
     "*.{js,json,ts,tsx}": "prettier --write"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "bracketSpacing": false,
+    "endOfLine": "lf",
+    "arrowParens": "avoid"
   },
   "author": "Seth Bertalotto <sbertal@verizonmedia.com>"
 }

@@ -1,4 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load("@npm//test262-harness:index.bzl", "test262_harness_test")
 load("//tools:index.bzl", "rollup_dts", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
@@ -60,4 +63,50 @@ rollup_dts(
     package_name = PACKAGE_NAME,
     package_json = "package.json",
     types = [":types"],
+)
+
+# Test262
+ts_project(
+    name = "test262-main-bundle",
+    srcs = SRCS,
+    declaration = True,
+    declaration_map = True,
+    extends = [
+        "//:tsconfig.json",
+    ],
+    outdir = "test262",
+    tsconfig = "//:tsconfig.es6.json",
+    deps = SRC_DEPS,
+)
+
+rollup_bundle(
+    name = "test262-polyfill",
+    srcs = [
+        ":test262-main-bundle",
+    ],
+    config_file = "//:rollup.config.js",
+    entry_point = "test262/polyfill-force.js",
+    format = "umd",
+    deps = [
+        "@npm//@rollup/plugin-node-resolve",
+        "@npm//@rollup/plugin-commonjs",
+        "@npm//@rollup/plugin-replace",
+        "@npm//@rollup/plugin-json",
+    ] + SRC_DEPS,
+)
+
+test262_harness_test(
+    name = "test262",
+    data = [
+        "test262-polyfill.js",
+        "//:test262-all",
+        "//:test262-locale",
+    ],
+    templated_args = [
+        "--reporter-keys",
+        "file,attrs,result",
+        "--prelude",
+        "$(rootpath test262-polyfill.js)",
+        "$(rootpaths //:test262-locale)",
+    ],
 )

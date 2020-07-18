@@ -218,6 +218,7 @@ function storeMessage(
   {id, description, defaultMessage}: MessageDescriptor,
   path: NodePath<any>,
   {extractSourceLocation}: OptionsSchema,
+  workspaceRoot: string,
   filename: string,
   messages: Map<string, ExtractedMessageDescriptor>
 ) {
@@ -244,7 +245,7 @@ function storeMessage(
   let loc = {};
   if (extractSourceLocation) {
     loc = {
-      file: p.relative(process.cwd(), filename),
+      file: p.relative(workspaceRoot, filename),
       ...path.node.loc,
     };
   }
@@ -344,28 +345,23 @@ function assertObjectExpression(
   return true;
 }
 
-export function resolveOutputPath(messagesDir: string, filename: string) {
-  // If no filename is specified, that means this babel plugin is called programmatically
-  // via NodeJS API by other programs (e.g. by feeding us with file content directly). In
-  // this case we will only make extracted messages accessible via Babel result objects.
-  const basename = filename ? p.basename(filename, p.extname(filename)) : null;
-
-  // Make sure the relative path is "absolute" before
-  // joining it with the `messagesDir`.
-  let relativePath = p.join(p.sep, p.relative(process.cwd(), filename));
-  // Solve when the window user has symlink on the directory, because
-  // process.cwd on windows returns the symlink root,
-  // and filename (from babel) returns the original root
-  if (process.platform === 'win32') {
-    const {name} = p.parse(process.cwd());
-    if (relativePath.includes(name)) {
-      relativePath = relativePath.slice(
-        relativePath.indexOf(name) + name.length
-      );
-    }
+/**
+ *
+ * @param workspaceRoot
+ * @param messagesDir
+ * @param filename Absolute path to the file
+ */
+export function resolveOutputPath(
+  workspaceRoot: string,
+  messagesDir: string,
+  filename: string
+) {
+  if (!filename.startsWith(workspaceRoot)) {
+    throw new Error(`File "${filename}" is not under workspace root "${workspaceRoot}". 
+Please configure workspaceRoot to be a folder that contains all files being extracted`);
   }
-
-  return p.join(messagesDir, p.dirname(relativePath), basename + '.json');
+  const {name, dir} = p.parse(p.relative(workspaceRoot, filename));
+  return p.join(messagesDir, dir, `${name}.json`);
 }
 
 export default declare((api: any, options: OptionsSchema) => {
@@ -375,7 +371,12 @@ export default declare((api: any, options: OptionsSchema) => {
     name: 'babel-plugin-react-intl',
     baseDataPath: 'options',
   });
-  const {messagesDir, outputEmptyJson, pragma} = options;
+  const {
+    messagesDir,
+    workspaceRoot = process.cwd(),
+    outputEmptyJson,
+    pragma,
+  } = options;
 
   /**
    * Store this in the node itself so that multiple passes work. Specifically
@@ -417,7 +418,11 @@ export default declare((api: any, options: OptionsSchema) => {
       if (
         messagesDir &&
         filename &&
-        (messagesFilename = resolveOutputPath(messagesDir, filename)) &&
+        (messagesFilename = resolveOutputPath(
+          workspaceRoot,
+          messagesDir,
+          filename
+        )) &&
         (outputEmptyJson || descriptors.length)
       ) {
         outputJSONSync(messagesFilename, descriptors);
@@ -520,6 +525,7 @@ export default declare((api: any, options: OptionsSchema) => {
               descriptor,
               path,
               opts,
+              workspaceRoot,
               filename,
               this.ReactIntlMessages
             );
@@ -627,7 +633,14 @@ export default declare((api: any, options: OptionsSchema) => {
             filename,
             overrideIdFn
           );
-          storeMessage(descriptor, messageDescriptor, opts, filename, messages);
+          storeMessage(
+            descriptor,
+            messageDescriptor,
+            opts,
+            workspaceRoot,
+            filename,
+            messages
+          );
 
           // Remove description since it's not used at runtime.
           messageDescriptor.replaceWith(

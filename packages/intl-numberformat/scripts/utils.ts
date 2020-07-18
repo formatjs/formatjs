@@ -1,9 +1,9 @@
-import {LDMLPluralRuleMap} from '@formatjs/intl-utils';
+import {LDMLPluralRuleMap, LDMLPluralRule} from '@formatjs/intl-utils';
 import {isEqual} from 'lodash';
 export function collapseSingleValuePluralRule<T>(
   rules: LDMLPluralRuleMap<T>
 ): LDMLPluralRuleMap<T> {
-  const keys = Object.keys(rules) as Array<Intl.LDMLPluralRule>;
+  const keys = Object.keys(rules) as Array<LDMLPluralRule>;
   return keys.reduce(
     (all: LDMLPluralRuleMap<T>, k) => {
       if (k !== 'other' && rules[k] && !isEqual(rules[k], rules.other)) {
@@ -15,7 +15,7 @@ export function collapseSingleValuePluralRule<T>(
   );
 }
 
-export const PLURAL_RULES: Array<Intl.LDMLPluralRule> = [
+export const PLURAL_RULES: Array<LDMLPluralRule> = [
   'other',
   'zero',
   'one',

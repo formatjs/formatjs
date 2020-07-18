@@ -3,6 +3,57 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.8.2](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.8.1...babel-plugin-react-intl@7.8.2) (2020-07-17)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [7.8.1](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.8.0...babel-plugin-react-intl@7.8.1) (2020-07-16)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+# [7.8.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.7.3...babel-plugin-react-intl@7.8.0) (2020-07-15)
+
+
+### Features
+
+* **babel-plugin-react-intl:** add `workspaceRoot` option, fix [#1649](https://github.com/formatjs/formatjs/issues/1649) ([16df60b](https://github.com/formatjs/formatjs/commit/16df60bc091a517df6d9cf072b5c6dba49de3a8c))
+
+
+
+
+
+## [7.7.3](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.7.1...babel-plugin-react-intl@7.7.3) (2020-07-14)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [7.7.2](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.7.1...babel-plugin-react-intl@7.7.2) (2020-07-14)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [7.7.1](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.7.0...babel-plugin-react-intl@7.7.1) (2020-07-14)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
 # [7.7.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.5.28...babel-plugin-react-intl@7.7.0) (2020-07-14)
 
 

@@ -11,7 +11,6 @@ exports_files(
     [
         "tsconfig.json",
         "tsconfig.esm.json",
-        "tsconfig.node.json",
         "tsconfig.es6.json",
         "api-extractor.json",
         "rollup.config.js",
@@ -54,7 +53,7 @@ filegroup(
             "**/proto-from-ctor-realm.js",  # Bc of Realm support
             "**/constructor-locales-get-tostring.js",  # Bc our Intl.getCanonicalLocales isn't really spec-compliant
             "**/taint-Object-prototype.js",  # Bc our Intl.getCanonicalLocales isn't really spec-compliant
-            "**/numbering-systems.js",  # See https://github.com/tc39/ecma402/pull/438
+            "**/numbering-systems.js",  # See https://github.com/tc39/ecma402/issues/479
         ],
     ),
     visibility = ["//packages/intl-numberformat:__subpackages__"],
@@ -72,6 +71,29 @@ filegroup(
         ],
     ),
     visibility = ["//packages/intl-listformat:__subpackages__"],
+)
+
+filegroup(
+    name = "test262-locale",
+    srcs = glob(
+        ["test262/test/intl402/Locale/**/*.js"],
+        exclude = [
+            "**/branding.js",  # TODO: lazy
+            "**/*-grandfathered.js",  # TODO: we don't care about grandfathered tbh
+            "**/proto-from-ctor-realm.js",  # TODO: not sure how to deal w/ Realm
+            "**/canonicalize-locale-list-take-locale.js",
+            "**/constructor-apply-options-canonicalizes-twice.js",
+            "**/constructor-getter-order.js",
+            "**/constructor-non-iana-canon.js",
+            "**/constructor-options-canonicalized.js",
+            "**/constructor-options-region-valid.js",
+            "**/constructor-tag-tostring.js",
+            "**/removing-likely-subtags-first-adds-likely-subtags.js",
+            "**/likely-subtags.js",
+            "**/constructor-tag.js",
+        ],
+    ),
+    visibility = ["//packages/intl-locale:__subpackages__"],
 )
 
 filegroup(
@@ -137,15 +159,22 @@ KARMA_TESTS = [
 
 karma_test(
     name = "karma",
+    configuration_env_vars = [
+        "SAUCE_USERNAME",
+        "SAUCE_ACCESS_KEY",
+    ],
     data = [
         "//:karma.conf.js",
         "@npm//karma-jasmine",
         "@npm//karma-chrome-launcher",
+        "@npm//karma-sauce-launcher",
         "@npm//karma-jasmine-matchers",
     ] + KARMA_TESTS,
     templated_args = [
         "start",
         "$(rootpath //:karma.conf.js)",
+        "--browsers",
+        "ChromeHeadless",
     ] + ["$$(rlocation $(locations %s))" % f for f in KARMA_TESTS],
 )
 
@@ -156,13 +185,16 @@ karma_test(
         "SAUCE_ACCESS_KEY",
     ],
     data = [
-        "//:karma.conf-ci.js",
+        "//:karma.conf.js",
         "@npm//karma-jasmine",
+        "@npm//karma-chrome-launcher",
         "@npm//karma-sauce-launcher",
         "@npm//karma-jasmine-matchers",
     ] + KARMA_TESTS,
     templated_args = [
         "start",
-        "$(rootpath //:karma.conf-ci.js)",
+        "$(rootpath //:karma.conf.js)",
+        "--browsers",
+        "sl_edge,sl_chrome,sl_firefox,sl_ie_11",
     ] + ["$$(rlocation $(locations %s))" % f for f in KARMA_TESTS],
 )

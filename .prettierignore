@@ -1,3 +1,4 @@
+.cache
 bazel-out
 dist
 locale-data

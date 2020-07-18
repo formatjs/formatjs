@@ -22,6 +22,7 @@ const skipOutputTests = [
   'additionalComponentNames',
   'outputEmptyJson',
   'empty',
+  'workspaceRoot',
 ];
 
 describe('emit asserts for: ', () => {
@@ -40,7 +41,9 @@ describe('emit asserts for: ', () => {
       expect(trim(actual)).toMatchSnapshot();
 
       // Check message output
-      expect(require(resolveOutputPath(__dirname, filePath))).toMatchSnapshot();
+      expect(
+        require(resolveOutputPath(process.cwd(), __dirname, filePath))
+      ).toMatchSnapshot();
     });
   });
 });
@@ -57,7 +60,9 @@ describe('options', () => {
     expect(trim(actual)).toMatchSnapshot();
 
     // Check message output
-    expect(require(resolveOutputPath(__dirname, filePath))).toMatchSnapshot();
+    expect(
+      require(resolveOutputPath(process.cwd(), __dirname, filePath))
+    ).toMatchSnapshot();
   });
   it('outputEmptyJson should output empty files', function () {
     const fixtureDir = join(__dirname, 'fixtures', 'outputEmptyJson');
@@ -70,7 +75,9 @@ describe('options', () => {
     expect(trim(actual)).toMatchSnapshot();
 
     // Check message output
-    expect(require(resolveOutputPath(__dirname, filePath))).toMatchSnapshot();
+    expect(
+      require(resolveOutputPath(process.cwd(), __dirname, filePath))
+    ).toMatchSnapshot();
   });
   it('without outputEmptyJson should output empty files', function () {
     const fixtureDir = join(__dirname, 'fixtures', 'empty');
@@ -81,7 +88,9 @@ describe('options', () => {
     expect(trim(actual)).toMatchSnapshot();
 
     // Check message output
-    expect(fs.existsSync(resolveOutputPath(__dirname, filePath))).toBeFalsy();
+    expect(
+      fs.existsSync(resolveOutputPath(process.cwd(), __dirname, filePath))
+    ).toBeFalsy();
   });
   it('correctly overrides the id when overrideIdFn is provided', () => {
     const fixtureDir = join(__dirname, 'fixtures', 'overrideIdFn');
@@ -104,7 +113,9 @@ describe('options', () => {
     expect(trim(actual)).toMatchSnapshot();
 
     // Check message output
-    expect(require(resolveOutputPath(__dirname, filePath))).toMatchSnapshot();
+    expect(
+      require(resolveOutputPath(process.cwd(), __dirname, filePath))
+    ).toMatchSnapshot();
   });
 
   it('removes descriptions when plugin is applied more than once', () => {
@@ -130,7 +141,9 @@ describe('options', () => {
     ).not.toThrow();
 
     // Check message output
-    expect(require(resolveOutputPath(__dirname, filePath))).toMatchSnapshot();
+    expect(
+      require(resolveOutputPath(process.cwd(), __dirname, filePath))
+    ).toMatchSnapshot();
   });
 
   it('should be able to parse inline defineMessage from react-intl', () => {
@@ -139,7 +152,9 @@ describe('options', () => {
     expect(() => transform(filePath)).not.toThrow();
 
     // Check message output
-    expect(require(resolveOutputPath(__dirname, filePath))).toMatchSnapshot();
+    expect(
+      require(resolveOutputPath(process.cwd(), __dirname, filePath))
+    ).toMatchSnapshot();
   });
 
   it('respects extractSourceLocation', () => {
@@ -152,7 +167,11 @@ describe('options', () => {
     ).not.toThrow();
 
     // Check message output
-    const actualMessages = require(resolveOutputPath(__dirname, filePath));
+    const actualMessages = require(resolveOutputPath(
+      process.cwd(),
+      __dirname,
+      filePath
+    ));
     actualMessages.forEach((msg: any) => {
       msg.file = msg.file.replace(/\/|\\/g, '@@sep@@');
     });
@@ -173,7 +192,9 @@ describe('options', () => {
     ).not.toThrow();
 
     // Check message output
-    expect(require(resolveOutputPath(__dirname, filePath))).toMatchSnapshot();
+    expect(
+      require(resolveOutputPath(process.cwd(), __dirname, filePath))
+    ).toMatchSnapshot();
   });
 
   it('respects extractFromFormatMessageCall from stateless components', () => {
@@ -190,7 +211,9 @@ describe('options', () => {
     ).not.toThrow();
 
     // Check message output
-    expect(require(resolveOutputPath(__dirname, filePath))).toMatchSnapshot();
+    expect(
+      require(resolveOutputPath(process.cwd(), __dirname, filePath))
+    ).toMatchSnapshot();
   });
 
   it('additionalComponentNames', () => {
@@ -203,7 +226,59 @@ describe('options', () => {
     ).not.toThrow();
 
     // Check message output
-    expect(require(resolveOutputPath(__dirname, filePath))).toMatchSnapshot();
+    expect(
+      require(resolveOutputPath(process.cwd(), __dirname, filePath))
+    ).toMatchSnapshot();
+  });
+
+  it('workspaceRoot', () => {
+    const fixtureDir = join(
+      __dirname,
+      'fixtures',
+      'workspaceRoot',
+      'subdir1',
+      'subdir2'
+    );
+    const filePath = join(fixtureDir, 'actual.js');
+    expect(() =>
+      transform(filePath, {
+        workspaceRoot: join(__dirname, 'fixtures', 'workspaceRoot', 'subdir1'),
+      })
+    ).not.toThrow();
+
+    // Check message output
+    expect(
+      require(resolveOutputPath(
+        join(__dirname, 'fixtures', 'workspaceRoot', 'subdir1'),
+        __dirname,
+        filePath
+      ))
+    ).toMatchSnapshot();
+
+    expect(() =>
+      transform(filePath, {
+        workspaceRoot: join(__dirname, 'fixtures', 'workspaceRoot'),
+      })
+    ).not.toThrow();
+
+    // Check message output
+    expect(
+      require(resolveOutputPath(
+        join(__dirname, 'fixtures', 'workspaceRoot'),
+        __dirname,
+        filePath
+      ))
+    ).toMatchSnapshot();
+  });
+
+  it('workspaceRoot invalid', () => {
+    const fixtureDir = join(__dirname, 'fixtures', 'workspaceRoot', 'subdir3');
+    const filePath = join(fixtureDir, 'actual.js');
+    expect(() =>
+      transform(filePath, {
+        workspaceRoot: join(__dirname, 'fixtures', 'workspaceRoot', 'subdir1'),
+      })
+    ).toThrow();
   });
 });
 

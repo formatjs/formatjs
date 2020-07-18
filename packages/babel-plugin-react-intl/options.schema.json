@@ -12,7 +12,8 @@
     "extractFromFormatMessageCall": {"type": "boolean"},
     "additionalComponentNames": {"type": "array", "items": {"type": "string"}},
     "outputEmptyJson": {"type": "boolean"},
-    "pragma": {"type": "string"}
+    "pragma": {"type": "string"},
+    "workspaceRoot": {"type": "string"}
   },
   "additionalProperties": false
 }

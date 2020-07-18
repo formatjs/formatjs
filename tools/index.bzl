@@ -14,6 +14,7 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
         srcs: src files
         deps: deps
         package_name: name from package.json
+        skip_esm: skip building ESM bundle
     """
     ts_project(
         name = name,

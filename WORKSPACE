@@ -32,7 +32,7 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 http_archive(
     name = "build_bazel_rules_nodejs",
     sha256 = "aa0b0a71afd4e1f203b7092c3284a6606a5bfac77e0bd31f071b37bcac0f7cf3",
-    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/2.0.0-rc.1/rules_nodejs-2.0.0-rc.1.tar.gz"],
+    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/2.0.0-rc.3/rules_nodejs-2.0.0-rc.1.tar.gz"],
 )
 
 load("@build_bazel_rules_nodejs//:index.bzl", "yarn_install")
@@ -64,11 +64,6 @@ yarn_install(
 #     package_json = "//website:package.json",
 #     yarn_lock = "//website:yarn.lock",
 # )
-
-# Setup TypeScript toolchain
-load("@npm//@bazel/typescript:index.bzl", "ts_setup_workspace")
-
-ts_setup_workspace()
 
 # Setup skylib
 http_archive(

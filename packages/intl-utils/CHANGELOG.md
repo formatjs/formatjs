@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@3.8.0...@formatjs/intl-utils@3.8.1) (2020-07-16)
+
+
+### Reverts
+
+* Revert "feat(@formatjs/intl-utils): remove custom LDMLPluralRuleType and use TS3.9 type" ([1a6eeac](https://github.com/formatjs/formatjs/commit/1a6eeac8c59184825968ffddc35374c83f3fe782))
+
+
+
+
+
+# [3.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@3.7.0...@formatjs/intl-utils@3.8.0) (2020-07-14)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** rm files restriction from package.json ([b89a780](https://github.com/formatjs/formatjs/commit/b89a780803aa682fddf020ca742dc896401e68e0))
+
+
+### Features
+
+* **@formatjs/intl-utils:** remove custom LDMLPluralRuleType and use TS3.9 type ([8e433d5](https://github.com/formatjs/formatjs/commit/8e433d5afdbf64f7a952d6345e50cad29bbb7083))
+
+
+
+
+
 # [3.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@3.6.0...@formatjs/intl-utils@3.7.0) (2020-07-14)
 
 

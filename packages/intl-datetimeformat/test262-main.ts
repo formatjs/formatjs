@@ -1,7 +1,7 @@
 /* @generated */
 // @ts-nocheck
 import './polyfill-force'
-import allData from './src/data';
+import allData from './src/data/all-tz';
 defineProperty(Intl, 'DateTimeFormat', {value: DateTimeFormat});
 
 Intl.DateTimeFormat.__addLocaleData(

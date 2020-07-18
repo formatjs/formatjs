@@ -1,7 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
+load("@npm//@bazel/terser:index.bzl", "terser_minified")
 load("//tools:index.bzl", "rollup_dts", "ts_compile")
-
-# load("@npm//karma:index.bzl", "karma_test")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "react-intl"
@@ -15,6 +15,8 @@ pkg_npm(
     ],
     deps = [
         "%s.d.ts" % PACKAGE_NAME,
+        "%s.umd.js" % PACKAGE_NAME,
+        ":%s.umd.min" % PACKAGE_NAME,
         ":dist",
         ":dist-esm",
     ],
@@ -91,25 +93,35 @@ rollup_dts(
         "//packages/intl-datetimeformat:types",
         "//packages/intl-relativetimeformat:types",
         "//packages/intl-messageformat:types",
+        "//packages/intl-messageformat-parser:types",
+        "//packages/intl-utils:types",
         "@npm//@types/hoist-non-react-statics",
     ],
 )
 
-# rollup_bundle(
-#     name = "rollup",
-#     srcs = [
-#         ":dist-esm",
-#     ],
-#     config_file = "//:rollup.config.js",
-#     entry_point = "lib/index.js",
-#     format = "umd",
-#     deps = [
-#         "@npm//@rollup/plugin-node-resolve",
-#         "@npm//@rollup/plugin-commonjs",
-#         "@npm//@rollup/plugin-replace",
-#         "@npm//@rollup/plugin-json",
-#     ] + SRC_DEPS,
-# )
+rollup_bundle(
+    name = "%s.umd" % PACKAGE_NAME,
+    srcs = [":dist-esm"],
+    args = [
+        "--name",
+        "IntlMessageFormat",
+    ],
+    config_file = "//:rollup.config.js",
+    entry_point = "lib/index.js",
+    format = "umd",
+    deps = [
+        "@npm//@rollup/plugin-node-resolve",
+        "@npm//@rollup/plugin-commonjs",
+        "@npm//@rollup/plugin-replace",
+        "@npm//@rollup/plugin-json",
+    ] + SRC_DEPS,
+)
+
+terser_minified(
+    name = "%s.umd.min" % PACKAGE_NAME,
+    src = "%s.umd.js" % PACKAGE_NAME,
+    sourcemap = False,
+)
 
 # karma tests
 # TODO

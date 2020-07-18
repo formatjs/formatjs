@@ -3,6 +3,82 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.2](https://github.com/formatjs/formatjs/compare/react-intl@5.3.1...react-intl@5.3.2) (2020-07-17)
+
+
+### Bug Fixes
+
+* **react-intl:** add back react-intl.umd.js ([ac4b435](https://github.com/formatjs/formatjs/commit/ac4b435be0c8b168896c4a24dbc61c419c48fd6e))
+
+
+
+
+
+## [5.3.1](https://github.com/formatjs/formatjs/compare/react-intl@5.3.0...react-intl@5.3.1) (2020-07-16)
+
+
+### Bug Fixes
+
+* **react-intl:** drop TS req to 3.8 ([140dd37](https://github.com/formatjs/formatjs/commit/140dd375c08149ffe3b602be868b6653b188d85f))
+
+
+### Reverts
+
+* Revert "feat(@formatjs/intl-utils): remove custom LDMLPluralRuleType and use TS3.9 type" ([1a6eeac](https://github.com/formatjs/formatjs/commit/1a6eeac8c59184825968ffddc35374c83f3fe782))
+
+
+
+
+
+# [5.3.0](https://github.com/formatjs/formatjs/compare/react-intl@5.2.2...react-intl@5.3.0) (2020-07-15)
+
+
+### Features
+
+* **react-intl:** add Enum support to defineMessages, fix [#1677](https://github.com/formatjs/formatjs/issues/1677) ([177420b](https://github.com/formatjs/formatjs/commit/177420bb54815ccd883e44973e56ec5b8113cc58))
+
+
+
+
+
+## [5.2.2](https://github.com/formatjs/formatjs/compare/react-intl@5.2.0...react-intl@5.2.2) (2020-07-14)
+
+
+### Bug Fixes
+
+* **react-intl:** fix rollup'ed type def file ([bddb88e](https://github.com/formatjs/formatjs/commit/bddb88e7435854b3152f2fbdc72b50054d9bad76))
+
+
+
+
+
+## [5.2.1](https://github.com/formatjs/formatjs/compare/react-intl@5.2.0...react-intl@5.2.1) (2020-07-14)
+
+
+### Bug Fixes
+
+* **react-intl:** fix rollup'ed type def file ([bddb88e](https://github.com/formatjs/formatjs/commit/bddb88e7435854b3152f2fbdc72b50054d9bad76))
+
+
+
+
+
+# [5.2.0](https://github.com/formatjs/formatjs/compare/react-intl@5.1.0...react-intl@5.2.0) (2020-07-14)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** rm files restriction from package.json ([b89a780](https://github.com/formatjs/formatjs/commit/b89a780803aa682fddf020ca742dc896401e68e0))
+
+
+### Features
+
+* **@formatjs/intl-utils:** remove custom LDMLPluralRuleType and use TS3.9 type ([8e433d5](https://github.com/formatjs/formatjs/commit/8e433d5afdbf64f7a952d6345e50cad29bbb7083))
+
+
+
+
+
 # [5.1.0](https://github.com/formatjs/formatjs/compare/react-intl@5.0.2...react-intl@5.1.0) (2020-07-14)
 
 

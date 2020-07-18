@@ -4,22 +4,32 @@
  * See the accompanying LICENSE file for terms.
  */
 import * as React from 'react';
-export * from './src/types';
-export function defineMessages<T, U extends Record<string, T>>(msgs: U): U {
-  return msgs;
-}
-export function defineMessage<T>(msg: T): T {
-  return msg;
-}
 import {
   createFormattedComponent,
   createFormattedDateTimePartsComponent,
 } from './src/components/createFormattedComponent';
-import {CustomFormatConfig, FormatDateOptions} from './src/types';
+import {
+  CustomFormatConfig,
+  FormatDateOptions,
+  MessageDescriptor,
+} from './src/types';
 import {NumberFormatOptions} from '@formatjs/intl-numberformat';
 import {IntlListFormatOptions} from '@formatjs/intl-listformat';
 import {DisplayNamesOptions} from '@formatjs/intl-displaynames';
 import {DateTimeFormatOptions} from '@formatjs/intl-datetimeformat';
+export * from './src/types';
+
+export function defineMessages<
+  K extends keyof any,
+  T = MessageDescriptor,
+  U extends Record<K, T> = Record<K, T>
+>(msgs: U): U {
+  return msgs;
+}
+
+export function defineMessage<T>(msg: T): T {
+  return msg;
+}
 export {
   default as injectIntl,
   Provider as RawIntlProvider,

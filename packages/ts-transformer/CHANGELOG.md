@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.4.0...@formatjs/ts-transformer@2.4.1) (2020-07-16)
+
+
+### Reverts
+
+* Revert "feat(@formatjs/intl-utils): remove custom LDMLPluralRuleType and use TS3.9 type" ([1a6eeac](https://github.com/formatjs/formatjs/commit/1a6eeac8c59184825968ffddc35374c83f3fe782))
+
+
+
+
+
+# [2.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.3.0...@formatjs/ts-transformer@2.4.0) (2020-07-14)
+
+
+### Features
+
+* **@formatjs/intl-utils:** remove custom LDMLPluralRuleType and use TS3.9 type ([8e433d5](https://github.com/formatjs/formatjs/commit/8e433d5afdbf64f7a952d6345e50cad29bbb7083))
+
+
+
+
+
 # [2.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.2.1...@formatjs/ts-transformer@2.3.0) (2020-07-14)
 
 

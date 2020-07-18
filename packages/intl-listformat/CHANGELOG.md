@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@3.1.3...@formatjs/intl-listformat@3.1.4) (2020-07-16)
+
+**Note:** Version bump only for package @formatjs/intl-listformat
+
+
+
+
+
+## [3.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@3.1.1...@formatjs/intl-listformat@3.1.3) (2020-07-14)
+
+
+### Bug Fixes
+
+* **react-intl:** fix rollup'ed type def file ([bddb88e](https://github.com/formatjs/formatjs/commit/bddb88e7435854b3152f2fbdc72b50054d9bad76))
+
+
+
+
+
+## [3.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@3.1.1...@formatjs/intl-listformat@3.1.2) (2020-07-14)
+
+
+### Bug Fixes
+
+* **react-intl:** fix rollup'ed type def file ([bddb88e](https://github.com/formatjs/formatjs/commit/bddb88e7435854b3152f2fbdc72b50054d9bad76))
+
+
+
+
+
+## [3.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@3.1.0...@formatjs/intl-listformat@3.1.1) (2020-07-14)
+
+**Note:** Version bump only for package @formatjs/intl-listformat
+
+
+
+
+
 # [3.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@3.0.2...@formatjs/intl-listformat@3.1.0) (2020-07-14)
 
 

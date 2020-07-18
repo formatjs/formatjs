@@ -1,3 +1,4 @@
+import {LDMLPluralRule} from './plural-rules-types';
 import {LocaleData} from './types';
 
 export type NumberFormatNotation =
@@ -102,7 +103,7 @@ export interface RawCurrencyData {
   accounting: string;
   short?: Record<DecimalFormatNum, LDMLPluralRuleMap<string>>;
   // IMPORTANT: We're making the assumption here that currency unitPattern
-  // are the same for all Intl.LDMLPluralRule
+  // are the same for all LDMLPluralRule
   unitPattern: string;
 }
 
@@ -138,7 +139,7 @@ export interface RawNumberData {
 }
 
 export type LDMLPluralRuleMap<T> = Omit<
-  Partial<Record<Intl.LDMLPluralRule, T>>,
+  Partial<Record<LDMLPluralRule, T>>,
   'other'
 > & {
   other: T;
