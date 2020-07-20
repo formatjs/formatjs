@@ -60,6 +60,7 @@
     "@typescript-eslint/eslint-plugin": "^3.5.0",
     "@typescript-eslint/parser": "^3.5.0",
     "babel-plugin-const-enum": "^1.0.1",
+    "benchmark": "^2.1.4",
     "chalk": "^4.0.0",
     "cldr-core": "^36.0.0",
     "cldr-dates-full": "^36.0.0",

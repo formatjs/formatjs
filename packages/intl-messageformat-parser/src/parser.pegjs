@@ -25,9 +25,7 @@ See the accompanying LICENSE file for terms.
         }: {}
     }
 
-    function ignoreTag() {
-        return options && options.ignoreTag;
-    }
+    const ignoreTag = options && options.ignoreTag;
 }
 
 start
@@ -36,19 +34,24 @@ start
 message = messageElement*
 
 messageElement
-    = literalElement
+    = &{ return !ignoreTag; } x:tagElement { return x; }
+    / literalElement
     / argumentElement
     / simpleFormatElement
     / pluralElement
     / selectElement
-    / tagElement
-    // Note: this is only possible when immediately in plural argument's option.
     / poundElement
 
 messageText
-    = parts:(doubleApostrophes / quotedString / unquotedString)+ {
+    = &{ return ignoreTag; } parts:(doubleApostrophes / quotedString / unquotedString / '<')+ {
         return parts.join('');
     }
+    / parts:(doubleApostrophes / quotedString / unquotedString / nonTagStartingAngleBracket)+ {
+        return parts.join('');
+    }
+
+// This is the case when ignoreTag is false.
+nonTagStartingAngleBracket = !(openingTag / closingTag / selfClosingTag) '<' { return '<'; }
 
 literalElement
     = messageText:messageText {
@@ -67,18 +70,10 @@ poundElement = '#' {
 }
 
 tagElement 'tagElement'
-    = 
-    // Special case for self-closing. We treat it as regular text
-    value:('<' validTag _ '/>') { 
-        return {
-            type: TYPE.literal,
-            value: value.join(''),
-            ...insertLocation()
-        }
-    }
+    = selfClosingTag
     / open:openingTag children:message close:closingTag {
         if (open !== close) {
-           error(`Mismatch tag "${open}" !== "${close}"`, location()) 
+           error(`Mismatch tag "${open}" !== "${close}"`, location())
         }
         return {
             type: TYPE.tag,
@@ -88,13 +83,16 @@ tagElement 'tagElement'
         }
     }
 
-openingTag = '<' &{ messageCtx.push('openingTag'); return true; } tag:validTag '>' &{ messageCtx.pop(); return true; } {
-    return tag
+// Special case for self-closing. We treat it as regular text
+selfClosingTag = value:('<' validTag _ '/>') {
+    return {
+        type: TYPE.literal,
+        value: value.join(''),
+        ...insertLocation()
+    }
 }
-
-closingTag = '</' &{ messageCtx.push('closingTag'); return true; } tag:validTag '>' &{ messageCtx.pop(); return true; } {
-    return tag
-}
+openingTag = '<' tag:validTag '>' { return tag; }
+closingTag = '</' tag:validTag '>' { return tag; }
 
 argumentElement 'argumentElement'
     = '{' _ value:argNameOrNumber _ '}' {
@@ -275,11 +273,10 @@ quotedString = "'" escapedChar:escapedChar quotedChars:$("''" / [^'])* "'"? {
 
 unquotedString = $(x:. &{
     return (
-        (ignoreTag() || x !== '<') &&
+        x !== '<' &&
         x !== '{' &&
         !(isInPluralOption() && x === '#') &&
-        !(isNestedMessageText() && x === '}') &&
-        !(!ignoreTag() && isNestedMessageText() && x === '>')
+        !(isNestedMessageText() && x === '}')
     );
 } / '\n')
 
@@ -294,4 +291,4 @@ argNumber 'argNumber' = '0' { return 0 }
         return parseInt(digits.join(''), 10);
     }
 argName 'argName' = $((!(whiteSpace / patternSyntax).)+)
-tagName 'tagName' = $(('-' / (!(whiteSpace / patternSyntax).))+) 
+tagName 'tagName' = $(('-' / (!(whiteSpace / patternSyntax).))+)

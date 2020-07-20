@@ -35,6 +35,134 @@ Array [
 ]
 `;
 
+exports[`greater than sign without escape 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "> ",
+  },
+  Object {
+    "options": Object {
+      "1": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "12",
+          },
+        ],
+      },
+      "2": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "6",
+          },
+        ],
+      },
+      "3": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "3",
+          },
+        ],
+      },
+      "4": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "2",
+          },
+        ],
+      },
+      "A": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "1",
+          },
+        ],
+      },
+    },
+    "type": 5,
+    "value": "level",
+  },
+  Object {
+    "type": 0,
+    "value": " hours",
+  },
+]
+`;
+
+exports[`issue #1845: less than sign without escape 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "< ",
+  },
+  Object {
+    "options": Object {
+      "1": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "12",
+          },
+        ],
+      },
+      "2": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "6",
+          },
+        ],
+      },
+      "3": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "3",
+          },
+        ],
+      },
+      "4": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "2",
+          },
+        ],
+      },
+      "A": Object {
+        "location": undefined,
+        "value": Array [
+          Object {
+            "type": 0,
+            "value": "1",
+          },
+        ],
+      },
+    },
+    "type": 5,
+    "value": "level",
+  },
+  Object {
+    "type": 0,
+    "value": " hours",
+  },
+]
+`;
+
 exports[`mismatched tag with ignoreTag 1`] = `
 Array [
   Object {
@@ -404,6 +532,15 @@ Array [
   Object {
     "type": 0,
     "value": "</foo> cats.",
+  },
+]
+`;
+
+exports[`unescaped left angle bracket 1`] = `
+Array [
+  Object {
+    "type": 0,
+    "value": "I <3 cats.",
   },
 ]
 `;
