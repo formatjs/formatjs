@@ -67,7 +67,7 @@
     "cldr-misc-full": "^36.0.0",
     "cldr-numbers-full": "^36.0.0",
     "cldr-units-full": "^36.0.0",
-    "commander": "5.1.0",
+    "commander": "6.0.0",
     "core-js": "^3.6.5",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
