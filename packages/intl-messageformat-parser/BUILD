@@ -1,4 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "nodejs_binary", "pkg_npm")
+load("@npm//ts-node:index.bzl", "ts_node")
 load("//tools:index.bzl", "rollup_dts", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
@@ -91,4 +92,15 @@ rollup_dts(
         "//packages/intl-numberformat:types",
         "//packages/intl-utils:types",
     ],
+)
+
+ts_node(
+    name = "benchmark",
+    args = [
+        "$(execpath tests/benchmark.js)",
+    ],
+    data = [
+        "@npm//benchmark",
+        "tests/benchmark.js",
+    ] + SRCS + SRC_DEPS,
 )

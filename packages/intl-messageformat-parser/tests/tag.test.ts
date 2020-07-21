@@ -1,4 +1,20 @@
-import {pegParse} from '../src/parser';
+import {pegParse as _pegParse, IParseOptions} from '../src/parser';
+
+// Make it easier to figure out the error location
+function pegParse(
+  source: string,
+  options?: IParseOptions
+): ReturnType<typeof _pegParse> {
+  try {
+    return _pegParse(source, options);
+  } catch (err) {
+    if (err.location) {
+      const {start, end} = err.location;
+      err.message = `(${start.line}:${start.column} - ${end.line}:${end.column}) ${err.message}`;
+    }
+    throw err;
+  }
+}
 
 test('tag with number arg', () => {
   expect(
@@ -31,6 +47,10 @@ test('tag with rich arg with ignoreTag', () => {
 
 test('escaped tag with rich arg', () => {
   expect(pegParse("I '<3 cats.")).toMatchSnapshot();
+});
+
+test('unescaped left angle bracket', () => {
+  expect(pegParse('I <3 cats.')).toMatchSnapshot();
 });
 
 test('escaped multiple tags', () => {
@@ -108,4 +128,34 @@ test('tag with dash with ignoreTag', function () {
       ignoreTag: true,
     })
   ).toMatchSnapshot();
+});
+
+// https://github.com/formatjs/formatjs/issues/1845
+test('issue #1845: less than sign without escape', () => {
+  expect(
+    pegParse('< {level, select, A {1} 4 {2} 3 {3} 2{6} 1{12}} hours')
+  ).toMatchSnapshot();
+});
+
+// https://github.com/formatjs/formatjs/issues/1845
+test('greater than sign without escape', () => {
+  expect(
+    pegParse('> {level, select, A {1} 4 {2} 3 {3} 2{6} 1{12}} hours')
+  ).toMatchSnapshot();
+});
+
+test('unmatched closing tag', () => {
+  expect(() => pegParse('a </foo>')).toThrow();
+});
+
+test('unclosed opening tag', () => {
+  expect(() => pegParse('<foo>a')).toThrow();
+});
+
+test('unclosed opening tag with nested messages', () => {
+  expect(() =>
+    pegParse(`
+    You have <em>{count, plural, =1 {</em> one message} other {<b>#</b> messages}}.
+  `)
+  ).toThrow();
 });

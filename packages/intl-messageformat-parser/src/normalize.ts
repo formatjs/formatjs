@@ -15,7 +15,7 @@ const PLURAL_HASHTAG_REGEX = /(^|[^\\])#/g;
  * @param el AST Element
  * @param pluralStack current plural stack
  */
-export function normalizeHashtagInPlural(els: MessageFormatElement[]) {
+export function normalizeHashtagInPlural(els: MessageFormatElement[]): void {
   els.forEach(el => {
     // If we're encountering a plural el
     if (!isPluralElement(el) && !isSelectElement(el)) {

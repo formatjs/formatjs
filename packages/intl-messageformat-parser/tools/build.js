@@ -10,6 +10,7 @@ function main({out, input}) {
   const srcString = peg.generate(fs.readFileSync(input, 'utf-8'), {
     plugins: [tspegjs],
     output: 'source',
+    trace: false,
     tspegjs: {
       customHeader: `
 import {
