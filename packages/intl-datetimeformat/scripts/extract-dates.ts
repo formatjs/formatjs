@@ -233,6 +233,9 @@ function loadDatesFields(locale: string): RawDateTimeLocaleInternalData {
     timeZoneName,
     gmtFormat: timeZoneNames.gmtFormat,
     hourFormat: timeZoneNames.hourFormat,
+    dateFormat: extractStyleFormatFields(gregorian.dateFormats),
+    timeFormat: extractStyleFormatFields(gregorian.timeFormats),
+    dateTimeFormat: extractStyleFormatFields(gregorian.dateTimeFormats),
     formats: {
       gregory: allFormats,
     },
@@ -270,4 +273,22 @@ export function extractDatesFields(
     },
     {}
   );
+}
+
+/**
+ * The CLDR formatObject has several fields other than full, long, medium, short which
+ * would increase the size of the saved payload if not ommitted.
+ * @param formatObject
+ */
+function extractStyleFormatFields<
+  T extends {full: string; long: string; medium: string; short: string}
+>(
+  formatObject: T
+): {full: string; long: string; medium: string; short: string} {
+  return {
+    full: formatObject.full,
+    long: formatObject.long,
+    medium: formatObject.medium,
+    short: formatObject.short,
+  };
 }

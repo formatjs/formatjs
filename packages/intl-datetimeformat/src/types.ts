@@ -41,9 +41,17 @@ export type RawDateTimeLocaleData = LocaleData<RawDateTimeLocaleInternalData>;
 
 export type RawDateTimeLocaleInternalData = Omit<
   DateTimeFormatLocaleInternalData,
-  'formats'
+  'dateFormat' | 'timeFormat' | 'dateTimeFormat' | 'formats'
 > & {
   formats: Record<string, string[]>;
+  dateFormat: {full: string; long: string; medium: string; short: string};
+  timeFormat: {full: string; long: string; medium: string; short: string};
+  dateTimeFormat: {
+    full: string;
+    long: string;
+    medium: string;
+    short: string;
+  };
 };
 
 export type TimeZoneNameData = Record<
@@ -87,6 +95,9 @@ export interface DateTimeFormatLocaleInternalData {
    */
   hourFormat: string;
   hourCycle: string;
+  dateFormat: {full: Formats; long: Formats; medium: Formats; short: Formats};
+  timeFormat: {full: Formats; long: Formats; medium: Formats; short: Formats};
+  dateTimeFormat: {full: string; long: string; medium: string; short: string};
   formats: Record<string, Formats[]>;
   nu: string[];
   hc: string[];
