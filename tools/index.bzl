@@ -33,7 +33,7 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
             declaration = True,
             declaration_map = True,
             extends = ["//:tsconfig.json"],
-            outdir = "lib",
+            out_dir = "lib",
             tsconfig = "//:tsconfig.esm.json",
             deps = deps,
         )
@@ -130,7 +130,7 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], rollup_deps = []
         declaration = True,
         declaration_map = True,
         extends = ["//:tsconfig.json"],
-        outdir = name,
+        out_dir = name,
         tsconfig = "//:tsconfig.esm.json",
         deps = deps + [
             "@npm//@jest/transform",

@@ -1,31 +1,32 @@
 diff --git a/node_modules/@bazel/typescript/internal/ts_project.bzl b/node_modules/@bazel/typescript/internal/ts_project.bzl
-index 60c305a..aeb5703 100755
+index 80cd6aa..283e9bb 100755
 --- a/node_modules/@bazel/typescript/internal/ts_project.bzl
 +++ b/node_modules/@bazel/typescript/internal/ts_project.bzl
 @@ -1,6 +1,7 @@
  "ts_project rule"
  
 -load("@build_bazel_rules_nodejs//:providers.bzl", "DeclarationInfo", "NpmPackageInfo", "declaration_info", "js_module_info", "run_node")
-+load("@build_bazel_rules_nodejs//:providers.bzl", "LinkablePackageInfo", "DeclarationInfo", "NpmPackageInfo", "declaration_info", "js_module_info", "run_node")
++load("@build_bazel_rules_nodejs//:providers.bzl", "DeclarationInfo", "LinkablePackageInfo", "NpmPackageInfo", "declaration_info", "js_module_info", "run_node")
 +load("@build_bazel_rules_nodejs//internal/linker:link_node_modules.bzl", "module_mappings_aspect")
  
  _DEFAULT_TSC = (
      
-@@ -8,8 +9,12 @@ _DEFAULT_TSC = (
- )
- 
+@@ -10,9 +11,13 @@ _DEFAULT_TSC = (
  _ATTRS = {
-+    "package_name": attr.string(),
      "args": attr.string_list(),
+     "declaration_dir": attr.string(),
 -    "deps": attr.label_list(providers = [DeclarationInfo]),
 +    "deps": attr.label_list(
 +        aspects = [module_mappings_aspect],
-+        providers = [DeclarationInfo]
++        providers = [DeclarationInfo],
 +    ),
      "extends": attr.label_list(allow_files = [".json"]),
-     "outdir": attr.string(),
-     "rootdir": attr.string(),
-@@ -158,6 +163,14 @@ def _ts_project_impl(ctx):
+     "out_dir": attr.string(),
++    "package_name": attr.string(),
+     "root_dir": attr.string(),
+     # NB: no restriction on extensions here, because tsc sometimes adds type-check support
+     # for more file kinds (like require('some.json')) and also
+@@ -160,6 +165,14 @@ def _ts_project_impl(ctx):
          providers.append(declaration_info(depset(typings_outputs), ctx.attr.deps))
          providers.append(OutputGroupInfo(types = depset(typings_outputs)))
  

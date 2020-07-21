@@ -156,7 +156,7 @@ ts_project(
     extends = [
         "//:tsconfig.json",
     ],
-    outdir = "test262",
+    out_dir = "test262",
     tsconfig = "//:tsconfig.es6.json",
     visibility = ["//visibility:public"],
     deps = SRC_DEPS,

@@ -333,7 +333,7 @@ ts_node(
 #     extends = [
 #         "//:tsconfig.json",
 #     ],
-#     outdir = "test262",
+#     out_dir = "test262",
 #     tsconfig = "//:tsconfig.es6.json",
 #     deps = SRC_DEPS,
 # )
