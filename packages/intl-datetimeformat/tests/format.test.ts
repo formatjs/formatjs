@@ -1,4 +1,4 @@
-import {DateTimeFormat} from '../';
+import {DateTimeFormat, DateTimeFormatOptions} from '../';
 import * as ko from './locale-data/ko.json';
 import * as en from './locale-data/en.json';
 import allData from '../src/data/all-tz';
@@ -12,7 +12,7 @@ import {
 DateTimeFormat.__addLocaleData(en, ko);
 DateTimeFormat.__addTZData(allData);
 
-const tests = [
+const tests: Array<{options: DateTimeFormatOptions; ko: string; en: string}> = [
   {
     options: {
       weekday: 'long',
@@ -192,6 +192,82 @@ const tests = [
     },
     ko: 'AD 20년 6월 15일 (월) PM 09시 48분 20초 GMT-7',
     en: 'Mon, J 15, 20 AD, 09:48:20 PM PDT',
+  },
+  {
+    options: {dateStyle: 'full', timeZone: 'America/Los_Angeles'},
+    ko: '2020년 6월 15일 월요일',
+    en: 'Monday, June 15, 2020',
+  },
+  {
+    options: {dateStyle: 'long', timeZone: 'America/Los_Angeles'},
+    ko: '2020년 6월 15일',
+    en: 'June 15, 2020',
+  },
+  {
+    options: {dateStyle: 'medium', timeZone: 'America/Los_Angeles'},
+    ko: '2020. 6. 15.',
+    en: 'Jun 15, 2020',
+  },
+  {
+    options: {dateStyle: 'short', timeZone: 'America/Los_Angeles'},
+    ko: '20. 6. 15.',
+    en: '6/15/20',
+  },
+  {
+    options: {timeStyle: 'full', timeZone: 'America/Los_Angeles'},
+    ko: 'PM 9시 48분 20초 미 태평양 하계 표준시',
+    en: '9:48:20 PM Pacific Daylight Time',
+  },
+  {
+    options: {timeStyle: 'long', timeZone: 'America/Los_Angeles'},
+    ko: 'PM 9시 48분 20초 GMT-7',
+    en: '9:48:20 PM PDT',
+  },
+  {
+    options: {timeStyle: 'medium', timeZone: 'America/Los_Angeles'},
+    ko: 'PM 9:48:20',
+    en: '9:48:20 PM',
+  },
+  {
+    options: {timeStyle: 'short', timeZone: 'America/Los_Angeles'},
+    ko: 'PM 9:48',
+    en: '9:48 PM',
+  },
+  {
+    options: {
+      dateStyle: 'long',
+      timeStyle: 'full',
+      timeZone: 'America/Los_Angeles',
+    },
+    ko: '2020년 6월 15일 PM 9시 48분 20초 미 태평양 하계 표준시',
+    en: 'June 15, 2020 at 9:48:20 PM Pacific Daylight Time',
+  },
+  {
+    options: {
+      dateStyle: 'medium',
+      timeStyle: 'long',
+      timeZone: 'America/Los_Angeles',
+    },
+    ko: '2020. 6. 15. PM 9시 48분 20초 GMT-7',
+    en: 'Jun 15, 2020, 9:48:20 PM PDT',
+  },
+  {
+    options: {
+      dateStyle: 'short',
+      timeStyle: 'medium',
+      timeZone: 'America/Los_Angeles',
+    },
+    ko: '20. 6. 15. PM 9:48:20',
+    en: '6/15/20, 9:48:20 PM',
+  },
+  {
+    options: {
+      dateStyle: 'full',
+      timeStyle: 'short',
+      timeZone: 'America/Los_Angeles',
+    },
+    ko: '2020년 6월 15일 월요일 PM 9:48',
+    en: 'Monday, June 15, 2020 at 9:48 PM',
   },
 ];
 

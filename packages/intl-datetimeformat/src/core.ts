@@ -34,6 +34,8 @@ export interface IntlDateTimeFormatInternal {
   locale: string;
   dataLocale: string;
   calendar?: string;
+  dateStyle?: 'full' | 'long' | 'medium' | 'short';
+  timeStyle?: 'full' | 'long' | 'medium' | 'short';
   weekday: 'narrow' | 'short' | 'long';
   era: 'narrow' | 'short' | 'long';
   year: '2-digit' | 'numeric';
@@ -100,6 +102,8 @@ const RESOLVED_OPTIONS_KEYS: Array<
   'locale',
   'calendar',
   'numberingSystem',
+  'dateStyle',
+  'timeStyle',
   'timeZone',
   'hourCycle',
   'weekday',
@@ -116,6 +120,8 @@ const RESOLVED_OPTIONS_KEYS: Array<
 export interface ResolvedDateTimeFormatOptions {
   locale: string;
   calendar?: string;
+  dateStyle?: 'full' | 'long' | 'medium' | 'short';
+  timeStyle?: 'full' | 'long' | 'medium' | 'short';
   weekday: 'narrow' | 'short' | 'long';
   era: 'narrow' | 'short' | 'long';
   year: '2-year' | 'numeric';
@@ -386,13 +392,44 @@ function initializeDateTimeFormat(
     ['basic', 'best fit'],
     'best fit'
   );
+  const dateStyle = getOption(
+    options,
+    'dateStyle',
+    'string',
+    ['full', 'long', 'medium', 'short'],
+    undefined
+  );
+  internalSlots.dateStyle = dateStyle;
+  const timeStyle = getOption(
+    options,
+    'timeStyle',
+    'string',
+    ['full', 'long', 'medium', 'short'],
+    undefined
+  );
+  internalSlots.timeStyle = timeStyle;
+
   let bestFormat;
-  if (matcher === 'basic') {
-    bestFormat = basicFormatMatcher(opt, formats);
+  if (dateStyle === undefined && timeStyle === undefined) {
+    if (matcher === 'basic') {
+      bestFormat = basicFormatMatcher(opt, formats);
+    } else {
+      opt.hour12 =
+        internalSlots.hourCycle === 'h11' || internalSlots.hourCycle === 'h12';
+      bestFormat = bestFitFormatMatcher(opt, formats);
+    }
   } else {
-    opt.hour12 =
-      internalSlots.hourCycle === 'h11' || internalSlots.hourCycle === 'h12';
-    bestFormat = bestFitFormatMatcher(opt, formats);
+    for (const prop of DATE_TIME_PROPS) {
+      const p = opt[prop];
+      if (p !== undefined) {
+        throw new TypeError(
+          `Intl.DateTimeFormat can't set option ${prop} when ${
+            dateStyle ? 'dateStyle' : 'timeStyle'
+          } is used`
+        );
+      }
+    }
+    bestFormat = dateTimeStyleFormat(dateStyle, timeStyle, dataLocaleData);
   }
   for (const prop in opt) {
     const p = bestFormat[prop as 'era'];
@@ -477,6 +514,20 @@ export function toDateTimeOptions(
       }
     }
   }
+  if (options.dateStyle !== undefined || options.timeStyle !== undefined) {
+    needDefaults = false;
+  }
+  if (required === 'date' && options.timeStyle) {
+    throw new TypeError(
+      'Intl.DateTimeFormat date was required but timeStyle was included'
+    );
+  }
+  if (required === 'time' && options.dateStyle) {
+    throw new TypeError(
+      'Intl.DateTimeFormat time was required but dateStyle was included'
+    );
+  }
+
   if (needDefaults && (defaults === 'date' || defaults === 'all')) {
     for (const prop of ['year', 'month', 'day'] as Array<
       keyof Pick<DateTimeFormatOptions, 'year' | 'month' | 'day'>
@@ -592,6 +643,51 @@ export function bestFitFormatMatcherScore(
     }
   }
   return score;
+}
+
+function dateTimeStyleFormat(
+  dateStyle: DateTimeFormatOptions['dateStyle'],
+  timeStyle: DateTimeFormatOptions['timeStyle'],
+  dataLocaleData: DateTimeFormatLocaleInternalData
+): Formats {
+  let dateFormat: Formats | undefined, timeFormat: Formats | undefined;
+  if (timeStyle !== undefined) {
+    timeFormat = dataLocaleData.timeFormat[timeStyle];
+  }
+  if (dateStyle !== undefined) {
+    dateFormat = dataLocaleData.dateFormat[dateStyle];
+  }
+
+  if (
+    dateStyle !== undefined &&
+    dateFormat !== undefined &&
+    timeFormat !== undefined
+  ) {
+    const format = {...dateFormat, ...timeFormat};
+    delete format.pattern;
+    delete format.pattern12;
+
+    const connector = dataLocaleData.dateTimeFormat[dateStyle];
+    format.pattern = connector
+      .replace('{0}', timeFormat.pattern)
+      .replace('{1}', dateFormat.pattern);
+    if (timeFormat.pattern12 !== undefined) {
+      format.pattern12 = connector
+        .replace('{0}', timeFormat.pattern12)
+        .replace('{1}', dateFormat.pattern);
+    }
+    return format as Formats;
+  }
+  if (timeFormat !== undefined) {
+    return timeFormat;
+  }
+  if (dateFormat === undefined) {
+    throw new TypeError(
+      'Intl.DateTimeFormat neither the dateFormat or the timeFormat could be found'
+    );
+  }
+
+  return dateFormat;
 }
 
 /**
@@ -1247,7 +1343,7 @@ defineProperty(DateTimeFormat.prototype, 'resolvedOptions', {
     const internalSlots = getInternalSlots(this);
     const ro: Record<string, unknown> = {};
     for (const key of RESOLVED_OPTIONS_KEYS) {
-      const value = internalSlots[key];
+      let value = internalSlots[key];
       if (key === 'hourCycle') {
         ro.hour12 =
           value === 'h11' || value === 'h12'
@@ -1256,6 +1352,15 @@ defineProperty(DateTimeFormat.prototype, 'resolvedOptions', {
             ? false
             : undefined;
       }
+      if (DATE_TIME_PROPS.indexOf(key as TABLE_6) > -1) {
+        if (
+          internalSlots.dateStyle !== undefined ||
+          internalSlots.timeStyle !== undefined
+        ) {
+          value = undefined;
+        }
+      }
+
       if (value !== undefined) {
         ro[key] = value;
       }
@@ -1284,16 +1389,42 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
     const availableLocales: string[] = datum.availableLocales;
     for (const locale of availableLocales) {
       try {
-        const {formats, ...rawData} = unpackData(locale, datum);
+        const {
+          dateFormat,
+          timeFormat,
+          dateTimeFormat,
+          formats,
+          ...rawData
+        } = unpackData(locale, datum);
         const processedData: DateTimeFormatLocaleInternalData = {
           ...rawData,
+          dateFormat: {
+            full: parseDateTimeSkeleton(dateFormat.full),
+            long: parseDateTimeSkeleton(dateFormat.long),
+            medium: parseDateTimeSkeleton(dateFormat.medium),
+            short: parseDateTimeSkeleton(dateFormat.short),
+          },
+          timeFormat: {
+            full: parseDateTimeSkeleton(timeFormat.full),
+            long: parseDateTimeSkeleton(timeFormat.long),
+            medium: parseDateTimeSkeleton(timeFormat.medium),
+            short: parseDateTimeSkeleton(timeFormat.short),
+          },
+          dateTimeFormat: {
+            full: parseDateTimeSkeleton(dateTimeFormat.full).pattern,
+            long: parseDateTimeSkeleton(dateTimeFormat.long).pattern,
+            medium: parseDateTimeSkeleton(dateTimeFormat.medium).pattern,
+            short: parseDateTimeSkeleton(dateTimeFormat.short).pattern,
+          },
           formats: {},
         };
+
         for (const calendar in formats) {
           processedData.formats[calendar] = formats[calendar].map(
             parseDateTimeSkeleton
           );
         }
+
         DateTimeFormat.localeData[locale] = processedData;
       } catch (e) {
         // Ignore if we got no data

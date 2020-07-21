@@ -7,11 +7,11 @@ import {
   toLocaleTimeString as _toLocaleTimeString,
 } from './src/to_locale_string';
 
-// function supportsDateStyle() {
-//   return !!(new Intl.DateTimeFormat(undefined, {
-//     dateStyle: 'short',
-//   } as any).resolvedOptions() as any).dateStyle;
-// }
+function supportsDateStyle() {
+  return !!(new Intl.DateTimeFormat(undefined, {
+    dateStyle: 'short',
+  } as any).resolvedOptions() as any).dateStyle;
+}
 
 /**
  * https://bugs.chromium.org/p/chromium/issues/detail?id=865351
@@ -28,8 +28,8 @@ function hasChromeLt71Bug() {
 if (
   !('DateTimeFormat' in Intl) ||
   !('formatToParts' in Intl.DateTimeFormat.prototype) ||
-  hasChromeLt71Bug()
-  // !supportsDateStyle()
+  hasChromeLt71Bug() ||
+  !supportsDateStyle()
 ) {
   defineProperty(Intl, 'DateTimeFormat', {value: DateTimeFormat});
   defineProperty(Date.prototype, 'toLocaleString', {
