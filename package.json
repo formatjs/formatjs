@@ -35,7 +35,7 @@
     "@bazel/buildifier": "^3.3.0",
     "@bazel/ibazel": "^0.13.1",
     "@bazel/rollup": "2.0.0",
-    "@bazel/terser": "2.0.0-rc.3",
+    "@bazel/terser": "2.0.0",
     "@bazel/typescript": "2.0.0-rc.3",
     "@commitlint/cli": "^9.0.1",
     "@commitlint/config-angular": "^9.0.1",
