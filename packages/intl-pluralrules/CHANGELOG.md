@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.2.3...@formatjs/intl-pluralrules@3.2.4) (2020-07-21)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+
+
+
+
 ## [3.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.2.2...@formatjs/intl-pluralrules@3.2.3) (2020-07-16)
 
 

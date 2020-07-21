@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.3.6](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@5.3.5...intl-messageformat-parser@5.3.6) (2020-07-21)
+
+
+### Bug Fixes
+
+* **intl-messageformat-parser:** no need to escape less than sign in messages ([#1857](https://github.com/formatjs/formatjs/issues/1857)) ([8897c96](https://github.com/formatjs/formatjs/commit/8897c9620c747557acaa917ff68a1e166788ac0a)), closes [#1845](https://github.com/formatjs/formatjs/issues/1845)
+
+
+
+
+
 ## [5.3.5](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@5.3.4...intl-messageformat-parser@5.3.5) (2020-07-17)
 
 **Note:** Version bump only for package intl-messageformat-parser

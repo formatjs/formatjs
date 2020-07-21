@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/cli",
-  "version": "1.10.6",
+  "version": "1.10.7",
   "description": "A CLI for formatjs.",
   "keywords": [
     "intl",
@@ -41,7 +41,7 @@
     "@types/loud-rejection": "^2.0.0",
     "@types/node": "14",
     "babel-plugin-const-enum": "^1.0.1",
-    "babel-plugin-react-intl": "^7.8.2",
+    "babel-plugin-react-intl": "^7.8.3",
     "chalk": "^4.0.0",
     "commander": "5.1.0",
     "fs-extra": "^9.0.0",
