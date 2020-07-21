@@ -972,15 +972,15 @@
   resolved "https://registry.yarnpkg.com/@bazel/rollup/-/rollup-2.0.0.tgz#1980cb3f6922227659260bfdca99c457889a5bc1"
   integrity sha512-mifUfCZbD1RIhfowh4N8E4881ag3FChz7F4z35wxMOP52g1q3+6Bvh5wv9iysFQopxGmS5jNEj3Dq/CWtSoOnw==
 
-"@bazel/terser@2.0.0-rc.3":
-  version "2.0.0-rc.3"
-  resolved "https://registry.yarnpkg.com/@bazel/terser/-/terser-2.0.0-rc.3.tgz#bbe342411bda953a729cb0daba0835bb9c4c826a"
-  integrity sha512-pLyki1SSYrfhFK50gD50jYRUYHkzqHGMgY3pkP5zDI8TAa06rLmpfPJU6ote06oJ25QIW7vmiZ/vAX0KZmkmAA==
+"@bazel/terser@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@bazel/terser/-/terser-2.0.0.tgz#a841db8aefd7c51c216b34a26bc02a6c93d5e56a"
+  integrity sha512-6mBYcfzP6pWxycYZ8r4Lz5kgiWZ7n08bVHZBIRExFeqs7Yy92dD92LPeA9FZIzFiX00IuR9Q1Lqy23xH5q7FeQ==
 
-"@bazel/typescript@2.0.0-rc.3":
-  version "2.0.0-rc.3"
-  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-2.0.0-rc.3.tgz#d982e56c2cf7eefde1b6ef4a8767603ce9c9d364"
-  integrity sha512-4xNupCgj5PPHfxhZAnQ4RxdVRtPEfKnJWYCZDetGACSMYeyEfUTkzovPA2u+EnaF4KRHUiYCeZmjDABdPgvZgA==
+"@bazel/typescript@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-2.0.0.tgz#2ff5615f09c733cc681ba2ada92b11c356b694cd"
+  integrity sha512-5FPkxULWIjAKLG5J1XvpXpY1/4IK39dAoWA/Hhg+16gXTES32fT8w42k96pb6BTaNnyBuYgIHBpELEAJ40OOAQ==
   dependencies:
     protobufjs "6.8.8"
     semver "5.6.0"
