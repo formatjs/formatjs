@@ -15,7 +15,14 @@ You can sign-up using this [invitation link](https://join.slack.com/t/formatjs/s
 
 We currently use [`bazel`](https://bazel.build/) to develop, along with [lerna](https://lerna.js.org/) for package management.
 
-To setup locally:
+To setup locally, first initialize the git submodule:
+
+```sh
+> git submodule init
+> git submodule update
+```
+
+Now you can build & test with yarn:
 
 ```sh
 > yarn
