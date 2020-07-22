@@ -31,7 +31,7 @@ jobs:
           submodules: true
           fetch-depth: 110
       - name: Use Node.js 12
-        uses: actions/setup-node@v2.1.0
+        uses: actions/setup-node@v2.1.1
         with:
           node-version: 12
       - name: yarn install
