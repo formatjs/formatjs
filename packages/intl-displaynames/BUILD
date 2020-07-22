@@ -135,7 +135,7 @@ ts_node(
     src = "tests/locale-data/%s.json" % locale,
     args = [
         "$(execpath scripts/cldr.ts)",
-        "--testLocale",
+        "--locales",
         locale,
         "--testOutFile",
         "$@",
@@ -148,6 +148,8 @@ generate_src_file(
     src = "test262-main.ts",
     args = [
         "$(execpath scripts/cldr.ts)",
+        "--locales",
+        "ar,de,en,en-US-POSIX,ja,ko,th,zh,zh-Hant,zh-Hans",
         "--test262MainFile",
         "$@",
     ],

@@ -62,9 +62,7 @@ import allData from './src/data/all-tz';
 defineProperty(Intl, 'DateTimeFormat', {value: DateTimeFormat});
 
 Intl.DateTimeFormat.__addLocaleData(
-${['ar', 'de', 'en', 'ja', 'ko', 'th', 'zh', 'zh-Hant', 'zh-Hans']
-  .map(lang => JSON.stringify(langData[lang]))
-  .join(',\n')}
+${locales.map(lang => JSON.stringify(langData[lang])).join(',\n')}
 )
 Intl.DateTimeFormat.__addTZData(allData)
   `

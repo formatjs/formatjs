@@ -4,33 +4,40 @@ import {outputFileSync, outputJSONSync} from 'fs-extra';
 import {DisplayNamesLocaleData} from '@formatjs/intl-utils';
 import * as minimist from 'minimist';
 
-const locales = getAllLocales();
-const data = extractDisplayNames();
-const allData = locales.reduce(
-  (all: Record<string, DisplayNamesLocaleData>, locale) => {
-    if (!all[locale]) {
-      all[locale] = {
-        data: {
-          [locale]: data[locale],
-        },
-        availableLocales: [locale],
-      };
-    }
-
-    return all;
-  },
-  {}
-);
-
 function main(args: minimist.ParsedArgs) {
   const {
     outDir,
-    testLocale,
+    locales: localesToGen,
     testOutFile,
     polyfillLocalesOutFile,
     test262MainFile,
   } = args;
+  const locales: string[] = localesToGen
+    ? localesToGen.split(',')
+    : getAllLocales();
+  const data = extractDisplayNames(locales);
+  const allData = locales.reduce(
+    (all: Record<string, DisplayNamesLocaleData>, locale) => {
+      if (locale === 'en-US-POSIX') {
+        all['en-US'] = {
+          data: {
+            ['en-US']: data[locale],
+          },
+          availableLocales: ['en-US'],
+        };
+      } else {
+        all[locale] = {
+          data: {
+            [locale]: data[locale],
+          },
+          availableLocales: [locale],
+        };
+      }
 
+      return all;
+    },
+    {}
+  );
   if (outDir) {
     // Dist all locale files to locale-data (JS)
     Object.keys(allData).forEach(function (lang) {
@@ -47,7 +54,7 @@ if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function'
   }
 
   if (testOutFile) {
-    outputJSONSync(testOutFile, allData[testLocale]);
+    outputJSONSync(testOutFile, allData[locales[0]]);
   }
 
   if (polyfillLocalesOutFile) {
@@ -77,18 +84,7 @@ if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function'
 import './polyfill-force';
 if (Intl.DisplayNames && typeof Intl.DisplayNames.__addLocaleData === 'function') {
   Intl.DisplayNames.__addLocaleData(
-    ${[
-      'ar',
-      'de',
-      'en',
-      'en-US-POSIX',
-      'ja',
-      'ko',
-      'th',
-      'zh',
-      'zh-Hant',
-      'zh-Hans',
-    ]
+    ${Object.keys(allData)
       .map(locale => JSON.stringify(allData[locale]))
       .join(',\n')});
 }
