@@ -12,26 +12,26 @@ Compiler.load(
 );
 
 const languages = Object.keys(plurals.supplemental['plurals-type-cardinal']);
-const allData: Record<string, PluralRulesLocaleData> = {};
-languages.forEach(lang => {
+
+function generateLocaleData(locale: string): PluralRulesLocaleData | undefined {
   let compiler, fn;
   try {
-    compiler = new Compiler(lang, {cardinals: true, ordinals: true});
+    compiler = new Compiler(locale, {cardinals: true, ordinals: true});
     fn = compiler.compile();
   } catch (e) {
     // Ignore
     return;
   }
-  allData[lang] = {
+  return {
     data: {
-      [lang]: {
+      [locale]: {
         categories: compiler.categories,
         fn,
       },
     },
-    availableLocales: [lang],
+    availableLocales: [locale],
   };
-});
+}
 
 function main(args: minimist.ParsedArgs) {
   const {
@@ -42,6 +42,16 @@ function main(args: minimist.ParsedArgs) {
     polyfillLocalesOutFile,
   } = args;
 
+  const data: Record<string, PluralRulesLocaleData> = {};
+  const locales = testLocale ? [testLocale] : languages;
+
+  locales.forEach(locale => {
+    const d = generateLocaleData(locale);
+    if (d) {
+      data[locale] = d;
+    }
+  });
+
   outDir &&
     languages.forEach(lang => {
       outputFileSync(
@@ -49,7 +59,7 @@ function main(args: minimist.ParsedArgs) {
         `/* @generated */
 // prettier-ignore
 if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
-  Intl.PluralRules.__addLocaleData(${serialize(allData[lang])})
+  Intl.PluralRules.__addLocaleData(${serialize(data[lang])})
 }
 `
       );
@@ -61,7 +71,7 @@ if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') 
       `/* @generated */
 // prettier-ignore
 // @ts-nocheck
-export default ${serialize(allData[testLocale])}
+export default ${serialize(data[testLocale])}
 `
     );
 
@@ -74,8 +84,8 @@ export default ${serialize(allData[testLocale])}
 require('./polyfill')
 if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
   Intl.PluralRules.__addLocaleData(
-${Object.keys(allData)
-  .map(lang => serialize(allData[lang]))
+${Object.keys(data)
+  .map(lang => serialize(data[lang]))
   .join(',\n')}
   )
 }
@@ -92,8 +102,8 @@ ${Object.keys(allData)
 import './polyfill-force'
 if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
 Intl.PluralRules.__addLocaleData(
-${Object.keys(allData)
-  .map(lang => serialize(allData[lang]))
+${Object.keys(data)
+  .map(lang => serialize(data[lang]))
   .join(',\n')}
 )
 }
