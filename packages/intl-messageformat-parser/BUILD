@@ -10,6 +10,7 @@ pkg_npm(
     package_name = PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
+        "README.md",
         "package.json",
     ],
     deps = [

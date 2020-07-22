@@ -12,6 +12,7 @@ pkg_npm(
     package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = [
         "LICENSE.md",
+        "README.md",
         "package.json",
     ],
     deps = [
