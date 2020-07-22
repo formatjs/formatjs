@@ -10,7 +10,11 @@ PACKAGE_NAME = "intl-listformat"
 
 TEST_LOCALES = [
     "en",
+    "en-AI",
+    "en-US-POSIX",
     "zh",
+    "zh-Hant",
+    "zh-Hans",
 ]
 
 TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
@@ -123,7 +127,7 @@ ts_node(
     src = "tests/locale-data/%s.json" % locale,
     args = [
         "$(execpath scripts/cldr.ts)",
-        "--testLocale",
+        "--locales",
         locale,
         "--testOutFile",
         "$@",

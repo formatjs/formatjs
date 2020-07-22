@@ -8,7 +8,6 @@ import * as ListPatterns from 'cldr-misc-full/main/en/listPatterns.json';
 import {sync as globSync} from 'glob';
 import {resolve, dirname} from 'path';
 import {ListPatternFieldsData, ListPattern} from '@formatjs/intl-utils';
-import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
 
 export type ListTypes = typeof ListPatterns['main']['en']['listPatterns'];
 
@@ -59,7 +58,7 @@ function loadListPatterns(locale: string): ListPatternFieldsData {
 }
 
 export function extractLists(
-  locales: string[] = AVAILABLE_LOCALES.availableLocales.full
+  locales: string[] = getAllLocales()
 ): Record<string, ListPatternFieldsData> {
   return locales.reduce(
     (all: Record<string, ListPatternFieldsData>, locale) => {

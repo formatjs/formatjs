@@ -4,40 +4,40 @@ import {outputFileSync, outputJsonSync} from 'fs-extra';
 import {ListPatternLocaleData} from '@formatjs/intl-utils';
 import * as minimist from 'minimist';
 
-const data = extractLists();
-const langData = getAllLocales().reduce(
-  (all: Record<string, ListPatternLocaleData>, locale) => {
-    const lang = locale.split('-')[0];
-    if (!all[lang]) {
-      all[lang] = {
-        data: {
-          [locale]: data[locale],
-        },
-        availableLocales: [locale],
-      };
-    } else {
-      all[lang].data[locale] = data[locale];
-      all[lang].availableLocales.push(locale);
-    }
-
-    if (locale === 'en-US-POSIX') {
-      all[lang].availableLocales.push('en-US');
-    }
-
-    return all;
-  },
-  {}
-);
-
 function main(args: minimist.ParsedArgs) {
   const {
     outDir,
-    testLocale,
+    locales: localesToGen,
     testOutFile,
     test262MainFile,
     polyfillLocalesOutFile,
   } = args;
+  const locales: string[] = localesToGen
+    ? localesToGen.split(',')
+    : getAllLocales();
+  const data = extractLists(locales);
+  const langData = locales.reduce(
+    (all: Record<string, ListPatternLocaleData>, locale) => {
+      if (locale === 'en-US-POSIX') {
+        all['en-US'] = {
+          data: {
+            ['en-US']: data[locale],
+          },
+          availableLocales: ['en-US'],
+        };
+      } else {
+        all[locale] = {
+          data: {
+            [locale]: data[locale],
+          },
+          availableLocales: [locale],
+        };
+      }
 
+      return all;
+    },
+    {}
+  );
   // Dist all locale files to locale-data
   outDir &&
     Object.keys(langData).forEach(function (lang) {
@@ -53,7 +53,11 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
     });
 
   // Dist all locale files to tests/locale-data
-  testOutFile && outputJsonSync(testOutFile, langData[testLocale]);
+  testOutFile &&
+    outputJsonSync(
+      testOutFile,
+      langData[locales[0] === 'en-US-POSIX' ? 'en-US' : locales[0]]
+    );
 
   // Aggregate all into ../polyfill-locales.js
   polyfillLocalesOutFile &&
