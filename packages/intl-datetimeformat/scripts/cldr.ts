@@ -1,36 +1,37 @@
 import {extractDatesFields, getAllLocales} from './extract-dates';
 import {join} from 'path';
-const locales = getAllLocales();
 import {outputFileSync, outputJSONSync} from 'fs-extra';
 import {RawDateTimeLocaleData} from '../src/types';
 import * as minimist from 'minimist';
 
-const data = extractDatesFields();
-const langData = locales.reduce(
-  (all: Record<string, RawDateTimeLocaleData>, locale) => {
-    if (!all[locale]) {
-      all[locale] = {
-        data: {
-          [locale]: data[locale],
-        },
-        availableLocales: [locale],
-      };
-    } else {
-      all[locale].data[locale] = data[locale];
-      all[locale].availableLocales.push(locale);
-    }
-
-    if (locale === 'en-US-POSIX') {
-      all[locale].availableLocales.push('en-US');
-    }
-
-    return all;
-  },
-  {}
-);
-
 function main(args: minimist.ParsedArgs) {
-  const {outDir, testLocale, testOutFile, test262MainFile} = args;
+  const {outDir, locales: localesToGen, testOutFile, test262MainFile} = args;
+  const locales: string[] = localesToGen
+    ? localesToGen.split(',')
+    : getAllLocales();
+  const data = extractDatesFields(locales);
+  const langData = locales.reduce(
+    (all: Record<string, RawDateTimeLocaleData>, locale) => {
+      if (locale === 'en-US-POSIX') {
+        all['en-US'] = {
+          data: {
+            ['en-US']: data[locale],
+          },
+          availableLocales: ['en-US'],
+        };
+      } else {
+        all[locale] = {
+          data: {
+            [locale]: data[locale],
+          },
+          availableLocales: [locale],
+        };
+      }
+
+      return all;
+    },
+    {}
+  );
   if (outDir) {
     // Dist all locale files to locale-data
     Object.keys(langData).forEach(function (lang) {
@@ -48,7 +49,7 @@ function main(args: minimist.ParsedArgs) {
 
   // Dist all json locale files to testDataDir
   if (testOutFile) {
-    outputJSONSync(testOutFile, langData[testLocale]);
+    outputJSONSync(testOutFile, langData[locales[0]]);
   }
 
   if (test262MainFile) {
