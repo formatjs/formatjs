@@ -34,7 +34,7 @@ Array [
   Object {
     "defaultMessage": "No ID",
     "description": "no ID",
-    "id": "fAT9Q5",
+    "id": "ae494",
   },
 ]
 `;
@@ -75,7 +75,7 @@ Array [
   Object {
     "defaultMessage": "No ID",
     "description": "no ID",
-    "id": "fAT9Q5",
+    "id": "ae494",
   },
 ]
 `;
@@ -166,7 +166,7 @@ Array [
       "line": 37,
     },
     "file": "defineMessages/actual.js",
-    "id": "fAT9Q5",
+    "id": "ae494",
     "start": Object {
       "column": 19,
       "line": 34,
@@ -205,7 +205,7 @@ Array [
   Object {
     "defaultMessage": "No ID",
     "description": "no ID",
-    "id": "fAT9Q5",
+    "id": "ae494",
   },
 ]
 `;
@@ -221,12 +221,12 @@ Options:
   --out-file <path>                                     The target file path where the plugin will output an aggregated \`.json\` file of allthe translations from the \`files\` supplied.
   This flag will ignore --messages-dir
   --id-interpolation-pattern <pattern>                  If certain message descriptors don't have id, this \`pattern\` will be used to automaticallygenerate IDs for them. Default to \`[contenthash:5]\`.
-  See https://github.com/webpack/loader-utils#interpolatename for sample patterns
+  See https://github.com/webpack/loader-utils#interpolatename for sample patterns (default: \\"[contenthash:5]\\")
   --extract-source-location                             Whether the metadata about the location of the message in the source file should be extracted. If \`true\`, then \`file\`, \`start\`, and \`end\` fields will exist for each extracted message descriptors. (default: false)
   --module-source-name <name>                           The ES6 module source name of the React Intl package. Defaults to: \`\\"react-intl\\"\`, but can be changed to another name/path to React Intl.
   --remove-default-message                              Remove \`defaultMessage\` field in generated js after extraction (default: false)
   --additional-component-names <comma-separated-names>  Additional component names to extract messages from, e.g: \`['FormattedFooBarMessage']\`. **NOTE**: By default we check for the fact that \`FormattedMessage\` is imported from \`moduleSourceName\` to make sure variable alias works. This option does not do that so it's less safe.
-  --extract-from-format-message-call                    Opt-in to extract from \`intl.formatMessage\` call with the same restrictions, e.g: has to be called with object literal such as \`intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'})\` (default: false)
+  --extract-from-format-message-call                    Opt-in to extract from \`intl.formatMessage\` call with the same restrictions, e.g: has to be called with object literal such as \`intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'})\` (default: true)
   --output-empty-json                                   Output file with empty [] if src has no messages. For build systems like bazel that relies on specific output mapping, not writing out a file can cause issues. (default: false)
   --ignore <files>                                      List of glob paths to **not** extract translations from.
   --throws                                              Whether to throw an exception when we fail to process any file in the batch.
@@ -283,11 +283,11 @@ Array [
   Object {
     "defaultMessage": "No ID",
     "description": "no ID",
-    "id": "fAT9Q5",
+    "id": "ae494",
   },
   Object {
     "defaultMessage": "No Desc",
-    "id": "GjRwn4",
+    "id": "c63ed",
   },
   Object {
     "defaultMessage": "formatted message",
@@ -331,7 +331,7 @@ Array [
   Object {
     "defaultMessage": "No ID",
     "description": "no ID",
-    "id": "fAT9Q5",
+    "id": "ae494",
   },
 ]
 `;
@@ -366,11 +366,11 @@ Array [
   Object {
     "defaultMessage": "No ID",
     "description": "no ID",
-    "id": "fAT9Q5",
+    "id": "ae494",
   },
   Object {
     "defaultMessage": "No Desc",
-    "id": "GjRwn4",
+    "id": "c63ed",
   },
   Object {
     "defaultMessage": "formatted message",

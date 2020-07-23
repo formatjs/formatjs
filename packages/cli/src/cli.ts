@@ -56,7 +56,8 @@ async function main(argv: string[]) {
         "If certain message descriptors don't have id, this `pattern` will be used to automatically",
         'generate IDs for them. Default to `[contenthash:5]`.\n',
         'See https://github.com/webpack/loader-utils#interpolatename for sample patterns',
-      ].join('')
+      ].join(''),
+      '[contenthash:5]'
     )
     .option(
       '--extract-source-location',
@@ -96,7 +97,7 @@ async function main(argv: string[]) {
         "to be called with object literal such as `intl.formatMessage({ id: 'foo', defaultMessage: ",
         "'bar', description: 'baz'})`",
       ].join(''),
-      false
+      true
     )
     .option(
       '--output-empty-json',
