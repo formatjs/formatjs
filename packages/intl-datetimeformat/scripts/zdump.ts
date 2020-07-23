@@ -1,6 +1,6 @@
 import * as minimist from 'minimist';
 
-import zones from '../src/zones';
+import zones from '../src/data/zones';
 import {execFile as _execFile} from 'child_process';
 import {promisify} from 'util';
 import {resolve} from 'path';

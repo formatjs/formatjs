@@ -383,9 +383,9 @@ ts_node(
 
 # zdump
 # TODO: zdump takes a very long time
-# ts_node(
-#     name = "zdump-gen",
-#     outs = ["tmp/data.zdump"],
+# generate_src_file(
+#     name="zdump",
+#     src = "data.zdump",
 #     args = [
 #         "$(execpath scripts/zdump.ts)",
 #         "--zicDir",
@@ -395,7 +395,7 @@ ts_node(
 #     ],
 #     data = [
 #         "scripts/zdump.ts",
-#         "src/zones.ts",
+#         "src/data/zones.ts",
 #         "zic",
 #         "//:tsconfig.json",
 #         "@npm//@types/fs-extra",
@@ -404,10 +404,4 @@ ts_node(
 #         "@npm//fs-extra",
 #         "@npm//minimist",
 #     ],
-# )
-
-# generated_file_test(
-#     name = "zdump",
-#     src = "data.zdump",
-#     generated = ":zdump-gen",
 # )
