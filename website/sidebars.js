@@ -1,10 +1,11 @@
 module.exports = {
   docs: {
     'Getting Started': [
-      'basic-internationalization-principles',
-      'icu-syntax',
+      'getting-started/installation',
+      'getting-started/application-workflow',
       'runtime-requirements',
     ],
+    'Core Concepts': ['basic-internationalization-principles', 'icu-syntax'],
     Polyfills: [
       'polyfills',
       'polyfills/intl-getcanonicallocales',

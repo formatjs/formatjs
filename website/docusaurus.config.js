@@ -20,7 +20,7 @@ module.exports = {
       },
       links: [
         {
-          to: 'docs/basic-internationalization-principles',
+          to: 'docs/getting-started/installation',
           activeBasePath: 'docs',
           label: 'Docs',
           position: 'left',
