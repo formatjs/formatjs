@@ -3,6 +3,7 @@
   "version": "2.4.1",
   "description": "TS Compiler transformer for formatjs",
   "main": "index.js",
+  "types": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/formatjs/formatjs.git"
@@ -15,8 +16,10 @@
     "transformer",
     "react-intl"
   ],
-  "dependencies": {
-    "@formatjs/intl-utils": "^3.8.1",
+  "peerDependencies": {
+    "typescript": "~3.8"
+  },
+  "devDependencies": {
     "typescript": "~3.8"
   },
   "author": "Long Ho <holevietlong@gmail.com>",

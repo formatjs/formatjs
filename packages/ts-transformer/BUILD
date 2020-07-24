@@ -7,7 +7,11 @@ PACKAGE_NAME = "ts-transformer"
 pkg_npm(
     name = PACKAGE_NAME,
     package_name = "@formatjs/%s" % PACKAGE_NAME,
-    srcs = ["package.json"],
+    srcs = [
+        "LICENSE.md",
+        "README.md",
+        "package.json",
+    ],
     deps = [":dist"],
 )
 
