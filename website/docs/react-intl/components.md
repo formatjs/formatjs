@@ -40,7 +40,7 @@ interface IntlConfig {
 
 - `locale`, `formats`, and `messages` are for the user's current locale and what the app should be rendered in. While `defaultLocale` and `defaultFormats` are for fallbacks or during development and represent the app's default. Notice how there is no `defaultMessages`, that's because each [Message Descriptor](#message-descriptor) provides a `defaultMessage`.
 
-- `textComponent` provides a way to configure the default wrapper for React Intl's `<Formatted*>` components. If not specified, [`<React.Fragment>`](https://reactjs.org/docs/fragments.html) is used. Before V3, `span` was used instead; check the [migration guide](Upgrade-Guide-3x.md) for more info.
+- `textComponent` provides a way to configure the default wrapper for React Intl's `<Formatted*>` components. If not specified, [`<React.Fragment>`](https://reactjs.org/docs/fragments.html) is used. Before V3, `span` was used instead; check the [migration guide](upgrade-guide-3.x.md) for more info.
 
 - `onError` allows the user to provide a custom error handler. By default, error messages are logged using `console.error` if `NODE_ENV` is not set to `production`.
 
@@ -707,12 +707,8 @@ Starting with [React Native v0.52](https://github.com/react-native-community/rel
 This requires [Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames) which has limited browser support. Please use our [polyfill](../polyfills/intl-displaynames.md) if you plan to support them.
 :::
 
-This component uses [`formatDisplayName`][formatdisplayname] and [`Intl.DisplayName`][intl-displayname]
-has `props` that correspond to `DisplayNameOptions`. You might need a [polyfill][displaynames-polyfill].
-
-[formatdisplayname]: api.md#formatdisplayname
-[intl-displayname]: https://github.com/tc39/proposal-intl-displaynames
-[displaynames-polyfill]: ../polyfills/intl-displaynames
+This component uses [`formatDisplayName`](api.md#formatdisplayname) and [`Intl.DisplayNames`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames)
+has `props` that correspond to `DisplayNameOptions`. You might need a [polyfill][../polyfills/intl-displaynames.md].
 
 **Props:**
 

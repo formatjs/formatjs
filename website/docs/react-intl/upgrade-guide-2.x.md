@@ -49,11 +49,11 @@ This decoupling of the library from the locale data, allows for the files to be 
 
 ## Remove Intl Mixin
 
-**The `IntlMixin` has been removed from React Intl v2.** The mixin did two things: it automatically propagated `locales`, `formats`, and `messages` throughout an app's hierarchy, and it provided an imperative API via `format*()` functions. These jobs are now handled by [`<IntlProvider>`](Components#intlprovider) and [`injectIntl()`](api.md#injection-api), respectively:
+**The `IntlMixin` has been removed from React Intl v2.** The mixin did two things: it automatically propagated `locales`, `formats`, and `messages` throughout an app's hierarchy, and it provided an imperative API via `format*()` functions. These jobs are now handled by [`<IntlProvider>`](components.md#intlprovider) and [`injectIntl()`](api.md#injection-api), respectively:
 
 ### Update to `IntlProvider`
 
-In React Intl v1, you would add the `IntlMixin` to your root component; e.g., `<App>`. Remove the `IntlMixin` and instead wrap your root component with [`<IntlProvider>`](Components#intlprovider):
+In React Intl v1, you would add the `IntlMixin` to your root component; e.g., `<App>`. Remove the `IntlMixin` and instead wrap your root component with [`<IntlProvider>`](components.md#intlprovider):
 
 ```tsx
 import ReactDOM from 'react-dom';
@@ -127,7 +127,7 @@ This upgrade guide will focus on using Message Descriptors that only contain an 
 
 ### Flatten `messages` Object
 
-React Intl v2 no longer supports nested `messages` objects, instead the collection of translated string messages passed to [`<IntlProvider>`](Components#intlprovider) must be flat. This is an explicit design choice which simplifies while increasing flexibility. React Intl v2 does not apply any special semantics to strings with dots; e.g., `"namespaced.string_id"`.
+React Intl v2 no longer supports nested `messages` objects, instead the collection of translated string messages passed to [`<IntlProvider>`](components.md#intlprovider) must be flat. This is an explicit design choice which simplifies while increasing flexibility. React Intl v2 does not apply any special semantics to strings with dots; e.g., `"namespaced.string_id"`.
 
 Apps using a nested `messages` object structure could use the following function to flatten their object according to React Intl v1's semantics:
 
@@ -199,7 +199,7 @@ In React Intl v2, the [`formatMessage()`](api.md#formatmessage) function is inje
 
 ### Update `FormattedMessage` and `FormattedHTMLMessage` Instances
 
-The props for these two components have completely changed in React Intl v2. Instead of taking a `message` prop and treating all other props as values to fill in placeholders in a message, [`<FormattedMessage>`](Components#formattedmessage) and [`<FormattedHTMLMessage>`](Components#formattedhtmlmessage) now the same props as a Message Descriptor plus a new `values` prop.
+The props for these two components have completely changed in React Intl v2. Instead of taking a `message` prop and treating all other props as values to fill in placeholders in a message, [`<FormattedMessage>`](components.md#formattedmessage) and [`<FormattedHTMLMessage>`](components.md#formattedhtmlmessage) now the same props as a Message Descriptor plus a new `values` prop.
 
 The new `values` prop groups all of the message's placeholder values together into an object.
 
@@ -223,7 +223,7 @@ Minor changes have been made to how the "now" reference time is specified when f
 
 ### Rename `FormattedRelative`'s `now` Prop to `initialNow`
 
-A new feature has been added to [`<FormattedRelative>`](Components#formattedrelative) instances in React Intl v2, they now "tick" and stay up to date. Since time moves forward, it was confusing to have a prop named `now`, so it has been renamed to `initialNow`. Any `<FormattedRelative>` instances that use `now` should update to prop name to `initialNow`:
+A new feature has been added to [`<FormattedRelative>`](components.md#formattedrelative) instances in React Intl v2, they now "tick" and stay up to date. Since time moves forward, it was confusing to have a prop named `now`, so it has been renamed to `initialNow`. Any `<FormattedRelative>` instances that use `now` should update to prop name to `initialNow`:
 
 **1.0:**
 
@@ -238,7 +238,7 @@ A new feature has been added to [`<FormattedRelative>`](Components#formattedrela
 ```
 
 :::info
-The [`<IntlProvider>`](Components#intlprovider) component also has a `initialNow` prop which can be assigned a value to stabilize the "now" reference time for _all_ [`<FormattedRelative>`](Components#formattedrelative) instances. This is useful for universal/isomorphic apps to proper React checksums between the server and client initial render.
+The [`<IntlProvider>`](components.md#intlprovider) component also has a `initialNow` prop which can be assigned a value to stabilize the "now" reference time for _all_ [`<FormattedRelative>`](components.md#formattedrelative) instances. This is useful for universal/isomorphic apps to proper React checksums between the server and client initial render.
 :::
 
 ### Merge `formatRelative()`'s Second and Third Arguments

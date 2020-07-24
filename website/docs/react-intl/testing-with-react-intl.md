@@ -5,7 +5,7 @@ title: Testing with formatjs
 
 ## `Intl` APIs requirements
 
-React Intl uses the built-in [`Intl` APIs](https://mdn.io/intl) in JavaScript. Make sure your environment satisfy the requirements listed in [`Intl` APIs requirements](Getting-Started.md##intl-apis-requirements)
+React Intl uses the built-in [`Intl` APIs](https://mdn.io/intl) in JavaScript. Make sure your environment satisfy the requirements listed in [`Intl` APIs requirements](../guides/runtime-requirements.md)
 
 ### Mocha
 

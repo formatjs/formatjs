@@ -72,5 +72,5 @@ intl.formatMessage(message, {name: 'John'}); // My name is John
 ```
 
 :::caution
-You can declare a message without immediately formatting it with `defineMessage` and our extractor would still be able to extract it. However, our [enforce-placeholders](../tooling/linter#enforce-placeholders.md) linter rule won't be able to analyze it.
+You can declare a message without immediately formatting it with `defineMessage` and our extractor would still be able to extract it. However, our [enforce-placeholders](../tooling/linter.md#enforce-placeholders) linter rule won't be able to analyze it.
 :::

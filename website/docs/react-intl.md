@@ -36,7 +36,7 @@ if (!Intl.PluralRules) {
 }
 ```
 
-4. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](tooling/intl-relativetimeformat.md) in your build along with individual CLDR data for each locale you support.
+4. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](polyfills/intl-relativetimeformat.md) in your build along with individual CLDR data for each locale you support.
 
 ```tsx
 if (!Intl.RelativeTimeFormat) {
@@ -297,7 +297,7 @@ Our [Advanced Usage](react-intl/advanced-usage.md) has further guides for produc
 
 ## Message extraction
 
-We've built [@formatjs/cli](tooling/cli.md) that helps you extract messages from a list of files. It uses [babel-plugin-react-intl](tooling/babel-plugin-react-intl.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
+We've built [@formatjs/cli](tooling/cli.md) that helps you extract messages from a list of files. It uses [babel-plugin-react-intl](tooling/babel-plugin.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
 
 ```tsx
 import {defineMessages} from 'react-intl';
