@@ -8,6 +8,7 @@
       "instanceof": "Function",
       "tsType": "(id: string, defaultMessage: string, description: string, filePath: string) => string"
     },
+    "idInterpolationPattern": {"type": "string"},
     "removeDefaultMessage": {"type": "boolean"},
     "extractFromFormatMessageCall": {"type": "boolean"},
     "additionalComponentNames": {"type": "array", "items": {"type": "string"}},

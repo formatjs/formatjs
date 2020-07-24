@@ -32,6 +32,7 @@ SRCS = glob(["*.ts"]) + ["options.schema.json"]
 
 SRC_DEPS = [
     "//packages/intl-messageformat-parser:dist",
+    "//packages/ts-transformer:dist",
     "@npm//@babel/helper-plugin-utils",
     "@npm//fs-extra",
     "@npm//@types/fs-extra",
@@ -61,6 +62,7 @@ jest_test(
     ]),
     deps = [
         "//packages/intl-messageformat-parser:types",
+        "//packages/ts-transformer:types",
         "@npm//@babel/preset-react",
     ] + SRC_DEPS,
 )

@@ -29,6 +29,7 @@ import {NodePath, Scope} from '@babel/traverse';
 import * as validate from 'schema-utils';
 import * as OPTIONS_SCHEMA from './options.schema.json';
 import {OptionsSchema} from './options.js';
+import {interpolateName} from '@formatjs/ts-transformer';
 
 const DEFAULT_COMPONENT_NAMES = ['FormattedMessage'];
 
@@ -189,6 +190,7 @@ function evaluateMessageDescriptor(
   descriptorPath: MessageDescriptorPath,
   isJSXSource = false,
   filename: string,
+  idInterpolationPattern?: string,
   overrideIdFn?: OptionsSchema['overrideIdFn']
 ) {
   let id = getMessageDescriptorValue(descriptorPath.id);
@@ -199,6 +201,16 @@ function evaluateMessageDescriptor(
 
   if (overrideIdFn) {
     id = overrideIdFn(id, defaultMessage, description, filename);
+  } else if (!id && idInterpolationPattern && defaultMessage) {
+    id = interpolateName(
+      {sourcePath: filename} as any,
+      idInterpolationPattern,
+      {
+        content: description
+          ? `${defaultMessage}#${description}`
+          : defaultMessage,
+      }
+    );
   }
   const descriptor: MessageDescriptor = {
     id,
@@ -470,6 +482,7 @@ export default declare((api: any, options: OptionsSchema) => {
           moduleSourceName = 'react-intl',
           additionalComponentNames = [],
           removeDefaultMessage,
+          idInterpolationPattern,
           overrideIdFn,
         } = opts;
         if (wasExtracted(path)) {
@@ -518,6 +531,7 @@ export default declare((api: any, options: OptionsSchema) => {
               descriptorPath,
               true,
               filename,
+              idInterpolationPattern,
               overrideIdFn
             );
 
@@ -562,7 +576,7 @@ export default declare((api: any, options: OptionsSchema) => {
               defaultMessageAttr.remove();
             }
 
-            if (overrideIdFn) {
+            if (overrideIdFn || (descriptor.id && idInterpolationPattern)) {
               if (idAttr) {
                 idAttr.get('value').replaceWith(t.stringLiteral(descriptor.id));
               } else if (defaultMessageAttr) {
@@ -594,6 +608,7 @@ export default declare((api: any, options: OptionsSchema) => {
         const {
           moduleSourceName = 'react-intl',
           overrideIdFn,
+          idInterpolationPattern,
           removeDefaultMessage,
           extractFromFormatMessageCall,
         } = opts;
@@ -631,6 +646,7 @@ export default declare((api: any, options: OptionsSchema) => {
             descriptorPath,
             false,
             filename,
+            idInterpolationPattern,
             overrideIdFn
           );
           storeMessage(

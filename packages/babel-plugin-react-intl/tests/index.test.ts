@@ -18,6 +18,7 @@ const skipOutputTests = [
   'icuSyntax',
   'removeDescriptions',
   'overrideIdFn',
+  'idInterpolationPattern',
   'removeDefaultMessage',
   'additionalComponentNames',
   'outputEmptyJson',
@@ -107,6 +108,21 @@ describe('options', () => {
           defaultMessage.length
         }.${typeof description}`;
       },
+    })!.code;
+
+    // Check code output
+    expect(trim(actual)).toMatchSnapshot();
+
+    // Check message output
+    expect(
+      require(resolveOutputPath(process.cwd(), __dirname, filePath))
+    ).toMatchSnapshot();
+  });
+  it('correctly overrides the id when idInterpolationPattern is provided', () => {
+    const fixtureDir = join(__dirname, 'fixtures', 'idInterpolationPattern');
+    const filePath = join(fixtureDir, 'actual.js');
+    const actual = transform(filePath, {
+      idInterpolationPattern: '[sha512:contenthash:hex:6]',
     })!.code;
 
     // Check code output
