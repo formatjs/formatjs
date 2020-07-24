@@ -165,7 +165,9 @@ import {IntlShape} from 'react-intl/lib/types'; // Incorrect
 
 If we're missing any interface top level support, please let us know and/or submitting a PR is greatly appreciated :)
 
-Note that you might need to make a few changes to your code if you were relying on the now deprecated **@types/react-intl** package. The most common example is `InjectedIntlProps` which must be replaced with `WrappedComponentProps`.
+:::info
+You might need to make a few changes to your code if you were relying on the now deprecated **@types/react-intl** package. The most common example is `InjectedIntlProps` which must be replaced with `WrappedComponentProps`.
+:::
 
 ## FormattedRelativeTime
 

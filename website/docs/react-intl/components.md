@@ -174,6 +174,10 @@ April 05, 2016
 
 ### `FormattedDateParts`
 
+:::caution browser support
+This requires [Intl.DateTimeFormat.prototype.formatToParts](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/formatToParts) which is not available in IE11. Please use our [polyfill](../polyfills/intl-datetimeformat.md) if you plan to support IE11.
+:::
+
 This component provides more customization to `FormattedDate` by allowing children function to have access to underlying parts of the formatted date. The available parts are listed [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/formatToParts)
 
 **Props:**
@@ -244,6 +248,10 @@ By default `<FormattedTime>` will render the formatted time into a `React.Fragme
 
 ### `FormattedTimeParts`
 
+:::caution browser support
+This requires [Intl.DateTimeFormat.prototype.formatToParts](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/formatToParts) which is not available in IE11. Please use our [polyfill](../polyfills/intl-datetimeformat.md) if you plan to support IE11.
+:::
+
 This component provides more customization to `FormattedTime` by allowing children function to have access to underlying parts of the formatted date. The available parts are listed [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/formatToParts)
 
 **Props:**
@@ -274,6 +282,10 @@ props: Intl.DateTimeFormatOptions &
 ```
 
 ### `FormattedRelativeTime`
+
+:::caution browser support
+This requires [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-relativetimeformat.md) if you plan to support them.
+:::
 
 This component uses the [`formatRelativeTime`](api.md#formatrelativetime) API and has `props` that correspond to the following relative formatting options:
 
@@ -406,6 +418,10 @@ in a [sanctioned unit](../polyfills/intl-numberformat.md#SupportedUnits). For ex
 
 ### `FormattedNumberParts`
 
+:::caution browser support
+This requires [Intl.NumberFormat.prototype.formatToParts](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/formatToParts) which is not available in IE11. Please use our [polyfill](../polyfills/intl-numberformat.md) if you plan to support IE11.
+:::
+
 This component provides more customization to `FormattedNumber` by allowing children function to have access to underlying parts of the formatted number. The available parts are listed [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat/formatToParts).
 
 **Props:**
@@ -474,6 +490,10 @@ messages
 ## List Formatting Components
 
 ### `FormattedList`
+
+:::caution browser support
+This requires [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-listformat.md) if you plan to support them.
+:::
 
 This component uses [`formatList`](api.md#formatlist) API and [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ListFormat). Its props corresponds to `Intl.ListFormatOptions`.
 
@@ -669,11 +689,9 @@ All the rich text gets translated together which yields higher quality output. T
 
 Extending this also allows users to potentially utilizing other rich text format, like [Markdown](https://daringfireball.net/projects/markdown/).
 
-#### Caveats
-
-This has the same caveats documented in [`intl-messageformat`](../intl-messageformat.md#caveats).
-
-**Each child in a list should have a unique "key"**: The chunks we return can be text and/or React chunks so the other way is that we have to clone them & add key, which has performance implication. See https://github.com/formatjs/formatjs/issues/1467 for workarounds.
+:::caution limitation
+This has the same limitations documented in [`intl-messageformat`](../intl-messageformat.md#caveats).
+:::
 
 ### Using React-Intl with React Native
 
@@ -684,6 +702,10 @@ Starting with [React Native v0.52](https://github.com/react-native-community/rel
 ## Localized Display Name Components
 
 ### `FormattedDisplayName`
+
+:::caution browser support
+This requires [Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames) which has limited browser support. Please use our [polyfill](../polyfills/intl-displaynames.md) if you plan to support them.
+:::
 
 This component uses [`formatDisplayName`][formatdisplayname] and [`Intl.DisplayName`][intl-displayname]
 has `props` that correspond to `DisplayNameOptions`. You might need a [polyfill][displaynames-polyfill].

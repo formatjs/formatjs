@@ -43,7 +43,9 @@ if ('ReactIntlLocaleData' in window) {
 }
 ```
 
-**Note:** This decoupling of the library from the locale data, allows for the files to be loaded via `<script async>`. When using async scripts, your client bootstrapping code will need to wait for the `load` event, including the code above.
+::info
+This decoupling of the library from the locale data, allows for the files to be loaded via `<script async>`. When using async scripts, your client bootstrapping code will need to wait for the `load` event, including the code above.
+:::
 
 ## Remove Intl Mixin
 
@@ -65,7 +67,9 @@ ReactDOM.render(
 );
 ```
 
-**Note:** The `locale` prop is **singular**, required, and only accepts a string value. This is a simplification of the plural `locales` prop used by the `IntlMixin`.
+:::info
+The `locale` prop is **singular**, required, and only accepts a string value. This is a simplification of the plural `locales` prop used by the `IntlMixin`.
+:::
 
 ### Update to `injectIntl()`
 
@@ -117,7 +121,9 @@ React Intl v2 introduces a new [**Message Descriptor**](api.md#message-descripto
 - **`description`**: Context for the translator about how it's used in the UI
 - **`defaultMessage`**: The default message (probably in English)
 
-**Note:** This upgrade guide will focus on using Message Descriptors that only contain an `id` property.
+:::info
+This upgrade guide will focus on using Message Descriptors that only contain an `id` property.
+:::
 
 ### Flatten `messages` Object
 
@@ -144,7 +150,9 @@ function flattenMessages(nestedMessages, prefix = '') {
 let messages = flattenMessages(nestedMessages);
 ```
 
-**Note:** Message ids can still contain `"."`s, so the ids themselves remain the same, it's only the `messages` object structure that needs to change.
+:::info
+Message ids can still contain `"."`s, so the ids themselves remain the same, it's only the `messages` object structure that needs to change.
+:::
 
 ### Replace `getIntlMessage()` Calls with Message Descriptors
 
@@ -185,7 +193,9 @@ let message = this.formatMessage(
 let message = this.props.intl.formatMessage({id: 'some.message.id'}, values);
 ```
 
-**Note:** In React Intl v2, the [`formatMessage()`](api.md#formatmessage) function is injected via [`injectIntl()`](api.md#injectintl).
+:::info
+In React Intl v2, the [`formatMessage()`](api.md#formatmessage) function is injected via [`injectIntl()`](api.md#injectintl).
+:::
 
 ### Update `FormattedMessage` and `FormattedHTMLMessage` Instances
 
@@ -227,7 +237,9 @@ A new feature has been added to [`<FormattedRelative>`](Components#formattedrela
 <FormattedRelative value={date} initialNow={otherDate} />
 ```
 
-**Note:** The [`<IntlProvider>`](Components#intlprovider) component also has a `initialNow` prop which can be assigned a value to stabilize the "now" reference time for _all_ [`<FormattedRelative>`](Components#formattedrelative) instances. This is useful for universal/isomorphic apps to proper React checksums between the server and client initial render.
+:::info
+The [`<IntlProvider>`](Components#intlprovider) component also has a `initialNow` prop which can be assigned a value to stabilize the "now" reference time for _all_ [`<FormattedRelative>`](Components#formattedrelative) instances. This is useful for universal/isomorphic apps to proper React checksums between the server and client initial render.
+:::
 
 ### Merge `formatRelative()`'s Second and Third Arguments
 
@@ -248,4 +260,6 @@ let relative = this.props.intl.formatRelative(date, {
 });
 ```
 
-**Note:** In React Intl v2, the [`formatRelative()`](api.md#formatrelative) function is injected via [`injectIntl()`](api.md#injectintl).
+:::info
+In React Intl v2, the [`formatRelative()`](api.md#formatrelative) function is injected via [`injectIntl()`](api.md#injectintl).
+:::

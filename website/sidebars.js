@@ -8,22 +8,16 @@ module.exports = {
       'getting-started/message-distribution',
     ],
     Guides: [
-      'guides/bundler-plugins',
       'guides/develop',
+      'guides/bundler-plugins',
       'react-intl/testing',
+      'guides/runtime-requirements',
       'react-intl/advanced-usage',
     ],
-    'Core Concepts': [
-      'basic-internationalization-principles',
-      'icu-syntax',
-      'runtime-requirements',
-    ],
+    'Core Concepts': ['basic-internationalization-principles', 'icu-syntax'],
   },
   api: {
-    'intl-messageformat': ['intl-messageformat'],
-    'intl-messageformat-parser': ['intl-messageformat-parser'],
     'react-intl': [
-      'react-intl',
       'react-intl/components',
       'react-intl/api',
       'react-intl/upgrade-guide-5x',
@@ -31,12 +25,8 @@ module.exports = {
       'react-intl/upgrade-guide-3x',
       'react-intl/upgrade-guide-2x',
     ],
-    Tooling: [
-      'tooling/cli',
-      'tooling/linter',
-      'tooling/babel-plugin',
-      'tooling/ts-transformer',
-    ],
+    'intl-messageformat': ['intl-messageformat'],
+    'intl-messageformat-parser': ['intl-messageformat-parser'],
   },
   polyfills: {
     Polyfills: [
@@ -49,6 +39,14 @@ module.exports = {
       'polyfills/intl-numberformat',
       'polyfills/intl-datetimeformat',
       'polyfills/intl-locale',
+    ],
+  },
+  tooling: {
+    Tooling: [
+      'tooling/cli',
+      'tooling/linter',
+      'tooling/babel-plugin',
+      'tooling/ts-transformer',
     ],
   },
 };

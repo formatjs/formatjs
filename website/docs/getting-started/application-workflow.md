@@ -14,13 +14,13 @@ projectRoot
 |-- src
 |   |-- App.js
 |-- lang
-|   |-- strings_en-US.json
-|   |-- strings_fr.json
+|   |-- en-US.json
+|   |-- fr.json
 |-- package.json
 |-- .eslintrc.js
 ```
 
-where `lang` folder is where the aggregated strings file from your application would live. Integration with 3rd-party translation vendor can consume the `string_en-US.json` file and produce `strings_fr.json` or other locale files accordingly.
+where `lang` folder is where the aggregated strings file from your application would live. Integration with 3rd-party translation vendor can consume the `en-US.json` file and produce `fr.json` or other locale files accordingly.
 
 ## Pipeline
 

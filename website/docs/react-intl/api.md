@@ -5,19 +5,6 @@ title: Imperative API
 
 There are a few API layers that React Intl provides and is built on. When using React Intl you'll be interacting with its API (documented here) and its React [components][components].
 
-## ECMAScript Internationalization API
-
-**React Intl uses and builds on the [Internationalization API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) built-in to JavaScript.**
-
-Specifically, the built-in API is used to format dates/times and numbers in React Intl. It's good to familiarize yourself with the following APIs, **especially their `options`:**
-
-- [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat)
-- [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat)
-- [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules)
-- [`Intl.RelativeTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat)
-
-React Intl wraps these APIs in a consistent way making them easier to use, more performant through memoization, and gracefully falls back when they throw errors.
-
 ## FormatJS Internationalization Formatters
 
 Beyond number, date & relative time formatting, React Intl provides string/message formatting. This formatter is part of the [FormatJS](http://formatjs.io/) project, which React Intl is also a part of. This formatter was developed in the same style as the built-in formatters.
@@ -262,6 +249,10 @@ formatTime(Date.now()); // "4:03 PM"
 
 ### `formatRelativeTime`
 
+:::caution browser support
+This requires [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-relativetimeformat.md) if you plan to support them.
+:::
+
 ```tsx
 type Unit =
   | 'second'
@@ -382,6 +373,10 @@ This function should only be used in apps that only need to support one language
 **This is currently stage 3 so [polyfill](../polyfills/intl-listformat.md) would be required.**
 
 ### `formatList`
+
+:::caution browser support
+This requires [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-listformat.md) if you plan to support them.
+:::
 
 ```ts
 type ListFormatOptions = {
@@ -528,7 +523,13 @@ The message we defined using [`defineMessages`](#definemessages) to support extr
 Messages can be simple strings _without_ placeholders, and that's the most common type of message.
 :::
 
+## Other Formatting APIs
+
 ### `formatDisplayName`
+
+:::caution browser support
+This requires [Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames) which has limited browser support. Please use our [polyfill](../polyfills/intl-displaynames.md) if you plan to support them.
+:::
 
 ```ts
 type FormatDisplayNameOptions = {

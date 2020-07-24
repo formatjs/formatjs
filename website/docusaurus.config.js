@@ -18,7 +18,7 @@ module.exports = {
         src: 'img/logo.svg',
         srcDark: 'img/logo-dark.svg',
       },
-      links: [
+      items: [
         {
           to: 'docs/getting-started/installation',
           activeBasePath: 'docs',
@@ -26,7 +26,7 @@ module.exports = {
           position: 'left',
         },
         {
-          to: 'docs/react-intl',
+          to: 'docs/react-intl/components',
           activeBasePath: 'api',
           label: 'API References',
           position: 'left',
@@ -35,6 +35,12 @@ module.exports = {
           to: 'docs/polyfills',
           activeBasePath: 'polyfills',
           label: 'Polyfills',
+          position: 'left',
+        },
+        {
+          to: 'docs/tooling/cli',
+          activeBasePath: 'tooling',
+          label: 'Tooling',
           position: 'left',
         },
         {

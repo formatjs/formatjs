@@ -9,11 +9,11 @@
     "deploy": "docusaurus deploy --out-dir dist"
   },
   "dependencies": {
-    "@docusaurus/core": "^2.0.0-alpha.58",
-    "@docusaurus/preset-classic": "^2.0.0-alpha.58",
-    "react-dom": "^16.3.0",
-    "react": "^16.3.0",
+    "@docusaurus/core": "^2.0.0-alpha.59",
+    "@docusaurus/preset-classic": "^2.0.0-alpha.59",
     "classnames": "^2.2.6",
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0",
     "react-intl": "5.0.2"
   },
   "browserslist": {

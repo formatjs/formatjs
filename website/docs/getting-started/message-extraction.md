@@ -20,7 +20,33 @@ formatjs extract "src/**/*.ts*" --out-file lang/en.json
 Given a file that has the following messages:
 
 ```tsx
-import {FormattedMessage, useIntl} from 'react-intl';
+import * as React from 'react';
+import {FormattedMessage, useIntl, injectIntl} from 'react-intl';
+
+class PasswordChangeWithIntl extends React.Component {
+  render() {
+    const {intl} = this.props;
+    return (
+      <li>
+        <input
+          placeholder={intl.formatMessage({
+            defaultMessage: 'New Password',
+            description: 'placeholder text',
+          })}
+        />
+        <input
+          placeholder={intl.formatMessage({
+            id: 'explicit-id',
+            defaultMessage: 'Confirm Password',
+            description: 'placeholder text',
+          })}
+        />
+      </li>
+    );
+  }
+}
+
+const PasswordChange = injectIntl(PasswordChangeWithIntl);
 
 export function List(props) {
   const intl = useIntl();
@@ -44,21 +70,7 @@ export function List(props) {
             />
           </button>
         </li>
-        <li>
-          <input
-            placeholder={intl.formatMessage({
-              defaultMessage: 'New Password',
-              description: 'placeholder text',
-            })}
-          />
-          <input
-            placeholder={intl.formatMessage({
-              id: 'explicit-id',
-              defaultMessage: 'Confirm Password',
-              description: 'placeholder text',
-            })}
-          />
-        </li>
+        <PasswordChange />
       </ul>
     </section>
   );
