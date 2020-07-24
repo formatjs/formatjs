@@ -958,10 +958,10 @@
   resolved "https://registry.yarnpkg.com/@bazel/ibazel/-/ibazel-0.13.1.tgz#23788f67a6fbe83d96f2d055691df4917c10ac8d"
   integrity sha512-FO1hBKpzpeBL0adnFYF2Dwl/7gox6ccKM6bb+x26AXrQpLbinXPuTi4zeXRL/MW4383mF6i4RovLCmwUU/YW0w==
 
-"@bazel/rollup@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@bazel/rollup/-/rollup-2.0.0.tgz#1980cb3f6922227659260bfdca99c457889a5bc1"
-  integrity sha512-mifUfCZbD1RIhfowh4N8E4881ag3FChz7F4z35wxMOP52g1q3+6Bvh5wv9iysFQopxGmS5jNEj3Dq/CWtSoOnw==
+"@bazel/rollup@2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@bazel/rollup/-/rollup-2.0.1.tgz#a826ab15fa02b7b81c13af3acf52eeaeb5813530"
+  integrity sha512-xDNj7BO5A3Sdfmliy3MVNDR3jmtPT+W7PB71Txg/jE0xEPS8Ntw0yPgPNBb+PPIZJRZr5smix9KTNL2oeI08GA==
 
 "@bazel/terser@2.0.0":
   version "2.0.0"
