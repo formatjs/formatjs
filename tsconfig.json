@@ -23,7 +23,6 @@
     "declarationMap": true,
     "jsx": "react",
     "paths": {
-      "*": ["*", "bazel-out/k8-fastbuild/bin/packages/*"],
       "@formatjs/*": ["bazel-out/k8-fastbuild/bin/packages/*"],
       "intl-messageformat": [
         "bazel-out/k8-fastbuild/bin/packages/intl-messageformat"
