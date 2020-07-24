@@ -646,10 +646,8 @@ By allowing embedding XML tag we want to make sure contextual information is not
 />
 ```
 
-**IMPORTANT**: The render function for each rich tag takes in a spread of `chunks` instead of a single argument. The reason behind this is that `chunks` can contain both `string` & `ReactElement` so we cannot merge them into a single argument like string concatenation.
-
 **Function as the child**
-Since rich text formatting allows embedding `ReactElement`, in function as the child scenario, function will receive a spread of chunks instead of a single message
+Since rich text formatting allows embedding `ReactElement`, in function as the child scenario, the function will receive the formatted message chunks as a single parameter.
 
 ```tsx
 <FormattedMessage
