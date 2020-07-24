@@ -11,7 +11,7 @@ Before:
 
 ```tsx
 new IntlMessageFormat('a<b>strong</b>').format({
-  b: (...chunks) => <strong>chunks</strong>,
+  b: (...chunks) => <strong>{chunks}</strong>,
 });
 ```
 
@@ -19,7 +19,7 @@ After:
 
 ```tsx
 new IntlMessageFormat('a<b>strong</b>').format({
-  b: chunks => <strong>chunks</strong>,
+  b: chunks => <strong>{chunks}</strong>,
 });
 ```
 

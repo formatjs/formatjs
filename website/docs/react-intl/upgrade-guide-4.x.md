@@ -9,7 +9,7 @@ title: Upgrade Guide (v3 -> v4)
 
 ```tsx
 new IntlMessageFormat('a<b>strong</b>').format({
-  b: (...chunks) => <strong>chunks</strong>,
+  b: (...chunks) => <strong>{chunks}</strong>,
 });
 ```
 
