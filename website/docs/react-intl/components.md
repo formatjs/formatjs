@@ -573,7 +573,7 @@ props: MessageDescriptor &
   {
     values: object,
     tagName: string,
-    children: (...formattedMessage: Array<ReactElement>) => ReactElement,
+    children: (chunks: ReactElement) => ReactElement,
   };
 ```
 
