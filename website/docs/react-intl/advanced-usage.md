@@ -34,11 +34,17 @@ ReactDOM.render(
 ); // will render `hello world`
 ```
 
-### Caveats
-
-- Since this approach uses `AST` as the data source, changes to `intl-messageformat-parser`'s `AST` will require cache invalidation
-- `AST` is also larger in size than regular `string` messages but can be efficiently compressed
+:::caution Caching
+Since this approach uses `AST` as the data source, changes to `intl-messageformat-parser`'s `AST` will require cache invalidation.
+:::
+:::caution Asset Size
+`AST` is also larger in size than regular `string` messages but can be efficiently compressed.
+:::
 
 ## Imperative APIs
 
 Imperative APIs (e.g `formatMessage`...) are generally faster than `Formatted` component since it does not create extra `ReactElement` nodes. They should have the exact same capabilities as `Formatted` components.
+
+## More examples
+
+Head over to https://github.com/formatjs/formatjs/tree/main/packages/react-intl/examples for more examples on how to use our libraries.

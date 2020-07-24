@@ -26,6 +26,18 @@ module.exports = {
           position: 'left',
         },
         {
+          to: 'docs/react-intl',
+          activeBasePath: 'api',
+          label: 'API References',
+          position: 'left',
+        },
+        {
+          to: 'docs/polyfills',
+          activeBasePath: 'polyfills',
+          label: 'Polyfills',
+          position: 'left',
+        },
+        {
           href: 'https://github.com/formatjs/formatjs',
           label: 'GitHub',
           position: 'right',

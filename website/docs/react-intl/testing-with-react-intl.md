@@ -1,6 +1,6 @@
 ---
 id: testing
-title: Testing with react-intl
+title: Testing with formatjs
 ---
 
 ## `Intl` APIs requirements
@@ -26,10 +26,6 @@ You can either load the polyfill in the browser from `node_modules` or use the [
 ```html
 <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl,Intl.~locale.en-US"></script>
 ```
-
-### Karma
-
-If you're using [Karma](https://karma-runner.github.io/) as your test runner and need to test in an older browser or [PhantomJS](http://phantomjs.org/) you can use [**karma-intl-shim**](https://github.com/walmartlabs/karma-intl-shim) created by Walmart Labs.
 
 ## Shallow Rendering
 

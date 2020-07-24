@@ -321,7 +321,9 @@ now
 1 minute ago
 ```
 
-**Note:** You can adjust the maximum interval that the component will re-render by setting the `updateIntervalInSeconds`. A falsy value will turn off auto-updating. The updating is smart and will schedule the next update for the next _interesting moment_.
+:::info maximum interval
+You can adjust the maximum interval that the component will re-render by setting the `updateIntervalInSeconds`. A falsy value will turn off auto-updating. The updating is smart and will schedule the next update for the next _interesting moment_.
+:::
 
 An _interesting moment_ is defined as the next non-fractional `value` for that `unit`. For example:
 
@@ -331,7 +333,9 @@ An _interesting moment_ is defined as the next non-fractional `value` for that `
 
 This will initially renders `59 seconds ago`, after 1 second, will render `1 minute ago`, and will not re-render until a full minute goes by, it'll render `2 minutes ago`. It will not try to render `1.2 minutes ago`.
 
-**Note:** `updateIntervalInSeconds` cannot be enabled for `unit` longer than `hour` (so not for `day`, `week`, `quarter`, `year`). This is primarily because it doesn't make sense to schedule a timeout in `day`s, and the number of `ms` in a day is larger than the max timeout that `setTimeout` accepts.
+:::caution limitation
+`updateIntervalInSeconds` cannot be enabled for `unit` longer than `hour` (so not for `day`, `week`, `quarter`, `year`). This is primarily because it doesn't make sense to schedule a timeout in `day`s, and the number of `ms` in a day is larger than the max timeout that `setTimeout` accepts.
+:::
 
 ## Number Formatting Components
 
@@ -544,7 +548,9 @@ type MessageDescriptor = {
 
 A common practice is to use the [`defineMessages`](api.md#definemessages) API to define all of a component's strings, then _spread_ the Message Descriptor as props to the component.
 
-**Note:** The [babel-plugin-react-intl](../tooling/babel-plugin.md) package can be used to extract Message Descriptors defined in JavaScript source files.
+:::info babel-plugin-react-intl
+The [babel-plugin-react-intl](../tooling/babel-plugin.md) package can be used to extract Message Descriptors defined in JavaScript source files.
+:::
 
 ### Message Formatting Fallbacks
 
@@ -600,7 +606,9 @@ Hello, Eric!
 <h1>Hello, Eric!</h1>
 ```
 
-**Note:** Messages can be simple strings _without_ placeholders, and that's the most common type of message. This case is highly-optimized, but still has the benefits of the [fallback procedure](#message-formatting-fallbacks).
+:::info simple message
+Messages can be simple strings _without_ placeholders, and that's the most common type of message. This case is highly-optimized, but still has the benefits of the [fallback procedure](#message-formatting-fallbacks).
+:::
 
 #### Rich Text Formatting
 

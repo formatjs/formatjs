@@ -136,7 +136,9 @@ Whether you use the ES6, CommonJS, or UMD version of React Intl, they all provid
 - [`FormattedPlural`](react-intl/components.md#formattedplural)
 - [`FormattedMessage`](react-intl/components.md#formattedmessage)
 
-**Note:** When using the UMD version of React Intl _without_ a module system, it will expect `react` to exist on the global variable: **`React`**, and put the above named exports on the global variable: **`ReactIntl`**.
+:::danger react
+When using the UMD version of React Intl _without_ a module system, it will expect `react` to exist on the global variable: **`React`**, and put the above named exports on the global variable: **`ReactIntl`**.
+:::
 
 ## Creating an I18n Context
 

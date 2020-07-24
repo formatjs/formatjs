@@ -373,7 +373,9 @@ formatPlural(3, {style: 'ordinal'}); // "few"
 formatPlural(4, {style: 'ordinal'}); // "other"
 ```
 
-**Note:** This function should only be used in apps that only need to support one language. If your app supports multiple languages use [`formatMessage`](#formatmessage) instead.
+:::danger multiple language support
+This function should only be used in apps that only need to support one language. If your app supports multiple languages use [`formatMessage`](#formatmessage) instead.
+:::
 
 ## List Formatting APIs
 
@@ -440,7 +442,9 @@ type MessageDescriptor = {
 };
 ```
 
-**Note:** The [babel-plugin-react-intl](../tooling/babel-plugin.md) package can be used to extract Message Descriptors defined in JavaScript source files.
+:::info babel-plugin-react-intl
+The [babel-plugin-react-intl](../tooling/babel-plugin.md) package can be used to extract Message Descriptors defined in JavaScript source files.
+:::
 
 ### Message Formatting Fallbacks
 
@@ -520,7 +524,9 @@ formatMessage(messages.greeting, {
 
 The message we defined using [`defineMessages`](#definemessages) to support extraction via `babel-plugin-react-intl`, but it doesn't have to be if you're not using the Babel plugin.
 
-**Note:** Messages can be simple strings _without_ placeholders, and that's the most common type of message.
+:::info simple message
+Messages can be simple strings _without_ placeholders, and that's the most common type of message.
+:::
 
 ### `formatDisplayName`
 

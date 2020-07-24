@@ -19,9 +19,9 @@ The default message descriptors for the app's default language will be extracted
 
 If a message descriptor has a `description`, it'll be removed from the source after it's extracted to save bytes since it isn't used at runtime.
 
-### Via `.babelrc` (Recommended)
+### Via `babel.config.json` (Recommended)
 
-**.babelrc**
+**babel.config.json**
 
 ```json
 {
@@ -74,6 +74,10 @@ The ES6 module source name of the React Intl package. Defaults to: `"react-intl"
 ### **`overrideIdFn`**
 
 A function with the signature `(id: string, defaultMessage: string, description: string|object) => string` which allows you to override the ID both in the extracted javascript and messages.
+
+### **`idInterpolationPattern`**
+
+If certain message descriptors don't have id, this `pattern` will be used to automaticallygenerate IDs for them. Default to `[contenthash:5]`. See https://github.com/webpack/loader-utils#interpolatename for sample patterns.
 
 ### **`removeDefaultMessage`**
 

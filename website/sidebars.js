@@ -3,9 +3,42 @@ module.exports = {
     'Getting Started': [
       'getting-started/installation',
       'getting-started/application-workflow',
+      'getting-started/message-declaration',
+      'getting-started/message-extraction',
+      'getting-started/message-distribution',
+    ],
+    Guides: [
+      'guides/bundler-plugins',
+      'guides/develop',
+      'react-intl/testing',
+      'react-intl/advanced-usage',
+    ],
+    'Core Concepts': [
+      'basic-internationalization-principles',
+      'icu-syntax',
       'runtime-requirements',
     ],
-    'Core Concepts': ['basic-internationalization-principles', 'icu-syntax'],
+  },
+  api: {
+    'intl-messageformat': ['intl-messageformat'],
+    'intl-messageformat-parser': ['intl-messageformat-parser'],
+    'react-intl': [
+      'react-intl',
+      'react-intl/components',
+      'react-intl/api',
+      'react-intl/upgrade-guide-5x',
+      'react-intl/upgrade-guide-4x',
+      'react-intl/upgrade-guide-3x',
+      'react-intl/upgrade-guide-2x',
+    ],
+    Tooling: [
+      'tooling/cli',
+      'tooling/linter',
+      'tooling/babel-plugin',
+      'tooling/ts-transformer',
+    ],
+  },
+  polyfills: {
     Polyfills: [
       'polyfills',
       'polyfills/intl-getcanonicallocales',
@@ -16,31 +49,6 @@ module.exports = {
       'polyfills/intl-numberformat',
       'polyfills/intl-datetimeformat',
       'polyfills/intl-locale',
-    ],
-    Libraries: [
-      'intl-messageformat',
-      'intl-messageformat-parser',
-      {
-        type: 'category',
-        label: 'react-intl',
-        items: [
-          'react-intl',
-          'react-intl/components',
-          'react-intl/api',
-          'react-intl/testing',
-          'react-intl/advanced-usage',
-          'react-intl/upgrade-guide-5x',
-          'react-intl/upgrade-guide-4x',
-          'react-intl/upgrade-guide-3x',
-          'react-intl/upgrade-guide-2x',
-        ],
-      },
-    ],
-    Tooling: [
-      'tooling/cli',
-      'tooling/linter',
-      'tooling/babel-plugin',
-      'tooling/ts-transformer',
     ],
   },
 };

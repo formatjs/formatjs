@@ -5,62 +5,93 @@ title: Installation
 
 formatjs is a set of libraries that help you setup internationalization in any project whether it's React or not.
 
-## Install
-
-1. Install `react-intl`
+## Installation
 
 ```sh
-npm i -S react-intl
-```
-
-2. Install our toolchain
-
-```sh
-npm i -D eslint eslint-plugin-formatjs @formatjs/cli
-```
-
-3. Configure your `.eslintrc.js` to incorporate our linter
-
-```js
-module.exports = {
-  plugins: ['formatjs'],
-  rules: {
-    'formatjs/enforce-description': ['error', 'literal'],
-    'formatjs/enforce-default-message': ['error', 'literal'],
-    // See https://formatjs.io/docs/tooling/linter for more rules
-  },
-};
-```
-
-4. Add our extractor to your `scripts` in `package.json`
-
-```json
-{
-  "scripts": {
-    "i18n:extract": "formatjs extract 'src/**/*' --out-file lang/strings_en-US.json"
-  }
-}
+npm i -S react react-intl
 ```
 
 ## Minimal Application
 
-After following the steps above, you should be able to get a minimal application like this running:
+After following the step above, you should be able to get a minimal application like this running:
 
 ```tsx
-import {createIntl} from 'react-intl';
+import {createIntl, createIntlCache} from 'react-intl';
 
-const intl = createIntl({
-  locale: 'en',
-  messages,
-});
+// Translated messages in French with matching IDs to what you declared
+const messagesInFrench = {
+  myMessage: "Aujourd'hui, c'est le {ts, date, ::yyyyMMdd}",
+};
 
+// This is optional but highly recommended
+// since it prevents memory leak
+const cache = createIntlCache();
+
+// Create the `intl` object
+const intl = createIntl(
+  {
+    // Locale of the application
+    locale: 'fr',
+    // Locale of the fallback defaultMessage
+    defaultLocale: 'en',
+    messages: messagesInFrench,
+  },
+  cache
+);
+
+// Aujourd'hui, c'est le 23/07/2020
 console.log(
   intl.formatMessage(
     {
-      id: 'foo',
+      // Matching ID as above
+      id: 'myMessage',
+      // Default Message in English
       defaultMessage: 'Today is {ts, date, ::yyyyMMdd}',
     },
     {ts: Date.now()}
   )
 );
+
+// 19,00 €
+console.log(intl.formatNumber(19, {style: 'currency', currency: 'EUR'}));
+```
+
+## Minimal React Application
+
+If you're using React, a minimal React application can look like this:
+
+```tsx
+import * as React from 'react';
+import {IntlProvider, FormattedMessage, FormattedNumber} from 'react-intl';
+
+// Translated messages in French with matching IDs to what you declared
+const messagesInFrench = {
+  myMessage: "Aujourd'hui, c'est le {ts, date, ::yyyyMMdd}",
+};
+
+export default function App() {
+  return (
+    <IntlProvider messages={messagesInFrench} locale="fr" defaultLocale="en">
+      <p>
+        <FormattedMessage
+          id="myMessage"
+          defaultMessage="Today is {ts, date, ::yyyyMMdd}"
+          values={{ts: Date.now()}}
+        />
+        <br />
+        <FormattedNumber value={19} style="currency" currency="EUR" />
+      </p>
+    </IntlProvider>
+  );
+}
+```
+
+Output
+
+```html
+<p>
+  Aujourd'hui, c'est le 23/07/2020
+  <br />
+  19,00 €
+</p>
 ```
