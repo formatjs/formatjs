@@ -96,23 +96,23 @@ let element = ReactTestUtils.renderIntoDocument(
 
 However this means that the `element` reference is now pointing to the `IntlProvider` instead of your component. To retrieve a reference to your wrapped component, you can use "refs" with these changes to the code:
 
-In your component, remember to add `{withRef: true}` when calling `injectIntl()`:
+In your component, remember to add `{forwardRef: true}` when calling `injectIntl()`:
 
 ```tsx
 class MyComponent extends React.Component {
   ...
   myClassFn() { ... }
 }
-export default injectIntl(MyComponent, {withRef: true});
+export default injectIntl(MyComponent, {forwardRef: true});
 ```
 
 In your test, add a "ref" to extract the reference to your tested component:
 
 ```tsx
-let element;
-let root = ReactTestUtils.renderIntoDocument(
+const element = React.createRef();
+ReactTestUtils.renderIntoDocument(
   <IntlProvider>
-    <MyComponent ref={c => (element = c.refs.wrappedInstance)} />
+    <MyComponent ref={element} />
   </IntlProvider>
 );
 ```
@@ -120,7 +120,7 @@ let root = ReactTestUtils.renderIntoDocument(
 You can now access the wrapped component instance from `element` like this:
 
 ```tsx
-element.myClassFn();
+element.current.myClassFn();
 ```
 
 ### Helper function
@@ -134,7 +134,7 @@ function renderWithIntl(element) {
   ReactTestUtils.renderIntoDocument(
     <IntlProvider>
       {React.cloneElement(element, {
-        ref: c => (instance = c.refs.wrappedInstance),
+        ref: instance,
       })}
     </IntlProvider>
   );
@@ -146,8 +146,9 @@ function renderWithIntl(element) {
 You can now use this in your tests like this:
 
 ```tsx
-let element = renderWithIntl(<MyElement>);
-element.myClassFn();
+const element = React.createRef();
+renderWithIntl(<MyElement ref={element}>);
+element.current.myClassFn();
 ```
 
 ## Enzyme
