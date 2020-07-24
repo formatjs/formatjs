@@ -168,15 +168,13 @@ function StandardsSection({className}) {
           id="standards-desc"
           defaultMessage="FormatJS is aligned with: <ecma>ECMAScript Internationalization API (ECMA-402)</ecma>, <cldr>Unicode CLDR</cldr>, and <icu>ICU Message syntax</icu>. By building on these industry standards, FormatJS leverages APIs in modern browsers and works with the message syntax used by professional translators."
           values={{
-            ecma: (...chunks) => (
+            ecma: chunks => (
               <a href="https://www.ecma-international.org/ecma-402/">
                 {chunks}
               </a>
             ),
-            cldr: (...chunks) => (
-              <a href="http://cldr.unicode.org/">{chunks}</a>
-            ),
-            icu: (...chunks) => (
+            cldr: chunks => <a href="http://cldr.unicode.org/">{chunks}</a>,
+            icu: chunks => (
               <a href="http://userguide.icu-project.org/formatparse/messages">
                 {chunks}
               </a>
