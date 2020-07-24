@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.10.7...@formatjs/cli@1.11.0) (2020-07-24)
+
+
+### Features
+
+* **@formatjs/cli:** default --extract-from-format-message-call to true ([1340e03](https://github.com/formatjs/formatjs/commit/1340e034ac25949af6bf65b498d9f5dd4327fb9b))
+
+
+
+
+
 ## [1.10.7](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.10.6...@formatjs/cli@1.10.7) (2020-07-21)
 
 **Note:** Version bump only for package @formatjs/cli

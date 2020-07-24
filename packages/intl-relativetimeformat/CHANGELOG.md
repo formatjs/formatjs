@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@6.2.4...@formatjs/intl-relativetimeformat@7.0.0) (2020-07-24)
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** stop aggregating locale-data into languages ([8ad38e8](https://github.com/formatjs/formatjs/commit/8ad38e88c53ac7c6bdb70353ba8aca4a9de4bed4))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-relativetimeformat:** In this release we no longer bundle locale data of the
+same language into a single file. This serves a couple of purposes:
+1. Reduce size of the locale-data and normalize them to around 3 - 6KB
+each. This tremendously helps popular languages like `en` or `zh` where
+previous locale-data was around 20K.
+2. Normalize our CLDR processing pipeline.
+3. Get rid of runtime data unpacking which helps runtime performance.
+
+
+
+
+
 ## [6.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@6.2.3...@formatjs/intl-relativetimeformat@6.2.4) (2020-07-21)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat

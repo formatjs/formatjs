@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.1](https://github.com/formatjs/formatjs/compare/react-intl@5.4.0...react-intl@5.4.1) (2020-07-24)
+
+**Note:** Version bump only for package react-intl
+
+
+
+
+
 # [5.4.0](https://github.com/formatjs/formatjs/compare/react-intl@5.3.2...react-intl@5.4.0) (2020-07-21)
 
 

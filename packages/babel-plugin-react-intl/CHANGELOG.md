@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.9.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.8.3...babel-plugin-react-intl@7.9.0) (2020-07-24)
+
+
+### Bug Fixes
+
+* **babel-plugin-react-intl:** default idInterpolationPattern to [contenthash:5] ([1530f78](https://github.com/formatjs/formatjs/commit/1530f7870b849e8fab3f140a642e719877f0000e))
+
+
+### Features
+
+* **babel-plugin-react-intl:** introduce idInterpolationPattern option ([61eb96e](https://github.com/formatjs/formatjs/commit/61eb96ed70c4698e24373ba33110419fcea746c1))
+
+
+
+
+
 ## [7.8.3](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.8.2...babel-plugin-react-intl@7.8.3) (2020-07-21)
 
 **Note:** Version bump only for package babel-plugin-react-intl

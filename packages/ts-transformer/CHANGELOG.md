@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.4.1...@formatjs/ts-transformer@2.4.2) (2020-07-24)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** fix deps ([9c06488](https://github.com/formatjs/formatjs/commit/9c06488b2c4dfb8cf2f01258e28041f5bf472570))
+
+
+
+
+
 ## [2.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.4.0...@formatjs/ts-transformer@2.4.1) (2020-07-16)
 
 

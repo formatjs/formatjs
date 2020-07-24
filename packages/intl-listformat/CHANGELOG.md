@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@3.1.5...@formatjs/intl-listformat@4.0.0) (2020-07-24)
+
+
+### Features
+
+* **@formatjs/intl-listformat:** stop aggregating locale-data into languages ([dfacd8e](https://github.com/formatjs/formatjs/commit/dfacd8e8983f4e0702d55f798cf4f68cf73bef4d))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-listformat:** In this release we no longer bundle locale data of the
+same language into a single file. This serves a couple of purposes:
+1. Reduce size of the locale-data and normalize them to around 1KB
+each.
+2. Normalize our CLDR processing pipeline.
+3. Get rid of runtime data unpacking which helps runtime performance.
+
+
+
+
+
 ## [3.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@3.1.4...@formatjs/intl-listformat@3.1.5) (2020-07-21)
 
 **Note:** Version bump only for package @formatjs/intl-listformat
