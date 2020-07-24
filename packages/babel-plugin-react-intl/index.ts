@@ -190,7 +190,7 @@ function evaluateMessageDescriptor(
   descriptorPath: MessageDescriptorPath,
   isJSXSource = false,
   filename: string,
-  idInterpolationPattern?: string,
+  idInterpolationPattern: string = '[contenthash:5]',
   overrideIdFn?: OptionsSchema['overrideIdFn']
 ) {
   let id = getMessageDescriptorValue(descriptorPath.id);
