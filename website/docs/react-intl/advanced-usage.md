@@ -7,38 +7,16 @@ title: Advanced Usage
 
 ## Pre-parsing messages
 
-You can also pre-parse all messages into `AST` using [`intl-messageformat-parser`](../intl-messageformat-parser.md) and pass that into `IntlProvider`. This is especially faster since it saves us time parsing `string` into `AST`. The use cases for this support are:
+You can also pre-parse all messages into `AST` using [`@formatjs/cli`](../tooling/cli.md) `compile` command and pass that into `IntlProvider`. This is especially faster since it saves us time parsing `string` into `AST`. The use cases for this support are:
 
 1. Server-side rendering or pre-parsing where you can cache the AST and don't have to pay compilation costs multiple time.
 2. Desktop apps using Electron or CEF where you can preload/precompile things in advanced before runtime.
-
-Example:
-
-```tsx
-// Pre-processed
-import parser from 'intl-messageformat-parser';
-const messages = {
-  ast_simple: parser.parse('hello world'),
-  ast_var: parser.parse('hello world, {name}'),
-};
-
-// During runtime
-// ES6 import
-import {IntlProvider, FormattedMessage} from 'react-intl';
-import * as ReactDOM from 'react-dom';
-
-ReactDOM.render(
-  <IntlProvider messages={messages}>
-    <FormattedMessage id="ast_simple" />
-  </IntlProvider>
-); // will render `hello world`
-```
 
 :::caution Caching
 Since this approach uses `AST` as the data source, changes to `intl-messageformat-parser`'s `AST` will require cache invalidation.
 :::
 :::caution Asset Size
-`AST` is also larger in size than regular `string` messages but can be efficiently compressed.
+`AST` is also slightly larger in size than regular `string` messages but can be efficiently compressed.
 :::
 
 ## Imperative APIs

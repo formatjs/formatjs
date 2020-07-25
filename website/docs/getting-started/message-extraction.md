@@ -80,28 +80,24 @@ export function List(props) {
 running the above command will create a file called `lang/en.json`:
 
 ```json
-[
-  {
-    "id": "hak27d",
+{
+  "hak27d": {
     "defaultMessage": "Control Panel",
     "description": "title of control panel section"
   },
-  {
-    "id": "haqsd",
+  "haqsd": {
     "defaultMessage": "Delete user {name}",
     "description": "delete button"
   },
-  {
-    "id": "19hjs",
+  "19hjs": {
     "defaultMessage": "New Password",
     "description": "placeholder text"
   },
-  {
-    "id": "explicit-id",
+  "explicit-id": {
     "defaultMessage": "Confirm Password",
     "description": "placeholder text"
   }
-]
+}
 ```
 
 :::info File Format

@@ -3,6 +3,12 @@ id: cli
 title: CLI
 ---
 
+## Installation
+
+```sh
+npm i -D @formatjs/cli
+```
+
 We've built https://www.npmjs.com/package/@formatjs/cli that helps you extract messages from a list of files. It uses [`@formatjs/ts-transformer`](ts-transformer.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
 
 ```tsx
@@ -41,18 +47,15 @@ function Comp(props) {
 }
 ```
 
-## Usage
+## Extraction
 
-```shell
-$ npm -g i @formatjs/cli
-$ formatjs extract --help
-Usage: formatjs extract [options] [files...]
+```sh
+formatjs extract --help
+# Usage: formatjs extract [options] [files...]
 
-Extract string messages from React components that use react-intl.
-The input language is expected to be TypeScript or ES2017 with JSX.
+# Extract string messages from React components that use react-intl.
+# The input language is expected to be TypeScript or ES2017 with JSX.
 ```
-
-## Options
 
 ### `--out-file [path]`
 
@@ -98,3 +101,20 @@ import {FormattedMessage} from 'react-intl';
 ```
 
 and with option `{pragma: "@intl-meta"}`, we'll parse out `// @intl-meta project:my-custom-project` into `{project: 'my-custom-project'}` in the result file.
+
+## Compilation
+
+Compile extracted file from `formatjs extract` to a react-intl consumable
+JSON file. This also does ICU message verification. See [Message Distribution](../getting-started/message-distribution.md) for more details.
+
+```sh
+formatjs compile --help
+```
+
+### `--out-file <output>`
+
+The target file that contains compiled messages.
+
+### `--ast`
+
+Whether to compile message into AST instead of just string. See [Advanced Usage](../react-intl/advanced-usage.md)

@@ -40,6 +40,7 @@
     "commander": "5.1.0",
     "fs-extra": "^9.0.0",
     "glob": "^7.1.6",
+    "intl-messageformat-parser": "^5.3.5",
     "lodash": "^4.17.15",
     "loud-rejection": "^2.2.0",
     "typescript": "^3.8"

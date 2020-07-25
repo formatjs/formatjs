@@ -10,58 +10,30 @@ Now that you've declared your messages, extracted them, sent them to your transl
 Let's take the example from [Message Extraction](./message-extraction.md), assuming we are working with the French version and the file is called `lang/fr.json`:
 
 ```json
-[
-  {
-    "id": "hak27d",
+{
+  "hak27d": {
     "defaultMessage": "Panneau de configuration",
     "description": "title of control panel section"
   },
-  {
-    "id": "haqsd",
+  "haqsd": {
     "defaultMessage": "Supprimer l'utilisateur {name}",
     "description": "delete button"
   },
-  {
-    "id": "19hjs",
+  "19hjs": {
     "defaultMessage": "nouveau mot de passe",
     "description": "placeholder text"
   },
-  {
-    "id": "explicit-id",
+  "explicit-id": {
     "defaultMessage": "Confirmez le mot de passe",
     "description": "placeholder text"
   }
-]
+}
 ```
 
-We can write a small script to convert this to a consumable format:
+We can use [@formatjs/cli](../tooling/cli.md) to compile this into a react-intl consumable JSON file:
 
-```tsx
-import {outputJSONSync} from 'fs-extra';
-import {MessageDescriptor} from 'react-intl';
-
-// Read the raw file
-const messages: MessageDescriptor[] = require('lang/fr.json');
-
-// Convert the raw file into key-value
-const compiledMessages: Record<string, string> = {};
-for (const msg of messages) {
-  compiledMessages[msg.id] = msg.defaultMessage;
-}
-
-// Write out the compiled file
-outputJSONSync('compiled-lang/fr.json', compiledMessages);
-```
-
-The compiled file looks like:
-
-```json
-{
-  "hak27d": "Panneau de configuration",
-  "haqsd": "Supprimer l'utilisateur {name}",
-  "19hjs": "nouveau mot de passe",
-  "explicit-id": "Confirmez le mot de passe"
-}
+```sh
+formatjs compile lang/fr.json --out-file compiled-lang/fr.json
 ```
 
 ## Distribution
