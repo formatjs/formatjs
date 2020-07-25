@@ -1,3 +1,4 @@
+// @react-intl project:foo file:bar
 import React, {Component} from 'react';
 import {defineMessages, FormattedMessage, defineMessage} from 'react-intl';
 

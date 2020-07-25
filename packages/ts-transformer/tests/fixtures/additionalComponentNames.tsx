@@ -1,3 +1,4 @@
+// @react-intl project:foo
 import React, {Component} from 'react';
 
 function CustomMessage() {}

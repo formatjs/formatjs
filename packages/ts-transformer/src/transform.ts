@@ -3,11 +3,16 @@ import {MessageDescriptor} from './types';
 import {interpolateName} from './interpolate-name';
 
 export type Extractor = (filePath: string, msgs: MessageDescriptor[]) => void;
+export type MetaExtractor = (
+  filePath: string,
+  meta: Record<string, string>
+) => void;
 
 export type InterpolateNameFn = (
   id?: string,
   defaultMessage?: string,
-  description?: string
+  description?: string,
+  filePath?: string
 ) => string;
 
 const MESSAGE_DESC_KEYS: Array<keyof MessageDescriptor> = [
@@ -17,6 +22,20 @@ const MESSAGE_DESC_KEYS: Array<keyof MessageDescriptor> = [
 ];
 
 export interface Opts {
+  /**
+   * Parse specific additional custom pragma.
+   * This allows you to tag certain file with metadata such as `project`.
+   * For example with this file:
+   * ```tsx
+   * // @intl-meta project:my-custom-project
+   * import {FormattedMessage} from 'react-intl';
+   * <FormattedMessage defaultMessage="foo" id="bar" />;
+   * ```
+   * and with option `{pragma: "@intl-meta"}`,
+   * we'll parse out `// @intl-meta project:my-custom-project`
+   * into `{project: 'my-custom-project'}` in the result file.
+   */
+  pragma?: string;
   /**
    * Whether the metadata about the location of the message in the source file
    * should be extracted. If `true`, then `file`, `start`, and `end`
@@ -48,6 +67,11 @@ export interface Opts {
    */
   onMsgExtracted?: Extractor;
   /**
+   * Callback function that gets called when we successfully parsed meta
+   * declared in pragma
+   */
+  onMetaExtracted?: MetaExtractor;
+  /**
    * webpack-style name interpolation
    *
    * @type {(InterpolateNameFn | string)}
@@ -58,6 +82,7 @@ export interface Opts {
 
 const DEFAULT_OPTS: Omit<Opts, 'program'> = {
   onMsgExtracted: () => undefined,
+  onMetaExtracted: () => undefined,
 };
 
 function isMultipleMessageDecl(node: ts.CallExpression) {
@@ -104,7 +129,7 @@ function extractMessageDescriptor(
   } else if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
     properties = node.attributes.properties;
   }
-  const msg: MessageDescriptor = {};
+  const msg: MessageDescriptor = {id: ''};
   if (!properties) {
     return;
   }
@@ -153,7 +178,12 @@ function extractMessageDescriptor(
         );
         break;
       case 'function':
-        msg.id = overrideIdFn(msg.id, msg.defaultMessage, msg.description);
+        msg.id = overrideIdFn(
+          msg.id,
+          msg.defaultMessage,
+          msg.description,
+          sf.fileName
+        );
         break;
     }
   }
@@ -317,7 +347,7 @@ function extractMessagesFromCallExpression(
             defaultMessage: opts.removeDefaultMessage
               ? undefined
               : msgs[i].defaultMessage,
-            id: msgs[i] ? msgs[i].id : undefined,
+            id: msgs[i] ? msgs[i].id : '',
           });
           return clonedNode;
         })
@@ -359,6 +389,8 @@ function extractMessagesFromCallExpression(
   return node;
 }
 
+const PRAGMA_REGEX = /^\/\/ @([^\s]*) (.*)$/m;
+
 function getVisitor(
   ctx: ts.TransformationContext,
   sf: ts.SourceFile,
@@ -379,7 +411,24 @@ function getVisitor(
 export function transform(opts: Opts) {
   opts = {...DEFAULT_OPTS, ...opts};
   const transformFn: ts.TransformerFactory<ts.SourceFile> = ctx => {
-    return (sf: ts.SourceFile) => ts.visitNode(sf, getVisitor(ctx, sf, opts));
+    return (sf: ts.SourceFile) => {
+      const pragmaResult = PRAGMA_REGEX.exec(sf.text);
+      if (pragmaResult) {
+        const [, pragma, kvString] = pragmaResult;
+        if (pragma === opts.pragma) {
+          const kvs = kvString.split(' ');
+          const result: Record<string, string> = {};
+          for (const kv of kvs) {
+            const [k, v] = kv.split(':');
+            result[k] = v;
+          }
+          if (typeof opts.onMetaExtracted === 'function') {
+            opts.onMetaExtracted(sf.fileName, result);
+          }
+        }
+      }
+      return ts.visitNode(sf, getVisitor(ctx, sf, opts));
+    };
   };
 
   return transformFn;

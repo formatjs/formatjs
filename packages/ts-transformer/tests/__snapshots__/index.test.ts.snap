@@ -39,6 +39,7 @@ class Foo extends react_1.Component {
 }
 exports.default = Foo;
 ",
+  "meta": Object {},
   "msgs": Array [
     Object {
       "defaultMessage": "Hello World! {foo, number}",
@@ -53,6 +54,7 @@ exports[`emit asserts for additionalComponentNames 1`] = `
 Object {
   "code": "\\"use strict\\";
 Object.defineProperty(exports, \\"__esModule\\", { value: true });
+// @react-intl project:foo
 const react_1 = require(\\"react\\");
 function CustomMessage() { }
 class Foo extends react_1.Component {
@@ -62,6 +64,9 @@ class Foo extends react_1.Component {
 }
 exports.default = Foo;
 ",
+  "meta": Object {
+    "project": "foo",
+  },
   "msgs": Array [
     Object {
       "defaultMessage": "Hello World!",
@@ -76,6 +81,7 @@ exports[`emit asserts for defineMessages 1`] = `
 Object {
   "code": "\\"use strict\\";
 Object.defineProperty(exports, \\"__esModule\\", { value: true });
+// @react-intl project:foo file:bar
 const react_1 = require(\\"react\\");
 const react_intl_1 = require(\\"react-intl\\");
 const msgs = react_intl_1.defineMessages({
@@ -121,6 +127,10 @@ class Foo extends react_1.Component {
 }
 exports.default = Foo;
 ",
+  "meta": Object {
+    "file": "bar",
+    "project": "foo",
+  },
   "msgs": Array [
     Object {
       "defaultMessage": "Hello World!",
@@ -201,6 +211,7 @@ class Foo extends react_1.Component {
 }
 exports.default = react_intl_1.injectIntl(Foo);
 ",
+  "meta": Object {},
   "msgs": Array [
     Object {
       "defaultMessage": "Hello World!",
@@ -260,6 +271,7 @@ const Foo = ({ intl: { formatMessage } }) => {
 };
 exports.default = react_intl_1.injectIntl(Foo);
 ",
+  "meta": Object {},
   "msgs": Array [
     Object {
       "defaultMessage": "Hello params!",
@@ -321,6 +333,7 @@ class Foo extends react_1.Component {
 }
 exports.default = react_intl_1.injectIntl(Foo);
 ",
+  "meta": Object {},
   "msgs": Array [
     Object {
       "defaultMessage": "bar",
@@ -353,6 +366,7 @@ class Foo extends react_1.Component {
 }
 exports.default = Foo;
 ",
+  "meta": Object {},
   "msgs": Array [
     Object {
       "defaultMessage": "Hello World!",
@@ -376,23 +390,24 @@ exports.default = Foo;
 exports[`emit asserts for nested 1`] = `
 Object {
   "code": "intl.formatMessage({
-    id: \\"HELLO.undefined.13.undefined\\",
+    id: \\"HELLO..13.undefined\\",
     defaultMessage: \\"layer1 {name}\\"
 }, {
     name: intl.formatMessage({
-        id: \\"HELLO.undefined.6.undefined\\",
+        id: \\"HELLO..6.undefined\\",
         defaultMessage: \\"layer2\\"
     }),
 });
 ",
+  "meta": Object {},
   "msgs": Array [
     Object {
       "defaultMessage": "layer1 {name}",
-      "id": "HELLO.undefined.13.undefined",
+      "id": "HELLO..13.undefined",
     },
     Object {
       "defaultMessage": "layer2",
-      "id": "HELLO.undefined.6.undefined",
+      "id": "HELLO..6.undefined",
     },
   ],
 }
@@ -418,6 +433,7 @@ function foo() {
 }
 exports.foo = foo;
 ",
+  "meta": Object {},
   "msgs": Array [
     Object {
       "defaultMessage": "props {intl}",
@@ -455,7 +471,7 @@ const msgs = react_intl_1.defineMessages({
     }
 });
 react_intl_1.defineMessage({
-    id: \\"HELLO.undefined.13.string\\",
+    id: \\"HELLO..13.string\\",
     defaultMessage: \\"defineMessage\\"
 });
 class Foo extends react_1.Component {
@@ -463,15 +479,15 @@ class Foo extends react_1.Component {
         const { intl } = this.props;
         const { formatMessage } = intl;
         this.props.intl.formatMessage({
-            id: \\"HELLO.undefined.5.string\\",
+            id: \\"HELLO..5.string\\",
             defaultMessage: \\"no-id\\"
         });
         intl.formatMessage({
-            id: \\"HELLO.undefined.18.string\\",
+            id: \\"HELLO..18.string\\",
             defaultMessage: \\"intl.formatMessage\\"
         });
         formatMessage({
-            id: \\"HELLO.undefined.13.string\\",
+            id: \\"HELLO..13.string\\",
             defaultMessage: \\"formatMessage\\"
         });
         return (react_1.default.createElement(\\"div\\", null,
@@ -480,11 +496,12 @@ class Foo extends react_1.Component {
             react_1.default.createElement(\\"p\\", null,
                 react_1.default.createElement(react_intl_1.FormattedMessage, Object.assign({}, msgs.content))),
             react_1.default.createElement(react_intl_1.FormattedMessage, { id: 'foo.bar.zoo', defaultMessage: 'Hello World! {abc}', values: { abc: 2 } }),
-            react_1.default.createElement(react_intl_1.FormattedMessage, { id: 'HELLO.undefined.18.undefined', defaultMessage: 'Hello World! {abc}', values: { abc: 2 } })));
+            react_1.default.createElement(react_intl_1.FormattedMessage, { id: 'HELLO..18.undefined', defaultMessage: 'Hello World! {abc}', values: { abc: 2 } })));
     }
 }
 exports.default = Foo;
 ",
+  "meta": Object {},
   "msgs": Array [
     Object {
       "defaultMessage": "Hello World!",
@@ -498,22 +515,22 @@ exports.default = Foo;
     Object {
       "defaultMessage": "defineMessage",
       "description": "foo",
-      "id": "HELLO.undefined.13.string",
+      "id": "HELLO..13.string",
     },
     Object {
       "defaultMessage": "no-id",
       "description": "no-id",
-      "id": "HELLO.undefined.5.string",
+      "id": "HELLO..5.string",
     },
     Object {
       "defaultMessage": "intl.formatMessage",
       "description": "no-id",
-      "id": "HELLO.undefined.18.string",
+      "id": "HELLO..18.string",
     },
     Object {
       "defaultMessage": "formatMessage",
       "description": "no-id",
-      "id": "HELLO.undefined.13.string",
+      "id": "HELLO..13.string",
     },
     Object {
       "defaultMessage": "Hello World! {abc}",
@@ -521,7 +538,7 @@ exports.default = Foo;
     },
     Object {
       "defaultMessage": "Hello World! {abc}",
-      "id": "HELLO.undefined.18.undefined",
+      "id": "HELLO..18.undefined",
     },
   ],
 }
@@ -545,6 +562,7 @@ class Foo extends react_1.Component {
 }
 exports.default = Foo;
 ",
+  "meta": Object {},
   "msgs": Array [
     Object {
       "defaultMessage": "Hello, {name}",
@@ -579,6 +597,7 @@ class Foo extends react_1.Component {
 }
 exports.default = Foo;
 ",
+  "meta": Object {},
   "msgs": Array [
     Object {
       "defaultMessage": "Hello, {name}",

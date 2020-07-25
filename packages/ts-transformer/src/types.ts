@@ -1,5 +1,5 @@
 export interface MessageDescriptor {
-  id?: string;
+  id: string;
   description?: string;
   defaultMessage?: string;
   file?: string;

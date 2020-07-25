@@ -9,9 +9,13 @@ const readFile = promisify(readFileAsync);
 const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
   additionalComponentNames: {
     additionalComponentNames: ['CustomMessage'],
+    pragma: 'react-intl',
   },
-  defineMessages: {},
+  defineMessages: {
+    pragma: 'react-intl',
+  },
   extractFromFormatMessage: {
+    pragma: 'react-intl',
     extractFromFormatMessageCall: true,
   },
   extractFromFormatMessageStateless: {
@@ -81,7 +85,7 @@ describe('emit asserts for', function () {
 
 async function compile(filePath: string, options?: Partial<Opts>) {
   let msgs: MessageDescriptor[] = [];
-
+  let meta: Record<string, string> = {};
   const input = await readFile(filePath, 'utf8');
   const output = ts.transpileModule(input, {
     compilerOptions: {
@@ -108,6 +112,9 @@ async function compile(filePath: string, options?: Partial<Opts>) {
           onMsgExtracted: (_, extractedMsgs) => {
             msgs = msgs.concat(extractedMsgs);
           },
+          onMetaExtracted: (_, m) => {
+            meta = m;
+          },
           ...(options || {}),
         }),
       ],
@@ -115,6 +122,7 @@ async function compile(filePath: string, options?: Partial<Opts>) {
   });
   return {
     msgs,
+    meta,
     code: output.outputText,
   };
 }
