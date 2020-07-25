@@ -27,6 +27,12 @@
       "intl-messageformat": [
         "bazel-out/k8-fastbuild/bin/packages/intl-messageformat"
       ],
+      "babel-plugin-react-intl": [
+        "bazel-out/k8-fastbuild/bin/packages/babel-plugin-react-intl"
+      ],
+      "eslint-plugin-formatjs": [
+        "bazel-out/k8-fastbuild/bin/packages/eslint-plugin-formatjs"
+      ],
       "intl-messageformat-parser": [
         "bazel-out/k8-fastbuild/bin/packages/intl-messageformat-parser"
       ],

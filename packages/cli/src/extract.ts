@@ -1,13 +1,19 @@
-import {
-  ExtractionResult,
-  OptionsSchema,
-  ExtractedMessageDescriptor,
-} from 'babel-plugin-react-intl';
-import * as babel from '@babel/core';
+import {OptionsSchema} from 'babel-plugin-react-intl';
 import {warn, getStdinAsString} from './console_utils';
-import {outputJSONSync} from 'fs-extra';
-import {interpolateName} from '@formatjs/ts-transformer';
+import {outputJSONSync, readFile} from 'fs-extra';
+import {
+  interpolateName,
+  transform,
+  Opts,
+  MessageDescriptor,
+} from '@formatjs/ts-transformer';
 import {IOptions as GlobOptions} from 'glob';
+import * as ts from 'typescript';
+
+export interface ExtractionResult<M = Record<string, string>> {
+  messages: MessageDescriptor[];
+  meta: M;
+}
 
 export type ExtractCLIOptions = Omit<ExtractOptions, 'overrideIdFn'> & {
   outFile?: string;
@@ -18,124 +24,83 @@ export type ExtractOptions = OptionsSchema & {
   throws?: boolean;
   idInterpolationPattern?: string;
   readFromStdin?: boolean;
-};
+} & Pick<Opts, 'onMsgExtracted' | 'onMetaExtracted'>;
 
-function getBabelConfig(
-  reactIntlOptions: ExtractCLIOptions,
-  extraBabelOptions: Partial<babel.TransformOptions> = {}
-): babel.TransformOptions {
-  return {
-    babelrc: false,
-    configFile: false,
-    parserOpts: {
-      plugins: [
-        'asyncGenerators',
-        'bigInt',
-        'classPrivateMethods',
-        'classPrivateProperties',
-        'classProperties',
-        'decorators-legacy',
-        'doExpressions',
-        'dynamicImport',
-        'exportDefaultFrom',
-        'functionBind',
-        'functionSent',
-        'importMeta',
-        'jsx',
-        'logicalAssignment',
-        'nullishCoalescingOperator',
-        'numericSeparator',
-        'objectRestSpread',
-        'optionalCatchBinding',
-        'optionalChaining',
-        'partialApplication',
-        'placeholders',
-        'throwExpressions',
-        'topLevelAwait',
-        'typescript',
-      ],
+function processFile(
+  source: string,
+  fn: string,
+  {idInterpolationPattern, ...opts}: Opts & {idInterpolationPattern?: string}
+) {
+  let messages: MessageDescriptor[] = [];
+  let meta: Record<string, string> = {};
+  if (!opts.overrideIdFn && idInterpolationPattern) {
+    opts = {
+      ...opts,
+      overrideIdFn: (id, defaultMessage, description, fileName) =>
+        id ||
+        interpolateName(
+          {
+            resourcePath: fileName,
+          } as any,
+          idInterpolationPattern,
+          {
+            content: description
+              ? `${defaultMessage}#${description}`
+              : defaultMessage,
+          }
+        ),
+      onMsgExtracted(_, msgs) {
+        messages = messages.concat(msgs);
+      },
+      onMetaExtracted(_, m) {
+        meta = m;
+      },
+    };
+  }
+
+  ts.transpileModule(source, {
+    compilerOptions: {
+      allowJs: true,
+      target: ts.ScriptTarget.ESNext,
+      noEmit: true,
     },
-    // We need to use require.resolve here, or otherwise the lookup is based on the current working
-    // directory of the CLI.
-    plugins: [[require.resolve('babel-plugin-react-intl'), reactIntlOptions]],
-    highlightCode: true,
-    // Extraction of string messages does not output the transformed JavaScript.
-    sourceMaps: false,
-    ...extraBabelOptions,
-  };
+    fileName: fn,
+    transformers: {
+      before: [transform(opts)],
+    },
+  });
+  return {messages, meta};
 }
 
 export async function extract(
   files: readonly string[],
-  {idInterpolationPattern, throws, readFromStdin, ...babelOpts}: ExtractOptions
+  {throws, readFromStdin, ...opts}: ExtractOptions
 ): Promise<ExtractionResult[]> {
   if (readFromStdin) {
     // Read from stdin
     if (process.stdin.isTTY) {
       warn('Reading source file from TTY.');
     }
-    if (!babelOpts.overrideIdFn && idInterpolationPattern) {
-      babelOpts = {
-        ...babelOpts,
-        overrideIdFn: (id, defaultMessage, description) =>
-          id ||
-          interpolateName(
-            {
-              resourcePath: 'dummy',
-            } as any,
-            idInterpolationPattern,
-            {content: defaultMessage + (description ? '#' + description : '')}
-          ),
-      };
-    }
     const stdinSource = await getStdinAsString();
-    const babelResult = babel.transformSync(
-      stdinSource,
-      getBabelConfig(babelOpts)
-    );
-
-    return [
-      ((babelResult as babel.BabelFileResult).metadata as any)[
-        'react-intl'
-      ] as ExtractionResult,
-    ];
+    return [processFile(stdinSource, 'dummy', opts)];
   }
 
   const results = await Promise.all(
-    files.map(filename => {
-      if (!babelOpts.overrideIdFn && idInterpolationPattern) {
-        babelOpts = {
-          ...babelOpts,
-          overrideIdFn: (id, defaultMessage, description) =>
-            id ||
-            interpolateName(
-              {
-                resourcePath: filename,
-              } as any,
-              idInterpolationPattern,
-              {
-                content: description
-                  ? `${defaultMessage}#${description}`
-                  : defaultMessage,
-              }
-            ),
-        };
+    files.map(async fn => {
+      try {
+        const source = await readFile(fn, 'utf8');
+        return processFile(source, fn, opts);
+      } catch (e) {
+        if (throws) {
+          throw e;
+        } else {
+          warn(e);
+        }
       }
-      const promise = babel.transformFileAsync(
-        filename,
-        getBabelConfig(babelOpts, {filename: filename})
-      );
-      return throws ? promise : promise.catch(e => warn(e));
     })
   );
-  return results
-    .filter(r => r && r.metadata)
-    .map(
-      r =>
-        ((r as babel.BabelFileResult).metadata as any)[
-          'react-intl'
-        ] as ExtractionResult
-    );
+
+  return results.filter((r): r is ExtractionResult => !!r);
 }
 
 export default async function extractAndWrite(
@@ -143,15 +108,26 @@ export default async function extractAndWrite(
   opts: ExtractCLIOptions
 ) {
   const {outFile, throws, ...extractOpts} = opts;
-  if (outFile) {
-    extractOpts.messagesDir = undefined;
-  }
   const extractionResults = await extract(files, extractOpts);
-  const printMessagesToStdout = extractOpts.messagesDir == null && !outFile;
-  const extractedMessages = new Map<string, ExtractedMessageDescriptor>();
+  const printMessagesToStdout = !outFile;
+  const extractedMessages = new Map<string, MessageDescriptor>();
+
   for (const {messages} of extractionResults) {
-    for (const message of messages ?? []) {
+    for (const message of messages) {
       const {id, description, defaultMessage} = message;
+      if (!id) {
+        const error = new Error(
+          `[FormatJS CLI] Missing message id for message: 
+${JSON.stringify(message, undefined, 2)}`
+        );
+        if (throws) {
+          throw error;
+        } else {
+          warn(error.message);
+        }
+        continue;
+      }
+
       if (extractedMessages.has(id)) {
         const existing = extractedMessages.get(id)!;
         if (
@@ -159,7 +135,7 @@ export default async function extractAndWrite(
           defaultMessage !== existing.defaultMessage
         ) {
           const error = new Error(
-            `[React Intl] Duplicate message id: "${id}", ` +
+            `[FormatJS CLI] Duplicate message id: "${id}", ` +
               'but the `description` and/or `defaultMessage` are different.'
           );
           if (throws) {
@@ -169,7 +145,7 @@ export default async function extractAndWrite(
           }
         }
       }
-      extractedMessages.set(message.id, message);
+      extractedMessages.set(id, message);
     }
   }
   const results = Array.from(extractedMessages.values());

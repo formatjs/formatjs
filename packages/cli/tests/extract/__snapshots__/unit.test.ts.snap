@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it passes camelCase-converted arguments to typescript API 1`] = `
+Array [
+  Array [
+    ";",
+    Object {
+      "compilerOptions": Object {
+        "allowJs": true,
+      },
+      "fileName": "file1.js",
+      "transformers": Object {
+        "before": Array [
+          [Function],
+        ],
+      },
+    },
+  ],
+  Array [
+    ";",
+    Object {
+      "compilerOptions": Object {
+        "allowJs": true,
+      },
+      "fileName": "file2.tsx",
+      "transformers": Object {
+        "before": Array [
+          [Function],
+        ],
+      },
+    },
+  ],
+]
+`;

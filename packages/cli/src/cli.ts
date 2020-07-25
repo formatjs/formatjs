@@ -35,14 +35,6 @@ async function main(argv: string[]) {
       ].join('\n')
     )
     .option(
-      '--messages-dir <dir>',
-      [
-        'The target location where the plugin will output a `.json` file corresponding to each ',
-        'component from which React Intl messages were extracted. If not provided, the extracted ',
-        'message descriptors will be printed to standard output.',
-      ].join('')
-    )
-    .option(
       '--out-file <path>',
       [
         'The target file path where the plugin will output an aggregated `.json` file of all',
@@ -67,13 +59,6 @@ async function main(argv: string[]) {
         'extracted message descriptors.',
       ].join(''),
       false
-    )
-    .option(
-      '--module-source-name <name>',
-      [
-        'The ES6 module source name of the React Intl package. Defaults to: `"react-intl"`, ',
-        'but can be changed to another name/path to React Intl.',
-      ].join('')
     )
     .option(
       '--remove-default-message',
@@ -130,16 +115,15 @@ async function main(argv: string[]) {
       for (const f of files) {
         processedFiles.push(
           ...globSync(f, {
-            cwd: process.cwd(),
             ignore: cmdObj.ignore,
           })
         );
       }
+
       await extract(processedFiles, {
         outFile: cmdObj.outFile,
         idInterpolationPattern:
           cmdObj.idInterpolationPattern || '[sha1:contenthash:base64:6]',
-        messagesDir: cmdObj.messagesDir,
         extractSourceLocation: cmdObj.extractSourceLocation,
         moduleSourceName: cmdObj.moduleSourceName,
         removeDefaultMessage: cmdObj.removeDefaultMessage,

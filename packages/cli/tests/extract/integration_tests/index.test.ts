@@ -1,7 +1,7 @@
 import {resolve, join} from 'path';
 import {promisify} from 'util';
 import {exec as nodeExec} from 'child_process';
-import {readJSON, mkdirp, readdir} from 'fs-extra';
+import {readJSON, mkdirp} from 'fs-extra';
 import * as _rimraf from 'rimraf';
 const exec = promisify(nodeExec);
 const rimraf = promisify(_rimraf);
@@ -22,7 +22,10 @@ test('basic case: help', async () => {
 
 test('basic case: defineMessages -> stdout', async () => {
   const {stdout, stderr} = await exec(
-    `${BIN_PATH} extract ${join(__dirname, 'defineMessages/actual.js')}`
+    `${BIN_PATH} extract --throws ${join(
+      __dirname,
+      'defineMessages/actual.js'
+    )}`
   );
   expect(JSON.parse(stdout)).toMatchSnapshot();
   expect(stderr).toBe('');
@@ -36,33 +39,27 @@ test('[glob] basic case: defineMessages -> stdout', async () => {
   expect(stderr).toBe('');
 }, 20000);
 
-test('basic case: defineMessages -> directory', async () => {
+test('basic case: defineMessages -> out-file', async () => {
   process.chdir(__dirname);
   const {stdout, stderr} = await exec(
-    `${BIN_PATH} extract defineMessages/actual.js --messages-dir ${ARTIFACT_PATH}`
+    `${BIN_PATH} extract defineMessages/actual.js --out-file ${ARTIFACT_PATH}/defineMessages/actual.json`
   );
   expect(stdout).toBe('');
   expect(stderr).toBe('');
-  // Write to test_artifacts/defineMessages/actual.json
-  expect(
-    await readdir(join(ARTIFACT_PATH, 'defineMessages'))
-  ).toMatchSnapshot();
+
   expect(
     await readJSON(join(ARTIFACT_PATH, 'defineMessages/actual.json'))
   ).toMatchSnapshot();
 }, 20000);
 
-test('basic case: defineMessages -> directory with location', async () => {
+test('basic case: defineMessages -> out-file with location', async () => {
   process.chdir(__dirname);
   const {stdout, stderr} = await exec(
-    `${BIN_PATH} extract defineMessages/actual.js --extract-source-location --messages-dir ${ARTIFACT_PATH}`
+    `${BIN_PATH} extract defineMessages/actual.js --extract-source-location --out-file ${ARTIFACT_PATH}/defineMessages/actual.json`
   );
   expect(stdout).toBe('');
   expect(stderr).toBe('');
-  // Write to test_artifacts/defineMessages/actual.json
-  expect(
-    await readdir(join(ARTIFACT_PATH, 'defineMessages'))
-  ).toMatchSnapshot();
+
   expect(
     await readJSON(join(ARTIFACT_PATH, 'defineMessages/actual.json'))
   ).toMatchSnapshot();
@@ -76,17 +73,22 @@ test('typescript -> stdout', async () => {
   expect(stderr).toBe('');
 }, 20000);
 
-test('ignore -> stdout', async () => {
-  const ignore = "--ignore '*.ignore.*'";
+const ignore = "--ignore '*.ignore.*'";
 
+test('ignore -> stdout TS', async () => {
   const tsResult = await exec(
-    `${BIN_PATH} extract ${join(__dirname, 'typescript/actual.tsx')} ${ignore}`
+    `${BIN_PATH} extract --throws ${join(
+      __dirname,
+      'typescript/actual.tsx'
+    )} ${ignore}`
   );
   expect(JSON.parse(tsResult.stdout)).toMatchSnapshot();
   expect(tsResult.stderr).toBe('');
+}, 20000);
 
+test('ignore -> stdout JS', async () => {
   const jsResult = await exec(
-    `${BIN_PATH} extract ${join(__dirname, 'defineMessages/*.js')} ${ignore}`
+    `${BIN_PATH} extract '${join(__dirname, 'defineMessages/*.js')}' ${ignore}`
   );
   expect(JSON.parse(jsResult.stdout)).toMatchSnapshot();
   expect(jsResult.stderr).toBe('');
@@ -94,7 +96,7 @@ test('ignore -> stdout', async () => {
 
 test('duplicated descriptor ids shows warning', async () => {
   const {stderr, stdout} = await exec(
-    `${BIN_PATH} extract ${join(__dirname, 'duplicated/*.tsx')}`
+    `${BIN_PATH} extract '${join(__dirname, 'duplicated/*.tsx')}'`
   );
   expect(JSON.parse(stdout)).toMatchSnapshot();
   expect(stderr).toContain('Duplicate message id: "foo"');
@@ -103,7 +105,7 @@ test('duplicated descriptor ids shows warning', async () => {
 test('duplicated descriptor ids throws', async () => {
   expect(async () => {
     await exec(
-      `${BIN_PATH} extract --throws ${join(__dirname, 'duplicated/*.tsx')}`
+      `${BIN_PATH} extract --throws '${join(__dirname, 'duplicated/*.tsx')}'`
     );
   }).rejects.toThrowError('Duplicate message id: "foo"');
 }, 20000);

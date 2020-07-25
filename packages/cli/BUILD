@@ -53,13 +53,12 @@ ts_compile(
     deps = SRC_DEPS,
 )
 
-# TODO: Add integration tests
 jest_test(
     name = "unit",
     srcs = [
         "package.json",
         "tests/extract/unit.test.ts",
-    ] + SRCS,
+    ] + SRCS + glob(["tests/extract/__snapshots__/*.snap"]),
     deps = [
         "@npm//eslint",
         "//packages/babel-plugin-react-intl:types",
