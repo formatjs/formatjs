@@ -5,7 +5,7 @@ title: Message Distribution
 
 Now that you've declared your messages, extracted them, sent them to your translation vendor and they have given you back the translated JSON of the same format, it's time to talk about how to distribute & consume the translated JSON.
 
-## Converting raw format
+## Compiling Messages
 
 Let's take the example from [Message Extraction](./message-extraction.md), assuming we are working with the French version and the file is called `lang/fr.json`:
 
