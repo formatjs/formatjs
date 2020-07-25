@@ -55,6 +55,11 @@ export default class Foo extends Component {
         </p>
         <p>
           <FormattedMessage {...msgs.kittens} />
+          <FormattedMessage
+            id="inline"
+            defaultMessage="formatted message"
+            description="foo"
+          />
         </p>
       </div>
     );

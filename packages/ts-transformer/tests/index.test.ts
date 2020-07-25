@@ -89,19 +89,8 @@ async function compile(filePath: string, options?: Partial<Opts>) {
   const input = await readFile(filePath, 'utf8');
   const output = ts.transpileModule(input, {
     compilerOptions: {
-      experimentalDecorators: true,
-      jsx: ts.JsxEmit.React,
-      module: ts.ModuleKind.CommonJS,
-      moduleResolution: ts.ModuleResolutionKind.NodeJs,
-      noEmitOnError: false,
-      noUnusedLocals: true,
-      noUnusedParameters: true,
-      stripInternal: true,
-      declaration: false,
-      baseUrl: __dirname,
-      target: ts.ScriptTarget.ES2015,
-      rootDir: __dirname,
-      outDir: join(__dirname, 'output'),
+      target: ts.ScriptTarget.ESNext,
+      allowJs: true,
     },
     fileName: filePath,
     reportDiagnostics: true,
