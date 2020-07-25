@@ -6,10 +6,16 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'formatjs', // Usually your GitHub org/user name.
   projectName: 'formatjs.github.io', // Usually your repo name.
+  plugins: ['@docusaurus/plugin-google-analytics'],
   themeConfig: {
     algolia: {
       apiKey: '64ffba7fb3e3ee96182a32b6bf44591f',
       indexName: 'formatjs',
+    },
+    googleAnalytics: {
+      trackingID: 'UA-173519367-1',
+      // Optional fields.
+      anonymizeIP: true, // Should IPs be anonymized?
     },
     navbar: {
       title: 'Format.JS',
