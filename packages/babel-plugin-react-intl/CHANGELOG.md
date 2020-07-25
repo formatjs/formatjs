@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.9.1](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.9.0...babel-plugin-react-intl@7.9.1) (2020-07-25)
+
+
+### Bug Fixes
+
+* **babel-plugin-react-intl:** tweak overrideIdFn signature in options ([4fd8163](https://github.com/formatjs/formatjs/commit/4fd81632722bea7dcad54588dca5d711e8e9cb64))
+
+
+
+
+
 # [7.9.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.8.3...babel-plugin-react-intl@7.9.0) (2020-07-24)
 
 

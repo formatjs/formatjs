@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.11.0...@formatjs/cli@2.0.0) (2020-07-25)
+
+
+### Features
+
+* **@formatjs/cli:** add `compile` command ([0ecf8b1](https://github.com/formatjs/formatjs/commit/0ecf8b12f875b224f292c3a40e05d8f4e6521024))
+* **@formatjs/cli:** modify output JSON schema ([457d30b](https://github.com/formatjs/formatjs/commit/457d30b509c13a1fc6ea3c55e92c381676bcc281))
+* **@formatjs/cli:** revamp underlying extraction ([0b0c810](https://github.com/formatjs/formatjs/commit/0b0c8108573ba4a0f74fdac1abe78c9f36f0e3db))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/cli:** The old output JSON messages used to be a
+`MessageDescriptor[]`. This format isn't friendly to translation vendors
+so we've changed it to `Record<string, Omit<MessageDescriptor, 'id'>>`.
+For example:
+```json
+{
+  "fjk13": {
+    "defaultMessage": "a message",
+    "description": "a description",
+    "start": 0,
+    "end": 20
+  }
+}
+```
+* **@formatjs/cli:** Remove `--messages-dir` option. This was primarily used
+to eagerly write out output in the babel plugin since we don't know when
+the execution will be done. This is not the case with the CLI.
+`--out-file` should be used instead.
+* **@formatjs/cli:** Remove `--module-source-name` option. This is not used.
+
+
+
+
+
 # [1.11.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@1.10.7...@formatjs/cli@1.11.0) (2020-07-24)
 
 

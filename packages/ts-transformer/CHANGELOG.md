@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.4.2...@formatjs/ts-transformer@2.5.0) (2020-07-25)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** fix `{} as const` case ([d010b50](https://github.com/formatjs/formatjs/commit/d010b502616e1b0d1bb3ca9501a74bc14f984d3d))
+
+
+### Features
+
+* **@formatjs/ts-transformer:** add support for pragma ([5096238](https://github.com/formatjs/formatjs/commit/50962386779d1751cfc481b22a4454f30ae4c7e0))
+
+
+
+
+
 ## [2.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.4.1...@formatjs/ts-transformer@2.4.2) (2020-07-24)
 
 

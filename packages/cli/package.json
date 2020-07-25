@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/cli",
-  "version": "1.11.0",
+  "version": "2.0.0",
   "description": "A CLI for formatjs.",
   "keywords": [
     "intl",
@@ -31,11 +31,11 @@
     "url": "git+ssh://git@github.com/formatjs/formatjs.git"
   },
   "dependencies": {
-    "@formatjs/ts-transformer": "^2.4.2",
+    "@formatjs/ts-transformer": "^2.5.0",
     "@types/lodash": "^4.14.150",
     "@types/loud-rejection": "^2.0.0",
     "@types/node": "14",
-    "babel-plugin-react-intl": "^7.9.0",
+    "babel-plugin-react-intl": "^7.9.1",
     "chalk": "^4.0.0",
     "commander": "5.1.0",
     "fs-extra": "^9.0.0",
