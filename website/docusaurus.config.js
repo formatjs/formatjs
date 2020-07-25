@@ -6,7 +6,6 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'formatjs', // Usually your GitHub org/user name.
   projectName: 'formatjs.github.io', // Usually your repo name.
-  plugins: ['@docusaurus/plugin-google-analytics'],
   themeConfig: {
     algolia: {
       apiKey: '64ffba7fb3e3ee96182a32b6bf44591f',
