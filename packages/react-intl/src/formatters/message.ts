@@ -21,6 +21,7 @@ import IntlMessageFormat, {
   isFormatXMLElementFn,
 } from 'intl-messageformat';
 import {MissingTranslationError, MessageFormatError} from '../error';
+import {TYPE} from 'intl-messageformat-parser';
 
 function setTimeZoneInOptions(
   opts: Record<string, Intl.DateTimeFormatOptions>,
@@ -154,6 +155,16 @@ export function formatMessage(
   // `id` is a required field of a Message Descriptor.
   invariant(!!id, '[React Intl] An `id` must be provided to format a message.');
   const message = messages && messages[String(id)];
+
+  // IMPORTANT: Hot path if `message` is AST with a single literal node
+  if (
+    Array.isArray(message) &&
+    message.length === 1 &&
+    message[0].type === TYPE.literal
+  ) {
+    return message[0].value;
+  }
+
   // IMPORTANT: Hot path straight lookup for performance
   if (!values && message && typeof message === 'string') {
     return message.replace(/'\{(.*?)\}'/gi, `{$1}`);

@@ -19,6 +19,8 @@ Since this approach uses `AST` as the data source, changes to `intl-messageforma
 `AST` is also slightly larger in size than regular `string` messages but can be efficiently compressed.
 :::
 
+In the future, we'll gear towards making this the default behavior.
+
 ## Imperative APIs
 
 Imperative APIs (e.g `formatMessage`...) are generally faster than `Formatted` component since it does not create extra `ReactElement` nodes. They should have the exact same capabilities as `Formatted` components.

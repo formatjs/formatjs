@@ -33,8 +33,12 @@ Let's take the example from [Message Extraction](./message-extraction.md), assum
 We can use [@formatjs/cli](../tooling/cli.md) to compile this into a react-intl consumable JSON file:
 
 ```sh
-formatjs compile lang/fr.json --out-file compiled-lang/fr.json
+formatjs compile lang/fr.json --ast --out-file compiled-lang/fr.json
 ```
+
+:::info Parsing messages into AST
+We recommending compiling your messages into AST as it allows us to skip parsing them during runtime. This makes your app more performant.
+:::
 
 ## Distribution
 
