@@ -7,6 +7,8 @@ Array [
     Object {
       "compilerOptions": Object {
         "allowJs": true,
+        "noEmit": true,
+        "target": 99,
       },
       "fileName": "file1.js",
       "transformers": Object {
@@ -21,6 +23,8 @@ Array [
     Object {
       "compilerOptions": Object {
         "allowJs": true,
+        "noEmit": true,
+        "target": 99,
       },
       "fileName": "file2.tsx",
       "transformers": Object {

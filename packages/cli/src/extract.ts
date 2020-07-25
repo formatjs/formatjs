@@ -148,7 +148,12 @@ ${JSON.stringify(message, undefined, 2)}`
       extractedMessages.set(id, message);
     }
   }
-  const results = Array.from(extractedMessages.values());
+  const results: Record<string, Omit<MessageDescriptor, 'id'>> = {};
+  const messages = Array.from(extractedMessages.values());
+  for (const {id, ...msg} of messages) {
+    results[id] = msg;
+  }
+
   if (outFile) {
     outputJSONSync(outFile, results, {
       spaces: 2,

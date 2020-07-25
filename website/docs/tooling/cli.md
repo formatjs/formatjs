@@ -3,7 +3,7 @@ id: cli
 title: CLI
 ---
 
-We've built https://www.npmjs.com/package/@formatjs/cli that helps you extract messages from a list of files. It uses [`babel-plugin-react-intl`](babel-plugin.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
+We've built https://www.npmjs.com/package/@formatjs/cli that helps you extract messages from a list of files. It uses [`@formatjs/ts-transformer`](ts-transformer.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
 
 ```tsx
 import {defineMessages, defineMessage} from 'react-intl';
@@ -54,10 +54,6 @@ The input language is expected to be TypeScript or ES2017 with JSX.
 
 ## Options
 
-### `--messages-dir [dir]`
-
-The target location where the plugin will output a `.json` file corresponding to each component from which React Intl messages were extracted. If not provided, the extracted message descriptors will be printed to standard output.
-
 ### `--out-file [path]`
 
 The target file path where the plugin will output an aggregated `.json` file of allthe translations from the `files` supplied. This flag will ignore `--messages-dir`
@@ -69,10 +65,6 @@ If certain message descriptors don't have id, this `pattern` will be used to aut
 ### `--extract-source-location`
 
 Whether the metadata about the location of the message in the source file should be extracted. If `true`, then `file`, `start`, and `end` fields will exist for each extracted message descriptors. (default: `false`)
-
-### `--module-source-name [name]`
-
-The ES6 module source name of the React Intl package. Defaults to: `"react-intl"`, but can be changed to another name/path to React Intl.
 
 ### `--additional-component-names [comma-separated-names]`
 
