@@ -41,7 +41,7 @@ const msgs = defineMessages({
     defaultMessage: 'this is \
     a message',
   },
-});
+} as const);
 
 export default class Foo extends Component {
   render() {

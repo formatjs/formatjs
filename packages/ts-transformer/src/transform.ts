@@ -312,8 +312,17 @@ function extractMessagesFromCallExpression(
 ): typeof node {
   const {onMsgExtracted} = opts;
   if (isMultipleMessageDecl(node)) {
-    const [descriptorsObj, ...restArgs] = node.arguments;
-    if (ts.isObjectLiteralExpression(descriptorsObj)) {
+    const [arg, ...restArgs] = node.arguments;
+    let descriptorsObj: ts.ObjectLiteralExpression | undefined;
+    if (ts.isObjectLiteralExpression(arg)) {
+      descriptorsObj = arg;
+    } else if (
+      ts.isAsExpression(arg) &&
+      ts.isObjectLiteralExpression(arg.expression)
+    ) {
+      descriptorsObj = arg.expression;
+    }
+    if (descriptorsObj) {
       const properties = descriptorsObj.properties;
       const msgs = properties
         .filter<ts.PropertyAssignment>((prop): prop is ts.PropertyAssignment =>
