@@ -63,7 +63,7 @@ jest_test(
     deps = [
         "//packages/intl-messageformat-parser:types",
         "//packages/ts-transformer:types",
-        "@npm//@babel/preset-react",
+        "@npm//@babel/plugin-syntax-jsx",
     ] + SRC_DEPS,
 )
 
