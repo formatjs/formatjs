@@ -1,6 +1,7 @@
 import * as commander from 'commander';
 import * as loudRejection from 'loud-rejection';
 import extract, {ExtractCLIOptions} from './extract';
+import compile, {CompileCLIOpts} from './compile';
 import {sync as globSync} from 'glob';
 
 const KNOWN_COMMANDS = ['extract'];
@@ -138,6 +139,27 @@ async function main(argv: string[]) {
       });
       process.exit(0);
     });
+
+  // Long text wrapping to available terminal columns: https://github.com/tj/commander.js/pull/956
+  commander
+    .command('compile <translation_file>')
+    .description(
+      `Compile extracted translation file into react-intl consumable JSON
+We also verify that the messages are valid ICU and not malformed.`
+    )
+    .option(
+      '--out-file <path>',
+      `Compiled translation output file.
+If this is not provided, result will be printed to stdout`
+    )
+    .option(
+      '--ast',
+      `Whether to compile to AST. See https://formatjs.io/docs/react-intl/advanced-usage#pre-parsing-messages
+for more information`
+    )
+    .action((file: string, {outFile, ...opts}: CompileCLIOpts) =>
+      compile(file, outFile, opts)
+    );
 
   if (argv.length < 3) {
     commander.help();
