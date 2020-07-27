@@ -34,7 +34,8 @@ During runtime this will throw an `Error` saying `ID is required`. In order to i
     [
       "react-intl",
       {
-        "extractFromFormatMessageCall": true
+        "extractFromFormatMessageCall": true,
+        "idInterpolationPattern": "[sha512:contenthash:base64:6]"
       }
     ]
   ]
@@ -47,7 +48,7 @@ This will produce the following JS
 const {FormattedMessage} = require('react-intl');
 
 React.createElement(FormattedMessage, {
-  id: '179jd',
+  id: '179jda',
   defaultMessage: 'My name is {name}',
   values: {
     name: userName,
@@ -97,7 +98,12 @@ module.exports = {
           options: {
             getCustomTransformers() {
               return {
-                before: [transform()],
+                before: [
+                  transform({
+                    extractFromFormatMessageCall: true,
+                    overrideIdFn: '[sha512:contenthash:base64:6]',
+                  }),
+                ],
               };
             },
           },
@@ -115,7 +121,7 @@ This will produce the following JS
 const {FormattedMessage} = require('react-intl');
 
 React.createElement(FormattedMessage, {
-  id: '179jd',
+  id: '179jda',
   defaultMessage: 'My name is {name}',
   values: {
     name: userName,
