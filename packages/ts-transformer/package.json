@@ -16,11 +16,8 @@
     "transformer",
     "react-intl"
   ],
-  "peerDependencies": {
-    "typescript": "~3.8"
-  },
-  "devDependencies": {
-    "typescript": "~3.8"
+  "dependencies": {
+    "typescript": "^3.8"
   },
   "author": "Long Ho <holevietlong@gmail.com>",
   "license": "MIT",
