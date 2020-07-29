@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.3](https://github.com/formatjs/formatjs/compare/react-intl@5.4.2...react-intl@5.4.3) (2020-07-29)
+
+
+### Bug Fixes
+
+* **react-intl:** fix crash when message id is __proto__, fix [#1885](https://github.com/formatjs/formatjs/issues/1885) ([a42cdec](https://github.com/formatjs/formatjs/commit/a42cdec44c5cba184832ad9703cf2aa7cf2f1be4))
+
+
+
+
+
 ## [5.4.2](https://github.com/formatjs/formatjs/compare/react-intl@5.4.1...react-intl@5.4.2) (2020-07-25)
 
 

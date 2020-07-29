@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.5.0...@formatjs/ts-transformer@2.5.1) (2020-07-29)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** declare TS as dependency, fix [#1884](https://github.com/formatjs/formatjs/issues/1884) ([0a08310](https://github.com/formatjs/formatjs/commit/0a08310c48e6e6477096036feafc330e3613ac0b))
+
+
+
+
+
 # [2.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.4.2...@formatjs/ts-transformer@2.5.0) (2020-07-25)
 
 

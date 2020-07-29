@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.1.6...@formatjs/intl-displaynames@3.1.7) (2020-07-29)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** handle missing ICU data bug ([#1886](https://github.com/formatjs/formatjs/issues/1886)) ([c72f000](https://github.com/formatjs/formatjs/commit/c72f00079d1f1c8203e8da05badac498c1378583)), closes [#1879](https://github.com/formatjs/formatjs/issues/1879)
+
+
+
+
+
 ## [3.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.1.5...@formatjs/intl-displaynames@3.1.6) (2020-07-24)
 
 **Note:** Version bump only for package @formatjs/intl-displaynames
