@@ -1,6 +1,6 @@
 import {parse, MessageFormatElement} from 'intl-messageformat-parser';
 import {MessageDescriptor} from '@formatjs/ts-transformer';
-import {outputJSONSync} from 'fs-extra';
+import {outputJSONSync, readJSONSync} from 'fs-extra';
 export interface CompileCLIOpts extends Opts {
   outFile?: string;
 }
@@ -12,10 +12,9 @@ export default function compile(
   outFile?: string,
   {ast}: Opts = {}
 ) {
-  const messages: Record<
-    string,
-    Omit<MessageDescriptor, 'id'>
-  > = require(inputFile);
+  const messages: Record<string, Omit<MessageDescriptor, 'id'>> = readJSONSync(
+    inputFile
+  );
   const results: Record<string, string | MessageFormatElement[]> = {};
   for (const [id, {defaultMessage = ''}] of Object.entries(messages)) {
     // Parse so we can verify that the message is not malformed
