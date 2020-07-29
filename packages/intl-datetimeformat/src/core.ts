@@ -414,11 +414,11 @@ function initializeDateTimeFormat(
     if (matcher === 'basic') {
       bestFormat = basicFormatMatcher(opt, formats);
     } else {
-      opt.hour12 =
-        hour12 !== undefined
-          ? hour12
-          : internalSlots.hourCycle === 'h11' ||
-            internalSlots.hourCycle === 'h12';
+      if (opt.hour !== undefined) {
+        opt.hour12 =
+          internalSlots.hourCycle === 'h11' ||
+          internalSlots.hourCycle === 'h12';
+      }
       bestFormat = bestFitFormatMatcher(opt, formats);
     }
   } else {
@@ -537,9 +537,6 @@ export function toDateTimeOptions(
     >) {
       options[prop] = 'numeric';
     }
-  }
-  if (needDefaults && defaults === 'date') {
-    options.hour12 = false;
   }
   if (needDefaults && (defaults === 'time' || defaults === 'all')) {
     for (const prop of ['hour', 'minute', 'second'] as Array<
