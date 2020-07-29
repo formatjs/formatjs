@@ -732,6 +732,11 @@ describe('format API', () => {
       expect(formatMessage({id: 'no_args'})).toBe(mf.format());
     });
 
+    it('formats message with ID as a method in Object.prototype, GH issue #1885', () => {
+      expect(formatMessage({id: 'toString'})).toBe('toString');
+      expect(formatMessage({id: '__proto__'})).toBe('__proto__');
+    });
+
     it('formats legacy HTML messages', () => {
       const {locale, messages} = config;
       const mf = new IntlMessageFormat(messages.richText, locale);

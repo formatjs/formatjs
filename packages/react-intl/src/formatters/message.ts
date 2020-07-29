@@ -150,11 +150,15 @@ export function formatMessage(
     | FormatXMLElementFn<React.ReactNode, React.ReactNode>
   >
 ): React.ReactNode {
-  const {id, defaultMessage} = messageDescriptor;
+  const {id: msgId, defaultMessage} = messageDescriptor;
 
   // `id` is a required field of a Message Descriptor.
-  invariant(!!id, '[React Intl] An `id` must be provided to format a message.');
-  const message = messages && messages[String(id)];
+  invariant(
+    !!msgId,
+    '[React Intl] An `id` must be provided to format a message.'
+  );
+  const id = String(msgId);
+  const message = messages && messages.hasOwnProperty(id) && messages[id];
 
   // IMPORTANT: Hot path if `message` is AST with a single literal node
   if (
