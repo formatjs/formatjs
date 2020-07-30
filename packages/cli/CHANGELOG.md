@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.0.1...@formatjs/cli@2.1.0) (2020-07-30)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** use `readJSONSync` instead of `require` ([#1895](https://github.com/formatjs/formatjs/issues/1895)) ([5eed1e5](https://github.com/formatjs/formatjs/commit/5eed1e5a5ad14156b409b29cd621ff3e27933049)), closes [#1896](https://github.com/formatjs/formatjs/issues/1896)
+
+
+### Features
+
+* **@formatjs/cli:** add `line`/`col` to extracted messages, fix [#1897](https://github.com/formatjs/formatjs/issues/1897) ([bf9d694](https://github.com/formatjs/formatjs/commit/bf9d6947e0863516e52c1ba8e27709607d1967a8))
+* **@formatjs/cli:** rm dead --output-empty-json option ([d1760dd](https://github.com/formatjs/formatjs/commit/d1760dd8d810867d48077f0623d7cb7f30698c5f))
+
+
+
+
+
 ## [2.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.0.0...@formatjs/cli@2.0.1) (2020-07-29)
 
 **Note:** Version bump only for package @formatjs/cli

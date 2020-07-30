@@ -1,6 +1,6 @@
 {
   "name": "intl-messageformat",
-  "version": "9.1.7",
+  "version": "9.2.0",
   "description": "Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.",
   "keywords": [
     "i18n",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.4](https://github.com/formatjs/formatjs/compare/react-intl@5.4.3...react-intl@5.4.4) (2020-07-30)
+
+
+### Bug Fixes
+
+* **react-intl:** fix UMD build, re-enable functional tests ([8257db7](https://github.com/formatjs/formatjs/commit/8257db7cda27ac758a21e5d848e9e81e945867a1))
+
+
+
+
+
 ## [5.4.3](https://github.com/formatjs/formatjs/compare/react-intl@5.4.2...react-intl@5.4.3) (2020-07-29)
 
 

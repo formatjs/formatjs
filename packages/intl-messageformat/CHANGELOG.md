@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.2.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.1.7...intl-messageformat@9.2.0) (2020-07-30)
+
+
+### Features
+
+* **intl-messageformat:** rm dep on intl-format-cache and use fast-memoize ([1a7eb02](https://github.com/formatjs/formatjs/commit/1a7eb0210f1a171eb5291a79bb9f3cc855c5e12f))
+
+
+
+
+
 ## [9.1.7](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.1.6...intl-messageformat@9.1.7) (2020-07-24)
 
 **Note:** Version bump only for package intl-messageformat
