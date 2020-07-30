@@ -76,7 +76,7 @@ export default function (ReactIntl) {
         />
       );
 
-      const rendered = renderWithIntlProvider(el);
+      const rendered = renderWithIntlProvider(el, {onError: console.error});
       expect(rendered.text()).toBe('You have 1,000 emails.');
     });
   });

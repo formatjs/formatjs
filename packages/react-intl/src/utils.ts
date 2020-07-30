@@ -17,8 +17,9 @@ import {
   IntlShape,
 } from './types';
 import * as React from 'react';
-import IntlMessageFormat, {FormatXMLElementFn} from 'intl-messageformat';
-import memoizeIntlConstructor from 'intl-format-cache';
+import {IntlMessageFormat, FormatXMLElementFn} from 'intl-messageformat';
+import * as memoize from 'fast-memoize';
+import {Cache} from 'fast-memoize';
 import {invariant} from '@formatjs/intl-utils';
 import {IntlRelativeTimeFormatOptions} from '@formatjs/intl-relativetimeformat';
 import {UnsupportedFormatterError} from './error';
@@ -86,6 +87,28 @@ export function createIntlCache(): IntlCache {
   };
 }
 
+function createFastMemoizeCache<V>(store: Record<string, V>): Cache<string, V> {
+  return {
+    create() {
+      return {
+        has(key) {
+          return key in store;
+        },
+        get(key) {
+          return store[key];
+        },
+        set(key, value) {
+          store[key] = value;
+        },
+      };
+    },
+  };
+}
+
+// @ts-ignore this is to deal with rollup's default import shenanigans
+const _memoizeIntl = memoize.default || memoize;
+const memoizeIntl = _memoizeIntl as typeof memoize.default;
+
 /**
  * Create intl formatters and populate cache
  * @param cache explicit cache to prevent leaking memory
@@ -96,20 +119,61 @@ export function createFormatters(
   const RelativeTimeFormat = (Intl as any).RelativeTimeFormat;
   const ListFormat = (Intl as any).ListFormat;
   const DisplayNames = (Intl as any).DisplayNames;
+  const getDateTimeFormat = memoizeIntl(
+    (...args) => new Intl.DateTimeFormat(...args),
+    {
+      cache: createFastMemoizeCache(cache.dateTime),
+      strategy: memoizeIntl.strategies.variadic,
+    }
+  );
+  const getNumberFormat = memoizeIntl(
+    (...args) => new Intl.NumberFormat(...args),
+    {
+      cache: createFastMemoizeCache(cache.number),
+      strategy: memoizeIntl.strategies.variadic,
+    }
+  );
+  const getPluralRules = memoizeIntl(
+    (...args) => new Intl.PluralRules(...args),
+    {
+      cache: createFastMemoizeCache(cache.pluralRules),
+      strategy: memoizeIntl.strategies.variadic,
+    }
+  );
   return {
-    getDateTimeFormat: memoizeIntlConstructor(
-      Intl.DateTimeFormat,
-      cache.dateTime
+    getDateTimeFormat,
+    getNumberFormat,
+    getMessageFormat: memoizeIntl(
+      (message, locales, overrideFormats, opts) =>
+        new IntlMessageFormat(message, locales, overrideFormats, {
+          formatters: {
+            getNumberFormat,
+            getDateTimeFormat,
+            getPluralRules,
+          },
+          ...(opts || {}),
+        }),
+      {
+        cache: createFastMemoizeCache(cache.message),
+        strategy: memoizeIntl.strategies.variadic,
+      }
     ),
-    getNumberFormat: memoizeIntlConstructor(Intl.NumberFormat, cache.number),
-    getMessageFormat: memoizeIntlConstructor(IntlMessageFormat, cache.message),
-    getRelativeTimeFormat: memoizeIntlConstructor(
-      RelativeTimeFormat,
-      cache.relativeTime
+    getRelativeTimeFormat: memoizeIntl(
+      (...args) => new RelativeTimeFormat(...args),
+      {
+        cache: createFastMemoizeCache(cache.relativeTime),
+        strategy: memoizeIntl.strategies.variadic,
+      }
     ),
-    getPluralRules: memoizeIntlConstructor(Intl.PluralRules, cache.pluralRules),
-    getListFormat: memoizeIntlConstructor(ListFormat, cache.list),
-    getDisplayNames: memoizeIntlConstructor(DisplayNames, cache.displayNames),
+    getPluralRules,
+    getListFormat: memoizeIntl((...args) => new ListFormat(...args), {
+      cache: createFastMemoizeCache(cache.list),
+      strategy: memoizeIntl.strategies.variadic,
+    }),
+    getDisplayNames: memoizeIntl((...args) => new DisplayNames(...args), {
+      cache: createFastMemoizeCache(cache.displayNames),
+      strategy: memoizeIntl.strategies.variadic,
+    }),
   };
 }
 

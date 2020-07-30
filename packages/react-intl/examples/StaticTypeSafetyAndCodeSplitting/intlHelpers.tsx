@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useIntl, IntlProvider as IntlProvider_} from '../..';
-import {PrimitiveType} from 'intl-messageformat';
+import type {PrimitiveType} from 'intl-messageformat';
 
 // "import type" ensures en messages aren't bundled by default
 import * as sourceOfTruth from './en.json';

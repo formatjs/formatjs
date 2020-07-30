@@ -47,6 +47,7 @@ SRC_DEPS = [
     "@npm//hoist-non-react-statics",
     "@npm//@types/hoist-non-react-statics",
     "@npm//shallow-equal",
+    "@npm//fast-memoize",
 ]
 
 TESTS = glob([
@@ -81,6 +82,20 @@ jest_test(
     deps = TEST_DEPS,
 )
 
+jest_test(
+    name = "functional",
+    srcs = glob(["tests/functional/**/*.ts*"]) + [
+        "tests/setup.js",
+        "react-intl.umd.js",
+        ":react-intl.umd.min",
+        "package.json",
+        "//packages/intl-numberformat:locale-data",
+        "//packages/intl-displaynames:polyfill-locales.js",
+    ],
+    jest_config = "jest.config.js",
+    deps = TEST_DEPS + [":dist"],
+)
+
 rollup_dts(
     name = "rollup-dts",
     package_name = PACKAGE_NAME,
@@ -105,7 +120,7 @@ rollup_bundle(
     srcs = [":dist-esm"],
     args = [
         "--name",
-        "IntlMessageFormat",
+        "ReactIntl",
     ],
     config_file = "//:rollup.config.js",
     entry_point = "lib/index.js",

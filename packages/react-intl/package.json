@@ -136,7 +136,7 @@
     "@formatjs/intl-utils": "^3.8.2",
     "@types/hoist-non-react-statics": "^3.3.1",
     "hoist-non-react-statics": "^3.3.2",
-    "intl-format-cache": "^4.3.1",
+    "fast-memoize": "^2.5.2",
     "intl-messageformat": "^9.1.7",
     "intl-messageformat-parser": "^5.3.7",
     "shallow-equal": "^1.2.1"

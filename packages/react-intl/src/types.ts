@@ -4,7 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 import * as React from 'react';
-import IntlMessageFormat, {
+import {
+  IntlMessageFormat,
   Formats,
   PrimitiveType,
   FormatXMLElementFn,
