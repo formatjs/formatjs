@@ -14,6 +14,11 @@ export interface ExtractionResult<M = Record<string, string>> {
   meta: M;
 }
 
+export interface ExtractedMessageDescriptor extends MessageDescriptor {
+  line?: number;
+  col?: number;
+}
+
 export type ExtractCLIOptions = Omit<
   ExtractOptions,
   'overrideIdFn' | 'onMsgExtracted' | 'onMetaExtracted'
@@ -27,6 +32,19 @@ export type ExtractOptions = Opts & {
   idInterpolationPattern?: string;
   readFromStdin?: boolean;
 } & Pick<Opts, 'onMsgExtracted' | 'onMetaExtracted'>;
+
+function calculateLineColFromOffset(
+  text: string,
+  start?: number
+): Pick<ExtractedMessageDescriptor, 'line' | 'col'> {
+  if (!start) {
+    return {line: 1, col: 1};
+  }
+  const chunk = text.slice(0, start);
+  const lines = chunk.split('\n');
+  const lastLine = lines[lines.length - 1];
+  return {line: lines.length, col: lastLine.length};
+}
 
 function processFile(
   source: string,
@@ -52,6 +70,12 @@ function processFile(
           }
         ),
       onMsgExtracted(_, msgs) {
+        if (opts.extractSourceLocation) {
+          msgs = msgs.map(msg => ({
+            ...msg,
+            ...calculateLineColFromOffset(source, msg.start),
+          }));
+        }
         messages = messages.concat(msgs);
       },
       onMetaExtracted(_, m) {
