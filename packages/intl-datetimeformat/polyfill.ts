@@ -40,14 +40,14 @@ if (
       return _toLocaleString(this, locales, options);
     },
   });
-  // defineProperty(Date.prototype, 'toLocaleDateString', {
-  //   value: function toLocaleDateString(
-  //     locales?: string | string[],
-  //     options?: DateTimeFormatOptions
-  //   ) {
-  //     return _toLocaleDateString(this, locales, options);
-  //   },
-  // });
+  defineProperty(Date.prototype, 'toLocaleDateString', {
+    value: function toLocaleDateString(
+      locales?: string | string[],
+      options?: DateTimeFormatOptions
+    ) {
+      return _toLocaleDateString(this, locales, options);
+    },
+  });
   defineProperty(Date.prototype, 'toLocaleTimeString', {
     value: function toLocaleTimeString(
       locales?: string | string[],

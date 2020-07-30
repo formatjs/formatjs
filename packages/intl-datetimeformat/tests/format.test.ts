@@ -316,7 +316,7 @@ describe('toLocaleString', function () {
   });
 });
 
-xdescribe('toLocaleDateString', function () {
+describe('toLocaleDateString', function () {
   it('ko', function () {
     expect(toLocaleDateString(new Date(TS), 'ko')).toBe('2020. 6. 16.');
   });

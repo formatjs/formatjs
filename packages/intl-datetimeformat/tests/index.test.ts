@@ -25,12 +25,11 @@ describe('Intl.DateTimeFormat', function () {
     ).toBe('12/31/1969, 7:00:00 PM Eastern Standard Time');
   });
   it('negative ts', function () {
-    // TODO: Fix the pattern matching here
     expect(
       new DateTimeFormat('en', {weekday: 'short', timeZone: 'UTC'}).format(
         new Date(1899, 1, 1)
       )
-    ).toBe('Wed, 12 AM');
+    ).toBe('Wed');
   });
   it('basicFormatMatcherScore', function () {
     const opts = {
