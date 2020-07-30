@@ -1,40 +1,32 @@
 import * as React from 'react';
-import {RawIntlProvider, FormattedMessage, createIntl} from '..';
-import {parse, MessageFormatElement} from 'intl-messageformat-parser';
+import {IntlProvider, FormattedMessage} from '../../';
 
-interface Props {}
+type IntlProviderProps = React.ComponentProps<typeof IntlProvider>;
 
-const messages: Record<string, string> = {
-  simple: 'Hello world',
-  placeholder: 'Hello {name}',
-  date: 'Hello {ts, date}',
-  time: 'Hello {ts, time}',
-  number: 'Hello {num, number}',
-  plural: 'I have {num, plural, one {# dog} other {# dogs}}',
-  select: 'I am a {gender, select, male {boy} female {girl}}',
-  selectordinal: `I am the {order, selectordinal, 
-        one {#st person} 
-        two {#nd person}
-        =3 {#rd person} 
-        other {#th person}
-    }`,
-  richtext: 'I have <bold>{num, plural, one {# dog} other {# dogs}}</bold>',
-};
+function loadLocaleData(locale: string) {
+  switch (locale) {
+    case 'fr':
+      return import('./compiled-lang/fr.json');
+    default:
+      return import('./compiled-lang/en.json');
+  }
+}
 
-const messageAst = Object.keys(messages).reduce(
-  (all: Record<string, MessageFormatElement[]>, k) => {
-    all[k] = parse(messages[k]);
-    return all;
-  },
-  {}
-);
+interface Props {
+  locale: IntlProviderProps['locale'];
+  messages: IntlProviderProps['messages'];
+}
 
-const intl = createIntl({locale: 'en', messages: messageAst});
-
-const App: React.FC<Props> = () => {
+const App: React.FC<Props> = props => {
   return (
-    <RawIntlProvider value={intl}>
+    <IntlProvider
+      locale={props.locale}
+      defaultLocale="en"
+      messages={props.messages}
+    >
       <p>
+        <span style={{fontSize: '30px'}}>AST</span>
+        <br />
         <FormattedMessage id="simple" />
         <br />
         <FormattedMessage id="placeholder" values={{name: 'John'}} />
@@ -66,12 +58,11 @@ const App: React.FC<Props> = () => {
           values={{num: 99, bold: chunks => <strong>{chunks}</strong>}}
         />
       </p>
-    </RawIntlProvider>
+    </IntlProvider>
   );
 };
 
-App.defaultProps = {
-  currentTime: new Date(),
-};
-
-export default App;
+export async function bootstrapApplication(locale: string) {
+  const messages = await loadLocaleData(locale);
+  return <App locale={locale} messages={messages.default} />;
+}

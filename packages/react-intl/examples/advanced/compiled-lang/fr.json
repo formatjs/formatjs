@@ -1,0 +1,77 @@
+{
+  "simple": [{"type": 0, "value": "Hello world"}],
+  "placeholder": [
+    {"type": 0, "value": "Hello "},
+    {"type": 1, "value": "name"}
+  ],
+  "date": [
+    {"type": 0, "value": "Hello "},
+    {"type": 3, "style": null, "value": "ts"}
+  ],
+  "time": [
+    {"type": 0, "value": "Hello "},
+    {"type": 4, "style": null, "value": "ts"}
+  ],
+  "number": [
+    {"type": 0, "value": "Hello "},
+    {"type": 2, "style": null, "value": "num"}
+  ],
+  "plural": [
+    {"type": 0, "value": "I have "},
+    {
+      "type": 6,
+      "pluralType": "cardinal",
+      "value": "num",
+      "offset": 0,
+      "options": {
+        "one": {"value": [{"type": 7}, {"type": 0, "value": " dog"}]},
+        "other": {"value": [{"type": 7}, {"type": 0, "value": " dogs"}]}
+      }
+    }
+  ],
+  "select": [
+    {"type": 0, "value": "I am a "},
+    {
+      "type": 5,
+      "value": "gender",
+      "options": {
+        "male": {"value": [{"type": 0, "value": "boy"}]},
+        "female": {"value": [{"type": 0, "value": "girl"}]}
+      }
+    }
+  ],
+  "selectordinal": [
+    {"type": 0, "value": "I am the "},
+    {
+      "type": 6,
+      "pluralType": "ordinal",
+      "value": "order",
+      "offset": 0,
+      "options": {
+        "one": {"value": [{"type": 7}, {"type": 0, "value": "st person"}]},
+        "two": {"value": [{"type": 7}, {"type": 0, "value": "nd person"}]},
+        "=3": {"value": [{"type": 7}, {"type": 0, "value": "rd person"}]},
+        "other": {"value": [{"type": 7}, {"type": 0, "value": "th person"}]}
+      }
+    }
+  ],
+  "richtext": [
+    {"type": 0, "value": "I have "},
+    {
+      "type": 8,
+      "value": "bold",
+      "children": [
+        {
+          "type": 6,
+          "pluralType": "cardinal",
+          "value": "num",
+          "offset": 0,
+          "options": {
+            "one": {"value": [{"type": 7}, {"type": 0, "value": " dog"}]},
+            "other": {"value": [{"type": 7}, {"type": 0, "value": " dogs"}]}
+          }
+        }
+      ]
+    }
+  ]
+}

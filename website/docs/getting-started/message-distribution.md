@@ -51,7 +51,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {IntlProvider} from 'react-intl';
 
-function loadLocaleData(locale: string): Promise<IntlProvider['messages']> {
+function loadLocaleData(locale: string) {
   switch (locale) {
     case 'fr':
       return import('compiled-lang/fr.json');
