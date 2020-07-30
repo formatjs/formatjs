@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.1.0...@formatjs/cli@2.1.1) (2020-07-30)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** remove mention of --messages-dir from help message, fix [#1899](https://github.com/formatjs/formatjs/issues/1899) ([0e40dab](https://github.com/formatjs/formatjs/commit/0e40dab9ceafc428a144a6ef70acb85110571645))
+
+
+
+
+
 # [2.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.0.1...@formatjs/cli@2.1.0) (2020-07-30)
 
 
