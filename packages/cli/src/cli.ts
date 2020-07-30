@@ -39,8 +39,7 @@ async function main(argv: string[]) {
       '--out-file <path>',
       [
         'The target file path where the plugin will output an aggregated `.json` file of all',
-        'the translations from the `files` supplied.\n',
-        'This flag will ignore --messages-dir',
+        'the translations from the `files` supplied.',
       ].join('')
     )
     .option(
