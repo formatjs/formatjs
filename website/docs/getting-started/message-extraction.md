@@ -14,8 +14,12 @@ npm i -D @formatjs/cli
 ## Extraction
 
 ```sh
-formatjs extract "src/**/*.ts*" --out-file lang/en.json
+formatjs extract "src/**/*.ts*" --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'
 ```
+
+:::caution ID Interpolation Pattern
+Make sure this pattern matches `idInterpolationPattern` when you use `babel-plugin-react-intl` or `@formatjs/ts-transformer` in [Bundling with formatjs](https://formatjs.io/docs/guides/bundler-plugins) or you'll get a `MISSING_TRANSLATION` error.
+:::
 
 Given a file that has the following messages:
 
@@ -107,3 +111,7 @@ The format of this file is meant to be verbose for translation purposes, not for
 :::info Message ID
 During extraction, we'll preserve explicit declared IDs and insert a hash as an ID for messages without. We recommend against explicit IDs since it can cause collision.
 :::
+
+## Automatic ID Generation
+
+Since manual IDs are discouraged, we've provided a `babel` plugin and a `TypeScript` AST transformer that will automatically insert message IDs in your transpiled code. For more details please visit [Bundling with formatjs](https://formatjs.io/docs/guides/bundler-plugins).
