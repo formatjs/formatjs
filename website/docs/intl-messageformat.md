@@ -265,17 +265,21 @@ If your messages are all in ASTs, you can alias `intl-messageformat-parser` to `
 
 ### Formatters
 
-For complex messages, initializing `Intl.*` constructors can be expensive. Therefore, we allow user to pass in `formatters` to provide memoized instances of these `Intl` objects. This opts combines with [passing in AST](#passing-in-ast) and `intl-format-cache` can speed things up by 30x per the benchmark down below.
+For complex messages, initializing `Intl.*` constructors can be expensive. Therefore, we allow user to pass in `formatters` to provide memoized instances of these `Intl` objects. This opts combines with [passing in AST](#passing-in-ast) and `fast-memoize` can speed things up by 30x per the benchmark down below.
 
 For example:
 
 ```ts
 import IntlMessageFormat from 'intl-messageformat';
-import memoizeIntlConstructor from 'intl-format-cache';
+import memoize from 'fast-memoize';
 const formatters = {
-  getNumberFormat: memoizeIntlConstructor(Intl.NumberFormat),
-  getDateTimeFormat: memoizeIntlConstructor(Intl.DateTimeFormat),
-  getPluralRules: memoizeIntlConstructor(Intl.PluralRules),
+  getNumberFormat: memoize(
+    (locale, opts) => new Intl.NumberFormat(locale, opts)
+  ),
+  getDateTimeFormat: memoize(
+    (locale, opts) => new Intl.DateTimeFormat(locale, opts)
+  ),
+  getPluralRules: memoize((locale, opts) => new Intl.PluralRules(locale, opts)),
 };
 new IntlMessageFormat('hello {number, number}', 'en', undefined, {
   formatters,

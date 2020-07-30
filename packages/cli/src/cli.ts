@@ -39,8 +39,7 @@ async function main(argv: string[]) {
       '--out-file <path>',
       [
         'The target file path where the plugin will output an aggregated `.json` file of all',
-        'the translations from the `files` supplied.\n',
-        'This flag will ignore --messages-dir',
+        'the translations from the `files` supplied.',
       ].join('')
     )
     .option(
@@ -86,11 +85,6 @@ async function main(argv: string[]) {
       true
     )
     .option(
-      '--output-empty-json',
-      'Output file with empty [] if src has no messages. For build systems like bazel that relies on specific output mapping, not writing out a file can cause issues.',
-      false
-    )
-    .option(
       '--ignore <files>',
       'List of glob paths to **not** extract translations from.'
     )
@@ -126,11 +120,9 @@ async function main(argv: string[]) {
         idInterpolationPattern:
           cmdObj.idInterpolationPattern || '[sha1:contenthash:base64:6]',
         extractSourceLocation: cmdObj.extractSourceLocation,
-        moduleSourceName: cmdObj.moduleSourceName,
         removeDefaultMessage: cmdObj.removeDefaultMessage,
         additionalComponentNames: cmdObj.additionalComponentNames,
         extractFromFormatMessageCall: cmdObj.extractFromFormatMessageCall,
-        outputEmptyJson: cmdObj.outputEmptyJson,
         throws: cmdObj.throws,
         pragma: cmdObj.pragma,
         // It is possible that the glob pattern does NOT match anything.

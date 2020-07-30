@@ -25,6 +25,10 @@ Object {
   "ignore": Object {
     "defaultMessage": "ignore",
   },
+  "inline-msg": Object {
+    "defaultMessage": "inline message",
+    "description": "inline description",
+  },
   "trailing.ws": Object {
     "defaultMessage": "   Some whitespace   ",
     "description": "Whitespace",
@@ -54,6 +58,10 @@ Object {
     "defaultMessage": "Hello Nurse!",
     "description": "Another message",
   },
+  "inline-msg": Object {
+    "defaultMessage": "inline message",
+    "description": "inline description",
+  },
   "trailing.ws": Object {
     "defaultMessage": "   Some whitespace   ",
     "description": "Whitespace",
@@ -64,45 +72,66 @@ Object {
 exports[`basic case: defineMessages -> out-file with location 1`] = `
 Object {
   "ae494": Object {
+    "col": 18,
     "defaultMessage": "No ID",
     "description": "no ID",
     "end": 937,
     "file": "defineMessages/actual.js",
+    "line": 34,
     "start": 876,
   },
   "app.home.kittens": Object {
+    "col": 10,
     "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
     "description": "Counts kittens",
     "end": 522,
     "file": "defineMessages/actual.js",
+    "line": 15,
     "start": 372,
   },
   "escaped.apostrophe": Object {
+    "col": 10,
     "defaultMessage": "A quoted value ''{value}'",
     "description": "Escaped apostrophe",
     "end": 786,
     "file": "defineMessages/actual.js",
+    "line": 25,
     "start": 662,
   },
   "foo.bar.baz": Object {
+    "col": 9,
     "defaultMessage": "Hello World!",
     "description": "The default message",
     "end": 246,
     "file": "defineMessages/actual.js",
+    "line": 5,
     "start": 141,
   },
   "foo.bar.biff": Object {
+    "col": 10,
     "defaultMessage": "Hello Nurse!",
     "description": "Another message",
     "end": 360,
     "file": "defineMessages/actual.js",
+    "line": 10,
     "start": 258,
   },
+  "inline-msg": Object {
+    "col": 10,
+    "defaultMessage": "inline message",
+    "description": "inline description",
+    "end": 1416,
+    "file": "defineMessages/actual.js",
+    "line": 53,
+    "start": 1269,
+  },
   "trailing.ws": Object {
+    "col": 21,
     "defaultMessage": "   Some whitespace   ",
     "description": "Whitespace",
     "end": 650,
     "file": "defineMessages/actual.js",
+    "line": 20,
     "start": 545,
   },
 }
@@ -130,6 +159,10 @@ Object {
     "defaultMessage": "Hello Nurse!",
     "description": "Another message",
   },
+  "inline-msg": Object {
+    "defaultMessage": "inline message",
+    "description": "inline description",
+  },
   "trailing.ws": Object {
     "defaultMessage": "   Some whitespace   ",
     "description": "Whitespace",
@@ -152,7 +185,6 @@ Options:
   --remove-default-message                              Remove \`defaultMessage\` field in generated js after extraction (default: false)
   --additional-component-names <comma-separated-names>  Additional component names to extract messages from, e.g: \`['FormattedFooBarMessage']\`. **NOTE**: By default we check for the fact that \`FormattedMessage\` is imported from \`moduleSourceName\` to make sure variable alias works. This option does not do that so it's less safe.
   --extract-from-format-message-call                    Opt-in to extract from \`intl.formatMessage\` call with the same restrictions, e.g: has to be called with object literal such as \`intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'})\` (default: true)
-  --output-empty-json                                   Output file with empty [] if src has no messages. For build systems like bazel that relies on specific output mapping, not writing out a file can cause issues. (default: false)
   --ignore <files>                                      List of glob paths to **not** extract translations from.
   --throws                                              Whether to throw an exception when we fail to process any file in the batch.
   --pragma <pragma>                                     parse specific additional custom pragma. This allows you to tag certain file with metadata such as \`project\`. For example with this file:
@@ -201,6 +233,10 @@ Object {
   },
   "ignore": Object {
     "defaultMessage": "ignore",
+  },
+  "inline-msg": Object {
+    "defaultMessage": "inline message",
+    "description": "inline description",
   },
   "trailing.ws": Object {
     "defaultMessage": "   Some whitespace   ",

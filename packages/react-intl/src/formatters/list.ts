@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {IntlConfig, Formatters, IntlFormatters} from '../types';
 import {filterProps} from '../utils';
-import IntlListFormat, {IntlListFormatOptions} from '@formatjs/intl-listformat';
+import type IntlListFormat from '@formatjs/intl-listformat';
+import type {IntlListFormatOptions} from '@formatjs/intl-listformat';
 import {FormatError, ErrorCode} from 'intl-messageformat';
 import {ReactIntlError, ReactIntlErrorCode} from '../error';
 

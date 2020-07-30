@@ -15,7 +15,8 @@ import {
   CustomFormats,
 } from '../types';
 
-import IntlMessageFormat, {
+import {
+  IntlMessageFormat,
   FormatXMLElementFn,
   PrimitiveType,
   isFormatXMLElementFn,

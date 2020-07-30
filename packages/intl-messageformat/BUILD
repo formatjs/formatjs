@@ -37,7 +37,7 @@ SRCS = glob(["src/*.ts"]) + ["index.ts"]
 
 SRC_DEPS = [
     "//packages/intl-messageformat-parser:dist",
-    "//packages/intl-format-cache:dist",
+    "@npm//fast-memoize",
 ]
 
 TESTS = glob([
@@ -61,7 +61,6 @@ jest_test(
     srcs = SRCS + TESTS,
     deps = TEST_DEPS + [
         "//packages/intl-messageformat-parser:types",
-        "//packages/intl-format-cache:types",
     ],
 )
 

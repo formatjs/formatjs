@@ -5,7 +5,8 @@ See the accompanying LICENSE file for terms.
 */
 
 import {parse, MessageFormatElement} from 'intl-messageformat-parser';
-import memoizeIntlConstructor from 'intl-format-cache';
+import * as memoize from 'fast-memoize';
+import {Cache} from 'fast-memoize';
 import {
   FormatterCache,
   Formatters,
@@ -64,7 +65,29 @@ export interface Options {
   ignoreTag?: boolean;
 }
 
-export function createDefaultFormatters(
+function createFastMemoizeCache<V>(store: Record<string, V>): Cache<string, V> {
+  return {
+    create() {
+      return {
+        has(key) {
+          return key in store;
+        },
+        get(key) {
+          return store[key];
+        },
+        set(key, value) {
+          store[key] = value;
+        },
+      };
+    },
+  };
+}
+
+// @ts-ignore this is to deal with rollup's default import shenanigans
+const _memoizeIntl = memoize.default || memoize;
+const memoizeIntl = _memoizeIntl as typeof memoize.default;
+
+function createDefaultFormatters(
   cache: FormatterCache = {
     number: {},
     dateTime: {},
@@ -72,12 +95,21 @@ export function createDefaultFormatters(
   }
 ): Formatters {
   return {
-    getNumberFormat: memoizeIntlConstructor(Intl.NumberFormat, cache.number),
-    getDateTimeFormat: memoizeIntlConstructor(
-      Intl.DateTimeFormat,
-      cache.dateTime
+    getNumberFormat: memoizeIntl((...args) => new Intl.NumberFormat(...args), {
+      cache: createFastMemoizeCache(cache.number),
+      strategy: memoizeIntl.strategies.variadic,
+    }),
+    getDateTimeFormat: memoizeIntl(
+      (...args) => new Intl.DateTimeFormat(...args),
+      {
+        cache: createFastMemoizeCache(cache.dateTime),
+        strategy: memoizeIntl.strategies.variadic,
+      }
     ),
-    getPluralRules: memoizeIntlConstructor(Intl.PluralRules, cache.pluralRules),
+    getPluralRules: memoizeIntl((...args) => new Intl.PluralRules(...args), {
+      cache: createFastMemoizeCache(cache.pluralRules),
+      strategy: memoizeIntl.strategies.variadic,
+    }),
   };
 }
 
@@ -250,5 +282,3 @@ export class IntlMessageFormat {
     },
   };
 }
-
-export default IntlMessageFormat;
