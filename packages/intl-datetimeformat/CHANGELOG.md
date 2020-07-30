@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.2.1...@formatjs/intl-datetimeformat@2.3.0) (2020-07-30)
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** add polyfill for Date.prototype.toLocaleDateString ([#1889](https://github.com/formatjs/formatjs/issues/1889)) ([4ed11da](https://github.com/formatjs/formatjs/commit/4ed11da5e1396134dc4d481e1eadb39c9860b5ef)), closes [#1756](https://github.com/formatjs/formatjs/issues/1756)
+
+
+
+
+
 ## [2.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.2.0...@formatjs/intl-datetimeformat@2.2.1) (2020-07-24)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat
