@@ -178,7 +178,6 @@ The input language is expected to be TypeScript or ES2017 with JSX.
 
 Options:
   --out-file <path>                                     The target file path where the plugin will output an aggregated \`.json\` file of allthe translations from the \`files\` supplied.
-  This flag will ignore --messages-dir
   --id-interpolation-pattern <pattern>                  If certain message descriptors don't have id, this \`pattern\` will be used to automaticallygenerate IDs for them. Default to \`[contenthash:5]\`.
   See https://github.com/webpack/loader-utils#interpolatename for sample patterns (default: \\"[contenthash:5]\\")
   --extract-source-location                             Whether the metadata about the location of the message in the source file should be extracted. If \`true\`, then \`file\`, \`start\`, and \`end\` fields will exist for each extracted message descriptors. (default: false)
