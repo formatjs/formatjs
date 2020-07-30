@@ -1,17 +1,10 @@
-import {mkdirp} from 'fs-extra';
 import {exec as nodeExec} from 'child_process';
 import {join, resolve} from 'path';
 import * as _rimraf from 'rimraf';
 import {promisify} from 'util';
 const exec = promisify(nodeExec);
-const rimraf = promisify(_rimraf);
 const BIN_PATH = resolve(__dirname, '../../../bin/formatjs');
 const ARTIFACT_PATH = resolve(__dirname, 'test_artifacts');
-
-beforeEach(async () => {
-  await mkdirp(join(__dirname, 'test_artifacts'));
-  await rimraf(ARTIFACT_PATH);
-});
 
 test('basic case: help', async () => {
   const {stdout, stderr} = await exec(`${BIN_PATH} compile --help`);

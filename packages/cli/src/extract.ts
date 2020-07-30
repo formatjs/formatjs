@@ -1,4 +1,3 @@
-import {OptionsSchema} from 'babel-plugin-react-intl';
 import {warn, getStdinAsString} from './console_utils';
 import {outputJSONSync, readFile} from 'fs-extra';
 import {
@@ -15,12 +14,15 @@ export interface ExtractionResult<M = Record<string, string>> {
   meta: M;
 }
 
-export type ExtractCLIOptions = Omit<ExtractOptions, 'overrideIdFn'> & {
+export type ExtractCLIOptions = Omit<
+  ExtractOptions,
+  'overrideIdFn' | 'onMsgExtracted' | 'onMetaExtracted'
+> & {
   outFile?: string;
   ignore?: GlobOptions['ignore'];
 };
 
-export type ExtractOptions = OptionsSchema & {
+export type ExtractOptions = Opts & {
   throws?: boolean;
   idInterpolationPattern?: string;
   readFromStdin?: boolean;

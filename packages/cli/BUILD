@@ -33,7 +33,6 @@ SRCS = glob(["src/*.ts"]) + [
 ]
 
 SRC_DEPS = [
-    "//packages/babel-plugin-react-intl:dist",
     "//packages/intl-messageformat-parser:dist",
     "//packages/ts-transformer:dist",
     "@npm//@types/node",
@@ -60,7 +59,6 @@ jest_test(
         "tests/extract/unit.test.ts",
     ] + SRCS + glob(["tests/extract/__snapshots__/*.snap"]),
     deps = [
-        "//packages/babel-plugin-react-intl:types",
         "//packages/intl-messageformat-parser:types",
         "//packages/ts-transformer:types",
         "@npm//rimraf",
@@ -75,7 +73,6 @@ jest_test(
         "bin/formatjs",
     ] + SRCS + glob(["tests/extract/integration_tests/**/*"]),
     deps = [
-        "//packages/babel-plugin-react-intl:types",
         "//packages/intl-messageformat-parser:types",
         "//packages/ts-transformer:types",
         "@npm//rimraf",

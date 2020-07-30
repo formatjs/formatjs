@@ -35,7 +35,6 @@
     "@types/lodash": "^4.14.150",
     "@types/loud-rejection": "^2.0.0",
     "@types/node": "14",
-    "babel-plugin-react-intl": "^7.9.2",
     "chalk": "^4.0.0",
     "commander": "5.1.0",
     "fs-extra": "^9.0.0",
