@@ -237,6 +237,18 @@ interface Opt extends Omit<Formats, 'pattern' | 'pattern12'> {
   hc: DateTimeFormatOptions['hourCycle'];
 }
 
+function isTimeRelated(opt: Opt) {
+  for (const prop of ['hour', 'minute', 'second'] as Array<
+    keyof Pick<Opt, 'hour' | 'minute' | 'second'>
+  >) {
+    const value = opt[prop];
+    if (value !== undefined) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /**
  * https://tc39.es/ecma402/#sec-initializedatetimeformat
  * @param dtf DateTimeFormat
@@ -414,7 +426,7 @@ function initializeDateTimeFormat(
     if (matcher === 'basic') {
       bestFormat = basicFormatMatcher(opt, formats);
     } else {
-      if (opt.hour !== undefined) {
+      if (isTimeRelated(opt)) {
         opt.hour12 =
           internalSlots.hourCycle === 'h11' ||
           internalSlots.hourCycle === 'h12';
