@@ -3,11 +3,10 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-import {IntlMessageFormat, createDefaultFormatters} from '../src/core';
+import {IntlMessageFormat} from '../src/core';
 import {PART_TYPE} from '../src/formatters';
 import {parse} from 'intl-messageformat-parser';
 import 'jasmine-expect';
-import memoizeFormatConstructor from 'intl-format-cache';
 
 describe('IntlMessageFormat', function () {
   it('should be a function', function () {
@@ -18,10 +17,7 @@ describe('IntlMessageFormat', function () {
     const mf = new IntlMessageFormat(
       'My name is {FIRST} {LAST}, age {age, number}, time {time, time}, date {date, date}.',
       'en',
-      undefined,
-      {
-        formatters: createDefaultFormatters(),
-      }
+      undefined
     );
     const ts = 12 * 3600 * 1e3;
     const output = mf.format({
@@ -919,19 +915,5 @@ describe('IntlMessageFormat', function () {
         expect(m).toBe('One company published new books.');
       });
     });
-  });
-});
-
-describe('intl-format-cache', function () {
-  const getMessageFormat = memoizeFormatConstructor(IntlMessageFormat);
-
-  it('memoizes IntlMessageFormat', function () {
-    const mf = getMessageFormat('foo', 'en');
-
-    expect(mf.resolvedOptions().locale).toBe('en');
-    expect(mf.format()).toBe('foo');
-
-    expect(getMessageFormat('foo', 'en')).toBe(mf);
-    expect(getMessageFormat('bar', 'en')).not.toBe(mf);
   });
 });

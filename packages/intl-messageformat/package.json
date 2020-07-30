@@ -31,7 +31,7 @@
   "module": "lib/index.js",
   "types": "intl-messageformat.d.ts",
   "dependencies": {
-    "intl-format-cache": "^4.3.1",
+    "fast-memoize": "^2.5.2",
     "intl-messageformat-parser": "^5.3.7"
   },
   "sideEffects": false,
