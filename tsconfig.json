@@ -35,9 +35,6 @@
       ],
       "intl-messageformat-parser": [
         "bazel-out/k8-fastbuild/bin/packages/intl-messageformat-parser"
-      ],
-      "intl-format-cache": [
-        "bazel-out/k8-fastbuild/bin/packages/intl-format-cache"
       ]
     }
   }

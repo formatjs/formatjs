@@ -225,7 +225,7 @@ Assuming `navigator.language` is `"en-us"`:
 
 # ESM Build
 
-`react-intl` and its underlying libraries (`intl-messageformat-parser`, `intl-messageformat`, `@formatjs/intl-relativetimeformat`, `intl-format-cache`, `intl-utils`) export ESM artifacts. This means you should configure your build toolchain to transpile those libraries.
+`react-intl` and its underlying libraries (`intl-messageformat-parser`, `intl-messageformat`, `@formatjs/intl-relativetimeformat`, `intl-utils`) export ESM artifacts. This means you should configure your build toolchain to transpile those libraries.
 
 ### Jest
 
