@@ -704,6 +704,30 @@ Array [
 ]
 `;
 
+exports[`options undefined messagesDir should work normally (w/o writing file) 1`] = `
+Object {
+  "messages": Array [
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": "Greeting to the world",
+      "id": "cvAgVK",
+    },
+  ],
+  "meta": Object {},
+}
+`;
+
+exports[`options undefined messagesDir should work normally (w/o writing file) 2`] = `
+"import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
+export default class Foo extends Component {
+  render() {
+    return <FormattedMessage id=\\"cvAgVK\\" defaultMessage=\\"Hello World!\\" />;
+  }
+
+}"
+`;
+
 exports[`options without outputEmptyJson should output empty files 1`] = `
 "import React, { Component } from 'react';
 import { defineMessage } from 'react-intl';

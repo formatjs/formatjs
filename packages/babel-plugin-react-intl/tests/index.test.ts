@@ -8,21 +8,20 @@ function trim(str?: string | null) {
 }
 
 const skipOutputTests = [
-  '.babelrc',
-  '.DS_Store',
-  'extractSourceLocation',
+  'additionalComponentNames',
+  'empty',
   'extractFromFormatMessageCall',
   'extractFromFormatMessageCallStateless',
-  'moduleSourceName',
-  'inline',
+  'extractSourceLocation',
   'icuSyntax',
-  'removeDescriptions',
-  'overrideIdFn',
   'idInterpolationPattern',
-  'removeDefaultMessage',
-  'additionalComponentNames',
+  'inline',
+  'moduleSourceName',
+  'noMessagesDir',
   'outputEmptyJson',
-  'empty',
+  'overrideIdFn',
+  'removeDefaultMessage',
+  'removeDescriptions',
   'workspaceRoot',
 ];
 
@@ -245,6 +244,19 @@ describe('options', () => {
     expect(
       require(resolveOutputPath(process.cwd(), __dirname, filePath))
     ).toMatchSnapshot();
+  });
+
+  it('undefined messagesDir should work normally (w/o writing file)', () => {
+    const fixtureDir = join(__dirname, 'fixtures', 'noMessagesDir');
+    const filePath = join(fixtureDir, 'actual.js');
+    const {code: actual, metadata} = transform(filePath, {
+      pragma: '@react-intl',
+      idInterpolationPattern: '[sha512:hash:base64:6]',
+      messagesDir: undefined,
+    })!;
+    expect((metadata as any)['react-intl']).toMatchSnapshot();
+    // Check code output
+    expect(trim(actual)).toMatchSnapshot();
   });
 
   it('workspaceRoot', () => {
