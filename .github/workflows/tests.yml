@@ -7,15 +7,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Bazel Cache
-        uses: actions/cache@v2.1.0
-        with:
-          path: |
-            ~/.cache/bazel
-            ~/.cache/bazel-disk-cache
-          key: ${{ runner.os }}-bazel-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-bazel-
+      # - name: Bazel Cache
+      #   uses: actions/cache@v2.1.0
+      #   with:
+      #     path: |
+      #       ~/.cache/bazel
+      #       ~/.cache/bazel-disk-cache
+      #     key: ${{ runner.os }}-bazel-${{ github.sha }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-bazel-
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
