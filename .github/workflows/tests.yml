@@ -43,14 +43,14 @@ jobs:
           yarn install --frozen-lockfile
         env:
           CI: true
-      - name: yarn build --remote_upload_local_results=true
+      - name: yarn build
         run: |
-          yarn build
+          yarn build --remote_upload_local_results=true
         env:
           CI: true
-      - name: yarn test --remote_upload_local_results=true
+      - name: yarn test
         run: |
-          yarn test
+          yarn test --remote_upload_local_results=true
         env:
           CI: true
       - uses: saucelabs/sauce-connect-action@v1.0.0
