@@ -7,15 +7,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Bazel Cache
-        uses: actions/cache@v2.1.0
-        with:
-          path: |
-            ~/.cache/bazel
-            ~/.cache/bazel-disk-cache
-          key: ${{ runner.os }}-bazel-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-bazel-
+      # - name: Bazel Cache
+      #   uses: actions/cache@v2.1.0
+      #   with:
+      #     path: |
+      #       ~/.cache/bazel
+      #       ~/.cache/bazel-disk-cache
+      #     key: ${{ runner.os }}-bazel-${{ github.sha }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-bazel-
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -30,6 +30,10 @@ jobs:
         with:
           submodules: true
           fetch-depth: 110
+      - name: Decrypt bazel GCS secret
+        run: ./.github/scripts/decrypt_secret.sh
+        env:
+          SECRET_BAZEL_CACHE_JSON_PASSPHRASE: ${{ secrets.SECRET_BAZEL_CACHE_JSON_PASSPHRASE }}
       - name: Use Node.js 12
         uses: actions/setup-node@v2.1.1
         with:
@@ -39,12 +43,12 @@ jobs:
           yarn install --frozen-lockfile
         env:
           CI: true
-      - name: yarn build
+      - name: yarn build --remote_upload_local_results=true
         run: |
           yarn build
         env:
           CI: true
-      - name: yarn test
+      - name: yarn test --remote_upload_local_results=true
         run: |
           yarn test
         env:
