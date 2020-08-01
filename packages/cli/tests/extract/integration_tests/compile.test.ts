@@ -28,6 +28,17 @@ test('normal json', async () => {
   expect(stderr).toBe('');
 }, 20000);
 
+test('normal json with formatter', async () => {
+  const {stdout, stderr} = await exec(
+    `${BIN_PATH} compile ${join(
+      __dirname,
+      'lang/en-format.json'
+    )} --format ${join(__dirname, 'formatter.js')}`
+  );
+  expect(JSON.parse(stdout)).toMatchSnapshot();
+  expect(stderr).toBe('');
+}, 20000);
+
 test('malformed ICU message json', async () => {
   expect(async () => {
     await exec(

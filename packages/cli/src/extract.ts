@@ -1,5 +1,6 @@
 import {warn, getStdinAsString} from './console_utils';
 import {outputJSONSync, readFile} from 'fs-extra';
+import {format as defaultFormatFn} from './formatters/default';
 import {
   interpolateName,
   transform,
@@ -25,6 +26,7 @@ export type ExtractCLIOptions = Omit<
 > & {
   outFile?: string;
   ignore?: GlobOptions['ignore'];
+  format?: string;
 };
 
 export type ExtractOptions = Opts & {
@@ -133,7 +135,8 @@ export default async function extractAndWrite(
   files: readonly string[],
   opts: ExtractCLIOptions
 ) {
-  const {outFile, throws, ...extractOpts} = opts;
+  const {outFile, throws, format, ...extractOpts} = opts;
+  const formatFn = format ? require(format).format : defaultFormatFn;
   const extractionResults = await extract(files, extractOpts);
   const printMessagesToStdout = !outFile;
   const extractedMessages = new Map<string, MessageDescriptor>();
@@ -181,12 +184,12 @@ ${JSON.stringify(message, undefined, 2)}`
   }
 
   if (outFile) {
-    outputJSONSync(outFile, results, {
+    outputJSONSync(outFile, formatFn(results), {
       spaces: 2,
     });
   }
   if (printMessagesToStdout) {
-    process.stdout.write(JSON.stringify(results, null, 2));
+    process.stdout.write(JSON.stringify(formatFn(results), null, 2));
     process.stdout.write('\n');
   }
 }

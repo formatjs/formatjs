@@ -57,6 +57,19 @@ formatjs extract --help
 # The input language is expected to be TypeScript or ES2017 with JSX.
 ```
 
+### `--format [path]`
+
+Path to a formatter file that controls the shape of JSON file from `--out-file`.
+The formatter file must export a function called `format` with the signature
+
+```tsx
+type FormatFn = <T = Record<string, MessageDescriptor>>(
+  msgs: Record<string, MessageDescriptor>
+) => T;
+```
+
+This is especially useful to convert from our extracted format to a TMS-specific format.
+
 ### `--out-file [path]`
 
 The target file path where the plugin will output an aggregated `.json` file of allthe translations from the `files` supplied. This flag will ignore `--messages-dir`
@@ -110,6 +123,18 @@ JSON file. This also does ICU message verification. See [Message Distribution](.
 ```sh
 formatjs compile --help
 ```
+
+### `--format [path]`
+
+Path to a formatter file that converts `<translation_file>` to `Record<string, string>` so we can compile. The file must export a function named `compile` with the signature:
+
+```tsx
+type CompileFn = <T = Record<string, MessageDescriptor>>(
+  msgs: T
+) => Record<string, string>;
+```
+
+This is especially useful to convert from a TMS-specific format back to react-intl format
 
 ### `--out-file <output>`
 

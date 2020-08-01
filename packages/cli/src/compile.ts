@@ -1,26 +1,31 @@
 import {parse, MessageFormatElement} from 'intl-messageformat-parser';
-import {MessageDescriptor} from '@formatjs/ts-transformer';
 import {outputJSONSync, readJSONSync} from 'fs-extra';
+import {compile as defaultCompileFn} from './formatters/default';
+
+export type CompileFn = (msgs: any) => Record<string, string>;
+
 export interface CompileCLIOpts extends Opts {
   outFile?: string;
 }
 export interface Opts {
   ast?: boolean;
+  format?: string;
 }
 export default function compile(
   inputFile: string,
   outFile?: string,
-  {ast}: Opts = {}
+  {ast, format}: Opts = {}
 ) {
-  const messages: Record<string, Omit<MessageDescriptor, 'id'>> = readJSONSync(
-    inputFile
-  );
+  const formatFn = format ? require(format).compile : defaultCompileFn;
+  const messages: Record<string, string> = formatFn(readJSONSync(inputFile));
   const results: Record<string, string | MessageFormatElement[]> = {};
-  for (const [id, {defaultMessage = ''}] of Object.entries(messages)) {
+
+  for (const [id, message] of Object.entries(messages)) {
     // Parse so we can verify that the message is not malformed
-    const msgAst = parse(defaultMessage);
-    results[id] = ast ? msgAst : defaultMessage;
+    const msgAst = parse(message);
+    results[id] = ast ? msgAst : message;
   }
+
   if (!outFile) {
     process.stdout.write(JSON.stringify(results, null, 2));
     process.stdout.write('\n');

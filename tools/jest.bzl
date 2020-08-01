@@ -17,6 +17,7 @@ def jest_test(name, srcs, deps, jest_config = "//:jest.config.js", snapshots = [
         "--no-cache",
         "--no-watchman",
         "--ci",
+        "--runInBand",
         "--colors",
     ]
     templated_args.extend(["--config", "$(rootpath %s)" % jest_config])

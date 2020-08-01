@@ -60,6 +60,15 @@ Compile extracted translation file into react-intl consumable JSON
 We also verify that the messages are valid ICU and not malformed.
 
 Options:
+  --format <path>    Path to a formatter file that converts \`<translation_file>\` to \`Record<string, string>\`
+  so we can compile. The file must export a function named \`compile\` with the signature:
+  \`\`\`
+  type CompileFn = <T = Record<string, MessageDescriptor>>(
+    msgs: T
+  ) => Record<string, string>;
+  \`\`\`
+  This is especially useful to convert from a TMS-specific format back to react-intl format
+  
   --out-file <path>  Compiled translation output file.
                      If this is not provided, result will be printed to stdout
   --ast              Whether to compile to AST. See
@@ -70,6 +79,14 @@ Options:
 `;
 
 exports[`normal json 1`] = `
+Object {
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message",
+}
+`;
+
+exports[`normal json with formatter 1`] = `
 Object {
   "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
   "a1dd2": "my name is {name}",

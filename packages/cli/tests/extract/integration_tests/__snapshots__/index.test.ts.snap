@@ -177,8 +177,19 @@ Extract string messages from React components that use react-intl.
 The input language is expected to be TypeScript or ES2017 with JSX.
 
 Options:
+  --format <path>                                       Path to a formatter file that controls the shape of JSON file from \`--out-file\`.
+  The formatter file must export a function called \`format\` with the signature
+  \`\`\`
+  type FormatFn = <T = Record<string, MessageDescriptor>>(
+    msgs: Record<string, MessageDescriptor>
+  ) => T
+  \`\`\` 
+  This is especially useful to convert from our extracted format to a TMS-specific format.
+  
   --out-file <path>                                     The target file path where the plugin will output an aggregated \`.json\` file of allthe translations from the \`files\` supplied.
-  --id-interpolation-pattern <pattern>                  If certain message descriptors don't have id, this \`pattern\` will be used to automaticallygenerate IDs for them. Default to \`[contenthash:5]\`.
+  --id-interpolation-pattern <pattern>                  If certain message descriptors don't have id, this \`pattern\` will be used to automatically
+  generate IDs for them. Default to \`[contenthash:5]\` where \`contenthash\` is the hash of
+  \`defaultMessage\` and \`description\`.
   See https://github.com/webpack/loader-utils#interpolatename for sample patterns (default: \\"[contenthash:5]\\")
   --extract-source-location                             Whether the metadata about the location of the message in the source file should be extracted. If \`true\`, then \`file\`, \`start\`, and \`end\` fields will exist for each extracted message descriptors. (default: false)
   --remove-default-message                              Remove \`defaultMessage\` field in generated js after extraction (default: false)
@@ -312,6 +323,42 @@ Object {
   "trailing.ws": Object {
     "defaultMessage": "   Some whitespace   ",
     "description": "Whitespace",
+  },
+}
+`;
+
+exports[`typescript -> stdout with formatter 1`] = `
+Object {
+  "ae494": Object {
+    "comment": "no ID",
+    "string": "No ID",
+  },
+  "app.home.kittens": Object {
+    "comment": "Counts kittens",
+    "string": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+  },
+  "c63ed": Object {
+    "string": "No Desc",
+  },
+  "escaped.apostrophe": Object {
+    "comment": "Escaped apostrophe",
+    "string": "A quoted value ''{value}'",
+  },
+  "foo.bar.baz": Object {
+    "comment": "The default message",
+    "string": "Hello World!",
+  },
+  "foo.bar.biff": Object {
+    "comment": "Another message",
+    "string": "Hello Nurse!",
+  },
+  "inline": Object {
+    "comment": "foo",
+    "string": "formatted message",
+  },
+  "trailing.ws": Object {
+    "comment": "Whitespace",
+    "string": "   Some whitespace   ",
   },
 }
 `;

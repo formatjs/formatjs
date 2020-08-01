@@ -104,10 +104,6 @@ running the above command will create a file called `lang/en.json`:
 }
 ```
 
-:::info File Format
-The format of this file is meant to be verbose for translation purposes, not for direct consumption of `react-intl`.
-:::
-
 :::info Message ID
 During extraction, we'll preserve explicit declared IDs and insert a hash as an ID for messages without. We recommend against explicit IDs since it can cause collision.
 :::
@@ -115,3 +111,41 @@ During extraction, we'll preserve explicit declared IDs and insert a hash as an 
 ## Automatic ID Generation
 
 Since manual IDs are discouraged, we've provided a `babel` plugin and a `TypeScript` AST transformer that will automatically insert message IDs in your transpiled code. For more details please visit [Bundling with formatjs](https://formatjs.io/docs/guides/bundler-plugins).
+
+## Translation Management System (TMS) Integration
+
+The default format generated from `@formatjs/cli` might not work with the specific TMS/vendor you're working with. You can specify a custom formatter with `--format <formatFile>` that allows you to convert that format into something tailored to your TMS. For example:
+
+If your vendor accepts the format like
+
+```json
+{
+  "[id]": {
+    "string": "[message]",
+    "comment": "[description]"
+  }
+}
+```
+
+you can run
+
+```sh
+formatjs extract "src/**/*.ts*" --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]' --format formatter.js
+```
+
+where `formatter.js` is:
+
+```js
+exports.format = function (msgs) {
+  const results = {};
+  for (const [id, msg] of Object.entries(msgs)) {
+    results[id] = {
+      string: msg.defaultMessage,
+      comment: msg.description,
+    };
+  }
+  return results;
+};
+```
+
+In the future we will provide formatters that work with popular TMSes by default.

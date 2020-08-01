@@ -40,6 +40,41 @@ formatjs compile lang/fr.json --ast --out-file compiled-lang/fr.json
 We recommending compiling your messages into AST as it allows us to skip parsing them during runtime. This makes your app more performant.
 :::
 
+## Translation Management System (TMS) Integration
+
+If your TMS/vendor has a different JSON format you can specify a custom formatter with `--format <formatFile>` that converts that into `Record<string,string>` so `@formatjs/cli` can understand. For example:
+
+If your vendor accepts the format like
+
+```json
+{
+  "[id]": {
+    "string": "[message]",
+    "comment": "[description]"
+  }
+}
+```
+
+you can run
+
+```sh
+formatjs compile lang/fr.json --ast --out-file compiled-lang/fr.json --format formatter.js
+```
+
+where `formatter.js` is:
+
+```js
+exports.compile = function (msgs) {
+  const results = {};
+  for (const [id, msg] of Object.entries(msgs)) {
+    results[id] = msg.string;
+  }
+  return results;
+};
+```
+
+In the future we will provide formatters that work with popular TMSes by default.
+
 ## Distribution
 
 While every application has a separate distribution pipeline, the common theme is the ability to map a locale to its translation file. In this example we'll assume your pipeline can understand dynamic `import`:

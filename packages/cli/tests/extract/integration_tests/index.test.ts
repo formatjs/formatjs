@@ -73,6 +73,17 @@ test('typescript -> stdout', async () => {
   expect(stderr).toBe('');
 }, 20000);
 
+test('typescript -> stdout with formatter', async () => {
+  const {stdout, stderr} = await exec(
+    `${BIN_PATH} extract ${join(
+      __dirname,
+      'typescript/actual.tsx'
+    )} --format ${join(__dirname, 'formatter.js')}`
+  );
+  expect(JSON.parse(stdout)).toMatchSnapshot();
+  expect(stderr).toBe('');
+}, 20000);
+
 const ignore = "--ignore '*.ignore.*'";
 
 test('ignore -> stdout TS', async () => {

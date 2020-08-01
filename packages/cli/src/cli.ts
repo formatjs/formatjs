@@ -36,6 +36,18 @@ async function main(argv: string[]) {
       ].join('\n')
     )
     .option(
+      '--format <path>',
+      `Path to a formatter file that controls the shape of JSON file from \`--out-file\`.
+The formatter file must export a function called \`format\` with the signature
+\`\`\`
+type FormatFn = <T = Record<string, MessageDescriptor>>(
+  msgs: Record<string, MessageDescriptor>
+) => T
+\`\`\` 
+This is especially useful to convert from our extracted format to a TMS-specific format.
+`
+    )
+    .option(
       '--out-file <path>',
       [
         'The target file path where the plugin will output an aggregated `.json` file of all',
@@ -44,11 +56,10 @@ async function main(argv: string[]) {
     )
     .option(
       '--id-interpolation-pattern <pattern>',
-      [
-        "If certain message descriptors don't have id, this `pattern` will be used to automatically",
-        'generate IDs for them. Default to `[contenthash:5]`.\n',
-        'See https://github.com/webpack/loader-utils#interpolatename for sample patterns',
-      ].join(''),
+      `If certain message descriptors don't have id, this \`pattern\` will be used to automatically
+generate IDs for them. Default to \`[contenthash:5]\` where \`contenthash\` is the hash of
+\`defaultMessage\` and \`description\`.
+See https://github.com/webpack/loader-utils#interpolatename for sample patterns`,
       '[contenthash:5]'
     )
     .option(
@@ -125,6 +136,7 @@ async function main(argv: string[]) {
         extractFromFormatMessageCall: cmdObj.extractFromFormatMessageCall,
         throws: cmdObj.throws,
         pragma: cmdObj.pragma,
+        format: cmdObj.format,
         // It is possible that the glob pattern does NOT match anything.
         // But so long as the glob pattern is provided, don't read from stdin.
         readFromStdin: files.length === 0,
@@ -138,6 +150,18 @@ async function main(argv: string[]) {
     .description(
       `Compile extracted translation file into react-intl consumable JSON
 We also verify that the messages are valid ICU and not malformed.`
+    )
+    .option(
+      '--format <path>',
+      `Path to a formatter file that converts \`<translation_file>\` to \`Record<string, string>\`
+so we can compile. The file must export a function named \`compile\` with the signature:
+\`\`\`
+type CompileFn = <T = Record<string, MessageDescriptor>>(
+  msgs: T
+) => Record<string, string>;
+\`\`\`
+This is especially useful to convert from a TMS-specific format back to react-intl format
+`
     )
     .option(
       '--out-file <path>',
