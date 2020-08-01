@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.1.1...@formatjs/cli@2.2.0) (2020-08-01)
+
+
+### Features
+
+* **@formatjs/cli:** Add --format option to control JSON output shape, ([1d984e6](https://github.com/formatjs/formatjs/commit/1d984e6aee7848b1a1c95d70e21279d3f049a086)), closes [#1907](https://github.com/formatjs/formatjs/issues/1907)
+
+
+
+
+
 ## [2.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.1.0...@formatjs/cli@2.1.1) (2020-07-30)
 
 
