@@ -1,0 +1,14 @@
+{
+  "ashd2": {
+    "string": "a message",
+    "comment": "foo"
+  },
+  "a1dd2": {
+    "string": "my name is {name}",
+    "comment": "foo"
+  },
+  "a1d12": {
+    "string": "I have {count, plural, one{a dog} other{many dogs}}",
+    "comment": "foo"
+  }
+}

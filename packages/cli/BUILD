@@ -57,7 +57,8 @@ jest_test(
     srcs = [
         "package.json",
         "tests/extract/unit.test.ts",
-    ] + SRCS + glob(["tests/extract/__snapshots__/*.snap"]),
+        "tests/extract/__snapshots__/unit.test.ts.snap",
+    ] + SRCS,
     deps = [
         "//packages/intl-messageformat-parser:types",
         "//packages/ts-transformer:types",
@@ -71,7 +72,12 @@ jest_test(
     srcs = [
         "package.json",
         "bin/formatjs",
-    ] + SRCS + glob(["tests/extract/integration_tests/**/*"]),
+    ] + SRCS + glob(
+        [
+            "tests/**/*",
+        ],
+        exclude = ["tests/extract/unit.test.ts"],
+    ),
     deps = [
         "//packages/intl-messageformat-parser:types",
         "//packages/ts-transformer:types",

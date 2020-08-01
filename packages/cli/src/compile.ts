@@ -1,6 +1,6 @@
 import {parse, MessageFormatElement} from 'intl-messageformat-parser';
 import {outputJSONSync, readJSONSync} from 'fs-extra';
-import {compile as defaultCompileFn} from './formatters/default';
+import {resolveBuiltinFormatter} from './formatters';
 
 export type CompileFn = (msgs: any) => Record<string, string>;
 
@@ -16,7 +16,7 @@ export default function compile(
   outFile?: string,
   {ast, format}: Opts = {}
 ) {
-  const formatFn = format ? require(format).compile : defaultCompileFn;
+  const formatFn = resolveBuiltinFormatter(format).compile;
   const messages: Record<string, string> = formatFn(readJSONSync(inputFile));
   const results: Record<string, string | MessageFormatElement[]> = {};
 

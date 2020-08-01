@@ -362,3 +362,39 @@ Object {
   },
 }
 `;
+
+exports[`typescript -> stdout with transifex 1`] = `
+Object {
+  "ae494": Object {
+    "developer_comment": "no ID",
+    "string": "No ID",
+  },
+  "app.home.kittens": Object {
+    "developer_comment": "Counts kittens",
+    "string": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+  },
+  "c63ed": Object {
+    "string": "No Desc",
+  },
+  "escaped.apostrophe": Object {
+    "developer_comment": "Escaped apostrophe",
+    "string": "A quoted value ''{value}'",
+  },
+  "foo.bar.baz": Object {
+    "developer_comment": "The default message",
+    "string": "Hello World!",
+  },
+  "foo.bar.biff": Object {
+    "developer_comment": "Another message",
+    "string": "Hello Nurse!",
+  },
+  "inline": Object {
+    "developer_comment": "foo",
+    "string": "formatted message",
+  },
+  "trailing.ws": Object {
+    "developer_comment": "Whitespace",
+    "string": "   Some whitespace   ",
+  },
+}
+`;

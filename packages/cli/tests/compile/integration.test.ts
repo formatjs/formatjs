@@ -3,7 +3,7 @@ import {join, resolve} from 'path';
 import * as _rimraf from 'rimraf';
 import {promisify} from 'util';
 const exec = promisify(nodeExec);
-const BIN_PATH = resolve(__dirname, '../../../bin/formatjs');
+const BIN_PATH = resolve(__dirname, '../../bin/formatjs');
 const ARTIFACT_PATH = resolve(__dirname, 'test_artifacts');
 
 test('basic case: help', async () => {
@@ -33,7 +33,18 @@ test('normal json with formatter', async () => {
     `${BIN_PATH} compile ${join(
       __dirname,
       'lang/en-format.json'
-    )} --format ${join(__dirname, 'formatter.js')}`
+    )} --format ${join(__dirname, '../formatter.js')}`
+  );
+  expect(JSON.parse(stdout)).toMatchSnapshot();
+  expect(stderr).toBe('');
+}, 20000);
+
+test('normal json with transifex', async () => {
+  const {stdout, stderr} = await exec(
+    `${BIN_PATH} compile ${join(
+      __dirname,
+      'lang/en-transifex.json'
+    )} --format transifex`
   );
   expect(JSON.parse(stdout)).toMatchSnapshot();
   expect(stderr).toBe('');

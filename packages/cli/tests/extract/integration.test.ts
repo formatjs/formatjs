@@ -6,7 +6,7 @@ import * as _rimraf from 'rimraf';
 const exec = promisify(nodeExec);
 const rimraf = promisify(_rimraf);
 
-const BIN_PATH = resolve(__dirname, '../../../bin/formatjs');
+const BIN_PATH = resolve(__dirname, '../../bin/formatjs');
 const ARTIFACT_PATH = resolve(__dirname, 'test_artifacts');
 
 beforeEach(async () => {
@@ -78,7 +78,18 @@ test('typescript -> stdout with formatter', async () => {
     `${BIN_PATH} extract ${join(
       __dirname,
       'typescript/actual.tsx'
-    )} --format ${join(__dirname, 'formatter.js')}`
+    )} --format ${join(__dirname, '../formatter.js')}`
+  );
+  expect(JSON.parse(stdout)).toMatchSnapshot();
+  expect(stderr).toBe('');
+}, 20000);
+
+test('typescript -> stdout with transifex', async () => {
+  const {stdout, stderr} = await exec(
+    `${BIN_PATH} extract ${join(
+      __dirname,
+      'typescript/actual.tsx'
+    )} --format transifex`
   );
   expect(JSON.parse(stdout)).toMatchSnapshot();
   expect(stderr).toBe('');

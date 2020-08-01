@@ -1,6 +1,5 @@
 import {warn, getStdinAsString} from './console_utils';
 import {outputJSONSync, readFile} from 'fs-extra';
-import {format as defaultFormatFn} from './formatters/default';
 import {
   interpolateName,
   transform,
@@ -9,6 +8,7 @@ import {
 } from '@formatjs/ts-transformer';
 import {IOptions as GlobOptions} from 'glob';
 import * as ts from 'typescript';
+import {resolveBuiltinFormatter} from './formatters';
 
 export interface ExtractionResult<M = Record<string, string>> {
   messages: MessageDescriptor[];
@@ -136,7 +136,7 @@ export default async function extractAndWrite(
   opts: ExtractCLIOptions
 ) {
   const {outFile, throws, format, ...extractOpts} = opts;
-  const formatFn = format ? require(format).format : defaultFormatFn;
+  const formatFn = resolveBuiltinFormatter(format).format;
   const extractionResults = await extract(files, extractOpts);
   const printMessagesToStdout = !outFile;
   const extractedMessages = new Map<string, MessageDescriptor>();
