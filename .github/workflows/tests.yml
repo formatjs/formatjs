@@ -45,12 +45,12 @@ jobs:
           CI: true
       - name: yarn build
         run: |
-          yarn build --remote_upload_local_results=true
+          yarn build --remote_cache=https://storage.googleapis.com/formatjs-bazel-cache --google_credentials=../secret.json
         env:
           CI: true
       - name: yarn test
         run: |
-          yarn test --remote_upload_local_results=true
+          yarn test --remote_cache=https://storage.googleapis.com/formatjs-bazel-cache --google_credentials=../secret.json
         env:
           CI: true
       - uses: saucelabs/sauce-connect-action@v1.0.0
