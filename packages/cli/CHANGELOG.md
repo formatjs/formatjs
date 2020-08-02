@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.2.0...@formatjs/cli@2.3.0) (2020-08-02)
+
+
+### Features
+
+* **@formatjs/cli:** add builtin formatter for smartling ([cd36f27](https://github.com/formatjs/formatjs/commit/cd36f277aa2728c4bea0a1fa8d751f2ef5792708))
+* **@formatjs/cli:** add builtin formatter for transifex ([db3955e](https://github.com/formatjs/formatjs/commit/db3955ec43e748d3702943c241a6aa4fc6274335))
+* **@formatjs/cli:** add lokalise, crowdin, lingohub, phrase formatter ([ebada90](https://github.com/formatjs/formatjs/commit/ebada90d8078561244cd3cab326336c358a3e366))
+
+
+
+
+
 # [2.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.1.1...@formatjs/cli@2.2.0) (2020-08-01)
 
 
