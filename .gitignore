@@ -2,3 +2,4 @@ bazel-out
 dist
 node_modules
 .cache
+.bazelrc.user
