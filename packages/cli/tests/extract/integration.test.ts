@@ -95,6 +95,39 @@ test('typescript -> stdout with transifex', async () => {
   expect(stderr).toBe('');
 }, 20000);
 
+test('typescript -> stdout with simple', async () => {
+  const {stdout, stderr} = await exec(
+    `${BIN_PATH} extract ${join(
+      __dirname,
+      'typescript/actual.tsx'
+    )} --format simple`
+  );
+  expect(JSON.parse(stdout)).toMatchSnapshot();
+  expect(stderr).toBe('');
+}, 20000);
+
+test('typescript -> stdout with lokalise', async () => {
+  const {stdout, stderr} = await exec(
+    `${BIN_PATH} extract ${join(
+      __dirname,
+      'typescript/actual.tsx'
+    )} --format lokalise`
+  );
+  expect(JSON.parse(stdout)).toMatchSnapshot();
+  expect(stderr).toBe('');
+}, 20000);
+
+test('typescript -> stdout with crowdin', async () => {
+  const {stdout, stderr} = await exec(
+    `${BIN_PATH} extract ${join(
+      __dirname,
+      'typescript/actual.tsx'
+    )} --format crowdin`
+  );
+  expect(JSON.parse(stdout)).toMatchSnapshot();
+  expect(stderr).toBe('');
+}, 20000);
+
 test('typescript -> stdout with smartling', async () => {
   const {stdout, stderr} = await exec(
     `${BIN_PATH} extract ${join(

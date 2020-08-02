@@ -86,7 +86,31 @@ Object {
 }
 `;
 
+exports[`normal json with crowdin 1`] = `
+Object {
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message",
+}
+`;
+
 exports[`normal json with formatter 1`] = `
+Object {
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message",
+}
+`;
+
+exports[`normal json with lokalise 1`] = `
+Object {
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message",
+}
+`;
+
+exports[`normal json with simple 1`] = `
 Object {
   "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
   "a1dd2": "my name is {name}",

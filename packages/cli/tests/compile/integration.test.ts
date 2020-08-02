@@ -61,6 +61,39 @@ test('normal json with smartling', async () => {
   expect(stderr).toBe('');
 }, 20000);
 
+test('normal json with simple', async () => {
+  const {stdout, stderr} = await exec(
+    `${BIN_PATH} compile ${join(
+      __dirname,
+      'lang/en-simple.json'
+    )} --format simple`
+  );
+  expect(JSON.parse(stdout)).toMatchSnapshot();
+  expect(stderr).toBe('');
+}, 20000);
+
+test('normal json with lokalise', async () => {
+  const {stdout, stderr} = await exec(
+    `${BIN_PATH} compile ${join(
+      __dirname,
+      'lang/en-lokalise.json'
+    )} --format lokalise`
+  );
+  expect(JSON.parse(stdout)).toMatchSnapshot();
+  expect(stderr).toBe('');
+}, 20000);
+
+test('normal json with crowdin', async () => {
+  const {stdout, stderr} = await exec(
+    `${BIN_PATH} compile ${join(
+      __dirname,
+      'lang/en-crowdin.json'
+    )} --format crowdin`
+  );
+  expect(JSON.parse(stdout)).toMatchSnapshot();
+  expect(stderr).toBe('');
+}, 20000);
+
 test('malformed ICU message json', async () => {
   expect(async () => {
     await exec(

@@ -1,0 +1,14 @@
+{
+  "ashd2": {
+    "translation": "a message",
+    "notes": "foo"
+  },
+  "a1dd2": {
+    "translation": "my name is {name}",
+    "notes": "foo"
+  },
+  "a1d12": {
+    "translation": "I have {count, plural, one{a dog} other{many dogs}}",
+    "notes": "foo"
+  }
+}

@@ -148,8 +148,11 @@ Whether to compile message into AST instead of just string. See [Advanced Usage]
 
 We provide the following built-in formatters to integrate with 3rd party TMSes:
 
-- `--format transifex`: https://docs.transifex.com/formats/json/structured-json
-- `--format smartling`: https://help.smartling.com/hc/en-us/articles/360008000733-JSON
+- `--format transifex`: [Transifex's Structured JSON](https://docs.transifex.com/formats/json/structured-json)
+- `--format smartling`: [Smartling ICU JSON](https://help.smartling.com/hc/en-us/articles/360008000733-JSON)
+- `--format simple`: Simple key-value JSON, used by [Lingohub](https://lingohub.com/developers/resource-files/json-localization/) and [Phrase](https://help.phrase.com/help/simple-json)
+- `--format crowdin`: [Crowdin Chrome JSON](https://support.crowdin.com/file-formats/chrome-json/)
+- `--format lokalise`: [Lokalise Structured JSON](https://docs.lokalise.com/en/articles/3229161-structured-json)
 
 ## Custom Formatters
 

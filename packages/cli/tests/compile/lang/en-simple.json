@@ -1,0 +1,5 @@
+{
+  "ashd2": "a message",
+  "a1dd2": "my name is {name}",
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}"
+}

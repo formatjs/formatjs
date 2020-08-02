@@ -327,6 +327,42 @@ Object {
 }
 `;
 
+exports[`typescript -> stdout with crowdin 1`] = `
+Object {
+  "ae494": Object {
+    "description": "no ID",
+    "message": "No ID",
+  },
+  "app.home.kittens": Object {
+    "description": "Counts kittens",
+    "message": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+  },
+  "c63ed": Object {
+    "message": "No Desc",
+  },
+  "escaped.apostrophe": Object {
+    "description": "Escaped apostrophe",
+    "message": "A quoted value ''{value}'",
+  },
+  "foo.bar.baz": Object {
+    "description": "The default message",
+    "message": "Hello World!",
+  },
+  "foo.bar.biff": Object {
+    "description": "Another message",
+    "message": "Hello Nurse!",
+  },
+  "inline": Object {
+    "description": "foo",
+    "message": "formatted message",
+  },
+  "trailing.ws": Object {
+    "description": "Whitespace",
+    "message": "   Some whitespace   ",
+  },
+}
+`;
+
 exports[`typescript -> stdout with formatter 1`] = `
 Object {
   "ae494": Object {
@@ -360,6 +396,55 @@ Object {
     "comment": "Whitespace",
     "string": "   Some whitespace   ",
   },
+}
+`;
+
+exports[`typescript -> stdout with lokalise 1`] = `
+Object {
+  "ae494": Object {
+    "notes": "no ID",
+    "translation": "No ID",
+  },
+  "app.home.kittens": Object {
+    "notes": "Counts kittens",
+    "translation": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+  },
+  "c63ed": Object {
+    "translation": "No Desc",
+  },
+  "escaped.apostrophe": Object {
+    "notes": "Escaped apostrophe",
+    "translation": "A quoted value ''{value}'",
+  },
+  "foo.bar.baz": Object {
+    "notes": "The default message",
+    "translation": "Hello World!",
+  },
+  "foo.bar.biff": Object {
+    "notes": "Another message",
+    "translation": "Hello Nurse!",
+  },
+  "inline": Object {
+    "notes": "foo",
+    "translation": "formatted message",
+  },
+  "trailing.ws": Object {
+    "notes": "Whitespace",
+    "translation": "   Some whitespace   ",
+  },
+}
+`;
+
+exports[`typescript -> stdout with simple 1`] = `
+Object {
+  "ae494": "No ID",
+  "app.home.kittens": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+  "c63ed": "No Desc",
+  "escaped.apostrophe": "A quoted value ''{value}'",
+  "foo.bar.baz": "Hello World!",
+  "foo.bar.biff": "Hello Nurse!",
+  "inline": "formatted message",
+  "trailing.ws": "   Some whitespace   ",
 }
 `;
 
