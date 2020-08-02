@@ -1,6 +1,6 @@
 import {FormatFn, CompileFn} from '../..';
 
-type StructuredJson = Record<
+export type StructuredJson = Record<
   string,
   {
     string: string;

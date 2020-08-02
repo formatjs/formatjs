@@ -1,0 +1,24 @@
+{
+  "smartling": {
+    "translate_paths": [
+      {
+        "path": "*/message",
+        "key": "{*}/message",
+        "instruction": "*/description"
+      }
+    ],
+    "variants_enabled": true
+  },
+  "ashd2": {
+    "message": "a message",
+    "description": "foo"
+  },
+  "a1dd2": {
+    "message": "my name is {name}",
+    "description": "foo"
+  },
+  "a1d12": {
+    "message": "I have {count, plural, one{a dog} other{many dogs}}",
+    "description": "foo"
+  }
+}

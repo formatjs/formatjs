@@ -43,6 +43,8 @@ SRC_DEPS = [
     "@npm//commander",
     "@npm//loud-rejection",
     "@npm//chalk",
+    "@npm//json-stable-stringify",
+    "@npm//@types/json-stable-stringify",
 ]
 
 ts_compile(

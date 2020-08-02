@@ -148,4 +148,4 @@ exports.format = function (msgs) {
 };
 ```
 
-In the future we will provide formatters that work with popular TMSes by default.
+We also provide several [builtin formatters](../tooling/cli.md#builtin-formatters) so feel free to create PRs to add more.

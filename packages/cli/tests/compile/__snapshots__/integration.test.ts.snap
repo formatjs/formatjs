@@ -94,6 +94,14 @@ Object {
 }
 `;
 
+exports[`normal json with smartling 1`] = `
+Object {
+  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
+  "a1dd2": "my name is {name}",
+  "ashd2": "a message",
+}
+`;
+
 exports[`normal json with transifex 1`] = `
 Object {
   "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",

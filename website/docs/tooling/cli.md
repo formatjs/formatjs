@@ -143,3 +143,29 @@ The target file that contains compiled messages.
 ### `--ast`
 
 Whether to compile message into AST instead of just string. See [Advanced Usage](../react-intl/advanced-usage.md)
+
+## Builtin Formatters
+
+We provide the following built-in formatters to integrate with 3rd party TMSes:
+
+- `--format transifex`: https://docs.transifex.com/formats/json/structured-json
+- `--format smartling`: https://help.smartling.com/hc/en-us/articles/360008000733-JSON
+
+## Custom Formatters
+
+You can provide your own formatter by using our interfaces:
+
+```tsx
+import {FormatFn, CompileFn, Comparator} from '@formatjs/cli';
+
+interface VendorJson {}
+
+// [Optional] Format @formatjs/cli structure to vendor's structure
+export const format: FormatFn<VendorJson> = () => {};
+// [Optional] Format vendor's structure to @formatjs/cli structure
+export const compile: CompileFn<VendorJson> = () => {};
+// [Optional] Sort the messages in a specific order during serialization
+export const compareMessages: Comparator = () => {};
+```
+
+Take a look at our [builtin formatter code](https://github.com/formatjs/formatjs/tree/main/packages/cli/src/formatters) for some examples.

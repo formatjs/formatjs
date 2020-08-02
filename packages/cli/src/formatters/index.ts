@@ -1,5 +1,6 @@
 import * as defaultFormatter from './default';
 import * as transifex from './transifex';
+import * as smartling from './smartling';
 
 export function resolveBuiltinFormatter(format?: string) {
   if (!format) {
@@ -8,6 +9,8 @@ export function resolveBuiltinFormatter(format?: string) {
   switch (format) {
     case 'transifex':
       return transifex;
+    case 'smartling':
+      return smartling;
   }
   try {
     return require(format);

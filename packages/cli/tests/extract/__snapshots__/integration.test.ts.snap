@@ -363,6 +363,53 @@ Object {
 }
 `;
 
+exports[`typescript -> stdout with smartling 1`] = `
+"{
+  \\"smartling\\": {
+    \\"translate_paths\\": [
+      {
+        \\"instruction\\": \\"*/description\\",
+        \\"key\\": \\"{*}/message\\",
+        \\"path\\": \\"*/message\\"
+      }
+    ],
+    \\"variants_enabled\\": true
+  },
+  \\"ae494\\": {
+    \\"description\\": \\"no ID\\",
+    \\"message\\": \\"No ID\\"
+  },
+  \\"app.home.kittens\\": {
+    \\"description\\": \\"Counts kittens\\",
+    \\"message\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\"
+  },
+  \\"c63ed\\": {
+    \\"message\\": \\"No Desc\\"
+  },
+  \\"escaped.apostrophe\\": {
+    \\"description\\": \\"Escaped apostrophe\\",
+    \\"message\\": \\"A quoted value ''{value}'\\"
+  },
+  \\"foo.bar.baz\\": {
+    \\"description\\": \\"The default message\\",
+    \\"message\\": \\"Hello World!\\"
+  },
+  \\"foo.bar.biff\\": {
+    \\"description\\": \\"Another message\\",
+    \\"message\\": \\"Hello Nurse!\\"
+  },
+  \\"inline\\": {
+    \\"description\\": \\"foo\\",
+    \\"message\\": \\"formatted message\\"
+  },
+  \\"trailing.ws\\": {
+    \\"description\\": \\"Whitespace\\",
+    \\"message\\": \\"   Some whitespace   \\"
+  }
+}
+"
+`;
+
 exports[`typescript -> stdout with transifex 1`] = `
 Object {
   "ae494": Object {

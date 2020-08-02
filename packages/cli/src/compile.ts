@@ -1,5 +1,6 @@
 import {parse, MessageFormatElement} from 'intl-messageformat-parser';
-import {outputJSONSync, readJSONSync} from 'fs-extra';
+import {outputFileSync, readJSONSync} from 'fs-extra';
+import * as stringify from 'json-stable-stringify';
 import {resolveBuiltinFormatter} from './formatters';
 
 export type CompileFn = (msgs: any) => Record<string, string>;
@@ -16,8 +17,11 @@ export default function compile(
   outFile?: string,
   {ast, format}: Opts = {}
 ) {
-  const formatFn = resolveBuiltinFormatter(format).compile;
-  const messages: Record<string, string> = formatFn(readJSONSync(inputFile));
+  const formatter = resolveBuiltinFormatter(format);
+
+  const messages: Record<string, string> = formatter.compile(
+    readJSONSync(inputFile)
+  );
   const results: Record<string, string | MessageFormatElement[]> = {};
 
   for (const [id, message] of Object.entries(messages)) {
@@ -25,13 +29,14 @@ export default function compile(
     const msgAst = parse(message);
     results[id] = ast ? msgAst : message;
   }
-
+  const serializedResult = stringify(results, {
+    space: 2,
+    cmp: formatter.compareMessages || undefined,
+  });
   if (!outFile) {
-    process.stdout.write(JSON.stringify(results, null, 2));
+    process.stdout.write(serializedResult);
     process.stdout.write('\n');
   } else {
-    outputJSONSync(outFile, results, {
-      spaces: 2,
-    });
+    outputFileSync(outFile, serializedResult);
   }
 }

@@ -1,5 +1,5 @@
 import {warn, getStdinAsString} from './console_utils';
-import {outputJSONSync, readFile} from 'fs-extra';
+import {readFile, outputFileSync} from 'fs-extra';
 import {
   interpolateName,
   transform,
@@ -9,7 +9,7 @@ import {
 import {IOptions as GlobOptions} from 'glob';
 import * as ts from 'typescript';
 import {resolveBuiltinFormatter} from './formatters';
-
+import * as stringify from 'json-stable-stringify';
 export interface ExtractionResult<M = Record<string, string>> {
   messages: MessageDescriptor[];
   meta: M;
@@ -136,9 +136,10 @@ export default async function extractAndWrite(
   opts: ExtractCLIOptions
 ) {
   const {outFile, throws, format, ...extractOpts} = opts;
-  const formatFn = resolveBuiltinFormatter(format).format;
+  const formatter = resolveBuiltinFormatter(format);
+
   const extractionResults = await extract(files, extractOpts);
-  const printMessagesToStdout = !outFile;
+
   const extractedMessages = new Map<string, MessageDescriptor>();
 
   for (const {messages} of extractionResults) {
@@ -182,14 +183,14 @@ ${JSON.stringify(message, undefined, 2)}`
   for (const {id, ...msg} of messages) {
     results[id] = msg;
   }
-
+  const serializedResult = stringify(formatter.format(results), {
+    space: 2,
+    cmp: formatter.compareMessages || undefined,
+  });
   if (outFile) {
-    outputJSONSync(outFile, formatFn(results), {
-      spaces: 2,
-    });
-  }
-  if (printMessagesToStdout) {
-    process.stdout.write(JSON.stringify(formatFn(results), null, 2));
+    outputFileSync(outFile, serializedResult);
+  } else {
+    process.stdout.write(serializedResult);
     process.stdout.write('\n');
   }
 }

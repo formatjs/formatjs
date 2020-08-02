@@ -95,6 +95,18 @@ test('typescript -> stdout with transifex', async () => {
   expect(stderr).toBe('');
 }, 20000);
 
+test('typescript -> stdout with smartling', async () => {
+  const {stdout, stderr} = await exec(
+    `${BIN_PATH} extract ${join(
+      __dirname,
+      'typescript/actual.tsx'
+    )} --format smartling`
+  );
+  // Don't parse bc re-parsing re-sort the keys
+  expect(stdout).toMatchSnapshot();
+  expect(stderr).toBe('');
+}, 20000);
+
 const ignore = "--ignore '*.ignore.*'";
 
 test('ignore -> stdout TS', async () => {

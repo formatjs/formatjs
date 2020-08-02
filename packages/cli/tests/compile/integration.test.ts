@@ -50,6 +50,17 @@ test('normal json with transifex', async () => {
   expect(stderr).toBe('');
 }, 20000);
 
+test('normal json with smartling', async () => {
+  const {stdout, stderr} = await exec(
+    `${BIN_PATH} compile ${join(
+      __dirname,
+      'lang/en-smartling.json'
+    )} --format smartling`
+  );
+  expect(JSON.parse(stdout)).toMatchSnapshot();
+  expect(stderr).toBe('');
+}, 20000);
+
 test('malformed ICU message json', async () => {
   expect(async () => {
     await exec(
