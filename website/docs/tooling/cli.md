@@ -148,11 +148,14 @@ Whether to compile message into AST instead of just string. See [Advanced Usage]
 
 We provide the following built-in formatters to integrate with 3rd party TMSes:
 
-- `--format transifex`: [Transifex's Structured JSON](https://docs.transifex.com/formats/json/structured-json)
-- `--format smartling`: [Smartling ICU JSON](https://help.smartling.com/hc/en-us/articles/360008000733-JSON)
-- `--format simple`: Simple key-value JSON, used by [Lingohub](https://lingohub.com/developers/resource-files/json-localization/) and [Phrase](https://help.phrase.com/help/simple-json)
-- `--format crowdin`: [Crowdin Chrome JSON](https://support.crowdin.com/file-formats/chrome-json/)
-- `--format lokalise`: [Lokalise Structured JSON](https://docs.lokalise.com/en/articles/3229161-structured-json)
+| TMS                                                                                       | `--format`  |
+| ----------------------------------------------------------------------------------------- | ----------- |
+| [Transifex's Structured JSON](https://docs.transifex.com/formats/json/structured-json)    | `transifex` |
+| [Smartling ICU JSON](https://help.smartling.com/hc/en-us/articles/360008000733-JSON)      | `smartling` |
+| [Lingohub](https://lingohub.com/developers/resource-files/json-localization/)             | `simple`    |
+| [Phrase](https://help.phrase.com/help/simple-json)                                        | `simple`    |
+| [Crowdin Chrome JSON](https://support.crowdin.com/file-formats/chrome-json/)              | `crowdin`   |
+| [Lokalise Structured JSON](https://docs.lokalise.com/en/articles/3229161-structured-json) | `lokalise`  |
 
 ## Custom Formatters
 
