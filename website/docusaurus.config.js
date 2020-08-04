@@ -26,27 +26,26 @@ module.exports = {
       items: [
         {
           to: 'docs/getting-started/installation',
-          activeBasePath: 'docs',
           label: 'Docs',
           position: 'left',
+          activeBaseRegex: `docs/(getting-started|guides|core-concepts)`,
         },
         {
           to: 'docs/react-intl/components',
-          activeBasePath: 'api',
           label: 'API References',
           position: 'left',
+          activeBaseRegex: `docs/(react-intl|intl-messageformat|intl-messageformat-parser)`,
         },
         {
           to: 'docs/polyfills',
-          activeBasePath: 'polyfills',
           label: 'Polyfills',
           position: 'left',
         },
         {
           to: 'docs/tooling/cli',
-          activeBasePath: 'tooling',
           label: 'Tooling',
           position: 'left',
+          activeBaseRegex: `docs/tooling/(cli|linter|babel-plugin|ts-transformer)`,
         },
         {
           href: 'https://github.com/formatjs/formatjs',
