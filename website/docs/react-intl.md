@@ -291,7 +291,7 @@ In order to use `react-intl` in TypeScript, make sure your `compilerOptions`'s `
 
 # Advanced Usage
 
-Our [Advanced Usage](react-intl/advanced-usage.md) has further guides for production setup in environments where performance is important.
+Our [Advanced Usage](guides/advanced-usage.md) has further guides for production setup in environments where performance is important.
 
 # Supported Tooling
 

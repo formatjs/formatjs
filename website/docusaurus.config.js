@@ -62,7 +62,7 @@ module.exports = {
           items: [
             {
               label: 'Getting Started',
-              to: 'docs/basic-internationalization-principles',
+              to: 'docs/core-concepts/basic-internationalization-principles',
             },
             {
               to: 'docs/polyfills',
