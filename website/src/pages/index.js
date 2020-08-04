@@ -260,7 +260,9 @@ function Home() {
                 'button button--outline button--secondary button--lg',
                 styles.getStarted
               )}
-              to={useBaseUrl('docs/basic-internationalization-principles')}
+              to={useBaseUrl(
+                'docs/core-concepts/basic-internationalization-principles'
+              )}
             >
               <FormattedMessage
                 defaultMessage="Get Started"

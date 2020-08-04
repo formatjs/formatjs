@@ -170,7 +170,7 @@ If this is not provided, result will be printed to stdout`
     )
     .option(
       '--ast',
-      `Whether to compile to AST. See https://formatjs.io/docs/react-intl/advanced-usage#pre-parsing-messages
+      `Whether to compile to AST. See https://formatjs.io/docs/guides/advanced-usage#pre-parsing-messages
 for more information`
     )
     .action((file: string, {outFile, ...opts}: CompileCLIOpts) =>

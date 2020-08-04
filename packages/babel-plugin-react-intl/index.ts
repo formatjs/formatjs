@@ -120,7 +120,7 @@ function getICUMessageValue(
 
     throw messagePath.buildCodeFrameError(
       '[React Intl] Message failed to parse. ' +
-        'See: https://formatjs.io/docs/icu-syntax' +
+        'See: https://formatjs.io/docs/core-concepts/icu-syntax' +
         `\n${parseError}`
     );
   }
