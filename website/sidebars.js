@@ -10,11 +10,14 @@ module.exports = {
     Guides: [
       'guides/develop',
       'guides/bundler-plugins',
-      'react-intl/testing',
+      'guides/testing',
       'guides/runtime-requirements',
-      'react-intl/advanced-usage',
+      'guides/advanced-usage',
     ],
-    'Core Concepts': ['basic-internationalization-principles', 'icu-syntax'],
+    'Core Concepts': [
+      'core-concepts/basic-internationalization-principles',
+      'core-concepts/icu-syntax',
+    ],
   },
   api: {
     'react-intl': [

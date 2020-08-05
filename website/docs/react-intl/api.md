@@ -401,7 +401,7 @@ formatList(['5 hours', '3 minutes'], {type: 'unit'}); // 5 hours, 3 minutes
 
 ### Message Syntax
 
-String/Message formatting is a paramount feature of React Intl and it builds on [ICU Message Formatting](http://userguide.icu-project.org/formatparse/messages) by using the [ICU Message Syntax](../icu-syntax.md). This message syntax allows for simple to complex messages to be defined, translated, and then formatted at runtime.
+String/Message formatting is a paramount feature of React Intl and it builds on [ICU Message Formatting](http://userguide.icu-project.org/formatparse/messages) by using the [ICU Message Syntax](../core-concepts/icu-syntax.md). This message syntax allows for simple to complex messages to be defined, translated, and then formatted at runtime.
 
 **Simple Message:**
 
@@ -419,7 +419,7 @@ Hello, {name}, you have {itemCount, plural,
 }.
 ```
 
-**See:** The [Message Syntax Guide](../icu-syntax.md).
+**See:** The [Message Syntax Guide](../core-concepts/icu-syntax.md).
 
 ### Message Descriptor
 

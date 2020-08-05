@@ -142,7 +142,7 @@ The target file that contains compiled messages.
 
 ### `--ast`
 
-Whether to compile message into AST instead of just string. See [Advanced Usage](../react-intl/advanced-usage.md)
+Whether to compile message into AST instead of just string. See [Advanced Usage](../guides/advanced-usage.md)
 
 ## Builtin Formatters
 
