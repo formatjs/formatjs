@@ -18,7 +18,7 @@ import {
   defineMessage,
   Formatters,
   IntlShape,
-} from '../../';
+} from '../..';
 import IntlRelativeFormat from '@formatjs/intl-relativetimeformat';
 import IntlListFormat from '@formatjs/intl-listformat';
 import {OptionalIntlConfig} from '../../src/components/provider';
@@ -490,7 +490,7 @@ describe('format API', () => {
       });
 
       it('uses named formats as defaults', () => {
-        const opts = {numeric: 'auto' as 'auto'};
+        const opts = {numeric: 'auto' as const};
         const format = 'seconds';
 
         const {locale, formats} = config;
@@ -692,6 +692,20 @@ describe('format API', () => {
         'Hello, foo!'
       );
       expect(state.getMessageFormat).toHaveBeenCalled();
+    });
+    it('should not crash of messages does not have Object.prototype', function () {
+      const messages = Object.create(null);
+      messages.no_args = 'Hello';
+      formatMessage = baseFormatMessage.bind(
+        null,
+        {
+          ...config,
+          messages,
+        },
+        state
+      );
+      expect(() => formatMessage({id: 'no_args'})).not.toThrow();
+      expect(formatMessage({id: 'no_args'})).toBe('Hello');
     });
     [`Hello, World!'{foo}'`, `'\ud83d'\udc04`].forEach(msg =>
       it(`should render escaped msg ${msg} properly in production`, () => {

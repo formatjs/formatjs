@@ -159,7 +159,13 @@ export function formatMessage(
     '[React Intl] An `id` must be provided to format a message.'
   );
   const id = String(msgId);
-  const message = messages && messages.hasOwnProperty(id) && messages[id];
+  const message =
+    // In case messages is Object.create(null)
+    // e.g import('foo.json') from webpack)
+    // See https://github.com/formatjs/formatjs/issues/1914
+    messages && messages.hasOwnProperty
+      ? messages.hasOwnProperty(id) && messages[id]
+      : messages[id];
 
   // IMPORTANT: Hot path if `message` is AST with a single literal node
   if (
