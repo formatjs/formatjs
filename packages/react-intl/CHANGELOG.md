@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.6](https://github.com/formatjs/formatjs/compare/react-intl@5.4.5...react-intl@5.4.6) (2020-08-06)
+
+
+### Bug Fixes
+
+* **react-intl:** fix Object.create(null) case for messages, fix [#1914](https://github.com/formatjs/formatjs/issues/1914) ([4a0f555](https://github.com/formatjs/formatjs/commit/4a0f555f5c11d33358ba85aec239e11090d59e86))
+* **react-intl:** just use Object.prototype.hasOwnProperty.call instead ([269adc4](https://github.com/formatjs/formatjs/commit/269adc4a81af5d0cfe84ab02bd5242b4335e4a00))
+
+
+
+
+
 ## [5.4.5](https://github.com/formatjs/formatjs/compare/react-intl@5.4.4...react-intl@5.4.5) (2020-07-30)
 
 **Note:** Version bump only for package react-intl
