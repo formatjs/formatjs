@@ -453,11 +453,11 @@ Object {
 import { defineMessages, FormattedMessage, defineMessage } from 'react-intl';
 const msgs = defineMessages({
     header: {
-        id: \\"foo.bar.baz\\",
+        id: \\"HELLO.foo.bar.baz.12.string\\",
         defaultMessage: \\"Hello World!\\"
     },
     content: {
-        id: \\"foo.bar.biff\\",
+        id: \\"HELLO.foo.bar.biff.12.undefined\\",
         defaultMessage: \\"Hello Nurse!\\"
     }
 });
@@ -488,7 +488,7 @@ export default class Foo extends Component {
         <p>
           <FormattedMessage {...msgs.content}/>
         </p>
-        <FormattedMessage id=\\"foo.bar.zoo\\" defaultMessage=\\"Hello World! {abc}\\" values={{ abc: 2 }}/>
+        <FormattedMessage id=\\"HELLO.foo.bar.zoo.18.undefined\\" defaultMessage=\\"Hello World! {abc}\\" values={{ abc: 2 }}/>
         <FormattedMessage id=\\"HELLO..18.undefined\\" defaultMessage=\\"Hello World! {abc}\\" values={{ abc: 2 }}/>
       </div>);
     }
@@ -499,11 +499,11 @@ export default class Foo extends Component {
     Object {
       "defaultMessage": "Hello World!",
       "description": "The default message",
-      "id": "foo.bar.baz",
+      "id": "HELLO.foo.bar.baz.12.string",
     },
     Object {
       "defaultMessage": "Hello Nurse!",
-      "id": "foo.bar.biff",
+      "id": "HELLO.foo.bar.biff.12.undefined",
     },
     Object {
       "defaultMessage": "defineMessage",
@@ -527,7 +527,7 @@ export default class Foo extends Component {
     },
     Object {
       "defaultMessage": "Hello World! {abc}",
-      "id": "foo.bar.zoo",
+      "id": "HELLO.foo.bar.zoo.18.undefined",
     },
     Object {
       "defaultMessage": "Hello World! {abc}",

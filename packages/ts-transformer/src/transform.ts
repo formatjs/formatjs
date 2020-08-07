@@ -164,18 +164,20 @@ function extractMessageDescriptor(
   if (!msg.defaultMessage && !msg.id) {
     return;
   }
-  if (!msg.id && msg.defaultMessage && overrideIdFn) {
+  if (msg.defaultMessage && overrideIdFn) {
     switch (typeof overrideIdFn) {
       case 'string':
-        msg.id = interpolateName(
-          {sourcePath: sf.fileName} as any,
-          overrideIdFn,
-          {
-            content: msg.description
-              ? `${msg.defaultMessage}#${msg.description}`
-              : msg.defaultMessage,
-          }
-        );
+        if (!msg.id) {
+          msg.id = interpolateName(
+            {sourcePath: sf.fileName} as any,
+            overrideIdFn,
+            {
+              content: msg.description
+                ? `${msg.defaultMessage}#${msg.description}`
+                : msg.defaultMessage,
+            }
+          );
+        }
         break;
       case 'function':
         msg.id = overrideIdFn(
