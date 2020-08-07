@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.5.1...@formatjs/ts-transformer@2.6.0) (2020-08-07)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** allow to override user defined message id via `overrideIdFn` as function ([#1926](https://github.com/formatjs/formatjs/issues/1926)) ([6af7846](https://github.com/formatjs/formatjs/commit/6af7846758c1e6832d75e1d0dfd8c4b8c064203c))
+
+
+
+
+
 ## [2.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.5.0...@formatjs/ts-transformer@2.5.1) (2020-07-29)
 
 
