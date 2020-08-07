@@ -23,6 +23,7 @@ const skipOutputTests = [
   'removeDefaultMessage',
   'removeDescriptions',
   'workspaceRoot',
+  'symlink',
 ];
 
 describe('emit asserts for: ', () => {
@@ -297,6 +298,18 @@ describe('options', () => {
         filePath
       ))
     ).toMatchSnapshot();
+  });
+
+  it('workspaceRoot with symlink', () => {
+    const fixtureDir = join(__dirname, 'fixtures', 'symlink', 'folder1');
+    const filePath = join(fixtureDir, 'sym/foo.ts');
+    const {code, metadata} = transform(filePath, {
+      workspaceRoot: join(__dirname, 'fixtures', 'symlink', 'folder1'),
+    })!;
+
+    // Check message output
+    expect(metadata).toMatchSnapshot();
+    expect(code).toMatchSnapshot();
   });
 
   it('workspaceRoot invalid', () => {

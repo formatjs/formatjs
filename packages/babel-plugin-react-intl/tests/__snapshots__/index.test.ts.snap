@@ -768,3 +768,26 @@ Array [
   },
 ]
 `;
+
+exports[`options workspaceRoot with symlink 1`] = `
+Object {
+  "react-intl": Object {
+    "messages": Array [
+      Object {
+        "defaultMessage": "foo",
+        "description": undefined,
+        "id": "foo",
+      },
+    ],
+    "meta": Object {},
+  },
+}
+`;
+
+exports[`options workspaceRoot with symlink 2`] = `
+"import { defineMessage } from 'react-intl';
+export default defineMessage({
+  \\"id\\": \\"foo\\",
+  \\"defaultMessage\\": \\"foo\\"
+});"
+`;
