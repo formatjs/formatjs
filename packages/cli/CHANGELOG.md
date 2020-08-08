@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.3.2...@formatjs/cli@2.4.0) (2020-08-08)
+
+
+### Features
+
+* **@formatjs/cli:** allow compile to take in a glob pattern also ([cb36802](https://github.com/formatjs/formatjs/commit/cb36802d143353f8ce9765e11adb163fc0eeec01))
+
+
+
+
+
 ## [2.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.3.1...@formatjs/cli@2.3.2) (2020-08-07)
 
 **Note:** Version bump only for package @formatjs/cli
