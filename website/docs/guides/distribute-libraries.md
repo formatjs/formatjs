@@ -16,7 +16,7 @@ Translated strings are basically assets, just like CSS, static configuration or 
 
 Each feature/library would be in charge of:
 
-- [Declaring its messages](../getting-strated/message-declaration.md).
+- [Declaring its messages](../getting-started/message-declaration.md).
 - Integrating with the [translation pipeline](../getting-started/application-workflow.md).
 - Declaring its translated & aggregated strings using either a [manifest like package.json](https://docs.npmjs.com/files/package.json) or a convention (always output to a specific location) or both.
 
