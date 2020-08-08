@@ -11,6 +11,7 @@ module.exports = {
       'guides/develop',
       'guides/bundler-plugins',
       'guides/testing',
+      'guides/distribute-libraries',
       'guides/runtime-requirements',
       'guides/advanced-usage',
     ],
