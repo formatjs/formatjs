@@ -3,7 +3,12 @@ id: babel-plugin
 title: babel-plugin-react-intl
 ---
 
-Extracts string messages for translation from modules that use [React Intl](../react-intl.md).
+Process string messages for translation from modules that use [React Intl](../react-intl.md), specifically:
+
+- Parse and verify that messages are ICU-compliant w/o any syntax issues.
+- Remove `description` from message descriptor to save bytes since it isn't used at runtime.
+- Option to remove `defaultMessage` from message descriptor to save bytes since it isn't used at runtime.
+- Automatically inject message ID based on specific pattern.
 
 ## Installation
 
@@ -15,9 +20,7 @@ $ npm install babel-plugin-react-intl
 
 **This Babel plugin only visits ES6 modules which `import` React Intl.**
 
-The default message descriptors for the app's default language will be extracted from: `defineMessages()`, `defineMessage()`, and `<FormattedMessage>`; all of which are named exports of the React Intl package.
-
-If a message descriptor has a `description`, it'll be removed from the source after it's extracted to save bytes since it isn't used at runtime.
+The default message descriptors for the app's default language will be processed from: `defineMessages()`, `defineMessage()`, `intl.formatMessage` and `<FormattedMessage>`; all of which are named exports of the React Intl package.
 
 ### Via `babel.config.json` (Recommended)
 
@@ -38,35 +41,6 @@ If a message descriptor has a `description`, it'll be removed from the source af
 
 ## Options
 
-### **`messagesDir`**
-
-The target location where the plugin will output a `.json` file corresponding to each component from which React Intl messages were extracted. If not provided, the extracted message descriptors will only be accessible via Babel's API.
-
-### **`workspaceRoot`**
-
-The folder to resolve relative path of source file to. This is used to control the directory structure of `messagesDir`. For example, when extractin from:
-
-```
-my_project
-|- src
-|-- subdir
-|--- file1.js
-```
-
-and `workspaceRoot` is set to `src`, `messagesDir` output will have the structure:
-
-```
-<messagesDir>
-|- subdir
-|-- file1.js
-```
-
-Specifying an invalid `workspaceRoot` (e.g if we encounter a file during parsing that does not live under `workspaceRoot`) will throw an `Error`.
-
-### **`extractSourceLocation`**
-
-Whether the metadata about the location of the message in the source file should be extracted. If `true`, then `file`, `start`, and `end` fields will exist for each extracted message descriptors. Defaults to `false`.
-
 ### **`moduleSourceName`**
 
 The ES6 module source name of the React Intl package. Defaults to: `"react-intl"`, but can be changed to another name/path to React Intl.
@@ -83,17 +57,13 @@ If certain message descriptors don't have id, this `pattern` will be used to aut
 
 Remove `defaultMessage` field in generated js after extraction.
 
-### **`additionalComponentNames`**
-
-Additional component names to extract messages from, e.g: `['FormattedFooBarMessage']`. **NOTE**: By default we check for the fact that `FormattedMessage` are imported from `moduleSourceName` to make sure variable alias works. This option does not do that so it's less safe.
-
 ### **`extractFromFormatMessageCall`**
 
 Opt-in to extract from `intl.formatMessage` call with the same restrictions, e.g: has to be called with object literal such as `intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'})`
 
-### **`outputEmptyJson`**
+### **`additionalComponentNames`**
 
-output file with empty `[]` if src has no messages. For build systems like bazel that relies on specific output mapping, not writing out a file can cause issues.
+Additional component names to extract messages from, e.g: `['FormattedFooBarMessage']`. **NOTE**: By default we check for the fact that `FormattedMessage` are imported from `moduleSourceName` to make sure variable alias works. This option does not do that so it's less safe.
 
 ### **`pragma`**
 
