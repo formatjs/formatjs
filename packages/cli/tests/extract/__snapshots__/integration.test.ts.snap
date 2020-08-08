@@ -2,41 +2,52 @@
 
 exports[`[glob] basic case: defineMessages -> stdout 1`] = `
 Object {
-  "ae494": Object {
-    "defaultMessage": "No ID",
-    "description": "no ID",
+  "stderr": "",
+  "stdout": "{
+  \\"ae494\\": {
+    \\"defaultMessage\\": \\"No ID\\",
+    \\"description\\": \\"no ID\\"
   },
-  "app.home.kittens": Object {
-    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
-    "description": "Counts kittens",
+  \\"app.home.kittens\\": {
+    \\"defaultMessage\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\",
+    \\"description\\": \\"Counts kittens\\"
   },
-  "escaped.apostrophe": Object {
-    "defaultMessage": "A quoted value ''{value}'",
-    "description": "Escaped apostrophe",
+  \\"escaped.apostrophe\\": {
+    \\"defaultMessage\\": \\"A quoted value ''{value}'\\",
+    \\"description\\": \\"Escaped apostrophe\\"
   },
-  "foo.bar.baz": Object {
-    "defaultMessage": "Hello World!",
-    "description": "The default message",
+  \\"foo.bar.baz\\": {
+    \\"defaultMessage\\": \\"Hello World!\\",
+    \\"description\\": \\"The default message\\"
   },
-  "foo.bar.biff": Object {
-    "defaultMessage": "Hello Nurse!",
-    "description": "Another message",
+  \\"foo.bar.biff\\": {
+    \\"defaultMessage\\": \\"Hello Nurse!\\",
+    \\"description\\": \\"Another message\\"
   },
-  "ignore": Object {
-    "defaultMessage": "ignore",
+  \\"ignore\\": {
+    \\"defaultMessage\\": \\"ignore\\"
   },
-  "inline-msg": Object {
-    "defaultMessage": "inline message",
-    "description": "inline description",
+  \\"inline-msg\\": {
+    \\"defaultMessage\\": \\"inline message\\",
+    \\"description\\": \\"inline description\\"
   },
-  "trailing.ws": Object {
-    "defaultMessage": "   Some whitespace   ",
-    "description": "Whitespace",
-  },
+  \\"trailing.ws\\": {
+    \\"defaultMessage\\": \\"   Some whitespace   \\",
+    \\"description\\": \\"Whitespace\\"
+  }
+}
+",
 }
 `;
 
 exports[`basic case: defineMessages -> out-file 1`] = `
+Object {
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`basic case: defineMessages -> out-file 2`] = `
 Object {
   "ae494": Object {
     "defaultMessage": "No ID",
@@ -70,6 +81,13 @@ Object {
 `;
 
 exports[`basic case: defineMessages -> out-file with location 1`] = `
+Object {
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`basic case: defineMessages -> out-file with location 2`] = `
 Object {
   "ae494": Object {
     "col": 18,
@@ -139,39 +157,45 @@ Object {
 
 exports[`basic case: defineMessages -> stdout 1`] = `
 Object {
-  "ae494": Object {
-    "defaultMessage": "No ID",
-    "description": "no ID",
+  "stderr": "",
+  "stdout": "{
+  \\"ae494\\": {
+    \\"defaultMessage\\": \\"No ID\\",
+    \\"description\\": \\"no ID\\"
   },
-  "app.home.kittens": Object {
-    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
-    "description": "Counts kittens",
+  \\"app.home.kittens\\": {
+    \\"defaultMessage\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\",
+    \\"description\\": \\"Counts kittens\\"
   },
-  "escaped.apostrophe": Object {
-    "defaultMessage": "A quoted value ''{value}'",
-    "description": "Escaped apostrophe",
+  \\"escaped.apostrophe\\": {
+    \\"defaultMessage\\": \\"A quoted value ''{value}'\\",
+    \\"description\\": \\"Escaped apostrophe\\"
   },
-  "foo.bar.baz": Object {
-    "defaultMessage": "Hello World!",
-    "description": "The default message",
+  \\"foo.bar.baz\\": {
+    \\"defaultMessage\\": \\"Hello World!\\",
+    \\"description\\": \\"The default message\\"
   },
-  "foo.bar.biff": Object {
-    "defaultMessage": "Hello Nurse!",
-    "description": "Another message",
+  \\"foo.bar.biff\\": {
+    \\"defaultMessage\\": \\"Hello Nurse!\\",
+    \\"description\\": \\"Another message\\"
   },
-  "inline-msg": Object {
-    "defaultMessage": "inline message",
-    "description": "inline description",
+  \\"inline-msg\\": {
+    \\"defaultMessage\\": \\"inline message\\",
+    \\"description\\": \\"inline description\\"
   },
-  "trailing.ws": Object {
-    "defaultMessage": "   Some whitespace   ",
-    "description": "Whitespace",
-  },
+  \\"trailing.ws\\": {
+    \\"defaultMessage\\": \\"   Some whitespace   \\",
+    \\"description\\": \\"Whitespace\\"
+  }
+}
+",
 }
 `;
 
 exports[`basic case: help 1`] = `
-"Usage: formatjs extract [options] [files...]
+Object {
+  "stderr": "",
+  "stdout": "Usage: formatjs extract [options] [files...]
 
 Extract string messages from React components that use react-intl.
 The input language is expected to be TypeScript or ES2017 with JSX.
@@ -208,7 +232,8 @@ Options:
   
         and with option \`{pragma: \\"@intl-meta\\"}\`, we'll parse out \`// @intl-meta project:my-custom-project\` into \`{project: 'my-custom-project'}\` in the result file.
   -h, --help                                            display help for command
-"
+",
+}
 `;
 
 exports[`duplicated descriptor ids shows warning 1`] = `
@@ -257,199 +282,225 @@ Object {
 
 exports[`ignore -> stdout TS 1`] = `
 Object {
-  "ae494": Object {
-    "defaultMessage": "No ID",
-    "description": "no ID",
+  "stderr": "",
+  "stdout": "{
+  \\"ae494\\": {
+    \\"defaultMessage\\": \\"No ID\\",
+    \\"description\\": \\"no ID\\"
   },
-  "app.home.kittens": Object {
-    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
-    "description": "Counts kittens",
+  \\"app.home.kittens\\": {
+    \\"defaultMessage\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\",
+    \\"description\\": \\"Counts kittens\\"
   },
-  "c63ed": Object {
-    "defaultMessage": "No Desc",
+  \\"c63ed\\": {
+    \\"defaultMessage\\": \\"No Desc\\"
   },
-  "escaped.apostrophe": Object {
-    "defaultMessage": "A quoted value ''{value}'",
-    "description": "Escaped apostrophe",
+  \\"escaped.apostrophe\\": {
+    \\"defaultMessage\\": \\"A quoted value ''{value}'\\",
+    \\"description\\": \\"Escaped apostrophe\\"
   },
-  "foo.bar.baz": Object {
-    "defaultMessage": "Hello World!",
-    "description": "The default message",
+  \\"foo.bar.baz\\": {
+    \\"defaultMessage\\": \\"Hello World!\\",
+    \\"description\\": \\"The default message\\"
   },
-  "foo.bar.biff": Object {
-    "defaultMessage": "Hello Nurse!",
-    "description": "Another message",
+  \\"foo.bar.biff\\": {
+    \\"defaultMessage\\": \\"Hello Nurse!\\",
+    \\"description\\": \\"Another message\\"
   },
-  "inline": Object {
-    "defaultMessage": "formatted message",
-    "description": "foo",
+  \\"inline\\": {
+    \\"defaultMessage\\": \\"formatted message\\",
+    \\"description\\": \\"foo\\"
   },
-  "trailing.ws": Object {
-    "defaultMessage": "   Some whitespace   ",
-    "description": "Whitespace",
-  },
+  \\"trailing.ws\\": {
+    \\"defaultMessage\\": \\"   Some whitespace   \\",
+    \\"description\\": \\"Whitespace\\"
+  }
+}
+",
 }
 `;
 
 exports[`typescript -> stdout 1`] = `
 Object {
-  "ae494": Object {
-    "defaultMessage": "No ID",
-    "description": "no ID",
+  "stderr": "",
+  "stdout": "{
+  \\"ae494\\": {
+    \\"defaultMessage\\": \\"No ID\\",
+    \\"description\\": \\"no ID\\"
   },
-  "app.home.kittens": Object {
-    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
-    "description": "Counts kittens",
+  \\"app.home.kittens\\": {
+    \\"defaultMessage\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\",
+    \\"description\\": \\"Counts kittens\\"
   },
-  "c63ed": Object {
-    "defaultMessage": "No Desc",
+  \\"c63ed\\": {
+    \\"defaultMessage\\": \\"No Desc\\"
   },
-  "escaped.apostrophe": Object {
-    "defaultMessage": "A quoted value ''{value}'",
-    "description": "Escaped apostrophe",
+  \\"escaped.apostrophe\\": {
+    \\"defaultMessage\\": \\"A quoted value ''{value}'\\",
+    \\"description\\": \\"Escaped apostrophe\\"
   },
-  "foo.bar.baz": Object {
-    "defaultMessage": "Hello World!",
-    "description": "The default message",
+  \\"foo.bar.baz\\": {
+    \\"defaultMessage\\": \\"Hello World!\\",
+    \\"description\\": \\"The default message\\"
   },
-  "foo.bar.biff": Object {
-    "defaultMessage": "Hello Nurse!",
-    "description": "Another message",
+  \\"foo.bar.biff\\": {
+    \\"defaultMessage\\": \\"Hello Nurse!\\",
+    \\"description\\": \\"Another message\\"
   },
-  "inline": Object {
-    "defaultMessage": "formatted message",
-    "description": "foo",
+  \\"inline\\": {
+    \\"defaultMessage\\": \\"formatted message\\",
+    \\"description\\": \\"foo\\"
   },
-  "trailing.ws": Object {
-    "defaultMessage": "   Some whitespace   ",
-    "description": "Whitespace",
-  },
+  \\"trailing.ws\\": {
+    \\"defaultMessage\\": \\"   Some whitespace   \\",
+    \\"description\\": \\"Whitespace\\"
+  }
+}
+",
 }
 `;
 
 exports[`typescript -> stdout with crowdin 1`] = `
 Object {
-  "ae494": Object {
-    "description": "no ID",
-    "message": "No ID",
+  "stderr": "",
+  "stdout": "{
+  \\"ae494\\": {
+    \\"description\\": \\"no ID\\",
+    \\"message\\": \\"No ID\\"
   },
-  "app.home.kittens": Object {
-    "description": "Counts kittens",
-    "message": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+  \\"app.home.kittens\\": {
+    \\"description\\": \\"Counts kittens\\",
+    \\"message\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\"
   },
-  "c63ed": Object {
-    "message": "No Desc",
+  \\"c63ed\\": {
+    \\"message\\": \\"No Desc\\"
   },
-  "escaped.apostrophe": Object {
-    "description": "Escaped apostrophe",
-    "message": "A quoted value ''{value}'",
+  \\"escaped.apostrophe\\": {
+    \\"description\\": \\"Escaped apostrophe\\",
+    \\"message\\": \\"A quoted value ''{value}'\\"
   },
-  "foo.bar.baz": Object {
-    "description": "The default message",
-    "message": "Hello World!",
+  \\"foo.bar.baz\\": {
+    \\"description\\": \\"The default message\\",
+    \\"message\\": \\"Hello World!\\"
   },
-  "foo.bar.biff": Object {
-    "description": "Another message",
-    "message": "Hello Nurse!",
+  \\"foo.bar.biff\\": {
+    \\"description\\": \\"Another message\\",
+    \\"message\\": \\"Hello Nurse!\\"
   },
-  "inline": Object {
-    "description": "foo",
-    "message": "formatted message",
+  \\"inline\\": {
+    \\"description\\": \\"foo\\",
+    \\"message\\": \\"formatted message\\"
   },
-  "trailing.ws": Object {
-    "description": "Whitespace",
-    "message": "   Some whitespace   ",
-  },
+  \\"trailing.ws\\": {
+    \\"description\\": \\"Whitespace\\",
+    \\"message\\": \\"   Some whitespace   \\"
+  }
+}
+",
 }
 `;
 
 exports[`typescript -> stdout with formatter 1`] = `
 Object {
-  "ae494": Object {
-    "comment": "no ID",
-    "string": "No ID",
+  "stderr": "",
+  "stdout": "{
+  \\"ae494\\": {
+    \\"comment\\": \\"no ID\\",
+    \\"string\\": \\"No ID\\"
   },
-  "app.home.kittens": Object {
-    "comment": "Counts kittens",
-    "string": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+  \\"app.home.kittens\\": {
+    \\"comment\\": \\"Counts kittens\\",
+    \\"string\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\"
   },
-  "c63ed": Object {
-    "string": "No Desc",
+  \\"c63ed\\": {
+    \\"string\\": \\"No Desc\\"
   },
-  "escaped.apostrophe": Object {
-    "comment": "Escaped apostrophe",
-    "string": "A quoted value ''{value}'",
+  \\"escaped.apostrophe\\": {
+    \\"comment\\": \\"Escaped apostrophe\\",
+    \\"string\\": \\"A quoted value ''{value}'\\"
   },
-  "foo.bar.baz": Object {
-    "comment": "The default message",
-    "string": "Hello World!",
+  \\"foo.bar.baz\\": {
+    \\"comment\\": \\"The default message\\",
+    \\"string\\": \\"Hello World!\\"
   },
-  "foo.bar.biff": Object {
-    "comment": "Another message",
-    "string": "Hello Nurse!",
+  \\"foo.bar.biff\\": {
+    \\"comment\\": \\"Another message\\",
+    \\"string\\": \\"Hello Nurse!\\"
   },
-  "inline": Object {
-    "comment": "foo",
-    "string": "formatted message",
+  \\"inline\\": {
+    \\"comment\\": \\"foo\\",
+    \\"string\\": \\"formatted message\\"
   },
-  "trailing.ws": Object {
-    "comment": "Whitespace",
-    "string": "   Some whitespace   ",
-  },
+  \\"trailing.ws\\": {
+    \\"comment\\": \\"Whitespace\\",
+    \\"string\\": \\"   Some whitespace   \\"
+  }
+}
+",
 }
 `;
 
 exports[`typescript -> stdout with lokalise 1`] = `
 Object {
-  "ae494": Object {
-    "notes": "no ID",
-    "translation": "No ID",
+  "stderr": "",
+  "stdout": "{
+  \\"ae494\\": {
+    \\"notes\\": \\"no ID\\",
+    \\"translation\\": \\"No ID\\"
   },
-  "app.home.kittens": Object {
-    "notes": "Counts kittens",
-    "translation": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+  \\"app.home.kittens\\": {
+    \\"notes\\": \\"Counts kittens\\",
+    \\"translation\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\"
   },
-  "c63ed": Object {
-    "translation": "No Desc",
+  \\"c63ed\\": {
+    \\"translation\\": \\"No Desc\\"
   },
-  "escaped.apostrophe": Object {
-    "notes": "Escaped apostrophe",
-    "translation": "A quoted value ''{value}'",
+  \\"escaped.apostrophe\\": {
+    \\"notes\\": \\"Escaped apostrophe\\",
+    \\"translation\\": \\"A quoted value ''{value}'\\"
   },
-  "foo.bar.baz": Object {
-    "notes": "The default message",
-    "translation": "Hello World!",
+  \\"foo.bar.baz\\": {
+    \\"notes\\": \\"The default message\\",
+    \\"translation\\": \\"Hello World!\\"
   },
-  "foo.bar.biff": Object {
-    "notes": "Another message",
-    "translation": "Hello Nurse!",
+  \\"foo.bar.biff\\": {
+    \\"notes\\": \\"Another message\\",
+    \\"translation\\": \\"Hello Nurse!\\"
   },
-  "inline": Object {
-    "notes": "foo",
-    "translation": "formatted message",
+  \\"inline\\": {
+    \\"notes\\": \\"foo\\",
+    \\"translation\\": \\"formatted message\\"
   },
-  "trailing.ws": Object {
-    "notes": "Whitespace",
-    "translation": "   Some whitespace   ",
-  },
+  \\"trailing.ws\\": {
+    \\"notes\\": \\"Whitespace\\",
+    \\"translation\\": \\"   Some whitespace   \\"
+  }
+}
+",
 }
 `;
 
 exports[`typescript -> stdout with simple 1`] = `
 Object {
-  "ae494": "No ID",
-  "app.home.kittens": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
-  "c63ed": "No Desc",
-  "escaped.apostrophe": "A quoted value ''{value}'",
-  "foo.bar.baz": "Hello World!",
-  "foo.bar.biff": "Hello Nurse!",
-  "inline": "formatted message",
-  "trailing.ws": "   Some whitespace   ",
+  "stderr": "",
+  "stdout": "{
+  \\"ae494\\": \\"No ID\\",
+  \\"app.home.kittens\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\",
+  \\"c63ed\\": \\"No Desc\\",
+  \\"escaped.apostrophe\\": \\"A quoted value ''{value}'\\",
+  \\"foo.bar.baz\\": \\"Hello World!\\",
+  \\"foo.bar.biff\\": \\"Hello Nurse!\\",
+  \\"inline\\": \\"formatted message\\",
+  \\"trailing.ws\\": \\"   Some whitespace   \\"
+}
+",
 }
 `;
 
 exports[`typescript -> stdout with smartling 1`] = `
-"{
+Object {
+  "stderr": "",
+  "stdout": "{
   \\"smartling\\": {
     \\"translate_paths\\": [
       {
@@ -492,41 +543,46 @@ exports[`typescript -> stdout with smartling 1`] = `
     \\"message\\": \\"   Some whitespace   \\"
   }
 }
-"
+",
+}
 `;
 
 exports[`typescript -> stdout with transifex 1`] = `
 Object {
-  "ae494": Object {
-    "developer_comment": "no ID",
-    "string": "No ID",
+  "stderr": "",
+  "stdout": "{
+  \\"ae494\\": {
+    \\"developer_comment\\": \\"no ID\\",
+    \\"string\\": \\"No ID\\"
   },
-  "app.home.kittens": Object {
-    "developer_comment": "Counts kittens",
-    "string": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+  \\"app.home.kittens\\": {
+    \\"developer_comment\\": \\"Counts kittens\\",
+    \\"string\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\"
   },
-  "c63ed": Object {
-    "string": "No Desc",
+  \\"c63ed\\": {
+    \\"string\\": \\"No Desc\\"
   },
-  "escaped.apostrophe": Object {
-    "developer_comment": "Escaped apostrophe",
-    "string": "A quoted value ''{value}'",
+  \\"escaped.apostrophe\\": {
+    \\"developer_comment\\": \\"Escaped apostrophe\\",
+    \\"string\\": \\"A quoted value ''{value}'\\"
   },
-  "foo.bar.baz": Object {
-    "developer_comment": "The default message",
-    "string": "Hello World!",
+  \\"foo.bar.baz\\": {
+    \\"developer_comment\\": \\"The default message\\",
+    \\"string\\": \\"Hello World!\\"
   },
-  "foo.bar.biff": Object {
-    "developer_comment": "Another message",
-    "string": "Hello Nurse!",
+  \\"foo.bar.biff\\": {
+    \\"developer_comment\\": \\"Another message\\",
+    \\"string\\": \\"Hello Nurse!\\"
   },
-  "inline": Object {
-    "developer_comment": "foo",
-    "string": "formatted message",
+  \\"inline\\": {
+    \\"developer_comment\\": \\"foo\\",
+    \\"string\\": \\"formatted message\\"
   },
-  "trailing.ws": Object {
-    "developer_comment": "Whitespace",
-    "string": "   Some whitespace   ",
-  },
+  \\"trailing.ws\\": {
+    \\"developer_comment\\": \\"Whitespace\\",
+    \\"string\\": \\"   Some whitespace   \\"
+  }
+}
+",
 }
 `;

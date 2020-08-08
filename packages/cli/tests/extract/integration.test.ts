@@ -15,37 +15,33 @@ beforeEach(async () => {
 });
 
 test('basic case: help', async () => {
-  const {stdout, stderr} = await exec(`${BIN_PATH} extract --help`);
-  expect(stdout).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(exec(`${BIN_PATH} extract --help`)).resolves.toMatchSnapshot();
 }, 20000);
 
 test('basic case: defineMessages -> stdout', async () => {
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} extract --throws ${join(
-      __dirname,
-      'defineMessages/actual.js'
-    )}`
-  );
-  expect(JSON.parse(stdout)).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(
+    exec(
+      `${BIN_PATH} extract --throws ${join(
+        __dirname,
+        'defineMessages/actual.js'
+      )}`
+    )
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 test('[glob] basic case: defineMessages -> stdout', async () => {
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} extract ${join(__dirname, 'defineMessages/*.js')}`
-  );
-  expect(JSON.parse(stdout)).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(
+    exec(`${BIN_PATH} extract ${join(__dirname, 'defineMessages/*.js')}`)
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 test('basic case: defineMessages -> out-file', async () => {
   process.chdir(__dirname);
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} extract defineMessages/actual.js --out-file ${ARTIFACT_PATH}/defineMessages/actual.json`
-  );
-  expect(stdout).toBe('');
-  expect(stderr).toBe('');
+  await expect(
+    exec(
+      `${BIN_PATH} extract defineMessages/actual.js --out-file ${ARTIFACT_PATH}/defineMessages/actual.json`
+    )
+  ).resolves.toMatchSnapshot();
 
   expect(
     await readJSON(join(ARTIFACT_PATH, 'defineMessages/actual.json'))
@@ -54,11 +50,11 @@ test('basic case: defineMessages -> out-file', async () => {
 
 test('basic case: defineMessages -> out-file with location', async () => {
   process.chdir(__dirname);
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} extract defineMessages/actual.js --extract-source-location --out-file ${ARTIFACT_PATH}/defineMessages/actual.json`
-  );
-  expect(stdout).toBe('');
-  expect(stderr).toBe('');
+  await expect(
+    exec(
+      `${BIN_PATH} extract defineMessages/actual.js --extract-source-location --out-file ${ARTIFACT_PATH}/defineMessages/actual.json`
+    )
+  ).resolves.toMatchSnapshot();
 
   expect(
     await readJSON(join(ARTIFACT_PATH, 'defineMessages/actual.json'))
@@ -66,91 +62,88 @@ test('basic case: defineMessages -> out-file with location', async () => {
 }, 20000);
 
 test('typescript -> stdout', async () => {
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} extract ${join(__dirname, 'typescript/actual.tsx')}`
-  );
-  expect(JSON.parse(stdout)).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(
+    exec(`${BIN_PATH} extract ${join(__dirname, 'typescript/actual.tsx')}`)
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 test('typescript -> stdout with formatter', async () => {
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} extract ${join(
-      __dirname,
-      'typescript/actual.tsx'
-    )} --format ${join(__dirname, '../formatter.js')}`
-  );
-  expect(JSON.parse(stdout)).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(
+    exec(
+      `${BIN_PATH} extract ${join(
+        __dirname,
+        'typescript/actual.tsx'
+      )} --format ${join(__dirname, '../formatter.js')}`
+    )
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 test('typescript -> stdout with transifex', async () => {
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} extract ${join(
-      __dirname,
-      'typescript/actual.tsx'
-    )} --format transifex`
-  );
-  expect(JSON.parse(stdout)).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(
+    exec(
+      `${BIN_PATH} extract ${join(
+        __dirname,
+        'typescript/actual.tsx'
+      )} --format transifex`
+    )
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 test('typescript -> stdout with simple', async () => {
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} extract ${join(
-      __dirname,
-      'typescript/actual.tsx'
-    )} --format simple`
-  );
-  expect(JSON.parse(stdout)).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(
+    exec(
+      `${BIN_PATH} extract ${join(
+        __dirname,
+        'typescript/actual.tsx'
+      )} --format simple`
+    )
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 test('typescript -> stdout with lokalise', async () => {
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} extract ${join(
-      __dirname,
-      'typescript/actual.tsx'
-    )} --format lokalise`
-  );
-  expect(JSON.parse(stdout)).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(
+    exec(
+      `${BIN_PATH} extract ${join(
+        __dirname,
+        'typescript/actual.tsx'
+      )} --format lokalise`
+    )
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 test('typescript -> stdout with crowdin', async () => {
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} extract ${join(
-      __dirname,
-      'typescript/actual.tsx'
-    )} --format crowdin`
-  );
-  expect(JSON.parse(stdout)).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(
+    exec(
+      `${BIN_PATH} extract ${join(
+        __dirname,
+        'typescript/actual.tsx'
+      )} --format crowdin`
+    )
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 test('typescript -> stdout with smartling', async () => {
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} extract ${join(
-      __dirname,
-      'typescript/actual.tsx'
-    )} --format smartling`
-  );
-  // Don't parse bc re-parsing re-sort the keys
-  expect(stdout).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(
+    exec(
+      `${BIN_PATH} extract ${join(
+        __dirname,
+        'typescript/actual.tsx'
+      )} --format smartling`
+    )
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 const ignore = "--ignore '*.ignore.*'";
 
 test('ignore -> stdout TS', async () => {
-  const tsResult = await exec(
-    `${BIN_PATH} extract --throws ${join(
-      __dirname,
-      'typescript/actual.tsx'
-    )} ${ignore}`
-  );
-  expect(JSON.parse(tsResult.stdout)).toMatchSnapshot();
-  expect(tsResult.stderr).toBe('');
+  await expect(
+    exec(
+      `${BIN_PATH} extract --throws ${join(
+        __dirname,
+        'typescript/actual.tsx'
+      )} ${ignore}`
+    )
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 test('ignore -> stdout JS', async () => {

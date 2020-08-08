@@ -146,10 +146,11 @@ See https://github.com/webpack/loader-utils#interpolatename for sample patterns`
 
   // Long text wrapping to available terminal columns: https://github.com/tj/commander.js/pull/956
   commander
-    .command('compile <translation_file>')
+    .command('compile <translation_files>')
     .description(
       `Compile extracted translation file into react-intl consumable JSON
-We also verify that the messages are valid ICU and not malformed.`
+We also verify that the messages are valid ICU and not malformed. 
+<translation_files> can be a glob like "foo/**/en.json"`
     )
     .option(
       '--format <path>',
@@ -173,9 +174,13 @@ If this is not provided, result will be printed to stdout`
       `Whether to compile to AST. See https://formatjs.io/docs/guides/advanced-usage#pre-parsing-messages
 for more information`
     )
-    .action((file: string, {outFile, ...opts}: CompileCLIOpts) =>
-      compile(file, outFile, opts)
-    );
+    .action(async (filePattern: string, {outFile, ...opts}: CompileCLIOpts) => {
+      const files = globSync(filePattern);
+      if (!files.length) {
+        throw new Error(`No input file found with pattern ${filePattern}`);
+      }
+      await compile(files, outFile, opts);
+    });
 
   if (argv.length < 3) {
     commander.help();

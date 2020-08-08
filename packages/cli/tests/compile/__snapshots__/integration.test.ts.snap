@@ -2,62 +2,76 @@
 
 exports[`AST 1`] = `
 Object {
-  "a1d12": Array [
-    Object {
-      "type": 0,
-      "value": "I have ",
+  "stderr": "",
+  "stdout": "{
+  \\"a1d12\\": [
+    {
+      \\"type\\": 0,
+      \\"value\\": \\"I have \\"
     },
-    Object {
-      "offset": 0,
-      "options": Object {
-        "one": Object {
-          "value": Array [
-            Object {
-              "type": 0,
-              "value": "a dog",
-            },
-          ],
+    {
+      \\"offset\\": 0,
+      \\"options\\": {
+        \\"one\\": {
+          \\"value\\": [
+            {
+              \\"type\\": 0,
+              \\"value\\": \\"a dog\\"
+            }
+          ]
         },
-        "other": Object {
-          "value": Array [
-            Object {
-              "type": 0,
-              "value": "many dogs",
-            },
-          ],
-        },
+        \\"other\\": {
+          \\"value\\": [
+            {
+              \\"type\\": 0,
+              \\"value\\": \\"many dogs\\"
+            }
+          ]
+        }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count",
-    },
+      \\"pluralType\\": \\"cardinal\\",
+      \\"type\\": 6,
+      \\"value\\": \\"count\\"
+    }
   ],
-  "a1dd2": Array [
-    Object {
-      "type": 0,
-      "value": "my name is ",
+  \\"a1dd2\\": [
+    {
+      \\"type\\": 0,
+      \\"value\\": \\"my name is \\"
     },
-    Object {
-      "type": 1,
-      "value": "name",
-    },
+    {
+      \\"type\\": 1,
+      \\"value\\": \\"name\\"
+    }
   ],
-  "ashd2": Array [
-    Object {
-      "type": 0,
-      "value": "a message",
-    },
-  ],
+  \\"ashd2\\": [
+    {
+      \\"type\\": 0,
+      \\"value\\": \\"a message\\"
+    }
+  ]
+}
+",
 }
 `;
 
-exports[`basic case: empty json 1`] = `Object {}`;
+exports[`basic case: empty json 1`] = `
+Object {
+  "stderr": "",
+  "stdout": "{
+}
+",
+}
+`;
 
 exports[`basic case: help 1`] = `
-"Usage: formatjs compile [options] <translation_file>
+Object {
+  "stderr": "",
+  "stdout": "Usage: formatjs compile [options] <translation_files>
 
 Compile extracted translation file into react-intl consumable JSON
-We also verify that the messages are valid ICU and not malformed.
+We also verify that the messages are valid ICU and not malformed. 
+<translation_files> can be a glob like \\"foo/**/en.json\\"
 
 Options:
   --format <path>    Path to a formatter file that converts \`<translation_file>\` to \`Record<string, string>\`
@@ -75,66 +89,117 @@ Options:
                      https://formatjs.io/docs/guides/advanced-usage#pre-parsing-messages
                      for more information
   -h, --help         display help for command
-"
+",
+}
+`;
+
+exports[`compile glob 1`] = `
+Object {
+  "stderr": "",
+  "stdout": "{
+  \\"1\\": \\"a message\\",
+  \\"2\\": \\"my name is {name}\\",
+  \\"3\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
+  \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
+  \\"a1dd2\\": \\"my name is {name}\\",
+  \\"ashd2\\": \\"a message\\"
+}
+",
+}
 `;
 
 exports[`normal json 1`] = `
 Object {
-  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
-  "a1dd2": "my name is {name}",
-  "ashd2": "a message",
+  "stderr": "",
+  "stdout": "{
+  \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
+  \\"a1dd2\\": \\"my name is {name}\\",
+  \\"ashd2\\": \\"a message\\"
+}
+",
 }
 `;
 
 exports[`normal json with crowdin 1`] = `
 Object {
-  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
-  "a1dd2": "my name is {name}",
-  "ashd2": "a message",
+  "stderr": "",
+  "stdout": "{
+  \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
+  \\"a1dd2\\": \\"my name is {name}\\",
+  \\"ashd2\\": \\"a message\\"
+}
+",
 }
 `;
 
 exports[`normal json with formatter 1`] = `
 Object {
-  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
-  "a1dd2": "my name is {name}",
-  "ashd2": "a message",
+  "stderr": "",
+  "stdout": "{
+  \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
+  \\"a1dd2\\": \\"my name is {name}\\",
+  \\"ashd2\\": \\"a message\\"
+}
+",
 }
 `;
 
 exports[`normal json with lokalise 1`] = `
 Object {
-  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
-  "a1dd2": "my name is {name}",
-  "ashd2": "a message",
+  "stderr": "",
+  "stdout": "{
+  \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
+  \\"a1dd2\\": \\"my name is {name}\\",
+  \\"ashd2\\": \\"a message\\"
+}
+",
 }
 `;
 
 exports[`normal json with simple 1`] = `
 Object {
-  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
-  "a1dd2": "my name is {name}",
-  "ashd2": "a message",
+  "stderr": "",
+  "stdout": "{
+  \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
+  \\"a1dd2\\": \\"my name is {name}\\",
+  \\"ashd2\\": \\"a message\\"
+}
+",
 }
 `;
 
 exports[`normal json with smartling 1`] = `
 Object {
-  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
-  "a1dd2": "my name is {name}",
-  "ashd2": "a message",
+  "stderr": "",
+  "stdout": "{
+  \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
+  \\"a1dd2\\": \\"my name is {name}\\",
+  \\"ashd2\\": \\"a message\\"
+}
+",
 }
 `;
 
 exports[`normal json with transifex 1`] = `
 Object {
-  "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
-  "a1dd2": "my name is {name}",
-  "ashd2": "a message",
+  "stderr": "",
+  "stdout": "{
+  \\"a1d12\\": \\"I have {count, plural, one{a dog} other{many dogs}}\\",
+  \\"a1dd2\\": \\"my name is {name}\\",
+  \\"ashd2\\": \\"a message\\"
+}
+",
 }
 `;
 
 exports[`out-file --ast 1`] = `
+Object {
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`out-file --ast 2`] = `
 Object {
   "a1d12": Array [
     Object {
@@ -186,6 +251,13 @@ Object {
 `;
 
 exports[`out-file 1`] = `
+Object {
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`out-file 2`] = `
 Object {
   "a1d12": "I have {count, plural, one{a dog} other{many dogs}}",
   "a1dd2": "my name is {name}",

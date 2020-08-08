@@ -7,131 +7,137 @@ const BIN_PATH = resolve(__dirname, '../../bin/formatjs');
 const ARTIFACT_PATH = resolve(__dirname, 'test_artifacts');
 
 test('basic case: help', async () => {
-  const {stdout, stderr} = await exec(`${BIN_PATH} compile --help`);
-  expect(stdout).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(exec(`${BIN_PATH} compile --help`)).resolves.toMatchSnapshot();
 }, 20000);
 
 test('basic case: empty json', async () => {
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} compile ${join(__dirname, 'lang/empty.json')}`
-  );
-  expect(JSON.parse(stdout)).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(
+    exec(`${BIN_PATH} compile ${join(__dirname, 'lang/empty.json')}`)
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 test('normal json', async () => {
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} compile ${join(__dirname, 'lang/en.json')}`
-  );
-  expect(JSON.parse(stdout)).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(
+    exec(`${BIN_PATH} compile ${join(__dirname, 'lang/en.json')}`)
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 test('normal json with formatter', async () => {
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} compile ${join(
-      __dirname,
-      'lang/en-format.json'
-    )} --format ${join(__dirname, '../formatter.js')}`
-  );
-  expect(JSON.parse(stdout)).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(
+    exec(
+      `${BIN_PATH} compile ${join(
+        __dirname,
+        'lang/en-format.json'
+      )} --format ${join(__dirname, '../formatter.js')}`
+    )
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 test('normal json with transifex', async () => {
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} compile ${join(
-      __dirname,
-      'lang/en-transifex.json'
-    )} --format transifex`
-  );
-  expect(JSON.parse(stdout)).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(
+    exec(
+      `${BIN_PATH} compile ${join(
+        __dirname,
+        'lang/en-transifex.json'
+      )} --format transifex`
+    )
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 test('normal json with smartling', async () => {
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} compile ${join(
-      __dirname,
-      'lang/en-smartling.json'
-    )} --format smartling`
-  );
-  expect(JSON.parse(stdout)).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(
+    exec(
+      `${BIN_PATH} compile ${join(
+        __dirname,
+        'lang/en-smartling.json'
+      )} --format smartling`
+    )
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 test('normal json with simple', async () => {
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} compile ${join(
-      __dirname,
-      'lang/en-simple.json'
-    )} --format simple`
-  );
-  expect(JSON.parse(stdout)).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(
+    exec(
+      `${BIN_PATH} compile ${join(
+        __dirname,
+        'lang/en-simple.json'
+      )} --format simple`
+    )
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 test('normal json with lokalise', async () => {
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} compile ${join(
-      __dirname,
-      'lang/en-lokalise.json'
-    )} --format lokalise`
-  );
-  expect(JSON.parse(stdout)).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(
+    exec(
+      `${BIN_PATH} compile ${join(
+        __dirname,
+        'lang/en-lokalise.json'
+      )} --format lokalise`
+    )
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 test('normal json with crowdin', async () => {
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} compile ${join(
-      __dirname,
-      'lang/en-crowdin.json'
-    )} --format crowdin`
-  );
-  expect(JSON.parse(stdout)).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(
+    exec(
+      `${BIN_PATH} compile ${join(
+        __dirname,
+        'lang/en-crowdin.json'
+      )} --format crowdin`
+    )
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 test('malformed ICU message json', async () => {
-  expect(async () => {
-    await exec(
+  await expect(
+    exec(
       `${BIN_PATH} compile ${join(__dirname, 'lang/malformed-messages.json')}`
-    );
-  }).rejects.toThrowError('SyntaxError: Expected "," but end of input found.');
+    )
+  ).rejects.toThrowError('SyntaxError: Expected "," but end of input found.');
 }, 20000);
 
 test('AST', async () => {
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} compile --ast ${join(__dirname, 'lang/en.json')}`
-  );
-  expect(JSON.parse(stdout)).toMatchSnapshot();
-  expect(stderr).toBe('');
+  await expect(
+    exec(`${BIN_PATH} compile --ast ${join(__dirname, 'lang/en.json')}`)
+  ).resolves.toMatchSnapshot();
 }, 20000);
 
 test('out-file', async () => {
   const outFilePath = join(ARTIFACT_PATH, 'en.json');
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} compile ${join(
-      __dirname,
-      'lang/en.json'
-    )} --out-file ${outFilePath}`
-  );
-  expect(stdout).toBe('');
-  expect(stderr).toBe('');
+  await expect(
+    exec(
+      `${BIN_PATH} compile ${join(
+        __dirname,
+        'lang/en.json'
+      )} --out-file ${outFilePath}`
+    )
+  ).resolves.toMatchSnapshot();
   expect(require(outFilePath)).toMatchSnapshot();
 }, 20000);
 
 test('out-file --ast', async () => {
   const outFilePath = join(ARTIFACT_PATH, 'ast.json');
-  const {stdout, stderr} = await exec(
-    `${BIN_PATH} compile --ast ${join(
-      __dirname,
-      'lang/en.json'
-    )} --out-file ${outFilePath}`
-  );
-  expect(stdout).toBe('');
-  expect(stderr).toBe('');
+  await expect(
+    exec(
+      `${BIN_PATH} compile --ast ${join(
+        __dirname,
+        'lang/en.json'
+      )} --out-file ${outFilePath}`
+    )
+  ).resolves.toMatchSnapshot();
   expect(require(outFilePath)).toMatchSnapshot();
 }, 20000);
+
+test('compile glob', async () => {
+  await expect(
+    exec(`${BIN_PATH} compile "${join(__dirname, 'glob/*.json')}"`)
+  ).resolves.toMatchSnapshot();
+});
+
+test('compile glob with conflict', async () => {
+  await expect(
+    exec(`${BIN_PATH} compile "${join(__dirname, 'glob-conflict/*.json')}"`)
+  ).rejects.toThrowError(
+    'Conflicting ID "a1d12" with different translation found in these 2 files'
+  );
+});
