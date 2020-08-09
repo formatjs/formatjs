@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.0.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.9.4...babel-plugin-react-intl@8.0.0) (2020-08-09)
+
+
+### Features
+
+* **babel-plugin-react-intl:** remove `messagesDir`, `workspaceRoot`, `outputEmptyJson` ([47ca556](https://github.com/formatjs/formatjs/commit/47ca556c1405eec7b7b2660275ae84a019112b2b))
+
+
+### BREAKING CHANGES
+
+* **babel-plugin-react-intl:** Since we've introduced `@formatjs/cli` and multiple
+guides regarding i18n workflow, we want to consolidate extraction to the
+CLI instead of combining it with code transformation as a side effects.
+Therefore, since this release `babel-plugin-react-intl` will be purely
+for code transformation such as validating messages, remove description,
+autoinject IDs and remove descriptions.
+All extractions should be done using `@formatjs/cli` using `npx formatjs
+extract` & `npx formatjs compile`.
+
+
+
+
+
 ## [7.9.4](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@7.9.3...babel-plugin-react-intl@7.9.4) (2020-08-07)
 
 **Note:** Version bump only for package babel-plugin-react-intl
