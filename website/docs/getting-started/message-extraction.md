@@ -13,8 +13,20 @@ npm i -D @formatjs/cli
 
 ## Extraction
 
+Add the following command to your `package.json` `scripts`:
+
+```json
+{
+  "scripts": {
+    "extract": "formatjs extract"
+  }
+}
+```
+
+and execute with `npm`:
+
 ```sh
-formatjs extract "src/**/*.ts*" --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'
+npm run extract -- 'src/**/*.ts*' --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'
 ```
 
 :::caution ID Interpolation Pattern
@@ -130,7 +142,7 @@ If your vendor accepts the format like
 you can run
 
 ```sh
-formatjs extract "src/**/*.ts*" --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]' --format formatter.js
+npm run extract -- "src/**/*.ts*" --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]' --format formatter.js
 ```
 
 where `formatter.js` is:

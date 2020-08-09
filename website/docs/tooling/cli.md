@@ -9,6 +9,17 @@ title: CLI
 npm i -D @formatjs/cli
 ```
 
+Add the following command to your `package.json` `scripts`:
+
+```json
+{
+  "scripts": {
+    "extract": "formatjs extract",
+    "compile": "formatjs compile"
+  }
+}
+```
+
 We've built https://www.npmjs.com/package/@formatjs/cli that helps you extract messages from a list of files. It uses [`@formatjs/ts-transformer`](ts-transformer.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
 
 ```tsx

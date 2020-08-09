@@ -32,8 +32,20 @@ Let's take the example from [Message Extraction](./message-extraction.md), assum
 
 We can use [@formatjs/cli](../tooling/cli.md) to compile this into a react-intl consumable JSON file:
 
+Add the following command to your `package.json` `scripts`:
+
+```json
+{
+  "scripts": {
+    "compile": "formatjs compile"
+  }
+}
+```
+
+and execute with `npm`:
+
 ```sh
-formatjs compile lang/fr.json --ast --out-file compiled-lang/fr.json
+npm run compile -- lang/fr.json --ast --out-file compiled-lang/fr.json
 ```
 
 :::info Parsing messages into AST
@@ -58,7 +70,7 @@ If your vendor accepts the format like
 you can run
 
 ```sh
-formatjs compile lang/fr.json --ast --out-file compiled-lang/fr.json --format formatter.js
+npm run compile -- lang/fr.json --ast --out-file compiled-lang/fr.json --format formatter.js
 ```
 
 where `formatter.js` is:
