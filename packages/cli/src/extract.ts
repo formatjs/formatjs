@@ -1,5 +1,5 @@
 import {warn, getStdinAsString} from './console_utils';
-import {readFile, outputFileSync} from 'fs-extra';
+import {readFile, outputFile} from 'fs-extra';
 import {
   interpolateName,
   transform,
@@ -11,28 +11,59 @@ import * as ts from 'typescript';
 import {resolveBuiltinFormatter} from './formatters';
 import * as stringify from 'json-stable-stringify';
 export interface ExtractionResult<M = Record<string, string>> {
+  /**
+   * List of extracted messages
+   */
   messages: MessageDescriptor[];
+  /**
+   * Metadata extracted w/ `pragma`
+   */
   meta: M;
 }
 
 export interface ExtractedMessageDescriptor extends MessageDescriptor {
+  /**
+   * Line number
+   */
   line?: number;
+  /**
+   * Column number
+   */
   col?: number;
 }
 
 export type ExtractCLIOptions = Omit<
-  ExtractOptions,
+  ExtractOpts,
   'overrideIdFn' | 'onMsgExtracted' | 'onMetaExtracted'
 > & {
+  /**
+   * Output File
+   */
   outFile?: string;
+  /**
+   * Ignore file glob pattern
+   */
   ignore?: GlobOptions['ignore'];
-  format?: string;
 };
 
-export type ExtractOptions = Opts & {
+export type ExtractOpts = Opts & {
+  /**
+   * Whether to throw an error if we had any issues with
+   * 1 of the source files
+   */
   throws?: boolean;
+  /**
+   * Message ID interpolation pattern
+   */
   idInterpolationPattern?: string;
+  /**
+   * Whether we read from stdin instead of a file
+   */
   readFromStdin?: boolean;
+  /**
+   * Path to a formatter file that controls the shape of JSON file from `outFile`.
+   */
+  format?: string;
 } & Pick<Opts, 'onMsgExtracted' | 'onMetaExtracted'>;
 
 function calculateLineColFromOffset(
@@ -100,45 +131,47 @@ function processFile(
   return {messages, meta};
 }
 
+/**
+ * Extract strings from source files
+ * @param files list of files
+ * @param extractOpts extract options
+ * @returns messages serialized as JSON string since key order
+ * matters for some `format`
+ */
 export async function extract(
   files: readonly string[],
-  {throws, readFromStdin, ...opts}: ExtractOptions
-): Promise<ExtractionResult[]> {
+  extractOpts: ExtractOpts
+) {
+  const {throws, readFromStdin, ...opts} = extractOpts;
+  let rawResults: Array<ExtractionResult | undefined>;
   if (readFromStdin) {
     // Read from stdin
     if (process.stdin.isTTY) {
       warn('Reading source file from TTY.');
     }
     const stdinSource = await getStdinAsString();
-    return [processFile(stdinSource, 'dummy', opts)];
+    rawResults = [processFile(stdinSource, 'dummy', opts)];
+  } else {
+    rawResults = await Promise.all(
+      files.map(async fn => {
+        try {
+          const source = await readFile(fn, 'utf8');
+          return processFile(source, fn, opts);
+        } catch (e) {
+          if (throws) {
+            throw e;
+          } else {
+            warn(e);
+          }
+        }
+      })
+    );
   }
 
-  const results = await Promise.all(
-    files.map(async fn => {
-      try {
-        const source = await readFile(fn, 'utf8');
-        return processFile(source, fn, opts);
-      } catch (e) {
-        if (throws) {
-          throw e;
-        } else {
-          warn(e);
-        }
-      }
-    })
+  const formatter = await resolveBuiltinFormatter(opts.format);
+  const extractionResults = rawResults.filter(
+    (r): r is ExtractionResult => !!r
   );
-
-  return results.filter((r): r is ExtractionResult => !!r);
-}
-
-export default async function extractAndWrite(
-  files: readonly string[],
-  opts: ExtractCLIOptions
-) {
-  const {outFile, throws, format, ...extractOpts} = opts;
-  const formatter = resolveBuiltinFormatter(format);
-
-  const extractionResults = await extract(files, extractOpts);
 
   const extractedMessages = new Map<string, MessageDescriptor>();
 
@@ -183,14 +216,27 @@ ${JSON.stringify(message, undefined, 2)}`
   for (const {id, ...msg} of messages) {
     results[id] = msg;
   }
-  const serializedResult = stringify(formatter.format(results), {
+  return stringify(formatter.format(results), {
     space: 2,
     cmp: formatter.compareMessages || undefined,
   });
+}
+
+/**
+ * Extract strings from source files, also writes to a file.
+ * @param files list of files
+ * @param extractOpts extract options
+ * @returns A Promise that resolves if output file was written successfully
+ */
+export default async function extractAndWrite(
+  files: readonly string[],
+  extractOpts: ExtractCLIOptions
+) {
+  const {outFile, ...opts} = extractOpts;
+  const serializedResult = await extract(files, opts);
   if (outFile) {
-    outputFileSync(outFile, serializedResult);
-  } else {
-    process.stdout.write(serializedResult);
-    process.stdout.write('\n');
+    return outputFile(outFile, serializedResult);
   }
+  process.stdout.write(serializedResult);
+  process.stdout.write('\n');
 }

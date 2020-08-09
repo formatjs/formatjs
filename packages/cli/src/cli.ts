@@ -174,12 +174,12 @@ If this is not provided, result will be printed to stdout`
       `Whether to compile to AST. See https://formatjs.io/docs/guides/advanced-usage#pre-parsing-messages
 for more information`
     )
-    .action(async (filePattern: string, {outFile, ...opts}: CompileCLIOpts) => {
+    .action(async (filePattern: string, opts: CompileCLIOpts) => {
       const files = globSync(filePattern);
       if (!files.length) {
         throw new Error(`No input file found with pattern ${filePattern}`);
       }
-      await compile(files, outFile, opts);
+      await compile(files, opts);
     });
 
   if (argv.length < 3) {

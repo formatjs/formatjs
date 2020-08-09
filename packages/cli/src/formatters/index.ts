@@ -5,7 +5,7 @@ import * as simple from './simple';
 import * as lokalise from './lokalise';
 import * as crowdin from './crowdin';
 
-export function resolveBuiltinFormatter(format?: string) {
+export async function resolveBuiltinFormatter(format?: string) {
   if (!format) {
     return defaultFormatter;
   }
@@ -22,7 +22,7 @@ export function resolveBuiltinFormatter(format?: string) {
       return crowdin;
   }
   try {
-    return require(format);
+    return import(format);
   } catch (e) {
     console.error(`Cannot resolve formatter ${format}`);
     throw e;

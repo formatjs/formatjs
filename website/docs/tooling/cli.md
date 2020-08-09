@@ -186,3 +186,48 @@ export const compareMessages: Comparator = () => {};
 ```
 
 Take a look at our [builtin formatter code](https://github.com/formatjs/formatjs/tree/main/packages/cli/src/formatters) for some examples.
+
+## Node API
+
+`@formatjs/cli` can also be consumed programmatically like below:
+
+### Extraction
+
+```tsx
+import {extract} from '@formatjs/cli';
+
+const resultAsString: Promise<string> = extract(files, {
+  idInterpolationPattern: '[sha512:contenthash:base64:6]',
+});
+```
+
+### Compilation
+
+```tsx
+import {compile} from '@formatjs/cli';
+
+const resultAsString: Promise<string> = compile(files, {
+  ast: true,
+});
+```
+
+### Custom Formatter
+
+```tsx
+import {FormatFn, CompileFn, Comparator} from '@formatjs/cli';
+
+export const format: FormatFn = msgs => msgs;
+
+// Sort key reverse alphabetically
+export const compareMessages = (el1, el2) => {
+  return el1.key < el2.key ? 1 : -1;
+};
+
+export const compile: CompileFn = msgs => {
+  const results: Record<string, string> = {};
+  for (const k in msgs) {
+    results[k] = msgs[k].defaultMessage!;
+  }
+  return results;
+};
+```
