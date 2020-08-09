@@ -1,8 +1,10 @@
 import * as commander from 'commander';
 import * as loudRejection from 'loud-rejection';
 import extract, {ExtractCLIOptions} from './extract';
-import compile, {CompileCLIOpts} from './compile';
+import compile, {CompileCLIOpts, Opts} from './compile';
+import compileFolder from './compile_folder';
 import {sync as globSync} from 'glob';
+import {join} from 'path';
 
 const KNOWN_COMMANDS = ['extract'];
 
@@ -144,7 +146,6 @@ See https://github.com/webpack/loader-utils#interpolatename for sample patterns`
       process.exit(0);
     });
 
-  // Long text wrapping to available terminal columns: https://github.com/tj/commander.js/pull/956
   commander
     .command('compile <translation_files>')
     .description(
@@ -180,6 +181,38 @@ for more information`
         throw new Error(`No input file found with pattern ${filePattern}`);
       }
       await compile(files, opts);
+    });
+
+  commander
+    .command('compile-folder <folder> <outFolder>')
+    .description(
+      `Batch compile all extracted translation JSON files in <folder> to <outFolder> containing
+react-intl consumable JSON. We also verify that the messages are 
+valid ICU and not malformed.`
+    )
+    .option(
+      '--format <path>',
+      `Path to a formatter file that converts JSON files in \`<folder>\` to \`Record<string, string>\`
+so we can compile. The file must export a function named \`compile\` with the signature:
+\`\`\`
+type CompileFn = <T = Record<string, MessageDescriptor>>(
+  msgs: T
+) => Record<string, string>;
+\`\`\`
+This is especially useful to convert from a TMS-specific format back to react-intl format
+`
+    )
+    .option(
+      '--ast',
+      `Whether to compile to AST. See https://formatjs.io/docs/guides/advanced-usage#pre-parsing-messages
+for more information`
+    )
+    .action(async (folder: string, outFolder: string, opts?: Opts) => {
+      const files = globSync(join(folder, '*.json'));
+      if (!files.length) {
+        throw new Error(`No JSON file found in ${folder}`);
+      }
+      await compileFolder(files, outFolder, opts);
     });
 
   if (argv.length < 3) {

@@ -1,0 +1,14 @@
+{
+  "1": {
+    "defaultMessage": "another message",
+    "description": "foo"
+  },
+  "2": {
+    "defaultMessage": "my name is {foo}",
+    "description": "foo"
+  },
+  "3": {
+    "defaultMessage": "I have {count, plural, one{a cat} other{many cats}}",
+    "description": "foo"
+  }
+}

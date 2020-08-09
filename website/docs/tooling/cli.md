@@ -155,6 +155,30 @@ The target file that contains compiled messages.
 
 Whether to compile message into AST instead of just string. See [Advanced Usage](../guides/advanced-usage.md)
 
+## Folder Compilation
+
+Batch compile a folder with extracted files from `formatjs extract` to a folder containing react-intl consumable JSON files. This also does ICU message verification. See [Message Distribution](../getting-started/message-distribution.md) for more details.
+
+```sh
+formatjs compile-folder [options] <folder> <outFolder>
+```
+
+### `--format [path]`
+
+Path to a formatter file that converts `<translation_file>` to `Record<string, string>` so we can compile. The file must export a function named `compile` with the signature:
+
+```tsx
+type CompileFn = <T = Record<string, MessageDescriptor>>(
+  msgs: T
+) => Record<string, string>;
+```
+
+This is especially useful to convert from a TMS-specific format back to react-intl format
+
+### `--ast`
+
+Whether to compile message into AST instead of just string. See [Advanced Usage](../guides/advanced-usage.md)
+
 ## Builtin Formatters
 
 We provide the following built-in formatters to integrate with 3rd party TMSes:

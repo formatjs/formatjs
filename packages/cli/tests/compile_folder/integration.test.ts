@@ -1,0 +1,33 @@
+import {exec as nodeExec} from 'child_process';
+import {join, resolve} from 'path';
+import * as _rimraf from 'rimraf';
+import {promisify} from 'util';
+import {sync as globSync} from 'glob';
+import {basename} from 'path';
+import {mkdtempSync} from 'fs';
+import {readJSON} from 'fs-extra';
+const exec = promisify(nodeExec);
+const BIN_PATH = resolve(__dirname, '../../bin/formatjs');
+
+test('basic case: help', async () => {
+  await expect(
+    exec(`${BIN_PATH} compile-folder --help`)
+  ).resolves.toMatchSnapshot();
+}, 20000);
+
+test('basic case', async () => {
+  const inputFiles = globSync(join(__dirname, 'lang', '*.json'));
+  const outFolder = mkdtempSync('formatjs-cli');
+  await exec(
+    `${BIN_PATH} compile-folder ${join(__dirname, 'lang')} ${outFolder}`
+  );
+
+  const outputFiles = globSync(join(outFolder, '*.json'));
+  expect(outputFiles.map(f => basename(f))).toEqual(
+    inputFiles.map(f => basename(f))
+  );
+
+  await expect(
+    Promise.all(outputFiles.map(f => readJSON(f)))
+  ).resolves.toMatchSnapshot();
+}, 20000);
