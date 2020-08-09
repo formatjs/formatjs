@@ -4,8 +4,6 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import * as p from 'path';
-import {outputJSONSync} from 'fs-extra';
 import {parse} from 'intl-messageformat-parser';
 const {declare} = require('@babel/helper-plugin-utils') as any;
 import {PluginObj, types as t} from '@babel/core';
@@ -230,7 +228,7 @@ function storeMessage(
   {id, description, defaultMessage}: MessageDescriptor,
   path: NodePath<any>,
   {extractSourceLocation}: OptionsSchema,
-  workspaceRoot: string,
+
   filename: string,
   messages: Map<string, ExtractedMessageDescriptor>
 ) {
@@ -257,7 +255,7 @@ function storeMessage(
   let loc = {};
   if (extractSourceLocation) {
     loc = {
-      file: p.relative(workspaceRoot, filename),
+      file: filename,
       ...path.node.loc,
     };
   }
@@ -357,25 +355,6 @@ function assertObjectExpression(
   return true;
 }
 
-/**
- *
- * @param workspaceRoot
- * @param messagesDir
- * @param filename Absolute path to the file
- */
-export function resolveOutputPath(
-  workspaceRoot: string,
-  messagesDir: string,
-  filename: string
-) {
-  if (!filename.startsWith(workspaceRoot)) {
-    throw new Error(`File "${filename}" is not under workspace root "${workspaceRoot}". 
-Please configure workspaceRoot to be a folder that contains all files being extracted`);
-  }
-  const {name, dir} = p.parse(p.relative(workspaceRoot, filename));
-  return p.join(messagesDir, dir, `${name}.json`);
-}
-
 export default declare((api: any, options: OptionsSchema) => {
   api.assertVersion(7);
 
@@ -383,12 +362,7 @@ export default declare((api: any, options: OptionsSchema) => {
     name: 'babel-plugin-react-intl',
     baseDataPath: 'options',
   });
-  const {
-    messagesDir,
-    workspaceRoot = process.cwd(),
-    outputEmptyJson,
-    pragma,
-  } = options;
+  const {pragma} = options;
 
   /**
    * Store this in the node itself so that multiple passes work. Specifically
@@ -413,32 +387,12 @@ export default declare((api: any, options: OptionsSchema) => {
     },
 
     post(state) {
-      const {
-        file: {
-          opts: {filename},
-        },
-      } = this;
-
       const {ReactIntlMessages: messages, ReactIntlMeta} = this;
       const descriptors = Array.from(messages.values());
       (state as any).metadata['react-intl'] = {
         messages: descriptors,
         meta: ReactIntlMeta,
       } as ExtractionResult;
-
-      let messagesFilename;
-      if (
-        messagesDir &&
-        filename &&
-        (messagesFilename = resolveOutputPath(
-          workspaceRoot,
-          messagesDir,
-          filename
-        )) &&
-        (outputEmptyJson || descriptors.length)
-      ) {
-        outputJSONSync(messagesFilename, descriptors);
-      }
     },
 
     visitor: {
@@ -539,7 +493,6 @@ export default declare((api: any, options: OptionsSchema) => {
               descriptor,
               path,
               opts,
-              workspaceRoot,
               filename,
               this.ReactIntlMessages
             );
@@ -649,14 +602,7 @@ export default declare((api: any, options: OptionsSchema) => {
             idInterpolationPattern,
             overrideIdFn
           );
-          storeMessage(
-            descriptor,
-            messageDescriptor,
-            opts,
-            workspaceRoot,
-            filename,
-            messages
-          );
+          storeMessage(descriptor, messageDescriptor, opts, filename, messages);
 
           // Remove description since it's not used at runtime.
           messageDescriptor.replaceWith(

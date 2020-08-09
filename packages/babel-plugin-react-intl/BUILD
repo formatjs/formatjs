@@ -34,8 +34,6 @@ SRC_DEPS = [
     "//packages/intl-messageformat-parser:dist",
     "//packages/ts-transformer:dist",
     "@npm//@babel/helper-plugin-utils",
-    "@npm//fs-extra",
-    "@npm//@types/fs-extra",
     "@npm//@babel/core",
     "@npm//@babel/types",
     "@npm//@types/babel__core",

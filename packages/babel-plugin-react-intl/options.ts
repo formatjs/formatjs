@@ -7,14 +7,11 @@
 
 export interface OptionsSchema {
   moduleSourceName?: string;
-  extractSourceLocation?: boolean;
-  messagesDir?: string;
   overrideIdFn?: (id?: string, defaultMessage?: string, description?: string, filePath?: string) => string;
   idInterpolationPattern?: string;
   removeDefaultMessage?: boolean;
-  extractFromFormatMessageCall?: boolean;
   additionalComponentNames?: string[];
-  outputEmptyJson?: boolean;
   pragma?: string;
-  workspaceRoot?: string;
+  extractFromFormatMessageCall?: boolean;
+  extractSourceLocation?: boolean;
 }
