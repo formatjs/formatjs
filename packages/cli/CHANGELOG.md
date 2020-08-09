@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.4.0...@formatjs/cli@2.5.0) (2020-08-09)
+
+
+### Features
+
+* **@formatjs/cli:** add extract & compile to public API, fix [#1939](https://github.com/formatjs/formatjs/issues/1939) ([ca4aa5a](https://github.com/formatjs/formatjs/commit/ca4aa5aa4df807013c38f38079513f53b879e870))
+
+
+
+
+
 # [2.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.3.2...@formatjs/cli@2.4.0) (2020-08-08)
 
 
