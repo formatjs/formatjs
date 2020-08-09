@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.5.0...@formatjs/cli@2.6.0) (2020-08-09)
+
+
+### Features
+
+* **@formatjs/cli:** add compile-folder command, fix [#1938](https://github.com/formatjs/formatjs/issues/1938) ([46b21bb](https://github.com/formatjs/formatjs/commit/46b21bb9bb58bf06ecb7692338a5a9e7f29fc9ae))
+
+
+
+
+
 # [2.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.4.0...@formatjs/cli@2.5.0) (2020-08-09)
 
 
