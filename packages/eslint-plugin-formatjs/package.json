@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "dependencies": {
+    "@formatjs/ts-transformer": "^2.6.0",
     "@types/emoji-regex": "^8.0.0",
     "@types/eslint": "^7.2.0",
     "@types/estree": "^0.0.45",

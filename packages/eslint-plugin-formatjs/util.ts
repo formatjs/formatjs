@@ -10,6 +10,7 @@ export interface MessageDescriptor {
 export interface MessageDescriptorNodeInfo {
   message: MessageDescriptor;
   messageNode?: TSESTree.Property['value'] | TSESTree.JSXAttribute['value'];
+  messagePropNode?: TSESTree.Property | TSESTree.JSXAttribute;
   descriptionNode?: TSESTree.Property['value'] | TSESTree.JSXAttribute['value'];
   idValueNode?: TSESTree.Property['value'] | TSESTree.JSXAttribute['value'];
   idPropNode?: TSESTree.Property | TSESTree.JSXAttribute;
@@ -77,6 +78,7 @@ function extractMessageDescriptor(
   const result: MessageDescriptorNodeInfo = {
     message: {},
     messageNode: undefined,
+    messagePropNode: undefined,
     descriptionNode: undefined,
     idValueNode: undefined,
   };
@@ -87,6 +89,7 @@ function extractMessageDescriptor(
     const value = isStringLiteral(prop.value) ? prop.value.value : undefined;
     switch (prop.key.name) {
       case 'defaultMessage':
+        result.messagePropNode = prop;
         result.messageNode = prop.value;
         result.message.defaultMessage = value;
         break;
@@ -116,6 +119,7 @@ function extractMessageDescriptorFromJSXElement(
   const result: MessageDescriptorNodeInfo = {
     message: {},
     messageNode: undefined,
+    messagePropNode: undefined,
     descriptionNode: undefined,
     idValueNode: undefined,
     idPropNode: undefined,
@@ -127,6 +131,7 @@ function extractMessageDescriptorFromJSXElement(
     const key = prop.name;
     switch (key.name) {
       case 'defaultMessage':
+        result.messagePropNode = prop;
         result.messageNode = prop.value;
         if (
           prop.value?.type === 'Literal' &&

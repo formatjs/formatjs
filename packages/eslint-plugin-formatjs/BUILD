@@ -39,6 +39,7 @@ SRC_DEPS = [
     "@npm//@types/estree",
     "@npm//@typescript-eslint/typescript-estree",
     "//packages/intl-messageformat-parser:dist",
+    "//packages/ts-transformer:dist",
 ]
 
 ts_compile(
@@ -61,5 +62,6 @@ jest_test(
         "@npm//eslint",
         "@npm//@typescript-eslint/parser",
         "//packages/intl-messageformat-parser:types",
+        "//packages/ts-transformer:types",
     ] + SRC_DEPS,
 )

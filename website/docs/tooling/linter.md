@@ -413,3 +413,49 @@ const messages = defineMessages({
   },
 });
 ```
+
+### `enforce-id`
+
+This enforces generated ID to be set in `MessageDescriptor`.
+
+#### Why
+
+Pipelines can enforce automatic ID generation at the linter level (autofix to insert autogen ID) so this guarantees that.
+
+```tsx
+import {defineMessages} from 'react-intl';
+
+const messages = defineMessages({
+  // PASS
+  foo: {
+    id: '19shaf'
+    defaultMessage: '{var, plural, one{one} other{other}}',
+  },
+  // FAILS
+  bar: {
+    id: 'something',
+    defaultMessage: '{var, plural, offset:1 one{one} other{other}}',
+  },
+  // FAILS
+  bar: {
+    defaultMessage: '{var, plural, offset:1 one{one} other{other}}',
+  },
+});
+```
+
+#### Options
+
+```json
+{
+  "plugins": ["formatjs"],
+  "rules": {
+    "formatjs/enforce-id": [
+      "error",
+      {
+        // THIS IS REQUIRED
+        "idInterpolationPattern": "[sha512:contenthash:base64:6]"
+      }
+    ]
+  }
+}
+```
