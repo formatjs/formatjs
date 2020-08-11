@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.3.0...@formatjs/intl-datetimeformat@2.3.1) (2020-08-11)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix standalone month, remove week of year pattern, part of [#1915](https://github.com/formatjs/formatjs/issues/1915) ([d0d7a06](https://github.com/formatjs/formatjs/commit/d0d7a06e3eb55013e4a033bf997fd5db3cb6a382))
+
+
+
+
+
 # [2.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.2.1...@formatjs/intl-datetimeformat@2.3.0) (2020-07-30)
 
 
