@@ -14,6 +14,7 @@ import {
   RawDateTimeLocaleInternalData,
   TimeZoneNameData,
   DateTimeFormatOptions,
+  Formats,
 } from '../src/types';
 import * as rawTimeData from 'cldr-core/supplemental/timeData.json';
 import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json';
@@ -173,14 +174,26 @@ function loadDatesFields(locale: string): RawDateTimeLocaleInternalData {
   const availableFormats = Object.values(
     gregorian.dateTimeFormats.availableFormats
   );
+  const parsedAvailableFormats: Array<[string, Formats]> = availableFormats
+    .map(f => {
+      try {
+        return [f, parseDateTimeSkeleton(f)] as [string, Formats];
+      } catch (e) {
+        // ignore
+      }
+    })
+    .filter((f): f is [string, Formats] => !!f);
   const dateFormats = Object.values(gregorian.dateFormats).map(v =>
     // Locale haw got some weird structure https://github.com/unicode-cldr/cldr-dates-full/blob/master/main/haw/ca-gregorian.json
     typeof v === 'object' ? (v as {_value: string})._value : v
   );
   const timeFormats = Object.values(gregorian.timeFormats);
-  const allFormats = [...availableFormats, ...dateFormats, ...timeFormats];
-  for (const f of availableFormats) {
-    const availableFormatEntry = parseDateTimeSkeleton(f);
+  const allFormats = [
+    ...parsedAvailableFormats.map(([f]) => f),
+    ...dateFormats,
+    ...timeFormats,
+  ];
+  for (const [f, availableFormatEntry] of parsedAvailableFormats) {
     if (isDateFormatOnly(availableFormatEntry)) {
       dateFormats.push(f);
     } else if (isTimeFormatOnly(availableFormatEntry)) {

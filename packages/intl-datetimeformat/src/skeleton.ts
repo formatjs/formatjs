@@ -53,7 +53,7 @@ export function parseDateTimeSkeleton(skeleton: string): Formats {
         // Quarter
         case 'q':
         case 'Q':
-          return '{quarter}';
+          throw new RangeError('`w/Q` (quarter) patterns are not supported');
         // Month
         case 'M':
         case 'L':
@@ -65,7 +65,9 @@ export function parseDateTimeSkeleton(skeleton: string): Formats {
         // Week
         case 'w':
         case 'W':
-          return '{weekday}';
+          throw new RangeError(
+            '`w/W` (week of year) patterns are not supported'
+          );
         case 'd':
           result.day = ['numeric', '2-digit'][len - 1];
           return '{day}';
