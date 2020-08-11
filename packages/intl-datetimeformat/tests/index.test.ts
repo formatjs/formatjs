@@ -24,7 +24,7 @@ describe('Intl.DateTimeFormat', function () {
       }).format(new Date(0))
     ).toBe('12/31/1969, 7:00:00 PM Eastern Standard Time');
   });
-  it('smoke test EST', function () {
+  it('smoke test CST', function () {
     expect(
       new DateTimeFormat('en', {
         year: 'numeric',
@@ -37,6 +37,15 @@ describe('Intl.DateTimeFormat', function () {
         timeZone: 'Asia/Shanghai',
       }).format(new Date(0))
     ).toBe('1/1/1970, 8:00:00 AM China Standard Time');
+  });
+  it('test for GH issue #1915', function () {
+    expect(
+      new DateTimeFormat('en', {
+        hour: 'numeric',
+        minute: 'numeric',
+        timeZone: 'Asia/Shanghai',
+      }).format(new Date(0))
+    ).toBe('8:00 AM');
   });
   it('month: long', function () {
     expect(
