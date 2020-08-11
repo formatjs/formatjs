@@ -1,5 +1,5 @@
 diff --git a/node_modules/@bazel/typescript/internal/ts_project.bzl b/node_modules/@bazel/typescript/internal/ts_project.bzl
-index 80cd6aa..283e9bb 100755
+index f7b249f..22b9e79 100755
 --- a/node_modules/@bazel/typescript/internal/ts_project.bzl
 +++ b/node_modules/@bazel/typescript/internal/ts_project.bzl
 @@ -1,6 +1,7 @@
