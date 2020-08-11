@@ -162,7 +162,7 @@ type IntlShape = IntlConfig & IntlFormatters;
 
 This interface is exported by the `react-intl` package that can be used in conjunction with the [`injectIntl`](#injectintl) HOC factory function.
 
-The definition above shows what the `props.intl` object will look like that's injected to your component via `injectIntl`. It's made up of three parts:
+The definition above shows what the `props.intl` object will look like that's injected to your component via `injectIntl`. It's made up of two parts:
 
 - **`IntlConfig`:** The intl metadata passed as props into the parent `<IntlProvider>`.
 - **`IntlFormatters`:** The imperative formatting API described below.
