@@ -89,29 +89,51 @@ rollup_dts(
 
 # CLDR
 CLDR_DEPS = [
+    ":cldr-raw",
     "scripts/cldr.ts",
-    "scripts/extract-displaynames.ts",
     "//:tsconfig.json",
-    "//packages/intl-utils:dist",
-    "//packages/intl-utils:types",
     "@npm//@types/fs-extra",
     "@npm//@types/glob",
-    "@npm//@types/lodash",
     "@npm//@types/minimist",
     "@npm//@types/node",
-    "@npm//cldr-core",
-    "@npm//cldr-localenames-full",
-    "@npm//cldr-numbers-full",
     "@npm//fs-extra",
     "@npm//glob",
-    "@npm//lodash",
     "@npm//minimist",
 ]
+
+ts_node(
+    name = "cldr-raw",
+    args = [
+        "$(execpath scripts/cldr-raw.ts)",
+        "--outDir",
+        "$(@D)",
+    ],
+    data = [
+        "scripts/cldr-raw.ts",
+        "scripts/extract-displaynames.ts",
+        "//:tsconfig.json",
+        "//packages/intl-utils:dist",
+        "//packages/intl-utils:types",
+        "@npm//@types/fs-extra",
+        "@npm//@types/glob",
+        "@npm//@types/minimist",
+        "@npm//@types/node",
+        "@npm//cldr-core",
+        "@npm//cldr-localenames-full",
+        "@npm//cldr-numbers-full",
+        "@npm//fs-extra",
+        "@npm//glob",
+        "@npm//minimist",
+    ],
+    output_dir = True,
+)
 
 ts_node(
     name = "locale-data",
     args = [
         "$(execpath scripts/cldr.ts)",
+        "--cldrFolder",
+        "$(location :cldr-raw)",
         "--outDir",
         "$(@D)",
     ],
@@ -124,6 +146,8 @@ ts_node(
     outs = ["polyfill-locales.js"],
     args = [
         "$(execpath scripts/cldr.ts)",
+        "--cldrFolder",
+        "$(location :cldr-raw)",
         "--polyfillLocalesOutFile",
         "$@",
     ],
@@ -136,6 +160,8 @@ ts_node(
     src = "tests/locale-data/%s.json" % locale,
     args = [
         "$(execpath scripts/cldr.ts)",
+        "--cldrFolder",
+        "$(location :cldr-raw)",
         "--locales",
         locale,
         "--testOutFile",
@@ -149,8 +175,10 @@ generate_src_file(
     src = "test262-main.ts",
     args = [
         "$(execpath scripts/cldr.ts)",
+        "--cldrFolder",
+        "$(location :cldr-raw)",
         "--locales",
-        "ar,de,en,en-US-POSIX,ja,ko,th,zh,zh-Hant,zh-Hans",
+        "ar,de,en,en-US,ja,ko,th,zh,zh-Hant,zh-Hans",
         "--test262MainFile",
         "$@",
     ],

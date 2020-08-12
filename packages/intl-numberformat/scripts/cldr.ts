@@ -1,59 +1,50 @@
-import {generateDataForLocales as extractCurrencies} from './extract-currencies';
-import {generateDataForLocales as extractUnits} from './extract-units';
-import {generateDataForLocales as extractNumbers} from './extract-numbers';
-import {RawNumberLocaleData} from '@formatjs/intl-utils';
-import {join} from 'path';
-import {outputFileSync, outputJSONSync} from 'fs-extra';
-import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
+import {join, basename} from 'path';
+import {outputFileSync, copyFileSync, readFileSync} from 'fs-extra';
 import * as minimist from 'minimist';
-
-const numbersData = extractNumbers();
-const currenciesData = extractCurrencies();
-const unitsData = extractUnits();
-
-const allData = AVAILABLE_LOCALES.availableLocales.full.reduce(
-  (all: Record<string, RawNumberLocaleData>, locale) => {
-    if (!all[locale]) {
-      all[locale] = {
-        data: {
-          [locale]: {
-            units: unitsData[locale],
-            currencies: currenciesData[locale],
-            numbers: numbersData[locale],
-            nu: numbersData[locale].nu,
-          },
-        },
-        availableLocales: [locale],
-      };
-    }
-
-    return all;
-  },
-  {}
-);
+import {sync as globSync} from 'glob';
 
 function main(args: minimist.ParsedArgs) {
-  const {outDir, testLocale, testOutFile, test262MainFile} = args;
-  // Dist all locale files to locale-data
-  outDir &&
-    Object.keys(allData).forEach(function (locale) {
+  const {
+    cldrFolder,
+    locales: localesToGen = '',
+    outDir,
+    test262MainFile,
+    testOutFile,
+  } = args;
+  const allFiles = globSync(join(cldrFolder, '*.json'));
+  allFiles.sort();
+  const locales = localesToGen
+    ? localesToGen.split(',')
+    : allFiles.map(f => basename(f, '.json'));
+
+  if (outDir) {
+    // Dist all locale files to locale-data (JS)
+    for (const locale of locales) {
+      const data = readFileSync(join(cldrFolder, `${locale}.json`));
       const destFile = join(outDir, locale + '.js');
       outputFileSync(
         destFile,
         `/* @generated */
 // prettier-ignore
 if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function') {
-  Intl.NumberFormat.__addLocaleData(${JSON.stringify(allData[locale])})
+  Intl.NumberFormat.__addLocaleData(${data})
 }`
       );
-    });
+    }
+  }
 
   // Dist all locale files to tests/locale-data
-  testOutFile && outputJSONSync(testOutFile, allData[testLocale]);
+  if (testOutFile) {
+    copyFileSync(join(cldrFolder, `${locales[0]}.json`), testOutFile);
+  }
 
   // For test262
   // Only a subset of locales
-  test262MainFile &&
+  if (test262MainFile) {
+    const allData = [];
+    for (const locale of locales) {
+      allData.push(readFileSync(join(cldrFolder, `${locale}.json`)));
+    }
     outputFileSync(
       test262MainFile,
       `
@@ -64,12 +55,12 @@ import './polyfill-force';
 import '@formatjs/intl-getcanonicallocales/polyfill';
 if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function') {
   Intl.NumberFormat.__addLocaleData(
-    ${['ar', 'de', 'en', 'ja', 'ko', 'th', 'zh', 'zh-Hant', 'zh-Hans']
-      .map(locale => JSON.stringify(allData[locale]))
-      .join(',\n')});
+    ${allData.join(',\n')}
+  )
 }
 `
     );
+  }
 }
 
 if (require.main === module) {

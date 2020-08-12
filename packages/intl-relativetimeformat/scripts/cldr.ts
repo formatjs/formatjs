@@ -1,61 +1,48 @@
-import {extractRelativeFields, getAllLocales} from './extract-relative';
-import {join} from 'path';
-import {outputFileSync, outputJSONSync} from 'fs-extra';
-import {RelativeTimeLocaleData} from '@formatjs/intl-utils';
+import {join, basename} from 'path';
+import {outputFileSync, copyFileSync, readFileSync} from 'fs-extra';
 import * as minimist from 'minimist';
-
+import {sync as globSync} from 'glob';
 function main(args: minimist.ParsedArgs) {
   const {
+    cldrFolder,
+    locales: localesToGen = '',
     outDir,
-    locales: localesToGen,
-    testOutFile,
-    test262MainFile,
     polyfillLocalesOutFile,
+    test262MainFile,
+    testOutFile,
   } = args;
-  const locales: string[] = localesToGen
+  const allFiles = globSync(join(cldrFolder, '*.json'));
+  allFiles.sort();
+  const locales = localesToGen
     ? localesToGen.split(',')
-    : getAllLocales();
-  const rawData = extractRelativeFields(locales);
-  const langData = locales.reduce(
-    (all: Record<string, RelativeTimeLocaleData>, locale) => {
-      if (locale === 'en-US-POSIX') {
-        all['en-US'] = {
-          data: {
-            ['en-US']: rawData[locale],
-          },
-          availableLocales: ['en-US'],
-        };
-      } else {
-        all[locale] = {
-          data: {
-            [locale]: rawData[locale],
-          },
-          availableLocales: [locale],
-        };
-      }
-
-      return all;
-    },
-    {}
-  );
+    : allFiles.map(f => basename(f, '.json'));
   // Dist all locale files to locale-data
-  outDir &&
-    Object.keys(langData).forEach(function (lang) {
-      const destFile = join(outDir, lang + '.js');
+  if (outDir) {
+    // Dist all locale files to locale-data (JS)
+    for (const locale of locales) {
+      const data = readFileSync(join(cldrFolder, `${locale}.json`));
+      const destFile = join(outDir, locale + '.js');
       outputFileSync(
         destFile,
         `/* @generated */	
 // prettier-ignore
 if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData === 'function') {
-  Intl.RelativeTimeFormat.__addLocaleData(${JSON.stringify(langData[lang])})
+  Intl.RelativeTimeFormat.__addLocaleData(${data})
 }`
       );
-    });
+    }
+  }
 
-  // Dist all json locale files to tests/locale-data
-  testOutFile && outputJSONSync(testOutFile, langData[locales[0]]);
+  if (testOutFile) {
+    copyFileSync(join(cldrFolder, `${locales[0]}.json`), testOutFile);
+  }
 
-  polyfillLocalesOutFile &&
+  if (polyfillLocalesOutFile) {
+    // Aggregate all into ../polyfill-locales.js
+    const allData = [];
+    for (const locale of locales) {
+      allData.push(readFileSync(join(cldrFolder, `${locale}.json`)));
+    }
     outputFileSync(
       polyfillLocalesOutFile,
       `/* @generated */
@@ -63,15 +50,18 @@ if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData ==
 require('./polyfill')
 if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData === 'function') {
   Intl.RelativeTimeFormat.__addLocaleData(
-${Object.keys(langData)
-  .map(lang => JSON.stringify(langData[lang]))
-  .join(',\n')}
+    ${allData.join(',\n')}
   )
 }
 `
     );
+  }
 
-  test262MainFile &&
+  if (test262MainFile) {
+    const allData = [];
+    for (const locale of locales) {
+      allData.push(readFileSync(join(cldrFolder, `${locale}.json`)));
+    }
     outputFileSync(
       test262MainFile,
       `/* @generated */
@@ -79,13 +69,12 @@ ${Object.keys(langData)
 import './polyfill-force'
 if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData === 'function') {
   Intl.RelativeTimeFormat.__addLocaleData(
-${Object.keys(langData)
-  .map(lang => JSON.stringify(langData[lang]))
-  .join(',\n')}
+    ${allData.join(',\n')}
   )
 }
 `
     );
+  }
 }
 
 if (require.main === module) {

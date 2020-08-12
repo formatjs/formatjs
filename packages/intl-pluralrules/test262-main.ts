@@ -3,8 +3,8 @@
 // @ts-nocheck
 import './polyfill-force'
 if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') {
-Intl.PluralRules.__addLocaleData(
-{"data":{"af":{"categories":{"cardinal":["one","other"],"ordinal":["other"]},"fn":function(n, ord) {
+  Intl.PluralRules.__addLocaleData(
+    {"data":{"af":{"categories":{"cardinal":["one","other"],"ordinal":["other"]},"fn":function(n, ord) {
   if (ord) return 'other';
   return n == 1 ? 'one' : 'other';
 }}},"availableLocales":["af"]},
@@ -721,16 +721,16 @@ Intl.PluralRules.__addLocaleData(
   if (ord) return 'other';
   return n == 1 ? 'one' : 'other';
 }}},"availableLocales":["ps"]},
-{"data":{"pt":{"categories":{"cardinal":["one","other"],"ordinal":["other"]},"fn":function(n, ord) {
-  var s = String(n).split('.'), i = s[0];
-  if (ord) return 'other';
-  return (i == 0 || i == 1) ? 'one' : 'other';
-}}},"availableLocales":["pt"]},
 {"data":{"pt-PT":{"categories":{"cardinal":["one","other"],"ordinal":["other"]},"fn":function(n, ord) {
   var s = String(n).split('.'), v0 = !s[1];
   if (ord) return 'other';
   return n == 1 && v0 ? 'one' : 'other';
 }}},"availableLocales":["pt-PT"]},
+{"data":{"pt":{"categories":{"cardinal":["one","other"],"ordinal":["other"]},"fn":function(n, ord) {
+  var s = String(n).split('.'), i = s[0];
+  if (ord) return 'other';
+  return (i == 0 || i == 1) ? 'one' : 'other';
+}}},"availableLocales":["pt"]},
 {"data":{"rm":{"categories":{"cardinal":["one","other"],"ordinal":["other"]},"fn":function(n, ord) {
   if (ord) return 'other';
   return n == 1 ? 'one' : 'other';
@@ -1045,5 +1045,5 @@ Intl.PluralRules.__addLocaleData(
   if (ord) return 'other';
   return n >= 0 && n <= 1 ? 'one' : 'other';
 }}},"availableLocales":["zu"]}
-)
+  )
 }

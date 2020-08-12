@@ -87,25 +87,49 @@ rollup_dts(
 
 # CLDR
 CLDR_DEPS = [
+    ":cldr-raw",
     "scripts/cldr.ts",
     "//:tsconfig.json",
-    "//packages/intl-utils:dist",
-    "//packages/intl-utils:types",
     "@npm//@types/fs-extra",
+    "@npm//@types/glob",
     "@npm//@types/minimist",
     "@npm//@types/node",
-    "@npm//@types/serialize-javascript",
-    "@npm//cldr-core",
     "@npm//fs-extra",
-    "@npm//make-plural-compiler",
+    "@npm//glob",
     "@npm//minimist",
-    "@npm//serialize-javascript",
 ]
+
+ts_node(
+    name = "cldr-raw",
+    args = [
+        "$(execpath scripts/cldr-raw.ts)",
+        "--outDir",
+        "$(@D)",
+    ],
+    data = [
+        "scripts/cldr-raw.ts",
+        "//:tsconfig.json",
+        "//packages/intl-utils:dist",
+        "//packages/intl-utils:types",
+        "@npm//@types/fs-extra",
+        "@npm//@types/minimist",
+        "@npm//@types/node",
+        "@npm//@types/serialize-javascript",
+        "@npm//cldr-core",
+        "@npm//fs-extra",
+        "@npm//make-plural-compiler",
+        "@npm//minimist",
+        "@npm//serialize-javascript",
+    ],
+    output_dir = True,
+)
 
 ts_node(
     name = "locale-data",
     args = [
         "$(execpath scripts/cldr.ts)",
+        "--cldrFolder",
+        "$(location :cldr-raw)",
         "--outDir",
         "$(@D)",
     ],
@@ -118,7 +142,9 @@ ts_node(
     src = "tests/locale-data/%s.ts" % locale,
     args = [
         "$(execpath scripts/cldr.ts)",
-        "--testLocale",
+        "--cldrFolder",
+        "$(location :cldr-raw)",
+        "--locales",
         locale,
         "--testOutFile",
         "$@",
@@ -131,6 +157,8 @@ ts_node(
     outs = ["polyfill-locales.js"],
     args = [
         "$(execpath scripts/cldr.ts)",
+        "--cldrFolder",
+        "$(location :cldr-raw)",
         "--polyfillLocalesOutFile",
         "$@",
     ],
@@ -142,6 +170,8 @@ generate_src_file(
     src = "test262-main.ts",
     args = [
         "$(execpath scripts/cldr.ts)",
+        "--cldrFolder",
+        "$(location :cldr-raw)",
         "--test262MainFile",
         "$@",
     ],

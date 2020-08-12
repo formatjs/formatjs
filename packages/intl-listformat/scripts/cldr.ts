@@ -1,66 +1,49 @@
-import {extractLists, getAllLocales} from './extract-list';
-import {join} from 'path';
-import {outputFileSync, outputJsonSync} from 'fs-extra';
-import {ListPatternLocaleData} from '@formatjs/intl-utils';
+import {join, basename} from 'path';
+import {outputFileSync, copyFileSync, readFileSync} from 'fs-extra';
+import {sync as globSync} from 'glob';
 import * as minimist from 'minimist';
 
 function main(args: minimist.ParsedArgs) {
   const {
+    cldrFolder,
+    locales: localesToGen = '',
     outDir,
-    locales: localesToGen,
-    testOutFile,
-    test262MainFile,
     polyfillLocalesOutFile,
+    test262MainFile,
+    testOutFile,
   } = args;
-  const locales: string[] = localesToGen
+  const allFiles = globSync(join(cldrFolder, '*.json'));
+  allFiles.sort();
+  const locales = localesToGen
     ? localesToGen.split(',')
-    : getAllLocales();
-  const data = extractLists(locales);
-  const langData = locales.reduce(
-    (all: Record<string, ListPatternLocaleData>, locale) => {
-      if (locale === 'en-US-POSIX') {
-        all['en-US'] = {
-          data: {
-            ['en-US']: data[locale],
-          },
-          availableLocales: ['en-US'],
-        };
-      } else {
-        all[locale] = {
-          data: {
-            [locale]: data[locale],
-          },
-          availableLocales: [locale],
-        };
-      }
-
-      return all;
-    },
-    {}
-  );
+    : allFiles.map(f => basename(f, '.json'));
   // Dist all locale files to locale-data
-  outDir &&
-    Object.keys(langData).forEach(function (lang) {
-      const destFile = join(outDir, lang + '.js');
+  if (outDir) {
+    // Dist all locale files to locale-data (JS)
+    for (const locale of locales) {
+      const data = readFileSync(join(cldrFolder, `${locale}.json`));
+      const destFile = join(outDir, locale + '.js');
       outputFileSync(
         destFile,
         `/* @generated */	
 // prettier-ignore
 if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
-  Intl.ListFormat.__addLocaleData(${JSON.stringify(langData[lang])})
+  Intl.ListFormat.__addLocaleData(${data})
 }`
       );
-    });
+    }
+  }
 
-  // Dist all locale files to tests/locale-data
-  testOutFile &&
-    outputJsonSync(
-      testOutFile,
-      langData[locales[0] === 'en-US-POSIX' ? 'en-US' : locales[0]]
-    );
+  if (testOutFile) {
+    copyFileSync(join(cldrFolder, `${locales[0]}.json`), testOutFile);
+  }
 
-  // Aggregate all into ../polyfill-locales.js
-  polyfillLocalesOutFile &&
+  if (polyfillLocalesOutFile) {
+    // Aggregate all into ../polyfill-locales.js
+    const allData = [];
+    for (const locale of locales) {
+      allData.push(readFileSync(join(cldrFolder, `${locale}.json`)));
+    }
     outputFileSync(
       polyfillLocalesOutFile,
       `/* @generated */
@@ -68,15 +51,18 @@ if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
 require('./polyfill')
 if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
   Intl.ListFormat.__addLocaleData(
-${Object.keys(langData)
-  .map(lang => JSON.stringify(langData[lang]))
-  .join(',\n')}
+    ${allData.join(',\n')}
   )
 }
 `
     );
+  }
 
-  test262MainFile &&
+  if (test262MainFile) {
+    const allData = [];
+    for (const locale of locales) {
+      allData.push(readFileSync(join(cldrFolder, `${locale}.json`)));
+    }
     outputFileSync(
       test262MainFile,
       `/* @generated */
@@ -84,13 +70,12 @@ ${Object.keys(langData)
 import './polyfill-force'
 if (Intl.ListFormat && typeof Intl.ListFormat.__addLocaleData === 'function') {
   Intl.ListFormat.__addLocaleData(
-${Object.keys(langData)
-  .map(lang => JSON.stringify(langData[lang]))
-  .join(',\n')}
+    ${allData.join(',\n')}
   )
 }
 `
     );
+  }
 }
 
 if (require.main === module) {

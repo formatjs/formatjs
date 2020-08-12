@@ -1,58 +1,47 @@
-import {extractDatesFields, getAllLocales} from './extract-dates';
-import {join} from 'path';
-import {outputFileSync, outputJSONSync} from 'fs-extra';
-import {RawDateTimeLocaleData} from '../src/types';
+import {join, basename} from 'path';
+import {outputFileSync, copyFileSync, readFileSync} from 'fs-extra';
 import * as minimist from 'minimist';
+import {sync as globSync} from 'glob';
 
 function main(args: minimist.ParsedArgs) {
-  const {outDir, locales: localesToGen, testOutFile, test262MainFile} = args;
-  const locales: string[] = localesToGen
+  const {
+    cldrFolder,
+    locales: localesToGen = '',
+    outDir,
+    test262MainFile,
+    testOutFile,
+  } = args;
+  const allFiles = globSync(join(cldrFolder, '*.json'));
+  allFiles.sort();
+  const locales = localesToGen
     ? localesToGen.split(',')
-    : getAllLocales();
-  const data = extractDatesFields(locales);
-  const langData = locales.reduce(
-    (all: Record<string, RawDateTimeLocaleData>, locale) => {
-      if (locale === 'en-US-POSIX') {
-        all['en-US'] = {
-          data: {
-            ['en-US']: data[locale],
-          },
-          availableLocales: ['en-US'],
-        };
-      } else {
-        all[locale] = {
-          data: {
-            [locale]: data[locale],
-          },
-          availableLocales: [locale],
-        };
-      }
-
-      return all;
-    },
-    {}
-  );
+    : allFiles.map(f => basename(f, '.json'));
   if (outDir) {
-    // Dist all locale files to locale-data
-    Object.keys(langData).forEach(function (lang) {
-      const destFile = join(outDir, lang + '.js');
+    // Dist all locale files to locale-data (JS)
+    for (const locale of locales) {
+      const data = readFileSync(join(cldrFolder, `${locale}.json`));
+      const destFile = join(outDir, locale + '.js');
       outputFileSync(
         destFile,
         `/* @generated */	
   // prettier-ignore
   if (Intl.DateTimeFormat && typeof Intl.DateTimeFormat.__addLocaleData === 'function') {
-    Intl.DateTimeFormat.__addLocaleData(${JSON.stringify(langData[lang])})
+    Intl.DateTimeFormat.__addLocaleData(${data})
   }`
       );
-    });
+    }
   }
 
   // Dist all json locale files to testDataDir
   if (testOutFile) {
-    outputJSONSync(testOutFile, langData[locales[0]]);
+    copyFileSync(join(cldrFolder, `${locales[0]}.json`), testOutFile);
   }
 
   if (test262MainFile) {
+    const allData = [];
+    for (const locale of locales) {
+      allData.push(readFileSync(join(cldrFolder, `${locale}.json`)));
+    }
     outputFileSync(
       test262MainFile,
       `/* @generated */
@@ -62,7 +51,7 @@ import allData from './src/data/all-tz';
 defineProperty(Intl, 'DateTimeFormat', {value: DateTimeFormat});
 
 Intl.DateTimeFormat.__addLocaleData(
-${locales.map(lang => JSON.stringify(langData[lang])).join(',\n')}
+  ${allData.join(',\n')}
 )
 Intl.DateTimeFormat.__addTZData(allData)
   `
