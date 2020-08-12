@@ -1,4 +1,4 @@
-import {sync as globSync} from 'glob';
+import {sync as globSync} from 'fast-glob';
 import {resolve, dirname} from 'path';
 import {DisplayNamesData, invariant} from '@formatjs/intl-utils';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';

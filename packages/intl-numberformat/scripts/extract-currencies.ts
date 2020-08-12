@@ -6,7 +6,7 @@
 'use strict';
 import * as CurrenciesData from 'cldr-numbers-full/main/en/currencies.json';
 import * as supplementalCurrencyData from 'cldr-core/supplemental/currencyData.json';
-import {sync as globSync} from 'glob';
+import {sync as globSync} from 'fast-glob';
 import {resolve, dirname} from 'path';
 import {CurrencyData, LDMLPluralRuleMap} from '@formatjs/intl-utils';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';

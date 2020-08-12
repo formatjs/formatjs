@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`it passes camelCase-converted arguments to typescript API 1`] = `
+exports[`unit it passes camelCase-converted arguments to typescript API 1`] = `
 Array [
   Array [
     ";",

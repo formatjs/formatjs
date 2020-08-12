@@ -5,7 +5,7 @@
  */
 'use strict';
 import * as ListPatterns from 'cldr-misc-full/main/en/listPatterns.json';
-import {sync as globSync} from 'glob';
+import {sync as globSync} from 'fast-glob';
 import {resolve, dirname} from 'path';
 import {ListPatternFieldsData, ListPattern} from '@formatjs/intl-utils';
 

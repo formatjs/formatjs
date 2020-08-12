@@ -91,11 +91,10 @@ CLDR_DEPS = [
     "scripts/cldr.ts",
     "//:tsconfig.json",
     "@npm//@types/fs-extra",
-    "@npm//@types/glob",
     "@npm//@types/minimist",
     "@npm//@types/node",
     "@npm//fs-extra",
-    "@npm//glob",
+    "@npm//fast-glob",
     "@npm//minimist",
 ]
 

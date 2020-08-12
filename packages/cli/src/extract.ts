@@ -6,7 +6,6 @@ import {
   Opts,
   MessageDescriptor,
 } from '@formatjs/ts-transformer';
-import {IOptions as GlobOptions} from 'glob';
 import * as ts from 'typescript';
 import {resolveBuiltinFormatter} from './formatters';
 import * as stringify from 'json-stable-stringify';
@@ -43,7 +42,7 @@ export type ExtractCLIOptions = Omit<
   /**
    * Ignore file glob pattern
    */
-  ignore?: GlobOptions['ignore'];
+  ignore?: string[];
 };
 
 export type ExtractOpts = Opts & {

@@ -7,7 +7,7 @@
 
 import * as DateFields from 'cldr-dates-full/main/en/ca-gregorian.json';
 import * as NumberFields from 'cldr-numbers-full/main/en/numbers.json';
-import {sync as globSync} from 'glob';
+import {sync as globSync} from 'fast-glob';
 import {resolve, dirname} from 'path';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
 import {

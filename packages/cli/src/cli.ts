@@ -3,7 +3,7 @@ import * as loudRejection from 'loud-rejection';
 import extract, {ExtractCLIOptions} from './extract';
 import compile, {CompileCLIOpts, Opts} from './compile';
 import compileFolder from './compile_folder';
-import {sync as globSync} from 'glob';
+import {sync as globSync} from 'fast-glob';
 import {join} from 'path';
 
 const KNOWN_COMMANDS = ['extract'];
@@ -98,7 +98,7 @@ See https://github.com/webpack/loader-utils#interpolatename for sample patterns`
       true
     )
     .option(
-      '--ignore <files>',
+      '--ignore <files...>',
       'List of glob paths to **not** extract translations from.'
     )
     .option(

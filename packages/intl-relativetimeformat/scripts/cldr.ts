@@ -1,7 +1,7 @@
 import {join, basename} from 'path';
 import {outputFileSync, copyFileSync, readFileSync} from 'fs-extra';
 import * as minimist from 'minimist';
-import {sync as globSync} from 'glob';
+import {sync as globSync} from 'fast-glob';
 function main(args: minimist.ParsedArgs) {
   const {
     cldrFolder,

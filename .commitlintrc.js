@@ -1,4 +1,4 @@
-const {sync: globSync} = require('glob');
+const {sync: globSync} = require('fast-glob');
 
 const packages = globSync('./packages/*/package.json').map(
   fn => require(fn).name

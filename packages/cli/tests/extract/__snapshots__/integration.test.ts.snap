@@ -219,7 +219,7 @@ Options:
   --remove-default-message                              Remove \`defaultMessage\` field in generated js after extraction (default: false)
   --additional-component-names <comma-separated-names>  Additional component names to extract messages from, e.g: \`['FormattedFooBarMessage']\`. **NOTE**: By default we check for the fact that \`FormattedMessage\` is imported from \`moduleSourceName\` to make sure variable alias works. This option does not do that so it's less safe.
   --extract-from-format-message-call                    Opt-in to extract from \`intl.formatMessage\` call with the same restrictions, e.g: has to be called with object literal such as \`intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'})\` (default: true)
-  --ignore <files>                                      List of glob paths to **not** extract translations from.
+  --ignore <files...>                                   List of glob paths to **not** extract translations from.
   --throws                                              Whether to throw an exception when we fail to process any file in the batch.
   --pragma <pragma>                                     parse specific additional custom pragma. This allows you to tag certain file with metadata such as \`project\`. For example with this file:
   
