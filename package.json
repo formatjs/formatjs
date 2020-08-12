@@ -55,7 +55,7 @@
     "@types/serialize-javascript": "^4.0.0",
     "@types/tar": "^4.0.3",
     "@typescript-eslint/eslint-plugin": "^3.5.0",
-    "@typescript-eslint/parser": "^3.5.0",
+    "@typescript-eslint/parser": "~3.8.0",
     "benchmark": "^2.1.4",
     "chalk": "^4.0.0",
     "cldr-core": "^36.0.0",
