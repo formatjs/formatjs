@@ -133,15 +133,11 @@ If you previously were using `addLocaleData` to support older browsers, we recom
 2. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 13-), include this [polyfill](https://www.npmjs.com/package/@formatjs/intl-relativetimeformat) in your build along with individual CLDR data for each locale you support.
 
 ```tsx
-if (!Intl.PluralRules) {
-  require('@formatjs/intl-pluralrules/polyfill');
-  require('@formatjs/intl-pluralrules/locale-data/de'); // Add locale data for de
-}
+require('@formatjs/intl-pluralrules/polyfill');
+require('@formatjs/intl-pluralrules/locale-data/de'); // Add locale data for de
 
-if (!Intl.RelativeTimeFormat) {
-  require('@formatjs/intl-relativetimeformat/polyfill');
-  require('@formatjs/intl-relativetimeformat/locale-data/de'); // Add locale data for de
-}
+require('@formatjs/intl-relativetimeformat/polyfill');
+require('@formatjs/intl-relativetimeformat/locale-data/de'); // Add locale data for de
 ```
 
 When using React Intl in Node.js, your `node` binary has to either:
