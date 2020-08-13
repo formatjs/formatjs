@@ -1,4 +1,4 @@
-import {DateTimeFormat} from '.';
+import {DateTimeFormat} from './';
 import {defineProperty} from '@formatjs/intl-utils';
 import {DateTimeFormatOptions} from './src/types';
 import {
