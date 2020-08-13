@@ -708,7 +708,7 @@ This requires [Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/J
 :::
 
 This component uses [`formatDisplayName`](api.md#formatdisplayname) and [`Intl.DisplayNames`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames)
-has `props` that correspond to `DisplayNameOptions`. You might need a [polyfill][../polyfills/intl-displaynames.md].
+has `props` that correspond to `DisplayNameOptions`. You might need a [polyfill](../polyfills/intl-displaynames.md).
 
 **Props:**
 
