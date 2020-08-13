@@ -1,4 +1,4 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("//tools:index.bzl", "rollup_dts", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
@@ -56,4 +56,10 @@ rollup_dts(
     package_name = PACKAGE_NAME,
     package_json = "package.json",
     types = [":types"],
+)
+
+generated_file_test(
+    name = "tsconfig_json",
+    src = "tsconfig.json",
+    generated = "//tools:tsconfig.golden.json",
 )

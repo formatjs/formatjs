@@ -85,3 +85,9 @@ generated_file_test(
     src = "options.ts",
     generated = ":options-gen",
 )
+
+generated_file_test(
+    name = "tsconfig_json",
+    src = "tsconfig.json",
+    generated = "//tools:tsconfig.golden.json",
+)

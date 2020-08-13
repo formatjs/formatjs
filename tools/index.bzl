@@ -78,13 +78,6 @@ def rollup_dts(name, package_name, package_json, types):
         types: filegroup that contains generated d.ts
     """
     native.genrule(
-        name = "copy-tsconfig-%s" % package_name,
-        srcs = ["//:tsconfig.json"],
-        outs = ["tsconfig.json"],
-        cmd = "cp $< $@",
-    )
-
-    native.genrule(
         name = "copy-api-extractor-%s" % package_name,
         srcs = ["//:api-extractor.json"],
         outs = ["api-extractor.json"],
@@ -94,6 +87,11 @@ def rollup_dts(name, package_name, package_json, types):
     copy_to_bin(
         name = "copy-package-json-%s" % package_name,
         srcs = [package_json],
+    )
+
+    copy_to_bin(
+        name = "copy-tsconfig-json-%s" % package_name,
+        srcs = ["tsconfig.json"],
     )
 
     api_extractor(
@@ -108,6 +106,8 @@ def rollup_dts(name, package_name, package_json, types):
         data = [
             "api-extractor.json",
             "tsconfig.json",
+            "//:tsconfig.json",
+            "copy-tsconfig-json-%s" % package_name,
             ":copy-package-json-%s" % package_name,
             "//:setup-api-extractor",
         ] + types,

@@ -105,3 +105,9 @@ ts_node(
         "tests/benchmark.js",
     ] + SRCS + SRC_DEPS,
 )
+
+generated_file_test(
+    name = "tsconfig_json",
+    src = "tsconfig.json",
+    generated = "//tools:tsconfig.golden.json",
+)

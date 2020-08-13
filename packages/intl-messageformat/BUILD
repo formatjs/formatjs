@@ -1,4 +1,4 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/terser:index.bzl", "terser_minified")
 load("//tools:index.bzl", "rollup_dts", "ts_compile")
@@ -96,4 +96,10 @@ terser_minified(
     name = "%s.umd.min" % PACKAGE_NAME,
     src = "%s.umd.js" % PACKAGE_NAME,
     sourcemap = False,
+)
+
+generated_file_test(
+    name = "tsconfig_json",
+    src = "tsconfig.json",
+    generated = "//tools:tsconfig.golden.json",
 )
