@@ -10,22 +10,160 @@ const DATE_TIME_REGEX = /(?:[Eec]{1,6}|G{1,5}|[Qq]{1,5}|(?:[yYur]+|U{1,5})|[ML]{
 // trim patterns after transformations
 const expPatternTrimmer = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
 
+function matchSkeletonPattern(
+  match: string,
+  result: Formats = {
+    pattern: '',
+    pattern12: '',
+    skeleton: '',
+    rawPattern: '',
+  }
+) {
+  const len = match.length;
+  switch (match[0]) {
+    // Era
+    case 'G':
+      result.era = len === 4 ? 'long' : len === 5 ? 'narrow' : 'short';
+      return '{era}';
+
+    // Year
+    case 'y':
+    case 'Y':
+    case 'u':
+    case 'U':
+    case 'r':
+      result.year = len === 2 ? '2-digit' : 'numeric';
+      return '{year}';
+
+    // Quarter
+    case 'q':
+    case 'Q':
+      throw new RangeError('`w/Q` (quarter) patterns are not supported');
+    // Month
+    case 'M':
+    case 'L':
+      result.month = ['numeric', '2-digit', 'short', 'long', 'narrow'][len - 1];
+      return '{month}';
+
+    // Week
+    case 'w':
+    case 'W':
+      throw new RangeError('`w/W` (week of year) patterns are not supported');
+    case 'd':
+      result.day = ['numeric', '2-digit'][len - 1];
+      return '{day}';
+
+    case 'D':
+    case 'F':
+    case 'g':
+      result.day = 'numeric';
+      return '{day}';
+
+    // Weekday
+    case 'E':
+      result.weekday = len === 4 ? 'long' : len === 5 ? 'narrow' : 'short';
+      return '{weekday}';
+
+    case 'e':
+      result.weekday = [
+        'numeric',
+        '2-digit',
+        'short',
+        'long',
+        'narrow',
+        'short',
+      ][len - 1];
+      return '{weekday}';
+
+    case 'c':
+      result.weekday = [
+        'numeric',
+        undefined,
+        'short',
+        'long',
+        'narrow',
+        'short',
+      ][len - 1];
+      return '{weekday}';
+
+    // Period
+    case 'a': // AM, PM
+    case 'b': // am, pm, noon, midnight
+    case 'B': // flexible day periods
+      result.hour12 = true;
+      return '{ampm}';
+    // Hour
+    case 'h':
+      result.hour = ['numeric', '2-digit'][len - 1];
+      return '{hour}';
+
+    case 'H':
+      result.hour = ['numeric', '2-digit'][len - 1];
+      return '{hour}';
+
+    case 'K':
+      result.hour = ['numeric', '2-digit'][len - 1];
+      return '{hour}';
+
+    case 'k':
+      result.hour = ['numeric', '2-digit'][len - 1];
+      return '{hour}';
+
+    case 'j':
+    case 'J':
+    case 'C':
+      throw new RangeError(
+        '`j/J/C` (hour) patterns are not supported, use `h/H/K/k` instead'
+      );
+    // Minute
+    case 'm':
+      result.minute = ['numeric', '2-digit'][len - 1];
+      return '{minute}';
+
+    // Second
+    case 's':
+      result.second = ['numeric', '2-digit'][len - 1];
+      return '{second}';
+
+    case 'S':
+    case 'A':
+      result.second = 'numeric';
+      return '{second}';
+    // Zone
+    case 'z': // 1..3, 4: specific non-location format
+    case 'Z': // 1..3, 4, 5: The ISO8601 varios formats
+    case 'O': // 1, 4: miliseconds in day short, long
+    case 'v': // 1, 4: generic non-location format
+    case 'V': // 1, 2, 3, 4: time zone ID or city
+    case 'X': // 1, 2, 3, 4: The ISO8601 varios formats
+    case 'x': // 1, 2, 3, 4: The ISO8601 varios formats
+      result.timeZoneName = len < 4 ? 'short' : 'long';
+      return '{timeZoneName}';
+  }
+  return '';
+}
+
 /**
  * Parse Date time skeleton into Intl.DateTimeFormatOptions
  * Ref: https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
  * @public
  * @param skeleton skeleton string
  */
-export function parseDateTimeSkeleton(skeleton: string): Formats {
+export function parseDateTimeSkeleton(
+  skeleton: string,
+  pattern: string = skeleton
+): Formats {
   const result: Formats = {
     pattern: '',
     pattern12: '',
     skeleton,
+    rawPattern: pattern,
   };
 
   const literals: string[] = [];
 
-  result.pattern12 = skeleton
+  // Use skeleton to populate result, but use mapped pattern to populate pattern
+  result.pattern12 = pattern
     // Double apostrophe
     .replace(/'{2}/g, '{apostrophe}')
     // Apostrophe-escaped
@@ -33,134 +171,10 @@ export function parseDateTimeSkeleton(skeleton: string): Formats {
       literals.push(literal);
       return `$$${literals.length - 1}$$`;
     })
-    .replace(DATE_TIME_REGEX, match => {
-      const len = match.length;
-      switch (match[0]) {
-        // Era
-        case 'G':
-          result.era = len === 4 ? 'long' : len === 5 ? 'narrow' : 'short';
-          return '{era}';
+    .replace(DATE_TIME_REGEX, matchSkeletonPattern);
 
-        // Year
-        case 'y':
-        case 'Y':
-        case 'u':
-        case 'U':
-        case 'r':
-          result.year = len === 2 ? '2-digit' : 'numeric';
-          return '{year}';
+  skeleton.replace(DATE_TIME_REGEX, m => matchSkeletonPattern(m, result));
 
-        // Quarter
-        case 'q':
-        case 'Q':
-          throw new RangeError('`w/Q` (quarter) patterns are not supported');
-        // Month
-        case 'M':
-        case 'L':
-          result.month = ['numeric', '2-digit', 'short', 'long', 'narrow'][
-            len - 1
-          ];
-          return '{month}';
-
-        // Week
-        case 'w':
-        case 'W':
-          throw new RangeError(
-            '`w/W` (week of year) patterns are not supported'
-          );
-        case 'd':
-          result.day = ['numeric', '2-digit'][len - 1];
-          return '{day}';
-
-        case 'D':
-        case 'F':
-        case 'g':
-          result.day = 'numeric';
-          return '{day}';
-
-        // Weekday
-        case 'E':
-          result.weekday = len === 4 ? 'long' : len === 5 ? 'narrow' : 'short';
-          return '{weekday}';
-
-        case 'e':
-          result.weekday = [
-            'numeric',
-            '2-digit',
-            'short',
-            'long',
-            'narrow',
-            'short',
-          ][len - 1];
-          return '{weekday}';
-
-        case 'c':
-          result.weekday = [
-            'numeric',
-            undefined,
-            'short',
-            'long',
-            'narrow',
-            'short',
-          ][len - 1];
-          return '{weekday}';
-
-        // Period
-        case 'a': // AM, PM
-        case 'b': // am, pm, noon, midnight
-        case 'B': // flexible day periods
-          result.hour12 = true;
-          return '{ampm}';
-        // Hour
-        case 'h':
-          result.hour = ['numeric', '2-digit'][len - 1];
-          return '{hour}';
-
-        case 'H':
-          result.hour = ['numeric', '2-digit'][len - 1];
-          return '{hour}';
-
-        case 'K':
-          result.hour = ['numeric', '2-digit'][len - 1];
-          return '{hour}';
-
-        case 'k':
-          result.hour = ['numeric', '2-digit'][len - 1];
-          return '{hour}';
-
-        case 'j':
-        case 'J':
-        case 'C':
-          throw new RangeError(
-            '`j/J/C` (hour) patterns are not supported, use `h/H/K/k` instead'
-          );
-        // Minute
-        case 'm':
-          result.minute = ['numeric', '2-digit'][len - 1];
-          return '{minute}';
-
-        // Second
-        case 's':
-          result.second = ['numeric', '2-digit'][len - 1];
-          return '{second}';
-
-        case 'S':
-        case 'A':
-          result.second = 'numeric';
-          return '{second}';
-        // Zone
-        case 'z': // 1..3, 4: specific non-location format
-        case 'Z': // 1..3, 4, 5: The ISO8601 varios formats
-        case 'O': // 1, 4: miliseconds in day short, long
-        case 'v': // 1, 4: generic non-location format
-        case 'V': // 1, 2, 3, 4: time zone ID or city
-        case 'X': // 1, 2, 3, 4: The ISO8601 varios formats
-        case 'x': // 1, 2, 3, 4: The ISO8601 varios formats
-          result.timeZoneName = len < 4 ? 'short' : 'long';
-          return '{timeZoneName}';
-      }
-      return '';
-    });
   //Restore literals
   if (literals.length) {
     result.pattern12 = result.pattern12

@@ -13,6 +13,7 @@ TEST_LOCALES = [
     "ar",
     "de",
     "en",
+    "en-GB",
     "ko",
     "pl",
 ]

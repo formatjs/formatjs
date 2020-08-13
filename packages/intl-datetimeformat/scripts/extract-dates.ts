@@ -171,49 +171,80 @@ function loadDatesFields(locale: string): RawDateTimeLocaleInternalData {
 
   const {short, full, medium, long} = gregorian.dateTimeFormats;
 
-  const availableFormats = Object.values(
-    gregorian.dateTimeFormats.availableFormats
-  );
-  const parsedAvailableFormats: Array<[string, Formats]> = availableFormats
-    .map(f => {
+  const {availableFormats} = gregorian.dateTimeFormats;
+  const parsedAvailableFormats: Array<[string, string, Formats]> = Object.keys(
+    availableFormats
+  )
+    .map(skeleton => {
+      const pattern = availableFormats[skeleton as 'Bh'];
       try {
-        return [f, parseDateTimeSkeleton(f)] as [string, Formats];
+        return [
+          skeleton,
+          pattern,
+          parseDateTimeSkeleton(skeleton, pattern),
+        ] as [string, string, Formats];
       } catch (e) {
         // ignore
       }
     })
-    .filter((f): f is [string, Formats] => !!f);
-  const dateFormats = Object.values(gregorian.dateFormats).map(v =>
-    // Locale haw got some weird structure https://github.com/unicode-cldr/cldr-dates-full/blob/master/main/haw/ca-gregorian.json
-    typeof v === 'object' ? (v as {_value: string})._value : v
+    .filter((f): f is [string, string, Formats] => !!f);
+  const dateFormats = Object.values(gregorian.dateFormats).reduce(
+    (all: Record<string, string>, v) => {
+      // Locale haw got some weird structure https://github.com/unicode-cldr/cldr-dates-full/blob/master/main/haw/ca-gregorian.json
+      all[v] = typeof v === 'object' ? (v as {_value: string})._value : v;
+      return all;
+    },
+    {}
   );
-  const timeFormats = Object.values(gregorian.timeFormats);
-  const allFormats = [
-    ...parsedAvailableFormats.map(([f]) => f),
+  const timeFormats = Object.values(gregorian.timeFormats).reduce(
+    (all: Record<string, string>, v) => {
+      // Locale haw got some weird structure https://github.com/unicode-cldr/cldr-dates-full/blob/master/main/haw/ca-gregorian.json
+      all[v] = v;
+      return all;
+    },
+    {}
+  );
+  const allFormats: Record<string, string> = {
+    ...parsedAvailableFormats.reduce(
+      (all: Record<string, string>, [skeleton, pattern]) => {
+        all[skeleton] = pattern;
+        return all;
+      },
+      {}
+    ),
     ...dateFormats,
     ...timeFormats,
-  ];
-  for (const [f, availableFormatEntry] of parsedAvailableFormats) {
+  };
+  for (const [
+    skeleton,
+    pattern,
+    availableFormatEntry,
+  ] of parsedAvailableFormats) {
     if (isDateFormatOnly(availableFormatEntry)) {
-      dateFormats.push(f);
+      dateFormats[skeleton] = pattern;
     } else if (isTimeFormatOnly(availableFormatEntry)) {
-      timeFormats.push(f);
+      timeFormats[skeleton] = pattern;
     }
   }
   // Based on https://unicode.org/reports/tr35/tr35-dates.html#Missing_Skeleton_Fields
-  for (const timeFormat of timeFormats) {
-    for (const dateFormat of dateFormats) {
-      let skeleton;
-      const entry = parseDateTimeSkeleton(dateFormat);
+  for (const [timeSkeleton, timePattern] of Object.entries(timeFormats)) {
+    for (const [dateSkeleton, datePattern] of Object.entries(dateFormats)) {
+      let rawPattern;
+      const entry = parseDateTimeSkeleton(dateSkeleton, datePattern);
       if (entry.month === 'long') {
-        skeleton = entry.weekday ? full : long;
+        rawPattern = entry.weekday ? full : long;
       } else if (entry.month === 'short') {
-        skeleton = medium;
+        rawPattern = medium;
       } else {
-        skeleton = short;
+        rawPattern = short;
       }
-      skeleton = skeleton.replace('{0}', timeFormat).replace('{1}', dateFormat);
-      allFormats.push(skeleton);
+      const pattern = rawPattern
+        .replace('{0}', timePattern)
+        .replace('{1}', datePattern);
+      const skeleton = rawPattern
+        .replace('{0}', timeSkeleton)
+        .replace('{1}', dateSkeleton);
+      allFormats[skeleton] = pattern;
     }
   }
   return {

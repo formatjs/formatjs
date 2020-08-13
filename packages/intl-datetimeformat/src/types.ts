@@ -43,7 +43,7 @@ export type RawDateTimeLocaleInternalData = Omit<
   DateTimeFormatLocaleInternalData,
   'dateFormat' | 'timeFormat' | 'dateTimeFormat' | 'formats'
 > & {
-  formats: Record<string, string[]>;
+  formats: Record<string, Record<string, string>>;
   dateFormat: {full: string; long: string; medium: string; short: string};
   timeFormat: {full: string; long: string; medium: string; short: string};
   dateTimeFormat: {
@@ -120,6 +120,7 @@ export type Formats = Pick<
   pattern: string;
   pattern12: string;
   skeleton: string;
+  rawPattern: string;
 };
 
 export interface DateTimeFormatOptions extends Intl.DateTimeFormatOptions {

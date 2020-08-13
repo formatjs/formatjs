@@ -570,6 +570,7 @@ const BASIC_FORMAT_MATCHER_VALUES = [
 
 const removalPenalty = 120;
 const additionPenalty = 20;
+const differentNumericTypePenalty = 15;
 const longLessPenalty = 8;
 const longMorePenalty = 6;
 const shortLessPenalty = 6;
@@ -636,24 +637,32 @@ export function bestFitFormatMatcherScore(
     } else if (optionsProp !== undefined && formatProp === undefined) {
       score -= removalPenalty;
     } else if (optionsProp !== formatProp) {
-      const optionsPropIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
-        optionsProp as string
-      );
-      const formatPropIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
-        formatProp as string
-      );
-      const delta = Math.max(
-        -2,
-        Math.min(formatPropIndex - optionsPropIndex, 2)
-      );
-      if (delta === 2) {
-        score -= longMorePenalty;
-      } else if (delta === 1) {
-        score -= shortMorePenalty;
-      } else if (delta === -1) {
-        score -= shortLessPenalty;
-      } else if (delta === -2) {
-        score -= longLessPenalty;
+      // extra penalty for numeric vs non-numeric
+      if (
+        isNumericType(optionsProp as 'numeric') !==
+        isNumericType(formatProp as 'short')
+      ) {
+        score -= differentNumericTypePenalty;
+      } else {
+        const optionsPropIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
+          optionsProp as string
+        );
+        const formatPropIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
+          formatProp as string
+        );
+        const delta = Math.max(
+          -2,
+          Math.min(formatPropIndex - optionsPropIndex, 2)
+        );
+        if (delta === 2) {
+          score -= longMorePenalty;
+        } else if (delta === 1) {
+          score -= shortMorePenalty;
+        } else if (delta === -1) {
+          score -= shortLessPenalty;
+        } else if (delta === -2) {
+          score -= longLessPenalty;
+        }
       }
     }
   }
@@ -754,11 +763,13 @@ function bestFitFormatMatcher(
     }
   }
 
-  bestFormat = {...bestFormat};
+  const skeletonFormat = {...bestFormat};
+  const patternFormat = parseDateTimeSkeleton(bestFormat.rawPattern);
 
   // Kinda following https://github.com/unicode-org/icu/blob/dd50e38f459d84e9bf1b0c618be8483d318458ad/icu4j/main/classes/core/src/com/ibm/icu/text/DateTimePatternGenerator.java
-  for (const prop in bestFormat) {
-    const bestValue = bestFormat[prop as TABLE_6];
+  // Method adjustFieldTypes
+  for (const prop in patternFormat) {
+    const bestValue = skeletonFormat[prop as TABLE_6];
     const inputValue = options[prop as TABLE_6];
     // Don't mess with minute/second or we can get in the situation of
     // 7:0:0 which is weird
@@ -778,10 +789,22 @@ function bestFitFormatMatcher(
     ) {
       continue;
     }
-    // Otherwise use the input value
-    bestFormat[prop as TABLE_6] = inputValue;
+
+    if (bestValue === inputValue) {
+      continue;
+    }
+    // Expand the pattern appropriately
+    // const bestValueIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
+    //   bestValue as string
+    // );
+    // const inputValueIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
+    //   inputValue as string
+    // );
+    // if (inputValueIndex > bestValueIndex) {
+    patternFormat[prop as TABLE_6] = inputValue;
+    // }
   }
-  return bestFormat;
+  return patternFormat;
 }
 
 const formatDescriptor = {
@@ -1360,12 +1383,15 @@ defineProperty(DateTimeFormat.prototype, 'resolvedOptions', {
     for (const key of RESOLVED_OPTIONS_KEYS) {
       let value = internalSlots[key];
       if (key === 'hourCycle') {
-        ro.hour12 =
+        const hour12 =
           value === 'h11' || value === 'h12'
             ? true
             : value === 'h23' || value === 'h24'
             ? false
             : undefined;
+        if (hour12 !== undefined) {
+          ro.hour12 = hour12;
+        }
       }
       if (DATE_TIME_PROPS.indexOf(key as TABLE_6) > -1) {
         if (
@@ -1435,8 +1461,10 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
         };
 
         for (const calendar in formats) {
-          processedData.formats[calendar] = formats[calendar].map(
-            parseDateTimeSkeleton
+          processedData.formats[calendar] = Object.keys(
+            formats[calendar]
+          ).map(skeleton =>
+            parseDateTimeSkeleton(skeleton, formats[calendar][skeleton])
           );
         }
 
