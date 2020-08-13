@@ -35,7 +35,7 @@ Você provavelmente tem algum texto na sua aplicação que está no idioma nativ
 FormatJS fornece um mecanismo que permite-lhe que escreva o programa da sua aplicação sem nenhum código especial para diferentes traduções. As considerações para cada local são encapsuladas nas suas cadeias e nas nossas bibliotecas.
 
 ```tsx
-const mensagens = {
+const messages = {
   pt: {
     GREETING: 'Olá {name}',
   },
