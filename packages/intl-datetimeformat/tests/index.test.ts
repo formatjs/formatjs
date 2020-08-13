@@ -57,6 +57,23 @@ describe('Intl.DateTimeFormat', function () {
       }).format(new Date(0))
     ).toBe('1/1/1970, 8:00:00 AM China Standard Time');
   });
+  it('CST w/ undefined TZ', function () {
+    const {TZ} = process.env;
+    process.env.TZ = undefined;
+    expect(
+      new DateTimeFormat('en', {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        timeZoneName: 'long',
+        timeZone: 'Asia/Shanghai',
+      }).format(new Date(0))
+    ).toBe('1/1/1970, 8:00:00 AM China Standard Time');
+    process.env.TZ = TZ;
+  });
   it('test for GH issue #1915', function () {
     expect(
       new DateTimeFormat('en', {
