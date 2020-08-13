@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.0.0...@formatjs/intl-relativetimeformat@7.1.0) (2020-08-13)
+
+
+### Features
+
+* **@formatjs/cli:** switch from glob to fast-glob ([6fc7bfb](https://github.com/formatjs/formatjs/commit/6fc7bfb925b6a6374c11dba79629f95371c02bc8))
+
+
+
+
+
 # [7.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@6.2.4...@formatjs/intl-relativetimeformat@7.0.0) (2020-07-24)
 
 

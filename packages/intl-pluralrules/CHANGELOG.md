@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.2.5...@formatjs/intl-pluralrules@3.3.0) (2020-08-13)
+
+
+### Features
+
+* **@formatjs/cli:** switch from glob to fast-glob ([6fc7bfb](https://github.com/formatjs/formatjs/commit/6fc7bfb925b6a6374c11dba79629f95371c02bc8))
+
+
+
+
+
 ## [3.2.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.2.4...@formatjs/intl-pluralrules@3.2.5) (2020-07-24)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules

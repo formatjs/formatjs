@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/cli",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "description": "A CLI for formatjs.",
   "keywords": [
     "intl",
@@ -38,9 +38,9 @@
     "@types/node": "14",
     "chalk": "^4.0.0",
     "commander": "5.1.0",
-    "fs-extra": "^9.0.0",
     "fast-glob": "^3.2.4",
-    "intl-messageformat-parser": "^5.3.5",
+    "fs-extra": "^9.0.0",
+    "intl-messageformat-parser": "^5.3.8",
     "json-stable-stringify": "^1.0.1",
     "lodash": "^4.17.15",
     "loud-rejection": "^2.2.0",

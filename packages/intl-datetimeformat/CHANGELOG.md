@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.3.1...@formatjs/intl-datetimeformat@2.4.0) (2020-08-13)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix best fit matching algo, fix [#1951](https://github.com/formatjs/formatjs/issues/1951) ([f567a09](https://github.com/formatjs/formatjs/commit/f567a09ad6111aa89749a1e3eb4ff622f5fd4654))
+
+
+### Features
+
+* **@formatjs/cli:** switch from glob to fast-glob ([6fc7bfb](https://github.com/formatjs/formatjs/commit/6fc7bfb925b6a6374c11dba79629f95371c02bc8))
+
+
+
+
+
 ## [2.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.3.0...@formatjs/intl-datetimeformat@2.3.1) (2020-08-11)
 
 

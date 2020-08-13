@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.1.7...@formatjs/intl-displaynames@3.2.0) (2020-08-13)
+
+
+### Features
+
+* **@formatjs/cli:** switch from glob to fast-glob ([6fc7bfb](https://github.com/formatjs/formatjs/commit/6fc7bfb925b6a6374c11dba79629f95371c02bc8))
+
+
+
+
+
 ## [3.1.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.1.6...@formatjs/intl-displaynames@3.1.7) (2020-07-29)
 
 

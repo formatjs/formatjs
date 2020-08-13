@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.6.0...@formatjs/cli@2.7.0) (2020-08-13)
+
+
+### Features
+
+* **@formatjs/cli:** switch from glob to fast-glob ([6fc7bfb](https://github.com/formatjs/formatjs/commit/6fc7bfb925b6a6374c11dba79629f95371c02bc8))
+
+
+
+
+
 # [2.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.5.0...@formatjs/cli@2.6.0) (2020-08-09)
 
 
