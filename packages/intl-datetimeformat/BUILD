@@ -16,6 +16,7 @@ TEST_LOCALES = [
     "en-GB",
     "ko",
     "pl",
+    "zh-Hans",
 ]
 
 TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]

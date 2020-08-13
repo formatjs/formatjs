@@ -769,40 +769,32 @@ function bestFitFormatMatcher(
   // Kinda following https://github.com/unicode-org/icu/blob/dd50e38f459d84e9bf1b0c618be8483d318458ad/icu4j/main/classes/core/src/com/ibm/icu/text/DateTimePatternGenerator.java
   // Method adjustFieldTypes
   for (const prop in patternFormat) {
-    const bestValue = skeletonFormat[prop as TABLE_6];
-    const inputValue = options[prop as TABLE_6];
+    const skeletonValue = skeletonFormat[prop as TABLE_6];
+    const patternValue = patternFormat[prop as TABLE_6];
+    const requestedValue = options[prop as TABLE_6];
     // Don't mess with minute/second or we can get in the situation of
     // 7:0:0 which is weird
     if (prop === 'minute' || prop === 'second') {
       continue;
     }
     // Nothing to do here
-    if (!inputValue) {
+    if (!requestedValue) {
       continue;
     }
     // https://unicode.org/reports/tr35/tr35-dates.html#Matching_Skeletons
     // Looks like we should not convert numeric to alphabetic but the other way
     // around is ok
     if (
-      isNumericType(bestValue as 'numeric') &&
-      !isNumericType(inputValue as 'short')
+      isNumericType(patternValue as 'numeric') &&
+      !isNumericType(requestedValue as 'short')
     ) {
       continue;
     }
 
-    if (bestValue === inputValue) {
+    if (skeletonValue === requestedValue) {
       continue;
     }
-    // Expand the pattern appropriately
-    // const bestValueIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
-    //   bestValue as string
-    // );
-    // const inputValueIndex = BASIC_FORMAT_MATCHER_VALUES.indexOf(
-    //   inputValue as string
-    // );
-    // if (inputValueIndex > bestValueIndex) {
-    patternFormat[prop as TABLE_6] = inputValue;
-    // }
+    patternFormat[prop as TABLE_6] = requestedValue;
   }
   return patternFormat;
 }
