@@ -84,7 +84,7 @@
     "json-stable-stringify": "^1.0.1",
     "karma": "^5.0.2",
     "karma-chrome-launcher": "^3.1.0",
-    "karma-jasmine": "^3.1.1",
+    "karma-jasmine": "^4.0.0",
     "karma-jasmine-matchers": "^4.0.2",
     "karma-sauce-launcher": "4.1.4",
     "lerna": "^3.20.2",
