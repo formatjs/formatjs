@@ -35,7 +35,8 @@ During runtime this will throw an `Error` saying `ID is required`. In order to i
       "react-intl",
       {
         "extractFromFormatMessageCall": true,
-        "idInterpolationPattern": "[sha512:contenthash:base64:6]"
+        "idInterpolationPattern": "[sha512:contenthash:base64:6]",
+        "ast": true
       }
     ]
   ]
