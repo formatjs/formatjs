@@ -30,6 +30,7 @@ SRCS = glob(["src/*.ts"]) + ["index.ts"]
 SRC_DEPS = [
     "@npm//typescript",
     "@npm//@types/node",
+    "//packages/intl-messageformat-parser:dist",
 ]
 
 ts_compile(
@@ -46,7 +47,9 @@ jest_test(
         "tests/**/*.tsx",
         "tests/**/*.snap",
     ]),
-    deps = SRC_DEPS,
+    deps = SRC_DEPS + [
+        "//packages/intl-messageformat-parser:types",
+    ],
 )
 
 generated_file_test(

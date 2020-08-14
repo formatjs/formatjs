@@ -68,6 +68,96 @@ export default class Foo extends Component {
 }
 `;
 
+exports[`emit asserts for ast 1`] = `
+Object {
+  "code": "import React, { Component } from 'react';
+import { defineMessages, FormattedMessage, defineMessage } from 'react-intl';
+const msgs = defineMessages({
+    header: {
+        id: \\"HELLO.foo.bar.baz.12.string\\",
+        defaultMessage: [{ type: 0, value: \\"Hello World!\\" }]
+    },
+    content: {
+        id: \\"HELLO.foo.bar.biff.12.undefined\\",
+        defaultMessage: [{ type: 0, value: \\"Hello Nurse!\\" }]
+    }
+});
+defineMessage({
+    id: \\"HELLO..13.string\\",
+    defaultMessage: [{ type: 0, value: \\"defineMessage\\" }]
+});
+export default class Foo extends Component {
+    render() {
+        const { intl } = this.props;
+        const { formatMessage } = intl;
+        this.props.intl.formatMessage({
+            id: \\"HELLO..5.string\\",
+            defaultMessage: [{ type: 0, value: \\"no-id\\" }]
+        });
+        intl.formatMessage({
+            id: \\"HELLO..18.string\\",
+            defaultMessage: [{ type: 0, value: \\"intl.formatMessage\\" }]
+        });
+        formatMessage({
+            id: \\"HELLO..13.string\\",
+            defaultMessage: [{ type: 0, value: \\"formatMessage\\" }]
+        });
+        return (<div>
+        <h1>
+          <FormattedMessage {...msgs.header}/>
+        </h1>
+        <p>
+          <FormattedMessage {...msgs.content}/>
+        </p>
+        <FormattedMessage id=\\"HELLO.foo.bar.zoo.18.undefined\\" defaultMessage={[{ type: 0, value: \\"Hello World! \\" }, { type: 1, value: \\"abc\\" }]} values={{ abc: 2 }}/>
+        <FormattedMessage id=\\"HELLO..18.undefined\\" defaultMessage={[{ type: 0, value: \\"Hello World! \\" }, { type: 1, value: \\"abc\\" }]} values={{ abc: 2 }}/>
+      </div>);
+    }
+}
+",
+  "meta": Object {},
+  "msgs": Array [
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": "The default message",
+      "id": "HELLO.foo.bar.baz.12.string",
+    },
+    Object {
+      "defaultMessage": "Hello Nurse!",
+      "id": "HELLO.foo.bar.biff.12.undefined",
+    },
+    Object {
+      "defaultMessage": "defineMessage",
+      "description": "foo",
+      "id": "HELLO..13.string",
+    },
+    Object {
+      "defaultMessage": "no-id",
+      "description": "no-id",
+      "id": "HELLO..5.string",
+    },
+    Object {
+      "defaultMessage": "intl.formatMessage",
+      "description": "no-id",
+      "id": "HELLO..18.string",
+    },
+    Object {
+      "defaultMessage": "formatMessage",
+      "description": "no-id",
+      "id": "HELLO..13.string",
+    },
+    Object {
+      "defaultMessage": "Hello World! {abc}",
+      "id": "HELLO.foo.bar.zoo.18.undefined",
+    },
+    Object {
+      "defaultMessage": "Hello World! {abc}",
+      "id": "HELLO..18.undefined",
+    },
+  ],
+}
+`;
+
 exports[`emit asserts for defineMessages 1`] = `
 Object {
   "code": "// @react-intl project:foo file:bar
