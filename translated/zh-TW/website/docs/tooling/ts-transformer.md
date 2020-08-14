@@ -41,6 +41,7 @@ module.exports = {
                 before: [
                   transform({
                     overrideIdFn: '[sha512:contenthash:base64:6]',
+                    ast: true,
                   }),
                 ],
               },
@@ -67,7 +68,8 @@ Take a look at [`ts-jest` guide](https://github.com/kulshekhar/ts-jest/blob/mast
         "transform": "@formatjs/ts-transformer",
         "import": "transform",
         "type": "config",
-        "overrideIdFn": "[sha512:contenthash:base64:6]"
+        "overrideIdFn": "[sha512:contenthash:base64:6]",
+        "ast": true
       }
     ]
   }
@@ -108,6 +110,10 @@ import {FormattedMessage} from 'react-intl';
 ```
 
 and with option `{pragma: "@intl-meta"}`, we'll parse out `// @intl-meta project:my-custom-project` into `{project: 'my-custom-project'}` in the result file.
+
+### **`ast`**
+
+Pre-parse `defaultMessage` into AST for faster runtime perf. This flag doesn't do anything when `removeDefaultMessage` is `true`.
 
 ### **`onMsgExtracted(filePath: string, msgs: MessageDescriptor[])`**
 
