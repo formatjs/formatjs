@@ -33,7 +33,8 @@ The default message descriptors for the app's default language will be processed
       "react-intl",
       {
         "idInterpolationPattern": "[sha512:contenthash:base64:6]",
-        "extractFromFormatMessageCall": true
+        "extractFromFormatMessageCall": true,
+        "ast": true
       }
     ]
   ]
@@ -78,6 +79,10 @@ import {FormattedMessage} from 'react-intl';
 ```
 
 and with option `{pragma: "@intl-meta"}`, we'll parse out `// @intl-meta project:my-custom-project` into `{project: 'my-custom-project'}` in the result file.
+
+### **`ast`**
+
+Pre-parse `defaultMessage` into AST for faster runtime perf. This flag doesn't do anything when `removeDefaultMessage` is `true`.
 
 ### Via Node API
 
