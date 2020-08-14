@@ -1,6 +1,6 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "generate_src_file", "rollup_dts", "ts_compile")
+load("//tools:index.bzl", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-datetimeformat"
@@ -28,7 +28,6 @@ pkg_npm(
     deps = [
         "add-all-tz.js",
         "add-golden-tz.js",
-        "%s.d.ts" % PACKAGE_NAME,
         ":dist",
         ":locale-data",
     ],
@@ -80,16 +79,6 @@ jest_test(
     name = "unit",
     srcs = SRCS + TESTS + TEST_LOCALE_DATA,
     deps = TEST_DEPS,
-)
-
-rollup_dts(
-    name = "rollup-dts",
-    package_name = PACKAGE_NAME,
-    package_json = "package.json",
-    types = [
-        ":types",
-        "//packages/intl-utils:types",
-    ],
 )
 
 # CLDR

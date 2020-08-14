@@ -21,7 +21,7 @@
   "sideEffects": false,
   "main": "index.js",
   "module": "lib/index.js",
-  "types": "intl-utils.d.ts",
+  "types": "index.d.ts",
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",
   "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c",

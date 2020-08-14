@@ -29,7 +29,7 @@
   },
   "main": "index.js",
   "module": "lib/index.js",
-  "types": "intl-messageformat.d.ts",
+  "types": "index.d.ts",
   "dependencies": {
     "fast-memoize": "^2.5.2",
     "intl-messageformat-parser": "^5.3.8"

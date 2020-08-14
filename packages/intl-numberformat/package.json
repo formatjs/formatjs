@@ -16,7 +16,7 @@
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",
   "main": "index.js",
-  "types": "intl-numberformat.d.ts",
+  "types": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/formatjs/formatjs.git"

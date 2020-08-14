@@ -1,9 +1,8 @@
 "Custom macro"
 
-load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin", "generated_file_test")
+load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
-load("@npm//@microsoft/api-extractor:index.bzl", "api_extractor")
 load("@npm//ts-node:index.bzl", "ts_node")
 
 def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
@@ -66,51 +65,6 @@ def generate_src_file(name, args, data, src):
         name = name,
         src = src,
         generated = tmp_filename,
-    )
-
-def rollup_dts(name, package_name, package_json, types):
-    """Macro for @microsoft/api-extractor.
-
-    Args:
-        name: target name
-        package_name: package name from package.json
-        package_json: package.json file
-        types: filegroup that contains generated d.ts
-    """
-    native.genrule(
-        name = "copy-api-extractor-%s" % package_name,
-        srcs = ["//:api-extractor.json"],
-        outs = ["api-extractor.json"],
-        cmd = "cp $< $@",
-    )
-
-    copy_to_bin(
-        name = "copy-package-json-%s" % package_name,
-        srcs = [package_json],
-    )
-
-    copy_to_bin(
-        name = "copy-tsconfig-json-%s" % package_name,
-        srcs = ["tsconfig.json"],
-    )
-
-    api_extractor(
-        name = name,
-        outs = ["%s.d.ts" % package_name],
-        args = [
-            "run",
-            "--local",
-            "-c",
-            "$(@D)/api-extractor.json",
-        ],
-        data = [
-            "api-extractor.json",
-            "tsconfig.json",
-            "//:tsconfig.json",
-            "copy-tsconfig-json-%s" % package_name,
-            ":copy-package-json-%s" % package_name,
-            "//:setup-api-extractor",
-        ] + types,
     )
 
 def bundle_karma_tests(name, srcs, tests, data = [], deps = [], rollup_deps = []):

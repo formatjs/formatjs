@@ -1,6 +1,6 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "nodejs_binary", "pkg_npm")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "rollup_dts", "ts_compile")
+load("//tools:index.bzl", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-messageformat-parser"
@@ -14,7 +14,6 @@ pkg_npm(
         "package.json",
     ],
     deps = [
-        "%s.d.ts" % PACKAGE_NAME,
         ":dist",
         ":dist-esm",
     ],
@@ -82,17 +81,6 @@ generated_file_test(
     name = "parser",
     src = "src/parser.ts",
     generated = ":parser-gen",
-)
-
-rollup_dts(
-    name = "rollup-dts",
-    package_name = PACKAGE_NAME,
-    package_json = "package.json",
-    types = [
-        ":types",
-        "//packages/intl-numberformat:types",
-        "//packages/intl-utils:types",
-    ],
 )
 
 ts_node(

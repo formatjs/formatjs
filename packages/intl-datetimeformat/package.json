@@ -3,7 +3,7 @@
   "version": "2.4.0",
   "description": "Intl.DateTimeFormat polyfill",
   "main": "index.js",
-  "types": "intl-datetimeformat.d.ts",
+  "types": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/formatjs/formatjs.git"

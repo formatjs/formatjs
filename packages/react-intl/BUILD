@@ -1,7 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/terser:index.bzl", "terser_minified")
-load("//tools:index.bzl", "rollup_dts", "ts_compile")
+load("//tools:index.bzl", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "react-intl"
@@ -15,7 +15,6 @@ pkg_npm(
         "package.json",
     ],
     deps = [
-        "%s.d.ts" % PACKAGE_NAME,
         "%s.umd.js" % PACKAGE_NAME,
         ":%s.umd.min" % PACKAGE_NAME,
         ":dist",
@@ -94,25 +93,6 @@ jest_test(
     ],
     jest_config = "jest.config.js",
     deps = TEST_DEPS + [":dist"],
-)
-
-rollup_dts(
-    name = "rollup-dts",
-    package_name = PACKAGE_NAME,
-    package_json = "package.json",
-    types = [
-        ":types",
-        "@npm//@types/react",
-        "//packages/intl-numberformat:types",
-        "//packages/intl-listformat:types",
-        "//packages/intl-displaynames:types",
-        "//packages/intl-datetimeformat:types",
-        "//packages/intl-relativetimeformat:types",
-        "//packages/intl-messageformat:types",
-        "//packages/intl-messageformat-parser:types",
-        "//packages/intl-utils:types",
-        "@npm//@types/hoist-non-react-statics",
-    ],
 )
 
 rollup_bundle(
