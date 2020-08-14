@@ -48,6 +48,86 @@ export default class Foo extends Component {
 }
 `;
 
+exports[`emit asserts for:  ast 1`] = `
+Object {
+  "code": "import React, { Component } from 'react';
+import { FormattedMessage, defineMessage, defineMessages } from 'react-intl';
+defineMessage({
+  \\"id\\": \\"defineMessage\\",
+  \\"defaultMessage\\": [{
+    \\"type\\": 0,
+    \\"value\\": \\"this is a \\"
+  }, {
+    \\"type\\": 3,
+    \\"style\\": \\"full\\",
+    \\"value\\": \\"dt\\"
+  }]
+});
+defineMessages({
+  foo: {
+    \\"id\\": \\"defineMessages1\\",
+    \\"defaultMessage\\": [{
+      \\"type\\": 0,
+      \\"value\\": \\"this is a \\"
+    }, {
+      \\"type\\": 4,
+      \\"style\\": \\"full\\",
+      \\"value\\": \\"dt\\"
+    }]
+  },
+  bar: {
+    \\"id\\": \\"defineMessages2\\",
+    \\"defaultMessage\\": [{
+      \\"type\\": 0,
+      \\"value\\": \\"this is a \\"
+    }, {
+      \\"type\\": 2,
+      \\"style\\": null,
+      \\"value\\": \\"dt\\"
+    }]
+  }
+});
+export default class Foo extends Component {
+  render() {
+    Intl.formatMessage({
+      id: 'intl.formatMessage',
+      defaultMessage: 'foo {s, plural, one{1} other{2}}'
+    });
+    return <FormattedMessage id=\\"foo.bar.baz\\" defaultMessage={[{
+      \\"type\\": 0,
+      \\"value\\": \\"Hello World!\\"
+    }]} />;
+  }
+
+}",
+  "data": Object {
+    "messages": Array [
+      Object {
+        "defaultMessage": "this is a {dt, date, full}",
+        "description": undefined,
+        "id": "defineMessage",
+      },
+      Object {
+        "defaultMessage": "this is a {dt, time, full}",
+        "description": undefined,
+        "id": "defineMessages1",
+      },
+      Object {
+        "defaultMessage": "this is a {dt, number}",
+        "description": undefined,
+        "id": "defineMessages2",
+      },
+      Object {
+        "defaultMessage": "Hello World!",
+        "description": "The default message.",
+        "id": "foo.bar.baz",
+      },
+    ],
+    "meta": Object {},
+  },
+}
+`;
+
 exports[`emit asserts for:  defineMessage 1`] = `
 Object {
   "code": "// @react-intl project:amazing
@@ -64,7 +144,7 @@ const msgs = {
   }),
   kittens: defineMessage({
     \\"id\\": \\"app.home.kittens\\",
-    \\"defaultMessage\\": \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\"
+    \\"defaultMessage\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\"
   }),
   trailingWhitespace: defineMessage({
     \\"id\\": \\"trailing.ws\\",
@@ -142,7 +222,7 @@ const msgs = defineMessages({
   },
   kittens: {
     \\"id\\": \\"app.home.kittens\\",
-    \\"defaultMessage\\": \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\"
+    \\"defaultMessage\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\"
   },
   trailingWhitespace: {
     \\"id\\": \\"trailing.ws\\",

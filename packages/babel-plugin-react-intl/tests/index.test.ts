@@ -7,6 +7,10 @@ const TESTS: Record<string, OptionsSchema> = {
   additionalComponentNames: {
     additionalComponentNames: ['CustomMessage'],
   },
+  ast: {
+    ast: true,
+    extractFromFormatMessageCall: true,
+  },
   defineMessage: {},
   defineMessages: {},
   descriptionsAsObjects: {},
