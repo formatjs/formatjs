@@ -181,5 +181,5 @@ export interface IntlCache {
 export interface MessageDescriptor {
   id?: string | number;
   description?: string | object;
-  defaultMessage?: string;
+  defaultMessage?: string | MessageFormatElement[];
 }
