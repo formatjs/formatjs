@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.7.2...@formatjs/cli@2.7.3) (2020-08-14)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** fix formatter path resolution, fix [#1969](https://github.com/formatjs/formatjs/issues/1969) ([d6ec6ca](https://github.com/formatjs/formatjs/commit/d6ec6ca48f4401bbc071556e5debe14dca7f5775))
+
+
+
+
+
 ## [2.7.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.7.1...@formatjs/cli@2.7.2) (2020-08-14)
 
 **Note:** Version bump only for package @formatjs/cli

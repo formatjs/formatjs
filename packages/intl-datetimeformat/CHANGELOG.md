@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.4.1...@formatjs/intl-datetimeformat@2.4.2) (2020-08-14)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix core file path import in polyfill ([#1968](https://github.com/formatjs/formatjs/issues/1968)) ([cf43f17](https://github.com/formatjs/formatjs/commit/cf43f17e36e23288d73bc7a556d02ae65528c61d))
+
+
+
+
+
 ## [2.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.4.0...@formatjs/intl-datetimeformat@2.4.1) (2020-08-14)
 
 
