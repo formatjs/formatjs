@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/ts-transformer",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "description": "TS Compiler transformer for formatjs",
   "main": "index.js",
   "types": "index.d.ts",
@@ -17,7 +17,7 @@
     "react-intl"
   ],
   "dependencies": {
-    "intl-messageformat-parser": "^5.3.9",
+    "intl-messageformat-parser": "^5.4.0",
     "typescript": "^3.8"
   },
   "author": "Long Ho <holevietlong@gmail.com>",

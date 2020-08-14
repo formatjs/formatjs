@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.6.0](https://github.com/formatjs/formatjs/compare/react-intl@5.5.0...react-intl@5.6.0) (2020-08-14)
+
+
+### Features
+
+* **react-intl:** expose react-intl-no-parser.umd.js that does not contain intl-messageformat-parser, fix [#1945](https://github.com/formatjs/formatjs/issues/1945) ([5330073](https://github.com/formatjs/formatjs/commit/53300732d0da380a572a2ffd12967c0924a36484))
+
+
+
+
+
 # [5.5.0](https://github.com/formatjs/formatjs/compare/react-intl@5.4.8...react-intl@5.5.0) (2020-08-14)
 
 
