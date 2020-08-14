@@ -1,5 +1,5 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
-load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "rollup_dts", "ts_compile")
+load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
+load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-getcanonicallocales"
@@ -13,7 +13,6 @@ pkg_npm(
         "package.json",
     ],
     deps = [
-        "%s.d.ts" % PACKAGE_NAME,
         ":dist",
     ],
 )
@@ -78,18 +77,16 @@ generate_src_file(
     ],
 )
 
-# API Extractor
-rollup_dts(
-    name = "rollup-dts",
-    package_name = PACKAGE_NAME,
-    package_json = "package.json",
-    types = [":types"],
-)
-
 # karma tests
 bundle_karma_tests(
     name = "bundled-karma-tests",
     srcs = SRCS,
     tests = TESTS,
     deps = TEST_DEPS,
+)
+
+generated_file_test(
+    name = "tsconfig_json",
+    src = "tsconfig.json",
+    generated = "//tools:tsconfig.golden.json",
 )

@@ -746,6 +746,24 @@ describe('format API', () => {
       expect(formatMessage({id: 'no_args'})).toBe(mf.format());
     });
 
+    it('formats basic message with preparsed defaultMessage', () => {
+      const {locale, messages} = config;
+      const mf = new IntlMessageFormat(messages.ast_var, locale);
+
+      expect(
+        formatMessage(
+          {id: 'foo', defaultMessage: messages.ast_var},
+          {
+            name: 'hey',
+          }
+        )
+      ).toBe(
+        mf.format({
+          name: 'hey',
+        })
+      );
+    });
+
     it('formats message with ID as a method in Object.prototype, GH issue #1885', () => {
       expect(formatMessage({id: 'toString'})).toBe('toString');
       expect(formatMessage({id: '__proto__'})).toBe('__proto__');

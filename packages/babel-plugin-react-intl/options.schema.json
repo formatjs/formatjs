@@ -11,7 +11,8 @@
     "additionalComponentNames": {"type": "array", "items": {"type": "string"}},
     "pragma": {"type": "string"},
     "extractFromFormatMessageCall": {"type": "boolean"},
-    "extractSourceLocation": {"type": "boolean"}
+    "extractSourceLocation": {"type": "boolean"},
+    "ast": {"type": "boolean"}
   },
   "additionalProperties": false
 }

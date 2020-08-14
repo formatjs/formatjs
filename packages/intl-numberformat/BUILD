@@ -1,9 +1,9 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "generate_src_file", "rollup_dts", "ts_compile")
+load("//tools:index.bzl", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-numberformat"
@@ -48,7 +48,6 @@ pkg_npm(
         "package.json",
     ],
     deps = [
-        "%s.d.ts" % PACKAGE_NAME,
         ":dist",
         ":locale-data",
     ],
@@ -103,16 +102,6 @@ ts_compile(
     srcs = SRCS + [f] + TEST_LOCALE_DATA + SNAPSHOTS,
     deps = TEST_DEPS,
 ) for f in TESTS]
-
-rollup_dts(
-    name = "rollup-dts",
-    package_name = PACKAGE_NAME,
-    package_json = "package.json",
-    types = [
-        ":types",
-        "//packages/intl-utils:types",
-    ],
-)
 
 # CLDR
 CLDR_DEPS = [
@@ -346,4 +335,10 @@ test262_harness_test(
         "$(rootpath test262-polyfill.js)",
         "$(rootpaths //:test262-numberformat)",
     ],
+)
+
+generated_file_test(
+    name = "tsconfig_json",
+    src = "tsconfig.json",
+    generated = "//tools:tsconfig.golden.json",
 )

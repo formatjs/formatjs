@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-react-intl",
-  "version": "8.0.1",
+  "version": "8.1.1",
   "description": "Extracts string messages for translation from modules that use React Intl.",
   "repository": {
     "type": "git",
@@ -14,10 +14,10 @@
     "@babel/core": "^7.9.0",
     "@babel/helper-plugin-utils": "^7.8.3",
     "@babel/types": "^7.9.5",
-    "@formatjs/ts-transformer": "^2.6.0",
+    "@formatjs/ts-transformer": "^2.7.1",
     "@types/babel__core": "^7.1.7",
     "@types/schema-utils": "^2.4.0",
-    "intl-messageformat-parser": "^5.3.8",
+    "intl-messageformat-parser": "^5.4.0",
     "schema-utils": "^2.6.6"
   },
   "keywords": [

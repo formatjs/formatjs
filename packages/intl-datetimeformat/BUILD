@@ -1,10 +1,6 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
-
-# load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
-# load("@npm//@bazel/typescript:index.bzl", "ts_project")
-# load("@npm//test262-harness:index.bzl", "test262_harness_test")
+load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "generate_src_file", "rollup_dts", "ts_compile")
+load("//tools:index.bzl", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-datetimeformat"
@@ -16,6 +12,7 @@ TEST_LOCALES = [
     "en-GB",
     "ko",
     "pl",
+    "zh-Hans",
 ]
 
 TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
@@ -31,7 +28,6 @@ pkg_npm(
     deps = [
         "add-all-tz.js",
         "add-golden-tz.js",
-        "%s.d.ts" % PACKAGE_NAME,
         ":dist",
         ":locale-data",
     ],
@@ -83,16 +79,6 @@ jest_test(
     name = "unit",
     srcs = SRCS + TESTS + TEST_LOCALE_DATA,
     deps = TEST_DEPS,
-)
-
-rollup_dts(
-    name = "rollup-dts",
-    package_name = PACKAGE_NAME,
-    package_json = "package.json",
-    types = [
-        ":types",
-        "//packages/intl-utils:types",
-    ],
 )
 
 # CLDR
@@ -350,6 +336,12 @@ ts_node(
         "@npm//fs-extra",
         "@npm//minimist",
     ],
+)
+
+generated_file_test(
+    name = "tsconfig_json",
+    src = "tsconfig.json",
+    generated = "//tools:tsconfig.golden.json",
 )
 
 # Test262

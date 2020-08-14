@@ -1,8 +1,8 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
-load("//tools:index.bzl", "rollup_dts", "ts_compile")
+load("//tools:index.bzl", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-locale"
@@ -16,7 +16,6 @@ pkg_npm(
         "package.json",
     ],
     deps = [
-        "%s.d.ts" % PACKAGE_NAME,
         ":dist",
     ],
 )
@@ -57,13 +56,6 @@ jest_test(
         "//packages/intl-getcanonicallocales:types",
         "//packages/intl-utils:types",
     ] + SRC_DEPS,
-)
-
-rollup_dts(
-    name = "rollup-dts",
-    package_name = PACKAGE_NAME,
-    package_json = "package.json",
-    types = [":types"],
 )
 
 # Test262
@@ -110,4 +102,10 @@ test262_harness_test(
         "$(rootpath test262-polyfill.js)",
         "$(rootpaths //:test262-locale)",
     ],
+)
+
+generated_file_test(
+    name = "tsconfig_json",
+    src = "tsconfig.json",
+    generated = "//tools:tsconfig.golden.json",
 )

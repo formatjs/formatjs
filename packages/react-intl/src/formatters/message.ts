@@ -131,6 +131,7 @@ export function formatMessage(
     onError,
     timeZone,
     wrapRichTextChunksInFragment,
+    defaultRichTextElements,
   }: Pick<
     IntlConfig,
     | 'locale'
@@ -141,6 +142,7 @@ export function formatMessage(
     | 'onError'
     | 'timeZone'
     | 'wrapRichTextChunksInFragment'
+    | 'defaultRichTextElements'
   >,
   state: Formatters,
   messageDescriptor: MessageDescriptor = {id: ''},
@@ -176,12 +178,30 @@ export function formatMessage(
     return message[0].value;
   }
 
+  if (
+    !values &&
+    message &&
+    typeof message === 'string' &&
+    !defaultRichTextElements
+  ) {
+    console.error(`[React Intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
+Please consider using "@formatjs/cli" to pre-compile your messages for performance.
+For more details see https://formatjs.io/docs/getting-started/message-distribution`);
+  }
+
   // IMPORTANT: Hot path straight lookup for performance
-  if (!values && message && typeof message === 'string') {
+  if (
+    !values &&
+    message &&
+    typeof message === 'string' &&
+    !defaultRichTextElements
+  ) {
     return message.replace(/'\{(.*?)\}'/gi, `{$1}`);
   }
-  const patchedValues =
-    values && assignUniqueKeysToFormatXMLElementFnArgument(values);
+  const patchedValues = assignUniqueKeysToFormatXMLElementFnArgument({
+    ...defaultRichTextElements,
+    ...(values || {}),
+  });
   formats = deepMergeFormatsAndSetTimeZone(formats, timeZone);
   defaultFormats = deepMergeFormatsAndSetTimeZone(defaultFormats, timeZone);
 

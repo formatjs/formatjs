@@ -1,3 +1,4 @@
+import '@formatjs/intl-getcanonicallocales/polyfill';
 import {
   DateTimeFormat,
   basicFormatMatcherScore,
@@ -5,10 +6,11 @@ import {
 } from '../';
 import * as en from './locale-data/en.json';
 import * as enGB from './locale-data/en-GB.json';
+import * as zhHans from './locale-data/zh-Hans.json';
 import allData from '../src/data/all-tz';
 import {parseDateTimeSkeleton} from '../src/skeleton';
 // @ts-ignore
-DateTimeFormat.__addLocaleData(en, enGB);
+DateTimeFormat.__addLocaleData(en, enGB, zhHans);
 DateTimeFormat.__addTZData(allData);
 describe('Intl.DateTimeFormat', function () {
   it('smoke test EST', function () {
@@ -56,6 +58,35 @@ describe('Intl.DateTimeFormat', function () {
         timeZone: 'Asia/Shanghai',
       }).format(new Date(0))
     ).toBe('1/1/1970, 8:00:00 AM China Standard Time');
+  });
+  it('CST w/ undefined TZ', function () {
+    const {TZ} = process.env;
+    process.env.TZ = undefined;
+    expect(
+      new DateTimeFormat('en', {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        timeZoneName: 'long',
+        timeZone: 'Asia/Shanghai',
+      }).format(new Date(0))
+    ).toBe('1/1/1970, 8:00:00 AM China Standard Time');
+    process.env.TZ = TZ;
+  });
+  it('smoke test for #1915', function () {
+    const {TZ} = process.env;
+    process.env.TZ = undefined;
+    expect(
+      new DateTimeFormat('zh-Hans', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+      }).format(new Date(0))
+    ).toBe('1月1日星期四');
+    process.env.TZ = TZ;
   });
   it('test for GH issue #1915', function () {
     expect(

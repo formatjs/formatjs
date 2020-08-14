@@ -26,7 +26,7 @@ import {
 import {NodePath, Scope} from '@babel/traverse';
 import * as validate from 'schema-utils';
 import * as OPTIONS_SCHEMA from './options.schema.json';
-import {OptionsSchema} from './options.js';
+import {OptionsSchema} from './options';
 import {interpolateName} from '@formatjs/ts-transformer';
 
 const DEFAULT_COMPONENT_NAMES = ['FormattedMessage'];
@@ -438,6 +438,7 @@ export default declare((api: any, options: OptionsSchema) => {
           removeDefaultMessage,
           idInterpolationPattern,
           overrideIdFn,
+          ast,
         } = opts;
         if (wasExtracted(path)) {
           return;
@@ -529,6 +530,24 @@ export default declare((api: any, options: OptionsSchema) => {
               defaultMessageAttr.remove();
             }
 
+            if (
+              !removeDefaultMessage &&
+              ast &&
+              descriptor.defaultMessage &&
+              defaultMessageAttr
+            ) {
+              defaultMessageAttr
+                .get('value')
+                .replaceWith(t.jsxExpressionContainer(t.stringLiteral('foo')));
+              (defaultMessageAttr.get('value') as NodePath<
+                JSXExpressionContainer
+              >)
+                .get('expression')
+                .replaceWithSourceString(
+                  JSON.stringify(parse(descriptor.defaultMessage))
+                );
+            }
+
             if (overrideIdFn || (descriptor.id && idInterpolationPattern)) {
               if (idAttr) {
                 idAttr.get('value').replaceWith(t.stringLiteral(descriptor.id));
@@ -564,6 +583,7 @@ export default declare((api: any, options: OptionsSchema) => {
           idInterpolationPattern,
           removeDefaultMessage,
           extractFromFormatMessageCall,
+          ast,
         } = opts;
         const callee = path.get('callee');
 
@@ -605,21 +625,17 @@ export default declare((api: any, options: OptionsSchema) => {
           storeMessage(descriptor, messageDescriptor, opts, filename, messages);
 
           // Remove description since it's not used at runtime.
-          messageDescriptor.replaceWith(
-            t.objectExpression([
-              t.objectProperty(
-                t.stringLiteral('id'),
-                t.stringLiteral(descriptor.id)
-              ),
+          messageDescriptor.replaceWithSourceString(
+            JSON.stringify({
+              id: descriptor.id,
               ...(!removeDefaultMessage && descriptor.defaultMessage
-                ? [
-                    t.objectProperty(
-                      t.stringLiteral('defaultMessage'),
-                      t.stringLiteral(descriptor.defaultMessage)
-                    ),
-                  ]
-                : []),
-            ])
+                ? {
+                    defaultMessage: ast
+                      ? parse(descriptor.defaultMessage)
+                      : descriptor.defaultMessage,
+                  }
+                : {}),
+            })
           );
 
           // Tag the AST node so we don't try to extract it twice.

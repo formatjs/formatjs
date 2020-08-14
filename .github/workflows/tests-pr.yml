@@ -1,0 +1,47 @@
+name: Unit + Sauce Labs Tests (PR)
+
+on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # - name: Bazel Cache
+      #   uses: actions/cache@v2.1.0
+      #   with:
+      #     path: |
+      #       ~/.cache/bazel
+      #       ~/.cache/bazel-disk-cache
+      #     key: ${{ runner.os }}-bazel-${{ github.sha }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-bazel-
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v2.1.0
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - uses: actions/checkout@v2.3.2
+        with:
+          submodules: true
+          fetch-depth: 110
+      - name: Use Node.js 12
+        uses: actions/setup-node@v2.1.1
+        with:
+          node-version: 12
+      - name: yarn install
+        run: |
+          yarn install --frozen-lockfile
+        env:
+          CI: true
+      - name: yarn build
+        run: |
+          yarn build
+      - name: yarn test
+        run: |
+          yarn test

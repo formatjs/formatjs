@@ -1,7 +1,7 @@
 import * as ts from 'typescript';
 import {MessageDescriptor} from './types';
 import {interpolateName} from './interpolate-name';
-
+import {parse, MessageFormatElement} from 'intl-messageformat-parser';
 export type Extractor = (filePath: string, msgs: MessageDescriptor[]) => void;
 export type MetaExtractor = (
   filePath: string,
@@ -20,6 +20,37 @@ const MESSAGE_DESC_KEYS: Array<keyof MessageDescriptor> = [
   'defaultMessage',
   'description',
 ];
+
+function primitiveToTSNode(v: string | number | boolean) {
+  return typeof v === 'string'
+    ? ts.createStringLiteral(v)
+    : typeof v === 'number'
+    ? ts.createNumericLiteral(v + '')
+    : typeof v === 'boolean'
+    ? v
+      ? ts.createTrue()
+      : ts.createFalse()
+    : undefined;
+}
+
+function objToTSNode(obj: object) {
+  const props: ts.PropertyAssignment[] = Object.entries(obj).map(([k, v]) =>
+    ts.createPropertyAssignment(
+      k,
+      primitiveToTSNode(v) ||
+        (Array.isArray(v)
+          ? ts.createArrayLiteral(v.map(objToTSNode))
+          : typeof v === 'object'
+          ? objToTSNode(v)
+          : ts.createNull())
+    )
+  );
+  return ts.createObjectLiteral(props);
+}
+
+function messageASTToTSNode(ast: MessageFormatElement[]) {
+  return ts.createArrayLiteral(ast.map(el => objToTSNode(el)));
+}
 
 export interface Opts {
   /**
@@ -78,6 +109,11 @@ export interface Opts {
    * @memberof Opts
    */
   overrideIdFn?: InterpolateNameFn | string;
+  /**
+   * Whether to compile `defaultMessage` to AST.
+   * This is no-op if `removeDefaultMessage` is `true`
+   */
+  ast?: boolean;
 }
 
 const DEFAULT_OPTS: Omit<Opts, 'program'> = {
@@ -241,27 +277,39 @@ function extractMessageFromJsxComponent(
   }
 
   const clonedEl = ts.getMutableClone(node);
-  clonedEl.attributes = setAttributesInJsxAttributes(clonedEl.attributes, {
-    defaultMessage: opts.removeDefaultMessage ? undefined : msg.defaultMessage,
-    id: msg.id,
-  });
+  clonedEl.attributes = setAttributesInJsxAttributes(
+    clonedEl.attributes,
+    {
+      defaultMessage: opts.removeDefaultMessage
+        ? undefined
+        : msg.defaultMessage,
+      id: msg.id,
+    },
+    opts.ast
+  );
   return clonedEl;
 }
 
 function setAttributesInObject(
   node: ts.ObjectLiteralExpression,
-  msg: MessageDescriptor
+  msg: MessageDescriptor,
+  ast?: boolean
 ) {
   const newNode = ts.getMutableClone(node);
-  const newProps = [];
-  for (const k of MESSAGE_DESC_KEYS) {
-    const val = msg[k];
-    if (val) {
-      newProps.push(
-        ts.createPropertyAssignment(k, ts.createStringLiteral(String(val)))
-      );
-    }
-  }
+  const newProps = [
+    ts.createPropertyAssignment('id', ts.createStringLiteral(msg.id)),
+    ...(msg.defaultMessage
+      ? [
+          ts.createPropertyAssignment(
+            'defaultMessage',
+            ast
+              ? messageASTToTSNode(parse(msg.defaultMessage))
+              : ts.createStringLiteral(msg.defaultMessage)
+          ),
+        ]
+      : []),
+  ];
+
   for (const prop of node.properties) {
     if (
       ts.isPropertyAssignment(prop) &&
@@ -270,7 +318,9 @@ function setAttributesInObject(
     ) {
       continue;
     }
-    newProps.push(prop);
+    if (ts.isPropertyAssignment(prop)) {
+      newProps.push(prop);
+    }
   }
   newNode.properties = ts.createNodeArray(newProps);
   return newNode;
@@ -278,21 +328,29 @@ function setAttributesInObject(
 
 function setAttributesInJsxAttributes(
   node: ts.JsxAttributes,
-  msg: MessageDescriptor
+  msg: MessageDescriptor,
+  ast?: boolean
 ) {
   const newNode = ts.getMutableClone(node);
-  const newProps = [];
-  for (const k of MESSAGE_DESC_KEYS) {
-    const val = msg[k];
-    if (val) {
-      newProps.push(
-        ts.createJsxAttribute(
-          ts.createIdentifier(k),
-          ts.createStringLiteral(String(val))
-        )
-      );
-    }
-  }
+  const newProps = [
+    ts.createJsxAttribute(
+      ts.createIdentifier('id'),
+      ts.createStringLiteral(msg.id)
+    ),
+    ...(msg.defaultMessage
+      ? [
+          ts.createJsxAttribute(
+            ts.createIdentifier('defaultMessage'),
+            ast
+              ? ts.createJsxExpression(
+                  undefined,
+                  messageASTToTSNode(parse(msg.defaultMessage))
+                )
+              : ts.createStringLiteral(msg.defaultMessage)
+          ),
+        ]
+      : []),
+  ];
   for (const prop of node.properties) {
     if (
       ts.isJsxAttribute(prop) &&
@@ -301,7 +359,9 @@ function setAttributesInJsxAttributes(
     ) {
       continue;
     }
-    newProps.push(prop);
+    if (ts.isJsxAttribute(prop)) {
+      newProps.push(prop);
+    }
   }
   newNode.properties = ts.createNodeArray(newProps);
   return newNode;
@@ -354,12 +414,16 @@ function extractMessagesFromCallExpression(
             return prop;
           }
           const clonedNode = ts.getMutableClone(prop);
-          clonedNode.initializer = setAttributesInObject(prop.initializer, {
-            defaultMessage: opts.removeDefaultMessage
-              ? undefined
-              : msgs[i].defaultMessage,
-            id: msgs[i] ? msgs[i].id : '',
-          });
+          clonedNode.initializer = setAttributesInObject(
+            prop.initializer,
+            {
+              defaultMessage: opts.removeDefaultMessage
+                ? undefined
+                : msgs[i].defaultMessage,
+              id: msgs[i] ? msgs[i].id : '',
+            },
+            opts.ast
+          );
           return clonedNode;
         })
       );
@@ -386,12 +450,16 @@ function extractMessagesFromCallExpression(
 
       const newNode = ts.getMutableClone(node);
       newNode.arguments = ts.createNodeArray([
-        setAttributesInObject(descriptorsObj, {
-          defaultMessage: opts.removeDefaultMessage
-            ? undefined
-            : msg.defaultMessage,
-          id: msg.id,
-        }),
+        setAttributesInObject(
+          descriptorsObj,
+          {
+            defaultMessage: opts.removeDefaultMessage
+              ? undefined
+              : msg.defaultMessage,
+            id: msg.id,
+          },
+          opts.ast
+        ),
         ...restArgs,
       ]);
       return newNode;

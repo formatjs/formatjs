@@ -1,6 +1,6 @@
 name: Unit + Sauce Labs Tests
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   build:

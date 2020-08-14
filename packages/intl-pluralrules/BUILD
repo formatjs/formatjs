@@ -1,11 +1,11 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
 
 # load("@npm//karma:index.bzl", "karma_test")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "rollup_dts", "ts_compile")
+load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-pluralrules"
@@ -27,7 +27,6 @@ pkg_npm(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "%s.d.ts" % PACKAGE_NAME,
         "polyfill-locales.js",
         ":dist",
         ":locale-data",
@@ -73,16 +72,6 @@ jest_test(
     name = "unit",
     srcs = SRCS + TESTS + TEST_LOCALE_DATA,
     deps = TEST_DEPS,
-)
-
-rollup_dts(
-    name = "rollup-dts",
-    package_name = PACKAGE_NAME,
-    package_json = "package.json",
-    types = [
-        ":types",
-        "//packages/intl-utils:types",
-    ],
 )
 
 # CLDR
@@ -231,4 +220,10 @@ bundle_karma_tests(
     data = TEST_LOCALE_DATA,
     tests = TESTS,
     deps = SRC_DEPS,
+)
+
+generated_file_test(
+    name = "tsconfig_json",
+    src = "tsconfig.json",
+    generated = "//tools:tsconfig.golden.json",
 )

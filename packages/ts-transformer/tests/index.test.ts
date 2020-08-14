@@ -39,6 +39,13 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
     },
     extractFromFormatMessageCall: true,
   },
+  ast: {
+    ast: true,
+    overrideIdFn: (id, defaultMessage, description) => {
+      return `HELLO.${id}.${defaultMessage!.length}.${typeof description}`;
+    },
+    extractFromFormatMessageCall: true,
+  },
   removeDefaultMessage: {
     removeDefaultMessage: true,
   },

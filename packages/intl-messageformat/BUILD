@@ -1,7 +1,7 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/terser:index.bzl", "terser_minified")
-load("//tools:index.bzl", "rollup_dts", "ts_compile")
+load("//tools:index.bzl", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-messageformat"
@@ -15,7 +15,6 @@ pkg_npm(
         "package.json",
     ],
     deps = [
-        "%s.d.ts" % PACKAGE_NAME,
         "%s.umd.js" % PACKAGE_NAME,
         ":%s.umd.min" % PACKAGE_NAME,
         ":dist",
@@ -64,16 +63,6 @@ jest_test(
     ],
 )
 
-rollup_dts(
-    name = "rollup-dts",
-    package_name = PACKAGE_NAME,
-    package_json = "package.json",
-    types = [
-        ":types",
-        "//packages/intl-messageformat-parser:types",
-    ],
-)
-
 rollup_bundle(
     name = "%s.umd" % PACKAGE_NAME,
     srcs = [":dist-esm"],
@@ -96,4 +85,10 @@ terser_minified(
     name = "%s.umd.min" % PACKAGE_NAME,
     src = "%s.umd.js" % PACKAGE_NAME,
     sourcemap = False,
+)
+
+generated_file_test(
+    name = "tsconfig_json",
+    src = "tsconfig.json",
+    generated = "//tools:tsconfig.golden.json",
 )

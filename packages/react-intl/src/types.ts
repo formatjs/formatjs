@@ -36,6 +36,7 @@ export interface IntlConfig {
   defaultLocale: string;
   defaultFormats: CustomFormats;
   wrapRichTextChunksInFragment?: boolean;
+  defaultRichTextElements?: Record<string, FormatXMLElementFn<React.ReactNode>>;
   onError(
     err:
       | MissingTranslationError
@@ -180,5 +181,5 @@ export interface IntlCache {
 export interface MessageDescriptor {
   id?: string | number;
   description?: string | object;
-  defaultMessage?: string;
+  defaultMessage?: string | MessageFormatElement[];
 }

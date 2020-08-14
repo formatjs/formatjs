@@ -1,5 +1,5 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
-load("//tools:index.bzl", "rollup_dts", "ts_compile")
+load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
+load("//tools:index.bzl", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-utils"
@@ -13,7 +13,6 @@ pkg_npm(
         "package.json",
     ],
     deps = [
-        "%s.d.ts" % PACKAGE_NAME,
         ":dist",
         ":dist-esm",
     ],
@@ -51,9 +50,8 @@ jest_test(
     deps = SRC_DEPS,
 )
 
-rollup_dts(
-    name = "rollup-dts",
-    package_name = PACKAGE_NAME,
-    package_json = "package.json",
-    types = [":types"],
+generated_file_test(
+    name = "tsconfig_json",
+    src = "tsconfig.json",
+    generated = "//tools:tsconfig.golden.json",
 )

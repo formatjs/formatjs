@@ -1,6 +1,6 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "nodejs_binary", "pkg_npm")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "rollup_dts", "ts_compile")
+load("//tools:index.bzl", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-messageformat-parser"
@@ -14,7 +14,6 @@ pkg_npm(
         "package.json",
     ],
     deps = [
-        "%s.d.ts" % PACKAGE_NAME,
         ":dist",
         ":dist-esm",
     ],
@@ -30,7 +29,10 @@ alias(
     actual = "%s.pack" % PACKAGE_NAME,
 )
 
-SRCS = glob(["src/*.ts"]) + ["index.ts"]
+SRCS = glob(["src/*.ts"]) + [
+    "index.ts",
+    "dummy.ts",
+]
 
 SRC_DEPS = [
     "//packages/intl-numberformat:dist",
@@ -84,17 +86,6 @@ generated_file_test(
     generated = ":parser-gen",
 )
 
-rollup_dts(
-    name = "rollup-dts",
-    package_name = PACKAGE_NAME,
-    package_json = "package.json",
-    types = [
-        ":types",
-        "//packages/intl-numberformat:types",
-        "//packages/intl-utils:types",
-    ],
-)
-
 ts_node(
     name = "benchmark",
     args = [
@@ -104,4 +95,10 @@ ts_node(
         "@npm//benchmark",
         "tests/benchmark.js",
     ] + SRCS + SRC_DEPS,
+)
+
+generated_file_test(
+    name = "tsconfig_json",
+    src = "tsconfig.json",
+    generated = "//tools:tsconfig.golden.json",
 )

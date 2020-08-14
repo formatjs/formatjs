@@ -1,7 +1,7 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/terser:index.bzl", "terser_minified")
-load("//tools:index.bzl", "rollup_dts", "ts_compile")
+load("//tools:index.bzl", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "react-intl"
@@ -15,9 +15,10 @@ pkg_npm(
         "package.json",
     ],
     deps = [
-        "%s.d.ts" % PACKAGE_NAME,
         "%s.umd.js" % PACKAGE_NAME,
         ":%s.umd.min" % PACKAGE_NAME,
+        "%s-no-parser.umd.js" % PACKAGE_NAME,
+        ":%s-no-parser.umd.min" % PACKAGE_NAME,
         ":dist",
         ":dist-esm",
     ],
@@ -86,8 +87,10 @@ jest_test(
     name = "functional",
     srcs = glob(["tests/functional/**/*.ts*"]) + [
         "tests/setup.js",
-        "react-intl.umd.js",
-        ":react-intl.umd.min",
+        "%s.umd.js" % PACKAGE_NAME,
+        ":%s.umd.min" % PACKAGE_NAME,
+        "%s-no-parser.umd.js" % PACKAGE_NAME,
+        ":%s-no-parser.umd.min" % PACKAGE_NAME,
         "package.json",
         "//packages/intl-numberformat:locale-data",
         "//packages/intl-displaynames:polyfill-locales.js",
@@ -96,31 +99,13 @@ jest_test(
     deps = TEST_DEPS + [":dist"],
 )
 
-rollup_dts(
-    name = "rollup-dts",
-    package_name = PACKAGE_NAME,
-    package_json = "package.json",
-    types = [
-        ":types",
-        "@npm//@types/react",
-        "//packages/intl-numberformat:types",
-        "//packages/intl-listformat:types",
-        "//packages/intl-displaynames:types",
-        "//packages/intl-datetimeformat:types",
-        "//packages/intl-relativetimeformat:types",
-        "//packages/intl-messageformat:types",
-        "//packages/intl-messageformat-parser:types",
-        "//packages/intl-utils:types",
-        "@npm//@types/hoist-non-react-statics",
-    ],
-)
-
 rollup_bundle(
     name = "%s.umd" % PACKAGE_NAME,
     srcs = [":dist-esm"],
     args = [
         "--name",
         "ReactIntl",
+        "--no-sourcemap",
     ],
     config_file = "//:rollup.config.js",
     entry_point = "lib/index.js",
@@ -136,6 +121,32 @@ rollup_bundle(
 terser_minified(
     name = "%s.umd.min" % PACKAGE_NAME,
     src = "%s.umd.js" % PACKAGE_NAME,
+    sourcemap = False,
+)
+
+rollup_bundle(
+    name = "%s-no-parser.umd" % PACKAGE_NAME,
+    srcs = [":dist-esm"],
+    args = [
+        "--name",
+        "ReactIntl",
+        "--no-sourcemap",
+    ],
+    config_file = "rollup.config.js",
+    entry_point = "lib/index.js",
+    format = "umd",
+    deps = [
+        "@npm//@rollup/plugin-node-resolve",
+        "@npm//@rollup/plugin-commonjs",
+        "@npm//@rollup/plugin-replace",
+        "@npm//@rollup/plugin-json",
+        "@npm//@rollup/plugin-alias",
+    ] + SRC_DEPS,
+)
+
+terser_minified(
+    name = "%s-no-parser.umd.min" % PACKAGE_NAME,
+    src = "%s-no-parser.umd.js" % PACKAGE_NAME,
     sourcemap = False,
 )
 
@@ -200,3 +211,9 @@ terser_minified(
 #         "$(rootpath //:karma.conf-ci.js)",
 #     ] + ["$$(rlocation $(location %s))" % f for f in BUNDLE_KARMA_TESTS],
 # )
+
+generated_file_test(
+    name = "tsconfig_json",
+    src = "tsconfig.json",
+    generated = "//tools:tsconfig.golden.json",
+)

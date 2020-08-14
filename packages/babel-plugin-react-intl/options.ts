@@ -14,4 +14,5 @@ export interface OptionsSchema {
   pragma?: string;
   extractFromFormatMessageCall?: boolean;
   extractSourceLocation?: boolean;
+  ast?: boolean;
 }

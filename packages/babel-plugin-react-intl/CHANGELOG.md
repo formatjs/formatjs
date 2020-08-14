@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.1.1](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.1.0...babel-plugin-react-intl@8.1.1) (2020-08-14)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+# [8.1.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.0.1...babel-plugin-react-intl@8.1.0) (2020-08-14)
+
+
+### Features
+
+* **babel-plugin-react-intl:** add --ast flag to compile defaultMessage to AST during transpilation ([1953149](https://github.com/formatjs/formatjs/commit/19531490a70c6d9a43ffdfe85c0b48a0ad0efa92))
+
+
+
+
+
 ## [8.0.1](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.0.0...babel-plugin-react-intl@8.0.1) (2020-08-13)
 
 **Note:** Version bump only for package babel-plugin-react-intl
