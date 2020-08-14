@@ -4,7 +4,7 @@ import * as smartling from './smartling';
 import * as simple from './simple';
 import * as lokalise from './lokalise';
 import * as crowdin from './crowdin';
-
+import {resolve} from 'path';
 export async function resolveBuiltinFormatter(format?: string) {
   if (!format) {
     return defaultFormatter;
@@ -22,7 +22,7 @@ export async function resolveBuiltinFormatter(format?: string) {
       return crowdin;
   }
   try {
-    return import(format);
+    return import(resolve(process.cwd(), format));
   } catch (e) {
     console.error(`Cannot resolve formatter ${format}`);
     throw e;
