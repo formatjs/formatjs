@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.5.0](https://github.com/formatjs/formatjs/compare/react-intl@5.4.8...react-intl@5.5.0) (2020-08-14)
+
+
+### Features
+
+* **react-intl:** add support for default rich text elements with defaultRichTextElements, fix [#1752](https://github.com/formatjs/formatjs/issues/1752) ([f18c6d3](https://github.com/formatjs/formatjs/commit/f18c6d3f41154197f6541b8584c54d970a881ccd))
+* **react-intl:** tweak MessageDescriptor defaultMessage type to be AST as well ([d110f8e](https://github.com/formatjs/formatjs/commit/d110f8e15ea49a416741445ad102340cc3a82d1a))
+
+
+
+
+
 ## [5.4.8](https://github.com/formatjs/formatjs/compare/react-intl@5.4.7...react-intl@5.4.8) (2020-08-13)
 
 **Note:** Version bump only for package react-intl

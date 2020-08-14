@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.6.0...@formatjs/ts-transformer@2.7.0) (2020-08-14)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** add --ast to precompile defaultMessage ([197ae81](https://github.com/formatjs/formatjs/commit/197ae816a42ad8e75b64e72b1265e0f305aeefb3))
+
+
+
+
+
 # [2.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.5.1...@formatjs/ts-transformer@2.6.0) (2020-08-07)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.4.0...@formatjs/intl-datetimeformat@2.4.1) (2020-08-14)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix numeric/alphabetic pattern expansion, part of [#1915](https://github.com/formatjs/formatjs/issues/1915) ([0fe7030](https://github.com/formatjs/formatjs/commit/0fe7030245ef6cd12f7661661f2db67281c87606))
+
+
+
+
+
 # [2.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.3.1...@formatjs/intl-datetimeformat@2.4.0) (2020-08-13)
 
 
