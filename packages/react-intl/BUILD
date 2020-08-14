@@ -17,6 +17,8 @@ pkg_npm(
     deps = [
         "%s.umd.js" % PACKAGE_NAME,
         ":%s.umd.min" % PACKAGE_NAME,
+        "%s-no-parser.umd.js" % PACKAGE_NAME,
+        ":%s-no-parser.umd.min" % PACKAGE_NAME,
         ":dist",
         ":dist-esm",
     ],
@@ -85,8 +87,10 @@ jest_test(
     name = "functional",
     srcs = glob(["tests/functional/**/*.ts*"]) + [
         "tests/setup.js",
-        "react-intl.umd.js",
-        ":react-intl.umd.min",
+        "%s.umd.js" % PACKAGE_NAME,
+        ":%s.umd.min" % PACKAGE_NAME,
+        "%s-no-parser.umd.js" % PACKAGE_NAME,
+        ":%s-no-parser.umd.min" % PACKAGE_NAME,
         "package.json",
         "//packages/intl-numberformat:locale-data",
         "//packages/intl-displaynames:polyfill-locales.js",
@@ -101,6 +105,7 @@ rollup_bundle(
     args = [
         "--name",
         "ReactIntl",
+        "--no-sourcemap",
     ],
     config_file = "//:rollup.config.js",
     entry_point = "lib/index.js",
@@ -116,6 +121,32 @@ rollup_bundle(
 terser_minified(
     name = "%s.umd.min" % PACKAGE_NAME,
     src = "%s.umd.js" % PACKAGE_NAME,
+    sourcemap = False,
+)
+
+rollup_bundle(
+    name = "%s-no-parser.umd" % PACKAGE_NAME,
+    srcs = [":dist-esm"],
+    args = [
+        "--name",
+        "ReactIntl",
+        "--no-sourcemap",
+    ],
+    config_file = "rollup.config.js",
+    entry_point = "lib/index.js",
+    format = "umd",
+    deps = [
+        "@npm//@rollup/plugin-node-resolve",
+        "@npm//@rollup/plugin-commonjs",
+        "@npm//@rollup/plugin-replace",
+        "@npm//@rollup/plugin-json",
+        "@npm//@rollup/plugin-alias",
+    ] + SRC_DEPS,
+)
+
+terser_minified(
+    name = "%s-no-parser.umd.min" % PACKAGE_NAME,
+    src = "%s-no-parser.umd.js" % PACKAGE_NAME,
     sourcemap = False,
 )
 

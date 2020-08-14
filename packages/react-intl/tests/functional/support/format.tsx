@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
+import {parse} from 'intl-messageformat-parser';
 
-export default function (ReactIntl) {
+export default function (ReactIntl, noParser?: boolean) {
   describe('format', () => {
     const {
       IntlProvider,
@@ -66,10 +67,12 @@ export default function (ReactIntl) {
     });
 
     it('pluralizes labels in strings', () => {
+      const message =
+        'You have {emails, plural, one {# email} other {# emails}}.';
       const el = (
         <FormattedMessage
           id="test"
-          defaultMessage="You have {emails, plural, one {# email} other {# emails}}."
+          defaultMessage={noParser ? parse(message) : message}
           values={{
             emails: 1000,
           }}
