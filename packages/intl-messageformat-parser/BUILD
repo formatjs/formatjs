@@ -29,7 +29,10 @@ alias(
     actual = "%s.pack" % PACKAGE_NAME,
 )
 
-SRCS = glob(["src/*.ts"]) + ["index.ts"]
+SRCS = glob(["src/*.ts"]) + [
+    "index.ts",
+    "dummy.ts",
+]
 
 SRC_DEPS = [
     "//packages/intl-numberformat:dist",
