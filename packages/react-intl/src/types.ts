@@ -36,6 +36,7 @@ export interface IntlConfig {
   defaultLocale: string;
   defaultFormats: CustomFormats;
   wrapRichTextChunksInFragment?: boolean;
+  defaultRichTextElements?: Record<string, FormatXMLElementFn<React.ReactNode>>;
   onError(
     err:
       | MissingTranslationError

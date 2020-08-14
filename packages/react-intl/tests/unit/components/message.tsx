@@ -217,6 +217,27 @@ describe('<FormattedMessage>', () => {
       expect(nameNode.type()).toBe('b');
       expect(nameNode.text()).toBe('Jest');
     });
+    it('supports rich-text message formatting with defaultRichTextElements', () => {
+      const rendered = mountWithProvider(
+        {
+          id: 'hello',
+          defaultMessage: 'Hello, <b>{name}</b>!',
+          values: {
+            name: 'Jest',
+          },
+        },
+        {
+          ...providerProps,
+          defaultRichTextElements: {
+            b: chunks => <b>{chunks}</b>,
+          },
+        }
+      );
+
+      const nameNode = rendered.find('b');
+      expect(nameNode.type()).toBe('b');
+      expect(nameNode.text()).toBe('Jest');
+    });
 
     it('supports rich-text message formatting w/ nested tag', () => {
       const rendered = mountWithProvider(

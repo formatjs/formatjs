@@ -34,6 +34,7 @@ interface IntlConfig {
   defaultLocale: string;
   defaultFormats: CustomFormats;
   wrapRichTextChunksInFragment?: boolean;
+  defaultRichTextElements?: Record<string, FormatXMLElementFn<React.ReactNode>>;
   onError(err: string): void;
 }
 ```
@@ -45,6 +46,8 @@ interface IntlConfig {
 - `onError` allows the user to provide a custom error handler. By default, error messages are logged using `console.error` if `NODE_ENV` is not set to `production`.
 
 - `wrapRichTextChunksInFragment`: When formatting rich text message, the output we produced is of type `Array<string | React.ReactElement>`, which will trigger key error. This wraps the output in a single `React.Fragment` to suppress that.
+
+- `defaultRichTextElements`: A map of tag to rich text formatting function. This is meant to provide a centralized way to format common tags such as `<b>`, `<p>`... or enforcing certain Design System in the codebase (e.g standardized `<a>` or `<button>`...). See https://github.com/formatjs/formatjs/issues/1752 for more context.
 
 These configuration props are combined with the `<IntlProvider>`'s component-specific props:
 
