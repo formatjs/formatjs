@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.6.3](https://github.com/formatjs/formatjs/compare/react-intl@5.6.2...react-intl@5.6.3) (2020-08-15)
+
+
+### Bug Fixes
+
+* **react-intl:** fix err message conditions for defaultRichTextElements, fix [#1972](https://github.com/formatjs/formatjs/issues/1972) ([7e6f311](https://github.com/formatjs/formatjs/commit/7e6f311f16f6ef4a4668f1fe9eeeac0b962b29b9))
+
+
+
+
+
 ## [5.6.2](https://github.com/formatjs/formatjs/compare/react-intl@5.6.1...react-intl@5.6.2) (2020-08-15)
 
 **Note:** Version bump only for package react-intl
