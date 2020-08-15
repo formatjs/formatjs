@@ -182,7 +182,7 @@ export function formatMessage(
     !values &&
     message &&
     typeof message === 'string' &&
-    !defaultRichTextElements
+    defaultRichTextElements
   ) {
     console.error(`[React Intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
 Please consider using "@formatjs/cli" to pre-compile your messages for performance.

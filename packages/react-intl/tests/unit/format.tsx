@@ -693,6 +693,12 @@ describe('format API', () => {
       );
       expect(state.getMessageFormat).toHaveBeenCalled();
     });
+    it('should hot path message without values', function () {
+      (state.getMessageFormat as jest.Mock).mockClear();
+      const err = jest.spyOn(console, 'error');
+      expect(formatMessage({id: 'no_args'})).toBe('Hello, World!');
+      expect(err).not.toHaveBeenCalled();
+    });
     it('should not crash of messages does not have Object.prototype', function () {
       const messages = Object.create(null);
       messages.no_args = 'Hello';
