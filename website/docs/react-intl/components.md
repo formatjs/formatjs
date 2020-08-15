@@ -39,15 +39,29 @@ interface IntlConfig {
 }
 ```
 
-- `locale`, `formats`, and `messages` are for the user's current locale and what the app should be rendered in. While `defaultLocale` and `defaultFormats` are for fallbacks or during development and represent the app's default. Notice how there is no `defaultMessages`, that's because each [Message Descriptor](#message-descriptor) provides a `defaultMessage`.
+### `locale`, `formats`, and `messages`
 
-- `textComponent` provides a way to configure the default wrapper for React Intl's `<Formatted*>` components. If not specified, [`<React.Fragment>`](https://reactjs.org/docs/fragments.html) is used. Before V3, `span` was used instead; check the [migration guide](upgrade-guide-3.x.md) for more info.
+The user's current locale and what the app should be rendered in. While `defaultLocale` and `defaultFormats` are for fallbacks or during development and represent the app's default. Notice how there is no `defaultMessages`, that's because each [Message Descriptor](#message-descriptor) provides a `defaultMessage`.
 
-- `onError` allows the user to provide a custom error handler. By default, error messages are logged using `console.error` if `NODE_ENV` is not set to `production`.
+### `defaultLocale` and `defaultFormats`
 
-- `wrapRichTextChunksInFragment`: When formatting rich text message, the output we produced is of type `Array<string | React.ReactElement>`, which will trigger key error. This wraps the output in a single `React.Fragment` to suppress that.
+Default locale & formats for when a message is not translated (missing from `messages`). `defaultLocale` should be the locale that `defaultMessage`s are declared in so that a sentence is coherent in a single locale. Without `defaultLocale` and/or if it's set incorrectly, you might run into scenario where a sentence is in English but embeded date/time is in Spanish.
 
-- `defaultRichTextElements`: A map of tag to rich text formatting function. This is meant to provide a centralized way to format common tags such as `<b>`, `<p>`... or enforcing certain Design System in the codebase (e.g standardized `<a>` or `<button>`...). See https://github.com/formatjs/formatjs/issues/1752 for more context.
+### `textComponent`
+
+Provides a way to configure the default wrapper for React Intl's `<Formatted*>` components. If not specified, [`<React.Fragment>`](https://reactjs.org/docs/fragments.html) is used. Before V3, `span` was used instead; check the [migration guide](upgrade-guide-3.x.md) for more info.
+
+### `onError`
+
+Allows the user to provide a custom error handler. By default, error messages are logged using `console.error` if `NODE_ENV` is not set to `production`.
+
+### `wrapRichTextChunksInFragment`
+
+When formatting rich text message, the output we produced is of type `Array<string | React.ReactElement>`, which will trigger key error. This wraps the output in a single `React.Fragment` to suppress that.
+
+#### `defaultRichTextElements`
+
+A map of tag to rich text formatting function. This is meant to provide a centralized way to format common tags such as `<b>`, `<p>`... or enforcing certain Design System in the codebase (e.g standardized `<a>` or `<button>`...). See https://github.com/formatjs/formatjs/issues/1752 for more context.
 
 These configuration props are combined with the `<IntlProvider>`'s component-specific props:
 
