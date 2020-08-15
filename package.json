@@ -112,7 +112,7 @@
     "ts-node": "^8.9.0",
     "ts-pegjs": "^0.2.6",
     "tslib": "^2.0.0",
-    "typescript": "~3.8.0"
+    "typescript": "~3.9.7"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
