@@ -54,6 +54,7 @@ filegroup(
             "**/constructor-locales-get-tostring.js",  # Bc our Intl.getCanonicalLocales isn't really spec-compliant
             "**/taint-Object-prototype.js",  # Bc our Intl.getCanonicalLocales isn't really spec-compliant
             "**/numbering-systems.js",  # See https://github.com/tc39/ecma402/issues/479
+            "**/dft-currency-mnfd-range-check-mxfd.js",  # TODO
         ],
     ),
     visibility = ["//packages/intl-numberformat:__subpackages__"],
@@ -133,6 +134,7 @@ filegroup(
         exclude = [
             "**/return-object.js",  # We need to fix default content support.
             "**/proto-from-ctor-realm.js",  # Bc of Realm support
+            "**/options-type-invalid-throws.js",  # TODO
         ],
     ),
     visibility = ["//packages/intl-displaynames:__subpackages__"],

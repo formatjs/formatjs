@@ -262,7 +262,7 @@ try {
     });
   }
   Object.defineProperty(DisplayNames, 'length', {
-    value: 0,
+    value: 2,
     writable: false,
     enumerable: false,
     configurable: true,
