@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.4.2...@formatjs/intl-datetimeformat@2.4.3) (2020-08-15)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix zoneData lookup, fix [#1915](https://github.com/formatjs/formatjs/issues/1915) ([da24efe](https://github.com/formatjs/formatjs/commit/da24efe91b4db3de08b319eeeefe068a700663ef))
+
+
+
+
+
 ## [2.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.4.1...@formatjs/intl-datetimeformat@2.4.2) (2020-08-14)
 
 
