@@ -97,6 +97,24 @@ describe('Intl.DateTimeFormat', function () {
       }).format(new Date(0))
     ).toBe('8:00 AM');
   });
+  it('diff tz should yield different result', function () {
+    const {TZ} = process.env;
+    process.env.TZ = undefined;
+    const now = new Date();
+    expect(
+      new DateTimeFormat('en', {
+        hour: 'numeric',
+        minute: 'numeric',
+        timeZone: 'Asia/Shanghai',
+      }).format(now)
+    ).not.toBe(
+      new DateTimeFormat('en', {
+        hour: 'numeric',
+        minute: 'numeric',
+      }).format(now)
+    );
+    process.env.TZ = TZ;
+  });
   it('month: long', function () {
     expect(
       new DateTimeFormat('en', {

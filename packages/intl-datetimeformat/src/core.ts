@@ -326,7 +326,7 @@ function initializeDateTimeFormat(
     }
     timeZone = canonicalizeTimeZoneName(timeZone);
   } else {
-    timeZone = DateTimeFormat.__defaultLocale;
+    timeZone = DateTimeFormat.__defaultTimeZone;
   }
   internalSlots.timeZone = timeZone;
 
@@ -1239,13 +1239,16 @@ function getApplicableZoneData(t: number, timeZone: string): [number, boolean] {
   if (!zoneData) {
     return [0, false];
   }
-  for (let i = 0; i < zoneData.length; i++) {
-    if (zoneData[i][0] * 1e3 >= t) {
-      const [, , offset, dst] = zoneData[i - 1];
-      return [offset * 1e3, dst];
+  let i = 0;
+  let offset = 0;
+  let dst = false;
+  for (; i <= zoneData.length; i++) {
+    if (i === zoneData.length || zoneData[i][0] * 1e3 >= t) {
+      [, , offset, dst] = zoneData[i - 1];
+      break;
     }
   }
-  return [0, false];
+  return [offset * 1e3, dst];
 }
 
 function toLocalTime(
@@ -1272,6 +1275,7 @@ function toLocalTime(
     'We only support Gregory calendar right now'
   );
   const [timeZoneOffset, inDST] = getApplicableZoneData(t, timeZone);
+
   const tz = t + timeZoneOffset;
   const year = yearFromTime(tz);
   return {
@@ -1413,7 +1417,8 @@ defineProperty(DateTimeFormat.prototype, 'formatToParts', {
   },
 });
 
-DateTimeFormat.__defaultTimeZone = 'UTC';
+DateTimeFormat.__defaultTimeZone =
+  (typeof process !== 'undefined' && process.env && process.env.TZ) || 'UTC';
 
 DateTimeFormat.__addLocaleData = function __addLocaleData(
   ...data: RawDateTimeLocaleData[]
