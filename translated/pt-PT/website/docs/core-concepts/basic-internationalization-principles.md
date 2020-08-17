@@ -36,13 +36,13 @@ FormatJS fornece um mecanismo que permite-lhe que escreva o programa da sua apli
 
 ```tsx
 const messages = {
-  pt: {
-    GREETING: 'Olá {name}',
-  },
   en: {
     GREETING: 'Hello {name}',
   },
-};
+  fr: {
+    GREETING: 'Bonjour {name}',
+  },
+}
 ```
 
 Nós usamos a [ICU Message syntax](http://userguide.icu-project.org/formatparse/messages) no qual também é usada em [Java](http://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html), C, PHP e várias outras linguagens.
