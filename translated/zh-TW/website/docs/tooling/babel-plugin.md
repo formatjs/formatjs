@@ -61,7 +61,7 @@ Remove `defaultMessage` field in generated js after extraction.
 
 ### **`extractFromFormatMessageCall`**
 
-Opt-in to extract from `intl.formatMessage` call with the same restrictions, e.g: has to be called with object literal such as `intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'})`
+Opt-in to compile `intl.formatMessage` call with the same restrictions, e.g: has to be called with object literal such as `intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'})`
 
 ### **`additionalComponentNames`**
 
