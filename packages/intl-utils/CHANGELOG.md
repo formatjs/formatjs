@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.8.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@3.8.3...@formatjs/intl-utils@3.8.4) (2020-08-17)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** use grouping data from CLDR ([#1985](https://github.com/formatjs/formatjs/issues/1985)) ([8edc4ae](https://github.com/formatjs/formatjs/commit/8edc4ae45ed8032f5ca33989f4820bea5c2db030)), closes [#1949](https://github.com/formatjs/formatjs/issues/1949)
+
+
+
+
+
 ## [3.8.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-utils@3.8.2...@formatjs/intl-utils@3.8.3) (2020-08-14)
 
 **Note:** Version bump only for package @formatjs/intl-utils

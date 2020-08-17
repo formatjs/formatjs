@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.4.3...@formatjs/intl-datetimeformat@2.5.0) (2020-08-17)
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** add __setDefaultTimeZone to DateTimeFormat, fix [#1989](https://github.com/formatjs/formatjs/issues/1989) ([6a56b13](https://github.com/formatjs/formatjs/commit/6a56b131fd8468202a7f9586418d7b79f9c14752))
+
+
+
+
+
 ## [2.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.4.2...@formatjs/intl-datetimeformat@2.4.3) (2020-08-15)
 
 
