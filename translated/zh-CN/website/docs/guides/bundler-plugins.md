@@ -14,14 +14,14 @@ npm i -D babel-plugin-react-intl
 Let's take this simple example:
 
 ```tsx
-import {FormattedMessage} from 'react-intl';
-<FormattedMessage
+import {FormattedMessage} from 'react-intl'
+;<FormattedMessage
   description="A message"
   defaultMessage="My name is {name}"
   values={{
     name: userName,
   }}
-/>;
+/>
 ```
 
 During runtime this will throw an `Error` saying `ID is required`. In order to inject an ID in the transpiled JS, you can use our [babel-plugin-react-intl](../tooling/babel-plugin.md) similarly as below:
@@ -46,7 +46,7 @@ During runtime this will throw an `Error` saying `ID is required`. In order to i
 This will produce the following JS
 
 ```js
-const {FormattedMessage} = require('react-intl');
+const {FormattedMessage} = require('react-intl')
 
 React.createElement(FormattedMessage, {
   id: '179jda',
@@ -54,7 +54,7 @@ React.createElement(FormattedMessage, {
   values: {
     name: userName,
   },
-});
+})
 ```
 
 :::info description Our plugin also removes `description` because it's only for translator, not end-user. :::
@@ -70,14 +70,14 @@ If you're using TypeScript, in order to enable custom AST transformer you should
 Let's take this simple example:
 
 ```tsx
-import {FormattedMessage} from 'react-intl';
-<FormattedMessage
+import {FormattedMessage} from 'react-intl'
+;<FormattedMessage
   description="A message"
   defaultMessage="My name is {name}"
   values={{
     name: userName,
   }}
-/>;
+/>
 ```
 
 ### ts-loader
@@ -85,7 +85,7 @@ import {FormattedMessage} from 'react-intl';
 You can add this in your webpack config `ts-loader`.
 
 ```js
-import {transform} from '@formatjs/ts-transformer';
+import {transform} from '@formatjs/ts-transformer'
 // webpack config
 module.exports = {
   rules: [
@@ -103,7 +103,7 @@ module.exports = {
                     overrideIdFn: '[sha512:contenthash:base64:6]',
                   }),
                 ],
-              };
+              }
             },
           },
         },
@@ -111,13 +111,13 @@ module.exports = {
       exclude: /node_modules/,
     },
   ],
-};
+}
 ```
 
 This will produce the following JS
 
 ```js
-const {FormattedMessage} = require('react-intl');
+const {FormattedMessage} = require('react-intl')
 
 React.createElement(FormattedMessage, {
   id: '179jda',
@@ -125,7 +125,7 @@ React.createElement(FormattedMessage, {
   values: {
     name: userName,
   },
-});
+})
 ```
 
 :::info description Our transformer also removes `description` because it's only for translator, not end-user. :::
