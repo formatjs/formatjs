@@ -36,12 +36,12 @@ Make sure this pattern matches `idInterpolationPattern` when you use `babel-plug
 Given a file that has the following messages:
 
 ```tsx
-import * as React from 'react';
-import {FormattedMessage, useIntl, injectIntl} from 'react-intl';
+import * as React from 'react'
+import {FormattedMessage, useIntl, injectIntl} from 'react-intl'
 
 class PasswordChangeWithIntl extends React.Component {
   render() {
-    const {intl} = this.props;
+    const {intl} = this.props
     return (
       <li>
         <input
@@ -58,14 +58,14 @@ class PasswordChangeWithIntl extends React.Component {
           })}
         />
       </li>
-    );
+    )
   }
 }
 
-const PasswordChange = injectIntl(PasswordChangeWithIntl);
+const PasswordChange = injectIntl(PasswordChangeWithIntl)
 
 export function List(props) {
-  const intl = useIntl();
+  const intl = useIntl()
   return (
     <section>
       <header>
@@ -89,7 +89,7 @@ export function List(props) {
         <PasswordChange />
       </ul>
     </section>
-  );
+  )
 }
 ```
 
@@ -149,15 +149,15 @@ where `formatter.js` is:
 
 ```js
 exports.format = function (msgs) {
-  const results = {};
+  const results = {}
   for (const [id, msg] of Object.entries(msgs)) {
     results[id] = {
       string: msg.defaultMessage,
       comment: msg.description,
-    };
+    }
   }
-  return results;
-};
+  return results
+}
 ```
 
 We also provide several [builtin formatters](../tooling/cli.md#builtin-formatters) to integrate with 3rd party TMSes so feel free to create PRs to add more.

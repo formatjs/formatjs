@@ -29,8 +29,8 @@ This package requires the following capabilities:
 To use the polyfill, just import it to make sure that a fully functional Intl.DateTimeFormat is available in your environment:
 
 ```tsx
-import '@formatjs/intl-datetimeformat/polyfill';
-import '@formatjs/intl-datetimeformat/locale-data/de'; // Add locale data for de
+import '@formatjs/intl-datetimeformat/polyfill'
+import '@formatjs/intl-datetimeformat/locale-data/de' // Add locale data for de
 ```
 
 ### Adding IANA Timezone Database
@@ -40,15 +40,15 @@ We provide 2 pre-processed IANA Timezone:
 #### Full: contains ALL Timezone from IANA database
 
 ```tsx
-import '@formatjs/intl-datetimeformat/polyfill';
-import '@formatjs/intl-datetimeformat/add-all-tz.js';
+import '@formatjs/intl-datetimeformat/polyfill'
+import '@formatjs/intl-datetimeformat/add-all-tz.js'
 ```
 
 #### Golden: contains popular set of timezones from IANA database
 
 ```tsx
-import '@formatjs/intl-datetimeformat/polyfill';
-import '@formatjs/intl-datetimeformat/add-golden-tz.js';
+import '@formatjs/intl-datetimeformat/polyfill'
+import '@formatjs/intl-datetimeformat/add-golden-tz.js'
 ```
 
 ## Tests

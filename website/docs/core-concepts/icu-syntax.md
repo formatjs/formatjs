@@ -221,13 +221,13 @@ apostrophe escapes one syntax character immediately following it; a pair of apos
 wrapped between them:
 
 ```js
-"This is not an interpolation: '{word}";
+"This is not an interpolation: '{word}"
 //→ "This is not an interpolation: {word}"
-"These are not interpolatons: '{word1} {word2}'";
+"These are not interpolatons: '{word1} {word2}'"
 //→ "These are not interpolatons: {word1} {word2}"
-"'<notATag>";
+"'<notATag>"
 //→ "<notATag>"
-"'<notATag>hello</notATag>'";
+"'<notATag>hello</notATag>'"
 //→ "<notATag>hello</notATag>"
 ```
 
@@ -236,6 +236,6 @@ However, we recommend using curly apostrophe `’` (U+2019) for human-readable s
 (U+0027) in ICU message syntax.
 
 ```js
-"This '{isn''t}' obvious.";
+"This '{isn''t}' obvious."
 //→ "This {isn't} obvious."
 ```

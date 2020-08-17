@@ -23,7 +23,7 @@ If you're supporting IE11-, this requires [`Intl.getCanonicalLocales`](intl-getc
 To use the polyfill, just import it to make sure that a fully functional Intl.ListFormat is available in your environment:
 
 ```tsx
-import '@formatjs/intl-listformat/polyfill';
+import '@formatjs/intl-listformat/polyfill'
 ```
 
 If Intl.ListFormat already exists, the polyfill will not be loaded.
@@ -31,15 +31,15 @@ If Intl.ListFormat already exists, the polyfill will not be loaded.
 To load locale data, you can include them on demand:
 
 ```js
-import '@formatjs/intl-listformat/polyfill';
-import '@formatjs/intl-listformat/locale-data/en'; // Add locale data for en
-import '@formatjs/intl-listformat/locale-data/de'; // Add locale data for de
+import '@formatjs/intl-listformat/polyfill'
+import '@formatjs/intl-listformat/locale-data/en' // Add locale data for en
+import '@formatjs/intl-listformat/locale-data/de' // Add locale data for de
 ```
 
 If you want to polyfill all locales (e.g for Node):
 
 ```tsx
-import '@formatjs/intl-listformat/polyfill-locales';
+import '@formatjs/intl-listformat/polyfill-locales'
 ```
 
 ## Tests
