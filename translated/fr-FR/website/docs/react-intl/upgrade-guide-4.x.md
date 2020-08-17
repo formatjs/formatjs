@@ -10,7 +10,7 @@ title: Upgrade Guide (v3 -> v4)
 ```tsx
 new IntlMessageFormat('a<b>strong</b>').format({
   b: (...chunks) => <strong>{chunks}</strong>,
-});
+})
 ```
 
 - We don't allow formatting self-closing tags because we already use ICU `{placeholder}` syntax for that.
@@ -30,7 +30,7 @@ In order to restore the old behavior of `FormattedHTMLMessage` & `intl.formatHTM
 Old way:
 
 ```ts
-intl.formatHTMLMessage('This is a <a href="foo">link</a>');
+intl.formatHTMLMessage('This is a <a href="foo">link</a>')
 ```
 
 New way:
@@ -38,7 +38,7 @@ New way:
 ```tsx
 intl.formatMessage('This is a <a>link</a>', {
   a: (...chunks) => sanitizeHTML(`<a href="foo">${chunks.join('')}</a>`),
-});
+})
 ```
 
 This forces developers to always sanitize their rendered HTML & chunks, thus minimizing XSS.
