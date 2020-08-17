@@ -26,7 +26,7 @@ intl.formatMessage(
   {
     name: userName,
   } // Values should be an object literal, but not necessarily every value inside
-);
+)
 ```
 
 :::caution We rely on AST to extract messages from the codebase, thus calling `intl.formatMessage()` exactly is required (not `formatMessage()` or `const {formatMessage: f} = intl; f()` or the like) :::
@@ -34,8 +34,8 @@ intl.formatMessage(
 2. Using React API `<FormattedMessage/>`
 
 ```tsx
-import {FormattedMessage} from 'react-intl';
-<FormattedMessage
+import {FormattedMessage} from 'react-intl'
+;<FormattedMessage
   description="A message" // Description should be a string literal
   defaultMessage="My name is {name}" // Message should be a string literal
   values={
@@ -43,7 +43,7 @@ import {FormattedMessage} from 'react-intl';
       name: userName,
     } // Values should be an object literal, but not necessarily every value inside
   }
-/>;
+/>
 ```
 
 :::caution We rely on AST to extract messages from the codebase, thus calling `FormattedMessage` exactly is required (not `const F = FormattedMessage; <F />` or the like) :::
@@ -51,20 +51,20 @@ import {FormattedMessage} from 'react-intl';
 3. Pre-declaring using `defineMessage` for later consumption (less recommended)
 
 ```tsx
-import {defineMessage} from 'react-intl';
+import {defineMessage} from 'react-intl'
 const message = defineMessage({
   description: 'A message', // Description should be a string literal
   defaultMessage: 'My name is {name}', // Message should be a string literal
-});
+})
 
-intl.formatMessage(message, {name: 'John'}); // My name is John
+intl.formatMessage(message, {name: 'John'}) // My name is John
 
-<FormattedMessage
+;<FormattedMessage
   {...message}
   values={{
     name: 'John',
   }}
-/>; // My name is John
+/> // My name is John
 ```
 
 :::caution You can declare a message without immediately formatting it with `defineMessage` and our extractor would still be able to extract it. However, our [enforce-placeholders](../tooling/linter.md#enforce-placeholders) linter rule won't be able to analyze it. :::

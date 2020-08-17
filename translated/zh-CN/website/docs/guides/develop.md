@@ -39,7 +39,7 @@ We trigger this error when a custom format is being declared but there's no corr
 ```tsx
 intl.formatMessage({
   defaultMessage: 'the price is {p, number, customCurrency}',
-});
+})
 ```
 
 and there's no formatter for `customCurrency`.

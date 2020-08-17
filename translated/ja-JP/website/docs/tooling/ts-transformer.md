@@ -5,7 +5,7 @@ title: ts-transformer
 
 [![npm version](https://badgen.net/npm/v/@formatjs/ts-transformer)](https://badgen.net/npm/v/@formatjs/ts-transformer)
 
-Process string messages for translation from modules that use [React Intl](../react-intl.md), specifically:
+Process string messages for translation from modules that use react-intl, specifically:
 
 - Parse and verify that messages are ICU-compliant w/o any syntax issues.
 - Remove `description` from message descriptor to save bytes since it isn't used at runtime.
@@ -25,7 +25,7 @@ The default message descriptors for the app's default language will be processed
 ### Via `ts-loader`
 
 ```tsx
-import {transform} from '@formatjs/ts-transformer';
+import {transform} from '@formatjs/ts-transformer'
 
 module.exports = {
   ...otherConfigs,
@@ -51,7 +51,7 @@ module.exports = {
       },
     ],
   },
-};
+}
 ```
 
 ### Via `ts-jest` in `jest.config.js`
@@ -104,9 +104,8 @@ parse specific additional custom pragma. This allows you to tag certain file wit
 
 ```tsx
 // @intl-meta project:my-custom-project
-import {FormattedMessage} from 'react-intl';
-
-<FormattedMessage defaultMessage="foo" id="bar" />;
+import {FormattedMessage} from 'react-intl'
+;<FormattedMessage defaultMessage="foo" id="bar" />
 ```
 
 and with option `{pragma: "@intl-meta"}`, we'll parse out `// @intl-meta project:my-custom-project` into `{project: 'my-custom-project'}` in the result file.
