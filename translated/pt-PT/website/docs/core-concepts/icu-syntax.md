@@ -218,19 +218,19 @@ with <link>{pct, number, ::percent} discount</link>
 The ASCII apostrophe ('`') can be used to escape syntax characters in the text portion of the message. A single apostrophe escapes one syntax character immediately following it; a pair of apostrophes escape every syntax characters wrapped between them:
 
 ```js
-"This is not an interpolation: '{word}";
+"This is not an interpolation: '{word}"
 //→ "This is not an interpolation: {word}"
-"These are not interpolatons: '{word1} {word2}'";
+"These are not interpolatons: '{word1} {word2}'"
 //→ "These are not interpolatons: {word1} {word2}"
-"'<notATag>";
+"'<notATag>"
 //→ "<notATag>"
-"'<notATag>hello</notATag>'";
+"'<notATag>hello</notATag>'"
 //→ "<notATag>hello</notATag>"
 ```
 
 Two consecutive ASCII apostrophes represents one ASCII apostrophe, similar to `%%` in `printf` represents one `%`. However, we recommend using curly apostrophe `’` (U+2019) for human-readable strings and only use ASCII apostrophe `'` (U+0027) in ICU message syntax.
 
 ```js
-"This '{isn''t}' obvious.";
+"This '{isn''t}' obvious."
 //→ "This {isn't} obvious."
 ```
