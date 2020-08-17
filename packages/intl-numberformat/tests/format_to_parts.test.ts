@@ -465,7 +465,7 @@ it('correctly formats Infinity to parts', () => {
   ]);
 });
 
-it.only('can format numbers with primary and secondary grouping sizes', () => {
+it('can format numbers with primary and secondary grouping sizes', () => {
   const data = require('./locale-data/hi.json').data.hi;
   const pl = new Intl.PluralRules('hi');
   const n = {
@@ -490,6 +490,6 @@ it.only('can format numbers with primary and secondary grouping sizes', () => {
     {type: 'group', value: ','},
     {type: 'integer', value: '556'},
     {type: 'decimal', value: '.'},
-    {type: 'fraction', value: '46'},
+    {type: 'fraction', value: '456'},
   ]);
 });

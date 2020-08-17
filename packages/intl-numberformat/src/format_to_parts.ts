@@ -111,7 +111,10 @@ export default function formatToParts(
       (style === 'currency' && options.currencyDisplay === 'name')
     ) {
       // Shortcut for decimal
-      numberPattern = sign === 0 ? '0' : sign === -1 ? '-0' : '+0';
+      const decimalData =
+        data.numbers.decimal[numberingSystem] ||
+        data.numbers.decimal[defaultNumberingSystem];
+      numberPattern = getPatternForSign(decimalData.standard, sign);
     } else if (style === 'currency') {
       const currencyData =
         data.numbers.currency[numberingSystem] ||
@@ -121,7 +124,7 @@ export default function formatToParts(
       numberPattern = getPatternForSign(
         currencyData[options.currencySign!],
         sign
-      ).replace(CLDR_NUMBER_PATTERN, '0');
+      );
     } else {
       // percent
       const percentPattern =
@@ -132,6 +135,17 @@ export default function formatToParts(
   } else {
     numberPattern = compactNumberPattern;
   }
+
+  // Extract the decimal number pattern string. It looks like "#,##0,00", which will later be
+  // used to infer decimal group sizes.
+  const decimalNumberPattern = CLDR_NUMBER_PATTERN.exec(numberPattern)![0];
+
+  // Now we start to substitute patterns
+  // 1. replace strings like `0` and `#,##0.00` with `{0}`
+  // 2. unquote characters (invariant: the quoted characters does not contain the special tokens)
+  numberPattern = numberPattern
+    .replace(CLDR_NUMBER_PATTERN, '{0}')
+    .replace(/'(.)'/g, '$1');
 
   // Handle currency spacing (both compact and non-compact).
   if (style === 'currency' && options.currencyDisplay !== 'name') {
@@ -146,26 +160,19 @@ export default function formatToParts(
     // "US$" and "[:digit:]" matches the latn numbering system digits.
     //
     // Example 2: for pattern "¤#,##0.00" with symbol "US$", there is no spacing between symbol
-    // a  nd number, because `$` does not match "[:^S:]".
+    // and number, because `$` does not match "[:^S:]".
     //
     // Implementation note: here we do the best effort to infer the insertion.
     // We also assume that `beforeInsertBetween` and `afterInsertBetween` will never be `;`.
     const afterCurrency = currencyData.currencySpacing.afterInsertBetween;
     if (afterCurrency && !S_DOLLAR_UNICODE_REGEX.test(nonNameCurrencyPart!)) {
-      numberPattern = numberPattern.replace('¤0', `¤${afterCurrency}0`);
+      numberPattern = numberPattern.replace('¤{0}', `¤${afterCurrency}{0}`);
     }
     const beforeCurrency = currencyData.currencySpacing.beforeInsertBetween;
     if (beforeCurrency && !CARET_S_UNICODE_REGEX.test(nonNameCurrencyPart!)) {
-      numberPattern = numberPattern.replace('0¤', `0${beforeCurrency}¤`);
+      numberPattern = numberPattern.replace('{0}¤', `{0}${beforeCurrency}¤`);
     }
   }
-
-  // Now we start to substitute patterns
-  // 1. replace strings like `0` and `#,##0.00` with `{0}`
-  // 2. unquote characters (invariant: the quoted characters does not contain the special tokens)
-  numberPattern = numberPattern
-    .replace(CLDR_NUMBER_PATTERN, '{0}')
-    .replace(/'(.)'/g, '$1');
 
   // The following tokens are special: `{0}`, `¤`, `%`, `-`, `+`, `{c:...}.
   const numberPatternParts = numberPattern.split(/({c:[^}]+}|\{0\}|[¤%\-\+])/g);
@@ -190,7 +197,8 @@ export default function formatToParts(
             exponent,
             numberingSystem,
             // If compact number pattern exists, do not insert group separators.
-            !compactNumberPattern && options.useGrouping
+            !compactNumberPattern && options.useGrouping,
+            decimalNumberPattern
           )
         );
         break;
@@ -363,7 +371,15 @@ function paritionNumberIntoParts(
   notation: NumberFormatOptionsNotation,
   exponent: number,
   numberingSystem: string,
-  useGrouping: boolean
+  useGrouping: boolean,
+  /**
+   * This is the decimal number pattern without signs or symbols.
+   * It is used to infer the group size when `useGrouping` is true.
+   *
+   * A typical value looks like "#,##0.00" (primary group size is 3).
+   * Some locales like Hindi has secondary group size of 2 (e.g. "#,##,##0.00").
+   */
+  decimalNumberPattern: string
 ): NumberFormatPart[] {
   const result: NumberFormatPart[] = [];
   // eslint-disable-next-line prefer-const
@@ -391,6 +407,8 @@ function paritionNumberIntoParts(
     integer = n;
   }
 
+  // #region Grouping integer digits
+
   // The weird compact and x >= 10000 check is to ensure consistency with Node.js and Chrome.
   // Note that `de` does not have compact form for thousands, but Node.js does not insert grouping separator
   // unless the rounded number is greater than 10000:
@@ -399,12 +417,39 @@ function paritionNumberIntoParts(
   if (useGrouping && (notation !== 'compact' || x >= 10000)) {
     const groupSepSymbol = symbols.group;
     const groups: string[] = [];
-    // Assuming that the group separator is always inserted between every 3 digits.
-    let i = integer.length - 3;
-    for (; i > 0; i -= 3) {
-      groups.push(integer.slice(i, i + 3));
+
+    // > There may be two different grouping sizes: The primary grouping size used for the least
+    // > significant integer group, and the secondary grouping size used for more significant groups.
+    // > If a pattern contains multiple grouping separators, the interval between the last one and the
+    // > end of the integer defines the primary grouping size, and the interval between the last two
+    // > defines the secondary grouping size. All others are ignored.
+    const integerNumberPattern = decimalNumberPattern.split('.')[0];
+    const patternGroups = integerNumberPattern.split(',');
+
+    let primaryGroupingSize = 3;
+    let secondaryGroupingSize = 3;
+
+    if (patternGroups.length > 1) {
+      primaryGroupingSize = patternGroups[patternGroups.length - 1].length;
     }
-    groups.push(integer.slice(0, i + 3));
+    if (patternGroups.length > 2) {
+      secondaryGroupingSize = patternGroups[patternGroups.length - 2].length;
+    }
+
+    let i = integer.length - primaryGroupingSize;
+    if (i > 0) {
+      // Slice the least significant integer group
+      groups.push(integer.slice(i, i + primaryGroupingSize));
+      // Then iteratively push the more signicant groups
+      // TODO: handle surrogate pairs in some numbering system digits
+      for (i -= secondaryGroupingSize; i > 0; i -= secondaryGroupingSize) {
+        groups.push(integer.slice(i, i + secondaryGroupingSize));
+      }
+      groups.push(integer.slice(0, i + secondaryGroupingSize));
+    } else {
+      groups.push(integer);
+    }
+
     while (groups.length > 0) {
       const integerGroup = groups.pop()!;
       result.push({type: 'integer', value: integerGroup});
@@ -415,6 +460,8 @@ function paritionNumberIntoParts(
   } else {
     result.push({type: 'integer', value: integer});
   }
+
+  // #endregion
 
   if (fraction !== undefined) {
     result.push(

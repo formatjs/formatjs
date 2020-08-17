@@ -130,6 +130,9 @@ export interface RawNumberData {
   decimal: Record<
     NumberingSystem,
     {
+      // The standard number pattern of the decimal.
+      standard: string;
+      // These two are compact notation mappings.
       long: Record<DecimalFormatNum, LDMLPluralRuleMap<string>>;
       short: Record<DecimalFormatNum, LDMLPluralRuleMap<string>>;
     }

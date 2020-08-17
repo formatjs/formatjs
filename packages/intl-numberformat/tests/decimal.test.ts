@@ -1,5 +1,5 @@
 import '@formatjs/intl-pluralrules/polyfill-locales';
-import {NumberFormat, NumberFormatOptions} from '../';
+import {NumberFormat, NumberFormatOptions} from '..';
 
 const LOCALES = [
   'en',
