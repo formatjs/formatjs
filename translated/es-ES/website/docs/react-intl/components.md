@@ -24,16 +24,16 @@ This component is used to setup the i18n context for a tree. Usually, this compo
 
 ```ts
 interface IntlConfig {
-  locale: string;
-  formats: CustomFormats;
-  messages: Record<string, string> | Record<string, MessageFormatElement[]>;
-  defaultLocale: string;
-  defaultFormats: CustomFormats;
-  timeZone?: string;
-  textComponent?: React.ComponentType | keyof React.ReactHTML;
-  wrapRichTextChunksInFragment?: boolean;
-  defaultRichTextElements?: Record<string, FormatXMLElementFn<React.ReactNode>>;
-  onError(err: string): void;
+  locale: string
+  formats: CustomFormats
+  messages: Record<string, string> | Record<string, MessageFormatElement[]>
+  defaultLocale: string
+  defaultFormats: CustomFormats
+  timeZone?: string
+  textComponent?: React.ComponentType | keyof React.ReactHTML
+  wrapRichTextChunksInFragment?: boolean
+  defaultRichTextElements?: Record<string, FormatXMLElementFn<React.ReactNode>>
+  onError(err: string): void
 }
 ```
 
@@ -69,7 +69,7 @@ These configuration props are combined with the `<IntlProvider>`'s component-spe
 props: IntlConfig &
   {
     children: ReactNode,
-  };
+  }
 ```
 
 Finally, child elements _must_ be supplied to `<IntlProvider>`.
@@ -87,14 +87,14 @@ const App = ({importantDate}) => (
       weekday="long"
     />
   </div>
-);
+)
 
 ReactDOM.render(
   <IntlProvider locale={navigator.language}>
     <App importantDate={new Date(1459913574887)} />
   </IntlProvider>,
   document.getElementById('container')
-);
+)
 ```
 
 Assuming `navigator.language` is `"fr"`:
@@ -147,34 +147,26 @@ props: Intl.DateTimeFormatOptions &
     value: any,
     format: string,
     children: (formattedDate: string) => ReactElement,
-  };
+  }
 ```
 
 By default `<FormattedDate>` will render the formatted date into a `<React.Fragment>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
 
 **Example:**
 
-```tsx
+```tsx live
 <FormattedDate value={new Date(1459832991883)} />
-```
-
-```html
-4/5/2016
 ```
 
 **Example with Options:**
 
-```tsx
+```tsx live
 <FormattedDate
   value={new Date(1459832991883)}
   year="numeric"
   month="long"
   day="2-digit"
 />
-```
-
-```html
-April 05, 2016
 ```
 
 ## FormattedDateParts
@@ -191,10 +183,10 @@ props: Intl.DateTimeFormatOptions &
     value: any,
     format: string,
     children: (parts: Intl.DateTimeFormatPart[]) => ReactElement,
-  };
+  }
 ```
 
-```tsx
+```tsx live
 <FormattedDateParts
   value={new Date(1459832991883)}
   year="numeric"
@@ -209,10 +201,6 @@ props: Intl.DateTimeFormatOptions &
     </>
   )}
 </FormattedDateParts>
-```
-
-```html
-<b>April</b> <small>05</small>
 ```
 
 ## FormattedTime
@@ -234,19 +222,15 @@ props: DateTimeFormatOptions &
     value: any,
     format: string,
     children: (formattedDate: string) => ReactElement,
-  };
+  }
 ```
 
 By default `<FormattedTime>` will render the formatted time into a `React.Fragment`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
 
 **Example:**
 
-```tsx
+```tsx live
 <FormattedTime value={new Date(1459832991883)} />
-```
-
-```html
-1:09 AM
 ```
 
 ## FormattedTimeParts
@@ -263,10 +247,10 @@ props: Intl.DateTimeFormatOptions &
     value: any,
     format: string,
     children: (parts: Intl.DateTimeFormatPart[]) => ReactElement,
-  };
+  }
 ```
 
-```tsx
+```tsx live
 <FormattedTimeParts value={new Date(1459832991883)}>
   {parts => (
     <>
@@ -278,10 +262,6 @@ props: Intl.DateTimeFormatOptions &
 </FormattedTimeParts>
 ```
 
-```html
-<b>01</b>:<small>09</small>
-```
-
 ## FormattedRelativeTime
 
 :::caution browser support This requires [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-relativetimeformat.md) if you plan to support them. :::
@@ -290,9 +270,9 @@ This component uses the [`formatRelativeTime`](api.md#formatrelativetime) API an
 
 ```ts
 type RelativeTimeFormatOptions = {
-  numeric?: 'always' | 'auto';
-  style?: 'long' | 'short' | 'narrow';
-};
+  numeric?: 'always' | 'auto'
+  style?: 'long' | 'short' | 'narrow'
+}
 ```
 
 **Prop Types:**
@@ -305,39 +285,23 @@ props: RelativeTimeFormatOptions &
     format: string,
     updateIntervalInSeconds: number,
     children: (formattedDate: string) => ReactElement,
-  };
+  }
 ```
 
 By default `<FormattedRelativeTime>` will render the formatted relative time into a `React.Fragment`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
 
 **Example:**
 
-```tsx
-<FormattedRelativeTime value={0} numeric="auto" updateIntervalInSeconds={10} />
-```
-
-```html
-now
-```
-
-…10 seconds later:
-
-```html
-10 seconds ago
-```
-
-…60 seconds later:
-
-```html
-1 minute ago
+```tsx live
+<FormattedRelativeTime value={0} numeric="auto" updateIntervalInSeconds={1} />
 ```
 
 :::info maximum interval You can adjust the maximum interval that the component will re-render by setting the `updateIntervalInSeconds`. A falsy value will turn off auto-updating. The updating is smart and will schedule the next update for the next _interesting moment_. :::
 
 An _interesting moment_ is defined as the next non-fractional `value` for that `unit`. For example:
 
-```tsx
-<FormattedRelativeTime value={-59} updateIntervalInSeconds={1} />
+```tsx live
+<FormattedRelativeTime value={-50} updateIntervalInSeconds={1} />
 ```
 
 This will initially renders `59 seconds ago`, after 1 second, will render `1 minute ago`, and will not re-render until a full minute goes by, it'll render `2 minutes ago`. It will not try to render `1.2 minutes ago`.
@@ -356,26 +320,22 @@ props: NumberFormatOptions &
     value: number,
     format: string,
     children: (formattedNumber: string) => ReactElement,
-  };
+  }
 ```
 
 By default `<FormattedNumber>` will render the formatted number into a `React.Fragment`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
 
 **Example:**
 
-```tsx
+```tsx live
 <FormattedNumber value={1000} />
-```
-
-```tsx
-1, 000;
 ```
 
 **Formatting Number using `unit`**
 
 Currently this is part of ES2020 [NumberFormat](https://tc39.es/ecma402/#numberformat-objects). We've provided a polyfill [here](../polyfills/intl-numberformat.md) and `react-intl` types allow users to pass in a [sanctioned unit](../polyfills/intl-numberformat.md#SupportedUnits). For example:
 
-```tsx
+```tsx live
 <FormattedNumber
   value={1000}
   style="unit"
@@ -384,21 +344,13 @@ Currently this is part of ES2020 [NumberFormat](https://tc39.es/ecma402/#numberf
 />
 ```
 
-```html
-1,000kB
-```
-
-```tsx
+```tsx live
 <FormattedNumber
   value={1000}
   unit="fahrenheit"
   unitDisplay="long"
   style="unit"
 />
-```
-
-```html
-1,000 degrees Fahrenheit
 ```
 
 ## FormattedNumberParts
@@ -415,12 +367,12 @@ props: NumberFormatOptions &
     value: number,
     format: string,
     children: (parts: Intl.NumberFormatPart[]) => ReactElement,
-  };
+  }
 ```
 
 **Example:**
 
-```tsx
+```tsx live
 <FormattedNumberParts value={1000}>
   {parts => (
     <>
@@ -430,10 +382,6 @@ props: NumberFormatOptions &
     </>
   )}
 </FormattedNumberParts>
-```
-
-```html
-<b>1</b>,<small>000</small>
 ```
 
 ## FormattedPlural
@@ -455,19 +403,15 @@ props: PluralFormatOptions &
     many: ReactElement,
 
     children: (formattedPlural: ReactElement) => ReactElement,
-  };
+  }
 ```
 
 By default `<FormattedPlural>` will select a [plural category](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) (`zero`, `one`, `two`, `few`, `many`, or `other`) and render the corresponding React element into a `React.Fragment`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
 
 **Example:**
 
-```tsx
+```tsx live
 <FormattedPlural value={10} one="message" other="messages" />
-```
-
-```html
-messages
 ```
 
 ## FormattedList
@@ -482,27 +426,19 @@ This component uses [`formatList`](api.md#formatlist) API and [Intl.ListFormat](
 props: ListFormatOptions &
   {
     children: (chunksOrString: string | React.ReactElement[]) => ReactElement,
-  };
+  }
 ```
 
 **Example:**
 
 When the locale is `en`:
 
-```tsx
+```tsx live
 <FormattedList type="conjunction" value={['Me', 'myself', 'I']} />
 ```
 
-```html
-Me, myself, and I
-```
-
-```tsx
+```tsx live
 <FormattedList type="conjunction" value={['Me', <b>myself</b>, 'I']} />
-```
-
-```html
-Me, <b>myself</b>, and I
 ```
 
 ## FormattedDisplayName
@@ -517,27 +453,19 @@ This component uses [`formatDisplayName`](api.md#formatdisplayname) and [`Intl.D
 props: FormatDisplayNameOptions &
   {
     value: string | number | object,
-  };
+  }
 ```
 
 **Example:**
 
 When the locale is `en`:
 
-```tsx
+```tsx live
 <FormattedDisplayName type="language" value="zh-Hans-SG" />
 ```
 
-```html
-Simplified Chinese (Singapore)
-```
-
-```tsx
+```tsx live
 <FormattedDisplayName type="currency" value="JPY" />
-```
-
-```html
-Japanese Yen
 ```
 
 ## FormattedMessage
@@ -552,7 +480,7 @@ props: MessageDescriptor &
     values: object,
     tagName: string,
     children: (chunks: ReactElement) => ReactElement,
-  };
+  }
 ```
 
 ### Message Syntax
@@ -587,10 +515,10 @@ React Intl has a Message Descriptor concept which is used to define your app's d
 
 ```tsx
 type MessageDescriptor = {
-  id?: string;
-  defaultMessage?: string;
-  description?: string;
-};
+  id?: string
+  defaultMessage?: string
+  description?: string
+}
 ```
 
 :::info compile message descriptors The [babel-plugin-react-intl](../tooling/babel-plugin.md) and [@formatjs/ts-transformer](../tooling/ts-transformer.md) packages can be used to compile Message Descriptors defined in JavaScript source files into AST for performance. :::
@@ -611,7 +539,7 @@ By default `<FormattedMessage>` will render the formatted string into a `<React.
 
 **Example:**
 
-```tsx
+```tsx live
 <FormattedMessage
   id="app.greeting"
   description="Greeting to welcome the user to the app"
@@ -622,18 +550,10 @@ By default `<FormattedMessage>` will render the formatted string into a `<React.
 />
 ```
 
-```html
-Hello, Eric!
-```
-
 **Example:** function as the child
 
-```tsx
-<FormattedMessage id="title">{txt => <H1>{txt}</H1>}</FormattedMessage>
-```
-
-```html
-<h1>Hello, Eric!</h1>
+```tsx live
+<FormattedMessage id="title">{txt => <h1>{txt}</h1>}</FormattedMessage>
 ```
 
 :::info simple message Messages can be simple strings _without_ placeholders, and that's the most common type of message. This case is highly-optimized, but still has the benefits of the [fallback procedure](#message-formatting-fallbacks). :::
@@ -642,7 +562,7 @@ Hello, Eric!
 
 `<FormattedMessage>` also supports rich-text formatting by specifying a XML tag in the message & resolving that tag in the `values` prop. Here's an example:
 
-```tsx
+```tsx live
 <FormattedMessage
   id="app.greeting"
   description="Greeting to welcome the user to the app"
@@ -654,14 +574,11 @@ Hello, Eric!
 />
 ```
 
-```html
-Hello, <b>Eric</b>!
-```
-
 By allowing embedding XML tag we want to make sure contextual information is not lost when you need to style part of the string. In a more complicated example like:
 
-```tsx
+```tsx live
 <FormattedMessage
+  id="foo"
   defaultMessage="To buy a shoe, <a>visit our website</a> and <cta>buy a shoe</cta>"
   values={{
     a: chunks => (
@@ -678,8 +595,9 @@ By allowing embedding XML tag we want to make sure contextual information is not
 
 Since rich text formatting allows embedding `ReactElement`, in function as the child scenario, the function will receive the formatted message chunks as a single parameter.
 
-```tsx
+```tsx live
 <FormattedMessage
+  id="foo"
   defaultMessage="To buy a shoe, <a>visit our website</a> and <cta>buy a shoe</cta>"
   values={{
     a: chunks => (
@@ -690,7 +608,7 @@ Since rich text formatting allows embedding `ReactElement`, in function as the c
     cta: chunks => <strong class="important">{chunks}</strong>,
   }}
 >
-  {chunks => <span>{chunks}</span>}
+  {chunks => <h2>{chunks}</h2>}
 </FormattedMessage>
 ```
 
