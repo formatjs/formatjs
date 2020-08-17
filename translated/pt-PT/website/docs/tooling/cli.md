@@ -42,7 +42,6 @@ defineMessage({
 
 ```tsx
 import {FormattedMessage} from 'react-intl'
-
 ;<FormattedMessage id="foo" defaultMessage="foo" description="bar" />
 ```
 
@@ -119,7 +118,6 @@ Parse specific additional custom pragma. This allows you to tag certain file wit
 ```tsx
 // @intl-meta project:my-custom-project
 import {FormattedMessage} from 'react-intl'
-
 ;<FormattedMessage defaultMessage="foo" id="bar" />
 ```
 
