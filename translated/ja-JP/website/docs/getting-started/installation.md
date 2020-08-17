@@ -16,16 +16,16 @@ npm i -S react react-intl
 After following the step above, you should be able to get a minimal application like this running:
 
 ```tsx
-import {createIntl, createIntlCache} from 'react-intl';
+import {createIntl, createIntlCache} from 'react-intl'
 
 // Translated messages in French with matching IDs to what you declared
 const messagesInFrench = {
   myMessage: "Aujourd'hui, c'est le {ts, date, ::yyyyMMdd}",
-};
+}
 
 // This is optional but highly recommended
 // since it prevents memory leak
-const cache = createIntlCache();
+const cache = createIntlCache()
 
 // Create the `intl` object
 const intl = createIntl(
@@ -37,7 +37,7 @@ const intl = createIntl(
     messages: messagesInFrench,
   },
   cache
-);
+)
 
 // Aujourd'hui, c'est le 23/07/2020
 console.log(
@@ -50,10 +50,10 @@ console.log(
     },
     {ts: Date.now()}
   )
-);
+)
 
 // 19,00 €
-console.log(intl.formatNumber(19, {style: 'currency', currency: 'EUR'}));
+console.log(intl.formatNumber(19, {style: 'currency', currency: 'EUR'}))
 ```
 
 ## Minimal React Application
@@ -61,13 +61,13 @@ console.log(intl.formatNumber(19, {style: 'currency', currency: 'EUR'}));
 If you're using React, a minimal React application can look like this:
 
 ```tsx
-import * as React from 'react';
-import {IntlProvider, FormattedMessage, FormattedNumber} from 'react-intl';
+import * as React from 'react'
+import {IntlProvider, FormattedMessage, FormattedNumber} from 'react-intl'
 
 // Translated messages in French with matching IDs to what you declared
 const messagesInFrench = {
   myMessage: "Aujourd'hui, c'est le {ts, date, ::yyyyMMdd}",
-};
+}
 
 export default function App() {
   return (
@@ -82,7 +82,7 @@ export default function App() {
         <FormattedNumber value={19} style="currency" currency="EUR" />
       </p>
     </IntlProvider>
-  );
+  )
 }
 ```
 
