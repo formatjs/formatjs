@@ -51,9 +51,22 @@ import '@formatjs/intl-datetimeformat/polyfill'
 import '@formatjs/intl-datetimeformat/add-golden-tz.js'
 ```
 
-:::danger Default Timezone
-Since JS Engines do not expose default timezone, there's currently no way for us to detect local timezone that a browser is in. Therefore, the default timezone in this polyfill is `UTC`. You can change this by either calling `__setDefaultTimeZone` or always explicitly pass in `timeZone` option for accurate date time calculation.
-:::
+### Default Timezone
+
+Since JS Engines do not expose default timezone, there's currently no way for us to detect local timezone that a browser is in. Therefore, the default timezone in this polyfill is `UTC`.
+
+You can change this by either calling `__setDefaultTimeZone` or always explicitly pass in `timeZone` option for accurate date time calculation.
+
+Since `__setDefaultTimeZone` is not in the spec, you should make sure to check for its existence before calling it & after tz data has been loaded, e.g:
+
+```tsx
+import '@formatjs/intl-datetimeformat/polyfill'
+import '@formatjs/intl-datetimeformat/add-all-tz.js'
+
+if ('__setDefaultTimeZone' in Intl.DateTimeFormat) {
+  Intl.DateTimeFormat.__setDefaultTimeZone('America/Los_Angeles')
+}
+```
 
 ## Tests
 
