@@ -23,7 +23,7 @@ Add the following command to your `package.json` `scripts`:
 We've built https://www.npmjs.com/package/@formatjs/cli that helps you extract messages from a list of files. It uses [`@formatjs/ts-transformer`](ts-transformer.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
 
 ```tsx
-import {defineMessages, defineMessage} from 'react-intl';
+import {defineMessages, defineMessage} from 'react-intl'
 
 defineMessages({
   foo: {
@@ -31,30 +31,30 @@ defineMessages({
     defaultMessage: 'foo',
     description: 'bar',
   },
-});
+})
 
 defineMessage({
   id: 'single',
   defaultMessage: 'single message',
   description: 'header',
-});
+})
 ```
 
 ```tsx
-import {FormattedMessage} from 'react-intl';
+import {FormattedMessage} from 'react-intl'
 
-<FormattedMessage id="foo" defaultMessage="foo" description="bar" />;
+;<FormattedMessage id="foo" defaultMessage="foo" description="bar" />
 ```
 
 ```tsx
 function Comp(props) {
-  const {intl} = props;
+  const {intl} = props
   return intl.formatMessage({
     // The whole `intl.formatMessage` is required so we can extract
     id: 'foo',
     defaultMessage: 'foo',
     description: 'bar',
-  });
+  })
 }
 ```
 
@@ -75,7 +75,7 @@ Path to a formatter file that controls the shape of JSON file from `--out-file`.
 ```tsx
 type FormatFn = <T = Record<string, MessageDescriptor>>(
   msgs: Record<string, MessageDescriptor>
-) => T;
+) => T
 ```
 
 This is especially useful to convert from our extracted format to a TMS-specific format.
@@ -118,9 +118,9 @@ Parse specific additional custom pragma. This allows you to tag certain file wit
 
 ```tsx
 // @intl-meta project:my-custom-project
-import {FormattedMessage} from 'react-intl';
+import {FormattedMessage} from 'react-intl'
 
-<FormattedMessage defaultMessage="foo" id="bar" />;
+;<FormattedMessage defaultMessage="foo" id="bar" />
 ```
 
 and with option `{pragma: "@intl-meta"}`, we'll parse out `// @intl-meta project:my-custom-project` into `{project: 'my-custom-project'}` in the result file.
@@ -140,7 +140,7 @@ Path to a formatter file that converts `<translation_file>` to `Record<string, s
 ```tsx
 type CompileFn = <T = Record<string, MessageDescriptor>>(
   msgs: T
-) => Record<string, string>;
+) => Record<string, string>
 ```
 
 This is especially useful to convert from a TMS-specific format back to react-intl format
@@ -168,7 +168,7 @@ Path to a formatter file that converts `<translation_file>` to `Record<string, s
 ```tsx
 type CompileFn = <T = Record<string, MessageDescriptor>>(
   msgs: T
-) => Record<string, string>;
+) => Record<string, string>
 ```
 
 This is especially useful to convert from a TMS-specific format back to react-intl format
@@ -195,16 +195,16 @@ We provide the following built-in formatters to integrate with 3rd party TMSes:
 You can provide your own formatter by using our interfaces:
 
 ```tsx
-import {FormatFn, CompileFn, Comparator} from '@formatjs/cli';
+import {FormatFn, CompileFn, Comparator} from '@formatjs/cli'
 
 interface VendorJson {}
 
 // [Optional] Format @formatjs/cli structure to vendor's structure
-export const format: FormatFn<VendorJson> = () => {};
+export const format: FormatFn<VendorJson> = () => {}
 // [Optional] Format vendor's structure to @formatjs/cli structure
-export const compile: CompileFn<VendorJson> = () => {};
+export const compile: CompileFn<VendorJson> = () => {}
 // [Optional] Sort the messages in a specific order during serialization
-export const compareMessages: Comparator = () => {};
+export const compareMessages: Comparator = () => {}
 ```
 
 Take a look at our [builtin formatter code](https://github.com/formatjs/formatjs/tree/main/packages/cli/src/formatters) for some examples.
@@ -216,40 +216,40 @@ Take a look at our [builtin formatter code](https://github.com/formatjs/formatjs
 ### Extraction
 
 ```tsx
-import {extract} from '@formatjs/cli';
+import {extract} from '@formatjs/cli'
 
 const resultAsString: Promise<string> = extract(files, {
   idInterpolationPattern: '[sha512:contenthash:base64:6]',
-});
+})
 ```
 
 ### Compilation
 
 ```tsx
-import {compile} from '@formatjs/cli';
+import {compile} from '@formatjs/cli'
 
 const resultAsString: Promise<string> = compile(files, {
   ast: true,
-});
+})
 ```
 
 ### Custom Formatter
 
 ```tsx
-import {FormatFn, CompileFn, Comparator} from '@formatjs/cli';
+import {FormatFn, CompileFn, Comparator} from '@formatjs/cli'
 
-export const format: FormatFn = msgs => msgs;
+export const format: FormatFn = msgs => msgs
 
 // Sort key reverse alphabetically
 export const compareMessages = (el1, el2) => {
-  return el1.key < el2.key ? 1 : -1;
-};
+  return el1.key < el2.key ? 1 : -1
+}
 
 export const compile: CompileFn = msgs => {
-  const results: Record<string, string> = {};
+  const results: Record<string, string> = {}
   for (const k in msgs) {
-    results[k] = msgs[k].defaultMessage!;
+    results[k] = msgs[k].defaultMessage!
   }
-  return results;
-};
+  return results
+}
 ```
