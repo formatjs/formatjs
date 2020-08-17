@@ -11,6 +11,7 @@ import {
   LDMLPluralRuleMap,
   DecimalFormatNum,
   RawCurrencyData,
+  invariant,
 } from '@formatjs/intl-utils';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
 import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils';
@@ -77,7 +78,14 @@ function extractNumbers(d: Numbers): RawNumberData {
         ];
       const longData = decimalData.long.decimalFormat;
       const shortData = decimalData.short.decimalFormat;
+
+      invariant(
+        decimalData.standard.includes('.'),
+        `Decimal pattern does not contain decimal point: ${decimalData.standard}`
+      );
+
       all[ns] = {
+        standard: decimalData.standard,
         long: reduceNumCount(longData),
         short: reduceNumCount(shortData),
       };

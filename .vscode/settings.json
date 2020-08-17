@@ -19,7 +19,8 @@
     "test262/**": true,
     "**/test_artifacts/**": true,
     "**/*.map": true,
-    "**/*.d.ts.map": true
+    "**/*.d.ts.map": true,
+    "bazel-out": true
   },
   "search.exclude": {
     "**/node_modules": true,
@@ -27,7 +28,8 @@
     "**/*.code-search": true,
     "**/lib": true,
     "**/dist": true,
-    "**/dist-es6": true
+    "**/dist-es6": true,
+    "bazel-out": true
   },
   "json.schemas": [
     {
