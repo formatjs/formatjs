@@ -26,20 +26,20 @@ This assumes a locale data `<script>` is added based on the request; e.g., for F
 ```tsx
 if ('ReactIntl' in window && 'ReactIntlLocaleData' in window) {
   Object.keys(ReactIntlLocaleData).forEach(lang => {
-    ReactIntl.addLocaleData(ReactIntlLocaleData[lang]);
-  });
+    ReactIntl.addLocaleData(ReactIntlLocaleData[lang])
+  })
 }
 ```
 
 **Using Browserify/Webpack to Load React Intl:**
 
 ```tsx
-import {addLocaleData} from 'react-intl';
+import {addLocaleData} from 'react-intl'
 
 if ('ReactIntlLocaleData' in window) {
   Object.keys(ReactIntlLocaleData).forEach(lang => {
-    addLocaleData(ReactIntlLocaleData[lang]);
-  });
+    addLocaleData(ReactIntlLocaleData[lang])
+  })
 }
 ```
 
@@ -56,15 +56,15 @@ This decoupling of the library from the locale data, allows for the files to be 
 In React Intl v1, you would add the `IntlMixin` to your root component; e.g., `<App>`. Remove the `IntlMixin` and instead wrap your root component with [`<IntlProvider>`](components.md#intlprovider):
 
 ```tsx
-import ReactDOM from 'react-dom';
-import {IntlProvider} from 'react-intl';
+import ReactDOM from 'react-dom'
+import {IntlProvider} from 'react-intl'
 
 ReactDOM.render(
   <IntlProvider locale="en">
     <App />
   </IntlProvider>,
   document.getElementById('container')
-);
+)
 ```
 
 :::info
@@ -78,23 +78,23 @@ The `IntlMixin` also provided the imperative API for custom components to use th
 Here's an example of a custom `<RelativeTime>` stateless component which uses `injectIntl()` and the imperative [`formatDate()`](api.md#formatdate) API:
 
 ```tsx
-import React from 'react';
-import {injectIntl, FormattedRelative} from 'react-intl';
+import React from 'react'
+import {injectIntl, FormattedRelative} from 'react-intl'
 
-const to2Digits = num => `${num < 10 ? `0${num}` : num}`;
+const to2Digits = num => `${num < 10 ? `0${num}` : num}`
 
 const RelativeTime = ({date, intl}) => {
-  date = new Date(date);
+  date = new Date(date)
 
-  let year = date.getFullYear();
-  let month = date.getMonth() + 1;
-  let day = date.getDate();
+  let year = date.getFullYear()
+  let month = date.getMonth() + 1
+  let day = date.getDate()
 
   let formattedDate = intl.formatDate(date, {
     year: 'long',
     month: 'numeric',
     day: 'numeric',
-  });
+  })
 
   return (
     <time
@@ -103,10 +103,10 @@ const RelativeTime = ({date, intl}) => {
     >
       <FormattedRelative value={date} />
     </time>
-  );
-};
+  )
+}
 
-export default injectIntl(RelativeTime);
+export default injectIntl(RelativeTime)
 ```
 
 `injectIntl()` is similar to a `connect()` HOC factory function you might find in a Flux framework to connect a component to a store.
@@ -134,20 +134,20 @@ Apps using a nested `messages` object structure could use the following function
 ```tsx
 function flattenMessages(nestedMessages, prefix = '') {
   return Object.keys(nestedMessages).reduce((messages, key) => {
-    let value = nestedMessages[key];
-    let prefixedKey = prefix ? `${prefix}.${key}` : key;
+    let value = nestedMessages[key]
+    let prefixedKey = prefix ? `${prefix}.${key}` : key
 
     if (typeof value === 'string') {
-      messages[prefixedKey] = value;
+      messages[prefixedKey] = value
     } else {
-      Object.assign(messages, flattenMessages(value, prefixedKey));
+      Object.assign(messages, flattenMessages(value, prefixedKey))
     }
 
-    return messages;
-  }, {});
+    return messages
+  }, {})
 }
 
-let messages = flattenMessages(nestedMessages);
+let messages = flattenMessages(nestedMessages)
 ```
 
 :::info
@@ -163,14 +163,14 @@ All calls to `getIntlMessage()` need to be replaced with a Message Descriptor.
 **Replace:**
 
 ```tsx
-this.getIntlMessage('some.message.id');
+this.getIntlMessage('some.message.id')
 ```
 
 **With:**
 
 ```tsx
 {
-  id: 'some.message.id';
+  id: 'some.message.id'
 }
 ```
 
@@ -181,16 +181,13 @@ A typical pattern when calling `formatMessage()` is to nest a call to `getIntlMe
 **1.0:**
 
 ```tsx
-let message = this.formatMessage(
-  this.getIntlMessage('some.message.id'),
-  values
-);
+let message = this.formatMessage(this.getIntlMessage('some.message.id'), values)
 ```
 
 **2.0:**
 
 ```tsx
-let message = this.props.intl.formatMessage({id: 'some.message.id'}, values);
+let message = this.props.intl.formatMessage({id: 'some.message.id'}, values)
 ```
 
 :::info
@@ -248,7 +245,7 @@ The signature of the `formatRelative()` function has been aligned with the other
 **1.0:**
 
 ```tsx
-let relative = this.formatRelative(date, {units: 'hour'}, {now: otherDate});
+let relative = this.formatRelative(date, {units: 'hour'}, {now: otherDate})
 ```
 
 **2.0:**
@@ -257,7 +254,7 @@ let relative = this.formatRelative(date, {units: 'hour'}, {now: otherDate});
 let relative = this.props.intl.formatRelative(date, {
   units: 'hour',
   now: otherDate,
-});
+})
 ```
 
 :::info

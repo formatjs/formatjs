@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "docusaurus start",
-    "build": "docusaurus build --out-dir dist",
+    "build": "prettier --write '{docs,src}/**/*.{md,ts,tsx}' && docusaurus build --out-dir dist",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy --out-dir dist"
   },
@@ -14,11 +14,11 @@
     "@docusaurus/preset-classic": "^2.0.0-alpha.61",
     "@docusaurus/theme-live-codeblock": "^2.0.0-alpha.61",
     "classnames": "^2.2.6",
+    "intl-messageformat": "^9.2.3",
+    "intl-messageformat-parser": "^5.4.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
-    "react-intl": "^5.6.3",
-    "intl-messageformat": "^9.2.3",
-    "intl-messageformat-parser": "^5.4.0"
+    "react-intl": "^5.6.3"
   },
   "browserslist": {
     "production": [
@@ -39,5 +39,8 @@
     "endOfLine": "lf",
     "arrowParens": "avoid",
     "semi": false
+  },
+  "devDependencies": {
+    "prettier": "^2.0.5"
   }
 }
