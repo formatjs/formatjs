@@ -274,7 +274,8 @@ it('properly unquotes characters from CLDR pattern', () => {
   ]);
 });
 
-// This might be a bug, bug we want to replicate Chrome and Node.js' behavior.
+// This might be a bug, but we want to replicate Chrome and Node.js' behavior.
+// TODO: this is fixed in Chrome.
 it('determines plurality of unit based on mantissa of the scientific notation', () => {
   const options = {
     ...defaultOptions,
@@ -461,5 +462,34 @@ it('correctly formats Infinity to parts', () => {
   };
   expect(formatToParts(n, data, pl, defaultOptions)).toEqual([
     {type: 'infinity', value: '∞'},
+  ]);
+});
+
+it.only('can format numbers with primary and secondary grouping sizes', () => {
+  const data = require('./locale-data/hi.json').data.hi;
+  const pl = new Intl.PluralRules('hi');
+  const n = {
+    ...baseNumberResult,
+    formattedString: '123556.456',
+    roundedNumber: 123556,
+  };
+  expect(
+    formatToParts(n, data, pl, {
+      ...defaultOptions,
+      useGrouping: true,
+      style: 'currency',
+      currency: 'USD',
+      currencyDisplay: 'symbol',
+      currencySign: 'standard',
+    })
+  ).toEqual([
+    {type: 'currency', value: '$'},
+    {type: 'integer', value: '1'},
+    {type: 'group', value: ','},
+    {type: 'integer', value: '23'},
+    {type: 'group', value: ','},
+    {type: 'integer', value: '556'},
+    {type: 'decimal', value: '.'},
+    {type: 'fraction', value: '46'},
   ]);
 });

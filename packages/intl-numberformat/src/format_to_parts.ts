@@ -63,7 +63,7 @@ export default function formatToParts(
   const {notation, style, numberingSystem} = options;
   const defaultNumberingSystem = data.numbers.nu[0];
 
-  // Part 1: partition and interpolate the CLDR number pattern.
+  // #region Part 1: partition and interpolate the CLDR number pattern.
   // ----------------------------------------------------------
 
   let compactNumberPattern: string | null = null;
@@ -222,7 +222,9 @@ export default function formatToParts(
     }
   }
 
-  // Part 2: interpolate unit pattern if necessary.
+  // #endregion
+
+  // #region Part 2: interpolate unit pattern if necessary.
   // ----------------------------------------------
 
   switch (style) {
@@ -346,6 +348,8 @@ export default function formatToParts(
     default:
       return numberParts;
   }
+
+  // #endregion
 }
 
 // A subset of https://tc39.es/ecma402/#sec-partitionnotationsubpattern
