@@ -326,7 +326,7 @@ function initializeDateTimeFormat(
     }
     timeZone = canonicalizeTimeZoneName(timeZone);
   } else {
-    timeZone = DateTimeFormat.__defaultTimeZone;
+    timeZone = DateTimeFormat.getDefaultTimeZone();
   }
   internalSlots.timeZone = timeZone;
 
@@ -973,7 +973,7 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
         } else if (p === 'timeZoneName') {
           const {timeZoneName, gmtFormat, hourFormat} = dataLocaleData;
           const timeZone =
-            internalSlots.timeZone || DateTimeFormat.__defaultTimeZone;
+            internalSlots.timeZone || DateTimeFormat.getDefaultTimeZone();
           const timeZoneData = timeZoneName[timeZone];
           if (timeZoneData && timeZoneData[f as 'short']) {
             fv = timeZoneData[f as 'short']![+tm.inDST];
@@ -1314,6 +1314,8 @@ export interface DateTimeFormatConstructor {
 
   __defaultLocale: string;
   __defaultTimeZone: string;
+  __setDefaultTimeZone(tz: string): void;
+  getDefaultTimeZone(): string;
   localeData: Record<string, DateTimeFormatLocaleInternalData>;
   availableLocales: string[];
   polyfilled: boolean;
@@ -1417,8 +1419,24 @@ defineProperty(DateTimeFormat.prototype, 'formatToParts', {
   },
 });
 
-DateTimeFormat.__defaultTimeZone =
+const DEFAULT_TIMEZONE =
   (typeof process !== 'undefined' && process.env && process.env.TZ) || 'UTC';
+
+DateTimeFormat.__setDefaultTimeZone = (timeZone: string) => {
+  if (timeZone !== undefined) {
+    timeZone = String(timeZone);
+    if (!isValidTimeZoneName(timeZone)) {
+      throw new RangeError('Invalid timeZoneName');
+    }
+    timeZone = canonicalizeTimeZoneName(timeZone);
+  } else {
+    timeZone = DEFAULT_TIMEZONE;
+  }
+  DateTimeFormat.__defaultTimeZone = timeZone;
+};
+
+DateTimeFormat.__defaultTimeZone = DEFAULT_TIMEZONE;
+DateTimeFormat.getDefaultTimeZone = () => DateTimeFormat.__defaultTimeZone;
 
 DateTimeFormat.__addLocaleData = function __addLocaleData(
   ...data: RawDateTimeLocaleData[]

@@ -97,6 +97,17 @@ describe('Intl.DateTimeFormat', function () {
       }).format(new Date(0))
     ).toBe('8:00 AM');
   });
+  it('setDefaultTimeZone should work', function () {
+    const defaultTimeZone = DateTimeFormat.getDefaultTimeZone();
+    DateTimeFormat.__setDefaultTimeZone('Asia/Shanghai');
+    expect(
+      new DateTimeFormat('en', {
+        hour: 'numeric',
+        minute: 'numeric',
+      }).format(new Date(0))
+    ).toBe('8:00 AM');
+    DateTimeFormat.__setDefaultTimeZone(defaultTimeZone);
+  });
   it('diff tz should yield different result', function () {
     const {TZ} = process.env;
     process.env.TZ = undefined;
