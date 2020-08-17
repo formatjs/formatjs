@@ -12,7 +12,7 @@ Before:
 ```tsx
 new IntlMessageFormat('a<b>strong</b>').format({
   b: (...chunks) => <strong>{chunks}</strong>,
-});
+})
 ```
 
 After:
@@ -20,7 +20,7 @@ After:
 ```tsx
 new IntlMessageFormat('a<b>strong</b>').format({
   b: chunks => <strong>{chunks}</strong>,
-});
+})
 ```
 
 - `FormattedMessage` render prop is no longer variadic.
