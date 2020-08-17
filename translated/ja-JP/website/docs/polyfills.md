@@ -14,6 +14,6 @@ Our current list of polyfills includes:
 - [Intl.NumberFormat](polyfills/intl-numberformat.md) (ES2020)
 - [Intl.Locale](polyfills/intl-locale.md)
 - [Intl.getCanonicalLocales](polyfills/intl-getcanonicallocales.md)
-- [Intl.DateTimeFormat](polyfills/intl-datetimeformat.md)
+- [Intl.DateTimeFormat](polyfills/intl-datetimeformat.md) (ES2020)
 
 ![Polyfill Hierarchy](/img/polyfills.svg)
