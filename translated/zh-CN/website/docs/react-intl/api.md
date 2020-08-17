@@ -3,63 +3,29 @@ id: api
 title: Imperative API
 ---
 
-There are a few API layers that React Intl provides and is built on. When using React Intl you'll be interacting with its API (documented here) and its React \[components\]\[components\].
+There are a few API layers that React Intl provides and is built on. When using React Intl you'll be interacting with its API (documented here) and its React [components](./components.md).
 
-## FormatJS Internationalization Formatters
+## Why Imperative API?
 
-Beyond number, date & relative time formatting, React Intl provides string/message formatting. This formatter is part of the [FormatJS](http://formatjs.io/) project, which React Intl is also a part of. This formatter was developed in the same style as the built-in formatters.
+While our [components](../components.md) provide a seamless integration with React, the imperative API are recommended (sometimes required) in several use cases:
 
-- [`IntlMessageFormat`](../intl-messageformat.md)
+- Setting text attributes such as `title`, `aria-label` and the like where a React component cannot be used (e.g `<img title />)
+- Formatting text/datetime... in non-React environment such as Node, Server API, Redux store, testing...
+- High performance scenarios where the number of React components rendered becomes the bottleneck (e.g Finance stock portfolio rendering, virtual tables with a lot of cells...)
 
-React Intl wraps these APIs in the same way it wraps the built-in Intl APIs.
+## The `intl` object
 
-## `defineMessages/defineMessage`
+The core of `react-intl` is the `intl` object (of type [`IntlShape`](#intlshape)), which is the instance to store a cache of all `Intl.*` APIs, configurations, compiled messages and such. The lifecycle of the `intl` object is typically tied to the `locale` & the list of `messages` that it contains, which means when you switch `locale`, this object should be recreated.
 
-```ts
-interface MessageDescriptor {
-  id: string;
-  description?: string | object;
-  defaultMessage?: string;
-}
+:::tip The `intl` object should be reused as much as possible for performance. :::
 
-function defineMessages(
-  messageDescriptors: Record<string, MessageDescriptor>
-): Record<string, MessageDescriptor>;
+There are a few ways to get access to the `intl` object:
 
-function defineMessage(messageDescriptor: MessageDescriptor): MessageDescriptor;
-```
+- `useIntl` hook: Once you've declared your `IntlProvider`, you can get access to the `intl` object via calling this hook in your functional React component
+- `injectIntl` HOC: In `class`-based React components, you can wrap them with the `injectIntl` HOC and `intl` should be available as a `prop`.
+- `createIntl`: In a non-React environment (Node, vue, angular, testing... you name it), you can directly create a `intl` object by calling this function with the same configuration as the `IntlProvider`.
 
-These functions is exported by the `react-intl` package and is simply a _hook_ for the [babel-plugin-react-intl](../tooling/babel-plugin.md) package to use when extracting default messages defined in JavaScript source files. This function simply returns the Message Descriptor map object that's passed-in.
-
-```ts
-import {defineMessages, defineMessage} from 'react-intl';
-
-const messages = defineMessages({
-  greeting: {
-    id: 'app.home.greeting',
-    description: 'Message to greet the user.',
-    defaultMessage: 'Hello, {name}!',
-  },
-});
-
-const msg = defineMessage({
-  id: 'single',
-  defaultMessage: 'single message',
-  description: 'header',
-});
-```
-
-## Injection API
-
-React Intl provides:
-
-1. [`useIntl` hook](#useintl-hook): to _hook_ the imperative formatting API into a React function component (with React version >= 16.8).
-2. [`injectIntl` HOC](#injectintl-hoc): to _inject_ the imperative formatting API into a React class or function component via its `props`.
-3. [`createIntl`](#createintl): to create `IntlShape` object outside of React lifecycle.
-
-These should be used when your React component needs to format data to a string value where a React element is not suitable; e.g., a `title` or `aria` attribute, or for side-effect in `componentDidMount`.
-
-### `useIntl` hook
+## useIntl hook
 
 If a component can be expressed in a form of function component, using `useIntl` hook can be handy. This `useIntl` hook do not expect any option as its argument when being called. Typically, here is how you would like to use:
 
@@ -81,7 +47,7 @@ export default FunctionComponent;
 
 To keep the API surface clean and simple, we only provide `useIntl` hook in the package. If preferable, user can wrap this built-in hook to make customized hook like `useFormatMessage` easily. Please visit React's official website for more general [introduction on React hooks](https://reactjs.org/docs/hooks-intro.html).
 
-### `injectIntl` HOC
+## injectIntl HOC
 
 ```ts
 type WrappedComponentProps<IntlPropName extends string = 'intl'> = {
@@ -130,7 +96,30 @@ const FunctionalComponent: React.FC<Props> = props => {
 export default injectIntl(FunctionalComponent);
 ```
 
-### `IntlShape`
+## createIntl
+
+This allows you to create an `IntlShape` object without using `Provider`. This allows you to format things outside of React lifecycle while reusing the same `intl` object. For example:
+
+```tsx
+import {createIntl, createIntlCache, RawIntlProvider} from 'react-intl'
+
+// This is optional but highly recommended
+// since it prevents memory leak
+const cache = createIntlCache()
+
+const intl = createIntl({
+  locale: 'fr-FR',
+  messages: {}
+}, cache)
+
+// Call imperatively
+intl.formatNumber(20)
+
+// Pass it to IntlProvider
+<RawIntlProvider value={intl}>{foo}</RawIntlProvider>
+```
+
+## IntlShape
 
 ```ts
 interface IntlConfig {
@@ -167,44 +156,31 @@ The definition above shows what the `props.intl` object will look like that's in
 - **`IntlConfig`:** The intl metadata passed as props into the parent `<IntlProvider>`.
 - **`IntlFormatters`:** The imperative formatting API described below.
 
-### `createIntl`
+### locale, formats, and messages
 
-This allows you to create an `IntlShape` object without using `Provider`. This allows you to format things outside of React lifecycle while reusing the same `intl` object. For example:
+The user's current locale and what the app should be rendered in. While `defaultLocale` and `defaultFormats` are for fallbacks or during development and represent the app's default. Notice how there is no `defaultMessages`, that's because each [Message Descriptor](#message-descriptor) provides a `defaultMessage`.
 
-```tsx
-import {createIntl, createIntlCache, RawIntlProvider} from 'react-intl'
+### defaultLocale and defaultFormats
 
-// This is optional but highly recommended
-// since it prevents memory leak
-const cache = createIntlCache()
+Default locale & formats for when a message is not translated (missing from `messages`). `defaultLocale` should be the locale that `defaultMessage`s are declared in so that a sentence is coherent in a single locale. Without `defaultLocale` and/or if it's set incorrectly, you might run into scenario where a sentence is in English but embeded date/time is in Spanish.
 
-const intl = createIntl({
-  locale: 'fr-FR',
-  messages: {}
-}, cache)
+### textComponent
 
-// Call imperatively
-intl.formatNumber(20)
+Provides a way to configure the default wrapper for React Intl's `<Formatted*>` components. If not specified, [`<React.Fragment>`](https://reactjs.org/docs/fragments.html) is used. Before V3, `span` was used instead; check the [migration guide](upgrade-guide-3.x.md) for more info.
 
-// Pass it to IntlProvider
-<RawIntlProvider value={intl}>{foo}</RawIntlProvider>
-```
+### onError
 
-## Date Formatting APIs
+Allows the user to provide a custom error handler. By default, error messages are logged using `console.error` if `NODE_ENV` is not set to `production`.
 
-React Intl provides three functions to format dates:
+### wrapRichTextChunksInFragment
 
-- [`formatDate`](#formatdate)
-- [`formatTime`](#formattime)
-- [`formatRelativeTime`](#formatrelativetime)
+When formatting rich text message, the output we produced is of type `Array<string | React.ReactElement>`, which will trigger key error. This wraps the output in a single `React.Fragment` to suppress that.
 
-These APIs are used by their corresponding [`<FormattedDate>`](./components.md#formatteddate), [`<FormattedTime>`](./components.md#formattedtime), and [`<FormattedRelativeTime>`](./components.md#formattedrelative) components and can be [injected](#injectintl) into your component via its `props`.
+### defaultRichTextElements
 
-Each of these APIs support custom named formats via their `format` option which can be specified on `<IntlProvider>`. Both `formatDate` and `formatTime` use [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) options
+A map of tag to rich text formatting function. This is meant to provide a centralized way to format common tags such as `<b>`, `<p>`... or enforcing certain Design System in the codebase (e.g standardized `<a>` or `<button>`...). See https://github.com/formatjs/formatjs/issues/1752 for more context.
 
-**See:** The [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) docs for details on each of these options.
-
-### `formatDate`
+## formatDate
 
 ```tsx
 function formatDate(
@@ -223,7 +199,7 @@ formatDate(Date.now(), {
 }); // "3/4/2016"
 ```
 
-### `formatTime`
+## formatTime
 
 ```tsx
 function formatTime(
@@ -247,7 +223,7 @@ It expects a `value` which can be parsed as a date (i.e., `isFinite(new Date(val
 formatTime(Date.now()); // "4:03 PM"
 ```
 
-### `formatRelativeTime`
+## formatRelativeTime
 
 :::caution browser support This requires [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-relativetimeformat.md) if you plan to support them. :::
 
@@ -288,16 +264,7 @@ formatRelativeTime(-24, 'hour'); // "24 hours ago"
 formatRelativeTime(-24, 'hour', {style: 'narrow'}); // "24 hr. ago"
 ```
 
-## Number Formatting APIs
-
-React Intl provides two functions to format numbers:
-
-- [`formatNumber`](#formatnumber)
-- [`formatPlural`](#formatplural)
-
-These APIs are used by their corresponding [`<FormattedNumber>`](./components.md#formattednumber), and [`<FormattedPlural>`](./components.md#formattedplural) components and can be [injected](#injectintl) into your component via its `props`.
-
-### `formatNumber`
+## formatNumber
 
 This function uses [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) options.
 
@@ -334,7 +301,7 @@ formatNumber(1000, {
 }); // "1,000 degrees Fahrenheit"
 ```
 
-### `formatPlural`
+## formatPlural
 
 ```ts
 type PluralFormatOptions = {
@@ -362,11 +329,7 @@ formatPlural(4, {style: 'ordinal'}); // "other"
 
 :::danger multiple language support This function should only be used in apps that only need to support one language. If your app supports multiple languages use [`formatMessage`](#formatmessage) instead. :::
 
-## List Formatting APIs
-
-**This is currently stage 3 so [polyfill](../polyfills/intl-listformat.md) would be required.**
-
-### `formatList`
+## formatList
 
 :::caution browser support This requires [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-listformat.md) if you plan to support them. :::
 
@@ -389,7 +352,41 @@ formatList(['Me', 'myself', 'I'], {type: 'conjunction'}); // Me, myself, and I
 formatList(['5 hours', '3 minutes'], {type: 'unit'}); // 5 hours, 3 minutes
 ```
 
-## Message Formatting APIs
+## formatDisplayName
+
+:::caution browser support This requires [Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames) which has limited browser support. Please use our [polyfill](../polyfills/intl-displaynames.md) if you plan to support them. :::
+
+```ts
+type FormatDisplayNameOptions = {
+  style?: 'narrow' | 'short' | 'long';
+  type?: 'language' | 'region' | 'script' | 'currency';
+  fallback?: 'code' | 'none';
+};
+
+function formatDisplayName(
+  value: string | number | object,
+  options?: FormatDisplayNameOptions
+): string | undefined;
+```
+
+Usage examples:
+
+```ts
+// When locale is `en`
+formatDisplayName('zh-Hans-SG'); //=> Simplified Chinese (Singapore)
+// When locale is `zh`
+formatDisplayName('zh-Hans-SG'); //=> 简体中文（新加坡）
+
+// When locale is `en`...
+// ISO-15924 four letters script code to localized display name
+formatDisplayName('Deva', {type: 'script'}); //=> Devanagari
+// ISO-4217 currency code to localized display name
+formatDisplayName('CNY', {type: 'currency'}); //=> Chinese Yuan
+// ISO-3166 two letters region code to localized display name
+formatDisplayName('UN', {type: 'region'}); //=> United Nations
+```
+
+## formatMessage
 
 ### Message Syntax
 
@@ -429,7 +426,7 @@ type MessageDescriptor = {
 };
 ```
 
-:::info babel-plugin-react-intl The [babel-plugin-react-intl](../tooling/babel-plugin.md) package can be used to extract Message Descriptors defined in JavaScript source files. :::
+:::info Extracting Message Descriptor You can extract inline-declared messages from source files using [our CLI](http://localhost:3000/docs/getting-started/message-extraction). :::
 
 ### Message Formatting Fallbacks
 
@@ -443,7 +440,7 @@ The message formatting APIs go the extra mile to provide fallbacks for the commo
 
 Above, "source" refers to using the template as is, without any substitutions made.
 
-### `formatMessage`
+### Usage
 
 ```ts
 type MessageFormatPrimitiveValue = string | number | boolean | null | undefined;
@@ -511,38 +508,38 @@ The message we defined using [`defineMessages`](#definemessages) to support extr
 
 :::info simple message Messages can be simple strings _without_ placeholders, and that's the most common type of message. :::
 
-## Other Formatting APIs
-
-### `formatDisplayName`
-
-:::caution browser support This requires [Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames) which has limited browser support. Please use our [polyfill](../polyfills/intl-displaynames.md) if you plan to support them. :::
+## defineMessages/defineMessage
 
 ```ts
-type FormatDisplayNameOptions = {
-  style?: 'narrow' | 'short' | 'long';
-  type?: 'language' | 'region' | 'script' | 'currency';
-  fallback?: 'code' | 'none';
-};
+interface MessageDescriptor {
+  id?: string;
+  description?: string | object;
+  defaultMessage?: string;
+}
 
-function formatDisplayName(
-  value: string | number | object,
-  options?: FormatDisplayNameOptions
-): string | undefined;
+function defineMessages(
+  messageDescriptors: Record<string, MessageDescriptor>
+): Record<string, MessageDescriptor>;
+
+function defineMessage(messageDescriptor: MessageDescriptor): MessageDescriptor;
 ```
 
-Usage examples:
+These functions is exported by the `react-intl` package and is simply a _hook_ for our CLI & babel/TS plugin to use when compiling default messages defined in JavaScript source files. This function simply returns the Message Descriptor map object that's passed-in.
 
 ```ts
-// When locale is `en`
-formatDisplayName('zh-Hans-SG'); //=> Simplified Chinese (Singapore)
-// When locale is `zh`
-formatDisplayName('zh-Hans-SG'); //=> 简体中文（新加坡）
+import {defineMessages, defineMessage} from 'react-intl';
 
-// When locale is `en`...
-// ISO-15924 four letters script code to localized display name
-formatDisplayName('Deva', {type: 'script'}); //=> Devanagari
-// ISO-4217 currency code to localized display name
-formatDisplayName('CNY', {type: 'currency'}); //=> Chinese Yuan
-// ISO-3166 two letters region code to localized display name
-formatDisplayName('UN', {type: 'region'}); //=> United Nations
+const messages = defineMessages({
+  greeting: {
+    id: 'app.home.greeting',
+    description: 'Message to greet the user.',
+    defaultMessage: 'Hello, {name}!',
+  },
+});
+
+const msg = defineMessage({
+  id: 'single',
+  defaultMessage: 'single message',
+  description: 'header',
+});
 ```
