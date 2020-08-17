@@ -34,30 +34,30 @@ Everything in the ES2020 Internationalization API spec (https://tc39.es/ecma402)
 To use this as a polyfill, override `Intl.NumberFormat` as below:
 
 ```tsx
-import '@formatjs/intl-numberformat/polyfill';
-import '@formatjs/intl-numberformat/locale-data/zh.js'; // locale-data for zh
-import '@formatjs/intl-numberformat/locale-data/en.js'; // locale-data for en
+import '@formatjs/intl-numberformat/polyfill'
+import '@formatjs/intl-numberformat/locale-data/zh.js' // locale-data for zh
+import '@formatjs/intl-numberformat/locale-data/en.js' // locale-data for en
 
 new Intl.NumberFormat('zh', {
   style: 'unit',
   unit: 'kilometer-per-hour',
   unitDisplay: 'long',
-}).format(1000); // 每小时1,000公里
+}).format(1000) // 每小时1,000公里
 
 new Intl.NumberFormat('en-US', {
   notation: 'engineering',
-}).format(987654321); // 987.7E6
+}).format(987654321) // 987.7E6
 
 new Intl.NumberFormat('zh', {
   style: 'currency',
   currency: 'EUR',
   currencySign: 'accounting',
-}).format(-100); // (€100.00)
+}).format(-100) // (€100.00)
 
 // `Number.prototype.toLocaleString` is also polyfilled.
-(987654321).toLocaleString('en-US', {
+;(987654321).toLocaleString('en-US', {
   notation: 'engineering',
-}); // 987.7E6
+}) // 987.7E6
 ```
 
 ## Supported Units
@@ -110,7 +110,7 @@ type Unit =
   | 'terabyte'
   | 'week'
   | 'yard'
-  | 'year';
+  | 'year'
 ```
 
 ### Compound Units

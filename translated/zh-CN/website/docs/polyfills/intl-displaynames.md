@@ -26,10 +26,10 @@ Everything in <https://github.com/tc39/proposal-intl-displaynames>.
 To use this as a polyfill, override `Intl.DisplayNames` as below:
 
 ```javascript
-import '@formatjs/intl-displaynames/polyfill';
-import '@formatjs/intl-displaynames/locale-data/en'; // locale-data for en
-import '@formatjs/intl-displaynames/locale-data/zh'; // locale-data for zh
+import '@formatjs/intl-displaynames/polyfill'
+import '@formatjs/intl-displaynames/locale-data/en' // locale-data for en
+import '@formatjs/intl-displaynames/locale-data/zh' // locale-data for zh
 
-new Intl.DisplayNames('en').of('zh-Hans'); //=> "Simplified Chinese"
-new Intl.DisplayNames('zh', {type: 'currency'}).of('USD'); //=> "美元"
+new Intl.DisplayNames('en').of('zh-Hans') //=> "Simplified Chinese"
+new Intl.DisplayNames('zh', {type: 'currency'}).of('USD') //=> "美元"
 ```

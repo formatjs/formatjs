@@ -89,10 +89,10 @@ The core of a i18n application is the `intl` object, which contains precompiled 
 Component libraries can declare `intl: IntlShape` as a prop and subsequently pass it down directly like:
 
 ```tsx
-import {IntlShape} from 'react-intl';
-import {MyButton, MyForm} from 'my-components';
+import {IntlShape} from 'react-intl'
+import {MyButton, MyForm} from 'my-components'
 interface Props {
-  intl: IntlShape;
+  intl: IntlShape
 }
 
 function MyFeature(props: Props) {
@@ -101,17 +101,17 @@ function MyFeature(props: Props) {
       <MyButton intl={props.intl} />
       <MyForm intl={props.intl} />
     </div>
-  );
+  )
 }
 ```
 
 or passing down via `context` using `RawIntlProvider`:
 
 ```tsx
-import {IntlShape, RawIntlProvider} from 'react-intl';
-import {MyButton, MyForm} from 'my-components';
+import {IntlShape, RawIntlProvider} from 'react-intl'
+import {MyButton, MyForm} from 'my-components'
 interface Props {
-  intl: IntlShape;
+  intl: IntlShape
 }
 
 function MyFeature(props: Props) {
@@ -120,6 +120,6 @@ function MyFeature(props: Props) {
       <MyButton />
       <MyForm />
     </RawIntlProvider>
-  );
+  )
 }
 ```

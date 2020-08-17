@@ -29,14 +29,14 @@ This package requires the following capabilities:
 To use the polyfill, just import it to make sure that a fully functional Intl.RelativeTimeFormat is available in your environment:
 
 ```tsx
-import '@formatjs/intl-relativetimeformat/polyfill';
-import '@formatjs/intl-relativetimeformat/locale-data/de'; // Add locale data for de
+import '@formatjs/intl-relativetimeformat/polyfill'
+import '@formatjs/intl-relativetimeformat/locale-data/de' // Add locale data for de
 ```
 
 If you want to polyfill all locales (e.g for Node):
 
 ```tsx
-import '@formatjs/intl-relativetimeformat/polyfill-locales';
+import '@formatjs/intl-relativetimeformat/polyfill-locales'
 ```
 
 ## Tests

@@ -25,31 +25,31 @@ Then in your eslint config:
 Currently this uses `intl.formatMessage`, `defineMessage`, `defineMessages`, `<FormattedMessage>` from `react-intl` as hooks to verify the message. Therefore, in your code use 1 of the following mechanisms:
 
 ```tsx
-import {defineMessages, defineMessage} from 'react-intl';
+import {defineMessages, defineMessage} from 'react-intl'
 
 const messages = defineMessages({
   foo: {
     defaultMessage: 'foo',
     description: 'bar',
   },
-});
+})
 
 defineMessage({
   defaultMessage: 'single message',
-});
+})
 ```
 
 ```tsx
-import {FormattedMessage} from 'react-intl';
+import {FormattedMessage} from 'react-intl'
 
-<FormattedMessage defaultMessage="foo" description="bar" />;
+;<FormattedMessage defaultMessage="foo" description="bar" />
 ```
 
 ```tsx
 function foo() {
   intl.formatMessage({
     defaultMessage: 'foo',
-  });
+  })
 }
 ```
 
@@ -106,7 +106,7 @@ This enforces `description` in the message descriptor.
 - Description provides helpful context for translators
 
 ```tsx
-import {defineMessages} from 'react-intl';
+import {defineMessages} from 'react-intl'
 
 const messages = defineMessages({
   // WORKS
@@ -118,7 +118,7 @@ const messages = defineMessages({
   bar: {
     defaultMessage: 'bar',
   },
-});
+})
 ```
 
 #### Options
@@ -143,7 +143,7 @@ This enforces `defaultMessage` in the message descriptor.
 - Can be useful in case we want to extract messages for translations from source code. This way can make sure people won't forget about defaultMessage
 
 ```tsx
-import {defineMessages} from 'react-intl';
+import {defineMessages} from 'react-intl'
 
 const messages = defineMessages({
   // WORKS
@@ -155,7 +155,7 @@ const messages = defineMessages({
   bar: {
     description: 'bar',
   },
-});
+})
 ```
 
 #### Options
@@ -269,7 +269,7 @@ This make sure placeholders are not camel-case.
 - This is to prevent case-sensitivity issue in certain translation vendors.
 
 ```tsx
-import {defineMessages} from 'react-intl';
+import {defineMessages} from 'react-intl'
 
 const messages = defineMessages({
   // WORKS
@@ -280,7 +280,7 @@ const messages = defineMessages({
   bar: {
     defaultMessage: 'foo {camelCase}',
   },
-});
+})
 ```
 
 ### `no-emoji`
@@ -293,7 +293,7 @@ This prevents usage of emoji in message.
 - Cross-platform encoding for emojis are faulty.
 
 ```tsx
-import {defineMessages} from 'react-intl';
+import {defineMessages} from 'react-intl'
 
 const messages = defineMessages({
   // WORKS
@@ -304,7 +304,7 @@ const messages = defineMessages({
   bar: {
     defaultMessage: '😃 Smileys & People',
   },
-});
+})
 ```
 
 ### `no-multiple-whitespaces`
@@ -317,7 +317,7 @@ This prevents usage of multiple consecutive whitespaces in message.
 - Prevents `\` linebreaks in JS string which results in awkward whitespaces.
 
 ```tsx
-import {defineMessages} from 'react-intl';
+import {defineMessages} from 'react-intl'
 
 const messages = defineMessages({
   // WORKS
@@ -333,7 +333,7 @@ const messages = defineMessages({
     defaultMessage: 'this message is too long \
     so I wanna line break it.',
   },
-});
+})
 ```
 
 ### `no-multiple-plurals`
@@ -372,7 +372,7 @@ This prevents specifying offset in plural rules in your message.
 - Offset has complicated logic implication so some translation vendors don't allow it.
 
 ```tsx
-import {defineMessages} from 'react-intl';
+import {defineMessages} from 'react-intl'
 
 const messages = defineMessages({
   // PASS
@@ -383,7 +383,7 @@ const messages = defineMessages({
   bar: {
     defaultMessage: '{var, plural, offset:1 one{one} other{other}}',
   },
-});
+})
 ```
 
 ### `supported-datetime-skeleton`
@@ -399,7 +399,7 @@ This prevents specifying manual ID in `MessageDescriptor`.
 Some pipelines enforces automatic ID generation during transpilation using `babel-plugin-react-intl` or `@formatjs/ts-transformer` so manual IDs cause issues of mismatching during runtime.
 
 ```tsx
-import {defineMessages} from 'react-intl';
+import {defineMessages} from 'react-intl'
 
 const messages = defineMessages({
   // PASS
@@ -411,7 +411,7 @@ const messages = defineMessages({
     id: 'something',
     defaultMessage: '{var, plural, offset:1 one{one} other{other}}',
   },
-});
+})
 ```
 
 ### `enforce-id`

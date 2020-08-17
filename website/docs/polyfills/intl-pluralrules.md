@@ -21,12 +21,12 @@ If you're supporting IE11-, this requires [`Intl.getCanonicalLocales`](intl-getc
 ## Usage
 
 ```tsx
-import '@formatjs/intl-pluralrules/polyfill';
-import '@formatjs/intl-pluralrules/locale-data/en'; // locale-data for en
+import '@formatjs/intl-pluralrules/polyfill'
+import '@formatjs/intl-pluralrules/locale-data/en' // locale-data for en
 ```
 
 To polyfill w/ ALL locales:
 
 ```tsx
-import '@formatjs/intl-pluralrules/polyfill-locales';
+import '@formatjs/intl-pluralrules/polyfill-locales'
 ```

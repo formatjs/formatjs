@@ -23,7 +23,7 @@ If you're supporting IE11-, this requires [`Intl.getCanonicalLocales`](intl-getc
 To use the polyfill, just import it to make sure that a fully functional Intl.Locale is available in your environment:
 
 ```tsx
-import '@formatjs/intl-locale/polyfill';
+import '@formatjs/intl-locale/polyfill'
 ```
 
 If Intl.Locale already exists, the polyfill will not be loaded.
@@ -31,7 +31,7 @@ If Intl.Locale already exists, the polyfill will not be loaded.
 To use this as a ponyfill:
 
 ```tsx
-import IntlLocale from '@formatjs/intl-locale';
+import IntlLocale from '@formatjs/intl-locale'
 ```
 
 ## Tests
