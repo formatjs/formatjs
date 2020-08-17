@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import type {PrimitiveType, FormatXMLElementFn} from 'intl-messageformat';
+import {PrimitiveType, FormatXMLElementFn} from 'intl-messageformat';
 import {Context} from './injectIntl';
 import {MessageDescriptor} from '../types';
 import {invariantIntlContext} from '../utils';
