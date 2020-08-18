@@ -1,5 +1,6 @@
 import {Locale} from './';
-if (!('Locale' in Intl)) {
+import {shouldPolyfill} from './should-polyfill';
+if (shouldPolyfill()) {
   Object.defineProperty(Intl, 'Locale', {
     value: Locale,
     writable: true,
