@@ -1,4 +1,5 @@
-import {getCanonicalLocales} from './';
+import {getCanonicalLocales} from '.';
+import {shouldPolyfill} from './should-polyfill';
 if (typeof Intl === 'undefined') {
   if (typeof window !== 'undefined') {
     Object.defineProperty(window, 'Intl', {
@@ -10,14 +11,7 @@ if (typeof Intl === 'undefined') {
     });
   }
 }
-if (
-  !('getCanonicalLocales' in Intl) ||
-  // Native Intl.getCanonicalLocales is just buggy
-  // https://bugs.chromium.org/p/v8/issues/detail?id=10682
-  ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
-    'und-x-private'
-  )[0] === 'x-private'
-) {
+if (shouldPolyfill()) {
   Object.defineProperty(Intl, 'getCanonicalLocales', {
     value: getCanonicalLocales,
     writable: true,

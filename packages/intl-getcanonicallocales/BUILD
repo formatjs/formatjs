@@ -27,10 +27,10 @@ alias(
     actual = "%s.pack" % PACKAGE_NAME,
 )
 
-SRCS = glob(["src/**/*.ts"]) + [
-    "index.ts",
-    "polyfill.ts",
-]
+SRCS = glob([
+    "src/**/*.ts",
+    "*.ts",
+])
 
 TESTS = glob([
     "tests/*.test.ts",
