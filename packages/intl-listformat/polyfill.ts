@@ -1,5 +1,6 @@
 import ListFormat from '.';
-if (!('ListFormat' in Intl)) {
+import {shouldPolyfill} from './should-polyfill';
+if (shouldPolyfill()) {
   Object.defineProperty(Intl, 'ListFormat', {
     value: ListFormat,
     writable: true,
