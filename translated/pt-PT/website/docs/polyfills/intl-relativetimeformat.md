@@ -25,17 +25,33 @@ This package requires the following capabilities:
 
 ## Usage
 
-To use the polyfill, just import it to make sure that a fully functional Intl.RelativeTimeFormat is available in your environment:
+### Simple
 
 ```tsx
 import '@formatjs/intl-relativetimeformat/polyfill'
-import '@formatjs/intl-relativetimeformat/locale-data/de' // Add locale data for de
+import '@formatjs/intl-relativetimeformat/locale-data/en' // locale-data for en
 ```
 
-If you want to polyfill all locales (e.g for Node):
+### Dynamic import + capability detection
 
 ```tsx
-import '@formatjs/intl-relativetimeformat/polyfill-locales'
+import {shouldPolyfill} from '@formatjs/intl-relativetimeformat/should-polyfill'
+function polyfill(locale: string): Promise<any> {
+  // This platform already supports Intl.PluralRules
+  if (!shouldPolyfill()) {
+    return Promise.resolve()
+  }
+  const polyfills = [import('@formatjs/intl-relativetimeformat/polyfill')]
+  switch (locale) {
+    default:
+      polyfills.push(import('@formatjs/intl-relativetimeformat/locale-data/en'))
+      break
+    case 'fr':
+      polyfills.push(import('@formatjs/intl-relativetimeformat/locale-data/fr'))
+      break
+  }
+  return Promise.all(polyfills)
+}
 ```
 
 ## Tests
