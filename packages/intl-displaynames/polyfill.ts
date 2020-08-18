@@ -1,5 +1,5 @@
 import {DisplayNames, DisplayNamesOptions} from '.';
-
+import {shouldPolyfill} from './should-polyfill';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Intl {
@@ -12,18 +12,7 @@ declare global {
   }
 }
 
-/**
- * https://bugs.chromium.org/p/chromium/issues/detail?id=1097432
- */
-function hasMissingICUBug() {
-  if (Intl.DisplayNames) {
-    const regionNames = new Intl.DisplayNames(['en'], {type: 'region'});
-    return regionNames.of('CA') === 'CA';
-  }
-  return false;
-}
-
-if (!Intl.DisplayNames || hasMissingICUBug()) {
+if (shouldPolyfill()) {
   Object.defineProperty(Intl, 'DisplayNames', {
     value: DisplayNames,
     enumerable: false,
