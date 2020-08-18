@@ -1,5 +1,6 @@
 import RelativeTimeFormat from './';
-if (!('RelativeTimeFormat' in Intl)) {
+import {shouldPolyfill} from './should-polyfill';
+if (shouldPolyfill()) {
   Object.defineProperty(Intl, 'RelativeTimeFormat', {
     value: RelativeTimeFormat,
     writable: true,
