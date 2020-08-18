@@ -1,10 +1,7 @@
 import {PluralRules} from './';
+import {shouldPolyfill} from './should-polyfill';
 
-if (
-  !('PluralRules' in Intl) ||
-  new Intl.PluralRules('en', {minimumFractionDigits: 2} as any).select(1) ===
-    'one'
-) {
+if (shouldPolyfill()) {
   Object.defineProperty(Intl, 'PluralRules', {
     value: PluralRules,
     writable: true,
