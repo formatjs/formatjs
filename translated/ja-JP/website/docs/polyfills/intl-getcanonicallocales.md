@@ -15,18 +15,23 @@ npm install @formatjs/intl-getcanonicallocales
 
 ## Usage
 
-To use the polyfill, just import it to make sure that a fully functional Intl.Locale is available in your environment:
+### Simple
 
 ```tsx
 import '@formatjs/intl-getcanonicallocales/polyfill'
 ```
 
-If Intl.Locale already exists, the polyfill will not be loaded.
-
-To use this as a ponyfill:
+### Dynamic import + capability detection
 
 ```tsx
-import getCanonicalLocales from '@formatjs/intl-getcanonicallocales'
+import {shouldPolyfill} from '@formatjs/intl-getcanonicallocales/should-polyfill'
+function polyfill(): Promise<any> {
+  // This platform already supports Intl.PluralRules
+  if (!shouldPolyfill()) {
+    return Promise.resolve()
+  }
+  return import('@formatjs/intl-getcanonicallocales/polyfill')
+}
 ```
 
 ## Tests
