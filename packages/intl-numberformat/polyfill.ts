@@ -1,12 +1,12 @@
 import {
   NumberFormat,
   toLocaleString as _toLocaleString,
-  isUnitSupported,
   NumberFormatOptions,
 } from './';
 import {defineProperty} from '@formatjs/intl-utils';
+import {shouldPolyfill} from './should-polyfill';
 
-if (!isUnitSupported('bit')) {
+if (shouldPolyfill()) {
   defineProperty(Intl, 'NumberFormat', {value: NumberFormat});
   defineProperty(Number.prototype, 'toLocaleString', {
     value: function toLocaleString(
