@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.3.2...@formatjs/intl-getcanonicallocales@1.4.0) (2020-08-18)
+
+
+### Features
+
+* **@formatjs/intl-getcanonicallocales:** expose shouldPolyfill to detect if platform needs our polyfill ([ba0aac6](https://github.com/formatjs/formatjs/commit/ba0aac6dda7053a5b4ffb8f6502dd8c1688cbc8f))
+
+
+
+
+
 ## [1.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.3.1...@formatjs/intl-getcanonicallocales@1.3.2) (2020-08-14)
 
 **Note:** Version bump only for package @formatjs/intl-getcanonicallocales

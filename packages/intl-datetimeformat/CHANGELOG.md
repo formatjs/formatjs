@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.5.0...@formatjs/intl-datetimeformat@2.6.0) (2020-08-18)
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** expose shouldPolyfill to detect if platform needs our polyfill ([d9b3914](https://github.com/formatjs/formatjs/commit/d9b391425b55e34075ba12951a26d74cc2811e29))
+
+
+
+
+
 # [2.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.4.3...@formatjs/intl-datetimeformat@2.5.0) (2020-08-17)
 
 

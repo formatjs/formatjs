@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.2.3...@formatjs/intl-displaynames@3.3.0) (2020-08-18)
+
+
+### Features
+
+* **@formatjs/intl-displaynames:** expose shouldPolyfill to detect if platform needs our polyfill ([8820290](https://github.com/formatjs/formatjs/commit/8820290194137b3dc758cdc6f461037d5bbb4af2))
+
+
+
+
+
 ## [3.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.2.2...@formatjs/intl-displaynames@3.2.3) (2020-08-17)
 
 **Note:** Version bump only for package @formatjs/intl-displaynames

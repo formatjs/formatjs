@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.3.2...@formatjs/intl-pluralrules@3.4.0) (2020-08-18)
+
+
+### Features
+
+* **@formatjs/intl-pluralrules:** expose shouldPolyfill to detect if platform needs our polyfill ([9ef0548](https://github.com/formatjs/formatjs/commit/9ef0548323f227b96b8fcd34a9c3e3cbf82bb61e))
+
+
+
+
+
 ## [3.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.3.1...@formatjs/intl-pluralrules@3.3.2) (2020-08-17)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.2.6...@formatjs/intl-locale@2.3.0) (2020-08-18)
+
+
+### Features
+
+* **@formatjs/intl-locale:** expose shouldPolyfill to detect if platform needs our polyfill ([3ed62e2](https://github.com/formatjs/formatjs/commit/3ed62e2a72a6934a347f4fdc54a8443bebf7eb07))
+
+
+
+
+
 ## [2.2.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.2.5...@formatjs/intl-locale@2.2.6) (2020-08-17)
 
 **Note:** Version bump only for package @formatjs/intl-locale

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.1.2...@formatjs/intl-relativetimeformat@7.2.0) (2020-08-18)
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** expose shouldPolyfill to detect if platform needs our polyfill ([391e1af](https://github.com/formatjs/formatjs/commit/391e1af41cd46fae6e3043130757eb6d69b7307f))
+
+
+
+
+
 ## [7.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.1.1...@formatjs/intl-relativetimeformat@7.1.2) (2020-08-17)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat

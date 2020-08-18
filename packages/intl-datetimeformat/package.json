@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-datetimeformat",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "Intl.DateTimeFormat polyfill",
   "main": "index.js",
   "types": "index.d.ts",
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "dependencies": {
-    "@formatjs/intl-getcanonicallocales": "^1.3.2",
+    "@formatjs/intl-getcanonicallocales": "^1.4.0",
     "@formatjs/intl-utils": "^3.8.4"
   }
 }

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.4.2...@formatjs/intl-numberformat@5.5.0) (2020-08-18)
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** expose shouldPolyfill to detect if platform needs our polyfill ([f12bde6](https://github.com/formatjs/formatjs/commit/f12bde68d1c5b0c22d9bdff7aef309379ac76dfe))
+
+
+
+
+
 ## [5.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.4.1...@formatjs/intl-numberformat@5.4.2) (2020-08-17)
 
 

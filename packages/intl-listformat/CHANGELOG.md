@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.1.2...@formatjs/intl-listformat@4.2.0) (2020-08-18)
+
+
+### Features
+
+* **@formatjs/intl-listformat:** expose shouldPolyfill to detect if platform needs our polyfill ([7f62ccd](https://github.com/formatjs/formatjs/commit/7f62ccd2b52202e8330d8fb709b1793f788b7e82))
+
+
+
+
+
 ## [4.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.1.1...@formatjs/intl-listformat@4.1.2) (2020-08-17)
 
 **Note:** Version bump only for package @formatjs/intl-listformat
