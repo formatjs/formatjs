@@ -22,6 +22,7 @@ module.exports = {
   },
   api: {
     'react-intl': [
+      'react-intl',
       'react-intl/components',
       'react-intl/api',
       'react-intl/upgrade-guide-5x',
@@ -53,4 +54,4 @@ module.exports = {
       'tooling/ts-transformer',
     ],
   },
-};
+}

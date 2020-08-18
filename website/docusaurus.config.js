@@ -32,7 +32,7 @@ module.exports = {
           activeBaseRegex: `docs/(getting-started|guides|core-concepts)`,
         },
         {
-          to: 'docs/react-intl/components',
+          to: 'docs/react-intl',
           label: 'API References',
           position: 'left',
           activeBaseRegex: `docs/(react-intl|intl-messageformat|intl-messageformat-parser)`,
@@ -63,7 +63,7 @@ module.exports = {
           items: [
             {
               label: 'Getting Started',
-              to: 'docs/core-concepts/basic-internationalization-principles',
+              to: 'docs/getting-started/installation',
             },
             {
               to: 'docs/polyfills',
