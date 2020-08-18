@@ -21,39 +21,39 @@ This package requires the following capabilities:
 
 2. If you're supporting IE11-, this requires [`Intl.getCanonicalLocales`](intl-getcanonicallocales.md).
 
-# Features
+## Features
 
 Everything in the ES2020 Internationalization API spec (https://tc39.es/ecma402).
 
-# Usage
+## Usage
 
-To use this as a polyfill, override `Intl.NumberFormat` as below:
+### Simple
 
 ```tsx
 import '@formatjs/intl-numberformat/polyfill'
-import '@formatjs/intl-numberformat/locale-data/zh.js' // locale-data for zh
-import '@formatjs/intl-numberformat/locale-data/en.js' // locale-data for en
+import '@formatjs/intl-numberformat/locale-data/en' // locale-data for en
+```
 
-new Intl.NumberFormat('zh', {
-  style: 'unit',
-  unit: 'kilometer-per-hour',
-  unitDisplay: 'long',
-}).format(1000) // 每小时1,000公里
+### Dynamic import + capability detection
 
-new Intl.NumberFormat('en-US', {
-  notation: 'engineering',
-}).format(987654321) // 987.7E6
-
-new Intl.NumberFormat('zh', {
-  style: 'currency',
-  currency: 'EUR',
-  currencySign: 'accounting',
-}).format(-100) // (€100.00)
-
-// `Number.prototype.toLocaleString` is also polyfilled.
-;(987654321).toLocaleString('en-US', {
-  notation: 'engineering',
-}) // 987.7E6
+```tsx
+import {shouldPolyfill} from '@formatjs/intl-numberformat/should-polyfill'
+function polyfill(locale: string): Promise<any> {
+  // This platform already supports Intl.PluralRules
+  if (!shouldPolyfill()) {
+    return Promise.resolve()
+  }
+  const polyfills = [import('@formatjs/intl-numberformat/polyfill')]
+  switch (locale) {
+    default:
+      polyfills.push(import('@formatjs/intl-numberformat/locale-data/en'))
+      break
+    case 'fr':
+      polyfills.push(import('@formatjs/intl-numberformat/locale-data/fr'))
+      break
+  }
+  return Promise.all(polyfills)
+}
 ```
 
 ## Supported Units

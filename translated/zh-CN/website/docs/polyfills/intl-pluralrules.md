@@ -19,13 +19,31 @@ If you're supporting IE11-, this requires [`Intl.getCanonicalLocales`](intl-getc
 
 ## Usage
 
+### Simple
+
 ```tsx
 import '@formatjs/intl-pluralrules/polyfill'
 import '@formatjs/intl-pluralrules/locale-data/en' // locale-data for en
 ```
 
-To polyfill w/ ALL locales:
+### Dynamic import + capability detection
 
 ```tsx
-import '@formatjs/intl-pluralrules/polyfill-locales'
+import {shouldPolyfill} from '@formatjs/intl-pluralrules/should-polyfill'
+function polyfill(locale: string): Promise<any> {
+  // This platform already supports Intl.PluralRules
+  if (!shouldPolyfill()) {
+    return Promise.resolve()
+  }
+  const polyfills = [import('@formatjs/intl-pluralrules/polyfill')]
+  switch (locale) {
+    default:
+      polyfills.push(import('@formatjs/intl-pluralrules/locale-data/en'))
+      break
+    case 'fr':
+      polyfills.push(import('@formatjs/intl-pluralrules/locale-data/fr'))
+      break
+  }
+  return Promise.all(polyfills)
+}
 ```
