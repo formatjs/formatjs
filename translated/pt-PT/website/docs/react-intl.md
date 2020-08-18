@@ -9,7 +9,7 @@ title: Overview
 
 ## Runtime Requirements
 
-**We support IE11 & 2 most recent versions of Edge, Chrome & Firefox.**
+**We support IE11 & 2 most recent versions of Edge, Chrome, Firefox & Safari.**
 
 React Intl relies on these `Intl` APIs:
 
@@ -17,7 +17,7 @@ React Intl relies on these `Intl` APIs:
 - [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat): Available on IE11+
 - [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules): This can be polyfilled using [this package](polyfills/intl-pluralrules.md).
 - [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat): This can be polyfilled using [this package](polyfills/intl-relativetimeformat.md).
-- (Optional) [Intl.DisplayNames][displaynames-spec]: Required if you use [`formatDisplayName`](react-intl/api.md#formatdisplayname) or [`FormattedDisplayName`](react-intl/components.md#formatteddisplayname). This can be polyfilled using [this package][displaynames-polyfill].
+- (Optional) [Intl.DisplayNames](https://tc39.es/proposal-intl-displaynames/): Required if you use [`formatDisplayName`](react-intl/api.md#formatdisplayname) or [`FormattedDisplayName`](react-intl/components.md#formatteddisplayname). This can be polyfilled using [this package](polyfills/intl-displaynames.md).
 
 If you need to support older browsers, we recommend you do the following:
 
@@ -25,30 +25,9 @@ If you need to support older browsers, we recommend you do the following:
 2. Polyfill `Intl.DateTimeFormat` with [`@formatjs/intl-datetimeformat`](polyfills/intl-datetimeformat.md)
 3. If you're supporting browsers that do not have [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules) (e.g IE11 & Safari 12-), include this [polyfill](polyfills/intl-pluralrules.md) in your build.
 
-```tsx
-if (!Intl.PluralRules) {
-  require('@formatjs/intl-pluralrules/polyfill');
-  require('@formatjs/intl-pluralrules/locale-data/de'); // Add locale data for de
-}
-```
-
 4. If you're supporting browsers that do not have [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RelativeTimeFormat) (e.g IE11, Edge, Safari 12-), include this [polyfill](polyfills/intl-relativetimeformat.md) in your build along with individual CLDR data for each locale you support.
 
-```tsx
-if (!Intl.RelativeTimeFormat) {
-  require('@formatjs/intl-relativetimeformat/polyfill');
-  require('@formatjs/intl-relativetimeformat/locale-data/de'); // Add locale data for de
-}
-```
-
-5. If you need `Intl.DisplayNames`, include this [polyfill][displaynames-polyfill] in your build along with individual CLDR data for each locale you support.
-
-```tsx
-if (!Intl.DisplayNames) {
-  require('@formatjs/intl-displaynames/polyfill');
-  require('@formatjs/intl-displaynames/locale-data/de'); // Add locale data for de
-}
-```
+5. If you need `Intl.DisplayNames`, include this [polyfill](polyfills/intl-displaynames.md) in your build along with individual CLDR data for each locale you support.
 
 ### Browser
 
@@ -86,7 +65,7 @@ If you cannot use the Intl variant of JSC (e.g on iOS), follow the instructions 
 FormatJS also provides types & polyfill for the following Intl API proposals:
 
 - NumberFormat: [polyfill](polyfills/intl-numberformat.md) & [spec](https://tc39.es/ecma402/)
-- DisplayNames: [polyfill][displaynames-polyfill] & [spec][displaynames-spec]
+- DisplayNames: [polyfill](polyfills/intl-displaynames.md) & [spec](https://tc39.es/proposal-intl-displaynames/)
 
 ## The `react-intl` Package
 
@@ -145,7 +124,7 @@ ReactDOM.render(
     <App />
   </IntlProvider>,
   document.getElementById('container')
-);
+)
 ```
 
 **See:** The [**`<IntlProvider>` docs**](react-intl/components.md#intlprovider) for more details.
@@ -234,12 +213,14 @@ If you're using `babel-loader`, or `ts-loader`, you can do 1 of the following:
 
 1. Add those libraries in `include`:
 
-```tsx
-include: [
-  path.join(__dirname, "node_modules/react-intl"),
-  path.join(__dirname, "node_modules/intl-messageformat"),
-  path.join(__dirname, "node_modules/intl-messageformat-parser"),
-],
+```ts
+{
+  include: [
+    path.join(__dirname, 'node_modules/react-intl'),
+    path.join(__dirname, 'node_modules/intl-messageformat'),
+    path.join(__dirname, 'node_modules/intl-messageformat-parser'),
+  ]
+}
 ```
 
 OR
@@ -289,7 +270,7 @@ Our [Advanced Usage](guides/advanced-usage.md) has further guides for production
 We've built [@formatjs/cli](tooling/cli.md) that helps you extract messages from a list of files. It uses [babel-plugin-react-intl](tooling/babel-plugin.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
 
 ```tsx
-import {defineMessages} from 'react-intl';
+import {defineMessages} from 'react-intl'
 
 defineMessages({
   foo: {
@@ -297,33 +278,26 @@ defineMessages({
     defaultMessage: 'foo',
     description: 'bar',
   },
-});
+})
 ```
 
 ```tsx
-import {FormattedMessage} from 'react-intl';
-
-<FormattedMessage id="foo" defaultMessage="foo" description="bar" />;
+import {FormattedMessage} from 'react-intl'
+;<FormattedMessage id="foo" defaultMessage="foo" description="bar" />
 ```
 
 ```tsx
 function Comp(props) {
-  const {intl} = props;
+  const {intl} = props
   return intl.formatMessage({
     // The whole `intl.formatMessage` is required so we can extract
     id: 'foo',
     defaultMessage: 'foo',
     description: 'bar',
-  });
+  })
 }
 ```
 
 ## ESLint Plugin
 
 We've also built [eslint-plugin-formatjs](tooling/linter.md) that helps enforcing specific rules on your messages if your translation vendor has restrictions.
-
-  [displaynames-spec]: https://tc39.es/proposal-intl-displaynames/
-
-  [displaynames-spec]: https://tc39.es/proposal-intl-displaynames/
-  [displaynames-polyfill]: polyfills/intl-displaynames.md
-  [displaynames-polyfill]: polyfills/intl-displaynames.md
