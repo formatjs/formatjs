@@ -24,13 +24,37 @@ This package requires the following capabilities:
 
 ## Usage
 
-### Polyfill
-
-To use the polyfill, just import it to make sure that a fully functional Intl.DateTimeFormat is available in your environment:
+### Simple
 
 ```tsx
 import '@formatjs/intl-datetimeformat/polyfill'
-import '@formatjs/intl-datetimeformat/locale-data/de' // Add locale data for de
+import '@formatjs/intl-datetimeformat/locale-data/en' // locale-data for en
+import '@formatjs/intl-datetimeformat/add-all-tz' // Add ALL tz data
+```
+
+### Dynamic import + capability detection
+
+```tsx
+import {shouldPolyfill} from '@formatjs/intl-datetimeformat/should-polyfill'
+function polyfill(locale: string): Promise<any> {
+  // This platform already supports Intl.PluralRules
+  if (!shouldPolyfill()) {
+    return Promise.resolve()
+  }
+  const polyfills = [
+    import('@formatjs/intl-datetimeformat/polyfill'),
+    import('@formatjs/intl-datetimeformat/add-all-tz'),
+  ]
+  switch (locale) {
+    default:
+      polyfills.push(import('@formatjs/intl-datetimeformat/locale-data/en'))
+      break
+    case 'fr':
+      polyfills.push(import('@formatjs/intl-datetimeformat/locale-data/fr'))
+      break
+  }
+  return Promise.all(polyfills)
+}
 ```
 
 ### Adding IANA Timezone Database
@@ -41,14 +65,14 @@ We provide 2 pre-processed IANA Timezone:
 
 ```tsx
 import '@formatjs/intl-datetimeformat/polyfill'
-import '@formatjs/intl-datetimeformat/add-all-tz.js'
+import '@formatjs/intl-datetimeformat/add-all-tz'
 ```
 
 #### Golden: contains popular set of timezones from IANA database
 
 ```tsx
 import '@formatjs/intl-datetimeformat/polyfill'
-import '@formatjs/intl-datetimeformat/add-golden-tz.js'
+import '@formatjs/intl-datetimeformat/add-golden-tz'
 ```
 
 ### Default Timezone

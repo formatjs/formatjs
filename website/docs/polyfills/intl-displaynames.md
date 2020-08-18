@@ -24,13 +24,31 @@ Everything in <https://github.com/tc39/proposal-intl-displaynames>.
 
 ## Usage
 
-To use this as a polyfill, override `Intl.DisplayNames` as below:
+### Simple
 
-```javascript
+```tsx
 import '@formatjs/intl-displaynames/polyfill'
 import '@formatjs/intl-displaynames/locale-data/en' // locale-data for en
-import '@formatjs/intl-displaynames/locale-data/zh' // locale-data for zh
+```
 
-new Intl.DisplayNames('en').of('zh-Hans') //=> "Simplified Chinese"
-new Intl.DisplayNames('zh', {type: 'currency'}).of('USD') //=> "美元"
+### Dynamic import + capability detection
+
+```tsx
+import {shouldPolyfill} from '@formatjs/intl-displaynames/should-polyfill'
+function polyfill(locale: string): Promise<any> {
+  // This platform already supports Intl.PluralRules
+  if (!shouldPolyfill()) {
+    return Promise.resolve()
+  }
+  const polyfills = [import('@formatjs/intl-displaynames/polyfill')]
+  switch (locale) {
+    default:
+      polyfills.push(import('@formatjs/intl-displaynames/locale-data/en'))
+      break
+    case 'fr':
+      polyfills.push(import('@formatjs/intl-displaynames/locale-data/fr'))
+      break
+  }
+  return Promise.all(polyfills)
+}
 ```
