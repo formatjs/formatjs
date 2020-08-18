@@ -19,18 +19,23 @@ If you're supporting IE11-, this requires [`Intl.getCanonicalLocales`](intl-getc
 
 ## Usage
 
-To use the polyfill, just import it to make sure that a fully functional Intl.Locale is available in your environment:
+### Simple
 
 ```tsx
 import '@formatjs/intl-locale/polyfill'
 ```
 
-If Intl.Locale already exists, the polyfill will not be loaded.
-
-To use this as a ponyfill:
+### Dynamic import + capability detection
 
 ```tsx
-import IntlLocale from '@formatjs/intl-locale'
+import {shouldPolyfill} from '@formatjs/intl-locale/should-polyfill'
+function polyfill(locale: string): Promise<any> {
+  // This platform already supports Intl.PluralRules
+  if (!shouldPolyfill()) {
+    return Promise.resolve()
+  }
+  return import('@formatjs/intl-locale/polyfill')
+}
 ```
 
 ## Tests
