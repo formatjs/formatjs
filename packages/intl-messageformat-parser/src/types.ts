@@ -132,12 +132,14 @@ export interface NumberSkeleton {
   type: SKELETON_TYPE.number;
   tokens: NumberSkeletonToken[];
   location?: Location;
+  parsedOptions: Intl.NumberFormatOptions;
 }
 
 export interface DateTimeSkeleton {
   type: SKELETON_TYPE.dateTime;
   pattern: string;
   location?: Location;
+  parsedOptions: Intl.DateTimeFormatOptions;
 }
 
 export type Skeleton = NumberSkeleton | DateTimeSkeleton;
@@ -212,6 +214,11 @@ export interface Options {
    * Default is true
    */
   normalizeHashtagInPlural?: boolean;
+  /**
+   * Whether to parse number/datetime skeleton
+   * into Intl.NumberFormatOptions & Intl.DateTimeFormatOptions
+   */
+  shouldParseSkeletons?: boolean;
   /**
    * Capture location info in AST
    * Default is false

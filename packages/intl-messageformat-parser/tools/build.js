@@ -13,6 +13,7 @@ function main({out, input}) {
     trace: false,
     tspegjs: {
       customHeader: `
+// @generated
 import {
     ArgumentElement,
     DateElement,
@@ -29,7 +30,8 @@ import {
     TagElement,
     TimeElement,
     TYPE,
-} from './types'`,
+} from './types'
+import {parseDateTimeSkeleton, parseNumberSkeleton} from './skeleton'`,
     },
     returnTypes: {
       argument: 'string',

@@ -1,7 +1,7 @@
 import {pegParse} from '../src/parser';
 import {printAST} from '../src/printer';
 import {isNumberElement, TYPE, isNumberSkeleton} from '../src/types';
-import {convertNumberSkeletonToNumberFormatOptions} from '../src/skeleton';
+import {parseNumberSkeleton} from '../src/skeleton';
 
 test.each([
   `compact-short currency/GBP`,
@@ -41,7 +41,7 @@ test.each([
   'sign-accounting-always',
   'sign-except-zero',
   'sign-accounting-except-zero',
-])('[convertNumberSkeletonToNumberFormatOptions] case: %p', skeleton => {
+])('[parseNumberSkeleton] case: %p', skeleton => {
   const ast = pegParse(`{0, number, ::${skeleton}}`);
   const el = ast[0];
   if (!isNumberElement(el)) {
@@ -50,7 +50,5 @@ test.each([
   if (!isNumberSkeleton(el.style)) {
     throw 'element style should be parsed as number skeleton';
   }
-  expect(
-    convertNumberSkeletonToNumberFormatOptions(el.style.tokens)
-  ).toMatchSnapshot();
+  expect(parseNumberSkeleton(el.style.tokens)).toMatchSnapshot();
 });

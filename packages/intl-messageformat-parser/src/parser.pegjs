@@ -6,6 +6,7 @@ See the accompanying LICENSE file for terms.
 
 /*
  * IMPORTANT: `TYPE` comes from `types.ts`
+ * `parseNumberSkeleton` & `parseDateTimeSkeleton` from 'skeleton.ts`
  */
 
 {
@@ -26,6 +27,7 @@ See the accompanying LICENSE file for terms.
     }
 
     const ignoreTag = options && options.ignoreTag;
+    const shouldParseSkeleton = options && options.shouldParseSkeleton;
 }
 
 start
@@ -121,6 +123,7 @@ numberSkeleton
         return {
             type: SKELETON_TYPE.number,
             tokens,
+            parsedOptions: shouldParseSkeleton ? parseNumberSkeleton(tokens) : {},
             ...insertLocation()
         }
     }
@@ -154,6 +157,7 @@ dateTimeSkeleton
         return {
             type: SKELETON_TYPE.dateTime,
             pattern,
+            parsedOptions: shouldParseSkeleton ? parseDateTimeSkeleton(pattern) : {},
             ...insertLocation(),
         }
     }

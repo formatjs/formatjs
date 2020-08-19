@@ -1,5 +1,6 @@
 // @ts-nocheck
 
+// @generated
 import {
     ArgumentElement,
     DateElement,
@@ -17,6 +18,7 @@ import {
     TimeElement,
     TYPE,
 } from './types'
+import {parseDateTimeSkeleton, parseNumberSkeleton} from './skeleton'
 // tslint:disable:only-arrow-functions
 // tslint:disable:object-literal-shorthand
 // tslint:disable:trailing-comma
@@ -269,6 +271,7 @@ function peg$parse(input: string, options?: IParseOptions) {
           return {
               type: SKELETON_TYPE.number,
               tokens,
+              parsedOptions: shouldParseSkeleton ? parseNumberSkeleton(tokens) : {},
               ...insertLocation()
           }
       };
@@ -304,6 +307,7 @@ function peg$parse(input: string, options?: IParseOptions) {
           return {
               type: SKELETON_TYPE.dateTime,
               pattern,
+              parsedOptions: shouldParseSkeleton ? parseDateTimeSkeleton(pattern) : {},
               ...insertLocation(),
           }
       };
@@ -2961,6 +2965,7 @@ function peg$parse(input: string, options?: IParseOptions) {
       }
 
       const ignoreTag = options && options.ignoreTag;
+      const shouldParseSkeleton = options && options.shouldParseSkeleton;
 
 
   peg$result = peg$startRuleFunction();

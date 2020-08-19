@@ -125,7 +125,7 @@ export function parseDateTimeSkeleton(
       case 'S':
       case 'A':
         throw new RangeError(
-          '`S/A` (second) pattenrs are not supported, use `s` instead'
+          '`S/A` (second) patterns are not supported, use `s` instead'
         );
       // Zone
       case 'z': // 1..3, 4: specific non-location format
@@ -138,7 +138,7 @@ export function parseDateTimeSkeleton(
       case 'X': // 1, 2, 3, 4: The ISO8601 varios formats
       case 'x': // 1, 2, 3, 4: The ISO8601 varios formats
         throw new RangeError(
-          '`Z/O/v/V/X/x` (timeZone) pattenrs are not supported, use `z` instead'
+          '`Z/O/v/V/X/x` (timeZone) patterns are not supported, use `z` instead'
         );
     }
     return '';
@@ -231,7 +231,7 @@ function parseNotationOptions(opt: string): NumberFormatOptions {
 /**
  * https://github.com/unicode-org/icu/blob/master/docs/userguide/format_parse/numbers/skeletons.md#skeleton-stems-and-options
  */
-export function convertNumberSkeletonToNumberFormatOptions(
+export function parseNumberSkeleton(
   tokens: NumberSkeletonToken[]
 ): NumberFormatOptions {
   let result: NumberFormatOptions = {};
