@@ -1,7 +1,6 @@
 import {IParseOptions} from './src/parser';
 import {Options} from './src/types';
 export * from './src/types';
-export * from './src/skeleton';
 
 export type ParseOptions = Options & IParseOptions;
 
