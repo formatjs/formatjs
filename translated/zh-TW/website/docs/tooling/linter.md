@@ -385,34 +385,6 @@ const messages = defineMessages({
 })
 ```
 
-### `supported-datetime-skeleton`
-
-Since formatjs only supports a subset of [DateTime Skeleton](../intl-messageformat-parser.md#Supported-DateTime-Skeleton). This rule exists to make sure you don't use a unsupported pattern.
-
-### `no-id`
-
-This prevents specifying manual ID in `MessageDescriptor`.
-
-#### Why
-
-Some pipelines enforces automatic ID generation during transpilation using `babel-plugin-react-intl` or `@formatjs/ts-transformer` so manual IDs cause issues of mismatching during runtime.
-
-```tsx
-import {defineMessages} from 'react-intl'
-
-const messages = defineMessages({
-  // PASS
-  foo: {
-    defaultMessage: '{var, plural, one{one} other{other}}',
-  },
-  // FAILS
-  bar: {
-    id: 'something',
-    defaultMessage: '{var, plural, offset:1 one{one} other{other}}',
-  },
-})
-```
-
 ### `enforce-id`
 
 This enforces generated ID to be set in `MessageDescriptor`.
