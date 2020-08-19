@@ -18,6 +18,7 @@ export {
   isWellFormedUnitIdentifier,
   defineProperty,
 } from './src/polyfill-utils';
+
 export {
   createResolveLocale,
   getLocaleHierarchy,
