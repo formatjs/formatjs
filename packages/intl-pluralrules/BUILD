@@ -185,6 +185,7 @@ ts_project(
 rollup_bundle(
     name = "test262-polyfill",
     srcs = [
+        "test262/get_internal_slots.js",
         "test262/index.js",
         "test262/polyfill-force.js",
     ],

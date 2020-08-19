@@ -7,13 +7,13 @@ import {
   createResolveLocale,
   supportedLocales,
   isMissingLocaleDataError,
-  setInternalSlot,
-  getInternalSlot,
   setNumberFormatDigitOptions,
   NumberFormatDigitInternalSlots,
+  formatNumericToString,
 } from '@formatjs/ecma402-abstract';
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
 import ToObject from 'es-abstract/2019/ToObject';
+import getInternalSlots from './get_internal_slots';
 function validateInstance(instance: any, method: string) {
   if (!(instance instanceof PluralRules)) {
     throw new TypeError(
@@ -24,92 +24,7 @@ function validateInstance(instance: any, method: string) {
   }
 }
 
-/**
- * https://tc39.es/ecma402/#sec-torawprecision
- * @param x
- * @param minPrecision
- * @param maxPrecision
- */
-function toRawPrecision(x: number, minPrecision: number, maxPrecision: number) {
-  let m = x.toPrecision(maxPrecision);
-  if (~m.indexOf('.') && maxPrecision > minPrecision) {
-    let cut = maxPrecision - minPrecision;
-    while (cut > 0 && m[m.length - 1] === '0') {
-      m = m.slice(0, m.length - 1);
-      cut--;
-    }
-    if (m[m.length - 1] === '.') {
-      return m.slice(0, m.length - 1);
-    }
-  }
-  return m;
-}
-
-/**
- * https://tc39.es/ecma402/#sec-torawfixed
- * @param x
- * @param minInteger
- * @param minFraction
- * @param maxFraction
- */
-function toRawFixed(
-  x: number,
-  minInteger: number,
-  minFraction: number,
-  maxFraction: number
-) {
-  let cut = maxFraction - minFraction;
-  let m = x.toFixed(maxFraction);
-  while (cut > 0 && m[m.length - 1] === '0') {
-    m = m.slice(0, m.length - 1);
-    cut--;
-  }
-  if (m[m.length - 1] === '.') {
-    m = m.slice(0, m.length - 1);
-  }
-  const int = m.split('.')[0].length;
-  if (int < minInteger) {
-    let z = '';
-    for (; z.length < minInteger - int; z += '0');
-    m = z + m;
-  }
-  return m;
-}
-
-function formatNumericToString(
-  internalSlotMap: WeakMap<PluralRules, PluralRulesInternal>,
-  pl: PluralRules,
-  x: number
-) {
-  const minimumSignificantDigits = getInternalSlot(
-    internalSlotMap,
-    pl,
-    'minimumSignificantDigits'
-  );
-  const maximumSignificantDigits = getInternalSlot(
-    internalSlotMap,
-    pl,
-    'maximumSignificantDigits'
-  );
-  if (
-    minimumSignificantDigits !== undefined &&
-    maximumSignificantDigits !== undefined
-  ) {
-    return toRawPrecision(
-      x,
-      minimumSignificantDigits,
-      maximumSignificantDigits
-    );
-  }
-  return toRawFixed(
-    x,
-    getInternalSlot(internalSlotMap, pl, 'minimumIntegerDigits'),
-    getInternalSlot(internalSlotMap, pl, 'minimumFractionDigits')!,
-    getInternalSlot(internalSlotMap, pl, 'maximumFractionDigits')!
-  );
-}
-
-interface PluralRulesInternal extends NumberFormatDigitInternalSlots {
+export interface PluralRulesInternal extends NumberFormatDigitInternalSlots {
   initializedPluralRules: boolean;
   locale: string;
   type: 'cardinal' | 'ordinal';
@@ -129,12 +44,8 @@ export class PluralRules implements Intl.PluralRules {
     const opt: any = Object.create(null);
     const opts =
       options === undefined ? Object.create(null) : ToObject(options);
-    setInternalSlot(
-      PluralRules.__INTERNAL_SLOT_MAP__,
-      this,
-      'initializedPluralRules',
-      true
-    );
+    const internalSlots = getInternalSlots(this);
+    internalSlots.initializedPluralRules = true;
     const matcher = getOption(
       opts,
       'localeMatcher',
@@ -143,19 +54,15 @@ export class PluralRules implements Intl.PluralRules {
       'best fit'
     );
     opt.localeMatcher = matcher;
-    setInternalSlot(
-      PluralRules.__INTERNAL_SLOT_MAP__,
-      this,
-      'type',
-      getOption(opts, 'type', 'string', ['cardinal', 'ordinal'], 'cardinal')
-    );
-    setNumberFormatDigitOptions(
-      PluralRules.__INTERNAL_SLOT_MAP__.get(this)!,
+    internalSlots.type = getOption(
       opts,
-      0,
-      3,
-      'standard'
+      'type',
+      'string',
+      ['cardinal', 'ordinal'],
+      'cardinal'
     );
+
+    setNumberFormatDigitOptions(internalSlots, opts, 0, 3, 'standard');
     const r = createResolveLocale(PluralRules.getDefaultLocale)(
       PluralRules.availableLocales,
       requestedLocales,
@@ -163,26 +70,14 @@ export class PluralRules implements Intl.PluralRules {
       PluralRules.relevantExtensionKeys,
       PluralRules.localeData
     );
-    setInternalSlot(
-      PluralRules.__INTERNAL_SLOT_MAP__,
-      this,
-      'locale',
-      r.locale
-    );
+    internalSlots.locale = r.locale;
   }
   public resolvedOptions() {
     validateInstance(this, 'resolvedOptions');
     const opts = Object.create(null);
-    opts.locale = getInternalSlot(
-      PluralRules.__INTERNAL_SLOT_MAP__,
-      this,
-      'locale'
-    );
-    opts.type = getInternalSlot(
-      PluralRules.__INTERNAL_SLOT_MAP__,
-      this,
-      'type'
-    );
+    const internalSlots = getInternalSlots(this);
+    opts.locale = internalSlots.locale;
+    opts.type = internalSlots.type;
     ([
       'minimumIntegerDigits',
       'minimumFractionDigits',
@@ -190,11 +85,7 @@ export class PluralRules implements Intl.PluralRules {
       'minimumSignificantDigits',
       'maximumSignificantDigits',
     ] as Array<keyof PluralRulesInternal>).forEach(field => {
-      const val = getInternalSlot(
-        PluralRules.__INTERNAL_SLOT_MAP__,
-        this,
-        field
-      );
+      const val = internalSlots[field];
       if (val !== undefined) {
         opts[field] = val;
       }
@@ -209,22 +100,12 @@ export class PluralRules implements Intl.PluralRules {
   }
   public select(val: number): LDMLPluralRule {
     validateInstance(this, 'select');
-    const locale = getInternalSlot(
-      PluralRules.__INTERNAL_SLOT_MAP__,
-      this,
-      'locale'
-    );
-    const type = getInternalSlot(
-      PluralRules.__INTERNAL_SLOT_MAP__,
-      this,
-      'type'
-    );
+    const internalSlots = getInternalSlots(this);
+    const {type, locale} = internalSlots;
+
     return PluralRules.localeData[locale].fn(
-      formatNumericToString(
-        PluralRules.__INTERNAL_SLOT_MAP__,
-        this,
-        Math.abs(Number(val))
-      ),
+      formatNumericToString(getInternalSlots(this), Math.abs(Number(val)))
+        .formattedString,
       type == 'ordinal'
     );
   }
@@ -271,10 +152,6 @@ export class PluralRules implements Intl.PluralRules {
   }
   private static relevantExtensionKeys = [];
   public static polyfilled = true;
-  private static readonly __INTERNAL_SLOT_MAP__ = new WeakMap<
-    PluralRules,
-    PluralRulesInternal
-  >();
 }
 
 try {
