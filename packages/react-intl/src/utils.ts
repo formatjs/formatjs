@@ -20,7 +20,7 @@ import * as React from 'react';
 import {IntlMessageFormat, FormatXMLElementFn} from 'intl-messageformat';
 import * as memoize from 'fast-memoize';
 import {Cache} from 'fast-memoize';
-import {invariant} from '@formatjs/intl-utils';
+import {invariant} from '@formatjs/ecma402-abstract';
 import {IntlRelativeTimeFormatOptions} from '@formatjs/intl-relativetimeformat';
 import {UnsupportedFormatterError} from './error';
 

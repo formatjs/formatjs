@@ -1,4 +1,3 @@
-export {selectUnit} from './src/diff';
 export {
   defaultNumberOption,
   getInternalSlot,
@@ -11,16 +10,11 @@ export {
   setInternalSlot,
   setMultiInternalSlots,
   setNumberFormatDigitOptions,
-  toObject,
-  objectIs,
   isWellFormedCurrencyCode,
-  toString,
   formatNumericToString,
   toRawFixed,
   toRawPrecision,
   getMagnitude,
-  repeat,
-  hasOwnProperty,
   isWellFormedUnitIdentifier,
   defineProperty,
 } from './src/polyfill-utils';

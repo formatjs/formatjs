@@ -79,13 +79,15 @@ TESTS = glob([
 SNAPSHOTS = glob(["tests/__snapshots__/*.snap"])
 
 SRC_DEPS = [
-    "//packages/intl-utils:dist",
+    "@npm//es-abstract",
+    "@npm//@types/es-abstract",
+    "//packages/ecma402-abstract:dist",
     "//packages/intl-getcanonicallocales:dist",
 ]
 
 TEST_DEPS = SRC_DEPS + [
     "//packages/intl-pluralrules",
-    "//packages/intl-utils:types",
+    "//packages/ecma402-abstract:types",
     "//packages/intl-getcanonicallocales:types",
 ]
 
@@ -130,8 +132,8 @@ ts_node(
         "scripts/extract-units.ts",
         "scripts/utils.ts",
         "//:tsconfig.json",
-        "//packages/intl-utils:dist",
-        "//packages/intl-utils:types",
+        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract:types",
         "@npm//@types/fs-extra",
         "@npm//@types/lodash",
         "@npm//@types/minimist",
@@ -206,8 +208,8 @@ generate_src_file(
         "scripts/extract-currencies.ts",
         "scripts/utils.ts",
         "//:tsconfig.json",
-        "//packages/intl-utils:dist",
-        "//packages/intl-utils:types",
+        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract:types",
         "@npm//@types/fs-extra",
         "@npm//@types/lodash",
         "@npm//@types/minimist",
@@ -255,8 +257,8 @@ generate_src_file(
         "scripts/numbering-systems.ts",
         "scripts/utils.ts",
         "//:tsconfig.json",
-        "//packages/intl-utils:dist",
-        "//packages/intl-utils:types",
+        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract:types",
         "@npm//@types/fs-extra",
         "@npm//@types/lodash",
         "@npm//@types/minimist",
@@ -281,8 +283,8 @@ generate_src_file(
     data = [
         "scripts/units-constants.ts",
         "//:tsconfig.json",
-        "//packages/intl-utils:dist",
-        "//packages/intl-utils:types",
+        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract:types",
         "@npm//@types/fs-extra",
         "@npm//@types/minimist",
         "@npm//@types/node",

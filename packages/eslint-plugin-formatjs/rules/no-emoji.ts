@@ -2,7 +2,7 @@ import {Rule, Scope} from 'eslint';
 import {ImportDeclaration, Node} from 'estree';
 import {TSESTree} from '@typescript-eslint/typescript-estree';
 import {extractMessages} from '../util';
-import * as emojiRegex from 'emoji-regex';
+import emojiRegex from 'emoji-regex';
 const EMOJI_REGEX: RegExp = (emojiRegex as any)();
 
 function checkNode(

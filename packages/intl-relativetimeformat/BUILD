@@ -57,7 +57,9 @@ TESTS = glob([
 ])
 
 SRC_DEPS = [
-    "//packages/intl-utils:dist",
+    "@npm//es-abstract",
+    "@npm//@types/es-abstract",
+    "//packages/ecma402-abstract:dist",
     "//packages/intl-getcanonicallocales:dist",
 ]
 
@@ -73,7 +75,7 @@ jest_test(
     srcs = SRCS + TESTS + TEST_LOCALE_DATA,
     deps = SRC_DEPS + [
         "//packages/intl-pluralrules",
-        "//packages/intl-utils:types",
+        "//packages/ecma402-abstract:types",
         "//packages/intl-getcanonicallocales:types",
     ],
 )
@@ -102,8 +104,8 @@ ts_node(
         "scripts/cldr-raw.ts",
         "scripts/extract-relative.ts",
         "//:tsconfig.json",
-        "//packages/intl-utils:dist",
-        "//packages/intl-utils:types",
+        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract:types",
         "@npm//@types/fs-extra",
         "@npm//@types/minimist",
         "@npm//@types/node",

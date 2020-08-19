@@ -7,7 +7,7 @@ import {
   SymbolsData,
   toRawFixed,
   UnitData,
-} from '@formatjs/intl-utils';
+} from '@formatjs/ecma402-abstract';
 import {
   NumberFormatOptionsCompactDisplay,
   NumberFormatOptionsCurrencyDisplay,

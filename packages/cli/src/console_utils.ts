@@ -1,6 +1,6 @@
-import * as chalk from 'chalk';
-import * as readline from 'readline';
-import * as tty from 'tty';
+import chalk from 'chalk';
+import readline from 'readline';
+import tty from 'tty';
 
 const CLEAR_WHOLE_LINE = 0;
 

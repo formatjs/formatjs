@@ -1,11 +1,11 @@
 import {generateDataForLocales as extractCurrencies} from './extract-currencies';
 import {generateDataForLocales as extractUnits} from './extract-units';
 import {generateDataForLocales as extractNumbers} from './extract-numbers';
-import {RawNumberLocaleData} from '@formatjs/intl-utils';
+import {RawNumberLocaleData} from '@formatjs/ecma402-abstract';
 import {join} from 'path';
 import {outputJSONSync} from 'fs-extra';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
-import * as minimist from 'minimist';
+import minimist from 'minimist';
 
 function main(args: minimist.ParsedArgs) {
   const {outDir} = args;

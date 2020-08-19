@@ -1,6 +1,6 @@
 import {exec as nodeExec} from 'child_process';
 import {join, resolve} from 'path';
-import * as _rimraf from 'rimraf';
+import _rimraf from 'rimraf';
 import {promisify} from 'util';
 const exec = promisify(nodeExec);
 const BIN_PATH = resolve(__dirname, '../../bin/formatjs');

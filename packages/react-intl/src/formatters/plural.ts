@@ -2,7 +2,7 @@ import {IntlConfig, Formatters, IntlFormatters} from '../types';
 import {filterProps} from '../utils';
 import {MessageFormatError} from '../error';
 import {ErrorCode, FormatError} from 'intl-messageformat';
-import {LDMLPluralRule} from '@formatjs/intl-utils';
+import {LDMLPluralRule} from '@formatjs/ecma402-abstract';
 
 const PLURAL_FORMAT_OPTIONS: Array<keyof Intl.PluralRulesOptions> = [
   'localeMatcher',

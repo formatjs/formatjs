@@ -1,12 +1,10 @@
 import {
   getInternalSlot,
-  toObject,
   getOption,
   setInternalSlot,
   setMultiInternalSlots,
-  objectIs,
   invariant,
-} from '@formatjs/intl-utils';
+} from '@formatjs/ecma402-abstract';
 import {
   isStructurallyValidLanguageTag,
   isUnicodeLanguageSubtag,
@@ -21,6 +19,8 @@ import {
   UnicodeLanguageId,
 } from '@formatjs/intl-getcanonicallocales';
 import {supplemental} from 'cldr-core/supplemental/likelySubtags.json';
+import SameValue from 'es-abstract/2019/SameValue';
+import ToObject from 'es-abstract/2019/ToObject';
 const {likelySubtags} = supplemental;
 
 export interface IntlLocaleOptions {
@@ -354,7 +354,7 @@ export class Locale {
     if (opts === undefined) {
       options = Object.create(null);
     } else {
-      options = toObject(opts);
+      options = ToObject(opts);
     }
 
     tag = applyOptionsToTag(tag, options);
@@ -441,7 +441,7 @@ export class Locale {
         __INTERNAL_SLOT_MAP__,
         this,
         'numeric',
-        objectIs(r.kn, 'true')
+        SameValue(r.kn, 'true')
       );
     }
     setInternalSlot(__INTERNAL_SLOT_MAP__, this, 'numberingSystem', r.nu);

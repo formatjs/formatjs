@@ -9,7 +9,7 @@ import * as DateFields from 'cldr-dates-full/main/en/dateFields.json';
 import * as NumberFields from 'cldr-numbers-full/main/en/numbers.json';
 import {sync as globSync} from 'fast-glob';
 import {resolve, dirname} from 'path';
-import {FieldData, LocaleFieldsData} from '@formatjs/intl-utils';
+import {FieldData, LocaleFieldsData} from '@formatjs/ecma402-abstract';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
 
 // The set of CLDR date field names that are used in FormatJS.

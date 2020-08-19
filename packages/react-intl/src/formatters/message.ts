@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import {invariant} from '@formatjs/intl-utils';
+import {invariant} from '@formatjs/ecma402-abstract';
 import {assignUniqueKeysToParts} from '../utils';
 
 import {

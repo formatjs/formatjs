@@ -1,6 +1,6 @@
-import * as tar from 'tar';
+import tar from 'tar';
 import fetch from 'node-fetch';
-import * as minimist from 'minimist';
+import minimist from 'minimist';
 async function main({version, outDir}: minimist.ParsedArgs) {
   const res = await fetch(
     `https://data.iana.org/time-zones/releases/tzdata${version}.tar.gz`

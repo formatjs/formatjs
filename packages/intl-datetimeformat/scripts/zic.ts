@@ -1,7 +1,7 @@
 import {execFile as _execFile} from 'child_process';
 import {promisify} from 'util';
 import {resolve} from 'path';
-import * as minimist from 'minimist';
+import minimist from 'minimist';
 const execFile = promisify(_execFile);
 
 const ZONE_FILENAMES = [

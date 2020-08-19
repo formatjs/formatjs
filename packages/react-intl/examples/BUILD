@@ -6,7 +6,7 @@ parcel(
         "//packages/react-intl:dist",
         "//packages/intl-messageformat:dist",
         "//packages/intl-messageformat-parser:dist",
-        "//packages/intl-utils:dist",
+        "//packages/ecma402-abstract:dist",
         "//packages/intl-pluralrules",
         "@npm//core-js",
     ],

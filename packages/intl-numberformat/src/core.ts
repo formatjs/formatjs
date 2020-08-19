@@ -8,13 +8,11 @@ import {
   invariant,
   isWellFormedCurrencyCode,
   isWellFormedUnitIdentifier,
-  objectIs,
   RawNumberLocaleData,
   setNumberFormatDigitOptions,
   supportedLocales,
-  toObject,
   unpackData,
-} from '@formatjs/intl-utils';
+} from '@formatjs/ecma402-abstract';
 import * as currencyDigitsData from './data/currency-digits.json';
 import {names as numberingSystemNames} from './data/numbering-systems.json';
 import formatToParts from './format_to_parts';
@@ -26,6 +24,10 @@ import {
   NumberFormat as NumberFormatType,
 } from './types';
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
+import SameValue from 'es-abstract/2019/SameValue';
+import ToObject from 'es-abstract/2019/ToObject';
+import HasOwnProperty from 'es-abstract/2015/HasOwnProperty';
+import ToNumber from 'es-abstract/2019/ToNumber';
 
 // Merge declaration with the constructor defined below.
 export type NumberFormat = NumberFormatType;
@@ -66,7 +68,7 @@ function removeUnicodeExtensionFromLocale(canonicalLocale: string): string {
  * https://tc39.es/ecma402/#sec-currencydigits
  */
 function currencyDigits(c: string): number {
-  return Object.prototype.hasOwnProperty.call(currencyDigitsData, c)
+  return HasOwnProperty(currencyDigitsData, c)
     ? (currencyDigitsData as Record<string, number>)[c]
     : 2;
 }
@@ -82,7 +84,7 @@ function initializeNumberFormat(
   // @ts-ignore
   const requestedLocales: string[] = Intl.getCanonicalLocales(locales);
   const options: NumberFormatOptions =
-    opts === undefined ? Object.create(null) : toObject(opts);
+    opts === undefined ? Object.create(null) : ToObject(opts);
   const opt = Object.create(null);
   const matcher = getOption(
     options,
@@ -230,14 +232,14 @@ function partitionNumberPattern(numberFormat: NumberFormat, x: number) {
       sign = 0;
       break;
     case 'auto':
-      if (objectIs(x, 0) || x > 0 || isNaN(x)) {
+      if (SameValue(x, 0) || x > 0 || isNaN(x)) {
         sign = 0;
       } else {
         sign = -1;
       }
       break;
     case 'always':
-      if (objectIs(x, 0) || x > 0 || isNaN(x)) {
+      if (SameValue(x, 0) || x > 0 || isNaN(x)) {
         sign = 1;
       } else {
         sign = -1;
@@ -601,26 +603,7 @@ function toNumeric(val: any) {
   if (typeof val === 'bigint') {
     return val;
   }
-  return toNumber(val);
-}
-
-function toNumber(val: any): number {
-  if (val === undefined) {
-    return NaN;
-  }
-  if (val === null) {
-    return +0;
-  }
-  if (typeof val === 'boolean') {
-    return val ? 1 : +0;
-  }
-  if (typeof val === 'number') {
-    return val;
-  }
-  if (typeof val === 'symbol' || typeof val === 'bigint') {
-    throw new TypeError('Cannot convert symbol/bigint to number');
-  }
-  return Number(val);
+  return ToNumber(val);
 }
 
 try {

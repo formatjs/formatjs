@@ -6,9 +6,9 @@ import {
   Opts,
   MessageDescriptor,
 } from '@formatjs/ts-transformer';
-import * as ts from 'typescript';
+import ts from 'typescript';
 import {resolveBuiltinFormatter} from './formatters';
-import * as stringify from 'json-stable-stringify';
+import stringify from 'json-stable-stringify';
 export interface ExtractionResult<M = Record<string, string>> {
   /**
    * List of extracted messages

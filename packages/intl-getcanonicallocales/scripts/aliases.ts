@@ -1,6 +1,6 @@
 import {outputFileSync} from 'fs-extra';
 import * as aliases from 'cldr-core/supplemental/aliases.json';
-import * as minimist from 'minimist';
+import minimist from 'minimist';
 
 const {
   languageAlias,

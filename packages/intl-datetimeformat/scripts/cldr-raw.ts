@@ -2,7 +2,7 @@ import {extractDatesFields, getAllLocales} from './extract-dates';
 import {join} from 'path';
 import {outputJSONSync} from 'fs-extra';
 import {RawDateTimeLocaleData} from '../src/types';
-import * as minimist from 'minimist';
+import minimist from 'minimist';
 
 function main(args: minimist.ParsedArgs) {
   const {outDir} = args;

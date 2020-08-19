@@ -1,6 +1,5 @@
 import {
   LDMLPluralRule,
-  toObject,
   getOption,
   PluralRulesLocaleData,
   PluralRulesData,
@@ -12,8 +11,9 @@ import {
   getInternalSlot,
   setNumberFormatDigitOptions,
   NumberFormatDigitInternalSlots,
-} from '@formatjs/intl-utils';
+} from '@formatjs/ecma402-abstract';
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
+import ToObject from 'es-abstract/2019/ToObject';
 function validateInstance(instance: any, method: string) {
   if (!(instance instanceof PluralRules)) {
     throw new TypeError(
@@ -128,7 +128,7 @@ export class PluralRules implements Intl.PluralRules {
       .getCanonicalLocales as typeof getCanonicalLocales)(locales);
     const opt: any = Object.create(null);
     const opts =
-      options === undefined ? Object.create(null) : toObject(options);
+      options === undefined ? Object.create(null) : ToObject(options);
     setInternalSlot(
       PluralRules.__INTERNAL_SLOT_MAP__,
       this,

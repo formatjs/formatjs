@@ -32,8 +32,10 @@ alias(
 SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
+    "@npm//es-abstract",
+    "@npm//@types/es-abstract",
     "@npm//cldr-core",
-    "//packages/intl-utils:dist",
+    "//packages/ecma402-abstract:dist",
     "//packages/intl-getcanonicallocales:dist",
 ]
 
@@ -53,7 +55,7 @@ jest_test(
     ]),
     deps = [
         "//packages/intl-getcanonicallocales:types",
-        "//packages/intl-utils:types",
+        "//packages/ecma402-abstract:types",
     ] + SRC_DEPS,
 )
 

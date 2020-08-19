@@ -4,7 +4,7 @@ import {
   NumberFormatNotation,
   NumberFormatLocaleInternalData,
   RawNumberLocaleData,
-} from '@formatjs/intl-utils';
+} from '@formatjs/ecma402-abstract';
 
 // Public --------------------------------------------------------------------------------------------------------------
 

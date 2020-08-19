@@ -23,6 +23,8 @@
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "dependencies": {
     "@formatjs/intl-getcanonicallocales": "^1.4.0",
-    "@formatjs/intl-utils": "^3.8.4"
+    "@formatjs/ecma402-abstract": "^1.0.0",
+    "es-abstract": "^1.17.6",
+    "@types/es-abstract": "^1.17.1"
   }
 }

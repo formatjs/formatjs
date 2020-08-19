@@ -24,7 +24,7 @@ import {
   isTSTypeAssertion,
 } from '@babel/types';
 import {NodePath, Scope} from '@babel/traverse';
-import * as validate from 'schema-utils';
+import validate from 'schema-utils';
 import * as OPTIONS_SCHEMA from './options.schema.json';
 import {OptionsSchema} from './options';
 import {interpolateName} from '@formatjs/ts-transformer';

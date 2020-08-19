@@ -1,4 +1,4 @@
-import {LocaleData} from '@formatjs/intl-utils';
+import {LocaleData} from '@formatjs/ecma402-abstract';
 
 export interface PackedData {
   zones: string[];

@@ -2,7 +2,7 @@ import {resolve, join} from 'path';
 import {promisify} from 'util';
 import {exec as nodeExec} from 'child_process';
 import {readJSON, mkdirp} from 'fs-extra';
-import * as _rimraf from 'rimraf';
+import _rimraf from 'rimraf';
 const exec = promisify(nodeExec);
 const rimraf = promisify(_rimraf);
 

@@ -1,4 +1,4 @@
-import * as minimist from 'minimist';
+import minimist from 'minimist';
 import {extractCurrencyDigits} from './extract-currencies';
 import {outputJSONSync} from 'fs-extra';
 

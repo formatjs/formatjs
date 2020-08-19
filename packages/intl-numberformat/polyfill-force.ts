@@ -3,7 +3,7 @@ import {
   toLocaleString as _toLocaleString,
   NumberFormatOptions,
 } from './';
-import {defineProperty} from '@formatjs/intl-utils';
+import {defineProperty} from '@formatjs/ecma402-abstract';
 
 defineProperty(Intl, 'NumberFormat', {value: NumberFormat});
 defineProperty(Number.prototype, 'toLocaleString', {

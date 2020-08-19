@@ -8,7 +8,7 @@ import * as CurrenciesData from 'cldr-numbers-full/main/en/currencies.json';
 import * as supplementalCurrencyData from 'cldr-core/supplemental/currencyData.json';
 import {sync as globSync} from 'fast-glob';
 import {resolve, dirname} from 'path';
-import {CurrencyData, LDMLPluralRuleMap} from '@formatjs/intl-utils';
+import {CurrencyData, LDMLPluralRuleMap} from '@formatjs/ecma402-abstract';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
 import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils';
 

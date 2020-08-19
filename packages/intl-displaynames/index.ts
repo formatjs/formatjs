@@ -10,9 +10,9 @@ import {
   DisplayNamesLocaleData,
   unpackData,
   DisplayNamesData,
-  toString,
-} from '@formatjs/intl-utils';
+} from '@formatjs/ecma402-abstract';
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
+import ToString from 'es-abstract/2019/ToString';
 
 export interface DisplayNamesOptions {
   localeMatcher?: 'lookup' | 'best fit';
@@ -125,7 +125,7 @@ export class DisplayNames {
   of(code: string | number | object): string | undefined {
     checkReceiver(this, 'of');
     const type = getSlot(this, 'type');
-    const codeAsString = toString(code);
+    const codeAsString = ToString(code);
     if (!isValidCodeForDisplayNames(type, codeAsString)) {
       throw RangeError('invalid code for Intl.DisplayNames.prototype.of');
     }

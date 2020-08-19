@@ -11,7 +11,7 @@ import {
   removeUnitNamespace,
   isWellFormedUnitIdentifier,
   UnitData,
-} from '@formatjs/intl-utils';
+} from '@formatjs/ecma402-abstract';
 import * as UnitsData from 'cldr-units-full/main/en/units.json';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
 import {collapseSingleValuePluralRule, PLURAL_RULES} from './utils';

@@ -2,7 +2,7 @@ load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("//tools:index.bzl", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
-PACKAGE_NAME = "intl-utils"
+PACKAGE_NAME = "ecma402-abstract"
 
 pkg_npm(
     name = PACKAGE_NAME,
@@ -28,7 +28,10 @@ alias(
 
 SRCS = glob(["src/*.ts"]) + ["index.ts"]
 
-SRC_DEPS = []
+SRC_DEPS = [
+    "@npm//es-abstract",
+    "@npm//@types/es-abstract",
+]
 
 ts_compile(
     name = "dist",

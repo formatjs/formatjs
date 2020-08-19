@@ -1,5 +1,4 @@
 import {
-  toObject,
   getOption,
   supportedLocales,
   RelativeTimeLocaleData,
@@ -16,8 +15,13 @@ import {
   isMissingLocaleDataError,
   unpackData,
   LocaleFieldsData,
-} from '@formatjs/intl-utils';
+} from '@formatjs/ecma402-abstract';
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
+
+import ToString from 'es-abstract/2019/ToString';
+import SameValue from 'es-abstract/2019/SameValue';
+import ToObject from 'es-abstract/2019/ToObject';
+
 export type Unit =
   | 'second'
   | 'minute'
@@ -168,24 +172,6 @@ function makePartsList(
   return result;
 }
 
-function objectIs(x: any, y: any) {
-  if (Object.is) {
-    return Object.is(x, y);
-  }
-  // SameValue algorithm
-  if (x === y) {
-    // Steps 1-5, 7-10
-    // Steps 6.b-6.e: +0 != -0
-    return x !== 0 || 1 / x === 1 / y;
-  }
-  // Step 6.a: NaN == NaN
-  return x !== x && y !== y;
-}
-
-function toString(arg: any): string {
-  return arg + '';
-}
-
 /**
  * PartitionRelativeTimePattern
  * @param rtf
@@ -226,17 +212,17 @@ function partitionRelativeTimePattern(
   const patterns = fields[entry]!;
   const numeric = getInternalSlot(internalSlotMap, rtf, 'numeric');
   if (numeric === 'auto') {
-    if (toString(value) in patterns) {
+    if (ToString(value) in patterns) {
       return [
         {
           type: 'literal',
-          value: patterns[toString(value) as '-1']!,
+          value: patterns[ToString(value) as '-1']!,
         },
       ];
     }
   }
   let tl: keyof FieldData = 'future';
-  if (objectIs(value, -0) || value < 0) {
+  if (SameValue(value, -0) || value < 0) {
     tl = 'past';
   }
   const po = patterns[tl];
@@ -281,7 +267,7 @@ export default class RelativeTimeFormat {
       .getCanonicalLocales as typeof getCanonicalLocales)(locales);
     const opt: any = Object.create(null);
     const opts =
-      options === undefined ? Object.create(null) : toObject(options);
+      options === undefined ? Object.create(null) : ToObject(options);
     const matcher = getOption(
       opts,
       'localeMatcher',
@@ -371,7 +357,7 @@ export default class RelativeTimeFormat {
       RelativeTimeFormat.__INTERNAL_SLOT_MAP__,
       this,
       Number(value),
-      toString(unit) as FormattableUnit
+      ToString(unit) as FormattableUnit
     )
       .map(el => el.value)
       .join('');
@@ -393,7 +379,7 @@ export default class RelativeTimeFormat {
       RelativeTimeFormat.__INTERNAL_SLOT_MAP__,
       this,
       Number(value),
-      toString(unit) as FormattableUnit
+      ToString(unit) as FormattableUnit
     );
   }
 

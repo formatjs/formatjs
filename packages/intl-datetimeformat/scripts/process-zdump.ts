@@ -1,4 +1,4 @@
-import * as minimist from 'minimist';
+import minimist from 'minimist';
 import {execFile as _execFile} from 'child_process';
 import {readFileSync} from 'fs';
 import {outputFileSync} from 'fs-extra';

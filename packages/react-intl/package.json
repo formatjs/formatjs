@@ -133,7 +133,7 @@
     "@formatjs/intl-listformat": "^4.2.0",
     "@formatjs/intl-numberformat": "^5.5.0",
     "@formatjs/intl-relativetimeformat": "^7.2.0",
-    "@formatjs/intl-utils": "^3.8.4",
+    "@formatjs/ecma402-abstract": "^1.0.0",
     "@types/hoist-non-react-statics": "^3.3.1",
     "fast-memoize": "^2.5.2",
     "hoist-non-react-statics": "^3.3.2",

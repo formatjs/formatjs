@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as hoistNonReactStatics_ from 'hoist-non-react-statics';
+import hoistNonReactStatics_ from 'hoist-non-react-statics';
 // Since rollup cannot deal with namespace being a function,
 // this is to interop with TypeScript since `invariant`
 // does not export a default

@@ -2,13 +2,11 @@ import {
   getOption,
   createResolveLocale,
   invariant,
-  toObject,
   defineProperty,
   supportedLocales,
-  objectIs,
   partitionPattern,
   unpackData,
-} from '@formatjs/intl-utils';
+} from '@formatjs/ecma402-abstract';
 import getInternalSlots from './get_internal_slots';
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
 import links from './data/links';
@@ -22,6 +20,16 @@ import {
 } from './types';
 import {unpack} from './packer';
 import {parseDateTimeSkeleton} from './skeleton';
+import ToObject from 'es-abstract/2019/ToObject';
+import TimeClip from 'es-abstract/2019/TimeClip';
+import ToNumber from 'es-abstract/2019/ToNumber';
+import WeekDay from 'es-abstract/2019/WeekDay';
+import MonthFromTime from 'es-abstract/2019/MonthFromTime';
+import DateFromTime from 'es-abstract/2019/DateFromTime';
+import HourFromTime from 'es-abstract/2019/HourFromTime';
+import MinFromTime from 'es-abstract/2019/MinFromTime';
+import SecFromTime from 'es-abstract/2019/SecFromTime';
+import YearFromTime from 'es-abstract/2019/YearFromTime';
 const UPPERCASED_LINKS = Object.keys(links).reduce(
   (all: Record<string, string>, l) => {
     all[l.toUpperCase()] = links[l as 'Zulu'];
@@ -169,65 +177,6 @@ function canonicalizeTimeZoneName(tz: string) {
     return 'UTC';
   }
   return ianaTimeZone;
-}
-
-/**
- * https://tc39.es/ecma262/#sec-tonumber
- * @param val
- */
-function toNumber(val: any): number {
-  if (val === undefined) {
-    return NaN;
-  }
-  if (val === null) {
-    return +0;
-  }
-  if (typeof val === 'boolean') {
-    return val ? 1 : +0;
-  }
-  if (typeof val === 'number') {
-    return val;
-  }
-  if (typeof val === 'symbol' || typeof val === 'bigint') {
-    throw new TypeError('Cannot convert symbol/bigint to number');
-  }
-  return Number(val);
-}
-
-/**
- * https://tc39.es/ecma262/#sec-tointeger
- * @param n
- */
-function toInteger(n: any) {
-  const number = toNumber(n);
-  if (isNaN(number) || objectIs(number, -0)) {
-    return 0;
-  }
-  if (isFinite(number)) {
-    return number;
-  }
-  let integer = Math.floor(Math.abs(number));
-  if (number < 0) {
-    integer = -integer;
-  }
-  if (objectIs(integer, -0)) {
-    return 0;
-  }
-  return integer;
-}
-
-/**
- * https://tc39.es/ecma262/#sec-timeclip
- * @param time
- */
-function timeClip(time: number) {
-  if (!isFinite(time)) {
-    return NaN;
-  }
-  if (Math.abs(time) > 8.64 * 1e16) {
-    return NaN;
-  }
-  return toInteger(time);
 }
 
 interface Opt extends Omit<Formats, 'pattern' | 'pattern12'> {
@@ -505,7 +454,7 @@ export function toDateTimeOptions(
   if (options === undefined) {
     options = null;
   } else {
-    options = toObject(options);
+    options = ToObject(options);
   }
   options = Object.create(options) as DateTimeFormatOptions;
   let needDefaults = true;
@@ -897,7 +846,7 @@ function offsetToGmtString(
  * @param x
  */
 function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
-  x = timeClip(x);
+  x = TimeClip(x);
   if (isNaN(x)) {
     throw new RangeError('invalid time');
   }
@@ -1057,181 +1006,6 @@ function formatDateTimeParts(dtf: DateTimeFormat, x: number) {
   return partitionDateTimePattern(dtf, x);
 }
 
-const MS_PER_DAY = 86400000;
-
-/**
- * https://www.ecma-international.org/ecma-262/11.0/index.html#eqn-modulo
- * @param x
- * @param y
- * @return k of the same sign as y
- */
-function mod(x: number, y: number): number {
-  return x - Math.floor(x / y) * y;
-}
-
-/**
- * https://tc39.es/ecma262/#eqn-Day
- * @param t
- */
-function day(t: number) {
-  return Math.floor(t / MS_PER_DAY);
-}
-
-/**
- * https://tc39.es/ecma262/#sec-week-day
- * @param t
- */
-function weekDay(t: number) {
-  return mod(day(t) + 4, 7);
-}
-
-function dayFromYear(y: number) {
-  return (
-    365 * (y - 1970) +
-    Math.floor((y - 1969) / 4) -
-    Math.floor((y - 1901) / 100) +
-    Math.floor((y - 1601) / 400)
-  );
-}
-
-function timeFromYear(y: number) {
-  return MS_PER_DAY * dayFromYear(y);
-}
-
-function yearFromTime(t: number) {
-  const min = Math.ceil(t / MS_PER_DAY / 366);
-  let y = min;
-  while (timeFromYear(y) <= t) {
-    y++;
-  }
-  return y - 1;
-}
-
-function daysInYear(y: number) {
-  if (y % 4 !== 0) {
-    return 365;
-  }
-  if (y % 100 !== 0) {
-    return 366;
-  }
-  if (y % 400 !== 0) {
-    return 365;
-  }
-  return 366;
-}
-
-function dayWithinYear(t: number) {
-  return day(t) - dayFromYear(yearFromTime(t));
-}
-
-function inLeapYear(t: number): 0 | 1 {
-  return daysInYear(yearFromTime(t)) === 365 ? 0 : 1;
-}
-
-function monthFromTime(t: number) {
-  const dwy = dayWithinYear(t);
-  const leap = inLeapYear(t);
-  if (dwy >= 0 && dwy < 31) {
-    return 0;
-  }
-  if (dwy < 59 + leap) {
-    return 1;
-  }
-  if (dwy < 90 + leap) {
-    return 2;
-  }
-  if (dwy < 120 + leap) {
-    return 3;
-  }
-  if (dwy < 151 + leap) {
-    return 4;
-  }
-  if (dwy < 181 + leap) {
-    return 5;
-  }
-  if (dwy < 212 + leap) {
-    return 6;
-  }
-  if (dwy < 243 + leap) {
-    return 7;
-  }
-  if (dwy < 273 + leap) {
-    return 8;
-  }
-  if (dwy < 304 + leap) {
-    return 9;
-  }
-  if (dwy < 334 + leap) {
-    return 10;
-  }
-  if (dwy < 365 + leap) {
-    return 11;
-  }
-  throw new Error('Invalid time');
-}
-
-function dateFromTime(t: number) {
-  const dwy = dayWithinYear(t);
-  const mft = monthFromTime(t);
-  const leap = inLeapYear(t);
-  if (mft === 0) {
-    return dwy + 1;
-  }
-  if (mft === 1) {
-    return dwy - 30;
-  }
-  if (mft === 2) {
-    return dwy - 58 - leap;
-  }
-  if (mft === 3) {
-    return dwy - 89 - leap;
-  }
-  if (mft === 4) {
-    return dwy - 119 - leap;
-  }
-  if (mft === 5) {
-    return dwy - 150 - leap;
-  }
-  if (mft === 6) {
-    return dwy - 180 - leap;
-  }
-  if (mft === 7) {
-    return dwy - 211 - leap;
-  }
-  if (mft === 8) {
-    return dwy - 242 - leap;
-  }
-  if (mft === 9) {
-    return dwy - 272 - leap;
-  }
-  if (mft === 10) {
-    return dwy - 303 - leap;
-  }
-  if (mft === 11) {
-    return dwy - 333 - leap;
-  }
-  throw new Error('Invalid time');
-}
-
-const HOURS_PER_DAY = 24;
-const MINUTES_PER_HOUR = 60;
-const SECONDS_PER_MINUTE = 60;
-const MS_PER_SECOND = 1e3;
-const MS_PER_MINUTE = MS_PER_SECOND * SECONDS_PER_MINUTE;
-const MS_PER_HOUR = MS_PER_MINUTE * MINUTES_PER_HOUR;
-
-function hourFromTime(t: number) {
-  return mod(Math.floor(t / MS_PER_HOUR), HOURS_PER_DAY);
-}
-
-function minFromTime(t: number) {
-  return mod(Math.floor(t / MS_PER_MINUTE), MINUTES_PER_HOUR);
-}
-
-function secFromTime(t: number) {
-  return mod(Math.floor(t / MS_PER_SECOND), SECONDS_PER_MINUTE);
-}
-
 function getApplicableZoneData(t: number, timeZone: string): [number, boolean] {
   const {tzData} = DateTimeFormat;
   const zoneData = tzData[timeZone];
@@ -1251,6 +1025,12 @@ function getApplicableZoneData(t: number, timeZone: string): [number, boolean] {
   return [offset * 1e3, dst];
 }
 
+/**
+ * https://tc39.es/ecma402/#sec-tolocaltime
+ * @param t
+ * @param calendar
+ * @param timeZone
+ */
 function toLocalTime(
   t: number,
   calendar: string,
@@ -1277,18 +1057,18 @@ function toLocalTime(
   const [timeZoneOffset, inDST] = getApplicableZoneData(t, timeZone);
 
   const tz = t + timeZoneOffset;
-  const year = yearFromTime(tz);
+  const year = YearFromTime(tz);
   return {
-    weekday: weekDay(tz),
+    weekday: WeekDay(tz),
     era: year < 0 ? 'BC' : 'AD',
     year,
     relatedYear: undefined,
     yearName: undefined,
-    month: monthFromTime(tz),
-    day: dateFromTime(tz),
-    hour: hourFromTime(tz),
-    minute: minFromTime(tz),
-    second: secFromTime(tz),
+    month: MonthFromTime(tz),
+    day: DateFromTime(tz),
+    hour: HourFromTime(tz),
+    minute: MinFromTime(tz),
+    second: SecFromTime(tz),
     inDST,
     // IMPORTANT: Not in spec
     timeZoneOffset,
@@ -1413,7 +1193,7 @@ defineProperty(DateTimeFormat.prototype, 'formatToParts', {
     if (date === undefined) {
       date = Date.now();
     } else {
-      date = toNumber(date);
+      date = ToNumber(date);
     }
     return formatDateTimeParts(this, date);
   },

@@ -1,4 +1,4 @@
-import * as minimist from 'minimist';
+import minimist from 'minimist';
 import {readFileSync} from 'fs';
 import {outputFileSync} from 'fs-extra';
 function main(args: minimist.ParsedArgs) {

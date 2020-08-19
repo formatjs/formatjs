@@ -1,6 +1,7 @@
 import {invariant} from './invariant';
-import {toObject, getOption} from './polyfill-utils';
+import {getOption} from './polyfill-utils';
 import {LocaleData} from './types';
+import ToObject from 'es-abstract/2019/ToObject';
 
 interface ResolveLocaleResult {
   locale: string;
@@ -277,7 +278,7 @@ export function supportedLocales(
 ): string[] {
   let matcher: 'best fit' | 'lookup' = 'best fit';
   if (options !== undefined) {
-    options = toObject(options);
+    options = ToObject(options);
     matcher = getOption(
       options,
       'localeMatcher',

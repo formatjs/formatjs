@@ -1,9 +1,9 @@
 import {join} from 'path';
 import {outputFileSync} from 'fs-extra';
-import * as serialize from 'serialize-javascript';
-import {PluralRulesLocaleData} from '@formatjs/intl-utils';
-import * as plurals from 'cldr-core/supplemental/plurals.json';
-import * as minimist from 'minimist';
+import serialize from 'serialize-javascript';
+import {PluralRulesLocaleData} from '@formatjs/ecma402-abstract';
+import plurals from 'cldr-core/supplemental/plurals.json';
+import minimist from 'minimist';
 
 const Compiler = require('make-plural-compiler');
 Compiler.load(

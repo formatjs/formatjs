@@ -1,8 +1,8 @@
 import {extractLists, getAllLocales} from './extract-list';
 import {join} from 'path';
 import {outputJSONSync} from 'fs-extra';
-import {ListPatternLocaleData} from '@formatjs/intl-utils';
-import * as minimist from 'minimist';
+import {ListPatternLocaleData} from '@formatjs/ecma402-abstract';
+import minimist from 'minimist';
 
 function main(args: minimist.ParsedArgs) {
   const {outDir} = args;

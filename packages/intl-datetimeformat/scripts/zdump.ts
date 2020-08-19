@@ -1,4 +1,4 @@
-import * as minimist from 'minimist';
+import minimist from 'minimist';
 
 import zones from '../src/data/zones';
 import {execFile as _execFile} from 'child_process';

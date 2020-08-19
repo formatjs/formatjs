@@ -1,8 +1,8 @@
 import {extractRelativeFields, getAllLocales} from './extract-relative';
 import {join} from 'path';
 import {outputJSONSync} from 'fs-extra';
-import {RelativeTimeLocaleData} from '@formatjs/intl-utils';
-import * as minimist from 'minimist';
+import {RelativeTimeLocaleData} from '@formatjs/ecma402-abstract';
+import minimist from 'minimist';
 
 function main(args: minimist.ParsedArgs) {
   const {outDir} = args;

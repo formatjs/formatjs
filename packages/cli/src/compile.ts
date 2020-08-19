@@ -1,6 +1,6 @@
 import {parse, MessageFormatElement} from 'intl-messageformat-parser';
 import {outputFile, readJSON} from 'fs-extra';
-import * as stringify from 'json-stable-stringify';
+import stringify from 'json-stable-stringify';
 import {resolveBuiltinFormatter} from './formatters';
 
 export type CompileFn = (msgs: any) => Record<string, string>;

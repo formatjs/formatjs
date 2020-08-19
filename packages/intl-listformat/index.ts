@@ -1,5 +1,4 @@
 import {
-  toObject,
   getOption,
   ListPatternLocaleData,
   unpackData,
@@ -13,8 +12,9 @@ import {
   invariant,
   isLiteralPart,
   LiteralPart,
-} from '@formatjs/intl-utils';
+} from '@formatjs/ecma402-abstract';
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
+import ToObject from 'es-abstract/2019/ToObject';
 
 export interface IntlListFormatOptions {
   /**
@@ -202,7 +202,7 @@ export default class ListFormat {
       .getCanonicalLocales as typeof getCanonicalLocales)(locales);
     const opt: any = Object.create(null);
     const opts =
-      options === undefined ? Object.create(null) : toObject(options);
+      options === undefined ? Object.create(null) : ToObject(options);
     const matcher = getOption(
       opts,
       'localeMatcher',

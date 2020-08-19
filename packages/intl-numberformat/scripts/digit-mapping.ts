@@ -1,4 +1,4 @@
-import * as minimist from 'minimist';
+import minimist from 'minimist';
 import {outputJSONSync} from 'fs-extra';
 
 // Generate an array of 10 characters with consecutive codepoint, starting from `starCharCode`.

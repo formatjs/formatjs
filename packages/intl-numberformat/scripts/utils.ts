@@ -1,4 +1,4 @@
-import {LDMLPluralRuleMap, LDMLPluralRule} from '@formatjs/intl-utils';
+import {LDMLPluralRuleMap, LDMLPluralRule} from '@formatjs/ecma402-abstract';
 import {isEqual} from 'lodash';
 export function collapseSingleValuePluralRule<T>(
   rules: LDMLPluralRuleMap<T>

@@ -1,4 +1,4 @@
-import * as minimist from 'minimist';
+import minimist from 'minimist';
 import {outputJSONSync} from 'fs-extra';
 import {extractNumberingSystemNames} from './extract-numbers';
 function main(args: minimist.ParsedArgs) {

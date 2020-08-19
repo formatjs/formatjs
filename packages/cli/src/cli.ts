@@ -1,5 +1,5 @@
-import * as commander from 'commander';
-import * as loudRejection from 'loud-rejection';
+import commander from 'commander';
+import loudRejection from 'loud-rejection';
 import extract, {ExtractCLIOptions} from './extract';
 import compile, {CompileCLIOpts, Opts} from './compile';
 import compileFolder from './compile_folder';

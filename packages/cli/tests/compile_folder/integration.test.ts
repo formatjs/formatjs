@@ -1,6 +1,6 @@
 import {exec as nodeExec} from 'child_process';
 import {join, resolve} from 'path';
-import * as _rimraf from 'rimraf';
+import _rimraf from 'rimraf';
 import {promisify} from 'util';
 import {sync as globSync} from 'glob';
 import {basename} from 'path';

@@ -1,6 +1,6 @@
 import {sync as globSync} from 'fast-glob';
 import {resolve, dirname} from 'path';
-import {DisplayNamesData, invariant} from '@formatjs/intl-utils';
+import {DisplayNamesData, invariant} from '@formatjs/ecma402-abstract';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
 
 // CLDR JSON types

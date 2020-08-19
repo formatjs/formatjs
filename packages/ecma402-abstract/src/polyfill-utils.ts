@@ -6,34 +6,8 @@ import {
   RawNumberFormatResult,
 } from './number-types';
 import {SANCTIONED_UNITS} from './units';
-
-export function hasOwnProperty(o: unknown, key: string): boolean {
-  return Object.prototype.hasOwnProperty.call(o, key);
-}
-
-/**
- * https://tc39.es/ecma262/#sec-toobject
- * @param arg
- */
-export function toObject<T>(
-  arg: T
-): T extends null ? never : T extends undefined ? never : T {
-  if (arg == null) {
-    throw new TypeError('undefined/null cannot be converted to object');
-  }
-  return Object(arg);
-}
-
-/**
- * https://tc39.es/ecma262/#sec-tostring
- */
-export function toString(o: unknown): string {
-  // Only symbol is irregular...
-  if (typeof o === 'symbol') {
-    throw TypeError('Cannot convert a Symbol value to a string');
-  }
-  return String(o);
-}
+import SameValue from 'es-abstract/2019/SameValue';
+import ToString from 'es-abstract/2019/ToString';
 
 /**
  * https://tc39.es/ecma402/#sec-getoption
@@ -60,7 +34,7 @@ export function getOption<T extends object, K extends keyof T, F>(
       value = Boolean(value);
     }
     if (type === 'string') {
-      value = toString(value);
+      value = ToString(value);
     }
     if (values !== undefined && !values.filter(val => val == value).length) {
       throw new RangeError(`${value} is not within ${values.join(', ')}`);
@@ -255,20 +229,6 @@ export function setNumberFormatDigitOptions(
   }
 }
 
-export function objectIs(x: any, y: any) {
-  if (Object.is) {
-    return Object.is(x, y);
-  }
-  // SameValue algorithm
-  if (x === y) {
-    // Steps 1-5, 7-10
-    // Steps 6.b-6.e: +0 != -0
-    return x !== 0 || 1 / x === 1 / y;
-  }
-  // Step 6.a: NaN == NaN
-  return x !== x && y !== y;
-}
-
 const NOT_A_Z_REGEX = /[^A-Z]/;
 
 /**
@@ -309,7 +269,7 @@ export function formatNumericToString(
   >,
   x: number
 ) {
-  const isNegative = x < 0 || objectIs(x, -0);
+  const isNegative = x < 0 || SameValue(x, -0);
   if (isNegative) {
     x = -x;
   }
@@ -496,7 +456,7 @@ export function toRawPrecision(
   }
 }
 
-export function repeat(s: string, times: number): string {
+function repeat(s: string, times: number): string {
   if (typeof s.repeat === 'function') {
     return s.repeat(times);
   }
