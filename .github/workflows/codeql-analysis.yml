@@ -1,0 +1,69 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [main, ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [main]
+  schedule:
+    - cron: '0 4 * * 1'
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Bazel Cache
+      uses: actions/cache@v2.1.0
+      with:
+        path: |
+          ~/.cache/bazel
+          ~/.cache/bazel-disk-cache
+        key: ${{ runner.os }}-bazel-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-bazel-
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+    - uses: actions/cache@v2.1.0
+      id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+        fetch-depth: 100
+
+    # If this run was triggered by a pull request event, then checkout
+    # the head of the pull request instead of the merge commit.
+    - run: git checkout HEAD^2
+      if: ${{ github.event_name == 'pull_request' }}
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      # Override language selection by uncommenting this and choosing your languages
+      with:
+         languages: javascript
+
+    # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
+    # If this step fails, then you should remove it and run the build manually (see below)
+    - name: Use Node.js 12
+      uses: actions/setup-node@v2.1.1
+      with:
+        node-version: 12
+    
+    - name: Build
+      run: |
+        yarn install --frozen-lockfile
+        yarn build
+      env:
+        CI: true
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
