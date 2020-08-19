@@ -8,6 +8,8 @@ declare global {
         locales?: string | string[],
         options?: DisplayNamesOptions
       ): DisplayNames;
+
+      readonly polyfilled?: true;
     };
   }
 }
