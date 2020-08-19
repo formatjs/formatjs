@@ -1,5 +1,4 @@
 import {
-  convertNumberSkeletonToNumberFormatOptions,
   isArgumentElement,
   isDateElement,
   isDateTimeSkeleton,
@@ -11,7 +10,6 @@ import {
   isSelectElement,
   isTimeElement,
   MessageFormatElement,
-  parseDateTimeSkeleton,
   isTagElement,
 } from 'intl-messageformat-parser';
 import {
@@ -164,7 +162,7 @@ export function formatToParts<T>(
         typeof el.style === 'string'
           ? formats.date[el.style]
           : isDateTimeSkeleton(el.style)
-          ? parseDateTimeSkeleton(el.style.pattern)
+          ? el.style.parsedOptions
           : undefined;
       result.push({
         type: PART_TYPE.literal,
@@ -179,7 +177,7 @@ export function formatToParts<T>(
         typeof el.style === 'string'
           ? formats.time[el.style]
           : isDateTimeSkeleton(el.style)
-          ? parseDateTimeSkeleton(el.style.pattern)
+          ? el.style.parsedOptions
           : undefined;
       result.push({
         type: PART_TYPE.literal,
@@ -194,7 +192,7 @@ export function formatToParts<T>(
         typeof el.style === 'string'
           ? formats.number[el.style]
           : isNumberSkeleton(el.style)
-          ? convertNumberSkeletonToNumberFormatOptions(el.style.tokens)
+          ? el.style.parsedOptions
           : undefined;
       result.push({
         type: PART_TYPE.literal,
