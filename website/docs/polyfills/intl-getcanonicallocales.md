@@ -26,12 +26,11 @@ import '@formatjs/intl-getcanonicallocales/polyfill'
 
 ```tsx
 import {shouldPolyfill} from '@formatjs/intl-getcanonicallocales/should-polyfill'
-function polyfill(): Promise<any> {
-  // This platform already supports Intl.PluralRules
-  if (!shouldPolyfill()) {
-    return Promise.resolve()
+async function polyfill() {
+  // This platform already supports Intl.getCanonicalLocales
+  if (shouldPolyfill()) {
+    await import('@formatjs/intl-getcanonicallocales/polyfill')
   }
-  return import('@formatjs/intl-getcanonicallocales/polyfill')
 }
 ```
 

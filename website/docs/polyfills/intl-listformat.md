@@ -31,21 +31,22 @@ import '@formatjs/intl-listformat/locale-data/en' // locale-data for en
 
 ```tsx
 import {shouldPolyfill} from '@formatjs/intl-listformat/should-polyfill'
-function polyfill(locale: string): Promise<any> {
-  // This platform already supports Intl.PluralRules
+async function polyfill(locale: string) {
+  // This platform already supports Intl.ListFormat
   if (!shouldPolyfill()) {
-    return Promise.resolve()
+    return
   }
-  const polyfills = [import('@formatjs/intl-listformat/polyfill')]
+  // Load the polyfill 1st BEFORE loading data
+  await import('@formatjs/intl-listformat/polyfill')
   switch (locale) {
     default:
-      polyfills.push(import('@formatjs/intl-listformat/locale-data/en'))
+      await import('@formatjs/intl-listformat/locale-data/en')
       break
+
     case 'fr':
-      polyfills.push(import('@formatjs/intl-listformat/locale-data/fr'))
+      await import('@formatjs/intl-listformat/locale-data/fr')
       break
   }
-  return Promise.all(polyfills)
 }
 ```
 

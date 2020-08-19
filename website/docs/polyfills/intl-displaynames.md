@@ -35,20 +35,20 @@ import '@formatjs/intl-displaynames/locale-data/en' // locale-data for en
 
 ```tsx
 import {shouldPolyfill} from '@formatjs/intl-displaynames/should-polyfill'
-function polyfill(locale: string): Promise<any> {
-  // This platform already supports Intl.PluralRules
+async function polyfill(locale: string) {
+  // This platform already supports Intl.DisplayNames
   if (!shouldPolyfill()) {
-    return Promise.resolve()
+    return
   }
-  const polyfills = [import('@formatjs/intl-displaynames/polyfill')]
+  // Load the polyfill 1st BEFORE loading data
+  await import('@formatjs/intl-displaynames/polyfill')
   switch (locale) {
     default:
-      polyfills.push(import('@formatjs/intl-displaynames/locale-data/en'))
+      await import('@formatjs/intl-displaynames/locale-data/en')
       break
     case 'fr':
-      polyfills.push(import('@formatjs/intl-displaynames/locale-data/fr'))
+      await import('@formatjs/intl-displaynames/locale-data/fr')
       break
   }
-  return Promise.all(polyfills)
 }
 ```

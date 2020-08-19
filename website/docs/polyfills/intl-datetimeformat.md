@@ -36,24 +36,26 @@ import '@formatjs/intl-datetimeformat/add-all-tz' // Add ALL tz data
 
 ```tsx
 import {shouldPolyfill} from '@formatjs/intl-datetimeformat/should-polyfill'
-function polyfill(locale: string): Promise<any> {
-  // This platform already supports Intl.PluralRules
+async function polyfill(locale: string) {
+  // This platform already supports Intl.DateTimeFormat ES2020
   if (!shouldPolyfill()) {
-    return Promise.resolve()
+    return
   }
-  const polyfills = [
-    import('@formatjs/intl-datetimeformat/polyfill'),
-    import('@formatjs/intl-datetimeformat/add-all-tz'),
-  ]
+  // Load the polyfill 1st BEFORE loading data
+  await import('@formatjs/intl-datetimeformat/polyfill')
+
+  // Parallelize CLDR data loading
+  const dataPolyfills = [import('@formatjs/intl-datetimeformat/add-all-tz')]
+
   switch (locale) {
     default:
-      polyfills.push(import('@formatjs/intl-datetimeformat/locale-data/en'))
+      dataPolyfills.push(import('@formatjs/intl-datetimeformat/locale-data/en'))
       break
     case 'fr':
-      polyfills.push(import('@formatjs/intl-datetimeformat/locale-data/fr'))
+      dataPolyfills.push(import('@formatjs/intl-datetimeformat/locale-data/fr'))
       break
   }
-  return Promise.all(polyfills)
+  await Promise.all(polyfills)
 }
 ```
 
