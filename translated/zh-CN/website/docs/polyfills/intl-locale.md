@@ -29,7 +29,7 @@ import '@formatjs/intl-locale/polyfill'
 
 ```tsx
 import {shouldPolyfill} from '@formatjs/intl-locale/should-polyfill'
-async function polyfill(locale: string) {
+async function polyfill() {
   // This platform already supports Intl.Locale
   if (shouldPolyfill()) {
     await import('@formatjs/intl-locale/polyfill')
