@@ -29,12 +29,11 @@ import '@formatjs/intl-locale/polyfill'
 
 ```tsx
 import {shouldPolyfill} from '@formatjs/intl-locale/should-polyfill'
-function polyfill(locale: string): Promise<any> {
-  // This platform already supports Intl.PluralRules
-  if (!shouldPolyfill()) {
-    return Promise.resolve()
+async function polyfill(locale: string) {
+  // This platform already supports Intl.Locale
+  if (shouldPolyfill()) {
+    await import('@formatjs/intl-locale/polyfill')
   }
-  return import('@formatjs/intl-locale/polyfill')
 }
 ```
 
