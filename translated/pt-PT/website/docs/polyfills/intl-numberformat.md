@@ -38,21 +38,22 @@ import '@formatjs/intl-numberformat/locale-data/en' // locale-data for en
 
 ```tsx
 import {shouldPolyfill} from '@formatjs/intl-numberformat/should-polyfill'
-function polyfill(locale: string): Promise<any> {
-  // This platform already supports Intl.PluralRules
+async function polyfill(locale: string) {
+  // This platform already supports Intl.NumberFormat ES2020
   if (!shouldPolyfill()) {
-    return Promise.resolve()
+    return
   }
-  const polyfills = [import('@formatjs/intl-numberformat/polyfill')]
+  // Load the polyfill 1st BEFORE loading data
+  await import('@formatjs/intl-numberformat/polyfill')
   switch (locale) {
     default:
-      polyfills.push(import('@formatjs/intl-numberformat/locale-data/en'))
+      await import('@formatjs/intl-numberformat/locale-data/en')
       break
+
     case 'fr':
-      polyfills.push(import('@formatjs/intl-numberformat/locale-data/fr'))
+      await import('@formatjs/intl-numberformat/locale-data/fr')
       break
   }
-  return Promise.all(polyfills)
 }
 ```
 
