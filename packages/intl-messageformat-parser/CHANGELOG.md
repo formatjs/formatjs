@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.5.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@5.4.2...intl-messageformat-parser@5.5.0) (2020-08-19)
+
+
+### Bug Fixes
+
+* **intl-messageformat-parser:** rm skeleton export from dummy ([986290f](https://github.com/formatjs/formatjs/commit/986290f02a13e9028cf0dab08d8c198790cd6bb9))
+
+
+### Features
+
+* **intl-messageformat-parser:** add shouldParseSkeleton flag to parse skeleton into ECMA402 format options ([ff84995](https://github.com/formatjs/formatjs/commit/ff8499540c8ddb12ad10d897b348671a607c40f9))
+
+
+
+
+
 ## [5.4.2](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@5.4.1...intl-messageformat-parser@5.4.2) (2020-08-18)
 
 **Note:** Version bump only for package intl-messageformat-parser

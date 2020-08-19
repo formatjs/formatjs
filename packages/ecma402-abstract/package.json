@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/ecma402-abstract",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A collection of implementation for ECMAScript abstract operations",
   "keywords": [
     "intl",
@@ -29,7 +29,7 @@
   "license": "MIT",
   "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c",
   "dependencies": {
-    "es-abstract": "^1.17.6",
-    "@types/es-abstract": "^1.17.1"
+    "@types/es-abstract": "^1.17.1",
+    "es-abstract": "^1.17.6"
   }
 }
