@@ -30,20 +30,20 @@ import '@formatjs/intl-pluralrules/locale-data/en' // locale-data for en
 
 ```tsx
 import {shouldPolyfill} from '@formatjs/intl-pluralrules/should-polyfill'
-function polyfill(locale: string): Promise<any> {
+async function polyfill(locale: string) {
   // This platform already supports Intl.PluralRules
   if (!shouldPolyfill()) {
-    return Promise.resolve()
+    return
   }
-  const polyfills = [import('@formatjs/intl-pluralrules/polyfill')]
+  // Load the polyfill 1st BEFORE loading data
+  await import('@formatjs/intl-pluralrules/polyfill')
   switch (locale) {
     default:
-      polyfills.push(import('@formatjs/intl-pluralrules/locale-data/en'))
+      await import('@formatjs/intl-pluralrules/locale-data/en')
       break
     case 'fr':
-      polyfills.push(import('@formatjs/intl-pluralrules/locale-data/fr'))
+      await import('@formatjs/intl-pluralrules/locale-data/fr')
       break
   }
-  return Promise.all(polyfills)
 }
 ```
