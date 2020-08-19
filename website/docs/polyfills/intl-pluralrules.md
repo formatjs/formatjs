@@ -32,19 +32,20 @@ import '@formatjs/intl-pluralrules/locale-data/en' // locale-data for en
 ```tsx
 import {shouldPolyfill} from '@formatjs/intl-pluralrules/should-polyfill'
 async function polyfill(locale: string) {
-  // This platform already supports Intl.PluralRules
-  if (!shouldPolyfill()) {
-    return
+  if (shouldPolyfill()) {
+    // Load the polyfill 1st BEFORE loading data
+    await import('@formatjs/intl-pluralrules/polyfill')
   }
-  // Load the polyfill 1st BEFORE loading data
-  await import('@formatjs/intl-pluralrules/polyfill')
-  switch (locale) {
-    default:
-      await import('@formatjs/intl-pluralrules/locale-data/en')
-      break
-    case 'fr':
-      await import('@formatjs/intl-pluralrules/locale-data/fr')
-      break
+
+  if (Intl.PluralRules.polyfilled) {
+    switch (locale) {
+      default:
+        await import('@formatjs/intl-pluralrules/locale-data/en')
+        break
+      case 'fr':
+        await import('@formatjs/intl-pluralrules/locale-data/fr')
+        break
+    }
   }
 }
 ```

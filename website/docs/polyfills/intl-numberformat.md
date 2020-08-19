@@ -43,20 +43,19 @@ import '@formatjs/intl-numberformat/locale-data/en' // locale-data for en
 ```tsx
 import {shouldPolyfill} from '@formatjs/intl-numberformat/should-polyfill'
 async function polyfill(locale: string) {
-  // This platform already supports Intl.NumberFormat ES2020
-  if (!shouldPolyfill()) {
-    return
+  if (shouldPolyfill()) {
+    // Load the polyfill 1st BEFORE loading data
+    await import('@formatjs/intl-numberformat/polyfill')
   }
-  // Load the polyfill 1st BEFORE loading data
-  await import('@formatjs/intl-numberformat/polyfill')
-  switch (locale) {
-    default:
-      await import('@formatjs/intl-numberformat/locale-data/en')
-      break
-
-    case 'fr':
-      await import('@formatjs/intl-numberformat/locale-data/fr')
-      break
+  if (Intl.NumberFormat.polyfilled) {
+    switch (locale) {
+      default:
+        await import('@formatjs/intl-numberformat/locale-data/en')
+        break
+      case 'fr':
+        await import('@formatjs/intl-numberformat/locale-data/fr')
+        break
+    }
   }
 }
 ```
