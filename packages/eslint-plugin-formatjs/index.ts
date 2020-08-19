@@ -7,7 +7,6 @@ import noOffset from './rules/no-offset';
 import blacklistElements from './rules/blacklist-elements';
 import enforcePluralRules from './rules/enforce-plural-rules';
 import enforcePlaceholders from './rules/enforce-placeholders';
-import enforceSupportedDateTimeSkeleton from './rules/supported-datetime-skeleton';
 import noMultipleWhitespaces from './rules/no-multiple-whitespaces';
 import noId from './rules/no-id';
 import enforceId from './rules/enforce-id';
@@ -22,7 +21,6 @@ const plugin = {
     'blacklist-elements': blacklistElements,
     'enforce-plural-rules': enforcePluralRules,
     'enforce-placeholders': enforcePlaceholders,
-    'supported-datetime-skeleton': enforceSupportedDateTimeSkeleton,
     'no-multiple-whitespaces': noMultipleWhitespaces,
     'no-id': noId,
     'enforce-id': enforceId,
