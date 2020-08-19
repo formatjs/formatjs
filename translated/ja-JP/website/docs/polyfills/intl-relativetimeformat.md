@@ -37,19 +37,20 @@ import '@formatjs/intl-relativetimeformat/locale-data/en' // locale-data for en
 ```tsx
 import {shouldPolyfill} from '@formatjs/intl-relativetimeformat/should-polyfill'
 async function polyfill(locale: string) {
-  // This platform already supports Intl.RelativeTimeFormat
-  if (!shouldPolyfill()) {
-    return
+  if (shouldPolyfill()) {
+    // Load the polyfill 1st BEFORE loading data
+    await import('@formatjs/intl-relativetimeformat/polyfill')
   }
-  // Load the polyfill 1st BEFORE loading data
-  await import('@formatjs/intl-relativetimeformat/polyfill')
-  switch (locale) {
-    default:
-      await import('@formatjs/intl-relativetimeformat/locale-data/en')
-      break
-    case 'fr':
-      await import('@formatjs/intl-relativetimeformat/locale-data/fr')
-      break
+
+  if (Intl.RelativeTimeFormat.polyfilled) {
+    switch (locale) {
+      default:
+        await import('@formatjs/intl-relativetimeformat/locale-data/en')
+        break
+      case 'fr':
+        await import('@formatjs/intl-relativetimeformat/locale-data/fr')
+        break
+    }
   }
 }
 ```
