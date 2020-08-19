@@ -21,7 +21,6 @@ pkg_npm(
     srcs = [
         "LICENSE.md",
         "README.md",
-        "package.json",
     ],
     deps = [
         "polyfill-locales.js",

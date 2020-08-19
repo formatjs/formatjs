@@ -10,11 +10,9 @@ pkg_npm(
     srcs = [
         "LICENSE.md",
         "README.md",
-        "package.json",
     ],
     deps = [
         ":dist",
-        ":dist-esm",
     ],
 )
 

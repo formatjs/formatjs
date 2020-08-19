@@ -23,7 +23,6 @@ pkg_npm(
     srcs = [
         "LICENSE.md",
         "README.md",
-        "package.json",
     ],
     visibility = ["//visibility:public"],
     deps = [

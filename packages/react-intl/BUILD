@@ -12,7 +12,6 @@ pkg_npm(
     srcs = [
         "LICENSE.md",
         "README.md",
-        "package.json",
     ],
     deps = [
         "%s.umd.js" % PACKAGE_NAME,
@@ -20,7 +19,6 @@ pkg_npm(
         "%s-no-parser.umd.js" % PACKAGE_NAME,
         ":%s-no-parser.umd.min" % PACKAGE_NAME,
         ":dist",
-        ":dist-esm",
     ],
 )
 

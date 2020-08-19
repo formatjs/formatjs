@@ -1,6 +1,7 @@
 "Custom macro"
 
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test")
+load("@build_bazel_rules_nodejs//internal/js_library:js_library.bzl", "js_library")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//ts-node:index.bzl", "ts_node")
@@ -16,13 +17,11 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
         skip_esm: skip building ESM bundle
     """
     ts_project(
-        name = name,
-        package_name = package_name,
+        name = "%s-base" % name,
         srcs = srcs,
         declaration = True,
         declaration_map = True,
         tsconfig = "//:tsconfig.json",
-        visibility = ["//visibility:public"],
         deps = deps,
     )
     if not skip_esm:
@@ -39,8 +38,16 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
 
     native.filegroup(
         name = "types",
-        srcs = [":dist"],
+        srcs = [":%s-base" % name],
         output_group = "types",
+        visibility = ["//visibility:public"],
+    )
+
+    js_library(
+        name = name,
+        package_name = package_name,
+        srcs = ["package.json"],
+        deps = [":%s-base" % name] + ([":%s-esm" % name] if not skip_esm else []),
         visibility = ["//visibility:public"],
     )
 
