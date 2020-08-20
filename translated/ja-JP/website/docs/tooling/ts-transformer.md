@@ -76,6 +76,31 @@ Take a look at [`ts-jest` guide](https://github.com/kulshekhar/ts-jest/blob/mast
 }
 ```
 
+### Via `rollup-plugin-typescript2`
+
+```ts
+// rollup.config.js
+import typescript from 'rollup-plugin-typescript2'
+import {transform} from '@formatjs/ts-transformer'
+
+export default {
+  input: './main.ts',
+
+  plugins: [
+    typescript({
+      transformers: () => ({
+        before: [
+          transform({
+            overrideIdFn: '[sha512:contenthash:base64:6]',
+            ast: true,
+          }),
+        ],
+      }),
+    }),
+  ],
+}
+```
+
 ## Options
 
 ### **`overrideIdFn`**
