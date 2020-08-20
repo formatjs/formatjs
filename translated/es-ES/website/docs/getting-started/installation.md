@@ -95,3 +95,111 @@ Output
   19,00 €
 </p>
 ```
+
+## Adding our babel-plugin/TypeScript Transformer for compilation
+
+Our tooling supports `babel`, `ts-loader`, `ts-jest`, `rollup-plugin-typescript2` & `ttypescript` for message compilation:
+
+### Babel
+
+If you're using `babel`, add `babel-plugin-react-intl` to your dependencies:
+
+```sh
+npm i -D babel-plugin-react-intl
+```
+
+and add it to your `babel.config.js` or `.babelrc`:
+
+```json
+{
+  "plugins": [
+    [
+      "react-intl",
+      {
+        "idInterpolationPattern": "[sha512:contenthash:base64:6]",
+        "extractFromFormatMessageCall": true,
+        "ast": true
+      }
+    ]
+  ]
+}
+```
+
+### `ts-loader`
+
+```tsx
+import {transform} from '@formatjs/ts-transformer'
+
+module.exports = {
+  ...otherConfigs,
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              getCustomTransformers: {
+                before: [
+                  transform({
+                    overrideIdFn: '[sha512:contenthash:base64:6]',
+                    ast: true,
+                  }),
+                ],
+              },
+            },
+          },
+        ],
+      },
+    ],
+  },
+}
+```
+
+### `ts-jest` in `jest.config.js`
+
+Take a look at [`ts-jest` guide](https://github.com/kulshekhar/ts-jest/blob/master/docs/user/config/astTransformers.md) on how to incorporate custom AST Transformers.
+
+### `ttypescript`
+
+```json
+{
+  "compilerOptions": {
+    "plugins": [
+      {
+        "transform": "@formatjs/ts-transformer",
+        "import": "transform",
+        "type": "config",
+        "overrideIdFn": "[sha512:contenthash:base64:6]",
+        "ast": true
+      }
+    ]
+  }
+}
+```
+
+### `rollup-plugin-typescript2`
+
+```ts
+// rollup.config.js
+import typescript from 'rollup-plugin-typescript2'
+import {transform} from '@formatjs/ts-transformer'
+
+export default {
+  input: './main.ts',
+
+  plugins: [
+    typescript({
+      transformers: () => ({
+        before: [
+          transform({
+            overrideIdFn: '[sha512:contenthash:base64:6]',
+            ast: true,
+          }),
+        ],
+      }),
+    }),
+  ],
+}
+```
