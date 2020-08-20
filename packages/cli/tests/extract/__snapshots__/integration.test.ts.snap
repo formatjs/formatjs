@@ -210,15 +210,23 @@ Options:
   \`\`\` 
   This is especially useful to convert from our extracted format to a TMS-specific format.
   
-  --out-file <path>                                     The target file path where the plugin will output an aggregated \`.json\` file of allthe translations from the \`files\` supplied.
+  --out-file <path>                                     The target file path where the plugin will output an aggregated 
+  \`.json\` file of all the translations from the \`files\` supplied.
   --id-interpolation-pattern <pattern>                  If certain message descriptors don't have id, this \`pattern\` will be used to automatically
   generate IDs for them. Default to \`[contenthash:5]\` where \`contenthash\` is the hash of
   \`defaultMessage\` and \`description\`.
   See https://github.com/webpack/loader-utils#interpolatename for sample patterns (default: \\"[contenthash:5]\\")
-  --extract-source-location                             Whether the metadata about the location of the message in the source file should be extracted. If \`true\`, then \`file\`, \`start\`, and \`end\` fields will exist for each extracted message descriptors. (default: false)
+  --extract-source-location                             Whether the metadata about the location of the message in the source file should be 
+  extracted. If \`true\`, then \`file\`, \`start\`, and \`end\` fields will exist for each 
+  extracted message descriptors. (default: false)
   --remove-default-message                              Remove \`defaultMessage\` field in generated js after extraction (default: false)
-  --additional-component-names <comma-separated-names>  Additional component names to extract messages from, e.g: \`['FormattedFooBarMessage']\`. **NOTE**: By default we check for the fact that \`FormattedMessage\` is imported from \`moduleSourceName\` to make sure variable alias works. This option does not do that so it's less safe.
-  --extract-from-format-message-call                    Opt-in to extract from \`intl.formatMessage\` call with the same restrictions, e.g: has to be called with object literal such as \`intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'})\` (default: true)
+  --additional-component-names <comma-separated-names>  Additional component names to extract messages from, e.g: \`['FormattedFooBarMessage']\`. 
+  **NOTE**: By default we check for the fact that \`FormattedMessage\` 
+  is imported from \`moduleSourceName\` to make sure variable alias 
+  works. This option does not do that so it's less safe.
+  --extract-from-format-message-call                    Opt-in to extract from \`intl.formatMessage\` call with the same restrictions, e.g: has 
+  to be called with object literal such as \`intl.formatMessage({ id: 'foo', defaultMessage: 
+  'bar', description: 'baz'}) (default: true)
   --ignore <files...>                                   List of glob paths to **not** extract translations from.
   --throws                                              Whether to throw an exception when we fail to process any file in the batch.
   --pragma <pragma>                                     parse specific additional custom pragma. This allows you to tag certain file with metadata such as \`project\`. For example with this file:
