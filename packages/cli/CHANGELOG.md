@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.9](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.7.8...@formatjs/cli@2.7.9) (2020-08-20)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** fix fast-glob path join, fix [#2009](https://github.com/formatjs/formatjs/issues/2009) ([fca70be](https://github.com/formatjs/formatjs/commit/fca70bec380569bf92553d884e226aa26a610267))
+
+
+
+
+
 ## [2.7.8](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.7.7...@formatjs/cli@2.7.8) (2020-08-20)
 
 
