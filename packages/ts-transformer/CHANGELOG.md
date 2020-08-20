@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.6](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.7.5...@formatjs/ts-transformer@2.7.6) (2020-08-20)
+
+
+### Bug Fixes
+
+* bump intl-messageformat-parser ([8bbfa04](https://github.com/formatjs/formatjs/commit/8bbfa047da159662700b7e500879da20e54c0f0b))
+
+
+
+
+
 ## [2.7.5](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.7.4...@formatjs/ts-transformer@2.7.5) (2020-08-19)
 
 **Note:** Version bump only for package @formatjs/ts-transformer
