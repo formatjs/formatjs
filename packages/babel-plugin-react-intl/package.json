@@ -17,7 +17,7 @@
     "@formatjs/ts-transformer": "^2.7.5",
     "@types/babel__core": "^7.1.7",
     "@types/schema-utils": "^2.4.0",
-    "intl-messageformat-parser": "^5.5.1",
+    "intl-messageformat-parser": "^6.0.0",
     "schema-utils": "^2.6.6"
   },
   "keywords": [

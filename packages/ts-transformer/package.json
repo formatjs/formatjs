@@ -17,7 +17,7 @@
     "react-intl"
   ],
   "dependencies": {
-    "intl-messageformat-parser": "^5.5.1",
+    "intl-messageformat-parser": "^6.0.0",
     "typescript": "^3.8"
   },
   "author": "Long Ho <holevietlong@gmail.com>",

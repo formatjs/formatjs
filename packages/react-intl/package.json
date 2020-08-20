@@ -138,7 +138,7 @@
     "fast-memoize": "^2.5.2",
     "hoist-non-react-statics": "^3.3.2",
     "intl-messageformat": "^9.3.1",
-    "intl-messageformat-parser": "^5.5.1",
+    "intl-messageformat-parser": "^6.0.0",
     "shallow-equal": "^1.2.1"
   },
   "peerDependencies": {
