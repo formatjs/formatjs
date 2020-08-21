@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.2.2...@formatjs/intl-listformat@4.2.3) (2020-08-21)
+
+
+### Bug Fixes
+
+* add back polyfill.umd, fix [#2013](https://github.com/formatjs/formatjs/issues/2013) ([b9cfbd2](https://github.com/formatjs/formatjs/commit/b9cfbd2eeead6a5165b0e4cbf1ef3edbfbeca8ce))
+
+
+
+
+
 ## [4.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.2.1...@formatjs/intl-listformat@4.2.2) (2020-08-19)
 
 **Note:** Version bump only for package @formatjs/intl-listformat

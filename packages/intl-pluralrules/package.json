@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-pluralrules",
-  "version": "3.4.2",
+  "version": "3.4.3",
   "description": "Polyfill for Intl.PluralRules",
   "keywords": [
     "polyfill",
@@ -20,8 +20,8 @@
     "url": "git+https://github.com/formatjs/formatjs.git"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "^1.0.2",
-    "@formatjs/intl-getcanonicallocales": "^1.4.1",
+    "@formatjs/ecma402-abstract": "^1.0.3",
+    "@formatjs/intl-getcanonicallocales": "^1.4.2",
     "@types/es-abstract": "^1.17.1",
     "es-abstract": "^1.17.6"
   },
