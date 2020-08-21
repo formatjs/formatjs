@@ -1,4 +1,6 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
+load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
+load("@npm//@bazel/terser:index.bzl", "terser_minified")
 load("@npm//ts-node:index.bzl", "ts_node")
 load("//tools:index.bzl", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
@@ -29,6 +31,9 @@ pkg_npm(
         "add-golden-tz.js",
         ":dist",
         ":locale-data",
+        # polyfill-library uses this
+        "polyfill.umd.js",
+        ":polyfill.umd.min",
     ],
 )
 
@@ -73,6 +78,7 @@ ts_compile(
     name = "dist",
     package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
+    skip_esm = False,
     deps = SRC_DEPS,
 )
 
@@ -423,3 +429,28 @@ generated_file_test(
 #         "@npm//minimist",
 #     ],
 # )
+
+rollup_bundle(
+    name = "polyfill.umd",
+    srcs = [":dist-esm"],
+    args = [
+        "--name",
+        "IntlPluralRules",
+        "--no-sourcemap",
+    ],
+    config_file = "//:rollup.config.js",
+    entry_point = "lib/polyfill.js",
+    format = "umd",
+    deps = [
+        "@npm//@rollup/plugin-node-resolve",
+        "@npm//@rollup/plugin-commonjs",
+        "@npm//@rollup/plugin-replace",
+        "@npm//@rollup/plugin-json",
+    ] + SRC_DEPS,
+)
+
+terser_minified(
+    name = "polyfill.umd.min",
+    src = "polyfill.umd.js",
+    sourcemap = False,
+)
