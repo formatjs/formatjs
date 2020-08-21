@@ -25,6 +25,8 @@
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "dependencies": {
-    "cldr-core": "36.0.0"
+    "cldr-core": "36.0.0",
+    "es-abstract": "^1.17.6",
+    "@types/es-abstract": "^1.17.1"
   }
 }

@@ -1,4 +1,6 @@
-// https://tc39.es/ecma402/#sec-issanctionedsimpleunitidentifier
+/**
+ * https://tc39.es/ecma402/#table-sanctioned-simple-unit-identifiers
+ */
 export const SANCTIONED_UNITS = [
   'angle-degree',
   'area-acre',
@@ -48,5 +50,17 @@ export const SANCTIONED_UNITS = [
 // In CLDR, the unit name always follows the form `namespace-unit` pattern.
 // For example: `digital-bit` instead of `bit`. This function removes the namespace prefix.
 export function removeUnitNamespace(unit: string) {
-  return unit.replace(/^(.*?)-/, '');
+  return unit.slice(unit.indexOf('-') + 1);
+}
+
+/**
+ * https://tc39.es/ecma402/#table-sanctioned-simple-unit-identifiers
+ */
+export const SIMPLE_UNITS = SANCTIONED_UNITS.map(removeUnitNamespace);
+
+/**
+ * https://tc39.es/ecma402/#sec-issanctionedsimpleunitidentifier
+ */
+export function IsSanctionedSimpleUnitIdentifier(unitIdentifier: string) {
+  return SIMPLE_UNITS.indexOf(unitIdentifier) > -1;
 }

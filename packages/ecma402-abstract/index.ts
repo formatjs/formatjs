@@ -1,36 +1,35 @@
+export * from './src/GetNumberOption';
+export * from './src/GetOption';
+export * from './src/IsSanctionedSimpleUnitIdentifier';
+export * from './src/IsWellFormedCurrencyCode';
+export * from './src/IsWellFormedUnitIdentifier';
+export * from './src/NumberFormat/FormatNumericToString';
+export * from './src/NumberFormat/SetNumberFormatDigitOptions';
+export * from './src/NumberFormat/ToRawFixed';
+export * from './src/NumberFormat/ToRawPrecision';
+export * from './src/PartitionPattern';
+export * from './src/ResolveLocale';
+export * from './src/SupportedLocales';
 export {
-  defaultNumberOption,
   getInternalSlot,
   getMultiInternalSlots,
-  getNumberOption,
-  getOption,
   isLiteralPart,
   LiteralPart,
-  partitionPattern,
   setInternalSlot,
   setMultiInternalSlots,
-  setNumberFormatDigitOptions,
-  isWellFormedCurrencyCode,
-  formatNumericToString,
-  toRawFixed,
-  toRawPrecision,
   getMagnitude,
-  isWellFormedUnitIdentifier,
   defineProperty,
-} from './src/polyfill-utils';
+} from './src/utils';
 
 export {
-  createResolveLocale,
   getLocaleHierarchy,
-  supportedLocales,
   unpackData,
   isMissingLocaleDataError,
-} from './src/resolve-locale';
-export * from './src/units';
-export * from './src/relative-time-types';
-export * from './src/list-types';
-export * from './src/plural-rules-types';
-export * from './src/number-types';
-export * from './src/displaynames-types';
-export {invariant} from './src/invariant';
-export {LocaleData} from './src/types';
+} from './src/data';
+export * from './types/relative-time';
+export * from './types/list';
+export * from './types/plural-rules';
+export * from './types/number';
+export * from './types/displaynames';
+export {invariant} from './src/utils';
+export {LocaleData} from './types/core';

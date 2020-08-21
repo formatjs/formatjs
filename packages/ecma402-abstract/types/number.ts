@@ -1,5 +1,5 @@
-import {LDMLPluralRule} from './plural-rules-types';
-import {LocaleData} from './types';
+import {LDMLPluralRule} from './plural-rules';
+import {LocaleData} from './core';
 
 export type NumberFormatNotation =
   | 'standard'

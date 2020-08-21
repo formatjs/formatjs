@@ -1,15 +1,15 @@
 import {
   LDMLPluralRule,
-  getOption,
+  GetOption,
   PluralRulesLocaleData,
   PluralRulesData,
   unpackData,
-  createResolveLocale,
-  supportedLocales,
+  ResolveLocale,
+  SupportedLocales,
   isMissingLocaleDataError,
-  setNumberFormatDigitOptions,
+  SetNumberFormatDigitOptions,
   NumberFormatDigitInternalSlots,
-  formatNumericToString,
+  FormatNumericToString,
 } from '@formatjs/ecma402-abstract';
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
 import ToObject from 'es-abstract/2019/ToObject';
@@ -46,7 +46,7 @@ export class PluralRules implements Intl.PluralRules {
       options === undefined ? Object.create(null) : ToObject(options);
     const internalSlots = getInternalSlots(this);
     internalSlots.initializedPluralRules = true;
-    const matcher = getOption(
+    const matcher = GetOption(
       opts,
       'localeMatcher',
       'string',
@@ -54,7 +54,7 @@ export class PluralRules implements Intl.PluralRules {
       'best fit'
     );
     opt.localeMatcher = matcher;
-    internalSlots.type = getOption(
+    internalSlots.type = GetOption(
       opts,
       'type',
       'string',
@@ -62,13 +62,14 @@ export class PluralRules implements Intl.PluralRules {
       'cardinal'
     );
 
-    setNumberFormatDigitOptions(internalSlots, opts, 0, 3, 'standard');
-    const r = createResolveLocale(PluralRules.getDefaultLocale)(
+    SetNumberFormatDigitOptions(internalSlots, opts, 0, 3, 'standard');
+    const r = ResolveLocale(
       PluralRules.availableLocales,
       requestedLocales,
       opt,
       PluralRules.relevantExtensionKeys,
-      PluralRules.localeData
+      PluralRules.localeData,
+      PluralRules.getDefaultLocale
     );
     internalSlots.locale = r.locale;
   }
@@ -104,7 +105,7 @@ export class PluralRules implements Intl.PluralRules {
     const {type, locale} = internalSlots;
 
     return PluralRules.localeData[locale].fn(
-      formatNumericToString(getInternalSlots(this), Math.abs(Number(val)))
+      FormatNumericToString(getInternalSlots(this), Math.abs(Number(val)))
         .formattedString,
       type == 'ordinal'
     );
@@ -116,7 +117,7 @@ export class PluralRules implements Intl.PluralRules {
     locales?: string | string[],
     options?: Pick<Intl.PluralRulesOptions, 'localeMatcher'>
   ) {
-    return supportedLocales(
+    return SupportedLocales(
       PluralRules.availableLocales,
       ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
         locales

@@ -5,7 +5,7 @@ import {
   NumberFormatLocaleInternalData,
   RawNumberFormatResult,
   SymbolsData,
-  toRawFixed,
+  ToRawFixed,
   UnitData,
 } from '@formatjs/ecma402-abstract';
 import {
@@ -479,7 +479,7 @@ function paritionNumberIntoParts(
       result.push({type: 'exponentMinusSign', value: symbols.minusSign});
       exponent = -exponent;
     }
-    const exponentResult = toRawFixed(exponent, 0, 0);
+    const exponentResult = ToRawFixed(exponent, 0, 0);
     result.push({
       type: 'exponentInteger',
       value: exponentResult.formattedString,

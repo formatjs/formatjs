@@ -26,7 +26,10 @@ alias(
     actual = "%s.pack" % PACKAGE_NAME,
 )
 
-SRCS = glob(["src/*.ts"]) + ["index.ts"]
+SRCS = glob(
+    ["**/*.ts"],
+    exclude = ["tests/**/*.ts"],
+)
 
 SRC_DEPS = [
     "@npm//es-abstract",

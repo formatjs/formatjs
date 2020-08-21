@@ -1,8 +1,5 @@
 import minimist from 'minimist';
-import {
-  SANCTIONED_UNITS,
-  removeUnitNamespace,
-} from '@formatjs/ecma402-abstract';
+import {SIMPLE_UNITS} from '@formatjs/ecma402-abstract';
 import {outputFileSync} from 'fs-extra';
 
 function main(args: minimist.ParsedArgs) {
@@ -13,9 +10,7 @@ function main(args: minimist.ParsedArgs) {
     `/* @generated */
   // prettier-ignore
   export type Unit =
-    ${SANCTIONED_UNITS.map(unit => `'${removeUnitNamespace(unit)}'`).join(
-      ' | '
-    )}
+    ${SIMPLE_UNITS.map(u => `'${u}'`).join(' | ')}
   `
   );
 }

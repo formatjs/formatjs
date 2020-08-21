@@ -1,4 +1,4 @@
-import {LocaleData} from './types';
+import {LocaleData} from './core';
 
 export type ListPatternLocaleData = LocaleData<ListPatternFieldsData>;
 

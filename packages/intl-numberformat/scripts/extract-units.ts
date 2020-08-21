@@ -9,7 +9,7 @@ import {
   LDMLPluralRuleMap,
   UnitDataTable,
   removeUnitNamespace,
-  isWellFormedUnitIdentifier,
+  IsWellFormedUnitIdentifier,
   UnitData,
 } from '@formatjs/ecma402-abstract';
 import * as UnitsData from 'cldr-units-full/main/en/units.json';
@@ -43,7 +43,7 @@ function loadUnits(locale: string): UnitDataTable {
   );
 
   const validUnits = Object.keys(units.long).filter(unit => {
-    return isWellFormedUnitIdentifier(removeUnitNamespace(unit));
+    return IsWellFormedUnitIdentifier(removeUnitNamespace(unit));
   });
 
   const simpleUnitEntries: [string, UnitData][] = validUnits.map(unit => {

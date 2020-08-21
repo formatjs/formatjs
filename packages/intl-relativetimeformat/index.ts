@@ -1,15 +1,15 @@
 import {
-  getOption,
-  supportedLocales,
+  GetOption,
+  SupportedLocales,
   RelativeTimeLocaleData,
-  createResolveLocale,
+  ResolveLocale,
   setInternalSlot,
   getInternalSlot,
   invariant,
   RelativeTimeField,
   FieldData,
   LDMLPluralRule,
-  partitionPattern,
+  PartitionPattern,
   isLiteralPart,
   LiteralPart,
   isMissingLocaleDataError,
@@ -150,7 +150,7 @@ function makePartsList(
   unit: Unit,
   parts: Intl.NumberFormatPart[]
 ): Part[] {
-  const patternParts = partitionPattern(pattern);
+  const patternParts = PartitionPattern(pattern);
   const result: Part[] = [];
   for (const patternPart of patternParts) {
     if (isLiteralPart(patternPart)) {
@@ -268,7 +268,7 @@ export default class RelativeTimeFormat {
     const opt: any = Object.create(null);
     const opts =
       options === undefined ? Object.create(null) : ToObject(options);
-    const matcher = getOption(
+    const matcher = GetOption(
       opts,
       'localeMatcher',
       'string',
@@ -276,7 +276,7 @@ export default class RelativeTimeFormat {
       'best fit'
     );
     opt.localeMatcher = matcher;
-    const numberingSystem: string = getOption(
+    const numberingSystem: string = GetOption(
       opts,
       'numberingSystem',
       'string',
@@ -289,12 +289,13 @@ export default class RelativeTimeFormat {
       }
     }
     opt.nu = numberingSystem;
-    const r = createResolveLocale(RelativeTimeFormat.getDefaultLocale)(
+    const r = ResolveLocale(
       RelativeTimeFormat.availableLocales,
       requestedLocales,
       opt,
       RelativeTimeFormat.relevantExtensionKeys,
-      RelativeTimeFormat.localeData
+      RelativeTimeFormat.localeData,
+      RelativeTimeFormat.getDefaultLocale
     );
     const {locale, nu} = r;
     setInternalSlot(
@@ -307,13 +308,13 @@ export default class RelativeTimeFormat {
       RelativeTimeFormat.__INTERNAL_SLOT_MAP__,
       this,
       'style',
-      getOption(opts, 'style', 'string', ['long', 'narrow', 'short'], 'long')
+      GetOption(opts, 'style', 'string', ['long', 'narrow', 'short'], 'long')
     );
     setInternalSlot(
       RelativeTimeFormat.__INTERNAL_SLOT_MAP__,
       this,
       'numeric',
-      getOption(opts, 'numeric', 'string', ['always', 'auto'], 'always')
+      GetOption(opts, 'numeric', 'string', ['always', 'auto'], 'always')
     );
     setInternalSlot(
       RelativeTimeFormat.__INTERNAL_SLOT_MAP__,
@@ -426,7 +427,7 @@ export default class RelativeTimeFormat {
     locales: string | string[],
     options?: Pick<IntlRelativeTimeFormatOptions, 'localeMatcher'>
   ): string[] {
-    return supportedLocales(
+    return SupportedLocales(
       RelativeTimeFormat.availableLocales,
       ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
         locales

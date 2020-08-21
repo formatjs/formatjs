@@ -1,5 +1,5 @@
-import {LocaleData} from './types';
-import {LDMLPluralRule} from './plural-rules-types';
+import {LocaleData} from './core';
+import {LDMLPluralRule} from './plural-rules';
 
 export interface FieldData {
   '0'?: string;

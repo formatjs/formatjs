@@ -1,16 +1,16 @@
 import {
-  createResolveLocale,
+  ResolveLocale,
   DecimalFormatNum,
   defineProperty,
-  formatNumericToString,
+  FormatNumericToString,
   getMagnitude,
-  getOption,
+  GetOption,
   invariant,
-  isWellFormedCurrencyCode,
-  isWellFormedUnitIdentifier,
+  IsWellFormedCurrencyCode,
+  IsWellFormedUnitIdentifier,
   RawNumberLocaleData,
-  setNumberFormatDigitOptions,
-  supportedLocales,
+  SetNumberFormatDigitOptions,
+  SupportedLocales,
   unpackData,
 } from '@formatjs/ecma402-abstract';
 import * as currencyDigitsData from './data/currency-digits.json';
@@ -86,7 +86,7 @@ function initializeNumberFormat(
   const options: NumberFormatOptions =
     opts === undefined ? Object.create(null) : ToObject(opts);
   const opt = Object.create(null);
-  const matcher = getOption(
+  const matcher = GetOption(
     options,
     'localeMatcher',
     'string',
@@ -95,7 +95,7 @@ function initializeNumberFormat(
   );
   opt.localeMatcher = matcher;
 
-  const numberingSystem = getOption(
+  const numberingSystem = GetOption(
     options,
     'numberingSystem',
     'string',
@@ -113,13 +113,14 @@ function initializeNumberFormat(
   opt.nu = numberingSystem;
 
   const {localeData} = NumberFormat;
-  const r = createResolveLocale(NumberFormat.getDefaultLocale)(
+  const r = ResolveLocale(
     NumberFormat.availableLocales,
     requestedLocales,
     opt,
     // [[RelevantExtensionKeys]] slot, which is a constant
     ['nu'],
-    localeData
+    localeData,
+    NumberFormat.getDefaultLocale
   );
   const dataLocaleData = localeData[removeUnicodeExtensionFromLocale(r.locale)];
 
@@ -144,7 +145,7 @@ function initializeNumberFormat(
     mxfdDefault = style === 'percent' ? 0 : 3;
   }
 
-  const notation = getOption(
+  const notation = GetOption(
     options,
     'notation',
     'string',
@@ -153,7 +154,7 @@ function initializeNumberFormat(
   );
   internalSlots.notation = notation;
 
-  setNumberFormatDigitOptions(
+  SetNumberFormatDigitOptions(
     internalSlots,
     options,
     mnfdDefault,
@@ -161,7 +162,7 @@ function initializeNumberFormat(
     notation
   );
 
-  const compactDisplay = getOption(
+  const compactDisplay = GetOption(
     options,
     'compactDisplay',
     'string',
@@ -172,7 +173,7 @@ function initializeNumberFormat(
     internalSlots.compactDisplay = compactDisplay;
   }
 
-  const useGrouping = getOption(
+  const useGrouping = GetOption(
     options,
     'useGrouping',
     'boolean',
@@ -181,7 +182,7 @@ function initializeNumberFormat(
   );
   internalSlots.useGrouping = useGrouping;
 
-  const signDisplay = getOption(
+  const signDisplay = GetOption(
     options,
     'signDisplay',
     'string',
@@ -218,7 +219,7 @@ function partitionNumberPattern(numberFormat: NumberFormat, x: number) {
     [exponent, magnitude] = computeExponent(numberFormat, x);
     // Preserve more precision by doing multiplication when exponent is negative.
     x = exponent < 0 ? x * 10 ** -exponent : x / 10 ** exponent;
-    const formatNumberResult = formatNumericToString(internalSlots, x);
+    const formatNumberResult = FormatNumericToString(internalSlots, x);
     n = formatNumberResult.formattedString;
     x = formatNumberResult.roundedNumber;
   }
@@ -387,7 +388,7 @@ defineProperty(NumberFormat, 'supportedLocalesOf', {
     locales: string | string[],
     options?: Pick<NumberFormatOptions, 'localeMatcher'>
   ) {
-    return supportedLocales(
+    return SupportedLocales(
       NumberFormat.availableLocales,
       ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
         locales
@@ -432,7 +433,7 @@ function setNumberFormatUnitOptions(
   options: NumberFormatOptions = Object.create(null)
 ) {
   const internalSlots = getInternalSlots(nf);
-  const style = getOption(
+  const style = GetOption(
     options,
     'style',
     'string',
@@ -440,27 +441,27 @@ function setNumberFormatUnitOptions(
     'decimal'
   );
   internalSlots.style = style;
-  const currency = getOption(
+  const currency = GetOption(
     options,
     'currency',
     'string',
     undefined,
     undefined
   );
-  if (currency !== undefined && !isWellFormedCurrencyCode(currency)) {
+  if (currency !== undefined && !IsWellFormedCurrencyCode(currency)) {
     throw RangeError('Malformed currency code');
   }
   if (style === 'currency' && currency === undefined) {
     throw TypeError('currency cannot be undefined');
   }
-  const currencyDisplay = getOption(
+  const currencyDisplay = GetOption(
     options,
     'currencyDisplay',
     'string',
     ['code', 'symbol', 'narrowSymbol', 'name'],
     'symbol'
   );
-  const currencySign = getOption(
+  const currencySign = GetOption(
     options,
     'currencySign',
     'string',
@@ -468,14 +469,14 @@ function setNumberFormatUnitOptions(
     'standard'
   );
 
-  const unit = getOption(options, 'unit', 'string', undefined, undefined);
-  if (unit !== undefined && !isWellFormedUnitIdentifier(unit)) {
+  const unit = GetOption(options, 'unit', 'string', undefined, undefined);
+  if (unit !== undefined && !IsWellFormedUnitIdentifier(unit)) {
     throw RangeError('Invalid unit argument for Intl.NumberFormat()');
   }
   if (style === 'unit' && unit === undefined) {
     throw TypeError('unit cannot be undefined');
   }
-  const unitDisplay = getOption(
+  const unitDisplay = GetOption(
     options,
     'unitDisplay',
     'string',
@@ -515,7 +516,7 @@ function computeExponent(
   const exponent = computeExponentForMagnitude(numberFormat, magnitude);
   // Preserve more precision by doing multiplication when exponent is negative.
   x = exponent < 0 ? x * 10 ** -exponent : x / 10 ** exponent;
-  const formatNumberResult = formatNumericToString(
+  const formatNumberResult = FormatNumericToString(
     getInternalSlots(numberFormat),
     x
   );

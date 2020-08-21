@@ -1,11 +1,11 @@
 import {
   getInternalSlot,
   setInternalSlot,
-  getOption,
-  createResolveLocale,
+  GetOption,
+  ResolveLocale,
   invariant,
-  supportedLocales,
-  isWellFormedCurrencyCode,
+  SupportedLocales,
+  IsWellFormedCurrencyCode,
   getMultiInternalSlots,
   DisplayNamesLocaleData,
   unpackData,
@@ -39,7 +39,7 @@ export class DisplayNames {
     const requestedLocales = ((Intl as any)
       .getCanonicalLocales as typeof getCanonicalLocales)(locales);
 
-    const matcher = getOption(
+    const matcher = GetOption(
       options!,
       'localeMatcher',
       'string',
@@ -47,15 +47,16 @@ export class DisplayNames {
       'best fit'
     );
 
-    const r = createResolveLocale(DisplayNames.getDefaultLocale)(
+    const r = ResolveLocale(
       DisplayNames.availableLocales,
       requestedLocales,
       {localeMatcher: matcher},
       [], // there is no relevantExtensionKeys
-      DisplayNames.localeData
+      DisplayNames.localeData,
+      DisplayNames.getDefaultLocale
     );
 
-    const style = getOption(
+    const style = GetOption(
       options,
       'style',
       'string',
@@ -64,7 +65,7 @@ export class DisplayNames {
     );
     setSlot(this, 'style', style);
 
-    const type = getOption(
+    const type = GetOption(
       options,
       'type',
       'string',
@@ -73,7 +74,7 @@ export class DisplayNames {
     );
     setSlot(this, 'type', type);
 
-    const fallback = getOption(
+    const fallback = GetOption(
       options,
       'fallback',
       'string',
@@ -96,7 +97,7 @@ export class DisplayNames {
     locales?: string | string[],
     options?: Pick<DisplayNamesOptions, 'localeMatcher'>
   ) {
-    return supportedLocales(
+    return SupportedLocales(
       DisplayNames.availableLocales,
       ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
         locales
@@ -247,7 +248,7 @@ function isValidCodeForDisplayNames(
       // unicode_script_subtag
       return /^[a-z]{4}$/i.test(code);
     case 'currency':
-      return isWellFormedCurrencyCode(code);
+      return IsWellFormedCurrencyCode(code);
   }
 }
 

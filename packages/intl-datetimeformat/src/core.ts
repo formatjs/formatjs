@@ -1,10 +1,10 @@
 import {
-  getOption,
-  createResolveLocale,
+  GetOption,
+  ResolveLocale,
   invariant,
   defineProperty,
-  supportedLocales,
-  partitionPattern,
+  SupportedLocales,
+  PartitionPattern,
   unpackData,
 } from '@formatjs/ecma402-abstract';
 import getInternalSlots from './get_internal_slots';
@@ -213,7 +213,7 @@ function initializeDateTimeFormat(
   const requestedLocales: string[] = Intl.getCanonicalLocales(locales);
   const options = toDateTimeOptions(opts, 'any', 'date');
   let opt: Opt = Object.create(null);
-  let matcher = getOption(
+  let matcher = GetOption(
     options,
     'localeMatcher',
     'string',
@@ -221,13 +221,13 @@ function initializeDateTimeFormat(
     'best fit'
   );
   opt.localeMatcher = matcher;
-  let calendar = getOption(options, 'calendar', 'string', undefined, undefined);
+  let calendar = GetOption(options, 'calendar', 'string', undefined, undefined);
   if (calendar !== undefined && !TYPE_REGEX.test(calendar)) {
     throw new RangeError('Malformed calendar');
   }
   const internalSlots = getInternalSlots(dtf);
   opt.ca = calendar;
-  const numberingSystem = getOption(
+  const numberingSystem = GetOption(
     options,
     'numberingSystem',
     'string',
@@ -238,8 +238,8 @@ function initializeDateTimeFormat(
     throw new RangeError('Malformed numbering system');
   }
   opt.nu = numberingSystem;
-  const hour12 = getOption(options, 'hour12', 'boolean', undefined, undefined);
-  let hourCycle = getOption(
+  const hour12 = GetOption(options, 'hour12', 'boolean', undefined, undefined);
+  let hourCycle = GetOption(
     options,
     'hourCycle',
     'string',
@@ -251,14 +251,15 @@ function initializeDateTimeFormat(
     hourCycle = null;
   }
   opt.hc = hourCycle;
-  const r = createResolveLocale(DateTimeFormat.getDefaultLocale)(
+  const r = ResolveLocale(
     DateTimeFormat.availableLocales,
     requestedLocales,
     // TODO: Fix the type
     opt as any,
     // [[RelevantExtensionKeys]] slot, which is a constant
     ['nu', 'ca', 'hc'],
-    DateTimeFormat.localeData
+    DateTimeFormat.localeData,
+    DateTimeFormat.getDefaultLocale
   );
   internalSlots.locale = r.locale;
   calendar = r.ca;
@@ -280,63 +281,63 @@ function initializeDateTimeFormat(
   internalSlots.timeZone = timeZone;
 
   opt = Object.create(null);
-  opt.weekday = getOption(
+  opt.weekday = GetOption(
     options,
     'weekday',
     'string',
     ['narrow', 'short', 'long'],
     undefined
   );
-  opt.era = getOption(
+  opt.era = GetOption(
     options,
     'era',
     'string',
     ['narrow', 'short', 'long'],
     undefined
   );
-  opt.year = getOption(
+  opt.year = GetOption(
     options,
     'year',
     'string',
     ['2-digit', 'numeric'],
     undefined
   );
-  opt.month = getOption(
+  opt.month = GetOption(
     options,
     'month',
     'string',
     ['2-digit', 'numeric', 'narrow', 'short', 'long'],
     undefined
   );
-  opt.day = getOption(
+  opt.day = GetOption(
     options,
     'day',
     'string',
     ['2-digit', 'numeric'],
     undefined
   );
-  opt.hour = getOption(
+  opt.hour = GetOption(
     options,
     'hour',
     'string',
     ['2-digit', 'numeric'],
     undefined
   );
-  opt.minute = getOption(
+  opt.minute = GetOption(
     options,
     'minute',
     'string',
     ['2-digit', 'numeric'],
     undefined
   );
-  opt.second = getOption(
+  opt.second = GetOption(
     options,
     'second',
     'string',
     ['2-digit', 'numeric'],
     undefined
   );
-  opt.timeZoneName = getOption(
+  opt.timeZoneName = GetOption(
     options,
     'timeZoneName',
     'string',
@@ -346,14 +347,14 @@ function initializeDateTimeFormat(
 
   const dataLocaleData = DateTimeFormat.localeData[dataLocale];
   const formats = dataLocaleData.formats[calendar as string];
-  matcher = getOption(
+  matcher = GetOption(
     options,
     'formatMatcher',
     'string',
     ['basic', 'best fit'],
     'best fit'
   );
-  const dateStyle = getOption(
+  const dateStyle = GetOption(
     options,
     'dateStyle',
     'string',
@@ -361,7 +362,7 @@ function initializeDateTimeFormat(
     undefined
   );
   internalSlots.dateStyle = dateStyle;
-  const timeStyle = getOption(
+  const timeStyle = GetOption(
     options,
     'timeStyle',
     'string',
@@ -873,7 +874,7 @@ function partitionDateTimePattern(dtf: DateTimeFormat, x: number) {
     internalSlots.timeZone
   );
   const result = [];
-  const patternParts = partitionPattern(internalSlots.pattern);
+  const patternParts = PartitionPattern(internalSlots.pattern);
   for (const patternPart of patternParts) {
     const p = patternPart.type;
     if (p === 'literal') {
@@ -1139,7 +1140,7 @@ defineProperty(DateTimeFormat, 'supportedLocalesOf', {
     locales: string | string[],
     options?: Pick<DateTimeFormatOptions, 'localeMatcher'>
   ) {
-    return supportedLocales(
+    return SupportedLocales(
       DateTimeFormat.availableLocales,
       ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
         locales

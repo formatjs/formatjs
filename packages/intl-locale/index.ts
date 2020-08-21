@@ -1,6 +1,6 @@
 import {
   getInternalSlot,
-  getOption,
+  GetOption,
   setInternalSlot,
   setMultiInternalSlots,
   invariant,
@@ -55,7 +55,7 @@ function applyOptionsToTag(tag: string, options: IntlLocaleOptions): string {
     'malformed language tag',
     RangeError
   );
-  const language = getOption(
+  const language = GetOption(
     options,
     'language',
     'string',
@@ -69,7 +69,7 @@ function applyOptionsToTag(tag: string, options: IntlLocaleOptions): string {
       RangeError
     );
   }
-  const script = getOption(options, 'script', 'string', undefined, undefined);
+  const script = GetOption(options, 'script', 'string', undefined, undefined);
   if (script !== undefined) {
     invariant(
       isUnicodeScriptSubtag(script),
@@ -77,7 +77,7 @@ function applyOptionsToTag(tag: string, options: IntlLocaleOptions): string {
       RangeError
     );
   }
-  const region = getOption(options, 'region', 'string', undefined, undefined);
+  const region = GetOption(options, 'region', 'string', undefined, undefined);
   if (region !== undefined) {
     invariant(
       isUnicodeRegionSubtag(region),
@@ -359,7 +359,7 @@ export class Locale {
 
     tag = applyOptionsToTag(tag, options);
     const opt = Object.create(null);
-    const calendar = getOption(
+    const calendar = GetOption(
       options,
       'calendar',
       'string',
@@ -373,7 +373,7 @@ export class Locale {
     }
     opt.ca = calendar;
 
-    const collation = getOption(
+    const collation = GetOption(
       options,
       'collation',
       'string',
@@ -386,7 +386,7 @@ export class Locale {
       }
     }
     opt.co = collation;
-    const hc = getOption(
+    const hc = GetOption(
       options,
       'hourCycle',
       'string',
@@ -394,7 +394,7 @@ export class Locale {
       undefined
     );
     opt.hc = hc;
-    const kf = getOption(
+    const kf = GetOption(
       options,
       'caseFirst',
       'string',
@@ -402,13 +402,13 @@ export class Locale {
       undefined
     );
     opt.kf = kf;
-    const _kn = getOption(options, 'numeric', 'boolean', undefined, undefined);
+    const _kn = GetOption(options, 'numeric', 'boolean', undefined, undefined);
     let kn;
     if (_kn !== undefined) {
       kn = String(_kn);
     }
     opt.kn = kn;
-    const numberingSystem = getOption(
+    const numberingSystem = GetOption(
       options,
       'numberingSystem',
       'string',

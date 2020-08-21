@@ -1,4 +1,4 @@
-import {LocaleData} from './types';
+import {LocaleData} from './core';
 
 type LanguageTag = string;
 type RegionCode = string;
