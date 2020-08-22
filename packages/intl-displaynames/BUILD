@@ -145,7 +145,10 @@ ts_node(
         "$@",
     ],
     data = CLDR_DEPS,
-    visibility = ["//packages/react-intl:__subpackages__"],
+    visibility = [
+        "//packages/intl:__subpackages__",
+        "//packages/react-intl:__subpackages__",
+    ],
 )
 
 [generate_src_file(

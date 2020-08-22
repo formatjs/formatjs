@@ -5,10 +5,10 @@
  */
 import * as React from 'react';
 import {Context} from './injectIntl';
-import {FormatRelativeTimeOptions} from '../types';
 import {Unit} from '@formatjs/intl-relativetimeformat';
 import {invariantIntlContext} from '../utils';
 import {invariant} from '@formatjs/ecma402-abstract';
+import {FormatRelativeTimeOptions} from '@formatjs/intl';
 const MINUTE = 60;
 const HOUR = 60 * 60;
 const DAY = 60 * 60 * 24;

@@ -139,7 +139,8 @@
     "hoist-non-react-statics": "^3.3.2",
     "intl-messageformat": "^9.3.3",
     "intl-messageformat-parser": "^6.0.2",
-    "shallow-equal": "^1.2.1"
+    "shallow-equal": "^1.2.1",
+    "@formatjs/intl": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^16.3.0"

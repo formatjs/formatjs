@@ -13,7 +13,9 @@ exports[`<FormattedMessage> rich text supports rich-text message formatting w/ n
   }
 >
   Hello, 
-  <b>
+  <b
+    key=".1"
+  >
     Jest
     <i
       key=".1"
@@ -37,7 +39,9 @@ exports[`<FormattedMessage> rich text supports rich-text message formatting w/ n
   }
 >
   Hello, 
-  <b>
+  <b
+    key=".1"
+  >
     Jest
     <i
       key=".1"

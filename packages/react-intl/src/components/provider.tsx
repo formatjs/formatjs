@@ -8,25 +8,35 @@ import * as React from 'react';
 import {Provider} from './injectIntl';
 import {
   DEFAULT_INTL_CONFIG,
-  createFormatters,
   invariantIntlContext,
-  createIntlCache,
+  assignUniqueKeysToParts,
 } from '../utils';
-import {IntlConfig, IntlShape, IntlCache} from '../types';
-import {formatNumber, formatNumberToParts} from '../formatters/number';
-import {formatRelativeTime} from '../formatters/relativeTime';
+import {IntlConfig, IntlShape} from '../types';
 import {
+  formatNumber,
+  formatNumberToParts,
+  formatRelativeTime,
   formatDate,
   formatTime,
   formatDateToParts,
   formatTimeToParts,
-} from '../formatters/dateTime';
-import {formatPlural} from '../formatters/plural';
-import {formatMessage} from '../formatters/message';
+  formatPlural,
+  formatMessage as coreFormatMessage,
+  formatList,
+  formatDisplayName,
+  IntlCache,
+  InvalidConfigError,
+  MissingDataError,
+  createFormatters,
+  createIntlCache,
+} from '@formatjs/intl';
+
 import * as shallowEquals_ from 'shallow-equal/objects';
-import {formatList} from '../formatters/list';
-import {formatDisplayName} from '../formatters/displayName';
-import {InvalidConfigError, MissingDataError} from '../error';
+import {
+  PrimitiveType,
+  FormatXMLElementFn,
+  isFormatXMLElementFn,
+} from 'intl-messageformat';
 const shallowEquals: typeof shallowEquals_ =
   (shallowEquals_ as any).default || shallowEquals_;
 
@@ -70,17 +80,72 @@ function processIntlConfig<P extends OptionalIntlConfig = OptionalIntlConfig>(
   };
 }
 
+function assignUniqueKeysToFormatXMLElementFnArgument<
+  T extends Record<
+    string,
+    | PrimitiveType
+    | React.ReactNode
+    | FormatXMLElementFn<React.ReactNode, React.ReactNode>
+  > = Record<
+    string,
+    | PrimitiveType
+    | React.ReactNode
+    | FormatXMLElementFn<React.ReactNode, React.ReactNode>
+  >
+>(values?: T): T | undefined {
+  if (!values) {
+    return values;
+  }
+  return Object.keys(values).reduce((acc: T, k) => {
+    const v = values[k];
+    (acc as any)[k] = isFormatXMLElementFn<React.ReactNode>(v)
+      ? assignUniqueKeysToParts(v)
+      : v;
+    return acc;
+  }, {} as T);
+}
+
+const formatMessage: typeof coreFormatMessage = (
+  config,
+  formatters,
+  descriptor,
+  rawValues
+) => {
+  const values = assignUniqueKeysToFormatXMLElementFnArgument(rawValues);
+  const chunks = coreFormatMessage(
+    config,
+    formatters,
+    descriptor,
+    values as any
+  );
+  if (Array.isArray(chunks)) {
+    return React.Children.toArray(chunks);
+  }
+  return chunks as any;
+};
+
 /**
  * Create intl object
  * @param config intl config
  * @param cache cache for formatter instances to prevent memory leak
  */
 export function createIntl(
-  config: OptionalIntlConfig,
+  {
+    defaultRichTextElements: rawDefaultRichTextElements,
+    ...config
+  }: OptionalIntlConfig,
   cache?: IntlCache
 ): IntlShape {
   const formatters = createFormatters(cache);
-  const resolvedConfig = {...DEFAULT_INTL_CONFIG, ...config};
+  const defaultRichTextElements = assignUniqueKeysToFormatXMLElementFnArgument(
+    rawDefaultRichTextElements
+  );
+  const resolvedConfig = {
+    ...DEFAULT_INTL_CONFIG,
+    ...config,
+    defaultRichTextElements,
+  };
+
   const {locale, defaultLocale, onError} = resolvedConfig;
   if (!locale) {
     if (onError) {

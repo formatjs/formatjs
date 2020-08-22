@@ -152,7 +152,10 @@ ts_node(
         "@npm//minimist",
     ],
     output_dir = True,
-    visibility = ["//packages/react-intl:__subpackages__"],
+    visibility = [
+        "//packages/intl:__subpackages__",
+        "//packages/react-intl:__subpackages__",
+    ],
 )
 
 ts_node(
@@ -166,7 +169,10 @@ ts_node(
     ],
     data = CLDR_DEPS,
     output_dir = True,
-    visibility = ["//packages/react-intl:__subpackages__"],
+    visibility = [
+        "//packages/intl:__subpackages__",
+        "//packages/react-intl:__subpackages__",
+    ],
 )
 
 [generate_src_file(

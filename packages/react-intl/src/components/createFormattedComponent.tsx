@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {invariantIntlContext} from '../utils';
 import {
-  IntlShape,
   FormatDateOptions,
   FormatNumberOptions,
   FormatListOptions,
   FormatDisplayNameOptions,
-} from '../types';
+} from '@formatjs/intl';
 import {Context} from './injectIntl';
+import {IntlShape} from '../types';
 
 enum DisplayName {
   formatDate = 'FormattedDate',

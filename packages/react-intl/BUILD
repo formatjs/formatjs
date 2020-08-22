@@ -37,6 +37,7 @@ SRCS = glob(["src/**/*.ts*"]) + ["index.ts"]
 SRC_DEPS = [
     "@npm//react",
     "@npm//@types/react",
+    "//packages/intl:dist",
     "//packages/intl-numberformat:dist",
     "//packages/intl-listformat:dist",
     "//packages/intl-displaynames:dist",

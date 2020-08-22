@@ -7,9 +7,9 @@
 import * as React from 'react';
 import type {PrimitiveType, FormatXMLElementFn} from 'intl-messageformat';
 import {Context} from './injectIntl';
-import {MessageDescriptor} from '../types';
 import {invariantIntlContext} from '../utils';
 import * as shallowEquals_ from 'shallow-equal/objects';
+import {MessageDescriptor} from '@formatjs/intl';
 const shallowEquals: typeof shallowEquals_ =
   (shallowEquals_ as any).default || shallowEquals_;
 
@@ -57,10 +57,7 @@ class FormattedMessage<
           } = this.props;
 
           const descriptor = {id, description, defaultMessage};
-          let nodes: string | React.ReactNodeArray = formatMessage(
-            descriptor,
-            values
-          );
+          let nodes: React.ReactNode = formatMessage(descriptor, values);
 
           if (!Array.isArray(nodes)) {
             nodes = [nodes];
@@ -73,7 +70,7 @@ class FormattedMessage<
           if (Component) {
             // Needs to use `createElement()` instead of JSX, otherwise React will
             // warn about a missing `key` prop with rich-text message formatting.
-            return React.createElement(Component, null, ...nodes);
+            return React.createElement(Component, null, ...(nodes as any));
           }
           return nodes;
         }}

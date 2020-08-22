@@ -6,7 +6,8 @@
 
 import * as React from 'react';
 import withIntl, {WithIntlProps} from './injectIntl';
-import {IntlShape, FormatPluralOptions} from '../types';
+import {IntlShape} from '../types';
+import {FormatPluralOptions} from '@formatjs/intl';
 
 interface Props extends FormatPluralOptions {
   value: number;

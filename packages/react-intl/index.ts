@@ -9,15 +9,37 @@ import {
   createFormattedDateTimePartsComponent,
 } from './src/components/createFormattedComponent';
 import {
+  MessageDescriptor,
   CustomFormatConfig,
   FormatDateOptions,
-  MessageDescriptor,
-} from './src/types';
+} from '@formatjs/intl';
 import {NumberFormatOptions} from '@formatjs/intl-numberformat';
 import {IntlListFormatOptions} from '@formatjs/intl-listformat';
 import {DisplayNamesOptions} from '@formatjs/intl-displaynames';
 import {DateTimeFormatOptions} from '@formatjs/intl-datetimeformat';
-export * from './src/types';
+export {IntlConfig, IntlShape} from './src/types';
+export {
+  createIntlCache,
+  MessageDescriptor,
+  IntlCache,
+  Formatters,
+  IntlFormatters,
+  FormatDisplayNameOptions,
+  FormatListOptions,
+  FormatPluralOptions,
+  FormatRelativeTimeOptions,
+  FormatNumberOptions,
+  FormatDateOptions,
+  CustomFormatConfig,
+  CustomFormats,
+  UnsupportedFormatterError,
+  InvalidConfigError,
+  MissingDataError,
+  MessageFormatError,
+  MissingTranslationError,
+  IntlErrorCode as ReactIntlErrorCode,
+  IntlError as ReactIntlError,
+} from '@formatjs/intl';
 
 export function defineMessages<
   K extends keyof any,
@@ -85,5 +107,3 @@ export {FormattedNumberParts} from './src/components/createFormattedComponent';
 export {default as FormattedRelativeTime} from './src/components/relative';
 export {default as FormattedPlural} from './src/components/plural';
 export {default as FormattedMessage} from './src/components/message';
-export {createIntlCache} from './src/utils';
-export * from './src/error';
