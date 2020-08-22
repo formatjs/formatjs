@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`format API formatMessage() fallbacks formats \`defaultMessage\` when message has a syntax error 1`] = `
+Array [
+  "FORMAT_ERROR",
+]
+`;
+
+exports[`format API formatMessage() fallbacks formats \`defaultMessage\` when message has missing values 1`] = `
+Array [
+  "FORMAT_ERROR",
+]
+`;
+
+exports[`format API formatMessage() fallbacks returns \`defaultMessage\` source when formatting errors and missing message 1`] = `
+Array [
+  "MISSING_TRANSLATION",
+  "FORMAT_ERROR",
+]
+`;
+
+exports[`format API formatMessage() fallbacks returns message \`id\` when message and \`defaultMessage\` are empty 1`] = `
+Array [
+  "MISSING_TRANSLATION",
+]
+`;
+
+exports[`format API formatMessage() fallbacks returns message \`id\` when message and \`defaultMessage\` are missing 1`] = `
+Array [
+  "MISSING_TRANSLATION",
+]
+`;
+
+exports[`format API formatMessage() fallbacks returns message source when formatting error and missing \`defaultMessage\` 1`] = `
+Array [
+  "FORMAT_ERROR",
+]
+`;
+
+exports[`format API formatMessage() fallbacks returns message source when message and \`defaultMessage\` have formatting errors 1`] = `
+Array [
+  "FORMAT_ERROR",
+  "FORMAT_ERROR",
+]
+`;

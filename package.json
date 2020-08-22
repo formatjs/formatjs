@@ -180,5 +180,8 @@
     "endOfLine": "lf",
     "arrowParens": "avoid"
   },
+  "resolutions": {
+    "**/chokidar": "^3.4.2"
+  },
   "author": "Seth Bertalotto <sbertal@verizonmedia.com>"
 }

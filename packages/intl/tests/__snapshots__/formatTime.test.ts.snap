@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`format API formatTime() options falls back and warns on invalid Intl.DateTimeFormat options 1`] = `
+Array [
+  "FORMAT_ERROR",
+]
+`;
+
+exports[`format API formatTime() options handles missing named formats and warns 1`] = `
+Array [
+  "UNSUPPORTED_FORMATTER",
+]
+`;
