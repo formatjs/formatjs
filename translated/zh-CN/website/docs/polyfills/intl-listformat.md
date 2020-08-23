@@ -9,9 +9,30 @@ A spec-compliant polyfill for Intl.ListFormat fully tested by the [official ECMA
 
 ## Installation
 
+import Tabs from '@theme/Tabs' import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i @formatjs/intl-listformat
 ```
-npm install @formatjs/intl-listformat
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add @formatjs/intl-listformat
 ```
+
+</TabItem>
+</Tabs>
 
 ## Requirements
 
