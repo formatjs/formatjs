@@ -44,9 +44,30 @@ Add the following command to your `package.json` `scripts`:
 
 and execute with `npm`:
 
+import Tabs from '@theme/Tabs' import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
 ```sh
 npm run compile -- lang/fr.json --ast --out-file compiled-lang/fr.json
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn compile lang/fr.json --ast --out-file compiled-lang/fr.json
+```
+
+</TabItem>
+</Tabs>
 
 :::info Parsing messages into AST We recommending compiling your messages into AST as it allows us to skip parsing them during runtime. This makes your app more performant. :::
 
@@ -67,9 +88,28 @@ If your vendor accepts the format like
 
 you can run
 
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
 ```sh
 npm run compile -- lang/fr.json --ast --out-file compiled-lang/fr.json --format formatter.js
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn compile lang/fr.json --ast --out-file compiled-lang/fr.json --format formatter.js
+```
+
+</TabItem>
+</Tabs>
 
 where `formatter.js` is:
 
