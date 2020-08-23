@@ -13,21 +13,10 @@ import {
 } from '../utils';
 import {IntlConfig, IntlShape} from '../types';
 import {
-  formatNumber,
-  formatNumberToParts,
-  formatRelativeTime,
-  formatDate,
-  formatTime,
-  formatDateToParts,
-  formatTimeToParts,
-  formatPlural,
   formatMessage as coreFormatMessage,
-  formatList,
-  formatDisplayName,
   IntlCache,
-  InvalidConfigError,
-  MissingDataError,
-  createFormatters,
+  createIntl as coreCreateIntl,
+  CreateIntlFn,
   createIntlCache,
 } from '@formatjs/intl';
 
@@ -129,106 +118,39 @@ const formatMessage: typeof coreFormatMessage = (
  * @param config intl config
  * @param cache cache for formatter instances to prevent memory leak
  */
-export function createIntl(
-  {
-    defaultRichTextElements: rawDefaultRichTextElements,
-    ...config
-  }: OptionalIntlConfig,
-  cache?: IntlCache
-): IntlShape {
-  const formatters = createFormatters(cache);
+export const createIntl: CreateIntlFn<React.ReactNode> = (
+  {defaultRichTextElements: rawDefaultRichTextElements, ...config},
+  cache
+) => {
   const defaultRichTextElements = assignUniqueKeysToFormatXMLElementFnArgument(
     rawDefaultRichTextElements
   );
-  const resolvedConfig = {
-    ...DEFAULT_INTL_CONFIG,
-    ...config,
-    defaultRichTextElements,
-  };
+  const coreIntl = coreCreateIntl<React.ReactNode>(
+    {
+      ...DEFAULT_INTL_CONFIG,
+      ...config,
+    },
+    cache
+  );
 
-  const {locale, defaultLocale, onError} = resolvedConfig;
-  if (!locale) {
-    if (onError) {
-      onError(
-        new InvalidConfigError(
-          `"locale" was not configured, using "${defaultLocale}" as fallback. See https://formatjs.io/docs/react-intl/api#intlshape for more details`
-        )
-      );
-    }
-    // Since there's no registered locale data for `locale`, this will
-    // fallback to the `defaultLocale` to make sure things can render.
-    // The `messages` are overridden to the `defaultProps` empty object
-    // to maintain referential equality across re-renders. It's assumed
-    // each <FormattedMessage> contains a `defaultMessage` prop.
-    resolvedConfig.locale = resolvedConfig.defaultLocale || 'en';
-  } else if (!Intl.NumberFormat.supportedLocalesOf(locale).length && onError) {
-    onError(
-      new MissingDataError(
-        `Missing locale data for locale: "${locale}" in Intl.NumberFormat. Using default locale: "${defaultLocale}" as fallback. See https://formatjs.io/docs/react-intl#runtime-requirements for more details`
-      )
-    );
-  } else if (
-    !Intl.DateTimeFormat.supportedLocalesOf(locale).length &&
-    onError
-  ) {
-    onError(
-      new MissingDataError(
-        `Missing locale data for locale: "${locale}" in Intl.DateTimeFormat. Using default locale: "${defaultLocale}" as fallback. See https://formatjs.io/docs/react-intl#runtime-requirements for more details`
-      )
-    );
-  }
   return {
-    ...resolvedConfig,
-    formatters,
-    formatNumber: formatNumber.bind(
+    ...coreIntl,
+    formatMessage: formatMessage.bind(
       null,
-      resolvedConfig,
-      formatters.getNumberFormat
-    ),
-    formatNumberToParts: formatNumberToParts.bind(
-      null,
-      resolvedConfig,
-      formatters.getNumberFormat
-    ),
-    formatRelativeTime: formatRelativeTime.bind(
-      null,
-      resolvedConfig,
-      formatters.getRelativeTimeFormat
-    ),
-    formatDate: formatDate.bind(
-      null,
-      resolvedConfig,
-      formatters.getDateTimeFormat
-    ),
-    formatDateToParts: formatDateToParts.bind(
-      null,
-      resolvedConfig,
-      formatters.getDateTimeFormat
-    ),
-    formatTime: formatTime.bind(
-      null,
-      resolvedConfig,
-      formatters.getDateTimeFormat
-    ),
-    formatTimeToParts: formatTimeToParts.bind(
-      null,
-      resolvedConfig,
-      formatters.getDateTimeFormat
-    ),
-    formatPlural: formatPlural.bind(
-      null,
-      resolvedConfig,
-      formatters.getPluralRules
-    ),
-    formatMessage: formatMessage.bind(null, resolvedConfig, formatters),
-    formatList: formatList.bind(null, resolvedConfig, formatters.getListFormat),
-    formatDisplayName: formatDisplayName.bind(
-      null,
-      resolvedConfig,
-      formatters.getDisplayNames
+      {
+        locale: coreIntl.locale,
+        timeZone: coreIntl.timeZone,
+        formats: coreIntl.formats,
+        defaultLocale: coreIntl.defaultLocale,
+        defaultFormats: coreIntl.defaultFormats,
+        messages: coreIntl.messages,
+        onError: coreIntl.onError,
+        defaultRichTextElements,
+      },
+      coreIntl.formatters
     ),
   };
-}
+};
 
 export default class IntlProvider extends React.PureComponent<
   // Exporting children props so it is composable with other HOCs.

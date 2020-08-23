@@ -33,3 +33,4 @@ export {formatList} from './src/list';
 export {formatPlural} from './src/plural';
 export {formatRelativeTime} from './src/relativeTime';
 export {formatNumber, formatNumberToParts} from './src/number';
+export {createIntl, CreateIntlFn} from './src/create-intl';

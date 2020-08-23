@@ -32,7 +32,12 @@ export type OnErrorFn = (
     | FormatError
 ) => void;
 
-export interface IntlConfig<T> {
+/**
+ * Config for intl object.
+ * Generic type T is the type of potential rich text element. For example:
+ * With React, T would be React.ReactNode
+ */
+export interface IntlConfig<T = string> {
   locale: string;
   timeZone?: string;
   formats: CustomFormats;
@@ -176,7 +181,7 @@ export interface MessageDescriptor {
   defaultMessage?: string | MessageFormatElement[];
 }
 
-export type OptionalIntlConfig<T> = Omit<
+export type OptionalIntlConfig<T = string> = Omit<
   IntlConfig<T>,
   keyof typeof DEFAULT_INTL_CONFIG
 > &
