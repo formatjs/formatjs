@@ -1,3 +1,4 @@
+export * from './src/CanonicalizeLocaleList';
 export * from './src/GetNumberOption';
 export * from './src/GetOption';
 export * from './src/IsSanctionedSimpleUnitIdentifier';
@@ -8,6 +9,9 @@ export * from './src/NumberFormat/SetNumberFormatDigitOptions';
 export * from './src/NumberFormat/ToRawFixed';
 export * from './src/NumberFormat/ToRawPrecision';
 export * from './src/PartitionPattern';
+export * from './src/PluralRules/GetOperands';
+export * from './src/PluralRules/InitializePluralRules';
+export * from './src/PluralRules/ResolvePlural';
 export * from './src/ResolveLocale';
 export * from './src/SupportedLocales';
 export {
