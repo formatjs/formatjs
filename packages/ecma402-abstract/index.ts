@@ -12,6 +12,12 @@ export * from './src/PartitionPattern';
 export * from './src/PluralRules/GetOperands';
 export * from './src/PluralRules/InitializePluralRules';
 export * from './src/PluralRules/ResolvePlural';
+export * from './src/RelativeTimeFormat/FormatRelativeTime';
+export * from './src/RelativeTimeFormat/FormatRelativeTimeToParts';
+export * from './src/RelativeTimeFormat/InitializeRelativeTimeFormat';
+export * from './src/RelativeTimeFormat/MakePartsList';
+export * from './src/RelativeTimeFormat/PartitionRelativeTimePattern';
+export * from './src/RelativeTimeFormat/SingularRelativeTimeUnit';
 export * from './src/ResolveLocale';
 export * from './src/SupportedLocales';
 export {
