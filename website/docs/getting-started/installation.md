@@ -79,7 +79,7 @@ console.log(intl.formatNumber(19, {style: 'currency', currency: 'EUR'}))
 ```
 
 :::tip
-If you're not using `React`, you can use [`@formatjs/intl`](../intl.mdx) instead that has the same API. In fact, `react-intl` also uses `@formatjs/intl`
+If you're not using `React`, you can use [`@formatjs/intl`](../intl.md) instead that has the same API. In fact, `react-intl` also uses `@formatjs/intl`
 :::
 
 ## Minimal React Application
