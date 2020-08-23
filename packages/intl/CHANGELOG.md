@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.1.0...@formatjs/intl@1.2.0) (2020-08-23)
+
+
+### Features
+
+* **@formatjs/intl:** expose createIntl, fix [#2015](https://github.com/formatjs/formatjs/issues/2015) ([a15cc1b](https://github.com/formatjs/formatjs/commit/a15cc1bb371cfe4990031f8af8be217493ff2b99))
+
+
+
+
+
 # 1.1.0 (2020-08-22)
 
 

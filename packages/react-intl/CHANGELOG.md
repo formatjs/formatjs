@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.7.0](https://github.com/formatjs/formatjs/compare/react-intl@5.6.10...react-intl@5.7.0) (2020-08-23)
+
+
+### Features
+
+* **@formatjs/intl:** expose createIntl, fix [#2015](https://github.com/formatjs/formatjs/issues/2015) ([a15cc1b](https://github.com/formatjs/formatjs/commit/a15cc1bb371cfe4990031f8af8be217493ff2b99))
+
+
+
+
+
 ## [5.6.10](https://github.com/formatjs/formatjs/compare/react-intl@5.6.9...react-intl@5.6.10) (2020-08-22)
 
 **Note:** Version bump only for package react-intl
