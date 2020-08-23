@@ -7,9 +7,31 @@ This eslint plugin allows you to enforce certain rules in your ICU message. This
 
 ## Usage
 
-```bash
-npm install eslint-plugin-formatjs
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i -D eslint-plugin-formatjs
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add -D eslint-plugin-formatjs
+```
+
+</TabItem>
+</Tabs>
 
 Then in your eslint config:
 

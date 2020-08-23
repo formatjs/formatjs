@@ -7,9 +7,31 @@ Now that you've had a working pipeline. It's time to dive deeper on how to optim
 
 ## Using babel-plugin-react-intl
 
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
 ```sh
 npm i -D babel-plugin-react-intl
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add -D babel-plugin-react-intl
+```
+
+</TabItem>
+</Tabs>
 
 Let's take this simple example:
 
@@ -63,9 +85,28 @@ Our plugin also removes `description` because it's only for translator, not end-
 
 ## Using @formatjs/ts-transformer
 
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
 ```sh
 npm i -D @formatjs/ts-transformer
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add -D @formatjs/ts-transformer
+```
+
+</TabItem>
+</Tabs>
 
 If you're using TypeScript, in order to enable custom AST transformer you should consider using [ttypescript](https://github.com/cevek/ttypescript), [ts-loader](https://github.com/TypeStrong/ts-loader) or similar.
 

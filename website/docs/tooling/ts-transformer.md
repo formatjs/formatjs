@@ -14,9 +14,31 @@ Process string messages for translation from modules that use react-intl, specif
 
 ## Installation
 
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
 ```sh
-$ npm install @formatjs/ts-transformer
+npm i @formatjs/ts-transformer
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add @formatjs/ts-transformer
+```
+
+</TabItem>
+</Tabs>
 
 ## Usage
 

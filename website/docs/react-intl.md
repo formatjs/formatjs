@@ -72,9 +72,31 @@ FormatJS also provides types & polyfill for the following Intl API proposals:
 
 Install the [`react-intl` npm package](https://www.npmjs.com/package/react-intl) via npm:
 
-```bash
-$ npm install react-intl --save
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i -S react-intl
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add react-intl
+```
+
+</TabItem>
+</Tabs>
 
 The `react-intl` npm package distributes the following modules (links from [unpkg](https://unpkg.com/)):
 

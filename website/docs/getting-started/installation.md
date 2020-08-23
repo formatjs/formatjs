@@ -7,9 +7,31 @@ formatjs is a set of libraries that help you setup internationalization in any p
 
 ## Installation
 
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
 ```sh
 npm i -S react react-intl
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add react react-intl
+```
+
+</TabItem>
+</Tabs>
 
 ## Minimal Application
 
@@ -55,6 +77,10 @@ console.log(
 // 19,00 €
 console.log(intl.formatNumber(19, {style: 'currency', currency: 'EUR'}))
 ```
+
+:::tip
+If you're not using `React`, you can use [`@formatjs/intl`](../intl.mdx) instead that has the same API. In fact, `react-intl` also uses `@formatjs/intl`
+:::
 
 ## Minimal React Application
 
@@ -104,9 +130,28 @@ Our tooling supports `babel`, `ts-loader`, `ts-jest`, `rollup-plugin-typescript2
 
 If you're using `babel`, add `babel-plugin-react-intl` to your dependencies:
 
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
 ```sh
 npm i -D babel-plugin-react-intl
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add -D babel-plugin-react-intl
+```
+
+</TabItem>
+</Tabs>
 
 and add it to your `babel.config.js` or `.babelrc`:
 
@@ -126,6 +171,29 @@ and add it to your `babel.config.js` or `.babelrc`:
 ```
 
 ### `ts-loader`
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i -D @formatjs/ts-transformer
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add -D @formatjs/ts-transformer
+```
+
+</TabItem>
+</Tabs>
 
 ```tsx
 import {transform} from '@formatjs/ts-transformer'
@@ -159,9 +227,55 @@ module.exports = {
 
 ### `ts-jest` in `jest.config.js`
 
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i -D @formatjs/ts-transformer
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add -D @formatjs/ts-transformer
+```
+
+</TabItem>
+</Tabs>
+
 Take a look at [`ts-jest` guide](https://github.com/kulshekhar/ts-jest/blob/master/docs/user/config/astTransformers.md) on how to incorporate custom AST Transformers.
 
 ### `ttypescript`
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i -D @formatjs/ts-transformer
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add -D @formatjs/ts-transformer
+```
+
+</TabItem>
+</Tabs>
 
 ```json
 {
@@ -180,6 +294,29 @@ Take a look at [`ts-jest` guide](https://github.com/kulshekhar/ts-jest/blob/mast
 ```
 
 ### `rollup-plugin-typescript2`
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i -D @formatjs/ts-transformer
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add -D @formatjs/ts-transformer
+```
+
+</TabItem>
+</Tabs>
 
 ```ts
 // rollup.config.js

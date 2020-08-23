@@ -1,6 +1,6 @@
 ---
 id: intl-datetimeformat
-title: Intl.DateTimeFormat
+title: Intl.DateTimeFormat (ES2020)
 ---
 
 A spec-compliant polyfill for Intl.DateTimeFormat fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
@@ -10,9 +10,31 @@ A spec-compliant polyfill for Intl.DateTimeFormat fully tested by the [official 
 
 ## Installation
 
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i @formatjs/intl-datetimeformat
 ```
-npm install @formatjs/intl-datetimeformat
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add @formatjs/intl-datetimeformat
 ```
+
+</TabItem>
+</Tabs>
 
 ## Requirements
 

@@ -7,9 +7,31 @@ Now that you've declared some messages, it's time to extract them.
 
 ## Installation
 
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
 ```sh
 npm i -D @formatjs/cli
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add -D @formatjs/cli
+```
+
+</TabItem>
+</Tabs>
 
 ## Extraction
 
@@ -25,9 +47,28 @@ Add the following command to your `package.json` `scripts`:
 
 and execute with `npm`:
 
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
 ```sh
 npm run extract -- 'src/**/*.ts*' --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn extract 'src/**/*.ts*' --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'
+```
+
+</TabItem>
+</Tabs>
 
 :::caution ID Interpolation Pattern
 Make sure this pattern matches `idInterpolationPattern` when you use `babel-plugin-react-intl` or `@formatjs/ts-transformer` in [Bundling with formatjs](https://formatjs.io/docs/guides/bundler-plugins) or you'll get a `MISSING_TRANSLATION` error.
@@ -141,9 +182,28 @@ If your vendor accepts the format like
 
 you can run
 
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
 ```sh
 npm run extract -- "src/**/*.ts*" --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]' --format formatter.js
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn extract "src/**/*.ts*" --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]' --format formatter.js
+```
+
+</TabItem>
+</Tabs>
 
 where `formatter.js` is:
 
