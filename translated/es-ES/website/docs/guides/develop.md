@@ -7,9 +7,30 @@ Aside from a strong focus on facilitating i18n production pipeline, `formatjs` a
 
 ## Linter Installation
 
+import Tabs from '@theme/Tabs' import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
 ```sh
 npm i -D eslint-plugin-formatjs eslint
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add -D eslint-plugin-formatjs eslint
+```
+
+</TabItem>
+</Tabs>
 
 Then in your eslint config:
 
