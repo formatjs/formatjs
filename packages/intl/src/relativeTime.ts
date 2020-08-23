@@ -1,11 +1,12 @@
 import {IntlFormatters, Formatters, CustomFormats, OnErrorFn} from './types';
 
 import {getNamedFormat, filterProps} from './utils';
-import RelativeTimeFormat, {
-  IntlRelativeTimeFormatOptions,
-} from '@formatjs/intl-relativetimeformat';
 import {FormatError, ErrorCode} from 'intl-messageformat';
 import {MessageFormatError} from './error';
+import {
+  IntlRelativeTimeFormatOptions,
+  RelativeTimeFormat,
+} from '@formatjs/ecma402-abstract';
 
 const RELATIVE_TIME_FORMAT_OPTIONS: Array<
   keyof IntlRelativeTimeFormatOptions

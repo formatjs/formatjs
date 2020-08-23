@@ -5,9 +5,7 @@ import {
   FormatXMLElementFn,
   FormatError,
 } from 'intl-messageformat';
-import IntlRelativeTimeFormat, {
-  IntlRelativeTimeFormatOptions,
-} from '@formatjs/intl-relativetimeformat';
+import IntlRelativeTimeFormat from '@formatjs/intl-relativetimeformat';
 import {MessageFormatElement} from 'intl-messageformat-parser';
 import {NumberFormatOptions} from '@formatjs/intl-numberformat';
 import IntlListFormat, {IntlListFormatOptions} from '@formatjs/intl-listformat';
@@ -21,6 +19,7 @@ import {
   UnsupportedFormatterError,
 } from './error';
 import {DEFAULT_INTL_CONFIG} from './utils';
+import {IntlRelativeTimeFormatOptions} from '@formatjs/ecma402-abstract';
 
 export type OnErrorFn = (
   err:

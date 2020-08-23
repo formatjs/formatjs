@@ -5,15 +5,14 @@
  */
 import * as React from 'react';
 import {Context} from './injectIntl';
-import {Unit} from '@formatjs/intl-relativetimeformat';
 import {invariantIntlContext} from '../utils';
-import {invariant} from '@formatjs/ecma402-abstract';
+import {invariant, RelativeTimeUnit} from '@formatjs/ecma402-abstract';
 import {FormatRelativeTimeOptions} from '@formatjs/intl';
 const MINUTE = 60;
 const HOUR = 60 * 60;
 const DAY = 60 * 60 * 24;
 
-function selectUnit(seconds: number): Unit {
+function selectUnit(seconds: number): RelativeTimeUnit {
   const absValue = Math.abs(seconds);
 
   if (absValue < MINUTE) {
@@ -31,7 +30,7 @@ function selectUnit(seconds: number): Unit {
   return 'day';
 }
 
-function getDurationInSeconds(unit?: Unit): number {
+function getDurationInSeconds(unit?: RelativeTimeUnit): number {
   switch (unit) {
     case 'second':
       return 1;
@@ -44,7 +43,7 @@ function getDurationInSeconds(unit?: Unit): number {
   }
 }
 
-function valueToSeconds(value?: number, unit?: Unit): number {
+function valueToSeconds(value?: number, unit?: RelativeTimeUnit): number {
   if (!value) {
     return 0;
   }
@@ -60,19 +59,19 @@ function valueToSeconds(value?: number, unit?: Unit): number {
 
 export interface Props extends FormatRelativeTimeOptions {
   value?: number;
-  unit?: Unit;
+  unit?: RelativeTimeUnit;
   updateIntervalInSeconds?: number;
   children?(value: string): React.ReactChild;
 }
 
 interface State {
-  prevUnit?: Unit;
+  prevUnit?: RelativeTimeUnit;
   prevValue?: number;
   currentValueInSeconds: number;
 }
 
-const INCREMENTABLE_UNITS: Unit[] = ['second', 'minute', 'hour'];
-function canIncrement(unit: Unit = 'second'): boolean {
+const INCREMENTABLE_UNITS: RelativeTimeUnit[] = ['second', 'minute', 'hour'];
+function canIncrement(unit: RelativeTimeUnit = 'second'): boolean {
   return INCREMENTABLE_UNITS.includes(unit);
 }
 

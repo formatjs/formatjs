@@ -8,8 +8,8 @@ import {
 import {IntlMessageFormat} from 'intl-messageformat';
 import * as memoize from 'fast-memoize';
 import {Cache} from 'fast-memoize';
-import {IntlRelativeTimeFormatOptions} from '@formatjs/intl-relativetimeformat';
 import {UnsupportedFormatterError} from './error';
+import {IntlRelativeTimeFormatOptions} from '@formatjs/ecma402-abstract';
 
 export function filterProps<T extends Record<string, any>, K extends string>(
   props: T,
