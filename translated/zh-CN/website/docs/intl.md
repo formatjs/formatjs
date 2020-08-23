@@ -188,7 +188,7 @@ intl.formatTime(Date.now()) // "4:03 PM"
 
 ## formatRelativeTime
 
-:::caution browser support This requires [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-relativetimeformat.md) if you plan to support them. :::
+:::caution browser support This requires [Intl.RelativeTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat) which has limited browser support. Please use our [polyfill](./polyfills/intl-relativetimeformat.md) if you plan to support them. :::
 
 ```tsx
 type Unit =
@@ -244,7 +244,7 @@ intl.formatNumber(1000, {style: 'currency', currency: 'USD'})
 
 **Formatting Number using `unit`**
 
-Currently this is part of ES2020 [NumberFormat](https://tc39.es/ecma402/#numberformat-objects). We've provided a polyfill [here](../polyfills/intl-numberformat.md) and `@formatjs/intl` types allow users to pass in a [sanctioned unit](../polyfills/intl-numberformat.md#SupportedUnits):
+Currently this is part of ES2020 [NumberFormat](https://tc39.es/ecma402/#numberformat-objects). We've provided a polyfill [here](./polyfills/intl-numberformat.md) and `@formatjs/intl` types allow users to pass in a [sanctioned unit](./polyfills/intl-numberformat.md#SupportedUnits):
 
 ```tsx live
 intl.formatNumber(1000, {
@@ -295,7 +295,7 @@ intl.formatPlural(4, {style: 'ordinal'})
 
 ## formatList
 
-:::caution browser support This requires [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) which has limited browser support. Please use our [polyfill](../polyfills/intl-listformat.md) if you plan to support them. :::
+:::caution browser support This requires [Intl.ListFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) which has limited browser support. Please use our [polyfill](./polyfills/intl-listformat.md) if you plan to support them. :::
 
 ```ts
 type ListFormatOptions = {
@@ -321,7 +321,7 @@ intl.formatList(['5 hours', '3 minutes'], {type: 'unit'})
 
 ## formatDisplayName
 
-:::caution browser support This requires [Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames) which has limited browser support. Please use our [polyfill](../polyfills/intl-displaynames.md) if you plan to support them. :::
+:::caution browser support This requires [Intl.DisplayNames](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames) which has limited browser support. Please use our [polyfill](./polyfills/intl-displaynames.md) if you plan to support them. :::
 
 ```ts
 type FormatDisplayNameOptions = {
@@ -361,7 +361,7 @@ intl.formatDisplayName('UN', {type: 'region'})
 
 ### Message Syntax
 
-String/Message formatting is a paramount feature of React Intl and it builds on [ICU Message Formatting](http://userguide.icu-project.org/formatparse/messages) by using the [ICU Message Syntax](../core-concepts/icu-syntax.md). This message syntax allows for simple to complex messages to be defined, translated, and then formatted at runtime.
+String/Message formatting is a paramount feature of React Intl and it builds on [ICU Message Formatting](http://userguide.icu-project.org/formatparse/messages) by using the [ICU Message Syntax](./core-concepts/icu-syntax.md). This message syntax allows for simple to complex messages to be defined, translated, and then formatted at runtime.
 
 **Simple Message:**
 
@@ -379,7 +379,7 @@ Hello, {name}, you have {itemCount, plural,
 }.
 ```
 
-**See:** The [Message Syntax Guide](../core-concepts/icu-syntax.md).
+**See:** The [Message Syntax Guide](./core-concepts/icu-syntax.md).
 
 ### Message Descriptor
 
