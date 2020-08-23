@@ -78,6 +78,7 @@ jest_test(
         ],
         exclude = ["tests/extract/unit.test.ts"],
     ),
+    flaky = True,
     deps = [
         "//packages/intl-messageformat-parser:types",
         "//packages/ts-transformer:types",

@@ -218,6 +218,8 @@ test262_harness_test(
     templated_args = [
         "--reporter-keys",
         "file,attrs,result",
+        "--timeout",
+        "30000",
         "--prelude",
         "$(rootpath test262-polyfill.js)",
         "$(rootpaths //:test262-relativetimeformat)",

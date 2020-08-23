@@ -391,6 +391,8 @@ generated_file_test(
 #     templated_args = [
 #         "--reporter-keys",
 #         "file,attrs,result",
+#         "-t",
+#         "2",
 #         "--prelude",
 #         "$(rootpath test262-polyfill.js)",
 #         "$(rootpaths //:test262-datetimeformat)",
