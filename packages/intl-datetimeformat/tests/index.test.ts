@@ -1,14 +1,10 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
-import {
-  DateTimeFormat,
-  basicFormatMatcherScore,
-  bestFitFormatMatcherScore,
-} from '../';
+import {DateTimeFormat} from '../src/core';
 import * as en from './locale-data/en.json';
 import * as enGB from './locale-data/en-GB.json';
 import * as zhHans from './locale-data/zh-Hans.json';
 import allData from '../src/data/all-tz';
-import {parseDateTimeSkeleton} from '../src/skeleton';
+
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, enGB, zhHans);
 DateTimeFormat.__addTZData(allData);
@@ -139,96 +135,5 @@ describe('Intl.DateTimeFormat', function () {
         new Date(1899, 1, 1)
       )
     ).toBe('Wed');
-  });
-  it('basicFormatMatcherScore', function () {
-    const opts = {
-      weekday: 'short',
-      era: 'short',
-      year: '2-digit',
-      month: 'narrow',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: 'numeric',
-      second: 'numeric',
-      timeZone: 'America/Los_Angeles',
-      timeZoneName: 'short',
-      hour12: true,
-    };
-    expect(
-      basicFormatMatcherScore(opts, parseDateTimeSkeleton('h:mm:ss a v'))
-    ).toBe(-615);
-    expect(
-      basicFormatMatcherScore(opts, parseDateTimeSkeleton('HH:mm:ss v'))
-    ).toBe(-612);
-  });
-  it('bestFitFormatMatcherScore', function () {
-    const opts = {
-      weekday: 'short',
-      era: 'short',
-      year: '2-digit',
-      month: 'narrow',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: 'numeric',
-      second: 'numeric',
-      timeZone: 'America/Los_Angeles',
-      timeZoneName: 'short',
-      hour12: true,
-    };
-    expect(
-      bestFitFormatMatcherScore(opts, parseDateTimeSkeleton('h:mm:ss a v'))
-    ).toBeGreaterThan(
-      bestFitFormatMatcherScore(opts, parseDateTimeSkeleton('HH:mm:ss v'))
-    );
-  });
-  it('bestFitFormatMatcherScore long weekday (ko)', function () {
-    const opts = {
-      weekday: 'long',
-      era: 'short',
-      year: '2-digit',
-      month: 'narrow',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: 'numeric',
-      second: 'numeric',
-      timeZoneName: 'short',
-      hour12: true,
-    };
-    expect(
-      bestFitFormatMatcherScore(
-        opts,
-        parseDateTimeSkeleton('G y년 MMM d일 EEEE a h시 m분 s초 z')
-      )
-    ).toBeGreaterThan(
-      bestFitFormatMatcherScore(
-        opts,
-        parseDateTimeSkeleton('G y년 MMM d일 (E) a h시 m분 s초 z')
-      )
-    );
-  });
-  it('bestFitFormatMatcherScore narrow weekday (ko)', function () {
-    const opts = {
-      weekday: 'short',
-      era: 'short',
-      year: '2-digit',
-      month: 'narrow',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: 'numeric',
-      second: 'numeric',
-      timeZoneName: 'short',
-      hour12: true,
-    };
-    expect(
-      bestFitFormatMatcherScore(
-        opts,
-        parseDateTimeSkeleton('G y년 MMM d일 (E) a h시 m분 s초 z')
-      )
-    ).toBeGreaterThan(
-      bestFitFormatMatcherScore(
-        opts,
-        parseDateTimeSkeleton('G y년 MMM d일 EEEE a h시 m분 s초 z')
-      )
-    );
   });
 });

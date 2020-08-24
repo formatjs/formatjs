@@ -1,5 +1,8 @@
-import {DateTimeFormat, DateTimeFormatOptions} from './';
-import {defineProperty} from '@formatjs/ecma402-abstract';
+import {DateTimeFormat} from './';
+import {
+  defineProperty,
+  DateTimeFormatOptions,
+} from '@formatjs/ecma402-abstract';
 import {shouldPolyfill} from './should-polyfill';
 import {
   toLocaleString as _toLocaleString,

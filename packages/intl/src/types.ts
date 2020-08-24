@@ -10,7 +10,6 @@ import {MessageFormatElement} from 'intl-messageformat-parser';
 import {NumberFormatOptions} from '@formatjs/intl-numberformat';
 import IntlListFormat, {IntlListFormatOptions} from '@formatjs/intl-listformat';
 import {DisplayNames, DisplayNamesOptions} from '@formatjs/intl-displaynames';
-import {DateTimeFormatOptions} from '@formatjs/intl-datetimeformat';
 import {
   MissingTranslationError,
   MessageFormatError,
@@ -19,7 +18,10 @@ import {
   UnsupportedFormatterError,
 } from './error';
 import {DEFAULT_INTL_CONFIG} from './utils';
-import {IntlRelativeTimeFormatOptions} from '@formatjs/ecma402-abstract';
+import {
+  IntlRelativeTimeFormatOptions,
+  DateTimeFormatOptions,
+} from '@formatjs/ecma402-abstract';
 
 export type OnErrorFn = (
   err:

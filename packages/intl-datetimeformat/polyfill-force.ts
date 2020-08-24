@@ -1,6 +1,8 @@
 import {DateTimeFormat} from './';
-import {defineProperty} from '@formatjs/ecma402-abstract';
-import {DateTimeFormatOptions} from './src/types';
+import {
+  defineProperty,
+  DateTimeFormatOptions,
+} from '@formatjs/ecma402-abstract';
 import {
   toLocaleString as _toLocaleString,
   toLocaleDateString as _toLocaleDateString,

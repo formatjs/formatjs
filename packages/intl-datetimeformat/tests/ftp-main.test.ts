@@ -1,14 +1,14 @@
-import {DateTimeFormat, DateTimeFormatPart} from '../';
 import * as en from './locale-data/en.json';
 import * as pl from './locale-data/pl.json';
 import * as de from './locale-data/de.json';
 import * as ar from './locale-data/ar.json';
 import allData from '../src/data/all-tz';
-import {DateTimeFormatOptions} from '../src/types';
+import {DateTimeFormat} from '../src/core';
+import {DateTimeFormatOptions} from '@formatjs/ecma402-abstract';
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, pl, de, ar);
 DateTimeFormat.__addTZData(allData);
-function reduce(parts: DateTimeFormatPart[]) {
+function reduce(parts: Intl.DateTimeFormatPart[]) {
   return parts.map(part => part.value).join('');
 }
 

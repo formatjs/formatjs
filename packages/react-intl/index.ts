@@ -16,7 +16,7 @@ import {
 import {NumberFormatOptions} from '@formatjs/intl-numberformat';
 import {IntlListFormatOptions} from '@formatjs/intl-listformat';
 import {DisplayNamesOptions} from '@formatjs/intl-displaynames';
-import {DateTimeFormatOptions} from '@formatjs/intl-datetimeformat';
+import {DateTimeFormatOptions} from '@formatjs/ecma402-abstract';
 export {IntlConfig, IntlShape} from './src/types';
 export {
   createIntlCache,

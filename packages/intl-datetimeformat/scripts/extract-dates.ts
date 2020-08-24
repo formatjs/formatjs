@@ -10,18 +10,17 @@ import * as NumberFields from 'cldr-numbers-full/main/en/numbers.json';
 import {sync as globSync} from 'fast-glob';
 import {resolve, dirname} from 'path';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
-import {
-  RawDateTimeLocaleInternalData,
-  TimeZoneNameData,
-  DateTimeFormatOptions,
-  Formats,
-} from '../src/types';
+import {RawDateTimeLocaleInternalData, TimeZoneNameData} from '../src/types';
 import * as rawTimeData from 'cldr-core/supplemental/timeData.json';
 import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json';
 import * as TimeZoneNames from 'cldr-dates-full/main/en/timeZoneNames.json';
 import * as metaZones from 'cldr-core/supplemental/metaZones.json';
-import {parseDateTimeSkeleton} from '../src/skeleton';
 import IntlLocale from '@formatjs/intl-locale';
+import {
+  DateTimeFormatOptions,
+  Formats,
+  parseDateTimeSkeleton,
+} from '@formatjs/ecma402-abstract';
 const {timeData} = rawTimeData.supplemental;
 const processedTimeData = Object.keys(timeData).reduce(
   (all: Record<string, string[]>, k) => {

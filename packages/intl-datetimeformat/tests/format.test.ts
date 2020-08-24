@@ -1,4 +1,3 @@
-import {DateTimeFormat, DateTimeFormatOptions} from '../';
 import * as ko from './locale-data/ko.json';
 import * as en from './locale-data/en.json';
 import allData from '../src/data/all-tz';
@@ -7,6 +6,8 @@ import {
   toLocaleDateString,
   toLocaleTimeString,
 } from '../src/to_locale_string';
+import {DateTimeFormat} from '../src/core';
+import {DateTimeFormatOptions} from '@formatjs/ecma402-abstract';
 
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, ko);
