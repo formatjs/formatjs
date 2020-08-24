@@ -155,13 +155,18 @@ try {
     });
   }
 
-  // https://github.com/tc39/test262/blob/master/test/intl402/PluralRules/length.js
-  Object.defineProperty(PluralRules, 'length', {
-    value: 0,
-    writable: false,
-    enumerable: false,
-    configurable: true,
-  });
+  try {
+    // https://github.com/tc39/test262/blob/master/test/intl402/PluralRules/length.js
+    Object.defineProperty(PluralRules, 'length', {
+      value: 0,
+      writable: false,
+      enumerable: false,
+      configurable: true,
+    });
+  } catch (error) {
+    // IE 11 sets Function.prototype.length to be non-configurable which will cause the
+    // above Object.defineProperty to throw an error.
+  }
   // https://github.com/tc39/test262/blob/master/test/intl402/RelativeTimeFormat/constructor/length.js
   Object.defineProperty(PluralRules.prototype.constructor, 'length', {
     value: 0,
