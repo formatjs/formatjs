@@ -10,8 +10,8 @@ import {
   RelativeTimePart,
   RelativeTimeFormattableUnit,
   InitializeRelativeTimeFormat,
+  CanonicalizeLocaleList,
 } from '@formatjs/ecma402-abstract';
-import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
 
 import ToString from 'es-abstract/2019/ToString';
 import getInternalSlots from './get_internal_slots';
@@ -98,9 +98,7 @@ export default class RelativeTimeFormat {
   ): string[] {
     return SupportedLocales(
       RelativeTimeFormat.availableLocales,
-      ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
-        locales
-      ),
+      CanonicalizeLocaleList(locales),
       options
     );
   }
