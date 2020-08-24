@@ -1,7 +1,17 @@
 export * from './src/CanonicalizeLocaleList';
+export * from './src/CanonicalizeTimeZoneName';
+export * from './src/DateTimeFormat/BasicFormatMatcher';
+export {BestFitFormatMatcher} from './src/DateTimeFormat/BestFitFormatMatcher';
+export * from './src/DateTimeFormat/DateTimeStyleFormat';
+export * from './src/DateTimeFormat/FormatDateTime';
+export * from './src/DateTimeFormat/FormatDateTimeToParts';
+export * from './src/DateTimeFormat/InitializeDateTimeFormat';
+export * from './src/DateTimeFormat/PartitionDateTimePattern';
+export * from './src/DateTimeFormat/ToDateTimeOptions';
 export * from './src/GetNumberOption';
 export * from './src/GetOption';
 export * from './src/IsSanctionedSimpleUnitIdentifier';
+export * from './src/IsValidTimeZoneName';
 export * from './src/IsWellFormedCurrencyCode';
 export * from './src/IsWellFormedUnitIdentifier';
 export * from './src/NumberFormat/FormatNumericToString';
@@ -20,6 +30,8 @@ export * from './src/RelativeTimeFormat/PartitionRelativeTimePattern';
 export * from './src/RelativeTimeFormat/SingularRelativeTimeUnit';
 export * from './src/ResolveLocale';
 export * from './src/SupportedLocales';
+export {DATE_TIME_PROPS} from './src/DateTimeFormat/utils';
+export {parseDateTimeSkeleton} from './src/DateTimeFormat/skeleton';
 export {
   getInternalSlot,
   getMultiInternalSlots,
@@ -37,6 +49,7 @@ export {
   isMissingLocaleDataError,
 } from './src/data';
 export * from './types/relative-time';
+export * from './types/date-time';
 export * from './types/list';
 export * from './types/plural-rules';
 export * from './types/number';
