@@ -1,5 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("//tools:index.bzl", "ts_compile")
+load("//tools:index.bzl", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "ecma402-abstract"
@@ -27,9 +27,11 @@ alias(
 )
 
 SRCS = glob(
-    ["**/*.ts"],
-    exclude = ["tests/**/*.ts"],
-)
+    [
+        "src/**/*",
+        "types/*.ts",
+    ],
+) + ["index.ts"]
 
 SRC_DEPS = [
     "@npm//es-abstract",
@@ -58,4 +60,24 @@ generated_file_test(
     name = "tsconfig_json",
     src = "tsconfig.json",
     generated = "//tools:tsconfig.golden.json",
+)
+
+# digit-mapping
+generate_src_file(
+    name = "digit-mapping",
+    src = "src/NumberFormat/digit-mapping.json",
+    args = [
+        "$(execpath tools/digit-mapping.ts)",
+        "--out",
+        "$@",
+    ],
+    data = [
+        "tools/digit-mapping.ts",
+        "//:tsconfig.json",
+        "@npm//@types/fs-extra",
+        "@npm//@types/minimist",
+        "@npm//@types/node",
+        "@npm//fs-extra",
+        "@npm//minimist",
+    ],
 )

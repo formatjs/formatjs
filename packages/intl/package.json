@@ -30,10 +30,8 @@
   "sideEffects": false,
   "dependencies": {
     "@formatjs/ecma402-abstract": "^1.0.3",
-    "@formatjs/intl-datetimeformat": "^2.6.3",
     "@formatjs/intl-displaynames": "^3.3.4",
     "@formatjs/intl-listformat": "^4.2.3",
-    "@formatjs/intl-numberformat": "^5.5.4",
     "@formatjs/intl-relativetimeformat": "^7.2.3",
     "fast-memoize": "^2.5.2",
     "intl-messageformat": "^9.3.4",

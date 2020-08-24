@@ -33,7 +33,7 @@ SRCS = glob(["src/*.ts"]) + [
 ]
 
 SRC_DEPS = [
-    "//packages/intl-numberformat:dist",
+    "//packages/ecma402-abstract:dist",
 ]
 
 ts_compile(
@@ -52,7 +52,7 @@ jest_test(
         "tests/**/*.snap",
     ]),
     deps = [
-        "//packages/intl-numberformat:types",
+        "//packages/ecma402-abstract:types",
     ] + SRC_DEPS,
 )
 

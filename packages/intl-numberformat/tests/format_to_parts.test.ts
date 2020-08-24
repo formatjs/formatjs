@@ -1,7 +1,7 @@
-import formatToParts from '../src/format_to_parts';
+import {_formatToParts} from '@formatjs/ecma402-abstract';
 
-function format(...args: Parameters<typeof formatToParts>): string {
-  return formatToParts(...args)
+function format(...args: Parameters<typeof _formatToParts>): string {
+  return _formatToParts(...args)
     .map(({value}) => value)
     .join('');
 }
@@ -267,7 +267,7 @@ it('properly unquotes characters from CLDR pattern', () => {
     magnitude: 14,
   };
   expect(format(n, data, pl, options)).toEqual('১০০০\xa0লা.কো.');
-  expect(formatToParts(n, data, pl, options)).toEqual([
+  expect(_formatToParts(n, data, pl, options)).toEqual([
     {type: 'integer', value: '১০০০'},
     {type: 'literal', value: '\xa0'},
     {type: 'compact', value: 'লা.কো.'},
@@ -433,7 +433,7 @@ it('formats compound unit with fallback "per" compound pattern', () => {
   const data = require('./locale-data/ja.json').data.ja;
   const pl = new Intl.PluralRules('ja');
   const n = {...baseNumberResult, formattedString: '42', roundedNumber: 42};
-  expect(formatToParts(n, data, pl, options)).toEqual([
+  expect(_formatToParts(n, data, pl, options)).toEqual([
     {type: 'unit', value: '摂氏'},
     // Spacing around "{0}" are considered literal instead of unit...
     {type: 'literal', value: ' '},
@@ -447,7 +447,7 @@ it('correctly formats NaN to parts', () => {
   const data = require('./locale-data/en.json').data.en;
   const pl = new Intl.PluralRules('en');
   const n = {...baseNumberResult, formattedString: 'NaN', roundedNumber: NaN};
-  expect(formatToParts(n, data, pl, defaultOptions)).toEqual([
+  expect(_formatToParts(n, data, pl, defaultOptions)).toEqual([
     {type: 'nan', value: 'NaN'},
   ]);
 });
@@ -460,7 +460,7 @@ it('correctly formats Infinity to parts', () => {
     formattedString: '∞',
     roundedNumber: Infinity,
   };
-  expect(formatToParts(n, data, pl, defaultOptions)).toEqual([
+  expect(_formatToParts(n, data, pl, defaultOptions)).toEqual([
     {type: 'infinity', value: '∞'},
   ]);
 });
@@ -474,7 +474,7 @@ it('can format numbers with primary and secondary grouping sizes', () => {
     roundedNumber: 123556,
   };
   expect(
-    formatToParts(n, data, pl, {
+    _formatToParts(n, data, pl, {
       ...defaultOptions,
       useGrouping: true,
       style: 'currency',

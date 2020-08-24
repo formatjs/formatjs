@@ -1,38 +1,28 @@
 import {
-  ResolveLocale,
-  DecimalFormatNum,
   defineProperty,
-  FormatNumericToString,
-  getMagnitude,
-  GetOption,
   invariant,
-  IsWellFormedCurrencyCode,
-  IsWellFormedUnitIdentifier,
   RawNumberLocaleData,
-  SetNumberFormatDigitOptions,
   SupportedLocales,
   unpackData,
+  InitializeNumberFormat,
+  FormatNumericToParts,
+  NumberFormatOptions,
 } from '@formatjs/ecma402-abstract';
 import * as currencyDigitsData from './data/currency-digits.json';
 import {names as numberingSystemNames} from './data/numbering-systems.json';
-import formatToParts from './format_to_parts';
+
 // eslint-disable-next-line import/no-cycle
 import getInternalSlots from './get_internal_slots';
 import {
   NumberFormatConstructor,
-  NumberFormatOptions,
   NumberFormat as NumberFormatType,
 } from './types';
 import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
-import SameValue from 'es-abstract/2019/SameValue';
-import ToObject from 'es-abstract/2019/ToObject';
-import HasOwnProperty from 'es-abstract/2015/HasOwnProperty';
+
 import ToNumber from 'es-abstract/2019/ToNumber';
 
 // Merge declaration with the constructor defined below.
 export type NumberFormat = NumberFormatType;
-
-const VALID_NUMBERING_SYSTEM_NAMES = new Set(numberingSystemNames);
 
 const RESOLVED_OPTIONS_KEYS = [
   'locale',
@@ -55,221 +45,6 @@ const RESOLVED_OPTIONS_KEYS = [
 ] as const;
 
 /**
- * Chop off the unicode extension from the locale string.
- */
-function removeUnicodeExtensionFromLocale(canonicalLocale: string): string {
-  const extensionIndex = canonicalLocale.indexOf('-u-');
-  return extensionIndex >= 0
-    ? canonicalLocale.slice(0, extensionIndex)
-    : canonicalLocale;
-}
-
-/**
- * https://tc39.es/ecma402/#sec-currencydigits
- */
-function currencyDigits(c: string): number {
-  return HasOwnProperty(currencyDigitsData, c)
-    ? (currencyDigitsData as Record<string, number>)[c]
-    : 2;
-}
-
-/**
- * https://tc39.es/ecma402/#sec-initializenumberformat
- */
-function initializeNumberFormat(
-  nf: NumberFormat,
-  locales?: string | string[],
-  opts?: NumberFormatOptions
-) {
-  // @ts-ignore
-  const requestedLocales: string[] = Intl.getCanonicalLocales(locales);
-  const options: NumberFormatOptions =
-    opts === undefined ? Object.create(null) : ToObject(opts);
-  const opt = Object.create(null);
-  const matcher = GetOption(
-    options,
-    'localeMatcher',
-    'string',
-    ['lookup', 'best fit'],
-    'best fit'
-  );
-  opt.localeMatcher = matcher;
-
-  const numberingSystem = GetOption(
-    options,
-    'numberingSystem',
-    'string',
-    undefined,
-    undefined
-  );
-  if (
-    numberingSystem !== undefined &&
-    !VALID_NUMBERING_SYSTEM_NAMES.has(numberingSystem)
-  ) {
-    // 8.a. If numberingSystem does not match the Unicode Locale Identifier type nonterminal,
-    // throw a RangeError exception.
-    throw RangeError(`Invalid numberingSystems: ${numberingSystem}`);
-  }
-  opt.nu = numberingSystem;
-
-  const {localeData} = NumberFormat;
-  const r = ResolveLocale(
-    NumberFormat.availableLocales,
-    requestedLocales,
-    opt,
-    // [[RelevantExtensionKeys]] slot, which is a constant
-    ['nu'],
-    localeData,
-    NumberFormat.getDefaultLocale
-  );
-  const dataLocaleData = localeData[removeUnicodeExtensionFromLocale(r.locale)];
-
-  const internalSlots = getInternalSlots(nf);
-  internalSlots.locale = r.locale;
-  internalSlots.dataLocale = r.dataLocale;
-  internalSlots.numberingSystem = r.nu;
-  internalSlots.dataLocaleData = dataLocaleData;
-
-  setNumberFormatUnitOptions(nf, options);
-  const style = internalSlots.style;
-
-  let mnfdDefault: number;
-  let mxfdDefault: number;
-  if (style === 'currency') {
-    const currency = internalSlots.currency;
-    const cDigits = currencyDigits(currency!);
-    mnfdDefault = cDigits;
-    mxfdDefault = cDigits;
-  } else {
-    mnfdDefault = 0;
-    mxfdDefault = style === 'percent' ? 0 : 3;
-  }
-
-  const notation = GetOption(
-    options,
-    'notation',
-    'string',
-    ['standard', 'scientific', 'engineering', 'compact'],
-    'standard'
-  );
-  internalSlots.notation = notation;
-
-  SetNumberFormatDigitOptions(
-    internalSlots,
-    options,
-    mnfdDefault,
-    mxfdDefault,
-    notation
-  );
-
-  const compactDisplay = GetOption(
-    options,
-    'compactDisplay',
-    'string',
-    ['short', 'long'],
-    'short'
-  );
-  if (notation === 'compact') {
-    internalSlots.compactDisplay = compactDisplay;
-  }
-
-  const useGrouping = GetOption(
-    options,
-    'useGrouping',
-    'boolean',
-    undefined,
-    true
-  );
-  internalSlots.useGrouping = useGrouping;
-
-  const signDisplay = GetOption(
-    options,
-    'signDisplay',
-    'string',
-    ['auto', 'never', 'always', 'exceptZero'],
-    'auto'
-  );
-  internalSlots.signDisplay = signDisplay;
-
-  return nf;
-}
-
-/**
- * https://tc39.es/ecma402/#sec-formatnumberstring
- */
-function partitionNumberPattern(numberFormat: NumberFormat, x: number) {
-  const internalSlots = getInternalSlots(numberFormat);
-  const {pl, dataLocaleData, numberingSystem} = internalSlots;
-  const symbols =
-    dataLocaleData.numbers.symbols[numberingSystem] ||
-    dataLocaleData.numbers.symbols[dataLocaleData.numbers.nu[0]];
-
-  let magnitude = 0;
-  let exponent = 0;
-  let n: string;
-
-  if (isNaN(x)) {
-    n = symbols.nan;
-  } else if (!isFinite(x)) {
-    n = symbols.infinity;
-  } else {
-    if (internalSlots.style === 'percent') {
-      x *= 100;
-    }
-    [exponent, magnitude] = computeExponent(numberFormat, x);
-    // Preserve more precision by doing multiplication when exponent is negative.
-    x = exponent < 0 ? x * 10 ** -exponent : x / 10 ** exponent;
-    const formatNumberResult = FormatNumericToString(internalSlots, x);
-    n = formatNumberResult.formattedString;
-    x = formatNumberResult.roundedNumber;
-  }
-
-  // Based on https://tc39.es/ecma402/#sec-getnumberformatpattern
-  // We need to do this before `x` is rounded.
-  let sign: -1 | 0 | 1;
-  const signDisplay = internalSlots.signDisplay;
-  switch (signDisplay) {
-    case 'never':
-      sign = 0;
-      break;
-    case 'auto':
-      if (SameValue(x, 0) || x > 0 || isNaN(x)) {
-        sign = 0;
-      } else {
-        sign = -1;
-      }
-      break;
-    case 'always':
-      if (SameValue(x, 0) || x > 0 || isNaN(x)) {
-        sign = 1;
-      } else {
-        sign = -1;
-      }
-      break;
-    default:
-      // x === 0 -> x is 0 or x is -0
-      if (x === 0 || isNaN(x)) {
-        sign = 0;
-      } else if (x > 0) {
-        sign = 1;
-      } else {
-        sign = -1;
-      }
-  }
-
-  return formatToParts(
-    {roundedNumber: x, formattedString: n, exponent, magnitude, sign},
-    internalSlots.dataLocaleData,
-    pl,
-    internalSlots
-  );
-}
-
-function formatNumericToParts(numberFormat: NumberFormat, x: number) {
-  return partitionNumberPattern(numberFormat, x);
-}
-
-/**
  * https://tc39.es/ecma402/#sec-intl-numberformat-constructor
  */
 export const NumberFormat = function (
@@ -282,9 +57,16 @@ export const NumberFormat = function (
     return new NumberFormat(locales, options);
   }
 
-  initializeNumberFormat(this, locales, options);
+  InitializeNumberFormat(this as any, locales, options, {
+    getInternalSlots,
+    localeData: NumberFormat.localeData,
+    availableLocales: NumberFormat.availableLocales,
+    getDefaultLocale: NumberFormat.getDefaultLocale,
+    currencyDigitsData,
+    numberingSystemNames,
+  });
 
-  const internalSlots = getInternalSlots(this);
+  const internalSlots = getInternalSlots(this as any);
 
   const dataLocale = internalSlots.dataLocale;
   const dataLocaleData = NumberFormat.localeData[dataLocale];
@@ -304,7 +86,9 @@ export const NumberFormat = function (
 
 defineProperty(NumberFormat.prototype, 'formatToParts', {
   value: function formatToParts(x: number) {
-    return formatNumericToParts(this, toNumeric(x) as number);
+    return FormatNumericToParts(this, toNumeric(x) as number, {
+      getInternalSlots,
+    });
   },
 });
 
@@ -315,7 +99,7 @@ defineProperty(NumberFormat.prototype, 'resolvedOptions', {
         'Method Intl.NumberFormat.prototype.resolvedOptions called on incompatible receiver'
       );
     }
-    const internalSlots = getInternalSlots(this);
+    const internalSlots = getInternalSlots(this as any);
     const ro: Record<string, unknown> = {};
     for (const key of RESOLVED_OPTIONS_KEYS) {
       const value = internalSlots[key];
@@ -336,7 +120,7 @@ const formatDescriptor = {
         'Intl.NumberFormat format property accessor called on incompatible receiver'
       );
     }
-    const internalSlots = getInternalSlots(this);
+    const internalSlots = getInternalSlots(this as any);
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const numberFormat = this;
     let boundFormat = internalSlots.boundFormat;
@@ -424,181 +208,6 @@ NumberFormat.getDefaultLocale = () => {
   return NumberFormat.__defaultLocale;
 };
 NumberFormat.polyfilled = true;
-
-/**
- * https://tc39.es/ecma402/#sec-setnumberformatunitoptions
- */
-function setNumberFormatUnitOptions(
-  nf: NumberFormat,
-  options: NumberFormatOptions = Object.create(null)
-) {
-  const internalSlots = getInternalSlots(nf);
-  const style = GetOption(
-    options,
-    'style',
-    'string',
-    ['decimal', 'percent', 'currency', 'unit'],
-    'decimal'
-  );
-  internalSlots.style = style;
-  const currency = GetOption(
-    options,
-    'currency',
-    'string',
-    undefined,
-    undefined
-  );
-  if (currency !== undefined && !IsWellFormedCurrencyCode(currency)) {
-    throw RangeError('Malformed currency code');
-  }
-  if (style === 'currency' && currency === undefined) {
-    throw TypeError('currency cannot be undefined');
-  }
-  const currencyDisplay = GetOption(
-    options,
-    'currencyDisplay',
-    'string',
-    ['code', 'symbol', 'narrowSymbol', 'name'],
-    'symbol'
-  );
-  const currencySign = GetOption(
-    options,
-    'currencySign',
-    'string',
-    ['standard', 'accounting'],
-    'standard'
-  );
-
-  const unit = GetOption(options, 'unit', 'string', undefined, undefined);
-  if (unit !== undefined && !IsWellFormedUnitIdentifier(unit)) {
-    throw RangeError('Invalid unit argument for Intl.NumberFormat()');
-  }
-  if (style === 'unit' && unit === undefined) {
-    throw TypeError('unit cannot be undefined');
-  }
-  const unitDisplay = GetOption(
-    options,
-    'unitDisplay',
-    'string',
-    ['short', 'narrow', 'long'],
-    'short'
-  );
-
-  if (style === 'currency') {
-    internalSlots.currency = currency!.toUpperCase();
-    internalSlots.currencyDisplay = currencyDisplay;
-    internalSlots.currencySign = currencySign;
-  }
-  if (style === 'unit') {
-    internalSlots.unit = unit;
-    internalSlots.unitDisplay = unitDisplay;
-  }
-}
-
-/**
- * The abstract operation ComputeExponent computes an exponent (power of ten) by which to scale x
- * according to the number formatting settings. It handles cases such as 999 rounding up to 1000,
- * requiring a different exponent.
- *
- * NOT IN SPEC: it returns [exponent, magnitude].
- */
-function computeExponent(
-  numberFormat: NumberFormat,
-  x: number
-): [number, number] {
-  if (x === 0) {
-    return [0, 0];
-  }
-  if (x < 0) {
-    x = -x;
-  }
-  const magnitude = getMagnitude(x);
-  const exponent = computeExponentForMagnitude(numberFormat, magnitude);
-  // Preserve more precision by doing multiplication when exponent is negative.
-  x = exponent < 0 ? x * 10 ** -exponent : x / 10 ** exponent;
-  const formatNumberResult = FormatNumericToString(
-    getInternalSlots(numberFormat),
-    x
-  );
-  if (formatNumberResult.roundedNumber === 0) {
-    return [exponent, magnitude];
-  }
-  const newMagnitude = getMagnitude(formatNumberResult.roundedNumber);
-  if (newMagnitude === magnitude - exponent) {
-    return [exponent, magnitude];
-  }
-  return [
-    computeExponentForMagnitude(numberFormat, magnitude + 1),
-    magnitude + 1,
-  ];
-}
-
-/**
- * The abstract operation ComputeExponentForMagnitude computes an exponent by which to scale a
- * number of the given magnitude (power of ten of the most significant digit) according to the
- * locale and the desired notation (scientific, engineering, or compact).
- */
-function computeExponentForMagnitude(
-  numberFormat: NumberFormat,
-  magnitude: number
-): number {
-  const internalSlots = getInternalSlots(numberFormat);
-  const {notation, dataLocaleData, numberingSystem} = internalSlots;
-
-  switch (notation) {
-    case 'standard':
-      return 0;
-    case 'scientific':
-      return magnitude;
-    case 'engineering':
-      return Math.floor(magnitude / 3) * 3;
-    default: {
-      // Let exponent be an implementation- and locale-dependent (ILD) integer by which to scale a
-      // number of the given magnitude in compact notation for the current locale.
-      const {compactDisplay, style, currencyDisplay} = internalSlots;
-      let thresholdMap;
-      if (style === 'currency' && currencyDisplay !== 'name') {
-        const currency =
-          dataLocaleData.numbers.currency[numberingSystem] ||
-          dataLocaleData.numbers.currency[dataLocaleData.numbers.nu[0]];
-        thresholdMap = currency.short;
-      } else {
-        const decimal =
-          dataLocaleData.numbers.decimal[numberingSystem] ||
-          dataLocaleData.numbers.decimal[dataLocaleData.numbers.nu[0]];
-        thresholdMap = compactDisplay === 'long' ? decimal.long : decimal.short;
-      }
-      if (!thresholdMap) {
-        return 0;
-      }
-      const num = String(10 ** magnitude) as DecimalFormatNum;
-      const thresholds = Object.keys(thresholdMap) as DecimalFormatNum[]; // TODO: this can be pre-processed
-      if (num < thresholds[0]) {
-        return 0;
-      }
-      if (num > thresholds[thresholds.length - 1]) {
-        return thresholds[thresholds.length - 1].length - 1;
-      }
-      const i = thresholds.indexOf(num);
-      if (i === -1) {
-        return 0;
-      }
-      // See https://unicode.org/reports/tr35/tr35-numbers.html#Compact_Number_Formats
-      // Special handling if the pattern is precisely `0`.
-      const magnitudeKey = thresholds[i];
-      // TODO: do we need to handle plural here?
-      const compactPattern = thresholdMap[magnitudeKey].other;
-      if (compactPattern === '0') {
-        return 0;
-      }
-      // Example: in zh-TW, `10000000` maps to `0000萬`. So we need to return 8 - 4 = 4 here.
-      return (
-        magnitudeKey.length -
-        thresholdMap[magnitudeKey].other.match(/0+/)![0].length
-      );
-    }
-  }
-}
 
 function toNumeric(val: any) {
   if (typeof val === 'bigint') {

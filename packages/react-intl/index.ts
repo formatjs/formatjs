@@ -13,10 +13,12 @@ import {
   CustomFormatConfig,
   FormatDateOptions,
 } from '@formatjs/intl';
-import {NumberFormatOptions} from '@formatjs/intl-numberformat';
 import {IntlListFormatOptions} from '@formatjs/intl-listformat';
 import {DisplayNamesOptions} from '@formatjs/intl-displaynames';
-import {DateTimeFormatOptions} from '@formatjs/ecma402-abstract';
+import {
+  DateTimeFormatOptions,
+  NumberFormatOptions,
+} from '@formatjs/ecma402-abstract';
 export {IntlConfig, IntlShape} from './src/types';
 export {
   createIntlCache,

@@ -1,7 +1,7 @@
 import {Formatters, IntlFormatters, CustomFormats, OnErrorFn} from './types';
 import {getNamedFormat, filterProps} from './utils';
-import {NumberFormatOptions} from '@formatjs/intl-numberformat';
 import {IntlError, IntlErrorCode} from './error';
+import {NumberFormatOptions} from '@formatjs/ecma402-abstract';
 
 const NUMBER_FORMAT_OPTIONS: Array<keyof NumberFormatOptions> = [
   'localeMatcher',

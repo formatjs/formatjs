@@ -1,23 +1,21 @@
 import {
-  DecimalFormatNum,
-  LDMLPluralRule,
-  LDMLPluralRuleMap,
-  NumberFormatLocaleInternalData,
-  RawNumberFormatResult,
-  SymbolsData,
-  ToRawFixed,
-  UnitData,
-} from '@formatjs/ecma402-abstract';
-import {
+  NumberFormatOptionsStyle,
+  NumberFormatOptionsNotation,
   NumberFormatOptionsCompactDisplay,
   NumberFormatOptionsCurrencyDisplay,
   NumberFormatOptionsCurrencySign,
-  NumberFormatOptionsNotation,
-  NumberFormatOptionsStyle,
   NumberFormatOptionsUnitDisplay,
+  NumberFormatLocaleInternalData,
+  UnitData,
+  SymbolsData,
+  RawNumberFormatResult,
+  DecimalFormatNum,
+  LDMLPluralRuleMap,
   NumberFormatPart,
-} from './types';
-import * as digitMapping from './data/digit-mapping.json';
+} from '../../types/number';
+import {ToRawFixed} from './ToRawFixed';
+import {LDMLPluralRule} from '../../types/plural-rules';
+import * as digitMapping from './digit-mapping.json';
 
 // This is from: unicode-12.1.0/General_Category/Symbol/regex.js
 // IE11 does not support unicode flag, otherwise this is just /\p{S}/u.

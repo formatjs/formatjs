@@ -30,11 +30,9 @@ alias(
 SRCS = glob(["src/**/*.ts*"]) + ["index.ts"]
 
 SRC_DEPS = [
-    "//packages/intl-numberformat:dist",
     "//packages/ecma402-abstract:dist",
     "//packages/intl-listformat:dist",
     "//packages/intl-displaynames:dist",
-    "//packages/intl-datetimeformat:dist",
     "//packages/intl-relativetimeformat:dist",
     "//packages/intl-messageformat:dist",
     "@npm//fast-memoize",
@@ -60,10 +58,10 @@ jest_test(
         "//packages/intl-displaynames:polyfill-locales.js",
     ],
     deps = SRC_DEPS + [
+        "//packages/intl-numberformat:dist",
         "//packages/intl-numberformat:types",
         "//packages/intl-listformat:types",
         "//packages/intl-displaynames:types",
-        "//packages/intl-datetimeformat:types",
         "//packages/intl-relativetimeformat:types",
         "//packages/intl-messageformat:types",
         "//packages/intl-messageformat-parser:types",

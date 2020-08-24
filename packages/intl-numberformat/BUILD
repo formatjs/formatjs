@@ -234,26 +234,6 @@ generate_src_file(
     ],
 )
 
-# digit-mapping
-generate_src_file(
-    name = "digit-mapping",
-    src = "src/data/digit-mapping.json",
-    args = [
-        "$(execpath scripts/digit-mapping.ts)",
-        "--out",
-        "$@",
-    ],
-    data = [
-        "scripts/digit-mapping.ts",
-        "//:tsconfig.json",
-        "@npm//@types/fs-extra",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//fs-extra",
-        "@npm//minimist",
-    ],
-)
-
 # numbering-systems
 generate_src_file(
     name = "numbering-systems",

@@ -1,4 +1,3 @@
-import '@formatjs/intl-getcanonicallocales/polyfill';
 import {bestFitFormatMatcherScore} from '../src/DateTimeFormat/BestFitFormatMatcher';
 import {parseDateTimeSkeleton} from '../src/DateTimeFormat/skeleton';
 

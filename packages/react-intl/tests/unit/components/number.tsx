@@ -3,7 +3,7 @@ import {mount} from 'enzyme';
 import {FormattedNumber, FormattedNumberParts} from '../../../';
 import {createIntl} from '../../../src/components/provider';
 import {mountFormattedComponentWithProvider} from '../testUtils';
-import {NumberFormatOptions} from '@formatjs/intl-numberformat';
+import {NumberFormatOptions} from '@formatjs/ecma402-abstract';
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedNumber);
 const mountPartsWithProvider = mountFormattedComponentWithProvider(
   FormattedNumberParts

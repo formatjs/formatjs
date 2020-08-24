@@ -38,10 +38,8 @@ SRC_DEPS = [
     "@npm//react",
     "@npm//@types/react",
     "//packages/intl:dist",
-    "//packages/intl-numberformat:dist",
     "//packages/intl-listformat:dist",
     "//packages/intl-displaynames:dist",
-    "//packages/intl-datetimeformat:dist",
     "//packages/intl-relativetimeformat:dist",
     "//packages/intl-messageformat:dist",
     "@npm//hoist-non-react-statics",
@@ -56,6 +54,7 @@ TESTS = glob([
 ])
 
 TEST_DEPS = SRC_DEPS + [
+    "//packages/intl-numberformat:dist",
     "@npm//enzyme-to-json",
     "@npm//enzyme",
     "@npm//@types/enzyme",

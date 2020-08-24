@@ -1,12 +1,11 @@
 // Type-only circular import
-// eslint-disable-next-line import/no-cycle
-import {NumberFormat} from '../';
-import {NumberFormatInternal} from './types';
 
-const internalSlotMap = new WeakMap<NumberFormat, NumberFormatInternal>();
+import {NumberFormatInternal} from '@formatjs/ecma402-abstract';
+
+const internalSlotMap = new WeakMap<Intl.NumberFormat, NumberFormatInternal>();
 
 export default function getInternalSlots(
-  x: NumberFormat
+  x: Intl.NumberFormat
 ): NumberFormatInternal {
   let internalSlots = internalSlotMap.get(x);
   if (!internalSlots) {
