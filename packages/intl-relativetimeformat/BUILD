@@ -61,10 +61,7 @@ TESTS = glob([
 ])
 
 SRC_DEPS = [
-    "@npm//es-abstract",
-    "@npm//@types/es-abstract",
     "//packages/ecma402-abstract:dist",
-    "//packages/intl-getcanonicallocales:dist",
 ]
 
 ts_compile(
@@ -81,6 +78,7 @@ jest_test(
     deps = SRC_DEPS + [
         "//packages/intl-pluralrules",
         "//packages/ecma402-abstract:types",
+        "//packages/intl-getcanonicallocales:dist",
         "//packages/intl-getcanonicallocales:types",
     ],
 )

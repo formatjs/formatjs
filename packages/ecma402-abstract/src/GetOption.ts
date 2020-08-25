@@ -1,4 +1,4 @@
-import ToString from 'es-abstract/2019/ToString';
+import {ToString} from '../262';
 
 /**
  * https://tc39.es/ecma402/#sec-getoption

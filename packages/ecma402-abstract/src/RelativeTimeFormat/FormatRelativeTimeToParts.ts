@@ -3,11 +3,10 @@ import {
   RelativeTimeFormattableUnit,
   RelativeTimePart,
   RelativeTimeFormatInternal,
+  RelativeTimeFormatNumberPart,
 } from '../../types/relative-time';
 import {PartitionRelativeTimePattern} from './PartitionRelativeTimePattern';
-import ArrayCreate from 'es-abstract/2019/ArrayCreate';
-import CreateDataPropertyOrThrow from 'es-abstract/2019/CreateDataPropertyOrThrow';
-import ToString from 'es-abstract/2019/ToString';
+import {ArrayCreate} from '../../262';
 
 export function FormatRelativeTimeToParts(
   rtf: RelativeTimeFormat,
@@ -19,16 +18,16 @@ export function FormatRelativeTimeToParts(
 ): RelativeTimePart[] {
   const parts = PartitionRelativeTimePattern(rtf, value, unit, implDetails);
   const result = ArrayCreate(0) as RelativeTimePart[];
-  let n = 0;
+
   for (const part of parts) {
-    const o = {};
-    CreateDataPropertyOrThrow(o, 'type', part.type);
-    CreateDataPropertyOrThrow(o, 'value', part.value);
+    const o = {
+      type: part.type,
+      value: part.value,
+    } as RelativeTimePart;
     if ('unit' in part) {
-      CreateDataPropertyOrThrow(o, 'unit', part.unit);
+      (o as RelativeTimeFormatNumberPart).unit = part.unit;
     }
-    CreateDataPropertyOrThrow(result, ToString(n), o);
-    n++;
+    result.push(o);
   }
   return result;
 }

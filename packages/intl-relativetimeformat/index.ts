@@ -11,9 +11,9 @@ import {
   RelativeTimeFormattableUnit,
   InitializeRelativeTimeFormat,
   CanonicalizeLocaleList,
+  ToString,
 } from '@formatjs/ecma402-abstract';
 
-import ToString from 'es-abstract/2019/ToString';
 import getInternalSlots from './get_internal_slots';
 
 export default class RelativeTimeFormat {

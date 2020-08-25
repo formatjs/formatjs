@@ -3,7 +3,7 @@ import {
   DateTimeFormatLocaleInternalData,
   UnpackedZoneData,
 } from '../../types/date-time';
-import TimeClip from 'es-abstract/2019/TimeClip';
+import {TimeClip} from '../../262';
 import {PartitionPattern} from '../PartitionPattern';
 import {DATE_TIME_PROPS} from './utils';
 import {ToLocalTime} from './ToLocalTime';

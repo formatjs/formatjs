@@ -1,4 +1,3 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin")
 load("@npm//karma:index.bzl", "karma_test")
 # Add rules here to build your software
 # See https://docs.bazel.build/versions/master/build-ref.html#BUILD_files
@@ -12,20 +11,10 @@ exports_files(
         "tsconfig.json",
         "tsconfig.esm.json",
         "tsconfig.es6.json",
-        "api-extractor.json",
         "rollup.config.js",
         "karma.conf.js",
         "karma.conf-ci.js",
         "jest.config.js",
-    ],
-    visibility = ["//:__subpackages__"],
-)
-
-copy_to_bin(
-    name = "setup-api-extractor",
-    srcs = [
-        "api-extractor.json",
-        "tsconfig.json",
     ],
     visibility = ["//:__subpackages__"],
 )

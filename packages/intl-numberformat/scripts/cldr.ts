@@ -51,8 +51,8 @@ if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function'
 // @generated
 // @ts-nocheck
 // prettier-ignore
-import './polyfill-force';
 import '@formatjs/intl-getcanonicallocales/polyfill';
+import './polyfill-force';
 if (Intl.NumberFormat && typeof Intl.NumberFormat.__addLocaleData === 'function') {
   Intl.NumberFormat.__addLocaleData(
     ${allData.join(',\n')}

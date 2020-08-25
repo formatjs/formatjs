@@ -1,4 +1,4 @@
-import ToObject from 'es-abstract/2019/ToObject';
+import {ToObject} from '../262';
 import {GetOption} from './GetOption';
 import {LookupSupportedLocales} from './LookupSupportedLocales';
 

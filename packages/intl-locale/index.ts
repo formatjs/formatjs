@@ -4,6 +4,8 @@ import {
   setInternalSlot,
   setMultiInternalSlots,
   invariant,
+  SameValue,
+  ToObject,
 } from '@formatjs/ecma402-abstract';
 import {
   isStructurallyValidLanguageTag,
@@ -19,8 +21,6 @@ import {
   UnicodeLanguageId,
 } from '@formatjs/intl-getcanonicallocales';
 import {supplemental} from 'cldr-core/supplemental/likelySubtags.json';
-import SameValue from 'es-abstract/2019/SameValue';
-import ToObject from 'es-abstract/2019/ToObject';
 const {likelySubtags} = supplemental;
 
 export interface IntlLocaleOptions {

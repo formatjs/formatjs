@@ -1,4 +1,4 @@
-import SameValue from 'es-abstract/5/SameValue';
+import {SameValue} from '../../262';
 import {ToRawPrecision} from './ToRawPrecision';
 import {repeat} from '../utils';
 import {

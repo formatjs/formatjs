@@ -1,4 +1,4 @@
-import HasOwnProperty from 'es-abstract/2019/HasOwnProperty';
+import {HasOwnProperty} from '../../262';
 
 /**
  * https://tc39.es/ecma402/#sec-currencydigits

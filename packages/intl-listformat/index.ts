@@ -12,9 +12,9 @@ import {
   invariant,
   isLiteralPart,
   LiteralPart,
+  ToObject,
+  CanonicalizeLocaleList,
 } from '@formatjs/ecma402-abstract';
-import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
-import ToObject from 'es-abstract/2019/ToObject';
 
 export interface IntlListFormatOptions {
   /**
@@ -198,8 +198,7 @@ export default class ListFormat {
       'initializedListFormat',
       true
     );
-    const requestedLocales = ((Intl as any)
-      .getCanonicalLocales as typeof getCanonicalLocales)(locales);
+    const requestedLocales = CanonicalizeLocaleList(locales);
     const opt: any = Object.create(null);
     const opts =
       options === undefined ? Object.create(null) : ToObject(options);
@@ -315,9 +314,7 @@ export default class ListFormat {
     // test262/test/intl402/ListFormat/constructor/supportedLocalesOf/result-type.js
     return SupportedLocales(
       ListFormat.availableLocales,
-      ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
-        locales
-      ),
+      CanonicalizeLocaleList(locales),
       options
     );
   }

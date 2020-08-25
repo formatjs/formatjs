@@ -64,3 +64,4 @@ export * from './types/number';
 export * from './types/displaynames';
 export {invariant} from './src/utils';
 export {LocaleData} from './types/core';
+export * from './262';

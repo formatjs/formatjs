@@ -28,8 +28,5 @@
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",
   "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c",
-  "dependencies": {
-    "@types/es-abstract": "^1.17.1",
-    "es-abstract": "^1.17.6"
-  }
+  "dependencies": {}
 }

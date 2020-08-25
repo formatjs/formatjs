@@ -1,5 +1,5 @@
 import {invariant} from '../utils';
-import Type from 'es-abstract/2019/Type';
+import {Type} from '../../262';
 import {
   RelativeTimeFormattableUnit,
   RelativeTimeUnit,

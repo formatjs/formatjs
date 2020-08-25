@@ -7,6 +7,8 @@ import {
   InitializeNumberFormat,
   FormatNumericToParts,
   NumberFormatOptions,
+  ToNumber,
+  CanonicalizeLocaleList,
 } from '@formatjs/ecma402-abstract';
 import * as currencyDigitsData from './data/currency-digits.json';
 import {names as numberingSystemNames} from './data/numbering-systems.json';
@@ -17,9 +19,6 @@ import {
   NumberFormatConstructor,
   NumberFormat as NumberFormatType,
 } from './types';
-import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
-
-import ToNumber from 'es-abstract/2019/ToNumber';
 
 // Merge declaration with the constructor defined below.
 export type NumberFormat = NumberFormatType;
@@ -174,9 +173,7 @@ defineProperty(NumberFormat, 'supportedLocalesOf', {
   ) {
     return SupportedLocales(
       NumberFormat.availableLocales,
-      ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
-        locales
-      ),
+      CanonicalizeLocaleList(locales),
       options
     );
   },

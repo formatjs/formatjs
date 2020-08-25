@@ -30,13 +30,11 @@ SRCS = glob(
     [
         "src/**/*",
         "types/*.ts",
+        "*.ts",
     ],
-) + ["index.ts"]
+)
 
-SRC_DEPS = [
-    "@npm//es-abstract",
-    "@npm//@types/es-abstract",
-]
+SRC_DEPS = []
 
 ts_compile(
     name = "dist",

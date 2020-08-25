@@ -7,13 +7,11 @@ import {
   RelativeTimeFormatInternal,
   RelativeTimePart,
 } from '../../types/relative-time';
-import Type from 'es-abstract/2019/Type';
 import {invariant} from '../utils';
 import {SingularRelativeTimeUnit} from './SingularRelativeTimeUnit';
 import {MakePartsList} from './MakePartsList';
 import {LDMLPluralRule} from '../../types/plural-rules';
-import SameValue from 'es-abstract/2019/SameValue';
-import ToString from 'es-abstract/2019/ToString';
+import {ToString, Type, SameValue} from '../../262';
 
 export function PartitionRelativeTimePattern(
   rtf: RelativeTimeFormat,

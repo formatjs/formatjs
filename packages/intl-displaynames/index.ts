@@ -10,9 +10,9 @@ import {
   DisplayNamesLocaleData,
   unpackData,
   DisplayNamesData,
+  ToString,
+  CanonicalizeLocaleList,
 } from '@formatjs/ecma402-abstract';
-import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
-import ToString from 'es-abstract/2019/ToString';
 
 export interface DisplayNamesOptions {
   localeMatcher?: 'lookup' | 'best fit';
@@ -36,8 +36,7 @@ export class DisplayNames {
     if (new.target === undefined) {
       throw TypeError(`Constructor Intl.DisplayNames requires 'new'`);
     }
-    const requestedLocales = ((Intl as any)
-      .getCanonicalLocales as typeof getCanonicalLocales)(locales);
+    const requestedLocales = CanonicalizeLocaleList(locales);
 
     const matcher = GetOption(
       options!,
@@ -99,9 +98,7 @@ export class DisplayNames {
   ) {
     return SupportedLocales(
       DisplayNames.availableLocales,
-      ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
-        locales
-      ),
+      CanonicalizeLocaleList(locales),
       options
     );
   }
@@ -145,8 +142,7 @@ export class DisplayNames {
     switch (type) {
       // Normalize the locale id and remove the region.
       case 'language': {
-        canonicalCode = ((Intl as any)
-          .getCanonicalLocales as typeof getCanonicalLocales)(codeAsString)[0];
+        canonicalCode = CanonicalizeLocaleList(codeAsString)[0];
         const regionMatch = /-([a-z]{2}|\d{3})\b/i.exec(canonicalCode);
         if (regionMatch) {
           // Remove region subtag

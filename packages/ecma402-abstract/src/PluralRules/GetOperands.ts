@@ -1,5 +1,5 @@
 import {invariant} from '../utils';
-import ToNumber from 'es-abstract/2019/ToNumber';
+import {ToNumber} from '../../262';
 
 export interface OperandsRecord {
   /**

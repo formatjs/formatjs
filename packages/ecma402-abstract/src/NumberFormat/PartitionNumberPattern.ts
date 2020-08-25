@@ -1,6 +1,6 @@
 import {NumberFormatInternal} from '../../types/number';
 import {FormatNumericToString} from './FormatNumericToString';
-import SameValue from 'es-abstract/2019/SameValue';
+import {SameValue} from '../../262';
 import {ComputeExponent} from './ComputeExponent';
 import formatToParts from './format_to_parts';
 

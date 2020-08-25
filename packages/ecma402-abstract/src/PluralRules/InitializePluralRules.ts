@@ -1,6 +1,6 @@
 import {PluralRulesInternal, PluralRulesData} from '../../types/plural-rules';
 import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList';
-import ToObject from 'es-abstract/2019/ToObject';
+import {ToObject} from '../../262';
 import {GetOption} from '../GetOption';
 import {SetNumberFormatDigitOptions} from '../NumberFormat/SetNumberFormatDigitOptions';
 import {ResolveLocale} from '../ResolveLocale';

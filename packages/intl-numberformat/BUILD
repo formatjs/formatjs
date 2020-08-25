@@ -83,15 +83,13 @@ TESTS = glob([
 SNAPSHOTS = glob(["tests/__snapshots__/*.snap"])
 
 SRC_DEPS = [
-    "@npm//es-abstract",
-    "@npm//@types/es-abstract",
     "//packages/ecma402-abstract:dist",
-    "//packages/intl-getcanonicallocales:dist",
 ]
 
 TEST_DEPS = SRC_DEPS + [
     "//packages/intl-pluralrules",
     "//packages/ecma402-abstract:types",
+    "//packages/intl-getcanonicallocales:dist",
     "//packages/intl-getcanonicallocales:types",
 ]
 
@@ -113,14 +111,14 @@ ts_compile(
 # CLDR
 CLDR_DEPS = [
     ":cldr-raw",
-    "scripts/cldr.ts",
-    "//:tsconfig.json",
     "@npm//@types/fs-extra",
     "@npm//@types/minimist",
     "@npm//@types/node",
-    "@npm//fs-extra",
     "@npm//fast-glob",
+    "@npm//fs-extra",
     "@npm//minimist",
+    "//:tsconfig.json",
+    "scripts/cldr.ts",
 ]
 
 ts_node(
@@ -311,6 +309,7 @@ rollup_bundle(
         "@npm//@rollup/plugin-commonjs",
         "@npm//@rollup/plugin-replace",
         "@npm//@rollup/plugin-json",
+        "//packages/intl-getcanonicallocales:dist",
     ] + SRC_DEPS,
 )
 

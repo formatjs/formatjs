@@ -5,7 +5,7 @@ import {
   LocaleFieldsData,
 } from '../../types/relative-time';
 import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList';
-import ToObject from 'es-abstract/2019/ToObject';
+import {ToObject} from '../../262';
 import {GetOption} from '../GetOption';
 import {ResolveLocale} from '../ResolveLocale';
 

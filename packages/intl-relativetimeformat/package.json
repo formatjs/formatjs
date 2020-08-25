@@ -20,9 +20,7 @@
     "url": "git@github.com:formatjs/formatjs.git"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "^1.0.3",
-    "@types/es-abstract": "^1.17.1",
-    "es-abstract": "^1.17.6"
+    "@formatjs/ecma402-abstract": "^1.0.3"
   },
   "main": "index.js",
   "types": "index.d.ts",

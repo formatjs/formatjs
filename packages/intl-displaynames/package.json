@@ -21,9 +21,7 @@
     "url": "git+https://github.com/formatjs/formatjs.git"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "^1.0.3",
-    "@types/es-abstract": "^1.17.1",
-    "es-abstract": "^1.17.6"
+    "@formatjs/ecma402-abstract": "^1.0.3"
   },
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"

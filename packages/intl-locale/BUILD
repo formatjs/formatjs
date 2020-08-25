@@ -36,8 +36,6 @@ alias(
 SRCS = glob(["*.ts"])
 
 SRC_DEPS = [
-    "@npm//es-abstract",
-    "@npm//@types/es-abstract",
     "@npm//cldr-core",
     "//packages/ecma402-abstract:dist",
     "//packages/intl-getcanonicallocales:dist",

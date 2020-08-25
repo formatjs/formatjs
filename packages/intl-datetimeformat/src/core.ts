@@ -16,12 +16,12 @@ import {
   DateTimeFormatLocaleInternalData,
   UnpackedZoneData,
   parseDateTimeSkeleton,
+  ToNumber,
 } from '@formatjs/ecma402-abstract';
 import getInternalSlots from './get_internal_slots';
 import links from './data/links';
 import {PackedData, RawDateTimeLocaleData} from './types';
 import {unpack} from './packer';
-import ToNumber from 'es-abstract/2019/ToNumber';
 
 const UPPERCASED_LINKS = Object.keys(links).reduce(
   (all: Record<string, string>, l) => {
@@ -263,8 +263,7 @@ defineProperty(DateTimeFormat.prototype, 'formatToParts', {
   },
 });
 
-const DEFAULT_TIMEZONE =
-  (typeof process !== 'undefined' && process.env && process.env.TZ) || 'UTC';
+const DEFAULT_TIMEZONE = 'UTC';
 
 DateTimeFormat.__setDefaultTimeZone = (timeZone: string) => {
   if (timeZone !== undefined) {

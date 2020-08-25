@@ -62,14 +62,12 @@ TESTS = glob([
 ])
 
 SRC_DEPS = [
-    "@npm//es-abstract",
-    "@npm//@types/es-abstract",
     "//packages/ecma402-abstract:dist",
-    "//packages/intl-getcanonicallocales:dist",
 ]
 
 TEST_DEPS = SRC_DEPS + [
     "//packages/ecma402-abstract:types",
+    "//packages/intl-getcanonicallocales:dist",
     "//packages/intl-getcanonicallocales:types",
 ]
 

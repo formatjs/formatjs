@@ -36,6 +36,7 @@ SRC_DEPS = [
     "//packages/intl-relativetimeformat:dist",
     "//packages/intl-messageformat:dist",
     "@npm//fast-memoize",
+    "@npm//@types/node",
 ]
 
 TESTS = glob([

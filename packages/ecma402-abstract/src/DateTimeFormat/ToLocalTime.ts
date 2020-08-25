@@ -1,13 +1,16 @@
 import {invariant} from '../utils';
-import Type from 'es-abstract/2019/Type';
-import YearFromTime from 'es-abstract/2019/YearFromTime';
-import WeekDay from 'es-abstract/2019/WeekDay';
-import MonthFromTime from 'es-abstract/2019/MonthFromTime';
-import DateFromTime from 'es-abstract/2019/DateFromTime';
-import HourFromTime from 'es-abstract/2019/HourFromTime';
-import MinFromTime from 'es-abstract/2019/MinFromTime';
-import SecFromTime from 'es-abstract/2019/SecFromTime';
+
 import {UnpackedZoneData} from '../../types/date-time';
+import {
+  Type,
+  YearFromTime,
+  WeekDay,
+  MonthFromTime,
+  DateFromTime,
+  HourFromTime,
+  MinFromTime,
+  SecFromTime,
+} from '../../262';
 
 function getApplicableZoneData(
   t: number,

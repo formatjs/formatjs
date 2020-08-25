@@ -1,8 +1,5 @@
 import {DateTimeFormatOptions} from '../../types/date-time';
-import ToObject from 'es-abstract/2019/ToObject';
-import Get from 'es-abstract/2019/Get';
-import ObjectCreate from 'es-abstract/2019/ObjectCreate';
-import CreateDataPropertyOrThrow from 'es-abstract/2019/CreateDataPropertyOrThrow';
+import {ToObject} from '../../262';
 
 /**
  * https://tc39.es/ecma402/#sec-todatetimeoptions
@@ -20,13 +17,13 @@ export function ToDateTimeOptions(
   } else {
     options = ToObject(options);
   }
-  options = ObjectCreate(options) as DateTimeFormatOptions;
+  options = Object.create(options) as DateTimeFormatOptions;
   let needDefaults = true;
   if (required === 'date' || required === 'any') {
     for (const prop of ['weekday', 'year', 'month', 'day'] as Array<
       keyof Pick<DateTimeFormatOptions, 'weekday' | 'year' | 'month' | 'day'>
     >) {
-      const value = Get(options, prop);
+      const value = options[prop];
       if (value !== undefined) {
         needDefaults = false;
       }
@@ -36,7 +33,7 @@ export function ToDateTimeOptions(
     for (const prop of ['hour', 'minute', 'second'] as Array<
       keyof Pick<DateTimeFormatOptions, 'hour' | 'minute' | 'second'>
     >) {
-      const value = Get(options, prop);
+      const value = options[prop];
       if (value !== undefined) {
         needDefaults = false;
       }
@@ -60,14 +57,14 @@ export function ToDateTimeOptions(
     for (const prop of ['year', 'month', 'day'] as Array<
       keyof Pick<DateTimeFormatOptions, 'year' | 'month' | 'day'>
     >) {
-      CreateDataPropertyOrThrow(options, prop, 'numeric');
+      options[prop] = 'numeric';
     }
   }
   if (needDefaults && (defaults === 'time' || defaults === 'all')) {
     for (const prop of ['hour', 'minute', 'second'] as Array<
       keyof Pick<DateTimeFormatOptions, 'hour' | 'minute' | 'second'>
     >) {
-      CreateDataPropertyOrThrow(options, prop, 'numeric');
+      options[prop] = 'numeric';
     }
   }
   return options;

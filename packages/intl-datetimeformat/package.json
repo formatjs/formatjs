@@ -22,9 +22,6 @@
   },
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "dependencies": {
-    "@formatjs/ecma402-abstract": "^1.0.3",
-    "@formatjs/intl-getcanonicallocales": "^1.4.2",
-    "@types/es-abstract": "^1.17.1",
-    "es-abstract": "^1.17.6"
+    "@formatjs/ecma402-abstract": "^1.0.3"
   }
 }

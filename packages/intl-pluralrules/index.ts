@@ -9,10 +9,11 @@ import {
   ResolvePlural,
   OperandsRecord,
   InitializePluralRules,
+  ToNumber,
+  CanonicalizeLocaleList,
 } from '@formatjs/ecma402-abstract';
-import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
 import getInternalSlots from './get_internal_slots';
-import ToNumber from 'es-abstract/2019/ToNumber';
+
 function validateInstance(instance: any, method: string) {
   if (!(instance instanceof PluralRules)) {
     throw new TypeError(
@@ -108,9 +109,7 @@ export class PluralRules implements Intl.PluralRules {
   ) {
     return SupportedLocales(
       PluralRules.availableLocales,
-      ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
-        locales
-      ),
+      CanonicalizeLocaleList(locales),
       options
     );
   }
