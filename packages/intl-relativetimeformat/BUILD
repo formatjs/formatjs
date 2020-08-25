@@ -230,6 +230,7 @@ bundle_karma_tests(
     data = TEST_LOCALE_DATA,
     rollup_deps = [
         "//packages/intl-pluralrules",
+        "//packages/intl-getcanonicallocales:dist",
     ],
     tests = TESTS,
     deps = SRC_DEPS,

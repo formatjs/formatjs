@@ -225,6 +225,9 @@ bundle_karma_tests(
     name = "bundled-karma-tests",
     srcs = SRCS,
     data = TEST_LOCALE_DATA,
+    rollup_deps = [
+        "//packages/intl-getcanonicallocales:dist",
+    ],
     tests = TESTS,
     deps = SRC_DEPS,
 )
