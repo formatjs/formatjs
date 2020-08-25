@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.4.3...@formatjs/intl-pluralrules@3.4.4) (2020-08-25)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** catch error thrown by IE11 around defining a `length` property on a Function ([#2020](https://github.com/formatjs/formatjs/issues/2020)) ([8eb0be6](https://github.com/formatjs/formatjs/commit/8eb0be6b06f2f0950f1817e5aabb85604cefa66a))
+
+
+
+
+
 ## [3.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.4.2...@formatjs/intl-pluralrules@3.4.3) (2020-08-21)
 
 

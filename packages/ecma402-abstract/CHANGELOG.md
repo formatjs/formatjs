@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.0.3...@formatjs/ecma402-abstract@1.1.0) (2020-08-25)
+
+
+### Features
+
+* **@formatjs/ecma402-abstract:** add DateTimeFormat ops ([9ad59b6](https://github.com/formatjs/formatjs/commit/9ad59b6dfe1cc00e5e0658e8f8369b98385101e2))
+* **@formatjs/ecma402-abstract:** add more PluralRules abstract opts ([c18c107](https://github.com/formatjs/formatjs/commit/c18c1079eca1fcd620b5cce30084fb9adda65baa))
+* **@formatjs/ecma402-abstract:** add RelativeTimeFormat abstract ops ([73325d6](https://github.com/formatjs/formatjs/commit/73325d68641a0d92d5cfde72d4e23d8fe4e14ee3))
+
+
+
+
+
 ## [1.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.0.2...@formatjs/ecma402-abstract@1.0.3) (2020-08-21)
 
 **Note:** Version bump only for package @formatjs/ecma402-abstract
