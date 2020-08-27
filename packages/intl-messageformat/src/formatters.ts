@@ -8,16 +8,16 @@ import {
   isPluralElement,
   isPoundElement,
   isSelectElement,
+  isTagElement,
   isTimeElement,
   MessageFormatElement,
-  isTagElement,
 } from 'intl-messageformat-parser';
 import {
-  MissingValueError,
-  InvalidValueError,
   ErrorCode,
   FormatError,
+  InvalidValueError,
   InvalidValueTypeError,
+  MissingValueError,
 } from './error';
 
 export interface Formats {
@@ -63,6 +63,14 @@ export type MessageFormatPart<T> = LiteralPart | ObjectPart<T>;
 
 export type PrimitiveType = string | number | boolean | null | undefined | Date;
 
+export type ValuesPropertyType<T> =
+  | PrimitiveType
+  | T
+  | FormatXMLElementFn<T>
+  | {[key: string]: ValuesPropertyType<T>};
+
+export type ValuesType<T> = Record<string, ValuesPropertyType<T>>;
+
 function mergeLiteral<T>(
   parts: MessageFormatPart<T>[]
 ): MessageFormatPart<T>[] {
@@ -85,9 +93,53 @@ function mergeLiteral<T>(
 }
 
 export function isFormatXMLElementFn<T>(
-  el: PrimitiveType | T | FormatXMLElementFn<T>
+  el: ValuesPropertyType<T>
 ): el is FormatXMLElementFn<T> {
   return typeof el === 'function';
+}
+
+/**
+ * Deep find a value using a path.
+ * @param path
+ * @param values
+ */
+export function deepFind<T>(
+  values: ValuesType<T> | undefined,
+  path: string
+): {value?: ValuesPropertyType<T>; exists: boolean} {
+  if (values === undefined) {
+    return {exists: false};
+  }
+
+  // Avoid nested lookup if possible
+  if (path.indexOf('.') === -1) {
+    return {
+      value: values[path],
+      exists: path in values,
+    };
+  }
+
+  // Divide the path into levels
+  const paths = path.split('.');
+  let current = values;
+
+  // Dive into the object using the path levels
+  for (const _path of paths) {
+    // If a level does not contain the path return and throw a MissingValueError
+    if (!(_path in current)) {
+      return {
+        exists: false,
+      };
+    }
+
+    // Assign the current value
+    current = current[_path] as ValuesType<T>;
+  }
+
+  return {
+    value: current,
+    exists: true,
+  };
 }
 
 // TODO(skeleton): add skeleton support
@@ -134,12 +186,15 @@ export function formatToParts<T>(
 
     const {value: varName} = el;
 
+    // Find value from values
+    const lookup = deepFind<T>(values, varName);
+
     // Enforce that all required values are provided by the caller.
-    if (!(values && varName in values)) {
+    if (!(values && lookup.exists)) {
       throw new MissingValueError(varName, originalMessage);
     }
 
-    let value = values[varName];
+    let value = lookup.value;
     if (isArgumentElement(el)) {
       if (!value || typeof value === 'string' || typeof value === 'number') {
         value =

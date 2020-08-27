@@ -465,6 +465,84 @@ describe('IntlMessageFormat', function () {
         expect(msg.format({ST1ATE: state})).toBe(state);
       });
     });
+
+    describe('a nested object', function () {
+      const user = {
+        name: 'FormatJS',
+        loggedIn: false,
+        friends: 0,
+        nullable: null,
+        notifications: 1,
+      };
+
+      it('should properly replace arguments in string', function () {
+        const mf = new IntlMessageFormat('Hey {user.name}!');
+        const message = mf.format({user});
+
+        expect(message).toBe('Hey FormatJS!');
+      });
+
+      it('should properly replace booleans', function () {
+        const mf = new IntlMessageFormat('{user.loggedIn}');
+        const message = mf.format({user});
+
+        expect(message).toBe('');
+      });
+
+      it('should properly replace numbers', function () {
+        const mf = new IntlMessageFormat(
+          'You have {user.friends} friends online.'
+        );
+        const message = mf.format({user});
+
+        expect(message).toBe('You have 0 friends online.');
+      });
+
+      it('should properly replace nulls', function () {
+        const mf = new IntlMessageFormat('{user.nullable}');
+        const message = mf.format({user});
+
+        expect(message).toBe('');
+      });
+
+      it('should fail on missing value', function () {
+        const mf = new IntlMessageFormat('{user.unknown}');
+
+        function formatWithMissingValue() {
+          return mf.format({user});
+        }
+
+        expect(formatWithMissingValue).toThrow(
+          Error(
+            'The intl string context variable "user.unknown" was not provided to the string "{user.unknown}"'
+          )
+        );
+      });
+
+      it('should properly format', function () {
+        const mf = new IntlMessageFormat(
+          `You have {user.notifications, plural,
+                      =0 {no notifications.}
+                      =1 {one notification.}
+                      other {# notifications.}
+                    }`
+        );
+
+        const message = mf.format({user});
+
+        expect(message).toBe('You have one notification.');
+      });
+
+      it('should properly replace multiple values', function () {
+        const mf = new IntlMessageFormat(
+          'Hey, {user.name}. You have {user.friends} friends online.'
+        );
+
+        const message = mf.format({user});
+
+        expect(message).toBe('Hey, FormatJS. You have 0 friends online.');
+      });
+    });
   });
 
   describe('selectordinal arguments', function () {
