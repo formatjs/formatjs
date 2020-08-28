@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.1.0...@formatjs/ecma402-abstract@1.2.0) (2020-08-28)
+
+
+### Features
+
+* **@formatjs/ecma402-abstract:** add CanonicalCodeForDisplayNames ([89e19d4](https://github.com/formatjs/formatjs/commit/89e19d400ab830489d7a050e9a45559750718f3b))
+
+
+
+
+
 # [1.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.0.3...@formatjs/ecma402-abstract@1.1.0) (2020-08-25)
 
 

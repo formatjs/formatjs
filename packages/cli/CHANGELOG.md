@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.13](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.7.12...@formatjs/cli@2.7.13) (2020-08-28)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** add more debug info when message validation errors out, fix [#2029](https://github.com/formatjs/formatjs/issues/2029) ([5b31bab](https://github.com/formatjs/formatjs/commit/5b31babf5a873dec7232a1640a83e64dfa8d3bee))
+
+
+
+
+
 ## [2.7.12](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.7.11...@formatjs/cli@2.7.12) (2020-08-25)
 
 **Note:** Version bump only for package @formatjs/cli
