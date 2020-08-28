@@ -29,7 +29,7 @@ There are a few ways to get access to the `intl` object:
 
 ## useIntl hook
 
-If a component can be expressed in a form of function component, using `useIntl` hook can be handy. This `useIntl` hook do not expect any option as its argument when being called. Typically, here is how you would like to use:
+If a component can be expressed in a form of function component, using `useIntl` hook can be handy. This `useIntl` hook does not expect any option as its argument when being called. Typically, here is how you would like to use:
 
 ```tsx
 import React from 'react'
