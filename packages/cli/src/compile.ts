@@ -37,6 +37,7 @@ export async function compile(inputFiles: string[], opts: Opts = {}) {
   const formatter = await resolveBuiltinFormatter(format);
 
   const messages: Record<string, string> = {};
+  const messageAsts: Record<string, MessageFormatElement[]> = {};
   const idsWithFileName: Record<string, string> = {};
   const compiledFiles = await Promise.all(
     inputFiles.map(f => readJSON(f).then(formatter.compile))
@@ -53,17 +54,20 @@ Message from ${compiled[id]}: ${inputFile}
 `);
       }
       messages[id] = compiled[id];
+      try {
+        const msgAst = parse(compiled[id]);
+        messageAsts[id] = msgAst;
+      } catch (e) {
+        console.error(
+          `Error validating message "${compiled[id]}" with ID "${id}" in file "${inputFile}"`
+        );
+        throw e;
+      }
       idsWithFileName[id] = inputFile;
     }
   }
-  const results: Record<string, string | MessageFormatElement[]> = {};
 
-  for (const [id, message] of Object.entries(messages)) {
-    // Parse so we can verify that the message is not malformed
-    const msgAst = parse(message);
-    results[id] = ast ? msgAst : message;
-  }
-  return stringify(results, {
+  return stringify(ast ? messageAsts : messages, {
     space: 2,
     cmp: formatter.compareMessages || undefined,
   });
