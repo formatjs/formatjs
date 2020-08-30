@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.7.13...@formatjs/cli@2.8.0) (2020-08-30)
+
+
+### Features
+
+* **@formatjs/cli:** add more debugging info to extraction, fix [#2044](https://github.com/formatjs/formatjs/issues/2044) ([20b832e](https://github.com/formatjs/formatjs/commit/20b832e9e778aa4d115c4bcb154dd7bb412a6b7d))
+* **@formatjs/cli:** upgrade TS to 4.0 ([ec0bd47](https://github.com/formatjs/formatjs/commit/ec0bd47f13ad3c1c38b3f7e72b9fca8ee784f591))
+
+
+
+
+
 ## [2.7.13](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.7.12...@formatjs/cli@2.7.13) (2020-08-28)
 
 

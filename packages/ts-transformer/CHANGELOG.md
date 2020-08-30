@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.7.10...@formatjs/ts-transformer@2.8.0) (2020-08-30)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** upgrade TS to 4.0 ([ce739be](https://github.com/formatjs/formatjs/commit/ce739be24ef50ceabc4d24530807c4bf6e53d5f3))
+
+
+
+
+
 ## [2.7.10](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.7.9...@formatjs/ts-transformer@2.7.10) (2020-08-28)
 
 **Note:** Version bump only for package @formatjs/ts-transformer

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.8.0](https://github.com/formatjs/formatjs/compare/react-intl@5.7.2...react-intl@5.8.0) (2020-08-30)
+
+
+### Features
+
+* **react-intl:** upgrade TS to 4.0 ([15fe44e](https://github.com/formatjs/formatjs/commit/15fe44e29339fd3f0658a6d43f96ca9771b2cf88))
+
+
+
+
+
 ## [5.7.2](https://github.com/formatjs/formatjs/compare/react-intl@5.7.1...react-intl@5.7.2) (2020-08-28)
 
 **Note:** Version bump only for package react-intl

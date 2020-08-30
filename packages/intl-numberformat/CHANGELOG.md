@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.5.6...@formatjs/intl-numberformat@5.6.0) (2020-08-30)
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** TS to 4.0 ([d77b58d](https://github.com/formatjs/formatjs/commit/d77b58d2cd94debb3d77e38a6bae1430362a2dca))
+
+
+
+
+
 ## [5.5.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.5.5...@formatjs/intl-numberformat@5.5.6) (2020-08-28)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat
