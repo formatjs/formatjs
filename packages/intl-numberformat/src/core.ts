@@ -125,7 +125,7 @@ const formatDescriptor = {
     let boundFormat = internalSlots.boundFormat;
     if (boundFormat === undefined) {
       // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-number-format-functions
-      boundFormat = (value?: number) => {
+      boundFormat = (value?: number | bigint) => {
         // TODO: check bigint
         const x = toNumeric(value) as number;
         return numberFormat
