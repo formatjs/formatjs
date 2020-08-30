@@ -116,17 +116,33 @@ function processFile(
     };
   }
 
-  ts.transpileModule(source, {
+  const output = ts.transpileModule(source, {
     compilerOptions: {
       allowJs: true,
       target: ts.ScriptTarget.ESNext,
       noEmit: true,
+      experimentalDecorators: true,
     },
+    reportDiagnostics: true,
     fileName: fn,
     transformers: {
       before: [transform(opts)],
     },
   });
+  if (output.diagnostics) {
+    const errs = output.diagnostics.filter(
+      d => d.category === ts.DiagnosticCategory.Error
+    );
+    if (errs.length) {
+      throw new Error(
+        ts.formatDiagnosticsWithColorAndContext(errs, {
+          getCanonicalFileName: fileName => fileName,
+          getCurrentDirectory: () => process.cwd(),
+          getNewLine: () => ts.sys.newLine,
+        })
+      );
+    }
+  }
   return {messages, meta};
 }
 

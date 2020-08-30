@@ -169,3 +169,11 @@ test('duplicated descriptor ids throws', async () => {
     );
   }).rejects.toThrowError('Duplicate message id: "foo"');
 }, 20000);
+
+test('invalid syntax should throw', async () => {
+  expect(async () => {
+    await exec(
+      `${BIN_PATH} extract --throws '${join(__dirname, 'typescript/err.tsx')}'`
+    );
+  }).rejects.toThrowError('TS1005');
+}, 20000);

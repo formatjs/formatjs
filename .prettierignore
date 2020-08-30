@@ -9,6 +9,7 @@ packages/intl-getcanonicallocales/src/data/
 packages/intl-messageformat-parser/src/parser.ts
 packages/intl-numberformat/src/data/
 packages/ecma402-abstract/src/NumberFormat/digit-mapping.json
+packages/cli/tests/extract/typescript/err.tsx
 test262*
 test262/
 website/.docusaurus
