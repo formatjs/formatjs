@@ -276,9 +276,8 @@ function extractMessageFromJsxComponent(
     onMsgExtracted(sf.fileName, [msg]);
   }
 
-  const clonedEl = ts.getMutableClone(node);
-  clonedEl.attributes = setAttributesInJsxAttributes(
-    clonedEl.attributes,
+  const attrs = setAttributesInJsxAttributes(
+    node.attributes,
     {
       defaultMessage: opts.removeDefaultMessage
         ? undefined
@@ -287,7 +286,9 @@ function extractMessageFromJsxComponent(
     },
     opts.ast
   );
-  return clonedEl;
+  return ts.isJsxOpeningElement(node)
+    ? ts.createJsxOpeningElement(node.tagName, node.typeArguments, attrs)
+    : ts.createJsxSelfClosingElement(node.tagName, node.typeArguments, attrs);
 }
 
 function setAttributesInObject(
@@ -295,7 +296,6 @@ function setAttributesInObject(
   msg: MessageDescriptor,
   ast?: boolean
 ) {
-  const newNode = ts.getMutableClone(node);
   const newProps = [
     ts.createPropertyAssignment('id', ts.createStringLiteral(msg.id)),
     ...(msg.defaultMessage
@@ -322,8 +322,7 @@ function setAttributesInObject(
       newProps.push(prop);
     }
   }
-  newNode.properties = ts.createNodeArray(newProps);
-  return newNode;
+  return ts.createObjectLiteral(ts.createNodeArray(newProps));
 }
 
 function setAttributesInJsxAttributes(
@@ -331,7 +330,6 @@ function setAttributesInJsxAttributes(
   msg: MessageDescriptor,
   ast?: boolean
 ) {
-  const newNode = ts.getMutableClone(node);
   const newProps = [
     ts.createJsxAttribute(
       ts.createIdentifier('id'),
@@ -363,8 +361,7 @@ function setAttributesInJsxAttributes(
       newProps.push(prop);
     }
   }
-  newNode.properties = ts.createNodeArray(newProps);
-  return newNode;
+  return ts.createJsxAttributes(ts.createNodeArray(newProps));
 }
 
 function extractMessagesFromCallExpression(
@@ -403,8 +400,6 @@ function extractMessagesFromCallExpression(
         onMsgExtracted(sf.fileName, msgs);
       }
 
-      const newNode = ts.getMutableClone(node);
-      const clonedDescriptorsObj = ts.getMutableClone(descriptorsObj);
       const clonedProperties = ts.createNodeArray(
         properties.map((prop, i) => {
           if (
@@ -413,26 +408,28 @@ function extractMessagesFromCallExpression(
           ) {
             return prop;
           }
-          const clonedNode = ts.getMutableClone(prop);
-          clonedNode.initializer = setAttributesInObject(
-            prop.initializer,
-            {
-              defaultMessage: opts.removeDefaultMessage
-                ? undefined
-                : msgs[i].defaultMessage,
-              id: msgs[i] ? msgs[i].id : '',
-            },
-            opts.ast
+
+          return ts.createPropertyAssignment(
+            prop.name,
+            setAttributesInObject(
+              prop.initializer,
+              {
+                defaultMessage: opts.removeDefaultMessage
+                  ? undefined
+                  : msgs[i].defaultMessage,
+                id: msgs[i] ? msgs[i].id : '',
+              },
+              opts.ast
+            )
           );
-          return clonedNode;
         })
       );
-      clonedDescriptorsObj.properties = clonedProperties;
-      newNode.arguments = ts.createNodeArray([
-        clonedDescriptorsObj,
-        ...restArgs,
-      ]);
-      return newNode;
+      const clonedDescriptorsObj = ts.createObjectLiteral(clonedProperties);
+      return ts.createCall(
+        node.expression,
+        node.typeArguments,
+        ts.createNodeArray([clonedDescriptorsObj, ...restArgs])
+      );
     }
   } else if (
     isSingularMessageDecl(node, opts.additionalComponentNames || []) ||
@@ -448,21 +445,23 @@ function extractMessagesFromCallExpression(
         onMsgExtracted(sf.fileName, [msg]);
       }
 
-      const newNode = ts.getMutableClone(node);
-      newNode.arguments = ts.createNodeArray([
-        setAttributesInObject(
-          descriptorsObj,
-          {
-            defaultMessage: opts.removeDefaultMessage
-              ? undefined
-              : msg.defaultMessage,
-            id: msg.id,
-          },
-          opts.ast
-        ),
-        ...restArgs,
-      ]);
-      return newNode;
+      return ts.createCall(
+        node.expression,
+        node.typeArguments,
+        ts.createNodeArray([
+          setAttributesInObject(
+            descriptorsObj,
+            {
+              defaultMessage: opts.removeDefaultMessage
+                ? undefined
+                : msg.defaultMessage,
+              id: msg.id,
+            },
+            opts.ast
+          ),
+          ...restArgs,
+        ])
+      );
     }
   }
   return node;
