@@ -79,7 +79,7 @@ export const FormattedTime: React.FC<
 export const FormattedNumber: React.FC<
   NumberFormatOptions &
     CustomFormatConfig & {
-      value: number;
+      value: number | bigint;
     }
 > = createFormattedComponent('formatNumber');
 export const FormattedList: React.FC<
