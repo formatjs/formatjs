@@ -7,10 +7,12 @@ Array [
     Object {
       "compilerOptions": Object {
         "allowJs": true,
+        "experimentalDecorators": true,
         "noEmit": true,
         "target": 99,
       },
       "fileName": "file1.js",
+      "reportDiagnostics": true,
       "transformers": Object {
         "before": Array [
           [Function],
@@ -23,10 +25,12 @@ Array [
     Object {
       "compilerOptions": Object {
         "allowJs": true,
+        "experimentalDecorators": true,
         "noEmit": true,
         "target": 99,
       },
       "fileName": "file2.tsx",
+      "reportDiagnostics": true,
       "transformers": Object {
         "before": Array [
           [Function],
