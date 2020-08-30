@@ -85,7 +85,9 @@ export function formatNumberToParts(
   options: Parameters<IntlFormatters['formatNumber']>[1] = {}
 ): Intl.NumberFormatPart[] {
   try {
-    return getFormatter(config, getNumberFormat, options).formatToParts(value);
+    return getFormatter(config, getNumberFormat, options).formatToParts(
+      value as number
+    );
   } catch (e) {
     config.onError(
       new IntlError(IntlErrorCode.FORMAT_ERROR, 'Error formatting number.', e)
