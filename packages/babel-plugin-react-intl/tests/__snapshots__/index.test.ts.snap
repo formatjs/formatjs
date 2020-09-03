@@ -148,7 +148,7 @@ const msgs = {
   }),
   trailingWhitespace: defineMessage({
     \\"id\\": \\"trailing.ws\\",
-    \\"defaultMessage\\": \\"   Some whitespace   \\"
+    \\"defaultMessage\\": \\"Some whitespace\\"
   }),
   escaped: defineMessage({
     \\"id\\": \\"escaped.apostrophe\\",
@@ -189,7 +189,7 @@ export default class Foo extends Component {
         "id": "app.home.kittens",
       },
       Object {
-        "defaultMessage": "   Some whitespace   ",
+        "defaultMessage": "Some whitespace",
         "description": "Whitespace",
         "id": "trailing.ws",
       },
@@ -226,7 +226,7 @@ const msgs = defineMessages({
   },
   trailingWhitespace: {
     \\"id\\": \\"trailing.ws\\",
-    \\"defaultMessage\\": \\"   Some whitespace   \\"
+    \\"defaultMessage\\": \\"Some whitespace\\"
   },
   escaped: {
     \\"id\\": \\"escaped.apostrophe\\",
@@ -267,7 +267,7 @@ export default class Foo extends Component {
         "id": "app.home.kittens",
       },
       Object {
-        "defaultMessage": "   Some whitespace   ",
+        "defaultMessage": "Some whitespace",
         "description": "Whitespace",
         "id": "trailing.ws",
       },
@@ -821,6 +821,38 @@ export default class Foo extends Component {
         "defaultMessage": "Hello World!",
         "description": "Greeting to the world",
         "id": "greeting-world",
+      },
+    ],
+    "meta": Object {},
+  },
+}
+`;
+
+exports[`emit asserts for:  templateLiteral 1`] = `
+Object {
+  "code": "import React, { Component } from 'react';
+import { FormattedMessage, defineMessage } from 'react-intl';
+defineMessage({
+  \\"id\\": \\"template\\",
+  \\"defaultMessage\\": \\"should remove newline and extra spaces\\"
+});
+export default class Foo extends Component {
+  render() {
+    return <FormattedMessage id=\\"foo.bar.baz\\" defaultMessage={\`Hello World!\`} />;
+  }
+
+}",
+  "data": Object {
+    "messages": Array [
+      Object {
+        "defaultMessage": "should remove newline and extra spaces",
+        "description": undefined,
+        "id": "template",
+      },
+      Object {
+        "defaultMessage": "Hello World!",
+        "description": "The default message.",
+        "id": "foo.bar.baz",
       },
     ],
     "meta": Object {},

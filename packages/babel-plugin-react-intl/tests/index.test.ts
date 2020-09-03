@@ -29,6 +29,7 @@ const TESTS: Record<string, OptionsSchema> = {
     idInterpolationPattern: '[sha512:contenthash:hex:6]',
   },
   inline: {},
+  templateLiteral: {},
   moduleSourceName: {
     moduleSourceName: 'react-i18n',
   },

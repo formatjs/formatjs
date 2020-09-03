@@ -22,6 +22,7 @@ import {
   isTSAsExpression,
   isTypeCastExpression,
   isTSTypeAssertion,
+  TemplateLiteral,
 } from '@babel/types';
 import {NodePath, Scope} from '@babel/traverse';
 import validate from 'schema-utils';
@@ -91,13 +92,15 @@ interface State {
 }
 
 function getICUMessageValue(
-  messagePath?: NodePath<StringLiteral>,
+  messagePath?: NodePath<StringLiteral> | NodePath<TemplateLiteral>,
   {isJSXSource = false} = {}
 ) {
   if (!messagePath) {
     return '';
   }
-  const message = getMessageDescriptorValue(messagePath);
+  const message = getMessageDescriptorValue(messagePath)
+    .trim()
+    .replace(/\s+/gm, ' ');
 
   try {
     parse(message);
@@ -145,7 +148,10 @@ function getMessageDescriptorKey(path: NodePath<any>) {
 }
 
 function getMessageDescriptorValue(
-  path?: NodePath<StringLiteral> | NodePath<JSXExpressionContainer>
+  path?:
+    | NodePath<StringLiteral>
+    | NodePath<JSXExpressionContainer>
+    | NodePath<TemplateLiteral>
 ) {
   if (!path) {
     return '';
