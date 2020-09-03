@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.2.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.1.11...babel-plugin-react-intl@8.2.0) (2020-09-03)
+
+
+### Features
+
+* **babel-plugin-react-intl:** trim trailing/leading spaces, newlines & consecutive whitespaces ([9d0ead2](https://github.com/formatjs/formatjs/commit/9d0ead288c7f2de8047de658d604e810664236d8)), closes [#2028](https://github.com/formatjs/formatjs/issues/2028)
+
+
+
+
+
 ## [8.1.11](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.1.10...babel-plugin-react-intl@8.1.11) (2020-08-30)
 
 **Note:** Version bump only for package babel-plugin-react-intl

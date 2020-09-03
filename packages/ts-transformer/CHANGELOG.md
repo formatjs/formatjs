@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.8.0...@formatjs/ts-transformer@2.9.0) (2020-09-03)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** trim trailing/leading spaces, newlines & ([6eaa774](https://github.com/formatjs/formatjs/commit/6eaa7743e86d3ec63e1612308aa15dcddd3e8135)), closes [#2028](https://github.com/formatjs/formatjs/issues/2028)
+
+
+
+
+
 # [2.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.7.10...@formatjs/ts-transformer@2.8.0) (2020-08-30)
 
 

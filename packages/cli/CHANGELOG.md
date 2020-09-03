@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.8.0...@formatjs/cli@2.9.0) (2020-09-03)
+
+
+### Features
+
+* **@formatjs/cli:** support template literal, trim trailing/leading spaces, newlines & ([8a52eb5](https://github.com/formatjs/formatjs/commit/8a52eb567a5f83d36f33bb0dac4961a69cf341b5)), closes [#2028](https://github.com/formatjs/formatjs/issues/2028)
+
+
+
+
+
 # [2.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.7.13...@formatjs/cli@2.8.0) (2020-08-30)
 
 
