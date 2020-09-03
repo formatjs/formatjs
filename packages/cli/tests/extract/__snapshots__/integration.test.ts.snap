@@ -32,7 +32,7 @@ Object {
     \\"description\\": \\"inline description\\"
   },
   \\"trailing.ws\\": {
-    \\"defaultMessage\\": \\"   Some whitespace   \\",
+    \\"defaultMessage\\": \\"Some whitespace\\",
     \\"description\\": \\"Whitespace\\"
   }
 }
@@ -74,7 +74,7 @@ Object {
     "description": "inline description",
   },
   "trailing.ws": Object {
-    "defaultMessage": "   Some whitespace   ",
+    "defaultMessage": "Some whitespace",
     "description": "Whitespace",
   },
 }
@@ -145,7 +145,7 @@ Object {
   },
   "trailing.ws": Object {
     "col": 21,
-    "defaultMessage": "   Some whitespace   ",
+    "defaultMessage": "Some whitespace",
     "description": "Whitespace",
     "end": 650,
     "file": "defineMessages/actual.js",
@@ -184,7 +184,7 @@ Object {
     \\"description\\": \\"inline description\\"
   },
   \\"trailing.ws\\": {
-    \\"defaultMessage\\": \\"   Some whitespace   \\",
+    \\"defaultMessage\\": \\"Some whitespace\\",
     \\"description\\": \\"Whitespace\\"
   }
 }
@@ -282,7 +282,7 @@ Object {
     "description": "inline description",
   },
   "trailing.ws": Object {
-    "defaultMessage": "   Some whitespace   ",
+    "defaultMessage": "Some whitespace",
     "description": "Whitespace",
   },
 }
@@ -320,7 +320,7 @@ Object {
     \\"description\\": \\"foo\\"
   },
   \\"trailing.ws\\": {
-    \\"defaultMessage\\": \\"   Some whitespace   \\",
+    \\"defaultMessage\\": \\"Some whitespace\\",
     \\"description\\": \\"Whitespace\\"
   }
 }
@@ -360,7 +360,7 @@ Object {
     \\"description\\": \\"foo\\"
   },
   \\"trailing.ws\\": {
-    \\"defaultMessage\\": \\"   Some whitespace   \\",
+    \\"defaultMessage\\": \\"Some whitespace\\",
     \\"description\\": \\"Whitespace\\"
   }
 }
@@ -401,7 +401,7 @@ Object {
   },
   \\"trailing.ws\\": {
     \\"description\\": \\"Whitespace\\",
-    \\"message\\": \\"   Some whitespace   \\"
+    \\"message\\": \\"Some whitespace\\"
   }
 }
 ",
@@ -441,7 +441,7 @@ Object {
   },
   \\"trailing.ws\\": {
     \\"comment\\": \\"Whitespace\\",
-    \\"string\\": \\"   Some whitespace   \\"
+    \\"string\\": \\"Some whitespace\\"
   }
 }
 ",
@@ -481,7 +481,7 @@ Object {
   },
   \\"trailing.ws\\": {
     \\"notes\\": \\"Whitespace\\",
-    \\"translation\\": \\"   Some whitespace   \\"
+    \\"translation\\": \\"Some whitespace\\"
   }
 }
 ",
@@ -499,7 +499,7 @@ Object {
   \\"foo.bar.baz\\": \\"Hello World!\\",
   \\"foo.bar.biff\\": \\"Hello Nurse!\\",
   \\"inline\\": \\"formatted message\\",
-  \\"trailing.ws\\": \\"   Some whitespace   \\"
+  \\"trailing.ws\\": \\"Some whitespace\\"
 }
 ",
 }
@@ -548,7 +548,7 @@ Object {
   },
   \\"trailing.ws\\": {
     \\"description\\": \\"Whitespace\\",
-    \\"message\\": \\"   Some whitespace   \\"
+    \\"message\\": \\"Some whitespace\\"
   }
 }
 ",
@@ -588,7 +588,7 @@ Object {
   },
   \\"trailing.ws\\": {
     \\"developer_comment\\": \\"Whitespace\\",
-    \\"string\\": \\"   Some whitespace   \\"
+    \\"string\\": \\"Some whitespace\\"
   }
 }
 ",
