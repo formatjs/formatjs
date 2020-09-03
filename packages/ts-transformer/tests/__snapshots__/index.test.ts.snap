@@ -142,7 +142,7 @@ Object {
   "code": "// @react-intl project:foo file:bar
 import React, { Component } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-const msgs = defineMessages({ header: { id: \\"foo.bar.baz\\", defaultMessage: \\"Hello World!\\" }, content: { id: \\"foo.bar.biff\\", defaultMessage: \\"Hello Nurse!\\" }, kittens: { id: \\"app.home.kittens\\", defaultMessage: \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\" }, trailingWhitespace: { id: \\"trailing.ws\\", defaultMessage: \\"   Some whitespace   \\" }, escaped: { id: \\"escaped.apostrophe\\", defaultMessage: \\"A quoted value ''{value}'\\" }, quoted: { id: \\"escaped.apostrophe\\", defaultMessage: \\"What's going on\\" }, newline: { id: \\"newline\\", defaultMessage: \\"this is     a message\\" } });
+const msgs = defineMessages({ header: { id: \\"foo.bar.baz\\", defaultMessage: \\"Hello World!\\" }, content: { id: \\"foo.bar.biff\\", defaultMessage: \\"Hello Nurse!\\" }, kittens: { id: \\"app.home.kittens\\", defaultMessage: \\"{count, plural, =0 {\\\\uD83D\\\\uDE2D} one {# kitten} other {# kittens}}\\" }, trailingWhitespace: { id: \\"trailing.ws\\", defaultMessage: \\"Some whitespace\\" }, escaped: { id: \\"escaped.apostrophe\\", defaultMessage: \\"A quoted value ''{value}'\\" }, quoted: { id: \\"escaped.apostrophe\\", defaultMessage: \\"What's going on\\" }, newline: { id: \\"newline\\", defaultMessage: \\"this is a message\\" } });
 export default class Foo extends Component {
     render() {
         return (<div>
@@ -181,7 +181,7 @@ export default class Foo extends Component {
       "id": "app.home.kittens",
     },
     Object {
-      "defaultMessage": "   Some whitespace   ",
+      "defaultMessage": "Some whitespace",
       "description": "Whitespace",
       "id": "trailing.ws",
     },
@@ -196,7 +196,7 @@ export default class Foo extends Component {
       "id": "escaped.apostrophe",
     },
     Object {
-      "defaultMessage": "this is     a message",
+      "defaultMessage": "this is a message",
       "description": "this is     a     description",
       "id": "newline",
     },
@@ -569,6 +569,31 @@ export default class Foo extends Component {
       "defaultMessage": "Hello World!",
       "description": "Greeting to the world",
       "id": "greeting-world",
+    },
+  ],
+}
+`;
+
+exports[`emit asserts for templateLiteral 1`] = `
+Object {
+  "code": "import React, { Component } from 'react';
+import { FormattedMessage, defineMessage } from 'react-intl';
+defineMessage({ id: \\"template\\", defaultMessage: \\"should remove newline and extra spaces\\" });
+export default class Foo extends Component {
+    render() {
+        return (<FormattedMessage id=\\"foo.bar.baz\\"/>);
+    }
+}
+",
+  "meta": Object {},
+  "msgs": Array [
+    Object {
+      "defaultMessage": "should remove newline and extra spaces",
+      "id": "template",
+    },
+    Object {
+      "description": "The default message.",
+      "id": "foo.bar.baz",
     },
   ],
 }

@@ -176,29 +176,41 @@ function extractMessageDescriptor(
       ts.isPropertyAssignment(prop) || ts.isJsxAttribute(prop)
         ? prop.initializer
         : undefined;
-    if (
-      !initializer ||
-      !ts.isStringLiteral(initializer) ||
-      !name ||
-      !ts.isIdentifier(name)
-    ) {
-      return;
-    }
-    switch (name.text) {
-      case 'id':
-        msg.id = initializer.text;
-        break;
-      case 'defaultMessage':
-        msg.defaultMessage = initializer.text;
-        break;
-      case 'description':
-        msg.description = initializer.text;
-        break;
+    if (name && ts.isIdentifier(name) && initializer) {
+      if (ts.isStringLiteral(initializer)) {
+        switch (name.text) {
+          case 'id':
+            msg.id = initializer.text;
+            break;
+          case 'defaultMessage':
+            msg.defaultMessage = initializer.text;
+            break;
+          case 'description':
+            msg.description = initializer.text;
+            break;
+        }
+      } else if (ts.isNoSubstitutionTemplateLiteral(initializer)) {
+        switch (name.text) {
+          case 'id':
+            msg.id = initializer.text;
+            break;
+          case 'defaultMessage':
+            msg.defaultMessage = initializer.text;
+            break;
+          case 'description':
+            msg.description = initializer.text;
+            break;
+        }
+      }
     }
   });
   // We extracted nothing
   if (!msg.defaultMessage && !msg.id) {
     return;
+  }
+
+  if (msg.defaultMessage) {
+    msg.defaultMessage = msg.defaultMessage.trim().replace(/\s+/gm, ' ');
   }
   if (msg.defaultMessage && overrideIdFn) {
     switch (typeof overrideIdFn) {
