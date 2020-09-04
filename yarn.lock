@@ -5501,10 +5501,10 @@ escodegen@~1.9.0:
   optionalDependencies:
     source-map "~0.6.1"
 
-eshost@^7.4.1:
-  version "7.4.1"
-  resolved "https://registry.yarnpkg.com/eshost/-/eshost-7.4.1.tgz#6e4c6dd3b9457f60e181f8368d811639fe2c7c22"
-  integrity sha512-bhjtr/7yv5E/HVKn6BW4OOzH2tAUE4Vo2bss83P+8rwzbNbfy85I1hw6yMAEaUiEopFDcS6ayuojOgecROHtWA==
+eshost@^7.5.1:
+  version "7.5.1"
+  resolved "https://registry.yarnpkg.com/eshost/-/eshost-7.5.1.tgz#3328318a5c811536002d84cab4f27c1319653717"
+  integrity sha512-F6wB3loO13jgT2m6h7cSrCAj/4Du1ALpHc/AnFhGJg5Rf2VjXtSGd4aC6RKVhWwrLaWd6kcPFLbcSBnE3xKNEw==
   dependencies:
     error-stack-parser "^1.3.3"
     is-symlink "^0.1.1"
@@ -12223,11 +12223,11 @@ test-exclude@^6.0.0:
     minimatch "^3.0.4"
 
 test262-harness@^7.3.1:
-  version "7.4.1"
-  resolved "https://registry.yarnpkg.com/test262-harness/-/test262-harness-7.4.1.tgz#6c7ee9a0431fe1f0606e67f369743de78175394d"
-  integrity sha512-LWeX+etRdgvXu4PDueWMTbBWnyv7BY00N0/FqlxVMzmxotvrG9tr8OUn4S0FlHUIUxIZcaGXTc/acBefY2vbTA==
+  version "7.5.1"
+  resolved "https://registry.yarnpkg.com/test262-harness/-/test262-harness-7.5.1.tgz#005e2b6d39c198773d30ccb14b471ae1e2e51ca5"
+  integrity sha512-JadYmxbj3XFuGkKCFWBpYuFXeiU95gw0oGylktoVIBb8uAcHyoHFcy2F81qfzoga13MWo+f81kJfviUEdMdXqg==
   dependencies:
-    eshost "^7.4.1"
+    eshost "^7.5.1"
     minimatch "^3.0.4"
     rxjs "^6.4.0"
     test262-stream "^1.3.0"
