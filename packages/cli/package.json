@@ -37,7 +37,7 @@
     "@types/loud-rejection": "^2.0.0",
     "@types/node": "14",
     "chalk": "^4.0.0",
-    "commander": "5.1.0",
+    "commander": "^6.1.0",
     "fast-glob": "^3.2.4",
     "fs-extra": "^9.0.0",
     "intl-messageformat-parser": "^6.0.5",
