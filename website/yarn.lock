@@ -1417,6 +1417,11 @@
     "@types/es-abstract" "^1.17.1"
     es-abstract "^1.17.6"
 
+"@formatjs/ecma402-abstract@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.2.0.tgz#5b03ba4931436070ad926d1b2e89bf07edc5ea5b"
+  integrity sha512-jc1bZHhIE1YI0HnZIZcdlKpF4wle2pkgQpzXHDoyy4bUqzBSvDqktnF26hOkyA04KD4wqd61gkuTvRrHMmroAg==
+
 "@formatjs/intl-datetimeformat@^2.6.2":
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/@formatjs/intl-datetimeformat/-/intl-datetimeformat-2.6.2.tgz#e3285d3ad59d00aa483eb9e9da7a8c1789332204"
@@ -1435,6 +1440,13 @@
     "@formatjs/ecma402-abstract" "^1.0.2"
     "@types/es-abstract" "^1.17.1"
     es-abstract "^1.17.6"
+
+"@formatjs/intl-displaynames@^3.3.6":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-displaynames/-/intl-displaynames-3.3.6.tgz#2b5c938ea1cd38e859f2d716ea317feccbbd8896"
+  integrity sha512-yrTDL3U0MR10vp17noLI2JuNiHq/Fp1P8/mW/t1gCMOpw38FY4bFTOV68FWxSZwzsy/yETqXHjPUTUbpLtEO/Q==
+  dependencies:
+    "@formatjs/ecma402-abstract" "^1.2.0"
 
 "@formatjs/intl-getcanonicallocales@^1.4.1":
   version "1.4.1"
