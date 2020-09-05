@@ -13,6 +13,7 @@
     "@docusaurus/plugin-google-analytics": "^2.0.0-alpha.61",
     "@docusaurus/preset-classic": "^2.0.0-alpha.61",
     "@docusaurus/theme-live-codeblock": "^2.0.0-alpha.61",
+    "@formatjs/intl-displaynames": "^3.3.6",
     "classnames": "^2.2.6",
     "intl-messageformat": "^9.2.3",
     "intl-messageformat-parser": "^5.4.0",

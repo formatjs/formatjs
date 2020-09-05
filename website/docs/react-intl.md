@@ -100,13 +100,13 @@ yarn add react-intl
 
 The `react-intl` npm package distributes the following modules (links from [unpkg](https://unpkg.com/)):
 
-- [**CommonJS**](https://unpkg.com/react-intl@latest/dist/index.js):
+- [**CommonJS**](https://unpkg.com/react-intl@latest/index.js):
   unbundled dependencies, `"main"` in `package.json`, warnings in dev.
 - [**ES6**](https://unpkg.com/react-intl@latest/lib/index.js):
   unbundled dependencies, `"module"` in `package.json`, warnings in dev.
-- [**UMD dev**](https://unpkg.com/react-intl@latest/dist/react-intl.js):
+- [**UMD dev**](https://unpkg.com/react-intl@latest/react-intl.umd.js):
   bundled dependencies (except `react`), browser or Node, warnings.
-- [**UMD prod**](https://unpkg.com/react-intl@latest/dist/react-intl.min.js):
+- [**UMD prod**](https://unpkg.com/react-intl@latest/react-intl.umd.min.js):
   minified, bundled dependencies (except `react`), browser or Node, no warnings.
 
 ### Module Bundlers
