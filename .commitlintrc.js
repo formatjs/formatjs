@@ -1,4 +1,5 @@
 const {sync: globSync} = require('fast-glob');
+const types = require('@commitlint/config-angular-type-enum');
 
 const packages = globSync('./packages/*/package.json').map(
   fn => require(fn).name
@@ -13,5 +14,6 @@ module.exports = {
     // Sweet Jesus why is disabling a rule syntax so verbose??
     'scope-enum': [2, 'always', packages],
     'header-max-length': [0, 'never', Infinity],
+    'type-enum': [1, 'always', [...types.value(), 'chore']],
   },
 };
