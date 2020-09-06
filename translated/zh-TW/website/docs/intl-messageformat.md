@@ -15,7 +15,7 @@ This package aims to provide a way for you to manage and format your JavaScript 
 
 This implementation is based on the [Strawman proposal](http://wiki.ecmascript.org/doku.php?id=globalization:messageformatting), but there are a few places this implementation diverges.
 
-:::info Future Changes This `IntlMessageFormat` API may change to stay in sync with ECMA-402, but this package will follow [semver](http://semver.org/).\_ :::
+:::info Future Changes This `IntlMessageFormat` API may change to stay in sync with ECMA-402, but this package will follow [semver](http://semver.org/). :::
 
 ### How It Works
 
