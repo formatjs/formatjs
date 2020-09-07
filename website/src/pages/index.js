@@ -1,19 +1,19 @@
-import React, {useState} from 'react';
-import cx from 'classnames';
-import Layout from '@theme/Layout';
-import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import styles from './styles.module.css';
-import {IntlProvider, FormattedMessage, useIntl} from 'react-intl';
+import React, {useState} from 'react'
+import cx from 'classnames'
+import Layout from '@theme/Layout'
+import Link from '@docusaurus/Link'
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
+import useBaseUrl from '@docusaurus/useBaseUrl'
+import styles from './styles.module.css'
+import {IntlProvider, FormattedMessage, useIntl} from 'react-intl'
 
-import en from '../../lang/strings_en-US.json';
-import fr from '../../lang/strings_fr-FR.json';
-import ja from '../../lang/strings_ja-JP.json';
-import cs from '../../lang/strings_cs-CZ.json';
-import pt from '../../lang/strings_pt-BR.json';
-import sv from '../../lang/strings_sv-SE.json';
-import es from '../../lang/strings_es-AR.json';
+import en from '../../lang/strings_en-US.json'
+import fr from '../../lang/strings_fr-FR.json'
+import ja from '../../lang/strings_ja-JP.json'
+import cs from '../../lang/strings_cs-CZ.json'
+import pt from '../../lang/strings_pt-BR.json'
+import sv from '../../lang/strings_sv-SE.json'
+import es from '../../lang/strings_es-AR.json'
 
 const MESSAGES = {
   'en-US': en,
@@ -23,10 +23,10 @@ const MESSAGES = {
   'pt-BR': pt,
   'sv-SE': sv,
   'es-AR': es,
-};
+}
 
 function IntegrationSection({className}) {
-  const intl = useIntl();
+  const intl = useIntl()
   return (
     <div className={cx(className, styles.integration)}>
       <div className={`row ${styles.imgs}`}>
@@ -65,7 +65,7 @@ function IntegrationSection({className}) {
         />
       </p>
     </div>
-  );
+  )
 }
 
 function IntroSection({className}) {
@@ -110,11 +110,11 @@ function IntroSection({className}) {
         />
       </p>
     </div>
-  );
+  )
 }
 
 function EnvSection({className}) {
-  const intl = useIntl();
+  const intl = useIntl()
   return (
     <div className={cx(className, styles.env)}>
       <div className={cx('row', styles.logos)}>
@@ -150,7 +150,7 @@ function EnvSection({className}) {
         />
       </p>
     </div>
-  );
+  )
 }
 
 function StandardsSection({className}) {
@@ -183,12 +183,12 @@ function StandardsSection({className}) {
         />
       </p>
     </div>
-  );
+  )
 }
 
 function Demo({className}) {
-  const [count, setCount] = useState(0);
-  const [lang, setLang] = useState('en-US');
+  const [count, setCount] = useState(0)
+  const [lang, setLang] = useState('en-US')
   return (
     <div className={cx(className, styles.demo)}>
       <p>
@@ -233,12 +233,12 @@ function Demo({className}) {
         </select>
       </label>
     </div>
-  );
+  )
 }
 
 function Home() {
-  const context = useDocusaurusContext();
-  const {siteConfig = {}} = context;
+  const context = useDocusaurusContext()
+  const {siteConfig = {}} = context
 
   return (
     <>
@@ -285,19 +285,19 @@ function Home() {
         </div>
       </main>
     </>
-  );
+  )
 }
 
 function App() {
-  const context = useDocusaurusContext();
-  const {siteConfig = {}} = context;
+  const context = useDocusaurusContext()
+  const {siteConfig = {}} = context
   return (
     <IntlProvider locale="en" messages={{}}>
       <Layout title={siteConfig.title} description={siteConfig.tagline}>
         <Home />
       </Layout>
     </IntlProvider>
-  );
+  )
 }
 
-export default App;
+export default App

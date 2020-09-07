@@ -1,7 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/terser:index.bzl", "terser_minified")
-load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "ts_compile")
+load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-getcanonicallocales"
@@ -119,4 +119,17 @@ terser_minified(
     name = "polyfill.umd.min",
     src = "polyfill.umd.js",
     sourcemap = False,
+)
+
+prettier_check(
+    name = "prettier",
+    srcs = glob(
+        [
+            "**/*",
+        ],
+        exclude = [
+            "CHANGELOG.md",
+            "src/data/aliases.ts",
+        ],
+    ),
 )

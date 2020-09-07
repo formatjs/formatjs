@@ -2,7 +2,7 @@ load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/terser:index.bzl", "terser_minified")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "generate_src_file", "ts_compile")
+load("//tools:index.bzl", "generate_src_file", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-datetimeformat"
@@ -458,4 +458,21 @@ terser_minified(
     name = "polyfill.umd.min",
     src = "polyfill.umd.js",
     sourcemap = False,
+)
+
+prettier_check(
+    name = "prettier",
+    srcs = glob(
+        [
+            "**/*",
+        ],
+        exclude = [
+            "CHANGELOG.md",
+            "tests/locale-data/*",
+            "iana-data/*",
+            "src/data/*",
+            "data.zdump",
+            "test262-main.ts",
+        ],
+    ),
 )

@@ -33,14 +33,6 @@
       "last 1 safari version"
     ]
   },
-  "prettier": {
-    "singleQuote": true,
-    "trailingComma": "es5",
-    "bracketSpacing": false,
-    "endOfLine": "lf",
-    "arrowParens": "avoid",
-    "semi": false
-  },
   "devDependencies": {
     "prettier": "^2.0.5"
   }

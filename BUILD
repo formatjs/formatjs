@@ -15,6 +15,7 @@ exports_files(
         "karma.conf.js",
         "karma.conf-ci.js",
         "jest.config.js",
+        ".prettierrc.json",
     ],
     visibility = ["//:__subpackages__"],
 )

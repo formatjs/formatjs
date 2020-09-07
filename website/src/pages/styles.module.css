@@ -13,11 +13,11 @@
   background-size: cover;
   background-position: 100%;
   background-color: #673a83;
-  background-image:url(/img/splash-head.jpg);
+  background-image: url(/img/splash-head.jpg);
 }
 
 :global(.hero__title) img {
-  height: 100px;  
+  height: 100px;
 }
 
 :global(.hero__title) {
@@ -42,7 +42,6 @@
   padding: 2rem 0;
   width: 100%;
 }
-
 
 .integration .imgs :global(.col) {
   display: flex;
@@ -104,7 +103,7 @@
   font-size: 16px;
   color: rgb(173, 104, 216);
 }
-.demo input[type=number],
+.demo input[type='number'],
 .demo select {
   width: 100px;
   height: 30px;
@@ -130,10 +129,9 @@
   padding: 1rem;
   border: 0.125rem solid rgba(208, 146, 247, 0.15);
   border-radius: 0.5rem;
-  background-color: rgba(208, 146, 247, 0.10);
+  background-color: rgba(208, 146, 247, 0.1);
 }
 
 .env .logos img {
   height: 100px;
-
 }

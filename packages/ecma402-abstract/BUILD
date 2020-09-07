@@ -1,5 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("//tools:index.bzl", "generate_src_file", "ts_compile")
+load("//tools:index.bzl", "generate_src_file", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "ecma402-abstract"
@@ -78,4 +78,18 @@ generate_src_file(
         "@npm//fs-extra",
         "@npm//minimist",
     ],
+)
+
+prettier_check(
+    name = "prettier",
+    srcs = glob(
+        [
+            "**/*",
+        ],
+        exclude = [
+            "CHANGELOG.md",
+            "src/NumberFormat/digit-mapping.json",
+            "BUILD",
+        ],
+    ),
 )

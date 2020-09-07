@@ -4,7 +4,7 @@ load("@npm//@bazel/terser:index.bzl", "terser_minified")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "ts_compile")
+load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-listformat"
@@ -267,4 +267,18 @@ terser_minified(
     name = "polyfill.umd.min",
     src = "polyfill.umd.js",
     sourcemap = False,
+)
+
+prettier_check(
+    name = "prettier",
+    srcs = glob(
+        [
+            "**/*",
+        ],
+        exclude = [
+            "CHANGELOG.md",
+            "tests/locale-data/*",
+            "test262-main.ts",
+        ],
+    ),
 )

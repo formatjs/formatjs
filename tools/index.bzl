@@ -4,6 +4,7 @@ load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test")
 load("@build_bazel_rules_nodejs//internal/js_library:js_library.bzl", "js_library")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load("@npm//prettier:index.bzl", "prettier", "prettier_test")
 load("@npm//ts-node:index.bzl", "ts_node")
 
 def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
@@ -121,4 +122,38 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], rollup_deps = []
         name = name,
         srcs = BUNDLE_KARMA_TESTS,
         visibility = ["//visibility:public"],
+    )
+
+def prettier_check(name, srcs, config = "//:.prettierrc.json"):
+    native.filegroup(
+        name = "%s_srcs" % name,
+        srcs = srcs,
+    )
+
+    prettier_test(
+        name = name,
+        data = [
+            "%s_srcs" % name,
+            config,
+        ],
+        templated_args = [
+            "--config",
+            "$(rootpath %s)" % config,
+            "--check",
+            "$(rootpaths :%s_srcs)" % name,
+        ],
+    )
+
+    prettier(
+        name = "%s.update" % name,
+        data = [
+            "%s_srcs" % name,
+            config,
+        ],
+        templated_args = [
+            "--config",
+            "$(rootpath %s)" % config,
+            "--write",
+            "$(rootpaths :%s_srcs)" % name,
+        ],
     )
