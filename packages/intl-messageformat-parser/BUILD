@@ -108,6 +108,7 @@ prettier_check(
             "**/*",
         ],
         exclude = [
+            "BUILD",
             "CHANGELOG.md",
             "src/parser.pegjs",
             "src/parser.ts",

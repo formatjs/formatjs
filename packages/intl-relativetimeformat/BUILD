@@ -274,6 +274,7 @@ prettier_check(
             "**/*",
         ],
         exclude = [
+            "BUILD",
             "CHANGELOG.md",
             "tests/locale-data/*",
             "test262-main.ts",

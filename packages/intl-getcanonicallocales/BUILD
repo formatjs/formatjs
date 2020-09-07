@@ -128,6 +128,7 @@ prettier_check(
             "**/*",
         ],
         exclude = [
+            "BUILD",
             "CHANGELOG.md",
             "src/data/aliases.ts",
         ],

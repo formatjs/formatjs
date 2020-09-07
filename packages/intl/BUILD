@@ -145,8 +145,9 @@ prettier_check(
             "**/*",
         ],
         exclude = [
+            "BUILD",
             "CHANGELOG.md",
-            "tests/__snapshot__/*",
+            "tests/__snapshots__/*",
         ],
     ),
 )

@@ -369,8 +369,10 @@ prettier_check(
             "**/*.ts",
         ],
         exclude = [
+            "BUILD",
             "src/data/*",
             "test262-main.ts",
+            "tests/__snapshots__/*",
         ],
     ) + ["README.md"],
 )

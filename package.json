@@ -14,13 +14,12 @@
     "build": "bazel build //...",
     "examples": "bazel run //packages/react-intl/examples",
     "format:check": "yarn bazel:lint-only",
-    "format": "yarn bazel:lint-fix && yarn prettier",
+    "format": "yarn bazel:lint-fix && lerna exec -- bazel run :prettier.update",
     "karma:ci": "bazel test :karma-ci",
     "karma:local": "bazel test :karma",
-    "prettier": "prettier --write '{packages,tools}/**/*.{md,ts,tsx}'",
     "release:next": "yarn lerna version prerelease --yes && yarn lerna exec --no-bail -- bazel run :publish --tag next",
-    "release": "yarn lerna version --yes && yarn lerna exec --no-bail -- bazel run :publish",
-    "test": "yarn run format:check && bazel test $(bazel query 'filter(\"^((?!karma).)*$\", kind(\".*_test rule\", //...))')"
+    "release": "lerna version --yes && lerna exec --no-bail -- bazel run :publish",
+    "test": "yarn format:check && bazel test $(bazel query 'filter(\"^((?!karma).)*$\", kind(\".*_test rule\", //...))')"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
