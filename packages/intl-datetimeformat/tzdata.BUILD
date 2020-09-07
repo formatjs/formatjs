@@ -1,0 +1,13 @@
+exports_files([
+    "zone.tab",
+    "backward",
+    "africa",
+    "antarctica",
+    "asia",
+    "australasia",
+    "etcetera",
+    "europe",
+    "northamerica",
+    "southamerica",
+    "pacificnew",
+])

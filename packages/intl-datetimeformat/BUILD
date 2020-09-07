@@ -223,12 +223,11 @@ generate_src_file(
     args = [
         "$(execpath scripts/zone.ts)",
         "--input",
-        "$(location iana-data/zone.tab)",
+        "$(location @tzdata//:zone.tab)",
         "--output",
         "$@",
     ],
     data = [
-        "iana-data/zone.tab",
         "scripts/zone.ts",
         "//:tsconfig.json",
         "@npm//@types/fs-extra",
@@ -236,6 +235,7 @@ generate_src_file(
         "@npm//@types/node",
         "@npm//fs-extra",
         "@npm//minimist",
+        "@tzdata//:zone.tab",
     ],
 )
 
@@ -247,12 +247,11 @@ generate_src_file(
     args = [
         "$(execpath scripts/link.ts)",
         "--input",
-        "$(location iana-data/backward)",
+        "$(location @tzdata//:backward)",
         "--output",
         "$@",
     ],
     data = [
-        "iana-data/backward",
         "scripts/link.ts",
         "//:tsconfig.json",
         "@npm//@types/fs-extra",
@@ -260,6 +259,7 @@ generate_src_file(
         "@npm//@types/node",
         "@npm//fs-extra",
         "@npm//minimist",
+        "@tzdata//:backward",
     ],
 )
 
@@ -468,9 +468,9 @@ prettier_check(
         ],
         exclude = [
             "BUILD",
+            "tzdata.BUILD",
             "CHANGELOG.md",
             "tests/locale-data/*",
-            "iana-data/*",
             "src/data/*",
             "data.zdump",
             "test262-main.ts",

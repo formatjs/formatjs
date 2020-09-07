@@ -35,6 +35,13 @@ http_archive(
     urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/2.1.0/rules_nodejs-2.1.0.tar.gz"],
 )
 
+http_archive(
+    name = "tzdata",
+    build_file = "@//:packages/intl-datetimeformat/tzdata.BUILD",
+    sha256 = "547161eca24d344e0b5f96aff6a76b454da295dc14ed4ca50c2355043fb899a2",
+    urls = ["https://data.iana.org/time-zones/releases/tzdata2020a.tar.gz"],
+)
+
 load("@build_bazel_rules_nodejs//:index.bzl", "yarn_install")
 
 # node_repositories(
