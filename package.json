@@ -17,7 +17,7 @@
     "format": "yarn bazel:lint-fix && lerna exec -- bazel run :prettier.update",
     "karma:ci": "bazel test :karma-ci",
     "karma:local": "bazel test :karma",
-    "release:next": "yarn lerna version prerelease --yes && yarn lerna exec --no-bail -- bazel run :publish --tag next",
+    "release:next": "lerna version prerelease --yes && lerna exec --no-bail -- bazel run :publish --tag next",
     "release": "lerna version --yes && lerna exec --no-bail -- bazel run :publish",
     "test": "yarn format:check && bazel test $(bazel query 'filter(\"^((?!karma).)*$\", kind(\".*_test rule\", //...))')"
   },
