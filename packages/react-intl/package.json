@@ -125,7 +125,7 @@
   },
   "main": "index.js",
   "module": "lib/index.js",
-  "types": "react-intl.d.ts",
+  "types": "index.d.ts",
   "sideEffects": false,
   "dependencies": {
     "@formatjs/ecma402-abstract": "^1.2.0",
