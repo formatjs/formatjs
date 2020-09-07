@@ -196,25 +196,45 @@ ts_node(
 )
 
 # zic
-# ts_node(
-#     name = "zic",
-#     args = [
-#         "$(execpath scripts/zic.ts)",
-#         "--dataDir",
-#         "$(locations iana-data)",
-#         "--outDir",
-#         "$(@D)",
-#     ],
-#     data = [
-#         "iana-data",
-#         "scripts/zic.ts",
-#         "//:tsconfig.json",
-#         "@npm//@types/minimist",
-#         "@npm//@types/node",
-#         "@npm//minimist",
-#     ],
-#     output_dir = True,
-# )
+ts_node(
+    name = "zic",
+    args = [
+        "$(execpath scripts/zic.ts)",
+        "--zoneFiles",
+        ",".join(["$(location %s)" % f for f in [
+            "@tzdata//:africa",
+            "@tzdata//:antarctica",
+            "@tzdata//:asia",
+            "@tzdata//:australasia",
+            "@tzdata//:etcetera",
+            "@tzdata//:europe",
+            "@tzdata//:northamerica",
+            "@tzdata//:southamerica",
+            "@tzdata//:pacificnew",
+            "@tzdata//:backward",
+        ]]),
+        "--outDir",
+        "$(@D)",
+    ],
+    data = [
+        "scripts/zic.ts",
+        "//:tsconfig.json",
+        "@npm//@types/minimist",
+        "@npm//@types/node",
+        "@npm//minimist",
+        "@tzdata//:africa",
+        "@tzdata//:antarctica",
+        "@tzdata//:asia",
+        "@tzdata//:australasia",
+        "@tzdata//:backward",
+        "@tzdata//:etcetera",
+        "@tzdata//:europe",
+        "@tzdata//:northamerica",
+        "@tzdata//:pacificnew",
+        "@tzdata//:southamerica",
+    ],
+    output_dir = True,
+)
 
 # zones
 generate_src_file(
