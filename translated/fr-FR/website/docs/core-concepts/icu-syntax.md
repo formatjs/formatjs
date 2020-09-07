@@ -226,6 +226,7 @@ The ASCII apostrophe ('`') can be used to escape syntax characters in the text p
 //→ "<notATag>"
 "'<notATag>hello</notATag>'"
 //→ "<notATag>hello</notATag>"
+
 ```
 
 Two consecutive ASCII apostrophes represents one ASCII apostrophe, similar to `%%` in `printf` represents one `%`. However, we recommend using curly apostrophe `’` (U+2019) for human-readable strings and only use ASCII apostrophe `'` (U+0027) in ICU message syntax.
@@ -233,4 +234,5 @@ Two consecutive ASCII apostrophes represents one ASCII apostrophe, similar to `%
 ```js
 "This '{isn''t}' obvious."
 //→ "This {isn't} obvious."
+
 ```

@@ -204,9 +204,7 @@ Assuming `navigator.language` is `"en-us"`:
 <div>
   <h1>Hello, World!</h1>
   <p><span title="4/5/2016">yesterday</span></p>
-  <div>
-    Amazing content.
-  </div>
+  <div>Amazing content.</div>
 </div>
 ```
 
