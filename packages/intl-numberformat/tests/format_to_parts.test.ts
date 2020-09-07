@@ -274,9 +274,9 @@ it('properly unquotes characters from CLDR pattern', () => {
   ]);
 });
 
-// This might be a bug, but we want to replicate Chrome and Node.js' behavior.
-// TODO: this is fixed in Chrome.
-it('determines plurality of unit based on mantissa of the scientific notation', () => {
+// There used to be a bug in NodeJS and Google Chrome that the plurality is determined by the
+// mantissa, now it is fixed.
+it('determines plurality of unit based on the number value of the scientific notation', () => {
   const options = {
     ...defaultOptions,
     style: 'unit',
@@ -293,10 +293,30 @@ it('determines plurality of unit based on mantissa of the scientific notation', 
     magnitude: 4,
     exponent: 4,
   };
-  expect(format(n, data, pl, options)).toEqual('1E4 US gallon');
+  expect(format(n, data, pl, options)).toEqual('1E4 US gallons');
 });
 
-// The plurality is NOT based on mantissa!
+it('determines the plurality of the currency in the compact notation based on the number value', () => {
+  const options = {
+    ...defaultOptions,
+    style: 'currency',
+    currency: 'USD',
+    currencyDisplay: 'name',
+    notation: 'compact',
+    compactDisplay: 'short',
+  } as const;
+  const data = require('./locale-data/en-GB.json').data['en-GB'];
+  const pl = new Intl.PluralRules('en-GB');
+  const n = {
+    ...baseNumberResult,
+    formattedString: '1',
+    roundedNumber: 1,
+    magnitude: 3,
+    exponent: 3,
+  };
+  expect(format(n, data, pl, options)).toEqual('1K US dollars');
+});
+
 it('determines plurality of currency based on the number value of scientific notation', () => {
   const options = {
     ...defaultOptions,

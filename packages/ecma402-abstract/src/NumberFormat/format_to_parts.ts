@@ -248,9 +248,6 @@ export default function formatToParts(
         if (currencyNameData) {
           unitName = selectPlural(
             pl,
-            // NOTE: Google Chrome's Intl.NumberFormat uses the original number to determine the plurality,
-            // but the mantissa for unit. We think this is a bug in ICU, but will still replicate the behavior.
-            // TODO: use original number.
             numberResult.roundedNumber * 10 ** exponent,
             currencyNameData.displayName
           );
@@ -293,7 +290,7 @@ export default function formatToParts(
         // Simple unit pattern
         unitPattern = selectPlural(
           pl,
-          numberResult.roundedNumber,
+          numberResult.roundedNumber * 10 ** exponent,
           data.units.simple[unit!][unitDisplay!]
         );
       } else {
@@ -305,7 +302,7 @@ export default function formatToParts(
 
         const numeratorUnitPattern = selectPlural(
           pl,
-          numberResult.roundedNumber,
+          numberResult.roundedNumber * 10 ** exponent,
           data.units.simple[numeratorUnit!][unitDisplay!]
         );
         const perUnitPattern =
