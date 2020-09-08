@@ -171,30 +171,6 @@ generate_src_file(
     data = CLDR_DEPS,
 )
 
-# IANA
-ts_node(
-    name = "iana-data",
-    args = [
-        "$(execpath scripts/iana.ts)",
-        "--version",
-        "2020a",
-        "--outDir",
-        "$(@D)",
-    ],
-    data = [
-        "scripts/iana.ts",
-        "//:tsconfig.json",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//@types/node-fetch",
-        "@npm//@types/tar",
-        "@npm//minimist",
-        "@npm//node-fetch",
-        "@npm//tar",
-    ],
-    output_dir = True,
-)
-
 # zic
 ts_node(
     name = "zic",
