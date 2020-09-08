@@ -139,6 +139,8 @@ def prettier_check(name, srcs, config = "//:.prettierrc.json"):
         templated_args = [
             "--config",
             "$(rootpath %s)" % config,
+            "--loglevel",
+            "warn",
             "--check",
             "$(rootpaths :%s_srcs)" % name,
         ],
@@ -153,6 +155,8 @@ def prettier_check(name, srcs, config = "//:.prettierrc.json"):
         templated_args = [
             "--config",
             "$(rootpath %s)" % config,
+            "--loglevel",
+            "warn",
             "--write",
             "$(rootpaths :%s_srcs)" % name,
         ],
