@@ -15,6 +15,12 @@ You can sign-up using this [invitation link](https://join.slack.com/t/formatjs/s
 
 We currently use [`bazel`](https://bazel.build/) to develop, along with [lerna](https://lerna.js.org/) for package management.
 
+Required UNIX dependencies:
+
+- `zic` for `intl-datetimeformat` tz compilation
+- `zdump` for `intl-datetimeformat` tz dump
+- `realpath` for absolute path resolution
+
 To setup locally, first initialize the git submodule:
 
 ```sh
@@ -39,20 +45,13 @@ To run examples:
 Releases can be done with the following steps:
 
 ```sh
-> lerna version
-> lerna exec --concurrency 1 --no-bail --sort -- bazel run :publish
-```
-
-or combined together
-
-```sh
-> npx lerna version --yes && npx lerna exec --concurrency 1 --no-bail --sort -- bazel run :publish
+> yarn release
 ```
 
 To publish next tag
 
 ```sh
-> lerna version prerelease --yes && lerna exec --concurrency 1 --no-bail --sort -- bazel run :publish -- --tag next
+> yarn release:next
 ```
 
 ## Published Packages
