@@ -171,70 +171,6 @@ generate_src_file(
     data = CLDR_DEPS,
 )
 
-# zic
-ts_node(
-    name = "zic",
-    args = [
-        "$(execpath scripts/zic.ts)",
-        "--zoneFiles",
-        ",".join(["$(location %s)" % f for f in [
-            "@tzdata//:africa",
-            "@tzdata//:antarctica",
-            "@tzdata//:asia",
-            "@tzdata//:australasia",
-            "@tzdata//:etcetera",
-            "@tzdata//:europe",
-            "@tzdata//:northamerica",
-            "@tzdata//:southamerica",
-            "@tzdata//:pacificnew",
-            "@tzdata//:backward",
-        ]]),
-        "--outDir",
-        "$(@D)",
-    ],
-    data = [
-        "scripts/zic.ts",
-        "//:tsconfig.json",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//minimist",
-        "@tzdata//:africa",
-        "@tzdata//:antarctica",
-        "@tzdata//:asia",
-        "@tzdata//:australasia",
-        "@tzdata//:backward",
-        "@tzdata//:etcetera",
-        "@tzdata//:europe",
-        "@tzdata//:northamerica",
-        "@tzdata//:pacificnew",
-        "@tzdata//:southamerica",
-    ],
-    output_dir = True,
-)
-
-# zones
-generate_src_file(
-    name = "zones",
-    src = "src/data/zones.ts",
-    args = [
-        "$(execpath scripts/zone.ts)",
-        "--input",
-        "$(location @tzdata//:zone.tab)",
-        "--output",
-        "$@",
-    ],
-    data = [
-        "scripts/zone.ts",
-        "//:tsconfig.json",
-        "@npm//@types/fs-extra",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//fs-extra",
-        "@npm//minimist",
-        "@tzdata//:zone.tab",
-    ],
-)
-
 # "ts-node scripts/link --input iana-data/backward --output src/links.ts"
 # links
 generate_src_file(
@@ -266,12 +202,11 @@ generate_src_file(
     args = [
         "$(execpath scripts/process-zdump.ts)",
         "--input",
-        "$(location data.zdump)",
+        "$(location @tzdata//:all.zdump)",
         "--output",
         "$@",
     ],
     data = [
-        "data.zdump",
         "scripts/process-zdump.ts",
         "src/packer.ts",
         "src/types.ts",
@@ -283,6 +218,7 @@ generate_src_file(
         "@npm//@types/node",
         "@npm//fs-extra",
         "@npm//minimist",
+        "@tzdata//:all.zdump",
     ],
 )
 
@@ -295,12 +231,11 @@ ts_node(
         "$(execpath scripts/process-zdump.ts)",
         "--polyfill",
         "--input",
-        "$(location data.zdump)",
+        "$(location @tzdata//:all.zdump)",
         "--output",
         "$@",
     ],
     data = [
-        "data.zdump",
         "scripts/process-zdump.ts",
         "src/packer.ts",
         "src/types.ts",
@@ -312,6 +247,7 @@ ts_node(
         "@npm//@types/node",
         "@npm//fs-extra",
         "@npm//minimist",
+        "@tzdata//:all.zdump",
     ],
 )
 
@@ -324,12 +260,11 @@ ts_node(
         "--golden",
         "--polyfill",
         "--input",
-        "$(location data.zdump)",
+        "$(location @tzdata//:all.zdump)",
         "--output",
         "$@",
     ],
     data = [
-        "data.zdump",
         "scripts/process-zdump.ts",
         "src/packer.ts",
         "src/types.ts",
@@ -341,6 +276,7 @@ ts_node(
         "@npm//@types/node",
         "@npm//fs-extra",
         "@npm//minimist",
+        "@tzdata//:all.zdump",
     ],
 )
 
@@ -406,31 +342,6 @@ generated_file_test(
 #     deps = SRC_DEPS,
 # )
 
-# zdump
-# TODO: zdump takes a very long time
-# generate_src_file(
-#     name="zdump",
-#     src = "data.zdump",
-#     args = [
-#         "$(execpath scripts/zdump.ts)",
-#         "--zicDir",
-#         "$(locations zic)",
-#         "--output",
-#         "$@",
-#     ],
-#     data = [
-#         "scripts/zdump.ts",
-#         "src/data/zones.ts",
-#         "zic",
-#         "//:tsconfig.json",
-#         "@npm//@types/fs-extra",
-#         "@npm//@types/minimist",
-#         "@npm//@types/node",
-#         "@npm//fs-extra",
-#         "@npm//minimist",
-#     ],
-# )
-
 rollup_bundle(
     name = "polyfill.umd",
     srcs = [":dist-esm"],
@@ -468,7 +379,6 @@ prettier_check(
             "CHANGELOG.md",
             "tests/locale-data/*",
             "src/data/*",
-            "data.zdump",
             "test262-main.ts",
         ],
     ),
