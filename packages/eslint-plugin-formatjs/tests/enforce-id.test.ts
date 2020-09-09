@@ -129,5 +129,23 @@ intl.formatMessage({ id: 'UoHSIG', defaultMessage: '{count, plural, one {<a>#</a
   count: 1,
 })`,
     },
+    {
+      code: `
+import { defineMessages } from 'react-intl'
+
+defineMessages({ example: { defaultMessage: 'example' } })`,
+      errors: [
+        {
+          message: `"id" does not match with hash pattern [sha512:contenthash:base64:6].
+Expected: O7Eu2j
+Actual: undefined`,
+        },
+      ],
+      options,
+      output: `
+import { defineMessages } from 'react-intl'
+
+defineMessages({ example: { defaultMessage: 'example', id: 'O7Eu2j' } })`,
+    },
   ],
 });

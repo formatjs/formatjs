@@ -66,9 +66,9 @@ Actual: ${id}`,
                 ` id="${correctId}"`
               );
             }
-            return fixer.insertTextAfter(
+            return fixer.replaceText(
               messagePropNode as any,
-              `id: '${correctId}',`
+              `defaultMessage: '${defaultMessage}', id: '${correctId}'`
             );
           },
         });
