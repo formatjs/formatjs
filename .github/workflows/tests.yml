@@ -53,7 +53,7 @@ jobs:
           yarn test --remote_cache=https://storage.googleapis.com/formatjs-bazel-cache --google_credentials=../secret.json
         env:
           CI: true
-      - uses: saucelabs/sauce-connect-action@v1.1.0
+      - uses: saucelabs/sauce-connect-action@v1.1.1
         with:
           username: ${{ secrets.SAUCE_USERNAME }}
           accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
