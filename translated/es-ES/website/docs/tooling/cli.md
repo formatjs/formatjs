@@ -142,7 +142,7 @@ import {FormattedMessage} from 'react-intl'
 ;<FormattedMessage defaultMessage="foo" id="bar" />
 ```
 
-and with option `{pragma: "@intl-meta"}`, we'll parse out `// @intl-meta project:my-custom-project` into `{project: 'my-custom-project'}` in the result file.
+and with option `{pragma: "intl-meta"}`, we'll parse out `// @intl-meta project:my-custom-project` into `{project: 'my-custom-project'}` in the result file.
 
 ## Compilation
 
