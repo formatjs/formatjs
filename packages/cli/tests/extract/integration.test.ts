@@ -67,6 +67,17 @@ test('typescript -> stdout', async () => {
   ).resolves.toMatchSnapshot();
 }, 20000);
 
+test('pragma', async () => {
+  await expect(
+    exec(
+      `${BIN_PATH} extract --pragma intl ${join(
+        __dirname,
+        'typescript/pragma.tsx'
+      )}`
+    )
+  ).resolves.toMatchSnapshot();
+}, 20000);
+
 test('typescript -> stdout with formatter', async () => {
   await expect(
     exec(

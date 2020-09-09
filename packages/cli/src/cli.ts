@@ -105,7 +105,7 @@ to be called with object literal such as \`intl.formatMessage({ id: 'foo', defau
       <FormattedMessage defaultMessage="foo" id="bar" />;
       \`\`\`
 
-      and with option \`{pragma: "@intl-meta"}\`, we'll parse out \`// @intl-meta project:my-custom-project\` into \`{project: 'my-custom-project'}\` in the result file.`
+      and with option \`{pragma: "intl-meta"}\`, we'll parse out \`// @intl-meta project:my-custom-project\` into \`{project: 'my-custom-project'}\` in the result file.`
     )
     .action(async (files: readonly string[], cmdObj: ExtractCLIOptions) => {
       const processedFiles = [];
