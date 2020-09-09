@@ -45,13 +45,13 @@ To run examples:
 Releases can be done with the following steps:
 
 ```sh
-> yarn release
+> npm run release
 ```
 
 To publish next tag
 
 ```sh
-> yarn release:next
+> npm run release:next
 ```
 
 ## Published Packages
