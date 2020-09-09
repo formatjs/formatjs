@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.10.0...@formatjs/cli@2.11.0) (2020-09-09)
+
+
+### Features
+
+* **@formatjs/cli:** catch issue w/ TS transpilation, fix [#2044](https://github.com/formatjs/formatjs/issues/2044) ([ceb0bf8](https://github.com/formatjs/formatjs/commit/ceb0bf8a58c13fe6811bc35191018ee1c431484a))
+
+
+
+
+
 # [2.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.9.0...@formatjs/cli@2.10.0) (2020-09-09)
 
 
