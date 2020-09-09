@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.9](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.8...eslint-plugin-formatjs@2.7.9) (2020-09-09)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** fix enforce-id fixer logic, fix [#2072](https://github.com/formatjs/formatjs/issues/2072) ([00f56cb](https://github.com/formatjs/formatjs/commit/00f56cb63ff9790626d2b660331251df8e16de16))
+
+
+
+
+
 ## [2.7.8](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.7...eslint-plugin-formatjs@2.7.8) (2020-09-03)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.8.1](https://github.com/formatjs/formatjs/compare/react-intl@5.8.0...react-intl@5.8.1) (2020-09-09)
+
+
+### Bug Fixes
+
+* **react-intl:** add typescript as peerDependency, fix [#2066](https://github.com/formatjs/formatjs/issues/2066) ([#2067](https://github.com/formatjs/formatjs/issues/2067)) ([c2fac57](https://github.com/formatjs/formatjs/commit/c2fac57ab11fe43a01bd5ae57635557beb45ad67))
+* **react-intl:** fix TS typing entry point path ([f01ab86](https://github.com/formatjs/formatjs/commit/f01ab8612ef4ea4cef8bdbfb597455c9553f149e))
+
+
+
+
+
 # [5.8.0](https://github.com/formatjs/formatjs/compare/react-intl@5.7.2...react-intl@5.8.0) (2020-08-30)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.6...@formatjs/intl-displaynames@3.3.7) (2020-09-09)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** fix TS typing entry point path ([82da0b9](https://github.com/formatjs/formatjs/commit/82da0b9d3a894eb28d2537297269097aa4c35668))
+
+
+
+
+
 ## [3.3.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.5...@formatjs/intl-displaynames@3.3.6) (2020-08-28)
 
 **Note:** Version bump only for package @formatjs/intl-displaynames

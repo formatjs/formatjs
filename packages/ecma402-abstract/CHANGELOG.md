@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.2.0...@formatjs/ecma402-abstract@1.2.1) (2020-09-09)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** determine plurality using rounded number value ([#2065](https://github.com/formatjs/formatjs/issues/2065)) ([4f7f791](https://github.com/formatjs/formatjs/commit/4f7f79131ab8e2868a93e614702a244e49ad6478))
+
+
+
+
+
 # [1.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.1.0...@formatjs/ecma402-abstract@1.2.0) (2020-08-28)
 
 

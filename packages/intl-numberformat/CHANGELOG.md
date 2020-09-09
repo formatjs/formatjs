@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.6.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.6.0...@formatjs/intl-numberformat@5.6.1) (2020-09-09)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** determine plurality using rounded number value ([#2065](https://github.com/formatjs/formatjs/issues/2065)) ([4f7f791](https://github.com/formatjs/formatjs/commit/4f7f79131ab8e2868a93e614702a244e49ad6478))
+
+
+
+
+
 # [5.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.5.6...@formatjs/intl-numberformat@5.6.0) (2020-08-30)
 
 

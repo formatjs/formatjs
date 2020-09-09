@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.9.0...@formatjs/cli@2.10.0) (2020-09-09)
+
+
+### Features
+
+* **@formatjs/cli:** add meta to messages, fix [#2074](https://github.com/formatjs/formatjs/issues/2074) ([585bc66](https://github.com/formatjs/formatjs/commit/585bc66c9ad182a10680466e148fdc4e7e388319))
+
+
+
+
+
 # [2.9.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.8.0...@formatjs/cli@2.9.0) (2020-09-03)
 
 
