@@ -29,6 +29,14 @@ test('basic case: defineMessages -> stdout', async () => {
   ).resolves.toMatchSnapshot();
 }, 20000);
 
+test('bad json', async () => {
+  await expect(
+    exec(
+      `${BIN_PATH} extract --throws ${join(__dirname, 'defineMessages/*.js*')}`
+    )
+  ).rejects.toThrowError('Error processing file');
+}, 20000);
+
 test('[glob] basic case: defineMessages -> stdout', async () => {
   await expect(
     exec(`${BIN_PATH} extract ${join(__dirname, 'defineMessages/*.js')}`)

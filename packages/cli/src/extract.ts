@@ -120,20 +120,26 @@ function processFile(
       },
     };
   }
-
-  const output = ts.transpileModule(source, {
-    compilerOptions: {
-      allowJs: true,
-      target: ts.ScriptTarget.ESNext,
-      noEmit: true,
-      experimentalDecorators: true,
-    },
-    reportDiagnostics: true,
-    fileName: fn,
-    transformers: {
-      before: [transform(opts)],
-    },
-  });
+  let output;
+  try {
+    output = ts.transpileModule(source, {
+      compilerOptions: {
+        allowJs: true,
+        target: ts.ScriptTarget.ESNext,
+        noEmit: true,
+        experimentalDecorators: true,
+      },
+      reportDiagnostics: true,
+      fileName: fn,
+      transformers: {
+        before: [transform(opts)],
+      },
+    });
+  } catch (e) {
+    e.message = `Error processing file ${fn} 
+${e.message || ''}`;
+    throw e;
+  }
   if (output.diagnostics) {
     const errs = output.diagnostics.filter(
       d => d.category === ts.DiagnosticCategory.Error
