@@ -334,11 +334,7 @@ By default `<FormattedNumber>` will render the formatted number into a `React.Fr
 **Example Formatting Currency Values**
 
 ```tsx live
-<FormattedNumber
-  value={1000}
-  style="currency"
-  currency="USD"
-/>
+<FormattedNumber value={1000} style="currency" currency="USD" />
 ```
 
 **Formatting Number using `unit`**
