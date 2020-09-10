@@ -37,7 +37,8 @@ We rely on AST to extract messages from the codebase, thus calling `intl.formatM
 
 ```tsx
 import {FormattedMessage} from 'react-intl'
-;<FormattedMessage
+
+<FormattedMessage
   description="A message" // Description should be a string literal
   defaultMessage="My name is {name}" // Message should be a string literal
   values={
@@ -62,7 +63,8 @@ const message = defineMessage({
 })
 
 intl.formatMessage(message, {name: 'John'}) // My name is John
-;<FormattedMessage
+
+<FormattedMessage
   {...message}
   values={{
     name: 'John',
