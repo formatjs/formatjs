@@ -97,7 +97,7 @@
     "rimraf": "^3.0.2",
     "rollup": "^2.7.2",
     "schema-utils": "^2.7.0",
-    "serialize-javascript": "^4.0.0",
+    "serialize-javascript": "^5.0.0",
     "shallow-equal": "^1.2.1",
     "tar": "^6.0.2",
     "terser": "^4.8.0",
