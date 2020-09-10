@@ -90,7 +90,7 @@ function processFile(
 ) {
   let messages: ExtractedMessageDescriptor[] = [];
   let meta: Record<string, string> | undefined;
-  const { onMetaExtracted, onMsgExtracted } = opts;
+  const {onMetaExtracted, onMsgExtracted} = opts;
 
   opts = {
     ...opts,
