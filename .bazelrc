@@ -64,12 +64,6 @@ build:debug --compilation_mode=dbg
 # This prevents accidentally depending on this feature, which Bazel will remove.
 build --nolegacy_external_runfiles
 
-# Turn on the "Managed Directories" feature.
-# This allows Bazel to share the same node_modules directory with other tools
-# NB: this option was introduced in Bazel 0.26
-# See https://docs.bazel.build/versions/master/command-line-reference.html#flag--experimental_allow_incremental_repository_updates
-common --experimental_allow_incremental_repository_updates
-
 # Turn on --incompatible_strict_action_env which was on by default
 # in Bazel 0.21.0 but turned off again in 0.22.0. Follow
 # https://github.com/bazelbuild/bazel/issues/7026 for more details.
