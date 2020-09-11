@@ -90,7 +90,6 @@ function processFile(
 ) {
   let messages: ExtractedMessageDescriptor[] = [];
   let meta: Record<string, string> | undefined;
-  const {onMetaExtracted, onMsgExtracted} = opts;
 
   opts = {
     ...opts,
@@ -102,13 +101,9 @@ function processFile(
         }));
       }
       messages = messages.concat(msgs);
-
-      if (onMsgExtracted) onMsgExtracted(_, msgs);
     },
     onMetaExtracted(_, m) {
       meta = m;
-
-      if (onMetaExtracted) onMetaExtracted(_, m);
     },
   };
 
