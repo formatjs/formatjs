@@ -90,6 +90,23 @@ function processFile(
 ) {
   let messages: ExtractedMessageDescriptor[] = [];
   let meta: Record<string, string> | undefined;
+
+  opts = {
+    ...opts,
+    onMsgExtracted(_, msgs) {
+      if (opts.extractSourceLocation) {
+        msgs = msgs.map(msg => ({
+          ...msg,
+          ...calculateLineColFromOffset(source, msg.start),
+        }));
+      }
+      messages = messages.concat(msgs);
+    },
+    onMetaExtracted(_, m) {
+      meta = m;
+    },
+  };
+
   if (!opts.overrideIdFn && idInterpolationPattern) {
     opts = {
       ...opts,
@@ -106,18 +123,6 @@ function processFile(
               : defaultMessage,
           }
         ),
-      onMsgExtracted(_, msgs) {
-        if (opts.extractSourceLocation) {
-          msgs = msgs.map(msg => ({
-            ...msg,
-            ...calculateLineColFromOffset(source, msg.start),
-          }));
-        }
-        messages = messages.concat(msgs);
-      },
-      onMetaExtracted(_, m) {
-        meta = m;
-      },
     };
   }
   let output;
