@@ -1,4 +1,6 @@
+load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
 load("@npm//karma:index.bzl", "karma_test")
+
 # Add rules here to build your software
 # See https://docs.bazel.build/versions/master/build-ref.html#BUILD_files
 
@@ -189,4 +191,29 @@ karma_test(
         "--browsers",
         "sl_edge,sl_chrome,sl_firefox,sl_ie_11",
     ] + ["$$(rlocation $(locations %s))" % f for f in KARMA_TESTS],
+)
+
+multirun(
+    name = "prettier_all",
+    commands = [
+        "//packages/babel-plugin-react-intl:prettier",
+        "//packages/cli:prettier",
+        "//packages/ecma402-abstract:prettier",
+        "//packages/eslint-plugin-formatjs:prettier",
+        "//packages/intl:prettier",
+        "//packages/intl-datetimeformat:prettier",
+        "//packages/intl-displaynames:prettier",
+        "//packages/intl-getcanonicallocales:prettier",
+        "//packages/intl-listformat:prettier",
+        "//packages/intl-locale:prettier",
+        "//packages/intl-messageformat:prettier",
+        "//packages/intl-messageformat-parser:prettier",
+        "//packages/intl-numberformat:prettier",
+        "//packages/intl-pluralrules:prettier",
+        "//packages/intl-relativetimeformat:prettier",
+        "//packages/react-intl:prettier",
+        "//packages/ts-transformer:prettier",
+        "//tools:prettier",
+        "//website:prettier",
+    ],
 )

@@ -915,20 +915,20 @@
   resolved "https://registry.yarnpkg.com/@bazel/ibazel/-/ibazel-0.13.1.tgz#23788f67a6fbe83d96f2d055691df4917c10ac8d"
   integrity sha512-FO1hBKpzpeBL0adnFYF2Dwl/7gox6ccKM6bb+x26AXrQpLbinXPuTi4zeXRL/MW4383mF6i4RovLCmwUU/YW0w==
 
-"@bazel/rollup@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@bazel/rollup/-/rollup-2.1.0.tgz#c551f440e45c3d46d1b8332a5b938a543f545d40"
-  integrity sha512-qiM7dwQwK/34YH8I6WhUqrfdtJTcEY5M1OJ7BzogScNg7wGieqzHviGbTfiysILOt5N3xwTESkC7tG3k5iosEQ==
+"@bazel/rollup@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@bazel/rollup/-/rollup-2.2.0.tgz#15651d545114e08db056f10a1eeaa4e76fc4df56"
+  integrity sha512-N4SyrvFkdAVc24CqFNhDtrR6P3XJTdPGziCuF7QM/BGihnsGlxF6+Dt2n5BTLJnObiB1St8vtRwCtAY8faxYWQ==
 
-"@bazel/terser@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@bazel/terser/-/terser-2.1.0.tgz#6e2c455de0c65129a8982233d07cf7ea7c047148"
-  integrity sha512-yrktbGAE/7feW5RW+5AUhms1ZMzyVV0EzrrvGZYHi2mf+TAkJzhJtrvC1eKCNXMgDpwTKtxlDSbAI/b8Cu7tIg==
+"@bazel/terser@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@bazel/terser/-/terser-2.2.0.tgz#e0452f3d20e41d5e63048b3eea3280256172fd30"
+  integrity sha512-vukKS9ayJsW/eFFX6tG2Blem+NmEWbcYuCXxwgjL/uYiMCL/uowaTpcvVp9B+DsNSXhGyohOYwud0nBreSUFzg==
 
-"@bazel/typescript@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-2.1.0.tgz#2b9f2fa809b07a40e243865e9c7a4f66c86b3755"
-  integrity sha512-v5zCD/zsUhqtZBINapwgtBFS6C+/9bWY82jtiAGwzJ9IUkADwLsxEcugW+o7kEDjB+72ckbwjMNXNVfFanw6AA==
+"@bazel/typescript@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-2.2.0.tgz#f2d3dce8715d574fe3146f19fdb8479abcc4d608"
+  integrity sha512-Thf8pXntBzE3EvJtyiTBNsfIf1QnYmGPQmUSGLcKUuuFoplUVYShMRHaxBoPZmYsnD/x+BFLgUKIzlXiEQpGqQ==
   dependencies:
     protobufjs "6.8.8"
     semver "5.6.0"

@@ -131,7 +131,7 @@ def prettier_check(name, srcs, config = "//:.prettierrc.json"):
     )
 
     prettier_test(
-        name = name,
+        name = "%s_test" % name,
         data = [
             "%s_srcs" % name,
             config,
@@ -147,7 +147,7 @@ def prettier_check(name, srcs, config = "//:.prettierrc.json"):
     )
 
     prettier(
-        name = "%s.update" % name,
+        name = name,
         data = [
             "%s_srcs" % name,
             config,
@@ -159,5 +159,8 @@ def prettier_check(name, srcs, config = "//:.prettierrc.json"):
             "warn",
             "--write",
             "$(rootpaths :%s_srcs)" % name,
+        ],
+        visibility = [
+            "//:__subpackages__",
         ],
     )
