@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.11.0...@formatjs/cli@2.11.1) (2020-09-11)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** fix calling extract programmatically without idInterpolationPattern ([#2084](https://github.com/formatjs/formatjs/issues/2084)) ([cb904cf](https://github.com/formatjs/formatjs/commit/cb904cfbefa27db778313a39fb14b9cdf147d58b))
+
+
+
+
+
 # [2.11.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.10.0...@formatjs/cli@2.11.0) (2020-09-09)
 
 
