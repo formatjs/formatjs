@@ -331,6 +331,12 @@ By default `<FormattedNumber>` will render the formatted number into a `React.Fr
 <FormattedNumber value={1000} />
 ```
 
+**Example Formatting Currency Values**
+
+```tsx live
+<FormattedNumber value={1000} style="currency" currency="USD" />
+```
+
 **Formatting Number using `unit`**
 
 Currently this is part of ES2020 [NumberFormat](https://tc39.es/ecma402/#numberformat-objects). We've provided a polyfill [here](../polyfills/intl-numberformat.md) and `react-intl` types allow users to pass in a [sanctioned unit](../polyfills/intl-numberformat.md#SupportedUnits). For example:
