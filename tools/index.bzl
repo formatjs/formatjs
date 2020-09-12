@@ -161,6 +161,6 @@ def prettier_check(name, srcs, config = "//:.prettierrc.json"):
             "$(rootpaths :%s_srcs)" % name,
         ],
         visibility = [
-            "//:__subpackages__",
+            "//:__pkg__",
         ],
     )
