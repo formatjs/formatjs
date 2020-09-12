@@ -1,4 +1,4 @@
-import * as ts from 'typescript';
+import * as typescript from 'typescript';
 import {MessageDescriptor} from './types';
 import {interpolateName} from './interpolate-name';
 import {parse, MessageFormatElement} from 'intl-messageformat-parser';
@@ -21,7 +21,9 @@ const MESSAGE_DESC_KEYS: Array<keyof MessageDescriptor> = [
   'description',
 ];
 
-function primitiveToTSNode(v: string | number | boolean) {
+type TypeScript = typeof typescript;
+
+function primitiveToTSNode(ts: TypeScript, v: string | number | boolean) {
   return typeof v === 'string'
     ? ts.createStringLiteral(v)
     : typeof v === 'number'
@@ -33,23 +35,25 @@ function primitiveToTSNode(v: string | number | boolean) {
     : undefined;
 }
 
-function objToTSNode(obj: object) {
-  const props: ts.PropertyAssignment[] = Object.entries(obj).map(([k, v]) =>
+function objToTSNode(ts: TypeScript, obj: object) {
+  const props: typescript.PropertyAssignment[] = Object.entries(
+    obj
+  ).map(([k, v]) =>
     ts.createPropertyAssignment(
       k,
-      primitiveToTSNode(v) ||
+      primitiveToTSNode(ts, v) ||
         (Array.isArray(v)
-          ? ts.createArrayLiteral(v.map(objToTSNode))
+          ? ts.createArrayLiteral(v.map(n => objToTSNode(ts, n)))
           : typeof v === 'object'
-          ? objToTSNode(v)
+          ? objToTSNode(ts, v)
           : ts.createNull())
     )
   );
   return ts.createObjectLiteral(props);
 }
 
-function messageASTToTSNode(ast: MessageFormatElement[]) {
-  return ts.createArrayLiteral(ast.map(el => objToTSNode(el)));
+function messageASTToTSNode(ts: TypeScript, ast: MessageFormatElement[]) {
+  return ts.createArrayLiteral(ast.map(el => objToTSNode(ts, el)));
 }
 
 export interface Opts {
@@ -121,7 +125,10 @@ const DEFAULT_OPTS: Omit<Opts, 'program'> = {
   onMetaExtracted: () => undefined,
 };
 
-function isMultipleMessageDecl(node: ts.CallExpression) {
+function isMultipleMessageDecl(
+  ts: TypeScript,
+  node: typescript.CallExpression
+) {
   return (
     ts.isIdentifier(node.expression) &&
     node.expression.text === 'defineMessages'
@@ -129,7 +136,11 @@ function isMultipleMessageDecl(node: ts.CallExpression) {
 }
 
 function isSingularMessageDecl(
-  node: ts.CallExpression | ts.JsxOpeningElement | ts.JsxSelfClosingElement,
+  ts: TypeScript,
+  node:
+    | typescript.CallExpression
+    | typescript.JsxOpeningElement
+    | typescript.JsxSelfClosingElement,
   additionalComponentNames: string[]
 ) {
   const compNames = new Set([
@@ -152,14 +163,17 @@ function isSingularMessageDecl(
 }
 
 function extractMessageDescriptor(
+  ts: TypeScript,
   node:
-    | ts.ObjectLiteralExpression
-    | ts.JsxOpeningElement
-    | ts.JsxSelfClosingElement,
+    | typescript.ObjectLiteralExpression
+    | typescript.JsxOpeningElement
+    | typescript.JsxSelfClosingElement,
   {overrideIdFn, extractSourceLocation}: Opts,
-  sf: ts.SourceFile
+  sf: typescript.SourceFile
 ): MessageDescriptor | undefined {
-  let properties: ts.NodeArray<ts.ObjectLiteralElement> | undefined = undefined;
+  let properties:
+    | typescript.NodeArray<typescript.ObjectLiteralElement>
+    | undefined = undefined;
   if (ts.isObjectLiteralExpression(node)) {
     properties = node.properties;
   } else if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
@@ -253,7 +267,10 @@ function extractMessageDescriptor(
  * @param node
  * @param sf
  */
-function isIntlFormatMessageCall(node: ts.CallExpression) {
+function isIntlFormatMessageCall(
+  ts: TypeScript,
+  node: typescript.CallExpression
+) {
   const method = node.expression;
 
   // Handle intl.formatMessage()
@@ -272,15 +289,16 @@ function isIntlFormatMessageCall(node: ts.CallExpression) {
 }
 
 function extractMessageFromJsxComponent(
-  node: ts.JsxOpeningElement | ts.JsxSelfClosingElement,
+  ts: TypeScript,
+  node: typescript.JsxOpeningElement | typescript.JsxSelfClosingElement,
   opts: Opts,
-  sf: ts.SourceFile
+  sf: typescript.SourceFile
 ): typeof node {
   const {onMsgExtracted} = opts;
-  if (!isSingularMessageDecl(node, opts.additionalComponentNames || [])) {
+  if (!isSingularMessageDecl(ts, node, opts.additionalComponentNames || [])) {
     return node;
   }
-  const msg = extractMessageDescriptor(node, opts, sf);
+  const msg = extractMessageDescriptor(ts, node, opts, sf);
   if (!msg) {
     return node;
   }
@@ -289,6 +307,7 @@ function extractMessageFromJsxComponent(
   }
 
   const attrs = setAttributesInJsxAttributes(
+    ts,
     node.attributes,
     {
       defaultMessage: opts.removeDefaultMessage
@@ -304,7 +323,8 @@ function extractMessageFromJsxComponent(
 }
 
 function setAttributesInObject(
-  node: ts.ObjectLiteralExpression,
+  ts: TypeScript,
+  node: typescript.ObjectLiteralExpression,
   msg: MessageDescriptor,
   ast?: boolean
 ) {
@@ -315,7 +335,7 @@ function setAttributesInObject(
           ts.createPropertyAssignment(
             'defaultMessage',
             ast
-              ? messageASTToTSNode(parse(msg.defaultMessage))
+              ? messageASTToTSNode(ts, parse(msg.defaultMessage))
               : ts.createStringLiteral(msg.defaultMessage)
           ),
         ]
@@ -338,7 +358,8 @@ function setAttributesInObject(
 }
 
 function setAttributesInJsxAttributes(
-  node: ts.JsxAttributes,
+  ts: TypeScript,
+  node: typescript.JsxAttributes,
   msg: MessageDescriptor,
   ast?: boolean
 ) {
@@ -354,7 +375,7 @@ function setAttributesInJsxAttributes(
             ast
               ? ts.createJsxExpression(
                   undefined,
-                  messageASTToTSNode(parse(msg.defaultMessage))
+                  messageASTToTSNode(ts, parse(msg.defaultMessage))
                 )
               : ts.createStringLiteral(msg.defaultMessage)
           ),
@@ -377,14 +398,15 @@ function setAttributesInJsxAttributes(
 }
 
 function extractMessagesFromCallExpression(
-  node: ts.CallExpression,
+  ts: TypeScript,
+  node: typescript.CallExpression,
   opts: Opts,
-  sf: ts.SourceFile
+  sf: typescript.SourceFile
 ): typeof node {
   const {onMsgExtracted} = opts;
-  if (isMultipleMessageDecl(node)) {
+  if (isMultipleMessageDecl(ts, node)) {
     const [arg, ...restArgs] = node.arguments;
-    let descriptorsObj: ts.ObjectLiteralExpression | undefined;
+    let descriptorsObj: typescript.ObjectLiteralExpression | undefined;
     if (ts.isObjectLiteralExpression(arg)) {
       descriptorsObj = arg;
     } else if (
@@ -396,13 +418,14 @@ function extractMessagesFromCallExpression(
     if (descriptorsObj) {
       const properties = descriptorsObj.properties;
       const msgs = properties
-        .filter<ts.PropertyAssignment>((prop): prop is ts.PropertyAssignment =>
-          ts.isPropertyAssignment(prop)
+        .filter<typescript.PropertyAssignment>(
+          (prop): prop is typescript.PropertyAssignment =>
+            ts.isPropertyAssignment(prop)
         )
         .map(
           prop =>
             ts.isObjectLiteralExpression(prop.initializer) &&
-            extractMessageDescriptor(prop.initializer, opts, sf)
+            extractMessageDescriptor(ts, prop.initializer, opts, sf)
         )
         .filter((msg): msg is MessageDescriptor => !!msg);
       if (!msgs.length) {
@@ -424,6 +447,7 @@ function extractMessagesFromCallExpression(
           return ts.createPropertyAssignment(
             prop.name,
             setAttributesInObject(
+              ts,
               prop.initializer,
               {
                 defaultMessage: opts.removeDefaultMessage
@@ -444,12 +468,12 @@ function extractMessagesFromCallExpression(
       );
     }
   } else if (
-    isSingularMessageDecl(node, opts.additionalComponentNames || []) ||
-    (opts.extractFromFormatMessageCall && isIntlFormatMessageCall(node))
+    isSingularMessageDecl(ts, node, opts.additionalComponentNames || []) ||
+    (opts.extractFromFormatMessageCall && isIntlFormatMessageCall(ts, node))
   ) {
     const [descriptorsObj, ...restArgs] = node.arguments;
     if (ts.isObjectLiteralExpression(descriptorsObj)) {
-      const msg = extractMessageDescriptor(descriptorsObj, opts, sf);
+      const msg = extractMessageDescriptor(ts, descriptorsObj, opts, sf);
       if (!msg) {
         return node;
       }
@@ -462,6 +486,7 @@ function extractMessagesFromCallExpression(
         node.typeArguments,
         ts.createNodeArray([
           setAttributesInObject(
+            ts,
             descriptorsObj,
             {
               defaultMessage: opts.removeDefaultMessage
@@ -482,15 +507,18 @@ function extractMessagesFromCallExpression(
 const PRAGMA_REGEX = /^\/\/ @([^\s]*) (.*)$/m;
 
 function getVisitor(
-  ctx: ts.TransformationContext,
-  sf: ts.SourceFile,
+  ts: TypeScript,
+  ctx: typescript.TransformationContext,
+  sf: typescript.SourceFile,
   opts: Opts
 ) {
-  const visitor: ts.Visitor = (node: ts.Node): ts.Node => {
+  const visitor: typescript.Visitor = (
+    node: typescript.Node
+  ): typescript.Node => {
     const newNode = ts.isCallExpression(node)
-      ? extractMessagesFromCallExpression(node, opts, sf)
+      ? extractMessagesFromCallExpression(ts, node, opts, sf)
       : ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)
-      ? extractMessageFromJsxComponent(node, opts, sf)
+      ? extractMessageFromJsxComponent(ts, node, opts, sf)
       : node;
 
     return ts.visitEachChild(newNode, visitor, ctx);
@@ -498,10 +526,10 @@ function getVisitor(
   return visitor;
 }
 
-export function transform(opts: Opts) {
+export function transformWithTs(ts: TypeScript, opts: Opts) {
   opts = {...DEFAULT_OPTS, ...opts};
-  const transformFn: ts.TransformerFactory<ts.SourceFile> = ctx => {
-    return (sf: ts.SourceFile) => {
+  const transformFn: typescript.TransformerFactory<typescript.SourceFile> = ctx => {
+    return (sf: typescript.SourceFile) => {
       const pragmaResult = PRAGMA_REGEX.exec(sf.text);
       if (pragmaResult) {
         const [, pragma, kvString] = pragmaResult;
@@ -517,9 +545,13 @@ export function transform(opts: Opts) {
           }
         }
       }
-      return ts.visitNode(sf, getVisitor(ctx, sf, opts));
+      return ts.visitNode(sf, getVisitor(ts, ctx, sf, opts));
     };
   };
 
   return transformFn;
+}
+
+export function transform(opts: Opts) {
+  return transformWithTs(typescript, opts);
 }

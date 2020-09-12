@@ -78,7 +78,41 @@ module.exports = {
 
 ### Via `ts-jest` in `jest.config.js`
 
-Take a look at [`ts-jest` guide](https://github.com/kulshekhar/ts-jest/blob/master/docs/user/config/astTransformers.md) on how to incorporate custom AST Transformers.
+`ts-jest` currently does not allow custom options to be passed into transformer. See https://github.com/kulshekhar/ts-jest/issues/1942 for more details. Therefore, you'd have to create a wrapper around this library and pass that into `ts-jest`.
+
+1. Create a module called `i18n-transformer.js` that has this content
+
+```js
+const {transformWithTs} = require('@formatjs/ts-transformer')
+
+exports.version = 1
+exports.name = 'i18n-transformer'
+
+exports.factory = function (cs) {
+  // See https://github.com/kulshekhar/ts-jest/issues/1942
+  return transformWithTs(cs.compilerModule, {
+    // options
+    overrideIdFn: '[sha512:contenthash:base64:6]',
+    ast: true,
+  })
+}
+```
+
+The follow this [guide](https://kulshekhar.github.io/ts-jest/user/config/astTransformers) to set AST transformers in your `package.json` or `jest.config.js`:
+
+```js
+// jest.config.js
+module.exports = {
+  // [...]
+  globals: {
+    'ts-jest': {
+      astTransformers: {
+        before: ['path/to/i18n-transformer'],
+      },
+    },
+  },
+}
+```
 
 ### Via `ttypescript`
 
