@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.9.1...@formatjs/ts-transformer@2.10.0) (2020-09-12)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** expose integration w/ ts-jest, fix [#2088](https://github.com/formatjs/formatjs/issues/2088) ([7e8fc33](https://github.com/formatjs/formatjs/commit/7e8fc33a431ac61fd9786a78178342b4f094216e))
+
+
+
+
+
 ## [2.9.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.9.0...@formatjs/ts-transformer@2.9.1) (2020-09-09)
 
 **Note:** Version bump only for package @formatjs/ts-transformer
