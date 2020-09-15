@@ -8,18 +8,17 @@
     "url": "https://github.com/formatjs/formatjs"
   },
   "scripts": {
-    "bazel:lint-fix": "yarn bazel:lint --lint=fix",
-    "bazel:lint-only": "yarn bazel:lint --lint=warn",
     "bazel:lint": "find . -type f \\( -name \"*.BUILD\" -or -name \"*.bzl\" -or -name WORKSPACE -or -name BUILD -or -name BUILD.bazel \\) ! -path \"*/node_modules/*\" | xargs buildifier -v --warnings=attr-cfg,attr-license,attr-non-empty,attr-output-default,attr-single-file,constant-glob,ctx-actions,ctx-args,depset-iteration,depset-union,dict-concatenation,duplicated-name,filetype,git-repository,http-archive,integer-division,load,load-on-top,native-build,native-package,out-of-order-load,output-group,package-name,package-on-top,positional-args,redefined-variable,repository-name,same-origin-load,string-iteration,unsorted-dict-items,unused-variable",
     "build": "bazel build //...",
+    "docs:start": "docusaurus start website",
+    "docs:deploy": "bazel run //website:deploy",
     "examples": "bazel run //packages/react-intl/examples",
-    "format:check": "yarn bazel:lint-only",
-    "format": "yarn bazel:lint-fix && bazel run :prettier_all",
+    "format": "yarn bazel:lint --lint=fix && bazel run :prettier_all",
     "karma:ci": "bazel test :karma-ci",
     "karma:local": "bazel test :karma",
     "release:next": "lerna version prerelease --yes && lerna exec --no-bail -- bazel run :publish --tag next",
     "release": "lerna version --yes && lerna exec --no-bail -- bazel run :publish",
-    "test": "yarn format:check && bazel test //..."
+    "test": "yarn bazel:lint --lint=warn && bazel test //..."
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
@@ -32,6 +31,11 @@
     "@bazel/typescript": "2.2.0",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-angular": "^11.0.0",
+    "@docusaurus/core": "^2.0.0-alpha.64",
+    "@docusaurus/plugin-google-analytics": "^2.0.0-alpha.64",
+    "@docusaurus/preset-classic": "^2.0.0-alpha.64",
+    "@docusaurus/theme-live-codeblock": "^2.0.0-alpha.64",
+    "@gongt/flat-yarn-install": "^1.0.2",
     "@rollup/plugin-alias": "^3.1.1",
     "@rollup/plugin-commonjs": "^15.0.0",
     "@rollup/plugin-json": "^4.0.3",
@@ -54,6 +58,7 @@
     "@typescript-eslint/parser": "~4.2.0",
     "benchmark": "^2.1.4",
     "chalk": "^4.0.0",
+    "classnames": "^2.2.6",
     "cldr-core": "^36.0.0",
     "cldr-dates-full": "^36.0.0",
     "cldr-localenames-full": "^36.0.0",
@@ -152,8 +157,20 @@
     ]
   },
   "devEngines": {
-    "node": ">= 8.x",
+    "node": ">= 10.x",
     "npm": "6.x"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "husky": {
     "hooks": {
