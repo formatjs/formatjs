@@ -46,16 +46,24 @@ function main({out}: minimist.ParsedArgs) {
     `/* @generated */	
 // prettier-ignore  
 export const languageAlias: Record<string, string> = ${JSON.stringify(
-      data.languageAlias
+      data.languageAlias,
+      undefined,
+      2
     )};
 export const territoryAlias: Record<string, string> = ${JSON.stringify(
-      data.territoryAlias
+      data.territoryAlias,
+      undefined,
+      2
     )};
 export const scriptAlias: Record<string, string> = ${JSON.stringify(
-      data.scriptAlias
+      data.scriptAlias,
+      undefined,
+      2
     )};
 export const variantAlias: Record<string, string> = ${JSON.stringify(
-      data.variantAlias
+      data.variantAlias,
+      undefined,
+      2
     )};
 `
   );

@@ -15,7 +15,7 @@ function main(args: minimist.ParsedArgs) {
     output,
     `// @generated
 // prettier-ignore
-export default ${JSON.stringify(Array.from(zones))}`
+export default ${JSON.stringify(Array.from(zones), undefined, 2)}`
   );
 }
 

@@ -364,7 +364,7 @@ if ('DateTimeFormat' in Intl && Intl.DateTimeFormat.__addTZData) {
       output,
       `// @generated
 // prettier-ignore
-export default ${JSON.stringify(pack(data))}`
+export default ${JSON.stringify(pack(data), undefined, 2)}`
     );
   }
 }
