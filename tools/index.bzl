@@ -121,7 +121,8 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], rollup_deps = []
     native.filegroup(
         name = name,
         srcs = BUNDLE_KARMA_TESTS,
-        visibility = ["//visibility:public"],
+        testonly = True,
+        visibility = ["//:__pkg__"],
     )
 
 def prettier_check(name, srcs, config = "//:.prettierrc.json"):

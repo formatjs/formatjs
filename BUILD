@@ -164,6 +164,7 @@ karma_test(
         "@npm//karma-sauce-launcher",
         "@npm//karma-jasmine-matchers",
     ] + KARMA_TESTS,
+    tags = ["manual"],
     templated_args = [
         "start",
         "$(rootpath //:karma.conf.js)",
@@ -174,6 +175,7 @@ karma_test(
 
 karma_test(
     name = "karma-ci",
+    size = "large",
     configuration_env_vars = [
         "SAUCE_USERNAME",
         "SAUCE_ACCESS_KEY",
@@ -185,6 +187,7 @@ karma_test(
         "@npm//karma-sauce-launcher",
         "@npm//karma-jasmine-matchers",
     ] + KARMA_TESTS,
+    tags = ["manual"],
     templated_args = [
         "start",
         "$(rootpath //:karma.conf.js)",

@@ -614,7 +614,8 @@ genrule(
         "pacificnew",
     ],
     outs = ZIC_OUT_FILES,
-    cmd = "/usr/sbin/zic -d $(@D)/zic $(SRCS)",
+    cmd = "zic -d $(@D)/zic $(SRCS)",
+    message = "Compiling zone files with zic",
 )
 
 ZONES = [
@@ -1049,7 +1050,8 @@ ZONES = [
     name = "zdump-%s" % zone,
     srcs = ["zic/%s" % zone],
     outs = ["zdump/%s" % zone],
-    cmd = "realpath $< | xargs /usr/bin/zdump -v > $@",
+    cmd = "realpath $< | xargs zdump -v > $@",
+    message = "zdump-ing %s" % zone,
 ) for zone in ZONES]
 
 genrule(
@@ -1057,5 +1059,6 @@ genrule(
     srcs = ["zdump/%s" % zone for zone in ZONES],
     outs = ["all.zdump"],
     cmd = "cat $(SRCS) > $@",
+    message = "Aggregating zdump output",
     visibility = ["//visibility:public"],
 )

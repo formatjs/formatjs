@@ -104,6 +104,7 @@ ts_compile(
 # Bc this is too big
 [jest_test(
     name = "unit-%s" % f[f.rindex("/") + 1:f.rindex(".")],
+    size = "large",
     srcs = SRCS + [f] + TEST_LOCALE_DATA + SNAPSHOTS,
     deps = TEST_DEPS,
 ) for f in TESTS]
@@ -315,11 +316,13 @@ rollup_bundle(
 
 test262_harness_test(
     name = "test262",
+    size = "large",
     data = [
         "test262-polyfill.js",
         "//:test262-all",
         "//:test262-numberformat",
     ],
+    tags = ["exclusive"],
     templated_args = [
         "--reporter-keys",
         "file,attrs,result",
