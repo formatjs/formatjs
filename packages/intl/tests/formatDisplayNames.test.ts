@@ -42,17 +42,20 @@ describe('format API', () => {
     });
 
     it('should return locale display name as string', function () {
-      expect(formatDisplayName('zh-Hans-SG')).toBe(
+      expect(formatDisplayName('zh-Hans-SG', {type: 'language'})).toBe(
         'Simplified Chinese (Singapore)'
       );
     });
 
     it('will return undefined if Intl.DisplayName would return undefined', function () {
       const displayName = new (Intl as any).DisplayNames('en', {
+        type: 'language',
         fallback: 'none',
       });
       expect(displayName.of('xx-XX')).toBeUndefined();
-      expect(formatDisplayName('xx-XX', {fallback: 'none'})).toBeUndefined();
+      expect(
+        formatDisplayName('xx-XX', {type: 'language', fallback: 'none'})
+      ).toBeUndefined();
     });
   });
 });

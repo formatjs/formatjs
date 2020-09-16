@@ -12,6 +12,7 @@ exports[`<FormattedDisplayName /> accepts Intl.DisplayNames options 1`] = `
 exports[`<FormattedDisplayName /> renders an empty <> when the underlying DisplayNames would return undefined 1`] = `
 <FormattedDisplayName
   fallback="none"
+  type="language"
   value="xx-XX"
 />
 `;

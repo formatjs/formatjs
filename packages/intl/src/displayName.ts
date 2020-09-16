@@ -24,7 +24,7 @@ export function formatDisplayName(
   },
   getDisplayNames: Formatters['getDisplayNames'],
   value: Parameters<IntlFormatters['formatDisplayName']>[0],
-  options: Parameters<IntlFormatters['formatDisplayName']>[1] = {}
+  options: Parameters<IntlFormatters['formatDisplayName']>[1]
 ): string | undefined {
   const DisplayNames: typeof IntlDisplayNames = (Intl as any).DisplayNames;
   if (!DisplayNames) {
