@@ -69,6 +69,7 @@ jest_test(
 
 jest_test(
     name = "integration",
+    size = "large",
     srcs = [
         "package.json",
         "bin/formatjs",
