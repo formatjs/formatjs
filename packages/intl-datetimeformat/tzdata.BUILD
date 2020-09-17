@@ -1,3 +1,5 @@
+load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary")
+
 exports_files([
     "backward",
 ])
@@ -1049,15 +1051,33 @@ ZONES = [
     "Pacific/Wallis",
 ]
 
+genrule(
+    name = "realpath_src",
+    srcs = [],
+    outs = ["realpath.js"],
+    cmd = "echo \"\
+const {realpathSync} = require('fs');\
+if (require.main === module) {\
+  console.log(realpathSync.native(process.argv[2], 'utf8'));\
+}\" > $@",
+)
+
+nodejs_binary(
+    name = "realpath",
+    data = [":realpath_src"],
+    entry_point = ":realpath.js",
+)
+
 [genrule(
     name = "zdump-%s" % zone,
     srcs = ["zic/%s" % zone],
     outs = ["zdump/%s" % zone],
-    # on Linux max abs time is 2039
+    # on Linux max abs time is 2038
     # TODO: Figure out why
-    cmd = "realpath $< | xargs $(location @tzcode//:zdump) -c 2038 -v > $@",
+    cmd = "$(location :realpath) $< | xargs $(location @tzcode//:zdump) -c 2038 -v > $@",
     message = "zdump-ing %s" % zone,
     tools = [
+        ":realpath",
         "@tzcode//:zdump",
     ],
 ) for zone in ZONES]
