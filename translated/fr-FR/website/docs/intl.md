@@ -43,11 +43,11 @@ The core of `@formatjs/intl` is the `intl` object (of type [`IntlShape`](#intlsh
 This allows you to create an `IntlShape` object that contains all `format*` methods. For example:
 
 ```tsx
-import {createIntl, createIntlCache} from '@formatjs/intl'
+import {createIntl, createIntlCache} from '@formatjs/intl';
 
 // This is optional but highly recommended
 // since it prevents memory leak
-const cache = createIntlCache()
+const cache = createIntlCache();
 
 const intl = createIntl(
   {
@@ -55,71 +55,71 @@ const intl = createIntl(
     messages: {},
   },
   cache
-)
+);
 
 // Call imperatively
-intl.formatNumber(20)
+intl.formatNumber(20);
 ```
 
 ## IntlShape
 
 ```ts
 interface IntlConfig {
-  locale: string
-  timeZone?: string
-  formats: CustomFormats
-  messages: Record<string, string> | Record<string, MessageFormatElement[]>
-  defaultLocale: string
-  defaultRichTextElements?: Record<string, FormatXMLElementFn<React.ReactNode>>
-  defaultFormats: CustomFormats
-  onError(err: string): void
+  locale: string;
+  timeZone?: string;
+  formats: CustomFormats;
+  messages: Record<string, string> | Record<string, MessageFormatElement[]>;
+  defaultLocale: string;
+  defaultRichTextElements?: Record<string, FormatXMLElementFn<React.ReactNode>>;
+  defaultFormats: CustomFormats;
+  onError(err: string): void;
 }
 
 interface IntlFormatters {
-  formatDate(value: number | Date | string, opts?: FormatDateOptions): string
-  formatTime(value: number | Date | string, opts?: FormatDateOptions): string
+  formatDate(value: number | Date | string, opts?: FormatDateOptions): string;
+  formatTime(value: number | Date | string, opts?: FormatDateOptions): string;
   formatDateToParts(
     value: number | Date | string,
     opts?: FormatDateOptions
-  ): Intl.DateTimeFormatPart[]
+  ): Intl.DateTimeFormatPart[];
   formatTimeToParts(
     value: number | Date | string,
     opts?: FormatDateOptions
-  ): Intl.DateTimeFormatPart[]
+  ): Intl.DateTimeFormatPart[];
   formatRelativeTime(
     value: number,
     unit?: FormattableUnit,
     opts?: FormatRelativeTimeOptions
-  ): string
-  formatNumber(value: number, opts?: FormatNumberOptions): string
+  ): string;
+  formatNumber(value: number, opts?: FormatNumberOptions): string;
   formatNumberToParts(
     value: number,
     opts?: FormatNumberOptions
-  ): Intl.NumberFormatPart[]
+  ): Intl.NumberFormatPart[];
   formatPlural(
     value: number | string,
     opts?: FormatPluralOptions
-  ): ReturnType<Intl.PluralRules['select']>
+  ): ReturnType<Intl.PluralRules['select']>;
   formatMessage(
     descriptor: MessageDescriptor,
     values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>
-  ): string
+  ): string;
   formatMessage(
     descriptor: MessageDescriptor,
     values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T, R>>
-  ): R
-  formatList(values: Array<string>, opts?: FormatListOptions): string
+  ): R;
+  formatList(values: Array<string>, opts?: FormatListOptions): string;
   formatList(
     values: Array<string | T>,
     opts?: FormatListOptions
-  ): T | string | Array<string | T>
+  ): T | string | Array<string | T>;
   formatDisplayName(
     value: string,
     opts?: FormatDisplayNameOptions
-  ): string | undefined
+  ): string | undefined;
 }
 
-type IntlShape = IntlConfig & IntlFormatters
+type IntlShape = IntlConfig & IntlFormatters;
 ```
 
 The definition above shows what the `intl` object will look like. It's made up of two parts:
@@ -149,7 +149,7 @@ A map of tag to rich text formatting function. This is meant to provide a centra
 function formatDate(
   value: number | Date,
   options?: Intl.DateTimeFormatOptions & {format?: string}
-): string
+): string;
 ```
 
 This function will return a formatted date string. It expects a `value` which can be parsed as a date (i.e., `isFinite(new Date(value))`), and accepts `options` that conform to `DateTimeFormatOptions`.
@@ -159,7 +159,7 @@ intl.formatDate(Date.now(), {
   year: 'numeric',
   month: 'numeric',
   day: 'numeric',
-})
+});
 ```
 
 ## formatTime
@@ -168,7 +168,7 @@ intl.formatDate(Date.now(), {
 function formatTime(
   value: number | Date,
   options?: Intl.DateTimeFormatOptions & {format?: string}
-): string
+): string;
 ```
 
 This function will return a formatted date string, but it differs from [`formatDate`](#formatdate) by having the following default options:
@@ -183,7 +183,7 @@ This function will return a formatted date string, but it differs from [`formatD
 It expects a `value` which can be parsed as a date (i.e., `isFinite(new Date(value))`), and accepts `options` that conform to `DateTimeFormatOptions`.
 
 ```tsx live
-intl.formatTime(Date.now()) // "4:03 PM"
+intl.formatTime(Date.now()); // "4:03 PM"
 ```
 
 ## formatRelativeTime
@@ -199,30 +199,30 @@ type Unit =
   | 'week'
   | 'month'
   | 'quarter'
-  | 'year'
+  | 'year';
 
 type RelativeTimeFormatOptions = {
-  numeric?: 'always' | 'auto'
-  style?: 'long' | 'short' | 'narrow'
-}
+  numeric?: 'always' | 'auto';
+  style?: 'long' | 'short' | 'narrow';
+};
 
 function formatRelativeTime(
   value: number,
   unit: Unit,
   options?: Intl.RelativeTimeFormatOptions & {
-    format?: string
+    format?: string;
   }
-): string
+): string;
 ```
 
 This function will return a formatted relative time string (e.g., "1 hour ago"). It expects a `value` which is a number, a `unit` and `options` that conform to `Intl.RelativeTimeFormatOptions`.
 
 ```tsx live
-intl.formatRelativeTime(0)
+intl.formatRelativeTime(0);
 ```
 
 ```tsx live
-intl.formatRelativeTime(-24, 'hour', {style: 'narrow'})
+intl.formatRelativeTime(-24, 'hour', {style: 'narrow'});
 ```
 
 ## formatNumber
@@ -233,13 +233,13 @@ This function uses [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/doc
 function formatNumber(
   value: number,
   options?: Intl.NumberFormatOptions & {format?: string}
-): string
+): string;
 ```
 
 This function will return a formatted number string. It expects a `value` which can be parsed as a number, and accepts `options` that conform to `NumberFormatOptions`.
 
 ```tsx live
-intl.formatNumber(1000, {style: 'currency', currency: 'USD'})
+intl.formatNumber(1000, {style: 'currency', currency: 'USD'});
 ```
 
 **Formatting Number using `unit`**
@@ -251,7 +251,7 @@ intl.formatNumber(1000, {
   style: 'unit',
   unit: 'kilobyte',
   unitDisplay: 'narrow',
-})
+});
 ```
 
 ```tsx live
@@ -259,20 +259,20 @@ intl.formatNumber(1000, {
   unit: 'fahrenheit',
   unitDisplay: 'long',
   style: 'unit',
-})
+});
 ```
 
 ## formatPlural
 
 ```ts
 type PluralFormatOptions = {
-  type?: 'cardinal' | 'ordinal' = 'cardinal'
-}
+  type?: 'cardinal' | 'ordinal' = 'cardinal';
+};
 
 function formatPlural(
   value: number,
   options?: Intl.PluralFormatOptions
-): 'zero' | 'one' | 'two' | 'few' | 'many' | 'other'
+): 'zero' | 'one' | 'two' | 'few' | 'many' | 'other';
 ```
 
 This function will return a plural category string: `"zero"`, `"one"`, `"two"`, `"few"`, `"many"`, or `"other"`. It expects a `value` which can be parsed as a number, and accepts `options` that conform to `PluralFormatOptions`.
@@ -280,15 +280,15 @@ This function will return a plural category string: `"zero"`, `"one"`, `"two"`, 
 This is a low-level utility whose output could be provided to a `switch` statement to select a particular string to display.
 
 ```tsx live
-intl.formatPlural(1)
+intl.formatPlural(1);
 ```
 
 ```tsx live
-intl.formatPlural(3, {style: 'ordinal'})
+intl.formatPlural(3, {style: 'ordinal'});
 ```
 
 ```tsx live
-intl.formatPlural(4, {style: 'ordinal'})
+intl.formatPlural(4, {style: 'ordinal'});
 ```
 
 :::danger multiple language support This function should only be used in apps that only need to support one language. If your app supports multiple languages use [`formatMessage`](#formatmessage) instead. :::
@@ -299,24 +299,24 @@ intl.formatPlural(4, {style: 'ordinal'})
 
 ```ts
 type ListFormatOptions = {
-  type?: 'disjunction' | 'conjunction' | 'unit'
-  style?: 'long' | 'short' | 'narrow'
-}
+  type?: 'disjunction' | 'conjunction' | 'unit';
+  style?: 'long' | 'short' | 'narrow';
+};
 
 function formatList(
   elements: (string | React.ReactNode)[],
   options?: Intl.ListFormatOptions
-): string | React.ReactNode[]
+): string | React.ReactNode[];
 ```
 
 This function allows you to join list of things together in an i18n-safe way. For example, when the locale is `en`:
 
 ```tsx live
-intl.formatList(['Me', 'myself', 'I'], {type: 'conjunction'})
+intl.formatList(['Me', 'myself', 'I'], {type: 'conjunction'});
 ```
 
 ```tsx live
-intl.formatList(['5 hours', '3 minutes'], {type: 'unit'})
+intl.formatList(['5 hours', '3 minutes'], {type: 'unit'});
 ```
 
 ## formatDisplayName
@@ -325,36 +325,36 @@ intl.formatList(['5 hours', '3 minutes'], {type: 'unit'})
 
 ```ts
 type FormatDisplayNameOptions = {
-  style?: 'narrow' | 'short' | 'long'
-  type?: 'language' | 'region' | 'script' | 'currency'
-  fallback?: 'code' | 'none'
-}
+  style?: 'narrow' | 'short' | 'long';
+  type?: 'language' | 'region' | 'script' | 'currency';
+  fallback?: 'code' | 'none';
+};
 
 function formatDisplayName(
   value: string | number | object,
   options?: FormatDisplayNameOptions
-): string | undefined
+): string | undefined;
 ```
 
 Usage examples:
 
 ```ts live
-intl.formatDisplayName('zh-Hans-SG')
+intl.formatDisplayName('zh-Hans-SG', {type: 'language'});
 ```
 
 ```ts live
 // ISO-15924 four letters script code to localized display name
-intl.formatDisplayName('Deva', {type: 'script'})
+intl.formatDisplayName('Deva', {type: 'script'});
 ```
 
 ```ts live
 // ISO-4217 currency code to localized display name
-intl.formatDisplayName('CNY', {type: 'currency'})
+intl.formatDisplayName('CNY', {type: 'currency'});
 ```
 
 ```ts live
 // ISO-3166 two letters region code to localized display name
-intl.formatDisplayName('UN', {type: 'region'})
+intl.formatDisplayName('UN', {type: 'region'});
 ```
 
 ## formatMessage
@@ -391,10 +391,10 @@ React Intl has a Message Descriptor concept which is used to define your app's d
 
 ```tsx
 type MessageDescriptor = {
-  id: string
-  defaultMessage?: string
-  description?: string | object
-}
+  id: string;
+  defaultMessage?: string;
+  description?: string | object;
+};
 ```
 
 :::info Extracting Message Descriptor You can extract inline-declared messages from source files using [our CLI](http://localhost:3000/docs/getting-started/message-extraction). :::
@@ -414,18 +414,18 @@ Above, "source" refers to using the template as is, without any substitutions ma
 ### Usage
 
 ```ts
-type MessageFormatPrimitiveValue = string | number | boolean | null | undefined
+type MessageFormatPrimitiveValue = string | number | boolean | null | undefined;
 function formatMessage(
   descriptor: MessageDescriptor,
   values?: Record<string, MessageFormatPrimitiveValue>
-): string
+): string;
 function formatMessage(
   descriptor: MessageDescriptor,
   values?: Record<
     string,
     MessageFormatPrimitiveValue | React.ReactElement | FormatXMLElementFn
   >
-): string | React.ReactNodeArray
+): string | React.ReactNodeArray;
 ```
 
 This function will return a formatted message string. It expects a `MessageDescriptor` with at least an `id` property, and accepts a shallow `values` object which are used to fill placeholders in the message.
@@ -489,22 +489,22 @@ The message we defined using [`defineMessages`](#definemessages) to support extr
 
 ```ts
 interface MessageDescriptor {
-  id?: string
-  description?: string | object
-  defaultMessage?: string
+  id?: string;
+  description?: string | object;
+  defaultMessage?: string;
 }
 
 function defineMessages(
   messageDescriptors: Record<string, MessageDescriptor>
-): Record<string, MessageDescriptor>
+): Record<string, MessageDescriptor>;
 
-function defineMessage(messageDescriptor: MessageDescriptor): MessageDescriptor
+function defineMessage(messageDescriptor: MessageDescriptor): MessageDescriptor;
 ```
 
 These functions is exported by the `@formatjs/intl` package and is simply a _hook_ for our CLI & babel/TS plugin to use when compiling default messages defined in JavaScript source files. This function simply returns the Message Descriptor map object that's passed-in.
 
 ```ts
-import {defineMessages, defineMessage} from '@formatjs/intl'
+import {defineMessages, defineMessage} from '@formatjs/intl';
 
 const messages = defineMessages({
   greeting: {
@@ -512,11 +512,11 @@ const messages = defineMessages({
     description: 'Message to greet the user.',
     defaultMessage: 'Hello, {name}!',
   },
-})
+});
 
 const msg = defineMessage({
   id: 'single',
   defaultMessage: 'single message',
   description: 'header',
-})
+});
 ```

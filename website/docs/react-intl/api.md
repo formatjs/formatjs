@@ -388,7 +388,7 @@ function formatDisplayName(
 Usage examples:
 
 ```ts live
-intl.formatDisplayName('zh-Hans-SG')
+intl.formatDisplayName('zh-Hans-SG', {type: 'language'})
 ```
 
 ```ts live
