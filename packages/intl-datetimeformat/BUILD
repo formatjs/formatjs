@@ -201,10 +201,9 @@ generate_src_file(
     src = "src/data/all-tz.ts",
     args = [
         "$(execpath scripts/process-zdump.ts)",
-        "--input",
-        "$(location @tzdata//:all.zdump)",
         "--output",
         "$@",
+        "$(locations @tzdata//:zdumps)",
     ],
     data = [
         "scripts/process-zdump.ts",
@@ -218,7 +217,7 @@ generate_src_file(
         "@npm//@types/node",
         "@npm//fs-extra",
         "@npm//minimist",
-        "@tzdata//:all.zdump",
+        "@tzdata//:zdumps",
     ],
 )
 
@@ -230,10 +229,9 @@ ts_node(
     args = [
         "$(execpath scripts/process-zdump.ts)",
         "--polyfill",
-        "--input",
-        "$(location @tzdata//:all.zdump)",
         "--output",
         "$@",
+        "$(locations @tzdata//:zdumps)",
     ],
     data = [
         "scripts/process-zdump.ts",
@@ -247,7 +245,7 @@ ts_node(
         "@npm//@types/node",
         "@npm//fs-extra",
         "@npm//minimist",
-        "@tzdata//:all.zdump",
+        "@tzdata//:zdumps",
     ],
 )
 
@@ -259,10 +257,9 @@ ts_node(
         "$(execpath scripts/process-zdump.ts)",
         "--golden",
         "--polyfill",
-        "--input",
-        "$(location @tzdata//:all.zdump)",
         "--output",
         "$@",
+        "$(locations @tzdata//:zdumps)",
     ],
     data = [
         "scripts/process-zdump.ts",
@@ -276,7 +273,7 @@ ts_node(
         "@npm//@types/node",
         "@npm//fs-extra",
         "@npm//minimist",
-        "@tzdata//:all.zdump",
+        "@tzdata//:zdumps",
     ],
 )
 

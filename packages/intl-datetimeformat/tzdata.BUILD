@@ -1060,11 +1060,8 @@ ZONES = [
     ],
 ) for zone in ZONES]
 
-genrule(
-    name = "zdump",
+filegroup(
+    name = "zdumps",
     srcs = ["zdump/%s" % zone for zone in ZONES],
-    outs = ["all.zdump"],
-    cmd = "cat $(SRCS) > $@",
-    message = "Aggregating zdump output",
     visibility = ["//visibility:public"],
 )
