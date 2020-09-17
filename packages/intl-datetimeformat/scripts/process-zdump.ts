@@ -1,10 +1,13 @@
 import minimist from 'minimist';
 import {execFile as _execFile} from 'child_process';
-import {readFileSync} from 'fs';
+import {readFile as _readFile} from 'fs';
+import {promisify} from 'util';
 import {outputFileSync} from 'fs-extra';
 import {UnpackedData, ZoneData} from '../src/types';
 import {pack} from '../src/packer';
+import stringify from 'json-stable-stringify';
 
+const readFile = promisify(_readFile);
 const SPACE_REGEX = /[\s\t]+/;
 
 const MONTHS = [
@@ -295,21 +298,14 @@ function utTimeToSeconds(utTime: string) {
   );
 }
 
-const LINE_REGEX = /^(.*?)\s+(.*?) UT = (.*?) isdst=(0|1) gmtoff=(.*?)$/i;
+const LINE_REGEX = /^(.*?)\s+(.*?) UTC? = (.*?) isdst=(0|1) gmtoff=(.*?)$/i;
 
-async function main(args: minimist.ParsedArgs) {
-  const {input, polyfill, output, golden} = args;
-  const content = readFileSync(input, 'utf8');
-  const zones: Record<string, ZoneData[]> = {};
+function processZone(
+  content: string,
+  {zones, abbrvs, offsets}: UnpackedData,
+  golden?: string
+) {
   const lines = content.split('\n');
-  const abbrvs: string[] = [];
-  const offsets: number[] = [];
-  const data: UnpackedData = {
-    zones,
-    abbrvs,
-    offsets,
-  };
-
   for (const line of lines) {
     if (line.endsWith('NULL')) {
       continue;
@@ -349,6 +345,27 @@ async function main(args: minimist.ParsedArgs) {
       }
     }
   }
+}
+
+async function main(args: minimist.ParsedArgs) {
+  const {_: files, polyfill, output, golden} = args;
+  const inputs = files.slice(2);
+  inputs.sort(); // sort so result is stable
+
+  const zones: Record<string, ZoneData[]> = {};
+  const abbrvs: string[] = [];
+  const offsets: number[] = [];
+  const data: UnpackedData = {
+    zones,
+    abbrvs,
+    offsets,
+  };
+
+  const contents = await Promise.all(
+    inputs.map((input: string) => readFile(input, 'utf8'))
+  );
+
+  processZone(contents.join('\n'), data, golden);
 
   if (polyfill) {
     outputFileSync(
@@ -364,7 +381,9 @@ if ('DateTimeFormat' in Intl && Intl.DateTimeFormat.__addTZData) {
       output,
       `// @generated
 // prettier-ignore
-export default ${JSON.stringify(pack(data), undefined, 2)}`
+export default ${stringify(pack(data), {
+        space: 2,
+      })}`
     );
   }
 }

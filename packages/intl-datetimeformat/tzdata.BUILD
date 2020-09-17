@@ -614,8 +614,11 @@ genrule(
         "pacificnew",
     ],
     outs = ZIC_OUT_FILES,
-    cmd = "zic -d $(@D)/zic $(SRCS)",
+    cmd = "$(location @tzcode//:zic) -d $(@D)/zic $(SRCS)",
     message = "Compiling zone files with zic",
+    tools = [
+        "@tzcode//:zic",
+    ],
 )
 
 ZONES = [
@@ -1050,15 +1053,17 @@ ZONES = [
     name = "zdump-%s" % zone,
     srcs = ["zic/%s" % zone],
     outs = ["zdump/%s" % zone],
-    cmd = "realpath $< | xargs zdump -v > $@",
+    # on Linux max abs time is 2039
+    # TODO: Figure out why
+    cmd = "realpath $< | xargs $(location @tzcode//:zdump) -c 2038 -v > $@",
     message = "zdump-ing %s" % zone,
+    tools = [
+        "@tzcode//:zdump",
+    ],
 ) for zone in ZONES]
 
-genrule(
-    name = "zdump",
+filegroup(
+    name = "zdumps",
     srcs = ["zdump/%s" % zone for zone in ZONES],
-    outs = ["all.zdump"],
-    cmd = "cat $(SRCS) > $@",
-    message = "Aggregating zdump output",
     visibility = ["//visibility:public"],
 )
