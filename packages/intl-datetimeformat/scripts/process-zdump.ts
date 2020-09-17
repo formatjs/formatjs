@@ -295,7 +295,7 @@ function utTimeToSeconds(utTime: string) {
   );
 }
 
-const LINE_REGEX = /^(.*?)\s+(.*?) UT = (.*?) isdst=(0|1) gmtoff=(.*?)$/i;
+const LINE_REGEX = /^(.*?)\s+(.*?) UTC? = (.*?) isdst=(0|1) gmtoff=(.*?)$/i;
 
 async function main(args: minimist.ParsedArgs) {
   const {input, polyfill, output, golden} = args;

@@ -376,6 +376,7 @@ prettier_check(
         exclude = [
             "BUILD",
             "tzdata.BUILD",
+            "tzcode.BUILD",
             "CHANGELOG.md",
             "tests/locale-data/*",
             "src/data/*",

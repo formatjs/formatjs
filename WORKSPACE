@@ -44,6 +44,13 @@ http_archive(
     urls = ["https://data.iana.org/time-zones/releases/tzdata2020a.tar.gz"],
 )
 
+http_archive(
+    name = "tzcode",
+    build_file = "@//:packages/intl-datetimeformat/tzcode.BUILD",
+    sha256 = "7d2af7120ee03df71fbca24031ccaf42404752e639196fe93c79a41b38a6d669",
+    urls = ["https://data.iana.org/time-zones/releases/tzcode2020a.tar.gz"],
+)
+
 load("@build_bazel_rules_nodejs//:index.bzl", "yarn_install")
 
 # node_repositories(
