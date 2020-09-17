@@ -2,8 +2,10 @@ import {UnpackedData, PackedData} from './types';
 import {UnpackedZoneData} from '@formatjs/ecma402-abstract';
 
 export function pack(data: UnpackedData): PackedData {
+  const zoneNames = Object.keys(data.zones);
+  zoneNames.sort(); // so output is stable
   return {
-    zones: Object.keys(data.zones).map(zone =>
+    zones: zoneNames.map(zone =>
       [
         zone,
         ...data.zones[zone].map(([ts, ...others]) =>

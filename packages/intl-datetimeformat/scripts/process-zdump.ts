@@ -5,6 +5,7 @@ import {promisify} from 'util';
 import {outputFileSync} from 'fs-extra';
 import {UnpackedData, ZoneData} from '../src/types';
 import {pack} from '../src/packer';
+import stringify from 'json-stable-stringify';
 
 const readFile = promisify(_readFile);
 const SPACE_REGEX = /[\s\t]+/;
@@ -299,12 +300,11 @@ function utTimeToSeconds(utTime: string) {
 
 const LINE_REGEX = /^(.*?)\s+(.*?) UTC? = (.*?) isdst=(0|1) gmtoff=(.*?)$/i;
 
-async function processZone(
-  input: string,
+function processZone(
+  content: string,
   {zones, abbrvs, offsets}: UnpackedData,
   golden?: string
 ) {
-  const content = await readFile(input, 'utf8');
   const lines = content.split('\n');
   for (const line of lines) {
     if (line.endsWith('NULL')) {
@@ -361,9 +361,11 @@ async function main(args: minimist.ParsedArgs) {
     offsets,
   };
 
-  await Promise.all(
-    inputs.map((input: string) => processZone(input, data, golden))
+  const contents = await Promise.all(
+    inputs.map((input: string) => readFile(input, 'utf8'))
   );
+
+  processZone(contents.join('\n'), data, golden);
 
   if (polyfill) {
     outputFileSync(
@@ -379,7 +381,9 @@ if ('DateTimeFormat' in Intl && Intl.DateTimeFormat.__addTZData) {
       output,
       `// @generated
 // prettier-ignore
-export default ${JSON.stringify(pack(data), undefined, 2)}`
+export default ${stringify(pack(data), {
+        space: 2,
+      })}`
     );
   }
 }
