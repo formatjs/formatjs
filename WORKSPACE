@@ -51,7 +51,13 @@ http_archive(
     urls = ["https://data.iana.org/time-zones/releases/tzcode2020a.tar.gz"],
 )
 
-load("@build_bazel_rules_nodejs//:index.bzl", "yarn_install")
+load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "yarn_install")
+
+node_repositories(
+    node_version = "12.18.3",
+    package_json = ["//:package.json"],
+    yarn_version = "1.22.4",
+)
 
 # node_repositories(
 #     node_version = "14.5.0",

@@ -1053,7 +1053,7 @@ ZONES = [
     name = "zdump-%s" % zone,
     srcs = ["zic/%s" % zone],
     outs = ["zdump/%s" % zone],
-    cmd = "realpath $< | xargs $(location @tzcode//:zdump) -v > $@",
+    cmd = "realpath $< | xargs $(location @tzcode//:zdump) -c -500,2100 -v > $@",
     message = "zdump-ing %s" % zone,
     tools = [
         "@tzcode//:zdump",
