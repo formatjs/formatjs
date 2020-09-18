@@ -58,7 +58,6 @@ SRCS = glob(
 
 TESTS = glob([
     "tests/*.test.ts",
-    "tests/__snapshots__/*.snap",
 ])
 
 SRC_DEPS = [
@@ -80,11 +79,11 @@ ts_compile(
     deps = SRC_DEPS,
 )
 
-jest_test(
-    name = "unit",
-    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
+[jest_test(
+    name = "unit-%s" % t[t.index("/") + 1:t.index(".test")],
+    srcs = SRCS + [t] + TEST_LOCALE_DATA,
     deps = TEST_DEPS,
-)
+) for t in TESTS]
 
 # CLDR
 CLDR_DEPS = [
