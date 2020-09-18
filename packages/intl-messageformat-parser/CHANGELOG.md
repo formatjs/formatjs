@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.7](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.6...intl-messageformat-parser@6.0.7) (2020-09-18)
+
+**Note:** Version bump only for package intl-messageformat-parser
+
+
+
+
+
 ## [6.0.6](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.5...intl-messageformat-parser@6.0.6) (2020-09-09)
 
 **Note:** Version bump only for package intl-messageformat-parser

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.7...@formatjs/intl-displaynames@3.3.8) (2020-09-18)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** follow ES2021 spec and make type option required ([#2103](https://github.com/formatjs/formatjs/issues/2103)) ([3e00688](https://github.com/formatjs/formatjs/commit/3e00688f955587ac155c9d6c2fa519b07df17a70))
+
+
+
+
+
 ## [3.3.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.6...@formatjs/intl-displaynames@3.3.7) (2020-09-09)
 
 
