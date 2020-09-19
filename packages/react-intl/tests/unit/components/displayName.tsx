@@ -41,6 +41,7 @@ describe('<FormattedDisplayName />', () => {
   it('renders an empty <> when the underlying DisplayNames would return undefined', () => {
     // When fallback is none, it will return undefined if no display name is available.
     const displayNames = new (Intl as any).DisplayNames('en', {
+      type: 'language',
       fallback: 'none',
     });
     expect(displayNames.of('xx-XX')).toBeUndefined();
@@ -48,6 +49,7 @@ describe('<FormattedDisplayName />', () => {
     // Now let's do the same with <FormattedDisplayNames />
     const rendered = mountWithProvider(
       {
+        type: 'language',
         fallback: 'none',
         value: 'xx-XX',
       },

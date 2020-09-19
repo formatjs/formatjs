@@ -15,12 +15,6 @@ You can sign-up using this [invitation link](https://join.slack.com/t/formatjs/s
 
 We currently use [`bazel`](https://bazel.build/) to develop, along with [lerna](https://lerna.js.org/) for package management.
 
-Required UNIX dependencies:
-
-- `zic` for `intl-datetimeformat` tz compilation
-- `zdump` for `intl-datetimeformat` tz dump
-- `realpath` for absolute path resolution
-
 To setup locally, first initialize the git submodule:
 
 ```sh

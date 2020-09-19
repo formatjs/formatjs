@@ -168,7 +168,7 @@ export function PartitionDateTimePattern(
     } else if (p === 'ampm') {
       const v = tm.hour;
       let fv;
-      if (v >= 11) {
+      if (v > 11) {
         fv = dataLocaleData.pm;
       } else {
         fv = dataLocaleData.am;

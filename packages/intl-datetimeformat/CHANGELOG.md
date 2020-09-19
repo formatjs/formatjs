@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.6...@formatjs/intl-datetimeformat@2.6.7) (2020-09-18)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix am/pm logic, fix [#2106](https://github.com/formatjs/formatjs/issues/2106) ([a36567b](https://github.com/formatjs/formatjs/commit/a36567b9d42adfb6391278c332c91eb94a35833b))
+
+
+
+
+
 ## [2.6.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.5...@formatjs/intl-datetimeformat@2.6.6) (2020-09-09)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat

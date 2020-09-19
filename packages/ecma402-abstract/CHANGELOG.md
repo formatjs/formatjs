@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.2.1...@formatjs/ecma402-abstract@1.2.2) (2020-09-18)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix am/pm logic, fix [#2106](https://github.com/formatjs/formatjs/issues/2106) ([a36567b](https://github.com/formatjs/formatjs/commit/a36567b9d42adfb6391278c332c91eb94a35833b))
+
+
+
+
+
 ## [1.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.2.0...@formatjs/ecma402-abstract@1.2.1) (2020-09-09)
 
 

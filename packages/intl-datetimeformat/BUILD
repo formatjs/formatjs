@@ -58,7 +58,6 @@ SRCS = glob(
 
 TESTS = glob([
     "tests/*.test.ts",
-    "tests/__snapshots__/*.snap",
 ])
 
 SRC_DEPS = [
@@ -80,11 +79,11 @@ ts_compile(
     deps = SRC_DEPS,
 )
 
-jest_test(
-    name = "unit",
-    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
+[jest_test(
+    name = "unit-%s" % t[t.index("/") + 1:t.index(".test")],
+    srcs = SRCS + [t] + TEST_LOCALE_DATA,
     deps = TEST_DEPS,
-)
+) for t in TESTS]
 
 # CLDR
 CLDR_DEPS = [
@@ -201,10 +200,9 @@ generate_src_file(
     src = "src/data/all-tz.ts",
     args = [
         "$(execpath scripts/process-zdump.ts)",
-        "--input",
-        "$(location @tzdata//:all.zdump)",
         "--output",
         "$@",
+        "$(locations @tzdata//:zdumps)",
     ],
     data = [
         "scripts/process-zdump.ts",
@@ -214,11 +212,13 @@ generate_src_file(
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
         "@npm//@types/fs-extra",
+        "@npm//@types/json-stable-stringify",
         "@npm//@types/minimist",
         "@npm//@types/node",
         "@npm//fs-extra",
+        "@npm//json-stable-stringify",
         "@npm//minimist",
-        "@tzdata//:all.zdump",
+        "@tzdata//:zdumps",
     ],
 )
 
@@ -230,10 +230,9 @@ ts_node(
     args = [
         "$(execpath scripts/process-zdump.ts)",
         "--polyfill",
-        "--input",
-        "$(location @tzdata//:all.zdump)",
         "--output",
         "$@",
+        "$(locations @tzdata//:zdumps)",
     ],
     data = [
         "scripts/process-zdump.ts",
@@ -243,11 +242,13 @@ ts_node(
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
         "@npm//@types/fs-extra",
+        "@npm//@types/json-stable-stringify",
         "@npm//@types/minimist",
         "@npm//@types/node",
         "@npm//fs-extra",
+        "@npm//json-stable-stringify",
         "@npm//minimist",
-        "@tzdata//:all.zdump",
+        "@tzdata//:zdumps",
     ],
 )
 
@@ -259,10 +260,9 @@ ts_node(
         "$(execpath scripts/process-zdump.ts)",
         "--golden",
         "--polyfill",
-        "--input",
-        "$(location @tzdata//:all.zdump)",
         "--output",
         "$@",
+        "$(locations @tzdata//:zdumps)",
     ],
     data = [
         "scripts/process-zdump.ts",
@@ -272,11 +272,13 @@ ts_node(
         "//packages/ecma402-abstract:dist",
         "//packages/ecma402-abstract:types",
         "@npm//@types/fs-extra",
+        "@npm//@types/json-stable-stringify",
         "@npm//@types/minimist",
         "@npm//@types/node",
         "@npm//fs-extra",
+        "@npm//json-stable-stringify",
         "@npm//minimist",
-        "@tzdata//:all.zdump",
+        "@tzdata//:zdumps",
     ],
 )
 
@@ -376,6 +378,7 @@ prettier_check(
         exclude = [
             "BUILD",
             "tzdata.BUILD",
+            "tzcode.BUILD",
             "CHANGELOG.md",
             "tests/locale-data/*",
             "src/data/*",

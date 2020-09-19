@@ -136,4 +136,13 @@ describe('Intl.DateTimeFormat', function () {
       )
     ).toBe('Wed');
   });
+  it('test #2106', function () {
+    expect(
+      new DateTimeFormat('en', {
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: 'Europe/Amsterdam',
+      }).format(new Date('2020-09-16T11:55:32.491+02:00'))
+    ).toBe('11:55 AM');
+  });
 });

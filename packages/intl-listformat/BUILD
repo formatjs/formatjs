@@ -211,11 +211,13 @@ rollup_bundle(
 
 test262_harness_test(
     name = "test262",
+    size = "large",
     data = [
         "test262-polyfill.js",
         "//:test262-all",
         "//:test262-listformat",
     ],
+    tags = ["exclusive"],
     templated_args = [
         "--reporter-keys",
         "file,attrs,result",

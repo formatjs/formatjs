@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.8.2](https://github.com/formatjs/formatjs/compare/react-intl@5.8.1...react-intl@5.8.2) (2020-09-18)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** follow ES2021 spec and make type option required ([#2103](https://github.com/formatjs/formatjs/issues/2103)) ([3e00688](https://github.com/formatjs/formatjs/commit/3e00688f955587ac155c9d6c2fa519b07df17a70))
+
+
+
+
+
 ## [5.8.1](https://github.com/formatjs/formatjs/compare/react-intl@5.8.0...react-intl@5.8.1) (2020-09-09)
 
 

@@ -19,7 +19,7 @@
     "karma:local": "bazel test :karma",
     "release:next": "lerna version prerelease --yes && lerna exec --no-bail -- bazel run :publish --tag next",
     "release": "lerna version --yes && lerna exec --no-bail -- bazel run :publish",
-    "test": "yarn format:check && bazel test $(bazel query 'filter(\"^((?!karma).)*$\", kind(\".*_test rule\", //...))')"
+    "test": "yarn format:check && bazel test //..."
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
@@ -30,8 +30,8 @@
     "@bazel/rollup": "2.2.0",
     "@bazel/terser": "2.2.0",
     "@bazel/typescript": "2.2.0",
-    "@commitlint/cli": "^9.0.1",
-    "@commitlint/config-angular": "^9.0.1",
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-angular": "^11.0.0",
     "@rollup/plugin-alias": "^3.1.1",
     "@rollup/plugin-commonjs": "^15.0.0",
     "@rollup/plugin-json": "^4.0.3",

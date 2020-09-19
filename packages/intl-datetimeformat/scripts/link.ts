@@ -16,7 +16,7 @@ function main(args: minimist.ParsedArgs) {
     output,
     `// @generated
 // prettier-ignore
-export default ${JSON.stringify(linkMap)}`
+export default ${JSON.stringify(linkMap, undefined, 2)}`
   );
 }
 

@@ -17,7 +17,7 @@ import {
 export interface DisplayNamesOptions {
   localeMatcher?: 'lookup' | 'best fit';
   style?: 'narrow' | 'short' | 'long';
-  type?: 'language' | 'region' | 'script' | 'currency';
+  type: 'language' | 'region' | 'script' | 'currency';
   fallback?: 'code' | 'none';
 }
 
@@ -69,8 +69,12 @@ export class DisplayNames {
       'type',
       'string',
       ['language', 'currency', 'region', 'script'],
-      'language'
+      undefined
     );
+    if (type === undefined) {
+      throw TypeError(`Intl.DisplayNames constructor requires "type" option`);
+    }
+
     setSlot(this, 'type', type);
 
     const fallback = GetOption(

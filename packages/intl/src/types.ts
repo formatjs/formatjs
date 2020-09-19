@@ -134,7 +134,7 @@ export interface IntlFormatters<T = any, R = T> {
   ): T | string | Array<string | T>;
   formatDisplayName(
     value: Parameters<DisplayNames['of']>[0],
-    opts?: FormatDisplayNameOptions
+    opts: FormatDisplayNameOptions
   ): string | undefined;
 }
 
