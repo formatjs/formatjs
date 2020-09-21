@@ -208,6 +208,7 @@ We provide the following built-in formatters to integrate with 3rd party TMSes:
 | [Phrase](https://help.phrase.com/help/simple-json)                                        | `simple`    |
 | [Crowdin Chrome JSON](https://support.crowdin.com/file-formats/chrome-json/)              | `crowdin`   |
 | [Lokalise Structured JSON](https://docs.lokalise.com/en/articles/3229161-structured-json) | `lokalise`  |
+| [locize](https://docs.locize.com/integration/supported-formats#json-nested)               | `simple`    |
 
 ## Custom Formatters
 
