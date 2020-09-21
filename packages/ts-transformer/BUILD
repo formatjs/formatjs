@@ -24,7 +24,10 @@ alias(
     actual = "%s.pack" % PACKAGE_NAME,
 )
 
-SRCS = glob(["src/*.ts"]) + ["index.ts"]
+SRCS = glob([
+    "src/*.ts",
+    "*.ts",
+])
 
 SRC_DEPS = [
     "@npm//typescript",
@@ -42,11 +45,23 @@ ts_compile(
 jest_test(
     name = "unit",
     srcs = SRCS + glob([
-        "tests/**/*.ts",
-        "tests/**/*.tsx",
-        "tests/**/*.snap",
+        "tests/*.ts*",
+        "tests/fixtures/*.ts*",
+        "tests/__snapshots__/*.snap",
     ]),
     deps = SRC_DEPS + [
+        "//packages/intl-messageformat-parser:types",
+    ],
+)
+
+jest_test(
+    name = "integration",
+    srcs = SRCS + glob([
+        "tests/integration/*.ts*",
+    ]),
+    jest_config = "tests/integration/jest.config.js",
+    deps = [
+        ":dist",
         "//packages/intl-messageformat-parser:types",
     ],
 )

@@ -20,6 +20,9 @@
     "intl-messageformat-parser": "^6.0.7",
     "typescript": "^4.0"
   },
+  "peerDependencies": {
+    "ts-jest": "^26.4.0"
+  },
   "author": "Long Ho <holevietlong@gmail.com>",
   "license": "MIT",
   "bugs": {
