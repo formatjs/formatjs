@@ -12,6 +12,7 @@ import {
   DisplayNamesData,
   ToString,
   CanonicalizeLocaleList,
+  ToObject,
 } from '@formatjs/ecma402-abstract';
 
 export interface DisplayNamesOptions {
@@ -30,26 +31,29 @@ export interface DisplayNamesResolvedOptions {
 
 export class DisplayNames {
   constructor(
-    locales?: string | string[],
-    options: DisplayNamesOptions = Object.create(null)
+    locales: string | string[] | undefined,
+    options: DisplayNamesOptions
   ) {
     if (new.target === undefined) {
       throw TypeError(`Constructor Intl.DisplayNames requires 'new'`);
     }
     const requestedLocales = CanonicalizeLocaleList(locales);
-
+    options = ToObject(options);
+    const opt = Object.create(null);
+    const {localeData} = DisplayNames;
     const matcher = GetOption(
-      options!,
+      options,
       'localeMatcher',
       'string',
       ['lookup', 'best fit'],
       'best fit'
     );
+    opt.localeMatcher = matcher;
 
     const r = ResolveLocale(
       DisplayNames.availableLocales,
       requestedLocales,
-      {localeMatcher: matcher},
+      opt,
       [], // there is no relevantExtensionKeys
       DisplayNames.localeData,
       DisplayNames.getDefaultLocale
@@ -88,12 +92,25 @@ export class DisplayNames {
     setSlot(this, 'locale', r.locale);
 
     const {dataLocale} = r;
-    const dataLocaleData = DisplayNames.localeData[dataLocale];
+    const dataLocaleData = localeData[dataLocale];
+    setSlot(this, 'localeData', dataLocaleData);
     invariant(
       dataLocaleData !== undefined,
       `locale data for ${r.locale} does not exist.`
     );
-    setSlot(this, 'localeData', dataLocaleData);
+    const {types} = dataLocaleData;
+    invariant(typeof types === 'object' && types != null, 'invalid types data');
+    const typeFields = types[type];
+    invariant(
+      typeof typeFields === 'object' && typeFields != null,
+      'invalid typeFields data'
+    );
+    const styleFields = typeFields[style];
+    invariant(
+      typeof styleFields === 'object' && styleFields != null,
+      'invalid styleFields data'
+    );
+    setSlot(this, 'fields', styleFields);
   }
 
   static supportedLocalesOf(
@@ -279,6 +296,7 @@ interface DisplayNamesInternalSlots {
   fallback: NonNullable<DisplayNamesOptions['fallback']>;
   // Note that this differs from `fields` slot in the spec.
   localeData: DisplayNamesData;
+  fields: Record<string, string>;
 }
 
 const __INTERNAL_SLOT_MAP__ = new WeakMap<
