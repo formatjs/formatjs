@@ -55,7 +55,7 @@ Message from ${compiled[id]}: ${inputFile}
       }
       messages[id] = compiled[id];
       try {
-        const msgAst = parse(compiled[id]);
+        const msgAst = parse(compiled[id] || '');
         messageAsts[id] = msgAst;
       } catch (e) {
         console.error(
