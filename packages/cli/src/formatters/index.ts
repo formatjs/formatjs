@@ -9,16 +9,16 @@ import {Comparator} from 'json-stable-stringify';
 import {resolve} from 'path';
 
 export interface Formatter {
-  format: FormatFn,
-  compile: CompileFn,
-  compareMessages?: Comparator
+  format: FormatFn;
+  compile: CompileFn;
+  compareMessages?: Comparator;
 }
 
 export async function resolveBuiltinFormatter(format?: string | Formatter) {
   if (!format) {
     return defaultFormatter;
   }
-  if(typeof format !== 'string') {
+  if (typeof format !== 'string') {
     return Promise.resolve().then(() => format);
   }
   switch (format) {
