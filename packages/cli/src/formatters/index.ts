@@ -12,7 +12,7 @@ export interface Formatter {
   format: FormatFn,
   compile: CompileFn,
   compareMessages?: Comparator
-};
+}
 
 export async function resolveBuiltinFormatter(format?: string | Formatter) {
   if (!format) {
