@@ -906,9 +906,9 @@
   integrity sha512-2JpfZb6eYCGrdLdUJamncIpI4pgEAhPURYGg+rCgqoZDJxzADuOnpf/00dEBXPM2XByXNXTqsKEFN2gTaZz2mA==
 
 "@bazel/buildifier@^3.3.0":
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/@bazel/buildifier/-/buildifier-3.4.0.tgz#44ce98b33bf8057f5398a78f7d1c564760b43f6c"
-  integrity sha512-TdugkgxAIxSyXSBZcLlntQKJ/rGV3LSMjlYuvRr3YtQBn/2sIfpHX0dcNZ7zdCPkev9cK0kpEs42MkmKHY9peQ==
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@bazel/buildifier/-/buildifier-3.5.0.tgz#afbee61d61543d0a0a28e2b29a5cbdb64c852953"
+  integrity sha512-cbUS0/GMg57g6NIg6JekgmqVtuobYzW4aGHk7KzMS/bFZvxg6WY19JJ5UZSzGyAGDu2152oUTFbh4WN74Fz1+Q==
 
 "@bazel/ibazel@^0.13.1":
   version "0.13.2"
