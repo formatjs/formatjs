@@ -1,7 +1,7 @@
 import {parse, MessageFormatElement} from 'intl-messageformat-parser';
 import {outputFile, readJSON} from 'fs-extra';
 import stringify from 'json-stable-stringify';
-import {resolveBuiltinFormatter} from './formatters';
+import {resolveBuiltinFormatter, Formatter} from './formatters';
 
 export type CompileFn = (msgs: any) => Record<string, string>;
 
@@ -20,7 +20,7 @@ export interface Opts {
    * Path to a formatter file that converts <translation_files> to
    * `Record<string, string>` so we can compile.
    */
-  format?: string;
+  format?: string | Formatter;
 }
 
 /**
