@@ -5,9 +5,12 @@ import * as simple from './simple';
 import * as lokalise from './lokalise';
 import * as crowdin from './crowdin';
 import {resolve} from 'path';
-export async function resolveBuiltinFormatter(format?: string) {
+export async function resolveBuiltinFormatter(format?: string | Function) {
   if (!format) {
     return defaultFormatter;
+  }
+  if(typeof format === 'function') {
+    return Promise.resolve().then(() => format);
   }
   switch (format) {
     case 'transifex':

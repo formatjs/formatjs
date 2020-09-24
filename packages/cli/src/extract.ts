@@ -67,7 +67,7 @@ export type ExtractOpts = Opts & {
   /**
    * Path to a formatter file that controls the shape of JSON file from `outFile`.
    */
-  format?: string;
+  format?: string | Function;
 } & Pick<Opts, 'onMsgExtracted' | 'onMetaExtracted'>;
 
 function calculateLineColFromOffset(

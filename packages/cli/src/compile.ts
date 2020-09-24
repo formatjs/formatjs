@@ -20,7 +20,7 @@ export interface Opts {
    * Path to a formatter file that converts <translation_files> to
    * `Record<string, string>` so we can compile.
    */
-  format?: string;
+  format?: string | Function;
 }
 
 /**
