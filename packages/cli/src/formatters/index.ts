@@ -19,7 +19,7 @@ export async function resolveBuiltinFormatter(format?: string | Formatter) {
     return defaultFormatter;
   }
   if (typeof format !== 'string') {
-    return Promise.resolve().then(() => format);
+    return format;
   }
   switch (format) {
     case 'transifex':
