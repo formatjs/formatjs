@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.11.3...@formatjs/cli@2.12.0) (2020-09-25)
+
+
+### Features
+
+* **@formatjs/cli:** allow custom Formatter with Node API ([#2143](https://github.com/formatjs/formatjs/issues/2143)) ([c9886ab](https://github.com/formatjs/formatjs/commit/c9886abb1b79ad6fb5cb74c36db377030ca058b0))
+
+
+
+
+
 ## [2.11.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.11.2...@formatjs/cli@2.11.3) (2020-09-18)
 
 **Note:** Version bump only for package @formatjs/cli
