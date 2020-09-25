@@ -7,7 +7,7 @@ import {
   MessageDescriptor,
 } from '@formatjs/ts-transformer';
 import ts from 'typescript';
-import {resolveBuiltinFormatter} from './formatters';
+import {resolveBuiltinFormatter, Formatter} from './formatters';
 import stringify from 'json-stable-stringify';
 
 export interface ExtractionResult<M = Record<string, string>> {
@@ -67,7 +67,7 @@ export type ExtractOpts = Opts & {
   /**
    * Path to a formatter file that controls the shape of JSON file from `outFile`.
    */
-  format?: string;
+  format?: string | Formatter;
 } & Pick<Opts, 'onMsgExtracted' | 'onMetaExtracted'>;
 
 function calculateLineColFromOffset(

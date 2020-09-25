@@ -1,13 +1,25 @@
 import * as defaultFormatter from './default';
+import {FormatFn, CompileFn} from './default';
 import * as transifex from './transifex';
 import * as smartling from './smartling';
 import * as simple from './simple';
 import * as lokalise from './lokalise';
 import * as crowdin from './crowdin';
+import {Comparator} from 'json-stable-stringify';
 import {resolve} from 'path';
-export async function resolveBuiltinFormatter(format?: string) {
+
+export interface Formatter {
+  format: FormatFn;
+  compile: CompileFn;
+  compareMessages?: Comparator;
+}
+
+export async function resolveBuiltinFormatter(format?: string | Formatter) {
   if (!format) {
     return defaultFormatter;
+  }
+  if (typeof format !== 'string') {
+    return format;
   }
   switch (format) {
     case 'transifex':
