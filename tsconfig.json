@@ -16,6 +16,7 @@
     "noFallthroughCasesInSwitch": true,
     "declarationMap": true,
     "jsx": "react",
+    "importHelpers": true,
     "paths": {
       "@formatjs/*": [
         // k8 is 64-bit GNU/Linux output location, darwin is macOS.

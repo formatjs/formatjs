@@ -89,6 +89,7 @@ CLDR_DEPS = [
     "@npm//fs-extra",
     "@npm//fast-glob",
     "@npm//minimist",
+    "@npm//tslib",
 ]
 
 ts_node(
@@ -112,6 +113,7 @@ ts_node(
         "@npm//make-plural-compiler",
         "@npm//minimist",
         "@npm//serialize-javascript",
+        "@npm//tslib",
     ],
     output_dir = True,
 )

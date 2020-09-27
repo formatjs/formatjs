@@ -118,6 +118,7 @@ CLDR_DEPS = [
     "@npm//fast-glob",
     "@npm//fs-extra",
     "@npm//minimist",
+    "@npm//tslib",
     "//:tsconfig.json",
     "scripts/cldr.ts",
 ]
@@ -149,6 +150,7 @@ ts_node(
         "@npm//fs-extra",
         "@npm//lodash",
         "@npm//minimist",
+        "@npm//tslib",
     ],
     output_dir = True,
     visibility = [
@@ -230,6 +232,7 @@ generate_src_file(
         "@npm//fs-extra",
         "@npm//lodash",
         "@npm//minimist",
+        "@npm//tslib",
     ],
 )
 
@@ -258,6 +261,7 @@ generate_src_file(
         "@npm//fs-extra",
         "@npm//lodash",
         "@npm//minimist",
+        "@npm//tslib",
     ],
 )
 
@@ -280,6 +284,7 @@ generate_src_file(
         "@npm//@types/node",
         "@npm//fs-extra",
         "@npm//minimist",
+        "@npm//tslib",
     ],
 )
 

@@ -18,7 +18,8 @@
     "@types/babel__core": "^7.1.7",
     "@types/schema-utils": "^2.4.0",
     "intl-messageformat-parser": "^6.0.7",
-    "schema-utils": "^2.6.6"
+    "schema-utils": "^2.6.6",
+    "tslib": "^2.0.1"
   },
   "keywords": [
     "babel-plugin",

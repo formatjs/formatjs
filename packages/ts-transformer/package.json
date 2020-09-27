@@ -18,7 +18,8 @@
   ],
   "dependencies": {
     "intl-messageformat-parser": "^6.0.7",
-    "typescript": "^4.0"
+    "typescript": "^4.0",
+    "tslib": "^2.0.1"
   },
   "peerDependencies": {
     "ts-jest": "^26.4.0"

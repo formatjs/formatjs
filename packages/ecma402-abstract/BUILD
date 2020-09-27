@@ -77,6 +77,7 @@ generate_src_file(
         "@npm//@types/node",
         "@npm//fs-extra",
         "@npm//minimist",
+        "@npm//tslib",
     ],
 )
 

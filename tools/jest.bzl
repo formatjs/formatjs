@@ -30,6 +30,7 @@ def jest_test(name, srcs, deps, size = "medium", jest_config = "//:jest.config.j
         "@npm//@jest/transform",
         "@npm//ts-jest",
         "@npm//@types/jest",
+        "@npm//tslib",
         "//:tsconfig.json",
         "//tools:jest-reporter.js",
     ]

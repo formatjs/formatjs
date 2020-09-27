@@ -13,6 +13,9 @@
     "ecma262",
     "format"
   ],
+  "dependencies": {
+    "tslib": "^2.0.1"
+  },
   "author": "Long Ho <holevietlong@gmail.com",
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"

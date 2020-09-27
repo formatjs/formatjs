@@ -35,6 +35,7 @@
     "@formatjs/intl-relativetimeformat": "^7.2.7",
     "fast-memoize": "^2.5.2",
     "intl-messageformat": "^9.3.8",
-    "intl-messageformat-parser": "^6.0.7"
+    "intl-messageformat-parser": "^6.0.7",
+    "tslib": "^2.0.1"
   }
 }

@@ -97,6 +97,7 @@ CLDR_DEPS = [
     "@npm//fs-extra",
     "@npm//fast-glob",
     "@npm//minimist",
+    "@npm//tslib",
 ]
 
 ts_node(
@@ -124,6 +125,7 @@ ts_node(
         "@npm//fast-glob",
         "@npm//fs-extra",
         "@npm//minimist",
+        "@npm//tslib",
     ],
     output_dir = True,
 )
@@ -191,6 +193,7 @@ generate_src_file(
         "@npm//@types/node",
         "@npm//fs-extra",
         "@npm//minimist",
+        "@npm//tslib",
         "@tzdata//:backward",
     ],
 )
@@ -219,6 +222,7 @@ generate_src_file(
         "@npm//fs-extra",
         "@npm//json-stable-stringify",
         "@npm//minimist",
+        "@npm//tslib",
         "@tzdata//:zdumps",
     ],
 )
@@ -249,6 +253,7 @@ ts_node(
         "@npm//fs-extra",
         "@npm//json-stable-stringify",
         "@npm//minimist",
+        "@npm//tslib",
         "@tzdata//:zdumps",
     ],
 )
@@ -279,6 +284,7 @@ ts_node(
         "@npm//fs-extra",
         "@npm//json-stable-stringify",
         "@npm//minimist",
+        "@npm//tslib",
         "@tzdata//:zdumps",
     ],
 )

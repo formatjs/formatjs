@@ -17,6 +17,8 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
         package_name: name from package.json
         skip_esm: skip building ESM bundle
     """
+    deps = deps + ["@npm//tslib"]
+
     ts_project(
         name = "%s-base" % name,
         srcs = srcs,
@@ -98,6 +100,7 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], rollup_deps = []
             "@npm//@jest/transform",
             "@npm//ts-jest",
             "@npm//@types/jest",
+            "@npm//tslib",
         ],
     )
 
@@ -115,6 +118,7 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], rollup_deps = []
                 "@npm//@rollup/plugin-commonjs",
                 "@npm//@rollup/plugin-replace",
                 "@npm//@rollup/plugin-json",
+                "@npm//tslib",
             ] + deps + rollup_deps,
         )
 
