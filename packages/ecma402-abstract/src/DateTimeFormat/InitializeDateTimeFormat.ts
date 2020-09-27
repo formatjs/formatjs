@@ -201,6 +201,14 @@ export function InitializeDateTimeFormat(
 
   const dataLocaleData = localeData[dataLocale];
   const formats = dataLocaleData.formats[calendar as string];
+  // UNSPECCED: IMPLEMENTATION DETAILS
+  if (!formats) {
+    throw new RangeError(
+      `Calendar "${calendar}" is not supported. Try setting "calendar" to 1 of the following: ${Object.keys(
+        dataLocaleData.formats
+      ).join(', ')}`
+    );
+  }
   matcher = GetOption(
     options,
     'formatMatcher',

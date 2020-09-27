@@ -3,10 +3,11 @@ import {DateTimeFormat} from '../src/core';
 import * as en from './locale-data/en.json';
 import * as enGB from './locale-data/en-GB.json';
 import * as zhHans from './locale-data/zh-Hans.json';
+import * as fa from './locale-data/fa.json';
 import allData from '../src/data/all-tz';
 
 // @ts-ignore
-DateTimeFormat.__addLocaleData(en, enGB, zhHans);
+DateTimeFormat.__addLocaleData(en, enGB, zhHans, fa);
 DateTimeFormat.__addTZData(allData);
 describe('Intl.DateTimeFormat', function () {
   it('smoke test EST', function () {
@@ -144,5 +145,27 @@ describe('Intl.DateTimeFormat', function () {
         timeZone: 'Europe/Amsterdam',
       }).format(new Date('2020-09-16T11:55:32.491+02:00'))
     ).toBe('11:55 AM');
+  });
+  it.skip('test #2145', function () {
+    expect(
+      new DateTimeFormat('fa', {
+        month: 'long',
+        year: '2-digit',
+        day: '2-digit',
+      }).format(new Date('2020-09-16T11:55:32.491+02:00'))
+    ).toBe('۲۶ شهریور ۹۹');
+  });
+  it('test #2145', function () {
+    expect(() =>
+      new DateTimeFormat('fa', {
+        month: 'long',
+        year: '2-digit',
+        day: '2-digit',
+      }).format(new Date('2020-09-16T11:55:32.491+02:00'))
+    ).toThrowError(
+      new RangeError(
+        'Calendar "persian" is not supported. Try setting "calendar" to 1 of the following: gregory'
+      )
+    );
   });
 });

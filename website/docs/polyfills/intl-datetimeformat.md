@@ -8,6 +8,10 @@ A spec-compliant polyfill for Intl.DateTimeFormat fully tested by the [official 
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-datetimeformat.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-datetimeformat)
 ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-datetimeformat)
 
+:::caution
+Right now we only support Gregorian calendar in this polyfill. Therefore we recommend setting `calendar: 'gregory'` in your options to be safe.
+:::
+
 ## Installation
 
 import Tabs from '@theme/Tabs'
