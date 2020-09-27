@@ -79,6 +79,7 @@ generate_src_file(
         "@npm//cldr-core",
         "@npm//fs-extra",
         "@npm//minimist",
+        "@npm//tslib",
     ],
 )
 

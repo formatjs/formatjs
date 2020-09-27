@@ -66,6 +66,7 @@ nodejs_binary(
         "@npm//minimist",
         "@npm//pegjs",
         "@npm//ts-pegjs",
+        "@npm//tslib",
     ],
     entry_point = "tools/build.js",
 )

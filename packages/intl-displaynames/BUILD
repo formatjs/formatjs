@@ -91,6 +91,7 @@ CLDR_DEPS = [
     "@npm//fs-extra",
     "@npm//fast-glob",
     "@npm//minimist",
+    "@npm//tslib",
 ]
 
 ts_node(
@@ -115,6 +116,7 @@ ts_node(
         "@npm//fast-glob",
         "@npm//fs-extra",
         "@npm//minimist",
+        "@npm//tslib",
     ],
     output_dir = True,
 )
