@@ -19,12 +19,14 @@ values={[
 ]}>
 <TabItem value="npm">
 
+
 ```sh
 npm i -D babel-plugin-react-intl
 ```
 
 </TabItem>
 <TabItem value="yarn">
+
 
 ```sh
 yarn add -D babel-plugin-react-intl
@@ -33,11 +35,14 @@ yarn add -D babel-plugin-react-intl
 </TabItem>
 </Tabs>
 
+
 Let's take this simple example:
 
+<!-- prettier-ignore-start -->
 ```tsx
 import {FormattedMessage} from 'react-intl'
-;<FormattedMessage
+
+<FormattedMessage
   description="A message"
   defaultMessage="My name is {name}"
   values={{
@@ -45,6 +50,7 @@ import {FormattedMessage} from 'react-intl'
   }}
 />
 ```
+<!-- prettier-ignore-end -->
 
 During runtime this will throw an `Error` saying `ID is required`. In order to inject an ID in the transpiled JS, you can use our [babel-plugin-react-intl](../tooling/babel-plugin.md) similarly as below:
 
@@ -86,13 +92,14 @@ Our plugin also removes `description` because it's only for translator, not end-
 ## Using @formatjs/ts-transformer
 
 <Tabs
-groupId="npm"
-defaultValue="npm"
-values={[
-{label: 'npm', value: 'npm'},
-{label: 'yarn', value: 'yarn'},
+  groupId="npm"
+  defaultValue="npm"
+  values={[
+  {label: 'npm', value: 'npm'},
+  {label: 'yarn', value: 'yarn'},
 ]}>
 <TabItem value="npm">
+
 
 ```sh
 npm i -D @formatjs/ts-transformer
@@ -101,6 +108,7 @@ npm i -D @formatjs/ts-transformer
 </TabItem>
 <TabItem value="yarn">
 
+
 ```sh
 yarn add -D @formatjs/ts-transformer
 ```
@@ -108,13 +116,16 @@ yarn add -D @formatjs/ts-transformer
 </TabItem>
 </Tabs>
 
+
 If you're using TypeScript, in order to enable custom AST transformer you should consider using [ttypescript](https://github.com/cevek/ttypescript), [ts-loader](https://github.com/TypeStrong/ts-loader) or similar.
 
 Let's take this simple example:
 
+<!-- prettier-ignore-start -->
 ```tsx
 import {FormattedMessage} from 'react-intl'
-;<FormattedMessage
+
+<FormattedMessage
   description="A message"
   defaultMessage="My name is {name}"
   values={{
@@ -122,6 +133,7 @@ import {FormattedMessage} from 'react-intl'
   }}
 />
 ```
+<!-- prettier-ignore-end -->
 
 ### ts-loader
 
