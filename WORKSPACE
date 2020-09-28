@@ -25,6 +25,12 @@ workspace(
 #     path = "./test262",
 # )
 
+new_local_repository(
+    name = "remote-website",
+    build_file = "formatjs.github.io.BUILD",
+    path = "./formatjs.github.io",
+)
+
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 # Install the nodejs "bootstrap" package
