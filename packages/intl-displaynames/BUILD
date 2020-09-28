@@ -132,6 +132,9 @@ ts_node(
     ],
     data = CLDR_DEPS,
     output_dir = True,
+    visibility = [
+        "//website:__pkg__",
+    ],
 )
 
 ts_node(
