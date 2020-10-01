@@ -215,6 +215,23 @@ function extractMessageDescriptor(
             msg.description = initializer.text;
             break;
         }
+      } else if (
+        ts.isJsxExpression(initializer) &&
+        initializer.expression &&
+        ts.isNoSubstitutionTemplateLiteral(initializer.expression)
+      ) {
+        const {expression} = initializer;
+        switch (name.text) {
+          case 'id':
+            msg.id = expression.text;
+            break;
+          case 'defaultMessage':
+            msg.defaultMessage = expression.text;
+            break;
+          case 'description':
+            msg.description = expression.text;
+            break;
+        }
       }
     }
   });
