@@ -22,6 +22,50 @@ test('normal json', async () => {
   ).resolves.toMatchSnapshot();
 }, 20000);
 
+test('xx-LS json', async () => {
+  await expect(
+    exec(
+      `${BIN_PATH} compile --ast --pseudo-locale xx-LS ${join(
+        __dirname,
+        'lang/en.json'
+      )}`
+    )
+  ).resolves.toMatchSnapshot();
+}, 20000);
+
+test('xx-HA json', async () => {
+  await expect(
+    exec(
+      `${BIN_PATH} compile --ast --pseudo-locale xx-HA ${join(
+        __dirname,
+        'lang/en.json'
+      )}`
+    )
+  ).resolves.toMatchSnapshot();
+}, 20000);
+
+test('xx-AC json', async () => {
+  await expect(
+    exec(
+      `${BIN_PATH} compile --ast --pseudo-locale xx-AC ${join(
+        __dirname,
+        'lang/en.json'
+      )}`
+    )
+  ).resolves.toMatchSnapshot();
+}, 20000);
+
+test('en-XA json', async () => {
+  await expect(
+    exec(
+      `${BIN_PATH} compile --ast --pseudo-locale en-XA ${join(
+        __dirname,
+        'lang/en.json'
+      )}`
+    )
+  ).resolves.toMatchSnapshot();
+}, 20000);
+
 test('normal json with formatter', async () => {
   await expect(
     exec(

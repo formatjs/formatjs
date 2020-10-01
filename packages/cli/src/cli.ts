@@ -164,6 +164,11 @@ If this is not provided, result will be printed to stdout`
       `Whether to compile to AST. See https://formatjs.io/docs/guides/advanced-usage#pre-parsing-messages
 for more information`
     )
+    .option(
+      '--pseudo-locale <pseudoLocale>',
+      `Whether to generate pseudo-locale files. See http://localhost:3000/docs/tooling/cli#--pseudo-locale-pseudolocale for possible values. 
+"--ast" is required for this to work.`
+    )
     .action(async (filePattern: string, opts: CompileCLIOpts) => {
       const files = globSync(filePattern);
       if (!files.length) {

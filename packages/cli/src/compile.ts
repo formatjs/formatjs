@@ -2,8 +2,16 @@ import {parse, MessageFormatElement} from 'intl-messageformat-parser';
 import {outputFile, readJSON} from 'fs-extra';
 import stringify from 'json-stable-stringify';
 import {resolveBuiltinFormatter, Formatter} from './formatters';
+import {
+  generateXXAC,
+  generateXXLS,
+  generateXXHA,
+  generateENXA,
+} from './pseudo_locale';
 
 export type CompileFn = (msgs: any) => Record<string, string>;
+
+export type PseudoLocale = 'xx-LS' | 'xx-AC' | 'xx-HA' | 'en-XA';
 
 export interface CompileCLIOpts extends Opts {
   /**
@@ -21,6 +29,10 @@ export interface Opts {
    * `Record<string, string>` so we can compile.
    */
   format?: string | Formatter;
+  /**
+   * Whether to compile to pseudo locale
+   */
+  pseudoLocale?: PseudoLocale;
 }
 
 /**
@@ -33,7 +45,7 @@ export interface Opts {
  * @returns serialized result in string format
  */
 export async function compile(inputFiles: string[], opts: Opts = {}) {
-  const {ast, format} = opts;
+  const {ast, format, pseudoLocale} = opts;
   const formatter = await resolveBuiltinFormatter(format);
 
   const messages: Record<string, string> = {};
@@ -56,7 +68,23 @@ Message from ${compiled[id]}: ${inputFile}
       messages[id] = compiled[id];
       try {
         const msgAst = parse(compiled[id]);
-        messageAsts[id] = msgAst;
+        switch (pseudoLocale) {
+          case 'xx-LS':
+            messageAsts[id] = generateXXLS(msgAst);
+            break;
+          case 'xx-AC':
+            messageAsts[id] = generateXXAC(msgAst);
+            break;
+          case 'xx-HA':
+            messageAsts[id] = generateXXHA(msgAst);
+            break;
+          case 'en-XA':
+            messageAsts[id] = generateENXA(msgAst);
+            break;
+          default:
+            messageAsts[id] = msgAst;
+            break;
+        }
       } catch (e) {
         console.error(
           `Error validating message "${compiled[id]}" with ID "${id}" in file "${inputFile}"`

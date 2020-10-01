@@ -175,6 +175,19 @@ The target file that contains compiled messages.
 
 Whether to compile message into AST instead of just string. See [Advanced Usage](../guides/advanced-usage.md)
 
+### `--pseudo-locale <pseudoLocale>`
+
+Whether we should compile messages into pseudo locales instead. Available pseudo-locales:
+
+Given the English message `my name is {name}`
+
+| Locale  | Message                                      |
+| ------- | -------------------------------------------- |
+| `xx-LS` | `my name is {name}SSSSSSSSSSSSSSSSSSSSSSSSS` |
+| `xx-AC` | `MY NAME IS {name}`                          |
+| `xx-HA` | `[javascript]my name is {name}`              |
+| `en-XA` | `ṁẏ ńâṁè íś {name}`                          |
+
 ## Folder Compilation
 
 Batch compile a folder with extracted files from `formatjs extract` to a folder containing react-intl consumable JSON files. This also does ICU message verification. See [Message Distribution](../getting-started/message-distribution.md) for more details.
