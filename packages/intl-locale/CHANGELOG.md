@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.3.7...@formatjs/intl-locale@2.3.8) (2020-10-01)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-locale:** fix invalid object tag issue, fix [#2160](https://github.com/formatjs/formatjs/issues/2160) ([88d658d](https://github.com/formatjs/formatjs/commit/88d658d4b2869a9b9d323d298372766a00651200))
+
+
+
+
+
 ## [2.3.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.3.6...@formatjs/intl-locale@2.3.7) (2020-09-18)
 
 **Note:** Version bump only for package @formatjs/intl-locale

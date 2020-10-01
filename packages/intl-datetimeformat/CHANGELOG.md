@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.7...@formatjs/intl-datetimeformat@2.6.8) (2020-10-01)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** throw err when calendar is not gregory, part of [#2145](https://github.com/formatjs/formatjs/issues/2145) ([1b75c10](https://github.com/formatjs/formatjs/commit/1b75c10e23b705462b504713320a7b602abce497))
+
+
+
+
+
 ## [2.6.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.6...@formatjs/intl-datetimeformat@2.6.7) (2020-09-18)
 
 

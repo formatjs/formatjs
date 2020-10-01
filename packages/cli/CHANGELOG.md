@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.12.0...@formatjs/cli@2.13.0) (2020-10-01)
+
+
+### Features
+
+* **@formatjs/cli:** add support for pseudo-locales, fix [#2165](https://github.com/formatjs/formatjs/issues/2165) ([015bbdb](https://github.com/formatjs/formatjs/commit/015bbdb53c1e9661fb9a5df9e31a74dde9a7ecfb))
+
+
+
+
+
 # [2.12.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.11.3...@formatjs/cli@2.12.0) (2020-09-25)
 
 

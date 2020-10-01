@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.11.0...@formatjs/ts-transformer@2.11.1) (2020-10-01)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** capture template literal in jsx node, fix [#2158](https://github.com/formatjs/formatjs/issues/2158) ([b75097e](https://github.com/formatjs/formatjs/commit/b75097ebbd967a237681abeaa1589260437d739e))
+
+
+
+
+
 # [2.11.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.10.1...@formatjs/ts-transformer@2.11.0) (2020-09-25)
 
 

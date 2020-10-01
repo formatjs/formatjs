@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.2.2...@formatjs/ecma402-abstract@1.2.3) (2020-10-01)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** throw err when calendar is not gregory, part of [#2145](https://github.com/formatjs/formatjs/issues/2145) ([1b75c10](https://github.com/formatjs/formatjs/commit/1b75c10e23b705462b504713320a7b602abce497))
+
+
+
+
+
 ## [1.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.2.1...@formatjs/ecma402-abstract@1.2.2) (2020-09-18)
 
 
