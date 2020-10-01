@@ -8,4 +8,8 @@ describe('intl-locale', () => {
       new Locale('en-u-foo-bar-nu-thai-ca-buddhist-kk-true').toString()
     ).toBe('en-u-bar-foo-ca-buddhist-kk-nu-thai');
   });
+  it('invalid tag', function () {
+    // expect(() => IntlLocale.prototype.toString.call(IntlLocale.prototype)).toThrowError(TypeError)
+    expect(() => new Locale({} as any)).toThrowError(RangeError);
+  });
 });

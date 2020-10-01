@@ -1,8 +1,5 @@
 import {
-  getInternalSlot,
   GetOption,
-  setInternalSlot,
-  setMultiInternalSlots,
   invariant,
   SameValue,
   ToObject,
@@ -21,6 +18,7 @@ import {
   UnicodeLanguageId,
 } from '@formatjs/intl-getcanonicallocales';
 import {supplemental} from 'cldr-core/supplemental/likelySubtags.json';
+import getInternalSlots from './get_internal_slots';
 const {likelySubtags} = supplemental;
 
 export interface IntlLocaleOptions {
@@ -39,12 +37,10 @@ const RELEVANT_EXTENSION_KEYS = ['ca', 'co', 'hc', 'kf', 'kn', 'nu'] as const;
 type RELEVANT_EXTENSION_KEY = typeof RELEVANT_EXTENSION_KEYS[number];
 type ExtensionOpts = Record<RELEVANT_EXTENSION_KEY, string>;
 
-interface IntlLocaleInternal extends IntlLocaleOptions {
+export interface IntlLocaleInternal extends IntlLocaleOptions {
   locale: string;
   initializedLocale: boolean;
 }
-
-const __INTERNAL_SLOT_MAP__ = new WeakMap<Locale, IntlLocaleInternal>();
 
 const UNICODE_TYPE_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i;
 
@@ -341,14 +337,18 @@ export class Locale {
       throw new TypeError('tag must be a string or object');
     }
 
+    let internalSlots;
     if (
       typeof tag === 'object' &&
-      getInternalSlot(__INTERNAL_SLOT_MAP__, tag, 'initializedLocale')
+      (internalSlots = getInternalSlots(tag)) &&
+      internalSlots.initializedLocale
     ) {
-      tag = getInternalSlot(__INTERNAL_SLOT_MAP__, tag, 'locale');
+      tag = internalSlots.locale;
     } else {
       tag = tag.toString() as string;
     }
+
+    internalSlots = getInternalSlots(this);
 
     let options: IntlLocaleOptions;
     if (opts === undefined) {
@@ -422,36 +422,25 @@ export class Locale {
     }
     opt.nu = numberingSystem;
     const r = applyUnicodeExtensionToTag(tag, opt, relevantExtensionKeys);
-    setMultiInternalSlots(__INTERNAL_SLOT_MAP__, this, {
-      locale: r.locale,
-      calendar: r.ca,
-      collation: r.co,
-      hourCycle: r.hc as 'h11',
-    });
+    internalSlots.locale = r.locale;
+    internalSlots.calendar = r.ca;
+    internalSlots.collation = r.co;
+    internalSlots.hourCycle = r.hc as 'h11';
+
     if (relevantExtensionKeys.indexOf('kf') > -1) {
-      setInternalSlot(
-        __INTERNAL_SLOT_MAP__,
-        this,
-        'caseFirst',
-        r.kf as 'upper'
-      );
+      internalSlots.caseFirst = r.kf as 'upper';
     }
     if (relevantExtensionKeys.indexOf('kn') > -1) {
-      setInternalSlot(
-        __INTERNAL_SLOT_MAP__,
-        this,
-        'numeric',
-        SameValue(r.kn, 'true')
-      );
+      internalSlots.numeric = SameValue(r.kn, 'true');
     }
-    setInternalSlot(__INTERNAL_SLOT_MAP__, this, 'numberingSystem', r.nu);
+    internalSlots.numberingSystem = r.nu;
   }
 
   /**
    * https://www.unicode.org/reports/tr35/#Likely_Subtags
    */
   public maximize(): Locale {
-    const locale = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'locale');
+    const locale = getInternalSlots(this).locale;
     try {
       const maximizedLocale = addLikelySubtags(locale);
       return new Locale(maximizedLocale);
@@ -464,7 +453,7 @@ export class Locale {
    * https://www.unicode.org/reports/tr35/#Likely_Subtags
    */
   public minimize(): Locale {
-    const locale = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'locale');
+    const locale = getInternalSlots(this).locale;
     try {
       const minimizedLocale = removeLikelySubtags(locale);
       return new Locale(minimizedLocale);
@@ -474,55 +463,55 @@ export class Locale {
   }
 
   public toString() {
-    return getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'locale');
+    return getInternalSlots(this).locale;
   }
 
   public get baseName() {
-    const locale = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'locale');
+    const locale = getInternalSlots(this).locale;
     return emitUnicodeLanguageId(parseUnicodeLanguageId(locale));
   }
 
   public get calendar() {
-    return getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'calendar');
+    return getInternalSlots(this).calendar;
   }
 
   public get collation() {
-    return getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'collation');
+    return getInternalSlots(this).collation;
   }
 
   public get hourCycle() {
-    return getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'hourCycle');
+    return getInternalSlots(this).hourCycle;
   }
 
   public get caseFirst() {
-    return getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'caseFirst');
+    return getInternalSlots(this).caseFirst;
   }
 
   public get numeric() {
-    return getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'numeric');
+    return getInternalSlots(this).numeric;
   }
   public get numberingSystem() {
-    return getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'numberingSystem');
+    return getInternalSlots(this).numberingSystem;
   }
   /**
    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.language
    */
   public get language() {
-    const locale = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'locale');
+    const locale = getInternalSlots(this).locale;
     return parseUnicodeLanguageId(locale).lang;
   }
   /**
    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.script
    */
   public get script() {
-    const locale = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'locale');
+    const locale = getInternalSlots(this).locale;
     return parseUnicodeLanguageId(locale).script;
   }
   /**
    * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.region
    */
   public get region() {
-    const locale = getInternalSlot(__INTERNAL_SLOT_MAP__, this, 'locale');
+    const locale = getInternalSlots(this).locale;
     return parseUnicodeLanguageId(locale).region;
   }
 
