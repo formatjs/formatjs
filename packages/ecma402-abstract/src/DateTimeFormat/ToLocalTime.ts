@@ -26,7 +26,7 @@ function getApplicableZoneData(
   let offset = 0;
   let dst = false;
   for (; i <= zoneData.length; i++) {
-    if (i === zoneData.length || zoneData[i][0] * 1e3 >= t) {
+    if (i === zoneData.length || zoneData[i][0] * 1e3 > t) {
       [, , offset, dst] = zoneData[i - 1];
       break;
     }
