@@ -332,7 +332,7 @@ type FormatDisplayNameOptions = {
 
 function formatDisplayName(
   value: string | number | object,
-  options?: FormatDisplayNameOptions
+  options: FormatDisplayNameOptions
 ): string | undefined
 ```
 
