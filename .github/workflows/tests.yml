@@ -35,7 +35,7 @@ jobs:
         env:
           SECRET_BAZEL_CACHE_JSON_PASSPHRASE: ${{ secrets.SECRET_BAZEL_CACHE_JSON_PASSPHRASE }}
       - name: Use Node.js 12
-        uses: actions/setup-node@v2.1.1
+        uses: actions/setup-node@v2.1.2
         with:
           node-version: 12
       - name: yarn install
