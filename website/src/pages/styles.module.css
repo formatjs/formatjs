@@ -30,10 +30,22 @@
   }
 }
 
+.heroSubtitle {
+  color: var(--ifm-color-white);
+}
+
 .buttons {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.getStarted:global(.button.button--outline.button--secondary):not(:hover) {
+  color: var(--ifm-color-white);
+}
+
+.getStarted:global(.button.button--outline.button--secondary):hover {
+  color: var(--ifm-color-gray-900);
 }
 
 .features {
