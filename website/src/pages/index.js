@@ -252,7 +252,9 @@ function Home() {
           <h1 className="hero__title">
             <img src={useBaseUrl('/img/logo-header.svg')} />
           </h1>
-          <p className="hero__subtitle">{siteConfig.tagline}</p>
+          <p className={cx('hero__subtitle', styles.heroSubtitle)}>
+            {siteConfig.tagline}
+          </p>
           <Demo />
           <div className={styles.buttons}>
             <Link
