@@ -9,10 +9,10 @@
     "deploy": "docusaurus deploy --out-dir dist"
   },
   "dependencies": {
-    "@docusaurus/core": "^2.0.0-alpha.63",
-    "@docusaurus/plugin-google-analytics": "^2.0.0-alpha.63",
-    "@docusaurus/preset-classic": "^2.0.0-alpha.63",
-    "@docusaurus/theme-live-codeblock": "^2.0.0-alpha.63",
+    "@docusaurus/core": "^2.0.0-alpha.65",
+    "@docusaurus/plugin-google-analytics": "^2.0.0-alpha.65",
+    "@docusaurus/preset-classic": "^2.0.0-alpha.65",
+    "@docusaurus/theme-live-codeblock": "^2.0.0-alpha.65",
     "@formatjs/intl-displaynames": "^3.3.6",
     "classnames": "^2.2.6",
     "intl-messageformat": "^9.2.3",
