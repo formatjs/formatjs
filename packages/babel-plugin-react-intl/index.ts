@@ -25,7 +25,7 @@ import {
   TemplateLiteral,
 } from '@babel/types';
 import {NodePath, Scope} from '@babel/traverse';
-import validate from 'schema-utils';
+import {validate} from 'schema-utils';
 import * as OPTIONS_SCHEMA from './options.schema.json';
 import {OptionsSchema} from './options';
 import {interpolateName} from '@formatjs/ts-transformer';
@@ -194,7 +194,7 @@ function evaluateMessageDescriptor(
   descriptorPath: MessageDescriptorPath,
   isJSXSource = false,
   filename: string,
-  idInterpolationPattern: string = '[contenthash:5]',
+  idInterpolationPattern = '[contenthash:5]',
   overrideIdFn?: OptionsSchema['overrideIdFn']
 ) {
   let id = getMessageDescriptorValue(descriptorPath.id);
