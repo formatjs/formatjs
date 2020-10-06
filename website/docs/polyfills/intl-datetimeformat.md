@@ -12,6 +12,10 @@ A spec-compliant polyfill for Intl.DateTimeFormat fully tested by the [official 
 Right now we only support Gregorian calendar in this polyfill. Therefore we recommend setting `calendar: 'gregory'` in your options to be safe.
 :::
 
+:::caution
+Right now this polyfill supports daylight transition until 2038 due to [Year 2038 problem](https://en.wikipedia.org/wiki/Year_2038_problem).
+:::
+
 ## Installation
 
 import Tabs from '@theme/Tabs'
