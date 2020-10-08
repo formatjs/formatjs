@@ -335,13 +335,16 @@ function processZone(
       zones[zone] = [['', abbrvIndex, offsetIndex, +dst]];
     } else {
       const lastEntry = zones[zone][zones[zone].length - 1];
+      const entry: ZoneData = [
+        utTimeToSeconds(utTime),
+        abbrvIndex,
+        offsetIndex,
+        +dst,
+      ];
       if (lastEntry[1] !== abbrvIndex) {
-        zones[zone].push([
-          utTimeToSeconds(utTime),
-          abbrvIndex,
-          offsetIndex,
-          +dst,
-        ]);
+        zones[zone].push(entry);
+      } else {
+        zones[zone][zones[zone].length - 1] = entry;
       }
     }
   }

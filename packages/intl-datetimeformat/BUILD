@@ -227,7 +227,7 @@ generate_src_file(
     ],
 )
 
-# "ts-node scripts/process-zdump --polyfill --output dist/add-all-tz.js --input data.zdump"
+# "ts-node scripts/process-zdump --polyfill --output dist/add-all-tz.js data.zdump"
 # add-all-tz
 ts_node(
     name = "add-all-tz",
