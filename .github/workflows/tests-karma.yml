@@ -1,4 +1,4 @@
-name: Unit Tests
+name: Sauce Labs Tests
 
 on: [push]
 
@@ -38,18 +38,13 @@ jobs:
         uses: actions/setup-node@v2.1.2
         with:
           node-version: 12
-      - name: yarn install
-        run: |
-          yarn install --frozen-lockfile
+      - uses: saucelabs/sauce-connect-action@v1.1.1
+        with:
+          username: ${{ secrets.SAUCE_USERNAME }}
+          accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
+          tunnelIdentifier: github-action-tunnel
+      - name: Karma
+        run: yarn karma:ci --remote_upload_local_results=true --action_env=SAUCE_ACCESS_KEY --action_env=SAUCE_USERNAME --remote_cache=https://storage.googleapis.com/formatjs-bazel-cache --google_credentials=../secret.json--remote_cache=https://storage.googleapis.com/formatjs-bazel-cache --google_credentials=../secret.json
         env:
-          CI: true
-      - name: yarn build
-        run: |
-          yarn build --remote_cache=https://storage.googleapis.com/formatjs-bazel-cache --google_credentials=../secret.json
-        env:
-          CI: true
-      - name: yarn test
-        run: |
-          yarn test --remote_cache=https://storage.googleapis.com/formatjs-bazel-cache --google_credentials=../secret.json
-        env:
-          CI: true
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
