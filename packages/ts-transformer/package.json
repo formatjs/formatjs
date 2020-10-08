@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/ts-transformer",
-  "version": "2.11.1",
+  "version": "2.11.2",
   "description": "TS Compiler transformer for formatjs",
   "main": "index.js",
   "types": "index.d.ts",
@@ -17,7 +17,7 @@
     "react-intl"
   ],
   "dependencies": {
-    "intl-messageformat-parser": "^6.0.8",
+    "intl-messageformat-parser": "^6.0.9",
     "tslib": "^2.0.1",
     "typescript": "^4.0"
   },

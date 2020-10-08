@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.8...@formatjs/intl-datetimeformat@2.6.9) (2020-10-08)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix zdump data processor, fix [#2192](https://github.com/formatjs/formatjs/issues/2192) ([3aa4c1e](https://github.com/formatjs/formatjs/commit/3aa4c1e8a305f8390a0af5f83bf07b7cdd8c84d9))
+
+
+
+
+
 ## [2.6.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.7...@formatjs/intl-datetimeformat@2.6.8) (2020-10-01)
 
 

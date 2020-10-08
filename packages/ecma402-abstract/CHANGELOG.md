@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.2.3...@formatjs/ecma402-abstract@1.2.4) (2020-10-08)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** hour off by one at the exact time that DST starts or ends. ([#2173](https://github.com/formatjs/formatjs/issues/2173)) ([b6601da](https://github.com/formatjs/formatjs/commit/b6601da698da5ebb2f1bcf5f57049d3162a7d48e)), closes [#2170](https://github.com/formatjs/formatjs/issues/2170)
+
+
+
+
+
 ## [1.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.2.2...@formatjs/ecma402-abstract@1.2.3) (2020-10-01)
 
 
