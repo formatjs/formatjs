@@ -168,4 +168,34 @@ describe('Intl.DateTimeFormat', function () {
       )
     );
   });
+  it('test #2192', function () {
+    expect(
+      new DateTimeFormat('en', {
+        calendar: 'gregory',
+        numberingSystem: 'latn',
+        timeZone: 'Africa/Johannesburg', // UTC+2
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+      }).format(Date.UTC(2020, 0, 1, 12, 0, 0))
+    ).toBe('1/1/2020, 2:00:00 PM');
+  });
+  it('test #2170', function () {
+    const formatter = new DateTimeFormat('en-GB', {
+      calendar: 'gregory',
+      hour: 'numeric',
+      hourCycle: 'h23',
+      timeZone: 'Europe/Berlin',
+    });
+    expect(formatter.format(new Date('2019-03-31T00:59:59.999Z'))).toBe('1');
+    expect(formatter.format(new Date('2019-03-31T01:00:00.000Z'))).toBe('3');
+    expect(formatter.format(new Date('2019-03-31T01:00:00.001Z'))).toBe('3');
+
+    expect(formatter.format(new Date('2019-10-27T00:59:59.999Z'))).toBe('2');
+    expect(formatter.format(new Date('2019-10-27T01:00:00.000Z'))).toBe('2');
+    expect(formatter.format(new Date('2019-10-27T01:00:00.001Z'))).toBe('2');
+  });
 });

@@ -334,15 +334,12 @@ function processZone(
     if (!zones[zone]) {
       zones[zone] = [['', abbrvIndex, offsetIndex, +dst]];
     } else {
-      const lastEntry = zones[zone][zones[zone].length - 1];
-      if (lastEntry[1] !== abbrvIndex) {
-        zones[zone].push([
-          utTimeToSeconds(utTime),
-          abbrvIndex,
-          offsetIndex,
-          +dst,
-        ]);
-      }
+      zones[zone].push([
+        utTimeToSeconds(utTime),
+        abbrvIndex,
+        offsetIndex,
+        +dst,
+      ]);
     }
   }
 }
