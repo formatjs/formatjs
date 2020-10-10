@@ -29,7 +29,7 @@ export interface NumberFormatConstructor {
   getDefaultLocale(): string;
 
   __defaultLocale: string;
-  localeData: Record<string, NumberFormatLocaleInternalData>;
+  localeData: Record<string, NumberFormatLocaleInternalData | undefined>;
   availableLocales: string[];
   polyfilled: boolean;
 }
