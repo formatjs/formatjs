@@ -93,6 +93,7 @@ export class DisplayNames {
 
     const {dataLocale} = r;
     const dataLocaleData = localeData[dataLocale];
+    invariant(!!dataLocaleData, `Missing locale data for ${dataLocale}`);
     setSlot(this, 'localeData', dataLocaleData);
     invariant(
       dataLocaleData !== undefined,
@@ -233,7 +234,7 @@ export class DisplayNames {
     };
   }
 
-  static localeData: Record<string, DisplayNamesData> = {};
+  static localeData: Record<string, DisplayNamesData | undefined> = {};
   private static availableLocales: string[] = [];
   private static __defaultLocale = 'en';
   private static getDefaultLocale() {
