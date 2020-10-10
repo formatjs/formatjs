@@ -1114,9 +1114,9 @@
     to-fast-properties "^2.0.0"
 
 "@bazel/bazelisk@^1.5.0":
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/@bazel/bazelisk/-/bazelisk-1.6.1.tgz#f9e279d2fecaf6cec6ed676bc8714846f3704e40"
-  integrity sha512-2JpfZb6eYCGrdLdUJamncIpI4pgEAhPURYGg+rCgqoZDJxzADuOnpf/00dEBXPM2XByXNXTqsKEFN2gTaZz2mA==
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@bazel/bazelisk/-/bazelisk-1.7.1.tgz#e277a50821125edfed12fbddeaf0a297e10846c3"
+  integrity sha512-mYriXNuwGb/2bP5mjTUH6ls7/pBDKCg0dBVwmJaLISBVculCjayxtNVFdcX8y2tmNegP8UFqnF6/dTY/uSD8NA==
 
 "@bazel/buildifier@^3.3.0":
   version "3.5.0"
@@ -1138,10 +1138,10 @@
   resolved "https://registry.yarnpkg.com/@bazel/terser/-/terser-2.2.0.tgz#e0452f3d20e41d5e63048b3eea3280256172fd30"
   integrity sha512-vukKS9ayJsW/eFFX6tG2Blem+NmEWbcYuCXxwgjL/uYiMCL/uowaTpcvVp9B+DsNSXhGyohOYwud0nBreSUFzg==
 
-"@bazel/typescript@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-2.2.0.tgz#f2d3dce8715d574fe3146f19fdb8479abcc4d608"
-  integrity sha512-Thf8pXntBzE3EvJtyiTBNsfIf1QnYmGPQmUSGLcKUuuFoplUVYShMRHaxBoPZmYsnD/x+BFLgUKIzlXiEQpGqQ==
+"@bazel/typescript@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-2.2.1.tgz#46d6dcedd91a7fd0421e9286790aff94ec45bece"
+  integrity sha512-nFdwkJYzKsmu9IzbQ8Wtt6YI7AlTEv5JHWTbMmZB4HBOi7xjhgFKiq3HQRhZ963EVoJ481Kb6M0wtkzARCb3YA==
   dependencies:
     protobufjs "6.8.8"
     semver "5.6.0"
@@ -15007,9 +15007,9 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     inherits "^2.0.1"
 
 rollup@^2.7.2:
-  version "2.28.2"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.28.2.tgz#599ec4978144a82d8a8ec3d37670a8440cb04e4b"
-  integrity sha512-8txbsFBFLmm9Xdt4ByTOGa9Muonmc8MfNjnGAR8U8scJlF1ZW7AgNZa7aqBXaKtlvnYP/ab++fQIq9dB9NWUbg==
+  version "2.29.0"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.29.0.tgz#0c5c5968530b21ca0e32f8b94b7cd9346cfb0eec"
+  integrity sha512-gtU0sjxMpsVlpuAf4QXienPmUAhd6Kc7owQ4f5lypoxBW18fw2UNYZ4NssLGsri6WhUZkE/Ts3EMRebN+gNLiQ==
   optionalDependencies:
     fsevents "~2.1.2"
 
