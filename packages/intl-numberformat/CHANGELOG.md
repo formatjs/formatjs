@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.6.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.6.4...@formatjs/intl-numberformat@5.6.5) (2020-10-10)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** fix err message for missing locale data, fix [#2203](https://github.com/formatjs/formatjs/issues/2203) ([f37b4ca](https://github.com/formatjs/formatjs/commit/f37b4ca369c2d3f91557c7c47b2188dfd2f6c001))
+
+
+
+
+
 ## [5.6.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.6.3...@formatjs/intl-numberformat@5.6.4) (2020-10-08)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

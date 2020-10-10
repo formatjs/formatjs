@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.5](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.2.4...@formatjs/ecma402-abstract@1.2.5) (2020-10-10)
+
+
+### Bug Fixes
+
+* **@formatjs/ecma402-abstract:** fix err message for missing locale data, fix [#2203](https://github.com/formatjs/formatjs/issues/2203) ([e2fb8a3](https://github.com/formatjs/formatjs/commit/e2fb8a37c168136283e965c471b64f2ccc55a0b2))
+
+
+
+
+
 ## [1.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.2.3...@formatjs/ecma402-abstract@1.2.4) (2020-10-08)
 
 

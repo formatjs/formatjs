@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.2.9...@formatjs/intl-listformat@4.2.10) (2020-10-10)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-listformat:** fix err message for missing locale data, fix [#2203](https://github.com/formatjs/formatjs/issues/2203) ([ffd2468](https://github.com/formatjs/formatjs/commit/ffd24687e2850b9963bd36aa5c0f4b98a0f82fa7))
+
+
+
+
+
 ## [4.2.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.2.8...@formatjs/intl-listformat@4.2.9) (2020-10-08)
 
 **Note:** Version bump only for package @formatjs/intl-listformat

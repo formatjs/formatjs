@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.12](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.11...@formatjs/intl-displaynames@3.3.12) (2020-10-10)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** fix err message for missing locale data, fix [#2203](https://github.com/formatjs/formatjs/issues/2203) ([966e257](https://github.com/formatjs/formatjs/commit/966e257ade6b738f9051148ace29f6e19f6b514d))
+
+
+
+
+
 ## [3.3.11](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.10...@formatjs/intl-displaynames@3.3.11) (2020-10-08)
 
 **Note:** Version bump only for package @formatjs/intl-displaynames
