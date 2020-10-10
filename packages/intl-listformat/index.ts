@@ -238,7 +238,8 @@ export default class ListFormat {
     setInternalSlot(ListFormat.__INTERNAL_SLOT_MAP__, this, 'style', style);
     const {dataLocale} = r;
     const dataLocaleData = localeData[dataLocale];
-    const dataLocaleTypes = dataLocaleData![type];
+    invariant(!!dataLocaleData, `Missing locale data for ${dataLocale}`);
+    const dataLocaleTypes = dataLocaleData[type];
     const templates = dataLocaleTypes![style]!;
     setInternalSlot(
       ListFormat.__INTERNAL_SLOT_MAP__,
@@ -335,7 +336,7 @@ export default class ListFormat {
       ListFormat.__defaultLocale = ListFormat.availableLocales[0];
     }
   }
-  static localeData: Record<string, ListPatternFieldsData> = {};
+  static localeData: Record<string, ListPatternFieldsData | undefined> = {};
   private static availableLocales: string[] = [];
   private static __defaultLocale = 'en';
   private static getDefaultLocale() {
