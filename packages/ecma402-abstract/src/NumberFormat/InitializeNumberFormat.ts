@@ -10,6 +10,7 @@ import {ResolveLocale} from '../ResolveLocale';
 import {SetNumberFormatUnitOptions} from './SetNumberFormatUnitOptions';
 import {CurrencyDigits} from './CurrencyDigits';
 import {SetNumberFormatDigitOptions} from './SetNumberFormatDigitOptions';
+import {invariant} from '../utils';
 
 /**
  * Chop off the unicode extension from the locale string.
@@ -37,7 +38,7 @@ export function InitializeNumberFormat(
     currencyDigitsData,
   }: {
     getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal;
-    localeData: Record<string, NumberFormatLocaleInternalData>;
+    localeData: Record<string, NumberFormatLocaleInternalData | undefined>;
     availableLocales: string[];
     numberingSystemNames: string[];
     getDefaultLocale(): string;
@@ -85,7 +86,7 @@ export function InitializeNumberFormat(
     getDefaultLocale
   );
   const dataLocaleData = localeData[removeUnicodeExtensionFromLocale(r.locale)];
-
+  invariant(!!dataLocaleData, `Missing locale data for ${r.locale}`);
   const internalSlots = getInternalSlots(nf);
   internalSlots.locale = r.locale;
   internalSlots.dataLocale = r.dataLocale;

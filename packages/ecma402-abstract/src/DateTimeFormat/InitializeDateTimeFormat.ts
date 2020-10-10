@@ -60,7 +60,7 @@ export function InitializeDateTimeFormat(
     getDefaultLocale(): string;
     getDefaultTimeZone(): string;
     relevantExtensionKeys: string[];
-    localeData: Record<string, DateTimeFormatLocaleInternalData>;
+    localeData: Record<string, DateTimeFormatLocaleInternalData | undefined>;
     tzData: Record<string, unknown>;
     uppercaseLinks: Record<string, string>;
   }
@@ -200,6 +200,7 @@ export function InitializeDateTimeFormat(
   );
 
   const dataLocaleData = localeData[dataLocale];
+  invariant(!!dataLocaleData, `Missing locale data for ${dataLocale}`);
   const formats = dataLocaleData.formats[calendar as string];
   // UNSPECCED: IMPLEMENTATION DETAILS
   if (!formats) {

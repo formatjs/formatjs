@@ -18,7 +18,7 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
   requestedLocales: string[],
   options: {localeMatcher: string; [k: string]: string},
   relevantExtensionKeys: K[],
-  localeData: Record<string, D>,
+  localeData: Record<string, D | undefined>,
   getDefaultLocale: () => string
 ): ResolveLocaleResult {
   const matcher = options.localeMatcher;
@@ -32,6 +32,10 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
   const result: ResolveLocaleResult = {locale: '', dataLocale: foundLocale};
   let supportedExtension = '-u';
   for (const key of relevantExtensionKeys) {
+    invariant(
+      foundLocale in localeData,
+      `Missing locale data for ${foundLocale}`
+    );
     const foundLocaleData = localeData[foundLocale];
     invariant(
       typeof foundLocaleData === 'object' && foundLocaleData !== null,

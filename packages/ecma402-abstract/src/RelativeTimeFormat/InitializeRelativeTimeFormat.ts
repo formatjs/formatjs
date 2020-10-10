@@ -8,6 +8,7 @@ import {CanonicalizeLocaleList} from '../CanonicalizeLocaleList';
 import {ToObject} from '../../262';
 import {GetOption} from '../GetOption';
 import {ResolveLocale} from '../ResolveLocale';
+import {invariant} from '../utils';
 
 const NUMBERING_SYSTEM_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i;
 
@@ -25,7 +26,7 @@ export function InitializeRelativeTimeFormat(
     getInternalSlots(rtf: RelativeTimeFormat): RelativeTimeFormatInternal;
     availableLocales: string[];
     relevantExtensionKeys: string[];
-    localeData: Record<string, LocaleFieldsData>;
+    localeData: Record<string, LocaleFieldsData | undefined>;
     getDefaultLocale(): string;
   }
 ) {
@@ -79,7 +80,9 @@ export function InitializeRelativeTimeFormat(
     ['always', 'auto'],
     'always'
   );
-  internalSlots.fields = localeData[locale];
+  const fields = localeData[locale];
+  invariant(!!fields, `Missing locale data for ${locale}`);
+  internalSlots.fields = fields;
   internalSlots.numberFormat = new Intl.NumberFormat(locales);
   internalSlots.pluralRules = new Intl.PluralRules(locales);
   internalSlots.numberingSystem = nu;
