@@ -4324,97 +4324,97 @@ exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', cur
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'compact', compactDisplay: 'long', currency: 'USD', 1`] = `"+10 ribu Dolar AS"`;
 
-exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'compact', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10 ribu ZWD"`;
+exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'compact', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10 ribu Dolar Zimbabwe (1980–2008)"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'compact', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10K Paun British"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'compact', compactDisplay: 'short', currency: 'USD', 1`] = `"+10K Dolar AS"`;
 
-exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'compact', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10K ZWD"`;
+exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'compact', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10K Dolar Zimbabwe (1980–2008)"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'compact', compactDisplay: 'long', currency: 'GBP', 1`] = `"10 ribu Paun British"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'compact', compactDisplay: 'long', currency: 'USD', 1`] = `"10 ribu Dolar AS"`;
 
-exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'compact', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10 ribu ZWD"`;
+exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'compact', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10 ribu Dolar Zimbabwe (1980–2008)"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'compact', compactDisplay: 'short', currency: 'GBP', 1`] = `"10K Paun British"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'compact', compactDisplay: 'short', currency: 'USD', 1`] = `"10K Dolar AS"`;
 
-exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'compact', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10K ZWD"`;
+exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'compact', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10K Dolar Zimbabwe (1980–2008)"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'compact', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10 ribu Paun British"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'compact', compactDisplay: 'long', currency: 'USD', 1`] = `"+10 ribu Dolar AS"`;
 
-exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'compact', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10 ribu ZWD"`;
+exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'compact', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10 ribu Dolar Zimbabwe (1980–2008)"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'compact', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10K Paun British"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'compact', compactDisplay: 'short', currency: 'USD', 1`] = `"+10K Dolar AS"`;
 
-exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'compact', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10K ZWD"`;
+exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'compact', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10K Dolar Zimbabwe (1980–2008)"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'compact', compactDisplay: 'long', currency: 'GBP', 1`] = `"10 ribu Paun British"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'compact', compactDisplay: 'long', currency: 'USD', 1`] = `"10 ribu Dolar AS"`;
 
-exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'compact', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10 ribu ZWD"`;
+exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'compact', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10 ribu Dolar Zimbabwe (1980–2008)"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'compact', compactDisplay: 'short', currency: 'GBP', 1`] = `"10K Paun British"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'compact', compactDisplay: 'short', currency: 'USD', 1`] = `"10K Dolar AS"`;
 
-exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'compact', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10K ZWD"`;
+exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'compact', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10K Dolar Zimbabwe (1980–2008)"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'compact', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10 ribu Paun British"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'compact', compactDisplay: 'long', currency: 'USD', 1`] = `"+10 ribu Dolar AS"`;
 
-exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'compact', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10 ribu ZWD"`;
+exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'compact', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10 ribu Dolar Zimbabwe (1980–2008)"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'compact', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10K Paun British"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'compact', compactDisplay: 'short', currency: 'USD', 1`] = `"+10K Dolar AS"`;
 
-exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'compact', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10K ZWD"`;
+exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'compact', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10K Dolar Zimbabwe (1980–2008)"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'compact', compactDisplay: 'long', currency: 'GBP', 1`] = `"10 ribu Paun British"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'compact', compactDisplay: 'long', currency: 'USD', 1`] = `"10 ribu Dolar AS"`;
 
-exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'compact', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10 ribu ZWD"`;
+exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'compact', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10 ribu Dolar Zimbabwe (1980–2008)"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'compact', compactDisplay: 'short', currency: 'GBP', 1`] = `"10K Paun British"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'compact', compactDisplay: 'short', currency: 'USD', 1`] = `"10K Dolar AS"`;
 
-exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'compact', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10K ZWD"`;
+exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'compact', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10K Dolar Zimbabwe (1980–2008)"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'compact', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10 ribu Paun British"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'compact', compactDisplay: 'long', currency: 'USD', 1`] = `"+10 ribu Dolar AS"`;
 
-exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'compact', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10 ribu ZWD"`;
+exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'compact', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10 ribu Dolar Zimbabwe (1980–2008)"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'compact', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10K Paun British"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'compact', compactDisplay: 'short', currency: 'USD', 1`] = `"+10K Dolar AS"`;
 
-exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'compact', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10K ZWD"`;
+exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'compact', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10K Dolar Zimbabwe (1980–2008)"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'compact', compactDisplay: 'long', currency: 'GBP', 1`] = `"10 ribu Paun British"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'compact', compactDisplay: 'long', currency: 'USD', 1`] = `"10 ribu Dolar AS"`;
 
-exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'compact', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10 ribu ZWD"`;
+exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'compact', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10 ribu Dolar Zimbabwe (1980–2008)"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'compact', compactDisplay: 'short', currency: 'GBP', 1`] = `"10K Paun British"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'compact', compactDisplay: 'short', currency: 'USD', 1`] = `"10K Dolar AS"`;
 
-exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'compact', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10K ZWD"`;
+exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'compact', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10K Dolar Zimbabwe (1980–2008)"`;
 
 exports[`Intl.NumberFormat 'ms', style: 'currency', currencyDisplay: 'narrowSymbol', currencySign: 'accounting', signDisplay: 'always', notation: 'compact', compactDisplay: 'long', currency: 'GBP', 1`] = `"+£10K"`;
 

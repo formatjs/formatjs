@@ -118,11 +118,12 @@ function extractNumbers(d: Numbers): RawNumberData {
   };
 }
 
-function loadNumbers(locale: string): RawNumberData {
+async function loadNumbers(locale: string): Promise<RawNumberData> {
   try {
     return extractNumbers(
-      (require(`cldr-numbers-full/main/${locale}/numbers.json`) as typeof NumbersData)
-        .main[locale as 'ar'].numbers
+      ((await import(
+        `cldr-numbers-full/main/${locale}/numbers.json`
+      )) as typeof NumbersData).main[locale as 'ar'].numbers
     );
   } catch (e) {
     console.error('Issue processing numbers data for ' + locale);
@@ -130,11 +131,12 @@ function loadNumbers(locale: string): RawNumberData {
   }
 }
 
-export function generateDataForLocales(
+export async function generateDataForLocales(
   locales: string[] = AVAILABLE_LOCALES.availableLocales.full
-): Record<string, RawNumberData> {
-  return locales.reduce((all: Record<string, RawNumberData>, locale) => {
-    all[locale] = loadNumbers(locale);
+): Promise<Record<string, RawNumberData>> {
+  const data = await Promise.all(locales.map(loadNumbers));
+  return data.reduce((all: Record<string, RawNumberData>, d, i) => {
+    all[locales[i]] = d;
     return all;
   }, {});
 }

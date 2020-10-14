@@ -80,8 +80,6 @@ TESTS = glob([
     "tests/*.test.ts",
 ])
 
-SNAPSHOTS = glob(["tests/__snapshots__/*.snap"])
-
 SRC_DEPS = [
     "//packages/ecma402-abstract:dist",
 ]
@@ -105,7 +103,7 @@ ts_compile(
 [jest_test(
     name = "unit-%s" % f[f.rindex("/") + 1:f.rindex(".")],
     size = "large",
-    srcs = SRCS + [f] + TEST_LOCALE_DATA + SNAPSHOTS,
+    srcs = SRCS + [f] + TEST_LOCALE_DATA + glob(["tests/__snapshots__/%s.*" % f[f.rindex("/") + 1:f.rindex(".")]]),
     deps = TEST_DEPS,
 ) for f in TESTS]
 
@@ -126,6 +124,8 @@ CLDR_DEPS = [
 ts_node(
     name = "cldr-raw",
     args = [
+        "--compiler-options",
+        "{\"target\":\"es2017\"}",
         "$(execpath scripts/cldr-raw.ts)",
         "--outDir",
         "$(@D)",
