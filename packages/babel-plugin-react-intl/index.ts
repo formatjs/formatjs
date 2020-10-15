@@ -5,7 +5,7 @@
  */
 
 import {parse} from 'intl-messageformat-parser';
-const {declare} = require('@babel/helper-plugin-utils') as any;
+import {declare} from '@babel/helper-plugin-utils';
 import {PluginObj, types as t} from '@babel/core';
 
 import {
@@ -465,7 +465,11 @@ export default declare((api: any, options: OptionsSchema) => {
 
         if (
           name.isJSXIdentifier() &&
-          (referencesImport(name, moduleSourceName, DEFAULT_COMPONENT_NAMES) ||
+          (referencesImport(
+            name as NodePath<any>,
+            moduleSourceName,
+            DEFAULT_COMPONENT_NAMES
+          ) ||
             additionalComponentNames.includes(name.node.name))
         ) {
           const attributes = path

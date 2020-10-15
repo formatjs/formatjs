@@ -168,5 +168,8 @@
   "resolutions": {
     "**/chokidar": "^3.4.2"
   },
-  "author": "Seth Bertalotto <sbertal@verizonmedia.com>"
+  "author": "Seth Bertalotto <sbertal@verizonmedia.com>",
+  "dependencies": {
+    "chokidar": "^3.4.2"
+  }
 }
