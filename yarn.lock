@@ -5241,10 +5241,10 @@ cldr-core@^37.0.0:
   resolved "https://registry.yarnpkg.com/cldr-core/-/cldr-core-37.0.0.tgz#f148d6faebed52a7fb8a17cccc4ac858770f663a"
   integrity sha512-tNH5lbfsE9xzsjjXQjq1tlpMFcmnQYfssDy0zYIZKVtAY18MeQy0+1qlLxB2Z9dwCixGJV8cdhtFjBOub077Gw==
 
-cldr-dates-full@^36.0.0:
-  version "36.0.0"
-  resolved "https://registry.yarnpkg.com/cldr-dates-full/-/cldr-dates-full-36.0.0.tgz#14705efdf26504eefa6683f92dd81c3c517e0b54"
-  integrity sha512-wwJw36kudI0BCN/JOcuHPJi+zGlquw1AbRkj9okyO0aKx6kuyjzCN1HBAX4m+aOMXRPA+yA46/aBfOdGjQ0VJg==
+cldr-dates-full@^37.0.0:
+  version "37.0.0"
+  resolved "https://registry.yarnpkg.com/cldr-dates-full/-/cldr-dates-full-37.0.0.tgz#462abf4e0833c4fc0d3d841ab999b05d1a58df75"
+  integrity sha512-0zxnbScSl2gTQJZZJ/U97tbf3sUZecNzcUg6noAqN4q6t9NlOI5oBv5gcG0pN+8rawPrkFWDBiPSQy2jAhxvoQ==
 
 cldr-localenames-full@^37.0.0:
   version "37.0.0"
