@@ -134,10 +134,13 @@ filegroup(
 
 filegroup(
     name = "test262-all",
-    srcs = glob([
-        "test262/**/*.js",
-        "test262/**/*.json",
-    ]) + ["test262/README.md"],
+    srcs = glob(
+        [
+            "test262/**/*.js",
+            "test262/**/*.json",
+        ],
+        exclude = ["test262/test/**/*"],
+    ) + ["test262/README.md"],
     visibility = ["//visibility:public"],
 )
 

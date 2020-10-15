@@ -55,7 +55,7 @@ function isTimeFormatOnly(opts: DateTimeFormatOptions) {
   );
 }
 
-export function getAllLocales() {
+export function getAllLocales(): string[] {
   return globSync('*/ca-gregorian.json', {
     cwd: resolve(
       dirname(require.resolve('cldr-dates-full/package.json')),
@@ -92,18 +92,22 @@ const tzToMetaZoneMap = metaZones.supplemental.metaZones.metazones.reduce(
   {}
 );
 
-function loadDatesFields(locale: string): RawDateTimeLocaleInternalData {
-  const gregorian = (require(`cldr-dates-full/main/${locale}/ca-gregorian.json`) as typeof DateFields)
-    .main[locale as 'en'].dates.calendars.gregorian;
-  const timeZoneNames = (require(`cldr-dates-full/main/${locale}/timeZoneNames.json`) as typeof TimeZoneNames)
-    .main[locale as 'en'].dates.timeZoneNames;
-  let nu: string | null = null;
-  try {
-    nu = (require(`cldr-numbers-full/main/${locale}/numbers.json`) as typeof NumberFields)
-      .main[locale as 'en'].numbers.defaultNumberingSystem;
-  } catch (e) {
-    // Ignore
-  }
+async function loadDatesFields(
+  locale: string
+): Promise<RawDateTimeLocaleInternalData> {
+  const [caGregorian, tzn, numbers] = await Promise.all([
+    import(`cldr-dates-full/main/${locale}/ca-gregorian.json`),
+    import(`cldr-dates-full/main/${locale}/timeZoneNames.json`),
+    import(`cldr-numbers-full/main/${locale}/numbers.json`).catch(
+      _ => undefined
+    ),
+  ]);
+  const gregorian = (caGregorian as typeof DateFields).main[locale as 'en']
+    .dates.calendars.gregorian;
+  const timeZoneNames = (tzn as typeof TimeZoneNames).main[locale as 'en'].dates
+    .timeZoneNames;
+  const nu = (numbers as typeof NumberFields | undefined)?.main[locale as 'en']
+    .numbers.defaultNumberingSystem;
 
   let hc: string[] = [];
   let region: string | undefined;
@@ -306,12 +310,13 @@ function loadDatesFields(locale: string): RawDateTimeLocaleInternalData {
   };
 }
 
-export function extractDatesFields(
+export async function extractDatesFields(
   locales: string[] = AVAILABLE_LOCALES.availableLocales.full
-): Record<string, RawDateTimeLocaleInternalData> {
+): Promise<Record<string, RawDateTimeLocaleInternalData>> {
+  const data = await Promise.all(locales.map(loadDatesFields));
   return locales.reduce(
-    (all: Record<string, RawDateTimeLocaleInternalData>, locale) => {
-      all[locale] = loadDatesFields(locale);
+    (all: Record<string, RawDateTimeLocaleInternalData>, locale, i) => {
+      all[locale] = data[i];
       return all;
     },
     {}

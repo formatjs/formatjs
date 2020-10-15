@@ -7,7 +7,7 @@
 
 import * as DateFields from 'cldr-dates-full/main/en/dateFields.json';
 import * as NumberFields from 'cldr-numbers-full/main/en/numbers.json';
-import {sync as globSync} from 'fast-glob';
+import glob from 'fast-glob';
 import {resolve, dirname} from 'path';
 import {FieldData, LocaleFieldsData} from '@formatjs/ecma402-abstract';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
@@ -42,25 +42,27 @@ const FIELD_NAMES = [
 
 type Fields = typeof DateFields['main']['en']['dates']['fields'];
 
-export function getAllLocales() {
-  return globSync('*/dateFields.json', {
+export async function getAllLocales(): Promise<string[]> {
+  const fns = await glob('*/dateFields.json', {
     cwd: resolve(
       dirname(require.resolve('cldr-dates-full/package.json')),
       './main'
     ),
-  }).map(dirname);
+  });
+  return fns.map(dirname);
 }
 
-function loadRelativeFields(locale: string): LocaleFieldsData {
-  const fields = (require(`cldr-dates-full/main/${locale}/dateFields.json`) as typeof DateFields)
-    .main[locale as 'en'].dates.fields;
-  let nu: string | null = null;
-  try {
-    nu = (require(`cldr-numbers-full/main/${locale}/numbers.json`) as typeof NumberFields)
-      .main[locale as 'en'].numbers.defaultNumberingSystem;
-  } catch (e) {
-    // Ignore
-  }
+async function loadRelativeFields(locale: string): Promise<LocaleFieldsData> {
+  const [dateFileds, numbers] = await Promise.all([
+    import(`cldr-dates-full/main/${locale}/dateFields.json`) as Promise<
+      typeof DateFields
+    >,
+    import(`cldr-numbers-full/main/${locale}/numbers.json`).catch(
+      _ => undefined
+    ) as Promise<typeof NumberFields | undefined>,
+  ]);
+  const fields = dateFileds.main[locale as 'en'].dates.fields;
+  const nu = numbers?.main[locale as 'en'].numbers.defaultNumberingSystem;
 
   // Reduce the date fields data down to whitelist of fields needed in the
   // FormatJS libs.
@@ -74,7 +76,7 @@ function loadRelativeFields(locale: string): LocaleFieldsData {
     },
     {
       nu: [nu],
-    }
+    } as LocaleFieldsData
   );
 }
 
@@ -112,11 +114,12 @@ function transformFieldData(data: Fields['week']): FieldData {
   return processed;
 }
 
-export function extractRelativeFields(
+export async function extractRelativeFields(
   locales: string[] = AVAILABLE_LOCALES.availableLocales.full
-): Record<string, LocaleFieldsData> {
-  return locales.reduce((all: Record<string, LocaleFieldsData>, locale) => {
-    all[locale] = loadRelativeFields(locale);
+): Promise<Record<string, LocaleFieldsData>> {
+  const data = await Promise.all(locales.map(loadRelativeFields));
+  return locales.reduce((all: Record<string, LocaleFieldsData>, locale, i) => {
+    all[locale] = data[i];
     return all;
   }, {});
 }

@@ -4,10 +4,10 @@ import {outputJSONSync} from 'fs-extra';
 import {RelativeTimeLocaleData} from '@formatjs/ecma402-abstract';
 import minimist from 'minimist';
 
-function main(args: minimist.ParsedArgs) {
+async function main(args: minimist.ParsedArgs) {
   const {outDir} = args;
-  const locales = getAllLocales();
-  const rawData = extractRelativeFields(locales);
+  const locales = await getAllLocales();
+  const rawData = await extractRelativeFields(locales);
   const langData = locales.reduce(
     (all: Record<string, RelativeTimeLocaleData>, locale) => {
       if (locale === 'en-US-POSIX') {
@@ -36,5 +36,5 @@ function main(args: minimist.ParsedArgs) {
 }
 
 if (require.main === module) {
-  main(minimist(process.argv));
+  (async () => main(minimist(process.argv)))();
 }
