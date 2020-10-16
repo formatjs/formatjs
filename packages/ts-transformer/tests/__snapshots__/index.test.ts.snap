@@ -584,6 +584,35 @@ export default class Foo extends Component {
 }
 `;
 
+exports[`emit asserts for resourcePath 1`] = `
+Object {
+  "code": "export function foo() {
+    props.intl.formatMessage({ id: \\"resourcePath-hYpBl\\", defaultMessage: \\"props {intl}\\" }, { bar: 'bar' });
+    this.props.intl.formatMessage({ id: \\"resourcePath-tBZlS\\", defaultMessage: \\"this props {intl}\\" }, { bar: 'bar' });
+    return intl.formatMessage({ id: \\"resourcePath-ALfyd\\", defaultMessage: \\"foo {bar}\\" }, { bar: 'bar' });
+}
+",
+  "meta": Object {},
+  "msgs": Array [
+    Object {
+      "defaultMessage": "props {intl}",
+      "description": "bar",
+      "id": "resourcePath-hYpBl",
+    },
+    Object {
+      "defaultMessage": "this props {intl}",
+      "description": "bar",
+      "id": "resourcePath-tBZlS",
+    },
+    Object {
+      "defaultMessage": "foo {bar}",
+      "description": "bar",
+      "id": "resourcePath-ALfyd",
+    },
+  ],
+}
+`;
+
 exports[`emit asserts for templateLiteral 1`] = `
 Object {
   "code": "import React, { Component } from 'react';

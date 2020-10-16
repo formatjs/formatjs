@@ -259,7 +259,7 @@ function extractMessageDescriptor(
       case 'string':
         if (!msg.id) {
           msg.id = interpolateName(
-            {sourcePath: sf.fileName} as any,
+            {resourcePath: sf.fileName} as any,
             overrideIdFn,
             {
               content: msg.description

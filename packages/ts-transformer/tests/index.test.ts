@@ -54,6 +54,10 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
     overrideIdFn: '[hash:base64:5]',
     extractFromFormatMessageCall: true,
   },
+  resourcePath: {
+    overrideIdFn: '[name]-[hash:base64:5]',
+    extractFromFormatMessageCall: true,
+  },
   removeDescription: {},
 };
 
