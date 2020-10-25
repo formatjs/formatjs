@@ -26,7 +26,7 @@
     "@bazel/ibazel": "^0.13.1",
     "@bazel/rollup": "2.2.1",
     "@bazel/terser": "2.2.1",
-    "@bazel/typescript": "2.2.1",
+    "@bazel/typescript": "2.2.2",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-angular": "^11.0.0",
     "@docusaurus/core": "^2.0.0-alpha.65",
