@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.3.10...@formatjs/intl-locale@2.4.0) (2020-10-25)
+
+
+### Features
+
+* **@formatjs/intl-locale:** upgrade cldr to v37 ([c14cd57](https://github.com/formatjs/formatjs/commit/c14cd57aed7bd2bcb4a9d3d5bef13046296f7f18))
+
+
+
+
+
 ## [2.3.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.3.9...@formatjs/intl-locale@2.3.10) (2020-10-10)
 
 **Note:** Version bump only for package @formatjs/intl-locale

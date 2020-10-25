@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.4](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.11.3...@formatjs/ts-transformer@2.11.4) (2020-10-25)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** fix node clone issue, fix [#2152](https://github.com/formatjs/formatjs/issues/2152) ([556cb3b](https://github.com/formatjs/formatjs/commit/556cb3baaa0968186d0ad36d4cddadeacd05e89b))
+
+
+
+
+
 ## [2.11.3](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.11.2...@formatjs/ts-transformer@2.11.3) (2020-10-10)
 
 **Note:** Version bump only for package @formatjs/ts-transformer

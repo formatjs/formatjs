@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.16](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.15...eslint-plugin-formatjs@2.7.16) (2020-10-25)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** fix extraction filter, fix [#2238](https://github.com/formatjs/formatjs/issues/2238) ([f9f2c3e](https://github.com/formatjs/formatjs/commit/f9f2c3eadff49b1245d80c21efd4912eefd53c3d))
+
+
+
+
+
 ## [2.7.15](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.14...eslint-plugin-formatjs@2.7.15) (2020-10-10)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.4.6...@formatjs/intl-getcanonicallocales@1.5.0) (2020-10-25)
+
+
+### Features
+
+* **@formatjs/intl-getcanonicallocales:** upgrade cldr to v37 ([53540af](https://github.com/formatjs/formatjs/commit/53540af06ef06e639443223170adf4cab7e308e0))
+
+
+
+
+
 ## [1.4.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.4.5...@formatjs/intl-getcanonicallocales@1.4.6) (2020-10-01)
 
 **Note:** Version bump only for package @formatjs/intl-getcanonicallocales

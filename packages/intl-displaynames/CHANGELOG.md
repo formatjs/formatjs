@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.12...@formatjs/intl-displaynames@3.4.0) (2020-10-25)
+
+
+### Features
+
+* **@formatjs/intl-displaynames:** upgrade cldr to v37 ([aaa12ee](https://github.com/formatjs/formatjs/commit/aaa12ee6cecaeabe1942b8be91a5ae365109af4e))
+
+
+
+
+
 ## [3.3.12](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.11...@formatjs/intl-displaynames@3.3.12) (2020-10-10)
 
 

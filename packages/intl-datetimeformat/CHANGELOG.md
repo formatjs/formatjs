@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.10...@formatjs/intl-datetimeformat@2.7.0) (2020-10-25)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix h/K pattern, fix [#2236](https://github.com/formatjs/formatjs/issues/2236) ([23257c6](https://github.com/formatjs/formatjs/commit/23257c6eade39cb0d158f6dea94cfeafd890e8f0))
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** upgrade cldr to v37 ([9a3dedc](https://github.com/formatjs/formatjs/commit/9a3dedca298eaae93062c3f3950e390c1bc07b3a))
+* **@formatjs/intl-datetimeformat:** upgrade CLDR to v37 ([d1b0514](https://github.com/formatjs/formatjs/commit/d1b0514dcc7312d84112bdb29557d712c871b6f0))
+
+
+
+
+
 ## [2.6.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.9...@formatjs/intl-datetimeformat@2.6.10) (2020-10-10)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat
