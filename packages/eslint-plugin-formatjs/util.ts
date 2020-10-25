@@ -169,7 +169,11 @@ function extractMessageDescriptorFromJSXElement(
         break;
     }
   }
-  if (!Object.keys(result.message).length) {
+  if (
+    !result.messagePropNode &&
+    !result.descriptionNode &&
+    !result.idPropNode
+  ) {
     return;
   }
   return [result, values];
