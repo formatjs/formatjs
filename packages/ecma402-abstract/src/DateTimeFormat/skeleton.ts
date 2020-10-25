@@ -95,6 +95,7 @@ function matchSkeletonPattern(
     // Hour
     case 'h':
       result.hour = ['numeric', '2-digit'][len - 1];
+      result.hour12 = true;
       return '{hour}';
 
     case 'H':
@@ -103,6 +104,7 @@ function matchSkeletonPattern(
 
     case 'K':
       result.hour = ['numeric', '2-digit'][len - 1];
+      result.hour12 = true;
       return '{hour}';
 
     case 'k':

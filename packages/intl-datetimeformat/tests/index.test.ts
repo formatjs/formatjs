@@ -190,12 +190,26 @@ describe('Intl.DateTimeFormat', function () {
       hourCycle: 'h23',
       timeZone: 'Europe/Berlin',
     });
-    expect(formatter.format(new Date('2019-03-31T00:59:59.999Z'))).toBe('1');
-    expect(formatter.format(new Date('2019-03-31T01:00:00.000Z'))).toBe('3');
-    expect(formatter.format(new Date('2019-03-31T01:00:00.001Z'))).toBe('3');
+    expect(formatter.format(new Date('2019-03-31T00:59:59.999Z'))).toBe('01');
+    expect(formatter.format(new Date('2019-03-31T01:00:00.000Z'))).toBe('03');
+    expect(formatter.format(new Date('2019-03-31T01:00:00.001Z'))).toBe('03');
 
-    expect(formatter.format(new Date('2019-10-27T00:59:59.999Z'))).toBe('2');
-    expect(formatter.format(new Date('2019-10-27T01:00:00.000Z'))).toBe('2');
-    expect(formatter.format(new Date('2019-10-27T01:00:00.001Z'))).toBe('2');
+    expect(formatter.format(new Date('2019-10-27T00:59:59.999Z'))).toBe('02');
+    expect(formatter.format(new Date('2019-10-27T01:00:00.000Z'))).toBe('02');
+    expect(formatter.format(new Date('2019-10-27T01:00:00.001Z'))).toBe('02');
+  });
+  it('test #2236', function () {
+    const date = new Date('2020-09-16T11:55:32.491+02:00');
+    const formatter = new DateTimeFormat('en-US', {
+      year: undefined,
+      month: undefined,
+      day: undefined,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: undefined,
+      timeZoneName: 'short',
+      timeZone: 'Europe/Amsterdam',
+    });
+    expect(formatter.format(date)).toBe('11:55 AM GMT+2');
   });
 });
