@@ -63,6 +63,10 @@ jest_test(
     deps = [
         ":dist",
         "//packages/intl-messageformat-parser:types",
+        "@npm//@types/react",
+        "@npm//@types/react-dom",
+        "@npm//react",
+        "@npm//react-dom",
     ],
 )
 

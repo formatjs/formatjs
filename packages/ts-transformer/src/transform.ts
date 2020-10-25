@@ -23,37 +23,47 @@ const MESSAGE_DESC_KEYS: Array<keyof MessageDescriptor> = [
 
 type TypeScript = typeof typescript;
 
-function primitiveToTSNode(ts: TypeScript, v: string | number | boolean) {
+function primitiveToTSNode(
+  factory: typescript.NodeFactory,
+  v: string | number | boolean
+) {
   return typeof v === 'string'
-    ? ts.createStringLiteral(v)
+    ? factory.createStringLiteral(v)
     : typeof v === 'number'
-    ? ts.createNumericLiteral(v + '')
+    ? factory.createNumericLiteral(v + '')
     : typeof v === 'boolean'
     ? v
-      ? ts.createTrue()
-      : ts.createFalse()
+      ? factory.createTrue()
+      : factory.createFalse()
     : undefined;
 }
 
-function objToTSNode(ts: TypeScript, obj: object) {
+function objToTSNode(factory: typescript.NodeFactory, obj: object) {
   const props: typescript.PropertyAssignment[] = Object.entries(
     obj
   ).map(([k, v]) =>
-    ts.createPropertyAssignment(
+    factory.createPropertyAssignment(
       k,
-      primitiveToTSNode(ts, v) ||
+      primitiveToTSNode(factory, v) ||
         (Array.isArray(v)
-          ? ts.createArrayLiteral(v.map(n => objToTSNode(ts, n)))
+          ? factory.createArrayLiteralExpression(
+              v.map(n => objToTSNode(factory, n))
+            )
           : typeof v === 'object'
-          ? objToTSNode(ts, v)
-          : ts.createNull())
+          ? objToTSNode(factory, v)
+          : factory.createNull())
     )
   );
-  return ts.createObjectLiteral(props);
+  return factory.createObjectLiteralExpression(props);
 }
 
-function messageASTToTSNode(ts: TypeScript, ast: MessageFormatElement[]) {
-  return ts.createArrayLiteral(ast.map(el => objToTSNode(ts, el)));
+function messageASTToTSNode(
+  factory: typescript.NodeFactory,
+  ast: MessageFormatElement[]
+) {
+  return factory.createArrayLiteralExpression(
+    ast.map(el => objToTSNode(factory, el))
+  );
 }
 
 export interface Opts {
@@ -307,9 +317,11 @@ function isIntlFormatMessageCall(
 
 function extractMessageFromJsxComponent(
   ts: TypeScript,
+  factory: typescript.NodeFactory,
   node: typescript.JsxOpeningElement | typescript.JsxSelfClosingElement,
   opts: Opts,
-  sf: typescript.SourceFile
+  sf: typescript.SourceFile,
+  ctx: typescript.TransformationContext
 ): typeof node {
   const {onMsgExtracted} = opts;
   if (!isSingularMessageDecl(ts, node, opts.additionalComponentNames || [])) {
@@ -323,37 +335,45 @@ function extractMessageFromJsxComponent(
     onMsgExtracted(sf.fileName, [msg]);
   }
 
-  const attrs = setAttributesInJsxAttributes(
-    ts,
-    node.attributes,
-    {
-      defaultMessage: opts.removeDefaultMessage
-        ? undefined
-        : msg.defaultMessage,
-      id: msg.id,
-    },
-    opts.ast
-  );
-  return ts.isJsxOpeningElement(node)
-    ? ts.createJsxOpeningElement(node.tagName, node.typeArguments, attrs)
-    : ts.createJsxSelfClosingElement(node.tagName, node.typeArguments, attrs);
+  const visitor: typescript.Visitor = node => {
+    if (ts.isJsxAttributes(node)) {
+      return factory.createJsxAttributes(
+        generateNewProperties(
+          ts,
+          factory,
+          node,
+          {
+            defaultMessage: opts.removeDefaultMessage
+              ? undefined
+              : msg.defaultMessage,
+            id: msg.id,
+          },
+          opts.ast
+        )
+      );
+    }
+    return node;
+  };
+
+  return ts.visitEachChild(node, visitor, ctx);
 }
 
 function setAttributesInObject(
   ts: TypeScript,
+  factory: typescript.NodeFactory,
   node: typescript.ObjectLiteralExpression,
   msg: MessageDescriptor,
   ast?: boolean
 ) {
   const newProps = [
-    ts.createPropertyAssignment('id', ts.createStringLiteral(msg.id)),
+    factory.createPropertyAssignment('id', factory.createStringLiteral(msg.id)),
     ...(msg.defaultMessage
       ? [
-          ts.createPropertyAssignment(
+          factory.createPropertyAssignment(
             'defaultMessage',
             ast
-              ? messageASTToTSNode(ts, parse(msg.defaultMessage))
-              : ts.createStringLiteral(msg.defaultMessage)
+              ? messageASTToTSNode(factory, parse(msg.defaultMessage))
+              : factory.createStringLiteral(msg.defaultMessage)
           ),
         ]
       : []),
@@ -371,30 +391,33 @@ function setAttributesInObject(
       newProps.push(prop);
     }
   }
-  return ts.createObjectLiteral(ts.createNodeArray(newProps));
+  return factory.createObjectLiteralExpression(
+    factory.createNodeArray(newProps)
+  );
 }
 
-function setAttributesInJsxAttributes(
+function generateNewProperties(
   ts: TypeScript,
+  factory: typescript.NodeFactory,
   node: typescript.JsxAttributes,
   msg: MessageDescriptor,
   ast?: boolean
 ) {
   const newProps = [
-    ts.createJsxAttribute(
-      ts.createIdentifier('id'),
-      ts.createStringLiteral(msg.id)
+    factory.createJsxAttribute(
+      factory.createIdentifier('id'),
+      factory.createStringLiteral(msg.id)
     ),
     ...(msg.defaultMessage
       ? [
-          ts.createJsxAttribute(
-            ts.createIdentifier('defaultMessage'),
+          factory.createJsxAttribute(
+            factory.createIdentifier('defaultMessage'),
             ast
-              ? ts.createJsxExpression(
+              ? factory.createJsxExpression(
                   undefined,
-                  messageASTToTSNode(ts, parse(msg.defaultMessage))
+                  messageASTToTSNode(factory, parse(msg.defaultMessage))
                 )
-              : ts.createStringLiteral(msg.defaultMessage)
+              : factory.createStringLiteral(msg.defaultMessage)
           ),
         ]
       : []),
@@ -411,11 +434,12 @@ function setAttributesInJsxAttributes(
       newProps.push(prop);
     }
   }
-  return ts.createJsxAttributes(ts.createNodeArray(newProps));
+  return newProps;
 }
 
 function extractMessagesFromCallExpression(
   ts: TypeScript,
+  factory: typescript.NodeFactory,
   node: typescript.CallExpression,
   opts: Opts,
   sf: typescript.SourceFile
@@ -452,7 +476,7 @@ function extractMessagesFromCallExpression(
         onMsgExtracted(sf.fileName, msgs);
       }
 
-      const clonedProperties = ts.createNodeArray(
+      const clonedProperties = factory.createNodeArray(
         properties.map((prop, i) => {
           if (
             !ts.isPropertyAssignment(prop) ||
@@ -461,10 +485,11 @@ function extractMessagesFromCallExpression(
             return prop;
           }
 
-          return ts.createPropertyAssignment(
+          return factory.createPropertyAssignment(
             prop.name,
             setAttributesInObject(
               ts,
+              factory,
               prop.initializer,
               {
                 defaultMessage: opts.removeDefaultMessage
@@ -477,11 +502,13 @@ function extractMessagesFromCallExpression(
           );
         })
       );
-      const clonedDescriptorsObj = ts.createObjectLiteral(clonedProperties);
-      return ts.createCall(
+      const clonedDescriptorsObj = factory.createObjectLiteralExpression(
+        clonedProperties
+      );
+      return factory.createCallExpression(
         node.expression,
         node.typeArguments,
-        ts.createNodeArray([clonedDescriptorsObj, ...restArgs])
+        factory.createNodeArray([clonedDescriptorsObj, ...restArgs])
       );
     }
   } else if (
@@ -498,12 +525,13 @@ function extractMessagesFromCallExpression(
         onMsgExtracted(sf.fileName, [msg]);
       }
 
-      return ts.createCall(
+      return factory.createCallExpression(
         node.expression,
         node.typeArguments,
-        ts.createNodeArray([
+        factory.createNodeArray([
           setAttributesInObject(
             ts,
+            factory,
             descriptorsObj,
             {
               defaultMessage: opts.removeDefaultMessage
@@ -533,11 +561,10 @@ function getVisitor(
     node: typescript.Node
   ): typescript.Node => {
     const newNode = ts.isCallExpression(node)
-      ? extractMessagesFromCallExpression(ts, node, opts, sf)
+      ? extractMessagesFromCallExpression(ts, ctx.factory, node, opts, sf)
       : ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)
-      ? extractMessageFromJsxComponent(ts, node, opts, sf)
+      ? extractMessageFromJsxComponent(ts, ctx.factory, node, opts, sf, ctx)
       : node;
-
     return ts.visitEachChild(newNode, visitor, ctx);
   };
   return visitor;

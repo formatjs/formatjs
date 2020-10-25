@@ -1,9 +1,9 @@
 module.exports = {
   preset: 'ts-jest',
-  testEnvironment: 'node',
+  testEnvironment: 'jsdom',
   globals: {
     'ts-jest': {
-      tsConfig: 'tsconfig.json',
+      tsconfig: 'tsconfig.json',
       astTransformers: {
         before: [
           {
@@ -12,6 +12,7 @@ module.exports = {
               // options
               overrideIdFn: '[sha512:contenthash:base64:6]',
               ast: true,
+              extractFromFormatMessageCall: true,
             },
           },
         ],
