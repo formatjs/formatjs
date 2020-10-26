@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.7.0...@formatjs/intl-datetimeformat@2.7.1) (2020-10-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix UMD bundle ([e0c85a3](https://github.com/formatjs/formatjs/commit/e0c85a330c0394f59395ee3acb6b0a608c305871))
+
+
+
+
+
 # [2.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.10...@formatjs/intl-datetimeformat@2.7.0) (2020-10-25)
 
 

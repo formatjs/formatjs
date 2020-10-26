@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.3.0...@formatjs/intl-listformat@4.3.1) (2020-10-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-listformat:** fix UMD bundle ([b7ac910](https://github.com/formatjs/formatjs/commit/b7ac910cb4eb8dc3895ba0d7468c0ed761a69302))
+
+
+
+
+
 # [4.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.2.10...@formatjs/intl-listformat@4.3.0) (2020-10-25)
 
 

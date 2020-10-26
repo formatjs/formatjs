@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.4.0...@formatjs/intl-displaynames@3.4.1) (2020-10-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** fix UMD bundle ([d11a506](https://github.com/formatjs/formatjs/commit/d11a5068c9465555f177234d511f08ab3ad9cfb4))
+
+
+
+
+
 # [3.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.12...@formatjs/intl-displaynames@3.4.0) (2020-10-25)
 
 

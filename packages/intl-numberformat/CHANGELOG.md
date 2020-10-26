@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.7.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.7.0...@formatjs/intl-numberformat@5.7.1) (2020-10-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** fix UMD bundle ([bc8f573](https://github.com/formatjs/formatjs/commit/bc8f573a8716f185f8111b2f8464ea901b166e56))
+
+
+
+
+
 # [5.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.6.5...@formatjs/intl-numberformat@5.7.0) (2020-10-25)
 
 

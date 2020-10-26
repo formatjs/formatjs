@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.0...@formatjs/intl-locale@2.4.1) (2020-10-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-locale:** fix UMD bundle ([ca9c910](https://github.com/formatjs/formatjs/commit/ca9c910dbc7b7fa158d40ddf21348e252c4fa3e9))
+
+
+
+
+
 # [2.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.3.10...@formatjs/intl-locale@2.4.0) (2020-10-25)
 
 

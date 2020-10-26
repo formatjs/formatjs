@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.3.0...@formatjs/intl-relativetimeformat@7.3.1) (2020-10-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** fix UMD bundle ([b996965](https://github.com/formatjs/formatjs/commit/b996965807c8c748592b6ea32565139d25fce668))
+
+
+
+
+
 # [7.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.2.10...@formatjs/intl-relativetimeformat@7.3.0) (2020-10-25)
 
 

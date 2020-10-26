@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.5.0...@formatjs/intl-pluralrules@3.5.1) (2020-10-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** fix UMD bundle ([ae0514f](https://github.com/formatjs/formatjs/commit/ae0514f13d439448c0d240c743735372e30de0ea))
+
+
+
+
+
 # [3.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.4.10...@formatjs/intl-pluralrules@3.5.0) (2020-10-25)
 
 

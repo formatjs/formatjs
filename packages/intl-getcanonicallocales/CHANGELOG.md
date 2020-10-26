@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.5.0...@formatjs/intl-getcanonicallocales@1.5.1) (2020-10-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-getcanonicallocales:** fix UMD bundle ([c0362f5](https://github.com/formatjs/formatjs/commit/c0362f5243e663d1ac4efb011e8b4919d9dec1c1))
+
+
+
+
+
 # [1.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.4.6...@formatjs/intl-getcanonicallocales@1.5.0) (2020-10-25)
 
 
