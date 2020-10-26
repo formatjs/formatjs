@@ -1,13 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import {formatList as formatListFn} from '../src/list';
 
-import IntlListFormat from '@formatjs/intl-listformat';
 import {OptionalIntlConfig, IntlFormatters} from '../src/types';
-declare global {
-  namespace Intl {
-    const ListFormat: typeof IntlListFormat;
-  }
-}
 
 describe('format API', () => {
   const {NODE_ENV} = process.env;
