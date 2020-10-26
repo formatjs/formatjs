@@ -1,4 +1,4 @@
-name: Unit + Sauce Labs Tests (PR)
+name: Unit Tests (PR)
 
 on: [pull_request]
 
