@@ -367,6 +367,7 @@ rollup_bundle(
         "@npm//@rollup/plugin-commonjs",
         "@npm//@rollup/plugin-replace",
         "@npm//@rollup/plugin-json",
+        "@npm//tslib",
     ] + SRC_DEPS,
 )
 
