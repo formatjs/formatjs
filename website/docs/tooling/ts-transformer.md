@@ -156,10 +156,6 @@ A function with the signature `(id: string, defaultMessage: string, description:
 
 Alternatively, `overrideIdFn` can be a template string, which is used only if the message ID is empty.
 
-### **`idInterpolationPattern`**
-
-If certain message descriptors don't have id, this `pattern` will be used to automaticallygenerate IDs for them. Default to `[contenthash:5]`. See https://github.com/webpack/loader-utils#interpolatename for sample patterns.
-
 ### **`removeDefaultMessage`**
 
 Remove `defaultMessage` field in generated js after extraction.
