@@ -117,7 +117,8 @@ export interface Opts {
    */
   onMetaExtracted?: MetaExtractor;
   /**
-   * webpack-style name interpolation
+   * webpack-style name interpolation.
+   * Can also be a string like '[sha512:contenthash:hex:6]'
    *
    * @type {(InterpolateNameFn | string)}
    * @memberof Opts
