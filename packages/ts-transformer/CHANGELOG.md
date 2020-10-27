@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.5](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.11.4...@formatjs/ts-transformer@2.11.5) (2020-10-27)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** clarify comment in docstring ([d729c4a](https://github.com/formatjs/formatjs/commit/d729c4ad496a476c9293c973486b12599d6e753c))
+* **@formatjs/ts-transformer:** fix resourcePath interpolation ([09ed2de](https://github.com/formatjs/formatjs/commit/09ed2de1617afdbff2391731279c522ac60cc929))
+
+
+
+
+
 ## [2.11.4](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.11.3...@formatjs/ts-transformer@2.11.4) (2020-10-25)
 
 
