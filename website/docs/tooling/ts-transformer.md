@@ -63,6 +63,7 @@ module.exports = {
                 before: [
                   transform({
                     overrideIdFn: '[sha512:contenthash:base64:6]',
+                    extractFromFormatMessageCall: true,
                     ast: true,
                   }),
                 ],
@@ -95,6 +96,7 @@ module.exports = {
             options: {
               // options
               overrideIdFn: '[sha512:contenthash:base64:6]',
+              extractFromFormatMessageCall: true,
               ast: true,
             },
           },
@@ -116,6 +118,7 @@ module.exports = {
         "import": "transform",
         "type": "config",
         "overrideIdFn": "[sha512:contenthash:base64:6]",
+        "extractFromFormatMessageCall": true,
         "ast": true
       }
     ]
@@ -139,6 +142,7 @@ export default {
         before: [
           transform({
             overrideIdFn: '[sha512:contenthash:base64:6]',
+            extractFromFormatMessageCall: true,
             ast: true,
           }),
         ],
