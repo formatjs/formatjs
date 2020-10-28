@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.11.5...@formatjs/ts-transformer@2.12.0) (2020-10-28)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** add string concat static evaluation, fix [#2252](https://github.com/formatjs/formatjs/issues/2252) ([24454ba](https://github.com/formatjs/formatjs/commit/24454ba57e76ef9cf9ef75a2c17ee7fd825100d0))
+
+
+
+
+
 ## [2.11.5](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.11.4...@formatjs/ts-transformer@2.11.5) (2020-10-27)
 
 

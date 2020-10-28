@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.17...eslint-plugin-formatjs@2.8.0) (2020-10-28)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** support string concat, fix [#2252](https://github.com/formatjs/formatjs/issues/2252) ([cbeee5e](https://github.com/formatjs/formatjs/commit/cbeee5e2d2be610374cad3dda8cf12adf81781b6))
+
+
+
+
+
 ## [2.7.17](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.16...eslint-plugin-formatjs@2.7.17) (2020-10-27)
 
 **Note:** Version bump only for package eslint-plugin-formatjs
