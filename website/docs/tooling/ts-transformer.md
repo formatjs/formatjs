@@ -168,7 +168,7 @@ Remove `defaultMessage` field in generated js after extraction.
 
 Whether the metadata about the location of the message in the source file should be extracted. If `true`, then `file`, `start`, and `end` fields will exist for each extracted message descriptors. Defaults to `false`.
 
-## **`extractFromFormatMessageCall`**
+### **`extractFromFormatMessageCall`**
 
 Opt-in to extract from `intl.formatMessage` call with the same restrictions, e.g: has to be called with object literal such as `intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'}`
 
