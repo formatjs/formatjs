@@ -13,6 +13,12 @@ defineMessage({
     defaultMessage: 'this is default message',
     description: 'asd'
 })`,
+    `intl.formatMessage({
+  defaultMessage: 'this is default message' + 'vvv',
+  description: 'asd'
+})`,
+    `import {FormattedMessage} from 'react-intl'
+const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
     dynamicMessage,
     noMatch,
     spreadJsx,

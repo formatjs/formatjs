@@ -29,6 +29,24 @@ function findReferenceImport(
   );
 }
 
+function staticallyEvaluateStringConcat(
+  node: TSESTree.BinaryExpression
+): [result: string, isStaticallyEvaluatable: boolean] {
+  if (!isStringLiteral(node.right)) {
+    return ['', false];
+  }
+  if (isStringLiteral(node.left)) {
+    return [String(node.left.value) + node.right.value, true];
+  }
+  if (node.left.type === 'BinaryExpression') {
+    const [result, isStaticallyEvaluatable] = staticallyEvaluateStringConcat(
+      node.left
+    );
+    return [result + node.right.value, isStaticallyEvaluatable];
+  }
+  return ['', false];
+}
+
 function isIntlFormatMessageCall(node: TSESTree.Node) {
   return (
     node.type === 'CallExpression' &&
@@ -86,20 +104,30 @@ function extractMessageDescriptor(
     if (prop.type !== 'Property' || prop.key.type !== 'Identifier') {
       continue;
     }
-    const value = isStringLiteral(prop.value) ? prop.value.value : undefined;
+    const valueNode = prop.value;
+    let value: string | undefined = undefined;
+    if (isStringLiteral(valueNode)) {
+      value = valueNode.value;
+    } else if (valueNode.type === 'BinaryExpression') {
+      const [result, isStatic] = staticallyEvaluateStringConcat(valueNode);
+      if (isStatic) {
+        value = result;
+      }
+    }
+
     switch (prop.key.name) {
       case 'defaultMessage':
         result.messagePropNode = prop;
-        result.messageNode = prop.value;
+        result.messageNode = valueNode;
         result.message.defaultMessage = value;
         break;
       case 'description':
-        result.descriptionNode = prop.value;
+        result.descriptionNode = valueNode;
         result.message.description = value;
         break;
       case 'id':
         result.message.id = value;
-        result.idValueNode = prop.value;
+        result.idValueNode = valueNode;
         result.idPropNode = prop;
         break;
     }
@@ -129,42 +157,51 @@ function extractMessageDescriptorFromJSXElement(
       continue;
     }
     const key = prop.name;
+    let valueNode = prop.value;
+    let value: string | undefined = undefined;
+    if (valueNode) {
+      if (isStringLiteral(valueNode)) {
+        value = valueNode.value;
+      } else if (
+        valueNode?.type === 'JSXExpressionContainer' &&
+        valueNode.expression.type === 'BinaryExpression'
+      ) {
+        const [result, isStatic] = staticallyEvaluateStringConcat(
+          valueNode.expression
+        );
+        if (isStatic) {
+          value = result;
+        }
+      }
+    }
+
     switch (key.name) {
       case 'defaultMessage':
         result.messagePropNode = prop;
-        result.messageNode = prop.value;
-        if (
-          prop.value?.type === 'Literal' &&
-          typeof prop.value.value === 'string'
-        ) {
-          result.message.defaultMessage = prop.value.value;
+        result.messageNode = valueNode;
+        if (value) {
+          result.message.defaultMessage = value;
         }
         break;
       case 'description':
-        result.descriptionNode = prop.value;
-        if (
-          prop.value?.type === 'Literal' &&
-          typeof prop.value.value === 'string'
-        ) {
-          result.message.description = prop.value.value;
+        result.descriptionNode = valueNode;
+        if (value) {
+          result.message.description = value;
         }
         break;
       case 'id':
-        result.idValueNode = prop.value;
+        result.idValueNode = valueNode;
         result.idPropNode = prop;
-        if (
-          prop.value?.type === 'Literal' &&
-          typeof prop.value.value === 'string'
-        ) {
-          result.message.id = prop.value.value;
+        if (value) {
+          result.message.id = value;
         }
         break;
       case 'values':
         if (
-          prop.value?.type === 'JSXExpressionContainer' &&
-          prop.value.expression.type === 'ObjectExpression'
+          valueNode?.type === 'JSXExpressionContainer' &&
+          valueNode.expression.type === 'ObjectExpression'
         ) {
-          values = prop.value.expression;
+          values = valueNode.expression;
         }
         break;
     }
