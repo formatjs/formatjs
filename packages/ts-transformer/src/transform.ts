@@ -173,6 +173,24 @@ function isSingularMessageDecl(
   return compNames.has(fnName);
 }
 
+function evaluateStringConcat(
+  ts: TypeScript,
+  node: typescript.BinaryExpression
+): [result: string, isStaticallyEvaluatable: boolean] {
+  const {right, left} = node;
+  if (!ts.isStringLiteral(right)) {
+    return ['', false];
+  }
+  if (ts.isStringLiteral(left)) {
+    return [left.text + right.text, true];
+  }
+  if (ts.isBinaryExpression(left)) {
+    const [result, isStatic] = evaluateStringConcat(ts, left);
+    return [result + right.text, isStatic];
+  }
+  return ['', false];
+}
+
 function extractMessageDescriptor(
   ts: TypeScript,
   node:
@@ -202,6 +220,7 @@ function extractMessageDescriptor(
         ? prop.initializer
         : undefined;
     if (name && ts.isIdentifier(name) && initializer) {
+      // {id: 'id'}
       if (ts.isStringLiteral(initializer)) {
         switch (name.text) {
           case 'id':
@@ -214,7 +233,9 @@ function extractMessageDescriptor(
             msg.description = initializer.text;
             break;
         }
-      } else if (ts.isNoSubstitutionTemplateLiteral(initializer)) {
+      }
+      // {id: `id`}
+      else if (ts.isNoSubstitutionTemplateLiteral(initializer)) {
         switch (name.text) {
           case 'id':
             msg.id = initializer.text;
@@ -226,22 +247,56 @@ function extractMessageDescriptor(
             msg.description = initializer.text;
             break;
         }
-      } else if (
-        ts.isJsxExpression(initializer) &&
-        initializer.expression &&
-        ts.isNoSubstitutionTemplateLiteral(initializer.expression)
-      ) {
-        const {expression} = initializer;
-        switch (name.text) {
-          case 'id':
-            msg.id = expression.text;
-            break;
-          case 'defaultMessage':
-            msg.defaultMessage = expression.text;
-            break;
-          case 'description':
-            msg.description = expression.text;
-            break;
+      } else if (ts.isJsxExpression(initializer) && initializer.expression) {
+        // <FormattedMessage foo={`bar`} />
+        if (ts.isNoSubstitutionTemplateLiteral(initializer.expression)) {
+          const {expression} = initializer;
+          switch (name.text) {
+            case 'id':
+              msg.id = expression.text;
+              break;
+            case 'defaultMessage':
+              msg.defaultMessage = expression.text;
+              break;
+            case 'description':
+              msg.description = expression.text;
+              break;
+          }
+        }
+        // <FormattedMessage foo={'bar' + 'baz'} />
+        else if (ts.isBinaryExpression(initializer.expression)) {
+          const {expression} = initializer;
+          const [result, isStatic] = evaluateStringConcat(ts, expression);
+          if (isStatic) {
+            switch (name.text) {
+              case 'id':
+                msg.id = result;
+                break;
+              case 'defaultMessage':
+                msg.defaultMessage = result;
+                break;
+              case 'description':
+                msg.description = result;
+                break;
+            }
+          }
+        }
+      }
+      // {defaultMessage: 'asd' + bar'}
+      else if (ts.isBinaryExpression(initializer)) {
+        const [result, isStatic] = evaluateStringConcat(ts, initializer);
+        if (isStatic) {
+          switch (name.text) {
+            case 'id':
+              msg.id = result;
+              break;
+            case 'defaultMessage':
+              msg.defaultMessage = result;
+              break;
+            case 'description':
+              msg.description = result;
+              break;
+          }
         }
       }
     }

@@ -33,6 +33,9 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
   formatMessageCall: {},
   FormattedMessage: {},
   inline: {},
+  stringConcat: {
+    extractFromFormatMessageCall: true,
+  },
   templateLiteral: {},
   overrideIdFn: {
     overrideIdFn: (id, defaultMessage, description) => {

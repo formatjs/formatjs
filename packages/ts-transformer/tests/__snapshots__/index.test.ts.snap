@@ -613,6 +613,41 @@ Object {
 }
 `;
 
+exports[`emit asserts for stringConcat 1`] = `
+Object {
+  "code": "import React, { Component } from 'react';
+import { FormattedMessage, defineMessage } from 'react-intl';
+export default class Foo extends Component {
+    render() {
+        return (<div>
+        <FormattedMessage id=\\"foo.bar.bazid\\" defaultMessage=\\"Hello World!farbaz\\"/>
+        {intl.formatMessage({ id: \\"header\\", defaultMessage: \\"Hello World!foobar\\" })}
+        {defineMessage({ id: \\"header2\\", defaultMessage: \\"Hello World!\\" })}
+      </div>);
+    }
+}
+",
+  "meta": Object {},
+  "msgs": Array [
+    Object {
+      "defaultMessage": "Hello World!farbaz",
+      "description": "The default message.",
+      "id": "foo.bar.bazid",
+    },
+    Object {
+      "defaultMessage": "Hello World!foobar",
+      "description": "The default message",
+      "id": "header",
+    },
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": "The default message asd",
+      "id": "header2",
+    },
+  ],
+}
+`;
+
 exports[`emit asserts for templateLiteral 1`] = `
 Object {
   "code": "import React, { Component } from 'react';
