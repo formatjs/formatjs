@@ -252,7 +252,7 @@ yarn add -D @formatjs/ts-transformer
 
 Take a look at [`ts-jest` guide](https://github.com/kulshekhar/ts-jest/blob/master/docs/user/config/astTransformers.md) on how to incorporate custom AST Transformers.
 
-### `ttypescript`
+### `typescript`
 
 <Tabs
 groupId="npm"
