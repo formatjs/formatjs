@@ -10,9 +10,9 @@ function checkNode(
   importedMacroVars: Scope.Variable[]
 ) {
   const msgs = extractMessages(node as TSESTree.Node, importedMacroVars);
-  const {
-    options: [{idInterpolationPattern}],
-  } = context;
+  const {options} = context;
+  const [opt = {}] = options;
+  const {idInterpolationPattern} = opt;
   for (const [
     {
       message: {defaultMessage, description, id},
@@ -21,57 +21,67 @@ function checkNode(
       messagePropNode,
     },
   ] of msgs) {
-    if (!defaultMessage) {
+    if (!idInterpolationPattern && !idPropNode) {
       context.report({
         node: node as Node,
-        message: `defaultMessage must be a string literal to calculate generated IDs`,
+        message: `id must be specified`,
       });
-    } else if (!description && descriptionNode) {
-      context.report({
-        node: node as Node,
-        message: `description must be a string literal to calculate generated IDs`,
-      });
-    } else {
-      const correctId = interpolateName(
-        {
-          resourcePath: context.getFilename(),
-        } as any,
-        idInterpolationPattern,
-        {
-          content: description
-            ? `${defaultMessage}#${description}`
-            : defaultMessage,
-        }
-      );
-      if (id !== correctId) {
+    } else if (idInterpolationPattern) {
+      if (!defaultMessage) {
         context.report({
           node: node as Node,
-          message: `"id" does not match with hash pattern ${idInterpolationPattern}.
+          message: `defaultMessage must be a string literal to calculate generated IDs`,
+        });
+      } else if (!description && descriptionNode) {
+        context.report({
+          node: node as Node,
+          message: `description must be a string literal to calculate generated IDs`,
+        });
+      } else {
+        const correctId = interpolateName(
+          {
+            resourcePath: context.getFilename(),
+          } as any,
+          idInterpolationPattern,
+          {
+            content: description
+              ? `${defaultMessage}#${description}`
+              : defaultMessage,
+          }
+        );
+        if (id !== correctId) {
+          context.report({
+            node: node as Node,
+            message: `"id" does not match with hash pattern ${idInterpolationPattern}.
 Expected: ${correctId}
 Actual: ${id}`,
-          fix(fixer) {
-            if (idPropNode) {
-              if (idPropNode.type === 'JSXAttribute') {
+            fix(fixer) {
+              if (idPropNode) {
+                if (idPropNode.type === 'JSXAttribute') {
+                  return fixer.replaceText(
+                    idPropNode as any,
+                    `id="${correctId}"`
+                  );
+                }
                 return fixer.replaceText(
                   idPropNode as any,
-                  `id="${correctId}"`
+                  `id: '${correctId}'`
                 );
               }
-              return fixer.replaceText(idPropNode as any, `id: '${correctId}'`);
-            }
-            // Insert after default message node
-            if (messagePropNode!.type === 'JSXAttribute') {
-              return fixer.insertTextAfter(
+              // Insert after default message node
+              if (messagePropNode!.type === 'JSXAttribute') {
+                return fixer.insertTextAfter(
+                  messagePropNode as any,
+                  ` id="${correctId}"`
+                );
+              }
+              return fixer.replaceText(
                 messagePropNode as any,
-                ` id="${correctId}"`
+                `defaultMessage: '${defaultMessage}', id: '${correctId}'`
               );
-            }
-            return fixer.replaceText(
-              messagePropNode as any,
-              `defaultMessage: '${defaultMessage}', id: '${correctId}'`
-            );
-          },
-        });
+            },
+          });
+        }
       }
     }
   }

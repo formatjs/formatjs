@@ -12,6 +12,7 @@ ruleTester.run('enforce-id', enforceId, {
       code: `<FormattedMessage id="/e77jM" defaultMessage="{count, plural, one {#} other {# more}}" values={{foo: 1}} />`,
       options,
     },
+    `<FormattedMessage id="manual id" defaultMessage="{count, plural, one {#} other {# more}}" values={{foo: 1}} />`,
     {code: noMatch, options},
     {code: spreadJsx, options},
     {code: emptyFnCall, options},
@@ -30,6 +31,29 @@ Actual: foo`,
       options,
       output: `
 intl.formatMessage({ id: 'j9qhn+', defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'})`,
+    },
+    {
+      code: `
+intl.formatMessage({defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'})`,
+      errors: [
+        {
+          message: `id must be specified`,
+        },
+      ],
+    },
+    {
+      code: `
+intl.formatMessage({defaultMessage: '{count, plural, one {#} other {# more}}', description: 'asd'})`,
+      errors: [
+        {
+          message: `"id" does not match with hash pattern [sha512:contenthash:base64:6].
+Expected: j9qhn+
+Actual: undefined`,
+        },
+      ],
+      options,
+      output: `
+intl.formatMessage({defaultMessage: '{count, plural, one {#} other {# more}}', id: 'j9qhn+', description: 'asd'})`,
     },
     {
       code: `
