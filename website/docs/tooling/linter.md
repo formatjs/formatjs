@@ -241,6 +241,24 @@ intl.formatMessage({
 }, values)
 ```
 
+#### Options
+
+```json
+{
+  "plugins": ["formatjs"],
+  "rules": {
+    "formatjs/enforce-placeholders": [
+      "error",
+      {
+        "ignoreList": ["foo"]
+      }
+    ]
+  }
+}
+```
+
+- `ignoreList`: List of placeholder names to ignore. This works with `defaultRichTextElements` in `react-intl` so we don't provide false positive for ambient global tag formatting
+
 ### `enforce-plural-rules`
 
 Enforce certain plural rules to always be specified/forbidden in a message.
@@ -413,7 +431,7 @@ This enforces generated ID to be set in `MessageDescriptor`.
 
 #### Why
 
-Pipelines can enforce automatic ID generation at the linter level (autofix to insert autogen ID) so this guarantees that.
+Pipelines can enforce automatic/manual ID generation at the linter level (autofix to insert autogen ID) so this guarantees that.
 
 ```tsx
 import {defineMessages} from 'react-intl';
@@ -445,10 +463,11 @@ const messages = defineMessages({
     "formatjs/enforce-id": [
       "error",
       {
-        // THIS IS REQUIRED
         "idInterpolationPattern": "[sha512:contenthash:base64:6]"
       }
     ]
   }
 }
 ```
+
+- `idInterpolationPattern`: Pattern to verify ID against
