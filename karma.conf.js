@@ -36,7 +36,6 @@ module.exports = function (config) {
     frameworks: ['jasmine', 'jasmine-matchers'],
     files: FILES,
     reporters: ['progress', 'saucelabs'],
-    port: 9876,
     colors: true,
     concurrency: 5,
     sauceLabs: {
@@ -47,7 +46,7 @@ module.exports = function (config) {
       accessKey: process.env.SAUCE_ACCESS_KEY,
       // Must match with `.github/workflows/saucelabs.yml`
       connectOptions: {
-        port: 5757,
+        scproxyPort: 5757,
         logfile: 'sauce_connect.log',
       },
       public: 'public',
