@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.8.0...eslint-plugin-formatjs@2.9.0) (2020-10-30)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** add ignoreList option to enforce-placeholders, fix [#2262](https://github.com/formatjs/formatjs/issues/2262) ([a10e00c](https://github.com/formatjs/formatjs/commit/a10e00c0c923c51c493c34de95d4b07c93f1bf12))
+* **eslint-plugin-formatjs:** makes idInterpolationPattern optional in enforce-id, fix [#2263](https://github.com/formatjs/formatjs/issues/2263) ([6289c28](https://github.com/formatjs/formatjs/commit/6289c28acf7671ee8ed08f73d3b72dc73522dc18))
+
+
+
+
+
 # [2.8.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.17...eslint-plugin-formatjs@2.8.0) (2020-10-28)
 
 
