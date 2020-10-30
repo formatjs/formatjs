@@ -23,7 +23,7 @@
     "@babel/plugin-syntax-jsx": "^7.10.4",
     "@bazel/bazelisk": "^1.5.0",
     "@bazel/buildifier": "^3.3.0",
-    "@bazel/ibazel": "^0.13.1",
+    "@bazel/ibazel": "^0.14.0",
     "@bazel/rollup": "2.2.2",
     "@bazel/terser": "2.2.2",
     "@bazel/typescript": "2.2.2",
