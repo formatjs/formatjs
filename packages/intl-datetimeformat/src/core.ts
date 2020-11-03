@@ -17,6 +17,9 @@ import {
   UnpackedZoneData,
   parseDateTimeSkeleton,
   ToNumber,
+  FormatDateTimeRange,
+  FormatDateTimeRangeToParts,
+  IntlDateTimeFormatInternal,
 } from '@formatjs/ecma402-abstract';
 import getInternalSlots from './get_internal_slots';
 import links from './data/links';
@@ -30,28 +33,6 @@ const UPPERCASED_LINKS = Object.keys(links).reduce(
   },
   {}
 );
-
-export interface IntlDateTimeFormatInternal {
-  locale: string;
-  dataLocale: string;
-  calendar?: string;
-  dateStyle?: 'full' | 'long' | 'medium' | 'short';
-  timeStyle?: 'full' | 'long' | 'medium' | 'short';
-  weekday: 'narrow' | 'short' | 'long';
-  era: 'narrow' | 'short' | 'long';
-  year: '2-digit' | 'numeric';
-  month: '2-digit' | 'numeric' | 'narrow' | 'short' | 'long';
-  day: '2-digit' | 'numeric';
-  hour: '2-digit' | 'numeric';
-  minute: '2-digit' | 'numeric';
-  second: '2-digit' | 'numeric';
-  timeZoneName: 'short' | 'long';
-  hourCycle: string;
-  numberingSystem: string;
-  timeZone: string;
-  pattern: string;
-  boundFormat?: Intl.DateTimeFormat['format'];
-}
 
 const RESOLVED_OPTIONS_KEYS: Array<
   keyof Omit<IntlDateTimeFormatInternal, 'pattern' | 'boundFormat'>
@@ -137,11 +118,11 @@ export interface DateTimeFormatConstructor {
   new (
     locales?: string | string[],
     options?: DateTimeFormatOptions
-  ): Intl.DateTimeFormat;
+  ): IDateTimeFormat;
   (
     locales?: string | string[],
     options?: DateTimeFormatOptions
-  ): Intl.DateTimeFormat;
+  ): IDateTimeFormat;
 
   __addLocaleData(...data: RawDateTimeLocaleData[]): void;
   supportedLocalesOf(
@@ -263,6 +244,52 @@ defineProperty(DateTimeFormat.prototype, 'formatToParts', {
   },
 });
 
+defineProperty(DateTimeFormat.prototype, 'formatRangeToParts', {
+  value: function formatRangeToParts(
+    startDate: number | Date,
+    endDate: number | Date
+  ) {
+    let dtf = this;
+    if (typeof dtf !== 'object') {
+      throw new TypeError();
+    }
+    if (startDate === undefined || endDate === undefined) {
+      throw new TypeError('startDate/endDate cannot be undefined');
+    }
+    const x = ToNumber(startDate);
+    const y = ToNumber(endDate);
+    return FormatDateTimeRangeToParts(dtf, x, y, {
+      getInternalSlots,
+      localeData: DateTimeFormat.localeData,
+      tzData: DateTimeFormat.tzData,
+      getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
+    });
+  },
+});
+
+defineProperty(DateTimeFormat.prototype, 'formatRange', {
+  value: function formatRange(
+    startDate: number | Date,
+    endDate: number | Date
+  ) {
+    let dtf = this;
+    if (typeof dtf !== 'object') {
+      throw new TypeError();
+    }
+    if (startDate === undefined || endDate === undefined) {
+      throw new TypeError('startDate/endDate cannot be undefined');
+    }
+    const x = ToNumber(startDate);
+    const y = ToNumber(endDate);
+    return FormatDateTimeRange(dtf, x, y, {
+      getInternalSlots,
+      localeData: DateTimeFormat.localeData,
+      tzData: DateTimeFormat.tzData,
+      getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
+    });
+  },
+});
+
 const DEFAULT_TIMEZONE = 'UTC';
 
 DateTimeFormat.__setDefaultTimeZone = (timeZone: string) => {
@@ -302,6 +329,7 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
           timeFormat,
           dateTimeFormat,
           formats,
+          intervalFormats,
           ...rawData
         } = unpackData(locale, datum);
         const processedData: DateTimeFormatLocaleInternalData = {
@@ -331,7 +359,12 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
           processedData.formats[calendar] = Object.keys(
             formats[calendar]
           ).map(skeleton =>
-            parseDateTimeSkeleton(skeleton, formats[calendar][skeleton])
+            parseDateTimeSkeleton(
+              skeleton,
+              formats[calendar][skeleton],
+              intervalFormats[skeleton],
+              intervalFormats.intervalFormatFallback
+            )
           );
         }
 

@@ -4,7 +4,9 @@ import {invariant} from './utils';
  * https://tc39.es/ecma402/#sec-partitionpattern
  * @param pattern
  */
-export function PartitionPattern(pattern: string) {
+export function PartitionPattern<T extends string>(
+  pattern: string
+): Array<{type: T; value: string | undefined}> {
   const result = [];
   let beginIndex = pattern.indexOf('{');
   let endIndex = 0;
@@ -15,12 +17,12 @@ export function PartitionPattern(pattern: string) {
     invariant(endIndex > beginIndex, `Invalid pattern ${pattern}`);
     if (beginIndex > nextIndex) {
       result.push({
-        type: 'literal',
+        type: 'literal' as T,
         value: pattern.substring(nextIndex, beginIndex),
       });
     }
     result.push({
-      type: pattern.substring(beginIndex + 1, endIndex),
+      type: pattern.substring(beginIndex + 1, endIndex) as T,
       value: undefined,
     });
     nextIndex = endIndex + 1;
@@ -28,7 +30,7 @@ export function PartitionPattern(pattern: string) {
   }
   if (nextIndex < length) {
     result.push({
-      type: 'literal',
+      type: 'literal' as T,
       value: pattern.substring(nextIndex, length),
     });
   }

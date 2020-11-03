@@ -1,4 +1,11 @@
-import {Formats} from '../../types/date-time';
+import {
+  DateTimeFormatOptions,
+  Formats,
+  RangePatternPart,
+  RangePatterns,
+  RangePatternType,
+  TABLE_2,
+} from '../../types/date-time';
 
 /**
  * https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
@@ -12,11 +19,19 @@ const expPatternTrimmer = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
 
 function matchSkeletonPattern(
   match: string,
-  result: Formats = {
-    pattern: '',
-    pattern12: '',
-    skeleton: '',
-    rawPattern: '',
+  result: Pick<
+    DateTimeFormatOptions,
+    | 'weekday'
+    | 'era'
+    | 'year'
+    | 'month'
+    | 'day'
+    | 'hour'
+    | 'minute'
+    | 'second'
+    | 'timeZoneName'
+  > & {
+    hour12?: boolean;
   }
 ) {
   const len = match.length;
@@ -145,6 +160,106 @@ function matchSkeletonPattern(
   return '';
 }
 
+function skeletonTokenToTable2(c: string): TABLE_2 {
+  switch (c) {
+    // Era
+    case 'G':
+      return 'era';
+
+    // Year
+    case 'y':
+    case 'Y':
+    case 'u':
+    case 'U':
+    case 'r':
+      return 'year';
+
+    // Month
+    case 'M':
+    case 'L':
+      return 'month';
+
+    // Day
+    case 'd':
+    case 'D':
+    case 'F':
+    case 'g':
+      return 'day';
+
+    // Period
+    case 'a': // AM, PM
+    case 'b': // am, pm, noon, midnight
+    case 'B': // flexible day periods
+      return 'ampm';
+    // Hour
+    case 'h':
+    case 'H':
+    case 'K':
+    case 'k':
+      return 'hour';
+    // Minute
+    case 'm':
+      return 'minute';
+
+    // Second
+    case 's':
+
+    case 'S':
+    case 'A':
+      return 'second';
+    default:
+      throw new RangeError('Invalid range pattern token');
+  }
+}
+
+export function processDateTimePattern(
+  pattern: string,
+  result?: Pick<
+    DateTimeFormatOptions,
+    | 'weekday'
+    | 'era'
+    | 'year'
+    | 'month'
+    | 'day'
+    | 'hour'
+    | 'minute'
+    | 'second'
+    | 'timeZoneName'
+  > & {
+    hour12?: boolean;
+  }
+): [pattern: string, pattern12: string] {
+  const literals: string[] = [];
+
+  // Use skeleton to populate result, but use mapped pattern to populate pattern
+  let pattern12 = pattern
+    // Double apostrophe
+    .replace(/'{2}/g, '{apostrophe}')
+    // Apostrophe-escaped
+    .replace(/'(.*?)'/g, (_, literal) => {
+      literals.push(literal);
+      return `$$${literals.length - 1}$$`;
+    })
+    .replace(DATE_TIME_REGEX, m => matchSkeletonPattern(m, result || {}));
+
+  //Restore literals
+  if (literals.length) {
+    pattern12 = pattern12
+      .replace(/\$\$(\d+)\$\$/g, (_, i) => {
+        return literals[+i];
+      })
+      .replace(/\{apostrophe\}/g, "'");
+  }
+  // Handle apostrophe-escaped things
+  return [
+    pattern12
+      .replace(/([\s\uFEFF\xA0])\{ampm\}([\s\uFEFF\xA0])/, '$1')
+      .replace('{ampm}', '')
+      .replace(expPatternTrimmer, ''),
+    pattern12,
+  ];
+}
+
 /**
  * Parse Date time skeleton into Intl.DateTimeFormatOptions
  * Ref: https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
@@ -153,42 +268,113 @@ function matchSkeletonPattern(
  */
 export function parseDateTimeSkeleton(
   skeleton: string,
-  pattern: string = skeleton
+  rawPattern: string = skeleton,
+  rangePatterns?: Record<string, string>,
+  intervalFormatFallback?: string
 ): Formats {
   const result: Formats = {
     pattern: '',
     pattern12: '',
     skeleton,
-    rawPattern: pattern,
+    rawPattern,
+    rangePatterns: {} as Formats['rangePatterns'],
+    rangePatterns12: {} as Formats['rangePatterns12'],
   };
 
-  const literals: string[] = [];
+  if (rangePatterns) {
+    for (const k in rangePatterns) {
+      const key = skeletonTokenToTable2(k);
+      const rawPattern = rangePatterns[k];
+      const intervalResult: RangePatterns = {
+        patternParts: [],
+      };
+      const [pattern, pattern12] = processDateTimePattern(
+        rawPattern,
+        intervalResult
+      );
 
-  // Use skeleton to populate result, but use mapped pattern to populate pattern
-  result.pattern12 = pattern
-    // Double apostrophe
-    .replace(/'{2}/g, '{apostrophe}')
-    // Apostrophe-escaped
-    .replace(/'(.*?)'/g, (_, literal) => {
-      literals.push(literal);
-      return `$$${literals.length - 1}$$`;
-    })
-    .replace(DATE_TIME_REGEX, matchSkeletonPattern);
-
-  skeleton.replace(DATE_TIME_REGEX, m => matchSkeletonPattern(m, result));
-
-  //Restore literals
-  if (literals.length) {
-    result.pattern12 = result.pattern12
-      .replace(/\$\$(\d+)\$\$/g, (_, i) => {
-        return literals[+i];
-      })
-      .replace(/\{apostrophe\}/g, "'");
+      result.rangePatterns[key] = {
+        ...intervalResult,
+        patternParts: splitRangePattern(pattern),
+      };
+      result.rangePatterns12[key] = {
+        ...intervalResult,
+        patternParts: splitRangePattern(pattern12),
+      };
+    }
+  } else if (intervalFormatFallback) {
+    const patternParts = splitFallbackRangePattern(intervalFormatFallback);
+    result.rangePatterns.default = {
+      patternParts,
+    };
+    result.rangePatterns12.default = {
+      patternParts,
+    };
   }
-  // Handle apostrophe-escaped things
-  result.pattern = result.pattern12
-    .replace(/([\s\uFEFF\xA0])\{ampm\}([\s\uFEFF\xA0])/, '$1')
-    .replace('{ampm}', '')
-    .replace(expPatternTrimmer, '');
+
+  // Process skeleton
+  skeleton.replace(DATE_TIME_REGEX, m => matchSkeletonPattern(m, result));
+  const [pattern, pattern12] = processDateTimePattern(rawPattern);
+  result.pattern = pattern;
+  result.pattern12 = pattern12;
   return result;
+}
+
+export function splitFallbackRangePattern(
+  pattern: string
+): Array<RangePatternPart> {
+  const parts = pattern.split(/(\{[0|1]\})/g).filter(Boolean);
+  return parts.map(pattern => {
+    switch (pattern) {
+      case '{0}':
+        return {
+          source: RangePatternType.startRange,
+          pattern,
+        };
+      case '{1}':
+        return {
+          source: RangePatternType.endRange,
+          pattern,
+        };
+      default:
+        return {
+          source: RangePatternType.shared,
+          pattern,
+        };
+    }
+  });
+}
+
+export function splitRangePattern(pattern: string): Array<RangePatternPart> {
+  const PART_REGEX = /\{(.*?)\}/g;
+  // Map of part and index within the string
+  const parts: Record<string, number> = {};
+  let match;
+  let splitIndex = 0;
+  while ((match = PART_REGEX.exec(pattern))) {
+    if (!(match[0] in parts)) {
+      parts[match[0]] = match.index;
+    } else {
+      splitIndex = match.index;
+      break;
+    }
+  }
+  if (!splitIndex) {
+    return [
+      {
+        source: RangePatternType.startRange,
+        pattern,
+      },
+    ];
+  }
+  return [
+    {
+      source: RangePatternType.startRange,
+      pattern: pattern.slice(0, splitIndex),
+    },
+    {
+      source: RangePatternType.endRange,
+      pattern: pattern.slice(splitIndex),
+    },
+  ];
 }

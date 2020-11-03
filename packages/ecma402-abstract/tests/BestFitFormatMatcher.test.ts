@@ -64,6 +64,8 @@ test('BestFitFormatMatcher second tz', function () {
     rawPattern: 'h:mm a v',
     skeleton: 'h:mm a v',
     timeZoneName: 'short',
+    rangePatterns: {},
+    rangePatterns12: {},
   });
 });
 test('bestFitFormatMatcherScore second tz', function () {

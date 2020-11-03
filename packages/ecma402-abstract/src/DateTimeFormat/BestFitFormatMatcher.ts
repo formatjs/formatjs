@@ -126,5 +126,8 @@ export function BestFitFormatMatcher(
     }
     patternFormat[prop as TABLE_6] = requestedValue;
   }
+  // Copy those over
+  patternFormat.rangePatterns = skeletonFormat.rangePatterns;
+  patternFormat.rangePatterns12 = skeletonFormat.rangePatterns12;
   return patternFormat;
 }

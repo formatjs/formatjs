@@ -266,6 +266,7 @@ export function InitializeDateTimeFormat(
     }
   }
   let pattern;
+  let rangePatterns;
   if (internalSlots.hour !== undefined) {
     const hcDefault = dataLocaleData.hourCycle;
     let hc = internalSlots.hourCycle;
@@ -292,14 +293,18 @@ export function InitializeDateTimeFormat(
 
     if (hc === 'h11' || hc === 'h12') {
       pattern = bestFormat.pattern12;
+      rangePatterns = bestFormat.rangePatterns12;
     } else {
       pattern = bestFormat.pattern;
+      rangePatterns = bestFormat.rangePatterns;
     }
   } else {
     // @ts-ignore
     internalSlots.hourCycle = undefined;
     pattern = bestFormat.pattern;
+    rangePatterns = bestFormat.rangePatterns;
   }
   internalSlots.pattern = pattern;
+  internalSlots.rangePatterns = rangePatterns;
   return dtf;
 }
