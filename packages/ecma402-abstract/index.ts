@@ -4,6 +4,8 @@ export * from './src/CanonicalizeTimeZoneName';
 export * from './src/DateTimeFormat/BasicFormatMatcher';
 export * from './src/DateTimeFormat/DateTimeStyleFormat';
 export * from './src/DateTimeFormat/FormatDateTime';
+export * from './src/DateTimeFormat/FormatDateTimeRange';
+export * from './src/DateTimeFormat/FormatDateTimeRangeToParts';
 export * from './src/DateTimeFormat/FormatDateTimeToParts';
 export * from './src/DateTimeFormat/InitializeDateTimeFormat';
 export * from './src/DateTimeFormat/PartitionDateTimePattern';

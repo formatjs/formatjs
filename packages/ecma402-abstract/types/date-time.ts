@@ -38,6 +38,8 @@ export type Formats = Pick<
   pattern12: string;
   skeleton: string;
   rawPattern: string;
+  rangePatterns: Record<TABLE_2 | 'default', RangePatterns>;
+  rangePatterns12: Record<TABLE_2 | 'default', RangePatterns>;
 };
 
 export interface IntlDateTimeFormatInternal {
@@ -59,7 +61,37 @@ export interface IntlDateTimeFormatInternal {
   numberingSystem: string;
   timeZone: string;
   pattern: string;
+  rangePatterns: Record<TABLE_2 | 'default', RangePatterns>;
   boundFormat?: Intl.DateTimeFormat['format'];
+}
+
+export interface RangePatternPart<
+  T extends RangePatternType = RangePatternType
+> {
+  source: T;
+  pattern: string;
+}
+
+export type RangePatterns = Pick<
+  DateTimeFormatOptions,
+  | 'weekday'
+  | 'era'
+  | 'year'
+  | 'month'
+  | 'day'
+  | 'hour'
+  | 'minute'
+  | 'second'
+  | 'timeZoneName'
+> & {
+  hour12?: boolean;
+  patternParts: Array<RangePatternPart>;
+};
+
+export const enum RangePatternType {
+  startRange = 'startRange',
+  shared = 'shared',
+  endRange = 'endRange',
 }
 
 export type TABLE_6 =
@@ -72,6 +104,16 @@ export type TABLE_6 =
   | 'minute'
   | 'second'
   | 'timeZoneName';
+
+export type TABLE_2 =
+  | 'era'
+  | 'year'
+  | 'month'
+  | 'day'
+  | 'ampm'
+  | 'hour'
+  | 'minute'
+  | 'second';
 
 export type TimeZoneNameData = Record<
   string,
@@ -123,8 +165,17 @@ export interface DateTimeFormatLocaleInternalData {
   ca: string[];
 }
 
+export type IntervalFormatsData = {
+  intervalFormatFallback: string;
+} & Record<string, Record<string, string>>;
+
 export interface DateTimeFormat extends Intl.DateTimeFormat {
   resolvedOptions(): ResolvedDateTimeFormatOptions;
+  formatRange(startDate: number | Date, endDate: number | Date): string;
+  formatRangeToParts(
+    startDate: number | Date,
+    endDate: number | Date
+  ): IntlDateTimeFormatPart[];
 }
 
 export interface ResolvedDateTimeFormatOptions
@@ -145,3 +196,16 @@ export type UnpackedZoneData = [
   // Whether it's daylight, 0|1
   boolean
 ];
+
+export type IntlDateTimeFormatPartType =
+  | Intl.DateTimeFormatPartTypes
+  | 'ampm'
+  | 'relatedYear'
+  | 'yearName'
+  | 'unknown';
+
+export interface IntlDateTimeFormatPart {
+  type: IntlDateTimeFormatPartType;
+  value: string | undefined;
+  source?: RangePatternType;
+}
