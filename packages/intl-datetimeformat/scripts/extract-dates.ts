@@ -174,7 +174,7 @@ async function loadDatesFields(
 
   const {short, full, medium, long} = gregorian.dateTimeFormats;
 
-  const {availableFormats} = gregorian.dateTimeFormats;
+  const {availableFormats, intervalFormats} = gregorian.dateTimeFormats;
   const parsedAvailableFormats: Array<[string, string, Formats]> = Object.keys(
     availableFormats
   )
@@ -286,6 +286,8 @@ async function loadDatesFields(
     formats: {
       gregory: allFormats,
     },
+    // @ts-ignore
+    intervalFormats,
     hourCycle: hc[0],
     nu: nu ? [nu] : [],
     ca: (

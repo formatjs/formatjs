@@ -34,6 +34,10 @@ function getApplicableZoneData(
   return [offset * 1e3, dst];
 }
 
+export interface ToLocalTimeImplDetails {
+  tzData: Record<string, UnpackedZoneData[]>;
+}
+
 /**
  * https://tc39.es/ecma402/#sec-tolocaltime
  * @param t
@@ -44,7 +48,7 @@ export function ToLocalTime(
   t: number,
   calendar: string,
   timeZone: string,
-  {tzData}: {tzData: Record<string, UnpackedZoneData[]>}
+  {tzData}: ToLocalTimeImplDetails
 ): {
   weekday: number;
   era: string;
