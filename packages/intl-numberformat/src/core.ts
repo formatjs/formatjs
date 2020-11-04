@@ -81,6 +81,7 @@ export const NumberFormat = function (
     minimumSignificantDigits: internalSlots.minimumSignificantDigits,
     maximumSignificantDigits: internalSlots.maximumSignificantDigits,
   } as any);
+  return this;
 } as NumberFormatConstructor;
 
 defineProperty(NumberFormat.prototype, 'formatToParts', {

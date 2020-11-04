@@ -47,6 +47,7 @@ filegroup(
             "**/taint-Object-prototype.js",  # Bc our Intl.getCanonicalLocales isn't really spec-compliant
             "**/numbering-systems.js",  # See https://github.com/tc39/ecma402/issues/479
             "**/dft-currency-mnfd-range-check-mxfd.js",  # TODO
+            "**/intl-legacy-constructed-symbol-on-unwrap.js",
         ],
     ),
     visibility = ["//packages/intl-numberformat:__subpackages__"],
