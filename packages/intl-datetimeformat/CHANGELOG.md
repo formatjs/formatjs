@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.7.1...@formatjs/intl-datetimeformat@2.8.0) (2020-11-04)
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** add Intl.DateTimeFormat.formatRange, fix [#2129](https://github.com/formatjs/formatjs/issues/2129) ([#2281](https://github.com/formatjs/formatjs/issues/2281)) ([a5290ad](https://github.com/formatjs/formatjs/commit/a5290ad276ef66bf66c8e33f040f5b94f6556620))
+
+
+
+
+
 ## [2.7.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.7.0...@formatjs/intl-datetimeformat@2.7.1) (2020-10-26)
 
 
