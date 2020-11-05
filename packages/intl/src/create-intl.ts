@@ -8,6 +8,7 @@ import {
   formatDateToParts,
   formatTime,
   formatTimeToParts,
+  formatDateTimeRange,
 } from './dateTime';
 import {formatPlural} from './plural';
 import {formatMessage} from './message';
@@ -93,6 +94,11 @@ export function createIntl<T = string>(
       formatters.getDateTimeFormat
     ),
     formatTime: formatTime.bind(
+      null,
+      resolvedConfig,
+      formatters.getDateTimeFormat
+    ),
+    formatDateTimeRange: formatDateTimeRange.bind(
       null,
       resolvedConfig,
       formatters.getDateTimeFormat

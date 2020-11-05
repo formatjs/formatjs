@@ -2,7 +2,10 @@ import {Formatters, IntlFormatters, CustomFormats, OnErrorFn} from './types';
 
 import {filterProps, getNamedFormat} from './utils';
 import {IntlError, IntlErrorCode} from './error';
-import {DateTimeFormatOptions} from '@formatjs/ecma402-abstract';
+import {
+  DateTimeFormatOptions,
+  DateTimeFormat,
+} from '@formatjs/ecma402-abstract';
 
 const DATE_TIME_FORMAT_OPTIONS: Array<keyof DateTimeFormatOptions> = [
   'localeMatcher',
@@ -44,7 +47,7 @@ export function getFormatter(
   type: 'date' | 'time',
   getDateTimeFormat: Formatters['getDateTimeFormat'],
   options: Parameters<IntlFormatters['formatDate']>[1] = {}
-): Intl.DateTimeFormat {
+): DateTimeFormat {
   const {format} = options;
   const defaults = {
     ...(timeZone && {timeZone}),
@@ -78,8 +81,7 @@ export function formatDate(
     onError: OnErrorFn;
   },
   getDateTimeFormat: Formatters['getDateTimeFormat'],
-  value?: Parameters<IntlFormatters['formatDate']>[0],
-  options: Parameters<IntlFormatters['formatDate']>[1] = {}
+  ...[value, options = {}]: Parameters<IntlFormatters['formatDate']>
 ): string {
   const date = typeof value === 'string' ? new Date(value || 0) : value;
   try {
@@ -103,8 +105,7 @@ export function formatTime(
     onError: OnErrorFn;
   },
   getDateTimeFormat: Formatters['getDateTimeFormat'],
-  value?: Parameters<IntlFormatters['formatTime']>[0],
-  options: Parameters<IntlFormatters['formatTime']>[1] = {}
+  ...[value, options = {}]: Parameters<IntlFormatters['formatTime']>
 ): string {
   const date = typeof value === 'string' ? new Date(value || 0) : value;
 
@@ -121,6 +122,34 @@ export function formatTime(
   return String(date);
 }
 
+export function formatDateTimeRange(
+  config: {
+    locale: string;
+    timeZone?: string;
+    formats: CustomFormats;
+    onError: OnErrorFn;
+  },
+  getDateTimeFormat: Formatters['getDateTimeFormat'],
+  ...[from, to, options = {}]: Parameters<IntlFormatters['formatDateTimeRange']>
+): string {
+  try {
+    return getFormatter(config, 'time', getDateTimeFormat, options).formatRange(
+      from,
+      to
+    );
+  } catch (e) {
+    config.onError(
+      new IntlError(
+        IntlErrorCode.FORMAT_ERROR,
+        'Error formatting date time range.',
+        e
+      )
+    );
+  }
+
+  return String(from);
+}
+
 export function formatDateToParts(
   config: {
     locale: string;
@@ -129,8 +158,7 @@ export function formatDateToParts(
     onError: OnErrorFn;
   },
   getDateTimeFormat: Formatters['getDateTimeFormat'],
-  value?: Parameters<IntlFormatters['formatDate']>[0],
-  options: Parameters<IntlFormatters['formatDate']>[1] = {}
+  ...[value, options = {}]: Parameters<IntlFormatters['formatDate']>
 ): Intl.DateTimeFormatPart[] {
   const date = typeof value === 'string' ? new Date(value || 0) : value;
   try {
@@ -157,8 +185,7 @@ export function formatTimeToParts(
     onError: OnErrorFn;
   },
   getDateTimeFormat: Formatters['getDateTimeFormat'],
-  value?: Parameters<IntlFormatters['formatTime']>[0],
-  options: Parameters<IntlFormatters['formatTime']>[1] = {}
+  ...[value, options = {}]: Parameters<IntlFormatters['formatTimeToParts']>
 ): Intl.DateTimeFormatPart[] {
   const date = typeof value === 'string' ? new Date(value || 0) : value;
 

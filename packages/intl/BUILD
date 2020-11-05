@@ -35,6 +35,7 @@ SRC_DEPS = [
     "//packages/intl-displaynames:dist",
     "//packages/intl-relativetimeformat:dist",
     "//packages/intl-messageformat:dist",
+    "//packages/intl-datetimeformat:dist",
     "@npm//fast-memoize",
     "@npm//@types/node",
 ]
@@ -65,6 +66,7 @@ jest_test(
         "//packages/intl-displaynames:types",
         "//packages/intl-relativetimeformat:types",
         "//packages/intl-messageformat:types",
+        "//packages/intl-datetimeformat:types",
         "//packages/intl-messageformat-parser:types",
         "//packages/ecma402-abstract:types",
     ],

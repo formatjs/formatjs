@@ -9,7 +9,10 @@ import {IntlMessageFormat} from 'intl-messageformat';
 import * as memoize from 'fast-memoize';
 import {Cache} from 'fast-memoize';
 import {UnsupportedFormatterError} from './error';
-import {IntlRelativeTimeFormatOptions} from '@formatjs/ecma402-abstract';
+import {
+  DateTimeFormat,
+  IntlRelativeTimeFormatOptions,
+} from '@formatjs/ecma402-abstract';
 
 export function filterProps<T extends Record<string, any>, K extends string>(
   props: T,
@@ -97,7 +100,7 @@ export function createFormatters(
   const ListFormat = (Intl as any).ListFormat;
   const DisplayNames = (Intl as any).DisplayNames;
   const getDateTimeFormat = memoizeIntl(
-    (...args) => new Intl.DateTimeFormat(...args),
+    (...args) => new Intl.DateTimeFormat(...args) as DateTimeFormat,
     {
       cache: createFastMemoizeCache(cache.dateTime),
       strategy: memoizeIntl.strategies.variadic,

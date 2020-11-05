@@ -33,6 +33,7 @@
     "@formatjs/intl-displaynames": "3.4.2",
     "@formatjs/intl-listformat": "4.3.2",
     "@formatjs/intl-relativetimeformat": "7.3.2",
+    "@formatjs/intl-datetimeformat": "2.8.0",
     "fast-memoize": "^2.5.2",
     "intl-messageformat": "9.3.13",
     "intl-messageformat-parser": "6.0.12",

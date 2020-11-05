@@ -6,6 +6,7 @@ import {
   FormatError,
 } from 'intl-messageformat';
 import IntlRelativeTimeFormat from '@formatjs/intl-relativetimeformat';
+import {DateTimeFormat} from '@formatjs/ecma402-abstract';
 import {MessageFormatElement} from 'intl-messageformat-parser';
 import IntlListFormat, {IntlListFormatOptions} from '@formatjs/intl-listformat';
 import {DisplayNames, DisplayNamesOptions} from '@formatjs/intl-displaynames';
@@ -86,6 +87,11 @@ export type FormatDisplayNameOptions = Exclude<
 >;
 
 export interface IntlFormatters<T = any, R = T> {
+  formatDateTimeRange(
+    from: Parameters<DateTimeFormat['formatRange']>[0],
+    to: Parameters<DateTimeFormat['formatRange']>[1],
+    opts?: FormatDateOptions
+  ): string;
   formatDate(
     value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
     opts?: FormatDateOptions
@@ -141,7 +147,7 @@ export interface IntlFormatters<T = any, R = T> {
 export interface Formatters {
   getDateTimeFormat(
     ...args: ConstructorParameters<typeof Intl.DateTimeFormat>
-  ): Intl.DateTimeFormat;
+  ): DateTimeFormat;
   getNumberFormat(
     ...args: ConstructorParameters<typeof Intl.NumberFormat>
   ): Intl.NumberFormat;
@@ -167,7 +173,7 @@ export interface IntlShape<T> extends IntlConfig<T>, IntlFormatters {
 }
 
 export interface IntlCache {
-  dateTime: Record<string, Intl.DateTimeFormat>;
+  dateTime: Record<string, DateTimeFormat>;
   number: Record<string, Intl.NumberFormat>;
   message: Record<string, IntlMessageFormat>;
   relativeTime: Record<string, IntlRelativeTimeFormat>;
