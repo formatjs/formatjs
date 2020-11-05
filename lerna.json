@@ -6,6 +6,7 @@
       "conventionalCommits": true,
       "message": "build: publish",
       "private": false,
+      "exact": true,
       "createRelease": "github",
       "ignoreChanges": ["**/tests/**", "**/*.md"]
     },
