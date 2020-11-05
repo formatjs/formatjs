@@ -268,6 +268,36 @@ props: Intl.DateTimeFormatOptions &
 </FormattedTimeParts>
 ```
 
+## FormattedDateTimeRange
+
+:::caution browser support
+This requires stage-3 API [Intl.RelativeTimeFormat.prototype.formatRange](https://github.com/tc39/proposal-intl-DateTimeFormat-formatRange) which has limited browser support. Please use our [polyfill](../polyfills/intl-datetimeformat.md) if you plan to support them.
+:::
+
+This component uses the [`formatDateTimeRange`](api.md#formatdatetimerange) and [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat) APIs and has `props` that correspond to the `DateTimeFormatOptions` specified above
+
+**Props:**
+
+```tsx
+props: DateTimeFormatOptions &
+  {
+    from: number | Date,
+    to: number | Date,
+    children: (formattedDate: string) => ReactElement,
+  }
+```
+
+By default `<FormattedDateTimeRange>` will render the formatted time into a `React.Fragment`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
+
+**Example:**
+
+```tsx live
+<FormattedDateTimeRange
+  from={new Date('2020-01-01')}
+  to={new Date('2020-01-15')}
+/>
+```
+
 ## FormattedRelativeTime
 
 :::caution browser support

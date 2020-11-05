@@ -1,6 +1,6 @@
 ---
 id: intl-datetimeformat
-title: Intl.DateTimeFormat (ES2020)
+title: Intl.DateTimeFormat (ESNext)
 ---
 
 A spec-compliant polyfill for Intl.DateTimeFormat fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
@@ -15,6 +15,11 @@ Right now we only support Gregorian calendar in this polyfill. Therefore we reco
 :::caution
 Right now this polyfill supports daylight transition until 2038 due to [Year 2038 problem](https://en.wikipedia.org/wiki/Year_2038_problem).
 :::
+
+## Features
+
+- [dateStyle/timeStyle](https://github.com/tc39/proposal-intl-datetime-style)
+- [formatRange](https://github.com/tc39/proposal-intl-DateTimeFormat-formatRange)
 
 ## Installation
 
