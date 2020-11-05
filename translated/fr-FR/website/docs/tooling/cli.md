@@ -90,7 +90,7 @@ formatjs extract --help
 
 ### `--format [path]`
 
-Path to a formatter file that controls the shape of JSON file from `--out-file`. The formatter file must export a function called `format` with the signature
+Path to a formatter file that controls the shape of JSON file from `--out-file`. The formatter file must export a function called `format` with the signature.
 
 ```tsx
 type FormatFn = <T = Record<string, MessageDescriptor>>(
@@ -99,6 +99,8 @@ type FormatFn = <T = Record<string, MessageDescriptor>>(
 ```
 
 This is especially useful to convert from our extracted format to a TMS-specific format.
+
+See our [builtin formatters](https://github.com/formatjs/formatjs/tree/main/packages/cli/src/formatters) for examples.
 
 ### `--out-file [path]`
 
@@ -162,7 +164,9 @@ type CompileFn = <T = Record<string, MessageDescriptor>>(
 ) => Record<string, string>
 ```
 
-This is especially useful to convert from a TMS-specific format back to react-intl format
+This is especially useful to convert from a TMS-specific format back to react-intl format.
+
+See our [builtin formatters](https://github.com/formatjs/formatjs/tree/main/packages/cli/src/formatters) for examples.
 
 ### `--out-file <output>`
 
