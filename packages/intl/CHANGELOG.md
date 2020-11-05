@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.4.1...@formatjs/intl@1.4.2) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@formatjs/intl:** fix default config for formatDateTimeRange ([60087d8](https://github.com/formatjs/formatjs/commit/60087d8df70d70b3c11dd733bb1961d389b0e211))
+
+
+
+
+
 ## [1.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.4.0...@formatjs/intl@1.4.1) (2020-11-05)
 
 **Note:** Version bump only for package @formatjs/intl
