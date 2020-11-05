@@ -249,7 +249,7 @@ This function will return a formatted date/time range string
 It expects 2 values (a `from` Date & a `to` Date) and accepts `options` that conform to `DateTimeFormatOptions`.
 
 ```tsx live
-intl.formatDateTimeRange(new Date('2020-01-01'), new Date('2020-01-15')) // "Jan 1 - 15"
+intl.formatDateTimeRange(new Date('2020-1-1'), new Date('2020-1-15'))
 ```
 
 ## formatRelativeTime

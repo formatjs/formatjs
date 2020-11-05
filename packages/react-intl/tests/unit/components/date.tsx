@@ -35,7 +35,7 @@ describe('<FormattedDate>', () => {
 
     mountWithProvider({value: NaN}, {...intl, onError});
     expect(onError).toHaveBeenCalledTimes(1);
-    expect(onError.mock.calls[0][0].code).toMatchSnapshot();
+    expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR');
   });
 
   it('renders a formatted date in a <>', () => {
@@ -75,7 +75,7 @@ describe('<FormattedDate>', () => {
 
     expect(rendered.text()).toBe(String(date));
     expect(onError).toHaveBeenCalled();
-    expect(onError.mock.calls[0][0].code).toMatchSnapshot();
+    expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR');
   });
 
   it('accepts `format` prop', () => {
@@ -148,7 +148,7 @@ describe('<FormattedDateParts>', () => {
 
     mountPartsWithProvider({value: NaN, children}, {...intl, onError});
     expect(onError).toHaveBeenCalledTimes(1);
-    expect(onError.mock.calls[0][0].code).toMatchSnapshot();
+    expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR');
   });
 
   it('accepts valid Intl.DateTimeFormat options as props', () => {
@@ -174,7 +174,7 @@ describe('<FormattedDateParts>', () => {
       intl.formatDateToParts(date, {year: 'invalid'})
     );
     expect(onError).toHaveBeenCalled();
-    expect(onError.mock.calls[0][0].code).toMatchSnapshot();
+    expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR');
   });
 
   it('renders a string date', () => {

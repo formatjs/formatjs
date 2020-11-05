@@ -71,7 +71,7 @@ describe('<FormattedNumber>', () => {
     );
 
     expect(rendered.text()).toBe('0');
-    expect(onError.mock.calls[0][0].code).toMatchSnapshot();
+    expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR');
     expect(onError).toHaveBeenCalledTimes(1);
   });
 

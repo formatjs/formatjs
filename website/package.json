@@ -13,13 +13,13 @@
     "@docusaurus/plugin-google-analytics": "^2.0.0-alpha.66",
     "@docusaurus/preset-classic": "^2.0.0-alpha.66",
     "@docusaurus/theme-live-codeblock": "^2.0.0-alpha.66",
-    "@formatjs/intl-displaynames": "latest",
+    "@formatjs/intl-displaynames": "^3.4.3",
     "classnames": "^2.2.6",
-    "intl-messageformat": "latest",
-    "intl-messageformat-parser": "latest",
+    "intl-messageformat": "^9.3.15",
+    "intl-messageformat-parser": "^6.0.13",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-intl": "latest"
+    "react-intl": "^5.9.1"
   },
   "browserslist": {
     "production": [

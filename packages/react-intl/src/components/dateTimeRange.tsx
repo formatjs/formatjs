@@ -15,7 +15,6 @@ const FormattedDateTimeRange: React.FC<Props> = props => (
     {(intl): React.ReactElement | null => {
       invariantIntlContext(intl);
       const {from, to, children, ...formatProps} = props;
-      // TODO: fix TS type definition for localeMatcher upstream
       const formattedValue = intl.formatDateTimeRange(from, to, formatProps);
 
       if (typeof children === 'function') {

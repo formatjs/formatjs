@@ -28,27 +28,27 @@ describe('<FormattedDateTimeRange>', () => {
   });
 
   it('renders a formatted date in a <>', () => {
-    const from = new Date('2020-01-01');
-    const to = new Date('2020-01-15');
+    const from = new Date('2020-1-1');
+    const to = new Date('2020-1-15');
 
     const rendered = mountWithProvider({from, to}, intl);
 
     expect(rendered.text()).toBe(intl.formatDateTimeRange(from, to));
   });
   it('renders a formatted date w/o textComponent', () => {
-    const from = new Date('2020-01-01');
-    const to = new Date('2020-01-15');
+    const from = new Date('2020-1-1');
+    const to = new Date('2020-1-15');
     const rendered = mountWithProvider(
       {from, to},
       {...intl, textComponent: '' as any}
     );
 
-    expect(rendered.text()).toBe(intl.formatDateTimeRange(from, to));
+    expect(rendered.text()).toBe('1/1/2020 – 1/15/2020');
   });
 
   it('accepts valid Intl.DateTimeFormat options as props', () => {
-    const from = new Date('2020-01-01');
-    const to = new Date('2020-01-15');
+    const from = new Date('2020-1-1');
+    const to = new Date('2020-1-15');
     const options = {year: 'numeric'};
 
     const rendered = mountWithProvider({from, to, ...options}, intl);
@@ -67,12 +67,12 @@ describe('<FormattedDateTimeRange>', () => {
 
     expect(rendered.text()).toBe(String(from));
     expect(onError).toHaveBeenCalled();
-    expect(onError.mock.calls[0][0].code).toMatchSnapshot();
+    expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR');
   });
 
   it('supports function-as-child pattern', () => {
-    const from = new Date('2020-01-01');
-    const to = new Date('2020-01-15');
+    const from = new Date('2020-1-1');
+    const to = new Date('2020-1-15');
     const spyChildren = jest.fn().mockImplementation(() => <b>Jest</b>);
     const rendered = mountWithProvider(
       {

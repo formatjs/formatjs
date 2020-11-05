@@ -59,7 +59,7 @@ describe('<IntlProvider>', () => {
       </IntlProvider>
     );
 
-    expect(onError.mock.calls[0][0].code).toMatchSnapshot();
+    expect(onError.mock.calls[0][0].code).toBe('INVALID_CONFIG');
     expect(onError).toHaveBeenCalledTimes(1);
   });
 
@@ -72,7 +72,7 @@ describe('<IntlProvider>', () => {
       </IntlProvider>
     );
 
-    expect(onError.mock.calls[0][0].code).toMatchSnapshot();
+    expect(onError.mock.calls[0][0].code).toBe('MISSING_DATA');
     expect(onError).toHaveBeenCalledTimes(1);
   });
 
@@ -87,7 +87,7 @@ describe('<IntlProvider>', () => {
       </IntlProvider>
     );
 
-    expect(onError.mock.calls[0][0].code).toMatchSnapshot();
+    expect(onError.mock.calls[0][0].code).toBe('MISSING_DATA');
     expect(onError).toHaveBeenCalledTimes(1);
     Intl.NumberFormat.supportedLocalesOf = supportedLocalesOf;
   });

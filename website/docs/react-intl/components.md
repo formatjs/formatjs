@@ -293,8 +293,8 @@ By default `<FormattedDateTimeRange>` will render the formatted time into a `Rea
 
 ```tsx live
 <FormattedDateTimeRange
-  from={new Date('2020-01-01')}
-  to={new Date('2020-01-15')}
+  from={new Date('2020-1-1')}
+  to={new Date('2020-1-15')}
 />
 ```
 

@@ -39,7 +39,7 @@ describe('<FormattedTime>', () => {
       value: NaN,
     });
     expect(onError).toHaveBeenCalledTimes(1);
-    expect(onError.mock.calls[0][0].code).toMatchSnapshot();
+    expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR');
   });
 
   it('renders a formatted time in a <>', () => {
@@ -76,7 +76,7 @@ describe('<FormattedTime>', () => {
     const rendered = mountWithProvider({value: date, hour: 'invalid'}, intl);
 
     expect(rendered.text()).toBe(String(date));
-    expect(onError.mock.calls[0][0].code).toMatchSnapshot();
+    expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR');
     expect(onError).toHaveBeenCalledTimes(1);
   });
 
@@ -153,7 +153,7 @@ describe('<FormattedTimeParts>', () => {
       ...injectIntlContext.props(),
       value: NaN,
     });
-    expect(onError.mock.calls[0][0].code).toMatchSnapshot();
+    expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR');
     expect(onError).toHaveBeenCalledTimes(1);
   });
 
@@ -192,7 +192,7 @@ describe('<FormattedTimeParts>', () => {
     expect(children.mock.calls[0][0]).toEqual(
       intl.formatTimeToParts(date, {hour: 'invalid'})
     );
-    expect(onError.mock.calls[0][0].code).toMatchSnapshot();
+    expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR');
     expect(onError).toHaveBeenCalledTimes(2);
   });
 

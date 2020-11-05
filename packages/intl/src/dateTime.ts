@@ -126,19 +126,23 @@ export function formatDateTimeRange(
   config: {
     locale: string;
     timeZone?: string;
-    formats: CustomFormats;
     onError: OnErrorFn;
   },
   getDateTimeFormat: Formatters['getDateTimeFormat'],
   ...[from, to, options = {}]: Parameters<IntlFormatters['formatDateTimeRange']>
 ): string {
+  const {timeZone, locale, onError} = config;
+
+  const filteredOptions = filterProps(
+    options,
+    DATE_TIME_FORMAT_OPTIONS,
+    timeZone ? {timeZone} : {}
+  );
+
   try {
-    return getFormatter(config, 'time', getDateTimeFormat, options).formatRange(
-      from,
-      to
-    );
+    return getDateTimeFormat(locale, filteredOptions).formatRange(from, to);
   } catch (e) {
-    config.onError(
+    onError(
       new IntlError(
         IntlErrorCode.FORMAT_ERROR,
         'Error formatting date time range.',
