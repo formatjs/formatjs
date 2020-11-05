@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.5.2...@formatjs/intl-pluralrules@3.5.3) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** lock down monorepo dep version ([468df0a](https://github.com/formatjs/formatjs/commit/468df0a89c1d6de06c81fa2ad35d15241e467c5e))
+
+
+
+
+
 ## [3.5.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.5.1...@formatjs/intl-pluralrules@3.5.2) (2020-11-04)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules

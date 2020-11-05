@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.3.9...@formatjs/intl@1.4.0) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@formatjs/intl:** lock down monorepo dep version ([ecfc07e](https://github.com/formatjs/formatjs/commit/ecfc07e2aa05892ac2d8a4b8fd69c039802cecf0))
+
+
+### Features
+
+* **@formatjs/intl:** add formatDateTimeRange per stage-3 spec ([b08ee67](https://github.com/formatjs/formatjs/commit/b08ee671dbaa3917cd91a368972d03e3c34cb184))
+
+
+
+
+
 ## [1.3.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.3.8...@formatjs/intl@1.3.9) (2020-11-04)
 
 

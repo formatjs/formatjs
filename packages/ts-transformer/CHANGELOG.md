@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.12.2](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.12.1...@formatjs/ts-transformer@2.12.2) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** lock down monorepo dep version ([b171ad0](https://github.com/formatjs/formatjs/commit/b171ad0c396330e01536a086f49c3a2a8fddaa91))
+
+
+
+
+
 ## [2.12.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.12.0...@formatjs/ts-transformer@2.12.1) (2020-11-04)
 
 **Note:** Version bump only for package @formatjs/ts-transformer

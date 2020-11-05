@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.2...@formatjs/intl-locale@2.4.3) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-locale:** lock down monorepo dep version ([2c4f457](https://github.com/formatjs/formatjs/commit/2c4f45783bdf05e50b6c54ea7f7a4ed37732d88f))
+
+
+
+
+
 ## [2.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.1...@formatjs/intl-locale@2.4.2) (2020-11-04)
 
 **Note:** Version bump only for package @formatjs/intl-locale

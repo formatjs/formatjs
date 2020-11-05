@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.4.2...@formatjs/intl-displaynames@3.4.3) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** lock down monorepo dep version ([1c56a1f](https://github.com/formatjs/formatjs/commit/1c56a1f743a19e2ac8aaa776aa626b95ff6d2223))
+
+
+
+
+
 ## [3.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.4.1...@formatjs/intl-displaynames@3.4.2) (2020-11-04)
 
 **Note:** Version bump only for package @formatjs/intl-displaynames

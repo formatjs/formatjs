@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.7.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.7.2...@formatjs/intl-numberformat@5.7.3) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** fix legacy constructor handling ([8c561f8](https://github.com/formatjs/formatjs/commit/8c561f8a3671ffc516841ea411ad361f595d23d3))
+* **@formatjs/intl-numberformat:** lock down monorepo dep version ([a440940](https://github.com/formatjs/formatjs/commit/a44094050b25d7948230efded3f3d9266c06c129))
+
+
+
+
+
 ## [5.7.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.7.1...@formatjs/intl-numberformat@5.7.2) (2020-11-04)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

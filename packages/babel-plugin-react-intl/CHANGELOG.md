@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.2.12](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.11...babel-plugin-react-intl@8.2.12) (2020-11-05)
+
+
+### Bug Fixes
+
+* **babel-plugin-react-intl:** lock down monorepo dep version ([652daa7](https://github.com/formatjs/formatjs/commit/652daa754a91e35384a4a17f64916478126696e2))
+
+
+
+
+
 ## [8.2.11](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.10...babel-plugin-react-intl@8.2.11) (2020-11-04)
 
 **Note:** Version bump only for package babel-plugin-react-intl

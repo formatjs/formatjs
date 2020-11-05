@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.13.7](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.6...@formatjs/cli@2.13.7) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** lock down monorepo dep version ([3bed9c1](https://github.com/formatjs/formatjs/commit/3bed9c12c8b5dfc05b05808b91f3b8a55b23f3e8))
+
+
+
+
+
 ## [2.13.6](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.5...@formatjs/cli@2.13.6) (2020-11-04)
 
 **Note:** Version bump only for package @formatjs/cli

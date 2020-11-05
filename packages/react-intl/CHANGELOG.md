@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.9.0](https://github.com/formatjs/formatjs/compare/react-intl@5.8.9...react-intl@5.9.0) (2020-11-05)
+
+
+### Bug Fixes
+
+* **react-intl:** lock down monorepo dep version ([7869092](https://github.com/formatjs/formatjs/commit/7869092fc8f9b245cacd2497d511c155085e769a))
+
+
+### Features
+
+* **react-intl:** introduce FormattedDateTimeRange, a stage-3 API ([ebff2a3](https://github.com/formatjs/formatjs/commit/ebff2a3d0732da3fcdadfc091f9ef898fff9b020))
+
+
+
+
+
 ## [5.8.9](https://github.com/formatjs/formatjs/compare/react-intl@5.8.8...react-intl@5.8.9) (2020-11-04)
 
 **Note:** Version bump only for package react-intl

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.13](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.12...intl-messageformat-parser@6.0.13) (2020-11-05)
+
+
+### Bug Fixes
+
+* **intl-messageformat-parser:** lock down monorepo dep version ([ef349c8](https://github.com/formatjs/formatjs/commit/ef349c8a52a68cfe19d13dcaf5ec754dcaca24ce))
+
+
+
+
+
 ## [6.0.12](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.11...intl-messageformat-parser@6.0.12) (2020-11-04)
 
 **Note:** Version bump only for package intl-messageformat-parser
