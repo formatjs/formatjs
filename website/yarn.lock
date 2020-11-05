@@ -1481,10 +1481,10 @@
     "@formatjs/ecma402-abstract" "1.3.0"
     tslib "^2.0.1"
 
-"@formatjs/intl@1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl/-/intl-1.4.1.tgz#e8b59a22738414c8b75d0fd75bf5f9a8822bcee1"
-  integrity sha512-X0Tu8Q5gq+fNcqkJPut24Rr6NNaFXkZoMJP+iLRv7ATbl+94AUMEGyo7GpPD4qsVNDbTnkjtWn8tfXbbxdxHbA==
+"@formatjs/intl@1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl/-/intl-1.4.2.tgz#45d0287acae282746ce65a177793bbce86844b49"
+  integrity sha512-z7v93jEuQpz3OTWTNEeMs4aAzrOag7khYT9TmnIBy+FPzftmgGuRWgwNGuSFiXcCJTIv9AG9V6EK/wDveh3zlA==
   dependencies:
     "@formatjs/ecma402-abstract" "1.3.0"
     "@formatjs/intl-datetimeformat" "2.8.1"
@@ -8380,12 +8380,12 @@ react-helmet@^6.0.0-beta:
     react-side-effect "^2.1.0"
 
 react-intl@^5.9.1:
-  version "5.9.1"
-  resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-5.9.1.tgz#c4308e0c4c2fe6fd5425b784d51189f62557f63c"
-  integrity sha512-M40H7B90q/v19s4FhO1THoPa23dtR7vep3ZE90Jws+oAgB01MW7MSUj/UJVgGKASZPocLoNYy6bYNMK/gbEURg==
+  version "5.9.2"
+  resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-5.9.2.tgz#9fc6a52fe09e39f6c303c06837bc9e146fc90367"
+  integrity sha512-mXrXi+3OP7Dg9OyhXImcfvkOIFdDy+lSFOMrvtdVWhB/zUdfWd/qlqbTh9Pl+pkJZqPQdyHEJbftD5fFCFVkyw==
   dependencies:
     "@formatjs/ecma402-abstract" "1.3.0"
-    "@formatjs/intl" "1.4.1"
+    "@formatjs/intl" "1.4.2"
     "@formatjs/intl-displaynames" "3.4.3"
     "@formatjs/intl-listformat" "4.3.3"
     "@formatjs/intl-relativetimeformat" "7.3.3"
