@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.3.1...@formatjs/ecma402-abstract@1.3.2) (2020-11-09)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix hourCycle setting, fix [#2291](https://github.com/formatjs/formatjs/issues/2291) ([1915595](https://github.com/formatjs/formatjs/commit/1915595e69e0f24be9c1c9af6a0986ecc82e485a))
+
+
+
+
+
 ## [1.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.3.0...@formatjs/ecma402-abstract@1.3.1) (2020-11-09)
 
 

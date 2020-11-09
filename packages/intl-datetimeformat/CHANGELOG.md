@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.8.2...@formatjs/intl-datetimeformat@2.8.3) (2020-11-09)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix hourCycle setting, fix [#2291](https://github.com/formatjs/formatjs/issues/2291) ([1915595](https://github.com/formatjs/formatjs/commit/1915595e69e0f24be9c1c9af6a0986ecc82e485a))
+
+
+
+
+
 ## [2.8.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.8.1...@formatjs/intl-datetimeformat@2.8.2) (2020-11-09)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat
