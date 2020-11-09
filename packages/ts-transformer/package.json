@@ -24,6 +24,11 @@
   "peerDependencies": {
     "ts-jest": "^26.4.0"
   },
+  "peerDependenciesMeta": {
+    "ts-jest": {
+      "optional": true
+    }
+  },
   "author": "Long Ho <holevietlong@gmail.com>",
   "license": "MIT",
   "bugs": {
