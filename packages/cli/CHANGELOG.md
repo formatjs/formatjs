@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.13.9](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.8...@formatjs/cli@2.13.9) (2020-11-09)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** fix help link ([ac15a3f](https://github.com/formatjs/formatjs/commit/ac15a3f955ececfaa0adff4198718eba7e8dc1b0))
+
+
+
+
+
 ## [2.13.8](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.7...@formatjs/cli@2.13.8) (2020-11-05)
 
 **Note:** Version bump only for package @formatjs/cli
