@@ -28,6 +28,29 @@ function isTimeRelated(opt: Opt) {
   return false;
 }
 
+function resolveHourCycle(hc: string, hcDefault: string, hour12?: boolean) {
+  if (hc == null) {
+    hc = hcDefault;
+  }
+  if (hour12 !== undefined) {
+    if (hour12) {
+      if (hcDefault === 'h11' || hcDefault === 'h23') {
+        hc = 'h11';
+      } else {
+        hc = 'h12';
+      }
+    } else {
+      invariant(!hour12, 'hour12 must not be set');
+      if (hcDefault === 'h11' || hcDefault === 'h23') {
+        hc = 'h23';
+      } else {
+        hc = 'h24';
+      }
+    }
+  }
+  return hc;
+}
+
 interface Opt extends Omit<Formats, 'pattern' | 'pattern12'> {
   localeMatcher: string;
   ca: DateTimeFormatOptions['calendar'];
@@ -239,11 +262,16 @@ export function InitializeDateTimeFormat(
     if (matcher === 'basic') {
       bestFormat = BasicFormatMatcher(opt, formats);
     } else {
+      // IMPL DETAILS START
       if (isTimeRelated(opt)) {
-        opt.hour12 =
-          internalSlots.hourCycle === 'h11' ||
-          internalSlots.hourCycle === 'h12';
+        const hc = resolveHourCycle(
+          internalSlots.hourCycle,
+          dataLocaleData.hourCycle,
+          hour12
+        );
+        opt.hour12 = hc === 'h11' || hc === 'h12';
       }
+      // IMPL DETAILS END
       bestFormat = BestFitFormatMatcher(opt, formats);
     }
   } else {
@@ -259,6 +287,10 @@ export function InitializeDateTimeFormat(
     }
     bestFormat = DateTimeStyleFormat(dateStyle, timeStyle, dataLocaleData);
   }
+  // IMPL DETAIL START
+  // For debugging
+  internalSlots.format = bestFormat;
+  // IMPL DETAIL END
   for (const prop in opt) {
     const p = bestFormat[prop as 'era'];
     if (p !== undefined) {
@@ -268,27 +300,11 @@ export function InitializeDateTimeFormat(
   let pattern;
   let rangePatterns;
   if (internalSlots.hour !== undefined) {
-    const hcDefault = dataLocaleData.hourCycle;
-    let hc = internalSlots.hourCycle;
-    if (hc == null) {
-      hc = hcDefault;
-    }
-    if (hour12 !== undefined) {
-      if (hour12) {
-        if (hcDefault === 'h11' || hcDefault === 'h23') {
-          hc = 'h11';
-        } else {
-          hc = 'h12';
-        }
-      } else {
-        invariant(!hour12, 'hour12 must not be set');
-        if (hcDefault === 'h11' || hcDefault === 'h23') {
-          hc = 'h23';
-        } else {
-          hc = 'h24';
-        }
-      }
-    }
+    const hc = resolveHourCycle(
+      internalSlots.hourCycle,
+      dataLocaleData.hourCycle,
+      hour12
+    );
     internalSlots.hourCycle = hc;
 
     if (hc === 'h11' || hc === 'h12') {

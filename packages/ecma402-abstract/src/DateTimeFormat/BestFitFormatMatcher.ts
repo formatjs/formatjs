@@ -10,7 +10,7 @@ import {
   shortLessPenalty,
   longLessPenalty,
 } from './utils';
-import {parseDateTimeSkeleton} from './skeleton';
+import {processDateTimePattern} from './skeleton';
 
 function isNumericType(
   t: 'numeric' | '2-digit' | 'narrow' | 'short' | 'long'
@@ -94,11 +94,12 @@ export function BestFitFormatMatcher(
   }
 
   const skeletonFormat = {...bestFormat};
-  const patternFormat = parseDateTimeSkeleton(bestFormat.rawPattern);
+  const patternFormat = {rawPattern: bestFormat.rawPattern} as Formats;
+  processDateTimePattern(bestFormat.rawPattern, patternFormat);
 
   // Kinda following https://github.com/unicode-org/icu/blob/dd50e38f459d84e9bf1b0c618be8483d318458ad/icu4j/main/classes/core/src/com/ibm/icu/text/DateTimePatternGenerator.java
   // Method adjustFieldTypes
-  for (const prop in patternFormat) {
+  for (const prop in skeletonFormat) {
     const skeletonValue = skeletonFormat[prop as TABLE_6];
     const patternValue = patternFormat[prop as TABLE_6];
     const requestedValue = options[prop as TABLE_6];
@@ -127,6 +128,9 @@ export function BestFitFormatMatcher(
     patternFormat[prop as TABLE_6] = requestedValue;
   }
   // Copy those over
+  patternFormat.pattern = skeletonFormat.pattern;
+  patternFormat.pattern12 = skeletonFormat.pattern12;
+  patternFormat.skeleton = skeletonFormat.skeleton;
   patternFormat.rangePatterns = skeletonFormat.rangePatterns;
   patternFormat.rangePatterns12 = skeletonFormat.rangePatterns12;
   return patternFormat;

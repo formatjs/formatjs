@@ -5,6 +5,7 @@ import * as enGB from './locale-data/en-GB.json';
 import * as zhHans from './locale-data/zh-Hans.json';
 import * as fa from './locale-data/fa.json';
 import allData from '../src/data/all-tz';
+import getInternalSlots from '../src/get_internal_slots';
 
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, enGB, zhHans, fa);
@@ -211,5 +212,23 @@ describe('Intl.DateTimeFormat', function () {
       timeZone: 'Europe/Amsterdam',
     });
     expect(formatter.format(date)).toBe('11:55 AM GMT+2');
+  });
+  it('test #2291', function () {
+    const date = new Date(2020, 1, 1, 10, 10, 10, 0);
+    const dtf = new DateTimeFormat('zh-Hans', {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+      hourCycle: 'h12',
+      localeMatcher: 'lookup',
+      formatMatcher: 'best fit',
+      timeZone: 'Asia/Kuala_Lumpur',
+    });
+    console.log(getInternalSlots(dtf));
+    expect(dtf.format(date)).toBe('2020年2月01日 下午06:10:10');
   });
 });

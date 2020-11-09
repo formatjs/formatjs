@@ -1,5 +1,6 @@
 import {
   parseDateTimeSkeleton,
+  processDateTimePattern,
   splitRangePattern,
 } from '../src/DateTimeFormat/skeleton';
 
@@ -108,4 +109,15 @@ test('parseDateTimeSkeleton', function () {
     rawPattern: 'MMM d',
     skeleton: 'MMMd',
   });
+});
+
+test('processDateTimePattern', function () {
+  expect(processDateTimePattern('Bh:mm:ss')).toEqual([
+    '{hour}:{minute}:{second}',
+    '{ampm}{hour}:{minute}:{second}',
+  ]);
+  expect(processDateTimePattern('y年M月d日 Bh:mm:ss')).toEqual([
+    '{year}年{month}月{day}日 {hour}:{minute}:{second}',
+    '{year}年{month}月{day}日 {ampm}{hour}:{minute}:{second}',
+  ]);
 });

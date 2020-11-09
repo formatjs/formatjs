@@ -61,6 +61,7 @@ export interface IntlDateTimeFormatInternal {
   numberingSystem: string;
   timeZone: string;
   pattern: string;
+  format: Formats;
   rangePatterns: Record<TABLE_2 | 'default', RangePatterns>;
   boundFormat?: Intl.DateTimeFormat['format'];
 }
