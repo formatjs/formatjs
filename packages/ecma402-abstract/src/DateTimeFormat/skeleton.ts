@@ -228,7 +228,7 @@ export function processDateTimePattern(
   > & {
     hour12?: boolean;
   }
-): [pattern: string, pattern12: string] {
+): [string, string] {
   const literals: string[] = [];
 
   // Use skeleton to populate result, but use mapped pattern to populate pattern
