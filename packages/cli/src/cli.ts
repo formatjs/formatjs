@@ -166,7 +166,7 @@ for more information`
     )
     .option(
       '--pseudo-locale <pseudoLocale>',
-      `Whether to generate pseudo-locale files. See http://localhost:3000/docs/tooling/cli#--pseudo-locale-pseudolocale for possible values. 
+      `Whether to generate pseudo-locale files. See https://formatjs.io/docs/tooling/cli#--pseudo-locale-pseudolocale for possible values. 
 "--ast" is required for this to work.`
     )
     .action(async (filePattern: string, opts: CompileCLIOpts) => {

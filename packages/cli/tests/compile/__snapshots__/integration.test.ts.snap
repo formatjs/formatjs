@@ -90,7 +90,7 @@ Options:
                                   https://formatjs.io/docs/guides/advanced-usage#pre-parsing-messages
                                   for more information
   --pseudo-locale <pseudoLocale>  Whether to generate pseudo-locale files. See
-                                  http://localhost:3000/docs/tooling/cli#--pseudo-locale-pseudolocale
+                                  https://formatjs.io/docs/tooling/cli#--pseudo-locale-pseudolocale
                                   for possible values.
                                   \\"--ast\\" is required for this to work.
   -h, --help                      display help for command
