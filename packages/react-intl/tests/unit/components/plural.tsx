@@ -103,7 +103,7 @@ describe('<FormattedPlural>', () => {
       intl
     );
 
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalled();
     expect(spy.mock.calls[0]).toEqual([props[intl.formatPlural(num)]]);
 
     expect(getByTestId('b').tagName).toBe('B');
