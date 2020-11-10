@@ -1,16 +1,18 @@
 import * as React from 'react';
-import {mount} from 'enzyme';
 import {FormattedNumber, FormattedNumberParts} from '../../../';
 import {createIntl} from '../../../src/components/provider';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 import {NumberFormatOptions} from '@formatjs/ecma402-abstract';
+import {render} from '@testing-library/react';
+import {IntlShape} from '@formatjs/intl';
+
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedNumber);
 const mountPartsWithProvider = mountFormattedComponentWithProvider(
   FormattedNumberParts
 );
 
 describe('<FormattedNumber>', () => {
-  let intl;
+  let intl: IntlShape<React.ReactNode>;
   const onError = jest.fn();
   beforeEach(() => {
     onError.mockClear();
@@ -25,52 +27,61 @@ describe('<FormattedNumber>', () => {
   });
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
-    expect(() => mount(<FormattedNumber value={0} />)).toThrow(
+    expect(() => render(<FormattedNumber value={0} />)).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     );
   });
 
   it('renders "NaN" in a <span> when no `value` prop is provided', () => {
-    const rendered = mountWithProvider({value: undefined}, intl);
+    const {getByTestId} = mountWithProvider(
+      {
+        // @ts-ignore
+        value: undefined,
+      },
+      intl
+    );
 
-    expect(rendered.text()).toBe('NaN');
+    expect(getByTestId('comp')).toHaveTextContent('NaN');
   });
 
   it('renders a formatted number in a <>', () => {
     const num = 1000;
 
-    const rendered = mountWithProvider({value: num}, intl);
+    const {getByTestId} = mountWithProvider({value: num}, intl);
 
-    expect(rendered.text()).toBe(intl.formatNumber(num));
+    expect(getByTestId('comp')).toHaveTextContent(intl.formatNumber(num));
   });
 
   it('renders a formatted number w/o textComponent', () => {
     const num = 1000;
 
-    const rendered = mountWithProvider(
+    const {getByTestId} = mountWithProvider(
       {value: num},
+      // @ts-ignore
       {...intl, textComponent: null}
     );
 
-    expect(rendered.text()).toBe(intl.formatNumber(num));
+    expect(getByTestId('comp')).toHaveTextContent(intl.formatNumber(num));
   });
 
   it('accepts valid Intl.NumberFormat options as props', () => {
     const num = 0.5;
     const options = {style: 'percent' as NumberFormatOptions['style']};
 
-    const rendered = mountWithProvider({value: num, ...options}, intl);
+    const {getByTestId} = mountWithProvider({value: num, ...options}, intl);
 
-    expect(rendered.text()).toBe(intl.formatNumber(num, options));
+    expect(getByTestId('comp')).toHaveTextContent(
+      intl.formatNumber(num, options)
+    );
   });
 
   it('falls back and warns on invalid Intl.NumberFormat options', () => {
-    const rendered = mountWithProvider(
+    const {getByTestId} = mountWithProvider(
       {value: 0, style: 'invalid' as any},
       intl
     );
 
-    expect(rendered.text()).toBe('0');
+    expect(getByTestId('comp')).toHaveTextContent('0');
     expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR');
     expect(onError).toHaveBeenCalledTimes(1);
   });
@@ -91,24 +102,26 @@ describe('<FormattedNumber>', () => {
     const num = 0.505;
     const format = 'percent';
 
-    const rendered = mountWithProvider({value: num, format}, intl);
+    const {getByTestId} = mountWithProvider({value: num, format}, intl);
 
-    expect(rendered.text()).toBe(intl.formatNumber(num, {format}));
+    expect(getByTestId('comp')).toHaveTextContent(
+      intl.formatNumber(num, {format})
+    );
   });
 
   it('supports function-as-child pattern', () => {
     const num = Date.now();
 
-    const spy = jest.fn().mockImplementation(() => <span>Jest</span>);
-    const rendered = mountWithProvider({value: num, children: spy}, intl).find(
-      'span'
-    );
+    const spy = jest
+      .fn()
+      .mockImplementation(() => <span data-testid="spy">Jest</span>);
+    const {getByTestId} = mountWithProvider({value: num, children: spy}, intl);
 
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy.mock.calls[0]).toEqual([intl.formatNumber(num)]);
 
-    expect(rendered.type()).toBe('span');
-    expect(rendered.text()).toBe('Jest');
+    expect(getByTestId('spy').tagName).toBe('SPAN');
+    expect(getByTestId('comp')).toHaveTextContent('Jest');
   });
 });
 
@@ -117,7 +130,7 @@ function NOOP(_: Intl.NumberFormatPart[]) {
 }
 
 describe('<FormattedNumberParts>', function () {
-  let intl;
+  let intl: IntlShape<React.ReactNode>;
   const children = jest.fn();
 
   beforeEach(() => {
@@ -134,7 +147,7 @@ describe('<FormattedNumberParts>', function () {
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
     expect(() =>
-      mount(<FormattedNumberParts value={0} children={NOOP} />)
+      render(<FormattedNumberParts value={0} children={NOOP} />)
     ).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     );

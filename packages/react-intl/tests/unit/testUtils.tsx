@@ -1,14 +1,6 @@
 import * as React from 'react';
-import {mount} from 'enzyme';
 import Provider, {OptionalIntlConfig} from '../../src/components/provider';
-
-function StrictProvider(props: OptionalIntlConfig) {
-  return (
-    <React.StrictMode>
-      <Provider {...props} />
-    </React.StrictMode>
-  );
-}
+import {render} from '@testing-library/react';
 
 export function mountFormattedComponentWithProvider<P>(
   Comp: React.ComponentType<P>
@@ -17,9 +9,31 @@ export function mountFormattedComponentWithProvider<P>(
     props: P & {children?(...nodes: React.ReactNodeArray): React.ReactNode},
     providerProps: OptionalIntlConfig = {locale: 'en'}
   ) => {
-    return mount(<Comp {...props} />, {
-      wrappingComponent: StrictProvider,
-      wrappingComponentProps: providerProps,
-    });
+    const result = render(
+      <React.StrictMode>
+        <Provider {...providerProps}>
+          <span data-testid="comp">
+            <Comp {...props} />
+          </span>
+        </Provider>
+      </React.StrictMode>
+    );
+
+    const {rerender} = result;
+    const rerenderProps = (
+      props: P & {children?(...nodes: React.ReactNodeArray): React.ReactNode},
+      providerProps: OptionalIntlConfig = {locale: 'en'}
+    ) =>
+      rerender(
+        <React.StrictMode>
+          <Provider {...providerProps}>
+            <span data-testid="comp">
+              <Comp {...props} />
+            </span>
+          </Provider>
+        </React.StrictMode>
+      );
+
+    return {...result, rerenderProps};
   };
 }

@@ -55,10 +55,13 @@ TESTS = glob([
 
 TEST_DEPS = SRC_DEPS + [
     "//packages/intl-numberformat:dist",
-    "@npm//enzyme-to-json",
-    "@npm//enzyme",
-    "@npm//@types/enzyme",
-    "@npm//enzyme-adapter-react-16",
+    "//packages/intl-listformat:types",
+    "//packages/intl-displaynames:types",
+    "//packages/ecma402-abstract:types",
+    "//packages/intl:types",
+    "//packages/intl-messageformat:types",
+    "@npm//@testing-library/react",
+    "@npm//@testing-library/jest-dom",
     "@npm//react-dom",
 ]
 

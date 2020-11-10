@@ -1,43 +1,21 @@
 import * as React from 'react';
-import {mount} from 'enzyme';
-import IntlProvider, {
-  OptionalIntlConfig,
-} from '../../../src/components/provider';
-import {WithIntlProps} from '../../../src/components/injectIntl';
-import {IntlShape} from '../../../src/types';
+import IntlProvider from '../../../src/components/provider';
 import withIntl from '../../../src/components/injectIntl';
+import {render} from '@testing-library/react';
+import {FormattedDate} from '../../../';
 
 describe('<IntlProvider>', () => {
   const now = Date.now();
 
-  const INTL_CONFIG_PROP_NAMES = [
-    'locale',
-    'timeZone',
-    'formats',
-    'textComponent',
-    'messages',
-    'defaultLocale',
-    'defaultFormats',
-    'onError',
-  ];
-  const INTL_FORMAT_PROP_NAMES = [
-    'formatDate',
-    'formatTime',
-    'formatRelativeTime',
-    'formatNumber',
-    'formatPlural',
-    'formatMessage',
-  ];
-
   class Child extends React.Component<any> {
     render() {
-      return <>{'foo'}</>;
+      return <span data-testid="foo">{'foo'}</span>;
     }
   }
 
   const IntlChild = withIntl(Child);
 
-  let dateNow;
+  let dateNow: jest.SpyInstance;
 
   beforeEach(() => {
     dateNow = jest.spyOn(Date, 'now').mockImplementation(() => now);
@@ -53,8 +31,12 @@ describe('<IntlProvider>', () => {
 
   it('warns when no `locale` prop is provided', () => {
     const onError = jest.fn();
-    mount(
-      <IntlProvider locale={undefined} onError={onError}>
+    render(
+      <IntlProvider
+        // @ts-ignore
+        locale={undefined}
+        onError={onError}
+      >
         <IntlChild />
       </IntlProvider>
     );
@@ -66,7 +48,7 @@ describe('<IntlProvider>', () => {
   it('warns when `locale` prop provided has no locale data in Intl.NumberFormat', () => {
     const locale = 'missing';
     const onError = jest.fn();
-    mount(
+    render(
       <IntlProvider locale={locale} onError={onError}>
         <IntlChild />
       </IntlProvider>
@@ -81,7 +63,7 @@ describe('<IntlProvider>', () => {
     const onError = jest.fn();
     const supportedLocalesOf = Intl.NumberFormat.supportedLocalesOf;
     Intl.NumberFormat.supportedLocalesOf = (): string[] => ['xx-HA'];
-    mount(
+    render(
       <IntlProvider locale={locale} onError={onError}>
         <IntlChild />
       </IntlProvider>
@@ -99,101 +81,8 @@ describe('<IntlProvider>', () => {
       </IntlProvider>
     );
 
-    const rendered = mount(el);
-    expect(rendered.children().length).toBe(1);
-    expect(rendered.children().contains(<IntlChild />)).toBe(true);
-  });
-
-  it('provides `context.intl` with values from intl config props', () => {
-    const props: WithIntlProps<OptionalIntlConfig> = {
-      locale: 'fr-FR',
-      timeZone: 'UTC',
-      formats: {},
-      messages: {},
-      textComponent: 'span',
-
-      defaultLocale: 'en-US',
-      defaultFormats: {},
-
-      onError: jest.fn(),
-    };
-
-    const rendered = mount(
-      <IntlProvider {...props}>
-        <IntlChild />
-      </IntlProvider>
-    );
-
-    const intl = rendered.find(Child).prop('intl');
-
-    INTL_CONFIG_PROP_NAMES.forEach(propName => {
-      expect(intl[propName]).toBe(props[propName]);
-    });
-  });
-
-  it('provides `context.intl` with timeZone from intl config props when it is specified', () => {
-    const props = {
-      locale: 'en',
-      timeZone: 'Europe/Paris',
-    };
-
-    const intl: IntlShape = mount(
-      <IntlProvider {...props}>
-        <IntlChild />
-      </IntlProvider>
-    )
-      .find(Child)
-      .prop('intl');
-    expect(intl.timeZone).toBe('Europe/Paris');
-  });
-
-  it('provides `context.intl` with values from `defaultProps` for missing or undefined props', () => {
-    const props = {
-      locale: 'en-US',
-      defaultLocale: undefined,
-    };
-
-    const intl: IntlShape = mount(
-      <IntlProvider {...props}>
-        <IntlChild />
-      </IntlProvider>
-    )
-      .find(Child)
-      .prop('intl');
-
-    expect(intl.defaultLocale).not.toBe(undefined);
-    expect(intl.defaultLocale).toBe('en');
-    expect(intl.messages).not.toBe(undefined);
-    expect(typeof intl.messages).toBe('object');
-  });
-
-  it('provides `context.intl` with format methods bound to intl config props', () => {
-    const intl: IntlShape = mount(
-      <IntlProvider
-        locale="en"
-        formats={{
-          date: {
-            'year-only': {
-              year: 'numeric',
-            },
-          },
-        }}
-      >
-        <IntlChild />
-      </IntlProvider>
-    )
-      .find(Child)
-      .prop('intl');
-
-    INTL_FORMAT_PROP_NAMES.forEach(propName => {
-      expect(intl[propName]).toBeDefined();
-      expect(typeof intl[propName]).toBe('function');
-    });
-
-    const date = new Date();
-    const df = new Intl.DateTimeFormat('en', {year: 'numeric'});
-
-    expect(intl.formatDate(date, {format: 'year-only'})).toBe(df.format(date));
+    const {container} = render(el);
+    expect(container).toHaveTextContent('foo');
   });
 
   it('shadows inherited intl config props from an <IntlProvider> ancestor', () => {
@@ -223,35 +112,25 @@ describe('<IntlProvider>', () => {
       onError,
     };
 
-    const parentContext: IntlShape = mount(
+    const {getByTestId} = render(
       <IntlProvider {...props}>
-        <IntlChild />
+        <IntlProvider
+          locale="fr"
+          timeZone="Atlantic/Azores"
+          formats={{}}
+          messages={{}}
+          defaultLocale="en"
+          defaultFormats={{}}
+          textComponent="span"
+        >
+          <span data-testid="comp">
+            <FormattedDate value={new Date(2020, 1, 1)} timeZoneName="short" />
+          </span>
+        </IntlProvider>
       </IntlProvider>
-    )
-      .find(Child)
-      .prop('intl');
-
-    const intl: IntlShape = mount(
-      <IntlProvider
-        locale="fr"
-        timeZone="Atlantic/Azores"
-        formats={{}}
-        messages={{}}
-        defaultLocale="en"
-        defaultFormats={{}}
-        textComponent="span"
-      >
-        <IntlChild />
-      </IntlProvider>,
-      {context: parentContext}
-    )
-      .find(Child)
-      .prop('intl');
+    );
 
     expect(onError).not.toHaveBeenCalled();
-
-    INTL_CONFIG_PROP_NAMES.forEach(propName => {
-      expect(intl[propName]).not.toBe(props[propName]);
-    });
+    expect(getByTestId('comp')).toHaveTextContent('31/01/2020');
   });
 });

@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {mount} from 'enzyme';
+import {render} from '@testing-library/react';
 import {IntlProvider} from '../../../';
 import useIntl from '../../../src/components/useIntl';
 
 const FunctionComponent = ({spy}: {spy?: Function}) => {
   const hookReturns = useIntl();
-  spy!(hookReturns);
+  spy!(hookReturns.locale);
   return null;
 };
 
@@ -16,36 +16,47 @@ const FC = () => {
 
 describe('useIntl() hook', () => {
   it('throws when <IntlProvider> is missing from ancestry', () => {
-    expect(() => mount(<FunctionComponent />)).toThrow(
+    expect(() => render(<FunctionComponent />)).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     );
   });
 
   it('hooks onto the intl context', () => {
     const spy = jest.fn();
-    const rendered = mount(
+    render(
       <IntlProvider locale="en">
         <FunctionComponent spy={spy} />
       </IntlProvider>
     );
-    const intl = rendered.state('intl');
-    expect(spy).toHaveBeenCalledWith(intl);
+
+    expect(spy).toHaveBeenCalledWith('en');
   });
 
   it('should work when switching locale on provider', () => {
-    const rendered = mount(
+    const {rerender, getByTestId} = render(
       <IntlProvider locale="en">
-        <FC />
+        <span data-testid="comp">
+          <FC />
+        </span>
       </IntlProvider>
     );
-    expect(rendered).toMatchSnapshot();
-    rendered.setProps({
-      locale: 'es',
-    });
-    expect(rendered).toMatchSnapshot();
-    rendered.setProps({
-      locale: 'en',
-    });
-    expect(rendered).toMatchSnapshot();
+    expect(getByTestId('comp')).toMatchSnapshot();
+    rerender(
+      <IntlProvider locale="es">
+        <span data-testid="comp">
+          <FC />
+        </span>
+      </IntlProvider>
+    );
+    expect(getByTestId('comp')).toMatchSnapshot();
+    rerender(
+      <IntlProvider locale="en">
+        <span data-testid="comp">
+          <FC />
+        </span>
+      </IntlProvider>
+    );
+
+    expect(getByTestId('comp')).toMatchSnapshot();
   });
 });
