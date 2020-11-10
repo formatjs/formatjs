@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.10.0](https://github.com/formatjs/formatjs/compare/react-intl@5.9.4...react-intl@5.10.0) (2020-11-10)
+
+
+### Bug Fixes
+
+* **react-intl:** set typescript dep as optional ([678d290](https://github.com/formatjs/formatjs/commit/678d29057066d53345799a6f948db388c0e6266c))
+
+
+### Features
+
+* **react-intl:** support react 17 ([#2301](https://github.com/formatjs/formatjs/issues/2301)) ([782eabe](https://github.com/formatjs/formatjs/commit/782eabe9754a377a677888433c23b71c8971f014)), closes [#2298](https://github.com/formatjs/formatjs/issues/2298)
+
+
+
+
+
 ## [5.9.4](https://github.com/formatjs/formatjs/compare/react-intl@5.9.3...react-intl@5.9.4) (2020-11-09)
 
 **Note:** Version bump only for package react-intl

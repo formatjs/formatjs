@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.12.6](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.12.5...@formatjs/ts-transformer@2.12.6) (2020-11-10)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** set ts-jest dep as optional, fix [#2299](https://github.com/formatjs/formatjs/issues/2299) ([07b6ae8](https://github.com/formatjs/formatjs/commit/07b6ae8d3c722e0135d7c23c335271f4e6906270))
+
+
+
+
+
 ## [2.12.5](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.12.4...@formatjs/ts-transformer@2.12.5) (2020-11-09)
 
 **Note:** Version bump only for package @formatjs/ts-transformer
