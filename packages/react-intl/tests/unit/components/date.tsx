@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {mount} from 'enzyme';
 import {FormattedDate, FormattedDateParts} from '../../../';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 import {createIntl} from '../../../src/components/provider';
 import {IntlShape} from '../../../';
+import {render} from '@testing-library/react';
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedDate);
 const mountPartsWithProvider = mountFormattedComponentWithProvider(
@@ -23,7 +23,7 @@ describe('<FormattedDate>', () => {
   });
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
-    expect(() => mount(<FormattedDate value={Date.now()} />)).toThrow(Error);
+    expect(() => render(<FormattedDate value={Date.now()} />)).toThrow(Error);
   });
 
   it('requires a finite `value` prop', () => {
@@ -41,39 +41,41 @@ describe('<FormattedDate>', () => {
   it('renders a formatted date in a <>', () => {
     const date = Date.now();
 
-    const rendered = mountWithProvider({value: date}, intl);
+    const {getByTestId} = mountWithProvider({value: date}, intl);
 
-    expect(rendered.text()).toBe(intl.formatDate(date));
+    expect(getByTestId('comp')).toHaveTextContent(intl.formatDate(date));
   });
   it('renders a formatted date w/o textComponent', () => {
     const date = Date.now();
 
-    const rendered = mountWithProvider(
+    const {getByTestId} = mountWithProvider(
       {value: date},
       {...intl, textComponent: '' as any}
     );
 
-    expect(rendered.text()).toBe(intl.formatDate(date));
+    expect(getByTestId('comp')).toHaveTextContent(intl.formatDate(date));
   });
 
   it('accepts valid Intl.DateTimeFormat options as props', () => {
     const date = new Date();
     const options = {year: 'numeric'};
 
-    const rendered = mountWithProvider({value: date, ...options}, intl);
+    const {getByTestId} = mountWithProvider({value: date, ...options}, intl);
 
-    expect(rendered.text()).toBe(intl.formatDate(date, options));
+    expect(getByTestId('comp')).toHaveTextContent(
+      intl.formatDate(date, options)
+    );
   });
 
   it('falls back and warns on invalid Intl.DateTimeFormat options', () => {
     const date = new Date();
     const onError = jest.fn();
-    const rendered = mountWithProvider(
+    const {getByTestId} = mountWithProvider(
       {value: date, year: 'invalid'},
       {...intl, onError}
     );
 
-    expect(rendered.text()).toBe(String(date));
+    expect(getByTestId('comp')).toHaveTextContent(String(date));
     expect(onError).toHaveBeenCalled();
     expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR');
   });
@@ -91,28 +93,32 @@ describe('<FormattedDate>', () => {
     const date = new Date();
     const format = 'year-only';
 
-    const rendered = mountWithProvider({value: date, format}, intl);
+    const {getByTestId} = mountWithProvider({value: date, format}, intl);
 
-    expect(rendered.text()).toBe(intl.formatDate(date, {format}));
+    expect(getByTestId('comp')).toHaveTextContent(
+      intl.formatDate(date, {format})
+    );
   });
 
   it('supports function-as-child pattern', () => {
     const date = Date.now();
 
-    const spyChildren = jest.fn().mockImplementation(() => <b>Jest</b>);
-    const rendered = mountWithProvider(
+    const spyChildren = jest
+      .fn()
+      .mockImplementation(() => <b data-testid="b">Jest</b>);
+    const {getByTestId} = mountWithProvider(
       {
         value: date,
         children: spyChildren,
       },
       intl
-    ).find('b');
+    );
 
     expect(spyChildren).toHaveBeenCalledTimes(1);
     expect(spyChildren.mock.calls[0]).toEqual([intl.formatDate(date)]);
 
-    expect(rendered.type()).toBe('b');
-    expect(rendered.text()).toBe('Jest');
+    expect(getByTestId('b')).toHaveTextContent('Jest');
+    expect(getByTestId('b').tagName).toBe('B');
   });
 });
 
@@ -133,7 +139,7 @@ describe('<FormattedDateParts>', () => {
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
     expect(() =>
-      mount(<FormattedDateParts children={children} value={Date.now()} />)
+      render(<FormattedDateParts children={children} value={Date.now()} />)
     ).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     );

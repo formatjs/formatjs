@@ -1,4 +1,3 @@
-const {configure} = require('enzyme');
 if (process.version.startsWith('v12')) {
   //   delete Intl.PluralRules;
   //   delete Intl.RelativeTimeFormat;
@@ -11,6 +10,5 @@ require('@formatjs/intl-displaynames/polyfill-locales');
 require('@formatjs/intl-numberformat/polyfill');
 require('@formatjs/intl-numberformat/locale-data/en');
 require('@formatjs/intl-numberformat/locale-data/es');
-const Adapter = require('enzyme-adapter-react-16');
-
-configure({adapter: new Adapter()});
+// add custom jest matchers from jest-dom
+require('@testing-library/jest-dom/extend-expect');

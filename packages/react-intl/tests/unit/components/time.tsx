@@ -1,8 +1,9 @@
 import * as React from 'react';
-import {mount} from 'enzyme';
 import {FormattedTime, FormattedTimeParts} from '../../../';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 import {createIntl} from '../../../src/components/provider';
+import {IntlShape} from '@formatjs/intl';
+import {render} from '@testing-library/react';
 
 const mountWithProvider = mountFormattedComponentWithProvider(FormattedTime);
 const mountPartsWithProvider = mountFormattedComponentWithProvider(
@@ -10,7 +11,7 @@ const mountPartsWithProvider = mountFormattedComponentWithProvider(
 );
 
 describe('<FormattedTime>', () => {
-  let intl;
+  let intl: IntlShape<React.ReactNode>;
   const onError = jest.fn();
   beforeEach(() => {
     onError.mockClear();
@@ -25,19 +26,21 @@ describe('<FormattedTime>', () => {
   });
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
-    expect(() => mount(<FormattedTime value={0} />)).toThrow(
+    expect(() => render(<FormattedTime value={0} />)).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     );
   });
 
   it('requires a finite `value` prop', () => {
-    const injectIntlContext = mountWithProvider({value: 0}, intl);
+    const {rerenderProps} = mountWithProvider({value: 0}, intl);
     expect(onError).not.toHaveBeenCalled();
 
-    injectIntlContext.setProps({
-      ...injectIntlContext.props(),
-      value: NaN,
-    });
+    rerenderProps(
+      {
+        value: NaN,
+      },
+      intl
+    );
     expect(onError).toHaveBeenCalledTimes(1);
     expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR');
   });
@@ -45,37 +48,46 @@ describe('<FormattedTime>', () => {
   it('renders a formatted time in a <>', () => {
     const date = new Date();
 
-    const rendered = mountWithProvider({value: date}, intl);
+    const {getByTestId} = mountWithProvider({value: date}, intl);
 
-    expect(rendered.text()).toBe(intl.formatTime(date));
+    expect(getByTestId('comp')).toHaveTextContent(intl.formatTime(date));
   });
 
   it('renders a formatted time w/o textComponent', () => {
     const date = new Date();
 
-    const rendered = mountWithProvider(
+    const {getByTestId} = mountWithProvider(
       {value: date},
-      {...intl, textComponent: null}
+      {
+        ...intl,
+        // @ts-ignore
+        textComponent: null,
+      }
     );
 
-    expect(rendered.text()).toBe(intl.formatTime(date));
+    expect(getByTestId('comp')).toHaveTextContent(intl.formatTime(date));
   });
 
   it('accepts valid Intl.DateTimeFormat options as props', () => {
     const date = Date.now();
     const options = {hour: '2-digit'};
 
-    const rendered = mountWithProvider({value: date, ...options}, intl);
+    const {getByTestId} = mountWithProvider({value: date, ...options}, intl);
 
-    expect(rendered.text()).toBe(intl.formatTime(date, options));
+    expect(getByTestId('comp')).toHaveTextContent(
+      intl.formatTime(date, options)
+    );
   });
 
   it('falls back and warns on invalid Intl.DateTimeFormat options', () => {
     const date = new Date();
 
-    const rendered = mountWithProvider({value: date, hour: 'invalid'}, intl);
+    const {getByTestId} = mountWithProvider(
+      {value: date, hour: 'invalid'},
+      intl
+    );
 
-    expect(rendered.text()).toBe(String(date));
+    expect(getByTestId('comp')).toHaveTextContent(String(date));
     expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR');
     expect(onError).toHaveBeenCalledTimes(1);
   });
@@ -96,21 +108,21 @@ describe('<FormattedTime>', () => {
     const date = Date.now();
     const format = 'hour-only';
 
-    const rendered = mountWithProvider({value: date, format}, intl);
+    const {getByTestId} = mountWithProvider({value: date, format}, intl);
 
-    expect(rendered.text()).toBe(intl.formatTime(date, {format}));
+    expect(getByTestId('comp')).toHaveTextContent(
+      intl.formatTime(date, {format})
+    );
   });
 
   it('supports function-as-child pattern', () => {
     const date = Date.now();
 
-    const spy = jest.fn().mockImplementation(() => <b>Jest</b>);
-    const rendered = mountWithProvider({value: date, children: spy}, intl).find(
-      'b'
-    );
+    const spy = jest.fn().mockImplementation(() => <b data-testid="b">Jest</b>);
+    const {getByTestId} = mountWithProvider({value: date, children: spy}, intl);
 
-    expect(rendered.type()).toBe('b');
-    expect(rendered.text()).toBe('Jest');
+    expect(getByTestId('b').tagName).toBe('B');
+    expect(getByTestId('comp')).toHaveTextContent('Jest');
 
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy.mock.calls[0]).toEqual([intl.formatTime(date)]);
@@ -118,7 +130,7 @@ describe('<FormattedTime>', () => {
 });
 
 describe('<FormattedTimeParts>', () => {
-  let intl;
+  let intl: IntlShape<React.ReactNode>;
   const children = jest.fn();
   const onError = jest.fn();
   beforeEach(() => {
@@ -136,23 +148,23 @@ describe('<FormattedTimeParts>', () => {
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
     expect(() =>
-      mount(<FormattedTimeParts value={0} children={children} />)
+      render(<FormattedTimeParts value={0} children={children} />)
     ).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     );
   });
 
   it('requires a finite `value` prop', () => {
-    const injectIntlContext = mountPartsWithProvider(
-      {value: 0, children},
-      intl
-    );
+    const {rerenderProps} = mountPartsWithProvider({value: 0, children}, intl);
     expect(onError).not.toHaveBeenCalled();
 
-    injectIntlContext.setProps({
-      ...injectIntlContext.props(),
-      value: NaN,
-    });
+    rerenderProps(
+      {
+        children,
+        value: NaN,
+      },
+      intl
+    );
     expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR');
     expect(onError).toHaveBeenCalledTimes(1);
   });

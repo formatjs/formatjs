@@ -1,10 +1,9 @@
 import * as React from 'react';
-import {mount} from 'enzyme';
 import {FormattedDateTimeRange} from '../../../';
 import {mountFormattedComponentWithProvider} from '../testUtils';
 import {createIntl} from '../../../src/components/provider';
 import {IntlShape} from '../../../';
-
+import {render} from '@testing-library/react';
 const mountWithProvider = mountFormattedComponentWithProvider(
   FormattedDateTimeRange
 );
@@ -23,7 +22,7 @@ describe('<FormattedDateTimeRange>', () => {
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
     expect(() =>
-      mount(<FormattedDateTimeRange from={Date.now()} to={Date.now()} />)
+      render(<FormattedDateTimeRange from={Date.now()} to={Date.now()} />)
     ).toThrow(Error);
   });
 
@@ -31,19 +30,21 @@ describe('<FormattedDateTimeRange>', () => {
     const from = new Date('2020-1-1');
     const to = new Date('2020-1-15');
 
-    const rendered = mountWithProvider({from, to}, intl);
+    const {getByTestId} = mountWithProvider({from, to}, intl);
 
-    expect(rendered.text()).toBe(intl.formatDateTimeRange(from, to));
+    expect(getByTestId('comp')).toHaveTextContent(
+      intl.formatDateTimeRange(from, to)
+    );
   });
   it('renders a formatted date w/o textComponent', () => {
     const from = new Date('2020-1-1');
     const to = new Date('2020-1-15');
-    const rendered = mountWithProvider(
+    const {getByTestId} = mountWithProvider(
       {from, to},
       {...intl, textComponent: '' as any}
     );
 
-    expect(rendered.text()).toBe('1/1/2020 – 1/15/2020');
+    expect(getByTestId('comp')).toHaveTextContent('1/1/2020 – 1/15/2020');
   });
 
   it('accepts valid Intl.DateTimeFormat options as props', () => {
@@ -51,21 +52,23 @@ describe('<FormattedDateTimeRange>', () => {
     const to = new Date('2020-1-15');
     const options = {year: 'numeric'};
 
-    const rendered = mountWithProvider({from, to, ...options}, intl);
+    const {getByTestId} = mountWithProvider({from, to, ...options}, intl);
 
-    expect(rendered.text()).toBe(intl.formatDateTimeRange(from, to, options));
+    expect(getByTestId('comp')).toHaveTextContent(
+      intl.formatDateTimeRange(from, to, options)
+    );
   });
 
   it('falls back and warns on invalid Intl.DateTimeFormat options', () => {
     const from = new Date();
     const onError = jest.fn();
-    const rendered = mountWithProvider(
+    const {getByTestId} = mountWithProvider(
       // @ts-ignore
       {from, to: undefined, year: 'invalid'},
       {...intl, onError}
     );
 
-    expect(rendered.text()).toBe(String(from));
+    expect(getByTestId('comp')).toHaveTextContent(String(from));
     expect(onError).toHaveBeenCalled();
     expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR');
   });
@@ -73,22 +76,25 @@ describe('<FormattedDateTimeRange>', () => {
   it('supports function-as-child pattern', () => {
     const from = new Date('2020-1-1');
     const to = new Date('2020-1-15');
-    const spyChildren = jest.fn().mockImplementation(() => <b>Jest</b>);
-    const rendered = mountWithProvider(
+    const spyChildren = jest
+      .fn()
+      .mockImplementation(() => <b data-testid="b">Jest</b>);
+    const {getByTestId} = mountWithProvider(
       {
         from,
         to,
         children: spyChildren,
       },
       intl
-    ).find('b');
+    );
 
     expect(spyChildren).toHaveBeenCalledTimes(1);
     expect(spyChildren.mock.calls[0]).toEqual([
       intl.formatDateTimeRange(from, to),
     ]);
 
-    expect(rendered.type()).toBe('b');
-    expect(rendered.text()).toBe('Jest');
+    const rendered = getByTestId('b');
+    expect(rendered.tagName).toBe('B');
+    expect(rendered).toHaveTextContent('Jest');
   });
 });

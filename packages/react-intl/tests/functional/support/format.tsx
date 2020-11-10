@@ -1,8 +1,10 @@
 import * as React from 'react';
-import {mount} from 'enzyme';
-import {parse} from 'intl-messageformat-parser';
 
-export default function (ReactIntl, noParser?: boolean) {
+import * as IReactIntl from '../../../';
+import {parse} from 'intl-messageformat-parser';
+import {render, screen} from '@testing-library/react';
+
+export default function (ReactIntl: typeof IReactIntl, noParser?: boolean) {
   describe('format', () => {
     const {
       IntlProvider,
@@ -13,8 +15,8 @@ export default function (ReactIntl, noParser?: boolean) {
       FormattedMessage,
     } = ReactIntl;
 
-    const renderWithIntlProvider = (Element, providerProps = {}) =>
-      mount(
+    const renderWithIntlProvider = (Element: JSX.Element, providerProps = {}) =>
+      render(
         <IntlProvider locale="en" {...providerProps}>
           {Element}
         </IntlProvider>
@@ -22,21 +24,31 @@ export default function (ReactIntl, noParser?: boolean) {
 
     it('formats dates', () => {
       const date = new Date();
-      const el = <FormattedDate id="test" value={date} month="numeric" />;
+      const el = (
+        <span data-testid="test">
+          <FormattedDate value={date} month="numeric" />
+        </span>
+      );
 
-      const rendered = renderWithIntlProvider(el);
-      expect(rendered.text()).toBe(String(date.getMonth() + 1));
+      renderWithIntlProvider(el);
+      expect(screen.getByTestId('test')).toHaveTextContent(
+        String(date.getMonth() + 1)
+      );
     });
 
     it('formats times', () => {
       const date = new Date();
-      const el = <FormattedTime id="test" value={date} />;
+      const el = (
+        <span data-testid="test">
+          <FormattedTime value={date} />
+        </span>
+      );
 
       const hours = date.getHours();
       const minutes = date.getMinutes();
 
-      const rendered = renderWithIntlProvider(el);
-      expect(rendered.text()).toBe(
+      renderWithIntlProvider(el);
+      expect(screen.getByTestId('test')).toHaveTextContent(
         `${hours > 12 ? hours % 12 : hours || '12'}:` +
           `${minutes < 10 ? `0${minutes}` : minutes} ` +
           `${hours < 12 ? 'AM' : 'PM'}`
@@ -44,43 +56,57 @@ export default function (ReactIntl, noParser?: boolean) {
     });
 
     it('formats relative time', () => {
-      const el = <FormattedRelativeTime id="test" value={-1} />;
+      const el = (
+        <span data-testid="test">
+          <FormattedRelativeTime value={-1} />
+        </span>
+      );
 
-      const rendered = renderWithIntlProvider(el);
-      expect(rendered.text()).toBe('1 second ago');
+      renderWithIntlProvider(el);
+      expect(screen.getByTestId('test')).toHaveTextContent('1 second ago');
     });
 
     it('formats numbers with thousands separators', () => {
-      const el = <FormattedNumber id="test" value={1000} />;
+      const el = (
+        <span data-testid="test">
+          <FormattedNumber value={1000} />
+        </span>
+      );
 
-      const rendered = renderWithIntlProvider(el);
-      expect(rendered.text()).toBe('1,000');
+      renderWithIntlProvider(el);
+      expect(screen.getByTestId('test')).toHaveTextContent('1,000');
     });
 
     it('formats numbers with decimal separators', () => {
       const el = (
-        <FormattedNumber id="test" value={0.1} minimumFractionDigits={2} />
+        <span data-testid="test">
+          <FormattedNumber value={0.1} minimumFractionDigits={2} />
+        </span>
       );
 
-      const rendered = renderWithIntlProvider(el);
-      expect(rendered.text()).toBe('0.10');
+      renderWithIntlProvider(el);
+      expect(screen.getByTestId('test')).toHaveTextContent('0.10');
     });
 
     it('pluralizes labels in strings', () => {
       const message =
         'You have {emails, plural, one {# email} other {# emails}}.';
       const el = (
-        <FormattedMessage
-          id="test"
-          defaultMessage={noParser ? parse(message) : message}
-          values={{
-            emails: 1000,
-          }}
-        />
+        <span data-testid="test">
+          <FormattedMessage
+            id="foo"
+            defaultMessage={noParser ? parse(message) : message}
+            values={{
+              emails: 1000,
+            }}
+          />
+        </span>
       );
 
-      const rendered = renderWithIntlProvider(el, {onError: console.error});
-      expect(rendered.text()).toBe('You have 1,000 emails.');
+      renderWithIntlProvider(el);
+      expect(screen.getByTestId('test')).toHaveTextContent(
+        'You have 1,000 emails.'
+      );
     });
   });
 }
