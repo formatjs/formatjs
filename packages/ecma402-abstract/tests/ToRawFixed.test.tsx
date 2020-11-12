@@ -1,4 +1,4 @@
-import {ToRawFixed} from '../src/NumberFormat/ToRawFixed';
+import {ToRawFixed} from '../NumberFormat/ToRawFixed';
 
 test('ToRawFixed(9.99, 0, 1)', () => {
   expect(ToRawFixed(9.99, 0, 1)).toEqual({

@@ -1,4 +1,4 @@
-import {ToRawPrecision} from '../src/NumberFormat/ToRawPrecision';
+import {ToRawPrecision} from '../NumberFormat/ToRawPrecision';
 
 it('ToRawPrecision(9.99, 1, 2)', () => {
   expect(ToRawPrecision(9.99, 1, 2)).toEqual({

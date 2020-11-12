@@ -1,4 +1,4 @@
-import {ResolveLocale} from '../src/ResolveLocale';
+import {ResolveLocale} from '../ResolveLocale';
 
 test('ResolveLocale', function () {
   expect(

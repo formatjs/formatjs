@@ -28,9 +28,12 @@ alias(
 
 SRCS = glob(
     [
-        "src/**/*",
-        "types/*.ts",
-        "*.ts",
+        "**/*.ts",
+        "NumberFormat/*.json",
+    ],
+    exclude = [
+        "tools/*.ts",
+        "tests/*.ts",
     ],
 )
 
@@ -63,7 +66,7 @@ generated_file_test(
 # digit-mapping
 generate_src_file(
     name = "digit-mapping",
-    src = "src/NumberFormat/digit-mapping.json",
+    src = "NumberFormat/digit-mapping.json",
     args = [
         "$(execpath tools/digit-mapping.ts)",
         "--out",
@@ -89,7 +92,7 @@ prettier_check(
         ],
         exclude = [
             "CHANGELOG.md",
-            "src/NumberFormat/digit-mapping.json",
+            "NumberFormat/digit-mapping.json",
             "BUILD",
         ],
     ),

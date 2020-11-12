@@ -1,4 +1,4 @@
-import {PartitionPattern} from '../src/PartitionPattern';
+import {PartitionPattern} from '../PartitionPattern';
 
 test('PartitionPattern should partition pattern correctly', function () {
   expect(PartitionPattern('AA{0}BB')).toEqual([

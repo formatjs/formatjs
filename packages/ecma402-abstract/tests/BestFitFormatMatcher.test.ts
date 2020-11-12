@@ -1,8 +1,8 @@
 import {
   bestFitFormatMatcherScore,
   BestFitFormatMatcher,
-} from '../src/DateTimeFormat/BestFitFormatMatcher';
-import {parseDateTimeSkeleton} from '../src/DateTimeFormat/skeleton';
+} from '../DateTimeFormat/BestFitFormatMatcher';
+import {parseDateTimeSkeleton} from '../DateTimeFormat/skeleton';
 
 test('bestFitFormatMatcherScore', function () {
   const opts = {

@@ -1,6 +1,6 @@
 import {LocaleData} from './core';
 import {LDMLPluralRule} from './plural-rules';
-import {LiteralPart} from '../src/utils';
+import {LiteralPart} from '../utils';
 
 export interface FieldData {
   '0'?: string;

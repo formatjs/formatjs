@@ -2,7 +2,7 @@ import {
   parseDateTimeSkeleton,
   processDateTimePattern,
   splitRangePattern,
-} from '../src/DateTimeFormat/skeleton';
+} from '../DateTimeFormat/skeleton';
 
 test('splitRangePattern basic case', function () {
   expect(splitRangePattern('{month} {day} - {day}')).toEqual([
