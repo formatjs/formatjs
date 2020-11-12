@@ -536,10 +536,6 @@ export default declare((api: any, options: OptionsSchema) => {
               descriptionAttr.remove();
             }
 
-            if (removeDefaultMessage && defaultMessageAttr) {
-              defaultMessageAttr.remove();
-            }
-
             if (
               !removeDefaultMessage &&
               ast &&
@@ -569,6 +565,10 @@ export default declare((api: any, options: OptionsSchema) => {
                   )
                 );
               }
+            }
+
+            if (removeDefaultMessage && defaultMessageAttr) {
+              defaultMessageAttr.remove();
             }
 
             // Tag the AST node so we don't try to extract it twice.
