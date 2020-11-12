@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.2.17](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.16...babel-plugin-react-intl@8.2.17) (2020-11-12)
+
+
+### Bug Fixes
+
+* **babel-plugin-react-intl:** fix babel crash with `removeDefaultMessage` ([#2306](https://github.com/formatjs/formatjs/issues/2306)) ([847bee8](https://github.com/formatjs/formatjs/commit/847bee8c084e0093dc233d578719aff3702a7939)), closes [#2305](https://github.com/formatjs/formatjs/issues/2305)
+
+
+
+
+
 ## [8.2.16](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.15...babel-plugin-react-intl@8.2.16) (2020-11-10)
 
 **Note:** Version bump only for package babel-plugin-react-intl

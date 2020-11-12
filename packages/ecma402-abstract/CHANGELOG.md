@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.3.2...@formatjs/ecma402-abstract@1.4.0) (2020-11-12)
+
+
+### Features
+
+* **@formatjs/ecma402-abstract:** Move files around ([5ba9502](https://github.com/formatjs/formatjs/commit/5ba9502992b83b28dd6904c417331ca357d64ca9))
+
+
+
+
+
 ## [1.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.3.1...@formatjs/ecma402-abstract@1.3.2) (2020-11-09)
 
 

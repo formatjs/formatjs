@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.4.5...@formatjs/intl-displaynames@3.4.6) (2020-11-12)
+
+**Note:** Version bump only for package @formatjs/intl-displaynames
+
+
+
+
+
 ## [3.4.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.4.4...@formatjs/intl-displaynames@3.4.5) (2020-11-09)
 
 **Note:** Version bump only for package @formatjs/intl-displaynames
