@@ -591,7 +591,7 @@ Object {
 import { defineMessages, FormattedMessage } from 'react-intl';
 const msgs = defineMessages({
   header: {
-    \\"id\\": \\"4d1460\\",
+    \\"id\\": \\"idInterpolationPattern.actual.4d1460\\",
     \\"defaultMessage\\": \\"Hello World!\\"
   },
   content: {
@@ -608,8 +608,8 @@ export default class Foo extends Component {
         <p>
           <FormattedMessage {...msgs.content} />
         </p>
-        <FormattedMessage id=\\"36a8c8\\" defaultMessage=\\"Hello World!\\" />
-        <FormattedMessage id=\\"5ce864\\" defaultMessage=\\"NO ID\\" />
+        <FormattedMessage id=\\"idInterpolationPattern.actual.36a8c8\\" defaultMessage=\\"Hello World!\\" />
+        <FormattedMessage id=\\"idInterpolationPattern.actual.5ce864\\" defaultMessage=\\"NO ID\\" />
       </div>;
   }
 
@@ -619,7 +619,7 @@ export default class Foo extends Component {
       Object {
         "defaultMessage": "Hello World!",
         "description": "The default message",
-        "id": "4d1460",
+        "id": "idInterpolationPattern.actual.4d1460",
       },
       Object {
         "defaultMessage": "Hello Nurse!",
@@ -632,12 +632,12 @@ export default class Foo extends Component {
       Object {
         "defaultMessage": "Hello World!",
         "description": "Something for the translator. Another description",
-        "id": "36a8c8",
+        "id": "idInterpolationPattern.actual.36a8c8",
       },
       Object {
         "defaultMessage": "NO ID",
         "description": "Something for the translator. Another description",
-        "id": "5ce864",
+        "id": "idInterpolationPattern.actual.5ce864",
       },
     ],
     "meta": Object {},

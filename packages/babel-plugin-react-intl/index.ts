@@ -207,7 +207,7 @@ function evaluateMessageDescriptor(
     id = overrideIdFn(id, defaultMessage, description, filename);
   } else if (!id && idInterpolationPattern && defaultMessage) {
     id = interpolateName(
-      {sourcePath: filename} as any,
+      {resourcePath: filename} as any,
       idInterpolationPattern,
       {
         content: description
