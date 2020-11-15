@@ -26,7 +26,7 @@ const TESTS: Record<string, OptionsSchema> = {
   formatMessageCall: {},
   FormattedMessage: {},
   idInterpolationPattern: {
-    idInterpolationPattern: '[sha512:contenthash:hex:6]',
+    idInterpolationPattern: '[folder].[name].[sha512:contenthash:hex:6]',
   },
   inline: {},
   templateLiteral: {},
