@@ -58,7 +58,7 @@ module.exports = {
           {
             loader: 'ts-loader',
             options: {
-              getCustomTransformers: {
+              getCustomTransformers: () => ({
                 before: [
                   transform({
                     overrideIdFn: '[sha512:contenthash:base64:6]',
@@ -66,7 +66,7 @@ module.exports = {
                     ast: true,
                   }),
                 ],
-              },
+              }),
             },
           },
         ],
