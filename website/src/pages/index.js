@@ -14,6 +14,7 @@ import cs from '../../lang/strings_cs-CZ.json'
 import pt from '../../lang/strings_pt-BR.json'
 import sv from '../../lang/strings_sv-SE.json'
 import es from '../../lang/strings_es-AR.json'
+import de from '../../lang/strings_de-DE.json'
 
 const MESSAGES = {
   'en-US': en,
@@ -23,6 +24,7 @@ const MESSAGES = {
   'pt-BR': pt,
   'sv-SE': sv,
   'es-AR': es,
+  'de-DE': de,
 }
 
 function IntegrationSection({className}) {
@@ -222,14 +224,15 @@ function Demo({className}) {
       </label>
       <label>
         <FormattedMessage id="demo-langs" defaultMessage="Locale" />{' '}
-        <select onChange={e => setLang(e.target.value)}>
+        <select value={lang} onChange={e => setLang(e.target.value)}>
+          <option value="cs-CZ">cs-CZ</option>
+          <option value="de-DE">de-DE</option>
           <option value="en-US">en-US</option>
+          <option value="es-AR">es-AR</option>
           <option value="fr-FR">fr-FR</option>
           <option value="ja-JP">ja-JP</option>
-          <option value="cs-CZ">cs-CZ</option>
           <option value="pt-BR">pt-BR</option>
           <option value="sv-SE">sv-SE</option>
-          <option value="es-AR">es-AR</option>
         </select>
       </label>
     </div>
