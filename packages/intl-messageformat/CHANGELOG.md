@@ -3,6 +3,148 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.3.18](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.17...intl-messageformat@9.3.18) (2020-11-12)
+
+**Note:** Version bump only for package intl-messageformat
+
+
+
+
+
+## [9.3.17](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.16...intl-messageformat@9.3.17) (2020-11-09)
+
+**Note:** Version bump only for package intl-messageformat
+
+
+
+
+
+## [9.3.16](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.15...intl-messageformat@9.3.16) (2020-11-09)
+
+**Note:** Version bump only for package intl-messageformat
+
+
+
+
+
+## [9.3.15](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.14...intl-messageformat@9.3.15) (2020-11-05)
+
+**Note:** Version bump only for package intl-messageformat
+
+
+
+
+
+## [9.3.14](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.13...intl-messageformat@9.3.14) (2020-11-05)
+
+
+### Bug Fixes
+
+* **intl-messageformat:** lock down monorepo dep version ([5f7db81](https://github.com/formatjs/formatjs/commit/5f7db81c43bce97639c5236425ee36c173b0701a))
+
+
+
+
+
+## [9.3.13](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.12...intl-messageformat@9.3.13) (2020-11-04)
+
+**Note:** Version bump only for package intl-messageformat
+
+
+
+
+
+## [9.3.12](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.11...intl-messageformat@9.3.12) (2020-10-25)
+
+**Note:** Version bump only for package intl-messageformat
+
+
+
+
+
+## [9.3.11](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.10...intl-messageformat@9.3.11) (2020-10-10)
+
+**Note:** Version bump only for package intl-messageformat
+
+
+
+
+
+## [9.3.10](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.9...intl-messageformat@9.3.10) (2020-10-08)
+
+**Note:** Version bump only for package intl-messageformat
+
+
+
+
+
+## [9.3.9](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.8...intl-messageformat@9.3.9) (2020-10-01)
+
+**Note:** Version bump only for package intl-messageformat
+
+
+
+
+
+## [9.3.8](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.7...intl-messageformat@9.3.8) (2020-09-18)
+
+**Note:** Version bump only for package intl-messageformat
+
+
+
+
+
+## [9.3.7](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.6...intl-messageformat@9.3.7) (2020-09-09)
+
+**Note:** Version bump only for package intl-messageformat
+
+
+
+
+
+## [9.3.6](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.5...intl-messageformat@9.3.6) (2020-08-28)
+
+**Note:** Version bump only for package intl-messageformat
+
+
+
+
+
+## [9.3.5](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.4...intl-messageformat@9.3.5) (2020-08-25)
+
+**Note:** Version bump only for package intl-messageformat
+
+
+
+
+
+## [9.3.4](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.3...intl-messageformat@9.3.4) (2020-08-22)
+
+**Note:** Version bump only for package intl-messageformat
+
+
+
+
+
+## [9.3.3](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.2...intl-messageformat@9.3.3) (2020-08-21)
+
+**Note:** Version bump only for package intl-messageformat
+
+
+
+
+
+## [9.3.2](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.1...intl-messageformat@9.3.2) (2020-08-20)
+
+
+### Bug Fixes
+
+* bump intl-messageformat-parser ([8bbfa04](https://github.com/formatjs/formatjs/commit/8bbfa047da159662700b7e500879da20e54c0f0b))
+
+
+
+
+
 ## [9.3.1](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.0...intl-messageformat@9.3.1) (2020-08-19)
 
 **Note:** Version bump only for package intl-messageformat

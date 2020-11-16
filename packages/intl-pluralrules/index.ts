@@ -1,19 +1,19 @@
 import {
   LDMLPluralRule,
-  getOption,
   PluralRulesLocaleData,
   PluralRulesData,
   unpackData,
-  createResolveLocale,
-  supportedLocales,
+  SupportedLocales,
   isMissingLocaleDataError,
-  setNumberFormatDigitOptions,
   NumberFormatDigitInternalSlots,
-  formatNumericToString,
+  ResolvePlural,
+  OperandsRecord,
+  InitializePluralRules,
+  ToNumber,
+  CanonicalizeLocaleList,
 } from '@formatjs/ecma402-abstract';
-import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
-import ToObject from 'es-abstract/2019/ToObject';
 import getInternalSlots from './get_internal_slots';
+
 function validateInstance(instance: any, method: string) {
   if (!(instance instanceof PluralRules)) {
     throw new TypeError(
@@ -30,6 +30,27 @@ export interface PluralRulesInternal extends NumberFormatDigitInternalSlots {
   type: 'cardinal' | 'ordinal';
 }
 
+/**
+ * http://ecma-international.org/ecma-402/7.0/index.html#sec-pluralruleselect
+ * @param locale
+ * @param type
+ * @param _n
+ * @param param3
+ */
+function PluralRuleSelect(
+  locale: string,
+  type: 'cardinal' | 'ordinal',
+  _n: number,
+  {IntegerDigits, NumberOfFractionDigits, FractionDigits}: OperandsRecord
+): LDMLPluralRule {
+  return PluralRules.localeData[locale].fn(
+    NumberOfFractionDigits
+      ? `${IntegerDigits}.${FractionDigits}`
+      : IntegerDigits,
+    type === 'ordinal'
+  );
+}
+
 export class PluralRules implements Intl.PluralRules {
   constructor(locales?: string | string[], options?: Intl.PluralRulesOptions) {
     // test262/test/intl402/RelativeTimeFormat/constructor/constructor/newtarget-undefined.js
@@ -39,38 +60,13 @@ export class PluralRules implements Intl.PluralRules {
     if (!newTarget) {
       throw new TypeError("Intl.PluralRules must be called with 'new'");
     }
-    const requestedLocales = ((Intl as any)
-      .getCanonicalLocales as typeof getCanonicalLocales)(locales);
-    const opt: any = Object.create(null);
-    const opts =
-      options === undefined ? Object.create(null) : ToObject(options);
-    const internalSlots = getInternalSlots(this);
-    internalSlots.initializedPluralRules = true;
-    const matcher = getOption(
-      opts,
-      'localeMatcher',
-      'string',
-      ['best fit', 'lookup'],
-      'best fit'
-    );
-    opt.localeMatcher = matcher;
-    internalSlots.type = getOption(
-      opts,
-      'type',
-      'string',
-      ['cardinal', 'ordinal'],
-      'cardinal'
-    );
-
-    setNumberFormatDigitOptions(internalSlots, opts, 0, 3, 'standard');
-    const r = createResolveLocale(PluralRules.getDefaultLocale)(
-      PluralRules.availableLocales,
-      requestedLocales,
-      opt,
-      PluralRules.relevantExtensionKeys,
-      PluralRules.localeData
-    );
-    internalSlots.locale = r.locale;
+    return InitializePluralRules(this, locales, options, {
+      availableLocales: PluralRules.availableLocales,
+      relevantExtensionKeys: PluralRules.relevantExtensionKeys,
+      localeData: PluralRules.localeData,
+      getDefaultLocale: PluralRules.getDefaultLocale,
+      getInternalSlots,
+    });
   }
   public resolvedOptions() {
     validateInstance(this, 'resolvedOptions');
@@ -99,15 +95,10 @@ export class PluralRules implements Intl.PluralRules {
     return opts;
   }
   public select(val: number): LDMLPluralRule {
-    validateInstance(this, 'select');
-    const internalSlots = getInternalSlots(this);
-    const {type, locale} = internalSlots;
-
-    return PluralRules.localeData[locale].fn(
-      formatNumericToString(getInternalSlots(this), Math.abs(Number(val)))
-        .formattedString,
-      type == 'ordinal'
-    );
+    const pr = this;
+    validateInstance(pr, 'select');
+    const n = ToNumber(val);
+    return ResolvePlural(pr, n, {getInternalSlots, PluralRuleSelect});
   }
   toString() {
     return '[object Intl.PluralRules]';
@@ -116,11 +107,9 @@ export class PluralRules implements Intl.PluralRules {
     locales?: string | string[],
     options?: Pick<Intl.PluralRulesOptions, 'localeMatcher'>
   ) {
-    return supportedLocales(
+    return SupportedLocales(
       PluralRules.availableLocales,
-      ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
-        locales
-      ),
+      CanonicalizeLocaleList(locales),
       options
     );
   }
@@ -145,12 +134,12 @@ export class PluralRules implements Intl.PluralRules {
     }
   }
   static localeData: Record<string, PluralRulesData> = {};
-  private static availableLocales: string[] = [];
-  private static __defaultLocale = 'en';
-  private static getDefaultLocale() {
+  static availableLocales: string[] = [];
+  static __defaultLocale = 'en';
+  static getDefaultLocale() {
     return PluralRules.__defaultLocale;
   }
-  private static relevantExtensionKeys = [];
+  static relevantExtensionKeys = [];
   public static polyfilled = true;
 }
 
@@ -165,13 +154,18 @@ try {
     });
   }
 
-  // https://github.com/tc39/test262/blob/master/test/intl402/PluralRules/length.js
-  Object.defineProperty(PluralRules, 'length', {
-    value: 0,
-    writable: false,
-    enumerable: false,
-    configurable: true,
-  });
+  try {
+    // https://github.com/tc39/test262/blob/master/test/intl402/PluralRules/length.js
+    Object.defineProperty(PluralRules, 'length', {
+      value: 0,
+      writable: false,
+      enumerable: false,
+      configurable: true,
+    });
+  } catch (error) {
+    // IE 11 sets Function.prototype.length to be non-configurable which will cause the
+    // above Object.defineProperty to throw an error.
+  }
   // https://github.com/tc39/test262/blob/master/test/intl402/RelativeTimeFormat/constructor/length.js
   Object.defineProperty(PluralRules.prototype.constructor, 'length', {
     value: 0,

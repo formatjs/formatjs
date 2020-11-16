@@ -29,7 +29,7 @@ There are a few ways to get access to the `intl` object:
 
 ## useIntl hook
 
-If a component can be expressed in a form of function component, using `useIntl` hook can be handy. This `useIntl` hook do not expect any option as its argument when being called. Typically, here is how you would like to use:
+If a component can be expressed in a form of function component, using `useIntl` hook can be handy. This `useIntl` hook does not expect any option as its argument when being called. Typically, here is how you would like to use:
 
 ```tsx
 import React from 'react'
@@ -138,6 +138,11 @@ interface IntlConfig {
 interface IntlFormatters {
   formatDate(value: number | Date, opts: FormatDateOptions): string
   formatTime(value: number | Date, opts: FormatDateOptions): string
+  formatDateTimeRange(
+    from: number | Date,
+    to: number | Date,
+    opts: FormatDateOptions
+  ): string
   formatRelativeTime(
     value: number,
     unit: Unit,
@@ -223,6 +228,28 @@ It expects a `value` which can be parsed as a date (i.e., `isFinite(new Date(val
 
 ```tsx live
 intl.formatTime(Date.now()) // "4:03 PM"
+```
+
+## formatDateTimeRange
+
+:::caution browser support
+This requires stage-3 API [Intl.RelativeTimeFormat.prototype.formatRange](https://github.com/tc39/proposal-intl-DateTimeFormat-formatRange) which has limited browser support. Please use our [polyfill](../polyfills/intl-datetimeformat.md) if you plan to support them.
+:::
+
+```tsx
+function formatDateTimeRange(
+  from: number | Date,
+  to: number | Date,
+  options?: Intl.DateTimeFormatOptions & {format?: string}
+): string
+```
+
+This function will return a formatted date/time range string
+
+It expects 2 values (a `from` Date & a `to` Date) and accepts `options` that conform to `DateTimeFormatOptions`.
+
+```tsx live
+intl.formatDateTimeRange(new Date('2020-1-1'), new Date('2020-1-15'))
 ```
 
 ## formatRelativeTime
@@ -388,7 +415,7 @@ function formatDisplayName(
 Usage examples:
 
 ```ts live
-intl.formatDisplayName('zh-Hans-SG')
+intl.formatDisplayName('zh-Hans-SG', {type: 'language'})
 ```
 
 ```ts live

@@ -1,6 +1,8 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
+load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
+load("@npm//@bazel/terser:index.bzl", "terser_minified")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "generate_src_file", "ts_compile")
+load("//tools:index.bzl", "generate_src_file", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-datetimeformat"
@@ -13,6 +15,7 @@ TEST_LOCALES = [
     "ko",
     "pl",
     "zh-Hans",
+    "fa",
 ]
 
 TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
@@ -29,6 +32,9 @@ pkg_npm(
         "add-golden-tz.js",
         ":dist",
         ":locale-data",
+        # polyfill-library uses this
+        "polyfill.umd.js",
+        ":polyfill.umd.min",
     ],
 )
 
@@ -53,19 +59,16 @@ SRCS = glob(
 
 TESTS = glob([
     "tests/*.test.ts",
-    "tests/__snapshots__/*.snap",
 ])
 
 SRC_DEPS = [
-    "@npm//es-abstract",
-    "@npm//@types/es-abstract",
     "//packages/ecma402-abstract:dist",
-    "//packages/intl-getcanonicallocales:dist",
 ]
 
 TEST_DEPS = SRC_DEPS + [
     "//packages/intl-pluralrules",
     "//packages/ecma402-abstract:types",
+    "//packages/intl-getcanonicallocales:dist",
     "//packages/intl-getcanonicallocales:types",
 ]
 
@@ -73,14 +76,15 @@ ts_compile(
     name = "dist",
     package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
+    skip_esm = False,
     deps = SRC_DEPS,
 )
 
-jest_test(
-    name = "unit",
-    srcs = SRCS + TESTS + TEST_LOCALE_DATA,
+[jest_test(
+    name = "unit-%s" % t[t.index("/") + 1:t.index(".test")],
+    srcs = SRCS + [t] + TEST_LOCALE_DATA,
     deps = TEST_DEPS,
-)
+) for t in TESTS]
 
 # CLDR
 CLDR_DEPS = [
@@ -93,6 +97,7 @@ CLDR_DEPS = [
     "@npm//fs-extra",
     "@npm//fast-glob",
     "@npm//minimist",
+    "@npm//tslib",
 ]
 
 ts_node(
@@ -105,7 +110,6 @@ ts_node(
     data = [
         "scripts/cldr-raw.ts",
         "scripts/extract-dates.ts",
-        "src/skeleton.ts",
         "src/types.ts",
         "//:tsconfig.json",
         "//packages/ecma402-abstract:dist",
@@ -121,6 +125,7 @@ ts_node(
         "@npm//fast-glob",
         "@npm//fs-extra",
         "@npm//minimist",
+        "@npm//tslib",
     ],
     output_dir = True,
 )
@@ -168,74 +173,6 @@ generate_src_file(
     data = CLDR_DEPS,
 )
 
-# IANA
-ts_node(
-    name = "iana-data",
-    args = [
-        "$(execpath scripts/iana.ts)",
-        "--version",
-        "2020a",
-        "--outDir",
-        "$(@D)",
-    ],
-    data = [
-        "scripts/iana.ts",
-        "//:tsconfig.json",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//@types/node-fetch",
-        "@npm//@types/tar",
-        "@npm//minimist",
-        "@npm//node-fetch",
-        "@npm//tar",
-    ],
-    output_dir = True,
-)
-
-# zic
-# ts_node(
-#     name = "zic",
-#     args = [
-#         "$(execpath scripts/zic.ts)",
-#         "--dataDir",
-#         "$(locations iana-data)",
-#         "--outDir",
-#         "$(@D)",
-#     ],
-#     data = [
-#         "iana-data",
-#         "scripts/zic.ts",
-#         "//:tsconfig.json",
-#         "@npm//@types/minimist",
-#         "@npm//@types/node",
-#         "@npm//minimist",
-#     ],
-#     output_dir = True,
-# )
-
-# zones
-generate_src_file(
-    name = "zones",
-    src = "src/data/zones.ts",
-    args = [
-        "$(execpath scripts/zone.ts)",
-        "--input",
-        "$(location iana-data/zone.tab)",
-        "--output",
-        "$@",
-    ],
-    data = [
-        "iana-data/zone.tab",
-        "scripts/zone.ts",
-        "//:tsconfig.json",
-        "@npm//@types/fs-extra",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//fs-extra",
-        "@npm//minimist",
-    ],
-)
-
 # "ts-node scripts/link --input iana-data/backward --output src/links.ts"
 # links
 generate_src_file(
@@ -244,12 +181,11 @@ generate_src_file(
     args = [
         "$(execpath scripts/link.ts)",
         "--input",
-        "$(location iana-data/backward)",
+        "$(location @tzdata//:backward)",
         "--output",
         "$@",
     ],
     data = [
-        "iana-data/backward",
         "scripts/link.ts",
         "//:tsconfig.json",
         "@npm//@types/fs-extra",
@@ -257,6 +193,8 @@ generate_src_file(
         "@npm//@types/node",
         "@npm//fs-extra",
         "@npm//minimist",
+        "@npm//tslib",
+        "@tzdata//:backward",
     ],
 )
 
@@ -266,22 +204,26 @@ generate_src_file(
     src = "src/data/all-tz.ts",
     args = [
         "$(execpath scripts/process-zdump.ts)",
-        "--input",
-        "$(location data.zdump)",
         "--output",
         "$@",
+        "$(locations @tzdata//:zdumps)",
     ],
     data = [
-        "data.zdump",
         "scripts/process-zdump.ts",
         "src/packer.ts",
         "src/types.ts",
         "//:tsconfig.json",
+        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract:types",
         "@npm//@types/fs-extra",
+        "@npm//@types/json-stable-stringify",
         "@npm//@types/minimist",
         "@npm//@types/node",
         "@npm//fs-extra",
+        "@npm//json-stable-stringify",
         "@npm//minimist",
+        "@npm//tslib",
+        "@tzdata//:zdumps",
     ],
 )
 
@@ -293,22 +235,26 @@ ts_node(
     args = [
         "$(execpath scripts/process-zdump.ts)",
         "--polyfill",
-        "--input",
-        "$(location data.zdump)",
         "--output",
         "$@",
+        "$(locations @tzdata//:zdumps)",
     ],
     data = [
-        "data.zdump",
         "scripts/process-zdump.ts",
         "src/packer.ts",
         "src/types.ts",
         "//:tsconfig.json",
+        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract:types",
         "@npm//@types/fs-extra",
+        "@npm//@types/json-stable-stringify",
         "@npm//@types/minimist",
         "@npm//@types/node",
         "@npm//fs-extra",
+        "@npm//json-stable-stringify",
         "@npm//minimist",
+        "@npm//tslib",
+        "@tzdata//:zdumps",
     ],
 )
 
@@ -320,22 +266,26 @@ ts_node(
         "$(execpath scripts/process-zdump.ts)",
         "--golden",
         "--polyfill",
-        "--input",
-        "$(location data.zdump)",
         "--output",
         "$@",
+        "$(locations @tzdata//:zdumps)",
     ],
     data = [
-        "data.zdump",
         "scripts/process-zdump.ts",
         "src/packer.ts",
         "src/types.ts",
         "//:tsconfig.json",
+        "//packages/ecma402-abstract:dist",
+        "//packages/ecma402-abstract:types",
         "@npm//@types/fs-extra",
+        "@npm//@types/json-stable-stringify",
         "@npm//@types/minimist",
         "@npm//@types/node",
         "@npm//fs-extra",
+        "@npm//json-stable-stringify",
         "@npm//minimist",
+        "@npm//tslib",
+        "@tzdata//:zdumps",
     ],
 )
 
@@ -385,6 +335,8 @@ generated_file_test(
 #     templated_args = [
 #         "--reporter-keys",
 #         "file,attrs,result",
+#         "-t",
+#         "2",
 #         "--prelude",
 #         "$(rootpath test262-polyfill.js)",
 #         "$(rootpaths //:test262-datetimeformat)",
@@ -399,27 +351,46 @@ generated_file_test(
 #     deps = SRC_DEPS,
 # )
 
-# zdump
-# TODO: zdump takes a very long time
-# generate_src_file(
-#     name="zdump",
-#     src = "data.zdump",
-#     args = [
-#         "$(execpath scripts/zdump.ts)",
-#         "--zicDir",
-#         "$(locations zic)",
-#         "--output",
-#         "$@",
-#     ],
-#     data = [
-#         "scripts/zdump.ts",
-#         "src/data/zones.ts",
-#         "zic",
-#         "//:tsconfig.json",
-#         "@npm//@types/fs-extra",
-#         "@npm//@types/minimist",
-#         "@npm//@types/node",
-#         "@npm//fs-extra",
-#         "@npm//minimist",
-#     ],
-# )
+rollup_bundle(
+    name = "polyfill.umd",
+    srcs = [":dist-esm"],
+    args = [
+        "--name",
+        "IntlPluralRules",
+        "--no-sourcemap",
+    ],
+    config_file = "//:rollup.config.js",
+    entry_point = "lib/polyfill.js",
+    format = "umd",
+    deps = [
+        "@npm//@rollup/plugin-node-resolve",
+        "@npm//@rollup/plugin-commonjs",
+        "@npm//@rollup/plugin-replace",
+        "@npm//@rollup/plugin-json",
+        "@npm//tslib",
+    ] + SRC_DEPS,
+)
+
+terser_minified(
+    name = "polyfill.umd.min",
+    src = "polyfill.umd.js",
+    sourcemap = False,
+)
+
+prettier_check(
+    name = "prettier",
+    srcs = glob(
+        [
+            "**/*",
+        ],
+        exclude = [
+            "BUILD",
+            "tzdata.BUILD",
+            "tzcode.BUILD",
+            "CHANGELOG.md",
+            "tests/locale-data/*",
+            "src/data/*",
+            "test262-main.ts",
+        ],
+    ),
+)

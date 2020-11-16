@@ -13,6 +13,12 @@ defineMessage({
     defaultMessage: 'this is default message',
     description: 'asd'
 })`,
+    `intl.formatMessage({
+  defaultMessage: 'this is default message' + 'vvv',
+  description: 'asd'
+})`,
+    `import {FormattedMessage} from 'react-intl'
+const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
     dynamicMessage,
     noMatch,
     spreadJsx,
@@ -134,7 +140,19 @@ defineMessage({
     {
       code: `
             import {FormattedMessage} from 'react-intl'
-            const a = <FormattedMessage defaultMessage={defaultMessage} description="this is description"></FormattedMessage>`,
+            const a = <FormattedMessage defaultMessage={defaultMessage} description="this is description"/>`,
+      errors: [
+        {
+          message:
+            '`defaultMessage` must be a string literal (not function call or variable)',
+        },
+      ],
+      options: ['literal'],
+    },
+    {
+      code: `
+            import {FormattedMessage} from 'react-intl'
+            const a = <FormattedMessage defaultMessage={defaultMessage}/>`,
       errors: [
         {
           message:
@@ -147,6 +165,18 @@ defineMessage({
       code: `
             import {FormattedMessage} from 'react-intl'
             const a = <FormattedMessage defaultMessage={\`asf\`} description="this is description"></FormattedMessage>`,
+      errors: [
+        {
+          message:
+            '`defaultMessage` must be a string literal (not function call or variable)',
+        },
+      ],
+      options: ['literal'],
+    },
+    {
+      code: `
+            import {FormattedMessage} from 'react-intl'
+            const a = <FormattedMessage defaultMessage={\`asf\`}/>`,
       errors: [
         {
           message:

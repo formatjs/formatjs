@@ -1,20 +1,20 @@
 import {
-  getOption,
+  GetOption,
   ListPatternLocaleData,
   unpackData,
   setInternalSlot,
-  supportedLocales,
-  createResolveLocale,
+  SupportedLocales,
+  ResolveLocale,
   getInternalSlot,
   ListPatternFieldsData,
   ListPatternData,
-  partitionPattern,
+  PartitionPattern,
   invariant,
   isLiteralPart,
   LiteralPart,
+  ToObject,
+  CanonicalizeLocaleList,
 } from '@formatjs/ecma402-abstract';
-import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
-import ToObject from 'es-abstract/2019/ToObject';
 
 export interface IntlListFormatOptions {
   /**
@@ -161,7 +161,7 @@ function deconstructPattern(
   pattern: string,
   placeables: Record<string, Placeable | Placeable[]>
 ) {
-  const patternParts = partitionPattern(pattern);
+  const patternParts = PartitionPattern(pattern);
   const result: Placeable[] = [];
   for (const patternPart of patternParts) {
     const {type: part} = patternPart;
@@ -198,12 +198,11 @@ export default class ListFormat {
       'initializedListFormat',
       true
     );
-    const requestedLocales = ((Intl as any)
-      .getCanonicalLocales as typeof getCanonicalLocales)(locales);
+    const requestedLocales = CanonicalizeLocaleList(locales);
     const opt: any = Object.create(null);
     const opts =
       options === undefined ? Object.create(null) : ToObject(options);
-    const matcher = getOption(
+    const matcher = GetOption(
       opts,
       'localeMatcher',
       'string',
@@ -212,15 +211,16 @@ export default class ListFormat {
     );
     opt.localeMatcher = matcher;
     const {localeData} = ListFormat;
-    const r = createResolveLocale(ListFormat.getDefaultLocale)(
+    const r = ResolveLocale(
       ListFormat.availableLocales,
       requestedLocales,
       opt,
       ListFormat.relevantExtensionKeys,
-      localeData
+      localeData,
+      ListFormat.getDefaultLocale
     );
     setInternalSlot(ListFormat.__INTERNAL_SLOT_MAP__, this, 'locale', r.locale);
-    const type: keyof ListPatternFieldsData = getOption(
+    const type: keyof ListPatternFieldsData = GetOption(
       opts,
       'type',
       'string',
@@ -228,7 +228,7 @@ export default class ListFormat {
       'conjunction'
     );
     setInternalSlot(ListFormat.__INTERNAL_SLOT_MAP__, this, 'type', type);
-    const style: keyof ListPatternData = getOption(
+    const style: keyof ListPatternData = GetOption(
       opts,
       'style',
       'string',
@@ -238,7 +238,8 @@ export default class ListFormat {
     setInternalSlot(ListFormat.__INTERNAL_SLOT_MAP__, this, 'style', style);
     const {dataLocale} = r;
     const dataLocaleData = localeData[dataLocale];
-    const dataLocaleTypes = dataLocaleData![type];
+    invariant(!!dataLocaleData, `Missing locale data for ${dataLocale}`);
+    const dataLocaleTypes = dataLocaleData[type];
     const templates = dataLocaleTypes![style]!;
     setInternalSlot(
       ListFormat.__INTERNAL_SLOT_MAP__,
@@ -312,11 +313,9 @@ export default class ListFormat {
     options?: Pick<IntlListFormatOptions, 'localeMatcher'>
   ) {
     // test262/test/intl402/ListFormat/constructor/supportedLocalesOf/result-type.js
-    return supportedLocales(
+    return SupportedLocales(
       ListFormat.availableLocales,
-      ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
-        locales
-      ),
+      CanonicalizeLocaleList(locales),
       options
     );
   }
@@ -337,7 +336,7 @@ export default class ListFormat {
       ListFormat.__defaultLocale = ListFormat.availableLocales[0];
     }
   }
-  static localeData: Record<string, ListPatternFieldsData> = {};
+  static localeData: Record<string, ListPatternFieldsData | undefined> = {};
   private static availableLocales: string[] = [];
   private static __defaultLocale = 'en';
   private static getDefaultLocale() {

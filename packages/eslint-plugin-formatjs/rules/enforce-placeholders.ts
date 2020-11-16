@@ -48,13 +48,15 @@ function keyExistsInExpression(
 
 function verifyAst(
   ast: MessageFormatElement[],
-  values: TSESTree.Expression | undefined
+  values: TSESTree.Expression | undefined,
+  ignoreList: Set<string>
 ) {
   for (const el of ast) {
     if (isLiteralElement(el) || isPoundElement(el)) {
       continue;
     }
-    if (!keyExistsInExpression(el.value, values)) {
+    const key = el.value;
+    if (!ignoreList.has(key) && !keyExistsInExpression(key, values)) {
       throw new PlaceholderEnforcement(
         `Missing value for placeholder "${el.value}"`
       );
@@ -62,7 +64,7 @@ function verifyAst(
 
     if (isPluralElement(el) || isSelectElement(el)) {
       for (const selector of Object.keys(el.options)) {
-        verifyAst(el.options[selector].value, values);
+        verifyAst(el.options[selector].value, values, ignoreList);
       }
     }
   }
@@ -74,7 +76,10 @@ function checkNode(
   importedMacroVars: Scope.Variable[]
 ) {
   const msgs = extractMessages(node, importedMacroVars, true);
-
+  const {
+    options: [opt],
+  } = context;
+  const ignoreList = new Set<string>(opt?.ignoreList || []);
   for (const [
     {
       message: {defaultMessage},
@@ -86,7 +91,7 @@ function checkNode(
       continue;
     }
     try {
-      verifyAst(parse(defaultMessage), values);
+      verifyAst(parse(defaultMessage), values, ignoreList);
     } catch (e) {
       context.report({
         node: messageNode as Node,
@@ -107,6 +112,20 @@ const rule: Rule.RuleModule = {
       url: 'https://formatjs.io/docs/tooling/linter#enforce-placeholders',
     },
     fixable: 'code',
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          ignoreList: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
   create(context) {
     let importedMacroVars: Scope.Variable[] = [];

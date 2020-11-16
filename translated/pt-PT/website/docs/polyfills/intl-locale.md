@@ -9,9 +9,30 @@ A spec-compliant polyfill/ponyfill for Intl.Locale tested by the [official ECMAS
 
 ## Installation
 
+import Tabs from '@theme/Tabs' import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i @formatjs/intl-locale
 ```
-npm install @formatjs/intl-locale
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add @formatjs/intl-locale
 ```
+
+</TabItem>
+</Tabs>
 
 ## Requirements
 

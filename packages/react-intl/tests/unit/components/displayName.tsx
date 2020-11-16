@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {mount} from 'enzyme';
+
 import {FormattedDisplayName} from '../../../';
 import {mountFormattedComponentWithProvider} from '../testUtils';
-
+import {render} from '@testing-library/react';
 const mountWithProvider = mountFormattedComponentWithProvider(
   FormattedDisplayName
 );
@@ -19,7 +19,9 @@ describe('<FormattedDisplayName />', () => {
       .spyOn(console, 'error')
       .mockImplementation(() => null);
     try {
-      expect(() => mount(<FormattedDisplayName value="zh-Hans" />)).toThrow(
+      expect(() =>
+        render(<FormattedDisplayName type="language" value="zh-Hans" />)
+      ).toThrow(
         '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
       );
     } finally {
@@ -28,32 +30,34 @@ describe('<FormattedDisplayName />', () => {
   });
 
   it('accepts Intl.DisplayNames options', () => {
-    const rendered = mountWithProvider(
+    const {container} = mountWithProvider(
       {
         type: 'currency',
         value: 'CNY',
       },
       intlConfig
     );
-    expect(rendered).toMatchSnapshot();
+    expect(container).toMatchSnapshot();
   });
 
   it('renders an empty <> when the underlying DisplayNames would return undefined', () => {
     // When fallback is none, it will return undefined if no display name is available.
     const displayNames = new (Intl as any).DisplayNames('en', {
+      type: 'language',
       fallback: 'none',
     });
     expect(displayNames.of('xx-XX')).toBeUndefined();
 
     // Now let's do the same with <FormattedDisplayNames />
-    const rendered = mountWithProvider(
+    const {container} = mountWithProvider(
       {
+        type: 'language',
         fallback: 'none',
         value: 'xx-XX',
       },
       intlConfig
     );
-    expect(rendered.text()).toBe('');
-    expect(rendered).toMatchSnapshot();
+
+    expect(container).toMatchSnapshot();
   });
 });

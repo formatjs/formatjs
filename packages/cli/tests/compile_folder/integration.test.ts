@@ -16,13 +16,13 @@ test('basic case: help', async () => {
 }, 20000);
 
 test('basic case', async () => {
-  const inputFiles = globSync(join(__dirname, 'lang', '*.json'));
+  const inputFiles = globSync(`${__dirname}/lang/*.json`);
   const outFolder = mkdtempSync('formatjs-cli');
   await exec(
     `${BIN_PATH} compile-folder ${join(__dirname, 'lang')} ${outFolder}`
   );
 
-  const outputFiles = globSync(join(outFolder, '*.json'));
+  const outputFiles = globSync(`${outFolder}/*.json`);
   expect(outputFiles.map(f => basename(f))).toEqual(
     inputFiles.map(f => basename(f))
   );

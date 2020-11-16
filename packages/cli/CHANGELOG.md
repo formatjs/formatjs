@@ -3,6 +3,259 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.13.12](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.11...@formatjs/cli@2.13.12) (2020-11-12)
+
+**Note:** Version bump only for package @formatjs/cli
+
+
+
+
+
+## [2.13.11](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.10...@formatjs/cli@2.13.11) (2020-11-10)
+
+**Note:** Version bump only for package @formatjs/cli
+
+
+
+
+
+## [2.13.10](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.9...@formatjs/cli@2.13.10) (2020-11-09)
+
+**Note:** Version bump only for package @formatjs/cli
+
+
+
+
+
+## [2.13.9](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.8...@formatjs/cli@2.13.9) (2020-11-09)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** fix help link ([ac15a3f](https://github.com/formatjs/formatjs/commit/ac15a3f955ececfaa0adff4198718eba7e8dc1b0))
+
+
+
+
+
+## [2.13.8](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.7...@formatjs/cli@2.13.8) (2020-11-05)
+
+**Note:** Version bump only for package @formatjs/cli
+
+
+
+
+
+## [2.13.7](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.6...@formatjs/cli@2.13.7) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** lock down monorepo dep version ([3bed9c1](https://github.com/formatjs/formatjs/commit/3bed9c12c8b5dfc05b05808b91f3b8a55b23f3e8))
+
+
+
+
+
+## [2.13.6](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.5...@formatjs/cli@2.13.6) (2020-11-04)
+
+**Note:** Version bump only for package @formatjs/cli
+
+
+
+
+
+## [2.13.5](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.4...@formatjs/cli@2.13.5) (2020-10-28)
+
+**Note:** Version bump only for package @formatjs/cli
+
+
+
+
+
+## [2.13.4](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.3...@formatjs/cli@2.13.4) (2020-10-27)
+
+**Note:** Version bump only for package @formatjs/cli
+
+
+
+
+
+## [2.13.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.2...@formatjs/cli@2.13.3) (2020-10-25)
+
+**Note:** Version bump only for package @formatjs/cli
+
+
+
+
+
+## [2.13.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.1...@formatjs/cli@2.13.2) (2020-10-10)
+
+**Note:** Version bump only for package @formatjs/cli
+
+
+
+
+
+## [2.13.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.0...@formatjs/cli@2.13.1) (2020-10-08)
+
+**Note:** Version bump only for package @formatjs/cli
+
+
+
+
+
+# [2.13.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.12.0...@formatjs/cli@2.13.0) (2020-10-01)
+
+
+### Features
+
+* **@formatjs/cli:** add support for pseudo-locales, fix [#2165](https://github.com/formatjs/formatjs/issues/2165) ([015bbdb](https://github.com/formatjs/formatjs/commit/015bbdb53c1e9661fb9a5df9e31a74dde9a7ecfb))
+
+
+
+
+
+# [2.12.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.11.3...@formatjs/cli@2.12.0) (2020-09-25)
+
+
+### Features
+
+* **@formatjs/cli:** allow custom Formatter with Node API ([#2143](https://github.com/formatjs/formatjs/issues/2143)) ([c9886ab](https://github.com/formatjs/formatjs/commit/c9886abb1b79ad6fb5cb74c36db377030ca058b0))
+
+
+
+
+
+## [2.11.3](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.11.2...@formatjs/cli@2.11.3) (2020-09-18)
+
+**Note:** Version bump only for package @formatjs/cli
+
+
+
+
+
+## [2.11.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.11.1...@formatjs/cli@2.11.2) (2020-09-12)
+
+**Note:** Version bump only for package @formatjs/cli
+
+
+
+
+
+## [2.11.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.11.0...@formatjs/cli@2.11.1) (2020-09-11)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** fix calling extract programmatically without idInterpolationPattern ([#2084](https://github.com/formatjs/formatjs/issues/2084)) ([cb904cf](https://github.com/formatjs/formatjs/commit/cb904cfbefa27db778313a39fb14b9cdf147d58b))
+
+
+
+
+
+# [2.11.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.10.0...@formatjs/cli@2.11.0) (2020-09-09)
+
+
+### Features
+
+* **@formatjs/cli:** catch issue w/ TS transpilation, fix [#2044](https://github.com/formatjs/formatjs/issues/2044) ([ceb0bf8](https://github.com/formatjs/formatjs/commit/ceb0bf8a58c13fe6811bc35191018ee1c431484a))
+
+
+
+
+
+# [2.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.9.0...@formatjs/cli@2.10.0) (2020-09-09)
+
+
+### Features
+
+* **@formatjs/cli:** add meta to messages, fix [#2074](https://github.com/formatjs/formatjs/issues/2074) ([585bc66](https://github.com/formatjs/formatjs/commit/585bc66c9ad182a10680466e148fdc4e7e388319))
+
+
+
+
+
+# [2.9.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.8.0...@formatjs/cli@2.9.0) (2020-09-03)
+
+
+### Features
+
+* **@formatjs/cli:** support template literal, trim trailing/leading spaces, newlines & ([8a52eb5](https://github.com/formatjs/formatjs/commit/8a52eb567a5f83d36f33bb0dac4961a69cf341b5)), closes [#2028](https://github.com/formatjs/formatjs/issues/2028)
+
+
+
+
+
+# [2.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.7.13...@formatjs/cli@2.8.0) (2020-08-30)
+
+
+### Features
+
+* **@formatjs/cli:** add more debugging info to extraction, fix [#2044](https://github.com/formatjs/formatjs/issues/2044) ([20b832e](https://github.com/formatjs/formatjs/commit/20b832e9e778aa4d115c4bcb154dd7bb412a6b7d))
+* **@formatjs/cli:** upgrade TS to 4.0 ([ec0bd47](https://github.com/formatjs/formatjs/commit/ec0bd47f13ad3c1c38b3f7e72b9fca8ee784f591))
+
+
+
+
+
+## [2.7.13](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.7.12...@formatjs/cli@2.7.13) (2020-08-28)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** add more debug info when message validation errors out, fix [#2029](https://github.com/formatjs/formatjs/issues/2029) ([5b31bab](https://github.com/formatjs/formatjs/commit/5b31babf5a873dec7232a1640a83e64dfa8d3bee))
+
+
+
+
+
+## [2.7.12](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.7.11...@formatjs/cli@2.7.12) (2020-08-25)
+
+**Note:** Version bump only for package @formatjs/cli
+
+
+
+
+
+## [2.7.11](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.7.10...@formatjs/cli@2.7.11) (2020-08-22)
+
+**Note:** Version bump only for package @formatjs/cli
+
+
+
+
+
+## [2.7.10](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.7.9...@formatjs/cli@2.7.10) (2020-08-21)
+
+**Note:** Version bump only for package @formatjs/cli
+
+
+
+
+
+## [2.7.9](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.7.8...@formatjs/cli@2.7.9) (2020-08-20)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** fix fast-glob path join, fix [#2009](https://github.com/formatjs/formatjs/issues/2009) ([fca70be](https://github.com/formatjs/formatjs/commit/fca70bec380569bf92553d884e226aa26a610267))
+
+
+
+
+
+## [2.7.8](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.7.7...@formatjs/cli@2.7.8) (2020-08-20)
+
+
+### Bug Fixes
+
+* bump intl-messageformat-parser ([8bbfa04](https://github.com/formatjs/formatjs/commit/8bbfa047da159662700b7e500879da20e54c0f0b))
+
+
+
+
+
 ## [2.7.7](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.7.6...@formatjs/cli@2.7.7) (2020-08-19)
 
 **Note:** Version bump only for package @formatjs/cli

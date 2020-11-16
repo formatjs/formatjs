@@ -1,5 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "ts_compile")
+load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
+load("@npm//@bazel/terser:index.bzl", "terser_minified")
+load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-getcanonicallocales"
@@ -13,6 +15,9 @@ pkg_npm(
     ],
     deps = [
         ":dist",
+        # polyfill-library uses this
+        "polyfill.umd.js",
+        ":polyfill.umd.min",
     ],
 )
 
@@ -46,6 +51,7 @@ ts_compile(
     name = "dist",
     package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
+    skip_esm = False,
     deps = SRC_DEPS,
 )
 
@@ -73,6 +79,7 @@ generate_src_file(
         "@npm//cldr-core",
         "@npm//fs-extra",
         "@npm//minimist",
+        "@npm//tslib",
     ],
 )
 
@@ -88,4 +95,44 @@ generated_file_test(
     name = "tsconfig_json",
     src = "tsconfig.json",
     generated = "//tools:tsconfig.golden.json",
+)
+
+rollup_bundle(
+    name = "polyfill.umd",
+    srcs = [":dist-esm"],
+    args = [
+        "--name",
+        "IntlPluralRules",
+        "--no-sourcemap",
+    ],
+    config_file = "//:rollup.config.js",
+    entry_point = "lib/polyfill.js",
+    format = "umd",
+    deps = [
+        "@npm//@rollup/plugin-node-resolve",
+        "@npm//@rollup/plugin-commonjs",
+        "@npm//@rollup/plugin-replace",
+        "@npm//@rollup/plugin-json",
+        "@npm//tslib",
+    ] + SRC_DEPS,
+)
+
+terser_minified(
+    name = "polyfill.umd.min",
+    src = "polyfill.umd.js",
+    sourcemap = False,
+)
+
+prettier_check(
+    name = "prettier",
+    srcs = glob(
+        [
+            "**/*",
+        ],
+        exclude = [
+            "BUILD",
+            "CHANGELOG.md",
+            "src/data/aliases.ts",
+        ],
+    ),
 )

@@ -3,6 +3,164 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.7.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.7.5...@formatjs/intl-numberformat@5.7.6) (2020-11-12)
+
+**Note:** Version bump only for package @formatjs/intl-numberformat
+
+
+
+
+
+## [5.7.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.7.4...@formatjs/intl-numberformat@5.7.5) (2020-11-09)
+
+**Note:** Version bump only for package @formatjs/intl-numberformat
+
+
+
+
+
+## [5.7.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.7.3...@formatjs/intl-numberformat@5.7.4) (2020-11-09)
+
+**Note:** Version bump only for package @formatjs/intl-numberformat
+
+
+
+
+
+## [5.7.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.7.2...@formatjs/intl-numberformat@5.7.3) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** fix legacy constructor handling ([8c561f8](https://github.com/formatjs/formatjs/commit/8c561f8a3671ffc516841ea411ad361f595d23d3))
+* **@formatjs/intl-numberformat:** lock down monorepo dep version ([a440940](https://github.com/formatjs/formatjs/commit/a44094050b25d7948230efded3f3d9266c06c129))
+
+
+
+
+
+## [5.7.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.7.1...@formatjs/intl-numberformat@5.7.2) (2020-11-04)
+
+**Note:** Version bump only for package @formatjs/intl-numberformat
+
+
+
+
+
+## [5.7.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.7.0...@formatjs/intl-numberformat@5.7.1) (2020-10-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** fix UMD bundle ([bc8f573](https://github.com/formatjs/formatjs/commit/bc8f573a8716f185f8111b2f8464ea901b166e56))
+
+
+
+
+
+# [5.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.6.5...@formatjs/intl-numberformat@5.7.0) (2020-10-25)
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** upgrade cldr to v37 ([3e6d0ce](https://github.com/formatjs/formatjs/commit/3e6d0ce7124401db07229758f738b927e4fcce35))
+
+
+
+
+
+## [5.6.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.6.4...@formatjs/intl-numberformat@5.6.5) (2020-10-10)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** fix err message for missing locale data, fix [#2203](https://github.com/formatjs/formatjs/issues/2203) ([f37b4ca](https://github.com/formatjs/formatjs/commit/f37b4ca369c2d3f91557c7c47b2188dfd2f6c001))
+
+
+
+
+
+## [5.6.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.6.3...@formatjs/intl-numberformat@5.6.4) (2020-10-08)
+
+**Note:** Version bump only for package @formatjs/intl-numberformat
+
+
+
+
+
+## [5.6.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.6.2...@formatjs/intl-numberformat@5.6.3) (2020-10-01)
+
+**Note:** Version bump only for package @formatjs/intl-numberformat
+
+
+
+
+
+## [5.6.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.6.1...@formatjs/intl-numberformat@5.6.2) (2020-09-18)
+
+**Note:** Version bump only for package @formatjs/intl-numberformat
+
+
+
+
+
+## [5.6.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.6.0...@formatjs/intl-numberformat@5.6.1) (2020-09-09)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** determine plurality using rounded number value ([#2065](https://github.com/formatjs/formatjs/issues/2065)) ([4f7f791](https://github.com/formatjs/formatjs/commit/4f7f79131ab8e2868a93e614702a244e49ad6478))
+
+
+
+
+
+# [5.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.5.6...@formatjs/intl-numberformat@5.6.0) (2020-08-30)
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** TS to 4.0 ([d77b58d](https://github.com/formatjs/formatjs/commit/d77b58d2cd94debb3d77e38a6bae1430362a2dca))
+
+
+
+
+
+## [5.5.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.5.5...@formatjs/intl-numberformat@5.5.6) (2020-08-28)
+
+**Note:** Version bump only for package @formatjs/intl-numberformat
+
+
+
+
+
+## [5.5.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.5.4...@formatjs/intl-numberformat@5.5.5) (2020-08-25)
+
+**Note:** Version bump only for package @formatjs/intl-numberformat
+
+
+
+
+
+## [5.5.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.5.3...@formatjs/intl-numberformat@5.5.4) (2020-08-22)
+
+**Note:** Version bump only for package @formatjs/intl-numberformat
+
+
+
+
+
+## [5.5.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.5.2...@formatjs/intl-numberformat@5.5.3) (2020-08-21)
+
+
+### Bug Fixes
+
+* add back polyfill.umd, fix [#2013](https://github.com/formatjs/formatjs/issues/2013) ([b9cfbd2](https://github.com/formatjs/formatjs/commit/b9cfbd2eeead6a5165b0e4cbf1ef3edbfbeca8ce))
+
+
+
+
+
 ## [5.5.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.5.1...@formatjs/intl-numberformat@5.5.2) (2020-08-19)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

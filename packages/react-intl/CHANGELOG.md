@@ -3,6 +3,225 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.10.1](https://github.com/formatjs/formatjs/compare/react-intl@5.10.0...react-intl@5.10.1) (2020-11-12)
+
+**Note:** Version bump only for package react-intl
+
+
+
+
+
+# [5.10.0](https://github.com/formatjs/formatjs/compare/react-intl@5.9.4...react-intl@5.10.0) (2020-11-10)
+
+
+### Bug Fixes
+
+* **react-intl:** set typescript dep as optional ([678d290](https://github.com/formatjs/formatjs/commit/678d29057066d53345799a6f948db388c0e6266c))
+
+
+### Features
+
+* **react-intl:** support react 17 ([#2301](https://github.com/formatjs/formatjs/issues/2301)) ([782eabe](https://github.com/formatjs/formatjs/commit/782eabe9754a377a677888433c23b71c8971f014)), closes [#2298](https://github.com/formatjs/formatjs/issues/2298)
+
+
+
+
+
+## [5.9.4](https://github.com/formatjs/formatjs/compare/react-intl@5.9.3...react-intl@5.9.4) (2020-11-09)
+
+**Note:** Version bump only for package react-intl
+
+
+
+
+
+## [5.9.3](https://github.com/formatjs/formatjs/compare/react-intl@5.9.2...react-intl@5.9.3) (2020-11-09)
+
+**Note:** Version bump only for package react-intl
+
+
+
+
+
+## [5.9.2](https://github.com/formatjs/formatjs/compare/react-intl@5.9.1...react-intl@5.9.2) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@formatjs/intl:** fix default config for formatDateTimeRange ([60087d8](https://github.com/formatjs/formatjs/commit/60087d8df70d70b3c11dd733bb1961d389b0e211))
+
+
+
+
+
+## [5.9.1](https://github.com/formatjs/formatjs/compare/react-intl@5.9.0...react-intl@5.9.1) (2020-11-05)
+
+**Note:** Version bump only for package react-intl
+
+
+
+
+
+# [5.9.0](https://github.com/formatjs/formatjs/compare/react-intl@5.8.9...react-intl@5.9.0) (2020-11-05)
+
+
+### Bug Fixes
+
+* **react-intl:** lock down monorepo dep version ([7869092](https://github.com/formatjs/formatjs/commit/7869092fc8f9b245cacd2497d511c155085e769a))
+
+
+### Features
+
+* **react-intl:** introduce FormattedDateTimeRange, a stage-3 API ([ebff2a3](https://github.com/formatjs/formatjs/commit/ebff2a3d0732da3fcdadfc091f9ef898fff9b020))
+
+
+
+
+
+## [5.8.9](https://github.com/formatjs/formatjs/compare/react-intl@5.8.8...react-intl@5.8.9) (2020-11-04)
+
+**Note:** Version bump only for package react-intl
+
+
+
+
+
+## [5.8.8](https://github.com/formatjs/formatjs/compare/react-intl@5.8.7...react-intl@5.8.8) (2020-10-26)
+
+**Note:** Version bump only for package react-intl
+
+
+
+
+
+## [5.8.7](https://github.com/formatjs/formatjs/compare/react-intl@5.8.6...react-intl@5.8.7) (2020-10-25)
+
+**Note:** Version bump only for package react-intl
+
+
+
+
+
+## [5.8.6](https://github.com/formatjs/formatjs/compare/react-intl@5.8.5...react-intl@5.8.6) (2020-10-10)
+
+**Note:** Version bump only for package react-intl
+
+
+
+
+
+## [5.8.5](https://github.com/formatjs/formatjs/compare/react-intl@5.8.4...react-intl@5.8.5) (2020-10-08)
+
+**Note:** Version bump only for package react-intl
+
+
+
+
+
+## [5.8.4](https://github.com/formatjs/formatjs/compare/react-intl@5.8.3...react-intl@5.8.4) (2020-10-01)
+
+**Note:** Version bump only for package react-intl
+
+
+
+
+
+## [5.8.3](https://github.com/formatjs/formatjs/compare/react-intl@5.8.2...react-intl@5.8.3) (2020-09-25)
+
+**Note:** Version bump only for package react-intl
+
+
+
+
+
+## [5.8.2](https://github.com/formatjs/formatjs/compare/react-intl@5.8.1...react-intl@5.8.2) (2020-09-18)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** follow ES2021 spec and make type option required ([#2103](https://github.com/formatjs/formatjs/issues/2103)) ([3e00688](https://github.com/formatjs/formatjs/commit/3e00688f955587ac155c9d6c2fa519b07df17a70))
+
+
+
+
+
+## [5.8.1](https://github.com/formatjs/formatjs/compare/react-intl@5.8.0...react-intl@5.8.1) (2020-09-09)
+
+
+### Bug Fixes
+
+* **react-intl:** add typescript as peerDependency, fix [#2066](https://github.com/formatjs/formatjs/issues/2066) ([#2067](https://github.com/formatjs/formatjs/issues/2067)) ([c2fac57](https://github.com/formatjs/formatjs/commit/c2fac57ab11fe43a01bd5ae57635557beb45ad67))
+* **react-intl:** fix TS typing entry point path ([f01ab86](https://github.com/formatjs/formatjs/commit/f01ab8612ef4ea4cef8bdbfb597455c9553f149e))
+
+
+
+
+
+# [5.8.0](https://github.com/formatjs/formatjs/compare/react-intl@5.7.2...react-intl@5.8.0) (2020-08-30)
+
+
+### Features
+
+* **react-intl:** upgrade TS to 4.0 ([15fe44e](https://github.com/formatjs/formatjs/commit/15fe44e29339fd3f0658a6d43f96ca9771b2cf88))
+
+
+
+
+
+## [5.7.2](https://github.com/formatjs/formatjs/compare/react-intl@5.7.1...react-intl@5.7.2) (2020-08-28)
+
+**Note:** Version bump only for package react-intl
+
+
+
+
+
+## [5.7.1](https://github.com/formatjs/formatjs/compare/react-intl@5.7.0...react-intl@5.7.1) (2020-08-25)
+
+**Note:** Version bump only for package react-intl
+
+
+
+
+
+# [5.7.0](https://github.com/formatjs/formatjs/compare/react-intl@5.6.10...react-intl@5.7.0) (2020-08-23)
+
+
+### Features
+
+* **@formatjs/intl:** expose createIntl, fix [#2015](https://github.com/formatjs/formatjs/issues/2015) ([a15cc1b](https://github.com/formatjs/formatjs/commit/a15cc1bb371cfe4990031f8af8be217493ff2b99))
+
+
+
+
+
+## [5.6.10](https://github.com/formatjs/formatjs/compare/react-intl@5.6.9...react-intl@5.6.10) (2020-08-22)
+
+**Note:** Version bump only for package react-intl
+
+
+
+
+
+## [5.6.9](https://github.com/formatjs/formatjs/compare/react-intl@5.6.8...react-intl@5.6.9) (2020-08-21)
+
+**Note:** Version bump only for package react-intl
+
+
+
+
+
+## [5.6.8](https://github.com/formatjs/formatjs/compare/react-intl@5.6.7...react-intl@5.6.8) (2020-08-20)
+
+
+### Bug Fixes
+
+* bump intl-messageformat-parser ([8bbfa04](https://github.com/formatjs/formatjs/commit/8bbfa047da159662700b7e500879da20e54c0f0b))
+
+
+
+
+
 ## [5.6.7](https://github.com/formatjs/formatjs/compare/react-intl@5.6.6...react-intl@5.6.7) (2020-08-19)
 
 **Note:** Version bump only for package react-intl

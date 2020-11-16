@@ -1,26 +1,26 @@
 import * as React from 'react';
-import {mount} from 'enzyme';
 import IntlProvider from '../../../src/components/provider';
-import injectIntl from '../../../src/components/injectIntl';
+import injectIntl, {
+  WrappedComponentProps,
+} from '../../../src/components/injectIntl';
+import {render} from '@testing-library/react';
+import {IntlShape} from '@formatjs/intl';
 
-const mountWithProvider = el =>
-  mount(<IntlProvider locale="en">{el}</IntlProvider>);
+const mountWithProvider = (el: JSX.Element) =>
+  render(<IntlProvider locale="en">{el}</IntlProvider>);
 
 describe('injectIntl()', () => {
-  let Wrapped;
-  let rendered;
+  let Wrapped: React.FC<WrappedComponentProps>;
 
   beforeEach(() => {
-    Wrapped = () => <div />;
+    Wrapped = ({intl}: {intl: IntlShape<React.ReactNode>}) => (
+      <div data-testid="comp">{JSON.stringify(intl)}</div>
+    );
     Wrapped.displayName = 'Wrapped';
+    // @ts-ignore
     Wrapped.someNonReactStatic = {
       foo: true,
     };
-    rendered = null;
-  });
-
-  afterEach(() => {
-    rendered && rendered.unmount();
   });
 
   it('allows introspection access to the wrapped component', () => {
@@ -45,20 +45,9 @@ describe('injectIntl()', () => {
   it('throws when <IntlProvider> is missing from ancestry', () => {
     const Injected = injectIntl(Wrapped);
 
-    expect(() => (rendered = mount(<Injected />))).toThrow(
+    expect(() => render(<Injected />)).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     );
-  });
-
-  it('renders <WrappedComponent> with `intl` prop', () => {
-    const Injected = injectIntl(Wrapped);
-
-    rendered = mountWithProvider(<Injected />);
-    const wrappedComponent = rendered.find(Wrapped);
-    // React 16 renders different in the wrapper
-    const intl = rendered.state('intl');
-
-    expect(wrappedComponent.prop('intl')).toBe(intl);
   });
 
   it('propagates all props to <WrappedComponent>', () => {
@@ -67,78 +56,9 @@ describe('injectIntl()', () => {
       foo: 'bar',
     };
 
-    rendered = mountWithProvider(<Injected {...props} />);
-    const wrappedComponent = rendered.find(Wrapped);
-
-    Object.keys(props).forEach(key => {
-      expect(wrappedComponent.prop(key)).toBe(props[key]);
-    });
-  });
-
-  describe('options', () => {
-    describe('intlPropName', () => {
-      it("sets <WrappedComponent>'s `props[intlPropName]` to `context.intl`", () => {
-        const propName = 'myIntl';
-        const Injected = injectIntl(Wrapped, {
-          intlPropName: propName,
-        });
-
-        rendered = mountWithProvider(<Injected />);
-        const wrapped = rendered.find(Wrapped);
-        const intl = rendered.state('intl');
-
-        expect(wrapped.prop(propName)).toBe(intl);
-      });
-    });
-
-    describe('forwardRef', () => {
-      it("doesn't forward the ref when forwardRef is `false`", () => {
-        const Injected = injectIntl(Wrapped) as any;
-        const wrapperRef = React.createRef();
-
-        rendered = mountWithProvider(<Injected ref={wrapperRef} />);
-        const wrapper = rendered.find(Injected);
-
-        expect(wrapperRef.current).toBe(wrapper.instance());
-      });
-
-      it('forwards the ref properly to the wrapped component', () => {
-        Wrapped = class extends React.Component {
-          render() {
-            return null;
-          }
-        };
-        const Injected = injectIntl(Wrapped, {forwardRef: true}) as any;
-        const wrapperRef = React.createRef();
-
-        rendered = mountWithProvider(<Injected ref={wrapperRef} />);
-        const wrapped = rendered.find(Wrapped);
-
-        expect(wrapperRef.current).toBe(wrapped.instance());
-      });
-    });
-
-    it('can also be used with a bound function', () => {
-      Wrapped = class extends React.Component {
-        render() {
-          return null;
-        }
-      };
-      const propName = 'myPropName';
-      const wrapperRef = React.createRef();
-      const Injected = injectIntl(Wrapped, {
-        forwardRef: true,
-        intlPropName: propName,
-      }) as any;
-
-      rendered = mountWithProvider(<Injected ref={wrapperRef} />);
-      const wrapped = rendered.find(Wrapped);
-
-      expect(wrapperRef.current).toBe(wrapped.instance());
-
-      const intl = rendered.state('intl');
-
-      expect(wrapped.prop(propName)).toBe(intl);
-    });
+    const {getByTestId} = mountWithProvider(<Injected {...props} />);
+    expect(getByTestId('comp')).toHaveTextContent(
+      '{"formats":{},"messages":{},"defaultLocale":"en","defaultFormats":{},"locale":"en","formatters":{}}'
+    );
   });
 });

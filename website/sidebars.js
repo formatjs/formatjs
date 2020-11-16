@@ -30,6 +30,7 @@ module.exports = {
       'react-intl/upgrade-guide-3x',
       'react-intl/upgrade-guide-2x',
     ],
+    '@formatjs/intl': ['intl'],
     'intl-messageformat': ['intl-messageformat'],
     'intl-messageformat-parser': ['intl-messageformat-parser'],
   },

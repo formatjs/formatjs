@@ -25,17 +25,45 @@ workspace(
 #     path = "./test262",
 # )
 
+# new_local_repository(
+#     name = "remote-website",
+#     build_file = "formatjs.github.io.BUILD",
+#     path = "./formatjs.github.io",
+# )
+
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
 # Install the nodejs "bootstrap" package
 # This provides the basic tools for running and packaging nodejs programs in Bazel
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "build_bazel_rules_nodejs",
-    sha256 = "10fffa29f687aa4d8eb6dfe8731ab5beb63811ab00981fc84a93899641fd4af1",
-    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/2.0.3/rules_nodejs-2.0.3.tar.gz"],
+    sha256 = "452bef42c4b2fbe0f509a2699ffeb3ae2c914087736b16314dbd356f3641d7e5",
+    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/2.3.0/rules_nodejs-2.3.0.tar.gz"],
 )
 
-load("@build_bazel_rules_nodejs//:index.bzl", "yarn_install")
+http_archive(
+    name = "tzdata",
+    build_file = "@//:packages/intl-datetimeformat/tzdata.BUILD",
+    sha256 = "547161eca24d344e0b5f96aff6a76b454da295dc14ed4ca50c2355043fb899a2",
+    urls = ["https://data.iana.org/time-zones/releases/tzdata2020a.tar.gz"],
+)
+
+http_archive(
+    name = "tzcode",
+    build_file = "@//:packages/intl-datetimeformat/tzcode.BUILD",
+    sha256 = "7d2af7120ee03df71fbca24031ccaf42404752e639196fe93c79a41b38a6d669",
+    urls = ["https://data.iana.org/time-zones/releases/tzcode2020a.tar.gz"],
+)
+
+load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "yarn_install")
+
+node_repositories(
+    node_version = "14.9.0",
+    package_json = ["//:package.json"],
+    yarn_version = "1.22.4",
+)
 
 # node_repositories(
 #     node_version = "14.5.0",
@@ -78,3 +106,30 @@ http_archive(
 load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
 
 bazel_skylib_workspace()
+
+# multirun is written in Go and hence needs rules_go to be built.
+# See https://github.com/bazelbuild/rules_go for the up to date setup instructions.
+http_archive(
+    name = "io_bazel_rules_go",
+    sha256 = "08c3cd71857d58af3cda759112437d9e63339ac9c6e0042add43f4d94caf632d",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.24.2/rules_go-v0.24.2.tar.gz",
+        "https://github.com/bazelbuild/rules_go/releases/download/v0.24.2/rules_go-v0.24.2.tar.gz",
+    ],
+)
+
+load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
+
+go_rules_dependencies()
+
+go_register_toolchains()
+
+git_repository(
+    name = "com_github_atlassian_bazel_tools",
+    commit = "64cad21247d8039660f90abc02549dd8012ebb5e",
+    remote = "https://github.com/atlassian/bazel-tools.git",
+)
+
+load("@com_github_atlassian_bazel_tools//multirun:deps.bzl", "multirun_dependencies")
+
+multirun_dependencies()

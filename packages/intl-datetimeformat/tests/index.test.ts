@@ -1,16 +1,14 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
-import {
-  DateTimeFormat,
-  basicFormatMatcherScore,
-  bestFitFormatMatcherScore,
-} from '../';
+import {DateTimeFormat} from '../src/core';
 import * as en from './locale-data/en.json';
 import * as enGB from './locale-data/en-GB.json';
 import * as zhHans from './locale-data/zh-Hans.json';
+import * as fa from './locale-data/fa.json';
 import allData from '../src/data/all-tz';
-import {parseDateTimeSkeleton} from '../src/skeleton';
+import getInternalSlots from '../src/get_internal_slots';
+
 // @ts-ignore
-DateTimeFormat.__addLocaleData(en, enGB, zhHans);
+DateTimeFormat.__addLocaleData(en, enGB, zhHans, fa);
 DateTimeFormat.__addTZData(allData);
 describe('Intl.DateTimeFormat', function () {
   it('smoke test EST', function () {
@@ -140,95 +138,97 @@ describe('Intl.DateTimeFormat', function () {
       )
     ).toBe('Wed');
   });
-  it('basicFormatMatcherScore', function () {
-    const opts = {
-      weekday: 'short',
-      era: 'short',
-      year: '2-digit',
-      month: 'narrow',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: 'numeric',
-      second: 'numeric',
-      timeZone: 'America/Los_Angeles',
-      timeZoneName: 'short',
-      hour12: true,
-    };
+  it('test #2106', function () {
     expect(
-      basicFormatMatcherScore(opts, parseDateTimeSkeleton('h:mm:ss a v'))
-    ).toBe(-615);
-    expect(
-      basicFormatMatcherScore(opts, parseDateTimeSkeleton('HH:mm:ss v'))
-    ).toBe(-612);
+      new DateTimeFormat('en', {
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: 'Europe/Amsterdam',
+      }).format(new Date('2020-09-16T11:55:32.491+02:00'))
+    ).toBe('11:55 AM');
   });
-  it('bestFitFormatMatcherScore', function () {
-    const opts = {
-      weekday: 'short',
-      era: 'short',
-      year: '2-digit',
-      month: 'narrow',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: 'numeric',
-      second: 'numeric',
-      timeZone: 'America/Los_Angeles',
-      timeZoneName: 'short',
-      hour12: true,
-    };
+  it.skip('test #2145', function () {
     expect(
-      bestFitFormatMatcherScore(opts, parseDateTimeSkeleton('h:mm:ss a v'))
-    ).toBeGreaterThan(
-      bestFitFormatMatcherScore(opts, parseDateTimeSkeleton('HH:mm:ss v'))
-    );
+      new DateTimeFormat('fa', {
+        month: 'long',
+        year: '2-digit',
+        day: '2-digit',
+      }).format(new Date('2020-09-16T11:55:32.491+02:00'))
+    ).toBe('۲۶ شهریور ۹۹');
   });
-  it('bestFitFormatMatcherScore long weekday (ko)', function () {
-    const opts = {
-      weekday: 'long',
-      era: 'short',
-      year: '2-digit',
-      month: 'narrow',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: 'numeric',
-      second: 'numeric',
-      timeZoneName: 'short',
-      hour12: true,
-    };
-    expect(
-      bestFitFormatMatcherScore(
-        opts,
-        parseDateTimeSkeleton('G y년 MMM d일 EEEE a h시 m분 s초 z')
-      )
-    ).toBeGreaterThan(
-      bestFitFormatMatcherScore(
-        opts,
-        parseDateTimeSkeleton('G y년 MMM d일 (E) a h시 m분 s초 z')
+  it('test #2145', function () {
+    expect(() =>
+      new DateTimeFormat('fa', {
+        month: 'long',
+        year: '2-digit',
+        day: '2-digit',
+      }).format(new Date('2020-09-16T11:55:32.491+02:00'))
+    ).toThrowError(
+      new RangeError(
+        'Calendar "persian" is not supported. Try setting "calendar" to 1 of the following: gregory'
       )
     );
   });
-  it('bestFitFormatMatcherScore narrow weekday (ko)', function () {
-    const opts = {
-      weekday: 'short',
-      era: 'short',
-      year: '2-digit',
-      month: 'narrow',
+  it('test #2192', function () {
+    expect(
+      new DateTimeFormat('en', {
+        calendar: 'gregory',
+        numberingSystem: 'latn',
+        timeZone: 'Africa/Johannesburg', // UTC+2
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+      }).format(Date.UTC(2020, 0, 1, 12, 0, 0))
+    ).toBe('1/1/2020, 2:00:00 PM');
+  });
+  it('test #2170', function () {
+    const formatter = new DateTimeFormat('en-GB', {
+      calendar: 'gregory',
+      hour: 'numeric',
+      hourCycle: 'h23',
+      timeZone: 'Europe/Berlin',
+    });
+    expect(formatter.format(new Date('2019-03-31T00:59:59.999Z'))).toBe('01');
+    expect(formatter.format(new Date('2019-03-31T01:00:00.000Z'))).toBe('03');
+    expect(formatter.format(new Date('2019-03-31T01:00:00.001Z'))).toBe('03');
+
+    expect(formatter.format(new Date('2019-10-27T00:59:59.999Z'))).toBe('02');
+    expect(formatter.format(new Date('2019-10-27T01:00:00.000Z'))).toBe('02');
+    expect(formatter.format(new Date('2019-10-27T01:00:00.001Z'))).toBe('02');
+  });
+  it('test #2236', function () {
+    const date = new Date('2020-09-16T11:55:32.491+02:00');
+    const formatter = new DateTimeFormat('en-US', {
+      year: undefined,
+      month: undefined,
+      day: undefined,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: undefined,
+      timeZoneName: 'short',
+      timeZone: 'Europe/Amsterdam',
+    });
+    expect(formatter.format(date)).toBe('11:55 AM GMT+2');
+  });
+  it('test #2291', function () {
+    const date = new Date(2020, 1, 1, 10, 10, 10, 0);
+    const dtf = new DateTimeFormat('zh-Hans', {
+      year: 'numeric',
+      month: 'short',
       day: '2-digit',
       hour: '2-digit',
-      minute: 'numeric',
-      second: 'numeric',
-      timeZoneName: 'short',
+      minute: '2-digit',
+      second: '2-digit',
       hour12: true,
-    };
-    expect(
-      bestFitFormatMatcherScore(
-        opts,
-        parseDateTimeSkeleton('G y년 MMM d일 (E) a h시 m분 s초 z')
-      )
-    ).toBeGreaterThan(
-      bestFitFormatMatcherScore(
-        opts,
-        parseDateTimeSkeleton('G y년 MMM d일 EEEE a h시 m분 s초 z')
-      )
-    );
+      hourCycle: 'h12',
+      localeMatcher: 'lookup',
+      formatMatcher: 'best fit',
+      timeZone: 'Asia/Kuala_Lumpur',
+    });
+    console.log(getInternalSlots(dtf));
+    expect(dtf.format(date)).toBe('2020年2月01日 下午06:10:10');
   });
 });

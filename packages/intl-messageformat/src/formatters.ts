@@ -288,6 +288,6 @@ Try polyfilling it using "@formatjs/intl-pluralrules"
   return mergeLiteral(result);
 }
 
-export type FormatXMLElementFn<T, R = string | Array<string | T>> = (
+export type FormatXMLElementFn<T, R = string | T | Array<string | T>> = (
   parts: Array<string | T>
 ) => R;

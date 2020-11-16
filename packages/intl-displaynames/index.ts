@@ -1,23 +1,24 @@
 import {
   getInternalSlot,
   setInternalSlot,
-  getOption,
-  createResolveLocale,
+  GetOption,
+  ResolveLocale,
   invariant,
-  supportedLocales,
-  isWellFormedCurrencyCode,
+  SupportedLocales,
+  IsWellFormedCurrencyCode,
   getMultiInternalSlots,
   DisplayNamesLocaleData,
   unpackData,
   DisplayNamesData,
+  ToString,
+  CanonicalizeLocaleList,
+  ToObject,
 } from '@formatjs/ecma402-abstract';
-import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales';
-import ToString from 'es-abstract/2019/ToString';
 
 export interface DisplayNamesOptions {
   localeMatcher?: 'lookup' | 'best fit';
   style?: 'narrow' | 'short' | 'long';
-  type?: 'language' | 'region' | 'script' | 'currency';
+  type: 'language' | 'region' | 'script' | 'currency';
   fallback?: 'code' | 'none';
 }
 
@@ -30,32 +31,35 @@ export interface DisplayNamesResolvedOptions {
 
 export class DisplayNames {
   constructor(
-    locales?: string | string[],
-    options: DisplayNamesOptions = Object.create(null)
+    locales: string | string[] | undefined,
+    options: DisplayNamesOptions
   ) {
     if (new.target === undefined) {
       throw TypeError(`Constructor Intl.DisplayNames requires 'new'`);
     }
-    const requestedLocales = ((Intl as any)
-      .getCanonicalLocales as typeof getCanonicalLocales)(locales);
-
-    const matcher = getOption(
-      options!,
+    const requestedLocales = CanonicalizeLocaleList(locales);
+    options = ToObject(options);
+    const opt = Object.create(null);
+    const {localeData} = DisplayNames;
+    const matcher = GetOption(
+      options,
       'localeMatcher',
       'string',
       ['lookup', 'best fit'],
       'best fit'
     );
+    opt.localeMatcher = matcher;
 
-    const r = createResolveLocale(DisplayNames.getDefaultLocale)(
+    const r = ResolveLocale(
       DisplayNames.availableLocales,
       requestedLocales,
-      {localeMatcher: matcher},
+      opt,
       [], // there is no relevantExtensionKeys
-      DisplayNames.localeData
+      DisplayNames.localeData,
+      DisplayNames.getDefaultLocale
     );
 
-    const style = getOption(
+    const style = GetOption(
       options,
       'style',
       'string',
@@ -64,16 +68,20 @@ export class DisplayNames {
     );
     setSlot(this, 'style', style);
 
-    const type = getOption(
+    const type = GetOption(
       options,
       'type',
       'string',
       ['language', 'currency', 'region', 'script'],
-      'language'
+      undefined
     );
+    if (type === undefined) {
+      throw TypeError(`Intl.DisplayNames constructor requires "type" option`);
+    }
+
     setSlot(this, 'type', type);
 
-    const fallback = getOption(
+    const fallback = GetOption(
       options,
       'fallback',
       'string',
@@ -84,23 +92,35 @@ export class DisplayNames {
     setSlot(this, 'locale', r.locale);
 
     const {dataLocale} = r;
-    const dataLocaleData = DisplayNames.localeData[dataLocale];
+    const dataLocaleData = localeData[dataLocale];
+    invariant(!!dataLocaleData, `Missing locale data for ${dataLocale}`);
+    setSlot(this, 'localeData', dataLocaleData);
     invariant(
       dataLocaleData !== undefined,
       `locale data for ${r.locale} does not exist.`
     );
-    setSlot(this, 'localeData', dataLocaleData);
+    const {types} = dataLocaleData;
+    invariant(typeof types === 'object' && types != null, 'invalid types data');
+    const typeFields = types[type];
+    invariant(
+      typeof typeFields === 'object' && typeFields != null,
+      'invalid typeFields data'
+    );
+    const styleFields = typeFields[style];
+    invariant(
+      typeof styleFields === 'object' && styleFields != null,
+      'invalid styleFields data'
+    );
+    setSlot(this, 'fields', styleFields);
   }
 
   static supportedLocalesOf(
     locales?: string | string[],
     options?: Pick<DisplayNamesOptions, 'localeMatcher'>
   ) {
-    return supportedLocales(
+    return SupportedLocales(
       DisplayNames.availableLocales,
-      ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
-        locales
-      ),
+      CanonicalizeLocaleList(locales),
       options
     );
   }
@@ -144,8 +164,7 @@ export class DisplayNames {
     switch (type) {
       // Normalize the locale id and remove the region.
       case 'language': {
-        canonicalCode = ((Intl as any)
-          .getCanonicalLocales as typeof getCanonicalLocales)(codeAsString)[0];
+        canonicalCode = CanonicalizeLocaleList(codeAsString)[0];
         const regionMatch = /-([a-z]{2}|\d{3})\b/i.exec(canonicalCode);
         if (regionMatch) {
           // Remove region subtag
@@ -215,7 +234,7 @@ export class DisplayNames {
     };
   }
 
-  static localeData: Record<string, DisplayNamesData> = {};
+  static localeData: Record<string, DisplayNamesData | undefined> = {};
   private static availableLocales: string[] = [];
   private static __defaultLocale = 'en';
   private static getDefaultLocale() {
@@ -247,7 +266,7 @@ function isValidCodeForDisplayNames(
       // unicode_script_subtag
       return /^[a-z]{4}$/i.test(code);
     case 'currency':
-      return isWellFormedCurrencyCode(code);
+      return IsWellFormedCurrencyCode(code);
   }
 }
 
@@ -278,6 +297,7 @@ interface DisplayNamesInternalSlots {
   fallback: NonNullable<DisplayNamesOptions['fallback']>;
   // Note that this differs from `fields` slot in the spec.
   localeData: DisplayNamesData;
+  fields: Record<string, string>;
 }
 
 const __INTERNAL_SLOT_MAP__ = new WeakMap<

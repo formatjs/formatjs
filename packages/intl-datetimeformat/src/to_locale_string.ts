@@ -1,6 +1,9 @@
 // eslint-disable-next-line import/no-cycle
-import {DateTimeFormat, toDateTimeOptions} from './core';
-import {DateTimeFormatOptions} from './types';
+import {DateTimeFormat} from './core';
+import {
+  ToDateTimeOptions,
+  DateTimeFormatOptions,
+} from '@formatjs/ecma402-abstract';
 
 /**
  * Number.prototype.toLocaleString ponyfill
@@ -22,7 +25,7 @@ export function toLocaleDateString(
 ): string {
   const dtf = new DateTimeFormat(
     locales,
-    toDateTimeOptions(options, 'date', 'date')
+    ToDateTimeOptions(options, 'date', 'date')
   );
   return dtf.format(x);
 }
@@ -34,7 +37,7 @@ export function toLocaleTimeString(
 ): string {
   const dtf = new DateTimeFormat(
     locales,
-    toDateTimeOptions(options, 'time', 'time')
+    ToDateTimeOptions(options, 'time', 'time')
   );
   return dtf.format(x);
 }

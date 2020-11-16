@@ -1,6 +1,6 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
-import {NumberFormat} from '../';
 import * as en from './locale-data/en.json';
+import {NumberFormat} from '../src/core';
 NumberFormat.__addLocaleData(en as any);
 
 it('normalizes lower-cased currency code', () => {

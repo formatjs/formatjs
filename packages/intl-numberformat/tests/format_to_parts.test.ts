@@ -1,7 +1,7 @@
-import formatToParts from '../src/format_to_parts';
+import {_formatToParts} from '@formatjs/ecma402-abstract';
 
-function format(...args: Parameters<typeof formatToParts>): string {
-  return formatToParts(...args)
+function format(...args: Parameters<typeof _formatToParts>): string {
+  return _formatToParts(...args)
     .map(({value}) => value)
     .join('');
 }
@@ -267,16 +267,16 @@ it('properly unquotes characters from CLDR pattern', () => {
     magnitude: 14,
   };
   expect(format(n, data, pl, options)).toEqual('১০০০\xa0লা.কো.');
-  expect(formatToParts(n, data, pl, options)).toEqual([
+  expect(_formatToParts(n, data, pl, options)).toEqual([
     {type: 'integer', value: '১০০০'},
     {type: 'literal', value: '\xa0'},
     {type: 'compact', value: 'লা.কো.'},
   ]);
 });
 
-// This might be a bug, but we want to replicate Chrome and Node.js' behavior.
-// TODO: this is fixed in Chrome.
-it('determines plurality of unit based on mantissa of the scientific notation', () => {
+// There used to be a bug in NodeJS and Google Chrome that the plurality is determined by the
+// mantissa, now it is fixed.
+it('determines plurality of unit based on the number value of the scientific notation', () => {
   const options = {
     ...defaultOptions,
     style: 'unit',
@@ -293,10 +293,30 @@ it('determines plurality of unit based on mantissa of the scientific notation', 
     magnitude: 4,
     exponent: 4,
   };
-  expect(format(n, data, pl, options)).toEqual('1E4 US gallon');
+  expect(format(n, data, pl, options)).toEqual('1E4 US gallons');
 });
 
-// The plurality is NOT based on mantissa!
+it('determines the plurality of the currency in the compact notation based on the number value', () => {
+  const options = {
+    ...defaultOptions,
+    style: 'currency',
+    currency: 'USD',
+    currencyDisplay: 'name',
+    notation: 'compact',
+    compactDisplay: 'short',
+  } as const;
+  const data = require('./locale-data/en-GB.json').data['en-GB'];
+  const pl = new Intl.PluralRules('en-GB');
+  const n = {
+    ...baseNumberResult,
+    formattedString: '1',
+    roundedNumber: 1,
+    magnitude: 3,
+    exponent: 3,
+  };
+  expect(format(n, data, pl, options)).toEqual('1K US dollars');
+});
+
 it('determines plurality of currency based on the number value of scientific notation', () => {
   const options = {
     ...defaultOptions,
@@ -433,7 +453,7 @@ it('formats compound unit with fallback "per" compound pattern', () => {
   const data = require('./locale-data/ja.json').data.ja;
   const pl = new Intl.PluralRules('ja');
   const n = {...baseNumberResult, formattedString: '42', roundedNumber: 42};
-  expect(formatToParts(n, data, pl, options)).toEqual([
+  expect(_formatToParts(n, data, pl, options)).toEqual([
     {type: 'unit', value: '摂氏'},
     // Spacing around "{0}" are considered literal instead of unit...
     {type: 'literal', value: ' '},
@@ -447,7 +467,7 @@ it('correctly formats NaN to parts', () => {
   const data = require('./locale-data/en.json').data.en;
   const pl = new Intl.PluralRules('en');
   const n = {...baseNumberResult, formattedString: 'NaN', roundedNumber: NaN};
-  expect(formatToParts(n, data, pl, defaultOptions)).toEqual([
+  expect(_formatToParts(n, data, pl, defaultOptions)).toEqual([
     {type: 'nan', value: 'NaN'},
   ]);
 });
@@ -460,7 +480,7 @@ it('correctly formats Infinity to parts', () => {
     formattedString: '∞',
     roundedNumber: Infinity,
   };
-  expect(formatToParts(n, data, pl, defaultOptions)).toEqual([
+  expect(_formatToParts(n, data, pl, defaultOptions)).toEqual([
     {type: 'infinity', value: '∞'},
   ]);
 });
@@ -474,7 +494,7 @@ it('can format numbers with primary and secondary grouping sizes', () => {
     roundedNumber: 123556,
   };
   expect(
-    formatToParts(n, data, pl, {
+    _formatToParts(n, data, pl, {
       ...defaultOptions,
       useGrouping: true,
       style: 'currency',

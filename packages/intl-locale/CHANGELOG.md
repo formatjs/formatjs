@@ -3,6 +3,141 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.5...@formatjs/intl-locale@2.4.6) (2020-11-12)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+
+
+
+
+## [2.4.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.4...@formatjs/intl-locale@2.4.5) (2020-11-09)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+
+
+
+
+## [2.4.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.3...@formatjs/intl-locale@2.4.4) (2020-11-09)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+
+
+
+
+## [2.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.2...@formatjs/intl-locale@2.4.3) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-locale:** lock down monorepo dep version ([2c4f457](https://github.com/formatjs/formatjs/commit/2c4f45783bdf05e50b6c54ea7f7a4ed37732d88f))
+
+
+
+
+
+## [2.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.1...@formatjs/intl-locale@2.4.2) (2020-11-04)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+
+
+
+
+## [2.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.0...@formatjs/intl-locale@2.4.1) (2020-10-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-locale:** fix UMD bundle ([ca9c910](https://github.com/formatjs/formatjs/commit/ca9c910dbc7b7fa158d40ddf21348e252c4fa3e9))
+
+
+
+
+
+# [2.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.3.10...@formatjs/intl-locale@2.4.0) (2020-10-25)
+
+
+### Features
+
+* **@formatjs/intl-locale:** upgrade cldr to v37 ([c14cd57](https://github.com/formatjs/formatjs/commit/c14cd57aed7bd2bcb4a9d3d5bef13046296f7f18))
+
+
+
+
+
+## [2.3.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.3.9...@formatjs/intl-locale@2.3.10) (2020-10-10)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+
+
+
+
+## [2.3.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.3.8...@formatjs/intl-locale@2.3.9) (2020-10-08)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+
+
+
+
+## [2.3.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.3.7...@formatjs/intl-locale@2.3.8) (2020-10-01)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-locale:** fix invalid object tag issue, fix [#2160](https://github.com/formatjs/formatjs/issues/2160) ([88d658d](https://github.com/formatjs/formatjs/commit/88d658d4b2869a9b9d323d298372766a00651200))
+
+
+
+
+
+## [2.3.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.3.6...@formatjs/intl-locale@2.3.7) (2020-09-18)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+
+
+
+
+## [2.3.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.3.5...@formatjs/intl-locale@2.3.6) (2020-09-09)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+
+
+
+
+## [2.3.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.3.4...@formatjs/intl-locale@2.3.5) (2020-08-28)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+
+
+
+
+## [2.3.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.3.3...@formatjs/intl-locale@2.3.4) (2020-08-25)
+
+**Note:** Version bump only for package @formatjs/intl-locale
+
+
+
+
+
+## [2.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.3.2...@formatjs/intl-locale@2.3.3) (2020-08-21)
+
+
+### Bug Fixes
+
+* add back polyfill.umd, fix [#2013](https://github.com/formatjs/formatjs/issues/2013) ([b9cfbd2](https://github.com/formatjs/formatjs/commit/b9cfbd2eeead6a5165b0e4cbf1ef3edbfbeca8ce))
+
+
+
+
+
 ## [2.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.3.1...@formatjs/intl-locale@2.3.2) (2020-08-19)
 
 **Note:** Version bump only for package @formatjs/intl-locale

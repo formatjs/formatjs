@@ -71,16 +71,37 @@ FormatJS also provides types & polyfill for the following Intl API proposals:
 
 Install the [`react-intl` npm package](https://www.npmjs.com/package/react-intl) via npm:
 
-```bash
-$ npm install react-intl --save
+import Tabs from '@theme/Tabs' import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i -S react-intl
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add react-intl
+```
+
+</TabItem>
+</Tabs>
 
 The `react-intl` npm package distributes the following modules (links from [unpkg](https://unpkg.com/)):
 
-- [**CommonJS**](https://unpkg.com/react-intl@latest/dist/index.js): unbundled dependencies, `"main"` in `package.json`, warnings in dev.
+- [**CommonJS**](https://unpkg.com/react-intl@latest/index.js): unbundled dependencies, `"main"` in `package.json`, warnings in dev.
 - [**ES6**](https://unpkg.com/react-intl@latest/lib/index.js): unbundled dependencies, `"module"` in `package.json`, warnings in dev.
-- [**UMD dev**](https://unpkg.com/react-intl@latest/dist/react-intl.js): bundled dependencies (except `react`), browser or Node, warnings.
-- [**UMD prod**](https://unpkg.com/react-intl@latest/dist/react-intl.min.js): minified, bundled dependencies (except `react`), browser or Node, no warnings.
+- [**UMD dev**](https://unpkg.com/react-intl@latest/react-intl.umd.js): bundled dependencies (except `react`), browser or Node, warnings.
+- [**UMD prod**](https://unpkg.com/react-intl@latest/react-intl.umd.min.js): minified, bundled dependencies (except `react`), browser or Node, no warnings.
 
 ### Module Bundlers
 
@@ -183,9 +204,7 @@ Assuming `navigator.language` is `"en-us"`:
 <div>
   <h1>Hello, World!</h1>
   <p><span title="4/5/2016">yesterday</span></p>
-  <div>
-    Amazing content.
-  </div>
+  <div>Amazing content.</div>
 </div>
 ```
 

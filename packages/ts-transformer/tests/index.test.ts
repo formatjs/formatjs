@@ -33,6 +33,10 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
   formatMessageCall: {},
   FormattedMessage: {},
   inline: {},
+  stringConcat: {
+    extractFromFormatMessageCall: true,
+  },
+  templateLiteral: {},
   overrideIdFn: {
     overrideIdFn: (id, defaultMessage, description) => {
       return `HELLO.${id}.${defaultMessage!.length}.${typeof description}`;
@@ -51,6 +55,10 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
   },
   noImport: {
     overrideIdFn: '[hash:base64:5]',
+    extractFromFormatMessageCall: true,
+  },
+  resourcePath: {
+    overrideIdFn: '[name]-[hash:base64:5]',
     extractFromFormatMessageCall: true,
   },
   removeDescription: {},

@@ -1,4 +1,4 @@
-import {sync as globSync} from 'fast-glob';
+import glob from 'fast-glob';
 import {resolve, dirname} from 'path';
 import {DisplayNamesData, invariant} from '@formatjs/ecma402-abstract';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
@@ -11,13 +11,14 @@ type LocalePatternRawData = typeof import('cldr-localenames-full/main/en/localeD
 type CurrencyRawData = typeof import('cldr-numbers-full/main/en/currencies.json')['main']['en']['numbers']['currencies'];
 // -------------------------------------------------------------------------------------------------
 
-export function getAllLocales() {
-  return globSync('*/localeDisplayNames.json', {
+export async function getAllLocales(): Promise<string[]> {
+  const fns = await glob('*/localeDisplayNames.json', {
     cwd: resolve(
       dirname(require.resolve('cldr-localenames-full/package.json')),
       './main'
     ),
-  }).map(dirname);
+  });
+  return fns.map(dirname);
 }
 
 function extractStyleData(
@@ -60,17 +61,31 @@ function extractCurrencyStyleData(
   return {long: longData, short: {}, narrow: {}};
 }
 
-function loadDisplayNames(locale: string): DisplayNamesData {
-  const langData: LanguageRawData = require(`cldr-localenames-full/main/${locale}/languages.json`)
-    .main[locale].localeDisplayNames.languages;
-  const regionData: RegionRawData = require(`cldr-localenames-full/main/${locale}/territories.json`)
-    .main[locale].localeDisplayNames.territories;
-  const scriptData: ScriptRawData = require(`cldr-localenames-full/main/${locale}/scripts.json`)
-    .main[locale].localeDisplayNames.scripts;
-  const localePatternData: LocalePatternRawData = require(`cldr-localenames-full/main/${locale}/localeDisplayNames.json`)
-    .main[locale].localeDisplayNames.localeDisplayPattern.localePattern;
-  const currencyData: CurrencyRawData = require(`cldr-numbers-full/main/${locale}/currencies.json`)
-    .main[locale].numbers.currencies;
+async function loadDisplayNames(locale: string): Promise<DisplayNamesData> {
+  const [
+    languages,
+    territories,
+    scripts,
+    localeDisplayNames,
+    currencies,
+  ] = await Promise.all([
+    import(`cldr-localenames-full/main/${locale}/languages.json`),
+    import(`cldr-localenames-full/main/${locale}/territories.json`),
+    import(`cldr-localenames-full/main/${locale}/scripts.json`),
+    import(`cldr-localenames-full/main/${locale}/localeDisplayNames.json`),
+    import(`cldr-numbers-full/main/${locale}/currencies.json`),
+  ]);
+  const langData: LanguageRawData =
+    languages.main[locale].localeDisplayNames.languages;
+  const regionData: RegionRawData =
+    territories.main[locale].localeDisplayNames.territories;
+  const scriptData: ScriptRawData =
+    scripts.main[locale].localeDisplayNames.scripts;
+  const localePatternData: LocalePatternRawData =
+    localeDisplayNames.main[locale].localeDisplayNames.localeDisplayPattern
+      .localePattern;
+  const currencyData: CurrencyRawData =
+    currencies.main[locale].numbers.currencies;
 
   return {
     types: {
@@ -86,11 +101,12 @@ function loadDisplayNames(locale: string): DisplayNamesData {
   };
 }
 
-export function extractDisplayNames(
+export async function extractDisplayNames(
   locales: string[] = AVAILABLE_LOCALES.availableLocales.full
-): Record<string, DisplayNamesData> {
-  return locales.reduce((all: Record<string, DisplayNamesData>, locale) => {
-    all[locale] = loadDisplayNames(locale);
+): Promise<Record<string, DisplayNamesData>> {
+  const data = await Promise.all(locales.map(loadDisplayNames));
+  return locales.reduce((all: Record<string, DisplayNamesData>, locale, i) => {
+    all[locale] = data[i];
     return all;
   }, {});
 }

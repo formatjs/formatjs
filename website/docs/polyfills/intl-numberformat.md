@@ -1,9 +1,9 @@
 ---
 id: intl-numberformat
-title: Intl.NumberFormat (ES2020)
+title: Intl.NumberFormat (ESNext)
 ---
 
-A polyfill for ES2020 [`Intl.NumberFormat`][numberformat] and [`Number.prototype.toLocaleString`][tolocalestring].
+A polyfill for ESNext [`Intl.NumberFormat`][numberformat] and [`Number.prototype.toLocaleString`][tolocalestring].
 
 [numberformat]: https://tc39.es/ecma402/#numberformat-objects
 [tolocalestring]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString
@@ -13,9 +13,31 @@ A polyfill for ES2020 [`Intl.NumberFormat`][numberformat] and [`Number.prototype
 
 ## Installation
 
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i @formatjs/intl-numberformat
 ```
-npm install @formatjs/intl-numberformat
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add @formatjs/intl-numberformat
 ```
+
+</TabItem>
+</Tabs>
 
 ## Requirements
 

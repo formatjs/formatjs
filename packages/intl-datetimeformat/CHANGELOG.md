@@ -3,6 +3,159 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.8.3...@formatjs/intl-datetimeformat@2.8.4) (2020-11-12)
+
+**Note:** Version bump only for package @formatjs/intl-datetimeformat
+
+
+
+
+
+## [2.8.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.8.2...@formatjs/intl-datetimeformat@2.8.3) (2020-11-09)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix hourCycle setting, fix [#2291](https://github.com/formatjs/formatjs/issues/2291) ([1915595](https://github.com/formatjs/formatjs/commit/1915595e69e0f24be9c1c9af6a0986ecc82e485a))
+
+
+
+
+
+## [2.8.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.8.1...@formatjs/intl-datetimeformat@2.8.2) (2020-11-09)
+
+**Note:** Version bump only for package @formatjs/intl-datetimeformat
+
+
+
+
+
+## [2.8.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.8.0...@formatjs/intl-datetimeformat@2.8.1) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** lock down monorepo dep version ([8981e91](https://github.com/formatjs/formatjs/commit/8981e91406f6edad551be3cdc9c8cb3c7e92aae2))
+
+
+
+
+
+# [2.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.7.1...@formatjs/intl-datetimeformat@2.8.0) (2020-11-04)
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** add Intl.DateTimeFormat.formatRange, fix [#2129](https://github.com/formatjs/formatjs/issues/2129) ([#2281](https://github.com/formatjs/formatjs/issues/2281)) ([a5290ad](https://github.com/formatjs/formatjs/commit/a5290ad276ef66bf66c8e33f040f5b94f6556620))
+
+
+
+
+
+## [2.7.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.7.0...@formatjs/intl-datetimeformat@2.7.1) (2020-10-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix UMD bundle ([e0c85a3](https://github.com/formatjs/formatjs/commit/e0c85a330c0394f59395ee3acb6b0a608c305871))
+
+
+
+
+
+# [2.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.10...@formatjs/intl-datetimeformat@2.7.0) (2020-10-25)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix h/K pattern, fix [#2236](https://github.com/formatjs/formatjs/issues/2236) ([23257c6](https://github.com/formatjs/formatjs/commit/23257c6eade39cb0d158f6dea94cfeafd890e8f0))
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** upgrade cldr to v37 ([9a3dedc](https://github.com/formatjs/formatjs/commit/9a3dedca298eaae93062c3f3950e390c1bc07b3a))
+* **@formatjs/intl-datetimeformat:** upgrade CLDR to v37 ([d1b0514](https://github.com/formatjs/formatjs/commit/d1b0514dcc7312d84112bdb29557d712c871b6f0))
+
+
+
+
+
+## [2.6.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.9...@formatjs/intl-datetimeformat@2.6.10) (2020-10-10)
+
+**Note:** Version bump only for package @formatjs/intl-datetimeformat
+
+
+
+
+
+## [2.6.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.8...@formatjs/intl-datetimeformat@2.6.9) (2020-10-08)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix zdump data processor, fix [#2192](https://github.com/formatjs/formatjs/issues/2192) ([3aa4c1e](https://github.com/formatjs/formatjs/commit/3aa4c1e8a305f8390a0af5f83bf07b7cdd8c84d9))
+
+
+
+
+
+## [2.6.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.7...@formatjs/intl-datetimeformat@2.6.8) (2020-10-01)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** throw err when calendar is not gregory, part of [#2145](https://github.com/formatjs/formatjs/issues/2145) ([1b75c10](https://github.com/formatjs/formatjs/commit/1b75c10e23b705462b504713320a7b602abce497))
+
+
+
+
+
+## [2.6.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.6...@formatjs/intl-datetimeformat@2.6.7) (2020-09-18)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix am/pm logic, fix [#2106](https://github.com/formatjs/formatjs/issues/2106) ([a36567b](https://github.com/formatjs/formatjs/commit/a36567b9d42adfb6391278c332c91eb94a35833b))
+
+
+
+
+
+## [2.6.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.5...@formatjs/intl-datetimeformat@2.6.6) (2020-09-09)
+
+**Note:** Version bump only for package @formatjs/intl-datetimeformat
+
+
+
+
+
+## [2.6.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.4...@formatjs/intl-datetimeformat@2.6.5) (2020-08-28)
+
+**Note:** Version bump only for package @formatjs/intl-datetimeformat
+
+
+
+
+
+## [2.6.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.3...@formatjs/intl-datetimeformat@2.6.4) (2020-08-25)
+
+**Note:** Version bump only for package @formatjs/intl-datetimeformat
+
+
+
+
+
+## [2.6.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.2...@formatjs/intl-datetimeformat@2.6.3) (2020-08-21)
+
+
+### Bug Fixes
+
+* add back polyfill.umd, fix [#2013](https://github.com/formatjs/formatjs/issues/2013) ([b9cfbd2](https://github.com/formatjs/formatjs/commit/b9cfbd2eeead6a5165b0e4cbf1ef3edbfbeca8ce))
+
+
+
+
+
 ## [2.6.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.6.1...@formatjs/intl-datetimeformat@2.6.2) (2020-08-19)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat

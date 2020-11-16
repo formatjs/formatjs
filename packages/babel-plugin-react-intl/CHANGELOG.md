@@ -3,6 +3,210 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.2.17](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.16...babel-plugin-react-intl@8.2.17) (2020-11-12)
+
+
+### Bug Fixes
+
+* **babel-plugin-react-intl:** fix babel crash with `removeDefaultMessage` ([#2306](https://github.com/formatjs/formatjs/issues/2306)) ([847bee8](https://github.com/formatjs/formatjs/commit/847bee8c084e0093dc233d578719aff3702a7939)), closes [#2305](https://github.com/formatjs/formatjs/issues/2305)
+
+
+
+
+
+## [8.2.16](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.15...babel-plugin-react-intl@8.2.16) (2020-11-10)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.2.15](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.14...babel-plugin-react-intl@8.2.15) (2020-11-09)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.2.14](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.13...babel-plugin-react-intl@8.2.14) (2020-11-09)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.2.13](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.12...babel-plugin-react-intl@8.2.13) (2020-11-05)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.2.12](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.11...babel-plugin-react-intl@8.2.12) (2020-11-05)
+
+
+### Bug Fixes
+
+* **babel-plugin-react-intl:** lock down monorepo dep version ([652daa7](https://github.com/formatjs/formatjs/commit/652daa754a91e35384a4a17f64916478126696e2))
+
+
+
+
+
+## [8.2.11](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.10...babel-plugin-react-intl@8.2.11) (2020-11-04)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.2.10](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.9...babel-plugin-react-intl@8.2.10) (2020-10-28)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.2.9](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.8...babel-plugin-react-intl@8.2.9) (2020-10-27)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.2.8](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.7...babel-plugin-react-intl@8.2.8) (2020-10-25)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.2.7](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.6...babel-plugin-react-intl@8.2.7) (2020-10-10)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.2.6](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.5...babel-plugin-react-intl@8.2.6) (2020-10-08)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.2.5](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.4...babel-plugin-react-intl@8.2.5) (2020-10-01)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.2.4](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.3...babel-plugin-react-intl@8.2.4) (2020-09-25)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.2.3](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.2...babel-plugin-react-intl@8.2.3) (2020-09-18)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.2.2](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.1...babel-plugin-react-intl@8.2.2) (2020-09-12)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.2.1](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.0...babel-plugin-react-intl@8.2.1) (2020-09-09)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+# [8.2.0](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.1.11...babel-plugin-react-intl@8.2.0) (2020-09-03)
+
+
+### Features
+
+* **babel-plugin-react-intl:** trim trailing/leading spaces, newlines & consecutive whitespaces ([9d0ead2](https://github.com/formatjs/formatjs/commit/9d0ead288c7f2de8047de658d604e810664236d8)), closes [#2028](https://github.com/formatjs/formatjs/issues/2028)
+
+
+
+
+
+## [8.1.11](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.1.10...babel-plugin-react-intl@8.1.11) (2020-08-30)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.1.10](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.1.9...babel-plugin-react-intl@8.1.10) (2020-08-28)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.1.9](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.1.8...babel-plugin-react-intl@8.1.9) (2020-08-25)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.1.8](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.1.7...babel-plugin-react-intl@8.1.8) (2020-08-22)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.1.7](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.1.6...babel-plugin-react-intl@8.1.7) (2020-08-21)
+
+**Note:** Version bump only for package babel-plugin-react-intl
+
+
+
+
+
+## [8.1.6](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.1.5...babel-plugin-react-intl@8.1.6) (2020-08-20)
+
+
+### Bug Fixes
+
+* bump intl-messageformat-parser ([8bbfa04](https://github.com/formatjs/formatjs/commit/8bbfa047da159662700b7e500879da20e54c0f0b))
+
+
+
+
+
 ## [8.1.5](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.1.4...babel-plugin-react-intl@8.1.5) (2020-08-19)
 
 **Note:** Version bump only for package babel-plugin-react-intl

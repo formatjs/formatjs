@@ -4,7 +4,6 @@ import extract, {ExtractCLIOptions} from './extract';
 import compile, {CompileCLIOpts, Opts} from './compile';
 import compileFolder from './compile_folder';
 import {sync as globSync} from 'fast-glob';
-import {join} from 'path';
 
 const KNOWN_COMMANDS = ['extract'];
 
@@ -32,10 +31,8 @@ async function main(argv: string[]) {
   commander
     .command('extract [files...]')
     .description(
-      [
-        'Extract string messages from React components that use react-intl.',
-        'The input language is expected to be TypeScript or ES2017 with JSX.',
-      ].join('\n')
+      `Extract string messages from React components that use react-intl.
+The input language is expected to be TypeScript or ES2017 with JSX.`
     )
     .option(
       '--format <path>',
@@ -51,10 +48,8 @@ This is especially useful to convert from our extracted format to a TMS-specific
     )
     .option(
       '--out-file <path>',
-      [
-        'The target file path where the plugin will output an aggregated `.json` file of all',
-        'the translations from the `files` supplied.',
-      ].join('')
+      `The target file path where the plugin will output an aggregated 
+\`.json\` file of all the translations from the \`files\` supplied.`
     )
     .option(
       '--id-interpolation-pattern <pattern>',
@@ -66,11 +61,9 @@ See https://github.com/webpack/loader-utils#interpolatename for sample patterns`
     )
     .option(
       '--extract-source-location',
-      [
-        'Whether the metadata about the location of the message in the source file should be ',
-        'extracted. If `true`, then `file`, `start`, and `end` fields will exist for each ',
-        'extracted message descriptors.',
-      ].join(''),
+      `Whether the metadata about the location of the message in the source file should be 
+extracted. If \`true\`, then \`file\`, \`start\`, and \`end\` fields will exist for each 
+extracted message descriptors.`,
       false
     )
     .option(
@@ -80,21 +73,17 @@ See https://github.com/webpack/loader-utils#interpolatename for sample patterns`
     )
     .option(
       '--additional-component-names <comma-separated-names>',
-      [
-        "Additional component names to extract messages from, e.g: `['FormattedFooBarMessage']`. ",
-        '**NOTE**: By default we check for the fact that `FormattedMessage` ',
-        'is imported from `moduleSourceName` to make sure variable alias ',
-        "works. This option does not do that so it's less safe.",
-      ].join(''),
+      `Additional component names to extract messages from, e.g: \`['FormattedFooBarMessage']\`. 
+**NOTE**: By default we check for the fact that \`FormattedMessage\` 
+is imported from \`moduleSourceName\` to make sure variable alias 
+works. This option does not do that so it's less safe.`,
       (val: string) => val.split(',')
     )
     .option(
       '--extract-from-format-message-call',
-      [
-        'Opt-in to extract from `intl.formatMessage` call with the same restrictions, e.g: has ',
-        "to be called with object literal such as `intl.formatMessage({ id: 'foo', defaultMessage: ",
-        "'bar', description: 'baz'})`",
-      ].join(''),
+      `Opt-in to extract from \`intl.formatMessage\` call with the same restrictions, e.g: has 
+to be called with object literal such as \`intl.formatMessage({ id: 'foo', defaultMessage: 
+'bar', description: 'baz'})`,
       true
     )
     .option(
@@ -116,7 +105,7 @@ See https://github.com/webpack/loader-utils#interpolatename for sample patterns`
       <FormattedMessage defaultMessage="foo" id="bar" />;
       \`\`\`
 
-      and with option \`{pragma: "@intl-meta"}\`, we'll parse out \`// @intl-meta project:my-custom-project\` into \`{project: 'my-custom-project'}\` in the result file.`
+      and with option \`{pragma: "intl-meta"}\`, we'll parse out \`// @intl-meta project:my-custom-project\` into \`{project: 'my-custom-project'}\` in the result file.`
     )
     .action(async (files: readonly string[], cmdObj: ExtractCLIOptions) => {
       const processedFiles = [];
@@ -175,6 +164,11 @@ If this is not provided, result will be printed to stdout`
       `Whether to compile to AST. See https://formatjs.io/docs/guides/advanced-usage#pre-parsing-messages
 for more information`
     )
+    .option(
+      '--pseudo-locale <pseudoLocale>',
+      `Whether to generate pseudo-locale files. See https://formatjs.io/docs/tooling/cli#--pseudo-locale-pseudolocale for possible values. 
+"--ast" is required for this to work.`
+    )
     .action(async (filePattern: string, opts: CompileCLIOpts) => {
       const files = globSync(filePattern);
       if (!files.length) {
@@ -208,7 +202,8 @@ This is especially useful to convert from a TMS-specific format back to react-in
 for more information`
     )
     .action(async (folder: string, outFolder: string, opts?: Opts) => {
-      const files = globSync(join(folder, '*.json'));
+      // fast-glob expect `/` in Windows as well
+      const files = globSync(`${folder}/*.json`);
       if (!files.length) {
         throw new Error(`No JSON file found in ${folder}`);
       }

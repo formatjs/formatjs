@@ -1,9 +1,17 @@
 import {parse, MessageFormatElement} from 'intl-messageformat-parser';
 import {outputFile, readJSON} from 'fs-extra';
 import stringify from 'json-stable-stringify';
-import {resolveBuiltinFormatter} from './formatters';
+import {resolveBuiltinFormatter, Formatter} from './formatters';
+import {
+  generateXXAC,
+  generateXXLS,
+  generateXXHA,
+  generateENXA,
+} from './pseudo_locale';
 
 export type CompileFn = (msgs: any) => Record<string, string>;
+
+export type PseudoLocale = 'xx-LS' | 'xx-AC' | 'xx-HA' | 'en-XA';
 
 export interface CompileCLIOpts extends Opts {
   /**
@@ -20,7 +28,11 @@ export interface Opts {
    * Path to a formatter file that converts <translation_files> to
    * `Record<string, string>` so we can compile.
    */
-  format?: string;
+  format?: string | Formatter;
+  /**
+   * Whether to compile to pseudo locale
+   */
+  pseudoLocale?: PseudoLocale;
 }
 
 /**
@@ -33,10 +45,11 @@ export interface Opts {
  * @returns serialized result in string format
  */
 export async function compile(inputFiles: string[], opts: Opts = {}) {
-  const {ast, format} = opts;
+  const {ast, format, pseudoLocale} = opts;
   const formatter = await resolveBuiltinFormatter(format);
 
   const messages: Record<string, string> = {};
+  const messageAsts: Record<string, MessageFormatElement[]> = {};
   const idsWithFileName: Record<string, string> = {};
   const compiledFiles = await Promise.all(
     inputFiles.map(f => readJSON(f).then(formatter.compile))
@@ -53,17 +66,36 @@ Message from ${compiled[id]}: ${inputFile}
 `);
       }
       messages[id] = compiled[id];
+      try {
+        const msgAst = parse(compiled[id]);
+        switch (pseudoLocale) {
+          case 'xx-LS':
+            messageAsts[id] = generateXXLS(msgAst);
+            break;
+          case 'xx-AC':
+            messageAsts[id] = generateXXAC(msgAst);
+            break;
+          case 'xx-HA':
+            messageAsts[id] = generateXXHA(msgAst);
+            break;
+          case 'en-XA':
+            messageAsts[id] = generateENXA(msgAst);
+            break;
+          default:
+            messageAsts[id] = msgAst;
+            break;
+        }
+      } catch (e) {
+        console.error(
+          `Error validating message "${compiled[id]}" with ID "${id}" in file "${inputFile}"`
+        );
+        throw e;
+      }
       idsWithFileName[id] = inputFile;
     }
   }
-  const results: Record<string, string | MessageFormatElement[]> = {};
 
-  for (const [id, message] of Object.entries(messages)) {
-    // Parse so we can verify that the message is not malformed
-    const msgAst = parse(message);
-    results[id] = ast ? msgAst : message;
-  }
-  return stringify(results, {
+  return stringify(ast ? messageAsts : messages, {
     space: 2,
     cmp: formatter.compareMessages || undefined,
   });

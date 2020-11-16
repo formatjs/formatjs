@@ -10,9 +10,31 @@ A polyfill for [`Intl.DisplayNames`](https://tc39.es/proposal-intl-displaynames)
 
 ## Installation
 
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i @formatjs/intl-displaynames
 ```
-npm install @formatjs/intl-displaynames
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add @formatjs/intl-displaynames
 ```
+
+</TabItem>
+</Tabs>
 
 ## Requirements
 

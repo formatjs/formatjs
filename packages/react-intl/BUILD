@@ -1,7 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/terser:index.bzl", "terser_minified")
-load("//tools:index.bzl", "ts_compile")
+load("//tools:index.bzl", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "react-intl"
@@ -37,10 +37,9 @@ SRCS = glob(["src/**/*.ts*"]) + ["index.ts"]
 SRC_DEPS = [
     "@npm//react",
     "@npm//@types/react",
-    "//packages/intl-numberformat:dist",
+    "//packages/intl:dist",
     "//packages/intl-listformat:dist",
     "//packages/intl-displaynames:dist",
-    "//packages/intl-datetimeformat:dist",
     "//packages/intl-relativetimeformat:dist",
     "//packages/intl-messageformat:dist",
     "@npm//hoist-non-react-statics",
@@ -55,10 +54,14 @@ TESTS = glob([
 ])
 
 TEST_DEPS = SRC_DEPS + [
-    "@npm//enzyme-to-json",
-    "@npm//enzyme",
-    "@npm//@types/enzyme",
-    "@npm//enzyme-adapter-react-16",
+    "//packages/intl-numberformat:dist",
+    "//packages/intl-listformat:types",
+    "//packages/intl-displaynames:types",
+    "//packages/ecma402-abstract:types",
+    "//packages/intl:types",
+    "//packages/intl-messageformat:types",
+    "@npm//@testing-library/react",
+    "@npm//@testing-library/jest-dom",
     "@npm//react-dom",
 ]
 
@@ -214,4 +217,18 @@ generated_file_test(
     name = "tsconfig_json",
     src = "tsconfig.json",
     generated = "//tools:tsconfig.golden.json",
+)
+
+prettier_check(
+    name = "prettier",
+    srcs = glob(
+        [
+            "**/*",
+        ],
+        exclude = [
+            "BUILD",
+            "CHANGELOG.md",
+            "tests/unit/components/__snapshots__/*",
+        ],
+    ),
 )

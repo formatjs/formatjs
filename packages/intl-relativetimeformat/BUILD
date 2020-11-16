@@ -1,9 +1,10 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
+load("@npm//@bazel/terser:index.bzl", "terser_minified")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "ts_compile")
+load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-relativetimeformat"
@@ -29,6 +30,9 @@ pkg_npm(
         "polyfill-locales.js",
         ":dist",
         ":locale-data",
+        # polyfill-library uses this
+        "polyfill.umd.js",
+        ":polyfill.umd.min",
     ],
 )
 
@@ -57,16 +61,14 @@ TESTS = glob([
 ])
 
 SRC_DEPS = [
-    "@npm//es-abstract",
-    "@npm//@types/es-abstract",
     "//packages/ecma402-abstract:dist",
-    "//packages/intl-getcanonicallocales:dist",
 ]
 
 ts_compile(
     name = "dist",
     package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
+    skip_esm = False,
     deps = SRC_DEPS,
 )
 
@@ -76,6 +78,7 @@ jest_test(
     deps = SRC_DEPS + [
         "//packages/intl-pluralrules",
         "//packages/ecma402-abstract:types",
+        "//packages/intl-getcanonicallocales:dist",
         "//packages/intl-getcanonicallocales:types",
     ],
 )
@@ -91,6 +94,7 @@ CLDR_DEPS = [
     "@npm//fs-extra",
     "@npm//fast-glob",
     "@npm//minimist",
+    "@npm//tslib",
 ]
 
 ts_node(
@@ -115,6 +119,7 @@ ts_node(
         "@npm//fast-glob",
         "@npm//fs-extra",
         "@npm//minimist",
+        "@npm//tslib",
     ],
     output_dir = True,
 )
@@ -205,14 +210,18 @@ rollup_bundle(
 
 test262_harness_test(
     name = "test262",
+    size = "large",
     data = [
         "test262-polyfill.js",
         "//:test262-all",
         "//:test262-relativetimeformat",
     ],
+    tags = ["exclusive"],
     templated_args = [
         "--reporter-keys",
         "file,attrs,result",
+        "--timeout",
+        "30000",
         "--prelude",
         "$(rootpath test262-polyfill.js)",
         "$(rootpaths //:test262-relativetimeformat)",
@@ -225,6 +234,7 @@ bundle_karma_tests(
     data = TEST_LOCALE_DATA,
     rollup_deps = [
         "//packages/intl-pluralrules",
+        "//packages/intl-getcanonicallocales:dist",
     ],
     tests = TESTS,
     deps = SRC_DEPS,
@@ -234,4 +244,45 @@ generated_file_test(
     name = "tsconfig_json",
     src = "tsconfig.json",
     generated = "//tools:tsconfig.golden.json",
+)
+
+rollup_bundle(
+    name = "polyfill.umd",
+    srcs = [":dist-esm"],
+    args = [
+        "--name",
+        "IntlPluralRules",
+        "--no-sourcemap",
+    ],
+    config_file = "//:rollup.config.js",
+    entry_point = "lib/polyfill.js",
+    format = "umd",
+    deps = [
+        "@npm//@rollup/plugin-node-resolve",
+        "@npm//@rollup/plugin-commonjs",
+        "@npm//@rollup/plugin-replace",
+        "@npm//@rollup/plugin-json",
+        "@npm//tslib",
+    ] + SRC_DEPS,
+)
+
+terser_minified(
+    name = "polyfill.umd.min",
+    src = "polyfill.umd.js",
+    sourcemap = False,
+)
+
+prettier_check(
+    name = "prettier",
+    srcs = glob(
+        [
+            "**/*",
+        ],
+        exclude = [
+            "BUILD",
+            "CHANGELOG.md",
+            "tests/locale-data/*",
+            "test262-main.ts",
+        ],
+    ),
 )

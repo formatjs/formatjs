@@ -1,5 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("//tools:index.bzl", "ts_compile")
+load("//tools:index.bzl", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "ts-transformer"
@@ -24,7 +24,10 @@ alias(
     actual = "%s.pack" % PACKAGE_NAME,
 )
 
-SRCS = glob(["src/*.ts"]) + ["index.ts"]
+SRCS = glob([
+    "src/*.ts",
+    "*.ts",
+])
 
 SRC_DEPS = [
     "@npm//typescript",
@@ -42,12 +45,28 @@ ts_compile(
 jest_test(
     name = "unit",
     srcs = SRCS + glob([
-        "tests/**/*.ts",
-        "tests/**/*.tsx",
-        "tests/**/*.snap",
+        "tests/*.ts*",
+        "tests/fixtures/*.ts*",
+        "tests/__snapshots__/*.snap",
     ]),
     deps = SRC_DEPS + [
         "//packages/intl-messageformat-parser:types",
+    ],
+)
+
+jest_test(
+    name = "integration",
+    srcs = SRCS + glob([
+        "tests/integration/*.ts*",
+    ]),
+    jest_config = "tests/integration/jest.config.js",
+    deps = [
+        ":dist",
+        "//packages/intl-messageformat-parser:types",
+        "@npm//@types/react",
+        "@npm//@types/react-dom",
+        "@npm//react",
+        "@npm//react-dom",
     ],
 )
 
@@ -55,4 +74,18 @@ generated_file_test(
     name = "tsconfig_json",
     src = "tsconfig.json",
     generated = "//tools:tsconfig.golden.json",
+)
+
+prettier_check(
+    name = "prettier",
+    srcs = glob(
+        [
+            "**/*",
+        ],
+        exclude = [
+            "BUILD",
+            "CHANGELOG.md",
+            "tests/__snapshots__/*",
+        ],
+    ),
 )

@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/ts-transformer",
-  "version": "2.7.5",
+  "version": "2.12.7",
   "description": "TS Compiler transformer for formatjs",
   "main": "index.js",
   "types": "index.d.ts",
@@ -17,8 +17,17 @@
     "react-intl"
   ],
   "dependencies": {
-    "intl-messageformat-parser": "^5.5.1",
-    "typescript": "^3.8"
+    "intl-messageformat-parser": "6.0.16",
+    "tslib": "^2.0.1",
+    "typescript": "^4.0"
+  },
+  "peerDependencies": {
+    "ts-jest": "^26.4.0"
+  },
+  "peerDependenciesMeta": {
+    "ts-jest": {
+      "optional": true
+    }
   },
   "author": "Long Ho <holevietlong@gmail.com>",
   "license": "MIT",

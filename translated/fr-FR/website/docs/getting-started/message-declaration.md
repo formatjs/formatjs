@@ -58,7 +58,8 @@ const message = defineMessage({
 })
 
 intl.formatMessage(message, {name: 'John'}) // My name is John
-;<FormattedMessage
+
+<FormattedMessage
   {...message}
   values={{
     name: 'John',

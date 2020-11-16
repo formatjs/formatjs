@@ -1,5 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("//tools:index.bzl", "ts_compile")
+load("//tools:index.bzl", "generate_src_file", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "ecma402-abstract"
@@ -26,12 +26,18 @@ alias(
     actual = "%s.pack" % PACKAGE_NAME,
 )
 
-SRCS = glob(["src/*.ts"]) + ["index.ts"]
+SRCS = glob(
+    [
+        "**/*.ts",
+        "NumberFormat/*.json",
+    ],
+    exclude = [
+        "tools/*.ts",
+        "tests/*.ts",
+    ],
+)
 
-SRC_DEPS = [
-    "@npm//es-abstract",
-    "@npm//@types/es-abstract",
-]
+SRC_DEPS = []
 
 ts_compile(
     name = "dist",
@@ -55,4 +61,39 @@ generated_file_test(
     name = "tsconfig_json",
     src = "tsconfig.json",
     generated = "//tools:tsconfig.golden.json",
+)
+
+# digit-mapping
+generate_src_file(
+    name = "digit-mapping",
+    src = "NumberFormat/digit-mapping.json",
+    args = [
+        "$(execpath tools/digit-mapping.ts)",
+        "--out",
+        "$@",
+    ],
+    data = [
+        "tools/digit-mapping.ts",
+        "//:tsconfig.json",
+        "@npm//@types/fs-extra",
+        "@npm//@types/minimist",
+        "@npm//@types/node",
+        "@npm//fs-extra",
+        "@npm//minimist",
+        "@npm//tslib",
+    ],
+)
+
+prettier_check(
+    name = "prettier",
+    srcs = glob(
+        [
+            "**/*",
+        ],
+        exclude = [
+            "CHANGELOG.md",
+            "NumberFormat/digit-mapping.json",
+            "BUILD",
+        ],
+    ),
 )

@@ -1,6 +1,6 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "nodejs_binary", "pkg_npm")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "ts_compile")
+load("//tools:index.bzl", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-messageformat-parser"
@@ -33,7 +33,7 @@ SRCS = glob(["src/*.ts"]) + [
 ]
 
 SRC_DEPS = [
-    "//packages/intl-numberformat:dist",
+    "//packages/ecma402-abstract:dist",
 ]
 
 ts_compile(
@@ -52,7 +52,7 @@ jest_test(
         "tests/**/*.snap",
     ]),
     deps = [
-        "//packages/intl-numberformat:types",
+        "//packages/ecma402-abstract:types",
     ] + SRC_DEPS,
 )
 
@@ -66,6 +66,7 @@ nodejs_binary(
         "@npm//minimist",
         "@npm//pegjs",
         "@npm//ts-pegjs",
+        "@npm//tslib",
     ],
     entry_point = "tools/build.js",
 )
@@ -99,4 +100,20 @@ generated_file_test(
     name = "tsconfig_json",
     src = "tsconfig.json",
     generated = "//tools:tsconfig.golden.json",
+)
+
+prettier_check(
+    name = "prettier",
+    srcs = glob(
+        [
+            "**/*",
+        ],
+        exclude = [
+            "BUILD",
+            "CHANGELOG.md",
+            "src/parser.pegjs",
+            "src/parser.ts",
+            "tests/__snapshots__/*",
+        ],
+    ),
 )

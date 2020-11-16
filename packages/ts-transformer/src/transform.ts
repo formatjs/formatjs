@@ -1,4 +1,4 @@
-import * as ts from 'typescript';
+import * as typescript from 'typescript';
 import {MessageDescriptor} from './types';
 import {interpolateName} from './interpolate-name';
 import {parse, MessageFormatElement} from 'intl-messageformat-parser';
@@ -21,35 +21,49 @@ const MESSAGE_DESC_KEYS: Array<keyof MessageDescriptor> = [
   'description',
 ];
 
-function primitiveToTSNode(v: string | number | boolean) {
+type TypeScript = typeof typescript;
+
+function primitiveToTSNode(
+  factory: typescript.NodeFactory,
+  v: string | number | boolean
+) {
   return typeof v === 'string'
-    ? ts.createStringLiteral(v)
+    ? factory.createStringLiteral(v)
     : typeof v === 'number'
-    ? ts.createNumericLiteral(v + '')
+    ? factory.createNumericLiteral(v + '')
     : typeof v === 'boolean'
     ? v
-      ? ts.createTrue()
-      : ts.createFalse()
+      ? factory.createTrue()
+      : factory.createFalse()
     : undefined;
 }
 
-function objToTSNode(obj: object) {
-  const props: ts.PropertyAssignment[] = Object.entries(obj).map(([k, v]) =>
-    ts.createPropertyAssignment(
+function objToTSNode(factory: typescript.NodeFactory, obj: object) {
+  const props: typescript.PropertyAssignment[] = Object.entries(
+    obj
+  ).map(([k, v]) =>
+    factory.createPropertyAssignment(
       k,
-      primitiveToTSNode(v) ||
+      primitiveToTSNode(factory, v) ||
         (Array.isArray(v)
-          ? ts.createArrayLiteral(v.map(objToTSNode))
+          ? factory.createArrayLiteralExpression(
+              v.map(n => objToTSNode(factory, n))
+            )
           : typeof v === 'object'
-          ? objToTSNode(v)
-          : ts.createNull())
+          ? objToTSNode(factory, v)
+          : factory.createNull())
     )
   );
-  return ts.createObjectLiteral(props);
+  return factory.createObjectLiteralExpression(props);
 }
 
-function messageASTToTSNode(ast: MessageFormatElement[]) {
-  return ts.createArrayLiteral(ast.map(el => objToTSNode(el)));
+function messageASTToTSNode(
+  factory: typescript.NodeFactory,
+  ast: MessageFormatElement[]
+) {
+  return factory.createArrayLiteralExpression(
+    ast.map(el => objToTSNode(factory, el))
+  );
 }
 
 export interface Opts {
@@ -103,7 +117,8 @@ export interface Opts {
    */
   onMetaExtracted?: MetaExtractor;
   /**
-   * webpack-style name interpolation
+   * webpack-style name interpolation.
+   * Can also be a string like '[sha512:contenthash:hex:6]'
    *
    * @type {(InterpolateNameFn | string)}
    * @memberof Opts
@@ -121,7 +136,10 @@ const DEFAULT_OPTS: Omit<Opts, 'program'> = {
   onMetaExtracted: () => undefined,
 };
 
-function isMultipleMessageDecl(node: ts.CallExpression) {
+function isMultipleMessageDecl(
+  ts: TypeScript,
+  node: typescript.CallExpression
+) {
   return (
     ts.isIdentifier(node.expression) &&
     node.expression.text === 'defineMessages'
@@ -129,7 +147,11 @@ function isMultipleMessageDecl(node: ts.CallExpression) {
 }
 
 function isSingularMessageDecl(
-  node: ts.CallExpression | ts.JsxOpeningElement | ts.JsxSelfClosingElement,
+  ts: TypeScript,
+  node:
+    | typescript.CallExpression
+    | typescript.JsxOpeningElement
+    | typescript.JsxSelfClosingElement,
   additionalComponentNames: string[]
 ) {
   const compNames = new Set([
@@ -151,15 +173,36 @@ function isSingularMessageDecl(
   return compNames.has(fnName);
 }
 
+function evaluateStringConcat(
+  ts: TypeScript,
+  node: typescript.BinaryExpression
+): [result: string, isStaticallyEvaluatable: boolean] {
+  const {right, left} = node;
+  if (!ts.isStringLiteral(right)) {
+    return ['', false];
+  }
+  if (ts.isStringLiteral(left)) {
+    return [left.text + right.text, true];
+  }
+  if (ts.isBinaryExpression(left)) {
+    const [result, isStatic] = evaluateStringConcat(ts, left);
+    return [result + right.text, isStatic];
+  }
+  return ['', false];
+}
+
 function extractMessageDescriptor(
+  ts: TypeScript,
   node:
-    | ts.ObjectLiteralExpression
-    | ts.JsxOpeningElement
-    | ts.JsxSelfClosingElement,
+    | typescript.ObjectLiteralExpression
+    | typescript.JsxOpeningElement
+    | typescript.JsxSelfClosingElement,
   {overrideIdFn, extractSourceLocation}: Opts,
-  sf: ts.SourceFile
+  sf: typescript.SourceFile
 ): MessageDescriptor | undefined {
-  let properties: ts.NodeArray<ts.ObjectLiteralElement> | undefined = undefined;
+  let properties:
+    | typescript.NodeArray<typescript.ObjectLiteralElement>
+    | undefined = undefined;
   if (ts.isObjectLiteralExpression(node)) {
     properties = node.properties;
   } else if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
@@ -176,36 +219,102 @@ function extractMessageDescriptor(
       ts.isPropertyAssignment(prop) || ts.isJsxAttribute(prop)
         ? prop.initializer
         : undefined;
-    if (
-      !initializer ||
-      !ts.isStringLiteral(initializer) ||
-      !name ||
-      !ts.isIdentifier(name)
-    ) {
-      return;
-    }
-    switch (name.text) {
-      case 'id':
-        msg.id = initializer.text;
-        break;
-      case 'defaultMessage':
-        msg.defaultMessage = initializer.text;
-        break;
-      case 'description':
-        msg.description = initializer.text;
-        break;
+    if (name && ts.isIdentifier(name) && initializer) {
+      // {id: 'id'}
+      if (ts.isStringLiteral(initializer)) {
+        switch (name.text) {
+          case 'id':
+            msg.id = initializer.text;
+            break;
+          case 'defaultMessage':
+            msg.defaultMessage = initializer.text;
+            break;
+          case 'description':
+            msg.description = initializer.text;
+            break;
+        }
+      }
+      // {id: `id`}
+      else if (ts.isNoSubstitutionTemplateLiteral(initializer)) {
+        switch (name.text) {
+          case 'id':
+            msg.id = initializer.text;
+            break;
+          case 'defaultMessage':
+            msg.defaultMessage = initializer.text;
+            break;
+          case 'description':
+            msg.description = initializer.text;
+            break;
+        }
+      } else if (ts.isJsxExpression(initializer) && initializer.expression) {
+        // <FormattedMessage foo={`bar`} />
+        if (ts.isNoSubstitutionTemplateLiteral(initializer.expression)) {
+          const {expression} = initializer;
+          switch (name.text) {
+            case 'id':
+              msg.id = expression.text;
+              break;
+            case 'defaultMessage':
+              msg.defaultMessage = expression.text;
+              break;
+            case 'description':
+              msg.description = expression.text;
+              break;
+          }
+        }
+        // <FormattedMessage foo={'bar' + 'baz'} />
+        else if (ts.isBinaryExpression(initializer.expression)) {
+          const {expression} = initializer;
+          const [result, isStatic] = evaluateStringConcat(ts, expression);
+          if (isStatic) {
+            switch (name.text) {
+              case 'id':
+                msg.id = result;
+                break;
+              case 'defaultMessage':
+                msg.defaultMessage = result;
+                break;
+              case 'description':
+                msg.description = result;
+                break;
+            }
+          }
+        }
+      }
+      // {defaultMessage: 'asd' + bar'}
+      else if (ts.isBinaryExpression(initializer)) {
+        const [result, isStatic] = evaluateStringConcat(ts, initializer);
+        if (isStatic) {
+          switch (name.text) {
+            case 'id':
+              msg.id = result;
+              break;
+            case 'defaultMessage':
+              msg.defaultMessage = result;
+              break;
+            case 'description':
+              msg.description = result;
+              break;
+          }
+        }
+      }
     }
   });
   // We extracted nothing
   if (!msg.defaultMessage && !msg.id) {
     return;
   }
+
+  if (msg.defaultMessage) {
+    msg.defaultMessage = msg.defaultMessage.trim().replace(/\s+/gm, ' ');
+  }
   if (msg.defaultMessage && overrideIdFn) {
     switch (typeof overrideIdFn) {
       case 'string':
         if (!msg.id) {
           msg.id = interpolateName(
-            {sourcePath: sf.fileName} as any,
+            {resourcePath: sf.fileName} as any,
             overrideIdFn,
             {
               content: msg.description
@@ -241,7 +350,10 @@ function extractMessageDescriptor(
  * @param node
  * @param sf
  */
-function isIntlFormatMessageCall(node: ts.CallExpression) {
+function isIntlFormatMessageCall(
+  ts: TypeScript,
+  node: typescript.CallExpression
+) {
   const method = node.expression;
 
   // Handle intl.formatMessage()
@@ -260,15 +372,18 @@ function isIntlFormatMessageCall(node: ts.CallExpression) {
 }
 
 function extractMessageFromJsxComponent(
-  node: ts.JsxOpeningElement | ts.JsxSelfClosingElement,
+  ts: TypeScript,
+  factory: typescript.NodeFactory,
+  node: typescript.JsxOpeningElement | typescript.JsxSelfClosingElement,
   opts: Opts,
-  sf: ts.SourceFile
+  sf: typescript.SourceFile,
+  ctx: typescript.TransformationContext
 ): typeof node {
   const {onMsgExtracted} = opts;
-  if (!isSingularMessageDecl(node, opts.additionalComponentNames || [])) {
+  if (!isSingularMessageDecl(ts, node, opts.additionalComponentNames || [])) {
     return node;
   }
-  const msg = extractMessageDescriptor(node, opts, sf);
+  const msg = extractMessageDescriptor(ts, node, opts, sf);
   if (!msg) {
     return node;
   }
@@ -276,35 +391,45 @@ function extractMessageFromJsxComponent(
     onMsgExtracted(sf.fileName, [msg]);
   }
 
-  const clonedEl = ts.getMutableClone(node);
-  clonedEl.attributes = setAttributesInJsxAttributes(
-    clonedEl.attributes,
-    {
-      defaultMessage: opts.removeDefaultMessage
-        ? undefined
-        : msg.defaultMessage,
-      id: msg.id,
-    },
-    opts.ast
-  );
-  return clonedEl;
+  const visitor: typescript.Visitor = node => {
+    if (ts.isJsxAttributes(node)) {
+      return factory.createJsxAttributes(
+        generateNewProperties(
+          ts,
+          factory,
+          node,
+          {
+            defaultMessage: opts.removeDefaultMessage
+              ? undefined
+              : msg.defaultMessage,
+            id: msg.id,
+          },
+          opts.ast
+        )
+      );
+    }
+    return node;
+  };
+
+  return ts.visitEachChild(node, visitor, ctx);
 }
 
 function setAttributesInObject(
-  node: ts.ObjectLiteralExpression,
+  ts: TypeScript,
+  factory: typescript.NodeFactory,
+  node: typescript.ObjectLiteralExpression,
   msg: MessageDescriptor,
   ast?: boolean
 ) {
-  const newNode = ts.getMutableClone(node);
   const newProps = [
-    ts.createPropertyAssignment('id', ts.createStringLiteral(msg.id)),
+    factory.createPropertyAssignment('id', factory.createStringLiteral(msg.id)),
     ...(msg.defaultMessage
       ? [
-          ts.createPropertyAssignment(
+          factory.createPropertyAssignment(
             'defaultMessage',
             ast
-              ? messageASTToTSNode(parse(msg.defaultMessage))
-              : ts.createStringLiteral(msg.defaultMessage)
+              ? messageASTToTSNode(factory, parse(msg.defaultMessage))
+              : factory.createStringLiteral(msg.defaultMessage)
           ),
         ]
       : []),
@@ -322,31 +447,33 @@ function setAttributesInObject(
       newProps.push(prop);
     }
   }
-  newNode.properties = ts.createNodeArray(newProps);
-  return newNode;
+  return factory.createObjectLiteralExpression(
+    factory.createNodeArray(newProps)
+  );
 }
 
-function setAttributesInJsxAttributes(
-  node: ts.JsxAttributes,
+function generateNewProperties(
+  ts: TypeScript,
+  factory: typescript.NodeFactory,
+  node: typescript.JsxAttributes,
   msg: MessageDescriptor,
   ast?: boolean
 ) {
-  const newNode = ts.getMutableClone(node);
   const newProps = [
-    ts.createJsxAttribute(
-      ts.createIdentifier('id'),
-      ts.createStringLiteral(msg.id)
+    factory.createJsxAttribute(
+      factory.createIdentifier('id'),
+      factory.createStringLiteral(msg.id)
     ),
     ...(msg.defaultMessage
       ? [
-          ts.createJsxAttribute(
-            ts.createIdentifier('defaultMessage'),
+          factory.createJsxAttribute(
+            factory.createIdentifier('defaultMessage'),
             ast
-              ? ts.createJsxExpression(
+              ? factory.createJsxExpression(
                   undefined,
-                  messageASTToTSNode(parse(msg.defaultMessage))
+                  messageASTToTSNode(factory, parse(msg.defaultMessage))
                 )
-              : ts.createStringLiteral(msg.defaultMessage)
+              : factory.createStringLiteral(msg.defaultMessage)
           ),
         ]
       : []),
@@ -363,19 +490,20 @@ function setAttributesInJsxAttributes(
       newProps.push(prop);
     }
   }
-  newNode.properties = ts.createNodeArray(newProps);
-  return newNode;
+  return newProps;
 }
 
 function extractMessagesFromCallExpression(
-  node: ts.CallExpression,
+  ts: TypeScript,
+  factory: typescript.NodeFactory,
+  node: typescript.CallExpression,
   opts: Opts,
-  sf: ts.SourceFile
+  sf: typescript.SourceFile
 ): typeof node {
   const {onMsgExtracted} = opts;
-  if (isMultipleMessageDecl(node)) {
+  if (isMultipleMessageDecl(ts, node)) {
     const [arg, ...restArgs] = node.arguments;
-    let descriptorsObj: ts.ObjectLiteralExpression | undefined;
+    let descriptorsObj: typescript.ObjectLiteralExpression | undefined;
     if (ts.isObjectLiteralExpression(arg)) {
       descriptorsObj = arg;
     } else if (
@@ -387,13 +515,14 @@ function extractMessagesFromCallExpression(
     if (descriptorsObj) {
       const properties = descriptorsObj.properties;
       const msgs = properties
-        .filter<ts.PropertyAssignment>((prop): prop is ts.PropertyAssignment =>
-          ts.isPropertyAssignment(prop)
+        .filter<typescript.PropertyAssignment>(
+          (prop): prop is typescript.PropertyAssignment =>
+            ts.isPropertyAssignment(prop)
         )
         .map(
           prop =>
             ts.isObjectLiteralExpression(prop.initializer) &&
-            extractMessageDescriptor(prop.initializer, opts, sf)
+            extractMessageDescriptor(ts, prop.initializer, opts, sf)
         )
         .filter((msg): msg is MessageDescriptor => !!msg);
       if (!msgs.length) {
@@ -403,9 +532,7 @@ function extractMessagesFromCallExpression(
         onMsgExtracted(sf.fileName, msgs);
       }
 
-      const newNode = ts.getMutableClone(node);
-      const clonedDescriptorsObj = ts.getMutableClone(descriptorsObj);
-      const clonedProperties = ts.createNodeArray(
+      const clonedProperties = factory.createNodeArray(
         properties.map((prop, i) => {
           if (
             !ts.isPropertyAssignment(prop) ||
@@ -413,34 +540,40 @@ function extractMessagesFromCallExpression(
           ) {
             return prop;
           }
-          const clonedNode = ts.getMutableClone(prop);
-          clonedNode.initializer = setAttributesInObject(
-            prop.initializer,
-            {
-              defaultMessage: opts.removeDefaultMessage
-                ? undefined
-                : msgs[i].defaultMessage,
-              id: msgs[i] ? msgs[i].id : '',
-            },
-            opts.ast
+
+          return factory.createPropertyAssignment(
+            prop.name,
+            setAttributesInObject(
+              ts,
+              factory,
+              prop.initializer,
+              {
+                defaultMessage: opts.removeDefaultMessage
+                  ? undefined
+                  : msgs[i].defaultMessage,
+                id: msgs[i] ? msgs[i].id : '',
+              },
+              opts.ast
+            )
           );
-          return clonedNode;
         })
       );
-      clonedDescriptorsObj.properties = clonedProperties;
-      newNode.arguments = ts.createNodeArray([
-        clonedDescriptorsObj,
-        ...restArgs,
-      ]);
-      return newNode;
+      const clonedDescriptorsObj = factory.createObjectLiteralExpression(
+        clonedProperties
+      );
+      return factory.createCallExpression(
+        node.expression,
+        node.typeArguments,
+        factory.createNodeArray([clonedDescriptorsObj, ...restArgs])
+      );
     }
   } else if (
-    isSingularMessageDecl(node, opts.additionalComponentNames || []) ||
-    (opts.extractFromFormatMessageCall && isIntlFormatMessageCall(node))
+    isSingularMessageDecl(ts, node, opts.additionalComponentNames || []) ||
+    (opts.extractFromFormatMessageCall && isIntlFormatMessageCall(ts, node))
   ) {
     const [descriptorsObj, ...restArgs] = node.arguments;
     if (ts.isObjectLiteralExpression(descriptorsObj)) {
-      const msg = extractMessageDescriptor(descriptorsObj, opts, sf);
+      const msg = extractMessageDescriptor(ts, descriptorsObj, opts, sf);
       if (!msg) {
         return node;
       }
@@ -448,21 +581,25 @@ function extractMessagesFromCallExpression(
         onMsgExtracted(sf.fileName, [msg]);
       }
 
-      const newNode = ts.getMutableClone(node);
-      newNode.arguments = ts.createNodeArray([
-        setAttributesInObject(
-          descriptorsObj,
-          {
-            defaultMessage: opts.removeDefaultMessage
-              ? undefined
-              : msg.defaultMessage,
-            id: msg.id,
-          },
-          opts.ast
-        ),
-        ...restArgs,
-      ]);
-      return newNode;
+      return factory.createCallExpression(
+        node.expression,
+        node.typeArguments,
+        factory.createNodeArray([
+          setAttributesInObject(
+            ts,
+            factory,
+            descriptorsObj,
+            {
+              defaultMessage: opts.removeDefaultMessage
+                ? undefined
+                : msg.defaultMessage,
+              id: msg.id,
+            },
+            opts.ast
+          ),
+          ...restArgs,
+        ])
+      );
     }
   }
   return node;
@@ -471,26 +608,28 @@ function extractMessagesFromCallExpression(
 const PRAGMA_REGEX = /^\/\/ @([^\s]*) (.*)$/m;
 
 function getVisitor(
-  ctx: ts.TransformationContext,
-  sf: ts.SourceFile,
+  ts: TypeScript,
+  ctx: typescript.TransformationContext,
+  sf: typescript.SourceFile,
   opts: Opts
 ) {
-  const visitor: ts.Visitor = (node: ts.Node): ts.Node => {
+  const visitor: typescript.Visitor = (
+    node: typescript.Node
+  ): typescript.Node => {
     const newNode = ts.isCallExpression(node)
-      ? extractMessagesFromCallExpression(node, opts, sf)
+      ? extractMessagesFromCallExpression(ts, ctx.factory, node, opts, sf)
       : ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)
-      ? extractMessageFromJsxComponent(node, opts, sf)
+      ? extractMessageFromJsxComponent(ts, ctx.factory, node, opts, sf, ctx)
       : node;
-
     return ts.visitEachChild(newNode, visitor, ctx);
   };
   return visitor;
 }
 
-export function transform(opts: Opts) {
+export function transformWithTs(ts: TypeScript, opts: Opts) {
   opts = {...DEFAULT_OPTS, ...opts};
-  const transformFn: ts.TransformerFactory<ts.SourceFile> = ctx => {
-    return (sf: ts.SourceFile) => {
+  const transformFn: typescript.TransformerFactory<typescript.SourceFile> = ctx => {
+    return (sf: typescript.SourceFile) => {
       const pragmaResult = PRAGMA_REGEX.exec(sf.text);
       if (pragmaResult) {
         const [, pragma, kvString] = pragmaResult;
@@ -506,9 +645,13 @@ export function transform(opts: Opts) {
           }
         }
       }
-      return ts.visitNode(sf, getVisitor(ctx, sf, opts));
+      return ts.visitNode(sf, getVisitor(ts, ctx, sf, opts));
     };
   };
 
   return transformFn;
+}
+
+export function transform(opts: Opts) {
+  return transformWithTs(typescript, opts);
 }

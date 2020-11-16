@@ -3,6 +3,166 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.4.5...@formatjs/intl-displaynames@3.4.6) (2020-11-12)
+
+**Note:** Version bump only for package @formatjs/intl-displaynames
+
+
+
+
+
+## [3.4.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.4.4...@formatjs/intl-displaynames@3.4.5) (2020-11-09)
+
+**Note:** Version bump only for package @formatjs/intl-displaynames
+
+
+
+
+
+## [3.4.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.4.3...@formatjs/intl-displaynames@3.4.4) (2020-11-09)
+
+**Note:** Version bump only for package @formatjs/intl-displaynames
+
+
+
+
+
+## [3.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.4.2...@formatjs/intl-displaynames@3.4.3) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** lock down monorepo dep version ([1c56a1f](https://github.com/formatjs/formatjs/commit/1c56a1f743a19e2ac8aaa776aa626b95ff6d2223))
+
+
+
+
+
+## [3.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.4.1...@formatjs/intl-displaynames@3.4.2) (2020-11-04)
+
+**Note:** Version bump only for package @formatjs/intl-displaynames
+
+
+
+
+
+## [3.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.4.0...@formatjs/intl-displaynames@3.4.1) (2020-10-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** fix UMD bundle ([d11a506](https://github.com/formatjs/formatjs/commit/d11a5068c9465555f177234d511f08ab3ad9cfb4))
+
+
+
+
+
+# [3.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.12...@formatjs/intl-displaynames@3.4.0) (2020-10-25)
+
+
+### Features
+
+* **@formatjs/intl-displaynames:** upgrade cldr to v37 ([aaa12ee](https://github.com/formatjs/formatjs/commit/aaa12ee6cecaeabe1942b8be91a5ae365109af4e))
+
+
+
+
+
+## [3.3.12](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.11...@formatjs/intl-displaynames@3.3.12) (2020-10-10)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** fix err message for missing locale data, fix [#2203](https://github.com/formatjs/formatjs/issues/2203) ([966e257](https://github.com/formatjs/formatjs/commit/966e257ade6b738f9051148ace29f6e19f6b514d))
+
+
+
+
+
+## [3.3.11](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.10...@formatjs/intl-displaynames@3.3.11) (2020-10-08)
+
+**Note:** Version bump only for package @formatjs/intl-displaynames
+
+
+
+
+
+## [3.3.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.9...@formatjs/intl-displaynames@3.3.10) (2020-10-01)
+
+**Note:** Version bump only for package @formatjs/intl-displaynames
+
+
+
+
+
+## [3.3.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.8...@formatjs/intl-displaynames@3.3.9) (2020-09-25)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** more spec-compliant fix, fix [#2122](https://github.com/formatjs/formatjs/issues/2122) ([3b08faf](https://github.com/formatjs/formatjs/commit/3b08faffe6cdaf6fe08629301afd377748bc631a))
+
+
+
+
+
+## [3.3.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.7...@formatjs/intl-displaynames@3.3.8) (2020-09-18)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** follow ES2021 spec and make type option required ([#2103](https://github.com/formatjs/formatjs/issues/2103)) ([3e00688](https://github.com/formatjs/formatjs/commit/3e00688f955587ac155c9d6c2fa519b07df17a70))
+
+
+
+
+
+## [3.3.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.6...@formatjs/intl-displaynames@3.3.7) (2020-09-09)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** fix TS typing entry point path ([82da0b9](https://github.com/formatjs/formatjs/commit/82da0b9d3a894eb28d2537297269097aa4c35668))
+
+
+
+
+
+## [3.3.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.5...@formatjs/intl-displaynames@3.3.6) (2020-08-28)
+
+**Note:** Version bump only for package @formatjs/intl-displaynames
+
+
+
+
+
+## [3.3.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.4...@formatjs/intl-displaynames@3.3.5) (2020-08-25)
+
+**Note:** Version bump only for package @formatjs/intl-displaynames
+
+
+
+
+
+## [3.3.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.3...@formatjs/intl-displaynames@3.3.4) (2020-08-22)
+
+**Note:** Version bump only for package @formatjs/intl-displaynames
+
+
+
+
+
+## [3.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.2...@formatjs/intl-displaynames@3.3.3) (2020-08-21)
+
+
+### Bug Fixes
+
+* add back polyfill.umd, fix [#2013](https://github.com/formatjs/formatjs/issues/2013) ([b9cfbd2](https://github.com/formatjs/formatjs/commit/b9cfbd2eeead6a5165b0e4cbf1ef3edbfbeca8ce))
+
+
+
+
+
 ## [3.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.3.1...@formatjs/intl-displaynames@3.3.2) (2020-08-19)
 
 **Note:** Version bump only for package @formatjs/intl-displaynames

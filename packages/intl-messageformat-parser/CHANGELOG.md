@@ -3,6 +3,140 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.16](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.15...intl-messageformat-parser@6.0.16) (2020-11-12)
+
+**Note:** Version bump only for package intl-messageformat-parser
+
+
+
+
+
+## [6.0.15](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.14...intl-messageformat-parser@6.0.15) (2020-11-09)
+
+**Note:** Version bump only for package intl-messageformat-parser
+
+
+
+
+
+## [6.0.14](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.13...intl-messageformat-parser@6.0.14) (2020-11-09)
+
+**Note:** Version bump only for package intl-messageformat-parser
+
+
+
+
+
+## [6.0.13](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.12...intl-messageformat-parser@6.0.13) (2020-11-05)
+
+
+### Bug Fixes
+
+* **intl-messageformat-parser:** lock down monorepo dep version ([ef349c8](https://github.com/formatjs/formatjs/commit/ef349c8a52a68cfe19d13dcaf5ec754dcaca24ce))
+
+
+
+
+
+## [6.0.12](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.11...intl-messageformat-parser@6.0.12) (2020-11-04)
+
+**Note:** Version bump only for package intl-messageformat-parser
+
+
+
+
+
+## [6.0.11](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.10...intl-messageformat-parser@6.0.11) (2020-10-25)
+
+**Note:** Version bump only for package intl-messageformat-parser
+
+
+
+
+
+## [6.0.10](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.9...intl-messageformat-parser@6.0.10) (2020-10-10)
+
+**Note:** Version bump only for package intl-messageformat-parser
+
+
+
+
+
+## [6.0.9](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.8...intl-messageformat-parser@6.0.9) (2020-10-08)
+
+**Note:** Version bump only for package intl-messageformat-parser
+
+
+
+
+
+## [6.0.8](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.7...intl-messageformat-parser@6.0.8) (2020-10-01)
+
+**Note:** Version bump only for package intl-messageformat-parser
+
+
+
+
+
+## [6.0.7](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.6...intl-messageformat-parser@6.0.7) (2020-09-18)
+
+**Note:** Version bump only for package intl-messageformat-parser
+
+
+
+
+
+## [6.0.6](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.5...intl-messageformat-parser@6.0.6) (2020-09-09)
+
+**Note:** Version bump only for package intl-messageformat-parser
+
+
+
+
+
+## [6.0.5](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.4...intl-messageformat-parser@6.0.5) (2020-08-28)
+
+**Note:** Version bump only for package intl-messageformat-parser
+
+
+
+
+
+## [6.0.4](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.3...intl-messageformat-parser@6.0.4) (2020-08-25)
+
+**Note:** Version bump only for package intl-messageformat-parser
+
+
+
+
+
+## [6.0.3](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.2...intl-messageformat-parser@6.0.3) (2020-08-22)
+
+**Note:** Version bump only for package intl-messageformat-parser
+
+
+
+
+
+## [6.0.2](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.1...intl-messageformat-parser@6.0.2) (2020-08-21)
+
+**Note:** Version bump only for package intl-messageformat-parser
+
+
+
+
+
+## [6.0.1](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@5.5.1...intl-messageformat-parser@6.0.1) (2020-08-20)
+
+
+### Bug Fixes
+
+* **intl-messageformat-parser:** bump version to 6.0 ([1864c13](https://github.com/formatjs/formatjs/commit/1864c13d28a4f0b1bb0269dfec2eb3c65698646e))
+
+
+
+
+
 ## [5.5.1](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@5.5.0...intl-messageformat-parser@5.5.1) (2020-08-19)
 
 **Note:** Version bump only for package intl-messageformat-parser

@@ -1,17 +1,47 @@
 ---
 id: intl-datetimeformat
-title: Intl.DateTimeFormat
+title: Intl.DateTimeFormat (ESNext)
 ---
 
 A spec-compliant polyfill for Intl.DateTimeFormat fully tested by the [official ECMAScript Conformance test suite](https://github.com/tc39/test262)
 
 [![npm Version](https://img.shields.io/npm/v/@formatjs/intl-datetimeformat.svg?style=flat-square)](https://www.npmjs.org/package/@formatjs/intl-datetimeformat) ![size](https://badgen.net/bundlephobia/minzip/@formatjs/intl-datetimeformat)
 
+:::caution Right now we only support Gregorian calendar in this polyfill. Therefore we recommend setting `calendar: 'gregory'` in your options to be safe. :::
+
+:::caution Right now this polyfill supports daylight transition until 2038 due to [Year 2038 problem](https://en.wikipedia.org/wiki/Year_2038_problem). :::
+
+## Features
+
+- [dateStyle/timeStyle](https://github.com/tc39/proposal-intl-datetime-style)
+- [formatRange](https://github.com/tc39/proposal-intl-DateTimeFormat-formatRange)
+
 ## Installation
 
+import Tabs from '@theme/Tabs' import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i @formatjs/intl-datetimeformat
 ```
-npm install @formatjs/intl-datetimeformat
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add @formatjs/intl-datetimeformat
 ```
+
+</TabItem>
+</Tabs>
 
 ## Requirements
 

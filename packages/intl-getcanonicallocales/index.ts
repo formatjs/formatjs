@@ -2,7 +2,11 @@ import {parseUnicodeLocaleId} from './src/parser';
 import {emitUnicodeLocaleId} from './src/emitter';
 import {canonicalizeUnicodeLocaleId} from './src/canonicalizer';
 
-function canonicalizeLocaleList(locales?: string[] | string): string[] {
+/**
+ * https://tc39.es/ecma402/#sec-canonicalizelocalelist
+ * @param locales
+ */
+function CanonicalizeLocaleList(locales?: string[] | string): string[] {
   if (locales === undefined) {
     return [];
   }
@@ -22,7 +26,7 @@ function canonicalizeLocaleList(locales?: string[] | string): string[] {
 }
 
 export function getCanonicalLocales(locales?: string[] | string): string[] {
-  return canonicalizeLocaleList(locales);
+  return CanonicalizeLocaleList(locales);
 }
 
 export {

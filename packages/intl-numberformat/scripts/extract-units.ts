@@ -9,7 +9,7 @@ import {
   LDMLPluralRuleMap,
   UnitDataTable,
   removeUnitNamespace,
-  isWellFormedUnitIdentifier,
+  IsWellFormedUnitIdentifier,
   UnitData,
 } from '@formatjs/ecma402-abstract';
 import * as UnitsData from 'cldr-units-full/main/en/units.json';
@@ -29,9 +29,10 @@ function extractUnitPattern(d: Units['long']['volume-gallon']) {
   );
 }
 
-function loadUnits(locale: string): UnitDataTable {
-  const units = (require(`cldr-units-full/main/${locale}/units.json`) as typeof UnitsData)
-    .main[locale as 'en'].units;
+async function loadUnits(locale: string): Promise<UnitDataTable> {
+  const units = ((await import(
+    `cldr-units-full/main/${locale}/units.json`
+  )) as typeof UnitsData).main[locale as 'en'].units;
 
   invariant(
     !!(
@@ -43,7 +44,7 @@ function loadUnits(locale: string): UnitDataTable {
   );
 
   const validUnits = Object.keys(units.long).filter(unit => {
-    return isWellFormedUnitIdentifier(removeUnitNamespace(unit));
+    return IsWellFormedUnitIdentifier(removeUnitNamespace(unit));
   });
 
   const simpleUnitEntries: [string, UnitData][] = validUnits.map(unit => {
@@ -77,11 +78,12 @@ function loadUnits(locale: string): UnitDataTable {
   return {simple: fromPairs(simpleUnitEntries), compound: compoundUnits};
 }
 
-export function generateDataForLocales(
+export async function generateDataForLocales(
   locales: string[] = AVAILABLE_LOCALES.availableLocales.full
-): Record<string, UnitDataTable> {
-  return locales.reduce((all: Record<string, UnitDataTable>, locale) => {
-    all[locale] = loadUnits(locale);
+): Promise<Record<string, UnitDataTable>> {
+  const data = await Promise.all(locales.map(loadUnits));
+  return data.reduce((all: Record<string, UnitDataTable>, d, i) => {
+    all[locales[i]] = d;
     return all;
   }, {});
 }

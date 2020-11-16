@@ -4,6 +4,7 @@ load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test")
 load("@build_bazel_rules_nodejs//internal/js_library:js_library.bzl", "js_library")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
+load("@npm//prettier:index.bzl", "prettier", "prettier_test")
 load("@npm//ts-node:index.bzl", "ts_node")
 
 def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
@@ -16,6 +17,8 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
         package_name: name from package.json
         skip_esm: skip building ESM bundle
     """
+    deps = deps + ["@npm//tslib"]
+
     ts_project(
         name = "%s-base" % name,
         srcs = srcs,
@@ -97,6 +100,7 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], rollup_deps = []
             "@npm//@jest/transform",
             "@npm//ts-jest",
             "@npm//@types/jest",
+            "@npm//tslib",
         ],
     )
 
@@ -114,11 +118,54 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], rollup_deps = []
                 "@npm//@rollup/plugin-commonjs",
                 "@npm//@rollup/plugin-replace",
                 "@npm//@rollup/plugin-json",
+                "@npm//tslib",
             ] + deps + rollup_deps,
         )
 
     native.filegroup(
         name = name,
         srcs = BUNDLE_KARMA_TESTS,
-        visibility = ["//visibility:public"],
+        testonly = True,
+        visibility = ["//:__pkg__"],
+    )
+
+def prettier_check(name, srcs, config = "//:.prettierrc.json"):
+    native.filegroup(
+        name = "%s_srcs" % name,
+        srcs = srcs,
+    )
+
+    prettier_test(
+        name = "%s_test" % name,
+        data = [
+            "%s_srcs" % name,
+            config,
+        ],
+        templated_args = [
+            "--config",
+            "$(rootpath %s)" % config,
+            "--loglevel",
+            "warn",
+            "--check",
+            "$(rootpaths :%s_srcs)" % name,
+        ],
+    )
+
+    prettier(
+        name = name,
+        data = [
+            "%s_srcs" % name,
+            config,
+        ],
+        templated_args = [
+            "--config",
+            "$(rootpath %s)" % config,
+            "--loglevel",
+            "warn",
+            "--write",
+            "$(rootpaths :%s_srcs)" % name,
+        ],
+        visibility = [
+            "//:__pkg__",
+        ],
     )

@@ -20,22 +20,26 @@ describe('.of()', () => {
   });
 
   it('preserves unrecognized region subtag in language code when fallback option is code', () => {
-    expect(new DisplayNames('zh', {fallback: 'code'}).of('zh-Hans-Xy')).toBe(
-      '简体中文（XY）'
-    );
+    expect(
+      new DisplayNames('zh', {type: 'language', fallback: 'code'}).of(
+        'zh-Hans-Xy'
+      )
+    ).toBe('简体中文（XY）');
   });
 
   describe('with fallback set to "none"', () => {
     it('returns undefined when called with language code that has unrecognized region subtag', () => {
-      expect(new DisplayNames('zh', {fallback: 'none'}).of('zh-Hans-XY')).toBe(
-        undefined
-      );
+      expect(
+        new DisplayNames('zh', {type: 'language', fallback: 'none'}).of(
+          'zh-Hans-XY'
+        )
+      ).toBe(undefined);
     });
 
     it('returns undefined when called with language code that valid region subtag but invalid language subtag', () => {
-      expect(new DisplayNames('zh', {fallback: 'none'}).of('xx-CN')).toBe(
-        undefined
-      );
+      expect(
+        new DisplayNames('zh', {type: 'language', fallback: 'none'}).of('xx-CN')
+      ).toBe(undefined);
     });
   });
 });

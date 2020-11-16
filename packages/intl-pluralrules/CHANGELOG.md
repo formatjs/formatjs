@@ -3,6 +3,141 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.5.5...@formatjs/intl-pluralrules@3.5.6) (2020-11-12)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+
+
+
+
+## [3.5.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.5.4...@formatjs/intl-pluralrules@3.5.5) (2020-11-09)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+
+
+
+
+## [3.5.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.5.3...@formatjs/intl-pluralrules@3.5.4) (2020-11-09)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+
+
+
+
+## [3.5.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.5.2...@formatjs/intl-pluralrules@3.5.3) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** lock down monorepo dep version ([468df0a](https://github.com/formatjs/formatjs/commit/468df0a89c1d6de06c81fa2ad35d15241e467c5e))
+
+
+
+
+
+## [3.5.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.5.1...@formatjs/intl-pluralrules@3.5.2) (2020-11-04)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+
+
+
+
+## [3.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.5.0...@formatjs/intl-pluralrules@3.5.1) (2020-10-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** fix UMD bundle ([ae0514f](https://github.com/formatjs/formatjs/commit/ae0514f13d439448c0d240c743735372e30de0ea))
+
+
+
+
+
+# [3.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.4.10...@formatjs/intl-pluralrules@3.5.0) (2020-10-25)
+
+
+### Features
+
+* **@formatjs/intl-pluralrules:** upgrade cldr to v37 ([1300999](https://github.com/formatjs/formatjs/commit/1300999e1be19fb0041d9ac2f1b40e3c3d582a88))
+
+
+
+
+
+## [3.4.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.4.9...@formatjs/intl-pluralrules@3.4.10) (2020-10-10)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+
+
+
+
+## [3.4.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.4.8...@formatjs/intl-pluralrules@3.4.9) (2020-10-08)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+
+
+
+
+## [3.4.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.4.7...@formatjs/intl-pluralrules@3.4.8) (2020-10-01)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+
+
+
+
+## [3.4.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.4.6...@formatjs/intl-pluralrules@3.4.7) (2020-09-18)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+
+
+
+
+## [3.4.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.4.5...@formatjs/intl-pluralrules@3.4.6) (2020-09-09)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+
+
+
+
+## [3.4.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.4.4...@formatjs/intl-pluralrules@3.4.5) (2020-08-28)
+
+**Note:** Version bump only for package @formatjs/intl-pluralrules
+
+
+
+
+
+## [3.4.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.4.3...@formatjs/intl-pluralrules@3.4.4) (2020-08-25)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** catch error thrown by IE11 around defining a `length` property on a Function ([#2020](https://github.com/formatjs/formatjs/issues/2020)) ([8eb0be6](https://github.com/formatjs/formatjs/commit/8eb0be6b06f2f0950f1817e5aabb85604cefa66a))
+
+
+
+
+
+## [3.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.4.2...@formatjs/intl-pluralrules@3.4.3) (2020-08-21)
+
+
+### Bug Fixes
+
+* add back polyfill.umd, fix [#2013](https://github.com/formatjs/formatjs/issues/2013) ([b9cfbd2](https://github.com/formatjs/formatjs/commit/b9cfbd2eeead6a5165b0e4cbf1ef3edbfbeca8ce))
+
+
+
+
+
 ## [3.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.4.1...@formatjs/intl-pluralrules@3.4.2) (2020-08-19)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules

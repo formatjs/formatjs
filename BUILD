@@ -1,5 +1,6 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin")
+load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
 load("@npm//karma:index.bzl", "karma_test")
+
 # Add rules here to build your software
 # See https://docs.bazel.build/versions/master/build-ref.html#BUILD_files
 
@@ -12,20 +13,11 @@ exports_files(
         "tsconfig.json",
         "tsconfig.esm.json",
         "tsconfig.es6.json",
-        "api-extractor.json",
         "rollup.config.js",
         "karma.conf.js",
         "karma.conf-ci.js",
         "jest.config.js",
-    ],
-    visibility = ["//:__subpackages__"],
-)
-
-copy_to_bin(
-    name = "setup-api-extractor",
-    srcs = [
-        "api-extractor.json",
-        "tsconfig.json",
+        ".prettierrc.json",
     ],
     visibility = ["//:__subpackages__"],
 )
@@ -55,6 +47,7 @@ filegroup(
             "**/taint-Object-prototype.js",  # Bc our Intl.getCanonicalLocales isn't really spec-compliant
             "**/numbering-systems.js",  # See https://github.com/tc39/ecma402/issues/479
             "**/dft-currency-mnfd-range-check-mxfd.js",  # TODO
+            "**/intl-legacy-constructed-symbol-on-unwrap.js",
         ],
     ),
     visibility = ["//packages/intl-numberformat:__subpackages__"],
@@ -142,10 +135,13 @@ filegroup(
 
 filegroup(
     name = "test262-all",
-    srcs = glob([
-        "test262/**/*.js",
-        "test262/**/*.json",
-    ]) + ["test262/README.md"],
+    srcs = glob(
+        [
+            "test262/**/*.js",
+            "test262/**/*.json",
+        ],
+        exclude = ["test262/test/**/*"],
+    ) + ["test262/README.md"],
     visibility = ["//visibility:public"],
 )
 
@@ -172,6 +168,7 @@ karma_test(
         "@npm//karma-sauce-launcher",
         "@npm//karma-jasmine-matchers",
     ] + KARMA_TESTS,
+    tags = ["manual"],
     templated_args = [
         "start",
         "$(rootpath //:karma.conf.js)",
@@ -182,6 +179,7 @@ karma_test(
 
 karma_test(
     name = "karma-ci",
+    size = "large",
     configuration_env_vars = [
         "SAUCE_USERNAME",
         "SAUCE_ACCESS_KEY",
@@ -193,10 +191,36 @@ karma_test(
         "@npm//karma-sauce-launcher",
         "@npm//karma-jasmine-matchers",
     ] + KARMA_TESTS,
+    tags = ["manual"],
     templated_args = [
         "start",
         "$(rootpath //:karma.conf.js)",
         "--browsers",
         "sl_edge,sl_chrome,sl_firefox,sl_ie_11",
     ] + ["$$(rlocation $(locations %s))" % f for f in KARMA_TESTS],
+)
+
+multirun(
+    name = "prettier_all",
+    commands = [
+        "//packages/babel-plugin-react-intl:prettier",
+        "//packages/cli:prettier",
+        "//packages/ecma402-abstract:prettier",
+        "//packages/eslint-plugin-formatjs:prettier",
+        "//packages/intl:prettier",
+        "//packages/intl-datetimeformat:prettier",
+        "//packages/intl-displaynames:prettier",
+        "//packages/intl-getcanonicallocales:prettier",
+        "//packages/intl-listformat:prettier",
+        "//packages/intl-locale:prettier",
+        "//packages/intl-messageformat:prettier",
+        "//packages/intl-messageformat-parser:prettier",
+        "//packages/intl-numberformat:prettier",
+        "//packages/intl-pluralrules:prettier",
+        "//packages/intl-relativetimeformat:prettier",
+        "//packages/react-intl:prettier",
+        "//packages/ts-transformer:prettier",
+        "//tools:prettier",
+        "//website:prettier",
+    ],
 )

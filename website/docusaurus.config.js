@@ -35,7 +35,7 @@ module.exports = {
           to: 'docs/react-intl',
           label: 'API References',
           position: 'left',
-          activeBaseRegex: `docs/(react-intl|intl-messageformat|intl-messageformat-parser)`,
+          activeBaseRegex: `docs/(intl|react-intl|intl-messageformat|intl-messageformat-parser)`,
         },
         {
           to: 'docs/polyfills',

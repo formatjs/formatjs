@@ -3,6 +3,71 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.5.0...@formatjs/intl-getcanonicallocales@1.5.1) (2020-10-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-getcanonicallocales:** fix UMD bundle ([c0362f5](https://github.com/formatjs/formatjs/commit/c0362f5243e663d1ac4efb011e8b4919d9dec1c1))
+
+
+
+
+
+# [1.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.4.6...@formatjs/intl-getcanonicallocales@1.5.0) (2020-10-25)
+
+
+### Features
+
+* **@formatjs/intl-getcanonicallocales:** upgrade cldr to v37 ([53540af](https://github.com/formatjs/formatjs/commit/53540af06ef06e639443223170adf4cab7e308e0))
+
+
+
+
+
+## [1.4.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.4.5...@formatjs/intl-getcanonicallocales@1.4.6) (2020-10-01)
+
+**Note:** Version bump only for package @formatjs/intl-getcanonicallocales
+
+
+
+
+
+## [1.4.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.4.4...@formatjs/intl-getcanonicallocales@1.4.5) (2020-09-18)
+
+**Note:** Version bump only for package @formatjs/intl-getcanonicallocales
+
+
+
+
+
+## [1.4.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.4.3...@formatjs/intl-getcanonicallocales@1.4.4) (2020-09-09)
+
+**Note:** Version bump only for package @formatjs/intl-getcanonicallocales
+
+
+
+
+
+## [1.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.4.2...@formatjs/intl-getcanonicallocales@1.4.3) (2020-08-25)
+
+**Note:** Version bump only for package @formatjs/intl-getcanonicallocales
+
+
+
+
+
+## [1.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.4.1...@formatjs/intl-getcanonicallocales@1.4.2) (2020-08-21)
+
+
+### Bug Fixes
+
+* add back polyfill.umd, fix [#2013](https://github.com/formatjs/formatjs/issues/2013) ([b9cfbd2](https://github.com/formatjs/formatjs/commit/b9cfbd2eeead6a5165b0e4cbf1ef3edbfbeca8ce))
+
+
+
+
+
 ## [1.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.4.0...@formatjs/intl-getcanonicallocales@1.4.1) (2020-08-19)
 
 **Note:** Version bump only for package @formatjs/intl-getcanonicallocales

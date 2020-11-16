@@ -3,6 +3,225 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.9.7](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.9.6...eslint-plugin-formatjs@2.9.7) (2020-11-12)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+## [2.9.6](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.9.5...eslint-plugin-formatjs@2.9.6) (2020-11-10)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+## [2.9.5](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.9.4...eslint-plugin-formatjs@2.9.5) (2020-11-09)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+## [2.9.4](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.9.3...eslint-plugin-formatjs@2.9.4) (2020-11-09)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+## [2.9.3](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.9.2...eslint-plugin-formatjs@2.9.3) (2020-11-05)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+## [2.9.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.9.1...eslint-plugin-formatjs@2.9.2) (2020-11-05)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** lock down monorepo dep version ([3b425a3](https://github.com/formatjs/formatjs/commit/3b425a3107afbb710cfeaebc27d4dfd9a42d08ed))
+
+
+
+
+
+## [2.9.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.9.0...eslint-plugin-formatjs@2.9.1) (2020-11-04)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+# [2.9.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.8.0...eslint-plugin-formatjs@2.9.0) (2020-10-30)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** add ignoreList option to enforce-placeholders, fix [#2262](https://github.com/formatjs/formatjs/issues/2262) ([a10e00c](https://github.com/formatjs/formatjs/commit/a10e00c0c923c51c493c34de95d4b07c93f1bf12))
+* **eslint-plugin-formatjs:** makes idInterpolationPattern optional in enforce-id, fix [#2263](https://github.com/formatjs/formatjs/issues/2263) ([6289c28](https://github.com/formatjs/formatjs/commit/6289c28acf7671ee8ed08f73d3b72dc73522dc18))
+
+
+
+
+
+# [2.8.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.17...eslint-plugin-formatjs@2.8.0) (2020-10-28)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** support string concat, fix [#2252](https://github.com/formatjs/formatjs/issues/2252) ([cbeee5e](https://github.com/formatjs/formatjs/commit/cbeee5e2d2be610374cad3dda8cf12adf81781b6))
+
+
+
+
+
+## [2.7.17](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.16...eslint-plugin-formatjs@2.7.17) (2020-10-27)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+## [2.7.16](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.15...eslint-plugin-formatjs@2.7.16) (2020-10-25)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** fix extraction filter, fix [#2238](https://github.com/formatjs/formatjs/issues/2238) ([f9f2c3e](https://github.com/formatjs/formatjs/commit/f9f2c3eadff49b1245d80c21efd4912eefd53c3d))
+
+
+
+
+
+## [2.7.15](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.14...eslint-plugin-formatjs@2.7.15) (2020-10-10)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+## [2.7.14](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.13...eslint-plugin-formatjs@2.7.14) (2020-10-08)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+## [2.7.13](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.12...eslint-plugin-formatjs@2.7.13) (2020-10-01)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+## [2.7.12](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.11...eslint-plugin-formatjs@2.7.12) (2020-09-25)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+## [2.7.11](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.10...eslint-plugin-formatjs@2.7.11) (2020-09-18)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+## [2.7.10](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.9...eslint-plugin-formatjs@2.7.10) (2020-09-12)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+## [2.7.9](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.8...eslint-plugin-formatjs@2.7.9) (2020-09-09)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** fix enforce-id fixer logic, fix [#2072](https://github.com/formatjs/formatjs/issues/2072) ([00f56cb](https://github.com/formatjs/formatjs/commit/00f56cb63ff9790626d2b660331251df8e16de16))
+
+
+
+
+
+## [2.7.8](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.7...eslint-plugin-formatjs@2.7.8) (2020-09-03)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+## [2.7.7](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.6...eslint-plugin-formatjs@2.7.7) (2020-08-30)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+## [2.7.6](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.5...eslint-plugin-formatjs@2.7.6) (2020-08-28)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+## [2.7.5](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.4...eslint-plugin-formatjs@2.7.5) (2020-08-25)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+## [2.7.4](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.3...eslint-plugin-formatjs@2.7.4) (2020-08-22)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+## [2.7.3](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.2...eslint-plugin-formatjs@2.7.3) (2020-08-21)
+
+**Note:** Version bump only for package eslint-plugin-formatjs
+
+
+
+
+
+## [2.7.2](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.1...eslint-plugin-formatjs@2.7.2) (2020-08-20)
+
+
+### Bug Fixes
+
+* bump intl-messageformat-parser ([8bbfa04](https://github.com/formatjs/formatjs/commit/8bbfa047da159662700b7e500879da20e54c0f0b))
+
+
+
+
+
 ## [2.7.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.7.0...eslint-plugin-formatjs@2.7.1) (2020-08-19)
 
 **Note:** Version bump only for package eslint-plugin-formatjs

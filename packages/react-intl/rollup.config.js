@@ -21,5 +21,11 @@ export default {
     }),
     commonjs(),
   ],
+  // UMD fallback for `react` is the global variable `React`.
   external: ['react'],
+  output: {
+    globals: {
+      react: 'React',
+    },
+  },
 };

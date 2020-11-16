@@ -29,6 +29,14 @@ test('basic case: defineMessages -> stdout', async () => {
   ).resolves.toMatchSnapshot();
 }, 20000);
 
+test('bad json', async () => {
+  await expect(
+    exec(
+      `${BIN_PATH} extract --throws ${join(__dirname, 'defineMessages/*.js*')}`
+    )
+  ).rejects.toThrowError('Error processing file');
+}, 20000);
+
 test('[glob] basic case: defineMessages -> stdout', async () => {
   await expect(
     exec(`${BIN_PATH} extract ${join(__dirname, 'defineMessages/*.js')}`)
@@ -64,6 +72,17 @@ test('basic case: defineMessages -> out-file with location', async () => {
 test('typescript -> stdout', async () => {
   await expect(
     exec(`${BIN_PATH} extract ${join(__dirname, 'typescript/actual.tsx')}`)
+  ).resolves.toMatchSnapshot();
+}, 20000);
+
+test('pragma', async () => {
+  await expect(
+    exec(
+      `${BIN_PATH} extract --pragma intl ${join(
+        __dirname,
+        'typescript/pragma.tsx'
+      )}`
+    )
   ).resolves.toMatchSnapshot();
 }, 20000);
 
@@ -168,4 +187,12 @@ test('duplicated descriptor ids throws', async () => {
       `${BIN_PATH} extract --throws '${join(__dirname, 'duplicated/*.tsx')}'`
     );
   }).rejects.toThrowError('Duplicate message id: "foo"');
+}, 20000);
+
+test('invalid syntax should throw', async () => {
+  expect(async () => {
+    await exec(
+      `${BIN_PATH} extract --throws '${join(__dirname, 'typescript/err.tsx')}'`
+    );
+  }).rejects.toThrowError('TS1005');
 }, 20000);

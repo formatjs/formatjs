@@ -10,9 +10,31 @@ A spec-compliant polyfill/ponyfill for `Intl.getCanonicalLocales` tested by the 
 
 ## Installation
 
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i @formatjs/intl-getcanonicallocales
 ```
-npm install @formatjs/intl-getcanonicallocales
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add @formatjs/intl-getcanonicallocales
 ```
+
+</TabItem>
+</Tabs>
 
 ## Usage
 

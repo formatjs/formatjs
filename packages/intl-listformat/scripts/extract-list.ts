@@ -5,19 +5,20 @@
  */
 'use strict';
 import * as ListPatterns from 'cldr-misc-full/main/en/listPatterns.json';
-import {sync as globSync} from 'fast-glob';
+import glob from 'fast-glob';
 import {resolve, dirname} from 'path';
 import {ListPatternFieldsData, ListPattern} from '@formatjs/ecma402-abstract';
 
 export type ListTypes = typeof ListPatterns['main']['en']['listPatterns'];
 
-export function getAllLocales() {
-  return globSync('*/listPatterns.json', {
+export async function getAllLocales(): Promise<string[]> {
+  const fns = await glob('*/listPatterns.json', {
     cwd: resolve(
       dirname(require.resolve('cldr-misc-full/package.json')),
       './main'
     ),
-  }).map(dirname);
+  });
+  return fns.map(dirname);
 }
 
 function serializeToPatternData(
@@ -31,9 +32,12 @@ function serializeToPatternData(
   };
 }
 
-function loadListPatterns(locale: string): ListPatternFieldsData {
-  const patterns = (require(`cldr-misc-full/main/${locale}/listPatterns.json`) as typeof ListPatterns)
-    .main[locale as 'en'].listPatterns;
+async function loadListPatterns(
+  locale: string
+): Promise<ListPatternFieldsData> {
+  const patterns = ((await import(
+    `cldr-misc-full/main/${locale}/listPatterns.json`
+  )) as typeof ListPatterns).main[locale as 'en'].listPatterns;
   return {
     conjunction: {
       long: serializeToPatternData(patterns['listPattern-type-standard']),
@@ -57,12 +61,13 @@ function loadListPatterns(locale: string): ListPatternFieldsData {
   };
 }
 
-export function extractLists(
-  locales: string[] = getAllLocales()
-): Record<string, ListPatternFieldsData> {
+export async function extractLists(
+  locales: string[]
+): Promise<Record<string, ListPatternFieldsData>> {
+  const data = await Promise.all(locales.map(loadListPatterns));
   return locales.reduce(
-    (all: Record<string, ListPatternFieldsData>, locale) => {
-      all[locale] = loadListPatterns(locale);
+    (all: Record<string, ListPatternFieldsData>, locale, i) => {
+      all[locale] = data[i];
       return all;
     },
     {}

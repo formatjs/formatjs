@@ -1,14 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FormattedRelativeTime> supports function-as-child pattern 1`] = `
-<FormattedRelativeTime
-  unit="second"
-  value={0}
+<span
+  data-testid="comp"
 >
   <b>
     Jest
   </b>
-</FormattedRelativeTime>
+</span>
 `;
-
-exports[`<FormattedRelativeTime> throws an error for invalid unit 1`] = `"FORMAT_ERROR"`;

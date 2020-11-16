@@ -1,9 +1,10 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
+load("@npm//@bazel/terser:index.bzl", "terser_minified")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "generate_src_file", "ts_compile")
+load("//tools:index.bzl", "generate_src_file", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-numberformat"
@@ -50,6 +51,9 @@ pkg_npm(
     deps = [
         ":dist",
         ":locale-data",
+        # polyfill-library uses this
+        "polyfill.umd.js",
+        ":polyfill.umd.min",
     ],
 )
 
@@ -76,18 +80,14 @@ TESTS = glob([
     "tests/*.test.ts",
 ])
 
-SNAPSHOTS = glob(["tests/__snapshots__/*.snap"])
-
 SRC_DEPS = [
-    "@npm//es-abstract",
-    "@npm//@types/es-abstract",
     "//packages/ecma402-abstract:dist",
-    "//packages/intl-getcanonicallocales:dist",
 ]
 
 TEST_DEPS = SRC_DEPS + [
     "//packages/intl-pluralrules",
     "//packages/ecma402-abstract:types",
+    "//packages/intl-getcanonicallocales:dist",
     "//packages/intl-getcanonicallocales:types",
 ]
 
@@ -95,32 +95,37 @@ ts_compile(
     name = "dist",
     package_name = "@formatjs/%s" % PACKAGE_NAME,
     srcs = SRCS,
+    skip_esm = False,
     deps = SRC_DEPS,
 )
 
 # Bc this is too big
 [jest_test(
     name = "unit-%s" % f[f.rindex("/") + 1:f.rindex(".")],
-    srcs = SRCS + [f] + TEST_LOCALE_DATA + SNAPSHOTS,
+    size = "large",
+    srcs = SRCS + [f] + TEST_LOCALE_DATA + glob(["tests/__snapshots__/%s.*" % f[f.rindex("/") + 1:f.rindex(".")]]),
     deps = TEST_DEPS,
 ) for f in TESTS]
 
 # CLDR
 CLDR_DEPS = [
     ":cldr-raw",
-    "scripts/cldr.ts",
-    "//:tsconfig.json",
     "@npm//@types/fs-extra",
     "@npm//@types/minimist",
     "@npm//@types/node",
-    "@npm//fs-extra",
     "@npm//fast-glob",
+    "@npm//fs-extra",
     "@npm//minimist",
+    "@npm//tslib",
+    "//:tsconfig.json",
+    "scripts/cldr.ts",
 ]
 
 ts_node(
     name = "cldr-raw",
     args = [
+        "--compiler-options",
+        "{\"target\":\"es2017\"}",
         "$(execpath scripts/cldr-raw.ts)",
         "--outDir",
         "$(@D)",
@@ -145,9 +150,13 @@ ts_node(
         "@npm//fs-extra",
         "@npm//lodash",
         "@npm//minimist",
+        "@npm//tslib",
     ],
     output_dir = True,
-    visibility = ["//packages/react-intl:__subpackages__"],
+    visibility = [
+        "//packages/intl:__subpackages__",
+        "//packages/react-intl:__subpackages__",
+    ],
 )
 
 ts_node(
@@ -161,7 +170,10 @@ ts_node(
     ],
     data = CLDR_DEPS,
     output_dir = True,
-    visibility = ["//packages/react-intl:__subpackages__"],
+    visibility = [
+        "//packages/intl:__subpackages__",
+        "//packages/react-intl:__subpackages__",
+    ],
 )
 
 [generate_src_file(
@@ -220,26 +232,7 @@ generate_src_file(
         "@npm//fs-extra",
         "@npm//lodash",
         "@npm//minimist",
-    ],
-)
-
-# digit-mapping
-generate_src_file(
-    name = "digit-mapping",
-    src = "src/data/digit-mapping.json",
-    args = [
-        "$(execpath scripts/digit-mapping.ts)",
-        "--out",
-        "$@",
-    ],
-    data = [
-        "scripts/digit-mapping.ts",
-        "//:tsconfig.json",
-        "@npm//@types/fs-extra",
-        "@npm//@types/minimist",
-        "@npm//@types/node",
-        "@npm//fs-extra",
-        "@npm//minimist",
+        "@npm//tslib",
     ],
 )
 
@@ -268,6 +261,7 @@ generate_src_file(
         "@npm//fs-extra",
         "@npm//lodash",
         "@npm//minimist",
+        "@npm//tslib",
     ],
 )
 
@@ -290,6 +284,7 @@ generate_src_file(
         "@npm//@types/node",
         "@npm//fs-extra",
         "@npm//minimist",
+        "@npm//tslib",
     ],
 )
 
@@ -320,19 +315,24 @@ rollup_bundle(
         "@npm//@rollup/plugin-commonjs",
         "@npm//@rollup/plugin-replace",
         "@npm//@rollup/plugin-json",
+        "//packages/intl-getcanonicallocales:dist",
     ] + SRC_DEPS,
 )
 
 test262_harness_test(
     name = "test262",
+    size = "large",
     data = [
         "test262-polyfill.js",
         "//:test262-all",
         "//:test262-numberformat",
     ],
+    tags = ["exclusive"],
     templated_args = [
         "--reporter-keys",
         "file,attrs,result",
+        "--timeout",
+        "30000",
         "--prelude",
         "$(rootpath test262-polyfill.js)",
         "$(rootpaths //:test262-numberformat)",
@@ -343,4 +343,45 @@ generated_file_test(
     name = "tsconfig_json",
     src = "tsconfig.json",
     generated = "//tools:tsconfig.golden.json",
+)
+
+rollup_bundle(
+    name = "polyfill.umd",
+    srcs = [":dist-esm"],
+    args = [
+        "--name",
+        "IntlPluralRules",
+        "--no-sourcemap",
+    ],
+    config_file = "//:rollup.config.js",
+    entry_point = "lib/polyfill.js",
+    format = "umd",
+    deps = [
+        "@npm//@rollup/plugin-node-resolve",
+        "@npm//@rollup/plugin-commonjs",
+        "@npm//@rollup/plugin-replace",
+        "@npm//@rollup/plugin-json",
+        "@npm//tslib",
+    ] + SRC_DEPS,
+)
+
+terser_minified(
+    name = "polyfill.umd.min",
+    src = "polyfill.umd.js",
+    sourcemap = False,
+)
+
+prettier_check(
+    name = "prettier",
+    srcs = glob(
+        [
+            "**/*.ts",
+        ],
+        exclude = [
+            "BUILD",
+            "src/data/*",
+            "test262-main.ts",
+            "tests/__snapshots__/*",
+        ],
+    ) + ["README.md"],
 )

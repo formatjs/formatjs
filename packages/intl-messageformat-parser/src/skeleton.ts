@@ -1,6 +1,5 @@
 import {NumberSkeletonToken} from './types';
-import {NumberFormatOptions} from '@formatjs/intl-numberformat';
-
+import {NumberFormatOptions} from '@formatjs/ecma402-abstract';
 /**
  * https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
  * Credit: https://github.com/caridy/intl-datetimeformat-pattern/blob/master/index.js

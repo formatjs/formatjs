@@ -56,6 +56,22 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
     noMatch,
     spreadJsx,
     emptyFnCall,
+    {
+      code: `
+        intl.formatMessage({
+          defaultMessage: '{count, plural, one {#} other {# more}}',
+          description: 'asd'
+      })`,
+      options: [{ignoreList: ['count']}],
+    },
+    {
+      code: `
+        intl.formatMessage({
+          defaultMessage: '<b>foo</b>',
+          description: 'asd'
+      })`,
+      options: [{ignoreList: ['b']}],
+    },
   ],
   invalid: [
     {
@@ -69,6 +85,14 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
           message: 'Missing value for placeholder "count"',
         },
       ],
+    },
+    {
+      code: `
+        intl.formatMessage({
+          defaultMessage: '<b>foo</b>',
+          description: 'asd'
+      })`,
+      errors: [{message: 'Missing value for placeholder "b"'}],
     },
     {
       code: `

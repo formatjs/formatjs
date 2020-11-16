@@ -10,18 +10,17 @@ import * as NumberFields from 'cldr-numbers-full/main/en/numbers.json';
 import {sync as globSync} from 'fast-glob';
 import {resolve, dirname} from 'path';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
-import {
-  RawDateTimeLocaleInternalData,
-  TimeZoneNameData,
-  DateTimeFormatOptions,
-  Formats,
-} from '../src/types';
+import {RawDateTimeLocaleInternalData, TimeZoneNameData} from '../src/types';
 import * as rawTimeData from 'cldr-core/supplemental/timeData.json';
 import * as rawCalendarPreferenceData from 'cldr-core/supplemental/calendarPreferenceData.json';
 import * as TimeZoneNames from 'cldr-dates-full/main/en/timeZoneNames.json';
 import * as metaZones from 'cldr-core/supplemental/metaZones.json';
-import {parseDateTimeSkeleton} from '../src/skeleton';
 import IntlLocale from '@formatjs/intl-locale';
+import {
+  DateTimeFormatOptions,
+  Formats,
+  parseDateTimeSkeleton,
+} from '@formatjs/ecma402-abstract';
 const {timeData} = rawTimeData.supplemental;
 const processedTimeData = Object.keys(timeData).reduce(
   (all: Record<string, string[]>, k) => {
@@ -56,7 +55,7 @@ function isTimeFormatOnly(opts: DateTimeFormatOptions) {
   );
 }
 
-export function getAllLocales() {
+export function getAllLocales(): string[] {
   return globSync('*/ca-gregorian.json', {
     cwd: resolve(
       dirname(require.resolve('cldr-dates-full/package.json')),
@@ -93,18 +92,22 @@ const tzToMetaZoneMap = metaZones.supplemental.metaZones.metazones.reduce(
   {}
 );
 
-function loadDatesFields(locale: string): RawDateTimeLocaleInternalData {
-  const gregorian = (require(`cldr-dates-full/main/${locale}/ca-gregorian.json`) as typeof DateFields)
-    .main[locale as 'en'].dates.calendars.gregorian;
-  const timeZoneNames = (require(`cldr-dates-full/main/${locale}/timeZoneNames.json`) as typeof TimeZoneNames)
-    .main[locale as 'en'].dates.timeZoneNames;
-  let nu: string | null = null;
-  try {
-    nu = (require(`cldr-numbers-full/main/${locale}/numbers.json`) as typeof NumberFields)
-      .main[locale as 'en'].numbers.defaultNumberingSystem;
-  } catch (e) {
-    // Ignore
-  }
+async function loadDatesFields(
+  locale: string
+): Promise<RawDateTimeLocaleInternalData> {
+  const [caGregorian, tzn, numbers] = await Promise.all([
+    import(`cldr-dates-full/main/${locale}/ca-gregorian.json`),
+    import(`cldr-dates-full/main/${locale}/timeZoneNames.json`),
+    import(`cldr-numbers-full/main/${locale}/numbers.json`).catch(
+      _ => undefined
+    ),
+  ]);
+  const gregorian = (caGregorian as typeof DateFields).main[locale as 'en']
+    .dates.calendars.gregorian;
+  const timeZoneNames = (tzn as typeof TimeZoneNames).main[locale as 'en'].dates
+    .timeZoneNames;
+  const nu = (numbers as typeof NumberFields | undefined)?.main[locale as 'en']
+    .numbers.defaultNumberingSystem;
 
   let hc: string[] = [];
   let region: string | undefined;
@@ -171,7 +174,7 @@ function loadDatesFields(locale: string): RawDateTimeLocaleInternalData {
 
   const {short, full, medium, long} = gregorian.dateTimeFormats;
 
-  const {availableFormats} = gregorian.dateTimeFormats;
+  const {availableFormats, intervalFormats} = gregorian.dateTimeFormats;
   const parsedAvailableFormats: Array<[string, string, Formats]> = Object.keys(
     availableFormats
   )
@@ -283,6 +286,8 @@ function loadDatesFields(locale: string): RawDateTimeLocaleInternalData {
     formats: {
       gregory: allFormats,
     },
+    // @ts-ignore
+    intervalFormats,
     hourCycle: hc[0],
     nu: nu ? [nu] : [],
     ca: (
@@ -307,12 +312,13 @@ function loadDatesFields(locale: string): RawDateTimeLocaleInternalData {
   };
 }
 
-export function extractDatesFields(
+export async function extractDatesFields(
   locales: string[] = AVAILABLE_LOCALES.availableLocales.full
-): Record<string, RawDateTimeLocaleInternalData> {
+): Promise<Record<string, RawDateTimeLocaleInternalData>> {
+  const data = await Promise.all(locales.map(loadDatesFields));
   return locales.reduce(
-    (all: Record<string, RawDateTimeLocaleInternalData>, locale) => {
-      all[locale] = loadDatesFields(locale);
+    (all: Record<string, RawDateTimeLocaleInternalData>, locale, i) => {
+      all[locale] = data[i];
       return all;
     },
     {}

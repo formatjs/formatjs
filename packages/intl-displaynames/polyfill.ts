@@ -1,16 +1,5 @@
-import {DisplayNames, DisplayNamesOptions} from '.';
+import {DisplayNames} from '.';
 import {shouldPolyfill} from './should-polyfill';
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace Intl {
-    const DisplayNames: {
-      new (
-        locales?: string | string[],
-        options?: DisplayNamesOptions
-      ): DisplayNames;
-    };
-  }
-}
 
 if (shouldPolyfill()) {
   Object.defineProperty(Intl, 'DisplayNames', {

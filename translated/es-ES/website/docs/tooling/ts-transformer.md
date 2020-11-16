@@ -14,9 +14,30 @@ Process string messages for translation from modules that use react-intl, specif
 
 ## Installation
 
+import Tabs from '@theme/Tabs' import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
 ```sh
-$ npm install @formatjs/ts-transformer
+npm i @formatjs/ts-transformer
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add @formatjs/ts-transformer
+```
+
+</TabItem>
+</Tabs>
 
 ## Usage
 
@@ -41,6 +62,7 @@ module.exports = {
                 before: [
                   transform({
                     overrideIdFn: '[sha512:contenthash:base64:6]',
+                    extractFromFormatMessageCall: true,
                     ast: true,
                   }),
                 ],
@@ -56,7 +78,31 @@ module.exports = {
 
 ### Via `ts-jest` in `jest.config.js`
 
-Take a look at [`ts-jest` guide](https://github.com/kulshekhar/ts-jest/blob/master/docs/user/config/astTransformers.md) on how to incorporate custom AST Transformers.
+:::caution This requires `ts-jest@26.4.0` or later :::
+
+```js
+// jest.config.js
+module.exports = {
+  // [...]
+  globals: {
+    'ts-jest': {
+      astTransformers: {
+        before: [
+          {
+            path: '@formatjs/ts-transformer/ts-jest-integration',
+            options: {
+              // options
+              overrideIdFn: '[sha512:contenthash:base64:6]',
+              extractFromFormatMessageCall: true,
+              ast: true,
+            },
+          },
+        ],
+      },
+    },
+  },
+}
+```
 
 ### Via `ttypescript`
 
@@ -69,10 +115,37 @@ Take a look at [`ts-jest` guide](https://github.com/kulshekhar/ts-jest/blob/mast
         "import": "transform",
         "type": "config",
         "overrideIdFn": "[sha512:contenthash:base64:6]",
+        "extractFromFormatMessageCall": true,
         "ast": true
       }
     ]
   }
+}
+```
+
+### Via `rollup-plugin-typescript2`
+
+```ts
+// rollup.config.js
+import typescript from 'rollup-plugin-typescript2'
+import {transform} from '@formatjs/ts-transformer'
+
+export default {
+  input: './main.ts',
+
+  plugins: [
+    typescript({
+      transformers: () => ({
+        before: [
+          transform({
+            overrideIdFn: '[sha512:contenthash:base64:6]',
+            extractFromFormatMessageCall: true,
+            ast: true,
+          }),
+        ],
+      }),
+    }),
+  ],
 }
 ```
 
@@ -82,9 +155,7 @@ Take a look at [`ts-jest` guide](https://github.com/kulshekhar/ts-jest/blob/mast
 
 A function with the signature `(id: string, defaultMessage: string, description: string|object) => string` which allows you to override the ID both in the extracted javascript and messages.
 
-### **`idInterpolationPattern`**
-
-If certain message descriptors don't have id, this `pattern` will be used to automaticallygenerate IDs for them. Default to `[contenthash:5]`. See https://github.com/webpack/loader-utils#interpolatename for sample patterns.
+Alternatively, `overrideIdFn` can be a template string, which is used only if the message ID is empty.
 
 ### **`removeDefaultMessage`**
 
@@ -93,6 +164,10 @@ Remove `defaultMessage` field in generated js after extraction.
 ### **`extractSourceLocation`**
 
 Whether the metadata about the location of the message in the source file should be extracted. If `true`, then `file`, `start`, and `end` fields will exist for each extracted message descriptors. Defaults to `false`.
+
+### **`extractFromFormatMessageCall`**
+
+Opt-in to extract from `intl.formatMessage` call with the same restrictions, e.g: has to be called with object literal such as `intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'}`
 
 ### **`additionalComponentNames`**
 

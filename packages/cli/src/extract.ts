@@ -7,8 +7,9 @@ import {
   MessageDescriptor,
 } from '@formatjs/ts-transformer';
 import ts from 'typescript';
-import {resolveBuiltinFormatter} from './formatters';
+import {resolveBuiltinFormatter, Formatter} from './formatters';
 import stringify from 'json-stable-stringify';
+
 export interface ExtractionResult<M = Record<string, string>> {
   /**
    * List of extracted messages
@@ -17,7 +18,7 @@ export interface ExtractionResult<M = Record<string, string>> {
   /**
    * Metadata extracted w/ `pragma`
    */
-  meta: M;
+  meta?: M;
 }
 
 export interface ExtractedMessageDescriptor extends MessageDescriptor {
@@ -29,6 +30,10 @@ export interface ExtractedMessageDescriptor extends MessageDescriptor {
    * Column number
    */
   col?: number;
+  /**
+   * Metadata extracted from pragma
+   */
+  meta?: Record<string, string>;
 }
 
 export type ExtractCLIOptions = Omit<
@@ -62,7 +67,7 @@ export type ExtractOpts = Opts & {
   /**
    * Path to a formatter file that controls the shape of JSON file from `outFile`.
    */
-  format?: string;
+  format?: string | Formatter;
 } & Pick<Opts, 'onMsgExtracted' | 'onMetaExtracted'>;
 
 function calculateLineColFromOffset(
@@ -83,8 +88,25 @@ function processFile(
   fn: string,
   {idInterpolationPattern, ...opts}: Opts & {idInterpolationPattern?: string}
 ) {
-  let messages: MessageDescriptor[] = [];
-  let meta: Record<string, string> = {};
+  let messages: ExtractedMessageDescriptor[] = [];
+  let meta: Record<string, string> | undefined;
+
+  opts = {
+    ...opts,
+    onMsgExtracted(_, msgs) {
+      if (opts.extractSourceLocation) {
+        msgs = msgs.map(msg => ({
+          ...msg,
+          ...calculateLineColFromOffset(source, msg.start),
+        }));
+      }
+      messages = messages.concat(msgs);
+    },
+    onMetaExtracted(_, m) {
+      meta = m;
+    },
+  };
+
   if (!opts.overrideIdFn && idInterpolationPattern) {
     opts = {
       ...opts,
@@ -101,32 +123,46 @@ function processFile(
               : defaultMessage,
           }
         ),
-      onMsgExtracted(_, msgs) {
-        if (opts.extractSourceLocation) {
-          msgs = msgs.map(msg => ({
-            ...msg,
-            ...calculateLineColFromOffset(source, msg.start),
-          }));
-        }
-        messages = messages.concat(msgs);
-      },
-      onMetaExtracted(_, m) {
-        meta = m;
-      },
     };
   }
+  let output;
+  try {
+    output = ts.transpileModule(source, {
+      compilerOptions: {
+        allowJs: true,
+        target: ts.ScriptTarget.ESNext,
+        noEmit: true,
+        experimentalDecorators: true,
+      },
+      reportDiagnostics: true,
+      fileName: fn,
+      transformers: {
+        before: [transform(opts)],
+      },
+    });
+  } catch (e) {
+    e.message = `Error processing file ${fn} 
+${e.message || ''}`;
+    throw e;
+  }
+  if (output.diagnostics) {
+    const errs = output.diagnostics.filter(
+      d => d.category === ts.DiagnosticCategory.Error
+    );
+    if (errs.length) {
+      throw new Error(
+        ts.formatDiagnosticsWithColorAndContext(errs, {
+          getCanonicalFileName: fileName => fileName,
+          getCurrentDirectory: () => process.cwd(),
+          getNewLine: () => ts.sys.newLine,
+        })
+      );
+    }
+  }
 
-  ts.transpileModule(source, {
-    compilerOptions: {
-      allowJs: true,
-      target: ts.ScriptTarget.ESNext,
-      noEmit: true,
-    },
-    fileName: fn,
-    transformers: {
-      before: [transform(opts)],
-    },
-  });
+  if (meta) {
+    messages.forEach(m => (m.meta = meta));
+  }
   return {messages, meta};
 }
 

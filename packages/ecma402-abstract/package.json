@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/ecma402-abstract",
-  "version": "1.0.2",
+  "version": "1.4.0",
   "description": "A collection of implementation for ECMAScript abstract operations",
   "keywords": [
     "intl",
@@ -13,6 +13,9 @@
     "ecma262",
     "format"
   ],
+  "dependencies": {
+    "tslib": "^2.0.1"
+  },
   "author": "Long Ho <holevietlong@gmail.com",
   "bugs": {
     "url": "https://github.com/formatjs/formatjs/issues"
@@ -27,9 +30,5 @@
   "types": "index.d.ts",
   "homepage": "https://github.com/formatjs/formatjs",
   "license": "MIT",
-  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c",
-  "dependencies": {
-    "@types/es-abstract": "^1.17.1",
-    "es-abstract": "^1.17.6"
-  }
+  "gitHead": "a7842673d8ad205171ad7c8cb8bb2f318b427c0c"
 }

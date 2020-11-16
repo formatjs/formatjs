@@ -3,6 +3,232 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.12.7](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.12.6...@formatjs/ts-transformer@2.12.7) (2020-11-12)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+
+
+
+
+## [2.12.6](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.12.5...@formatjs/ts-transformer@2.12.6) (2020-11-10)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** set ts-jest dep as optional, fix [#2299](https://github.com/formatjs/formatjs/issues/2299) ([07b6ae8](https://github.com/formatjs/formatjs/commit/07b6ae8d3c722e0135d7c23c335271f4e6906270))
+
+
+
+
+
+## [2.12.5](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.12.4...@formatjs/ts-transformer@2.12.5) (2020-11-09)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+
+
+
+
+## [2.12.4](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.12.3...@formatjs/ts-transformer@2.12.4) (2020-11-09)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+
+
+
+
+## [2.12.3](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.12.2...@formatjs/ts-transformer@2.12.3) (2020-11-05)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+
+
+
+
+## [2.12.2](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.12.1...@formatjs/ts-transformer@2.12.2) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** lock down monorepo dep version ([b171ad0](https://github.com/formatjs/formatjs/commit/b171ad0c396330e01536a086f49c3a2a8fddaa91))
+
+
+
+
+
+## [2.12.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.12.0...@formatjs/ts-transformer@2.12.1) (2020-11-04)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+
+
+
+
+# [2.12.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.11.5...@formatjs/ts-transformer@2.12.0) (2020-10-28)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** add string concat static evaluation, fix [#2252](https://github.com/formatjs/formatjs/issues/2252) ([24454ba](https://github.com/formatjs/formatjs/commit/24454ba57e76ef9cf9ef75a2c17ee7fd825100d0))
+
+
+
+
+
+## [2.11.5](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.11.4...@formatjs/ts-transformer@2.11.5) (2020-10-27)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** clarify comment in docstring ([d729c4a](https://github.com/formatjs/formatjs/commit/d729c4ad496a476c9293c973486b12599d6e753c))
+* **@formatjs/ts-transformer:** fix resourcePath interpolation ([09ed2de](https://github.com/formatjs/formatjs/commit/09ed2de1617afdbff2391731279c522ac60cc929))
+
+
+
+
+
+## [2.11.4](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.11.3...@formatjs/ts-transformer@2.11.4) (2020-10-25)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** fix node clone issue, fix [#2152](https://github.com/formatjs/formatjs/issues/2152) ([556cb3b](https://github.com/formatjs/formatjs/commit/556cb3baaa0968186d0ad36d4cddadeacd05e89b))
+
+
+
+
+
+## [2.11.3](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.11.2...@formatjs/ts-transformer@2.11.3) (2020-10-10)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+
+
+
+
+## [2.11.2](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.11.1...@formatjs/ts-transformer@2.11.2) (2020-10-08)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+
+
+
+
+## [2.11.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.11.0...@formatjs/ts-transformer@2.11.1) (2020-10-01)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** capture template literal in jsx node, fix [#2158](https://github.com/formatjs/formatjs/issues/2158) ([b75097e](https://github.com/formatjs/formatjs/commit/b75097ebbd967a237681abeaa1589260437d739e))
+
+
+
+
+
+# [2.11.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.10.1...@formatjs/ts-transformer@2.11.0) (2020-09-25)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** add 1st party ts-jest-integration, update docs, fix [#2088](https://github.com/formatjs/formatjs/issues/2088) ([3a0b0a5](https://github.com/formatjs/formatjs/commit/3a0b0a5f3eed4796cffc7a6cbeb3bf1be4267cb6))
+
+
+
+
+
+## [2.10.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.10.0...@formatjs/ts-transformer@2.10.1) (2020-09-18)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+
+
+
+
+# [2.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.9.1...@formatjs/ts-transformer@2.10.0) (2020-09-12)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** expose integration w/ ts-jest, fix [#2088](https://github.com/formatjs/formatjs/issues/2088) ([7e8fc33](https://github.com/formatjs/formatjs/commit/7e8fc33a431ac61fd9786a78178342b4f094216e))
+
+
+
+
+
+## [2.9.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.9.0...@formatjs/ts-transformer@2.9.1) (2020-09-09)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+
+
+
+
+# [2.9.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.8.0...@formatjs/ts-transformer@2.9.0) (2020-09-03)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** trim trailing/leading spaces, newlines & ([6eaa774](https://github.com/formatjs/formatjs/commit/6eaa7743e86d3ec63e1612308aa15dcddd3e8135)), closes [#2028](https://github.com/formatjs/formatjs/issues/2028)
+
+
+
+
+
+# [2.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.7.10...@formatjs/ts-transformer@2.8.0) (2020-08-30)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** upgrade TS to 4.0 ([ce739be](https://github.com/formatjs/formatjs/commit/ce739be24ef50ceabc4d24530807c4bf6e53d5f3))
+
+
+
+
+
+## [2.7.10](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.7.9...@formatjs/ts-transformer@2.7.10) (2020-08-28)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+
+
+
+
+## [2.7.9](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.7.8...@formatjs/ts-transformer@2.7.9) (2020-08-25)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+
+
+
+
+## [2.7.8](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.7.7...@formatjs/ts-transformer@2.7.8) (2020-08-22)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+
+
+
+
+## [2.7.7](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.7.6...@formatjs/ts-transformer@2.7.7) (2020-08-21)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+
+
+
+
+## [2.7.6](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.7.5...@formatjs/ts-transformer@2.7.6) (2020-08-20)
+
+
+### Bug Fixes
+
+* bump intl-messageformat-parser ([8bbfa04](https://github.com/formatjs/formatjs/commit/8bbfa047da159662700b7e500879da20e54c0f0b))
+
+
+
+
+
 ## [2.7.5](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.7.4...@formatjs/ts-transformer@2.7.5) (2020-08-19)
 
 **Note:** Version bump only for package @formatjs/ts-transformer

@@ -702,6 +702,10 @@ if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') 
   if (ord) return 'other';
   return n == 1 ? 'one' : 'other';
 }}},"availableLocales":["pap"]},
+{"data":{"pcm":{"categories":{"cardinal":["one","other"],"ordinal":["other"]},"fn":function(n, ord) {
+  if (ord) return 'other';
+  return n >= 0 && n <= 1 ? 'one' : 'other';
+}}},"availableLocales":["pcm"]},
 {"data":{"pl":{"categories":{"cardinal":["one","few","many","other"],"ordinal":["other"]},"fn":function(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   if (ord) return 'other';
@@ -768,6 +772,12 @@ if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') 
   if (ord) return 'other';
   return n == 1 ? 'one' : 'other';
 }}},"availableLocales":["saq"]},
+{"data":{"sat":{"categories":{"cardinal":["one","two","other"],"ordinal":["other"]},"fn":function(n, ord) {
+  if (ord) return 'other';
+  return n == 1 ? 'one'
+    : n == 2 ? 'two'
+    : 'other';
+}}},"availableLocales":["sat"]},
 {"data":{"sc":{"categories":{"cardinal":["one","other"],"ordinal":["many","other"]},"fn":function(n, ord) {
   var s = String(n).split('.'), v0 = !s[1];
   if (ord) return (n == 11 || n == 8 || n == 80 || n == 800) ? 'many' : 'other';

@@ -2,7 +2,7 @@ module.exports = {
   preset: 'ts-jest',
   globals: {
     'ts-jest': {
-      tsConfig: 'tsconfig.json',
+      tsconfig: 'tsconfig.json',
       diagnostics: false,
     },
   },
@@ -23,5 +23,4 @@ module.exports = {
       statements: 95,
     },
   },
-  snapshotSerializers: ['enzyme-to-json/serializer'],
 };

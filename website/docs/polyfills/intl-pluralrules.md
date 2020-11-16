@@ -10,9 +10,31 @@ A spec-compliant polyfill for [`Intl.PluralRules`](https://developer.mozilla.org
 
 ## Installation
 
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i @formatjs/intl-pluralrules
 ```
-npm install @formatjs/intl-pluralrules
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add @formatjs/intl-pluralrules
 ```
+
+</TabItem>
+</Tabs>
 
 ## Requirements
 

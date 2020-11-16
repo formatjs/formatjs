@@ -5,9 +5,31 @@ title: CLI
 
 ## Installation
 
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
 ```sh
 npm i -D @formatjs/cli
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add -D @formatjs/cli
+```
+
+</TabItem>
+</Tabs>
 
 Add the following command to your `package.json` `scripts`:
 
@@ -70,7 +92,7 @@ formatjs extract --help
 ### `--format [path]`
 
 Path to a formatter file that controls the shape of JSON file from `--out-file`.
-The formatter file must export a function called `format` with the signature
+The formatter file must export a function called `format` with the signature.
 
 ```tsx
 type FormatFn = <T = Record<string, MessageDescriptor>>(
@@ -79,6 +101,8 @@ type FormatFn = <T = Record<string, MessageDescriptor>>(
 ```
 
 This is especially useful to convert from our extracted format to a TMS-specific format.
+
+See our [builtin formatters](https://github.com/formatjs/formatjs/tree/main/packages/cli/src/formatters) for examples.
 
 ### `--out-file [path]`
 
@@ -122,7 +146,7 @@ import {FormattedMessage} from 'react-intl'
 ;<FormattedMessage defaultMessage="foo" id="bar" />
 ```
 
-and with option `{pragma: "@intl-meta"}`, we'll parse out `// @intl-meta project:my-custom-project` into `{project: 'my-custom-project'}` in the result file.
+and with option `{pragma: "intl-meta"}`, we'll parse out `// @intl-meta project:my-custom-project` into `{project: 'my-custom-project'}` in the result file.
 
 ## Compilation
 
@@ -143,7 +167,9 @@ type CompileFn = <T = Record<string, MessageDescriptor>>(
 ) => Record<string, string>
 ```
 
-This is especially useful to convert from a TMS-specific format back to react-intl format
+This is especially useful to convert from a TMS-specific format back to react-intl format.
+
+See our [builtin formatters](https://github.com/formatjs/formatjs/tree/main/packages/cli/src/formatters) for examples.
 
 ### `--out-file <output>`
 
@@ -152,6 +178,19 @@ The target file that contains compiled messages.
 ### `--ast`
 
 Whether to compile message into AST instead of just string. See [Advanced Usage](../guides/advanced-usage.md)
+
+### `--pseudo-locale <pseudoLocale>`
+
+Whether we should compile messages into pseudo locales instead. Available pseudo-locales:
+
+Given the English message `my name is {name}`
+
+| Locale  | Message                                      |
+| ------- | -------------------------------------------- |
+| `xx-LS` | `my name is {name}SSSSSSSSSSSSSSSSSSSSSSSSS` |
+| `xx-AC` | `MY NAME IS {name}`                          |
+| `xx-HA` | `[javascript]my name is {name}`              |
+| `en-XA` | `ṁẏ ńâṁè íś {name}`                          |
 
 ## Folder Compilation
 
@@ -189,6 +228,7 @@ We provide the following built-in formatters to integrate with 3rd party TMSes:
 | [Phrase](https://help.phrase.com/help/simple-json)                                        | `simple`    |
 | [Crowdin Chrome JSON](https://support.crowdin.com/file-formats/chrome-json/)              | `crowdin`   |
 | [Lokalise Structured JSON](https://docs.lokalise.com/en/articles/3229161-structured-json) | `lokalise`  |
+| [locize](https://docs.locize.com/integration/supported-formats#json-nested)               | `simple`    |
 
 ## Custom Formatters
 

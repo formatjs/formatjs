@@ -9,16 +9,17 @@
     "deploy": "docusaurus deploy --out-dir dist"
   },
   "dependencies": {
-    "@docusaurus/core": "^2.0.0-alpha.61",
-    "@docusaurus/plugin-google-analytics": "^2.0.0-alpha.61",
-    "@docusaurus/preset-classic": "^2.0.0-alpha.61",
-    "@docusaurus/theme-live-codeblock": "^2.0.0-alpha.61",
+    "@docusaurus/core": "^2.0.0-alpha.66",
+    "@docusaurus/plugin-google-analytics": "^2.0.0-alpha.66",
+    "@docusaurus/preset-classic": "^2.0.0-alpha.66",
+    "@docusaurus/theme-live-codeblock": "^2.0.0-alpha.66",
+    "@formatjs/intl-displaynames": "^3.4.3",
     "classnames": "^2.2.6",
-    "intl-messageformat": "^9.2.3",
-    "intl-messageformat-parser": "^5.4.0",
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0",
-    "react-intl": "^5.6.3"
+    "intl-messageformat": "^9.3.15",
+    "intl-messageformat-parser": "^6.0.13",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-intl": "^5.9.1"
   },
   "browserslist": {
     "production": [
@@ -32,15 +33,7 @@
       "last 1 safari version"
     ]
   },
-  "prettier": {
-    "singleQuote": true,
-    "trailingComma": "es5",
-    "bracketSpacing": false,
-    "endOfLine": "lf",
-    "arrowParens": "avoid",
-    "semi": false
-  },
   "devDependencies": {
-    "prettier": "^2.0.5"
+    "prettier": "^2.1.2"
   }
 }

@@ -10,7 +10,8 @@
     "**/.classpath": true,
     "**/.project": true,
     "**/.settings": true,
-    "**/.factorypath": true
+    "**/.factorypath": true,
+    "dist": true
   },
   "files.watcherExclude": {
     "**/.git/objects/**": true,

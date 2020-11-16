@@ -3,6 +3,141 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.3.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.3.5...@formatjs/intl-listformat@4.3.6) (2020-11-12)
+
+**Note:** Version bump only for package @formatjs/intl-listformat
+
+
+
+
+
+## [4.3.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.3.4...@formatjs/intl-listformat@4.3.5) (2020-11-09)
+
+**Note:** Version bump only for package @formatjs/intl-listformat
+
+
+
+
+
+## [4.3.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.3.3...@formatjs/intl-listformat@4.3.4) (2020-11-09)
+
+**Note:** Version bump only for package @formatjs/intl-listformat
+
+
+
+
+
+## [4.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.3.2...@formatjs/intl-listformat@4.3.3) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-listformat:** lock down monorepo dep version ([43c0e12](https://github.com/formatjs/formatjs/commit/43c0e127caaee81187779e7028869c1dca730ec5))
+
+
+
+
+
+## [4.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.3.1...@formatjs/intl-listformat@4.3.2) (2020-11-04)
+
+**Note:** Version bump only for package @formatjs/intl-listformat
+
+
+
+
+
+## [4.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.3.0...@formatjs/intl-listformat@4.3.1) (2020-10-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-listformat:** fix UMD bundle ([b7ac910](https://github.com/formatjs/formatjs/commit/b7ac910cb4eb8dc3895ba0d7468c0ed761a69302))
+
+
+
+
+
+# [4.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.2.10...@formatjs/intl-listformat@4.3.0) (2020-10-25)
+
+
+### Features
+
+* **@formatjs/intl-listformat:** upgrade cldr to v37 ([f61d7eb](https://github.com/formatjs/formatjs/commit/f61d7eb29f2d876890ff36840b23a1d07c58a6a1))
+
+
+
+
+
+## [4.2.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.2.9...@formatjs/intl-listformat@4.2.10) (2020-10-10)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-listformat:** fix err message for missing locale data, fix [#2203](https://github.com/formatjs/formatjs/issues/2203) ([ffd2468](https://github.com/formatjs/formatjs/commit/ffd24687e2850b9963bd36aa5c0f4b98a0f82fa7))
+
+
+
+
+
+## [4.2.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.2.8...@formatjs/intl-listformat@4.2.9) (2020-10-08)
+
+**Note:** Version bump only for package @formatjs/intl-listformat
+
+
+
+
+
+## [4.2.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.2.7...@formatjs/intl-listformat@4.2.8) (2020-10-01)
+
+**Note:** Version bump only for package @formatjs/intl-listformat
+
+
+
+
+
+## [4.2.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.2.6...@formatjs/intl-listformat@4.2.7) (2020-09-18)
+
+**Note:** Version bump only for package @formatjs/intl-listformat
+
+
+
+
+
+## [4.2.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.2.5...@formatjs/intl-listformat@4.2.6) (2020-09-09)
+
+**Note:** Version bump only for package @formatjs/intl-listformat
+
+
+
+
+
+## [4.2.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.2.4...@formatjs/intl-listformat@4.2.5) (2020-08-28)
+
+**Note:** Version bump only for package @formatjs/intl-listformat
+
+
+
+
+
+## [4.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.2.3...@formatjs/intl-listformat@4.2.4) (2020-08-25)
+
+**Note:** Version bump only for package @formatjs/intl-listformat
+
+
+
+
+
+## [4.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.2.2...@formatjs/intl-listformat@4.2.3) (2020-08-21)
+
+
+### Bug Fixes
+
+* add back polyfill.umd, fix [#2013](https://github.com/formatjs/formatjs/issues/2013) ([b9cfbd2](https://github.com/formatjs/formatjs/commit/b9cfbd2eeead6a5165b0e4cbf1ef3edbfbeca8ce))
+
+
+
+
+
 ## [4.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.2.1...@formatjs/intl-listformat@4.2.2) (2020-08-19)
 
 **Note:** Version bump only for package @formatjs/intl-listformat

@@ -31,7 +31,7 @@ function extractCurrencyPattern(d: Currencies['USD']) {
   );
 }
 
-export function getAllLocales() {
+export function getAllLocales(): string[] {
   return globSync('*/units.json', {
     cwd: resolve(
       dirname(require.resolve('cldr-units-full/package.json')),
@@ -40,9 +40,12 @@ export function getAllLocales() {
   }).map(dirname);
 }
 
-function loadCurrencies(locale: string): Record<string, CurrencyData> {
-  const currencies = (require(`cldr-numbers-full/main/${locale}/currencies.json`) as typeof CurrenciesData)
-    .main[locale as 'en'].numbers.currencies;
+async function loadCurrencies(
+  locale: string
+): Promise<Record<string, CurrencyData>> {
+  const currencies = ((await import(
+    `cldr-numbers-full/main/${locale}/currencies.json`
+  )) as typeof CurrenciesData).main[locale as 'en'].numbers.currencies;
   return (Object.keys(currencies) as Array<keyof typeof currencies>).reduce(
     (all: Record<string, CurrencyData>, isoCode) => {
       const d = currencies[isoCode] as Currencies['USD'];
@@ -58,12 +61,13 @@ function loadCurrencies(locale: string): Record<string, CurrencyData> {
   );
 }
 
-export function generateDataForLocales(
+export async function generateDataForLocales(
   locales: string[] = AVAILABLE_LOCALES.availableLocales.full
-): Record<string, Record<string, CurrencyData>> {
-  return locales.reduce(
-    (all: Record<string, Record<string, CurrencyData>>, locale) => {
-      all[locale] = loadCurrencies(locale);
+): Promise<Record<string, Record<string, CurrencyData>>> {
+  const data = await Promise.all(locales.map(loadCurrencies));
+  return data.reduce(
+    (all: Record<string, Record<string, CurrencyData>>, d, i) => {
+      all[locales[i]] = d;
       return all;
     },
     {}

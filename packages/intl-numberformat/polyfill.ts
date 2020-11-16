@@ -1,9 +1,6 @@
-import {
-  NumberFormat,
-  toLocaleString as _toLocaleString,
-  NumberFormatOptions,
-} from './';
-import {defineProperty} from '@formatjs/ecma402-abstract';
+import {NumberFormat} from './src/core';
+import {toLocaleString as _toLocaleString} from './src/to_locale_string';
+import {defineProperty, NumberFormatOptions} from '@formatjs/ecma402-abstract';
 import {shouldPolyfill} from './should-polyfill';
 
 if (shouldPolyfill()) {

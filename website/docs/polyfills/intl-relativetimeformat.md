@@ -10,9 +10,31 @@ A spec-compliant polyfill for Intl.RelativeTimeFormat fully tested by the [offic
 
 ## Installation
 
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
+```sh
+npm i @formatjs/intl-relativetimeformat
 ```
-npm install @formatjs/intl-relativetimeformat
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add @formatjs/intl-relativetimeformat
 ```
+
+</TabItem>
+</Tabs>
 
 ## Requirements
 

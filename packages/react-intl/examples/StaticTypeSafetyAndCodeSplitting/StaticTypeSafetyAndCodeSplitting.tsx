@@ -12,7 +12,8 @@ const Component: React.FC = () => {
     <>
       <h1>Static type safety + code splitting example</h1>
       <p>
-        Have a look at DevTools > Network: only "it.json" is loaded, not "en".
+        Have a look at DevTools &gt; Network: only "it.json" is loaded, not
+        "en".
       </p>
       <p>
         Also have a look at the examples source code for helpers allowing to

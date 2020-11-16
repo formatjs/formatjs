@@ -9,6 +9,9 @@ import React from 'react'
 import * as ReactIntl from 'react-intl'
 import IntlMessageFormat from 'intl-messageformat'
 import * as IntlMessageFormatParser from 'intl-messageformat-parser'
+// Our live code demo depends on `Intl.DisplayNames`, which isn't available as of Firefox 81.
+import '@formatjs/intl-displaynames/polyfill'
+import '@formatjs/intl-displaynames/locale-data/en'
 
 // Add react-live imports you need here
 const ReactLiveScope = {

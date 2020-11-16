@@ -9,15 +9,39 @@ import {
   createFormattedDateTimePartsComponent,
 } from './src/components/createFormattedComponent';
 import {
+  MessageDescriptor,
   CustomFormatConfig,
   FormatDateOptions,
-  MessageDescriptor,
-} from './src/types';
-import {NumberFormatOptions} from '@formatjs/intl-numberformat';
+} from '@formatjs/intl';
 import {IntlListFormatOptions} from '@formatjs/intl-listformat';
 import {DisplayNamesOptions} from '@formatjs/intl-displaynames';
-import {DateTimeFormatOptions} from '@formatjs/intl-datetimeformat';
-export * from './src/types';
+import {
+  DateTimeFormatOptions,
+  NumberFormatOptions,
+} from '@formatjs/ecma402-abstract';
+export {IntlConfig, IntlShape} from './src/types';
+export {
+  createIntlCache,
+  MessageDescriptor,
+  IntlCache,
+  Formatters,
+  IntlFormatters,
+  FormatDisplayNameOptions,
+  FormatListOptions,
+  FormatPluralOptions,
+  FormatRelativeTimeOptions,
+  FormatNumberOptions,
+  FormatDateOptions,
+  CustomFormatConfig,
+  CustomFormats,
+  UnsupportedFormatterError,
+  InvalidConfigError,
+  MissingDataError,
+  MessageFormatError,
+  MissingTranslationError,
+  IntlErrorCode as ReactIntlErrorCode,
+  IntlError as ReactIntlError,
+} from '@formatjs/intl';
 
 export function defineMessages<
   K extends keyof any,
@@ -55,7 +79,7 @@ export const FormattedTime: React.FC<
 export const FormattedNumber: React.FC<
   NumberFormatOptions &
     CustomFormatConfig & {
-      value: number;
+      value: number | bigint;
     }
 > = createFormattedComponent('formatNumber');
 export const FormattedList: React.FC<
@@ -85,5 +109,4 @@ export {FormattedNumberParts} from './src/components/createFormattedComponent';
 export {default as FormattedRelativeTime} from './src/components/relative';
 export {default as FormattedPlural} from './src/components/plural';
 export {default as FormattedMessage} from './src/components/message';
-export {createIntlCache} from './src/utils';
-export * from './src/error';
+export {default as FormattedDateTimeRange} from './src/components/dateTimeRange';

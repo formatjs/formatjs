@@ -13,6 +13,14 @@ defineMessage({
     defaultMessage: '{count, plural, one {#} other {# more}}',
     description: 'asd'
 })`,
+    `intl.formatMessage({
+  defaultMessage: '{count, plural, one {#} other {# more}}',
+  description: 'asd' + 'aaz'
+})`,
+    `import {FormattedMessage} from 'react-intl'
+const a = <FormattedMessage defaultMessage="{count2, plural, one {#} other {# more}}"
+description={'asd' + 'azz'}
+/>`,
     dynamicMessage,
     noMatch,
     spreadJsx,

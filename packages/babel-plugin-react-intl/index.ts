@@ -5,7 +5,7 @@
  */
 
 import {parse} from 'intl-messageformat-parser';
-const {declare} = require('@babel/helper-plugin-utils') as any;
+import {declare} from '@babel/helper-plugin-utils';
 import {PluginObj, types as t} from '@babel/core';
 
 import {
@@ -22,9 +22,10 @@ import {
   isTSAsExpression,
   isTypeCastExpression,
   isTSTypeAssertion,
+  TemplateLiteral,
 } from '@babel/types';
 import {NodePath, Scope} from '@babel/traverse';
-import validate from 'schema-utils';
+import {validate} from 'schema-utils';
 import * as OPTIONS_SCHEMA from './options.schema.json';
 import {OptionsSchema} from './options';
 import {interpolateName} from '@formatjs/ts-transformer';
@@ -91,13 +92,15 @@ interface State {
 }
 
 function getICUMessageValue(
-  messagePath?: NodePath<StringLiteral>,
+  messagePath?: NodePath<StringLiteral> | NodePath<TemplateLiteral>,
   {isJSXSource = false} = {}
 ) {
   if (!messagePath) {
     return '';
   }
-  const message = getMessageDescriptorValue(messagePath);
+  const message = getMessageDescriptorValue(messagePath)
+    .trim()
+    .replace(/\s+/gm, ' ');
 
   try {
     parse(message);
@@ -145,7 +148,10 @@ function getMessageDescriptorKey(path: NodePath<any>) {
 }
 
 function getMessageDescriptorValue(
-  path?: NodePath<StringLiteral> | NodePath<JSXExpressionContainer>
+  path?:
+    | NodePath<StringLiteral>
+    | NodePath<JSXExpressionContainer>
+    | NodePath<TemplateLiteral>
 ) {
   if (!path) {
     return '';
@@ -188,7 +194,7 @@ function evaluateMessageDescriptor(
   descriptorPath: MessageDescriptorPath,
   isJSXSource = false,
   filename: string,
-  idInterpolationPattern: string = '[contenthash:5]',
+  idInterpolationPattern = '[contenthash:5]',
   overrideIdFn?: OptionsSchema['overrideIdFn']
 ) {
   let id = getMessageDescriptorValue(descriptorPath.id);
@@ -201,7 +207,7 @@ function evaluateMessageDescriptor(
     id = overrideIdFn(id, defaultMessage, description, filename);
   } else if (!id && idInterpolationPattern && defaultMessage) {
     id = interpolateName(
-      {sourcePath: filename} as any,
+      {resourcePath: filename} as any,
       idInterpolationPattern,
       {
         content: description
@@ -459,7 +465,11 @@ export default declare((api: any, options: OptionsSchema) => {
 
         if (
           name.isJSXIdentifier() &&
-          (referencesImport(name, moduleSourceName, DEFAULT_COMPONENT_NAMES) ||
+          (referencesImport(
+            name as NodePath<any>,
+            moduleSourceName,
+            DEFAULT_COMPONENT_NAMES
+          ) ||
             additionalComponentNames.includes(name.node.name))
         ) {
           const attributes = path
@@ -526,10 +536,6 @@ export default declare((api: any, options: OptionsSchema) => {
               descriptionAttr.remove();
             }
 
-            if (removeDefaultMessage && defaultMessageAttr) {
-              defaultMessageAttr.remove();
-            }
-
             if (
               !removeDefaultMessage &&
               ast &&
@@ -559,6 +565,10 @@ export default declare((api: any, options: OptionsSchema) => {
                   )
                 );
               }
+            }
+
+            if (removeDefaultMessage && defaultMessageAttr) {
+              defaultMessageAttr.remove();
             }
 
             // Tag the AST node so we don't try to extract it twice.

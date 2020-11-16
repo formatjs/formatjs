@@ -12,9 +12,31 @@ Process string messages for translation from modules that use react-intl, specif
 
 ## Installation
 
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+<Tabs
+groupId="npm"
+defaultValue="npm"
+values={[
+{label: 'npm', value: 'npm'},
+{label: 'yarn', value: 'yarn'},
+]}>
+<TabItem value="npm">
+
 ```sh
-$ npm install babel-plugin-react-intl
+npm i babel-plugin-react-intl
 ```
+
+</TabItem>
+<TabItem value="yarn">
+
+```sh
+yarn add babel-plugin-react-intl
+```
+
+</TabItem>
+</Tabs>
 
 ## Usage
 

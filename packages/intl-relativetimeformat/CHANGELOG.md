@@ -3,6 +3,138 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.3.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.3.5...@formatjs/intl-relativetimeformat@7.3.6) (2020-11-12)
+
+**Note:** Version bump only for package @formatjs/intl-relativetimeformat
+
+
+
+
+
+## [7.3.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.3.4...@formatjs/intl-relativetimeformat@7.3.5) (2020-11-09)
+
+**Note:** Version bump only for package @formatjs/intl-relativetimeformat
+
+
+
+
+
+## [7.3.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.3.3...@formatjs/intl-relativetimeformat@7.3.4) (2020-11-09)
+
+**Note:** Version bump only for package @formatjs/intl-relativetimeformat
+
+
+
+
+
+## [7.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.3.2...@formatjs/intl-relativetimeformat@7.3.3) (2020-11-05)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** lock down monorepo dep version ([196d28a](https://github.com/formatjs/formatjs/commit/196d28af2ae2ea2fc2219fd270e331d5ae1b7530))
+
+
+
+
+
+## [7.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.3.1...@formatjs/intl-relativetimeformat@7.3.2) (2020-11-04)
+
+**Note:** Version bump only for package @formatjs/intl-relativetimeformat
+
+
+
+
+
+## [7.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.3.0...@formatjs/intl-relativetimeformat@7.3.1) (2020-10-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-relativetimeformat:** fix UMD bundle ([b996965](https://github.com/formatjs/formatjs/commit/b996965807c8c748592b6ea32565139d25fce668))
+
+
+
+
+
+# [7.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.2.10...@formatjs/intl-relativetimeformat@7.3.0) (2020-10-25)
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** upgrade CLDR to v37 ([d1b0514](https://github.com/formatjs/formatjs/commit/d1b0514dcc7312d84112bdb29557d712c871b6f0))
+
+
+
+
+
+## [7.2.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.2.9...@formatjs/intl-relativetimeformat@7.2.10) (2020-10-10)
+
+**Note:** Version bump only for package @formatjs/intl-relativetimeformat
+
+
+
+
+
+## [7.2.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.2.8...@formatjs/intl-relativetimeformat@7.2.9) (2020-10-08)
+
+**Note:** Version bump only for package @formatjs/intl-relativetimeformat
+
+
+
+
+
+## [7.2.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.2.7...@formatjs/intl-relativetimeformat@7.2.8) (2020-10-01)
+
+**Note:** Version bump only for package @formatjs/intl-relativetimeformat
+
+
+
+
+
+## [7.2.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.2.6...@formatjs/intl-relativetimeformat@7.2.7) (2020-09-18)
+
+**Note:** Version bump only for package @formatjs/intl-relativetimeformat
+
+
+
+
+
+## [7.2.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.2.5...@formatjs/intl-relativetimeformat@7.2.6) (2020-09-09)
+
+**Note:** Version bump only for package @formatjs/intl-relativetimeformat
+
+
+
+
+
+## [7.2.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.2.4...@formatjs/intl-relativetimeformat@7.2.5) (2020-08-28)
+
+**Note:** Version bump only for package @formatjs/intl-relativetimeformat
+
+
+
+
+
+## [7.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.2.3...@formatjs/intl-relativetimeformat@7.2.4) (2020-08-25)
+
+**Note:** Version bump only for package @formatjs/intl-relativetimeformat
+
+
+
+
+
+## [7.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.2.2...@formatjs/intl-relativetimeformat@7.2.3) (2020-08-21)
+
+
+### Bug Fixes
+
+* add back polyfill.umd, fix [#2013](https://github.com/formatjs/formatjs/issues/2013) ([b9cfbd2](https://github.com/formatjs/formatjs/commit/b9cfbd2eeead6a5165b0e4cbf1ef3edbfbeca8ce))
+
+
+
+
+
 ## [7.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.2.1...@formatjs/intl-relativetimeformat@7.2.2) (2020-08-19)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat
