@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.4.5...@formatjs/intl@1.4.6) (2020-11-19)
+
+
+### Bug Fixes
+
+* **@formatjs/intl:** fix type decl for createIntl, fix [#2320](https://github.com/formatjs/formatjs/issues/2320) ([f129d60](https://github.com/formatjs/formatjs/commit/f129d60241d304ae34c12c3c335160c45d4deb5b))
+
+
+
+
+
 ## [1.4.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.4.4...@formatjs/intl@1.4.5) (2020-11-12)
 
 **Note:** Version bump only for package @formatjs/intl

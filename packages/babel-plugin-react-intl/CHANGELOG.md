@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.2.18](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.17...babel-plugin-react-intl@8.2.18) (2020-11-19)
+
+
+### Bug Fixes
+
+* **babel-plugin-react-intl:** idInterpolationPattern ([#2311](https://github.com/formatjs/formatjs/issues/2311)) ([2cb1249](https://github.com/formatjs/formatjs/commit/2cb1249ef68b04ca75c0ce2d1e55ec1086de2532))
+
+
+
+
+
 ## [8.2.17](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.16...babel-plugin-react-intl@8.2.17) (2020-11-12)
 
 
