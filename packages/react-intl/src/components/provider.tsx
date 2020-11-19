@@ -118,7 +118,11 @@ const formatMessage: typeof coreFormatMessage = (
  * @param config intl config
  * @param cache cache for formatter instances to prevent memory leak
  */
-export const createIntl: CreateIntlFn<React.ReactNode> = (
+export const createIntl: CreateIntlFn<
+  React.ReactNode,
+  OptionalIntlConfig,
+  IntlShape
+> = (
   {defaultRichTextElements: rawDefaultRichTextElements, ...config},
   cache
 ) => {
