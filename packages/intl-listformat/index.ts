@@ -1,7 +1,6 @@
 import {
   GetOption,
   ListPatternLocaleData,
-  unpackData,
   setInternalSlot,
   SupportedLocales,
   ResolveLocale,
@@ -321,15 +320,12 @@ export default class ListFormat {
   }
 
   public static __addLocaleData(...data: ListPatternLocaleData[]) {
-    for (const datum of data) {
-      const availableLocales: string[] = datum.availableLocales;
-      availableLocales.forEach(locale => {
-        try {
-          ListFormat.localeData[locale] = unpackData(locale, datum);
-        } catch (e) {
-          // If we can't unpack this data, ignore the locale
-        }
-      });
+    for (const {data: d, locale} of data) {
+      try {
+        ListFormat.localeData[locale] = d;
+      } catch (e) {
+        // If we can't unpack this data, ignore the locale
+      }
     }
     ListFormat.availableLocales = Object.keys(ListFormat.localeData);
     if (!ListFormat.__defaultLocale) {

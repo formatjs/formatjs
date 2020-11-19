@@ -3,7 +3,6 @@ import {
   invariant,
   RawNumberLocaleData,
   SupportedLocales,
-  unpackData,
   InitializeNumberFormat,
   FormatNumericToParts,
   NumberFormatOptions,
@@ -183,14 +182,11 @@ defineProperty(NumberFormat, 'supportedLocalesOf', {
 NumberFormat.__addLocaleData = function __addLocaleData(
   ...data: RawNumberLocaleData[]
 ) {
-  for (const datum of data) {
-    const availableLocales: string[] = datum.availableLocales;
-    for (const locale of availableLocales) {
-      try {
-        NumberFormat.localeData[locale] = unpackData(locale, datum);
-      } catch (e) {
-        // Ignore if we got no data
-      }
+  for (const {data: d, locale} of data) {
+    try {
+      NumberFormat.localeData[locale] = d;
+    } catch (e) {
+      // Ignore if we got no data
     }
   }
   NumberFormat.availableLocales = Object.keys(NumberFormat.localeData);

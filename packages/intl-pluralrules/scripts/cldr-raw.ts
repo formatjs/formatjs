@@ -24,12 +24,10 @@ function generateLocaleData(locale: string): PluralRulesLocaleData | undefined {
   }
   return {
     data: {
-      [locale]: {
-        categories: compiler.categories,
-        fn,
-      },
+      categories: compiler.categories,
+      fn,
     },
-    availableLocales: [locale],
+    locale,
   };
 }
 

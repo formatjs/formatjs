@@ -2,7 +2,6 @@ import {
   SupportedLocales,
   RelativeTimeLocaleData,
   isMissingLocaleDataError,
-  unpackData,
   LocaleFieldsData,
   IntlRelativeTimeFormatOptions,
   ResolvedIntlRelativeTimeFormatOptions,
@@ -104,19 +103,16 @@ export default class RelativeTimeFormat {
   }
 
   public static __addLocaleData(...data: RelativeTimeLocaleData[]): void {
-    for (const datum of data) {
-      const availableLocales: string[] = datum.availableLocales;
-      availableLocales.forEach(locale => {
-        try {
-          RelativeTimeFormat.localeData[locale] = unpackData(locale, datum);
-        } catch (e) {
-          if (isMissingLocaleDataError(e)) {
-            // If we just don't have data for certain locale, that's ok
-            return;
-          }
-          throw e;
+    for (const {data: d, locale} of data) {
+      try {
+        RelativeTimeFormat.localeData[locale] = d;
+      } catch (e) {
+        if (isMissingLocaleDataError(e)) {
+          // If we just don't have data for certain locale, that's ok
+          return;
         }
-      });
+        throw e;
+      }
     }
     RelativeTimeFormat.availableLocales = Object.keys(
       RelativeTimeFormat.localeData

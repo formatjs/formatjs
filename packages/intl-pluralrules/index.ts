@@ -2,7 +2,6 @@ import {
   LDMLPluralRule,
   PluralRulesLocaleData,
   PluralRulesData,
-  unpackData,
   SupportedLocales,
   isMissingLocaleDataError,
   NumberFormatDigitInternalSlots,
@@ -114,19 +113,16 @@ export class PluralRules implements Intl.PluralRules {
     );
   }
   public static __addLocaleData(...data: PluralRulesLocaleData[]) {
-    for (const datum of data) {
-      const availableLocales: string[] = datum.availableLocales;
-      availableLocales.forEach(locale => {
-        try {
-          PluralRules.localeData[locale] = unpackData(locale, datum);
-        } catch (e) {
-          if (isMissingLocaleDataError(e)) {
-            // If we just don't have data for certain locale, that's ok
-            return;
-          }
-          throw e;
+    for (const {data: d, locale} of data) {
+      try {
+        PluralRules.localeData[locale] = d;
+      } catch (e) {
+        if (isMissingLocaleDataError(e)) {
+          // If we just don't have data for certain locale, that's ok
+          return;
         }
-      });
+        throw e;
+      }
     }
     PluralRules.availableLocales = Object.keys(PluralRules.localeData);
     if (!PluralRules.__defaultLocale) {

@@ -12,17 +12,13 @@ async function main(args: minimist.ParsedArgs) {
     (all: Record<string, RelativeTimeLocaleData>, locale) => {
       if (locale === 'en-US-POSIX') {
         all['en-US'] = {
-          data: {
-            ['en-US']: rawData[locale],
-          },
-          availableLocales: ['en-US'],
+          data: rawData[locale],
+          locale: 'en-US',
         };
       } else {
         all[locale] = {
-          data: {
-            [locale]: rawData[locale],
-          },
-          availableLocales: [locale],
+          data: rawData[locale],
+          locale,
         };
       }
 

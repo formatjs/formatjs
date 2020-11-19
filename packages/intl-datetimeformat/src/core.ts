@@ -2,7 +2,6 @@ import {
   invariant,
   defineProperty,
   SupportedLocales,
-  unpackData,
   InitializeDateTimeFormat,
   IsValidTimeZoneName,
   CanonicalizeTimeZoneName,
@@ -320,58 +319,55 @@ DateTimeFormat.getDefaultTimeZone = () => DateTimeFormat.__defaultTimeZone;
 DateTimeFormat.__addLocaleData = function __addLocaleData(
   ...data: RawDateTimeLocaleData[]
 ) {
-  for (const datum of data) {
-    const availableLocales: string[] = datum.availableLocales;
-    for (const locale of availableLocales) {
-      try {
-        const {
-          dateFormat,
-          timeFormat,
-          dateTimeFormat,
-          formats,
-          intervalFormats,
-          ...rawData
-        } = unpackData(locale, datum);
-        const processedData: DateTimeFormatLocaleInternalData = {
-          ...rawData,
-          dateFormat: {
-            full: parseDateTimeSkeleton(dateFormat.full),
-            long: parseDateTimeSkeleton(dateFormat.long),
-            medium: parseDateTimeSkeleton(dateFormat.medium),
-            short: parseDateTimeSkeleton(dateFormat.short),
-          },
-          timeFormat: {
-            full: parseDateTimeSkeleton(timeFormat.full),
-            long: parseDateTimeSkeleton(timeFormat.long),
-            medium: parseDateTimeSkeleton(timeFormat.medium),
-            short: parseDateTimeSkeleton(timeFormat.short),
-          },
-          dateTimeFormat: {
-            full: parseDateTimeSkeleton(dateTimeFormat.full).pattern,
-            long: parseDateTimeSkeleton(dateTimeFormat.long).pattern,
-            medium: parseDateTimeSkeleton(dateTimeFormat.medium).pattern,
-            short: parseDateTimeSkeleton(dateTimeFormat.short).pattern,
-          },
-          formats: {},
-        };
+  for (const {data: d, locale} of data) {
+    try {
+      const {
+        dateFormat,
+        timeFormat,
+        dateTimeFormat,
+        formats,
+        intervalFormats,
+        ...rawData
+      } = d;
+      const processedData: DateTimeFormatLocaleInternalData = {
+        ...rawData,
+        dateFormat: {
+          full: parseDateTimeSkeleton(dateFormat.full),
+          long: parseDateTimeSkeleton(dateFormat.long),
+          medium: parseDateTimeSkeleton(dateFormat.medium),
+          short: parseDateTimeSkeleton(dateFormat.short),
+        },
+        timeFormat: {
+          full: parseDateTimeSkeleton(timeFormat.full),
+          long: parseDateTimeSkeleton(timeFormat.long),
+          medium: parseDateTimeSkeleton(timeFormat.medium),
+          short: parseDateTimeSkeleton(timeFormat.short),
+        },
+        dateTimeFormat: {
+          full: parseDateTimeSkeleton(dateTimeFormat.full).pattern,
+          long: parseDateTimeSkeleton(dateTimeFormat.long).pattern,
+          medium: parseDateTimeSkeleton(dateTimeFormat.medium).pattern,
+          short: parseDateTimeSkeleton(dateTimeFormat.short).pattern,
+        },
+        formats: {},
+      };
 
-        for (const calendar in formats) {
-          processedData.formats[calendar] = Object.keys(
-            formats[calendar]
-          ).map(skeleton =>
-            parseDateTimeSkeleton(
-              skeleton,
-              formats[calendar][skeleton],
-              intervalFormats[skeleton],
-              intervalFormats.intervalFormatFallback
-            )
-          );
-        }
-
-        DateTimeFormat.localeData[locale] = processedData;
-      } catch (e) {
-        // Ignore if we got no data
+      for (const calendar in formats) {
+        processedData.formats[calendar] = Object.keys(
+          formats[calendar]
+        ).map(skeleton =>
+          parseDateTimeSkeleton(
+            skeleton,
+            formats[calendar][skeleton],
+            intervalFormats[skeleton],
+            intervalFormats.intervalFormatFallback
+          )
+        );
       }
+
+      DateTimeFormat.localeData[locale] = processedData;
+    } catch (e) {
+      // Ignore if we got no data
     }
   }
   DateTimeFormat.availableLocales = Object.keys(DateTimeFormat.localeData);

@@ -54,7 +54,7 @@ export {
   defineProperty,
 } from './utils';
 
-export {getLocaleHierarchy, unpackData, isMissingLocaleDataError} from './data';
+export {isMissingLocaleDataError} from './data';
 export * from './types/relative-time';
 export * from './types/date-time';
 export * from './types/list';

@@ -12,17 +12,13 @@ async function main(args: minimist.ParsedArgs) {
     (all: Record<string, ListPatternLocaleData>, locale) => {
       if (locale === 'en-US-POSIX') {
         all['en-US'] = {
-          data: {
-            ['en-US']: data[locale],
-          },
-          availableLocales: ['en-US'],
+          data: data[locale],
+          locale: 'en-US',
         };
       } else {
         all[locale] = {
-          data: {
-            [locale]: data[locale],
-          },
-          availableLocales: [locale],
+          data: data[locale],
+          locale,
         };
       }
 

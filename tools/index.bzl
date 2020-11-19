@@ -54,7 +54,7 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
         visibility = ["//visibility:public"],
     )
 
-def generate_src_file(name, args, data, src):
+def generate_src_file(name, args, data, src, visibility = None):
     """Generate a source file.
 
     Args:
@@ -62,6 +62,7 @@ def generate_src_file(name, args, data, src):
         args: args to generate src file binary
         data: dependent data labels
         src: src file to generate
+        visibility: target visibility
     """
     tmp_filename = "%s-gen.tmp" % name
     ts_node(
@@ -75,6 +76,7 @@ def generate_src_file(name, args, data, src):
         name = name,
         src = src,
         generated = tmp_filename,
+        visibility = visibility,
     )
 
 def bundle_karma_tests(name, srcs, tests, data = [], deps = [], rollup_deps = []):

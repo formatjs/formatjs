@@ -51,14 +51,12 @@ async function main(args: minimist.ParsedArgs) {
       if (!all[locale]) {
         all[locale] = {
           data: {
-            [locale]: {
-              units: unitsData[locale],
-              currencies: currenciesData[locale],
-              numbers: numbersData[locale],
-              nu: numbersData[locale].nu,
-            },
+            units: unitsData[locale],
+            currencies: currenciesData[locale],
+            numbers: numbersData[locale],
+            nu: numbersData[locale].nu,
           },
-          availableLocales: [locale],
+          locale,
         };
       }
 

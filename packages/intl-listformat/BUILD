@@ -1,4 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
+load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/terser:index.bzl", "terser_minified")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
@@ -155,6 +156,15 @@ ts_node(
     data = CLDR_DEPS,
 ) for locale in TEST_LOCALES]
 
+multirun(
+    name = "tests-locale-data-all.update",
+    testonly = True,
+    commands = [":tests-locale-data-%s.update" % locale for locale in TEST_LOCALES],
+    visibility = [
+        "//:__pkg__",
+    ],
+)
+
 ts_node(
     name = "polyfill-locales",
     outs = ["polyfill-locales.js"],
@@ -179,6 +189,9 @@ generate_src_file(
         "$@",
     ],
     data = CLDR_DEPS,
+    visibility = [
+        "//:__pkg__",
+    ],
 )
 
 # Test262

@@ -1,4 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
+load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
 load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/terser:index.bzl", "terser_minified")
 load("@npm//ts-node:index.bzl", "ts_node")
@@ -158,6 +159,15 @@ ts_node(
     data = CLDR_DEPS,
 ) for locale in TEST_LOCALES]
 
+multirun(
+    name = "tests-locale-data-all.update",
+    testonly = True,
+    commands = [":tests-locale-data-%s.update" % locale for locale in TEST_LOCALES],
+    visibility = [
+        "//:__pkg__",
+    ],
+)
+
 generate_src_file(
     name = "test262-main",
     src = "test262-main.ts",
@@ -171,6 +181,9 @@ generate_src_file(
         "$@",
     ],
     data = CLDR_DEPS,
+    visibility = [
+        "//:__pkg__",
+    ],
 )
 
 # "ts-node scripts/link --input iana-data/backward --output src/links.ts"

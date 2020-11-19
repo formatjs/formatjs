@@ -8,7 +8,6 @@ import {
   IsWellFormedCurrencyCode,
   getMultiInternalSlots,
   DisplayNamesLocaleData,
-  unpackData,
   DisplayNamesData,
   ToString,
   CanonicalizeLocaleList,
@@ -126,14 +125,11 @@ export class DisplayNames {
   }
 
   static __addLocaleData(...data: DisplayNamesLocaleData[]) {
-    for (const datum of data) {
-      const availableLocales: string[] = datum.availableLocales;
-      for (const locale of availableLocales) {
-        try {
-          DisplayNames.localeData[locale] = unpackData(locale, datum);
-        } catch (e) {
-          // If we can't unpack this data, ignore the locale
-        }
+    for (const {data: d, locale} of data) {
+      try {
+        DisplayNames.localeData[locale] = d;
+      } catch (e) {
+        // If we can't unpack this data, ignore the locale
       }
     }
     DisplayNames.availableLocales = Object.keys(DisplayNames.localeData);

@@ -224,3 +224,22 @@ multirun(
         "//website:prettier",
     ],
 )
+
+multirun(
+    name = "tests-locale-data-all.update",
+    testonly = True,
+    commands = [
+        "//packages/intl-datetimeformat:tests-locale-data-all.update",
+        "//packages/intl-displaynames:tests-locale-data-all.update",
+        "//packages/intl-listformat:tests-locale-data-all.update",
+        "//packages/intl-numberformat:tests-locale-data-all.update",
+        "//packages/intl-pluralrules:tests-locale-data-all.update",
+        "//packages/intl-relativetimeformat:tests-locale-data-all.update",
+        "//packages/intl-datetimeformat:test262-main.update",
+        "//packages/intl-displaynames:test262-main.update",
+        "//packages/intl-listformat:test262-main.update",
+        "//packages/intl-numberformat:test262-main.update",
+        "//packages/intl-pluralrules:test262-main.update",
+        "//packages/intl-relativetimeformat:test262-main.update",
+    ],
+)
