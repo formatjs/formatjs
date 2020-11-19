@@ -15,8 +15,12 @@ import {formatMessage} from './message';
 import {formatList} from './list';
 import {formatDisplayName} from './displayName';
 
-export interface CreateIntlFn<T = string> {
-  (config: OptionalIntlConfig<T>, cache?: IntlCache): IntlShape<T>;
+export interface CreateIntlFn<
+  T = string,
+  C extends OptionalIntlConfig<T> = OptionalIntlConfig<T>,
+  S extends IntlShape<T> = IntlShape<T>
+> {
+  (config: C, cache?: IntlCache): S;
 }
 
 /**
