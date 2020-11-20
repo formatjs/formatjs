@@ -1,4 +1,5 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
+import '@formatjs/intl-locale/polyfill';
 import {PluralRules} from '../';
 // @ts-ignore
 import zh from './locale-data/zh';

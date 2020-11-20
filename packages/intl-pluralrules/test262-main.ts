@@ -750,9 +750,6 @@ if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') 
   if (ord) return 'other';
   return n == 1 ? 'one' : 'other';
 }},"locale":"rof"},
-{"data":{"categories":{"cardinal":["other"],"ordinal":["other"]},"fn":function(n, ord) {
-  return 'other';
-}},"locale":"root"},
 {"data":{"categories":{"cardinal":["one","few","many","other"],"ordinal":["other"]},"fn":function(n, ord) {
   var s = String(n).split('.'), i = s[0], v0 = !s[1], i10 = i.slice(-1), i100 = i.slice(-2);
   if (ord) return 'other';

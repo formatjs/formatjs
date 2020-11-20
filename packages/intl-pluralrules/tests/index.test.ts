@@ -1,11 +1,21 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
-
+import '@formatjs/intl-locale/polyfill';
 import {PluralRules} from '../';
 // @ts-ignore
 import en from './locale-data/en';
 PluralRules.__addLocaleData(en);
 
 describe('PluralRules', function () {
+  it('default locale', function () {
+    expect(new PluralRules().resolvedOptions()).toEqual({
+      locale: 'en',
+      maximumFractionDigits: 3,
+      minimumFractionDigits: 0,
+      minimumIntegerDigits: 1,
+      pluralCategories: ['one', 'other'],
+      type: 'cardinal',
+    });
+  });
   it('should work for cardinal', function () {
     expect(new PluralRules('en').select(0)).toBe('other');
     expect(new PluralRules('en').select(1)).toBe('one');
