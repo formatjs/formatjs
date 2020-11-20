@@ -19,6 +19,7 @@ prettier_check(
 
 DEPS = [
     ":copy",
+    "//packages/intl-locale:dist",
     "//packages/intl-displaynames:dist",
     "//packages/intl-displaynames:locale-data",
     "//packages/intl-messageformat:dist",
