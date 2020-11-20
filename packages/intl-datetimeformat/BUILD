@@ -71,6 +71,8 @@ TEST_DEPS = SRC_DEPS + [
     "//packages/ecma402-abstract:types",
     "//packages/intl-getcanonicallocales:dist",
     "//packages/intl-getcanonicallocales:types",
+    "//packages/intl-locale:dist",
+    "//packages/intl-locale:types",
 ]
 
 ts_compile(
