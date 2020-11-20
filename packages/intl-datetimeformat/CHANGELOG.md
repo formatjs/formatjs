@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.8.4...@formatjs/intl-datetimeformat@3.0.0) (2020-11-20)
+
+
+### Features
+
+* **@formatjs/ecma402-abstract:** remove unpackData ([18cd5ae](https://github.com/formatjs/formatjs/commit/18cd5aef07f83456a1ecc98beb86b96869b6cf93))
+* **@formatjs/intl-datetimeformat:** enhance best fit locale negotiation ([3dac938](https://github.com/formatjs/formatjs/commit/3dac938b188a5ef39e1453beb4225beaa920c92a))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-datetimeformat:** This polyfill now requires Intl.Locale, or
+@formatjs/intl-locale polyfill
+
+
+
+
+
 ## [2.8.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.8.3...@formatjs/intl-datetimeformat@2.8.4) (2020-11-12)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat

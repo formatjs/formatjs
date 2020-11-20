@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.4.6...@formatjs/intl@1.4.7) (2020-11-20)
+
+**Note:** Version bump only for package @formatjs/intl
+
+
+
+
+
 ## [1.4.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.4.5...@formatjs/intl@1.4.6) (2020-11-19)
 
 

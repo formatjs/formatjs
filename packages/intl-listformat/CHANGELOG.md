@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.3.6...@formatjs/intl-listformat@5.0.0) (2020-11-20)
+
+
+### Features
+
+* **@formatjs/ecma402-abstract:** remove unpackData ([18cd5ae](https://github.com/formatjs/formatjs/commit/18cd5aef07f83456a1ecc98beb86b96869b6cf93))
+* **@formatjs/intl-listformat:** enhance best fit locale negotiation ([607bc74](https://github.com/formatjs/formatjs/commit/607bc7403727fd4853bc223e0fdde9a0b92084cd))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-listformat:** This polyfill now requires Intl.Locale, or
+@formatjs/intl-locale polyfill
+
+
+
+
+
 ## [4.3.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@4.3.5...@formatjs/intl-listformat@4.3.6) (2020-11-12)
 
 **Note:** Version bump only for package @formatjs/intl-listformat

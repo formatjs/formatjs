@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.4.6...@formatjs/intl-displaynames@4.0.0) (2020-11-20)
+
+
+### Features
+
+* **@formatjs/ecma402-abstract:** remove unpackData ([18cd5ae](https://github.com/formatjs/formatjs/commit/18cd5aef07f83456a1ecc98beb86b96869b6cf93))
+* **@formatjs/intl-displaynames:** enhance best fit locale negotiation ([654cd8b](https://github.com/formatjs/formatjs/commit/654cd8b7711216f710933489a4fa1ee5194b6d1e))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-displaynames:** This polyfill now requires Intl.Locale, or
+@formatjs/intl-locale polyfill
+
+
+
+
+
 ## [3.4.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.4.5...@formatjs/intl-displaynames@3.4.6) (2020-11-12)
 
 **Note:** Version bump only for package @formatjs/intl-displaynames

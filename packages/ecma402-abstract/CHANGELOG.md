@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.4.0...@formatjs/ecma402-abstract@1.5.0) (2020-11-20)
+
+
+### Features
+
+* **@formatjs/ecma402-abstract:** improve best fit locale negotiation ([7ab3e46](https://github.com/formatjs/formatjs/commit/7ab3e46be9f954b1b4cb0baac2b2c05f13544fde))
+* **@formatjs/ecma402-abstract:** remove unpackData ([18cd5ae](https://github.com/formatjs/formatjs/commit/18cd5aef07f83456a1ecc98beb86b96869b6cf93))
+
+
+
+
+
 # [1.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.3.2...@formatjs/ecma402-abstract@1.4.0) (2020-11-12)
 
 

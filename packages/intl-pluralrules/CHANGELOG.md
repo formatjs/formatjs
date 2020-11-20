@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.5.6...@formatjs/intl-pluralrules@4.0.0) (2020-11-20)
+
+
+### Features
+
+* **@formatjs/ecma402-abstract:** remove unpackData ([18cd5ae](https://github.com/formatjs/formatjs/commit/18cd5aef07f83456a1ecc98beb86b96869b6cf93))
+* **@formatjs/intl-pluralrules:** enhance best fit locale negotiation ([3b9bc19](https://github.com/formatjs/formatjs/commit/3b9bc19a4c930aee55ad60685ab2fb3519bc85fe))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-pluralrules:** This polyfill now requires Intl.Locale, or
+@formatjs/intl-locale polyfill
+
+
+
+
+
 ## [3.5.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@3.5.5...@formatjs/intl-pluralrules@3.5.6) (2020-11-12)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules

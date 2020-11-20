@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.7.6...@formatjs/intl-numberformat@6.0.0) (2020-11-20)
+
+
+### Features
+
+* **@formatjs/ecma402-abstract:** remove unpackData ([18cd5ae](https://github.com/formatjs/formatjs/commit/18cd5aef07f83456a1ecc98beb86b96869b6cf93))
+* **@formatjs/intl-numberformat:** enhance best fit locale negotiation ([08f9606](https://github.com/formatjs/formatjs/commit/08f960697116f85ada02f2bdf5fc3123029680b7))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/intl-numberformat:** This polyfill now requires Intl.Locale, or
+@formatjs/intl-locale polyfill
+
+
+
+
+
 ## [5.7.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.7.5...@formatjs/intl-numberformat@5.7.6) (2020-11-12)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

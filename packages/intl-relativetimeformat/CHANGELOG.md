@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.3.6...@formatjs/intl-relativetimeformat@8.0.0) (2020-11-20)
+
+
+* feat(@formatjs/intl-relativetimeformat: enhance best fit locale negotiation ([bb9485f](https://github.com/formatjs/formatjs/commit/bb9485f77be023368f9dcb6a81caa93b3ad47a70))
+
+
+### Features
+
+* **@formatjs/ecma402-abstract:** remove unpackData ([18cd5ae](https://github.com/formatjs/formatjs/commit/18cd5aef07f83456a1ecc98beb86b96869b6cf93))
+
+
+### BREAKING CHANGES
+
+* This polyfill now requires Intl.Locale, or
+@formatjs/intl-locale polyfill
+
+
+
+
+
 ## [7.3.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@7.3.5...@formatjs/intl-relativetimeformat@7.3.6) (2020-11-12)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat
