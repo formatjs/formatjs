@@ -184,6 +184,10 @@ if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') 
   if (ord) return 'other';
   return n == 1 && v0 ? 'one' : 'other';
 }},"locale":"de"},
+{"data":{"categories":{"cardinal":["one","other"],"ordinal":["other"]},"fn":function(n, ord) {
+  if (ord) return 'other';
+  return n >= 0 && n <= 1 ? 'one' : 'other';
+}},"locale":"doi"},
 {"data":{"categories":{"cardinal":["one","two","few","other"],"ordinal":["other"]},"fn":function(n, ord) {
   var s = String(n).split('.'), i = s[0], f = s[1] || '', v0 = !s[1], i100 = i.slice(-2), f100 = f.slice(-2);
   if (ord) return 'other';
@@ -254,9 +258,12 @@ if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') 
   if (ord) return 'other';
   return n == 1 ? 'one' : 'other';
 }},"locale":"fo"},
-{"data":{"categories":{"cardinal":["one","other"],"ordinal":["one","other"]},"fn":function(n, ord) {
+{"data":{"categories":{"cardinal":["one","many","other"],"ordinal":["one","other"]},"fn":function(n, ord) {
+  var s = String(n).split('.'), i = s[0], v0 = !s[1], i1000000 = i.slice(-6);
   if (ord) return n == 1 ? 'one' : 'other';
-  return n >= 0 && n < 2 ? 'one' : 'other';
+  return n >= 0 && n < 2 ? 'one'
+    : e == 0 && i != 0 && i1000000 == 0 && v0 || (e < 0 || e > 5) ? 'many'
+    : 'other';
 }},"locale":"fr"},
 {"data":{"categories":{"cardinal":["one","other"],"ordinal":["other"]},"fn":function(n, ord) {
   if (ord) return 'other';
@@ -532,6 +539,11 @@ if (Intl.PluralRules && typeof Intl.PluralRules.__addLocaleData === 'function') 
   if (ord) return 'other';
   return n == 1 ? 'one' : 'other';
 }},"locale":"lg"},
+{"data":{"categories":{"cardinal":["one","other"],"ordinal":["many","other"]},"fn":function(n, ord) {
+  var s = String(n).split('.'), v0 = !s[1], t0 = Number(s[0]) == n;
+  if (ord) return (n == 11 || n == 8 || (t0 && n >= 80 && n <= 89) || (t0 && n >= 800 && n <= 899)) ? 'many' : 'other';
+  return n == 1 && v0 ? 'one' : 'other';
+}},"locale":"lij"},
 {"data":{"categories":{"cardinal":["other"],"ordinal":["other"]},"fn":function(n, ord) {
   return 'other';
 }},"locale":"lkt"},
