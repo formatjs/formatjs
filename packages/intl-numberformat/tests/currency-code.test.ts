@@ -1,4 +1,5 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
+import '@formatjs/intl-locale/polyfill';
 import * as en from './locale-data/en.json';
 import {NumberFormat} from '../src/core';
 NumberFormat.__addLocaleData(en as any);

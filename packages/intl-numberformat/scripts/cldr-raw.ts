@@ -1,7 +1,6 @@
 import {generateDataForLocales as extractCurrencies} from './extract-currencies';
 import {generateDataForLocales as extractUnits} from './extract-units';
 import {generateDataForLocales as extractNumbers} from './extract-numbers';
-import {RawNumberLocaleData} from '@formatjs/ecma402-abstract';
 import {join} from 'path';
 import {outputJSONSync} from 'fs-extra';
 import * as AVAILABLE_LOCALES from 'cldr-core/availableLocales.json';
@@ -37,36 +36,38 @@ const MISSING_DATA_LOCALES = new Set([
 async function main(args: minimist.ParsedArgs) {
   const {outDir} = args;
   // Dist all locale files to locale-data
-  const locales = AVAILABLE_LOCALES.availableLocales.full.filter(
-    l => !MISSING_DATA_LOCALES.has(l)
-  );
+  const locales = AVAILABLE_LOCALES.availableLocales.full.filter(l => {
+    try {
+      return (
+        !MISSING_DATA_LOCALES.has(l) &&
+        (Intl as any).getCanonicalLocales(l).length
+      );
+    } catch (e) {
+      console.warn(`Invalid locale ${l}`);
+      return false;
+    }
+  });
   const [numbersData, currenciesData, unitsData] = await Promise.all([
     extractNumbers(locales),
     extractCurrencies(locales),
     extractUnits(locales),
   ]);
 
-  const allData = locales.reduce(
-    (all: Record<string, RawNumberLocaleData>, locale) => {
-      if (!all[locale]) {
-        all[locale] = {
-          data: {
-            units: unitsData[locale],
-            currencies: currenciesData[locale],
-            numbers: numbersData[locale],
-            nu: numbersData[locale].nu,
-          },
-          locale,
-        };
-      }
-
-      return all;
-    },
-    {}
-  );
-  Object.keys(allData).forEach(function (locale) {
-    outputJSONSync(join(outDir, `${locale}.json`), allData[locale]);
-  });
+  for (let locale of locales) {
+    const d = {
+      units: unitsData[locale],
+      currencies: currenciesData[locale],
+      numbers: numbersData[locale],
+      nu: numbersData[locale].nu,
+    };
+    if (locale === 'en-US-POSIX') {
+      locale = 'en-US';
+    }
+    outputJSONSync(join(outDir, `${locale}.json`), {
+      data: d,
+      locale,
+    });
+  }
 }
 
 if (require.main === module) {

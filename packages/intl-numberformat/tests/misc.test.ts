@@ -23,6 +23,8 @@ const LOCALES = [
   'tr',
   'uk',
   'zh',
+  'zh-Hans',
+  'zh-Hant',
   'en-BS',
 ];
 
@@ -229,4 +231,37 @@ it('avoids floating point precision loss at best effort when formatting huge num
   expect(nf.format(1e41)).toEqual(
     '100,000,000,000,000,000,000,000,000,000,000,000,000,000'
   );
+});
+
+test('NaN zh-TW', function () {
+  expect(new NumberFormat('zh-TW').format(NaN)).toBe('非數值');
+});
+
+it('ignore-invalid-unicode-ext-values.js', function () {
+  var locales = ['ja-JP', 'zh-Hans-CN', 'zh-Hant-TW'];
+  var input = 1234567.89;
+
+  locales.forEach(function (locale) {
+    var defaultNumberFormat = new NumberFormat([locale]);
+    var defaultOptions = defaultNumberFormat.resolvedOptions();
+    var defaultLocale = defaultOptions.locale;
+    var defaultFormatted = defaultNumberFormat.format(input);
+
+    const keyValues = {
+      cu: ['USD', 'EUR', 'JPY', 'CNY', 'TWD', 'invalid'],
+      nu: ['native', 'traditio', 'finance', 'invalid'],
+    };
+
+    Object.getOwnPropertyNames(keyValues).forEach(function (key) {
+      keyValues[key as 'cu'].forEach(function (value) {
+        var numberFormat = new NumberFormat([
+          locale + '-u-' + key + '-' + value,
+        ]);
+        var options = numberFormat.resolvedOptions();
+        expect(options.locale).toBe(defaultLocale);
+        expect(options).toEqual(defaultOptions);
+        expect(numberFormat.format(input)).toBe(defaultFormatted);
+      });
+    });
+  });
 });

@@ -183,21 +183,23 @@ NumberFormat.__addLocaleData = function __addLocaleData(
   ...data: RawNumberLocaleData[]
 ) {
   for (const {data: d, locale} of data) {
-    try {
-      NumberFormat.localeData[locale] = d;
-    } catch (e) {
-      // Ignore if we got no data
+    const minimizedLocale = new (Intl as any).Locale(locale)
+      .minimize()
+      .toString();
+    NumberFormat.localeData[locale] = NumberFormat.localeData[
+      minimizedLocale
+    ] = d;
+    NumberFormat.availableLocales.add(minimizedLocale);
+    NumberFormat.availableLocales.add(locale);
+    if (!NumberFormat.__defaultLocale) {
+      NumberFormat.__defaultLocale = minimizedLocale;
     }
-  }
-  NumberFormat.availableLocales = Object.keys(NumberFormat.localeData);
-  if (!NumberFormat.__defaultLocale) {
-    NumberFormat.__defaultLocale = NumberFormat.availableLocales[0];
   }
 };
 
-NumberFormat.__defaultLocale = 'en';
+NumberFormat.__defaultLocale = '';
 NumberFormat.localeData = {};
-NumberFormat.availableLocales = [];
+NumberFormat.availableLocales = new Set<string>();
 NumberFormat.getDefaultLocale = () => {
   return NumberFormat.__defaultLocale;
 };
