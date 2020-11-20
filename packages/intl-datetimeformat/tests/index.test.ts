@@ -230,6 +230,6 @@ describe('Intl.DateTimeFormat', function () {
       timeZone: 'Asia/Kuala_Lumpur',
     });
     console.log(getInternalSlots(dtf));
-    expect(dtf.format(date)).toBe('2020年2月01日 下午06:10:10');
+    expect(dtf.format(date)).toBe('2020年2月01日下午06:10:10');
   });
 });

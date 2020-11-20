@@ -13,7 +13,7 @@ function main({out}: minimist.ParsedArgs) {
   const data = {
     languageAlias: Object.keys(languageAlias).reduce(
       (all: Record<string, string>, locale) => {
-        all[locale] = languageAlias[locale as 'zh-CN']._replacement;
+        all[locale] = languageAlias[locale as 'zh-cmn']._replacement;
         return all;
       },
       {}
@@ -34,7 +34,7 @@ function main({out}: minimist.ParsedArgs) {
     ),
     variantAlias: Object.keys(variantAlias).reduce(
       (all: Record<string, string>, locale) => {
-        all[locale] = variantAlias[locale as 'arevela']._replacement;
+        all[locale] = variantAlias[locale as 'heploc']._replacement;
         return all;
       },
       {}

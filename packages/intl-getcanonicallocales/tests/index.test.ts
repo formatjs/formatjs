@@ -12,17 +12,11 @@ describe('Intl.getCanonicalLocales', () => {
   it('should canonicalize casing for zh-hANs-sG', function () {
     expect(getCanonicalLocales('zh-hANs-sG')).toEqual(['zh-Hans-SG']);
   });
-  it('should handle zh-TW', function () {
-    expect(getCanonicalLocales('zh-TW')).toEqual(['zh-Hant-TW']);
-  });
-  it('should handle zh-CN', function () {
-    expect(getCanonicalLocales('zh-CN')).toEqual(['zh-Hans-CN']);
-  });
   it('should handle twi', function () {
     expect(getCanonicalLocales('twi')).toEqual(['ak']);
   });
   it('should handle ug-Arab-CN ', function () {
-    expect(getCanonicalLocales('ug-Arab-CN')).toEqual(['ug-CN']);
+    expect(getCanonicalLocales('ug-Arab-CN')).toEqual(['ug-Arab-CN']);
   });
   it('canonicalizes twice', function () {
     expect(getCanonicalLocales('und-Armn-SU')).toEqual(['und-Armn-AM']);
