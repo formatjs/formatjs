@@ -11,12 +11,16 @@ load("//tools:jest.bzl", "jest_test")
 PACKAGE_NAME = "intl-numberformat"
 
 TEST_LOCALES = [
-    "en",
-    "en-GB",
+    "ar-SS",
+    "bn",
     "da",
     "de",
+    "en-BS",
+    "en-GB",
+    "en",
     "es",
     "fr",
+    "hi",
     "id",
     "it",
     "ja",
@@ -28,16 +32,13 @@ TEST_LOCALES = [
     "pt",
     "ru",
     "sv",
+    "sw",
     "th",
     "tr",
     "uk",
-    "zh",
-    "en-BS",
+    "zh-Hans",
     "zh-Hant",
-    "ar-SS",
-    "bn",
-    "sw",
-    "hi",
+    "zh",
 ]
 
 TEST_LOCALE_DATA = ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES]
@@ -90,6 +91,8 @@ TEST_DEPS = SRC_DEPS + [
     "//packages/ecma402-abstract:types",
     "//packages/intl-getcanonicallocales:dist",
     "//packages/intl-getcanonicallocales:types",
+    "//packages/intl-locale:dist",
+    "//packages/intl-locale:types",
 ]
 
 ts_compile(
@@ -209,7 +212,7 @@ generate_src_file(
         "--cldrFolder",
         "$(location :cldr-raw)",
         "--locales",
-        "ar,de,en,ja,ko,th,zh,zh-Hant,zh-Hans",
+        "ar,de,en,ja,ko,th,zh,zh-Hant",
         "--test262MainFile",
         "$@",
     ],
@@ -329,6 +332,7 @@ rollup_bundle(
         "@npm//@rollup/plugin-replace",
         "@npm//@rollup/plugin-json",
         "//packages/intl-getcanonicallocales:dist",
+        "//packages/intl-locale:dist",
     ] + SRC_DEPS,
 )
 

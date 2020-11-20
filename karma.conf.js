@@ -17,7 +17,7 @@ module.exports = function (config) {
     sl_chrome: {
       base: 'SauceLabs',
       browserName: 'chrome',
-      version: '36', // https://polyfill.io/v3/supported-browsers/
+      version: '38', // https://polyfill.io/v3/supported-browsers/
     },
     sl_firefox: {
       base: 'SauceLabs',

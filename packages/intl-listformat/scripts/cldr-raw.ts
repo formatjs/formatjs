@@ -1,34 +1,23 @@
 import {extractLists, getAllLocales} from './extract-list';
 import {join} from 'path';
 import {outputJSONSync} from 'fs-extra';
-import {ListPatternLocaleData} from '@formatjs/ecma402-abstract';
+
 import minimist from 'minimist';
 
 async function main(args: minimist.ParsedArgs) {
   const {outDir} = args;
   const locales = await getAllLocales();
   const data = await extractLists(locales);
-  const langData = locales.reduce(
-    (all: Record<string, ListPatternLocaleData>, locale) => {
-      if (locale === 'en-US-POSIX') {
-        all['en-US'] = {
-          data: data[locale],
-          locale: 'en-US',
-        };
-      } else {
-        all[locale] = {
-          data: data[locale],
-          locale,
-        };
-      }
-
-      return all;
-    },
-    {}
-  );
-  Object.keys(langData).forEach(function (locale) {
-    outputJSONSync(join(outDir, `${locale}.json`), langData[locale]);
-  });
+  for (let locale of locales) {
+    const d = data[locale];
+    if (locale === 'en-US-POSIX') {
+      locale = 'en-US';
+    }
+    outputJSONSync(join(outDir, `${locale}.json`), {
+      data: d,
+      locale,
+    });
+  }
 }
 
 if (require.main === module) {

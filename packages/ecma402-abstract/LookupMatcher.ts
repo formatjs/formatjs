@@ -9,7 +9,7 @@ import {LookupMatcherResult} from './types/core';
  * @param getDefaultLocale
  */
 export function LookupMatcher(
-  availableLocales: string[],
+  availableLocales: Set<string>,
   requestedLocales: string[],
   getDefaultLocale: () => string
 ): LookupMatcherResult {

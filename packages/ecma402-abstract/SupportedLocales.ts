@@ -9,7 +9,7 @@ import {LookupSupportedLocales} from './LookupSupportedLocales';
  * @param options
  */
 export function SupportedLocales(
-  availableLocales: string[],
+  availableLocales: Set<string>,
   requestedLocales: string[],
   options?: {localeMatcher?: 'best fit' | 'lookup'}
 ): string[] {

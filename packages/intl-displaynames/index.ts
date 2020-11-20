@@ -126,15 +126,17 @@ export class DisplayNames {
 
   static __addLocaleData(...data: DisplayNamesLocaleData[]) {
     for (const {data: d, locale} of data) {
-      try {
-        DisplayNames.localeData[locale] = d;
-      } catch (e) {
-        // If we can't unpack this data, ignore the locale
+      const minimizedLocale = new (Intl as any).Locale(locale)
+        .minimize()
+        .toString();
+      DisplayNames.localeData[locale] = DisplayNames.localeData[
+        minimizedLocale
+      ] = d;
+      DisplayNames.availableLocales.add(minimizedLocale);
+      DisplayNames.availableLocales.add(locale);
+      if (!DisplayNames.__defaultLocale) {
+        DisplayNames.__defaultLocale = minimizedLocale;
       }
-    }
-    DisplayNames.availableLocales = Object.keys(DisplayNames.localeData);
-    if (!DisplayNames.__defaultLocale) {
-      DisplayNames.__defaultLocale = DisplayNames.availableLocales[0];
     }
   }
 
@@ -231,8 +233,8 @@ export class DisplayNames {
   }
 
   static localeData: Record<string, DisplayNamesData | undefined> = {};
-  private static availableLocales: string[] = [];
-  private static __defaultLocale = 'en';
+  private static availableLocales = new Set<string>();
+  private static __defaultLocale = '';
   private static getDefaultLocale() {
     return DisplayNames.__defaultLocale;
   }

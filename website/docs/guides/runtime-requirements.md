@@ -49,6 +49,7 @@ If you're using `react-intl` in React Native, make sure your runtime has built-i
 If you cannot use the Intl variant of JSC (e.g on iOS), follow the instructions in [polyfills](./polyfills.md) to polyfill the following APIs (in this order):
 
 1. [Intl.getCanonicalLocales](./polyfills/intl-getcanonicallocales.md)
-2. [Intl.PluralRules](./polyfills/intl-pluralrules.md)
-3. [Intl.NumberFormat](./polyfills/intl-numberformat.md)
-4. [Intl.DateTimeFormat](./polyfills/intl-datetimeformat.md)
+1. [Intl.Locale](./polyfills/intl-locale.md)
+1. [Intl.PluralRules](./polyfills/intl-pluralrules.md)
+1. [Intl.NumberFormat](./polyfills/intl-numberformat.md)
+1. [Intl.DateTimeFormat](./polyfills/intl-datetimeformat.md)

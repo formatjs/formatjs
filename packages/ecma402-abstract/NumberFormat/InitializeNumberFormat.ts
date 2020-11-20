@@ -13,16 +13,6 @@ import {SetNumberFormatDigitOptions} from './SetNumberFormatDigitOptions';
 import {invariant} from '../utils';
 
 /**
- * Chop off the unicode extension from the locale string.
- */
-function removeUnicodeExtensionFromLocale(canonicalLocale: string): string {
-  const extensionIndex = canonicalLocale.indexOf('-u-');
-  return extensionIndex >= 0
-    ? canonicalLocale.slice(0, extensionIndex)
-    : canonicalLocale;
-}
-
-/**
  * https://tc39.es/ecma402/#sec-initializenumberformat
  */
 export function InitializeNumberFormat(
@@ -39,7 +29,7 @@ export function InitializeNumberFormat(
   }: {
     getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal;
     localeData: Record<string, NumberFormatLocaleInternalData | undefined>;
-    availableLocales: string[];
+    availableLocales: Set<string>;
     numberingSystemNames: string[];
     getDefaultLocale(): string;
     currencyDigitsData: Record<string, number>;
@@ -85,8 +75,8 @@ export function InitializeNumberFormat(
     localeData,
     getDefaultLocale
   );
-  const dataLocaleData = localeData[removeUnicodeExtensionFromLocale(r.locale)];
-  invariant(!!dataLocaleData, `Missing locale data for ${r.locale}`);
+  const dataLocaleData = localeData[r.dataLocale];
+  invariant(!!dataLocaleData, `Missing locale data for ${r.dataLocale}`);
   const internalSlots = getInternalSlots(nf);
   internalSlots.locale = r.locale;
   internalSlots.dataLocale = r.dataLocale;

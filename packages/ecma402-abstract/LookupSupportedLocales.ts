@@ -7,7 +7,7 @@ import {BestAvailableLocale} from './BestAvailableLocale';
  * @param requestedLocales
  */
 export function LookupSupportedLocales(
-  availableLocales: string[],
+  availableLocales: Set<string>,
   requestedLocales: string[]
 ) {
   const subset: string[] = [];

@@ -3,7 +3,6 @@ import {
   PluralRulesLocaleData,
   PluralRulesData,
   SupportedLocales,
-  isMissingLocaleDataError,
   NumberFormatDigitInternalSlots,
   ResolvePlural,
   OperandsRecord,
@@ -114,24 +113,16 @@ export class PluralRules implements Intl.PluralRules {
   }
   public static __addLocaleData(...data: PluralRulesLocaleData[]) {
     for (const {data: d, locale} of data) {
-      try {
-        PluralRules.localeData[locale] = d;
-      } catch (e) {
-        if (isMissingLocaleDataError(e)) {
-          // If we just don't have data for certain locale, that's ok
-          return;
-        }
-        throw e;
+      PluralRules.localeData[locale] = d;
+      PluralRules.availableLocales.add(locale);
+      if (!PluralRules.__defaultLocale) {
+        PluralRules.__defaultLocale = locale;
       }
-    }
-    PluralRules.availableLocales = Object.keys(PluralRules.localeData);
-    if (!PluralRules.__defaultLocale) {
-      PluralRules.__defaultLocale = PluralRules.availableLocales[0];
     }
   }
   static localeData: Record<string, PluralRulesData> = {};
-  static availableLocales: string[] = [];
-  static __defaultLocale = 'en';
+  static availableLocales = new Set<string>();
+  static __defaultLocale = '';
   static getDefaultLocale() {
     return PluralRules.__defaultLocale;
   }

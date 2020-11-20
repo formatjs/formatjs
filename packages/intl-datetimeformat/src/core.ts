@@ -135,7 +135,7 @@ export interface DateTimeFormatConstructor {
   __setDefaultTimeZone(tz: string): void;
   getDefaultTimeZone(): string;
   localeData: Record<string, DateTimeFormatLocaleInternalData>;
-  availableLocales: string[];
+  availableLocales: Set<string>;
   polyfilled: boolean;
   tzData: Record<string, UnpackedZoneData[]>;
   __addTZData(d: PackedData): void;
@@ -320,59 +320,61 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
   ...data: RawDateTimeLocaleData[]
 ) {
   for (const {data: d, locale} of data) {
-    try {
-      const {
-        dateFormat,
-        timeFormat,
-        dateTimeFormat,
-        formats,
-        intervalFormats,
-        ...rawData
-      } = d;
-      const processedData: DateTimeFormatLocaleInternalData = {
-        ...rawData,
-        dateFormat: {
-          full: parseDateTimeSkeleton(dateFormat.full),
-          long: parseDateTimeSkeleton(dateFormat.long),
-          medium: parseDateTimeSkeleton(dateFormat.medium),
-          short: parseDateTimeSkeleton(dateFormat.short),
-        },
-        timeFormat: {
-          full: parseDateTimeSkeleton(timeFormat.full),
-          long: parseDateTimeSkeleton(timeFormat.long),
-          medium: parseDateTimeSkeleton(timeFormat.medium),
-          short: parseDateTimeSkeleton(timeFormat.short),
-        },
-        dateTimeFormat: {
-          full: parseDateTimeSkeleton(dateTimeFormat.full).pattern,
-          long: parseDateTimeSkeleton(dateTimeFormat.long).pattern,
-          medium: parseDateTimeSkeleton(dateTimeFormat.medium).pattern,
-          short: parseDateTimeSkeleton(dateTimeFormat.short).pattern,
-        },
-        formats: {},
-      };
+    const {
+      dateFormat,
+      timeFormat,
+      dateTimeFormat,
+      formats,
+      intervalFormats,
+      ...rawData
+    } = d;
+    const processedData: DateTimeFormatLocaleInternalData = {
+      ...rawData,
+      dateFormat: {
+        full: parseDateTimeSkeleton(dateFormat.full),
+        long: parseDateTimeSkeleton(dateFormat.long),
+        medium: parseDateTimeSkeleton(dateFormat.medium),
+        short: parseDateTimeSkeleton(dateFormat.short),
+      },
+      timeFormat: {
+        full: parseDateTimeSkeleton(timeFormat.full),
+        long: parseDateTimeSkeleton(timeFormat.long),
+        medium: parseDateTimeSkeleton(timeFormat.medium),
+        short: parseDateTimeSkeleton(timeFormat.short),
+      },
+      dateTimeFormat: {
+        full: parseDateTimeSkeleton(dateTimeFormat.full).pattern,
+        long: parseDateTimeSkeleton(dateTimeFormat.long).pattern,
+        medium: parseDateTimeSkeleton(dateTimeFormat.medium).pattern,
+        short: parseDateTimeSkeleton(dateTimeFormat.short).pattern,
+      },
+      formats: {},
+    };
 
-      for (const calendar in formats) {
-        processedData.formats[calendar] = Object.keys(
-          formats[calendar]
-        ).map(skeleton =>
-          parseDateTimeSkeleton(
-            skeleton,
-            formats[calendar][skeleton],
-            intervalFormats[skeleton],
-            intervalFormats.intervalFormatFallback
-          )
-        );
-      }
-
-      DateTimeFormat.localeData[locale] = processedData;
-    } catch (e) {
-      // Ignore if we got no data
+    for (const calendar in formats) {
+      processedData.formats[calendar] = Object.keys(
+        formats[calendar]
+      ).map(skeleton =>
+        parseDateTimeSkeleton(
+          skeleton,
+          formats[calendar][skeleton],
+          intervalFormats[skeleton],
+          intervalFormats.intervalFormatFallback
+        )
+      );
     }
-  }
-  DateTimeFormat.availableLocales = Object.keys(DateTimeFormat.localeData);
-  if (!DateTimeFormat.__defaultLocale) {
-    DateTimeFormat.__defaultLocale = DateTimeFormat.availableLocales[0];
+
+    const minimizedLocale = new (Intl as any).Locale(locale)
+      .minimize()
+      .toString();
+    DateTimeFormat.localeData[locale] = DateTimeFormat.localeData[
+      minimizedLocale
+    ] = processedData;
+    DateTimeFormat.availableLocales.add(locale);
+    DateTimeFormat.availableLocales.add(minimizedLocale);
+    if (!DateTimeFormat.__defaultLocale) {
+      DateTimeFormat.__defaultLocale = minimizedLocale;
+    }
   }
 };
 
@@ -380,7 +382,7 @@ Object.defineProperty(DateTimeFormat.prototype, 'format', formatDescriptor);
 
 DateTimeFormat.__defaultLocale = '';
 DateTimeFormat.localeData = {};
-DateTimeFormat.availableLocales = [];
+DateTimeFormat.availableLocales = new Set();
 DateTimeFormat.getDefaultLocale = () => {
   return DateTimeFormat.__defaultLocale;
 };

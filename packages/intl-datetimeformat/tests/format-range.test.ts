@@ -1,4 +1,5 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
+import '@formatjs/intl-locale/polyfill';
 import {DateTimeFormat} from '../src/core';
 import * as en from './locale-data/en.json';
 import * as enGB from './locale-data/en-GB.json';

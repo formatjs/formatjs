@@ -30,6 +30,6 @@ export interface NumberFormatConstructor {
 
   __defaultLocale: string;
   localeData: Record<string, NumberFormatLocaleInternalData | undefined>;
-  availableLocales: string[];
+  availableLocales: Set<string>;
   polyfilled: boolean;
 }

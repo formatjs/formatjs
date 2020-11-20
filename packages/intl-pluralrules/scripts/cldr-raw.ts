@@ -34,19 +34,18 @@ function generateLocaleData(locale: string): PluralRulesLocaleData | undefined {
 function main(args: minimist.ParsedArgs) {
   const {outDir} = args;
 
-  const data: Record<string, PluralRulesLocaleData> = {};
-  const locales = languages;
-
-  locales.forEach(locale => {
-    const d = generateLocaleData(locale);
-    if (d) {
-      data[locale] = d;
+  for (const locale of languages) {
+    try {
+      (Intl as any).getCanonicalLocales(locale);
+    } catch (e) {
+      console.warn(`Invalid locale ${locale}`);
+      continue;
     }
-  });
-
-  languages.forEach(lang => {
-    outputFileSync(join(outDir, `${lang}.js`), serialize(data[lang]));
-  });
+    outputFileSync(
+      join(outDir, `${locale}.js`),
+      serialize(generateLocaleData(locale))
+    );
+  }
 }
 if (require.main === module) {
   main(minimist(process.argv));

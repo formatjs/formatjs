@@ -61,7 +61,16 @@ export function getAllLocales(): string[] {
       dirname(require.resolve('cldr-dates-full/package.json')),
       './main'
     ),
-  }).map(dirname);
+  })
+    .map(dirname)
+    .filter(l => {
+      try {
+        return (Intl as any).getCanonicalLocales(l).length;
+      } catch (e) {
+        console.warn(`Invalid locale ${l}`);
+        return false;
+      }
+    });
 }
 
 function resolveDateTimeSymbolTable(token: string): string {

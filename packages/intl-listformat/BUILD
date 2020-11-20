@@ -70,6 +70,8 @@ TEST_DEPS = SRC_DEPS + [
     "//packages/ecma402-abstract:types",
     "//packages/intl-getcanonicallocales:dist",
     "//packages/intl-getcanonicallocales:types",
+    "//packages/intl-locale:dist",
+    "//packages/intl-locale:types",
 ]
 
 ts_compile(
@@ -250,6 +252,8 @@ bundle_karma_tests(
     data = TEST_LOCALE_DATA,
     rollup_deps = [
         "//packages/intl-getcanonicallocales:dist",
+        "//packages/intl-locale:dist",
+        "//packages/intl-locale:types",
     ],
     tests = TESTS,
     deps = SRC_DEPS,

@@ -1,7 +1,6 @@
 import {
   SupportedLocales,
   RelativeTimeLocaleData,
-  isMissingLocaleDataError,
   LocaleFieldsData,
   IntlRelativeTimeFormatOptions,
   ResolvedIntlRelativeTimeFormatOptions,
@@ -104,27 +103,22 @@ export default class RelativeTimeFormat {
 
   public static __addLocaleData(...data: RelativeTimeLocaleData[]): void {
     for (const {data: d, locale} of data) {
-      try {
-        RelativeTimeFormat.localeData[locale] = d;
-      } catch (e) {
-        if (isMissingLocaleDataError(e)) {
-          // If we just don't have data for certain locale, that's ok
-          return;
-        }
-        throw e;
+      const minimizedLocale = new (Intl as any).Locale(locale)
+        .minimize()
+        .toString();
+      RelativeTimeFormat.localeData[locale] = RelativeTimeFormat.localeData[
+        minimizedLocale
+      ] = d;
+      RelativeTimeFormat.availableLocales.add(minimizedLocale);
+      RelativeTimeFormat.availableLocales.add(locale);
+      if (!RelativeTimeFormat.__defaultLocale) {
+        RelativeTimeFormat.__defaultLocale = minimizedLocale;
       }
-    }
-    RelativeTimeFormat.availableLocales = Object.keys(
-      RelativeTimeFormat.localeData
-    );
-    if (!RelativeTimeFormat.__defaultLocale) {
-      RelativeTimeFormat.__defaultLocale =
-        RelativeTimeFormat.availableLocales[0];
     }
   }
   static localeData: Record<string, LocaleFieldsData> = {};
-  private static availableLocales: string[] = [];
-  private static __defaultLocale = 'en';
+  private static availableLocales = new Set<string>();
+  private static __defaultLocale = '';
   private static getDefaultLocale() {
     return RelativeTimeFormat.__defaultLocale;
   }
