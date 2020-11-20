@@ -18,7 +18,14 @@ export async function getAllLocales(): Promise<string[]> {
       './main'
     ),
   });
-  return fns.map(dirname);
+  return fns.map(dirname).filter(l => {
+    try {
+      return (Intl as any).getCanonicalLocales(l).length;
+    } catch (e) {
+      console.warn(`Invalid locale ${l}`);
+      return false;
+    }
+  });
 }
 
 function serializeToPatternData(

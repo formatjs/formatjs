@@ -321,20 +321,22 @@ export default class ListFormat {
 
   public static __addLocaleData(...data: ListPatternLocaleData[]) {
     for (const {data: d, locale} of data) {
-      try {
-        ListFormat.localeData[locale] = d;
-      } catch (e) {
-        // If we can't unpack this data, ignore the locale
+      const minimizedLocale = new (Intl as any).Locale(locale)
+        .minimize()
+        .toString();
+      ListFormat.localeData[locale] = ListFormat.localeData[
+        minimizedLocale
+      ] = d;
+      ListFormat.availableLocales.add(minimizedLocale);
+      ListFormat.availableLocales.add(locale);
+      if (!ListFormat.__defaultLocale) {
+        ListFormat.__defaultLocale = minimizedLocale;
       }
-    }
-    ListFormat.availableLocales = Object.keys(ListFormat.localeData);
-    if (!ListFormat.__defaultLocale) {
-      ListFormat.__defaultLocale = ListFormat.availableLocales[0];
     }
   }
   static localeData: Record<string, ListPatternFieldsData | undefined> = {};
-  private static availableLocales: string[] = [];
-  private static __defaultLocale = 'en';
+  private static availableLocales = new Set<string>();
+  private static __defaultLocale = '';
   private static getDefaultLocale() {
     return ListFormat.__defaultLocale;
   }
