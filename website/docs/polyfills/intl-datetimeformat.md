@@ -93,7 +93,7 @@ async function polyfill(locale: string) {
         )
         break
     }
-    await Promise.all(polyfills)
+    await Promise.all(dataPolyfills)
   }
 }
 ```
