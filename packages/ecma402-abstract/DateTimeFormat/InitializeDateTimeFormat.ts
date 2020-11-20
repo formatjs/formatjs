@@ -79,7 +79,7 @@ export function InitializeDateTimeFormat(
     uppercaseLinks,
   }: {
     getInternalSlots(dtf: Intl.DateTimeFormat): IntlDateTimeFormatInternal;
-    availableLocales: string[];
+    availableLocales: Set<string>;
     getDefaultLocale(): string;
     getDefaultTimeZone(): string;
     relevantExtensionKeys: string[];

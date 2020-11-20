@@ -14,7 +14,7 @@ export interface ResolveLocaleResult {
  * https://tc39.es/ecma402/#sec-resolvelocale
  */
 export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
-  availableLocales: string[],
+  availableLocales: Set<string>,
   requestedLocales: string[],
   options: {localeMatcher: string; [k: string]: string},
   relevantExtensionKeys: K[],

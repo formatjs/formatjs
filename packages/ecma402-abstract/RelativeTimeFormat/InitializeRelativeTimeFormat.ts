@@ -24,7 +24,7 @@ export function InitializeRelativeTimeFormat(
     getDefaultLocale,
   }: {
     getInternalSlots(rtf: RelativeTimeFormat): RelativeTimeFormatInternal;
-    availableLocales: string[];
+    availableLocales: Set<string>;
     relevantExtensionKeys: string[];
     localeData: Record<string, LocaleFieldsData | undefined>;
     getDefaultLocale(): string;
@@ -80,8 +80,8 @@ export function InitializeRelativeTimeFormat(
     ['always', 'auto'],
     'always'
   );
-  const fields = localeData[locale];
-  invariant(!!fields, `Missing locale data for ${locale}`);
+  const fields = localeData[r.dataLocale];
+  invariant(!!fields, `Missing locale data for ${r.dataLocale}`);
   internalSlots.fields = fields;
   internalSlots.numberFormat = new Intl.NumberFormat(locales);
   internalSlots.pluralRules = new Intl.PluralRules(locales);

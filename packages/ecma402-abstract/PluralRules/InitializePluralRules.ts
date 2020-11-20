@@ -16,7 +16,7 @@ export function InitializePluralRules(
     getDefaultLocale,
     getInternalSlots,
   }: {
-    availableLocales: string[];
+    availableLocales: Set<string>;
     relevantExtensionKeys: string[];
     localeData: Record<string, PluralRulesData | undefined>;
     getDefaultLocale(): string;
