@@ -5659,35 +5659,35 @@ classnames@^2.2.5:
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
   integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
 
-cldr-core@^37.0.0:
-  version "37.0.0"
-  resolved "https://registry.yarnpkg.com/cldr-core/-/cldr-core-37.0.0.tgz#f148d6faebed52a7fb8a17cccc4ac858770f663a"
-  integrity sha512-tNH5lbfsE9xzsjjXQjq1tlpMFcmnQYfssDy0zYIZKVtAY18MeQy0+1qlLxB2Z9dwCixGJV8cdhtFjBOub077Gw==
+cldr-core@38:
+  version "38.0.0-BETA"
+  resolved "https://registry.yarnpkg.com/cldr-core/-/cldr-core-38.0.0-BETA.tgz#696754b008470b155f2f612351c4db32e7afafcc"
+  integrity sha512-sKwXbmmqPalhJTd2jnIWnqe4/Z2Up8zrhJb+PcaLh2vCbUCjJnshm9uL7pgKUDxiA1TQPadJvqQEb5fsY5VxrA==
 
-cldr-dates-full@^37.0.0:
-  version "37.0.0"
-  resolved "https://registry.yarnpkg.com/cldr-dates-full/-/cldr-dates-full-37.0.0.tgz#462abf4e0833c4fc0d3d841ab999b05d1a58df75"
-  integrity sha512-0zxnbScSl2gTQJZZJ/U97tbf3sUZecNzcUg6noAqN4q6t9NlOI5oBv5gcG0pN+8rawPrkFWDBiPSQy2jAhxvoQ==
+cldr-dates-full@38:
+  version "38.0.0-BETA"
+  resolved "https://registry.yarnpkg.com/cldr-dates-full/-/cldr-dates-full-38.0.0-BETA.tgz#16961973d860165d8319b770b5026bc0734c0839"
+  integrity sha512-EvMTJvqDPHvZ7Rl2bxo7SMYR3rgBFqkWTP6lg26mTFjaPcjVNRyDH5ZPcjdHnNY6dru28zR88HEBciJvkLPuLA==
 
-cldr-localenames-full@^37.0.0:
-  version "37.0.0"
-  resolved "https://registry.yarnpkg.com/cldr-localenames-full/-/cldr-localenames-full-37.0.0.tgz#b88fc19523e24eb503d5511bbb2af9c78058a84c"
-  integrity sha512-sPSaGYJ29Ie31pmZ6gfshHLq64lY+WK6qLuRjNwTzM+TNqFD++saHd4hvTS8zHVmjfgGmLxmHam8ZzWxdJrvSQ==
+cldr-localenames-full@38:
+  version "38.0.0-BETA"
+  resolved "https://registry.yarnpkg.com/cldr-localenames-full/-/cldr-localenames-full-38.0.0-BETA.tgz#f5f326e4d486f4f127bb4e9b660aa3d5e41fbde9"
+  integrity sha512-9P4DzK57pRwsDD4aS/QSDWIsYtL7M3T+/W9vyHAvERPXbnsL5CcsIypakUgdn6VH9DHYAgXNlLh1FVbeJa6RNA==
 
-cldr-misc-full@^37.0.0:
-  version "37.0.0"
-  resolved "https://registry.yarnpkg.com/cldr-misc-full/-/cldr-misc-full-37.0.0.tgz#c95d0d6af50ee7a9c9cbb1aead3717e868420291"
-  integrity sha512-W6w3YOO57TIrttg+L6bYVI+l7rJxMQ9r8T2hS6OKDm/LO861aV9J0BvJnwTxHoXxT5xAEtx+N9G0p/v8UtWeaA==
+cldr-misc-full@38:
+  version "38.0.0-BETA"
+  resolved "https://registry.yarnpkg.com/cldr-misc-full/-/cldr-misc-full-38.0.0-BETA.tgz#1fe689fcfe9103f1c9a553157459f1053e0f17a3"
+  integrity sha512-pOtNHe4cMSNJhUt3P25++r14VOpos9KiylIOts7NVLt7FbXl7Q4rjaGhaqGWgpH/gIcbqZqMx4JjFaJOOJQ/eQ==
 
-cldr-numbers-full@^37.0.0:
-  version "37.0.0"
-  resolved "https://registry.yarnpkg.com/cldr-numbers-full/-/cldr-numbers-full-37.0.0.tgz#f8095af56411a4e37e6779f360dfc10ce507d4dc"
-  integrity sha512-XSWKxDq69lZYqEK1dAQWWWhKBGJoO887mSjWl7Bv3Kw/IjOi++LQ4EK/zYXVxQkxZpvHZPv775JOqUFWMUJB7Q==
+cldr-numbers-full@38:
+  version "38.0.0-BETA"
+  resolved "https://registry.yarnpkg.com/cldr-numbers-full/-/cldr-numbers-full-38.0.0-BETA.tgz#3e622144328c05372e778057c5a7c5ee4696d08b"
+  integrity sha512-/MJyN065wVwP8Cjoz/zJYOWyNJOKwB0nzNyi/SWba/iCARWfc6ouU1uRbjC3Kq+RoT8NyKUQjDno/RdZ7y6DWQ==
 
-cldr-units-full@^37.0.0:
-  version "37.0.0"
-  resolved "https://registry.yarnpkg.com/cldr-units-full/-/cldr-units-full-37.0.0.tgz#3e41ca055cff58c7251a9113acdc088768a2b191"
-  integrity sha512-/zq5e8PgCU7FdzNUF+4IaeSwsIEnQr0vc3IZhLVJ8FsACXQcdO6iUR6oGRmpmBGWj6of5wBHnC3lHt5vgCbxrA==
+cldr-units-full@38:
+  version "38.0.0-BETA"
+  resolved "https://registry.yarnpkg.com/cldr-units-full/-/cldr-units-full-38.0.0-BETA.tgz#d619617d8d978a9136bd889e830918ee9986c79c"
+  integrity sha512-GB7bHrra0YwjR7bhaytxtOfoaNXf5eak5BZM3ap287C6jFbI5SrZIMgUHEevsGB5J1w0ZlY5Hv/IYM0eb2YLgg==
 
 clean-css@^4.2.3:
   version "4.2.3"

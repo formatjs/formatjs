@@ -11808,289 +11808,289 @@ exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'code', cur
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'code', currencySign: 'standard', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"ZWD 10,000"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10.00E3 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10.00E3 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"+10.00E3 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10E3 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10.00E3 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10.00E3 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"+10.00E3 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10E3 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"+1.00E4 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"+1.00E4 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"+1.00E4 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+1E4 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"+1.00E4 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"+1.00E4 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"+1.00E4 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+1E4 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10,000.00 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10,000.00 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"+10,000.00 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10,000 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10,000.00 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10,000.00 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"+10,000.00 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10,000 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"10.00E3 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"10.00E3 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"10.00E3 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10E3 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"10.00E3 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"10.00E3 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"10.00E3 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10E3 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"1.00E4 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"1.00E4 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"1.00E4 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"1E4 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"1.00E4 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"1.00E4 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"1.00E4 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"1E4 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"10,000.00 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"10,000.00 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"10,000.00 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10,000 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"10,000.00 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"10,000.00 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"10,000.00 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10,000 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10.00E3 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10.00E3 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"+10.00E3 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10E3 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10.00E3 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10.00E3 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"+10.00E3 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10E3 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"+1.00E4 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"+1.00E4 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"+1.00E4 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+1E4 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"+1.00E4 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"+1.00E4 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"+1.00E4 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+1E4 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10,000.00 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10,000.00 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"+10,000.00 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10,000 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10,000.00 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10,000.00 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"+10,000.00 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10,000 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"10.00E3 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"10.00E3 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"10.00E3 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10E3 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"10.00E3 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"10.00E3 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"10.00E3 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10E3 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"1.00E4 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"1.00E4 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"1.00E4 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"1E4 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"1.00E4 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"1.00E4 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"1.00E4 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"1E4 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"10,000.00 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"10,000.00 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"10,000.00 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10,000 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"10,000.00 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"10,000.00 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"10,000.00 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10,000 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10.00E3 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10.00E3 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"+10.00E3 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10E3 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10.00E3 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10.00E3 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"+10.00E3 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10E3 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"+1.00E4 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"+1.00E4 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"+1.00E4 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+1E4 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"+1.00E4 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"+1.00E4 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"+1.00E4 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+1E4 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10,000.00 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10,000.00 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"+10,000.00 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10,000 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10,000.00 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10,000.00 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"+10,000.00 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10,000 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"10.00E3 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"10.00E3 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"10.00E3 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10E3 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"10.00E3 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"10.00E3 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"10.00E3 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10E3 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"1.00E4 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"1.00E4 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"1.00E4 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"1E4 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"1.00E4 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"1.00E4 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"1.00E4 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"1E4 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"10,000.00 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"10,000.00 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"10,000.00 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10,000 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"10,000.00 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"10,000.00 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"10,000.00 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10,000 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10.00E3 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10.00E3 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"+10.00E3 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10E3 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10.00E3 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10.00E3 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"+10.00E3 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10E3 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"+1.00E4 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"+1.00E4 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"+1.00E4 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+1E4 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"+1.00E4 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"+1.00E4 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"+1.00E4 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+1E4 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10,000.00 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10,000.00 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"+10,000.00 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10,000 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10,000.00 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10,000.00 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"+10,000.00 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10,000 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"10.00E3 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"10.00E3 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"10.00E3 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10E3 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"10.00E3 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"10.00E3 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"10.00E3 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10E3 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"1.00E4 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"1.00E4 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"1.00E4 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"1E4 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"1.00E4 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"1.00E4 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"1.00E4 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"1E4 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"10,000.00 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"10,000.00 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"10,000.00 미국 달러"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10,000 짐바브웨 달러"`;
 
-exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"10,000.00 영국령 파운드 스털링"`;
+exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"10,000.00 영국 파운드"`;
 
 exports[`Intl.NumberFormat 'ko', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"10,000.00 미국 달러"`;
 
@@ -19874,289 +19874,289 @@ exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'code', cur
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10,00×10^3 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"+10,00×10^3 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"+10,00×10^3 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10×10^3 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10,00×10^3 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"+10,00×10^3 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"+10,00×10^3 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10×10^3 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"+1,00×10^4 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"+1,00×10^4 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"+1,00×10^4 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+1×10^4 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"+1,00×10^4 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"+1,00×10^4 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"+1,00×10^4 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+1×10^4 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10 000,00 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"+10 000,00 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"+10 000,00 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10 000 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10 000,00 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"+10 000,00 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"+10 000,00 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10 000 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"10,00×10^3 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"10,00×10^3 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"10,00×10^3 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10×10^3 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"10,00×10^3 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"10,00×10^3 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"10,00×10^3 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10×10^3 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"1,00×10^4 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"1,00×10^4 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"1,00×10^4 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"1×10^4 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"1,00×10^4 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"1,00×10^4 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"1,00×10^4 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"1×10^4 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"10 000,00 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"10 000,00 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"10 000,00 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10 000 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"10 000,00 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"10 000,00 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"10 000,00 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10 000 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10,00×10^3 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"+10,00×10^3 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"+10,00×10^3 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10×10^3 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10,00×10^3 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"+10,00×10^3 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"+10,00×10^3 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10×10^3 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"+1,00×10^4 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"+1,00×10^4 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"+1,00×10^4 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+1×10^4 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"+1,00×10^4 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"+1,00×10^4 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"+1,00×10^4 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+1×10^4 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10 000,00 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"+10 000,00 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"+10 000,00 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10 000 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10 000,00 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"+10 000,00 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"+10 000,00 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10 000 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"10,00×10^3 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"10,00×10^3 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"10,00×10^3 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10×10^3 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"10,00×10^3 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"10,00×10^3 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"10,00×10^3 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10×10^3 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"1,00×10^4 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"1,00×10^4 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"1,00×10^4 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"1×10^4 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"1,00×10^4 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"1,00×10^4 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"1,00×10^4 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"1×10^4 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"10 000,00 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"10 000,00 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"10 000,00 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10 000 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"10 000,00 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"10 000,00 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"10 000,00 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'accounting', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10 000 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10,00×10^3 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"+10,00×10^3 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"+10,00×10^3 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10×10^3 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10,00×10^3 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"+10,00×10^3 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"+10,00×10^3 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10×10^3 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"+1,00×10^4 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"+1,00×10^4 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"+1,00×10^4 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+1×10^4 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"+1,00×10^4 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"+1,00×10^4 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"+1,00×10^4 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+1×10^4 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10 000,00 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"+10 000,00 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"+10 000,00 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10 000 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10 000,00 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"+10 000,00 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"+10 000,00 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'always', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10 000 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"10,00×10^3 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"10,00×10^3 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"10,00×10^3 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10×10^3 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"10,00×10^3 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"10,00×10^3 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"10,00×10^3 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10×10^3 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"1,00×10^4 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"1,00×10^4 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"1,00×10^4 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"1×10^4 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"1,00×10^4 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"1,00×10^4 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"1,00×10^4 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"1×10^4 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"10 000,00 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"10 000,00 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"10 000,00 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10 000 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"10 000,00 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"10 000,00 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"10 000,00 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'auto', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10 000 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10,00×10^3 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"+10,00×10^3 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"+10,00×10^3 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10×10^3 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10,00×10^3 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"+10,00×10^3 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"+10,00×10^3 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10×10^3 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"+1,00×10^4 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"+1,00×10^4 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"+1,00×10^4 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+1×10^4 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"+1,00×10^4 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"+1,00×10^4 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"+1,00×10^4 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+1×10^4 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"+10 000,00 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"+10 000,00 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"+10 000,00 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"+10 000 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"+10 000,00 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"+10 000,00 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"+10 000,00 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'exceptZero', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"+10 000 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'GBP', 1`] = `"10,00×10^3 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"10,00×10^3 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'USD', 1`] = `"10,00×10^3 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10×10^3 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'short', currency: 'GBP', 1`] = `"10,00×10^3 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"10,00×10^3 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'short', currency: 'USD', 1`] = `"10,00×10^3 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'engineering', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10×10^3 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'scientific', compactDisplay: 'long', currency: 'GBP', 1`] = `"1,00×10^4 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"1,00×10^4 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'scientific', compactDisplay: 'long', currency: 'USD', 1`] = `"1,00×10^4 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'scientific', compactDisplay: 'long', currency: 'ZWD', 1`] = `"1×10^4 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'scientific', compactDisplay: 'short', currency: 'GBP', 1`] = `"1,00×10^4 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"1,00×10^4 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'scientific', compactDisplay: 'short', currency: 'USD', 1`] = `"1,00×10^4 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'scientific', compactDisplay: 'short', currency: 'ZWD', 1`] = `"1×10^4 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'standard', compactDisplay: 'long', currency: 'GBP', 1`] = `"10 000,00 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"10 000,00 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'standard', compactDisplay: 'long', currency: 'USD', 1`] = `"10 000,00 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'standard', compactDisplay: 'long', currency: 'ZWD', 1`] = `"10 000 Zimbabwe-dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'GBP', 1`] = `"10 000,00 brittiska pund"`;
 
-exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"10 000,00 US-dollar"`;
+exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'USD', 1`] = `"10 000,00 amerikansk dollar"`;
 
 exports[`Intl.NumberFormat 'sv', style: 'currency', currencyDisplay: 'name', currencySign: 'standard', signDisplay: 'never', notation: 'standard', compactDisplay: 'short', currency: 'ZWD', 1`] = `"10 000 Zimbabwe-dollar"`;
 

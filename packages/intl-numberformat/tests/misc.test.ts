@@ -61,7 +61,7 @@ it('should lookup locale correctly', function () {
       style: 'unit',
       unit: 'gallon',
     }).format(1000)
-  ).toBe('1,000 gal US');
+  ).toBe('1,000 US gal');
 });
 
 it('supportedLocalesOf should return correct result based on data loaded', function () {
