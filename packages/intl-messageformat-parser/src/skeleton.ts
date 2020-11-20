@@ -154,32 +154,31 @@ const SIGNIFICANT_PRECISION_REGEX = /^(@+)?(\+|#+)?$/g;
 
 function parseSignificantPrecision(str: string): NumberFormatOptions {
   const result: NumberFormatOptions = {};
-  str.replace(SIGNIFICANT_PRECISION_REGEX, function (
-    _: string,
-    g1: string,
-    g2: string | number
-  ) {
-    // @@@ case
-    if (typeof g2 !== 'string') {
-      result.minimumSignificantDigits = g1.length;
-      result.maximumSignificantDigits = g1.length;
+  str.replace(
+    SIGNIFICANT_PRECISION_REGEX,
+    function (_: string, g1: string, g2: string | number) {
+      // @@@ case
+      if (typeof g2 !== 'string') {
+        result.minimumSignificantDigits = g1.length;
+        result.maximumSignificantDigits = g1.length;
+      }
+      // @@@+ case
+      else if (g2 === '+') {
+        result.minimumSignificantDigits = g1.length;
+      }
+      // .### case
+      else if (g1[0] === '#') {
+        result.maximumSignificantDigits = g1.length;
+      }
+      // .@@## or .@@@ case
+      else {
+        result.minimumSignificantDigits = g1.length;
+        result.maximumSignificantDigits =
+          g1.length + (typeof g2 === 'string' ? g2.length : 0);
+      }
+      return '';
     }
-    // @@@+ case
-    else if (g2 === '+') {
-      result.minimumSignificantDigits = g1.length;
-    }
-    // .### case
-    else if (g1[0] === '#') {
-      result.maximumSignificantDigits = g1.length;
-    }
-    // .@@## or .@@@ case
-    else {
-      result.minimumSignificantDigits = g1.length;
-      result.maximumSignificantDigits =
-        g1.length + (typeof g2 === 'string' ? g2.length : 0);
-    }
-    return '';
-  });
+  );
   return result;
 }
 
@@ -311,32 +310,35 @@ export function parseNumberSkeleton(
           'Fraction-precision stems only accept a single optional option'
         );
       }
-      token.stem.replace(FRACTION_PRECISION_REGEX, function (
-        _: string,
-        g1: string,
-        g2: string | number,
-        g3: string,
-        g4: string,
-        g5: string
-      ) {
-        // .000* case (before ICU67 it was .000+)
-        if (g2 === '*') {
-          result.minimumFractionDigits = g1.length;
+      token.stem.replace(
+        FRACTION_PRECISION_REGEX,
+        function (
+          _: string,
+          g1: string,
+          g2: string | number,
+          g3: string,
+          g4: string,
+          g5: string
+        ) {
+          // .000* case (before ICU67 it was .000+)
+          if (g2 === '*') {
+            result.minimumFractionDigits = g1.length;
+          }
+          // .### case
+          else if (g3 && g3[0] === '#') {
+            result.maximumFractionDigits = g3.length;
+          }
+          // .00## case
+          else if (g4 && g5) {
+            result.minimumFractionDigits = g4.length;
+            result.maximumFractionDigits = g4.length + g5.length;
+          } else {
+            result.minimumFractionDigits = g1.length;
+            result.maximumFractionDigits = g1.length;
+          }
+          return '';
         }
-        // .### case
-        else if (g3 && g3[0] === '#') {
-          result.maximumFractionDigits = g3.length;
-        }
-        // .00## case
-        else if (g4 && g5) {
-          result.minimumFractionDigits = g4.length;
-          result.maximumFractionDigits = g4.length + g5.length;
-        } else {
-          result.minimumFractionDigits = g1.length;
-          result.maximumFractionDigits = g1.length;
-        }
-        return '';
-      });
+      );
 
       if (token.options.length) {
         result = {...result, ...parseSignificantPrecision(token.options[0])};

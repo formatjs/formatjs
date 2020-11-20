@@ -545,9 +545,9 @@ export default declare((api: any, options: OptionsSchema) => {
               defaultMessageAttr
                 .get('value')
                 .replaceWith(t.jsxExpressionContainer(t.stringLiteral('foo')));
-              (defaultMessageAttr.get('value') as NodePath<
-                JSXExpressionContainer
-              >)
+              (defaultMessageAttr.get(
+                'value'
+              ) as NodePath<JSXExpressionContainer>)
                 .get('expression')
                 .replaceWithSourceString(
                   JSON.stringify(parse(descriptor.defaultMessage))
@@ -610,9 +610,9 @@ export default declare((api: any, options: OptionsSchema) => {
             return;
           }
 
-          const properties = messageDescriptor.get('properties') as NodePath<
-            ObjectProperty
-          >[];
+          const properties = messageDescriptor.get(
+            'properties'
+          ) as NodePath<ObjectProperty>[];
 
           const descriptorPath = createMessageDescriptor(
             properties.map(

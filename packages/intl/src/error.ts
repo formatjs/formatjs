@@ -25,17 +25,13 @@ ${exception ? `\n${exception.message}\n${exception.stack}` : ''}`
   }
 }
 
-export class UnsupportedFormatterError extends IntlError<
-  IntlErrorCode.UNSUPPORTED_FORMATTER
-> {
+export class UnsupportedFormatterError extends IntlError<IntlErrorCode.UNSUPPORTED_FORMATTER> {
   constructor(message: string, exception?: Error) {
     super(IntlErrorCode.UNSUPPORTED_FORMATTER, message, exception);
   }
 }
 
-export class InvalidConfigError extends IntlError<
-  IntlErrorCode.INVALID_CONFIG
-> {
+export class InvalidConfigError extends IntlError<IntlErrorCode.INVALID_CONFIG> {
   constructor(message: string, exception?: Error) {
     super(IntlErrorCode.INVALID_CONFIG, message, exception);
   }
@@ -69,9 +65,7 @@ Description: ${descriptor?.description}
   }
 }
 
-export class MissingTranslationError extends IntlError<
-  IntlErrorCode.MISSING_TRANSLATION
-> {
+export class MissingTranslationError extends IntlError<IntlErrorCode.MISSING_TRANSLATION> {
   public readonly descriptor?: MessageDescriptor;
   constructor(descriptor: MessageDescriptor, locale: string) {
     super(
