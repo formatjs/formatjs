@@ -81,6 +81,8 @@ jest_test(
         "//packages/ecma402-abstract:types",
         "//packages/intl-getcanonicallocales:dist",
         "//packages/intl-getcanonicallocales:types",
+        "//packages/intl-locale:dist",
+        "//packages/intl-locale:types",
     ],
 )
 
@@ -248,6 +250,7 @@ bundle_karma_tests(
     rollup_deps = [
         "//packages/intl-pluralrules",
         "//packages/intl-getcanonicallocales:dist",
+        "//packages/intl-locale:dist",
     ],
     tests = TESTS,
     deps = SRC_DEPS,

@@ -1,4 +1,5 @@
 import '@formatjs/intl-getcanonicallocales/polyfill';
+import '@formatjs/intl-locale/polyfill';
 import '@formatjs/intl-pluralrules/polyfill-locales';
 import * as zh from './locale-data/zh.json';
 import * as zhHant from './locale-data/zh-Hant.json';
