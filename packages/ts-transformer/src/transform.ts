@@ -376,8 +376,7 @@ function extractMessageFromJsxComponent(
   factory: typescript.NodeFactory,
   node: typescript.JsxOpeningElement | typescript.JsxSelfClosingElement,
   opts: Opts,
-  sf: typescript.SourceFile,
-  ctx: typescript.TransformationContext
+  sf: typescript.SourceFile
 ): typeof node {
   const {onMsgExtracted} = opts;
   if (!isSingularMessageDecl(ts, node, opts.additionalComponentNames || [])) {
@@ -391,27 +390,34 @@ function extractMessageFromJsxComponent(
     onMsgExtracted(sf.fileName, [msg]);
   }
 
-  const visitor: typescript.Visitor = node => {
-    if (ts.isJsxAttributes(node)) {
-      return factory.createJsxAttributes(
-        generateNewProperties(
-          ts,
-          factory,
-          node,
-          {
-            defaultMessage: opts.removeDefaultMessage
-              ? undefined
-              : msg.defaultMessage,
-            id: msg.id,
-          },
-          opts.ast
-        )
-      );
-    }
-    return node;
-  };
+  const newProps = generateNewProperties(
+    ts,
+    factory,
+    node.attributes,
+    {
+      defaultMessage: opts.removeDefaultMessage
+        ? undefined
+        : msg.defaultMessage,
+      id: msg.id,
+    },
+    opts.ast
+  );
 
-  return ts.visitEachChild(node, visitor, ctx);
+  if (ts.isJsxOpeningElement(node)) {
+    return factory.updateJsxOpeningElement(
+      node,
+      node.tagName,
+      node.typeArguments,
+      factory.createJsxAttributes(newProps)
+    );
+  }
+
+  return factory.updateJsxSelfClosingElement(
+    node,
+    node.tagName,
+    node.typeArguments,
+    factory.createJsxAttributes(newProps)
+  );
 }
 
 function setAttributesInObject(
@@ -561,10 +567,11 @@ function extractMessagesFromCallExpression(
       const clonedDescriptorsObj = factory.createObjectLiteralExpression(
         clonedProperties
       );
-      return factory.createCallExpression(
+      return factory.updateCallExpression(
+        node,
         node.expression,
         node.typeArguments,
-        factory.createNodeArray([clonedDescriptorsObj, ...restArgs])
+        [clonedDescriptorsObj, ...restArgs]
       );
     }
   } else if (
@@ -581,10 +588,11 @@ function extractMessagesFromCallExpression(
         onMsgExtracted(sf.fileName, [msg]);
       }
 
-      return factory.createCallExpression(
+      return factory.updateCallExpression(
+        node,
         node.expression,
         node.typeArguments,
-        factory.createNodeArray([
+        [
           setAttributesInObject(
             ts,
             factory,
@@ -598,7 +606,7 @@ function extractMessagesFromCallExpression(
             opts.ast
           ),
           ...restArgs,
-        ])
+        ]
       );
     }
   }
@@ -619,7 +627,7 @@ function getVisitor(
     const newNode = ts.isCallExpression(node)
       ? extractMessagesFromCallExpression(ts, ctx.factory, node, opts, sf)
       : ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)
-      ? extractMessageFromJsxComponent(ts, ctx.factory, node, opts, sf, ctx)
+      ? extractMessageFromJsxComponent(ts, ctx.factory, node, opts, sf)
       : node;
     return ts.visitEachChild(newNode, visitor, ctx);
   };
