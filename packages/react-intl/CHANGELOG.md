@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.10.4](https://github.com/formatjs/formatjs/compare/react-intl@5.10.3...react-intl@5.10.4) (2020-11-21)
+
+
+### Bug Fixes
+
+* **react-intl:** only warn about non-AST messages during initialization, fix [#2258](https://github.com/formatjs/formatjs/issues/2258) ([b1e1fd0](https://github.com/formatjs/formatjs/commit/b1e1fd0734aaa0340f7d43cfe86566ba639369e3))
+
+
+
+
+
 ## [5.10.3](https://github.com/formatjs/formatjs/compare/react-intl@5.10.2...react-intl@5.10.3) (2020-11-20)
 
 **Note:** Version bump only for package react-intl
