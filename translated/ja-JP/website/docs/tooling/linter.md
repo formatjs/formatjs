@@ -470,3 +470,11 @@ const messages = defineMessages({
 ```
 
 - `idInterpolationPattern`: Pattern to verify ID against
+
+### `no-id`
+
+This bans explicit ID in `MessageDescriptor`.
+
+#### Why
+
+We generally encourage automatic ID generation due to [these reasons](https://formatjs.io/docs/getting-started/message-declaration). This makes sure no explicit IDs are set.
