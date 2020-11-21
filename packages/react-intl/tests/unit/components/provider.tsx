@@ -133,4 +133,33 @@ describe('<IntlProvider>', () => {
     expect(onError).not.toHaveBeenCalled();
     expect(getByTestId('comp')).toHaveTextContent('31/01/2020');
   });
+  it('show warning for non-AST messages with defaultRichTextElements', () => {
+    const consoleWarn = jest.spyOn(console, 'warn');
+
+    render(
+      <IntlProvider
+        locale="fr"
+        timeZone="Atlantic/Azores"
+        formats={{}}
+        messages={{
+          foo: 'bar',
+        }}
+        defaultLocale="en"
+        defaultFormats={{}}
+        textComponent="span"
+        defaultRichTextElements={{
+          b: chunks => <b>{chunks}</b>,
+        }}
+      >
+        <span data-testid="comp">
+          <FormattedDate value={new Date(2020, 1, 1)} timeZoneName="short" />
+        </span>
+      </IntlProvider>
+    );
+
+    expect(consoleWarn)
+      .toHaveBeenCalledWith(`[@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
+Please consider using "@formatjs/cli" to pre-compile your messages for performance.
+For more details see https://formatjs.io/docs/getting-started/message-distribution`);
+  });
 });

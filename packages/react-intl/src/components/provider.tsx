@@ -133,6 +133,7 @@ export const createIntl: CreateIntlFn<
     {
       ...DEFAULT_INTL_CONFIG,
       ...config,
+      defaultRichTextElements,
     },
     cache
   );
