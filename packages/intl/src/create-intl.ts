@@ -69,6 +69,19 @@ export function createIntl<T = string>(
       )
     );
   }
+
+  const firstMessage = config.messages
+    ? config.messages[Object.keys(config.messages)[0]]
+    : undefined;
+  if (
+    config.defaultRichTextElements &&
+    firstMessage &&
+    typeof firstMessage === 'string'
+  ) {
+    console.warn(`[@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
+Please consider using "@formatjs/cli" to pre-compile your messages for performance.
+For more details see https://formatjs.io/docs/getting-started/message-distribution`);
+  }
   return {
     ...resolvedConfig,
     formatters,
