@@ -3203,10 +3203,10 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@testing-library/dom@^7.27.1":
-  version "7.28.0"
-  resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-7.28.0.tgz#4d68a39675dbf0fa2f3c53bc2b9ab9e1dd1d55b2"
-  integrity sha512-jY9wE3eF/fjrxUCC1VTCnMWE/g+aCP582Df4H6H9wQYY0yLglyevTO7TET9pgg0w9Yzm8n7ck0Hxzi18pN5+4w==
+"@testing-library/dom@^7.28.1":
+  version "7.28.1"
+  resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-7.28.1.tgz#dea78be6e1e6db32ddcb29a449e94d9700c79eb9"
+  integrity sha512-acv3l6kDwZkQif/YqJjstT3ks5aaI33uxGNVIQmdKzbZ2eMKgg3EV2tB84GDdc72k3Kjhl6mO8yUt6StVIdRDg==
   dependencies:
     "@babel/code-frame" "^7.10.4"
     "@babel/runtime" "^7.12.5"
@@ -3232,12 +3232,12 @@
     redent "^3.0.0"
 
 "@testing-library/react@^11.1.1":
-  version "11.2.1"
-  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-11.2.1.tgz#01b3d2dd5768ac27402b5d7e41c87e605be3c326"
-  integrity sha512-/rKucr9p/mhMongaeTXwgIRfDnsAUu6LbfN+moNUn2oU0Kw5a7inN5vGvPWv7Ef0YndpERAfODjeseUIlhzRHw==
+  version "11.2.2"
+  resolved "https://registry.yarnpkg.com/@testing-library/react/-/react-11.2.2.tgz#099c6c195140ff069211143cb31c0f8337bdb7b7"
+  integrity sha512-jaxm0hwUjv+hzC+UFEywic7buDC9JQ1q3cDsrWVSDAPmLotfA6E6kUHlYm/zOeGCac6g48DR36tFHxl7Zb+N5A==
   dependencies:
     "@babel/runtime" "^7.12.5"
-    "@testing-library/dom" "^7.27.1"
+    "@testing-library/dom" "^7.28.1"
 
 "@types/anymatch@*":
   version "1.3.1"
