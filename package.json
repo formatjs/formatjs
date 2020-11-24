@@ -50,7 +50,7 @@
     "@types/json-stable-stringify": "^1.0.32",
     "@types/lodash": "^4.14.150",
     "@types/node": "14",
-    "@types/react-dom": "^16.3.0",
+    "@types/react-dom": "^17.0.0",
     "@types/rimraf": "^3.0.0",
     "@types/serialize-javascript": "^4.0.0",
     "@typescript-eslint/eslint-plugin": "^4.0.0",
