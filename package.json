@@ -54,7 +54,7 @@
     "@types/rimraf": "^3.0.0",
     "@types/serialize-javascript": "^4.0.0",
     "@typescript-eslint/eslint-plugin": "^4.0.0",
-    "@typescript-eslint/parser": "~4.6.0",
+    "@typescript-eslint/parser": "~4.8.2",
     "benchmark": "^2.1.4",
     "chalk": "^4.0.0",
     "cldr-core": "^37.0.0",
