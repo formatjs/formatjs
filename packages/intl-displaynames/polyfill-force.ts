@@ -1,4 +1,4 @@
-import {DisplayNames} from '.';
+import {DisplayNames} from './';
 
 Object.defineProperty(Intl, 'DisplayNames', {
   value: DisplayNames,
