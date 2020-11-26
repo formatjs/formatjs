@@ -16,11 +16,11 @@ This parser is written in [PEG.js](https://pegjs.org/), a parser generator for J
 ## Usage
 
 ```ts
-import {parse} from 'intl-messageformat-parser';
+import {parse} from 'intl-messageformat-parser'
 const ast = parse(`this is {count, plural, 
   one{# dog} 
   other{# dogs}
-}`);
+}`)
 ```
 
 ### Example
