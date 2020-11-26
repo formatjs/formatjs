@@ -42,7 +42,7 @@ const messages = {
   fr: {
     GREETING: 'Bonjour {name}',
   },
-};
+}
 ```
 
 We use the [ICU Message syntax](https://unicode-org.github.io/icu/userguide/format_parse/messages) which is also used in [Java](http://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html), C, PHP and various other platforms.
