@@ -1152,10 +1152,10 @@
   resolved "https://registry.yarnpkg.com/@bazel/ibazel/-/ibazel-0.14.0.tgz#86fa0002bed2ce1123b7ad98d4dd4623a0d93244"
   integrity sha512-s0gyec6lArcRDwVfIP6xpY8iEaFpzrSpyErSppd3r2O49pOEg7n6HGS/qJ8ncvme56vrDk6crl/kQ6VAdEO+rg==
 
-"@bazel/rollup@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@bazel/rollup/-/rollup-2.3.0.tgz#688774f0abe8f3c891d566d65bdfb54768c10e21"
-  integrity sha512-kSsgZtu2UIHUqw9UuCeEvRsFn5eobomTmkj3MYJ/LNlCR+HohKG9DWLkT5KcPPL9tDZTq62vRqLk9k/h/E44Bw==
+"@bazel/rollup@2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@bazel/rollup/-/rollup-2.3.1.tgz#30265ac682149e82f3a4a0cfda216f3d860e7373"
+  integrity sha512-KyMIYr8UV1MkwdW+2HUnwUNAddFhETM8OSaaOQK5I7hV4XKjBzc2EZstt4HRcNtsVF5Lnsi7Arb8xjbBdXTqvw==
 
 "@bazel/terser@2.3.0":
   version "2.3.0"
