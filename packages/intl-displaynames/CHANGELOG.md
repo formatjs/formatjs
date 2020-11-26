@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@4.0.0...@formatjs/intl-displaynames@4.0.1) (2020-11-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-getcanonicallocales:** fix import path for polyfills ([#2348](https://github.com/formatjs/formatjs/issues/2348)) ([c704cf5](https://github.com/formatjs/formatjs/commit/c704cf5561c659ab1552c1c0efd76616c822da6f))
+
+
+
+
+
 # [4.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@3.4.6...@formatjs/intl-displaynames@4.0.0) (2020-11-20)
 
 

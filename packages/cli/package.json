@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/cli",
-  "version": "2.13.13",
+  "version": "2.13.14",
   "description": "A CLI for formatjs.",
   "keywords": [
     "intl",
@@ -31,7 +31,7 @@
     "url": "git+ssh://git@github.com/formatjs/formatjs.git"
   },
   "dependencies": {
-    "@formatjs/ts-transformer": "2.12.8",
+    "@formatjs/ts-transformer": "2.12.9",
     "@types/json-stable-stringify": "^1.0.32",
     "@types/lodash": "^4.14.150",
     "@types/loud-rejection": "^2.0.0",

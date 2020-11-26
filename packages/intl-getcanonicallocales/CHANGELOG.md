@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.5.1...@formatjs/intl-getcanonicallocales@1.5.2) (2020-11-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-getcanonicallocales:** fix import path for polyfills ([#2348](https://github.com/formatjs/formatjs/issues/2348)) ([c704cf5](https://github.com/formatjs/formatjs/commit/c704cf5561c659ab1552c1c0efd76616c822da6f))
+
+
+
+
+
 ## [1.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.5.0...@formatjs/intl-getcanonicallocales@1.5.1) (2020-10-26)
 
 
