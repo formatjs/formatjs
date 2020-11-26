@@ -1,4 +1,4 @@
-import {DisplayNames} from '.';
+import {DisplayNames} from './';
 import {shouldPolyfill} from './should-polyfill';
 
 if (shouldPolyfill()) {

@@ -1,4 +1,4 @@
-import ListFormat from '.';
+import ListFormat from './';
 import {shouldPolyfill} from './should-polyfill';
 if (shouldPolyfill()) {
   Object.defineProperty(Intl, 'ListFormat', {

@@ -1,4 +1,4 @@
-import ListFormat from '.';
+import ListFormat from './';
 
 Object.defineProperty(Intl, 'ListFormat', {
   value: ListFormat,

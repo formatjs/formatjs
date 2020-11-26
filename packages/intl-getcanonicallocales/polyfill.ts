@@ -1,4 +1,4 @@
-import {getCanonicalLocales} from '.';
+import {getCanonicalLocales} from './';
 import {shouldPolyfill} from './should-polyfill';
 if (typeof Intl === 'undefined') {
   if (typeof window !== 'undefined') {
