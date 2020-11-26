@@ -3,24 +3,24 @@ id: intl-messageformat-parser
 title: Intl MessageFormat Parser
 ---
 
-Parses [ICU Message strings](http://userguide.icu-project.org/formatparse/messages) into an AST via JavaScript.
+Parses [ICU Message strings](https://unicode-org.github.io/icu/userguide/format_parse/messages) into an AST via JavaScript.
 
 [![npm Version](https://badgen.net/npm/v/intl-messageformat-parser)](https://www.npmjs.com/package/intl-messageformat-parser) [![size](https://badgen.net/bundlephobia/minzip/intl-messageformat-parser)](https://bundlephobia.com/result?p=intl-messageformat-parser)
 
 ## Overview
 
-This package implements a parser in JavaScript that parses the industry standard [ICU Message strings](http://userguide.icu-project.org/formatparse/messages) — used for internationalization — into an AST. The produced AST can then be used by a compiler, like [`intl-messageformat`](./intl-messageformat.md), to produce localized formatted strings for display to users.
+This package implements a parser in JavaScript that parses the industry standard [ICU Message strings](https://unicode-org.github.io/icu/userguide/format_parse/messages) — used for internationalization — into an AST. The produced AST can then be used by a compiler, like [`intl-messageformat`](./intl-messageformat.md), to produce localized formatted strings for display to users.
 
 This parser is written in [PEG.js](https://pegjs.org/), a parser generator for JavaScript.
 
 ## Usage
 
 ```ts
-import {parse} from 'intl-messageformat-parser'
+import {parse} from 'intl-messageformat-parser';
 const ast = parse(`this is {count, plural, 
   one{# dog} 
   other{# dogs}
-}`)
+}`);
 ```
 
 ### Example

@@ -62,11 +62,11 @@ new IntlMessageFormat(
 
 ### Message Syntax
 
-The message syntax that this package uses is not proprietary, in fact it's a common standard message syntax that works across programming languages and one that professional translators are familiar with. This package uses the **[ICU Message syntax](http://userguide.icu-project.org/formatparse/messages)** and works for all [CLDR languages](http://cldr.unicode.org/) which have pluralization rules defined.
+The message syntax that this package uses is not proprietary, in fact it's a common standard message syntax that works across programming languages and one that professional translators are familiar with. This package uses the **[ICU Message syntax](https://unicode-org.github.io/icu/userguide/format_parse/messages)** and works for all [CLDR languages](http://cldr.unicode.org/) which have pluralization rules defined.
 
 ### Features
 
-- Uses industry standards: [ICU Message syntax](http://userguide.icu-project.org/formatparse/messages) and [CLDR locale data](http://cldr.unicode.org/).
+- Uses industry standards: [ICU Message syntax](https://unicode-org.github.io/icu/userguide/format_parse/messages) and [CLDR locale data](http://cldr.unicode.org/).
 
 - Supports **plural**, **select**, and **selectordinal** message arguments.
 

@@ -150,8 +150,7 @@ dateTimeSkeletonPattern = [a-zA-Z]+
 
 // See also:
 // - http://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
-// - http://cldr.unicode.org/translation/date-time-patterns
-// - http://www.icu-project.org/apiref/icu4j/com/ibm/icu/text/SimpleDateFormat.html
+// - http://cldr.unicode.org/translation/date-time-1/date-time-patterns
 dateTimeSkeleton
     = pattern:$(dateTimeSkeletonLiteral / dateTimeSkeletonPattern)+ {
         return {

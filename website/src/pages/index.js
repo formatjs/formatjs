@@ -177,7 +177,7 @@ function StandardsSection({className}) {
             ),
             cldr: chunks => <a href="http://cldr.unicode.org/">{chunks}</a>,
             icu: chunks => (
-              <a href="http://userguide.icu-project.org/formatparse/messages">
+              <a href="https://unicode-org.github.io/icu/userguide/format_parse/messages">
                 {chunks}
               </a>
             ),

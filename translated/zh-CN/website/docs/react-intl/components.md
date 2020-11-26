@@ -24,16 +24,16 @@ This component is used to setup the i18n context for a tree. Usually, this compo
 
 ```ts
 interface IntlConfig {
-  locale: string
-  formats: CustomFormats
-  messages: Record<string, string> | Record<string, MessageFormatElement[]>
-  defaultLocale: string
-  defaultFormats: CustomFormats
-  timeZone?: string
-  textComponent?: React.ComponentType | keyof React.ReactHTML
-  wrapRichTextChunksInFragment?: boolean
-  defaultRichTextElements?: Record<string, FormatXMLElementFn<React.ReactNode>>
-  onError(err: string): void
+  locale: string;
+  formats: CustomFormats;
+  messages: Record<string, string> | Record<string, MessageFormatElement[]>;
+  defaultLocale: string;
+  defaultFormats: CustomFormats;
+  timeZone?: string;
+  textComponent?: React.ComponentType | keyof React.ReactHTML;
+  wrapRichTextChunksInFragment?: boolean;
+  defaultRichTextElements?: Record<string, FormatXMLElementFn<React.ReactNode>>;
+  onError(err: string): void;
 }
 ```
 
@@ -69,7 +69,7 @@ These configuration props are combined with the `<IntlProvider>`'s component-spe
 props: IntlConfig &
   {
     children: ReactNode,
-  }
+  };
 ```
 
 Finally, child elements _must_ be supplied to `<IntlProvider>`.
@@ -87,14 +87,14 @@ const App = ({importantDate}) => (
       weekday="long"
     />
   </div>
-)
+);
 
 ReactDOM.render(
   <IntlProvider locale={navigator.language}>
     <App importantDate={new Date(1459913574887)} />
   </IntlProvider>,
   document.getElementById('container')
-)
+);
 ```
 
 Assuming `navigator.language` is `"fr"`:
@@ -147,7 +147,7 @@ props: Intl.DateTimeFormatOptions &
     value: any,
     format: string,
     children: (formattedDate: string) => ReactElement,
-  }
+  };
 ```
 
 By default `<FormattedDate>` will render the formatted date into a `<React.Fragment>`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
@@ -183,7 +183,7 @@ props: Intl.DateTimeFormatOptions &
     value: any,
     format: string,
     children: (parts: Intl.DateTimeFormatPart[]) => ReactElement,
-  }
+  };
 ```
 
 ```tsx live
@@ -222,7 +222,7 @@ props: DateTimeFormatOptions &
     value: any,
     format: string,
     children: (formattedDate: string) => ReactElement,
-  }
+  };
 ```
 
 By default `<FormattedTime>` will render the formatted time into a `React.Fragment`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
@@ -247,7 +247,7 @@ props: Intl.DateTimeFormatOptions &
     value: any,
     format: string,
     children: (parts: Intl.DateTimeFormatPart[]) => ReactElement,
-  }
+  };
 ```
 
 ```tsx live
@@ -276,7 +276,7 @@ props: DateTimeFormatOptions &
     from: number | Date,
     to: number | Date,
     children: (formattedDate: string) => ReactElement,
-  }
+  };
 ```
 
 By default `<FormattedDateTimeRange>` will render the formatted time into a `React.Fragment`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
@@ -298,9 +298,9 @@ This component uses the [`formatRelativeTime`](api.md#formatrelativetime) API an
 
 ```ts
 type RelativeTimeFormatOptions = {
-  numeric?: 'always' | 'auto'
-  style?: 'long' | 'short' | 'narrow'
-}
+  numeric?: 'always' | 'auto';
+  style?: 'long' | 'short' | 'narrow';
+};
 ```
 
 **Prop Types:**
@@ -313,7 +313,7 @@ props: RelativeTimeFormatOptions &
     format: string,
     updateIntervalInSeconds: number,
     children: (formattedDate: string) => ReactElement,
-  }
+  };
 ```
 
 By default `<FormattedRelativeTime>` will render the formatted relative time into a `React.Fragment`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
@@ -348,7 +348,7 @@ props: NumberFormatOptions &
     value: number,
     format: string,
     children: (formattedNumber: string) => ReactElement,
-  }
+  };
 ```
 
 By default `<FormattedNumber>` will render the formatted number into a `React.Fragment`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
@@ -401,7 +401,7 @@ props: NumberFormatOptions &
     value: number,
     format: string,
     children: (parts: Intl.NumberFormatPart[]) => ReactElement,
-  }
+  };
 ```
 
 **Example:**
@@ -437,7 +437,7 @@ props: PluralFormatOptions &
     many: ReactElement,
 
     children: (formattedPlural: ReactElement) => ReactElement,
-  }
+  };
 ```
 
 By default `<FormattedPlural>` will select a [plural category](http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html) (`zero`, `one`, `two`, `few`, `many`, or `other`) and render the corresponding React element into a `React.Fragment`. If you need to customize rendering, you can either wrap it with another React element (recommended), or pass a function as the child.
@@ -460,7 +460,7 @@ This component uses [`formatList`](api.md#formatlist) API and [Intl.ListFormat](
 props: ListFormatOptions &
   {
     children: (chunksOrString: string | React.ReactElement[]) => ReactElement,
-  }
+  };
 ```
 
 **Example:**
@@ -487,7 +487,7 @@ This component uses [`formatDisplayName`](api.md#formatdisplayname) and [`Intl.D
 props: FormatDisplayNameOptions &
   {
     value: string | number | object,
-  }
+  };
 ```
 
 **Example:**
@@ -514,12 +514,12 @@ props: MessageDescriptor &
     values: object,
     tagName: string,
     children: (chunks: ReactElement) => ReactElement,
-  }
+  };
 ```
 
 ### Message Syntax
 
-String/Message formatting is a paramount feature of React Intl and it builds on [ICU Message Formatting](http://userguide.icu-project.org/formatparse/messages) by using the [ICU Message Syntax](../core-concepts/icu-syntax.md). This message syntax allows for simple to complex messages to be defined, translated, and then formatted at runtime.
+String/Message formatting is a paramount feature of React Intl and it builds on [ICU Message Formatting](https://unicode-org.github.io/icu/userguide/format_parse/messages) by using the [ICU Message Syntax](../core-concepts/icu-syntax.md). This message syntax allows for simple to complex messages to be defined, translated, and then formatted at runtime.
 
 **Simple Message:**
 
@@ -549,10 +549,10 @@ React Intl has a Message Descriptor concept which is used to define your app's d
 
 ```tsx
 type MessageDescriptor = {
-  id?: string
-  defaultMessage?: string
-  description?: string
-}
+  id?: string;
+  defaultMessage?: string;
+  description?: string;
+};
 ```
 
 :::info compile message descriptors The [babel-plugin-react-intl](../tooling/babel-plugin.md) and [@formatjs/ts-transformer](../tooling/ts-transformer.md) packages can be used to compile Message Descriptors defined in JavaScript source files into AST for performance. :::

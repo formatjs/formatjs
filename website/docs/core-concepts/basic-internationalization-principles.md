@@ -45,7 +45,7 @@ const messages = {
 }
 ```
 
-We use the [ICU Message syntax](http://userguide.icu-project.org/formatparse/messages) which is also used in [Java](http://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html), C, PHP and various other platforms.
+We use the [ICU Message syntax](https://unicode-org.github.io/icu/userguide/format_parse/messages) which is also used in [Java](http://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html), C, PHP and various other platforms.
 
 ## Bundling Translated Strings
 

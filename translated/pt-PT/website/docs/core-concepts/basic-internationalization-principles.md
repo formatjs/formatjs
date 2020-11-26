@@ -42,10 +42,10 @@ const messages = {
   fr: {
     GREETING: 'Bonjour {name}',
   },
-}
+};
 ```
 
-Nós usamos a [ICU Message syntax](http://userguide.icu-project.org/formatparse/messages) no qual também é usada em [Java](http://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html), C, PHP e várias outras linguagens.
+Nós usamos a [ICU Message syntax](https://unicode-org.github.io/icu/userguide/format_parse/messages) no qual também é usada em [Java](http://docs.oracle.com/javase/7/docs/api/java/text/MessageFormat.html), C, PHP e várias outras linguagens.
 
 ## Agrupar Cadeias Traduzidas
 

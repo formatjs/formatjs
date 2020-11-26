@@ -355,7 +355,7 @@ This is especially beneficial in SSR where you can reuse the same `intl` object 
 
 ## Message Format Syntax Changes
 
-We've rewritten our parser to be more faithful to [ICU Message Format](https://ssl.icu-project.org/apiref/icu4j/com/ibm/icu/text/MessageFormat.html), in order to potentially support skeleton. So far the backwards-incompatible changes are:
+We've rewritten our parser to be more faithful to [ICU Message Format](https://unicode-org.github.io/icu-docs/apidoc/released/icu4j/com/ibm/icu/text/MessageFormat.html), in order to potentially support skeleton. So far the backwards-incompatible changes are:
 
 ### Escape character has been changed to apostrophe (`'`).
 
@@ -369,7 +369,7 @@ Previously while we were using ICU message format syntax, our escape char was ba
 <FormattedMessage defaultMessage="'{foo}'" /> //prints out "{foo}"
 ```
 
-We highly recommend reading the spec to learn more about how quote/escaping works [here](http://userguide.icu-project.org/formatparse/messages) under **Quoting/Escaping** section.
+We highly recommend reading the spec to learn more about how quote/escaping works [here](https://unicode-org.github.io/icu/userguide/format_parse/messages) under **Quoting/Escaping** section.
 
 ### Placeholder argument syntax change
 

@@ -1040,7 +1040,7 @@ subset of
 to react-intl.
 The skeleton syntax per ICU is `today is {ts, time, ::yyyyMMdd}`.
 Further documentation can be read at
-http://userguide.icu-project.org/formatparse/datetime.
+https://unicode-org.github.io/icu/userguide/format_parse/datetimedatetime.
 
 ### [3.6.2](https://github.com/formatjs/react-intl/compare/v3.6.1...v3.6.2) (2019-11-21)
 

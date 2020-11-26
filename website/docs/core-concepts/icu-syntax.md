@@ -3,7 +3,7 @@ id: icu-syntax
 title: Message Syntax
 ---
 
-If you are translating text you'll need a way for your translators to express the subtleties of spelling, grammar, and conjugation inherent in each language. We use the [ICU Message syntax](http://userguide.icu-project.org/formatparse/messages) which is also used in Java and PHP.
+If you are translating text you'll need a way for your translators to express the subtleties of spelling, grammar, and conjugation inherent in each language. We use the [ICU Message syntax](https://unicode-org.github.io/icu/userguide/format_parse/messages) which is also used in Java and PHP.
 
 The [`intl-messageformat`](intl-messageformat.md) library takes the message and input data and creates an appropriately formatted string. This feature is included with all of the integrations we provide.
 
