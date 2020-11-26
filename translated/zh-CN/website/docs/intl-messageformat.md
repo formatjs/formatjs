@@ -22,13 +22,13 @@ This implementation is based on the [Strawman proposal](http://wiki.ecmascript.o
 Messages are provided into the constructor as a `String` message, or a [pre-parsed AST](./intl-messageformat-parser.md) object.
 
 ```tsx
-const msg = new IntlMessageFormat(message, locales, [formats], [opts]);
+const msg = new IntlMessageFormat(message, locales, [formats], [opts])
 ```
 
 The string `message` is parsed, then stored internally in a compiled form that is optimized for the `format()` method to produce the formatted string for displaying to the user.
 
 ```tsx
-const output = msg.format(values);
+const output = msg.format(values)
 ```
 
 ### Common Usage Example
@@ -43,7 +43,7 @@ new IntlMessageFormat(
       other {# photos.}
     }`,
   'en-US'
-).format({numPhotos: 1000});
+).format({numPhotos: 1000})
 ```
 
 ```tsx live
@@ -54,7 +54,7 @@ new IntlMessageFormat(
       other {tiene # fotos.}
     }`,
   'en-US'
-).format({numPhotos: 1000});
+).format({numPhotos: 1000})
 ```
 
 ### Message Syntax
@@ -96,11 +96,11 @@ This package assumes that the [`Intl`](https://developer.mozilla.org/en-US/docs/
 Either do:
 
 ```tsx
-import IntlMessageFormat from 'intl-messageformat';
+import IntlMessageFormat from 'intl-messageformat'
 ```
 
 ```tsx
-const IntlMessageFormat = require('intl-messageformat').default;
+const IntlMessageFormat = require('intl-messageformat').default
 ```
 
 **NOTE: Your Node has to include [full ICU](https://nodejs.org/api/intl.html)**
@@ -122,7 +122,7 @@ To create a message to format, use the `IntlMessageFormat` constructor. The cons
   - `ignoreTag`: Whether to treat HTML/XML tags as string literal instead of parsing them as tag token. When this is `false` we only allow simple tags without any attributes
 
 ```tsx
-const msg = new IntlMessageFormat('My name is {name}.', 'en-US');
+const msg = new IntlMessageFormat('My name is {name}.', 'en-US')
 ```
 
 ### Locale Resolution
@@ -134,7 +134,7 @@ const msg = new IntlMessageFormat('My name is {name}.', 'en-US');
 This method returns an object with the options values that were resolved during instance creation. It currently only contains a `locale` property; here's an example:
 
 ```tsx live
-new IntlMessageFormat('', 'en-us').resolvedOptions().locale;
+new IntlMessageFormat('', 'en-us').resolvedOptions().locale
 ```
 
 Notice how the specified locale was the all lower-case value: `"en-us"`, but it was resolved and normalized to: `"en-US"`.
@@ -144,7 +144,7 @@ Notice how the specified locale was the all lower-case value: `"en-us"`, but it 
 Once the message is created, formatting the message is done by calling the `format()` method on the instance and passing a collection of `values`:
 
 ```tsx live
-new IntlMessageFormat('My name is {name}.', 'en-US').format({name: 'Eric'});
+new IntlMessageFormat('My name is {name}.', 'en-US').format({name: 'Eric'})
 ```
 
 :::danger placeholders A value **must** be supplied for every argument in the message pattern the instance was constructed with. :::
@@ -154,7 +154,7 @@ new IntlMessageFormat('My name is {name}.', 'en-US').format({name: 'Eric'});
 ```tsx live
 new IntlMessageFormat('hello <b>world</b>', 'en').format({
   b: chunks => <strong>{chunks}</strong>,
-});
+})
 ```
 
 We support embedded XML tag in the message, e.g `this is a <b>strong</b> tag`. This is not meant to be a full-fledged method to embed HTML, but rather to tag specific text chunk so translation can be more contextual. Therefore, the following restrictions apply:
@@ -176,17 +176,17 @@ function () {
 4. XML/HTML tags are escaped using apostrophe just like other ICU constructs. In order to escape you can do things like:
 
 ```tsx live
-new IntlMessageFormat("I '<'3 cats").format();
+new IntlMessageFormat("I '<'3 cats").format()
 ```
 
 ```tsx live
-new IntlMessageFormat("raw '<b>HTML</b>'").format();
+new IntlMessageFormat("raw '<b>HTML</b>'").format()
 ```
 
 ```tsx live
 new IntlMessageFormat(
   "raw '<b>HTML</b>' with '<a>'{placeholder}'</a>'"
-).format({placeholder: 'some word'});
+).format({placeholder: 'some word'})
 ```
 
 5. Embedded valid HTML tag is a bit of a grey area right now since we're not supporting the full HTML/XHTML/XML spec.
@@ -207,7 +207,7 @@ Example:
 new IntlMessageFormat(
   'The price is: {price, number, ::currency/EUR}',
   'en-GB'
-).format({price: 100});
+).format({price: 100})
 ```
 
 A full set of options and syntax can be found [here](https://github.com/unicode-org/icu/blob/master/docs/userguide/format_parse/numbers/skeletons.md)
@@ -240,7 +240,7 @@ Example:
 ```tsx live
 new IntlMessageFormat('Today is: {now, date, ::yyyyMMdd}', 'en-GB').format({
   now: new Date(),
-});
+})
 ```
 
 ## Advanced Usage
@@ -250,13 +250,13 @@ new IntlMessageFormat('Today is: {now, date, ::yyyyMMdd}', 'en-GB').format({
 You can pass in pre-parsed AST to IntlMessageFormat like this:
 
 ```tsx
-new IntlMessageFormat('hello').format(); // prints out hello
+new IntlMessageFormat('hello').format() // prints out hello
 
 // is equivalent to
 
-import IntlMessageFormat from 'intl-messageformat';
-import parser from 'intl-messageformat-parser';
-new IntlMessageFormat(parser.parse('hello')).format(); // prints out hello
+import IntlMessageFormat from 'intl-messageformat'
+import parser from 'intl-messageformat-parser'
+new IntlMessageFormat(parser.parse('hello')).format() // prints out hello
 ```
 
 This helps performance for cases like SSR or preload/precompilation-supported platforms since `AST` can be cached.
@@ -270,8 +270,8 @@ For complex messages, initializing `Intl.*` constructors can be expensive. There
 For example:
 
 ```ts
-import IntlMessageFormat from 'intl-messageformat';
-import memoize from 'fast-memoize';
+import IntlMessageFormat from 'intl-messageformat'
+import memoize from 'fast-memoize'
 const formatters = {
   getNumberFormat: memoize(
     (locale, opts) => new Intl.NumberFormat(locale, opts)
@@ -280,10 +280,10 @@ const formatters = {
     (locale, opts) => new Intl.DateTimeFormat(locale, opts)
   ),
   getPluralRules: memoize((locale, opts) => new Intl.PluralRules(locale, opts)),
-};
+}
 new IntlMessageFormat('hello {number, number}', 'en', undefined, {
   formatters,
-}).format({number: 3}); // prints out `hello, 3`
+}).format({number: 3}) // prints out `hello, 3`
 ```
 
 ## Benchmark
