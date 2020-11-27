@@ -23,7 +23,7 @@ function allTests(opts?: ParseOptions) {
     // the runtime doesn't replace it when in a `pluralFormat` option.
     `'#'`,
     /**
-     * @see http://userguide.icu-project.org/formatpegParse/messages#TOC-Quoting-Escaping
+     * @see https://unicode-org.github.io/icu/userguide/format_parse/messages/#quotingescaping
      * @see https://github.com/formatjs/formatjs/issues/97
      */
     "This '{isn''t}' obvious",
