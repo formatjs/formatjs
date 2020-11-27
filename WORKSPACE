@@ -46,15 +46,15 @@ http_archive(
 http_archive(
     name = "tzdata",
     build_file = "@//:packages/intl-datetimeformat/tzdata.BUILD",
-    sha256 = "547161eca24d344e0b5f96aff6a76b454da295dc14ed4ca50c2355043fb899a2",
-    urls = ["https://data.iana.org/time-zones/releases/tzdata2020a.tar.gz"],
+    sha256 = "8d813957de363387696f05af8a8889afa282ab5016a764c701a20758d39cbaf3",
+    urls = ["https://data.iana.org/time-zones/releases/tzdata2020d.tar.gz"],
 )
 
 http_archive(
     name = "tzcode",
     build_file = "@//:packages/intl-datetimeformat/tzcode.BUILD",
-    sha256 = "7d2af7120ee03df71fbca24031ccaf42404752e639196fe93c79a41b38a6d669",
-    urls = ["https://data.iana.org/time-zones/releases/tzcode2020a.tar.gz"],
+    sha256 = "6cf050ba28e8053029d3f32d71341d11a794c6b5dd51a77fc769d6dae364fad5",
+    urls = ["https://data.iana.org/time-zones/releases/tzcode2020d.tar.gz"],
 )
 
 load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "yarn_install")
