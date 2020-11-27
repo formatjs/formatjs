@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@3.0.0...@formatjs/intl-datetimeformat@3.1.0) (2020-11-27)
+
+
+### Features
+
+* **@formatjs/intl-datetimeformat:** update tzdata to 2020d ([e59e01c](https://github.com/formatjs/formatjs/commit/e59e01ca9be8ff70174cfd00d54e6765a0505936))
+
+
+
+
+
 # [3.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@2.8.4...@formatjs/intl-datetimeformat@3.0.0) (2020-11-20)
 
 
