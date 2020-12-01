@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.0.0...@formatjs/intl-numberformat@6.0.1) (2020-12-01)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** add index file ([8ffb7a3](https://github.com/formatjs/formatjs/commit/8ffb7a3f236bc92cc3ab943f16de596b665cc3d6))
+
+
+
+
+
 # [6.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@5.7.6...@formatjs/intl-numberformat@6.0.0) (2020-11-20)
 
 
