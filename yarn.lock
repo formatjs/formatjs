@@ -11366,10 +11366,10 @@ karma-jasmine@^4.0.0:
   dependencies:
     jasmine-core "^3.6.0"
 
-karma-sauce-launcher@4.3.3:
-  version "4.3.3"
-  resolved "https://registry.yarnpkg.com/karma-sauce-launcher/-/karma-sauce-launcher-4.3.3.tgz#ae92cd4d8d0147f6d0b8f3f9558785aaecbc65fa"
-  integrity sha512-t9t4RYGXKF1md3EutXb59r4gWOFi67jfUDHdfEssSXsjNlmMZ43qGFupUFbpBO6iebSbwf+KqLcwhDx/bxzbuQ==
+karma-sauce-launcher@4.3.4:
+  version "4.3.4"
+  resolved "https://registry.yarnpkg.com/karma-sauce-launcher/-/karma-sauce-launcher-4.3.4.tgz#3033b6cb9610db4b67de074baef58c652d5a11b8"
+  integrity sha512-sXka3l3Z9x+UhGMsg0fU+i+Jq82j7tfApMrAupM8JxO8ZskmSCozUM4cffLTwuzJPYjf0ffFNu3Up5Pzr26N/g==
   dependencies:
     fs-extra "^9.0.1"
     global-agent "^2.1.12"
