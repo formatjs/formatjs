@@ -52,7 +52,7 @@
     "@types/node": "14",
     "@types/react-dom": "^17.0.0",
     "@types/rimraf": "^3.0.0",
-    "@types/serialize-javascript": "^4.0.0",
+    "@types/serialize-javascript": "^5.0.0",
     "@typescript-eslint/eslint-plugin": "^4.0.0",
     "@typescript-eslint/parser": "~4.9.0",
     "benchmark": "^2.1.4",
