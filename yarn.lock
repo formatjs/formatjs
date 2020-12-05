@@ -3544,10 +3544,10 @@
     "@types/glob" "*"
     "@types/node" "*"
 
-"@types/serialize-javascript@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@types/serialize-javascript/-/serialize-javascript-4.0.0.tgz#ab9c47edf71f6a4590221118d1dffc37b50d71a2"
-  integrity sha512-y9UO8ozDGF30EVRizmsXuCdZzAxHmYpEEiL+/SQjX+7bnxslkvZQU8rLydixJv7yVae6bWyrNDFHsh6fYHkFMA==
+"@types/serialize-javascript@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@types/serialize-javascript/-/serialize-javascript-5.0.0.tgz#127638567bd9f11251ad0ca2d9d9ea9ce5ca4b93"
+  integrity sha512-2+ai0/OTduvDzJHRAcqDwgNwshL1TN+iAfjzJJogXPSSjTBuqPl7MI0xGqCcPx+PDFbvmziiK1H6bjDb4DcoSA==
 
 "@types/source-list-map@*":
   version "0.1.2"
