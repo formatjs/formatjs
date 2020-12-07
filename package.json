@@ -16,7 +16,8 @@
     "karma:local": "bazel test :karma",
     "release:next": "lerna version prerelease --yes && lerna exec --no-bail -- bazel run :publish --tag next",
     "release": "lerna version --yes && lerna exec --no-bail -- bazel run :publish",
-    "test": "yarn bazel:lint --lint=warn && bazel test //..."
+    "test": "yarn bazel:lint --lint=warn && bazel test //...",
+    "postinstall": "husky install"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
@@ -74,7 +75,7 @@
     "fast-glob": "^3.2.4",
     "fast-memoize": "^2.5.2",
     "fs-extra": "^9.0.0",
-    "husky": "^4.2.5",
+    "husky": "5",
     "jest": "26",
     "json-schema-to-typescript": "^10.0.0",
     "json-stable-stringify": "^1.0.1",
@@ -152,12 +153,6 @@
   "devEngines": {
     "node": ">= 10.x",
     "npm": "6.x"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged --allow-empty",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   },
   "lint-staged": {
     "(BUILD|WORKSPACE|BUILD.bazel|*.bzl)": "yarn bazel:lint --lint=fix"
