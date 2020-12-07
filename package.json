@@ -74,7 +74,7 @@
     "fast-glob": "^3.2.4",
     "fast-memoize": "^2.5.2",
     "fs-extra": "^9.0.0",
-    "husky": "^4.2.5",
+    "husky": "^5.0.4",
     "jest": "26",
     "json-schema-to-typescript": "^10.0.0",
     "json-stable-stringify": "^1.0.1",
