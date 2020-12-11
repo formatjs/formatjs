@@ -27,6 +27,10 @@ describe('PluralRules', function () {
     expect(new PluralRules('en-XX').select(0)).toBe('other');
     expect(new PluralRules('en-XX').select(1)).toBe('one');
   });
+  it('should deal with en-US', function () {
+    expect(new PluralRules('en-US').select(0)).toBe('other');
+    expect(new PluralRules('en-US').select(1)).toBe('one');
+  });
   it('should work for ordinal', function () {
     expect(new PluralRules('en', {type: 'ordinal'}).select(0)).toBe('other');
     expect(new PluralRules('en', {type: 'ordinal'}).select(1)).toBe('one');
