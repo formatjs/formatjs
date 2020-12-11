@@ -197,6 +197,24 @@ NumberFormat.__addLocaleData = function __addLocaleData(
   }
 };
 
+NumberFormat.__addUnitData = function __addUnitData(
+  locale: string,
+  unitsData: RawNumberLocaleData['data']['units']
+) {
+  const {[locale]: existingData} = NumberFormat.localeData;
+  if (!existingData) {
+    throw new Error(`Locale data for "${locale}" has not been loaded in NumberFormat. 
+Please __addLocaleData before adding additional unit data`);
+  }
+
+  for (const unit in unitsData.simple) {
+    existingData.units.simple[unit] = unitsData.simple[unit];
+  }
+  for (const unit in unitsData.compound) {
+    existingData.units.compound[unit] = unitsData.compound[unit];
+  }
+};
+
 NumberFormat.__defaultLocale = '';
 NumberFormat.localeData = {};
 NumberFormat.availableLocales = new Set<string>();

@@ -22,6 +22,10 @@ export interface NumberFormatConstructor {
   (locales?: string | string[], options?: NumberFormatOptions): NumberFormat;
 
   __addLocaleData(...data: RawNumberLocaleData[]): void;
+  __addUnitData(
+    locale: string,
+    unitsData: RawNumberLocaleData['data']['units']
+  ): void;
   supportedLocalesOf(
     locales: string | string[],
     options?: Pick<NumberFormatOptions, 'localeMatcher'>
