@@ -225,7 +225,7 @@ This function will return a formatted date string, but it differs from [`formatD
 It expects a `value` which can be parsed as a date (i.e., `isFinite(new Date(value))`), and accepts `options` that conform to `DateTimeFormatOptions`.
 
 ```tsx live
-intl.formatTime(Date.now()) // "4:03 PM"
+intl.formatTime(Date.now()) /* "4:03 PM" */
 ```
 
 ## formatDateTimeRange
