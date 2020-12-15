@@ -6,11 +6,6 @@
 
 build --action_env=PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin
 
-build --bes_results_url=https://app.buildbuddy.io/invocation/
-build --bes_backend=grpcs://cloud.buildbuddy.io
-build --remote_header=x-buildbuddy-api-key=ktodncN3k6rwqI3XNxue
-build --build_metadata=REPO_URL=https://github.com/formatjs/formatjs.git
-
 # Give me dem stack traces
 build --verbose_failures
 
