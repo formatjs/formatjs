@@ -36,8 +36,9 @@ We rely on AST to extract messages from the codebase, thus calling `intl.formatM
 2. Using React API `<FormattedMessage/>`
 
 ```tsx
-import {FormattedMessage} from 'react-intl'
-;<FormattedMessage
+import {FormattedMessage} from 'react-intl';
+
+<FormattedMessage
   description="A message" // Description should be a string literal
   defaultMessage="My name is {name}" // Message should be a string literal
   values={
