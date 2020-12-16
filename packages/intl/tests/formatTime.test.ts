@@ -1,19 +1,13 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import {DateTimeFormat} from '@formatjs/ecma402-abstract';
 import {formatTime as formatTimeFn} from '../src/dateTime';
-import {OptionalIntlConfig, IntlFormatters, Formatters} from '../src/types';
-import '@formatjs/intl-datetimeformat/polyfill';
-import '@formatjs/intl-datetimeformat/locale-data/en';
-import '@formatjs/intl-datetimeformat/add-all-tz';
+import {OptionalIntlConfig, IntlFormatters} from '../src/types';
 
 describe('format API', () => {
   const {NODE_ENV} = process.env;
 
   let config: OptionalIntlConfig<any>;
 
-  let getDateTimeFormat: Formatters['getDateTimeFormat'] = (
-    ...args: ConstructorParameters<typeof Intl.DateTimeFormat>
-  ) => new Intl.DateTimeFormat(...args) as DateTimeFormat;
+  let getDateTimeFormat: any;
   beforeEach(() => {
     config = {
       locale: 'en',
@@ -35,6 +29,10 @@ describe('format API', () => {
 
       onError: jest.fn(),
     };
+
+    getDateTimeFormat = jest
+      .fn()
+      .mockImplementation((...args) => new Intl.DateTimeFormat(...args));
   });
 
   afterEach(() => {
@@ -52,21 +50,11 @@ describe('format API', () => {
       });
       // @ts-ignore
       formatTime = formatTimeFn.bind(null, config, getDateTimeFormat);
-      (config.onError as jest.Mock).mockClear();
     });
 
     it('render now if no value is provided', () => {
       // @ts-ignore
       expect(formatTime()).toBe(df.format());
-    });
-
-    it('should not inject additional hour/minute when dateStyle/timeStyle are used', function () {
-      expect(config.onError).not.toHaveBeenCalled();
-      formatTimeFn(config as any, getDateTimeFormat, new Date(), {
-        dateStyle: 'short',
-      });
-
-      expect(config.onError).not.toHaveBeenCalled();
     });
 
     it('falls back and warns when a non-finite value is provided', () => {

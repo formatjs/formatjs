@@ -144,9 +144,9 @@ ts_node(
     ],
     data = CLDR_DEPS,
     output_dir = True,
-    visibility = [
-        "//packages/intl:__subpackages__",
-    ],
+    visibility=[
+        "//packages/intl:__subpackages__"
+    ]
 )
 
 [generate_src_file(
@@ -274,9 +274,9 @@ ts_node(
         "@npm//tslib",
         "@tzdata//:zdumps",
     ],
-    visibility = [
-        "//packages/intl:__subpackages__",
-    ],
+    visibility=[
+        "//packages/intl:__subpackages__"
+    ]
 )
 
 # add-golden-tz

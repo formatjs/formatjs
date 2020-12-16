@@ -56,8 +56,6 @@ ts_compile(
 jest_test(
     name = "unit",
     srcs = SRCS + TESTS + [
-        "//packages/intl-datetimeformat:locale-data",
-        "//packages/intl-datetimeformat:add-all-tz",
         "//packages/intl-numberformat:locale-data",
         "//packages/intl-displaynames:polyfill-locales.js",
     ],
