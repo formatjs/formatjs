@@ -64,7 +64,9 @@ export function getFormatter(
     type === 'time' &&
     !filteredOptions.hour &&
     !filteredOptions.minute &&
-    !filteredOptions.second
+    !filteredOptions.second &&
+    !filteredOptions.timeStyle &&
+    !filteredOptions.dateStyle
   ) {
     // Add default formatting options if hour, minute, or second isn't defined.
     filteredOptions = {...filteredOptions, hour: 'numeric', minute: 'numeric'};
