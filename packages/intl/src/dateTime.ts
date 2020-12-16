@@ -60,16 +60,6 @@ export function getFormatter(
     defaults
   );
 
-  if (
-    type === 'time' &&
-    !filteredOptions.hour &&
-    !filteredOptions.minute &&
-    !filteredOptions.second
-  ) {
-    // Add default formatting options if hour, minute, or second isn't defined.
-    filteredOptions = {...filteredOptions, hour: 'numeric', minute: 'numeric'};
-  }
-
   return getDateTimeFormat(locale, filteredOptions);
 }
 
