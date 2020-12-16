@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.0.1...@formatjs/intl-numberformat@6.1.0) (2020-12-16)
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** add ability to add additional units data ([73c0460](https://github.com/formatjs/formatjs/commit/73c04608f3bf6cfa94c889cf012521b603342eab)), closes [#2398](https://github.com/formatjs/formatjs/issues/2398)
+
+
+
+
+
 ## [6.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.0.0...@formatjs/intl-numberformat@6.0.1) (2020-12-01)
 
 

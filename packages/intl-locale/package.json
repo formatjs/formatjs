@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-locale",
-  "version": "2.4.8",
+  "version": "2.4.9",
   "description": "Intl.Locale polyfill",
   "keywords": [
     "intl",
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@formatjs/ecma402-abstract": "1.5.0",
-    "@formatjs/intl-getcanonicallocales": "1.5.2",
+    "@formatjs/intl-getcanonicallocales": "1.5.3",
     "cldr-core": "38",
     "tslib": "^2.0.1"
   }
