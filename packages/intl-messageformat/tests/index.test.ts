@@ -847,6 +847,15 @@ describe('IntlMessageFormat', function () {
     ).toBe('£123,456.79');
   });
 
+  it('number skeleton with scale', function () {
+    expect(
+      new IntlMessageFormat(
+        '{amount, number, ::percent scale/0.01}',
+        'en-US'
+      ).format({amount: 12.3})
+    ).toBe('12%');
+  });
+
   it('date skeleton', function () {
     expect(
       new IntlMessageFormat('{d, date, ::yyyyMMMdd}', 'en-US').format({

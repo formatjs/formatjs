@@ -11,6 +11,7 @@ import {
   isTimeElement,
   MessageFormatElement,
   isTagElement,
+  ExtendedNumberFormatOptions,
 } from 'intl-messageformat-parser';
 import {
   MissingValueError,
@@ -194,10 +195,16 @@ export function formatToParts<T>(
           : isNumberSkeleton(el.style)
           ? el.style.parsedOptions
           : undefined;
+
+      if (style && (style as ExtendedNumberFormatOptions).scale) {
+        value =
+          (value as number) *
+          ((style as ExtendedNumberFormatOptions).scale || 1);
+      }
       result.push({
         type: PART_TYPE.literal,
         value: formatters
-          .getNumberFormat(locales, style)
+          .getNumberFormat(locales, style as Intl.NumberFormatOptions)
           .format(value as number),
       });
       continue;
