@@ -1,5 +1,5 @@
-import {NumberSkeletonToken} from './types';
-import {NumberFormatOptions} from '@formatjs/ecma402-abstract';
+import {ExtendedNumberFormatOptions, NumberSkeletonToken} from './types';
+
 /**
  * https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
  * Credit: https://github.com/caridy/intl-datetimeformat-pattern/blob/master/index.js
@@ -145,15 +145,15 @@ export function parseDateTimeSkeleton(
   return result;
 }
 
-function icuUnitToEcma(unit: string): NumberFormatOptions['unit'] {
-  return unit.replace(/^(.*?)-/, '') as NumberFormatOptions['unit'];
+function icuUnitToEcma(unit: string): ExtendedNumberFormatOptions['unit'] {
+  return unit.replace(/^(.*?)-/, '') as ExtendedNumberFormatOptions['unit'];
 }
 
 const FRACTION_PRECISION_REGEX = /^\.(?:(0+)(\*)?|(#+)|(0+)(#+))$/g;
 const SIGNIFICANT_PRECISION_REGEX = /^(@+)?(\+|#+)?$/g;
 
-function parseSignificantPrecision(str: string): NumberFormatOptions {
-  const result: NumberFormatOptions = {};
+function parseSignificantPrecision(str: string): ExtendedNumberFormatOptions {
+  const result: ExtendedNumberFormatOptions = {};
   str.replace(
     SIGNIFICANT_PRECISION_REGEX,
     function (_: string, g1: string, g2: string | number) {
@@ -182,7 +182,7 @@ function parseSignificantPrecision(str: string): NumberFormatOptions {
   return result;
 }
 
-function parseSign(str: string): NumberFormatOptions | undefined {
+function parseSign(str: string): ExtendedNumberFormatOptions | undefined {
   switch (str) {
     case 'sign-auto':
       return {
@@ -217,8 +217,8 @@ function parseSign(str: string): NumberFormatOptions | undefined {
   }
 }
 
-function parseNotationOptions(opt: string): NumberFormatOptions {
-  const result: NumberFormatOptions = {};
+function parseNotationOptions(opt: string): ExtendedNumberFormatOptions {
+  const result: ExtendedNumberFormatOptions = {};
   const signOpts = parseSign(opt);
   if (signOpts) {
     return signOpts;
@@ -231,8 +231,8 @@ function parseNotationOptions(opt: string): NumberFormatOptions {
  */
 export function parseNumberSkeleton(
   tokens: NumberSkeletonToken[]
-): NumberFormatOptions {
-  let result: NumberFormatOptions = {};
+): ExtendedNumberFormatOptions {
+  let result: ExtendedNumberFormatOptions = {};
   for (const token of tokens) {
     switch (token.stem) {
       case 'percent':
@@ -299,6 +299,9 @@ export function parseNumberSkeleton(
         continue;
       case 'unit-width-iso-code':
         result.currencyDisplay = 'symbol';
+        continue;
+      case 'scale':
+        result.scale = parseFloat(token.options[0]);
         continue;
     }
     // Precision

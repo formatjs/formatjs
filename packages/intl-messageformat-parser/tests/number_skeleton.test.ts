@@ -20,6 +20,7 @@ test.each([
   'percent .00/@##',
   'percent .00/@@@',
   'percent .00/@@@@*',
+  'percent scale/0.01',
   'currency/CAD .',
   'currency/GBP .0*/@@@',
   'currency/GBP .00##/@@@',

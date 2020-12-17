@@ -1,3 +1,9 @@
+import {NumberFormatOptions} from '@formatjs/ecma402-abstract';
+
+export interface ExtendedNumberFormatOptions extends NumberFormatOptions {
+  scale?: number;
+}
+
 export enum TYPE {
   /**
    * Raw text
@@ -132,7 +138,7 @@ export interface NumberSkeleton {
   type: SKELETON_TYPE.number;
   tokens: NumberSkeletonToken[];
   location?: Location;
-  parsedOptions: Intl.NumberFormatOptions;
+  parsedOptions: ExtendedNumberFormatOptions;
 }
 
 export interface DateTimeSkeleton {

@@ -149,6 +149,13 @@ Object {
 }
 `;
 
+exports[`[parseNumberSkeleton] case: "percent scale/0.01" 1`] = `
+Object {
+  "scale": 0.01,
+  "style": "percent",
+}
+`;
+
 exports[`[parseNumberSkeleton] case: "scientific" 1`] = `
 Object {
   "notation": "scientific",
