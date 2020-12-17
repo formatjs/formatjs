@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.4.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.20...intl-messageformat@9.4.0) (2020-12-17)
+
+
+### Features
+
+* **intl-messageformat:** format scale stem in number skeleton correctly, fix [#2414](https://github.com/formatjs/formatjs/issues/2414) ([e48b60c](https://github.com/formatjs/formatjs/commit/e48b60c776725ca3d0f52e677d25ab86e1a7d91a))
+
+
+
+
+
 ## [9.3.20](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.3.19...intl-messageformat@9.3.20) (2020-11-27)
 
 **Note:** Version bump only for package intl-messageformat

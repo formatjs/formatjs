@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.18...intl-messageformat-parser@6.1.0) (2020-12-17)
+
+
+### Features
+
+* **intl-messageformat-parser:** record scale stem in number skeleton, fix [#2414](https://github.com/formatjs/formatjs/issues/2414) ([3419140](https://github.com/formatjs/formatjs/commit/3419140096ea413b4c9dc9f4f8d44318a7e5ae09))
+
+
+
+
+
 ## [6.0.18](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.0.17...intl-messageformat-parser@6.0.18) (2020-11-27)
 
 **Note:** Version bump only for package intl-messageformat-parser
