@@ -10,8 +10,8 @@ import {
   CanonicalizeLocaleList,
 } from '@formatjs/ecma402-abstract';
 import * as currencyDigitsData from './data/currency-digits.json';
-import {names as numberingSystemNames} from './data/numbering-systems.json';
-
+import * as numberingSystemsData from './data/numbering-systems.json';
+const {names: numberingSystemNames} = numberingSystemsData;
 // eslint-disable-next-line import/no-cycle
 import getInternalSlots from './get_internal_slots';
 import {
