@@ -12,4 +12,7 @@ describe('intl-locale', () => {
     // expect(() => IntlLocale.prototype.toString.call(IntlLocale.prototype)).toThrowError(TypeError)
     expect(() => new Locale({} as any)).toThrowError(RangeError);
   });
+  it('und-x-private', function () {
+    expect(new Locale('und-x-private').toString()).toBe('und-x-private');
+  });
 });
