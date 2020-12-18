@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.1.0...@formatjs/intl-numberformat@6.1.1) (2020-12-18)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** fix webpack5 issue, fix [#2417](https://github.com/formatjs/formatjs/issues/2417) ([3cf812c](https://github.com/formatjs/formatjs/commit/3cf812cf9d17ec1ff01876e3c27dec43a9391a60))
+
+
+
+
+
 # [6.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.0.1...@formatjs/intl-numberformat@6.1.0) (2020-12-16)
 
 

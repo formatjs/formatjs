@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.9...@formatjs/intl-locale@2.4.10) (2020-12-18)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-locale:** fix webpack5 issue, fix [#2417](https://github.com/formatjs/formatjs/issues/2417) ([e780871](https://github.com/formatjs/formatjs/commit/e78087154942e9d08fe498e828079a34eb398ae5))
+
+
+
+
+
 ## [2.4.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.8...@formatjs/intl-locale@2.4.9) (2020-12-16)
 
 **Note:** Version bump only for package @formatjs/intl-locale
