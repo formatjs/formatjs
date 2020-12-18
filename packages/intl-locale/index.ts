@@ -17,9 +17,11 @@ import {
   getCanonicalLocales,
   UnicodeLanguageId,
 } from '@formatjs/intl-getcanonicallocales';
-import {supplemental} from 'cldr-core/supplemental/likelySubtags.json';
+import * as likelySubtagsData from 'cldr-core/supplemental/likelySubtags.json';
 import getInternalSlots from './get_internal_slots';
-const {likelySubtags} = supplemental;
+const {
+  supplemental: {likelySubtags},
+} = likelySubtagsData;
 
 export interface IntlLocaleOptions {
   language?: string;
