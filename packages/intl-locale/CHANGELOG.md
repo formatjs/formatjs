@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.11](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.10...@formatjs/intl-locale@2.4.11) (2020-12-18)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-locale:** try catch polyfill detection, fix [#2423](https://github.com/formatjs/formatjs/issues/2423) ([945a869](https://github.com/formatjs/formatjs/commit/945a869dfe63c623d186914eda62426a6dbfd713))
+
+
+
+
+
 ## [2.4.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.9...@formatjs/intl-locale@2.4.10) (2020-12-18)
 
 
