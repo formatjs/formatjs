@@ -36,6 +36,7 @@ export function shouldPolyfill() {
   return (
     !('DateTimeFormat' in Intl) ||
     !('formatToParts' in Intl.DateTimeFormat.prototype) ||
+    !('formatRange' in Intl.DateTimeFormat.prototype) ||
     hasChromeLt71Bug() ||
     hasUnthrownDateTimeStyleBug() ||
     !supportsDateStyle()
