@@ -1,5 +1,5 @@
 import * as path from 'path';
-import {createHash, HexBase64Latin1Encoding} from 'crypto';
+import {BinaryToTextEncoding, createHash} from 'crypto';
 export interface LoaderContext {
   resourceQuery?: string;
   resourcePath?: string;
@@ -24,7 +24,7 @@ export type NameFn = (resourcePath?: string, resourceQuery?: string) => string;
 function getHashDigest(
   content: string,
   hashType = 'md5',
-  digestType: HexBase64Latin1Encoding = 'hex',
+  digestType: BinaryToTextEncoding = 'hex',
   length = 9999
 ) {
   const hasher = createHash(hashType);
