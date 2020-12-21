@@ -3504,7 +3504,7 @@
   resolved "https://registry.yarnpkg.com/@types/parse5/-/parse5-5.0.3.tgz#e7b5aebbac150f8b5fdd4a46e7f0bd8e65e19109"
   integrity sha512-kUNnecmtkunAoQ3CnjmMkzNU/gtxG8guhi+Fk2U/kOpIKjIMKnXGp4IJCgQJrXSgMsWYimYG4TGjz/UzbGEBTw==
 
-"@types/prettier@^2.0.0":
+"@types/prettier@^2.0.0", "@types/prettier@^2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.1.5.tgz#b6ab3bba29e16b821d84e09ecfaded462b816b00"
   integrity sha512-UEyp8LwZ4Dg30kVU2Q3amHHyTn1jEdhCIE59ANed76GaT1Vp76DD3ZWSAxgCrw6wJ0TqeoBpqmfUHiUDPs//HQ==
@@ -11190,11 +11190,12 @@ json-schema-ref-parser@^9.0.6:
     "@apidevtools/json-schema-ref-parser" "9.0.6"
 
 json-schema-to-typescript@^10.0.0:
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/json-schema-to-typescript/-/json-schema-to-typescript-10.0.0.tgz#b20e76f64522ae5fe9e6ac05cb50d2151d2a7f3e"
-  integrity sha512-G5RZlHchI9r/v31QhH5k57K+2kvYRBWKIGctJPsUuIkUIf3J3xXzvQZJGa16bhVjgs1fStaLamfFIti6K6V6wQ==
+  version "10.0.2"
+  resolved "https://registry.yarnpkg.com/json-schema-to-typescript/-/json-schema-to-typescript-10.0.2.tgz#fb34eef632e9a8ced06bcf99e61696636abf989f"
+  integrity sha512-+ntMqDdfpCqt+6EIGY5b0xre6+P0oyJiwPdcRk+6x5tPBD8StQCTSxM24O/dG80Vr0zwwypLb+3H5iZtu3SAsA==
   dependencies:
     "@types/json-schema" "^7.0.6"
+    "@types/prettier" "^2.1.5"
     cli-color "^2.0.0"
     glob "^7.1.6"
     glob-promise "^3.4.0"
