@@ -68,9 +68,7 @@ ts_project(
     srcs = SRCS,
     declaration = True,
     declaration_map = True,
-    extends = [
-        "//:tsconfig.json",
-    ],
+    extends = "//:tsconfig.json",
     out_dir = "test262",
     tsconfig = "//:tsconfig.es6.json",
     deps = SRC_DEPS,

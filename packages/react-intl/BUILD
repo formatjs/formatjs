@@ -158,7 +158,7 @@ terser_minified(
 #     srcs = SRCS + TESTS,
 #     declaration = True,
 #     declaration_map = True,
-#     extends = ["//:tsconfig.json"],
+#     extends = "//:tsconfig.json",
 #     out_dir = "tests-karma",
 #     tsconfig = "//:tsconfig.esm.json",
 #     visibility = ["//visibility:public"],

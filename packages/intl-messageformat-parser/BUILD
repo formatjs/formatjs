@@ -69,6 +69,7 @@ nodejs_binary(
         "@npm//tslib",
     ],
     entry_point = "tools/build.js",
+    templated_args = ["--bazel_patch_module_resolver"],
 )
 
 genrule(
