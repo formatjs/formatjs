@@ -9,7 +9,7 @@ There are a few API layers that React Intl provides and is built on. When using 
 
 While our [components](./components.md) provide a seamless integration with React, the imperative API are recommended (sometimes required) in several use cases:
 
-- Setting text attributes such as `title`, `aria-label` and the like where a React component cannot be used (e.g `<img title/>)
+- Setting text attributes such as `title`, `aria-label` and the like where a React component cannot be used (e.g `<img title/>`)
 - Formatting text/datetime... in non-React environment such as Node, Server API, Redux store, testing...
 - High performance scenarios where the number of React components rendered becomes the bottleneck (e.g Finance stock portfolio rendering, virtual tables with a lot of cells...)
 
