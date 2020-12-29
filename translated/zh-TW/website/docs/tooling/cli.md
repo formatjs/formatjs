@@ -88,6 +88,14 @@ formatjs extract --help
 # The input language is expected to be TypeScript or ES2017 with JSX.
 ```
 
+For example:
+
+```sh
+formatjs extract "src/**/*.{ts,tsx}" --out-file lang.json
+```
+
+:::caution You should always quote (`"` or `'`) your glob pattern (like `"src/**/*"`) to avoid auto shell expansion of those glob, which varies depending on your shell (`zsh` vs `fish` vs `bash`). :::
+
 ### `--format [path]`
 
 Path to a formatter file that controls the shape of JSON file from `--out-file`. The formatter file must export a function called `format` with the signature.
