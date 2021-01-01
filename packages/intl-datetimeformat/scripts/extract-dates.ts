@@ -87,6 +87,22 @@ function resolveDateTimeSymbolTable(token: string): string {
   return '';
 }
 
+function filterKeys<T>(
+  data: Record<string, T>,
+  filterFn: Parameters<Array<keyof typeof data>['filter']>[0]
+): Record<string, T> {
+  return (Object.keys(data) as Array<keyof typeof data>)
+    .filter(filterFn)
+    .reduce((all: Record<string, T>, k) => {
+      all[k] = data[k];
+      return all;
+    }, {});
+}
+
+function hasAltVariant(k: string): boolean {
+  return !k.endsWith('alt-variant');
+}
+
 const {calendarPreferenceData} = rawCalendarPreferenceData.supplemental;
 
 /**
@@ -183,10 +199,19 @@ async function loadDatesFields(
 
   const {short, full, medium, long} = gregorian.dateTimeFormats;
 
-  const {availableFormats, intervalFormats} = gregorian.dateTimeFormats;
+  const {availableFormats} = gregorian.dateTimeFormats;
+  let rawIntervalFormats = gregorian.dateTimeFormats.intervalFormats;
+  const intervalFormats = Object.keys(rawIntervalFormats)
+    .filter(hasAltVariant)
+    .reduce((all: Record<string, string | Record<string, string>>, k) => {
+      const v = rawIntervalFormats[k as 'Bhm'];
+      all[k] = typeof v === 'string' ? v : filterKeys(v, hasAltVariant);
+      return all;
+    }, {});
   const parsedAvailableFormats: Array<[string, string, Formats]> = Object.keys(
     availableFormats
   )
+    .filter(hasAltVariant)
     .map(skeleton => {
       const pattern = availableFormats[skeleton as 'Bh'];
       try {

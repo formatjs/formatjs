@@ -3,13 +3,14 @@ import '@formatjs/intl-locale/polyfill';
 import {DateTimeFormat} from '../src/core';
 import * as en from './locale-data/en.json';
 import * as enGB from './locale-data/en-GB.json';
+import * as enCA from './locale-data/en-CA.json';
 import * as zhHans from './locale-data/zh-Hans.json';
 import * as fa from './locale-data/fa.json';
 import allData from '../src/data/all-tz';
 import getInternalSlots from '../src/get_internal_slots';
 
 // @ts-ignore
-DateTimeFormat.__addLocaleData(en, enGB, zhHans, fa);
+DateTimeFormat.__addLocaleData(en, enGB, enCA, zhHans, fa);
 DateTimeFormat.__addTZData(allData);
 describe('Intl.DateTimeFormat', function () {
   it('smoke test EST', function () {
