@@ -32,7 +32,7 @@ function IntegrationSection({className}) {
   return (
     <div className={cx(className, styles.integration)}>
       <div className={`row ${styles.imgs}`}>
-        <a className="col col--6" href="https://github.com/formatjs/react-intl">
+        <a className="col col--4" href="https://formatjs.io/docs/react-intl">
           <img
             src={useBaseUrl('/img/react.svg')}
             alt={intl.formatMessage({
@@ -42,14 +42,23 @@ function IntegrationSection({className}) {
           />
         </a>
         <a
-          className="col col--6"
-          href="https://github.com/ember-intl/ember-intl"
+          className="col col--4"
+          href="https://ember-intl.github.io/ember-intl/"
         >
           <img
             src={useBaseUrl('/img/ember.svg')}
             alt={intl.formatMessage({
               id: 'integration-ember',
               defaultMessage: 'Ember',
+            })}
+          />
+        </a>
+        <a className="col col--4" href="https://formatjs.io/docs/vue-intl">
+          <img
+            src={useBaseUrl('/img/vue-logo.svg')}
+            alt={intl.formatMessage({
+              id: 'integration-vue',
+              defaultMessage: 'Vue',
             })}
           />
         </a>
