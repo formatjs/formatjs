@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-relativetimeformat",
-  "version": "8.0.1",
+  "version": "8.0.2",
   "description": "Formats JavaScript dates to relative time strings.",
   "keywords": [
     "intl",

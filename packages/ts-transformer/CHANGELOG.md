@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.12.12](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.12.11...@formatjs/ts-transformer@2.12.12) (2021-01-01)
+
+**Note:** Version bump only for package @formatjs/ts-transformer
+
+
+
+
+
 ## [2.12.11](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.12.10...@formatjs/ts-transformer@2.12.11) (2020-12-17)
 
 **Note:** Version bump only for package @formatjs/ts-transformer
