@@ -1,4 +1,4 @@
-load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
+load("@build_bazel_rules_nodejs//:index.bzl", "pkg_npm")
 load("//tools:index.bzl", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
@@ -55,12 +55,6 @@ jest_test(
         "@npm//@vue/test-utils",
         "//packages/intl:types",
     ],
-)
-
-generated_file_test(
-    name = "tsconfig_json",
-    src = "tsconfig.json",
-    generated = "//tools:tsconfig.golden.json",
 )
 
 prettier_check(

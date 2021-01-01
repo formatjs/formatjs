@@ -24,7 +24,8 @@ def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
         srcs = srcs,
         declaration = True,
         declaration_map = True,
-        tsconfig = "//:tsconfig.json",
+        tsconfig = "tsconfig.json",
+        extends = "//:tsconfig.json",
         deps = deps,
     )
     if not skip_esm:
