@@ -1,0 +1,24 @@
+{
+  "name": "@formatjs/vue-intl",
+  "version": "0.1.0",
+  "description": "formatjs intl binding for vue",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "vue",
+    "intl",
+    "i18n",
+    "internationalization",
+    "formatjs"
+  ],
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "dependencies": {
+    "@formatjs/intl": "1.4.13"
+  },
+  "peerDependencies": {
+    "vue": "3"
+  },
+  "license": "ISC"
+}

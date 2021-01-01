@@ -62,6 +62,7 @@
     "@typescript-eslint/eslint-plugin": "^4.0.0",
     "@typescript-eslint/parser": "^4.11.0",
     "@typescript-eslint/typescript-estree": "^4.11.0",
+    "@vue/test-utils": "2.0.0-beta.13",
     "benchmark": "^2.1.4",
     "chalk": "^4.0.0",
     "classnames": "^2.2.6",
@@ -116,7 +117,8 @@
     "ts-node": "^9.0.0",
     "ts-pegjs": "^0.2.6",
     "tslib": "^2.0.1",
-    "typescript": "4"
+    "typescript": "4",
+    "vue": "3"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
