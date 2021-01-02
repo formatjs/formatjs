@@ -116,3 +116,33 @@ We currently support:
 - `$formatTimeRange`
 - `$formatDisplayName`
 - `$formatList`
+
+## Caveats
+
+### Using ICU in Vue SFC
+
+Since `}}` & `{{` are special tokens in `.vue` `<template>`, this can cause potential conflict with ICU MessageFormat syntax, e.g:
+
+```html {4}
+<template>
+  <p>
+    {{ $formatMessage({ defaultMessage: '{count, selectordinal, offset:1 one {#}
+    other {# more}}', }) }}
+  </p>
+</template>
+```
+
+Notice the `{# more}}` where it ends with `}}`. This will cause parsing issue in your `vue` template. In order to work around this issue, we recommend using space to turn `}}` into `} }`.
+
+```vue {6}
+<template>
+  <p>
+    {{
+      $formatMessage({
+        defaultMessage:
+          '{count, selectordinal, offset:1 one {#} other {# more} }',
+      })
+    }}
+  </p>
+</template>
+```
