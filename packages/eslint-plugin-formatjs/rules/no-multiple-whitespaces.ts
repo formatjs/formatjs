@@ -51,6 +51,19 @@ const rule: Rule.RuleModule = {
   },
   create(context) {
     let importedMacroVars: Scope.Variable[] = [];
+    const callExpressionVisitor = (node: TSESTree.Node) =>
+      checkNode(context, node, importedMacroVars);
+
+    if (context.parserServices.defineTemplateBodyVisitor) {
+      return context.parserServices.defineTemplateBodyVisitor(
+        {
+          CallExpression: callExpressionVisitor,
+        },
+        {
+          CallExpression: callExpressionVisitor,
+        }
+      );
+    }
     return {
       ImportDeclaration: node => {
         const moduleName = (node as ImportDeclaration).source.value;
@@ -60,8 +73,7 @@ const rule: Rule.RuleModule = {
       },
       JSXOpeningElement: (node: Node) =>
         checkNode(context, node as TSESTree.Node, importedMacroVars),
-      CallExpression: node =>
-        checkNode(context, node as TSESTree.Node, importedMacroVars),
+      CallExpression: callExpressionVisitor,
     };
   },
 };

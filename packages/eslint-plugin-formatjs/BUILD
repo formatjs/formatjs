@@ -48,22 +48,28 @@ ts_compile(
     deps = SRC_DEPS,
 )
 
-jest_test(
-    name = "unit",
-    srcs = SRCS + glob([
-        "tests/**/*.ts",
-        "tests/**/*.tsx",
-        "tests/**/*.snap",
-        "tests/**/*.js",
-        "tests/**/*.json",
-    ]),
+TESTS_BASE_SRCS = SRCS + glob(
+    [
+        "tests/*.ts",
+    ],
+    exclude = ["tests/*.test.ts"],
+)
+
+TEST_FILES = glob([
+    "tests/*.test.ts",
+])
+
+[jest_test(
+    name = "unit-%s" % f[6:f.index(".test.ts")],
+    srcs = TESTS_BASE_SRCS + [f],
     deps = [
         "@npm//eslint",
         "@npm//@typescript-eslint/parser",
+        "@npm//vue-eslint-parser",
         "//packages/intl-messageformat-parser:types",
         "//packages/ts-transformer:types",
     ] + SRC_DEPS,
-)
+) for f in TEST_FILES]
 
 generated_file_test(
     name = "tsconfig_json",

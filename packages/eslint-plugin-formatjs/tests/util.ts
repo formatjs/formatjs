@@ -11,3 +11,16 @@ export const ruleTester = new RuleTester({
     },
   },
 });
+
+export const vueRuleTester = new RuleTester({
+  parser: require.resolve('vue-eslint-parser'),
+  parserOptions: {
+    ecmaVersion: 6,
+    sourceType: 'module',
+    ecmaFeatures: {
+      globalReturn: false,
+      impliedStrict: false,
+      jsx: false,
+    },
+  },
+});

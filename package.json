@@ -118,7 +118,8 @@
     "ts-pegjs": "0.3",
     "tslib": "^2.0.1",
     "typescript": "4",
-    "vue": "3"
+    "vue": "3",
+    "vue-eslint-parser": "^7.3.0"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",

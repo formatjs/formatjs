@@ -1,6 +1,6 @@
 import enforceDefaultMessage from '../rules/enforce-default-message';
 import {noMatch, spreadJsx, emptyFnCall, dynamicMessage} from './fixtures';
-import {ruleTester} from './util';
+import {ruleTester, vueRuleTester} from './util';
 
 ruleTester.run('enforce-default-message', enforceDefaultMessage, {
   valid: [
@@ -177,6 +177,53 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
       code: `
             import {FormattedMessage} from 'react-intl'
             const a = <FormattedMessage defaultMessage={\`asf\`}/>`,
+      errors: [
+        {
+          message:
+            '`defaultMessage` must be a string literal (not function call or variable)',
+        },
+      ],
+      options: ['literal'],
+    },
+  ],
+});
+
+vueRuleTester.run('vue/enforce-default-message', enforceDefaultMessage, {
+  valid: [
+    `<template>
+<p>{{$formatMessage({
+    defaultMessage: 'this is default message',
+    description: 'asd'
+})}}</p></template>`,
+    `<script>intl.formatMessage({
+    defaultMessage: 'this is default message',
+    description: 'asd'
+})</script>`,
+    `<script>intl.formatMessage({
+  defaultMessage: 'this is default message' + 'vvv',
+  description: 'asd'
+})</script>`,
+  ],
+  invalid: [
+    {
+      code: `
+      <template>
+      <p>{{$formatMessage({
+                description: 'this is default message'
+            })}}</p></template>`,
+      errors: [
+        {
+          message: '`defaultMessage` has to be specified in message descriptor',
+        },
+      ],
+    },
+    {
+      code: `
+      <template>
+      <p>{{$formatMessage({
+                defaultMessage,
+                description: 'this is default message'
+            })}}</p></template>`,
       errors: [
         {
           message:

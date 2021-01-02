@@ -60,6 +60,14 @@ function isIntlFormatMessageCall(node: TSESTree.Node) {
   );
 }
 
+function is$formatMessageCall(node: TSESTree.Node) {
+  return (
+    node.type === 'CallExpression' &&
+    node.callee.type === 'Identifier' &&
+    node.callee.name === '$formatMessage'
+  );
+}
+
 function isSingleMessageDescriptorDeclaration(
   id: TSESTree.LeftHandSideExpression,
   importedVars: Scope.Variable[]
@@ -248,7 +256,8 @@ export function extractMessages(
     if (
       (!excludeMessageDeclCalls &&
         isSingleMessageDescriptorDeclaration(fnId, importedMacroVars)) ||
-      isIntlFormatMessageCall(node)
+      isIntlFormatMessageCall(node) ||
+      is$formatMessageCall(node)
     ) {
       const msgDescriptorNodeInfo = extractMessageDescriptor(expr.arguments[0]);
       if (msgDescriptorNodeInfo) {
