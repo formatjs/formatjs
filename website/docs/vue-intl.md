@@ -117,6 +117,12 @@ We currently support:
 - `$formatDisplayName`
 - `$formatList`
 
+## Tooling
+
+We're actively working on adding `vue` support for formatjs toolchain. Currently the following tools are supported:
+
+- [eslint-plugin-formatjs](./tooling/linter.md): This fully supports `.vue` and JS/TS.
+
 ## Caveats
 
 ### Using ICU in Vue SFC
