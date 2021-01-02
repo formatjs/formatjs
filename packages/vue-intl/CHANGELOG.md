@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/vue-intl@0.2.1...@formatjs/vue-intl@0.3.0) (2021-01-02)
+
+
+### Features
+
+* **@formatjs/vue-intl:** support Vue composition API, part of [#2464](https://github.com/formatjs/formatjs/issues/2464) ([8845ad7](https://github.com/formatjs/formatjs/commit/8845ad7ae3916f51915614f6f7f2e7ec54e8e2fd))
+
+
+
+
+
 ## [0.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/vue-intl@0.2.0...@formatjs/vue-intl@0.2.1) (2021-01-01)
 
 
