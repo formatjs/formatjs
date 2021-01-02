@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.9.13...eslint-plugin-formatjs@2.10.0) (2021-01-02)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** add support for .vue ([2f73827](https://github.com/formatjs/formatjs/commit/2f73827b22c06ce4ee98744c48de6357097c4816))
+
+
+
+
+
 ## [2.9.13](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.9.12...eslint-plugin-formatjs@2.9.13) (2021-01-02)
 
 **Note:** Version bump only for package eslint-plugin-formatjs
