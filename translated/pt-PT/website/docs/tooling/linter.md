@@ -3,7 +3,7 @@ id: linter
 title: eslint-plugin-formatjs
 ---
 
-This eslint plugin allows you to enforce certain rules in your ICU message. This is currently under development
+This eslint plugin allows you to enforce certain rules in your ICU message.
 
 ## Usage
 
@@ -43,6 +43,8 @@ Then in your eslint config:
 }
 ```
 
+### React
+
 Currently this uses `intl.formatMessage`, `defineMessage`, `defineMessages`, `<FormattedMessage>` from `react-intl` as hooks to verify the message. Therefore, in your code use 1 of the following mechanisms:
 
 ```tsx
@@ -71,6 +73,22 @@ function foo() {
     defaultMessage: 'foo',
   })
 }
+```
+
+### Vue
+
+This will check against `intl.formatMessage`, `$formatMessage` function calls in both your JS/TS & your SFC `.vue` files. For example:
+
+```vue
+<template>
+  <p>
+    {{
+      $formatMessage({
+        defaultMessage: 'today is {now, date}',
+      })
+    }}
+  </p>
+</template>
 ```
 
 ## Available Rules
