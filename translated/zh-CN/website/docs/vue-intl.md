@@ -55,6 +55,47 @@ From there you can use our APIs in 2 ways:
 
 By specifying `inject: ['intl']`, you can use the full `IntlFormatters` API documented in [@formatjs/intl](./intl.md#IntlShape).
 
+### Composition API
+
+We also support Vue's [Composition API](https://composition-api.vuejs.org/) with `provideIntl` & `useIntl`.
+
+```ts
+import {createIntl} from '@formatjs/intl'
+import {provideIntl, useIntl} from '@formatjs/vue-intl'
+
+const Ancestor = {
+  setup() {
+    provideIntl(
+      createIntl({
+        locale: 'en',
+        defaultLocale: 'en',
+        messages: {
+          foo: 'Composed',
+        },
+      })
+    )
+  },
+  render() {
+    return h(Descendant)
+  },
+}
+
+const Descendant = {
+  setup() {
+    const intl = useIntl()
+    return () =>
+      h(
+        'p',
+        {},
+        intl.formatMessage({
+          id: 'foo',
+          defaultMessage: 'Hello',
+        })
+      )
+  },
+}
+```
+
 ### Methods
 
 You can also use our formatters in Vue template by prepending `$` like below:
@@ -74,3 +115,39 @@ We currently support:
 - `$formatTimeRange`
 - `$formatDisplayName`
 - `$formatList`
+
+## Tooling
+
+We're actively working on adding `vue` support for formatjs toolchain. Currently the following tools are supported:
+
+- [eslint-plugin-formatjs](./tooling/linter.md): This fully supports `.vue` and JS/TS.
+
+## Caveats
+
+### Using ICU in Vue SFC
+
+Since `}}` & `{{` are special tokens in `.vue` `<template>`, this can cause potential conflict with ICU MessageFormat syntax, e.g:
+
+```html {4}
+<template>
+  <p>
+    {{ $formatMessage({ defaultMessage: '{count, selectordinal, offset:1 one {#}
+    other {# more}}', }) }}
+  </p>
+</template>
+```
+
+Notice the `{# more}}` where it ends with `}}`. This will cause parsing issue in your `vue` template. In order to work around this issue, we recommend using space to turn `}}` into `} }`.
+
+```vue {6}
+<template>
+  <p>
+    {{
+      $formatMessage({
+        defaultMessage:
+          '{count, selectordinal, offset:1 one {#} other {# more} }',
+      })
+    }}
+  </p>
+</template>
+```
