@@ -1,6 +1,7 @@
 import {defineComponent, h} from 'vue';
-import VueIntl from '../index';
+import VueIntl, {provideIntl, useIntl} from '../index';
 import {mount} from '@vue/test-utils';
+import {createIntl} from '@formatjs/intl';
 
 const Translations = defineComponent({
   template: `
@@ -25,6 +26,38 @@ const Translations = defineComponent({
   `,
 });
 
+const Descendant = {
+  setup() {
+    const intl = useIntl();
+    return () =>
+      h(
+        'p',
+        {},
+        intl.formatMessage({
+          id: 'foo',
+          defaultMessage: 'Hello',
+        })
+      );
+  },
+};
+
+const Ancestor = {
+  setup() {
+    provideIntl(
+      createIntl({
+        locale: 'en',
+        defaultLocale: 'en',
+        messages: {
+          foo: 'Composed',
+        },
+      })
+    );
+  },
+  render() {
+    return h(Descendant);
+  },
+};
+
 const Injected = defineComponent({
   inject: ['intl'],
   render() {
@@ -41,7 +74,6 @@ const Injected = defineComponent({
 });
 
 test('basic', function () {
-  // @ts-ignore
   const wrapper = mount(Translations, {
     global: {
       plugins: [
@@ -63,7 +95,6 @@ test('basic', function () {
 });
 
 test('injected', function () {
-  // @ts-ignore
   const wrapper = mount(Injected, {
     global: {
       plugins: [
@@ -82,4 +113,10 @@ test('injected', function () {
   });
 
   expect(wrapper.text()).toBe('Injected');
+});
+
+test('composition', function () {
+  const wrapper = mount(Ancestor);
+
+  expect(wrapper.text()).toBe('Composed');
 });

@@ -56,6 +56,47 @@ From there you can use our APIs in 2 ways:
 
 By specifying `inject: ['intl']`, you can use the full `IntlFormatters` API documented in [@formatjs/intl](./intl.md#IntlShape).
 
+### Composition API
+
+We also support Vue's [Composition API](https://composition-api.vuejs.org/) with `provideIntl` & `useIntl`.
+
+```ts
+import {createIntl} from '@formatjs/intl'
+import {provideIntl, useIntl} from '@formatjs/vue-intl'
+
+const Ancestor = {
+  setup() {
+    provideIntl(
+      createIntl({
+        locale: 'en',
+        defaultLocale: 'en',
+        messages: {
+          foo: 'Composed',
+        },
+      })
+    )
+  },
+  render() {
+    return h(Descendant)
+  },
+}
+
+const Descendant = {
+  setup() {
+    const intl = useIntl()
+    return () =>
+      h(
+        'p',
+        {},
+        intl.formatMessage({
+          id: 'foo',
+          defaultMessage: 'Hello',
+        })
+      )
+  },
+}
+```
+
 ### Methods
 
 You can also use our formatters in Vue template by prepending `$` like below:
