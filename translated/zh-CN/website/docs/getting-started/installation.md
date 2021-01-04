@@ -36,8 +36,19 @@ yarn add react react-intl
 
 After following the step above, you should be able to get a minimal application like this running:
 
+<Tabs
+groupId="engine"
+defaultValue="react"
+values={[
+{label: 'Node', value: 'node'},
+{label: 'React', value: 'react'},
+{label: 'Vue3', value: 'vue'},
+]}>
+
+<TabItem value="node">
+
 ```tsx
-import {createIntl, createIntlCache} from 'react-intl'
+import {createIntl, createIntlCache} from '@formatjs/intl'
 
 // Translated messages in French with matching IDs to what you declared
 const messagesInFrench = {
@@ -77,11 +88,9 @@ console.log(
 console.log(intl.formatNumber(19, {style: 'currency', currency: 'EUR'}))
 ```
 
-:::tip If you're not using `React`, you can use [`@formatjs/intl`](../intl.md) instead that has the same API. In fact, `react-intl` also uses `@formatjs/intl` :::
+</TabItem>
 
-## Minimal React Application
-
-If you're using React, a minimal React application can look like this:
+<TabItem value="react">
 
 ```tsx
 import * as React from 'react'
@@ -118,6 +127,48 @@ Output
   19,00 €
 </p>
 ```
+
+</TabItem>
+
+<TabItem value="vue">
+
+```tsx
+import VueIntl from '@formatjs/vue-intl'
+import {createApp} from 'vue'
+
+const app = createApp(App)
+app.use(VueIntl, {
+  locale: 'en',
+  defaultLocale: 'en',
+  messages: {
+    myMessage: "Aujourd'hui, c'est le {ts, date, ::yyyyMMdd}",
+  },
+})
+```
+
+```vue
+<template>
+  <p>
+    {{ $formatMessage( { id: 'myMessage', defaultMessage: 'Today is {ts, date,
+    ::yyyyMMdd}', }, { ts: Date.now(), } ) }}
+    <br />
+    {{ $formatNumber(19, {style: 'currency', currency: 'EUR'}) }}
+  </p>
+</template>
+```
+
+Output
+
+```html
+<p>
+  Aujourd'hui, c'est le 23/07/2020
+  <br />
+  19,00 €
+</p>
+```
+
+</TabItem>
+</Tabs>
 
 ## Adding our babel-plugin/TypeScript Transformer for compilation
 
