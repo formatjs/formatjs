@@ -1,6 +1,6 @@
 ---
 id: babel-plugin
-title: babel-plugin-react-intl
+title: babel-plugin-formatjs
 ---
 
 Process string messages for translation from modules that use react-intl, specifically:
@@ -24,14 +24,14 @@ values={[
 <TabItem value="npm">
 
 ```sh
-npm i babel-plugin-react-intl
+npm i babel-plugin-formatjs
 ```
 
 </TabItem>
 <TabItem value="yarn">
 
 ```sh
-yarn add babel-plugin-react-intl
+yarn add babel-plugin-formatjs
 ```
 
 </TabItem>
@@ -87,6 +87,10 @@ Opt-in to compile `intl.formatMessage` call with the same restrictions, e.g: has
 ### **`additionalComponentNames`**
 
 Additional component names to extract messages from, e.g: `['FormattedFooBarMessage']`. **NOTE**: By default we check for the fact that `FormattedMessage` are imported from `moduleSourceName` to make sure variable alias works. This option does not do that so it's less safe.
+
+### **`additionalFunctionNames`**
+
+Additional function names to extract messages from, e.g: `['$formatMessage']`. Use this if you prefer to alias `formatMessage` to something shorter like `$t`.
 
 ### **`pragma`**
 
