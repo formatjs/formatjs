@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.13.0...@formatjs/ts-transformer@3.0.0) (2021-01-04)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** remove extractFromFormatMessageCall ([25f6376](https://github.com/formatjs/formatjs/commit/25f6376011d0009630fa8599400ee0e8e284c20f))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/ts-transformer:** This has been turned on by default.
+
+
+
+
+
 # [2.13.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.12.13...@formatjs/ts-transformer@2.13.0) (2021-01-04)
 
 

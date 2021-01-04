@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.0.0](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@8.4.0...babel-plugin-formatjs@9.0.0) (2021-01-04)
+
+
+### Bug Fixes
+
+* **babel-plugin-formatjs:** fix package description ([69c509d](https://github.com/formatjs/formatjs/commit/69c509dc7a7d76c37263bb6b185af26c939a7028))
+
+
+### Features
+
+* **babel-plugin-formatjs:** change result metadata key from react-intl to formatjs ([73a8d2f](https://github.com/formatjs/formatjs/commit/73a8d2f01977aa16055dfe275a2f66584e279a10))
+* **babel-plugin-formatjs:** remove moduleSourceName and extractFromFormatMessageCall (on by default) ([e310baf](https://github.com/formatjs/formatjs/commit/e310baf561b0313f251d16e9b97109cd40cbcf0e))
+
+
+### BREAKING CHANGES
+
+* **babel-plugin-formatjs:** `moduleSourceName` is not relevant and used a whole
+lot. We've removed `extractFromFormatMessageCall` and turn it on by
+default to avoid config confusion.
+* **babel-plugin-formatjs:** If you use this plugin programmatically,
+`metadata['react-int']` is now `metadata['formatjs']`
+
+
+
+
+
 # [8.4.0](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@8.3.0...babel-plugin-formatjs@8.4.0) (2021-01-04)
 
 

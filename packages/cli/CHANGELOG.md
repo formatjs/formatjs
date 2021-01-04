@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.15.0...@formatjs/cli@3.0.0) (2021-01-04)
+
+
+### Features
+
+* **@formatjs/cli:** remove --extract-from-format-message-call ([0c12d18](https://github.com/formatjs/formatjs/commit/0c12d183c7a69c713fbfe59804668c88da9012f6))
+
+
+### BREAKING CHANGES
+
+* **@formatjs/cli:** This has been on by default for a while. We're removing
+it and making it permanent.
+
+
+
+
+
 # [2.15.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.14.0...@formatjs/cli@2.15.0) (2021-01-04)
 
 
