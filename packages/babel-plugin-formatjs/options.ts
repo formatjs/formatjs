@@ -6,14 +6,12 @@
  */
 
 export interface OptionsSchema {
-  moduleSourceName?: string;
   overrideIdFn?: (id?: string, defaultMessage?: string, description?: string, filePath?: string) => string;
   idInterpolationPattern?: string;
   removeDefaultMessage?: boolean;
   additionalComponentNames?: string[];
   additionalFunctionNames?: string[];
   pragma?: string;
-  extractFromFormatMessageCall?: boolean;
   extractSourceLocation?: boolean;
   ast?: boolean;
 }

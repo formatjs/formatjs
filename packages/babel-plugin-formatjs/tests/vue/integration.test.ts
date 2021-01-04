@@ -27,7 +27,6 @@ test.skip('dummy', function (done) {
                   'babel-plugin-formatjs',
                   {
                     idInterpolationPattern: '[sha512:contenthash:base64:6]',
-                    extractFromFormatMessageCall: true,
                     ast: true,
                   },
                 ],

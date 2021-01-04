@@ -1,7 +1,6 @@
 {
   "type": "object",
   "properties": {
-    "moduleSourceName": {"type": "string"},
     "overrideIdFn": {
       "instanceof": "Function",
       "tsType": "(id?: string, defaultMessage?: string, description?: string, filePath?: string) => string"
@@ -11,7 +10,6 @@
     "additionalComponentNames": {"type": "array", "items": {"type": "string"}},
     "additionalFunctionNames": {"type": "array", "items": {"type": "string"}},
     "pragma": {"type": "string"},
-    "extractFromFormatMessageCall": {"type": "boolean"},
     "extractSourceLocation": {"type": "boolean"},
     "ast": {"type": "boolean"}
   },

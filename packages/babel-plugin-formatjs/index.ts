@@ -30,9 +30,7 @@ import * as OPTIONS_SCHEMA from './options.schema.json';
 import {OptionsSchema} from './options';
 import {interpolateName} from '@formatjs/ts-transformer';
 
-const DEFAULT_COMPONENT_NAMES = ['FormattedMessage'];
-
-const EXTRACTED = Symbol('ReactIntlExtracted');
+const EXTRACTED = Symbol('FormatJSExtracted');
 const DESCRIPTOR_PROPS = new Set(['id', 'description', 'defaultMessage']);
 
 interface MessageDescriptor {
@@ -269,18 +267,6 @@ function storeMessage(
   messages.set(id, {id, description, defaultMessage, ...loc});
 }
 
-function referencesImport(
-  path: NodePath<any>,
-  mod: string,
-  importedNames: string[]
-) {
-  if (!(path.isIdentifier() || path.isJSXIdentifier())) {
-    return false;
-  }
-
-  return importedNames.some(name => path.referencesImport(mod, name));
-}
-
 function isFormatMessageCall(
   callee: NodePath<Expression | V8IntrinsicIdentifier>,
   additionalFunctionNames: string[]
@@ -408,7 +394,6 @@ export default declare((api: any, options: OptionsSchema) => {
         }
       ) {
         const {
-          moduleSourceName = 'react-intl',
           additionalComponentNames = [],
           removeDefaultMessage,
           idInterpolationPattern,
@@ -421,7 +406,7 @@ export default declare((api: any, options: OptionsSchema) => {
 
         const name = path.get('name');
 
-        if (name.referencesImport(moduleSourceName, 'FormattedPlural')) {
+        if (name.isJSXIdentifier() && name.node.name === 'FormattedPlural') {
           if (path.node && path.node.loc)
             console.warn(
               `[React Intl] Line ${path.node.loc.start.line}: ` +
@@ -434,11 +419,7 @@ export default declare((api: any, options: OptionsSchema) => {
 
         if (
           name.isJSXIdentifier() &&
-          (referencesImport(
-            name as NodePath<any>,
-            moduleSourceName,
-            DEFAULT_COMPONENT_NAMES
-          ) ||
+          (name.node.name === 'FormattedMessage' ||
             additionalComponentNames.includes(name.node.name))
         ) {
           const attributes = path
@@ -557,11 +538,9 @@ export default declare((api: any, options: OptionsSchema) => {
       ) {
         const {ReactIntlMessages: messages} = this;
         const {
-          moduleSourceName = 'react-intl',
           overrideIdFn,
           idInterpolationPattern,
           removeDefaultMessage,
-          extractFromFormatMessageCall,
           additionalFunctionNames = [],
           ast,
         } = opts;
@@ -624,14 +603,14 @@ export default declare((api: any, options: OptionsSchema) => {
 
         // Check that this is `defineMessages` call
         if (
-          isMultipleMessagesDeclMacro(callee, moduleSourceName) ||
-          isSingularMessagesDeclMacro(callee, moduleSourceName)
+          isMultipleMessagesDeclMacro(callee) ||
+          isSingularMessagesDeclMacro(callee)
         ) {
           const firstArgument = path.get('arguments')[0];
           const messagesObj = getMessagesObjectFromExpression(firstArgument);
 
           if (assertObjectExpression(messagesObj, callee)) {
-            if (isSingularMessagesDeclMacro(callee, moduleSourceName)) {
+            if (isSingularMessagesDeclMacro(callee)) {
               processMessageObject(messagesObj as NodePath<ObjectExpression>);
             } else {
               const properties = messagesObj.get('properties');
@@ -645,10 +624,7 @@ export default declare((api: any, options: OptionsSchema) => {
         }
 
         // Check that this is `intl.formatMessage` call
-        if (
-          extractFromFormatMessageCall &&
-          isFormatMessageCall(callee, additionalFunctionNames)
-        ) {
+        if (isFormatMessageCall(callee, additionalFunctionNames)) {
           const messageDescriptor = path.get('arguments')[0];
           if (messageDescriptor.isObjectExpression()) {
             processMessageObject(messageDescriptor);
@@ -659,18 +635,12 @@ export default declare((api: any, options: OptionsSchema) => {
   } as PluginObj<PluginPass<OptionsSchema> & State>;
 });
 
-function isMultipleMessagesDeclMacro(
-  callee: NodePath<any>,
-  moduleSourceName: string
-) {
-  return referencesImport(callee, moduleSourceName, ['defineMessages']);
+function isMultipleMessagesDeclMacro(callee: NodePath<any>) {
+  return callee.isIdentifier() && callee.node.name === 'defineMessages';
 }
 
-function isSingularMessagesDeclMacro(
-  callee: NodePath<any>,
-  moduleSourceName: string
-) {
-  return referencesImport(callee, moduleSourceName, ['defineMessage']);
+function isSingularMessagesDeclMacro(callee: NodePath<any>) {
+  return callee.isIdentifier() && callee.node.name === 'defineMessage';
 }
 
 function getMessagesObjectFromExpression(

@@ -9,11 +9,9 @@ const TESTS: Record<string, OptionsSchema> = {
   },
   additionalFunctionNames: {
     additionalFunctionNames: [],
-    extractFromFormatMessageCall: true,
   },
   ast: {
     ast: true,
-    extractFromFormatMessageCall: true,
   },
   defineMessage: {},
   defineMessages: {},
@@ -21,12 +19,8 @@ const TESTS: Record<string, OptionsSchema> = {
   empty: {},
   enforceDefaultMessage: {},
   enforceDescriptions: {},
-  extractFromFormatMessageCall: {
-    extractFromFormatMessageCall: true,
-  },
-  extractFromFormatMessageCallStateless: {
-    extractFromFormatMessageCall: true,
-  },
+  extractFromFormatMessageCall: {},
+  extractFromFormatMessageCallStateless: {},
   formatMessageCall: {},
   FormattedMessage: {},
   idInterpolationPattern: {
@@ -34,9 +28,6 @@ const TESTS: Record<string, OptionsSchema> = {
   },
   inline: {},
   templateLiteral: {},
-  moduleSourceName: {
-    moduleSourceName: 'react-i18n',
-  },
   overrideIdFn: {
     overrideIdFn: (
       id?: string,
@@ -62,7 +53,7 @@ describe('emit asserts for: ', () => {
       const {
         code,
         // @ts-ignore
-        metadata: {'react-intl': data},
+        metadata: {formatjs: data},
       } = transform(filePath, {
         pragma: '@react-intl',
         ...opts,
@@ -85,7 +76,7 @@ test('extractSourceLocation', function () {
   const {
     code,
     // @ts-ignore
-    metadata: {'react-intl': data},
+    metadata: {formatjs: data},
   } = transform(filePath, {
     pragma: '@react-intl',
     extractSourceLocation: true,
