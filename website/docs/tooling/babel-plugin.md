@@ -52,7 +52,7 @@ The default message descriptors for the app's default language will be processed
 {
   "plugins": [
     [
-      "react-intl",
+      "formatjs",
       {
         "idInterpolationPattern": "[sha512:contenthash:base64:6]",
         "extractFromFormatMessageCall": true,
@@ -115,6 +115,6 @@ The extract message descriptors are available via the `metadata` property on the
 
 ```javascript
 require('@babel/core').transform('code', {
-  plugins: ['react-intl'],
-}) // => { code, map, ast, metadata['react-intl'].messages, metadata['react-intl'].meta };
+  plugins: ['formatjs'],
+}) // => { code, map, ast, metadata['formatjs'].messages, metadata['formatjs'].meta };
 ```

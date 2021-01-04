@@ -364,7 +364,7 @@ export default declare((api: any, options: OptionsSchema) => {
     post(state) {
       const {ReactIntlMessages: messages, ReactIntlMeta} = this;
       const descriptors = Array.from(messages.values());
-      (state as any).metadata['react-intl'] = {
+      (state as any).metadata['formatjs'] = {
         messages: descriptors,
         meta: ReactIntlMeta,
       } as ExtractionResult;

@@ -212,7 +212,7 @@ and add it to your `babel.config.js` or `.babelrc`:
 {
   "plugins": [
     [
-      "react-intl",
+      "formatjs",
       {
         "idInterpolationPattern": "[sha512:contenthash:base64:6]",
         "extractFromFormatMessageCall": true,
