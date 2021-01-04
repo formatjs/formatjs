@@ -71,7 +71,7 @@ yarn extract 'src/**/*.ts*' --out-file lang/en.json --id-interpolation-pattern '
 </Tabs>
 
 :::caution ID Interpolation Pattern
-Make sure this pattern matches `idInterpolationPattern` when you use `babel-plugin-react-intl` or `@formatjs/ts-transformer` in [Bundling with formatjs](https://formatjs.io/docs/guides/bundler-plugins) or you'll get a `MISSING_TRANSLATION` error.
+Make sure this pattern matches `idInterpolationPattern` when you use `babel-plugin-formatjs` or `@formatjs/ts-transformer` in [Bundling with formatjs](https://formatjs.io/docs/guides/bundler-plugins) or you'll get a `MISSING_TRANSLATION` error.
 :::
 
 Given a file that has the following messages:

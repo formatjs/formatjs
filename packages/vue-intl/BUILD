@@ -43,8 +43,7 @@ ts_compile(
 
 jest_test(
     name = "unit",
-    srcs = SRCS + glob([
-        "tests/*.ts*",
+    srcs = SRCS + ["tests/index.test.ts"] + glob([
         "tests/__snapshots__/*.snap",
     ]),
     additional_args = [

@@ -496,7 +496,7 @@ function () {
 }
 ```
 
-The message we defined using [`defineMessages`](#definemessages) to support extraction via `babel-plugin-react-intl`, but it doesn't have to be if you're not using the Babel plugin.
+The message we defined using [`defineMessages`](#definemessages) to support extraction via `babel-plugin-formatjs`, but it doesn't have to be if you're not using the Babel plugin.
 
 :::info simple message
 Messages can be simple strings _without_ placeholders, and that's the most common type of message.

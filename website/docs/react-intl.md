@@ -294,7 +294,7 @@ Our [Advanced Usage](guides/advanced-usage.md) has further guides for production
 
 ## Message extraction
 
-We've built [@formatjs/cli](tooling/cli.md) that helps you extract messages from a list of files. It uses [babel-plugin-react-intl](tooling/babel-plugin.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
+We've built [@formatjs/cli](tooling/cli.md) that helps you extract messages from a list of files. It uses [babel-plugin-formatjs](tooling/babel-plugin.md) under the hood and should be able to extract messages if you're declaring using 1 of the mechanisms below:
 
 ```tsx
 import {defineMessages} from 'react-intl'

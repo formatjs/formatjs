@@ -579,7 +579,7 @@ type MessageDescriptor = {
 ```
 
 :::info compile message descriptors
-The [babel-plugin-react-intl](../tooling/babel-plugin.md) and [@formatjs/ts-transformer](../tooling/ts-transformer.md) packages can be used to compile Message Descriptors defined in JavaScript source files into AST for performance.
+The [babel-plugin-formatjs](../tooling/babel-plugin.md) and [@formatjs/ts-transformer](../tooling/ts-transformer.md) packages can be used to compile Message Descriptors defined in JavaScript source files into AST for performance.
 :::
 
 ### Message Formatting Fallbacks

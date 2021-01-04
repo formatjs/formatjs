@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.4.0](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@8.3.0...babel-plugin-formatjs@8.4.0) (2021-01-04)
+
+
+### Features
+
+* **babel-plugin-formatjs:** add additionalFunctionNames feature to extract from custom function calls ([043ac50](https://github.com/formatjs/formatjs/commit/043ac509da0e55a8639877a35550df81385a3155))
+
+
+
+
+
+# 8.3.0 (2021-01-04)
+
+
+### Features
+
+* **babel-plugin-formatjs:** rename babel-plugin-react-intl to babel-plugin-formatjs ([c9357b7](https://github.com/formatjs/formatjs/commit/c9357b7968c3c7e5c9335ff0058e47da0cb5c6c7))
+
+
+
+
+
 ## [8.2.25](https://github.com/formatjs/formatjs/compare/babel-plugin-react-intl@8.2.24...babel-plugin-react-intl@8.2.25) (2021-01-04)
 
 **Note:** Version bump only for package babel-plugin-react-intl

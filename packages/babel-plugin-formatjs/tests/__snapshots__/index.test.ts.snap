@@ -48,6 +48,45 @@ export default class Foo extends Component {
 }
 `;
 
+exports[`emit asserts for:  additionalFunctionNames 1`] = `
+Object {
+  "code": "// @react-intl project:foo
+import React, { Component } from 'react';
+
+function CustomMessage() {}
+
+export default class Foo extends Component {
+  render() {
+    return <CustomMessage id={formatMessage({
+      \\"id\\": \\"acbd1\\",
+      \\"defaultMessage\\": \\"foo\\"
+    })} description={$formatMessage({
+      \\"id\\": \\"92e00\\",
+      \\"defaultMessage\\": \\"foo2\\"
+    })} defaultMessage=\\"Hello World!\\" />;
+  }
+
+}",
+  "data": Object {
+    "messages": Array [
+      Object {
+        "defaultMessage": "foo",
+        "description": undefined,
+        "id": "acbd1",
+      },
+      Object {
+        "defaultMessage": "foo2",
+        "description": undefined,
+        "id": "92e00",
+      },
+    ],
+    "meta": Object {
+      "project": "foo",
+    },
+  },
+}
+`;
+
 exports[`emit asserts for:  ast 1`] = `
 Object {
   "code": "import React, { Component } from 'react';
@@ -477,9 +516,8 @@ function myFunction(param1, {
   formatDate
 }) {
   return formatMessage({
-    id: 'inline1',
-    defaultMessage: 'Hello params!',
-    description: 'A stateless message'
+    \\"id\\": \\"inline1\\",
+    \\"defaultMessage\\": \\"Hello params!\\"
   }) + formatDate(new Date());
 }
 
@@ -502,9 +540,8 @@ const Foo = ({
 }) => {
   const msgs = {
     qux: formatMessage({
-      id: 'foo.bar.quux',
-      defaultMessage: 'Hello <b>Stateless!</b>',
-      description: 'A stateless message'
+      \\"id\\": \\"foo.bar.quux\\",
+      \\"defaultMessage\\": \\"Hello <b>Stateless!</b>\\"
     })
   };
   return <div>
@@ -520,9 +557,19 @@ export default injectIntl(Foo);",
   "data": Object {
     "messages": Array [
       Object {
+        "defaultMessage": "Hello params!",
+        "description": "A stateless message",
+        "id": "inline1",
+      },
+      Object {
         "defaultMessage": "hook <b>foo</b>",
         "description": "hook",
         "id": "hook",
+      },
+      Object {
+        "defaultMessage": "Hello <b>Stateless!</b>",
+        "description": "A stateless message",
+        "id": "foo.bar.quux",
       },
       Object {
         "defaultMessage": "bar",

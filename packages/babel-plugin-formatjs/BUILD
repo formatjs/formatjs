@@ -3,7 +3,7 @@ load("@npm//json-schema-to-typescript:index.bzl", "json2ts")
 load("//tools:index.bzl", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
-PACKAGE_NAME = "babel-plugin-react-intl"
+PACKAGE_NAME = "babel-plugin-formatjs"
 
 pkg_npm(
     name = PACKAGE_NAME,
@@ -48,12 +48,15 @@ ts_compile(
 
 jest_test(
     name = "unit",
-    srcs = SRCS + glob([
-        "tests/**/*.ts",
-        "tests/**/*.tsx",
-        "tests/**/*.js",
-        "tests/**/*.json",
-    ]),
+    srcs = SRCS + glob(
+        [
+            "tests/**/*.ts",
+            "tests/**/*.tsx",
+            "tests/**/*.js",
+            "tests/**/*.json",
+        ],
+        exclude = ["tests/vue/**/*"],
+    ),
     snapshots = glob([
         "tests/**/*.snap",
     ]),
@@ -62,6 +65,24 @@ jest_test(
         "//packages/ts-transformer:types",
         "@npm//@babel/plugin-syntax-jsx",
     ] + SRC_DEPS,
+)
+
+jest_test(
+    name = "integration-vue",
+    srcs = ["tests/vue/integration.test.ts"] + glob([
+        "tests/vue/fixtures/*",
+    ]),
+    deps = [
+        ":dist",
+        ":types",
+        "@npm//@types/node",
+        "@npm//@types/webpack",
+        "@npm//@vue/compiler-sfc",
+        "@npm//babel-loader",
+        "@npm//vue",
+        "@npm//vue-loader",
+        "@npm//webpack",
+    ],
 )
 
 # json2ts -i src/options.schema.json -o src/options.ts

@@ -3,7 +3,7 @@ bazel-out
 dist
 locale-data
 packages/*/CHANGELOG.md
-packages/babel-plugin-react-intl/options.ts
+packages/babel-plugin-formatjs/options.ts
 packages/intl-datetimeformat/src/data/
 packages/intl-getcanonicallocales/src/data/
 packages/intl-messageformat-parser/src/parser.ts
