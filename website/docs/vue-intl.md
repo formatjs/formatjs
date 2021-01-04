@@ -124,7 +124,7 @@ See [@formatjs/intl](./intl.md) for the full list of API signatures.
 We're actively working on adding `vue` support for formatjs toolchain. Currently the following tools are supported:
 
 - [eslint-plugin-formatjs](./tooling/linter.md): This fully supports `.vue` and JS/TS.
-- [@formatjs/cli]('./tooling/cli.md): We now support extracting messages from `.vue` SFC files.
+- [@formatjs/cli](./tooling/cli.md): We now support extracting messages from `.vue` SFC files.
 
 ## Caveats
 
