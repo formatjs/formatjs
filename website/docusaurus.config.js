@@ -8,6 +8,9 @@ module.exports = {
   projectName: 'formatjs.github.io', // Usually your repo name.
   themes: ['@docusaurus/theme-live-codeblock'],
   themeConfig: {
+    prism: {
+      additionalLanguages: ['markup'],
+    },
     algolia: {
       apiKey: '64ffba7fb3e3ee96182a32b6bf44591f',
       indexName: 'formatjs',

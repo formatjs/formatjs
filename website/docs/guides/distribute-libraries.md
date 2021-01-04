@@ -3,6 +3,9 @@ id: distribute-libraries
 title: Distributing i18n-friendly libraries
 ---
 
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
 In larger scale applications/monorepos, not all components/libraries live within the same repo/project and they might get distributed differently. While there are multiple ways to solve this problem, this guide aims to provide a guidance that we've seen working quite well with large engineering orgs.
 
 ## High level concept
@@ -88,6 +91,16 @@ The core of a i18n application is the `intl` object, which contains precompiled 
 
 Component libraries can declare `intl: IntlShape` as a prop and subsequently pass it down directly like:
 
+<Tabs
+groupId="engine"
+defaultValue="react"
+values={[
+{label: 'React', value: 'react'},
+{label: 'Vue3', value: 'vue'},
+]}>
+
+<TabItem value="react">
+
 ```tsx
 import {IntlShape} from 'react-intl'
 import {MyButton, MyForm} from 'my-components'
@@ -123,3 +136,53 @@ function MyFeature(props: Props) {
   )
 }
 ```
+
+</TabItem>
+
+<TabItem value="vue">
+
+```ts
+import {useIntl} from '@formatjs/vue-intl'
+
+const MyFeature = {
+  setup() {
+    const intl = useIntl()
+    return () =>
+      h(
+        'p',
+        {},
+        intl.formatMessage({
+          id: 'foo',
+          defaultMessage: 'Hello',
+        })
+      )
+  },
+}
+```
+
+or passing down via `provideIntl`
+
+```ts
+import {createIntl} from '@formatjs/intl'
+import {provideIntl, useIntl} from '@formatjs/vue-intl'
+
+const Ancestor = {
+  setup() {
+    provideIntl(
+      createIntl({
+        locale: 'en',
+        defaultLocale: 'en',
+        messages: {
+          foo: 'Composed',
+        },
+      })
+    )
+  },
+  render() {
+    return h(MyFeature)
+  },
+}
+```
+
+</TabItem>
+</Tabs>
