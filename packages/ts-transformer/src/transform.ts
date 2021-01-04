@@ -104,12 +104,6 @@ export interface Opts {
    */
   additionalFunctionNames?: string[];
   /**
-   * Opt-in to extract from `intl.formatMessage` call with the same restrictions,
-   * e.g: has to be called with object literal such as
-   * `intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'})`
-   */
-  extractFromFormatMessageCall?: boolean;
-  /**
    * Callback function that gets called everytime we encountered something
    * that looks like a MessageDescriptor
    *
@@ -584,8 +578,7 @@ function extractMessagesFromCallExpression(
     }
   } else if (
     isSingularMessageDecl(ts, node, opts.additionalComponentNames || []) ||
-    (opts.extractFromFormatMessageCall &&
-      isIntlFormatMessageCall(ts, node, additionalFunctionNames || []))
+    isIntlFormatMessageCall(ts, node, additionalFunctionNames || [])
   ) {
     const [descriptorsObj, ...restArgs] = node.arguments;
     if (ts.isObjectLiteralExpression(descriptorsObj)) {

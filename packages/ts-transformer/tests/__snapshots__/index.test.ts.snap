@@ -369,22 +369,14 @@ const objectPointer = {
 class Foo extends Component {
     render() {
         const msgs = {
-            baz: this.props.intl.formatMessage({
-                id: 'foo.bar.baz',
-                defaultMessage: 'Hello World!',
-                description: 'The default message',
-            }),
-            biff: this.props.intl.formatMessage({
-                id: 'foo.bar.biff',
-                defaultMessage: 'Hello Nurse!',
-                description: 'Another message',
-            }),
+            baz: this.props.intl.formatMessage({ id: \\"foo.bar.baz\\", defaultMessage: \\"Hello World!\\" }),
+            biff: this.props.intl.formatMessage({ id: \\"foo.bar.biff\\", defaultMessage: \\"Hello Nurse!\\" }),
             invalid: this.props.intl.formatMessage(objectPointer),
         };
         return (<div>
         <h1>{msgs.header}</h1>
         <p>{msgs.content}</p>
-        <input placeholder={intl.formatMessage({ defaultMessage: 'inline' })}/>
+        <input placeholder={intl.formatMessage({ id: \\"A/2tFVt1SI\\", defaultMessage: \\"inline\\" })}/>
         <span>
           <FormattedMessage id=\\"foo\\" defaultMessage=\\"bar\\"/>
         </span>
@@ -395,6 +387,20 @@ export default injectIntl(Foo);
 ",
   "meta": Object {},
   "msgs": Array [
+    Object {
+      "defaultMessage": "Hello World!",
+      "description": "The default message",
+      "id": "foo.bar.baz",
+    },
+    Object {
+      "defaultMessage": "Hello Nurse!",
+      "description": "Another message",
+      "id": "foo.bar.biff",
+    },
+    Object {
+      "defaultMessage": "inline",
+      "id": "A/2tFVt1SI",
+    },
     Object {
       "defaultMessage": "bar",
       "description": "baz",

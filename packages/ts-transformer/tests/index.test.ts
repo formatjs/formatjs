@@ -14,20 +14,15 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
   additionalFunctionNames: {
     additionalFunctionNames: ['$formatMessage'],
     pragma: 'react-intl',
-    extractFromFormatMessageCall: true,
   },
   defineMessages: {
     pragma: 'react-intl',
   },
   extractFromFormatMessage: {
     pragma: 'react-intl',
-    extractFromFormatMessageCall: true,
   },
-  extractFromFormatMessageStateless: {
-    extractFromFormatMessageCall: true,
-  },
+  extractFromFormatMessageStateless: {},
   nested: {
-    extractFromFormatMessageCall: true,
     overrideIdFn: (id, defaultMessage, description) => {
       return `HELLO.${id}.${defaultMessage!.length}.${typeof description}`;
     },
@@ -38,33 +33,27 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
   formatMessageCall: {},
   FormattedMessage: {},
   inline: {},
-  stringConcat: {
-    extractFromFormatMessageCall: true,
-  },
+  stringConcat: {},
   templateLiteral: {},
   overrideIdFn: {
     overrideIdFn: (id, defaultMessage, description) => {
       return `HELLO.${id}.${defaultMessage!.length}.${typeof description}`;
     },
-    extractFromFormatMessageCall: true,
   },
   ast: {
     ast: true,
     overrideIdFn: (id, defaultMessage, description) => {
       return `HELLO.${id}.${defaultMessage!.length}.${typeof description}`;
     },
-    extractFromFormatMessageCall: true,
   },
   removeDefaultMessage: {
     removeDefaultMessage: true,
   },
   noImport: {
     overrideIdFn: '[hash:base64:5]',
-    extractFromFormatMessageCall: true,
   },
   resourcePath: {
     overrideIdFn: '[name]-[hash:base64:5]',
-    extractFromFormatMessageCall: true,
   },
   removeDescription: {},
 };

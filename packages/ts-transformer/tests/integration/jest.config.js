@@ -12,7 +12,6 @@ module.exports = {
               // options
               overrideIdFn: '[sha512:contenthash:base64:6]',
               ast: true,
-              extractFromFormatMessageCall: true,
             },
           },
         ],
