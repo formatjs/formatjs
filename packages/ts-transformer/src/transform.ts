@@ -98,6 +98,12 @@ export interface Opts {
    */
   additionalComponentNames?: string[];
   /**
+   * Additional function names to extract messages from,
+   * e.g: `['formatMessage', '$t']`
+   * Default to `['formatMessage']`
+   */
+  additionalFunctionNames?: string[];
+  /**
    * Opt-in to extract from `intl.formatMessage` call with the same restrictions,
    * e.g: has to be called with object literal such as
    * `intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'})`
@@ -352,8 +358,10 @@ function extractMessageDescriptor(
  */
 function isIntlFormatMessageCall(
   ts: TypeScript,
-  node: typescript.CallExpression
+  node: typescript.CallExpression,
+  additionalFunctionNames: string[]
 ) {
+  const fnNames = new Set(['formatMessage', ...additionalFunctionNames]);
   const method = node.expression;
 
   // Handle intl.formatMessage()
@@ -368,7 +376,7 @@ function isIntlFormatMessageCall(
   }
 
   // Handle formatMessage()
-  return ts.isIdentifier(method) && method.text === 'formatMessage';
+  return ts.isIdentifier(method) && fnNames.has(method.text);
 }
 
 function extractMessageFromJsxComponent(
@@ -506,7 +514,7 @@ function extractMessagesFromCallExpression(
   opts: Opts,
   sf: typescript.SourceFile
 ): typeof node {
-  const {onMsgExtracted} = opts;
+  const {onMsgExtracted, additionalFunctionNames} = opts;
   if (isMultipleMessageDecl(ts, node)) {
     const [arg, ...restArgs] = node.arguments;
     let descriptorsObj: typescript.ObjectLiteralExpression | undefined;
@@ -576,7 +584,8 @@ function extractMessagesFromCallExpression(
     }
   } else if (
     isSingularMessageDecl(ts, node, opts.additionalComponentNames || []) ||
-    (opts.extractFromFormatMessageCall && isIntlFormatMessageCall(ts, node))
+    (opts.extractFromFormatMessageCall &&
+      isIntlFormatMessageCall(ts, node, additionalFunctionNames || []))
   ) {
     const [descriptorsObj, ...restArgs] = node.arguments;
     if (ts.isObjectLiteralExpression(descriptorsObj)) {

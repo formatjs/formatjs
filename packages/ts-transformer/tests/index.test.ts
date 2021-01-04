@@ -11,6 +11,11 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
     additionalComponentNames: ['CustomMessage'],
     pragma: 'react-intl',
   },
+  additionalFunctionNames: {
+    additionalFunctionNames: ['$formatMessage'],
+    pragma: 'react-intl',
+    extractFromFormatMessageCall: true,
+  },
   defineMessages: {
     pragma: 'react-intl',
   },

@@ -78,6 +78,33 @@ export default class Foo extends Component {
 }
 `;
 
+exports[`emit asserts for additionalFunctionNames 1`] = `
+Object {
+  "code": "// @react-intl project:foo
+import React, { Component } from 'react';
+function CustomMessage() { }
+export default class Foo extends Component {
+    render() {
+        return (<CustomMessage id={formatMessage({ id: \\"rL0Y20zC+F\\", defaultMessage: \\"foo\\" })} description={$formatMessage({ id: \\"rL0Y20zC+F\\", defaultMessage: \\"foo\\" })} defaultMessage=\\"Hello World!\\"/>);
+    }
+}
+",
+  "meta": Object {
+    "project": "foo",
+  },
+  "msgs": Array [
+    Object {
+      "defaultMessage": "foo",
+      "id": "rL0Y20zC+F",
+    },
+    Object {
+      "defaultMessage": "foo",
+      "id": "rL0Y20zC+F",
+    },
+  ],
+}
+`;
+
 exports[`emit asserts for ast 1`] = `
 Object {
   "code": "import React, { Component } from 'react';
