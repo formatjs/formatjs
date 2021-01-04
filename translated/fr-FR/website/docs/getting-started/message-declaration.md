@@ -10,11 +10,9 @@ While you can declare your messages using only `id`s, we highly recommend declar
 3. Text styling is also dependent on the message itself. Things like truncation, capitalization... certainly affect the messages themselves.
 4. Better integrations with toolchains. Most toolchains cannot verify cross-file references to validate syntax/usage.
 
-## How to declare a message
-
 At a high level, formatjs messages use [ICU Syntax](../core-concepts/icu-syntax.md) with a couple of enhancements common in other message format such as [Fluent](https://github.com/projectfluent/fluent.js/). This section focuses on the actual supported ways of calling `formatjs` APIs so messages can be extracted.
 
-1. Using imperative API `intl.formatMessage`
+## Using imperative API `intl.formatMessage`
 
 ```tsx
 // Method must be exactly `intl.formatMessage`
@@ -29,9 +27,7 @@ intl.formatMessage(
 )
 ```
 
-:::caution We rely on AST to extract messages from the codebase, thus calling `intl.formatMessage()` exactly is required (not `formatMessage()` or `const {formatMessage: f} = intl; f()` or the like) :::
-
-2. Using React API `<FormattedMessage/>`
+## Using React API `<FormattedMessage/>`
 
 ```tsx
 import {FormattedMessage} from 'react-intl'
@@ -46,9 +42,15 @@ import {FormattedMessage} from 'react-intl'
 />
 ```
 
-:::caution We rely on AST to extract messages from the codebase, thus calling `FormattedMessage` exactly is required (not `const F = FormattedMessage; <F />` or the like) :::
+## Using Vue API & template methods such as `$formatMessage`
 
-3. Pre-declaring using `defineMessage` for later consumption (less recommended)
+```vue
+<template>
+  <p>{{ $formatNumber(3, {style: 'currency', currency: 'USD'}) }}</p>
+</template>
+```
+
+## Pre-declaring using `defineMessage` for later consumption (less recommended)
 
 ```tsx
 import {defineMessage} from 'react-intl'
@@ -66,5 +68,7 @@ intl.formatMessage(message, {name: 'John'}) // My name is John
   }}
 /> // My name is John
 ```
+
+:::caution We rely on AST to extract messages from the codebase, so make sure you call `intl.formatMessage()`, use our builtin React components, use our Vue methods or configure [`additionalFunctionNames`](../tooling/cli.md#--additional-function-names-comma-separated-names)/[`additionalComponentNames`](../tooling/cli.md#--additional-component-names-comma-separated-names) properly. :::
 
 :::caution You can declare a message without immediately formatting it with `defineMessage` and our extractor would still be able to extract it. However, our [enforce-placeholders](../tooling/linter.md#enforce-placeholders) linter rule won't be able to analyze it. :::

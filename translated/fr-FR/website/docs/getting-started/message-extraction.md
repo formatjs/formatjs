@@ -73,6 +73,16 @@ yarn extract 'src/**/*.ts*' --out-file lang/en.json --id-interpolation-pattern '
 
 Given a file that has the following messages:
 
+<Tabs
+groupId="engine"
+defaultValue="react"
+values={[
+{label: 'React', value: 'react'},
+{label: 'Vue3', value: 'vue'},
+]}>
+
+<TabItem value="react">
+
 ```tsx
 import * as React from 'react'
 import {FormattedMessage, useIntl, injectIntl} from 'react-intl'
@@ -120,8 +130,8 @@ export function List(props) {
               description="Delete button"
               values={{
                 name: props.name,
-              }}
-            />
+ }}
+ />
           </button>
         </li>
         <PasswordChange />
@@ -130,6 +140,70 @@ export function List(props) {
   )
 }
 ```
+
+</TabItem>
+
+<TabItem value="vue">
+
+```vue
+<template>
+  <section>
+    <header>
+      {{
+        $formatMessage({
+          defaultMessage: 'Control Panel',
+          description: 'title of control panel section',
+        })
+      }}
+    </header>
+    <ul>
+      <li>
+        <button>
+          {{
+            $formatMessage(
+              {
+                defaultMessage: 'Delete user {name}',
+                description: 'Delete button',
+              },
+              {
+                name: props.name,
+              }
+            )
+          }}
+        </button>
+      </li>
+      <li>
+        <input :placeholder="newPwdPlaceholder" />
+        <input :placeholder="confirmPwdPlaceholder" />
+      </li>
+    </ul>
+  </section>
+</template>
+
+<script>
+export default {
+  inject: ['intl'],
+  props: ['name'],
+  data() {
+    return {
+      name: this.name,
+      newPwdPlaceholder: intl.formatMessage({
+        defaultMessage: 'New Password',
+        description: 'placeholder text',
+      }),
+      confirmPwdPlaceholder: intl.formatMessage({
+        id: 'explicit-id',
+        defaultMessage: 'Confirm Password',
+        description: 'placeholder text',
+      }),
+    }
+  },
+}
+</script>
+```
+
+</TabItem>
+</Tabs>
 
 running the above command will create a file called `lang/en.json`:
 
@@ -187,14 +261,14 @@ values={[
 <TabItem value="npm">
 
 ```sh
-npm run extract -- "src/**/*.ts*" --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]' --format formatter.js
+npm run extract -- "src/**/*.{ts,tsx,vue}" --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]' --format formatter.js
 ```
 
 </TabItem>
 <TabItem value="yarn">
 
 ```sh
-yarn extract "src/**/*.ts*" --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]' --format formatter.js
+yarn extract "src/**/*.{ts,tsx,vue}" --out-file lang/en.json --id-interpolation-pattern '[sha512:contenthash:base64:6]' --format formatter.js
 ```
 
 </TabItem>

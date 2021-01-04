@@ -129,7 +129,42 @@ In the future we will provide formatters that work with popular TMSes by default
 
 While every application has a separate distribution pipeline, the common theme is the ability to map a locale to its translation file. In this example we'll assume your pipeline can understand dynamic `import`:
 
-1. In a React application
+<Tabs
+groupId="engine"
+defaultValue="react"
+values={[
+{label: 'Node', value: 'node'},
+{label: 'React', value: 'react'},
+{label: 'Vue3', value: 'vue'},
+]}>
+
+<TabItem value="node">
+
+```tsx
+import {createIntl, createIntlCache} from '@formatjs/intl'
+
+function loadLocaleData(locale: string): Promise<Record<string, string>> {
+  switch (locale) {
+    case 'fr':
+      return import('compiled-lang/fr.json')
+    default:
+      return import('compiled-lang/en.json')
+  }
+}
+
+// A single cache instance can be shared for all locales
+const intlCache = createIntlCache()
+
+async function bootstrapApplication(locale) {
+  const messages = await loadLocaleData(locale)
+  const intl = createIntl({locale, messages}, intlCache)
+  // Now the intl object is localized and ready to use
+}
+```
+
+</TabItem>
+
+<TabItem value="react">
 
 ```tsx
 import * as React from 'react'
@@ -163,12 +198,14 @@ async function bootstrapApplication(locale, mainDiv) {
 }
 ```
 
-2. In a non-React application
+</TabItem>
+<TabItem value="vue">
 
 ```tsx
-import {createIntl, createIntlCache} from 'react-intl'
+import VueIntl from '@formatjs/vue-intl'
+import {createApp} from 'vue'
 
-function loadLocaleData(locale: string): Promise<Record<string, string>> {
+function loadLocaleData(locale: string) {
   switch (locale) {
     case 'fr':
       return import('compiled-lang/fr.json')
@@ -177,12 +214,16 @@ function loadLocaleData(locale: string): Promise<Record<string, string>> {
   }
 }
 
-// A single cache instance can be shared for all locales
-const intlCache = createIntlCache()
-
-async function bootstrapApplication(locale) {
+async function bootstrapApplication(locale, mainDiv) {
   const messages = await loadLocaleData(locale)
-  const intl = createIntl({locale, messages}, intlCache)
-  // Now the intl object is localized and ready to use
+  const app = createApp(App)
+  app.use(VueIntl, {
+    locale: 'en',
+    defaultLocale: 'en',
+    messages,
+  })
 }
 ```
+
+</TabItem>
+</Tabs>
