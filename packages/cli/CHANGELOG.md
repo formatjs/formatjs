@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.15.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.14.0...@formatjs/cli@2.15.0) (2021-01-04)
+
+
+### Features
+
+* **babel-plugin-formatjs:** rename babel-plugin-react-intl to babel-plugin-formatjs ([c9357b7](https://github.com/formatjs/formatjs/commit/c9357b7968c3c7e5c9335ff0058e47da0cb5c6c7))
+
+
+
+
+
 # [2.14.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.18...@formatjs/cli@2.14.0) (2021-01-04)
 
 
