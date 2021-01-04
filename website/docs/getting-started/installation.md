@@ -215,7 +215,6 @@ and add it to your `babel.config.js` or `.babelrc`:
       "formatjs",
       {
         "idInterpolationPattern": "[sha512:contenthash:base64:6]",
-        "extractFromFormatMessageCall": true,
         "ast": true
       }
     ]

@@ -59,7 +59,6 @@ During runtime this will throw an `Error` saying `ID is required`. In order to i
     [
       "formatjs",
       {
-        "extractFromFormatMessageCall": true,
         "idInterpolationPattern": "[sha512:contenthash:base64:6]",
         "ast": true
       }
@@ -148,7 +147,6 @@ module.exports = {
               return {
                 before: [
                   transform({
-                    extractFromFormatMessageCall: true,
                     overrideIdFn: '[sha512:contenthash:base64:6]',
                   }),
                 ],

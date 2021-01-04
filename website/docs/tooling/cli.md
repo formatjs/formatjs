@@ -134,10 +134,6 @@ Additional component names to extract messages from, e.g: `['FormattedFooBarMess
 
 Additional function names to extract messages from, e.g: `['$t']`.
 
-### `--extract-from-format-message-call`
-
-Opt-in to extract from `intl.formatMessage` call with the same restrictions, e.g: has to be called with object literal such as `intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'})` (default: `false`)
-
 ### `--output-empty-json`
 
 Output file with empty [] if src has no messages. For build systems like [bazel](https://bazel.build/) that relies on specific output mapping, not writing out a file can cause issues. (default: `false`)
