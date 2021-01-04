@@ -1,7 +1,7 @@
 {
   "name": "babel-plugin-formatjs",
   "version": "8.4.0",
-  "description": "Extracts string messages for translation from modules that use React Intl.",
+  "description": "Extracts string messages for translation from modules that use formatjs.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/formatjs/formatjs.git"
