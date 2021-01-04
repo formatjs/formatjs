@@ -2,14 +2,14 @@ import {warn, getStdinAsString} from './console_utils';
 import {readFile, outputFile} from 'fs-extra';
 import {
   interpolateName,
-  transform,
   Opts,
   MessageDescriptor,
 } from '@formatjs/ts-transformer';
-import ts from 'typescript';
+
 import {resolveBuiltinFormatter, Formatter} from './formatters';
 import stringify from 'json-stable-stringify';
-
+import {parseFile} from './vue_extractor';
+import {parseScript} from './parse_script';
 export interface ExtractionResult<M = Record<string, string>> {
   /**
    * List of extracted messages
@@ -93,6 +93,10 @@ function processFile(
 
   opts = {
     ...opts,
+    additionalComponentNames: [
+      '$formatMessage',
+      ...(opts.additionalComponentNames || []),
+    ],
     onMsgExtracted(_, msgs) {
       if (opts.extractSourceLocation) {
         msgs = msgs.map(msg => ({
@@ -125,39 +129,12 @@ function processFile(
         ),
     };
   }
-  let output;
-  try {
-    output = ts.transpileModule(source, {
-      compilerOptions: {
-        allowJs: true,
-        target: ts.ScriptTarget.ESNext,
-        noEmit: true,
-        experimentalDecorators: true,
-      },
-      reportDiagnostics: true,
-      fileName: fn,
-      transformers: {
-        before: [transform(opts)],
-      },
-    });
-  } catch (e) {
-    e.message = `Error processing file ${fn} 
-${e.message || ''}`;
-    throw e;
-  }
-  if (output.diagnostics) {
-    const errs = output.diagnostics.filter(
-      d => d.category === ts.DiagnosticCategory.Error
-    );
-    if (errs.length) {
-      throw new Error(
-        ts.formatDiagnosticsWithColorAndContext(errs, {
-          getCanonicalFileName: fileName => fileName,
-          getCurrentDirectory: () => process.cwd(),
-          getNewLine: () => ts.sys.newLine,
-        })
-      );
-    }
+
+  const scriptParseFn = parseScript(opts, fn);
+  if (fn.endsWith('.vue')) {
+    parseFile(source, fn, scriptParseFn);
+  } else {
+    scriptParseFn(source);
   }
 
   if (meta) {

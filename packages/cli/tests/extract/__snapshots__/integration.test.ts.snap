@@ -666,3 +666,16 @@ Object {
 ",
 }
 `;
+
+exports[`vue 1`] = `
+Object {
+  "1ebd4": Object {
+    "defaultMessage": "in script",
+    "description": "in script desc",
+  },
+  "f6d14": Object {
+    "defaultMessage": "in template",
+    "description": "in template desc",
+  },
+}
+`;

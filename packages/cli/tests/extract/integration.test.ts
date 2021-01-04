@@ -196,3 +196,11 @@ test('invalid syntax should throw', async () => {
     );
   }).rejects.toThrowError('TS1005');
 }, 20000);
+
+test('vue', async () => {
+  const {stdout} = await exec(
+    `${BIN_PATH} extract '${join(__dirname, 'vue/*.vue')}'`
+  );
+
+  expect(JSON.parse(stdout)).toMatchSnapshot();
+});

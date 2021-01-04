@@ -43,6 +43,7 @@ SRC_DEPS = [
     "@npm//chalk",
     "@npm//json-stable-stringify",
     "@npm//@types/json-stable-stringify",
+    "@npm//@vue/compiler-sfc",
 ]
 
 ts_compile(
@@ -57,6 +58,7 @@ jest_test(
     srcs = [
         "package.json",
         "tests/extract/unit.test.ts",
+        "tests/extract/vue_extractor.test.ts",
         "tests/extract/__snapshots__/unit.test.ts.snap",
     ] + SRCS,
     deps = [

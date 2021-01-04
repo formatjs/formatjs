@@ -92,7 +92,7 @@ formatjs extract --help
 For example:
 
 ```sh
-formatjs extract "src/**/*.{ts,tsx}" --out-file lang.json
+formatjs extract "src/**/*.{ts,tsx,vue}" --out-file lang.json
 ```
 
 :::caution
@@ -129,6 +129,10 @@ Whether the metadata about the location of the message in the source file should
 ### `--additional-component-names [comma-separated-names]`
 
 Additional component names to extract messages from, e.g: `['FormattedFooBarMessage']`. **NOTE**: By default we check for the fact that `FormattedMessage` is imported from `moduleSourceName` to make sure variable alias works. This option does not do that so it's less safe.
+
+### `--additional-function-names [comma-separated-names]`
+
+Additional function names to extract messages from, e.g: `['$t']`.
 
 ### `--extract-from-format-message-call`
 
