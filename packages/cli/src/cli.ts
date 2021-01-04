@@ -85,13 +85,6 @@ works. This option does not do that so it's less safe.`,
       (val: string) => val.split(',')
     )
     .option(
-      '--extract-from-format-message-call',
-      `Opt-in to extract from \`intl.formatMessage\` call with the same restrictions, e.g: has 
-to be called with object literal such as \`intl.formatMessage({ id: 'foo', defaultMessage: 
-'bar', description: 'baz'})`,
-      true
-    )
-    .option(
       '--ignore <files...>',
       'List of glob paths to **not** extract translations from.'
     )
@@ -130,7 +123,6 @@ to be called with object literal such as \`intl.formatMessage({ id: 'foo', defau
         removeDefaultMessage: cmdObj.removeDefaultMessage,
         additionalComponentNames: cmdObj.additionalComponentNames,
         additionalFunctionNames: cmdObj.additionalFunctionNames,
-        extractFromFormatMessageCall: cmdObj.extractFromFormatMessageCall,
         throws: cmdObj.throws,
         pragma: cmdObj.pragma,
         format: cmdObj.format,

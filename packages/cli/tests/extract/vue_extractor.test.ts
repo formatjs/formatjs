@@ -28,7 +28,6 @@ test('vue_extractor', function () {
     'comp.vue',
     parseScript({
       additionalFunctionNames: ['$formatMessage'],
-      extractFromFormatMessageCall: true,
       onMsgExtracted(_, msgs) {
         messages = messages.concat(msgs);
       },

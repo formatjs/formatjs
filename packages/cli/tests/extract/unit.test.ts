@@ -23,7 +23,6 @@ describe('unit', function () {
       'extract',
       '--extract-source-location',
       '--remove-default-message',
-      '--extract-from-format-message-call',
       '--throws',
       '--additional-component-names',
       'Foo,Bar',
