@@ -1,6 +1,6 @@
 ---
 id: babel-plugin
-title: babel-plugin-react-intl
+title: babel-plugin-formatjs
 ---
 
 Process string messages for translation from modules that use react-intl, specifically:
@@ -25,14 +25,14 @@ values={[
 <TabItem value="npm">
 
 ```sh
-npm i babel-plugin-react-intl
+npm i babel-plugin-formatjs
 ```
 
 </TabItem>
 <TabItem value="yarn">
 
 ```sh
-yarn add babel-plugin-react-intl
+yarn add babel-plugin-formatjs
 ```
 
 </TabItem>

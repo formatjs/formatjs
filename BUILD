@@ -203,7 +203,7 @@ karma_test(
 multirun(
     name = "prettier_all",
     commands = [
-        "//packages/babel-plugin-react-intl:prettier",
+        "//packages/babel-plugin-formatjs:prettier",
         "//packages/cli:prettier",
         "//packages/ecma402-abstract:prettier",
         "//packages/eslint-plugin-formatjs:prettier",

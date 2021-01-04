@@ -24,7 +24,7 @@ test.skip('dummy', function (done) {
             options: {
               plugins: [
                 [
-                  'babel-plugin-react-intl',
+                  'babel-plugin-formatjs',
                   {
                     idInterpolationPattern: '[sha512:contenthash:base64:6]',
                     extractFromFormatMessageCall: true,

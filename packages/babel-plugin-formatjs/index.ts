@@ -365,7 +365,7 @@ export default declare((api: any, options: OptionsSchema) => {
   api.assertVersion(7);
 
   validate(OPTIONS_SCHEMA as any, options, {
-    name: 'babel-plugin-react-intl',
+    name: 'babel-plugin-formatjs',
     baseDataPath: 'options',
   });
   const {pragma} = options;

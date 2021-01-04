@@ -3,7 +3,7 @@ load("@npm//json-schema-to-typescript:index.bzl", "json2ts")
 load("//tools:index.bzl", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
-PACKAGE_NAME = "babel-plugin-react-intl"
+PACKAGE_NAME = "babel-plugin-formatjs"
 
 pkg_npm(
     name = PACKAGE_NAME,

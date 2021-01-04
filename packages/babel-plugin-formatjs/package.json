@@ -1,5 +1,5 @@
 {
-  "name": "babel-plugin-react-intl",
+  "name": "babel-plugin-formatjs",
   "version": "8.2.25",
   "description": "Extracts string messages for translation from modules that use React Intl.",
   "repository": {
