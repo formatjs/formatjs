@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.12.13...@formatjs/ts-transformer@2.13.0) (2021-01-04)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** allow setting `additionalFunctionNames` to extract from custom function calls ([96fc3b1](https://github.com/formatjs/formatjs/commit/96fc3b1370eafbbab52f1de4c4d477f9ff2510a0))
+
+
+
+
+
 ## [2.12.13](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@2.12.12...@formatjs/ts-transformer@2.12.13) (2021-01-02)
 
 **Note:** Version bump only for package @formatjs/ts-transformer

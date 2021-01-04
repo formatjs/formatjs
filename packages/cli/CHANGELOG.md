@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.14.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.18...@formatjs/cli@2.14.0) (2021-01-04)
+
+
+### Features
+
+* **@formatjs/cli:** support .vue SFC files ([24d6d1b](https://github.com/formatjs/formatjs/commit/24d6d1bb7a770d9298675d74a365b14147a2f229))
+
+
+
+
+
 ## [2.13.18](https://github.com/formatjs/formatjs/compare/@formatjs/cli@2.13.17...@formatjs/cli@2.13.18) (2021-01-02)
 
 **Note:** Version bump only for package @formatjs/cli
