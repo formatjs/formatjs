@@ -9,6 +9,7 @@
     "idInterpolationPattern": {"type": "string"},
     "removeDefaultMessage": {"type": "boolean"},
     "additionalComponentNames": {"type": "array", "items": {"type": "string"}},
+    "additionalFunctionNames": {"type": "array", "items": {"type": "string"}},
     "pragma": {"type": "string"},
     "extractFromFormatMessageCall": {"type": "boolean"},
     "extractSourceLocation": {"type": "boolean"},

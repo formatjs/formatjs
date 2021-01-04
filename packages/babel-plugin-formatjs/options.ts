@@ -11,6 +11,7 @@ export interface OptionsSchema {
   idInterpolationPattern?: string;
   removeDefaultMessage?: boolean;
   additionalComponentNames?: string[];
+  additionalFunctionNames?: string[];
   pragma?: string;
   extractFromFormatMessageCall?: boolean;
   extractSourceLocation?: boolean;

@@ -24,7 +24,7 @@ import {
   isTSTypeAssertion,
   TemplateLiteral,
 } from '@babel/types';
-import {NodePath, Scope} from '@babel/traverse';
+import {NodePath} from '@babel/traverse';
 import {validate} from 'schema-utils';
 import * as OPTIONS_SCHEMA from './options.schema.json';
 import {OptionsSchema} from './options';
@@ -281,47 +281,16 @@ function referencesImport(
   return importedNames.some(name => path.referencesImport(mod, name));
 }
 
-function isFormatMessageDestructuring(scope: Scope) {
-  const binding = scope.getBinding('formatMessage');
-  const {block} = scope;
-  const declNode = binding?.path.node;
-  // things like `const {formatMessage} = intl; formatMessage(...)`
-  if (t.isVariableDeclarator(declNode)) {
-    // things like `const {formatMessage} = useIntl(); formatMessage(...)`
-    if (t.isCallExpression(declNode.init)) {
-      if (t.isIdentifier(declNode.init.callee)) {
-        return declNode.init.callee.name === 'useIntl';
-      }
-    }
-    return (
-      t.isObjectPattern(declNode.id) &&
-      declNode.id.properties.find((value: any) => value.key.name === 'intl')
-    );
-  }
-
-  // things like const fn = ({ intl: { formatMessage }}) => { formatMessage(...) }
-  if (
-    t.isFunctionDeclaration(block) &&
-    block.params.length &&
-    t.isObjectPattern(block.params[0])
-  ) {
-    return block.params[0].properties.find(
-      (value: any) => value.key.name === 'intl'
-    );
-  }
-
-  return false;
-}
-
 function isFormatMessageCall(
   callee: NodePath<Expression | V8IntrinsicIdentifier>,
-  path: NodePath<any>
+  additionalFunctionNames: string[]
 ) {
-  if (
-    callee.isIdentifier() &&
-    callee.node.name === 'formatMessage' &&
-    isFormatMessageDestructuring(path.scope)
-  ) {
+  const fnNames = new Set([
+    'formatMessage',
+    '$formatMessage',
+    ...additionalFunctionNames,
+  ]);
+  if (callee.isIdentifier() && fnNames.has(callee.node.name)) {
     return true;
   }
 
@@ -593,6 +562,7 @@ export default declare((api: any, options: OptionsSchema) => {
           idInterpolationPattern,
           removeDefaultMessage,
           extractFromFormatMessageCall,
+          additionalFunctionNames = [],
           ast,
         } = opts;
         const callee = path.get('callee');
@@ -675,7 +645,10 @@ export default declare((api: any, options: OptionsSchema) => {
         }
 
         // Check that this is `intl.formatMessage` call
-        if (extractFromFormatMessageCall && isFormatMessageCall(callee, path)) {
+        if (
+          extractFromFormatMessageCall &&
+          isFormatMessageCall(callee, additionalFunctionNames)
+        ) {
           const messageDescriptor = path.get('arguments')[0];
           if (messageDescriptor.isObjectExpression()) {
             processMessageObject(messageDescriptor);

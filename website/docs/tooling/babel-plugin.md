@@ -89,6 +89,10 @@ Opt-in to compile `intl.formatMessage` call with the same restrictions, e.g: has
 
 Additional component names to extract messages from, e.g: `['FormattedFooBarMessage']`. **NOTE**: By default we check for the fact that `FormattedMessage` are imported from `moduleSourceName` to make sure variable alias works. This option does not do that so it's less safe.
 
+### **`additionalFunctionNames`**
+
+Additional function names to extract messages from, e.g: `['$formatMessage']`. Use this if you prefer to alias `formatMessage` to something shorter like `$t`.
+
 ### **`pragma`**
 
 parse specific additional custom pragma. This allows you to tag certain file with metadata such as `project`. For example with this file:
