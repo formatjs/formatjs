@@ -72,7 +72,7 @@ function IntegrationSection({className}) {
       <p>
         <FormattedMessage
           id="integration-desc"
-          defaultMessage="For most web projects, internationalization happens in the template or view layer, so we've built integrations with React."
+          defaultMessage="For most web projects, internationalization happens in the template or view layer, so we've built integrations with React & Vue."
         />
       </p>
     </div>
