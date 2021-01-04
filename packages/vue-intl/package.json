@@ -3,8 +3,9 @@
   "version": "0.3.1",
   "description": "formatjs intl binding for vue",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/formatjs/formatjs.git"
   },
   "keywords": [
     "vue",
