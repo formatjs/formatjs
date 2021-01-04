@@ -138,7 +138,7 @@ import {createApp} from 'vue'
 
 const app = createApp(App)
 app.use(VueIntl, {
-  locale: 'en',
+  locale: 'fr',
   defaultLocale: 'en',
   messages: {
     myMessage: "Aujourd'hui, c'est le {ts, date, ::yyyyMMdd}",
@@ -149,8 +149,12 @@ app.use(VueIntl, {
 ```vue
 <template>
   <p>
-    {{ $formatMessage( { id: 'myMessage', defaultMessage: 'Today is {ts, date,
-    ::yyyyMMdd}', }, { ts: Date.now(), } ) }}
+    {{
+      $formatMessage(
+        {id: 'myMessage', defaultMessage: 'Today is {ts, date, ::yyyyMMdd}'},
+        {ts: Date.now()}
+      )
+    }}
     <br />
     {{ $formatNumber(19, {style: 'currency', currency: 'EUR'}) }}
   </p>
