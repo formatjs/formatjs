@@ -63,27 +63,29 @@ export function PartitionDateTimeRangePattern(
   for (const fieldName of TABLE_2_FIELDS) {
     if (dateFieldsPracticallyEqual && !patternContainsLargerDateField) {
       if (fieldName === 'ampm') {
-        let v1 = tm1.hour;
-        let v2 = tm2.hour;
         let rp = rangePatterns.ampm;
-        if ((v1 > 11 && v2 < 11) || (v1 < 11 && v2 > 11)) {
-          dateFieldsPracticallyEqual = false;
-        }
         if (rangePattern !== undefined && rp === undefined) {
           patternContainsLargerDateField = true;
+        } else {
+          let v1 = tm1.hour;
+          let v2 = tm2.hour;
+          if ((v1 > 11 && v2 < 11) || (v1 < 11 && v2 > 11)) {
+            dateFieldsPracticallyEqual = false;
+          }
+          rangePattern = rp;
         }
-        rangePattern = rp;
       } else {
-        let v1 = tm1[fieldName];
-        let v2 = tm2[fieldName];
         let rp = rangePatterns[fieldName];
-        if (!SameValue(v1, v2)) {
-          dateFieldsPracticallyEqual = false;
-        }
         if (rangePattern !== undefined && rp === undefined) {
           patternContainsLargerDateField = true;
+        } else {
+          let v1 = tm1[fieldName];
+          let v2 = tm2[fieldName];
+          if (!SameValue(v1, v2)) {
+            dateFieldsPracticallyEqual = false;
+          }
+          rangePattern = rp;
         }
-        rangePattern = rp;
       }
     }
   }
@@ -102,6 +104,13 @@ export function PartitionDateTimeRangePattern(
   let result: IntlDateTimeFormatPart[] = [];
   if (rangePattern === undefined) {
     rangePattern = rangePatterns.default;
+    /** IMPL DETAILS */
+    // Now we have to replace {0} & {1} with actual pattern
+    for (const patternPart of rangePattern.patternParts) {
+      if (patternPart.pattern === '{0}' || patternPart.pattern === '{1}') {
+        patternPart.pattern = pattern;
+      }
+    }
   }
   for (const rangePatternPart of rangePattern.patternParts) {
     const {source, pattern} = rangePatternPart;

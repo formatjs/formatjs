@@ -373,3 +373,30 @@ test.skip('v8 test/intl/date-format/format_range_hour_cycle.js', function () {
   expect(df_24_ja_dt.formatRange(midnight, midnight)).toBe('2019/04/04 24:00');
   expect(df_24_ja_dt.formatRange(noon, noon)).toBe('2019/04/04 12:00');
 });
+
+test('default formatRange pattern (short), #2474', function () {
+  const dtf = new DateTimeFormat('en', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  });
+  let date1 = new Date(Date.UTC(2021, 0, 10)); // "Jan 10, 2021"
+  let date2 = new Date(Date.UTC(2021, 0, 20)); // "Jan 20, 2021"
+  expect(dtf.formatRange(date1, date2)).toBe(
+    'Jan 10, 2021, 12:00 AM – Jan 20, 2021, 12:00 AM'
+  );
+});
+
+// TODO: This is still off
+test.skip('default formatRange pattern (long), #2474', function () {
+  const dtf = new DateTimeFormat('en', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+  let date1 = new Date(Date.UTC(2021, 0, 10)); // "Jan 10, 2021"
+  let date2 = new Date(Date.UTC(2021, 0, 20)); // "Jan 20, 2021"
+  expect(dtf.formatRange(date1, date2)).toBe('January 10 – 20, 2021');
+});

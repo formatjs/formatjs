@@ -7,7 +7,6 @@ import * as enCA from './locale-data/en-CA.json';
 import * as zhHans from './locale-data/zh-Hans.json';
 import * as fa from './locale-data/fa.json';
 import allData from '../src/data/all-tz';
-import getInternalSlots from '../src/get_internal_slots';
 
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, enGB, enCA, zhHans, fa);
@@ -230,7 +229,6 @@ describe('Intl.DateTimeFormat', function () {
       formatMatcher: 'best fit',
       timeZone: 'Asia/Kuala_Lumpur',
     });
-    console.log(getInternalSlots(dtf));
     expect(dtf.format(date)).toBe('2020年2月01日下午06:10:10');
   });
 });
