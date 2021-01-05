@@ -45,7 +45,7 @@
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.1",
     "@types/babel__core": "^7.1.7",
-    "@types/emoji-regex": "^8.0.0",
+    "@types/emoji-regex": "9",
     "@types/enzyme": "^3.10.5",
     "@types/eslint": "^7.2.0",
     "@types/estree": "^0.0.45",
@@ -115,7 +115,7 @@
     "schema-utils": "^3.0.0",
     "serialize-javascript": "^5.0.0",
     "shallow-equal": "^1.2.1",
-    "terser": "^4.8.0",
+    "terser": "^5.5.1",
     "test262-harness": "^7.3.1",
     "ts-jest": "^26.4.0",
     "ts-node": "^9.0.0",
@@ -179,7 +179,7 @@
   },
   "resolutions": {
     "**/chokidar": "^3.4.2",
-    "terser": "4.8.0"
+    "terser": "5.5.1"
   },
   "author": "Seth Bertalotto <sbertal@verizonmedia.com>"
 }
