@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@3.2.2...@formatjs/intl-datetimeformat@3.2.3) (2021-01-05)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix default range pattern fallback, fix [#2474](https://github.com/formatjs/formatjs/issues/2474) ([2a618a1](https://github.com/formatjs/formatjs/commit/2a618a1ebf853a377c43da131573e5b78e35bd99))
+
+
+
+
+
 ## [3.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@3.2.1...@formatjs/intl-datetimeformat@3.2.2) (2021-01-01)
 
 
