@@ -51,10 +51,9 @@ The default message descriptors for the app's default language will be processed
 {
   "plugins": [
     [
-      "react-intl",
+      "formatjs",
       {
         "idInterpolationPattern": "[sha512:contenthash:base64:6]",
-        "extractFromFormatMessageCall": true,
         "ast": true
       }
     ]
@@ -63,10 +62,6 @@ The default message descriptors for the app's default language will be processed
 ```
 
 ## Options
-
-### **`moduleSourceName`**
-
-The ES6 module source name of the React Intl package. Defaults to: `"react-intl"`, but can be changed to another name/path to React Intl.
 
 ### **`overrideIdFn`**
 
@@ -79,10 +74,6 @@ If certain message descriptors don't have id, this `pattern` will be used to aut
 ### **`removeDefaultMessage`**
 
 Remove `defaultMessage` field in generated js after extraction.
-
-### **`extractFromFormatMessageCall`**
-
-Opt-in to compile `intl.formatMessage` call with the same restrictions, e.g: has to be called with object literal such as `intl.formatMessage({ id: 'foo', defaultMessage: 'bar', description: 'baz'})`
 
 ### **`additionalComponentNames`**
 
@@ -114,6 +105,6 @@ The extract message descriptors are available via the `metadata` property on the
 
 ```javascript
 require('@babel/core').transform('code', {
-  plugins: ['react-intl'],
-}) // => { code, map, ast, metadata['react-intl'].messages, metadata['react-intl'].meta };
+  plugins: ['formatjs'],
+}) // => { code, map, ast, metadata['formatjs'].messages, metadata['formatjs'].meta };
 ```
