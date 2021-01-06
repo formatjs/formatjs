@@ -7,6 +7,7 @@ import {
   FormatXMLElementFn,
   PrimitiveType,
   Formatters as IntlMessageFormatFormatters,
+  Options,
 } from 'intl-messageformat';
 import {MissingTranslationError, MessageFormatError} from './error';
 import {TYPE, MessageFormatElement} from 'intl-messageformat-parser';
@@ -75,7 +76,8 @@ export function formatMessage(
   },
   state: Formatters,
   messageDescriptor?: MessageDescriptor,
-  values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>
+  values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
+  opts?: Options
 ): string;
 export function formatMessage<T>(
   {
@@ -99,7 +101,8 @@ export function formatMessage<T>(
   },
   state: IntlMessageFormatFormatters & Pick<Formatters, 'getMessageFormat'>,
   messageDescriptor: MessageDescriptor = {id: ''},
-  values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>
+  values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T>>,
+  opts?: Options
 ): Array<T | string> | string | T {
   const {id: msgId, defaultMessage} = messageDescriptor;
 
@@ -157,7 +160,8 @@ export function formatMessage<T>(
         const formatter = state.getMessageFormat(
           defaultMessage,
           defaultLocale,
-          defaultFormats
+          defaultFormats,
+          opts
         );
 
         return formatter.format(values);

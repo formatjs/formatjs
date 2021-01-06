@@ -466,6 +466,21 @@ describe('format API', () => {
           (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
         ).toMatchSnapshot();
       });
+
+      it('allow passing Intl.MessageFormat opts in', function () {
+        const {locale, messages, formats} = config;
+        const opts = {
+          ignoreTag: true,
+        };
+        const mf = new IntlMessageFormat(
+          messages!.richText,
+          locale,
+          formats,
+          opts
+        );
+
+        expect(formatMessage({id: 'richText'}, opts)).toBe(mf.format());
+      });
     });
   });
 });

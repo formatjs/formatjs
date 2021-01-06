@@ -4,6 +4,7 @@ import {
   PrimitiveType,
   FormatXMLElementFn,
   FormatError,
+  Options as IntlMessageFormatOptions,
 } from 'intl-messageformat';
 import IntlRelativeTimeFormat from '@formatjs/intl-relativetimeformat';
 import {DateTimeFormat} from '@formatjs/ecma402-abstract';
@@ -127,11 +128,13 @@ export interface IntlFormatters<T = any, R = T> {
   ): ReturnType<Intl.PluralRules['select']>;
   formatMessage(
     descriptor: MessageDescriptor,
-    values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>
+    values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
+    opts?: IntlMessageFormatOptions
   ): string;
   formatMessage(
     descriptor: MessageDescriptor,
-    values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T, R>>
+    values?: Record<string, PrimitiveType | T | FormatXMLElementFn<T, R>>,
+    opts?: IntlMessageFormatOptions
   ): R;
   formatList(values: Array<string>, opts?: FormatListOptions): string;
   formatList(
