@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.4.16...@formatjs/intl@1.5.0) (2021-01-06)
+
+
+### Features
+
+* **@formatjs/intl:** allow options to be pass into intl.formatMessage (e.g ignoreTag) ([a51bd76](https://github.com/formatjs/formatjs/commit/a51bd7636d53fb9d7165245765169ecc6b445af7))
+
+
+
+
+
 ## [1.4.16](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.4.15...@formatjs/intl@1.4.16) (2021-01-05)
 
 **Note:** Version bump only for package @formatjs/intl
