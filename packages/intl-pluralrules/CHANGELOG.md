@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@4.0.4...@formatjs/intl-pluralrules@4.0.5) (2021-01-07)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** fix plural compiler patch ([f3a7188](https://github.com/formatjs/formatjs/commit/f3a71887529467650749da414f6cb1e039557ddd))
+
+
+
+
+
 ## [4.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@4.0.3...@formatjs/intl-pluralrules@4.0.4) (2021-01-07)
 
 
