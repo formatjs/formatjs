@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@4.0.3...@formatjs/intl-pluralrules@4.0.4) (2021-01-07)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-pluralrules:** handle compact operand c/e for cldrv38, fix [#2482](https://github.com/formatjs/formatjs/issues/2482) ([f1fbfd5](https://github.com/formatjs/formatjs/commit/f1fbfd5004053f2c092ec82f0c3b2abbcbfde117))
+
+
+
+
+
 ## [4.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@4.0.2...@formatjs/intl-pluralrules@4.0.3) (2021-01-05)
 
 **Note:** Version bump only for package @formatjs/intl-pluralrules
