@@ -1,5 +1,5 @@
 diff --git a/node_modules/make-plural-compiler/lib/parser.js b/node_modules/make-plural-compiler/lib/parser.js
-index 63be531..c313363 100644
+index 63be531..b4d4bf6 100644
 --- a/node_modules/make-plural-compiler/lib/parser.js
 +++ b/node_modules/make-plural-compiler/lib/parser.js
 @@ -6,6 +6,10 @@ Object.defineProperty(exports, "__esModule", {
@@ -37,7 +37,7 @@ index 63be531..c313363 100644
 +      vars.unshift("s = String(n).split('.')");
 +    }
 +
-+    return 'const ' + vars.join(', ');
++    return 'var ' + vars.join(', ');
    }
  
  }
