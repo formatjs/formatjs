@@ -182,5 +182,8 @@
     "**/chokidar": "^3.4.2",
     "terser": "4.8.0"
   },
-  "author": "Seth Bertalotto <sbertal@verizonmedia.com>"
+  "author": "Seth Bertalotto <sbertal@verizonmedia.com>",
+  "dependencies": {
+    "chokidar": "^3.4.2"
+  }
 }
