@@ -15,13 +15,9 @@ const languages = Object.keys(plurals.supplemental['plurals-type-cardinal']);
 
 function generateLocaleData(locale: string): PluralRulesLocaleData | undefined {
   let compiler, fn;
-  try {
-    compiler = new Compiler(locale, {cardinals: true, ordinals: true});
-    fn = compiler.compile();
-  } catch (e) {
-    // Ignore
-    return;
-  }
+  compiler = new Compiler(locale, {cardinals: true, ordinals: true});
+  fn = compiler.compile();
+
   return {
     data: {
       categories: compiler.categories,

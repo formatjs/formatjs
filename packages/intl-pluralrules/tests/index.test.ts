@@ -3,7 +3,8 @@ import '@formatjs/intl-locale/polyfill';
 import {PluralRules} from '../';
 // @ts-ignore
 import en from './locale-data/en';
-PluralRules.__addLocaleData(en);
+import fr from './locale-data/fr';
+PluralRules.__addLocaleData(en, fr);
 
 describe('PluralRules', function () {
   it('default locale', function () {
@@ -30,6 +31,9 @@ describe('PluralRules', function () {
   it('should deal with en-US', function () {
     expect(new PluralRules('en-US').select(0)).toBe('other');
     expect(new PluralRules('en-US').select(1)).toBe('one');
+  });
+  it('should not crash for fr', function () {
+    expect(new PluralRules('fr').select(1000000)).toBe('many');
   });
   it('should work for ordinal', function () {
     expect(new PluralRules('en', {type: 'ordinal'}).select(0)).toBe('other');

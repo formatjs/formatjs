@@ -17,7 +17,7 @@
     "release:next": "lerna version prerelease --yes && lerna exec --no-bail -- bazel run :publish --tag next",
     "release": "lerna version --yes && lerna exec --no-bail -- bazel run :publish",
     "test": "yarn bazel:lint --lint=warn && bazel test //...",
-    "postinstall": "husky install"
+    "postinstall": "husky install && patch-package"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
@@ -106,6 +106,7 @@
     "make-plural-compiler": "^5.1.0",
     "minimist": "^1.2.5",
     "parcel": "^1.12.4",
+    "patch-package": "^6.2.2",
     "pegjs": "^0.10.0",
     "prettier": "^2.0.5",
     "react": "^16.3.0 || 17",

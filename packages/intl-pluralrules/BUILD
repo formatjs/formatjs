@@ -15,6 +15,7 @@ PACKAGE_NAME = "intl-pluralrules"
 TEST_LOCALES = [
     "en",
     "zh",
+    "fr",
 ]
 
 TEST_LOCALE_DATA = ["tests/locale-data/%s.ts" % locale for locale in TEST_LOCALES]
