@@ -20,14 +20,14 @@ values={[
 <TabItem value="npm">
 
 ```sh
-npm i -S @formatjs/vue-intl
+npm i -S vue-intl
 ```
 
 </TabItem>
 <TabItem value="yarn">
 
 ```sh
-yarn add -S @formatjs/vue-intl
+yarn add -S vue-intl
 ```
 
 </TabItem>
@@ -38,7 +38,7 @@ yarn add -S @formatjs/vue-intl
 Initialize `VueIntl` plugin with the same `IntlConfig` documented in [@formatjs/intl](./intl.md#IntlShape).
 
 ```tsx
-import VueIntl from '@formatjs/vue-intl'
+import VueIntl from 'vue-intl'
 
 const app = createApp(App)
 app.use(VueIntl, {
@@ -62,7 +62,7 @@ We also support Vue's [Composition API](https://composition-api.vuejs.org/) with
 
 ```ts
 import {createIntl} from '@formatjs/intl'
-import {provideIntl, useIntl} from '@formatjs/vue-intl'
+import {provideIntl, useIntl} from 'vue-intl'
 
 const Ancestor = {
   setup() {

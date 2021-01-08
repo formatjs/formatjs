@@ -134,7 +134,7 @@ Output
 <TabItem value="vue">
 
 ```tsx
-import VueIntl from '@formatjs/vue-intl'
+import VueIntl from 'vue-intl'
 import {createApp} from 'vue'
 
 const app = createApp(App)
