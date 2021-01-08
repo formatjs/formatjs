@@ -19,14 +19,14 @@ values={[
 <TabItem value="npm">
 
 ```sh
-npm i -S @formatjs/vue-intl
+npm i -S vue-intl
 ```
 
 </TabItem>
 <TabItem value="yarn">
 
 ```sh
-yarn add -S @formatjs/vue-intl
+yarn add -S vue-intl
 ```
 
 </TabItem>
@@ -37,7 +37,7 @@ yarn add -S @formatjs/vue-intl
 Initialize `VueIntl` plugin with the same `IntlConfig` documented in [@formatjs/intl](./intl.md#IntlShape).
 
 ```tsx
-import VueIntl from '@formatjs/vue-intl'
+import VueIntl from 'vue-intl'
 
 const app = createApp(App)
 app.use(VueIntl, {
@@ -61,7 +61,7 @@ We also support Vue's [Composition API](https://composition-api.vuejs.org/) with
 
 ```ts
 import {createIntl} from '@formatjs/intl'
-import {provideIntl, useIntl} from '@formatjs/vue-intl'
+import {provideIntl, useIntl} from 'vue-intl'
 
 const Ancestor = {
   setup() {
@@ -120,10 +120,12 @@ See [@formatjs/intl](./intl.md) for the full list of API signatures.
 
 ## Tooling
 
-We're actively working on adding `vue` support for formatjs toolchain. Currently the following tools are supported:
+`formatjs` toolchain fully supports `vue`:
 
 - [eslint-plugin-formatjs](./tooling/linter.md): This fully supports `.vue` and JS/TS.
 - [@formatjs/cli](./tooling/cli.md): We now support extracting messages from `.vue` SFC files.
+- [babel-plugin-formatjs](./tooling/babel-plugin.md): Compile messages during bundling for `babel`.
+- [@formatjs/ts-transformer](./tooling/ts-transformer.md): Compile messages during bundling for `TypeScript`.
 
 ## Caveats
 

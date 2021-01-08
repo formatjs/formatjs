@@ -139,7 +139,7 @@ function MyFeature(props: Props) {
 <TabItem value="vue">
 
 ```ts
-import {useIntl} from '@formatjs/vue-intl'
+import {useIntl} from 'vue-intl'
 
 const MyFeature = {
   setup() {
@@ -161,7 +161,7 @@ or passing down via `provideIntl`
 
 ```ts
 import {createIntl} from '@formatjs/intl'
-import {provideIntl, useIntl} from '@formatjs/vue-intl'
+import {provideIntl, useIntl} from 'vue-intl'
 
 const Ancestor = {
   setup() {
