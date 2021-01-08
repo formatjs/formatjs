@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@3.2.3...@formatjs/intl-datetimeformat@3.2.4) (2021-01-08)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** fix should-polyfill check when DTF has not loaded any locale data ([be8d901](https://github.com/formatjs/formatjs/commit/be8d9016e852fb802d9485571d93225f0133935a)), closes [#2489](https://github.com/formatjs/formatjs/issues/2489)
+
+
+
+
+
 ## [3.2.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@3.2.2...@formatjs/intl-datetimeformat@3.2.3) (2021-01-05)
 
 
