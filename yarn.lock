@@ -11247,9 +11247,9 @@ json-schema-ref-parser@^9.0.6:
     "@apidevtools/json-schema-ref-parser" "9.0.6"
 
 json-schema-to-typescript@^10.0.0:
-  version "10.1.1"
-  resolved "https://registry.yarnpkg.com/json-schema-to-typescript/-/json-schema-to-typescript-10.1.1.tgz#85ddde0f2ed51434f9debb63edc0134ddaecd6cf"
-  integrity sha512-wKrnekI8G0HLi+LNiXsjeXhjlGCOrKbUJUhBIXFjULkJATuOsbWgH64y0hUGamYioMG7i4W873khUrKN+0ChWg==
+  version "10.1.2"
+  resolved "https://registry.yarnpkg.com/json-schema-to-typescript/-/json-schema-to-typescript-10.1.2.tgz#696e0dd5ab76e59b6700f6ac424d4b1d91526b52"
+  integrity sha512-BKn+custnB0vUCWkMB3xXsc7efoHtiPeEpJme9Lw5dGesl9VnKU6U0yasUn4kf+gMypV3COMsuNzsQtPwvfQsA==
   dependencies:
     "@types/json-schema" "^7.0.6"
     "@types/prettier" "^2.1.5"
