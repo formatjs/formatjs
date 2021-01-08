@@ -121,10 +121,12 @@ See [@formatjs/intl](./intl.md) for the full list of API signatures.
 
 ## Tooling
 
-We're actively working on adding `vue` support for formatjs toolchain. Currently the following tools are supported:
+`formatjs` toolchain fully supports `vue`:
 
 - [eslint-plugin-formatjs](./tooling/linter.md): This fully supports `.vue` and JS/TS.
 - [@formatjs/cli](./tooling/cli.md): We now support extracting messages from `.vue` SFC files.
+- [babel-plugin-formatjs](./tooling/babel-plugin.md): Compile messages during bundling for `babel`.
+- [@formatjs/ts-transformer](./tooling/ts-transformer.md): Compile messages during bundling for `TypeScript`.
 
 ## Caveats
 
