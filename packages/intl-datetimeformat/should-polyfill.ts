@@ -1,19 +1,27 @@
 function supportsDateStyle() {
-  return !!(new Intl.DateTimeFormat(undefined, {
-    dateStyle: 'short',
-  } as any).resolvedOptions() as any).dateStyle;
+  try {
+    return !!(new Intl.DateTimeFormat(undefined, {
+      dateStyle: 'short',
+    } as any).resolvedOptions() as any).dateStyle;
+  } catch (e) {
+    return false;
+  }
 }
 
 /**
  * https://bugs.chromium.org/p/chromium/issues/detail?id=865351
  */
 function hasChromeLt71Bug() {
-  return (
-    new Intl.DateTimeFormat('en', {
-      hourCycle: 'h11',
-      hour: 'numeric',
-    } as any).formatToParts(0)[2].type !== 'dayPeriod'
-  );
+  try {
+    return (
+      new Intl.DateTimeFormat('en', {
+        hourCycle: 'h11',
+        hour: 'numeric',
+      } as any).formatToParts(0)[2].type !== 'dayPeriod'
+    );
+  } catch (e) {
+    return false;
+  }
 }
 
 /**
