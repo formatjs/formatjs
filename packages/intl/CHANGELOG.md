@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.5.1...@formatjs/intl@1.6.0) (2021-01-12)
+
+
+### Features
+
+* **@formatjs/intl:** add private method __addMessages to add extra messages ([82471d1](https://github.com/formatjs/formatjs/commit/82471d1aaeeecbb96cf6186c9ae66d25a884473d))
+
+
+
+
+
 ## [1.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.5.0...@formatjs/intl@1.5.1) (2021-01-08)
 
 **Note:** Version bump only for package @formatjs/intl
