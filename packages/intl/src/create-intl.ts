@@ -1,4 +1,4 @@
-import {OptionalIntlConfig, IntlCache, IntlShape} from './types';
+import {OptionalIntlConfig, IntlCache, IntlShape, IntlConfig} from './types';
 import {createFormatters, DEFAULT_INTL_CONFIG} from './utils';
 import {InvalidConfigError, MissingDataError} from './error';
 import {formatNumber, formatNumberToParts} from './number';
@@ -14,6 +14,7 @@ import {formatPlural} from './plural';
 import {formatMessage} from './message';
 import {formatList} from './list';
 import {formatDisplayName} from './displayName';
+import {MessageFormatElement} from 'intl-messageformat-parser';
 
 export interface CreateIntlFn<
   T = string,
@@ -21,6 +22,27 @@ export interface CreateIntlFn<
   S extends IntlShape<T> = IntlShape<T>
 > {
   (config: C, cache?: IntlCache): S;
+}
+
+function messagesContainAst(
+  messages: Record<string, string> | Record<string, MessageFormatElement[]>
+): messages is Record<string, MessageFormatElement[]> {
+  const firstMessage = messages
+    ? messages[Object.keys(messages)[0]]
+    : undefined;
+
+  return typeof firstMessage === 'object' && !!firstMessage;
+}
+
+function verifyConfigMessages<T = string>(config: OptionalIntlConfig<T>) {
+  if (
+    config.defaultRichTextElements &&
+    !messagesContainAst(config.messages || {})
+  ) {
+    console.warn(`[@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
+Please consider using "@formatjs/cli" to pre-compile your messages for performance.
+For more details see https://formatjs.io/docs/getting-started/message-distribution`);
+  }
 }
 
 /**
@@ -31,7 +53,13 @@ export interface CreateIntlFn<
 export function createIntl<T = string>(
   config: OptionalIntlConfig<T>,
   cache?: IntlCache
-): IntlShape<T> {
+): IntlShape<T> & {
+  /**
+   * This is not really public, primarily for ember-intl
+   * @param messages Additional messages
+   */
+  __addMessages(messages: IntlConfig<T>['messages']): void;
+} {
   const formatters = createFormatters(cache);
   const resolvedConfig = {
     ...DEFAULT_INTL_CONFIG,
@@ -70,18 +98,7 @@ export function createIntl<T = string>(
     );
   }
 
-  const firstMessage = config.messages
-    ? config.messages[Object.keys(config.messages)[0]]
-    : undefined;
-  if (
-    config.defaultRichTextElements &&
-    firstMessage &&
-    typeof firstMessage === 'string'
-  ) {
-    console.warn(`[@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
-Please consider using "@formatjs/cli" to pre-compile your messages for performance.
-For more details see https://formatjs.io/docs/getting-started/message-distribution`);
-  }
+  verifyConfigMessages(resolvedConfig);
   return {
     ...resolvedConfig,
     formatters,
@@ -137,5 +154,30 @@ For more details see https://formatjs.io/docs/getting-started/message-distributi
       resolvedConfig,
       formatters.getDisplayNames
     ),
+    __addMessages(
+      messages: Record<string, string> | Record<string, MessageFormatElement[]>
+    ) {
+      const existingMessagesContainAst = messagesContainAst(
+        resolvedConfig.messages
+      );
+      const mergingMessagesContainAst = messagesContainAst(messages);
+      if (
+        config.onError &&
+        ((existingMessagesContainAst && !mergingMessagesContainAst) ||
+          (!existingMessagesContainAst && mergingMessagesContainAst))
+      ) {
+        config.onError(
+          new InvalidConfigError(
+            `Cannot mix AST & non-AST messages for locale ${resolvedConfig.locale}`
+          )
+        );
+      }
+
+      // @ts-expect-error this is fine
+      resolvedConfig.messages = {
+        ...resolvedConfig.messages,
+        ...messages,
+      };
+    },
   };
 }
