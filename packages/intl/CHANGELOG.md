@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.6.0...@formatjs/intl@1.6.1) (2021-01-13)
+
+
+### Bug Fixes
+
+* **@formatjs/intl:** pass opts to getMessageFormat as well ([7f4fa56](https://github.com/formatjs/formatjs/commit/7f4fa564c22ceae5b735e01a5d78b72106128850))
+
+
+
+
+
 # [1.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.5.1...@formatjs/intl@1.6.0) (2021-01-12)
 
 
