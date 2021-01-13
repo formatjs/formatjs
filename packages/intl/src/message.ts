@@ -184,6 +184,7 @@ export function formatMessage<T>(
   try {
     const formatter = state.getMessageFormat(message, locale, formats, {
       formatters: state,
+      ...(opts || {}),
     });
 
     return formatter.format<T>(values);
@@ -205,7 +206,8 @@ export function formatMessage<T>(
       const formatter = state.getMessageFormat(
         defaultMessage,
         defaultLocale,
-        defaultFormats
+        defaultFormats,
+        opts
       );
 
       return formatter.format(values);
