@@ -35,7 +35,6 @@ SRC_DEPS = [
     "@npm//emoji-regex",
     "@npm//@types/emoji-regex",
     "@npm//@types/eslint",
-    "@npm//@types/estree",
     "@npm//@typescript-eslint/typescript-estree",
     "//packages/intl-messageformat-parser:dist",
     "//packages/ts-transformer:dist",
