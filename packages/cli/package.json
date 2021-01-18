@@ -39,7 +39,7 @@
     "@vue/compiler-core": "^3.0.0",
     "@vue/compiler-sfc": "^3.0.5",
     "chalk": "^4.0.0",
-    "commander": "^6.1.0",
+    "commander": "7",
     "fast-glob": "^3.2.4",
     "fs-extra": "^9.0.0",
     "intl-messageformat-parser": "6.1.3",
