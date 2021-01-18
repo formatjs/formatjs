@@ -355,7 +355,7 @@ This is especially beneficial in SSR where you can reuse the same `intl` object 
 
 ## Message Format Syntax Changes
 
-We've rewritten our parser to be more faithful to [ICU Message Format](https://unicode-org.github.io/icu-docs/apidoc/released/icu4j/com/ibm/icu/text/MessageFormat.html), in order to potentially support skeleton. So far the backwards-incompatible changes are:
+We've rewritten our parser to be more faithful to [ICU Message Format](https://unicode-org.github.io/icu/userguide/format_parse/messages/), in order to potentially support skeleton. So far the backwards-incompatible changes are:
 
 ### Escape character has been changed to apostrophe (`'`).
 
