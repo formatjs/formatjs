@@ -125,7 +125,7 @@
     "vue": "3",
     "vue-eslint-parser": "^7.3.0",
     "vue-loader": "16",
-    "webpack": "4"
+    "webpack": "5"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
