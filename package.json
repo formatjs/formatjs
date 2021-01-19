@@ -93,7 +93,7 @@
     "jest": "26",
     "json-schema-to-typescript": "^10.0.0",
     "json-stable-stringify": "^1.0.1",
-    "karma": "^5.0.2",
+    "karma": "^6.0.0",
     "karma-chrome-launcher": "^3.1.0",
     "karma-jasmine": "^4.0.0",
     "karma-jasmine-matchers": "^4.0.2",
