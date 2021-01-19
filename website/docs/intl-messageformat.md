@@ -216,7 +216,7 @@ new IntlMessageFormat(
 ).format({price: 100})
 ```
 
-A full set of options and syntax can be found [here](https://github.com/unicode-org/icu/blob/master/docs/userguide/format_parse/numbers/skeletons.md)
+A full set of options and syntax can be found [here](https://unicode-org.github.io/icu/userguide/format_parse/numbers/skeletons.html)
 
 #### Date/Time Skeleton
 

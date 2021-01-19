@@ -58,7 +58,7 @@ Sometimes embedding how the number will be formatted provides great context to t
 The price of this bagel is {num, number, ::sign-always compact-short currency/GBP}
 ```
 
-You can read more about this [here](https://github.com/unicode-org/icu/blob/master/docs/userguide/format_parse/numbers/skeletons.md).
+You can read more about this [here](https://unicode-org.github.io/icu/userguide/format_parse/numbers/skeletons.html).
 
 ### `date` Type
 
@@ -92,7 +92,7 @@ Internally it uses the `Intl.DateTimeFormat` API. You can define custom values f
 
 ### Supported DateTime Skeleton
 
-Similar to `number` type, we also support ICU DateTime skeleton. ICU provides a [wide array of pattern](https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table) to customize date time format. However, not all of them are available via ECMA402's Intl API. Therefore, we only support the following patterns
+Similar to `number` type, we also support ICU DateTime skeleton. ICU provides a [wide array of pattern](https://unicode-org.github.io/icu/userguide/format_parse/datetime/#date-field-symbol-table) to customize date time format. However, not all of them are available via ECMA402's Intl API. Therefore, we only support the following patterns
 
 | Symbol | Meaning                       | Notes                     |
 | ------ | ----------------------------- | ------------------------- |
