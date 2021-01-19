@@ -174,7 +174,7 @@ karma_test(
         "$(rootpath //:karma.conf.js)",
         "--browsers",
         "ChromeHeadless",
-    ] + ["$$(rlocation $(locations %s))" % f for f in KARMA_TESTS],
+    ],
 )
 
 karma_test(
@@ -197,7 +197,7 @@ karma_test(
         "$(rootpath //:karma.conf.js)",
         "--browsers",
         "sl_edge,sl_chrome,sl_firefox,sl_ie_11,sl_safari",
-    ] + ["$$(rlocation $(locations %s))" % f for f in KARMA_TESTS],
+    ],
 )
 
 multirun(

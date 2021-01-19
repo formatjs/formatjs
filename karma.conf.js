@@ -1,6 +1,3 @@
-// Look at //:BUILD to see why we're slicing 6
-const FILES = process.argv.slice(6);
-
 module.exports = function (config) {
   // Browsers to run on Sauce Labs
   // Check out https://saucelabs.com/platforms for all browser/OS combos
@@ -35,7 +32,7 @@ module.exports = function (config) {
   config.set({
     basePath: '',
     frameworks: ['jasmine', 'jasmine-matchers'],
-    files: FILES,
+    files: ['**/bundled-karma-tests-*.test.bundled.js'],
     reporters: ['progress', 'saucelabs'],
     colors: true,
     concurrency: 5,
