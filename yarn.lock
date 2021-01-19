@@ -3433,9 +3433,9 @@
   integrity sha512-fZQQafSREFyuZcdWFAExYjBiCL7AUCdgsk80iO0q4yihYYdcIiH28CcuPTGFgLOCC8RlW49GSQxdHwZP+I7CNg==
 
 "@types/node@*", "@types/node@14", "@types/node@>= 8", "@types/node@^14.14.10":
-  version "14.14.21"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.21.tgz#d934aacc22424fe9622ebf6857370c052eae464e"
-  integrity sha512-cHYfKsnwllYhjOzuC5q1VpguABBeecUp24yFluHpn/BQaVxB1CuQ1FSRZCzrPxrkIfWISXV2LbeoBthLWg0+0A==
+  version "14.14.22"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.22.tgz#0d29f382472c4ccf3bd96ff0ce47daf5b7b84b18"
+  integrity sha512-g+f/qj/cNcqKkc3tFqlXOYjrmZA+jNBiDzbP3kH+B+otKFqAdPgVTGP1IeKRdMml/aE69as5S4FqtxAbl+LaMw==
 
 "@types/node@^10.1.0":
   version "10.17.51"
@@ -11461,10 +11461,10 @@ karma-sauce-launcher@4.3.5:
     saucelabs "^4.6.3"
     webdriverio "^6.7.0"
 
-karma@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/karma/-/karma-6.0.0.tgz#7333193406e23d2b8071025c89b5e8d8ec000d48"
-  integrity sha512-Tc9VlrmAlOUjsi+5tyNlo18TWiOps3wo4HJYqfZImyTrek2gUASmW6q+bEIE1U5w9f+sQ97P5PbbUCp3uVNqrQ==
+karma@^6.0.2:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/karma/-/karma-6.0.2.tgz#4bf52f7586fdcc51122e206431fd5510795cacfa"
+  integrity sha512-GBm8vPkQvjJL1ye//iH6yk9ROHOW+1TaFzRvbc6TbbCOFszbEG66dyDMoFjMMTAHy0ERNqRrMHap/LEHWeijNA==
   dependencies:
     body-parser "^1.19.0"
     braces "^3.0.2"
