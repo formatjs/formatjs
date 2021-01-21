@@ -9,6 +9,7 @@ export interface SmartlingDirectives {
     }
   ];
   variants_enabled: boolean;
+  string_format: string;
   [k: string]: any;
 }
 
@@ -33,6 +34,7 @@ export const format: FormatFn<SmartlingJson> = msgs => {
         },
       ],
       variants_enabled: true,
+      string_format: 'icu',
     },
   } as any;
   for (const [id, msg] of Object.entries(msgs)) {
