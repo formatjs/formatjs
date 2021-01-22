@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@3.0.1...@formatjs/cli@3.0.2) (2021-01-22)
+
+
+### Bug Fixes
+
+* **@formatjs/cli:** add string_format:icu config to smartling formatter ([#2528](https://github.com/formatjs/formatjs/issues/2528)) ([eec1c6f](https://github.com/formatjs/formatjs/commit/eec1c6faa406fc28257976f1ef2c10b75e6b4d19)), closes [#2526](https://github.com/formatjs/formatjs/issues/2526)
+
+
+
+
+
 ## [3.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@3.0.0...@formatjs/cli@3.0.1) (2021-01-05)
 
 **Note:** Version bump only for package @formatjs/cli
