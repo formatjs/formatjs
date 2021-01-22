@@ -580,6 +580,7 @@ Object {
   "stderr": "",
   "stdout": "{
   \\"smartling\\": {
+    \\"string_format\\": \\"icu\\",
     \\"translate_paths\\": [
       {
         \\"instruction\\": \\"*/description\\",
