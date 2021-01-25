@@ -1,14 +1,14 @@
 module.exports = [
   [
-    "use-babel-config",
+    'use-babel-config',
     {
-      presets: ["react-app"],
+      presets: ['react-app'],
       plugins: [
-        "react-require",
+        'react-require',
         [
-          "babel-plugin-formatjs",
+          'babel-plugin-formatjs',
           {
-            idInterpolationPattern: "[sha512:contenthash:base64:6]",
+            idInterpolationPattern: '[sha512:contenthash:base64:6]',
             ast: true,
           },
         ],
@@ -16,12 +16,12 @@ module.exports = [
     },
   ],
   [
-    "use-eslint-config",
+    'use-eslint-config',
     {
-      extends: ["react-app"],
-      plugins: ["eslint-plugin-formatjs"],
+      extends: ['react-app'],
+      plugins: ['eslint-plugin-formatjs'],
       rules: {
-        "formatjs/enforce-description": "error",
+        'formatjs/enforce-description': 'error',
       },
     },
   ],
