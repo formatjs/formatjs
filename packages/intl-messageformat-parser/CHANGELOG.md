@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.2.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.1.3...intl-messageformat-parser@6.2.0) (2021-01-25)
+
+
+### Features
+
+* **intl-messageformat-parser:** support integer-width (full & concise form), fix [#2525](https://github.com/formatjs/formatjs/issues/2525) ([01e4715](https://github.com/formatjs/formatjs/commit/01e47158f949a52f947f45e500dc694e209d7b72))
+
+
+
+
+
 ## [6.1.3](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.1.2...intl-messageformat-parser@6.1.3) (2021-01-05)
 
 **Note:** Version bump only for package intl-messageformat-parser
