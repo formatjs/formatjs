@@ -42,6 +42,8 @@ test.each([
   'sign-accounting-always',
   'sign-except-zero',
   'sign-accounting-except-zero',
+  '000',
+  'integer-width/*000',
 ])('[parseNumberSkeleton] case: %p', skeleton => {
   const ast = pegParse(`{0, number, ::${skeleton}}`);
   const el = ast[0];

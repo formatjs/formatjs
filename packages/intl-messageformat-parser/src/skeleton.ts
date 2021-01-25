@@ -151,6 +151,8 @@ function icuUnitToEcma(unit: string): ExtendedNumberFormatOptions['unit'] {
 
 const FRACTION_PRECISION_REGEX = /^\.(?:(0+)(\*)?|(#+)|(0+)(#+))$/g;
 const SIGNIFICANT_PRECISION_REGEX = /^(@+)?(\+|#+)?$/g;
+const INTEGER_WIDTH_REGEX = /(\*)(0+)|(#+)(0+)|(0+)/g;
+const CONCISE_INTEGER_WIDTH_REGEX = /^(0+)$/;
 
 function parseSignificantPrecision(str: string): ExtendedNumberFormatOptions {
   const result: ExtendedNumberFormatOptions = {};
@@ -303,11 +305,48 @@ export function parseNumberSkeleton(
       case 'scale':
         result.scale = parseFloat(token.options[0]);
         continue;
+      // https://unicode-org.github.io/icu/userguide/format_parse/numbers/skeletons.html#integer-width
+      case 'integer-width':
+        if (token.options.length > 1) {
+          throw new RangeError(
+            'integer-width stems only accept a single optional option'
+          );
+        }
+        token.options[0].replace(
+          INTEGER_WIDTH_REGEX,
+          function (
+            _: string,
+            g1: string,
+            g2: string,
+            g3: string,
+            g4: string,
+            g5: string
+          ) {
+            if (g1) {
+              result.minimumIntegerDigits = g2.length;
+            } else if (g3 && g4) {
+              throw new Error(
+                'We currently do not support maximum integer digits'
+              );
+            } else if (g5) {
+              throw new Error(
+                'We currently do not support exact integer digits'
+              );
+            }
+            return '';
+          }
+        );
+        continue;
     }
-    // Precision
-    // https://github.com/unicode-org/icu/blob/master/docs/userguide/format_parse/numbers/skeletons.md#fraction-precision
-    // precision-integer case
+    // https://unicode-org.github.io/icu/userguide/format_parse/numbers/skeletons.html#integer-width
+    if (CONCISE_INTEGER_WIDTH_REGEX.test(token.stem)) {
+      result.minimumIntegerDigits = token.stem.length;
+      continue;
+    }
     if (FRACTION_PRECISION_REGEX.test(token.stem)) {
+      // Precision
+      // https://unicode-org.github.io/icu/userguide/format_parse/numbers/skeletons.html#fraction-precision
+      // precision-integer case
       if (token.options.length > 1) {
         throw new RangeError(
           'Fraction-precision stems only accept a single optional option'
@@ -348,6 +387,7 @@ export function parseNumberSkeleton(
       }
       continue;
     }
+    // https://unicode-org.github.io/icu/userguide/format_parse/numbers/skeletons.html#significant-digits-precision
     if (SIGNIFICANT_PRECISION_REGEX.test(token.stem)) {
       result = {...result, ...parseSignificantPrecision(token.stem)};
       continue;
