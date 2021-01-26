@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.3.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.2.0...intl-messageformat-parser@6.3.0) (2021-01-26)
+
+
+### Features
+
+* **intl-messageformat-parser:** support more concise skeleton, fix [#2512](https://github.com/formatjs/formatjs/issues/2512) ([6be7988](https://github.com/formatjs/formatjs/commit/6be7988aef05ea906bbae3fbf419a551376ad5cc))
+
+
+
+
+
 # [6.2.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.1.3...intl-messageformat-parser@6.2.0) (2021-01-25)
 
 
