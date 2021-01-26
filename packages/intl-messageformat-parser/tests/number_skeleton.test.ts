@@ -15,6 +15,7 @@ test.each([
 
 test.each([
   'percent .##',
+  '% .##',
   'percent .000*',
   'percent .0###',
   'percent .00/@##',
@@ -37,13 +38,23 @@ test.each([
   'notation-simple',
   'sign-auto',
   'sign-always',
+  '+!',
   'sign-never',
+  '+_',
   'sign-accounting',
+  '()',
   'sign-accounting-always',
+  '()!',
   'sign-except-zero',
+  '+?',
   'sign-accounting-except-zero',
+  '()?',
   '000',
   'integer-width/*000',
+  'E0',
+  'E+!00',
+  'EE+?000',
+  '%x100',
 ])('[parseNumberSkeleton] case: %p', skeleton => {
   const ast = pegParse(`{0, number, ::${skeleton}}`);
   const el = ast[0];

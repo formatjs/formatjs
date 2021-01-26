@@ -1,8 +1,83 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`[parseNumberSkeleton] case: "% .##" 1`] = `
+Object {
+  "maximumFractionDigits": 2,
+  "style": "percent",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: "%x100" 1`] = `
+Object {
+  "scale": 100,
+  "style": "percent",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: "()!" 1`] = `
+Object {
+  "currencySign": "accounting",
+  "signDisplay": "always",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: "()" 1`] = `
+Object {
+  "currencySign": "accounting",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: "()?" 1`] = `
+Object {
+  "currencySign": "accounting",
+  "signDisplay": "exceptZero",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: "+!" 1`] = `
+Object {
+  "signDisplay": "always",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: "+?" 1`] = `
+Object {
+  "signDisplay": "exceptZero",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: "+_" 1`] = `
+Object {
+  "signDisplay": "never",
+}
+`;
+
 exports[`[parseNumberSkeleton] case: "000" 1`] = `
 Object {
   "minimumIntegerDigits": 3,
+}
+`;
+
+exports[`[parseNumberSkeleton] case: "E+!00" 1`] = `
+Object {
+  "minimumIntegerDigits": 2,
+  "notation": "scientific",
+  "signDisplay": "always",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: "E0" 1`] = `
+Object {
+  "minimumIntegerDigits": 1,
+  "notation": "scientific",
+}
+`;
+
+exports[`[parseNumberSkeleton] case: "EE+?000" 1`] = `
+Object {
+  "minimumIntegerDigits": 3,
+  "notation": "engineering",
+  "signDisplay": "exceptZero",
 }
 `;
 

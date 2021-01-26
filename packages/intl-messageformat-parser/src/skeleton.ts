@@ -191,32 +191,71 @@ function parseSign(str: string): ExtendedNumberFormatOptions | undefined {
         signDisplay: 'auto',
       };
     case 'sign-accounting':
+    case '()':
       return {
         currencySign: 'accounting',
       };
     case 'sign-always':
+    case '+!':
       return {
         signDisplay: 'always',
       };
     case 'sign-accounting-always':
+    case '()!':
       return {
         signDisplay: 'always',
         currencySign: 'accounting',
       };
     case 'sign-except-zero':
+    case '+?':
       return {
         signDisplay: 'exceptZero',
       };
     case 'sign-accounting-except-zero':
+    case '()?':
       return {
         signDisplay: 'exceptZero',
         currencySign: 'accounting',
       };
     case 'sign-never':
+    case '+_':
       return {
         signDisplay: 'never',
       };
   }
+}
+
+function parseConciseScientificAndEngineeringStem(
+  stem: string
+): ExtendedNumberFormatOptions | undefined {
+  // Engineering
+  let result: ExtendedNumberFormatOptions | undefined;
+  if (stem[0] === 'E' && stem[1] === 'E') {
+    result = {
+      notation: 'engineering',
+    };
+    stem = stem.slice(2);
+  } else if (stem[0] === 'E') {
+    result = {
+      notation: 'scientific',
+    };
+    stem = stem.slice(1);
+  }
+  if (result) {
+    const signDisplay = stem.slice(0, 2);
+    if (signDisplay === '+!') {
+      result.signDisplay = 'always';
+      stem = stem.slice(2);
+    } else if (signDisplay === '+?') {
+      result.signDisplay = 'exceptZero';
+      stem = stem.slice(2);
+    }
+    if (!CONCISE_INTEGER_WIDTH_REGEX.test(stem)) {
+      throw new Error('Malformed concise eng/scientific notation');
+    }
+    result.minimumIntegerDigits = stem.length;
+  }
+  return result;
 }
 
 function parseNotationOptions(opt: string): ExtendedNumberFormatOptions {
@@ -238,13 +277,19 @@ export function parseNumberSkeleton(
   for (const token of tokens) {
     switch (token.stem) {
       case 'percent':
+      case '%':
         result.style = 'percent';
+        continue;
+      case '%x100':
+        result.style = 'percent';
+        result.scale = 100;
         continue;
       case 'currency':
         result.style = 'currency';
         result.currency = token.options[0];
         continue;
       case 'group-off':
+      case ',_':
         result.useGrouping = false;
         continue;
       case 'precision-integer':
@@ -252,14 +297,17 @@ export function parseNumberSkeleton(
         result.maximumFractionDigits = 0;
         continue;
       case 'measure-unit':
+      case 'unit':
         result.style = 'unit';
         result.unit = icuUnitToEcma(token.options[0]);
         continue;
       case 'compact-short':
+      case 'K':
         result.notation = 'compact';
         result.compactDisplay = 'short';
         continue;
       case 'compact-long':
+      case 'KK':
         result.notation = 'compact';
         result.compactDisplay = 'long';
         continue;
@@ -395,6 +443,12 @@ export function parseNumberSkeleton(
     const signOpts = parseSign(token.stem);
     if (signOpts) {
       result = {...result, ...signOpts};
+    }
+    const conciseScientificAndEngineeringOpts = parseConciseScientificAndEngineeringStem(
+      token.stem
+    );
+    if (conciseScientificAndEngineeringOpts) {
+      result = {...result, ...conciseScientificAndEngineeringOpts};
     }
   }
   return result;
