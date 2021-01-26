@@ -10,6 +10,20 @@ import Injected from './Injected';
 import HandleChange from './HandleChange';
 import StaticTypeSafetyAndCodeSplitting from './StaticTypeSafetyAndCodeSplitting/StaticTypeSafetyAndCodeSplitting';
 
+//polyfills
+import '@formatjs/intl-getcanonicallocales/polyfill';
+import '@formatjs/intl-locale/polyfill';
+
+import '@formatjs/intl-pluralrules/polyfill';
+import '@formatjs/intl-pluralrules/locale-data/en'; // locale-data for en
+
+import '@formatjs/intl-numberformat/polyfill';
+import '@formatjs/intl-numberformat/locale-data/en'; // locale-data for en
+
+import '@formatjs/intl-datetimeformat/polyfill';
+import '@formatjs/intl-datetimeformat/locale-data/en'; // locale-data for en
+import '@formatjs/intl-datetimeformat/add-all-tz'; // Add ALL tz data
+
 ReactDOM.render(<Timezone />, document.getElementById('timezone'));
 
 ReactDOM.render(<Messages />, document.getElementById('messages'));

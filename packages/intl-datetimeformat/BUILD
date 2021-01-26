@@ -147,6 +147,7 @@ ts_node(
     output_dir = True,
     visibility = [
         "//packages/intl:__subpackages__",
+        "//packages/react-intl:__subpackages__",
     ],
 )
 
@@ -277,6 +278,7 @@ ts_node(
     ],
     visibility = [
         "//packages/intl:__subpackages__",
+        "//packages/react-intl:__subpackages__",
     ],
 )
 
