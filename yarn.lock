@@ -11409,14 +11409,13 @@ karma-jasmine@^4.0.0:
   dependencies:
     jasmine-core "^3.6.0"
 
-karma-sauce-launcher@4.3.4:
-  version "4.3.4"
-  resolved "https://registry.yarnpkg.com/karma-sauce-launcher/-/karma-sauce-launcher-4.3.4.tgz#3033b6cb9610db4b67de074baef58c652d5a11b8"
-  integrity sha512-sXka3l3Z9x+UhGMsg0fU+i+Jq82j7tfApMrAupM8JxO8ZskmSCozUM4cffLTwuzJPYjf0ffFNu3Up5Pzr26N/g==
+karma-sauce-launcher@4.3.5:
+  version "4.3.5"
+  resolved "https://registry.yarnpkg.com/karma-sauce-launcher/-/karma-sauce-launcher-4.3.5.tgz#fd882a182fdd86206c05311a34b674cd4aef7c1c"
+  integrity sha512-a6c8qbuLspMi2KNGQefXe/lhZAd2JSkxheT6kBb3GKwWfyZyjG+eF3C7lFennWHZyzeXHv7pY5LMpi/mHGCzag==
   dependencies:
-    fs-extra "^9.0.1"
     global-agent "^2.1.12"
-    saucelabs "^4.5.1"
+    saucelabs "^4.6.3"
     webdriverio "^6.7.0"
 
 karma@^5.0.2:
@@ -16106,7 +16105,7 @@ sane@^4.0.3:
     minimist "^1.1.1"
     walker "~1.0.5"
 
-saucelabs@^4.5.1:
+saucelabs@^4.6.3:
   version "4.6.3"
   resolved "https://registry.yarnpkg.com/saucelabs/-/saucelabs-4.6.3.tgz#aa07f0b05793863158f08a9f7c87fa0a0b13452b"
   integrity sha512-LQEA7ENXq03MWs5sTbvRPlDiaR9PFEfqiMUHtiXEJQUGQ5JAmIXOB39/4hL3CUvZKZ2Bv7Ook6ZCDsqUFY7Vmw==
