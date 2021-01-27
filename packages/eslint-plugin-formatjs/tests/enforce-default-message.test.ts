@@ -17,6 +17,12 @@ defineMessage({
   defaultMessage: 'this is default message' + 'vvv',
   description: 'asd'
 })`,
+    `intl.formatMessage({
+  defaultMessage: \`a template
+  literal
+\`,
+  description: 'asd'
+})`,
     `import {FormattedMessage} from 'react-intl'
 const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
     dynamicMessage,
@@ -58,8 +64,9 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
             })`,
       errors: [
         {
-          message:
-            '`defaultMessage` must be a string literal (not function call or variable)',
+          message: `"defaultMessage" must be:
+- a string literal or
+- template literal without variable`,
         },
       ],
       options: ['literal'],
@@ -72,8 +79,9 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
             })`,
       errors: [
         {
-          message:
-            '`defaultMessage` must be a string literal (not function call or variable)',
+          message: `"defaultMessage" must be:
+- a string literal or
+- template literal without variable`,
         },
       ],
       options: ['literal'],
@@ -86,8 +94,9 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
             })`,
       errors: [
         {
-          message:
-            '`defaultMessage` must be a string literal (not function call or variable)',
+          message: `"defaultMessage" must be:
+- a string literal or
+- template literal without variable`,
         },
       ],
       options: ['literal'],
@@ -143,8 +152,9 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
             const a = <FormattedMessage defaultMessage={defaultMessage} description="this is description"/>`,
       errors: [
         {
-          message:
-            '`defaultMessage` must be a string literal (not function call or variable)',
+          message: `"defaultMessage" must be:
+- a string literal or
+- template literal without variable`,
         },
       ],
       options: ['literal'],
@@ -155,8 +165,9 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
             const a = <FormattedMessage defaultMessage={defaultMessage}/>`,
       errors: [
         {
-          message:
-            '`defaultMessage` must be a string literal (not function call or variable)',
+          message: `"defaultMessage" must be:
+- a string literal or
+- template literal without variable`,
         },
       ],
       options: ['literal'],
@@ -164,11 +175,12 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
     {
       code: `
             import {FormattedMessage} from 'react-intl'
-            const a = <FormattedMessage defaultMessage={\`asf\`} description="this is description"></FormattedMessage>`,
+            const a = <FormattedMessage defaultMessage={\`asf \${foo}\`} description="this is description"></FormattedMessage>`,
       errors: [
         {
-          message:
-            '`defaultMessage` must be a string literal (not function call or variable)',
+          message: `"defaultMessage" must be:
+- a string literal or
+- template literal without variable`,
         },
       ],
       options: ['literal'],
@@ -176,11 +188,12 @@ const a = <FormattedMessage defaultMessage={'asf' + 'bar'}/>`,
     {
       code: `
             import {FormattedMessage} from 'react-intl'
-            const a = <FormattedMessage defaultMessage={\`asf\`}/>`,
+            const a = <FormattedMessage defaultMessage={\`asf \${aas}\`}/>`,
       errors: [
         {
-          message:
-            '`defaultMessage` must be a string literal (not function call or variable)',
+          message: `"defaultMessage" must be:
+- a string literal or
+- template literal without variable`,
         },
       ],
       options: ['literal'],
@@ -226,8 +239,9 @@ vueRuleTester.run('vue/enforce-default-message', enforceDefaultMessage, {
             })}}</p></template>`,
       errors: [
         {
-          message:
-            '`defaultMessage` must be a string literal (not function call or variable)',
+          message: `"defaultMessage" must be:
+- a string literal or
+- template literal without variable`,
         },
       ],
       options: ['literal'],

@@ -20,6 +20,12 @@ function isStringLiteral(node: TSESTree.Node): node is TSESTree.StringLiteral {
   return node.type === 'Literal' && typeof node.value === 'string';
 }
 
+function isTemplateLiteralWithoutVar(
+  node: TSESTree.Node
+): node is TSESTree.TemplateLiteral {
+  return node.type === 'TemplateLiteral' && node.quasis.length === 1;
+}
+
 function findReferenceImport(
   id: TSESTree.Identifier,
   importedVars: Scope.Variable[]
@@ -116,6 +122,8 @@ function extractMessageDescriptor(
     let value: string | undefined = undefined;
     if (isStringLiteral(valueNode)) {
       value = valueNode.value;
+    } else if (isTemplateLiteralWithoutVar(valueNode)) {
+      value = valueNode.quasis[0].value.cooked;
     } else if (valueNode.type === 'BinaryExpression') {
       const [result, isStatic] = staticallyEvaluateStringConcat(valueNode);
       if (isStatic) {
@@ -170,15 +178,15 @@ function extractMessageDescriptorFromJSXElement(
     if (valueNode) {
       if (isStringLiteral(valueNode)) {
         value = valueNode.value;
-      } else if (
-        valueNode?.type === 'JSXExpressionContainer' &&
-        valueNode.expression.type === 'BinaryExpression'
-      ) {
-        const [result, isStatic] = staticallyEvaluateStringConcat(
-          valueNode.expression
-        );
-        if (isStatic) {
-          value = result;
+      } else if (valueNode?.type === 'JSXExpressionContainer') {
+        const {expression} = valueNode;
+        if (expression.type === 'BinaryExpression') {
+          const [result, isStatic] = staticallyEvaluateStringConcat(expression);
+          if (isStatic) {
+            value = result;
+          }
+        } else if (isTemplateLiteralWithoutVar(expression)) {
+          value = expression.quasis[0].value.cooked;
         }
       }
     }

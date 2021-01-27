@@ -22,8 +22,9 @@ function checkNode(
       if (type === 'literal' && messageNode) {
         context.report({
           node: messageNode as Node,
-          message:
-            '`defaultMessage` must be a string literal (not function call or variable)',
+          message: `"defaultMessage" must be:
+- a string literal or
+- template literal without variable`,
         });
       } else if (!messageNode) {
         context.report({
