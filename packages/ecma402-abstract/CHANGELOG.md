@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.2](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.5.1...@formatjs/ecma402-abstract@1.5.2) (2021-01-27)
+
+
+### Bug Fixes
+
+* **@formatjs/ecma402-abstract:** make Set usage IE11-safe, fix [#2529](https://github.com/formatjs/formatjs/issues/2529) ([2ebe21c](https://github.com/formatjs/formatjs/commit/2ebe21cf4eaad9200bbb0bbd89e5a7ad95c1a97f))
+
+
+
+
+
 ## [1.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.5.0...@formatjs/ecma402-abstract@1.5.1) (2021-01-05)
 
 
