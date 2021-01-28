@@ -5629,9 +5629,9 @@ classnames@^2.2.5, classnames@^2.2.6:
   integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
 
 cldr-core@38:
-  version "38.0.0"
-  resolved "https://registry.yarnpkg.com/cldr-core/-/cldr-core-38.0.0.tgz#f54a5dfd222c79a050f1fe8e87ad9764f16fb840"
-  integrity sha512-WkjA4zo5rLT/BWTZAxHJ0lJXwI33gCYucEz1+CpoI8Wu+rr5IrC57wyNXyrNNMdxfDE5RsWi/JCQ9qnG8sHTiw==
+  version "38.1.0"
+  resolved "https://registry.yarnpkg.com/cldr-core/-/cldr-core-38.1.0.tgz#3c400436b89110e2c0584469d51b7479ef0fa70c"
+  integrity sha512-Da9xKjDp4qGGIX0VDsBqTan09iR5nuYD2a/KkfEaUyqKhu6wFVNRiCpPDXeRbpVwPBY6PgemV8WiHatMhcpy4A==
 
 cldr-dates-full@38:
   version "38.0.0"
@@ -5639,24 +5639,24 @@ cldr-dates-full@38:
   integrity sha512-9HMCjlY85+S4axJIKZuUuUqTiKEtcMSPbZ5aMPe794QmYlp5iMIrgJLjwxYxUmvvn7A38UmN8mxBp+a0cXaszg==
 
 cldr-localenames-full@38:
-  version "38.0.0"
-  resolved "https://registry.yarnpkg.com/cldr-localenames-full/-/cldr-localenames-full-38.0.0.tgz#8edcc245b00ebbda974c5cfd361640dd4924a6f1"
-  integrity sha512-8XuN12Kg9w7V/n2DcWcZmxcUdxSxgmDhbAj0ia4C/zPD8YP0Q20uRR0gI5xa1Nd9wvlugHs+JMNn62hhyqZMew==
+  version "38.1.0"
+  resolved "https://registry.yarnpkg.com/cldr-localenames-full/-/cldr-localenames-full-38.1.0.tgz#23789c6db614e9447275c4349010140df3bd749b"
+  integrity sha512-3npom64lc2K5uj2pXApmyi4t3wSuVFZu6xRJN9RzxUZEnQ3HYzojPnOPrbzteLxEjyOLDSvaPK19Gh7PGolF4w==
 
 cldr-misc-full@38:
-  version "38.0.0"
-  resolved "https://registry.yarnpkg.com/cldr-misc-full/-/cldr-misc-full-38.0.0.tgz#a2297eadc11b6fdd9e0611724daae7b47399605a"
-  integrity sha512-NB7YboX4HFuYRwUoHKfoYvb9WE6/PxQknTbubp8pniPZeUSPNrIA03CghAhwuSR1uDapBkEHOj/qt1CrZM22Uw==
+  version "38.1.0"
+  resolved "https://registry.yarnpkg.com/cldr-misc-full/-/cldr-misc-full-38.1.0.tgz#9280450005794db7c5289e19347c6691d79f5074"
+  integrity sha512-Ya+eV+ho1R5odZyTzbCL31mmEIlcKA0QaE9+mN+NFQKsPB8+OJmFe/iBIrvHsJkSkT4MWxXe+08yDoIsrMzf1A==
 
 cldr-numbers-full@38:
-  version "38.0.0"
-  resolved "https://registry.yarnpkg.com/cldr-numbers-full/-/cldr-numbers-full-38.0.0.tgz#dfe6152d1345b7a878dd99830f46dc13a9576924"
-  integrity sha512-GG/Z45bBmJZMuTn6sOTs0lbLUhzviTvFhr2dJRpSeE0iROXwkrUlmaMk3rbd/NjG2yIRCzj4gtoBmCyz3pi8qg==
+  version "38.1.0"
+  resolved "https://registry.yarnpkg.com/cldr-numbers-full/-/cldr-numbers-full-38.1.0.tgz#fd2f7a17961bd5060e3e1dfcf485c668a6bde097"
+  integrity sha512-htNoFJojSPBBHN5Jj+VS/zE6oirZKbF7JVW4IBr/3UXFJkuQyhCaKQDXmAv74HkqHZ+vk4KREi7rYC2892Mgpw==
 
 cldr-units-full@38:
-  version "38.0.0"
-  resolved "https://registry.yarnpkg.com/cldr-units-full/-/cldr-units-full-38.0.0.tgz#e646de50a1353a0fa7e0df5efcd1f470304a2f3f"
-  integrity sha512-fyOXyKTLxv3BwavzLFc/1eZ6YHInCSJdjhJvpV1nRmn5GmJCvGAa4P+YGpZ+//vUoU5UHtO29A/+TVtyHDqdaw==
+  version "38.1.0"
+  resolved "https://registry.yarnpkg.com/cldr-units-full/-/cldr-units-full-38.1.0.tgz#bac389f965122cf69fc6b499328bd393c770fdc0"
+  integrity sha512-ZNbxNeWeyLHuLMBnrjrfOlS2feQhG9uNB6cjp9BV/EFdxO0QHe2nPCtx6hYZ5mmAfMrhe0SbMiJcgVRNYjOQRQ==
 
 clean-css@^4.2.3:
   version "4.2.3"
