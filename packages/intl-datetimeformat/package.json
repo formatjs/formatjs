@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-datetimeformat",
-  "version": "3.2.5",
+  "version": "3.2.6",
   "description": "Intl.DateTimeFormat polyfill",
   "main": "index.js",
   "types": "index.d.ts",
