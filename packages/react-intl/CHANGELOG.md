@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.11.0](https://github.com/formatjs/formatjs/compare/react-intl@5.10.19...react-intl@5.11.0) (2021-01-29)
+
+
+### Features
+
+* **react-intl:** allow FormattedMessage to pass in ignoreTag, fix [#2538](https://github.com/formatjs/formatjs/issues/2538) ([15d4854](https://github.com/formatjs/formatjs/commit/15d4854b4fffef387102905f5a159910860d8e15))
+
+
+
+
+
 ## [5.10.19](https://github.com/formatjs/formatjs/compare/react-intl@5.10.18...react-intl@5.10.19) (2021-01-27)
 
 **Note:** Version bump only for package react-intl
