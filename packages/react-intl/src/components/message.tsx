@@ -5,7 +5,11 @@
  */
 
 import * as React from 'react';
-import type {PrimitiveType, FormatXMLElementFn} from 'intl-messageformat';
+import type {
+  PrimitiveType,
+  FormatXMLElementFn,
+  Options as IntlMessageFormatOptions,
+} from 'intl-messageformat';
 import {Context} from './injectIntl';
 import {invariantIntlContext} from '../utils';
 import * as shallowEquals_ from 'shallow-equal/objects';
@@ -19,6 +23,7 @@ export interface Props<
   values?: V;
   tagName?: React.ElementType<any>;
   children?(...nodes: React.ReactNodeArray): React.ReactNode;
+  ignoreTag?: IntlMessageFormatOptions['ignoreTag'];
 }
 
 class FormattedMessage<
@@ -54,10 +59,13 @@ class FormattedMessage<
             values,
             children,
             tagName: Component = Text,
+            ignoreTag,
           } = this.props;
 
           const descriptor = {id, description, defaultMessage};
-          let nodes: React.ReactNode = formatMessage(descriptor, values);
+          let nodes: React.ReactNode = formatMessage(descriptor, values, {
+            ignoreTag,
+          });
 
           if (!Array.isArray(nodes)) {
             nodes = [nodes];
