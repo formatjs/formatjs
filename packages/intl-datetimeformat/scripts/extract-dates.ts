@@ -327,21 +327,19 @@ async function loadDatesFields(
     ca: (
       calendarPreferenceData[region as keyof typeof calendarPreferenceData] ||
       calendarPreferenceData['001']
-    )
-      .split(' ')
-      .map(c => {
-        //Resolve aliases per https://github.com/unicode-org/cldr/blob/master/common/bcp47/calendar.xml
-        if (c === 'gregorian') {
-          return 'gregory';
-        }
-        if (c === 'islamic-civil') {
-          return 'islamicc';
-        }
-        if (c === 'ethiopic-amete-alem') {
-          return 'ethioaa';
-        }
-        return c;
-      }),
+    ).map(c => {
+      //Resolve aliases per https://github.com/unicode-org/cldr/blob/master/common/bcp47/calendar.xml
+      if (c === 'gregorian') {
+        return 'gregory';
+      }
+      if (c === 'islamic-civil') {
+        return 'islamicc';
+      }
+      if (c === 'ethiopic-amete-alem') {
+        return 'ethioaa';
+      }
+      return c;
+    }),
     hc,
   };
 }
