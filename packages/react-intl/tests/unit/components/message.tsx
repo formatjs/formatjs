@@ -229,6 +229,24 @@ describe('<FormattedMessage>', () => {
       expect(nameNode).toHaveTextContent('Jest');
     });
 
+    it('supports rich-text message formatting with defaultRichTextElements', () => {
+      const {getByTestId} = mountWithProvider(
+        {
+          id: 'hello',
+          defaultMessage: 'Hello, <b>{name}</b>!',
+          values: {
+            name: 'Jest',
+          },
+          ignoreTag: true,
+        },
+        {
+          ...providerProps,
+        }
+      );
+
+      expect(getByTestId('comp')).toHaveTextContent('Hello, <b>{name}</b>!');
+    });
+
     it('supports rich-text message formatting w/ nested tag', () => {
       const {getByTestId} = mountWithProvider(
         {
