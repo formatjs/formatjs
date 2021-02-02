@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.10.7...eslint-plugin-formatjs@2.12.0) (2021-02-02)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** support template literal without var, fix [#2527](https://github.com/formatjs/formatjs/issues/2527) ([a048e25](https://github.com/formatjs/formatjs/commit/a048e25a5f4cc32b1602b00dbf982282aac97773))
+
+
+
+
+
 # [2.11.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@2.10.7...eslint-plugin-formatjs@2.11.0) (2021-01-29)
 
 
