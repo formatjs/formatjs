@@ -98,14 +98,16 @@ const formatMessage: typeof coreFormatMessage = (
   config,
   formatters,
   descriptor,
-  rawValues
+  rawValues,
+  ...rest
 ) => {
   const values = assignUniqueKeysToFormatXMLElementFnArgument(rawValues);
   const chunks = coreFormatMessage(
     config,
     formatters,
     descriptor,
-    values as any
+    values as any,
+    ...rest
   );
   if (Array.isArray(chunks)) {
     return React.Children.toArray(chunks);

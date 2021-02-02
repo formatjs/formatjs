@@ -244,7 +244,7 @@ describe('<FormattedMessage>', () => {
         }
       );
 
-      expect(getByTestId('comp')).toHaveTextContent('Hello, <b>{name}</b>!');
+      expect(getByTestId('comp')).toHaveTextContent('Hello, <b>Jest</b>!');
     });
 
     it('supports rich-text message formatting w/ nested tag', () => {
