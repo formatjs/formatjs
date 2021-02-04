@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.12.1](https://github.com/formatjs/formatjs/compare/react-intl@5.12.0...react-intl@5.12.1) (2021-02-04)
+
+
+### Bug Fixes
+
+* **react-intl:** re-export MessageFormatElement, fix [#2559](https://github.com/formatjs/formatjs/issues/2559) ([365e104](https://github.com/formatjs/formatjs/commit/365e104b34b5b95f7bbc008711eeeb3f3d31f442))
+
+
+
+
+
 # [5.12.0](https://github.com/formatjs/formatjs/compare/react-intl@5.10.19...react-intl@5.12.0) (2021-02-02)
 
 
