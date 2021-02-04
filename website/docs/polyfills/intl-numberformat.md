@@ -86,7 +86,7 @@ async function polyfill(locale: string) {
 
 ### Simple Units
 
-Currently [the spec](https://tc39.es/ecma402/#sec-issanctionedsimpleunitidentifier) defines a list of sanctioned units as below.
+Currently, [the spec](https://tc39.es/ecma402/#sec-issanctionedsimpleunitidentifier) defines a list of sanctioned units as below.
 
 ```tsx
 type Unit =
