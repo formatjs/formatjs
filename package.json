@@ -25,7 +25,7 @@
     "@babel/plugin-syntax-jsx": "^7.10.4",
     "@babel/types": "^7.12.11",
     "@bazel/bazelisk": "^1.5.0",
-    "@bazel/buildifier": "^3.3.0",
+    "@bazel/buildifier": "^4.0.0",
     "@bazel/ibazel": "^0.14.0",
     "@bazel/rollup": "3.1.0",
     "@bazel/terser": "3.1.0",
