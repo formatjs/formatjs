@@ -137,5 +137,5 @@ type Unit =
 
 ### Compound Units
 
-You can specify `X-per-Y` unit, where `X` and `Y` are sactioned simple units (e.g. `kilometer-per-hour`).
+You can specify `X-per-Y` unit, where `X` and `Y` are sanctioned simple units (e.g. `kilometer-per-hour`).
 The library will choose the best-fit localized pattern to format this compound unit.
