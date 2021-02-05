@@ -81,7 +81,7 @@ async function polyfill(locale: string) {
 
 ### Simple Units
 
-Currently [the spec](https://tc39.es/ecma402/#sec-issanctionedsimpleunitidentifier) defines a list of sanctioned units as below.
+Currently, [the spec](https://tc39.es/ecma402/#sec-issanctionedsimpleunitidentifier) defines a list of sanctioned units as below.
 
 ```tsx
 type Unit =
@@ -132,7 +132,7 @@ type Unit =
 
 ### Compound Units
 
-You can specify `X-per-Y` unit, where `X` and `Y` are sactioned simple units (e.g. `kilometer-per-hour`). The library will choose the best-fit localized pattern to format this compound unit.
+You can specify `X-per-Y` unit, where `X` and `Y` are sanctioned simple units (e.g. `kilometer-per-hour`). The library will choose the best-fit localized pattern to format this compound unit.
 
 [numberformat]: https://tc39.es/ecma402/#numberformat-objects
 [tolocalestring]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString
