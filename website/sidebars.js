@@ -38,14 +38,15 @@ module.exports = {
   polyfills: {
     Polyfills: [
       'polyfills',
+      'polyfills/intl-datetimeformat',
+      'polyfills/intl-displaynames',
       'polyfills/intl-getcanonicallocales',
+      'polyfills/intl-listformat',
+      'polyfills/intl-locale',
+      'polyfills/intl-localematcher',
+      'polyfills/intl-numberformat',
       'polyfills/intl-pluralrules',
       'polyfills/intl-relativetimeformat',
-      'polyfills/intl-listformat',
-      'polyfills/intl-displaynames',
-      'polyfills/intl-numberformat',
-      'polyfills/intl-datetimeformat',
-      'polyfills/intl-locale',
     ],
   },
   tooling: {
