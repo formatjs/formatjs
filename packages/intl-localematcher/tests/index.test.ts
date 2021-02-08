@@ -10,3 +10,9 @@ test('Intl.LocaleMatcher', function () {
 test('empty requested', function () {
   expect(match([], ['zh-Hant-TW', 'en'], 'en')).toEqual('en');
 });
+
+test('extension', function () {
+  expect(match(['fr-CA-x-foo'], ['zh-Hant-TW', 'fr', 'en'], 'en')).toEqual(
+    'fr'
+  );
+});
