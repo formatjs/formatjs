@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.1.0...@formatjs/intl-localematcher@0.2.0) (2021-02-08)
+
+
+### Features
+
+* **@formatjs/intl-localematcher:** switch entry point to prepackaged UMD file ([a0481cc](https://github.com/formatjs/formatjs/commit/a0481cc79e95960b540cafc541d555a5c228851f))
+
+
+
+
+
 # 0.1.0 (2021-02-08)
 
 
