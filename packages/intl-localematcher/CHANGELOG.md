@@ -1,0 +1,12 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# 0.1.0 (2021-02-08)
+
+
+### Features
+
+* **@formatjs/intl-localematcher:** add ponyfill for Intl.LocaleMatcher ([e479543](https://github.com/formatjs/formatjs/commit/e479543e92e9b6c6d08f68848f25bcb9ba558ab3))
+* **@formatjs/intl-localematcher:** reset version ([7684b54](https://github.com/formatjs/formatjs/commit/7684b543fa7c3db3aad839bae8485ec7de4ee495))
