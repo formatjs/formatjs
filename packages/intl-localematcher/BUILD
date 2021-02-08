@@ -1,4 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
+load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("//tools:index.bzl", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
@@ -13,6 +14,7 @@ pkg_npm(
         "README.md",
     ],
     deps = [
+        "index.umd.js",
         ":dist",
     ],
 )
@@ -82,4 +84,24 @@ prettier_check(
             "CHANGELOG.md",
         ],
     ),
+)
+
+rollup_bundle(
+    name = "index.umd",
+    srcs = [":dist-esm"],
+    args = [
+        "--name",
+        "IntlLocaleMatcher",
+        "--no-sourcemap",
+    ],
+    config_file = "//:rollup.config.js",
+    entry_point = "lib/index.js",
+    format = "umd",
+    deps = [
+        "@npm//@rollup/plugin-node-resolve",
+        "@npm//@rollup/plugin-commonjs",
+        "@npm//@rollup/plugin-replace",
+        "@npm//@rollup/plugin-json",
+        "@npm//tslib",
+    ] + SRC_DEPS,
 )
