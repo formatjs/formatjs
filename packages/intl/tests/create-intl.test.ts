@@ -13,3 +13,13 @@ test('createIntl', function () {
     })
   ).toBe('bar');
 });
+
+test('__addMessages', function () {
+  const intl = createIntl({
+    locale: 'en',
+    messages: {},
+  });
+  expect(intl.messages).toEqual({});
+  intl.__addMessages({foo: ''});
+  expect(intl.messages).toEqual({foo: ''});
+});

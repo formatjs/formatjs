@@ -173,11 +173,9 @@ export function createIntl<T = string>(
         );
       }
 
-      // @ts-expect-error this is fine
-      resolvedConfig.messages = {
-        ...resolvedConfig.messages,
-        ...messages,
-      };
+      Object.keys(messages).forEach(k => {
+        resolvedConfig.messages[k] = messages[k];
+      });
     },
   };
 }
