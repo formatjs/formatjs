@@ -234,6 +234,7 @@ We provide the following built-in formatters to integrate with 3rd party TMSes:
 | [Crowdin Chrome JSON](https://support.crowdin.com/file-formats/chrome-json/)              | `crowdin`   |
 | [Lokalise Structured JSON](https://docs.lokalise.com/en/articles/3229161-structured-json) | `lokalise`  |
 | [locize](https://docs.locize.com/integration/supported-formats#json-nested)               | `simple`    |
+| [SimpleLocalize](https://simplelocalize.io/docs/integrations/format-js-cli/)              | `simple`    |
 
 ## Custom Formatters
 
