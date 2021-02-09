@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.6.6...@formatjs/intl@1.6.7) (2021-02-09)
+
+
+### Bug Fixes
+
+* **@formatjs/intl:** fix __addMessages issues with references ([f9266f9](https://github.com/formatjs/formatjs/commit/f9266f9af9f092377f6be975d938ec0b55b851d7))
+
+
+
+
+
 ## [1.6.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.6.4...@formatjs/intl@1.6.6) (2021-02-02)
 
 **Note:** Version bump only for package @formatjs/intl
