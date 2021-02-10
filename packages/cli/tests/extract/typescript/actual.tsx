@@ -27,6 +27,27 @@ const msgs = defineMessages({
     description: 'Whitespace',
     defaultMessage: '   Some whitespace   ',
   },
+  newline: {
+    id: 'newline',
+    description: 'this is \
+    a \
+    description',
+    defaultMessage: 'this is \
+    a message',
+  },
+  linebreak: {
+    id: 'linebreak',
+    description: 'this is\na\ndescription',
+    defaultMessage: 'this is\na message',
+  },
+  templateLinebreak: {
+    id: 'templateLinebreak',
+    description: `this is
+    a
+    description`,
+    defaultMessage: `this is
+    a message`,
+  },
   escaped: {
     id: 'escaped.apostrophe',
     description: 'Escaped apostrophe',
@@ -68,6 +89,13 @@ export default class Foo extends Component<{}, {}> {
             id="inline"
             defaultMessage="formatted message"
             description="foo"
+          />
+          <FormattedMessage
+            id="inline.linebreak"
+            defaultMessage="formatted message
+						with linebreak"
+            description="foo
+						bar"
           />
         </p>
       </div>

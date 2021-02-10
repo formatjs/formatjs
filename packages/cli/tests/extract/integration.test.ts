@@ -197,6 +197,22 @@ test('invalid syntax should throw', async () => {
   }).rejects.toThrowError('TS1005');
 }, 20000);
 
+test('whitespace and newlines should be preserved', async () => {
+  process.chdir(__dirname);
+  await expect(
+    exec(
+      `${BIN_PATH} extract '${join(
+        __dirname,
+        'typescript/actual.tsx'
+      )}' --out-file ${ARTIFACT_PATH}/defineMessages/actual.json`
+    )
+  ).resolves.toMatchSnapshot();
+
+  expect(
+    await readJSON(join(ARTIFACT_PATH, 'defineMessages/actual.json'))
+  ).toMatchSnapshot();
+}, 20000);
+
 test('vue', async () => {
   const {stdout} = await exec(
     `${BIN_PATH} extract '${join(__dirname, 'vue/*.vue')}'`
