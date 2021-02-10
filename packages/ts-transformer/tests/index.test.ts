@@ -56,6 +56,10 @@ const FILES_TO_TESTS: Record<string, Partial<Opts>> = {
     overrideIdFn: '[name]-[hash:base64:5]',
   },
   removeDescription: {},
+  defineMessagesPreserveWhitespace: {
+    pragma: 'react-intl',
+    preserveWhitespace: true,
+  },
 };
 
 const FIXTURES_DIR = join(__dirname, 'fixtures');

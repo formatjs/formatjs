@@ -129,6 +129,10 @@ export interface Opts {
    * This is no-op if `removeDefaultMessage` is `true`
    */
   ast?: boolean;
+  /**
+   * Whether to preserve whitespace and newlines.
+   */
+  preserveWhitespace?: boolean;
 }
 
 const DEFAULT_OPTS: Omit<Opts, 'program'> = {
@@ -197,7 +201,7 @@ function extractMessageDescriptor(
     | typescript.ObjectLiteralExpression
     | typescript.JsxOpeningElement
     | typescript.JsxSelfClosingElement,
-  {overrideIdFn, extractSourceLocation}: Opts,
+  {overrideIdFn, extractSourceLocation, preserveWhitespace}: Opts,
   sf: typescript.SourceFile
 ): MessageDescriptor | undefined {
   let properties:
@@ -306,7 +310,7 @@ function extractMessageDescriptor(
     return;
   }
 
-  if (msg.defaultMessage) {
+  if (msg.defaultMessage && !preserveWhitespace) {
     msg.defaultMessage = msg.defaultMessage.trim().replace(/\s+/gm, ' ');
   }
   if (msg.defaultMessage && overrideIdFn) {
