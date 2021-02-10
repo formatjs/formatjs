@@ -237,6 +237,7 @@ Options:
         \`\`\`
   
         and with option \`{pragma: \\"intl-meta\\"}\`, we'll parse out \`// @intl-meta project:my-custom-project\` into \`{project: 'my-custom-project'}\` in the result file.
+  --preserve-whitespace                                 Whether to preserve whitespace and newlines.
   -h, --help                                            display help for command
 ",
 }
@@ -316,6 +317,22 @@ Object {
   \\"inline\\": {
     \\"defaultMessage\\": \\"formatted message\\",
     \\"description\\": \\"foo\\"
+  },
+  \\"inline.linebreak\\": {
+    \\"defaultMessage\\": \\"formatted message with linebreak\\",
+    \\"description\\": \\"foo\\\\n\\\\t\\\\t\\\\t\\\\t\\\\t\\\\tbar\\"
+  },
+  \\"linebreak\\": {
+    \\"defaultMessage\\": \\"this is a message\\",
+    \\"description\\": \\"this is\\\\na\\\\ndescription\\"
+  },
+  \\"newline\\": {
+    \\"defaultMessage\\": \\"this is a message\\",
+    \\"description\\": \\"this is     a     description\\"
+  },
+  \\"templateLinebreak\\": {
+    \\"defaultMessage\\": \\"this is a message\\",
+    \\"description\\": \\"this is\\\\n    a\\\\n    description\\"
   },
   \\"trailing.ws\\": {
     \\"defaultMessage\\": \\"Some whitespace\\",
@@ -429,6 +446,22 @@ Object {
     \\"defaultMessage\\": \\"formatted message\\",
     \\"description\\": \\"foo\\"
   },
+  \\"inline.linebreak\\": {
+    \\"defaultMessage\\": \\"formatted message with linebreak\\",
+    \\"description\\": \\"foo\\\\n\\\\t\\\\t\\\\t\\\\t\\\\t\\\\tbar\\"
+  },
+  \\"linebreak\\": {
+    \\"defaultMessage\\": \\"this is a message\\",
+    \\"description\\": \\"this is\\\\na\\\\ndescription\\"
+  },
+  \\"newline\\": {
+    \\"defaultMessage\\": \\"this is a message\\",
+    \\"description\\": \\"this is     a     description\\"
+  },
+  \\"templateLinebreak\\": {
+    \\"defaultMessage\\": \\"this is a message\\",
+    \\"description\\": \\"this is\\\\n    a\\\\n    description\\"
+  },
   \\"trailing.ws\\": {
     \\"defaultMessage\\": \\"Some whitespace\\",
     \\"description\\": \\"Whitespace\\"
@@ -468,6 +501,22 @@ Object {
   \\"inline\\": {
     \\"description\\": \\"foo\\",
     \\"message\\": \\"formatted message\\"
+  },
+  \\"inline.linebreak\\": {
+    \\"description\\": \\"foo\\\\n\\\\t\\\\t\\\\t\\\\t\\\\t\\\\tbar\\",
+    \\"message\\": \\"formatted message with linebreak\\"
+  },
+  \\"linebreak\\": {
+    \\"description\\": \\"this is\\\\na\\\\ndescription\\",
+    \\"message\\": \\"this is a message\\"
+  },
+  \\"newline\\": {
+    \\"description\\": \\"this is     a     description\\",
+    \\"message\\": \\"this is a message\\"
+  },
+  \\"templateLinebreak\\": {
+    \\"description\\": \\"this is\\\\n    a\\\\n    description\\",
+    \\"message\\": \\"this is a message\\"
   },
   \\"trailing.ws\\": {
     \\"description\\": \\"Whitespace\\",
@@ -509,6 +558,22 @@ Object {
     \\"comment\\": \\"foo\\",
     \\"string\\": \\"formatted message\\"
   },
+  \\"inline.linebreak\\": {
+    \\"comment\\": \\"foo\\\\n\\\\t\\\\t\\\\t\\\\t\\\\t\\\\tbar\\",
+    \\"string\\": \\"formatted message with linebreak\\"
+  },
+  \\"linebreak\\": {
+    \\"comment\\": \\"this is\\\\na\\\\ndescription\\",
+    \\"string\\": \\"this is a message\\"
+  },
+  \\"newline\\": {
+    \\"comment\\": \\"this is     a     description\\",
+    \\"string\\": \\"this is a message\\"
+  },
+  \\"templateLinebreak\\": {
+    \\"comment\\": \\"this is\\\\n    a\\\\n    description\\",
+    \\"string\\": \\"this is a message\\"
+  },
   \\"trailing.ws\\": {
     \\"comment\\": \\"Whitespace\\",
     \\"string\\": \\"Some whitespace\\"
@@ -549,6 +614,22 @@ Object {
     \\"notes\\": \\"foo\\",
     \\"translation\\": \\"formatted message\\"
   },
+  \\"inline.linebreak\\": {
+    \\"notes\\": \\"foo\\\\n\\\\t\\\\t\\\\t\\\\t\\\\t\\\\tbar\\",
+    \\"translation\\": \\"formatted message with linebreak\\"
+  },
+  \\"linebreak\\": {
+    \\"notes\\": \\"this is\\\\na\\\\ndescription\\",
+    \\"translation\\": \\"this is a message\\"
+  },
+  \\"newline\\": {
+    \\"notes\\": \\"this is     a     description\\",
+    \\"translation\\": \\"this is a message\\"
+  },
+  \\"templateLinebreak\\": {
+    \\"notes\\": \\"this is\\\\n    a\\\\n    description\\",
+    \\"translation\\": \\"this is a message\\"
+  },
   \\"trailing.ws\\": {
     \\"notes\\": \\"Whitespace\\",
     \\"translation\\": \\"Some whitespace\\"
@@ -569,6 +650,10 @@ Object {
   \\"foo.bar.baz\\": \\"Hello World!\\",
   \\"foo.bar.biff\\": \\"Hello Nurse!\\",
   \\"inline\\": \\"formatted message\\",
+  \\"inline.linebreak\\": \\"formatted message with linebreak\\",
+  \\"linebreak\\": \\"this is a message\\",
+  \\"newline\\": \\"this is a message\\",
+  \\"templateLinebreak\\": \\"this is a message\\",
   \\"trailing.ws\\": \\"Some whitespace\\"
 }
 ",
@@ -617,6 +702,22 @@ Object {
     \\"description\\": \\"foo\\",
     \\"message\\": \\"formatted message\\"
   },
+  \\"inline.linebreak\\": {
+    \\"description\\": \\"foo\\\\n\\\\t\\\\t\\\\t\\\\t\\\\t\\\\tbar\\",
+    \\"message\\": \\"formatted message with linebreak\\"
+  },
+  \\"linebreak\\": {
+    \\"description\\": \\"this is\\\\na\\\\ndescription\\",
+    \\"message\\": \\"this is a message\\"
+  },
+  \\"newline\\": {
+    \\"description\\": \\"this is     a     description\\",
+    \\"message\\": \\"this is a message\\"
+  },
+  \\"templateLinebreak\\": {
+    \\"description\\": \\"this is\\\\n    a\\\\n    description\\",
+    \\"message\\": \\"this is a message\\"
+  },
   \\"trailing.ws\\": {
     \\"description\\": \\"Whitespace\\",
     \\"message\\": \\"Some whitespace\\"
@@ -657,6 +758,22 @@ Object {
     \\"developer_comment\\": \\"foo\\",
     \\"string\\": \\"formatted message\\"
   },
+  \\"inline.linebreak\\": {
+    \\"developer_comment\\": \\"foo\\\\n\\\\t\\\\t\\\\t\\\\t\\\\t\\\\tbar\\",
+    \\"string\\": \\"formatted message with linebreak\\"
+  },
+  \\"linebreak\\": {
+    \\"developer_comment\\": \\"this is\\\\na\\\\ndescription\\",
+    \\"string\\": \\"this is a message\\"
+  },
+  \\"newline\\": {
+    \\"developer_comment\\": \\"this is     a     description\\",
+    \\"string\\": \\"this is a message\\"
+  },
+  \\"templateLinebreak\\": {
+    \\"developer_comment\\": \\"this is\\\\n    a\\\\n    description\\",
+    \\"string\\": \\"this is a message\\"
+  },
   \\"trailing.ws\\": {
     \\"developer_comment\\": \\"Whitespace\\",
     \\"string\\": \\"Some whitespace\\"
@@ -675,6 +792,70 @@ Object {
   "f6d14": Object {
     "defaultMessage": "in template",
     "description": "in template desc",
+  },
+}
+`;
+
+exports[`whitespace and newlines should be preserved 1`] = `
+Object {
+  "stderr": "",
+  "stdout": "",
+}
+`;
+
+exports[`whitespace and newlines should be preserved 2`] = `
+Object {
+  "ae494": Object {
+    "defaultMessage": "No ID",
+    "description": "no ID",
+  },
+  "app.home.kittens": Object {
+    "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+    "description": "Counts kittens",
+  },
+  "c63ed": Object {
+    "defaultMessage": "No Desc",
+  },
+  "escaped.apostrophe": Object {
+    "defaultMessage": "A quoted value ''{value}'",
+    "description": "Escaped apostrophe",
+  },
+  "foo.bar.baz": Object {
+    "defaultMessage": "Hello World!",
+    "description": "The default message",
+  },
+  "foo.bar.biff": Object {
+    "defaultMessage": "Hello Nurse!",
+    "description": "Another message",
+  },
+  "inline": Object {
+    "defaultMessage": "formatted message",
+    "description": "foo",
+  },
+  "inline.linebreak": Object {
+    "defaultMessage": "formatted message with linebreak",
+    "description": "foo
+						bar",
+  },
+  "linebreak": Object {
+    "defaultMessage": "this is a message",
+    "description": "this is
+a
+description",
+  },
+  "newline": Object {
+    "defaultMessage": "this is a message",
+    "description": "this is     a     description",
+  },
+  "templateLinebreak": Object {
+    "defaultMessage": "this is a message",
+    "description": "this is
+    a
+    description",
+  },
+  "trailing.ws": Object {
+    "defaultMessage": "Some whitespace",
+    "description": "Whitespace",
   },
 }
 `;

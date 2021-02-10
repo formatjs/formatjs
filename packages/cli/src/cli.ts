@@ -105,6 +105,10 @@ works. This option does not do that so it's less safe.`,
 
       and with option \`{pragma: "intl-meta"}\`, we'll parse out \`// @intl-meta project:my-custom-project\` into \`{project: 'my-custom-project'}\` in the result file.`
     )
+    .option(
+      '--preserve-whitespace',
+      'Whether to preserve whitespace and newlines.'
+    )
     .action(async (files: readonly string[], cmdObj: ExtractCLIOptions) => {
       const processedFiles = [];
       for (const f of files) {
@@ -129,6 +133,7 @@ works. This option does not do that so it's less safe.`,
         // It is possible that the glob pattern does NOT match anything.
         // But so long as the glob pattern is provided, don't read from stdin.
         readFromStdin: files.length === 0,
+        preserveWhitespace: cmdObj.preserveWhitespace,
       });
       process.exit(0);
     });
