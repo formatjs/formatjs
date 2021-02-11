@@ -98,10 +98,10 @@ function getICUMessageValue(
     return '';
   }
   let message = getMessageDescriptorValue(messagePath);
-		
-	if (!preserveWhitespace) {
-		message = message.trim().replace(/\s+/gm, ' ');
-	}
+
+  if (!preserveWhitespace) {
+    message = message.trim().replace(/\s+/gm, ' ');
+  }
 
   try {
     parse(message);
@@ -200,9 +200,13 @@ function evaluateMessageDescriptor(
   preserveWhitespace?: OptionsSchema['preserveWhitespace']
 ) {
   let id = getMessageDescriptorValue(descriptorPath.id);
-  const defaultMessage = getICUMessageValue(descriptorPath.defaultMessage, {
-    isJSXSource,
-  }, preserveWhitespace);
+  const defaultMessage = getICUMessageValue(
+    descriptorPath.defaultMessage,
+    {
+      isJSXSource,
+    },
+    preserveWhitespace
+  );
   const description = getMessageDescriptorValue(descriptorPath.description);
 
   if (overrideIdFn) {
@@ -402,8 +406,8 @@ export default declare((api: any, options: OptionsSchema) => {
           removeDefaultMessage,
           idInterpolationPattern,
           overrideIdFn,
-					ast,
-					preserveWhitespace,
+          ast,
+          preserveWhitespace,
         } = opts;
         if (wasExtracted(path)) {
           return;
@@ -452,8 +456,8 @@ export default declare((api: any, options: OptionsSchema) => {
               true,
               filename,
               idInterpolationPattern,
-							overrideIdFn,
-							preserveWhitespace
+              overrideIdFn,
+              preserveWhitespace
             );
 
             storeMessage(
@@ -548,8 +552,8 @@ export default declare((api: any, options: OptionsSchema) => {
           idInterpolationPattern,
           removeDefaultMessage,
           additionalFunctionNames = [],
-					ast,
-					preserveWhitespace,
+          ast,
+          preserveWhitespace,
         } = opts;
         const callee = path.get('callee');
 
@@ -587,7 +591,7 @@ export default declare((api: any, options: OptionsSchema) => {
             filename,
             idInterpolationPattern,
             overrideIdFn,
-						preserveWhitespace
+            preserveWhitespace
           );
           storeMessage(descriptor, messageDescriptor, opts, filename, messages);
 
