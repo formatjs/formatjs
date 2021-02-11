@@ -44,6 +44,9 @@ const TESTS: Record<string, OptionsSchema> = {
   removeDefaultMessage: {
     removeDefaultMessage: true,
   },
+  defineMessagesPreserveWhitespace: {
+    preserveWhitespace: true,
+  },
 };
 
 describe('emit asserts for: ', () => {

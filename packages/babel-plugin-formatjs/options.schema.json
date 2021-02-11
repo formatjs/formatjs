@@ -11,7 +11,8 @@
     "additionalFunctionNames": {"type": "array", "items": {"type": "string"}},
     "pragma": {"type": "string"},
     "extractSourceLocation": {"type": "boolean"},
-    "ast": {"type": "boolean"}
+    "ast": {"type": "boolean"},
+    "preserveWhitespace": {"type": "boolean"}
   },
   "additionalProperties": false
 }
