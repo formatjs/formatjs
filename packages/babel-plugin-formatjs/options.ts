@@ -14,4 +14,5 @@ export interface OptionsSchema {
   pragma?: string;
   extractSourceLocation?: boolean;
   ast?: boolean;
+  preserveWhitespace?: boolean;
 }

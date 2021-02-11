@@ -323,6 +323,128 @@ export default class Foo extends Component {
 }
 `;
 
+exports[`emit asserts for:  defineMessagesPreserveWhitespace 1`] = `
+Object {
+  "code": "// @react-intl project:amazing
+import React, { Component } from 'react';
+import { defineMessages, FormattedMessage } from 'react-intl';
+const msgs = defineMessages({
+  header: {
+    \\"id\\": \\"foo.bar.baz\\",
+    \\"defaultMessage\\": \\"Hello World!\\"
+  },
+  content: {
+    \\"id\\": \\"foo.bar.biff\\",
+    \\"defaultMessage\\": \\"Hello Nurse!\\"
+  },
+  kittens: {
+    \\"id\\": \\"app.home.kittens\\",
+    \\"defaultMessage\\": \\"{count, plural, =0 {😭} one {# kitten} other {# kittens}}\\"
+  },
+  trailingWhitespace: {
+    \\"id\\": \\"trailing.ws\\",
+    \\"defaultMessage\\": \\"   Some whitespace   \\"
+  },
+  escaped: {
+    \\"id\\": \\"escaped.apostrophe\\",
+    \\"defaultMessage\\": \\"A quoted value ''{value}'\\"
+  },
+  newline: {
+    \\"id\\": \\"newline\\",
+    \\"defaultMessage\\": \\"this is     a message\\"
+  },
+  linebreak: {
+    \\"id\\": \\"linebreak\\",
+    \\"defaultMessage\\": \\"this is\\\\na message\\"
+  },
+  templateLinebreak: {
+    \\"id\\": \\"templateLinebreak\\",
+    \\"defaultMessage\\": \\"this is\\\\n    a message\\"
+  }
+});
+export default class Foo extends Component {
+  render() {
+    return <div>
+        <h1>
+          <FormattedMessage {...msgs.header} />
+        </h1>
+        <p>
+          <FormattedMessage {...msgs.content} />
+        </p>
+        <p>
+          <FormattedMessage {...msgs.kittens} />
+        </p>
+        <p>
+          <FormattedMessage id=\\"inline.linebreak\\" defaultMessage=\\"formatted message
+						with linebreak\\" />
+        </p>
+      </div>;
+  }
+
+}",
+  "data": Object {
+    "messages": Array [
+      Object {
+        "defaultMessage": "Hello World!",
+        "description": "The default message",
+        "id": "foo.bar.baz",
+      },
+      Object {
+        "defaultMessage": "Hello Nurse!",
+        "description": "Another message",
+        "id": "foo.bar.biff",
+      },
+      Object {
+        "defaultMessage": "{count, plural, =0 {😭} one {# kitten} other {# kittens}}",
+        "description": "Counts kittens",
+        "id": "app.home.kittens",
+      },
+      Object {
+        "defaultMessage": "   Some whitespace   ",
+        "description": "Whitespace",
+        "id": "trailing.ws",
+      },
+      Object {
+        "defaultMessage": "A quoted value ''{value}'",
+        "description": "Escaped apostrophe",
+        "id": "escaped.apostrophe",
+      },
+      Object {
+        "defaultMessage": "this is     a message",
+        "description": "this is     a     description",
+        "id": "newline",
+      },
+      Object {
+        "defaultMessage": "this is
+a message",
+        "description": "this is
+a
+description",
+        "id": "linebreak",
+      },
+      Object {
+        "defaultMessage": "this is
+    a message",
+        "description": "this is
+    a
+    description",
+        "id": "templateLinebreak",
+      },
+      Object {
+        "defaultMessage": "formatted message
+						with linebreak",
+        "description": "foo
+						bar",
+        "id": "inline.linebreak",
+      },
+    ],
+    "meta": Object {
+      "project": "amazing",
+    },
+  },
+}
+`;
+
 exports[`emit asserts for:  descriptionsAsObjects 1`] = `
 Object {
   "code": "import React, { Component } from 'react';
