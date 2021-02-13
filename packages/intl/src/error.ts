@@ -1,6 +1,6 @@
 import {MessageDescriptor} from './types';
 
-export const enum IntlErrorCode {
+export enum IntlErrorCode {
   FORMAT_ERROR = 'FORMAT_ERROR',
   UNSUPPORTED_FORMATTER = 'UNSUPPORTED_FORMATTER',
   INVALID_CONFIG = 'INVALID_CONFIG',
