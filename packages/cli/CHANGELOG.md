@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@3.0.5...@formatjs/cli@3.1.0) (2021-02-13)
+
+
+### Features
+
+* **@formatjs/cli:** support preserving whitespace and newlines ([a1b31bd](https://github.com/formatjs/formatjs/commit/a1b31bdd5ab203db463a101dbb3ae06a76cac7a3))
+
+
+
+
+
 ## [3.0.5](https://github.com/formatjs/formatjs/compare/@formatjs/cli@3.0.4...@formatjs/cli@3.0.5) (2021-01-27)
 
 **Note:** Version bump only for package @formatjs/cli

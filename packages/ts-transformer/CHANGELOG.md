@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.0.4...@formatjs/ts-transformer@3.1.0) (2021-02-13)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** support preserving whitespace and newlines ([99e3b89](https://github.com/formatjs/formatjs/commit/99e3b896c2f6ffe4bf805379be44ee772dded806))
+
+
+
+
+
 ## [3.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.0.3...@formatjs/ts-transformer@3.0.4) (2021-01-27)
 
 **Note:** Version bump only for package @formatjs/ts-transformer

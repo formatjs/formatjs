@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.1.0](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@9.0.4...babel-plugin-formatjs@9.1.0) (2021-02-13)
+
+
+### Features
+
+* **babel-plugin-formatjs:** support preserving whitespace and newlines ([0172f46](https://github.com/formatjs/formatjs/commit/0172f46e3e4b554c25579bb7c3563b2879522d91))
+
+
+
+
+
 ## [9.0.4](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@9.0.3...babel-plugin-formatjs@9.0.4) (2021-01-27)
 
 **Note:** Version bump only for package babel-plugin-formatjs

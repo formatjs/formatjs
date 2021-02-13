@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.6.7...@formatjs/intl@1.6.8) (2021-02-13)
+
+
+### Bug Fixes
+
+* **@formatjs/intl:** support isolatedModules ([#2602](https://github.com/formatjs/formatjs/issues/2602)) ([b7284f4](https://github.com/formatjs/formatjs/commit/b7284f428db26e2345775f3dc652d1119ef91670))
+
+
+
+
+
 ## [1.6.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.6.6...@formatjs/intl@1.6.7) (2021-02-09)
 
 
