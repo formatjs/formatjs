@@ -24,20 +24,20 @@ export interface CreateIntlFn<
   (config: C, cache?: IntlCache): S;
 }
 
-function messagesContainAst(
+function messagesContainString(
   messages: Record<string, string> | Record<string, MessageFormatElement[]>
 ): messages is Record<string, MessageFormatElement[]> {
   const firstMessage = messages
     ? messages[Object.keys(messages)[0]]
     : undefined;
 
-  return typeof firstMessage === 'object' && !!firstMessage;
+  return typeof firstMessage === 'string';
 }
 
 function verifyConfigMessages<T = string>(config: OptionalIntlConfig<T>) {
   if (
     config.defaultRichTextElements &&
-    !messagesContainAst(config.messages || {})
+    messagesContainString(config.messages || {})
   ) {
     console.warn(`[@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
 Please consider using "@formatjs/cli" to pre-compile your messages for performance.

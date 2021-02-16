@@ -13,3 +13,14 @@ test('createIntl', function () {
     })
   ).toBe('bar');
 });
+
+test('verify config', function () {
+  const warnFn = jest.spyOn(console, 'warn');
+  expect(warnFn).not.toHaveBeenCalled();
+  createIntl({
+    locale: 'en',
+    messages: {},
+    defaultRichTextElements: {},
+  });
+  expect(warnFn).not.toHaveBeenCalled();
+});
