@@ -216,7 +216,7 @@ Assuming `navigator.language` is `"en-us"`:
 </div>
 ```
 
-**See:** The [**API docs**][api] and [**Component docs**][components] for more details.
+**See:** The [**API docs**](react-intl/api.md) and [**Component docs**](react-intl/components.md) for more details.
 
 # ESM Build
 
