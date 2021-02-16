@@ -1,4 +1,4 @@
-import {OptionalIntlConfig, IntlCache, IntlShape, IntlConfig} from './types';
+import {OptionalIntlConfig, IntlCache, IntlShape} from './types';
 import {createFormatters, DEFAULT_INTL_CONFIG} from './utils';
 import {InvalidConfigError, MissingDataError} from './error';
 import {formatNumber, formatNumberToParts} from './number';
@@ -53,13 +53,7 @@ For more details see https://formatjs.io/docs/getting-started/message-distributi
 export function createIntl<T = string>(
   config: OptionalIntlConfig<T>,
   cache?: IntlCache
-): IntlShape<T> & {
-  /**
-   * This is not really public, primarily for ember-intl
-   * @param messages Additional messages
-   */
-  __addMessages(messages: IntlConfig<T>['messages']): void;
-} {
+): IntlShape<T> {
   const formatters = createFormatters(cache);
   const resolvedConfig = {
     ...DEFAULT_INTL_CONFIG,
@@ -154,28 +148,5 @@ export function createIntl<T = string>(
       resolvedConfig,
       formatters.getDisplayNames
     ),
-    __addMessages(
-      messages: Record<string, string> | Record<string, MessageFormatElement[]>
-    ) {
-      const existingMessagesContainAst = messagesContainAst(
-        resolvedConfig.messages
-      );
-      const mergingMessagesContainAst = messagesContainAst(messages);
-      if (
-        config.onError &&
-        ((existingMessagesContainAst && !mergingMessagesContainAst) ||
-          (!existingMessagesContainAst && mergingMessagesContainAst))
-      ) {
-        config.onError(
-          new InvalidConfigError(
-            `Cannot mix AST & non-AST messages for locale ${resolvedConfig.locale}`
-          )
-        );
-      }
-
-      Object.keys(messages).forEach(k => {
-        resolvedConfig.messages[k] = messages[k];
-      });
-    },
   };
 }
