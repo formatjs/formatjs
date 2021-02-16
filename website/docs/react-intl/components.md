@@ -643,7 +643,11 @@ By allowing embedding XML tag we want to make sure contextual information is not
   defaultMessage="To buy a shoe, <a>visit our website</a> and <cta>buy a shoe</cta>"
   values={{
     a: chunks => (
-      <a class="external_link" target="_blank" href="https://www.shoe.com/">
+      <a
+        class="external_link"
+        target="_blank"
+        href="https://www.example.com/shoe"
+      >
         {chunks}
       </a>
     ),
@@ -662,7 +666,11 @@ Since rich text formatting allows embedding `ReactElement`, in function as the c
   defaultMessage="To buy a shoe, <a>visit our website</a> and <cta>buy a shoe</cta>"
   values={{
     a: chunks => (
-      <a class="external_link" target="_blank" href="https://www.shoe.com/">
+      <a
+        class="external_link"
+        target="_blank"
+        href="https://www.example.com/shoe"
+      >
         {chunks}
       </a>
     ),
