@@ -3,20 +3,7 @@ export interface DateTimeFormatOptions extends Intl.DateTimeFormatOptions {
   dateStyle?: 'full' | 'long' | 'medium' | 'short';
   timeStyle?: 'full' | 'long' | 'medium' | 'short';
   fractionalSecondDigits?: number;
-  calendar?:
-    | 'buddhist'
-    | 'chinese'
-    | 'coptic'
-    | 'ethiopia'
-    | 'ethiopic'
-    | 'gregory'
-    | 'hebrew'
-    | 'indian'
-    | 'islamic'
-    | 'iso8601'
-    | 'japanese'
-    | 'persian'
-    | 'roc';
+  calendar?: 'gregory';
   // dayPeriod?: 'narrow' | 'short' | 'long';
   numberingSystem?: string;
 }
