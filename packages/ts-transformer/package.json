@@ -17,16 +17,12 @@
     "react-intl"
   ],
   "dependencies": {
-    "intl-messageformat-parser": "6.3.3"
-  },
-  "devDependencies": {
+    "intl-messageformat-parser": "6.3.3",
     "tslib": "^2.0.1",
     "typescript": "^4.0"
   },
   "peerDependencies": {
-    "ts-jest": "^26.4.0",
-    "tslib": "^2.0.1",
-    "typescript": "^4.0"
+    "ts-jest": "^26.4.0"
   },
   "peerDependenciesMeta": {
     "ts-jest": {
