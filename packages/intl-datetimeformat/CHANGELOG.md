@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@3.2.7...@formatjs/intl-datetimeformat@3.2.8) (2021-02-21)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** handle Etc/GMT[+-]X, fix [#2609](https://github.com/formatjs/formatjs/issues/2609) ([7ddc417](https://github.com/formatjs/formatjs/commit/7ddc417be7831a4329770a8563138574eaf53350))
+
+
+
+
+
 ## [3.2.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@3.2.5...@formatjs/intl-datetimeformat@3.2.7) (2021-02-02)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat

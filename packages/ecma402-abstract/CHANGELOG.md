@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.3](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.5.2...@formatjs/ecma402-abstract@1.5.3) (2021-02-21)
+
+
+### Bug Fixes
+
+* **@formatjs/ecma402-abstract:** limit accepted calendar values to 'gregory' ([#2618](https://github.com/formatjs/formatjs/issues/2618)) ([fb3e462](https://github.com/formatjs/formatjs/commit/fb3e46281e18d41e3cc42ba77ec418f244ec84c1))
+
+
+
+
+
 ## [1.5.2](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.5.1...@formatjs/ecma402-abstract@1.5.2) (2021-01-27)
 
 

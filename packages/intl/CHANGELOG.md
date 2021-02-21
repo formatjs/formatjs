@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.6.8...@formatjs/intl@1.7.0) (2021-02-21)
+
+
+### Bug Fixes
+
+* **@formatjs/intl:** fix warning logic for AST, fix [#2610](https://github.com/formatjs/formatjs/issues/2610) ([04086bf](https://github.com/formatjs/formatjs/commit/04086bf939de06b0feff15d9bb54b2ae9aa3bc36))
+
+
+### Features
+
+* **@formatjs/intl:** rm __addMessages private method ([4337cc5](https://github.com/formatjs/formatjs/commit/4337cc5c5169793dbc22c8a4d9f17bee1527490c))
+
+
+
+
+
 ## [1.6.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.6.7...@formatjs/intl@1.6.8) (2021-02-13)
 
 

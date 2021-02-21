@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.1.0...@formatjs/ts-transformer@3.1.1) (2021-02-21)
+
+
+### Bug Fixes
+
+* **@formatjs/ts-transformer:** move typescript & tslib to peerDependencies ([#2621](https://github.com/formatjs/formatjs/issues/2621)) ([a0baae3](https://github.com/formatjs/formatjs/commit/a0baae3c402cd40e5097bc5aa1adb52a4bd566a3)), closes [#2620](https://github.com/formatjs/formatjs/issues/2620)
+
+
+
+
+
 # [3.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.0.4...@formatjs/ts-transformer@3.1.0) (2021-02-13)
 
 

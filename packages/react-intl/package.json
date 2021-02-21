@@ -1,6 +1,6 @@
 {
   "name": "react-intl",
-  "version": "5.12.3",
+  "version": "5.12.4",
   "description": "Internationalize React apps. This library provides React components and an API to format dates, numbers, and strings, including pluralization and handling translations.",
   "keywords": [
     "intl",
@@ -128,16 +128,16 @@
   "types": "index.d.ts",
   "sideEffects": false,
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.5.2",
-    "@formatjs/intl": "1.6.8",
-    "@formatjs/intl-displaynames": "4.0.5",
-    "@formatjs/intl-listformat": "5.0.5",
-    "@formatjs/intl-relativetimeformat": "8.0.4",
+    "@formatjs/ecma402-abstract": "1.5.3",
+    "@formatjs/intl": "1.7.0",
+    "@formatjs/intl-displaynames": "4.0.6",
+    "@formatjs/intl-listformat": "5.0.6",
+    "@formatjs/intl-relativetimeformat": "8.0.5",
     "@types/hoist-non-react-statics": "^3.3.1",
     "fast-memoize": "^2.5.2",
     "hoist-non-react-statics": "^3.3.2",
-    "intl-messageformat": "9.4.7",
-    "intl-messageformat-parser": "6.3.2",
+    "intl-messageformat": "9.4.8",
+    "intl-messageformat-parser": "6.3.3",
     "shallow-equal": "^1.2.1",
     "tslib": "^2.0.1"
   },
