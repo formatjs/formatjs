@@ -248,7 +248,7 @@ defineProperty(DateTimeFormat.prototype, 'formatRangeToParts', {
     startDate: number | Date,
     endDate: number | Date
   ) {
-    let dtf = this;
+    const dtf = this;
     if (typeof dtf !== 'object') {
       throw new TypeError();
     }
@@ -271,7 +271,7 @@ defineProperty(DateTimeFormat.prototype, 'formatRange', {
     startDate: number | Date,
     endDate: number | Date
   ) {
-    let dtf = this;
+    const dtf = this;
     if (typeof dtf !== 'object') {
       throw new TypeError();
     }

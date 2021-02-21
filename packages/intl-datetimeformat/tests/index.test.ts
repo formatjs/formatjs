@@ -231,4 +231,40 @@ describe('Intl.DateTimeFormat', function () {
     });
     expect(dtf.format(date)).toBe('2020年2月01日下午06:10:10');
   });
+  it('test #2609, should handle Etc/GMT-14 short', function () {
+    const date = new Date(2020, 1, 1, 10, 10, 10, 0);
+    const dtf = new DateTimeFormat('zh-Hans', {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+      hourCycle: 'h12',
+      localeMatcher: 'lookup',
+      formatMatcher: 'best fit',
+      timeZone: 'Etc/GMT-14',
+      timeZoneName: 'short',
+    });
+    expect(dtf.format(date)).toBe('2020年2月02日GMT+14 上午12:10:10');
+  });
+  it('test #2609, should handle Etc/GMT-14 long', function () {
+    const date = new Date(2020, 1, 1, 10, 10, 10, 0);
+    const dtf = new DateTimeFormat('zh-Hans', {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+      hourCycle: 'h12',
+      localeMatcher: 'lookup',
+      formatMatcher: 'best fit',
+      timeZone: 'Etc/GMT-14',
+      timeZoneName: 'long',
+    });
+    expect(dtf.format(date)).toBe('2020年2月02日GMT+14:00 上午12:10:10');
+  });
 });

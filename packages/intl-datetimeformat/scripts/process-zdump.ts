@@ -344,6 +344,46 @@ function processZone(
   }
 }
 
+const SPECIAL_CASES = [
+  'Etc/GMT-14',
+  'Etc/GMT-13',
+  'Etc/GMT-12',
+  'Etc/GMT-11',
+  'Etc/GMT-10',
+  'Etc/GMT-9',
+  'Etc/GMT-8',
+  'Etc/GMT-7',
+  'Etc/GMT-6',
+  'Etc/GMT-5',
+  'Etc/GMT-4',
+  'Etc/GMT-3',
+  'Etc/GMT-2',
+  'Etc/GMT-1',
+  'Etc/GMT+1',
+  'Etc/GMT+2',
+  'Etc/GMT+3',
+  'Etc/GMT+4',
+  'Etc/GMT+5',
+  'Etc/GMT+6',
+  'Etc/GMT+7',
+  'Etc/GMT+8',
+  'Etc/GMT+9',
+  'Etc/GMT+10',
+  'Etc/GMT+11',
+  'Etc/GMT+12',
+].map(tz => {
+  const offsetInHours = tz.split(/([-+]\d{1,2})/)[1];
+  const offsetInHoursNum = +offsetInHours;
+  const abbrv =
+    offsetInHoursNum > 0
+      ? `GMT-${offsetInHoursNum}`
+      : `GMT+${-offsetInHoursNum}`;
+
+  return `zic/${tz}  Mon Jan 1 00:00:00 0000 UTC = doesnotmatter ${abbrv} isdst=0 gmtoff=${
+    -offsetInHoursNum * 3600
+  }`;
+});
+
 async function main(args: minimist.ParsedArgs) {
   const {_: files, polyfill, output, golden} = args;
   const inputs = files.slice(2);
@@ -362,7 +402,7 @@ async function main(args: minimist.ParsedArgs) {
     inputs.map((input: string) => readFile(input, 'utf8'))
   );
 
-  processZone(contents.join('\n'), data, golden);
+  processZone([contents, ...SPECIAL_CASES].join('\n'), data, golden);
 
   if (polyfill) {
     outputFileSync(
