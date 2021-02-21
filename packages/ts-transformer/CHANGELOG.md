@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.1.1...@formatjs/ts-transformer@3.1.2) (2021-02-21)
+
+
+### Reverts
+
+* Revert "fix(@formatjs/ts-transformer): move typescript & tslib to peerDependencies (#2621)" ([af04601](https://github.com/formatjs/formatjs/commit/af04601cca78a1385f2859e4d4a5633c85adf904)), closes [#2621](https://github.com/formatjs/formatjs/issues/2621) [#2623](https://github.com/formatjs/formatjs/issues/2623)
+
+
+
+
+
 ## [3.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.1.0...@formatjs/ts-transformer@3.1.1) (2021-02-21)
 
 
