@@ -21,8 +21,9 @@
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
     "declarationMap": true,
-    "jsx": "react",
+    "isolatedModules": true,
     "importHelpers": true,
+    "jsx": "react",
     "paths": {
       "@formatjs/*": [
         // k8 is 64-bit GNU/Linux output location, darwin is macOS.

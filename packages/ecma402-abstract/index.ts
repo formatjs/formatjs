@@ -47,12 +47,12 @@ export {
   getInternalSlot,
   getMultiInternalSlots,
   isLiteralPart,
-  LiteralPart,
   setInternalSlot,
   setMultiInternalSlots,
   getMagnitude,
   defineProperty,
 } from './utils';
+export type {LiteralPart} from './utils';
 
 export {isMissingLocaleDataError} from './data';
 export * from './types/relative-time';
@@ -62,5 +62,5 @@ export * from './types/plural-rules';
 export * from './types/number';
 export * from './types/displaynames';
 export {invariant} from './utils';
-export {LocaleData} from './types/core';
+export type {LocaleData} from './types/core';
 export * from './262';
