@@ -407,7 +407,7 @@ type FormatDisplayNameOptions = {
 }
 
 function formatDisplayName(
-  value: string | number | object,
+  value: string | number | Record<string, unknown>,
   options?: FormatDisplayNameOptions
 ): string | undefined
 ```

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import '@formatjs/intl-getcanonicallocales/polyfill';
 import '@formatjs/intl-locale/polyfill';
-import {DisplayNames} from '../';
+import {DisplayNames} from '..';
 
 import * as en from './locale-data/en.json';
 import * as zh from './locale-data/zh.json';
@@ -26,6 +26,12 @@ describe('.of()', () => {
         'zh-Hans-Xy'
       )
     ).toBe('简体中文（XY）');
+  });
+
+  it('find script correctly', function () {
+    expect(
+      new DisplayNames('zh', {type: 'script', fallback: 'code'}).of('arab')
+    ).toBe('阿拉伯文');
   });
 
   describe('with fallback set to "none"', () => {

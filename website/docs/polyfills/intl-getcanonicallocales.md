@@ -38,6 +38,15 @@ yarn add @formatjs/intl-getcanonicallocales
 
 ## Usage
 
+### Via polyfill.io
+
+You can use [polyfill.io URL Builder](https://polyfill.io/v3/url-builder/) to create a polyfill script tag for `Intl.GetCanonicalLocales`. For example:
+
+```html
+<!-- Polyfill Intl.GetCanonicalLocales & its dependencies -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=Intl.GetCanonicalLocales"></script>
+```
+
 ### Simple
 
 ```tsx

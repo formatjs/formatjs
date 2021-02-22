@@ -47,6 +47,15 @@ Everything in <https://github.com/tc39/proposal-intl-displaynames>.
 
 ## Usage
 
+### Via polyfill.io
+
+You can use [polyfill.io URL Builder](https://polyfill.io/v3/url-builder/) to create a polyfill script tag for `Intl.DisplayNames`. By default the created URL does not come with any locale data. In order to add locale data, append `Intl.DisplayNames.~locale.<locale>` to your list of features. For example:
+
+```html
+<!-- Polyfill Intl.DisplayNames, its dependencies & `en` locale data -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=Intl.DisplayNames,Intl.DisplayNames.~locale.en"></script>
+```
+
 ### Simple
 
 ```tsx

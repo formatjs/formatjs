@@ -17,3 +17,7 @@ Our current list of polyfills includes:
 - [Intl.DateTimeFormat](polyfills/intl-datetimeformat.md) (ES2020)
 
 ![Polyfill Hierarchy](/img/polyfills.svg)
+
+# polyfill.io Integration
+
+For basic use cases, we recommend using [polyfill.io](https://polyfill.io/) or [polyfill-library](https://github.com/Financial-Times/polyfill-library) to generate polyfill bundle since it automatically resolves the dependencies above for you.

@@ -509,7 +509,7 @@ has `props` that correspond to `DisplayNameOptions`. You might need a [polyfill]
 ```ts
 props: FormatDisplayNameOptions &
   {
-    value: string | number | object,
+    value: string | number | Record<string, unknown>,
   }
 ```
 

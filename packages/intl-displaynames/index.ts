@@ -12,6 +12,7 @@ import {
   ToString,
   CanonicalizeLocaleList,
   ToObject,
+  CanonicalCodeForDisplayNames,
 } from '@formatjs/ecma402-abstract';
 
 export interface DisplayNamesOptions {
@@ -116,7 +117,7 @@ export class DisplayNames {
   static supportedLocalesOf(
     locales?: string | string[],
     options?: Pick<DisplayNamesOptions, 'localeMatcher'>
-  ) {
+  ): string[] {
     return SupportedLocales(
       DisplayNames.availableLocales,
       CanonicalizeLocaleList(locales),
@@ -124,7 +125,7 @@ export class DisplayNames {
     );
   }
 
-  static __addLocaleData(...data: DisplayNamesLocaleData[]) {
+  static __addLocaleData(...data: DisplayNamesLocaleData[]): void {
     for (const {data: d, locale} of data) {
       const minimizedLocale = new (Intl as any).Locale(locale)
         .minimize()
@@ -140,7 +141,7 @@ export class DisplayNames {
     }
   }
 
-  of(code: string | number | object): string | undefined {
+  of(code: string | number | Record<string, unknown>): string | undefined {
     checkReceiver(this, 'of');
     const type = getSlot(this, 'type');
     const codeAsString = ToString(code);
@@ -156,38 +157,20 @@ export class DisplayNames {
     );
 
     // Canonicalize the case.
-    let canonicalCode: string;
+    let canonicalCode = CanonicalCodeForDisplayNames(type, codeAsString);
+
     // This is only used to store extracted language region.
     let regionSubTag: string | undefined;
-    switch (type) {
-      // Normalize the locale id and remove the region.
-      case 'language': {
-        canonicalCode = CanonicalizeLocaleList(codeAsString)[0];
-        const regionMatch = /-([a-z]{2}|\d{3})\b/i.exec(canonicalCode);
-        if (regionMatch) {
-          // Remove region subtag
-          canonicalCode =
-            canonicalCode.substring(0, regionMatch.index) +
-            canonicalCode.substring(regionMatch.index + regionMatch[0].length);
-          regionSubTag = regionMatch[1];
-        }
-        break;
-      }
-      // currency code should be all upper-case.
-      case 'currency':
-        canonicalCode = codeAsString.toUpperCase();
-        break;
-      // script code should be title case
-      case 'script':
+    if (type === 'language') {
+      const regionMatch = /-([a-z]{2}|\d{3})\b/i.exec(canonicalCode);
+      if (regionMatch) {
+        // Remove region subtag
         canonicalCode =
-          codeAsString[0] + codeAsString.substring(1).toLowerCase();
-        break;
-      // region shold be all upper-case
-      case 'region':
-        canonicalCode = codeAsString.toUpperCase();
-        break;
+          canonicalCode.substring(0, regionMatch.index) +
+          canonicalCode.substring(regionMatch.index + regionMatch[0].length);
+        regionSubTag = regionMatch[1];
+      }
     }
-
     const typesData = localeData.types[type];
     // If the style of choice does not exist, fallback to "long".
     const name =

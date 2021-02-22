@@ -89,7 +89,7 @@ export const FormattedList: React.FC<
 > = createFormattedComponent('formatList');
 export const FormattedDisplayName: React.FC<
   DisplayNamesOptions & {
-    value: string | number | object;
+    value: string | number | Record<string, unknown>;
   }
 > = createFormattedComponent('formatDisplayName');
 export const FormattedDateParts: React.FC<

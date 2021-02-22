@@ -15,7 +15,7 @@ function isUnicodeScriptSubtag(script: string): boolean {
 export function CanonicalCodeForDisplayNames(
   type: 'language' | 'region' | 'script' | 'currency',
   code: string
-) {
+): string {
   if (type === 'language') {
     return CanonicalizeLocaleList([code])[0];
   }
@@ -29,7 +29,7 @@ export function CanonicalCodeForDisplayNames(
     if (!isUnicodeScriptSubtag(code)) {
       throw RangeError('invalid script');
     }
-    return `${code[0].toUpperCase()}${code.slice(1)}`;
+    return `${code[0].toUpperCase()}${code.slice(1).toLowerCase()}`;
   }
   invariant(type === 'currency', 'invalid type');
   if (!IsWellFormedCurrencyCode(code)) {
