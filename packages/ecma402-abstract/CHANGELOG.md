@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.4](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.5.3...@formatjs/ecma402-abstract@1.5.4) (2021-02-22)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** fix script canonicalization, fix [#2622](https://github.com/formatjs/formatjs/issues/2622) ([be07282](https://github.com/formatjs/formatjs/commit/be072825c3d8f5171b3a2aed8f382f6fde6b12ca))
+
+
+
+
+
 ## [1.5.3](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.5.2...@formatjs/ecma402-abstract@1.5.3) (2021-02-21)
 
 

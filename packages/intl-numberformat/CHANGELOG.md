@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.1.5...@formatjs/intl-numberformat@6.1.6) (2021-02-22)
+
+**Note:** Version bump only for package @formatjs/intl-numberformat
+
+
+
+
+
 ## [6.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.1.4...@formatjs/intl-numberformat@6.1.5) (2021-02-21)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

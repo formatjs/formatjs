@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.12.5](https://github.com/formatjs/formatjs/compare/react-intl@5.12.4...react-intl@5.12.5) (2021-02-22)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** fix script canonicalization, fix [#2622](https://github.com/formatjs/formatjs/issues/2622) ([be07282](https://github.com/formatjs/formatjs/commit/be072825c3d8f5171b3a2aed8f382f6fde6b12ca))
+
+
+
+
+
 ## [5.12.4](https://github.com/formatjs/formatjs/compare/react-intl@5.12.3...react-intl@5.12.4) (2021-02-21)
 
 **Note:** Version bump only for package react-intl

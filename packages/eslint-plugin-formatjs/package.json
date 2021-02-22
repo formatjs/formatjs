@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-formatjs",
-  "version": "2.12.3",
+  "version": "2.12.4",
   "description": "ESLint plugin for formatjs",
   "main": "index.js",
   "repository": {
@@ -20,12 +20,12 @@
   },
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "dependencies": {
-    "@formatjs/ts-transformer": "3.1.2",
+    "@formatjs/ts-transformer": "3.1.3",
     "@types/emoji-regex": "^8.0.0",
     "@types/eslint": "^7.2.0",
     "@typescript-eslint/typescript-estree": "^3.6.0",
     "emoji-regex": "^9.0.0",
-    "intl-messageformat-parser": "6.3.3",
+    "intl-messageformat-parser": "6.3.4",
     "tslib": "^2.0.1"
   },
   "peerDependencies": {
