@@ -668,4 +668,4 @@ function getMessagesObjectFromExpression(
   }
   return currentPath;
 }
-export {OptionsSchema} from './options';
+export type {OptionsSchema} from './options';

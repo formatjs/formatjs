@@ -76,7 +76,7 @@ export type RangePatterns = Pick<
   patternParts: Array<RangePatternPart>;
 };
 
-export const enum RangePatternType {
+export enum RangePatternType {
   startRange = 'startRange',
   shared = 'shared',
   endRange = 'endRange',

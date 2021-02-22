@@ -17,7 +17,6 @@ function walk(node: TemplateChildNode, visitor: (node: any) => void) {
     return;
   }
   visitor(node);
-
   if (node.type === NodeTypes.INTERPOLATION) {
     visitor(node.content);
   } else {

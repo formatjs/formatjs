@@ -14,7 +14,9 @@ export interface Formatter {
   compareMessages?: Comparator;
 }
 
-export async function resolveBuiltinFormatter(format?: string | Formatter) {
+export async function resolveBuiltinFormatter(
+  format?: string | Formatter
+): Promise<any> {
   if (!format) {
     return defaultFormatter;
   }
@@ -34,6 +36,7 @@ export async function resolveBuiltinFormatter(format?: string | Formatter) {
       return crowdin;
   }
   try {
+    // eslint-disable-next-line import/dynamic-import-chunkname
     return import(resolve(process.cwd(), format));
   } catch (e) {
     console.error(`Cannot resolve formatter ${format}`);

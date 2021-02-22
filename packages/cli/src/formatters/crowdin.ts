@@ -1,4 +1,4 @@
-import {FormatFn, CompileFn} from '../..';
+import {CompileFn, FormatFn} from './default';
 
 export type SmartlingJson = Record<
   string,

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {defineMessages, FormattedMessage} from 'react-intl';
 
-export const enum TestEnum {
+export enum TestEnum {
   FOO = 'foo',
   BAR = 'bar',
 }

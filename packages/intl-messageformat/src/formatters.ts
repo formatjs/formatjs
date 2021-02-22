@@ -45,7 +45,7 @@ export interface Formatters {
   ): Intl.PluralRules;
 }
 
-export const enum PART_TYPE {
+export enum PART_TYPE {
   literal,
   object,
 }

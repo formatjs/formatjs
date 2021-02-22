@@ -21,7 +21,6 @@
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
     "declarationMap": true,
-    "isolatedModules": true,
     "importHelpers": true,
     "jsx": "react",
     "paths": {

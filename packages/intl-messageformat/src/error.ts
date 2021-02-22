@@ -1,4 +1,4 @@
-export const enum ErrorCode {
+export enum ErrorCode {
   // When we have a placeholder but no value to format
   MISSING_VALUE = 'MISSING_VALUE',
   // When value supplied is invalid

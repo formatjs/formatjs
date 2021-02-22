@@ -44,7 +44,7 @@ export enum TYPE {
   tag,
 }
 
-export const enum SKELETON_TYPE {
+export enum SKELETON_TYPE {
   number,
   dateTime,
 }

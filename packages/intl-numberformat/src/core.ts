@@ -83,12 +83,21 @@ export const NumberFormat = function (
   return this;
 } as NumberFormatConstructor;
 
+function formatToParts(this: Intl.NumberFormat, x: number) {
+  return FormatNumericToParts(this, toNumeric(x) as number, {
+    getInternalSlots,
+  });
+}
+
+Object.defineProperty(formatToParts, 'name', {
+  value: 'formatToParts',
+  enumerable: false,
+  writable: false,
+  configurable: true,
+});
+
 defineProperty(NumberFormat.prototype, 'formatToParts', {
-  value: function formatToParts(x: number) {
-    return FormatNumericToParts(this, toNumeric(x) as number, {
-      getInternalSlots,
-    });
-  },
+  value: formatToParts,
 });
 
 defineProperty(NumberFormat.prototype, 'resolvedOptions', {

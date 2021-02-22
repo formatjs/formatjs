@@ -1,4 +1,5 @@
-import {FormatFn, CompileFn, Comparator} from '../..';
+import {Comparator} from 'json-stable-stringify';
+import {CompileFn, FormatFn} from './default';
 
 export interface SmartlingDirectives {
   translate_paths: [
