@@ -115,7 +115,7 @@
     "schema-utils": "^3.0.0",
     "serialize-javascript": "^5.0.0",
     "shallow-equal": "^1.2.1",
-    "terser": "^4.8.0",
+    "terser": "^5.6.0",
     "test262-harness": "^7.3.1",
     "ts-jest": "^26.4.0",
     "ts-node": "^9.0.0",
@@ -180,7 +180,7 @@
   },
   "resolutions": {
     "**/chokidar": "^3.4.2",
-    "terser": "4.8.0"
+    "terser": "5.6.0"
   },
   "author": "Seth Bertalotto <sbertal@verizonmedia.com>",
   "dependencies": {
