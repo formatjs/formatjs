@@ -2,7 +2,7 @@
 
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test")
 load("@build_bazel_rules_nodejs//internal/js_library:js_library.bzl", "js_library")
-load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
+load("@npm//@bazel/esbuild:index.bzl", _esbuild = "esbuild")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//prettier:index.bzl", "prettier", "prettier_test")
 load("@npm//ts-node:index.bzl", "ts_node")
@@ -80,7 +80,7 @@ def generate_src_file(name, args, data, src, visibility = None):
         visibility = visibility,
     )
 
-def bundle_karma_tests(name, srcs, tests, data = [], deps = [], rollup_deps = []):
+def bundle_karma_tests(name, srcs, tests, data = [], deps = [], esbuild_deps = []):
     """Bundle tests and run karma.
 
     Args:
@@ -89,7 +89,7 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], rollup_deps = []
         tests: test files
         data: data
         deps: src + test deps
-        rollup_deps: deps to package with rollup but not to compile
+        esbuild_deps: deps to package with rollup but not to compile
     """
     ts_project(
         name = "%s-compile" % name,
@@ -110,19 +110,14 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], rollup_deps = []
     BUNDLE_KARMA_TESTS = ["%s-%s.bundled" % (name, f[f.rindex("/") + 1:f.rindex(".")]) for f in tests]
 
     for f in tests:
-        rollup_bundle(
+        esbuild(
             name = "%s-%s.bundled" % (name, f[f.rindex("/") + 1:f.rindex(".")]),
-            srcs = ["%s-compile" % name],
-            config_file = "//:rollup.config.js",
             entry_point = "%s/%s.js" % (name, f[:f.rindex(".")]),
-            format = "umd",
+            format = "iife",
             deps = [
-                "@npm//@rollup/plugin-node-resolve",
-                "@npm//@rollup/plugin-commonjs",
-                "@npm//@rollup/plugin-replace",
-                "@npm//@rollup/plugin-json",
+                ":%s-compile" % name,
                 "@npm//tslib",
-            ] + deps + rollup_deps,
+            ] + deps + esbuild_deps,
         )
 
     native.filegroup(
@@ -171,4 +166,15 @@ def prettier_check(name, srcs, config = "//:.prettierrc.json"):
         visibility = [
             "//:__pkg__",
         ],
+    )
+
+def esbuild(name, **kwargs):
+    _esbuild(
+        name = name,
+        tool = select({
+            "@bazel_tools//src/conditions:darwin": "@esbuild_darwin//:bin/esbuild",
+            "@bazel_tools//src/conditions:linux_x86_64": "@esbuild_linux//:bin/esbuild",
+            "@bazel_tools//src/conditions:windows": "@esbuild_windows//:esbuild.exe",
+        }),
+        **kwargs
     )

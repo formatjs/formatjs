@@ -1,7 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
-load("@npm//@bazel/terser:index.bzl", "terser_minified")
-load("//tools:index.bzl", "prettier_check", "ts_compile")
+load("//tools:index.bzl", "esbuild", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-messageformat"
@@ -14,8 +12,7 @@ pkg_npm(
         "README.md",
     ],
     deps = [
-        "%s.umd.js" % PACKAGE_NAME,
-        ":%s.umd.min" % PACKAGE_NAME,
+        "%s.iife.js" % PACKAGE_NAME,
         ":dist",
     ],
 )
@@ -61,28 +58,16 @@ jest_test(
     ],
 )
 
-rollup_bundle(
-    name = "%s.umd" % PACKAGE_NAME,
-    srcs = [":dist-esm"],
+esbuild(
+    name = "%s.iife" % PACKAGE_NAME,
     args = [
-        "--name",
-        "IntlMessageFormat",
+        "--global-name=IntlMessageFormat",
     ],
-    config_file = "//:rollup.config.js",
     entry_point = "lib/index.js",
-    format = "umd",
+    target = "es5",
     deps = [
-        "@npm//@rollup/plugin-node-resolve",
-        "@npm//@rollup/plugin-commonjs",
-        "@npm//@rollup/plugin-replace",
-        "@npm//@rollup/plugin-json",
+        ":dist-esm",
     ] + SRC_DEPS,
-)
-
-terser_minified(
-    name = "%s.umd.min" % PACKAGE_NAME,
-    src = "%s.umd.js" % PACKAGE_NAME,
-    sourcemap = False,
 )
 
 generated_file_test(

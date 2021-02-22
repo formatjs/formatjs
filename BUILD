@@ -13,7 +13,6 @@ exports_files(
         "tsconfig.json",
         "tsconfig.esm.json",
         "tsconfig.es6.json",
-        "rollup.config.js",
         "karma.conf.js",
         "karma.conf-ci.js",
         "jest.config.js",

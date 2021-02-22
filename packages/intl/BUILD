@@ -74,68 +74,6 @@ jest_test(
     ],
 )
 
-# karma tests
-# TODO
-# ts_project(
-#     name = "karma-tests",
-#     srcs = SRCS + TESTS,
-#     declaration = True,
-#     declaration_map = True,
-#     extends = "//:tsconfig.json",
-#     out_dir = "tests-karma",
-#     tsconfig = "//:tsconfig.esm.json",
-#     visibility = ["//visibility:public"],
-#     deps = SRC_DEPS,
-# )
-
-# BUNDLE_KARMA_TESTS = ["karma-tests-%s.bundled" % f[f.rindex("/") + 1:f.rindex(".")] for f in TESTS]
-
-# [rollup_bundle(
-#     name = "karma-tests-%s.bundled" % f[f.rindex("/") + 1:f.rindex(".")],
-#     srcs = ["tests-karma/%s.js" % f[:f.rindex(".")] for f in SRCS],
-#     config_file = "//:rollup.config.js",
-#     entry_point = "tests-karma/%s.js" % f[:f.rindex(".")],
-#     format = "umd",
-#     deps = [
-#         "@npm//@rollup/plugin-node-resolve",
-#         "@npm//@rollup/plugin-commonjs",
-#         "@npm//@rollup/plugin-replace",
-#         "@npm//@rollup/plugin-json",
-#     ] + SRC_DEPS,
-# ) for f in TESTS]
-
-# karma_test(
-#     name = "karma",
-#     data = [
-#         "//:karma.conf.js",
-#         "@npm//karma-jasmine",
-#         "@npm//karma-chrome-launcher",
-#         "@npm//karma-jasmine-matchers",
-#     ] + BUNDLE_KARMA_TESTS,
-#     templated_args = [
-#         "start",
-#         "$(rootpath //:karma.conf.js)",
-#     ] + ["$$(rlocation $(location %s))" % f for f in BUNDLE_KARMA_TESTS],
-# )
-
-# karma_test(
-#     name = "karma-ci",
-#     configuration_env_vars = [
-#         "SAUCE_USERNAME",
-#         "SAUCE_ACCESS_KEY",
-#     ],
-#     data = [
-#         "//:karma.conf-ci.js",
-#         "@npm//karma-jasmine",
-#         "@npm//karma-sauce-launcher",
-#         "@npm//karma-jasmine-matchers",
-#     ] + BUNDLE_KARMA_TESTS,
-#     templated_args = [
-#         "start",
-#         "$(rootpath //:karma.conf-ci.js)",
-#     ] + ["$$(rlocation $(location %s))" % f for f in BUNDLE_KARMA_TESTS],
-# )
-
 generated_file_test(
     name = "tsconfig_json",
     src = "tsconfig.json",

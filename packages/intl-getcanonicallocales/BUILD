@@ -1,7 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
-load("@npm//@bazel/terser:index.bzl", "terser_minified")
-load("//tools:index.bzl", "bundle_karma_tests", "generate_src_file", "prettier_check", "ts_compile")
+load("//tools:index.bzl", "bundle_karma_tests", "esbuild", "generate_src_file", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-getcanonicallocales"
@@ -16,8 +14,7 @@ pkg_npm(
     deps = [
         ":dist",
         # polyfill-library uses this
-        "polyfill.umd.js",
-        ":polyfill.umd.min",
+        "polyfill.iife.js",
     ],
 )
 
@@ -97,30 +94,13 @@ generated_file_test(
     generated = "//tools:tsconfig.golden.json",
 )
 
-rollup_bundle(
-    name = "polyfill.umd",
-    srcs = [":dist-esm"],
-    args = [
-        "--name",
-        "IntlPluralRules",
-        "--no-sourcemap",
-    ],
-    config_file = "//:rollup.config.js",
+esbuild(
+    name = "polyfill.iife",
     entry_point = "lib/polyfill.js",
-    format = "umd",
     deps = [
-        "@npm//@rollup/plugin-node-resolve",
-        "@npm//@rollup/plugin-commonjs",
-        "@npm//@rollup/plugin-replace",
-        "@npm//@rollup/plugin-json",
+        ":dist-esm",
         "@npm//tslib",
     ] + SRC_DEPS,
-)
-
-terser_minified(
-    name = "polyfill.umd.min",
-    src = "polyfill.umd.js",
-    sourcemap = False,
 )
 
 prettier_check(

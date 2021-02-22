@@ -13,6 +13,8 @@ workspace(
     },
 )
 
+_ESBUILD_VERSION = "0.8.34"
+
 # new_local_repository(
 #     name="build_bazel_rules_nodejs",
 #     path = "./third_party/github.com/bazelbuild/rules_nodejs",
@@ -65,16 +67,35 @@ node_repositories(
     yarn_version = "1.22.4",
 )
 
-# node_repositories(
-#     node_version = "14.5.0",
-#     package_json = ["//:package.json"],
-#     node_repositories = {
-#         "14.5.0-darwin_amd64": ("node-v14.5.0-darwin-x64.tar.gz", "node-v14.5.0-darwin-x64", "47dfd88abcd4d6d6f7b7516c95645f9760ba9c93d04b51a92895584c945b2953"),
-#         "14.5.0-linux_amd64": ("node-v14.5.0-linux-x64.tar.xz", "node-v14.5.0-linux-x64", "8b0235c318de87ecf8eec9a39e5c5df80757dbec571addda7123276dfcb34d5b"),
-#         "14.5.0-windows_amd64": ("node-v14.5.0-win-x64.zip", "node-v14.5.0-win-x64", "ab5728c85ece98210036fc9c38984fa2410a882dd99075b3d5bece58e4cc6ea2"),
-#     },
-#     node_urls = ["https://nodejs.org/dist/v{version}/{filename}"],
-# )
+http_archive(
+    name = "esbuild_darwin",
+    build_file_content = """exports_files(["bin/esbuild"])""",
+    sha256 = "3bf980b5175df873dd84fd614d57722f3b1b9c7e74929504e26192d23075d5c3",
+    strip_prefix = "package",
+    urls = [
+        "https://registry.npmjs.org/esbuild-darwin-64/-/esbuild-darwin-64-%s.tgz" % _ESBUILD_VERSION,
+    ],
+)
+
+http_archive(
+    name = "esbuild_windows",
+    build_file_content = """exports_files(["esbuild.exe"])""",
+    sha256 = "826cd58553e7b6910dd22aba001cd72af34e05c9c3e9af567b5b2a6b1c9f3941",
+    strip_prefix = "package",
+    urls = [
+        "https://registry.npmjs.org/esbuild-windows-64/-/esbuild-windows-64-%s.tgz" % _ESBUILD_VERSION,
+    ],
+)
+
+http_archive(
+    name = "esbuild_linux",
+    build_file_content = """exports_files(["bin/esbuild"])""",
+    sha256 = "9dff3f5b06fd964a1cbb6aa9ea5ebf797767f1bd2bac71e084fb0bbefeba24a3",
+    strip_prefix = "package",
+    urls = [
+        "https://registry.npmjs.org/esbuild-linux-64/-/esbuild-linux-64-%s.tgz" % _ESBUILD_VERSION,
+    ],
+)
 
 # The yarn_install rule runs yarn anytime the package.json or yarn.lock file changes.
 # It also extracts and installs any Bazel rules distributed in an npm package.

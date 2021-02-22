@@ -1,9 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("@npm//@bazel/rollup:index.bzl", "rollup_bundle")
-load("@npm//@bazel/terser:index.bzl", "terser_minified")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
-load("//tools:index.bzl", "prettier_check", "ts_compile")
+load("//tools:index.bzl", "esbuild", "prettier_check", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-locale"
@@ -18,8 +16,7 @@ pkg_npm(
     deps = [
         ":dist",
         # polyfill-library uses this
-        "polyfill.umd.js",
-        ":polyfill.umd.min",
+        "polyfill.iife.js",
     ],
 )
 
@@ -74,19 +71,12 @@ ts_project(
     deps = SRC_DEPS,
 )
 
-rollup_bundle(
+esbuild(
     name = "test262-polyfill",
-    srcs = [
-        ":test262-main-bundle",
-    ],
-    config_file = "//:rollup.config.js",
     entry_point = "test262/polyfill-force.js",
-    format = "umd",
+    target = "es6",
     deps = [
-        "@npm//@rollup/plugin-node-resolve",
-        "@npm//@rollup/plugin-commonjs",
-        "@npm//@rollup/plugin-replace",
-        "@npm//@rollup/plugin-json",
+        ":test262-main-bundle",
     ] + SRC_DEPS,
 )
 
@@ -116,30 +106,14 @@ generated_file_test(
     generated = "//tools:tsconfig.golden.json",
 )
 
-rollup_bundle(
-    name = "polyfill.umd",
-    srcs = [":dist-esm"],
-    args = [
-        "--name",
-        "IntlPluralRules",
-        "--no-sourcemap",
-    ],
-    config_file = "//:rollup.config.js",
+esbuild(
+    name = "polyfill.iife",
     entry_point = "lib/polyfill.js",
-    format = "umd",
+    target = "es5",
     deps = [
-        "@npm//@rollup/plugin-node-resolve",
-        "@npm//@rollup/plugin-commonjs",
-        "@npm//@rollup/plugin-replace",
-        "@npm//@rollup/plugin-json",
+        ":dist-esm",
         "@npm//tslib",
     ] + SRC_DEPS,
-)
-
-terser_minified(
-    name = "polyfill.umd.min",
-    src = "polyfill.umd.js",
-    sourcemap = False,
 )
 
 prettier_check(
