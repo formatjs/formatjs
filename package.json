@@ -73,7 +73,7 @@
     "core-js": "^3.6.5",
     "emoji-regex": "^9.2.0",
     "eslint": "^7.4.0",
-    "eslint-config-prettier": "^7.0.0",
+    "eslint-config-prettier": "^8.0.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jest": "^24.0.0",
     "eslint-plugin-prettier": "^3.1.3",
