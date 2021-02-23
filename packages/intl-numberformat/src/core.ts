@@ -8,6 +8,7 @@ import {
   NumberFormatOptions,
   ToNumber,
   CanonicalizeLocaleList,
+  OrdinaryHasInstance,
 } from '@formatjs/ecma402-abstract';
 import * as currencyDigitsData from './data/currency-digits.json';
 import * as numberingSystemsData from './data/numbering-systems.json';
@@ -51,7 +52,7 @@ export const NumberFormat = function (
   options?: NumberFormatOptions
 ) {
   // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
-  if (!this || !(this instanceof NumberFormat)) {
+  if (!this || !OrdinaryHasInstance(NumberFormat, this)) {
     return new NumberFormat(locales, options);
   }
 
@@ -102,7 +103,7 @@ defineProperty(NumberFormat.prototype, 'formatToParts', {
 
 defineProperty(NumberFormat.prototype, 'resolvedOptions', {
   value: function resolvedOptions() {
-    if (typeof this !== 'object' || !(this instanceof NumberFormat)) {
+    if (typeof this !== 'object' || !OrdinaryHasInstance(NumberFormat, this)) {
       throw TypeError(
         'Method Intl.NumberFormat.prototype.resolvedOptions called on incompatible receiver'
       );
@@ -122,8 +123,8 @@ defineProperty(NumberFormat.prototype, 'resolvedOptions', {
 const formatDescriptor = {
   enumerable: false,
   configurable: true,
-  get() {
-    if (typeof this !== 'object' || !(this instanceof NumberFormat)) {
+  get(this: NumberFormat) {
+    if (typeof this !== 'object' || !OrdinaryHasInstance(NumberFormat, this)) {
       throw TypeError(
         'Intl.NumberFormat format property accessor called on incompatible receiver'
       );

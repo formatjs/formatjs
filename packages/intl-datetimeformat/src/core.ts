@@ -19,6 +19,7 @@ import {
   FormatDateTimeRange,
   FormatDateTimeRangeToParts,
   IntlDateTimeFormatInternal,
+  OrdinaryHasInstance,
 } from '@formatjs/ecma402-abstract';
 import getInternalSlots from './get_internal_slots';
 import links from './data/links';
@@ -58,7 +59,10 @@ const formatDescriptor = {
   enumerable: false,
   configurable: true,
   get(this: IDateTimeFormat) {
-    if (typeof this !== 'object' || !(this instanceof DateTimeFormat)) {
+    if (
+      typeof this !== 'object' ||
+      !OrdinaryHasInstance(DateTimeFormat, this)
+    ) {
       throw TypeError(
         'Intl.DateTimeFormat format property accessor called on incompatible receiver'
       );
@@ -147,7 +151,7 @@ export const DateTimeFormat = function (
   options?: DateTimeFormatOptions
 ) {
   // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
-  if (!this || !(this instanceof DateTimeFormat)) {
+  if (!this || !OrdinaryHasInstance(DateTimeFormat, this)) {
     return new DateTimeFormat(locales, options);
   }
 
@@ -190,7 +194,10 @@ defineProperty(DateTimeFormat, 'supportedLocalesOf', {
 
 defineProperty(DateTimeFormat.prototype, 'resolvedOptions', {
   value: function resolvedOptions(this: IDateTimeFormat) {
-    if (typeof this !== 'object' || !(this instanceof DateTimeFormat)) {
+    if (
+      typeof this !== 'object' ||
+      !OrdinaryHasInstance(DateTimeFormat, this)
+    ) {
       throw TypeError(
         'Method Intl.DateTimeFormat.prototype.resolvedOptions called on incompatible receiver'
       );

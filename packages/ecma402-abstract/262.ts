@@ -338,3 +338,40 @@ export function MinFromTime(t: number) {
 export function SecFromTime(t: number) {
   return mod(Math.floor(t / MS_PER_SECOND), SECONDS_PER_MINUTE);
 }
+
+function IsCallable(fn: any): fn is Function {
+  return typeof fn === 'function';
+}
+
+/**
+ * The abstract operation OrdinaryHasInstance implements
+ * the default algorithm for determining if an object O
+ * inherits from the instance object inheritance path
+ * provided by constructor C.
+ * @param C class
+ * @param O object
+ * @param internalSlots internalSlots
+ */
+export function OrdinaryHasInstance(
+  C: Object,
+  O: any,
+  internalSlots?: {boundTargetFunction: any}
+) {
+  if (!IsCallable(C)) {
+    return false;
+  }
+  if (internalSlots?.boundTargetFunction) {
+    let BC = internalSlots?.boundTargetFunction;
+    return O instanceof BC;
+  }
+  if (typeof O !== 'object') {
+    return false;
+  }
+  let P = C.prototype;
+  if (typeof P !== 'object') {
+    throw new TypeError(
+      'OrdinaryHasInstance called on an object with an invalid prototype property.'
+    );
+  }
+  return Object.prototype.isPrototypeOf.call(P, O);
+}
