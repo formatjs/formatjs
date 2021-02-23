@@ -75,6 +75,7 @@ jest_test(
     deps = [
         ":dist",
         ":types",
+        "//packages/intl-messageformat-parser:types",
         "@npm//@types/node",
         "@npm//@types/webpack",
         "@npm//@vue/compiler-sfc",

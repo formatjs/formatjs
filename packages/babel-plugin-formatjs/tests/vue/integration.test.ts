@@ -2,7 +2,8 @@ import webpack from 'webpack';
 import {VueLoaderPlugin} from 'vue-loader';
 import {readFileSync} from 'fs';
 import {resolve} from 'path';
-test.skip('dummy', function (done) {
+
+test('dummy', function (done) {
   webpack(
     {
       entry: require.resolve('./fixtures/app.js'),
@@ -35,21 +36,16 @@ test.skip('dummy', function (done) {
           },
           {
             resourceQuery: /blockType=template/,
-            loader: require.resolve('../'),
+            loader: require.resolve('../../'),
           },
         ],
       },
       plugins: [new VueLoaderPlugin()],
     },
-    (err, stats) => {
-      console.log(err, stats);
-      // [Stats Object](#stats-object)
-      //   if (err || stats.hasErrors()) {
-      //     done(err);
-      //   } else {
-      //     done();
-      //   }
-      expect(readFileSync(resolve(__dirname, 'out.js'), 'utf-8')).toBe('asd');
+    _ => {
+      expect(readFileSync(resolve(__dirname, 'out.js'), 'utf-8')).toContain(
+        '[{type:0,value:"Today is "},{type:3,style:{type:1,pattern:"yyyyMMdd",parsedOptions:{year:"numeric",month:"2-digit",day:"2-digit"}},value:"ts"}]'
+      );
       done();
     }
   );
