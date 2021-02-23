@@ -1153,20 +1153,20 @@
   resolved "https://registry.yarnpkg.com/@bazel/buildifier/-/buildifier-4.0.0.tgz#c99fb21295c7e2858fa176c2b950c589217ae8ac"
   integrity sha512-e242AK+shp+5bpAc9l93pmG5YRYRfM0INV3gfbdxNeBxccx1MJUagaiwxqAV+Mw55zk92gsb99f2TAc9tt6C7w==
 
-"@bazel/esbuild@^3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@bazel/esbuild/-/esbuild-3.2.0.tgz#3535fcd0da9615bb8fa4350eafb8babfae177a45"
-  integrity sha512-WtTWqtdQrLSSof59VfleFH3823WATS/TVaqQTGUEAFdBYhlysSI1qFGGCZ7Mj4HdlbWDc46zBr97umkaxj4N4g==
+"@bazel/esbuild@^3.2.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@bazel/esbuild/-/esbuild-3.2.1.tgz#bbd530bd2283c67276f432c51080e61331436fdc"
+  integrity sha512-8Y2Vd9KMxWfL9KzF9qbrUGHJZiJsee6xpT+dUCd29zYJA9Ddu4WCeNtS24Ejbm1y3NUgGPXh1nLgTQ/yIfCYng==
 
 "@bazel/ibazel@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@bazel/ibazel/-/ibazel-0.14.0.tgz#86fa0002bed2ce1123b7ad98d4dd4623a0d93244"
   integrity sha512-s0gyec6lArcRDwVfIP6xpY8iEaFpzrSpyErSppd3r2O49pOEg7n6HGS/qJ8ncvme56vrDk6crl/kQ6VAdEO+rg==
 
-"@bazel/typescript@3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-3.2.0.tgz#299bd173fe04f98407ab9be4f654662c1c28470e"
-  integrity sha512-RKdy9ThbcUAqZR3AJK7AR/nxbJqdHi7pPayIGUSMIpxVkeTxVRQpf1aGe2H02HdZ9fR/uk1xXhO/Ff9TLvTgHQ==
+"@bazel/typescript@3.2.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-3.2.1.tgz#564849e2f05387612d13ef64304b7a7582bd107a"
+  integrity sha512-2KgMqKcbqL89WWWVC2iwTCS0tMWmQ4LpQgFhaF3Lp56Edl0nv/fy0TOu+waw2Qs2rTBbTVKhk5/9DRiqJmOd2g==
   dependencies:
     protobufjs "6.8.8"
     semver "5.6.0"

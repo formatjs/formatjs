@@ -1,9 +1,11 @@
 import {DisplayNames} from '..';
 import {shouldPolyfill} from '../should-polyfill';
 
-test('should-polyfill', function () {
-  // Node 14.9.0 does have this bug
-  expect(shouldPolyfill()).toBe(true);
+describe('before polyfill', function () {
+  it('should-polyfill should be true', function () {
+    // Node 14.9.0/browsers does have this bug
+    expect(shouldPolyfill()).toBe(true);
+  });
 });
 
 describe('after polyfill', function () {
