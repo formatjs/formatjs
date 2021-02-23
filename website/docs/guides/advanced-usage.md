@@ -21,7 +21,7 @@ Since this approach uses `AST` as the data source, changes to `intl-messageforma
 
 ## `react-intl` without parser (40% smaller)
 
-If you've made sure all your messages & `defaultMessage`s are precompiled as above, you can resolve `react-intl` to `react-intl/react-intl-no-parser.umd` during bundling to get a much smaller bundler (~40% less).
+If you've made sure all your messages & `defaultMessage`s are precompiled as above, you can resolve `intl-messageformat-parser` to `intl-messageformat-parser/no-parser` during bundling to get a much smaller bundler (~40% less).
 
 In the future, we'll gear towards making this the default behavior.
 

@@ -29,7 +29,7 @@ alias(
 
 SRCS = glob(["src/*.ts"]) + [
     "index.ts",
-    "dummy.ts",
+    "no-parser.ts",
 ]
 
 SRC_DEPS = [

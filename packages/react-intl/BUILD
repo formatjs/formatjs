@@ -12,8 +12,6 @@ pkg_npm(
         "README.md",
     ],
     deps = [
-        # "%s.iife.js" % PACKAGE_NAME,
-        # "%s-no-parser.iife.js" % PACKAGE_NAME,
         ":dist",
     ],
 )
@@ -84,8 +82,6 @@ jest_test(
     name = "functional",
     srcs = glob(["tests/functional/**/*.ts*"]) + [
         "tests/setup.js",
-        # "%s.iife.js" % PACKAGE_NAME,
-        # "%s-no-parser.iife.js" % PACKAGE_NAME,
         "package.json",
         "//packages/intl-numberformat:locale-data",
         "//packages/intl-displaynames:polyfill-locales.js",
@@ -93,32 +89,6 @@ jest_test(
     jest_config = "jest.config.js",
     deps = TEST_DEPS + [":dist"],
 )
-
-# esbuild(
-#     name = "%s.iife" % PACKAGE_NAME,
-#     args = [
-#         "--define:process.env.NODE_ENV=\"production\"",
-#         "--global-name=ReactIntl",
-#     ],
-#     entry_point = "lib/index.js",
-#     target = "es5",
-#     deps = [
-#         ":dist-esm",
-#     ] + SRC_DEPS,
-# )
-
-# esbuild(
-#     name = "%s-no-parser.iife" % PACKAGE_NAME,
-#     args = [
-#         "--global-name=ReactIntl",
-#         "--define:process.env.NODE_ENV=\"production\"",
-#     ],
-#     entry_point = "lib/index.js",
-#     target = "es5",
-#     deps = [
-#         ":dist-esm",
-#     ] + SRC_DEPS,
-# )
 
 generated_file_test(
     name = "tsconfig_json",
