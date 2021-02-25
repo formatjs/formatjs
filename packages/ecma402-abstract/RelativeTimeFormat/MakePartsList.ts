@@ -1,14 +1,13 @@
-import {RelativeTimeUnit, RelativeTimePart} from '../types/relative-time';
 import {PartitionPattern} from '../PartitionPattern';
 import {invariant} from '../utils';
 
 export function MakePartsList(
   pattern: string,
-  unit: RelativeTimeUnit,
-  parts: Intl.NumberFormatPart[]
+  unit: Intl.RelativeTimeFormatUnit,
+  parts: Intl.NumberFormatPart[] | Intl.RelativeTimeFormatPart[]
 ) {
   const patternParts = PartitionPattern(pattern);
-  const result: RelativeTimePart[] = [];
+  const result: Intl.RelativeTimeFormatPart[] = [];
   for (const patternPart of patternParts) {
     if (patternPart.type === 'literal') {
       result.push({

@@ -2,8 +2,7 @@ export interface DateTimeFormatOptions extends Intl.DateTimeFormatOptions {
   hourCycle?: 'h11' | 'h12' | 'h23' | 'h24';
   dateStyle?: 'full' | 'long' | 'medium' | 'short';
   timeStyle?: 'full' | 'long' | 'medium' | 'short';
-  fractionalSecondDigits?: number;
-  calendar?: 'gregory';
+  calendar?: string;
   // dayPeriod?: 'narrow' | 'short' | 'long';
   numberingSystem?: string;
 }

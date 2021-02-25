@@ -1,6 +1,4 @@
 import {
-  RelativeTimeFormat,
-  IntlRelativeTimeFormatOptions,
   RelativeTimeFormatInternal,
   LocaleFieldsData,
 } from '../types/relative-time';
@@ -13,9 +11,9 @@ import {invariant} from '../utils';
 const NUMBERING_SYSTEM_REGEX = /^[a-z0-9]{3,8}(-[a-z0-9]{3,8})*$/i;
 
 export function InitializeRelativeTimeFormat(
-  rtf: RelativeTimeFormat,
+  rtf: Intl.RelativeTimeFormat,
   locales: string | string[] | undefined,
-  options: IntlRelativeTimeFormatOptions | undefined,
+  options: Intl.RelativeTimeFormatOptions | undefined,
   {
     getInternalSlots,
     availableLocales,
@@ -23,7 +21,7 @@ export function InitializeRelativeTimeFormat(
     localeData,
     getDefaultLocale,
   }: {
-    getInternalSlots(rtf: RelativeTimeFormat): RelativeTimeFormatInternal;
+    getInternalSlots(rtf: Intl.RelativeTimeFormat): RelativeTimeFormatInternal;
     availableLocales: Set<string>;
     relevantExtensionKeys: string[];
     localeData: Record<string, LocaleFieldsData | undefined>;

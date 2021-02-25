@@ -1,31 +1,25 @@
-import {
-  RelativeTimeFormat,
-  RelativeTimeFormattableUnit,
-  RelativeTimePart,
-  RelativeTimeFormatInternal,
-  RelativeTimeFormatNumberPart,
-} from '../types/relative-time';
+import {RelativeTimeFormatInternal} from '../types/relative-time';
 import {PartitionRelativeTimePattern} from './PartitionRelativeTimePattern';
 import {ArrayCreate} from '../262';
 
 export function FormatRelativeTimeToParts(
-  rtf: RelativeTimeFormat,
+  rtf: Intl.RelativeTimeFormat,
   value: number,
-  unit: RelativeTimeFormattableUnit,
+  unit: Intl.RelativeTimeFormatUnit,
   implDetails: {
-    getInternalSlots(rtf: RelativeTimeFormat): RelativeTimeFormatInternal;
+    getInternalSlots(rtf: Intl.RelativeTimeFormat): RelativeTimeFormatInternal;
   }
-): RelativeTimePart[] {
+): Intl.RelativeTimeFormatPart[] {
   const parts = PartitionRelativeTimePattern(rtf, value, unit, implDetails);
-  const result = ArrayCreate(0) as RelativeTimePart[];
+  const result = ArrayCreate(0) as Intl.RelativeTimeFormatPart[];
 
   for (const part of parts) {
     const o = {
       type: part.type,
       value: part.value,
-    } as RelativeTimePart;
+    } as Intl.RelativeTimeFormatPart;
     if ('unit' in part) {
-      (o as RelativeTimeFormatNumberPart).unit = part.unit;
+      o.unit = part.unit;
     }
     result.push(o);
   }

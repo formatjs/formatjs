@@ -1,16 +1,12 @@
-import {
-  RelativeTimeFormat,
-  RelativeTimeFormattableUnit,
-  RelativeTimeFormatInternal,
-} from '../types/relative-time';
+import {RelativeTimeFormatInternal} from '../types/relative-time';
 import {PartitionRelativeTimePattern} from './PartitionRelativeTimePattern';
 
 export function FormatRelativeTime(
-  rtf: RelativeTimeFormat,
+  rtf: Intl.RelativeTimeFormat,
   value: number,
-  unit: RelativeTimeFormattableUnit,
+  unit: Intl.RelativeTimeFormatUnit,
   implDetails: {
-    getInternalSlots(rtf: RelativeTimeFormat): RelativeTimeFormatInternal;
+    getInternalSlots(rtf: Intl.RelativeTimeFormat): RelativeTimeFormatInternal;
   }
 ): string {
   const parts = PartitionRelativeTimePattern(rtf, value, unit, implDetails);

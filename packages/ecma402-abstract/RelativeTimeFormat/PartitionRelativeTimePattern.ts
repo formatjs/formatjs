@@ -1,11 +1,7 @@
 import {
-  RelativeTimeFormattableUnit,
-  RelativeTimeFormatNumberPart,
   FieldData,
   RelativeTimeField,
-  RelativeTimeFormat,
   RelativeTimeFormatInternal,
-  RelativeTimePart,
 } from '../types/relative-time';
 import {invariant} from '../utils';
 import {SingularRelativeTimeUnit} from './SingularRelativeTimeUnit';
@@ -14,15 +10,15 @@ import {LDMLPluralRule} from '../types/plural-rules';
 import {ToString, Type, SameValue} from '../262';
 
 export function PartitionRelativeTimePattern(
-  rtf: RelativeTimeFormat,
+  rtf: Intl.RelativeTimeFormat,
   value: number,
-  unit: RelativeTimeFormattableUnit,
+  unit: Intl.RelativeTimeFormatUnit,
   {
     getInternalSlots,
   }: {
-    getInternalSlots(rtf: RelativeTimeFormat): RelativeTimeFormatInternal;
+    getInternalSlots(rtf: Intl.RelativeTimeFormat): RelativeTimeFormatInternal;
   }
-): RelativeTimePart[] {
+): Intl.RelativeTimeFormatPart[] {
   invariant(
     Type(value) === 'Number',
     `value must be number, instead got ${typeof value}`,
@@ -76,7 +72,7 @@ export function PartitionRelativeTimePattern(
             type: 'literal',
             value: numberFormat.format(Math.abs(value)),
             unit,
-          } as RelativeTimeFormatNumberPart,
+          } as Intl.RelativeTimeFormatPart,
         ];
   const pr = pluralRules.select(value) as LDMLPluralRule;
   const pattern = po[pr];

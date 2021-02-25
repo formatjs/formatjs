@@ -57,7 +57,9 @@ function matchSkeletonPattern(
     // Month
     case 'M':
     case 'L':
-      result.month = ['numeric', '2-digit', 'short', 'long', 'narrow'][len - 1];
+      result.month = ['numeric', '2-digit', 'short', 'long', 'narrow'][
+        len - 1
+      ] as 'numeric';
       return '{month}';
 
     // Week
@@ -65,7 +67,7 @@ function matchSkeletonPattern(
     case 'W':
       throw new RangeError('`w/W` (week of year) patterns are not supported');
     case 'd':
-      result.day = ['numeric', '2-digit'][len - 1];
+      result.day = ['numeric', '2-digit'][len - 1] as 'numeric';
       return '{day}';
 
     case 'D':
@@ -81,24 +83,24 @@ function matchSkeletonPattern(
 
     case 'e':
       result.weekday = [
-        'numeric',
-        '2-digit',
-        'short',
-        'long',
-        'narrow',
-        'short',
-      ][len - 1];
-      return '{weekday}';
-
-    case 'c':
-      result.weekday = [
-        'numeric',
+        undefined,
         undefined,
         'short',
         'long',
         'narrow',
         'short',
-      ][len - 1];
+      ][len - 1] as 'short';
+      return '{weekday}';
+
+    case 'c':
+      result.weekday = [
+        undefined,
+        undefined,
+        'short',
+        'long',
+        'narrow',
+        'short',
+      ][len - 1] as 'short';
       return '{weekday}';
 
     // Period
@@ -109,21 +111,21 @@ function matchSkeletonPattern(
       return '{ampm}';
     // Hour
     case 'h':
-      result.hour = ['numeric', '2-digit'][len - 1];
+      result.hour = ['numeric', '2-digit'][len - 1] as 'numeric';
       result.hour12 = true;
       return '{hour}';
 
     case 'H':
-      result.hour = ['numeric', '2-digit'][len - 1];
+      result.hour = ['numeric', '2-digit'][len - 1] as 'numeric';
       return '{hour}';
 
     case 'K':
-      result.hour = ['numeric', '2-digit'][len - 1];
+      result.hour = ['numeric', '2-digit'][len - 1] as 'numeric';
       result.hour12 = true;
       return '{hour}';
 
     case 'k':
-      result.hour = ['numeric', '2-digit'][len - 1];
+      result.hour = ['numeric', '2-digit'][len - 1] as 'numeric';
       return '{hour}';
 
     case 'j':
@@ -134,12 +136,12 @@ function matchSkeletonPattern(
       );
     // Minute
     case 'm':
-      result.minute = ['numeric', '2-digit'][len - 1];
+      result.minute = ['numeric', '2-digit'][len - 1] as 'numeric';
       return '{minute}';
 
     // Second
     case 's':
-      result.second = ['numeric', '2-digit'][len - 1];
+      result.second = ['numeric', '2-digit'][len - 1] as 'numeric';
       return '{second}';
 
     case 'S':

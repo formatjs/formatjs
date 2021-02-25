@@ -52,7 +52,7 @@ function resolveHourCycle(hc: string, hcDefault: string, hour12?: boolean) {
 }
 
 interface Opt extends Omit<Formats, 'pattern' | 'pattern12'> {
-  localeMatcher: string;
+  localeMatcher: DateTimeFormatOptions['localeMatcher'];
   ca: DateTimeFormatOptions['calendar'];
   nu: DateTimeFormatOptions['numberingSystem'];
   hc: DateTimeFormatOptions['hourCycle'];
@@ -233,7 +233,7 @@ export function InitializeDateTimeFormat(
       ).join(', ')}`
     );
   }
-  matcher = GetOption(
+  const formatMatcher = GetOption(
     options,
     'formatMatcher',
     'string',
@@ -259,7 +259,7 @@ export function InitializeDateTimeFormat(
 
   let bestFormat;
   if (dateStyle === undefined && timeStyle === undefined) {
-    if (matcher === 'basic') {
+    if (formatMatcher === 'basic') {
       bestFormat = BasicFormatMatcher(opt, formats);
     } else {
       // IMPL DETAILS START

@@ -1,17 +1,14 @@
 import {invariant} from '../utils';
 import {Type} from '../262';
-import {
-  RelativeTimeFormattableUnit,
-  RelativeTimeUnit,
-} from '../types/relative-time';
+import {RelativeTimeFormatSingularUnit} from '../types/relative-time';
 
 /**
  * https://tc39.es/proposal-intl-relative-time/#sec-singularrelativetimeunit
  * @param unit
  */
 export function SingularRelativeTimeUnit(
-  unit: RelativeTimeFormattableUnit
-): RelativeTimeUnit {
+  unit: Intl.RelativeTimeFormatUnit
+): RelativeTimeFormatSingularUnit {
   invariant(Type(unit) === 'String', 'unit must be a string');
   if (unit === 'seconds') return 'second';
   if (unit === 'minutes') return 'minute';

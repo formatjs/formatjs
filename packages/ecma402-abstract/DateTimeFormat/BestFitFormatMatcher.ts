@@ -125,7 +125,7 @@ export function BestFitFormatMatcher(
     if (skeletonValue === requestedValue) {
       continue;
     }
-    patternFormat[prop as TABLE_6] = requestedValue;
+    patternFormat[prop as TABLE_6] = requestedValue as any;
   }
   // Copy those over
   patternFormat.pattern = skeletonFormat.pattern;
