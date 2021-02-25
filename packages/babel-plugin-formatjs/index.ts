@@ -292,19 +292,8 @@ function isFormatMessageCall(
     return false;
   }
 
-  const object = callee.get('object');
   const property = callee.get('property') as NodePath<Identifier>;
-
-  return (
-    property.isIdentifier() &&
-    property.node.name === 'formatMessage' &&
-    !Array.isArray(object) &&
-    // things like `intl.formatMessage`
-    ((object.isIdentifier() && object.node.name === 'intl') ||
-      // things like `this.props.intl.formatMessage`
-      (object.isMemberExpression() &&
-        (object.get('property') as NodePath<Identifier>).node.name === 'intl'))
-  );
+  return fnNames.has(property.node.name);
 }
 
 function assertObjectExpression(

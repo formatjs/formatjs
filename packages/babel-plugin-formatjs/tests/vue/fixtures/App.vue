@@ -1,7 +1,7 @@
 <template>
   <p>
     {{
-      intl.formatMessage(
+      _ctx.formatMessage(
         {id: 'myMessage', defaultMessage: 'Today is {ts, date,::yyyyMMdd}'},
         {ts: Date.now()}
       )

@@ -129,8 +129,30 @@ defineMessages({
 export default class Foo extends Component {
   render() {
     Intl.formatMessage({
-      id: 'intl.formatMessage',
-      defaultMessage: 'foo {s, plural, one{1} other{2}}'
+      \\"id\\": \\"intl.formatMessage\\",
+      \\"defaultMessage\\": [{
+        \\"type\\": 0,
+        \\"value\\": \\"foo \\"
+      }, {
+        \\"type\\": 6,
+        \\"pluralType\\": \\"cardinal\\",
+        \\"value\\": \\"s\\",
+        \\"offset\\": 0,
+        \\"options\\": {
+          \\"one\\": {
+            \\"value\\": [{
+              \\"type\\": 0,
+              \\"value\\": \\"1\\"
+            }]
+          },
+          \\"other\\": {
+            \\"value\\": [{
+              \\"type\\": 0,
+              \\"value\\": \\"2\\"
+            }]
+          }
+        }
+      }]
     });
     return <FormattedMessage id=\\"foo.bar.baz\\" defaultMessage={[{
       \\"type\\": 0,
@@ -155,6 +177,11 @@ export default class Foo extends Component {
         "defaultMessage": "this is a {dt, number}",
         "description": undefined,
         "id": "defineMessages2",
+      },
+      Object {
+        "defaultMessage": "foo {s, plural, one{1} other{2}}",
+        "description": undefined,
+        "id": "intl.formatMessage",
       },
       Object {
         "defaultMessage": "Hello World!",
