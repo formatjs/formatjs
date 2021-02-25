@@ -3,13 +3,9 @@ import {IntlFormatters, Formatters, CustomFormats, OnErrorFn} from './types';
 import {getNamedFormat, filterProps} from './utils';
 import {FormatError, ErrorCode} from 'intl-messageformat';
 import {MessageFormatError} from './error';
-import {
-  IntlRelativeTimeFormatOptions,
-  RelativeTimeFormat,
-} from '@formatjs/ecma402-abstract';
 
 const RELATIVE_TIME_FORMAT_OPTIONS: Array<
-  keyof IntlRelativeTimeFormatOptions
+  keyof Intl.RelativeTimeFormatOptions
 > = ['numeric', 'style'];
 
 function getFormatter(
@@ -24,7 +20,7 @@ function getFormatter(
   },
   getRelativeTimeFormat: Formatters['getRelativeTimeFormat'],
   options: Parameters<IntlFormatters['formatRelativeTime']>[2] = {}
-): RelativeTimeFormat {
+): Intl.RelativeTimeFormat {
   const {format} = options;
 
   const defaults =
@@ -32,7 +28,7 @@ function getFormatter(
   const filteredOptions = filterProps(
     options,
     RELATIVE_TIME_FORMAT_OPTIONS,
-    defaults as IntlRelativeTimeFormatOptions
+    defaults as Intl.RelativeTimeFormatOptions
   );
 
   return getRelativeTimeFormat(locale, filteredOptions);
@@ -52,7 +48,7 @@ export function formatRelativeTime(
   if (!unit) {
     unit = 'second';
   }
-  const RelativeTimeFormat = (Intl as any).RelativeTimeFormat;
+  const RelativeTimeFormat = Intl.RelativeTimeFormat;
   if (!RelativeTimeFormat) {
     config.onError(
       new FormatError(

@@ -138,6 +138,7 @@ describe('format API', () => {
       });
 
       it('falls back and warns on invalid Intl.DateTimeFormat options', () => {
+        // @ts-expect-error just for test
         expect(formatTime(0, {hour: 'invalid'})).toBe('0');
         expect(
           (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
@@ -156,7 +157,7 @@ describe('format API', () => {
 
       it('uses named formats as defaults', () => {
         const date = new Date();
-        const opts = {minute: '2-digit'};
+        const opts: Intl.DateTimeFormatOptions = {minute: '2-digit'};
         const format = 'hour-only';
 
         const {locale, formats} = config;

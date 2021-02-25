@@ -6,7 +6,6 @@ import {
   FormatError,
   Options as IntlMessageFormatOptions,
 } from 'intl-messageformat';
-import IntlRelativeTimeFormat from '@formatjs/intl-relativetimeformat';
 import {DateTimeFormat} from '@formatjs/ecma402-abstract';
 import {MessageFormatElement} from 'intl-messageformat-parser';
 import IntlListFormat, {IntlListFormatOptions} from '@formatjs/intl-listformat';
@@ -20,7 +19,6 @@ import {
 } from './error';
 import {DEFAULT_INTL_CONFIG} from './utils';
 import {
-  IntlRelativeTimeFormatOptions,
   DateTimeFormatOptions,
   NumberFormatOptions,
 } from '@formatjs/ecma402-abstract';
@@ -52,7 +50,7 @@ export interface IntlConfig<T = string> {
 }
 
 export interface CustomFormats extends Partial<Formats> {
-  relative?: Record<string, IntlRelativeTimeFormatOptions>;
+  relative?: Record<string, Intl.RelativeTimeFormatOptions>;
 }
 
 export interface CustomFormatConfig {
@@ -70,7 +68,7 @@ export type FormatNumberOptions = Exclude<
 > &
   CustomFormatConfig;
 export type FormatRelativeTimeOptions = Exclude<
-  IntlRelativeTimeFormatOptions,
+  Intl.RelativeTimeFormatOptions,
   'localeMatcher'
 > &
   CustomFormatConfig;
@@ -110,8 +108,8 @@ export interface IntlFormatters<T = any, R = T> {
     opts?: FormatDateOptions
   ): Intl.DateTimeFormatPart[];
   formatRelativeTime(
-    value: Parameters<IntlRelativeTimeFormat['format']>[0],
-    unit?: Parameters<IntlRelativeTimeFormat['format']>[1],
+    value: Parameters<Intl.RelativeTimeFormat['format']>[0],
+    unit?: Parameters<Intl.RelativeTimeFormat['format']>[1],
     opts?: FormatRelativeTimeOptions
   ): string;
   formatNumber(
@@ -158,8 +156,8 @@ export interface Formatters {
     ...args: ConstructorParameters<typeof IntlMessageFormat>
   ): IntlMessageFormat;
   getRelativeTimeFormat(
-    ...args: ConstructorParameters<typeof IntlRelativeTimeFormat>
-  ): IntlRelativeTimeFormat;
+    ...args: ConstructorParameters<typeof Intl.RelativeTimeFormat>
+  ): Intl.RelativeTimeFormat;
   getPluralRules(
     ...args: ConstructorParameters<typeof Intl.PluralRules>
   ): Intl.PluralRules;
@@ -179,7 +177,7 @@ export interface IntlCache {
   dateTime: Record<string, DateTimeFormat>;
   number: Record<string, Intl.NumberFormat>;
   message: Record<string, IntlMessageFormat>;
-  relativeTime: Record<string, IntlRelativeTimeFormat>;
+  relativeTime: Record<string, Intl.RelativeTimeFormat>;
   pluralRules: Record<string, Intl.PluralRules>;
   list: Record<string, IntlListFormat>;
   displayNames: Record<string, DisplayNames>;

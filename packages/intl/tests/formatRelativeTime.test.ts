@@ -1,13 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import {formatRelativeTime as formatRelativeTimeFn} from '../src/relativeTime';
 import {OptionalIntlConfig, IntlFormatters} from '../src/types';
-import IntlRelativeTimeFormat from '@formatjs/intl-relativetimeformat';
-
-declare global {
-  namespace Intl {
-    const RelativeTimeFormat: typeof IntlRelativeTimeFormat;
-  }
-}
 
 describe('format API', () => {
   const {NODE_ENV} = process.env;

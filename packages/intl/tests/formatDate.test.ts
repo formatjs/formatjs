@@ -107,6 +107,7 @@ describe('format API', () => {
       });
 
       it('falls back and warns on invalid Intl.DateTimeFormat options', () => {
+        // @ts-expect-error invalid year just for testing
         expect(formatDate(0, {year: 'invalid'})).toBe('0');
         expect(
           (config.onError as jest.Mock).mock.calls.map(c => c[0].code)
@@ -125,7 +126,7 @@ describe('format API', () => {
 
       it('uses named formats as defaults', () => {
         const date = new Date();
-        const opts = {month: 'numeric'};
+        const opts: Intl.DateTimeFormatOptions = {month: 'numeric'};
         const format = 'year-only';
 
         const {locale, formats} = config;

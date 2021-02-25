@@ -26,7 +26,6 @@ const DATE_TIME_FORMAT_OPTIONS: Array<keyof DateTimeFormatOptions> = [
   'hourCycle',
   'dateStyle',
   'timeStyle',
-  'fractionalSecondDigits',
   'calendar',
   // 'dayPeriod',
   'numberingSystem',
@@ -57,6 +56,7 @@ export function getFormatter(
   let filteredOptions = filterProps(
     options,
     DATE_TIME_FORMAT_OPTIONS,
+    // @ts-expect-error es2020 has a lot stuff from es2021 bleed in
     defaults
   );
 
