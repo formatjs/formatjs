@@ -9,7 +9,6 @@ function supportsES2020() {
   try {
     const s = new Intl.NumberFormat('en', {
       style: 'unit',
-      // @ts-expect-error the built-in typing isn't supporting ES2020 yet.
       unit: 'bit',
       unitDisplay: 'long',
       notation: 'scientific',
