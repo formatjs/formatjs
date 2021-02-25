@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.2.0](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@9.1.4...babel-plugin-formatjs@9.2.0) (2021-02-25)
+
+
+### Features
+
+* **babel-plugin-formatjs:** relax function call check to allow foobar.formatMessage ([d26dfdd](https://github.com/formatjs/formatjs/commit/d26dfdd0bf431b00df6bd7411e3fd4ff98b6e2b4))
+
+
+
+
+
 ## [9.1.4](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@9.1.3...babel-plugin-formatjs@9.1.4) (2021-02-25)
 
 **Note:** Version bump only for package babel-plugin-formatjs
