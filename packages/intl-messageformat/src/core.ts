@@ -216,7 +216,7 @@ export class IntlMessageFormat {
   // Default format options used as the prototype of the `formats` provided to the
   // constructor. These are used when constructing the internal Intl.NumberFormat
   // and Intl.DateTimeFormat instances.
-  static formats = {
+  static formats: Formats = {
     number: {
       currency: {
         style: 'currency',
