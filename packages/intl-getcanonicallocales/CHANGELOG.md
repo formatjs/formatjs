@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.5.4...@formatjs/intl-getcanonicallocales@1.5.5) (2021-02-25)
+
+
+### Bug Fixes
+
+* bump tslib version dep ([37577d2](https://github.com/formatjs/formatjs/commit/37577d22bf28d23de1d8013ba0047cf221ad8840)), closes [#2645](https://github.com/formatjs/formatjs/issues/2645)
+
+
+
+
+
 ## [1.5.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@1.5.3...@formatjs/intl-getcanonicallocales@1.5.4) (2021-02-25)
 
 **Note:** Version bump only for package @formatjs/intl-getcanonicallocales

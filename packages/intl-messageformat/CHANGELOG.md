@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.5.1](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.5.0...intl-messageformat@9.5.1) (2021-02-25)
+
+
+### Bug Fixes
+
+* bump tslib version dep ([37577d2](https://github.com/formatjs/formatjs/commit/37577d22bf28d23de1d8013ba0047cf221ad8840)), closes [#2645](https://github.com/formatjs/formatjs/issues/2645)
+
+
+
+
+
 # [9.5.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@9.4.9...intl-messageformat@9.5.0) (2021-02-25)
 
 

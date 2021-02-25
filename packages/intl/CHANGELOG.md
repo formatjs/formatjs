@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.8.0...@formatjs/intl@1.8.1) (2021-02-25)
+
+
+### Bug Fixes
+
+* bump tslib version dep ([37577d2](https://github.com/formatjs/formatjs/commit/37577d22bf28d23de1d8013ba0047cf221ad8840)), closes [#2645](https://github.com/formatjs/formatjs/issues/2645)
+
+
+
+
+
 # [1.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.7.1...@formatjs/intl@1.8.0) (2021-02-25)
 
 

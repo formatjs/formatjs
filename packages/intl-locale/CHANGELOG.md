@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.18](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.17...@formatjs/intl-locale@2.4.18) (2021-02-25)
+
+
+### Bug Fixes
+
+* bump tslib version dep ([37577d2](https://github.com/formatjs/formatjs/commit/37577d22bf28d23de1d8013ba0047cf221ad8840)), closes [#2645](https://github.com/formatjs/formatjs/issues/2645)
+
+
+
+
+
 ## [2.4.17](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@2.4.16...@formatjs/intl-locale@2.4.17) (2021-02-25)
 
 **Note:** Version bump only for package @formatjs/intl-locale

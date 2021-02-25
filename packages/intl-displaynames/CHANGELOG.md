@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@4.0.8...@formatjs/intl-displaynames@4.0.9) (2021-02-25)
+
+
+### Bug Fixes
+
+* bump tslib version dep ([37577d2](https://github.com/formatjs/formatjs/commit/37577d22bf28d23de1d8013ba0047cf221ad8840)), closes [#2645](https://github.com/formatjs/formatjs/issues/2645)
+
+
+
+
+
 ## [4.0.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@4.0.7...@formatjs/intl-displaynames@4.0.8) (2021-02-25)
 
 

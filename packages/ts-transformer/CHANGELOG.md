@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.1.4...@formatjs/ts-transformer@3.1.5) (2021-02-25)
+
+
+### Bug Fixes
+
+* bump tslib version dep ([37577d2](https://github.com/formatjs/formatjs/commit/37577d22bf28d23de1d8013ba0047cf221ad8840)), closes [#2645](https://github.com/formatjs/formatjs/issues/2645)
+
+
+
+
+
 ## [3.1.4](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.1.3...@formatjs/ts-transformer@3.1.4) (2021-02-25)
 
 **Note:** Version bump only for package @formatjs/ts-transformer

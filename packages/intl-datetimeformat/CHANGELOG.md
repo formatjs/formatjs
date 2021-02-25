@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.11](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@3.2.10...@formatjs/intl-datetimeformat@3.2.11) (2021-02-25)
+
+
+### Bug Fixes
+
+* bump tslib version dep ([37577d2](https://github.com/formatjs/formatjs/commit/37577d22bf28d23de1d8013ba0047cf221ad8840)), closes [#2645](https://github.com/formatjs/formatjs/issues/2645)
+
+
+
+
+
 ## [3.2.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@3.2.9...@formatjs/intl-datetimeformat@3.2.10) (2021-02-25)
 
 

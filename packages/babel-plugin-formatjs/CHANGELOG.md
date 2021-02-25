@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.2.1](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@9.2.0...babel-plugin-formatjs@9.2.1) (2021-02-25)
+
+
+### Bug Fixes
+
+* bump tslib version dep ([37577d2](https://github.com/formatjs/formatjs/commit/37577d22bf28d23de1d8013ba0047cf221ad8840)), closes [#2645](https://github.com/formatjs/formatjs/issues/2645)
+
+
+
+
+
 # [9.2.0](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@9.1.4...babel-plugin-formatjs@9.2.0) (2021-02-25)
 
 
