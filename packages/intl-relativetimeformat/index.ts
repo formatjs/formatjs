@@ -2,11 +2,7 @@ import {
   SupportedLocales,
   RelativeTimeLocaleData,
   LocaleFieldsData,
-  IntlRelativeTimeFormatOptions,
-  ResolvedIntlRelativeTimeFormatOptions,
   PartitionRelativeTimePattern,
-  RelativeTimePart,
-  RelativeTimeFormattableUnit,
   InitializeRelativeTimeFormat,
   CanonicalizeLocaleList,
   ToString,
@@ -17,7 +13,7 @@ import getInternalSlots from './get_internal_slots';
 export default class RelativeTimeFormat {
   constructor(
     locales?: string | string[],
-    options?: IntlRelativeTimeFormatOptions
+    options?: Intl.RelativeTimeFormatOptions
   ) {
     // test262/test/intl402/RelativeTimeFormat/constructor/constructor/newtarget-undefined.js
     // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
@@ -34,7 +30,7 @@ export default class RelativeTimeFormat {
       getDefaultLocale: RelativeTimeFormat.getDefaultLocale,
     });
   }
-  format(value: number, unit: RelativeTimeFormattableUnit): string {
+  format(value: number, unit: Intl.RelativeTimeFormatUnit): string {
     if (typeof this !== 'object') {
       throw new TypeError('format was called on a non-object');
     }
@@ -45,7 +41,7 @@ export default class RelativeTimeFormat {
     return PartitionRelativeTimePattern(
       this,
       Number(value),
-      ToString(unit) as RelativeTimeFormattableUnit,
+      ToString(unit) as Intl.RelativeTimeFormatUnit,
       {
         getInternalSlots,
       }
@@ -55,8 +51,8 @@ export default class RelativeTimeFormat {
   }
   formatToParts(
     value: number,
-    unit: RelativeTimeFormattableUnit
-  ): RelativeTimePart[] {
+    unit: Intl.RelativeTimeFormatUnit
+  ): Intl.RelativeTimeFormatPart[] {
     if (typeof this !== 'object') {
       throw new TypeError('formatToParts was called on a non-object');
     }
@@ -67,12 +63,12 @@ export default class RelativeTimeFormat {
     return PartitionRelativeTimePattern(
       this,
       Number(value),
-      ToString(unit) as RelativeTimeFormattableUnit,
+      ToString(unit) as Intl.RelativeTimeFormatUnit,
       {getInternalSlots}
     );
   }
 
-  resolvedOptions(): ResolvedIntlRelativeTimeFormatOptions {
+  resolvedOptions(): Intl.ResolvedRelativeTimeFormatOptions {
     if (typeof this !== 'object') {
       throw new TypeError('resolvedOptions was called on a non-object');
     }
@@ -92,7 +88,7 @@ export default class RelativeTimeFormat {
 
   public static supportedLocalesOf(
     locales: string | string[],
-    options?: Pick<IntlRelativeTimeFormatOptions, 'localeMatcher'>
+    options?: Pick<Intl.RelativeTimeFormatOptions, 'localeMatcher'>
   ): string[] {
     return SupportedLocales(
       RelativeTimeFormat.availableLocales,

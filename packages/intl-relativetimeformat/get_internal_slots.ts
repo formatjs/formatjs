@@ -1,18 +1,15 @@
 // Type-only circular import
 // eslint-disable-next-line import/no-cycle
 
-import {
-  RelativeTimeFormat,
-  RelativeTimeFormatInternal,
-} from '@formatjs/ecma402-abstract';
+import {RelativeTimeFormatInternal} from '@formatjs/ecma402-abstract';
 
 const internalSlotMap = new WeakMap<
-  RelativeTimeFormat,
+  Intl.RelativeTimeFormat,
   RelativeTimeFormatInternal
 >();
 
 export default function getInternalSlots(
-  x: RelativeTimeFormat
+  x: Intl.RelativeTimeFormat
 ): RelativeTimeFormatInternal {
   let internalSlots = internalSlotMap.get(x);
   if (!internalSlots) {
