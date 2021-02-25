@@ -29,11 +29,11 @@ export default class Foo extends Component {
     render() {
         return (<p>
         <FormattedMessage id=\\"foo.bar.baz\\" defaultMessage=\\"Hello World! {foo, number}\\" values={{
-            foo: 1,
-        }}/>
+                foo: 1,
+            }}/>
         <FormattedMessage id=\\"foo.bar.baz\\" defaultMessage=\\"Hello World! {foo, number}\\" values={{
-            foo: 1,
-        }}/>
+                foo: 1,
+            }}/>
       </p>);
     }
 }
