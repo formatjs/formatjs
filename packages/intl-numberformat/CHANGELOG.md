@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.1.6...@formatjs/intl-numberformat@6.2.0) (2021-02-25)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** switch instanceof to OrdinaryHasInstance per new spec ([c40fd87](https://github.com/formatjs/formatjs/commit/c40fd879508a678374203c1ef4efa842985dfc44))
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** support TS4.2 ([ea86c52](https://github.com/formatjs/formatjs/commit/ea86c5211fbfff552aff644939afc94eccd1d806))
+
+
+
+
+
 ## [6.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@6.1.5...@formatjs/intl-numberformat@6.1.6) (2021-02-22)
 
 **Note:** Version bump only for package @formatjs/intl-numberformat

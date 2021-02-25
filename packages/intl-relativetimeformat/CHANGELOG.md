@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@8.0.6...@formatjs/intl-relativetimeformat@8.1.0) (2021-02-25)
+
+
+### Features
+
+* **@formatjs/intl-relativetimeformat:** support TS4.2 ([6cd5718](https://github.com/formatjs/formatjs/commit/6cd57185c246e1961230cb22eaeaf39532cfbae9))
+
+
+
+
+
 ## [8.0.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@8.0.5...@formatjs/intl-relativetimeformat@8.0.6) (2021-02-22)
 
 **Note:** Version bump only for package @formatjs/intl-relativetimeformat

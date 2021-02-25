@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.13.0](https://github.com/formatjs/formatjs/compare/react-intl@5.12.5...react-intl@5.13.0) (2021-02-25)
+
+
+### Features
+
+* **react-intl:** support TS4.2 ([78b8766](https://github.com/formatjs/formatjs/commit/78b8766cfca3363b477bd9d0b01c8d4b36a7c1cf))
+
+
+
+
+
 ## [5.12.5](https://github.com/formatjs/formatjs/compare/react-intl@5.12.4...react-intl@5.12.5) (2021-02-22)
 
 

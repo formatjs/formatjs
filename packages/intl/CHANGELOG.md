@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.7.1...@formatjs/intl@1.8.0) (2021-02-25)
+
+
+### Features
+
+* **@formatjs/intl:** support TS4.2 ([ba56b9a](https://github.com/formatjs/formatjs/commit/ba56b9a14de58ea17e19ab6033bcb5f8c9c03bae))
+
+
+
+
+
 ## [1.7.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl@1.7.0...@formatjs/intl@1.7.1) (2021-02-22)
 
 **Note:** Version bump only for package @formatjs/intl

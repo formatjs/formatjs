@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.5.4...@formatjs/ecma402-abstract@1.6.0) (2021-02-25)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** switch instanceof to OrdinaryHasInstance per new spec ([c40fd87](https://github.com/formatjs/formatjs/commit/c40fd879508a678374203c1ef4efa842985dfc44))
+
+
+### Features
+
+* **@formatjs/ecma402-abstract:** support TS4.2 ([a161685](https://github.com/formatjs/formatjs/commit/a161685531020751227fe10d10e4eaa9e1fce846))
+
+
+
+
+
 ## [1.5.4](https://github.com/formatjs/formatjs/compare/@formatjs/ecma402-abstract@1.5.3...@formatjs/ecma402-abstract@1.5.4) (2021-02-22)
 
 

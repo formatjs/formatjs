@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@4.0.7...@formatjs/intl-displaynames@4.0.8) (2021-02-25)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** fix should-polyfill to handle chrome script bug ([4417391](https://github.com/formatjs/formatjs/commit/441739106756183f09f67128cdc4ab3012b5e23a))
+
+
+
+
+
 ## [4.0.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@4.0.6...@formatjs/intl-displaynames@4.0.7) (2021-02-22)
 
 

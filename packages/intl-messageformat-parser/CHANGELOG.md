@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.4.0](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.3.4...intl-messageformat-parser@6.4.0) (2021-02-25)
+
+
+### Features
+
+* **intl-messageformat-parser:** support TS4.2 ([aa756c1](https://github.com/formatjs/formatjs/commit/aa756c1314d20057a6e7563185f53d1884977094))
+
+
+
+
+
 ## [6.3.4](https://github.com/formatjs/formatjs/compare/intl-messageformat-parser@6.3.3...intl-messageformat-parser@6.3.4) (2021-02-22)
 
 **Note:** Version bump only for package intl-messageformat-parser

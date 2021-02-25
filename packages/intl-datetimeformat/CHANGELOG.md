@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.10](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@3.2.9...@formatjs/intl-datetimeformat@3.2.10) (2021-02-25)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** switch instanceof to OrdinaryHasInstance per new spec ([c40fd87](https://github.com/formatjs/formatjs/commit/c40fd879508a678374203c1ef4efa842985dfc44))
+
+
+
+
+
 ## [3.2.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@3.2.8...@formatjs/intl-datetimeformat@3.2.9) (2021-02-22)
 
 **Note:** Version bump only for package @formatjs/intl-datetimeformat
