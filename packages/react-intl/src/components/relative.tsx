@@ -6,13 +6,16 @@
 import * as React from 'react';
 import {Context} from './injectIntl';
 import {invariantIntlContext} from '../utils';
-import {invariant, RelativeTimeUnit} from '@formatjs/ecma402-abstract';
+import {
+  invariant,
+  RelativeTimeFormatSingularUnit,
+} from '@formatjs/ecma402-abstract';
 import {FormatRelativeTimeOptions} from '@formatjs/intl';
 const MINUTE = 60;
 const HOUR = 60 * 60;
 const DAY = 60 * 60 * 24;
 
-function selectUnit(seconds: number): RelativeTimeUnit {
+function selectUnit(seconds: number): RelativeTimeFormatSingularUnit {
   const absValue = Math.abs(seconds);
 
   if (absValue < MINUTE) {
@@ -30,7 +33,7 @@ function selectUnit(seconds: number): RelativeTimeUnit {
   return 'day';
 }
 
-function getDurationInSeconds(unit?: RelativeTimeUnit): number {
+function getDurationInSeconds(unit?: RelativeTimeFormatSingularUnit): number {
   switch (unit) {
     case 'second':
       return 1;
@@ -43,7 +46,10 @@ function getDurationInSeconds(unit?: RelativeTimeUnit): number {
   }
 }
 
-function valueToSeconds(value?: number, unit?: RelativeTimeUnit): number {
+function valueToSeconds(
+  value?: number,
+  unit?: RelativeTimeFormatSingularUnit
+): number {
   if (!value) {
     return 0;
   }
@@ -59,19 +65,25 @@ function valueToSeconds(value?: number, unit?: RelativeTimeUnit): number {
 
 export interface Props extends FormatRelativeTimeOptions {
   value?: number;
-  unit?: RelativeTimeUnit;
+  unit?: RelativeTimeFormatSingularUnit;
   updateIntervalInSeconds?: number;
   children?(value: string): React.ReactChild;
 }
 
 interface State {
-  prevUnit?: RelativeTimeUnit;
+  prevUnit?: RelativeTimeFormatSingularUnit;
   prevValue?: number;
   currentValueInSeconds: number;
 }
 
-const INCREMENTABLE_UNITS: RelativeTimeUnit[] = ['second', 'minute', 'hour'];
-function canIncrement(unit: RelativeTimeUnit = 'second'): boolean {
+const INCREMENTABLE_UNITS: RelativeTimeFormatSingularUnit[] = [
+  'second',
+  'minute',
+  'hour',
+];
+function canIncrement(
+  unit: RelativeTimeFormatSingularUnit = 'second'
+): boolean {
   return INCREMENTABLE_UNITS.includes(unit);
 }
 
