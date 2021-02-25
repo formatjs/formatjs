@@ -27,6 +27,6 @@
     "@formatjs/ecma402-abstract": "1.6.0",
     "@formatjs/intl-getcanonicallocales": "1.5.4",
     "cldr-core": "38",
-    "tslib": "^2.0.1"
+    "tslib": "^2.1.0"
   }
 }

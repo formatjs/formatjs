@@ -14,7 +14,7 @@
     "format"
   ],
   "dependencies": {
-    "tslib": "^2.0.1"
+    "tslib": "^2.1.0"
   },
   "author": "Long Ho <holevietlong@gmail.com",
   "bugs": {

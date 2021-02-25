@@ -46,7 +46,7 @@
     "json-stable-stringify": "^1.0.1",
     "lodash": "^4.17.15",
     "loud-rejection": "^2.2.0",
-    "tslib": "^2.0.1",
+    "tslib": "^2.1.0",
     "typescript": "^4.0"
   },
   "bugs": {

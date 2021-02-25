@@ -26,7 +26,7 @@
     "@typescript-eslint/typescript-estree": "^3.6.0",
     "emoji-regex": "^9.0.0",
     "intl-messageformat-parser": "6.4.0",
-    "tslib": "^2.0.1"
+    "tslib": "^2.1.0"
   },
   "peerDependencies": {
     "eslint": "^7.0.0"

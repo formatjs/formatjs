@@ -23,6 +23,6 @@
   "homepage": "https://github.com/formatjs/formatjs#readme",
   "dependencies": {
     "@formatjs/ecma402-abstract": "1.6.0",
-    "tslib": "^2.0.1"
+    "tslib": "^2.1.0"
   }
 }

@@ -37,6 +37,6 @@
     "fast-memoize": "^2.5.2",
     "intl-messageformat": "9.5.0",
     "intl-messageformat-parser": "6.4.0",
-    "tslib": "^2.0.1"
+    "tslib": "^2.1.0"
   }
 }

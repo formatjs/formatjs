@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@formatjs/ecma402-abstract": "1.6.0",
-    "tslib": "^2.0.1"
+    "tslib": "^2.1.0"
   },
   "homepage": "https://github.com/formatjs/formatjs",
   "gitHead": "8b0baec8eda5002715cf893274fe59782fc2d371"
