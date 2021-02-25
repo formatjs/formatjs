@@ -49,14 +49,14 @@ export function parseDateTimeSkeleton(
       case 'L':
         result.month = ['numeric', '2-digit', 'short', 'long', 'narrow'][
           len - 1
-        ];
+        ] as 'numeric';
         break;
       // Week
       case 'w':
       case 'W':
         throw new RangeError('`w/W` (week) patterns are not supported');
       case 'd':
-        result.day = ['numeric', '2-digit'][len - 1];
+        result.day = ['numeric', '2-digit'][len - 1] as 'numeric';
         break;
       case 'D':
       case 'F':
@@ -72,13 +72,17 @@ export function parseDateTimeSkeleton(
         if (len < 4) {
           throw new RangeError('`e..eee` (weekday) patterns are not supported');
         }
-        result.weekday = ['short', 'long', 'narrow', 'short'][len - 4];
+        result.weekday = ['short', 'long', 'narrow', 'short'][
+          len - 4
+        ] as 'short';
         break;
       case 'c':
         if (len < 4) {
           throw new RangeError('`c..ccc` (weekday) patterns are not supported');
         }
-        result.weekday = ['short', 'long', 'narrow', 'short'][len - 4];
+        result.weekday = ['short', 'long', 'narrow', 'short'][
+          len - 4
+        ] as 'short';
         break;
 
       // Period
@@ -93,19 +97,19 @@ export function parseDateTimeSkeleton(
       // Hour
       case 'h':
         result.hourCycle = 'h12';
-        result.hour = ['numeric', '2-digit'][len - 1];
+        result.hour = ['numeric', '2-digit'][len - 1] as 'numeric';
         break;
       case 'H':
         result.hourCycle = 'h23';
-        result.hour = ['numeric', '2-digit'][len - 1];
+        result.hour = ['numeric', '2-digit'][len - 1] as 'numeric';
         break;
       case 'K':
         result.hourCycle = 'h11';
-        result.hour = ['numeric', '2-digit'][len - 1];
+        result.hour = ['numeric', '2-digit'][len - 1] as 'numeric';
         break;
       case 'k':
         result.hourCycle = 'h24';
-        result.hour = ['numeric', '2-digit'][len - 1];
+        result.hour = ['numeric', '2-digit'][len - 1] as 'numeric';
         break;
       case 'j':
       case 'J':
@@ -115,11 +119,11 @@ export function parseDateTimeSkeleton(
         );
       // Minute
       case 'm':
-        result.minute = ['numeric', '2-digit'][len - 1];
+        result.minute = ['numeric', '2-digit'][len - 1] as 'numeric';
         break;
       // Second
       case 's':
-        result.second = ['numeric', '2-digit'][len - 1];
+        result.second = ['numeric', '2-digit'][len - 1] as 'numeric';
         break;
       case 'S':
       case 'A':
