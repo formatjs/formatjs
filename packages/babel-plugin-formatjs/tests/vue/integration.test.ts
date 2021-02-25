@@ -34,10 +34,6 @@ test('dummy', function (done) {
               ],
             },
           },
-          {
-            resourceQuery: /blockType=template/,
-            loader: require.resolve('../../'),
-          },
         ],
       },
       plugins: [new VueLoaderPlugin()],
