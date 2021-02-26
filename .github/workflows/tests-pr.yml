@@ -10,24 +10,17 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
       - uses: actions/checkout@v2.3.4
         with:
           submodules: true
           fetch-depth: 110
-      - name: Decrypt bazel GCS secret
-        run: ./.github/scripts/decrypt_secret.sh
-        env:
-          SECRET_BAZEL_CACHE_JSON_PASSPHRASE: ${{ secrets.SECRET_BAZEL_CACHE_JSON_PASSPHRASE }}
       - name: build
         run: |
-          bazel build //...
+          bazel build //... --config:ci --build_metadata=COMMIT_SHA=$(git rev-parse HEAD)
         env:
           CI: true
       - name: test
         run: |
-          bazel test //...
+          bazel test //... --config:ci --build_metadata=COMMIT_SHA=$(git rev-parse HEAD)
         env:
           CI: true
