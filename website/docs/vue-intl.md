@@ -128,6 +128,40 @@ See [@formatjs/intl](./intl.md) for the full list of API signatures.
 - [babel-plugin-formatjs](./tooling/babel-plugin.md): Compile messages during bundling for `babel`.
 - [@formatjs/ts-transformer](./tooling/ts-transformer.md): Compile messages during bundling for `TypeScript`.
 
+### Configuration for Vue CLI
+
+Compilation of `formatMessage` (and other) calls can also be configured for projects created with Vue CLI. First, install the Babel plugin and register it:
+
+```js
+// babel.config.js
+module.exports = {
+  plugins: [
+    [
+      'formatjs',
+      {
+        idInterpolationPattern: '[sha512:contenthash:base64:6]',
+        ast: true,
+      },
+    ],
+  ],
+}
+```
+
+If you also want to compile messages in the `<template>` block of single-file components (as opposed to only in script tags), the Babel plugin needs to be registered as a webpack loader for that block:
+
+```js
+// vue.config.js
+module.exports = {
+  chainWebpack: config => {
+    config.module
+      .rule('formatjs')
+      .resourceQuery(/blockType=template/)
+      .use('formatjs')
+      .loader('babel-plugin-formatjs')
+  },
+}
+```
+
 ## Caveats
 
 ### Using ICU in Vue SFC
