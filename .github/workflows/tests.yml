@@ -20,11 +20,11 @@ jobs:
           echo "${{ secrets.BUILDBUDDY_ORG_KEY }}">buildbuddy-key.pem
       - name: build
         run: |
-          bazel build //... --config:ci --build_metadata=COMMIT_SHA=$(git rev-parse HEAD)
+          bazel build //... --config=ci --build_metadata=COMMIT_SHA=$(git rev-parse HEAD)
         env:
           CI: true
       - name: test
         run: |
-          bazel test //... --config:ci --build_metadata=COMMIT_SHA=$(git rev-parse HEAD)
+          bazel test //... --config=ci --build_metadata=COMMIT_SHA=$(git rev-parse HEAD)
         env:
           CI: true
