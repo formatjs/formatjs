@@ -1,6 +1,6 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "nodejs_binary", "pkg_npm")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "prettier_check", "ts_compile")
+load("//tools:index.bzl", "check_format", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-messageformat-parser"
@@ -103,14 +103,13 @@ generated_file_test(
     generated = "//tools:tsconfig.golden.json",
 )
 
-prettier_check(
+check_format(
     name = "prettier",
     srcs = glob(
         [
             "**/*",
         ],
         exclude = [
-            "BUILD",
             "CHANGELOG.md",
             "src/parser.pegjs",
             "src/parser.ts",

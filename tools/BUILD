@@ -1,15 +1,16 @@
-load("//tools:index.bzl", "prettier_check")
+load("//tools:index.bzl", "check_format")
 
 exports_files([
     "jest-reporter.js",
     "tsconfig.golden.json",
 ])
 
-prettier_check(
+check_format(
     name = "prettier",
     srcs = glob(
         [
-            "*.js",
+            "*.*",
         ],
+        exclude = ["tsconfig.golden.json"],
     ),
 )

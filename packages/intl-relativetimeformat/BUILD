@@ -1,9 +1,9 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
+load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
 load("@npm//ts-node:index.bzl", "ts_node")
-load("//tools:index.bzl", "bundle_karma_tests", "esbuild", "generate_src_file", "prettier_check", "ts_compile")
+load("//tools:index.bzl", "bundle_karma_tests", "check_format", "esbuild", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-relativetimeformat"
@@ -261,14 +261,13 @@ esbuild(
     ] + SRC_DEPS,
 )
 
-prettier_check(
+check_format(
     name = "prettier",
     srcs = glob(
         [
             "**/*",
         ],
         exclude = [
-            "BUILD",
             "CHANGELOG.md",
             "tests/locale-data/*",
             "test262-main.ts",

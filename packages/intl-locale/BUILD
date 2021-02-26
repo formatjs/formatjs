@@ -1,7 +1,7 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//test262-harness:index.bzl", "test262_harness_test")
-load("//tools:index.bzl", "esbuild", "prettier_check", "ts_compile")
+load("//tools:index.bzl", "check_format", "esbuild", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-locale"
@@ -116,14 +116,13 @@ esbuild(
     ] + SRC_DEPS,
 )
 
-prettier_check(
+check_format(
     name = "prettier",
     srcs = glob(
         [
             "**/*",
         ],
         exclude = [
-            "BUILD",
             "CHANGELOG.md",
         ],
     ),

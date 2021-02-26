@@ -1,6 +1,6 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
 load("@npm//json-schema-to-typescript:index.bzl", "json2ts")
-load("//tools:index.bzl", "prettier_check", "ts_compile")
+load("//tools:index.bzl", "check_format", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "babel-plugin-formatjs"
@@ -113,7 +113,7 @@ generated_file_test(
     generated = "//tools:tsconfig.golden.json",
 )
 
-prettier_check(
+check_format(
     name = "prettier",
     srcs = glob(
         [
@@ -121,7 +121,6 @@ prettier_check(
         ],
         exclude = [
             "CHANGELOG.md",
-            "BUILD",
             "options.ts",
             "tests/__snapshots__/*",
         ],
