@@ -34,12 +34,20 @@ export default class Foo extends Component {
         <FormattedMessage id=\\"foo.bar.baz\\" defaultMessage=\\"Hello World! {foo, number}\\" values={{
                 foo: 1,
             }}/>
+        <FormattedMessage id=\\"foo.bar.baz\\" defaultMessage=\\"Hello World! {foo, number}\\" values={{
+                foo: 1,
+            }}/>
       </p>);
     }
 }
 ",
   "meta": Object {},
   "msgs": Array [
+    Object {
+      "defaultMessage": "Hello World! {foo, number}",
+      "description": "The default message.",
+      "id": "foo.bar.baz",
+    },
     Object {
       "defaultMessage": "Hello World! {foo, number}",
       "description": "The default message.",
