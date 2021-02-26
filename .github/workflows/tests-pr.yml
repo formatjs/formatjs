@@ -6,7 +6,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -16,11 +16,11 @@ jobs:
           fetch-depth: 110
       - name: build
         run: |
-          bazel build //... --config:ci --build_metadata=COMMIT_SHA=$(git rev-parse HEAD)
+          bazel build //... --build_metadata=COMMIT_SHA=$(git rev-parse HEAD)
         env:
           CI: true
       - name: test
         run: |
-          bazel test //... --config:ci --build_metadata=COMMIT_SHA=$(git rev-parse HEAD)
+          bazel test //... --build_metadata=COMMIT_SHA=$(git rev-parse HEAD)
         env:
           CI: true
