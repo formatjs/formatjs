@@ -219,13 +219,35 @@ function extractMessageDescriptor(
 
   properties.forEach(prop => {
     const {name} = prop;
-    const initializer =
+    const initializer:
+      | typescript.Expression
+      | typescript.JsxExpression
+      | undefined =
       ts.isPropertyAssignment(prop) || ts.isJsxAttribute(prop)
         ? prop.initializer
         : undefined;
+
     if (name && ts.isIdentifier(name) && initializer) {
+      // <FormattedMessage foo={'barbaz'} />
+      if (
+        ts.isJsxExpression(initializer) &&
+        initializer.expression &&
+        ts.isStringLiteral(initializer.expression)
+      ) {
+        switch (name.text) {
+          case 'id':
+            msg.id = initializer.expression.text;
+            break;
+          case 'defaultMessage':
+            msg.defaultMessage = initializer.expression.text;
+            break;
+          case 'description':
+            msg.description = initializer.expression.text;
+            break;
+        }
+      }
       // {id: 'id'}
-      if (ts.isStringLiteral(initializer)) {
+      else if (ts.isStringLiteral(initializer)) {
         switch (name.text) {
           case 'id':
             msg.id = initializer.text;
