@@ -15,24 +15,6 @@ workspace(
 
 _ESBUILD_VERSION = "0.8.48"
 
-# new_local_repository(
-#     name="build_bazel_rules_nodejs",
-#     path = "./third_party/github.com/bazelbuild/rules_nodejs",
-#     build_file = "//third_party/github.com/bazelbuild/rules_nodejs:BUILD.bazel"
-# )
-
-# new_local_repository(
-#     name = "test262",
-#     build_file = "BUILD.test262",
-#     path = "./test262",
-# )
-
-# new_local_repository(
-#     name = "remote-website",
-#     build_file = "formatjs.github.io.BUILD",
-#     path = "./formatjs.github.io",
-# )
-
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 # Install the nodejs "bootstrap" package
@@ -107,13 +89,6 @@ yarn_install(
     yarn_lock = "//:yarn.lock",
 )
 
-# yarn_install(
-#     # Name this npm so that Bazel Label references look like @npm//package
-#     name = "website_npm",
-#     package_json = "//website:package.json",
-#     yarn_lock = "//website:yarn.lock",
-# )
-
 # Setup skylib
 http_archive(
     name = "bazel_skylib",
@@ -146,11 +121,48 @@ go_rules_dependencies()
 go_register_toolchains()
 
 git_repository(
-    name = "com_github_atlassian_bazel_tools",
-    commit = "64cad21247d8039660f90abc02549dd8012ebb5e",
-    remote = "https://github.com/atlassian/bazel-tools.git",
+    name = "com_github_ash2k_bazel_tools",
+    commit = "03adfba9705ea0f2de06215949374989ad7d018c",
+    remote = "https://github.com/ash2k/bazel-tools.git",
 )
 
-load("@com_github_atlassian_bazel_tools//multirun:deps.bzl", "multirun_dependencies")
+load("@com_github_ash2k_bazel_tools//multirun:deps.bzl", "multirun_dependencies")
 
 multirun_dependencies()
+
+# buildifier
+
+http_archive(
+    name = "bazel_gazelle",
+    sha256 = "b85f48fa105c4403326e9525ad2b2cc437babaa6e15a3fc0b1dbab0ab064bc7c",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/bazel-gazelle/releases/download/v0.22.2/bazel-gazelle-v0.22.2.tar.gz",
+        "https://github.com/bazelbuild/bazel-gazelle/releases/download/v0.22.2/bazel-gazelle-v0.22.2.tar.gz",
+    ],
+)
+
+load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
+
+gazelle_dependencies()
+
+_PROTOBUF_VERSION = "3.15.3"
+
+http_archive(
+    name = "com_google_protobuf",
+    sha256 = "1c11b325e9fbb655895e8fe9843479337d50dd0be56a41737cbb9aede5e9ffa0",
+    strip_prefix = "protobuf-%s" % _PROTOBUF_VERSION,
+    urls = ["https://github.com/protocolbuffers/protobuf/archive/v%s.zip" % _PROTOBUF_VERSION],
+)
+
+load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+
+protobuf_deps()
+
+_BUILDIFIER_VERSION = "4.0.0"
+
+http_archive(
+    name = "bazelbuild_buildtools",
+    sha256 = "2adaafee16c53b80adff742b88bc90b2a5e99bf6889a5d82f22ef66655dc467b",
+    strip_prefix = "buildtools-%s" % _BUILDIFIER_VERSION,
+    url = "https://github.com/bazelbuild/buildtools/archive/%s.zip" % _BUILDIFIER_VERSION,
+)

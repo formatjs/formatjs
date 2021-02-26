@@ -1,11 +1,12 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin")
 load("@npm//@docusaurus/core:index.bzl", "docusaurus")
-load("//tools:index.bzl", "prettier_check")
+load("//tools:index.bzl", "check_format")
 
-prettier_check(
+check_format(
     name = "prettier",
     srcs = glob(
         [
+            "BUILD",
             "docs/**/*",
             "lang/*",
             "src/**/*",

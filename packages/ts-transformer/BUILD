@@ -1,5 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("//tools:index.bzl", "prettier_check", "ts_compile")
+load("//tools:index.bzl", "check_format", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "ts-transformer"
@@ -76,14 +76,13 @@ generated_file_test(
     generated = "//tools:tsconfig.golden.json",
 )
 
-prettier_check(
+check_format(
     name = "prettier",
     srcs = glob(
         [
             "**/*",
         ],
         exclude = [
-            "BUILD",
             "CHANGELOG.md",
             "tests/__snapshots__/*",
         ],

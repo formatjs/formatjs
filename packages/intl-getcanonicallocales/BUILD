@@ -1,5 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("//tools:index.bzl", "bundle_karma_tests", "esbuild", "generate_src_file", "prettier_check", "ts_compile")
+load("//tools:index.bzl", "bundle_karma_tests", "check_format", "esbuild", "generate_src_file", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
 PACKAGE_NAME = "intl-getcanonicallocales"
@@ -103,14 +103,13 @@ esbuild(
     ] + SRC_DEPS,
 )
 
-prettier_check(
+check_format(
     name = "prettier",
     srcs = glob(
         [
             "**/*",
         ],
         exclude = [
-            "BUILD",
             "CHANGELOG.md",
             "src/data/aliases.ts",
         ],

@@ -2,10 +2,45 @@
 
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test")
 load("@build_bazel_rules_nodejs//internal/js_library:js_library.bzl", "js_library")
+load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier_test")
 load("@npm//@bazel/esbuild:index.bzl", _esbuild = "esbuild")
 load("@npm//@bazel/typescript:index.bzl", "ts_project")
 load("@npm//prettier:index.bzl", "prettier", "prettier_test")
 load("@npm//ts-node:index.bzl", "ts_node")
+
+BUILDIFIER_WARNINGS = [
+    "attr-cfg",
+    "attr-license",
+    "attr-non-empty",
+    "attr-output-default",
+    "attr-single-file",
+    "constant-glob",
+    "ctx-actions",
+    "ctx-args",
+    "depset-iteration",
+    "depset-union",
+    "dict-concatenation",
+    "duplicated-name",
+    "filetype",
+    "git-repository",
+    "http-archive",
+    "integer-division",
+    "load",
+    "load-on-top",
+    "native-build",
+    "native-package",
+    "out-of-order-load",
+    "output-group",
+    "package-name",
+    "package-on-top",
+    "positional-args",
+    "redefined-variable",
+    "repository-name",
+    "same-origin-load",
+    "string-iteration",
+    "unsorted-dict-items",
+    "unused-variable",
+]
 
 def ts_compile(name, srcs, deps, package_name = None, skip_esm = True):
     """Compile TS with prefilled args.
@@ -131,16 +166,32 @@ def bundle_karma_tests(name, srcs, tests, data = [], deps = [], esbuild_deps = [
         visibility = ["//:__pkg__"],
     )
 
-def prettier_check(name, srcs, config = "//:.prettierrc.json"):
+def check_format(name, srcs, config = "//:.prettierrc.json"):
+    """
+    Run all file formatting checks like prettier/buildifier.
+
+    Args:
+        name: name of target
+        srcs: list of srcs files
+        config: prettier config
+    """
     native.filegroup(
-        name = "%s_srcs" % name,
-        srcs = srcs,
+        name = "%s_prettier_srcs" % name,
+        srcs = [s for s in srcs if not s.endswith("BUILD") and not s.endswith(".bzl")],
+    )
+
+    buildifier_test(
+        name = "%s_buildifier_test" % name,
+        srcs = [s for s in srcs if s.endswith("BUILD") or s.endswith(".bzl")],
+        lint_mode = "warn",
+        lint_warnings = BUILDIFIER_WARNINGS,
+        verbose = True,
     )
 
     prettier_test(
-        name = "%s_test" % name,
+        name = "%s_prettier_test" % name,
         data = [
-            "%s_srcs" % name,
+            "%s_prettier_srcs" % name,
             config,
         ],
         templated_args = [
@@ -149,14 +200,14 @@ def prettier_check(name, srcs, config = "//:.prettierrc.json"):
             "--loglevel",
             "warn",
             "--check",
-            "$(rootpaths :%s_srcs)" % name,
+            "$(rootpaths :%s_prettier_srcs)" % name,
         ],
     )
 
     prettier(
         name = name,
         data = [
-            "%s_srcs" % name,
+            "%s_prettier_srcs" % name,
             config,
         ],
         templated_args = [
@@ -165,7 +216,7 @@ def prettier_check(name, srcs, config = "//:.prettierrc.json"):
             "--loglevel",
             "warn",
             "--write",
-            "$(rootpaths :%s_srcs)" % name,
+            "$(rootpaths :%s_prettier_srcs)" % name,
         ],
         visibility = [
             "//:__pkg__",

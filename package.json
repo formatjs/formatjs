@@ -8,15 +8,15 @@
     "url": "https://github.com/formatjs/formatjs"
   },
   "scripts": {
-    "bazel:lint": "find . -type f \\( -name \"*.BUILD\" -or -name \"*.bzl\" -or -name WORKSPACE -or -name BUILD -or -name BUILD.bazel \\) ! -path \"*/node_modules/*\" | xargs buildifier -v --warnings=attr-cfg,attr-license,attr-non-empty,attr-output-default,attr-single-file,constant-glob,ctx-actions,ctx-args,depset-iteration,depset-union,dict-concatenation,duplicated-name,filetype,git-repository,http-archive,integer-division,load,load-on-top,native-build,native-package,out-of-order-load,output-group,package-name,package-on-top,positional-args,redefined-variable,repository-name,same-origin-load,string-iteration,unsorted-dict-items,unused-variable",
+    "bazel:lint": "bazel run //:buildifier",
     "build": "bazel build //...",
     "examples": "bazel run //packages/react-intl/examples",
-    "format": "yarn bazel:lint --lint=fix && bazel run :prettier_all",
+    "format": "yarn bazel:lint && bazel run :prettier_all",
     "karma:ci": "bazel test :karma-ci",
     "karma:local": "bazel test :karma",
     "release:next": "lerna version prerelease --yes && lerna exec --no-bail -- bazel run :publish --tag next",
     "release": "lerna version --yes && lerna exec --no-bail -- bazel run :publish",
-    "test": "yarn bazel:lint --lint=warn && bazel test //...",
+    "test": "bazel test //...",
     "postinstall": "husky install && patch-package"
   },
   "devDependencies": {
@@ -25,7 +25,6 @@
     "@babel/plugin-syntax-jsx": "^7.10.4",
     "@babel/types": "^7.12.11",
     "@bazel/bazelisk": "^1.5.0",
-    "@bazel/buildifier": "^4.0.0",
     "@bazel/esbuild": "^3.2.1",
     "@bazel/ibazel": "^0.14.0",
     "@bazel/typescript": "3.2.1",
@@ -93,7 +92,6 @@
     "karma-jasmine-matchers": "^4.0.2",
     "karma-sauce-launcher": "4.3.5",
     "lerna": "^3.20.2",
-    "lint-staged": "^10.2.11",
     "lodash": "^4.17.15",
     "loud-rejection": "^2.2.0",
     "make-plural-compiler": "^5.1.0",
@@ -166,9 +164,6 @@
   "devEngines": {
     "node": ">= 10.x",
     "npm": "6.x"
-  },
-  "lint-staged": {
-    "(BUILD|WORKSPACE|BUILD.bazel|*.bzl)": "yarn bazel:lint --lint=fix"
   },
   "resolutions": {
     "**/chokidar": "^3.4.2",

@@ -1,8 +1,7 @@
-load("@com_github_atlassian_bazel_tools//multirun:def.bzl", "multirun")
+load("@com_github_ash2k_bazel_tools//multirun:def.bzl", "multirun")
+load("@bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
 load("@npm//karma:index.bzl", "karma_test")
-
-# Add rules here to build your software
-# See https://docs.bazel.build/versions/master/build-ref.html#BUILD_files
+load("//tools:index.bzl", "BUILDIFIER_WARNINGS")
 
 # Allow any ts_library rules in this workspace to reference the config
 # Note: if you move the tsconfig.json file to a subdirectory, you can add an alias() here instead
@@ -243,4 +242,12 @@ multirun(
         "//packages/intl-relativetimeformat:test262-main.update",
         "//packages/intl-relativetimeformat:tests-locale-data-all.update",
     ],
+)
+
+buildifier(
+    name = "buildifier",
+    exclude_patterns = ["./node_modules/*"],
+    lint_mode = "fix",
+    lint_warnings = BUILDIFIER_WARNINGS,
+    verbose = True,
 )
