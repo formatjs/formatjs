@@ -50,11 +50,7 @@ docusaurus(
     args = [
         "build",
         "--out-dir",
-        "$(@D)/dist",
-        "--generated-files-dir",
-        "$(@D)/generated",
-        "--config",
-        "$(BINDIR)/website/docusaurus.config.js",
+        "$(@D)",
         "$(BINDIR)/website",
     ],
     data = DEPS,
@@ -77,7 +73,7 @@ docusaurus(
         "website/docusaurus.config.js",
         "--skip-build",
         "--out-dir",
-        "$$(rlocation $(location :website_out))/dist",
+        "$$(rlocation $(location :website_out))",
         "website",
     ],
 )
@@ -93,7 +89,7 @@ docusaurus(
         "--config",
         "$(BINDIR)/website/docusaurus.config.js",
         "--dir",
-        "$$(rlocation $(location :website_out))/dist",
+        "$$(rlocation $(location :website_out))",
         "",
     ],
 )
