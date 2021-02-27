@@ -6,13 +6,13 @@ check_format(
     name = "prettier",
     srcs = glob(
         [
-            "BUILD",
             "docs/**/*",
             "lang/*",
             "src/**/*",
             "*.js*",
         ],
     ) + [
+        "BUILD",
         "README.md",
     ],
     config = ".prettierrc.json",
@@ -46,11 +46,15 @@ copy_to_bin(
 )
 
 docusaurus(
-    name = "dist",
+    name = "website_out",
     args = [
         "build",
         "--out-dir",
-        "$(@D)",
+        "$(@D)/dist",
+        "--generated-files-dir",
+        "$(@D)/generated",
+        "--config",
+        "$(BINDIR)/website/docusaurus.config.js",
         "$(BINDIR)/website",
     ],
     data = DEPS,
@@ -63,9 +67,17 @@ docusaurus(
         "USE_SSH",
         "GIT_USER",
     ],
-    data = DEPS + [":dist"],
+    data = DEPS + [
+        ":website_out",
+        "docusaurus.config.js",
+    ],
     templated_args = [
         "deploy",
+        "--config",
+        "website/docusaurus.config.js",
+        "--skip-build",
+        "--out-dir",
+        "$$(rlocation $(location :website_out))/dist",
         "website",
     ],
 )
@@ -73,13 +85,15 @@ docusaurus(
 docusaurus(
     name = "serve",
     data = DEPS + [
-        ":dist",
+        ":website_out",
         "docusaurus.config.js",
     ],
     templated_args = [
         "serve",
+        "--config",
+        "$(BINDIR)/website/docusaurus.config.js",
         "--dir",
-        "$$(rlocation $(location :dist))",
-        "$(BINDIR)/website",
+        "$$(rlocation $(location :website_out))/dist",
+        "",
     ],
 )
