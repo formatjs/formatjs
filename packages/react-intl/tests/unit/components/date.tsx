@@ -129,7 +129,9 @@ describe('<FormattedDate>', () => {
 
 describe('<FormattedDateParts>', () => {
   let intl: IntlShape;
-  const children = jest.fn();
+  const children = jest.fn(
+    parts => (Array.isArray(parts) && parts[0] && parts[0].value) || null
+  );
 
   beforeEach(() => {
     intl = createIntl({

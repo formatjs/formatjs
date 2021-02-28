@@ -1,11 +1,5 @@
 import * as React from 'react';
-import hoistNonReactStatics_ from 'hoist-non-react-statics';
-// Since rollup cannot deal with namespace being a function,
-// this is to interop with TypeScript since `invariant`
-// does not export a default
-// https://github.com/rollup/rollup/issues/1267
-const hoistNonReactStatics: typeof hoistNonReactStatics_ =
-  (hoistNonReactStatics_ as any).default || hoistNonReactStatics_;
+import hoistNonReactStatics from 'hoist-non-react-statics';
 import {invariantIntlContext} from '../utils';
 import {IntlShape} from '../types';
 

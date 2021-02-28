@@ -289,7 +289,7 @@ describe('<FormattedMessage>', () => {
           values: {
             name: <b data-testid="b">Jest</b>,
           },
-          children: chunks => <strong>{chunks}</strong>,
+          children: (chunks: any) => <strong>{chunks}</strong>,
         },
         providerProps
       );

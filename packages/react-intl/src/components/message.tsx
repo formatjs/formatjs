@@ -16,7 +16,7 @@ export interface Props<
 > extends MessageDescriptor {
   values?: V;
   tagName?: React.ElementType<any>;
-  children?(...nodes: React.ReactNodeArray): React.ReactNode;
+  children?(...nodes: React.ReactNodeArray): React.ReactElement | null;
   ignoreTag?: IntlMessageFormatOptions['ignoreTag'];
 }
 
@@ -29,7 +29,7 @@ function areEqual(prevProps: Props, nextProps: Props): boolean {
   );
 }
 
-const FormattedMessage = React.memo<Props>(function (props) {
+const FormattedMessage = React.memo<Props>(props => {
   const intl = useIntl();
   const {formatMessage, textComponent: Text = React.Fragment} = intl;
   const {
@@ -52,7 +52,7 @@ const FormattedMessage = React.memo<Props>(function (props) {
   }
 
   if (typeof children === 'function') {
-    return <>{children(nodes)}</>;
+    return children(nodes);
   }
 
   if (Component) {

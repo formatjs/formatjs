@@ -134,7 +134,9 @@ function NOOP(_: Intl.NumberFormatPart[]) {
 
 describe('<FormattedNumberParts>', function () {
   let intl: IntlShape<React.ReactNode>;
-  const children = jest.fn();
+  const children = jest.fn(
+    parts => (Array.isArray(parts) && parts[0] && parts[0].value) || null
+  );
 
   beforeEach(() => {
     intl = createIntl({

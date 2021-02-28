@@ -135,7 +135,9 @@ describe('<FormattedTime>', () => {
 
 describe('<FormattedTimeParts>', () => {
   let intl: IntlShape<React.ReactNode>;
-  const children = jest.fn();
+  const children = jest.fn(
+    parts => (Array.isArray(parts) && parts[0] && parts[0].value) || null
+  );
   const onError = jest.fn();
   beforeEach(() => {
     onError.mockClear();

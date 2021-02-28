@@ -1,13 +1,12 @@
 import * as React from 'react';
-import {invariantIntlContext} from '../utils';
 import {
   FormatDateOptions,
   FormatNumberOptions,
   FormatListOptions,
   FormatDisplayNameOptions,
 } from '@formatjs/intl';
-import {Context} from './injectIntl';
 import {IntlShape} from '../types';
+import useIntl from './useIntl';
 
 enum DisplayName {
   formatDate = 'FormattedDate',
@@ -40,15 +39,11 @@ export const FormattedNumberParts: React.FC<
 
     children(val: Intl.NumberFormatPart[]): React.ReactElement | null;
   }
-> = props => (
-  <Context.Consumer>
-    {(intl): React.ReactElement | null => {
-      invariantIntlContext(intl);
-      const {value, children, ...formatProps} = props;
-      return children(intl.formatNumberToParts(value, formatProps));
-    }}
-  </Context.Consumer>
-);
+> = props => {
+  const intl = useIntl();
+  const {value, children, ...formatProps} = props;
+  return children(intl.formatNumberToParts(value, formatProps));
+};
 FormattedNumberParts.displayName = 'FormattedNumberParts';
 
 export function createFormattedDateTimePartsComponent<
@@ -67,21 +62,17 @@ export function createFormattedDateTimePartsComponent<
     children(val: Intl.DateTimeFormatPart[]): React.ReactElement | null;
   };
 
-  const ComponentParts: React.FC<Props> = props => (
-    <Context.Consumer>
-      {(intl): React.ReactElement | null => {
-        invariantIntlContext(intl);
-        const {value, children, ...formatProps} = props;
-        const date = typeof value === 'string' ? new Date(value || 0) : value;
-        const formattedParts: Intl.DateTimeFormatPart[] =
-          name === 'formatDate'
-            ? intl.formatDateToParts(date, formatProps)
-            : intl.formatTimeToParts(date, formatProps);
+  const ComponentParts: React.FC<Props> = props => {
+    const intl = useIntl();
+    const {value, children, ...formatProps} = props;
+    const date = typeof value === 'string' ? new Date(value || 0) : value;
+    const formattedParts: Intl.DateTimeFormatPart[] =
+      name === 'formatDate'
+        ? intl.formatDateToParts(date, formatProps)
+        : intl.formatTimeToParts(date, formatProps);
 
-        return children(formattedParts);
-      }}
-    </Context.Consumer>
-  );
+    return children(formattedParts);
+  };
   ComponentParts.displayName = DisplayNameParts[name];
   return ComponentParts;
 }
@@ -100,22 +91,19 @@ export function createFormattedComponent<Name extends keyof Formatter>(
     children?(val: string): React.ReactElement | null;
   };
 
-  const Component: React.FC<Props> = props => (
-    <Context.Consumer>
-      {(intl): JSX.Element | null => {
-        invariantIntlContext(intl);
-        const {value, children, ...formatProps} = props;
-        // TODO: fix TS type definition for localeMatcher upstream
-        const formattedValue = intl[name](value as any, formatProps as any);
+  const Component: React.FC<Props> = props => {
+    const intl = useIntl();
+    const {value, children, ...formatProps} = props;
+    // TODO: fix TS type definition for localeMatcher upstream
+    const formattedValue = intl[name](value as any, formatProps as any);
 
-        if (typeof children === 'function') {
-          return children(formattedValue as any);
-        }
-        const Text = intl.textComponent || React.Fragment;
-        return <Text>{formattedValue}</Text>;
-      }}
-    </Context.Consumer>
-  );
+    if (typeof children === 'function') {
+      return children(formattedValue as any);
+    }
+    const Text = intl.textComponent || React.Fragment;
+    return <Text>{formattedValue}</Text>;
+  };
+
   Component.displayName = DisplayName[name];
   return Component;
 }

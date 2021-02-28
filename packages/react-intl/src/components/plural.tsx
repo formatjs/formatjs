@@ -5,13 +5,11 @@
  */
 
 import * as React from 'react';
-import withIntl, {WithIntlProps} from './injectIntl';
-import {IntlShape} from '../types';
 import {FormatPluralOptions} from '@formatjs/intl';
+import useIntl from './useIntl';
 
 interface Props extends FormatPluralOptions {
   value: number;
-  intl: IntlShape;
   other: React.ReactNode;
   zero?: React.ReactNode;
   one?: React.ReactNode;
@@ -22,12 +20,8 @@ interface Props extends FormatPluralOptions {
 }
 
 const FormattedPlural: React.FC<Props> = props => {
-  const {
-    value,
-    other,
-    children,
-    intl: {formatPlural, textComponent: Text},
-  } = props;
+  const {formatPlural, textComponent: Text} = useIntl();
+  const {value, other, children} = props;
 
   const pluralCategory = formatPlural(value, props);
   const formattedPlural = props[pluralCategory as 'one'] || other;
@@ -48,10 +42,4 @@ FormattedPlural.defaultProps = {
 
 FormattedPlural.displayName = 'FormattedPlural';
 
-// Explicitly annotate type here to workaround API extractor's inability to handle `import('./someModule')`
-// type annotations when rolling up DTS file.
-const FormattedPluralWithIntl: React.FC<WithIntlProps<Props>> & {
-  WrappedComponent: React.ComponentType<Props>;
-} = withIntl(FormattedPlural);
-
-export default FormattedPluralWithIntl;
+export default FormattedPlural;
