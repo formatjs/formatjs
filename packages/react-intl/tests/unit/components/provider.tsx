@@ -1,5 +1,7 @@
 import * as React from 'react';
-import IntlProvider from '../../../src/components/provider';
+import IntlProvider, {
+  OptionalIntlConfig,
+} from '../../../src/components/provider';
 import withIntl from '../../../src/components/injectIntl';
 import {render} from '@testing-library/react';
 import {FormattedDate} from '../../../';
@@ -87,7 +89,7 @@ describe('<IntlProvider>', () => {
 
   it('shadows inherited intl config props from an <IntlProvider> ancestor', () => {
     const onError = jest.fn();
-    const props = {
+    const props: OptionalIntlConfig = {
       locale: 'en',
       timeZone: 'Australia/Adelaide',
       formats: {
@@ -134,7 +136,9 @@ describe('<IntlProvider>', () => {
     expect(getByTestId('comp')).toHaveTextContent('31/01/2020');
   });
   it('show warning for non-AST messages with defaultRichTextElements', () => {
-    const consoleWarn = jest.spyOn(console, 'warn');
+    const consoleWarn = jest
+      .spyOn(console, 'warn')
+      .mockImplementation(() => null);
 
     render(
       <IntlProvider

@@ -12,6 +12,7 @@ describe('<FormattedDateTimeRange>', () => {
   let intl: IntlShape;
   beforeEach(() => {
     intl = createIntl({
+      onError: () => {},
       locale: 'en',
     });
   });
@@ -21,6 +22,8 @@ describe('<FormattedDateTimeRange>', () => {
   });
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
+    // So it doesn't spam the console
+    jest.spyOn(console, 'error').mockImplementation(() => {});
     expect(() =>
       render(<FormattedDateTimeRange from={Date.now()} to={Date.now()} />)
     ).toThrow(Error);
@@ -50,7 +53,7 @@ describe('<FormattedDateTimeRange>', () => {
   it('accepts valid Intl.DateTimeFormat options as props', () => {
     const from = new Date('2020-1-1');
     const to = new Date('2020-1-15');
-    const options = {year: 'numeric'};
+    const options: Intl.DateTimeFormatOptions = {year: 'numeric'};
 
     const {getByTestId} = mountWithProvider({from, to, ...options}, intl);
 
@@ -63,7 +66,7 @@ describe('<FormattedDateTimeRange>', () => {
     const from = new Date();
     const onError = jest.fn();
     const {getByTestId} = mountWithProvider(
-      // @ts-ignore
+      // @ts-expect-error invalid for testing
       {from, to: undefined, year: 'invalid'},
       {...intl, onError}
     );

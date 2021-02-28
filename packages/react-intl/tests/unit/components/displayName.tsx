@@ -15,18 +15,13 @@ describe('<FormattedDisplayName />', () => {
   });
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
-    const mockConsole = jest
-      .spyOn(console, 'error')
-      .mockImplementation(() => null);
-    try {
-      expect(() =>
-        render(<FormattedDisplayName type="language" value="zh-Hans" />)
-      ).toThrow(
-        '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
-      );
-    } finally {
-      mockConsole.mockRestore();
-    }
+    // So it doesn't spam the console
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    expect(() =>
+      render(<FormattedDisplayName type="language" value="zh-Hans" />)
+    ).toThrow(
+      '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
+    );
   });
 
   it('accepts Intl.DisplayNames options', () => {

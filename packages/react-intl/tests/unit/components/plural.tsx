@@ -12,8 +12,8 @@ describe('<FormattedPlural>', () => {
   let intl: IntlShape<React.ReactNode>;
 
   beforeEach(() => {
-    console.error = jest.fn();
     intl = createIntl({
+      onError: () => {},
       locale: 'en',
     });
   });
@@ -23,6 +23,8 @@ describe('<FormattedPlural>', () => {
   });
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
+    // So it doesn't spam the console
+    jest.spyOn(console, 'error').mockImplementation(() => {});
     expect(() => render(<FormattedPlural value={1} other="" />)).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     );

@@ -46,7 +46,7 @@ copy_to_bin(
 )
 
 docusaurus(
-    name = "website_out",
+    name = "build",
     args = [
         "build",
         "--out-dir",
@@ -64,7 +64,7 @@ docusaurus(
         "GIT_USER",
     ],
     data = DEPS + [
-        ":website_out",
+        ":build",
         "docusaurus.config.js",
     ],
     templated_args = [
@@ -73,7 +73,7 @@ docusaurus(
         "website/docusaurus.config.js",
         "--skip-build",
         "--out-dir",
-        "$$(rlocation $(location :website_out))",
+        "$$(rlocation $(location :build))",
         "website",
     ],
 )
@@ -81,7 +81,7 @@ docusaurus(
 docusaurus(
     name = "serve",
     data = DEPS + [
-        ":website_out",
+        ":build",
         "docusaurus.config.js",
     ],
     templated_args = [
@@ -89,7 +89,7 @@ docusaurus(
         "--config",
         "$(BINDIR)/website/docusaurus.config.js",
         "--dir",
-        "$$(rlocation $(location :website_out))",
+        "$$(rlocation $(location :build))",
         "",
     ],
 )

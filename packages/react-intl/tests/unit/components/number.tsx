@@ -27,6 +27,8 @@ describe('<FormattedNumber>', () => {
   });
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
+    // So it doesn't spam the console
+    jest.spyOn(console, 'error').mockImplementation(() => {});
     expect(() => render(<FormattedNumber value={0} />)).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     );
@@ -88,6 +90,7 @@ describe('<FormattedNumber>', () => {
 
   it('accepts `format` prop', () => {
     intl = createIntl({
+      onError: () => {},
       locale: 'en',
       formats: {
         number: {
@@ -134,9 +137,9 @@ describe('<FormattedNumberParts>', function () {
   const children = jest.fn();
 
   beforeEach(() => {
-    console.error = jest.fn();
     intl = createIntl({
       locale: 'en',
+      onError: () => {},
     });
     children.mockClear();
   });
@@ -146,6 +149,8 @@ describe('<FormattedNumberParts>', function () {
   });
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
+    // So it doesn't spam the console
+    jest.spyOn(console, 'error').mockImplementation(() => {});
     expect(() =>
       render(<FormattedNumberParts value={0} children={NOOP} />)
     ).toThrow(
@@ -169,6 +174,7 @@ describe('<FormattedNumberParts>', function () {
 
   it('accepts `format` prop', () => {
     intl = createIntl({
+      onError: () => {},
       locale: 'en',
       formats: {
         number: {

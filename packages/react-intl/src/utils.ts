@@ -41,3 +41,36 @@ export function assignUniqueKeysToParts(
     return formatXMLElementFn(React.Children.toArray(parts)) as any;
   };
 }
+
+export function shallowEqual<
+  T extends Record<string, unknown> = Record<string, unknown>
+>(objA?: T, objB?: T) {
+  if (objA === objB) {
+    return true;
+  }
+
+  if (!objA || !objB) {
+    return false;
+  }
+
+  var aKeys = Object.keys(objA);
+  var bKeys = Object.keys(objB);
+  var len = aKeys.length;
+
+  if (bKeys.length !== len) {
+    return false;
+  }
+
+  for (var i = 0; i < len; i++) {
+    var key = aKeys[i];
+
+    if (
+      objA[key] !== objB[key] ||
+      !Object.prototype.hasOwnProperty.call(objB, key)
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+}

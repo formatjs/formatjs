@@ -17,6 +17,7 @@ describe('<FormattedRelativeTime>', () => {
   let intl: IntlShape;
   const intlConfig: OptionalIntlConfig = {
     locale: 'en',
+    onError: () => {},
   };
 
   beforeEach(() => {
@@ -28,6 +29,8 @@ describe('<FormattedRelativeTime>', () => {
   });
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
+    // So it doesn't spam the console
+    jest.spyOn(console, 'error').mockImplementation(() => {});
     expect(() => render(<FormattedRelativeTime />)).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     );
@@ -90,6 +93,7 @@ describe('<FormattedRelativeTime>', () => {
   it('accepts `format` prop', () => {
     const format = 'seconds';
     const config: OptionalIntlConfig = {
+      onError: () => {},
       locale: 'en',
       formats: {
         relative: {

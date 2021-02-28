@@ -5,17 +5,11 @@
  */
 
 import * as React from 'react';
-import type {
-  PrimitiveType,
-  FormatXMLElementFn,
-  Options as IntlMessageFormatOptions,
-} from 'intl-messageformat';
-import {Context} from './injectIntl';
-import {invariantIntlContext} from '../utils';
-import * as shallowEquals_ from 'shallow-equal/objects';
+import type {Options as IntlMessageFormatOptions} from 'intl-messageformat';
+
 import {MessageDescriptor} from '@formatjs/intl';
-const shallowEquals: typeof shallowEquals_ =
-  (shallowEquals_ as any).default || shallowEquals_;
+import useIntl from './useIntl';
+import {shallowEqual} from '../utils';
 
 export interface Props<
   V extends Record<string, any> = Record<string, React.ReactNode>
@@ -26,65 +20,48 @@ export interface Props<
   ignoreTag?: IntlMessageFormatOptions['ignoreTag'];
 }
 
-class FormattedMessage<
-  V extends Record<string, any> = Record<
-    string,
-    | PrimitiveType
-    | React.ReactElement
-    | FormatXMLElementFn<React.ReactNode, React.ReactNode>
-  >
-> extends React.Component<Props<V>> {
-  static displayName = 'FormattedMessage';
-
-  shouldComponentUpdate(nextProps: Props<V>): boolean {
-    const {values, ...otherProps} = this.props;
-    const {values: nextValues, ...nextOtherProps} = nextProps;
-    return (
-      !shallowEquals(nextValues, values) ||
-      !shallowEquals(otherProps, nextOtherProps)
-    );
-  }
-
-  render(): JSX.Element {
-    return (
-      <Context.Consumer>
-        {(intl): React.ReactNode => {
-          invariantIntlContext(intl);
-
-          const {formatMessage, textComponent: Text = React.Fragment} = intl;
-          const {
-            id,
-            description,
-            defaultMessage,
-            values,
-            children,
-            tagName: Component = Text,
-            ignoreTag,
-          } = this.props;
-
-          const descriptor = {id, description, defaultMessage};
-          let nodes: React.ReactNode = formatMessage(descriptor, values, {
-            ignoreTag,
-          });
-
-          if (!Array.isArray(nodes)) {
-            nodes = [nodes];
-          }
-
-          if (typeof children === 'function') {
-            return children(nodes);
-          }
-
-          if (Component) {
-            // Needs to use `createElement()` instead of JSX, otherwise React will
-            // warn about a missing `key` prop with rich-text message formatting.
-            return React.createElement(Component, null, ...(nodes as any));
-          }
-          return nodes;
-        }}
-      </Context.Consumer>
-    );
-  }
+function areEqual(prevProps: Props, nextProps: Props): boolean {
+  const {values, ...otherProps} = prevProps;
+  const {values: nextValues, ...nextOtherProps} = nextProps;
+  return (
+    shallowEqual(nextValues, values) &&
+    shallowEqual(otherProps as any, nextOtherProps)
+  );
 }
+
+const FormattedMessage = React.memo<Props>(function (props) {
+  const intl = useIntl();
+  const {formatMessage, textComponent: Text = React.Fragment} = intl;
+  const {
+    id,
+    description,
+    defaultMessage,
+    values,
+    children,
+    tagName: Component = Text,
+    ignoreTag,
+  } = props;
+
+  const descriptor = {id, description, defaultMessage};
+  let nodes: React.ReactNode = formatMessage(descriptor, values, {
+    ignoreTag,
+  });
+
+  if (!Array.isArray(nodes)) {
+    nodes = [nodes];
+  }
+
+  if (typeof children === 'function') {
+    return <>{children(nodes)}</>;
+  }
+
+  if (Component) {
+    // Needs to use `createElement()` instead of JSX, otherwise React will
+    // warn about a missing `key` prop with rich-text message formatting.
+    return React.createElement(Component, null, ...(nodes as any));
+  }
+  return <>{nodes}</>;
+}, areEqual);
+FormattedMessage.displayName = 'FormattedMessage';
 
 export default FormattedMessage;

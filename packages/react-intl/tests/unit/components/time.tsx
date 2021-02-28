@@ -26,6 +26,8 @@ describe('<FormattedTime>', () => {
   });
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
+    // So it doesn't spam the console
+    jest.spyOn(console, 'error').mockImplementation(() => {});
     expect(() => render(<FormattedTime value={0} />)).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     );
@@ -70,7 +72,7 @@ describe('<FormattedTime>', () => {
 
   it('accepts valid Intl.DateTimeFormat options as props', () => {
     const date = Date.now();
-    const options = {hour: '2-digit'};
+    const options: Intl.DateTimeFormatOptions = {hour: '2-digit'};
 
     const {getByTestId} = mountWithProvider({value: date, ...options}, intl);
 
@@ -83,6 +85,7 @@ describe('<FormattedTime>', () => {
     const date = new Date();
 
     const {getByTestId} = mountWithProvider(
+      // @ts-expect-error invalid for testing
       {value: date, hour: 'invalid'},
       intl
     );
@@ -94,6 +97,7 @@ describe('<FormattedTime>', () => {
 
   it('accepts `format` prop', () => {
     intl = createIntl({
+      onError: () => {},
       locale: 'en',
       formats: {
         time: {
@@ -147,6 +151,8 @@ describe('<FormattedTimeParts>', () => {
   });
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
+    // So it doesn't spam the console
+    jest.spyOn(console, 'error').mockImplementation(() => {});
     expect(() =>
       render(<FormattedTimeParts value={0} children={children} />)
     ).toThrow(
@@ -171,9 +177,9 @@ describe('<FormattedTimeParts>', () => {
 
   it('accepts valid Intl.DateTimeFormat options as props', () => {
     const date = new Date(1567130870626);
-    const options = {hour: '2-digit', children};
+    const options: Intl.DateTimeFormatOptions = {hour: '2-digit'};
 
-    mountPartsWithProvider({value: date, ...options}, intl);
+    mountPartsWithProvider({value: date, children, ...options}, intl);
 
     expect(children.mock.calls[0][0]).toEqual(
       intl.formatTimeToParts(date, options)
@@ -199,9 +205,10 @@ describe('<FormattedTimeParts>', () => {
   it('falls back and warns on invalid Intl.DateTimeFormat options', () => {
     const date = new Date(1567130870626);
 
+    // @ts-expect-error invalid for testing
     mountPartsWithProvider({value: date, hour: 'invalid', children}, intl);
-
     expect(children.mock.calls[0][0]).toEqual(
+      // @ts-expect-error invalid for testing
       intl.formatTimeToParts(date, {hour: 'invalid'})
     );
     expect(onError.mock.calls[0][0].code).toBe('FORMAT_ERROR');
@@ -210,6 +217,7 @@ describe('<FormattedTimeParts>', () => {
 
   it('accepts `format` prop', () => {
     intl = createIntl({
+      onError: () => {},
       locale: 'en',
       formats: {
         time: {

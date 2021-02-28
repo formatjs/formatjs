@@ -38,7 +38,6 @@ SRC_DEPS = [
     "//packages/intl-messageformat:dist",
     "@npm//hoist-non-react-statics",
     "@npm//@types/hoist-non-react-statics",
-    "@npm//shallow-equal",
     "@npm//fast-memoize",
 ]
 
@@ -54,6 +53,7 @@ TEST_DEPS = SRC_DEPS + [
     "//packages/ecma402-abstract:types",
     "//packages/intl:types",
     "//packages/intl-messageformat:types",
+    "//packages/intl-messageformat-parser:types",
     "@npm//@testing-library/react",
     "@npm//@testing-library/jest-dom",
     "@npm//react-dom",

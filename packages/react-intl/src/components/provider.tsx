@@ -10,6 +10,7 @@ import {
   DEFAULT_INTL_CONFIG,
   invariantIntlContext,
   assignUniqueKeysToParts,
+  shallowEqual,
 } from '../utils';
 import {IntlConfig, IntlShape} from '../types';
 import {
@@ -20,14 +21,11 @@ import {
   createIntlCache,
 } from '@formatjs/intl';
 
-import * as shallowEquals_ from 'shallow-equal/objects';
 import {
   PrimitiveType,
   FormatXMLElementFn,
   isFormatXMLElementFn,
 } from 'intl-messageformat';
-const shallowEquals: typeof shallowEquals_ =
-  (shallowEquals_ as any).default || shallowEquals_;
 
 interface State {
   /**
@@ -179,7 +177,7 @@ export default class IntlProvider extends React.PureComponent<
     {prevConfig, cache}: State
   ): Partial<State> | null {
     const config = processIntlConfig(props);
-    if (!shallowEquals(prevConfig, config)) {
+    if (!shallowEqual(prevConfig, config)) {
       return {
         intl: createIntl(config, cache),
         prevConfig: config,

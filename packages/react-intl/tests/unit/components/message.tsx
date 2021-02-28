@@ -21,9 +21,9 @@ describe('<FormattedMessage>', () => {
     providerProps = {
       locale: 'en',
       defaultLocale: 'en',
+      onError: () => {},
     };
     intl = createIntl(providerProps);
-    console.error = jest.fn();
   });
 
   it('has a `displayName`', () => {
@@ -31,6 +31,8 @@ describe('<FormattedMessage>', () => {
   });
 
   it('throws when <IntlProvider> is missing from ancestry and there is no defaultMessage', () => {
+    // So it doesn't spam the console
+    jest.spyOn(console, 'error').mockImplementation(() => {});
     expect(() => render(<FormattedMessage id="foo" />)).toThrow(
       '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
     );

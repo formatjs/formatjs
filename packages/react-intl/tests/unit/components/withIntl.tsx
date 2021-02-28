@@ -43,6 +43,8 @@ describe('injectIntl()', () => {
   });
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
+    // So it doesn't spam the console
+    jest.spyOn(console, 'error').mockImplementation(() => {});
     const Injected = injectIntl(Wrapped);
 
     expect(() => render(<Injected />)).toThrow(

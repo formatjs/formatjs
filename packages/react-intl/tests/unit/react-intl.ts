@@ -56,7 +56,7 @@ describe('react-intl', () => {
       });
 
       it('exports `FormattedMessage`', () => {
-        expect(typeof ReactIntl.FormattedMessage).toBe('function');
+        expect(typeof ReactIntl.FormattedMessage).toBe('object');
       });
 
       it('exports `FormattedDisplayNames`', () => {

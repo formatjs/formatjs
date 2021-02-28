@@ -15,6 +15,7 @@ describe('<FormattedDate>', () => {
   beforeEach(() => {
     intl = createIntl({
       locale: 'en',
+      onError: () => {},
     });
   });
 
@@ -23,6 +24,8 @@ describe('<FormattedDate>', () => {
   });
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
+    // So it doesn't spam the console
+    jest.spyOn(console, 'error').mockImplementation(() => {});
     expect(() => render(<FormattedDate value={Date.now()} />)).toThrow(Error);
   });
 
@@ -58,7 +61,7 @@ describe('<FormattedDate>', () => {
 
   it('accepts valid Intl.DateTimeFormat options as props', () => {
     const date = new Date();
-    const options = {year: 'numeric'};
+    const options: Intl.DateTimeFormatOptions = {year: 'numeric'};
 
     const {getByTestId} = mountWithProvider({value: date, ...options}, intl);
 
@@ -71,6 +74,7 @@ describe('<FormattedDate>', () => {
     const date = new Date();
     const onError = jest.fn();
     const {getByTestId} = mountWithProvider(
+      // @ts-expect-error invalid value for testing
       {value: date, year: 'invalid'},
       {...intl, onError}
     );
@@ -82,6 +86,7 @@ describe('<FormattedDate>', () => {
 
   it('accepts `format` prop', () => {
     intl = createIntl({
+      onError: () => {},
       locale: 'en',
       formats: {
         date: {
@@ -129,6 +134,7 @@ describe('<FormattedDateParts>', () => {
   beforeEach(() => {
     intl = createIntl({
       locale: 'en',
+      onError: () => {},
     });
     children.mockClear();
   });
@@ -138,6 +144,8 @@ describe('<FormattedDateParts>', () => {
   });
 
   it('throws when <IntlProvider> is missing from ancestry', () => {
+    // So it doesn't spam the console
+    jest.spyOn(console, 'error').mockImplementation(() => {});
     expect(() =>
       render(<FormattedDateParts children={children} value={Date.now()} />)
     ).toThrow(
@@ -159,9 +167,9 @@ describe('<FormattedDateParts>', () => {
 
   it('accepts valid Intl.DateTimeFormat options as props', () => {
     const date = new Date(1567130870626);
-    const options = {year: 'numeric', children};
+    const options: Intl.DateTimeFormatOptions = {year: 'numeric'};
 
-    mountPartsWithProvider({value: date, ...options}, intl);
+    mountPartsWithProvider({value: date, children, ...options}, intl);
 
     expect(children.mock.calls[0][0]).toEqual(
       intl.formatDateToParts(date, options)
@@ -172,11 +180,13 @@ describe('<FormattedDateParts>', () => {
     const date = new Date(1567130870626);
     const onError = jest.fn();
     mountPartsWithProvider(
+      // @ts-expect-error invalid value for testing
       {value: date, year: 'invalid', children},
       {...intl, onError}
     );
 
     expect(children.mock.calls[0][0]).toEqual(
+      // @ts-expect-error invalid value for testing
       intl.formatDateToParts(date, {year: 'invalid'})
     );
     expect(onError).toHaveBeenCalled();
@@ -201,6 +211,7 @@ describe('<FormattedDateParts>', () => {
 
   it('accepts `format` prop', () => {
     intl = createIntl({
+      onError: () => {},
       locale: 'en',
       formats: {
         date: {
