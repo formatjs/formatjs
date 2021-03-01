@@ -1,6 +1,6 @@
 {
   "name": "intl-messageformat",
-  "version": "9.5.1",
+  "version": "9.5.2",
   "description": "Formats ICU Message strings with number, date, plural, and select placeholders to create localized messages.",
   "keywords": [
     "i18n",
@@ -32,7 +32,7 @@
   "types": "index.d.ts",
   "dependencies": {
     "fast-memoize": "^2.5.2",
-    "intl-messageformat-parser": "6.4.1",
+    "intl-messageformat-parser": "6.4.2",
     "tslib": "^2.1.0"
   },
   "sideEffects": false,

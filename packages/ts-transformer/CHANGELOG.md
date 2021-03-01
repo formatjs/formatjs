@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.1.5...@formatjs/ts-transformer@3.2.0) (2021-03-01)
+
+
+### Features
+
+* **@formatjs/ts-transformer:** add support for string literals within curly braces for JSX component props ([#2648](https://github.com/formatjs/formatjs/issues/2648)) ([3cdad26](https://github.com/formatjs/formatjs/commit/3cdad2673e2dba4a57ba5233b0ed7d6052fba932))
+
+
+
+
+
 ## [3.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@3.1.4...@formatjs/ts-transformer@3.1.5) (2021-02-25)
 
 

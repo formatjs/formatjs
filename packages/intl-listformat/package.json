@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-listformat",
-  "version": "5.0.9",
+  "version": "5.0.10",
   "description": "Formats JS list in a i18n-safe way",
   "keywords": [
     "intl",
@@ -19,7 +19,7 @@
     "url": "git@github.com:formatjs/formatjs.git"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.6.1",
+    "@formatjs/ecma402-abstract": "1.6.2",
     "tslib": "^2.1.0"
   },
   "main": "index.js",

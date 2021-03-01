@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/ecma402-abstract",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "A collection of implementation for ECMAScript abstract operations",
   "keywords": [
     "intl",

@@ -1,6 +1,6 @@
 {
   "name": "intl-messageformat-parser",
-  "version": "6.4.1",
+  "version": "6.4.2",
   "description": "Parses ICU Message strings into an AST via JavaScript.",
   "main": "index.js",
   "module": "lib/index.js",
@@ -35,7 +35,7 @@
     "url": "https://github.com/formatjs/formatjs/issues"
   },
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.6.1",
+    "@formatjs/ecma402-abstract": "1.6.2",
     "tslib": "^2.1.0"
   },
   "homepage": "https://github.com/formatjs/formatjs",

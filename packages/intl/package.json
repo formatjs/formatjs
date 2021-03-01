@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "Internationalize JS apps. This library provides an API to format dates, numbers, and strings, including pluralization and handling translations.",
   "keywords": [
     "intl",
@@ -29,14 +29,14 @@
   "module": "lib/index.js",
   "sideEffects": false,
   "dependencies": {
-    "@formatjs/ecma402-abstract": "1.6.1",
-    "@formatjs/intl-datetimeformat": "3.2.11",
-    "@formatjs/intl-displaynames": "4.0.9",
-    "@formatjs/intl-listformat": "5.0.9",
-    "@formatjs/intl-relativetimeformat": "8.1.1",
+    "@formatjs/ecma402-abstract": "1.6.2",
+    "@formatjs/intl-datetimeformat": "3.2.12",
+    "@formatjs/intl-displaynames": "4.0.10",
+    "@formatjs/intl-listformat": "5.0.10",
+    "@formatjs/intl-relativetimeformat": "8.1.2",
     "fast-memoize": "^2.5.2",
-    "intl-messageformat": "9.5.1",
-    "intl-messageformat-parser": "6.4.1",
+    "intl-messageformat": "9.5.2",
+    "intl-messageformat-parser": "6.4.2",
     "tslib": "^2.1.0"
   }
 }
