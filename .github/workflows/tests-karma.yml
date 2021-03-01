@@ -21,7 +21,7 @@ jobs:
           echo "${{ secrets.BUILDBUDDY_ORG_CERT }}">buildbuddy-cert.pem
           echo "${{ secrets.BUILDBUDDY_ORG_KEY }}">buildbuddy-key.pem
       - name: Karma
-        run: bazel test --config=ci :karma-ci --action_env=SAUCE_ACCESS_KEY --action_env=SAUCE_USERNAME
+        run: bazel test --config=ci :karma-ci --action_env=SAUCE_ACCESS_KEY --action_env=SAUCE_USERNAME --action_env=GITHUB_RUN_ID
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}

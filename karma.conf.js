@@ -38,7 +38,7 @@ module.exports = function (config) {
     concurrency: 5,
     sauceLabs: {
       testName: 'formatjs',
-      build: process.env.TRAVIS_BUILD_ID,
+      build: process.env.GITHUB_RUN_ID,
       recordScreenshots: false,
       username: process.env.SAUCE_USERNAME,
       accessKey: process.env.SAUCE_ACCESS_KEY,

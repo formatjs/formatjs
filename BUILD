@@ -181,6 +181,7 @@ karma_test(
     configuration_env_vars = [
         "SAUCE_USERNAME",
         "SAUCE_ACCESS_KEY",
+        "GITHUB_RUN_ID",
     ],
     data = [
         "//:karma.conf.js",
