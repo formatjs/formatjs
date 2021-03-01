@@ -21,14 +21,16 @@ export function mountFormattedComponentWithProvider<P>(
 
     const {rerender} = result;
     const rerenderProps = (
-      props: P & {children?(...nodes: React.ReactNodeArray): React.ReactNode},
-      providerProps: OptionalIntlConfig = {locale: 'en'}
+      newProps: P & {
+        children?(...nodes: React.ReactNodeArray): React.ReactNode;
+      } = props,
+      newProviderProps: OptionalIntlConfig = providerProps
     ) =>
       rerender(
         <React.StrictMode>
-          <Provider {...providerProps}>
+          <Provider {...newProviderProps}>
             <span data-testid="comp">
-              <Comp {...props} />
+              <Comp {...newProps} />
             </span>
           </Provider>
         </React.StrictMode>
