@@ -4,13 +4,13 @@
  * See the accompanying LICENSE file for terms.
  */
 import * as React from 'react';
-import {Context} from './injectIntl';
-import {invariantIntlContext} from '../utils';
 import {
   invariant,
   RelativeTimeFormatSingularUnit,
 } from '@formatjs/ecma402-abstract';
 import {FormatRelativeTimeOptions} from '@formatjs/intl';
+import useIntl from './useIntl';
+
 const MINUTE = 60;
 const HOUR = 60 * 60;
 const DAY = 60 * 60 * 24;
@@ -67,7 +67,7 @@ export interface Props extends FormatRelativeTimeOptions {
   value?: number;
   unit?: RelativeTimeFormatSingularUnit;
   updateIntervalInSeconds?: number;
-  children?(value: string): React.ReactChild;
+  children?(value: string): React.ReactElement | null;
 }
 
 interface State {
@@ -86,6 +86,27 @@ function canIncrement(
 ): boolean {
   return INCREMENTABLE_UNITS.includes(unit);
 }
+
+const SimpleFormattedRelativeTime: React.FC<
+  Omit<Props, 'updateIntervalInSeconds'>
+> = props => {
+  const {formatRelativeTime, textComponent: Text} = useIntl();
+  const {children, value, unit, ...otherProps} = props;
+
+  const formattedRelativeTime = formatRelativeTime(
+    value || 0,
+    unit,
+    otherProps
+  );
+
+  if (typeof children === 'function') {
+    return children(formattedRelativeTime);
+  }
+  if (Text) {
+    return <Text>{formattedRelativeTime}</Text>;
+  }
+  return <>{formattedRelativeTime}</>;
+};
 
 export class FormattedRelativeTime extends React.PureComponent<Props, State> {
   // Public for testing
@@ -179,45 +200,27 @@ export class FormattedRelativeTime extends React.PureComponent<Props, State> {
     return null;
   }
 
-  render(): JSX.Element {
+  render() {
+    const {value, unit, updateIntervalInSeconds, ...otherProps} = this.props;
+    const {currentValueInSeconds} = this.state;
+    let currentValue = value || 0;
+    let currentUnit = unit;
+
+    if (
+      canIncrement(unit) &&
+      typeof currentValueInSeconds === 'number' &&
+      updateIntervalInSeconds
+    ) {
+      currentUnit = selectUnit(currentValueInSeconds);
+      const unitDuration = getDurationInSeconds(currentUnit);
+      currentValue = Math.round(currentValueInSeconds / unitDuration);
+    }
     return (
-      <Context.Consumer>
-        {(intl): React.ReactNode => {
-          invariantIntlContext(intl);
-
-          const {formatRelativeTime, textComponent: Text} = intl;
-          const {children, value, unit, updateIntervalInSeconds} = this.props;
-          const {currentValueInSeconds} = this.state;
-          let currentValue = value || 0;
-          let currentUnit = unit;
-
-          if (
-            canIncrement(unit) &&
-            typeof currentValueInSeconds === 'number' &&
-            updateIntervalInSeconds
-          ) {
-            currentUnit = selectUnit(currentValueInSeconds);
-            const unitDuration = getDurationInSeconds(currentUnit);
-            currentValue = Math.round(currentValueInSeconds / unitDuration);
-          }
-
-          const formattedRelativeTime = formatRelativeTime(
-            currentValue,
-            currentUnit,
-            {
-              ...this.props,
-            }
-          );
-
-          if (typeof children === 'function') {
-            return children(formattedRelativeTime);
-          }
-          if (Text) {
-            return <Text>{formattedRelativeTime}</Text>;
-          }
-          return formattedRelativeTime;
-        }}
-      </Context.Consumer>
+      <SimpleFormattedRelativeTime
+        value={currentValue}
+        unit={currentUnit}
+        {...otherProps}
+      />
     );
   }
 }
