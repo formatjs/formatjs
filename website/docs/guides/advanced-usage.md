@@ -30,7 +30,7 @@ module.exports = {
   //...
   resolve: {
     alias: {
-      'intl-messageformat-parser': 'intl-messageformatp-parser/no-parser',
+      'intl-messageformat-parser': 'intl-messageformat-parser/no-parser',
     },
   },
 }
@@ -46,7 +46,7 @@ module.exports = {
   plugins: [
     alias({
       entries: {
-        'intl-messageformat-parser': 'intl-messageformatp-parser/no-parser',
+        'intl-messageformat-parser': 'intl-messageformat-parser/no-parser',
       },
     }),
   ],
