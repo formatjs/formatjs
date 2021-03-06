@@ -1,5 +1,64 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`emit asserts for:  2663 1`] = `
+Object {
+  "code": "function App() {
+  const intl = useIntl(); // Uncomment either of the following 'error' functions and run \`npm run build\` to see errors.
+
+  async function error1() {
+    await intl.formatMessage({
+      \\"id\\": \\"5ce0d\\",
+      \\"defaultMessage\\": \\"foo\\"
+    });
+  }
+
+  async function ok1() {
+    const message = intl.formatMessage({
+      \\"id\\": \\"5ce0d\\",
+      \\"defaultMessage\\": \\"foo\\"
+    });
+    await message;
+  } // async function error2() {
+  //   return intl.formatMessage({ defaultMessage: 'foo', description: 'foo' });
+  // }
+
+
+  async function ok2() {
+    const message = intl.formatMessage({
+      \\"id\\": \\"5ce0d\\",
+      \\"defaultMessage\\": \\"foo\\"
+    });
+    return message;
+  } // async function error3() {
+  //   await console.log(
+  //     intl.formatMessage({ defaultMessage: 'foo', description: 'foo' })
+  //   );
+  // }
+
+
+  async function ok3() {
+    const result = console.log(intl.formatMessage({
+      \\"id\\": \\"5ce0d\\",
+      \\"defaultMessage\\": \\"foo\\"
+    }));
+    await result;
+  }
+
+  return null;
+}",
+  "data": Object {
+    "messages": Array [
+      Object {
+        "defaultMessage": "foo",
+        "description": "foo",
+        "id": "5ce0d",
+      },
+    ],
+    "meta": Object {},
+  },
+}
+`;
+
 exports[`emit asserts for:  FormattedMessage 1`] = `
 Object {
   "code": "import React, { Component } from 'react';
@@ -795,7 +854,7 @@ Object {
 import { defineMessages, FormattedMessage } from 'react-intl';
 const msgs = defineMessages({
   header: {
-    \\"id\\": \\"idInterpolationPattern.actual.4d1460\\",
+    \\"id\\": \\"fixtures.idInterpolationPattern.4d1460\\",
     \\"defaultMessage\\": \\"Hello World!\\"
   },
   content: {
@@ -812,8 +871,8 @@ export default class Foo extends Component {
         <p>
           <FormattedMessage {...msgs.content} />
         </p>
-        <FormattedMessage id=\\"idInterpolationPattern.actual.36a8c8\\" defaultMessage=\\"Hello World!\\" />
-        <FormattedMessage id=\\"idInterpolationPattern.actual.5ce864\\" defaultMessage=\\"NO ID\\" />
+        <FormattedMessage id=\\"fixtures.idInterpolationPattern.36a8c8\\" defaultMessage=\\"Hello World!\\" />
+        <FormattedMessage id=\\"fixtures.idInterpolationPattern.5ce864\\" defaultMessage=\\"NO ID\\" />
       </div>;
   }
 
@@ -823,7 +882,7 @@ export default class Foo extends Component {
       Object {
         "defaultMessage": "Hello World!",
         "description": "The default message",
-        "id": "idInterpolationPattern.actual.4d1460",
+        "id": "fixtures.idInterpolationPattern.4d1460",
       },
       Object {
         "defaultMessage": "Hello Nurse!",
@@ -836,12 +895,12 @@ export default class Foo extends Component {
       Object {
         "defaultMessage": "Hello World!",
         "description": "Something for the translator. Another description",
-        "id": "idInterpolationPattern.actual.36a8c8",
+        "id": "fixtures.idInterpolationPattern.36a8c8",
       },
       Object {
         "defaultMessage": "NO ID",
         "description": "Something for the translator. Another description",
-        "id": "idInterpolationPattern.actual.5ce864",
+        "id": "fixtures.idInterpolationPattern.5ce864",
       },
     ],
     "meta": Object {},
@@ -898,11 +957,11 @@ Object {
 import { defineMessages, FormattedMessage } from 'react-intl';
 const msgs = defineMessages({
   header: {
-    \\"id\\": \\"actual.js.foo.bar.baz.12.string\\",
+    \\"id\\": \\"overrideIdFn.js.foo.bar.baz.12.string\\",
     \\"defaultMessage\\": \\"Hello World!\\"
   },
   content: {
-    \\"id\\": \\"actual.js.foo.bar.biff.12.object\\",
+    \\"id\\": \\"overrideIdFn.js.foo.bar.biff.12.object\\",
     \\"defaultMessage\\": \\"Hello Nurse!\\"
   }
 });
@@ -915,8 +974,8 @@ export default class Foo extends Component {
         <p>
           <FormattedMessage {...msgs.content} />
         </p>
-        <FormattedMessage id=\\"actual.js.foo.bar.zoo.12.object\\" defaultMessage=\\"Hello World!\\" />
-        <FormattedMessage id=\\"actual.js..5.object\\" defaultMessage=\\"NO ID\\" />
+        <FormattedMessage id=\\"overrideIdFn.js.foo.bar.zoo.12.object\\" defaultMessage=\\"Hello World!\\" />
+        <FormattedMessage id=\\"overrideIdFn.js..5.object\\" defaultMessage=\\"NO ID\\" />
       </div>;
   }
 
@@ -926,7 +985,7 @@ export default class Foo extends Component {
       Object {
         "defaultMessage": "Hello World!",
         "description": "The default message",
-        "id": "actual.js.foo.bar.baz.12.string",
+        "id": "overrideIdFn.js.foo.bar.baz.12.string",
       },
       Object {
         "defaultMessage": "Hello Nurse!",
@@ -934,7 +993,7 @@ export default class Foo extends Component {
           "metadata": "Additional metadata content.",
           "text": "Something for the translator.",
         },
-        "id": "actual.js.foo.bar.biff.12.object",
+        "id": "overrideIdFn.js.foo.bar.biff.12.object",
       },
       Object {
         "defaultMessage": "Hello World!",
@@ -942,7 +1001,7 @@ export default class Foo extends Component {
           "metadata": "Additional metadata content.",
           "text": "Something for the translator. Another description",
         },
-        "id": "actual.js.foo.bar.zoo.12.object",
+        "id": "overrideIdFn.js.foo.bar.zoo.12.object",
       },
       Object {
         "defaultMessage": "NO ID",
@@ -950,7 +1009,7 @@ export default class Foo extends Component {
           "metadata": "Additional metadata content.",
           "text": "Something for the translator. Another description",
         },
-        "id": "actual.js..5.object",
+        "id": "overrideIdFn.js..5.object",
       },
     ],
     "meta": Object {},

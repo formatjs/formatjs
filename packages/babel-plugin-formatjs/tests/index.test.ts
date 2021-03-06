@@ -47,12 +47,13 @@ const TESTS: Record<string, OptionsSchema> = {
   defineMessagesPreserveWhitespace: {
     preserveWhitespace: true,
   },
+  2663: {},
 };
 
 describe('emit asserts for: ', () => {
   for (const [caseName, opts] of Object.entries(TESTS)) {
     it(caseName, function () {
-      const filePath = join(__dirname, 'fixtures', caseName, 'actual.js');
+      const filePath = join(__dirname, 'fixtures', `${caseName}.js`);
       const {
         code,
         // @ts-ignore
@@ -70,12 +71,7 @@ describe('emit asserts for: ', () => {
 });
 
 test('extractSourceLocation', function () {
-  const filePath = join(
-    __dirname,
-    'fixtures',
-    'extractSourceLocation',
-    'actual.js'
-  );
+  const filePath = join(__dirname, 'fixtures', 'extractSourceLocation.js');
   const {
     code,
     // @ts-ignore
@@ -99,7 +95,7 @@ test('extractSourceLocation', function () {
 describe('errors', () => {
   it('Properly throws parse errors', () => {
     expect(() =>
-      transform(join(__dirname, 'fixtures', 'icuSyntax', 'actual.js'))
+      transform(join(__dirname, 'fixtures', 'icuSyntax.js'))
     ).toThrow(/Expected .* but "\." found/);
   });
 });
