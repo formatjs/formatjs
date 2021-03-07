@@ -139,27 +139,73 @@ Object {
 import { FormattedMessage, defineMessage, defineMessages } from 'react-intl';
 defineMessage({
   id: \\"defineMessage\\",
-  defaultMessage: [{\\"type\\":0,\\"value\\":\\"this is a \\"},{\\"type\\":3,\\"style\\":\\"full\\",\\"value\\":\\"dt\\"}]
+  defaultMessage: [{
+    \\"type\\": 0,
+    \\"value\\": \\"this is a \\"
+  }, {
+    \\"type\\": 3,
+    \\"style\\": \\"full\\",
+    \\"value\\": \\"dt\\"
+  }]
 });
 defineMessages({
   foo: {
     id: \\"defineMessages1\\",
-    defaultMessage: [{\\"type\\":0,\\"value\\":\\"this is a \\"},{\\"type\\":4,\\"style\\":\\"full\\",\\"value\\":\\"dt\\"}]
+    defaultMessage: [{
+      \\"type\\": 0,
+      \\"value\\": \\"this is a \\"
+    }, {
+      \\"type\\": 4,
+      \\"style\\": \\"full\\",
+      \\"value\\": \\"dt\\"
+    }]
   },
   bar: {
     id: \\"defineMessages2\\",
-    defaultMessage: [{\\"type\\":0,\\"value\\":\\"this is a \\"},{\\"type\\":2,\\"style\\":null,\\"value\\":\\"dt\\"}]
+    defaultMessage: [{
+      \\"type\\": 0,
+      \\"value\\": \\"this is a \\"
+    }, {
+      \\"type\\": 2,
+      \\"style\\": null,
+      \\"value\\": \\"dt\\"
+    }]
   }
 });
 export default class Foo extends Component {
   render() {
     Intl.formatMessage({
       id: \\"intl.formatMessage\\",
-      defaultMessage: [{\\"type\\":0,\\"value\\":\\"foo \\"},{\\"type\\":6,\\"pluralType\\":\\"cardinal\\",\\"value\\":\\"s\\",\\"offset\\":0,\\"options\\":{\\"one\\":{\\"value\\":[{\\"type\\":0,\\"value\\":\\"1\\"}]},\\"other\\":{\\"value\\":[{\\"type\\":0,\\"value\\":\\"2\\"}]}}}]
+      defaultMessage: [{
+        \\"type\\": 0,
+        \\"value\\": \\"foo \\"
+      }, {
+        \\"type\\": 6,
+        \\"pluralType\\": \\"cardinal\\",
+        \\"value\\": \\"s\\",
+        \\"offset\\": 0,
+        \\"options\\": {
+          \\"one\\": {
+            \\"value\\": [{
+              \\"type\\": 0,
+              \\"value\\": \\"1\\"
+            }]
+          },
+          \\"other\\": {
+            \\"value\\": [{
+              \\"type\\": 0,
+              \\"value\\": \\"2\\"
+            }]
+          }
+        }
+      }]
     });
     return /*#__PURE__*/React.createElement(FormattedMessage, {
       id: \\"foo.bar.baz\\",
-      defaultMessage: [{\\"type\\":0,\\"value\\":\\"Hello World!\\"}]
+      defaultMessage: [{
+        \\"type\\": 0,
+        \\"value\\": \\"Hello World!\\"
+      }]
     });
   }
 

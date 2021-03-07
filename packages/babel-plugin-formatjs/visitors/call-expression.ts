@@ -11,7 +11,7 @@ import {
   tagAsExtracted,
 } from '../utils';
 import {parse} from 'intl-messageformat-parser';
-import template from '@babel/template';
+
 function assertObjectExpression(
   path: NodePath<any>,
   callee: NodePath<t.Expression | t.V8IntrinsicIdentifier>
@@ -160,15 +160,14 @@ export const visitor: VisitNodeFunction<
       if (removeDefaultMessage) {
         defaultMessageProp?.remove();
       } else if (descriptor.defaultMessage) {
-        defaultMessageProp
-          .get('value')
-          .replaceWith(
-            ast
-              ? template.expression`${JSON.stringify(
-                  parse(descriptor.defaultMessage)
-                )}`()
-              : t.stringLiteral(descriptor.defaultMessage)
+        const valueProp = defaultMessageProp.get('value');
+        if (ast) {
+          valueProp.replaceWithSourceString(
+            JSON.stringify(parse(descriptor.defaultMessage))
           );
+        } else {
+          valueProp.replaceWith(t.stringLiteral(descriptor.defaultMessage));
+        }
       }
     }
 

@@ -43,7 +43,6 @@ SRC_DEPS = [
     "@npm//schema-utils",
     "@npm//@babel/plugin-syntax-jsx",
     "@npm//@babel/traverse",
-    "@npm//@babel/template",
 ]
 
 ts_compile(

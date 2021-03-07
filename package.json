@@ -26,7 +26,6 @@
     "@babel/plugin-syntax-jsx": "7",
     "@babel/preset-env": "^7.13.9",
     "@babel/preset-react": "^7.12.13",
-    "@babel/template": "^7.12.13",
     "@babel/traverse": "7",
     "@babel/types": "^7.12.11",
     "@bazel/bazelisk": "^1.5.0",

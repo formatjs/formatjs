@@ -19,7 +19,6 @@
     "@formatjs/ts-transformer": "3.2.0",
     "@types/babel__core": "^7.1.7",
     "@types/babel__helper-plugin-utils": "7",
-    "@babel/template": "7",
     "@types/schema-utils": "^2.4.0",
     "intl-messageformat-parser": "6.4.2",
     "schema-utils": "^3.0.0",

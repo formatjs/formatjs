@@ -13,7 +13,7 @@ import {
   tagAsExtracted,
   wasExtracted,
 } from '../utils';
-import template from '@babel/template';
+
 export const visitor: VisitNodeFunction<
   PluginPass<OptionsSchema> & State,
   t.JSXOpeningElement
@@ -114,12 +114,14 @@ export const visitor: VisitNodeFunction<
     } else if (ast && descriptor.defaultMessage) {
       defaultMessageAttr
         .get('value')
-        .replaceWith(
-          t.jsxExpressionContainer(
-            template.expression`${JSON.stringify(
-              parse(descriptor.defaultMessage)
-            )}`()
-          )
+        .replaceWith(t.jsxExpressionContainer(t.nullLiteral()));
+      const valueAttr = defaultMessageAttr.get(
+        'value'
+      ) as NodePath<t.JSXExpressionContainer>;
+      valueAttr
+        .get('expression')
+        .replaceWithSourceString(
+          JSON.stringify(parse(descriptor.defaultMessage))
         );
     }
   }
