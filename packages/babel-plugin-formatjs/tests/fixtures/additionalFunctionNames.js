@@ -5,6 +5,9 @@ function CustomMessage() {}
 
 export default class Foo extends Component {
   render() {
+    t({
+      defaultMessage: 'foo',
+    });
     return (
       <CustomMessage
         id={formatMessage({

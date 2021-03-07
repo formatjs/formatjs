@@ -27,7 +27,10 @@ alias(
     actual = "%s.pack" % PACKAGE_NAME,
 )
 
-SRCS = glob(["*.ts"]) + ["options.schema.json"]
+SRCS = glob(
+    ["**/*.ts"],
+    exclude = ["tests/**/*"],
+) + ["options.schema.json"]
 
 SRC_DEPS = [
     "//packages/intl-messageformat-parser:dist",
@@ -36,7 +39,11 @@ SRC_DEPS = [
     "@npm//@babel/core",
     "@npm//@babel/types",
     "@npm//@types/babel__core",
+    "@npm//@types/babel__helper-plugin-utils",
     "@npm//schema-utils",
+    "@npm//@babel/plugin-syntax-jsx",
+    "@npm//@babel/traverse",
+    "@npm//@babel/template",
 ]
 
 ts_compile(
@@ -63,7 +70,8 @@ jest_test(
     deps = [
         "//packages/intl-messageformat-parser:types",
         "//packages/ts-transformer:types",
-        "@npm//@babel/plugin-syntax-jsx",
+        "@npm//@babel/preset-env",
+        "@npm//@babel/preset-react",
     ] + SRC_DEPS,
 )
 

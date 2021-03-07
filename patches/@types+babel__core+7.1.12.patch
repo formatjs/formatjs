@@ -1,0 +1,17 @@
+diff --git a/node_modules/@types/babel__core/index.d.ts b/node_modules/@types/babel__core/index.d.ts
+index 4b50b4a..1d29ef2 100644
+--- a/node_modules/@types/babel__core/index.d.ts
++++ b/node_modules/@types/babel__core/index.d.ts
+@@ -442,10 +442,10 @@ export interface BabelFile {
+     code: string;
+ }
+ 
+-export interface PluginPass {
++export interface PluginPass<T extends PluginOptions = undefined> {
+     file: BabelFile;
+     key: string;
+-    opts: PluginOptions;
++    opts: T;
+     cwd: string;
+     filename: string;
+     [key: string]: unknown;
