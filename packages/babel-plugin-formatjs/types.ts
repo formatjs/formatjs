@@ -8,8 +8,10 @@ export interface MessageDescriptor {
 }
 
 export interface State {
-  ReactIntlMessages: Map<string, ExtractedMessageDescriptor>;
-  ReactIntlMeta: Record<string, string>;
+  messages: ExtractedMessageDescriptor[];
+  meta: Record<string, string>;
+  componentNames: string[];
+  functionNames: string[];
 }
 
 export type ExtractedMessageDescriptor = MessageDescriptor &
@@ -19,3 +21,22 @@ export type MessageDescriptorPath = Record<
   keyof MessageDescriptor,
   NodePath<StringLiteral> | undefined
 >;
+
+export interface Options {
+  overrideIdFn?: (
+    id?: string,
+    defaultMessage?: string,
+    description?: string,
+    filePath?: string
+  ) => string;
+  onMsgExtracted?: (filePath: string, msgs: MessageDescriptor[]) => void;
+  onMetaExtracted?: (filePath: string, meta: Record<string, string>) => void;
+  idInterpolationPattern?: string;
+  removeDefaultMessage?: boolean;
+  additionalComponentNames?: string[];
+  additionalFunctionNames?: string[];
+  pragma?: string;
+  extractSourceLocation?: boolean;
+  ast?: boolean;
+  preserveWhitespace?: boolean;
+}

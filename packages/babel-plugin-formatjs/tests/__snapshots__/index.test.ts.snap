@@ -1,37 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`2663 1`] = `
-Object {
-  "code": "function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, \\"next\\", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, \\"throw\\", err); } _next(undefined); }); }; }
-
-function error1() {
-  return _error.apply(this, arguments);
-}
-
-function _error() {
-  _error = _asyncToGenerator(function* () {
-    yield intl.formatMessage({
-      id: \\"5ce0d\\",
-      defaultMessage: \\"foo\\"
-    });
-  });
-  return _error.apply(this, arguments);
-}",
-  "data": Object {
-    "messages": Array [
-      Object {
-        "defaultMessage": "foo",
-        "description": "foo",
-        "id": "5ce0d",
-      },
-    ],
-    "meta": Object {},
-  },
-}
-`;
-
 exports[`FormattedMessage 1`] = `
 Object {
   "code": "import React, { Component } from 'react';
@@ -51,6 +19,57 @@ export default class Foo extends Component {
         "defaultMessage": "Hello World!",
         "description": "The default message.",
         "id": "foo.bar.baz",
+      },
+    ],
+    "meta": Object {},
+  },
+}
+`;
+
+exports[`GH #2663 1`] = `
+Object {
+  "code": "\\"use strict\\";
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, \\"next\\", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, \\"throw\\", err); } _next(undefined); }); }; }
+
+function error1() {
+  return _error.apply(this, arguments);
+}
+
+function _error() {
+  _error = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return intl.formatMessage({
+              id: \\"5ce0d\\",
+              defaultMessage: \\"foo\\"
+            });
+
+          case 2:
+          case \\"end\\":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _error.apply(this, arguments);
+}",
+  "data": Object {
+    "messages": Array [
+      Object {
+        "defaultMessage": "foo",
+        "description": "foo",
+        "id": "5ce0d",
+      },
+      Object {
+        "defaultMessage": "foo",
+        "description": undefined,
+        "id": "5ce0d",
       },
     ],
     "meta": Object {},
@@ -96,8 +115,8 @@ function CustomMessage() {}
 export default class Foo extends Component {
   render() {
     t({
-      id: \\"acbd1\\",
-      defaultMessage: \\"foo\\"
+      id: \\"e358e\\",
+      defaultMessage: \\"t\\"
     });
     return /*#__PURE__*/React.createElement(CustomMessage, {
       id: formatMessage({
@@ -115,6 +134,11 @@ export default class Foo extends Component {
 }",
   "data": Object {
     "messages": Array [
+      Object {
+        "defaultMessage": "t",
+        "description": undefined,
+        "id": "e358e",
+      },
       Object {
         "defaultMessage": "foo",
         "description": undefined,
@@ -590,22 +614,27 @@ export default class Foo extends Component {
 `;
 
 exports[`extractSourceLocation 2`] = `
-Object {
-  "messages": Array [
-    Object {
-      "defaultMessage": "Hello World!",
-      "description": undefined,
-      "end": Any<Object>,
-      "file": Any<String>,
-      "filename": undefined,
-      "id": "foo.bar.baz",
-      "identifierName": undefined,
-      "start": Any<Object>,
+Array [
+  Object {
+    "defaultMessage": "Hello World!",
+    "description": undefined,
+    "end": Position {
+      "column": 78,
+      "line": 6,
     },
-  ],
-  "meta": Object {},
-}
+    "file": Any<String>,
+    "filename": undefined,
+    "id": "foo.bar.baz",
+    "identifierName": undefined,
+    "start": Position {
+      "column": 11,
+      "line": 6,
+    },
+  },
+]
 `;
+
+exports[`extractSourceLocation 3`] = `Object {}`;
 
 exports[`formatMessageCall 1`] = `
 Object {

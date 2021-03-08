@@ -1,9 +1,8 @@
 import {NodePath, PluginPass} from '@babel/core';
 
-import {State} from '../types';
+import {Options, State} from '../types';
 import * as t from '@babel/types';
 import {VisitNodeFunction} from '@babel/traverse';
-import {OptionsSchema} from '../options';
 import {parse} from 'intl-messageformat-parser';
 import {
   createMessageDescriptor,
@@ -15,7 +14,7 @@ import {
 } from '../utils';
 
 export const visitor: VisitNodeFunction<
-  PluginPass<OptionsSchema> & State,
+  PluginPass<Options> & State,
   t.JSXOpeningElement
 > = function (
   path,
@@ -27,24 +26,21 @@ export const visitor: VisitNodeFunction<
   }
 ) {
   const {
-    additionalComponentNames = [],
     removeDefaultMessage,
     idInterpolationPattern,
     overrideIdFn,
     ast,
     preserveWhitespace,
   } = opts;
-  const messages = this.ReactIntlMessages;
+
+  const {componentNames, messages} = this;
   if (wasExtracted(path)) {
     return;
   }
 
   const name = path.get('name');
 
-  if (
-    !name.isJSXIdentifier({name: 'FormattedMessage'}) &&
-    !additionalComponentNames.find(n => name.isJSXIdentifier({name: n}))
-  ) {
+  if (!componentNames.find(n => name.isJSXIdentifier({name: n}))) {
     return;
   }
 

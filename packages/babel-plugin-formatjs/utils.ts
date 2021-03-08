@@ -1,8 +1,9 @@
 import * as t from '@babel/types';
 import {parse} from 'intl-messageformat-parser';
 import {interpolateName} from '@formatjs/ts-transformer';
-import {OptionsSchema} from './options';
+
 import {
+  Options,
   ExtractedMessageDescriptor,
   MessageDescriptor,
   MessageDescriptorPath,
@@ -78,8 +79,8 @@ export function evaluateMessageDescriptor(
   isJSXSource = false,
   filename: string | undefined,
   idInterpolationPattern = '[contenthash:5]',
-  overrideIdFn?: OptionsSchema['overrideIdFn'],
-  preserveWhitespace?: OptionsSchema['preserveWhitespace']
+  overrideIdFn?: Options['overrideIdFn'],
+  preserveWhitespace?: Options['preserveWhitespace']
 ) {
   let id = getMessageDescriptorValue(descriptorPath.id);
   const defaultMessage = getICUMessageValue(
@@ -121,7 +122,7 @@ export function evaluateMessageDescriptor(
 function getICUMessageValue(
   messagePath?: NodePath<t.StringLiteral> | NodePath<t.TemplateLiteral>,
   {isJSXSource = false} = {},
-  preserveWhitespace?: OptionsSchema['preserveWhitespace']
+  preserveWhitespace?: Options['preserveWhitespace']
 ) {
   if (!messagePath) {
     return '';
@@ -189,29 +190,15 @@ export function wasExtracted(path: NodePath<any>) {
 export function storeMessage(
   {id, description, defaultMessage}: MessageDescriptor,
   path: NodePath<any>,
-  {extractSourceLocation}: OptionsSchema,
+  {extractSourceLocation}: Options,
 
   filename: string | undefined,
-  messages: Map<string, ExtractedMessageDescriptor>
+  messages: ExtractedMessageDescriptor[]
 ) {
   if (!id && !defaultMessage) {
     throw path.buildCodeFrameError(
       '[React Intl] Message Descriptors require an `id` or `defaultMessage`.'
     );
-  }
-
-  if (messages.has(id)) {
-    const existing = messages.get(id);
-
-    if (
-      description !== existing!.description ||
-      defaultMessage !== existing!.defaultMessage
-    ) {
-      throw path.buildCodeFrameError(
-        `[React Intl] Duplicate message id: "${id}", ` +
-          'but the `description` and/or `defaultMessage` are different.'
-      );
-    }
   }
 
   let loc = {};
@@ -221,6 +208,5 @@ export function storeMessage(
       ...path.node.loc,
     };
   }
-
-  messages.set(id, {id, description, defaultMessage, ...loc});
+  messages.push({id, description, defaultMessage, ...loc});
 }

@@ -1,5 +1,4 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "generated_file_test", "pkg_npm")
-load("@npm//json-schema-to-typescript:index.bzl", "json2ts")
 load("//tools:index.bzl", "check_format", "ts_compile")
 load("//tools:jest.bzl", "jest_test")
 
@@ -30,7 +29,7 @@ alias(
 SRCS = glob(
     ["**/*.ts"],
     exclude = ["tests/**/*"],
-) + ["options.schema.json"]
+)
 
 SRC_DEPS = [
     "//packages/intl-messageformat-parser:dist",
@@ -40,7 +39,6 @@ SRC_DEPS = [
     "@npm//@babel/types",
     "@npm//@types/babel__core",
     "@npm//@types/babel__helper-plugin-utils",
-    "@npm//schema-utils",
     "@npm//@babel/plugin-syntax-jsx",
     "@npm//@babel/traverse",
 ]
@@ -91,27 +89,6 @@ jest_test(
         "@npm//vue-loader",
         "@npm//webpack",
     ],
-)
-
-# json2ts -i src/options.schema.json -o src/options.ts
-json2ts(
-    name = "options-gen",
-    outs = ["tmp/options.ts"],
-    args = [
-        "-i",
-        "$(execpath options.schema.json)",
-        "-o",
-        "$@",
-    ],
-    data = [
-        "options.schema.json",
-    ],
-)
-
-generated_file_test(
-    name = "options",
-    src = "options.ts",
-    generated = ":options-gen",
 )
 
 generated_file_test(

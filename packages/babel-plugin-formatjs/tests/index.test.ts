@@ -1,20 +1,25 @@
 import * as path from 'path';
 
 import {transformFileSync} from '@babel/core';
-import plugin, {OptionsSchema} from '../';
+import plugin from '../';
+import {Options, ExtractedMessageDescriptor} from '../types';
 
-function transformAndCheck(fn: string, opts: OptionsSchema = {}) {
+function transformAndCheck(fn: string, opts: Options = {}) {
   const filePath = path.join(__dirname, 'fixtures', `${fn}.js`);
-  const {
-    code,
-    // @ts-ignore
-    metadata: {formatjs: data},
-  } = transform(filePath, {
+  const messages: ExtractedMessageDescriptor[] = [];
+  const meta = {};
+  const {code} = transform(filePath, {
     pragma: '@react-intl',
     ...opts,
+    onMsgExtracted(_, msgs) {
+      messages.push(...msgs);
+    },
+    onMetaExtracted(_, m) {
+      Object.assign(meta, m);
+    },
   });
   expect({
-    data,
+    data: {messages, meta},
     code: code?.trim(),
   }).toMatchSnapshot();
 }
@@ -76,8 +81,34 @@ test('idInterpolationPattern', function () {
   });
 });
 
-test('2663', function () {
-  transformAndCheck('2663');
+test('GH #2663', function () {
+  const filePath = path.join(__dirname, 'fixtures', `2663.js`);
+  const messages: ExtractedMessageDescriptor[] = [];
+  const meta = {};
+
+  const {code} = transformFileSync(filePath, {
+    presets: ['@babel/preset-env', '@babel/preset-react'],
+    plugins: [
+      [
+        plugin,
+        {
+          pragma: '@react-intl',
+          onMsgExtracted(_, msgs) {
+            messages.push(...msgs);
+          },
+          onMetaExtracted(_, m) {
+            Object.assign(meta, m);
+          },
+        } as Options,
+        Date.now() + '' + ++cacheBust,
+      ],
+    ],
+  })!;
+
+  expect({
+    data: {messages, meta},
+    code: code?.trim(),
+  }).toMatchSnapshot();
 });
 
 test('overrideIdFn', function () {
@@ -108,24 +139,26 @@ test('preserveWhitespace', function () {
 
 test('extractSourceLocation', function () {
   const filePath = path.join(__dirname, 'fixtures', 'extractSourceLocation.js');
-  const {
-    code,
-    // @ts-ignore
-    metadata: {formatjs: data},
-  } = transform(filePath, {
+  const messages: ExtractedMessageDescriptor[] = [];
+  const meta = {};
+
+  const {code} = transform(filePath, {
     pragma: '@react-intl',
     extractSourceLocation: true,
+    onMsgExtracted(_, msgs) {
+      messages.push(...msgs);
+    },
+    onMetaExtracted(_, m) {
+      Object.assign(meta, m);
+    },
   });
   expect(code?.trim()).toMatchSnapshot();
-  expect(data).toMatchSnapshot({
-    messages: [
-      {
-        file: expect.any(String),
-        start: expect.any(Object),
-        end: expect.any(Object),
-      },
-    ],
-  });
+  expect(messages).toMatchSnapshot([
+    {
+      file: expect.any(String),
+    },
+  ]);
+  expect(meta).toMatchSnapshot();
 });
 
 test('Properly throws parse errors', () => {
@@ -138,7 +171,7 @@ let cacheBust = 1;
 
 function transform(
   filePath: string,
-  options = {},
+  options: Options = {},
   {multiplePasses = false} = {}
 ) {
   function getPluginConfig() {

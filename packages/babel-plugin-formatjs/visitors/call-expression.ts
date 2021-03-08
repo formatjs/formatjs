@@ -1,7 +1,6 @@
 import {NodePath, PluginPass} from '@babel/core';
 import * as t from '@babel/types';
-import {OptionsSchema} from '../options';
-import {State} from '../types';
+import {Options, State} from '../types';
 import {VisitNodeFunction} from '@babel/traverse';
 import {
   createMessageDescriptor,
@@ -20,36 +19,24 @@ function assertObjectExpression(
     throw path.buildCodeFrameError(
       `[React Intl] \`${
         (callee.get('property') as NodePath<t.Identifier>).node.name
-      }()\` must be ` +
-        'called with an object expression with values ' +
-        'that are React Intl Message Descriptors, also ' +
-        'defined as object expressions.'
+      }()\` must be called with an object expression with values that are React Intl Message Descriptors, also defined as object expressions.`
     );
   }
 }
 
 function isFormatMessageCall(
-  callee: NodePath<t.Expression | t.V8IntrinsicIdentifier>,
-  additionalFunctionNames: string[]
+  callee: NodePath<t.Expression | t.V8IntrinsicIdentifier | t.MemberExpression>,
+  functionNames: string[]
 ) {
-  if (
-    callee.isIdentifier({name: 'formatMessage'}) ||
-    callee.isIdentifier({name: '$formatMessage'}) ||
-    additionalFunctionNames.find(name => callee.isIdentifier({name}))
-  ) {
+  if (functionNames.find(name => callee.isIdentifier({name}))) {
     return true;
   }
 
-  if (!callee.isMemberExpression()) {
-    return false;
+  if (callee.isMemberExpression()) {
+    const property = callee.get('property') as NodePath<t.MemberExpression>;
+    return !!functionNames.find(name => property.isIdentifier({name}));
   }
-
-  const property = callee.get('property') as NodePath<t.Node>;
-  return (
-    property.isIdentifier({name: 'formatMessage'}) ||
-    property.isIdentifier({name: '$formatMessage'}) ||
-    !!additionalFunctionNames.find(name => property.isIdentifier({name}))
-  );
+  return false;
 }
 
 function getMessagesObjectFromExpression(
@@ -67,7 +54,7 @@ function getMessagesObjectFromExpression(
 }
 
 export const visitor: VisitNodeFunction<
-  PluginPass<OptionsSchema> & State,
+  PluginPass<Options> & State,
   t.CallExpression
 > = function (
   path,
@@ -82,17 +69,16 @@ export const visitor: VisitNodeFunction<
     overrideIdFn,
     idInterpolationPattern,
     removeDefaultMessage,
-    additionalFunctionNames = [],
     ast,
     preserveWhitespace,
   } = opts;
   if (wasExtracted(path)) {
     return;
   }
-  const messages = this.ReactIntlMessages;
+  const {messages, functionNames} = this;
   const callee = path.get('callee');
   const args = path.get('arguments');
-  // console.log(callee.node);
+
   /**
    * Process MessageDescriptor
    * @param messageDescriptor Message Descriptor
@@ -196,7 +182,7 @@ export const visitor: VisitNodeFunction<
   }
 
   // Check that this is `intl.formatMessage` call
-  if (isFormatMessageCall(callee, additionalFunctionNames)) {
+  if (isFormatMessageCall(callee, functionNames)) {
     const messageDescriptor = args[0];
     if (messageDescriptor.isObjectExpression()) {
       processMessageObject(messageDescriptor);

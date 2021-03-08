@@ -6,7 +6,7 @@ function CustomMessage() {}
 export default class Foo extends Component {
   render() {
     t({
-      defaultMessage: 'foo',
+      defaultMessage: 't',
     });
     return (
       <CustomMessage
