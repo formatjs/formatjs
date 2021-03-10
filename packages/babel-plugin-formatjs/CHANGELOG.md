@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.2.4](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@9.2.3...babel-plugin-formatjs@9.2.4) (2021-03-10)
+
+
+### Bug Fixes
+
+* **babel-plugin-formatjs:** fix node insertion issue, fix [#2663](https://github.com/formatjs/formatjs/issues/2663) ([d06d410](https://github.com/formatjs/formatjs/commit/d06d4107d5dedf91f99cd6d433f346aa65c6fe1e))
+
+
+
+
+
 ## [9.2.3](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@9.2.2...babel-plugin-formatjs@9.2.3) (2021-03-08)
 
 
