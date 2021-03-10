@@ -35,7 +35,7 @@
     "@commitlint/cli": "12",
     "@commitlint/config-angular": "12",
     "@docusaurus/core": "2.0.0-alpha.1734975f2",
-    "@docusaurus/plugin-google-analytics": "2.0.0-alpha.1734975f2",
+    "@docusaurus/plugin-google-analytics": "2.0.0-alpha.09284187f",
     "@docusaurus/preset-classic": "2.0.0-alpha.1734975f2",
     "@docusaurus/theme-live-codeblock": "2.0.0-alpha.1734975f2",
     "@jest/transform": "^26.6.2",
