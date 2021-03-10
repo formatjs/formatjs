@@ -964,20 +964,91 @@ description",
 }
 `;
 
-exports[`removeDefaultMessage 1`] = `
+exports[`removeDefaultMessage + overrideIdFn 1`] = `
 Object {
   "code": "import React, { Component } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
-var messages = defineMessages({
+defineMessages({
   foo: {
-    id: \\"greeting-user\\"
+    id: \\"removeDefaultMessage.js.greeting-user.13.string\\"
+  },
+  foo2: {
+    id: \\"removeDefaultMessage.js..8.string\\"
+  },
+  foo3: {
+    id: \\"removeDefaultMessage.js..8.string\\"
   }
 });
 export default class Foo extends Component {
   render() {
-    return /*#__PURE__*/React.createElement(FormattedMessage, {
+    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FormattedMessage, {
+      id: \\"removeDefaultMessage.js.greeting-world.12.string\\"
+    }), /*#__PURE__*/React.createElement(FormattedMessage, {
+      id: \\"removeDefaultMessage.js..17.string\\"
+    }), /*#__PURE__*/React.createElement(FormattedMessage, {
+      id: \\"removeDefaultMessage.js..12.string\\"
+    }));
+  }
+
+}",
+  "data": Object {
+    "messages": Array [
+      Object {
+        "defaultMessage": "Hello, {name}",
+        "description": "Greeting the user",
+        "id": "removeDefaultMessage.js.greeting-user.13.string",
+      },
+      Object {
+        "defaultMessage": "foo2-msg",
+        "description": "foo2",
+        "id": "removeDefaultMessage.js..8.string",
+      },
+      Object {
+        "defaultMessage": "foo3-msg",
+        "description": undefined,
+        "id": "removeDefaultMessage.js..8.string",
+      },
+      Object {
+        "defaultMessage": "Hello World!",
+        "description": "Greeting to the world",
+        "id": "removeDefaultMessage.js.greeting-world.12.string",
+      },
+      Object {
+        "defaultMessage": "message with desc",
+        "description": "desc with desc",
+        "id": "removeDefaultMessage.js..17.string",
+      },
+      Object {
+        "defaultMessage": "message only",
+        "description": undefined,
+        "id": "removeDefaultMessage.js..12.string",
+      },
+    ],
+    "meta": Object {},
+  },
+}
+`;
+
+exports[`removeDefaultMessage 1`] = `
+Object {
+  "code": "import React, { Component } from 'react';
+import { defineMessages, FormattedMessage } from 'react-intl';
+defineMessages({
+  foo: {
+    id: \\"greeting-user\\"
+  },
+  foo2: {
+    id: \\"cffbc\\"
+  },
+  foo3: {
+    id: \\"306dd\\"
+  }
+});
+export default class Foo extends Component {
+  render() {
+    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FormattedMessage, {
       id: \\"greeting-world\\"
-    });
+    }), /*#__PURE__*/React.createElement(FormattedMessage, null), /*#__PURE__*/React.createElement(FormattedMessage, null));
   }
 
 }",
@@ -989,9 +1060,29 @@ export default class Foo extends Component {
         "id": "greeting-user",
       },
       Object {
+        "defaultMessage": "foo2-msg",
+        "description": "foo2",
+        "id": "cffbc",
+      },
+      Object {
+        "defaultMessage": "foo3-msg",
+        "description": undefined,
+        "id": "306dd",
+      },
+      Object {
         "defaultMessage": "Hello World!",
         "description": "Greeting to the world",
         "id": "greeting-world",
+      },
+      Object {
+        "defaultMessage": "message with desc",
+        "description": "desc with desc",
+        "id": "e3319",
+      },
+      Object {
+        "defaultMessage": "message only",
+        "description": undefined,
+        "id": "e6e6b",
       },
     ],
     "meta": Object {},

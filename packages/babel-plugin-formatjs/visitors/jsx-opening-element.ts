@@ -81,6 +81,7 @@ export const visitor: VisitNodeFunction<
   let idAttr: NodePath<t.JSXAttribute> | undefined;
   let descriptionAttr: NodePath<t.JSXAttribute> | undefined;
   let defaultMessageAttr: NodePath<t.JSXAttribute> | undefined;
+  const firstAttr = attributes[0];
   for (const attr of attributes) {
     if (!attr.isJSXAttribute()) {
       continue;
@@ -97,6 +98,17 @@ export const visitor: VisitNodeFunction<
       case 'id':
         idAttr = attr;
         break;
+    }
+  }
+
+  // Insert ID before removing node to prevent null node insertBefore
+  if (overrideIdFn || (descriptor.id && idInterpolationPattern)) {
+    if (idAttr) {
+      idAttr.get('value').replaceWith(t.stringLiteral(descriptor.id));
+    } else if (firstAttr) {
+      firstAttr.insertBefore(
+        t.jsxAttribute(t.jsxIdentifier('id'), t.stringLiteral(descriptor.id))
+      );
     }
   }
 
@@ -119,16 +131,6 @@ export const visitor: VisitNodeFunction<
         .replaceWithSourceString(
           JSON.stringify(parse(descriptor.defaultMessage))
         );
-    }
-  }
-
-  if (overrideIdFn || (descriptor.id && idInterpolationPattern)) {
-    if (idAttr) {
-      idAttr.get('value').replaceWith(t.stringLiteral(descriptor.id));
-    } else if (defaultMessageAttr) {
-      defaultMessageAttr.insertBefore(
-        t.jsxAttribute(t.jsxIdentifier('id'), t.stringLiteral(descriptor.id))
-      );
     }
   }
 

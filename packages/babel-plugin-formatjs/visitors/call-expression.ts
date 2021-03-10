@@ -127,12 +127,7 @@ export const visitor: VisitNodeFunction<
       prop.get('key').isIdentifier({name: 'id'})
     );
 
-    // Remove description
-    properties
-      .find(prop => prop.get('key').isIdentifier({name: 'description'}))
-      ?.remove();
-
-    // Insert ID potentially
+    // Insert ID potentially 1st before removing nodes
     if (idProp) {
       idProp.get('value').replaceWith(t.stringLiteral(descriptor.id));
     } else {
@@ -140,6 +135,11 @@ export const visitor: VisitNodeFunction<
         t.objectProperty(t.identifier('id'), t.stringLiteral(descriptor.id))
       );
     }
+
+    // Remove description
+    properties
+      .find(prop => prop.get('key').isIdentifier({name: 'description'}))
+      ?.remove();
 
     // Pre-parse or remove defaultMessage
     if (defaultMessageProp) {

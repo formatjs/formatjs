@@ -131,6 +131,22 @@ test('removeDefaultMessage', function () {
     removeDefaultMessage: true,
   });
 });
+test('removeDefaultMessage + overrideIdFn', function () {
+  transformAndCheck('removeDefaultMessage', {
+    removeDefaultMessage: true,
+    overrideIdFn: (
+      id?: string,
+      defaultMessage?: string,
+      description?: string,
+      filePath?: string
+    ) => {
+      const filename = path.basename(filePath!);
+      return `${filename}.${id}.${
+        defaultMessage!.length
+      }.${typeof description}`;
+    },
+  });
+});
 test('preserveWhitespace', function () {
   transformAndCheck('preserveWhitespace', {
     preserveWhitespace: true,
