@@ -6,7 +6,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-18.04]
     runs-on: ${{ matrix.os }}
 
     steps:
