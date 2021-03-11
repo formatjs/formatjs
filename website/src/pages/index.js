@@ -34,7 +34,7 @@ function IntegrationSection({className}) {
       <div className={`row ${styles.imgs}`}>
         <a className="col col--4" href="https://formatjs.io/docs/react-intl">
           <img
-            src={useBaseUrl('/img/react.svg')}
+            src={useBaseUrl('img/react.svg')}
             alt={intl.formatMessage({
               id: 'integration-react',
               defaultMessage: 'React',
@@ -46,7 +46,7 @@ function IntegrationSection({className}) {
           href="https://ember-intl.github.io/ember-intl/"
         >
           <img
-            src={useBaseUrl('/img/ember.svg')}
+            src={useBaseUrl('img/ember.svg')}
             alt={intl.formatMessage({
               id: 'integration-ember',
               defaultMessage: 'Ember',
@@ -55,7 +55,7 @@ function IntegrationSection({className}) {
         </a>
         <a className="col col--4" href="https://formatjs.io/docs/vue-intl">
           <img
-            src={useBaseUrl('/img/vue-logo.svg')}
+            src={useBaseUrl('img/vue-logo.svg')}
             alt={intl.formatMessage({
               id: 'integration-vue',
               defaultMessage: 'Vue',
@@ -130,22 +130,22 @@ function EnvSection({className}) {
     <div className={cx(className, styles.env)}>
       <div className={cx('row', styles.logos)}>
         <div className="col col--2">
-          <img src={useBaseUrl('/img/chrome.png')} />
+          <img src={useBaseUrl('img/chrome.png')} />
         </div>
         <div className="col col--2">
-          <img src={useBaseUrl('/img/firefox.png')} />
+          <img src={useBaseUrl('img/firefox.png')} />
         </div>
         <div className="col col--2">
-          <img src={useBaseUrl('/img/safari.png')} />
+          <img src={useBaseUrl('img/safari.png')} />
         </div>
         <div className="col col--2">
-          <img src={useBaseUrl('/img/edge.png')} />
+          <img src={useBaseUrl('img/edge.png')} />
         </div>
         <div className="col col--2">
-          <img src={useBaseUrl('/img/ie11.png')} />
+          <img src={useBaseUrl('img/ie11.png')} />
         </div>
         <div className="col col--2">
-          <img src={useBaseUrl('/img/node.svg')} />
+          <img src={useBaseUrl('img/node.svg')} />
         </div>
       </div>
       <h3>
@@ -176,19 +176,19 @@ function ShowcaseSection({className}) {
       </h3>
       <div className={cx('row', styles.logos)}>
         <div className="col col--2">
-          <img src={useBaseUrl('/img/yahoo.svg')} />
+          <img src={useBaseUrl('img/yahoo.svg')} />
         </div>
         <div className="col col--2">
-          <img src={useBaseUrl('/img/dropbox.svg')} />
+          <img src={useBaseUrl('img/dropbox.svg')} />
         </div>
         <div className="col col--2">
-          <img src={useBaseUrl('/img/tinder.svg')} />
+          <img src={useBaseUrl('img/tinder.svg')} />
         </div>
         <div className="col col--2">
-          <img src={useBaseUrl('/img/ethereum.svg')} />
+          <img src={useBaseUrl('img/ethereum.svg')} />
         </div>
         <div className="col col--2">
-          <img src={useBaseUrl('/img/mozilla.svg')} />
+          <img src={useBaseUrl('img/mozilla.svg')} />
         </div>
       </div>
     </div>
@@ -198,7 +198,7 @@ function ShowcaseSection({className}) {
 function StandardsSection({className}) {
   return (
     <div className={cx(className, styles.standards)}>
-      <img src={useBaseUrl('/img/js.svg')} />
+      <img src={useBaseUrl('img/js.svg')} />
       <h3>
         <FormattedMessage
           id="standards-title"
@@ -288,12 +288,12 @@ function Home() {
       <header
         className={cx('hero hero--primary', styles.heroBanner)}
         style={{
-          backgroundImage: `url(${useBaseUrl('/img/splash-head.jpg')})`,
+          backgroundImage: `url(${useBaseUrl('img/splash-head.jpg')})`,
         }}
       >
         <div className="container">
           <h1 className="hero__title">
-            <img src={useBaseUrl('/img/logo-header.svg')} />
+            <img src={useBaseUrl('img/logo-header.svg')} />
           </h1>
           <p className={cx('hero__subtitle', styles.heroSubtitle)}>
             {siteConfig.tagline}

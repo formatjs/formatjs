@@ -1,5 +1,6 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "copy_to_bin")
 load("@npm//@docusaurus/core:index.bzl", "docusaurus")
+load("@npm//http-server:index.bzl", "http_server")
 load("//tools:index.bzl", "check_format")
 
 check_format(
@@ -69,8 +70,6 @@ docusaurus(
     ],
     templated_args = [
         "deploy",
-        "--config",
-        "website/docusaurus.config.js",
         "--skip-build",
         "--out-dir",
         "$$(rlocation $(location :build))",
@@ -78,18 +77,12 @@ docusaurus(
     ],
 )
 
-docusaurus(
+http_server(
     name = "serve",
-    data = DEPS + [
+    data = [
         ":build",
-        "docusaurus.config.js",
     ],
     templated_args = [
-        "serve",
-        "--config",
-        "$(BINDIR)/website/docusaurus.config.js",
-        "--dir",
         "$$(rlocation $(location :build))",
-        "",
     ],
 )
