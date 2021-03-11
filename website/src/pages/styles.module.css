@@ -99,7 +99,8 @@
 .integration .imgs,
 .intro .layers,
 .env .logos,
-.env .coverage {
+.env .coverage,
+.showcase .logos {
   margin-bottom: 15px;
 }
 
@@ -146,4 +147,8 @@
 
 .env .logos img {
   height: 100px;
+}
+
+.showcase .logos {
+  align-items: center;
 }

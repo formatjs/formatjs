@@ -164,6 +164,37 @@ function EnvSection({className}) {
   )
 }
 
+function ShowcaseSection({className}) {
+  const intl = useIntl()
+  return (
+    <div className={cx(className, styles.showcase)}>
+      <h3>
+        <FormattedMessage
+          id="showcase-title"
+          defaultMessage="Trusted by industry leaders."
+        />
+      </h3>
+      <div className={cx('row', styles.logos)}>
+        <div className="col col--2">
+          <img src={useBaseUrl('/img/yahoo.svg')} />
+        </div>
+        <div className="col col--2">
+          <img src={useBaseUrl('/img/dropbox.svg')} />
+        </div>
+        <div className="col col--2">
+          <img src={useBaseUrl('/img/tinder.svg')} />
+        </div>
+        <div className="col col--2">
+          <img src={useBaseUrl('/img/ethereum.svg')} />
+        </div>
+        <div className="col col--2">
+          <img src={useBaseUrl('/img/mozilla.svg')} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function StandardsSection({className}) {
   return (
     <div className={cx(className, styles.standards)}>
@@ -295,6 +326,9 @@ function Home() {
           </div>
           <div className="row">
             <EnvSection className="col col--12" />
+          </div>
+          <div className="row">
+            <ShowcaseSection className="col col--12" />
           </div>
         </div>
       </main>
