@@ -241,6 +241,10 @@ We provide the following built-in formatters to integrate with 3rd party TMSes:
 | [locize](https://docs.locize.com/integration/supported-formats#json-nested)               | `simple`    |
 | [SimpleLocalize](https://simplelocalize.io/docs/integrations/format-js-cli/)              | `simple`    |
 
+:::caution
+The `format`s of `extract` & `compile` have to be the same, which means if you `extract --format smartling`, you have to `compile --format smartling` as well & vice versa.
+:::
+
 ## Custom Formatters
 
 You can provide your own formatter by using our interfaces:
