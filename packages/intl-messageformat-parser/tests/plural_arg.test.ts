@@ -1,4 +1,4 @@
-import {pegParse} from '../src/parser';
+import {pegParse} from '../src/parser'
 
 test('trivial', () => {
   expect(
@@ -7,7 +7,7 @@ test('trivial', () => {
         one {item}
         other {items}
       }`)
-  ).toMatchSnapshot();
+  ).toMatchSnapshot()
   expect(
     pegParse(`\
       You have {itemCount, plural,
@@ -15,8 +15,8 @@ test('trivial', () => {
         one {1 item}
         other {{itemCount} items}
       }.`)
-  );
-});
+  )
+})
 
 test('escaped nested message', () => {
   expect(
@@ -25,5 +25,5 @@ test('escaped nested message', () => {
         one {item'}'}
         other {items'}'}
       }`)
-  ).toMatchSnapshot();
-});
+  ).toMatchSnapshot()
+})

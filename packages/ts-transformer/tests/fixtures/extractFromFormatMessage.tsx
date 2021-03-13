@@ -1,15 +1,15 @@
-import React, {Component} from 'react';
-import {injectIntl, FormattedMessage} from 'react-intl';
+import React, {Component} from 'react'
+import {injectIntl, FormattedMessage} from 'react-intl'
 
 const objectPointer = {
   id: 'foo.bar.invalid',
   defaultMessage: 'This cannot be extracted',
   description: 'the plugin only supports inline objects',
-};
+}
 
 class Foo extends Component {
   render() {
-    const {intl} = this.props;
+    const {intl} = this.props
     const msgs = {
       baz: this.props.intl.formatMessage({
         id: 'foo.bar.baz',
@@ -27,7 +27,7 @@ class Foo extends Component {
         defaultMessage,
         description: 'asd',
       }),
-    };
+    }
 
     return (
       <div>
@@ -38,8 +38,8 @@ class Foo extends Component {
           <FormattedMessage id="foo" defaultMessage="bar" description="baz" />
         </span>
       </div>
-    );
+    )
   }
 }
 
-export default injectIntl(Foo);
+export default injectIntl(Foo)

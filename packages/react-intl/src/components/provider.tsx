@@ -4,51 +4,51 @@
  * See the accompanying LICENSE file for terms.
  */
 
-import * as React from 'react';
-import {Provider} from './injectIntl';
+import * as React from 'react'
+import {Provider} from './injectIntl'
 import {
   DEFAULT_INTL_CONFIG,
   invariantIntlContext,
   assignUniqueKeysToParts,
   shallowEqual,
-} from '../utils';
-import {IntlConfig, IntlShape} from '../types';
+} from '../utils'
+import {IntlConfig, IntlShape} from '../types'
 import {
   formatMessage as coreFormatMessage,
   IntlCache,
   createIntl as coreCreateIntl,
   CreateIntlFn,
   createIntlCache,
-} from '@formatjs/intl';
+} from '@formatjs/intl'
 
 import {
   PrimitiveType,
   FormatXMLElementFn,
   isFormatXMLElementFn,
-} from 'intl-messageformat';
+} from 'intl-messageformat'
 
 interface State {
   /**
    * Explicit intl cache to prevent memory leaks
    */
-  cache: IntlCache;
+  cache: IntlCache
   /**
    * Intl object we created
    */
-  intl?: IntlShape;
+  intl?: IntlShape
   /**
    * list of memoized config we care about.
    * This is important since creating intl is
    * very expensive
    */
-  prevConfig: OptionalIntlConfig;
+  prevConfig: OptionalIntlConfig
 }
 
 export type OptionalIntlConfig = Omit<
   IntlConfig,
   keyof typeof DEFAULT_INTL_CONFIG
 > &
-  Partial<typeof DEFAULT_INTL_CONFIG>;
+  Partial<typeof DEFAULT_INTL_CONFIG>
 
 function processIntlConfig<P extends OptionalIntlConfig = OptionalIntlConfig>(
   config: P
@@ -64,7 +64,7 @@ function processIntlConfig<P extends OptionalIntlConfig = OptionalIntlConfig>(
     onError: config.onError,
     wrapRichTextChunksInFragment: config.wrapRichTextChunksInFragment,
     defaultRichTextElements: config.defaultRichTextElements,
-  };
+  }
 }
 
 function assignUniqueKeysToFormatXMLElementFnArgument<
@@ -81,15 +81,15 @@ function assignUniqueKeysToFormatXMLElementFnArgument<
   >
 >(values?: T): T | undefined {
   if (!values) {
-    return values;
+    return values
   }
   return Object.keys(values).reduce((acc: T, k) => {
-    const v = values[k];
-    (acc as any)[k] = isFormatXMLElementFn<React.ReactNode>(v)
+    const v = values[k]
+    ;(acc as any)[k] = isFormatXMLElementFn<React.ReactNode>(v)
       ? assignUniqueKeysToParts(v)
-      : v;
-    return acc;
-  }, {} as T);
+      : v
+    return acc
+  }, {} as T)
 }
 
 const formatMessage: typeof coreFormatMessage = (
@@ -99,19 +99,19 @@ const formatMessage: typeof coreFormatMessage = (
   rawValues,
   ...rest
 ) => {
-  const values = assignUniqueKeysToFormatXMLElementFnArgument(rawValues);
+  const values = assignUniqueKeysToFormatXMLElementFnArgument(rawValues)
   const chunks = coreFormatMessage(
     config,
     formatters,
     descriptor,
     values as any,
     ...rest
-  );
+  )
   if (Array.isArray(chunks)) {
-    return React.Children.toArray(chunks);
+    return React.Children.toArray(chunks)
   }
-  return chunks as any;
-};
+  return chunks as any
+}
 
 /**
  * Create intl object
@@ -128,7 +128,7 @@ export const createIntl: CreateIntlFn<
 ) => {
   const defaultRichTextElements = assignUniqueKeysToFormatXMLElementFnArgument(
     rawDefaultRichTextElements
-  );
+  )
   const coreIntl = coreCreateIntl<React.ReactNode>(
     {
       ...DEFAULT_INTL_CONFIG,
@@ -136,7 +136,7 @@ export const createIntl: CreateIntlFn<
       defaultRichTextElements,
     },
     cache
-  );
+  )
 
   return {
     ...coreIntl,
@@ -154,8 +154,8 @@ export const createIntl: CreateIntlFn<
       },
       coreIntl.formatters
     ),
-  };
-};
+  }
+}
 
 export default class IntlProvider extends React.PureComponent<
   // Exporting children props so it is composable with other HOCs.
@@ -163,31 +163,31 @@ export default class IntlProvider extends React.PureComponent<
   React.PropsWithChildren<OptionalIntlConfig>,
   State
 > {
-  static displayName = 'IntlProvider';
-  static defaultProps = DEFAULT_INTL_CONFIG;
-  private cache: IntlCache = createIntlCache();
+  static displayName = 'IntlProvider'
+  static defaultProps = DEFAULT_INTL_CONFIG
+  private cache: IntlCache = createIntlCache()
   state: State = {
     cache: this.cache,
     intl: createIntl(processIntlConfig(this.props), this.cache),
     prevConfig: processIntlConfig(this.props),
-  };
+  }
 
   static getDerivedStateFromProps(
     props: OptionalIntlConfig,
     {prevConfig, cache}: State
   ): Partial<State> | null {
-    const config = processIntlConfig(props);
+    const config = processIntlConfig(props)
     if (!shallowEqual(prevConfig, config)) {
       return {
         intl: createIntl(config, cache),
         prevConfig: config,
-      };
+      }
     }
-    return null;
+    return null
   }
 
   render(): JSX.Element {
-    invariantIntlContext(this.state.intl);
-    return <Provider value={this.state.intl}>{this.props.children}</Provider>;
+    invariantIntlContext(this.state.intl)
+    return <Provider value={this.state.intl}>{this.props.children}</Provider>
   }
 }

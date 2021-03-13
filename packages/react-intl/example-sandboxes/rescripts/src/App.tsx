@@ -1,5 +1,5 @@
-import './styles.css';
-import {IntlProvider, FormattedMessage} from 'react-intl';
+import './styles.css'
+import {IntlProvider, FormattedMessage} from 'react-intl'
 export default function App() {
   return (
     <IntlProvider locale="en" messages={{}}>
@@ -12,5 +12,5 @@ export default function App() {
         </h2>
       </div>
     </IntlProvider>
-  );
+  )
 }

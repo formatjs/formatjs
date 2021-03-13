@@ -1,9 +1,9 @@
-import {MessageDescriptor} from '@formatjs/ts-transformer';
-import {parseScript} from '../../src/parse_script';
-import {parseFile} from '../../src/vue_extractor';
+import {MessageDescriptor} from '@formatjs/ts-transformer'
+import {parseScript} from '../../src/parse_script'
+import {parseFile} from '../../src/vue_extractor'
 
 test('vue_extractor', function () {
-  let messages: MessageDescriptor[] = [];
+  let messages: MessageDescriptor[] = []
 
   parseFile(
     `
@@ -29,11 +29,11 @@ test('vue_extractor', function () {
     parseScript({
       additionalFunctionNames: ['$formatMessage'],
       onMsgExtracted(_, msgs) {
-        messages = messages.concat(msgs);
+        messages = messages.concat(msgs)
       },
       overrideIdFn: '[contenthash:5]',
     })
-  );
+  )
   expect(messages).toEqual([
     {
       defaultMessage: 'in template',
@@ -45,5 +45,5 @@ test('vue_extractor', function () {
       description: 'in script desc',
       id: '1ebd4',
     },
-  ]);
-});
+  ])
+})

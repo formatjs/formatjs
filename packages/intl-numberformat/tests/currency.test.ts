@@ -1,6 +1,6 @@
-import '@formatjs/intl-pluralrules/polyfill-locales';
-import {NumberFormat} from '../src/core';
-import {NumberFormatOptions} from '@formatjs/ecma402-abstract';
+import '@formatjs/intl-pluralrules/polyfill-locales'
+import {NumberFormat} from '../src/core'
+import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 
 const LOCALES = [
   'en',
@@ -25,41 +25,41 @@ const LOCALES = [
   'uk',
   'zh',
   'en-BS',
-];
+]
 
 LOCALES.forEach(locale => {
-  NumberFormat.__addLocaleData(require(`./locale-data/${locale}.json`));
-});
+  NumberFormat.__addLocaleData(require(`./locale-data/${locale}.json`))
+})
 
 const SIGN_DISPLAYS: Array<NumberFormatOptions['signDisplay']> = [
   'auto',
   'always',
   'never',
   'exceptZero',
-];
+]
 const NOTATIONS: Array<NumberFormatOptions['notation']> = [
   'engineering',
   'scientific',
   'standard',
-];
+]
 const COMPACT_DISPLAYS: Array<NumberFormatOptions['compactDisplay']> = [
   'long',
   'short',
-];
+]
 
 const CURRENCY_DISPLAYS: Array<NumberFormatOptions['currencyDisplay']> = [
   'code',
   'symbol',
   'name',
   'narrowSymbol',
-];
+]
 
 const CURRENCY_SIGNS: Array<NumberFormatOptions['currencySign']> = [
   'accounting',
   'standard',
-];
+]
 
-const CURRENCIES = ['USD', 'GBP', 'ZWD'];
+const CURRENCIES = ['USD', 'GBP', 'ZWD']
 
 function test() {
   LOCALES.forEach(locale => {
@@ -87,23 +87,23 @@ function test() {
                                     notation,
                                     compactDisplay,
                                   }).format(10000)
-                                ).toMatchSnapshot();
+                                ).toMatchSnapshot()
                               })
-                            );
+                            )
                           })
-                        );
+                        )
                       })
-                    );
+                    )
                   })
-                );
+                )
               })
-            );
+            )
           })
-        );
-      });
-    });
-  });
+        )
+      })
+    })
+  })
 }
 
 // Node v8 does not have format and v12 has native NumberFormat.
-describe('Intl.NumberFormat', test);
+describe('Intl.NumberFormat', test)

@@ -1,18 +1,18 @@
-import {FormattedMessage, injectIntl} from 'react-intl';
-import React, {Component} from 'react';
+import {FormattedMessage, injectIntl} from 'react-intl'
+import React, {Component} from 'react'
 
 const objectPointer = {
   id: 'foo.bar.invalid',
   defaultMessage: 'This cannot be extracted',
   description: 'the plugin only supports inline objects',
-};
+}
 
 class Foo extends Component {
   render() {
-    const {intl} = this.props;
+    const {intl} = this.props
     const {
       intl: {formatMessage},
-    } = this.props;
+    } = this.props
     const msgs = {
       baz: this.props.intl.formatMessage({
         id: 'foo.bar.baz',
@@ -30,7 +30,7 @@ class Foo extends Component {
         description: 'A different message',
       }),
       invalid: this.props.intl.formatMessage(objectPointer),
-    };
+    }
 
     return (
       <div>
@@ -40,8 +40,8 @@ class Foo extends Component {
           <FormattedMessage id="foo" defaultMessage="bar" description="baz" />
         </span>
       </div>
-    );
+    )
   }
 }
 
-export default injectIntl(Foo);
+export default injectIntl(Foo)

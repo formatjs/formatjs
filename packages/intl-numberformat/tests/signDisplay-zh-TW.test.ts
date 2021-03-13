@@ -1,17 +1,17 @@
-import '@formatjs/intl-getcanonicallocales/polyfill';
-import '@formatjs/intl-locale/polyfill';
-import '@formatjs/intl-pluralrules/polyfill-locales';
-import * as zh from './locale-data/zh.json';
-import * as zhHant from './locale-data/zh-Hant.json';
-import {NumberFormat} from '../src/core';
-NumberFormat.__addLocaleData(zh as any, zhHant as any);
+import '@formatjs/intl-getcanonicallocales/polyfill'
+import '@formatjs/intl-locale/polyfill'
+import '@formatjs/intl-pluralrules/polyfill-locales'
+import * as zh from './locale-data/zh.json'
+import * as zhHant from './locale-data/zh-Hant.json'
+import {NumberFormat} from '../src/core'
+NumberFormat.__addLocaleData(zh as any, zhHant as any)
 
 const tests = [
   ['auto', '-∞', '-987', '-0', '-0', '0', '0', '987', '∞', '非數值'],
   ['always', '-∞', '-987', '-0', '-0', '+0', '+0', '+987', '+∞', '+非數值'],
   ['never', '∞', '987', '0', '0', '0', '0', '987', '∞', '非數值'],
   ['exceptZero', '-∞', '-987', '0', '0', '0', '0', '+987', '+∞', '非數值'],
-] as const;
+] as const
 
 describe('signDisplay-zh-TW', function () {
   for (const [
@@ -24,29 +24,29 @@ describe('signDisplay-zh-TW', function () {
     positiveNearZero,
     positive,
   ] of tests) {
-    const nf = new NumberFormat('zh-TW', {signDisplay});
+    const nf = new NumberFormat('zh-TW', {signDisplay})
     describe(signDisplay, function () {
       it('negativeInfinity', () => {
-        expect(nf.format(-Infinity)).toEqual(negativeInfinity);
-      });
+        expect(nf.format(-Infinity)).toEqual(negativeInfinity)
+      })
       it('negative', function () {
-        expect(nf.format(-987)).toEqual(negative);
-      });
+        expect(nf.format(-987)).toEqual(negative)
+      })
       it('negativeNearZero', function () {
-        expect(nf.format(-0.0001)).toEqual(negativeNearZero);
-      });
+        expect(nf.format(-0.0001)).toEqual(negativeNearZero)
+      })
       it('negativeZero', function () {
-        expect(nf.format(-0)).toEqual(negativeZero);
-      });
+        expect(nf.format(-0)).toEqual(negativeZero)
+      })
       it('zero', function () {
-        expect(nf.format(0)).toEqual(zero);
-      });
+        expect(nf.format(0)).toEqual(zero)
+      })
       it('positiveNearZero', function () {
-        expect(nf.format(0.0001)).toEqual(positiveNearZero);
-      });
+        expect(nf.format(0.0001)).toEqual(positiveNearZero)
+      })
       it('positive', function () {
-        expect(nf.format(987)).toEqual(positive);
-      });
-    });
+        expect(nf.format(987)).toEqual(positive)
+      })
+    })
   }
-});
+})

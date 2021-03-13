@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {defineMessages, FormattedMessage} from 'react-intl';
+import React, {Component} from 'react'
+import {defineMessages, FormattedMessage} from 'react-intl'
 
 defineMessages({
   foo: {
@@ -14,7 +14,7 @@ defineMessages({
   foo3: {
     defaultMessage: 'foo3-msg',
   },
-});
+})
 
 export default class Foo extends Component {
   render() {
@@ -31,6 +31,6 @@ export default class Foo extends Component {
         />
         <FormattedMessage defaultMessage="message only" />
       </>
-    );
+    )
   }
 }

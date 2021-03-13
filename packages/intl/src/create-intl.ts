@@ -1,37 +1,35 @@
-import {OptionalIntlConfig, IntlCache, IntlShape} from './types';
-import {createFormatters, DEFAULT_INTL_CONFIG} from './utils';
-import {InvalidConfigError, MissingDataError} from './error';
-import {formatNumber, formatNumberToParts} from './number';
-import {formatRelativeTime} from './relativeTime';
+import {OptionalIntlConfig, IntlCache, IntlShape} from './types'
+import {createFormatters, DEFAULT_INTL_CONFIG} from './utils'
+import {InvalidConfigError, MissingDataError} from './error'
+import {formatNumber, formatNumberToParts} from './number'
+import {formatRelativeTime} from './relativeTime'
 import {
   formatDate,
   formatDateToParts,
   formatTime,
   formatTimeToParts,
   formatDateTimeRange,
-} from './dateTime';
-import {formatPlural} from './plural';
-import {formatMessage} from './message';
-import {formatList} from './list';
-import {formatDisplayName} from './displayName';
-import {MessageFormatElement} from 'intl-messageformat-parser';
+} from './dateTime'
+import {formatPlural} from './plural'
+import {formatMessage} from './message'
+import {formatList} from './list'
+import {formatDisplayName} from './displayName'
+import {MessageFormatElement} from 'intl-messageformat-parser'
 
 export interface CreateIntlFn<
   T = string,
   C extends OptionalIntlConfig<T> = OptionalIntlConfig<T>,
   S extends IntlShape<T> = IntlShape<T>
 > {
-  (config: C, cache?: IntlCache): S;
+  (config: C, cache?: IntlCache): S
 }
 
 function messagesContainString(
   messages: Record<string, string> | Record<string, MessageFormatElement[]>
 ): messages is Record<string, MessageFormatElement[]> {
-  const firstMessage = messages
-    ? messages[Object.keys(messages)[0]]
-    : undefined;
+  const firstMessage = messages ? messages[Object.keys(messages)[0]] : undefined
 
-  return typeof firstMessage === 'string';
+  return typeof firstMessage === 'string'
 }
 
 function verifyConfigMessages<T = string>(config: OptionalIntlConfig<T>) {
@@ -41,7 +39,7 @@ function verifyConfigMessages<T = string>(config: OptionalIntlConfig<T>) {
   ) {
     console.warn(`[@formatjs/intl] "defaultRichTextElements" was specified but "message" was not pre-compiled. 
 Please consider using "@formatjs/cli" to pre-compile your messages for performance.
-For more details see https://formatjs.io/docs/getting-started/message-distribution`);
+For more details see https://formatjs.io/docs/getting-started/message-distribution`)
   }
 }
 
@@ -54,33 +52,33 @@ export function createIntl<T = string>(
   config: OptionalIntlConfig<T>,
   cache?: IntlCache
 ): IntlShape<T> {
-  const formatters = createFormatters(cache);
+  const formatters = createFormatters(cache)
   const resolvedConfig = {
     ...DEFAULT_INTL_CONFIG,
     ...config,
-  };
+  }
 
-  const {locale, defaultLocale, onError} = resolvedConfig;
+  const {locale, defaultLocale, onError} = resolvedConfig
   if (!locale) {
     if (onError) {
       onError(
         new InvalidConfigError(
           `"locale" was not configured, using "${defaultLocale}" as fallback. See https://formatjs.io/docs/react-intl/api#intlshape for more details`
         )
-      );
+      )
     }
     // Since there's no registered locale data for `locale`, this will
     // fallback to the `defaultLocale` to make sure things can render.
     // The `messages` are overridden to the `defaultProps` empty object
     // to maintain referential equality across re-renders. It's assumed
     // each <FormattedMessage> contains a `defaultMessage` prop.
-    resolvedConfig.locale = resolvedConfig.defaultLocale || 'en';
+    resolvedConfig.locale = resolvedConfig.defaultLocale || 'en'
   } else if (!Intl.NumberFormat.supportedLocalesOf(locale).length && onError) {
     onError(
       new MissingDataError(
         `Missing locale data for locale: "${locale}" in Intl.NumberFormat. Using default locale: "${defaultLocale}" as fallback. See https://formatjs.io/docs/react-intl#runtime-requirements for more details`
       )
-    );
+    )
   } else if (
     !Intl.DateTimeFormat.supportedLocalesOf(locale).length &&
     onError
@@ -89,10 +87,10 @@ export function createIntl<T = string>(
       new MissingDataError(
         `Missing locale data for locale: "${locale}" in Intl.DateTimeFormat. Using default locale: "${defaultLocale}" as fallback. See https://formatjs.io/docs/react-intl#runtime-requirements for more details`
       )
-    );
+    )
   }
 
-  verifyConfigMessages(resolvedConfig);
+  verifyConfigMessages(resolvedConfig)
   return {
     ...resolvedConfig,
     formatters,
@@ -148,5 +146,5 @@ export function createIntl<T = string>(
       resolvedConfig,
       formatters.getDisplayNames
     ),
-  };
+  }
 }

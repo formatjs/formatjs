@@ -1,5 +1,5 @@
-import {Opts, transform} from '@formatjs/ts-transformer';
-import ts from 'typescript';
+import {Opts, transform} from '@formatjs/ts-transformer'
+import ts from 'typescript'
 
 /**
  * Invoid TypeScript module transpilation with our TS transformer
@@ -8,7 +8,7 @@ import ts from 'typescript';
  */
 export function parseScript(opts: Opts, fn?: string) {
   return (source: string) => {
-    let output;
+    let output
     try {
       output = ts.transpileModule(source, {
         compilerOptions: {
@@ -22,16 +22,16 @@ export function parseScript(opts: Opts, fn?: string) {
         transformers: {
           before: [transform(opts)],
         },
-      });
+      })
     } catch (e) {
       e.message = `Error processing file ${fn} 
-${e.message || ''}`;
-      throw e;
+${e.message || ''}`
+      throw e
     }
     if (output.diagnostics) {
       const errs = output.diagnostics.filter(
         d => d.category === ts.DiagnosticCategory.Error
-      );
+      )
       if (errs.length) {
         throw new Error(
           ts.formatDiagnosticsWithColorAndContext(errs, {
@@ -39,8 +39,8 @@ ${e.message || ''}`;
             getCurrentDirectory: () => process.cwd(),
             getNewLine: () => ts.sys.newLine,
           })
-        );
+        )
       }
     }
-  };
+  }
 }

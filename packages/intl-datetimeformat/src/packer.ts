@@ -1,9 +1,9 @@
-import {UnpackedData, PackedData} from './types';
-import {UnpackedZoneData} from '@formatjs/ecma402-abstract';
+import {UnpackedData, PackedData} from './types'
+import {UnpackedZoneData} from '@formatjs/ecma402-abstract'
 
 export function pack(data: UnpackedData): PackedData {
-  const zoneNames = Object.keys(data.zones);
-  zoneNames.sort(); // so output is stable
+  const zoneNames = Object.keys(data.zones)
+  zoneNames.sort() // so output is stable
   return {
     zones: zoneNames.map(zone =>
       [
@@ -15,16 +15,16 @@ export function pack(data: UnpackedData): PackedData {
     ),
     abbrvs: data.abbrvs.join('|'),
     offsets: data.offsets.map(o => o.toString(36)).join('|'),
-  };
+  }
 }
 
 export function unpack(data: PackedData): Record<string, UnpackedZoneData[]> {
-  const abbrvs = data.abbrvs.split('|');
-  const offsets = data.offsets.split('|').map(n => parseInt(n, 36));
-  const packedZones = data.zones;
-  const zones: Record<string, UnpackedZoneData[]> = {};
+  const abbrvs = data.abbrvs.split('|')
+  const offsets = data.offsets.split('|').map(n => parseInt(n, 36))
+  const packedZones = data.zones
+  const zones: Record<string, UnpackedZoneData[]> = {}
   for (const d of packedZones) {
-    const [zone, ...zoneData] = d.split('|');
+    const [zone, ...zoneData] = d.split('|')
 
     zones[zone] = zoneData
       .map(z => z.split(','))
@@ -33,7 +33,7 @@ export function unpack(data: PackedData): Record<string, UnpackedZoneData[]> {
         abbrvs[+abbrvIndex],
         offsets[+offsetIndex],
         dst === '1',
-      ]);
+      ])
   }
-  return zones;
+  return zones
 }

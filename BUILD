@@ -208,6 +208,7 @@ multirun(
         "//packages/eslint-plugin-formatjs:prettier",
         "//packages/intl-datetimeformat:prettier",
         "//packages/intl-displaynames:prettier",
+        "//packages/intl-durationformat:prettier",
         "//packages/intl-getcanonicallocales:prettier",
         "//packages/intl-listformat:prettier",
         "//packages/intl-locale:prettier",

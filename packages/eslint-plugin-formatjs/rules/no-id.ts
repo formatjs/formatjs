@@ -1,29 +1,29 @@
-import {Rule, Scope} from 'eslint';
-import {ImportDeclaration, Node} from 'estree';
-import {extractMessages} from '../util';
-import {TSESTree} from '@typescript-eslint/typescript-estree';
+import {Rule, Scope} from 'eslint'
+import {ImportDeclaration, Node} from 'estree'
+import {extractMessages} from '../util'
+import {TSESTree} from '@typescript-eslint/typescript-estree'
 
 function checkNode(
   context: Rule.RuleContext,
   node: Node,
   importedMacroVars: Scope.Variable[]
 ) {
-  const msgs = extractMessages(node as TSESTree.Node, importedMacroVars);
+  const msgs = extractMessages(node as TSESTree.Node, importedMacroVars)
   for (const [{idPropNode}] of msgs) {
     if (idPropNode) {
       context.report({
         node: idPropNode as Node,
         message: 'Manual `id` are not allowed in message descriptor',
         fix(fixer) {
-          const src = context.getSourceCode();
-          const token = src.getTokenAfter(idPropNode as any);
-          const fixes = [fixer.remove(idPropNode as any)];
+          const src = context.getSourceCode()
+          const token = src.getTokenAfter(idPropNode as any)
+          const fixes = [fixer.remove(idPropNode as any)]
           if (token?.value === ',') {
-            fixes.push(fixer.remove(token));
+            fixes.push(fixer.remove(token))
           }
-          return fixes;
+          return fixes
         },
-      });
+      })
     }
   }
 }
@@ -40,9 +40,9 @@ export default {
     fixable: 'code',
   },
   create(context) {
-    let importedMacroVars: Scope.Variable[] = [];
+    let importedMacroVars: Scope.Variable[] = []
     const callExpressionVisitor = (node: Node) =>
-      checkNode(context, node, importedMacroVars);
+      checkNode(context, node, importedMacroVars)
 
     if (context.parserServices.defineTemplateBodyVisitor) {
       return context.parserServices.defineTemplateBodyVisitor(
@@ -52,18 +52,18 @@ export default {
         {
           CallExpression: callExpressionVisitor,
         }
-      );
+      )
     }
     return {
       ImportDeclaration: node => {
-        const moduleName = (node as ImportDeclaration).source.value;
+        const moduleName = (node as ImportDeclaration).source.value
         if (moduleName === 'react-intl') {
-          importedMacroVars = context.getDeclaredVariables(node);
+          importedMacroVars = context.getDeclaredVariables(node)
         }
       },
       JSXOpeningElement: (node: Node) =>
         checkNode(context, node, importedMacroVars),
       CallExpression: callExpressionVisitor,
-    };
+    }
   },
-} as Rule.RuleModule;
+} as Rule.RuleModule

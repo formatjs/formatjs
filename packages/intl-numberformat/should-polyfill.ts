@@ -12,17 +12,17 @@ function supportsES2020() {
       unit: 'bit',
       unitDisplay: 'long',
       notation: 'scientific',
-    }).format(10000);
+    }).format(10000)
 
     // Check for a plurality bug in environment that uses the older versions of ICU:
     // https://unicode-org.atlassian.net/browse/ICU-13836
     if (s !== '1E4 bits') {
-      return false;
+      return false
     }
   } catch (e) {
-    return false;
+    return false
   }
-  return true;
+  return true
 }
 
 export function shouldPolyfill() {
@@ -30,5 +30,5 @@ export function shouldPolyfill() {
     typeof Intl === 'undefined' ||
     !('NumberFormat' in Intl) ||
     !supportsES2020()
-  );
+  )
 }

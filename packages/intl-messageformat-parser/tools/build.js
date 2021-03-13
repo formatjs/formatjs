@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-const peg = require('pegjs');
-const tspegjs = require('ts-pegjs');
-const fs = require('fs');
-const {outputFileSync} = require('fs-extra');
-const minimist = require('minimist');
+const peg = require('pegjs')
+const tspegjs = require('ts-pegjs')
+const fs = require('fs')
+const {outputFileSync} = require('fs-extra')
+const minimist = require('minimist')
 
 function main({out, input}) {
   // TS
@@ -65,19 +65,19 @@ import {parseDateTimeSkeleton, parseNumberSkeleton} from './skeleton'`,
 | TimeElement
 `,
     },
-  });
+  })
 
-  const REGEX = /ParseFunction = \((.*?)\) => (any);/g;
-  const PARSE_EXPORT = /export const parse:/g;
+  const REGEX = /ParseFunction = \((.*?)\) => (any);/g
+  const PARSE_EXPORT = /export const parse:/g
   outputFileSync(
     out,
     '// @ts-nocheck\n' +
       srcString
         .replace(REGEX, 'ParseFunction = ($1) => MessageFormatElement[];')
         .replace(PARSE_EXPORT, 'export const pegParse:')
-  );
+  )
 }
 
 if (require.main === module) {
-  main(minimist(process.argv));
+  main(minimist(process.argv))
 }

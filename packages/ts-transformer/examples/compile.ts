@@ -1,8 +1,8 @@
-import * as ts from 'typescript';
-import {transform as intlTransformer} from '../';
+import * as ts from 'typescript'
+import {transform as intlTransformer} from '../'
 
 declare module 'fs-extra' {
-  export function outputJsonSync(file: string, data: any, opts?: {}): void;
+  export function outputJsonSync(file: string, data: any, opts?: {}): void
 }
 const CJS_CONFIG: ts.CompilerOptions = {
   experimentalDecorators: true,
@@ -16,16 +16,16 @@ const CJS_CONFIG: ts.CompilerOptions = {
   declaration: true,
   baseUrl: __dirname,
   target: ts.ScriptTarget.ES2015,
-};
+}
 
 export default function compile(
   input: string,
   compilerOptions: ts.CompilerOptions = CJS_CONFIG
 ) {
-  const compilerHost = ts.createCompilerHost(compilerOptions);
-  const program = ts.createProgram([input], compilerOptions, compilerHost);
+  const compilerHost = ts.createCompilerHost(compilerOptions)
+  const program = ts.createProgram([input], compilerOptions, compilerHost)
 
-  const msgs = {};
+  const msgs = {}
 
   let emitResult = program.emit(undefined, undefined, undefined, undefined, {
     before: [
@@ -33,18 +33,18 @@ export default function compile(
         overrideIdFn: '[hash:base64:10]',
       }),
     ],
-  });
+  })
 
   let allDiagnostics = ts
     .getPreEmitDiagnostics(program)
-    .concat(emitResult.diagnostics);
+    .concat(emitResult.diagnostics)
   console.log(
     ts.formatDiagnosticsWithColorAndContext(allDiagnostics, {
       getCanonicalFileName: fileName => fileName,
       getCurrentDirectory: () => process.cwd(),
       getNewLine: () => ts.sys.newLine,
     })
-  );
+  )
 
-  return msgs;
+  return msgs
 }

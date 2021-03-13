@@ -2,9 +2,9 @@ function supportsDateStyle() {
   try {
     return !!(new Intl.DateTimeFormat(undefined, {
       dateStyle: 'short',
-    } as any).resolvedOptions() as any).dateStyle;
+    } as any).resolvedOptions() as any).dateStyle
   } catch (e) {
-    return false;
+    return false
   }
 }
 
@@ -18,9 +18,9 @@ function hasChromeLt71Bug() {
         hourCycle: 'h11',
         hour: 'numeric',
       } as any).formatToParts(0)[2].type !== 'dayPeriod'
-    );
+    )
   } catch (e) {
-    return false;
+    return false
   }
 }
 
@@ -34,9 +34,9 @@ function hasUnthrownDateTimeStyleBug(): boolean {
     return !!new Intl.DateTimeFormat('en', {
       dateStyle: 'short',
       hour: 'numeric',
-    } as any).format(new Date(0));
+    } as any).format(new Date(0))
   } catch (e) {
-    return false;
+    return false
   }
 }
 
@@ -48,5 +48,5 @@ export function shouldPolyfill() {
     hasChromeLt71Bug() ||
     hasUnthrownDateTimeStyleBug() ||
     !supportsDateStyle()
-  );
+  )
 }

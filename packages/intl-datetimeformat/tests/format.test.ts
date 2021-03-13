@@ -1,17 +1,17 @@
-import * as ko from './locale-data/ko.json';
-import * as en from './locale-data/en.json';
-import allData from '../src/data/all-tz';
+import * as ko from './locale-data/ko.json'
+import * as en from './locale-data/en.json'
+import allData from '../src/data/all-tz'
 import {
   toLocaleString,
   toLocaleDateString,
   toLocaleTimeString,
-} from '../src/to_locale_string';
-import {DateTimeFormat} from '../src/core';
-import {DateTimeFormatOptions} from '@formatjs/ecma402-abstract';
+} from '../src/to_locale_string'
+import {DateTimeFormat} from '../src/core'
+import {DateTimeFormatOptions} from '@formatjs/ecma402-abstract'
 
 // @ts-ignore
-DateTimeFormat.__addLocaleData(en, ko);
-DateTimeFormat.__addTZData(allData);
+DateTimeFormat.__addLocaleData(en, ko)
+DateTimeFormat.__addTZData(allData)
 
 const tests: Array<{options: DateTimeFormatOptions; ko: string; en: string}> = [
   {
@@ -270,9 +270,9 @@ const tests: Array<{options: DateTimeFormatOptions; ko: string; en: string}> = [
     ko: '2020년 6월 15일 월요일 PM 9:48',
     en: 'Monday, June 15, 2020 at 9:48 PM',
   },
-];
+]
 
-const TS = 1592282900463;
+const TS = 1592282900463
 
 // console.log(
 //   JSON.stringify(
@@ -290,51 +290,51 @@ describe('format', function () {
       const resolvedOptions = new DateTimeFormat(
         'ko',
         options
-      ).resolvedOptions();
-      const result: Record<string, any> = {};
+      ).resolvedOptions()
+      const result: Record<string, any> = {}
       Object.keys(options).forEach(
         k => (result[k] = resolvedOptions[k as 'day'])
-      );
-      expect(result).toEqual(options);
-    });
+      )
+      expect(result).toEqual(options)
+    })
     it(`ko ${JSON.stringify(options)}`, function () {
-      expect(new DateTimeFormat('ko', options).format(TS)).toBe(ko);
-    });
+      expect(new DateTimeFormat('ko', options).format(TS)).toBe(ko)
+    })
     it(`en ${JSON.stringify(options)}`, function () {
-      expect(new DateTimeFormat('en', options).format(TS)).toBe(en);
-    });
-  });
-});
+      expect(new DateTimeFormat('en', options).format(TS)).toBe(en)
+    })
+  })
+})
 
 describe('toLocaleString', function () {
   tests.forEach(({options, en, ko}) => {
     it(`ko ${JSON.stringify(options)}`, function () {
-      expect(toLocaleString(new Date(TS), 'ko', options)).toBe(ko);
-    });
+      expect(toLocaleString(new Date(TS), 'ko', options)).toBe(ko)
+    })
     it(`en ${JSON.stringify(options)}`, function () {
-      expect(toLocaleString(new Date(TS), 'en', options)).toBe(en);
-    });
-  });
-});
+      expect(toLocaleString(new Date(TS), 'en', options)).toBe(en)
+    })
+  })
+})
 
 describe('toLocaleDateString', function () {
   it('ko', function () {
-    expect(toLocaleDateString(new Date(TS), 'ko')).toBe('2020. 6. 16.');
-  });
+    expect(toLocaleDateString(new Date(TS), 'ko')).toBe('2020. 6. 16.')
+  })
   it('en', function () {
-    expect(toLocaleDateString(new Date(TS), 'en')).toBe('6/16/2020');
-  });
-});
+    expect(toLocaleDateString(new Date(TS), 'en')).toBe('6/16/2020')
+  })
+})
 
 describe('toLocaleTimeString', function () {
   it('ko', function () {
     expect(toLocaleTimeString(new Date(TS), 'ko', {timeZone: 'UTC'})).toBe(
       'AM 4:48:20'
-    );
-  });
+    )
+  })
   it('en', function () {
     expect(toLocaleTimeString(new Date(TS), 'en', {timeZone: 'UTC'})).toBe(
       '4:48:20 AM'
-    );
-  });
-});
+    )
+  })
+})

@@ -1,7 +1,7 @@
-import '@formatjs/intl-pluralrules/polyfill-locales';
-import * as ko from './locale-data/ko.json';
-import {NumberFormat} from '../src/core';
-NumberFormat.__addLocaleData(ko as any);
+import '@formatjs/intl-pluralrules/polyfill-locales'
+import * as ko from './locale-data/ko.json'
+import {NumberFormat} from '../src/core'
+NumberFormat.__addLocaleData(ko as any)
 
 const tests: any[] = [
   [
@@ -72,7 +72,7 @@ const tests: any[] = [
       {type: 'fraction', value: '0016'},
     ],
   ],
-];
+]
 
 describe('notation-compact-ko-KR', function () {
   for (const [number, short, long = short] of tests) {
@@ -80,16 +80,16 @@ describe('notation-compact-ko-KR', function () {
       const nfShort = new NumberFormat('ko-KR', {
         notation: 'compact',
         compactDisplay: 'short',
-      });
-      expect(nfShort.formatToParts(number)).toEqual(short);
-    });
+      })
+      expect(nfShort.formatToParts(number)).toEqual(short)
+    })
 
     it(`${number} long`, function () {
       const nfLong = new NumberFormat('ko-KR', {
         notation: 'compact',
         compactDisplay: 'long',
-      });
-      expect(nfLong.formatToParts(number)).toEqual(long);
-    });
+      })
+      expect(nfLong.formatToParts(number)).toEqual(long)
+    })
   }
-});
+})

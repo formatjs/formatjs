@@ -5,72 +5,72 @@ import {
   isLiteralElement,
   isPluralElement,
   isSelectElement,
-} from 'intl-messageformat-parser';
+} from 'intl-messageformat-parser'
 
 export function generateXXLS(
   msg: string | MessageFormatElement[]
 ): MessageFormatElement[] {
-  const ast = typeof msg === 'string' ? parse(msg) : msg;
-  const lastChunk = ast.pop();
+  const ast = typeof msg === 'string' ? parse(msg) : msg
+  const lastChunk = ast.pop()
   if (lastChunk && isLiteralElement(lastChunk)) {
-    lastChunk.value += 'SSSSSSSSSSSSSSSSSSSSSSSSS';
-    return [...ast, lastChunk];
+    lastChunk.value += 'SSSSSSSSSSSSSSSSSSSSSSSSS'
+    return [...ast, lastChunk]
   }
-  return [...ast, {type: TYPE.literal, value: 'SSSSSSSSSSSSSSSSSSSSSSSSS'}];
+  return [...ast, {type: TYPE.literal, value: 'SSSSSSSSSSSSSSSSSSSSSSSSS'}]
 }
 
 export function generateXXAC(
   msg: string | MessageFormatElement[]
 ): MessageFormatElement[] {
-  const ast = typeof msg === 'string' ? parse(msg) : msg;
+  const ast = typeof msg === 'string' ? parse(msg) : msg
   ast.forEach(el => {
     if (isLiteralElement(el)) {
-      el.value = el.value.toUpperCase();
+      el.value = el.value.toUpperCase()
     } else if (isPluralElement(el) || isSelectElement(el)) {
       for (const opt of Object.values(el.options)) {
-        generateXXAC(opt.value);
+        generateXXAC(opt.value)
       }
     }
-  });
-  return ast;
+  })
+  return ast
 }
 
 export function generateXXHA(
   msg: string | MessageFormatElement[]
 ): MessageFormatElement[] {
-  const ast = typeof msg === 'string' ? parse(msg) : msg;
-  const firstChunk = ast.shift();
+  const ast = typeof msg === 'string' ? parse(msg) : msg
+  const firstChunk = ast.shift()
   if (firstChunk && isLiteralElement(firstChunk)) {
-    firstChunk.value = '[javascript]' + firstChunk.value;
-    return [firstChunk, ...ast];
+    firstChunk.value = '[javascript]' + firstChunk.value
+    return [firstChunk, ...ast]
   }
-  return [{type: TYPE.literal, value: '[javascript]'}, ...ast];
+  return [{type: TYPE.literal, value: '[javascript]'}, ...ast]
 }
 
-const ASCII = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-const ACCENTED_ASCII = 'âḃćḋèḟĝḫíĵǩĺṁńŏṗɋŕśṭůṿẘẋẏẓḀḂḈḊḔḞḠḢḬĴḴĻḾŊÕṔɊŔṠṮŨṼẄẌŸƵ';
+const ASCII = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+const ACCENTED_ASCII = 'âḃćḋèḟĝḫíĵǩĺṁńŏṗɋŕśṭůṿẘẋẏẓḀḂḈḊḔḞḠḢḬĴḴĻḾŊÕṔɊŔṠṮŨṼẄẌŸƵ'
 
 export function generateENXA(
   msg: string | MessageFormatElement[]
 ): MessageFormatElement[] {
-  const ast = typeof msg === 'string' ? parse(msg) : msg;
+  const ast = typeof msg === 'string' ? parse(msg) : msg
   ast.forEach(el => {
     if (isLiteralElement(el)) {
       el.value = el.value
         .split('')
         .map(c => {
-          const i = ASCII.indexOf(c);
+          const i = ASCII.indexOf(c)
           if (i < 0) {
-            return c;
+            return c
           }
-          return ACCENTED_ASCII[i];
+          return ACCENTED_ASCII[i]
         })
-        .join('');
+        .join('')
     } else if (isPluralElement(el) || isSelectElement(el)) {
       for (const opt of Object.values(el.options)) {
-        generateENXA(opt.value);
+        generateENXA(opt.value)
       }
     }
-  });
-  return ast;
+  })
+  return ast
 }

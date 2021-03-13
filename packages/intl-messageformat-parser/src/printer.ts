@@ -28,10 +28,10 @@ import {
   NumberSkeletonToken,
   DateTimeSkeleton,
   isPoundElement,
-} from './types';
+} from './types'
 
 export function printAST(ast: MessageFormatElement[]): string {
-  return doPrintAST(ast, false);
+  return doPrintAST(ast, false)
 }
 
 export function doPrintAST(
@@ -40,50 +40,50 @@ export function doPrintAST(
 ): string {
   const printedNodes = ast.map(el => {
     if (isLiteralElement(el)) {
-      return printLiteralElement(el, isInPlural);
+      return printLiteralElement(el, isInPlural)
     }
 
     if (isArgumentElement(el)) {
-      return printArgumentElement(el);
+      return printArgumentElement(el)
     }
     if (isDateElement(el) || isTimeElement(el) || isNumberElement(el)) {
-      return printSimpleFormatElement(el);
+      return printSimpleFormatElement(el)
     }
 
     if (isPluralElement(el)) {
-      return printPluralElement(el);
+      return printPluralElement(el)
     }
 
     if (isSelectElement(el)) {
-      return printSelectElement(el);
+      return printSelectElement(el)
     }
 
     if (isPoundElement(el)) {
-      return '#';
+      return '#'
     }
     if (isTagElement(el)) {
-      return printTagElement(el);
+      return printTagElement(el)
     }
-  });
+  })
 
-  return printedNodes.join('');
+  return printedNodes.join('')
 }
 
 function printTagElement(el: TagElement): string {
-  return `<${el.value}>${printAST(el.children)}</${el.value}>`;
+  return `<${el.value}>${printAST(el.children)}</${el.value}>`
 }
 
 function printEscapedMessage(message: string): string {
-  return message.replace(/([{}](?:.*[{}])?)/su, `'$1'`);
+  return message.replace(/([{}](?:.*[{}])?)/su, `'$1'`)
 }
 
 function printLiteralElement({value}: LiteralElement, isInPlural: boolean) {
-  const escaped = printEscapedMessage(value);
-  return isInPlural ? escaped.replace('#', "'#'") : escaped;
+  const escaped = printEscapedMessage(value)
+  return isInPlural ? escaped.replace('#', "'#'") : escaped
 }
 
 function printArgumentElement({value}: ArgumentElement) {
-  return `{${value}}`;
+  return `{${value}}`
 }
 
 function printSimpleFormatElement(
@@ -91,28 +91,28 @@ function printSimpleFormatElement(
 ) {
   return `{${el.value}, ${TYPE[el.type]}${
     el.style ? `, ${printArgumentStyle(el.style)}` : ''
-  }}`;
+  }}`
 }
 
 function printNumberSkeletonToken(token: NumberSkeletonToken): string {
-  const {stem, options} = token;
+  const {stem, options} = token
   return options.length === 0
     ? stem
-    : `${stem}${options.map(o => `/${o}`).join('')}`;
+    : `${stem}${options.map(o => `/${o}`).join('')}`
 }
 
 function printArgumentStyle(style: string | Skeleton) {
   if (typeof style === 'string') {
-    return printEscapedMessage(style);
+    return printEscapedMessage(style)
   } else if (style.type === SKELETON_TYPE.dateTime) {
-    return `::${printDateTimeSkeleton(style)}`;
+    return `::${printDateTimeSkeleton(style)}`
   } else {
-    return `::${style.tokens.map(printNumberSkeletonToken).join(' ')}`;
+    return `::${style.tokens.map(printNumberSkeletonToken).join(' ')}`
   }
 }
 
 export function printDateTimeSkeleton(style: DateTimeSkeleton): string {
-  return style.pattern;
+  return style.pattern
 }
 
 function printSelectElement(el: SelectElement) {
@@ -122,12 +122,12 @@ function printSelectElement(el: SelectElement) {
     Object.keys(el.options)
       .map(id => `${id}{${doPrintAST(el.options[id].value, false)}}`)
       .join(' '),
-  ].join(',');
-  return `{${msg}}`;
+  ].join(',')
+  return `{${msg}}`
 }
 
 function printPluralElement(el: PluralElement) {
-  const type = el.pluralType === 'cardinal' ? 'plural' : 'selectordinal';
+  const type = el.pluralType === 'cardinal' ? 'plural' : 'selectordinal'
   const msg = [
     el.value,
     type,
@@ -139,6 +139,6 @@ function printPluralElement(el: PluralElement) {
     ]
       .filter(Boolean)
       .join(' '),
-  ].join(',');
-  return `{${msg}}`;
+  ].join(',')
+  return `{${msg}}`
 }

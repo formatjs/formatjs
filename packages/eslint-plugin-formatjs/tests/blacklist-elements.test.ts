@@ -1,6 +1,6 @@
-import blacklistElements from '../rules/blacklist-elements';
-import {dynamicMessage, emptyFnCall, noMatch, spreadJsx} from './fixtures';
-import {ruleTester, vueRuleTester} from './util';
+import blacklistElements from '../rules/blacklist-elements'
+import {dynamicMessage, emptyFnCall, noMatch, spreadJsx} from './fixtures'
+import {ruleTester, vueRuleTester} from './util'
 
 ruleTester.run('blacklist-elements', blacklistElements, {
   valid: [
@@ -31,7 +31,7 @@ ruleTester.run('blacklist-elements', blacklistElements, {
       ],
     },
   ],
-});
+})
 
 vueRuleTester.run('vue/blacklist-elements', blacklistElements, {
   valid: [
@@ -76,4 +76,4 @@ vueRuleTester.run('vue/blacklist-elements', blacklistElements, {
       ],
     },
   ],
-});
+})

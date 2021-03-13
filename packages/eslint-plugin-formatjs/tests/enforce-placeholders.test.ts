@@ -1,6 +1,6 @@
-import enforcePlaceholders from '../rules/enforce-placeholders';
-import {ruleTester} from './util';
-import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures';
+import enforcePlaceholders from '../rules/enforce-placeholders'
+import {ruleTester} from './util'
+import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
 ruleTester.run('enforce-placeholders', enforcePlaceholders, {
   valid: [
     `intl.formatMessage({
@@ -157,4 +157,4 @@ ruleTester.run('enforce-placeholders', enforcePlaceholders, {
       ],
     },
   ],
-});
+})

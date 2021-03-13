@@ -4,20 +4,20 @@
 import {
   DateTimeFormat,
   IntlDateTimeFormatInternal,
-} from '@formatjs/ecma402-abstract';
+} from '@formatjs/ecma402-abstract'
 
 const internalSlotMap = new WeakMap<
   DateTimeFormat,
   IntlDateTimeFormatInternal
->();
+>()
 
 export default function getInternalSlots(
   x: DateTimeFormat
 ): IntlDateTimeFormatInternal {
-  let internalSlots = internalSlotMap.get(x);
+  let internalSlots = internalSlotMap.get(x)
   if (!internalSlots) {
-    internalSlots = Object.create(null) as IntlDateTimeFormatInternal;
-    internalSlotMap.set(x, internalSlots);
+    internalSlots = Object.create(null) as IntlDateTimeFormatInternal
+    internalSlotMap.set(x, internalSlots)
   }
-  return internalSlots;
+  return internalSlots
 }

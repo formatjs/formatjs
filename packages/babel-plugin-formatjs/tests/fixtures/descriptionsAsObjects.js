@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {FormattedMessage} from 'react-intl';
+import React, {Component} from 'react'
+import {FormattedMessage} from 'react-intl'
 
 // @react-intl project:amazing2
 export default class Foo extends Component {
@@ -13,6 +13,6 @@ export default class Foo extends Component {
           metadata: 'Additional metadata content.',
         }}
       />
-    );
+    )
   }
 }

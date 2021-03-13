@@ -1,7 +1,7 @@
-import {Suite, Event} from 'benchmark';
-import IntlMessageFormat, {Formatters} from '../src';
-import '@formatjs/intl-pluralrules/polyfill-locales';
-import memoize from 'intl-format-cache';
+import {Suite, Event} from 'benchmark'
+import IntlMessageFormat, {Formatters} from '../src'
+import '@formatjs/intl-pluralrules/polyfill-locales'
+import memoize from 'intl-format-cache'
 
 const msg =
   '' +
@@ -23,19 +23,19 @@ const msg =
   '=0 {{host} does not give a party.}' +
   '=1 {{host} invites {guest} to their party.}' +
   '=2 {{host} invites {guest} and one other person to their party.}' +
-  'other {{host} invites {guest} and {num_guests,number} other people to their party.}}}}';
+  'other {{host} invites {guest} and {num_guests,number} other people to their party.}}}}'
 
-const mf = new IntlMessageFormat(msg, 'en-US');
-const stringMsg = 'Hello, world!';
-const stringMf = new IntlMessageFormat(stringMsg, 'en-US');
+const mf = new IntlMessageFormat(msg, 'en-US')
+const stringMsg = 'Hello, world!'
+const stringMf = new IntlMessageFormat(stringMsg, 'en-US')
 
-const preparsedMsg = IntlMessageFormat.__parse!(msg);
+const preparsedMsg = IntlMessageFormat.__parse!(msg)
 
 const formatters: Formatters = {
   getNumberFormat: memoize(Intl.NumberFormat),
   getDateTimeFormat: memoize(Intl.DateTimeFormat),
   getPluralRules: memoize(Intl.PluralRules),
-};
+}
 
 new Suite()
   .add('format_cached_complex_msg', () =>
@@ -94,9 +94,9 @@ new Suite()
     })
   )
   .on('error', function (event: Event) {
-    console.log(String(event.target));
+    console.log(String(event.target))
   })
   .on('cycle', function (event: Event) {
-    console.log(String(event.target));
+    console.log(String(event.target))
   })
-  .run();
+  .run()

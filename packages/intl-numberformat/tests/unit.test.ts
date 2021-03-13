@@ -1,6 +1,6 @@
-import '@formatjs/intl-pluralrules/polyfill-locales';
-import {NumberFormat} from '../src/core';
-import {NumberFormatOptions} from '@formatjs/ecma402-abstract';
+import '@formatjs/intl-pluralrules/polyfill-locales'
+import {NumberFormat} from '../src/core'
+import {NumberFormatOptions} from '@formatjs/ecma402-abstract'
 
 const LOCALES = [
   'en',
@@ -25,33 +25,33 @@ const LOCALES = [
   'uk',
   'zh',
   'en-BS',
-];
+]
 
 LOCALES.forEach(locale => {
-  NumberFormat.__addLocaleData(require(`./locale-data/${locale}.json`));
-});
+  NumberFormat.__addLocaleData(require(`./locale-data/${locale}.json`))
+})
 
 const SIGN_DISPLAYS: Array<NumberFormatOptions['signDisplay']> = [
   'auto',
   'always',
   'never',
   'exceptZero',
-];
+]
 const NOTATIONS: Array<NumberFormatOptions['notation']> = [
   'engineering',
   'scientific',
   'compact',
   'standard',
-];
+]
 const UNIT_DISPLAYS: Array<NumberFormatOptions['unitDisplay']> = [
   'long',
   'short',
   'narrow',
-];
+]
 const COMPACT_DISPLAYS: Array<NumberFormatOptions['compactDisplay']> = [
   'long',
   'short',
-];
+]
 
 function test() {
   LOCALES.forEach(locale => {
@@ -74,7 +74,7 @@ function test() {
                             notation,
                             compactDisplay,
                           }).formatToParts(10000)
-                        ).toMatchSnapshot();
+                        ).toMatchSnapshot()
                         expect(
                           new NumberFormat(locale, {
                             style: 'unit',
@@ -84,7 +84,7 @@ function test() {
                             notation,
                             compactDisplay,
                           }).formatToParts(10000)
-                        ).toMatchSnapshot();
+                        ).toMatchSnapshot()
                         expect(
                           new NumberFormat(locale, {
                             style: 'unit',
@@ -94,19 +94,19 @@ function test() {
                             notation,
                             compactDisplay,
                           }).formatToParts(10000)
-                        ).toMatchSnapshot();
+                        ).toMatchSnapshot()
                       })
-                    );
+                    )
                   })
-                );
+                )
               })
-            );
+            )
           })
-        );
-      });
-    });
-  });
+        )
+      })
+    })
+  })
 }
 
 // Node v8 does not have formatToParts and v12 has native NumberFormat.
-describe('NumberFormat', test);
+describe('NumberFormat', test)

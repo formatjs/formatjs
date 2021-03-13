@@ -1,5 +1,5 @@
-import {DisplayNames} from './';
-import {shouldPolyfill} from './should-polyfill';
+import {DisplayNames} from './'
+import {shouldPolyfill} from './should-polyfill'
 
 if (shouldPolyfill()) {
   Object.defineProperty(Intl, 'DisplayNames', {
@@ -7,5 +7,5 @@ if (shouldPolyfill()) {
     enumerable: false,
     writable: true,
     configurable: true,
-  });
+  })
 }

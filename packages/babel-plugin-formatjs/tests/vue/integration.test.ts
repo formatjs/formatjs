@@ -1,7 +1,7 @@
-import webpack from 'webpack';
-import {VueLoaderPlugin} from 'vue-loader';
-import {readFileSync} from 'fs';
-import {resolve} from 'path';
+import webpack from 'webpack'
+import {VueLoaderPlugin} from 'vue-loader'
+import {readFileSync} from 'fs'
+import {resolve} from 'path'
 
 test('dummy', function (done) {
   webpack(
@@ -41,8 +41,8 @@ test('dummy', function (done) {
     _ => {
       expect(readFileSync(resolve(__dirname, 'out.js'), 'utf-8')).toContain(
         '[{type:0,value:"Today is "},{type:3,style:{type:1,pattern:"yyyyMMdd",parsedOptions:{year:"numeric",month:"2-digit",day:"2-digit"}},value:"ts"}]'
-      );
-      done();
+      )
+      done()
     }
-  );
-}, 10000);
+  )
+}, 10000)

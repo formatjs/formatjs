@@ -1,4 +1,4 @@
-import {parseUnicodeLocaleId} from '../src/parser';
+import {parseUnicodeLocaleId} from '../src/parser'
 
 describe('parser', () => {
   const invalidLanguageTags = [
@@ -71,12 +71,12 @@ describe('parser', () => {
     'si-x', // incomplete private-use tags
     'x-',
     'x-y-',
-  ];
+  ]
 
   for (const langtag of invalidLanguageTags) {
     it(`new Intl.Locale("${langtag}") throws RangeError`, function () {
-      expect(() => parseUnicodeLocaleId(langtag)).toThrowError(RangeError);
-    });
+      expect(() => parseUnicodeLocaleId(langtag)).toThrowError(RangeError)
+    })
   }
 
   it('en-u-foo-bar-nu-thai-ca-buddhist-kk-true', function () {
@@ -95,8 +95,8 @@ describe('parser', () => {
         },
       ],
       lang: {lang: 'en', region: undefined, script: undefined, variants: []},
-    });
-  });
+    })
+  })
   it('da-u-ca-gregory-ca-buddhist', function () {
     expect(parseUnicodeLocaleId('da-u-ca-gregory-ca-buddhist')).toEqual({
       extensions: [
@@ -110,8 +110,8 @@ describe('parser', () => {
         },
       ],
       lang: {lang: 'da', region: undefined, script: undefined, variants: []},
-    });
-  });
+    })
+  })
   it('en-Latn-fonipa', function () {
     expect(parseUnicodeLocaleId('en-Latn-fonipa')).toEqual({
       extensions: [],
@@ -121,8 +121,8 @@ describe('parser', () => {
         script: 'Latn',
         variants: ['fonipa'],
       },
-    });
-  });
+    })
+  })
   it('de-Latn-DE-u-ca-gregory-co-phonebk-hc-h23-kf-kn-false-nu-latn', function () {
     expect(
       parseUnicodeLocaleId(
@@ -144,8 +144,8 @@ describe('parser', () => {
         },
       ],
       lang: {lang: 'de', region: 'DE', script: 'Latn', variants: []},
-    });
-  });
+    })
+  })
   it('ja-Jpan-JP-u-ca-japanese-co-search-hc-h24-kf-false-kn-nu-jpanfin', function () {
     expect(
       parseUnicodeLocaleId(
@@ -167,8 +167,8 @@ describe('parser', () => {
         },
       ],
       lang: {lang: 'ja', region: 'JP', script: 'Jpan', variants: []},
-    });
-  });
+    })
+  })
   it('fr-Latn-CA-u-ca-gregory-co-standard-hc-h11-kf-kn-false-nu-latn', function () {
     expect(
       parseUnicodeLocaleId(
@@ -190,8 +190,8 @@ describe('parser', () => {
         },
       ],
       lang: {lang: 'fr', region: 'CA', script: 'Latn', variants: []},
-    });
-  });
+    })
+  })
   it('en-a-bar-x-u-foo', function () {
     expect(parseUnicodeLocaleId('en-a-bar-x-u-foo')).toEqual({
       extensions: [
@@ -199,6 +199,6 @@ describe('parser', () => {
         {type: 'x', value: 'u-foo'},
       ],
       lang: {lang: 'en', region: undefined, script: undefined, variants: []},
-    });
-  });
-});
+    })
+  })
+})

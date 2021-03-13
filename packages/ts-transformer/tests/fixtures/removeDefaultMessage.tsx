@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {defineMessages, FormattedMessage} from 'react-intl';
+import React, {Component} from 'react'
+import {defineMessages, FormattedMessage} from 'react-intl'
 
 const messages = defineMessages({
   foo: {
@@ -7,7 +7,7 @@ const messages = defineMessages({
     description: 'Greeting the user',
     defaultMessage: 'Hello, {name}',
   },
-});
+})
 
 export default class Foo extends Component {
   render() {
@@ -17,6 +17,6 @@ export default class Foo extends Component {
         description="Greeting to the world"
         defaultMessage="Hello World!"
       />
-    );
+    )
   }
 }

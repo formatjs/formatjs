@@ -1,39 +1,39 @@
-import {warn, getStdinAsString} from './console_utils';
-import {readFile, outputFile} from 'fs-extra';
+import {warn, getStdinAsString} from './console_utils'
+import {readFile, outputFile} from 'fs-extra'
 import {
   interpolateName,
   Opts,
   MessageDescriptor,
-} from '@formatjs/ts-transformer';
+} from '@formatjs/ts-transformer'
 
-import {resolveBuiltinFormatter, Formatter} from './formatters';
-import stringify from 'json-stable-stringify';
-import {parseFile} from './vue_extractor';
-import {parseScript} from './parse_script';
+import {resolveBuiltinFormatter, Formatter} from './formatters'
+import stringify from 'json-stable-stringify'
+import {parseFile} from './vue_extractor'
+import {parseScript} from './parse_script'
 export interface ExtractionResult<M = Record<string, string>> {
   /**
    * List of extracted messages
    */
-  messages: MessageDescriptor[];
+  messages: MessageDescriptor[]
   /**
    * Metadata extracted w/ `pragma`
    */
-  meta?: M;
+  meta?: M
 }
 
 export interface ExtractedMessageDescriptor extends MessageDescriptor {
   /**
    * Line number
    */
-  line?: number;
+  line?: number
   /**
    * Column number
    */
-  col?: number;
+  col?: number
   /**
    * Metadata extracted from pragma
    */
-  meta?: Record<string, string>;
+  meta?: Record<string, string>
 }
 
 export type ExtractCLIOptions = Omit<
@@ -43,44 +43,44 @@ export type ExtractCLIOptions = Omit<
   /**
    * Output File
    */
-  outFile?: string;
+  outFile?: string
   /**
    * Ignore file glob pattern
    */
-  ignore?: string[];
-};
+  ignore?: string[]
+}
 
 export type ExtractOpts = Opts & {
   /**
    * Whether to throw an error if we had any issues with
    * 1 of the source files
    */
-  throws?: boolean;
+  throws?: boolean
   /**
    * Message ID interpolation pattern
    */
-  idInterpolationPattern?: string;
+  idInterpolationPattern?: string
   /**
    * Whether we read from stdin instead of a file
    */
-  readFromStdin?: boolean;
+  readFromStdin?: boolean
   /**
    * Path to a formatter file that controls the shape of JSON file from `outFile`.
    */
-  format?: string | Formatter;
-} & Pick<Opts, 'onMsgExtracted' | 'onMetaExtracted'>;
+  format?: string | Formatter
+} & Pick<Opts, 'onMsgExtracted' | 'onMetaExtracted'>
 
 function calculateLineColFromOffset(
   text: string,
   start?: number
 ): Pick<ExtractedMessageDescriptor, 'line' | 'col'> {
   if (!start) {
-    return {line: 1, col: 1};
+    return {line: 1, col: 1}
   }
-  const chunk = text.slice(0, start);
-  const lines = chunk.split('\n');
-  const lastLine = lines[lines.length - 1];
-  return {line: lines.length, col: lastLine.length};
+  const chunk = text.slice(0, start)
+  const lines = chunk.split('\n')
+  const lastLine = lines[lines.length - 1]
+  return {line: lines.length, col: lastLine.length}
 }
 
 function processFile(
@@ -88,8 +88,8 @@ function processFile(
   fn: string,
   {idInterpolationPattern, ...opts}: Opts & {idInterpolationPattern?: string}
 ) {
-  let messages: ExtractedMessageDescriptor[] = [];
-  let meta: Record<string, string> | undefined;
+  let messages: ExtractedMessageDescriptor[] = []
+  let meta: Record<string, string> | undefined
 
   opts = {
     ...opts,
@@ -102,14 +102,14 @@ function processFile(
         msgs = msgs.map(msg => ({
           ...msg,
           ...calculateLineColFromOffset(source, msg.start),
-        }));
+        }))
       }
-      messages = messages.concat(msgs);
+      messages = messages.concat(msgs)
     },
     onMetaExtracted(_, m) {
-      meta = m;
+      meta = m
     },
-  };
+  }
 
   if (!opts.overrideIdFn && idInterpolationPattern) {
     opts = {
@@ -127,20 +127,20 @@ function processFile(
               : defaultMessage,
           }
         ),
-    };
+    }
   }
 
-  const scriptParseFn = parseScript(opts, fn);
+  const scriptParseFn = parseScript(opts, fn)
   if (fn.endsWith('.vue')) {
-    parseFile(source, fn, scriptParseFn);
+    parseFile(source, fn, scriptParseFn)
   } else {
-    scriptParseFn(source);
+    scriptParseFn(source)
   }
 
   if (meta) {
-    messages.forEach(m => (m.meta = meta));
+    messages.forEach(m => (m.meta = meta))
   }
-  return {messages, meta};
+  return {messages, meta}
 }
 
 /**
@@ -154,57 +154,55 @@ export async function extract(
   files: readonly string[],
   extractOpts: ExtractOpts
 ) {
-  const {throws, readFromStdin, ...opts} = extractOpts;
-  let rawResults: Array<ExtractionResult | undefined>;
+  const {throws, readFromStdin, ...opts} = extractOpts
+  let rawResults: Array<ExtractionResult | undefined>
   if (readFromStdin) {
     // Read from stdin
     if (process.stdin.isTTY) {
-      warn('Reading source file from TTY.');
+      warn('Reading source file from TTY.')
     }
-    const stdinSource = await getStdinAsString();
-    rawResults = [processFile(stdinSource, 'dummy', opts)];
+    const stdinSource = await getStdinAsString()
+    rawResults = [processFile(stdinSource, 'dummy', opts)]
   } else {
     rawResults = await Promise.all(
       files.map(async fn => {
         try {
-          const source = await readFile(fn, 'utf8');
-          return processFile(source, fn, opts);
+          const source = await readFile(fn, 'utf8')
+          return processFile(source, fn, opts)
         } catch (e) {
           if (throws) {
-            throw e;
+            throw e
           } else {
-            warn(e);
+            warn(e)
           }
         }
       })
-    );
+    )
   }
 
-  const formatter = await resolveBuiltinFormatter(opts.format);
-  const extractionResults = rawResults.filter(
-    (r): r is ExtractionResult => !!r
-  );
+  const formatter = await resolveBuiltinFormatter(opts.format)
+  const extractionResults = rawResults.filter((r): r is ExtractionResult => !!r)
 
-  const extractedMessages = new Map<string, MessageDescriptor>();
+  const extractedMessages = new Map<string, MessageDescriptor>()
 
   for (const {messages} of extractionResults) {
     for (const message of messages) {
-      const {id, description, defaultMessage} = message;
+      const {id, description, defaultMessage} = message
       if (!id) {
         const error = new Error(
           `[FormatJS CLI] Missing message id for message: 
 ${JSON.stringify(message, undefined, 2)}`
-        );
+        )
         if (throws) {
-          throw error;
+          throw error
         } else {
-          warn(error.message);
+          warn(error.message)
         }
-        continue;
+        continue
       }
 
       if (extractedMessages.has(id)) {
-        const existing = extractedMessages.get(id)!;
+        const existing = extractedMessages.get(id)!
         if (
           description !== existing.description ||
           defaultMessage !== existing.defaultMessage
@@ -212,26 +210,26 @@ ${JSON.stringify(message, undefined, 2)}`
           const error = new Error(
             `[FormatJS CLI] Duplicate message id: "${id}", ` +
               'but the `description` and/or `defaultMessage` are different.'
-          );
+          )
           if (throws) {
-            throw error;
+            throw error
           } else {
-            warn(error.message);
+            warn(error.message)
           }
         }
       }
-      extractedMessages.set(id, message);
+      extractedMessages.set(id, message)
     }
   }
-  const results: Record<string, Omit<MessageDescriptor, 'id'>> = {};
-  const messages = Array.from(extractedMessages.values());
+  const results: Record<string, Omit<MessageDescriptor, 'id'>> = {}
+  const messages = Array.from(extractedMessages.values())
   for (const {id, ...msg} of messages) {
-    results[id] = msg;
+    results[id] = msg
   }
   return stringify(formatter.format(results), {
     space: 2,
     cmp: formatter.compareMessages || undefined,
-  });
+  })
 }
 
 /**
@@ -244,11 +242,11 @@ export default async function extractAndWrite(
   files: readonly string[],
   extractOpts: ExtractCLIOptions
 ) {
-  const {outFile, ...opts} = extractOpts;
-  const serializedResult = await extract(files, opts);
+  const {outFile, ...opts} = extractOpts
+  const serializedResult = await extract(files, opts)
   if (outFile) {
-    return outputFile(outFile, serializedResult);
+    return outputFile(outFile, serializedResult)
   }
-  process.stdout.write(serializedResult);
-  process.stdout.write('\n');
+  process.stdout.write(serializedResult)
+  process.stdout.write('\n')
 }

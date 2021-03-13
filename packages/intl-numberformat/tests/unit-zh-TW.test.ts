@@ -1,10 +1,10 @@
-import '@formatjs/intl-getcanonicallocales/polyfill';
-import '@formatjs/intl-locale/polyfill';
-import '@formatjs/intl-pluralrules/polyfill-locales';
-import * as zh from './locale-data/zh.json';
-import * as zhHant from './locale-data/zh-Hant.json';
-import {NumberFormat} from '../src/core';
-NumberFormat.__addLocaleData(zh as any, zhHant as any);
+import '@formatjs/intl-getcanonicallocales/polyfill'
+import '@formatjs/intl-locale/polyfill'
+import '@formatjs/intl-pluralrules/polyfill-locales'
+import * as zh from './locale-data/zh.json'
+import * as zhHant from './locale-data/zh-Hant.json'
+import {NumberFormat} from '../src/core'
+NumberFormat.__addLocaleData(zh as any, zhHant as any)
 
 const tests: any = [
   [
@@ -142,20 +142,20 @@ const tests: any = [
       ],
     },
   ],
-];
+]
 
 describe('unit-zh-TW', function () {
   for (const [number, expectedData] of tests) {
     for (const unitDisplay in expectedData) {
-      const expected = expectedData[unitDisplay];
+      const expected = expectedData[unitDisplay]
       it(`${number} - ${unitDisplay}`, function () {
         const nf = new NumberFormat('zh-TW', {
           style: 'unit',
           unit: 'meter',
           unitDisplay: unitDisplay as 'narrow',
-        });
-        expect(nf.formatToParts(number)).toEqual(expected);
-      });
+        })
+        expect(nf.formatToParts(number)).toEqual(expected)
+      })
     }
   }
-});
+})

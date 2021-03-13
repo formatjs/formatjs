@@ -1,30 +1,30 @@
-import commander from 'commander';
-import loudRejection from 'loud-rejection';
-import extract, {ExtractCLIOptions} from './extract';
-import compile, {CompileCLIOpts, Opts} from './compile';
-import compileFolder from './compile_folder';
-import {sync as globSync} from 'fast-glob';
+import commander from 'commander'
+import loudRejection from 'loud-rejection'
+import extract, {ExtractCLIOptions} from './extract'
+import compile, {CompileCLIOpts, Opts} from './compile'
+import compileFolder from './compile_folder'
+import {sync as globSync} from 'fast-glob'
 
-const KNOWN_COMMANDS = ['extract'];
+const KNOWN_COMMANDS = ['extract']
 
 async function main(argv: string[]) {
-  loudRejection();
+  loudRejection()
 
-  const version = require('../package.json').version;
+  const version = require('../package.json').version
 
   commander
     .version(version, '-v, --version')
     .usage('<command> [flags]')
     .action(command => {
       if (!KNOWN_COMMANDS.includes(command)) {
-        commander.help();
+        commander.help()
       }
-    });
+    })
 
   commander
     .command('help', {isDefault: true})
     .description('Show this help message.')
-    .action(() => commander.help());
+    .action(() => commander.help())
 
   // Long text wrapping to available terminal columns: https://github.com/tj/commander.js/pull/956
   // NOTE: please keep the help text in sync with babel-plugin-formatjs documentation.
@@ -110,13 +110,13 @@ works. This option does not do that so it's less safe.`,
       'Whether to preserve whitespace and newlines.'
     )
     .action(async (files: readonly string[], cmdObj: ExtractCLIOptions) => {
-      const processedFiles = [];
+      const processedFiles = []
       for (const f of files) {
         processedFiles.push(
           ...globSync(f, {
             ignore: cmdObj.ignore,
           })
-        );
+        )
       }
 
       await extract(processedFiles, {
@@ -134,9 +134,9 @@ works. This option does not do that so it's less safe.`,
         // But so long as the glob pattern is provided, don't read from stdin.
         readFromStdin: files.length === 0,
         preserveWhitespace: cmdObj.preserveWhitespace,
-      });
-      process.exit(0);
-    });
+      })
+      process.exit(0)
+    })
 
   commander
     .command('compile <translation_files>')
@@ -173,12 +173,12 @@ for more information`
 "--ast" is required for this to work.`
     )
     .action(async (filePattern: string, opts: CompileCLIOpts) => {
-      const files = globSync(filePattern);
+      const files = globSync(filePattern)
       if (!files.length) {
-        throw new Error(`No input file found with pattern ${filePattern}`);
+        throw new Error(`No input file found with pattern ${filePattern}`)
       }
-      await compile(files, opts);
-    });
+      await compile(files, opts)
+    })
 
   commander
     .command('compile-folder <folder> <outFolder>')
@@ -206,17 +206,17 @@ for more information`
     )
     .action(async (folder: string, outFolder: string, opts?: Opts) => {
       // fast-glob expect `/` in Windows as well
-      const files = globSync(`${folder}/*.json`);
+      const files = globSync(`${folder}/*.json`)
       if (!files.length) {
-        throw new Error(`No JSON file found in ${folder}`);
+        throw new Error(`No JSON file found in ${folder}`)
       }
-      await compileFolder(files, outFolder, opts);
-    });
+      await compileFolder(files, outFolder, opts)
+    })
 
   if (argv.length < 3) {
-    commander.help();
+    commander.help()
   } else {
-    commander.parse(argv);
+    commander.parse(argv)
   }
 }
-export default main;
+export default main

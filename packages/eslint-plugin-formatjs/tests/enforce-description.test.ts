@@ -1,6 +1,6 @@
-import enforceDescription from '../rules/enforce-description';
-import {noMatch, spreadJsx, emptyFnCall, dynamicMessage} from './fixtures';
-import {ruleTester} from './util';
+import enforceDescription from '../rules/enforce-description'
+import {noMatch, spreadJsx, emptyFnCall, dynamicMessage} from './fixtures'
+import {ruleTester} from './util'
 
 ruleTester.run('enforce-description', enforceDescription, {
   valid: [
@@ -114,4 +114,4 @@ description={'asd' + 'azz'}
       ],
     },
   ],
-});
+})

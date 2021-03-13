@@ -1,6 +1,6 @@
-import noId from '../rules/no-id';
-import {ruleTester} from './util';
-import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures';
+import noId from '../rules/no-id'
+import {ruleTester} from './util'
+import {dynamicMessage, noMatch, spreadJsx, emptyFnCall} from './fixtures'
 ruleTester.run('no-id', noId, {
   valid: [
     `intl.formatMessage({
@@ -148,4 +148,4 @@ intl.formatMessage({  defaultMessage: '{count, plural, one {<a>#</a>} other {# m
 })`,
     },
   ],
-});
+})

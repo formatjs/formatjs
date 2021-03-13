@@ -6,254 +6,254 @@ import {
   PuExtension,
   OtherExtension,
   KV,
-} from './types';
+} from './types'
 
-const ALPHANUM_1_8 = /^[a-z0-9]{1,8}$/i;
-const ALPHANUM_2_8 = /^[a-z0-9]{2,8}$/i;
-const ALPHANUM_3_8 = /^[a-z0-9]{3,8}$/i;
+const ALPHANUM_1_8 = /^[a-z0-9]{1,8}$/i
+const ALPHANUM_2_8 = /^[a-z0-9]{2,8}$/i
+const ALPHANUM_3_8 = /^[a-z0-9]{3,8}$/i
 
-const KEY_REGEX = /^[a-z0-9][a-z]$/i;
+const KEY_REGEX = /^[a-z0-9][a-z]$/i
 
-const TYPE_REGEX = /^[a-z0-9]{3,8}$/i;
-const ALPHA_4 = /^[a-z]{4}$/i;
+const TYPE_REGEX = /^[a-z0-9]{3,8}$/i
+const ALPHA_4 = /^[a-z]{4}$/i
 // alphanum-[tTuUxX]
-const OTHER_EXTENSION_TYPE = /^[0-9a-svwyz]$/i;
-const UNICODE_REGION_SUBTAG_REGEX = /^([a-z]{2}|[0-9]{3})$/i;
-const UNICODE_VARIANT_SUBTAG_REGEX = /^([a-z0-9]{5,8}|[0-9][a-z0-9]{3})$/i;
-const UNICODE_LANGUAGE_SUBTAG_REGEX = /^([a-z]{2,3}|[a-z]{5,8})$/i;
-const TKEY_REGEX = /^[a-z][0-9]$/i;
+const OTHER_EXTENSION_TYPE = /^[0-9a-svwyz]$/i
+const UNICODE_REGION_SUBTAG_REGEX = /^([a-z]{2}|[0-9]{3})$/i
+const UNICODE_VARIANT_SUBTAG_REGEX = /^([a-z0-9]{5,8}|[0-9][a-z0-9]{3})$/i
+const UNICODE_LANGUAGE_SUBTAG_REGEX = /^([a-z]{2,3}|[a-z]{5,8})$/i
+const TKEY_REGEX = /^[a-z][0-9]$/i
 
-export const SEPARATOR = '-';
+export const SEPARATOR = '-'
 
 export function isUnicodeLanguageSubtag(lang: string): boolean {
-  return UNICODE_LANGUAGE_SUBTAG_REGEX.test(lang);
+  return UNICODE_LANGUAGE_SUBTAG_REGEX.test(lang)
 }
 
 export function isStructurallyValidLanguageTag(tag: string): boolean {
   try {
-    parseUnicodeLanguageId(tag.split(SEPARATOR));
+    parseUnicodeLanguageId(tag.split(SEPARATOR))
   } catch (e) {
-    return false;
+    return false
   }
-  return true;
+  return true
 }
 
 export function isUnicodeRegionSubtag(region: string): boolean {
-  return UNICODE_REGION_SUBTAG_REGEX.test(region);
+  return UNICODE_REGION_SUBTAG_REGEX.test(region)
 }
 
 export function isUnicodeScriptSubtag(script: string): boolean {
-  return ALPHA_4.test(script);
+  return ALPHA_4.test(script)
 }
 
 export function isUnicodeVariantSubtag(variant: string): boolean {
-  return UNICODE_VARIANT_SUBTAG_REGEX.test(variant);
+  return UNICODE_VARIANT_SUBTAG_REGEX.test(variant)
 }
 
 export function parseUnicodeLanguageId(
   chunks: string[] | string
 ): UnicodeLanguageId {
   if (typeof chunks === 'string') {
-    chunks = chunks.split(SEPARATOR);
+    chunks = chunks.split(SEPARATOR)
   }
-  const lang = chunks.shift();
+  const lang = chunks.shift()
   if (!lang) {
-    throw new RangeError('Missing unicode_language_subtag');
+    throw new RangeError('Missing unicode_language_subtag')
   }
   if (lang === 'root') {
-    return {lang: 'root', variants: []};
+    return {lang: 'root', variants: []}
   }
   // unicode_language_subtag
   if (!isUnicodeLanguageSubtag(lang)) {
-    throw new RangeError('Malformed unicode_language_subtag');
+    throw new RangeError('Malformed unicode_language_subtag')
   }
-  let script;
+  let script
   // unicode_script_subtag
   if (isUnicodeScriptSubtag(chunks[0])) {
-    script = chunks.shift();
+    script = chunks.shift()
   }
-  let region;
+  let region
   // unicode_region_subtag
   if (isUnicodeRegionSubtag(chunks[0])) {
-    region = chunks.shift();
+    region = chunks.shift()
   }
-  const variants: Record<string, any> = {};
+  const variants: Record<string, any> = {}
   while (chunks.length && isUnicodeVariantSubtag(chunks[0])) {
-    const variant = chunks.shift()!;
+    const variant = chunks.shift()!
     if (variant in variants) {
-      throw new RangeError(`Duplicate variant "${variant}"`);
+      throw new RangeError(`Duplicate variant "${variant}"`)
     }
-    variants[variant] = 1;
+    variants[variant] = 1
   }
   return {
     lang,
     script,
     region,
     variants: Object.keys(variants),
-  };
+  }
 }
 
 function parseUnicodeExtension(chunks: string[]): UnicodeExtension {
-  const keywords = [];
-  let keyword;
+  const keywords = []
+  let keyword
   while (chunks.length && (keyword = parseKeyword(chunks))) {
-    keywords.push(keyword);
+    keywords.push(keyword)
   }
   if (keywords.length) {
     return {
       type: 'u',
       keywords,
       attributes: [],
-    };
+    }
   }
   // Mix of attributes & keywords
   // Check for attributes first
-  const attributes = [];
+  const attributes = []
   while (chunks.length && ALPHANUM_3_8.test(chunks[0])) {
-    attributes.push(chunks.shift()!);
+    attributes.push(chunks.shift()!)
   }
   while (chunks.length && (keyword = parseKeyword(chunks))) {
-    keywords.push(keyword);
+    keywords.push(keyword)
   }
   if (keywords.length || attributes.length) {
     return {
       type: 'u',
       attributes,
       keywords,
-    };
+    }
   }
-  throw new RangeError('Malformed unicode_extension');
+  throw new RangeError('Malformed unicode_extension')
 }
 
 function parseKeyword(chunks: string[]): KV | undefined {
-  let key;
+  let key
   if (!KEY_REGEX.test(chunks[0])) {
-    return;
+    return
   }
-  key = chunks.shift()!;
+  key = chunks.shift()!
 
-  const type = [];
+  const type = []
   while (chunks.length && TYPE_REGEX.test(chunks[0])) {
-    type.push(chunks.shift());
+    type.push(chunks.shift())
   }
-  let value: string = '';
+  let value: string = ''
   if (type.length) {
-    value = type.join(SEPARATOR);
+    value = type.join(SEPARATOR)
   }
-  return [key, value];
+  return [key, value]
 }
 
 function parseTransformedExtension(chunks: string[]): TransformedExtension {
-  let lang: UnicodeLanguageId | undefined;
+  let lang: UnicodeLanguageId | undefined
   try {
-    lang = parseUnicodeLanguageId(chunks);
+    lang = parseUnicodeLanguageId(chunks)
   } catch (e) {
     // Try just parsing tfield
   }
-  const fields: KV[] = [];
+  const fields: KV[] = []
   while (chunks.length && TKEY_REGEX.test(chunks[0])) {
-    const key = chunks.shift()!;
-    const value = [];
+    const key = chunks.shift()!
+    const value = []
     while (chunks.length && ALPHANUM_3_8.test(chunks[0])) {
-      value.push(chunks.shift());
+      value.push(chunks.shift())
     }
     if (!value.length) {
-      throw new RangeError(`Missing tvalue for tkey "${key}"`);
+      throw new RangeError(`Missing tvalue for tkey "${key}"`)
     }
-    fields.push([key, value.join(SEPARATOR)]);
+    fields.push([key, value.join(SEPARATOR)])
   }
   if (fields.length) {
     return {
       type: 't',
       fields,
       lang,
-    };
+    }
   }
-  throw new RangeError('Malformed transformed_extension');
+  throw new RangeError('Malformed transformed_extension')
 }
 function parsePuExtension(chunks: string[]): PuExtension {
-  const exts = [];
+  const exts = []
   while (chunks.length && ALPHANUM_1_8.test(chunks[0])) {
-    exts.push(chunks.shift());
+    exts.push(chunks.shift())
   }
   if (exts.length) {
     return {
       type: 'x',
       value: exts.join(SEPARATOR),
-    };
+    }
   }
-  throw new RangeError('Malformed private_use_extension');
+  throw new RangeError('Malformed private_use_extension')
 }
 function parseOtherExtensionValue(chunks: string[]): string {
-  const exts = [];
+  const exts = []
   while (chunks.length && ALPHANUM_2_8.test(chunks[0])) {
-    exts.push(chunks.shift());
+    exts.push(chunks.shift())
   }
   if (exts.length) {
-    return exts.join(SEPARATOR);
+    return exts.join(SEPARATOR)
   }
-  return '';
+  return ''
 }
 function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {
   if (!chunks.length) {
-    return {extensions: []};
+    return {extensions: []}
   }
-  const extensions: UnicodeLocaleId['extensions'] = [];
-  let unicodeExtension;
-  let transformedExtension;
-  let puExtension;
-  const otherExtensionMap: Record<string, OtherExtension> = {};
+  const extensions: UnicodeLocaleId['extensions'] = []
+  let unicodeExtension
+  let transformedExtension
+  let puExtension
+  const otherExtensionMap: Record<string, OtherExtension> = {}
   do {
-    const type = chunks.shift()!;
+    const type = chunks.shift()!
     switch (type) {
       case 'u':
       case 'U':
         if (unicodeExtension) {
-          throw new RangeError('There can only be 1 -u- extension');
+          throw new RangeError('There can only be 1 -u- extension')
         }
-        unicodeExtension = parseUnicodeExtension(chunks);
-        extensions.push(unicodeExtension);
-        break;
+        unicodeExtension = parseUnicodeExtension(chunks)
+        extensions.push(unicodeExtension)
+        break
       case 't':
       case 'T':
         if (transformedExtension) {
-          throw new RangeError('There can only be 1 -t- extension');
+          throw new RangeError('There can only be 1 -t- extension')
         }
-        transformedExtension = parseTransformedExtension(chunks);
-        extensions.push(transformedExtension);
-        break;
+        transformedExtension = parseTransformedExtension(chunks)
+        extensions.push(transformedExtension)
+        break
       case 'x':
       case 'X':
         if (puExtension) {
-          throw new RangeError('There can only be 1 -x- extension');
+          throw new RangeError('There can only be 1 -x- extension')
         }
-        puExtension = parsePuExtension(chunks);
-        extensions.push(puExtension);
-        break;
+        puExtension = parsePuExtension(chunks)
+        extensions.push(puExtension)
+        break
       default:
         if (!OTHER_EXTENSION_TYPE.test(type)) {
-          throw new RangeError('Malformed extension type');
+          throw new RangeError('Malformed extension type')
         }
         if (type in otherExtensionMap) {
-          throw new RangeError(`There can only be 1 -${type}- extension`);
+          throw new RangeError(`There can only be 1 -${type}- extension`)
         }
         const extension: OtherExtension = {
           type: type as 'a',
           value: parseOtherExtensionValue(chunks),
-        };
-        otherExtensionMap[extension.type] = extension;
-        extensions.push(extension);
-        break;
+        }
+        otherExtensionMap[extension.type] = extension
+        extensions.push(extension)
+        break
     }
-  } while (chunks.length);
-  return {extensions};
+  } while (chunks.length)
+  return {extensions}
 }
 
 export function parseUnicodeLocaleId(locale: string): UnicodeLocaleId {
-  const chunks = locale.split(SEPARATOR);
-  const lang = parseUnicodeLanguageId(chunks);
+  const chunks = locale.split(SEPARATOR)
+  const lang = parseUnicodeLanguageId(chunks)
   return {
     lang,
     ...parseExtensions(chunks),
-  };
+  }
 }

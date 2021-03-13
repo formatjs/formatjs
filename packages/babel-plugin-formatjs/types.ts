@@ -1,26 +1,26 @@
-import {NodePath} from '@babel/core';
-import {SourceLocation, StringLiteral} from '@babel/types';
+import {NodePath} from '@babel/core'
+import {SourceLocation, StringLiteral} from '@babel/types'
 
 export interface MessageDescriptor {
-  id: string;
-  defaultMessage?: string;
-  description?: string;
+  id: string
+  defaultMessage?: string
+  description?: string
 }
 
 export interface State {
-  messages: ExtractedMessageDescriptor[];
-  meta: Record<string, string>;
-  componentNames: string[];
-  functionNames: string[];
+  messages: ExtractedMessageDescriptor[]
+  meta: Record<string, string>
+  componentNames: string[]
+  functionNames: string[]
 }
 
 export type ExtractedMessageDescriptor = MessageDescriptor &
-  Partial<SourceLocation> & {file?: string};
+  Partial<SourceLocation> & {file?: string}
 
 export type MessageDescriptorPath = Record<
   keyof MessageDescriptor,
   NodePath<StringLiteral> | undefined
->;
+>
 
 export interface Options {
   overrideIdFn?: (
@@ -28,15 +28,15 @@ export interface Options {
     defaultMessage?: string,
     description?: string,
     filePath?: string
-  ) => string;
-  onMsgExtracted?: (filePath: string, msgs: MessageDescriptor[]) => void;
-  onMetaExtracted?: (filePath: string, meta: Record<string, string>) => void;
-  idInterpolationPattern?: string;
-  removeDefaultMessage?: boolean;
-  additionalComponentNames?: string[];
-  additionalFunctionNames?: string[];
-  pragma?: string;
-  extractSourceLocation?: boolean;
-  ast?: boolean;
-  preserveWhitespace?: boolean;
+  ) => string
+  onMsgExtracted?: (filePath: string, msgs: MessageDescriptor[]) => void
+  onMetaExtracted?: (filePath: string, meta: Record<string, string>) => void
+  idInterpolationPattern?: string
+  removeDefaultMessage?: boolean
+  additionalComponentNames?: string[]
+  additionalFunctionNames?: string[]
+  pragma?: string
+  extractSourceLocation?: boolean
+  ast?: boolean
+  preserveWhitespace?: boolean
 }

@@ -1,18 +1,18 @@
-import {execFile as _execFile} from 'child_process';
-import {promisify} from 'util';
-import minimist from 'minimist';
-const execFile = promisify(_execFile);
+import {execFile as _execFile} from 'child_process'
+import {promisify} from 'util'
+import minimist from 'minimist'
+const execFile = promisify(_execFile)
 
 async function main(args: minimist.ParsedArgs) {
-  const {zoneFiles, outDir} = args;
+  const {zoneFiles, outDir} = args
   try {
-    execFile('/usr/sbin/zic', ['-d', outDir, ...zoneFiles.split(',')]);
+    execFile('/usr/sbin/zic', ['-d', outDir, ...zoneFiles.split(',')])
   } catch (e) {
-    console.error(e);
-    process.exitCode = 1;
+    console.error(e)
+    process.exitCode = 1
   }
 }
 
 if (require.main === module) {
-  main(minimist(process.argv));
+  main(minimist(process.argv))
 }
